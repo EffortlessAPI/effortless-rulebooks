@@ -1,0 +1,208 @@
+# ERB Schema - Language Candidates Rulebook
+# Source: effortless-rulebook/effortless-rulebook.json
+# This is a schema-only file (no data) for LLM consumption
+
+entities:
+  LanguageCandidate:
+    description: "A candidate item to evaluate whether it qualifies as a 'language'"
+    primary_key: language_candidate_id
+
+    raw_fields:
+      language_candidate_id:
+        type: string
+        nullable: false
+      name:
+        type: string
+        nullable: true
+      category:
+        type: string
+        nullable: true
+        examples: ["Natural Language", "Formal Language", "Physical Object", "Running Software"]
+      can_be_held:
+        type: boolean
+        nullable: true
+        description: "Tangibility predicate - can this be physically held?"
+      meaning_is_serialized:
+        type: boolean
+        nullable: true
+        description: "Can meaning be represented in serialized form?"
+      requires_parsing:
+        type: boolean
+        nullable: true
+        description: "Does it need parsing to be interpreted?"
+      is_ongology_descriptor:
+        type: boolean
+        nullable: true
+        description: "Does it function as an ontology/descriptor system?"
+      has_syntax:
+        type: boolean
+        nullable: true
+        description: "Does it have explicit grammar rules?"
+      chosen_language_candidate:
+        type: boolean
+        nullable: true
+        description: "Manually marked as a 'true' language candidate"
+      sort_order:
+        type: integer
+        nullable: true
+      has_identity:
+        type: boolean
+        nullable: true
+        description: "Does it have persistent identity?"
+      distance_from_concept:
+        type: integer
+        nullable: true
+        values: [1, 2]
+        description: "1=Mirror (is the thing), 2=Description (describes the thing)"
+
+    calculated_fields:
+      # Level 1: Simple calculations on raw fields only
+      category_contains_language:
+        type: boolean
+        depends_on: [category]
+        formula: 'FIND("language", LOWER(category)) > 0'
+        description: "Does the category string contain 'language'?"
+
+      has_grammar:
+        type: string
+        depends_on: [has_syntax]
+        formula: "CAST(has_syntax AS TEXT)"
+        description: "String representation of has_syntax"
+
+      relationship_to_concept:
+        type: string
+        depends_on: [distance_from_concept]
+        formula: 'IF(distance_from_concept = 1, "IsMirrorOf", "IsDescriptionOf")'
+        description: "Semantic relationship to the language concept"
+
+      family_fued_question:
+        type: string
+        depends_on: [name]
+        formula: '"Is " & name & " a language?"'
+        description: "The Family Feud style question"
+
+      # Level 2: Depends on Level 1 calculations
+      is_a_family_feud_top_answer:
+        type: boolean
+        depends_on:
+          - category_contains_language  # Level 1 calc
+          - has_syntax                  # raw
+          - can_be_held                 # raw
+          - meaning_is_serialized       # raw
+          - requires_parsing            # raw
+          - is_ongology_descriptor      # raw
+          - has_identity                # raw
+          - distance_from_concept       # raw
+        formula: |
+          AND(
+            category_contains_language,
+            has_syntax,
+            NOT(can_be_held),
+            meaning_is_serialized,
+            requires_parsing,
+            is_ongology_descriptor,
+            NOT(has_identity),
+            distance_from_concept = 2
+          )
+        description: "Would this be a 'top answer' on Family Feud for 'Is X a language?'"
+
+      # Level 3: Depends on Level 2 calculations
+      family_feud_mismatch:
+        type: string
+        depends_on:
+          - is_a_family_feud_top_answer  # Level 2 calc
+          - chosen_language_candidate    # raw
+          - name                         # raw
+        formula: |
+          IF(is_a_family_feud_top_answer != chosen_language_candidate,
+            name & " " &
+            IF(is_a_family_feud_top_answer, "Is", "Isn't") &
+            " a Family Feud Language, but " &
+            IF(chosen_language_candidate, "Is", "Is Not") &
+            " marked as a 'Language Candidate.'",
+            NULL
+          )
+        description: "Reports mismatches between computed and manual classification"
+
+  IsEverythingALanguage:
+    description: "Argument steps in the philosophical debate about language definition"
+    primary_key: is_everything_a_language_id
+
+    raw_fields:
+      is_everything_a_language_id:
+        type: string
+        nullable: false
+      name:
+        type: string
+        nullable: true
+        description: "Identifier like NEIAL-001"
+      argument_name:
+        type: string
+        nullable: true
+        values: ["LanguageCanBeFormalized", "NotEverythingIsALanguage"]
+      argument_category:
+        type: string
+        nullable: true
+        values: ["Definition", "Premise", "Conclusion", "Example", "Observation", "Refinement"]
+      step_type:
+        type: string
+        nullable: true
+        values: ["Motivation", "PredicateSet", "Definition", "Witness", "Conclusion",
+                 "Entailment", "Counterexample", "NonLanguageExample", "FuzzyBoundary", "Refinement"]
+      statement:
+        type: string
+        nullable: true
+        description: "Natural language argument text"
+      formalization:
+        type: string
+        nullable: true
+        description: "Formal logic notation"
+      related_candidate_name:
+        type: string
+        nullable: true
+      related_candidate_id:
+        type: string
+        nullable: true
+        foreign_key: LanguageCandidate.language_candidate_id
+      evidence_from_rulebook:
+        type: string
+        nullable: true
+        description: "Predicate values supporting the candidate"
+      notes:
+        type: string
+        nullable: true
+
+    calculated_fields: {}  # No calculations on this entity
+
+# DAG Execution Order (topological sort)
+calculation_dag:
+  level_0:
+    - all raw fields from both entities
+  level_1:
+    - LanguageCandidate.category_contains_language
+    - LanguageCandidate.has_grammar
+    - LanguageCandidate.relationship_to_concept
+    - LanguageCandidate.family_fued_question
+  level_2:
+    - LanguageCandidate.is_a_family_feud_top_answer
+  level_3:
+    - LanguageCandidate.family_feud_mismatch
+
+# Core Language Definition (from the rulebook)
+language_definition:
+  formula: |
+    Language(x) := HasSyntax(x)
+                   AND RequiresParsing(x)
+                   AND Meaning_Is_Serialized(x)
+                   AND IsOngologyDescriptor(x)
+  predicates:
+    core:
+      - has_syntax
+      - requires_parsing
+      - meaning_is_serialized
+      - is_ongology_descriptor
+    auxiliary:
+      - can_be_held
+      - has_identity
+      - distance_from_concept
+      - category

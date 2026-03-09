@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ERB Schema - XLSX Template (SpreadsheetML)
+  ==========================================
+  Mirrors the PostgreSQL functions from postgres/02-create-functions.sql
+  Source: effortless-rulebook/effortless-rulebook.json
+
+  This is a simplified SpreadsheetML template showing the structure.
+  XLSX files are ZIP archives containing XML files following the
+  Office Open XML (OOXML) standard (ECMA-376, ISO/IEC 29500).
+
+  DAG Execution Order:
+    Level 0: Raw fields
+    Level 1: categoryContainsLanguage, hasGrammar, relationshipToConcept, familyFuedQuestion
+    Level 2: isAFamilyFeudTopAnswer (depends on categoryContainsLanguage)
+    Level 3: familyFeudMismatch (depends on isAFamilyFeudTopAnswer)
+-->
+<worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"
+           xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships">
+
+  <!-- Column definitions -->
+  <cols>
+    <col min="1" max="1" width="25" customWidth="1"/>  <!-- language_candidate_id -->
+    <col min="2" max="2" width="20" customWidth="1"/>  <!-- name -->
+    <col min="3" max="3" width="18" customWidth="1"/>  <!-- category -->
+    <col min="4" max="4" width="12" customWidth="1"/>  <!-- has_syntax -->
+    <col min="5" max="5" width="15" customWidth="1"/>  <!-- requires_parsing -->
+    <col min="6" max="6" width="18" customWidth="1"/>  <!-- meaning_is_serialized -->
+    <col min="7" max="7" width="20" customWidth="1"/>  <!-- is_ongology_descriptor -->
+    <col min="8" max="8" width="12" customWidth="1"/>  <!-- can_be_held -->
+    <col min="9" max="9" width="12" customWidth="1"/>  <!-- has_identity -->
+    <col min="10" max="10" width="18" customWidth="1"/> <!-- distance_from_concept -->
+    <col min="11" max="11" width="25" customWidth="1"/> <!-- is_a_family_feud_top_answer -->
+    <col min="12" max="12" width="30" customWidth="1"/> <!-- family_feud_mismatch -->
+  </cols>
+
+  <sheetData>
+    <!-- Header Row (Row 1) -->
+    <row r="1">
+      <c r="A1" t="s"><v>language_candidate_id</v></c>
+      <c r="B1" t="s"><v>name</v></c>
+      <c r="C1" t="s"><v>category</v></c>
+      <c r="D1" t="s"><v>has_syntax</v></c>
+      <c r="E1" t="s"><v>requires_parsing</v></c>
+      <c r="F1" t="s"><v>meaning_is_serialized</v></c>
+      <c r="G1" t="s"><v>is_ongology_descriptor</v></c>
+      <c r="H1" t="s"><v>can_be_held</v></c>
+      <c r="I1" t="s"><v>has_identity</v></c>
+      <c r="J1" t="s"><v>distance_from_concept</v></c>
+      <c r="K1" t="s"><v>is_a_family_feud_top_answer</v></c>
+      <c r="L1" t="s"><v>family_feud_mismatch</v></c>
+    </row>
+
+    <!-- Template for data rows (repeat for each candidate) -->
+    <!-- {{#each candidates}} -->
+    <row r="{{row_number}}">
+      <c r="A{{row_number}}" t="s"><v>{{language_candidate_id}}</v></c>
+      <c r="B{{row_number}}" t="s"><v>{{name}}</v></c>
+      <c r="C{{row_number}}" t="s"><v>{{category}}</v></c>
+      <c r="D{{row_number}}" t="b"><v>{{has_syntax}}</v></c>
+      <c r="E{{row_number}}" t="b"><v>{{requires_parsing}}</v></c>
+      <c r="F{{row_number}}" t="b"><v>{{meaning_is_serialized}}</v></c>
+      <c r="G{{row_number}}" t="b"><v>{{is_ongology_descriptor}}</v></c>
+      <c r="H{{row_number}}" t="b"><v>{{can_be_held}}</v></c>
+      <c r="I{{row_number}}" t="b"><v>{{has_identity}}</v></c>
+      <c r="J{{row_number}}" t="n"><v>{{distance_from_concept}}</v></c>
+      <!-- Calculated: Level 2 -->
+      <c r="K{{row_number}}" t="b"><v>{{is_a_family_feud_top_answer}}</v></c>
+      <!-- Calculated: Level 3 -->
+      <c r="L{{row_number}}" t="s"><v>{{family_feud_mismatch}}</v></c>
+    </row>
+    <!-- {{/each}} -->
+
+  </sheetData>
+
+  <!--
+    XLSX Formula Cells (native Excel formulas)
+    ==========================================
+    In a real XLSX, calculated fields would use Excel formulas:
+
+    is_a_family_feud_top_answer (Column K):
+    =AND(
+      ISNUMBER(SEARCH("language", LOWER(C2))),
+      D2=TRUE,
+      H2=FALSE,
+      F2=TRUE,
+      E2=TRUE,
+      G2=TRUE,
+      I2=FALSE,
+      J2=2
+    )
+
+    family_feud_mismatch (Column L):
+    =IF(K2<>chosen_language_candidate,
+      B2 & " " & IF(K2, "Is", "Isn't") & " a Family Feud Language, but " &
+      IF(chosen_language_candidate, "Is", "Is Not") & " marked as a 'Language Candidate.'",
+      "")
+
+    DAG Execution in Excel:
+    - Level 0: Columns A-J (raw data, no formulas)
+    - Level 1: Hidden intermediate calculations (could be in hidden columns)
+    - Level 2: Column K (depends on Level 0 and Level 1)
+    - Level 3: Column L (depends on Column K)
+  -->
+
+</worksheet>

@@ -1,0 +1,153 @@
+# Effortless Rulebook
+
+### Generated from:
+
+> This builds ssotme tools including those that are disabled which regenerates this file.
+
+```
+$ cd ./docs
+$ ssotme -build -id
+```
+
+
+> {{Description}}
+
+**Model ID:** `{{model_name}}`
+
+---
+
+## Formal Arguments
+
+The following logical argument establishes that "language" can be formalized as a computable classification, and demonstrates that not everything qualifies as a language under this definition.
+
+{{#with IsEverythingALanguage}}
+{{#each data}}
+### {{Name}}: {{ArgumentCategory}} ({{StepType}})
+
+**Argument:** {{ArgumentName}}
+
+> {{Statement}}
+
+{{#if Formalization}}
+**Formalization:**
+```
+{{Formalization}}
+```
+{{/if}}
+
+{{#if RelatedCandidateName}}
+**Related Candidate:** {{RelatedCandidateName}}
+{{/if}}
+
+{{#if EvidenceFromRulebook}}
+**Evidence:** `{{EvidenceFromRulebook}}`
+{{/if}}
+
+{{#if Notes}}
+*Note: {{Notes}}*
+{{/if}}
+
+---
+{{/each}}
+{{/with}}
+
+## Language Candidates
+
+The following entities have been evaluated against the operational definition of "language" using testable predicates.
+
+| Name | Category | Is Language? | HasSyntax | RequiresParsing | HasLinearDecodingPressure | StableOntologyReference | README |
+|------|----------|--------------|-----------|-----------------|---------------------------|-------------------------|--------|
+{{#each LanguageCandidates.data}}
+| {{Name}} | {{Category}} | {{#if TopFamilyFeudAnswer}}Yes{{else}}No{{/if}} | {{#if HasSyntax}}✓{{else}}✗{{/if}} | {{#if RequiresParsing}}✓{{else}}✗{{/if}} | {{#if HasLinearDecodingPressure}}✓{{else}}✗{{/if}} | {{#if StableOntologyReference}}✓{{else}}✗{{/if}} | {{#if TopFamilyFeudAnswer}}[View](./execution-substrates/{{LanguageCandidateId}}/README.md){{else}}-{{/if}} |
+{{/each}}
+
+### Predicate Legend
+
+| Predicate | Description |
+|-----------|-------------|
+| **HasSyntax** | Has formal syntactic rules governing valid expressions |
+| **RequiresParsing** | Understanding requires parsing/interpreting structured input |
+| **HasLinearDecodingPressure** | Requires sequential/linear interpretation to extract meaning |
+| **StableOntologyReference** | Provides stable references to concepts over time |
+
+---
+
+## Table Schemas
+
+{{#each this}}
+{{#if schema}}
+### Table: {{@key}}
+
+{{#if Description}}
+> {{Description}}
+{{/if}}
+
+#### Schema
+
+| Field | Type | Data Type | Nullable | Description |
+|-------|------|-----------|----------|-------------|
+{{#each schema}}
+| `{{name}}` | {{type}} | {{datatype}} | {{#if nullable}}Yes{{else}}No{{/if}} | {{#if Description}}{{Description}}{{else}}-{{/if}} |
+{{/each}}
+
+{{#each schema}}
+{{#if formula}}
+**Formula for `{{name}}`:**
+```
+{{formula}}
+```
+
+{{/if}}
+{{/each}}
+
+{{#if data}}
+#### Sample Data ({{data.length}} records)
+
+{{#with data.[0]}}
+| Field | Value |
+|-------|-------|
+{{#each this}}
+| `{{@key}}` | {{this}} |
+{{/each}}
+{{/with}}
+
+{{/if}}
+---
+
+{{/if}}
+{{/each}}
+
+## Metadata
+
+{{#with _meta}}
+{{#if _CMCC_Summary}}
+**Summary:** {{_CMCC_Summary}}
+{{/if}}
+
+{{#with _conversion_metadata}}
+### Conversion Details
+
+| Property | Value |
+|----------|-------|
+| Source Base ID | `{{source_base_id}}` |
+| Table Count | {{table_count}} |
+| Tool Version | {{tool_version}} |
+| Export Mode | {{export_mode}} |
+| Field Type Mapping | {{field_type_mapping}} |
+
+{{#with type_inference}}
+### Type Inference
+
+- **Enabled:** {{enabled}}
+- **Priority:** {{priority}}
+- **Airtable Type Mapping:** {{airtable_type_mapping}}
+- **Data Coercion Hierarchy:** {{data_coercion_hierarchy}}
+- **Nullable Support:** {{nullable_support}}
+- **Error Value Handling:** {{error_value_handling}}
+{{/with}}
+{{/with}}
+{{/with}}
+
+---
+
+*Generated from effortless-rulebook.json*

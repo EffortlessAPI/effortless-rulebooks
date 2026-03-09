@@ -1,0 +1,4703 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jessica Talisman - Ontology Parts 1-3</title>
+    <style>
+
+:root {
+    --bg-primary: #ffffff;
+    --bg-secondary: #f8f9fa;
+    --bg-tertiary: #e9ecef;
+    --text-primary: #212529;
+    --text-secondary: #6c757d;
+    --border-color: #dee2e6;
+    --accent-color: #0d6efd;
+    --success-color: #198754;
+    --warning-color: #ffc107;
+    --danger-color: #dc3545;
+    --answer-key-color: #6f42c1;
+    --shadow: 0 2px 8px rgba(0,0,0,0.1);
+    --radius: 6px;
+}
+
+[data-theme="dark"] {
+    --bg-primary: #1a1a2e;
+    --bg-secondary: #16213e;
+    --bg-tertiary: #0f3460;
+    --text-primary: #eaeaea;
+    --text-secondary: #b0b0b0;
+    --border-color: #3a3a5c;
+    --accent-color: #4dabf7;
+    --success-color: #51cf66;
+    --warning-color: #fcc419;
+    --danger-color: #ff6b6b;
+    --answer-key-color: #b197fc;
+    --shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    line-height: 1.4;
+    min-height: 100vh;
+}
+
+header {
+    background: var(--bg-primary);
+    border-bottom: 1px solid var(--border-color);
+    padding: 0.75rem 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: var(--shadow);
+}
+
+.header-content h1 { font-size: 1.25rem; font-weight: 600; }
+.header-meta { display: flex; gap: 1rem; font-size: 0.8rem; color: var(--text-secondary); }
+.project-name { font-weight: 500; }
+
+#theme-toggle {
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: 50%;
+    width: 32px; height: 32px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem;
+    transition: all 0.2s;
+}
+#theme-toggle:hover { background: var(--accent-color); color: white; }
+#theme-toggle .moon { display: none; }
+[data-theme="dark"] #theme-toggle .sun { display: none; }
+[data-theme="dark"] #theme-toggle .moon { display: inline; }
+
+.tabs {
+    display: flex;
+    gap: 0;
+    background: var(--bg-primary);
+    padding: 0 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+    overflow-x: auto;
+}
+
+.tab {
+    background: none;
+    border: none;
+    padding: 0.6rem 1.25rem;
+    cursor: pointer;
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+.tab:hover { color: var(--text-primary); background: var(--bg-secondary); }
+.tab.active { color: var(--accent-color); border-bottom-color: var(--accent-color); font-weight: 500; }
+
+main {
+    padding: 1rem 1.5rem;
+    width: 100%;
+}
+
+.tab-content { display: none; }
+.tab-content.active { display: block; animation: fadeIn 0.2s ease; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+.stats-grid {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.stat-card {
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    padding: 0.75rem 1.25rem;
+    text-align: center;
+    box-shadow: var(--shadow);
+    min-width: 140px;
+}
+
+.stat-value { font-size: 1.5rem; font-weight: 700; }
+.stat-label { font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em; }
+
+.score-perfect { color: var(--success-color); }
+.score-good { color: var(--success-color); }
+.score-warning { color: var(--warning-color); }
+.score-danger { color: var(--danger-color); }
+
+h2 { font-size: 1rem; font-weight: 600; margin-bottom: 0.75rem; color: var(--text-primary); }
+
+/* Matrix and table containers - horizontal scroll */
+.matrix-container, .table-scroll {
+    overflow-x: auto;
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+}
+
+.health-matrix {
+    border-collapse: collapse;
+    font-size: 0.8rem;
+    white-space: nowrap;
+}
+
+.health-matrix th,
+.health-matrix td {
+    padding: 0.4rem 0.75rem;
+    text-align: center;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.health-matrix th {
+    background: var(--bg-tertiary);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.7rem;
+    letter-spacing: 0.05em;
+    color: var(--text-secondary);
+}
+
+.health-matrix .substrate-name { text-align: left; font-weight: 500; }
+.health-matrix .entity-col { min-width: 80px; }
+
+.cell-pass { background: rgba(25, 135, 84, 0.15); color: var(--success-color); font-weight: 600; }
+.cell-fail { background: rgba(220, 53, 69, 0.15); color: var(--danger-color); font-weight: 600; cursor: pointer; }
+.cell-fail:hover { background: rgba(220, 53, 69, 0.25); }
+.cell-na { color: var(--text-secondary); }
+.cell-answer-key { background: rgba(111, 66, 193, 0.15); color: var(--answer-key-color); font-weight: 600; }
+.answer-key-row { background: rgba(111, 66, 193, 0.05); }
+.answer-key-row .substrate-name { color: var(--answer-key-color); }
+.restored-row { background: rgba(255, 193, 7, 0.08); }
+.warning-badge { color: var(--warning-color); font-size: 0.85rem; cursor: help; margin-left: 0.25rem; }
+.score-cell { font-weight: 600; }
+.time-cell { color: var(--text-secondary); font-family: monospace; font-size: 0.75rem; }
+
+/* Runtime bar in health matrix */
+.runtime-bar-cell {
+    min-width: 100px;
+    padding: 0.4rem 0.5rem;
+}
+
+/* Sub-tabs - horizontal scrolling */
+.sub-tabs {
+    display: flex;
+    gap: 0.35rem;
+    margin-bottom: 1rem;
+    padding: 0.35rem;
+    background: var(--bg-tertiary);
+    border-radius: var(--radius);
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+.sub-tab {
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    padding: 0.35rem 0.75rem;
+    cursor: pointer;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    border-radius: var(--radius);
+    transition: all 0.15s;
+    flex-shrink: 0;
+}
+.sub-tab:hover { color: var(--text-primary); border-color: var(--accent-color); }
+.sub-tab.active { color: var(--accent-color); border-color: var(--accent-color); font-weight: 500; }
+
+.substrate-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.substrate-link {
+    padding: 0.35rem 0.75rem;
+    border-radius: var(--radius);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.8rem;
+    border: 1px solid var(--border-color);
+    background: var(--bg-primary);
+    transition: all 0.15s;
+}
+.substrate-link:hover { transform: translateY(-1px); box-shadow: var(--shadow); }
+
+.entity-link, .substrate-row-link { cursor: pointer; transition: all 0.15s; }
+.entity-link:hover, .substrate-row-link:hover { color: var(--accent-color) !important; }
+
+#entity-details, #substrate-details {
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    padding: 1rem;
+    box-shadow: var(--shadow);
+}
+
+/* Compact schema table */
+.schema-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1rem;
+    font-size: 0.8rem;
+}
+.schema-table th, .schema-table td {
+    padding: 0.35rem 0.5rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+}
+.schema-table th { background: var(--bg-tertiary); font-weight: 600; }
+.type-raw { color: var(--text-secondary); }
+.type-calculated { color: var(--accent-color); font-weight: 500; }
+.formula-cell {
+    font-family: monospace;
+    font-size: 0.75rem;
+    color: var(--answer-key-color);
+    min-width: 200px;
+    max-width: 400px;
+    vertical-align: top;
+}
+.formula-pre {
+    margin: 0;
+    padding: 0.25rem 0.4rem;
+    background: var(--bg-tertiary);
+    border-radius: 3px;
+    white-space: pre-wrap;
+    word-break: break-word;
+    font-family: monospace;
+    font-size: 0.75rem;
+}
+.desc-cell {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    min-width: 150px;
+    max-width: 350px;
+    vertical-align: top;
+}
+.desc-text {
+    display: block;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.entity-header { margin-bottom: 0.75rem; }
+.entity-header h3 { font-size: 1rem; margin-bottom: 0.25rem; }
+
+/* Compact data table with ellipsis */
+.data-table {
+    border-collapse: collapse;
+    font-size: 0.8rem;
+}
+.data-table th, .data-table td {
+    padding: 0.3rem 0.5rem;
+    text-align: left;
+    border: 1px solid var(--border-color);
+    max-width: 300px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.data-table th { background: var(--bg-tertiary); font-weight: 600; font-size: 0.75rem; }
+.data-table .computed { background: rgba(13, 110, 253, 0.1); }
+
+/* Warnings and failures */
+.warning-banner {
+    background: rgba(255, 193, 7, 0.15);
+    border: 1px solid var(--warning-color);
+    border-left: 3px solid var(--warning-color);
+    border-radius: var(--radius);
+    padding: 0.5rem 0.75rem;
+    margin-bottom: 0.75rem;
+    font-size: 0.8rem;
+}
+.warning-banner strong { color: var(--warning-color); margin-right: 0.5rem; }
+.warning-banner code { background: var(--bg-tertiary); padding: 0.1rem 0.25rem; border-radius: 3px; font-size: 0.75rem; }
+
+.failure-card {
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-left: 3px solid var(--danger-color);
+    border-radius: var(--radius);
+    padding: 0.5rem 0.75rem;
+    margin-bottom: 0.5rem;
+    font-size: 0.8rem;
+}
+
+code.expected { background: rgba(25, 135, 84, 0.15); color: var(--success-color); padding: 0.1rem 0.25rem; border-radius: 3px; }
+code.actual { background: rgba(220, 53, 69, 0.15); color: var(--danger-color); padding: 0.1rem 0.25rem; border-radius: 3px; }
+
+.no-failures, .no-results { text-align: center; padding: 1.5rem; color: var(--text-secondary); }
+
+/* Substrate info bar */
+.substrate-info { margin-bottom: 1rem; }
+.substrate-info h3 { font-size: 1.1rem; margin-bottom: 0.25rem; }
+.substrate-stats { display: flex; gap: 1.5rem; font-size: 0.85rem; }
+.substrate-stat { display: flex; gap: 0.35rem; align-items: center; }
+.substrate-stat-label { color: var(--text-secondary); }
+.substrate-stat-value { font-weight: 600; }
+
+/* Collapsible schema/formula section */
+details { margin-bottom: 0.75rem; }
+summary {
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 0.85rem;
+    padding: 0.4rem 0.6rem;
+    background: var(--bg-tertiary);
+    border-radius: var(--radius);
+    user-select: none;
+    display: inline-block;
+}
+summary:hover { background: var(--bg-secondary); }
+details[open] summary { margin-bottom: 0.5rem; }
+
+footer {
+    text-align: center;
+    padding: 1rem;
+    color: var(--text-secondary);
+    font-size: 0.75rem;
+    border-top: 1px solid var(--border-color);
+    margin-top: 1.5rem;
+}
+
+/* Entity tabs within substrate view */
+.entity-tabs-container { margin-bottom: 1rem; }
+.entity-tab-content { display: none; }
+.entity-tab-content.active { display: block; }
+
+/* Graded test table - COMPACT */
+.entity-test-section {
+    background: var(--bg-secondary);
+    border-radius: var(--radius);
+    border: 1px solid var(--border-color);
+    padding: 0.75rem;
+}
+
+.entity-test-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+.entity-name { font-size: 1rem; font-weight: 600; }
+.entity-score {
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    background: var(--bg-tertiary);
+}
+
+.entity-description {
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+}
+
+/* Computed columns - hidden in collapsible */
+.computed-cols-info {
+    font-size: 0.8rem;
+    padding: 0.5rem;
+    background: var(--bg-primary);
+    border-radius: var(--radius);
+}
+.computed-cols-info ul { margin: 0.5rem 0 0 0; padding: 0; list-style: none; }
+.computed-cols-info li {
+    margin-bottom: 0.35rem;
+    padding: 0.35rem 0.5rem;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    border-left: 2px solid var(--accent-color);
+}
+.computed-cols-info .field-name {
+    font-weight: 600;
+    font-family: monospace;
+    font-size: 0.8rem;
+    color: var(--accent-color);
+}
+.computed-cols-info .formula-row { display: block; margin-top: 0.25rem; }
+.computed-cols-info .formula-label { color: var(--text-secondary); font-size: 0.7rem; text-transform: uppercase; margin-right: 0.35rem; }
+.computed-cols-info .formula {
+    font-family: monospace;
+    font-size: 0.75rem;
+    color: var(--answer-key-color);
+    background: var(--bg-tertiary);
+    padding: 0.35rem 0.5rem;
+    border-radius: 3px;
+    white-space: pre-wrap;
+    word-break: break-word;
+    display: block;
+    margin-top: 0.25rem;
+    line-height: 1.5;
+}
+.computed-cols-info .desc-row { display: block; color: var(--text-secondary); font-size: 0.75rem; font-style: italic; margin-top: 0.25rem; white-space: pre-wrap; word-break: break-word; line-height: 1.5; }
+
+/* Graded test table - VERY COMPACT with ellipsis */
+.graded-test-table {
+    border-collapse: collapse;
+    background: var(--bg-primary);
+    font-size: 0.8rem;
+}
+
+.graded-test-table th,
+.graded-test-table td {
+    padding: 0.3rem 0.5rem;
+    text-align: left;
+    border: 1px solid var(--border-color);
+    max-width: 300px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.graded-test-table th {
+    background: var(--bg-tertiary);
+    font-weight: 600;
+    font-size: 0.75rem;
+    position: sticky;
+    top: 0;
+}
+
+.graded-test-table .computed-col-header {
+    background: rgba(13, 110, 253, 0.15);
+    color: var(--accent-color);
+}
+
+.graded-test-table .record-pk {
+    font-family: monospace;
+    font-weight: 500;
+    background: var(--bg-secondary);
+    max-width: 180px;
+}
+
+.graded-test-table .cell-passed {
+    background: rgba(25, 135, 84, 0.08);
+}
+.graded-test-table .cell-passed .check-mark {
+    color: var(--success-color);
+    font-weight: bold;
+    margin-right: 0.25rem;
+}
+.graded-test-table .cell-passed code {
+    font-family: monospace;
+    font-size: 0.75rem;
+    color: var(--text-primary);
+}
+
+.graded-test-table .cell-failed {
+    background: rgba(220, 53, 69, 0.1);
+}
+.graded-test-table .cell-failed .expected-actual {
+    display: block;
+    font-size: 0.7rem;
+    margin-bottom: 0.1rem;
+}
+.graded-test-table .cell-failed .expected-actual:last-child { margin-bottom: 0; }
+.graded-test-table .expected-label, .graded-test-table .actual-label {
+    font-weight: 500;
+    color: var(--text-secondary);
+    margin-right: 0.25rem;
+}
+
+/* Tooltip for full text on hover */
+[title] { cursor: help; }
+
+/* Substrate view tabs and iframe */
+.substrate-view { display: none; }
+.substrate-view.active { display: block; }
+.substrate-report-iframe {
+    width: 100%;
+    min-height: 600px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    background: var(--bg-primary);
+}
+
+/* Postgres report section */
+.postgres-report {
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+}
+.postgres-report h4 {
+    font-size: 1.1rem;
+    margin-bottom: 0.75rem;
+    color: var(--answer-key-color);
+}
+.postgres-intro {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 1.25rem;
+    color: var(--text-primary);
+}
+.postgres-details h5 {
+    font-size: 0.9rem;
+    margin: 1rem 0 0.5rem 0;
+    color: var(--text-primary);
+}
+.postgres-details ul, .postgres-details ol {
+    margin: 0.5rem 0 1rem 1.5rem;
+    font-size: 0.85rem;
+    line-height: 1.6;
+}
+.postgres-details li { margin-bottom: 0.4rem; }
+.postgres-details p { font-size: 0.85rem; line-height: 1.6; margin-bottom: 0.75rem; }
+.postgres-conclusion {
+    background: rgba(111, 66, 193, 0.1);
+    border-left: 3px solid var(--answer-key-color);
+    padding: 0.75rem 1rem;
+    border-radius: 0 var(--radius) var(--radius) 0;
+    margin-top: 1rem;
+}
+
+/* Schema entity sections */
+.schema-entity-section {
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    margin-bottom: 1rem;
+    overflow: hidden;
+}
+.schema-entity-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    background: var(--bg-tertiary);
+    border-bottom: 1px solid var(--border-color);
+}
+.schema-entity-name {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0;
+    color: var(--accent-color);
+}
+.schema-meta {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.75rem;
+}
+.schema-meta-item {
+    color: var(--text-secondary);
+    background: var(--bg-primary);
+    padding: 0.2rem 0.5rem;
+    border-radius: 3px;
+    border: 1px solid var(--border-color);
+}
+.schema-entity-desc {
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    font-style: italic;
+    border-bottom: 1px solid var(--border-color);
+    background: var(--bg-secondary);
+}
+
+@media print {
+    header, .tabs, footer { display: none; }
+    .tab-content { display: block !important; }
+    body { background: white; color: black; }
+}
+
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <h1>Jessica Talisman - Ontology Parts 1-3</h1>
+            <div class="header-meta">
+                <span class="project-name">Orchestration Report</span>
+            </div>
+        </div>
+        <button id="theme-toggle" title="Toggle dark/light mode">
+            <span class="sun">&#9728;</span>
+            <span class="moon">&#9790;</span>
+        </button>
+    </header>
+
+    <nav class="tabs" id="main-tabs">
+        <button class="tab active" data-tab="overview">Overview</button>
+        <button class="tab" data-tab="entities">Entities</button>
+        <button class="tab" data-tab="substrates">Substrates</button>
+    </nav>
+
+    <main>
+        <section id="overview" class="tab-content active">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value" id="passing-count">
+                        10 / 11
+                    </div>
+                    <div class="stat-label">Substrates Passing</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value score-good">
+                        98.6%
+                    </div>
+                    <div class="stat-label">Overall Score</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">
+                        318.7s
+                    </div>
+                    <div class="stat-label">Total Runtime</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">
+                        6
+                    </div>
+                    <div class="stat-label">Entities</div>
+                </div>
+            </div>
+
+            <h2>Substrates</h2>
+            <div class="substrate-links">
+                <a href="#" class="substrate-link score-perfect" data-substrate="postgres">postgres (answer-key): 100%</a>
+                    <a href="#" class="substrate-link score-perfect" data-substrate="explain-dag">explain-dag: 100%</a>
+                    <a href="#" class="substrate-link score-perfect" data-substrate="uml">uml: 100%</a>
+                    <a href="#" class="substrate-link score-perfect" data-substrate="yaml">yaml: 100%</a>
+                    <a href="#" class="substrate-link score-perfect" data-substrate="golang">golang: 100%</a>
+                    <a href="#" class="substrate-link score-perfect" data-substrate="python">python: 100%</a>
+                    <a href="#" class="substrate-link score-perfect" data-substrate="csv">csv: 100%</a>
+                    <a href="#" class="substrate-link score-perfect" data-substrate="binary">binary: 100%</a>
+                    <a href="#" class="substrate-link score-perfect" data-substrate="xlsx">xlsx: 100%</a>
+                    <a href="#" class="substrate-link score-perfect" data-substrate="owl">owl: 100%</a>
+                    <a href="#" class="substrate-link score-good" data-substrate="english">english: 84%</a>
+            </div>
+
+            <h2>Substrate Health Matrix</h2>
+            <div class="matrix-container">
+                <table class="health-matrix" id="health-matrix">
+                    <thead>
+                        <tr>
+                            <th>Substrate</th>
+                            <th class="entity-col entity-link" data-entity="approval_gates">approval_gates</th>
+                            <th class="entity-col entity-link" data-entity="departments">departments</th>
+                            <th class="entity-col entity-link" data-entity="precedes_steps">precedes_steps</th>
+                            <th class="entity-col entity-link" data-entity="roles">roles</th>
+                            <th class="entity-col entity-link" data-entity="workflow_steps">workflow_steps</th>
+                            <th class="entity-col entity-link" data-entity="workflows">workflows</th>
+                            <th>Score</th>
+                            <th>Time</th>
+                            <th style="min-width: 120px;">Runtime</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="answer-key-row"><td class="substrate-name substrate-row-link" data-substrate="postgres">postgres (answer-key)</td><td class="cell-answer-key" data-substrate="postgres" data-entity="approval_gates" title="11/11">&#9733;</td><td class="cell-answer-key" data-substrate="postgres" data-entity="departments" title="15/15">&#9733;</td><td class="cell-answer-key" data-substrate="postgres" data-entity="precedes_steps" title="16/16">&#9733;</td><td class="cell-answer-key" data-substrate="postgres" data-entity="roles" title="15/15">&#9733;</td><td class="cell-answer-key" data-substrate="postgres" data-entity="workflow_steps" title="16/16">&#9733;</td><td class="cell-answer-key" data-substrate="postgres" data-entity="workflows" title="30/30">&#9733;</td><td class="score-cell score-perfect">100%</td><td class="time-cell">0.0s</td></tr>
+                        <tr class=""><td class="substrate-name substrate-row-link" data-substrate="explain-dag">explain-dag</td><td class="cell-pass" data-substrate="explain-dag" data-entity="approval_gates" title="11/11">&#10003;</td><td class="cell-pass" data-substrate="explain-dag" data-entity="departments" title="15/15">&#10003;</td><td class="cell-pass" data-substrate="explain-dag" data-entity="precedes_steps" title="16/16">&#10003;</td><td class="cell-pass" data-substrate="explain-dag" data-entity="roles" title="15/15">&#10003;</td><td class="cell-pass" data-substrate="explain-dag" data-entity="workflow_steps" title="16/16">&#10003;</td><td class="cell-pass" data-substrate="explain-dag" data-entity="workflows" title="30/30">&#10003;</td><td class="score-cell score-perfect">100.0%</td><td class="time-cell">0.1s</td></tr>
+                        <tr class=""><td class="substrate-name substrate-row-link" data-substrate="uml">uml</td><td class="cell-pass" data-substrate="uml" data-entity="approval_gates" title="11/11">&#10003;</td><td class="cell-pass" data-substrate="uml" data-entity="departments" title="15/15">&#10003;</td><td class="cell-pass" data-substrate="uml" data-entity="precedes_steps" title="16/16">&#10003;</td><td class="cell-pass" data-substrate="uml" data-entity="roles" title="15/15">&#10003;</td><td class="cell-pass" data-substrate="uml" data-entity="workflow_steps" title="16/16">&#10003;</td><td class="cell-pass" data-substrate="uml" data-entity="workflows" title="30/30">&#10003;</td><td class="score-cell score-perfect">100.0%</td><td class="time-cell">0.1s</td></tr>
+                        <tr class=""><td class="substrate-name substrate-row-link" data-substrate="yaml">yaml</td><td class="cell-pass" data-substrate="yaml" data-entity="approval_gates" title="11/11">&#10003;</td><td class="cell-pass" data-substrate="yaml" data-entity="departments" title="15/15">&#10003;</td><td class="cell-pass" data-substrate="yaml" data-entity="precedes_steps" title="16/16">&#10003;</td><td class="cell-pass" data-substrate="yaml" data-entity="roles" title="15/15">&#10003;</td><td class="cell-pass" data-substrate="yaml" data-entity="workflow_steps" title="16/16">&#10003;</td><td class="cell-pass" data-substrate="yaml" data-entity="workflows" title="30/30">&#10003;</td><td class="score-cell score-perfect">100.0%</td><td class="time-cell">0.1s</td></tr>
+                        <tr class=""><td class="substrate-name substrate-row-link" data-substrate="golang">golang</td><td class="cell-pass" data-substrate="golang" data-entity="approval_gates" title="11/11">&#10003;</td><td class="cell-pass" data-substrate="golang" data-entity="departments" title="15/15">&#10003;</td><td class="cell-pass" data-substrate="golang" data-entity="precedes_steps" title="16/16">&#10003;</td><td class="cell-pass" data-substrate="golang" data-entity="roles" title="15/15">&#10003;</td><td class="cell-pass" data-substrate="golang" data-entity="workflow_steps" title="16/16">&#10003;</td><td class="cell-pass" data-substrate="golang" data-entity="workflows" title="30/30">&#10003;</td><td class="score-cell score-perfect">100.0%</td><td class="time-cell">0.1s</td></tr>
+                        <tr class=""><td class="substrate-name substrate-row-link" data-substrate="python">python</td><td class="cell-pass" data-substrate="python" data-entity="approval_gates" title="11/11">&#10003;</td><td class="cell-pass" data-substrate="python" data-entity="departments" title="15/15">&#10003;</td><td class="cell-pass" data-substrate="python" data-entity="precedes_steps" title="16/16">&#10003;</td><td class="cell-pass" data-substrate="python" data-entity="roles" title="15/15">&#10003;</td><td class="cell-pass" data-substrate="python" data-entity="workflow_steps" title="16/16">&#10003;</td><td class="cell-pass" data-substrate="python" data-entity="workflows" title="30/30">&#10003;</td><td class="score-cell score-perfect">100.0%</td><td class="time-cell">0.1s</td></tr>
+                        <tr class=""><td class="substrate-name substrate-row-link" data-substrate="csv">csv</td><td class="cell-pass" data-substrate="csv" data-entity="approval_gates" title="11/11">&#10003;</td><td class="cell-pass" data-substrate="csv" data-entity="departments" title="15/15">&#10003;</td><td class="cell-pass" data-substrate="csv" data-entity="precedes_steps" title="16/16">&#10003;</td><td class="cell-pass" data-substrate="csv" data-entity="roles" title="15/15">&#10003;</td><td class="cell-pass" data-substrate="csv" data-entity="workflow_steps" title="16/16">&#10003;</td><td class="cell-pass" data-substrate="csv" data-entity="workflows" title="30/30">&#10003;</td><td class="score-cell score-perfect">100.0%</td><td class="time-cell">0.2s</td></tr>
+                        <tr class=""><td class="substrate-name substrate-row-link" data-substrate="binary">binary</td><td class="cell-pass" data-substrate="binary" data-entity="approval_gates" title="11/11">&#10003;</td><td class="cell-pass" data-substrate="binary" data-entity="departments" title="15/15">&#10003;</td><td class="cell-pass" data-substrate="binary" data-entity="precedes_steps" title="16/16">&#10003;</td><td class="cell-pass" data-substrate="binary" data-entity="roles" title="15/15">&#10003;</td><td class="cell-pass" data-substrate="binary" data-entity="workflow_steps" title="16/16">&#10003;</td><td class="cell-pass" data-substrate="binary" data-entity="workflows" title="30/30">&#10003;</td><td class="score-cell score-perfect">100.0%</td><td class="time-cell">0.3s</td></tr>
+                        <tr class=""><td class="substrate-name substrate-row-link" data-substrate="xlsx">xlsx</td><td class="cell-pass" data-substrate="xlsx" data-entity="approval_gates" title="11/11">&#10003;</td><td class="cell-pass" data-substrate="xlsx" data-entity="departments" title="15/15">&#10003;</td><td class="cell-pass" data-substrate="xlsx" data-entity="precedes_steps" title="16/16">&#10003;</td><td class="cell-pass" data-substrate="xlsx" data-entity="roles" title="15/15">&#10003;</td><td class="cell-pass" data-substrate="xlsx" data-entity="workflow_steps" title="16/16">&#10003;</td><td class="cell-pass" data-substrate="xlsx" data-entity="workflows" title="30/30">&#10003;</td><td class="score-cell score-perfect">100.0%</td><td class="time-cell">0.4s</td></tr>
+                        <tr class=""><td class="substrate-name substrate-row-link" data-substrate="owl">owl</td><td class="cell-pass" data-substrate="owl" data-entity="approval_gates" title="11/11">&#10003;</td><td class="cell-pass" data-substrate="owl" data-entity="departments" title="15/15">&#10003;</td><td class="cell-pass" data-substrate="owl" data-entity="precedes_steps" title="16/16">&#10003;</td><td class="cell-pass" data-substrate="owl" data-entity="roles" title="15/15">&#10003;</td><td class="cell-pass" data-substrate="owl" data-entity="workflow_steps" title="16/16">&#10003;</td><td class="cell-pass" data-substrate="owl" data-entity="workflows" title="30/30">&#10003;</td><td class="score-cell score-perfect">100.0%</td><td class="time-cell">10.1s</td></tr>
+                        <tr class=""><td class="substrate-name substrate-row-link" data-substrate="english">english</td><td class="cell-pass" data-substrate="english" data-entity="approval_gates" title="11/11">&#10003;</td><td class="cell-pass" data-substrate="english" data-entity="departments" title="15/15">&#10003;</td><td class="cell-fail" data-substrate="english" data-entity="precedes_steps" title="0/16">16</td><td class="cell-pass" data-substrate="english" data-entity="roles" title="15/15">&#10003;</td><td class="cell-pass" data-substrate="english" data-entity="workflow_steps" title="16/16">&#10003;</td><td class="cell-pass" data-substrate="english" data-entity="workflows" title="30/30">&#10003;</td><td class="score-cell score-good">84.5%</td><td class="time-cell">307.2s</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="entities" class="tab-content">
+            <nav class="sub-tabs" id="entity-tabs">
+                <button class="sub-tab active" data-entity="approval_gates">approval_gates</button>
+                <button class="sub-tab " data-entity="departments">departments</button>
+                <button class="sub-tab " data-entity="precedes_steps">precedes_steps</button>
+                <button class="sub-tab " data-entity="roles">roles</button>
+                <button class="sub-tab " data-entity="workflow_steps">workflow_steps</button>
+                <button class="sub-tab " data-entity="workflows">workflows</button>
+            </nav>
+            <div id="entity-details"></div>
+        </section>
+
+        <section id="substrates" class="tab-content">
+            <nav class="sub-tabs" id="substrate-tabs">
+                <button class="sub-tab active" data-substrate="postgres">postgres (answer-key)</button>
+                <button class="sub-tab " data-substrate="explain-dag">explain-dag</button>
+                <button class="sub-tab " data-substrate="uml">uml</button>
+                <button class="sub-tab " data-substrate="yaml">yaml</button>
+                <button class="sub-tab " data-substrate="golang">golang</button>
+                <button class="sub-tab " data-substrate="python">python</button>
+                <button class="sub-tab " data-substrate="csv">csv</button>
+                <button class="sub-tab " data-substrate="binary">binary</button>
+                <button class="sub-tab " data-substrate="xlsx">xlsx</button>
+                <button class="sub-tab " data-substrate="owl">owl</button>
+                <button class="sub-tab " data-substrate="english">english</button>
+            </nav>
+            <div id="substrate-details"></div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>Generated by ERB Test Orchestrator</p>
+    </footer>
+
+    <script>
+const REPORT_DATA = {
+  "meta": {
+    "project_name": "Jessica Talisman - Ontology Parts 1-3",
+    "directory_name": "ERB_jessica-talisman-ontology",
+    "rulebook_path": "/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/ERB_jessica-talisman-ontology/effortless-rulebook/effortless-rulebook.json",
+    "rulebook_name": "Jessica Talisman - Ontology Parts 1-3",
+    "rulebook_description": "Rulebook generated from Airtable base 'Jessica Talisman - Ontology Parts 1-3'."
+  },
+  "summary": {
+    "total_substrates": 11,
+    "passing_substrates": 10,
+    "total_entities": 6,
+    "total_computed_columns": 7,
+    "total_records": 88,
+    "overall_score": 98.58781994704324,
+    "total_runtime_seconds": 318.7261371612549,
+    "total_fields_tested": 1133,
+    "total_passed": 1117,
+    "total_failed": 16
+  },
+  "entities": {
+    "approval_gates": {
+      "primary_key": "approval_gate_id",
+      "computed_columns": [
+        "name"
+      ],
+      "computed_columns_info": [
+        {
+          "name": "name",
+          "formula": "=SUBSTITUTE(LOWER(DisplayName), \" \", \"-\")",
+          "description": ""
+        }
+      ],
+      "record_count": 11,
+      "schema": [
+        {
+          "name": "ApprovalGateId",
+          "datatype": "string",
+          "type": "raw",
+          "nullable": false
+        },
+        {
+          "name": "Name",
+          "datatype": "string",
+          "type": "calculated",
+          "nullable": true,
+          "formula": "=SUBSTITUTE(LOWER({{DisplayName}}), \" \", \"-\")"
+        },
+        {
+          "name": "DisplayName",
+          "datatype": "string",
+          "type": "raw",
+          "nullable": true
+        },
+        {
+          "name": "WorkflowSteps",
+          "datatype": "string",
+          "type": "relationship",
+          "nullable": true,
+          "Description": "Back-reference to workflow steps that use this approval gate. Enables finding all steps requiring this specific gate.",
+          "RelatedTo": "WorkflowSteps"
+        },
+        {
+          "name": "EscalationThresholdHours",
+          "datatype": "integer",
+          "type": "raw",
+          "nullable": true,
+          "Description": "Integer number of hours that may elapse on a pending gate before the ntwf:delegatesTo chain activates. Maps to ntwf:escalationThresholdHours. Domain applies only to ApprovalGate individuals."
+        }
+      ],
+      "description": "Table: ApprovalGates",
+      "answer_key": [
+        {
+          "approval_gate_id": "compliance-check",
+          "name": "compliance-check",
+          "display_name": "Compliance Check",
+          "workflow_steps": "document-verification",
+          "escalation_threshold_hours": 0
+        },
+        {
+          "approval_gate_id": "customer-confirmation",
+          "name": "customer-confirmation",
+          "display_name": "Customer Confirmation",
+          "workflow_steps": "customer-feedback-collection",
+          "escalation_threshold_hours": 0
+        },
+        {
+          "approval_gate_id": "executive-sign-off",
+          "name": "executive-sign-off",
+          "display_name": "Executive Sign-off",
+          "workflow_steps": "assign-task-to-team, close-workflow",
+          "escalation_threshold_hours": 0
+        },
+        {
+          "approval_gate_id": "final-authorization",
+          "name": "final-authorization",
+          "display_name": "Final Authorization",
+          "workflow_steps": "system-notification-sent",
+          "escalation_threshold_hours": 0
+        },
+        {
+          "approval_gate_id": "finance-approval",
+          "name": "finance-approval",
+          "display_name": "Finance Approval",
+          "workflow_steps": "finance-approval, generate-report",
+          "escalation_threshold_hours": 0
+        },
+        {
+          "approval_gate_id": "initial-review",
+          "name": "initial-review",
+          "display_name": "Initial Review",
+          "workflow_steps": "submit-request",
+          "escalation_threshold_hours": 0
+        },
+        {
+          "approval_gate_id": "it-security-gate",
+          "name": "it-security-gate",
+          "display_name": "IT Security Gate",
+          "workflow_steps": "archive-request, automated-eligibility-check",
+          "escalation_threshold_hours": 0
+        },
+        {
+          "approval_gate_id": "legal-review",
+          "name": "legal-review",
+          "display_name": "Legal Review",
+          "workflow_steps": "legal-compliance-check, team-lead-review",
+          "escalation_threshold_hours": 0
+        },
+        {
+          "approval_gate_id": "manager-approval",
+          "name": "manager-approval",
+          "display_name": "Manager Approval",
+          "workflow_steps": "final-approval, manager-review",
+          "escalation_threshold_hours": 0
+        },
+        {
+          "approval_gate_id": "quality-assurance",
+          "name": "quality-assurance",
+          "display_name": "Quality Assurance",
+          "workflow_steps": "quality-assurance-review",
+          "escalation_threshold_hours": 0
+        },
+        {
+          "approval_gate_id": "some-new-gate",
+          "name": "some-new-gate",
+          "display_name": "some new gate",
+          "workflow_steps": "some-new-task",
+          "escalation_threshold_hours": 0
+        }
+      ]
+    },
+    "departments": {
+      "primary_key": "department_id",
+      "computed_columns": [
+        "name"
+      ],
+      "computed_columns_info": [
+        {
+          "name": "name",
+          "formula": "=SUBSTITUTE(LOWER(DisplayName), \" \", \"-\")",
+          "description": "Human-readable display name of the department. Should match organizational terminology for stakeholder communication."
+        }
+      ],
+      "record_count": 15,
+      "schema": [
+        {
+          "name": "DepartmentId",
+          "datatype": "string",
+          "type": "raw",
+          "nullable": false
+        },
+        {
+          "name": "Name",
+          "datatype": "string",
+          "type": "calculated",
+          "nullable": true,
+          "Description": "Human-readable display name of the department. Should match organizational terminology for stakeholder communication.",
+          "formula": "=SUBSTITUTE(LOWER({{DisplayName}}), \" \", \"-\")"
+        },
+        {
+          "name": "Title",
+          "datatype": "string",
+          "type": "raw",
+          "nullable": true,
+          "Description": "Human-readable display name of the department. Should match organizational terminology for stakeholder communication."
+        },
+        {
+          "name": "DisplayName",
+          "datatype": "string",
+          "type": "raw",
+          "nullable": true,
+          "Description": "Machine-friendly name for programmatic reference."
+        },
+        {
+          "name": "Roles",
+          "datatype": "string",
+          "type": "relationship",
+          "nullable": true,
+          "Description": "Back-reference to roles owned by this department. Inverse of Roles.OwnedBy.",
+          "RelatedTo": "Roles"
+        }
+      ],
+      "description": "Table: Departments",
+      "answer_key": [
+        {
+          "department_id": "administration",
+          "name": "administration",
+          "title": "Administration Department",
+          "display_name": "Administration",
+          "roles": "hr"
+        },
+        {
+          "department_id": "customer-service",
+          "name": "customer-service",
+          "title": "Customer Service Department",
+          "display_name": "Customer Service",
+          "roles": "manager"
+        },
+        {
+          "department_id": "facilities-management",
+          "name": "facilities-management",
+          "title": "Facilities Department",
+          "display_name": "Facilities Management",
+          "roles": "trainer"
+        },
+        {
+          "department_id": "finance",
+          "name": "finance",
+          "title": "Finance Department",
+          "display_name": "Finance",
+          "roles": "editor"
+        },
+        {
+          "department_id": "human-resources",
+          "name": "human-resources",
+          "title": "HR Department",
+          "display_name": "Human Resources",
+          "roles": "administrator"
+        },
+        {
+          "department_id": "information-technology",
+          "name": "information-technology",
+          "title": "IT Department",
+          "display_name": "Information Technology",
+          "roles": "viewer"
+        },
+        {
+          "department_id": "legal",
+          "name": "legal",
+          "title": "Legal Department",
+          "display_name": "Legal",
+          "roles": "analyst"
+        },
+        {
+          "department_id": "marketing",
+          "name": "marketing",
+          "title": "Marketing Department",
+          "display_name": "Marketing",
+          "roles": "moderator"
+        },
+        {
+          "department_id": "operations",
+          "name": "operations",
+          "title": "Operations Department",
+          "display_name": "Operations",
+          "roles": "tester"
+        },
+        {
+          "department_id": "procurement",
+          "name": "procurement",
+          "title": "Procurement Department",
+          "display_name": "Procurement",
+          "roles": "developer"
+        },
+        {
+          "department_id": "public-relations",
+          "name": "public-relations",
+          "title": "PR Department",
+          "display_name": "Public Relations",
+          "roles": "finance"
+        },
+        {
+          "department_id": "quality-assurance",
+          "name": "quality-assurance",
+          "title": "QA Department",
+          "display_name": "Quality Assurance",
+          "roles": "guest"
+        },
+        {
+          "department_id": "research-and-development",
+          "name": "research-and-development",
+          "title": "R&D Department",
+          "display_name": "Research and Development",
+          "roles": "support"
+        },
+        {
+          "department_id": "sales",
+          "name": "sales",
+          "title": "Sales Department",
+          "display_name": "Sales",
+          "roles": "contributor"
+        },
+        {
+          "department_id": "training-and-development",
+          "name": "training-and-development",
+          "title": "Training Department",
+          "display_name": "Training and Development",
+          "roles": "owner"
+        }
+      ]
+    },
+    "precedes_steps": {
+      "primary_key": "precedes_step_id",
+      "computed_columns": [
+        "display_name"
+      ],
+      "computed_columns_info": [
+        {
+          "name": "display_name",
+          "formula": "=\"Step-\" & StepNumber",
+          "description": ""
+        }
+      ],
+      "record_count": 16,
+      "schema": [
+        {
+          "name": "PrecedesStepId",
+          "datatype": "string",
+          "type": "raw",
+          "nullable": false
+        },
+        {
+          "name": "Name",
+          "datatype": "string",
+          "type": "raw",
+          "nullable": true,
+          "Description": "Ordinal sequence number for the relationship. Used for sorting and display."
+        },
+        {
+          "name": "DisplayName",
+          "datatype": "string",
+          "type": "calculated",
+          "nullable": true,
+          "formula": "=\"Step-\" & {{StepNumber}}"
+        },
+        {
+          "name": "StepNumber",
+          "datatype": "integer",
+          "type": "raw",
+          "nullable": true
+        },
+        {
+          "name": "WorkflowStep",
+          "datatype": "string",
+          "type": "relationship",
+          "nullable": true,
+          "Description": "Foreign key to the step that comes BEFORE. The source of the 'precedes' relationship.",
+          "RelatedTo": "WorkflowSteps"
+        }
+      ],
+      "description": "Table: PrecedesSteps",
+      "answer_key": [
+        {
+          "precedes_step_id": "assign-task-to-team",
+          "name": "assign-task-to-team",
+          "display_name": "Step-16",
+          "step_number": 16,
+          "workflow_step": "some-new-task"
+        },
+        {
+          "precedes_step_id": "step-1",
+          "name": "step-1",
+          "display_name": "Step-1",
+          "step_number": 1,
+          "workflow_step": "submit-request"
+        },
+        {
+          "precedes_step_id": "step-10",
+          "name": "step-10",
+          "display_name": "Step-10",
+          "step_number": 10,
+          "workflow_step": "customer-feedback-collection"
+        },
+        {
+          "precedes_step_id": "step-11",
+          "name": "step-11",
+          "display_name": "Step-11",
+          "step_number": 11,
+          "workflow_step": "legal-compliance-check"
+        },
+        {
+          "precedes_step_id": "step-12",
+          "name": "step-12",
+          "display_name": "Step-12",
+          "step_number": 12,
+          "workflow_step": "assign-task-to-team"
+        },
+        {
+          "precedes_step_id": "step-13",
+          "name": "step-13",
+          "display_name": "Step-13",
+          "step_number": 13,
+          "workflow_step": "team-lead-review"
+        },
+        {
+          "precedes_step_id": "step-14",
+          "name": "step-14",
+          "display_name": "Step-14",
+          "step_number": 14,
+          "workflow_step": "generate-report"
+        },
+        {
+          "precedes_step_id": "step-15",
+          "name": "step-15",
+          "display_name": "Step-15",
+          "step_number": 15,
+          "workflow_step": "close-workflow"
+        },
+        {
+          "precedes_step_id": "step-2",
+          "name": "step-2",
+          "display_name": "Step-2",
+          "step_number": 2,
+          "workflow_step": "manager-review"
+        },
+        {
+          "precedes_step_id": "step-3",
+          "name": "step-3",
+          "display_name": "Step-3",
+          "step_number": 3,
+          "workflow_step": "automated-eligibility-check"
+        },
+        {
+          "precedes_step_id": "step-4",
+          "name": "step-4",
+          "display_name": "Step-4",
+          "step_number": 4,
+          "workflow_step": "finance-approval"
+        },
+        {
+          "precedes_step_id": "step-5",
+          "name": "step-5",
+          "display_name": "Step-5",
+          "step_number": 5,
+          "workflow_step": "document-verification"
+        },
+        {
+          "precedes_step_id": "step-6",
+          "name": "step-6",
+          "display_name": "Step-6",
+          "step_number": 6,
+          "workflow_step": "quality-assurance-review"
+        },
+        {
+          "precedes_step_id": "step-7",
+          "name": "step-7",
+          "display_name": "Step-7",
+          "step_number": 7,
+          "workflow_step": "system-notification-sent"
+        },
+        {
+          "precedes_step_id": "step-8",
+          "name": "step-8",
+          "display_name": "Step-8",
+          "step_number": 8,
+          "workflow_step": "final-approval"
+        },
+        {
+          "precedes_step_id": "step-9",
+          "name": "step-9",
+          "display_name": "Step-9",
+          "step_number": 9,
+          "workflow_step": "archive-request"
+        }
+      ]
+    },
+    "roles": {
+      "primary_key": "role_id",
+      "computed_columns": [
+        "name"
+      ],
+      "computed_columns_info": [
+        {
+          "name": "name",
+          "formula": "=LOWER(DisplayName)",
+          "description": ""
+        }
+      ],
+      "record_count": 15,
+      "schema": [
+        {
+          "name": "RoleId",
+          "datatype": "string",
+          "type": "raw",
+          "nullable": false
+        },
+        {
+          "name": "Name",
+          "datatype": "string",
+          "type": "calculated",
+          "nullable": true,
+          "formula": "=LOWER({{DisplayName}})"
+        },
+        {
+          "name": "DisplayName",
+          "datatype": "string",
+          "type": "raw",
+          "nullable": true
+        },
+        {
+          "name": "Label",
+          "datatype": "string",
+          "type": "raw",
+          "nullable": true,
+          "Description": "Human-readable display name. Maps to rdfs:label. Per Heuristic 6: if you cannot write a clear label, you do not yet understand the concept well enough to model it."
+        },
+        {
+          "name": "Comment",
+          "datatype": "string",
+          "type": "raw",
+          "nullable": true,
+          "Description": "Detailed description of the role's responsibilities and scope. Maps to rdfs:comment. Should define what the role covers, what it excludes, and how it differs from adjacent roles."
+        },
+        {
+          "name": "FilledByHumanAgent",
+          "datatype": "string",
+          "type": "relationship",
+          "nullable": true,
+          "RelatedTo": "HumanAgents"
+        },
+        {
+          "name": "FilledByAIAgent",
+          "datatype": "string",
+          "type": "relationship",
+          "nullable": true,
+          "RelatedTo": "AIAgents"
+        },
+        {
+          "name": "FilledByAutomatedPipeline",
+          "datatype": "string",
+          "type": "relationship",
+          "nullable": true,
+          "RelatedTo": "AutomatedPipelines"
+        },
+        {
+          "name": "OwnedBy",
+          "datatype": "string",
+          "type": "relationship",
+          "nullable": true,
+          "Description": "Foreign key to the Department that owns this role. Maps to ntwf:ownedBy (owl:FunctionalProperty). Enables answering CQ7: 'Which workflows involve both Engineering and Legal?'",
+          "RelatedTo": "Departments"
+        },
+        {
+          "name": "DelegatesTo",
+          "datatype": "string",
+          "type": "relationship",
+          "nullable": true,
+          "Description": "Foreign key to the fallback Role in an escalation chain. Maps to ntwf:delegatesTo. Enables answering CQ6: 'What happens when the VP of Engineering is unavailable?'",
+          "RelatedTo": "Roles"
+        },
+        {
+          "name": "WorkflowSteps",
+          "datatype": "string",
+          "type": "relationship",
+          "nullable": true,
+          "Description": "Back-reference to workflow steps assigned to this role. Inverse of WorkflowSteps.AssignedRole.",
+          "RelatedTo": "WorkflowSteps"
+        },
+        {
+          "name": "FromDelegatesTo",
+          "datatype": "string",
+          "type": "relationship",
+          "nullable": true,
+          "RelatedTo": "Roles"
+        }
+      ],
+      "description": "Table: Roles",
+      "answer_key": [
+        {
+          "role_id": "administrator",
+          "name": "administrator",
+          "display_name": "Administrator",
+          "label": "Admin",
+          "comment": "Has full access to all system features and settings.",
+          "filled_by_human_agent": "agent-001",
+          "filled_by_ai_agent": "ava",
+          "filled_by_automated_pipeline": "lead-notification-pipeline",
+          "owned_by": "human-resources",
+          "delegates_to": "",
+          "workflow_steps": "submit-request",
+          "from_delegates_to": "editor"
+        },
+        {
+          "role_id": "analyst",
+          "name": "analyst",
+          "display_name": "Analyst",
+          "label": "Data Analyst",
+          "comment": "Has access to analytics and reporting tools.",
+          "filled_by_human_agent": "agent-008",
+          "filled_by_ai_agent": "kai",
+          "filled_by_automated_pipeline": "project-intake-pipeline",
+          "owned_by": "legal",
+          "delegates_to": "support",
+          "workflow_steps": "final-approval",
+          "from_delegates_to": "developer"
+        },
+        {
+          "role_id": "contributor",
+          "name": "contributor",
+          "display_name": "Contributor",
+          "label": "Content Contributor",
+          "comment": "Can submit new content for review but cannot publish directly.",
+          "filled_by_human_agent": "agent-005",
+          "filled_by_ai_agent": "zara",
+          "filled_by_automated_pipeline": "support-ticket-automation",
+          "owned_by": "sales",
+          "delegates_to": "moderator",
+          "workflow_steps": "document-verification",
+          "from_delegates_to": "manager"
+        },
+        {
+          "role_id": "developer",
+          "name": "developer",
+          "display_name": "Developer",
+          "label": "Software Developer",
+          "comment": "Can access and modify application code and integrations.",
+          "filled_by_human_agent": "agent-009",
+          "filled_by_ai_agent": "sophie",
+          "filled_by_automated_pipeline": "crm-data-sync",
+          "owned_by": "procurement",
+          "delegates_to": "analyst",
+          "workflow_steps": "archive-request",
+          "from_delegates_to": "tester"
+        },
+        {
+          "role_id": "editor",
+          "name": "editor",
+          "display_name": "Editor",
+          "label": "Content Editor",
+          "comment": "Can create, edit, and delete content but cannot change system settings.",
+          "filled_by_human_agent": "agent-002",
+          "filled_by_ai_agent": "leo",
+          "filled_by_automated_pipeline": "e-commerce-order-sync",
+          "owned_by": "finance",
+          "delegates_to": "administrator",
+          "workflow_steps": "manager-review",
+          "from_delegates_to": "viewer"
+        },
+        {
+          "role_id": "finance",
+          "name": "finance",
+          "display_name": "Finance",
+          "label": "Finance Officer",
+          "comment": "Handles billing, invoices, and financial reports.",
+          "filled_by_human_agent": "agent-012",
+          "filled_by_ai_agent": "jade",
+          "filled_by_automated_pipeline": "task-management-sync",
+          "owned_by": "public-relations",
+          "delegates_to": "hr",
+          "workflow_steps": "assign-task-to-team, some-new-task",
+          "from_delegates_to": "guest"
+        },
+        {
+          "role_id": "guest",
+          "name": "guest",
+          "display_name": "Guest",
+          "label": "Temporary Access",
+          "comment": "Limited access for temporary users or external collaborators.",
+          "filled_by_human_agent": "agent-013",
+          "filled_by_ai_agent": "mila",
+          "filled_by_automated_pipeline": "cloud-storage-sync",
+          "owned_by": "quality-assurance",
+          "delegates_to": "finance",
+          "workflow_steps": "team-lead-review",
+          "from_delegates_to": "trainer"
+        },
+        {
+          "role_id": "hr",
+          "name": "hr",
+          "display_name": "HR",
+          "label": "Human Resources",
+          "comment": "Manages employee records and recruitment processes.",
+          "filled_by_human_agent": "agent-011",
+          "filled_by_ai_agent": "liam",
+          "filled_by_automated_pipeline": "survey-data-pipeline",
+          "owned_by": "administration",
+          "delegates_to": "tester",
+          "workflow_steps": "legal-compliance-check",
+          "from_delegates_to": "finance"
+        },
+        {
+          "role_id": "manager",
+          "name": "manager",
+          "display_name": "Manager",
+          "label": "Project Manager",
+          "comment": "Oversees project progress and manages team assignments.",
+          "filled_by_human_agent": "agent-006",
+          "filled_by_ai_agent": "owen",
+          "filled_by_automated_pipeline": "devops-integration",
+          "owned_by": "customer-service",
+          "delegates_to": "contributor",
+          "workflow_steps": "quality-assurance-review",
+          "from_delegates_to": "support"
+        },
+        {
+          "role_id": "moderator",
+          "name": "moderator",
+          "display_name": "Moderator",
+          "label": "Forum Moderator",
+          "comment": "Can manage user comments and moderate discussions.",
+          "filled_by_human_agent": "agent-004",
+          "filled_by_ai_agent": "eli",
+          "filled_by_automated_pipeline": "newsletter-signup-sync",
+          "owned_by": "marketing",
+          "delegates_to": "viewer",
+          "workflow_steps": "finance-approval",
+          "from_delegates_to": "contributor"
+        },
+        {
+          "role_id": "owner",
+          "name": "owner",
+          "display_name": "Owner",
+          "label": "System Owner",
+          "comment": "Ultimate authority over the system, can assign or revoke any role.",
+          "filled_by_human_agent": "agent-015",
+          "filled_by_ai_agent": "ella",
+          "filled_by_automated_pipeline": "survey-data-export",
+          "owned_by": "training-and-development",
+          "delegates_to": "trainer",
+          "workflow_steps": "close-workflow",
+          "from_delegates_to": ""
+        },
+        {
+          "role_id": "support",
+          "name": "support",
+          "display_name": "Support",
+          "label": "Customer Support",
+          "comment": "Handles user inquiries and provides technical assistance.",
+          "filled_by_human_agent": "agent-007",
+          "filled_by_ai_agent": "nina",
+          "filled_by_automated_pipeline": "finance-automation",
+          "owned_by": "research-and-development",
+          "delegates_to": "manager",
+          "workflow_steps": "system-notification-sent",
+          "from_delegates_to": "analyst"
+        },
+        {
+          "role_id": "tester",
+          "name": "tester",
+          "display_name": "Tester",
+          "label": "Quality Assurance",
+          "comment": "Responsible for testing new features and reporting bugs.",
+          "filled_by_human_agent": "agent-010",
+          "filled_by_ai_agent": "max",
+          "filled_by_automated_pipeline": "calendar-integration",
+          "owned_by": "operations",
+          "delegates_to": "developer",
+          "workflow_steps": "customer-feedback-collection",
+          "from_delegates_to": "hr"
+        },
+        {
+          "role_id": "trainer",
+          "name": "trainer",
+          "display_name": "Trainer",
+          "label": "Training Specialist",
+          "comment": "Creates and delivers training materials to users.",
+          "filled_by_human_agent": "agent-014",
+          "filled_by_ai_agent": "noah",
+          "filled_by_automated_pipeline": "email-notification-pipeline",
+          "owned_by": "facilities-management",
+          "delegates_to": "guest",
+          "workflow_steps": "generate-report",
+          "from_delegates_to": "owner"
+        },
+        {
+          "role_id": "viewer",
+          "name": "viewer",
+          "display_name": "Viewer",
+          "label": "Read-Only",
+          "comment": "Can view content but cannot make any changes.",
+          "filled_by_human_agent": "agent-003",
+          "filled_by_ai_agent": "maya",
+          "filled_by_automated_pipeline": "issue-tracking-bridge",
+          "owned_by": "information-technology",
+          "delegates_to": "editor",
+          "workflow_steps": "automated-eligibility-check",
+          "from_delegates_to": "moderator"
+        }
+      ]
+    },
+    "workflow_steps": {
+      "primary_key": "workflow_step_id",
+      "computed_columns": [
+        "name"
+      ],
+      "computed_columns_info": [
+        {
+          "name": "name",
+          "formula": "=SUBSTITUTE(LOWER(DisplayName), \" \", \"-\")",
+          "description": ""
+        }
+      ],
+      "record_count": 16,
+      "schema": [
+        {
+          "name": "WorkflowStepId",
+          "datatype": "string",
+          "type": "raw",
+          "nullable": false
+        },
+        {
+          "name": "Name",
+          "datatype": "string",
+          "type": "calculated",
+          "nullable": true,
+          "formula": "=SUBSTITUTE(LOWER({{DisplayName}}), \" \", \"-\")"
+        },
+        {
+          "name": "DisplayName",
+          "datatype": "string",
+          "type": "raw",
+          "nullable": true
+        },
+        {
+          "name": "Workflow",
+          "datatype": "string",
+          "type": "relationship",
+          "nullable": true,
+          "Description": "Foreign key to the parent workflow. Represents the inverse of ntwf:hasStep, enabling navigation from step to its containing workflow (ntwf:isStepOf).",
+          "RelatedTo": "Workflows"
+        },
+        {
+          "name": "SequencePosition",
+          "datatype": "integer",
+          "type": "raw",
+          "nullable": true,
+          "Description": "Integer ordinal position of the step within its workflow. Maps to ntwf:sequencePosition, declared as owl:FunctionalProperty (each step has exactly one position). Enables positional queries."
+        },
+        {
+          "name": "AssignedRole",
+          "datatype": "string",
+          "type": "relationship",
+          "nullable": true,
+          "Description": "Foreign key to the Role responsible for executing this step. Maps to ntwf:assignedRole. Critical for implementing Heuristic 2 (role-agent separation): steps point to roles, not directly to agents.",
+          "RelatedTo": "Roles"
+        },
+        {
+          "name": "RequiresHumanApproval",
+          "datatype": "boolean",
+          "type": "raw",
+          "nullable": true,
+          "Description": "Boolean flag indicating whether a human agent must fill the assigned role. Maps to ntwf:requiresHumanApproval. Enables answering CQ3: 'Which steps require human decisions vs. AI execution?'"
+        },
+        {
+          "name": "ApprovalGate",
+          "datatype": "string",
+          "type": "relationship",
+          "nullable": true,
+          "Description": "Foreign key to ApprovalGate if this step is a decision checkpoint. When populated, indicates this step blocks workflow execution until explicit authorization is given.",
+          "RelatedTo": "ApprovalGates"
+        },
+        {
+          "name": "PrecededBySteps",
+          "datatype": "string",
+          "type": "relationship",
+          "nullable": true,
+          "Description": "Reference to steps that must complete before this step can execute. Part of the ntwf:precedesStep transitive ordering relationship.",
+          "RelatedTo": "PrecedesSteps"
+        }
+      ],
+      "description": "Table: WorkflowSteps",
+      "answer_key": [
+        {
+          "workflow_step_id": "archive-request",
+          "name": "archive-request",
+          "display_name": "Archive Request",
+          "workflow": "customer-feedback",
+          "sequence_position": 9,
+          "assigned_role": "developer",
+          "requires_human_approval": false,
+          "approval_gate": "it-security-gate",
+          "preceded_by_steps": "step-9"
+        },
+        {
+          "workflow_step_id": "assign-task-to-team",
+          "name": "assign-task-to-team",
+          "display_name": "Assign Task to Team",
+          "workflow": "asset-management",
+          "sequence_position": 12,
+          "assigned_role": "finance",
+          "requires_human_approval": false,
+          "approval_gate": "executive-sign-off",
+          "preceded_by_steps": "step-12"
+        },
+        {
+          "workflow_step_id": "automated-eligibility-check",
+          "name": "automated-eligibility-check",
+          "display_name": "Automated Eligibility Check",
+          "workflow": "content-publishing",
+          "sequence_position": 3,
+          "assigned_role": "viewer",
+          "requires_human_approval": false,
+          "approval_gate": "it-security-gate",
+          "preceded_by_steps": "step-3"
+        },
+        {
+          "workflow_step_id": "close-workflow",
+          "name": "close-workflow",
+          "display_name": "Close Workflow",
+          "workflow": "change-management",
+          "sequence_position": 15,
+          "assigned_role": "owner",
+          "requires_human_approval": false,
+          "approval_gate": "executive-sign-off",
+          "preceded_by_steps": "step-15"
+        },
+        {
+          "workflow_step_id": "customer-feedback-collection",
+          "name": "customer-feedback-collection",
+          "display_name": "Customer Feedback Collection",
+          "workflow": "project-kickoff",
+          "sequence_position": 10,
+          "assigned_role": "tester",
+          "requires_human_approval": false,
+          "approval_gate": "customer-confirmation",
+          "preceded_by_steps": "step-10"
+        },
+        {
+          "workflow_step_id": "document-verification",
+          "name": "document-verification",
+          "display_name": "Document Verification",
+          "workflow": "it-support",
+          "sequence_position": 5,
+          "assigned_role": "contributor",
+          "requires_human_approval": false,
+          "approval_gate": "compliance-check",
+          "preceded_by_steps": "step-5"
+        },
+        {
+          "workflow_step_id": "final-approval",
+          "name": "final-approval",
+          "display_name": "Final Approval",
+          "workflow": "procurement",
+          "sequence_position": 8,
+          "assigned_role": "analyst",
+          "requires_human_approval": true,
+          "approval_gate": "manager-approval",
+          "preceded_by_steps": "step-8"
+        },
+        {
+          "workflow_step_id": "finance-approval",
+          "name": "finance-approval",
+          "display_name": "Finance Approval",
+          "workflow": "leave-request",
+          "sequence_position": 4,
+          "assigned_role": "moderator",
+          "requires_human_approval": true,
+          "approval_gate": "finance-approval",
+          "preceded_by_steps": "step-4"
+        },
+        {
+          "workflow_step_id": "generate-report",
+          "name": "generate-report",
+          "display_name": "Generate Report",
+          "workflow": "incident-reporting",
+          "sequence_position": 14,
+          "assigned_role": "trainer",
+          "requires_human_approval": false,
+          "approval_gate": "finance-approval",
+          "preceded_by_steps": "step-14"
+        },
+        {
+          "workflow_step_id": "legal-compliance-check",
+          "name": "legal-compliance-check",
+          "display_name": "Legal Compliance Check",
+          "workflow": "contract-review",
+          "sequence_position": 11,
+          "assigned_role": "hr",
+          "requires_human_approval": true,
+          "approval_gate": "legal-review",
+          "preceded_by_steps": "step-11"
+        },
+        {
+          "workflow_step_id": "manager-review",
+          "name": "manager-review",
+          "display_name": "Manager Review",
+          "workflow": "invoice-approval",
+          "sequence_position": 2,
+          "assigned_role": "editor",
+          "requires_human_approval": true,
+          "approval_gate": "manager-approval",
+          "preceded_by_steps": "step-2"
+        },
+        {
+          "workflow_step_id": "quality-assurance-review",
+          "name": "quality-assurance-review",
+          "display_name": "Quality Assurance Review",
+          "workflow": "expense-reimbursement",
+          "sequence_position": 6,
+          "assigned_role": "manager",
+          "requires_human_approval": true,
+          "approval_gate": "quality-assurance",
+          "preceded_by_steps": "step-6"
+        },
+        {
+          "workflow_step_id": "some-new-task",
+          "name": "some-new-task",
+          "display_name": "Some new task",
+          "workflow": "asset-management",
+          "sequence_position": 13,
+          "assigned_role": "finance",
+          "requires_human_approval": false,
+          "approval_gate": "some-new-gate",
+          "preceded_by_steps": "assign-task-to-team"
+        },
+        {
+          "workflow_step_id": "submit-request",
+          "name": "submit-request",
+          "display_name": "Submit Request",
+          "workflow": "onboarding",
+          "sequence_position": 1,
+          "assigned_role": "administrator",
+          "requires_human_approval": true,
+          "approval_gate": "initial-review",
+          "preceded_by_steps": "step-1"
+        },
+        {
+          "workflow_step_id": "system-notification-sent",
+          "name": "system-notification-sent",
+          "display_name": "System Notification Sent",
+          "workflow": "performance-review",
+          "sequence_position": 7,
+          "assigned_role": "support",
+          "requires_human_approval": false,
+          "approval_gate": "final-authorization",
+          "preceded_by_steps": "step-7"
+        },
+        {
+          "workflow_step_id": "team-lead-review",
+          "name": "team-lead-review",
+          "display_name": "Team Lead Review",
+          "workflow": "recruitment",
+          "sequence_position": 13,
+          "assigned_role": "guest",
+          "requires_human_approval": true,
+          "approval_gate": "legal-review",
+          "preceded_by_steps": "step-13"
+        }
+      ]
+    },
+    "workflows": {
+      "primary_key": "workflow_id",
+      "computed_columns": [
+        "name",
+        "has_more_than1_step"
+      ],
+      "computed_columns_info": [
+        {
+          "name": "name",
+          "formula": "=SUBSTITUTE(LOWER(DisplayName), \" \", \"-\")",
+          "description": "Short machine-friendly name for the workflow. Used for programmatic reference and URL slug generation."
+        },
+        {
+          "name": "has_more_than1_step",
+          "formula": "=CountOfSteps > 1",
+          "description": ""
+        }
+      ],
+      "record_count": 15,
+      "schema": [
+        {
+          "name": "WorkflowId",
+          "datatype": "string",
+          "type": "raw",
+          "nullable": false
+        },
+        {
+          "name": "Name",
+          "datatype": "string",
+          "type": "calculated",
+          "nullable": true,
+          "Description": "Short machine-friendly name for the workflow. Used for programmatic reference and URL slug generation.",
+          "formula": "=SUBSTITUTE(LOWER({{DisplayName}}), \" \", \"-\")"
+        },
+        {
+          "name": "DisplayName",
+          "datatype": "string",
+          "type": "raw",
+          "nullable": true
+        },
+        {
+          "name": "Title",
+          "datatype": "string",
+          "type": "raw",
+          "nullable": true,
+          "Description": "Human-readable title of the workflow. Maps to dct:title from Dublin Core. Example: 'Production Deployment Workflow', 'Employee Onboarding'."
+        },
+        {
+          "name": "Description",
+          "datatype": "string",
+          "type": "raw",
+          "nullable": true,
+          "Description": "Detailed description of the workflow's purpose and scope. Maps to dct:description from Dublin Core. Should explain what business goal the workflow achieves."
+        },
+        {
+          "name": "Identifier",
+          "datatype": "string",
+          "type": "raw",
+          "nullable": true,
+          "Description": "External system identifier for cross-referencing. Maps to dct:identifier from Dublin Core. This is the join key back to document management systems, ticket systems, or other operational systems."
+        },
+        {
+          "name": "Modified",
+          "datatype": "datetime",
+          "type": "raw",
+          "nullable": true,
+          "Description": "Last modification timestamp. Maps to dct:modified from Dublin Core. Critical for answering CQ5: 'Which workflows haven't been reviewed or updated in twelve months?'"
+        },
+        {
+          "name": "WorkflowSteps",
+          "datatype": "string",
+          "type": "relationship",
+          "nullable": true,
+          "Description": "Reference to workflow steps. Represents the ntwf:hasStep relationship linking workflows to their constituent steps.",
+          "RelatedTo": "WorkflowSteps"
+        },
+        {
+          "name": "CountOfSteps",
+          "datatype": "integer",
+          "type": "aggregation",
+          "nullable": true,
+          "Description": "Calculated count of workflow steps in this workflow. Useful for workflow complexity analysis and reporting.",
+          "formula": "=COUNTIFS(WorkflowSteps!{{Workflow}}, Workflows!{{WorkflowId}})"
+        },
+        {
+          "name": "HasMoreThan1Step",
+          "datatype": "boolean",
+          "type": "calculated",
+          "nullable": true,
+          "formula": "={{CountOfSteps}} > 1"
+        }
+      ],
+      "description": "Table: Workflows",
+      "answer_key": [
+        {
+          "workflow_id": "asset-management",
+          "name": "asset-management",
+          "display_name": "Asset Management",
+          "title": "Asset Management Process",
+          "description": "Process for tracking, maintaining, and auditing company assets.",
+          "identifier": "WF-ASM-012",
+          "modified": "2024-05-18 00:00:00-05:00",
+          "workflow_steps": "assign-task-to-team, some-new-task",
+          "count_of_steps": 2,
+          "has_more_than1_step": true
+        },
+        {
+          "workflow_id": "change-management",
+          "name": "change-management",
+          "display_name": "Change Management",
+          "title": "Change Management Workflow",
+          "description": "Structured process for requesting, evaluating, and implementing organizational changes.",
+          "identifier": "WF-CHM-015",
+          "modified": "2024-05-27 00:00:00-05:00",
+          "workflow_steps": "close-workflow",
+          "count_of_steps": 1,
+          "has_more_than1_step": false
+        },
+        {
+          "workflow_id": "content-publishing",
+          "name": "content-publishing",
+          "display_name": "Content Publishing",
+          "title": "Content Publishing Process",
+          "description": "Workflow for drafting, reviewing, and publishing content to the company website.",
+          "identifier": "WF-CNT-003",
+          "modified": "2024-05-28 00:00:00-05:00",
+          "workflow_steps": "automated-eligibility-check",
+          "count_of_steps": 1,
+          "has_more_than1_step": false
+        },
+        {
+          "workflow_id": "contract-review",
+          "name": "contract-review",
+          "display_name": "Contract Review",
+          "title": "Contract Review Workflow",
+          "description": "Workflow for legal and management review of contracts before signing.",
+          "identifier": "WF-CTR-011",
+          "modified": "2024-06-04 00:00:00-05:00",
+          "workflow_steps": "legal-compliance-check",
+          "count_of_steps": 1,
+          "has_more_than1_step": false
+        },
+        {
+          "workflow_id": "customer-feedback",
+          "name": "customer-feedback",
+          "display_name": "Customer Feedback",
+          "title": "Customer Feedback Collection",
+          "description": "Workflow for collecting, analyzing, and acting on customer feedback.",
+          "identifier": "WF-CFB-009",
+          "modified": "2024-05-25 00:00:00-05:00",
+          "workflow_steps": "archive-request",
+          "count_of_steps": 1,
+          "has_more_than1_step": false
+        },
+        {
+          "workflow_id": "expense-reimbursement",
+          "name": "expense-reimbursement",
+          "display_name": "Expense Reimbursement",
+          "title": "Expense Reimbursement Process",
+          "description": "Steps for employees to submit expenses and receive reimbursements after approval.",
+          "identifier": "WF-EXP-006",
+          "modified": "2024-06-03 00:00:00-05:00",
+          "workflow_steps": "quality-assurance-review",
+          "count_of_steps": 1,
+          "has_more_than1_step": false
+        },
+        {
+          "workflow_id": "incident-reporting",
+          "name": "incident-reporting",
+          "display_name": "Incident Reporting",
+          "title": "Incident Reporting Process",
+          "description": "Steps for reporting, investigating, and resolving workplace incidents.",
+          "identifier": "WF-INC-014",
+          "modified": "2024-06-06 00:00:00-05:00",
+          "workflow_steps": "generate-report",
+          "count_of_steps": 1,
+          "has_more_than1_step": false
+        },
+        {
+          "workflow_id": "invoice-approval",
+          "name": "invoice-approval",
+          "display_name": "Invoice Approval",
+          "title": "Invoice Approval Workflow",
+          "description": "Automated workflow for reviewing, approving, and processing vendor invoices.",
+          "identifier": "WF-INV-002",
+          "modified": "2024-06-01 00:00:00-05:00",
+          "workflow_steps": "manager-review",
+          "count_of_steps": 1,
+          "has_more_than1_step": false
+        },
+        {
+          "workflow_id": "it-support",
+          "name": "it-support",
+          "display_name": "IT Support",
+          "title": "IT Support Ticketing",
+          "description": "Workflow for submitting, triaging, and resolving IT support tickets.",
+          "identifier": "WF-ITS-005",
+          "modified": "2024-05-30 00:00:00-05:00",
+          "workflow_steps": "document-verification",
+          "count_of_steps": 1,
+          "has_more_than1_step": false
+        },
+        {
+          "workflow_id": "leave-request",
+          "name": "leave-request",
+          "display_name": "Leave Request",
+          "title": "Leave Request Workflow",
+          "description": "Process for employees to submit, review, and approve leave requests.",
+          "identifier": "WF-LRQ-004",
+          "modified": "2024-06-05 00:00:00-05:00",
+          "workflow_steps": "finance-approval",
+          "count_of_steps": 1,
+          "has_more_than1_step": false
+        },
+        {
+          "workflow_id": "onboarding",
+          "name": "onboarding",
+          "display_name": "Onboarding",
+          "title": "Employee Onboarding",
+          "description": "A step-by-step process to onboard new employees, including document collection, orientation, and training.",
+          "identifier": "WF-ONB-001",
+          "modified": "2024-05-10 00:00:00-05:00",
+          "workflow_steps": "submit-request",
+          "count_of_steps": 1,
+          "has_more_than1_step": false
+        },
+        {
+          "workflow_id": "performance-review",
+          "name": "performance-review",
+          "display_name": "Performance Review",
+          "title": "Annual Performance Review",
+          "description": "Structured workflow for conducting annual employee performance evaluations.",
+          "identifier": "WF-PRV-007",
+          "modified": "2024-05-15 00:00:00-05:00",
+          "workflow_steps": "system-notification-sent",
+          "count_of_steps": 1,
+          "has_more_than1_step": false
+        },
+        {
+          "workflow_id": "procurement",
+          "name": "procurement",
+          "display_name": "Procurement",
+          "title": "Procurement Workflow",
+          "description": "Process for requesting, approving, and purchasing goods or services.",
+          "identifier": "WF-PRC-008",
+          "modified": "2024-06-02 00:00:00-05:00",
+          "workflow_steps": "final-approval",
+          "count_of_steps": 1,
+          "has_more_than1_step": false
+        },
+        {
+          "workflow_id": "project-kickoff",
+          "name": "project-kickoff",
+          "display_name": "Project Kickoff",
+          "title": "Project Kickoff Process",
+          "description": "Steps to initiate a new project, including team assignment and goal setting.",
+          "identifier": "WF-PKO-010",
+          "modified": "2024-05-20 00:00:00-05:00",
+          "workflow_steps": "customer-feedback-collection",
+          "count_of_steps": 1,
+          "has_more_than1_step": false
+        },
+        {
+          "workflow_id": "recruitment",
+          "name": "recruitment",
+          "display_name": "Recruitment",
+          "title": "Recruitment Workflow",
+          "description": "Workflow for posting jobs, screening candidates, and scheduling interviews.",
+          "identifier": "WF-RCT-013",
+          "modified": "2024-05-22 00:00:00-05:00",
+          "workflow_steps": "team-lead-review",
+          "count_of_steps": 1,
+          "has_more_than1_step": false
+        }
+      ]
+    }
+  },
+  "substrates": {
+    "postgres": {
+      "substrate": "postgres",
+      "is_answer_key": true,
+      "total_fields_tested": 103,
+      "fields_passed": 103,
+      "fields_failed": 0,
+      "elapsed_seconds": 0.0,
+      "entities": {
+        "approval_gates": {
+          "fields_tested": 11,
+          "fields_passed": 11,
+          "fields_failed": 0,
+          "failures": [],
+          "computed_columns": [
+            "name"
+          ]
+        },
+        "departments": {
+          "fields_tested": 15,
+          "fields_passed": 15,
+          "fields_failed": 0,
+          "failures": [],
+          "computed_columns": [
+            "name"
+          ]
+        },
+        "precedes_steps": {
+          "fields_tested": 16,
+          "fields_passed": 16,
+          "fields_failed": 0,
+          "failures": [],
+          "computed_columns": [
+            "display_name"
+          ]
+        },
+        "roles": {
+          "fields_tested": 15,
+          "fields_passed": 15,
+          "fields_failed": 0,
+          "failures": [],
+          "computed_columns": [
+            "name"
+          ]
+        },
+        "workflow_steps": {
+          "fields_tested": 16,
+          "fields_passed": 16,
+          "fields_failed": 0,
+          "failures": [],
+          "computed_columns": [
+            "name"
+          ]
+        },
+        "workflows": {
+          "fields_tested": 30,
+          "fields_passed": 30,
+          "fields_failed": 0,
+          "failures": [],
+          "computed_columns": [
+            "name",
+            "has_more_than1_step"
+          ]
+        }
+      },
+      "error": null,
+      "run_metadata": {
+        "last_run": null,
+        "last_successful_run": null
+      }
+    },
+    "binary": {
+      "substrate": "binary",
+      "total_fields_tested": 103,
+      "fields_passed": 103,
+      "fields_failed": 0,
+      "elapsed_seconds": 0.30512094497680664,
+      "entities": {
+        "roles": {
+          "fields_tested": 15,
+          "fields_passed": 15,
+          "fields_failed": 0,
+          "failures": []
+        },
+        "workflow_steps": {
+          "fields_tested": 16,
+          "fields_passed": 16,
+          "fields_failed": 0,
+          "failures": []
+        },
+        "workflows": {
+          "fields_tested": 30,
+          "fields_passed": 30,
+          "fields_failed": 0,
+          "failures": []
+        },
+        "precedes_steps": {
+          "fields_tested": 16,
+          "fields_passed": 16,
+          "fields_failed": 0,
+          "failures": []
+        },
+        "departments": {
+          "fields_tested": 15,
+          "fields_passed": 15,
+          "fields_failed": 0,
+          "failures": []
+        },
+        "approval_gates": {
+          "fields_tested": 11,
+          "fields_passed": 11,
+          "fields_failed": 0,
+          "failures": []
+        }
+      },
+      "error": null,
+      "run_metadata": {
+        "last_run": {
+          "status": "success",
+          "duration_seconds": 0.30512094497680664,
+          "exit_code": 0,
+          "score": 100.0
+        },
+        "last_successful_run": {
+          "duration_seconds": 0.30512094497680664,
+          "status": "success",
+          "test_results": {
+            "total_fields_tested": 103,
+            "fields_passed": 103,
+            "fields_failed": 0,
+            "score": 100.0
+          }
+        }
+      }
+    },
+    "csv": {
+      "substrate": "csv",
+      "total_fields_tested": 103,
+      "fields_passed": 103,
+      "fields_failed": 0,
+      "elapsed_seconds": 0.23070096969604492,
+      "entities": {
+        "roles": {
+          "fields_tested": 15,
+          "fields_passed": 15,
+          "fields_failed": 0,
+          "failures": []
+        },
+        "workflow_steps": {
+          "fields_tested": 16,
+          "fields_passed": 16,
+          "fields_failed": 0,
+          "failures": []
+        },
+        "workflows": {
+          "fields_tested": 30,
+          "fields_passed": 30,
+          "fields_failed": 0,
+          "failures": []
+        },
+        "precedes_steps": {
+          "fields_tested": 16,
+          "fields_passed": 16,
+          "fields_failed": 0,
+          "failures": []
+        },
+        "departments": {
+          "fields_tested": 15,
+          "fields_passed": 15,
+          "fields_failed": 0,
+          "failures": []
+        },
+        "approval_gates": {
+          "fields_tested": 11,
+          "fields_passed": 11,
+          "fields_failed": 0,
+          "failures": []
+        }
+      },
+      "error": null,
+      "run_metadata": {
+        "last_run": {
+          "status": "success",
+          "duration_seconds": 0.23070096969604492,
+          "exit_code": 0,
+          "score": 100.0
+        },
+        "last_successful_run": {
+          "duration_seconds": 0.23070096969604492,
+          "status": "success",
+          "test_results": {
+            "total_fields_tested": 103,
+            "fields_passed": 103,
+            "fields_failed": 0,
+            "score": 100.0
+          }
+        }
+      }
+    },
+    "english": {
+      "substrate": "english",
+      "total_fields_tested": 103,
+      "fields_passed": 87,
+      "fields_failed": 16,
+      "elapsed_seconds": 307.15376710891724,
+      "entities": {
+        "roles": {
+          "fields_tested": 15,
+          "fields_passed": 15,
+          "fields_failed": 0,
+          "failures": []
+        },
+        "workflow_steps": {
+          "fields_tested": 16,
+          "fields_passed": 16,
+          "fields_failed": 0,
+          "failures": []
+        },
+        "workflows": {
+          "fields_tested": 30,
+          "fields_passed": 30,
+          "fields_failed": 0,
+          "failures": []
+        },
+        "precedes_steps": {
+          "fields_tested": 16,
+          "fields_passed": 0,
+          "fields_failed": 16,
+          "failures": [
+            {
+              "pk": "assign-task-to-team",
+              "field": "display_name",
+              "expected": "Step-16",
+              "actual": "Assign Task to Team"
+            },
+            {
+              "pk": "step-1",
+              "field": "display_name",
+              "expected": "Step-1",
+              "actual": "Step 1"
+            },
+            {
+              "pk": "step-10",
+              "field": "display_name",
+              "expected": "Step-10",
+              "actual": "Step 10"
+            },
+            {
+              "pk": "step-11",
+              "field": "display_name",
+              "expected": "Step-11",
+              "actual": "Step 11"
+            },
+            {
+              "pk": "step-12",
+              "field": "display_name",
+              "expected": "Step-12",
+              "actual": "Step 12"
+            },
+            {
+              "pk": "step-13",
+              "field": "display_name",
+              "expected": "Step-13",
+              "actual": "Step 13"
+            },
+            {
+              "pk": "step-14",
+              "field": "display_name",
+              "expected": "Step-14",
+              "actual": "Step 14"
+            },
+            {
+              "pk": "step-15",
+              "field": "display_name",
+              "expected": "Step-15",
+              "actual": "Step 15"
+            },
+            {
+              "pk": "step-2",
+              "field": "display_name",
+              "expected": "Step-2",
+              "actual": "Step 2"
+            },
+            {
+              "pk": "step-3",
+              "field": "display_name",
+              "expected": "Step-3",
+              "actual": "Step 3"
+            },
+            {
+              "pk": "step-4",
+              "field": "display_name",
+              "expected": "Step-4",
+              "actual": "finance-approval"
+            },
+            {
+              "pk": "step-5",
+              "field": "display_name",
+              "expected": "Step-5",
+              "actual": "document-verification"
+            },
+            {
+              "pk": "step-6",
+              "field": "display_name",
+              "expected": "Step-6",
+              "actual": "quality-assurance-review"
+            },
+            {
+              "pk": "step-7",
+              "field": "display_name",
+              "expected": "Step-7",
+              "actual": "system-notification-sent"
+            },
+            {
+              "pk": "step-8",
+              "field": "display_name",
+              "expected": "Step-8",
+              "actual": "final-approval"
+            },
+            {
+              "pk": "step-9",
+              "field": "display_name",
+              "expected": "Step-9",
+              "actual": "archive-request"
+            }
+          ]
+        },
+        "departments": {
+          "fields_tested": 15,
+          "fields_passed": 15,
+          "fields_failed": 0,
+          "failures": []
+        },
+        "approval_gates": {
+          "fields_tested": 11,
+          "fields_passed": 11,
+          "fields_failed": 0,
+          "failures": []
+        }
+      },
+      "error": null,
+      "run_metadata": {
+        "last_run": {
+          "status": "success",
+          "duration_seconds": 291.91583609580994,
+          "exit_code": 0,
+          "score": 84.46601941747572
+        },
+        "last_successful_run": {
+          "duration_seconds": 307.15376710891724,
+          "status": "success",
+          "timing_preserved": true,
+          "test_results": {
+            "total_fields_tested": 85,
+            "fields_passed": 85,
+            "fields_failed": 0,
+            "score": 100.0
+          }
+        }
+      }
+    },
+    "explain-dag": {
+      "substrate": "explain-dag",
+      "total_fields_tested": 103,
+      "fields_passed": 103,
+      "fields_failed": 0,
+      "elapsed_seconds": 0.11489224433898926,
+      "entities": {
+        "roles": {
+          "fields_tested": 15,
+          "fields_passed": 15,
+          "fields_failed": 0,
+          "failures": []
+        },
+        "workflow_steps": {
+          "fields_tested": 16,
+          "fields_passed": 16,
+          "fields_failed": 0,
+          "failures": []
+        },
+        "workflows": {
+          "fields_tested": 30,
+          "fields_passed": 30,
+          "fields_failed": 0,
+          "failures": []
+        },
+        "precedes_steps": {
+          "fields_tested": 16,
+          "fields_passed": 16,
+          "fields_failed": 0,
+          "failures": []
+        },
+        "departments": {
+          "fields_tested": 15,
+          "fields_passed": 15,
+          "fields_failed": 0,
+          "failures": []
+        },
+        "approval_gates": {
+          "fields_tested": 11,
+          "fields_passed": 11,
+          "fields_failed": 0,
+          "failures": []
+        }
+      },
+      "error": null,
+      "run_metadata": {
+        "last_run": {
+          "status": "success",
+          "duration_seconds": 0.11489224433898926,
+          "exit_code": 0,
+          "score": 100.0
+        },
+        "last_successful_run": {
+          "duration_seconds": 0.11489224433898926,
+          "status": "success",
+          "test_results": {
+            "total_fields_tested": 103,
+            "fields_passed": 103,
+            "fields_failed": 0,
+            "score": 100.0
+          }
+        }
+      }
+    },
+    "golang": {
+      "substrate": "golang",
+      "total_fields_tested": 103,
+      "fields_passed": 103,
+      "fields_failed": 0,
+      "elapsed_seconds": 0.1259148120880127,
+      "entities": {
+        "roles": {
+          "fields_tested": 15,
+          "fields_passed": 15,
+          "fields_failed": 0,
+          "failures": []
+        },
+        "workflow_steps": {
+          "fields_tested": 16,
+          "fields_passed": 16,
+          "fields_failed": 0,
+          "failures": []
+        },
+        "workflows": {
+          "fields_tested": 30,
+          "fields_passed": 30,
+          "fields_failed": 0,
+          "failures": []
+        },
+        "precedes_steps": {
+          "fields_tested": 16,
+          "fields_passed": 16,
+          "fields_failed": 0,
+          "failures": []
+        },
+        "departments": {
+          "fields_tested": 15,
+          "fields_passed": 15,
+          "fields_failed": 0,
+          "failures": []
+        },
+        "approval_gates": {
+          "fields_tested": 11,
+          "fields_passed": 11,
+          "fields_failed": 0,
+          "failures": []
+        }
+      },
+      "error": null,
+      "run_metadata": {
+        "last_run": {
+          "status": "success",
+          "duration_seconds": 0.1259148120880127,
+          "exit_code": 0,
+          "score": 100.0
+        },
+        "last_successful_run": {
+          "duration_seconds": 0.1259148120880127,
+          "status": "success",
+          "test_results": {
+            "total_fields_tested": 103,
+            "fields_passed": 103,
+            "fields_failed": 0,
+            "score": 100.0
+          }
+        }
+      }
+    },
+    "owl": {
+      "substrate": "owl",
+      "total_fields_tested": 103,
+      "fields_passed": 103,
+      "fields_failed": 0,
+      "elapsed_seconds": 10.064263105392456,
+      "entities": {
+        "roles": {
+          "fields_tested": 15,
+          "fields_passed": 15,
+          "fields_failed": 0,
+          "failures": []
+        },
+        "workflow_steps": {
+          "fields_tested": 16,
+          "fields_passed": 16,
+          "fields_failed": 0,
+          "failures": []
+        },
+        "workflows": {
+          "fields_tested": 30,
+          "fields_passed": 30,
+          "fields_failed": 0,
+          "failures": []
+        },
+        "precedes_steps": {
+          "fields_tested": 16,
+          "fields_passed": 16,
+          "fields_failed": 0,
+          "failures": []
+        },
+        "departments": {
+          "fields_tested": 15,
+          "fields_passed": 15,
+          "fields_failed": 0,
+          "failures": []
+        },
+        "approval_gates": {
+          "fields_tested": 11,
+          "fields_passed": 11,
+          "fields_failed": 0,
+          "failures": []
+        }
+      },
+      "error": null,
+      "run_metadata": {
+        "last_run": {
+          "status": "success",
+          "duration_seconds": 10.064263105392456,
+          "exit_code": 0,
+          "score": 100.0
+        },
+        "last_successful_run": {
+          "duration_seconds": 10.064263105392456,
+          "status": "success",
+          "test_results": {
+            "total_fields_tested": 103,
+            "fields_passed": 103,
+            "fields_failed": 0,
+            "score": 100.0
+          }
+        }
+      }
+    },
+    "python": {
+      "substrate": "python",
+      "total_fields_tested": 103,
+      "fields_passed": 103,
+      "fields_failed": 0,
+      "elapsed_seconds": 0.12931394577026367,
+      "entities": {
+        "roles": {
+          "fields_tested": 15,
+          "fields_passed": 15,
+          "fields_failed": 0,
+          "failures": []
+        },
+        "workflow_steps": {
+          "fields_tested": 16,
+          "fields_passed": 16,
+          "fields_failed": 0,
+          "failures": []
+        },
+        "workflows": {
+          "fields_tested": 30,
+          "fields_passed": 30,
+          "fields_failed": 0,
+          "failures": []
+        },
+        "precedes_steps": {
+          "fields_tested": 16,
+          "fields_passed": 16,
+          "fields_failed": 0,
+          "failures": []
+        },
+        "departments": {
+          "fields_tested": 15,
+          "fields_passed": 15,
+          "fields_failed": 0,
+          "failures": []
+        },
+        "approval_gates": {
+          "fields_tested": 11,
+          "fields_passed": 11,
+          "fields_failed": 0,
+          "failures": []
+        }
+      },
+      "error": null,
+      "run_metadata": {
+        "last_run": {
+          "status": "success",
+          "duration_seconds": 0.12931394577026367,
+          "exit_code": 0,
+          "score": 100.0
+        },
+        "last_successful_run": {
+          "duration_seconds": 0.12931394577026367,
+          "status": "success",
+          "test_results": {
+            "total_fields_tested": 103,
+            "fields_passed": 103,
+            "fields_failed": 0,
+            "score": 100.0
+          }
+        }
+      }
+    },
+    "uml": {
+      "substrate": "uml",
+      "total_fields_tested": 103,
+      "fields_passed": 103,
+      "fields_failed": 0,
+      "elapsed_seconds": 0.11601400375366211,
+      "entities": {
+        "roles": {
+          "fields_tested": 15,
+          "fields_passed": 15,
+          "fields_failed": 0,
+          "failures": []
+        },
+        "workflow_steps": {
+          "fields_tested": 16,
+          "fields_passed": 16,
+          "fields_failed": 0,
+          "failures": []
+        },
+        "workflows": {
+          "fields_tested": 30,
+          "fields_passed": 30,
+          "fields_failed": 0,
+          "failures": []
+        },
+        "precedes_steps": {
+          "fields_tested": 16,
+          "fields_passed": 16,
+          "fields_failed": 0,
+          "failures": []
+        },
+        "departments": {
+          "fields_tested": 15,
+          "fields_passed": 15,
+          "fields_failed": 0,
+          "failures": []
+        },
+        "approval_gates": {
+          "fields_tested": 11,
+          "fields_passed": 11,
+          "fields_failed": 0,
+          "failures": []
+        }
+      },
+      "error": null,
+      "run_metadata": {
+        "last_run": {
+          "status": "success",
+          "duration_seconds": 0.11601400375366211,
+          "exit_code": 0,
+          "score": 100.0
+        },
+        "last_successful_run": {
+          "duration_seconds": 0.11601400375366211,
+          "status": "success",
+          "test_results": {
+            "total_fields_tested": 103,
+            "fields_passed": 103,
+            "fields_failed": 0,
+            "score": 100.0
+          }
+        }
+      }
+    },
+    "xlsx": {
+      "substrate": "xlsx",
+      "total_fields_tested": 103,
+      "fields_passed": 103,
+      "fields_failed": 0,
+      "elapsed_seconds": 0.36907505989074707,
+      "entities": {
+        "roles": {
+          "fields_tested": 15,
+          "fields_passed": 15,
+          "fields_failed": 0,
+          "failures": []
+        },
+        "workflow_steps": {
+          "fields_tested": 16,
+          "fields_passed": 16,
+          "fields_failed": 0,
+          "failures": []
+        },
+        "workflows": {
+          "fields_tested": 30,
+          "fields_passed": 30,
+          "fields_failed": 0,
+          "failures": []
+        },
+        "precedes_steps": {
+          "fields_tested": 16,
+          "fields_passed": 16,
+          "fields_failed": 0,
+          "failures": []
+        },
+        "departments": {
+          "fields_tested": 15,
+          "fields_passed": 15,
+          "fields_failed": 0,
+          "failures": []
+        },
+        "approval_gates": {
+          "fields_tested": 11,
+          "fields_passed": 11,
+          "fields_failed": 0,
+          "failures": []
+        }
+      },
+      "error": null,
+      "run_metadata": {
+        "last_run": {
+          "status": "success",
+          "duration_seconds": 0.36907505989074707,
+          "exit_code": 0,
+          "score": 100.0
+        },
+        "last_successful_run": {
+          "duration_seconds": 0.36907505989074707,
+          "status": "success",
+          "test_results": {
+            "total_fields_tested": 103,
+            "fields_passed": 103,
+            "fields_failed": 0,
+            "score": 100.0
+          }
+        }
+      }
+    },
+    "yaml": {
+      "substrate": "yaml",
+      "total_fields_tested": 103,
+      "fields_passed": 103,
+      "fields_failed": 0,
+      "elapsed_seconds": 0.11707496643066406,
+      "entities": {
+        "roles": {
+          "fields_tested": 15,
+          "fields_passed": 15,
+          "fields_failed": 0,
+          "failures": []
+        },
+        "workflow_steps": {
+          "fields_tested": 16,
+          "fields_passed": 16,
+          "fields_failed": 0,
+          "failures": []
+        },
+        "workflows": {
+          "fields_tested": 30,
+          "fields_passed": 30,
+          "fields_failed": 0,
+          "failures": []
+        },
+        "precedes_steps": {
+          "fields_tested": 16,
+          "fields_passed": 16,
+          "fields_failed": 0,
+          "failures": []
+        },
+        "departments": {
+          "fields_tested": 15,
+          "fields_passed": 15,
+          "fields_failed": 0,
+          "failures": []
+        },
+        "approval_gates": {
+          "fields_tested": 11,
+          "fields_passed": 11,
+          "fields_failed": 0,
+          "failures": []
+        }
+      },
+      "error": null,
+      "run_metadata": {
+        "last_run": {
+          "status": "success",
+          "duration_seconds": 0.11707496643066406,
+          "exit_code": 0,
+          "score": 100.0
+        },
+        "last_successful_run": {
+          "duration_seconds": 0.11707496643066406,
+          "status": "success",
+          "test_results": {
+            "total_fields_tested": 103,
+            "fields_passed": 103,
+            "fields_failed": 0,
+            "score": 100.0
+          }
+        }
+      }
+    }
+  },
+  "answer_keys": {
+    "roles": [
+      {
+        "role_id": "administrator",
+        "name": "administrator",
+        "display_name": "Administrator",
+        "label": "Admin",
+        "comment": "Has full access to all system features and settings.",
+        "filled_by_human_agent": "agent-001",
+        "filled_by_ai_agent": "ava",
+        "filled_by_automated_pipeline": "lead-notification-pipeline",
+        "owned_by": "human-resources",
+        "delegates_to": "",
+        "workflow_steps": "submit-request",
+        "from_delegates_to": "editor"
+      },
+      {
+        "role_id": "analyst",
+        "name": "analyst",
+        "display_name": "Analyst",
+        "label": "Data Analyst",
+        "comment": "Has access to analytics and reporting tools.",
+        "filled_by_human_agent": "agent-008",
+        "filled_by_ai_agent": "kai",
+        "filled_by_automated_pipeline": "project-intake-pipeline",
+        "owned_by": "legal",
+        "delegates_to": "support",
+        "workflow_steps": "final-approval",
+        "from_delegates_to": "developer"
+      },
+      {
+        "role_id": "contributor",
+        "name": "contributor",
+        "display_name": "Contributor",
+        "label": "Content Contributor",
+        "comment": "Can submit new content for review but cannot publish directly.",
+        "filled_by_human_agent": "agent-005",
+        "filled_by_ai_agent": "zara",
+        "filled_by_automated_pipeline": "support-ticket-automation",
+        "owned_by": "sales",
+        "delegates_to": "moderator",
+        "workflow_steps": "document-verification",
+        "from_delegates_to": "manager"
+      },
+      {
+        "role_id": "developer",
+        "name": "developer",
+        "display_name": "Developer",
+        "label": "Software Developer",
+        "comment": "Can access and modify application code and integrations.",
+        "filled_by_human_agent": "agent-009",
+        "filled_by_ai_agent": "sophie",
+        "filled_by_automated_pipeline": "crm-data-sync",
+        "owned_by": "procurement",
+        "delegates_to": "analyst",
+        "workflow_steps": "archive-request",
+        "from_delegates_to": "tester"
+      },
+      {
+        "role_id": "editor",
+        "name": "editor",
+        "display_name": "Editor",
+        "label": "Content Editor",
+        "comment": "Can create, edit, and delete content but cannot change system settings.",
+        "filled_by_human_agent": "agent-002",
+        "filled_by_ai_agent": "leo",
+        "filled_by_automated_pipeline": "e-commerce-order-sync",
+        "owned_by": "finance",
+        "delegates_to": "administrator",
+        "workflow_steps": "manager-review",
+        "from_delegates_to": "viewer"
+      },
+      {
+        "role_id": "finance",
+        "name": "finance",
+        "display_name": "Finance",
+        "label": "Finance Officer",
+        "comment": "Handles billing, invoices, and financial reports.",
+        "filled_by_human_agent": "agent-012",
+        "filled_by_ai_agent": "jade",
+        "filled_by_automated_pipeline": "task-management-sync",
+        "owned_by": "public-relations",
+        "delegates_to": "hr",
+        "workflow_steps": "assign-task-to-team, some-new-task",
+        "from_delegates_to": "guest"
+      },
+      {
+        "role_id": "guest",
+        "name": "guest",
+        "display_name": "Guest",
+        "label": "Temporary Access",
+        "comment": "Limited access for temporary users or external collaborators.",
+        "filled_by_human_agent": "agent-013",
+        "filled_by_ai_agent": "mila",
+        "filled_by_automated_pipeline": "cloud-storage-sync",
+        "owned_by": "quality-assurance",
+        "delegates_to": "finance",
+        "workflow_steps": "team-lead-review",
+        "from_delegates_to": "trainer"
+      },
+      {
+        "role_id": "hr",
+        "name": "hr",
+        "display_name": "HR",
+        "label": "Human Resources",
+        "comment": "Manages employee records and recruitment processes.",
+        "filled_by_human_agent": "agent-011",
+        "filled_by_ai_agent": "liam",
+        "filled_by_automated_pipeline": "survey-data-pipeline",
+        "owned_by": "administration",
+        "delegates_to": "tester",
+        "workflow_steps": "legal-compliance-check",
+        "from_delegates_to": "finance"
+      },
+      {
+        "role_id": "manager",
+        "name": "manager",
+        "display_name": "Manager",
+        "label": "Project Manager",
+        "comment": "Oversees project progress and manages team assignments.",
+        "filled_by_human_agent": "agent-006",
+        "filled_by_ai_agent": "owen",
+        "filled_by_automated_pipeline": "devops-integration",
+        "owned_by": "customer-service",
+        "delegates_to": "contributor",
+        "workflow_steps": "quality-assurance-review",
+        "from_delegates_to": "support"
+      },
+      {
+        "role_id": "moderator",
+        "name": "moderator",
+        "display_name": "Moderator",
+        "label": "Forum Moderator",
+        "comment": "Can manage user comments and moderate discussions.",
+        "filled_by_human_agent": "agent-004",
+        "filled_by_ai_agent": "eli",
+        "filled_by_automated_pipeline": "newsletter-signup-sync",
+        "owned_by": "marketing",
+        "delegates_to": "viewer",
+        "workflow_steps": "finance-approval",
+        "from_delegates_to": "contributor"
+      },
+      {
+        "role_id": "owner",
+        "name": "owner",
+        "display_name": "Owner",
+        "label": "System Owner",
+        "comment": "Ultimate authority over the system, can assign or revoke any role.",
+        "filled_by_human_agent": "agent-015",
+        "filled_by_ai_agent": "ella",
+        "filled_by_automated_pipeline": "survey-data-export",
+        "owned_by": "training-and-development",
+        "delegates_to": "trainer",
+        "workflow_steps": "close-workflow",
+        "from_delegates_to": ""
+      },
+      {
+        "role_id": "support",
+        "name": "support",
+        "display_name": "Support",
+        "label": "Customer Support",
+        "comment": "Handles user inquiries and provides technical assistance.",
+        "filled_by_human_agent": "agent-007",
+        "filled_by_ai_agent": "nina",
+        "filled_by_automated_pipeline": "finance-automation",
+        "owned_by": "research-and-development",
+        "delegates_to": "manager",
+        "workflow_steps": "system-notification-sent",
+        "from_delegates_to": "analyst"
+      },
+      {
+        "role_id": "tester",
+        "name": "tester",
+        "display_name": "Tester",
+        "label": "Quality Assurance",
+        "comment": "Responsible for testing new features and reporting bugs.",
+        "filled_by_human_agent": "agent-010",
+        "filled_by_ai_agent": "max",
+        "filled_by_automated_pipeline": "calendar-integration",
+        "owned_by": "operations",
+        "delegates_to": "developer",
+        "workflow_steps": "customer-feedback-collection",
+        "from_delegates_to": "hr"
+      },
+      {
+        "role_id": "trainer",
+        "name": "trainer",
+        "display_name": "Trainer",
+        "label": "Training Specialist",
+        "comment": "Creates and delivers training materials to users.",
+        "filled_by_human_agent": "agent-014",
+        "filled_by_ai_agent": "noah",
+        "filled_by_automated_pipeline": "email-notification-pipeline",
+        "owned_by": "facilities-management",
+        "delegates_to": "guest",
+        "workflow_steps": "generate-report",
+        "from_delegates_to": "owner"
+      },
+      {
+        "role_id": "viewer",
+        "name": "viewer",
+        "display_name": "Viewer",
+        "label": "Read-Only",
+        "comment": "Can view content but cannot make any changes.",
+        "filled_by_human_agent": "agent-003",
+        "filled_by_ai_agent": "maya",
+        "filled_by_automated_pipeline": "issue-tracking-bridge",
+        "owned_by": "information-technology",
+        "delegates_to": "editor",
+        "workflow_steps": "automated-eligibility-check",
+        "from_delegates_to": "moderator"
+      }
+    ],
+    "workflow_steps": [
+      {
+        "workflow_step_id": "archive-request",
+        "name": "archive-request",
+        "display_name": "Archive Request",
+        "workflow": "customer-feedback",
+        "sequence_position": 9,
+        "assigned_role": "developer",
+        "requires_human_approval": false,
+        "approval_gate": "it-security-gate",
+        "preceded_by_steps": "step-9"
+      },
+      {
+        "workflow_step_id": "assign-task-to-team",
+        "name": "assign-task-to-team",
+        "display_name": "Assign Task to Team",
+        "workflow": "asset-management",
+        "sequence_position": 12,
+        "assigned_role": "finance",
+        "requires_human_approval": false,
+        "approval_gate": "executive-sign-off",
+        "preceded_by_steps": "step-12"
+      },
+      {
+        "workflow_step_id": "automated-eligibility-check",
+        "name": "automated-eligibility-check",
+        "display_name": "Automated Eligibility Check",
+        "workflow": "content-publishing",
+        "sequence_position": 3,
+        "assigned_role": "viewer",
+        "requires_human_approval": false,
+        "approval_gate": "it-security-gate",
+        "preceded_by_steps": "step-3"
+      },
+      {
+        "workflow_step_id": "close-workflow",
+        "name": "close-workflow",
+        "display_name": "Close Workflow",
+        "workflow": "change-management",
+        "sequence_position": 15,
+        "assigned_role": "owner",
+        "requires_human_approval": false,
+        "approval_gate": "executive-sign-off",
+        "preceded_by_steps": "step-15"
+      },
+      {
+        "workflow_step_id": "customer-feedback-collection",
+        "name": "customer-feedback-collection",
+        "display_name": "Customer Feedback Collection",
+        "workflow": "project-kickoff",
+        "sequence_position": 10,
+        "assigned_role": "tester",
+        "requires_human_approval": false,
+        "approval_gate": "customer-confirmation",
+        "preceded_by_steps": "step-10"
+      },
+      {
+        "workflow_step_id": "document-verification",
+        "name": "document-verification",
+        "display_name": "Document Verification",
+        "workflow": "it-support",
+        "sequence_position": 5,
+        "assigned_role": "contributor",
+        "requires_human_approval": false,
+        "approval_gate": "compliance-check",
+        "preceded_by_steps": "step-5"
+      },
+      {
+        "workflow_step_id": "final-approval",
+        "name": "final-approval",
+        "display_name": "Final Approval",
+        "workflow": "procurement",
+        "sequence_position": 8,
+        "assigned_role": "analyst",
+        "requires_human_approval": true,
+        "approval_gate": "manager-approval",
+        "preceded_by_steps": "step-8"
+      },
+      {
+        "workflow_step_id": "finance-approval",
+        "name": "finance-approval",
+        "display_name": "Finance Approval",
+        "workflow": "leave-request",
+        "sequence_position": 4,
+        "assigned_role": "moderator",
+        "requires_human_approval": true,
+        "approval_gate": "finance-approval",
+        "preceded_by_steps": "step-4"
+      },
+      {
+        "workflow_step_id": "generate-report",
+        "name": "generate-report",
+        "display_name": "Generate Report",
+        "workflow": "incident-reporting",
+        "sequence_position": 14,
+        "assigned_role": "trainer",
+        "requires_human_approval": false,
+        "approval_gate": "finance-approval",
+        "preceded_by_steps": "step-14"
+      },
+      {
+        "workflow_step_id": "legal-compliance-check",
+        "name": "legal-compliance-check",
+        "display_name": "Legal Compliance Check",
+        "workflow": "contract-review",
+        "sequence_position": 11,
+        "assigned_role": "hr",
+        "requires_human_approval": true,
+        "approval_gate": "legal-review",
+        "preceded_by_steps": "step-11"
+      },
+      {
+        "workflow_step_id": "manager-review",
+        "name": "manager-review",
+        "display_name": "Manager Review",
+        "workflow": "invoice-approval",
+        "sequence_position": 2,
+        "assigned_role": "editor",
+        "requires_human_approval": true,
+        "approval_gate": "manager-approval",
+        "preceded_by_steps": "step-2"
+      },
+      {
+        "workflow_step_id": "quality-assurance-review",
+        "name": "quality-assurance-review",
+        "display_name": "Quality Assurance Review",
+        "workflow": "expense-reimbursement",
+        "sequence_position": 6,
+        "assigned_role": "manager",
+        "requires_human_approval": true,
+        "approval_gate": "quality-assurance",
+        "preceded_by_steps": "step-6"
+      },
+      {
+        "workflow_step_id": "some-new-task",
+        "name": "some-new-task",
+        "display_name": "Some new task",
+        "workflow": "asset-management",
+        "sequence_position": 13,
+        "assigned_role": "finance",
+        "requires_human_approval": false,
+        "approval_gate": "some-new-gate",
+        "preceded_by_steps": "assign-task-to-team"
+      },
+      {
+        "workflow_step_id": "submit-request",
+        "name": "submit-request",
+        "display_name": "Submit Request",
+        "workflow": "onboarding",
+        "sequence_position": 1,
+        "assigned_role": "administrator",
+        "requires_human_approval": true,
+        "approval_gate": "initial-review",
+        "preceded_by_steps": "step-1"
+      },
+      {
+        "workflow_step_id": "system-notification-sent",
+        "name": "system-notification-sent",
+        "display_name": "System Notification Sent",
+        "workflow": "performance-review",
+        "sequence_position": 7,
+        "assigned_role": "support",
+        "requires_human_approval": false,
+        "approval_gate": "final-authorization",
+        "preceded_by_steps": "step-7"
+      },
+      {
+        "workflow_step_id": "team-lead-review",
+        "name": "team-lead-review",
+        "display_name": "Team Lead Review",
+        "workflow": "recruitment",
+        "sequence_position": 13,
+        "assigned_role": "guest",
+        "requires_human_approval": true,
+        "approval_gate": "legal-review",
+        "preceded_by_steps": "step-13"
+      }
+    ],
+    "ai_agents": [
+      {
+        "ai_agent_id": "ava",
+        "name": "Ava",
+        "title": "CustomerSupportBot",
+        "display_name": "Ava",
+        "model_version": "GPT-4.0",
+        "roles": "administrator"
+      },
+      {
+        "ai_agent_id": "leo",
+        "name": "Leo",
+        "title": "SalesAssistantAI",
+        "display_name": "Leo",
+        "model_version": "GPT-3.5",
+        "roles": "editor"
+      },
+      {
+        "ai_agent_id": "maya",
+        "name": "Maya",
+        "title": "HRRecruiterBot",
+        "display_name": "Maya",
+        "model_version": "GPT-4.0",
+        "roles": "viewer"
+      },
+      {
+        "ai_agent_id": "eli",
+        "name": "Eli",
+        "title": "FinanceAdvisorAI",
+        "display_name": "Eli",
+        "model_version": "GPT-3.5",
+        "roles": "moderator"
+      },
+      {
+        "ai_agent_id": "zara",
+        "name": "Zara",
+        "title": "MarketingCopyAI",
+        "display_name": "Zara",
+        "model_version": "GPT-4.0",
+        "roles": "contributor"
+      },
+      {
+        "ai_agent_id": "owen",
+        "name": "Owen",
+        "title": "LegalDraftBot",
+        "display_name": "Owen",
+        "model_version": "GPT-3.5",
+        "roles": "manager"
+      },
+      {
+        "ai_agent_id": "nina",
+        "name": "Nina",
+        "title": "MedicalAssistantAI",
+        "display_name": "Nina",
+        "model_version": "GPT-4.0",
+        "roles": "support"
+      },
+      {
+        "ai_agent_id": "kai",
+        "name": "Kai",
+        "title": "TravelPlannerBot",
+        "display_name": "Kai",
+        "model_version": "GPT-3.5",
+        "roles": "analyst"
+      },
+      {
+        "ai_agent_id": "sophie",
+        "name": "Sophie",
+        "title": "EcommerceHelperAI",
+        "display_name": "Sophie",
+        "model_version": "GPT-4.0",
+        "roles": "developer"
+      },
+      {
+        "ai_agent_id": "max",
+        "name": "Max",
+        "title": "EducationTutorBot",
+        "display_name": "Max",
+        "model_version": "GPT-3.5",
+        "roles": "tester"
+      },
+      {
+        "ai_agent_id": "liam",
+        "name": "Liam",
+        "title": "RealEstateAdvisorAI",
+        "display_name": "Liam",
+        "model_version": "GPT-4.0",
+        "roles": "hr"
+      },
+      {
+        "ai_agent_id": "jade",
+        "name": "Jade",
+        "title": "FitnessCoachBot",
+        "display_name": "Jade",
+        "model_version": "GPT-3.5",
+        "roles": "finance"
+      },
+      {
+        "ai_agent_id": "mila",
+        "name": "Mila",
+        "title": "EventPlannerAI",
+        "display_name": "Mila",
+        "model_version": "GPT-4.0",
+        "roles": "guest"
+      },
+      {
+        "ai_agent_id": "noah",
+        "name": "Noah",
+        "title": "PersonalFinanceBot",
+        "display_name": "Noah",
+        "model_version": "GPT-3.5",
+        "roles": "trainer"
+      },
+      {
+        "ai_agent_id": "ella",
+        "name": "Ella",
+        "title": "ContentEditorAI",
+        "display_name": "Ella",
+        "model_version": "GPT-4.0",
+        "roles": "owner"
+      }
+    ],
+    "workflows": [
+      {
+        "workflow_id": "asset-management",
+        "name": "asset-management",
+        "display_name": "Asset Management",
+        "title": "Asset Management Process",
+        "description": "Process for tracking, maintaining, and auditing company assets.",
+        "identifier": "WF-ASM-012",
+        "modified": "2024-05-18 00:00:00-05:00",
+        "workflow_steps": "assign-task-to-team, some-new-task",
+        "count_of_steps": 2,
+        "has_more_than1_step": true
+      },
+      {
+        "workflow_id": "change-management",
+        "name": "change-management",
+        "display_name": "Change Management",
+        "title": "Change Management Workflow",
+        "description": "Structured process for requesting, evaluating, and implementing organizational changes.",
+        "identifier": "WF-CHM-015",
+        "modified": "2024-05-27 00:00:00-05:00",
+        "workflow_steps": "close-workflow",
+        "count_of_steps": 1,
+        "has_more_than1_step": false
+      },
+      {
+        "workflow_id": "content-publishing",
+        "name": "content-publishing",
+        "display_name": "Content Publishing",
+        "title": "Content Publishing Process",
+        "description": "Workflow for drafting, reviewing, and publishing content to the company website.",
+        "identifier": "WF-CNT-003",
+        "modified": "2024-05-28 00:00:00-05:00",
+        "workflow_steps": "automated-eligibility-check",
+        "count_of_steps": 1,
+        "has_more_than1_step": false
+      },
+      {
+        "workflow_id": "contract-review",
+        "name": "contract-review",
+        "display_name": "Contract Review",
+        "title": "Contract Review Workflow",
+        "description": "Workflow for legal and management review of contracts before signing.",
+        "identifier": "WF-CTR-011",
+        "modified": "2024-06-04 00:00:00-05:00",
+        "workflow_steps": "legal-compliance-check",
+        "count_of_steps": 1,
+        "has_more_than1_step": false
+      },
+      {
+        "workflow_id": "customer-feedback",
+        "name": "customer-feedback",
+        "display_name": "Customer Feedback",
+        "title": "Customer Feedback Collection",
+        "description": "Workflow for collecting, analyzing, and acting on customer feedback.",
+        "identifier": "WF-CFB-009",
+        "modified": "2024-05-25 00:00:00-05:00",
+        "workflow_steps": "archive-request",
+        "count_of_steps": 1,
+        "has_more_than1_step": false
+      },
+      {
+        "workflow_id": "expense-reimbursement",
+        "name": "expense-reimbursement",
+        "display_name": "Expense Reimbursement",
+        "title": "Expense Reimbursement Process",
+        "description": "Steps for employees to submit expenses and receive reimbursements after approval.",
+        "identifier": "WF-EXP-006",
+        "modified": "2024-06-03 00:00:00-05:00",
+        "workflow_steps": "quality-assurance-review",
+        "count_of_steps": 1,
+        "has_more_than1_step": false
+      },
+      {
+        "workflow_id": "incident-reporting",
+        "name": "incident-reporting",
+        "display_name": "Incident Reporting",
+        "title": "Incident Reporting Process",
+        "description": "Steps for reporting, investigating, and resolving workplace incidents.",
+        "identifier": "WF-INC-014",
+        "modified": "2024-06-06 00:00:00-05:00",
+        "workflow_steps": "generate-report",
+        "count_of_steps": 1,
+        "has_more_than1_step": false
+      },
+      {
+        "workflow_id": "invoice-approval",
+        "name": "invoice-approval",
+        "display_name": "Invoice Approval",
+        "title": "Invoice Approval Workflow",
+        "description": "Automated workflow for reviewing, approving, and processing vendor invoices.",
+        "identifier": "WF-INV-002",
+        "modified": "2024-06-01 00:00:00-05:00",
+        "workflow_steps": "manager-review",
+        "count_of_steps": 1,
+        "has_more_than1_step": false
+      },
+      {
+        "workflow_id": "it-support",
+        "name": "it-support",
+        "display_name": "IT Support",
+        "title": "IT Support Ticketing",
+        "description": "Workflow for submitting, triaging, and resolving IT support tickets.",
+        "identifier": "WF-ITS-005",
+        "modified": "2024-05-30 00:00:00-05:00",
+        "workflow_steps": "document-verification",
+        "count_of_steps": 1,
+        "has_more_than1_step": false
+      },
+      {
+        "workflow_id": "leave-request",
+        "name": "leave-request",
+        "display_name": "Leave Request",
+        "title": "Leave Request Workflow",
+        "description": "Process for employees to submit, review, and approve leave requests.",
+        "identifier": "WF-LRQ-004",
+        "modified": "2024-06-05 00:00:00-05:00",
+        "workflow_steps": "finance-approval",
+        "count_of_steps": 1,
+        "has_more_than1_step": false
+      },
+      {
+        "workflow_id": "onboarding",
+        "name": "onboarding",
+        "display_name": "Onboarding",
+        "title": "Employee Onboarding",
+        "description": "A step-by-step process to onboard new employees, including document collection, orientation, and training.",
+        "identifier": "WF-ONB-001",
+        "modified": "2024-05-10 00:00:00-05:00",
+        "workflow_steps": "submit-request",
+        "count_of_steps": 1,
+        "has_more_than1_step": false
+      },
+      {
+        "workflow_id": "performance-review",
+        "name": "performance-review",
+        "display_name": "Performance Review",
+        "title": "Annual Performance Review",
+        "description": "Structured workflow for conducting annual employee performance evaluations.",
+        "identifier": "WF-PRV-007",
+        "modified": "2024-05-15 00:00:00-05:00",
+        "workflow_steps": "system-notification-sent",
+        "count_of_steps": 1,
+        "has_more_than1_step": false
+      },
+      {
+        "workflow_id": "procurement",
+        "name": "procurement",
+        "display_name": "Procurement",
+        "title": "Procurement Workflow",
+        "description": "Process for requesting, approving, and purchasing goods or services.",
+        "identifier": "WF-PRC-008",
+        "modified": "2024-06-02 00:00:00-05:00",
+        "workflow_steps": "final-approval",
+        "count_of_steps": 1,
+        "has_more_than1_step": false
+      },
+      {
+        "workflow_id": "project-kickoff",
+        "name": "project-kickoff",
+        "display_name": "Project Kickoff",
+        "title": "Project Kickoff Process",
+        "description": "Steps to initiate a new project, including team assignment and goal setting.",
+        "identifier": "WF-PKO-010",
+        "modified": "2024-05-20 00:00:00-05:00",
+        "workflow_steps": "customer-feedback-collection",
+        "count_of_steps": 1,
+        "has_more_than1_step": false
+      },
+      {
+        "workflow_id": "recruitment",
+        "name": "recruitment",
+        "display_name": "Recruitment",
+        "title": "Recruitment Workflow",
+        "description": "Workflow for posting jobs, screening candidates, and scheduling interviews.",
+        "identifier": "WF-RCT-013",
+        "modified": "2024-05-22 00:00:00-05:00",
+        "workflow_steps": "team-lead-review",
+        "count_of_steps": 1,
+        "has_more_than1_step": false
+      }
+    ],
+    "precedes_steps": [
+      {
+        "precedes_step_id": "assign-task-to-team",
+        "name": "assign-task-to-team",
+        "display_name": "Step-16",
+        "step_number": 16,
+        "workflow_step": "some-new-task"
+      },
+      {
+        "precedes_step_id": "step-1",
+        "name": "step-1",
+        "display_name": "Step-1",
+        "step_number": 1,
+        "workflow_step": "submit-request"
+      },
+      {
+        "precedes_step_id": "step-10",
+        "name": "step-10",
+        "display_name": "Step-10",
+        "step_number": 10,
+        "workflow_step": "customer-feedback-collection"
+      },
+      {
+        "precedes_step_id": "step-11",
+        "name": "step-11",
+        "display_name": "Step-11",
+        "step_number": 11,
+        "workflow_step": "legal-compliance-check"
+      },
+      {
+        "precedes_step_id": "step-12",
+        "name": "step-12",
+        "display_name": "Step-12",
+        "step_number": 12,
+        "workflow_step": "assign-task-to-team"
+      },
+      {
+        "precedes_step_id": "step-13",
+        "name": "step-13",
+        "display_name": "Step-13",
+        "step_number": 13,
+        "workflow_step": "team-lead-review"
+      },
+      {
+        "precedes_step_id": "step-14",
+        "name": "step-14",
+        "display_name": "Step-14",
+        "step_number": 14,
+        "workflow_step": "generate-report"
+      },
+      {
+        "precedes_step_id": "step-15",
+        "name": "step-15",
+        "display_name": "Step-15",
+        "step_number": 15,
+        "workflow_step": "close-workflow"
+      },
+      {
+        "precedes_step_id": "step-2",
+        "name": "step-2",
+        "display_name": "Step-2",
+        "step_number": 2,
+        "workflow_step": "manager-review"
+      },
+      {
+        "precedes_step_id": "step-3",
+        "name": "step-3",
+        "display_name": "Step-3",
+        "step_number": 3,
+        "workflow_step": "automated-eligibility-check"
+      },
+      {
+        "precedes_step_id": "step-4",
+        "name": "step-4",
+        "display_name": "Step-4",
+        "step_number": 4,
+        "workflow_step": "finance-approval"
+      },
+      {
+        "precedes_step_id": "step-5",
+        "name": "step-5",
+        "display_name": "Step-5",
+        "step_number": 5,
+        "workflow_step": "document-verification"
+      },
+      {
+        "precedes_step_id": "step-6",
+        "name": "step-6",
+        "display_name": "Step-6",
+        "step_number": 6,
+        "workflow_step": "quality-assurance-review"
+      },
+      {
+        "precedes_step_id": "step-7",
+        "name": "step-7",
+        "display_name": "Step-7",
+        "step_number": 7,
+        "workflow_step": "system-notification-sent"
+      },
+      {
+        "precedes_step_id": "step-8",
+        "name": "step-8",
+        "display_name": "Step-8",
+        "step_number": 8,
+        "workflow_step": "final-approval"
+      },
+      {
+        "precedes_step_id": "step-9",
+        "name": "step-9",
+        "display_name": "Step-9",
+        "step_number": 9,
+        "workflow_step": "archive-request"
+      }
+    ],
+    "automated_pipelines": [
+      {
+        "automated_pipeline_id": "calendar-integration",
+        "name": "calendar-integration",
+        "description": "Google Calendar Event to Teams Meeting",
+        "display_name": "Calendar Integration",
+        "roles": "tester"
+      },
+      {
+        "automated_pipeline_id": "cloud-storage-sync",
+        "name": "cloud-storage-sync",
+        "description": "Dropbox Upload to Google Drive",
+        "display_name": "Cloud Storage Sync",
+        "roles": "guest"
+      },
+      {
+        "automated_pipeline_id": "crm-data-sync",
+        "name": "crm-data-sync",
+        "description": "HubSpot Contact to Salesforce Lead",
+        "display_name": "CRM Data Sync",
+        "roles": "developer"
+      },
+      {
+        "automated_pipeline_id": "devops-integration",
+        "name": "devops-integration",
+        "description": "GitHub PR to Jira Story",
+        "display_name": "DevOps Integration",
+        "roles": "manager"
+      },
+      {
+        "automated_pipeline_id": "e-commerce-order-sync",
+        "name": "e-commerce-order-sync",
+        "description": "Shopify Order to QuickBooks Invoice",
+        "display_name": "E-commerce Order Sync",
+        "roles": "editor"
+      },
+      {
+        "automated_pipeline_id": "email-notification-pipeline",
+        "name": "email-notification-pipeline",
+        "description": "Outlook Email to Slack Channel",
+        "display_name": "Email Notification Pipeline",
+        "roles": "trainer"
+      },
+      {
+        "automated_pipeline_id": "finance-automation",
+        "name": "finance-automation",
+        "description": "Stripe Payment to Xero Invoice",
+        "display_name": "Finance Automation",
+        "roles": "support"
+      },
+      {
+        "automated_pipeline_id": "issue-tracking-bridge",
+        "name": "issue-tracking-bridge",
+        "description": "Jira Issue to Trello Card",
+        "display_name": "Issue Tracking Bridge",
+        "roles": "viewer"
+      },
+      {
+        "automated_pipeline_id": "lead-notification-pipeline",
+        "name": "lead-notification-pipeline",
+        "description": "Salesforce to Slack Lead Alert",
+        "display_name": "Lead Notification Pipeline",
+        "roles": "administrator"
+      },
+      {
+        "automated_pipeline_id": "newsletter-signup-sync",
+        "name": "newsletter-signup-sync",
+        "description": "Google Sheets to Mailchimp Subscriber",
+        "display_name": "Newsletter Signup Sync",
+        "roles": "moderator"
+      },
+      {
+        "automated_pipeline_id": "project-intake-pipeline",
+        "name": "project-intake-pipeline",
+        "description": "Airtable Form to Monday.com Item",
+        "display_name": "Project Intake Pipeline",
+        "roles": "analyst"
+      },
+      {
+        "automated_pipeline_id": "support-ticket-automation",
+        "name": "support-ticket-automation",
+        "description": "Zendesk Ticket to Asana Task",
+        "display_name": "Support Ticket Automation",
+        "roles": "contributor"
+      },
+      {
+        "automated_pipeline_id": "survey-data-export",
+        "name": "survey-data-export",
+        "description": "SurveyMonkey Response to Excel Sheet",
+        "display_name": "Survey Data Export",
+        "roles": "owner"
+      },
+      {
+        "automated_pipeline_id": "survey-data-pipeline",
+        "name": "survey-data-pipeline",
+        "description": "Typeform Response to Notion Database",
+        "display_name": "Survey Data Pipeline",
+        "roles": "hr"
+      },
+      {
+        "automated_pipeline_id": "task-management-sync",
+        "name": "task-management-sync",
+        "description": "Trello Card to Google Tasks",
+        "display_name": "Task Management Sync",
+        "roles": "finance"
+      }
+    ],
+    "departments": [
+      {
+        "department_id": "administration",
+        "name": "administration",
+        "title": "Administration Department",
+        "display_name": "Administration",
+        "roles": "hr"
+      },
+      {
+        "department_id": "customer-service",
+        "name": "customer-service",
+        "title": "Customer Service Department",
+        "display_name": "Customer Service",
+        "roles": "manager"
+      },
+      {
+        "department_id": "facilities-management",
+        "name": "facilities-management",
+        "title": "Facilities Department",
+        "display_name": "Facilities Management",
+        "roles": "trainer"
+      },
+      {
+        "department_id": "finance",
+        "name": "finance",
+        "title": "Finance Department",
+        "display_name": "Finance",
+        "roles": "editor"
+      },
+      {
+        "department_id": "human-resources",
+        "name": "human-resources",
+        "title": "HR Department",
+        "display_name": "Human Resources",
+        "roles": "administrator"
+      },
+      {
+        "department_id": "information-technology",
+        "name": "information-technology",
+        "title": "IT Department",
+        "display_name": "Information Technology",
+        "roles": "viewer"
+      },
+      {
+        "department_id": "legal",
+        "name": "legal",
+        "title": "Legal Department",
+        "display_name": "Legal",
+        "roles": "analyst"
+      },
+      {
+        "department_id": "marketing",
+        "name": "marketing",
+        "title": "Marketing Department",
+        "display_name": "Marketing",
+        "roles": "moderator"
+      },
+      {
+        "department_id": "operations",
+        "name": "operations",
+        "title": "Operations Department",
+        "display_name": "Operations",
+        "roles": "tester"
+      },
+      {
+        "department_id": "procurement",
+        "name": "procurement",
+        "title": "Procurement Department",
+        "display_name": "Procurement",
+        "roles": "developer"
+      },
+      {
+        "department_id": "public-relations",
+        "name": "public-relations",
+        "title": "PR Department",
+        "display_name": "Public Relations",
+        "roles": "finance"
+      },
+      {
+        "department_id": "quality-assurance",
+        "name": "quality-assurance",
+        "title": "QA Department",
+        "display_name": "Quality Assurance",
+        "roles": "guest"
+      },
+      {
+        "department_id": "research-and-development",
+        "name": "research-and-development",
+        "title": "R&D Department",
+        "display_name": "Research and Development",
+        "roles": "support"
+      },
+      {
+        "department_id": "sales",
+        "name": "sales",
+        "title": "Sales Department",
+        "display_name": "Sales",
+        "roles": "contributor"
+      },
+      {
+        "department_id": "training-and-development",
+        "name": "training-and-development",
+        "title": "Training Department",
+        "display_name": "Training and Development",
+        "roles": "owner"
+      }
+    ],
+    "human_agents": [
+      {
+        "human_agent_id": "agent-001",
+        "name": "agent_001",
+        "display_name": "Alice Johnson",
+        "mbox": "alice.johnson@example.com",
+        "roles": "administrator"
+      },
+      {
+        "human_agent_id": "agent-002",
+        "name": "agent_002",
+        "display_name": "Brian Smith",
+        "mbox": "brian.smith@example.com",
+        "roles": "editor"
+      },
+      {
+        "human_agent_id": "agent-003",
+        "name": "agent_003",
+        "display_name": "Catherine Lee",
+        "mbox": "catherine.lee@example.com",
+        "roles": "viewer"
+      },
+      {
+        "human_agent_id": "agent-004",
+        "name": "agent_004",
+        "display_name": "David Kim",
+        "mbox": "david.kim@example.com",
+        "roles": "moderator"
+      },
+      {
+        "human_agent_id": "agent-005",
+        "name": "agent_005",
+        "display_name": "Emily Chen",
+        "mbox": "emily.chen@example.com",
+        "roles": "contributor"
+      },
+      {
+        "human_agent_id": "agent-006",
+        "name": "agent_006",
+        "display_name": "Frank Miller",
+        "mbox": "frank.miller@example.com",
+        "roles": "manager"
+      },
+      {
+        "human_agent_id": "agent-007",
+        "name": "agent_007",
+        "display_name": "Grace Park",
+        "mbox": "grace.park@example.com",
+        "roles": "support"
+      },
+      {
+        "human_agent_id": "agent-008",
+        "name": "agent_008",
+        "display_name": "Henry Adams",
+        "mbox": "henry.adams@example.com",
+        "roles": "analyst"
+      },
+      {
+        "human_agent_id": "agent-009",
+        "name": "agent_009",
+        "display_name": "Isabella Martinez",
+        "mbox": "isabella.martinez@example.com",
+        "roles": "developer"
+      },
+      {
+        "human_agent_id": "agent-010",
+        "name": "agent_010",
+        "display_name": "Jack Wilson",
+        "mbox": "jack.wilson@example.com",
+        "roles": "tester"
+      },
+      {
+        "human_agent_id": "agent-011",
+        "name": "agent_011",
+        "display_name": "Karen Patel",
+        "mbox": "karen.patel@example.com",
+        "roles": "hr"
+      },
+      {
+        "human_agent_id": "agent-012",
+        "name": "agent_012",
+        "display_name": "Liam Nguyen",
+        "mbox": "liam.nguyen@example.com",
+        "roles": "finance"
+      },
+      {
+        "human_agent_id": "agent-013",
+        "name": "agent_013",
+        "display_name": "Monica Rivera",
+        "mbox": "monica.rivera@example.com",
+        "roles": "guest"
+      },
+      {
+        "human_agent_id": "agent-014",
+        "name": "agent_014",
+        "display_name": "Nathan Brown",
+        "mbox": "nathan.brown@example.com",
+        "roles": "trainer"
+      },
+      {
+        "human_agent_id": "agent-015",
+        "name": "agent_015",
+        "display_name": "Olivia Clark",
+        "mbox": "olivia.clark@example.com",
+        "roles": "owner"
+      }
+    ],
+    "approval_gates": [
+      {
+        "approval_gate_id": "compliance-check",
+        "name": "compliance-check",
+        "display_name": "Compliance Check",
+        "workflow_steps": "document-verification",
+        "escalation_threshold_hours": 0
+      },
+      {
+        "approval_gate_id": "customer-confirmation",
+        "name": "customer-confirmation",
+        "display_name": "Customer Confirmation",
+        "workflow_steps": "customer-feedback-collection",
+        "escalation_threshold_hours": 0
+      },
+      {
+        "approval_gate_id": "executive-sign-off",
+        "name": "executive-sign-off",
+        "display_name": "Executive Sign-off",
+        "workflow_steps": "assign-task-to-team, close-workflow",
+        "escalation_threshold_hours": 0
+      },
+      {
+        "approval_gate_id": "final-authorization",
+        "name": "final-authorization",
+        "display_name": "Final Authorization",
+        "workflow_steps": "system-notification-sent",
+        "escalation_threshold_hours": 0
+      },
+      {
+        "approval_gate_id": "finance-approval",
+        "name": "finance-approval",
+        "display_name": "Finance Approval",
+        "workflow_steps": "finance-approval, generate-report",
+        "escalation_threshold_hours": 0
+      },
+      {
+        "approval_gate_id": "initial-review",
+        "name": "initial-review",
+        "display_name": "Initial Review",
+        "workflow_steps": "submit-request",
+        "escalation_threshold_hours": 0
+      },
+      {
+        "approval_gate_id": "it-security-gate",
+        "name": "it-security-gate",
+        "display_name": "IT Security Gate",
+        "workflow_steps": "archive-request, automated-eligibility-check",
+        "escalation_threshold_hours": 0
+      },
+      {
+        "approval_gate_id": "legal-review",
+        "name": "legal-review",
+        "display_name": "Legal Review",
+        "workflow_steps": "legal-compliance-check, team-lead-review",
+        "escalation_threshold_hours": 0
+      },
+      {
+        "approval_gate_id": "manager-approval",
+        "name": "manager-approval",
+        "display_name": "Manager Approval",
+        "workflow_steps": "final-approval, manager-review",
+        "escalation_threshold_hours": 0
+      },
+      {
+        "approval_gate_id": "quality-assurance",
+        "name": "quality-assurance",
+        "display_name": "Quality Assurance",
+        "workflow_steps": "quality-assurance-review",
+        "escalation_threshold_hours": 0
+      },
+      {
+        "approval_gate_id": "some-new-gate",
+        "name": "some-new-gate",
+        "display_name": "some new gate",
+        "workflow_steps": "some-new-task",
+        "escalation_threshold_hours": 0
+      }
+    ]
+  }
+};
+
+
+// Substrate report URL - hardcoded for htmlpreview.github.io
+function getSubstrateReportUrl(substrateName) {
+    const localPath = `../execution-substrates/${substrateName}/substrate-report.html`;
+    const onlinePath = `https://htmlpreview.github.io?https://github.com/eejai42/is-everything-really-a-language/blob/main/execution-substrates/${substrateName}/substrate-report.html`;
+
+    // Use local path for file:// protocol, online path otherwise
+    return window.location.protocol === 'file:' ? localPath : onlinePath;
+}
+
+// Runtime bar chart - inject into health matrix table
+function renderRuntimeBars() {
+    const table = document.getElementById('health-matrix');
+    if (!table || !REPORT_DATA.substrates) return;
+
+    // Calculate max time for scaling (exclude answer-key postgres)
+    const times = Object.entries(REPORT_DATA.substrates)
+        .filter(([name]) => name !== 'postgres')
+        .map(([name, data]) => data.elapsed_seconds || 0);
+    const maxTime = Math.max(...times, 1);
+
+    // Add bar cells to each row
+    const rows = table.querySelectorAll('tbody tr');
+    rows.forEach(row => {
+        const substrateCell = row.querySelector('.substrate-name');
+        if (!substrateCell) return;
+
+        const substrateName = substrateCell.dataset.substrate;
+        const data = REPORT_DATA.substrates[substrateName];
+        const time = data ? (data.elapsed_seconds || 0) : 0;
+        const pct = (time / maxTime) * 100;
+        const barClass = time > 60 ? 'bar-ai' : (time < 1 ? 'bar-fast' : '');
+
+        const barCell = document.createElement('td');
+        barCell.className = 'runtime-bar-cell';
+        barCell.innerHTML = `
+            <div class="bar-track" style="height: 14px; background: var(--bg-tertiary); border-radius: 3px; overflow: hidden;">
+                <div class="bar-fill ${barClass}" style="width: ${Math.max(pct, 0.5)}%; height: 100%; background: ${barClass === 'bar-ai' ? 'var(--warning-color)' : barClass === 'bar-fast' ? 'var(--success-color)' : 'var(--accent-color)'}; border-radius: 3px;"></div>
+            </div>
+        `;
+        row.appendChild(barCell);
+    });
+}
+
+renderRuntimeBars();
+
+// Theme toggle
+const themeToggle = document.getElementById('theme-toggle');
+const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && prefersDark)) {
+    document.documentElement.setAttribute('data-theme', 'dark');
+}
+
+themeToggle.addEventListener('click', () => {
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    document.documentElement.setAttribute('data-theme', isDark ? 'light' : 'dark');
+    localStorage.setItem('theme', isDark ? 'light' : 'dark');
+});
+
+// URL-BASED ROUTING
+function parseUrlHash() {
+    const hash = window.location.hash.slice(1);
+    if (!hash) return { tab: 'overview', item: null };
+    const parts = hash.split('/');
+    return { tab: parts[0] || 'overview', item: parts[1] ? decodeURIComponent(parts[1]) : null };
+}
+
+function updateUrlHash(tab, item = null) {
+    const hash = item ? `${tab}/${encodeURIComponent(item)}` : tab;
+    history.replaceState(null, '', `#${hash}`);
+}
+
+window.addEventListener('hashchange', () => {
+    const state = parseUrlHash();
+    navigateToState(state, false);
+});
+
+function navigateToState(state, updateUrl = true) {
+    const { tab, item } = state;
+    mainTabs.forEach(t => t.classList.remove('active'));
+    tabContents.forEach(c => c.classList.remove('active'));
+
+    const targetTab = document.querySelector(`#main-tabs .tab[data-tab="${tab}"]`);
+    if (targetTab) targetTab.classList.add('active');
+    document.getElementById(tab)?.classList.add('active');
+
+    if (tab === 'entities' && item) selectEntityTabNoUrl(item);
+    else if (tab === 'substrates' && item) selectSubstrateTabNoUrl(item);
+    else if (tab === 'entities') {
+        const entities = Object.keys(REPORT_DATA.entities).sort();
+        if (entities.length > 0) selectEntityTabNoUrl(entities[0]);
+    } else if (tab === 'substrates') {
+        const substrates = Object.keys(REPORT_DATA.substrates).sort();
+        if (substrates.length > 0) selectSubstrateTabNoUrl(substrates[0]);
+    }
+
+    if (updateUrl) updateUrlHash(tab, item);
+}
+
+const mainTabs = document.querySelectorAll('#main-tabs .tab');
+const tabContents = document.querySelectorAll('.tab-content');
+
+mainTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+        const tabId = tab.dataset.tab;
+        mainTabs.forEach(t => t.classList.remove('active'));
+        tabContents.forEach(c => c.classList.remove('active'));
+        tab.classList.add('active');
+        document.getElementById(tabId)?.classList.add('active');
+        updateUrlHash(tabId);
+
+        if (tabId === 'entities') {
+            const entities = Object.keys(REPORT_DATA.entities).sort();
+            if (entities.length > 0) selectEntityTab(entities[0]);
+        } else if (tabId === 'substrates') {
+            const substrates = Object.keys(REPORT_DATA.substrates).sort();
+            if (substrates.length > 0) selectSubstrateTab(substrates[0]);
+        }
+    });
+});
+
+// Entity sub-tabs
+const entityTabs = document.querySelectorAll('#entity-tabs .sub-tab');
+const entityDetails = document.getElementById('entity-details');
+
+function selectEntityTabNoUrl(entityName) {
+    entityTabs.forEach(t => t.classList.remove('active'));
+    const targetTab = document.querySelector(`#entity-tabs .sub-tab[data-entity="${entityName}"]`);
+    if (targetTab) targetTab.classList.add('active');
+    renderEntityDetails(entityName);
+}
+
+function selectEntityTab(entityName) {
+    selectEntityTabNoUrl(entityName);
+    updateUrlHash('entities', entityName);
+}
+
+function renderEntityDetails(entityName) {
+    const entity = REPORT_DATA.entities[entityName];
+    if (!entity) { entityDetails.innerHTML = '<p>Entity not found</p>'; return; }
+
+    const computedCount = entity.computed_columns ? entity.computed_columns.length : 0;
+    const rawCount = entity.schema.length - computedCount;
+
+    let html = '<div class="schema-entity-section">';
+    html += `<div class="schema-entity-header">`;
+    html += `<h4 class="schema-entity-name">${escapeHtml(entityName)}</h4>`;
+    html += `<div class="schema-meta">`;
+    html += `<span class="schema-meta-item">${entity.schema.length} fields</span>`;
+    html += `<span class="schema-meta-item">${computedCount} computed</span>`;
+    html += `<span class="schema-meta-item">${rawCount} raw</span>`;
+    html += `<span class="schema-meta-item">${entity.answer_key ? entity.answer_key.length : 0} records</span>`;
+    html += `</div>`;
+    html += `</div>`;
+    if (entity.description) {
+        html += `<p class="schema-entity-desc">${escapeHtml(entity.description)}</p>`;
+    }
+
+    // Schema table - no collapsible
+    html += '<div class="table-scroll"><table class="schema-table"><thead><tr>';
+    html += '<th>Field</th><th>Type</th><th>Formula</th><th>Description</th>';
+    html += '</tr></thead><tbody>';
+    entity.schema.forEach(field => {
+        const typeClass = field.type === 'calculated' ? 'type-calculated' : 'type-raw';
+        const formula = field.formula || '';
+        const desc = field.Description || field.description || '';
+        html += `<tr>
+            <td>${escapeHtml(field.name)}</td>
+            <td class="${typeClass}">${escapeHtml(field.type || 'raw')}</td>
+            <td class="formula-cell"><pre class="formula-pre">${escapeHtml(formula)}</pre></td>
+            <td class="desc-cell"><span class="desc-text">${escapeHtml(desc)}</span></td>
+        </tr>`;
+    });
+    html += '</tbody></table></div></div>';
+
+    // Answer key in collapsible
+    html += '<details><summary>Answer Key Data (' + (entity.answer_key?.length || 0) + ' records)</summary>';
+    if (entity.answer_key && entity.answer_key.length > 0) {
+        const computedCols = entity.computed_columns || [];
+        const cols = Object.keys(entity.answer_key[0]);
+        html += '<div class="table-scroll"><table class="data-table"><thead><tr>';
+        cols.forEach(col => {
+            const isComputed = computedCols.includes(col);
+            html += `<th class="${isComputed ? 'computed' : ''}">${escapeHtml(col)}</th>`;
+        });
+        html += '</tr></thead><tbody>';
+        entity.answer_key.forEach(row => {
+            html += '<tr>';
+            cols.forEach(col => {
+                const isComputed = computedCols.includes(col);
+                const val = row[col] !== null ? String(row[col]) : 'null';
+                html += `<td class="${isComputed ? 'computed' : ''}" title="${escapeHtml(val)}">${escapeHtml(val)}</td>`;
+            });
+            html += '</tr>';
+        });
+        html += '</tbody></table></div>';
+    } else { html += '<p>No data</p>'; }
+    html += '</details>';
+
+    // Substrate results tabs
+    html += '<h4>Substrate Results</h4>';
+    html += '<nav class="sub-tabs" id="entity-substrate-tabs">';
+    Object.keys(REPORT_DATA.substrates).sort().forEach((substrate, i) => {
+        const grades = REPORT_DATA.substrates[substrate];
+        const entityGrades = grades.entities ? grades.entities[entityName] : null;
+        if (entityGrades) {
+            const passed = entityGrades.fields_passed;
+            const total = entityGrades.fields_tested;
+            const score = total > 0 ? (passed / total * 100).toFixed(0) : 0;
+            const scoreClass = getScoreClass(score);
+            const active = i === 0 ? 'active' : '';
+            html += `<button class="sub-tab ${active} score-${scoreClass}" data-substrate="${escapeHtml(substrate)}" data-entity="${escapeHtml(entityName)}">${escapeHtml(substrate)}: ${score}%</button>`;
+        }
+    });
+    html += '</nav><div id="entity-substrate-details"></div>';
+
+    entityDetails.innerHTML = html;
+
+    document.querySelectorAll('#entity-substrate-tabs .sub-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+            document.querySelectorAll('#entity-substrate-tabs .sub-tab').forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            renderEntitySubstrateDetails(tab.dataset.entity, tab.dataset.substrate);
+        });
+    });
+
+    const firstSubstrateTab = document.querySelector('#entity-substrate-tabs .sub-tab');
+    if (firstSubstrateTab) renderEntitySubstrateDetails(entityName, firstSubstrateTab.dataset.substrate);
+}
+
+function renderEntitySubstrateDetails(entityName, substrateName) {
+    const container = document.getElementById('entity-substrate-details');
+    if (!container) return;
+
+    const substrate = REPORT_DATA.substrates[substrateName];
+    const entity = REPORT_DATA.entities[entityName];
+    const entityGrades = substrate?.entities?.[entityName];
+
+    if (!entityGrades) { container.innerHTML = '<p class="no-results">No results.</p>'; return; }
+
+    const computedCols = entity.computed_columns || [];
+    const answerKey = entity.answer_key || [];
+    const pk = entity.primary_key;
+
+    const failureLookup = {};
+    if (entityGrades.failures) {
+        entityGrades.failures.forEach(f => { failureLookup[`${f.pk}|${f.field}`] = f; });
+    }
+
+    let html = '<div class="table-scroll"><table class="graded-test-table"><thead><tr>';
+    html += `<th>Record</th>`;
+    computedCols.forEach(col => { html += `<th class="computed-col-header">${escapeHtml(col)}</th>`; });
+    html += '</tr></thead><tbody>';
+
+    answerKey.forEach(record => {
+        const pkVal = record[pk];
+        html += `<tr><td class="record-pk" title="${escapeHtml(String(pkVal))}">${escapeHtml(String(pkVal))}</td>`;
+        computedCols.forEach(col => {
+            const expectedVal = record[col];
+            const failKey = `${pkVal}|${col}`;
+            const failure = failureLookup[failKey];
+            if (failure) {
+                html += `<td class="cell-failed" title="Expected: ${escapeHtml(String(failure.expected))}&#10;Actual: ${escapeHtml(String(failure.actual))}">
+                    <span class="expected-actual"><span class="expected-label">E:</span><code class="expected">${escapeHtml(String(failure.expected))}</code></span>
+                    <span class="expected-actual"><span class="actual-label">A:</span><code class="actual">${escapeHtml(String(failure.actual))}</code></span>
+                </td>`;
+            } else {
+                const valStr = String(expectedVal);
+                html += `<td class="cell-passed" title="${escapeHtml(valStr)}"><span class="check-mark">&#10003;</span><code>${escapeHtml(valStr)}</code></td>`;
+            }
+        });
+        html += '</tr>';
+    });
+    html += '</tbody></table></div>';
+    container.innerHTML = html;
+}
+
+if (entityTabs.length > 0 && REPORT_DATA.entities) {
+    entityTabs.forEach(tab => {
+        tab.addEventListener('click', () => selectEntityTab(tab.dataset.entity));
+    });
+}
+
+// Substrate sub-tabs
+const substrateTabs = document.querySelectorAll('#substrate-tabs .sub-tab');
+const substrateDetails = document.getElementById('substrate-details');
+
+function selectSubstrateTabNoUrl(substrateName) {
+    substrateTabs.forEach(t => t.classList.remove('active'));
+    const targetTab = document.querySelector(`#substrate-tabs .sub-tab[data-substrate="${substrateName}"]`);
+    if (targetTab) targetTab.classList.add('active');
+    renderSubstrateDetails(substrateName);
+}
+
+function selectSubstrateTab(substrateName) {
+    selectSubstrateTabNoUrl(substrateName);
+    updateUrlHash('substrates', substrateName);
+}
+
+function getScoreClass(score) {
+    if (score >= 100) return 'perfect';
+    if (score >= 80) return 'good';
+    if (score >= 60) return 'warning';
+    return 'danger';
+}
+
+// Track current entity within substrate view
+let currentSubstrateEntity = null;
+
+function renderSubstrateDetails(substrateName) {
+    const substrate = REPORT_DATA.substrates[substrateName];
+    if (!substrate) { substrateDetails.innerHTML = '<p>Substrate not found</p>'; return; }
+
+    const total = substrate.total_fields_tested;
+    const passed = substrate.fields_passed;
+    const failed = substrate.fields_failed;
+    const score = total > 0 ? (passed / total * 100).toFixed(1) : 0;
+    const elapsed = substrate.elapsed_seconds || 0;
+    const isAnswerKey = substrate.is_answer_key;
+
+    let statusText = isAnswerKey ? 'ANSWER KEY' : (failed === 0 ? 'PASS' : 'FAIL');
+    let statusClass = isAnswerKey ? 'score-perfect' : (failed === 0 ? 'score-good' : 'score-danger');
+
+    let html = '<div class="substrate-info">';
+    html += `<h3>${escapeHtml(substrateName)}</h3>`;
+    html += '<div class="substrate-stats">';
+    html += `<div class="substrate-stat"><span class="substrate-stat-label">Status:</span><span class="substrate-stat-value ${statusClass}">${statusText}</span></div>`;
+    html += `<div class="substrate-stat"><span class="substrate-stat-label">Score:</span><span class="substrate-stat-value">${score}%</span></div>`;
+    html += `<div class="substrate-stat"><span class="substrate-stat-label">Runtime:</span><span class="substrate-stat-value">${elapsed.toFixed(2)}s</span></div>`;
+    html += '</div></div>';
+
+    // Warning banner
+    const runMeta = substrate.run_metadata || {};
+    const lastRun = runMeta.last_run || {};
+    const lastSuccess = runMeta.last_successful_run || {};
+    if (lastRun.status === 'failure' && lastSuccess) {
+        const errorMsg = lastRun.error_message || 'Unknown error';
+        html += `<div class="warning-banner"><strong>⚠ Last run failed:</strong> <code>${escapeHtml(errorMsg)}</code></div>`;
+    }
+
+    if (substrate.error) {
+        html += `<div class="failure-card"><code class="actual">${escapeHtml(substrate.error)}</code></div>`;
+    }
+
+    // Primary tabs: Report, Data, Schema
+    html += '<nav class="sub-tabs" id="substrate-view-tabs">';
+    html += `<button class="sub-tab active" data-view="report">Report</button>`;
+    html += `<button class="sub-tab" data-view="data">Data</button>`;
+    html += `<button class="sub-tab" data-view="schema">Schema</button>`;
+    html += '</nav>';
+
+    // Tab content containers
+    html += '<div id="substrate-view-content">';
+
+    // Report tab - iframe to substrate-report.html or postgres explanation
+    html += '<div id="substrate-report-view" class="substrate-view active">';
+    if (!isAnswerKey) {
+        html += `<iframe src="${getSubstrateReportUrl(escapeHtml(substrateName))}" class="substrate-report-iframe" frameborder="0"></iframe>`;
+    } else {
+        html += '<div class="postgres-report">';
+        html += '<h4>PostgreSQL Reference Implementation</h4>';
+        html += '<p class="postgres-intro">PostgreSQL serves as the <strong>reference implementation</strong> for this rulebook. It is not privileged or special—it is simply the most reliable and consistent answer key generator due to its mature SQL engine and deterministic calculation behavior.</p>';
+        html += '<div class="postgres-details">';
+        html += '<h5>Why PostgreSQL?</h5>';
+        html += '<ul>';
+        html += '<li><strong>Deterministic calculations</strong> — SQL functions produce consistent, reproducible results</li>';
+        html += '<li><strong>Mature type system</strong> — Handles numeric precision, dates, and text reliably</li>';
+        html += '<li><strong>Declarative formulas</strong> — The rulebook formulas map directly to SQL expressions</li>';
+        html += '<li><strong>Battle-tested</strong> — Decades of production use ensures edge cases are handled correctly</li>';
+        html += '</ul>';
+        html += '<h5>The Point</h5>';
+        html += '<p>All substrates should converge on the same answers. PostgreSQL generates the "answer key" not because it is authoritative, but because it is the most <em>reliable</em> substrate for computing correct values. When other substrates match PostgreSQL, it validates that:</p>';
+        html += '<ol>';
+        html += '<li>The rulebook formulas are unambiguous across execution environments</li>';
+        html += '<li>Each substrate correctly interprets and executes the business logic</li>';
+        html += '<li>The same inputs produce the same outputs—regardless of implementation language</li>';
+        html += '</ol>';
+        html += '<p class="postgres-conclusion"><strong>Everything ends up agreeing—that is the point.</strong> The orchestration tests prove that diverse implementations (JavaScript, Python, Go, spreadsheets, etc.) all compute identical results from the same rulebook specification.</p>';
+        html += '</div>';
+        html += '</div>';
+    }
+    html += '</div>';
+
+    // Data tab - graded test results
+    html += '<div id="substrate-data-view" class="substrate-view">';
+
+    // Get entities with results
+    const entitiesWithResults = Object.keys(REPORT_DATA.entities).sort().filter(entityName => {
+        const entity = REPORT_DATA.entities[entityName];
+        const computedCols = entity.computed_columns || [];
+        const answerKey = entity.answer_key || [];
+        return computedCols.length > 0 && answerKey.length > 0;
+    });
+
+    if (entitiesWithResults.length === 0) {
+        html += '<p class="no-results">No test results available.</p>';
+    } else {
+        // Entity tabs within substrate view
+        html += '<h4>Graded Test Results</h4>';
+        html += '<nav class="sub-tabs" id="substrate-entity-tabs">';
+        entitiesWithResults.forEach((entityName, i) => {
+            const entity = REPORT_DATA.entities[entityName];
+            const entityGrades = substrate.entities ? substrate.entities[entityName] : null;
+            const eTotal = entityGrades ? entityGrades.fields_tested : 0;
+            const ePassed = entityGrades ? entityGrades.fields_passed : 0;
+            const eScore = eTotal > 0 ? (ePassed / eTotal * 100).toFixed(0) : 0;
+            const eClass = getScoreClass(eScore);
+            const active = i === 0 ? 'active' : '';
+            html += `<button class="sub-tab ${active} score-${eClass}" data-entity="${escapeHtml(entityName)}">${escapeHtml(entityName)} (${ePassed}/${eTotal})</button>`;
+        });
+        html += '</nav>';
+        html += '<div id="substrate-entity-content"></div>';
+    }
+    html += '</div>';
+
+    // Schema tab
+    html += '<div id="substrate-schema-view" class="substrate-view">';
+    Object.keys(REPORT_DATA.entities).sort().forEach(entityName => {
+        const entity = REPORT_DATA.entities[entityName];
+        const computedCount = entity.computed_columns ? entity.computed_columns.length : 0;
+        const rawCount = entity.schema.length - computedCount;
+        html += '<div class="schema-entity-section">';
+        html += `<div class="schema-entity-header">`;
+        html += `<h4 class="schema-entity-name">${escapeHtml(entityName)}</h4>`;
+        html += `<div class="schema-meta">`;
+        html += `<span class="schema-meta-item">${entity.schema.length} fields</span>`;
+        html += `<span class="schema-meta-item">${computedCount} computed</span>`;
+        html += `<span class="schema-meta-item">${rawCount} raw</span>`;
+        html += `<span class="schema-meta-item">${entity.answer_key ? entity.answer_key.length : 0} records</span>`;
+        html += `</div>`;
+        html += `</div>`;
+        if (entity.description) {
+            html += `<p class="schema-entity-desc">${escapeHtml(entity.description)}</p>`;
+        }
+        html += '<div class="table-scroll"><table class="schema-table"><thead><tr>';
+        html += '<th>Field</th><th>Type</th><th>Formula</th><th>Description</th>';
+        html += '</tr></thead><tbody>';
+        entity.schema.forEach(field => {
+            const typeClass = field.type === 'calculated' ? 'type-calculated' : 'type-raw';
+            const formula = field.formula || '';
+            const desc = field.Description || field.description || '';
+            html += `<tr>
+                <td>${escapeHtml(field.name)}</td>
+                <td class="${typeClass}">${escapeHtml(field.type || 'raw')}</td>
+                <td class="formula-cell"><pre class="formula-pre">${escapeHtml(formula)}</pre></td>
+                <td class="desc-cell"><span class="desc-text">${escapeHtml(desc)}</span></td>
+            </tr>`;
+        });
+        html += '</tbody></table></div>';
+        html += '</div>';
+    });
+    html += '</div>';
+
+    html += '</div>'; // end substrate-view-content
+
+    substrateDetails.innerHTML = html;
+
+    // Attach handlers to view tabs (Report/Data/Schema)
+    document.querySelectorAll('#substrate-view-tabs .sub-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+            document.querySelectorAll('#substrate-view-tabs .sub-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.substrate-view').forEach(v => v.classList.remove('active'));
+            tab.classList.add('active');
+            const view = tab.dataset.view;
+            document.getElementById(`substrate-${view}-view`)?.classList.add('active');
+        });
+    });
+
+    // Attach handlers to entity tabs
+    document.querySelectorAll('#substrate-entity-tabs .sub-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+            document.querySelectorAll('#substrate-entity-tabs .sub-tab').forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            currentSubstrateEntity = tab.dataset.entity;
+            renderSubstrateEntityContent(substrateName, tab.dataset.entity);
+        });
+    });
+
+    // Render first entity in data view
+    if (entitiesWithResults.length > 0) {
+        currentSubstrateEntity = entitiesWithResults[0];
+        renderSubstrateEntityContent(substrateName, entitiesWithResults[0]);
+    }
+}
+
+function renderSubstrateEntityContent(substrateName, entityName) {
+    const container = document.getElementById('substrate-entity-content');
+    if (!container) return;
+
+    const substrate = REPORT_DATA.substrates[substrateName];
+    const entity = REPORT_DATA.entities[entityName];
+    const entityGrades = substrate.entities ? substrate.entities[entityName] : null;
+    const answerKey = entity.answer_key || [];
+    const computedCols = entity.computed_columns || [];
+    const computedColsInfo = entity.computed_columns_info || [];
+    const pk = entity.primary_key;
+
+    const entityDesc = entity.description || '';
+    const eTotal = entityGrades ? entityGrades.fields_tested : 0;
+    const ePassed = entityGrades ? entityGrades.fields_passed : 0;
+    const eScore = eTotal > 0 ? (ePassed / eTotal * 100).toFixed(1) : 0;
+
+    let html = '<div class="entity-test-section">';
+    if (entityDesc) html += `<p class="entity-description">${escapeHtml(entityDesc)}</p>`;
+
+    // Computed columns in collapsible
+    html += '<details><summary>Computed Columns (' + computedCols.length + ')</summary>';
+    html += '<div class="computed-cols-info"><ul>';
+    computedColsInfo.forEach(col => {
+        const formula = col.formula || '';
+        const desc = col.description || '';
+        html += `<li><span class="field-name">${escapeHtml(col.name)}</span>`;
+        if (formula) html += `<span class="formula-row"><span class="formula-label">Formula:</span><span class="formula">${escapeHtml(formula)}</span></span>`;
+        if (desc) html += `<span class="desc-row">${escapeHtml(desc)}</span>`;
+        html += '</li>';
+    });
+    html += '</ul></div></details>';
+
+    // Build failure lookup
+    const failureLookup = {};
+    if (entityGrades && entityGrades.failures) {
+        entityGrades.failures.forEach(f => { failureLookup[`${f.pk}|${f.field}`] = f; });
+    }
+
+    // Graded test table
+    html += '<div class="table-scroll"><table class="graded-test-table"><thead><tr>';
+    html += `<th>Record</th>`;
+    computedCols.forEach(col => { html += `<th class="computed-col-header">${escapeHtml(col)}</th>`; });
+    html += '</tr></thead><tbody>';
+
+    answerKey.forEach(record => {
+        const pkVal = record[pk];
+        html += `<tr><td class="record-pk" title="${escapeHtml(String(pkVal))}">${escapeHtml(String(pkVal))}</td>`;
+        computedCols.forEach(col => {
+            const expectedVal = record[col];
+            const failKey = `${pkVal}|${col}`;
+            const failure = failureLookup[failKey];
+            if (failure) {
+                html += `<td class="cell-failed" title="Expected: ${escapeHtml(String(failure.expected))}&#10;Actual: ${escapeHtml(String(failure.actual))}">
+                    <span class="expected-actual"><span class="expected-label">E:</span><code class="expected">${escapeHtml(String(failure.expected))}</code></span>
+                    <span class="expected-actual"><span class="actual-label">A:</span><code class="actual">${escapeHtml(String(failure.actual))}</code></span>
+                </td>`;
+            } else {
+                const valStr = String(expectedVal);
+                html += `<td class="cell-passed" title="${escapeHtml(valStr)}"><span class="check-mark">&#10003;</span><code>${escapeHtml(valStr)}</code></td>`;
+            }
+        });
+        html += '</tr>';
+    });
+    html += '</tbody></table></div></div>';
+    container.innerHTML = html;
+}
+
+if (substrateTabs.length > 0 && REPORT_DATA.substrates) {
+    substrateTabs.forEach(tab => {
+        tab.addEventListener('click', () => selectSubstrateTab(tab.dataset.substrate));
+    });
+}
+
+// Initialize from URL
+const initialState = parseUrlHash();
+navigateToState(initialState, false);
+
+// Click handlers for navigation
+document.querySelectorAll('.substrate-link').forEach(link => {
+    link.addEventListener('click', (e) => {
+        e.preventDefault();
+        navigateToState({ tab: 'substrates', item: link.dataset.substrate });
+    });
+});
+
+document.querySelectorAll('.entity-link').forEach(header => {
+    header.addEventListener('click', () => {
+        navigateToState({ tab: 'entities', item: header.dataset.entity });
+    });
+});
+
+document.querySelectorAll('.substrate-row-link').forEach(cell => {
+    cell.addEventListener('click', () => {
+        navigateToState({ tab: 'substrates', item: cell.dataset.substrate });
+    });
+});
+
+document.querySelectorAll('.cell-fail, .cell-pass').forEach(cell => {
+    cell.addEventListener('click', () => {
+        navigateToState({ tab: 'substrates', item: cell.dataset.substrate });
+    });
+});
+
+function escapeHtml(str) {
+    if (str === null || str === undefined) return '';
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+}
+
+console.log('Orchestration Report loaded.');
+
+    </script>
+</body>
+</html>
