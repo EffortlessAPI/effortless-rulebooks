@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Substrate Report: golang</title>
+    <style>
+:root {
+    --bg-primary: #ffffff; --bg-secondary: #f8f9fa; --bg-tertiary: #e9ecef;
+    --text-primary: #212529; --text-secondary: #6c757d; --border-color: #dee2e6;
+    --accent-color: #0d6efd; --success-color: #198754; --warning-color: #ffc107;
+    --danger-color: #dc3545; --code-bg: #f6f8fa; --shadow: 0 2px 8px rgba(0,0,0,0.1); --radius: 6px;
+}
+[data-theme="dark"] {
+    --bg-primary: #1a1a2e; --bg-secondary: #16213e; --bg-tertiary: #0f3460;
+    --text-primary: #eaeaea; --text-secondary: #b0b0b0; --border-color: #3a3a5c;
+    --accent-color: #4dabf7; --success-color: #51cf66; --warning-color: #fcc419;
+    --danger-color: #ff6b6b; --code-bg: #0d1117; --shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg-secondary); color: var(--text-primary); line-height: 1.5; min-height: 100vh; }
+header { background: var(--bg-primary); border-bottom: 1px solid var(--border-color); padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; }
+.header-left { display: flex; align-items: center; gap: 0.75rem; }
+.substrate-icon { font-size: 1.5rem; }
+h1 { font-size: 1.1rem; font-weight: 600; }
+.header-stats { display: flex; gap: 1rem; font-size: 0.8rem; }
+.stat { display: flex; align-items: center; gap: 0.25rem; }
+.stat-value { font-weight: 600; }
+.score-perfect, .score-good { color: var(--success-color); }
+.score-warning { color: var(--warning-color); }
+.score-danger { color: var(--danger-color); }
+#theme-toggle { background: var(--bg-tertiary); border: 1px solid var(--border-color); border-radius: 50%; width: 28px; height: 28px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; }
+#theme-toggle:hover { background: var(--accent-color); color: white; }
+#theme-toggle .moon { display: none; }
+[data-theme="dark"] #theme-toggle .sun { display: none; }
+[data-theme="dark"] #theme-toggle .moon { display: inline; }
+.tabs { display: flex; background: var(--bg-primary); border-bottom: 1px solid var(--border-color); overflow-x: auto; padding: 0 0.5rem; }
+.tab { background: none; border: none; padding: 0.5rem 1rem; cursor: pointer; font-size: 0.8rem; color: var(--text-secondary); border-bottom: 2px solid transparent; white-space: nowrap; }
+.tab:hover { color: var(--text-primary); }
+.tab.active { color: var(--accent-color); border-bottom-color: var(--accent-color); font-weight: 500; }
+main { padding: 1rem; }
+.tab-content { display: none; }
+.tab-content.active { display: block; animation: fadeIn 0.2s ease; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+.card { background: var(--bg-primary); border: 1px solid var(--border-color); border-radius: var(--radius); padding: 1rem; margin-bottom: 1rem; box-shadow: var(--shadow); }
+.card h2 { font-size: 0.9rem; font-weight: 600; margin-bottom: 0.75rem; }
+pre { background: var(--code-bg); border: 1px solid var(--border-color); border-radius: var(--radius); padding: 0.75rem; overflow-x: auto; font-family: 'SF Mono', Monaco, monospace; font-size: 0.75rem; line-height: 1.4; max-height: 500px; overflow-y: auto; }
+.code-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
+.code-info { font-size: 0.75rem; color: var(--text-secondary); }
+.copy-btn { background: var(--bg-tertiary); border: 1px solid var(--border-color); border-radius: 4px; padding: 0.25rem 0.5rem; font-size: 0.7rem; cursor: pointer; }
+.copy-btn:hover { background: var(--accent-color); color: white; }
+.markdown-content { line-height: 1.6; }
+.markdown-content p { margin-bottom: 0.75rem; }
+.markdown-content ul, .markdown-content ol { margin-left: 1.5rem; margin-bottom: 0.75rem; }
+.markdown-content li { margin-bottom: 0.25rem; }
+.markdown-content code { background: var(--code-bg); padding: 0.125rem 0.375rem; border-radius: 3px; font-size: 0.85em; }
+.results-summary { display: flex; gap: 1.5rem; flex-wrap: wrap; margin-bottom: 1rem; }
+.result-item { text-align: center; }
+.result-value { font-size: 1.5rem; font-weight: 700; }
+.result-label { font-size: 0.7rem; color: var(--text-secondary); text-transform: uppercase; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-left">
+            <span class="substrate-icon">🐹</span>
+            <h1>Golang Execution Substrate</h1>
+        </div>
+        <div class="header-stats">
+            <div class="stat"><span>Score:</span><span class="stat-value score-perfect">100.0%</span></div>
+            <div class="stat"><span>103/103 passed</span></div>
+        </div>
+        <button id="theme-toggle" title="Toggle theme"><span class="sun">☀️</span><span class="moon">🌙</span></button>
+    </header>
+    <nav class="tabs">
+        <button class="tab active" data-tab="description">Description</button>
+        <button class="tab" data-tab="log">Run Log</button>
+        <button class="tab" data-tab="results">Test Results</button>
+        <button class="tab" data-tab="sdk">Generated SDK</button>
+        <button class="tab" data-tab="main">Test Runner</button>
+    </nav>
+    <main>
+        <div id="description" class="tab-content active">
+            <div class="card">
+                <h2>What This Substrate Does</h2>
+                <div class="markdown-content">
+                    <p>The Golang substrate compiles rulebook formulas into native Go code with Calc* methods, enabling high-performance formula evaluation with static typing.</p>
+                    <h3>Orchestration Pattern</h3>
+                    <ol>
+                        <li><strong>Generate</strong>: <code>inject-into-golang.py</code> generates Go structs and Calc* methods</li>
+                        <li><strong>Compile</strong>: Go compiler builds the test binary</li>
+                        <li><strong>Execute</strong>: <code>erb_test</code> binary runs and produces test answers</li>
+                        <li><strong>Test</strong>: Compare computed values against expected answers</li>
+                    </ol>
+                </div>
+            </div>
+            <div class="card">
+                <h2>Key Features</h2>
+                <ul class="markdown-content">
+                    <li><strong>Static Typing</strong>: All fields are strongly typed Go structs</li>
+                    <li><strong>Calc* Methods</strong>: Each calculated field has a dedicated method</li>
+                    <li><strong>Pointer Semantics</strong>: Nullable fields use *bool, *string, etc.</li>
+                    <li><strong>High Performance</strong>: Compiled native binary for fast execution</li>
+                </ul>
+            </div>
+        </div>
+        <div id="log" class="tab-content">
+            <div class="card">
+                <h2>Execution Log</h2>
+                <pre>=== Go Substrate Test Run ===
+
+golang: Starting test...
+golang: Compiling and running...
+Golang substrate: Processing 6 tables with calculated fields...
+  Expected tables: Workflows, WorkflowSteps, ApprovalGates, PrecedesSteps, Roles, Departments
+
+Processing Workflows...
+  ✓ workflows: 15 records processed
+
+Processing WorkflowSteps...
+  ✓ workflow_steps: 16 records processed
+
+Processing ApprovalGates...
+  ✓ approval_gates: 11 records processed
+
+Processing PrecedesSteps...
+  ✓ precedes_steps: 16 records processed
+
+Processing Roles...
+  ✓ roles: 15 records processed
+
+Processing Departments...
+  ✓ departments: 15 records processed
+
+════════════════════════════════════════════════════════════════
+Golang substrate: ALL 6 tables processed successfully (88 total records)
+════════════════════════════════════════════════════════════════
+
+</pre>
+            </div>
+        </div>
+        <div id="results" class="tab-content">
+            <div class="card">
+                <h2>Test Summary</h2>
+                <div class="results-summary">
+                    <div class="result-item"><div class="result-value score-perfect">100.0%</div><div class="result-label">Score</div></div>
+                    <div class="result-item"><div class="result-value score-perfect">103</div><div class="result-label">Passed</div></div>
+                    <div class="result-item"><div class="result-value">0</div><div class="result-label">Failed</div></div>
+                    <div class="result-item"><div class="result-value">103</div><div class="result-label">Total</div></div>
+                </div>
+            </div>
+        </div>
+        <div id="sdk" class="tab-content">
+            <div class="card">
+                <div class="code-header">
+                    <h2>erb_sdk.go</h2>
+                    <div><span class="code-info">540 lines</span><button class="copy-btn" onclick="copyCode('sdk-code')">Copy</button></div>
+                </div>
+                <pre id="sdk-code">// ERB SDK - Go Implementation (GENERATED - DO NOT EDIT)
+// ======================================================
+// Generated from: effortless-rulebook/effortless-rulebook.json
+//
+// This file contains structs and calculation functions
+// for all tables defined in the rulebook.
+
+package main
+
+import (
+	&quot;encoding/json&quot;
+	&quot;fmt&quot;
+	&quot;os&quot;
+	&quot;strconv&quot;
+	&quot;strings&quot;
+)
+
+// =============================================================================
+// HELPER FUNCTIONS
+// =============================================================================
+
+// boolVal safely dereferences a *bool, returning false if nil
+func boolVal(b *bool) bool {
+	if b == nil {
+		return false
+	}
+	return *b
+}
+
+// stringVal safely dereferences a *string, returning &quot;&quot; if nil
+func stringVal(s *string) string {
+	if s == nil {
+		return &quot;&quot;
+	}
+	return *s
+}
+
+// nilIfEmpty returns nil for empty strings, otherwise a pointer to the string
+func nilIfEmpty(s string) *string {
+	if s == &quot;&quot; {
+		return nil
+	}
+	return &amp;s
+}
+
+// intToString safely converts a *int to string, returning &quot;&quot; if nil
+func intToString(i *int) string {
+	if i == nil {
+		return &quot;&quot;
+	}
+	return strconv.Itoa(*i)
+}
+
+// boolToString converts a bool to &quot;true&quot; or &quot;false&quot;
+func boolToString(b bool) string {
+	if b {
+		return &quot;true&quot;
+	}
+	return &quot;false&quot;
+}
+
+// =============================================================================
+// WORKFLOWS TABLE
+// =============================================================================
+
+// Workflow represents a row in the Workflows table
+type Workflow struct {
+	WorkflowId string `json:&quot;workflow_id&quot;`
+	DisplayName *string `json:&quot;display_name&quot;`
+	Title *string `json:&quot;title&quot;`
+	Description *string `json:&quot;description&quot;`
+	Identifier *string `json:&quot;identifier&quot;`
+	Modified *string `json:&quot;modified&quot;`
+	WorkflowSteps *string `json:&quot;workflow_steps&quot;`
+	CountOfSteps *int `json:&quot;count_of_steps&quot;`
+	Name *string `json:&quot;name&quot;`
+	HasMoreThan1Step *bool `json:&quot;has_more_than1_step&quot;`
+}
+
+// --- Individual Calculation Functions ---
+
+// CalcName computes the Name calculated field
+// Formula: =SUBSTITUTE(LOWER({{DisplayName}}), &quot; &quot;, &quot;-&quot;)
+func (tc *Workflow) CalcName() string {
+	return strings.ReplaceAll(strings.ToLower(stringVal(tc.DisplayName)), &quot; &quot;, &quot;-&quot;)
+}
+
+// CalcHasMoreThan1Step computes the HasMoreThan1Step calculated field
+// Formula: ={{CountOfSteps}} &gt; 1
+func (tc *Workflow) CalcHasMoreThan1Step() bool {
+	return (tc.CountOfSteps != nil &amp;&amp; *tc.CountOfSteps &gt; 1)
+}
+
+// --- Compute All Calculated Fields ---
+
+// ComputeAll computes all calculated fields and returns an updated struct
+func (tc *Workflow) ComputeAll() *Workflow {
+	// Level 1 calculations
+	name := strings.ReplaceAll(strings.ToLower(stringVal(tc.DisplayName)), &quot; &quot;, &quot;-&quot;)
+	hasMoreThan1Step := (tc.CountOfSteps != nil &amp;&amp; *tc.CountOfSteps &gt; 1)
+
+	return &amp;Workflow{
+		WorkflowId: tc.WorkflowId,
+		DisplayName: tc.DisplayName,
+		Title: tc.Title,
+		Description: tc.Description,
+		Identifier: tc.Identifier,
+		Modified: tc.Modified,
+		WorkflowSteps: tc.WorkflowSteps,
+		CountOfSteps: tc.CountOfSteps,
+		Name: nilIfEmpty(name),
+		HasMoreThan1Step: &amp;hasMoreThan1Step,
+	}
+}
+
+// =============================================================================
+// WORKFLOWSTEPS TABLE
+// =============================================================================
+
+// WorkflowStep represents a row in the WorkflowSteps table
+type WorkflowStep struct {
+	WorkflowStepId string `json:&quot;workflow_step_id&quot;`
+	DisplayName *string `json:&quot;display_name&quot;`
+	Workflow *string `json:&quot;workflow&quot;`
+	SequencePosition *int `json:&quot;sequence_position&quot;`
+	AssignedRole *string `json:&quot;assigned_role&quot;`
+	RequiresHumanApproval *bool `json:&quot;requires_human_approval&quot;`
+	ApprovalGate *string `json:&quot;approval_gate&quot;`
+	PrecededBySteps *string `json:&quot;preceded_by_steps&quot;`
+	Name *string `json:&quot;name&quot;`
+}
+
+// --- Individual Calculation Functions ---
+
+// CalcName computes the Name calculated field
+// Formula: =SUBSTITUTE(LOWER({{DisplayName}}), &quot; &quot;, &quot;-&quot;)
+func (tc *WorkflowStep) CalcName() string {
+	return strings.ReplaceAll(strings.ToLower(stringVal(tc.DisplayName)), &quot; &quot;, &quot;-&quot;)
+}
+
+// --- Compute All Calculated Fields ---
+
+// ComputeAll computes all calculated fields and returns an updated struct
+func (tc *WorkflowStep) ComputeAll() *WorkflowStep {
+	// Level 1 calculations
+	name := strings.ReplaceAll(strings.ToLower(stringVal(tc.DisplayName)), &quot; &quot;, &quot;-&quot;)
+
+	return &amp;WorkflowStep{
+		WorkflowStepId: tc.WorkflowStepId,
+		DisplayName: tc.DisplayName,
+		Workflow: tc.Workflow,
+		SequencePosition: tc.SequencePosition,
+		AssignedRole: tc.AssignedRole,
+		RequiresHumanApproval: tc.RequiresHumanApproval,
+		ApprovalGate: tc.ApprovalGate,
+		PrecededBySteps: tc.PrecededBySteps,
+		Name: nilIfEmpty(name),
+	}
+}
+
+// =============================================================================
+// APPROVALGATES TABLE
+// =============================================================================
+
+// ApprovalGate represents a row in the ApprovalGates table
+type ApprovalGate struct {
+	ApprovalGateId string `json:&quot;approval_gate_id&quot;`
+	DisplayName *string `json:&quot;display_name&quot;`
+	WorkflowSteps *string `json:&quot;workflow_steps&quot;`
+	EscalationThresholdHours *int `json:&quot;escalation_threshold_hours&quot;`
+	Name *string `json:&quot;name&quot;`
+}
+
+// --- Individual Calculation Functions ---
+
+// CalcName computes the Name calculated field
+// Formula: =SUBSTITUTE(LOWER({{DisplayName}}), &quot; &quot;, &quot;-&quot;)
+func (tc *ApprovalGate) CalcName() string {
+	return strings.ReplaceAll(strings.ToLower(stringVal(tc.DisplayName)), &quot; &quot;, &quot;-&quot;)
+}
+
+// --- Compute All Calculated Fields ---
+
+// ComputeAll computes all calculated fields and returns an updated struct
+func (tc *ApprovalGate) ComputeAll() *ApprovalGate {
+	// Level 1 calculations
+	name := strings.ReplaceAll(strings.ToLower(stringVal(tc.DisplayName)), &quot; &quot;, &quot;-&quot;)
+
+	return &amp;ApprovalGate{
+		ApprovalGateId: tc.ApprovalGateId,
+		DisplayName: tc.DisplayName,
+		WorkflowSteps: tc.WorkflowSteps,
+		EscalationThresholdHours: tc.EscalationThresholdHours,
+		Name: nilIfEmpty(name),
+	}
+}
+
+// =============================================================================
+// PRECEDESSTEPS TABLE
+// =============================================================================
+
+// PrecedesStep represents a row in the PrecedesSteps table
+type PrecedesStep struct {
+	PrecedesStepId string `json:&quot;precedes_step_id&quot;`
+	Name *string `json:&quot;name&quot;`
+	StepNumber *int `json:&quot;step_number&quot;`
+	WorkflowStep *string `json:&quot;workflow_step&quot;`
+	DisplayName *string `json:&quot;display_name&quot;`
+}
+
+// --- Individual Calculation Functions ---
+
+// CalcDisplayName computes the DisplayName calculated field
+// Formula: =&quot;Step-&quot; &amp; {{StepNumber}}
+func (tc *PrecedesStep) CalcDisplayName() string {
+	return &quot;Step-&quot; + intToString(tc.StepNumber)
+}
+
+// --- Compute All Calculated Fields ---
+
+// ComputeAll computes all calculated fields and returns an updated struct
+func (tc *PrecedesStep) ComputeAll() *PrecedesStep {
+	// Level 1 calculations
+	displayName := &quot;Step-&quot; + intToString(tc.StepNumber)
+
+	return &amp;PrecedesStep{
+		PrecedesStepId: tc.PrecedesStepId,
+		Name: tc.Name,
+		StepNumber: tc.StepNumber,
+		WorkflowStep: tc.WorkflowStep,
+		DisplayName: nilIfEmpty(displayName),
+	}
+}
+
+// =============================================================================
+// ROLES TABLE
+// =============================================================================
+
+// Role represents a row in the Roles table
+type Role struct {
+	RoleId string `json:&quot;role_id&quot;`
+	DisplayName *string `json:&quot;display_name&quot;`
+	Label *string `json:&quot;label&quot;`
+	Comment *string `json:&quot;comment&quot;`
+	FilledByHumanAgent *string `json:&quot;filled_by_human_agent&quot;`
+	FilledByAIAgent *string `json:&quot;filled_by_ai_agent&quot;`
+	FilledByAutomatedPipeline *string `json:&quot;filled_by_automated_pipeline&quot;`
+	OwnedBy *string `json:&quot;owned_by&quot;`
+	DelegatesTo *string `json:&quot;delegates_to&quot;`
+	WorkflowSteps *string `json:&quot;workflow_steps&quot;`
+	FromDelegatesTo *string `json:&quot;from_delegates_to&quot;`
+	Name *string `json:&quot;name&quot;`
+}
+
+// --- Individual Calculation Functions ---
+
+// CalcName computes the Name calculated field
+// Formula: =LOWER({{DisplayName}})
+func (tc *Role) CalcName() string {
+	return strings.ToLower(stringVal(tc.DisplayName))
+}
+
+// --- Compute All Calculated Fields ---
+
+// ComputeAll computes all calculated fields and returns an updated struct
+func (tc *Role) ComputeAll() *Role {
+	// Level 1 calculations
+	name := strings.ToLower(stringVal(tc.DisplayName))
+
+	return &amp;Role{
+		RoleId: tc.RoleId,
+		DisplayName: tc.DisplayName,
+		Label: tc.Label,
+		Comment: tc.Comment,
+		FilledByHumanAgent: tc.FilledByHumanAgent,
+		FilledByAIAgent: tc.FilledByAIAgent,
+		FilledByAutomatedPipeline: tc.FilledByAutomatedPipeline,
+		OwnedBy: tc.OwnedBy,
+		DelegatesTo: tc.DelegatesTo,
+		WorkflowSteps: tc.WorkflowSteps,
+		FromDelegatesTo: tc.FromDelegatesTo,
+		Name: nilIfEmpty(name),
+	}
+}
+
+// =============================================================================
+// DEPARTMENTS TABLE
+// =============================================================================
+
+// Department represents a row in the Departments table
+type Department struct {
+	DepartmentId string `json:&quot;department_id&quot;`
+	Title *string `json:&quot;title&quot;`
+	DisplayName *string `json:&quot;display_name&quot;`
+	Roles *string `json:&quot;roles&quot;`
+	Name *string `json:&quot;name&quot;`
+}
+
+// --- Individual Calculation Functions ---
+
+// CalcName computes the Name calculated field
+// Formula: =SUBSTITUTE(LOWER({{DisplayName}}), &quot; &quot;, &quot;-&quot;)
+func (tc *Department) CalcName() string {
+	return strings.ReplaceAll(strings.ToLower(stringVal(tc.DisplayName)), &quot; &quot;, &quot;-&quot;)
+}
+
+// --- Compute All Calculated Fields ---
+
+// ComputeAll computes all calculated fields and returns an updated struct
+func (tc *Department) ComputeAll() *Department {
+	// Level 1 calculations
+	name := strings.ReplaceAll(strings.ToLower(stringVal(tc.DisplayName)), &quot; &quot;, &quot;-&quot;)
+
+	return &amp;Department{
+		DepartmentId: tc.DepartmentId,
+		Title: tc.Title,
+		DisplayName: tc.DisplayName,
+		Roles: tc.Roles,
+		Name: nilIfEmpty(name),
+	}
+}
+
+// =============================================================================
+// HUMANAGENTS TABLE
+// =============================================================================
+
+// HumanAgent represents a row in the HumanAgents table
+type HumanAgent struct {
+	HumanAgentId string `json:&quot;human_agent_id&quot;`
+	Name *string `json:&quot;name&quot;`
+	DisplayName *string `json:&quot;display_name&quot;`
+	Mbox *string `json:&quot;mbox&quot;`
+	Roles *string `json:&quot;roles&quot;`
+}
+
+// =============================================================================
+// AIAGENTS TABLE
+// =============================================================================
+
+// AIAgent represents a row in the AIAgents table
+type AIAgent struct {
+	AIAgentId string `json:&quot;ai_agent_id&quot;`
+	Name *string `json:&quot;name&quot;`
+	Title *string `json:&quot;title&quot;`
+	DisplayName *string `json:&quot;display_name&quot;`
+	ModelVersion *string `json:&quot;model_version&quot;`
+	Roles *string `json:&quot;roles&quot;`
+}
+
+// =============================================================================
+// AUTOMATEDPIPELINES TABLE
+// =============================================================================
+
+// AutomatedPipeline represents a row in the AutomatedPipelines table
+type AutomatedPipeline struct {
+	AutomatedPipelineId string `json:&quot;automated_pipeline_id&quot;`
+	Name *string `json:&quot;name&quot;`
+	Description *string `json:&quot;description&quot;`
+	DisplayName *string `json:&quot;display_name&quot;`
+	Roles *string `json:&quot;roles&quot;`
+}
+
+// =============================================================================
+// FILE I/O FUNCTIONS (for all tables with calculated fields)
+// =============================================================================
+
+// LoadWorkflowRecords loads Workflows records from a JSON file
+func LoadWorkflowRecords(path string) ([]Workflow, error) {
+	data, err := os.ReadFile(path)
+	if err != nil {
+		return nil, fmt.Errorf(&quot;failed to read file: %w&quot;, err)
+	}
+
+	var records []Workflow
+	if err := json.Unmarshal(data, &amp;records); err != nil {
+		return nil, fmt.Errorf(&quot;failed to parse file: %w&quot;, err)
+	}
+
+	return records, nil
+}
+
+// SaveWorkflowRecords saves computed Workflows records to a JSON file
+func SaveWorkflowRecords(path string, records []Workflow) error {
+	data, err := json.MarshalIndent(records, &quot;&quot;, &quot;  &quot;)
+	if err != nil {
+		return fmt.Errorf(&quot;failed to marshal records: %w&quot;, err)
+	}
+
+	if err := os.WriteFile(path, data, 0644); err != nil {
+		return fmt.Errorf(&quot;failed to write records: %w&quot;, err)
+	}
+
+	return nil
+}
+
+// LoadWorkflowStepRecords loads WorkflowSteps records from a JSON file
+func LoadWorkflowStepRecords(path string) ([]WorkflowStep, error) {
+	data, err := os.ReadFile(path)
+	if err != nil {
+		return nil, fmt.Errorf(&quot;failed to read file: %w&quot;, err)
+	}
+
+	var records []WorkflowStep
+	if err := json.Unmarshal(data, &amp;records); err != nil {
+		return nil, fmt.Errorf(&quot;failed to parse file: %w&quot;, err)
+	}
+
+	return records, nil
+}
+
+// SaveWorkflowStepRecords saves computed WorkflowSteps records to a JSON file
+func SaveWorkflowStepRecords(path string, records []WorkflowStep) error {
+	data, err := json.MarshalIndent(records, &quot;&quot;, &quot;  &quot;)
+	if err != nil {
+		return fmt.Errorf(&quot;failed to marshal records: %w&quot;, err)
+	}
+
+	if err := os.WriteFile(path, data, 0644); err != nil {
+		return fmt.Errorf(&quot;failed to write records: %w&quot;, err)
+	}
+
+	return nil
+}
+
+// LoadApprovalGateRecords loads ApprovalGates records from a JSON file
+func LoadApprovalGateRecords(path string) ([]ApprovalGate, error) {
+	data, err := os.ReadFile(path)
+	if err != nil {
+		return nil, fmt.Errorf(&quot;failed to read file: %w&quot;, err)
+	}
+
+	var records []ApprovalGate
+	if err := json.Unmarshal(data, &amp;records); err != nil {
+		return nil, fmt.Errorf(&quot;failed to parse file: %w&quot;, err)
+	}
+
+	return records, nil
+}
+
+// SaveApprovalGateRecords saves computed ApprovalGates records to a JSON file
+func SaveApprovalGateRecords(path string, records []ApprovalGate) error {
+	data, err := json.MarshalIndent(records, &quot;&quot;, &quot;  &quot;)
+	if err != nil {
+		return fmt.Errorf(&quot;failed to marshal records: %w&quot;, err)
+	}
+
+	if err := os.WriteFile(path, data, 0644); err != nil {
+		return fmt.Errorf(&quot;failed to write records: %w&quot;, err)
+	}
+
+	return nil
+}
+
+// LoadPrecedesStepRecords loads PrecedesSteps records from a JSON file
+func LoadPrecedesStepRecords(path string) ([]PrecedesStep, error) {
+	data, err := os.ReadFile(path)
+	if err != nil {
+		return nil, fmt.Errorf(&quot;failed to read file: %w&quot;, err)
+	}
+
+	var records []PrecedesStep
+	if err := json.Unmarshal(data, &amp;records); err != nil {
+		return nil, fmt.Errorf(&quot;failed to parse file: %w&quot;, err)
+	}
+
+	return records, nil
+}
+
+// SavePrecedesStepRecords saves computed PrecedesSteps records to a JSON file
+func SavePrecedesStepRecords(path string, records []PrecedesStep) error {
+	data, err := json.MarshalIndent(records, &quot;&quot;, &quot;  &quot;)
+	if err != nil {
+		return fmt.Errorf(&quot;failed to marshal records: %w&quot;, err)
+	}
+
+	if err := os.WriteFile(path, data, 0644); err != nil {
+		return fmt.Errorf(&quot;failed to write records: %w&quot;, err)
+	}
+
+	return nil
+}
+
+// LoadRoleRecords loads Roles records from a JSON file
+func LoadRoleRecords(path string) ([]Role, error) {
+	data, err := os.ReadFile(path)
+	if err != nil {
+		return nil, fmt.Errorf(&quot;failed to read file: %w&quot;, err)
+	}
+
+	var records []Role
+	if err := json.Unmarshal(data, &amp;records); err != nil {
+		return nil, fmt.Errorf(&quot;failed to parse file: %w&quot;, err)
+	}
+
+	return records, nil
+}
+
+// SaveRoleRecords saves computed Roles records to a JSON file
+func SaveRoleRecords(path string, records []Role) error {
+	data, err := json.MarshalIndent(records, &quot;&quot;, &quot;  &quot;)
+	if err != nil {
+		return fmt.Errorf(&quot;failed to marshal records: %w&quot;, err)
+	}
+
+	if err := os.WriteFile(path, data, 0644); err != nil {
+		return fmt.Errorf(&quot;failed to write records: %w&quot;, err)
+	}
+
+	return nil
+}
+
+// LoadDepartmentRecords loads Departments records from a JSON file
+func LoadDepartmentRecords(path string) ([]Department, error) {
+	data, err := os.ReadFile(path)
+	if err != nil {
+		return nil, fmt.Errorf(&quot;failed to read file: %w&quot;, err)
+	}
+
+	var records []Department
+	if err := json.Unmarshal(data, &amp;records); err != nil {
+		return nil, fmt.Errorf(&quot;failed to parse file: %w&quot;, err)
+	}
+
+	return records, nil
+}
+
+// SaveDepartmentRecords saves computed Departments records to a JSON file
+func SaveDepartmentRecords(path string, records []Department) error {
+	data, err := json.MarshalIndent(records, &quot;&quot;, &quot;  &quot;)
+	if err != nil {
+		return fmt.Errorf(&quot;failed to marshal records: %w&quot;, err)
+	}
+
+	if err := os.WriteFile(path, data, 0644); err != nil {
+		return fmt.Errorf(&quot;failed to write records: %w&quot;, err)
+	}
+
+	return nil
+}
+</pre>
+            </div>
+        </div>
+        <div id="main" class="tab-content">
+            <div class="card">
+                <div class="code-header">
+                    <h2>main.go</h2>
+                    <div><span class="code-info">236 lines</span><button class="copy-btn" onclick="copyCode('main-code')">Copy</button></div>
+                </div>
+                <pre id="main-code">// ERB SDK - Go Test Runner (GENERATED - DO NOT EDIT)
+// =======================================================
+// This file is REGENERATED every time inject-into-golang.py runs.
+// It must stay in sync with erb_sdk.go and the rulebook.
+//
+// Tables with calculated fields: Workflows, WorkflowSteps, ApprovalGates, PrecedesSteps, Roles, Departments
+//
+// IMPORTANT: This runner processes ALL tables, not just a &quot;primary&quot; one.
+// If ANY table fails to process, the entire run fails with exit code 1.
+
+package main
+
+import (
+	&quot;fmt&quot;
+	&quot;os&quot;
+	&quot;path/filepath&quot;
+)
+
+func main() {
+	scriptDir, err := os.Getwd()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, &quot;FATAL: Failed to get working directory: %v\n&quot;, err)
+		os.Exit(1)
+	}
+
+	// Shared blank-tests directory at project root
+	blankTestsDir := filepath.Join(scriptDir, &quot;..&quot;, &quot;..&quot;, &quot;testing&quot;, &quot;blank-tests&quot;)
+	testAnswersDir := filepath.Join(scriptDir, &quot;test-answers&quot;)
+
+	// Ensure output directory exists
+	if err := os.MkdirAll(testAnswersDir, 0755); err != nil {
+		fmt.Fprintf(os.Stderr, &quot;FATAL: Failed to create test-answers directory: %v\n&quot;, err)
+		os.Exit(1)
+	}
+
+	fmt.Println(&quot;Golang substrate: Processing 6 tables with calculated fields...&quot;)
+	fmt.Println(&quot;  Expected tables: Workflows, WorkflowSteps, ApprovalGates, PrecedesSteps, Roles, Departments&quot;)
+	fmt.Println(&quot;&quot;)
+
+	// Track success/failure for ALL tables
+	var errors []string
+	var totalRecords int
+
+	// ─────────────────────────────────────────────────────────────────
+	// Process Workflows
+	// ─────────────────────────────────────────────────────────────────
+	fmt.Println(&quot;Processing Workflows...&quot;)
+	workflowsInput := filepath.Join(blankTestsDir, &quot;workflows.json&quot;)
+	workflowsOutput := filepath.Join(testAnswersDir, &quot;workflows.json&quot;)
+
+	workflowsRecords, err := LoadWorkflowRecords(workflowsInput)
+	if err != nil {
+		errMsg := fmt.Sprintf(&quot;Workflows: failed to load - %v&quot;, err)
+		fmt.Fprintf(os.Stderr, &quot;ERROR: %s\n&quot;, errMsg)
+		errors = append(errors, errMsg)
+	} else {
+		var computedWorkflow []Workflow
+		for _, r := range workflowsRecords {
+			computedWorkflow = append(computedWorkflow, *r.ComputeAll())
+		}
+
+		if err := SaveWorkflowRecords(workflowsOutput, computedWorkflow); err != nil {
+			errMsg := fmt.Sprintf(&quot;Workflows: failed to save - %v&quot;, err)
+			fmt.Fprintf(os.Stderr, &quot;ERROR: %s\n&quot;, errMsg)
+			errors = append(errors, errMsg)
+		} else {
+			fmt.Printf(&quot;  ✓ workflows: %d records processed\n&quot;, len(computedWorkflow))
+			totalRecords += len(computedWorkflow)
+		}
+	}
+	fmt.Println(&quot;&quot;)
+
+	// ─────────────────────────────────────────────────────────────────
+	// Process WorkflowSteps
+	// ─────────────────────────────────────────────────────────────────
+	fmt.Println(&quot;Processing WorkflowSteps...&quot;)
+	workflow_stepsInput := filepath.Join(blankTestsDir, &quot;workflow_steps.json&quot;)
+	workflow_stepsOutput := filepath.Join(testAnswersDir, &quot;workflow_steps.json&quot;)
+
+	workflow_stepsRecords, err := LoadWorkflowStepRecords(workflow_stepsInput)
+	if err != nil {
+		errMsg := fmt.Sprintf(&quot;WorkflowSteps: failed to load - %v&quot;, err)
+		fmt.Fprintf(os.Stderr, &quot;ERROR: %s\n&quot;, errMsg)
+		errors = append(errors, errMsg)
+	} else {
+		var computedWorkflowStep []WorkflowStep
+		for _, r := range workflow_stepsRecords {
+			computedWorkflowStep = append(computedWorkflowStep, *r.ComputeAll())
+		}
+
+		if err := SaveWorkflowStepRecords(workflow_stepsOutput, computedWorkflowStep); err != nil {
+			errMsg := fmt.Sprintf(&quot;WorkflowSteps: failed to save - %v&quot;, err)
+			fmt.Fprintf(os.Stderr, &quot;ERROR: %s\n&quot;, errMsg)
+			errors = append(errors, errMsg)
+		} else {
+			fmt.Printf(&quot;  ✓ workflow_steps: %d records processed\n&quot;, len(computedWorkflowStep))
+			totalRecords += len(computedWorkflowStep)
+		}
+	}
+	fmt.Println(&quot;&quot;)
+
+	// ─────────────────────────────────────────────────────────────────
+	// Process ApprovalGates
+	// ─────────────────────────────────────────────────────────────────
+	fmt.Println(&quot;Processing ApprovalGates...&quot;)
+	approval_gatesInput := filepath.Join(blankTestsDir, &quot;approval_gates.json&quot;)
+	approval_gatesOutput := filepath.Join(testAnswersDir, &quot;approval_gates.json&quot;)
+
+	approval_gatesRecords, err := LoadApprovalGateRecords(approval_gatesInput)
+	if err != nil {
+		errMsg := fmt.Sprintf(&quot;ApprovalGates: failed to load - %v&quot;, err)
+		fmt.Fprintf(os.Stderr, &quot;ERROR: %s\n&quot;, errMsg)
+		errors = append(errors, errMsg)
+	} else {
+		var computedApprovalGate []ApprovalGate
+		for _, r := range approval_gatesRecords {
+			computedApprovalGate = append(computedApprovalGate, *r.ComputeAll())
+		}
+
+		if err := SaveApprovalGateRecords(approval_gatesOutput, computedApprovalGate); err != nil {
+			errMsg := fmt.Sprintf(&quot;ApprovalGates: failed to save - %v&quot;, err)
+			fmt.Fprintf(os.Stderr, &quot;ERROR: %s\n&quot;, errMsg)
+			errors = append(errors, errMsg)
+		} else {
+			fmt.Printf(&quot;  ✓ approval_gates: %d records processed\n&quot;, len(computedApprovalGate))
+			totalRecords += len(computedApprovalGate)
+		}
+	}
+	fmt.Println(&quot;&quot;)
+
+	// ─────────────────────────────────────────────────────────────────
+	// Process PrecedesSteps
+	// ─────────────────────────────────────────────────────────────────
+	fmt.Println(&quot;Processing PrecedesSteps...&quot;)
+	precedes_stepsInput := filepath.Join(blankTestsDir, &quot;precedes_steps.json&quot;)
+	precedes_stepsOutput := filepath.Join(testAnswersDir, &quot;precedes_steps.json&quot;)
+
+	precedes_stepsRecords, err := LoadPrecedesStepRecords(precedes_stepsInput)
+	if err != nil {
+		errMsg := fmt.Sprintf(&quot;PrecedesSteps: failed to load - %v&quot;, err)
+		fmt.Fprintf(os.Stderr, &quot;ERROR: %s\n&quot;, errMsg)
+		errors = append(errors, errMsg)
+	} else {
+		var computedPrecedesStep []PrecedesStep
+		for _, r := range precedes_stepsRecords {
+			computedPrecedesStep = append(computedPrecedesStep, *r.ComputeAll())
+		}
+
+		if err := SavePrecedesStepRecords(precedes_stepsOutput, computedPrecedesStep); err != nil {
+			errMsg := fmt.Sprintf(&quot;PrecedesSteps: failed to save - %v&quot;, err)
+			fmt.Fprintf(os.Stderr, &quot;ERROR: %s\n&quot;, errMsg)
+			errors = append(errors, errMsg)
+		} else {
+			fmt.Printf(&quot;  ✓ precedes_steps: %d records processed\n&quot;, len(computedPrecedesStep))
+			totalRecords += len(computedPrecedesStep)
+		}
+	}
+	fmt.Println(&quot;&quot;)
+
+	// ─────────────────────────────────────────────────────────────────
+	// Process Roles
+	// ─────────────────────────────────────────────────────────────────
+	fmt.Println(&quot;Processing Roles...&quot;)
+	rolesInput := filepath.Join(blankTestsDir, &quot;roles.json&quot;)
+	rolesOutput := filepath.Join(testAnswersDir, &quot;roles.json&quot;)
+
+	rolesRecords, err := LoadRoleRecords(rolesInput)
+	if err != nil {
+		errMsg := fmt.Sprintf(&quot;Roles: failed to load - %v&quot;, err)
+		fmt.Fprintf(os.Stderr, &quot;ERROR: %s\n&quot;, errMsg)
+		errors = append(errors, errMsg)
+	} else {
+		var computedRole []Role
+		for _, r := range rolesRecords {
+			computedRole = append(computedRole, *r.ComputeAll())
+		}
+
+		if err := SaveRoleRecords(rolesOutput, computedRole); err != nil {
+			errMsg := fmt.Sprintf(&quot;Roles: failed to save - %v&quot;, err)
+			fmt.Fprintf(os.Stderr, &quot;ERROR: %s\n&quot;, errMsg)
+			errors = append(errors, errMsg)
+		} else {
+			fmt.Printf(&quot;  ✓ roles: %d records processed\n&quot;, len(computedRole))
+			totalRecords += len(computedRole)
+		}
+	}
+	fmt.Println(&quot;&quot;)
+
+	// ─────────────────────────────────────────────────────────────────
+	// Process Departments
+	// ─────────────────────────────────────────────────────────────────
+	fmt.Println(&quot;Processing Departments...&quot;)
+	departmentsInput := filepath.Join(blankTestsDir, &quot;departments.json&quot;)
+	departmentsOutput := filepath.Join(testAnswersDir, &quot;departments.json&quot;)
+
+	departmentsRecords, err := LoadDepartmentRecords(departmentsInput)
+	if err != nil {
+		errMsg := fmt.Sprintf(&quot;Departments: failed to load - %v&quot;, err)
+		fmt.Fprintf(os.Stderr, &quot;ERROR: %s\n&quot;, errMsg)
+		errors = append(errors, errMsg)
+	} else {
+		var computedDepartment []Department
+		for _, r := range departmentsRecords {
+			computedDepartment = append(computedDepartment, *r.ComputeAll())
+		}
+
+		if err := SaveDepartmentRecords(departmentsOutput, computedDepartment); err != nil {
+			errMsg := fmt.Sprintf(&quot;Departments: failed to save - %v&quot;, err)
+			fmt.Fprintf(os.Stderr, &quot;ERROR: %s\n&quot;, errMsg)
+			errors = append(errors, errMsg)
+		} else {
+			fmt.Printf(&quot;  ✓ departments: %d records processed\n&quot;, len(computedDepartment))
+			totalRecords += len(computedDepartment)
+		}
+	}
+	fmt.Println(&quot;&quot;)
+
+	// ─────────────────────────────────────────────────────────────────
+	// Final validation - FAIL LOUDLY if any errors occurred
+	// ─────────────────────────────────────────────────────────────────
+	if len(errors) &gt; 0 {
+		fmt.Fprintf(os.Stderr, &quot;\n&quot;)
+		fmt.Fprintf(os.Stderr, &quot;════════════════════════════════════════════════════════════════\n&quot;)
+		fmt.Fprintf(os.Stderr, &quot;FATAL: %d table(s) FAILED to process\n&quot;, len(errors))
+		fmt.Fprintf(os.Stderr, &quot;════════════════════════════════════════════════════════════════\n&quot;)
+		for _, e := range errors {
+			fmt.Fprintf(os.Stderr, &quot;  • %s\n&quot;, e)
+		}
+		fmt.Fprintf(os.Stderr, &quot;\n&quot;)
+		os.Exit(1)
+	}
+
+	fmt.Println(&quot;════════════════════════════════════════════════════════════════&quot;)
+	fmt.Printf(&quot;Golang substrate: ALL %d tables processed successfully (%d total records)\n&quot;, 6, totalRecords)
+	fmt.Println(&quot;════════════════════════════════════════════════════════════════&quot;)
+}</pre>
+            </div>
+        </div>
+    </main>
+    <script>
+const themeToggle = document.getElementById('theme-toggle');
+const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+function getInitialTheme() { try { if (window.parent && window.parent.document.documentElement.dataset.theme) return window.parent.document.documentElement.dataset.theme; } catch (e) {} return prefersDark ? 'dark' : 'light'; }
+document.documentElement.dataset.theme = getInitialTheme();
+themeToggle.addEventListener('click', () => { document.documentElement.dataset.theme = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark'; });
+window.addEventListener('message', (event) => { if (event.data.type === 'theme-change') document.documentElement.dataset.theme = event.data.theme; });
+document.querySelectorAll('.tab').forEach(tab => { tab.addEventListener('click', () => { document.querySelectorAll('.tab').forEach(t => t.classList.remove('active')); document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active')); tab.classList.add('active'); document.getElementById(tab.dataset.tab).classList.add('active'); }); });
+function copyCode(elementId) { navigator.clipboard.writeText(document.getElementById(elementId).textContent).then(() => { event.target.textContent = 'Copied!'; setTimeout(() => event.target.textContent = 'Copy', 2000); }); }
+    </script>
+</body>
+</html>

@@ -1,0 +1,268 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" font-family="system-ui, -apple-system, sans-serif">
+  <defs>
+    <!-- Gradient for main hub -->
+    <linearGradient id="hubGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#4F46E5"/>
+      <stop offset="100%" style="stop-color:#3730A3"/>
+    </linearGradient>
+
+    <!-- Gradient for Airtable -->
+    <linearGradient id="airtableGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#FCBF49"/>
+      <stop offset="100%" style="stop-color:#F77F00"/>
+    </linearGradient>
+
+    <!-- Gradient for PostgreSQL -->
+    <linearGradient id="postgresGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#336791"/>
+      <stop offset="100%" style="stop-color:#264d73"/>
+    </linearGradient>
+
+    <!-- Shadow filter -->
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="4" stdDeviation="8" flood-opacity="0.15"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="900" fill="#F8FAFC"/>
+
+  <!-- Title -->
+  <text x="600" y="45" text-anchor="middle" font-size="28" font-weight="700" fill="#1E293B">
+    Effortless Rulebook Architecture
+  </text>
+  <text x="600" y="75" text-anchor="middle" font-size="16" fill="#64748B">
+    Single Source of Truth  →  Declarative Hub  →  Execution Substrates
+  </text>
+
+  <!-- Connection lines (drawn first so they're behind) -->
+  <g stroke="#CBD5E1" stroke-width="2" fill="none">
+    <!-- Airtable to Hub -->
+    <path d="M 600 170 L 600 250" stroke-width="3" stroke="#94A3B8"/>
+    <polygon points="600,250 595,240 605,240" fill="#94A3B8"/>
+
+    <!-- Hub to substrates - curved lines -->
+    <!-- Binary -->
+    <path d="M 520 370 Q 180 450 140 520"/>
+    <!-- CSV -->
+    <path d="M 540 370 Q 320 450 290 520"/>
+    <!-- English -->
+    <path d="M 560 370 Q 420 470 440 520"/>
+    <!-- Golang -->
+    <path d="M 580 370 Q 530 470 590 520"/>
+    <!-- OWL -->
+    <path d="M 620 370 Q 670 470 740 520"/>
+    <!-- Python -->
+    <path d="M 640 370 Q 780 450 890 520"/>
+    <!-- UML -->
+    <path d="M 660 370 Q 900 430 1040 520"/>
+    <!-- XLSX -->
+    <path d="M 560 370 Q 260 500 215 620"/>
+    <!-- YAML -->
+    <path d="M 640 370 Q 940 500 985 620"/>
+
+    <!-- Hub to PostgreSQL foundation -->
+    <path d="M 600 370 L 600 760" stroke-width="3" stroke-dasharray="8,4"/>
+  </g>
+
+  <!-- ============ AIRTABLE (Source of Truth) ============ -->
+  <g transform="translate(600, 145)" filter="url(#shadow)">
+    <rect x="-100" y="-45" width="200" height="70" rx="12" fill="url(#airtableGradient)"/>
+    <!-- Airtable icon (simplified grid) -->
+    <g transform="translate(-80, -25)">
+      <rect x="0" y="0" width="12" height="12" rx="2" fill="white" opacity="0.9"/>
+      <rect x="16" y="0" width="12" height="12" rx="2" fill="white" opacity="0.7"/>
+      <rect x="0" y="16" width="12" height="12" rx="2" fill="white" opacity="0.7"/>
+      <rect x="16" y="16" width="12" height="12" rx="2" fill="white" opacity="0.5"/>
+    </g>
+    <text x="8" y="0" text-anchor="middle" font-size="18" font-weight="600" fill="white">Airtable</text>
+    <text x="8" y="18" text-anchor="middle" font-size="11" fill="white" opacity="0.9">Single Source of Truth</text>
+  </g>
+
+  <!-- ============ EFFORTLESS RULEBOOK HUB ============ -->
+  <g transform="translate(600, 320)" filter="url(#shadow)">
+    <rect x="-130" y="-55" width="260" height="100" rx="16" fill="url(#hubGradient)"/>
+    <!-- JSON icon -->
+    <g transform="translate(-100, -35)">
+      <text font-size="24" fill="white" opacity="0.9">{</text>
+      <text x="15" y="0" font-size="24" fill="white" opacity="0.9">}</text>
+    </g>
+    <text x="10" y="-15" text-anchor="middle" font-size="20" font-weight="700" fill="white">Effortless Rulebook</text>
+    <text x="10" y="8" text-anchor="middle" font-size="12" fill="white" opacity="0.8">effortless-rulebook.json</text>
+    <text x="10" y="28" text-anchor="middle" font-size="13" fill="#C7D2FE" font-weight="500">Declarative Hub</text>
+  </g>
+
+  <!-- ============ EXECUTION SUBSTRATES ============ -->
+
+  <!-- Row 1: Binary, CSV, English, Golang, OWL, Python, UML -->
+
+  <!-- Binary -->
+  <g transform="translate(140, 580)" filter="url(#shadow)">
+    <rect x="-55" y="-55" width="110" height="110" rx="16" fill="white" stroke="#E2E8F0" stroke-width="2"/>
+    <!-- Binary icon: 0s and 1s -->
+    <g transform="translate(-25, -30)" font-family="monospace" font-size="14" font-weight="700" fill="#059669">
+      <text>01</text>
+      <text y="16">10</text>
+      <text y="32">01</text>
+    </g>
+    <text y="40" text-anchor="middle" font-size="14" font-weight="600" fill="#1E293B">Binary</text>
+  </g>
+
+  <!-- CSV -->
+  <g transform="translate(290, 580)" filter="url(#shadow)">
+    <rect x="-55" y="-55" width="110" height="110" rx="16" fill="white" stroke="#E2E8F0" stroke-width="2"/>
+    <!-- CSV icon: table grid -->
+    <g transform="translate(-30, -35)">
+      <rect width="60" height="50" rx="4" fill="none" stroke="#0EA5E9" stroke-width="2"/>
+      <line x1="0" y1="16" x2="60" y2="16" stroke="#0EA5E9" stroke-width="2"/>
+      <line x1="20" y1="0" x2="20" y2="50" stroke="#0EA5E9" stroke-width="2"/>
+      <line x1="40" y1="0" x2="40" y2="50" stroke="#0EA5E9" stroke-width="2"/>
+    </g>
+    <text y="40" text-anchor="middle" font-size="14" font-weight="600" fill="#1E293B">CSV</text>
+  </g>
+
+  <!-- English -->
+  <g transform="translate(440, 580)" filter="url(#shadow)">
+    <rect x="-55" y="-55" width="110" height="110" rx="16" fill="white" stroke="#E2E8F0" stroke-width="2"/>
+    <!-- English icon: text lines with speech bubble -->
+    <g transform="translate(-25, -35)">
+      <path d="M 0 5 Q 0 0 5 0 L 45 0 Q 50 0 50 5 L 50 35 Q 50 40 45 40 L 20 40 L 10 50 L 10 40 L 5 40 Q 0 40 0 35 Z" fill="#8B5CF6" opacity="0.9"/>
+      <text x="8" y="18" font-size="10" fill="white" font-weight="600">Hello</text>
+      <text x="8" y="30" font-size="10" fill="white" font-weight="600">World</text>
+    </g>
+    <text y="40" text-anchor="middle" font-size="14" font-weight="600" fill="#1E293B">English</text>
+  </g>
+
+  <!-- Golang -->
+  <g transform="translate(590, 580)" filter="url(#shadow)">
+    <rect x="-55" y="-55" width="110" height="110" rx="16" fill="white" stroke="#E2E8F0" stroke-width="2"/>
+    <!-- Go Gopher inspired icon -->
+    <g transform="translate(-25, -35)">
+      <ellipse cx="25" cy="22" rx="22" ry="20" fill="#00ADD8"/>
+      <circle cx="18" cy="18" r="6" fill="white"/>
+      <circle cx="32" cy="18" r="6" fill="white"/>
+      <circle cx="18" cy="18" r="3" fill="#1E293B"/>
+      <circle cx="32" cy="18" r="3" fill="#1E293B"/>
+      <ellipse cx="25" cy="30" rx="5" ry="3" fill="#1E293B"/>
+    </g>
+    <text y="40" text-anchor="middle" font-size="14" font-weight="600" fill="#1E293B">Golang</text>
+  </g>
+
+  <!-- OWL -->
+  <g transform="translate(740, 580)" filter="url(#shadow)">
+    <rect x="-55" y="-55" width="110" height="110" rx="16" fill="white" stroke="#E2E8F0" stroke-width="2"/>
+    <!-- OWL icon: Owl face -->
+    <g transform="translate(-25, -35)">
+      <!-- Owl body -->
+      <ellipse cx="25" cy="28" rx="22" ry="18" fill="#7C3AED"/>
+      <!-- Eyes -->
+      <circle cx="15" cy="22" r="10" fill="#FCD34D"/>
+      <circle cx="35" cy="22" r="10" fill="#FCD34D"/>
+      <circle cx="15" cy="22" r="5" fill="#1E293B"/>
+      <circle cx="35" cy="22" r="5" fill="#1E293B"/>
+      <!-- Beak -->
+      <polygon points="25,28 21,35 29,35" fill="#F59E0B"/>
+      <!-- Ear tufts -->
+      <polygon points="5,12 10,20 0,20" fill="#7C3AED"/>
+      <polygon points="45,12 50,20 40,20" fill="#7C3AED"/>
+    </g>
+    <text y="40" text-anchor="middle" font-size="14" font-weight="600" fill="#1E293B">OWL</text>
+  </g>
+
+  <!-- Python -->
+  <g transform="translate(890, 580)" filter="url(#shadow)">
+    <rect x="-55" y="-55" width="110" height="110" rx="16" fill="white" stroke="#E2E8F0" stroke-width="2"/>
+    <!-- Python icon: intertwined snakes -->
+    <g transform="translate(-20, -30)">
+      <path d="M 20 0 C 5 0 5 10 5 15 L 5 25 C 5 35 15 35 20 35 L 25 35 L 25 40 L 15 40 C 0 40 0 25 0 20 L 0 10 C 0 -5 15 -5 20 -5 L 35 -5 L 35 -10"
+            fill="none" stroke="#3776AB" stroke-width="6" stroke-linecap="round"/>
+      <path d="M 20 50 C 35 50 35 40 35 35 L 35 25 C 35 15 25 15 20 15 L 15 15 L 15 10 L 25 10 C 40 10 40 25 40 30 L 40 40 C 40 55 25 55 20 55 L 5 55"
+            fill="none" stroke="#FFD43B" stroke-width="6" stroke-linecap="round"/>
+      <circle cx="12" cy="5" r="3" fill="white"/>
+      <circle cx="28" cy="45" r="3" fill="white"/>
+    </g>
+    <text y="40" text-anchor="middle" font-size="14" font-weight="600" fill="#1E293B">Python</text>
+  </g>
+
+  <!-- UML -->
+  <g transform="translate(1040, 580)" filter="url(#shadow)">
+    <rect x="-55" y="-55" width="110" height="110" rx="16" fill="white" stroke="#E2E8F0" stroke-width="2"/>
+    <!-- UML icon: class diagram boxes -->
+    <g transform="translate(-30, -35)">
+      <rect x="0" y="0" width="25" height="20" rx="2" fill="none" stroke="#DC2626" stroke-width="2"/>
+      <line x1="0" y1="8" x2="25" y2="8" stroke="#DC2626" stroke-width="2"/>
+      <rect x="35" y="0" width="25" height="20" rx="2" fill="none" stroke="#DC2626" stroke-width="2"/>
+      <line x1="35" y1="8" x2="60" y2="8" stroke="#DC2626" stroke-width="2"/>
+      <rect x="17" y="30" width="25" height="20" rx="2" fill="none" stroke="#DC2626" stroke-width="2"/>
+      <line x1="17" y1="38" x2="42" y2="38" stroke="#DC2626" stroke-width="2"/>
+      <!-- Connectors -->
+      <line x1="12" y1="20" x2="25" y2="30" stroke="#DC2626" stroke-width="2"/>
+      <line x1="48" y1="20" x2="35" y2="30" stroke="#DC2626" stroke-width="2"/>
+    </g>
+    <text y="40" text-anchor="middle" font-size="14" font-weight="600" fill="#1E293B">UML</text>
+  </g>
+
+  <!-- Row 2: XLSX, YAML (positioned below the main row, on the sides) -->
+
+  <!-- XLSX -->
+  <g transform="translate(215, 700)" filter="url(#shadow)">
+    <rect x="-55" y="-55" width="110" height="110" rx="16" fill="white" stroke="#E2E8F0" stroke-width="2"/>
+    <!-- Excel icon: spreadsheet with X -->
+    <g transform="translate(-25, -32)">
+      <rect width="50" height="45" rx="4" fill="#217346"/>
+      <text x="12" y="32" font-size="28" font-weight="700" fill="white">X</text>
+      <rect x="32" y="8" width="12" height="5" rx="1" fill="white" opacity="0.8"/>
+      <rect x="32" y="16" width="12" height="5" rx="1" fill="white" opacity="0.6"/>
+      <rect x="32" y="24" width="12" height="5" rx="1" fill="white" opacity="0.8"/>
+      <rect x="32" y="32" width="12" height="5" rx="1" fill="white" opacity="0.6"/>
+    </g>
+    <text y="40" text-anchor="middle" font-size="14" font-weight="600" fill="#1E293B">XLSX</text>
+  </g>
+
+  <!-- YAML -->
+  <g transform="translate(985, 700)" filter="url(#shadow)">
+    <rect x="-55" y="-55" width="110" height="110" rx="16" fill="white" stroke="#E2E8F0" stroke-width="2"/>
+    <!-- YAML icon: indented structure -->
+    <g transform="translate(-28, -32)" font-family="monospace" font-size="11" fill="#F59E0B" font-weight="600">
+      <text>key:</text>
+      <text y="14" x="8">- val</text>
+      <text y="28" x="8">- val</text>
+      <text y="42">data:</text>
+    </g>
+    <text y="40" text-anchor="middle" font-size="14" font-weight="600" fill="#1E293B">YAML</text>
+  </g>
+
+  <!-- ============ POSTGRESQL FOUNDATION ============ -->
+  <g transform="translate(600, 820)" filter="url(#shadow)">
+    <rect x="-500" y="-45" width="1000" height="80" rx="16" fill="url(#postgresGradient)"/>
+
+    <!-- PostgreSQL elephant icon -->
+    <g transform="translate(-460, -30)">
+      <!-- Elephant body -->
+      <ellipse cx="25" cy="25" rx="20" ry="18" fill="white" opacity="0.9"/>
+      <!-- Trunk -->
+      <path d="M 10 25 Q 0 30 5 40 Q 10 45 15 40" fill="none" stroke="white" stroke-width="4" stroke-linecap="round" opacity="0.9"/>
+      <!-- Ear -->
+      <ellipse cx="35" cy="18" rx="8" ry="10" fill="white" opacity="0.7"/>
+      <!-- Eye -->
+      <circle cx="30" cy="20" r="3" fill="#336791"/>
+    </g>
+
+    <text x="0" y="-5" text-anchor="middle" font-size="22" font-weight="700" fill="white">PostgreSQL</text>
+    <text x="0" y="18" text-anchor="middle" font-size="13" fill="white" opacity="0.9">Canonical Computation Engine  •  Tables + calc_*() Functions + Views</text>
+
+    <!-- Answer key badge -->
+    <g transform="translate(350, -15)">
+      <rect x="0" y="0" width="120" height="30" rx="15" fill="white" opacity="0.2"/>
+      <text x="60" y="20" text-anchor="middle" font-size="11" font-weight="600" fill="white">answer-key.json</text>
+    </g>
+  </g>
+
+  <!-- Legend / Footer -->
+  <g transform="translate(600, 885)">
+    <text text-anchor="middle" font-size="12" fill="#94A3B8">
+      10 Execution Substrates  •  Each independently validates the same rulebook
+    </text>
+  </g>
+
+</svg>

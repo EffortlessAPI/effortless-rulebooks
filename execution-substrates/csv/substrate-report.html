@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Substrate Report: csv</title>
+    <style>
+:root {
+    --bg-primary: #ffffff; --bg-secondary: #f8f9fa; --bg-tertiary: #e9ecef;
+    --text-primary: #212529; --text-secondary: #6c757d; --border-color: #dee2e6;
+    --accent-color: #0d6efd; --success-color: #198754; --warning-color: #ffc107;
+    --danger-color: #dc3545; --code-bg: #f6f8fa; --shadow: 0 2px 8px rgba(0,0,0,0.1); --radius: 6px;
+}
+[data-theme="dark"] {
+    --bg-primary: #1a1a2e; --bg-secondary: #16213e; --bg-tertiary: #0f3460;
+    --text-primary: #eaeaea; --text-secondary: #b0b0b0; --border-color: #3a3a5c;
+    --accent-color: #4dabf7; --success-color: #51cf66; --warning-color: #fcc419;
+    --danger-color: #ff6b6b; --code-bg: #0d1117; --shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg-secondary); color: var(--text-primary); line-height: 1.5; min-height: 100vh; }
+header { background: var(--bg-primary); border-bottom: 1px solid var(--border-color); padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; }
+.header-left { display: flex; align-items: center; gap: 0.75rem; }
+.substrate-icon { font-size: 1.5rem; }
+h1 { font-size: 1.1rem; font-weight: 600; }
+.header-stats { display: flex; gap: 1rem; font-size: 0.8rem; }
+.stat { display: flex; align-items: center; gap: 0.25rem; }
+.stat-value { font-weight: 600; }
+.score-perfect, .score-good { color: var(--success-color); }
+.score-warning { color: var(--warning-color); }
+.score-danger { color: var(--danger-color); }
+#theme-toggle { background: var(--bg-tertiary); border: 1px solid var(--border-color); border-radius: 50%; width: 28px; height: 28px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; }
+#theme-toggle:hover { background: var(--accent-color); color: white; }
+#theme-toggle .moon { display: none; }
+[data-theme="dark"] #theme-toggle .sun { display: none; }
+[data-theme="dark"] #theme-toggle .moon { display: inline; }
+.tabs { display: flex; background: var(--bg-primary); border-bottom: 1px solid var(--border-color); overflow-x: auto; padding: 0 0.5rem; }
+.tab { background: none; border: none; padding: 0.5rem 1rem; cursor: pointer; font-size: 0.8rem; color: var(--text-secondary); border-bottom: 2px solid transparent; white-space: nowrap; }
+.tab:hover { color: var(--text-primary); }
+.tab.active { color: var(--accent-color); border-bottom-color: var(--accent-color); font-weight: 500; }
+main { padding: 1rem; }
+.tab-content { display: none; }
+.tab-content.active { display: block; animation: fadeIn 0.2s ease; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+.card { background: var(--bg-primary); border: 1px solid var(--border-color); border-radius: var(--radius); padding: 1rem; margin-bottom: 1rem; box-shadow: var(--shadow); }
+.card h2 { font-size: 0.9rem; font-weight: 600; margin-bottom: 0.75rem; }
+pre { background: var(--code-bg); border: 1px solid var(--border-color); border-radius: var(--radius); padding: 0.75rem; overflow-x: auto; font-family: 'SF Mono', Monaco, monospace; font-size: 0.75rem; line-height: 1.4; max-height: 500px; overflow-y: auto; }
+.code-info { font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 0.5rem; }
+.markdown-content { line-height: 1.6; }
+.markdown-content p { margin-bottom: 0.75rem; }
+.markdown-content ul, .markdown-content ol { margin-left: 1.5rem; margin-bottom: 0.75rem; }
+.markdown-content li { margin-bottom: 0.25rem; }
+.markdown-content code { background: var(--code-bg); padding: 0.125rem 0.375rem; border-radius: 3px; font-size: 0.85em; }
+.results-summary { display: flex; gap: 1.5rem; flex-wrap: wrap; margin-bottom: 1rem; }
+.result-item { text-align: center; }
+.result-value { font-size: 1.5rem; font-weight: 700; }
+.result-label { font-size: 0.7rem; color: var(--text-secondary); text-transform: uppercase; }
+.csv-table { width: 100%; border-collapse: collapse; font-size: 0.75rem; }
+.csv-table th, .csv-table td { border: 1px solid var(--border-color); padding: 0.35rem 0.5rem; text-align: left; white-space: nowrap; }
+.csv-table th { background: var(--bg-tertiary); font-weight: 600; position: sticky; top: 0; }
+.csv-table tbody tr:hover { background: var(--bg-secondary); }
+.bool-true { color: var(--success-color); font-weight: 500; }
+.bool-false { color: var(--danger-color); }
+.table-scroll { overflow-x: auto; max-height: 400px; overflow-y: auto; }
+.truncated { font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.5rem; font-style: italic; }
+.download-link { display: inline-block; margin-top: 0.5rem; padding: 0.5rem 1rem; background: var(--accent-color); color: white; text-decoration: none; border-radius: var(--radius); font-size: 0.8rem; }
+.download-link:hover { opacity: 0.9; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-left">
+            <span class="substrate-icon">📊</span>
+            <h1>CSV Execution Substrate</h1>
+        </div>
+        <div class="header-stats">
+            <div class="stat"><span>Score:</span><span class="stat-value score-perfect">100.0%</span></div>
+            <div class="stat"><span>103/103 passed</span></div>
+        </div>
+        <button id="theme-toggle" title="Toggle theme"><span class="sun">☀️</span><span class="moon">🌙</span></button>
+    </header>
+    <nav class="tabs">
+        <button class="tab active" data-tab="description">Description</button>
+        <button class="tab" data-tab="log">Run Log</button>
+        <button class="tab" data-tab="results">Test Results</button>
+        <button class="tab" data-tab="candidates">Language Candidates</button>
+        <button class="tab" data-tab="formulas">Column Formulas</button>
+    </nav>
+    <main>
+        <div id="description" class="tab-content active">
+            <div class="card">
+                <h2>What This Substrate Does</h2>
+                <div class="markdown-content">
+                    <p>The CSV substrate exports rulebook data and formulas to universal CSV format, enabling interoperability with spreadsheet applications and data analysis tools.</p>
+                    <h3>Orchestration Pattern</h3>
+                    <ol>
+                        <li><strong>Export</strong>: <code>inject-into-csv.py</code> generates CSV files from rulebook JSON</li>
+                        <li><strong>Data Files</strong>: Creates <code>language_candidates.csv</code> with all entity data</li>
+                        <li><strong>Formula Mapping</strong>: Creates <code>column_formulas.csv</code> with calculation definitions</li>
+                        <li><strong>Test</strong>: Validates CSV output matches expected values</li>
+                    </ol>
+                </div>
+            </div>
+            <div class="card">
+                <h2>Key Features</h2>
+                <ul class="markdown-content">
+                    <li><strong>Universal Format</strong>: CSV works with any spreadsheet or data tool</li>
+                    <li><strong>Formula Documentation</strong>: Column formulas exported separately for reference</li>
+                    <li><strong>Excel Export</strong>: Also generates <code>rulebook.xlsx</code> for Excel users</li>
+                    <li><strong>Data Validation</strong>: Boolean and calculated fields properly formatted</li>
+                </ul>
+            </div>
+        </div>
+        <div id="log" class="tab-content">
+            <div class="card">
+                <h2>Execution Log</h2>
+                <pre>=== CSV Substrate Test Run ===
+
+
+  Processing approval_gates from approval_gates.csv...
+Found 5 fields in test answers
+Primary key field: approval_gate_id
+Loaded 11 rows from CSV
+Filled 11 null fields across 11 records
+Updated /Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/ERB_jessica-talisman-ontology/execution-substrates/csv/test-answers/approval_gates.json
+
+  Processing departments from departments.csv...
+Found 5 fields in test answers
+Primary key field: department_id
+Loaded 15 rows from CSV
+Filled 15 null fields across 15 records
+Updated /Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/ERB_jessica-talisman-ontology/execution-substrates/csv/test-answers/departments.json
+
+  Processing precedes_steps from precedes_steps.csv...
+Found 5 fields in test answers
+Primary key field: precedes_step_id
+Loaded 16 rows from CSV
+Filled 16 null fields across 16 records
+Updated /Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/ERB_jessica-talisman-ontology/execution-substrates/csv/test-answers/precedes_steps.json
+
+  Processing roles from roles.csv...
+Found 12 fields in test answers
+Primary key field: role_id
+Loaded 15 rows from CSV
+Filled 15 null fields across 15 records
+Updated /Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/ERB_jessica-talisman-ontology/execution-substrates/csv/test-answers/roles.json
+
+  Processing workflow_steps from workflow_steps.csv...
+Found 9 fields in test answers
+Primary key field: workflow_step_id
+Loaded 16 rows from CSV
+Filled 16 null fields across 16 records
+Updated /Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/ERB_jessica-talisman-ontology/execution-substrates/csv/test-answers/workflow_steps.json
+
+  Processing workflows from workflows.csv...
+Found 10 fields in test answers
+Primary key field: workflow_id
+Loaded 15 rows from CSV
+Filled 30 null fields across 15 records
+Updated /Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/ERB_jessica-talisman-ontology/execution-substrates/csv/test-answers/workflows.json
+
+csv: Processed 6 entities
+
+</pre>
+            </div>
+        </div>
+        <div id="results" class="tab-content">
+            <div class="card">
+                <h2>Test Summary</h2>
+                <div class="results-summary">
+                    <div class="result-item"><div class="result-value score-perfect">100.0%</div><div class="result-label">Score</div></div>
+                    <div class="result-item"><div class="result-value score-perfect">103</div><div class="result-label">Passed</div></div>
+                    <div class="result-item"><div class="result-value">0</div><div class="result-label">Failed</div></div>
+                    <div class="result-item"><div class="result-value">103</div><div class="result-label">Total</div></div>
+                </div>
+            </div>
+        </div>
+        <div id="candidates" class="tab-content">
+            <div class="card">
+                <h2>language_candidates.csv</h2>
+                <div class="table-scroll"><p>Error reading CSV: [Errno 2] No such file or directory: 'test-data/language_candidates.csv'</p></div>
+            </div>
+        </div>
+        <div id="formulas" class="tab-content">
+            <div class="card">
+                <h2>column_formulas.csv</h2>
+                <div class="table-scroll"><table class="csv-table"><thead><tr><th>table_name</th><th>field_name</th><th>field_type</th><th>dag_level</th><th>formula</th></tr></thead><tbody><tr><td>Workflows</td><td>workflow_id</td><td>raw</td><td>0</td><td></td></tr><tr><td>Workflows</td><td>name</td><td>calculated</td><td></td><td>=SUBSTITUTE(LOWER({{DisplayName}}), &quot; &quot;, &quot;-&quot;)</td></tr><tr><td>Workflows</td><td>display_name</td><td>raw</td><td>0</td><td></td></tr><tr><td>Workflows</td><td>title</td><td>raw</td><td>0</td><td></td></tr><tr><td>Workflows</td><td>description</td><td>raw</td><td>0</td><td></td></tr><tr><td>Workflows</td><td>identifier</td><td>raw</td><td>0</td><td></td></tr><tr><td>Workflows</td><td>modified</td><td>raw</td><td>0</td><td></td></tr><tr><td>Workflows</td><td>workflow_steps</td><td>relationship</td><td></td><td></td></tr><tr><td>Workflows</td><td>count_of_steps</td><td>aggregation</td><td></td><td>=COUNTIFS(WorkflowSteps!{{Workflow}}, Workflows!{{WorkflowId}})</td></tr><tr><td>Workflows</td><td>has_more_than1_step</td><td>calculated</td><td></td><td>={{CountOfSteps}} &gt; 1</td></tr><tr><td>WorkflowSteps</td><td>workflow_step_id</td><td>raw</td><td>0</td><td></td></tr><tr><td>WorkflowSteps</td><td>name</td><td>calculated</td><td></td><td>=SUBSTITUTE(LOWER({{DisplayName}}), &quot; &quot;, &quot;-&quot;)</td></tr><tr><td>WorkflowSteps</td><td>display_name</td><td>raw</td><td>0</td><td></td></tr><tr><td>WorkflowSteps</td><td>workflow</td><td>relationship</td><td></td><td></td></tr><tr><td>WorkflowSteps</td><td>sequence_position</td><td>raw</td><td>0</td><td></td></tr><tr><td>WorkflowSteps</td><td>assigned_role</td><td>relationship</td><td></td><td></td></tr><tr><td>WorkflowSteps</td><td>requires_human_approval</td><td>raw</td><td>0</td><td></td></tr><tr><td>WorkflowSteps</td><td>approval_gate</td><td>relationship</td><td></td><td></td></tr><tr><td>WorkflowSteps</td><td>preceded_by_steps</td><td>relationship</td><td></td><td></td></tr><tr><td>ApprovalGates</td><td>approval_gate_id</td><td>raw</td><td>0</td><td></td></tr><tr><td>ApprovalGates</td><td>name</td><td>calculated</td><td></td><td>=SUBSTITUTE(LOWER({{DisplayName}}), &quot; &quot;, &quot;-&quot;)</td></tr><tr><td>ApprovalGates</td><td>display_name</td><td>raw</td><td>0</td><td></td></tr><tr><td>ApprovalGates</td><td>workflow_steps</td><td>relationship</td><td></td><td></td></tr><tr><td>ApprovalGates</td><td>escalation_threshold_hours</td><td>raw</td><td>0</td><td></td></tr><tr><td>PrecedesSteps</td><td>precedes_step_id</td><td>raw</td><td>0</td><td></td></tr><tr><td>PrecedesSteps</td><td>name</td><td>raw</td><td>0</td><td></td></tr><tr><td>PrecedesSteps</td><td>display_name</td><td>calculated</td><td></td><td>=&quot;Step-&quot; &amp; {{StepNumber}}</td></tr><tr><td>PrecedesSteps</td><td>step_number</td><td>raw</td><td>0</td><td></td></tr><tr><td>PrecedesSteps</td><td>workflow_step</td><td>relationship</td><td></td><td></td></tr><tr><td>Roles</td><td>role_id</td><td>raw</td><td>0</td><td></td></tr><tr><td>Roles</td><td>name</td><td>calculated</td><td></td><td>=LOWER({{DisplayName}})</td></tr><tr><td>Roles</td><td>display_name</td><td>raw</td><td>0</td><td></td></tr><tr><td>Roles</td><td>label</td><td>raw</td><td>0</td><td></td></tr><tr><td>Roles</td><td>comment</td><td>raw</td><td>0</td><td></td></tr><tr><td>Roles</td><td>filled_by_human_agent</td><td>relationship</td><td></td><td></td></tr><tr><td>Roles</td><td>filled_by_ai_agent</td><td>relationship</td><td></td><td></td></tr><tr><td>Roles</td><td>filled_by_automated_pipeline</td><td>relationship</td><td></td><td></td></tr><tr><td>Roles</td><td>owned_by</td><td>relationship</td><td></td><td></td></tr><tr><td>Roles</td><td>delegates_to</td><td>relationship</td><td></td><td></td></tr><tr><td>Roles</td><td>workflow_steps</td><td>relationship</td><td></td><td></td></tr><tr><td>Roles</td><td>from_delegates_to</td><td>relationship</td><td></td><td></td></tr><tr><td>Departments</td><td>department_id</td><td>raw</td><td>0</td><td></td></tr><tr><td>Departments</td><td>name</td><td>calculated</td><td></td><td>=SUBSTITUTE(LOWER({{DisplayName}}), &quot; &quot;, &quot;-&quot;)</td></tr><tr><td>Departments</td><td>title</td><td>raw</td><td>0</td><td></td></tr><tr><td>Departments</td><td>display_name</td><td>raw</td><td>0</td><td></td></tr><tr><td>Departments</td><td>roles</td><td>relationship</td><td></td><td></td></tr><tr><td>HumanAgents</td><td>human_agent_id</td><td>raw</td><td>0</td><td></td></tr><tr><td>HumanAgents</td><td>name</td><td>raw</td><td>0</td><td></td></tr><tr><td>HumanAgents</td><td>display_name</td><td>raw</td><td>0</td><td></td></tr><tr><td>HumanAgents</td><td>mbox</td><td>raw</td><td>0</td><td></td></tr></tbody></table><p class="truncated">Showing 50 of 62 rows</p></div>
+            </div>
+        </div>
+    </main>
+    <script>
+const themeToggle = document.getElementById('theme-toggle');
+const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+function getInitialTheme() { try { if (window.parent && window.parent.document.documentElement.dataset.theme) return window.parent.document.documentElement.dataset.theme; } catch (e) {} return prefersDark ? 'dark' : 'light'; }
+document.documentElement.dataset.theme = getInitialTheme();
+themeToggle.addEventListener('click', () => { document.documentElement.dataset.theme = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark'; });
+window.addEventListener('message', (event) => { if (event.data.type === 'theme-change') document.documentElement.dataset.theme = event.data.theme; });
+document.querySelectorAll('.tab').forEach(tab => { tab.addEventListener('click', () => { document.querySelectorAll('.tab').forEach(t => t.classList.remove('active')); document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active')); tab.classList.add('active'); document.getElementById(tab.dataset.tab).classList.add('active'); }); });
+    </script>
+</body>
+</html>
