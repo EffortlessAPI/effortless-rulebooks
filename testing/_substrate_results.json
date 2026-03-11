@@ -166,12 +166,12 @@
   "binary": {
     "last_run": {
       "status": "success",
-      "duration_seconds": 0.29781126976013184,
+      "duration_seconds": 0.6231832504272461,
       "exit_code": 0,
       "score": 100.0
     },
     "last_successful_run": {
-      "duration_seconds": 0.29781126976013184,
+      "duration_seconds": 0.6231832504272461,
       "status": "success",
       "test_results": {
         "total_fields_tested": 3,

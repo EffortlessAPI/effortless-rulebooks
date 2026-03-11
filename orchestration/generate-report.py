@@ -310,7 +310,6 @@ def load_substrate_report_content(substrate_name: str) -> dict:
             html_content = f.read()
 
         # Parse tabs: <button class="tab..." data-tab="...">Label</button>
-        import re
         tabs = []
         tab_pattern = r'<button[^>]*class="tab[^"]*"[^>]*data-tab="([^"]+)"[^>]*>([^<]+)</button>'
         for match in re.finditer(tab_pattern, html_content):
@@ -318,21 +317,38 @@ def load_substrate_report_content(substrate_name: str) -> dict:
             tab_label = match.group(2).strip()
             tabs.append({"id": tab_id, "label": tab_label})
 
-        # Parse tab contents: <div id="tab_id" class="tab-content...">...</div>
+        # Parse tab contents using balanced div matching
         contents = {}
         for tab in tabs:
             tab_id = tab["id"]
-            # Find the content div for this tab
-            content_pattern = rf'<div\s+id="{tab_id}"\s+class="tab-content[^"]*"[^>]*>(.*?)</div>\s*(?=<div\s+id="|\s*</main>|\s*<script>)'
-            content_match = re.search(content_pattern, html_content, re.DOTALL)
-            if content_match:
-                contents[tab_id] = content_match.group(1).strip()
-            else:
-                # Try a simpler approach - find the div and capture until next major element
-                simple_pattern = rf'<div\s+id="{tab_id}"\s+class="tab-content[^"]*">([\s\S]*?)</div>\s*<div\s+id='
-                simple_match = re.search(simple_pattern, html_content)
-                if simple_match:
-                    contents[tab_id] = simple_match.group(1).strip()
+            # Find the start of this tab's content div
+            start_pattern = rf'<div\s+id="{tab_id}"\s+class="tab-content[^"]*"[^>]*>'
+            start_match = re.search(start_pattern, html_content)
+            if not start_match:
+                continue
+
+            # Find the matching closing </div> by counting nesting
+            start_pos = start_match.end()
+            depth = 1
+            pos = start_pos
+            while depth > 0 and pos < len(html_content):
+                # Find next <div or </div>
+                next_open = html_content.find('<div', pos)
+                next_close = html_content.find('</div>', pos)
+
+                if next_close == -1:
+                    break
+
+                if next_open != -1 and next_open < next_close:
+                    # Check if it's actually a div tag (not just containing "div")
+                    if html_content[next_open:next_open+5] in ('<div ', '<div>'):
+                        depth += 1
+                    pos = next_open + 4
+                else:
+                    depth -= 1
+                    if depth == 0:
+                        contents[tab_id] = html_content[start_pos:next_close].strip()
+                    pos = next_close + 6
 
         return {"tabs": tabs, "contents": contents}
     except Exception as e:
@@ -529,8 +545,8 @@ def generate_html(data: dict) -> str:
 
     <nav class="tabs" id="main-tabs">
         <button class="tab active" data-tab="overview">Overview</button>
+        <button class="tab" data-tab="substrates">Conformance Test Results</button>
         <button class="tab" data-tab="entities">Entities</button>
-        <button class="tab" data-tab="substrates">Substrates</button>
     </nav>
 
     <main>
@@ -540,7 +556,7 @@ def generate_html(data: dict) -> str:
                     <div class="stat-value" id="passing-count">
                         {data["summary"]["passing_substrates"]} / {data["summary"]["total_substrates"]}
                     </div>
-                    <div class="stat-label">Substrates Passing</div>
+                    <div class="stat-label">Tests Passing</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-value score-{get_score_class(data["summary"]["overall_score"])}">
@@ -562,12 +578,12 @@ def generate_html(data: dict) -> str:
                 </div>
             </div>
 
-            <h2>Substrates</h2>
+            <h2>Conformance Test Results</h2>
             <div class="substrate-links">
                 {generate_substrate_links(data)}
             </div>
 
-            <h2>Substrate Health Matrix</h2>
+            <h2>Conformance Test Matrix</h2>
             <div class="matrix-container">
                 <table class="health-matrix" id="health-matrix">
                     <thead>
@@ -586,18 +602,18 @@ def generate_html(data: dict) -> str:
             </div>
         </section>
 
-        <section id="entities" class="tab-content">
-            <nav class="sub-tabs" id="entity-tabs">
-                {generate_entity_tabs(data)}
-            </nav>
-            <div id="entity-details"></div>
-        </section>
-
         <section id="substrates" class="tab-content">
             <nav class="sub-tabs" id="substrate-tabs">
                 {generate_substrate_tabs(data)}
             </nav>
             <div id="substrate-details"></div>
+        </section>
+
+        <section id="entities" class="tab-content">
+            <nav class="sub-tabs" id="entity-tabs">
+                {generate_entity_tabs(data)}
+            </nav>
+            <div id="entity-details"></div>
         </section>
 
     </main>
@@ -1568,17 +1584,31 @@ themeToggle.addEventListener('click', () => {
 });
 
 // URL-BASED ROUTING
+// Hash format: tab/substrate/viewTab/entity
 function parseUrlHash() {
     const hash = window.location.hash.slice(1);
-    if (!hash) return { tab: 'overview', item: null };
+    if (!hash) return { tab: 'overview', item: null, viewTab: null, entity: null };
     const parts = hash.split('/');
-    return { tab: parts[0] || 'overview', item: parts[1] ? decodeURIComponent(parts[1]) : null };
+    return {
+        tab: parts[0] || 'overview',
+        item: parts[1] ? decodeURIComponent(parts[1]) : null,
+        viewTab: parts[2] ? decodeURIComponent(parts[2]) : null,
+        entity: parts[3] ? decodeURIComponent(parts[3]) : null
+    };
 }
 
-function updateUrlHash(tab, item = null) {
-    const hash = item ? `${tab}/${encodeURIComponent(item)}` : tab;
+function updateUrlHash(tab, item = null, viewTab = null, entity = null) {
+    let hash = tab;
+    if (item) hash += '/' + encodeURIComponent(item);
+    if (viewTab) hash += '/' + encodeURIComponent(viewTab);
+    if (entity) hash += '/' + encodeURIComponent(entity);
     history.replaceState(null, '', `#${hash}`);
 }
+
+// Track current substrate state for URL updates
+let currentSubstrateName = null;
+let currentViewTab = 'data';
+let currentEntityInView = null;
 
 window.addEventListener('hashchange', () => {
     const state = parseUrlHash();
@@ -1586,7 +1616,7 @@ window.addEventListener('hashchange', () => {
 });
 
 function navigateToState(state, updateUrl = true) {
-    const { tab, item } = state;
+    const { tab, item, viewTab, entity } = state;
     mainTabs.forEach(t => t.classList.remove('active'));
     tabContents.forEach(c => c.classList.remove('active'));
 
@@ -1595,16 +1625,18 @@ function navigateToState(state, updateUrl = true) {
     document.getElementById(tab)?.classList.add('active');
 
     if (tab === 'entities' && item) selectEntityTabNoUrl(item);
-    else if (tab === 'substrates' && item) selectSubstrateTabNoUrl(item);
+    else if (tab === 'substrates' && item) {
+        selectSubstrateTabNoUrl(item, viewTab, entity);
+    }
     else if (tab === 'entities') {
         const entities = Object.keys(REPORT_DATA.entities).sort();
         if (entities.length > 0) selectEntityTabNoUrl(entities[0]);
     } else if (tab === 'substrates') {
         const substrates = Object.keys(REPORT_DATA.substrates).sort();
-        if (substrates.length > 0) selectSubstrateTabNoUrl(substrates[0]);
+        if (substrates.length > 0) selectSubstrateTabNoUrl(substrates[0], viewTab, entity);
     }
 
-    if (updateUrl) updateUrlHash(tab, item);
+    if (updateUrl) updateUrlHash(tab, item, viewTab, entity);
 }
 
 const mainTabs = document.querySelectorAll('#main-tabs .tab');
@@ -1617,14 +1649,23 @@ mainTabs.forEach(tab => {
         tabContents.forEach(c => c.classList.remove('active'));
         tab.classList.add('active');
         document.getElementById(tabId)?.classList.add('active');
-        updateUrlHash(tabId);
 
         if (tabId === 'entities') {
             const entities = Object.keys(REPORT_DATA.entities).sort();
             if (entities.length > 0) selectEntityTab(entities[0]);
+            updateUrlHash(tabId);
         } else if (tabId === 'substrates') {
+            // Remember last substrate and view tab when returning to this tab
             const substrates = Object.keys(REPORT_DATA.substrates).sort();
-            if (substrates.length > 0) selectSubstrateTab(substrates[0]);
+            const substrateToShow = currentSubstrateName && substrates.includes(currentSubstrateName)
+                ? currentSubstrateName
+                : substrates[0];
+            if (substrateToShow) {
+                selectSubstrateTabNoUrl(substrateToShow, currentViewTab, currentEntityInView);
+                updateUrlHash('substrates', substrateToShow, currentViewTab, currentEntityInView);
+            }
+        } else {
+            updateUrlHash(tabId);
         }
     });
 });
@@ -1807,16 +1848,40 @@ if (entityTabs.length > 0 && REPORT_DATA.entities) {
 const substrateTabs = document.querySelectorAll('#substrate-tabs .sub-tab');
 const substrateDetails = document.getElementById('substrate-details');
 
-function selectSubstrateTabNoUrl(substrateName) {
+// Shared tabs that exist on all substrates - preserve these when switching
+const SHARED_VIEW_TABS = ['data', 'schema', 'dynamic-description', 'dynamic-log', 'dynamic-results'];
+
+function isSharedViewTab(viewTab) {
+    return SHARED_VIEW_TABS.includes(viewTab);
+}
+
+function selectSubstrateTabNoUrl(substrateName, viewTab = null, entity = null) {
     substrateTabs.forEach(t => t.classList.remove('active'));
     const targetTab = document.querySelector(`#substrate-tabs .sub-tab[data-substrate="${substrateName}"]`);
     if (targetTab) targetTab.classList.add('active');
-    renderSubstrateDetails(substrateName);
+    currentSubstrateName = substrateName;
+    // If no viewTab specified, keep current if it's shared, otherwise default to 'data'
+    if (viewTab) {
+        currentViewTab = viewTab;
+    } else if (!isSharedViewTab(currentViewTab)) {
+        currentViewTab = 'data';
+    }
+    // Keep currentViewTab as-is if it's a shared tab
+    currentEntityInView = entity !== null ? entity : currentEntityInView;
+    renderSubstrateDetails(substrateName, currentViewTab, currentEntityInView);
 }
 
 function selectSubstrateTab(substrateName) {
-    selectSubstrateTabNoUrl(substrateName);
-    updateUrlHash('substrates', substrateName);
+    // Preserve shared view tab when switching substrates
+    const viewTabToUse = isSharedViewTab(currentViewTab) ? currentViewTab : 'data';
+    selectSubstrateTabNoUrl(substrateName, viewTabToUse, currentEntityInView);
+    updateUrlHash('substrates', substrateName, currentViewTab, currentEntityInView);
+}
+
+function updateSubstrateUrl() {
+    if (currentSubstrateName) {
+        updateUrlHash('substrates', currentSubstrateName, currentViewTab, currentEntityInView);
+    }
 }
 
 function getScoreClass(score) {
@@ -1826,10 +1891,7 @@ function getScoreClass(score) {
     return 'danger';
 }
 
-// Track current entity within substrate view
-let currentSubstrateEntity = null;
-
-function renderSubstrateDetails(substrateName) {
+function renderSubstrateDetails(substrateName, restoreViewTab = null, restoreEntity = null) {
     const substrate = REPORT_DATA.substrates[substrateName];
     if (!substrate) { substrateDetails.innerHTML = '<p>Substrate not found</p>'; return; }
 
@@ -1987,23 +2049,53 @@ function renderSubstrateDetails(substrateName) {
         loadSubstrateTabs(substrateName);
     }
 
-    // Attach handlers to view tabs
+    // Attach handlers to view tabs with URL tracking
     attachViewTabHandlers();
 
-    // Attach handlers to entity tabs
+    // Attach handlers to entity tabs with URL tracking
     document.querySelectorAll('#substrate-entity-tabs .sub-tab').forEach(tab => {
         tab.addEventListener('click', () => {
             document.querySelectorAll('#substrate-entity-tabs .sub-tab').forEach(t => t.classList.remove('active'));
             tab.classList.add('active');
-            currentSubstrateEntity = tab.dataset.entity;
+            currentEntityInView = tab.dataset.entity;
             renderSubstrateEntityContent(substrateName, tab.dataset.entity);
+            updateSubstrateUrl();
         });
     });
 
-    // Render first entity in data view
-    if (entitiesWithResults.length > 0) {
-        currentSubstrateEntity = entitiesWithResults[0];
-        renderSubstrateEntityContent(substrateName, entitiesWithResults[0]);
+    // Restore view tab from URL if provided, or fall back to 'data'
+    if (restoreViewTab) {
+        const viewTabBtn = document.querySelector(`#substrate-view-tabs .sub-tab[data-view="${restoreViewTab}"]`);
+        if (viewTabBtn) {
+            document.querySelectorAll('#substrate-view-tabs .sub-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.substrate-view').forEach(v => v.classList.remove('active'));
+            viewTabBtn.classList.add('active');
+            document.getElementById(`substrate-${restoreViewTab}-view`)?.classList.add('active');
+            currentViewTab = restoreViewTab;
+        } else {
+            // Tab doesn't exist on this substrate, fall back to 'data'
+            currentViewTab = 'data';
+            // Data tab is already active by default from the HTML
+        }
+    }
+
+    // Determine which entity to show
+    let entityToShow = null;
+    if (restoreEntity && entitiesWithResults.includes(restoreEntity)) {
+        entityToShow = restoreEntity;
+    } else if (entitiesWithResults.length > 0) {
+        entityToShow = entitiesWithResults[0];
+    }
+
+    // Restore entity tab from URL or default to first
+    if (entityToShow) {
+        const entityTabBtn = document.querySelector(`#substrate-entity-tabs .sub-tab[data-entity="${entityToShow}"]`);
+        if (entityTabBtn) {
+            document.querySelectorAll('#substrate-entity-tabs .sub-tab').forEach(t => t.classList.remove('active'));
+            entityTabBtn.classList.add('active');
+        }
+        currentEntityInView = entityToShow;
+        renderSubstrateEntityContent(substrateName, entityToShow);
     }
 }
 
@@ -2123,6 +2215,8 @@ function attachViewTabHandlers() {
             tab.classList.add('active');
             const view = tab.dataset.view;
             document.getElementById(`substrate-${view}-view`)?.classList.add('active');
+            currentViewTab = view;
+            updateSubstrateUrl();
         });
     });
 }
