@@ -1308,6 +1308,18 @@ footer {
     margin-right: 0.25rem;
 }
 
+/* Raw fact cells - no special styling, just display the value */
+.graded-test-table .cell-raw {
+    font-family: monospace;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+}
+
+/* Computed column highlighting - adds subtle accent border */
+.graded-test-table td.computed {
+    border-left: 2px solid var(--accent-color);
+}
+
 /* Tooltip for full text on hover */
 [title] { cursor: help; }
 
@@ -1663,26 +1675,38 @@ function renderEntitySubstrateDetails(entityName, substrateName) {
         entityGrades.failures.forEach(f => { failureLookup[`${f.pk}|${f.field}`] = f; });
     }
 
+    // Get all columns from the schema to preserve proper order (not from answer_key which may be unordered)
+    const schemaFields = entity.schema ? entity.schema.map(f => f.name.replace(/([A-Z])/g, (m, c, i) => i > 0 ? '_' + c.toLowerCase() : c.toLowerCase())) : [];
+    const allCols = schemaFields.length > 0 ? schemaFields : (answerKey.length > 0 ? Object.keys(answerKey[0]) : []);
+
     let html = '<div class="table-scroll"><table class="graded-test-table"><thead><tr>';
-    html += `<th>Record</th>`;
-    computedCols.forEach(col => { html += `<th class="computed-col-header">${escapeHtml(col)}</th>`; });
+    allCols.forEach(col => {
+        const isComputed = computedCols.includes(col);
+        html += `<th class="${isComputed ? 'computed-col-header' : ''}">${escapeHtml(col)}</th>`;
+    });
     html += '</tr></thead><tbody>';
 
     answerKey.forEach(record => {
         const pkVal = record[pk];
-        html += `<tr><td class="record-pk" title="${escapeHtml(String(pkVal))}">${escapeHtml(String(pkVal))}</td>`;
-        computedCols.forEach(col => {
-            const expectedVal = record[col];
+        html += '<tr>';
+        allCols.forEach(col => {
+            const isComputed = computedCols.includes(col);
+            const val = record[col];
             const failKey = `${pkVal}|${col}`;
             const failure = failureLookup[failKey];
-            if (failure) {
-                html += `<td class="cell-failed" title="Expected: ${escapeHtml(String(failure.expected))}&#10;Actual: ${escapeHtml(String(failure.actual))}">
+
+            if (isComputed && failure) {
+                html += `<td class="cell-failed computed" title="Expected: ${escapeHtml(String(failure.expected))}&#10;Actual: ${escapeHtml(String(failure.actual))}">
                     <span class="expected-actual"><span class="expected-label">E:</span><code class="expected">${escapeHtml(String(failure.expected))}</code></span>
                     <span class="expected-actual"><span class="actual-label">A:</span><code class="actual">${escapeHtml(String(failure.actual))}</code></span>
                 </td>`;
+            } else if (isComputed) {
+                const valStr = val !== null ? String(val) : 'null';
+                html += `<td class="cell-passed computed" title="${escapeHtml(valStr)}"><span class="check-mark">&#10003;</span><code>${escapeHtml(valStr)}</code></td>`;
             } else {
-                const valStr = String(expectedVal);
-                html += `<td class="cell-passed" title="${escapeHtml(valStr)}"><span class="check-mark">&#10003;</span><code>${escapeHtml(valStr)}</code></td>`;
+                // Raw fact - just display the value without pass/fail styling
+                const valStr = val !== null ? String(val) : 'null';
+                html += `<td class="cell-raw" title="${escapeHtml(valStr)}">${escapeHtml(valStr)}</td>`;
             }
         });
         html += '</tr>';
@@ -1938,27 +1962,39 @@ function renderSubstrateEntityContent(substrateName, entityName) {
         entityGrades.failures.forEach(f => { failureLookup[`${f.pk}|${f.field}`] = f; });
     }
 
-    // Graded test table
+    // Graded test table - show ALL columns with computed ones highlighted
+    // Get all columns from the schema to preserve proper order (not from answer_key which may be unordered)
+    const schemaFields = entity.schema ? entity.schema.map(f => f.name.replace(/([A-Z])/g, (m, c, i) => i > 0 ? '_' + c.toLowerCase() : c.toLowerCase())) : [];
+    const allCols = schemaFields.length > 0 ? schemaFields : (answerKey.length > 0 ? Object.keys(answerKey[0]) : []);
+
     html += '<div class="table-scroll"><table class="graded-test-table"><thead><tr>';
-    html += `<th>Record</th>`;
-    computedCols.forEach(col => { html += `<th class="computed-col-header">${escapeHtml(col)}</th>`; });
+    allCols.forEach(col => {
+        const isComputed = computedCols.includes(col);
+        html += `<th class="${isComputed ? 'computed-col-header' : ''}">${escapeHtml(col)}</th>`;
+    });
     html += '</tr></thead><tbody>';
 
     answerKey.forEach(record => {
         const pkVal = record[pk];
-        html += `<tr><td class="record-pk" title="${escapeHtml(String(pkVal))}">${escapeHtml(String(pkVal))}</td>`;
-        computedCols.forEach(col => {
-            const expectedVal = record[col];
+        html += '<tr>';
+        allCols.forEach(col => {
+            const isComputed = computedCols.includes(col);
+            const val = record[col];
             const failKey = `${pkVal}|${col}`;
             const failure = failureLookup[failKey];
-            if (failure) {
-                html += `<td class="cell-failed" title="Expected: ${escapeHtml(String(failure.expected))}&#10;Actual: ${escapeHtml(String(failure.actual))}">
+
+            if (isComputed && failure) {
+                html += `<td class="cell-failed computed" title="Expected: ${escapeHtml(String(failure.expected))}&#10;Actual: ${escapeHtml(String(failure.actual))}">
                     <span class="expected-actual"><span class="expected-label">E:</span><code class="expected">${escapeHtml(String(failure.expected))}</code></span>
                     <span class="expected-actual"><span class="actual-label">A:</span><code class="actual">${escapeHtml(String(failure.actual))}</code></span>
                 </td>`;
+            } else if (isComputed) {
+                const valStr = val !== null ? String(val) : 'null';
+                html += `<td class="cell-passed computed" title="${escapeHtml(valStr)}"><span class="check-mark">&#10003;</span><code>${escapeHtml(valStr)}</code></td>`;
             } else {
-                const valStr = String(expectedVal);
-                html += `<td class="cell-passed" title="${escapeHtml(valStr)}"><span class="check-mark">&#10003;</span><code>${escapeHtml(valStr)}</code></td>`;
+                // Raw fact - just display the value without pass/fail styling
+                const valStr = val !== null ? String(val) : 'null';
+                html += `<td class="cell-raw" title="${escapeHtml(valStr)}">${escapeHtml(valStr)}</td>`;
             }
         });
         html += '</tr>';

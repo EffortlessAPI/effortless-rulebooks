@@ -29,7 +29,7 @@ from enum import Enum, auto
 # Add project root to path for shared imports
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 
-from orchestration.shared import load_rulebook
+from orchestration.shared import load_rulebook, compute_aggregations
 
 # Add Python substrate directory to path for shared library
 script_dir = Path(__file__).parent.resolve()
@@ -701,10 +701,15 @@ def topological_sort_constraints(class_constraints: Dict[str, str]) -> List[tupl
 # =============================================================================
 
 def process_entity(input_path: str, output_path: str, entity_name: str,
-                   all_constraints: Dict[str, Dict[str, str]]) -> int:
+                   all_constraints: Dict[str, Dict[str, str]],
+                   rulebook: dict = None, project_root: Path = None) -> int:
     """Process a single entity file using OCL interpreter."""
     with open(input_path, 'r', encoding='utf-8') as f:
         records = json.load(f)
+
+    # Compute aggregation fields first (e.g., COUNTIFS)
+    if rulebook is not None and project_root is not None:
+        records = compute_aggregations(records, entity_name, rulebook, project_root)
 
     # Convert entity name to PascalCase for OCL class lookup
     class_name = snake_to_pascal(entity_name)
@@ -752,6 +757,13 @@ def run_multi_entity():
         print(f"Error: {blank_tests_dir} not found")
         sys.exit(1)
 
+    # Load rulebook for aggregation computation
+    try:
+        rulebook = load_rulebook()
+    except FileNotFoundError as e:
+        print(f"Warning: Could not load rulebook for aggregations: {e}")
+        rulebook = None
+
     # Load OCL constraints
     ocl_path = script_dir / "constraints.ocl"
     if not ocl_path.exists():
@@ -784,7 +796,8 @@ def run_multi_entity():
         entity = filename.replace('.json', '')
         output_path = test_answers_dir / filename
 
-        count = process_entity(input_path, str(output_path), entity, all_constraints)
+        count = process_entity(input_path, str(output_path), entity, all_constraints,
+                               rulebook, project_root)
         total_records += count
         entity_count += 1
 

@@ -528,6 +528,18 @@ footer {
     margin-right: 0.25rem;
 }
 
+/* Raw fact cells - no special styling, just display the value */
+.graded-test-table .cell-raw {
+    font-family: monospace;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+}
+
+/* Computed column highlighting - adds subtle accent border */
+.graded-test-table td.computed {
+    border-left: 2px solid var(--accent-color);
+}
+
 /* Tooltip for full text on hover */
 [title] { cursor: help; }
 
@@ -671,7 +683,7 @@ footer {
                 </div>
                 <div class="stat-card">
                     <div class="stat-value">
-                        1458.0s
+                        214.5s
                     </div>
                     <div class="stat-label">Total Runtime</div>
                 </div>
@@ -687,11 +699,11 @@ footer {
             <div class="substrate-links">
                 <a href="#" class="substrate-link score-perfect" data-substrate="postgres">postgres (answer-key): 100%</a>
                     <a href="#" class="substrate-link score-perfect" data-substrate="python">python: 100%</a>
-                    <a href="#" class="substrate-link score-perfect" data-substrate="explain-dag">explain-dag: 100%</a>
                     <a href="#" class="substrate-link score-perfect" data-substrate="uml">uml: 100%</a>
+                    <a href="#" class="substrate-link score-perfect" data-substrate="explain-dag">explain-dag: 100%</a>
                     <a href="#" class="substrate-link score-perfect" data-substrate="yaml">yaml: 100%</a>
-                    <a href="#" class="substrate-link score-perfect" data-substrate="golang">golang: 100%</a>
                     <a href="#" class="substrate-link score-perfect" data-substrate="csv">csv: 100%</a>
+                    <a href="#" class="substrate-link score-perfect" data-substrate="golang">golang: 100%</a>
                     <a href="#" class="substrate-link score-perfect" data-substrate="binary">binary: 100%</a>
                     <a href="#" class="substrate-link score-perfect" data-substrate="xlsx">xlsx: 100%</a>
                     <a href="#" class="substrate-link score-perfect" data-substrate="owl">owl: 100%</a>
@@ -716,17 +728,17 @@ footer {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="answer-key-row"><td class="substrate-name substrate-row-link" data-substrate="postgres">postgres (answer-key)</td><td class="cell-answer-key" data-substrate="postgres" data-entity="approval_gates" title="11/11">&#9733;</td><td class="cell-answer-key" data-substrate="postgres" data-entity="departments" title="15/15">&#9733;</td><td class="cell-answer-key" data-substrate="postgres" data-entity="precedes_steps" title="16/16">&#9733;</td><td class="cell-answer-key" data-substrate="postgres" data-entity="roles" title="15/15">&#9733;</td><td class="cell-answer-key" data-substrate="postgres" data-entity="workflow_steps" title="16/16">&#9733;</td><td class="cell-answer-key" data-substrate="postgres" data-entity="workflows" title="30/30">&#9733;</td><td class="score-cell score-perfect">100%</td><td class="time-cell">0.0s</td></tr>
-                        <tr class=""><td class="substrate-name substrate-row-link" data-substrate="python">python</td><td class="cell-pass" data-substrate="python" data-entity="approval_gates" title="11/11">&#10003;</td><td class="cell-pass" data-substrate="python" data-entity="departments" title="15/15">&#10003;</td><td class="cell-pass" data-substrate="python" data-entity="precedes_steps" title="16/16">&#10003;</td><td class="cell-pass" data-substrate="python" data-entity="roles" title="15/15">&#10003;</td><td class="cell-pass" data-substrate="python" data-entity="workflow_steps" title="16/16">&#10003;</td><td class="cell-pass" data-substrate="python" data-entity="workflows" title="30/30">&#10003;</td><td class="score-cell score-perfect">100.0%</td><td class="time-cell">0.1s</td></tr>
-                        <tr class=""><td class="substrate-name substrate-row-link" data-substrate="explain-dag">explain-dag</td><td class="cell-pass" data-substrate="explain-dag" data-entity="approval_gates" title="11/11">&#10003;</td><td class="cell-pass" data-substrate="explain-dag" data-entity="departments" title="15/15">&#10003;</td><td class="cell-pass" data-substrate="explain-dag" data-entity="precedes_steps" title="16/16">&#10003;</td><td class="cell-pass" data-substrate="explain-dag" data-entity="roles" title="15/15">&#10003;</td><td class="cell-pass" data-substrate="explain-dag" data-entity="workflow_steps" title="16/16">&#10003;</td><td class="cell-pass" data-substrate="explain-dag" data-entity="workflows" title="30/30">&#10003;</td><td class="score-cell score-perfect">100.0%</td><td class="time-cell">0.1s</td></tr>
-                        <tr class=""><td class="substrate-name substrate-row-link" data-substrate="uml">uml</td><td class="cell-pass" data-substrate="uml" data-entity="approval_gates" title="11/11">&#10003;</td><td class="cell-pass" data-substrate="uml" data-entity="departments" title="15/15">&#10003;</td><td class="cell-pass" data-substrate="uml" data-entity="precedes_steps" title="16/16">&#10003;</td><td class="cell-pass" data-substrate="uml" data-entity="roles" title="15/15">&#10003;</td><td class="cell-pass" data-substrate="uml" data-entity="workflow_steps" title="16/16">&#10003;</td><td class="cell-pass" data-substrate="uml" data-entity="workflows" title="30/30">&#10003;</td><td class="score-cell score-perfect">100.0%</td><td class="time-cell">0.1s</td></tr>
-                        <tr class=""><td class="substrate-name substrate-row-link" data-substrate="yaml">yaml</td><td class="cell-pass" data-substrate="yaml" data-entity="approval_gates" title="11/11">&#10003;</td><td class="cell-pass" data-substrate="yaml" data-entity="departments" title="15/15">&#10003;</td><td class="cell-pass" data-substrate="yaml" data-entity="precedes_steps" title="16/16">&#10003;</td><td class="cell-pass" data-substrate="yaml" data-entity="roles" title="15/15">&#10003;</td><td class="cell-pass" data-substrate="yaml" data-entity="workflow_steps" title="16/16">&#10003;</td><td class="cell-pass" data-substrate="yaml" data-entity="workflows" title="30/30">&#10003;</td><td class="score-cell score-perfect">100.0%</td><td class="time-cell">0.1s</td></tr>
-                        <tr class=""><td class="substrate-name substrate-row-link" data-substrate="golang">golang</td><td class="cell-pass" data-substrate="golang" data-entity="approval_gates" title="11/11">&#10003;</td><td class="cell-pass" data-substrate="golang" data-entity="departments" title="15/15">&#10003;</td><td class="cell-pass" data-substrate="golang" data-entity="precedes_steps" title="16/16">&#10003;</td><td class="cell-pass" data-substrate="golang" data-entity="roles" title="15/15">&#10003;</td><td class="cell-pass" data-substrate="golang" data-entity="workflow_steps" title="16/16">&#10003;</td><td class="cell-pass" data-substrate="golang" data-entity="workflows" title="30/30">&#10003;</td><td class="score-cell score-perfect">100.0%</td><td class="time-cell">0.2s</td></tr>
-                        <tr class=""><td class="substrate-name substrate-row-link" data-substrate="csv">csv</td><td class="cell-pass" data-substrate="csv" data-entity="approval_gates" title="11/11">&#10003;</td><td class="cell-pass" data-substrate="csv" data-entity="departments" title="15/15">&#10003;</td><td class="cell-pass" data-substrate="csv" data-entity="precedes_steps" title="16/16">&#10003;</td><td class="cell-pass" data-substrate="csv" data-entity="roles" title="15/15">&#10003;</td><td class="cell-pass" data-substrate="csv" data-entity="workflow_steps" title="16/16">&#10003;</td><td class="cell-pass" data-substrate="csv" data-entity="workflows" title="30/30">&#10003;</td><td class="score-cell score-perfect">100.0%</td><td class="time-cell">0.3s</td></tr>
-                        <tr class=""><td class="substrate-name substrate-row-link" data-substrate="binary">binary</td><td class="cell-pass" data-substrate="binary" data-entity="approval_gates" title="11/11">&#10003;</td><td class="cell-pass" data-substrate="binary" data-entity="departments" title="15/15">&#10003;</td><td class="cell-pass" data-substrate="binary" data-entity="precedes_steps" title="16/16">&#10003;</td><td class="cell-pass" data-substrate="binary" data-entity="roles" title="15/15">&#10003;</td><td class="cell-pass" data-substrate="binary" data-entity="workflow_steps" title="16/16">&#10003;</td><td class="cell-pass" data-substrate="binary" data-entity="workflows" title="30/30">&#10003;</td><td class="score-cell score-perfect">100.0%</td><td class="time-cell">0.4s</td></tr>
-                        <tr class=""><td class="substrate-name substrate-row-link" data-substrate="xlsx">xlsx</td><td class="cell-pass" data-substrate="xlsx" data-entity="approval_gates" title="11/11">&#10003;</td><td class="cell-pass" data-substrate="xlsx" data-entity="departments" title="15/15">&#10003;</td><td class="cell-pass" data-substrate="xlsx" data-entity="precedes_steps" title="16/16">&#10003;</td><td class="cell-pass" data-substrate="xlsx" data-entity="roles" title="15/15">&#10003;</td><td class="cell-pass" data-substrate="xlsx" data-entity="workflow_steps" title="16/16">&#10003;</td><td class="cell-pass" data-substrate="xlsx" data-entity="workflows" title="30/30">&#10003;</td><td class="score-cell score-perfect">100.0%</td><td class="time-cell">0.4s</td></tr>
-                        <tr class=""><td class="substrate-name substrate-row-link" data-substrate="owl">owl</td><td class="cell-pass" data-substrate="owl" data-entity="approval_gates" title="11/11">&#10003;</td><td class="cell-pass" data-substrate="owl" data-entity="departments" title="15/15">&#10003;</td><td class="cell-pass" data-substrate="owl" data-entity="precedes_steps" title="16/16">&#10003;</td><td class="cell-pass" data-substrate="owl" data-entity="roles" title="15/15">&#10003;</td><td class="cell-pass" data-substrate="owl" data-entity="workflow_steps" title="16/16">&#10003;</td><td class="cell-pass" data-substrate="owl" data-entity="workflows" title="30/30">&#10003;</td><td class="score-cell score-perfect">100.0%</td><td class="time-cell">10.0s</td></tr>
-                        <tr class=""><td class="substrate-name substrate-row-link" data-substrate="english">english</td><td class="cell-pass" data-substrate="english" data-entity="approval_gates" title="11/11">&#10003;</td><td class="cell-pass" data-substrate="english" data-entity="departments" title="15/15">&#10003;</td><td class="cell-pass" data-substrate="english" data-entity="precedes_steps" title="16/16">&#10003;</td><td class="cell-pass" data-substrate="english" data-entity="roles" title="15/15">&#10003;</td><td class="cell-pass" data-substrate="english" data-entity="workflow_steps" title="16/16">&#10003;</td><td class="cell-pass" data-substrate="english" data-entity="workflows" title="30/30">&#10003;</td><td class="score-cell score-perfect">100.0%</td><td class="time-cell">1446.4s</td></tr>
+                        <tr class="answer-key-row"><td class="substrate-name substrate-row-link" data-substrate="postgres">postgres (answer-key)</td><td class="cell-answer-key" data-substrate="postgres" data-entity="approval_gates" title="11/11">&#9733;</td><td class="cell-answer-key" data-substrate="postgres" data-entity="departments" title="15/15">&#9733;</td><td class="cell-answer-key" data-substrate="postgres" data-entity="precedes_steps" title="16/16">&#9733;</td><td class="cell-answer-key" data-substrate="postgres" data-entity="roles" title="15/15">&#9733;</td><td class="cell-answer-key" data-substrate="postgres" data-entity="workflow_steps" title="16/16">&#9733;</td><td class="cell-answer-key" data-substrate="postgres" data-entity="workflows" title="45/45">&#9733;</td><td class="score-cell score-perfect">100%</td><td class="time-cell">0.0s</td></tr>
+                        <tr class=""><td class="substrate-name substrate-row-link" data-substrate="python">python</td><td class="cell-pass" data-substrate="python" data-entity="approval_gates" title="11/11">&#10003;</td><td class="cell-pass" data-substrate="python" data-entity="departments" title="15/15">&#10003;</td><td class="cell-pass" data-substrate="python" data-entity="precedes_steps" title="16/16">&#10003;</td><td class="cell-pass" data-substrate="python" data-entity="roles" title="15/15">&#10003;</td><td class="cell-pass" data-substrate="python" data-entity="workflow_steps" title="16/16">&#10003;</td><td class="cell-pass" data-substrate="python" data-entity="workflows" title="45/45">&#10003;</td><td class="score-cell score-perfect">100.0%</td><td class="time-cell">0.1s</td></tr>
+                        <tr class=""><td class="substrate-name substrate-row-link" data-substrate="uml">uml</td><td class="cell-pass" data-substrate="uml" data-entity="approval_gates" title="11/11">&#10003;</td><td class="cell-pass" data-substrate="uml" data-entity="departments" title="15/15">&#10003;</td><td class="cell-pass" data-substrate="uml" data-entity="precedes_steps" title="16/16">&#10003;</td><td class="cell-pass" data-substrate="uml" data-entity="roles" title="15/15">&#10003;</td><td class="cell-pass" data-substrate="uml" data-entity="workflow_steps" title="16/16">&#10003;</td><td class="cell-pass" data-substrate="uml" data-entity="workflows" title="45/45">&#10003;</td><td class="score-cell score-perfect">100.0%</td><td class="time-cell">0.1s</td></tr>
+                        <tr class=""><td class="substrate-name substrate-row-link" data-substrate="explain-dag">explain-dag</td><td class="cell-pass" data-substrate="explain-dag" data-entity="approval_gates" title="11/11">&#10003;</td><td class="cell-pass" data-substrate="explain-dag" data-entity="departments" title="15/15">&#10003;</td><td class="cell-pass" data-substrate="explain-dag" data-entity="precedes_steps" title="16/16">&#10003;</td><td class="cell-pass" data-substrate="explain-dag" data-entity="roles" title="15/15">&#10003;</td><td class="cell-pass" data-substrate="explain-dag" data-entity="workflow_steps" title="16/16">&#10003;</td><td class="cell-pass" data-substrate="explain-dag" data-entity="workflows" title="45/45">&#10003;</td><td class="score-cell score-perfect">100.0%</td><td class="time-cell">0.1s</td></tr>
+                        <tr class=""><td class="substrate-name substrate-row-link" data-substrate="yaml">yaml</td><td class="cell-pass" data-substrate="yaml" data-entity="approval_gates" title="11/11">&#10003;</td><td class="cell-pass" data-substrate="yaml" data-entity="departments" title="15/15">&#10003;</td><td class="cell-pass" data-substrate="yaml" data-entity="precedes_steps" title="16/16">&#10003;</td><td class="cell-pass" data-substrate="yaml" data-entity="roles" title="15/15">&#10003;</td><td class="cell-pass" data-substrate="yaml" data-entity="workflow_steps" title="16/16">&#10003;</td><td class="cell-pass" data-substrate="yaml" data-entity="workflows" title="45/45">&#10003;</td><td class="score-cell score-perfect">100.0%</td><td class="time-cell">0.1s</td></tr>
+                        <tr class=""><td class="substrate-name substrate-row-link" data-substrate="csv">csv</td><td class="cell-pass" data-substrate="csv" data-entity="approval_gates" title="11/11">&#10003;</td><td class="cell-pass" data-substrate="csv" data-entity="departments" title="15/15">&#10003;</td><td class="cell-pass" data-substrate="csv" data-entity="precedes_steps" title="16/16">&#10003;</td><td class="cell-pass" data-substrate="csv" data-entity="roles" title="15/15">&#10003;</td><td class="cell-pass" data-substrate="csv" data-entity="workflow_steps" title="16/16">&#10003;</td><td class="cell-pass" data-substrate="csv" data-entity="workflows" title="45/45">&#10003;</td><td class="score-cell score-perfect">100.0%</td><td class="time-cell">0.2s</td></tr>
+                        <tr class=""><td class="substrate-name substrate-row-link" data-substrate="golang">golang</td><td class="cell-pass" data-substrate="golang" data-entity="approval_gates" title="11/11">&#10003;</td><td class="cell-pass" data-substrate="golang" data-entity="departments" title="15/15">&#10003;</td><td class="cell-pass" data-substrate="golang" data-entity="precedes_steps" title="16/16">&#10003;</td><td class="cell-pass" data-substrate="golang" data-entity="roles" title="15/15">&#10003;</td><td class="cell-pass" data-substrate="golang" data-entity="workflow_steps" title="16/16">&#10003;</td><td class="cell-pass" data-substrate="golang" data-entity="workflows" title="45/45">&#10003;</td><td class="score-cell score-perfect">100.0%</td><td class="time-cell">0.2s</td></tr>
+                        <tr class=""><td class="substrate-name substrate-row-link" data-substrate="binary">binary</td><td class="cell-pass" data-substrate="binary" data-entity="approval_gates" title="11/11">&#10003;</td><td class="cell-pass" data-substrate="binary" data-entity="departments" title="15/15">&#10003;</td><td class="cell-pass" data-substrate="binary" data-entity="precedes_steps" title="16/16">&#10003;</td><td class="cell-pass" data-substrate="binary" data-entity="roles" title="15/15">&#10003;</td><td class="cell-pass" data-substrate="binary" data-entity="workflow_steps" title="16/16">&#10003;</td><td class="cell-pass" data-substrate="binary" data-entity="workflows" title="45/45">&#10003;</td><td class="score-cell score-perfect">100.0%</td><td class="time-cell">0.4s</td></tr>
+                        <tr class=""><td class="substrate-name substrate-row-link" data-substrate="xlsx">xlsx</td><td class="cell-pass" data-substrate="xlsx" data-entity="approval_gates" title="11/11">&#10003;</td><td class="cell-pass" data-substrate="xlsx" data-entity="departments" title="15/15">&#10003;</td><td class="cell-pass" data-substrate="xlsx" data-entity="precedes_steps" title="16/16">&#10003;</td><td class="cell-pass" data-substrate="xlsx" data-entity="roles" title="15/15">&#10003;</td><td class="cell-pass" data-substrate="xlsx" data-entity="workflow_steps" title="16/16">&#10003;</td><td class="cell-pass" data-substrate="xlsx" data-entity="workflows" title="45/45">&#10003;</td><td class="score-cell score-perfect">100.0%</td><td class="time-cell">0.4s</td></tr>
+                        <tr class=""><td class="substrate-name substrate-row-link" data-substrate="owl">owl</td><td class="cell-pass" data-substrate="owl" data-entity="approval_gates" title="11/11">&#10003;</td><td class="cell-pass" data-substrate="owl" data-entity="departments" title="15/15">&#10003;</td><td class="cell-pass" data-substrate="owl" data-entity="precedes_steps" title="16/16">&#10003;</td><td class="cell-pass" data-substrate="owl" data-entity="roles" title="15/15">&#10003;</td><td class="cell-pass" data-substrate="owl" data-entity="workflow_steps" title="16/16">&#10003;</td><td class="cell-pass" data-substrate="owl" data-entity="workflows" title="45/45">&#10003;</td><td class="score-cell score-perfect">100.0%</td><td class="time-cell">10.3s</td></tr>
+                        <tr class=""><td class="substrate-name substrate-row-link" data-substrate="english">english</td><td class="cell-pass" data-substrate="english" data-entity="approval_gates" title="11/11">&#10003;</td><td class="cell-pass" data-substrate="english" data-entity="departments" title="15/15">&#10003;</td><td class="cell-pass" data-substrate="english" data-entity="precedes_steps" title="16/16">&#10003;</td><td class="cell-pass" data-substrate="english" data-entity="roles" title="15/15">&#10003;</td><td class="cell-pass" data-substrate="english" data-entity="workflow_steps" title="16/16">&#10003;</td><td class="cell-pass" data-substrate="english" data-entity="workflows" title="45/45">&#10003;</td><td class="score-cell score-perfect">100.0%</td><td class="time-cell">202.6s</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -748,11 +760,11 @@ footer {
             <nav class="sub-tabs" id="substrate-tabs">
                 <button class="sub-tab active" data-substrate="postgres">postgres (answer-key)</button>
                 <button class="sub-tab " data-substrate="python">python</button>
-                <button class="sub-tab " data-substrate="explain-dag">explain-dag</button>
                 <button class="sub-tab " data-substrate="uml">uml</button>
+                <button class="sub-tab " data-substrate="explain-dag">explain-dag</button>
                 <button class="sub-tab " data-substrate="yaml">yaml</button>
-                <button class="sub-tab " data-substrate="golang">golang</button>
                 <button class="sub-tab " data-substrate="csv">csv</button>
+                <button class="sub-tab " data-substrate="golang">golang</button>
                 <button class="sub-tab " data-substrate="binary">binary</button>
                 <button class="sub-tab " data-substrate="xlsx">xlsx</button>
                 <button class="sub-tab " data-substrate="owl">owl</button>
@@ -781,12 +793,12 @@ const REPORT_DATA = {
     "total_substrates": 11,
     "passing_substrates": 11,
     "total_entities": 6,
-    "total_computed_columns": 7,
+    "total_computed_columns": 8,
     "total_records": 88,
     "overall_score": 100.0,
-    "total_runtime_seconds": 1458.0347995758057,
-    "total_fields_tested": 1133,
-    "total_passed": 1133,
+    "total_runtime_seconds": 214.4940083026886,
+    "total_fields_tested": 1298,
+    "total_passed": 1298,
     "total_failed": 0
   },
   "entities": {
@@ -1823,6 +1835,7 @@ const REPORT_DATA = {
       "primary_key": "workflow_id",
       "computed_columns": [
         "name",
+        "count_of_steps",
         "has_more_than1_step"
       ],
       "computed_columns_info": [
@@ -1830,6 +1843,11 @@ const REPORT_DATA = {
           "name": "name",
           "formula": "=SUBSTITUTE(LOWER(DisplayName), \" \", \"-\")",
           "description": "Short machine-friendly name for the workflow. Used for programmatic reference and URL slug generation."
+        },
+        {
+          "name": "count_of_steps",
+          "formula": "=COUNTIFS(WorkflowSteps!Workflow, Workflows!WorkflowId)",
+          "description": "Calculated count of workflow steps in this workflow. Useful for workflow complexity analysis and reporting."
         },
         {
           "name": "has_more_than1_step",
@@ -2100,8 +2118,8 @@ const REPORT_DATA = {
     "postgres": {
       "substrate": "postgres",
       "is_answer_key": true,
-      "total_fields_tested": 103,
-      "fields_passed": 103,
+      "total_fields_tested": 118,
+      "fields_passed": 118,
       "fields_failed": 0,
       "elapsed_seconds": 0.0,
       "entities": {
@@ -2151,12 +2169,13 @@ const REPORT_DATA = {
           ]
         },
         "workflows": {
-          "fields_tested": 30,
-          "fields_passed": 30,
+          "fields_tested": 45,
+          "fields_passed": 45,
           "fields_failed": 0,
           "failures": [],
           "computed_columns": [
             "name",
+            "count_of_steps",
             "has_more_than1_step"
           ]
         }
@@ -2169,8 +2188,8 @@ const REPORT_DATA = {
     },
     "binary": {
       "substrate": "binary",
-      "total_fields_tested": 103,
-      "fields_passed": 103,
+      "total_fields_tested": 118,
+      "fields_passed": 118,
       "fields_failed": 0,
       "elapsed_seconds": 0.35329604148864746,
       "entities": {
@@ -2187,8 +2206,8 @@ const REPORT_DATA = {
           "failures": []
         },
         "workflows": {
-          "fields_tested": 30,
-          "fields_passed": 30,
+          "fields_tested": 45,
+          "fields_passed": 45,
           "fields_failed": 0,
           "failures": []
         },
@@ -2215,9 +2234,9 @@ const REPORT_DATA = {
       "run_metadata": {
         "last_run": {
           "status": "success",
-          "duration_seconds": 0.35329604148864746,
+          "duration_seconds": 0.30486297607421875,
           "exit_code": 0,
-          "score": 100.0
+          "score": 86.4406779661017
         },
         "last_successful_run": {
           "duration_seconds": 0.35329604148864746,
@@ -2233,10 +2252,10 @@ const REPORT_DATA = {
     },
     "csv": {
       "substrate": "csv",
-      "total_fields_tested": 103,
-      "fields_passed": 103,
+      "total_fields_tested": 118,
+      "fields_passed": 118,
       "fields_failed": 0,
-      "elapsed_seconds": 0.29831409454345703,
+      "elapsed_seconds": 0.2191939353942871,
       "entities": {
         "roles": {
           "fields_tested": 15,
@@ -2251,8 +2270,8 @@ const REPORT_DATA = {
           "failures": []
         },
         "workflows": {
-          "fields_tested": 30,
-          "fields_passed": 30,
+          "fields_tested": 45,
+          "fields_passed": 45,
           "fields_failed": 0,
           "failures": []
         },
@@ -2279,16 +2298,16 @@ const REPORT_DATA = {
       "run_metadata": {
         "last_run": {
           "status": "success",
-          "duration_seconds": 0.29831409454345703,
+          "duration_seconds": 0.2191939353942871,
           "exit_code": 0,
           "score": 100.0
         },
         "last_successful_run": {
-          "duration_seconds": 0.29831409454345703,
+          "duration_seconds": 0.2191939353942871,
           "status": "success",
           "test_results": {
-            "total_fields_tested": 103,
-            "fields_passed": 103,
+            "total_fields_tested": 118,
+            "fields_passed": 118,
             "fields_failed": 0,
             "score": 100.0
           }
@@ -2297,10 +2316,10 @@ const REPORT_DATA = {
     },
     "english": {
       "substrate": "english",
-      "total_fields_tested": 103,
-      "fields_passed": 103,
+      "total_fields_tested": 118,
+      "fields_passed": 118,
       "fields_failed": 0,
-      "elapsed_seconds": 1446.3529591560364,
+      "elapsed_seconds": 202.597186088562,
       "entities": {
         "roles": {
           "fields_tested": 15,
@@ -2315,8 +2334,8 @@ const REPORT_DATA = {
           "failures": []
         },
         "workflows": {
-          "fields_tested": 30,
-          "fields_passed": 30,
+          "fields_tested": 45,
+          "fields_passed": 45,
           "fields_failed": 0,
           "failures": []
         },
@@ -2343,18 +2362,16 @@ const REPORT_DATA = {
       "run_metadata": {
         "last_run": {
           "status": "success",
-          "duration_seconds": 1446.3529591560364,
+          "duration_seconds": 202.597186088562,
           "exit_code": 0,
-          "score": 100.0,
-          "timing_preserved": true
+          "score": 100.0
         },
         "last_successful_run": {
-          "duration_seconds": 1446.3529591560364,
+          "duration_seconds": 202.597186088562,
           "status": "success",
-          "timing_preserved": true,
           "test_results": {
-            "total_fields_tested": 103,
-            "fields_passed": 103,
+            "total_fields_tested": 118,
+            "fields_passed": 118,
             "fields_failed": 0,
             "score": 100.0
           }
@@ -2363,10 +2380,10 @@ const REPORT_DATA = {
     },
     "explain-dag": {
       "substrate": "explain-dag",
-      "total_fields_tested": 103,
-      "fields_passed": 103,
+      "total_fields_tested": 118,
+      "fields_passed": 118,
       "fields_failed": 0,
-      "elapsed_seconds": 0.11599588394165039,
+      "elapsed_seconds": 0.11692309379577637,
       "entities": {
         "roles": {
           "fields_tested": 15,
@@ -2381,8 +2398,8 @@ const REPORT_DATA = {
           "failures": []
         },
         "workflows": {
-          "fields_tested": 30,
-          "fields_passed": 30,
+          "fields_tested": 45,
+          "fields_passed": 45,
           "fields_failed": 0,
           "failures": []
         },
@@ -2409,16 +2426,16 @@ const REPORT_DATA = {
       "run_metadata": {
         "last_run": {
           "status": "success",
-          "duration_seconds": 0.11599588394165039,
+          "duration_seconds": 0.11692309379577637,
           "exit_code": 0,
           "score": 100.0
         },
         "last_successful_run": {
-          "duration_seconds": 0.11599588394165039,
+          "duration_seconds": 0.11692309379577637,
           "status": "success",
           "test_results": {
-            "total_fields_tested": 103,
-            "fields_passed": 103,
+            "total_fields_tested": 118,
+            "fields_passed": 118,
             "fields_failed": 0,
             "score": 100.0
           }
@@ -2427,8 +2444,8 @@ const REPORT_DATA = {
     },
     "golang": {
       "substrate": "golang",
-      "total_fields_tested": 103,
-      "fields_passed": 103,
+      "total_fields_tested": 118,
+      "fields_passed": 118,
       "fields_failed": 0,
       "elapsed_seconds": 0.22537708282470703,
       "entities": {
@@ -2445,8 +2462,8 @@ const REPORT_DATA = {
           "failures": []
         },
         "workflows": {
-          "fields_tested": 30,
-          "fields_passed": 30,
+          "fields_tested": 45,
+          "fields_passed": 45,
           "fields_failed": 0,
           "failures": []
         },
@@ -2473,9 +2490,9 @@ const REPORT_DATA = {
       "run_metadata": {
         "last_run": {
           "status": "success",
-          "duration_seconds": 0.22537708282470703,
+          "duration_seconds": 0.22637605667114258,
           "exit_code": 0,
-          "score": 100.0
+          "score": 86.4406779661017
         },
         "last_successful_run": {
           "duration_seconds": 0.22537708282470703,
@@ -2491,10 +2508,10 @@ const REPORT_DATA = {
     },
     "owl": {
       "substrate": "owl",
-      "total_fields_tested": 103,
-      "fields_passed": 103,
+      "total_fields_tested": 118,
+      "fields_passed": 118,
       "fields_failed": 0,
-      "elapsed_seconds": 9.986004114151001,
+      "elapsed_seconds": 10.278264045715332,
       "entities": {
         "roles": {
           "fields_tested": 15,
@@ -2509,8 +2526,8 @@ const REPORT_DATA = {
           "failures": []
         },
         "workflows": {
-          "fields_tested": 30,
-          "fields_passed": 30,
+          "fields_tested": 45,
+          "fields_passed": 45,
           "fields_failed": 0,
           "failures": []
         },
@@ -2537,16 +2554,16 @@ const REPORT_DATA = {
       "run_metadata": {
         "last_run": {
           "status": "success",
-          "duration_seconds": 9.986004114151001,
+          "duration_seconds": 10.278264045715332,
           "exit_code": 0,
           "score": 100.0
         },
         "last_successful_run": {
-          "duration_seconds": 9.986004114151001,
+          "duration_seconds": 10.278264045715332,
           "status": "success",
           "test_results": {
-            "total_fields_tested": 103,
-            "fields_passed": 103,
+            "total_fields_tested": 118,
+            "fields_passed": 118,
             "fields_failed": 0,
             "score": 100.0
           }
@@ -2555,10 +2572,10 @@ const REPORT_DATA = {
     },
     "python": {
       "substrate": "python",
-      "total_fields_tested": 103,
-      "fields_passed": 103,
+      "total_fields_tested": 118,
+      "fields_passed": 118,
       "fields_failed": 0,
-      "elapsed_seconds": 0.10717201232910156,
+      "elapsed_seconds": 0.10641002655029297,
       "entities": {
         "roles": {
           "fields_tested": 15,
@@ -2573,8 +2590,8 @@ const REPORT_DATA = {
           "failures": []
         },
         "workflows": {
-          "fields_tested": 30,
-          "fields_passed": 30,
+          "fields_tested": 45,
+          "fields_passed": 45,
           "fields_failed": 0,
           "failures": []
         },
@@ -2601,16 +2618,16 @@ const REPORT_DATA = {
       "run_metadata": {
         "last_run": {
           "status": "success",
-          "duration_seconds": 0.10717201232910156,
+          "duration_seconds": 0.10641002655029297,
           "exit_code": 0,
           "score": 100.0
         },
         "last_successful_run": {
-          "duration_seconds": 0.10717201232910156,
+          "duration_seconds": 0.10641002655029297,
           "status": "success",
           "test_results": {
-            "total_fields_tested": 103,
-            "fields_passed": 103,
+            "total_fields_tested": 118,
+            "fields_passed": 118,
             "fields_failed": 0,
             "score": 100.0
           }
@@ -2619,10 +2636,10 @@ const REPORT_DATA = {
     },
     "uml": {
       "substrate": "uml",
-      "total_fields_tested": 103,
-      "fields_passed": 103,
+      "total_fields_tested": 118,
+      "fields_passed": 118,
       "fields_failed": 0,
-      "elapsed_seconds": 0.11674308776855469,
+      "elapsed_seconds": 0.11063909530639648,
       "entities": {
         "roles": {
           "fields_tested": 15,
@@ -2637,8 +2654,8 @@ const REPORT_DATA = {
           "failures": []
         },
         "workflows": {
-          "fields_tested": 30,
-          "fields_passed": 30,
+          "fields_tested": 45,
+          "fields_passed": 45,
           "fields_failed": 0,
           "failures": []
         },
@@ -2665,16 +2682,16 @@ const REPORT_DATA = {
       "run_metadata": {
         "last_run": {
           "status": "success",
-          "duration_seconds": 0.11674308776855469,
+          "duration_seconds": 0.11063909530639648,
           "exit_code": 0,
           "score": 100.0
         },
         "last_successful_run": {
-          "duration_seconds": 0.11674308776855469,
+          "duration_seconds": 0.11063909530639648,
           "status": "success",
           "test_results": {
-            "total_fields_tested": 103,
-            "fields_passed": 103,
+            "total_fields_tested": 118,
+            "fields_passed": 118,
             "fields_failed": 0,
             "score": 100.0
           }
@@ -2683,10 +2700,10 @@ const REPORT_DATA = {
     },
     "xlsx": {
       "substrate": "xlsx",
-      "total_fields_tested": 103,
-      "fields_passed": 103,
+      "total_fields_tested": 118,
+      "fields_passed": 118,
       "fields_failed": 0,
-      "elapsed_seconds": 0.3581690788269043,
+      "elapsed_seconds": 0.3691239356994629,
       "entities": {
         "roles": {
           "fields_tested": 15,
@@ -2701,8 +2718,8 @@ const REPORT_DATA = {
           "failures": []
         },
         "workflows": {
-          "fields_tested": 30,
-          "fields_passed": 30,
+          "fields_tested": 45,
+          "fields_passed": 45,
           "fields_failed": 0,
           "failures": []
         },
@@ -2729,16 +2746,16 @@ const REPORT_DATA = {
       "run_metadata": {
         "last_run": {
           "status": "success",
-          "duration_seconds": 0.3581690788269043,
+          "duration_seconds": 0.3691239356994629,
           "exit_code": 0,
           "score": 100.0
         },
         "last_successful_run": {
-          "duration_seconds": 0.3581690788269043,
+          "duration_seconds": 0.3691239356994629,
           "status": "success",
           "test_results": {
-            "total_fields_tested": 103,
-            "fields_passed": 103,
+            "total_fields_tested": 118,
+            "fields_passed": 118,
             "fields_failed": 0,
             "score": 100.0
           }
@@ -2747,10 +2764,10 @@ const REPORT_DATA = {
     },
     "yaml": {
       "substrate": "yaml",
-      "total_fields_tested": 103,
-      "fields_passed": 103,
+      "total_fields_tested": 118,
+      "fields_passed": 118,
       "fields_failed": 0,
-      "elapsed_seconds": 0.12076902389526367,
+      "elapsed_seconds": 0.11759495735168457,
       "entities": {
         "roles": {
           "fields_tested": 15,
@@ -2765,8 +2782,8 @@ const REPORT_DATA = {
           "failures": []
         },
         "workflows": {
-          "fields_tested": 30,
-          "fields_passed": 30,
+          "fields_tested": 45,
+          "fields_passed": 45,
           "fields_failed": 0,
           "failures": []
         },
@@ -2793,16 +2810,16 @@ const REPORT_DATA = {
       "run_metadata": {
         "last_run": {
           "status": "success",
-          "duration_seconds": 0.12076902389526367,
+          "duration_seconds": 0.11759495735168457,
           "exit_code": 0,
           "score": 100.0
         },
         "last_successful_run": {
-          "duration_seconds": 0.12076902389526367,
+          "duration_seconds": 0.11759495735168457,
           "status": "success",
           "test_results": {
-            "total_fields_tested": 103,
-            "fields_passed": 103,
+            "total_fields_tested": 118,
+            "fields_passed": 118,
             "fields_failed": 0,
             "score": 100.0
           }
@@ -4272,26 +4289,38 @@ function renderEntitySubstrateDetails(entityName, substrateName) {
         entityGrades.failures.forEach(f => { failureLookup[`${f.pk}|${f.field}`] = f; });
     }
 
+    // Get all columns from the schema to preserve proper order (not from answer_key which may be unordered)
+    const schemaFields = entity.schema ? entity.schema.map(f => f.name.replace(/([A-Z])/g, (m, c, i) => i > 0 ? '_' + c.toLowerCase() : c.toLowerCase())) : [];
+    const allCols = schemaFields.length > 0 ? schemaFields : (answerKey.length > 0 ? Object.keys(answerKey[0]) : []);
+
     let html = '<div class="table-scroll"><table class="graded-test-table"><thead><tr>';
-    html += `<th>Record</th>`;
-    computedCols.forEach(col => { html += `<th class="computed-col-header">${escapeHtml(col)}</th>`; });
+    allCols.forEach(col => {
+        const isComputed = computedCols.includes(col);
+        html += `<th class="${isComputed ? 'computed-col-header' : ''}">${escapeHtml(col)}</th>`;
+    });
     html += '</tr></thead><tbody>';
 
     answerKey.forEach(record => {
         const pkVal = record[pk];
-        html += `<tr><td class="record-pk" title="${escapeHtml(String(pkVal))}">${escapeHtml(String(pkVal))}</td>`;
-        computedCols.forEach(col => {
-            const expectedVal = record[col];
+        html += '<tr>';
+        allCols.forEach(col => {
+            const isComputed = computedCols.includes(col);
+            const val = record[col];
             const failKey = `${pkVal}|${col}`;
             const failure = failureLookup[failKey];
-            if (failure) {
-                html += `<td class="cell-failed" title="Expected: ${escapeHtml(String(failure.expected))}&#10;Actual: ${escapeHtml(String(failure.actual))}">
+
+            if (isComputed && failure) {
+                html += `<td class="cell-failed computed" title="Expected: ${escapeHtml(String(failure.expected))}&#10;Actual: ${escapeHtml(String(failure.actual))}">
                     <span class="expected-actual"><span class="expected-label">E:</span><code class="expected">${escapeHtml(String(failure.expected))}</code></span>
                     <span class="expected-actual"><span class="actual-label">A:</span><code class="actual">${escapeHtml(String(failure.actual))}</code></span>
                 </td>`;
+            } else if (isComputed) {
+                const valStr = val !== null ? String(val) : 'null';
+                html += `<td class="cell-passed computed" title="${escapeHtml(valStr)}"><span class="check-mark">&#10003;</span><code>${escapeHtml(valStr)}</code></td>`;
             } else {
-                const valStr = String(expectedVal);
-                html += `<td class="cell-passed" title="${escapeHtml(valStr)}"><span class="check-mark">&#10003;</span><code>${escapeHtml(valStr)}</code></td>`;
+                // Raw fact - just display the value without pass/fail styling
+                const valStr = val !== null ? String(val) : 'null';
+                html += `<td class="cell-raw" title="${escapeHtml(valStr)}">${escapeHtml(valStr)}</td>`;
             }
         });
         html += '</tr>';
@@ -4547,27 +4576,39 @@ function renderSubstrateEntityContent(substrateName, entityName) {
         entityGrades.failures.forEach(f => { failureLookup[`${f.pk}|${f.field}`] = f; });
     }
 
-    // Graded test table
+    // Graded test table - show ALL columns with computed ones highlighted
+    // Get all columns from the schema to preserve proper order (not from answer_key which may be unordered)
+    const schemaFields = entity.schema ? entity.schema.map(f => f.name.replace(/([A-Z])/g, (m, c, i) => i > 0 ? '_' + c.toLowerCase() : c.toLowerCase())) : [];
+    const allCols = schemaFields.length > 0 ? schemaFields : (answerKey.length > 0 ? Object.keys(answerKey[0]) : []);
+
     html += '<div class="table-scroll"><table class="graded-test-table"><thead><tr>';
-    html += `<th>Record</th>`;
-    computedCols.forEach(col => { html += `<th class="computed-col-header">${escapeHtml(col)}</th>`; });
+    allCols.forEach(col => {
+        const isComputed = computedCols.includes(col);
+        html += `<th class="${isComputed ? 'computed-col-header' : ''}">${escapeHtml(col)}</th>`;
+    });
     html += '</tr></thead><tbody>';
 
     answerKey.forEach(record => {
         const pkVal = record[pk];
-        html += `<tr><td class="record-pk" title="${escapeHtml(String(pkVal))}">${escapeHtml(String(pkVal))}</td>`;
-        computedCols.forEach(col => {
-            const expectedVal = record[col];
+        html += '<tr>';
+        allCols.forEach(col => {
+            const isComputed = computedCols.includes(col);
+            const val = record[col];
             const failKey = `${pkVal}|${col}`;
             const failure = failureLookup[failKey];
-            if (failure) {
-                html += `<td class="cell-failed" title="Expected: ${escapeHtml(String(failure.expected))}&#10;Actual: ${escapeHtml(String(failure.actual))}">
+
+            if (isComputed && failure) {
+                html += `<td class="cell-failed computed" title="Expected: ${escapeHtml(String(failure.expected))}&#10;Actual: ${escapeHtml(String(failure.actual))}">
                     <span class="expected-actual"><span class="expected-label">E:</span><code class="expected">${escapeHtml(String(failure.expected))}</code></span>
                     <span class="expected-actual"><span class="actual-label">A:</span><code class="actual">${escapeHtml(String(failure.actual))}</code></span>
                 </td>`;
+            } else if (isComputed) {
+                const valStr = val !== null ? String(val) : 'null';
+                html += `<td class="cell-passed computed" title="${escapeHtml(valStr)}"><span class="check-mark">&#10003;</span><code>${escapeHtml(valStr)}</code></td>`;
             } else {
-                const valStr = String(expectedVal);
-                html += `<td class="cell-passed" title="${escapeHtml(valStr)}"><span class="check-mark">&#10003;</span><code>${escapeHtml(valStr)}</code></td>`;
+                // Raw fact - just display the value without pass/fail styling
+                const valStr = val !== null ? String(val) : 'null';
+                html += `<td class="cell-raw" title="${escapeHtml(valStr)}">${escapeHtml(valStr)}</td>`;
             }
         });
         html += '</tr>';

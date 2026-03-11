@@ -1,113 +1,95 @@
-# Specification Document for Jessica Talisman - BASIC Ontology Parts 1-3 Rulebook
+# Specification Document for Jessica Talisman - BASIC Ontology Parts 1-3
 
 ## Overview
-This document provides a detailed specification for the calculated fields within the "Jessica Talisman - BASIC Ontology Parts 1-3" rulebook. The rulebook is structured to manage workflows, workflow steps, approval gates, roles, and other related entities. The focus is on how to compute specific calculated fields based on raw input data.
+This document outlines the specifications for calculating fields within the rulebook "Jessica Talisman - BASIC Ontology Parts 1-3." The rulebook is designed to manage workflows, workflow steps, approval gates, roles, departments, human agents, AI agents, and automated pipelines. It provides a structured way to compute specific fields based on raw input data.
 
 ## Workflows
 
 ### Input Fields
-1. **WorkflowId**
-   - **Type:** String
-   - **Description:** Unique identifier for the workflow.
-
-2. **DisplayName**
-   - **Type:** String
-   - **Description:** Human-readable name of the workflow.
+1. **DisplayName**
+   - **Type:** String (raw)
+   - **Description:** A human-readable name for the workflow.
 
 ### Calculated Fields
 1. **Name**
-   - **Description:** A machine-friendly name for the workflow, used for programmatic reference and URL slug generation.
-   - **Computation:** Convert the `DisplayName` to lowercase, replace spaces with hyphens.
+   - **Description:** This field generates a machine-friendly name for the workflow by converting the `DisplayName` to lowercase and replacing spaces with hyphens.
    - **Formula:** `=SUBSTITUTE(LOWER({{DisplayName}}), " ", "-")`
-   - **Example:** If `DisplayName` is "Employee Onboarding", then `Name` would be "employee-onboarding".
+   - **Example:** For a `DisplayName` of "Employee Onboarding", the computed `Name` would be "employee-onboarding".
 
 2. **CountOfSteps**
-   - **Description:** The total number of steps associated with this workflow.
-   - **Computation:** Count the number of entries in the `WorkflowSteps` table that reference this workflow by matching `WorkflowSteps.Workflow` with `WorkflowId`.
+   - **Description:** This field counts the number of steps associated with the workflow by checking how many entries in the `WorkflowSteps` table reference the current `WorkflowId`.
    - **Formula:** `=COUNTIFS(WorkflowSteps!{{Workflow}}, Workflows!{{WorkflowId}})`
-   - **Example:** If there are 2 steps linked to the workflow with `WorkflowId` "onboarding", then `CountOfSteps` would be 2.
+   - **Example:** If there is one step associated with the workflow "onboarding", the `CountOfSteps` would be 1.
 
 3. **HasMoreThan1Step**
-   - **Description:** A boolean indicating if the workflow has more than one step.
-   - **Computation:** Check if `CountOfSteps` is greater than 1.
+   - **Description:** This boolean field indicates whether the workflow contains more than one step by comparing the `CountOfSteps` to 1.
    - **Formula:** `={{CountOfSteps}} > 1`
-   - **Example:** If `CountOfSteps` is 2, then `HasMoreThan1Step` would be `true`. If `CountOfSteps` is 1, it would be `false`.
+   - **Example:** If `CountOfSteps` is 1, then `HasMoreThan1Step` would be false.
 
 ## WorkflowSteps
 
 ### Input Fields
-1. **WorkflowStepId**
-   - **Type:** String
-   - **Description:** Unique identifier for the workflow step.
-
-2. **DisplayName**
-   - **Type:** String
-   - **Description:** Human-readable name of the workflow step.
-
-3. **Workflow**
-   - **Type:** String
-   - **Description:** Foreign key to the parent workflow.
+1. **DisplayName**
+   - **Type:** String (raw)
+   - **Description:** A human-readable name for the workflow step.
 
 ### Calculated Fields
 1. **Name**
-   - **Description:** A machine-friendly name for the workflow step.
-   - **Computation:** Convert the `DisplayName` to lowercase, replace spaces with hyphens.
+   - **Description:** This field generates a machine-friendly name for the workflow step by converting the `DisplayName` to lowercase and replacing spaces with hyphens.
    - **Formula:** `=SUBSTITUTE(LOWER({{DisplayName}}), " ", "-")`
-   - **Example:** If `DisplayName` is "Submit Request", then `Name` would be "submit-request".
+   - **Example:** For a `DisplayName` of "Submit Request", the computed `Name` would be "submit-request".
 
 ## ApprovalGates
 
 ### Input Fields
-1. **ApprovalGateId**
-   - **Type:** String
-   - **Description:** Unique identifier for the approval gate.
-
-2. **DisplayName**
-   - **Type:** String
-   - **Description:** Human-readable name of the approval gate.
+1. **DisplayName**
+   - **Type:** String (raw)
+   - **Description:** A human-readable name for the approval gate.
 
 ### Calculated Fields
 1. **Name**
-   - **Description:** A machine-friendly name for the approval gate.
-   - **Computation:** Convert the `DisplayName` to lowercase, replace spaces with hyphens.
+   - **Description:** This field generates a machine-friendly name for the approval gate by converting the `DisplayName` to lowercase and replacing spaces with hyphens.
    - **Formula:** `=SUBSTITUTE(LOWER({{DisplayName}}), " ", "-")`
-   - **Example:** If `DisplayName` is "Manager Approval", then `Name` would be "manager-approval".
+   - **Example:** For a `DisplayName` of "Initial Review", the computed `Name` would be "initial-review".
 
 ## PrecedesSteps
 
 ### Input Fields
-1. **PrecedesStepId**
-   - **Type:** String
-   - **Description:** Unique identifier for the precedes step.
-
-2. **StepNumber**
-   - **Type:** Integer
-   - **Description:** Ordinal position of the step within its workflow.
+1. **StepNumber**
+   - **Type:** Integer (raw)
+   - **Description:** The ordinal position of the step within its workflow.
 
 ### Calculated Fields
 1. **DisplayName**
-   - **Description:** A formatted string representing the step number.
-   - **Computation:** Concatenate "Step-" with the `StepNumber`.
+   - **Description:** This field generates a display name for the precedes step in the format "Step-X", where X is the `StepNumber`.
    - **Formula:** `="Step-" & {{StepNumber}}`
-   - **Example:** If `StepNumber` is 1, then `DisplayName` would be "Step-1".
+   - **Example:** If `StepNumber` is 1, the computed `DisplayName` would be "Step-1".
 
 ## Roles
 
 ### Input Fields
-1. **RoleId**
-   - **Type:** String
-   - **Description:** Unique identifier for the role.
-
-2. **DisplayName**
-   - **Type:** String
-   - **Description:** Human-readable name of the role.
+1. **DisplayName**
+   - **Type:** String (raw)
+   - **Description:** A human-readable name for the role.
 
 ### Calculated Fields
 1. **Name**
-   - **Description:** A machine-friendly name for the role.
-   - **Computation:** Convert the `DisplayName` to lowercase.
+   - **Description:** This field generates a lowercase version of the `DisplayName` for programmatic reference.
    - **Formula:** `=LOWER({{DisplayName}})`
-   - **Example:** If `DisplayName` is "Administrator", then `Name` would be "administrator".
+   - **Example:** For a `DisplayName` of "Administrator", the computed `Name` would be "administrator".
+
+## Departments
+
+### Input Fields
+1. **DisplayName**
+   - **Type:** String (raw)
+   - **Description:** A human-readable name for the department.
+
+### Calculated Fields
+1. **Name**
+   - **Description:** This field generates a machine-friendly name for the department by converting the `DisplayName` to lowercase and replacing spaces with hyphens.
+   - **Formula:** `=SUBSTITUTE(LOWER({{DisplayName}}), " ", "-")`
+   - **Example:** For a `DisplayName` of "Human Resources", the computed `Name` would be "human-resources".
 
 ## Conclusion
-This specification outlines the necessary steps to compute calculated fields within the "Jessica Talisman - BASIC Ontology Parts 1-3" rulebook. By following the provided computations and examples, one can accurately derive the values for each calculated field based on the raw input data.
+This specification document provides a detailed guide on how to compute calculated fields based on raw input fields within the specified rulebook. By following these instructions, users can derive the correct values for each calculated field without needing to reference the original formulas directly.

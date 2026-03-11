@@ -38,6 +38,7 @@
     "primary_key": "workflow_id",
     "computed_columns": [
       "name",
+      "count_of_steps",
       "has_more_than1_step"
     ],
     "record_count": 15

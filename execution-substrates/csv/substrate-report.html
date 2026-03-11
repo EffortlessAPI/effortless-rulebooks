@@ -399,18 +399,43 @@ Generated from: `effortless-rulebook/effortless-rulebook.json`
 
 | Metric | Value |
 |--------|-------|
-| Total Fields Tested | 3 |
-| Passed | 3 |
+| Total Fields Tested | 118 |
+| Passed | 118 |
 | Failed | 0 |
 | Score | 100.0% |
 | Duration | &lt; 1s |
 
 ## Results by Entity
 
-### customers
+### roles
 
-- Fields: 3/3 (100.0%)
-- Computed columns: full_name
+- Fields: 15/15 (100.0%)
+- Computed columns: name
+
+### workflow_steps
+
+- Fields: 16/16 (100.0%)
+- Computed columns: name
+
+### workflows
+
+- Fields: 45/45 (100.0%)
+- Computed columns: name, count_of_steps, has_more_than1_step
+
+### precedes_steps
+
+- Fields: 16/16 (100.0%)
+- Computed columns: display_name
+
+### departments
+
+- Fields: 15/15 (100.0%)
+- Computed columns: name
+
+### approval_gates
+
+- Fields: 11/11 (100.0%)
+- Computed columns: name
 </pre>
         </div>
     </div>
@@ -460,7 +485,7 @@ Updated /Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99
 Found 10 fields in test answers
 Primary key field: workflow_id
 Loaded 15 rows from CSV
-Filled 30 null fields across 15 records
+Filled 45 null fields across 15 records
 Updated /Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/ERB_jessica-talisman-ontology/execution-substrates/csv/test-answers/workflows.json
 
 csv: Processed 6 entities

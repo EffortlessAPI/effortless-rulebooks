@@ -42,6 +42,11 @@ func main() {
 	var totalRecords int
 
 	// ─────────────────────────────────────────────────────────────────
+	// Pre-load WorkflowSteps for aggregations (COUNTIFS)
+	// ─────────────────────────────────────────────────────────────────
+	workflowStepsForAgg, _ := LoadWorkflowStepRecords(filepath.Join(blankTestsDir, "workflow_steps.json"))
+
+	// ─────────────────────────────────────────────────────────────────
 	// Process Workflows
 	// ─────────────────────────────────────────────────────────────────
 	fmt.Println("Processing Workflows...")
@@ -54,6 +59,9 @@ func main() {
 		fmt.Fprintf(os.Stderr, "ERROR: %s\n", errMsg)
 		errors = append(errors, errMsg)
 	} else {
+		// Compute aggregations (CountOfSteps) before calculated fields
+		workflowsRecords = CountWorkflowSteps(workflowsRecords, workflowStepsForAgg)
+
 		var computedWorkflow []Workflow
 		for _, r := range workflowsRecords {
 			computedWorkflow = append(computedWorkflow, *r.ComputeAll())

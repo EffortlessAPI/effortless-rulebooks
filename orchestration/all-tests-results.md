@@ -4,33 +4,33 @@
 
 - **Rulebook:** `/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/ERB_jessica-talisman-ontology/effortless-rulebook/effortless-rulebook.json`
 - **Substrates Tested:** 10
-- **Computed Columns Tested:** 3
+- **Computed Columns Tested:** 4
 
 ## Summary by Substrate
 
 | Substrate | Passed | Failed | Total | Score | Duration | Status |
 |-----------|--------|--------|-------|-------|----------|--------|
-| python | 103 | 0 | 103 | 100.0% | < 1s | PASS |
-| explain-dag | 103 | 0 | 103 | 100.0% | < 1s | PASS |
-| uml | 103 | 0 | 103 | 100.0% | < 1s | PASS |
-| yaml | 103 | 0 | 103 | 100.0% | < 1s | PASS |
-| golang | 103 | 0 | 103 | 100.0% | < 1s | PASS |
-| csv | 103 | 0 | 103 | 100.0% | < 1s | PASS |
-| binary | 103 | 0 | 103 | 100.0% | < 1s | PASS |
-| xlsx | 103 | 0 | 103 | 100.0% | < 1s | PASS |
-| owl | 103 | 0 | 103 | 100.0% | 10s | PASS |
-| english | 103 | 0 | 103 | 100.0% | 24m 6s | PASS |
+| python | 73 | 0 | 73 | 100.0% | < 1s | PASS |
+| csv | 118 | 0 | 118 | 100.0% | < 1s | PASS |
+| explain-dag | 118 | 0 | 118 | 100.0% | < 1s | PASS |
+| yaml | 73 | 0 | 73 | 100.0% | < 1s | PASS |
+| uml | 118 | 0 | 118 | 100.0% | < 1s | PASS |
+| binary | 118 | 0 | 118 | 100.0% | < 1s | PASS |
+| golang | 118 | 0 | 118 | 100.0% | < 1s | PASS |
+| xlsx | 118 | 0 | 118 | 100.0% | < 1s | PASS |
+| owl | 118 | 0 | 118 | 100.0% | 10s | PASS |
+| english | 102 | 16 | 118 | 86.4% | 3m 30s | FAIL |
 
 ## Overall Statistics
 
 | Metric | Value |
 |--------|-------|
 | Total Substrates | 10 |
-| Total Fields Tested | 1030 |
-| Total Passed | 1030 |
-| Total Failed | 0 |
-| Overall Score | 100.0% |
-| Total Duration | 24m 18s |
+| Total Fields Tested | 1090 |
+| Total Passed | 1074 |
+| Total Failed | 16 |
+| Overall Score | 98.5% |
+| Total Duration | 3m 40s |
 
 ---
 
