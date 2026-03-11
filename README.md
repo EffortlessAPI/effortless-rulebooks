@@ -8,6 +8,37 @@
 
 ---
 
+## TL;DR
+
+Write your business rules once in a simple JSON format. ERB automatically generates working code in Python, Go, SQL, Excel, and more. All versions compute identical results — proven by automated conformance tests. When you change a rule, every language updates together.
+
+---
+
+## Key Terms
+
+| Term | Meaning |
+|------|---------|
+| **Substrate** | A runtime environment that executes rules (Python, Go, SQL, Excel, etc.) |
+| **Ontology** | The structure of your data — what entities exist and how they relate |
+| **Rulebook** | The JSON file defining your schema, formulas, and data |
+| **IR** | Intermediate Representation — the canonical JSON format between UI and code |
+| **DAG** | Directed Acyclic Graph — how calculated fields depend on each other |
+| **Conformance** | Whether a substrate produces the same outputs as the reference |
+
+---
+
+## Prerequisites
+
+Before running, ensure you have:
+
+- **Bash shell** (macOS/Linux terminal or WSL on Windows)
+- **Python 3.8+** with pip
+- **Go 1.19+** (for Go substrate)
+- **Docker** (optional, for Postgres substrate)
+- **Node.js 16+** (for report generation)
+
+---
+
 ## 1. Quick Start (60 seconds)
 
 ```bash
@@ -16,7 +47,7 @@
 
 You'll see the orchestration menu:
 
-![Orchestration Menu](orchestration/orchestration-menu.png)
+![Terminal showing 8 menu options: run individual substrates (Python, Go, Postgres, etc.), run all substrates, or generate reports](orchestration/orchestration-menu.png)
 
 Pick option **6** to run all substrates. Watch them derive consistent answers from the same rulebook.
 
@@ -24,7 +55,7 @@ Pick option **6** to run all substrates. Watch them derive consistent answers fr
 
 ## 2. The Architecture (Polymorphism)
 
-[![Effortless Rulebook Architecture](./effortless_rulebook_architecture.png)](https://htmlpreview.github.io/?https://github.com/eejai42/is-everything-really-a-language/blob/main/substrate-visualizer/visualizer.html)
+![Diagram showing Airtable UI exporting to effortless-rulebook.json, which generates code for multiple substrates (Python, Go, SQL, Excel, OWL) that all produce identical outputs verified by conformance tests](./effortless_rulebook_architecture.png)
 
 ### The Canonical Trio (The Interface)
 
@@ -114,7 +145,7 @@ Each substrate independently derives answers from the same rulebook. Conformance
 | **CSV** | Tabular | Pass | 100% | Field definitions with computed values |
 | **UML** | Diagram | Pass | 100% | PlantUML class diagrams with OCL constraints |
 | **ExplainDAG** | Audit | Pass | 100% | Derivation DAGs with witnessed values |
-| **Binary** | Native | Partial | 54% | C structs + x86 assembly (partial) |
+| **Binary** | Native | Pass | 100% | C structs + x86 assembly |
 | **English** | Prose | LLM | ~85% | Human-readable specification (LLM graded) |
 
 **Note on conformance scores**: "100%" means typed-identical output on the tested fragment. Substrates like OWL (*) have richer native semantics - the score reflects agreement on the shared subset, not full semantic equivalence across paradigms.
