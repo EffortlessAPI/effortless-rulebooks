@@ -399,17 +399,43 @@ Generated from: `effortless-rulebook/effortless-rulebook.json`
 
 | Metric | Value |
 |--------|-------|
-| Total Fields Tested | 0 |
-| Passed | 0 |
+| Total Fields Tested | 122 |
+| Passed | 122 |
 | Failed | 0 |
-| Score | 0.0% |
+| Score | 100.0% |
 | Duration | &lt; 1s |
 
-## Error
+## Results by Entity
 
-```
-No test-answers found
-```
+### roles
+
+- Fields: 15/15 (100.0%)
+- Computed columns: name
+
+### workflow_steps
+
+- Fields: 20/20 (100.0%)
+- Computed columns: name
+
+### workflows
+
+- Fields: 45/45 (100.0%)
+- Computed columns: name, count_of_non_proposed_steps, has_more_than1_step
+
+### precedes_steps
+
+- Fields: 16/16 (100.0%)
+- Computed columns: display_name
+
+### departments
+
+- Fields: 15/15 (100.0%)
+- Computed columns: name
+
+### approval_gates
+
+- Fields: 11/11 (100.0%)
+- Computed columns: name
 </pre>
         </div>
     </div>
@@ -420,49 +446,14 @@ No test-answers found
             <pre>=== CSV Substrate Test Run ===
 
 
-  Processing approval_gates from approval_gates.csv...
-Found 5 fields in test answers
-Primary key field: approval_gate_id
-Loaded 11 rows from CSV
-Filled 11 null fields across 11 records
-Updated /Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/ERB_jessica-talisman-ontology/execution-substrates/csv/test-answers/approval_gates.json
+  Processing customers from customers.csv...
+Found 6 fields in test answers
+Primary key field: customer_id
+Loaded 3 rows from CSV
+Filled 3 null fields across 3 records
+Updated /Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/ERB_jessica-talisman-ontology/execution-substrates/csv/test-answers/customers.json
 
-  Processing departments from departments.csv...
-Found 5 fields in test answers
-Primary key field: department_id
-Loaded 15 rows from CSV
-Filled 15 null fields across 15 records
-Updated /Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/ERB_jessica-talisman-ontology/execution-substrates/csv/test-answers/departments.json
-
-  Processing precedes_steps from precedes_steps.csv...
-Found 5 fields in test answers
-Primary key field: precedes_step_id
-Loaded 16 rows from CSV
-Filled 16 null fields across 16 records
-Updated /Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/ERB_jessica-talisman-ontology/execution-substrates/csv/test-answers/precedes_steps.json
-
-  Processing roles from roles.csv...
-Found 12 fields in test answers
-Primary key field: role_id
-Loaded 15 rows from CSV
-Filled 15 null fields across 15 records
-Updated /Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/ERB_jessica-talisman-ontology/execution-substrates/csv/test-answers/roles.json
-
-  Processing workflow_steps from workflow_steps.csv...
-Found 9 fields in test answers
-Primary key field: workflow_step_id
-Loaded 20 rows from CSV
-Filled 19 null fields across 19 records
-Updated /Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/ERB_jessica-talisman-ontology/execution-substrates/csv/test-answers/workflow_steps.json
-
-  Processing workflows from workflows.csv...
-Found 10 fields in test answers
-Primary key field: workflow_id
-Loaded 15 rows from CSV
-Filled 45 null fields across 15 records
-Updated /Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/ERB_jessica-talisman-ontology/execution-substrates/csv/test-answers/workflows.json
-
-csv: Processed 6 entities
+csv: Processed 1 entities
 
 </pre>
         </div>
