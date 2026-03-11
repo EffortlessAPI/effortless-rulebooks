@@ -179,7 +179,7 @@ Using ENGLISH PROSE documents (glossary.md, specification.md)
 ======================================================================
 
 Loading English specification documents...
-  Loaded specification.md (2414 chars)
+  Loaded specification.md (2298 chars)
 
 Loading rulebook for schema metadata...
 Discovered 1 entities: Customers
@@ -191,7 +191,7 @@ Processing customers...
 PROMPT (first 2 lines):
   You are taking a test. Your task is to fill in the computed columns for each record based on the Eng
   
-  ... (125 total lines, 4272 chars)
+  ... (133 total lines, 4156 chars)
 ============================================================
 Calling OpenAI (gpt-4o-mini)... please wait...
 ============================================================
@@ -226,55 +226,64 @@ Filled 3 computed fields total
                 <h2>specification.md (LLM-Generated)</h2>
                 <div class="prose-container markdown-content"><h2>Specification Document for DEMO: Customer FullName Rulebook</h2>
 <h3>Overview</h3>
-<p>This rulebook outlines the schema and calculations for generating customer full names from individual first and last names. It is derived from an Airtable base named 'DEMO: Customer FullName'. The primary focus is on how to compute the `FullName` field based on the provided `FirstName` and `LastName` fields.</p>
-<h3>Customers Table</h3>
+<p>This specification document outlines the structure and calculation methods used in the "DEMO: Customer FullName" rulebook, derived from an Airtable base. The primary purpose of this rulebook is to compute the full names of customers based on their first and last names.</p>
+<h3>Entity: Customers</h3>
 <h4>Input Fields</h4>
-<p>The following input fields are defined in the Customers table, which are necessary for calculating the `FullName`:</p>
+<p>The following input fields are utilized to compute the calculated fields:</p>
 <p>1. <strong>CustomerId</strong></p>
-<p>   - <strong>Type</strong>: String</p>
-<p>   - <strong>Description</strong>: A unique identifier for each customer. This field is mandatory.</p>
+<p>   - <strong>Type:</strong> String</p>
+<p>   - <strong>Description:</strong> Unique identifier for each customer. This field is mandatory and cannot be null.</p>
 <p>2. <strong>Customer</strong></p>
-<p>   - <strong>Type</strong>: String</p>
-<p>   - <strong>Description</strong>: An identifier for the customers. This field is optional.</p>
+<p>   - <strong>Type:</strong> String</p>
+<p>   - <strong>Description:</strong> Identifier for the customers. This field is optional and can be null.</p>
 <p>3. <strong>EmailAddress</strong></p>
-<p>   - <strong>Type</strong>: String</p>
-<p>   - <strong>Description</strong>: The customer's email address. This field is optional.</p>
+<p>   - <strong>Type:</strong> String</p>
+<p>   - <strong>Description:</strong> The customer's email address. This field is optional and can be null.</p>
 <p>4. <strong>FirstName</strong></p>
-<p>   - <strong>Type</strong>: String</p>
-<p>   - <strong>Description</strong>: The first name of the customer, used to create the full name. This field is optional.</p>
+<p>   - <strong>Type:</strong> String</p>
+<p>   - <strong>Description:</strong> The first name of the customer, used to create the full name. This field is optional and can be null.</p>
 <p>5. <strong>LastName</strong></p>
-<p>   - <strong>Type</strong>: String</p>
-<p>   - <strong>Description</strong>: The last name of the customer, used to create the full name. This field is optional.</p>
+<p>   - <strong>Type:</strong> String</p>
+<p>   - <strong>Description:</strong> The last name of the customer, used to create the full name. This field is optional and can be null.</p>
 <h4>Calculated Field</h4>
 <p>#### FullName</p>
 <ul>
-<li>**Type**: Calculated</li>
-<li>**Description**: The full name is computed by concatenating the last name and first name of the customer in the format &quot;LastName, FirstName&quot;.</li>
+<li>**Type:** Calculated</li>
+<li>**Description:** The full name is computed from the first and last name of the customer.</li>
+<li>**Calculation Method:** </li>
+<p>  To compute the `FullName`, concatenate the `LastName` and `FirstName` fields, separated by a comma and a space. The format will be: </p>
+<p>  ```</p>
+<p>  LastName, FirstName</p>
+<p>  ```</p>
+<li>**Formula for Reference:** </li>
+<p>  ```</p>
+<p>  ={{LastName}} & ", " & {{FirstName}}</p>
+<p>  ```</p>
 </ul>
-<p><strong>Calculation Method</strong>:</p>
-<p>To compute the `FullName`, follow these steps:</p>
-<p>1. Retrieve the value from the `LastName` field.</p>
-<p>2. Append a comma followed by a space.</p>
-<p>3. Retrieve the value from the `FirstName` field.</p>
-<p>4. Concatenate these values to form the full name.</p>
-<p><strong>Formula for Reference</strong>:</p>
-<pre>
-={{LastName}} &amp; &quot;, &quot; &amp; {{FirstName}}
-</pre>
-<p><strong>Concrete Examples</strong>:</p>
-<p>1. For the customer with `CustomerId` "cust0001":</p>
-<p>   - `LastName`: "Smith"</p>
-<p>   - `FirstName`: "Jane"</p>
-<p>   - <strong>Computed FullName</strong>: "Smith, Jane"</p>
-<p>2. For the customer with `CustomerId` "cust0002":</p>
-<p>   - `LastName`: "Doe"</p>
-<p>   - `FirstName`: "John"</p>
-<p>   - <strong>Computed FullName</strong>: "Doe, John"</p>
-<p>3. For the customer with `CustomerId` "cust0003":</p>
-<p>   - `LastName`: "Jones"</p>
-<p>   - `FirstName`: "Emily"</p>
-<p>   - <strong>Computed FullName</strong>: "Jones, Emily"</p>
-<p>This specification provides a clear understanding of how to derive the `FullName` from the `FirstName` and `LastName` fields, ensuring that the values can be computed accurately without needing to reference the original formulas.</p></div>
+<p>#### Example Calculation</p>
+<p>Using the data provided in the rulebook, the following examples illustrate how to compute the `FullName`:</p>
+<p>1. <strong>Customer Data:</strong></p>
+<p>   - <strong>FirstName:</strong> Jane</p>
+<p>   - <strong>LastName:</strong> Smith</p>
+<p>   - <strong>Computed FullName:</strong> </p>
+<p>     ```</p>
+<p>     Smith, Jane</p>
+<p>     ```</p>
+<p>2. <strong>Customer Data:</strong></p>
+<p>   - <strong>FirstName:</strong> John</p>
+<p>   - <strong>LastName:</strong> Doe</p>
+<p>   - <strong>Computed FullName:</strong> </p>
+<p>     ```</p>
+<p>     Doe, John</p>
+<p>     ```</p>
+<p>3. <strong>Customer Data:</strong></p>
+<p>   - <strong>FirstName:</strong> Emily</p>
+<p>   - <strong>LastName:</strong> Jones</p>
+<p>   - <strong>Computed FullName:</strong> </p>
+<p>     ```</p>
+<p>     Jones, Emily</p>
+<p>     ```</p>
+<p>By following the above instructions, one can accurately compute the `FullName` for each customer based on their first and last names.</p></div>
             </div>
         </div>
     </main>
