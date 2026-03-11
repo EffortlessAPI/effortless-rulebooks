@@ -16,7 +16,7 @@ DROP FUNCTION IF EXISTS calc_departments_name(TEXT) CASCADE;
 DROP FUNCTION IF EXISTS calc_precedes_steps_display_name(TEXT) CASCADE;
 DROP FUNCTION IF EXISTS calc_roles_name(TEXT) CASCADE;
 DROP FUNCTION IF EXISTS calc_workflow_steps_name(TEXT) CASCADE;
-DROP FUNCTION IF EXISTS calc_workflows_count_of_steps(TEXT) CASCADE;
+DROP FUNCTION IF EXISTS calc_workflows_count_of_non_proposed_steps(TEXT) CASCADE;
 DROP FUNCTION IF EXISTS calc_workflows_has_more_than1_step(TEXT) CASCADE;
 DROP FUNCTION IF EXISTS calc_workflows_name(TEXT) CASCADE;
 DROP FUNCTION IF EXISTS get_ai_agents_display_name(TEXT) CASCADE;
@@ -86,6 +86,11 @@ CREATE TABLE workflows (
   identifier                          TEXT                ,
   modified                            TIMESTAMPTZ         
 );
+COMMENT ON TABLE workflows IS 'Table: Workflows';
+COMMENT ON COLUMN workflows.title IS 'Human-readable title of the workflow. Maps to dct:title from Dublin Core. Example: ''Production Deployment Workflow'', ''Employee Onboarding''.';
+COMMENT ON COLUMN workflows.description IS 'Detailed description of the workflow''s purpose and scope. Maps to dct:description from Dublin Core. Should explain what business goal the workflow achieves.';
+COMMENT ON COLUMN workflows.identifier IS 'External system identifier for cross-referencing. Maps to dct:identifier from Dublin Core. This is the join key back to document management systems, ticket systems, or other operational systems.';
+COMMENT ON COLUMN workflows.modified IS 'Last modification timestamp. Maps to dct:modified from Dublin Core. Critical for answering CQ5: ''Which workflows haven''t been reviewed or updated in twelve months?''';
 
 CREATE TABLE workflow_steps (
   workflow_step_id                    TEXT                 PRIMARY KEY,
@@ -97,19 +102,31 @@ CREATE TABLE workflow_steps (
   approval_gate                       TEXT                ,
   preceded_by_steps                   TEXT                
 );
+COMMENT ON TABLE workflow_steps IS 'Table: WorkflowSteps';
+COMMENT ON COLUMN workflow_steps.workflow IS 'Foreign key to the parent workflow. Represents the inverse of ntwf:hasStep, enabling navigation from step to its containing workflow (ntwf:isStepOf).';
+COMMENT ON COLUMN workflow_steps.sequence_position IS 'Integer ordinal position of the step within its workflow. Maps to ntwf:sequencePosition, declared as owl:FunctionalProperty (each step has exactly one position). Enables positional queries.';
+COMMENT ON COLUMN workflow_steps.assigned_role IS 'Foreign key to the Role responsible for executing this step. Maps to ntwf:assignedRole. Critical for implementing Heuristic 2 (role-agent separation): steps point to roles, not directly to agents.';
+COMMENT ON COLUMN workflow_steps.requires_human_approval IS 'Boolean flag indicating whether a human agent must fill the assigned role. Maps to ntwf:requiresHumanApproval. Enables answering CQ3: ''Which steps require human decisions vs. AI execution?''';
+COMMENT ON COLUMN workflow_steps.approval_gate IS 'Foreign key to ApprovalGate if this step is a decision checkpoint. When populated, indicates this step blocks workflow execution until explicit authorization is given.';
+COMMENT ON COLUMN workflow_steps.preceded_by_steps IS 'Reference to steps that must complete before this step can execute. Part of the ntwf:precedesStep transitive ordering relationship.';
 
 CREATE TABLE approval_gates (
   approval_gate_id                    TEXT                 PRIMARY KEY,
   display_name                        TEXT                ,
   escalation_threshold_hours          INTEGER             
 );
+COMMENT ON TABLE approval_gates IS 'Table: ApprovalGates';
+COMMENT ON COLUMN approval_gates.escalation_threshold_hours IS 'Integer number of hours that may elapse on a pending gate before the ntwf:delegatesTo chain activates. Maps to ntwf:escalationThresholdHours. Domain applies only to ApprovalGate individuals.';
 
 CREATE TABLE precedes_steps (
   precedes_step_id                    TEXT                 PRIMARY KEY,
   name                                TEXT                ,
-  step_number                         INTEGER             ,
-  workflow_step                       TEXT                
+  workflow_step                       TEXT                ,
+  step_number                         INTEGER             
 );
+COMMENT ON TABLE precedes_steps IS 'Table: PrecedesSteps';
+COMMENT ON COLUMN precedes_steps.name IS 'Ordinal sequence number for the relationship. Used for sorting and display.';
+COMMENT ON COLUMN precedes_steps.workflow_step IS 'Foreign key to the step that comes BEFORE. The source of the ''precedes'' relationship.';
 
 CREATE TABLE roles (
   role_id                             TEXT                 PRIMARY KEY,
@@ -123,6 +140,11 @@ CREATE TABLE roles (
   delegates_to                        TEXT                ,
   from_delegates_to                   TEXT                
 );
+COMMENT ON TABLE roles IS 'Table: Roles';
+COMMENT ON COLUMN roles.label IS 'Human-readable display name. Maps to rdfs:label. Per Heuristic 6: if you cannot write a clear label, you do not yet understand the concept well enough to model it.';
+COMMENT ON COLUMN roles.comment IS 'Detailed description of the role''s responsibilities and scope. Maps to rdfs:comment. Should define what the role covers, what it excludes, and how it differs from adjacent roles.';
+COMMENT ON COLUMN roles.owned_by IS 'Foreign key to the Department that owns this role. Maps to ntwf:ownedBy (owl:FunctionalProperty). Enables answering CQ7: ''Which workflows involve both Engineering and Legal?''';
+COMMENT ON COLUMN roles.delegates_to IS 'Foreign key to the fallback Role in an escalation chain. Maps to ntwf:delegatesTo. Enables answering CQ6: ''What happens when the VP of Engineering is unavailable?''';
 
 CREATE TABLE departments (
   department_id                       TEXT                 PRIMARY KEY,
@@ -130,6 +152,10 @@ CREATE TABLE departments (
   display_name                        TEXT                ,
   roles                               TEXT                
 );
+COMMENT ON TABLE departments IS 'Table: Departments';
+COMMENT ON COLUMN departments.title IS 'Human-readable display name of the department. Should match organizational terminology for stakeholder communication.';
+COMMENT ON COLUMN departments.display_name IS 'Machine-friendly name for programmatic reference.';
+COMMENT ON COLUMN departments.roles IS 'Back-reference to roles owned by this department. Inverse of Roles.OwnedBy.';
 
 CREATE TABLE human_agents (
   human_agent_id                      TEXT                 PRIMARY KEY,
@@ -138,6 +164,10 @@ CREATE TABLE human_agents (
   mbox                                TEXT                ,
   roles                               TEXT                
 );
+COMMENT ON TABLE human_agents IS 'Table: HumanAgents';
+COMMENT ON COLUMN human_agents.name IS 'Full name of the person. Maps to foaf:name. Note: FOAF''s name property is appropriate for persons, not for software systems (which use schema:name).';
+COMMENT ON COLUMN human_agents.mbox IS 'Email address of the person. Maps to foaf:mbox. Used for notifications and organizational directory integration.';
+COMMENT ON COLUMN human_agents.roles IS 'Back-reference to roles currently filled by this agent. Inverse of Roles.FilledBy_HumanAgent.';
 
 CREATE TABLE ai_agents (
   ai_agent_id                         TEXT                 PRIMARY KEY,
@@ -147,6 +177,10 @@ CREATE TABLE ai_agents (
   model_version                       TEXT                ,
   roles                               TEXT                
 );
+COMMENT ON TABLE ai_agents IS 'Table: AIAgents';
+COMMENT ON COLUMN ai_agents.name IS 'Display name of the AI agent. Maps to schema:name (not foaf:name, which is for persons).';
+COMMENT ON COLUMN ai_agents.model_version IS 'Version string of the AI model. Maps to ntwf:modelVersion. Makes AI-produced artifacts auditable at the version level. The domain declaration means this property applies only to AIAgent individuals.';
+COMMENT ON COLUMN ai_agents.roles IS 'Back-reference to roles currently filled by this AI agent. Inverse of Roles.FilledBy_AIAgent.';
 
 CREATE TABLE automated_pipelines (
   automated_pipeline_id               TEXT                 PRIMARY KEY,
@@ -155,4 +189,7 @@ CREATE TABLE automated_pipelines (
   display_name                        TEXT                ,
   roles                               TEXT                
 );
+COMMENT ON TABLE automated_pipelines IS 'Table: AutomatedPipelines';
+COMMENT ON COLUMN automated_pipelines.name IS 'Display name of the pipeline. Maps to schema:name (appropriate for software systems, unlike foaf:name which is for persons).';
+COMMENT ON COLUMN automated_pipelines.roles IS 'Back-reference to roles currently filled by this pipeline. Inverse of Roles.FilledBy_AutomatedPipeline.';
 

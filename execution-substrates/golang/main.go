@@ -4,6 +4,7 @@
 // It must stay in sync with erb_sdk.go and the rulebook.
 //
 // Tables with calculated fields: Workflows, WorkflowSteps, ApprovalGates, PrecedesSteps, Roles, Departments
+// Tables with aggregations: Workflows
 //
 // IMPORTANT: This runner processes ALL tables, not just a "primary" one.
 // If ANY table fails to process, the entire run fails with exit code 1.
@@ -42,6 +43,15 @@ func main() {
 	var totalRecords int
 
 	// ─────────────────────────────────────────────────────────────────
+	// Load related tables for aggregation calculations
+	// ─────────────────────────────────────────────────────────────────
+	workflow_stepsData, err := LoadWorkflowStepRecords(filepath.Join(blankTestsDir, "workflow_steps.json"))
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Warning: Could not load WorkflowSteps for aggregations: %v\n", err)
+		workflow_stepsData = nil
+	}
+
+	// ─────────────────────────────────────────────────────────────────
 	// Process Workflows
 	// ─────────────────────────────────────────────────────────────────
 	fmt.Println("Processing Workflows...")
@@ -54,6 +64,24 @@ func main() {
 		fmt.Fprintf(os.Stderr, "ERROR: %s\n", errMsg)
 		errors = append(errors, errMsg)
 	} else {
+		// Compute aggregations for Workflows
+		count_of_non_proposed_stepsCountMap := make(map[string]int)
+		if workflow_stepsData != nil {
+			for _, rel := range workflow_stepsData {
+				if rel.Workflow != nil {
+					count_of_non_proposed_stepsCountMap[*rel.Workflow]++
+				}
+			}
+		}
+
+		// Update records with aggregation values
+		for i := range workflowsRecords {
+			if workflowsRecords[i].WorkflowId != "" {
+				count := count_of_non_proposed_stepsCountMap[workflowsRecords[i].WorkflowId]
+				workflowsRecords[i].CountOfNonProposedSteps = &count
+			}
+		}
+
 		var computedWorkflow []Workflow
 		for _, r := range workflowsRecords {
 			computedWorkflow = append(computedWorkflow, *r.ComputeAll())

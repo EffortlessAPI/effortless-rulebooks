@@ -50,8 +50,8 @@ class HumanAgents {
 class PrecedesSteps {
   +PrecedesStepId: String
   +Name: String
-  +StepNumber: Integer
   +WorkflowStep: String
+  +StepNumber: Integer
   --
   /DisplayName: String  {derived}
 }
@@ -93,7 +93,7 @@ class Workflows {
   +Identifier: String
   +Modified: String
   +WorkflowSteps: String
-  +CountOfSteps: Integer
+  +CountOfNonProposedSteps: Integer
   --
   /Name: String  {derived}
   /HasMoreThan1Step: Boolean  {derived}

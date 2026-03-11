@@ -4,40 +4,14 @@
 
 | Metric | Value |
 |--------|-------|
-| Total Fields Tested | 118 |
-| Passed | 118 |
+| Total Fields Tested | 0 |
+| Passed | 0 |
 | Failed | 0 |
-| Score | 100.0% |
-| Duration | 4m 10s |
+| Score | 0.0% |
+| Duration | 1s |
 
-## Results by Entity
+## Error
 
-### roles
-
-- Fields: 15/15 (100.0%)
-- Computed columns: name
-
-### workflow_steps
-
-- Fields: 16/16 (100.0%)
-- Computed columns: name
-
-### workflows
-
-- Fields: 45/45 (100.0%)
-- Computed columns: name, count_of_steps, has_more_than1_step
-
-### precedes_steps
-
-- Fields: 16/16 (100.0%)
-- Computed columns: display_name
-
-### departments
-
-- Fields: 15/15 (100.0%)
-- Computed columns: name
-
-### approval_gates
-
-- Fields: 11/11 (100.0%)
-- Computed columns: name
+```
+No test-answers found
+```

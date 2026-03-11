@@ -141,11 +141,11 @@ erb:WorkflowsShape a sh:NodeShape ;
             }
             WHERE {
     $this a erb:Workflows .
-    OPTIONAL { $this erb:countOfSteps ?count_of_steps . }
-                BIND((?count_of_steps > 1) AS ?_result)
+    OPTIONAL { $this erb:countOfNonProposedSteps ?count_of_non_proposed_steps . }
+                BIND((?count_of_non_proposed_steps > 1) AS ?_result)
             }
         """ ;
     ] .
-# Rule for CountOfSteps - parse error: Unexpected character '!' at position 22
+# Rule for CountOfNonProposedSteps - parse error: Unexpected character '!' at position 22
 
 # Generated 7 SHACL rules

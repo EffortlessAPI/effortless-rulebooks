@@ -32,13 +32,13 @@
     "computed_columns": [
       "name"
     ],
-    "record_count": 16
+    "record_count": 20
   },
   "workflows": {
     "primary_key": "workflow_id",
     "computed_columns": [
       "name",
-      "count_of_steps",
+      "count_of_non_proposed_steps",
       "has_more_than1_step"
     ],
     "record_count": 15

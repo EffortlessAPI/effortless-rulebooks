@@ -536,7 +536,7 @@ _eval_precedes_steps_display_name:
     mov x1, #5
     str x0, [sp, #16]
     str x1, [sp, #24]
-    ldr x0, [x19, #48]
+    ldr x0, [x19, #64]
     mov x1, x0
     sub x0, x29, #200
     bl _int_to_string

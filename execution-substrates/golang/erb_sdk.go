@@ -72,7 +72,7 @@ type Workflow struct {
 	Identifier *string `json:"identifier"`
 	Modified *string `json:"modified"`
 	WorkflowSteps *string `json:"workflow_steps"`
-	CountOfSteps *int `json:"count_of_steps"`
+	CountOfNonProposedSteps *int `json:"count_of_non_proposed_steps"`
 	Name *string `json:"name"`
 	HasMoreThan1Step *bool `json:"has_more_than1_step"`
 }
@@ -86,9 +86,9 @@ func (tc *Workflow) CalcName() string {
 }
 
 // CalcHasMoreThan1Step computes the HasMoreThan1Step calculated field
-// Formula: ={{CountOfSteps}} > 1
+// Formula: ={{CountOfNonProposedSteps}} > 1
 func (tc *Workflow) CalcHasMoreThan1Step() bool {
-	return (tc.CountOfSteps != nil && *tc.CountOfSteps > 1)
+	return (tc.CountOfNonProposedSteps != nil && *tc.CountOfNonProposedSteps > 1)
 }
 
 // --- Compute All Calculated Fields ---
@@ -97,7 +97,7 @@ func (tc *Workflow) CalcHasMoreThan1Step() bool {
 func (tc *Workflow) ComputeAll() *Workflow {
 	// Level 1 calculations
 	name := strings.ReplaceAll(strings.ToLower(stringVal(tc.DisplayName)), " ", "-")
-	hasMoreThan1Step := (tc.CountOfSteps != nil && *tc.CountOfSteps > 1)
+	hasMoreThan1Step := (tc.CountOfNonProposedSteps != nil && *tc.CountOfNonProposedSteps > 1)
 
 	return &Workflow{
 		WorkflowId: tc.WorkflowId,
@@ -107,7 +107,7 @@ func (tc *Workflow) ComputeAll() *Workflow {
 		Identifier: tc.Identifier,
 		Modified: tc.Modified,
 		WorkflowSteps: tc.WorkflowSteps,
-		CountOfSteps: tc.CountOfSteps,
+		CountOfNonProposedSteps: tc.CountOfNonProposedSteps,
 		Name: nilIfEmpty(name),
 		HasMoreThan1Step: &hasMoreThan1Step,
 	}
@@ -203,8 +203,8 @@ func (tc *ApprovalGate) ComputeAll() *ApprovalGate {
 type PrecedesStep struct {
 	PrecedesStepId string `json:"precedes_step_id"`
 	Name *string `json:"name"`
-	StepNumber *int `json:"step_number"`
 	WorkflowStep *string `json:"workflow_step"`
+	StepNumber *int `json:"step_number"`
 	DisplayName *string `json:"display_name"`
 }
 
@@ -226,8 +226,8 @@ func (tc *PrecedesStep) ComputeAll() *PrecedesStep {
 	return &PrecedesStep{
 		PrecedesStepId: tc.PrecedesStepId,
 		Name: tc.Name,
-		StepNumber: tc.StepNumber,
 		WorkflowStep: tc.WorkflowStep,
+		StepNumber: tc.StepNumber,
 		DisplayName: nilIfEmpty(displayName),
 	}
 }

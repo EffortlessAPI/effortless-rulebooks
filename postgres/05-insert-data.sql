@@ -5,28 +5,16 @@
 -- ============================================================================
 
 INSERT INTO workflows (workflow_id, display_name, title, description, identifier, modified)
-VALUES ('onboarding', 'Onboarding', 'Employee Onboarding', 'A step-by-step process to onboard new employees, including document collection, orientation, and training.', 'WF-ONB-001', '2024-05-10');
-
-INSERT INTO workflows (workflow_id, display_name, title, description, identifier, modified)
-VALUES ('invoice-approval', 'Invoice Approval', 'Invoice Approval Workflow', 'Automated workflow for reviewing, approving, and processing vendor invoices.', 'WF-INV-002', '2024-06-01');
-
-INSERT INTO workflows (workflow_id, display_name, title, description, identifier, modified)
-VALUES ('content-publishing', 'Content Publishing', 'Content Publishing Process', 'Workflow for drafting, reviewing, and publishing content to the company website.', 'WF-CNT-003', '2024-05-28');
-
-INSERT INTO workflows (workflow_id, display_name, title, description, identifier, modified)
-VALUES ('leave-request', 'Leave Request', 'Leave Request Workflow', 'Process for employees to submit, review, and approve leave requests.', 'WF-LRQ-004', '2024-06-05');
-
-INSERT INTO workflows (workflow_id, display_name, title, description, identifier, modified)
-VALUES ('it-support', 'IT Support', 'IT Support Ticketing', 'Workflow for submitting, triaging, and resolving IT support tickets.', 'WF-ITS-005', '2024-05-30');
-
-INSERT INTO workflows (workflow_id, display_name, title, description, identifier, modified)
-VALUES ('expense-reimbursement', 'Expense Reimbursement', 'Expense Reimbursement Process', 'Steps for employees to submit expenses and receive reimbursements after approval.', 'WF-EXP-006', '2024-06-03');
-
-INSERT INTO workflows (workflow_id, display_name, title, description, identifier, modified)
 VALUES ('performance-review', 'Performance Review', 'Annual Performance Review', 'Structured workflow for conducting annual employee performance evaluations.', 'WF-PRV-007', '2024-05-15');
 
 INSERT INTO workflows (workflow_id, display_name, title, description, identifier, modified)
-VALUES ('procurement', 'Procurement', 'Procurement Workflow', 'Process for requesting, approving, and purchasing goods or services.', 'WF-PRC-008', '2024-06-02');
+VALUES ('change-management', 'Change Management', 'Change Management Workflow', 'Structured process for requesting, evaluating, and implementing organizational changes.', 'WF-CHM-015', '2024-05-27');
+
+INSERT INTO workflows (workflow_id, display_name, title, description, identifier, modified)
+VALUES ('asset-management', 'Asset Management', 'Asset Management Process', 'Process for tracking, maintaining, and auditing company assets.', 'WF-ASM-012', '2024-05-18');
+
+INSERT INTO workflows (workflow_id, display_name, title, description, identifier, modified)
+VALUES ('incident-reporting', 'Incident Reporting', 'Incident Reporting Process', 'Steps for reporting, investigating, and resolving workplace incidents.', 'WF-INC-014', '2024-06-06');
 
 INSERT INTO workflows (workflow_id, display_name, title, description, identifier, modified)
 VALUES ('customer-feedback', 'Customer Feedback', 'Customer Feedback Collection', 'Workflow for collecting, analyzing, and acting on customer feedback.', 'WF-CFB-009', '2024-05-25');
@@ -35,25 +23,40 @@ INSERT INTO workflows (workflow_id, display_name, title, description, identifier
 VALUES ('project-kickoff', 'Project Kickoff', 'Project Kickoff Process', 'Steps to initiate a new project, including team assignment and goal setting.', 'WF-PKO-010', '2024-05-20');
 
 INSERT INTO workflows (workflow_id, display_name, title, description, identifier, modified)
-VALUES ('contract-review', 'Contract Review', 'Contract Review Workflow', 'Workflow for legal and management review of contracts before signing.', 'WF-CTR-011', '2024-06-04');
+VALUES ('onboarding', 'Onboarding', 'Employee Onboarding', 'A step-by-step process to onboard new employees, including document collection, orientation, and training.', 'WF-ONB-001', '2024-05-10');
 
 INSERT INTO workflows (workflow_id, display_name, title, description, identifier, modified)
-VALUES ('asset-management', 'Asset Management', 'Asset Management Process', 'Process for tracking, maintaining, and auditing company assets.', 'WF-ASM-012', '2024-05-18');
+VALUES ('content-publishing', 'Content Publishing', 'Content Publishing Process', 'Workflow for drafting, reviewing, and publishing content to the company website.', 'WF-CNT-003', '2024-05-28');
+
+INSERT INTO workflows (workflow_id, display_name, title, description, identifier, modified)
+VALUES ('expense-reimbursement', 'Expense Reimbursement', 'Expense Reimbursement Process', 'Steps for employees to submit expenses and receive reimbursements after approval.', 'WF-EXP-006', '2024-06-03');
+
+INSERT INTO workflows (workflow_id, display_name, title, description, identifier, modified)
+VALUES ('procurement', 'Procurement', 'Procurement Workflow', 'Process for requesting, approving, and purchasing goods or services.', 'WF-PRC-008', '2024-06-02');
+
+INSERT INTO workflows (workflow_id, display_name, title, description, identifier, modified)
+VALUES ('invoice-approval', 'Invoice Approval', 'Invoice Approval Workflow', 'Automated workflow for reviewing, approving, and processing vendor invoices.', 'WF-INV-002', '2024-06-01');
+
+INSERT INTO workflows (workflow_id, display_name, title, description, identifier, modified)
+VALUES ('contract-review', 'Contract Review', 'Contract Review Workflow', 'Workflow for legal and management review of contracts before signing.', 'WF-CTR-011', '2024-06-04');
 
 INSERT INTO workflows (workflow_id, display_name, title, description, identifier, modified)
 VALUES ('recruitment', 'Recruitment', 'Recruitment Workflow', 'Workflow for posting jobs, screening candidates, and scheduling interviews.', 'WF-RCT-013', '2024-05-22');
 
 INSERT INTO workflows (workflow_id, display_name, title, description, identifier, modified)
-VALUES ('incident-reporting', 'Incident Reporting', 'Incident Reporting Process', 'Steps for reporting, investigating, and resolving workplace incidents.', 'WF-INC-014', '2024-06-06');
+VALUES ('it-support', 'IT Support', 'IT Support Ticketing', 'Workflow for submitting, triaging, and resolving IT support tickets.', 'WF-ITS-005', '2024-05-30');
 
 INSERT INTO workflows (workflow_id, display_name, title, description, identifier, modified)
-VALUES ('change-management', 'Change Management', 'Change Management Workflow', 'Structured process for requesting, evaluating, and implementing organizational changes.', 'WF-CHM-015', '2024-05-27');
+VALUES ('leave-request', 'Leave Request', 'Leave Request Workflow', 'Process for employees to submit, review, and approve leave requests.', 'WF-LRQ-004', '2024-06-05');
 
 INSERT INTO workflow_steps (workflow_step_id, display_name, workflow, sequence_position, assigned_role, requires_human_approval, approval_gate, preceded_by_steps)
 VALUES ('submit-request', 'Submit Request', 'onboarding', 1, 'administrator', TRUE, 'initial-review', 'step-1');
 
 INSERT INTO workflow_steps (workflow_step_id, display_name, workflow, sequence_position, assigned_role, requires_human_approval, approval_gate, preceded_by_steps)
 VALUES ('manager-review', 'Manager Review', 'invoice-approval', 2, 'editor', TRUE, 'manager-approval', 'step-2');
+
+INSERT INTO workflow_steps (workflow_step_id, display_name, workflow, sequence_position, assigned_role, requires_human_approval, approval_gate, preceded_by_steps)
+VALUES ('recwwXHLqxKPhj6Mt', '', 'performance-review', 0, '', FALSE, '', '');
 
 INSERT INTO workflow_steps (workflow_step_id, display_name, workflow, sequence_position, assigned_role, requires_human_approval, approval_gate, preceded_by_steps)
 VALUES ('automated-eligibility-check', 'Automated Eligibility Check', 'content-publishing', 3, 'viewer', FALSE, 'it-security-gate', 'step-3');
@@ -97,6 +100,15 @@ VALUES ('generate-report', 'Generate Report', 'incident-reporting', 14, 'trainer
 INSERT INTO workflow_steps (workflow_step_id, display_name, workflow, sequence_position, assigned_role, requires_human_approval, approval_gate, preceded_by_steps)
 VALUES ('close-workflow', 'Close Workflow', 'change-management', 15, 'owner', FALSE, 'executive-sign-off', 'step-15');
 
+INSERT INTO workflow_steps (workflow_step_id, display_name, workflow, sequence_position, assigned_role, requires_human_approval, approval_gate, preceded_by_steps)
+VALUES ('step1', 'step1', 'change-management', 0, '', FALSE, '', '');
+
+INSERT INTO workflow_steps (workflow_step_id, display_name, workflow, sequence_position, assigned_role, requires_human_approval, approval_gate, preceded_by_steps)
+VALUES ('asdf', 'asdf', 'change-management', 0, '', FALSE, '', '');
+
+INSERT INTO workflow_steps (workflow_step_id, display_name, workflow, sequence_position, assigned_role, requires_human_approval, approval_gate, preceded_by_steps)
+VALUES ('step-2', 'Step 2', 'performance-review', 0, '', FALSE, '', '');
+
 INSERT INTO approval_gates (approval_gate_id, display_name, escalation_threshold_hours)
 VALUES ('initial-review', 'Initial Review', 0);
 
@@ -130,53 +142,53 @@ VALUES ('customer-confirmation', 'Customer Confirmation', 0);
 INSERT INTO approval_gates (approval_gate_id, display_name, escalation_threshold_hours)
 VALUES ('some-new-gate', 'some new gate', 0);
 
-INSERT INTO precedes_steps (precedes_step_id, name, step_number, workflow_step)
-VALUES ('step-1', 'step-1', 1, 'submit-request');
+INSERT INTO precedes_steps (precedes_step_id, name, workflow_step, step_number)
+VALUES ('step-1', 'step-1', 'submit-request', 1);
 
-INSERT INTO precedes_steps (precedes_step_id, name, step_number, workflow_step)
-VALUES ('step-2', 'step-2', 2, 'manager-review');
+INSERT INTO precedes_steps (precedes_step_id, name, workflow_step, step_number)
+VALUES ('step-2', 'step-2', 'manager-review', 2);
 
-INSERT INTO precedes_steps (precedes_step_id, name, step_number, workflow_step)
-VALUES ('step-3', 'step-3', 3, 'automated-eligibility-check');
+INSERT INTO precedes_steps (precedes_step_id, name, workflow_step, step_number)
+VALUES ('step-3', 'step-3', 'automated-eligibility-check', 3);
 
-INSERT INTO precedes_steps (precedes_step_id, name, step_number, workflow_step)
-VALUES ('step-4', 'step-4', 4, 'finance-approval');
+INSERT INTO precedes_steps (precedes_step_id, name, workflow_step, step_number)
+VALUES ('step-4', 'step-4', 'finance-approval', 4);
 
-INSERT INTO precedes_steps (precedes_step_id, name, step_number, workflow_step)
-VALUES ('step-5', 'step-5', 5, 'document-verification');
+INSERT INTO precedes_steps (precedes_step_id, name, workflow_step, step_number)
+VALUES ('step-5', 'step-5', 'document-verification', 5);
 
-INSERT INTO precedes_steps (precedes_step_id, name, step_number, workflow_step)
-VALUES ('step-6', 'step-6', 6, 'quality-assurance-review');
+INSERT INTO precedes_steps (precedes_step_id, name, workflow_step, step_number)
+VALUES ('step-6', 'step-6', 'quality-assurance-review', 6);
 
-INSERT INTO precedes_steps (precedes_step_id, name, step_number, workflow_step)
-VALUES ('step-7', 'step-7', 7, 'system-notification-sent');
+INSERT INTO precedes_steps (precedes_step_id, name, workflow_step, step_number)
+VALUES ('step-7', 'step-7', 'system-notification-sent', 7);
 
-INSERT INTO precedes_steps (precedes_step_id, name, step_number, workflow_step)
-VALUES ('step-8', 'step-8', 8, 'final-approval');
+INSERT INTO precedes_steps (precedes_step_id, name, workflow_step, step_number)
+VALUES ('step-8', 'step-8', 'final-approval', 8);
 
-INSERT INTO precedes_steps (precedes_step_id, name, step_number, workflow_step)
-VALUES ('step-9', 'step-9', 9, 'archive-request');
+INSERT INTO precedes_steps (precedes_step_id, name, workflow_step, step_number)
+VALUES ('step-9', 'step-9', 'archive-request', 9);
 
-INSERT INTO precedes_steps (precedes_step_id, name, step_number, workflow_step)
-VALUES ('step-10', 'step-10', 10, 'customer-feedback-collection');
+INSERT INTO precedes_steps (precedes_step_id, name, workflow_step, step_number)
+VALUES ('step-10', 'step-10', 'customer-feedback-collection', 10);
 
-INSERT INTO precedes_steps (precedes_step_id, name, step_number, workflow_step)
-VALUES ('step-11', 'step-11', 11, 'legal-compliance-check');
+INSERT INTO precedes_steps (precedes_step_id, name, workflow_step, step_number)
+VALUES ('step-11', 'step-11', 'legal-compliance-check', 11);
 
-INSERT INTO precedes_steps (precedes_step_id, name, step_number, workflow_step)
-VALUES ('step-12', 'step-12', 12, 'assign-task-to-team');
+INSERT INTO precedes_steps (precedes_step_id, name, workflow_step, step_number)
+VALUES ('step-12', 'step-12', 'assign-task-to-team', 12);
 
-INSERT INTO precedes_steps (precedes_step_id, name, step_number, workflow_step)
-VALUES ('step-13', 'step-13', 13, 'team-lead-review');
+INSERT INTO precedes_steps (precedes_step_id, name, workflow_step, step_number)
+VALUES ('step-13', 'step-13', 'team-lead-review', 13);
 
-INSERT INTO precedes_steps (precedes_step_id, name, step_number, workflow_step)
-VALUES ('step-14', 'step-14', 14, 'generate-report');
+INSERT INTO precedes_steps (precedes_step_id, name, workflow_step, step_number)
+VALUES ('step-14', 'step-14', 'generate-report', 14);
 
-INSERT INTO precedes_steps (precedes_step_id, name, step_number, workflow_step)
-VALUES ('step-15', 'step-15', 15, 'close-workflow');
+INSERT INTO precedes_steps (precedes_step_id, name, workflow_step, step_number)
+VALUES ('step-15', 'step-15', 'close-workflow', 15);
 
-INSERT INTO precedes_steps (precedes_step_id, name, step_number, workflow_step)
-VALUES ('assign-task-to-team', 'assign-task-to-team', 16, 'some-new-task');
+INSERT INTO precedes_steps (precedes_step_id, name, workflow_step, step_number)
+VALUES ('assign-task-to-team', 'assign-task-to-team', 'some-new-task', 16);
 
 INSERT INTO roles (role_id, display_name, label, comment, filled_by_human_agent, filled_by_ai_agent, filled_by_automated_pipeline, owned_by, delegates_to, from_delegates_to)
 VALUES ('administrator', 'Administrator', 'Admin', 'Has full access to all system features and settings.', 'agent-001', 'ava', 'lead-notification-pipeline', 'human-resources', '', 'editor');

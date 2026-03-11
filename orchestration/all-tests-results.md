@@ -10,27 +10,27 @@
 
 | Substrate | Passed | Failed | Total | Score | Duration | Status |
 |-----------|--------|--------|-------|-------|----------|--------|
-| python | 118 | 0 | 118 | 100.0% | < 1s | PASS |
-| uml | 118 | 0 | 118 | 100.0% | < 1s | PASS |
-| yaml | 118 | 0 | 118 | 100.0% | < 1s | PASS |
-| explain-dag | 118 | 0 | 118 | 100.0% | < 1s | PASS |
-| csv | 118 | 0 | 118 | 100.0% | < 1s | PASS |
-| binary | 118 | 0 | 118 | 100.0% | < 1s | PASS |
-| xlsx | 118 | 0 | 118 | 100.0% | < 1s | PASS |
-| owl | 118 | 0 | 118 | 100.0% | 10s | PASS |
-| golang | 102 | 16 | 118 | 86.4% | < 1s | FAIL |
-| english | 0 | 0 | 0 | 0.0% | 46s | PASS |
+| python | 122 | 0 | 122 | 100.0% | < 1s | PASS |
+| yaml | 122 | 0 | 122 | 100.0% | < 1s | PASS |
+| uml | 122 | 0 | 122 | 100.0% | < 1s | PASS |
+| explain-dag | 122 | 0 | 122 | 100.0% | < 1s | PASS |
+| csv | 122 | 0 | 122 | 100.0% | < 1s | PASS |
+| xlsx | 122 | 0 | 122 | 100.0% | < 1s | PASS |
+| golang | 122 | 0 | 122 | 100.0% | < 1s | PASS |
+| binary | 122 | 0 | 122 | 100.0% | < 1s | PASS |
+| owl | 122 | 0 | 122 | 100.0% | 10s | PASS |
+| english | 0 | 0 | 0 | 0.0% | 1s | ERROR: No test-answers found |
 
 ## Overall Statistics
 
 | Metric | Value |
 |--------|-------|
 | Total Substrates | 10 |
-| Total Fields Tested | 1062 |
-| Total Passed | 1046 |
-| Total Failed | 16 |
-| Overall Score | 98.5% |
-| Total Duration | 57s |
+| Total Fields Tested | 1098 |
+| Total Passed | 1098 |
+| Total Failed | 0 |
+| Overall Score | 100.0% |
+| Total Duration | 14s |
 
 ---
 

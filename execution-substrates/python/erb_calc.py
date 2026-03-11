@@ -22,9 +22,9 @@ def calc_workflows_name(display_name):
 
 # Level 2
 
-def calc_workflows_has_more_than1_step(count_of_steps):
-    """Formula: ={{CountOfSteps}} > 1"""
-    return (count_of_steps > 1)
+def calc_workflows_has_more_than1_step(count_of_non_proposed_steps):
+    """Formula: ={{CountOfNonProposedSteps}} > 1"""
+    return (count_of_non_proposed_steps > 1)
 
 
 def compute_workflows_fields(record: dict) -> dict:
@@ -35,7 +35,7 @@ def compute_workflows_fields(record: dict) -> dict:
     result['name'] = calc_workflows_name(result.get('display_name'))
 
     # Level 2 calculations
-    result['has_more_than1_step'] = calc_workflows_has_more_than1_step(result.get('count_of_steps'))
+    result['has_more_than1_step'] = calc_workflows_has_more_than1_step(result.get('count_of_non_proposed_steps'))
 
     # Convert empty strings to None for string fields
     for key in ['name']:

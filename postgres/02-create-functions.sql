@@ -39,7 +39,7 @@ END;
 $$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
 
 
-CREATE OR REPLACE FUNCTION calc_workflows_count_of_steps(p_workflow_id TEXT)
+CREATE OR REPLACE FUNCTION calc_workflows_count_of_non_proposed_steps(p_workflow_id TEXT)
 RETURNS INTEGER AS $$
 BEGIN
   RETURN ((SELECT COUNT(*) FROM workflow_steps WHERE workflow = (SELECT NULLIF(workflow_id, '') FROM workflows WHERE workflow_id = p_workflow_id)));
@@ -50,7 +50,7 @@ $$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
 CREATE OR REPLACE FUNCTION calc_workflows_has_more_than1_step(p_workflow_id TEXT)
 RETURNS BOOLEAN AS $$
 BEGIN
-  RETURN (calc_workflows_count_of_steps(p_workflow_id) > 1)::boolean;
+  RETURN (calc_workflows_count_of_non_proposed_steps(p_workflow_id) > 1)::boolean;
 END;
 $$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
 

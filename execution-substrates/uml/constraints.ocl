@@ -31,8 +31,8 @@ context Workflows
 -- Formula: =SUBSTITUTE(LOWER({{DisplayName}}), " ", "-")
 derive Name: self.displayName.toLower().replace(' ', '-')
 
--- Formula for CountOfSteps - parse error: Unexpected character '!' at position 22
+-- Formula for CountOfNonProposedSteps - parse error: Unexpected character '!' at position 22
 -- Original: =COUNTIFS(WorkflowSteps!{{Workflow}}, Workflows!{{WorkflowId}})
 
--- Formula: ={{CountOfSteps}} > 1
-derive HasMoreThan1Step: (self.countOfSteps > 1)
+-- Formula: ={{CountOfNonProposedSteps}} > 1
+derive HasMoreThan1Step: (self.countOfNonProposedSteps > 1)

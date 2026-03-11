@@ -560,113 +560,113 @@ object "agent_015" as HumanAgents_14 {
 object "step-1" as PrecedesSteps_0 {
   PrecedesStepId = "step-1"
   Name = "step-1"
-  StepNumber = 1
   WorkflowStep = "submit-request"
+  StepNumber = 1
 }
 
 object "step-2" as PrecedesSteps_1 {
   PrecedesStepId = "step-2"
   Name = "step-2"
-  StepNumber = 2
   WorkflowStep = "manager-review"
+  StepNumber = 2
 }
 
 object "step-3" as PrecedesSteps_2 {
   PrecedesStepId = "step-3"
   Name = "step-3"
-  StepNumber = 3
   WorkflowStep = "automated-eligibility-check"
+  StepNumber = 3
 }
 
 object "step-4" as PrecedesSteps_3 {
   PrecedesStepId = "step-4"
   Name = "step-4"
-  StepNumber = 4
   WorkflowStep = "finance-approval"
+  StepNumber = 4
 }
 
 object "step-5" as PrecedesSteps_4 {
   PrecedesStepId = "step-5"
   Name = "step-5"
-  StepNumber = 5
   WorkflowStep = "document-verification"
+  StepNumber = 5
 }
 
 object "step-6" as PrecedesSteps_5 {
   PrecedesStepId = "step-6"
   Name = "step-6"
-  StepNumber = 6
   WorkflowStep = "quality-assurance-review"
+  StepNumber = 6
 }
 
 object "step-7" as PrecedesSteps_6 {
   PrecedesStepId = "step-7"
   Name = "step-7"
-  StepNumber = 7
   WorkflowStep = "system-notification-sent"
+  StepNumber = 7
 }
 
 object "step-8" as PrecedesSteps_7 {
   PrecedesStepId = "step-8"
   Name = "step-8"
-  StepNumber = 8
   WorkflowStep = "final-approval"
+  StepNumber = 8
 }
 
 object "step-9" as PrecedesSteps_8 {
   PrecedesStepId = "step-9"
   Name = "step-9"
-  StepNumber = 9
   WorkflowStep = "archive-request"
+  StepNumber = 9
 }
 
 object "step-10" as PrecedesSteps_9 {
   PrecedesStepId = "step-10"
   Name = "step-10"
-  StepNumber = 10
   WorkflowStep = "customer-feedback-collection"
+  StepNumber = 10
 }
 
 object "step-11" as PrecedesSteps_10 {
   PrecedesStepId = "step-11"
   Name = "step-11"
-  StepNumber = 11
   WorkflowStep = "legal-compliance-check"
+  StepNumber = 11
 }
 
 object "step-12" as PrecedesSteps_11 {
   PrecedesStepId = "step-12"
   Name = "step-12"
-  StepNumber = 12
   WorkflowStep = "assign-task-to-team"
+  StepNumber = 12
 }
 
 object "step-13" as PrecedesSteps_12 {
   PrecedesStepId = "step-13"
   Name = "step-13"
-  StepNumber = 13
   WorkflowStep = "team-lead-review"
+  StepNumber = 13
 }
 
 object "step-14" as PrecedesSteps_13 {
   PrecedesStepId = "step-14"
   Name = "step-14"
-  StepNumber = 14
   WorkflowStep = "generate-report"
+  StepNumber = 14
 }
 
 object "step-15" as PrecedesSteps_14 {
   PrecedesStepId = "step-15"
   Name = "step-15"
-  StepNumber = 15
   WorkflowStep = "close-workflow"
+  StepNumber = 15
 }
 
 object "assign-task-to-team" as PrecedesSteps_15 {
   PrecedesStepId = "assign-task-to-team"
   Name = "assign-task-to-team"
-  StepNumber = 16
   WorkflowStep = "some-new-task"
+  StepNumber = 16
 }
 
 object "administrator" as Roles_0 {
@@ -901,7 +901,18 @@ object "manager-review" as WorkflowSteps_1 {
   PrecededBySteps = "step-2"
 }
 
-object "automated-eligibility-check" as WorkflowSteps_2 {
+object "" as WorkflowSteps_2 {
+  WorkflowStepId = "recwwXHLqxKPhj6Mt"
+  DisplayName = ""
+  Workflow = "performance-review"
+  SequencePosition = 0
+  AssignedRole = ""
+  RequiresHumanApproval = false
+  ApprovalGate = ""
+  PrecededBySteps = ""
+}
+
+object "automated-eligibility-check" as WorkflowSteps_3 {
   WorkflowStepId = "automated-eligibility-check"
   DisplayName = "Automated Eligibility Check"
   Workflow = "content-publishing"
@@ -912,7 +923,7 @@ object "automated-eligibility-check" as WorkflowSteps_2 {
   PrecededBySteps = "step-3"
 }
 
-object "finance-approval" as WorkflowSteps_3 {
+object "finance-approval" as WorkflowSteps_4 {
   WorkflowStepId = "finance-approval"
   DisplayName = "Finance Approval"
   Workflow = "leave-request"
@@ -923,7 +934,7 @@ object "finance-approval" as WorkflowSteps_3 {
   PrecededBySteps = "step-4"
 }
 
-object "document-verification" as WorkflowSteps_4 {
+object "document-verification" as WorkflowSteps_5 {
   WorkflowStepId = "document-verification"
   DisplayName = "Document Verification"
   Workflow = "it-support"
@@ -934,7 +945,7 @@ object "document-verification" as WorkflowSteps_4 {
   PrecededBySteps = "step-5"
 }
 
-object "quality-assurance-review" as WorkflowSteps_5 {
+object "quality-assurance-review" as WorkflowSteps_6 {
   WorkflowStepId = "quality-assurance-review"
   DisplayName = "Quality Assurance Review"
   Workflow = "expense-reimbursement"
@@ -945,7 +956,7 @@ object "quality-assurance-review" as WorkflowSteps_5 {
   PrecededBySteps = "step-6"
 }
 
-object "system-notification-sent" as WorkflowSteps_6 {
+object "system-notification-sent" as WorkflowSteps_7 {
   WorkflowStepId = "system-notification-sent"
   DisplayName = "System Notification Sent"
   Workflow = "performance-review"
@@ -956,7 +967,7 @@ object "system-notification-sent" as WorkflowSteps_6 {
   PrecededBySteps = "step-7"
 }
 
-object "final-approval" as WorkflowSteps_7 {
+object "final-approval" as WorkflowSteps_8 {
   WorkflowStepId = "final-approval"
   DisplayName = "Final Approval"
   Workflow = "procurement"
@@ -967,7 +978,7 @@ object "final-approval" as WorkflowSteps_7 {
   PrecededBySteps = "step-8"
 }
 
-object "archive-request" as WorkflowSteps_8 {
+object "archive-request" as WorkflowSteps_9 {
   WorkflowStepId = "archive-request"
   DisplayName = "Archive Request"
   Workflow = "customer-feedback"
@@ -978,7 +989,7 @@ object "archive-request" as WorkflowSteps_8 {
   PrecededBySteps = "step-9"
 }
 
-object "customer-feedback-collection" as WorkflowSteps_9 {
+object "customer-feedback-collection" as WorkflowSteps_10 {
   WorkflowStepId = "customer-feedback-collection"
   DisplayName = "Customer Feedback Collection"
   Workflow = "project-kickoff"
@@ -989,7 +1000,7 @@ object "customer-feedback-collection" as WorkflowSteps_9 {
   PrecededBySteps = "step-10"
 }
 
-object "legal-compliance-check" as WorkflowSteps_10 {
+object "legal-compliance-check" as WorkflowSteps_11 {
   WorkflowStepId = "legal-compliance-check"
   DisplayName = "Legal Compliance Check"
   Workflow = "contract-review"
@@ -1000,7 +1011,7 @@ object "legal-compliance-check" as WorkflowSteps_10 {
   PrecededBySteps = "step-11"
 }
 
-object "assign-task-to-team" as WorkflowSteps_11 {
+object "assign-task-to-team" as WorkflowSteps_12 {
   WorkflowStepId = "assign-task-to-team"
   DisplayName = "Assign Task to Team"
   Workflow = "asset-management"
@@ -1011,7 +1022,7 @@ object "assign-task-to-team" as WorkflowSteps_11 {
   PrecededBySteps = "step-12"
 }
 
-object "some-new-task" as WorkflowSteps_12 {
+object "some-new-task" as WorkflowSteps_13 {
   WorkflowStepId = "some-new-task"
   DisplayName = "Some new task"
   Workflow = "asset-management"
@@ -1022,7 +1033,7 @@ object "some-new-task" as WorkflowSteps_12 {
   PrecededBySteps = "assign-task-to-team"
 }
 
-object "team-lead-review" as WorkflowSteps_13 {
+object "team-lead-review" as WorkflowSteps_14 {
   WorkflowStepId = "team-lead-review"
   DisplayName = "Team Lead Review"
   Workflow = "recruitment"
@@ -1033,7 +1044,7 @@ object "team-lead-review" as WorkflowSteps_13 {
   PrecededBySteps = "step-13"
 }
 
-object "generate-report" as WorkflowSteps_14 {
+object "generate-report" as WorkflowSteps_15 {
   WorkflowStepId = "generate-report"
   DisplayName = "Generate Report"
   Workflow = "incident-reporting"
@@ -1044,7 +1055,7 @@ object "generate-report" as WorkflowSteps_14 {
   PrecededBySteps = "step-14"
 }
 
-object "close-workflow" as WorkflowSteps_15 {
+object "close-workflow" as WorkflowSteps_16 {
   WorkflowStepId = "close-workflow"
   DisplayName = "Close Workflow"
   Workflow = "change-management"
@@ -1055,128 +1066,62 @@ object "close-workflow" as WorkflowSteps_15 {
   PrecededBySteps = "step-15"
 }
 
-object "onboarding" as Workflows_0 {
-  WorkflowId = "onboarding"
-  DisplayName = "Onboarding"
-  Title = "Employee Onboarding"
-  Description = "A step-by-step process to o..."
-  Identifier = "WF-ONB-001"
-  Modified = "2024-05-10"
-  WorkflowSteps = "submit-request"
-  CountOfSteps = 1
+object "step1" as WorkflowSteps_17 {
+  WorkflowStepId = "step1"
+  DisplayName = "step1"
+  Workflow = "change-management"
+  SequencePosition = 0
+  AssignedRole = ""
+  RequiresHumanApproval = false
+  ApprovalGate = ""
+  PrecededBySteps = ""
 }
 
-object "invoice-approval" as Workflows_1 {
-  WorkflowId = "invoice-approval"
-  DisplayName = "Invoice Approval"
-  Title = "Invoice Approval Workflow"
-  Description = "Automated workflow for revi..."
-  Identifier = "WF-INV-002"
-  Modified = "2024-06-01"
-  WorkflowSteps = "manager-review"
-  CountOfSteps = 1
+object "asdf" as WorkflowSteps_18 {
+  WorkflowStepId = "asdf"
+  DisplayName = "asdf"
+  Workflow = "change-management"
+  SequencePosition = 0
+  AssignedRole = ""
+  RequiresHumanApproval = false
+  ApprovalGate = ""
+  PrecededBySteps = ""
 }
 
-object "content-publishing" as Workflows_2 {
-  WorkflowId = "content-publishing"
-  DisplayName = "Content Publishing"
-  Title = "Content Publishing Process"
-  Description = "Workflow for drafting, revi..."
-  Identifier = "WF-CNT-003"
-  Modified = "2024-05-28"
-  WorkflowSteps = "automated-eligibility-check"
-  CountOfSteps = 1
+object "step-2" as WorkflowSteps_19 {
+  WorkflowStepId = "step-2"
+  DisplayName = "Step 2"
+  Workflow = "performance-review"
+  SequencePosition = 0
+  AssignedRole = ""
+  RequiresHumanApproval = false
+  ApprovalGate = ""
+  PrecededBySteps = ""
 }
 
-object "leave-request" as Workflows_3 {
-  WorkflowId = "leave-request"
-  DisplayName = "Leave Request"
-  Title = "Leave Request Workflow"
-  Description = "Process for employees to su..."
-  Identifier = "WF-LRQ-004"
-  Modified = "2024-06-05"
-  WorkflowSteps = "finance-approval"
-  CountOfSteps = 1
-}
-
-object "it-support" as Workflows_4 {
-  WorkflowId = "it-support"
-  DisplayName = "IT Support"
-  Title = "IT Support Ticketing"
-  Description = "Workflow for submitting, tr..."
-  Identifier = "WF-ITS-005"
-  Modified = "2024-05-30"
-  WorkflowSteps = "document-verification"
-  CountOfSteps = 1
-}
-
-object "expense-reimbursement" as Workflows_5 {
-  WorkflowId = "expense-reimbursement"
-  DisplayName = "Expense Reimbursement"
-  Title = "Expense Reimbursement Process"
-  Description = "Steps for employees to subm..."
-  Identifier = "WF-EXP-006"
-  Modified = "2024-06-03"
-  WorkflowSteps = "quality-assurance-review"
-  CountOfSteps = 1
-}
-
-object "performance-review" as Workflows_6 {
+object "performance-review" as Workflows_0 {
   WorkflowId = "performance-review"
   DisplayName = "Performance Review"
   Title = "Annual Performance Review"
   Description = "Structured workflow for con..."
   Identifier = "WF-PRV-007"
   Modified = "2024-05-15"
-  WorkflowSteps = "system-notification-sent"
-  CountOfSteps = 1
+  WorkflowSteps = "system-notification-sent, s..."
+  CountOfNonProposedSteps = 3
 }
 
-object "procurement" as Workflows_7 {
-  WorkflowId = "procurement"
-  DisplayName = "Procurement"
-  Title = "Procurement Workflow"
-  Description = "Process for requesting, app..."
-  Identifier = "WF-PRC-008"
-  Modified = "2024-06-02"
-  WorkflowSteps = "final-approval"
-  CountOfSteps = 1
+object "change-management" as Workflows_1 {
+  WorkflowId = "change-management"
+  DisplayName = "Change Management"
+  Title = "Change Management Workflow"
+  Description = "Structured process for requ..."
+  Identifier = "WF-CHM-015"
+  Modified = "2024-05-27"
+  WorkflowSteps = "close-workflow, step1, asdf"
+  CountOfNonProposedSteps = 3
 }
 
-object "customer-feedback" as Workflows_8 {
-  WorkflowId = "customer-feedback"
-  DisplayName = "Customer Feedback"
-  Title = "Customer Feedback Collection"
-  Description = "Workflow for collecting, an..."
-  Identifier = "WF-CFB-009"
-  Modified = "2024-05-25"
-  WorkflowSteps = "archive-request"
-  CountOfSteps = 1
-}
-
-object "project-kickoff" as Workflows_9 {
-  WorkflowId = "project-kickoff"
-  DisplayName = "Project Kickoff"
-  Title = "Project Kickoff Process"
-  Description = "Steps to initiate a new pro..."
-  Identifier = "WF-PKO-010"
-  Modified = "2024-05-20"
-  WorkflowSteps = "customer-feedback-collection"
-  CountOfSteps = 1
-}
-
-object "contract-review" as Workflows_10 {
-  WorkflowId = "contract-review"
-  DisplayName = "Contract Review"
-  Title = "Contract Review Workflow"
-  Description = "Workflow for legal and mana..."
-  Identifier = "WF-CTR-011"
-  Modified = "2024-06-04"
-  WorkflowSteps = "legal-compliance-check"
-  CountOfSteps = 1
-}
-
-object "asset-management" as Workflows_11 {
+object "asset-management" as Workflows_2 {
   WorkflowId = "asset-management"
   DisplayName = "Asset Management"
   Title = "Asset Management Process"
@@ -1184,7 +1129,106 @@ object "asset-management" as Workflows_11 {
   Identifier = "WF-ASM-012"
   Modified = "2024-05-18"
   WorkflowSteps = "assign-task-to-team, some-n..."
-  CountOfSteps = 2
+  CountOfNonProposedSteps = 2
+}
+
+object "incident-reporting" as Workflows_3 {
+  WorkflowId = "incident-reporting"
+  DisplayName = "Incident Reporting"
+  Title = "Incident Reporting Process"
+  Description = "Steps for reporting, invest..."
+  Identifier = "WF-INC-014"
+  Modified = "2024-06-06"
+  WorkflowSteps = "generate-report"
+  CountOfNonProposedSteps = 1
+}
+
+object "customer-feedback" as Workflows_4 {
+  WorkflowId = "customer-feedback"
+  DisplayName = "Customer Feedback"
+  Title = "Customer Feedback Collection"
+  Description = "Workflow for collecting, an..."
+  Identifier = "WF-CFB-009"
+  Modified = "2024-05-25"
+  WorkflowSteps = "archive-request"
+  CountOfNonProposedSteps = 1
+}
+
+object "project-kickoff" as Workflows_5 {
+  WorkflowId = "project-kickoff"
+  DisplayName = "Project Kickoff"
+  Title = "Project Kickoff Process"
+  Description = "Steps to initiate a new pro..."
+  Identifier = "WF-PKO-010"
+  Modified = "2024-05-20"
+  WorkflowSteps = "customer-feedback-collection"
+  CountOfNonProposedSteps = 1
+}
+
+object "onboarding" as Workflows_6 {
+  WorkflowId = "onboarding"
+  DisplayName = "Onboarding"
+  Title = "Employee Onboarding"
+  Description = "A step-by-step process to o..."
+  Identifier = "WF-ONB-001"
+  Modified = "2024-05-10"
+  WorkflowSteps = "submit-request"
+  CountOfNonProposedSteps = 1
+}
+
+object "content-publishing" as Workflows_7 {
+  WorkflowId = "content-publishing"
+  DisplayName = "Content Publishing"
+  Title = "Content Publishing Process"
+  Description = "Workflow for drafting, revi..."
+  Identifier = "WF-CNT-003"
+  Modified = "2024-05-28"
+  WorkflowSteps = "automated-eligibility-check"
+  CountOfNonProposedSteps = 1
+}
+
+object "expense-reimbursement" as Workflows_8 {
+  WorkflowId = "expense-reimbursement"
+  DisplayName = "Expense Reimbursement"
+  Title = "Expense Reimbursement Process"
+  Description = "Steps for employees to subm..."
+  Identifier = "WF-EXP-006"
+  Modified = "2024-06-03"
+  WorkflowSteps = "quality-assurance-review"
+  CountOfNonProposedSteps = 1
+}
+
+object "procurement" as Workflows_9 {
+  WorkflowId = "procurement"
+  DisplayName = "Procurement"
+  Title = "Procurement Workflow"
+  Description = "Process for requesting, app..."
+  Identifier = "WF-PRC-008"
+  Modified = "2024-06-02"
+  WorkflowSteps = "final-approval"
+  CountOfNonProposedSteps = 1
+}
+
+object "invoice-approval" as Workflows_10 {
+  WorkflowId = "invoice-approval"
+  DisplayName = "Invoice Approval"
+  Title = "Invoice Approval Workflow"
+  Description = "Automated workflow for revi..."
+  Identifier = "WF-INV-002"
+  Modified = "2024-06-01"
+  WorkflowSteps = "manager-review"
+  CountOfNonProposedSteps = 1
+}
+
+object "contract-review" as Workflows_11 {
+  WorkflowId = "contract-review"
+  DisplayName = "Contract Review"
+  Title = "Contract Review Workflow"
+  Description = "Workflow for legal and mana..."
+  Identifier = "WF-CTR-011"
+  Modified = "2024-06-04"
+  WorkflowSteps = "legal-compliance-check"
+  CountOfNonProposedSteps = 1
 }
 
 object "recruitment" as Workflows_12 {
@@ -1195,29 +1239,29 @@ object "recruitment" as Workflows_12 {
   Identifier = "WF-RCT-013"
   Modified = "2024-05-22"
   WorkflowSteps = "team-lead-review"
-  CountOfSteps = 1
+  CountOfNonProposedSteps = 1
 }
 
-object "incident-reporting" as Workflows_13 {
-  WorkflowId = "incident-reporting"
-  DisplayName = "Incident Reporting"
-  Title = "Incident Reporting Process"
-  Description = "Steps for reporting, invest..."
-  Identifier = "WF-INC-014"
-  Modified = "2024-06-06"
-  WorkflowSteps = "generate-report"
-  CountOfSteps = 1
+object "it-support" as Workflows_13 {
+  WorkflowId = "it-support"
+  DisplayName = "IT Support"
+  Title = "IT Support Ticketing"
+  Description = "Workflow for submitting, tr..."
+  Identifier = "WF-ITS-005"
+  Modified = "2024-05-30"
+  WorkflowSteps = "document-verification"
+  CountOfNonProposedSteps = 1
 }
 
-object "change-management" as Workflows_14 {
-  WorkflowId = "change-management"
-  DisplayName = "Change Management"
-  Title = "Change Management Workflow"
-  Description = "Structured process for requ..."
-  Identifier = "WF-CHM-015"
-  Modified = "2024-05-27"
-  WorkflowSteps = "close-workflow"
-  CountOfSteps = 1
+object "leave-request" as Workflows_14 {
+  WorkflowId = "leave-request"
+  DisplayName = "Leave Request"
+  Title = "Leave Request Workflow"
+  Description = "Process for employees to su..."
+  Identifier = "WF-LRQ-004"
+  Modified = "2024-06-05"
+  WorkflowSteps = "finance-approval"
+  CountOfNonProposedSteps = 1
 }
 
 @enduml

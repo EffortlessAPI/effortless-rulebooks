@@ -67,8 +67,8 @@ pre { background: var(--code-bg); border: 1px solid var(--border-color); border-
             <h1>Golang Execution Substrate</h1>
         </div>
         <div class="header-stats">
-            <div class="stat"><span>Score:</span><span class="stat-value score-good">86.4%</span></div>
-            <div class="stat"><span>102/118 passed</span></div>
+            <div class="stat"><span>Score:</span><span class="stat-value score-perfect">100.0%</span></div>
+            <div class="stat"><span>122/122 passed</span></div>
         </div>
         <button id="theme-toggle" title="Toggle theme"><span class="sun">☀️</span><span class="moon">🌙</span></button>
     </header>
@@ -118,7 +118,7 @@ Processing Workflows...
   ✓ workflows: 15 records processed
 
 Processing WorkflowSteps...
-  ✓ workflow_steps: 16 records processed
+  ✓ workflow_steps: 20 records processed
 
 Processing ApprovalGates...
   ✓ approval_gates: 11 records processed
@@ -133,7 +133,7 @@ Processing Departments...
   ✓ departments: 15 records processed
 
 ════════════════════════════════════════════════════════════════
-Golang substrate: ALL 6 tables processed successfully (88 total records)
+Golang substrate: ALL 6 tables processed successfully (92 total records)
 ════════════════════════════════════════════════════════════════
 
 </pre>
@@ -143,10 +143,10 @@ Golang substrate: ALL 6 tables processed successfully (88 total records)
             <div class="card">
                 <h2>Test Summary</h2>
                 <div class="results-summary">
-                    <div class="result-item"><div class="result-value score-good">86.4%</div><div class="result-label">Score</div></div>
-                    <div class="result-item"><div class="result-value score-perfect">102</div><div class="result-label">Passed</div></div>
-                    <div class="result-item"><div class="result-value">16</div><div class="result-label">Failed</div></div>
-                    <div class="result-item"><div class="result-value">118</div><div class="result-label">Total</div></div>
+                    <div class="result-item"><div class="result-value score-perfect">100.0%</div><div class="result-label">Score</div></div>
+                    <div class="result-item"><div class="result-value score-perfect">122</div><div class="result-label">Passed</div></div>
+                    <div class="result-item"><div class="result-value">0</div><div class="result-label">Failed</div></div>
+                    <div class="result-item"><div class="result-value">122</div><div class="result-label">Total</div></div>
                 </div>
             </div>
         </div>
@@ -230,7 +230,7 @@ type Workflow struct {
 	Identifier *string `json:&quot;identifier&quot;`
 	Modified *string `json:&quot;modified&quot;`
 	WorkflowSteps *string `json:&quot;workflow_steps&quot;`
-	CountOfSteps *int `json:&quot;count_of_steps&quot;`
+	CountOfNonProposedSteps *int `json:&quot;count_of_non_proposed_steps&quot;`
 	Name *string `json:&quot;name&quot;`
 	HasMoreThan1Step *bool `json:&quot;has_more_than1_step&quot;`
 }
@@ -244,9 +244,9 @@ func (tc *Workflow) CalcName() string {
 }
 
 // CalcHasMoreThan1Step computes the HasMoreThan1Step calculated field
-// Formula: ={{CountOfSteps}} &gt; 1
+// Formula: ={{CountOfNonProposedSteps}} &gt; 1
 func (tc *Workflow) CalcHasMoreThan1Step() bool {
-	return (tc.CountOfSteps != nil &amp;&amp; *tc.CountOfSteps &gt; 1)
+	return (tc.CountOfNonProposedSteps != nil &amp;&amp; *tc.CountOfNonProposedSteps &gt; 1)
 }
 
 // --- Compute All Calculated Fields ---
@@ -255,7 +255,7 @@ func (tc *Workflow) CalcHasMoreThan1Step() bool {
 func (tc *Workflow) ComputeAll() *Workflow {
 	// Level 1 calculations
 	name := strings.ReplaceAll(strings.ToLower(stringVal(tc.DisplayName)), &quot; &quot;, &quot;-&quot;)
-	hasMoreThan1Step := (tc.CountOfSteps != nil &amp;&amp; *tc.CountOfSteps &gt; 1)
+	hasMoreThan1Step := (tc.CountOfNonProposedSteps != nil &amp;&amp; *tc.CountOfNonProposedSteps &gt; 1)
 
 	return &amp;Workflow{
 		WorkflowId: tc.WorkflowId,
@@ -265,7 +265,7 @@ func (tc *Workflow) ComputeAll() *Workflow {
 		Identifier: tc.Identifier,
 		Modified: tc.Modified,
 		WorkflowSteps: tc.WorkflowSteps,
-		CountOfSteps: tc.CountOfSteps,
+		CountOfNonProposedSteps: tc.CountOfNonProposedSteps,
 		Name: nilIfEmpty(name),
 		HasMoreThan1Step: &amp;hasMoreThan1Step,
 	}
@@ -361,8 +361,8 @@ func (tc *ApprovalGate) ComputeAll() *ApprovalGate {
 type PrecedesStep struct {
 	PrecedesStepId string `json:&quot;precedes_step_id&quot;`
 	Name *string `json:&quot;name&quot;`
-	StepNumber *int `json:&quot;step_number&quot;`
 	WorkflowStep *string `json:&quot;workflow_step&quot;`
+	StepNumber *int `json:&quot;step_number&quot;`
 	DisplayName *string `json:&quot;display_name&quot;`
 }
 
@@ -384,8 +384,8 @@ func (tc *PrecedesStep) ComputeAll() *PrecedesStep {
 	return &amp;PrecedesStep{
 		PrecedesStepId: tc.PrecedesStepId,
 		Name: tc.Name,
-		StepNumber: tc.StepNumber,
 		WorkflowStep: tc.WorkflowStep,
+		StepNumber: tc.StepNumber,
 		DisplayName: nilIfEmpty(displayName),
 	}
 }
@@ -702,7 +702,7 @@ func SaveDepartmentRecords(path string, records []Department) error {
             <div class="card">
                 <div class="code-header">
                     <h2>main.go</h2>
-                    <div><span class="code-info">236 lines</span><button class="copy-btn" onclick="copyCode('main-code')">Copy</button></div>
+                    <div><span class="code-info">264 lines</span><button class="copy-btn" onclick="copyCode('main-code')">Copy</button></div>
                 </div>
                 <pre id="main-code">// ERB SDK - Go Test Runner (GENERATED - DO NOT EDIT)
 // =======================================================
@@ -710,6 +710,7 @@ func SaveDepartmentRecords(path string, records []Department) error {
 // It must stay in sync with erb_sdk.go and the rulebook.
 //
 // Tables with calculated fields: Workflows, WorkflowSteps, ApprovalGates, PrecedesSteps, Roles, Departments
+// Tables with aggregations: Workflows
 //
 // IMPORTANT: This runner processes ALL tables, not just a &quot;primary&quot; one.
 // If ANY table fails to process, the entire run fails with exit code 1.
@@ -748,6 +749,15 @@ func main() {
 	var totalRecords int
 
 	// ─────────────────────────────────────────────────────────────────
+	// Load related tables for aggregation calculations
+	// ─────────────────────────────────────────────────────────────────
+	workflow_stepsData, err := LoadWorkflowStepRecords(filepath.Join(blankTestsDir, &quot;workflow_steps.json&quot;))
+	if err != nil {
+		fmt.Fprintf(os.Stderr, &quot;Warning: Could not load WorkflowSteps for aggregations: %v\n&quot;, err)
+		workflow_stepsData = nil
+	}
+
+	// ─────────────────────────────────────────────────────────────────
 	// Process Workflows
 	// ─────────────────────────────────────────────────────────────────
 	fmt.Println(&quot;Processing Workflows...&quot;)
@@ -760,6 +770,24 @@ func main() {
 		fmt.Fprintf(os.Stderr, &quot;ERROR: %s\n&quot;, errMsg)
 		errors = append(errors, errMsg)
 	} else {
+		// Compute aggregations for Workflows
+		count_of_non_proposed_stepsCountMap := make(map[string]int)
+		if workflow_stepsData != nil {
+			for _, rel := range workflow_stepsData {
+				if rel.Workflow != nil {
+					count_of_non_proposed_stepsCountMap[*rel.Workflow]++
+				}
+			}
+		}
+
+		// Update records with aggregation values
+		for i := range workflowsRecords {
+			if workflowsRecords[i].WorkflowId != &quot;&quot; {
+				count := count_of_non_proposed_stepsCountMap[workflowsRecords[i].WorkflowId]
+				workflowsRecords[i].CountOfNonProposedSteps = &amp;count
+			}
+		}
+
 		var computedWorkflow []Workflow
 		for _, r := range workflowsRecords {
 			computedWorkflow = append(computedWorkflow, *r.ComputeAll())

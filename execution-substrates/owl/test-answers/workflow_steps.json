@@ -22,6 +22,17 @@
     "display_name": "Manager Review"
   },
   {
+    "workflow_step_id": "recwwXHLqxKPhj6Mt",
+    "workflow": "performance-review",
+    "name": null,
+    "display_name": null,
+    "sequence_position": 0,
+    "assigned_role": null,
+    "requires_human_approval": false,
+    "approval_gate": null,
+    "preceded_by_steps": null
+  },
+  {
     "workflow_step_id": "automated-eligibility-check",
     "name": "automated-eligibility-check",
     "workflow": "content-publishing",
@@ -174,5 +185,38 @@
     "preceded_by_steps": "step-15",
     "display_name": "Close Workflow",
     "requires_human_approval": false
+  },
+  {
+    "workflow_step_id": "step1",
+    "name": "step1",
+    "workflow": "change-management",
+    "display_name": "step1",
+    "sequence_position": 0,
+    "assigned_role": null,
+    "requires_human_approval": false,
+    "approval_gate": null,
+    "preceded_by_steps": null
+  },
+  {
+    "workflow_step_id": "asdf",
+    "name": "asdf",
+    "workflow": "change-management",
+    "display_name": "asdf",
+    "sequence_position": 0,
+    "assigned_role": null,
+    "requires_human_approval": false,
+    "approval_gate": null,
+    "preceded_by_steps": null
+  },
+  {
+    "workflow_step_id": "step-2",
+    "name": "step-2",
+    "workflow": "performance-review",
+    "display_name": "Step 2",
+    "sequence_position": 0,
+    "assigned_role": null,
+    "requires_human_approval": false,
+    "approval_gate": null,
+    "preceded_by_steps": null
   }
 ]

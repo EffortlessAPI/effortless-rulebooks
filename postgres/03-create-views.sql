@@ -15,7 +15,7 @@ SELECT
   t.identifier,
   t.modified,
   calc_workflows_workflow_steps(t.workflow_id) AS workflow_steps,
-  calc_workflows_count_of_steps(t.workflow_id) AS count_of_steps,
+  calc_workflows_count_of_non_proposed_steps(t.workflow_id) AS count_of_non_proposed_steps,
   calc_workflows_has_more_than1_step(t.workflow_id) AS has_more_than1_step
 FROM workflows t;
 
@@ -45,9 +45,9 @@ CREATE OR REPLACE VIEW vw_precedes_steps WITH (security_invoker = ON) AS
 SELECT
   t.precedes_step_id,
   t.name,
+  t.workflow_step,
   calc_precedes_steps_display_name(t.precedes_step_id) AS display_name,
-  t.step_number,
-  t.workflow_step
+  t.step_number
 FROM precedes_steps t;
 
 CREATE OR REPLACE VIEW vw_roles WITH (security_invoker = ON) AS

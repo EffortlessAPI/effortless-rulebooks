@@ -174,6 +174,11 @@ erb:name a owl:DatatypeProperty ;
     rdfs:range xsd:string ;
     rdfs:label "Name" .
 
+erb:workflowStep a owl:DatatypeProperty ;
+    rdfs:domain erb:PrecedesSteps ;
+    rdfs:range xsd:string ;
+    rdfs:label "WorkflowStep" .
+
 erb:displayName a owl:DatatypeProperty ;
     rdfs:domain erb:PrecedesSteps ;
     rdfs:range xsd:string ;
@@ -184,11 +189,6 @@ erb:stepNumber a owl:DatatypeProperty ;
     rdfs:domain erb:PrecedesSteps ;
     rdfs:range xsd:integer ;
     rdfs:label "StepNumber" .
-
-erb:workflowStep a owl:DatatypeProperty ;
-    rdfs:domain erb:PrecedesSteps ;
-    rdfs:range xsd:string ;
-    rdfs:label "WorkflowStep" .
 
 # === Class: Roles ===
 erb:Roles a owl:Class ;
@@ -350,10 +350,10 @@ erb:workflowSteps a owl:DatatypeProperty ;
     rdfs:range xsd:string ;
     rdfs:label "WorkflowSteps" .
 
-erb:countOfSteps a owl:DatatypeProperty ;
+erb:countOfNonProposedSteps a owl:DatatypeProperty ;
     rdfs:domain erb:Workflows ;
     rdfs:range xsd:integer ;
-    rdfs:label "CountOfSteps" .
+    rdfs:label "CountOfNonProposedSteps" .
     # calculated: aggregation
 
 erb:hasMoreThan1Step a owl:DatatypeProperty ;
