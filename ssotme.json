@@ -1,16 +1,16 @@
 {
   "ShowHidden": false,
   "ShowAllFiles": false,
-  "Name": "BASIC: Jessic Talisman's Ontology Seri Parts 1-3",
+  "Name": "CustomerDemo",
   "Description": "IMPORTANT!!!! ** BASIC baseId: applThn0rikpCR9C3, ADVANCED baseId: appwN9EAp8IeIxM23",
   "ProjectSettings": [
     {
       "Name": "baseId",
-      "Value": "applThn0rikpCR9C3"
+      "Value": "appWrXPvXbkgQGOxt"
     },
     {
       "Name": "project-name",
-      "Value": "BASIC: Jessic Talisman's Ontology Seri Parts 1-3"
+      "Value": "CustomerDemo"
     },
     {
       "Name": "_apikey_",

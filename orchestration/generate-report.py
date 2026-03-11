@@ -1326,15 +1326,44 @@ footer {
 /* Tooltip for full text on hover */
 [title] { cursor: help; }
 
-/* Substrate view tabs and iframe */
+/* Substrate view tabs */
 .substrate-view { display: none; }
 .substrate-view.active { display: block; }
-.substrate-report-iframe {
-    width: 100%;
-    min-height: 600px;
+
+/* Dynamic substrate content from embedded report */
+.substrate-dynamic-view {
+    background: var(--bg-primary);
     border: 1px solid var(--border-color);
     border-radius: var(--radius);
-    background: var(--bg-primary);
+    padding: 1rem;
+}
+.substrate-dynamic-view pre {
+    background: var(--code-bg);
+    padding: 0.75rem;
+    border-radius: var(--radius);
+    overflow-x: auto;
+    font-size: 0.8rem;
+}
+.substrate-dynamic-view code {
+    font-family: 'SF Mono', Monaco, 'Cascadia Code', monospace;
+    font-size: 0.8rem;
+}
+.substrate-dynamic-view table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+}
+.substrate-dynamic-view th, .substrate-dynamic-view td {
+    padding: 0.5rem;
+    border: 1px solid var(--border-color);
+    text-align: left;
+}
+.substrate-dynamic-view th {
+    background: var(--bg-secondary);
+    font-weight: 600;
+}
+#substrate-dynamic-tabs {
+    display: contents;
 }
 
 /* Postgres report section */
@@ -1785,47 +1814,22 @@ function renderSubstrateDetails(substrateName) {
         html += `<div class="failure-card"><code class="actual">${escapeHtml(substrate.error)}</code></div>`;
     }
 
-    // Primary tabs: Report, Data, Schema
+    // Unified tabs: Data, Schema, then substrate-specific tabs (loaded dynamically)
     html += '<nav class="sub-tabs" id="substrate-view-tabs">';
-    html += `<button class="sub-tab active" data-view="report">Report</button>`;
-    html += `<button class="sub-tab" data-view="data">Data</button>`;
+    html += `<button class="sub-tab active" data-view="data">Data</button>`;
     html += `<button class="sub-tab" data-view="schema">Schema</button>`;
+    if (isAnswerKey) {
+        html += `<button class="sub-tab" data-view="about">About</button>`;
+    }
+    // Substrate-specific tabs will be added dynamically after fetch
+    html += '<span id="substrate-dynamic-tabs"></span>';
     html += '</nav>';
 
     // Tab content containers
     html += '<div id="substrate-view-content">';
 
-    // Report tab - iframe to substrate-report.html or postgres explanation
-    html += '<div id="substrate-report-view" class="substrate-view active">';
-    if (!isAnswerKey) {
-        html += `<iframe src="${getSubstrateReportUrl(escapeHtml(substrateName))}" class="substrate-report-iframe" frameborder="0"></iframe>`;
-    } else {
-        html += '<div class="postgres-report">';
-        html += '<h4>PostgreSQL Reference Implementation</h4>';
-        html += '<p class="postgres-intro">PostgreSQL serves as the <strong>reference implementation</strong> for this rulebook. It is not privileged or special—it is simply the most reliable and consistent answer key generator due to its mature SQL engine and deterministic calculation behavior.</p>';
-        html += '<div class="postgres-details">';
-        html += '<h5>Why PostgreSQL?</h5>';
-        html += '<ul>';
-        html += '<li><strong>Deterministic calculations</strong> — SQL functions produce consistent, reproducible results</li>';
-        html += '<li><strong>Mature type system</strong> — Handles numeric precision, dates, and text reliably</li>';
-        html += '<li><strong>Declarative formulas</strong> — The rulebook formulas map directly to SQL expressions</li>';
-        html += '<li><strong>Battle-tested</strong> — Decades of production use ensures edge cases are handled correctly</li>';
-        html += '</ul>';
-        html += '<h5>The Point</h5>';
-        html += '<p>All substrates should converge on the same answers. PostgreSQL generates the "answer key" not because it is authoritative, but because it is the most <em>reliable</em> substrate for computing correct values. When other substrates match PostgreSQL, it validates that:</p>';
-        html += '<ol>';
-        html += '<li>The rulebook formulas are unambiguous across execution environments</li>';
-        html += '<li>Each substrate correctly interprets and executes the business logic</li>';
-        html += '<li>The same inputs produce the same outputs—regardless of implementation language</li>';
-        html += '</ol>';
-        html += '<p class="postgres-conclusion"><strong>Everything ends up agreeing—that is the point.</strong> The orchestration tests prove that diverse implementations (JavaScript, Python, Go, spreadsheets, etc.) all compute identical results from the same rulebook specification.</p>';
-        html += '</div>';
-        html += '</div>';
-    }
-    html += '</div>';
-
-    // Data tab - graded test results
-    html += '<div id="substrate-data-view" class="substrate-view">';
+    // Data tab - graded test results (now first/active)
+    html += '<div id="substrate-data-view" class="substrate-view active">';
 
     // Get entities with results
     const entitiesWithResults = Object.keys(REPORT_DATA.entities).sort().filter(entityName => {
@@ -1894,20 +1898,47 @@ function renderSubstrateDetails(substrateName) {
     });
     html += '</div>';
 
+    // About tab for postgres (answer key)
+    if (isAnswerKey) {
+        html += '<div id="substrate-about-view" class="substrate-view">';
+        html += '<div class="postgres-report">';
+        html += '<h4>PostgreSQL Reference Implementation</h4>';
+        html += '<p class="postgres-intro">PostgreSQL serves as the <strong>reference implementation</strong> for this rulebook. It is not privileged or special—it is simply the most reliable and consistent answer key generator due to its mature SQL engine and deterministic calculation behavior.</p>';
+        html += '<div class="postgres-details">';
+        html += '<h5>Why PostgreSQL?</h5>';
+        html += '<ul>';
+        html += '<li><strong>Deterministic calculations</strong> — SQL functions produce consistent, reproducible results</li>';
+        html += '<li><strong>Mature type system</strong> — Handles numeric precision, dates, and text reliably</li>';
+        html += '<li><strong>Declarative formulas</strong> — The rulebook formulas map directly to SQL expressions</li>';
+        html += '<li><strong>Battle-tested</strong> — Decades of production use ensures edge cases are handled correctly</li>';
+        html += '</ul>';
+        html += '<h5>The Point</h5>';
+        html += '<p>All substrates should converge on the same answers. PostgreSQL generates the "answer key" not because it is authoritative, but because it is the most <em>reliable</em> substrate for computing correct values. When other substrates match PostgreSQL, it validates that:</p>';
+        html += '<ol>';
+        html += '<li>The rulebook formulas are unambiguous across execution environments</li>';
+        html += '<li>Each substrate correctly interprets and executes the business logic</li>';
+        html += '<li>The same inputs produce the same outputs—regardless of implementation language</li>';
+        html += '</ol>';
+        html += '<p class="postgres-conclusion"><strong>Everything ends up agreeing—that is the point.</strong> The orchestration tests prove that diverse implementations (JavaScript, Python, Go, spreadsheets, etc.) all compute identical results from the same rulebook specification.</p>';
+        html += '</div>';
+        html += '</div>';
+        html += '</div>';
+    }
+
+    // Container for dynamically loaded substrate-specific tabs
+    html += '<div id="substrate-dynamic-content"></div>';
+
     html += '</div>'; // end substrate-view-content
 
     substrateDetails.innerHTML = html;
 
-    // Attach handlers to view tabs (Report/Data/Schema)
-    document.querySelectorAll('#substrate-view-tabs .sub-tab').forEach(tab => {
-        tab.addEventListener('click', () => {
-            document.querySelectorAll('#substrate-view-tabs .sub-tab').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.substrate-view').forEach(v => v.classList.remove('active'));
-            tab.classList.add('active');
-            const view = tab.dataset.view;
-            document.getElementById(`substrate-${view}-view`)?.classList.add('active');
-        });
-    });
+    // Load substrate-specific tabs for non-answer-key substrates
+    if (!isAnswerKey) {
+        loadSubstrateTabs(substrateName);
+    }
+
+    // Attach handlers to view tabs
+    attachViewTabHandlers();
 
     // Attach handlers to entity tabs
     document.querySelectorAll('#substrate-entity-tabs .sub-tab').forEach(tab => {
@@ -2031,6 +2062,68 @@ function renderSubstrateEntityContent(substrateName, entityName) {
     });
     html += '</tbody></table></div></div>';
     container.innerHTML = html;
+}
+
+// Attach view tab handlers (Data, Schema, and dynamically loaded tabs)
+function attachViewTabHandlers() {
+    document.querySelectorAll('#substrate-view-tabs .sub-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+            document.querySelectorAll('#substrate-view-tabs .sub-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.substrate-view').forEach(v => v.classList.remove('active'));
+            tab.classList.add('active');
+            const view = tab.dataset.view;
+            document.getElementById(`substrate-${view}-view`)?.classList.add('active');
+        });
+    });
+}
+
+// Load substrate-specific tabs from substrate-report.html
+async function loadSubstrateTabs(substrateName) {
+    const reportUrl = getSubstrateReportUrl(substrateName);
+    const dynamicTabsContainer = document.getElementById('substrate-dynamic-tabs');
+    const dynamicContentContainer = document.getElementById('substrate-dynamic-content');
+
+    if (!dynamicTabsContainer || !dynamicContentContainer) return;
+
+    try {
+        const response = await fetch(reportUrl);
+        if (!response.ok) {
+            console.warn(`Could not load substrate report: ${response.status}`);
+            return;
+        }
+
+        const html = await response.text();
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, 'text/html');
+
+        // Extract tabs from the substrate report
+        const substrateTabs = doc.querySelectorAll('.tabs .tab');
+        const substrateContents = doc.querySelectorAll('.tab-content');
+
+        // Build tab buttons for each substrate-specific tab
+        let tabButtonsHtml = '';
+        substrateTabs.forEach(tab => {
+            const tabId = tab.dataset.tab;
+            const tabText = tab.textContent.trim();
+            tabButtonsHtml += `<button class="sub-tab" data-view="dynamic-${tabId}">${tabText}</button>`;
+        });
+        dynamicTabsContainer.innerHTML = tabButtonsHtml;
+
+        // Build content containers for each substrate-specific tab
+        let contentHtml = '';
+        substrateContents.forEach(content => {
+            const tabId = content.id;
+            // Copy styles inline since we're extracting content
+            contentHtml += `<div id="substrate-dynamic-${tabId}-view" class="substrate-view substrate-dynamic-view">${content.innerHTML}</div>`;
+        });
+        dynamicContentContainer.innerHTML = contentHtml;
+
+        // Re-attach handlers to include the new tabs
+        attachViewTabHandlers();
+
+    } catch (error) {
+        console.warn('Error loading substrate report:', error);
+    }
 }
 
 if (substrateTabs.length > 0 && REPORT_DATA.substrates) {
