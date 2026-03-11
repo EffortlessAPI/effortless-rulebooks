@@ -293,6 +293,53 @@ def parse_test_results_md(filepath: str, substrate_name: str) -> dict:
     return grades
 
 
+def load_substrate_report_content(substrate_name: str) -> dict:
+    """Load and parse substrate-report.html to extract tab content.
+
+    Returns dict with 'tabs' list of {id, label} and 'contents' dict of {id: html_content}
+    """
+    if substrate_name == 'postgres':
+        return {"tabs": [], "contents": {}}
+
+    report_path = os.path.join(SUBSTRATES_DIR, substrate_name, "substrate-report.html")
+    if not os.path.exists(report_path):
+        return {"tabs": [], "contents": {}}
+
+    try:
+        with open(report_path, 'r', encoding='utf-8') as f:
+            html_content = f.read()
+
+        # Parse tabs: <button class="tab..." data-tab="...">Label</button>
+        import re
+        tabs = []
+        tab_pattern = r'<button[^>]*class="tab[^"]*"[^>]*data-tab="([^"]+)"[^>]*>([^<]+)</button>'
+        for match in re.finditer(tab_pattern, html_content):
+            tab_id = match.group(1)
+            tab_label = match.group(2).strip()
+            tabs.append({"id": tab_id, "label": tab_label})
+
+        # Parse tab contents: <div id="tab_id" class="tab-content...">...</div>
+        contents = {}
+        for tab in tabs:
+            tab_id = tab["id"]
+            # Find the content div for this tab
+            content_pattern = rf'<div\s+id="{tab_id}"\s+class="tab-content[^"]*"[^>]*>(.*?)</div>\s*(?=<div\s+id="|\s*</main>|\s*<script>)'
+            content_match = re.search(content_pattern, html_content, re.DOTALL)
+            if content_match:
+                contents[tab_id] = content_match.group(1).strip()
+            else:
+                # Try a simpler approach - find the div and capture until next major element
+                simple_pattern = rf'<div\s+id="{tab_id}"\s+class="tab-content[^"]*">([\s\S]*?)</div>\s*<div\s+id='
+                simple_match = re.search(simple_pattern, html_content)
+                if simple_match:
+                    contents[tab_id] = simple_match.group(1).strip()
+
+        return {"tabs": tabs, "contents": contents}
+    except Exception as e:
+        print(f"Warning: Could not parse substrate report for {substrate_name}: {e}")
+        return {"tabs": [], "contents": {}}
+
+
 def load_substrate_test_answers(substrate_name: str) -> dict:
     """Load test answers from a substrate"""
     if substrate_name == 'postgres':
@@ -365,6 +412,9 @@ def collect_all_data():
 
         # Load test answers for this substrate
         grades["test_answers"] = load_substrate_test_answers(substrate)
+
+        # Load substrate report content (tabs and their HTML)
+        grades["report_content"] = load_substrate_report_content(substrate)
 
         all_grades[substrate] = grades
 
@@ -2077,53 +2127,40 @@ function attachViewTabHandlers() {
     });
 }
 
-// Load substrate-specific tabs from substrate-report.html
-async function loadSubstrateTabs(substrateName) {
-    const reportUrl = getSubstrateReportUrl(substrateName);
+// Load substrate-specific tabs from pre-loaded report_content data
+function loadSubstrateTabs(substrateName) {
+    const substrate = REPORT_DATA.substrates[substrateName];
+    const reportContent = substrate ? substrate.report_content : null;
     const dynamicTabsContainer = document.getElementById('substrate-dynamic-tabs');
     const dynamicContentContainer = document.getElementById('substrate-dynamic-content');
 
-    if (!dynamicTabsContainer || !dynamicContentContainer) return;
+    if (!dynamicTabsContainer || !dynamicContentContainer || !reportContent) return;
 
-    try {
-        const response = await fetch(reportUrl);
-        if (!response.ok) {
-            console.warn(`Could not load substrate report: ${response.status}`);
-            return;
-        }
+    const tabs = reportContent.tabs || [];
+    const contents = reportContent.contents || {};
 
-        const html = await response.text();
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(html, 'text/html');
-
-        // Extract tabs from the substrate report
-        const substrateTabs = doc.querySelectorAll('.tabs .tab');
-        const substrateContents = doc.querySelectorAll('.tab-content');
-
-        // Build tab buttons for each substrate-specific tab
-        let tabButtonsHtml = '';
-        substrateTabs.forEach(tab => {
-            const tabId = tab.dataset.tab;
-            const tabText = tab.textContent.trim();
-            tabButtonsHtml += `<button class="sub-tab" data-view="dynamic-${tabId}">${tabText}</button>`;
-        });
-        dynamicTabsContainer.innerHTML = tabButtonsHtml;
-
-        // Build content containers for each substrate-specific tab
-        let contentHtml = '';
-        substrateContents.forEach(content => {
-            const tabId = content.id;
-            // Copy styles inline since we're extracting content
-            contentHtml += `<div id="substrate-dynamic-${tabId}-view" class="substrate-view substrate-dynamic-view">${content.innerHTML}</div>`;
-        });
-        dynamicContentContainer.innerHTML = contentHtml;
-
-        // Re-attach handlers to include the new tabs
-        attachViewTabHandlers();
-
-    } catch (error) {
-        console.warn('Error loading substrate report:', error);
+    if (tabs.length === 0) {
+        // No substrate-specific tabs available
+        return;
     }
+
+    // Build tab buttons for each substrate-specific tab
+    let tabButtonsHtml = '';
+    tabs.forEach(tab => {
+        tabButtonsHtml += `<button class="sub-tab" data-view="dynamic-${tab.id}">${escapeHtml(tab.label)}</button>`;
+    });
+    dynamicTabsContainer.innerHTML = tabButtonsHtml;
+
+    // Build content containers for each substrate-specific tab
+    let contentHtml = '';
+    tabs.forEach(tab => {
+        const tabContent = contents[tab.id] || '<p>Content not available</p>';
+        contentHtml += `<div id="substrate-dynamic-${tab.id}-view" class="substrate-view substrate-dynamic-view">${tabContent}</div>`;
+    });
+    dynamicContentContainer.innerHTML = contentHtml;
+
+    // Re-attach handlers to include the new tabs
+    attachViewTabHandlers();
 }
 
 if (substrateTabs.length > 0 && REPORT_DATA.substrates) {
