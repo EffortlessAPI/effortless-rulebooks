@@ -363,6 +363,9 @@ def collect_all_data():
         else:
             grades["run_metadata"] = {"last_run": None, "last_successful_run": None}
 
+        # Load test answers for this substrate
+        grades["test_answers"] = load_substrate_test_answers(substrate)
+
         all_grades[substrate] = grades
 
     # Build report data structure
@@ -1935,6 +1938,19 @@ function renderSubstrateEntityContent(substrateName, entityName) {
     const computedColsInfo = entity.computed_columns_info || [];
     const pk = entity.primary_key;
 
+    // Get substrate's actual test answers for this entity
+    const substrateTestAnswers = substrate.test_answers ? substrate.test_answers[entityName] : null;
+    const hasTestData = substrateTestAnswers && substrateTestAnswers.length > 0;
+
+    // Build lookup of test answers by primary key
+    const testAnswerLookup = {};
+    if (hasTestData) {
+        substrateTestAnswers.forEach(record => {
+            const pkVal = record[pk];
+            if (pkVal) testAnswerLookup[pkVal] = record;
+        });
+    }
+
     const entityDesc = entity.description || '';
     const eTotal = entityGrades ? entityGrades.fields_tested : 0;
     const ePassed = entityGrades ? entityGrades.fields_passed : 0;
@@ -1942,6 +1958,11 @@ function renderSubstrateEntityContent(substrateName, entityName) {
 
     let html = '<div class="entity-test-section">';
     if (entityDesc) html += `<p class="entity-description">${escapeHtml(entityDesc)}</p>`;
+
+    // Show warning if no test data
+    if (!hasTestData) {
+        html += '<p class="no-test-data-warning" style="color: var(--warning-color); padding: 0.5rem; background: rgba(255,193,7,0.1); border-radius: 4px; margin-bottom: 1rem;">No test answers found for this entity. The substrate has not been run or did not produce output for this entity.</p>';
+    }
 
     // Computed columns in collapsible
     html += '<details><summary>Computed Columns (' + computedCols.length + ')</summary>';
@@ -1976,24 +1997,33 @@ function renderSubstrateEntityContent(substrateName, entityName) {
 
     answerKey.forEach(record => {
         const pkVal = record[pk];
+        const testRecord = testAnswerLookup[pkVal] || {};
         html += '<tr>';
         allCols.forEach(col => {
             const isComputed = computedCols.includes(col);
-            const val = record[col];
+            const expectedVal = record[col];
+            const actualVal = testRecord[col];
             const failKey = `${pkVal}|${col}`;
             const failure = failureLookup[failKey];
 
-            if (isComputed && failure) {
-                html += `<td class="cell-failed computed" title="Expected: ${escapeHtml(String(failure.expected))}&#10;Actual: ${escapeHtml(String(failure.actual))}">
-                    <span class="expected-actual"><span class="expected-label">E:</span><code class="expected">${escapeHtml(String(failure.expected))}</code></span>
-                    <span class="expected-actual"><span class="actual-label">A:</span><code class="actual">${escapeHtml(String(failure.actual))}</code></span>
-                </td>`;
-            } else if (isComputed) {
-                const valStr = val !== null ? String(val) : 'null';
-                html += `<td class="cell-passed computed" title="${escapeHtml(valStr)}"><span class="check-mark">&#10003;</span><code>${escapeHtml(valStr)}</code></td>`;
+            if (isComputed) {
+                if (!hasTestData) {
+                    // No test data - show expected value grayed out and crossed out
+                    const valStr = expectedVal !== null && expectedVal !== undefined ? String(expectedVal) : 'null';
+                    html += `<td class="cell-not-tested computed" title="Not tested - expected: ${escapeHtml(valStr)}" style="color: var(--text-secondary); background: rgba(108,117,125,0.1);"><code style="opacity: 0.5; text-decoration: line-through;">${escapeHtml(valStr)}</code></td>`;
+                } else if (failure) {
+                    html += `<td class="cell-failed computed" title="Expected: ${escapeHtml(String(failure.expected))}&#10;Actual: ${escapeHtml(String(failure.actual))}">
+                        <span class="expected-actual"><span class="expected-label">E:</span><code class="expected">${escapeHtml(String(failure.expected))}</code></span>
+                        <span class="expected-actual"><span class="actual-label">A:</span><code class="actual">${escapeHtml(String(failure.actual))}</code></span>
+                    </td>`;
+                } else {
+                    // Passed - show actual value from test answers
+                    const valStr = actualVal !== null && actualVal !== undefined ? String(actualVal) : 'null';
+                    html += `<td class="cell-passed computed" title="${escapeHtml(valStr)}"><span class="check-mark">&#10003;</span><code>${escapeHtml(valStr)}</code></td>`;
+                }
             } else {
-                // Raw fact - just display the value without pass/fail styling
-                const valStr = val !== null ? String(val) : 'null';
+                // Raw fact - display from answer key (these aren't tested, just context)
+                const valStr = expectedVal !== null && expectedVal !== undefined ? String(expectedVal) : 'null';
                 html += `<td class="cell-raw" title="${escapeHtml(valStr)}">${escapeHtml(valStr)}</td>`;
             }
         });

@@ -361,30 +361,6 @@ type AutomatedPipeline struct {
 }
 
 // =============================================================================
-// AGGREGATION FUNCTIONS
-// =============================================================================
-
-// CountWorkflowSteps counts the number of WorkflowSteps for each Workflow
-// This implements the COUNTIFS aggregation: =COUNTIFS(WorkflowSteps!{{Workflow}}, Workflows!{{WorkflowId}})
-func CountWorkflowSteps(workflows []Workflow, workflowSteps []WorkflowStep) []Workflow {
-	// Build count map: workflow_id -> count
-	countMap := make(map[string]int)
-	for _, step := range workflowSteps {
-		if step.Workflow != nil && *step.Workflow != "" {
-			countMap[*step.Workflow]++
-		}
-	}
-
-	// Update each workflow with its count
-	for i := range workflows {
-		count := countMap[workflows[i].WorkflowId]
-		workflows[i].CountOfSteps = &count
-	}
-
-	return workflows
-}
-
-// =============================================================================
 // FILE I/O FUNCTIONS (for all tables with calculated fields)
 // =============================================================================
 
