@@ -69,8 +69,8 @@ pre { background: var(--code-bg); border: 1px solid var(--border-color); border-
             <h1>English (NLG) Execution Substrate</h1>
         </div>
         <div class="header-stats">
-            <div class="stat"><span>Score:</span><span class="stat-value score-good">84.5%</span></div>
-            <div class="stat"><span>87/103 passed</span></div>
+            <div class="stat"><span>Score:</span><span class="stat-value score-perfect">100.0%</span></div>
+            <div class="stat"><span>103/103 passed</span></div>
         </div>
         <button id="theme-toggle" title="Toggle theme"><span class="sun">☀️</span><span class="moon">🌙</span></button>
     </header>
@@ -107,9 +107,227 @@ pre { background: var(--code-bg); border: 1px solid var(--border-color); border-
         <div id="log" class="tab-content">
             <div class="card">
                 <h2>Execution Log</h2>
-                <pre>=== English (LLM) Substrate - Using Previous Answers ===
+                <pre>=== English (LLM) Substrate Test Run ===
 
-Test skipped by user. Grading previous answers against current answer key.
+======================================================================
+English Execution Substrate - LLM Test Execution
+Using ENGLISH PROSE documents (glossary.md, specification.md)
+======================================================================
+
+Loading English specification documents...
+  Loaded specification.md (4582 chars)
+
+Loading rulebook for schema metadata...
+Discovered 9 entities: Workflows, WorkflowSteps, ApprovalGates, PrecedesSteps, Roles, Departments, HumanAgents, AIAgents, AutomatedPipelines
+
+Processing approval_gates...
+  Schema: 5 fields, 1 calculated
+    Processing 11 records in batches of 10...
+    Batch 1/2: records 1-10
+    Using English prose documents (specification)
+============================================================
+PROMPT (first 2 lines):
+  You are taking a test. Your task is to fill in the computed columns for each record based on the Eng
+  
+  ... (219 total lines, 7914 chars)
+============================================================
+Calling OpenAI (gpt-4o-mini)... please wait...
+============================================================
+RESPONSE (first 2 lines):
+  [
+    {
+  ... (72 total lines, 2180 chars)
+============================================================
+    Batch 2/2: records 11-11
+============================================================
+PROMPT (first 2 lines):
+  You are taking a test. Your task is to fill in the computed columns for each record based on the Eng
+  
+  ... (156 total lines, 6061 chars)
+============================================================
+Calling OpenAI (gpt-4o-mini)... please wait...
+============================================================
+RESPONSE (first 2 lines):
+  [
+    {
+  ... (9 total lines, 193 chars)
+============================================================
+  -&gt; approval_gates: 11 records, 11 computed fields filled
+
+Processing departments...
+  Schema: 5 fields, 1 calculated
+    Processing 15 records in batches of 10...
+    Batch 1/2: records 1-10
+    Using English prose documents (specification)
+============================================================
+PROMPT (first 2 lines):
+  You are taking a test. Your task is to fill in the computed columns for each record based on the Eng
+  
+  ... (219 total lines, 7496 chars)
+============================================================
+Calling OpenAI (gpt-4o-mini)... please wait...
+============================================================
+RESPONSE (first 2 lines):
+  [
+    {
+  ... (72 total lines, 1730 chars)
+============================================================
+    Batch 2/2: records 11-15
+============================================================
+PROMPT (first 2 lines):
+  You are taking a test. Your task is to fill in the computed columns for each record based on the Eng
+  
+  ... (184 total lines, 6705 chars)
+============================================================
+Calling OpenAI (gpt-4o-mini)... please wait...
+============================================================
+RESPONSE (first 2 lines):
+  [
+    {
+  ... (37 total lines, 905 chars)
+============================================================
+  -&gt; departments: 15 records, 15 computed fields filled
+
+Processing precedes_steps...
+  Schema: 5 fields, 1 calculated
+    Processing 16 records in batches of 10...
+    Batch 1/2: records 1-10
+    Using English prose documents (specification)
+============================================================
+PROMPT (first 2 lines):
+  You are taking a test. Your task is to fill in the computed columns for each record based on the Eng
+  
+  ... (219 total lines, 7486 chars)
+============================================================
+Calling OpenAI (gpt-4o-mini)... please wait...
+============================================================
+RESPONSE (first 2 lines):
+  [
+    {
+  ... (72 total lines, 1646 chars)
+============================================================
+    Batch 2/2: records 11-16
+============================================================
+PROMPT (first 2 lines):
+  You are taking a test. Your task is to fill in the computed columns for each record based on the Eng
+  
+  ... (191 total lines, 6825 chars)
+============================================================
+Calling OpenAI (gpt-4o-mini)... please wait...
+============================================================
+RESPONSE (first 2 lines):
+  [
+    {
+  ... (44 total lines, 962 chars)
+============================================================
+  -&gt; precedes_steps: 16 records, 16 computed fields filled
+
+Processing roles...
+  Schema: 12 fields, 1 calculated
+    Processing 15 records in batches of 10...
+    Batch 1/2: records 1-10
+    Using English prose documents (specification)
+============================================================
+PROMPT (first 2 lines):
+  You are taking a test. Your task is to fill in the computed columns for each record based on the Eng
+  
+  ... (289 total lines, 10567 chars)
+============================================================
+Calling OpenAI (gpt-4o-mini)... please wait...
+============================================================
+RESPONSE (first 2 lines):
+  [
+    {
+  ... (142 total lines, 4753 chars)
+============================================================
+    Batch 2/2: records 11-15
+============================================================
+PROMPT (first 2 lines):
+  You are taking a test. Your task is to fill in the computed columns for each record based on the Eng
+  
+  ... (219 total lines, 8249 chars)
+============================================================
+Calling OpenAI (gpt-4o-mini)... please wait...
+============================================================
+RESPONSE (first 2 lines):
+  [
+    {
+  ... (72 total lines, 2400 chars)
+============================================================
+  -&gt; roles: 15 records, 15 computed fields filled
+
+Processing workflow_steps...
+  Schema: 9 fields, 1 calculated
+    Processing 16 records in batches of 10...
+    Batch 1/2: records 1-10
+    Using English prose documents (specification)
+============================================================
+PROMPT (first 2 lines):
+  You are taking a test. Your task is to fill in the computed columns for each record based on the Eng
+  
+  ... (259 total lines, 9144 chars)
+============================================================
+Calling OpenAI (gpt-4o-mini)... please wait...
+============================================================
+RESPONSE (first 2 lines):
+  [
+    {
+  ... (112 total lines, 3436 chars)
+============================================================
+    Batch 2/2: records 11-16
+============================================================
+PROMPT (first 2 lines):
+  You are taking a test. Your task is to fill in the computed columns for each record based on the Eng
+  
+  ... (215 total lines, 7825 chars)
+============================================================
+Calling OpenAI (gpt-4o-mini)... please wait...
+============================================================
+RESPONSE (first 2 lines):
+  [
+    {
+  ... (68 total lines, 2039 chars)
+============================================================
+  -&gt; workflow_steps: 16 records, 16 computed fields filled
+
+Processing workflows...
+  Schema: 10 fields, 2 calculated
+    Processing 15 records in batches of 10...
+    Batch 1/2: records 1-10
+    Using English prose documents (specification)
+============================================================
+PROMPT (first 2 lines):
+  You are taking a test. Your task is to fill in the computed columns for each record based on the Eng
+  
+  ... (269 total lines, 10141 chars)
+============================================================
+Calling OpenAI (gpt-4o-mini)... please wait...
+============================================================
+RESPONSE (first 2 lines):
+  [
+    {
+  ... (122 total lines, 4396 chars)
+============================================================
+    Batch 2/2: records 11-15
+============================================================
+PROMPT (first 2 lines):
+  You are taking a test. Your task is to fill in the computed columns for each record based on the Eng
+  
+  ... (209 total lines, 8000 chars)
+============================================================
+Calling OpenAI (gpt-4o-mini)... please wait...
+============================================================
+RESPONSE (first 2 lines):
+  [
+    {
+  ... (62 total lines, 2165 chars)
+============================================================
+  -&gt; workflows: 15 records, 30 computed fields filled
+
+======================================================================
+English substrate: Processed 6 entities, 88 total records
+Filled 103 computed fields total
+======================================================================
 
 </pre>
             </div>
@@ -118,9 +336,9 @@ Test skipped by user. Grading previous answers against current answer key.
             <div class="card">
                 <h2>Test Summary</h2>
                 <div class="results-summary">
-                    <div class="result-item"><div class="result-value score-good">84.5%</div><div class="result-label">Score</div></div>
-                    <div class="result-item"><div class="result-value score-perfect">87</div><div class="result-label">Passed</div></div>
-                    <div class="result-item"><div class="result-value">16</div><div class="result-label">Failed</div></div>
+                    <div class="result-item"><div class="result-value score-perfect">100.0%</div><div class="result-label">Score</div></div>
+                    <div class="result-item"><div class="result-value score-perfect">103</div><div class="result-label">Passed</div></div>
+                    <div class="result-item"><div class="result-value">0</div><div class="result-label">Failed</div></div>
                     <div class="result-item"><div class="result-value">103</div><div class="result-label">Total</div></div>
                 </div>
             </div>
@@ -128,159 +346,94 @@ Test skipped by user. Grading previous answers against current answer key.
         <div id="specification" class="tab-content">
             <div class="card">
                 <h2>specification.md (LLM-Generated)</h2>
-                <div class="prose-container markdown-content"><h2>Specification Document for DEMO: StarTrek Rulebook</h2>
+                <div class="prose-container markdown-content"><h2>Specification Document for Jessica Talisman - BASIC Ontology Parts 1-3 Rulebook</h2>
 <h3>Overview</h3>
-<p>This document provides a detailed specification for the calculated fields within the DEMO: StarTrek rulebook. The rulebook includes data about various Star Trek series, their seasons, episodes, and ratings. The calculated fields derive values based on existing raw data, allowing for insights such as total episodes, series ratings, and whether a series is considered long-running or good.</p>
-<p>---</p>
-<h3>Entities and Calculated Fields</h3>
-<h4>1. Series</h4>
-<p>#### Input Fields</p>
-<ul>
-<li>**SerieId**</li>
-<p>  - <strong>Type</strong>: String</p>
-<p>  - <strong>Description</strong>: Unique identifier for the series.</p>
-</ul>
-<ul>
-<li>**SeriesNumber**</li>
-<p>  - <strong>Type</strong>: Integer</p>
-<p>  - <strong>Description</strong>: The numerical order of the series in the Star Trek franchise.</p>
-</ul>
-<ul>
-<li>**ShowCode**</li>
-<p>  - <strong>Type</strong>: String</p>
-<p>  - <strong>Description</strong>: A short code representing the series.</p>
-</ul>
-<p>#### Calculated Fields</p>
-<ul>
-<li>**Name**</li>
-<p>  - <strong>Description</strong>: Combines the SeriesNumber and ShowCode to create a formatted name for the series.</p>
-<p>  - <strong>Formula</strong>: `={{SeriesNumber}} & "-" & {{ShowCode}}`</p>
-<p>  - <strong>Example</strong>: For SeriesNumber `1` and ShowCode `TOS`, the Name would be `1-TOS`.</p>
-</ul>
-<ul>
-<li>**TotalSeasons**</li>
-<p>  - <strong>Description</strong>: Counts the number of seasons associated with the series.</p>
-<p>  - <strong>Formula</strong>: `=COUNTIFS(Seasons!{{Series}}, Series!{{SerieId}})`</p>
-<p>  - <strong>Example</strong>: For SerieId `1-tos`, if there are 3 seasons, TotalSeasons would be `3`.</p>
-</ul>
-<ul>
-<li>**TotalEpisodes**</li>
-<p>  - <strong>Description</strong>: Sums the episode counts from all seasons associated with the series.</p>
-<p>  - <strong>Formula</strong>: `=SUMIFS(Seasons!{{EpisodeCount}}, Seasons!{{Series}}, Series!{{SerieId}})`</p>
-<p>  - <strong>Example</strong>: If the series has 3 seasons with episode counts of 26, 26, and 24, TotalEpisodes would be `76`.</p>
-</ul>
-<ul>
-<li>**IsLongRunning**</li>
-<p>  - <strong>Description</strong>: Determines if the series has more than 50 episodes.</p>
-<p>  - <strong>Formula</strong>: `={{TotalEpisodes}} > 50`</p>
-<p>  - <strong>Example</strong>: For TotalEpisodes `76`, IsLongRunning would be `true`.</p>
-</ul>
-<ul>
-<li>**Rating**</li>
-<p>  - <strong>Description</strong>: Sums the ratings given to the series by users.</p>
-<p>  - <strong>Formula</strong>: `=SUMIFS(Ratings!{{Rating}}, Ratings!{{Series}}, Series!{{SerieId}})`</p>
-<p>  - <strong>Example</strong>: If the series has ratings of 5, 5, and 3, the Rating would be `13`.</p>
-</ul>
-<ul>
-<li>**IsGood**</li>
-<p>  - <strong>Description</strong>: Checks if the average rating is 4.5 or higher.</p>
-<p>  - <strong>Formula</strong>: `={{Rating}} >= 4.5`</p>
-<p>  - <strong>Example</strong>: For a Rating of `4.333`, IsGood would be `false`.</p>
-</ul>
-<p>---</p>
-<h4>2. Seasons</h4>
-<p>#### Input Fields</p>
-<ul>
-<li>**SeasonId**</li>
-<p>  - <strong>Type</strong>: String</p>
-<p>  - <strong>Description</strong>: Unique identifier for the season.</p>
-</ul>
-<ul>
-<li>**Series**</li>
-<p>  - <strong>Type</strong>: String</p>
-<p>  - <strong>Description</strong>: Identifier linking to the associated series.</p>
-</ul>
-<ul>
-<li>**SeasonNumber**</li>
-<p>  - <strong>Type</strong>: Integer</p>
-<p>  - <strong>Description</strong>: The numerical order of the season within its series.</p>
-</ul>
-<p>#### Calculated Fields</p>
-<ul>
-<li>**Name**</li>
-<p>  - <strong>Description</strong>: Combines the Series identifier and SeasonNumber to create a formatted name for the season.</p>
-<p>  - <strong>Formula</strong>: `={{Series}} & "-Season-" & {{SeasonNumber}}`</p>
-<p>  - <strong>Example</strong>: For Series `1-tos` and SeasonNumber `1`, the Name would be `1-tos-Season-1`.</p>
-</ul>
-<ul>
-<li>**EpisodeCount**</li>
-<p>  - <strong>Description</strong>: Counts the number of episodes in the season.</p>
-<p>  - <strong>Formula</strong>: `=COUNTIFS(Episodes!{{Season}}, Seasons!{{SeasonId}})`</p>
-<p>  - <strong>Example</strong>: If there are 26 episodes in Season `1-tos-season-1`, EpisodeCount would be `26`.</p>
-</ul>
-<p>---</p>
-<h4>3. Episodes</h4>
-<p>#### Input Fields</p>
-<ul>
-<li>**EpisodeId**</li>
-<p>  - <strong>Type</strong>: String</p>
-<p>  - <strong>Description</strong>: Unique identifier for the episode.</p>
-</ul>
-<ul>
-<li>**Season**</li>
-<p>  - <strong>Type</strong>: String</p>
-<p>  - <strong>Description</strong>: Identifier linking to the associated season.</p>
-</ul>
-<ul>
-<li>**EpisodeNumber**</li>
-<p>  - <strong>Type</strong>: Integer</p>
-<p>  - <strong>Description</strong>: The numerical order of the episode within its season.</p>
-</ul>
-<p>#### Calculated Fields</p>
-<ul>
-<li>**Name**</li>
-<p>  - <strong>Description</strong>: Combines the Season identifier and EpisodeNumber to create a formatted name for the episode.</p>
-<p>  - <strong>Formula</strong>: `={{Season}} & "-Episode-" & IF({{EpisodeNumber}} < 10, '0', '') & {{EpisodeNumber}}`</p>
-<p>  - <strong>Example</strong>: For Season `1-tos-season-1` and EpisodeNumber `1`, the Name would be `1-tos-season-1-Episode-01`.</p>
-</ul>
-<p>---</p>
-<h4>4. Ratings</h4>
-<p>#### Input Fields</p>
-<ul>
-<li>**RatingId**</li>
-<p>  - <strong>Type</strong>: String</p>
-<p>  - <strong>Description</strong>: Unique identifier for the rating.</p>
-</ul>
-<ul>
-<li>**Rating**</li>
-<p>  - <strong>Type</strong>: String</p>
-<p>  - <strong>Description</strong>: The rating value given by a user.</p>
-</ul>
-<ul>
-<li>**Series**</li>
-<p>  - <strong>Type</strong>: String</p>
-<p>  - <strong>Description</strong>: Identifier linking to the associated series.</p>
-</ul>
-<ul>
-<li>**Episode**</li>
-<p>  - <strong>Type</strong>: String</p>
-<p>  - <strong>Description</strong>: Identifier linking to the associated episode.</p>
-</ul>
-<p>#### Calculated Fields</p>
-<ul>
-<li>**DisplayName**</li>
-<p>  - <strong>Description</strong>: Creates a display name based on whether the rating is for a series or an episode.</p>
-<p>  - <strong>Formula</strong>: `=IF({{Series}} = BLANK(), "Episode: " & {{EpisodeName}}, "Series: " & {{SeriesName}})`</p>
-<p>  - <strong>Example</strong>: For Series `1-tos`, the DisplayName would be `Series: 1-TOS`.</p>
-</ul>
-<ul>
-<li>**Name**</li>
-<p>  - <strong>Description</strong>: Combines the DisplayName and UsersName to create a unique name for the rating.</p>
-<p>  - <strong>Formula</strong>: `={{DisplayName}} & "-" & {{UsersName}}`</p>
-<p>  - <strong>Example</strong>: For DisplayName `Series: 1-TOS` and UsersName `Riley Shaw`, the Name would be `Series: 1-TOS-Riley Shaw`.</p>
-</ul>
-<p>---</p>
-<p>This specification document outlines the necessary steps and formulas to compute calculated fields for the DEMO: StarTrek rulebook, allowing users to derive meaningful insights from the data.</p></div>
+<p>This document provides a detailed specification for the calculated fields within the "Jessica Talisman - BASIC Ontology Parts 1-3" rulebook. The rulebook is structured to manage workflows, workflow steps, approval gates, roles, and other related entities. The focus is on how to compute specific calculated fields based on raw input data.</p>
+<h3>Workflows</h3>
+<h4>Input Fields</h4>
+<p>1. <strong>WorkflowId</strong></p>
+<p>   - <strong>Type:</strong> String</p>
+<p>   - <strong>Description:</strong> Unique identifier for the workflow.</p>
+<p>2. <strong>DisplayName</strong></p>
+<p>   - <strong>Type:</strong> String</p>
+<p>   - <strong>Description:</strong> Human-readable name of the workflow.</p>
+<h4>Calculated Fields</h4>
+<p>1. <strong>Name</strong></p>
+<p>   - <strong>Description:</strong> A machine-friendly name for the workflow, used for programmatic reference and URL slug generation.</p>
+<p>   - <strong>Computation:</strong> Convert the `DisplayName` to lowercase, replace spaces with hyphens.</p>
+<p>   - <strong>Formula:</strong> `=SUBSTITUTE(LOWER({{DisplayName}}), " ", "-")`</p>
+<p>   - <strong>Example:</strong> If `DisplayName` is "Employee Onboarding", then `Name` would be "employee-onboarding".</p>
+<p>2. <strong>CountOfSteps</strong></p>
+<p>   - <strong>Description:</strong> The total number of steps associated with this workflow.</p>
+<p>   - <strong>Computation:</strong> Count the number of entries in the `WorkflowSteps` table that reference this workflow by matching `WorkflowSteps.Workflow` with `WorkflowId`.</p>
+<p>   - <strong>Formula:</strong> `=COUNTIFS(WorkflowSteps!{{Workflow}}, Workflows!{{WorkflowId}})`</p>
+<p>   - <strong>Example:</strong> If there are 2 steps linked to the workflow with `WorkflowId` "onboarding", then `CountOfSteps` would be 2.</p>
+<p>3. <strong>HasMoreThan1Step</strong></p>
+<p>   - <strong>Description:</strong> A boolean indicating if the workflow has more than one step.</p>
+<p>   - <strong>Computation:</strong> Check if `CountOfSteps` is greater than 1.</p>
+<p>   - <strong>Formula:</strong> `={{CountOfSteps}} > 1`</p>
+<p>   - <strong>Example:</strong> If `CountOfSteps` is 2, then `HasMoreThan1Step` would be `true`. If `CountOfSteps` is 1, it would be `false`.</p>
+<h3>WorkflowSteps</h3>
+<h4>Input Fields</h4>
+<p>1. <strong>WorkflowStepId</strong></p>
+<p>   - <strong>Type:</strong> String</p>
+<p>   - <strong>Description:</strong> Unique identifier for the workflow step.</p>
+<p>2. <strong>DisplayName</strong></p>
+<p>   - <strong>Type:</strong> String</p>
+<p>   - <strong>Description:</strong> Human-readable name of the workflow step.</p>
+<p>3. <strong>Workflow</strong></p>
+<p>   - <strong>Type:</strong> String</p>
+<p>   - <strong>Description:</strong> Foreign key to the parent workflow.</p>
+<h4>Calculated Fields</h4>
+<p>1. <strong>Name</strong></p>
+<p>   - <strong>Description:</strong> A machine-friendly name for the workflow step.</p>
+<p>   - <strong>Computation:</strong> Convert the `DisplayName` to lowercase, replace spaces with hyphens.</p>
+<p>   - <strong>Formula:</strong> `=SUBSTITUTE(LOWER({{DisplayName}}), " ", "-")`</p>
+<p>   - <strong>Example:</strong> If `DisplayName` is "Submit Request", then `Name` would be "submit-request".</p>
+<h3>ApprovalGates</h3>
+<h4>Input Fields</h4>
+<p>1. <strong>ApprovalGateId</strong></p>
+<p>   - <strong>Type:</strong> String</p>
+<p>   - <strong>Description:</strong> Unique identifier for the approval gate.</p>
+<p>2. <strong>DisplayName</strong></p>
+<p>   - <strong>Type:</strong> String</p>
+<p>   - <strong>Description:</strong> Human-readable name of the approval gate.</p>
+<h4>Calculated Fields</h4>
+<p>1. <strong>Name</strong></p>
+<p>   - <strong>Description:</strong> A machine-friendly name for the approval gate.</p>
+<p>   - <strong>Computation:</strong> Convert the `DisplayName` to lowercase, replace spaces with hyphens.</p>
+<p>   - <strong>Formula:</strong> `=SUBSTITUTE(LOWER({{DisplayName}}), " ", "-")`</p>
+<p>   - <strong>Example:</strong> If `DisplayName` is "Manager Approval", then `Name` would be "manager-approval".</p>
+<h3>PrecedesSteps</h3>
+<h4>Input Fields</h4>
+<p>1. <strong>PrecedesStepId</strong></p>
+<p>   - <strong>Type:</strong> String</p>
+<p>   - <strong>Description:</strong> Unique identifier for the precedes step.</p>
+<p>2. <strong>StepNumber</strong></p>
+<p>   - <strong>Type:</strong> Integer</p>
+<p>   - <strong>Description:</strong> Ordinal position of the step within its workflow.</p>
+<h4>Calculated Fields</h4>
+<p>1. <strong>DisplayName</strong></p>
+<p>   - <strong>Description:</strong> A formatted string representing the step number.</p>
+<p>   - <strong>Computation:</strong> Concatenate "Step-" with the `StepNumber`.</p>
+<p>   - <strong>Formula:</strong> `="Step-" & {{StepNumber}}`</p>
+<p>   - <strong>Example:</strong> If `StepNumber` is 1, then `DisplayName` would be "Step-1".</p>
+<h3>Roles</h3>
+<h4>Input Fields</h4>
+<p>1. <strong>RoleId</strong></p>
+<p>   - <strong>Type:</strong> String</p>
+<p>   - <strong>Description:</strong> Unique identifier for the role.</p>
+<p>2. <strong>DisplayName</strong></p>
+<p>   - <strong>Type:</strong> String</p>
+<p>   - <strong>Description:</strong> Human-readable name of the role.</p>
+<h4>Calculated Fields</h4>
+<p>1. <strong>Name</strong></p>
+<p>   - <strong>Description:</strong> A machine-friendly name for the role.</p>
+<p>   - <strong>Computation:</strong> Convert the `DisplayName` to lowercase.</p>
+<p>   - <strong>Formula:</strong> `=LOWER({{DisplayName}})`</p>
+<p>   - <strong>Example:</strong> If `DisplayName` is "Administrator", then `Name` would be "administrator".</p>
+<h3>Conclusion</h3>
+<p>This specification outlines the necessary steps to compute calculated fields within the "Jessica Talisman - BASIC Ontology Parts 1-3" rulebook. By following the provided computations and examples, one can accurately derive the values for each calculated field based on the raw input data.</p></div>
             </div>
         </div>
     </main>

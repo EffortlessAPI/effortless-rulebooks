@@ -63,6 +63,21 @@ header {
 .header-content h1 { font-size: 1.25rem; font-weight: 600; }
 .header-meta { display: flex; gap: 1rem; font-size: 0.8rem; color: var(--text-secondary); }
 .project-name { font-weight: 500; }
+.header-actions { display: flex; align-items: center; gap: 0.75rem; }
+.airtable-link {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    text-decoration: none;
+    padding: 0.35rem 0.75rem;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    transition: all 0.15s ease;
+}
+.airtable-link:hover {
+    color: var(--accent-color);
+    border-color: var(--accent-color);
+    background: var(--bg-secondary);
+}
 
 #theme-toggle {
     background: var(--bg-tertiary);
@@ -624,10 +639,13 @@ footer {
                 <span class="project-name">Orchestration Report</span>
             </div>
         </div>
-        <button id="theme-toggle" title="Toggle dark/light mode">
-            <span class="sun">&#9728;</span>
-            <span class="moon">&#9790;</span>
-        </button>
+        <div class="header-actions">
+            <a href="https://airtable.com/applThn0rikpCR9C3" target="_blank" class="airtable-link" title="Open in Airtable">Airtable &#8599;</a>
+            <button id="theme-toggle" title="Toggle dark/light mode">
+                <span class="sun">&#9728;</span>
+                <span class="moon">&#9790;</span>
+            </button>
+        </div>
     </header>
 
     <nav class="tabs" id="main-tabs">
@@ -641,19 +659,19 @@ footer {
             <div class="stats-grid">
                 <div class="stat-card">
                     <div class="stat-value" id="passing-count">
-                        10 / 11
+                        11 / 11
                     </div>
                     <div class="stat-label">Substrates Passing</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-value score-good">
-                        98.6%
+                    <div class="stat-value score-perfect">
+                        100.0%
                     </div>
                     <div class="stat-label">Overall Score</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-value">
-                        318.5s
+                        1457.7s
                     </div>
                     <div class="stat-label">Total Runtime</div>
                 </div>
@@ -671,13 +689,13 @@ footer {
                     <a href="#" class="substrate-link score-perfect" data-substrate="python">python: 100%</a>
                     <a href="#" class="substrate-link score-perfect" data-substrate="explain-dag">explain-dag: 100%</a>
                     <a href="#" class="substrate-link score-perfect" data-substrate="uml">uml: 100%</a>
-                    <a href="#" class="substrate-link score-perfect" data-substrate="yaml">yaml: 100%</a>
                     <a href="#" class="substrate-link score-perfect" data-substrate="golang">golang: 100%</a>
+                    <a href="#" class="substrate-link score-perfect" data-substrate="yaml">yaml: 100%</a>
                     <a href="#" class="substrate-link score-perfect" data-substrate="csv">csv: 100%</a>
                     <a href="#" class="substrate-link score-perfect" data-substrate="binary">binary: 100%</a>
                     <a href="#" class="substrate-link score-perfect" data-substrate="xlsx">xlsx: 100%</a>
                     <a href="#" class="substrate-link score-perfect" data-substrate="owl">owl: 100%</a>
-                    <a href="#" class="substrate-link score-good" data-substrate="english">english: 84%</a>
+                    <a href="#" class="substrate-link score-perfect" data-substrate="english">english: 100%</a>
             </div>
 
             <h2>Substrate Health Matrix</h2>
@@ -702,13 +720,13 @@ footer {
                         <tr class=""><td class="substrate-name substrate-row-link" data-substrate="python">python</td><td class="cell-pass" data-substrate="python" data-entity="approval_gates" title="11/11">&#10003;</td><td class="cell-pass" data-substrate="python" data-entity="departments" title="15/15">&#10003;</td><td class="cell-pass" data-substrate="python" data-entity="precedes_steps" title="16/16">&#10003;</td><td class="cell-pass" data-substrate="python" data-entity="roles" title="15/15">&#10003;</td><td class="cell-pass" data-substrate="python" data-entity="workflow_steps" title="16/16">&#10003;</td><td class="cell-pass" data-substrate="python" data-entity="workflows" title="30/30">&#10003;</td><td class="score-cell score-perfect">100.0%</td><td class="time-cell">0.1s</td></tr>
                         <tr class=""><td class="substrate-name substrate-row-link" data-substrate="explain-dag">explain-dag</td><td class="cell-pass" data-substrate="explain-dag" data-entity="approval_gates" title="11/11">&#10003;</td><td class="cell-pass" data-substrate="explain-dag" data-entity="departments" title="15/15">&#10003;</td><td class="cell-pass" data-substrate="explain-dag" data-entity="precedes_steps" title="16/16">&#10003;</td><td class="cell-pass" data-substrate="explain-dag" data-entity="roles" title="15/15">&#10003;</td><td class="cell-pass" data-substrate="explain-dag" data-entity="workflow_steps" title="16/16">&#10003;</td><td class="cell-pass" data-substrate="explain-dag" data-entity="workflows" title="30/30">&#10003;</td><td class="score-cell score-perfect">100.0%</td><td class="time-cell">0.1s</td></tr>
                         <tr class=""><td class="substrate-name substrate-row-link" data-substrate="uml">uml</td><td class="cell-pass" data-substrate="uml" data-entity="approval_gates" title="11/11">&#10003;</td><td class="cell-pass" data-substrate="uml" data-entity="departments" title="15/15">&#10003;</td><td class="cell-pass" data-substrate="uml" data-entity="precedes_steps" title="16/16">&#10003;</td><td class="cell-pass" data-substrate="uml" data-entity="roles" title="15/15">&#10003;</td><td class="cell-pass" data-substrate="uml" data-entity="workflow_steps" title="16/16">&#10003;</td><td class="cell-pass" data-substrate="uml" data-entity="workflows" title="30/30">&#10003;</td><td class="score-cell score-perfect">100.0%</td><td class="time-cell">0.1s</td></tr>
-                        <tr class=""><td class="substrate-name substrate-row-link" data-substrate="yaml">yaml</td><td class="cell-pass" data-substrate="yaml" data-entity="approval_gates" title="11/11">&#10003;</td><td class="cell-pass" data-substrate="yaml" data-entity="departments" title="15/15">&#10003;</td><td class="cell-pass" data-substrate="yaml" data-entity="precedes_steps" title="16/16">&#10003;</td><td class="cell-pass" data-substrate="yaml" data-entity="roles" title="15/15">&#10003;</td><td class="cell-pass" data-substrate="yaml" data-entity="workflow_steps" title="16/16">&#10003;</td><td class="cell-pass" data-substrate="yaml" data-entity="workflows" title="30/30">&#10003;</td><td class="score-cell score-perfect">100.0%</td><td class="time-cell">0.1s</td></tr>
                         <tr class=""><td class="substrate-name substrate-row-link" data-substrate="golang">golang</td><td class="cell-pass" data-substrate="golang" data-entity="approval_gates" title="11/11">&#10003;</td><td class="cell-pass" data-substrate="golang" data-entity="departments" title="15/15">&#10003;</td><td class="cell-pass" data-substrate="golang" data-entity="precedes_steps" title="16/16">&#10003;</td><td class="cell-pass" data-substrate="golang" data-entity="roles" title="15/15">&#10003;</td><td class="cell-pass" data-substrate="golang" data-entity="workflow_steps" title="16/16">&#10003;</td><td class="cell-pass" data-substrate="golang" data-entity="workflows" title="30/30">&#10003;</td><td class="score-cell score-perfect">100.0%</td><td class="time-cell">0.1s</td></tr>
+                        <tr class=""><td class="substrate-name substrate-row-link" data-substrate="yaml">yaml</td><td class="cell-pass" data-substrate="yaml" data-entity="approval_gates" title="11/11">&#10003;</td><td class="cell-pass" data-substrate="yaml" data-entity="departments" title="15/15">&#10003;</td><td class="cell-pass" data-substrate="yaml" data-entity="precedes_steps" title="16/16">&#10003;</td><td class="cell-pass" data-substrate="yaml" data-entity="roles" title="15/15">&#10003;</td><td class="cell-pass" data-substrate="yaml" data-entity="workflow_steps" title="16/16">&#10003;</td><td class="cell-pass" data-substrate="yaml" data-entity="workflows" title="30/30">&#10003;</td><td class="score-cell score-perfect">100.0%</td><td class="time-cell">0.1s</td></tr>
                         <tr class=""><td class="substrate-name substrate-row-link" data-substrate="csv">csv</td><td class="cell-pass" data-substrate="csv" data-entity="approval_gates" title="11/11">&#10003;</td><td class="cell-pass" data-substrate="csv" data-entity="departments" title="15/15">&#10003;</td><td class="cell-pass" data-substrate="csv" data-entity="precedes_steps" title="16/16">&#10003;</td><td class="cell-pass" data-substrate="csv" data-entity="roles" title="15/15">&#10003;</td><td class="cell-pass" data-substrate="csv" data-entity="workflow_steps" title="16/16">&#10003;</td><td class="cell-pass" data-substrate="csv" data-entity="workflows" title="30/30">&#10003;</td><td class="score-cell score-perfect">100.0%</td><td class="time-cell">0.2s</td></tr>
                         <tr class=""><td class="substrate-name substrate-row-link" data-substrate="binary">binary</td><td class="cell-pass" data-substrate="binary" data-entity="approval_gates" title="11/11">&#10003;</td><td class="cell-pass" data-substrate="binary" data-entity="departments" title="15/15">&#10003;</td><td class="cell-pass" data-substrate="binary" data-entity="precedes_steps" title="16/16">&#10003;</td><td class="cell-pass" data-substrate="binary" data-entity="roles" title="15/15">&#10003;</td><td class="cell-pass" data-substrate="binary" data-entity="workflow_steps" title="16/16">&#10003;</td><td class="cell-pass" data-substrate="binary" data-entity="workflows" title="30/30">&#10003;</td><td class="score-cell score-perfect">100.0%</td><td class="time-cell">0.3s</td></tr>
                         <tr class=""><td class="substrate-name substrate-row-link" data-substrate="xlsx">xlsx</td><td class="cell-pass" data-substrate="xlsx" data-entity="approval_gates" title="11/11">&#10003;</td><td class="cell-pass" data-substrate="xlsx" data-entity="departments" title="15/15">&#10003;</td><td class="cell-pass" data-substrate="xlsx" data-entity="precedes_steps" title="16/16">&#10003;</td><td class="cell-pass" data-substrate="xlsx" data-entity="roles" title="15/15">&#10003;</td><td class="cell-pass" data-substrate="xlsx" data-entity="workflow_steps" title="16/16">&#10003;</td><td class="cell-pass" data-substrate="xlsx" data-entity="workflows" title="30/30">&#10003;</td><td class="score-cell score-perfect">100.0%</td><td class="time-cell">0.4s</td></tr>
-                        <tr class=""><td class="substrate-name substrate-row-link" data-substrate="owl">owl</td><td class="cell-pass" data-substrate="owl" data-entity="approval_gates" title="11/11">&#10003;</td><td class="cell-pass" data-substrate="owl" data-entity="departments" title="15/15">&#10003;</td><td class="cell-pass" data-substrate="owl" data-entity="precedes_steps" title="16/16">&#10003;</td><td class="cell-pass" data-substrate="owl" data-entity="roles" title="15/15">&#10003;</td><td class="cell-pass" data-substrate="owl" data-entity="workflow_steps" title="16/16">&#10003;</td><td class="cell-pass" data-substrate="owl" data-entity="workflows" title="30/30">&#10003;</td><td class="score-cell score-perfect">100.0%</td><td class="time-cell">9.8s</td></tr>
-                        <tr class=""><td class="substrate-name substrate-row-link" data-substrate="english">english</td><td class="cell-pass" data-substrate="english" data-entity="approval_gates" title="11/11">&#10003;</td><td class="cell-pass" data-substrate="english" data-entity="departments" title="15/15">&#10003;</td><td class="cell-fail" data-substrate="english" data-entity="precedes_steps" title="0/16">16</td><td class="cell-pass" data-substrate="english" data-entity="roles" title="15/15">&#10003;</td><td class="cell-pass" data-substrate="english" data-entity="workflow_steps" title="16/16">&#10003;</td><td class="cell-pass" data-substrate="english" data-entity="workflows" title="30/30">&#10003;</td><td class="score-cell score-good">84.5%</td><td class="time-cell">307.2s</td></tr>
+                        <tr class=""><td class="substrate-name substrate-row-link" data-substrate="owl">owl</td><td class="cell-pass" data-substrate="owl" data-entity="approval_gates" title="11/11">&#10003;</td><td class="cell-pass" data-substrate="owl" data-entity="departments" title="15/15">&#10003;</td><td class="cell-pass" data-substrate="owl" data-entity="precedes_steps" title="16/16">&#10003;</td><td class="cell-pass" data-substrate="owl" data-entity="roles" title="15/15">&#10003;</td><td class="cell-pass" data-substrate="owl" data-entity="workflow_steps" title="16/16">&#10003;</td><td class="cell-pass" data-substrate="owl" data-entity="workflows" title="30/30">&#10003;</td><td class="score-cell score-perfect">100.0%</td><td class="time-cell">9.9s</td></tr>
+                        <tr class=""><td class="substrate-name substrate-row-link" data-substrate="english">english</td><td class="cell-pass" data-substrate="english" data-entity="approval_gates" title="11/11">&#10003;</td><td class="cell-pass" data-substrate="english" data-entity="departments" title="15/15">&#10003;</td><td class="cell-pass" data-substrate="english" data-entity="precedes_steps" title="16/16">&#10003;</td><td class="cell-pass" data-substrate="english" data-entity="roles" title="15/15">&#10003;</td><td class="cell-pass" data-substrate="english" data-entity="workflow_steps" title="16/16">&#10003;</td><td class="cell-pass" data-substrate="english" data-entity="workflows" title="30/30">&#10003;</td><td class="score-cell score-perfect">100.0%</td><td class="time-cell">1446.4s</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -732,8 +750,8 @@ footer {
                 <button class="sub-tab " data-substrate="python">python</button>
                 <button class="sub-tab " data-substrate="explain-dag">explain-dag</button>
                 <button class="sub-tab " data-substrate="uml">uml</button>
-                <button class="sub-tab " data-substrate="yaml">yaml</button>
                 <button class="sub-tab " data-substrate="golang">golang</button>
+                <button class="sub-tab " data-substrate="yaml">yaml</button>
                 <button class="sub-tab " data-substrate="csv">csv</button>
                 <button class="sub-tab " data-substrate="binary">binary</button>
                 <button class="sub-tab " data-substrate="xlsx">xlsx</button>
@@ -756,19 +774,20 @@ const REPORT_DATA = {
     "directory_name": "ERB_jessica-talisman-ontology",
     "rulebook_path": "/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/ERB_jessica-talisman-ontology/effortless-rulebook/effortless-rulebook.json",
     "rulebook_name": "Jessica Talisman - BASIC Ontology Parts 1-3",
-    "rulebook_description": "Rulebook generated from Airtable base 'Jessica Talisman - BASIC Ontology Parts 1-3'."
+    "rulebook_description": "Rulebook generated from Airtable base 'Jessica Talisman - BASIC Ontology Parts 1-3'.",
+    "base_id": "applThn0rikpCR9C3"
   },
   "summary": {
     "total_substrates": 11,
-    "passing_substrates": 10,
+    "passing_substrates": 11,
     "total_entities": 6,
     "total_computed_columns": 7,
     "total_records": 88,
-    "overall_score": 98.58781994704324,
-    "total_runtime_seconds": 318.47545742988586,
+    "overall_score": 100.0,
+    "total_runtime_seconds": 1457.7345740795135,
     "total_fields_tested": 1133,
-    "total_passed": 1117,
-    "total_failed": 16
+    "total_passed": 1133,
+    "total_failed": 0
   },
   "entities": {
     "approval_gates": {
@@ -2153,7 +2172,7 @@ const REPORT_DATA = {
       "total_fields_tested": 103,
       "fields_passed": 103,
       "fields_failed": 0,
-      "elapsed_seconds": 0.30553603172302246,
+      "elapsed_seconds": 0.30287885665893555,
       "entities": {
         "roles": {
           "fields_tested": 15,
@@ -2196,12 +2215,12 @@ const REPORT_DATA = {
       "run_metadata": {
         "last_run": {
           "status": "success",
-          "duration_seconds": 0.30553603172302246,
+          "duration_seconds": 0.30287885665893555,
           "exit_code": 0,
           "score": 100.0
         },
         "last_successful_run": {
-          "duration_seconds": 0.30553603172302246,
+          "duration_seconds": 0.30287885665893555,
           "status": "success",
           "test_results": {
             "total_fields_tested": 103,
@@ -2217,7 +2236,7 @@ const REPORT_DATA = {
       "total_fields_tested": 103,
       "fields_passed": 103,
       "fields_failed": 0,
-      "elapsed_seconds": 0.2317218780517578,
+      "elapsed_seconds": 0.22693610191345215,
       "entities": {
         "roles": {
           "fields_tested": 15,
@@ -2260,12 +2279,12 @@ const REPORT_DATA = {
       "run_metadata": {
         "last_run": {
           "status": "success",
-          "duration_seconds": 0.2317218780517578,
+          "duration_seconds": 0.22693610191345215,
           "exit_code": 0,
           "score": 100.0
         },
         "last_successful_run": {
-          "duration_seconds": 0.2317218780517578,
+          "duration_seconds": 0.22693610191345215,
           "status": "success",
           "test_results": {
             "total_fields_tested": 103,
@@ -2279,9 +2298,9 @@ const REPORT_DATA = {
     "english": {
       "substrate": "english",
       "total_fields_tested": 103,
-      "fields_passed": 87,
-      "fields_failed": 16,
-      "elapsed_seconds": 307.15376710891724,
+      "fields_passed": 103,
+      "fields_failed": 0,
+      "elapsed_seconds": 1446.3529591560364,
       "entities": {
         "roles": {
           "fields_tested": 15,
@@ -2303,106 +2322,9 @@ const REPORT_DATA = {
         },
         "precedes_steps": {
           "fields_tested": 16,
-          "fields_passed": 0,
-          "fields_failed": 16,
-          "failures": [
-            {
-              "pk": "assign-task-to-team",
-              "field": "display_name",
-              "expected": "Step-16",
-              "actual": "Assign Task to Team"
-            },
-            {
-              "pk": "step-1",
-              "field": "display_name",
-              "expected": "Step-1",
-              "actual": "Step 1"
-            },
-            {
-              "pk": "step-10",
-              "field": "display_name",
-              "expected": "Step-10",
-              "actual": "Step 10"
-            },
-            {
-              "pk": "step-11",
-              "field": "display_name",
-              "expected": "Step-11",
-              "actual": "Step 11"
-            },
-            {
-              "pk": "step-12",
-              "field": "display_name",
-              "expected": "Step-12",
-              "actual": "Step 12"
-            },
-            {
-              "pk": "step-13",
-              "field": "display_name",
-              "expected": "Step-13",
-              "actual": "Step 13"
-            },
-            {
-              "pk": "step-14",
-              "field": "display_name",
-              "expected": "Step-14",
-              "actual": "Step 14"
-            },
-            {
-              "pk": "step-15",
-              "field": "display_name",
-              "expected": "Step-15",
-              "actual": "Step 15"
-            },
-            {
-              "pk": "step-2",
-              "field": "display_name",
-              "expected": "Step-2",
-              "actual": "Step 2"
-            },
-            {
-              "pk": "step-3",
-              "field": "display_name",
-              "expected": "Step-3",
-              "actual": "Step 3"
-            },
-            {
-              "pk": "step-4",
-              "field": "display_name",
-              "expected": "Step-4",
-              "actual": "finance-approval"
-            },
-            {
-              "pk": "step-5",
-              "field": "display_name",
-              "expected": "Step-5",
-              "actual": "document-verification"
-            },
-            {
-              "pk": "step-6",
-              "field": "display_name",
-              "expected": "Step-6",
-              "actual": "quality-assurance-review"
-            },
-            {
-              "pk": "step-7",
-              "field": "display_name",
-              "expected": "Step-7",
-              "actual": "system-notification-sent"
-            },
-            {
-              "pk": "step-8",
-              "field": "display_name",
-              "expected": "Step-8",
-              "actual": "final-approval"
-            },
-            {
-              "pk": "step-9",
-              "field": "display_name",
-              "expected": "Step-9",
-              "actual": "archive-request"
-            }
-          ]
+          "fields_passed": 16,
+          "fields_failed": 0,
+          "failures": []
         },
         "departments": {
           "fields_tested": 15,
@@ -2421,18 +2343,16 @@ const REPORT_DATA = {
       "run_metadata": {
         "last_run": {
           "status": "success",
-          "duration_seconds": 307.15376710891724,
+          "duration_seconds": 1446.3529591560364,
           "exit_code": 0,
-          "score": 84.46601941747572,
-          "timing_preserved": true
+          "score": 100.0
         },
         "last_successful_run": {
-          "duration_seconds": 307.15376710891724,
+          "duration_seconds": 1446.3529591560364,
           "status": "success",
-          "timing_preserved": true,
           "test_results": {
-            "total_fields_tested": 85,
-            "fields_passed": 85,
+            "total_fields_tested": 103,
+            "fields_passed": 103,
             "fields_failed": 0,
             "score": 100.0
           }
@@ -2444,7 +2364,7 @@ const REPORT_DATA = {
       "total_fields_tested": 103,
       "fields_passed": 103,
       "fields_failed": 0,
-      "elapsed_seconds": 0.11272668838500977,
+      "elapsed_seconds": 0.11328887939453125,
       "entities": {
         "roles": {
           "fields_tested": 15,
@@ -2487,12 +2407,12 @@ const REPORT_DATA = {
       "run_metadata": {
         "last_run": {
           "status": "success",
-          "duration_seconds": 0.11272668838500977,
+          "duration_seconds": 0.11328887939453125,
           "exit_code": 0,
           "score": 100.0
         },
         "last_successful_run": {
-          "duration_seconds": 0.11272668838500977,
+          "duration_seconds": 0.11328887939453125,
           "status": "success",
           "test_results": {
             "total_fields_tested": 103,
@@ -2508,7 +2428,7 @@ const REPORT_DATA = {
       "total_fields_tested": 103,
       "fields_passed": 103,
       "fields_failed": 0,
-      "elapsed_seconds": 0.1417679786682129,
+      "elapsed_seconds": 0.12288999557495117,
       "entities": {
         "roles": {
           "fields_tested": 15,
@@ -2551,12 +2471,12 @@ const REPORT_DATA = {
       "run_metadata": {
         "last_run": {
           "status": "success",
-          "duration_seconds": 0.1417679786682129,
+          "duration_seconds": 0.12288999557495117,
           "exit_code": 0,
           "score": 100.0
         },
         "last_successful_run": {
-          "duration_seconds": 0.1417679786682129,
+          "duration_seconds": 0.12288999557495117,
           "status": "success",
           "test_results": {
             "total_fields_tested": 103,
@@ -2572,7 +2492,7 @@ const REPORT_DATA = {
       "total_fields_tested": 103,
       "fields_passed": 103,
       "fields_failed": 0,
-      "elapsed_seconds": 9.817396879196167,
+      "elapsed_seconds": 9.909686088562012,
       "entities": {
         "roles": {
           "fields_tested": 15,
@@ -2615,12 +2535,12 @@ const REPORT_DATA = {
       "run_metadata": {
         "last_run": {
           "status": "success",
-          "duration_seconds": 9.817396879196167,
+          "duration_seconds": 9.909686088562012,
           "exit_code": 0,
           "score": 100.0
         },
         "last_successful_run": {
-          "duration_seconds": 9.817396879196167,
+          "duration_seconds": 9.909686088562012,
           "status": "success",
           "test_results": {
             "total_fields_tested": 103,
@@ -2636,7 +2556,7 @@ const REPORT_DATA = {
       "total_fields_tested": 103,
       "fields_passed": 103,
       "fields_failed": 0,
-      "elapsed_seconds": 0.10150504112243652,
+      "elapsed_seconds": 0.10474205017089844,
       "entities": {
         "roles": {
           "fields_tested": 15,
@@ -2679,12 +2599,12 @@ const REPORT_DATA = {
       "run_metadata": {
         "last_run": {
           "status": "success",
-          "duration_seconds": 0.10150504112243652,
+          "duration_seconds": 0.10474205017089844,
           "exit_code": 0,
           "score": 100.0
         },
         "last_successful_run": {
-          "duration_seconds": 0.10150504112243652,
+          "duration_seconds": 0.10474205017089844,
           "status": "success",
           "test_results": {
             "total_fields_tested": 103,
@@ -2700,7 +2620,7 @@ const REPORT_DATA = {
       "total_fields_tested": 103,
       "fields_passed": 103,
       "fields_failed": 0,
-      "elapsed_seconds": 0.11450004577636719,
+      "elapsed_seconds": 0.11631417274475098,
       "entities": {
         "roles": {
           "fields_tested": 15,
@@ -2743,12 +2663,12 @@ const REPORT_DATA = {
       "run_metadata": {
         "last_run": {
           "status": "success",
-          "duration_seconds": 0.11450004577636719,
+          "duration_seconds": 0.11631417274475098,
           "exit_code": 0,
           "score": 100.0
         },
         "last_successful_run": {
-          "duration_seconds": 0.11450004577636719,
+          "duration_seconds": 0.11631417274475098,
           "status": "success",
           "test_results": {
             "total_fields_tested": 103,
@@ -2764,7 +2684,7 @@ const REPORT_DATA = {
       "total_fields_tested": 103,
       "fields_passed": 103,
       "fields_failed": 0,
-      "elapsed_seconds": 0.38017797470092773,
+      "elapsed_seconds": 0.35966992378234863,
       "entities": {
         "roles": {
           "fields_tested": 15,
@@ -2807,12 +2727,12 @@ const REPORT_DATA = {
       "run_metadata": {
         "last_run": {
           "status": "success",
-          "duration_seconds": 0.38017797470092773,
+          "duration_seconds": 0.35966992378234863,
           "exit_code": 0,
           "score": 100.0
         },
         "last_successful_run": {
-          "duration_seconds": 0.38017797470092773,
+          "duration_seconds": 0.35966992378234863,
           "status": "success",
           "test_results": {
             "total_fields_tested": 103,
@@ -2828,7 +2748,7 @@ const REPORT_DATA = {
       "total_fields_tested": 103,
       "fields_passed": 103,
       "fields_failed": 0,
-      "elapsed_seconds": 0.11635780334472656,
+      "elapsed_seconds": 0.12520885467529297,
       "entities": {
         "roles": {
           "fields_tested": 15,
@@ -2871,12 +2791,12 @@ const REPORT_DATA = {
       "run_metadata": {
         "last_run": {
           "status": "success",
-          "duration_seconds": 0.11635780334472656,
+          "duration_seconds": 0.12520885467529297,
           "exit_code": 0,
           "score": 100.0
         },
         "last_successful_run": {
-          "duration_seconds": 0.11635780334472656,
+          "duration_seconds": 0.12520885467529297,
           "status": "success",
           "test_results": {
             "total_fields_tested": 103,

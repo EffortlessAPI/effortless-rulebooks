@@ -13,24 +13,24 @@
 | python | 103 | 0 | 103 | 100.0% | < 1s | PASS |
 | explain-dag | 103 | 0 | 103 | 100.0% | < 1s | PASS |
 | uml | 103 | 0 | 103 | 100.0% | < 1s | PASS |
-| yaml | 103 | 0 | 103 | 100.0% | < 1s | PASS |
 | golang | 103 | 0 | 103 | 100.0% | < 1s | PASS |
+| yaml | 103 | 0 | 103 | 100.0% | < 1s | PASS |
 | csv | 103 | 0 | 103 | 100.0% | < 1s | PASS |
 | binary | 103 | 0 | 103 | 100.0% | < 1s | PASS |
 | xlsx | 103 | 0 | 103 | 100.0% | < 1s | PASS |
 | owl | 103 | 0 | 103 | 100.0% | 10s | PASS |
-| english | 87 | 16 | 103 | 84.5% | 5m 7s | FAIL |
+| english | 0 | 0 | 0 | 0.0% | 41s | PASS |
 
 ## Overall Statistics
 
 | Metric | Value |
 |--------|-------|
 | Total Substrates | 10 |
-| Total Fields Tested | 1030 |
-| Total Passed | 1014 |
-| Total Failed | 16 |
-| Overall Score | 98.4% |
-| Total Duration | 5m 18s |
+| Total Fields Tested | 927 |
+| Total Passed | 927 |
+| Total Failed | 0 |
+| Overall Score | 100.0% |
+| Total Duration | 53s |
 
 ---
 
