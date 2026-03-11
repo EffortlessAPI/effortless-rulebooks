@@ -233,7 +233,7 @@ output = html_template.format(
     substrate_name=SUBSTRATE_NAME, title=SUBSTRATE_TITLE, icon=SUBSTRATE_ICON,
     score=score, score_class=score_class, passed=passed, failed=failed, total=total,
     log_content=log_escaped,
-    lang_candidates_table=lang_candidates_table, column_formulas_table=column_formulas_table
+    entities_table=entities_table, column_formulas_table=column_formulas_table
 )
 
 with open('substrate-report.html', 'w') as f:

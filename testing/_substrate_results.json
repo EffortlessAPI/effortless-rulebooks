@@ -2,12 +2,12 @@
   "uml": {
     "last_run": {
       "status": "success",
-      "duration_seconds": 0.11646294593811035,
+      "duration_seconds": 0.10940885543823242,
       "exit_code": 0,
       "score": 100.0
     },
     "last_successful_run": {
-      "duration_seconds": 0.11646294593811035,
+      "duration_seconds": 0.10940885543823242,
       "status": "success",
       "test_results": {
         "total_fields_tested": 3,
@@ -20,12 +20,12 @@
   "python": {
     "last_run": {
       "status": "success",
-      "duration_seconds": 0.10369515419006348,
+      "duration_seconds": 0.10342979431152344,
       "exit_code": 0,
       "score": 100.0
     },
     "last_successful_run": {
-      "duration_seconds": 0.10369515419006348,
+      "duration_seconds": 0.10342979431152344,
       "status": "success",
       "test_results": {
         "total_fields_tested": 3,
@@ -38,12 +38,12 @@
   "golang": {
     "last_run": {
       "status": "success",
-      "duration_seconds": 0.12625384330749512,
+      "duration_seconds": 0.12000489234924316,
       "exit_code": 0,
       "score": 100.0
     },
     "last_successful_run": {
-      "duration_seconds": 0.12625384330749512,
+      "duration_seconds": 0.12000489234924316,
       "status": "success",
       "test_results": {
         "total_fields_tested": 3,
@@ -56,12 +56,12 @@
   "owl": {
     "last_run": {
       "status": "success",
-      "duration_seconds": 0.28481221199035645,
+      "duration_seconds": 0.275083065032959,
       "exit_code": 0,
       "score": 100.0
     },
     "last_successful_run": {
-      "duration_seconds": 0.28481221199035645,
+      "duration_seconds": 0.275083065032959,
       "status": "success",
       "test_results": {
         "total_fields_tested": 3,
@@ -74,12 +74,12 @@
   "xlsx": {
     "last_run": {
       "status": "success",
-      "duration_seconds": 0.3111419677734375,
+      "duration_seconds": 0.2821340560913086,
       "exit_code": 0,
       "score": 100.0
     },
     "last_successful_run": {
-      "duration_seconds": 0.3111419677734375,
+      "duration_seconds": 0.2821340560913086,
       "status": "success",
       "test_results": {
         "total_fields_tested": 3,
@@ -92,12 +92,12 @@
   "english": {
     "last_run": {
       "status": "success",
-      "duration_seconds": 78.86111903190613,
+      "duration_seconds": 31.23362898826599,
       "exit_code": 0,
       "score": 100.0
     },
     "last_successful_run": {
-      "duration_seconds": 78.86111903190613,
+      "duration_seconds": 31.23362898826599,
       "status": "success",
       "test_results": {
         "total_fields_tested": 3,
@@ -130,12 +130,12 @@
   "csv": {
     "last_run": {
       "status": "success",
-      "duration_seconds": 0.19040894508361816,
+      "duration_seconds": 0.18535113334655762,
       "exit_code": 0,
       "score": 100.0
     },
     "last_successful_run": {
-      "duration_seconds": 0.19040894508361816,
+      "duration_seconds": 0.18535113334655762,
       "status": "success",
       "test_results": {
         "total_fields_tested": 3,
@@ -148,12 +148,12 @@
   "yaml": {
     "last_run": {
       "status": "success",
-      "duration_seconds": 0.11879396438598633,
+      "duration_seconds": 0.11340904235839844,
       "exit_code": 0,
       "score": 100.0
     },
     "last_successful_run": {
-      "duration_seconds": 0.11879396438598633,
+      "duration_seconds": 0.11340904235839844,
       "status": "success",
       "test_results": {
         "total_fields_tested": 3,
@@ -166,12 +166,12 @@
   "binary": {
     "last_run": {
       "status": "success",
-      "duration_seconds": 0.6231832504272461,
+      "duration_seconds": 0.3049499988555908,
       "exit_code": 0,
       "score": 100.0
     },
     "last_successful_run": {
-      "duration_seconds": 0.6231832504272461,
+      "duration_seconds": 0.3049499988555908,
       "status": "success",
       "test_results": {
         "total_fields_tested": 3,
@@ -204,12 +204,12 @@
   "explain-dag": {
     "last_run": {
       "status": "success",
-      "duration_seconds": 0.11373424530029297,
+      "duration_seconds": 0.11157083511352539,
       "exit_code": 0,
       "score": 100.0
     },
     "last_successful_run": {
-      "duration_seconds": 0.11373424530029297,
+      "duration_seconds": 0.11157083511352539,
       "status": "success",
       "test_results": {
         "total_fields_tested": 3,

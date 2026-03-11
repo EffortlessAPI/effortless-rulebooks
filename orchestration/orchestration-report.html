@@ -327,6 +327,46 @@ h2 { font-size: 1rem; font-weight: 600; margin-bottom: 0.75rem; color: var(--tex
 .data-table th { background: var(--bg-tertiary); font-weight: 600; font-size: 0.75rem; }
 .data-table .computed { background: rgba(13, 110, 253, 0.1); }
 
+/* Blank tests section */
+.blank-tests-section { margin-bottom: 1.5rem; }
+.blank-tests-section h4 { margin-bottom: 0.5rem; }
+.blank-tests-section h4 .subtitle { font-weight: normal; font-size: 0.85rem; color: var(--text-secondary); }
+.blank-tests-intro { font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1rem; line-height: 1.5; }
+.blank-tests-intro code { background: var(--bg-tertiary); padding: 0.1rem 0.3rem; border-radius: 3px; }
+.blank-test-entity { margin-bottom: 1rem; }
+.blank-test-header {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    padding: 0.5rem 0.75rem;
+    background: var(--bg-secondary);
+    border-radius: var(--radius);
+    margin-bottom: 0.5rem;
+    font-size: 0.85rem;
+}
+.blank-test-header.stale { background: rgba(255, 193, 7, 0.15); border-left: 3px solid var(--warning-color); }
+.blank-test-header .entity-name { font-weight: 600; }
+.blank-test-header .record-count { color: var(--text-secondary); }
+.blank-test-header .last-modified { color: var(--text-secondary); font-size: 0.8rem; }
+.blank-test-header .stale-warning { color: var(--warning-color); font-weight: 500; margin-left: auto; }
+/* Stale entity styling */
+.stale-entity { background: rgba(255, 193, 7, 0.1) !important; border-left: 3px solid var(--warning-color); }
+.stale-entity-section { margin-top: 0.5rem; }
+.stale-entity-warning {
+    background: rgba(255, 193, 7, 0.15);
+    border: 1px solid var(--warning-color);
+    border-left: 3px solid var(--warning-color);
+    border-radius: var(--radius);
+    padding: 0.75rem 1rem;
+    margin-bottom: 1rem;
+}
+.stale-entity-warning strong { color: var(--warning-color); display: block; margin-bottom: 0.5rem; }
+.stale-entity-warning p { margin: 0.5rem 0; font-size: 0.85rem; line-height: 1.5; }
+.stale-entity-warning code { background: var(--bg-tertiary); padding: 0.1rem 0.3rem; border-radius: 3px; }
+.stale-explanation { color: var(--text-secondary); font-style: italic; }
+.stale-data-table { opacity: 0.85; }
+.stale-data-table .null-value { color: var(--text-secondary); font-style: italic; }
+
 /* Warnings and failures */
 .warning-banner {
     background: rgba(255, 193, 7, 0.15);
@@ -712,7 +752,7 @@ footer {
                 </div>
                 <div class="stat-card">
                     <div class="stat-value">
-                        80.8s
+                        32.8s
                     </div>
                     <div class="stat-label">Total Runtime</div>
                 </div>
@@ -728,8 +768,8 @@ footer {
             <div class="substrate-links">
                 <a href="#" class="substrate-link score-perfect" data-substrate="postgres">postgres (answer-key): 100%</a>
                     <a href="#" class="substrate-link score-perfect" data-substrate="python">python: 100%</a>
-                    <a href="#" class="substrate-link score-perfect" data-substrate="explain-dag">explain-dag: 100%</a>
                     <a href="#" class="substrate-link score-perfect" data-substrate="uml">uml: 100%</a>
+                    <a href="#" class="substrate-link score-perfect" data-substrate="explain-dag">explain-dag: 100%</a>
                     <a href="#" class="substrate-link score-perfect" data-substrate="yaml">yaml: 100%</a>
                     <a href="#" class="substrate-link score-perfect" data-substrate="golang">golang: 100%</a>
                     <a href="#" class="substrate-link score-perfect" data-substrate="csv">csv: 100%</a>
@@ -754,15 +794,15 @@ footer {
                     <tbody>
                         <tr class="answer-key-row"><td class="substrate-name substrate-row-link" data-substrate="postgres">postgres (answer-key)</td><td class="cell-answer-key" data-substrate="postgres" data-entity="customers" title="3/3">&#9733;</td><td class="score-cell score-perfect">100%</td><td class="time-cell">0.0s</td></tr>
                         <tr class=""><td class="substrate-name substrate-row-link" data-substrate="python">python</td><td class="cell-pass" data-substrate="python" data-entity="customers" title="3/3">&#10003;</td><td class="score-cell score-perfect">100.0%</td><td class="time-cell">0.1s</td></tr>
-                        <tr class=""><td class="substrate-name substrate-row-link" data-substrate="explain-dag">explain-dag</td><td class="cell-pass" data-substrate="explain-dag" data-entity="customers" title="3/3">&#10003;</td><td class="score-cell score-perfect">100.0%</td><td class="time-cell">0.1s</td></tr>
                         <tr class=""><td class="substrate-name substrate-row-link" data-substrate="uml">uml</td><td class="cell-pass" data-substrate="uml" data-entity="customers" title="3/3">&#10003;</td><td class="score-cell score-perfect">100.0%</td><td class="time-cell">0.1s</td></tr>
+                        <tr class=""><td class="substrate-name substrate-row-link" data-substrate="explain-dag">explain-dag</td><td class="cell-pass" data-substrate="explain-dag" data-entity="customers" title="3/3">&#10003;</td><td class="score-cell score-perfect">100.0%</td><td class="time-cell">0.1s</td></tr>
                         <tr class=""><td class="substrate-name substrate-row-link" data-substrate="yaml">yaml</td><td class="cell-pass" data-substrate="yaml" data-entity="customers" title="3/3">&#10003;</td><td class="score-cell score-perfect">100.0%</td><td class="time-cell">0.1s</td></tr>
                         <tr class=""><td class="substrate-name substrate-row-link" data-substrate="golang">golang</td><td class="cell-pass" data-substrate="golang" data-entity="customers" title="3/3">&#10003;</td><td class="score-cell score-perfect">100.0%</td><td class="time-cell">0.1s</td></tr>
                         <tr class=""><td class="substrate-name substrate-row-link" data-substrate="csv">csv</td><td class="cell-pass" data-substrate="csv" data-entity="customers" title="3/3">&#10003;</td><td class="score-cell score-perfect">100.0%</td><td class="time-cell">0.2s</td></tr>
                         <tr class=""><td class="substrate-name substrate-row-link" data-substrate="owl">owl</td><td class="cell-pass" data-substrate="owl" data-entity="customers" title="3/3">&#10003;</td><td class="score-cell score-perfect">100.0%</td><td class="time-cell">0.3s</td></tr>
                         <tr class=""><td class="substrate-name substrate-row-link" data-substrate="xlsx">xlsx</td><td class="cell-pass" data-substrate="xlsx" data-entity="customers" title="3/3">&#10003;</td><td class="score-cell score-perfect">100.0%</td><td class="time-cell">0.3s</td></tr>
-                        <tr class=""><td class="substrate-name substrate-row-link" data-substrate="binary">binary</td><td class="cell-pass" data-substrate="binary" data-entity="customers" title="3/3">&#10003;</td><td class="score-cell score-perfect">100.0%</td><td class="time-cell">0.6s</td></tr>
-                        <tr class=""><td class="substrate-name substrate-row-link" data-substrate="english">english</td><td class="cell-pass" data-substrate="english" data-entity="customers" title="3/3">&#10003;</td><td class="score-cell score-perfect">100.0%</td><td class="time-cell">78.9s</td></tr>
+                        <tr class=""><td class="substrate-name substrate-row-link" data-substrate="binary">binary</td><td class="cell-pass" data-substrate="binary" data-entity="customers" title="3/3">&#10003;</td><td class="score-cell score-perfect">100.0%</td><td class="time-cell">0.3s</td></tr>
+                        <tr class=""><td class="substrate-name substrate-row-link" data-substrate="english">english</td><td class="cell-pass" data-substrate="english" data-entity="customers" title="3/3">&#10003;</td><td class="score-cell score-perfect">100.0%</td><td class="time-cell">31.2s</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -772,8 +812,8 @@ footer {
             <nav class="sub-tabs" id="substrate-tabs">
                 <button class="sub-tab active" data-substrate="postgres">postgres (answer-key)</button>
                 <button class="sub-tab " data-substrate="python">python</button>
-                <button class="sub-tab " data-substrate="explain-dag">explain-dag</button>
                 <button class="sub-tab " data-substrate="uml">uml</button>
+                <button class="sub-tab " data-substrate="explain-dag">explain-dag</button>
                 <button class="sub-tab " data-substrate="yaml">yaml</button>
                 <button class="sub-tab " data-substrate="golang">golang</button>
                 <button class="sub-tab " data-substrate="csv">csv</button>
@@ -815,7 +855,7 @@ const REPORT_DATA = {
     "total_computed_columns": 1,
     "total_records": 3,
     "overall_score": 100.0,
-    "total_runtime_seconds": 80.84960556030273,
+    "total_runtime_seconds": 32.83897066116333,
     "total_fields_tested": 33,
     "total_passed": 33,
     "total_failed": 0
@@ -969,7 +1009,7 @@ const REPORT_DATA = {
       "total_fields_tested": 3,
       "fields_passed": 3,
       "fields_failed": 0,
-      "elapsed_seconds": 0.6231832504272461,
+      "elapsed_seconds": 0.3049499988555908,
       "entities": {
         "customers": {
           "fields_tested": 3,
@@ -982,12 +1022,12 @@ const REPORT_DATA = {
       "run_metadata": {
         "last_run": {
           "status": "success",
-          "duration_seconds": 0.6231832504272461,
+          "duration_seconds": 0.3049499988555908,
           "exit_code": 0,
           "score": 100.0
         },
         "last_successful_run": {
-          "duration_seconds": 0.6231832504272461,
+          "duration_seconds": 0.3049499988555908,
           "status": "success",
           "test_results": {
             "total_fields_tested": 3,
@@ -1062,7 +1102,7 @@ const REPORT_DATA = {
       "total_fields_tested": 3,
       "fields_passed": 3,
       "fields_failed": 0,
-      "elapsed_seconds": 0.19040894508361816,
+      "elapsed_seconds": 0.18535113334655762,
       "entities": {
         "customers": {
           "fields_tested": 3,
@@ -1075,78 +1115,12 @@ const REPORT_DATA = {
       "run_metadata": {
         "last_run": {
           "status": "success",
-          "duration_seconds": 0.19040894508361816,
+          "duration_seconds": 0.18535113334655762,
           "exit_code": 0,
           "score": 100.0
         },
         "last_successful_run": {
-          "duration_seconds": 0.19040894508361816,
-          "status": "success",
-          "test_results": {
-            "total_fields_tested": 3,
-            "fields_passed": 3,
-            "fields_failed": 0,
-            "score": 100.0
-          }
-        }
-      },
-      "test_answers": {
-        "customers": [
-          {
-            "customer_id": "cust0001",
-            "customer": "CUST0001",
-            "email_address": "jane.smith@email.com",
-            "first_name": "Jane",
-            "last_name": "Smith",
-            "full_name": "Smith, Jane"
-          },
-          {
-            "customer_id": "cust0002",
-            "customer": "CUST0002",
-            "email_address": "john.doe@email.com",
-            "first_name": "John",
-            "last_name": "Doe",
-            "full_name": "Doe, John"
-          },
-          {
-            "customer_id": "cust0003",
-            "customer": "CUST0003",
-            "email_address": "emily.jones@email.com",
-            "first_name": "Emily",
-            "last_name": "Jones",
-            "full_name": "Jones, Emily"
-          }
-        ]
-      },
-      "report_content": {
-        "tabs": [],
-        "contents": {}
-      }
-    },
-    "english": {
-      "substrate": "english",
-      "total_fields_tested": 3,
-      "fields_passed": 3,
-      "fields_failed": 0,
-      "elapsed_seconds": 78.86111903190613,
-      "entities": {
-        "customers": {
-          "fields_tested": 3,
-          "fields_passed": 3,
-          "fields_failed": 0,
-          "failures": []
-        }
-      },
-      "error": null,
-      "run_metadata": {
-        "last_run": {
-          "status": "success",
-          "duration_seconds": 78.86111903190613,
-          "exit_code": 0,
-          "score": 100.0
-        },
-        "last_successful_run": {
-          "duration_seconds": 78.86111903190613,
+          "duration_seconds": 0.18535113334655762,
           "status": "success",
           "test_results": {
             "total_fields_tested": 3,
@@ -1191,32 +1165,37 @@ const REPORT_DATA = {
             "label": "Description"
           },
           {
-            "id": "graded-data",
-            "label": "Graded Data"
-          },
-          {
             "id": "log",
             "label": "Run Log"
           },
           {
-            "id": "specification",
-            "label": "Specification"
+            "id": "results",
+            "label": "Test Results"
+          },
+          {
+            "id": "candidates",
+            "label": "Entities"
+          },
+          {
+            "id": "formulas",
+            "label": "Column Formulas"
           }
         ],
         "contents": {
-          "description": "<div class=\"card\">\n                <h2>What This Substrate Does</h2>\n                <div class=\"markdown-content\">\n                    <p>The English substrate tests whether <strong>plain English can serve as an execution substrate</strong>. It uses a two-step LLM flow:</p>\n                    <h3>Two-Step LLM Architecture</h3>\n                    <ol>\n                        <li><strong>Inject</strong>: <code>inject-into-english.py</code> sends the rulebook JSON to an LLM, which writes a plain English specification explaining how to compute each calculated field</li>\n                        <li><strong>Take Test</strong>: <code>take-test.py</code> sends the English specification + test data to an LLM, which computes the calculated field values by following the English instructions</li>\n                    </ol>\n                    <p><strong>Zero formula parsing.</strong> The LLM reads formulas natively and explains them better than regex could.</p>\n                </div>\n            </div>\n            <div class=\"card\">\n                <h2>Key Features</h2>\n                <ul class=\"markdown-content\">\n                    <li><strong>Generic</strong>: Works with ANY rulebook - no domain-specific hardcoding</li>\n                    <li><strong>LLM-Driven</strong>: Specification generated by LLM, not template strings</li>\n                    <li><strong>Round-Trip Testing</strong>: Verifies the English spec is clear enough to compute correct values</li>\n                    <li><strong>Minimal Code</strong>: ~130 lines total, down from ~425 lines</li>\n                </ul>\n            </div>",
-          "graded-data": "<div class=\"card\">\n                <h2>Graded Test Data</h2>\n                <p style=\"color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 1rem;\">All columns shown. <span style=\"color: var(--accent-color); font-weight: 500;\">Blue headers</span> indicate computed fields being tested. <span style=\"color: var(--success-color);\">\u2713</span> = passed, <span style=\"color: var(--danger-color);\">E/A</span> = failed (Expected vs Actual).</p>\n                <div class=\"entity-section\">\n<h3 class=\"entity-name\">customers</h3>\n<div class=\"table-scroll\"><table class=\"graded-table\"><thead><tr>\n<th class=\"\">customer_id</th>\n<th class=\"\">customer</th>\n<th class=\"\">email_address</th>\n<th class=\"\">first_name</th>\n<th class=\"\">last_name</th>\n<th class=\"computed-header\">full_name</th>\n</tr></thead><tbody>\n<tr>\n<td class=\"cell-raw\" title=\"cust0001\">cust0001</td>\n<td class=\"cell-raw\" title=\"CUST0001\">CUST0001</td>\n<td class=\"cell-raw\" title=\"jane.smith@email.com\">jane.smith@email.com</td>\n<td class=\"cell-raw\" title=\"Jane\">Jane</td>\n<td class=\"cell-raw\" title=\"Smith\">Smith</td>\n<td class=\"cell-passed computed\" title=\"Smith, Jane\">\n<span class=\"check\">\u2713</span><code>Smith, Jane</code></td>\n</tr>\n<tr>\n<td class=\"cell-raw\" title=\"cust0002\">cust0002</td>\n<td class=\"cell-raw\" title=\"CUST0002\">CUST0002</td>\n<td class=\"cell-raw\" title=\"john.doe@email.com\">john.doe@email.com</td>\n<td class=\"cell-raw\" title=\"John\">John</td>\n<td class=\"cell-raw\" title=\"Doe\">Doe</td>\n<td class=\"cell-passed computed\" title=\"Doe, John\">\n<span class=\"check\">\u2713</span><code>Doe, John</code></td>\n</tr>\n<tr>\n<td class=\"cell-raw\" title=\"cust0003\">cust0003</td>\n<td class=\"cell-raw\" title=\"CUST0003\">CUST0003</td>\n<td class=\"cell-raw\" title=\"emily.jones@email.com\">emily.jones@email.com</td>\n<td class=\"cell-raw\" title=\"Emily\">Emily</td>\n<td class=\"cell-raw\" title=\"Jones\">Jones</td>\n<td class=\"cell-passed computed\" title=\"Jones, Emily\">\n<span class=\"check\">\u2713</span><code>Jones, Emily</code></td>\n</tr>\n</tbody></table></div></div>\n            </div>",
-          "log": "<div class=\"card\">\n                <h2>Execution Log</h2>\n                <pre>=== English (LLM) Substrate Test Run ===\n\n======================================================================\nEnglish Execution Substrate - LLM Test Execution\nUsing ENGLISH PROSE documents (glossary.md, specification.md)\n======================================================================\n\nLoading English specification documents...\n  Loaded specification.md (2435 chars)\n\nLoading rulebook for schema metadata...\nDiscovered 1 entities: Customers\n\nProcessing customers...\n  Schema: 6 fields, 1 calculated\n    Using English prose documents (specification)\n============================================================\nPROMPT (first 2 lines):\n  You are taking a test. Your task is to fill in the computed columns for each record based on the Eng\n  \n  ... (120 total lines, 4293 chars)\n============================================================\nCalling OpenAI (gpt-4o-mini)... please wait...\n============================================================\nRESPONSE (first 2 lines):\n  [\n    {\n  ... (26 total lines, 587 chars)\n============================================================\n  -&gt; customers: 3 records, 3 computed fields filled\n\n======================================================================\nEnglish substrate: Processed 1 entities, 3 total records\nFilled 3 computed fields total\n======================================================================\n\n</pre>\n            </div>",
-          "specification": "<div class=\"card\">\n                <h2>specification.md (LLM-Generated)</h2>\n                <div class=\"prose-container markdown-content\"><h2>Specification Document for DEMO: Customer FullName Rulebook</h2>\n<h3>Overview</h3>\n<p>This document outlines the specifications for calculating fields within the \"DEMO: Customer FullName\" rulebook, which is derived from an Airtable base. The primary focus is on computing the full name of customers based on their first and last names. </p>\n<h3>Customers Table</h3>\n<h4>Input Fields</h4>\n<p>The following input fields are used to compute the calculated fields in the Customers table:</p>\n<p>1. <strong>CustomerId</strong></p>\n<p>   - <strong>Type:</strong> String</p>\n<p>   - <strong>Description:</strong> A unique identifier for each customer. This field is mandatory.</p>\n<p>2. <strong>Customer</strong></p>\n<p>   - <strong>Type:</strong> String</p>\n<p>   - <strong>Description:</strong> An identifier for the customers. This field is optional.</p>\n<p>3. <strong>EmailAddress</strong></p>\n<p>   - <strong>Type:</strong> String</p>\n<p>   - <strong>Description:</strong> The customer's email address. This field is optional.</p>\n<p>4. <strong>FirstName</strong></p>\n<p>   - <strong>Type:</strong> String</p>\n<p>   - <strong>Description:</strong> The first name of the customer, used in the computation of the full name. This field is optional.</p>\n<p>5. <strong>LastName</strong></p>\n<p>   - <strong>Type:</strong> String</p>\n<p>   - <strong>Description:</strong> The last name of the customer, used in the computation of the full name. This field is optional.</p>\n<h4>Calculated Fields</h4>\n<p>#### FullName</p>\n<ul>\n<li>**Type:** Calculated</li>\n<li>**Description:** The full name is computed by combining the last name and first name of the customer in the format &quot;LastName, FirstName&quot;.</li>\n<li>**Computation Method:**</li>\n<p>  To compute the `FullName`, concatenate the `LastName` and `FirstName` fields with a comma and a space in between. If either the `FirstName` or `LastName` is missing, the result will be formatted accordingly, but the full name will still follow the same structure.</p>\n</ul>\n<ul>\n<li>**Formula for Reference:**</li>\n<p>  ```</p>\n<p>  ={{LastName}} & \", \" & {{FirstName}}</p>\n<p>  ```</p>\n</ul>\n<ul>\n<li>**Concrete Examples:**</li>\n<p>  1. For the customer with `CustomerId` \"cust0001\":</p>\n<p>     - <strong>FirstName:</strong> Jane</p>\n<p>     - <strong>LastName:</strong> Smith</p>\n<p>     - <strong>Computed FullName:</strong> \"Smith, Jane\"</p>\n</ul>\n<p>  2. For the customer with `CustomerId` \"cust0002\":</p>\n<p>     - <strong>FirstName:</strong> John</p>\n<p>     - <strong>LastName:</strong> Doe</p>\n<p>     - <strong>Computed FullName:</strong> \"Doe, John\"</p>\n<p>  3. For the customer with `CustomerId` \"cust0003\":</p>\n<p>     - <strong>FirstName:</strong> Emily</p>\n<p>     - <strong>LastName:</strong> Jones</p>\n<p>     - <strong>Computed FullName:</strong> \"Jones, Emily\"</p>\n<p>This specification provides a clear guide on how to compute the `FullName` field using the `FirstName` and `LastName` inputs. By following the outlined method, one can accurately derive the full names of customers as specified in the rulebook.</p></div>\n            </div>"
+          "description": "<div class=\"card\">\n                <h2>What This Substrate Does</h2>\n                <div class=\"markdown-content\">\n                    <p>The CSV substrate exports rulebook data and formulas to universal CSV format, enabling interoperability with spreadsheet applications and data analysis tools.</p>\n                    <h3>Orchestration Pattern</h3>\n                    <ol>\n                        <li><strong>Export</strong>: <code>inject-into-csv.py</code> generates CSV files from rulebook JSON</li>\n                        <li><strong>Data Files</strong>: Creates CSV files for each entity in the rulebook</li>\n                        <li><strong>Formula Mapping</strong>: Creates <code>column_formulas.csv</code> with calculation definitions</li>\n                        <li><strong>Test</strong>: Validates CSV output matches expected values</li>\n                    </ol>\n                </div>\n            </div>\n            <div class=\"card\">\n                <h2>Key Features</h2>\n                <ul class=\"markdown-content\">\n                    <li><strong>Universal Format</strong>: CSV works with any spreadsheet or data tool</li>\n                    <li><strong>Formula Documentation</strong>: Column formulas exported separately for reference</li>\n                    <li><strong>Excel Export</strong>: Also generates <code>rulebook.xlsx</code> for Excel users</li>\n                    <li><strong>Data Validation</strong>: Boolean and calculated fields properly formatted</li>\n                </ul>\n            </div>",
+          "log": "<div class=\"card\">\n                <h2>Execution Log</h2>\n                <pre>=== CSV Substrate Test Run ===\n\n\n  Processing customers from customers.csv...\nFound 6 fields in test answers\nPrimary key field: customer_id\nLoaded 3 rows from CSV\nFilled 3 null fields across 3 records\nUpdated /Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/ERB_jessica-talisman-ontology/execution-substrates/csv/test-answers/customers.json\n\ncsv: Processed 1 entities\n\n</pre>\n            </div>",
+          "results": "<div class=\"card\">\n                <h2>Test Summary</h2>\n                <div class=\"results-summary\">\n                    <div class=\"result-item\"><div class=\"result-value score-perfect\">100.0%</div><div class=\"result-label\">Score</div></div>\n                    <div class=\"result-item\"><div class=\"result-value score-perfect\">3</div><div class=\"result-label\">Passed</div></div>\n                    <div class=\"result-item\"><div class=\"result-value\">0</div><div class=\"result-label\">Failed</div></div>\n                    <div class=\"result-item\"><div class=\"result-value\">3</div><div class=\"result-label\">Total</div></div>\n                </div>\n            </div>",
+          "candidates": "<div class=\"card\">\n                <h2>Entity Data (workflows.csv)</h2>\n                <div class=\"table-scroll\"><p>Error reading CSV: [Errno 2] No such file or directory: 'test-data/workflows.csv'</p></div>\n            </div>",
+          "formulas": "<div class=\"card\">\n                <h2>column_formulas.csv</h2>\n                <div class=\"table-scroll\"><table class=\"csv-table\"><thead><tr><th>table_name</th><th>field_name</th><th>field_type</th><th>dag_level</th><th>formula</th></tr></thead><tbody><tr><td>Customers</td><td>customer_id</td><td>raw</td><td>0</td><td></td></tr><tr><td>Customers</td><td>customer</td><td>raw</td><td>0</td><td></td></tr><tr><td>Customers</td><td>email_address</td><td>raw</td><td>0</td><td></td></tr><tr><td>Customers</td><td>first_name</td><td>raw</td><td>0</td><td></td></tr><tr><td>Customers</td><td>last_name</td><td>raw</td><td>0</td><td></td></tr><tr><td>Customers</td><td>full_name</td><td>calculated</td><td></td><td>={{LastName}} &amp; &quot;, &quot; &amp; {{FirstName}}</td></tr></tbody></table></div>\n            </div>"
         }
       }
     },
-    "explain-dag": {
-      "substrate": "explain-dag",
+    "english": {
+      "substrate": "english",
       "total_fields_tested": 3,
       "fields_passed": 3,
       "fields_failed": 0,
-      "elapsed_seconds": 0.11373424530029297,
+      "elapsed_seconds": 31.23362898826599,
       "entities": {
         "customers": {
           "fields_tested": 3,
@@ -1229,12 +1208,105 @@ const REPORT_DATA = {
       "run_metadata": {
         "last_run": {
           "status": "success",
-          "duration_seconds": 0.11373424530029297,
+          "duration_seconds": 31.23362898826599,
           "exit_code": 0,
           "score": 100.0
         },
         "last_successful_run": {
-          "duration_seconds": 0.11373424530029297,
+          "duration_seconds": 31.23362898826599,
+          "status": "success",
+          "test_results": {
+            "total_fields_tested": 3,
+            "fields_passed": 3,
+            "fields_failed": 0,
+            "score": 100.0
+          }
+        }
+      },
+      "test_answers": {
+        "customers": [
+          {
+            "customer_id": "cust0001",
+            "customer": "CUST0001",
+            "email_address": "jane.smith@email.com",
+            "first_name": "Jane",
+            "last_name": "Smith",
+            "full_name": "Smith, Jane"
+          },
+          {
+            "customer_id": "cust0002",
+            "customer": "CUST0002",
+            "email_address": "john.doe@email.com",
+            "first_name": "John",
+            "last_name": "Doe",
+            "full_name": "Doe, John"
+          },
+          {
+            "customer_id": "cust0003",
+            "customer": "CUST0003",
+            "email_address": "emily.jones@email.com",
+            "first_name": "Emily",
+            "last_name": "Jones",
+            "full_name": "Jones, Emily"
+          }
+        ]
+      },
+      "report_content": {
+        "tabs": [
+          {
+            "id": "description",
+            "label": "Description"
+          },
+          {
+            "id": "log",
+            "label": "Run Log"
+          },
+          {
+            "id": "results",
+            "label": "Test Results"
+          },
+          {
+            "id": "graded-data",
+            "label": "Graded Data"
+          },
+          {
+            "id": "specification",
+            "label": "Specification"
+          }
+        ],
+        "contents": {
+          "description": "<div class=\"card\">\n                <h2>What This Substrate Does</h2>\n                <div class=\"markdown-content\">\n                    <p>The English substrate tests whether <strong>plain English can serve as an execution substrate</strong>. It uses a two-step LLM flow:</p>\n                    <h3>Two-Step LLM Architecture</h3>\n                    <ol>\n                        <li><strong>Inject</strong>: <code>inject-into-english.py</code> sends the rulebook JSON to an LLM, which writes a plain English specification explaining how to compute each calculated field</li>\n                        <li><strong>Take Test</strong>: <code>take-test.py</code> sends the English specification + test data to an LLM, which computes the calculated field values by following the English instructions</li>\n                    </ol>\n                    <p><strong>Zero formula parsing.</strong> The LLM reads formulas natively and explains them better than regex could.</p>\n                </div>\n            </div>\n            <div class=\"card\">\n                <h2>Key Features</h2>\n                <ul class=\"markdown-content\">\n                    <li><strong>Generic</strong>: Works with ANY rulebook - no domain-specific hardcoding</li>\n                    <li><strong>LLM-Driven</strong>: Specification generated by LLM, not template strings</li>\n                    <li><strong>Round-Trip Testing</strong>: Verifies the English spec is clear enough to compute correct values</li>\n                    <li><strong>Minimal Code</strong>: ~130 lines total, down from ~425 lines</li>\n                </ul>\n            </div>",
+          "log": "<div class=\"card\">\n                <h2>Execution Log</h2>\n                <pre>=== English (LLM) Substrate Test Run ===\n\n======================================================================\nEnglish Execution Substrate - LLM Test Execution\nUsing ENGLISH PROSE documents (glossary.md, specification.md)\n======================================================================\n\nLoading English specification documents...\n  Loaded specification.md (2414 chars)\n\nLoading rulebook for schema metadata...\nDiscovered 1 entities: Customers\n\nProcessing customers...\n  Schema: 6 fields, 1 calculated\n    Using English prose documents (specification)\n============================================================\nPROMPT (first 2 lines):\n  You are taking a test. Your task is to fill in the computed columns for each record based on the Eng\n  \n  ... (125 total lines, 4272 chars)\n============================================================\nCalling OpenAI (gpt-4o-mini)... please wait...\n============================================================\nRESPONSE (first 2 lines):\n  [\n    {\n  ... (26 total lines, 587 chars)\n============================================================\n  -&gt; customers: 3 records, 3 computed fields filled\n\n======================================================================\nEnglish substrate: Processed 1 entities, 3 total records\nFilled 3 computed fields total\n======================================================================\n\n</pre>\n            </div>",
+          "results": "<div class=\"card\">\n                <h2>Test Summary</h2>\n                <div class=\"results-summary\">\n                    <div class=\"result-item\"><div class=\"result-value score-perfect\">100.0%</div><div class=\"result-label\">Score</div></div>\n                    <div class=\"result-item\"><div class=\"result-value score-perfect\">3</div><div class=\"result-label\">Passed</div></div>\n                    <div class=\"result-item\"><div class=\"result-value\">0</div><div class=\"result-label\">Failed</div></div>\n                    <div class=\"result-item\"><div class=\"result-value\">3</div><div class=\"result-label\">Total</div></div>\n                </div>\n            </div>",
+          "graded-data": "<div class=\"card\">\n                <h2>Graded Test Data</h2>\n                <p style=\"color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 1rem;\">All columns shown. <span style=\"color: var(--accent-color); font-weight: 500;\">Blue headers</span> indicate computed fields being tested. <span style=\"color: var(--success-color);\">\u2713</span> = passed, <span style=\"color: var(--danger-color);\">E/A</span> = failed (Expected vs Actual).</p>\n                <div class=\"entity-section\">\n<h3 class=\"entity-name\">customers</h3>\n<div class=\"table-scroll\"><table class=\"graded-table\"><thead><tr>\n<th class=\"\">customer_id</th>\n<th class=\"\">customer</th>\n<th class=\"\">email_address</th>\n<th class=\"\">first_name</th>\n<th class=\"\">last_name</th>\n<th class=\"computed-header\">full_name</th>\n</tr></thead><tbody>\n<tr>\n<td class=\"cell-raw\" title=\"cust0001\">cust0001</td>\n<td class=\"cell-raw\" title=\"CUST0001\">CUST0001</td>\n<td class=\"cell-raw\" title=\"jane.smith@email.com\">jane.smith@email.com</td>\n<td class=\"cell-raw\" title=\"Jane\">Jane</td>\n<td class=\"cell-raw\" title=\"Smith\">Smith</td>\n<td class=\"cell-passed computed\" title=\"Smith, Jane\">\n<span class=\"check\">\u2713</span><code>Smith, Jane</code></td>\n</tr>\n<tr>\n<td class=\"cell-raw\" title=\"cust0002\">cust0002</td>\n<td class=\"cell-raw\" title=\"CUST0002\">CUST0002</td>\n<td class=\"cell-raw\" title=\"john.doe@email.com\">john.doe@email.com</td>\n<td class=\"cell-raw\" title=\"John\">John</td>\n<td class=\"cell-raw\" title=\"Doe\">Doe</td>\n<td class=\"cell-passed computed\" title=\"Doe, John\">\n<span class=\"check\">\u2713</span><code>Doe, John</code></td>\n</tr>\n<tr>\n<td class=\"cell-raw\" title=\"cust0003\">cust0003</td>\n<td class=\"cell-raw\" title=\"CUST0003\">CUST0003</td>\n<td class=\"cell-raw\" title=\"emily.jones@email.com\">emily.jones@email.com</td>\n<td class=\"cell-raw\" title=\"Emily\">Emily</td>\n<td class=\"cell-raw\" title=\"Jones\">Jones</td>\n<td class=\"cell-passed computed\" title=\"Jones, Emily\">\n<span class=\"check\">\u2713</span><code>Jones, Emily</code></td>\n</tr>\n</tbody></table></div></div>\n            </div>",
+          "specification": "<div class=\"card\">\n                <h2>specification.md (LLM-Generated)</h2>\n                <div class=\"prose-container markdown-content\"><h2>Specification Document for DEMO: Customer FullName Rulebook</h2>\n<h3>Overview</h3>\n<p>This rulebook outlines the schema and calculations for generating customer full names from individual first and last names. It is derived from an Airtable base named 'DEMO: Customer FullName'. The primary focus is on how to compute the `FullName` field based on the provided `FirstName` and `LastName` fields.</p>\n<h3>Customers Table</h3>\n<h4>Input Fields</h4>\n<p>The following input fields are defined in the Customers table, which are necessary for calculating the `FullName`:</p>\n<p>1. <strong>CustomerId</strong></p>\n<p>   - <strong>Type</strong>: String</p>\n<p>   - <strong>Description</strong>: A unique identifier for each customer. This field is mandatory.</p>\n<p>2. <strong>Customer</strong></p>\n<p>   - <strong>Type</strong>: String</p>\n<p>   - <strong>Description</strong>: An identifier for the customers. This field is optional.</p>\n<p>3. <strong>EmailAddress</strong></p>\n<p>   - <strong>Type</strong>: String</p>\n<p>   - <strong>Description</strong>: The customer's email address. This field is optional.</p>\n<p>4. <strong>FirstName</strong></p>\n<p>   - <strong>Type</strong>: String</p>\n<p>   - <strong>Description</strong>: The first name of the customer, used to create the full name. This field is optional.</p>\n<p>5. <strong>LastName</strong></p>\n<p>   - <strong>Type</strong>: String</p>\n<p>   - <strong>Description</strong>: The last name of the customer, used to create the full name. This field is optional.</p>\n<h4>Calculated Field</h4>\n<p>#### FullName</p>\n<ul>\n<li>**Type**: Calculated</li>\n<li>**Description**: The full name is computed by concatenating the last name and first name of the customer in the format &quot;LastName, FirstName&quot;.</li>\n</ul>\n<p><strong>Calculation Method</strong>:</p>\n<p>To compute the `FullName`, follow these steps:</p>\n<p>1. Retrieve the value from the `LastName` field.</p>\n<p>2. Append a comma followed by a space.</p>\n<p>3. Retrieve the value from the `FirstName` field.</p>\n<p>4. Concatenate these values to form the full name.</p>\n<p><strong>Formula for Reference</strong>:</p>\n<pre>\n={{LastName}} &amp; &quot;, &quot; &amp; {{FirstName}}\n</pre>\n<p><strong>Concrete Examples</strong>:</p>\n<p>1. For the customer with `CustomerId` \"cust0001\":</p>\n<p>   - `LastName`: \"Smith\"</p>\n<p>   - `FirstName`: \"Jane\"</p>\n<p>   - <strong>Computed FullName</strong>: \"Smith, Jane\"</p>\n<p>2. For the customer with `CustomerId` \"cust0002\":</p>\n<p>   - `LastName`: \"Doe\"</p>\n<p>   - `FirstName`: \"John\"</p>\n<p>   - <strong>Computed FullName</strong>: \"Doe, John\"</p>\n<p>3. For the customer with `CustomerId` \"cust0003\":</p>\n<p>   - `LastName`: \"Jones\"</p>\n<p>   - `FirstName`: \"Emily\"</p>\n<p>   - <strong>Computed FullName</strong>: \"Jones, Emily\"</p>\n<p>This specification provides a clear understanding of how to derive the `FullName` from the `FirstName` and `LastName` fields, ensuring that the values can be computed accurately without needing to reference the original formulas.</p></div>\n            </div>"
+        }
+      }
+    },
+    "explain-dag": {
+      "substrate": "explain-dag",
+      "total_fields_tested": 3,
+      "fields_passed": 3,
+      "fields_failed": 0,
+      "elapsed_seconds": 0.11157083511352539,
+      "entities": {
+        "customers": {
+          "fields_tested": 3,
+          "fields_passed": 3,
+          "fields_failed": 0,
+          "failures": []
+        }
+      },
+      "error": null,
+      "run_metadata": {
+        "last_run": {
+          "status": "success",
+          "duration_seconds": 0.11157083511352539,
+          "exit_code": 0,
+          "score": 100.0
+        },
+        "last_successful_run": {
+          "duration_seconds": 0.11157083511352539,
           "status": "success",
           "test_results": {
             "total_fields_tested": 3,
@@ -1299,7 +1371,7 @@ const REPORT_DATA = {
           "description": "<div class=\"card\">\n                <h2>What This Substrate Does</h2>\n                <div class=\"markdown-content\">\n                    <p>The Explain-DAG substrate generates falsifiable explanation artifacts that show exactly how each calculated field value was derived. It produces machine-readable derivation DAGs for every computed value.</p>\n                    <h3>Two-Layer Design</h3>\n                    <ol>\n                        <li><strong>Expression Templates</strong>: <code>explain_spec.json</code> defines the structure of each formula</li>\n                        <li><strong>Instance Bindings</strong>: <code>test-explanations/*.jsonl</code> contains per-record derivation traces</li>\n                    </ol>\n                    <h3>Orchestration Pattern</h3>\n                    <ol>\n                        <li><strong>Generate</strong>: <code>inject-into-explain-dag.py</code> creates expression templates</li>\n                        <li><strong>Execute</strong>: <code>take-test.py</code> binds templates to actual data values</li>\n                        <li><strong>Output</strong>: JSONL files with step-by-step derivation for each record</li>\n                        <li><strong>Test</strong>: Validate derivations match expected final values</li>\n                    </ol>\n                </div>\n            </div>\n            <div class=\"card\">\n                <h2>Key Features</h2>\n                <ul class=\"markdown-content\">\n                    <li><strong>Falsifiable Explanations</strong>: Every step can be independently verified</li>\n                    <li><strong>DAG Structure</strong>: Shows dependency relationships between calculations</li>\n                    <li><strong>Machine-Readable</strong>: JSON format for programmatic analysis</li>\n                    <li><strong>Per-Record Traces</strong>: Complete derivation history for each entity</li>\n                </ul>\n            </div>\n            <div class=\"card\">\n                <h2>Example Derivation</h2>\n                <div class=\"dag-example\">Record: english\n\nHasGrammar = true\n  \u2514\u2500\u2500 (HasSyntax = true) == TRUE()\n        \u251c\u2500\u2500 field_ref: HasSyntax \u2192 true\n        \u2514\u2500\u2500 const: TRUE() \u2192 true</div>\n            </div>",
           "log": "<div class=\"card\">\n                <h2>Execution Log</h2>\n                <pre>=== ExplainDAG Substrate Test Run ===\n\n  -&gt; customers: 3 records with explanations\nExplainDAG substrate: Processed 1 entities, 3 total records\nExplanations written to: /Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/ERB_jessica-talisman-ontology/execution-substrates/explain-dag/test-explanations\n\n</pre>\n            </div>",
           "results": "<div class=\"card\">\n                <h2>Test Summary</h2>\n                <div class=\"results-summary\">\n                    <div class=\"result-item\"><div class=\"result-value score-perfect\">100.0%</div><div class=\"result-label\">Score</div></div>\n                    <div class=\"result-item\"><div class=\"result-value score-perfect\">3</div><div class=\"result-label\">Passed</div></div>\n                    <div class=\"result-item\"><div class=\"result-value\">0</div><div class=\"result-label\">Failed</div></div>\n                    <div class=\"result-item\"><div class=\"result-value\">3</div><div class=\"result-label\">Total</div></div>\n                </div>\n            </div>",
-          "templates": "<div class=\"card\">\n                <div class=\"code-header\">\n                    <h2>explain_spec.json</h2>\n                    <div><span class=\"code-info\">123 lines</span><button class=\"copy-btn\" onclick=\"copyCode('spec-code')\">Copy</button></div>\n                </div>\n                <pre id=\"spec-code\">{\n  &quot;schema_version&quot;: &quot;erb.explain_spec.v1&quot;,\n  &quot;rulebook&quot;: {\n    &quot;name&quot;: &quot;DEMO: Customer FullName&quot;,\n    &quot;rulebook_hash&quot;: &quot;sha256:fc5baec006076835eeecd2be23742af0&quot;\n  },\n  &quot;semantics&quot;: {\n    &quot;profile&quot;: &quot;excel&quot;,\n    &quot;version&quot;: &quot;v1&quot;,\n    &quot;null_handling&quot;: &quot;three_valued_logic&quot;,\n    &quot;boolean_coercion&quot;: &quot;strict&quot;\n  },\n  &quot;entities&quot;: {\n    &quot;Customers&quot;: {\n      &quot;id_field&quot;: &quot;CustomerId&quot;,\n      &quot;id_field_snake&quot;: &quot;customer_id&quot;,\n      &quot;fields&quot;: {\n        &quot;CustomerId&quot;: {\n          &quot;datatype&quot;: &quot;string&quot;,\n          &quot;nullable&quot;: false,\n          &quot;type&quot;: &quot;raw&quot;\n        },\n        &quot;Customer&quot;: {\n          &quot;datatype&quot;: &quot;string&quot;,\n          &quot;nullable&quot;: true,\n          &quot;type&quot;: &quot;raw&quot;\n        },\n        &quot;EmailAddress&quot;: {\n          &quot;datatype&quot;: &quot;string&quot;,\n          &quot;nullable&quot;: true,\n          &quot;type&quot;: &quot;raw&quot;\n        },\n        &quot;FirstName&quot;: {\n          &quot;datatype&quot;: &quot;string&quot;,\n          &quot;nullable&quot;: true,\n          &quot;type&quot;: &quot;raw&quot;\n        },\n        &quot;LastName&quot;: {\n          &quot;datatype&quot;: &quot;string&quot;,\n          &quot;nullable&quot;: true,\n          &quot;type&quot;: &quot;raw&quot;\n        },\n        &quot;FullName&quot;: {\n          &quot;datatype&quot;: &quot;string&quot;,\n          &quot;nullable&quot;: true,\n          &quot;type&quot;: &quot;calculated&quot;\n        }\n      },\n      &quot;calc_order&quot;: [\n        &quot;FullName&quot;\n      ],\n      &quot;dep_edges&quot;: [\n        [\n          &quot;FirstName&quot;,\n          &quot;FullName&quot;\n        ],\n        [\n          &quot;LastName&quot;,\n          &quot;FullName&quot;\n        ]\n      ],\n      &quot;expr_templates&quot;: {\n        &quot;FullName&quot;: {\n          &quot;formula_source&quot;: &quot;={{LastName}} &amp; \\&quot;, \\&quot; &amp; {{FirstName}}&quot;,\n          &quot;template_hash&quot;: &quot;sha256:87fca7e8a65752b8&quot;,\n          &quot;root_node&quot;: &quot;n_result_FullName&quot;,\n          &quot;nodes&quot;: {\n            &quot;n_ref_1&quot;: {\n              &quot;kind&quot;: &quot;field_ref&quot;,\n              &quot;field&quot;: &quot;LastName&quot;,\n              &quot;field_snake&quot;: &quot;last_name&quot;\n            },\n            &quot;n_const_2&quot;: {\n              &quot;kind&quot;: &quot;const&quot;,\n              &quot;value&quot;: &quot;, &quot;,\n              &quot;type&quot;: &quot;string&quot;\n            },\n            &quot;n_ref_3&quot;: {\n              &quot;kind&quot;: &quot;field_ref&quot;,\n              &quot;field&quot;: &quot;FirstName&quot;,\n              &quot;field_snake&quot;: &quot;first_name&quot;\n            },\n            &quot;n_op_4&quot;: {\n              &quot;kind&quot;: &quot;op&quot;,\n              &quot;name&quot;: &quot;CONCAT&quot;,\n              &quot;args&quot;: [\n                &quot;n_ref_1&quot;,\n                &quot;n_const_2&quot;,\n                &quot;n_ref_3&quot;\n              ]\n            },\n            &quot;n_result_FullName&quot;: {\n              &quot;kind&quot;: &quot;result&quot;,\n              &quot;field&quot;: &quot;FullName&quot;,\n              &quot;field_snake&quot;: &quot;full_name&quot;,\n              &quot;in&quot;: [\n                &quot;n_op_4&quot;\n              ]\n            }\n          },\n          &quot;edges&quot;: [\n            [\n              &quot;n_ref_1&quot;,\n              &quot;n_op_4&quot;\n            ],\n            [\n              &quot;n_const_2&quot;,\n              &quot;n_op_4&quot;\n            ],\n            [\n              &quot;n_ref_3&quot;,\n              &quot;n_op_4&quot;\n            ],\n            [\n              &quot;n_op_4&quot;,\n              &quot;n_result_FullName&quot;\n            ]\n          ]\n        }\n      }\n    }\n  }\n}</pre>\n            </div>",
+          "templates": "<div class=\"card\">\n                <div class=\"code-header\">\n                    <h2>explain_spec.json</h2>\n                    <div><span class=\"code-info\">123 lines</span><button class=\"copy-btn\" onclick=\"copyCode('spec-code')\">Copy</button></div>\n                </div>\n                <pre id=\"spec-code\">{\n  &quot;schema_version&quot;: &quot;erb.explain_spec.v1&quot;,\n  &quot;rulebook&quot;: {\n    &quot;name&quot;: &quot;DEMO: Customer FullName&quot;,\n    &quot;rulebook_hash&quot;: &quot;sha256:fc5baec006076835eeecd2be23742af0&quot;\n  },\n  &quot;semantics&quot;: {\n    &quot;profile&quot;: &quot;excel&quot;,\n    &quot;version&quot;: &quot;v1&quot;,\n    &quot;null_handling&quot;: &quot;three_valued_logic&quot;,\n    &quot;boolean_coercion&quot;: &quot;strict&quot;\n  },\n  &quot;entities&quot;: {\n    &quot;Customers&quot;: {\n      &quot;id_field&quot;: &quot;CustomerId&quot;,\n      &quot;id_field_snake&quot;: &quot;customer_id&quot;,\n      &quot;fields&quot;: {\n        &quot;CustomerId&quot;: {\n          &quot;datatype&quot;: &quot;string&quot;,\n          &quot;nullable&quot;: false,\n          &quot;type&quot;: &quot;raw&quot;\n        },\n        &quot;Customer&quot;: {\n          &quot;datatype&quot;: &quot;string&quot;,\n          &quot;nullable&quot;: true,\n          &quot;type&quot;: &quot;raw&quot;\n        },\n        &quot;EmailAddress&quot;: {\n          &quot;datatype&quot;: &quot;string&quot;,\n          &quot;nullable&quot;: true,\n          &quot;type&quot;: &quot;raw&quot;\n        },\n        &quot;FirstName&quot;: {\n          &quot;datatype&quot;: &quot;string&quot;,\n          &quot;nullable&quot;: true,\n          &quot;type&quot;: &quot;raw&quot;\n        },\n        &quot;LastName&quot;: {\n          &quot;datatype&quot;: &quot;string&quot;,\n          &quot;nullable&quot;: true,\n          &quot;type&quot;: &quot;raw&quot;\n        },\n        &quot;FullName&quot;: {\n          &quot;datatype&quot;: &quot;string&quot;,\n          &quot;nullable&quot;: true,\n          &quot;type&quot;: &quot;calculated&quot;\n        }\n      },\n      &quot;calc_order&quot;: [\n        &quot;FullName&quot;\n      ],\n      &quot;dep_edges&quot;: [\n        [\n          &quot;LastName&quot;,\n          &quot;FullName&quot;\n        ],\n        [\n          &quot;FirstName&quot;,\n          &quot;FullName&quot;\n        ]\n      ],\n      &quot;expr_templates&quot;: {\n        &quot;FullName&quot;: {\n          &quot;formula_source&quot;: &quot;={{LastName}} &amp; \\&quot;, \\&quot; &amp; {{FirstName}}&quot;,\n          &quot;template_hash&quot;: &quot;sha256:87fca7e8a65752b8&quot;,\n          &quot;root_node&quot;: &quot;n_result_FullName&quot;,\n          &quot;nodes&quot;: {\n            &quot;n_ref_1&quot;: {\n              &quot;kind&quot;: &quot;field_ref&quot;,\n              &quot;field&quot;: &quot;LastName&quot;,\n              &quot;field_snake&quot;: &quot;last_name&quot;\n            },\n            &quot;n_const_2&quot;: {\n              &quot;kind&quot;: &quot;const&quot;,\n              &quot;value&quot;: &quot;, &quot;,\n              &quot;type&quot;: &quot;string&quot;\n            },\n            &quot;n_ref_3&quot;: {\n              &quot;kind&quot;: &quot;field_ref&quot;,\n              &quot;field&quot;: &quot;FirstName&quot;,\n              &quot;field_snake&quot;: &quot;first_name&quot;\n            },\n            &quot;n_op_4&quot;: {\n              &quot;kind&quot;: &quot;op&quot;,\n              &quot;name&quot;: &quot;CONCAT&quot;,\n              &quot;args&quot;: [\n                &quot;n_ref_1&quot;,\n                &quot;n_const_2&quot;,\n                &quot;n_ref_3&quot;\n              ]\n            },\n            &quot;n_result_FullName&quot;: {\n              &quot;kind&quot;: &quot;result&quot;,\n              &quot;field&quot;: &quot;FullName&quot;,\n              &quot;field_snake&quot;: &quot;full_name&quot;,\n              &quot;in&quot;: [\n                &quot;n_op_4&quot;\n              ]\n            }\n          },\n          &quot;edges&quot;: [\n            [\n              &quot;n_ref_1&quot;,\n              &quot;n_op_4&quot;\n            ],\n            [\n              &quot;n_const_2&quot;,\n              &quot;n_op_4&quot;\n            ],\n            [\n              &quot;n_ref_3&quot;,\n              &quot;n_op_4&quot;\n            ],\n            [\n              &quot;n_op_4&quot;,\n              &quot;n_result_FullName&quot;\n            ]\n          ]\n        }\n      }\n    }\n  }\n}</pre>\n            </div>",
           "explorer": "<div class=\"card\">\n                <h2>Sample Explanations (JSONL)</h2>\n                <div class=\"code-info\">First few records from test-explanations/</div>\n                <pre>{&quot;schema_version&quot;: &quot;erb.explain_instance.v1&quot;, &quot;rulebook_hash&quot;: &quot;sha256:5e28a38440c0dfa624d42ba03e473d9d&quot;, &quot;entity&quot;: &quot;approvals&quot;, &quot;record_id&quot;: &quot;compliance-check&quot;, &quot;values&quot;: {&quot;name&quot;: &quot;compliance-check&quot;}, &quot;explanations&quot;: {&quot;Name&quot;: {&quot;template_hash&quot;: &quot;sha256:89d15a4a6be3f751&quot;, &quot;root&quot;: &quot;i_result_Name&quot;, &quot;nodes&quot;: {&quot;i_ref_1&quot;: {&quot;kind&quot;: &quot;field_ref&quot;, &quot;value&quot;: &quot;Compliance Check&quot;, &quot;type&quot;: &quot;string&quot;, &quot;field&quot;: &quot;DisplayName&quot;, &quot;field_snake&quot;: &quot;display_name&quot;}, &quot;i_const_3&quot;: {&quot;kind&quot;: &quot;const&quot;, &quot;value&quot;: &quot; &quot;, &quot;type&quot;: &quot;string&quot;}, &quot;i_const_4&quot;: {&quot;kind&quot;: &quot;const&quot;, &quot;value&quot;: &quot;-&quot;, &quot;type&quot;: &quot;string&quot;}, &quot;i_fn_2&quot;: {&quot;kind&quot;: &quot;fn&quot;, &quot;value&quot;: &quot;compliance check&quot;, &quot;type&quot;: &quot;string&quot;, &quot;name&quot;: &quot;LOWER&quot;, &quot;args&quot;: [&quot;n_ref_1&quot;]}, &quot;i_fn_5&quot;: {&quot;kind&quot;: &quot;fn&quot;, &quot;value&quot;: &quot;compliance-check&quot;, &quot;type&quot;: &quot;string&quot;, &quot;name&quot;: &quot;SUBSTITUTE&quot;, &quot;args&quot;: [&quot;n_fn_2&quot;, &quot;n_const_3&quot;, &quot;n_const_4&quot;]}, &quot;i_result_Name&quot;: {&quot;kind&quot;: &quot;result&quot;, &quot;value&quot;: &quot;compliance-check&quot;, &quot;type&quot;: &quot;string&quot;, &quot;field&quot;: &quot;Name&quot;}}, &quot;edges&quot;: [[&quot;i_ref_1&quot;, &quot;i_fn_2&quot;], [&quot;i_fn_2&quot;, &quot;i_fn_5&quot;], [&quot;i_const_3&quot;, &quot;i_fn_5&quot;], [&quot;i_const_4&quot;, &quot;i_fn_5&quot;], [&quot;i_fn_5&quot;, &quot;i_result_Name&quot;]], &quot;evidence&quot;: {&quot;short_circuit&quot;: [], &quot;branches&quot;: []}}}}\n{&quot;schema_version&quot;: &quot;erb.explain_instance.v1&quot;, &quot;rulebook_hash&quot;: &quot;sha256:5e28a38440c0dfa624d42ba03e473d9d&quot;, &quot;entity&quot;: &quot;approvals&quot;, &quot;record_id&quot;: &quot;customer-confirmation&quot;, &quot;values&quot;: {&quot;name&quot;: &quot;customer-confirmation&quot;}, &quot;explanations&quot;: {&quot;Name&quot;: {&quot;template_hash&quot;: &quot;sha256:89d15a4a6be3f751&quot;, &quot;root&quot;: &quot;i_result_Name&quot;, &quot;nodes&quot;: {&quot;i_ref_1&quot;: {&quot;kind&quot;: &quot;field_ref&quot;, &quot;value&quot;: &quot;Customer Confirmation&quot;, &quot;type&quot;: &quot;string&quot;, &quot;field&quot;: &quot;DisplayName&quot;, &quot;field_snake&quot;: &quot;display_name&quot;}, &quot;i_const_3&quot;: {&quot;kind&quot;: &quot;const&quot;, &quot;value&quot;: &quot; &quot;, &quot;type&quot;: &quot;string&quot;}, &quot;i_const_4&quot;: {&quot;kind&quot;: &quot;const&quot;, &quot;value&quot;: &quot;-&quot;, &quot;type&quot;: &quot;string&quot;}, &quot;i_fn_2&quot;: {&quot;kind&quot;: &quot;fn&quot;, &quot;value&quot;: &quot;customer confirmation&quot;, &quot;type&quot;: &quot;string&quot;, &quot;name&quot;: &quot;LOWER&quot;, &quot;args&quot;: [&quot;n_ref_1&quot;]}, &quot;i_fn_5&quot;: {&quot;kind&quot;: &quot;fn&quot;, &quot;value&quot;: &quot;customer-confirmation&quot;, &quot;type&quot;: &quot;string&quot;, &quot;name&quot;: &quot;SUBSTITUTE&quot;, &quot;args&quot;: [&quot;n_fn_2&quot;, &quot;n_const_3&quot;, &quot;n_const_4&quot;]}, &quot;i_result_Name&quot;: {&quot;kind&quot;: &quot;result&quot;, &quot;value&quot;: &quot;customer-confirmation&quot;, &quot;type&quot;: &quot;string&quot;, &quot;field&quot;: &quot;Name&quot;}}, &quot;edges&quot;: [[&quot;i_ref_1&quot;, &quot;i_fn_2&quot;], [&quot;i_fn_2&quot;, &quot;i_fn_5&quot;], [&quot;i_const_3&quot;, &quot;i_fn_5&quot;], [&quot;i_const_4&quot;, &quot;i_fn_5&quot;], [&quot;i_fn_5&quot;, &quot;i_result_Name&quot;]], &quot;evidence&quot;: {&quot;short_circuit&quot;: [], &quot;branches&quot;: []}}}}\n{&quot;schema_version&quot;: &quot;erb.explain_instance.v1&quot;, &quot;rulebook_hash&quot;: &quot;sha256:5e28a38440c0dfa624d42ba03e473d9d&quot;, &quot;entity&quot;: &quot;approvals&quot;, &quot;record_id&quot;: &quot;executive-sign-off&quot;, &quot;values&quot;: {&quot;name&quot;: &quot;executive-sign-off&quot;}, &quot;explanations&quot;: {&quot;Name&quot;: {&quot;template_hash&quot;: &quot;sha256:89d15a4a6be3f751&quot;, &quot;root&quot;: &quot;i_result_Name&quot;, &quot;nodes&quot;: {&quot;i_ref_1&quot;: {&quot;kind&quot;: &quot;field_ref&quot;, &quot;value&quot;: &quot;Executive Sign-off&quot;, &quot;type&quot;: &quot;string&quot;, &quot;field&quot;: &quot;DisplayName&quot;, &quot;field_snake&quot;: &quot;display_name&quot;}, &quot;i_const_3&quot;: {&quot;kind&quot;: &quot;const&quot;, &quot;value&quot;: &quot; &quot;, &quot;type&quot;: &quot;string&quot;}, &quot;i_const_4&quot;: {&quot;kind&quot;: &quot;const&quot;, &quot;value&quot;: &quot;-&quot;, &quot;type&quot;: &quot;string&quot;}, &quot;i_fn_2&quot;: {&quot;kind&quot;: &quot;fn&quot;, &quot;value&quot;: &quot;executive sign-off&quot;, &quot;type&quot;: &quot;string&quot;, &quot;name&quot;: &quot;LOWER&quot;, &quot;args&quot;: [&quot;n_ref_1&quot;]}, &quot;i_fn_5&quot;: {&quot;kind&quot;: &quot;fn&quot;, &quot;value&quot;: &quot;executive-sign-off&quot;, &quot;type&quot;: &quot;string&quot;, &quot;name&quot;: &quot;SUBSTITUTE&quot;, &quot;args&quot;: [&quot;n_fn_2&quot;, &quot;n_const_3&quot;, &quot;n_const_4&quot;]}, &quot;i_result_Name&quot;: {&quot;kind&quot;: &quot;result&quot;, &quot;value&quot;: &quot;executive-sign-off&quot;, &quot;type&quot;: &quot;string&quot;, &quot;field&quot;: &quot;Name&quot;}}, &quot;edges&quot;: [[&quot;i_ref_1&quot;, &quot;i_fn_2&quot;], [&quot;i_fn_2&quot;, &quot;i_fn_5&quot;], [&quot;i_const_3&quot;, &quot;i_fn_5&quot;], [&quot;i_const_4&quot;, &quot;i_fn_5&quot;], [&quot;i_fn_5&quot;, &quot;i_result_Name&quot;]], &quot;evidence&quot;: {&quot;short_circuit&quot;: [], &quot;branches&quot;: []}}}}\n{&quot;schema_version&quot;: &quot;erb.explain_instance.v1&quot;, &quot;rulebook_hash&quot;: &quot;sha256:5e28a38440c0dfa624d42ba03e473d9d&quot;, &quot;entity&quot;: &quot;approvals&quot;, &quot;record_id&quot;: &quot;final-authorization&quot;, &quot;values&quot;: {&quot;name&quot;: &quot;final-authorization&quot;}, &quot;explanations&quot;: {&quot;Name&quot;: {&quot;template_hash&quot;: &quot;sha256:89d15a4a6be3f751&quot;, &quot;root&quot;: &quot;i_result_Name&quot;, &quot;nodes&quot;: {&quot;i_ref_1&quot;: {&quot;kind&quot;: &quot;field_ref&quot;, &quot;value&quot;: &quot;Final Authorization&quot;, &quot;type&quot;: &quot;string&quot;, &quot;field&quot;: &quot;DisplayName&quot;, &quot;field_snake&quot;: &quot;display_name&quot;}, &quot;i_const_3&quot;: {&quot;kind&quot;: &quot;const&quot;, &quot;value&quot;: &quot; &quot;, &quot;type&quot;: &quot;string&quot;}, &quot;i_const_4&quot;: {&quot;kind&quot;: &quot;const&quot;, &quot;value&quot;: &quot;-&quot;, &quot;type&quot;: &quot;string&quot;}, &quot;i_fn_2&quot;: {&quot;kind&quot;: &quot;fn&quot;, &quot;value&quot;: &quot;final authorization&quot;, &quot;type&quot;: &quot;string&quot;, &quot;name&quot;: &quot;LOWER&quot;, &quot;args&quot;: [&quot;n_ref_1&quot;]}, &quot;i_fn_5&quot;: {&quot;kind&quot;: &quot;fn&quot;, &quot;value&quot;: &quot;final-authorization&quot;, &quot;type&quot;: &quot;string&quot;, &quot;name&quot;: &quot;SUBSTITUTE&quot;, &quot;args&quot;: [&quot;n_fn_2&quot;, &quot;n_const_3&quot;, &quot;n_const_4&quot;]}, &quot;i_result_Name&quot;: {&quot;kind&quot;: &quot;result&quot;, &quot;value&quot;: &quot;final-authorization&quot;, &quot;type&quot;: &quot;string&quot;, &quot;field&quot;: &quot;Name&quot;}}, &quot;edges&quot;: [[&quot;i_ref_1&quot;, &quot;i_fn_2&quot;], [&quot;i_fn_2&quot;, &quot;i_fn_5&quot;], [&quot;i_const_3&quot;, &quot;i_fn_5&quot;], [&quot;i_const_4&quot;, &quot;i_fn_5&quot;], [&quot;i_fn_5&quot;, &quot;i_result_Name&quot;]], &quot;evidence&quot;: {&quot;short_circuit&quot;: [], &quot;branches&quot;: []}}}}\n{&quot;schema_version&quot;: &quot;erb.explain_instance.v1&quot;, &quot;rulebook_hash&quot;: &quot;sha256:5e28a38440c0dfa624d42ba03e473d9d&quot;, &quot;entity&quot;: &quot;approvals&quot;, &quot;record_id&quot;: &quot;finance-approval&quot;, &quot;values&quot;: {&quot;name&quot;: &quot;finance-approval&quot;}, &quot;explanations&quot;: {&quot;Name&quot;: {&quot;template_hash&quot;: &quot;sha256:89d15a4a6be3f751&quot;, &quot;root&quot;: &quot;i_result_Name&quot;, &quot;nodes&quot;: {&quot;i_ref_1&quot;: {&quot;kind&quot;: &quot;field_ref&quot;, &quot;value&quot;: &quot;Finance Approval&quot;, &quot;type&quot;: &quot;string&quot;, &quot;field&quot;: &quot;DisplayName&quot;, &quot;field_snake&quot;: &quot;display_name&quot;}, &quot;i_const_3&quot;: {&quot;kind&quot;: &quot;const&quot;, &quot;value&quot;: &quot; &quot;, &quot;type&quot;: &quot;string&quot;}, &quot;i_const_4&quot;: {&quot;kind&quot;: &quot;const&quot;, &quot;value&quot;: &quot;-&quot;, &quot;type&quot;: &quot;string&quot;}, &quot;i_fn_2&quot;: {&quot;kind&quot;: &quot;fn&quot;, &quot;value&quot;: &quot;finance approval&quot;, &quot;type&quot;: &quot;string&quot;, &quot;name&quot;: &quot;LOWER&quot;, &quot;args&quot;: [&quot;n_ref_1&quot;]}, &quot;i_fn_5&quot;: {&quot;kind&quot;: &quot;fn&quot;, &quot;value&quot;: &quot;finance-approval&quot;, &quot;type&quot;: &quot;string&quot;, &quot;name&quot;: &quot;SUBSTITUTE&quot;, &quot;args&quot;: [&quot;n_fn_2&quot;, &quot;n_const_3&quot;, &quot;n_const_4&quot;]}, &quot;i_result_Name&quot;: {&quot;kind&quot;: &quot;result&quot;, &quot;value&quot;: &quot;finance-approval&quot;, &quot;type&quot;: &quot;string&quot;, &quot;field&quot;: &quot;Name&quot;}}, &quot;edges&quot;: [[&quot;i_ref_1&quot;, &quot;i_fn_2&quot;], [&quot;i_fn_2&quot;, &quot;i_fn_5&quot;], [&quot;i_const_3&quot;, &quot;i_fn_5&quot;], [&quot;i_const_4&quot;, &quot;i_fn_5&quot;], [&quot;i_fn_5&quot;, &quot;i_result_Name&quot;]], &quot;evidence&quot;: {&quot;short_circuit&quot;: [], &quot;branches&quot;: []}}}}\n</pre>\n            </div>"
         }
       }
@@ -1309,7 +1381,7 @@ const REPORT_DATA = {
       "total_fields_tested": 3,
       "fields_passed": 3,
       "fields_failed": 0,
-      "elapsed_seconds": 0.12625384330749512,
+      "elapsed_seconds": 0.12000489234924316,
       "entities": {
         "customers": {
           "fields_tested": 3,
@@ -1322,12 +1394,12 @@ const REPORT_DATA = {
       "run_metadata": {
         "last_run": {
           "status": "success",
-          "duration_seconds": 0.12625384330749512,
+          "duration_seconds": 0.12000489234924316,
           "exit_code": 0,
           "score": 100.0
         },
         "last_successful_run": {
-          "duration_seconds": 0.12625384330749512,
+          "duration_seconds": 0.12000489234924316,
           "status": "success",
           "test_results": {
             "total_fields_tested": 3,
@@ -1402,7 +1474,7 @@ const REPORT_DATA = {
       "total_fields_tested": 3,
       "fields_passed": 3,
       "fields_failed": 0,
-      "elapsed_seconds": 0.28481221199035645,
+      "elapsed_seconds": 0.275083065032959,
       "entities": {
         "customers": {
           "fields_tested": 3,
@@ -1415,12 +1487,12 @@ const REPORT_DATA = {
       "run_metadata": {
         "last_run": {
           "status": "success",
-          "duration_seconds": 0.28481221199035645,
+          "duration_seconds": 0.275083065032959,
           "exit_code": 0,
           "score": 100.0
         },
         "last_successful_run": {
-          "duration_seconds": 0.28481221199035645,
+          "duration_seconds": 0.275083065032959,
           "status": "success",
           "test_results": {
             "total_fields_tested": 3,
@@ -1500,7 +1572,7 @@ const REPORT_DATA = {
       "total_fields_tested": 3,
       "fields_passed": 3,
       "fields_failed": 0,
-      "elapsed_seconds": 0.10369515419006348,
+      "elapsed_seconds": 0.10342979431152344,
       "entities": {
         "customers": {
           "fields_tested": 3,
@@ -1513,12 +1585,12 @@ const REPORT_DATA = {
       "run_metadata": {
         "last_run": {
           "status": "success",
-          "duration_seconds": 0.10369515419006348,
+          "duration_seconds": 0.10342979431152344,
           "exit_code": 0,
           "score": 100.0
         },
         "last_successful_run": {
-          "duration_seconds": 0.10369515419006348,
+          "duration_seconds": 0.10342979431152344,
           "status": "success",
           "test_results": {
             "total_fields_tested": 3,
@@ -1593,7 +1665,7 @@ const REPORT_DATA = {
       "total_fields_tested": 3,
       "fields_passed": 3,
       "fields_failed": 0,
-      "elapsed_seconds": 0.11646294593811035,
+      "elapsed_seconds": 0.10940885543823242,
       "entities": {
         "customers": {
           "fields_tested": 3,
@@ -1606,12 +1678,12 @@ const REPORT_DATA = {
       "run_metadata": {
         "last_run": {
           "status": "success",
-          "duration_seconds": 0.11646294593811035,
+          "duration_seconds": 0.10940885543823242,
           "exit_code": 0,
           "score": 100.0
         },
         "last_successful_run": {
-          "duration_seconds": 0.11646294593811035,
+          "duration_seconds": 0.10940885543823242,
           "status": "success",
           "test_results": {
             "total_fields_tested": 3,
@@ -1691,7 +1763,7 @@ const REPORT_DATA = {
       "total_fields_tested": 3,
       "fields_passed": 3,
       "fields_failed": 0,
-      "elapsed_seconds": 0.3111419677734375,
+      "elapsed_seconds": 0.2821340560913086,
       "entities": {
         "customers": {
           "fields_tested": 3,
@@ -1704,12 +1776,12 @@ const REPORT_DATA = {
       "run_metadata": {
         "last_run": {
           "status": "success",
-          "duration_seconds": 0.3111419677734375,
+          "duration_seconds": 0.2821340560913086,
           "exit_code": 0,
           "score": 100.0
         },
         "last_successful_run": {
-          "duration_seconds": 0.3111419677734375,
+          "duration_seconds": 0.2821340560913086,
           "status": "success",
           "test_results": {
             "total_fields_tested": 3,
@@ -1784,7 +1856,7 @@ const REPORT_DATA = {
       "total_fields_tested": 3,
       "fields_passed": 3,
       "fields_failed": 0,
-      "elapsed_seconds": 0.11879396438598633,
+      "elapsed_seconds": 0.11340904235839844,
       "entities": {
         "customers": {
           "fields_tested": 3,
@@ -1797,12 +1869,12 @@ const REPORT_DATA = {
       "run_metadata": {
         "last_run": {
           "status": "success",
-          "duration_seconds": 0.11879396438598633,
+          "duration_seconds": 0.11340904235839844,
           "exit_code": 0,
           "score": 100.0
         },
         "last_successful_run": {
-          "duration_seconds": 0.11879396438598633,
+          "duration_seconds": 0.11340904235839844,
           "status": "success",
           "test_results": {
             "total_fields_tested": 3,
@@ -2318,7 +2390,7 @@ function renderSubstrateDetails(substrateName, restoreViewTab = null, restoreEnt
     // Data tab - graded test results (now first/active)
     html += '<div id="substrate-data-view" class="substrate-view active">';
 
-    // Get entities with results
+    // Get entities with results from current ontology
     const entitiesWithResults = Object.keys(REPORT_DATA.entities).sort().filter(entityName => {
         const entity = REPORT_DATA.entities[entityName];
         const computedCols = entity.computed_columns || [];
@@ -2326,12 +2398,23 @@ function renderSubstrateDetails(substrateName, restoreViewTab = null, restoreEnt
         return computedCols.length > 0 && answerKey.length > 0;
     });
 
-    if (entitiesWithResults.length === 0) {
+    // Get stale entities: in substrate's test_answers but NOT in current ontology
+    const testAnswers = substrate.test_answers || {};
+    const staleEntities = Object.keys(testAnswers).sort().filter(entityName => {
+        return !REPORT_DATA.entities[entityName];
+    });
+
+    const hasCurrentResults = entitiesWithResults.length > 0;
+    const hasStaleResults = staleEntities.length > 0;
+
+    if (!hasCurrentResults && !hasStaleResults) {
         html += '<p class="no-results">No test results available.</p>';
     } else {
         // Entity tabs within substrate view
         html += '<h4>Graded Test Results</h4>';
         html += '<nav class="sub-tabs" id="substrate-entity-tabs">';
+
+        // Current ontology entities (with grading)
         entitiesWithResults.forEach((entityName, i) => {
             const entity = REPORT_DATA.entities[entityName];
             const entityGrades = substrate.entities ? substrate.entities[entityName] : null;
@@ -2342,6 +2425,13 @@ function renderSubstrateDetails(substrateName, restoreViewTab = null, restoreEnt
             const active = i === 0 ? 'active' : '';
             html += `<button class="sub-tab ${active} score-${eClass}" data-entity="${escapeHtml(entityName)}">${escapeHtml(entityName)} (${ePassed}/${eTotal})</button>`;
         });
+
+        // Stale entities (from previous ontology - no grading possible)
+        staleEntities.forEach((entityName, i) => {
+            const active = (!hasCurrentResults && i === 0) ? 'active' : '';
+            html += `<button class="sub-tab ${active} stale-entity" data-entity="${escapeHtml(entityName)}" data-stale="true">${escapeHtml(entityName)} (stale)</button>`;
+        });
+
         html += '</nav>';
         html += '<div id="substrate-entity-content"></div>';
     }
@@ -2480,6 +2570,13 @@ function renderSubstrateEntityContent(substrateName, entityName) {
 
     const substrate = REPORT_DATA.substrates[substrateName];
     const entity = REPORT_DATA.entities[entityName];
+
+    // Check if this is a stale entity (not in current ontology)
+    if (!entity) {
+        renderStaleEntityContent(container, substrateName, entityName, substrate);
+        return;
+    }
+
     const entityGrades = substrate.entities ? substrate.entities[entityName] : null;
     const answerKey = entity.answer_key || [];
     const computedCols = entity.computed_columns || [];
@@ -2578,6 +2675,47 @@ function renderSubstrateEntityContent(substrateName, entityName) {
         html += '</tr>';
     });
     html += '</tbody></table></div></div>';
+    container.innerHTML = html;
+}
+
+// Render stale entity content (entity from previous ontology, not in current rulebook)
+function renderStaleEntityContent(container, substrateName, entityName, substrate) {
+    const testAnswers = substrate.test_answers ? substrate.test_answers[entityName] : [];
+
+    let html = '<div class="stale-entity-section">';
+    html += '<div class="stale-entity-warning">';
+    html += '<strong>⚠ Stale Test Data</strong>';
+    html += '<p>This entity (<code>' + escapeHtml(entityName) + '</code>) is not part of the current ontology. ';
+    html += 'This data is from a previous rulebook and has not been updated.</p>';
+    html += '<p class="stale-explanation">This demonstrates a key failure mode of slower substrates (like English/LLM): ';
+    html += 'when the ontology changes, substrates that take time to re-run retain stale data from the previous model. ';
+    html += 'Unlike instant formal substrates, natural language requires effort to update.</p>';
+    html += '</div>';
+
+    if (!testAnswers || testAnswers.length === 0) {
+        html += '<p class="no-results">No test answer data found for this entity.</p>';
+    } else {
+        // Display all data as plain text - no grading possible without schema
+        const cols = Object.keys(testAnswers[0]);
+        html += '<h5>Raw Test Answers (' + testAnswers.length + ' records)</h5>';
+        html += '<div class="table-scroll"><table class="data-table stale-data-table"><thead><tr>';
+        cols.forEach(col => {
+            html += '<th>' + escapeHtml(col) + '</th>';
+        });
+        html += '</tr></thead><tbody>';
+        testAnswers.forEach(record => {
+            html += '<tr>';
+            cols.forEach(col => {
+                const val = record[col];
+                const display = val !== null && val !== undefined ? escapeHtml(String(val)) : '<span class="null-value">null</span>';
+                html += '<td>' + display + '</td>';
+            });
+            html += '</tr>';
+        });
+        html += '</tbody></table></div>';
+    }
+
+    html += '</div>';
     container.innerHTML = html;
 }
 

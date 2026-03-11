@@ -153,6 +153,38 @@ def load_answer_keys():
     return answer_keys
 
 
+def load_blank_tests():
+    """Load all blank tests with metadata about staleness.
+
+    Blank tests represent the "raw, unprocessed" state of data before
+    computed fields are filled in. They may be stale if the ontology
+    has changed - this is pedagogically valuable as it demonstrates
+    a key failure mode of natural language: staleness and the time
+    required to update it.
+    """
+    blank_tests = {}
+    if os.path.isdir(BLANK_TESTS_DIR):
+        for file in glob.glob(os.path.join(BLANK_TESTS_DIR, "*.json")):
+            entity = os.path.basename(file).replace('.json', '')
+            try:
+                stat = os.stat(file)
+                mtime = datetime.fromtimestamp(stat.st_mtime).isoformat()
+                with open(file, 'r') as f:
+                    data = json.load(f)
+                blank_tests[entity] = {
+                    "data": data,
+                    "last_modified": mtime,
+                    "file_path": file
+                }
+            except Exception as e:
+                blank_tests[entity] = {
+                    "data": [],
+                    "error": str(e),
+                    "file_path": file
+                }
+    return blank_tests
+
+
 def get_substrates():
     """Get list of all substrates (11 generated + postgres)"""
     substrates = ['postgres']  # postgres is first (default answer-key substrate)
@@ -1176,6 +1208,46 @@ h2 { font-size: 1rem; font-weight: 600; margin-bottom: 0.75rem; color: var(--tex
 .data-table th { background: var(--bg-tertiary); font-weight: 600; font-size: 0.75rem; }
 .data-table .computed { background: rgba(13, 110, 253, 0.1); }
 
+/* Blank tests section */
+.blank-tests-section { margin-bottom: 1.5rem; }
+.blank-tests-section h4 { margin-bottom: 0.5rem; }
+.blank-tests-section h4 .subtitle { font-weight: normal; font-size: 0.85rem; color: var(--text-secondary); }
+.blank-tests-intro { font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1rem; line-height: 1.5; }
+.blank-tests-intro code { background: var(--bg-tertiary); padding: 0.1rem 0.3rem; border-radius: 3px; }
+.blank-test-entity { margin-bottom: 1rem; }
+.blank-test-header {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    padding: 0.5rem 0.75rem;
+    background: var(--bg-secondary);
+    border-radius: var(--radius);
+    margin-bottom: 0.5rem;
+    font-size: 0.85rem;
+}
+.blank-test-header.stale { background: rgba(255, 193, 7, 0.15); border-left: 3px solid var(--warning-color); }
+.blank-test-header .entity-name { font-weight: 600; }
+.blank-test-header .record-count { color: var(--text-secondary); }
+.blank-test-header .last-modified { color: var(--text-secondary); font-size: 0.8rem; }
+.blank-test-header .stale-warning { color: var(--warning-color); font-weight: 500; margin-left: auto; }
+/* Stale entity styling */
+.stale-entity { background: rgba(255, 193, 7, 0.1) !important; border-left: 3px solid var(--warning-color); }
+.stale-entity-section { margin-top: 0.5rem; }
+.stale-entity-warning {
+    background: rgba(255, 193, 7, 0.15);
+    border: 1px solid var(--warning-color);
+    border-left: 3px solid var(--warning-color);
+    border-radius: var(--radius);
+    padding: 0.75rem 1rem;
+    margin-bottom: 1rem;
+}
+.stale-entity-warning strong { color: var(--warning-color); display: block; margin-bottom: 0.5rem; }
+.stale-entity-warning p { margin: 0.5rem 0; font-size: 0.85rem; line-height: 1.5; }
+.stale-entity-warning code { background: var(--bg-tertiary); padding: 0.1rem 0.3rem; border-radius: 3px; }
+.stale-explanation { color: var(--text-secondary); font-style: italic; }
+.stale-data-table { opacity: 0.85; }
+.stale-data-table .null-value { color: var(--text-secondary); font-style: italic; }
+
 /* Warnings and failures */
 .warning-banner {
     background: rgba(255, 193, 7, 0.15);
@@ -1943,7 +2015,7 @@ function renderSubstrateDetails(substrateName, restoreViewTab = null, restoreEnt
     // Data tab - graded test results (now first/active)
     html += '<div id="substrate-data-view" class="substrate-view active">';
 
-    // Get entities with results
+    // Get entities with results from current ontology
     const entitiesWithResults = Object.keys(REPORT_DATA.entities).sort().filter(entityName => {
         const entity = REPORT_DATA.entities[entityName];
         const computedCols = entity.computed_columns || [];
@@ -1951,12 +2023,23 @@ function renderSubstrateDetails(substrateName, restoreViewTab = null, restoreEnt
         return computedCols.length > 0 && answerKey.length > 0;
     });
 
-    if (entitiesWithResults.length === 0) {
+    // Get stale entities: in substrate's test_answers but NOT in current ontology
+    const testAnswers = substrate.test_answers || {};
+    const staleEntities = Object.keys(testAnswers).sort().filter(entityName => {
+        return !REPORT_DATA.entities[entityName];
+    });
+
+    const hasCurrentResults = entitiesWithResults.length > 0;
+    const hasStaleResults = staleEntities.length > 0;
+
+    if (!hasCurrentResults && !hasStaleResults) {
         html += '<p class="no-results">No test results available.</p>';
     } else {
         // Entity tabs within substrate view
         html += '<h4>Graded Test Results</h4>';
         html += '<nav class="sub-tabs" id="substrate-entity-tabs">';
+
+        // Current ontology entities (with grading)
         entitiesWithResults.forEach((entityName, i) => {
             const entity = REPORT_DATA.entities[entityName];
             const entityGrades = substrate.entities ? substrate.entities[entityName] : null;
@@ -1967,6 +2050,13 @@ function renderSubstrateDetails(substrateName, restoreViewTab = null, restoreEnt
             const active = i === 0 ? 'active' : '';
             html += `<button class="sub-tab ${active} score-${eClass}" data-entity="${escapeHtml(entityName)}">${escapeHtml(entityName)} (${ePassed}/${eTotal})</button>`;
         });
+
+        // Stale entities (from previous ontology - no grading possible)
+        staleEntities.forEach((entityName, i) => {
+            const active = (!hasCurrentResults && i === 0) ? 'active' : '';
+            html += `<button class="sub-tab ${active} stale-entity" data-entity="${escapeHtml(entityName)}" data-stale="true">${escapeHtml(entityName)} (stale)</button>`;
+        });
+
         html += '</nav>';
         html += '<div id="substrate-entity-content"></div>';
     }
@@ -2105,6 +2195,13 @@ function renderSubstrateEntityContent(substrateName, entityName) {
 
     const substrate = REPORT_DATA.substrates[substrateName];
     const entity = REPORT_DATA.entities[entityName];
+
+    // Check if this is a stale entity (not in current ontology)
+    if (!entity) {
+        renderStaleEntityContent(container, substrateName, entityName, substrate);
+        return;
+    }
+
     const entityGrades = substrate.entities ? substrate.entities[entityName] : null;
     const answerKey = entity.answer_key || [];
     const computedCols = entity.computed_columns || [];
@@ -2203,6 +2300,47 @@ function renderSubstrateEntityContent(substrateName, entityName) {
         html += '</tr>';
     });
     html += '</tbody></table></div></div>';
+    container.innerHTML = html;
+}
+
+// Render stale entity content (entity from previous ontology, not in current rulebook)
+function renderStaleEntityContent(container, substrateName, entityName, substrate) {
+    const testAnswers = substrate.test_answers ? substrate.test_answers[entityName] : [];
+
+    let html = '<div class="stale-entity-section">';
+    html += '<div class="stale-entity-warning">';
+    html += '<strong>⚠ Stale Test Data</strong>';
+    html += '<p>This entity (<code>' + escapeHtml(entityName) + '</code>) is not part of the current ontology. ';
+    html += 'This data is from a previous rulebook and has not been updated.</p>';
+    html += '<p class="stale-explanation">This demonstrates a key failure mode of slower substrates (like English/LLM): ';
+    html += 'when the ontology changes, substrates that take time to re-run retain stale data from the previous model. ';
+    html += 'Unlike instant formal substrates, natural language requires effort to update.</p>';
+    html += '</div>';
+
+    if (!testAnswers || testAnswers.length === 0) {
+        html += '<p class="no-results">No test answer data found for this entity.</p>';
+    } else {
+        // Display all data as plain text - no grading possible without schema
+        const cols = Object.keys(testAnswers[0]);
+        html += '<h5>Raw Test Answers (' + testAnswers.length + ' records)</h5>';
+        html += '<div class="table-scroll"><table class="data-table stale-data-table"><thead><tr>';
+        cols.forEach(col => {
+            html += '<th>' + escapeHtml(col) + '</th>';
+        });
+        html += '</tr></thead><tbody>';
+        testAnswers.forEach(record => {
+            html += '<tr>';
+            cols.forEach(col => {
+                const val = record[col];
+                const display = val !== null && val !== undefined ? escapeHtml(String(val)) : '<span class="null-value">null</span>';
+                html += '<td>' + display + '</td>';
+            });
+            html += '</tr>';
+        });
+        html += '</tbody></table></div>';
+    }
+
+    html += '</div>';
     container.innerHTML = html;
 }
 

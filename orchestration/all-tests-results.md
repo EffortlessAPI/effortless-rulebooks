@@ -11,26 +11,26 @@
 | Substrate | Passed | Failed | Total | Score | Duration | Status |
 |-----------|--------|--------|-------|-------|----------|--------|
 | python | 3 | 0 | 3 | 100.0% | < 1s | PASS |
-| explain-dag | 3 | 0 | 3 | 100.0% | < 1s | PASS |
 | uml | 3 | 0 | 3 | 100.0% | < 1s | PASS |
+| explain-dag | 3 | 0 | 3 | 100.0% | < 1s | PASS |
 | yaml | 3 | 0 | 3 | 100.0% | < 1s | PASS |
 | golang | 3 | 0 | 3 | 100.0% | < 1s | PASS |
 | csv | 3 | 0 | 3 | 100.0% | < 1s | PASS |
 | owl | 3 | 0 | 3 | 100.0% | < 1s | PASS |
-| binary | 3 | 0 | 3 | 100.0% | < 1s | PASS |
 | xlsx | 3 | 0 | 3 | 100.0% | < 1s | PASS |
-| english | 3 | 0 | 3 | 100.0% | 1m 19s | PASS |
+| binary | 3 | 0 | 3 | 100.0% | < 1s | PASS |
+| english | 0 | 0 | 0 | 0.0% | 1m 31s | ERROR: No test-answers found |
 
 ## Overall Statistics
 
 | Metric | Value |
 |--------|-------|
 | Total Substrates | 10 |
-| Total Fields Tested | 30 |
-| Total Passed | 30 |
+| Total Fields Tested | 27 |
+| Total Passed | 27 |
 | Total Failed | 0 |
 | Overall Score | 100.0% |
-| Total Duration | 1m 21s |
+| Total Duration | 1m 32s |
 
 ---
 

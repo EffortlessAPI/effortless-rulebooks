@@ -271,8 +271,9 @@ pre {{ background: var(--code-bg); border: 1px solid var(--border-color); border
     </header>
     <nav class="tabs">
         <button class="tab active" data-tab="description">Description</button>
-        <button class="tab" data-tab="graded-data">Graded Data</button>
         <button class="tab" data-tab="log">Run Log</button>
+        <button class="tab" data-tab="results">Test Results</button>
+        <button class="tab" data-tab="graded-data">Graded Data</button>
         <button class="tab" data-tab="specification">Specification</button>
     </nav>
     <main>
@@ -310,6 +311,17 @@ pre {{ background: var(--code-bg); border: 1px solid var(--border-color); border
             <div class="card">
                 <h2>Execution Log</h2>
                 <pre>{log_content}</pre>
+            </div>
+        </div>
+        <div id="results" class="tab-content">
+            <div class="card">
+                <h2>Test Summary</h2>
+                <div class="results-summary">
+                    <div class="result-item"><div class="result-value {score_class}">{score}</div><div class="result-label">Score</div></div>
+                    <div class="result-item"><div class="result-value score-perfect">{passed}</div><div class="result-label">Passed</div></div>
+                    <div class="result-item"><div class="result-value">{failed}</div><div class="result-label">Failed</div></div>
+                    <div class="result-item"><div class="result-value">{total}</div><div class="result-label">Total</div></div>
+                </div>
             </div>
         </div>
         <div id="specification" class="tab-content">
