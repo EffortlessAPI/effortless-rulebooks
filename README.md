@@ -49,7 +49,49 @@ You'll see the orchestration menu:
 
 ![Terminal showing 8 menu options: run individual substrates (Python, Go, Postgres, etc.), run all substrates, or generate reports](orchestration/orchestration-menu.png)
 
-Pick option **6** to run all substrates. Watch them derive consistent answers from the same rulebook.
+Pick option **A** to run all substrates. Watch them derive consistent answers from the same rulebook.
+
+### Orchestration Menu Reference
+
+| Key | Action | Description |
+|-----|--------|-------------|
+| **A** | Run ALL substrates | Regenerates and tests every substrate against the rulebook (default) |
+| **V** | View Results | Generates and opens the HTML conformance report |
+| **01-12** | Run single substrate | Run just one substrate (e.g., `01` for binary, `05` for golang) |
+| **C** | Clean | Remove all generated files from every substrate |
+| **D** | Dev-Ops menu | PostgreSQL initialization, SSoTME setup, diagnostics |
+| **P** | Pull & Inject | Pull latest from Airtable and inject into all substrates |
+| **B** | Change Base ID | **Switch to a different Airtable base** (see below) |
+| **Q** | Quit | Exit the orchestrator |
+
+### Swappable Bases: One Repo, Many Ontologies
+
+**This is one of the most powerful features of the ERB platform.**
+
+The `orchestration/bases.json` file contains a list of Airtable bases that can be instantly swapped:
+
+```json
+[
+  {"id": "applThn0rikpCR9C3", "name": "BASIC: Jessic Talisman's Ontology"},
+  {"id": "appwN9EAp8IeIxM23", "name": "ADVANCED: Jessic Talisman's Ontology"},
+  {"id": "appC8XTj95lubn6hz", "name": "is-everything-a-language"},
+  {"id": "appWrXPvXbkgQGOxt", "name": "CustomerDemo"}
+]
+```
+
+Press **B** in the orchestrator to switch bases. When you select a new base:
+
+1. The orchestrator pulls the new rulebook from Airtable
+2. All substrates regenerate from the new schema
+3. Conformance tests run against the new ontology
+
+**Why this matters:**
+- **Same infrastructure, different domains** — The execution substrates, conformance testing, and DAG tracing work identically regardless of what ontology you load
+- **A/B testing ontologies** — Compare BASIC vs ADVANCED versions of the same conceptual model
+- **Demo flexibility** — Show the platform with customer-specific data without modifying code
+- **Prove domain-agnosticism** — The same repo runs `is-everything-a-language` (philosophical), `CustomerDemo` (business), and `Workflows` (operational) ontologies
+
+The bases list is **not** legacy cruft — it's a feature catalog of available ontologies.
 
 ---
 
