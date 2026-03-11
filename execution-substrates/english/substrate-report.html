@@ -128,90 +128,159 @@ Test skipped by user. Grading previous answers against current answer key.
         <div id="specification" class="tab-content">
             <div class="card">
                 <h2>specification.md (LLM-Generated)</h2>
-                <div class="prose-container markdown-content"><h2>Specification Document for Jessica Talisman - Ontology Parts 1-3 Rulebook</h2>
+                <div class="prose-container markdown-content"><h2>Specification Document for DEMO: StarTrek Rulebook</h2>
 <h3>Overview</h3>
-<p>This specification document outlines the calculated fields present in the "Jessica Talisman - Ontology Parts 1-3" rulebook. It provides detailed instructions on how to compute these fields based on the input data available in the rulebook. The rulebook is structured around workflows, workflow steps, approval gates, and roles, each containing specific fields that contribute to the overall functionality of the system.</p>
-<h3>Workflows</h3>
-<h4>Input Fields</h4>
-<p>1. <strong>DisplayName</strong></p>
-<p>   - <strong>Type:</strong> String (raw)</p>
-<p>   - <strong>Description:</strong> A human-readable name for the workflow.</p>
-<h4>Calculated Fields</h4>
-<p>1. <strong>Name</strong></p>
-<p>   - <strong>Description:</strong> This field generates a machine-friendly name for the workflow, which is used for programmatic reference and URL slug generation.</p>
-<p>   - <strong>Computation:</strong> Convert the `DisplayName` to lowercase and replace spaces with hyphens.</p>
-<p>   - <strong>Formula:</strong> `=SUBSTITUTE(LOWER({{DisplayName}}), " ", "-")`</p>
-<p>   - <strong>Example:</strong> </p>
-<p>     - If `DisplayName` is "Onboarding", then:</p>
-<p>       - `Name` = `SUBSTITUTE(LOWER("Onboarding"), " ", "-")` = "onboarding"</p>
-<p>2. <strong>CountOfSteps</strong></p>
-<p>   - <strong>Description:</strong> This field counts the number of workflow steps associated with this workflow.</p>
-<p>   - <strong>Computation:</strong> Count the number of entries in the `WorkflowSteps` table where the `Workflow` matches the current workflow's `WorkflowId`.</p>
-<p>   - <strong>Formula:</strong> `=COUNTIFS(WorkflowSteps!{{Workflow}}, Workflows!{{WorkflowId}})`</p>
-<p>   - <strong>Example:</strong> </p>
-<p>     - If there is 1 step associated with the workflow "onboarding", then:</p>
-<p>       - `CountOfSteps` = 1</p>
-<p>3. <strong>HasMoreThan1Step</strong></p>
-<p>   - <strong>Description:</strong> This field indicates whether the workflow has more than one step.</p>
-<p>   - <strong>Computation:</strong> Check if `CountOfSteps` is greater than 1.</p>
-<p>   - <strong>Formula:</strong> `={{CountOfSteps}} > 1`</p>
-<p>   - <strong>Example:</strong> </p>
-<p>     - If `CountOfSteps` is 1, then:</p>
-<p>       - `HasMoreThan1Step` = `1 > 1` = false</p>
-<h3>WorkflowSteps</h3>
-<h4>Input Fields</h4>
-<p>1. <strong>DisplayName</strong></p>
-<p>   - <strong>Type:</strong> String (raw)</p>
-<p>   - <strong>Description:</strong> A human-readable name for the workflow step.</p>
-<h4>Calculated Fields</h4>
-<p>1. <strong>Name</strong></p>
-<p>   - <strong>Description:</strong> This field generates a machine-friendly name for the workflow step, used for programmatic reference.</p>
-<p>   - <strong>Computation:</strong> Convert the `DisplayName` to lowercase and replace spaces with hyphens.</p>
-<p>   - <strong>Formula:</strong> `=SUBSTITUTE(LOWER({{DisplayName}}), " ", "-")`</p>
-<p>   - <strong>Example:</strong></p>
-<p>     - If `DisplayName` is "Submit Request", then:</p>
-<p>       - `Name` = `SUBSTITUTE(LOWER("Submit Request"), " ", "-")` = "submit-request"</p>
-<h3>ApprovalGates</h3>
-<h4>Input Fields</h4>
-<p>1. <strong>DisplayName</strong></p>
-<p>   - <strong>Type:</strong> String (raw)</p>
-<p>   - <strong>Description:</strong> A human-readable name for the approval gate.</p>
-<h4>Calculated Fields</h4>
-<p>1. <strong>Name</strong></p>
-<p>   - <strong>Description:</strong> This field generates a machine-friendly name for the approval gate.</p>
-<p>   - <strong>Computation:</strong> Convert the `DisplayName` to lowercase and replace spaces with hyphens.</p>
-<p>   - <strong>Formula:</strong> `=SUBSTITUTE(LOWER({{DisplayName}}), " ", "-")`</p>
-<p>   - <strong>Example:</strong></p>
-<p>     - If `DisplayName` is "Initial Review", then:</p>
-<p>       - `Name` = `SUBSTITUTE(LOWER("Initial Review"), " ", "-")` = "initial-review"</p>
-<h3>Roles</h3>
-<h4>Input Fields</h4>
-<p>1. <strong>DisplayName</strong></p>
-<p>   - <strong>Type:</strong> String (raw)</p>
-<p>   - <strong>Description:</strong> A human-readable name for the role.</p>
-<h4>Calculated Fields</h4>
-<p>1. <strong>Name</strong></p>
-<p>   - <strong>Description:</strong> This field generates a lowercase name for the role.</p>
-<p>   - <strong>Computation:</strong> Convert the `DisplayName` to lowercase.</p>
-<p>   - <strong>Formula:</strong> `=LOWER({{DisplayName}})`</p>
-<p>   - <strong>Example:</strong></p>
-<p>     - If `DisplayName` is "Admin", then:</p>
-<p>       - `Name` = `LOWER("Admin")` = "admin"</p>
-<h3>Departments</h3>
-<h4>Input Fields</h4>
-<p>1. <strong>DisplayName</strong></p>
-<p>   - <strong>Type:</strong> String (raw)</p>
-<p>   - <strong>Description:</strong> A human-readable name for the department.</p>
-<h4>Calculated Fields</h4>
-<p>1. <strong>Name</strong></p>
-<p>   - <strong>Description:</strong> This field generates a machine-friendly name for the department.</p>
-<p>   - <strong>Computation:</strong> Convert the `DisplayName` to lowercase and replace spaces with hyphens.</p>
-<p>   - <strong>Formula:</strong> `=SUBSTITUTE(LOWER({{DisplayName}}), " ", "-")`</p>
-<p>   - <strong>Example:</strong></p>
-<p>     - If `DisplayName` is "Human Resources", then:</p>
-<p>       - `Name` = `SUBSTITUTE(LOWER("Human Resources"), " ", "-")` = "human-resources"</p>
-<h3>Conclusion</h3>
-<p>This document provides a comprehensive guide to calculating the fields in the "Jessica Talisman - Ontology Parts 1-3" rulebook. By following the outlined procedures, users can accurately compute the necessary values based on the raw input data provided in the rulebook.</p></div>
+<p>This document provides a detailed specification for the calculated fields within the DEMO: StarTrek rulebook. The rulebook includes data about various Star Trek series, their seasons, episodes, and ratings. The calculated fields derive values based on existing raw data, allowing for insights such as total episodes, series ratings, and whether a series is considered long-running or good.</p>
+<p>---</p>
+<h3>Entities and Calculated Fields</h3>
+<h4>1. Series</h4>
+<p>#### Input Fields</p>
+<ul>
+<li>**SerieId**</li>
+<p>  - <strong>Type</strong>: String</p>
+<p>  - <strong>Description</strong>: Unique identifier for the series.</p>
+</ul>
+<ul>
+<li>**SeriesNumber**</li>
+<p>  - <strong>Type</strong>: Integer</p>
+<p>  - <strong>Description</strong>: The numerical order of the series in the Star Trek franchise.</p>
+</ul>
+<ul>
+<li>**ShowCode**</li>
+<p>  - <strong>Type</strong>: String</p>
+<p>  - <strong>Description</strong>: A short code representing the series.</p>
+</ul>
+<p>#### Calculated Fields</p>
+<ul>
+<li>**Name**</li>
+<p>  - <strong>Description</strong>: Combines the SeriesNumber and ShowCode to create a formatted name for the series.</p>
+<p>  - <strong>Formula</strong>: `={{SeriesNumber}} & "-" & {{ShowCode}}`</p>
+<p>  - <strong>Example</strong>: For SeriesNumber `1` and ShowCode `TOS`, the Name would be `1-TOS`.</p>
+</ul>
+<ul>
+<li>**TotalSeasons**</li>
+<p>  - <strong>Description</strong>: Counts the number of seasons associated with the series.</p>
+<p>  - <strong>Formula</strong>: `=COUNTIFS(Seasons!{{Series}}, Series!{{SerieId}})`</p>
+<p>  - <strong>Example</strong>: For SerieId `1-tos`, if there are 3 seasons, TotalSeasons would be `3`.</p>
+</ul>
+<ul>
+<li>**TotalEpisodes**</li>
+<p>  - <strong>Description</strong>: Sums the episode counts from all seasons associated with the series.</p>
+<p>  - <strong>Formula</strong>: `=SUMIFS(Seasons!{{EpisodeCount}}, Seasons!{{Series}}, Series!{{SerieId}})`</p>
+<p>  - <strong>Example</strong>: If the series has 3 seasons with episode counts of 26, 26, and 24, TotalEpisodes would be `76`.</p>
+</ul>
+<ul>
+<li>**IsLongRunning**</li>
+<p>  - <strong>Description</strong>: Determines if the series has more than 50 episodes.</p>
+<p>  - <strong>Formula</strong>: `={{TotalEpisodes}} > 50`</p>
+<p>  - <strong>Example</strong>: For TotalEpisodes `76`, IsLongRunning would be `true`.</p>
+</ul>
+<ul>
+<li>**Rating**</li>
+<p>  - <strong>Description</strong>: Sums the ratings given to the series by users.</p>
+<p>  - <strong>Formula</strong>: `=SUMIFS(Ratings!{{Rating}}, Ratings!{{Series}}, Series!{{SerieId}})`</p>
+<p>  - <strong>Example</strong>: If the series has ratings of 5, 5, and 3, the Rating would be `13`.</p>
+</ul>
+<ul>
+<li>**IsGood**</li>
+<p>  - <strong>Description</strong>: Checks if the average rating is 4.5 or higher.</p>
+<p>  - <strong>Formula</strong>: `={{Rating}} >= 4.5`</p>
+<p>  - <strong>Example</strong>: For a Rating of `4.333`, IsGood would be `false`.</p>
+</ul>
+<p>---</p>
+<h4>2. Seasons</h4>
+<p>#### Input Fields</p>
+<ul>
+<li>**SeasonId**</li>
+<p>  - <strong>Type</strong>: String</p>
+<p>  - <strong>Description</strong>: Unique identifier for the season.</p>
+</ul>
+<ul>
+<li>**Series**</li>
+<p>  - <strong>Type</strong>: String</p>
+<p>  - <strong>Description</strong>: Identifier linking to the associated series.</p>
+</ul>
+<ul>
+<li>**SeasonNumber**</li>
+<p>  - <strong>Type</strong>: Integer</p>
+<p>  - <strong>Description</strong>: The numerical order of the season within its series.</p>
+</ul>
+<p>#### Calculated Fields</p>
+<ul>
+<li>**Name**</li>
+<p>  - <strong>Description</strong>: Combines the Series identifier and SeasonNumber to create a formatted name for the season.</p>
+<p>  - <strong>Formula</strong>: `={{Series}} & "-Season-" & {{SeasonNumber}}`</p>
+<p>  - <strong>Example</strong>: For Series `1-tos` and SeasonNumber `1`, the Name would be `1-tos-Season-1`.</p>
+</ul>
+<ul>
+<li>**EpisodeCount**</li>
+<p>  - <strong>Description</strong>: Counts the number of episodes in the season.</p>
+<p>  - <strong>Formula</strong>: `=COUNTIFS(Episodes!{{Season}}, Seasons!{{SeasonId}})`</p>
+<p>  - <strong>Example</strong>: If there are 26 episodes in Season `1-tos-season-1`, EpisodeCount would be `26`.</p>
+</ul>
+<p>---</p>
+<h4>3. Episodes</h4>
+<p>#### Input Fields</p>
+<ul>
+<li>**EpisodeId**</li>
+<p>  - <strong>Type</strong>: String</p>
+<p>  - <strong>Description</strong>: Unique identifier for the episode.</p>
+</ul>
+<ul>
+<li>**Season**</li>
+<p>  - <strong>Type</strong>: String</p>
+<p>  - <strong>Description</strong>: Identifier linking to the associated season.</p>
+</ul>
+<ul>
+<li>**EpisodeNumber**</li>
+<p>  - <strong>Type</strong>: Integer</p>
+<p>  - <strong>Description</strong>: The numerical order of the episode within its season.</p>
+</ul>
+<p>#### Calculated Fields</p>
+<ul>
+<li>**Name**</li>
+<p>  - <strong>Description</strong>: Combines the Season identifier and EpisodeNumber to create a formatted name for the episode.</p>
+<p>  - <strong>Formula</strong>: `={{Season}} & "-Episode-" & IF({{EpisodeNumber}} < 10, '0', '') & {{EpisodeNumber}}`</p>
+<p>  - <strong>Example</strong>: For Season `1-tos-season-1` and EpisodeNumber `1`, the Name would be `1-tos-season-1-Episode-01`.</p>
+</ul>
+<p>---</p>
+<h4>4. Ratings</h4>
+<p>#### Input Fields</p>
+<ul>
+<li>**RatingId**</li>
+<p>  - <strong>Type</strong>: String</p>
+<p>  - <strong>Description</strong>: Unique identifier for the rating.</p>
+</ul>
+<ul>
+<li>**Rating**</li>
+<p>  - <strong>Type</strong>: String</p>
+<p>  - <strong>Description</strong>: The rating value given by a user.</p>
+</ul>
+<ul>
+<li>**Series**</li>
+<p>  - <strong>Type</strong>: String</p>
+<p>  - <strong>Description</strong>: Identifier linking to the associated series.</p>
+</ul>
+<ul>
+<li>**Episode**</li>
+<p>  - <strong>Type</strong>: String</p>
+<p>  - <strong>Description</strong>: Identifier linking to the associated episode.</p>
+</ul>
+<p>#### Calculated Fields</p>
+<ul>
+<li>**DisplayName**</li>
+<p>  - <strong>Description</strong>: Creates a display name based on whether the rating is for a series or an episode.</p>
+<p>  - <strong>Formula</strong>: `=IF({{Series}} = BLANK(), "Episode: " & {{EpisodeName}}, "Series: " & {{SeriesName}})`</p>
+<p>  - <strong>Example</strong>: For Series `1-tos`, the DisplayName would be `Series: 1-TOS`.</p>
+</ul>
+<ul>
+<li>**Name**</li>
+<p>  - <strong>Description</strong>: Combines the DisplayName and UsersName to create a unique name for the rating.</p>
+<p>  - <strong>Formula</strong>: `={{DisplayName}} & "-" & {{UsersName}}`</p>
+<p>  - <strong>Example</strong>: For DisplayName `Series: 1-TOS` and UsersName `Riley Shaw`, the Name would be `Series: 1-TOS-Riley Shaw`.</p>
+</ul>
+<p>---</p>
+<p>This specification document outlines the necessary steps and formulas to compute calculated fields for the DEMO: StarTrek rulebook, allowing users to derive meaningful insights from the data.</p></div>
             </div>
         </div>
     </main>

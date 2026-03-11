@@ -10,11 +10,32 @@ $ ssotme -build -id
 ```
 
 
-> Rulebook generated from Airtable base 'Jessica Talisman - Ontology Parts 1-3'.
+> Rulebook generated from Airtable base 'Jessica Talisman - BASIC Ontology Parts 1-3'.
 
 **Model ID:** ``
 
 ---
+
+## Formal Arguments
+
+The following logical argument establishes that "language" can be formalized as a computable classification, and demonstrates that not everything qualifies as a language under this definition.
+
+
+## Language Candidates
+
+The following entities have been evaluated against the operational definition of "language" using testable predicates.
+
+| Name | Category | Is Language? | HasSyntax | RequiresParsing | HasLinearDecodingPressure | StableOntologyReference | README |
+|------|----------|--------------|-----------|-----------------|---------------------------|-------------------------|--------|
+
+### Predicate Legend
+
+| Predicate | Description |
+|-----------|-------------|
+| **HasSyntax** | Has formal syntactic rules governing valid expressions |
+| **RequiresParsing** | Understanding requires parsing/interpreting structured input |
+| **HasLinearDecodingPressure** | Requires sequential/linear interpretation to extract meaning |
+| **StableOntologyReference** | Provides stable references to concepts over time |
 
 ---
 

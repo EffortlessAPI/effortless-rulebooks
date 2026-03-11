@@ -1,8 +1,8 @@
 {
   "schema_version": "erb.explain_spec.v1",
   "rulebook": {
-    "name": "Jessica Talisman - Ontology Parts 1-3",
-    "rulebook_hash": "sha256:f2603d5224fbd6c35eef869302fcc354"
+    "name": "Jessica Talisman - BASIC Ontology Parts 1-3",
+    "rulebook_hash": "sha256:b5c65732b97d4b1f8b00d8e0f37eeb1a"
   },
   "semantics": {
     "profile": "excel",

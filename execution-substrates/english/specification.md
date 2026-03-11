@@ -1,103 +1,141 @@
-# Specification Document for Jessica Talisman - Ontology Parts 1-3 Rulebook
+# Specification Document for DEMO: StarTrek Rulebook
 
 ## Overview
-This specification document outlines the calculated fields present in the "Jessica Talisman - Ontology Parts 1-3" rulebook. It provides detailed instructions on how to compute these fields based on the input data available in the rulebook. The rulebook is structured around workflows, workflow steps, approval gates, and roles, each containing specific fields that contribute to the overall functionality of the system.
+This document provides a detailed specification for the calculated fields within the DEMO: StarTrek rulebook. The rulebook includes data about various Star Trek series, their seasons, episodes, and ratings. The calculated fields derive values based on existing raw data, allowing for insights such as total episodes, series ratings, and whether a series is considered long-running or good.
 
-## Workflows
+---
 
-### Input Fields
-1. **DisplayName**
-   - **Type:** String (raw)
-   - **Description:** A human-readable name for the workflow.
+## Entities and Calculated Fields
 
-### Calculated Fields
-1. **Name**
-   - **Description:** This field generates a machine-friendly name for the workflow, which is used for programmatic reference and URL slug generation.
-   - **Computation:** Convert the `DisplayName` to lowercase and replace spaces with hyphens.
-   - **Formula:** `=SUBSTITUTE(LOWER({{DisplayName}}), " ", "-")`
-   - **Example:** 
-     - If `DisplayName` is "Onboarding", then:
-       - `Name` = `SUBSTITUTE(LOWER("Onboarding"), " ", "-")` = "onboarding"
+### 1. Series
 
-2. **CountOfSteps**
-   - **Description:** This field counts the number of workflow steps associated with this workflow.
-   - **Computation:** Count the number of entries in the `WorkflowSteps` table where the `Workflow` matches the current workflow's `WorkflowId`.
-   - **Formula:** `=COUNTIFS(WorkflowSteps!{{Workflow}}, Workflows!{{WorkflowId}})`
-   - **Example:** 
-     - If there is 1 step associated with the workflow "onboarding", then:
-       - `CountOfSteps` = 1
+#### Input Fields
+- **SerieId**
+  - **Type**: String
+  - **Description**: Unique identifier for the series.
 
-3. **HasMoreThan1Step**
-   - **Description:** This field indicates whether the workflow has more than one step.
-   - **Computation:** Check if `CountOfSteps` is greater than 1.
-   - **Formula:** `={{CountOfSteps}} > 1`
-   - **Example:** 
-     - If `CountOfSteps` is 1, then:
-       - `HasMoreThan1Step` = `1 > 1` = false
+- **SeriesNumber**
+  - **Type**: Integer
+  - **Description**: The numerical order of the series in the Star Trek franchise.
 
-## WorkflowSteps
+- **ShowCode**
+  - **Type**: String
+  - **Description**: A short code representing the series.
 
-### Input Fields
-1. **DisplayName**
-   - **Type:** String (raw)
-   - **Description:** A human-readable name for the workflow step.
+#### Calculated Fields
+- **Name**
+  - **Description**: Combines the SeriesNumber and ShowCode to create a formatted name for the series.
+  - **Formula**: `={{SeriesNumber}} & "-" & {{ShowCode}}`
+  - **Example**: For SeriesNumber `1` and ShowCode `TOS`, the Name would be `1-TOS`.
 
-### Calculated Fields
-1. **Name**
-   - **Description:** This field generates a machine-friendly name for the workflow step, used for programmatic reference.
-   - **Computation:** Convert the `DisplayName` to lowercase and replace spaces with hyphens.
-   - **Formula:** `=SUBSTITUTE(LOWER({{DisplayName}}), " ", "-")`
-   - **Example:**
-     - If `DisplayName` is "Submit Request", then:
-       - `Name` = `SUBSTITUTE(LOWER("Submit Request"), " ", "-")` = "submit-request"
+- **TotalSeasons**
+  - **Description**: Counts the number of seasons associated with the series.
+  - **Formula**: `=COUNTIFS(Seasons!{{Series}}, Series!{{SerieId}})`
+  - **Example**: For SerieId `1-tos`, if there are 3 seasons, TotalSeasons would be `3`.
 
-## ApprovalGates
+- **TotalEpisodes**
+  - **Description**: Sums the episode counts from all seasons associated with the series.
+  - **Formula**: `=SUMIFS(Seasons!{{EpisodeCount}}, Seasons!{{Series}}, Series!{{SerieId}})`
+  - **Example**: If the series has 3 seasons with episode counts of 26, 26, and 24, TotalEpisodes would be `76`.
 
-### Input Fields
-1. **DisplayName**
-   - **Type:** String (raw)
-   - **Description:** A human-readable name for the approval gate.
+- **IsLongRunning**
+  - **Description**: Determines if the series has more than 50 episodes.
+  - **Formula**: `={{TotalEpisodes}} > 50`
+  - **Example**: For TotalEpisodes `76`, IsLongRunning would be `true`.
 
-### Calculated Fields
-1. **Name**
-   - **Description:** This field generates a machine-friendly name for the approval gate.
-   - **Computation:** Convert the `DisplayName` to lowercase and replace spaces with hyphens.
-   - **Formula:** `=SUBSTITUTE(LOWER({{DisplayName}}), " ", "-")`
-   - **Example:**
-     - If `DisplayName` is "Initial Review", then:
-       - `Name` = `SUBSTITUTE(LOWER("Initial Review"), " ", "-")` = "initial-review"
+- **Rating**
+  - **Description**: Sums the ratings given to the series by users.
+  - **Formula**: `=SUMIFS(Ratings!{{Rating}}, Ratings!{{Series}}, Series!{{SerieId}})`
+  - **Example**: If the series has ratings of 5, 5, and 3, the Rating would be `13`.
 
-## Roles
+- **IsGood**
+  - **Description**: Checks if the average rating is 4.5 or higher.
+  - **Formula**: `={{Rating}} >= 4.5`
+  - **Example**: For a Rating of `4.333`, IsGood would be `false`.
 
-### Input Fields
-1. **DisplayName**
-   - **Type:** String (raw)
-   - **Description:** A human-readable name for the role.
+---
 
-### Calculated Fields
-1. **Name**
-   - **Description:** This field generates a lowercase name for the role.
-   - **Computation:** Convert the `DisplayName` to lowercase.
-   - **Formula:** `=LOWER({{DisplayName}})`
-   - **Example:**
-     - If `DisplayName` is "Admin", then:
-       - `Name` = `LOWER("Admin")` = "admin"
+### 2. Seasons
 
-## Departments
+#### Input Fields
+- **SeasonId**
+  - **Type**: String
+  - **Description**: Unique identifier for the season.
 
-### Input Fields
-1. **DisplayName**
-   - **Type:** String (raw)
-   - **Description:** A human-readable name for the department.
+- **Series**
+  - **Type**: String
+  - **Description**: Identifier linking to the associated series.
 
-### Calculated Fields
-1. **Name**
-   - **Description:** This field generates a machine-friendly name for the department.
-   - **Computation:** Convert the `DisplayName` to lowercase and replace spaces with hyphens.
-   - **Formula:** `=SUBSTITUTE(LOWER({{DisplayName}}), " ", "-")`
-   - **Example:**
-     - If `DisplayName` is "Human Resources", then:
-       - `Name` = `SUBSTITUTE(LOWER("Human Resources"), " ", "-")` = "human-resources"
+- **SeasonNumber**
+  - **Type**: Integer
+  - **Description**: The numerical order of the season within its series.
 
-## Conclusion
-This document provides a comprehensive guide to calculating the fields in the "Jessica Talisman - Ontology Parts 1-3" rulebook. By following the outlined procedures, users can accurately compute the necessary values based on the raw input data provided in the rulebook.
+#### Calculated Fields
+- **Name**
+  - **Description**: Combines the Series identifier and SeasonNumber to create a formatted name for the season.
+  - **Formula**: `={{Series}} & "-Season-" & {{SeasonNumber}}`
+  - **Example**: For Series `1-tos` and SeasonNumber `1`, the Name would be `1-tos-Season-1`.
+
+- **EpisodeCount**
+  - **Description**: Counts the number of episodes in the season.
+  - **Formula**: `=COUNTIFS(Episodes!{{Season}}, Seasons!{{SeasonId}})`
+  - **Example**: If there are 26 episodes in Season `1-tos-season-1`, EpisodeCount would be `26`.
+
+---
+
+### 3. Episodes
+
+#### Input Fields
+- **EpisodeId**
+  - **Type**: String
+  - **Description**: Unique identifier for the episode.
+
+- **Season**
+  - **Type**: String
+  - **Description**: Identifier linking to the associated season.
+
+- **EpisodeNumber**
+  - **Type**: Integer
+  - **Description**: The numerical order of the episode within its season.
+
+#### Calculated Fields
+- **Name**
+  - **Description**: Combines the Season identifier and EpisodeNumber to create a formatted name for the episode.
+  - **Formula**: `={{Season}} & "-Episode-" & IF({{EpisodeNumber}} < 10, '0', '') & {{EpisodeNumber}}`
+  - **Example**: For Season `1-tos-season-1` and EpisodeNumber `1`, the Name would be `1-tos-season-1-Episode-01`.
+
+---
+
+### 4. Ratings
+
+#### Input Fields
+- **RatingId**
+  - **Type**: String
+  - **Description**: Unique identifier for the rating.
+
+- **Rating**
+  - **Type**: String
+  - **Description**: The rating value given by a user.
+
+- **Series**
+  - **Type**: String
+  - **Description**: Identifier linking to the associated series.
+
+- **Episode**
+  - **Type**: String
+  - **Description**: Identifier linking to the associated episode.
+
+#### Calculated Fields
+- **DisplayName**
+  - **Description**: Creates a display name based on whether the rating is for a series or an episode.
+  - **Formula**: `=IF({{Series}} = BLANK(), "Episode: " & {{EpisodeName}}, "Series: " & {{SeriesName}})`
+  - **Example**: For Series `1-tos`, the DisplayName would be `Series: 1-TOS`.
+
+- **Name**
+  - **Description**: Combines the DisplayName and UsersName to create a unique name for the rating.
+  - **Formula**: `={{DisplayName}} & "-" & {{UsersName}}`
+  - **Example**: For DisplayName `Series: 1-TOS` and UsersName `Riley Shaw`, the Name would be `Series: 1-TOS-Riley Shaw`.
+
+---
+
+This specification document outlines the necessary steps and formulas to compute calculated fields for the DEMO: StarTrek rulebook, allowing users to derive meaningful insights from the data.
