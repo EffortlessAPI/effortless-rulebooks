@@ -489,11 +489,6 @@ def generate_html(data: dict) -> str:
                 </div>
             </div>
 
-            <div class="runtime-chart">
-                <h3>Runtime by Substrate</h3>
-                <div class="bar-container" id="runtime-bars"></div>
-            </div>
-
             <h2>Substrates</h2>
             <div class="substrate-links">
                 {generate_substrate_links(data)}
@@ -508,6 +503,7 @@ def generate_html(data: dict) -> str:
                             {generate_entity_headers(data)}
                             <th>Score</th>
                             <th>Time</th>
+                            <th style="min-width: 120px;">Runtime</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -948,60 +944,10 @@ h2 { font-size: 1rem; font-weight: 600; margin-bottom: 0.75rem; color: var(--tex
 .score-cell { font-weight: 600; }
 .time-cell { color: var(--text-secondary); font-family: monospace; font-size: 0.75rem; }
 
-/* Runtime bar chart */
-.runtime-chart {
-    background: var(--bg-primary);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius);
-    padding: 1rem;
-    margin-bottom: 1.5rem;
-    box-shadow: var(--shadow);
-}
-.runtime-chart h3 {
-    font-size: 0.9rem;
-    margin-bottom: 0.75rem;
-    color: var(--text-primary);
-}
-.bar-container {
-    display: flex;
-    flex-direction: column;
-    gap: 0.4rem;
-}
-.bar-row {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-.bar-label {
-    width: 80px;
-    font-size: 0.75rem;
-    color: var(--text-secondary);
-    text-align: right;
-    flex-shrink: 0;
-}
-.bar-track {
-    flex: 1;
-    height: 18px;
-    background: var(--bg-tertiary);
-    border-radius: 3px;
-    overflow: hidden;
-    position: relative;
-}
-.bar-fill {
-    height: 100%;
-    background: var(--accent-color);
-    border-radius: 3px;
-    transition: width 0.3s ease;
-    min-width: 2px;
-}
-.bar-fill.bar-ai { background: var(--warning-color); }
-.bar-fill.bar-fast { background: var(--success-color); }
-.bar-time {
-    width: 50px;
-    font-size: 0.7rem;
-    font-family: monospace;
-    color: var(--text-secondary);
-    flex-shrink: 0;
+/* Runtime bar in health matrix */
+.runtime-bar-cell {
+    min-width: 100px;
+    padding: 0.4rem 0.5rem;
 }
 
 /* Sub-tabs - horizontal scrolling */
@@ -1442,42 +1388,38 @@ function getSubstrateReportUrl(substrateName) {
     return window.location.protocol === 'file:' ? localPath : onlinePath;
 }
 
-// Runtime bar chart
-function formatTime(seconds) {
-    if (seconds < 60) return seconds.toFixed(1) + 's';
-    const mins = Math.floor(seconds / 60);
-    if (mins < 60) return mins + 'm';
-    const hrs = Math.floor(mins / 60);
-    return hrs + 'h';
-}
-
+// Runtime bars in health matrix table
 function renderRuntimeBars() {
-    const container = document.getElementById('runtime-bars');
-    if (!container || !REPORT_DATA.substrates) return;
+    const table = document.getElementById('health-matrix');
+    if (!table || !REPORT_DATA.substrates) return;
 
-    const substrates = Object.entries(REPORT_DATA.substrates)
+    // Calculate max time for scaling (exclude answer-key postgres)
+    const times = Object.entries(REPORT_DATA.substrates)
         .filter(([name]) => name !== 'postgres')
-        .map(([name, data]) => ({
-            name,
-            time: data.runtime_seconds || 0
-        }))
-        .sort((a, b) => b.time - a.time);
+        .map(([name, data]) => data.elapsed_seconds || 0);
+    const maxTime = Math.max(...times, 1);
 
-    const maxTime = Math.max(...substrates.map(s => s.time), 1);
+    // Add bar cells to each row
+    const rows = table.querySelectorAll('tbody tr');
+    rows.forEach(row => {
+        const substrateCell = row.querySelector('.substrate-name');
+        if (!substrateCell) return;
 
-    container.innerHTML = substrates.map(s => {
-        const pct = (s.time / maxTime) * 100;
-        const barClass = s.time > 60 ? 'bar-ai' : (s.time < 1 ? 'bar-fast' : '');
-        return `
-            <div class="bar-row">
-                <span class="bar-label">${s.name}</span>
-                <div class="bar-track">
-                    <div class="bar-fill ${barClass}" style="width: ${Math.max(pct, 0.5)}%"></div>
-                </div>
-                <span class="bar-time">${formatTime(s.time)}</span>
+        const substrateName = substrateCell.dataset.substrate;
+        const data = REPORT_DATA.substrates[substrateName];
+        const time = data ? (data.elapsed_seconds || 0) : 0;
+        const pct = (time / maxTime) * 100;
+        const barColor = time > 60 ? 'var(--warning-color)' : (time < 1 ? 'var(--success-color)' : 'var(--accent-color)');
+
+        const barCell = document.createElement('td');
+        barCell.className = 'runtime-bar-cell';
+        barCell.innerHTML = `
+            <div style="height: 14px; background: var(--bg-tertiary); border-radius: 3px; overflow: hidden;">
+                <div style="width: ${Math.max(pct, 0.5)}%; height: 100%; background: ${barColor}; border-radius: 3px;"></div>
             </div>
         `;
-    }).join('');
+        row.appendChild(barCell);
+    });
 }
 
 renderRuntimeBars();
