@@ -38,12 +38,12 @@ def ensure_output_folder():
 
 
 def write_readme(candidate_name, description=None, technology=None):
-    """Write a placeholder README.md for the language candidate.
+    """Write a placeholder README.md for the execution substrate.
 
     Args:
-        candidate_name: Name of the target language/format (e.g., 'python', 'owl')
+        candidate_name: Name of the target format/substrate (e.g., 'python', 'owl')
         description: Optional description, defaults to a placeholder message
-        technology: Optional technology section explaining the format/language
+        technology: Optional technology section explaining the format/substrate
     """
     output_folder = ensure_output_folder()
     readme_path = output_folder / "README.md"
@@ -56,7 +56,7 @@ def write_readme(candidate_name, description=None, technology=None):
     if technology:
         technology_section = f"\n## Technology\n\n{technology}\n"
 
-    content = f"""# {candidate_name.title()} Language Candidate
+    content = f"""# {candidate_name.title()} Execution Substrate
 
 {description}
 {technology_section}

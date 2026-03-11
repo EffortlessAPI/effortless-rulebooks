@@ -21,21 +21,11 @@ $ ssotme -build -id
 The following logical argument establishes that "language" can be formalized as a computable classification, and demonstrates that not everything qualifies as a language under this definition.
 
 
-## Language Candidates
+## Execution Substrates
 
-The following entities have been evaluated against the operational definition of "language" using testable predicates.
+The following formats have been evaluated as execution substrates for this rulebook.
 
-| Name | Category | Is Language? | HasSyntax | RequiresParsing | HasLinearDecodingPressure | StableOntologyReference | README |
-|------|----------|--------------|-----------|-----------------|---------------------------|-------------------------|--------|
-
-### Predicate Legend
-
-| Predicate | Description |
-|-----------|-------------|
-| **HasSyntax** | Has formal syntactic rules governing valid expressions |
-| **RequiresParsing** | Understanding requires parsing/interpreting structured input |
-| **HasLinearDecodingPressure** | Requires sequential/linear interpretation to extract meaning |
-| **StableOntologyReference** | Provides stable references to concepts over time |
+See the `execution-substrates/` directory for available format implementations.
 
 ---
 
