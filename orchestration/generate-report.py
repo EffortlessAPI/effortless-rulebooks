@@ -30,6 +30,7 @@ SUBSTRATES_DIR = os.path.join(PROJECT_ROOT, "execution-substrates")
 RULEBOOK_DIR = os.path.join(PROJECT_ROOT, "effortless-rulebook")
 RULEBOOK_PATH = os.path.join(RULEBOOK_DIR, "effortless-rulebook.json")
 POSTGRES_DIR = os.path.join(PROJECT_ROOT, "postgres")
+SSOTME_JSON = os.path.join(PROJECT_ROOT, "ssotme.json")
 DEFAULT_OUTPUT = os.path.join(SCRIPT_DIR, "orchestration-report.html")
 
 
@@ -43,6 +44,21 @@ def load_rulebook():
         return {}
     with open(RULEBOOK_PATH, 'r') as f:
         return json.load(f)
+
+
+def get_base_id():
+    """Get the Airtable base ID from ssotme.json"""
+    if not os.path.exists(SSOTME_JSON):
+        return None
+    try:
+        with open(SSOTME_JSON, 'r') as f:
+            config = json.load(f)
+        for setting in config.get('ProjectSettings', []):
+            if setting.get('Name') == 'baseId':
+                return setting.get('Value', '')
+    except Exception:
+        pass
+    return None
 
 
 def to_snake_case(name: str) -> str:
@@ -358,7 +374,8 @@ def collect_all_data():
             "directory_name": os.path.basename(PROJECT_ROOT),
             "rulebook_path": RULEBOOK_PATH,
             "rulebook_name": rulebook_name,
-            "rulebook_description": rulebook.get("Description", "")
+            "rulebook_description": rulebook.get("Description", ""),
+            "base_id": get_base_id()
         },
         "summary": {
             "total_substrates": len(substrates),
@@ -448,10 +465,13 @@ def generate_html(data: dict) -> str:
                 <span class="project-name">Orchestration Report</span>
             </div>
         </div>
-        <button id="theme-toggle" title="Toggle dark/light mode">
-            <span class="sun">&#9728;</span>
-            <span class="moon">&#9790;</span>
-        </button>
+        <div class="header-actions">
+            {f'<a href="https://airtable.com/{data["meta"]["base_id"]}" target="_blank" class="airtable-link" title="Open in Airtable">Airtable &#8599;</a>' if data["meta"].get("base_id") else ''}
+            <button id="theme-toggle" title="Toggle dark/light mode">
+                <span class="sun">&#9728;</span>
+                <span class="moon">&#9790;</span>
+            </button>
+        </div>
     </header>
 
     <nav class="tabs" id="main-tabs">
@@ -823,6 +843,21 @@ header {
 .header-content h1 { font-size: 1.25rem; font-weight: 600; }
 .header-meta { display: flex; gap: 1rem; font-size: 0.8rem; color: var(--text-secondary); }
 .project-name { font-weight: 500; }
+.header-actions { display: flex; align-items: center; gap: 0.75rem; }
+.airtable-link {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    text-decoration: none;
+    padding: 0.35rem 0.75rem;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    transition: all 0.15s ease;
+}
+.airtable-link:hover {
+    color: var(--accent-color);
+    border-color: var(--accent-color);
+    background: var(--bg-secondary);
+}
 
 #theme-toggle {
     background: var(--bg-tertiary);

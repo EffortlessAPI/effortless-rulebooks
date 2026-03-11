@@ -166,7 +166,7 @@ show_menu() {
     echo -e "${BOLD}${CYAN}╚════════════════════════════════════════════════════════════╝${NC}"
     echo ""
     echo -e "  Project:  ${WHITE}$PROJECT_NAME${NC}"
-    echo -e "  Base ID:  ${WHITE}$CURRENT_BASE${NC}"
+    echo -e "  Airtable: ${CYAN}https://airtable.com/$CURRENT_BASE${NC}"
     echo ""
 
     # Get list of substrates for the menu
