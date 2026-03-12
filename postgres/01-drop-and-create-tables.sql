@@ -11,20 +11,23 @@
 -- ============================================================================
 
 -- Drop functions (order: first, because views depend on them)
-DROP FUNCTION IF EXISTS calc_approval_gates_name(TEXT) CASCADE;
+DROP FUNCTION IF EXISTS calc_approvals_name(TEXT) CASCADE;
 DROP FUNCTION IF EXISTS calc_departments_name(TEXT) CASCADE;
 DROP FUNCTION IF EXISTS calc_precedes_steps_display_name(TEXT) CASCADE;
 DROP FUNCTION IF EXISTS calc_roles_name(TEXT) CASCADE;
+DROP FUNCTION IF EXISTS calc_workflow_steps_approval_gate_escalation_threshold_hours(TEXT) CASCADE;
+DROP FUNCTION IF EXISTS calc_workflow_steps_assigned_role_department(TEXT) CASCADE;
+DROP FUNCTION IF EXISTS calc_workflow_steps_execution_actor_type(TEXT) CASCADE;
 DROP FUNCTION IF EXISTS calc_workflow_steps_name(TEXT) CASCADE;
-DROP FUNCTION IF EXISTS calc_workflows_count_of_non_proposed_steps(TEXT) CASCADE;
+DROP FUNCTION IF EXISTS calc_workflows_count_of_steps(TEXT) CASCADE;
 DROP FUNCTION IF EXISTS calc_workflows_has_more_than1_step(TEXT) CASCADE;
 DROP FUNCTION IF EXISTS calc_workflows_name(TEXT) CASCADE;
 DROP FUNCTION IF EXISTS get_ai_agents_display_name(TEXT) CASCADE;
 DROP FUNCTION IF EXISTS get_ai_agents_model_version(TEXT) CASCADE;
 DROP FUNCTION IF EXISTS get_ai_agents_name(TEXT) CASCADE;
 DROP FUNCTION IF EXISTS get_ai_agents_title(TEXT) CASCADE;
-DROP FUNCTION IF EXISTS get_approval_gates_display_name(TEXT) CASCADE;
-DROP FUNCTION IF EXISTS get_approval_gates_escalation_threshold_hours(TEXT) CASCADE;
+DROP FUNCTION IF EXISTS get_approvals_display_name(TEXT) CASCADE;
+DROP FUNCTION IF EXISTS get_approvals_escalation_threshold_hours(TEXT) CASCADE;
 DROP FUNCTION IF EXISTS get_automated_pipelines_description(TEXT) CASCADE;
 DROP FUNCTION IF EXISTS get_automated_pipelines_display_name(TEXT) CASCADE;
 DROP FUNCTION IF EXISTS get_automated_pipelines_name(TEXT) CASCADE;
@@ -49,7 +52,7 @@ DROP FUNCTION IF EXISTS get_workflows_title(TEXT) CASCADE;
 
 -- Drop views (order: second, because they depend on tables)
 DROP VIEW IF EXISTS vw_ai_agents CASCADE;
-DROP VIEW IF EXISTS vw_approval_gates CASCADE;
+DROP VIEW IF EXISTS vw_approvals CASCADE;
 DROP VIEW IF EXISTS vw_automated_pipelines CASCADE;
 DROP VIEW IF EXISTS vw_departments CASCADE;
 DROP VIEW IF EXISTS vw_human_agents CASCADE;
@@ -61,7 +64,7 @@ DROP VIEW IF EXISTS vw_workflows CASCADE;
 
 -- Drop tables (order: last, after dependent objects are removed)
 DROP TABLE IF EXISTS ai_agents CASCADE;
-DROP TABLE IF EXISTS approval_gates CASCADE;
+DROP TABLE IF EXISTS approvals CASCADE;
 DROP TABLE IF EXISTS automated_pipelines CASCADE;
 DROP TABLE IF EXISTS departments CASCADE;
 DROP TABLE IF EXISTS human_agents CASCADE;
@@ -110,19 +113,19 @@ COMMENT ON COLUMN workflow_steps.requires_human_approval IS 'Boolean flag indica
 COMMENT ON COLUMN workflow_steps.approval_gate IS 'Foreign key to ApprovalGate if this step is a decision checkpoint. When populated, indicates this step blocks workflow execution until explicit authorization is given.';
 COMMENT ON COLUMN workflow_steps.preceded_by_steps IS 'Reference to steps that must complete before this step can execute. Part of the ntwf:precedesStep transitive ordering relationship.';
 
-CREATE TABLE approval_gates (
-  approval_gate_id                    TEXT                 PRIMARY KEY,
+CREATE TABLE approvals (
+  approval_id                         TEXT                 PRIMARY KEY,
   display_name                        TEXT                ,
   escalation_threshold_hours          INTEGER             
 );
-COMMENT ON TABLE approval_gates IS 'Table: ApprovalGates';
-COMMENT ON COLUMN approval_gates.escalation_threshold_hours IS 'Integer number of hours that may elapse on a pending gate before the ntwf:delegatesTo chain activates. Maps to ntwf:escalationThresholdHours. Domain applies only to ApprovalGate individuals.';
+COMMENT ON TABLE approvals IS 'Table: Approvals';
+COMMENT ON COLUMN approvals.escalation_threshold_hours IS 'Integer number of hours that may elapse on a pending gate before the ntwf:delegatesTo chain activates. Maps to ntwf:escalationThresholdHours. Domain applies only to ApprovalGate individuals.';
 
 CREATE TABLE precedes_steps (
   precedes_step_id                    TEXT                 PRIMARY KEY,
   name                                TEXT                ,
-  workflow_step                       TEXT                ,
-  step_number                         INTEGER             
+  step_number                         INTEGER             ,
+  workflow_step                       TEXT                
 );
 COMMENT ON TABLE precedes_steps IS 'Table: PrecedesSteps';
 COMMENT ON COLUMN precedes_steps.name IS 'Ordinal sequence number for the relationship. Used for sorting and display.';

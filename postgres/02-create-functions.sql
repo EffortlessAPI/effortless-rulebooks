@@ -39,7 +39,7 @@ END;
 $$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
 
 
-CREATE OR REPLACE FUNCTION calc_workflows_count_of_non_proposed_steps(p_workflow_id TEXT)
+CREATE OR REPLACE FUNCTION calc_workflows_count_of_steps(p_workflow_id TEXT)
 RETURNS INTEGER AS $$
 BEGIN
   RETURN ((SELECT COUNT(*) FROM workflow_steps WHERE workflow = (SELECT NULLIF(workflow_id, '') FROM workflows WHERE workflow_id = p_workflow_id)));
@@ -50,7 +50,23 @@ $$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
 CREATE OR REPLACE FUNCTION calc_workflows_has_more_than1_step(p_workflow_id TEXT)
 RETURNS BOOLEAN AS $$
 BEGIN
-  RETURN (calc_workflows_count_of_non_proposed_steps(p_workflow_id) > 1)::boolean;
+  RETURN (calc_workflows_count_of_steps(p_workflow_id) > 1)::boolean;
+END;
+$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
+
+
+CREATE OR REPLACE FUNCTION calc_workflow_steps_assigned_role_department(p_workflow_step_id TEXT)
+RETURNS TEXT AS $$
+BEGIN
+  RETURN (SELECT owned_by::text FROM roles WHERE role_id = (SELECT assigned_role FROM workflow_steps WHERE workflow_step_id = p_workflow_step_id));
+END;
+$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
+
+
+CREATE OR REPLACE FUNCTION calc_workflow_steps_approval_gate_escalation_threshold_hours(p_workflow_step_id TEXT)
+RETURNS INTEGER AS $$
+BEGIN
+  RETURN (SELECT escalation_threshold_hours::integer FROM approvals WHERE approval_id = (SELECT approval_gate FROM workflow_steps WHERE workflow_step_id = p_workflow_step_id));
 END;
 $$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
 
@@ -110,17 +126,17 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
 
-CREATE OR REPLACE FUNCTION get_approval_gates_display_name(p_approval_gate_id TEXT)
+CREATE OR REPLACE FUNCTION get_approvals_display_name(p_approval_id TEXT)
 RETURNS TEXT AS $$
 BEGIN
-  RETURN (SELECT display_name FROM approval_gates WHERE approval_gate_id = p_approval_gate_id);
+  RETURN (SELECT display_name FROM approvals WHERE approval_id = p_approval_id);
 END;
 $$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
 
-CREATE OR REPLACE FUNCTION get_approval_gates_escalation_threshold_hours(p_approval_gate_id TEXT)
+CREATE OR REPLACE FUNCTION get_approvals_escalation_threshold_hours(p_approval_id TEXT)
 RETURNS INTEGER AS $$
 BEGIN
-  RETURN (SELECT escalation_threshold_hours FROM approval_gates WHERE approval_gate_id = p_approval_gate_id);
+  RETURN (SELECT escalation_threshold_hours FROM approvals WHERE approval_id = p_approval_id);
 END;
 $$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
 
@@ -147,10 +163,18 @@ END;
 $$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
 
 
-CREATE OR REPLACE FUNCTION calc_approval_gates_name(p_approval_gate_id TEXT)
+CREATE OR REPLACE FUNCTION calc_workflow_steps_execution_actor_type(p_workflow_step_id TEXT)
 RETURNS TEXT AS $$
 BEGIN
-  RETURN (REPLACE(LOWER((SELECT NULLIF(display_name, '') FROM approval_gates WHERE approval_gate_id = p_approval_gate_id)), ' ', '-'))::text;
+  RETURN (CASE WHEN calc_workflow_steps_assigned_role_department(p_workflow_step_id) = 'HumanAgent' THEN 'HumanAgent' ELSE CASE WHEN calc_workflow_steps_assigned_role_department(p_workflow_step_id) = 'AIAgent' THEN 'AIAgent' ELSE CASE WHEN calc_workflow_steps_assigned_role_department(p_workflow_step_id) = 'AutomatedPipeline' THEN 'AutomatedPipeline' ELSE NULL END END END)::text;
+END;
+$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
+
+
+CREATE OR REPLACE FUNCTION calc_approvals_name(p_approval_id TEXT)
+RETURNS TEXT AS $$
+BEGIN
+  RETURN (REPLACE(LOWER((SELECT NULLIF(display_name, '') FROM approvals WHERE approval_id = p_approval_id)), ' ', '-'))::text;
 END;
 $$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
 
@@ -278,13 +302,13 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
 
-CREATE OR REPLACE FUNCTION calc_approval_gates_workflow_steps(p_approval_gate_id TEXT)
+CREATE OR REPLACE FUNCTION calc_approvals_workflow_steps(p_approval_id TEXT)
 RETURNS TEXT AS $$
 BEGIN
   RETURN (
     SELECT STRING_AGG(workflow_step_id::TEXT, ', ' ORDER BY workflow_step_id)
     FROM workflow_steps
-    WHERE approval_gate = p_approval_gate_id
+    WHERE approval_gate = p_approval_id
   );
 END;
 $$ LANGUAGE plpgsql STABLE SECURITY DEFINER;

@@ -10,7 +10,7 @@ $ ssotme -build -id
 ```
 
 
-> Rulebook generated from Airtable base 'Jessica Talisman - BASIC Ontology Parts 1-3'.
+> Rulebook generated from Airtable base 'Jessica Talisman - ADVANCED Ontology Parts 1-3'.
 
 **Model ID:** ``
 
@@ -47,7 +47,7 @@ See the `execution-substrates/` directory for available format implementations.
 | `Identifier` | raw | string | Yes | External system identifier for cross-referencing. Maps to dct:identifier from Dublin Core. This is the join key back to document management systems, ticket systems, or other operational systems. |
 | `Modified` | raw | datetime | Yes | Last modification timestamp. Maps to dct:modified from Dublin Core. Critical for answering CQ5: 'Which workflows haven't been reviewed or updated in twelve months?' |
 | `WorkflowSteps` | relationship | string | Yes | Reference to workflow steps. Represents the ntwf:hasStep relationship linking workflows to their constituent steps. |
-| `CountOfNonProposedSteps` | aggregation | integer | Yes | Calculated count of workflow steps in this workflow. Useful for workflow complexity analysis and reporting. |
+| `CountOfSteps` | aggregation | integer | Yes | Calculated count of workflow steps in this workflow. Useful for workflow complexity analysis and reporting. |
 | `HasMoreThan1Step` | calculated | boolean | Yes | - |
 
 **Formula for `Name`:**
@@ -55,14 +55,14 @@ See the `execution-substrates/` directory for available format implementations.
 =SUBSTITUTE(LOWER({{DisplayName}}), " ", "-")
 ```
 
-**Formula for `CountOfNonProposedSteps`:**
+**Formula for `CountOfSteps`:**
 ```
 =COUNTIFS(WorkflowSteps!{{Workflow}}, Workflows!{{WorkflowId}})
 ```
 
 **Formula for `HasMoreThan1Step`:**
 ```
-={{CountOfNonProposedSteps}} > 1
+={{CountOfSteps}} > 1
 ```
 
 
@@ -70,16 +70,16 @@ See the `execution-substrates/` directory for available format implementations.
 
 | Field | Value |
 |-------|-------|
-| `WorkflowId` | performance-review |
-| `Name` | performance-review |
-| `Title` | Annual Performance Review |
-| `Description` | Structured workflow for conducting annual employee performance evaluations. |
-| `Identifier` | WF-PRV-007 |
-| `Modified` | 2024-05-15 |
-| `WorkflowSteps` | system-notification-sent, step-2, recwwXHLqxKPhj6Mt |
-| `CountOfNonProposedSteps` | 3 |
-| `DisplayName` | Performance Review |
-| `HasMoreThan1Step` | true |
+| `WorkflowId` | onboarding |
+| `Name` | onboarding |
+| `Title` | Employee Onboarding |
+| `Description` | A step-by-step process to onboard new employees, including document collection, orientation, and training. |
+| `Identifier` | WF-ONB-001 |
+| `Modified` | 2024-05-10 |
+| `WorkflowSteps` | submit-request |
+| `CountOfSteps` | 1 |
+| `DisplayName` | Onboarding |
+| `HasMoreThan1Step` | false |
 
 ---
 
@@ -100,14 +100,32 @@ See the `execution-substrates/` directory for available format implementations.
 | `RequiresHumanApproval` | raw | boolean | Yes | Boolean flag indicating whether a human agent must fill the assigned role. Maps to ntwf:requiresHumanApproval. Enables answering CQ3: 'Which steps require human decisions vs. AI execution?' |
 | `ApprovalGate` | relationship | string | Yes | Foreign key to ApprovalGate if this step is a decision checkpoint. When populated, indicates this step blocks workflow execution until explicit authorization is given. |
 | `PrecededBySteps` | relationship | string | Yes | Reference to steps that must complete before this step can execute. Part of the ntwf:precedesStep transitive ordering relationship. |
+| `ExecutionActorType` | calculated | string | Yes | - |
+| `AssignedRoleDepartment` | lookup | string | Yes | - |
+| `ApprovalGateEscalationThresholdHours` | lookup | integer | Yes | - |
 
 **Formula for `Name`:**
 ```
 =SUBSTITUTE(LOWER({{DisplayName}}), " ", "-")
 ```
 
+**Formula for `ExecutionActorType`:**
+```
+=IF({{AssignedRoleDepartment}} = "HumanAgent", "HumanAgent", IF({{AssignedRoleDepartment}} = "AIAgent", "AIAgent", IF({{AssignedRoleDepartment}} = "AutomatedPipeline", "AutomatedPipeline", BLANK())))
+```
 
-#### Sample Data (20 records)
+**Formula for `AssignedRoleDepartment`:**
+```
+=INDEX(Roles!{{OwnedBy}}, MATCH(WorkflowSteps!{{AssignedRole}}, Roles!{{RoleId}}, 0))
+```
+
+**Formula for `ApprovalGateEscalationThresholdHours`:**
+```
+=INDEX(Approvals!{{EscalationThresholdHours}}, MATCH(WorkflowSteps!{{ApprovalGate}}, Approvals!{{ApprovalId}}, 0))
+```
+
+
+#### Sample Data (16 records)
 
 | Field | Value |
 |-------|-------|
@@ -120,18 +138,21 @@ See the `execution-substrates/` directory for available format implementations.
 | `ApprovalGate` | initial-review |
 | `PrecededBySteps` | step-1 |
 | `DisplayName` | Submit Request |
+| `AssignedRoleDepartment` | human-resources |
+| `ApprovalGateEscalationThresholdHours` | 0 |
+| `ExecutionActorType` |  |
 
 ---
 
-### Table: ApprovalGates
+### Table: Approvals
 
-> Table: ApprovalGates
+> Table: Approvals
 
 #### Schema
 
 | Field | Type | Data Type | Nullable | Description |
 |-------|------|-----------|----------|-------------|
-| `ApprovalGateId` | raw | string | No | - |
+| `ApprovalId` | raw | string | No | - |
 | `Name` | calculated | string | Yes | - |
 | `DisplayName` | raw | string | Yes | - |
 | `WorkflowSteps` | relationship | string | Yes | Back-reference to workflow steps that use this approval gate. Enables finding all steps requiring this specific gate. |
@@ -143,11 +164,11 @@ See the `execution-substrates/` directory for available format implementations.
 ```
 
 
-#### Sample Data (11 records)
+#### Sample Data (10 records)
 
 | Field | Value |
 |-------|-------|
-| `ApprovalGateId` | initial-review |
+| `ApprovalId` | initial-review |
 | `Name` | initial-review |
 | `WorkflowSteps` | submit-request |
 | `EscalationThresholdHours` | 0 |
@@ -165,9 +186,9 @@ See the `execution-substrates/` directory for available format implementations.
 |-------|------|-----------|----------|-------------|
 | `PrecedesStepId` | raw | string | No | - |
 | `Name` | raw | string | Yes | Ordinal sequence number for the relationship. Used for sorting and display. |
-| `WorkflowStep` | relationship | string | Yes | Foreign key to the step that comes BEFORE. The source of the 'precedes' relationship. |
 | `DisplayName` | calculated | string | Yes | - |
 | `StepNumber` | raw | integer | Yes | - |
+| `WorkflowStep` | relationship | string | Yes | Foreign key to the step that comes BEFORE. The source of the 'precedes' relationship. |
 
 **Formula for `DisplayName`:**
 ```
@@ -357,7 +378,7 @@ See the `execution-substrates/` directory for available format implementations.
 
 | Property | Value |
 |----------|-------|
-| Source Base ID | `applThn0rikpCR9C3` |
+| Source Base ID | `appwN9EAp8IeIxM23` |
 | Table Count | 9 |
 | Tool Version | 2.0.0 |
 | Export Mode | schema_first_type_mapping |

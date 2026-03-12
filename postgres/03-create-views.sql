@@ -15,7 +15,7 @@ SELECT
   t.identifier,
   t.modified,
   calc_workflows_workflow_steps(t.workflow_id) AS workflow_steps,
-  calc_workflows_count_of_non_proposed_steps(t.workflow_id) AS count_of_non_proposed_steps,
+  calc_workflows_count_of_steps(t.workflow_id) AS count_of_steps,
   calc_workflows_has_more_than1_step(t.workflow_id) AS has_more_than1_step
 FROM workflows t;
 
@@ -29,25 +29,28 @@ SELECT
   t.assigned_role,
   t.requires_human_approval,
   t.approval_gate,
-  t.preceded_by_steps
+  t.preceded_by_steps,
+  calc_workflow_steps_execution_actor_type(t.workflow_step_id) AS execution_actor_type,
+  calc_workflow_steps_assigned_role_department(t.workflow_step_id) AS assigned_role_department,
+  calc_workflow_steps_approval_gate_escalation_threshold_hours(t.workflow_step_id) AS approval_gate_escalation_threshold_hours
 FROM workflow_steps t;
 
-CREATE OR REPLACE VIEW vw_approval_gates WITH (security_invoker = ON) AS
+CREATE OR REPLACE VIEW vw_approvals WITH (security_invoker = ON) AS
 SELECT
-  t.approval_gate_id,
-  calc_approval_gates_name(t.approval_gate_id) AS name,
+  t.approval_id,
+  calc_approvals_name(t.approval_id) AS name,
   t.display_name,
-  calc_approval_gates_workflow_steps(t.approval_gate_id) AS workflow_steps,
+  calc_approvals_workflow_steps(t.approval_id) AS workflow_steps,
   t.escalation_threshold_hours
-FROM approval_gates t;
+FROM approvals t;
 
 CREATE OR REPLACE VIEW vw_precedes_steps WITH (security_invoker = ON) AS
 SELECT
   t.precedes_step_id,
   t.name,
-  t.workflow_step,
   calc_precedes_steps_display_name(t.precedes_step_id) AS display_name,
-  t.step_number
+  t.step_number,
+  t.workflow_step
 FROM precedes_steps t;
 
 CREATE OR REPLACE VIEW vw_roles WITH (security_invoker = ON) AS
