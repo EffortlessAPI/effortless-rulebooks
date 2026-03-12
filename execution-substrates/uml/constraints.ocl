@@ -1,7 +1,38 @@
 -- OCL Constraints for ERB
 -- Generated from effortless-rulebook.json
 
-context Customers
+context ApprovalGates
 
--- Formula: ={{LastName}} & ", " & {{FirstName}}
-derive FullName: self.lastName + ', ' + self.firstName
+-- Formula: =SUBSTITUTE(LOWER({{DisplayName}}), " ", "-")
+derive Name: self.displayName.toLower().replace(' ', '-')
+
+context Departments
+
+-- Formula: =SUBSTITUTE(LOWER({{DisplayName}}), " ", "-")
+derive Name: self.displayName.toLower().replace(' ', '-')
+
+context PrecedesSteps
+
+-- Formula: ="Step-" & {{StepNumber}}
+derive DisplayName: 'Step-' + self.stepNumber
+
+context Roles
+
+-- Formula: =LOWER({{DisplayName}})
+derive Name: self.displayName.toLower()
+
+context WorkflowSteps
+
+-- Formula: =SUBSTITUTE(LOWER({{DisplayName}}), " ", "-")
+derive Name: self.displayName.toLower().replace(' ', '-')
+
+context Workflows
+
+-- Formula: =SUBSTITUTE(LOWER({{DisplayName}}), " ", "-")
+derive Name: self.displayName.toLower().replace(' ', '-')
+
+-- Formula for CountOfNonProposedSteps - parse error: Unexpected character '!' at position 22
+-- Original: =COUNTIFS(WorkflowSteps!{{Workflow}}, Workflows!{{WorkflowId}})
+
+-- Formula: ={{CountOfNonProposedSteps}} > 1
+derive HasMoreThan1Step: (self.countOfNonProposedSteps > 1)
