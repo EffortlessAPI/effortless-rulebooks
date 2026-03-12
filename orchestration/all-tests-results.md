@@ -11,15 +11,15 @@
 | Substrate | Passed | Failed | Total | Score | Duration | Status |
 |-----------|--------|--------|-------|-------|----------|--------|
 | python | 3 | 0 | 3 | 100.0% | < 1s | PASS |
-| yaml | 3 | 0 | 3 | 100.0% | < 1s | PASS |
 | uml | 3 | 0 | 3 | 100.0% | < 1s | PASS |
 | explain-dag | 3 | 0 | 3 | 100.0% | < 1s | PASS |
+| yaml | 3 | 0 | 3 | 100.0% | < 1s | PASS |
+| golang | 3 | 0 | 3 | 100.0% | < 1s | PASS |
 | csv | 3 | 0 | 3 | 100.0% | < 1s | PASS |
 | owl | 3 | 0 | 3 | 100.0% | < 1s | PASS |
 | xlsx | 3 | 0 | 3 | 100.0% | < 1s | PASS |
-| golang | 3 | 0 | 3 | 100.0% | < 1s | PASS |
 | binary | 3 | 0 | 3 | 100.0% | < 1s | PASS |
-| english | 3 | 0 | 3 | 100.0% | 7m 32s | PASS |
+| english | 3 | 0 | 3 | 100.0% | 15m 41s | PASS |
 
 ## Overall Statistics
 
@@ -30,7 +30,7 @@
 | Total Passed | 30 |
 | Total Failed | 0 |
 | Overall Score | 100.0% |
-| Total Duration | 7m 34s |
+| Total Duration | 15m 43s |
 
 ---
 

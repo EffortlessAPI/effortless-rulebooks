@@ -1,51 +1,15 @@
 -- ============================================================================
--- SOURCE: ERBCustomizations table, record: 03d-customize-rls.sql
--- If you see SQL errors below, check this customization in Airtable
+-- CUSTOMIZE POLICIES - User-defined policies customizations
 -- ============================================================================
-
--- ============================================================================
--- CUSTOMIZE POLICIES - User-defined Row Level Security policies
--- ============================================================================
--- This file is for YOUR custom RLS policies that should persist across
+-- This file is for YOUR custom changes that should persist across
 -- regeneration of the base ERB files.
 --
--- USE THIS FILE FOR:
---   - Additional RLS policies for custom tables
---   - Extended security rules beyond base policies
---   - Role-specific access controls
---   - Custom permission functions
---
 -- IMPORTANT:
---   - This file runs AFTER 04-create-policies.sql
---   - Base RLS policies already exist when this runs
---   - This file will NOT be overwritten by ERB regeneration
---   - RLS must be enabled on tables before policies apply
---
--- ROW LEVEL SECURITY BASICS:
---   1. Enable RLS on the table: ALTER TABLE t ENABLE ROW LEVEL SECURITY;
---   2. Create policies for SELECT, INSERT, UPDATE, DELETE
---   3. Policies use current_user or session variables for context
---
--- EXAMPLES:
---
---   -- Enable RLS on a custom table
---   ALTER TABLE audit_log ENABLE ROW LEVEL SECURITY;
---
---   -- Policy: Users can only see their own audit entries
---   CREATE POLICY audit_log_select ON audit_log
---       FOR SELECT
---       USING (user_id = current_setting('app.current_user_id', true));
---
---   -- Policy: Only admins can delete
---   CREATE POLICY audit_log_delete ON audit_log
---       FOR DELETE
---       USING (current_setting('app.is_admin', true)::BOOLEAN = true);
---
---   -- Policy: Allow insert for authenticated users
---   CREATE POLICY audit_log_insert ON audit_log
---       FOR INSERT
---       WITH CHECK (current_setting('app.current_user_id', true) IS NOT NULL);
+--   - This file runs AFTER the main policies script
+--   - Define your customizations in the ERBCustomizations table in Airtable
+--   - Those changes will appear here after the next build
 --
 -- ============================================================================
 
--- Your custom policies go here:
+-- Your custom policies changes will appear here:
+

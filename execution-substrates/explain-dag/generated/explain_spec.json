@@ -51,11 +51,11 @@
       ],
       "dep_edges": [
         [
-          "FirstName",
+          "LastName",
           "FullName"
         ],
         [
-          "LastName",
+          "FirstName",
           "FullName"
         ]
       ],
