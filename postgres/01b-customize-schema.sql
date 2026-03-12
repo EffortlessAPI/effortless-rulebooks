@@ -1,5 +1,5 @@
 -- ============================================================================
--- SOURCE: ERBCustomizations table, record: 01b-customize-schema.sql
+-- SOURCE: ERBCustomizations table, record: 03a-customize-schema.sql
 -- If you see SQL errors below, check this customization in Airtable
 -- ============================================================================
 
@@ -19,6 +19,23 @@
 --   - This file runs AFTER 01-drop-and-create-tables.sql
 --   - The base tables already exist when this runs
 --   - This file will NOT be overwritten by ERB regeneration
+--
+-- EXAMPLES:
+--
+--   -- Add a custom table
+--   CREATE TABLE IF NOT EXISTS audit_log (
+--       audit_log_id    TEXT PRIMARY KEY DEFAULT gen_random_uuid()::TEXT,
+--       table_name      TEXT NOT NULL,
+--       record_id       TEXT NOT NULL,
+--       action          TEXT NOT NULL,
+--       changed_at      TIMESTAMPTZ DEFAULT NOW()
+--   );
+--
+--   -- Add a column to an existing table
+--   ALTER TABLE erb_versions ADD COLUMN IF NOT EXISTS custom_field TEXT;
+--
+--   -- Add an index for performance
+--   CREATE INDEX IF NOT EXISTS idx_custom ON some_table(some_column);
 --
 -- ============================================================================
 

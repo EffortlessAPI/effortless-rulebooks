@@ -9,67 +9,352 @@
 -- These functions perform lookups via foreign key relationships
 -- ============================================================================
 
-
-CREATE OR REPLACE FUNCTION calc_language_candidates_has_grammar(p_language_candidate_id TEXT)
-RETURNS BOOLEAN AS $$
+CREATE OR REPLACE FUNCTION get_seasons_season_number(p_season_id TEXT)
+RETURNS INTEGER AS $$
 BEGIN
-  RETURN ((SELECT has_syntax FROM language_candidates WHERE language_candidate_id = p_language_candidate_id) = TRUE)::boolean;
+  RETURN (SELECT season_number FROM seasons WHERE season_id = p_season_id);
 END;
 $$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
 
-
-CREATE OR REPLACE FUNCTION calc_language_candidates_question(p_language_candidate_id TEXT)
+CREATE OR REPLACE FUNCTION get_seasons_title(p_season_id TEXT)
 RETURNS TEXT AS $$
 BEGIN
-  RETURN ('Is " & (SELECT NULLIF(name, '''') FROM language_candidates WHERE language_candidate_id = p_language_candidate_id) & " a language?')::text;
+  RETURN (SELECT title FROM seasons WHERE season_id = p_season_id);
 END;
 $$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
 
-
-CREATE OR REPLACE FUNCTION calc_language_candidates_predicted_answer(p_language_candidate_id TEXT)
-RETURNS BOOLEAN AS $$
-BEGIN
-  RETURN ((COALESCE((SELECT has_syntax FROM language_candidates WHERE language_candidate_id = p_language_candidate_id), FALSE) AND COALESCE((SELECT is_parsed FROM language_candidates WHERE language_candidate_id = p_language_candidate_id), FALSE) AND (calc_language_candidates_is_description_of(p_language_candidate_id) = 'true') AND COALESCE((SELECT has_linear_decoding_pressure FROM language_candidates WHERE language_candidate_id = p_language_candidate_id), FALSE) AND COALESCE((SELECT resolves_to_an_ast FROM language_candidates WHERE language_candidate_id = p_language_candidate_id), FALSE) AND COALESCE((SELECT is_stable_ontology_reference FROM language_candidates WHERE language_candidate_id = p_language_candidate_id), FALSE) AND NOT (COALESCE((SELECT can_be_held FROM language_candidates WHERE language_candidate_id = p_language_candidate_id), FALSE)) AND NOT (COALESCE((SELECT has_identity FROM language_candidates WHERE language_candidate_id = p_language_candidate_id), FALSE))))::boolean;
-END;
-$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
-
-
-CREATE OR REPLACE FUNCTION calc_language_candidates_prediction_predicates(p_language_candidate_id TEXT)
+CREATE OR REPLACE FUNCTION get_seasons_description(p_season_id TEXT)
 RETURNS TEXT AS $$
 BEGIN
-  RETURN (CONCAT(CASE WHEN COALESCE((SELECT has_syntax FROM language_candidates WHERE language_candidate_id = p_language_candidate_id), FALSE) THEN 'Has Syntax' ELSE 'No Syntax' END, ' & ', CASE WHEN COALESCE((SELECT is_parsed FROM language_candidates WHERE language_candidate_id = p_language_candidate_id), FALSE) THEN 'Requires Parsing' ELSE 'No Parsing Neede' END, ' & ', CASE WHEN (calc_language_candidates_is_description_of(p_language_candidate_id) = 'true') THEN 'Describes the thing' ELSE 'Is the Thing' END, ' & ', CASE WHEN COALESCE((SELECT has_linear_decoding_pressure FROM language_candidates WHERE language_candidate_id = p_language_candidate_id), FALSE) THEN 'Has Linear Decoding Pressure' ELSE 'No Decoding Pressure' END, ' & ', CASE WHEN COALESCE((SELECT resolves_to_an_ast FROM language_candidates WHERE language_candidate_id = p_language_candidate_id), FALSE) THEN 'Resolves to AST' ELSE 'No AST' END, ', ', CASE WHEN COALESCE((SELECT is_stable_ontology_reference FROM language_candidates WHERE language_candidate_id = p_language_candidate_id), FALSE) THEN 'Is Stable Ontology' ELSE 'Not ''Ontology''' END, ' AND ', CASE WHEN COALESCE((SELECT can_be_held FROM language_candidates WHERE language_candidate_id = p_language_candidate_id), FALSE) THEN 'Can Be Held' ELSE 'Can''t Be Held' END, ', ', CASE WHEN COALESCE((SELECT has_identity FROM language_candidates WHERE language_candidate_id = p_language_candidate_id), FALSE) THEN 'Has Identity' ELSE 'Has no Identity' END))::text;
+  RETURN (SELECT description FROM seasons WHERE season_id = p_season_id);
 END;
 $$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
 
+CREATE OR REPLACE FUNCTION get_seasons_start_airdate(p_season_id TEXT)
+RETURNS TIMESTAMPTZ AS $$
+BEGIN
+  RETURN (SELECT start_airdate FROM seasons WHERE season_id = p_season_id);
+END;
+$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
 
-CREATE OR REPLACE FUNCTION calc_language_candidates_prediction_fail(p_language_candidate_id TEXT)
+CREATE OR REPLACE FUNCTION get_seasons_end_airdate(p_season_id TEXT)
+RETURNS TIMESTAMPTZ AS $$
+BEGIN
+  RETURN (SELECT end_airdate FROM seasons WHERE season_id = p_season_id);
+END;
+$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
+
+CREATE OR REPLACE FUNCTION get_seasons_mock_data_notes(p_season_id TEXT)
 RETURNS TEXT AS $$
 BEGIN
-  RETURN (CONCAT(CASE WHEN NOT (calc_language_candidates_predicted_answer(p_language_candidate_id) = (SELECT is_language FROM language_candidates WHERE language_candidate_id = p_language_candidate_id)) THEN CONCAT((SELECT NULLIF(name, '') FROM language_candidates WHERE language_candidate_id = p_language_candidate_id), ' ', CASE WHEN (calc_language_candidates_predicted_answer(p_language_candidate_id) = 'true') THEN 'Is' ELSE 'Isn''t' END, ' a Family Feud Language, but ', CASE WHEN COALESCE((SELECT is_language FROM language_candidates WHERE language_candidate_id = p_language_candidate_id), FALSE) THEN 'Is' ELSE 'Is Not' END, ' marked as a ''Language Candidate.''') ELSE '' END, CASE WHEN (calc_language_candidates_is_open_closed_world_conflicted(p_language_candidate_id) = 'true') THEN ' - Open World vs. Closed World Conflict.' ELSE '' END))::text;
+  RETURN (SELECT mock_data_notes FROM seasons WHERE season_id = p_season_id);
 END;
 $$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
 
-
-CREATE OR REPLACE FUNCTION calc_language_candidates_is_description_of(p_language_candidate_id TEXT)
-RETURNS BOOLEAN AS $$
+CREATE OR REPLACE FUNCTION get_ratings_rating(p_rating_id TEXT)
+RETURNS INTEGER AS $$
 BEGIN
-  RETURN ((SELECT distance_from_concept FROM language_candidates WHERE language_candidate_id = p_language_candidate_id) > 1)::boolean;
+  RETURN (SELECT rating FROM ratings WHERE rating_id = p_rating_id);
 END;
 $$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
 
-
-CREATE OR REPLACE FUNCTION calc_language_candidates_is_open_closed_world_conflicted(p_language_candidate_id TEXT)
-RETURNS BOOLEAN AS $$
-BEGIN
-  RETURN ((COALESCE((SELECT is_open_world FROM language_candidates WHERE language_candidate_id = p_language_candidate_id), FALSE) AND COALESCE((SELECT is_closed_world FROM language_candidates WHERE language_candidate_id = p_language_candidate_id), FALSE)))::boolean;
-END;
-$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
-
-
-CREATE OR REPLACE FUNCTION calc_language_candidates_relationship_to_concept(p_language_candidate_id TEXT)
+CREATE OR REPLACE FUNCTION get_ratings_users_name(p_rating_id TEXT)
 RETURNS TEXT AS $$
 BEGIN
-  RETURN (CASE WHEN COALESCE((SELECT distance_from_concept FROM language_candidates WHERE language_candidate_id = p_language_candidate_id) = 1, FALSE) THEN 'IsMirrorOf' ELSE 'IsDescriptionOf' END)::text;
+  RETURN (SELECT users_name FROM ratings WHERE rating_id = p_rating_id);
+END;
+$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
+
+CREATE OR REPLACE FUNCTION get_ratings_email_address(p_rating_id TEXT)
+RETURNS TEXT AS $$
+BEGIN
+  RETURN (SELECT email_address FROM ratings WHERE rating_id = p_rating_id);
+END;
+$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
+
+CREATE OR REPLACE FUNCTION get_ratings_phone_nmber(p_rating_id TEXT)
+RETURNS TEXT AS $$
+BEGIN
+  RETURN (SELECT phone_nmber FROM ratings WHERE rating_id = p_rating_id);
+END;
+$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
+
+CREATE OR REPLACE FUNCTION get_ratings_notes(p_rating_id TEXT)
+RETURNS TEXT AS $$
+BEGIN
+  RETURN (SELECT notes FROM ratings WHERE rating_id = p_rating_id);
+END;
+$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
+
+CREATE OR REPLACE FUNCTION get_ratings_created_at(p_rating_id TEXT)
+RETURNS TIMESTAMPTZ AS $$
+BEGIN
+  RETURN (SELECT created_at FROM ratings WHERE rating_id = p_rating_id);
+END;
+$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
+
+
+CREATE OR REPLACE FUNCTION calc_series_name(p_serie_id TEXT)
+RETURNS TEXT AS $$
+BEGIN
+  RETURN (CONCAT((SELECT series_number FROM series WHERE serie_id = p_serie_id), '-', (SELECT NULLIF(show_code, '') FROM series WHERE serie_id = p_serie_id)))::text;
+END;
+$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
+
+
+CREATE OR REPLACE FUNCTION calc_series_total_seasons(p_serie_id TEXT)
+RETURNS INTEGER AS $$
+BEGIN
+  RETURN ((SELECT COUNT(*) FROM seasons WHERE series = (SELECT NULLIF(serie_id, '') FROM series WHERE serie_id = p_serie_id)));
+END;
+$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
+
+
+CREATE OR REPLACE FUNCTION calc_series_total_episodes(p_serie_id TEXT)
+RETURNS NUMERIC AS $$
+BEGIN
+  RETURN ((SELECT COALESCE(SUM(calc_seasons_episode_count(season_id)), 0) FROM seasons WHERE series = p_serie_id));
+END;
+$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
+
+
+CREATE OR REPLACE FUNCTION calc_series_is_long_running(p_serie_id TEXT)
+RETURNS BOOLEAN AS $$
+BEGIN
+  RETURN (calc_series_total_episodes(p_serie_id) > 50)::boolean;
+END;
+$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
+
+
+CREATE OR REPLACE FUNCTION calc_series_rating(p_serie_id TEXT)
+RETURNS NUMERIC AS $$
+BEGIN
+  RETURN ((SELECT COALESCE(SUM(rating), 0) FROM ratings WHERE series = p_serie_id));
+END;
+$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
+
+
+CREATE OR REPLACE FUNCTION calc_series_is_good(p_serie_id TEXT)
+RETURNS BOOLEAN AS $$
+BEGIN
+  RETURN (calc_series_rating(p_serie_id) >= 4.5)::boolean;
+END;
+$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
+
+
+CREATE OR REPLACE FUNCTION calc_seasons_show_title(p_season_id TEXT)
+RETURNS TEXT AS $$
+BEGIN
+  RETURN (SELECT title::text FROM series WHERE serie_id = (SELECT series FROM seasons WHERE season_id = p_season_id));
+END;
+$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
+
+
+CREATE OR REPLACE FUNCTION calc_seasons_show_description(p_season_id TEXT)
+RETURNS TEXT AS $$
+BEGIN
+  RETURN (SELECT description::text FROM series WHERE serie_id = (SELECT series FROM seasons WHERE season_id = p_season_id));
+END;
+$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
+
+
+CREATE OR REPLACE FUNCTION calc_seasons_show_network(p_season_id TEXT)
+RETURNS TEXT AS $$
+BEGIN
+  RETURN (SELECT network::text FROM series WHERE serie_id = (SELECT series FROM seasons WHERE season_id = p_season_id));
+END;
+$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
+
+CREATE OR REPLACE FUNCTION get_series_series_number(p_serie_id TEXT)
+RETURNS INTEGER AS $$
+BEGIN
+  RETURN (SELECT series_number FROM series WHERE serie_id = p_serie_id);
+END;
+$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
+
+CREATE OR REPLACE FUNCTION get_series_show_code(p_serie_id TEXT)
+RETURNS TEXT AS $$
+BEGIN
+  RETURN (SELECT show_code FROM series WHERE serie_id = p_serie_id);
+END;
+$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
+
+CREATE OR REPLACE FUNCTION get_series_title(p_serie_id TEXT)
+RETURNS TEXT AS $$
+BEGIN
+  RETURN (SELECT title FROM series WHERE serie_id = p_serie_id);
+END;
+$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
+
+CREATE OR REPLACE FUNCTION get_series_description(p_serie_id TEXT)
+RETURNS TEXT AS $$
+BEGIN
+  RETURN (SELECT description FROM series WHERE serie_id = p_serie_id);
+END;
+$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
+
+CREATE OR REPLACE FUNCTION get_series_network(p_serie_id TEXT)
+RETURNS TEXT AS $$
+BEGIN
+  RETURN (SELECT network FROM series WHERE serie_id = p_serie_id);
+END;
+$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
+
+CREATE OR REPLACE FUNCTION get_series_premiere_date(p_serie_id TEXT)
+RETURNS TIMESTAMPTZ AS $$
+BEGIN
+  RETURN (SELECT premiere_date FROM series WHERE serie_id = p_serie_id);
+END;
+$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
+
+CREATE OR REPLACE FUNCTION get_series_finale_date(p_serie_id TEXT)
+RETURNS TIMESTAMPTZ AS $$
+BEGIN
+  RETURN (SELECT finale_date FROM series WHERE serie_id = p_serie_id);
+END;
+$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
+
+CREATE OR REPLACE FUNCTION get_episodes_episode_number(p_episode_id TEXT)
+RETURNS INTEGER AS $$
+BEGIN
+  RETURN (SELECT episode_number FROM episodes WHERE episode_id = p_episode_id);
+END;
+$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
+
+CREATE OR REPLACE FUNCTION get_episodes_description(p_episode_id TEXT)
+RETURNS TEXT AS $$
+BEGIN
+  RETURN (SELECT description FROM episodes WHERE episode_id = p_episode_id);
+END;
+$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
+
+CREATE OR REPLACE FUNCTION get_episodes_airdate(p_episode_id TEXT)
+RETURNS TIMESTAMPTZ AS $$
+BEGIN
+  RETURN (SELECT airdate FROM episodes WHERE episode_id = p_episode_id);
+END;
+$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
+
+CREATE OR REPLACE FUNCTION get_episodes_writers(p_episode_id TEXT)
+RETURNS TEXT AS $$
+BEGIN
+  RETURN (SELECT writers FROM episodes WHERE episode_id = p_episode_id);
+END;
+$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
+
+CREATE OR REPLACE FUNCTION get_episodes_director(p_episode_id TEXT)
+RETURNS TEXT AS $$
+BEGIN
+  RETURN (SELECT director FROM episodes WHERE episode_id = p_episode_id);
+END;
+$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
+
+CREATE OR REPLACE FUNCTION get_episodes_runtime_minutes(p_episode_id TEXT)
+RETURNS INTEGER AS $$
+BEGIN
+  RETURN (SELECT runtime_minutes FROM episodes WHERE episode_id = p_episode_id);
+END;
+$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
+
+CREATE OR REPLACE FUNCTION get_episodes_one_sentence_summary(p_episode_id TEXT)
+RETURNS TEXT AS $$
+BEGIN
+  RETURN (SELECT one_sentence_summary FROM episodes WHERE episode_id = p_episode_id);
+END;
+$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
+
+CREATE OR REPLACE FUNCTION get_episodes_favorite_color(p_episode_id TEXT)
+RETURNS TEXT AS $$
+BEGIN
+  RETURN (SELECT favorite_color FROM episodes WHERE episode_id = p_episode_id);
+END;
+$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
+
+
+CREATE OR REPLACE FUNCTION calc_seasons_name(p_season_id TEXT)
+RETURNS TEXT AS $$
+BEGIN
+  RETURN (CONCAT((SELECT NULLIF(series, '') FROM seasons WHERE season_id = p_season_id), '-Season-', (SELECT season_number FROM seasons WHERE season_id = p_season_id)))::text;
+END;
+$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
+
+
+CREATE OR REPLACE FUNCTION calc_seasons_episode_count(p_season_id TEXT)
+RETURNS INTEGER AS $$
+BEGIN
+  RETURN ((SELECT COUNT(*) FROM episodes WHERE season = (SELECT NULLIF(season_id, '') FROM seasons WHERE season_id = p_season_id)));
+END;
+$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
+
+
+CREATE OR REPLACE FUNCTION calc_episodes_season_number(p_episode_id TEXT)
+RETURNS INTEGER AS $$
+BEGIN
+  RETURN (SELECT season_number::integer FROM seasons WHERE season_id = (SELECT season FROM episodes WHERE episode_id = p_episode_id));
+END;
+$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
+
+
+CREATE OR REPLACE FUNCTION calc_episodes_season_title(p_episode_id TEXT)
+RETURNS TEXT AS $$
+BEGIN
+  RETURN (SELECT title::text FROM seasons WHERE season_id = (SELECT season FROM episodes WHERE episode_id = p_episode_id));
+END;
+$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
+
+
+CREATE OR REPLACE FUNCTION calc_episodes_season_description(p_episode_id TEXT)
+RETURNS TEXT AS $$
+BEGIN
+  RETURN (SELECT description::text FROM seasons WHERE season_id = (SELECT season FROM episodes WHERE episode_id = p_episode_id));
+END;
+$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
+
+
+CREATE OR REPLACE FUNCTION calc_episodes_name(p_episode_id TEXT)
+RETURNS TEXT AS $$
+BEGIN
+  RETURN (CONCAT((SELECT NULLIF(season, '') FROM episodes WHERE episode_id = p_episode_id), '-Episode-', CASE WHEN COALESCE((SELECT episode_number FROM episodes WHERE episode_id = p_episode_id) < 10, FALSE) THEN '0' ELSE '' END, (SELECT episode_number FROM episodes WHERE episode_id = p_episode_id)))::text;
+END;
+$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
+
+
+CREATE OR REPLACE FUNCTION calc_ratings_series_name(p_rating_id TEXT)
+RETURNS TEXT AS $$
+BEGIN
+  RETURN calc_series_name((SELECT series FROM ratings WHERE rating_id = p_rating_id));
+END;
+$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
+
+
+CREATE OR REPLACE FUNCTION calc_ratings_episode_name(p_rating_id TEXT)
+RETURNS TEXT AS $$
+BEGIN
+  RETURN calc_episodes_name((SELECT episode FROM ratings WHERE rating_id = p_rating_id));
+END;
+$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
+
+
+CREATE OR REPLACE FUNCTION calc_ratings_episode_season_title(p_rating_id TEXT)
+RETURNS TEXT AS $$
+BEGIN
+  RETURN calc_episodes_season_title((SELECT episode FROM ratings WHERE rating_id = p_rating_id));
+END;
+$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
+
+
+CREATE OR REPLACE FUNCTION calc_ratings_name(p_rating_id TEXT)
+RETURNS TEXT AS $$
+BEGIN
+  RETURN (CONCAT(calc_ratings_display_name(p_rating_id), '-', (SELECT NULLIF(users_name, '') FROM ratings WHERE rating_id = p_rating_id)))::text;
+END;
+$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
+
+
+CREATE OR REPLACE FUNCTION calc_ratings_display_name(p_rating_id TEXT)
+RETURNS TEXT AS $$
+BEGIN
+  RETURN (CASE WHEN (SELECT NULLIF(series, '') FROM ratings WHERE rating_id = p_rating_id) IS NULL THEN CONCAT('Episode: ', calc_ratings_episode_name(p_rating_id)) ELSE CONCAT('Series: ', calc_ratings_series_name(p_rating_id)) END)::text;
 END;
 $$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
 
@@ -77,4 +362,37 @@ $$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
 -- MANY-SIDE RELATIONSHIP FUNCTIONS
 -- These functions aggregate child records for many-side relationships
 -- ============================================================================
+
+CREATE OR REPLACE FUNCTION calc_series_seasons(p_serie_id TEXT)
+RETURNS TEXT AS $$
+BEGIN
+  RETURN (
+    SELECT STRING_AGG(season_id::TEXT, ', ' ORDER BY season_id)
+    FROM seasons
+    WHERE series = p_serie_id
+  );
+END;
+$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
+
+CREATE OR REPLACE FUNCTION calc_series_series_ratings(p_serie_id TEXT)
+RETURNS TEXT AS $$
+BEGIN
+  RETURN (
+    SELECT STRING_AGG(rating_id::TEXT, ', ' ORDER BY rating_id)
+    FROM ratings
+    WHERE series = p_serie_id
+  );
+END;
+$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
+
+CREATE OR REPLACE FUNCTION calc_seasons_episodes(p_season_id TEXT)
+RETURNS TEXT AS $$
+BEGIN
+  RETURN (
+    SELECT STRING_AGG(episode_id::TEXT, ', ' ORDER BY episode_id)
+    FROM episodes
+    WHERE season = p_season_id
+  );
+END;
+$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
 

@@ -1,16 +1,16 @@
 {
   "ShowHidden": false,
   "ShowAllFiles": false,
-  "Name": "is-everything-a-language",
+  "Name": "DEMO: StarTrek TV Shows",
   "Description": "IMPORTANT!!!! ** BASIC baseId: applThn0rikpCR9C3, ADVANCED baseId: appwN9EAp8IeIxM23",
   "ProjectSettings": [
     {
       "Name": "baseId",
-      "Value": "appC8XTj95lubn6hz"
+      "Value": "appqwWQxIWFtyDsiL"
     },
     {
       "Name": "project-name",
-      "Value": "is-everything-a-language"
+      "Value": "DEMO: StarTrek TV Shows"
     },
     {
       "Name": "_apikey_",

@@ -1,5 +1,5 @@
 -- ============================================================================
--- SOURCE: ERBCustomizations table, record: 03b-customize-views.sql
+-- SOURCE: ERBCustomizations table, record: 03c-customize-views.sql
 -- If you see SQL errors below, check this customization in Airtable
 -- ============================================================================
 
@@ -9,10 +9,44 @@
 -- This file is for YOUR custom views that should persist across
 -- regeneration of the base ERB files.
 --
+-- USE THIS FILE FOR:
+--   - Additional views not defined in the rulebook
+--   - Specialized views for reporting or dashboards
+--   - Views that combine data from multiple base views
+--   - Materialized views for performance optimization
+--
 -- IMPORTANT:
 --   - This file runs AFTER 03-create-views.sql
 --   - All base vw_* views already exist when this runs
 --   - This file will NOT be overwritten by ERB regeneration
+--   - If you need to EXTEND a base view, create a new view that selects from it
+--
+-- ERB VIEW PATTERN:
+--   - Base views (vw_*) contain all denormalized data + calculated fields
+--   - READ from views, WRITE to base tables
+--   - Never JOIN in application code - extend views instead
+--
+-- EXAMPLES:
+--
+--   -- Custom reporting view
+--   CREATE OR REPLACE VIEW vw_monthly_summary AS
+--   SELECT
+--       DATE_TRUNC('month', created_at) AS month,
+--       COUNT(*) AS record_count,
+--       SUM(amount) AS total_amount
+--   FROM vw_orders
+--   GROUP BY DATE_TRUNC('month', created_at);
+--
+--   -- Extended view with additional computed fields
+--   CREATE OR REPLACE VIEW vw_orders_extended AS
+--   SELECT
+--       o.*,
+--       calc_orders_total_with_tax(o.order_id) AS total_with_tax
+--   FROM vw_orders o;
+--
+--   -- Materialized view for heavy queries
+--   CREATE MATERIALIZED VIEW IF NOT EXISTS mv_dashboard_stats AS
+--   SELECT ... FROM vw_orders ...;
 --
 -- ============================================================================
 

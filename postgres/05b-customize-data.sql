@@ -1,5 +1,5 @@
 -- ============================================================================
--- SOURCE: ERBCustomizations table, record: 05b-customize-data.sql
+-- SOURCE: ERBCustomizations table, record: 03e-customize-data.sql
 -- If you see SQL errors below, check this customization in Airtable
 -- ============================================================================
 
@@ -9,10 +9,45 @@
 -- This file is for YOUR custom seed data that should persist across
 -- regeneration of the base ERB files.
 --
+-- USE THIS FILE FOR:
+--   - Additional seed data for custom tables
+--   - Environment-specific configuration data
+--   - Test data for development
+--   - Data migrations and transformations
+--
 -- IMPORTANT:
 --   - This file runs AFTER 05-insert-data.sql
 --   - Base seed data already exists when this runs
 --   - This file will NOT be overwritten by ERB regeneration
+--   - Use INSERT ... ON CONFLICT for idempotent inserts
+--
+-- IDEMPOTENT INSERTS:
+--   Use ON CONFLICT to make scripts safe to run multiple times:
+--
+--   INSERT INTO table (id, field) VALUES ('x', 'y')
+--   ON CONFLICT (id) DO UPDATE SET field = EXCLUDED.field;
+--
+--   Or to skip if exists:
+--   INSERT INTO table (id, field) VALUES ('x', 'y')
+--   ON CONFLICT (id) DO NOTHING;
+--
+-- EXAMPLES:
+--
+--   -- Add custom configuration
+--   INSERT INTO settings (setting_id, key, value) VALUES
+--       ('cfg-1', 'feature_flag_x', 'enabled'),
+--       ('cfg-2', 'max_retries', '3')
+--   ON CONFLICT (setting_id) DO UPDATE SET value = EXCLUDED.value;
+--
+--   -- Add test users for development
+--   INSERT INTO users (user_id, email, role) VALUES
+--       ('test-admin', 'admin@test.local', 'admin'),
+--       ('test-user', 'user@test.local', 'user')
+--   ON CONFLICT (user_id) DO NOTHING;
+--
+--   -- Data migration example
+--   UPDATE orders SET status = 'archived'
+--   WHERE created_at < NOW() - INTERVAL '1 year';
 --
 -- ============================================================================
 

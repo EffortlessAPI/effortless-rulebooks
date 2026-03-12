@@ -1,51 +1,58 @@
 -- ============================================================================
--- SOURCE: ERBCustomizations table, record: 02b-customize-functions.sql
+-- SOURCE: ERBCustomizations table, record: 03b-customize-functions.sql
 -- If you see SQL errors below, check this customization in Airtable
 -- ============================================================================
 
--- Prediction Fail: Returns TRUE when predicted_answer doesn't match is_language
-DROP FUNCTION calc_language_candidates_question;
+-- ============================================================================
+-- CUSTOMIZE FUNCTIONS - User-defined calculation functions
+-- ============================================================================
+-- This file is for YOUR custom PostgreSQL functions that should persist
+-- across regeneration of the base ERB files.
+--
+-- USE THIS FILE FOR:
+--   - Additional calc_* functions for computed fields
+--   - Helper functions for complex business logic
+--   - Utility functions for data transformation
+--   - Trigger functions for custom automation
+--
+-- IMPORTANT:
+--   - This file runs AFTER 02-create-functions.sql
+--   - Base ERB calc functions already exist when this runs
+--   - This file will NOT be overwritten by ERB regeneration
+--   - Functions defined here can be used in 03b-customize-views.sql
+--
+-- ERB FUNCTION NAMING CONVENTIONS:
+--   - calc_tablename_fieldname() - Returns a computed value for a view field
+--   - Helper functions can use any naming convention
+--
+-- EXAMPLES:
+--
+--   -- Custom calculation function for a view field
+--   CREATE OR REPLACE FUNCTION calc_orders_total_with_tax(p_order_id TEXT)
+--   RETURNS NUMERIC AS $$
+--   BEGIN
+--       RETURN (SELECT subtotal * 1.08 FROM orders WHERE order_id = p_order_id);
+--   END;
+--   $$ LANGUAGE plpgsql STABLE;
+--
+--   -- Utility function
+--   CREATE OR REPLACE FUNCTION format_currency(p_amount NUMERIC)
+--   RETURNS TEXT AS $$
+--   BEGIN
+--       RETURN '$' || TO_CHAR(p_amount, 'FM999,999,990.00');
+--   END;
+--   $$ LANGUAGE plpgsql IMMUTABLE;
+--
+-- ============================================================================
 
-CREATE OR REPLACE FUNCTION public.calc_language_candidates_question(p_language_candidate_id text)
- RETURNS text
+-- Your custom functions go here:
+
+CREATE OR REPLACE FUNCTION public.calc_series_rating(p_serie_id text)
+ RETURNS numeric
  LANGUAGE plpgsql
  STABLE SECURITY DEFINER
 AS $function$
 BEGIN
-  RETURN ('Is ' || (SELECT NULLIF(name, '''') FROM language_candidates WHERE language_candidate_id = p_language_candidate_id) || ' a language?')::text;
+  RETURN ((SELECT COALESCE(COUNT(rating), 0) FROM ratings WHERE series = p_serie_id));
 END;
-$function$;
-
-CREATE OR REPLACE FUNCTION public.calc_language_candidates_bio_hockett_score(p_language_candidate_id text)
- RETURNS integer
- LANGUAGE plpgsql
- STABLE SECURITY DEFINER
-AS $function$
-DECLARE
-    candidate_record RECORD;
-BEGIN
-    -- Select the required attributes for the given language candidate ID
-    SELECT bio_has_semanticity, bio_has_arbitrariness, bio_has_discreteness, 
-           bio_has_duality_of_patterning, bio_has_productivity, 
-           bio_has_displacement, bio_has_cultural_transmission, 
-           bio_has_interchangeability, bio_has_feedback, 
-           bio_has_broadcast_transmission, bio_has_rapid_fading
-    INTO candidate_record
-    FROM language_candidates
-    WHERE language_candidate_id = p_language_candidate_id;
-
-    -- Calculate and return the Hockett score by summing up the boolean attributes
-    RETURN 
-        COALESCE(candidate_record.bio_has_semanticity, FALSE)::int +
-        COALESCE(candidate_record.bio_has_arbitrariness, FALSE)::int +
-        COALESCE(candidate_record.bio_has_discreteness, FALSE)::int +
-        COALESCE(candidate_record.bio_has_duality_of_patterning, FALSE)::int +
-        COALESCE(candidate_record.bio_has_productivity, FALSE)::int +
-        COALESCE(candidate_record.bio_has_displacement, FALSE)::int +
-        COALESCE(candidate_record.bio_has_cultural_transmission, FALSE)::int +
-        COALESCE(candidate_record.bio_has_interchangeability, FALSE)::int +
-        COALESCE(candidate_record.bio_has_feedback, FALSE)::int +
-        COALESCE(candidate_record.bio_has_broadcast_transmission, FALSE)::int +
-        COALESCE(candidate_record.bio_has_rapid_fading, FALSE)::int;
-END;
-$function$;
+$function$
