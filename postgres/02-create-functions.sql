@@ -9,280 +9,67 @@
 -- These functions perform lookups via foreign key relationships
 -- ============================================================================
 
-CREATE OR REPLACE FUNCTION get_workflow_steps_display_name(p_workflow_step_id TEXT)
-RETURNS TEXT AS $$
-BEGIN
-  RETURN (SELECT display_name FROM workflow_steps WHERE workflow_step_id = p_workflow_step_id);
-END;
-$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
 
-CREATE OR REPLACE FUNCTION get_workflow_steps_sequence_position(p_workflow_step_id TEXT)
-RETURNS INTEGER AS $$
-BEGIN
-  RETURN (SELECT sequence_position FROM workflow_steps WHERE workflow_step_id = p_workflow_step_id);
-END;
-$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
-
-CREATE OR REPLACE FUNCTION get_workflow_steps_requires_human_approval(p_workflow_step_id TEXT)
+CREATE OR REPLACE FUNCTION calc_language_candidates_has_grammar(p_language_candidate_id TEXT)
 RETURNS BOOLEAN AS $$
 BEGIN
-  RETURN (SELECT requires_human_approval FROM workflow_steps WHERE workflow_step_id = p_workflow_step_id);
+  RETURN ((SELECT has_syntax FROM language_candidates WHERE language_candidate_id = p_language_candidate_id) = TRUE)::boolean;
 END;
 $$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
 
 
-CREATE OR REPLACE FUNCTION calc_workflows_name(p_workflow_id TEXT)
+CREATE OR REPLACE FUNCTION calc_language_candidates_question(p_language_candidate_id TEXT)
 RETURNS TEXT AS $$
 BEGIN
-  RETURN (REPLACE(LOWER((SELECT NULLIF(display_name, '') FROM workflows WHERE workflow_id = p_workflow_id)), ' ', '-'))::text;
+  RETURN ('Is " & (SELECT NULLIF(name, '''') FROM language_candidates WHERE language_candidate_id = p_language_candidate_id) & " a language?')::text;
 END;
 $$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
 
 
-CREATE OR REPLACE FUNCTION calc_workflows_count_of_steps(p_workflow_id TEXT)
-RETURNS INTEGER AS $$
-BEGIN
-  RETURN ((SELECT COUNT(*) FROM workflow_steps WHERE workflow = (SELECT NULLIF(workflow_id, '') FROM workflows WHERE workflow_id = p_workflow_id)));
-END;
-$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
-
-
-CREATE OR REPLACE FUNCTION calc_workflows_has_more_than1_step(p_workflow_id TEXT)
+CREATE OR REPLACE FUNCTION calc_language_candidates_predicted_answer(p_language_candidate_id TEXT)
 RETURNS BOOLEAN AS $$
 BEGIN
-  RETURN (calc_workflows_count_of_steps(p_workflow_id) > 1)::boolean;
+  RETURN ((COALESCE((SELECT has_syntax FROM language_candidates WHERE language_candidate_id = p_language_candidate_id), FALSE) AND COALESCE((SELECT is_parsed FROM language_candidates WHERE language_candidate_id = p_language_candidate_id), FALSE) AND (calc_language_candidates_is_description_of(p_language_candidate_id) = 'true') AND COALESCE((SELECT has_linear_decoding_pressure FROM language_candidates WHERE language_candidate_id = p_language_candidate_id), FALSE) AND COALESCE((SELECT resolves_to_an_ast FROM language_candidates WHERE language_candidate_id = p_language_candidate_id), FALSE) AND COALESCE((SELECT is_stable_ontology_reference FROM language_candidates WHERE language_candidate_id = p_language_candidate_id), FALSE) AND NOT (COALESCE((SELECT can_be_held FROM language_candidates WHERE language_candidate_id = p_language_candidate_id), FALSE)) AND NOT (COALESCE((SELECT has_identity FROM language_candidates WHERE language_candidate_id = p_language_candidate_id), FALSE))))::boolean;
 END;
 $$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
 
 
-CREATE OR REPLACE FUNCTION calc_workflow_steps_assigned_role_department(p_workflow_step_id TEXT)
+CREATE OR REPLACE FUNCTION calc_language_candidates_prediction_predicates(p_language_candidate_id TEXT)
 RETURNS TEXT AS $$
 BEGIN
-  RETURN (SELECT owned_by::text FROM roles WHERE role_id = (SELECT assigned_role FROM workflow_steps WHERE workflow_step_id = p_workflow_step_id));
+  RETURN (CONCAT(CASE WHEN COALESCE((SELECT has_syntax FROM language_candidates WHERE language_candidate_id = p_language_candidate_id), FALSE) THEN 'Has Syntax' ELSE 'No Syntax' END, ' & ', CASE WHEN COALESCE((SELECT is_parsed FROM language_candidates WHERE language_candidate_id = p_language_candidate_id), FALSE) THEN 'Requires Parsing' ELSE 'No Parsing Neede' END, ' & ', CASE WHEN (calc_language_candidates_is_description_of(p_language_candidate_id) = 'true') THEN 'Describes the thing' ELSE 'Is the Thing' END, ' & ', CASE WHEN COALESCE((SELECT has_linear_decoding_pressure FROM language_candidates WHERE language_candidate_id = p_language_candidate_id), FALSE) THEN 'Has Linear Decoding Pressure' ELSE 'No Decoding Pressure' END, ' & ', CASE WHEN COALESCE((SELECT resolves_to_an_ast FROM language_candidates WHERE language_candidate_id = p_language_candidate_id), FALSE) THEN 'Resolves to AST' ELSE 'No AST' END, ', ', CASE WHEN COALESCE((SELECT is_stable_ontology_reference FROM language_candidates WHERE language_candidate_id = p_language_candidate_id), FALSE) THEN 'Is Stable Ontology' ELSE 'Not ''Ontology''' END, ' AND ', CASE WHEN COALESCE((SELECT can_be_held FROM language_candidates WHERE language_candidate_id = p_language_candidate_id), FALSE) THEN 'Can Be Held' ELSE 'Can''t Be Held' END, ', ', CASE WHEN COALESCE((SELECT has_identity FROM language_candidates WHERE language_candidate_id = p_language_candidate_id), FALSE) THEN 'Has Identity' ELSE 'Has no Identity' END))::text;
 END;
 $$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
 
 
-CREATE OR REPLACE FUNCTION calc_workflow_steps_approval_gate_escalation_threshold_hours(p_workflow_step_id TEXT)
-RETURNS INTEGER AS $$
-BEGIN
-  RETURN (SELECT escalation_threshold_hours::integer FROM approvals WHERE approval_id = (SELECT approval_gate FROM workflow_steps WHERE workflow_step_id = p_workflow_step_id));
-END;
-$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
-
-CREATE OR REPLACE FUNCTION get_workflows_display_name(p_workflow_id TEXT)
+CREATE OR REPLACE FUNCTION calc_language_candidates_prediction_fail(p_language_candidate_id TEXT)
 RETURNS TEXT AS $$
 BEGIN
-  RETURN (SELECT display_name FROM workflows WHERE workflow_id = p_workflow_id);
+  RETURN (CONCAT(CASE WHEN NOT (calc_language_candidates_predicted_answer(p_language_candidate_id) = (SELECT is_language FROM language_candidates WHERE language_candidate_id = p_language_candidate_id)) THEN CONCAT((SELECT NULLIF(name, '') FROM language_candidates WHERE language_candidate_id = p_language_candidate_id), ' ', CASE WHEN (calc_language_candidates_predicted_answer(p_language_candidate_id) = 'true') THEN 'Is' ELSE 'Isn''t' END, ' a Family Feud Language, but ', CASE WHEN COALESCE((SELECT is_language FROM language_candidates WHERE language_candidate_id = p_language_candidate_id), FALSE) THEN 'Is' ELSE 'Is Not' END, ' marked as a ''Language Candidate.''') ELSE '' END, CASE WHEN (calc_language_candidates_is_open_closed_world_conflicted(p_language_candidate_id) = 'true') THEN ' - Open World vs. Closed World Conflict.' ELSE '' END))::text;
 END;
 $$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
 
-CREATE OR REPLACE FUNCTION get_workflows_title(p_workflow_id TEXT)
+
+CREATE OR REPLACE FUNCTION calc_language_candidates_is_description_of(p_language_candidate_id TEXT)
+RETURNS BOOLEAN AS $$
+BEGIN
+  RETURN ((SELECT distance_from_concept FROM language_candidates WHERE language_candidate_id = p_language_candidate_id) > 1)::boolean;
+END;
+$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
+
+
+CREATE OR REPLACE FUNCTION calc_language_candidates_is_open_closed_world_conflicted(p_language_candidate_id TEXT)
+RETURNS BOOLEAN AS $$
+BEGIN
+  RETURN ((COALESCE((SELECT is_open_world FROM language_candidates WHERE language_candidate_id = p_language_candidate_id), FALSE) AND COALESCE((SELECT is_closed_world FROM language_candidates WHERE language_candidate_id = p_language_candidate_id), FALSE)))::boolean;
+END;
+$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
+
+
+CREATE OR REPLACE FUNCTION calc_language_candidates_relationship_to_concept(p_language_candidate_id TEXT)
 RETURNS TEXT AS $$
 BEGIN
-  RETURN (SELECT title FROM workflows WHERE workflow_id = p_workflow_id);
-END;
-$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
-
-CREATE OR REPLACE FUNCTION get_workflows_description(p_workflow_id TEXT)
-RETURNS TEXT AS $$
-BEGIN
-  RETURN (SELECT description FROM workflows WHERE workflow_id = p_workflow_id);
-END;
-$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
-
-CREATE OR REPLACE FUNCTION get_workflows_identifier(p_workflow_id TEXT)
-RETURNS TEXT AS $$
-BEGIN
-  RETURN (SELECT identifier FROM workflows WHERE workflow_id = p_workflow_id);
-END;
-$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
-
-CREATE OR REPLACE FUNCTION get_workflows_modified(p_workflow_id TEXT)
-RETURNS TIMESTAMPTZ AS $$
-BEGIN
-  RETURN (SELECT modified FROM workflows WHERE workflow_id = p_workflow_id);
-END;
-$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
-
-CREATE OR REPLACE FUNCTION get_roles_display_name(p_role_id TEXT)
-RETURNS TEXT AS $$
-BEGIN
-  RETURN (SELECT display_name FROM roles WHERE role_id = p_role_id);
-END;
-$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
-
-CREATE OR REPLACE FUNCTION get_roles_label(p_role_id TEXT)
-RETURNS TEXT AS $$
-BEGIN
-  RETURN (SELECT label FROM roles WHERE role_id = p_role_id);
-END;
-$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
-
-CREATE OR REPLACE FUNCTION get_roles_comment(p_role_id TEXT)
-RETURNS TEXT AS $$
-BEGIN
-  RETURN (SELECT comment FROM roles WHERE role_id = p_role_id);
-END;
-$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
-
-CREATE OR REPLACE FUNCTION get_approvals_display_name(p_approval_id TEXT)
-RETURNS TEXT AS $$
-BEGIN
-  RETURN (SELECT display_name FROM approvals WHERE approval_id = p_approval_id);
-END;
-$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
-
-CREATE OR REPLACE FUNCTION get_approvals_escalation_threshold_hours(p_approval_id TEXT)
-RETURNS INTEGER AS $$
-BEGIN
-  RETURN (SELECT escalation_threshold_hours FROM approvals WHERE approval_id = p_approval_id);
-END;
-$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
-
-CREATE OR REPLACE FUNCTION get_precedes_steps_name(p_precedes_step_id TEXT)
-RETURNS TEXT AS $$
-BEGIN
-  RETURN (SELECT name FROM precedes_steps WHERE precedes_step_id = p_precedes_step_id);
-END;
-$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
-
-CREATE OR REPLACE FUNCTION get_precedes_steps_step_number(p_precedes_step_id TEXT)
-RETURNS INTEGER AS $$
-BEGIN
-  RETURN (SELECT step_number FROM precedes_steps WHERE precedes_step_id = p_precedes_step_id);
-END;
-$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
-
-
-CREATE OR REPLACE FUNCTION calc_workflow_steps_name(p_workflow_step_id TEXT)
-RETURNS TEXT AS $$
-BEGIN
-  RETURN (REPLACE(LOWER((SELECT NULLIF(display_name, '') FROM workflow_steps WHERE workflow_step_id = p_workflow_step_id)), ' ', '-'))::text;
-END;
-$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
-
-
-CREATE OR REPLACE FUNCTION calc_workflow_steps_execution_actor_type(p_workflow_step_id TEXT)
-RETURNS TEXT AS $$
-BEGIN
-  RETURN (CASE WHEN calc_workflow_steps_assigned_role_department(p_workflow_step_id) = 'HumanAgent' THEN 'HumanAgent' ELSE CASE WHEN calc_workflow_steps_assigned_role_department(p_workflow_step_id) = 'AIAgent' THEN 'AIAgent' ELSE CASE WHEN calc_workflow_steps_assigned_role_department(p_workflow_step_id) = 'AutomatedPipeline' THEN 'AutomatedPipeline' ELSE NULL END END END)::text;
-END;
-$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
-
-
-CREATE OR REPLACE FUNCTION calc_approvals_name(p_approval_id TEXT)
-RETURNS TEXT AS $$
-BEGIN
-  RETURN (REPLACE(LOWER((SELECT NULLIF(display_name, '') FROM approvals WHERE approval_id = p_approval_id)), ' ', '-'))::text;
-END;
-$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
-
-
-CREATE OR REPLACE FUNCTION calc_precedes_steps_display_name(p_precedes_step_id TEXT)
-RETURNS TEXT AS $$
-BEGIN
-  RETURN (CONCAT('Step-', (SELECT step_number FROM precedes_steps WHERE precedes_step_id = p_precedes_step_id)))::text;
-END;
-$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
-
-CREATE OR REPLACE FUNCTION get_human_agents_name(p_human_agent_id TEXT)
-RETURNS TEXT AS $$
-BEGIN
-  RETURN (SELECT name FROM human_agents WHERE human_agent_id = p_human_agent_id);
-END;
-$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
-
-CREATE OR REPLACE FUNCTION get_human_agents_display_name(p_human_agent_id TEXT)
-RETURNS TEXT AS $$
-BEGIN
-  RETURN (SELECT display_name FROM human_agents WHERE human_agent_id = p_human_agent_id);
-END;
-$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
-
-CREATE OR REPLACE FUNCTION get_human_agents_mbox(p_human_agent_id TEXT)
-RETURNS TEXT AS $$
-BEGIN
-  RETURN (SELECT mbox FROM human_agents WHERE human_agent_id = p_human_agent_id);
-END;
-$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
-
-CREATE OR REPLACE FUNCTION get_ai_agents_name(p_ai_agent_id TEXT)
-RETURNS TEXT AS $$
-BEGIN
-  RETURN (SELECT name FROM ai_agents WHERE ai_agent_id = p_ai_agent_id);
-END;
-$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
-
-CREATE OR REPLACE FUNCTION get_ai_agents_title(p_ai_agent_id TEXT)
-RETURNS TEXT AS $$
-BEGIN
-  RETURN (SELECT title FROM ai_agents WHERE ai_agent_id = p_ai_agent_id);
-END;
-$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
-
-CREATE OR REPLACE FUNCTION get_ai_agents_display_name(p_ai_agent_id TEXT)
-RETURNS TEXT AS $$
-BEGIN
-  RETURN (SELECT display_name FROM ai_agents WHERE ai_agent_id = p_ai_agent_id);
-END;
-$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
-
-CREATE OR REPLACE FUNCTION get_ai_agents_model_version(p_ai_agent_id TEXT)
-RETURNS TEXT AS $$
-BEGIN
-  RETURN (SELECT model_version FROM ai_agents WHERE ai_agent_id = p_ai_agent_id);
-END;
-$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
-
-CREATE OR REPLACE FUNCTION get_automated_pipelines_name(p_automated_pipeline_id TEXT)
-RETURNS TEXT AS $$
-BEGIN
-  RETURN (SELECT name FROM automated_pipelines WHERE automated_pipeline_id = p_automated_pipeline_id);
-END;
-$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
-
-CREATE OR REPLACE FUNCTION get_automated_pipelines_description(p_automated_pipeline_id TEXT)
-RETURNS TEXT AS $$
-BEGIN
-  RETURN (SELECT description FROM automated_pipelines WHERE automated_pipeline_id = p_automated_pipeline_id);
-END;
-$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
-
-CREATE OR REPLACE FUNCTION get_automated_pipelines_display_name(p_automated_pipeline_id TEXT)
-RETURNS TEXT AS $$
-BEGIN
-  RETURN (SELECT display_name FROM automated_pipelines WHERE automated_pipeline_id = p_automated_pipeline_id);
-END;
-$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
-
-CREATE OR REPLACE FUNCTION get_departments_title(p_department_id TEXT)
-RETURNS TEXT AS $$
-BEGIN
-  RETURN (SELECT title FROM departments WHERE department_id = p_department_id);
-END;
-$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
-
-CREATE OR REPLACE FUNCTION get_departments_display_name(p_department_id TEXT)
-RETURNS TEXT AS $$
-BEGIN
-  RETURN (SELECT display_name FROM departments WHERE department_id = p_department_id);
-END;
-$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
-
-
-CREATE OR REPLACE FUNCTION calc_roles_name(p_role_id TEXT)
-RETURNS TEXT AS $$
-BEGIN
-  RETURN (LOWER((SELECT NULLIF(display_name, '') FROM roles WHERE role_id = p_role_id)))::text;
-END;
-$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
-
-
-CREATE OR REPLACE FUNCTION calc_departments_name(p_department_id TEXT)
-RETURNS TEXT AS $$
-BEGIN
-  RETURN (REPLACE(LOWER((SELECT NULLIF(display_name, '') FROM departments WHERE department_id = p_department_id)), ' ', '-'))::text;
+  RETURN (CASE WHEN COALESCE((SELECT distance_from_concept FROM language_candidates WHERE language_candidate_id = p_language_candidate_id) = 1, FALSE) THEN 'IsMirrorOf' ELSE 'IsDescriptionOf' END)::text;
 END;
 $$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
 
@@ -290,37 +77,4 @@ $$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
 -- MANY-SIDE RELATIONSHIP FUNCTIONS
 -- These functions aggregate child records for many-side relationships
 -- ============================================================================
-
-CREATE OR REPLACE FUNCTION calc_workflows_workflow_steps(p_workflow_id TEXT)
-RETURNS TEXT AS $$
-BEGIN
-  RETURN (
-    SELECT STRING_AGG(workflow_step_id::TEXT, ', ' ORDER BY workflow_step_id)
-    FROM workflow_steps
-    WHERE workflow = p_workflow_id
-  );
-END;
-$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
-
-CREATE OR REPLACE FUNCTION calc_approvals_workflow_steps(p_approval_id TEXT)
-RETURNS TEXT AS $$
-BEGIN
-  RETURN (
-    SELECT STRING_AGG(workflow_step_id::TEXT, ', ' ORDER BY workflow_step_id)
-    FROM workflow_steps
-    WHERE approval_gate = p_approval_id
-  );
-END;
-$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
-
-CREATE OR REPLACE FUNCTION calc_roles_workflow_steps(p_role_id TEXT)
-RETURNS TEXT AS $$
-BEGIN
-  RETURN (
-    SELECT STRING_AGG(workflow_step_id::TEXT, ', ' ORDER BY workflow_step_id)
-    FROM workflow_steps
-    WHERE assigned_role = p_role_id
-  );
-END;
-$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
 
