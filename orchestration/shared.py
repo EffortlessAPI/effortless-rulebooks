@@ -346,6 +346,45 @@ def load_related_data(project_root: Path, related_table: str) -> list:
         return json.load(f)
 
 
+def estimate_llm_time(rulebook: dict, seconds_per_unit: float = 2.0) -> str:
+    """
+    Estimate how long LLM-based testing will take based on rulebook size.
+
+    Calculation: sum of (fields * rows) for each entity
+    Assumes each unit takes ~seconds_per_unit seconds.
+    Returns time rounded UP to nearest 15 seconds in "m:ss" format.
+
+    Args:
+        rulebook: The loaded rulebook dictionary
+        seconds_per_unit: Estimated seconds per field*row unit (default 2.0)
+
+    Returns:
+        Formatted string like "2:30" (2 minutes, 30 seconds)
+    """
+    import math
+    entities = discover_entities(rulebook)
+    total_units = 0
+
+    for entity in entities:
+        schema = get_entity_schema(rulebook, entity)
+        data = get_entity_data(rulebook, entity)
+        num_fields = len(schema)
+        num_rows = len(data)
+        total_units += num_fields * num_rows
+
+    # Calculate seconds and round UP to nearest 15
+    total_seconds = int(total_units * seconds_per_unit)
+    rounded_seconds = math.ceil(total_seconds / 15) * 15
+
+    # Ensure at least 15 seconds
+    rounded_seconds = max(15, rounded_seconds)
+
+    # Format as m:ss
+    minutes = rounded_seconds // 60
+    seconds = rounded_seconds % 60
+    return f"{minutes}:{seconds:02d}"
+
+
 def compute_aggregations(records: list, entity_name: str, rulebook: dict, project_root: Path) -> list:
     """
     Compute aggregation fields for a list of records.

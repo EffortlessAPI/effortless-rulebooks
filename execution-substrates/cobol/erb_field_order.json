@@ -1,0 +1,18 @@
+{
+  "Customers": [
+    "CustomerId",
+    "Customer",
+    "EmailAddress",
+    "FirstName",
+    "LastName",
+    "FullName"
+  ],
+  "customers": [
+    "CustomerId",
+    "Customer",
+    "EmailAddress",
+    "FirstName",
+    "LastName",
+    "FullName"
+  ]
+}

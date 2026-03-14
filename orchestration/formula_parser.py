@@ -1169,3 +1169,126 @@ def evaluate_field(formula: str, record: dict, field_name_mapping: dict = None) 
         context[key] = value
 
     return evaluate(formula, context)
+
+
+# =============================================================================
+# COBOL Code Generation
+# =============================================================================
+
+def to_cobol_name(name: str) -> str:
+    """Convert a field name to COBOL format (uppercase, hyphens)."""
+    # Convert camelCase/PascalCase to hyphen-separated uppercase
+    import re
+    # Insert hyphen before uppercase letters (except at start)
+    s1 = re.sub('(.)([A-Z][a-z]+)', r'\1-\2', name)
+    s2 = re.sub('([a-z0-9])([A-Z])', r'\1-\2', s1)
+    # Replace underscores with hyphens and uppercase
+    return s2.replace('_', '-').upper()
+
+
+def compile_to_cobol(ast: ASTNode, prefix: str = "RECORD") -> str:
+    """
+    Compile an AST to COBOL expression.
+    Returns COBOL code that can be used in MOVE or condition statements.
+    """
+    if isinstance(ast, Literal):
+        if isinstance(ast.value, str):
+            # COBOL string literal (escape quotes by doubling)
+            escaped = ast.value.replace('"', '""')
+            return f'"{escaped}"'
+        elif isinstance(ast.value, bool):
+            return '"true"' if ast.value else '"false"'
+        elif isinstance(ast.value, (int, float)):
+            return str(ast.value)
+        return f'"{ast.value}"'
+
+    if isinstance(ast, FieldRef):
+        cobol_name = to_cobol_name(ast.name)
+        return f'{prefix}-{cobol_name}'
+
+    if isinstance(ast, UnaryOp):
+        if ast.op == 'NOT':
+            operand = compile_to_cobol(ast.operand, prefix)
+            # NOT in COBOL context - handled in IF statement
+            return f'NOT ({operand} = "true")'
+        raise ValueError(f"Unknown unary operator: {ast.op}")
+
+    if isinstance(ast, BinaryOp):
+        left = compile_to_cobol(ast.left, prefix)
+        right = compile_to_cobol(ast.right, prefix)
+        op_map = {
+            '=': '=', '<>': 'NOT =', '<': '<', '<=': '<=', '>': '>', '>=': '>=',
+            '+': '+', '-': '-', '*': '*', '/': '/'
+        }
+        if ast.op == '&':
+            # String concatenation - return as tuple for special handling
+            return ('CONCAT', left, right)
+        return f'({left} {op_map.get(ast.op, ast.op)} {right})'
+
+    if isinstance(ast, FuncCall):
+        if ast.name == 'AND':
+            conditions = [compile_to_cobol(arg, prefix) for arg in ast.args]
+            # Wrap each condition properly for COBOL
+            wrapped = []
+            for cond in conditions:
+                if isinstance(cond, tuple) and cond[0] == 'CONDITION':
+                    wrapped.append(cond[1])
+                elif ' = ' in str(cond) or ' NOT ' in str(cond):
+                    wrapped.append(f'({cond})')
+                else:
+                    wrapped.append(f'({cond} = "true")')
+            return '(' + ' AND '.join(wrapped) + ')'
+
+        if ast.name == 'OR':
+            conditions = [compile_to_cobol(arg, prefix) for arg in ast.args]
+            wrapped = []
+            for cond in conditions:
+                if isinstance(cond, tuple) and cond[0] == 'CONDITION':
+                    wrapped.append(cond[1])
+                elif ' = ' in str(cond) or ' NOT ' in str(cond):
+                    wrapped.append(f'({cond})')
+                else:
+                    wrapped.append(f'({cond} = "true")')
+            return '(' + ' OR '.join(wrapped) + ')'
+
+        if ast.name == 'NOT':
+            if len(ast.args) != 1:
+                raise ValueError("NOT requires 1 argument")
+            operand = compile_to_cobol(ast.args[0], prefix)
+            return f'NOT ({operand} = "true")'
+
+        if ast.name == 'IF':
+            # IF in COBOL is a statement, not an expression
+            # Return a marker for the caller to handle
+            cond = compile_to_cobol(ast.args[0], prefix)
+            then_val = compile_to_cobol(ast.args[1], prefix)
+            else_val = compile_to_cobol(ast.args[2], prefix) if len(ast.args) > 2 else '"false"'
+            return ('IF', cond, then_val, else_val)
+
+        if ast.name == 'CONCAT':
+            parts = [compile_to_cobol(arg, prefix) for arg in ast.args]
+            return ('CONCAT', *parts)
+
+        if ast.name == 'LOWER':
+            arg = compile_to_cobol(ast.args[0], prefix)
+            return ('LOWER', arg)
+
+        if ast.name == 'TRIM':
+            arg = compile_to_cobol(ast.args[0], prefix)
+            return ('TRIM', arg)
+
+        if ast.name == 'SUM':
+            parts = [compile_to_cobol(arg, prefix) for arg in ast.args]
+            return ('SUM', parts)
+
+        if ast.name == 'FIND':
+            needle = compile_to_cobol(ast.args[0], prefix)
+            haystack = compile_to_cobol(ast.args[1], prefix)
+            return ('FIND', needle, haystack)
+
+        if ast.name == 'CAST':
+            return compile_to_cobol(ast.args[0], prefix)
+
+        raise ValueError(f"COBOL: Unknown function: {ast.name}")
+
+    raise ValueError(f"COBOL: Unknown AST type: {type(ast)}")

@@ -4,54 +4,33 @@ set -e
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR"
 
-# Parse arguments
-SKIP_INJECT=false
-SKIP_TRAINING=false
-for arg in "$@"; do
-    case $arg in
-        --skip-inject)
-            SKIP_INJECT=true
-            shift
-            ;;
-        --skip-training)
-            SKIP_TRAINING=true
-            shift
-            ;;
-    esac
-done
+# Check if orchestrator told us to skip (set when user chose not to run English during "Run ALL")
+if [[ "${ENGLISH_SKIP_LLM:-}" == "true" ]]; then
+    echo "english: Skipping LLM (user chose to skip during 'Run ALL')"
 
-# Check if English documents already exist
-DOCS_EXIST=false
-if [[ -f "$SCRIPT_DIR/glossary.md" ]] && [[ -f "$SCRIPT_DIR/specification.md" ]]; then
-    DOCS_EXIST=true
-fi
-
-# If running interactively and docs exist, ask about TRAINING (the slow LLM step)
-if [[ -t 0 ]] && [[ "$SKIP_INJECT" = false ]] && [[ "$DOCS_EXIST" = true ]]; then
-    echo ""
-    echo "english: English documents already exist (glossary.md, specification.md)."
-    echo "english: TRAINING regenerates these docs using LLM and may take 2+ minutes."
-    read -p "english: Regenerate English documents (TRAINING)? [y/N] " train_response
-
-    if [[ ! "$train_response" =~ ^[Yy]$ ]]; then
-        echo "english: TRAINING skipped - using existing documents"
-        SKIP_TRAINING=true
+    # Restore previous answers if available
+    if [[ -d "$SCRIPT_DIR/.last-run-answers" ]]; then
+        rm -rf "$SCRIPT_DIR/test-answers"
+        mkdir -p "$SCRIPT_DIR/test-answers"
+        cp -r "$SCRIPT_DIR/.last-run-answers/"* "$SCRIPT_DIR/test-answers/" 2>/dev/null || true
+        echo "english: Previous answers restored"
     fi
+
+    echo "SUBSTRATE_SKIPPED_BUT_GRADE"
+    exit 0
 fi
 
-# Inject data into the english substrate (unless --skip-inject or training skipped)
-# This generates the markdown files (specification.md, etc.) using an LLM
-if [ "$SKIP_INJECT" = false ] && [ "$SKIP_TRAINING" = false ]; then
-    python3 "$SCRIPT_DIR/inject-into-english.py" --regenerate || {
-        INJECT_EXIT_CODE=$?
-        if [ "$INJECT_EXIT_CODE" != "2" ]; then
-            echo "Error during injection (exit code $INJECT_EXIT_CODE)"
-            exit $INJECT_EXIT_CODE
-        fi
-        # Exit code 2 means markdown files already exist - continue to test
-    }
-fi
+# Otherwise, just run everything - no prompts!
+# If the user selected English specifically, or said "yes" during Run ALL, we run.
 
-# Run the test for this substrate
-# This uses an LLM to "execute" the English specification and compute answers
+echo "english: Generating specification via LLM..."
+python3 "$SCRIPT_DIR/inject-into-english.py" --regenerate --no-prompt || {
+    INJECT_EXIT_CODE=$?
+    if [ "$INJECT_EXIT_CODE" != "2" ]; then
+        echo "Error during injection (exit code $INJECT_EXIT_CODE)"
+        exit $INJECT_EXIT_CODE
+    fi
+}
+
+echo "english: Taking test via LLM..."
 "$SCRIPT_DIR/take-test.sh"

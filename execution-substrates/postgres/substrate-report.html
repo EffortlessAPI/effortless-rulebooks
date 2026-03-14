@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>postgres - Substrate Report</title>
+    <style>
+        :root {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8f9fa;
+            --bg-code: #1e1e1e;
+            --text-primary: #212529;
+            --text-secondary: #6c757d;
+            --text-code: #d4d4d4;
+            --border-color: #dee2e6;
+            --accent-color: #0d6efd;
+            --success-color: #198754;
+            --warning-color: #ffc107;
+            --danger-color: #dc3545;
+            --radius: 6px;
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: #1a1a2e;
+            --bg-secondary: #16213e;
+            --bg-code: #0d1117;
+            --text-primary: #eaeaea;
+            --text-secondary: #b0b0b0;
+            --text-code: #c9d1d9;
+            --border-color: #3a3a5c;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            padding: 1rem;
+        }
+
+        header {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 1rem 1.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            font-size: 1.5rem;
+            color: var(--accent-color);
+        }
+
+        header .meta {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .tab {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            background: var(--bg-primary);
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+
+        .tab:hover {
+            border-color: var(--accent-color);
+        }
+
+        .tab.active {
+            background: var(--accent-color);
+            color: white;
+            border-color: var(--accent-color);
+        }
+
+        .tab-content {
+            display: none;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .section {
+            margin-bottom: 1.5rem;
+        }
+
+        .section h2 {
+            font-size: 1.2rem;
+            margin-bottom: 0.75rem;
+            color: var(--text-primary);
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 0.25rem;
+        }
+
+        pre {
+            background: var(--bg-code);
+            color: var(--text-code);
+            padding: 1rem;
+            border-radius: var(--radius);
+            overflow-x: auto;
+            font-family: 'SF Mono', Monaco, Consolas, monospace;
+            font-size: 0.85rem;
+            line-height: 1.5;
+            max-height: 600px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 2rem;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+        }
+
+        #theme-toggle {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div>
+            <h1>postgres</h1>
+            <div class="meta">Execution Substrate Report</div>
+        </div>
+        <div>
+            <button id="theme-toggle" onclick="toggleTheme()">&#127769;</button>
+        </div>
+    </header>
+
+    <div class="tabs">
+        <button class="tab active" onclick="showTab('overview')">Overview</button>
+        <button class="tab" onclick="showTab('results')">Test Results</button>
+        <button class="tab" onclick="showTab('log')">Execution Log</button>
+    </div>
+
+    <div id="overview" class="tab-content active">
+        <div class="section">
+            <h2>How This Substrate Works</h2>
+            <pre># PostgreSQL Execution Substrate
+
+This substrate tests the PostgreSQL implementation of calculated fields against the
+canonical answer keys derived from the rulebook.
+
+## How It Works
+
+1. The rulebook formulas are compiled to SQL functions (in `/postgres/02-create-functions.sql`)
+2. These functions are used in views (`/postgres/03-create-views.sql`)
+3. This test runner queries those views and compares results to the answer keys
+
+## No Privileged Position
+
+PostgreSQL is tested **equally** with all other substrates (Python, Go, binary, etc.).
+The answer keys come directly from the rulebook&#x27;s seed data, not from PostgreSQL.
+This ensures that a bug in the Postgres implementation would be caught, just like
+any other substrate.
+
+## Prerequisites
+
+- PostgreSQL database running
+- Database initialized with `postgres/init-db.sh`
+- `psycopg2` Python package installed
+
+## Running
+
+```bash
+# Run tests
+./take-test.sh
+
+# Or directly
+python3 take-test.py
+```
+
+## Output
+
+- `test-answers/` - Contains JSON files with computed values from PostgreSQL views
+- `.last-run.log` - Log from the most recent test run
+</pre>
+        </div>
+    </div>
+
+    <div id="results" class="tab-content">
+        <div class="section">
+            <h2>Test Results Summary</h2>
+            <pre>(No test-results.md found)</pre>
+        </div>
+    </div>
+
+    <div id="log" class="tab-content">
+        <div class="section">
+            <h2>Execution Log</h2>
+            <pre>=== PostgreSQL Substrate Test Run ===
+
+postgres: Starting test...
+postgres: Connecting to database and querying views...
+PostgreSQL Substrate: Starting test...
+PostgreSQL Substrate: Connected to database
+PostgreSQL Substrate: Found 1 views
+  -&gt; customers: 3 records
+PostgreSQL Substrate: Processed 1 views, 3 total records
+
+</pre>
+        </div>
+    </div>
+
+    <footer>
+        Generated by ERB Substrate Report Generator
+    </footer>
+
+    <script>
+        function showTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        function toggleTheme() {
+            const body = document.body;
+            const isDark = body.getAttribute('data-theme') === 'dark';
+            body.setAttribute('data-theme', isDark ? '' : 'dark');
+            document.getElementById('theme-toggle').textContent = isDark ? '🌙' : '☀️';
+        }
+    </script>
+</body>
+</html>
