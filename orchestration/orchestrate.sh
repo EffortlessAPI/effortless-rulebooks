@@ -48,10 +48,16 @@ SUBSTRATE_COLORS=(
 # PARSE ARGUMENTS
 # =============================================================================
 CI_MODE=false
+DOCKER_MODE=false
 while [[ $# -gt 0 ]]; do
     case $1 in
         --ci)
             CI_MODE=true
+            shift
+            ;;
+        --docker)
+            DOCKER_MODE=true
+            CI_MODE=true  # Docker mode implies CI mode (non-interactive)
             shift
             ;;
         *)
@@ -59,6 +65,12 @@ while [[ $# -gt 0 ]]; do
             ;;
     esac
 done
+
+# Also check environment variable for Docker mode
+if [ "${ERB_DOCKER_MODE:-}" = "true" ]; then
+    DOCKER_MODE=true
+    CI_MODE=true
+fi
 
 # =============================================================================
 # TOOL DETECTION
@@ -107,6 +119,25 @@ print(config.get('Name', 'Unknown'))
     else
         echo "Unknown"
     fi
+}
+
+get_valid_substrates() {
+    # Returns substrates that have either an inject script OR a take-test script
+    # This allows test-only substrates (like postgres) to be included
+    local result=""
+    for dir in "$SUBSTRATES_DIR"/*/; do
+        [ -d "$dir" ] || continue
+        local name=$(basename "$dir")
+        [[ "$name" == .* ]] && continue  # Skip hidden directories
+        # Check for any valid substrate marker
+        if [ -f "$dir/inject-substrate.sh" ] || \
+           [ -f "$dir/inject-into-${name}.py" ] || \
+           [ -f "$dir/take-test.py" ] || \
+           [ -f "$dir/take-test.sh" ]; then
+            result="$result $name"
+        fi
+    done
+    echo $result
 }
 
 get_bases_list() {
@@ -169,8 +200,8 @@ show_menu() {
     echo -e "  Airtable: ${CYAN}https://airtable.com/$CURRENT_BASE${NC}"
     echo ""
 
-    # Get list of substrates for the menu
-    SUBSTRATES=$(ls -d "$SUBSTRATES_DIR"/*/ 2>/dev/null | xargs -n1 basename)
+    # Get list of valid substrates for the menu
+    SUBSTRATES=$(get_valid_substrates)
     SUBSTRATES_ARRAY=($SUBSTRATES)
     TOTAL_SUBSTRATES=${#SUBSTRATES_ARRAY[@]}
 
@@ -184,17 +215,13 @@ show_menu() {
     echo -e "  ${YELLOW}Or select a specific substrate:${NC}"
     echo ""
 
-    # Display substrates with numbers
+    # Display substrates with numbers (already filtered by get_valid_substrates)
     INDEX=1
     for substrate in $SUBSTRATES; do
-        substrate_dir="$SUBSTRATES_DIR/$substrate"
-        inject_script="$substrate_dir/inject-substrate.sh"
-        if [ -f "$inject_script" ]; then
-            if [ $INDEX -lt 10 ]; then
-                echo -e "  ${CYAN}[0$INDEX]${NC} $substrate"
-            else
-                echo -e "  ${CYAN}[$INDEX]${NC} $substrate"
-            fi
+        if [ $INDEX -lt 10 ]; then
+            echo -e "  ${CYAN}[0$INDEX]${NC} $substrate"
+        else
+            echo -e "  ${CYAN}[$INDEX]${NC} $substrate"
         fi
         INDEX=$((INDEX + 1))
     done
@@ -242,26 +269,25 @@ action_pull_airtable() {
     echo -e "  Base ID: ${WHITE}$CURRENT_BASE${NC}"
     echo ""
 
-    # Step 1: Pull from Airtable
+    # Step 1: Pull from Airtable (with offline fallback)
     echo -e "${BOLD}${BLUE}┌──────────────────────────────────────────────────────────────┐${NC}"
-    echo -e "${BOLD}${BLUE}│${NC} ${BOLD}${WHITE}STEP 1:${NC} ${YELLOW}Pulling from Airtable (ssotme -buildall)...${NC}        ${BOLD}${BLUE}│${NC}"
+    echo -e "${BOLD}${BLUE}│${NC} ${BOLD}${WHITE}STEP 1:${NC} ${YELLOW}Syncing rulebook (with offline fallback)...${NC}        ${BOLD}${BLUE}│${NC}"
     echo -e "${BOLD}${BLUE}└──────────────────────────────────────────────────────────────┘${NC}"
     echo ""
 
     cd "$PROJECT_ROOT"
-    ssotme -buildall
+    python3 "$SCRIPT_DIR/rulebook-cache.py" sync
 
     echo ""
 
-    # Step 2: Generate answer keys from PostgreSQL
+    # Step 2: Generate answer keys from rulebook
     echo -e "${BOLD}${BLUE}┌──────────────────────────────────────────────────────────────┐${NC}"
-    echo -e "${BOLD}${BLUE}│${NC} ${BOLD}${WHITE}STEP 2:${NC} ${YELLOW}Generating answer keys from PostgreSQL...${NC}          ${BOLD}${BLUE}│${NC}"
+    echo -e "${BOLD}${BLUE}│${NC} ${BOLD}${WHITE}STEP 2:${NC} ${YELLOW}Generating answer keys from rulebook...${NC}            ${BOLD}${BLUE}│${NC}"
     echo -e "${BOLD}${BLUE}└──────────────────────────────────────────────────────────────┘${NC}"
     echo ""
 
     python3 -c "
 import sys
-import psycopg2
 sys.path.insert(0, '$SCRIPT_DIR')
 from importlib.util import spec_from_loader, module_from_spec
 from importlib.machinery import SourceFileLoader
@@ -271,15 +297,13 @@ spec = spec_from_loader('test_orchestrator', SourceFileLoader('test_orchestrator
 test_orch = module_from_spec(spec)
 spec.loader.exec_module(test_orch)
 
-# Load rulebook and connect to database
+# Load rulebook (no database connection needed - answer keys come from rulebook seed data)
 rulebook = test_orch.load_rulebook()
-conn = psycopg2.connect(test_orch.DB_CONNECTION)
 
 # Generate answer keys and blank tests
-all_answer_keys = test_orch.generate_all_answer_keys(conn, rulebook)
+all_answer_keys = test_orch.generate_all_answer_keys(rulebook)
 test_orch.generate_all_blank_tests(all_answer_keys, rulebook)
 
-conn.close()
 print('Answer keys and blank tests generated.')
 "
 
@@ -471,7 +495,7 @@ action_change_base_id() {
     cd "$PROJECT_ROOT"
     # Use || to prevent set -e from killing the script on failure
     BUILDALL_FAILED=""
-    ssotme -buildall || BUILDALL_FAILED="true"
+    python3 "$SCRIPT_DIR/rulebook-cache.py" sync || BUILDALL_FAILED="true"
 
     if [ -z "$BUILDALL_FAILED" ]; then
         NEW_PROJECT_NAME=$(get_project_name)
@@ -687,8 +711,8 @@ action_init_postgres() {
 run_substrates() {
     local RUN_SINGLE="$1"
 
-    # Get substrates list
-    SUBSTRATES=$(ls -d "$SUBSTRATES_DIR"/*/ 2>/dev/null | xargs -n1 basename)
+    # Get list of valid substrates (those with inject or test scripts)
+    SUBSTRATES=$(get_valid_substrates)
     SUBSTRATES_ARRAY=($SUBSTRATES)
     TOTAL_SUBSTRATES=${#SUBSTRATES_ARRAY[@]}
 
@@ -700,7 +724,6 @@ echo -e "${BOLD}${BLUE}│${NC} ${BOLD}${WHITE}STEP 1:${NC} ${YELLOW}Generating 
 echo -e "${BOLD}${BLUE}└──────────────────────────────────────────────────────────────┘${NC}"
 python3 -c "
 import sys
-import psycopg2
 sys.path.insert(0, '$SCRIPT_DIR')
 from importlib.util import spec_from_loader, module_from_spec
 from importlib.machinery import SourceFileLoader
@@ -710,15 +733,12 @@ spec = spec_from_loader('test_orchestrator', SourceFileLoader('test_orchestrator
 test_orch = module_from_spec(spec)
 spec.loader.exec_module(test_orch)
 
-# Load rulebook and connect to database
+# Load rulebook (no database connection needed - answer keys come from rulebook seed data)
 rulebook = test_orch.load_rulebook()
-conn = psycopg2.connect(test_orch.DB_CONNECTION)
 
 # Run steps 1 and 2 (new generic functions)
-all_answer_keys = test_orch.generate_all_answer_keys(conn, rulebook)
+all_answer_keys = test_orch.generate_all_answer_keys(rulebook)
 test_orch.generate_all_blank_tests(all_answer_keys, rulebook)
-
-conn.close()
 "
 echo ""
 
@@ -735,8 +755,49 @@ if [ -n "$RUN_SINGLE" ]; then
     SUBSTRATES_TO_RUN="$RUN_SINGLE"
     TOTAL_TO_RUN=1
 else
-    SUBSTRATES_TO_RUN=$(ls -d "$SUBSTRATES_DIR"/*/ 2>/dev/null | xargs -n1 basename)
-    TOTAL_TO_RUN=$(echo "$SUBSTRATES_TO_RUN" | wc -w | tr -d ' ')
+    SUBSTRATES_TO_RUN="$SUBSTRATES"  # Use already-discovered valid substrates
+    TOTAL_TO_RUN=$TOTAL_SUBSTRATES
+fi
+
+# -----------------------------------------------------------------------------
+# CONSOLIDATED ENGLISH PROMPT: Ask ONCE before running ALL substrates
+# When running a single substrate, don't ask - user explicitly chose it
+# -----------------------------------------------------------------------------
+export ENGLISH_SKIP_LLM="false"
+
+# Show English warning when: running ALL substrates OR explicitly running english
+# Skip warning in CI mode or non-interactive shells
+if ! $CI_MODE && [[ -t 0 ]]; then
+    ENGLISH_DIR="$SUBSTRATES_DIR/english"
+    # Show if: (running all AND english exists) OR (running only english)
+    if [ -d "$ENGLISH_DIR" ] && { [ -z "$RUN_SINGLE" ] || [ "$RUN_SINGLE" = "english" ]; }; then
+        # Calculate time estimate based on rulebook size
+        ESTIMATE=$(python3 -c "
+import sys
+sys.path.insert(0, '$SCRIPT_DIR')
+from shared import load_rulebook, estimate_llm_time
+import os
+os.chdir('$PROJECT_ROOT/execution-substrates/english')
+rb = load_rulebook()
+print(estimate_llm_time(rb))
+" 2>/dev/null || echo "?:??")
+
+        echo ""
+        echo -e "${BOLD}${MAGENTA}┌──────────────────────────────────────────────────────────────┐${NC}"
+        echo -e "${BOLD}${MAGENTA}│${NC} ${BOLD}English Substrate Warning${NC}                                    ${BOLD}${MAGENTA}│${NC}"
+        echo -e "${BOLD}${MAGENTA}└──────────────────────────────────────────────────────────────┘${NC}"
+        echo -e "  The English substrate uses LLM calls."
+        echo -e "  Estimated time: ${YELLOW}${ESTIMATE}${NC} (based on rulebook size)"
+        echo ""
+        read -p "  Run English substrate? [Y/n] " english_response
+        if [[ "$english_response" =~ ^[Nn]$ ]]; then
+            export ENGLISH_SKIP_LLM="true"
+            echo -e "  ${DIM}English will use cached results${NC}"
+        else
+            echo -e "  ${GREEN}English will run (may take a while)${NC}"
+        fi
+        echo ""
+    fi
 fi
 
 INJECT_RESULTS=""
@@ -981,8 +1042,102 @@ with open(score_file, 'w') as f:
 
         # Add vertical spacing after each substrate for visual isolation
         printf '\n%.0s' {1..10}
+    elif [ -f "$substrate_dir/take-test.sh" ] || [ -f "$substrate_dir/take-test.py" ]; then
+        # Test-only substrate (no inject script, but has take-test)
+        substrate_upper=$(echo "$substrate" | tr '[:lower:]' '[:upper:]')
+        echo -e "${COLOR}╔══════════════════════════════════════════════════════════════╗${NC}"
+        echo -e "${COLOR}║${NC} ${BOLD}[$CURRENT/$TOTAL_TO_RUN]${NC} ${COLOR}▶ ${BOLD}${substrate_upper}${NC} ${DIM}(test-only)${NC}"
+        echo -e "${COLOR}╚══════════════════════════════════════════════════════════════╝${NC}"
+
+        # Setup test-answers directory
+        test_answers_dir="$substrate_dir/test-answers"
+        test_answers_backup="$substrate_dir/test-answers.bak"
+        if [ -d "$test_answers_dir" ] && [ "$(ls -A "$test_answers_dir" 2>/dev/null)" ]; then
+            rm -rf "$test_answers_backup"
+            cp -r "$test_answers_dir" "$test_answers_backup"
+        fi
+        rm -rf "$test_answers_dir"
+        mkdir -p "$test_answers_dir"
+
+        # Run take-test script
+        INJECT_TEMP_FILE=$(mktemp)
+        START_TIME=$(python3 -c "import time; print(time.time())")
+        if [ -f "$substrate_dir/take-test.sh" ]; then
+            bash "$substrate_dir/take-test.sh" 2>&1 | tee "$INJECT_TEMP_FILE" || true
+        else
+            (cd "$substrate_dir" && python3 take-test.py) 2>&1 | tee "$INJECT_TEMP_FILE" || true
+        fi
+        INJECT_EXIT_CODE=${PIPESTATUS[0]}
+        END_TIME=$(python3 -c "import time; print(time.time())")
+        ELAPSED_TIME=$(python3 -c "print($END_TIME - $START_TIME)")
+        INJECT_OUTPUT=$(cat "$INJECT_TEMP_FILE")
+        rm -f "$INJECT_TEMP_FILE"
+
+        PRESERVE_TIMING=false
+        if [ $INJECT_EXIT_CODE -eq 0 ]; then
+            INJECT_RESULTS="$INJECT_RESULTS$substrate:OK\n"
+            echo -e "  ${GREEN}✓${NC} ${substrate}: ${GREEN}${BOLD}OK${NC}"
+            rm -rf "$test_answers_backup"
+        else
+            INJECT_RESULTS="$INJECT_RESULTS$substrate:FAILED\n"
+            echo -e "  ${RED}✗${NC} ${substrate}: ${RED}${BOLD}FAILED${NC}"
+            FAILED_SUBSTRATES="$FAILED_SUBSTRATES $substrate"
+            echo "$INJECT_OUTPUT" > "$FAILED_OUTPUTS_DIR/$substrate.txt"
+            if [ -d "$test_answers_backup" ]; then
+                rm -rf "$test_answers_dir"
+                mv "$test_answers_backup" "$test_answers_dir"
+            fi
+        fi
+
+        # Grade this substrate
+        python3 -c "
+import sys
+import json
+import os
+import glob
+sys.path.insert(0, '$SCRIPT_DIR')
+from importlib.util import spec_from_loader, module_from_spec
+from importlib.machinery import SourceFileLoader
+
+spec = spec_from_loader('test_orchestrator', SourceFileLoader('test_orchestrator', '$SCRIPT_DIR/test-orchestrator.py'))
+test_orch = module_from_spec(spec)
+spec.loader.exec_module(test_orch)
+
+all_answer_keys = {}
+for entity_file in glob.glob(os.path.join(test_orch.ANSWER_KEYS_DIR, '*.json')):
+    entity = os.path.basename(entity_file).replace('.json', '')
+    with open(entity_file, 'r') as f:
+        all_answer_keys[entity] = json.load(f)
+
+rulebook = test_orch.load_rulebook()
+substrate = '$substrate'
+inject_exit_code = $INJECT_EXIT_CODE
+elapsed_seconds = $ELAPSED_TIME
+
+if inject_exit_code != 0:
+    grades = test_orch.grade_substrate(substrate, all_answer_keys, rulebook)
+    grades['error'] = 'FAILED TO EXECUTE'
+    grades['execution_failed'] = True
+else:
+    grades = test_orch.grade_substrate(substrate, all_answer_keys, rulebook)
+
+grades['elapsed_seconds'] = elapsed_seconds
+test_orch.update_run_metadata(substrate, grades, inject_exit_code == 0, None, preserve_timing=False)
+test_orch.generate_substrate_report(substrate, grades, rulebook)
+test_orch.print_substrate_test_summary(substrate, grades, rulebook)
+
+import pickle
+grades_file = os.path.join(test_orch.SUBSTRATES_DIR, substrate, '.grades.pkl')
+with open(grades_file, 'wb') as f:
+    pickle.dump(grades, f)
+
+score_file = os.path.join(test_orch.SUBSTRATES_DIR, substrate, '.score')
+with open(score_file, 'w') as f:
+    f.write(str(grades.get('score', -1)))
+"
+        printf '\n%.0s' {1..10}
     else
-        echo -e "  ${YELLOW}○${NC} ${substrate}: ${DIM}SKIPPED (no inject-substrate.sh)${NC}"
+        echo -e "  ${YELLOW}○${NC} ${substrate}: ${DIM}SKIPPED (no inject or test script)${NC}"
         INJECT_RESULTS="$INJECT_RESULTS$substrate:SKIPPED\n"
     fi
 done
@@ -1142,24 +1297,57 @@ return 0
 # MAIN LOOP
 # =============================================================================
 
-# CI MODE: Run all tests immediately and exit
+# DOCKER/CI MODE: Run all substrates non-interactively and exit
 if $CI_MODE; then
     echo ""
     echo -e "${BOLD}${CYAN}╔════════════════════════════════════════════════════════════╗${NC}"
     echo -e "${BOLD}${CYAN}║${NC}          ${BOLD}${WHITE}EXECUTION SUBSTRATE ORCHESTRATOR${NC}                  ${BOLD}${CYAN}║${NC}"
     echo -e "${BOLD}${CYAN}╚════════════════════════════════════════════════════════════╝${NC}"
     echo ""
-    echo -e "${BOLD}Running in CI mode - executing all substrates...${NC}"
+
+    if $DOCKER_MODE; then
+        echo -e "${BOLD}Running in Docker mode - using cached data...${NC}"
+        echo ""
+
+        # Step 0: Set up from cache (use repo cache if no user cache)
+        echo -e "${BLUE}Setting up from cache...${NC}"
+        python3 "$SCRIPT_DIR/cache-manager.py" setup-offline 2>/dev/null || {
+            echo -e "${YELLOW}Cache manager not available, trying rulebook-cache...${NC}"
+            python3 "$SCRIPT_DIR/rulebook-cache.py" sync --offline --non-interactive || true
+        }
+        echo ""
+    else
+        echo -e "${BOLD}Running in CI mode - executing all substrates...${NC}"
+    fi
+
     run_substrates ""
-    exit $?
+    EXIT_CODE=$?
+
+    # In Docker mode, print a summary of where to find results
+    if $DOCKER_MODE; then
+        echo ""
+        echo -e "${BOLD}${GREEN}════════════════════════════════════════════════════════════════${NC}"
+        echo -e "${BOLD}${GREEN}  Docker execution complete!${NC}"
+        echo -e "${BOLD}${GREEN}════════════════════════════════════════════════════════════════${NC}"
+        echo ""
+        echo -e "  ${BOLD}Reports generated:${NC}"
+        echo -e "    • orchestration/orchestration-report.html"
+        echo -e "    • orchestration/all-tests-results.md"
+        echo -e "    • execution-substrates/*/substrate-report.html"
+        echo ""
+        echo -e "  ${DIM}(Reports are in your mounted volume - accessible from host)${NC}"
+        echo ""
+    fi
+
+    exit $EXIT_CODE
 fi
 
 # Interactive menu loop
 while true; do
     show_menu
 
-    # Get substrates for numbered selection
-    SUBSTRATES=$(ls -d "$SUBSTRATES_DIR"/*/ 2>/dev/null | xargs -n1 basename)
+    # Get substrates for numbered selection (must match show_menu)
+    SUBSTRATES=$(get_valid_substrates)
     SUBSTRATES_ARRAY=($SUBSTRATES)
     TOTAL_SUBSTRATES=${#SUBSTRATES_ARRAY[@]}
 

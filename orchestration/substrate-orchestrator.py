@@ -2,9 +2,8 @@
 """
 Central orchestrator for ERB substrate generation.
 
-This script can invoke all generators or specific ones by name.
-Individual generators are typically invoked directly via ssotme -build,
-but this orchestrator can be used for batch operations or testing.
+This script auto-discovers substrates by scanning execution-substrates/.
+Any folder with an inject-into-{name}.py script is automatically included.
 
 Usage:
     python substrate-orchestrator.py                  # Run all generators
@@ -16,19 +15,6 @@ import subprocess
 import sys
 from pathlib import Path
 
-# Substrates that have inject-into-{name}.py scripts
-GENERATORS = [
-    "python",
-    "english",
-    "golang",
-    "binary",
-    "csv",
-    "uml",
-    "owl",
-    "xlsx",
-    "explain-dag",
-]
-
 
 def get_orchestration_dir():
     """Get the orchestration directory path."""
@@ -38,6 +24,22 @@ def get_orchestration_dir():
 def get_project_root():
     """Get the project root directory."""
     return get_orchestration_dir().parent
+
+
+def discover_generators():
+    """Auto-discover substrates that have inject-into-{name}.py scripts."""
+    substrates_dir = get_project_root() / "execution-substrates"
+    generators = []
+
+    for substrate_dir in sorted(substrates_dir.iterdir()):
+        if not substrate_dir.is_dir():
+            continue
+        name = substrate_dir.name
+        inject_script = substrate_dir / f"inject-into-{name}.py"
+        if inject_script.exists():
+            generators.append(name)
+
+    return generators
 
 
 def run_generator(name):
@@ -68,9 +70,11 @@ def run_generator(name):
 
 
 def main():
+    available = discover_generators()
+
     if len(sys.argv) > 1 and sys.argv[1] == "--list":
-        print("Available generators:")
-        for name in GENERATORS:
+        print("Available generators (auto-discovered):")
+        for name in available:
             print(f"  - {name}")
         return
 
@@ -78,12 +82,12 @@ def main():
     if len(sys.argv) > 1:
         targets = sys.argv[1:]
         for target in targets:
-            if target not in GENERATORS:
+            if target not in available:
                 print(f"Unknown generator: {target}")
-                print(f"Available: {', '.join(GENERATORS)}")
+                print(f"Available: {', '.join(available)}")
                 sys.exit(1)
     else:
-        targets = GENERATORS
+        targets = available
 
     # Run the generators
     results = {}
