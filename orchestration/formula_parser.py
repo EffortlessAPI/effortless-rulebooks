@@ -877,3 +877,295 @@ def compile_to_go(ast: ASTNode, struct_name: str = 'lc', field_types: dict = Non
         return ' + '.join(parts)
 
     raise ValueError(f"Unknown AST node type: {type(ast)}")
+
+
+# =============================================================================
+# CANONICAL EVALUATOR
+# =============================================================================
+# Direct formula evaluation for generating answer keys from the rulebook.
+# This evaluator is the source of truth - all substrates must match its output.
+
+def evaluate(formula: str, context: dict) -> any:
+    """
+    Evaluate a formula directly given field values.
+
+    This is the canonical evaluator - the single source of truth for formula
+    semantics. Answer keys are generated using this evaluator, and all
+    execution substrates (Python, Go, Postgres, etc.) must produce identical
+    results to pass conformance testing.
+
+    Args:
+        formula: An Excel-dialect formula string (e.g., "=IF({{Name}}=\"\", \"Unknown\", {{Name}})")
+        context: A dict mapping field names (PascalCase) to their values
+
+    Returns:
+        The evaluated result (bool, int, str, or None)
+
+    Example:
+        >>> evaluate('={{FirstName}} & " " & {{LastName}}', {'FirstName': 'John', 'LastName': 'Doe'})
+        'John Doe'
+    """
+    ast = parse_formula(formula)
+    return _eval_ast(ast, context)
+
+
+def _eval_ast(node: ASTNode, ctx: dict) -> any:
+    """
+    Recursively evaluate an AST node given a context dict.
+
+    Implements Excel-style semantics:
+    - None/null values propagate sensibly
+    - Empty string vs None distinction preserved
+    - Boolean coercion follows Excel conventions
+    """
+    if isinstance(node, LiteralBool):
+        return node.value
+
+    if isinstance(node, LiteralInt):
+        return node.value
+
+    if isinstance(node, LiteralString):
+        return node.value
+
+    if isinstance(node, FieldRef):
+        # Field names in formulas are PascalCase
+        return ctx.get(node.name)
+
+    if isinstance(node, UnaryOp):
+        if node.op == 'NOT':
+            operand = _eval_ast(node.operand, ctx)
+            # None is treated as False for NOT
+            if operand is None:
+                return True
+            return not bool(operand)
+        raise ValueError(f"Unknown unary op: {node.op}")
+
+    if isinstance(node, BinaryOp):
+        left = _eval_ast(node.left, ctx)
+        right = _eval_ast(node.right, ctx)
+
+        if node.op == '=':
+            return left == right
+        if node.op == '<>':
+            return left != right
+        if node.op == '<':
+            # Handle None comparisons
+            if left is None or right is None:
+                return False
+            return left < right
+        if node.op == '<=':
+            if left is None or right is None:
+                return False
+            return left <= right
+        if node.op == '>':
+            if left is None or right is None:
+                return False
+            return left > right
+        if node.op == '>=':
+            if left is None or right is None:
+                return False
+            return left >= right
+        raise ValueError(f"Unknown binary op: {node.op}")
+
+    if isinstance(node, FuncCall):
+        return _eval_func(node, ctx)
+
+    if isinstance(node, Concat):
+        parts = []
+        for part in node.parts:
+            val = _eval_ast(part, ctx)
+            # Convert None to empty string for concatenation
+            parts.append(str(val) if val is not None else '')
+        return ''.join(parts)
+
+    raise ValueError(f"Unknown AST node type: {type(node)}")
+
+
+def _eval_func(node: FuncCall, ctx: dict) -> any:
+    """Evaluate a function call AST node."""
+    name = node.name
+    args = node.args
+
+    if name == 'AND':
+        for arg in args:
+            val = _eval_ast(arg, ctx)
+            # None or False fails AND
+            if val is None or val is False or val == 0:
+                return False
+        return True
+
+    if name == 'OR':
+        for arg in args:
+            val = _eval_ast(arg, ctx)
+            # Any truthy value passes OR
+            if val is True or (val is not None and val != False and val != 0):
+                return True
+        return False
+
+    if name == 'NOT':
+        if len(args) != 1:
+            raise ValueError("NOT requires 1 argument")
+        val = _eval_ast(args[0], ctx)
+        if val is None:
+            return True
+        return not bool(val)
+
+    if name == 'IF':
+        if len(args) < 2:
+            raise ValueError("IF requires at least 2 arguments")
+        cond = _eval_ast(args[0], ctx)
+        # Condition is truthy if not None/False/0/""
+        is_true = cond is not None and cond is not False and cond != 0 and cond != ""
+        if is_true:
+            return _eval_ast(args[1], ctx)
+        elif len(args) > 2:
+            return _eval_ast(args[2], ctx)
+        else:
+            return None
+
+    if name == 'LOWER':
+        if len(args) != 1:
+            raise ValueError("LOWER requires 1 argument")
+        val = _eval_ast(args[0], ctx)
+        if val is None:
+            return ''
+        return str(val).lower()
+
+    if name == 'UPPER':
+        if len(args) != 1:
+            raise ValueError("UPPER requires 1 argument")
+        val = _eval_ast(args[0], ctx)
+        if val is None:
+            return ''
+        return str(val).upper()
+
+    if name == 'FIND':
+        if len(args) != 2:
+            raise ValueError("FIND requires 2 arguments")
+        needle = _eval_ast(args[0], ctx)
+        haystack = _eval_ast(args[1], ctx)
+        if needle is None or haystack is None:
+            return False
+        return str(needle) in str(haystack)
+
+    if name == 'CAST':
+        if len(args) < 1:
+            raise ValueError("CAST requires at least 1 argument")
+        val = _eval_ast(args[0], ctx)
+        if val is None:
+            return ''
+        return str(val)
+
+    if name == 'SUM':
+        total = 0
+        for arg in args:
+            val = _eval_ast(arg, ctx)
+            if val is not None and isinstance(val, (int, float)):
+                total += val
+        return total
+
+    if name == 'SUBSTITUTE':
+        if len(args) != 3:
+            raise ValueError("SUBSTITUTE requires 3 arguments")
+        text = _eval_ast(args[0], ctx)
+        old_text = _eval_ast(args[1], ctx)
+        new_text = _eval_ast(args[2], ctx)
+        if text is None:
+            return ''
+        return str(text).replace(str(old_text or ''), str(new_text or ''))
+
+    if name == 'LEFT':
+        if len(args) != 2:
+            raise ValueError("LEFT requires 2 arguments")
+        text = _eval_ast(args[0], ctx)
+        num = _eval_ast(args[1], ctx)
+        if text is None:
+            return ''
+        return str(text)[:int(num)]
+
+    if name == 'RIGHT':
+        if len(args) != 2:
+            raise ValueError("RIGHT requires 2 arguments")
+        text = _eval_ast(args[0], ctx)
+        num = _eval_ast(args[1], ctx)
+        if text is None:
+            return ''
+        n = int(num)
+        return str(text)[-n:] if n > 0 else ''
+
+    if name == 'LEN':
+        if len(args) != 1:
+            raise ValueError("LEN requires 1 argument")
+        val = _eval_ast(args[0], ctx)
+        if val is None:
+            return 0
+        return len(str(val))
+
+    if name == 'CONCAT':
+        parts = []
+        for arg in args:
+            val = _eval_ast(arg, ctx)
+            parts.append(str(val) if val is not None else '')
+        return ''.join(parts)
+
+    if name == 'COUNT':
+        # COUNT of non-null values
+        count = 0
+        for arg in args:
+            val = _eval_ast(arg, ctx)
+            if val is not None:
+                count += 1
+        return count
+
+    if name == 'AVERAGE':
+        total = 0
+        count = 0
+        for arg in args:
+            val = _eval_ast(arg, ctx)
+            if val is not None and isinstance(val, (int, float)):
+                total += val
+                count += 1
+        return total / count if count > 0 else None
+
+    if name == 'MIN':
+        values = []
+        for arg in args:
+            val = _eval_ast(arg, ctx)
+            if val is not None and isinstance(val, (int, float)):
+                values.append(val)
+        return min(values) if values else None
+
+    if name == 'MAX':
+        values = []
+        for arg in args:
+            val = _eval_ast(arg, ctx)
+            if val is not None and isinstance(val, (int, float)):
+                values.append(val)
+        return max(values) if values else None
+
+    raise ValueError(f"Unknown function: {name}")
+
+
+def evaluate_field(formula: str, record: dict, field_name_mapping: dict = None) -> any:
+    """
+    Convenience function to evaluate a formula against a record.
+
+    Args:
+        formula: The formula string
+        record: A dict with snake_case field names (as stored in JSON)
+        field_name_mapping: Optional dict mapping snake_case -> PascalCase
+                           If None, attempts to convert automatically
+
+    Returns:
+        The evaluated result
+    """
+    # Build context with PascalCase keys (as used in formulas)
+    context = {}
+    for key, value in record.items():
+        # Convert snake_case to PascalCase for the context
+        pascal_key = to_pascal_case(key)
+        context[pascal_key] = value
+        # Also keep original key in case formula uses it directly
+        context[key] = value
+
+    return evaluate(formula, context)

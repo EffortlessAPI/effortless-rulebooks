@@ -66,7 +66,7 @@ The *thing that changes per substrate* is: **what "injection" produces**, **how 
 
 | Substrate | Role | Injection Produces (Domain-Agnostic) | Executable? |
 |-----------|------|--------------------------------------|:-----------:|
-| **PostgreSQL** | Source of truth — canonical computation engine | Tables (1:1 with entities), `calc_*()` functions (1:1 with computed columns), views | ✓ Full |
+| **PostgreSQL** | SQL computation engine (tested equally) | Tables (1:1 with entities), `calc_*()` functions (1:1 with computed columns), views | ✓ Full |
 | **XLSX** | Spreadsheet runtime for formulas | Worksheets (1:1 with entities), formula columns (1:1 with computed columns) | ✓ Full |
 | **CSV** | Tabular schema export | Field definitions (1:1 with entities/fields) | ✓ Full |
 | **Python** | SDK runtime (dataclass + methods) | `@dataclass` classes (1:1 with entities), `calc_*()` methods (1:1 with computed columns) | ✓ Limited |
@@ -89,7 +89,7 @@ The *thing that changes per substrate* is: **what "injection" produces**, **how 
 
 | Layer | Description | Run | README |
 |-------|-------------|-----|--------|
-| **PostgreSQL** | Source of truth — tables, calc functions, views | [init-db.sh](postgres/init-db.sh) | [README](postgres/README.md) |
+| **PostgreSQL** | SQL tables, calc functions, views (tested equally) | [take-test.sh](execution-substrates/postgres/take-test.sh) | [README](execution-substrates/postgres/README.md) |
 | **XLSX** | Excel workbook with native formulas | [run.sh](execution-substrates/xlsx/run.sh) | [README](execution-substrates/xlsx/README.md) |
 | **Python** | SDK with dataclasses and calc methods | [run.sh](execution-substrates/python/run.sh) | [README](execution-substrates/python/README.md) |
 | **Go** | Structs with calculation methods | [run.sh](execution-substrates/golang/run.sh) | [README](execution-substrates/golang/README.md) |
@@ -131,46 +131,49 @@ This means **when the rulebook changes** (different domain, different entities, 
 │                         TESTING ARCHITECTURE                                │
 └─────────────────────────────────────────────────────────────────────────────┘
 
-  ┌─────────────────────┐
-  │   PostgreSQL View   │  ← Source of Truth
-  │  (vw_workflows...   │    (all computed fields included)
-  └──────────┬──────────┘
-             │
-             ▼
+  ┌───────────────────────────┐
+  │   effortless-rulebook.json│  ← SINGLE SOURCE OF TRUTH
+  │   (schema + seed data)    │    (all field values defined here)
+  └────────────┬──────────────┘
+               │
+               ▼
   ┌─────────────────────┐     ┌─────────────────────┐
   │   answer-key.json   │     │   blank-test.json   │
-  │  (complete answers) │     │  (nulled computed   │
+  │  (from rulebook)    │     │  (nulled computed   │
   └─────────────────────┘     │   columns)          │
              │                └──────────┬──────────┘
              │                           │
-             │    ┌──────────────────────┼──────────────────────┐
-             │    │                      │                      │
-             │    ▼                      ▼                      ▼
-             │  ┌─────────┐         ┌─────────┐           ┌─────────┐
-             │  │  XLSX   │         │ Python  │    ...    │ Golang  │
-             │  │Substrate│         │Substrate│           │Substrate│
-             │  └────┬────┘         └────┬────┘           └────┬────┘
-             │       │                   │                     │
-             │       ▼                   ▼                     ▼
-             │  ┌─────────┐         ┌─────────┐           ┌─────────┐
-             │  │  test-  │         │  test-  │           │  test-  │
-             │  │answers. │         │answers. │           │answers. │
-             │  │  json   │         │  json   │           │  json   │
-             │  └────┬────┘         └────┬────┘           └────┬────┘
-             │       │                   │                     │
-             └───────┼───────────────────┼─────────────────────┤
-                     │                   │                     │
-                     ▼                   ▼                     ▼
+             │    ┌──────────┬───────────┼───────────┬──────────┐
+             │    │          │           │           │          │
+             │    ▼          ▼           ▼           ▼          ▼
+             │  ┌──────┐  ┌──────┐  ┌──────┐  ┌──────┐   ┌──────┐
+             │  │XLSX  │  │Python│  │ Go   │  │Postgres│  │ ...  │
+             │  │      │  │      │  │      │  │       │   │      │
+             │  └──┬───┘  └──┬───┘  └──┬───┘  └───┬───┘   └──┬───┘
+             │     │         │         │          │          │
+             │     ▼         ▼         ▼          ▼          ▼
+             │  ┌──────┐  ┌──────┐  ┌──────┐  ┌──────┐   ┌──────┐
+             │  │test- │  │test- │  │test- │  │test- │   │test- │
+             │  │answer│  │answer│  │answer│  │answer│   │answer│
+             │  └──┬───┘  └──┬───┘  └──┬───┘  └───┬──┘   └──┬───┘
+             │     │         │         │          │          │
+             └─────┼─────────┼─────────┼──────────┼──────────┤
+                   │         │         │          │          │
+                   ▼         ▼         ▼          ▼          ▼
               ┌────────────────────────────────────────────────────┐
               │              TEST ORCHESTRATOR                     │
               │         (field-by-field comparison)                │
               │                                                    │
-              │   For each substrate:                              │
-              │     test-answers.json  vs  answer-key.json         │
+              │   ALL substrates tested equally against            │
+              │   answer-key.json (derived from rulebook)          │
               │                    ↓                               │
               │            PASS / FAIL + Score                     │
               └────────────────────────────────────────────────────┘
 ```
+
+**Key Point:** No substrate holds a privileged position. The rulebook is the single source
+of truth. Answer keys are generated directly from the rulebook's seed data. All substrates
+(including PostgreSQL) are tested equally against these answer keys.
 
 ### Phase 1: Substrate Injection (Domain-Agnostic)
 
@@ -326,7 +329,7 @@ cd execution-substrates/xlsx
 
 | File | Location | Purpose |
 |------|----------|---------|
-| `answer-key.json` | `testing/` | Ground truth from PostgreSQL |
+| `answer-key.json` | `testing/` | Ground truth from rulebook (no privileged substrate) |
 | `blank-test.json` | `testing/` | Test input (nulled computed columns) |
 | `test-answers.json` | `execution-substrates/*/` | Substrate's computed answers |
 | `test-results.md` | `execution-substrates/*/` | Per-substrate grade report |

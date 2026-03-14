@@ -232,12 +232,12 @@ When you have SQL, Python, Go, Excel all computing the same thing, which one is 
 
 How do you know all implementations produce the same outputs?
 
-**Answer**: Conformance testing against a reference implementation.
+**Answer**: Conformance testing against the rulebook.
 
-1. Generate `answer-key.json` from one substrate (Postgres by default)
-2. Run every other substrate against `blank-test.json` (inputs with computed fields nulled)
+1. Generate `answer-key.json` directly from the rulebook's seed data (no privileged substrate)
+2. Run every substrate against `blank-test.json` (inputs with computed fields nulled)
 3. Compare outputs field-by-field, row-by-row
-4. Drift is detected automatically, not discovered in production
+4. Drift is detected automatically — all substrates (including Postgres) are tested equally
 
 ### 3. Can you trace a computation?
 

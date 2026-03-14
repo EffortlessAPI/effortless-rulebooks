@@ -2,106 +2,106 @@
   {
     "department_id": "administration",
     "name": "administration",
-    "title": "Administration Department",
+    "roles": "hr",
     "display_name": "Administration",
-    "roles": "hr"
+    "title": "Administration Department"
   },
   {
     "department_id": "customer-service",
     "name": "customer-service",
-    "title": "Customer Service Department",
+    "roles": "manager",
     "display_name": "Customer Service",
-    "roles": "manager"
+    "title": "Customer Service Department"
   },
   {
     "department_id": "facilities-management",
     "name": "facilities-management",
-    "title": "Facilities Department",
+    "roles": "trainer",
     "display_name": "Facilities Management",
-    "roles": "trainer"
+    "title": "Facilities Department"
   },
   {
     "department_id": "finance",
     "name": "finance",
-    "title": "Finance Department",
+    "roles": "editor",
     "display_name": "Finance",
-    "roles": "editor"
+    "title": "Finance Department"
   },
   {
     "department_id": "human-resources",
     "name": "human-resources",
-    "title": "HR Department",
+    "roles": "administrator",
     "display_name": "Human Resources",
-    "roles": "administrator"
+    "title": "HR Department"
   },
   {
     "department_id": "information-technology",
     "name": "information-technology",
-    "title": "IT Department",
+    "roles": "viewer",
     "display_name": "Information Technology",
-    "roles": "viewer"
+    "title": "IT Department"
   },
   {
     "department_id": "legal",
     "name": "legal",
-    "title": "Legal Department",
+    "roles": "analyst",
     "display_name": "Legal",
-    "roles": "analyst"
+    "title": "Legal Department"
   },
   {
     "department_id": "marketing",
     "name": "marketing",
-    "title": "Marketing Department",
+    "roles": "moderator",
     "display_name": "Marketing",
-    "roles": "moderator"
+    "title": "Marketing Department"
   },
   {
     "department_id": "operations",
     "name": "operations",
-    "title": "Operations Department",
+    "roles": "tester",
     "display_name": "Operations",
-    "roles": "tester"
+    "title": "Operations Department"
   },
   {
     "department_id": "procurement",
     "name": "procurement",
-    "title": "Procurement Department",
+    "roles": "developer",
     "display_name": "Procurement",
-    "roles": "developer"
+    "title": "Procurement Department"
   },
   {
     "department_id": "public-relations",
     "name": "public-relations",
-    "title": "PR Department",
+    "roles": "finance",
     "display_name": "Public Relations",
-    "roles": "finance"
+    "title": "PR Department"
   },
   {
     "department_id": "quality-assurance",
     "name": "quality-assurance",
-    "title": "QA Department",
+    "roles": "guest",
     "display_name": "Quality Assurance",
-    "roles": "guest"
+    "title": "QA Department"
   },
   {
     "department_id": "research-and-development",
     "name": "research-and-development",
-    "title": "R&D Department",
+    "roles": "support",
     "display_name": "Research and Development",
-    "roles": "support"
+    "title": "R&D Department"
   },
   {
     "department_id": "sales",
     "name": "sales",
-    "title": "Sales Department",
+    "roles": "contributor",
     "display_name": "Sales",
-    "roles": "contributor"
+    "title": "Sales Department"
   },
   {
     "department_id": "training-and-development",
     "name": "training-and-development",
-    "title": "Training Department",
+    "roles": "owner",
     "display_name": "Training and Development",
-    "roles": "owner"
+    "title": "Training Department"
   }
 ]

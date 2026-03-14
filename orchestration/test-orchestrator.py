@@ -328,15 +328,50 @@ def view_to_entity_name(view_name: str) -> str:
 
 
 # =============================================================================
-# STEP 1: Generate Answer Keys from Postgres
+# STEP 1: Generate Answer Keys from Rulebook
 # =============================================================================
+# Answer keys are generated directly from the rulebook's seed data.
+# The rulebook is the single source of truth - no database required.
+# All substrates (including Postgres) are tested against these answer keys.
 
-def generate_all_answer_keys(conn, rulebook: dict) -> dict:
+def get_entity_data(rulebook: dict, entity_name: str) -> list:
     """
-    Query all vw_* views and export to answer-keys/{entity}.json.
+    Get the data array for an entity from the rulebook.
+    Handles both PascalCase and snake_case entity names.
+    Returns empty list if entity or data not found.
+    """
+    # Try direct lookup
+    if entity_name in rulebook:
+        return rulebook[entity_name].get('data', [])
+
+    # Try converting from snake_case to PascalCase
+    pascal_name = to_pascal_case(entity_name)
+    if pascal_name in rulebook:
+        return rulebook[pascal_name].get('data', [])
+
+    return []
+
+
+def convert_record_to_snake_case(record: dict) -> dict:
+    """Convert all keys in a record from PascalCase to snake_case."""
+    return {to_snake_case(k): v for k, v in record.items()}
+
+
+def generate_all_answer_keys(rulebook: dict) -> dict:
+    """
+    Generate answer keys directly from the rulebook's seed data.
+
+    The rulebook contains all data including computed field values.
+    This function converts PascalCase field names to snake_case and
+    exports to answer-keys/{entity}.json.
+
     Returns dict of entity_name -> list of records.
+
+    NOTE: This function does NOT use a database. The rulebook is the
+    single source of truth for answer keys. All execution substrates
+    (Python, Go, Postgres, etc.) are tested equally against these keys.
     """
-    print("Step 1: Generating answer keys from all views...", flush=True)
+    print("Step 1: Generating answer keys from rulebook...", flush=True)
 
     # Clear and recreate answer-keys directory to remove stale files
     import shutil
@@ -344,16 +379,55 @@ def generate_all_answer_keys(conn, rulebook: dict) -> dict:
         shutil.rmtree(ANSWER_KEYS_DIR)
     os.makedirs(ANSWER_KEYS_DIR, exist_ok=True)
 
-    views = discover_views(conn)
-    print(f"  Found {len(views)} views: {', '.join(views)}", flush=True)
+    entities = discover_entities(rulebook)
+    print(f"  Found {len(entities)} entities in rulebook", flush=True)
 
     all_answer_keys = {}
-    first_entity_with_computed = None
+
+    for entity_pascal in entities:
+        entity_snake = to_snake_case(entity_pascal)
+        pk = discover_primary_key(rulebook, entity_pascal)
+
+        # Get seed data from rulebook
+        raw_records = get_entity_data(rulebook, entity_pascal)
+
+        if not raw_records:
+            print(f"  -> {entity_snake}: No seed data (skipping)", flush=True)
+            continue
+
+        # Convert field names to snake_case
+        records = [convert_record_to_snake_case(r) for r in raw_records]
+
+        # Sort by primary key if available
+        if pk and records and pk in records[0]:
+            records = sorted(records, key=lambda r: r.get(pk, ''))
+
+        # Save to file
+        output_path = os.path.join(ANSWER_KEYS_DIR, f"{entity_snake}.json")
+        with open(output_path, 'w') as f:
+            json.dump(records, f, indent=2, default=str)
+
+        all_answer_keys[entity_snake] = records
+        print(f"  -> {entity_snake}: {len(records)} records", flush=True)
+
+    return all_answer_keys
+
+
+# Legacy function - kept for postgres substrate's take-test.py
+def generate_answer_keys_from_postgres(conn, rulebook: dict) -> dict:
+    """
+    Query all vw_* views and return as dict of entity_name -> records.
+
+    NOTE: This function is used by the postgres substrate's take-test.py
+    to query computed values from views. It is NOT used for generating
+    the canonical answer keys (use generate_all_answer_keys() for that).
+    """
+    views = discover_views(conn)
+    all_results = {}
 
     for view in views:
         entity = view_to_entity_name(view)
         pk = discover_primary_key(rulebook, entity)
-        computed_cols = discover_computed_columns(rulebook, entity)
 
         cur = conn.cursor(cursor_factory=RealDictCursor)
 
@@ -367,15 +441,9 @@ def generate_all_answer_keys(conn, rulebook: dict) -> dict:
         records = [dict(row) for row in rows]
         cur.close()
 
-        # Save to file
-        output_path = os.path.join(ANSWER_KEYS_DIR, f"{entity}.json")
-        with open(output_path, 'w') as f:
-            json.dump(records, f, indent=2, default=str)
+        all_results[entity] = records
 
-        all_answer_keys[entity] = records
-        print(f"  -> {entity}: {len(records)} records", flush=True)
-
-    return all_answer_keys
+    return all_results
 
 
 # =============================================================================
@@ -1522,28 +1590,17 @@ def main():
     print("=" * 60, flush=True)
     print(flush=True)
 
-    # Load rulebook
+    # Load rulebook - the single source of truth
     rulebook = load_rulebook()
     entities = discover_entities(rulebook)
     print(f"Discovered {len(entities)} entities in rulebook: {', '.join(entities)}", flush=True)
     print(flush=True)
 
-    # Connect to database
-    try:
-        conn = psycopg2.connect(DB_CONNECTION)
-        print(f"Connected to database", flush=True)
-    except Exception as e:
-        print(f"ERROR: Failed to connect to database: {e}", flush=True)
-        print(f"  Connection string: {DB_CONNECTION}", flush=True)
-        sys.exit(1)
-
+    # Step 1: Generate answer keys directly from rulebook (no database needed)
+    # The rulebook contains all data including expected computed field values.
+    # All substrates (Python, Go, Postgres, etc.) are tested equally against these.
+    all_answer_keys = generate_all_answer_keys(rulebook)
     print(flush=True)
-
-    # Step 1: Generate answer keys from all views
-    all_answer_keys = generate_all_answer_keys(conn, rulebook)
-    print(flush=True)
-
-    conn.close()
 
     # Step 2: Generate blank tests
     generate_all_blank_tests(all_answer_keys, rulebook)
