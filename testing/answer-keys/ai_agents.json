@@ -2,121 +2,121 @@
   {
     "ai_agent_id": "ava",
     "name": "Ava",
-    "title": "CustomerSupportBot",
     "display_name": "Ava",
     "model_version": "GPT-4.0",
-    "roles": "administrator"
-  },
-  {
-    "ai_agent_id": "leo",
-    "name": "Leo",
-    "title": "SalesAssistantAI",
-    "display_name": "Leo",
-    "model_version": "GPT-3.5",
-    "roles": "editor"
-  },
-  {
-    "ai_agent_id": "maya",
-    "name": "Maya",
-    "title": "HRRecruiterBot",
-    "display_name": "Maya",
-    "model_version": "GPT-4.0",
-    "roles": "viewer"
+    "roles": "administrator",
+    "title": "CustomerSupportBot"
   },
   {
     "ai_agent_id": "eli",
     "name": "Eli",
-    "title": "FinanceAdvisorAI",
     "display_name": "Eli",
     "model_version": "GPT-3.5",
-    "roles": "moderator"
-  },
-  {
-    "ai_agent_id": "zara",
-    "name": "Zara",
-    "title": "MarketingCopyAI",
-    "display_name": "Zara",
-    "model_version": "GPT-4.0",
-    "roles": "contributor"
-  },
-  {
-    "ai_agent_id": "owen",
-    "name": "Owen",
-    "title": "LegalDraftBot",
-    "display_name": "Owen",
-    "model_version": "GPT-3.5",
-    "roles": "manager"
-  },
-  {
-    "ai_agent_id": "nina",
-    "name": "Nina",
-    "title": "MedicalAssistantAI",
-    "display_name": "Nina",
-    "model_version": "GPT-4.0",
-    "roles": "support"
-  },
-  {
-    "ai_agent_id": "kai",
-    "name": "Kai",
-    "title": "TravelPlannerBot",
-    "display_name": "Kai",
-    "model_version": "GPT-3.5",
-    "roles": "analyst"
-  },
-  {
-    "ai_agent_id": "sophie",
-    "name": "Sophie",
-    "title": "EcommerceHelperAI",
-    "display_name": "Sophie",
-    "model_version": "GPT-4.0",
-    "roles": "developer"
-  },
-  {
-    "ai_agent_id": "max",
-    "name": "Max",
-    "title": "EducationTutorBot",
-    "display_name": "Max",
-    "model_version": "GPT-3.5",
-    "roles": "tester"
-  },
-  {
-    "ai_agent_id": "liam",
-    "name": "Liam",
-    "title": "RealEstateAdvisorAI",
-    "display_name": "Liam",
-    "model_version": "GPT-4.0",
-    "roles": "hr"
-  },
-  {
-    "ai_agent_id": "jade",
-    "name": "Jade",
-    "title": "FitnessCoachBot",
-    "display_name": "Jade",
-    "model_version": "GPT-3.5",
-    "roles": "finance"
-  },
-  {
-    "ai_agent_id": "mila",
-    "name": "Mila",
-    "title": "EventPlannerAI",
-    "display_name": "Mila",
-    "model_version": "GPT-4.0",
-    "roles": "guest"
-  },
-  {
-    "ai_agent_id": "noah",
-    "name": "Noah",
-    "title": "PersonalFinanceBot",
-    "display_name": "Noah",
-    "model_version": "GPT-3.5",
-    "roles": "trainer"
+    "roles": "moderator",
+    "title": "FinanceAdvisorAI"
   },
   {
     "ai_agent_id": "ella",
     "name": "Ella",
-    "title": "ContentEditorAI",
     "display_name": "Ella",
     "model_version": "GPT-4.0",
-    "roles": "owner"
+    "roles": "owner",
+    "title": "ContentEditorAI"
+  },
+  {
+    "ai_agent_id": "jade",
+    "name": "Jade",
+    "display_name": "Jade",
+    "model_version": "GPT-3.5",
+    "roles": "finance",
+    "title": "FitnessCoachBot"
+  },
+  {
+    "ai_agent_id": "kai",
+    "name": "Kai",
+    "display_name": "Kai",
+    "model_version": "GPT-3.5",
+    "roles": "analyst",
+    "title": "TravelPlannerBot"
+  },
+  {
+    "ai_agent_id": "leo",
+    "name": "Leo",
+    "display_name": "Leo",
+    "model_version": "GPT-3.5",
+    "roles": "editor",
+    "title": "SalesAssistantAI"
+  },
+  {
+    "ai_agent_id": "liam",
+    "name": "Liam",
+    "display_name": "Liam",
+    "model_version": "GPT-4.0",
+    "roles": "hr",
+    "title": "RealEstateAdvisorAI"
+  },
+  {
+    "ai_agent_id": "max",
+    "name": "Max",
+    "display_name": "Max",
+    "model_version": "GPT-3.5",
+    "roles": "tester",
+    "title": "EducationTutorBot"
+  },
+  {
+    "ai_agent_id": "maya",
+    "name": "Maya",
+    "display_name": "Maya",
+    "model_version": "GPT-4.0",
+    "roles": "viewer",
+    "title": "HRRecruiterBot"
+  },
+  {
+    "ai_agent_id": "mila",
+    "name": "Mila",
+    "display_name": "Mila",
+    "model_version": "GPT-4.0",
+    "roles": "guest",
+    "title": "EventPlannerAI"
+  },
+  {
+    "ai_agent_id": "nina",
+    "name": "Nina",
+    "display_name": "Nina",
+    "model_version": "GPT-4.0",
+    "roles": "support",
+    "title": "MedicalAssistantAI"
+  },
+  {
+    "ai_agent_id": "noah",
+    "name": "Noah",
+    "display_name": "Noah",
+    "model_version": "GPT-3.5",
+    "roles": "trainer",
+    "title": "PersonalFinanceBot"
+  },
+  {
+    "ai_agent_id": "owen",
+    "name": "Owen",
+    "display_name": "Owen",
+    "model_version": "GPT-3.5",
+    "roles": "manager",
+    "title": "LegalDraftBot"
+  },
+  {
+    "ai_agent_id": "sophie",
+    "name": "Sophie",
+    "display_name": "Sophie",
+    "model_version": "GPT-4.0",
+    "roles": "developer",
+    "title": "EcommerceHelperAI"
+  },
+  {
+    "ai_agent_id": "zara",
+    "name": "Zara",
+    "display_name": "Zara",
+    "model_version": "GPT-4.0",
+    "roles": "contributor",
+    "title": "MarketingCopyAI"
   }
 ]
