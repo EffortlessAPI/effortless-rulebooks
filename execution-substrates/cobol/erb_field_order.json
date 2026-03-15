@@ -1,120 +1,18 @@
 {
-  "Workflows": [
-    "WorkflowId",
-    "DisplayName",
-    "Title",
-    "Color",
-    "Description",
-    "Identifier",
-    "Modified",
-    "WorkflowSteps",
-    "CountOfNonProposedSteps",
-    "Name",
-    "HasMoreThan1Step"
+  "Customers": [
+    "CustomerId",
+    "Customer",
+    "EmailAddress",
+    "FirstName",
+    "LastName",
+    "FullName"
   ],
-  "workflows": [
-    "WorkflowId",
-    "DisplayName",
-    "Title",
-    "Color",
-    "Description",
-    "Identifier",
-    "Modified",
-    "WorkflowSteps",
-    "CountOfNonProposedSteps",
-    "Name",
-    "HasMoreThan1Step"
-  ],
-  "WorkflowSteps": [
-    "WorkflowStepId",
-    "DisplayName",
-    "Workflow",
-    "SequencePosition",
-    "AssignedRole",
-    "RequiresHumanApproval",
-    "ApprovalGate",
-    "PrecededBySteps",
-    "Name"
-  ],
-  "workflow_steps": [
-    "WorkflowStepId",
-    "DisplayName",
-    "Workflow",
-    "SequencePosition",
-    "AssignedRole",
-    "RequiresHumanApproval",
-    "ApprovalGate",
-    "PrecededBySteps",
-    "Name"
-  ],
-  "ApprovalGates": [
-    "ApprovalGateId",
-    "DisplayName",
-    "WorkflowSteps",
-    "EscalationThresholdHours",
-    "Name"
-  ],
-  "approval_gates": [
-    "ApprovalGateId",
-    "DisplayName",
-    "WorkflowSteps",
-    "EscalationThresholdHours",
-    "Name"
-  ],
-  "PrecedesSteps": [
-    "PrecedesStepId",
-    "Name",
-    "WorkflowStep",
-    "StepNumber",
-    "DisplayName"
-  ],
-  "precedes_steps": [
-    "PrecedesStepId",
-    "Name",
-    "WorkflowStep",
-    "StepNumber",
-    "DisplayName"
-  ],
-  "Roles": [
-    "RoleId",
-    "DisplayName",
-    "Label",
-    "Comment",
-    "FilledByHumanAgent",
-    "FilledByAIAgent",
-    "FilledByAutomatedPipeline",
-    "OwnedBy",
-    "DelegatesTo",
-    "WorkflowSteps",
-    "FromDelegatesTo",
-    "Name"
-  ],
-  "roles": [
-    "RoleId",
-    "DisplayName",
-    "Label",
-    "Comment",
-    "FilledByHumanAgent",
-    "FilledByAIAgent",
-    "FilledByAutomatedPipeline",
-    "OwnedBy",
-    "DelegatesTo",
-    "WorkflowSteps",
-    "FromDelegatesTo",
-    "Name"
-  ],
-  "Departments": [
-    "DepartmentId",
-    "Title",
-    "DisplayName",
-    "Roles",
-    "Name"
-  ],
-  "departments": [
-    "DepartmentId",
-    "Title",
-    "DisplayName",
-    "Roles",
-    "Name"
+  "customers": [
+    "CustomerId",
+    "Customer",
+    "EmailAddress",
+    "FirstName",
+    "LastName",
+    "FullName"
   ]
 }

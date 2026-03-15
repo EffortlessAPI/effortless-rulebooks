@@ -36,57 +36,57 @@ class DataType(Enum):
 
 
 # =============================================================================
-# AST NODE TYPES (reused from binary substrate pattern)
+# EXPRESSION NODE TYPES (reused from binary substrate pattern)
 # =============================================================================
 
 @dataclass
-class ASTNode:
-    """Base class for AST nodes"""
+class ExprNode:
+    """Base class for expression nodes"""
     pass
 
 
 @dataclass
-class LiteralBool(ASTNode):
+class LiteralBool(ExprNode):
     value: bool
 
 
 @dataclass
-class LiteralInt(ASTNode):
+class LiteralInt(ExprNode):
     value: int
 
 
 @dataclass
-class LiteralString(ASTNode):
+class LiteralString(ExprNode):
     value: str
 
 
 @dataclass
-class FieldRef(ASTNode):
+class FieldRef(ExprNode):
     name: str  # Field name without {{ }}
 
 
 @dataclass
-class BinaryOp(ASTNode):
+class BinaryOp(ExprNode):
     op: str  # '=', '<>', '<', '<=', '>', '>='
-    left: ASTNode
-    right: ASTNode
+    left: ExprNode
+    right: ExprNode
 
 
 @dataclass
-class UnaryOp(ASTNode):
+class UnaryOp(ExprNode):
     op: str  # 'NOT'
-    operand: ASTNode
+    operand: ExprNode
 
 
 @dataclass
-class FuncCall(ASTNode):
+class FuncCall(ExprNode):
     name: str  # 'AND', 'OR', 'IF', 'LOWER', 'FIND'
-    args: List[ASTNode]
+    args: List[ExprNode]
 
 
 @dataclass
-class Concat(ASTNode):
-    parts: List[ASTNode]
+class Concat(ExprNode):
+    parts: List[ExprNode]
 
 
 # =============================================================================
@@ -251,13 +251,13 @@ class Parser:
         self.pos += 1
         return tok
 
-    def parse(self) -> ASTNode:
+    def parse(self) -> ExprNode:
         result = self.parse_concat()
         if self.current().type != TokenType.EOF:
             raise SyntaxError(f"Unexpected token {self.current()} after expression")
         return result
 
-    def parse_concat(self) -> ASTNode:
+    def parse_concat(self) -> ExprNode:
         left = self.parse_comparison()
         parts = [left]
         while self.current().type == TokenType.AMPERSAND:
@@ -268,7 +268,7 @@ class Parser:
             return parts[0]
         return Concat(parts=parts)
 
-    def parse_comparison(self) -> ASTNode:
+    def parse_comparison(self) -> ExprNode:
         left = self.parse_primary()
         op_map = {
             TokenType.EQUALS: '=',
@@ -285,7 +285,7 @@ class Parser:
             return BinaryOp(op=op, left=left, right=right)
         return left
 
-    def parse_primary(self) -> ASTNode:
+    def parse_primary(self) -> ExprNode:
         tok = self.current()
 
         if tok.type == TokenType.STRING:
@@ -339,8 +339,8 @@ class Parser:
         raise SyntaxError(f"Unexpected token {tok.type} at position {tok.pos}")
 
 
-def parse_formula(formula_text: str) -> ASTNode:
-    """Parse an Excel-dialect formula into an AST."""
+def parse_formula(formula_text: str) -> ExprNode:
+    """Parse an Excel-dialect formula into an expression tree."""
     tokens = tokenize(formula_text)
     parser = Parser(tokens)
     return parser.parse()
@@ -370,96 +370,96 @@ def escape_sparql_string(s: str) -> str:
     return s.replace('\\', '\\\\').replace('"', '\\"').replace("'", "\\'")
 
 
-def compile_to_sparql(ast: ASTNode, field_bindings: Dict[str, str] = None) -> str:
-    """Compile an AST node to a SPARQL expression."""
+def compile_to_sparql(expr: ExprNode, field_bindings: Dict[str, str] = None) -> str:
+    """Compile an expression node to a SPARQL expression."""
     if field_bindings is None:
         field_bindings = {}
 
-    if isinstance(ast, LiteralBool):
-        return 'true' if ast.value else 'false'
+    if isinstance(expr, LiteralBool):
+        return 'true' if expr.value else 'false'
 
-    if isinstance(ast, LiteralInt):
-        return str(ast.value)
+    if isinstance(expr, LiteralInt):
+        return str(expr.value)
 
-    if isinstance(ast, LiteralString):
-        escaped = escape_sparql_string(ast.value)
+    if isinstance(expr, LiteralString):
+        escaped = escape_sparql_string(expr.value)
         return f'"{escaped}"'
 
-    if isinstance(ast, FieldRef):
-        var_name = field_to_sparql_var(ast.name)
-        field_bindings[ast.name] = var_name
+    if isinstance(expr, FieldRef):
+        var_name = field_to_sparql_var(expr.name)
+        field_bindings[expr.name] = var_name
         return var_name
 
-    if isinstance(ast, UnaryOp):
-        if ast.op == 'NOT':
-            operand = compile_to_sparql(ast.operand, field_bindings)
+    if isinstance(expr, UnaryOp):
+        if expr.op == 'NOT':
+            operand = compile_to_sparql(expr.operand, field_bindings)
             return f'(!({operand}))'
-        raise ValueError(f"Unknown unary op: {ast.op}")
+        raise ValueError(f"Unknown unary op: {expr.op}")
 
-    if isinstance(ast, BinaryOp):
-        left = compile_to_sparql(ast.left, field_bindings)
-        right = compile_to_sparql(ast.right, field_bindings)
+    if isinstance(expr, BinaryOp):
+        left = compile_to_sparql(expr.left, field_bindings)
+        right = compile_to_sparql(expr.right, field_bindings)
         op_map = {'=': '=', '<>': '!=', '<': '<', '<=': '<=', '>': '>', '>=': '>='}
-        sparql_op = op_map.get(ast.op, '=')
+        sparql_op = op_map.get(expr.op, '=')
         return f'({left} {sparql_op} {right})'
 
-    if isinstance(ast, FuncCall):
-        if ast.name == 'AND':
-            parts = [compile_to_sparql(arg, field_bindings) for arg in ast.args]
+    if isinstance(expr, FuncCall):
+        if expr.name == 'AND':
+            parts = [compile_to_sparql(arg, field_bindings) for arg in expr.args]
             return '(' + ' && '.join(parts) + ')'
 
-        if ast.name == 'OR':
-            parts = [compile_to_sparql(arg, field_bindings) for arg in ast.args]
+        if expr.name == 'OR':
+            parts = [compile_to_sparql(arg, field_bindings) for arg in expr.args]
             return '(' + ' || '.join(parts) + ')'
 
-        if ast.name == 'IF':
-            if len(ast.args) < 2:
+        if expr.name == 'IF':
+            if len(expr.args) < 2:
                 raise ValueError("IF requires at least 2 arguments")
-            cond = compile_to_sparql(ast.args[0], field_bindings)
-            then_val = compile_to_sparql(ast.args[1], field_bindings)
-            else_val = compile_to_sparql(ast.args[2], field_bindings) if len(ast.args) > 2 else '""'
+            cond = compile_to_sparql(expr.args[0], field_bindings)
+            then_val = compile_to_sparql(expr.args[1], field_bindings)
+            else_val = compile_to_sparql(expr.args[2], field_bindings) if len(expr.args) > 2 else '""'
             return f'IF({cond}, {then_val}, {else_val})'
 
-        if ast.name == 'NOT':
-            if len(ast.args) != 1:
+        if expr.name == 'NOT':
+            if len(expr.args) != 1:
                 raise ValueError("NOT requires 1 argument")
-            operand = compile_to_sparql(ast.args[0], field_bindings)
+            operand = compile_to_sparql(expr.args[0], field_bindings)
             return f'(!({operand}))'
 
-        if ast.name == 'LOWER':
-            if len(ast.args) != 1:
+        if expr.name == 'LOWER':
+            if len(expr.args) != 1:
                 raise ValueError("LOWER requires 1 argument")
-            arg = compile_to_sparql(ast.args[0], field_bindings)
+            arg = compile_to_sparql(expr.args[0], field_bindings)
             return f'LCASE({arg})'
 
-        if ast.name == 'FIND':
-            if len(ast.args) != 2:
+        if expr.name == 'FIND':
+            if len(expr.args) != 2:
                 raise ValueError("FIND requires 2 arguments")
-            needle = compile_to_sparql(ast.args[0], field_bindings)
-            haystack = compile_to_sparql(ast.args[1], field_bindings)
+            needle = compile_to_sparql(expr.args[0], field_bindings)
+            haystack = compile_to_sparql(expr.args[1], field_bindings)
             return f'CONTAINS({haystack}, {needle})'
 
-        if ast.name == 'SUM':
+        if expr.name == 'SUM':
             # SUM of values - use arithmetic addition
-            parts = [compile_to_sparql(arg, field_bindings) for arg in ast.args]
+            parts = [compile_to_sparql(arg, field_bindings) for arg in expr.args]
             return '(' + ' + '.join(parts) + ')'
 
-        if ast.name == 'SUBSTITUTE':
+        if expr.name == 'SUBSTITUTE':
             # SUBSTITUTE(text, old_text, new_text) -> REPLACE(text, old_text, new_text)
-            if len(ast.args) != 3:
+            if len(expr.args) != 3:
                 raise ValueError("SUBSTITUTE requires 3 arguments")
-            text = compile_to_sparql(ast.args[0], field_bindings)
-            old_text = compile_to_sparql(ast.args[1], field_bindings)
-            new_text = compile_to_sparql(ast.args[2], field_bindings)
+            text = compile_to_sparql(expr.args[0], field_bindings)
+            old_text = compile_to_sparql(expr.args[1], field_bindings)
+            new_text = compile_to_sparql(expr.args[2], field_bindings)
             return f'REPLACE({text}, {old_text}, {new_text})'
 
-        raise ValueError(f"Unknown function: {ast.name}")
+        raise ValueError(f"Unknown function: {expr.name}")
 
-    if isinstance(ast, Concat):
-        parts = [compile_to_sparql(part, field_bindings) for part in ast.parts]
+    if isinstance(expr, Concat):
+        parts = [compile_to_sparql(part, field_bindings) for part in expr.parts]
         return 'CONCAT(' + ', '.join(parts) + ')'
 
-    raise ValueError(f"Unknown AST node type: {type(ast)}")
+    raise ValueError(f"Unknown expression node type: {type(expr)}")
 
 
 # =============================================================================
@@ -690,9 +690,9 @@ def generate_shacl_rules(tables: Dict[str, Any]) -> str:
             rule_name = f'rule_{table_name}_{calc["name"]}'
 
             try:
-                ast = parse_formula(calc['formula'])
+                expr = parse_formula(calc['formula'])
                 field_bindings = {}
-                sparql_expr = compile_to_sparql(ast, field_bindings)
+                sparql_expr = compile_to_sparql(expr, field_bindings)
 
                 # Build WHERE clause bindings
                 where_parts = ['    $this a erb:' + table_name + ' .']

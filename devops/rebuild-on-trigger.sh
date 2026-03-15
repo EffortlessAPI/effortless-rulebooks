@@ -12,14 +12,14 @@
 # //
 # // The script then:
 # //   1. Extracts the PAT and exports it as AIRTABLE_API_KEY
-# //   2. Runs buildall.sh (ssotme transpilers, init-db, etc.)
+# //   2. Runs buildall.sh (effortless transpilers, init-db, etc.)
 # //   3. Commits with the message/notes from the payload
 # //   4. POSTs the full output back to /result/{baseId} with success/fail status
 # //   5. Loops and listens for more changes
 #!/bin/bash
 
 # Note: This script is intended to run forever. Do NOT use `set -e` (errexit),
-# because any transient failure (curl/network, ssotme build, db init, git commit)
+# because any transient failure (curl/network, effortless build, db init, git commit)
 # would terminate the watcher loop.
 set -uo pipefail
 

@@ -2,7 +2,7 @@
 # ERB (Effortlessly Invariant Rulesbooks) Docker Image
 # =============================================================================
 # Complete environment for running the ERB stack with all substrates.
-# Includes: Python, PostgreSQL client, .NET (for ssotme), Go, Node.js
+# Includes: Python, PostgreSQL client, .NET (for effortless cli), Go, Node.js
 # =============================================================================
 
 FROM python:3.11-slim-bookworm
@@ -35,7 +35,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 # =============================================================================
-# Install .NET 8 SDK (required by ssotme npm package)
+# Install .NET 8 SDK (required by effortless cli npm package)
 # =============================================================================
 RUN curl -sSL https://dot.net/v1/dotnet-install.sh -o dotnet-install.sh \
     && chmod +x dotnet-install.sh \
@@ -47,16 +47,16 @@ ENV DOTNET_ROOT=/usr/share/dotnet
 ENV PATH="${PATH}:/usr/share/dotnet"
 
 # =============================================================================
-# Install Node.js 20 (for ssotme CLI and report generation)
+# Install Node.js 20 (for effortless cli and report generation)
 # =============================================================================
 RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
     && apt-get install -y nodejs \
     && rm -rf /var/lib/apt/lists/*
 
 # =============================================================================
-# Install ssotme CLI from npm
+# Install effortless CLI from npm
 # =============================================================================
-RUN npm install -g ssotme
+RUN npm install -g ssotme  # ssotme is the old name for effortless cli
 
 # =============================================================================
 # Install Go (for Go substrate) - detect architecture
@@ -99,7 +99,8 @@ RUN chmod +x orchestration/orchestrate.sh \
 # Default database URL (connects to docker-compose postgres service)
 ENV DATABASE_URL=postgresql://postgres:postgres@postgres:5432/erb
 
-# Disable interactive prompts in ssotme
+# Disable interactive prompts in  effortless cli
+
 ENV SSOTME_NONINTERACTIVE=1
 
 # =============================================================================

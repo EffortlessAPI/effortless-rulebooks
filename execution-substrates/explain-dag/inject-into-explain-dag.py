@@ -3,7 +3,7 @@
 ExplainDAG Injector - Generate explanation specification from the Effortless Rulebook.
 
 This script reads formulas from the rulebook and generates:
-1. explain_spec.json - static AST templates and dependency DAG for each entity
+1. explain_spec.json - static expression templates and dependency DAG for each entity
 2. Used by take-test.py to produce machine-readable derivation explanations
 
 The key insight: separate TEMPLATE (formula structure) from INSTANCE (witnessed values).
@@ -26,18 +26,18 @@ from orchestration.shared import (
 )
 from orchestration.formula_parser import (
     parse_formula, get_field_dependencies,
-    ASTNode, FieldRef, FuncCall, BinaryOp, UnaryOp, Concat,
+    ExprNode, FieldRef, FuncCall, BinaryOp, UnaryOp, Concat,
     LiteralBool, LiteralInt, LiteralString
 )
 
 
 # =============================================================================
-# AST TO GRAPH CONVERSION
+# EXPRESSION GRAPH GENERATION
 # =============================================================================
 
-def ast_to_graph(ast: ASTNode, field_name: str) -> Dict[str, Any]:
+def expr_to_graph(expr: ExprNode, field_name: str) -> Dict[str, Any]:
     """
-    Convert a parsed AST into a graph representation suitable for explanations.
+    Convert a parsed expression tree into a graph representation suitable for explanations.
 
     Returns a dict with:
     - root_node: ID of the root node
@@ -52,8 +52,8 @@ def ast_to_graph(ast: ASTNode, field_name: str) -> Dict[str, Any]:
         node_counter[0] += 1
         return f"n_{prefix}_{node_counter[0]}"
 
-    def visit(node: ASTNode) -> str:
-        """Visit an AST node and return its graph node ID."""
+    def visit(node: ExprNode) -> str:
+        """Visit an expression node and return its graph node ID."""
 
         if isinstance(node, LiteralBool):
             node_id = make_node_id("const")
@@ -139,10 +139,10 @@ def ast_to_graph(ast: ASTNode, field_name: str) -> Dict[str, Any]:
                 edges.append([part_id, node_id])
             return node_id
 
-        raise ValueError(f"Unknown AST node type: {type(node)}")
+        raise ValueError(f"Unknown expression node type: {type(node)}")
 
-    # Visit the AST and get the expression root
-    expr_root_id = visit(ast)
+    # Visit the expression tree and get the expression root
+    expr_root_id = visit(expr)
 
     # Add the result node that wraps the expression
     result_id = f"n_result_{field_name}"
@@ -190,8 +190,8 @@ def build_calc_order(calculated_fields: List[Dict], raw_field_names: Set[str]) -
     for field in calculated_fields:
         formula = field.get('formula', '')
         try:
-            ast = parse_formula(formula)
-            deps = get_field_dependencies(ast)
+            expr = parse_formula(formula)
+            deps = get_field_dependencies(expr)
             field_deps[field['name']] = set(deps)
         except Exception as e:
             print(f"Warning: Failed to parse formula for {field['name']}: {e}")
@@ -303,8 +303,8 @@ def generate_explain_spec(rulebook: Dict) -> Dict[str, Any]:
             formula = field.get('formula', '')
             field_description = field.get('Description', '')
             try:
-                ast = parse_formula(formula)
-                graph = ast_to_graph(ast, field['name'])
+                expr = parse_formula(formula)
+                graph = expr_to_graph(expr, field['name'])
                 template_hash = compute_template_hash(graph, formula)
 
                 template_info = {
@@ -409,7 +409,7 @@ def main():
     script_dir = Path(__file__).resolve().parent
 
     print("=" * 70)
-    print("ExplainDAG Execution Substrate - AST Template Generator")
+    print("ExplainDAG Execution Substrate - Expression Template Generator")
     print("=" * 70)
     print()
 

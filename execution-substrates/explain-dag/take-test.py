@@ -43,7 +43,7 @@ class EvalResult:
 
 class ExplainEvaluator:
     """
-    Evaluates AST templates against record values, producing explanations.
+    Evaluates expression templates against record values, producing explanations.
 
     Uses Excel-style semantics with three-valued logic for null handling.
     """

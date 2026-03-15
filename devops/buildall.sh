@@ -1,2 +1,2 @@
 #!/bin/bash
-ssotme -buildall
+effortless -buildall

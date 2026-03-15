@@ -15,7 +15,7 @@ This substrate compiles rulebook formulas into UML artifacts including PlantUML 
 │                                                              │
 │   1. Load rulebook JSON (structured data)                    │
 │                          ↓                                   │
-│   2. Parse Excel-dialect formulas into AST                   │
+│   2. Parse Excel-dialect formulas into expression tree       │
 │                          ↓                                   │
 │   3. Generate class-diagram.puml (schema as UML classes)     │
 │                          ↓                                   │

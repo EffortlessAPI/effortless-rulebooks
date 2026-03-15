@@ -28,57 +28,57 @@ from orchestration.shared import load_rulebook, handle_clean_arg
 
 
 # =============================================================================
-# AST NODE TYPES (reused from OWL substrate)
+# EXPRESSION NODE TYPES (reused from OWL substrate)
 # =============================================================================
 
 @dataclass
-class ASTNode:
-    """Base class for AST nodes"""
+class ExprNode:
+    """Base class for expression nodes"""
     pass
 
 
 @dataclass
-class LiteralBool(ASTNode):
+class LiteralBool(ExprNode):
     value: bool
 
 
 @dataclass
-class LiteralInt(ASTNode):
+class LiteralInt(ExprNode):
     value: int
 
 
 @dataclass
-class LiteralString(ASTNode):
+class LiteralString(ExprNode):
     value: str
 
 
 @dataclass
-class FieldRef(ASTNode):
+class FieldRef(ExprNode):
     name: str  # Field name without {{ }}
 
 
 @dataclass
-class BinaryOp(ASTNode):
+class BinaryOp(ExprNode):
     op: str  # '=', '<>', '<', '<=', '>', '>='
-    left: ASTNode
-    right: ASTNode
+    left: ExprNode
+    right: ExprNode
 
 
 @dataclass
-class UnaryOp(ASTNode):
+class UnaryOp(ExprNode):
     op: str  # 'NOT'
-    operand: ASTNode
+    operand: ExprNode
 
 
 @dataclass
-class FuncCall(ASTNode):
+class FuncCall(ExprNode):
     name: str  # 'AND', 'OR', 'IF', 'LOWER', 'FIND'
-    args: List[ASTNode]
+    args: List[ExprNode]
 
 
 @dataclass
-class Concat(ASTNode):
-    parts: List[ASTNode]
+class Concat(ExprNode):
+    parts: List[ExprNode]
 
 
 # =============================================================================
@@ -243,13 +243,13 @@ class Parser:
         self.pos += 1
         return tok
 
-    def parse(self) -> ASTNode:
+    def parse(self) -> ExprNode:
         result = self.parse_concat()
         if self.current().type != TokenType.EOF:
             raise SyntaxError(f"Unexpected token {self.current()} after expression")
         return result
 
-    def parse_concat(self) -> ASTNode:
+    def parse_concat(self) -> ExprNode:
         left = self.parse_comparison()
         parts = [left]
         while self.current().type == TokenType.AMPERSAND:
@@ -260,7 +260,7 @@ class Parser:
             return parts[0]
         return Concat(parts=parts)
 
-    def parse_comparison(self) -> ASTNode:
+    def parse_comparison(self) -> ExprNode:
         left = self.parse_primary()
         op_map = {
             TokenType.EQUALS: '=',
@@ -277,7 +277,7 @@ class Parser:
             return BinaryOp(op=op, left=left, right=right)
         return left
 
-    def parse_primary(self) -> ASTNode:
+    def parse_primary(self) -> ExprNode:
         tok = self.current()
 
         if tok.type == TokenType.STRING:
@@ -331,8 +331,8 @@ class Parser:
         raise SyntaxError(f"Unexpected token {tok.type} at position {tok.pos}")
 
 
-def parse_formula(formula_text: str) -> ASTNode:
-    """Parse an Excel-dialect formula into an AST."""
+def parse_formula(formula_text: str) -> ExprNode:
+    """Parse an Excel-dialect formula into an expression tree."""
     tokens = tokenize(formula_text)
     parser = Parser(tokens)
     return parser.parse()
@@ -354,92 +354,92 @@ def escape_ocl_string(s: str) -> str:
     return s.replace("'", "\\'")
 
 
-def compile_to_ocl(ast: ASTNode) -> str:
-    """Compile an AST node to an OCL expression."""
+def compile_to_ocl(expr: ExprNode) -> str:
+    """Compile an expression node to an OCL expression."""
 
-    if isinstance(ast, LiteralBool):
-        return 'true' if ast.value else 'false'
+    if isinstance(expr, LiteralBool):
+        return 'true' if expr.value else 'false'
 
-    if isinstance(ast, LiteralInt):
-        return str(ast.value)
+    if isinstance(expr, LiteralInt):
+        return str(expr.value)
 
-    if isinstance(ast, LiteralString):
-        escaped = escape_ocl_string(ast.value)
+    if isinstance(expr, LiteralString):
+        escaped = escape_ocl_string(expr.value)
         return f"'{escaped}'"
 
-    if isinstance(ast, FieldRef):
-        return field_to_ocl_attr(ast.name)
+    if isinstance(expr, FieldRef):
+        return field_to_ocl_attr(expr.name)
 
-    if isinstance(ast, UnaryOp):
-        if ast.op == 'NOT':
-            operand = compile_to_ocl(ast.operand)
+    if isinstance(expr, UnaryOp):
+        if expr.op == 'NOT':
+            operand = compile_to_ocl(expr.operand)
             return f'not ({operand})'
-        raise ValueError(f"Unknown unary op: {ast.op}")
+        raise ValueError(f"Unknown unary op: {expr.op}")
 
-    if isinstance(ast, BinaryOp):
-        left = compile_to_ocl(ast.left)
-        right = compile_to_ocl(ast.right)
+    if isinstance(expr, BinaryOp):
+        left = compile_to_ocl(expr.left)
+        right = compile_to_ocl(expr.right)
         op_map = {'=': '=', '<>': '<>', '<': '<', '<=': '<=', '>': '>', '>=': '>='}
-        ocl_op = op_map.get(ast.op, '=')
+        ocl_op = op_map.get(expr.op, '=')
         return f'({left} {ocl_op} {right})'
 
-    if isinstance(ast, FuncCall):
-        if ast.name == 'AND':
-            parts = [compile_to_ocl(arg) for arg in ast.args]
+    if isinstance(expr, FuncCall):
+        if expr.name == 'AND':
+            parts = [compile_to_ocl(arg) for arg in expr.args]
             return '(' + ' and '.join(parts) + ')'
 
-        if ast.name == 'OR':
-            parts = [compile_to_ocl(arg) for arg in ast.args]
+        if expr.name == 'OR':
+            parts = [compile_to_ocl(arg) for arg in expr.args]
             return '(' + ' or '.join(parts) + ')'
 
-        if ast.name == 'IF':
-            if len(ast.args) < 2:
+        if expr.name == 'IF':
+            if len(expr.args) < 2:
                 raise ValueError("IF requires at least 2 arguments")
-            cond = compile_to_ocl(ast.args[0])
-            then_val = compile_to_ocl(ast.args[1])
-            else_val = compile_to_ocl(ast.args[2]) if len(ast.args) > 2 else "''"
+            cond = compile_to_ocl(expr.args[0])
+            then_val = compile_to_ocl(expr.args[1])
+            else_val = compile_to_ocl(expr.args[2]) if len(expr.args) > 2 else "''"
             return f'if {cond} then {then_val} else {else_val} endif'
 
-        if ast.name == 'NOT':
-            if len(ast.args) != 1:
+        if expr.name == 'NOT':
+            if len(expr.args) != 1:
                 raise ValueError("NOT requires 1 argument")
-            operand = compile_to_ocl(ast.args[0])
+            operand = compile_to_ocl(expr.args[0])
             return f'not ({operand})'
 
-        if ast.name == 'LOWER':
-            if len(ast.args) != 1:
+        if expr.name == 'LOWER':
+            if len(expr.args) != 1:
                 raise ValueError("LOWER requires 1 argument")
-            arg = compile_to_ocl(ast.args[0])
+            arg = compile_to_ocl(expr.args[0])
             return f'{arg}.toLower()'
 
-        if ast.name == 'FIND':
-            if len(ast.args) != 2:
+        if expr.name == 'FIND':
+            if len(expr.args) != 2:
                 raise ValueError("FIND requires 2 arguments")
-            needle = compile_to_ocl(ast.args[0])
-            haystack = compile_to_ocl(ast.args[1])
+            needle = compile_to_ocl(expr.args[0])
+            haystack = compile_to_ocl(expr.args[1])
             return f'{haystack}.indexOf({needle})'
 
-        if ast.name == 'SUM':
+        if expr.name == 'SUM':
             # SUM of values - use arithmetic addition
-            parts = [compile_to_ocl(arg) for arg in ast.args]
+            parts = [compile_to_ocl(arg) for arg in expr.args]
             return '(' + ' + '.join(parts) + ')'
 
-        if ast.name == 'SUBSTITUTE':
+        if expr.name == 'SUBSTITUTE':
             # SUBSTITUTE(text, old_text, new_text) -> text.replace(old_text, new_text)
-            if len(ast.args) != 3:
+            if len(expr.args) != 3:
                 raise ValueError("SUBSTITUTE requires 3 arguments")
-            text = compile_to_ocl(ast.args[0])
-            old_text = compile_to_ocl(ast.args[1])
-            new_text = compile_to_ocl(ast.args[2])
+            text = compile_to_ocl(expr.args[0])
+            old_text = compile_to_ocl(expr.args[1])
+            new_text = compile_to_ocl(expr.args[2])
             return f'{text}.replace({old_text}, {new_text})'
 
-        raise ValueError(f"Unknown function: {ast.name}")
+        raise ValueError(f"Unknown function: {expr.name}")
 
-    if isinstance(ast, Concat):
-        parts = [compile_to_ocl(part) for part in ast.parts]
+    if isinstance(expr, Concat):
+        parts = [compile_to_ocl(part) for part in expr.parts]
         return ' + '.join(parts)
 
-    raise ValueError(f"Unknown AST node type: {type(ast)}")
+    raise ValueError(f"Unknown expression node type: {type(expr)}")
 
 
 # =============================================================================
@@ -648,8 +648,8 @@ def generate_ocl_constraints(tables: Dict[str, Any]) -> str:
             col_description = col.get('Description', '')
 
             try:
-                ast = parse_formula(formula)
-                ocl_expr = compile_to_ocl(ast)
+                expr = parse_formula(formula)
+                ocl_expr = compile_to_ocl(expr)
 
                 # Add field description if available
                 if col_description:

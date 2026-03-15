@@ -76,7 +76,7 @@ fi
 # TOOL DETECTION
 # =============================================================================
 if [ -z "$SSOTME_AVAILABLE" ]; then
-    if command -v ssotme &> /dev/null; then
+    if command -v effortless &> /dev/null; then
         SSOTME_AVAILABLE=true
     else
         SSOTME_AVAILABLE=false
@@ -230,13 +230,13 @@ show_menu() {
     echo -e "  ${DIM}────────────────────────────────────────${NC}"
     # Dev-Ops
     echo -e "  ${RED}[C]${NC} ${BOLD}CLEAN${NC} all generated files"
-    echo -e "  ${YELLOW}[D]${NC} ${BOLD}DEV-OPS${NC} menu (PostgreSQL init, SSoTME setup)"
+    echo -e "  ${YELLOW}[D]${NC} ${BOLD}DEV-OPS${NC} menu (PostgreSQL init, Effortless setup)"
     if [ "$SSOTME_AVAILABLE" = true ]; then
         echo -e "  ${CYAN}[P]${NC} ${BOLD}PULL${NC} & Inject (Airtable → Postgres → Substrates)"
         echo -e "  ${CYAN}[B]${NC} ${BOLD}CHANGE BASE ID${NC} and pull"
     else
-        echo -e "  ${DIM}[P] Pull & Inject (requires SSoTME)${NC}"
-        echo -e "  ${DIM}[B] Change Base ID (requires SSoTME)${NC}"
+        echo -e "  ${DIM}[P] Pull & Inject (requires Effortless CLI)${NC}"
+        echo -e "  ${DIM}[B] Change Base ID (requires Effortless CLI)${NC}"
     fi
 
     echo ""
@@ -254,8 +254,8 @@ action_pull_airtable() {
 
     if [ "$SSOTME_AVAILABLE" != true ]; then
         echo ""
-        echo -e "${RED}SSoTME is not installed.${NC}"
-        echo -e "Visit ${CYAN}https://www.ssotme.com${NC} for installation instructions."
+        echo -e "${RED}Effortless CLI is not installed.${NC}"
+        echo -e "Visit ${CYAN}https://www.effortlessapi.com${NC} for installation instructions."
         echo ""
         read -p "Press Enter to continue..."
         return
@@ -347,8 +347,8 @@ action_change_base_id() {
 
     if [ "$SSOTME_AVAILABLE" != true ]; then
         echo ""
-        echo -e "${RED}SSoTME is not installed.${NC}"
-        echo -e "Base swapping requires SSoTME to regenerate code after changing the base."
+        echo -e "${RED}Effortless CLI is not installed.${NC}"
+        echo -e "Base swapping requires the Effortless CLI to regenerate code after changing the base."
         echo ""
         read -p "Press Enter to continue..."
         return
@@ -487,17 +487,17 @@ action_change_base_id() {
             ;;
     esac
 
-    # Regenerate from new base
+    # Sync rulebook from new base (does NOT rebuild substrates)
     echo ""
-    echo -e "${YELLOW}Regenerating from new base...${NC}"
+    echo -e "${YELLOW}Syncing rulebook from Airtable...${NC}"
     echo ""
 
     cd "$PROJECT_ROOT"
     # Use || to prevent set -e from killing the script on failure
-    BUILDALL_FAILED=""
-    python3 "$SCRIPT_DIR/rulebook-cache.py" sync || BUILDALL_FAILED="true"
+    SYNC_FAILED=""
+    python3 "$SCRIPT_DIR/rulebook-cache.py" sync || SYNC_FAILED="true"
 
-    if [ -z "$BUILDALL_FAILED" ]; then
+    if [ -z "$SYNC_FAILED" ]; then
         NEW_PROJECT_NAME=$(get_project_name)
         NEW_BASE=$(get_current_base_id)
         echo ""
@@ -507,9 +507,14 @@ action_change_base_id() {
         echo ""
         echo -e "  Project: ${WHITE}$NEW_PROJECT_NAME${NC}"
         echo -e "  Base ID: ${WHITE}$NEW_BASE${NC}"
+        echo ""
+        echo -e "  ${DIM}Rulebook updated. Substrates NOT rebuilt.${NC}"
+        echo -e "  ${DIM}To update substrates:${NC}"
+        echo -e "    ${CYAN}effortless build${NC}         ${DIM}# all substrates${NC}"
+        echo -e "    ${CYAN}./orchestrate.sh${NC}         ${DIM}# run tests (rebuilds as needed)${NC}"
     else
         echo ""
-        echo -e "${RED}Regeneration failed.${NC}"
+        echo -e "${RED}Rulebook sync failed.${NC}"
         echo -e "You may need to restore the previous base: ${WHITE}$PROJECT_NAME${NC} (${CURRENT_BASE})"
     fi
     echo ""
@@ -589,20 +594,20 @@ action_devops_menu() {
             echo -e "  ${DIM}[I] Initialize PostgreSQL (not installed)${NC}"
         fi
 
-        # SSoTME setup
+        # Effortless CLI setup
         if [ "$SSOTME_AVAILABLE" = true ]; then
-            echo -e "  ${DIM}[S] SSoTME Setup (already installed)${NC}"
+            echo -e "  ${DIM}[S] Effortless Setup (already installed)${NC}"
         else
-            echo -e "  [${CYAN}S${NC}] SSoTME Setup Instructions"
+            echo -e "  [${CYAN}S${NC}] Effortless Setup Instructions"
         fi
 
         echo ""
         echo -e "  ${DIM}────────────────────────────────────────${NC}"
         echo -e "  ${BOLD}Tool Status:${NC}"
         if [ "$SSOTME_AVAILABLE" = true ]; then
-            echo -e "    SSoTME:     ${GREEN}Available${NC}"
+            echo -e "    Effortless: ${GREEN}Available${NC}"
         else
-            echo -e "    SSoTME:     ${YELLOW}Not installed${NC} ${DIM}(Airtable sync disabled)${NC}"
+            echo -e "    Effortless: ${YELLOW}Not installed${NC} ${DIM}(Airtable sync disabled)${NC}"
         fi
 
         if $POSTGRES_AVAILABLE; then
@@ -628,7 +633,7 @@ action_devops_menu() {
                 fi
                 ;;
             [Ss])
-                action_setup_ssotme
+                action_setup_effortless
                 ;;
             [Qq]|"")
                 return
@@ -642,21 +647,21 @@ action_devops_menu() {
     done
 }
 
-action_setup_ssotme() {
+action_setup_effortless() {
     echo ""
-    echo -e "${BOLD}${CYAN}SSoTME Installation Instructions${NC}"
+    echo -e "${BOLD}${CYAN}Effortless CLI Installation Instructions${NC}"
     echo ""
-    echo -e "SSoTME (Single Source of Truth Made Easy) is required for:"
+    echo -e "The Effortless CLI is required for:"
     echo -e "  ${DIM}-${NC} Pulling data from Airtable"
     echo -e "  ${DIM}-${NC} Regenerating code from rulebook changes"
     echo ""
-    echo -e "${YELLOW}To install SSoTME:${NC}"
+    echo -e "${YELLOW}To install Effortless:${NC}"
     echo ""
-    echo -e "  1. Visit: ${CYAN}https://www.ssotme.com${NC}"
+    echo -e "  1. Visit: ${CYAN}https://www.effortlessapi.com${NC}"
     echo -e "  2. Follow the installation instructions for your platform"
-    echo -e "  3. Run ${WHITE}ssotme --version${NC} to verify installation"
+    echo -e "  3. Run ${WHITE}effortless --version${NC} to verify installation"
     echo ""
-    echo -e "${DIM}Note: You can still run substrate tests without SSoTME using existing files.${NC}"
+    echo -e "${DIM}Note: You can still run substrate tests without Effortless using existing files.${NC}"
     echo ""
     read -p "Press Enter to continue..."
 }

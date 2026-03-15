@@ -29,22 +29,15 @@
            GOBACK.
        .
 
-       *> ========== WORKFLOWS ==========
+       *> ========== CUSTOMERS ==========
        *> Level 1
-       CALC-NAME.
-           *> ERROR: Could not parse formula: =SUBSTITUTE(LOWER({{DisplayName}}), " ", "-")...
-           MOVE "ERROR" TO RECORD-NAME
-       .
-
-       *> Level 2
-       CALC-HAS-MORE-THAN1-STEP.
-           *> ERROR: Could not parse formula: ={{CountOfNonProposedSteps}} > 1...
-           MOVE "ERROR" TO RECORD-HAS-MORE-THAN1-STEP
+       CALC-FULL-NAME.
+           MOVE SPACES TO RECORD-FULL-NAME
+           STRING FUNCTION TRIM(RECORD-FIRST-NAME) DELIMITED SIZE " " DELIMITED SIZE FUNCTION TRIM(RECORD-LAST-NAME) DELIMITED SIZE INTO RECORD-FULL-NAME
        .
 
        COMPUTE-ALL-FIELDS.
-           PERFORM CALC-NAME
-           PERFORM CALC-HAS-MORE-THAN1-STEP
+           PERFORM CALC-FULL-NAME
        .
        FIND-CONTAINS.
            MOVE "false" TO WS-FIND-RESULT
