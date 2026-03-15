@@ -286,18 +286,38 @@ Generated from: `effortless-rulebook/effortless-rulebook.json`
 
 | Metric | Value |
 |--------|-------|
-| Total Fields Tested | 3 |
-| Passed | 3 |
+| Total Fields Tested | 77 |
+| Passed | 77 |
 | Failed | 0 |
 | Score | 100.0% |
 | Duration | &lt; 1s |
 
 ## Results by Entity
 
-### customers
+### roles
 
-- Fields: 3/3 (100.0%)
-- Computed columns: full_name
+- Fields: 15/15 (100.0%)
+- Computed columns: name
+
+### workflow_steps
+
+- Fields: 20/20 (100.0%)
+- Computed columns: name
+
+### precedes_steps
+
+- Fields: 16/16 (100.0%)
+- Computed columns: display_name
+
+### departments
+
+- Fields: 15/15 (100.0%)
+- Computed columns: name
+
+### approval_gates
+
+- Fields: 11/11 (100.0%)
+- Computed columns: name
 </pre>
         </div>
     </div>
@@ -308,9 +328,28 @@ Generated from: `effortless-rulebook/effortless-rulebook.json`
             <pre>=== COBOL Substrate Test Run ===
 
 cobol: Producing test-answers via Python erb_calc (same logic as generated COBOL)...
-  -&gt; customers: 3 records
-COBOL substrate: Processed 1 entities, 3 total records
-
+  -&gt; approval_gates: 11 records
+  -&gt; departments: 15 records
+  -&gt; precedes_steps: 16 records
+  -&gt; roles: 15 records
+  -&gt; workflow_steps: 20 records
+Traceback (most recent call last):
+  File &quot;/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/cobol/take-test.py&quot;, line 67, in &lt;module&gt;
+    main()
+    ~~~~^^
+  File &quot;/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/cobol/take-test.py&quot;, line 58, in main
+    count = process_entity(input_path, output_path, entity)
+  File &quot;/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/cobol/take-test.py&quot;, line 30, in process_entity
+    computed = compute_all_calculated_fields(record, entity_name)
+  File &quot;/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/cobol/../python/erb_calc.py&quot;, line 237, in compute_all_calculated_fields
+    return compute_workflows_fields(record)
+  File &quot;/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/cobol/../python/erb_calc.py&quot;, line 47, in compute_workflows_fields
+    result[&#x27;has_more_than1_step&#x27;] = calc_workflows_has_more_than1_step(result.get(&#x27;count_of_non_proposed_steps&#x27;))
+                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File &quot;/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/cobol/../python/erb_calc.py&quot;, line 32, in calc_workflows_has_more_than1_step
+    return (count_of_non_proposed_steps &gt; 1)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: &#x27;&gt;&#x27; not supported between instances of &#x27;NoneType&#x27; and &#x27;int&#x27;
 </pre>
         </div>
     </div>

@@ -104,6 +104,39 @@ A concrete next-step demo is to drive this COBOL substrate from a realistic main
 2. **Generate COBOL that matches a functional demo**: Run the orchestration pipeline so that the new rulebook produces Python `erb_calc.py` and COBOL `erb_calc.cbl`/`erb_copy.cpy`. Wire the generated COBOL into a small CardDemo-inspired batch driver (or a minimal standalone program) and show that, for the same input transactions, the generated COBOL produces the same outputs as the original CardDemo programs.
 3. **Generalize to other substrates**: Reuse the same rulebook to generate and test other substrates (Python, YAML, Go, CSV, English, etc.), all against the same `testing/blank-tests/` cases derived from CardDemo data. This demonstrates that the model is **substrate-agnostic**: you describe the rules once, then project them consistently into multiple execution environments, including COBOL.
 
+## Limitations (Why COBOL Is Not a Preferred Substrate in 2026)
+
+While COBOL remains important for maintaining legacy systems, this substrate demonstrates why it's rarely chosen for new ERB deployments:
+
+### 1. Missing String Functions
+
+The COBOL formula compiler does not yet support `SUBSTITUTE()`, which is used in Workflows to generate URL-friendly names:
+
+```
+=SUBSTITUTE(LOWER({{DisplayName}}), " ", "-")
+```
+
+COBOL lacks native string manipulation intrinsics. Implementing SUBSTITUTE requires character-by-character iteration with nested loops—tedious to generate and error-prone compared to a single function call in Python, Go, or JavaScript.
+
+### 2. No Cross-Table Lookups
+
+Formulas like `COUNTIFS(WorkflowSteps!{{Workflow}}, Workflows!{{WorkflowId}})` reference data across tables. Modern substrates (Python, Go, SQL) handle this naturally with dictionaries, maps, or JOINs.
+
+COBOL's record-at-a-time processing model has no built-in concept of relational lookups. Supporting COUNTIFS would require:
+- Pre-loading related tables into WORKING-STORAGE arrays
+- Generating nested PERFORM loops to scan and count matches
+- Managing memory limits for large datasets
+
+This architectural mismatch makes COBOL poorly suited for rulebooks with relational formulas.
+
+### When COBOL Still Makes Sense
+
+- **Legacy integration**: Embedding ERB logic into existing COBOL batch jobs
+- **Mainframe compliance**: Environments where only COBOL is approved
+- **CardDemo-style modernization**: Extracting rules from legacy COBOL into a portable rulebook, then optionally regenerating COBOL for continuity
+
+For greenfield projects, prefer Python, Go, or PostgreSQL substrates.
+
 ## Source
 
 Generated from: `effortless-rulebook/effortless-rulebook.json`
