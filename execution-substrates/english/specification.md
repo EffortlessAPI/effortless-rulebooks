@@ -1,51 +1,129 @@
-# Specification Document for DEMO: Customer FullName Rulebook
+# Specification Document for Jessica Talisman - BASIC Ontology Parts 1-3
 
 ## Overview
-This rulebook provides a structured approach to managing customer data, specifically focusing on the computation of the full name of customers based on their first and last names. It is derived from an Airtable base and includes a schema for the customer data as well as a calculated field for the full name.
+This document provides a detailed specification for the rulebook derived from the Airtable base "Jessica Talisman - BASIC Ontology Parts 1-3". It outlines how to compute calculated fields for various entities within the rulebook, specifically focusing on workflows and their associated steps.
 
-## Customers Table
+---
+
+## Workflows
 
 ### Input Fields
-The following input fields are used to compute the calculated field:
+1. **DisplayName**
+   - **Type:** String (raw)
+   - **Description:** A human-readable name for the workflow.
 
-1. **FirstName**
-   - **Type:** String
-   - **Description:** The first name of the customer, used to create the full name.
+### Calculated Fields
 
-2. **LastName**
-   - **Type:** String
-   - **Description:** The last name of the customer, used to create the full name.
+#### 1. Name
+- **Description:** This field provides a machine-friendly name for the workflow, which is used for programmatic reference and URL slug generation.
+- **Computation:** To compute the `Name`, take the `DisplayName`, convert it to lowercase, and replace spaces with hyphens.
+- **Formula:** `=SUBSTITUTE(LOWER({{DisplayName}}), " ", "-")`
+- **Example:** 
+  - If `DisplayName` is "Performance Review", then:
+  - `Name` = "performance-review"
 
-### Calculated Field
+---
 
-#### FullName
-- **Type:** Calculated
-- **Description:** The full name of the customer is computed by concatenating the first name and last name with a space in between.
+### Input Fields
+1. **WorkflowSteps**
+   - **Type:** String (raw)
+   - **Description:** Reference to workflow steps associated with this workflow.
 
-**Computation Explanation:**
-To compute the `FullName`, take the value from the `FirstName` field and the value from the `LastName` field. Concatenate these two values together with a space character in between.
+### Calculated Fields
 
-**Formula for Reference:**
-```
-={{FirstName}} & " " & {{LastName}}
-```
+#### 2. CountOfNonProposedSteps
+- **Description:** This field counts the number of workflow steps associated with the workflow, which helps in analyzing workflow complexity.
+- **Computation:** Count the number of entries in `WorkflowSteps` that match the current `WorkflowId`.
+- **Formula:** `=COUNTIFS(WorkflowSteps!{{Workflow}}, Workflows!{{WorkflowId}})`
+- **Example:**
+  - If `WorkflowSteps` contains "system-notification-sent, step-2, recwwXHLqxKPhj6Mt" for the workflow with `WorkflowId` "performance-review", then:
+  - `CountOfNonProposedSteps` = 3
 
-**Concrete Example:**
-Using the data provided in the rulebook:
+#### 3. HasMoreThan1Step
+- **Description:** This boolean field indicates whether the workflow has more than one step.
+- **Computation:** Check if `CountOfNonProposedSteps` is greater than 1.
+- **Formula:** `={{CountOfNonProposedSteps}} > 1`
+- **Example:**
+  - If `CountOfNonProposedSteps` is 3, then:
+  - `HasMoreThan1Step` = true
 
-- For the first customer:
-  - **FirstName:** "Jane"
-  - **LastName:** "Smith"
-  - **Computed FullName:** "Jane Smith"
+---
 
-- For the second customer:
-  - **FirstName:** "John"
-  - **LastName:** "Doe"
-  - **Computed FullName:** "John Doe"
+## WorkflowSteps
 
-- For the third customer:
-  - **FirstName:** "Emily"
-  - **LastName:** "Jones"
-  - **Computed FullName:** "Emily Jones"
+### Input Fields
+1. **DisplayName**
+   - **Type:** String (raw)
+   - **Description:** A human-readable name for the workflow step.
 
-This specification allows for the accurate computation of the `FullName` field based on the provided first and last names of customers.
+### Calculated Fields
+
+#### 1. Name
+- **Description:** This field provides a machine-friendly name for the workflow step, similar to the `Name` field in workflows.
+- **Computation:** To compute the `Name`, take the `DisplayName`, convert it to lowercase, and replace spaces with hyphens.
+- **Formula:** `=SUBSTITUTE(LOWER({{DisplayName}}), " ", "-")`
+- **Example:**
+  - If `DisplayName` is "Submit Request", then:
+  - `Name` = "submit-request"
+
+---
+
+## ApprovalGates
+
+### Input Fields
+1. **DisplayName**
+   - **Type:** String (raw)
+   - **Description:** A human-readable name for the approval gate.
+
+### Calculated Fields
+
+#### 1. Name
+- **Description:** This field provides a machine-friendly name for the approval gate.
+- **Computation:** To compute the `Name`, take the `DisplayName`, convert it to lowercase, and replace spaces with hyphens.
+- **Formula:** `=SUBSTITUTE(LOWER({{DisplayName}}), " ", "-")`
+- **Example:**
+  - If `DisplayName` is "Manager Approval", then:
+  - `Name` = "manager-approval"
+
+---
+
+## PrecedesSteps
+
+### Input Fields
+1. **StepNumber**
+   - **Type:** Integer (raw)
+   - **Description:** The ordinal position of the step in the workflow.
+
+### Calculated Fields
+
+#### 1. DisplayName
+- **Description:** This field generates a display name for the step based on its sequence number.
+- **Computation:** Concatenate the string "Step-" with the `StepNumber`.
+- **Formula:** `="Step-" & {{StepNumber}}`
+- **Example:**
+  - If `StepNumber` is 1, then:
+  - `DisplayName` = "Step-1"
+
+---
+
+## Roles
+
+### Input Fields
+1. **DisplayName**
+   - **Type:** String (raw)
+   - **Description:** A human-readable name for the role.
+
+### Calculated Fields
+
+#### 1. Name
+- **Description:** This field provides a machine-friendly name for the role.
+- **Computation:** To compute the `Name`, take the `DisplayName` and convert it to lowercase.
+- **Formula:** `=LOWER({{DisplayName}})`
+- **Example:**
+  - If `DisplayName` is "Admin", then:
+  - `Name` = "admin"
+
+---
+
+## Conclusion
+This specification outlines the necessary steps to compute calculated fields for workflows, workflow steps, approval gates, precedes steps, and roles within the Jessica Talisman - BASIC Ontology Parts 1-3 rulebook. By following the provided formulas and examples, users can accurately derive the calculated values as intended.

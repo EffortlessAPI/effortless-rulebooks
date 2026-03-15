@@ -29,15 +29,22 @@
            GOBACK.
        .
 
-       *> ========== CUSTOMERS ==========
+       *> ========== WORKFLOWS ==========
        *> Level 1
-       CALC-FULL-NAME.
-           *> ERROR: Could not parse formula: ={{FirstName}} & " " & {{LastName}}...
-           MOVE "ERROR" TO RECORD-FULL-NAME
+       CALC-NAME.
+           *> ERROR: Could not parse formula: =SUBSTITUTE(LOWER({{DisplayName}}), " ", "-")...
+           MOVE "ERROR" TO RECORD-NAME
+       .
+
+       *> Level 2
+       CALC-HAS-MORE-THAN1-STEP.
+           *> ERROR: Could not parse formula: ={{CountOfNonProposedSteps}} > 1...
+           MOVE "ERROR" TO RECORD-HAS-MORE-THAN1-STEP
        .
 
        COMPUTE-ALL-FIELDS.
-           PERFORM CALC-FULL-NAME
+           PERFORM CALC-NAME
+           PERFORM CALC-HAS-MORE-THAN1-STEP
        .
        FIND-CONTAINS.
            MOVE "false" TO WS-FIND-RESULT
