@@ -153,23 +153,57 @@ def get_cache_info(base_id: str = None) -> dict:
     return metadata[base_id]
 
 
-def run_ssotme_buildall() -> bool:
-    """Run ssotme -buildall and return success status."""
+def run_effortless_buildall() -> bool:
+    """Run effortless -buildall and return success status.
+
+    DEPRECATED: Use run_effortless_sync_rulebook() instead for base switching.
+    This rebuilds ALL substrates which violates separation of concerns.
+    """
     try:
         result = subprocess.run(
-            ["ssotme", "-buildall"],
+            ["effortless", "-buildall"],
             cwd=PROJECT_ROOT,
             timeout=300  # 5 minute timeout
         )
         return result.returncode == 0
     except subprocess.TimeoutExpired:
-        print(f"{RED}Error: ssotme -buildall timed out{NC}")
+        print(f"{RED}Error: effortless -buildall timed out{NC}")
         return False
     except FileNotFoundError:
-        print(f"{RED}Error: ssotme not found in PATH{NC}")
+        print(f"{RED}Error: effortless not found in PATH{NC}")
         return False
     except Exception as e:
-        print(f"{RED}Error running ssotme: {e}{NC}")
+        print(f"{RED}Error running effortless: {e}{NC}")
+        return False
+
+
+def run_effortless_sync_rulebook() -> bool:
+    """Sync ONLY the rulebook from Airtable. Does NOT rebuild substrates.
+
+    This runs effortless -buildLocal in the effortless-rulebook folder,
+    which only executes the airtable-to-rulebook transpiler.
+
+    Substrates should be rebuilt separately via:
+    - `effortless build` in project root (all substrates)
+    - Individual inject scripts in each substrate folder
+    - For SSoT.me substrates: `effortless build` in that substrate's folder
+    """
+    rulebook_dir = PROJECT_ROOT / "effortless-rulebook"
+    try:
+        result = subprocess.run(
+            ["effortless", "-buildLocal"],
+            cwd=rulebook_dir,
+            timeout=120  # 2 minute timeout for just rulebook
+        )
+        return result.returncode == 0
+    except subprocess.TimeoutExpired:
+        print(f"{RED}Error: effortless -buildLocal timed out{NC}")
+        return False
+    except FileNotFoundError:
+        print(f"{RED}Error: effortless not found in PATH{NC}")
+        return False
+    except Exception as e:
+        print(f"{RED}Error syncing rulebook: {e}{NC}")
         return False
 
 
@@ -201,11 +235,12 @@ def sync_with_fallback(force_cache: bool = False, non_interactive: bool = False)
             print(f"{RED}No cached rulebook available for this base{NC}")
             return False
 
-    # Try to sync from Airtable
-    print(f"{BLUE}Syncing from Airtable...{NC}")
-    if run_ssotme_buildall():
+    # Try to sync rulebook from Airtable (does NOT rebuild substrates)
+    print(f"{BLUE}Syncing rulebook from Airtable...{NC}")
+    if run_effortless_sync_rulebook():
         # Success - cache the new rulebook
         cache_rulebook(base_id)
+        print(f"{GREEN}Rulebook synced. Run 'effortless build' to update substrates.{NC}")
         return True
 
     # Sync failed - offer fallback
@@ -284,17 +319,33 @@ def clear_cache():
         print("No cache to clear")
 
 
+def build_all_substrates() -> bool:
+    """Build ALL substrates from the current rulebook.
+
+    This runs effortless -buildall which rebuilds everything.
+    Use this after switching bases when you want to update all substrates.
+    """
+    print(f"{BLUE}Building all substrates...{NC}")
+    success = run_effortless_buildall()
+    if success:
+        print(f"{GREEN}All substrates rebuilt.{NC}")
+    return success
+
+
 if __name__ == "__main__":
     import argparse
 
     parser = argparse.ArgumentParser(description="Rulebook cache manager")
     subparsers = parser.add_subparsers(dest="command", help="Commands")
 
-    # Sync command (default behavior)
-    sync_parser = subparsers.add_parser("sync", help="Sync from Airtable with fallback to cache")
+    # Sync command (default behavior) - syncs ONLY the rulebook, NOT substrates
+    sync_parser = subparsers.add_parser("sync", help="Sync rulebook from Airtable (does NOT rebuild substrates)")
     sync_parser.add_argument("--offline", action="store_true", help="Use cache directly (skip Airtable)")
     sync_parser.add_argument("--non-interactive", "-y", action="store_true",
                             help="Non-interactive mode (use cache automatically on failure)")
+
+    # Build-all command - rebuilds ALL substrates
+    subparsers.add_parser("build-all", help="Rebuild ALL substrates from rulebook (effortless -buildall)")
 
     # Cache command
     subparsers.add_parser("cache", help="Cache the current rulebook")
@@ -315,6 +366,10 @@ if __name__ == "__main__":
             offline = getattr(args, 'offline', False)
             non_interactive = getattr(args, 'non_interactive', False) or os.environ.get('SSOTME_NONINTERACTIVE')
             success = sync_with_fallback(force_cache=offline, non_interactive=non_interactive)
+            sys.exit(0 if success else 1)
+
+        elif args.command == "build-all":
+            success = build_all_substrates()
             sys.exit(0 if success else 1)
 
         elif args.command == "cache":

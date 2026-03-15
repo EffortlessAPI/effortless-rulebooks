@@ -303,7 +303,7 @@ The pattern works for **any domain** - the orchestration, conformance testing, a
 The formula compilation pipeline transforms Airtable formulas into native expressions:
 
 ```
-Airtable formula -> AST -> Python/Go/SQL/Excel expression
+Airtable formula -> expression tree -> Python/Go/SQL/Excel expression
 ```
 
 ### Supported Formula Types

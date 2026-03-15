@@ -186,7 +186,7 @@ This substrate compiles rulebook formulas into GnuCOBOL free-format source. It g
 │                                                              │
 │   1. Load rulebook JSON (structured data)                    │
 │                          ↓                                   │
-│   2. Parse Excel-dialect formulas into AST                   │
+│   2. Parse Excel-dialect formulas into expression tree       │
 │                          ↓                                   │
 │   3. Build dependency DAG for calculation ordering           │
 │                          ↓                                   │
@@ -270,6 +270,39 @@ A concrete next-step demo is to drive this COBOL substrate from a realistic main
 2. **Generate COBOL that matches a functional demo**: Run the orchestration pipeline so that the new rulebook produces Python `erb_calc.py` and COBOL `erb_calc.cbl`/`erb_copy.cpy`. Wire the generated COBOL into a small CardDemo-inspired batch driver (or a minimal standalone program) and show that, for the same input transactions, the generated COBOL produces the same outputs as the original CardDemo programs.
 3. **Generalize to other substrates**: Reuse the same rulebook to generate and test other substrates (Python, YAML, Go, CSV, English, etc.), all against the same `testing/blank-tests/` cases derived from CardDemo data. This demonstrates that the model is **substrate-agnostic**: you describe the rules once, then project them consistently into multiple execution environments, including COBOL.
 
+## Limitations (Why COBOL Is Not a Preferred Substrate in 2026)
+
+While COBOL remains important for maintaining legacy systems, this substrate demonstrates why it&#x27;s rarely chosen for new ERB deployments:
+
+### 1. Missing String Functions
+
+The COBOL formula compiler does not yet support `SUBSTITUTE()`, which is used in Workflows to generate URL-friendly names:
+
+```
+=SUBSTITUTE(LOWER({{DisplayName}}), &quot; &quot;, &quot;-&quot;)
+```
+
+COBOL lacks native string manipulation intrinsics. Implementing SUBSTITUTE requires character-by-character iteration with nested loops—tedious to generate and error-prone compared to a single function call in Python, Go, or JavaScript.
+
+### 2. No Cross-Table Lookups
+
+Formulas like `COUNTIFS(WorkflowSteps!{{Workflow}}, Workflows!{{WorkflowId}})` reference data across tables. Modern substrates (Python, Go, SQL) handle this naturally with dictionaries, maps, or JOINs.
+
+COBOL&#x27;s record-at-a-time processing model has no built-in concept of relational lookups. Supporting COUNTIFS would require:
+- Pre-loading related tables into WORKING-STORAGE arrays
+- Generating nested PERFORM loops to scan and count matches
+- Managing memory limits for large datasets
+
+This architectural mismatch makes COBOL poorly suited for rulebooks with relational formulas.
+
+### When COBOL Still Makes Sense
+
+- **Legacy integration**: Embedding ERB logic into existing COBOL batch jobs
+- **Mainframe compliance**: Environments where only COBOL is approved
+- **CardDemo-style modernization**: Extracting rules from legacy COBOL into a portable rulebook, then optionally regenerating COBOL for continuity
+
+For greenfield projects, prefer Python, Go, or PostgreSQL substrates.
+
 ## Source
 
 Generated from: `effortless-rulebook/effortless-rulebook.json`
@@ -286,38 +319,18 @@ Generated from: `effortless-rulebook/effortless-rulebook.json`
 
 | Metric | Value |
 |--------|-------|
-| Total Fields Tested | 77 |
-| Passed | 77 |
+| Total Fields Tested | 3 |
+| Passed | 3 |
 | Failed | 0 |
 | Score | 100.0% |
 | Duration | &lt; 1s |
 
 ## Results by Entity
 
-### roles
+### customers
 
-- Fields: 15/15 (100.0%)
-- Computed columns: name
-
-### workflow_steps
-
-- Fields: 20/20 (100.0%)
-- Computed columns: name
-
-### precedes_steps
-
-- Fields: 16/16 (100.0%)
-- Computed columns: display_name
-
-### departments
-
-- Fields: 15/15 (100.0%)
-- Computed columns: name
-
-### approval_gates
-
-- Fields: 11/11 (100.0%)
-- Computed columns: name
+- Fields: 3/3 (100.0%)
+- Computed columns: full_name
 </pre>
         </div>
     </div>
@@ -327,29 +340,23 @@ Generated from: `effortless-rulebook/effortless-rulebook.json`
             <h2>Execution Log</h2>
             <pre>=== COBOL Substrate Test Run ===
 
-cobol: Producing test-answers via Python erb_calc (same logic as generated COBOL)...
-  -&gt; approval_gates: 11 records
-  -&gt; departments: 15 records
-  -&gt; precedes_steps: 16 records
-  -&gt; roles: 15 records
-  -&gt; workflow_steps: 20 records
-Traceback (most recent call last):
-  File &quot;/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/cobol/take-test.py&quot;, line 67, in &lt;module&gt;
-    main()
-    ~~~~^^
-  File &quot;/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/cobol/take-test.py&quot;, line 58, in main
-    count = process_entity(input_path, output_path, entity)
-  File &quot;/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/cobol/take-test.py&quot;, line 30, in process_entity
-    computed = compute_all_calculated_fields(record, entity_name)
-  File &quot;/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/cobol/../python/erb_calc.py&quot;, line 237, in compute_all_calculated_fields
-    return compute_workflows_fields(record)
-  File &quot;/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/cobol/../python/erb_calc.py&quot;, line 47, in compute_workflows_fields
-    result[&#x27;has_more_than1_step&#x27;] = calc_workflows_has_more_than1_step(result.get(&#x27;count_of_non_proposed_steps&#x27;))
-                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File &quot;/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/cobol/../python/erb_calc.py&quot;, line 32, in calc_workflows_has_more_than1_step
-    return (count_of_non_proposed_steps &gt; 1)
-            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-TypeError: &#x27;&gt;&#x27; not supported between instances of &#x27;NoneType&#x27; and &#x27;int&#x27;
+cobol: Starting test (using GnuCOBOL)...
+COBOL Substrate Test Runner
+==================================================
+
+Checking for GnuCOBOL...
+  Found: cobc (GnuCOBOL) 3.2.0
+
+Compiling erb_main.cbl...
+  Compiled successfully: erb_test
+
+Processing entities...
+  -&gt; customers: 3 records
+
+==================================================
+COBOL substrate: Processed 1 entities, 3 total records
+==================================================
+
 </pre>
         </div>
     </div>

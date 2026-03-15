@@ -52,7 +52,7 @@ from orchestration.shared import (
 # Formula parsing utilities to convert ERB formula syntax to Python expressions
 from orchestration.formula_parser import (
     parse_formula, compile_to_python, get_field_dependencies,
-    ASTNode, FieldRef, FuncCall, Concat, LiteralString
+    ExprNode, FieldRef, FuncCall, Concat, LiteralString
 )
 
 
@@ -89,9 +89,9 @@ def build_dag_levels(calculated_fields: List[Dict], raw_field_names: Set[str]) -
     for field in calculated_fields:
         formula = field.get('formula', '')
         try:
-            # Parse the formula into an AST and extract referenced fields
-            ast = parse_formula(formula)
-            deps = get_field_dependencies(ast)
+            # Parse the formula into an expression tree and extract referenced fields
+            expr = parse_formula(formula)
+            deps = get_field_dependencies(expr)
             # Normalize to snake_case for consistent comparison
             field_deps[field['name']] = set(to_snake_case(d) for d in deps)
         except Exception as e:
@@ -175,9 +175,9 @@ def generate_calc_function(entity_name: str, field: Dict) -> str:
     that computes the field value from its dependencies.
 
     TRANSFORMATION PIPELINE:
-      1. Parse the ERB formula into an AST (Abstract Syntax Tree)
-      2. Extract field dependencies from the AST
-      3. Compile the AST to a Python expression
+      1. Parse the ERB formula into an expression tree
+      2. Extract field dependencies from the expression tree
+      3. Compile the expression tree to a Python expression
       4. Generate a function with the deps as parameters
 
     EXAMPLE:
@@ -204,9 +204,9 @@ def generate_calc_function(entity_name: str, field: Dict) -> str:
     # Parse the formula and compile to Python
     # -------------------------------------------------------------------------
     try:
-        ast = parse_formula(formula)           # Parse ERB formula syntax to AST
-        deps = get_field_dependencies(ast)     # Extract field references from AST
-        python_expr = compile_to_python(ast)   # Convert AST to Python expression
+        expr = parse_formula(formula)           # Parse ERB formula
+        deps = get_field_dependencies(expr)     # Extract field references
+        python_expr = compile_to_python(expr)   # Convert to Python expression
     except Exception as e:
         # If parsing fails, generate a stub function that raises an error
         # This allows the generated file to still be syntactically valid
@@ -320,8 +320,8 @@ def generate_entity_compute_function(
 
             # Re-parse formula to get dependencies for the function call
             try:
-                ast = parse_formula(field.get('formula', ''))
-                deps = get_field_dependencies(ast)
+                expr = parse_formula(field.get('formula', ''))
+                deps = get_field_dependencies(expr)
             except:
                 deps = []
 

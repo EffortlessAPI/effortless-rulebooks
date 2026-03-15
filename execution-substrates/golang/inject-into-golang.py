@@ -24,7 +24,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 from orchestration.shared import load_rulebook, get_candidate_name_from_cwd, handle_clean_arg
 from orchestration.formula_parser import (
     parse_formula, compile_to_go, get_field_dependencies,
-    to_snake_case, to_pascal_case, ASTNode, FuncCall
+    to_snake_case, to_pascal_case, ExprNode, FuncCall
 )
 
 
@@ -93,24 +93,24 @@ def get_input_fields(schema: List[Dict]) -> List[Dict]:
     return [field for field in schema if field.get('type') in input_types]
 
 
-def uses_string_functions(ast: ASTNode) -> bool:
-    """Check if an AST uses any functions that require the strings package.
+def uses_string_functions(expr: ExprNode) -> bool:
+    """Check if an expression uses any functions that require the strings package.
 
     Functions: LOWER, FIND, SUBSTITUTE
     """
-    if isinstance(ast, FuncCall):
-        if ast.name in ('LOWER', 'FIND', 'SUBSTITUTE'):
+    if isinstance(expr, FuncCall):
+        if expr.name in ('LOWER', 'FIND', 'SUBSTITUTE'):
             return True
-        return any(uses_string_functions(arg) for arg in ast.args)
+        return any(uses_string_functions(arg) for arg in expr.args)
 
     # Check recursively for other node types
     from orchestration.formula_parser import BinaryOp, UnaryOp, Concat
-    if isinstance(ast, BinaryOp):
-        return uses_string_functions(ast.left) or uses_string_functions(ast.right)
-    if isinstance(ast, UnaryOp):
-        return uses_string_functions(ast.operand)
-    if isinstance(ast, Concat):
-        return any(uses_string_functions(part) for part in ast.parts)
+    if isinstance(expr, BinaryOp):
+        return uses_string_functions(expr.left) or uses_string_functions(expr.right)
+    if isinstance(expr, UnaryOp):
+        return uses_string_functions(expr.operand)
+    if isinstance(expr, Concat):
+        return any(uses_string_functions(part) for part in expr.parts)
 
     return False
 
@@ -126,8 +126,8 @@ def rulebook_needs_strings_import(rulebook: Dict) -> bool:
             formula = field.get('formula', '')
             if formula:
                 try:
-                    ast = parse_formula(formula)
-                    if uses_string_functions(ast):
+                    expr = parse_formula(formula)
+                    if uses_string_functions(expr):
                         return True
                 except Exception:
                     pass
@@ -176,8 +176,8 @@ def build_dag_levels(calculated_fields: List[Dict], raw_field_names: Set[str]) -
     for field in calculated_fields:
         formula = field.get('formula', '')
         try:
-            ast = parse_formula(formula)
-            deps = get_field_dependencies(ast)
+            expr = parse_formula(formula)
+            deps = get_field_dependencies(expr)
             field_deps[field['name']] = set(d for d in deps)
         except Exception as e:
             print(f"Warning: Failed to parse formula for {field['name']}: {e}")
@@ -240,8 +240,8 @@ def compile_formula_to_go(field: Dict, struct_var: str = 'tc', calc_vars: Dict[s
     """
     formula = field.get('formula', '')
     try:
-        ast = parse_formula(formula)
-        go_expr = compile_to_go(ast, struct_var, field_types or {})
+        expr = parse_formula(formula)
+        go_expr = compile_to_go(expr, struct_var, field_types or {})
 
         # Substitute references to already-computed calculated fields
         # with their local variable names. Order matters - more specific patterns first.

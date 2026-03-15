@@ -197,11 +197,11 @@ def generate_shacl_rules(rulebook):
         for column in table_def["schema"]:
             formula = column.get("formula")
             if formula:
-                # Parse formula to AST (reuse binary substrate parser)
-                ast = parse_formula(formula)
+                # Parse formula to expression tree (reuse binary substrate parser)
+                expr = parse_formula(formula)
 
-                # Compile AST to SPARQL expression
-                sparql_expr = compile_to_sparql(ast)
+                # Compile expression tree to SPARQL expression
+                sparql_expr = compile_to_sparql(expr)
 
                 # Emit SHACL rule
                 emit_shacl_rule(column["name"], sparql_expr)
@@ -214,7 +214,7 @@ Reuses the formula parser from binary substrate, but targets SPARQL:
 ```
 Formula: FIND("language", LOWER({{Category}})) > 0
     ↓ parse
-AST: BinaryOp(op='>',
+Expr: BinaryOp(op='>',
        left=FuncCall('FIND', [LiteralString("language"),
                               FuncCall('LOWER', [FieldRef('Category')])]),
        right=LiteralInt(0))
@@ -225,7 +225,7 @@ SPARQL: (CONTAINS(LCASE(?category), "language"))
 ```
 Formula: IF({{DistanceFromConcept}} = 1, "IsMirrorOf", "IsDescriptionOf")
     ↓ parse
-AST: FuncCall('IF', [BinaryOp('=', FieldRef('DistanceFromConcept'), LiteralInt(1)),
+Expr: FuncCall('IF', [BinaryOp('=', FieldRef('DistanceFromConcept'), LiteralInt(1)),
                      LiteralString("IsMirrorOf"),
                      LiteralString("IsDescriptionOf")])
     ↓ compile_to_sparql

@@ -5,7 +5,7 @@
 #
 # This script:
 #   1. Pulls the latest rulebook from Airtable (airtabletorulebook transpiler)
-#   2. Runs buildall to regenerate all artifacts (ssotme -buildall)
+#   2. Runs buildall to regenerate all artifacts (effortless -buildall)
 #   3. Runs orchestration to test all substrates (unless --skip-orchestrate)
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -26,7 +26,7 @@ done
 
 echo "=== Pulling from Airtable ==="
 cd "$REPO_ROOT"
-ssotme airtabletorulebook
+effortless airtabletorulebook
 
 echo ""
 echo "=== Running buildall ==="

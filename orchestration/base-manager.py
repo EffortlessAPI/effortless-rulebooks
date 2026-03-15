@@ -19,10 +19,10 @@ BASES_FILE = os.path.join(SCRIPT_DIR, "bases.json")  # Separate file that ssotme
 
 
 def get_airtable_api_key():
-    """Get Airtable API key from ssotme config."""
+    """Get Airtable API key from effortless config."""
     try:
         result = subprocess.run(
-            ["ssotme", "-info"],
+            ["effortless", "-info"],
             capture_output=True,
             text=True,
             timeout=10
@@ -33,7 +33,7 @@ def get_airtable_api_key():
                 if len(parts) > 1:
                     return parts[1].strip()
     except Exception as e:
-        print(f"Warning: Could not get API key from ssotme: {e}", file=sys.stderr)
+        print(f"Warning: Could not get API key from effortless: {e}", file=sys.stderr)
     return None
 
 
@@ -201,7 +201,7 @@ def fetch_base_name_or_fail(base_id: str) -> str:
     """Fetch base name from Airtable. FAILS if it can't get the name. No fallbacks."""
     api_key = get_airtable_api_key()
     if not api_key:
-        raise ValueError("No Airtable API key configured. Run 'ssotme -setAccount airtable <your-pat>'")
+        raise ValueError("No Airtable API key configured. Run 'effortless -setAccount airtable <your-pat>'")
     return fetch_base_name(base_id, api_key)  # Let exceptions propagate
 
 

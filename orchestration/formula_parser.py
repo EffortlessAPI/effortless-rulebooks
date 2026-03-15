@@ -3,9 +3,9 @@
 Shared Formula Parser for ERB Execution Substrates
 
 This module provides a reusable formula parser that converts Excel-dialect
-formulas (from effortless-rulebook.json) into an Abstract Syntax Tree (AST).
+formulas (from effortless-rulebook.json) into an expression tree.
 
-Each substrate then compiles the AST to its target language:
+Each substrate then compiles the expression tree to its target language:
 - Python: compile_to_python()
 - JavaScript: compile_to_javascript()
 - Go: compile_to_go()
@@ -21,57 +21,57 @@ from enum import Enum, auto
 
 
 # =============================================================================
-# AST NODE TYPES
+# EXPRESSION NODE TYPES
 # =============================================================================
 
 @dataclass
-class ASTNode:
-    """Base class for AST nodes"""
+class ExprNode:
+    """Base class for expression nodes"""
     pass
 
 
 @dataclass
-class LiteralBool(ASTNode):
+class LiteralBool(ExprNode):
     value: bool
 
 
 @dataclass
-class LiteralInt(ASTNode):
+class LiteralInt(ExprNode):
     value: int
 
 
 @dataclass
-class LiteralString(ASTNode):
+class LiteralString(ExprNode):
     value: str
 
 
 @dataclass
-class FieldRef(ASTNode):
+class FieldRef(ExprNode):
     name: str  # Field name without {{ }}
 
 
 @dataclass
-class BinaryOp(ASTNode):
+class BinaryOp(ExprNode):
     op: str  # '=', '<>', '<', '<=', '>', '>='
-    left: ASTNode
-    right: ASTNode
+    left: ExprNode
+    right: ExprNode
 
 
 @dataclass
-class UnaryOp(ASTNode):
+class UnaryOp(ExprNode):
     op: str  # 'NOT'
-    operand: ASTNode
+    operand: ExprNode
 
 
 @dataclass
-class FuncCall(ASTNode):
+class FuncCall(ExprNode):
     name: str  # 'AND', 'OR', 'IF', 'LOWER', 'FIND', 'CAST'
-    args: List[ASTNode]
+    args: List[ExprNode]
 
 
 @dataclass
-class Concat(ASTNode):
-    parts: List[ASTNode]
+class Concat(ExprNode):
+    parts: List[ExprNode]
 
 
 # =============================================================================
@@ -236,13 +236,13 @@ class Parser:
         self.pos += 1
         return tok
 
-    def parse(self) -> ASTNode:
+    def parse(self) -> ExprNode:
         result = self.parse_concat()
         if self.current().type != TokenType.EOF:
             raise SyntaxError(f"Unexpected token {self.current()} after expression")
         return result
 
-    def parse_concat(self) -> ASTNode:
+    def parse_concat(self) -> ExprNode:
         left = self.parse_comparison()
         parts = [left]
         while self.current().type == TokenType.AMPERSAND:
@@ -253,7 +253,7 @@ class Parser:
             return parts[0]
         return Concat(parts=parts)
 
-    def parse_comparison(self) -> ASTNode:
+    def parse_comparison(self) -> ExprNode:
         left = self.parse_primary()
         op_map = {
             TokenType.EQUALS: '=',
@@ -270,7 +270,7 @@ class Parser:
             return BinaryOp(op=op, left=left, right=right)
         return left
 
-    def parse_primary(self) -> ASTNode:
+    def parse_primary(self) -> ExprNode:
         tok = self.current()
 
         if tok.type == TokenType.STRING:
@@ -324,8 +324,8 @@ class Parser:
         raise SyntaxError(f"Unexpected token {tok.type} at position {tok.pos}")
 
 
-def parse_formula(formula_text: str) -> ASTNode:
-    """Parse an Excel-dialect formula into an AST."""
+def parse_formula(formula_text: str) -> ExprNode:
+    """Parse an Excel-dialect formula into an expression tree."""
     tokens = tokenize(formula_text)
     parser = Parser(tokens)
     return parser.parse()
@@ -371,15 +371,15 @@ def to_pascal_case(snake_name: str) -> str:
     return ''.join(word.capitalize() for word in snake_name.split('_'))
 
 
-def get_field_dependencies(ast: ASTNode) -> List[str]:
-    """Extract all field references from an AST.
+def get_field_dependencies(expr: ExprNode) -> List[str]:
+    """Extract all field references from an expression tree.
 
     Returns a list of field names (PascalCase as they appear in formulas).
     Used for DAG ordering and dependency tracking.
     """
     deps = []
 
-    def visit(node: ASTNode):
+    def visit(node: ExprNode):
         if isinstance(node, FieldRef):
             if node.name not in deps:
                 deps.append(node.name)
@@ -395,7 +395,7 @@ def get_field_dependencies(ast: ASTNode) -> List[str]:
             for part in node.parts:
                 visit(part)
 
-    visit(ast)
+    visit(expr)
     return deps
 
 
@@ -403,129 +403,129 @@ def get_field_dependencies(ast: ASTNode) -> List[str]:
 # PYTHON CODE GENERATOR
 # =============================================================================
 
-def _is_boolean_expr(ast: ASTNode) -> bool:
-    """Check if an AST node produces a boolean result."""
-    if isinstance(ast, LiteralBool):
+def _is_boolean_expr(expr: ExprNode) -> bool:
+    """Check if an expression node produces a boolean result."""
+    if isinstance(expr, LiteralBool):
         return True
-    if isinstance(ast, UnaryOp) and ast.op == 'NOT':
+    if isinstance(expr, UnaryOp) and expr.op == 'NOT':
         return True
-    if isinstance(ast, BinaryOp):
+    if isinstance(expr, BinaryOp):
         return True  # Comparisons return bool
-    if isinstance(ast, FuncCall) and ast.name in ('AND', 'OR', 'NOT'):
+    if isinstance(expr, FuncCall) and expr.name in ('AND', 'OR', 'NOT'):
         return True
     return False
 
 
-def _compile_and_arg(ast: ASTNode) -> str:
+def _compile_and_arg(expr: ExprNode) -> str:
     """Compile an AND/OR argument with appropriate boolean coercion."""
-    compiled = compile_to_python(ast)
+    compiled = compile_to_python(expr)
     # If it's already a boolean expression, don't wrap with 'is True'
-    if _is_boolean_expr(ast):
+    if _is_boolean_expr(expr):
         return compiled
     # Field references need 'is True' for None handling
     return f'({compiled} is True)'
 
 
-def compile_to_python(ast: ASTNode) -> str:
-    """Compile an AST to a Python expression.
+def compile_to_python(expr: ExprNode) -> str:
+    """Compile an expression tree to a Python expression.
 
     Handles None values by using 'is True' and 'is not True' patterns.
     Field references are converted to snake_case variable names.
     """
-    if isinstance(ast, LiteralBool):
-        return 'True' if ast.value else 'False'
+    if isinstance(expr, LiteralBool):
+        return 'True' if expr.value else 'False'
 
-    if isinstance(ast, LiteralInt):
-        return str(ast.value)
+    if isinstance(expr, LiteralInt):
+        return str(expr.value)
 
-    if isinstance(ast, LiteralString):
-        return repr(ast.value)
+    if isinstance(expr, LiteralString):
+        return repr(expr.value)
 
-    if isinstance(ast, FieldRef):
-        return to_snake_case(ast.name)
+    if isinstance(expr, FieldRef):
+        return to_snake_case(expr.name)
 
-    if isinstance(ast, UnaryOp):
-        if ast.op == 'NOT':
-            operand = compile_to_python(ast.operand)
+    if isinstance(expr, UnaryOp):
+        if expr.op == 'NOT':
+            operand = compile_to_python(expr.operand)
             # For field refs, use 'is not True' for None safety
-            if isinstance(ast.operand, FieldRef):
+            if isinstance(expr.operand, FieldRef):
                 return f'({operand} is not True)'
             # For other expressions, use regular not
             return f'(not {operand})'
-        raise ValueError(f"Unknown unary op: {ast.op}")
+        raise ValueError(f"Unknown unary op: {expr.op}")
 
-    if isinstance(ast, BinaryOp):
-        left = compile_to_python(ast.left)
-        right = compile_to_python(ast.right)
+    if isinstance(expr, BinaryOp):
+        left = compile_to_python(expr.left)
+        right = compile_to_python(expr.right)
         op_map = {'=': '==', '<>': '!=', '<': '<', '<=': '<=', '>': '>', '>=': '>='}
-        return f'({left} {op_map[ast.op]} {right})'
+        return f'({left} {op_map[expr.op]} {right})'
 
-    if isinstance(ast, FuncCall):
-        if ast.name == 'AND':
-            parts = [_compile_and_arg(arg) for arg in ast.args]
+    if isinstance(expr, FuncCall):
+        if expr.name == 'AND':
+            parts = [_compile_and_arg(arg) for arg in expr.args]
             return '(' + ' and '.join(parts) + ')'
 
-        if ast.name == 'OR':
-            parts = [_compile_and_arg(arg) for arg in ast.args]
+        if expr.name == 'OR':
+            parts = [_compile_and_arg(arg) for arg in expr.args]
             return '(' + ' or '.join(parts) + ')'
 
-        if ast.name == 'IF':
-            if len(ast.args) < 2:
+        if expr.name == 'IF':
+            if len(expr.args) < 2:
                 raise ValueError("IF requires at least 2 arguments")
-            cond = compile_to_python(ast.args[0])
-            then_val = compile_to_python(ast.args[1])
-            else_val = compile_to_python(ast.args[2]) if len(ast.args) > 2 else 'None'
+            cond = compile_to_python(expr.args[0])
+            then_val = compile_to_python(expr.args[1])
+            else_val = compile_to_python(expr.args[2]) if len(expr.args) > 2 else 'None'
             return f'({then_val} if {cond} else {else_val})'
 
-        if ast.name == 'NOT':
-            if len(ast.args) != 1:
+        if expr.name == 'NOT':
+            if len(expr.args) != 1:
                 raise ValueError("NOT requires 1 argument")
-            operand = compile_to_python(ast.args[0])
+            operand = compile_to_python(expr.args[0])
             return f'({operand} is not True)'
 
-        if ast.name == 'LOWER':
-            if len(ast.args) != 1:
+        if expr.name == 'LOWER':
+            if len(expr.args) != 1:
                 raise ValueError("LOWER requires 1 argument")
-            arg = compile_to_python(ast.args[0])
+            arg = compile_to_python(expr.args[0])
             return f'(({arg} or "").lower())'
 
-        if ast.name == 'FIND':
-            if len(ast.args) != 2:
+        if expr.name == 'FIND':
+            if len(expr.args) != 2:
                 raise ValueError("FIND requires 2 arguments")
-            needle = compile_to_python(ast.args[0])
-            haystack = compile_to_python(ast.args[1])
+            needle = compile_to_python(expr.args[0])
+            haystack = compile_to_python(expr.args[1])
             return f'({needle} in ({haystack} or ""))'
 
-        if ast.name == 'CAST':
+        if expr.name == 'CAST':
             # CAST(x AS TEXT) -> str(x) if x else ""
-            if len(ast.args) >= 1:
-                arg = compile_to_python(ast.args[0])
+            if len(expr.args) >= 1:
+                arg = compile_to_python(expr.args[0])
                 return f'(str({arg}) if {arg} else "")'
             raise ValueError("CAST requires at least 1 argument")
 
-        if ast.name == 'SUM':
+        if expr.name == 'SUM':
             # SUM(a, b, c) -> (a + b + c)
             # Typically used as SUM(IF(cond,1,0), IF(cond,1,0), ...)
-            if not ast.args:
+            if not expr.args:
                 return '0'
-            parts = [compile_to_python(arg) for arg in ast.args]
+            parts = [compile_to_python(arg) for arg in expr.args]
             return '(' + ' + '.join(parts) + ')'
 
-        if ast.name == 'SUBSTITUTE':
+        if expr.name == 'SUBSTITUTE':
             # SUBSTITUTE(text, old_text, new_text) -> text.replace(old_text, new_text)
-            if len(ast.args) != 3:
+            if len(expr.args) != 3:
                 raise ValueError("SUBSTITUTE requires 3 arguments")
-            text = compile_to_python(ast.args[0])
-            old_text = compile_to_python(ast.args[1])
-            new_text = compile_to_python(ast.args[2])
+            text = compile_to_python(expr.args[0])
+            old_text = compile_to_python(expr.args[1])
+            new_text = compile_to_python(expr.args[2])
             return f'(({text} or "").replace({old_text}, {new_text}))'
 
-        raise ValueError(f"Unknown function: {ast.name}")
+        raise ValueError(f"Unknown function: {expr.name}")
 
-    if isinstance(ast, Concat):
+    if isinstance(expr, Concat):
         # Use string concatenation to avoid nested f-string issues
         parts = []
-        for part in ast.parts:
+        for part in expr.parts:
             if isinstance(part, LiteralString):
                 parts.append(repr(part.value))
             elif isinstance(part, FieldRef):
@@ -537,98 +537,98 @@ def compile_to_python(ast: ASTNode) -> str:
                 parts.append(f'str({expr} if {expr} is not None else "")')
         return '(' + ' + '.join(parts) + ')'
 
-    raise ValueError(f"Unknown AST node type: {type(ast)}")
+    raise ValueError(f"Unknown expression node type: {type(expr)}")
 
 
 # =============================================================================
 # JAVASCRIPT CODE GENERATOR
 # =============================================================================
 
-def compile_to_javascript(ast: ASTNode, obj_name: str = 'candidate') -> str:
-    """Compile an AST to a JavaScript expression.
+def compile_to_javascript(expr: ExprNode, obj_name: str = 'candidate') -> str:
+    """Compile an expression tree to a JavaScript expression.
 
     Uses explicit === true / !== true for proper null handling.
     Field references use camelCase with object prefix.
     """
-    if isinstance(ast, LiteralBool):
-        return 'true' if ast.value else 'false'
+    if isinstance(expr, LiteralBool):
+        return 'true' if expr.value else 'false'
 
-    if isinstance(ast, LiteralInt):
-        return str(ast.value)
+    if isinstance(expr, LiteralInt):
+        return str(expr.value)
 
-    if isinstance(ast, LiteralString):
-        escaped = ast.value.replace('\\', '\\\\').replace("'", "\\'")
+    if isinstance(expr, LiteralString):
+        escaped = expr.value.replace('\\', '\\\\').replace("'", "\\'")
         return f"'{escaped}'"
 
-    if isinstance(ast, FieldRef):
-        return f'{obj_name}.{to_camel_case(ast.name)}'
+    if isinstance(expr, FieldRef):
+        return f'{obj_name}.{to_camel_case(expr.name)}'
 
-    if isinstance(ast, UnaryOp):
-        if ast.op == 'NOT':
-            operand = compile_to_javascript(ast.operand, obj_name)
+    if isinstance(expr, UnaryOp):
+        if expr.op == 'NOT':
+            operand = compile_to_javascript(expr.operand, obj_name)
             return f'({operand} !== true)'
-        raise ValueError(f"Unknown unary op: {ast.op}")
+        raise ValueError(f"Unknown unary op: {expr.op}")
 
-    if isinstance(ast, BinaryOp):
-        left = compile_to_javascript(ast.left, obj_name)
-        right = compile_to_javascript(ast.right, obj_name)
+    if isinstance(expr, BinaryOp):
+        left = compile_to_javascript(expr.left, obj_name)
+        right = compile_to_javascript(expr.right, obj_name)
         op_map = {'=': '===', '<>': '!==', '<': '<', '<=': '<=', '>': '>', '>=': '>='}
-        return f'({left} {op_map[ast.op]} {right})'
+        return f'({left} {op_map[expr.op]} {right})'
 
-    if isinstance(ast, FuncCall):
-        if ast.name == 'AND':
-            parts = [f'({compile_to_javascript(arg, obj_name)} === true)' for arg in ast.args]
+    if isinstance(expr, FuncCall):
+        if expr.name == 'AND':
+            parts = [f'({compile_to_javascript(arg, obj_name)} === true)' for arg in expr.args]
             return '(' + ' && '.join(parts) + ')'
 
-        if ast.name == 'OR':
-            parts = [f'({compile_to_javascript(arg, obj_name)} === true)' for arg in ast.args]
+        if expr.name == 'OR':
+            parts = [f'({compile_to_javascript(arg, obj_name)} === true)' for arg in expr.args]
             return '(' + ' || '.join(parts) + ')'
 
-        if ast.name == 'IF':
-            if len(ast.args) < 2:
+        if expr.name == 'IF':
+            if len(expr.args) < 2:
                 raise ValueError("IF requires at least 2 arguments")
-            cond = compile_to_javascript(ast.args[0], obj_name)
-            then_val = compile_to_javascript(ast.args[1], obj_name)
-            else_val = compile_to_javascript(ast.args[2], obj_name) if len(ast.args) > 2 else 'null'
+            cond = compile_to_javascript(expr.args[0], obj_name)
+            then_val = compile_to_javascript(expr.args[1], obj_name)
+            else_val = compile_to_javascript(expr.args[2], obj_name) if len(expr.args) > 2 else 'null'
             return f'({cond} ? {then_val} : {else_val})'
 
-        if ast.name == 'NOT':
-            if len(ast.args) != 1:
+        if expr.name == 'NOT':
+            if len(expr.args) != 1:
                 raise ValueError("NOT requires 1 argument")
-            operand = compile_to_javascript(ast.args[0], obj_name)
+            operand = compile_to_javascript(expr.args[0], obj_name)
             return f'({operand} !== true)'
 
-        if ast.name == 'LOWER':
-            if len(ast.args) != 1:
+        if expr.name == 'LOWER':
+            if len(expr.args) != 1:
                 raise ValueError("LOWER requires 1 argument")
-            arg = compile_to_javascript(ast.args[0], obj_name)
+            arg = compile_to_javascript(expr.args[0], obj_name)
             return f'(({arg} || "").toLowerCase())'
 
-        if ast.name == 'FIND':
-            if len(ast.args) != 2:
+        if expr.name == 'FIND':
+            if len(expr.args) != 2:
                 raise ValueError("FIND requires 2 arguments")
-            needle = compile_to_javascript(ast.args[0], obj_name)
-            haystack = compile_to_javascript(ast.args[1], obj_name)
+            needle = compile_to_javascript(expr.args[0], obj_name)
+            haystack = compile_to_javascript(expr.args[1], obj_name)
             return f'(({haystack} || "").includes({needle}))'
 
-        if ast.name == 'CAST':
-            if len(ast.args) >= 1:
-                arg = compile_to_javascript(ast.args[0], obj_name)
+        if expr.name == 'CAST':
+            if len(expr.args) >= 1:
+                arg = compile_to_javascript(expr.args[0], obj_name)
                 return f'({arg} ? String({arg}) : "")'
             raise ValueError("CAST requires at least 1 argument")
 
-        if ast.name == 'SUM':
+        if expr.name == 'SUM':
             # SUM(a, b, c) -> (a + b + c)
-            if not ast.args:
+            if not expr.args:
                 return '0'
-            parts = [compile_to_javascript(arg, obj_name) for arg in ast.args]
+            parts = [compile_to_javascript(arg, obj_name) for arg in expr.args]
             return '(' + ' + '.join(parts) + ')'
 
-        raise ValueError(f"Unknown function: {ast.name}")
+        raise ValueError(f"Unknown function: {expr.name}")
 
-    if isinstance(ast, Concat):
+    if isinstance(expr, Concat):
         parts = []
-        for part in ast.parts:
+        for part in expr.parts:
             if isinstance(part, LiteralString):
                 escaped = part.value.replace('\\', '\\\\').replace('`', '\\`').replace('$', '\\$')
                 parts.append(escaped)
@@ -637,46 +637,46 @@ def compile_to_javascript(ast: ASTNode, obj_name: str = 'candidate') -> str:
                 parts.append('${' + f'{var} || ""' + '}')
         return '`' + ''.join(parts) + '`'
 
-    raise ValueError(f"Unknown AST node type: {type(ast)}")
+    raise ValueError(f"Unknown expression node type: {type(expr)}")
 
 
 # =============================================================================
 # GO CODE GENERATOR
 # =============================================================================
 
-def _compile_to_go_int(ast: ASTNode, struct_name: str, field_types: dict) -> str:
-    """Compile an AST node to a Go expression that returns an int.
+def _compile_to_go_int(expr: ExprNode, struct_name: str, field_types: dict) -> str:
+    """Compile an expression node to a Go expression that returns an int.
 
     This is used for SUM arguments where IF(cond, 1, 0) should return int, not string.
     """
-    if isinstance(ast, LiteralInt):
-        return str(ast.value)
+    if isinstance(expr, LiteralInt):
+        return str(expr.value)
 
-    if isinstance(ast, FuncCall) and ast.name == 'IF':
+    if isinstance(expr, FuncCall) and expr.name == 'IF':
         # IF(cond, then, else) -> func() int { if cond { return then }; return else }()
-        if len(ast.args) < 2:
+        if len(expr.args) < 2:
             raise ValueError("IF requires at least 2 arguments")
-        cond = compile_to_go(ast.args[0], struct_name, field_types)
-        then_val = _compile_to_go_int(ast.args[1], struct_name, field_types)
-        else_val = _compile_to_go_int(ast.args[2], struct_name, field_types) if len(ast.args) > 2 else '0'
+        cond = compile_to_go(expr.args[0], struct_name, field_types)
+        then_val = _compile_to_go_int(expr.args[1], struct_name, field_types)
+        else_val = _compile_to_go_int(expr.args[2], struct_name, field_types) if len(expr.args) > 2 else '0'
         # Wrap condition in boolVal if it's a field ref
-        if isinstance(ast.args[0], FieldRef):
+        if isinstance(expr.args[0], FieldRef):
             cond = f'boolVal({cond})'
         return f'func() int {{ if {cond} {{ return {then_val} }}; return {else_val} }}()'
 
     # For other expressions, fall back to the regular compiler
     # (shouldn't happen in practice for SUM(IF(...), IF(...)))
-    return compile_to_go(ast, struct_name, field_types)
+    return compile_to_go(expr, struct_name, field_types)
 
 
-def compile_to_go(ast: ASTNode, struct_name: str = 'lc', field_types: dict = None) -> str:
-    """Compile an AST to a Go expression.
+def compile_to_go(expr: ExprNode, struct_name: str = 'lc', field_types: dict = None) -> str:
+    """Compile an expression tree to a Go expression.
 
     Uses boolVal() helper for nil-safe boolean access.
     Field references use PascalCase struct field names.
 
     Args:
-        ast: The AST node to compile
+        expr: The expression node to compile
         struct_name: Variable name for the struct (e.g., 'tc' for tc.FieldName)
         field_types: Optional dict mapping field names to their datatypes
                      (e.g., {'OrderNumber': 'integer', 'Name': 'string'})
@@ -684,82 +684,82 @@ def compile_to_go(ast: ASTNode, struct_name: str = 'lc', field_types: dict = Non
     if field_types is None:
         field_types = {}
 
-    if isinstance(ast, LiteralBool):
-        return 'true' if ast.value else 'false'
+    if isinstance(expr, LiteralBool):
+        return 'true' if expr.value else 'false'
 
-    if isinstance(ast, LiteralInt):
-        return str(ast.value)
+    if isinstance(expr, LiteralInt):
+        return str(expr.value)
 
-    if isinstance(ast, LiteralString):
-        escaped = ast.value.replace('\\', '\\\\').replace('"', '\\"')
+    if isinstance(expr, LiteralString):
+        escaped = expr.value.replace('\\', '\\\\').replace('"', '\\"')
         return f'"{escaped}"'
 
-    if isinstance(ast, FieldRef):
+    if isinstance(expr, FieldRef):
         # Go struct fields are PascalCase
-        field_name = ast.name  # Already PascalCase in rulebook
+        field_name = expr.name  # Already PascalCase in rulebook
         return f'{struct_name}.{field_name}'
 
-    if isinstance(ast, UnaryOp):
-        if ast.op == 'NOT':
-            operand = compile_to_go(ast.operand, struct_name, field_types)
+    if isinstance(expr, UnaryOp):
+        if expr.op == 'NOT':
+            operand = compile_to_go(expr.operand, struct_name, field_types)
             # Wrap in boolVal for nil-safe access
-            if isinstance(ast.operand, FieldRef):
+            if isinstance(expr.operand, FieldRef):
                 return f'!boolVal({operand})'
             return f'!({operand})'
-        raise ValueError(f"Unknown unary op: {ast.op}")
+        raise ValueError(f"Unknown unary op: {expr.op}")
 
-    if isinstance(ast, BinaryOp):
+    if isinstance(expr, BinaryOp):
         # Handle comparisons involving field refs (pointer fields in Go)
-        if isinstance(ast.left, FieldRef) and isinstance(ast.right, FieldRef):
+        if isinstance(expr.left, FieldRef) and isinstance(expr.right, FieldRef):
             # Both sides are field refs - wrap both in boolVal for nil-safe comparison
-            left = compile_to_go(ast.left, struct_name, field_types)
-            right = compile_to_go(ast.right, struct_name, field_types)
+            left = compile_to_go(expr.left, struct_name, field_types)
+            right = compile_to_go(expr.right, struct_name, field_types)
             op_map = {'=': '==', '<>': '!=', '<': '<', '<=': '<=', '>': '>', '>=': '>='}
-            return f'(boolVal({left}) {op_map[ast.op]} boolVal({right}))'
+            return f'(boolVal({left}) {op_map[expr.op]} boolVal({right}))'
 
-        if isinstance(ast.left, FieldRef) and isinstance(ast.right, LiteralInt):
+        if isinstance(expr.left, FieldRef) and isinstance(expr.right, LiteralInt):
             # Field ref compared to integer - need nil check and dereference
-            left_field = ast.left.name
-            right = compile_to_go(ast.right, struct_name, field_types)
-            op_go = {'=': '==', '<>': '!=', '<': '<', '<=': '<=', '>': '>', '>=': '>='}[ast.op]
-            if ast.op == '=':
+            left_field = expr.left.name
+            right = compile_to_go(expr.right, struct_name, field_types)
+            op_go = {'=': '==', '<>': '!=', '<': '<', '<=': '<=', '>': '>', '>=': '>='}[expr.op]
+            if expr.op == '=':
                 return f'({struct_name}.{left_field} != nil && *{struct_name}.{left_field} == {right})'
-            elif ast.op == '<>':
+            elif expr.op == '<>':
                 return f'({struct_name}.{left_field} == nil || *{struct_name}.{left_field} != {right})'
             else:
                 # For <, <=, >, >= - nil is treated as false (0 comparison semantics)
                 return f'({struct_name}.{left_field} != nil && *{struct_name}.{left_field} {op_go} {right})'
 
-        if isinstance(ast.left, FieldRef) and isinstance(ast.right, LiteralBool):
+        if isinstance(expr.left, FieldRef) and isinstance(expr.right, LiteralBool):
             # Field ref compared to boolean literal - use boolVal for nil-safe access
-            left = compile_to_go(ast.left, struct_name, field_types)
-            right = compile_to_go(ast.right, struct_name, field_types)
+            left = compile_to_go(expr.left, struct_name, field_types)
+            right = compile_to_go(expr.right, struct_name, field_types)
             op_map = {'=': '==', '<>': '!='}
-            return f'(boolVal({left}) {op_map[ast.op]} {right})'
+            return f'(boolVal({left}) {op_map[expr.op]} {right})'
 
-        if isinstance(ast.left, FieldRef) and isinstance(ast.right, LiteralString):
+        if isinstance(expr.left, FieldRef) and isinstance(expr.right, LiteralString):
             # Field ref compared to string literal - use stringVal for nil-safe access
-            left = compile_to_go(ast.left, struct_name, field_types)
-            right = compile_to_go(ast.right, struct_name, field_types)
+            left = compile_to_go(expr.left, struct_name, field_types)
+            right = compile_to_go(expr.right, struct_name, field_types)
             op_map = {'=': '==', '<>': '!='}
-            return f'(stringVal({left}) {op_map[ast.op]} {right})'
+            return f'(stringVal({left}) {op_map[expr.op]} {right})'
 
-        if isinstance(ast.left, LiteralString) and isinstance(ast.right, FieldRef):
+        if isinstance(expr.left, LiteralString) and isinstance(expr.right, FieldRef):
             # String literal compared to field ref - use stringVal for nil-safe access
-            left = compile_to_go(ast.left, struct_name, field_types)
-            right = compile_to_go(ast.right, struct_name, field_types)
+            left = compile_to_go(expr.left, struct_name, field_types)
+            right = compile_to_go(expr.right, struct_name, field_types)
             op_map = {'=': '==', '<>': '!='}
-            return f'({left} {op_map[ast.op]} stringVal({right}))'
+            return f'({left} {op_map[expr.op]} stringVal({right}))'
 
-        left = compile_to_go(ast.left, struct_name, field_types)
-        right = compile_to_go(ast.right, struct_name, field_types)
+        left = compile_to_go(expr.left, struct_name, field_types)
+        right = compile_to_go(expr.right, struct_name, field_types)
         op_map = {'=': '==', '<>': '!=', '<': '<', '<=': '<=', '>': '>', '>=': '>='}
-        return f'({left} {op_map[ast.op]} {right})'
+        return f'({left} {op_map[expr.op]} {right})'
 
-    if isinstance(ast, FuncCall):
-        if ast.name == 'AND':
+    if isinstance(expr, FuncCall):
+        if expr.name == 'AND':
             parts = []
-            for arg in ast.args:
+            for arg in expr.args:
                 compiled = compile_to_go(arg, struct_name, field_types)
                 if isinstance(arg, FieldRef):
                     parts.append(f'boolVal({compiled})')
@@ -773,9 +773,9 @@ def compile_to_go(ast: ASTNode, struct_name: str = 'lc', field_types: dict = Non
                     parts.append(compiled)
             return '(' + ' && '.join(parts) + ')'
 
-        if ast.name == 'OR':
+        if expr.name == 'OR':
             parts = []
-            for arg in ast.args:
+            for arg in expr.args:
                 compiled = compile_to_go(arg, struct_name, field_types)
                 if isinstance(arg, FieldRef):
                     parts.append(f'boolVal({compiled})')
@@ -783,42 +783,42 @@ def compile_to_go(ast: ASTNode, struct_name: str = 'lc', field_types: dict = Non
                     parts.append(compiled)
             return '(' + ' || '.join(parts) + ')'
 
-        if ast.name == 'IF':
-            if len(ast.args) < 2:
+        if expr.name == 'IF':
+            if len(expr.args) < 2:
                 raise ValueError("IF requires at least 2 arguments")
-            cond = compile_to_go(ast.args[0], struct_name, field_types)
-            then_val = compile_to_go(ast.args[1], struct_name, field_types)
-            else_val = compile_to_go(ast.args[2], struct_name, field_types) if len(ast.args) > 2 else '""'
+            cond = compile_to_go(expr.args[0], struct_name, field_types)
+            then_val = compile_to_go(expr.args[1], struct_name, field_types)
+            else_val = compile_to_go(expr.args[2], struct_name, field_types) if len(expr.args) > 2 else '""'
             # Go doesn't have ternary - generate inline func
             return f'func() string {{ if {cond} {{ return {then_val} }}; return {else_val} }}()'
 
-        if ast.name == 'NOT':
-            if len(ast.args) != 1:
+        if expr.name == 'NOT':
+            if len(expr.args) != 1:
                 raise ValueError("NOT requires 1 argument")
-            operand = compile_to_go(ast.args[0], struct_name, field_types)
-            if isinstance(ast.args[0], FieldRef):
+            operand = compile_to_go(expr.args[0], struct_name, field_types)
+            if isinstance(expr.args[0], FieldRef):
                 return f'!boolVal({operand})'
             return f'!({operand})'
 
-        if ast.name == 'LOWER':
-            if len(ast.args) != 1:
+        if expr.name == 'LOWER':
+            if len(expr.args) != 1:
                 raise ValueError("LOWER requires 1 argument")
-            arg = compile_to_go(ast.args[0], struct_name, field_types)
+            arg = compile_to_go(expr.args[0], struct_name, field_types)
             return f'strings.ToLower(stringVal({arg}))'
 
-        if ast.name == 'FIND':
-            if len(ast.args) != 2:
+        if expr.name == 'FIND':
+            if len(expr.args) != 2:
                 raise ValueError("FIND requires 2 arguments")
-            needle = compile_to_go(ast.args[0], struct_name, field_types)
-            haystack = compile_to_go(ast.args[1], struct_name, field_types)
+            needle = compile_to_go(expr.args[0], struct_name, field_types)
+            haystack = compile_to_go(expr.args[1], struct_name, field_types)
             return f'strings.Contains(stringVal({haystack}), {needle})'
 
-        if ast.name == 'CAST':
-            if len(ast.args) >= 1:
-                arg = compile_to_go(ast.args[0], struct_name, field_types)
-                if isinstance(ast.args[0], FieldRef):
+        if expr.name == 'CAST':
+            if len(expr.args) >= 1:
+                arg = compile_to_go(expr.args[0], struct_name, field_types)
+                if isinstance(expr.args[0], FieldRef):
                     # Check field type for appropriate conversion
-                    field_type = field_types.get(ast.args[0].name, 'boolean').lower()
+                    field_type = field_types.get(expr.args[0].name, 'boolean').lower()
                     if field_type == 'integer':
                         return f'intToString({arg})'
                     elif field_type == 'boolean':
@@ -828,34 +828,34 @@ def compile_to_go(ast: ASTNode, struct_name: str = 'lc', field_types: dict = Non
                 return f'fmt.Sprintf("%v", {arg})'
             raise ValueError("CAST requires at least 1 argument")
 
-        if ast.name == 'SUM':
+        if expr.name == 'SUM':
             # SUM(a, b, c) -> (a + b + c)
             # Typically used as SUM(IF(cond,1,0), IF(cond,1,0), ...)
             # For Go, we need IF to return int, not string
-            if not ast.args:
+            if not expr.args:
                 return '0'
             parts = []
-            for arg in ast.args:
+            for arg in expr.args:
                 parts.append(_compile_to_go_int(arg, struct_name, field_types))
             return '(' + ' + '.join(parts) + ')'
 
-        if ast.name == 'SUBSTITUTE':
+        if expr.name == 'SUBSTITUTE':
             # SUBSTITUTE(text, old_text, new_text) -> strings.ReplaceAll(text, old_text, new_text)
-            if len(ast.args) != 3:
+            if len(expr.args) != 3:
                 raise ValueError("SUBSTITUTE requires 3 arguments")
-            text = compile_to_go(ast.args[0], struct_name, field_types)
-            old_text = compile_to_go(ast.args[1], struct_name, field_types)
-            new_text = compile_to_go(ast.args[2], struct_name, field_types)
+            text = compile_to_go(expr.args[0], struct_name, field_types)
+            old_text = compile_to_go(expr.args[1], struct_name, field_types)
+            new_text = compile_to_go(expr.args[2], struct_name, field_types)
             # Wrap field refs in stringVal for nil-safe access
-            if isinstance(ast.args[0], FieldRef):
+            if isinstance(expr.args[0], FieldRef):
                 text = f'stringVal({text})'
             return f'strings.ReplaceAll({text}, {old_text}, {new_text})'
 
-        raise ValueError(f"Unknown function: {ast.name}")
+        raise ValueError(f"Unknown function: {expr.name}")
 
-    if isinstance(ast, Concat):
+    if isinstance(expr, Concat):
         parts = []
-        for part in ast.parts:
+        for part in expr.parts:
             if isinstance(part, LiteralString):
                 escaped = part.value.replace('\\', '\\\\').replace('"', '\\"')
                 parts.append(f'"{escaped}"')
@@ -876,7 +876,7 @@ def compile_to_go(ast: ASTNode, struct_name: str = 'lc', field_types: dict = Non
             return parts[0]
         return ' + '.join(parts)
 
-    raise ValueError(f"Unknown AST node type: {type(ast)}")
+    raise ValueError(f"Unknown expression node type: {type(expr)}")
 
 
 # =============================================================================
@@ -905,13 +905,13 @@ def evaluate(formula: str, context: dict) -> any:
         >>> evaluate('={{FirstName}} & " " & {{LastName}}', {'FirstName': 'John', 'LastName': 'Doe'})
         'John Doe'
     """
-    ast = parse_formula(formula)
-    return _eval_ast(ast, context)
+    expr = parse_formula(formula)
+    return _eval_expr(expr, context)
 
 
-def _eval_ast(node: ASTNode, ctx: dict) -> any:
+def _eval_expr(node: ExprNode, ctx: dict) -> any:
     """
-    Recursively evaluate an AST node given a context dict.
+    Recursively evaluate an expression node given a context dict.
 
     Implements Excel-style semantics:
     - None/null values propagate sensibly
@@ -933,7 +933,7 @@ def _eval_ast(node: ASTNode, ctx: dict) -> any:
 
     if isinstance(node, UnaryOp):
         if node.op == 'NOT':
-            operand = _eval_ast(node.operand, ctx)
+            operand = _eval_expr(node.operand, ctx)
             # None is treated as False for NOT
             if operand is None:
                 return True
@@ -941,8 +941,8 @@ def _eval_ast(node: ASTNode, ctx: dict) -> any:
         raise ValueError(f"Unknown unary op: {node.op}")
 
     if isinstance(node, BinaryOp):
-        left = _eval_ast(node.left, ctx)
-        right = _eval_ast(node.right, ctx)
+        left = _eval_expr(node.left, ctx)
+        right = _eval_expr(node.right, ctx)
 
         if node.op == '=':
             return left == right
@@ -973,22 +973,22 @@ def _eval_ast(node: ASTNode, ctx: dict) -> any:
     if isinstance(node, Concat):
         parts = []
         for part in node.parts:
-            val = _eval_ast(part, ctx)
+            val = _eval_expr(part, ctx)
             # Convert None to empty string for concatenation
             parts.append(str(val) if val is not None else '')
         return ''.join(parts)
 
-    raise ValueError(f"Unknown AST node type: {type(node)}")
+    raise ValueError(f"Unknown expression node type: {type(node)}")
 
 
 def _eval_func(node: FuncCall, ctx: dict) -> any:
-    """Evaluate a function call AST node."""
+    """Evaluate a function call expression node."""
     name = node.name
     args = node.args
 
     if name == 'AND':
         for arg in args:
-            val = _eval_ast(arg, ctx)
+            val = _eval_expr(arg, ctx)
             # None or False fails AND
             if val is None or val is False or val == 0:
                 return False
@@ -996,7 +996,7 @@ def _eval_func(node: FuncCall, ctx: dict) -> any:
 
     if name == 'OR':
         for arg in args:
-            val = _eval_ast(arg, ctx)
+            val = _eval_expr(arg, ctx)
             # Any truthy value passes OR
             if val is True or (val is not None and val != False and val != 0):
                 return True
@@ -1005,7 +1005,7 @@ def _eval_func(node: FuncCall, ctx: dict) -> any:
     if name == 'NOT':
         if len(args) != 1:
             raise ValueError("NOT requires 1 argument")
-        val = _eval_ast(args[0], ctx)
+        val = _eval_expr(args[0], ctx)
         if val is None:
             return True
         return not bool(val)
@@ -1013,20 +1013,20 @@ def _eval_func(node: FuncCall, ctx: dict) -> any:
     if name == 'IF':
         if len(args) < 2:
             raise ValueError("IF requires at least 2 arguments")
-        cond = _eval_ast(args[0], ctx)
+        cond = _eval_expr(args[0], ctx)
         # Condition is truthy if not None/False/0/""
         is_true = cond is not None and cond is not False and cond != 0 and cond != ""
         if is_true:
-            return _eval_ast(args[1], ctx)
+            return _eval_expr(args[1], ctx)
         elif len(args) > 2:
-            return _eval_ast(args[2], ctx)
+            return _eval_expr(args[2], ctx)
         else:
             return None
 
     if name == 'LOWER':
         if len(args) != 1:
             raise ValueError("LOWER requires 1 argument")
-        val = _eval_ast(args[0], ctx)
+        val = _eval_expr(args[0], ctx)
         if val is None:
             return ''
         return str(val).lower()
@@ -1034,7 +1034,7 @@ def _eval_func(node: FuncCall, ctx: dict) -> any:
     if name == 'UPPER':
         if len(args) != 1:
             raise ValueError("UPPER requires 1 argument")
-        val = _eval_ast(args[0], ctx)
+        val = _eval_expr(args[0], ctx)
         if val is None:
             return ''
         return str(val).upper()
@@ -1042,8 +1042,8 @@ def _eval_func(node: FuncCall, ctx: dict) -> any:
     if name == 'FIND':
         if len(args) != 2:
             raise ValueError("FIND requires 2 arguments")
-        needle = _eval_ast(args[0], ctx)
-        haystack = _eval_ast(args[1], ctx)
+        needle = _eval_expr(args[0], ctx)
+        haystack = _eval_expr(args[1], ctx)
         if needle is None or haystack is None:
             return False
         return str(needle) in str(haystack)
@@ -1051,7 +1051,7 @@ def _eval_func(node: FuncCall, ctx: dict) -> any:
     if name == 'CAST':
         if len(args) < 1:
             raise ValueError("CAST requires at least 1 argument")
-        val = _eval_ast(args[0], ctx)
+        val = _eval_expr(args[0], ctx)
         if val is None:
             return ''
         return str(val)
@@ -1059,7 +1059,7 @@ def _eval_func(node: FuncCall, ctx: dict) -> any:
     if name == 'SUM':
         total = 0
         for arg in args:
-            val = _eval_ast(arg, ctx)
+            val = _eval_expr(arg, ctx)
             if val is not None and isinstance(val, (int, float)):
                 total += val
         return total
@@ -1067,9 +1067,9 @@ def _eval_func(node: FuncCall, ctx: dict) -> any:
     if name == 'SUBSTITUTE':
         if len(args) != 3:
             raise ValueError("SUBSTITUTE requires 3 arguments")
-        text = _eval_ast(args[0], ctx)
-        old_text = _eval_ast(args[1], ctx)
-        new_text = _eval_ast(args[2], ctx)
+        text = _eval_expr(args[0], ctx)
+        old_text = _eval_expr(args[1], ctx)
+        new_text = _eval_expr(args[2], ctx)
         if text is None:
             return ''
         return str(text).replace(str(old_text or ''), str(new_text or ''))
@@ -1077,8 +1077,8 @@ def _eval_func(node: FuncCall, ctx: dict) -> any:
     if name == 'LEFT':
         if len(args) != 2:
             raise ValueError("LEFT requires 2 arguments")
-        text = _eval_ast(args[0], ctx)
-        num = _eval_ast(args[1], ctx)
+        text = _eval_expr(args[0], ctx)
+        num = _eval_expr(args[1], ctx)
         if text is None:
             return ''
         return str(text)[:int(num)]
@@ -1086,8 +1086,8 @@ def _eval_func(node: FuncCall, ctx: dict) -> any:
     if name == 'RIGHT':
         if len(args) != 2:
             raise ValueError("RIGHT requires 2 arguments")
-        text = _eval_ast(args[0], ctx)
-        num = _eval_ast(args[1], ctx)
+        text = _eval_expr(args[0], ctx)
+        num = _eval_expr(args[1], ctx)
         if text is None:
             return ''
         n = int(num)
@@ -1096,7 +1096,7 @@ def _eval_func(node: FuncCall, ctx: dict) -> any:
     if name == 'LEN':
         if len(args) != 1:
             raise ValueError("LEN requires 1 argument")
-        val = _eval_ast(args[0], ctx)
+        val = _eval_expr(args[0], ctx)
         if val is None:
             return 0
         return len(str(val))
@@ -1104,7 +1104,7 @@ def _eval_func(node: FuncCall, ctx: dict) -> any:
     if name == 'CONCAT':
         parts = []
         for arg in args:
-            val = _eval_ast(arg, ctx)
+            val = _eval_expr(arg, ctx)
             parts.append(str(val) if val is not None else '')
         return ''.join(parts)
 
@@ -1112,7 +1112,7 @@ def _eval_func(node: FuncCall, ctx: dict) -> any:
         # COUNT of non-null values
         count = 0
         for arg in args:
-            val = _eval_ast(arg, ctx)
+            val = _eval_expr(arg, ctx)
             if val is not None:
                 count += 1
         return count
@@ -1121,7 +1121,7 @@ def _eval_func(node: FuncCall, ctx: dict) -> any:
         total = 0
         count = 0
         for arg in args:
-            val = _eval_ast(arg, ctx)
+            val = _eval_expr(arg, ctx)
             if val is not None and isinstance(val, (int, float)):
                 total += val
                 count += 1
@@ -1130,7 +1130,7 @@ def _eval_func(node: FuncCall, ctx: dict) -> any:
     if name == 'MIN':
         values = []
         for arg in args:
-            val = _eval_ast(arg, ctx)
+            val = _eval_expr(arg, ctx)
             if val is not None and isinstance(val, (int, float)):
                 values.append(val)
         return min(values) if values else None
@@ -1138,7 +1138,7 @@ def _eval_func(node: FuncCall, ctx: dict) -> any:
     if name == 'MAX':
         values = []
         for arg in args:
-            val = _eval_ast(arg, ctx)
+            val = _eval_expr(arg, ctx)
             if val is not None and isinstance(val, (int, float)):
                 values.append(val)
         return max(values) if values else None
@@ -1186,48 +1186,53 @@ def to_cobol_name(name: str) -> str:
     return s2.replace('_', '-').upper()
 
 
-def compile_to_cobol(ast: ASTNode, prefix: str = "RECORD") -> str:
+def compile_to_cobol(expr: ExprNode, prefix: str = "RECORD") -> str:
     """
-    Compile an AST to COBOL expression.
+    Compile an expression tree to COBOL expression.
     Returns COBOL code that can be used in MOVE or condition statements.
     """
-    if isinstance(ast, Literal):
-        if isinstance(ast.value, str):
-            # COBOL string literal (escape quotes by doubling)
-            escaped = ast.value.replace('"', '""')
-            return f'"{escaped}"'
-        elif isinstance(ast.value, bool):
-            return '"true"' if ast.value else '"false"'
-        elif isinstance(ast.value, (int, float)):
-            return str(ast.value)
-        return f'"{ast.value}"'
+    if isinstance(expr, LiteralString):
+        # COBOL string literal (escape quotes by doubling)
+        escaped = expr.value.replace('"', '""')
+        return f'"{escaped}"'
 
-    if isinstance(ast, FieldRef):
-        cobol_name = to_cobol_name(ast.name)
+    if isinstance(expr, LiteralBool):
+        return '"true"' if expr.value else '"false"'
+
+    if isinstance(expr, LiteralInt):
+        return str(expr.value)
+
+    if isinstance(expr, Concat):
+        # Handle Concat expression type directly
+        parts = [compile_to_cobol(p, prefix) for p in expr.parts]
+        return ('CONCAT', *parts)
+
+    if isinstance(expr, FieldRef):
+        cobol_name = to_cobol_name(expr.name)
         return f'{prefix}-{cobol_name}'
 
-    if isinstance(ast, UnaryOp):
-        if ast.op == 'NOT':
-            operand = compile_to_cobol(ast.operand, prefix)
+    if isinstance(expr, UnaryOp):
+        if expr.op == 'NOT':
+            operand = compile_to_cobol(expr.operand, prefix)
             # NOT in COBOL context - handled in IF statement
             return f'NOT ({operand} = "true")'
-        raise ValueError(f"Unknown unary operator: {ast.op}")
+        raise ValueError(f"Unknown unary operator: {expr.op}")
 
-    if isinstance(ast, BinaryOp):
-        left = compile_to_cobol(ast.left, prefix)
-        right = compile_to_cobol(ast.right, prefix)
+    if isinstance(expr, BinaryOp):
+        left = compile_to_cobol(expr.left, prefix)
+        right = compile_to_cobol(expr.right, prefix)
         op_map = {
             '=': '=', '<>': 'NOT =', '<': '<', '<=': '<=', '>': '>', '>=': '>=',
             '+': '+', '-': '-', '*': '*', '/': '/'
         }
-        if ast.op == '&':
+        if expr.op == '&':
             # String concatenation - return as tuple for special handling
             return ('CONCAT', left, right)
-        return f'({left} {op_map.get(ast.op, ast.op)} {right})'
+        return f'({left} {op_map.get(expr.op, expr.op)} {right})'
 
-    if isinstance(ast, FuncCall):
-        if ast.name == 'AND':
-            conditions = [compile_to_cobol(arg, prefix) for arg in ast.args]
+    if isinstance(expr, FuncCall):
+        if expr.name == 'AND':
+            conditions = [compile_to_cobol(arg, prefix) for arg in expr.args]
             # Wrap each condition properly for COBOL
             wrapped = []
             for cond in conditions:
@@ -1239,8 +1244,8 @@ def compile_to_cobol(ast: ASTNode, prefix: str = "RECORD") -> str:
                     wrapped.append(f'({cond} = "true")')
             return '(' + ' AND '.join(wrapped) + ')'
 
-        if ast.name == 'OR':
-            conditions = [compile_to_cobol(arg, prefix) for arg in ast.args]
+        if expr.name == 'OR':
+            conditions = [compile_to_cobol(arg, prefix) for arg in expr.args]
             wrapped = []
             for cond in conditions:
                 if isinstance(cond, tuple) and cond[0] == 'CONDITION':
@@ -1251,44 +1256,184 @@ def compile_to_cobol(ast: ASTNode, prefix: str = "RECORD") -> str:
                     wrapped.append(f'({cond} = "true")')
             return '(' + ' OR '.join(wrapped) + ')'
 
-        if ast.name == 'NOT':
-            if len(ast.args) != 1:
+        if expr.name == 'NOT':
+            if len(expr.args) != 1:
                 raise ValueError("NOT requires 1 argument")
-            operand = compile_to_cobol(ast.args[0], prefix)
+            operand = compile_to_cobol(expr.args[0], prefix)
             return f'NOT ({operand} = "true")'
 
-        if ast.name == 'IF':
+        if expr.name == 'IF':
             # IF in COBOL is a statement, not an expression
             # Return a marker for the caller to handle
-            cond = compile_to_cobol(ast.args[0], prefix)
-            then_val = compile_to_cobol(ast.args[1], prefix)
-            else_val = compile_to_cobol(ast.args[2], prefix) if len(ast.args) > 2 else '"false"'
+            cond = compile_to_cobol(expr.args[0], prefix)
+            then_val = compile_to_cobol(expr.args[1], prefix)
+            else_val = compile_to_cobol(expr.args[2], prefix) if len(expr.args) > 2 else '"false"'
             return ('IF', cond, then_val, else_val)
 
-        if ast.name == 'CONCAT':
-            parts = [compile_to_cobol(arg, prefix) for arg in ast.args]
+        if expr.name == 'CONCAT':
+            parts = [compile_to_cobol(arg, prefix) for arg in expr.args]
             return ('CONCAT', *parts)
 
-        if ast.name == 'LOWER':
-            arg = compile_to_cobol(ast.args[0], prefix)
+        if expr.name == 'LOWER':
+            arg = compile_to_cobol(expr.args[0], prefix)
             return ('LOWER', arg)
 
-        if ast.name == 'TRIM':
-            arg = compile_to_cobol(ast.args[0], prefix)
+        if expr.name == 'TRIM':
+            arg = compile_to_cobol(expr.args[0], prefix)
             return ('TRIM', arg)
 
-        if ast.name == 'SUM':
-            parts = [compile_to_cobol(arg, prefix) for arg in ast.args]
+        if expr.name == 'SUM':
+            parts = [compile_to_cobol(arg, prefix) for arg in expr.args]
             return ('SUM', parts)
 
-        if ast.name == 'FIND':
-            needle = compile_to_cobol(ast.args[0], prefix)
-            haystack = compile_to_cobol(ast.args[1], prefix)
+        if expr.name == 'FIND':
+            needle = compile_to_cobol(expr.args[0], prefix)
+            haystack = compile_to_cobol(expr.args[1], prefix)
             return ('FIND', needle, haystack)
 
-        if ast.name == 'CAST':
-            return compile_to_cobol(ast.args[0], prefix)
+        if expr.name == 'CAST':
+            return compile_to_cobol(expr.args[0], prefix)
 
-        raise ValueError(f"COBOL: Unknown function: {ast.name}")
+        raise ValueError(f"COBOL: Unknown function: {expr.name}")
 
-    raise ValueError(f"COBOL: Unknown AST type: {type(ast)}")
+    raise ValueError(f"COBOL: Unknown expression type: {type(expr)}")
+
+
+def cobol_expr_to_statements(expr_result, result_var: str, temp_vars: list) -> list:
+    """
+    Convert compile_to_cobol result (string or tuple) into a list of COBOL statements.
+
+    Args:
+        expr_result: Result from compile_to_cobol (string or tuple)
+        result_var: Target variable to store result (e.g., "RECORD-FULL-NAME")
+        temp_vars: List of available temp variables (e.g., ["WS-TEMP-1", "WS-TEMP-2", ...])
+
+    Returns:
+        List of COBOL statement strings (without leading spaces)
+    """
+    temp_idx = [0]  # Use list for mutable closure
+
+    def get_temp():
+        if temp_idx[0] >= len(temp_vars):
+            raise ValueError("Ran out of temp variables")
+        var = temp_vars[temp_idx[0]]
+        temp_idx[0] += 1
+        return var
+
+    def flatten_concat(tup):
+        """Flatten nested CONCAT tuples into a list of parts."""
+        parts = []
+        for item in tup[1:]:
+            if isinstance(item, tuple) and item[0] == 'CONCAT':
+                parts.extend(flatten_concat(item))
+            else:
+                parts.append(item)
+        return parts
+
+    def process(expr, target_var):
+        """Process an expression and return statements that store result in target_var."""
+        stmts = []
+
+        if isinstance(expr, str):
+            # Simple value - just MOVE it
+            stmts.append(f'MOVE {expr} TO {target_var}')
+
+        elif isinstance(expr, tuple):
+            op = expr[0]
+
+            if op == 'CONCAT':
+                # STRING concatenation - use FUNCTION TRIM for field values
+                parts = flatten_concat(expr)
+                stmts.append(f'MOVE SPACES TO {target_var}')
+                string_stmt = f'STRING '
+                delimited_parts = []
+                for p in parts:
+                    if isinstance(p, tuple):
+                        # Nested operation - evaluate to temp first
+                        tmp = get_temp()
+                        stmts.extend(process(p, tmp))
+                        delimited_parts.append(f'FUNCTION TRIM({tmp}) DELIMITED SIZE')
+                    elif p.startswith('"'):
+                        # String literal - use as-is
+                        delimited_parts.append(f'{p} DELIMITED SIZE')
+                    else:
+                        # Field reference - use TRIM to remove padding
+                        delimited_parts.append(f'FUNCTION TRIM({p}) DELIMITED SIZE')
+                string_stmt += ' '.join(delimited_parts)
+                string_stmt += f' INTO {target_var}'
+                stmts.append(string_stmt)
+
+            elif op == 'IF':
+                _, cond, then_val, else_val = expr
+                # Handle condition which might be a tuple
+                if isinstance(cond, tuple):
+                    cond_str = format_condition(cond)
+                else:
+                    cond_str = cond if ' = ' in cond or ' NOT ' in cond else f'{cond} = "true"'
+
+                stmts.append(f'IF {cond_str}')
+                then_stmts = process(then_val, target_var)
+                for s in then_stmts:
+                    stmts.append(f'    {s}')
+                stmts.append('ELSE')
+                else_stmts = process(else_val, target_var)
+                for s in else_stmts:
+                    stmts.append(f'    {s}')
+                stmts.append('END-IF')
+
+            elif op == 'LOWER':
+                _, arg = expr
+                if isinstance(arg, tuple):
+                    tmp = get_temp()
+                    stmts.extend(process(arg, tmp))
+                    stmts.append(f'MOVE FUNCTION LOWER-CASE({tmp}) TO {target_var}')
+                else:
+                    stmts.append(f'MOVE FUNCTION LOWER-CASE({arg}) TO {target_var}')
+
+            elif op == 'TRIM':
+                _, arg = expr
+                if isinstance(arg, tuple):
+                    tmp = get_temp()
+                    stmts.extend(process(arg, tmp))
+                    stmts.append(f'MOVE FUNCTION TRIM({tmp}) TO {target_var}')
+                else:
+                    stmts.append(f'MOVE FUNCTION TRIM({arg}) TO {target_var}')
+
+            elif op == 'SUM':
+                parts = expr[1]
+                # COMPUTE with addition
+                compute_expr = ' + '.join(str(p) for p in parts)
+                stmts.append(f'COMPUTE {target_var} = {compute_expr}')
+
+            elif op == 'FIND':
+                _, needle, haystack = expr
+                # Use INSPECT or helper paragraph
+                stmts.append(f'MOVE {needle} TO WS-FIND-NEEDLE')
+                stmts.append(f'MOVE {haystack} TO WS-FIND-HAYSTACK')
+                stmts.append('PERFORM FIND-CONTAINS')
+                stmts.append(f'MOVE WS-FIND-RESULT TO {target_var}')
+
+            else:
+                raise ValueError(f"Unknown COBOL tuple operation: {op}")
+
+        else:
+            raise ValueError(f"Unknown expression type: {type(expr)}")
+
+        return stmts
+
+    def format_condition(cond):
+        """Format a condition for use in IF statement."""
+        if isinstance(cond, str):
+            if ' = ' in cond or ' NOT ' in cond or ' < ' in cond or ' > ' in cond:
+                return cond
+            return f'{cond} = "true"'
+        elif isinstance(cond, tuple):
+            op = cond[0]
+            if op == 'CONCAT':
+                # Concatenation result used as condition - evaluate first
+                return f'{cond} = "true"'  # This shouldn't happen normally
+            # For other tuples, format recursively
+            return str(cond)
+        return str(cond)
+
+    return process(expr_result, result_var)

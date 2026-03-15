@@ -4,8 +4,8 @@ Binary Execution Substrate - Formula-to-Assembly Compiler
 
 This compiler:
 1. Reads the rulebook (formulas)
-2. Parses each formula into an AST
-3. Lowers AST → typed IR DAG
+2. Parses each formula into an expression tree
+3. Lowers expression tree → typed IR DAG
 4. Generates x86-64 assembly from IR
 5. Compiles asm → .dylib/.so
 
@@ -47,57 +47,57 @@ class FieldInfo:
 
 
 # =============================================================================
-# AST NODE TYPES
+# EXPRESSION NODE TYPES
 # =============================================================================
 
 @dataclass
-class ASTNode:
-    """Base class for AST nodes"""
+class ExprNode:
+    """Base class for expression nodes"""
     pass
 
 
 @dataclass
-class LiteralBool(ASTNode):
+class LiteralBool(ExprNode):
     value: bool
 
 
 @dataclass
-class LiteralInt(ASTNode):
+class LiteralInt(ExprNode):
     value: int
 
 
 @dataclass
-class LiteralString(ASTNode):
+class LiteralString(ExprNode):
     value: str
 
 
 @dataclass
-class FieldRef(ASTNode):
+class FieldRef(ExprNode):
     name: str  # Field name without {{ }}
 
 
 @dataclass
-class BinaryOp(ASTNode):
+class BinaryOp(ExprNode):
     op: str  # '=', '<>', '<', '<=', '>', '>='
-    left: ASTNode
-    right: ASTNode
+    left: ExprNode
+    right: ExprNode
 
 
 @dataclass
-class UnaryOp(ASTNode):
+class UnaryOp(ExprNode):
     op: str  # 'NOT'
-    operand: ASTNode
+    operand: ExprNode
 
 
 @dataclass
-class FuncCall(ASTNode):
+class FuncCall(ExprNode):
     name: str  # 'AND', 'OR', 'IF', 'LOWER', 'FIND'
-    args: List[ASTNode]
+    args: List[ExprNode]
 
 
 @dataclass
-class Concat(ASTNode):
-    parts: List[ASTNode]
+class Concat(ExprNode):
+    parts: List[ExprNode]
 
 
 # =============================================================================
@@ -366,14 +366,14 @@ class Parser:
         self.pos += 1
         return tok
 
-    def parse(self) -> ASTNode:
-        """Parse the entire formula and return AST."""
+    def parse(self) -> ExprNode:
+        """Parse the entire formula and return expression tree."""
         result = self.parse_concat()
         if self.current().type != TokenType.EOF:
             raise SyntaxError(f"Unexpected token {self.current()} after expression")
         return result
 
-    def parse_concat(self) -> ASTNode:
+    def parse_concat(self) -> ExprNode:
         """Parse string concatenation (lowest precedence)."""
         left = self.parse_comparison()
 
@@ -387,7 +387,7 @@ class Parser:
             return parts[0]
         return Concat(parts=parts)
 
-    def parse_comparison(self) -> ASTNode:
+    def parse_comparison(self) -> ExprNode:
         """Parse comparison operators."""
         left = self.parse_primary()
 
@@ -408,7 +408,7 @@ class Parser:
 
         return left
 
-    def parse_primary(self) -> ASTNode:
+    def parse_primary(self) -> ExprNode:
         """Parse primary expressions: literals, field refs, function calls."""
         tok = self.current()
 
@@ -473,8 +473,8 @@ class Parser:
         raise SyntaxError(f"Unexpected token {tok.type} at position {tok.pos}")
 
 
-def parse_formula(formula_text: str) -> ASTNode:
-    """Parse an Excel-dialect formula into an AST."""
+def parse_formula(formula_text: str) -> ExprNode:
+    """Parse an Excel-dialect formula into an expression tree."""
     tokens = tokenize(formula_text)
     parser = Parser(tokens)
     return parser.parse()
@@ -493,7 +493,7 @@ def normalize_field_name(name: str) -> str:
 
 
 class IRLowerer:
-    """Lower AST to typed IR with resolved field offsets."""
+    """Lower expression tree to typed IR with resolved field offsets."""
 
     def __init__(self, schema: Dict[str, FieldInfo], string_literals: Dict[str, str]):
         self.schema = schema
@@ -511,23 +511,23 @@ class IRLowerer:
         self.string_literals[label] = value
         return label
 
-    def lower(self, ast: ASTNode) -> IRNode:
-        """Lower an AST node to IR."""
+    def lower(self, expr: ExprNode) -> IRNode:
+        """Lower an expression node to IR."""
 
-        if isinstance(ast, LiteralBool):
-            return IRLiteralBool(result_type=DataType.BOOL, value=ast.value)
+        if isinstance(expr, LiteralBool):
+            return IRLiteralBool(result_type=DataType.BOOL, value=expr.value)
 
-        if isinstance(ast, LiteralInt):
-            return IRLiteralInt(result_type=DataType.INT, value=ast.value)
+        if isinstance(expr, LiteralInt):
+            return IRLiteralInt(result_type=DataType.INT, value=expr.value)
 
-        if isinstance(ast, LiteralString):
-            label = self.get_string_label(ast.value)
-            return IRLiteralString(result_type=DataType.STRING, value=ast.value, label=label)
+        if isinstance(expr, LiteralString):
+            label = self.get_string_label(expr.value)
+            return IRLiteralString(result_type=DataType.STRING, value=expr.value, label=label)
 
-        if isinstance(ast, FieldRef):
-            field_name = normalize_field_name(ast.name)
+        if isinstance(expr, FieldRef):
+            field_name = normalize_field_name(expr.name)
             if field_name not in self.schema:
-                raise ValueError(f"Unknown field: {ast.name} (normalized: {field_name})")
+                raise ValueError(f"Unknown field: {expr.name} (normalized: {field_name})")
             info = self.schema[field_name]
 
             if info.datatype == DataType.BOOL:
@@ -544,35 +544,35 @@ class IRLowerer:
             else:
                 raise ValueError(f"Unknown field type: {info.datatype}")
 
-        if isinstance(ast, UnaryOp):
-            if ast.op == 'NOT':
-                operand = self.lower(ast.operand)
+        if isinstance(expr, UnaryOp):
+            if expr.op == 'NOT':
+                operand = self.lower(expr.operand)
                 return IRNot(result_type=DataType.BOOL, operand=operand)
-            raise ValueError(f"Unknown unary op: {ast.op}")
+            raise ValueError(f"Unknown unary op: {expr.op}")
 
-        if isinstance(ast, BinaryOp):
-            left = self.lower(ast.left)
-            right = self.lower(ast.right)
+        if isinstance(expr, BinaryOp):
+            left = self.lower(expr.left)
+            right = self.lower(expr.right)
             op_map = {'=': 'eq', '<>': 'ne', '<': 'lt', '<=': 'le', '>': 'gt', '>=': 'ge'}
-            return IRCompare(result_type=DataType.BOOL, op=op_map[ast.op], left=left, right=right)
+            return IRCompare(result_type=DataType.BOOL, op=op_map[expr.op], left=left, right=right)
 
-        if isinstance(ast, FuncCall):
-            if ast.name == 'AND':
-                operands = [self.lower(arg) for arg in ast.args]
+        if isinstance(expr, FuncCall):
+            if expr.name == 'AND':
+                operands = [self.lower(arg) for arg in expr.args]
                 return IRAnd(result_type=DataType.BOOL, operands=operands)
 
-            if ast.name == 'OR':
-                operands = [self.lower(arg) for arg in ast.args]
+            if expr.name == 'OR':
+                operands = [self.lower(arg) for arg in expr.args]
                 return IROr(result_type=DataType.BOOL, operands=operands)
 
-            if ast.name == 'IF':
-                if len(ast.args) < 2 or len(ast.args) > 3:
-                    raise ValueError(f"IF requires 2 or 3 arguments, got {len(ast.args)}")
-                cond = self.lower(ast.args[0])
-                then_br = self.lower(ast.args[1])
+            if expr.name == 'IF':
+                if len(expr.args) < 2 or len(expr.args) > 3:
+                    raise ValueError(f"IF requires 2 or 3 arguments, got {len(expr.args)}")
+                cond = self.lower(expr.args[0])
+                then_br = self.lower(expr.args[1])
                 # If no else clause, default to empty string (for string results) or false (for bool)
-                if len(ast.args) == 3:
-                    else_br = self.lower(ast.args[2])
+                if len(expr.args) == 3:
+                    else_br = self.lower(expr.args[2])
                 else:
                     # Default else branch based on then branch type
                     if then_br.result_type == DataType.STRING:
@@ -585,37 +585,37 @@ class IRLowerer:
                 result_type = then_br.result_type
                 return IRIf(result_type=result_type, condition=cond, then_branch=then_br, else_branch=else_br)
 
-            if ast.name == 'NOT':
-                if len(ast.args) != 1:
-                    raise ValueError(f"NOT requires 1 argument, got {len(ast.args)}")
-                operand = self.lower(ast.args[0])
+            if expr.name == 'NOT':
+                if len(expr.args) != 1:
+                    raise ValueError(f"NOT requires 1 argument, got {len(expr.args)}")
+                operand = self.lower(expr.args[0])
                 return IRNot(result_type=DataType.BOOL, operand=operand)
 
-            if ast.name == 'SUM':
-                operands = [self.lower(arg) for arg in ast.args]
+            if expr.name == 'SUM':
+                operands = [self.lower(arg) for arg in expr.args]
                 return IRSum(result_type=DataType.INT, operands=operands)
 
-            if ast.name == 'LOWER':
-                if len(ast.args) != 1:
-                    raise ValueError(f"LOWER requires 1 argument, got {len(ast.args)}")
-                operand = self.lower(ast.args[0])
+            if expr.name == 'LOWER':
+                if len(expr.args) != 1:
+                    raise ValueError(f"LOWER requires 1 argument, got {len(expr.args)}")
+                operand = self.lower(expr.args[0])
                 return IRLower(result_type=DataType.STRING, operand=operand)
 
-            if ast.name == 'SUBSTITUTE':
-                if len(ast.args) != 3:
-                    raise ValueError(f"SUBSTITUTE requires 3 arguments, got {len(ast.args)}")
-                source = self.lower(ast.args[0])
-                old_text = self.lower(ast.args[1])
-                new_text = self.lower(ast.args[2])
+            if expr.name == 'SUBSTITUTE':
+                if len(expr.args) != 3:
+                    raise ValueError(f"SUBSTITUTE requires 3 arguments, got {len(expr.args)}")
+                source = self.lower(expr.args[0])
+                old_text = self.lower(expr.args[1])
+                new_text = self.lower(expr.args[2])
                 return IRSubstitute(result_type=DataType.STRING, source=source, old_text=old_text, new_text=new_text)
 
-            raise ValueError(f"Unknown function: {ast.name}")
+            raise ValueError(f"Unknown function: {expr.name}")
 
-        if isinstance(ast, Concat):
-            parts = [self.lower(part) for part in ast.parts]
+        if isinstance(expr, Concat):
+            parts = [self.lower(part) for part in expr.parts]
             return IRConcat(result_type=DataType.STRING, parts=parts)
 
-        raise ValueError(f"Unknown AST node type: {type(ast)}")
+        raise ValueError(f"Unknown expression node type: {type(expr)}")
 
 
 def build_schema(columns: List[dict]) -> Dict[str, FieldInfo]:
@@ -655,10 +655,10 @@ def build_schema(columns: List[dict]) -> Dict[str, FieldInfo]:
     return schema
 
 
-def lower_to_ir(ast: ASTNode, schema: Dict[str, FieldInfo], string_literals: Dict[str, str]) -> IRNode:
-    """Lower AST to typed IR DAG."""
+def lower_to_ir(expr: ExprNode, schema: Dict[str, FieldInfo], string_literals: Dict[str, str]) -> IRNode:
+    """Lower expression tree to typed IR DAG."""
     lowerer = IRLowerer(schema, string_literals)
-    return lowerer.lower(ast)
+    return lowerer.lower(expr)
 
 
 # =============================================================================
@@ -1577,8 +1577,8 @@ def main():
         # Phase 1: Parse
         print("    Phase 1: Parsing...")
         try:
-            ast = parse_formula(cf['formula'])
-            print(f"    AST: {type(ast).__name__}")
+            expr = parse_formula(cf['formula'])
+            print(f"    Expr: {type(expr).__name__}")
         except Exception as e:
             print(f"    ⚠️  Skipping (parse error): {e}")
             continue
@@ -1586,7 +1586,7 @@ def main():
         # Phase 2: Lower to IR
         print("    Phase 2: Lowering to IR...")
         try:
-            ir = lower_to_ir(ast, entity_schema, string_literals)
+            ir = lower_to_ir(expr, entity_schema, string_literals)
             print(f"    IR: {type(ir).__name__}, result_type={ir.result_type.name}")
         except Exception as e:
             print(f"    ⚠️  Skipping (lowering error): {e}")

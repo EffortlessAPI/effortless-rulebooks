@@ -42,7 +42,7 @@ Unlike other substrates that only produce computed values, ExplainDAG shows
 
 ### Generated at Inject Time
 
-- `generated/explain_spec.json` - Static AST templates and dependency DAG
+- `generated/explain_spec.json` - Static expression templates and dependency DAG
 
 ### Generated at Test Time
 

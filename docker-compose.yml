@@ -74,7 +74,7 @@ services:
     volumes:
       # Mount the project for live updates
       - .:/app
-      # Persist ssotme config
+      # Persist effortless config
       - erb-ssotme-config:/root/.ssotme
     stdin_open: true
     tty: true

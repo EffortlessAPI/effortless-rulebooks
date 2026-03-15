@@ -220,7 +220,7 @@ def ocl_tokenize(expr: str) -> List[OCLToken]:
 
 
 # =============================================================================
-# OCL AST NODES
+# OCL EXPRESSION NODES
 # =============================================================================
 
 @dataclass
@@ -435,7 +435,7 @@ class OCLParser:
 
 
 def parse_ocl(expr: str) -> OCLNode:
-    """Parse an OCL expression into an AST."""
+    """Parse an OCL expression into an expression tree."""
     tokens = ocl_tokenize(expr)
     parser = OCLParser(tokens)
     return parser.parse()
@@ -459,8 +459,8 @@ class OCLInterpreter:
             self.attr_lookup[normalized] = value
 
     def evaluate(self, expr: str) -> Any:
-        ast = parse_ocl(expr)
-        return self.eval_node(ast)
+        expr = parse_ocl(expr)
+        return self.eval_node(expr)
 
     def eval_node(self, node: OCLNode) -> Any:
         if isinstance(node, OCLLiteralBool):

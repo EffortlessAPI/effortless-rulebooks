@@ -20,7 +20,7 @@ This substrate compiles rulebook formulas into GnuCOBOL free-format source. It g
 │                                                              │
 │   1. Load rulebook JSON (structured data)                    │
 │                          ↓                                   │
-│   2. Parse Excel-dialect formulas into AST                   │
+│   2. Parse Excel-dialect formulas into expression tree       │
 │                          ↓                                   │
 │   3. Build dependency DAG for calculation ordering           │
 │                          ↓                                   │

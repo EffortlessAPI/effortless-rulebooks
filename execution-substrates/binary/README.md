@@ -74,8 +74,8 @@ typedef struct {
 
 1. Read `test_answers.json`
 2. For each "computed value" to reproduce:
-   - Parse its Excel-dialect expression into an AST
-   - Lower AST → **typed IR DAG** using only generic ops:
+   - Parse its Excel-dialect expression into an expression tree
+   - Lower expression tree → **typed IR DAG** using only generic ops:
      - `IF`, `AND/OR/NOT`
      - Comparisons (`=`, `<>`, `<`, `<=`, `>`, `>=`)
      - Arithmetic (optional)
@@ -151,7 +151,7 @@ Everything else either:
 ### Phase 6: Correctness Harness
 
 For each computed value, run:
-1. Python reference evaluator (AST interpreted) vs asm evaluator
+1. Python reference evaluator (expression interpreted) vs asm evaluator
 2. Diff on a sample of `test_answers`
 3. Only ship asm outputs when the harness matches
 
