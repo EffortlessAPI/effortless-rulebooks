@@ -1,225 +1,118 @@
 # JTO - v3 Rulebook Specification Document
 
 ## Overview
-The JTO - v3 rulebook defines a schema for workflows, workflow steps, roles, and human agents. It includes specific calculations to derive certain fields based on relationships and data aggregations. This document outlines how to compute the calculated fields within the rulebook, detailing the necessary input fields and providing clear instructions for each calculation.
+This document outlines the specifications for the JTO - v3 rulebook, which is designed to manage workflows, workflow steps, roles, and human agents within a structured framework. The rulebook includes various entities, each with defined fields and relationships, and specifies how to compute certain calculated fields based on raw input data.
 
-## Workflows
+## Entities with Calculated Fields
 
-### Input Fields
-1. **WorkflowId**
-   - **Type:** string
-   - **Description:** Unique identifier for the workflow.
+### 1. Workflows
+#### Input Fields
+- **WorkflowId**: `string` - Unique identifier for the workflow.
+- **Title**: `string` - Human-readable name for the workflow.
+- **Description**: `string` - Detailed description of the workflow's purpose and scope.
+- **Created**: `datetime` - Date the workflow was created.
+- **Modified**: `datetime` - Date the workflow was last modified.
+- **Identifier**: `string` - External reference identifier (e.g., ticket number).
+- **WorkflowSteps**: `string` - Steps contained in this workflow.
 
-2. **Title**
-   - **Type:** string
-   - **Description:** Title of the workflow.
+#### Calculated Field
+- **CountOfWorkflowSteps**: `integer`
+  - **Description**: This field counts the number of steps associated with the workflow by checking how many steps have the current workflow's ID as their parent.
+  - **How to Compute**: To compute this value, you will count all entries in the `WorkflowSteps` table where the `IsStepOf` field matches the current workflow's `WorkflowId`.
+  - **Formula**: `=COUNTIFS(WorkflowSteps!{{IsStepOf}}, Workflows!{{WorkflowId}})`
+  - **Example**: For the workflow with `WorkflowId` "production-deployment-workflow", there are three steps: "legal-review", "risk-assessment", and "release-approval". Thus, `CountOfWorkflowSteps` would be 3.
 
-3. **Description**
-   - **Type:** string
-   - **Description:** Description of the workflow.
+---
 
-4. **Created**
-   - **Type:** datetime
-   - **Description:** Date and time when the workflow was created.
+### 2. WorkflowSteps
+#### Input Fields
+- **WorkflowStepId**: `string` - Unique identifier for the workflow step.
+- **Label**: `string` - Human-readable name for the step.
+- **SequencePosition**: `integer` - Ordinal position in the workflow sequence.
+- **RequiresHumanApproval**: `boolean` - Indicates if this step requires human approval.
+- **IsStepOf**: `string` - Parent workflow containing this step.
+- **AssignedRole**: `string` - Role responsible for this step.
 
-5. **Modified**
-   - **Type:** datetime
-   - **Description:** Date and time when the workflow was last modified.
+#### Calculated Fields
+- **IsStepOfTitle**: `string`
+  - **Description**: This field retrieves the title of the parent workflow associated with this step.
+  - **How to Compute**: Use the `MATCH` function to find the row in the `Workflows` table where the `WorkflowId` matches the `IsStepOf` field, then use `INDEX` to get the corresponding `Title`.
+  - **Formula**: `=INDEX(Workflows!{{Title}}, MATCH(WorkflowSteps!{{IsStepOf}}, Workflows!{{WorkflowId}}, 0))`
+  - **Example**: For the step with `IsStepOf` "production-deployment-workflow", the `IsStepOfTitle` would return "Production Deployment Workflow".
 
-6. **Identifier**
-   - **Type:** string
-   - **Description:** An additional identifier for the workflow.
+- **IsStepOfDescription**: `string`
+  - **Description**: This field retrieves the description of the parent workflow associated with this step.
+  - **How to Compute**: Similar to `IsStepOfTitle`, use `MATCH` to find the row in the `Workflows` table and then `INDEX` to get the `Description`.
+  - **Formula**: `=INDEX(Workflows!{{Description}}, MATCH(WorkflowSteps!{{IsStepOf}}, Workflows!{{WorkflowId}}, 0))`
+  - **Example**: For the step with `IsStepOf` "production-deployment-workflow", the `IsStepOfDescription` would return "End-to-end workflow for deploying software releases to production, including risk analysis, legal clearance, and release approval."
 
-7. **WorkflowSteps**
-   - **Type:** string
-   - **Description:** A list of workflow step IDs associated with this workflow.
+- **IsStepOfIdentifier**: `string`
+  - **Description**: This field retrieves the external identifier of the parent workflow associated with this step.
+  - **How to Compute**: Use `MATCH` to find the row in the `Workflows` table where the `WorkflowId` matches the `IsStepOf` field, then use `INDEX` to get the corresponding `Identifier`.
+  - **Formula**: `=INDEX(Workflows!{{Identifier}}, MATCH(WorkflowSteps!{{IsStepOf}}, Workflows!{{WorkflowId}}, 0))`
+  - **Example**: For the step with `IsStepOf` "production-deployment-workflow", the `IsStepOfIdentifier` would return "WF-PROD-001".
 
-### Calculated Field
-#### CountOfWorkflowSteps
-- **Description:** This field counts the number of workflow steps associated with the workflow.
-- **Calculation Method:** 
-  - Use the `COUNTIFS` function to count the number of entries in the `WorkflowSteps` table where the `IsStepOf` field matches the `WorkflowId` of the current workflow.
-- **Formula:** 
-  ```plaintext
-  =COUNTIFS(WorkflowSteps!{{IsStepOf}}, Workflows!{{WorkflowId}})
-  ```
-- **Example:** 
-  For the workflow with `WorkflowId` "production-deployment-workflow", the `CountOfWorkflowSteps` is calculated as follows:
-  - The `WorkflowSteps` associated with this workflow are "legal-review", "risk-assessment", and "release-approval".
-  - Therefore, the count is 3.
+- **AssignedRoleLabel**: `string`
+  - **Description**: This field retrieves the label of the role assigned to this step.
+  - **How to Compute**: Use `MATCH` to find the row in the `Roles` table where the `RoleId` matches the `AssignedRole` field, then use `INDEX` to get the corresponding `Label`.
+  - **Formula**: `=INDEX(Roles!{{Label}}, MATCH(WorkflowSteps!{{AssignedRole}}, Roles!{{RoleId}}, 0))`
+  - **Example**: For the step with `AssignedRole` "risk-analyst", the `AssignedRoleLabel` would return "Risk Analyst".
 
-## WorkflowSteps
+- **AssignedRoleComment**: `string`
+  - **Description**: This field retrieves the comment or description of the assigned role.
+  - **How to Compute**: Similar to `AssignedRoleLabel`, use `MATCH` to find the row in the `Roles` table and then `INDEX` to get the `Comment`.
+  - **Formula**: `=INDEX(Roles!{{Comment}}, MATCH(WorkflowSteps!{{AssignedRole}}, Roles!{{RoleId}}, 0))`
+  - **Example**: For the step with `AssignedRole` "risk-analyst", the `AssignedRoleComment` would return "Role responsible for risk assessment. In full ontology, filled by AI agent."
 
-### Input Fields
-1. **WorkflowStepId**
-   - **Type:** string
-   - **Description:** Unique identifier for the workflow step.
+- **AssignedRoleFilledBy**: `string`
+  - **Description**: This field retrieves the agent currently filling the assigned role.
+  - **How to Compute**: Use `MATCH` to find the row in the `Roles` table where the `RoleId` matches the `AssignedRole`, then use `INDEX` to get the corresponding `FilledBy`.
+  - **Formula**: `=INDEX(Roles!{{FilledBy}}, MATCH(WorkflowSteps!{{AssignedRole}}, Roles!{{RoleId}}, 0))`
+  - **Example**: For the step with `AssignedRole` "release-manager", the `AssignedRoleFilledBy` would return "maria-gonzalez".
 
-2. **Label**
-   - **Type:** string
-   - **Description:** Label for the workflow step.
+---
 
-3. **SequencePosition**
-   - **Type:** integer
-   - **Description:** Position of the workflow step in the sequence.
+### 3. Roles
+#### Input Fields
+- **RoleId**: `string` - Unique identifier for the role.
+- **Label**: `string` - Human-readable name for the role.
+- **Comment**: `string` - Description of the role's responsibilities.
+- **FilledBy**: `string` - Agent currently filling this role.
 
-4. **RequiresHumanApproval**
-   - **Type:** boolean
-   - **Description:** Indicates if the workflow step requires human approval.
+#### Calculated Fields
+- **CountOfWorkflowSteps**: `integer`
+  - **Description**: This field counts the number of workflow steps assigned to this role.
+  - **How to Compute**: Count all entries in the `WorkflowSteps` table where the `AssignedRole` matches the current role's `RoleId`.
+  - **Formula**: `=COUNTIFS(WorkflowSteps!{{AssignedRole}}, Roles!{{RoleId}})`
+  - **Example**: For the role with `RoleId` "release-manager", there is one step assigned: "release-approval". Thus, `CountOfWorkflowSteps` would be 1.
 
-5. **IsStepOf**
-   - **Type:** string
-   - **Description:** The workflow ID that this step is part of.
+- **FilledByName**: `string`
+  - **Description**: This field retrieves the name of the agent filling this role.
+  - **How to Compute**: Use `MATCH` to find the row in the `HumanAgents` table where the `HumanAgentId` matches the `FilledBy` field, then use `INDEX` to get the corresponding `Name`.
+  - **Formula**: `=INDEX(HumanAgents!{{Name}}, MATCH(Roles!{{FilledBy}}, HumanAgents!{{HumanAgentId}}, 0))`
+  - **Example**: For the role with `FilledBy` "maria-gonzalez", the `FilledByName` would return "Maria Gonzalez".
 
-6. **AssignedRole**
-   - **Type:** string
-   - **Description:** The role assigned to this workflow step.
+- **FilledByMBox**: `string`
+  - **Description**: This field retrieves the email address of the agent filling this role.
+  - **How to Compute**: Similar to `FilledByName`, use `MATCH` to find the row in the `HumanAgents` table and then `INDEX` to get the `Mbox`.
+  - **Formula**: `=INDEX(HumanAgents!{{Mbox}}, MATCH(Roles!{{FilledBy}}, HumanAgents!{{HumanAgentId}}, 0))`
+  - **Example**: For the role with `FilledBy` "maria-gonzalez", the `FilledByMBox` would return "maria.gonzalez@specialsolutions.example".
 
-### Calculated Fields
-#### IsStepOfTitle
-- **Description:** Retrieves the title of the workflow that this step is part of.
-- **Calculation Method:** 
-  - Use the `INDEX` and `MATCH` functions to find the title in the `Workflows` table where the `WorkflowId` matches the `IsStepOf` field.
-- **Formula:** 
-  ```plaintext
-  =INDEX(Workflows!{{Title}}, MATCH(WorkflowSteps!{{IsStepOf}}, Workflows!{{WorkflowId}}, 0))
-  ```
-- **Example:** 
-  For the step with `WorkflowStepId` "risk-assessment", the `IsStepOfTitle` is "Production Deployment Workflow".
+---
 
-#### IsStepOfDescription
-- **Description:** Retrieves the description of the workflow that this step is part of.
-- **Calculation Method:** 
-  - Similar to `IsStepOfTitle`, but retrieves the description instead.
-- **Formula:** 
-  ```plaintext
-  =INDEX(Workflows!{{Description}}, MATCH(WorkflowSteps!{{IsStepOf}}, Workflows!{{WorkflowId}}, 0))
-  ```
-- **Example:** 
-  For the step with `WorkflowStepId` "legal-review", the `IsStepOfDescription` is "End-to-end workflow for deploying software releases to production, including risk analysis, legal clearance, and release approval."
+### 4. HumanAgents
+#### Input Fields
+- **HumanAgentId**: `string` - Unique identifier for the human agent.
+- **Name**: `string` - Full name of the person.
+- **Mbox**: `string` - Email address of the person.
 
-#### IsStepOfIdentifier
-- **Description:** Retrieves the identifier of the workflow that this step is part of.
-- **Calculation Method:** 
-  - Similar to the previous lookups, but retrieves the identifier.
-- **Formula:** 
-  ```plaintext
-  =INDEX(Workflows!{{Identifier}}, MATCH(WorkflowSteps!{{IsStepOf}}, Workflows!{{WorkflowId}}, 0))
-  ```
-- **Example:** 
-  For the step with `WorkflowStepId` "release-approval", the `IsStepOfIdentifier` is "WF-PROD-001".
+#### Calculated Field
+- **CountOfRoles**: `integer`
+  - **Description**: This field counts the number of roles currently filled by this agent.
+  - **How to Compute**: Count all entries in the `Roles` table where the `FilledBy` matches the current agent's `HumanAgentId`.
+  - **Formula**: `=COUNTIFS(Roles!{{FilledBy}}, HumanAgents!{{HumanAgentId}})`
+  - **Example**: For the agent with `HumanAgentId` "maria-gonzalez", the `CountOfRoles` would be 1, as she is filling the "release-manager" role.
 
-#### AssignedRoleLabel
-- **Description:** Retrieves the label of the role assigned to this workflow step.
-- **Calculation Method:** 
-  - Use `INDEX` and `MATCH` to find the label in the `Roles` table where the `RoleId` matches the `AssignedRole`.
-- **Formula:** 
-  ```plaintext
-  =INDEX(Roles!{{Label}}, MATCH(WorkflowSteps!{{AssignedRole}}, Roles!{{RoleId}}, 0))
-  ```
-- **Example:** 
-  For the step with `AssignedRole` "risk-analyst", the `AssignedRoleLabel` is "Risk Analyst".
+---
 
-#### AssignedRoleComment
-- **Description:** Retrieves the comment associated with the assigned role.
-- **Calculation Method:** 
-  - Similar to `AssignedRoleLabel`, but retrieves the comment.
-- **Formula:** 
-  ```plaintext
-  =INDEX(Roles!{{Comment}}, MATCH(WorkflowSteps!{{AssignedRole}}, Roles!{{RoleId}}, 0))
-  ```
-- **Example:** 
-  For the step with `AssignedRole` "legal-compliance-reviewer", the `AssignedRoleComment` is "Role responsible for legal and compliance review of releases."
-
-#### AssignedRoleFilledBy
-- **Description:** Retrieves the identifier of the human agent assigned to the role.
-- **Calculation Method:** 
-  - Similar to the previous lookups, but retrieves the `FilledBy` field.
-- **Formula:** 
-  ```plaintext
-  =INDEX(Roles!{{FilledBy}}, MATCH(WorkflowSteps!{{AssignedRole}}, Roles!{{RoleId}}, 0))
-  ```
-- **Example:** 
-  For the step with `AssignedRole` "release-manager", the `AssignedRoleFilledBy` is "maria-gonzalez".
-
-## Roles
-
-### Input Fields
-1. **RoleId**
-   - **Type:** string
-   - **Description:** Unique identifier for the role.
-
-2. **Label**
-   - **Type:** string
-   - **Description:** Label for the role.
-
-3. **Comment**
-   - **Type:** string
-   - **Description:** Comment describing the role.
-
-4. **FilledBy**
-   - **Type:** string
-   - **Description:** Identifier for the human agent filling this role.
-
-### Calculated Fields
-#### CountOfWorkflowSteps
-- **Description:** Counts the number of workflow steps assigned to this role.
-- **Calculation Method:** 
-  - Use `COUNTIFS` to count the number of entries in the `WorkflowSteps` table where the `AssignedRole` matches the `RoleId`.
-- **Formula:** 
-  ```plaintext
-  =COUNTIFS(WorkflowSteps!{{AssignedRole}}, Roles!{{RoleId}})
-  ```
-- **Example:** 
-  For the role with `RoleId` "release-manager", the `CountOfWorkflowSteps` is 1, as there is one workflow step ("release-approval") assigned to this role.
-
-#### FilledByName
-- **Description:** Retrieves the name of the human agent filling this role.
-- **Calculation Method:** 
-  - Use `INDEX` and `MATCH` to find the name in the `HumanAgents` table where the `HumanAgentId` matches the `FilledBy` field.
-- **Formula:** 
-  ```plaintext
-  =INDEX(HumanAgents!{{Name}}, MATCH(Roles!{{FilledBy}}, HumanAgents!{{HumanAgentId}}, 0))
-  ```
-- **Example:** 
-  For the role with `FilledBy` "maria-gonzalez", the `FilledByName` is "Maria Gonzalez".
-
-#### FilledByMBox
-- **Description:** Retrieves the email address of the human agent filling this role.
-- **Calculation Method:** 
-  - Similar to `FilledByName`, but retrieves the `Mbox` field.
-- **Formula:** 
-  ```plaintext
-  =INDEX(HumanAgents!{{Mbox}}, MATCH(Roles!{{FilledBy}}, HumanAgents!{{HumanAgentId}}, 0))
-  ```
-- **Example:** 
-  For the role with `FilledBy` "maria-gonzalez", the `FilledByMBox` is "maria.gonzalez@specialsolutions.example".
-
-## HumanAgents
-
-### Input Fields
-1. **HumanAgentId**
-   - **Type:** string
-   - **Description:** Unique identifier for the human agent.
-
-2. **Name**
-   - **Type:** string
-   - **Description:** Name of the human agent.
-
-3. **Mbox**
-   - **Type:** string
-   - **Description:** Email address of the human agent.
-
-### Calculated Fields
-#### CountOfRles
-- **Description:** Counts the number of roles assigned to this human agent.
-- **Calculation Method:** 
-  - Use `COUNTIFS` to count the number of entries in the `Roles` table where the `FilledBy` field matches the `HumanAgentId`.
-- **Formula:** 
-  ```plaintext
-  =COUNTIFS(Roles!{{FilledBy}}, HumanAgents!{{HumanAgentId}})
-  ```
-- **Example:** 
-  For the human agent with `HumanAgentId` "maria-gonzalez", the `CountOfRles` is 1, as she fills the "release-manager" role.
-
-This specification document provides a detailed guide on how to compute the calculated fields in the JTO - v3 rulebook, ensuring clarity and accuracy in deriving values from the defined inputs.
+This specification document provides a comprehensive guide to computing calculated fields within the JTO - v3 rulebook, ensuring clarity and consistency in data management across workflows, steps, roles, and agents.

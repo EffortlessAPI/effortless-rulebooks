@@ -51,6 +51,6 @@ SELECT
   t.name,
   t.mbox,
   t.roles,
-  calc_human_agents_count_of_rles(t.human_agent_id) AS count_of_rles
+  calc_human_agents_count_of_roles(t.human_agent_id) AS count_of_roles
 FROM human_agents t;
 

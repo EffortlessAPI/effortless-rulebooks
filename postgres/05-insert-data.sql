@@ -29,5 +29,26 @@ INSERT INTO human_agents (human_agent_id, name, mbox, roles)
 VALUES ('maria-gonzalez', 'Maria Gonzalez', 'maria.gonzalez@specialsolutions.example', 'release-manager');
 
 INSERT INTO human_agents (human_agent_id, name, mbox, roles)
+VALUES ('maria-gonzalez', 'Maria Gonzalez', 'maria.gonzalez@specialsolutions.example', '');
+
+INSERT INTO human_agents (human_agent_id, name, mbox, roles)
+VALUES ('james-okafor', 'James Okafor', 'james.okafor@specialsolutions.example', '');
+
+INSERT INTO human_agents (human_agent_id, name, mbox, roles)
+VALUES ('maria-gonzalez', 'Maria Gonzalez', 'maria.gonzalez@specialsolutions.example', '');
+
+INSERT INTO human_agents (human_agent_id, name, mbox, roles)
+VALUES ('james-okafor', 'James Okafor', 'james.okafor@specialsolutions.example', '');
+
+INSERT INTO human_agents (human_agent_id, name, mbox, roles)
+VALUES ('maria-gonzalez', 'Maria Gonzalez', 'maria.gonzalez@specialsolutions.example', '');
+
+INSERT INTO human_agents (human_agent_id, name, mbox, roles)
+VALUES ('james-okafor', 'James Okafor', 'james.okafor@specialsolutions.example', '');
+
+INSERT INTO human_agents (human_agent_id, name, mbox, roles)
+VALUES ('maria-gonzalez', 'Maria Gonzalez', 'maria.gonzalez@specialsolutions.example', '');
+
+INSERT INTO human_agents (human_agent_id, name, mbox, roles)
 VALUES ('james-okafor', 'James Okafor', 'james.okafor@specialsolutions.example', '');
 

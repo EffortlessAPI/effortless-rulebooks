@@ -16,8 +16,8 @@
   "human_agents": {
     "primary_key": "human_agent_id",
     "computed_columns": [
-      "count_of_rles"
+      "count_of_roles"
     ],
-    "record_count": 2
+    "record_count": 9
   }
 }

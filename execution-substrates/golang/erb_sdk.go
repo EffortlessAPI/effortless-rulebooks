@@ -97,13 +97,13 @@ func (f FlexibleString) String() string {
 // Table: Workflows
 type Workflow struct {
 	WorkflowId string `json:"workflow_id"`
-	Title *string `json:"title"`
-	Description *string `json:"description"`
-	Created *string `json:"created"`
-	Modified *string `json:"modified"`
-	Identifier *string `json:"identifier"`
-	WorkflowSteps *string `json:"workflow_steps"`
-	CountOfWorkflowSteps *int `json:"count_of_workflow_steps"`
+	Title *string `json:"title"` // Human-readable name for the workflow. Maps to dct:title per Dublin Core.
+	Description *string `json:"description"` // Detailed description of the workflow purpose and scope. Maps to dct:description per Dublin Core.
+	Created *string `json:"created"` // Date the workflow was created. Maps to dct:created per Dublin Core.
+	Modified *string `json:"modified"` // Date the workflow was last modified. Maps to dct:modified. Used to identify stale workflows per NTWF CQ5.
+	Identifier *string `json:"identifier"` // External reference identifier (e.g., ticket number). Maps to dct:identifier. Join key to operational systems.
+	WorkflowSteps *string `json:"workflow_steps"` // Steps contained in this workflow. Inverse of IsStepOf. Maps to ntwf:hasStep.
+	CountOfWorkflowSteps *int `json:"count_of_workflow_steps"` // Count of steps in this workflow. Aggregation over IsStepOf relationship.
 }
 
 // =============================================================================
@@ -115,17 +115,17 @@ type Workflow struct {
 // Table: WorkflowSteps
 type WorkflowStep struct {
 	WorkflowStepId string `json:"workflow_step_id"`
-	Label *string `json:"label"`
-	SequencePosition *int `json:"sequence_position"`
-	RequiresHumanApproval *bool `json:"requires_human_approval"`
-	IsStepOf *string `json:"is_step_of"`
-	AssignedRole *string `json:"assigned_role"`
-	IsStepOfTitle *string `json:"is_step_of_title"`
-	IsStepOfDescription *string `json:"is_step_of_description"`
-	IsStepOfIdentifier *string `json:"is_step_of_identifier"`
-	AssignedRoleLabel *string `json:"assigned_role_label"`
-	AssignedRoleComment *string `json:"assigned_role_comment"`
-	AssignedRoleFilledBy *string `json:"assigned_role_filled_by"`
+	Label *string `json:"label"` // Human-readable name for the step. Maps to rdfs:label.
+	SequencePosition *int `json:"sequence_position"` // Ordinal position in workflow sequence. Maps to ntwf:sequencePosition (functional). Supports positional ordering queries.
+	RequiresHumanApproval *bool `json:"requires_human_approval"` // Whether this step requires a human agent. Maps to ntwf:requiresHumanApproval. Answers NTWF CQ3.
+	IsStepOf *string `json:"is_step_of"` // Parent workflow containing this step. Inverse of WorkflowSteps. Maps to ntwf:isStepOf.
+	AssignedRole *string `json:"assigned_role"` // Role responsible for this step. Maps to ntwf:assignedRole (functional). Implements role-agent separation.
+	IsStepOfTitle *string `json:"is_step_of_title"` // Denormalized lookup of parent workflow title.
+	IsStepOfDescription *string `json:"is_step_of_description"` // Denormalized lookup of parent workflow description.
+	IsStepOfIdentifier *string `json:"is_step_of_identifier"` // Denormalized lookup of parent workflow external identifier.
+	AssignedRoleLabel *string `json:"assigned_role_label"` // Denormalized lookup of assigned role label.
+	AssignedRoleComment *string `json:"assigned_role_comment"` // Denormalized lookup of assigned role comment/description.
+	AssignedRoleFilledBy *string `json:"assigned_role_filled_by"` // Denormalized lookup of agent currently filling the assigned role.
 }
 
 // =============================================================================
@@ -137,13 +137,13 @@ type WorkflowStep struct {
 // Table: Roles
 type Role struct {
 	RoleId string `json:"role_id"`
-	Label *string `json:"label"`
-	Comment *string `json:"comment"`
-	FilledBy *string `json:"filled_by"`
-	WorkflowSteps *string `json:"workflow_steps"`
-	CountOfWorkflowSteps *int `json:"count_of_workflow_steps"`
-	FilledByName *string `json:"filled_by_name"`
-	FilledByMBox *string `json:"filled_by_m_box"`
+	Label *string `json:"label"` // Human-readable name for the role. Maps to rdfs:label.
+	Comment *string `json:"comment"` // Description of the role's responsibilities. Maps to rdfs:comment.
+	FilledBy *string `json:"filled_by"` // Agent currently filling this role. Maps to ntwf:filledBy. The change-management triple - update this when personnel change.
+	WorkflowSteps *string `json:"workflow_steps"` // Steps assigned to this role. Inverse of AssignedRole.
+	CountOfWorkflowSteps *int `json:"count_of_workflow_steps"` // Count of workflow steps assigned to this role.
+	FilledByName *string `json:"filled_by_name"` // Denormalized lookup of agent name (foaf:name) filling this role.
+	FilledByMBox *string `json:"filled_by_m_box"` // Denormalized lookup of agent email (foaf:mbox) filling this role.
 }
 
 // =============================================================================
@@ -155,8 +155,8 @@ type Role struct {
 // Table: HumanAgents
 type HumanAgent struct {
 	HumanAgentId string `json:"human_agent_id"`
-	Name *string `json:"name"`
-	Mbox *string `json:"mbox"`
-	Roles *string `json:"roles"`
-	CountOfRles *int `json:"count_of_rles"`
+	Name *string `json:"name"` // Full name of the person. Maps to foaf:name per FOAF ontology.
+	Mbox *string `json:"mbox"` // Email address of the person. Maps to foaf:mbox per FOAF ontology. Used for contact and identity resolution.
+	Roles *string `json:"roles"` // Roles filled by this agent. Inverse of FilledBy.
+	CountOfRoles *int `json:"count_of_roles"` // Count of roles currently filled by this agent.
 }

@@ -174,7 +174,7 @@ END;
 $$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
 
 
-CREATE OR REPLACE FUNCTION calc_human_agents_count_of_rles(p_human_agent_id TEXT)
+CREATE OR REPLACE FUNCTION calc_human_agents_count_of_roles(p_human_agent_id TEXT)
 RETURNS INTEGER AS $$
 BEGIN
   RETURN ((SELECT COUNT(*) FROM roles WHERE filled_by = (SELECT NULLIF(human_agent_id, '') FROM human_agents WHERE human_agent_id = p_human_agent_id)));

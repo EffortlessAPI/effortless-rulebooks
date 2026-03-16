@@ -11,7 +11,7 @@
 -- ============================================================================
 
 -- Drop functions (order: first, because views depend on them)
-DROP FUNCTION IF EXISTS calc_human_agents_count_of_rles(TEXT) CASCADE;
+DROP FUNCTION IF EXISTS calc_human_agents_count_of_roles(TEXT) CASCADE;
 DROP FUNCTION IF EXISTS calc_roles_count_of_workflow_steps(TEXT) CASCADE;
 DROP FUNCTION IF EXISTS calc_roles_filled_by_m_box(TEXT) CASCADE;
 DROP FUNCTION IF EXISTS calc_roles_filled_by_name(TEXT) CASCADE;
@@ -65,6 +65,11 @@ CREATE TABLE workflows (
   identifier                          TEXT                
 );
 COMMENT ON TABLE workflows IS 'Table: Workflows';
+COMMENT ON COLUMN workflows.title IS 'Human-readable name for the workflow. Maps to dct:title per Dublin Core.';
+COMMENT ON COLUMN workflows.description IS 'Detailed description of the workflow purpose and scope. Maps to dct:description per Dublin Core.';
+COMMENT ON COLUMN workflows.created IS 'Date the workflow was created. Maps to dct:created per Dublin Core.';
+COMMENT ON COLUMN workflows.modified IS 'Date the workflow was last modified. Maps to dct:modified. Used to identify stale workflows per NTWF CQ5.';
+COMMENT ON COLUMN workflows.identifier IS 'External reference identifier (e.g., ticket number). Maps to dct:identifier. Join key to operational systems.';
 
 CREATE TABLE workflow_steps (
   workflow_step_id                    TEXT                 PRIMARY KEY,
@@ -75,6 +80,11 @@ CREATE TABLE workflow_steps (
   assigned_role                       TEXT                
 );
 COMMENT ON TABLE workflow_steps IS 'Table: WorkflowSteps';
+COMMENT ON COLUMN workflow_steps.label IS 'Human-readable name for the step. Maps to rdfs:label.';
+COMMENT ON COLUMN workflow_steps.sequence_position IS 'Ordinal position in workflow sequence. Maps to ntwf:sequencePosition (functional). Supports positional ordering queries.';
+COMMENT ON COLUMN workflow_steps.requires_human_approval IS 'Whether this step requires a human agent. Maps to ntwf:requiresHumanApproval. Answers NTWF CQ3.';
+COMMENT ON COLUMN workflow_steps.is_step_of IS 'Parent workflow containing this step. Inverse of WorkflowSteps. Maps to ntwf:isStepOf.';
+COMMENT ON COLUMN workflow_steps.assigned_role IS 'Role responsible for this step. Maps to ntwf:assignedRole (functional). Implements role-agent separation.';
 
 CREATE TABLE roles (
   role_id                             TEXT                 PRIMARY KEY,
@@ -84,6 +94,10 @@ CREATE TABLE roles (
   workflow_steps                      TEXT                
 );
 COMMENT ON TABLE roles IS 'Table: Roles';
+COMMENT ON COLUMN roles.label IS 'Human-readable name for the role. Maps to rdfs:label.';
+COMMENT ON COLUMN roles.comment IS 'Description of the role''s responsibilities. Maps to rdfs:comment.';
+COMMENT ON COLUMN roles.filled_by IS 'Agent currently filling this role. Maps to ntwf:filledBy. The change-management triple - update this when personnel change.';
+COMMENT ON COLUMN roles.workflow_steps IS 'Steps assigned to this role. Inverse of AssignedRole.';
 
 CREATE TABLE human_agents (
   human_agent_id                      TEXT                 PRIMARY KEY,
@@ -92,4 +106,7 @@ CREATE TABLE human_agents (
   roles                               TEXT                
 );
 COMMENT ON TABLE human_agents IS 'Table: HumanAgents';
+COMMENT ON COLUMN human_agents.name IS 'Full name of the person. Maps to foaf:name per FOAF ontology.';
+COMMENT ON COLUMN human_agents.mbox IS 'Email address of the person. Maps to foaf:mbox per FOAF ontology. Used for contact and identity resolution.';
+COMMENT ON COLUMN human_agents.roles IS 'Roles filled by this agent. Inverse of FilledBy.';
 

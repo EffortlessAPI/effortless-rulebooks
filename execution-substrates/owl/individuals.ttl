@@ -10,14 +10,63 @@ erb:HumanAgents_0 a erb:HumanAgents ;
     erb:name "Maria Gonzalez" ;
     erb:mbox "maria.gonzalez@specialsolutions.example" ;
     erb:roles "release-manager" ;
-    erb:countOfRles 1 .
+    erb:countOfRoles 1 .
 
 erb:HumanAgents_1 a erb:HumanAgents ;
+    erb:humanAgentId "maria-gonzalez" ;
+    erb:name "Maria Gonzalez" ;
+    erb:mbox "maria.gonzalez@specialsolutions.example" ;
+    erb:roles "" ;
+    erb:countOfRoles 0 .
+
+erb:HumanAgents_2 a erb:HumanAgents ;
     erb:humanAgentId "james-okafor" ;
     erb:name "James Okafor" ;
     erb:mbox "james.okafor@specialsolutions.example" ;
     erb:roles "" ;
-    erb:countOfRles 0 .
+    erb:countOfRoles 0 .
+
+erb:HumanAgents_3 a erb:HumanAgents ;
+    erb:humanAgentId "maria-gonzalez" ;
+    erb:name "Maria Gonzalez" ;
+    erb:mbox "maria.gonzalez@specialsolutions.example" ;
+    erb:roles "" ;
+    erb:countOfRoles 0 .
+
+erb:HumanAgents_4 a erb:HumanAgents ;
+    erb:humanAgentId "james-okafor" ;
+    erb:name "James Okafor" ;
+    erb:mbox "james.okafor@specialsolutions.example" ;
+    erb:roles "" ;
+    erb:countOfRoles 0 .
+
+erb:HumanAgents_5 a erb:HumanAgents ;
+    erb:humanAgentId "maria-gonzalez" ;
+    erb:name "Maria Gonzalez" ;
+    erb:mbox "maria.gonzalez@specialsolutions.example" ;
+    erb:roles "" ;
+    erb:countOfRoles 0 .
+
+erb:HumanAgents_6 a erb:HumanAgents ;
+    erb:humanAgentId "james-okafor" ;
+    erb:name "James Okafor" ;
+    erb:mbox "james.okafor@specialsolutions.example" ;
+    erb:roles "" ;
+    erb:countOfRoles 0 .
+
+erb:HumanAgents_7 a erb:HumanAgents ;
+    erb:humanAgentId "maria-gonzalez" ;
+    erb:name "Maria Gonzalez" ;
+    erb:mbox "maria.gonzalez@specialsolutions.example" ;
+    erb:roles "" ;
+    erb:countOfRoles 0 .
+
+erb:HumanAgents_8 a erb:HumanAgents ;
+    erb:humanAgentId "james-okafor" ;
+    erb:name "James Okafor" ;
+    erb:mbox "james.okafor@specialsolutions.example" ;
+    erb:roles "" ;
+    erb:countOfRoles 0 .
 
 # === Individuals: Roles ===
 
