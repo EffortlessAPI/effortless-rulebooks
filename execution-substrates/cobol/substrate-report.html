@@ -319,23 +319,17 @@ Generated from: `effortless-rulebook/effortless-rulebook.json`
 
 | Metric | Value |
 |--------|-------|
-| Total Fields Tested | 3 |
-| Passed | 1 |
-| Failed | 2 |
-| Score | 33.3% |
+| Total Fields Tested | 0 |
+| Passed | 0 |
+| Failed | 0 |
+| Score | 0.0% |
 | Duration | &lt; 1s |
 
-## Results by Entity
+## Error
 
-### workflows
-
-- Fields: 1/3 (33.3%)
-- Computed columns: name, count_of_steps, has_more_than1_step
-
-| PK | Field | Expected | Actual |
-|-----|-------|----------|--------|
-| production-deployment | count_of_steps | 5 | 0 |
-| production-deployment | has_more_than1_step | True | False |
+```
+No test-answers found
+```
 </pre>
         </div>
     </div>
@@ -353,21 +347,10 @@ Checking for GnuCOBOL...
   Found: cobc (GnuCOBOL) 3.2.0
 
 Compiling erb_main.cbl...
-  Compiled successfully: erb_test
+FATAL: COBOL compilation failed:
+erb_main.cbl:1: error: PROGRAM-ID header missing
+    1 &gt; &lt;EOF&gt;
 
-COBOL substrate targets: workflows
-
-Processing entities...
-  Skipping approvals (COBOL only supports workflows)
-  Skipping departments (COBOL only supports workflows)
-  Skipping precedes_steps (COBOL only supports workflows)
-  Skipping roles (COBOL only supports workflows)
-  Skipping workflow_steps (COBOL only supports workflows)
-  -&gt; workflows: 1 records
-
-==================================================
-COBOL substrate: Processed 1 entities, 1 total records
-==================================================
 
 </pre>
         </div>

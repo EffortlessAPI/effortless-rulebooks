@@ -1,87 +1,122 @@
 [
   {
-    "workflow_step_id": "deployment-execution",
-    "name": "deployment-execution",
-    "workflow": "production-deployment",
-    "sequence_position": 4,
-    "assigned_role": "deployment-engineer",
-    "preceded_by_steps": "step-3",
-    "display_name": "Deployment Execution",
-    "assigned_role_department": "engineering",
-    "requires_human_approval": false,
-    "approval_gate": "",
-    "execution_actor_type": "",
-    "approval_gate_escalation_threshold_hours": 0,
-    "step_transitions_from_step": "",
-    "step_transitions_to_step": "",
-    "workflow_artifacts": ""
+    "workflow_step_id": "archive-documents",
+    "label": "Archive Documents",
+    "sequence_position": 8,
+    "is_step_of": "quarterly-performance-review",
+    "assigned_role": "technical-writer",
+    "requires_human_approval": false
   },
   {
-    "workflow_step_id": "legal-clearance",
-    "name": "legal-clearance",
-    "workflow": "production-deployment",
-    "sequence_position": 2,
-    "assigned_role": "legal-compliance-reviewer",
-    "requires_human_approval": true,
-    "preceded_by_steps": "step-1",
-    "display_name": "Legal Clearance",
-    "assigned_role_department": "legal",
-    "approval_gate": "",
-    "execution_actor_type": "",
-    "approval_gate_escalation_threshold_hours": 0,
-    "step_transitions_from_step": "",
-    "step_transitions_to_step": "",
-    "workflow_artifacts": ""
-  },
-  {
-    "workflow_step_id": "post-deployment-review",
-    "name": "post-deployment-review",
-    "workflow": "production-deployment",
-    "sequence_position": 5,
-    "assigned_role": "release-manager",
-    "requires_human_approval": true,
-    "preceded_by_steps": "step-4",
-    "display_name": "Post-Deployment Review",
-    "assigned_role_department": "engineering",
-    "approval_gate": "",
-    "execution_actor_type": "",
-    "approval_gate_escalation_threshold_hours": 0,
-    "step_transitions_from_step": "",
-    "step_transitions_to_step": "",
-    "workflow_artifacts": ""
-  },
-  {
-    "workflow_step_id": "release-approval-gate",
-    "name": "release-approval-gate",
-    "workflow": "production-deployment",
+    "workflow_step_id": "assign-reviewer",
+    "label": "Assign Reviewer",
     "sequence_position": 3,
-    "assigned_role": "release-manager",
-    "requires_human_approval": true,
-    "approval_gate": "release-approval-gate",
-    "preceded_by_steps": "step-2",
-    "display_name": "Release Approval Gate",
-    "assigned_role_department": "engineering",
-    "approval_gate_escalation_threshold_hours": 24,
-    "execution_actor_type": "",
-    "step_transitions_from_step": "",
-    "step_transitions_to_step": "",
-    "workflow_artifacts": ""
+    "is_step_of": "customer-feedback-collection",
+    "assigned_role": "quality-assurance-analyst",
+    "requires_human_approval": false
   },
   {
-    "workflow_step_id": "risk-analysis",
-    "name": "risk-analysis",
-    "workflow": "production-deployment",
+    "workflow_step_id": "audit-trail-review",
+    "label": "Audit Trail Review",
+    "sequence_position": 15,
+    "requires_human_approval": true,
+    "is_step_of": "procurement-request",
+    "assigned_role": "scrum-master"
+  },
+  {
+    "workflow_step_id": "close-workflow",
+    "label": "Close Workflow",
+    "sequence_position": 13,
+    "is_step_of": "remote-access-request",
+    "assigned_role": "system-administrator",
+    "requires_human_approval": false
+  },
+  {
+    "workflow_step_id": "escalate-issue",
+    "label": "Escalate Issue",
+    "sequence_position": 14,
+    "requires_human_approval": true,
+    "is_step_of": "customer-escalation-handling",
+    "assigned_role": "finance-officer"
+  },
+  {
+    "workflow_step_id": "final-approval",
+    "label": "Final Approval",
+    "sequence_position": 6,
+    "requires_human_approval": true,
+    "is_step_of": "content-publishing",
+    "assigned_role": "devops-engineer"
+  },
+  {
+    "workflow_step_id": "generate-report",
+    "label": "Generate Report",
+    "sequence_position": 9,
+    "is_step_of": "vendor-onboarding",
+    "assigned_role": "customer-support-specialist",
+    "requires_human_approval": false
+  },
+  {
+    "workflow_step_id": "initial-review",
+    "label": "Initial Review",
+    "sequence_position": 2,
+    "requires_human_approval": true,
+    "is_step_of": "weekly-sales-report",
+    "assigned_role": "software-engineer"
+  },
+  {
+    "workflow_step_id": "notify-stakeholders",
+    "label": "Notify Stakeholders",
+    "sequence_position": 7,
+    "is_step_of": "expense-reimbursement",
+    "assigned_role": "product-owner",
+    "requires_human_approval": false
+  },
+  {
+    "workflow_step_id": "quality-assurance-check",
+    "label": "Quality Assurance Check",
+    "sequence_position": 10,
+    "requires_human_approval": true,
+    "is_step_of": "project-kickoff",
+    "assigned_role": "hr-manager"
+  },
+  {
+    "workflow_step_id": "reviewer-feedback",
+    "label": "Reviewer Feedback",
+    "sequence_position": 4,
+    "requires_human_approval": true,
+    "is_step_of": "invoice-approval",
+    "assigned_role": "ui-ux-designer"
+  },
+  {
+    "workflow_step_id": "revise-submission",
+    "label": "Revise Submission",
+    "sequence_position": 5,
+    "is_step_of": "it-support-ticketing",
+    "assigned_role": "business-analyst",
+    "requires_human_approval": false
+  },
+  {
+    "workflow_step_id": "schedule-follow-up",
+    "label": "Schedule Follow-up",
+    "sequence_position": 12,
+    "is_step_of": "annual-compliance-training",
+    "assigned_role": "data-scientist",
+    "requires_human_approval": false
+  },
+  {
+    "workflow_step_id": "send-confirmation-email",
+    "label": "Send Confirmation Email",
+    "sequence_position": 11,
+    "is_step_of": "marketing-campaign-launch",
+    "assigned_role": "marketing-specialist",
+    "requires_human_approval": false
+  },
+  {
+    "workflow_step_id": "submit-request",
+    "label": "Submit Request",
     "sequence_position": 1,
-    "assigned_role": "risk-analysis-agent",
-    "display_name": "Risk Analysis",
-    "assigned_role_department": "engineering",
-    "requires_human_approval": false,
-    "approval_gate": "",
-    "preceded_by_steps": "",
-    "execution_actor_type": "",
-    "approval_gate_escalation_threshold_hours": 0,
-    "step_transitions_from_step": "",
-    "step_transitions_to_step": "",
-    "workflow_artifacts": ""
+    "requires_human_approval": true,
+    "is_step_of": "onboarding-new-employees",
+    "assigned_role": "project-manager"
   }
 ]
