@@ -5,15 +5,71 @@ object "Maria Gonzalez" as HumanAgents_0 {
   Name = "Maria Gonzalez"
   Mbox = "maria.gonzalez@specialsolut..."
   Roles = "release-manager"
-  CountOfRles = 1
+  CountOfRoles = 1
 }
 
-object "James Okafor" as HumanAgents_1 {
+object "Maria Gonzalez" as HumanAgents_1 {
+  HumanAgentId = "maria-gonzalez"
+  Name = "Maria Gonzalez"
+  Mbox = "maria.gonzalez@specialsolut..."
+  Roles = ""
+  CountOfRoles = 0
+}
+
+object "James Okafor" as HumanAgents_2 {
   HumanAgentId = "james-okafor"
   Name = "James Okafor"
   Mbox = "james.okafor@specialsolutio..."
   Roles = ""
-  CountOfRles = 0
+  CountOfRoles = 0
+}
+
+object "Maria Gonzalez" as HumanAgents_3 {
+  HumanAgentId = "maria-gonzalez"
+  Name = "Maria Gonzalez"
+  Mbox = "maria.gonzalez@specialsolut..."
+  Roles = ""
+  CountOfRoles = 0
+}
+
+object "James Okafor" as HumanAgents_4 {
+  HumanAgentId = "james-okafor"
+  Name = "James Okafor"
+  Mbox = "james.okafor@specialsolutio..."
+  Roles = ""
+  CountOfRoles = 0
+}
+
+object "Maria Gonzalez" as HumanAgents_5 {
+  HumanAgentId = "maria-gonzalez"
+  Name = "Maria Gonzalez"
+  Mbox = "maria.gonzalez@specialsolut..."
+  Roles = ""
+  CountOfRoles = 0
+}
+
+object "James Okafor" as HumanAgents_6 {
+  HumanAgentId = "james-okafor"
+  Name = "James Okafor"
+  Mbox = "james.okafor@specialsolutio..."
+  Roles = ""
+  CountOfRoles = 0
+}
+
+object "Maria Gonzalez" as HumanAgents_7 {
+  HumanAgentId = "maria-gonzalez"
+  Name = "Maria Gonzalez"
+  Mbox = "maria.gonzalez@specialsolut..."
+  Roles = ""
+  CountOfRoles = 0
+}
+
+object "James Okafor" as HumanAgents_8 {
+  HumanAgentId = "james-okafor"
+  Name = "James Okafor"
+  Mbox = "james.okafor@specialsolutio..."
+  Roles = ""
+  CountOfRoles = 0
 }
 
 object "Roles_0" as Roles_0 {

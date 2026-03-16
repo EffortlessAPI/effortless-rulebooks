@@ -7,10 +7,10 @@ end note
 
 class HumanAgents {
   +HumanAgentId: String
-  +Name: String
-  +Mbox: String
-  +Roles: String
-  +CountOfRles: Integer
+  +Name: String -- Full name of the person. Maps to foaf:name per FOAF ontology.
+  +Mbox: String -- Email address of the person. Maps to foaf:mbox per FOAF ontology. Used for contact and identity resolution.
+  +Roles: String -- Roles filled by this agent. Inverse of FilledBy.
+  +CountOfRoles: Integer -- Count of roles currently filled by this agent.
   --
 }
 
@@ -20,13 +20,13 @@ end note
 
 class Roles {
   +RoleId: String
-  +Label: String
-  +Comment: String
-  +FilledBy: String
-  +WorkflowSteps: String
-  +CountOfWorkflowSteps: Integer
-  +FilledByName: String
-  +FilledByMBox: String
+  +Label: String -- Human-readable name for the role. Maps to rdfs:label.
+  +Comment: String -- Description of the role's responsibilities. Maps to rdfs:comment.
+  +FilledBy: String -- Agent currently filling this role. Maps to ntwf:filledBy. The change-management triple - update this when personnel change.
+  +WorkflowSteps: String -- Steps assigned to this role. Inverse of AssignedRole.
+  +CountOfWorkflowSteps: Integer -- Count of workflow steps assigned to this role.
+  +FilledByName: String -- Denormalized lookup of agent name (foaf:name) filling this role.
+  +FilledByMBox: String -- Denormalized lookup of agent email (foaf:mbox) filling this role.
   --
 }
 
@@ -36,17 +36,17 @@ end note
 
 class WorkflowSteps {
   +WorkflowStepId: String
-  +Label: String
-  +SequencePosition: Integer
-  +RequiresHumanApproval: Boolean
-  +IsStepOf: String
-  +AssignedRole: String
-  +IsStepOfTitle: String
-  +IsStepOfDescription: String
-  +IsStepOfIdentifier: String
-  +AssignedRoleLabel: String
-  +AssignedRoleComment: String
-  +AssignedRoleFilledBy: String
+  +Label: String -- Human-readable name for the step. Maps to rdfs:label.
+  +SequencePosition: Integer -- Ordinal position in workflow sequence. Maps to ntwf:sequencePosition (functional). Supports positional ordering queries.
+  +RequiresHumanApproval: Boolean -- Whether this step requires a human agent. Maps to ntwf:requiresHumanApproval. Answers NTWF CQ3.
+  +IsStepOf: String -- Parent workflow containing this step. Inverse of WorkflowSteps. Maps to ntwf:isStepOf.
+  +AssignedRole: String -- Role responsible for this step. Maps to ntwf:assignedRole (functional). Implements role-agent separation.
+  +IsStepOfTitle: String -- Denormalized lookup of parent workflow title.
+  +IsStepOfDescription: String -- Denormalized lookup of parent workflow description.
+  +IsStepOfIdentifier: String -- Denormalized lookup of parent workflow external identifier.
+  +AssignedRoleLabel: String -- Denormalized lookup of assigned role label.
+  +AssignedRoleComment: String -- Denormalized lookup of assigned role comment/description.
+  +AssignedRoleFilledBy: String -- Denormalized lookup of agent currently filling the assigned role.
   --
 }
 
@@ -56,13 +56,13 @@ end note
 
 class Workflows {
   +WorkflowId: String
-  +Title: String
-  +Description: String
-  +Created: String
-  +Modified: String
-  +Identifier: String
-  +WorkflowSteps: String
-  +CountOfWorkflowSteps: Integer
+  +Title: String -- Human-readable name for the workflow. Maps to dct:title per Dublin Core.
+  +Description: String -- Detailed description of the workflow purpose and scope. Maps to dct:description per Dublin Core.
+  +Created: String -- Date the workflow was created. Maps to dct:created per Dublin Core.
+  +Modified: String -- Date the workflow was last modified. Maps to dct:modified. Used to identify stale workflows per NTWF CQ5.
+  +Identifier: String -- External reference identifier (e.g., ticket number). Maps to dct:identifier. Join key to operational systems.
+  +WorkflowSteps: String -- Steps contained in this workflow. Inverse of IsStepOf. Maps to ntwf:hasStep.
+  +CountOfWorkflowSteps: Integer -- Count of steps in this workflow. Aggregation over IsStepOf relationship.
   --
 }
 

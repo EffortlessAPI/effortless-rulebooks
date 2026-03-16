@@ -215,11 +215,28 @@ python3 take-test.py
 
 | Metric | Value |
 |--------|-------|
-| Total Fields Tested | 0 |
-| Passed | 0 |
+| Total Fields Tested | 6 |
+| Passed | 6 |
 | Failed | 0 |
-| Score | 0.0% |
+| Score | 100.0% |
 | Duration | 2s |
+
+## Results by Entity
+
+### roles
+
+- Fields: 3/3 (100.0%)
+- Computed columns: count_of_workflow_steps
+
+### workflows
+
+- Fields: 1/1 (100.0%)
+- Computed columns: count_of_workflow_steps
+
+### human_agents
+
+- Fields: 2/2 (100.0%)
+- Computed columns: count_of_rles
 </pre>
         </div>
     </div>
@@ -234,11 +251,11 @@ postgres: Connecting to database and querying views...
 PostgreSQL Substrate: Starting test...
 PostgreSQL Substrate: Connected to database
 PostgreSQL Substrate: Found 4 views
-  -&gt; human_agents: 2 records
+  -&gt; human_agents: 1 records
   -&gt; roles: 3 records
   -&gt; workflow_steps: 3 records
   -&gt; workflows: 1 records
-PostgreSQL Substrate: Processed 4 views, 9 total records
+PostgreSQL Substrate: Processed 4 views, 8 total records
 
 </pre>
         </div>

@@ -7,7 +7,7 @@
 # === Shape with rules for HumanAgents ===
 erb:HumanAgentsShape a sh:NodeShape ;
     sh:targetClass erb:HumanAgents .
-# Rule for CountOfRles - parse error: Unexpected character '!' at position 14
+# Rule for CountOfRoles - parse error: Unexpected character '!' at position 14
 
 # === Shape with rules for Roles ===
 erb:RolesShape a sh:NodeShape ;
