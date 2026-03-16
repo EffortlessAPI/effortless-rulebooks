@@ -1,104 +1,107 @@
 [
   {
-    "role_id": "cto",
-    "name": "cto",
-    "display_name": "CTO",
-    "label": "CTO",
-    "comment": "Chief Technology Officer. Final authority in delegation chain for Release Approval Gate.",
-    "filled_by_human_agent": "chen-wei",
-    "filled_by_ai_agent": "",
-    "filled_by_automated_pipeline": "",
-    "owned_by": "engineering",
-    "delegates_to": "",
-    "workflow_steps": null,
-    "from_delegates_to": "vp-engineering",
-    "all_linked_workflow_steps": null,
-    "distinct_workflows_for_linked_steps": null,
-    "workflow_artifacts": ""
+    "role_id": "business-analyst",
+    "label": "Business Analyst",
+    "comment": "Gathers requirements and translates business needs into technical solutions.",
+    "filled_by": "emily-chen",
+    "workflow_steps": "revise-submission"
   },
   {
-    "role_id": "deployment-engineer",
-    "name": "deployment engineer",
-    "display_name": "Deployment Engineer",
-    "label": "Deployment Engineer",
-    "comment": "Role responsible for executing and monitoring production deployments.",
-    "filled_by_human_agent": "",
-    "filled_by_ai_agent": "",
-    "filled_by_automated_pipeline": "ci-pipeline",
-    "owned_by": "engineering",
-    "delegates_to": "",
-    "workflow_steps": "deployment-execution",
-    "from_delegates_to": "",
-    "all_linked_workflow_steps": "deployment-execution",
-    "distinct_workflows_for_linked_steps": "production-deployment",
-    "workflow_artifacts": ""
+    "role_id": "customer-support-specialist",
+    "label": "Customer Support Specialist",
+    "comment": "Assists users with issues and provides product support.",
+    "filled_by": "isaac-brown",
+    "workflow_steps": "generate-report"
   },
   {
-    "role_id": "legal-compliance-reviewer",
-    "name": "legal compliance reviewer",
-    "display_name": "Legal Compliance Reviewer",
-    "label": "Legal Compliance Reviewer",
-    "comment": "Role responsible for legal and compliance review of releases.",
-    "filled_by_human_agent": "",
-    "filled_by_ai_agent": "",
-    "filled_by_automated_pipeline": "",
-    "owned_by": "legal",
-    "delegates_to": "",
-    "workflow_steps": "legal-clearance",
-    "from_delegates_to": "",
-    "all_linked_workflow_steps": "legal-clearance",
-    "distinct_workflows_for_linked_steps": "production-deployment",
-    "workflow_artifacts": ""
+    "role_id": "data-scientist",
+    "label": "Data Scientist",
+    "comment": "Analyzes data to extract insights and support decision-making.",
+    "filled_by": "linda-park",
+    "workflow_steps": "schedule-follow-up"
   },
   {
-    "role_id": "release-manager",
-    "name": "release manager",
-    "display_name": "Release Manager",
-    "label": "Release Manager",
-    "comment": "Primary role responsible for coordinating production releases. First in delegation chain for Release Approval Gate.",
-    "filled_by_human_agent": "maria-gonzalez",
-    "filled_by_ai_agent": "",
-    "filled_by_automated_pipeline": "",
-    "owned_by": "engineering",
-    "delegates_to": "vp-engineering",
-    "workflow_steps": "post-deployment-review, release-approval-gate",
-    "from_delegates_to": "",
-    "all_linked_workflow_steps": "post-deployment-review, release-approval-gate",
-    "distinct_workflows_for_linked_steps": "production-deployment",
-    "workflow_artifacts": ""
+    "role_id": "devops-engineer",
+    "label": "DevOps Engineer",
+    "comment": "Manages deployment pipelines and infrastructure automation.",
+    "filled_by": "frank-miller",
+    "workflow_steps": "final-approval"
   },
   {
-    "role_id": "risk-analysis-agent",
-    "name": "risk analysis agent",
-    "display_name": "Risk Analysis Agent",
-    "label": "Risk Analysis Agent",
-    "comment": "Role assigned to AI systems performing automated risk assessment.",
-    "filled_by_human_agent": "",
-    "filled_by_ai_agent": "risk-analysis-ai",
-    "filled_by_automated_pipeline": "",
-    "owned_by": "engineering",
-    "delegates_to": "",
-    "workflow_steps": "risk-analysis",
-    "from_delegates_to": "",
-    "all_linked_workflow_steps": "risk-analysis",
-    "distinct_workflows_for_linked_steps": "production-deployment",
-    "workflow_artifacts": ""
+    "role_id": "finance-officer",
+    "label": "Finance Officer",
+    "comment": "Manages budgets, expenses, and financial reporting.",
+    "filled_by": "nina-rossi",
+    "workflow_steps": "escalate-issue"
   },
   {
-    "role_id": "vp-engineering",
-    "name": "vp engineering",
-    "display_name": "VP Engineering",
-    "label": "VP Engineering",
-    "comment": "Vice President of Engineering. Second in delegation chain for Release Approval Gate.",
-    "filled_by_human_agent": "james-okafor",
-    "filled_by_ai_agent": "",
-    "filled_by_automated_pipeline": "",
-    "owned_by": "engineering",
-    "delegates_to": "cto",
-    "workflow_steps": null,
-    "from_delegates_to": "release-manager",
-    "all_linked_workflow_steps": null,
-    "distinct_workflows_for_linked_steps": null,
-    "workflow_artifacts": ""
+    "role_id": "hr-manager",
+    "label": "HR Manager",
+    "comment": "Handles recruitment, onboarding, and employee relations.",
+    "filled_by": "julia-nguyen",
+    "workflow_steps": "quality-assurance-check"
+  },
+  {
+    "role_id": "marketing-specialist",
+    "label": "Marketing Specialist",
+    "comment": "Develops marketing strategies and manages campaigns.",
+    "filled_by": "kevin-o-brien",
+    "workflow_steps": "send-confirmation-email"
+  },
+  {
+    "role_id": "product-owner",
+    "label": "Product Owner",
+    "comment": "Defines product vision and prioritizes features for development.",
+    "filled_by": "grace-patel",
+    "workflow_steps": "notify-stakeholders"
+  },
+  {
+    "role_id": "project-manager",
+    "label": "Project Manager",
+    "comment": "Oversees project timelines, deliverables, and team coordination.",
+    "filled_by": "alice-johnson",
+    "workflow_steps": "submit-request"
+  },
+  {
+    "role_id": "quality-assurance-analyst",
+    "label": "Quality Assurance Analyst",
+    "comment": "Tests software to ensure quality and identify bugs.",
+    "filled_by": "carmen-diaz",
+    "workflow_steps": "assign-reviewer"
+  },
+  {
+    "role_id": "scrum-master",
+    "label": "Scrum Master",
+    "comment": "Facilitates agile ceremonies and removes team impediments.",
+    "filled_by": "oscar-gomez",
+    "workflow_steps": "audit-trail-review"
+  },
+  {
+    "role_id": "software-engineer",
+    "label": "Software Engineer",
+    "comment": "Develops and maintains software applications and systems.",
+    "filled_by": "brian-lee",
+    "workflow_steps": "initial-review"
+  },
+  {
+    "role_id": "system-administrator",
+    "label": "System Administrator",
+    "comment": "Maintains servers, networks, and IT infrastructure.",
+    "filled_by": "michael-evans",
+    "workflow_steps": "close-workflow"
+  },
+  {
+    "role_id": "technical-writer",
+    "label": "Technical Writer",
+    "comment": "Creates and maintains technical documentation and user guides.",
+    "filled_by": "hannah-smith",
+    "workflow_steps": "archive-documents"
+  },
+  {
+    "role_id": "ui-ux-designer",
+    "label": "UI/UX Designer",
+    "comment": "Designs user interfaces and ensures a positive user experience.",
+    "filled_by": "david-kim",
+    "workflow_steps": "reviewer-feedback"
   }
 ]

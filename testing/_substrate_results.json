@@ -2,9 +2,9 @@
   "binary": {
     "last_run": {
       "status": "success",
-      "duration_seconds": 0.3437941074371338,
+      "duration_seconds": 0.12769317626953125,
       "exit_code": 0,
-      "score": 100.0
+      "score": 0.0
     },
     "last_successful_run": {
       "duration_seconds": 0.3437941074371338,
@@ -20,9 +20,9 @@
   "csv": {
     "last_run": {
       "status": "success",
-      "duration_seconds": 0.3025498390197754,
+      "duration_seconds": 0.32648777961730957,
       "exit_code": 0,
-      "score": 100.0
+      "score": 0.0
     },
     "last_successful_run": {
       "duration_seconds": 0.3025498390197754,
@@ -38,9 +38,9 @@
   "english": {
     "last_run": {
       "status": "success",
-      "duration_seconds": 83.41303014755249,
+      "duration_seconds": 15.728963851928711,
       "exit_code": 0,
-      "score": 40.74074074074074
+      "score": 0.0
     },
     "last_successful_run": {
       "duration_seconds": 18.269374132156372,
@@ -56,9 +56,9 @@
   "explain-dag": {
     "last_run": {
       "status": "success",
-      "duration_seconds": 0.12197709083557129,
+      "duration_seconds": 0.12192201614379883,
       "exit_code": 0,
-      "score": 100.0
+      "score": 0.0
     },
     "last_successful_run": {
       "duration_seconds": 0.12197709083557129,
@@ -74,9 +74,9 @@
   "golang": {
     "last_run": {
       "status": "success",
-      "duration_seconds": 0.5517480373382568,
+      "duration_seconds": 0.05151987075805664,
       "exit_code": 0,
-      "score": 100.0
+      "score": 0.0
     },
     "last_successful_run": {
       "duration_seconds": 0.5517480373382568,
@@ -92,9 +92,9 @@
   "owl": {
     "last_run": {
       "status": "success",
-      "duration_seconds": 0.48273205757141113,
+      "duration_seconds": 0.23648691177368164,
       "exit_code": 0,
-      "score": 100.0
+      "score": 0.0
     },
     "last_successful_run": {
       "duration_seconds": 0.48273205757141113,
@@ -110,9 +110,9 @@
   "python": {
     "last_run": {
       "status": "success",
-      "duration_seconds": 0.11519598960876465,
+      "duration_seconds": 0.10518026351928711,
       "exit_code": 0,
-      "score": 100.0
+      "score": 0.0
     },
     "last_successful_run": {
       "duration_seconds": 0.11519598960876465,
@@ -128,9 +128,9 @@
   "uml": {
     "last_run": {
       "status": "success",
-      "duration_seconds": 0.12439107894897461,
+      "duration_seconds": 0.12159895896911621,
       "exit_code": 0,
-      "score": 100.0
+      "score": 0.0
     },
     "last_successful_run": {
       "duration_seconds": 0.12439107894897461,
@@ -146,9 +146,9 @@
   "xlsx": {
     "last_run": {
       "status": "success",
-      "duration_seconds": 0.47524213790893555,
+      "duration_seconds": 0.4168519973754883,
       "exit_code": 0,
-      "score": 100.0
+      "score": 0.0
     },
     "last_successful_run": {
       "duration_seconds": 0.47524213790893555,
@@ -164,9 +164,9 @@
   "yaml": {
     "last_run": {
       "status": "success",
-      "duration_seconds": 0.12911701202392578,
+      "duration_seconds": 0.13613104820251465,
       "exit_code": 0,
-      "score": 100.0
+      "score": 0.0
     },
     "last_successful_run": {
       "duration_seconds": 0.12911701202392578,
@@ -182,9 +182,9 @@
   "cobol": {
     "last_run": {
       "status": "success",
-      "duration_seconds": 0.34825706481933594,
+      "duration_seconds": 0.14119887351989746,
       "exit_code": 0,
-      "score": 33.33333333333333
+      "score": 0.0
     },
     "last_successful_run": {
       "duration_seconds": 0.38200807571411133,
@@ -200,9 +200,9 @@
   "postgres": {
     "last_run": {
       "status": "success",
-      "duration_seconds": 1.8024921417236328,
+      "duration_seconds": 1.6583011150360107,
       "exit_code": 0,
-      "score": 100.0
+      "score": 0.0
     },
     "last_successful_run": {
       "duration_seconds": 1.8024921417236328,

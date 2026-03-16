@@ -1,35 +1,92 @@
 [
   {
-    "human_agent_id": "chen-wei",
-    "name": "chen-wei",
-    "display_name": "Chen Wei",
-    "mbox": "mailto:chen.wei@specialsolutions.example",
-    "roles": "cto",
-    "all_linked_roles": "cto",
-    "all_related_workflow_steps": "",
-    "all_distinct_workflows_for_linked_roles": "",
-    "workflow_artifacts": ""
+    "human_agent_id": "alice-johnson",
+    "name": "Alice Johnson",
+    "mbox": "alice.johnson@example.com",
+    "roles": "project-manager"
   },
   {
-    "human_agent_id": "james-okafor",
-    "name": "james-okafor",
-    "display_name": "James Okafor",
-    "mbox": "mailto:james.okafor@specialsolutions.example",
-    "roles": "vp-engineering",
-    "all_linked_roles": "vp engineering",
-    "all_related_workflow_steps": "",
-    "all_distinct_workflows_for_linked_roles": "",
-    "workflow_artifacts": ""
+    "human_agent_id": "brian-lee",
+    "name": "Brian Lee",
+    "mbox": "brian.lee@example.com",
+    "roles": "software-engineer"
   },
   {
-    "human_agent_id": "maria-gonzalez",
-    "name": "maria-gonzalez",
-    "display_name": "Maria Gonzalez",
-    "mbox": "mailto:maria.gonzalez@specialsolutions.example",
-    "roles": "release-manager",
-    "all_linked_roles": "release manager",
-    "all_related_workflow_steps": "release-approval-gate, post-deployment-review",
-    "all_distinct_workflows_for_linked_roles": "production-deployment, production-deployment",
-    "workflow_artifacts": ""
+    "human_agent_id": "carmen-diaz",
+    "name": "Carmen Diaz",
+    "mbox": "carmen.diaz@example.com",
+    "roles": "quality-assurance-analyst"
+  },
+  {
+    "human_agent_id": "david-kim",
+    "name": "David Kim",
+    "mbox": "david.kim@example.com",
+    "roles": "ui-ux-designer"
+  },
+  {
+    "human_agent_id": "emily-chen",
+    "name": "Emily Chen",
+    "mbox": "emily.chen@example.com",
+    "roles": "business-analyst"
+  },
+  {
+    "human_agent_id": "frank-miller",
+    "name": "Frank Miller",
+    "mbox": "frank.miller@example.com",
+    "roles": "devops-engineer"
+  },
+  {
+    "human_agent_id": "grace-patel",
+    "name": "Grace Patel",
+    "mbox": "grace.patel@example.com",
+    "roles": "product-owner"
+  },
+  {
+    "human_agent_id": "hannah-smith",
+    "name": "Hannah Smith",
+    "mbox": "hannah.smith@example.com",
+    "roles": "technical-writer"
+  },
+  {
+    "human_agent_id": "isaac-brown",
+    "name": "Isaac Brown",
+    "mbox": "isaac.brown@example.com",
+    "roles": "customer-support-specialist"
+  },
+  {
+    "human_agent_id": "julia-nguyen",
+    "name": "Julia Nguyen",
+    "mbox": "julia.nguyen@example.com",
+    "roles": "hr-manager"
+  },
+  {
+    "human_agent_id": "kevin-o-brien",
+    "name": "Kevin O'Brien",
+    "mbox": "kevin.obrien@example.com",
+    "roles": "marketing-specialist"
+  },
+  {
+    "human_agent_id": "linda-park",
+    "name": "Linda Park",
+    "mbox": "linda.park@example.com",
+    "roles": "data-scientist"
+  },
+  {
+    "human_agent_id": "michael-evans",
+    "name": "Michael Evans",
+    "mbox": "michael.evans@example.com",
+    "roles": "system-administrator"
+  },
+  {
+    "human_agent_id": "nina-rossi",
+    "name": "Nina Rossi",
+    "mbox": "nina.rossi@example.com",
+    "roles": "finance-officer"
+  },
+  {
+    "human_agent_id": "oscar-gomez",
+    "name": "Oscar Gomez",
+    "mbox": "oscar.gomez@example.com",
+    "roles": "scrum-master"
   }
 ]

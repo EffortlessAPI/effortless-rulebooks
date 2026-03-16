@@ -3,482 +3,460 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix erb: <http://example.org/erb#> .
 
-# === Individuals: AIAgents ===
-
-erb:AIAgents_0 a erb:AIAgents ;
-    erb:aIAgentId "risk-analysis-ai" ;
-    erb:name "risk-analysis-ai" ;
-    erb:title "AI agent that processes Q1 2026 Risk Metrics dataset for automated risk assessment." ;
-    erb:displayName "RiskAnalysis-AI" ;
-    erb:modelVersion "risk-classifier-v2.4.1" ;
-    erb:roles "risk-analysis-agent" ;
-    erb:workflowArtifacts "" .
-
-# === Individuals: Approvals ===
-
-erb:Approvals_0 a erb:Approvals ;
-    erb:approvalId "release-approval-gate" ;
-    erb:displayName "Release Approval Gate" ;
-    erb:workflowSteps "release-approval-gate" ;
-    erb:escalationThresholdHours 24 ;
-    erb:workflow_from_WorkflowSteps "production-deployment" ;
-    erb:assigned_Role_from_WorkflowSteps "release-manager" ;
-    erb:sequence_Position_from_WorkflowSteps 3 ;
-    erb:requires_Human_Approval_from_WorkflowSteps true .
-
-# === Individuals: AutomatedPipelines ===
-
-erb:AutomatedPipelines_0 a erb:AutomatedPipelines ;
-    erb:automatedPipelineId "ci-pipeline" ;
-    erb:name "ci-pipeline" ;
-    erb:description "Continuous Integration pipeline that executes production deployments." ;
-    erb:displayName "CI Pipeline" ;
-    erb:roles "deployment-engineer" ;
-    erb:workflowArtifacts "" .
-
-# === Individuals: Departments ===
-
-erb:Departments_0 a erb:Departments ;
-    erb:departmentId "engineering" ;
-    erb:title "Engineering department responsible for software development and deployment." ;
-    erb:displayName "Engineering" ;
-    erb:roles "release-manager, vp-engineering, cto, risk-analysis-agent, deployment-engineer" ;
-    erb:all_Owned_Roles "Release Manager, VP Engineering, CTO, Risk Analysis Agent, Deployment Engineer" ;
-    erb:all_Related_Workflow_Steps "release-approval-gate, post-deployment-review, risk-analysis, deployment-execution" ;
-    erb:all_Distinct_Workflows_for_Owned_Roles "production-deployment, production-deployment, production-deployment, production-deployment" .
-
-erb:Departments_1 a erb:Departments ;
-    erb:departmentId "legal" ;
-    erb:title "Legal department responsible for compliance review." ;
-    erb:displayName "Legal" ;
-    erb:roles "legal-compliance-reviewer" ;
-    erb:all_Owned_Roles "Legal Compliance Reviewer" ;
-    erb:all_Related_Workflow_Steps "legal-clearance" ;
-    erb:all_Distinct_Workflows_for_Owned_Roles "production-deployment" .
-
-# === Individuals: ERBCustomizations ===
-
-erb:ERBCustomizations_0 a erb:ERBCustomizations ;
-    erb:eRBCustomizationId "03a-customize-schema-sql" ;
-    erb:name "03a-customize-schema.sql" ;
-    erb:title "Customize Schema" ;
-    erb:sQLCode """-- ============================================================================
--- CUSTOMIZE SCHEMA - User-defined tables and schema modifications
--- ============================================================================
--- This file is for YOUR custom schema changes that should persist across
--- regeneration of the base ERB files.
---
--- USE THIS FILE FOR:
---   - Additional tables not defined in the rulebook
---   - Extra columns on existing tables (ALTER TABLE)
---   - Custom indexes for performance tuning
---   - Custom constraints or triggers
---
--- IMPORTANT:
---   - This file runs AFTER 01-drop-and-create-tables.sql
---   - The base tables already exist when this runs
---   - This file will NOT be overwritten by ERB regeneration
---
--- ============================================================================
-
--- Your custom schema changes go here:
-""" ;
-    erb:sQLTarget "Postgres" ;
-    erb:customizationType "Schema" .
-
-erb:ERBCustomizations_1 a erb:ERBCustomizations ;
-    erb:eRBCustomizationId "03b-customize-functions-sql" ;
-    erb:name "03b-customize-functions.sql" ;
-    erb:title "Customize Functions" ;
-    erb:sQLCode """-- ============================================================================
--- CUSTOMIZE FUNCTIONS - User-defined calculation functions
--- ============================================================================
--- This file is for YOUR custom PostgreSQL functions that should persist
--- across regeneration of the base ERB files.
---
--- IMPORTANT:
---   - This file runs AFTER 02-create-functions.sql
---   - Base ERB calc functions already exist when this runs
---   - This file will NOT be overwritten by ERB regeneration
---
--- ============================================================================
-
--- Your custom functions go here:
-CREATE OR REPLACE FUNCTION public.calc_roles_all_linked_workflow_steps(p_role_id text)
- RETURNS text
- LANGUAGE plpgsql
- STABLE SECURITY DEFINER
-AS $function$
-BEGIN
-  RETURN (SELECT string_agg(DISTINCT calc_workflow_steps_name(workflow_step_id)::text, ', ') FROM workflow_steps WHERE assigned_role = p_role_id);
-END;
-$function$;
-
-CREATE OR REPLACE FUNCTION public.calc_departments_all_related_workflow_steps(p_department_id text)
- RETURNS text
- LANGUAGE plpgsql
- STABLE SECURITY DEFINER
-AS $function$
-BEGIN
-  RETURN (SELECT string_agg(DISTINCT calc_roles_all_linked_workflow_steps(role_id)::text, ', ') FROM roles WHERE owned_by = p_department_id);
-END;
-$function$;
-
-CREATE OR REPLACE FUNCTION public.calc_departments_all_distinct_workflows_for_owned_roles(p_department_id text)
- RETURNS text
- LANGUAGE plpgsql
- STABLE SECURITY DEFINER
-AS $function$
-BEGIN
-  RETURN (SELECT string_agg(DISTINCT calc_roles_distinct_workflows_for_linked_steps(role_id)::text, ', ') FROM roles WHERE owned_by = p_department_id);
-END;
-$function$;
-
-""" ;
-    erb:sQLTarget "Postgres" ;
-    erb:customizationType "Functions" .
-
-erb:ERBCustomizations_2 a erb:ERBCustomizations ;
-    erb:eRBCustomizationId "03c-customize-views-sql" ;
-    erb:name "03c-customize-views.sql" ;
-    erb:title "Customize Views" ;
-    erb:sQLCode """-- ============================================================================
--- CUSTOMIZE VIEWS - User-defined views and view extensions
--- ============================================================================
--- This file is for YOUR custom views that should persist across
--- regeneration of the base ERB files.
---
--- IMPORTANT:
---   - This file runs AFTER 03-create-views.sql
---   - All base vw_* views already exist when this runs
---   - This file will NOT be overwritten by ERB regeneration
---
--- ============================================================================
-
--- Your custom views go here:
-""" ;
-    erb:sQLTarget "Postgres" ;
-    erb:customizationType "Views" .
-
-erb:ERBCustomizations_3 a erb:ERBCustomizations ;
-    erb:eRBCustomizationId "03d-customize-rls-sql" ;
-    erb:name "03d-customize-rls.sql" ;
-    erb:title "Customize Policies (RLS)" ;
-    erb:sQLCode """-- ============================================================================
--- CUSTOMIZE POLICIES - User-defined Row Level Security policies
--- ============================================================================
--- This file is for YOUR custom RLS policies that should persist across
--- regeneration of the base ERB files.
---
--- IMPORTANT:
---   - This file runs AFTER 04-create-policies.sql
---   - Base RLS policies already exist when this runs
---   - This file will NOT be overwritten by ERB regeneration
---
--- ============================================================================
-
--- Your custom policies go here:
-""" ;
-    erb:sQLTarget "Postgres" ;
-    erb:customizationType "RLS" .
-
-erb:ERBCustomizations_4 a erb:ERBCustomizations ;
-    erb:eRBCustomizationId "03e-customize-data-sql" ;
-    erb:name "03e-customize-data.sql" ;
-    erb:title "Customize Data (Seeds / Migrations)" ;
-    erb:sQLCode """-- ============================================================================
--- CUSTOMIZE DATA - User-defined seed data and data migrations
--- ============================================================================
--- This file is for YOUR custom seed data that should persist across
--- regeneration of the base ERB files.
---
--- IMPORTANT:
---   - This file runs AFTER 05-insert-data.sql
---   - Base seed data already exists when this runs
---   - This file will NOT be overwritten by ERB regeneration
---
--- ============================================================================
-
--- Your custom data inserts go here:
-""" ;
-    erb:sQLTarget "Postgres" ;
-    erb:customizationType "Data" .
-
 # === Individuals: HumanAgents ===
 
 erb:HumanAgents_0 a erb:HumanAgents ;
-    erb:humanAgentId "maria-gonzalez" ;
-    erb:name "maria-gonzalez" ;
-    erb:displayName "Maria Gonzalez" ;
-    erb:mbox "mailto:maria.gonzalez@specialsolutions.example" ;
-    erb:roles "release-manager" ;
-    erb:all_Linked_Roles "release manager" ;
-    erb:all_Related_Workflow_Steps "release-approval-gate, post-deployment-review" ;
-    erb:all_Distinct_Workflows_for_Linked_Roles "production-deployment, production-deployment" ;
-    erb:workflowArtifacts "" .
+    erb:humanAgentId "alice-johnson" ;
+    erb:name "Alice Johnson" ;
+    erb:mbox "alice.johnson@example.com" ;
+    erb:roles "project-manager" .
 
 erb:HumanAgents_1 a erb:HumanAgents ;
-    erb:humanAgentId "james-okafor" ;
-    erb:name "james-okafor" ;
-    erb:displayName "James Okafor" ;
-    erb:mbox "mailto:james.okafor@specialsolutions.example" ;
-    erb:roles "vp-engineering" ;
-    erb:all_Linked_Roles "vp engineering" ;
-    erb:all_Related_Workflow_Steps "" ;
-    erb:all_Distinct_Workflows_for_Linked_Roles "" ;
-    erb:workflowArtifacts "" .
+    erb:humanAgentId "brian-lee" ;
+    erb:name "Brian Lee" ;
+    erb:mbox "brian.lee@example.com" ;
+    erb:roles "software-engineer" .
 
 erb:HumanAgents_2 a erb:HumanAgents ;
-    erb:humanAgentId "chen-wei" ;
-    erb:name "chen-wei" ;
-    erb:displayName "Chen Wei" ;
-    erb:mbox "mailto:chen.wei@specialsolutions.example" ;
-    erb:roles "cto" ;
-    erb:all_Linked_Roles "cto" ;
-    erb:all_Related_Workflow_Steps "" ;
-    erb:all_Distinct_Workflows_for_Linked_Roles "" ;
-    erb:workflowArtifacts "" .
+    erb:humanAgentId "carmen-diaz" ;
+    erb:name "Carmen Diaz" ;
+    erb:mbox "carmen.diaz@example.com" ;
+    erb:roles "quality-assurance-analyst" .
 
-# === Individuals: PrecedesSteps ===
+erb:HumanAgents_3 a erb:HumanAgents ;
+    erb:humanAgentId "david-kim" ;
+    erb:name "David Kim" ;
+    erb:mbox "david.kim@example.com" ;
+    erb:roles "ui-ux-designer" .
 
-erb:PrecedesSteps_0 a erb:PrecedesSteps ;
-    erb:precedesStepId "step-1" ;
-    erb:name "step-1" ;
-    erb:stepNumber 32 ;
-    erb:workflowStep "legal-clearance" .
+erb:HumanAgents_4 a erb:HumanAgents ;
+    erb:humanAgentId "emily-chen" ;
+    erb:name "Emily Chen" ;
+    erb:mbox "emily.chen@example.com" ;
+    erb:roles "business-analyst" .
 
-erb:PrecedesSteps_1 a erb:PrecedesSteps ;
-    erb:precedesStepId "step-2" ;
-    erb:name "step-2" ;
-    erb:stepNumber 33 ;
-    erb:workflowStep "release-approval-gate" .
+erb:HumanAgents_5 a erb:HumanAgents ;
+    erb:humanAgentId "frank-miller" ;
+    erb:name "Frank Miller" ;
+    erb:mbox "frank.miller@example.com" ;
+    erb:roles "devops-engineer" .
 
-erb:PrecedesSteps_2 a erb:PrecedesSteps ;
-    erb:precedesStepId "step-3" ;
-    erb:name "step-3" ;
-    erb:stepNumber 34 ;
-    erb:workflowStep "deployment-execution" .
+erb:HumanAgents_6 a erb:HumanAgents ;
+    erb:humanAgentId "grace-patel" ;
+    erb:name "Grace Patel" ;
+    erb:mbox "grace.patel@example.com" ;
+    erb:roles "product-owner" .
 
-erb:PrecedesSteps_3 a erb:PrecedesSteps ;
-    erb:precedesStepId "step-4" ;
-    erb:name "step-4" ;
-    erb:stepNumber 35 ;
-    erb:workflowStep "post-deployment-review" .
+erb:HumanAgents_7 a erb:HumanAgents ;
+    erb:humanAgentId "hannah-smith" ;
+    erb:name "Hannah Smith" ;
+    erb:mbox "hannah.smith@example.com" ;
+    erb:roles "technical-writer" .
 
-erb:PrecedesSteps_4 a erb:PrecedesSteps ;
-    erb:precedesStepId "step-5" ;
-    erb:name "step-5" ;
-    erb:stepNumber 36 ;
-    erb:workflowStep "" .
+erb:HumanAgents_8 a erb:HumanAgents ;
+    erb:humanAgentId "isaac-brown" ;
+    erb:name "Isaac Brown" ;
+    erb:mbox "isaac.brown@example.com" ;
+    erb:roles "customer-support-specialist" .
+
+erb:HumanAgents_9 a erb:HumanAgents ;
+    erb:humanAgentId "julia-nguyen" ;
+    erb:name "Julia Nguyen" ;
+    erb:mbox "julia.nguyen@example.com" ;
+    erb:roles "hr-manager" .
+
+erb:HumanAgents_10 a erb:HumanAgents ;
+    erb:humanAgentId "kevin-o-brien" ;
+    erb:name "Kevin O'Brien" ;
+    erb:mbox "kevin.obrien@example.com" ;
+    erb:roles "marketing-specialist" .
+
+erb:HumanAgents_11 a erb:HumanAgents ;
+    erb:humanAgentId "linda-park" ;
+    erb:name "Linda Park" ;
+    erb:mbox "linda.park@example.com" ;
+    erb:roles "data-scientist" .
+
+erb:HumanAgents_12 a erb:HumanAgents ;
+    erb:humanAgentId "michael-evans" ;
+    erb:name "Michael Evans" ;
+    erb:mbox "michael.evans@example.com" ;
+    erb:roles "system-administrator" .
+
+erb:HumanAgents_13 a erb:HumanAgents ;
+    erb:humanAgentId "nina-rossi" ;
+    erb:name "Nina Rossi" ;
+    erb:mbox "nina.rossi@example.com" ;
+    erb:roles "finance-officer" .
+
+erb:HumanAgents_14 a erb:HumanAgents ;
+    erb:humanAgentId "oscar-gomez" ;
+    erb:name "Oscar Gomez" ;
+    erb:mbox "oscar.gomez@example.com" ;
+    erb:roles "scrum-master" .
 
 # === Individuals: Roles ===
 
 erb:Roles_0 a erb:Roles ;
-    erb:roleId "release-manager" ;
-    erb:displayName "Release Manager" ;
-    erb:label "Release Manager" ;
-    erb:comment "Primary role responsible for coordinating production releases. First in delegation chain for Release Approval Gate." ;
-    erb:filledByHumanAgent "maria-gonzalez" ;
-    erb:filledByAIAgent "" ;
-    erb:filledByAutomatedPipeline "" ;
-    erb:ownedBy "engineering" ;
-    erb:delegatesTo "vp-engineering" ;
-    erb:workflowSteps "release-approval-gate, post-deployment-review" ;
-    erb:fromDelegatesTo "" ;
-    erb:all_Linked_Workflow_Steps "release-approval-gate, post-deployment-review" ;
-    erb:distinct_Workflows_for_Linked_Steps "production-deployment, production-deployment" ;
-    erb:workflowArtifacts "" .
+    erb:roleId "project-manager" ;
+    erb:label "Project Manager" ;
+    erb:comment "Oversees project timelines, deliverables, and team coordination." ;
+    erb:filledBy "alice-johnson" ;
+    erb:workflowSteps "submit-request" .
 
 erb:Roles_1 a erb:Roles ;
-    erb:roleId "vp-engineering" ;
-    erb:displayName "VP Engineering" ;
-    erb:label "VP Engineering" ;
-    erb:comment "Vice President of Engineering. Second in delegation chain for Release Approval Gate." ;
-    erb:filledByHumanAgent "james-okafor" ;
-    erb:filledByAIAgent "" ;
-    erb:filledByAutomatedPipeline "" ;
-    erb:ownedBy "engineering" ;
-    erb:delegatesTo "cto" ;
-    erb:workflowSteps "" ;
-    erb:fromDelegatesTo "release-manager" ;
-    erb:all_Linked_Workflow_Steps "" ;
-    erb:distinct_Workflows_for_Linked_Steps "" ;
-    erb:workflowArtifacts "" .
+    erb:roleId "software-engineer" ;
+    erb:label "Software Engineer" ;
+    erb:comment "Develops and maintains software applications and systems." ;
+    erb:filledBy "brian-lee" ;
+    erb:workflowSteps "initial-review" .
 
 erb:Roles_2 a erb:Roles ;
-    erb:roleId "cto" ;
-    erb:displayName "CTO" ;
-    erb:label "CTO" ;
-    erb:comment "Chief Technology Officer. Final authority in delegation chain for Release Approval Gate." ;
-    erb:filledByHumanAgent "chen-wei" ;
-    erb:filledByAIAgent "" ;
-    erb:filledByAutomatedPipeline "" ;
-    erb:ownedBy "engineering" ;
-    erb:delegatesTo "" ;
-    erb:workflowSteps "" ;
-    erb:fromDelegatesTo "vp-engineering" ;
-    erb:all_Linked_Workflow_Steps "" ;
-    erb:distinct_Workflows_for_Linked_Steps "" ;
-    erb:workflowArtifacts "" .
+    erb:roleId "quality-assurance-analyst" ;
+    erb:label "Quality Assurance Analyst" ;
+    erb:comment "Tests software to ensure quality and identify bugs." ;
+    erb:filledBy "carmen-diaz" ;
+    erb:workflowSteps "assign-reviewer" .
 
 erb:Roles_3 a erb:Roles ;
-    erb:roleId "legal-compliance-reviewer" ;
-    erb:displayName "Legal Compliance Reviewer" ;
-    erb:label "Legal Compliance Reviewer" ;
-    erb:comment "Role responsible for legal and compliance review of releases." ;
-    erb:filledByHumanAgent "" ;
-    erb:filledByAIAgent "" ;
-    erb:filledByAutomatedPipeline "" ;
-    erb:ownedBy "legal" ;
-    erb:delegatesTo "" ;
-    erb:workflowSteps "legal-clearance" ;
-    erb:fromDelegatesTo "" ;
-    erb:all_Linked_Workflow_Steps "legal-clearance" ;
-    erb:distinct_Workflows_for_Linked_Steps "production-deployment" ;
-    erb:workflowArtifacts "" .
+    erb:roleId "ui-ux-designer" ;
+    erb:label "UI/UX Designer" ;
+    erb:comment "Designs user interfaces and ensures a positive user experience." ;
+    erb:filledBy "david-kim" ;
+    erb:workflowSteps "reviewer-feedback" .
 
 erb:Roles_4 a erb:Roles ;
-    erb:roleId "risk-analysis-agent" ;
-    erb:displayName "Risk Analysis Agent" ;
-    erb:label "Risk Analysis Agent" ;
-    erb:comment "Role assigned to AI systems performing automated risk assessment." ;
-    erb:filledByHumanAgent "" ;
-    erb:filledByAIAgent "risk-analysis-ai" ;
-    erb:filledByAutomatedPipeline "" ;
-    erb:ownedBy "engineering" ;
-    erb:delegatesTo "" ;
-    erb:workflowSteps "risk-analysis" ;
-    erb:fromDelegatesTo "" ;
-    erb:all_Linked_Workflow_Steps "risk-analysis" ;
-    erb:distinct_Workflows_for_Linked_Steps "production-deployment" ;
-    erb:workflowArtifacts "" .
+    erb:roleId "business-analyst" ;
+    erb:label "Business Analyst" ;
+    erb:comment "Gathers requirements and translates business needs into technical solutions." ;
+    erb:filledBy "emily-chen" ;
+    erb:workflowSteps "revise-submission" .
 
 erb:Roles_5 a erb:Roles ;
-    erb:roleId "deployment-engineer" ;
-    erb:displayName "Deployment Engineer" ;
-    erb:label "Deployment Engineer" ;
-    erb:comment "Role responsible for executing and monitoring production deployments." ;
-    erb:filledByHumanAgent "" ;
-    erb:filledByAIAgent "" ;
-    erb:filledByAutomatedPipeline "ci-pipeline" ;
-    erb:ownedBy "engineering" ;
-    erb:delegatesTo "" ;
-    erb:workflowSteps "deployment-execution" ;
-    erb:fromDelegatesTo "" ;
-    erb:all_Linked_Workflow_Steps "deployment-execution" ;
-    erb:distinct_Workflows_for_Linked_Steps "production-deployment" ;
-    erb:workflowArtifacts "" .
+    erb:roleId "devops-engineer" ;
+    erb:label "DevOps Engineer" ;
+    erb:comment "Manages deployment pipelines and infrastructure automation." ;
+    erb:filledBy "frank-miller" ;
+    erb:workflowSteps "final-approval" .
 
-# === Individuals: StepTransitions ===
+erb:Roles_6 a erb:Roles ;
+    erb:roleId "product-owner" ;
+    erb:label "Product Owner" ;
+    erb:comment "Defines product vision and prioritizes features for development." ;
+    erb:filledBy "grace-patel" ;
+    erb:workflowSteps "notify-stakeholders" .
 
-erb:StepTransitions_0 a erb:StepTransitions ;
-    erb:stepTransitionId "recyFLWI1GTneB21x" ;
-    erb:name "" ;
-    erb:from_Step "" ;
-    erb:to_Step "" ;
-    erb:workflow_from_From_Step "" .
+erb:Roles_7 a erb:Roles ;
+    erb:roleId "technical-writer" ;
+    erb:label "Technical Writer" ;
+    erb:comment "Creates and maintains technical documentation and user guides." ;
+    erb:filledBy "hannah-smith" ;
+    erb:workflowSteps "archive-documents" .
 
-# === Individuals: WorkflowArtifacts ===
+erb:Roles_8 a erb:Roles ;
+    erb:roleId "customer-support-specialist" ;
+    erb:label "Customer Support Specialist" ;
+    erb:comment "Assists users with issues and provides product support." ;
+    erb:filledBy "isaac-brown" ;
+    erb:workflowSteps "generate-report" .
 
-erb:WorkflowArtifacts_0 a erb:WorkflowArtifacts ;
-    erb:workflowArtifactId "reciCzrsZeMEg90oc" ;
-    erb:artifact_Name "" ;
-    erb:produced_By_Step "" ;
-    erb:workflow_from_Produced_By_Step "" ;
-    erb:attributed_Role "" ;
-    erb:attributed_Human_Agent "" ;
-    erb:attributed_AI_Agent "" ;
-    erb:attributed_Pipeline "" ;
-    erb:derived_From_Artifact "" ;
-    erb:artifact_Description "" ;
-    erb:artifact_File "" ;
-    erb:from_field_Derived_From_Artifact "" .
+erb:Roles_9 a erb:Roles ;
+    erb:roleId "hr-manager" ;
+    erb:label "HR Manager" ;
+    erb:comment "Handles recruitment, onboarding, and employee relations." ;
+    erb:filledBy "julia-nguyen" ;
+    erb:workflowSteps "quality-assurance-check" .
+
+erb:Roles_10 a erb:Roles ;
+    erb:roleId "marketing-specialist" ;
+    erb:label "Marketing Specialist" ;
+    erb:comment "Develops marketing strategies and manages campaigns." ;
+    erb:filledBy "kevin-o-brien" ;
+    erb:workflowSteps "send-confirmation-email" .
+
+erb:Roles_11 a erb:Roles ;
+    erb:roleId "data-scientist" ;
+    erb:label "Data Scientist" ;
+    erb:comment "Analyzes data to extract insights and support decision-making." ;
+    erb:filledBy "linda-park" ;
+    erb:workflowSteps "schedule-follow-up" .
+
+erb:Roles_12 a erb:Roles ;
+    erb:roleId "system-administrator" ;
+    erb:label "System Administrator" ;
+    erb:comment "Maintains servers, networks, and IT infrastructure." ;
+    erb:filledBy "michael-evans" ;
+    erb:workflowSteps "close-workflow" .
+
+erb:Roles_13 a erb:Roles ;
+    erb:roleId "finance-officer" ;
+    erb:label "Finance Officer" ;
+    erb:comment "Manages budgets, expenses, and financial reporting." ;
+    erb:filledBy "nina-rossi" ;
+    erb:workflowSteps "escalate-issue" .
+
+erb:Roles_14 a erb:Roles ;
+    erb:roleId "scrum-master" ;
+    erb:label "Scrum Master" ;
+    erb:comment "Facilitates agile ceremonies and removes team impediments." ;
+    erb:filledBy "oscar-gomez" ;
+    erb:workflowSteps "audit-trail-review" .
 
 # === Individuals: WorkflowSteps ===
 
 erb:WorkflowSteps_0 a erb:WorkflowSteps ;
-    erb:workflowStepId "risk-analysis" ;
-    erb:displayName "Risk Analysis" ;
-    erb:workflow "production-deployment" ;
+    erb:workflowStepId "submit-request" ;
+    erb:label "Submit Request" ;
     erb:sequencePosition 1 ;
-    erb:assignedRole "risk-analysis-agent" ;
-    erb:requiresHumanApproval false ;
-    erb:approvalGate "" ;
-    erb:precededBySteps "" ;
-    erb:assignedRoleDepartment "engineering" ;
-    erb:approvalGateEscalationThresholdHours 0 ;
-    erb:stepTransitions_From_Step "" ;
-    erb:stepTransitions_To_Step "" ;
-    erb:workflowArtifacts "" .
+    erb:requiresHumanApproval true ;
+    erb:isStepOf "onboarding-new-employees" ;
+    erb:assignedRole "project-manager" .
 
 erb:WorkflowSteps_1 a erb:WorkflowSteps ;
-    erb:workflowStepId "legal-clearance" ;
-    erb:displayName "Legal Clearance" ;
-    erb:workflow "production-deployment" ;
+    erb:workflowStepId "initial-review" ;
+    erb:label "Initial Review" ;
     erb:sequencePosition 2 ;
-    erb:assignedRole "legal-compliance-reviewer" ;
     erb:requiresHumanApproval true ;
-    erb:approvalGate "" ;
-    erb:precededBySteps "step-1" ;
-    erb:assignedRoleDepartment "legal" ;
-    erb:approvalGateEscalationThresholdHours 0 ;
-    erb:stepTransitions_From_Step "" ;
-    erb:stepTransitions_To_Step "" ;
-    erb:workflowArtifacts "" .
+    erb:isStepOf "weekly-sales-report" ;
+    erb:assignedRole "software-engineer" .
 
 erb:WorkflowSteps_2 a erb:WorkflowSteps ;
-    erb:workflowStepId "release-approval-gate" ;
-    erb:displayName "Release Approval Gate" ;
-    erb:workflow "production-deployment" ;
+    erb:workflowStepId "assign-reviewer" ;
+    erb:label "Assign Reviewer" ;
     erb:sequencePosition 3 ;
-    erb:assignedRole "release-manager" ;
-    erb:requiresHumanApproval true ;
-    erb:approvalGate "release-approval-gate" ;
-    erb:precededBySteps "step-2" ;
-    erb:assignedRoleDepartment "engineering" ;
-    erb:approvalGateEscalationThresholdHours 24 ;
-    erb:stepTransitions_From_Step "" ;
-    erb:stepTransitions_To_Step "" ;
-    erb:workflowArtifacts "" .
+    erb:requiresHumanApproval false ;
+    erb:isStepOf "customer-feedback-collection" ;
+    erb:assignedRole "quality-assurance-analyst" .
 
 erb:WorkflowSteps_3 a erb:WorkflowSteps ;
-    erb:workflowStepId "deployment-execution" ;
-    erb:displayName "Deployment Execution" ;
-    erb:workflow "production-deployment" ;
+    erb:workflowStepId "reviewer-feedback" ;
+    erb:label "Reviewer Feedback" ;
     erb:sequencePosition 4 ;
-    erb:assignedRole "deployment-engineer" ;
-    erb:requiresHumanApproval false ;
-    erb:approvalGate "" ;
-    erb:precededBySteps "step-3" ;
-    erb:assignedRoleDepartment "engineering" ;
-    erb:approvalGateEscalationThresholdHours 0 ;
-    erb:stepTransitions_From_Step "" ;
-    erb:stepTransitions_To_Step "" ;
-    erb:workflowArtifacts "" .
+    erb:requiresHumanApproval true ;
+    erb:isStepOf "invoice-approval" ;
+    erb:assignedRole "ui-ux-designer" .
 
 erb:WorkflowSteps_4 a erb:WorkflowSteps ;
-    erb:workflowStepId "post-deployment-review" ;
-    erb:displayName "Post-Deployment Review" ;
-    erb:workflow "production-deployment" ;
+    erb:workflowStepId "revise-submission" ;
+    erb:label "Revise Submission" ;
     erb:sequencePosition 5 ;
-    erb:assignedRole "release-manager" ;
+    erb:requiresHumanApproval false ;
+    erb:isStepOf "it-support-ticketing" ;
+    erb:assignedRole "business-analyst" .
+
+erb:WorkflowSteps_5 a erb:WorkflowSteps ;
+    erb:workflowStepId "final-approval" ;
+    erb:label "Final Approval" ;
+    erb:sequencePosition 6 ;
     erb:requiresHumanApproval true ;
-    erb:approvalGate "" ;
-    erb:precededBySteps "step-4" ;
-    erb:assignedRoleDepartment "engineering" ;
-    erb:approvalGateEscalationThresholdHours 0 ;
-    erb:stepTransitions_From_Step "" ;
-    erb:stepTransitions_To_Step "" ;
-    erb:workflowArtifacts "" .
+    erb:isStepOf "content-publishing" ;
+    erb:assignedRole "devops-engineer" .
+
+erb:WorkflowSteps_6 a erb:WorkflowSteps ;
+    erb:workflowStepId "notify-stakeholders" ;
+    erb:label "Notify Stakeholders" ;
+    erb:sequencePosition 7 ;
+    erb:requiresHumanApproval false ;
+    erb:isStepOf "expense-reimbursement" ;
+    erb:assignedRole "product-owner" .
+
+erb:WorkflowSteps_7 a erb:WorkflowSteps ;
+    erb:workflowStepId "archive-documents" ;
+    erb:label "Archive Documents" ;
+    erb:sequencePosition 8 ;
+    erb:requiresHumanApproval false ;
+    erb:isStepOf "quarterly-performance-review" ;
+    erb:assignedRole "technical-writer" .
+
+erb:WorkflowSteps_8 a erb:WorkflowSteps ;
+    erb:workflowStepId "generate-report" ;
+    erb:label "Generate Report" ;
+    erb:sequencePosition 9 ;
+    erb:requiresHumanApproval false ;
+    erb:isStepOf "vendor-onboarding" ;
+    erb:assignedRole "customer-support-specialist" .
+
+erb:WorkflowSteps_9 a erb:WorkflowSteps ;
+    erb:workflowStepId "quality-assurance-check" ;
+    erb:label "Quality Assurance Check" ;
+    erb:sequencePosition 10 ;
+    erb:requiresHumanApproval true ;
+    erb:isStepOf "project-kickoff" ;
+    erb:assignedRole "hr-manager" .
+
+erb:WorkflowSteps_10 a erb:WorkflowSteps ;
+    erb:workflowStepId "send-confirmation-email" ;
+    erb:label "Send Confirmation Email" ;
+    erb:sequencePosition 11 ;
+    erb:requiresHumanApproval false ;
+    erb:isStepOf "marketing-campaign-launch" ;
+    erb:assignedRole "marketing-specialist" .
+
+erb:WorkflowSteps_11 a erb:WorkflowSteps ;
+    erb:workflowStepId "schedule-follow-up" ;
+    erb:label "Schedule Follow-up" ;
+    erb:sequencePosition 12 ;
+    erb:requiresHumanApproval false ;
+    erb:isStepOf "annual-compliance-training" ;
+    erb:assignedRole "data-scientist" .
+
+erb:WorkflowSteps_12 a erb:WorkflowSteps ;
+    erb:workflowStepId "close-workflow" ;
+    erb:label "Close Workflow" ;
+    erb:sequencePosition 13 ;
+    erb:requiresHumanApproval false ;
+    erb:isStepOf "remote-access-request" ;
+    erb:assignedRole "system-administrator" .
+
+erb:WorkflowSteps_13 a erb:WorkflowSteps ;
+    erb:workflowStepId "escalate-issue" ;
+    erb:label "Escalate Issue" ;
+    erb:sequencePosition 14 ;
+    erb:requiresHumanApproval true ;
+    erb:isStepOf "customer-escalation-handling" ;
+    erb:assignedRole "finance-officer" .
+
+erb:WorkflowSteps_14 a erb:WorkflowSteps ;
+    erb:workflowStepId "audit-trail-review" ;
+    erb:label "Audit Trail Review" ;
+    erb:sequencePosition 15 ;
+    erb:requiresHumanApproval true ;
+    erb:isStepOf "procurement-request" ;
+    erb:assignedRole "scrum-master" .
 
 # === Individuals: Workflows ===
 
 erb:Workflows_0 a erb:Workflows ;
-    erb:workflowId "production-deployment" ;
-    erb:displayName "Production Deployment" ;
-    erb:title "Production Deployment Workflow" ;
-    erb:description "End-to-end workflow for deploying software releases to production, including risk analysis, legal clearance, and executive approval gates." ;
-    erb:identifier "ss:workflow-production-deployment" ;
-    erb:modified "2026-01-15" ;
-    erb:workflowSteps "risk-analysis, legal-clearance, release-approval-gate, deployment-execution, post-deployment-review" ;
-    erb:countOfSteps 5 .
+    erb:workflowId "onboarding-new-employees" ;
+    erb:title "Onboarding New Employees" ;
+    erb:description "Automates the process of onboarding new hires, including document collection, account setup, and training assignments." ;
+    erb:created "2024-05-01" ;
+    erb:modified "2024-06-01" ;
+    erb:identifier "WF-ONB-001" ;
+    erb:workflowSteps "submit-request" .
+
+erb:Workflows_1 a erb:Workflows ;
+    erb:workflowId "weekly-sales-report" ;
+    erb:title "Weekly Sales Report" ;
+    erb:description "Generates and distributes weekly sales performance reports to the management team." ;
+    erb:created "2024-04-15" ;
+    erb:modified "2024-06-02" ;
+    erb:identifier "WF-SAL-002" ;
+    erb:workflowSteps "initial-review" .
+
+erb:Workflows_2 a erb:Workflows ;
+    erb:workflowId "customer-feedback-collection" ;
+    erb:title "Customer Feedback Collection" ;
+    erb:description "Collects and organizes customer feedback from multiple channels for analysis." ;
+    erb:created "2024-03-20" ;
+    erb:modified "2024-05-30" ;
+    erb:identifier "WF-CFB-003" ;
+    erb:workflowSteps "assign-reviewer" .
+
+erb:Workflows_3 a erb:Workflows ;
+    erb:workflowId "invoice-approval" ;
+    erb:title "Invoice Approval" ;
+    erb:description "Routes invoices to the appropriate managers for review and approval before payment." ;
+    erb:created "2024-05-10" ;
+    erb:modified "2024-06-01" ;
+    erb:identifier "WF-INV-004" ;
+    erb:workflowSteps "reviewer-feedback" .
+
+erb:Workflows_4 a erb:Workflows ;
+    erb:workflowId "it-support-ticketing" ;
+    erb:title "IT Support Ticketing" ;
+    erb:description "Manages IT support requests from submission to resolution, including escalation steps." ;
+    erb:created "2024-04-01" ;
+    erb:modified "2024-05-28" ;
+    erb:identifier "WF-ITS-005" ;
+    erb:workflowSteps "revise-submission" .
+
+erb:Workflows_5 a erb:Workflows ;
+    erb:workflowId "content-publishing" ;
+    erb:title "Content Publishing" ;
+    erb:description "Coordinates the review, approval, and publishing of new website content." ;
+    erb:created "2024-03-25" ;
+    erb:modified "2024-05-29" ;
+    erb:identifier "WF-CNT-006" ;
+    erb:workflowSteps "final-approval" .
+
+erb:Workflows_6 a erb:Workflows ;
+    erb:workflowId "expense-reimbursement" ;
+    erb:title "Expense Reimbursement" ;
+    erb:description "Automates employee expense submission, approval, and reimbursement processes." ;
+    erb:created "2024-05-05" ;
+    erb:modified "2024-06-01" ;
+    erb:identifier "WF-EXP-007" ;
+    erb:workflowSteps "notify-stakeholders" .
+
+erb:Workflows_7 a erb:Workflows ;
+    erb:workflowId "quarterly-performance-review" ;
+    erb:title "Quarterly Performance Review" ;
+    erb:description "Schedules and tracks quarterly employee performance reviews and feedback sessions." ;
+    erb:created "2024-03-30" ;
+    erb:modified "2024-05-31" ;
+    erb:identifier "WF-PRF-008" ;
+    erb:workflowSteps "archive-documents" .
+
+erb:Workflows_8 a erb:Workflows ;
+    erb:workflowId "vendor-onboarding" ;
+    erb:title "Vendor Onboarding" ;
+    erb:description "Guides new vendors through compliance checks, contract signing, and system setup." ;
+    erb:created "2024-04-20" ;
+    erb:modified "2024-06-02" ;
+    erb:identifier "WF-VND-009" ;
+    erb:workflowSteps "generate-report" .
+
+erb:Workflows_9 a erb:Workflows ;
+    erb:workflowId "project-kickoff" ;
+    erb:title "Project Kickoff" ;
+    erb:description "Outlines steps for initiating new projects, including team assignments and resource allocation." ;
+    erb:created "2024-05-12" ;
+    erb:modified "2024-06-01" ;
+    erb:identifier "WF-PRJ-010" ;
+    erb:workflowSteps "quality-assurance-check" .
+
+erb:Workflows_10 a erb:Workflows ;
+    erb:workflowId "marketing-campaign-launch" ;
+    erb:title "Marketing Campaign Launch" ;
+    erb:description "Manages the planning, approval, and launch of marketing campaigns across channels." ;
+    erb:created "2024-04-05" ;
+    erb:modified "2024-05-30" ;
+    erb:identifier "WF-MKT-011" ;
+    erb:workflowSteps "send-confirmation-email" .
+
+erb:Workflows_11 a erb:Workflows ;
+    erb:workflowId "annual-compliance-training" ;
+    erb:title "Annual Compliance Training" ;
+    erb:description "Tracks employee completion of mandatory annual compliance training modules." ;
+    erb:created "2024-03-15" ;
+    erb:modified "2024-05-29" ;
+    erb:identifier "WF-COM-012" ;
+    erb:workflowSteps "schedule-follow-up" .
+
+erb:Workflows_12 a erb:Workflows ;
+    erb:workflowId "remote-access-request" ;
+    erb:title "Remote Access Request" ;
+    erb:description "Automates approval and provisioning of remote access for employees and contractors." ;
+    erb:created "2024-05-08" ;
+    erb:modified "2024-06-01" ;
+    erb:identifier "WF-REM-013" ;
+    erb:workflowSteps "close-workflow" .
+
+erb:Workflows_13 a erb:Workflows ;
+    erb:workflowId "customer-escalation-handling" ;
+    erb:title "Customer Escalation Handling" ;
+    erb:description "Defines steps for handling and resolving escalated customer issues." ;
+    erb:created "2024-04-18" ;
+    erb:modified "2024-06-02" ;
+    erb:identifier "WF-CES-014" ;
+    erb:workflowSteps "escalate-issue" .
+
+erb:Workflows_14 a erb:Workflows ;
+    erb:workflowId "procurement-request" ;
+    erb:title "Procurement Request" ;
+    erb:description "Manages the submission, approval, and tracking of procurement requests." ;
+    erb:created "2024-05-03" ;
+    erb:modified "2024-06-01" ;
+    erb:identifier "WF-PRC-015" ;
+    erb:workflowSteps "audit-trail-review" .

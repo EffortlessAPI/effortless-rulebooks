@@ -34,6 +34,13 @@
     "description": "Fun domain example: TV series, seasons, episodes, characters demonstrating the pattern on familiar data",
     "docs": "bases/star-trek",
     "complexity": "moderate"
+  },
+  {
+    "id": "app6afUqa0zBTiMzM",
+    "name": "JTO v3",
+    "description": "Version 3 of the Jessica Talisman's Ontology",
+    "docs": "bases/jto-v3",
+    "complexity": "moderate"
   }
 ]
 
