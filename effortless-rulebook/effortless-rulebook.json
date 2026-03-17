@@ -1,1491 +1,900 @@
 {
   "$schema": "https://example.com/cmcc-schema/v1",
-  "Name": "Jessica\u0027s Ontology Series-v3",
-  "Description": "Rulebook generated from Airtable base \u0027Jessica\u0027s Ontology Series-v3\u0027.",
+  "Name": "Jessica's Ontology Series-v3",
+  "Description": "Rulebook implementing the NTWF ontology from Jessica Talisman's Ontology Series. Models workflows at Special Solutions with role-agent separation, PROV-O provenance tracking, and Dublin Core metadata.",
   "Workflows": {
-    "Description": "Table: Workflows",
+    "Description": "Table: Workflows. Subclass of prov:Plan and schema:CreativeWork per NTWF ontology.",
     "schema": [
-      {
-        "name": "WorkflowId",
-        "datatype": "string",
-        "type": "raw",
-        "nullable": false
-      },
-      {
-        "name": "Title",
-        "datatype": "string",
-        "type": "raw",
-        "nullable": true,
-        "Description": "Human-readable name for the workflow. Maps to dct:title per Dublin Core."
-      },
-      {
-        "name": "Description",
-        "datatype": "string",
-        "type": "raw",
-        "nullable": true,
-        "Description": "Detailed description of the workflow purpose and scope. Maps to dct:description per Dublin Core."
-      },
-      {
-        "name": "Created",
-        "datatype": "datetime",
-        "type": "raw",
-        "nullable": true,
-        "Description": "Date the workflow was created. Maps to dct:created per Dublin Core."
-      },
-      {
-        "name": "Modified",
-        "datatype": "datetime",
-        "type": "raw",
-        "nullable": true,
-        "Description": "Date the workflow was last modified. Maps to dct:modified. Used to identify stale workflows per NTWF CQ5."
-      },
-      {
-        "name": "Identifier",
-        "datatype": "string",
-        "type": "raw",
-        "nullable": true,
-        "Description": "External reference identifier (e.g., ticket number). Maps to dct:identifier. Join key to operational systems."
-      },
-      {
-        "name": "WorkflowSteps",
-        "datatype": "string",
-        "type": "relationship",
-        "nullable": true,
-        "Description": "Steps contained in this workflow. Inverse of IsStepOf. Maps to ntwf:hasStep.",
-        "RelatedTo": "WorkflowSteps"
-      },
-      {
-        "name": "CountOfWorkflowSteps",
-        "datatype": "integer",
-        "type": "aggregation",
-        "nullable": true,
-        "Description": "Count of steps in this workflow. Aggregation over IsStepOf relationship.",
-        "formula": "=COUNTIFS(WorkflowSteps!{{IsStepOf}}, Workflows!{{WorkflowId}})"
-      }
+      {"name": "WorkflowId", "datatype": "string", "type": "raw", "nullable": false},
+      {"name": "Title", "datatype": "string", "type": "raw", "nullable": true, "Description": "Human-readable name. Maps to dct:title."},
+      {"name": "Description", "datatype": "string", "type": "raw", "nullable": true, "Description": "Workflow purpose and scope. Maps to dct:description."},
+      {"name": "Created", "datatype": "datetime", "type": "raw", "nullable": true, "Description": "Creation date. Maps to dct:created."},
+      {"name": "Modified", "datatype": "datetime", "type": "raw", "nullable": true, "Description": "Last modified date. Maps to dct:modified. Answers CQ5 (stale workflows)."},
+      {"name": "Identifier", "datatype": "string", "type": "raw", "nullable": true, "Description": "External reference (ticket number). Maps to dct:identifier."},
+      {"name": "WorkflowSteps", "datatype": "string", "type": "relationship", "nullable": true, "RelatedTo": "WorkflowSteps", "Description": "Steps in this workflow. Maps to ntwf:hasStep."},
+      {"name": "CountOfWorkflowSteps", "datatype": "integer", "type": "aggregation", "nullable": true, "formula": "=COUNTIFS(WorkflowSteps!{{IsStepOf}}, Workflows!{{WorkflowId}})"}
     ],
     "data": [
       {
-        "WorkflowId": "production-deployment-workflow",
+        "WorkflowId": "production-deployment",
         "Title": "Production Deployment Workflow",
-        "Description": "End-to-end workflow for deploying software releases to production, including risk analysis, legal clearance, and release approval. From Jessica Talisman\u0027s NTWF ontology article.",
+        "Description": "End-to-end workflow for deploying software releases. Involves AI risk analysis, human legal review, human approval gate, automated deployment, and human verification. Demonstrates all three agent types. From Jessica Talisman's NTWF article.",
         "Created": "2026-01-15",
         "Modified": "2026-01-15",
         "Identifier": "WF-PROD-001",
-        "WorkflowSteps": "legal-review, risk-assessment, release-approval",
-        "CountOfWorkflowSteps": 3
+        "WorkflowSteps": "step-risk-assessment, step-legal-review, step-release-approval, step-deployment, step-post-deployment",
+        "CountOfWorkflowSteps": 5
+      },
+      {
+        "WorkflowId": "quarterly-business-review",
+        "Title": "Quarterly Business Review",
+        "Description": "Cross-departmental workflow for QBR preparation. Involves Engineering and Finance. Answers CQ8: 'What datasets does the QBR consume?'",
+        "Created": "2025-10-01",
+        "Modified": "2025-12-15",
+        "Identifier": "WF-QBR-001",
+        "WorkflowSteps": "step-data-collection, step-metrics-analysis, step-financial-review, step-executive-summary",
+        "CountOfWorkflowSteps": 4
       }
     ]
   },
   "WorkflowSteps": {
-    "Description": "Table: WorkflowSteps",
+    "Description": "Table: WorkflowSteps. Subclass of prov:Activity per NTWF ontology.",
     "schema": [
-      {
-        "name": "WorkflowStepId",
-        "datatype": "string",
-        "type": "raw",
-        "nullable": false
-      },
-      {
-        "name": "Label",
-        "datatype": "string",
-        "type": "raw",
-        "nullable": true,
-        "Description": "Human-readable name for the step. Maps to rdfs:label."
-      },
-      {
-        "name": "SequencePosition",
-        "datatype": "integer",
-        "type": "raw",
-        "nullable": true,
-        "Description": "Ordinal position in workflow sequence. Maps to ntwf:sequencePosition (functional). Supports positional ordering queries."
-      },
-      {
-        "name": "RequiresHumanApproval",
-        "datatype": "boolean",
-        "type": "raw",
-        "nullable": true,
-        "Description": "Whether this step requires a human agent. Maps to ntwf:requiresHumanApproval. Answers NTWF CQ3."
-      },
-      {
-        "name": "IsStepOf",
-        "datatype": "string",
-        "type": "relationship",
-        "nullable": true,
-        "Description": "Parent workflow containing this step. Inverse of WorkflowSteps. Maps to ntwf:isStepOf.",
-        "RelatedTo": "Workflows"
-      },
-      {
-        "name": "AssignedRole",
-        "datatype": "string",
-        "type": "relationship",
-        "nullable": true,
-        "Description": "Role responsible for this step. Maps to ntwf:assignedRole (functional). Implements role-agent separation.",
-        "RelatedTo": "Roles"
-      },
-      {
-        "name": "IsStepOfTitle",
-        "datatype": "string",
-        "type": "lookup",
-        "nullable": true,
-        "Description": "Denormalized lookup of parent workflow title.",
-        "formula": "=INDEX(Workflows!{{Title}}, MATCH(WorkflowSteps!{{IsStepOf}}, Workflows!{{WorkflowId}}, 0))"
-      },
-      {
-        "name": "IsStepOfDescription",
-        "datatype": "string",
-        "type": "lookup",
-        "nullable": true,
-        "Description": "Denormalized lookup of parent workflow description.",
-        "formula": "=INDEX(Workflows!{{Description}}, MATCH(WorkflowSteps!{{IsStepOf}}, Workflows!{{WorkflowId}}, 0))"
-      },
-      {
-        "name": "IsStepOfIdentifier",
-        "datatype": "string",
-        "type": "lookup",
-        "nullable": true,
-        "Description": "Denormalized lookup of parent workflow external identifier.",
-        "formula": "=INDEX(Workflows!{{Identifier}}, MATCH(WorkflowSteps!{{IsStepOf}}, Workflows!{{WorkflowId}}, 0))"
-      },
-      {
-        "name": "AssignedRoleLabel",
-        "datatype": "string",
-        "type": "lookup",
-        "nullable": true,
-        "Description": "Denormalized lookup of assigned role label.",
-        "formula": "=INDEX(Roles!{{Label}}, MATCH(WorkflowSteps!{{AssignedRole}}, Roles!{{RoleId}}, 0))"
-      },
-      {
-        "name": "AssignedRoleComment",
-        "datatype": "string",
-        "type": "lookup",
-        "nullable": true,
-        "Description": "Denormalized lookup of assigned role comment/description.",
-        "formula": "=INDEX(Roles!{{Comment}}, MATCH(WorkflowSteps!{{AssignedRole}}, Roles!{{RoleId}}, 0))"
-      },
-      {
-        "name": "AssignedRoleFilledBy",
-        "datatype": "string",
-        "type": "lookup",
-        "nullable": true,
-        "Description": "Denormalized lookup of agent currently filling the assigned role.",
-        "formula": "=INDEX(Roles!{{FilledBy}}, MATCH(WorkflowSteps!{{AssignedRole}}, Roles!{{RoleId}}, 0))"
-      },
-      {
-        "name": "PrecedesStepsFrom",
-        "datatype": "string",
-        "type": "relationship",
-        "nullable": true,
-        "RelatedTo": "PrecedesSteps"
-      },
-      {
-        "name": "PrecedesStepsTo",
-        "datatype": "string",
-        "type": "relationship",
-        "nullable": true,
-        "RelatedTo": "PrecedesSteps"
-      },
-      {
-        "name": "ApprovalGate",
-        "datatype": "string",
-        "type": "relationship",
-        "nullable": true,
-        "Description": "Approval gate attached to this step, if any. Establishes double-typing per article.",
-        "RelatedTo": "ApprovalGates"
-      },
-      {
-        "name": "StepDurationMinutes",
-        "datatype": "integer",
-        "type": "raw",
-        "nullable": true,
-        "Description": "Expected duration of the step in minutes. Maps to ntwf:stepDurationMinutes."
-      },
-      {
-        "name": "ProducesArtifact",
-        "datatype": "string",
-        "type": "raw",
-        "nullable": true,
-        "Description": "Artifact produced by this step. Maps to ntwf:producesArtifact. Aligned with prov:generated."
-      },
-      {
-        "name": "RequiresArtifact",
-        "datatype": "string",
-        "type": "raw",
-        "nullable": true,
-        "Description": "Artifact required as input to this step. Maps to ntwf:requiresArtifact. Aligned with prov:used."
-      },
-      {
-        "name": "ConsumesDataset",
-        "datatype": "string",
-        "type": "raw",
-        "nullable": true,
-        "Description": "Dataset consumed by this step. Maps to ntwf:consumesDataset. Answers NTWF CQ8."
-      }
+      {"name": "WorkflowStepId", "datatype": "string", "type": "raw", "nullable": false},
+      {"name": "Label", "datatype": "string", "type": "raw", "nullable": true, "Description": "Step name. Maps to rdfs:label."},
+      {"name": "SequencePosition", "datatype": "integer", "type": "raw", "nullable": true, "Description": "Ordinal position. Maps to ntwf:sequencePosition."},
+      {"name": "RequiresHumanApproval", "datatype": "boolean", "type": "raw", "nullable": true, "Description": "Whether human required. Maps to ntwf:requiresHumanApproval. Answers CQ3."},
+      {"name": "StepDurationMinutes", "datatype": "integer", "type": "raw", "nullable": true, "Description": "Expected duration. Maps to ntwf:stepDurationMinutes."},
+      {"name": "IsStepOf", "datatype": "string", "type": "relationship", "nullable": true, "RelatedTo": "Workflows", "Description": "Parent workflow. Maps to ntwf:isStepOf."},
+      {"name": "AssignedRole", "datatype": "string", "type": "relationship", "nullable": true, "RelatedTo": "Roles", "Description": "Responsible role. Maps to ntwf:assignedRole. Implements role-agent separation."},
+      {"name": "ApprovalGate", "datatype": "string", "type": "relationship", "nullable": true, "RelatedTo": "ApprovalGates", "Description": "Approval gate if this is a gate step. Establishes double-typing."},
+      {"name": "ProducesArtifact", "datatype": "string", "type": "relationship", "nullable": true, "RelatedTo": "Artifacts", "Description": "Artifact produced. Maps to ntwf:producesArtifact / prov:generated."},
+      {"name": "RequiresArtifact", "datatype": "string", "type": "relationship", "nullable": true, "RelatedTo": "Artifacts", "Description": "Artifact required as input. Maps to ntwf:requiresArtifact / prov:used."},
+      {"name": "ConsumesDataset", "datatype": "string", "type": "relationship", "nullable": true, "RelatedTo": "Datasets", "Description": "Dataset consumed. Maps to ntwf:consumesDataset. Answers CQ8."},
+      {"name": "IsStepOfTitle", "datatype": "string", "type": "lookup", "nullable": true, "formula": "=INDEX(Workflows!{{Title}}, MATCH(WorkflowSteps!{{IsStepOf}}, Workflows!{{WorkflowId}}, 0))"},
+      {"name": "AssignedRoleLabel", "datatype": "string", "type": "lookup", "nullable": true, "formula": "=INDEX(Roles!{{Label}}, MATCH(WorkflowSteps!{{AssignedRole}}, Roles!{{RoleId}}, 0))"},
+      {"name": "AssignedRoleFilledByName", "datatype": "string", "type": "lookup", "nullable": true, "formula": "=INDEX(Roles!{{FilledByName}}, MATCH(WorkflowSteps!{{AssignedRole}}, Roles!{{RoleId}}, 0))"},
+      {"name": "AssignedRoleDepartment", "datatype": "string", "type": "lookup", "nullable": true, "formula": "=INDEX(Roles!{{DepartmentName}}, MATCH(WorkflowSteps!{{AssignedRole}}, Roles!{{RoleId}}, 0))"}
     ],
     "data": [
       {
-        "WorkflowStepId": "risk-assessment",
+        "WorkflowStepId": "step-risk-assessment",
         "Label": "Risk Assessment",
         "SequencePosition": 1,
-        "IsStepOf": "production-deployment-workflow",
-        "AssignedRole": "risk-analyst",
-        "IsStepOfTitle": "Production Deployment Workflow",
-        "IsStepOfDescription": "End-to-end workflow for deploying software releases to production, including risk analysis, legal clearance, and release approval. From Jessica Talisman\u0027s NTWF ontology article.",
-        "IsStepOfIdentifier": "WF-PROD-001",
-        "AssignedRoleLabel": "Risk Analyst",
-        "AssignedRoleComment": "Role responsible for risk assessment. In full ontology, filled by AI agent.",
-        "PrecedesStepsFrom": "step-1-to-2",
         "RequiresHumanApproval": false,
-        "AssignedRoleFilledBy": "",
-        "PrecedesStepsTo": "",
+        "StepDurationMinutes": 15,
+        "IsStepOf": "production-deployment",
+        "AssignedRole": "role-risk-analyst",
         "ApprovalGate": "",
-        "StepDurationMinutes": 0,
-        "ProducesArtifact": "",
+        "ProducesArtifact": "artifact-risk-report",
         "RequiresArtifact": "",
-        "ConsumesDataset": ""
+        "ConsumesDataset": "dataset-risk-metrics-q1",
+        "IsStepOfTitle": "Production Deployment Workflow",
+        "AssignedRoleLabel": "Risk Analyst",
+        "AssignedRoleFilledByName": "RiskAnalysis-AI",
+        "AssignedRoleDepartment": "Engineering"
       },
       {
-        "WorkflowStepId": "legal-review",
+        "WorkflowStepId": "step-legal-review",
         "Label": "Legal Review",
         "SequencePosition": 2,
         "RequiresHumanApproval": true,
-        "IsStepOf": "production-deployment-workflow",
-        "AssignedRole": "legal-compliance-reviewer",
-        "IsStepOfTitle": "Production Deployment Workflow",
-        "IsStepOfDescription": "End-to-end workflow for deploying software releases to production, including risk analysis, legal clearance, and release approval. From Jessica Talisman\u0027s NTWF ontology article.",
-        "IsStepOfIdentifier": "WF-PROD-001",
-        "AssignedRoleLabel": "Legal Compliance Reviewer",
-        "AssignedRoleComment": "Role responsible for legal and compliance review of releases.",
-        "PrecedesStepsFrom": "step-2-to-3",
-        "PrecedesStepsTo": "step-1-to-2",
-        "AssignedRoleFilledBy": "",
+        "StepDurationMinutes": 120,
+        "IsStepOf": "production-deployment",
+        "AssignedRole": "role-legal-reviewer",
         "ApprovalGate": "",
-        "StepDurationMinutes": 0,
-        "ProducesArtifact": "",
-        "RequiresArtifact": "",
-        "ConsumesDataset": ""
+        "ProducesArtifact": "artifact-legal-clearance",
+        "RequiresArtifact": "artifact-risk-report",
+        "ConsumesDataset": "",
+        "IsStepOfTitle": "Production Deployment Workflow",
+        "AssignedRoleLabel": "Legal Compliance Reviewer",
+        "AssignedRoleFilledByName": "Sarah Chen",
+        "AssignedRoleDepartment": "Legal"
       },
       {
-        "WorkflowStepId": "release-approval",
+        "WorkflowStepId": "step-release-approval",
         "Label": "Release Approval",
         "SequencePosition": 3,
         "RequiresHumanApproval": true,
-        "IsStepOf": "production-deployment-workflow",
-        "AssignedRole": "release-manager",
+        "StepDurationMinutes": 30,
+        "IsStepOf": "production-deployment",
+        "AssignedRole": "role-release-manager",
+        "ApprovalGate": "gate-release-approval",
+        "ProducesArtifact": "artifact-release-authorization",
+        "RequiresArtifact": "artifact-legal-clearance",
+        "ConsumesDataset": "",
         "IsStepOfTitle": "Production Deployment Workflow",
-        "IsStepOfDescription": "End-to-end workflow for deploying software releases to production, including risk analysis, legal clearance, and release approval. From Jessica Talisman\u0027s NTWF ontology article.",
-        "IsStepOfIdentifier": "WF-PROD-001",
         "AssignedRoleLabel": "Release Manager",
-        "AssignedRoleComment": "Primary role responsible for coordinating production releases. First in delegation chain. Article CQ2: \u0027filled by Maria Gonzalez\u0027",
-        "AssignedRoleFilledBy": "maria-gonzalez",
-        "PrecedesStepsFrom": "step-3-to-4",
-        "PrecedesStepsTo": "step-2-to-3",
+        "AssignedRoleFilledByName": "Maria Gonzalez",
+        "AssignedRoleDepartment": "Engineering"
+      },
+      {
+        "WorkflowStepId": "step-deployment",
+        "Label": "Deployment Execution",
+        "SequencePosition": 4,
+        "RequiresHumanApproval": false,
+        "StepDurationMinutes": 45,
+        "IsStepOf": "production-deployment",
+        "AssignedRole": "role-deployment-engineer",
         "ApprovalGate": "",
-        "StepDurationMinutes": 0,
-        "ProducesArtifact": "",
+        "ProducesArtifact": "artifact-deployment-log",
+        "RequiresArtifact": "artifact-release-authorization",
+        "ConsumesDataset": "",
+        "IsStepOfTitle": "Production Deployment Workflow",
+        "AssignedRoleLabel": "Deployment Engineer",
+        "AssignedRoleFilledByName": "CI Pipeline",
+        "AssignedRoleDepartment": "Engineering"
+      },
+      {
+        "WorkflowStepId": "step-post-deployment",
+        "Label": "Post-Deployment Verification",
+        "SequencePosition": 5,
+        "RequiresHumanApproval": true,
+        "StepDurationMinutes": 60,
+        "IsStepOf": "production-deployment",
+        "AssignedRole": "role-release-manager",
+        "ApprovalGate": "",
+        "ProducesArtifact": "artifact-post-deployment-report",
+        "RequiresArtifact": "artifact-deployment-log",
+        "ConsumesDataset": "",
+        "IsStepOfTitle": "Production Deployment Workflow",
+        "AssignedRoleLabel": "Release Manager",
+        "AssignedRoleFilledByName": "Maria Gonzalez",
+        "AssignedRoleDepartment": "Engineering"
+      },
+      {
+        "WorkflowStepId": "step-data-collection",
+        "Label": "Data Collection",
+        "SequencePosition": 1,
+        "RequiresHumanApproval": false,
+        "StepDurationMinutes": 30,
+        "IsStepOf": "quarterly-business-review",
+        "AssignedRole": "role-data-engineer",
+        "ApprovalGate": "",
+        "ProducesArtifact": "artifact-raw-data-export",
         "RequiresArtifact": "",
-        "ConsumesDataset": ""
-      }
-    ]
-  },
-  "ApprovalGates": {
-    "Description": "Table: ApprovalGates",
-    "schema": [
-      {
-        "name": "ApprovalGateId",
-        "datatype": "string",
-        "type": "raw",
-        "nullable": false
+        "ConsumesDataset": "dataset-sales-q1, dataset-incidents-q1",
+        "IsStepOfTitle": "Quarterly Business Review",
+        "AssignedRoleLabel": "Data Engineer",
+        "AssignedRoleFilledByName": "ETL Pipeline",
+        "AssignedRoleDepartment": "Engineering"
       },
       {
-        "name": "Name",
-        "datatype": "string",
-        "type": "raw",
-        "nullable": true,
-        "Description": "Display name of the approval gate. Maps to rdfs:label."
-      },
-      {
-        "name": "Description",
-        "datatype": "string",
-        "type": "raw",
-        "nullable": true,
-        "Description": "Description of what this gate approves and its criteria."
-      },
-      {
-        "name": "WorkflowStep",
-        "datatype": "string",
-        "type": "relationship",
-        "nullable": true,
-        "Description": "The workflow step that this gate is attached to. Establishes double-typing.",
-        "RelatedTo": "WorkflowSteps"
-      },
-      {
-        "name": "EscalationThresholdHours",
-        "datatype": "integer",
-        "type": "raw",
-        "nullable": true,
-        "Description": "Hours that may elapse before delegation chain activates. Maps to ntwf:escalationThresholdHours."
-      }
-    ],
-    "data": [
-      {
-        "ApprovalGateId": "release-approval-gate",
-        "Name": "Release Approval Gate",
-        "Description": "Final approval gate before production deployment. Requires Release Manager sign-off. Step 3 in the Production Deployment Workflow. When approval is pending beyond threshold, escalates via delegation chain.",
-        "EscalationThresholdHours": 24,
-        "WorkflowStep": ""
-      },
-      {
-        "ApprovalGateId": "release-approval-gate",
-        "Name": "Release Approval Gate",
-        "Description": "Final approval gate before production deployment. Requires Release Manager sign-off. Step 3 in the Production Deployment Workflow. When approval is pending beyond threshold, escalates via delegation chain: Release Manager -\u003E VP Engineering -\u003E CTO.",
-        "EscalationThresholdHours": 24,
-        "WorkflowStep": ""
-      },
-      {
-        "ApprovalGateId": "financial-review-gate",
-        "Name": "Financial Review Gate",
-        "Description": "Approval gate for financial data in QBR. Requires Financial Analyst sign-off before executive summary can be prepared. Escalates to CFO if pending beyond threshold.",
-        "EscalationThresholdHours": 48,
-        "WorkflowStep": ""
-      }
-    ]
-  },
-  "Roles": {
-    "Description": "Table: Roles",
-    "schema": [
-      {
-        "name": "RoleId",
-        "datatype": "string",
-        "type": "raw",
-        "nullable": false
-      },
-      {
-        "name": "Label",
-        "datatype": "string",
-        "type": "raw",
-        "nullable": true,
-        "Description": "Human-readable name for the role. Maps to rdfs:label."
-      },
-      {
-        "name": "Comment",
-        "datatype": "string",
-        "type": "raw",
-        "nullable": true,
-        "Description": "Description of the role\u0027s responsibilities. Maps to rdfs:comment."
-      },
-      {
-        "name": "Department",
-        "datatype": "string",
-        "type": "relationship",
-        "nullable": true,
-        "Description": "Department that owns this role. Maps to org:memberOf.",
-        "RelatedTo": "Departments"
-      },
-      {
-        "name": "FilledBy",
-        "datatype": "string",
-        "type": "relationship",
-        "nullable": true,
-        "Description": "Agent currently filling this role. Maps to ntwf:filledBy. The change-management triple - update this when personnel change.",
-        "RelatedTo": "Agents"
-      },
-      {
-        "name": "WorkflowSteps",
-        "datatype": "string",
-        "type": "relationship",
-        "nullable": true,
-        "Description": "Steps assigned to this role. Inverse of AssignedRole.",
-        "RelatedTo": "WorkflowSteps"
-      },
-      {
-        "name": "CountOfWorkflowSteps",
-        "datatype": "integer",
-        "type": "aggregation",
-        "nullable": true,
-        "Description": "Count of workflow steps assigned to this role.",
-        "formula": "=COUNTIFS(WorkflowSteps!{{AssignedRole}}, Roles!{{RoleId}})"
-      },
-      {
-        "name": "DelegatesTo",
-        "datatype": "string",
-        "type": "relationship",
-        "nullable": true,
-        "Description": "Role to escalate to when this role\u0027s agent is unavailable. Maps to ntwf:delegatesTo. Enables delegation chain queries.",
-        "RelatedTo": "Roles"
-      },
-      {
-        "name": "DelegatesToLabel",
-        "datatype": "string",
-        "type": "lookup",
-        "nullable": true,
-        "formula": "=INDEX(Roles!{{Label}}, MATCH(Roles!{{DelegatesTo}}, Roles!{{RoleId}}, 0))"
-      },
-      {
-        "name": "FilledByName",
-        "datatype": "string",
-        "type": "lookup",
-        "nullable": true,
-        "Description": "Denormalized lookup of agent name (foaf:name) filling this role.",
-        "formula": "=INDEX(Agents!{{Name}}, MATCH(Roles!{{FilledBy}}, Agents!{{AgentId}}, 0))"
-      },
-      {
-        "name": "FilledByMBox",
-        "datatype": "string",
-        "type": "lookup",
-        "nullable": true,
-        "Description": "Denormalized lookup of agent email (foaf:mbox) filling this role.",
-        "formula": "=INDEX(Agents!{{Mbox}}, MATCH(Roles!{{FilledBy}}, Agents!{{AgentId}}, 0))"
-      },
-      {
-        "name": "DelegatedToBy",
-        "datatype": "string",
-        "type": "relationship",
-        "nullable": true,
-        "Description": "Inverse of DelegatesTo. Role that delegates to this role.",
-        "RelatedTo": "Roles"
-      }
-    ],
-    "data": [
-      {
-        "RoleId": "release-manager",
-        "Label": "Release Manager",
-        "Comment": "Primary role responsible for coordinating production releases. First in delegation chain. Article CQ2: \u0027filled by Maria Gonzalez\u0027",
-        "FilledBy": "maria-gonzalez",
-        "WorkflowSteps": "release-approval",
-        "FilledByName": "Maria Gonzalez",
-        "FilledByMBox": "maria.gonzalez@specialsolutions.example",
-        "CountOfWorkflowSteps": 1,
-        "DelegatesTo": "vp-engineering",
-        "DelegatesToLabel": "VP Engineering",
-        "Department": "",
-        "DelegatedToBy": ""
-      },
-      {
-        "RoleId": "legal-compliance-reviewer",
-        "Label": "Legal Compliance Reviewer",
-        "Comment": "Role responsible for legal and compliance review of releases.",
-        "WorkflowSteps": "legal-review",
-        "CountOfWorkflowSteps": 1,
-        "Department": "",
-        "FilledBy": "",
-        "DelegatesTo": "",
-        "DelegatesToLabel": "",
-        "FilledByName": "",
-        "FilledByMBox": "",
-        "DelegatedToBy": ""
-      },
-      {
-        "RoleId": "risk-analyst",
-        "Label": "Risk Analyst",
-        "Comment": "Role responsible for risk assessment. In full ontology, filled by AI agent.",
-        "WorkflowSteps": "risk-assessment",
-        "CountOfWorkflowSteps": 1,
-        "Department": "",
-        "FilledBy": "",
-        "DelegatesTo": "",
-        "DelegatesToLabel": "",
-        "FilledByName": "",
-        "FilledByMBox": "",
-        "DelegatedToBy": ""
-      },
-      {
-        "RoleId": "vp-engineering",
-        "Label": "VP Engineering",
-        "Comment": "Secondary role in delegation chain. Escalation from Release Manager when primary agent unavailable. Article CQ6.",
-        "CountOfWorkflowSteps": 0,
-        "DelegatesTo": "cto",
-        "DelegatedToBy": "release-manager",
-        "DelegatesToLabel": "CTO",
-        "Department": "",
-        "FilledBy": "",
-        "WorkflowSteps": "",
-        "FilledByName": "",
-        "FilledByMBox": ""
-      },
-      {
-        "RoleId": "cto",
-        "Label": "CTO",
-        "Comment": "Final role in delegation chain. Ultimate authority for release decisions. Article CQ6.",
-        "CountOfWorkflowSteps": 0,
-        "DelegatedToBy": "vp-engineering",
-        "Department": "",
-        "FilledBy": "",
-        "WorkflowSteps": "",
-        "DelegatesTo": "",
-        "DelegatesToLabel": "",
-        "FilledByName": "",
-        "FilledByMBox": ""
-      }
-    ]
-  },
-  "Agents": {
-    "Description": "Table: Agents",
-    "schema": [
-      {
-        "name": "AgentId",
-        "datatype": "string",
-        "type": "raw",
-        "nullable": false
-      },
-      {
-        "name": "Name",
-        "datatype": "string",
-        "type": "raw",
-        "nullable": true,
-        "Description": "Full name of the person. Maps to foaf:name per FOAF ontology."
-      },
-      {
-        "name": "TypeOfAgent",
-        "datatype": "string",
-        "type": "relationship",
-        "nullable": true,
-        "Description": "Agent type classification: human, ai, or automatedpipeline. Determines which NTWF subclass applies.",
-        "RelatedTo": "TypesOfAgents"
-      },
-      {
-        "name": "Roles",
-        "datatype": "string",
-        "type": "relationship",
-        "nullable": true,
-        "Description": "Roles filled by this agent. Inverse of FilledBy.",
-        "RelatedTo": "Roles"
-      },
-      {
-        "name": "Description",
-        "datatype": "string",
-        "type": "raw",
-        "nullable": true,
-        "Description": "Description of the agent\u0027s purpose and capabilities."
-      },
-      {
-        "name": "ModelVersion",
-        "datatype": "string",
-        "type": "raw",
-        "nullable": true,
-        "Description": "AI model version string. Maps to ntwf:modelVersion. Only applicable to AIAgent type. Domain declaration means applying this to a HumanAgent would incorrectly infer AIAgent type."
-      },
-      {
-        "name": "Mbox",
-        "datatype": "string",
-        "type": "raw",
-        "nullable": true,
-        "Description": "Email address of the person. Maps to foaf:mbox per FOAF ontology. Used for contact and identity resolution."
-      },
-      {
-        "name": "CountOfRoles",
-        "datatype": "integer",
-        "type": "aggregation",
-        "nullable": true,
-        "Description": "Count of roles currently filled by this agent.",
-        "formula": "=COUNTIFS(Roles!{{FilledBy}}, Agents!{{AgentId}})"
-      },
-      {
-        "name": "Artifacts",
-        "datatype": "string",
-        "type": "relationship",
-        "nullable": true,
-        "RelatedTo": "Artifacts"
-      },
-      {
-        "name": "Datasets",
-        "datatype": "string",
-        "type": "relationship",
-        "nullable": true,
-        "RelatedTo": "Datasets"
-      },
-      {
-        "name": "ProducedArtifacts",
-        "datatype": "string",
-        "type": "raw",
-        "nullable": true,
-        "Description": "Artifacts attributed to this agent. Maps to inverse of prov:wasAttributedTo."
-      },
-      {
-        "name": "ProcessedDatasets",
-        "datatype": "string",
-        "type": "raw",
-        "nullable": true,
-        "Description": "Datasets processed by this agent (for AI agents). Inverse of ProcessedBy."
-      }
-    ],
-    "data": [
-      {
-        "AgentId": "maria-gonzalez",
-        "Name": "Maria Gonzalez",
-        "Mbox": "maria.gonzalez@specialsolutions.example",
-        "Roles": "release-manager",
-        "CountOfRoles": 1,
-        "TypeOfAgent": "human",
-        "Description": "Human Release Manager",
-        "ModelVersion": "",
-        "Artifacts": "",
-        "Datasets": "",
-        "ProducedArtifacts": "",
-        "ProcessedDatasets": ""
-      },
-      {
-        "AgentId": "james-okafor",
-        "Name": "James Okafor",
-        "Mbox": "james.okafor@specialsolutions.example",
-        "CountOfRoles": 0,
-        "TypeOfAgent": "human",
-        "Roles": "",
-        "Description": "",
-        "ModelVersion": "",
-        "Artifacts": "",
-        "Datasets": "",
-        "ProducedArtifacts": "",
-        "ProcessedDatasets": ""
-      },
-      {
-        "AgentId": "riskanalysis-ai",
-        "Name": "RiskAnalysis-AI",
-        "CountOfRoles": 0,
-        "TypeOfAgent": "ai",
-        "ModelVersion": "risk-classifier-v2.4.1",
-        "Description": "AI agent responsible for automated risk assessment. Processes Q1 2026 Risk Metrics dataset and produces Risk Report artifact. Article CQ8 demonstrates this agent\u0027s dataset processing. Subclass of prov:SoftwareAgent.",
-        "Roles": "",
-        "Mbox": "",
-        "Artifacts": "",
-        "Datasets": "",
-        "ProducedArtifacts": "",
-        "ProcessedDatasets": ""
-      },
-      {
-        "AgentId": "ci-pipeline",
-        "Name": "CI Pipeline",
-        "CountOfRoles": 0,
-        "TypeOfAgent": "automatedpipeline",
-        "Description": "Continuous Integration pipeline responsible for automated build, test, and deployment execution. Fills the Deployment Engineer role for automated deployment steps.",
-        "Roles": "",
-        "ModelVersion": "",
-        "Mbox": "",
-        "Artifacts": "",
-        "Datasets": "",
-        "ProducedArtifacts": "",
-        "ProcessedDatasets": ""
-      },
-      {
-        "AgentId": "maria-gonzalez",
-        "Name": "Maria Gonzalez",
-        "Mbox": "maria.gonzalez@specialsolutions.example",
-        "CountOfRoles": 0,
-        "Description": "Senior Release Manager responsible for coordinating production deployments. Primary point of contact for release approval. Article CQ2 answer.",
-        "TypeOfAgent": "",
-        "Roles": "",
-        "ModelVersion": "",
-        "Artifacts": "",
-        "Datasets": "",
-        "ProducedArtifacts": "",
-        "ProcessedDatasets": ""
-      },
-      {
-        "AgentId": "james-okafor",
-        "Name": "James Okafor",
-        "Mbox": "james.okafor@specialsolutions.example",
-        "CountOfRoles": 0,
-        "TypeOfAgent": "human",
-        "Description": "VP of Engineering. Second in delegation chain for release approvals.",
-        "Roles": "",
-        "ModelVersion": "",
-        "Artifacts": "",
-        "Datasets": "",
-        "ProducedArtifacts": "",
-        "ProcessedDatasets": ""
-      },
-      {
-        "AgentId": "david-kim",
-        "Name": "David Kim",
-        "Mbox": "david.kim@specialsolutions.example",
-        "CountOfRoles": 0,
-        "TypeOfAgent": "human",
-        "Description": "CTO. Final authority in delegation chain for release decisions.",
-        "Roles": "",
-        "ModelVersion": "",
-        "Artifacts": "",
-        "Datasets": "",
-        "ProducedArtifacts": "",
-        "ProcessedDatasets": ""
-      },
-      {
-        "AgentId": "sarah-chen",
-        "Name": "Sarah Chen",
-        "Mbox": "sarah.chen@specialsolutions.example",
-        "CountOfRoles": 0,
-        "Description": "Legal Compliance Reviewer. Reviews releases for regulatory compliance.",
-        "TypeOfAgent": "",
-        "Roles": "",
-        "ModelVersion": "",
-        "Artifacts": "",
-        "Datasets": "",
-        "ProducedArtifacts": "",
-        "ProcessedDatasets": ""
-      },
-      {
-        "AgentId": "robert-williams",
-        "Name": "Robert Williams",
-        "Mbox": "robert.williams@specialsolutions.example",
-        "CountOfRoles": 0,
-        "TypeOfAgent": "human",
-        "Description": "General Counsel. Senior legal authority for escalations.",
-        "Roles": "",
-        "ModelVersion": "",
-        "Artifacts": "",
-        "Datasets": "",
-        "ProducedArtifacts": "",
-        "ProcessedDatasets": ""
-      },
-      {
-        "AgentId": "michael-torres",
-        "Name": "Michael Torres",
-        "Mbox": "michael.torres@specialsolutions.example",
-        "CountOfRoles": 0,
-        "Description": "Financial Analyst responsible for reviewing financial metrics in QBR.",
-        "TypeOfAgent": "",
-        "Roles": "",
-        "ModelVersion": "",
-        "Artifacts": "",
-        "Datasets": "",
-        "ProducedArtifacts": "",
-        "ProcessedDatasets": ""
-      },
-      {
-        "AgentId": "jennifer-park",
-        "Name": "Jennifer Park",
-        "Mbox": "jennifer.park@specialsolutions.example",
-        "CountOfRoles": 0,
-        "Description": "CFO responsible for executive summaries and final financial sign-off.",
-        "TypeOfAgent": "",
-        "Roles": "",
-        "ModelVersion": "",
-        "Artifacts": "",
-        "Datasets": "",
-        "ProducedArtifacts": "",
-        "ProcessedDatasets": ""
-      },
-      {
-        "AgentId": "ci-pipeline",
-        "Name": "CI Pipeline",
-        "CountOfRoles": 0,
-        "Description": "Continuous Integration pipeline responsible for automated build, test, and deployment execution. Fills the Deployment Engineer role for automated deployment steps. Subclass of prov:SoftwareAgent and schema:SoftwareApplication.",
-        "TypeOfAgent": "",
-        "Roles": "",
-        "ModelVersion": "",
-        "Mbox": "",
-        "Artifacts": "",
-        "Datasets": "",
-        "ProducedArtifacts": "",
-        "ProcessedDatasets": ""
-      },
-      {
-        "AgentId": "etl-pipeline",
-        "Name": "ETL Pipeline",
-        "CountOfRoles": 0,
-        "Description": "Extract-Transform-Load pipeline responsible for data collection and aggregation for business reviews.",
-        "TypeOfAgent": "",
-        "Roles": "",
-        "ModelVersion": "",
-        "Mbox": "",
-        "Artifacts": "",
-        "Datasets": "",
-        "ProducedArtifacts": "",
-        "ProcessedDatasets": ""
-      }
-    ]
-  },
-  "Artifacts": {
-    "Description": "Table: Artifacts",
-    "schema": [
-      {
-        "name": "ArtifactId",
-        "datatype": "string",
-        "type": "raw",
-        "nullable": false
-      },
-      {
-        "name": "Name",
-        "datatype": "string",
-        "type": "raw",
-        "nullable": true,
-        "Description": "Display name of the artifact. Maps to rdfs:label."
-      },
-      {
-        "name": "Description",
-        "datatype": "string",
-        "type": "raw",
-        "nullable": true,
-        "Description": "Description of the artifact\u0027s content and purpose."
-      },
-      {
-        "name": "ProducedBy",
-        "datatype": "string",
-        "type": "relationship",
-        "nullable": true,
-        "Description": "Workflow step that produces this artifact. Maps to ntwf:producedBy.",
-        "RelatedTo": "Agents"
-      },
-      {
-        "name": "SequencePosition",
-        "datatype": "integer",
-        "type": "raw",
-        "nullable": true,
-        "Description": "Position in the artifact provenance chain."
-      },
-      {
-        "name": "Title",
-        "datatype": "string",
-        "type": "raw",
-        "nullable": true,
-        "Description": "Display name of the artifact. Maps to dct:title."
-      },
-      {
-        "name": "Identifier",
-        "datatype": "string",
-        "type": "raw",
-        "nullable": true,
-        "Description": "External reference identifier (document ID, ticket number). Maps to dct:identifier. Join key to document management system."
-      },
-      {
-        "name": "Created",
-        "datatype": "datetime",
-        "type": "raw",
-        "nullable": true,
-        "Description": "Date the artifact was created. Maps to dct:created."
-      },
-      {
-        "name": "GeneratedBy",
-        "datatype": "string",
-        "type": "raw",
-        "nullable": true,
-        "Description": "Workflow step that produced this artifact. Maps to prov:wasGeneratedBy."
-      },
-      {
-        "name": "AttributedTo",
-        "datatype": "string",
-        "type": "raw",
-        "nullable": true,
-        "Description": "Agent responsible for producing this artifact. Maps to prov:wasAttributedTo."
-      },
-      {
-        "name": "DerivedFrom",
-        "datatype": "string",
-        "type": "raw",
-        "nullable": true,
-        "Description": "Upstream artifact this was derived from. Maps to prov:wasDerivedFrom. Forms provenance chain."
-      }
-    ],
-    "data": [
-      {
-        "ArtifactId": "risk-report",
-        "Name": "Risk Report",
-        "Description": "Automated risk assessment output produced by the RiskAnalysis-AI agent. First artifact in the provenance chain.",
-        "SequencePosition": 1,
-        "ProducedBy": "",
-        "Title": "",
-        "Identifier": "",
-        "Created": "",
-        "GeneratedBy": "",
-        "AttributedTo": "",
-        "DerivedFrom": ""
-      },
-      {
-        "ArtifactId": "legal-clearance",
-        "Name": "Legal Clearance",
-        "Description": "Legal compliance sign-off document produced after legal review. Certifies release meets regulatory requirements.",
+        "WorkflowStepId": "step-metrics-analysis",
+        "Label": "Metrics Analysis",
         "SequencePosition": 2,
-        "ProducedBy": "",
-        "Title": "",
-        "Identifier": "",
-        "Created": "",
-        "GeneratedBy": "",
-        "AttributedTo": "",
-        "DerivedFrom": ""
+        "RequiresHumanApproval": false,
+        "StepDurationMinutes": 20,
+        "IsStepOf": "quarterly-business-review",
+        "AssignedRole": "role-risk-analyst",
+        "ApprovalGate": "",
+        "ProducesArtifact": "artifact-metrics-analysis",
+        "RequiresArtifact": "artifact-raw-data-export",
+        "ConsumesDataset": "dataset-risk-metrics-q1",
+        "IsStepOfTitle": "Quarterly Business Review",
+        "AssignedRoleLabel": "Risk Analyst",
+        "AssignedRoleFilledByName": "RiskAnalysis-AI",
+        "AssignedRoleDepartment": "Engineering"
       },
       {
-        "ArtifactId": "release-authorization",
-        "Name": "Release Authorization",
-        "Description": "Formal authorization to proceed with production deployment. Produced by Release Manager at the approval gate.",
+        "WorkflowStepId": "step-financial-review",
+        "Label": "Financial Review",
         "SequencePosition": 3,
-        "ProducedBy": "",
-        "Title": "",
-        "Identifier": "",
-        "Created": "",
-        "GeneratedBy": "",
-        "AttributedTo": "",
-        "DerivedFrom": ""
+        "RequiresHumanApproval": true,
+        "StepDurationMinutes": 90,
+        "IsStepOf": "quarterly-business-review",
+        "AssignedRole": "role-financial-analyst",
+        "ApprovalGate": "gate-financial-review",
+        "ProducesArtifact": "artifact-financial-summary",
+        "RequiresArtifact": "artifact-metrics-analysis",
+        "ConsumesDataset": "dataset-financials-q1",
+        "IsStepOfTitle": "Quarterly Business Review",
+        "AssignedRoleLabel": "Financial Analyst",
+        "AssignedRoleFilledByName": "Michael Torres",
+        "AssignedRoleDepartment": "Finance"
       },
       {
-        "ArtifactId": "deployment-log",
-        "Name": "Deployment Log",
-        "Description": "Technical log of deployment execution including timestamps, systems affected, and any errors encountered.",
+        "WorkflowStepId": "step-executive-summary",
+        "Label": "Executive Summary",
         "SequencePosition": 4,
-        "ProducedBy": "",
-        "Title": "",
-        "Identifier": "",
-        "Created": "",
-        "GeneratedBy": "",
-        "AttributedTo": "",
-        "DerivedFrom": ""
-      },
-      {
-        "ArtifactId": "post-deployment-report",
-        "Name": "Post-Deployment Report",
-        "Description": "Final report summarizing deployment outcome, metrics, and any follow-up items. Closes the workflow.",
-        "SequencePosition": 5,
-        "ProducedBy": "",
-        "Title": "",
-        "Identifier": "",
-        "Created": "",
-        "GeneratedBy": "",
-        "AttributedTo": "",
-        "DerivedFrom": ""
-      },
-      {
-        "ArtifactId": "artifact-risk-report",
-        "Name": "artifact-risk-report",
-        "Description": "Automated risk assessment output produced by the RiskAnalysis-AI agent. First artifact in the production deployment provenance chain. Contains risk scores, identified vulnerabilities, and mitigation recommendations.",
-        "SequencePosition": 1,
-        "Title": "Risk Report",
-        "Identifier": "DOC-RISK-2026-001",
-        "Created": "2026-01-15T00:00:00Z",
-        "ProducedBy": "",
-        "GeneratedBy": "",
-        "AttributedTo": "",
-        "DerivedFrom": ""
-      },
-      {
-        "ArtifactId": "artifact-legal-clearance",
-        "Name": "artifact-legal-clearance",
-        "Description": "Legal compliance sign-off document produced after legal review. Certifies release meets regulatory requirements. Derived from Risk Report analysis.",
-        "SequencePosition": 2,
-        "Title": "Legal Clearance",
-        "Identifier": "DOC-LEGAL-2026-001",
-        "Created": "2026-01-15T00:00:00Z",
-        "ProducedBy": "",
-        "GeneratedBy": "",
-        "AttributedTo": "",
-        "DerivedFrom": ""
-      },
-      {
-        "ArtifactId": "artifact-release-authorization",
-        "Name": "artifact-release-authorization",
-        "Description": "Formal authorization to proceed with production deployment. Produced by Release Manager at the approval gate. Derived from Legal Clearance.",
-        "SequencePosition": 3,
-        "Title": "Release Authorization",
-        "Identifier": "DOC-AUTH-2026-001",
-        "Created": "2026-01-15T00:00:00Z",
-        "ProducedBy": "",
-        "GeneratedBy": "",
-        "AttributedTo": "",
-        "DerivedFrom": ""
-      },
-      {
-        "ArtifactId": "artifact-deployment-log",
-        "Name": "artifact-deployment-log",
-        "Description": "Technical log of deployment execution including timestamps, systems affected, commands executed, and any errors encountered. Produced by CI Pipeline.",
-        "SequencePosition": 4,
-        "Title": "Deployment Log",
-        "Identifier": "DOC-DEPLOY-2026-001",
-        "Created": "2026-01-15T00:00:00Z",
-        "ProducedBy": "",
-        "GeneratedBy": "",
-        "AttributedTo": "",
-        "DerivedFrom": ""
-      },
-      {
-        "ArtifactId": "artifact-post-deployment-report",
-        "Name": "artifact-post-deployment-report",
-        "Description": "Final report summarizing deployment outcome, metrics, and any follow-up items. Closes the production deployment workflow.",
-        "SequencePosition": 5,
-        "Title": "Post-Deployment Report",
-        "Identifier": "DOC-POST-2026-001",
-        "Created": "2026-01-15T00:00:00Z",
-        "ProducedBy": "",
-        "GeneratedBy": "",
-        "AttributedTo": "",
-        "DerivedFrom": ""
-      },
-      {
-        "ArtifactId": "artifact-raw-data-export",
-        "Name": "artifact-raw-data-export",
-        "Description": "Aggregated raw data from multiple source systems for QBR analysis. Produced by ETL Pipeline from sales and incident datasets.",
-        "SequencePosition": 1,
-        "Title": "Raw Data Export",
-        "Identifier": "DOC-DATA-2026-Q1",
-        "Created": "2026-01-10T00:00:00Z",
-        "ProducedBy": "",
-        "GeneratedBy": "",
-        "AttributedTo": "",
-        "DerivedFrom": ""
-      },
-      {
-        "ArtifactId": "artifact-metrics-analysis",
-        "Name": "artifact-metrics-analysis",
-        "Description": "AI-generated analysis of business metrics including trends, anomalies, and risk indicators. Produced by RiskAnalysis-AI from raw data export.",
-        "SequencePosition": 2,
-        "Title": "Metrics Analysis Report",
-        "Identifier": "DOC-METRICS-2026-Q1",
-        "Created": "2026-01-12T00:00:00Z",
-        "ProducedBy": "",
-        "GeneratedBy": "",
-        "AttributedTo": "",
-        "DerivedFrom": ""
-      },
-      {
-        "ArtifactId": "artifact-financial-summary",
-        "Name": "artifact-financial-summary",
-        "Description": "Financial analysis and summary prepared by Financial Analyst. Includes revenue, costs, and profitability metrics.",
-        "SequencePosition": 3,
-        "Title": "Financial Summary",
-        "Identifier": "DOC-FIN-2026-Q1",
-        "Created": "2026-01-14T00:00:00Z",
-        "ProducedBy": "",
-        "GeneratedBy": "",
-        "AttributedTo": "",
-        "DerivedFrom": ""
-      },
-      {
-        "ArtifactId": "artifact-qbr-presentation",
-        "Name": "artifact-qbr-presentation",
-        "Description": "Final quarterly business review presentation for executive stakeholders. Synthesizes all prior artifacts into actionable insights.",
-        "SequencePosition": 4,
-        "Title": "QBR Executive Presentation",
-        "Identifier": "DOC-QBR-2026-Q1",
-        "Created": "2026-01-15T00:00:00Z",
-        "ProducedBy": "",
-        "GeneratedBy": "",
-        "AttributedTo": "",
-        "DerivedFrom": ""
+        "RequiresHumanApproval": true,
+        "StepDurationMinutes": 120,
+        "IsStepOf": "quarterly-business-review",
+        "AssignedRole": "role-cfo",
+        "ApprovalGate": "",
+        "ProducesArtifact": "artifact-qbr-presentation",
+        "RequiresArtifact": "artifact-financial-summary",
+        "ConsumesDataset": "",
+        "IsStepOfTitle": "Quarterly Business Review",
+        "AssignedRoleLabel": "CFO",
+        "AssignedRoleFilledByName": "Jennifer Park",
+        "AssignedRoleDepartment": "Finance"
       }
     ]
   },
   "PrecedesSteps": {
-    "Description": "Table: PrecedesSteps",
+    "Description": "Table: PrecedesSteps. Junction table for step ordering. Maps to ntwf:precedesStep (owl:TransitiveProperty).",
     "schema": [
-      {
-        "name": "PrecedesStepId",
-        "datatype": "string",
-        "type": "raw",
-        "nullable": false
-      },
-      {
-        "name": "Name",
-        "datatype": "string",
-        "type": "raw",
-        "nullable": true
-      },
-      {
-        "name": "FromStep",
-        "datatype": "string",
-        "type": "relationship",
-        "nullable": true,
-        "Description": "The step that comes BEFORE (source of the precedes edge).",
-        "RelatedTo": "WorkflowSteps"
-      },
-      {
-        "name": "ToStep",
-        "datatype": "string",
-        "type": "relationship",
-        "nullable": true,
-        "Description": "The step that comes AFTER (target of the precedes edge).",
-        "RelatedTo": "WorkflowSteps"
-      }
+      {"name": "PrecedesStepId", "datatype": "string", "type": "raw", "nullable": false},
+      {"name": "FromStep", "datatype": "string", "type": "relationship", "nullable": true, "RelatedTo": "WorkflowSteps", "Description": "Step that comes BEFORE."},
+      {"name": "ToStep", "datatype": "string", "type": "relationship", "nullable": true, "RelatedTo": "WorkflowSteps", "Description": "Step that comes AFTER."},
+      {"name": "FromStepLabel", "datatype": "string", "type": "lookup", "nullable": true, "formula": "=INDEX(WorkflowSteps!{{Label}}, MATCH(PrecedesSteps!{{FromStep}}, WorkflowSteps!{{WorkflowStepId}}, 0))"},
+      {"name": "ToStepLabel", "datatype": "string", "type": "lookup", "nullable": true, "formula": "=INDEX(WorkflowSteps!{{Label}}, MATCH(PrecedesSteps!{{ToStep}}, WorkflowSteps!{{WorkflowStepId}}, 0))"}
+    ],
+    "data": [
+      {"PrecedesStepId": "prod-1-to-2", "FromStep": "step-risk-assessment", "ToStep": "step-legal-review", "FromStepLabel": "Risk Assessment", "ToStepLabel": "Legal Review"},
+      {"PrecedesStepId": "prod-2-to-3", "FromStep": "step-legal-review", "ToStep": "step-release-approval", "FromStepLabel": "Legal Review", "ToStepLabel": "Release Approval"},
+      {"PrecedesStepId": "prod-3-to-4", "FromStep": "step-release-approval", "ToStep": "step-deployment", "FromStepLabel": "Release Approval", "ToStepLabel": "Deployment Execution"},
+      {"PrecedesStepId": "prod-4-to-5", "FromStep": "step-deployment", "ToStep": "step-post-deployment", "FromStepLabel": "Deployment Execution", "ToStepLabel": "Post-Deployment Verification"},
+      {"PrecedesStepId": "qbr-1-to-2", "FromStep": "step-data-collection", "ToStep": "step-metrics-analysis", "FromStepLabel": "Data Collection", "ToStepLabel": "Metrics Analysis"},
+      {"PrecedesStepId": "qbr-2-to-3", "FromStep": "step-metrics-analysis", "ToStep": "step-financial-review", "FromStepLabel": "Metrics Analysis", "ToStepLabel": "Financial Review"},
+      {"PrecedesStepId": "qbr-3-to-4", "FromStep": "step-financial-review", "ToStep": "step-executive-summary", "FromStepLabel": "Financial Review", "ToStepLabel": "Executive Summary"}
+    ]
+  },
+  "ApprovalGates": {
+    "Description": "Table: ApprovalGates. Subclass of WorkflowStep. Decision points requiring explicit authorization.",
+    "schema": [
+      {"name": "ApprovalGateId", "datatype": "string", "type": "raw", "nullable": false},
+      {"name": "Name", "datatype": "string", "type": "raw", "nullable": true, "Description": "Gate name. Maps to rdfs:label."},
+      {"name": "Description", "datatype": "string", "type": "raw", "nullable": true},
+      {"name": "WorkflowStep", "datatype": "string", "type": "relationship", "nullable": true, "RelatedTo": "WorkflowSteps", "Description": "The step this gate is attached to. Establishes double-typing."},
+      {"name": "EscalationThresholdHours", "datatype": "integer", "type": "raw", "nullable": true, "Description": "Hours before delegation chain activates. Maps to ntwf:escalationThresholdHours."},
+      {"name": "WorkflowStepLabel", "datatype": "string", "type": "lookup", "nullable": true, "formula": "=INDEX(WorkflowSteps!{{Label}}, MATCH(ApprovalGates!{{WorkflowStep}}, WorkflowSteps!{{WorkflowStepId}}, 0))"},
+      {"name": "WorkflowStepAssignedRole", "datatype": "string", "type": "lookup", "nullable": true, "formula": "=INDEX(WorkflowSteps!{{AssignedRoleLabel}}, MATCH(ApprovalGates!{{WorkflowStep}}, WorkflowSteps!{{WorkflowStepId}}, 0))"}
     ],
     "data": [
       {
-        "PrecedesStepId": "step-1-to-2",
-        "Name": "step-1-to-2",
-        "FromStep": "risk-assessment",
-        "ToStep": "legal-review"
+        "ApprovalGateId": "gate-release-approval",
+        "Name": "Release Approval Gate",
+        "Description": "Final approval before production deployment. Requires Release Manager sign-off. Escalates via delegation chain: Release Manager -> VP Engineering -> CTO.",
+        "WorkflowStep": "step-release-approval",
+        "EscalationThresholdHours": 24,
+        "WorkflowStepLabel": "Release Approval",
+        "WorkflowStepAssignedRole": "Release Manager"
       },
       {
-        "PrecedesStepId": "step-2-to-3",
-        "Name": "step-2-to-3",
-        "FromStep": "legal-review",
-        "ToStep": "release-approval"
-      },
-      {
-        "PrecedesStepId": "step-3-to-4",
-        "Name": "step-3-to-4",
-        "FromStep": "release-approval",
-        "ToStep": ""
-      },
-      {
-        "PrecedesStepId": "prod-1-to-2",
-        "Name": "prod-1-to-2",
-        "FromStep": "",
-        "ToStep": ""
-      },
-      {
-        "PrecedesStepId": "prod-2-to-3",
-        "Name": "prod-2-to-3",
-        "FromStep": "",
-        "ToStep": ""
-      },
-      {
-        "PrecedesStepId": "prod-3-to-4",
-        "Name": "prod-3-to-4",
-        "FromStep": "",
-        "ToStep": ""
-      },
-      {
-        "PrecedesStepId": "prod-4-to-5",
-        "Name": "prod-4-to-5",
-        "FromStep": "",
-        "ToStep": ""
-      },
-      {
-        "PrecedesStepId": "qbr-1-to-2",
-        "Name": "qbr-1-to-2",
-        "FromStep": "",
-        "ToStep": ""
-      },
-      {
-        "PrecedesStepId": "qbr-2-to-3",
-        "Name": "qbr-2-to-3",
-        "FromStep": "",
-        "ToStep": ""
-      },
-      {
-        "PrecedesStepId": "qbr-3-to-4",
-        "Name": "qbr-3-to-4",
-        "FromStep": "",
-        "ToStep": ""
+        "ApprovalGateId": "gate-financial-review",
+        "Name": "Financial Review Gate",
+        "Description": "Approval gate for financial data in QBR. Requires Financial Analyst sign-off. Escalates to CFO if pending beyond threshold.",
+        "WorkflowStep": "step-financial-review",
+        "EscalationThresholdHours": 48,
+        "WorkflowStepLabel": "Financial Review",
+        "WorkflowStepAssignedRole": "Financial Analyst"
       }
     ]
   },
-  "Datasets": {
-    "Description": "Table: Datasets",
+  "Roles": {
+    "Description": "Table: Roles. Custom NTWF class. Structural center implementing role-agent separation (Heuristic 2).",
     "schema": [
-      {
-        "name": "DatasetId",
-        "datatype": "string",
-        "type": "raw",
-        "nullable": false
-      },
-      {
-        "name": "Name",
-        "datatype": "string",
-        "type": "raw",
-        "nullable": true,
-        "Description": "Display name of the dataset. Maps to dct:title."
-      },
-      {
-        "name": "Description",
-        "datatype": "string",
-        "type": "raw",
-        "nullable": true,
-        "Description": "Description of the dataset\u0027s content and source."
-      },
-      {
-        "name": "ProcessedBy",
-        "datatype": "string",
-        "type": "relationship",
-        "nullable": true,
-        "Description": "AI agent that processes this dataset. Inverse of ProcessesDatasets.",
-        "RelatedTo": "Agents"
-      },
-      {
-        "name": "TimePeriod",
-        "datatype": "string",
-        "type": "raw",
-        "nullable": true,
-        "Description": "Time period the dataset covers (e.g., \u0027Q1 2026\u0027)."
-      },
-      {
-        "name": "Title",
-        "datatype": "string",
-        "type": "raw",
-        "nullable": true,
-        "Description": "Display name of the dataset. Maps to dct:title."
-      },
-      {
-        "name": "Modified",
-        "datatype": "datetime",
-        "type": "raw",
-        "nullable": true,
-        "Description": "Date the dataset was last modified. Maps to dct:modified."
-      },
-      {
-        "name": "Publisher",
-        "datatype": "string",
-        "type": "raw",
-        "nullable": true,
-        "Description": "Department that publishes/owns this dataset. Maps to dct:publisher."
-      },
-      {
-        "name": "ConsumedByStep",
-        "datatype": "string",
-        "type": "raw",
-        "nullable": true,
-        "Description": "Workflow step(s) that consume this dataset. Inverse of ConsumesDataset."
-      }
+      {"name": "RoleId", "datatype": "string", "type": "raw", "nullable": false},
+      {"name": "Label", "datatype": "string", "type": "raw", "nullable": true, "Description": "Role name. Maps to rdfs:label."},
+      {"name": "Comment", "datatype": "string", "type": "raw", "nullable": true, "Description": "Role responsibilities. Maps to rdfs:comment."},
+      {"name": "Department", "datatype": "string", "type": "relationship", "nullable": true, "RelatedTo": "Departments", "Description": "Owning department. Maps to ntwf:ownedBy. Enables CQ7."},
+      {"name": "FilledBy", "datatype": "string", "type": "relationship", "nullable": true, "RelatedTo": "Agents", "Description": "Current agent. Maps to ntwf:filledBy. THE change-management triple."},
+      {"name": "DelegatesTo", "datatype": "string", "type": "relationship", "nullable": true, "RelatedTo": "Roles", "Description": "Escalation role. Maps to ntwf:delegatesTo. Enables CQ6."},
+      {"name": "DelegatedToBy", "datatype": "string", "type": "relationship", "nullable": true, "RelatedTo": "Roles", "Description": "Inverse of DelegatesTo."},
+      {"name": "WorkflowSteps", "datatype": "string", "type": "relationship", "nullable": true, "RelatedTo": "WorkflowSteps", "Description": "Steps assigned to this role."},
+      {"name": "CountOfWorkflowSteps", "datatype": "integer", "type": "aggregation", "nullable": true, "formula": "=COUNTIFS(WorkflowSteps!{{AssignedRole}}, Roles!{{RoleId}})"},
+      {"name": "DepartmentName", "datatype": "string", "type": "lookup", "nullable": true, "formula": "=INDEX(Departments!{{Name}}, MATCH(Roles!{{Department}}, Departments!{{DepartmentId}}, 0))"},
+      {"name": "FilledByName", "datatype": "string", "type": "lookup", "nullable": true, "formula": "=INDEX(Agents!{{Name}}, MATCH(Roles!{{FilledBy}}, Agents!{{AgentId}}, 0))"},
+      {"name": "FilledByMBox", "datatype": "string", "type": "lookup", "nullable": true, "formula": "=INDEX(Agents!{{Mbox}}, MATCH(Roles!{{FilledBy}}, Agents!{{AgentId}}, 0))"},
+      {"name": "FilledByAgentType", "datatype": "string", "type": "lookup", "nullable": true, "formula": "=INDEX(Agents!{{TypeOfAgent}}, MATCH(Roles!{{FilledBy}}, Agents!{{AgentId}}, 0))"},
+      {"name": "DelegatesToLabel", "datatype": "string", "type": "lookup", "nullable": true, "formula": "=INDEX(Roles!{{Label}}, MATCH(Roles!{{DelegatesTo}}, Roles!{{RoleId}}, 0))"}
     ],
     "data": [
       {
-        "DatasetId": "q1-2026-risk-metrics",
-        "Name": "Q1 2026 Risk Metrics",
-        "Description": "Quarterly risk metrics dataset containing historical deployment data, incident reports, and risk indicators. Processed by RiskAnalysis-AI to produce Risk Report. Article CQ8 answer.",
-        "TimePeriod": "Q1 2026",
-        "ProcessedBy": "",
-        "Title": "",
-        "Modified": "",
-        "Publisher": "",
-        "ConsumedByStep": ""
+        "RoleId": "role-release-manager",
+        "Label": "Release Manager",
+        "Comment": "Primary role for production releases. First in delegation chain. CQ2 answer: filled by Maria Gonzalez.",
+        "Department": "dept-engineering",
+        "FilledBy": "agent-maria-gonzalez",
+        "DelegatesTo": "role-vp-engineering",
+        "DelegatedToBy": "",
+        "WorkflowSteps": "step-release-approval, step-post-deployment",
+        "CountOfWorkflowSteps": 2,
+        "DepartmentName": "Engineering",
+        "FilledByName": "Maria Gonzalez",
+        "FilledByMBox": "maria.gonzalez@specialsolutions.example",
+        "FilledByAgentType": "human",
+        "DelegatesToLabel": "VP Engineering"
       },
       {
-        "DatasetId": "dataset-risk-metrics-q1",
-        "Name": "dataset-risk-metrics-q1",
-        "Description": "Quarterly risk metrics dataset containing historical deployment data, incident reports, and risk indicators. Processed by RiskAnalysis-AI to produce Risk Report. Article CQ8 answer: \u0027What datasets does the quarterly business review consume?\u0027",
-        "TimePeriod": "Q1 2026",
-        "Title": "Q1 2026 Risk Metrics",
-        "Modified": "2026-01-10T00:00:00Z",
-        "ProcessedBy": "",
-        "Publisher": "",
-        "ConsumedByStep": ""
+        "RoleId": "role-vp-engineering",
+        "Label": "VP Engineering",
+        "Comment": "Second in delegation chain. Escalation from Release Manager.",
+        "Department": "dept-engineering",
+        "FilledBy": "agent-james-okafor",
+        "DelegatesTo": "role-cto",
+        "DelegatedToBy": "role-release-manager",
+        "WorkflowSteps": "",
+        "CountOfWorkflowSteps": 0,
+        "DepartmentName": "Engineering",
+        "FilledByName": "James Okafor",
+        "FilledByMBox": "james.okafor@specialsolutions.example",
+        "FilledByAgentType": "human",
+        "DelegatesToLabel": "CTO"
       },
       {
-        "DatasetId": "dataset-sales-q1",
-        "Name": "dataset-sales-q1",
-        "Description": "Quarterly sales data including revenue by product line, customer segments, and regional breakdown.",
-        "TimePeriod": "Q1 2026",
-        "Title": "Q1 2026 Sales Data",
-        "Modified": "2026-01-08T00:00:00Z",
-        "ProcessedBy": "",
-        "Publisher": "",
-        "ConsumedByStep": ""
+        "RoleId": "role-cto",
+        "Label": "CTO",
+        "Comment": "Final in delegation chain. Ultimate authority for release decisions. CQ6 shows this chain.",
+        "Department": "dept-engineering",
+        "FilledBy": "agent-david-kim",
+        "DelegatesTo": "",
+        "DelegatedToBy": "role-vp-engineering",
+        "WorkflowSteps": "",
+        "CountOfWorkflowSteps": 0,
+        "DepartmentName": "Engineering",
+        "FilledByName": "David Kim",
+        "FilledByMBox": "david.kim@specialsolutions.example",
+        "FilledByAgentType": "human",
+        "DelegatesToLabel": ""
       },
       {
-        "DatasetId": "dataset-incidents-q1",
-        "Name": "dataset-incidents-q1",
-        "Description": "Quarterly incident and outage data including severity, resolution time, and root cause analysis.",
-        "TimePeriod": "Q1 2026",
-        "Title": "Q1 2026 Incident Reports",
-        "Modified": "2026-01-09T00:00:00Z",
-        "ProcessedBy": "",
-        "Publisher": "",
-        "ConsumedByStep": ""
+        "RoleId": "role-legal-reviewer",
+        "Label": "Legal Compliance Reviewer",
+        "Comment": "Legal and compliance review. Owned by Legal dept, enabling CQ7 cross-departmental queries.",
+        "Department": "dept-legal",
+        "FilledBy": "agent-sarah-chen",
+        "DelegatesTo": "role-general-counsel",
+        "DelegatedToBy": "",
+        "WorkflowSteps": "step-legal-review",
+        "CountOfWorkflowSteps": 1,
+        "DepartmentName": "Legal",
+        "FilledByName": "Sarah Chen",
+        "FilledByMBox": "sarah.chen@specialsolutions.example",
+        "FilledByAgentType": "human",
+        "DelegatesToLabel": "General Counsel"
       },
       {
-        "DatasetId": "dataset-financials-q1",
-        "Name": "dataset-financials-q1",
-        "Description": "Quarterly financial data including P\u0026L, balance sheet, and cash flow statements.",
-        "TimePeriod": "Q1 2026",
-        "Title": "Q1 2026 Financial Statements",
-        "Modified": "2026-01-12T00:00:00Z",
-        "ProcessedBy": "",
-        "Publisher": "",
-        "ConsumedByStep": ""
+        "RoleId": "role-general-counsel",
+        "Label": "General Counsel",
+        "Comment": "Senior legal role. Escalation point for Legal Compliance Reviewer.",
+        "Department": "dept-legal",
+        "FilledBy": "agent-robert-williams",
+        "DelegatesTo": "",
+        "DelegatedToBy": "role-legal-reviewer",
+        "WorkflowSteps": "",
+        "CountOfWorkflowSteps": 0,
+        "DepartmentName": "Legal",
+        "FilledByName": "Robert Williams",
+        "FilledByMBox": "robert.williams@specialsolutions.example",
+        "FilledByAgentType": "human",
+        "DelegatesToLabel": ""
+      },
+      {
+        "RoleId": "role-risk-analyst",
+        "Label": "Risk Analyst",
+        "Comment": "Risk assessment role. Filled by AI agent (RiskAnalysis-AI). Demonstrates AI filling roles.",
+        "Department": "dept-engineering",
+        "FilledBy": "agent-riskanalysis-ai",
+        "DelegatesTo": "",
+        "DelegatedToBy": "",
+        "WorkflowSteps": "step-risk-assessment, step-metrics-analysis",
+        "CountOfWorkflowSteps": 2,
+        "DepartmentName": "Engineering",
+        "FilledByName": "RiskAnalysis-AI",
+        "FilledByMBox": "",
+        "FilledByAgentType": "ai",
+        "DelegatesToLabel": ""
+      },
+      {
+        "RoleId": "role-deployment-engineer",
+        "Label": "Deployment Engineer",
+        "Comment": "Deployment execution role. Filled by CI Pipeline. Demonstrates automated pipelines filling roles.",
+        "Department": "dept-engineering",
+        "FilledBy": "agent-ci-pipeline",
+        "DelegatesTo": "role-release-manager",
+        "DelegatedToBy": "",
+        "WorkflowSteps": "step-deployment",
+        "CountOfWorkflowSteps": 1,
+        "DepartmentName": "Engineering",
+        "FilledByName": "CI Pipeline",
+        "FilledByMBox": "",
+        "FilledByAgentType": "automatedpipeline",
+        "DelegatesToLabel": "Release Manager"
+      },
+      {
+        "RoleId": "role-data-engineer",
+        "Label": "Data Engineer",
+        "Comment": "Data collection and ETL. Filled by ETL Pipeline.",
+        "Department": "dept-engineering",
+        "FilledBy": "agent-etl-pipeline",
+        "DelegatesTo": "",
+        "DelegatedToBy": "",
+        "WorkflowSteps": "step-data-collection",
+        "CountOfWorkflowSteps": 1,
+        "DepartmentName": "Engineering",
+        "FilledByName": "ETL Pipeline",
+        "FilledByMBox": "",
+        "FilledByAgentType": "automatedpipeline",
+        "DelegatesToLabel": ""
+      },
+      {
+        "RoleId": "role-financial-analyst",
+        "Label": "Financial Analyst",
+        "Comment": "Financial review and analysis. Owned by Finance department.",
+        "Department": "dept-finance",
+        "FilledBy": "agent-michael-torres",
+        "DelegatesTo": "role-cfo",
+        "DelegatedToBy": "",
+        "WorkflowSteps": "step-financial-review",
+        "CountOfWorkflowSteps": 1,
+        "DepartmentName": "Finance",
+        "FilledByName": "Michael Torres",
+        "FilledByMBox": "michael.torres@specialsolutions.example",
+        "FilledByAgentType": "human",
+        "DelegatesToLabel": "CFO"
+      },
+      {
+        "RoleId": "role-cfo",
+        "Label": "CFO",
+        "Comment": "Chief Financial Officer. Executive summaries and final financial sign-off.",
+        "Department": "dept-finance",
+        "FilledBy": "agent-jennifer-park",
+        "DelegatesTo": "",
+        "DelegatedToBy": "role-financial-analyst",
+        "WorkflowSteps": "step-executive-summary",
+        "CountOfWorkflowSteps": 1,
+        "DepartmentName": "Finance",
+        "FilledByName": "Jennifer Park",
+        "FilledByMBox": "jennifer.park@specialsolutions.example",
+        "FilledByAgentType": "human",
+        "DelegatesToLabel": ""
       }
     ]
   },
-  "Departments": {
-    "Description": "Table: Departments",
+  "Agents": {
+    "Description": "Table: Agents. Subclass of prov:Agent. Parent for HumanAgent, AIAgent, AutomatedPipeline (all mutually disjoint).",
     "schema": [
-      {
-        "name": "DepartmentId",
-        "datatype": "string",
-        "type": "raw",
-        "nullable": false
-      },
-      {
-        "name": "Name",
-        "datatype": "string",
-        "type": "raw",
-        "nullable": true,
-        "Description": "Human-readable name of the department. Maps to rdfs:label."
-      },
-      {
-        "name": "Description",
-        "datatype": "string",
-        "type": "raw",
-        "nullable": true,
-        "Description": "Description of the department\u0027s function and responsibilities."
-      },
-      {
-        "name": "Roles",
-        "datatype": "string",
-        "type": "raw",
-        "nullable": true,
-        "Description": "Roles owned by this department. Inverse of Department on Roles."
-      },
-      {
-        "name": "CountOfRoles",
-        "datatype": "integer",
-        "type": "raw",
-        "nullable": true,
-        "Description": "Count of roles owned by this department."
-      },
-      {
-        "name": "Roles_2",
-        "datatype": "string",
-        "type": "relationship",
-        "nullable": true,
-        "RelatedTo": "Roles"
-      },
-      {
-        "name": "PublishedDatasets",
-        "datatype": "string",
-        "type": "raw",
-        "nullable": true,
-        "Description": "Datasets published by this department. Inverse of Publisher."
-      }
+      {"name": "AgentId", "datatype": "string", "type": "raw", "nullable": false},
+      {"name": "Name", "datatype": "string", "type": "raw", "nullable": true, "Description": "Agent name. Maps to foaf:name (humans) or schema:name (software)."},
+      {"name": "TypeOfAgent", "datatype": "string", "type": "relationship", "nullable": true, "RelatedTo": "TypesOfAgents", "Description": "Agent type: human, ai, or automatedpipeline."},
+      {"name": "Mbox", "datatype": "string", "type": "raw", "nullable": true, "Description": "Email. Maps to foaf:mbox. Only for HumanAgent."},
+      {"name": "ModelVersion", "datatype": "string", "type": "raw", "nullable": true, "Description": "AI model version. Maps to ntwf:modelVersion. Only for AIAgent."},
+      {"name": "Description", "datatype": "string", "type": "raw", "nullable": true},
+      {"name": "Roles", "datatype": "string", "type": "relationship", "nullable": true, "RelatedTo": "Roles", "Description": "Roles filled. Inverse of FilledBy."},
+      {"name": "CountOfRoles", "datatype": "integer", "type": "aggregation", "nullable": true, "formula": "=COUNTIFS(Roles!{{FilledBy}}, Agents!{{AgentId}})"},
+      {"name": "ProducedArtifacts", "datatype": "string", "type": "relationship", "nullable": true, "RelatedTo": "Artifacts", "Description": "Artifacts attributed to this agent. Inverse of prov:wasAttributedTo."},
+      {"name": "ProcessedDatasets", "datatype": "string", "type": "relationship", "nullable": true, "RelatedTo": "Datasets", "Description": "Datasets processed by this agent."},
+      {"name": "TypeOfAgentName", "datatype": "string", "type": "lookup", "nullable": true, "formula": "=INDEX(TypesOfAgents!{{Name}}, MATCH(Agents!{{TypeOfAgent}}, TypesOfAgents!{{TypesOfAgentId}}, 0))"}
     ],
     "data": [
       {
-        "DepartmentId": "engineering",
-        "Name": "Engineering",
-        "Description": "Software engineering department responsible for development, deployment, and technical operations. Owns Release Manager, VP Engineering, CTO, Risk Analyst, Deployment Engineer, and Data Engineer roles.",
-        "Roles": "",
-        "CountOfRoles": 0,
-        "Roles_2": "",
-        "PublishedDatasets": ""
+        "AgentId": "agent-maria-gonzalez",
+        "Name": "Maria Gonzalez",
+        "TypeOfAgent": "human",
+        "Mbox": "maria.gonzalez@specialsolutions.example",
+        "ModelVersion": "",
+        "Description": "Senior Release Manager. Primary point of contact for release approval. CQ2 answer.",
+        "Roles": "role-release-manager",
+        "CountOfRoles": 1,
+        "ProducedArtifacts": "artifact-release-authorization, artifact-post-deployment-report",
+        "ProcessedDatasets": "",
+        "TypeOfAgentName": "Human Agent"
       },
       {
-        "DepartmentId": "legal",
-        "Name": "Legal",
-        "Description": "Legal and compliance department responsible for regulatory review and legal clearance. Owns Legal Compliance Reviewer and General Counsel roles. Article CQ7: \u0027Which workflows involve both Engineering and Legal?\u0027",
-        "Roles": "",
-        "CountOfRoles": 0,
-        "Roles_2": "",
-        "PublishedDatasets": ""
+        "AgentId": "agent-james-okafor",
+        "Name": "James Okafor",
+        "TypeOfAgent": "human",
+        "Mbox": "james.okafor@specialsolutions.example",
+        "ModelVersion": "",
+        "Description": "VP of Engineering. Second in delegation chain.",
+        "Roles": "role-vp-engineering",
+        "CountOfRoles": 1,
+        "ProducedArtifacts": "",
+        "ProcessedDatasets": "",
+        "TypeOfAgentName": "Human Agent"
       },
       {
-        "DepartmentId": "finance",
-        "Name": "Finance",
-        "Description": "Finance department responsible for financial analysis, reporting, and executive summaries. Owns Financial Analyst and CFO roles.",
-        "Roles": "",
-        "CountOfRoles": 0,
-        "Roles_2": "",
-        "PublishedDatasets": ""
+        "AgentId": "agent-david-kim",
+        "Name": "David Kim",
+        "TypeOfAgent": "human",
+        "Mbox": "david.kim@specialsolutions.example",
+        "ModelVersion": "",
+        "Description": "CTO. Final authority in delegation chain.",
+        "Roles": "role-cto",
+        "CountOfRoles": 1,
+        "ProducedArtifacts": "",
+        "ProcessedDatasets": "",
+        "TypeOfAgentName": "Human Agent"
+      },
+      {
+        "AgentId": "agent-sarah-chen",
+        "Name": "Sarah Chen",
+        "TypeOfAgent": "human",
+        "Mbox": "sarah.chen@specialsolutions.example",
+        "ModelVersion": "",
+        "Description": "Legal Compliance Reviewer. Reviews releases for regulatory compliance.",
+        "Roles": "role-legal-reviewer",
+        "CountOfRoles": 1,
+        "ProducedArtifacts": "artifact-legal-clearance",
+        "ProcessedDatasets": "",
+        "TypeOfAgentName": "Human Agent"
+      },
+      {
+        "AgentId": "agent-robert-williams",
+        "Name": "Robert Williams",
+        "TypeOfAgent": "human",
+        "Mbox": "robert.williams@specialsolutions.example",
+        "ModelVersion": "",
+        "Description": "General Counsel. Senior legal authority.",
+        "Roles": "role-general-counsel",
+        "CountOfRoles": 1,
+        "ProducedArtifacts": "",
+        "ProcessedDatasets": "",
+        "TypeOfAgentName": "Human Agent"
+      },
+      {
+        "AgentId": "agent-michael-torres",
+        "Name": "Michael Torres",
+        "TypeOfAgent": "human",
+        "Mbox": "michael.torres@specialsolutions.example",
+        "ModelVersion": "",
+        "Description": "Financial Analyst. Reviews financial metrics in QBR.",
+        "Roles": "role-financial-analyst",
+        "CountOfRoles": 1,
+        "ProducedArtifacts": "artifact-financial-summary",
+        "ProcessedDatasets": "",
+        "TypeOfAgentName": "Human Agent"
+      },
+      {
+        "AgentId": "agent-jennifer-park",
+        "Name": "Jennifer Park",
+        "TypeOfAgent": "human",
+        "Mbox": "jennifer.park@specialsolutions.example",
+        "ModelVersion": "",
+        "Description": "CFO. Executive summaries and final financial sign-off.",
+        "Roles": "role-cfo",
+        "CountOfRoles": 1,
+        "ProducedArtifacts": "artifact-qbr-presentation",
+        "ProcessedDatasets": "",
+        "TypeOfAgentName": "Human Agent"
+      },
+      {
+        "AgentId": "agent-riskanalysis-ai",
+        "Name": "RiskAnalysis-AI",
+        "TypeOfAgent": "ai",
+        "Mbox": "",
+        "ModelVersion": "risk-classifier-v2.4.1",
+        "Description": "AI agent for automated risk assessment. Processes risk metrics dataset. CQ8 demonstrates dataset processing. Subclass of prov:SoftwareAgent.",
+        "Roles": "role-risk-analyst",
+        "CountOfRoles": 1,
+        "ProducedArtifacts": "artifact-risk-report, artifact-metrics-analysis",
+        "ProcessedDatasets": "dataset-risk-metrics-q1",
+        "TypeOfAgentName": "AI Agent"
+      },
+      {
+        "AgentId": "agent-ci-pipeline",
+        "Name": "CI Pipeline",
+        "TypeOfAgent": "automatedpipeline",
+        "Mbox": "",
+        "ModelVersion": "",
+        "Description": "CI pipeline for automated deployment. Subclass of prov:SoftwareAgent and schema:SoftwareApplication.",
+        "Roles": "role-deployment-engineer",
+        "CountOfRoles": 1,
+        "ProducedArtifacts": "artifact-deployment-log",
+        "ProcessedDatasets": "",
+        "TypeOfAgentName": "Automated Pipeline"
+      },
+      {
+        "AgentId": "agent-etl-pipeline",
+        "Name": "ETL Pipeline",
+        "TypeOfAgent": "automatedpipeline",
+        "Mbox": "",
+        "ModelVersion": "",
+        "Description": "ETL pipeline for data collection and aggregation.",
+        "Roles": "role-data-engineer",
+        "CountOfRoles": 1,
+        "ProducedArtifacts": "artifact-raw-data-export",
+        "ProcessedDatasets": "dataset-sales-q1, dataset-incidents-q1",
+        "TypeOfAgentName": "Automated Pipeline"
       }
     ]
   },
   "TypesOfAgents": {
-    "Description": "Table: TypesOfAgents",
+    "Description": "Table: TypesOfAgents. Classification for agent types. Maps to NTWF hierarchy: HumanAgent, AIAgent, AutomatedPipeline (mutually disjoint).",
     "schema": [
-      {
-        "name": "TypesOfAgentId",
-        "datatype": "string",
-        "type": "raw",
-        "nullable": false
-      },
-      {
-        "name": "Name",
-        "datatype": "string",
-        "type": "raw",
-        "nullable": true,
-        "Description": "Display name of the AI agent. Maps to schema:name."
-      },
-      {
-        "name": "Description",
-        "datatype": "string",
-        "type": "raw",
-        "nullable": true,
-        "Description": "Description of the AI agent\u0027s purpose and capabilities."
-      },
-      {
-        "name": "Agents",
-        "datatype": "string",
-        "type": "relationship",
-        "nullable": true,
-        "Description": "Agents of this type. Inverse of TypeOfAgent.",
-        "RelatedTo": "Agents"
-      },
-      {
-        "name": "OntologyClass",
-        "datatype": "string",
-        "type": "raw",
-        "nullable": true,
-        "Description": "Corresponding NTWF/external ontology class."
-      },
-      {
-        "name": "Superclasses",
-        "datatype": "string",
-        "type": "raw",
-        "nullable": true,
-        "Description": "Parent classes in ontology hierarchy."
-      },
-      {
-        "name": "CountOfAgents",
-        "datatype": "integer",
-        "type": "raw",
-        "nullable": true
-      }
+      {"name": "TypesOfAgentId", "datatype": "string", "type": "raw", "nullable": false},
+      {"name": "Name", "datatype": "string", "type": "raw", "nullable": true},
+      {"name": "Description", "datatype": "string", "type": "raw", "nullable": true},
+      {"name": "OntologyClass", "datatype": "string", "type": "raw", "nullable": true, "Description": "Corresponding NTWF ontology class."},
+      {"name": "Superclasses", "datatype": "string", "type": "raw", "nullable": true, "Description": "Parent classes in ontology hierarchy."},
+      {"name": "Agents", "datatype": "string", "type": "relationship", "nullable": true, "RelatedTo": "Agents"},
+      {"name": "CountOfAgents", "datatype": "integer", "type": "aggregation", "nullable": true, "formula": "=COUNTIFS(Agents!{{TypeOfAgent}}, TypesOfAgents!{{TypesOfAgentId}})"}
     ],
     "data": [
       {
         "TypesOfAgentId": "human",
-        "Name": "Human",
-        "Description": "AI agent responsible for automated risk assessment. Processes Q1 2026 Risk Metrics dataset and produces Risk Report artifact. Article CQ8 demonstrates this agent\u0027s dataset processing.",
-        "Agents": "maria-gonzalez, james-okafor, james-okafor, david-kim, robert-williams",
-        "OntologyClass": "",
-        "Superclasses": "",
-        "CountOfAgents": 0
+        "Name": "Human Agent",
+        "Description": "Human individuals with legal standing. Carry foaf:name and foaf:mbox. Only type that can fill requiresHumanApproval roles.",
+        "OntologyClass": "ntwf:HumanAgent",
+        "Superclasses": "foaf:Person, prov:Agent",
+        "Agents": "agent-maria-gonzalez, agent-james-okafor, agent-david-kim, agent-sarah-chen, agent-robert-williams, agent-michael-torres, agent-jennifer-park",
+        "CountOfAgents": 7
       },
       {
         "TypesOfAgentId": "ai",
-        "Name": "AI",
-        "Description": "AIAgents - Autonomous AI systems that can fill roles. Subclass of ntwf:Agent. Distinguished from HumanAgents by having ModelVersion instead of foaf:mbox.",
-        "Agents": "riskanalysis-ai",
-        "OntologyClass": "",
-        "Superclasses": "",
-        "CountOfAgents": 0
+        "Name": "AI Agent",
+        "Description": "Autonomous AI systems. Produce probabilistic outputs. Carry ntwf:modelVersion for audit.",
+        "OntologyClass": "ntwf:AIAgent",
+        "Superclasses": "prov:SoftwareAgent",
+        "Agents": "agent-riskanalysis-ai",
+        "CountOfAgents": 1
       },
       {
         "TypesOfAgentId": "automatedpipeline",
-        "Name": "AutomatedPipeline",
-        "Agents": "ci-pipeline",
-        "Description": "",
-        "OntologyClass": "",
-        "Superclasses": "",
-        "CountOfAgents": 0
-      },
-      {
-        "TypesOfAgentId": "human-agent",
-        "Name": "Human Agent",
-        "Description": "Human individuals who can fill roles in workflows. Have legal standing in organizational processes. Carry foaf:name and foaf:mbox properties. Only agent type that can fill roles where requiresHumanApproval is true.",
-        "OntologyClass": "ntwf:HumanAgent",
-        "Superclasses": "foaf:Person, prov:Agent",
-        "Agents": "",
-        "CountOfAgents": 0
-      },
-      {
-        "TypesOfAgentId": "ai-agent",
-        "Name": "AI Agent",
-        "Description": "Autonomous AI systems that can fill roles. Produce probabilistic outputs that may require human review. Carry ntwf:modelVersion property for audit purposes. Distinguished from HumanAgents by having ModelVersion instead of foaf:mbox.",
-        "OntologyClass": "ntwf:AIAgent",
-        "Superclasses": "prov:SoftwareAgent",
-        "Agents": "",
-        "CountOfAgents": 0
-      },
-      {
-        "TypesOfAgentId": "automated-pipeline",
         "Name": "Automated Pipeline",
-        "Description": "Deterministic software pipelines that execute predefined rules. Produce deterministic outputs according to predefined rules. Distinguished from AIAgent by schema:SoftwareApplication alignment.",
+        "Description": "Deterministic software pipelines. Produce deterministic outputs per predefined rules.",
         "OntologyClass": "ntwf:AutomatedPipeline",
         "Superclasses": "prov:SoftwareAgent, schema:SoftwareApplication",
-        "Agents": "",
-        "CountOfAgents": 0
+        "Agents": "agent-ci-pipeline, agent-etl-pipeline",
+        "CountOfAgents": 2
+      }
+    ]
+  },
+  "Artifacts": {
+    "Description": "Table: Artifacts. Subclass of prov:Entity and schema:CreativeWork. Workflow outputs with provenance tracking.",
+    "schema": [
+      {"name": "ArtifactId", "datatype": "string", "type": "raw", "nullable": false},
+      {"name": "Title", "datatype": "string", "type": "raw", "nullable": true, "Description": "Artifact name. Maps to dct:title."},
+      {"name": "Description", "datatype": "string", "type": "raw", "nullable": true},
+      {"name": "Identifier", "datatype": "string", "type": "raw", "nullable": true, "Description": "External reference (document ID). Maps to dct:identifier."},
+      {"name": "Created", "datatype": "datetime", "type": "raw", "nullable": true, "Description": "Creation date. Maps to dct:created."},
+      {"name": "SequencePosition", "datatype": "integer", "type": "raw", "nullable": true, "Description": "Position in provenance chain."},
+      {"name": "GeneratedBy", "datatype": "string", "type": "relationship", "nullable": true, "RelatedTo": "WorkflowSteps", "Description": "Step that produced this. Maps to prov:wasGeneratedBy."},
+      {"name": "AttributedTo", "datatype": "string", "type": "relationship", "nullable": true, "RelatedTo": "Agents", "Description": "Responsible agent. Maps to prov:wasAttributedTo."},
+      {"name": "DerivedFrom", "datatype": "string", "type": "relationship", "nullable": true, "RelatedTo": "Artifacts", "Description": "Upstream artifact. Maps to prov:wasDerivedFrom. Forms provenance chain."},
+      {"name": "GeneratedByLabel", "datatype": "string", "type": "lookup", "nullable": true, "formula": "=INDEX(WorkflowSteps!{{Label}}, MATCH(Artifacts!{{GeneratedBy}}, WorkflowSteps!{{WorkflowStepId}}, 0))"},
+      {"name": "AttributedToName", "datatype": "string", "type": "lookup", "nullable": true, "formula": "=INDEX(Agents!{{Name}}, MATCH(Artifacts!{{AttributedTo}}, Agents!{{AgentId}}, 0))"},
+      {"name": "DerivedFromTitle", "datatype": "string", "type": "lookup", "nullable": true, "formula": "=INDEX(Artifacts!{{Title}}, MATCH(Artifacts!{{DerivedFrom}}, Artifacts!{{ArtifactId}}, 0))"}
+    ],
+    "data": [
+      {
+        "ArtifactId": "artifact-risk-report",
+        "Title": "Risk Report",
+        "Description": "Automated risk assessment output. First in production deployment provenance chain. Contains risk scores, vulnerabilities, mitigations.",
+        "Identifier": "DOC-RISK-2026-001",
+        "Created": "2026-01-15",
+        "SequencePosition": 1,
+        "GeneratedBy": "step-risk-assessment",
+        "AttributedTo": "agent-riskanalysis-ai",
+        "DerivedFrom": "",
+        "GeneratedByLabel": "Risk Assessment",
+        "AttributedToName": "RiskAnalysis-AI",
+        "DerivedFromTitle": ""
+      },
+      {
+        "ArtifactId": "artifact-legal-clearance",
+        "Title": "Legal Clearance",
+        "Description": "Legal compliance sign-off. Certifies release meets regulatory requirements. Derived from Risk Report.",
+        "Identifier": "DOC-LEGAL-2026-001",
+        "Created": "2026-01-15",
+        "SequencePosition": 2,
+        "GeneratedBy": "step-legal-review",
+        "AttributedTo": "agent-sarah-chen",
+        "DerivedFrom": "artifact-risk-report",
+        "GeneratedByLabel": "Legal Review",
+        "AttributedToName": "Sarah Chen",
+        "DerivedFromTitle": "Risk Report"
+      },
+      {
+        "ArtifactId": "artifact-release-authorization",
+        "Title": "Release Authorization",
+        "Description": "Formal authorization for production deployment. Produced at approval gate. Derived from Legal Clearance.",
+        "Identifier": "DOC-AUTH-2026-001",
+        "Created": "2026-01-15",
+        "SequencePosition": 3,
+        "GeneratedBy": "step-release-approval",
+        "AttributedTo": "agent-maria-gonzalez",
+        "DerivedFrom": "artifact-legal-clearance",
+        "GeneratedByLabel": "Release Approval",
+        "AttributedToName": "Maria Gonzalez",
+        "DerivedFromTitle": "Legal Clearance"
+      },
+      {
+        "ArtifactId": "artifact-deployment-log",
+        "Title": "Deployment Log",
+        "Description": "Technical log of deployment execution. Timestamps, systems affected, commands, errors. Produced by CI Pipeline.",
+        "Identifier": "DOC-DEPLOY-2026-001",
+        "Created": "2026-01-15",
+        "SequencePosition": 4,
+        "GeneratedBy": "step-deployment",
+        "AttributedTo": "agent-ci-pipeline",
+        "DerivedFrom": "artifact-release-authorization",
+        "GeneratedByLabel": "Deployment Execution",
+        "AttributedToName": "CI Pipeline",
+        "DerivedFromTitle": "Release Authorization"
+      },
+      {
+        "ArtifactId": "artifact-post-deployment-report",
+        "Title": "Post-Deployment Report",
+        "Description": "Final report. Deployment outcome, metrics, follow-up items. Closes production deployment workflow.",
+        "Identifier": "DOC-POST-2026-001",
+        "Created": "2026-01-15",
+        "SequencePosition": 5,
+        "GeneratedBy": "step-post-deployment",
+        "AttributedTo": "agent-maria-gonzalez",
+        "DerivedFrom": "artifact-deployment-log",
+        "GeneratedByLabel": "Post-Deployment Verification",
+        "AttributedToName": "Maria Gonzalez",
+        "DerivedFromTitle": "Deployment Log"
+      },
+      {
+        "ArtifactId": "artifact-raw-data-export",
+        "Title": "Raw Data Export",
+        "Description": "Aggregated raw data from multiple sources for QBR. Produced by ETL Pipeline.",
+        "Identifier": "DOC-DATA-2026-Q1",
+        "Created": "2026-01-10",
+        "SequencePosition": 1,
+        "GeneratedBy": "step-data-collection",
+        "AttributedTo": "agent-etl-pipeline",
+        "DerivedFrom": "",
+        "GeneratedByLabel": "Data Collection",
+        "AttributedToName": "ETL Pipeline",
+        "DerivedFromTitle": ""
+      },
+      {
+        "ArtifactId": "artifact-metrics-analysis",
+        "Title": "Metrics Analysis Report",
+        "Description": "AI-generated analysis of business metrics. Trends, anomalies, risk indicators. Derived from raw data export.",
+        "Identifier": "DOC-METRICS-2026-Q1",
+        "Created": "2026-01-12",
+        "SequencePosition": 2,
+        "GeneratedBy": "step-metrics-analysis",
+        "AttributedTo": "agent-riskanalysis-ai",
+        "DerivedFrom": "artifact-raw-data-export",
+        "GeneratedByLabel": "Metrics Analysis",
+        "AttributedToName": "RiskAnalysis-AI",
+        "DerivedFromTitle": "Raw Data Export"
+      },
+      {
+        "ArtifactId": "artifact-financial-summary",
+        "Title": "Financial Summary",
+        "Description": "Financial analysis by Financial Analyst. Revenue, costs, profitability metrics.",
+        "Identifier": "DOC-FIN-2026-Q1",
+        "Created": "2026-01-14",
+        "SequencePosition": 3,
+        "GeneratedBy": "step-financial-review",
+        "AttributedTo": "agent-michael-torres",
+        "DerivedFrom": "artifact-metrics-analysis",
+        "GeneratedByLabel": "Financial Review",
+        "AttributedToName": "Michael Torres",
+        "DerivedFromTitle": "Metrics Analysis Report"
+      },
+      {
+        "ArtifactId": "artifact-qbr-presentation",
+        "Title": "QBR Executive Presentation",
+        "Description": "Final quarterly business review presentation. Synthesizes all prior artifacts into actionable insights.",
+        "Identifier": "DOC-QBR-2026-Q1",
+        "Created": "2026-01-15",
+        "SequencePosition": 4,
+        "GeneratedBy": "step-executive-summary",
+        "AttributedTo": "agent-jennifer-park",
+        "DerivedFrom": "artifact-financial-summary",
+        "GeneratedByLabel": "Executive Summary",
+        "AttributedToName": "Jennifer Park",
+        "DerivedFromTitle": "Financial Summary"
+      }
+    ]
+  },
+  "Datasets": {
+    "Description": "Table: Datasets. Maps to dcat:Dataset. Data consumed by workflow steps.",
+    "schema": [
+      {"name": "DatasetId", "datatype": "string", "type": "raw", "nullable": false},
+      {"name": "Title", "datatype": "string", "type": "raw", "nullable": true, "Description": "Dataset name. Maps to dct:title."},
+      {"name": "Description", "datatype": "string", "type": "raw", "nullable": true},
+      {"name": "TimePeriod", "datatype": "string", "type": "raw", "nullable": true, "Description": "Time period covered. Maps to dct:temporal."},
+      {"name": "Modified", "datatype": "datetime", "type": "raw", "nullable": true, "Description": "Last modified. Maps to dct:modified."},
+      {"name": "Publisher", "datatype": "string", "type": "relationship", "nullable": true, "RelatedTo": "Departments", "Description": "Publishing department. Maps to dct:publisher."},
+      {"name": "ProcessedBy", "datatype": "string", "type": "relationship", "nullable": true, "RelatedTo": "Agents", "Description": "Agent that processes this dataset."},
+      {"name": "ConsumedByStep", "datatype": "string", "type": "relationship", "nullable": true, "RelatedTo": "WorkflowSteps", "Description": "Steps that consume this dataset. Inverse of ConsumesDataset."},
+      {"name": "PublisherName", "datatype": "string", "type": "lookup", "nullable": true, "formula": "=INDEX(Departments!{{Name}}, MATCH(Datasets!{{Publisher}}, Departments!{{DepartmentId}}, 0))"},
+      {"name": "ProcessedByName", "datatype": "string", "type": "lookup", "nullable": true, "formula": "=INDEX(Agents!{{Name}}, MATCH(Datasets!{{ProcessedBy}}, Agents!{{AgentId}}, 0))"}
+    ],
+    "data": [
+      {
+        "DatasetId": "dataset-risk-metrics-q1",
+        "Title": "Q1 2026 Risk Metrics",
+        "Description": "Quarterly risk metrics: deployment history, incident reports, risk indicators. Processed by RiskAnalysis-AI. CQ8 answer.",
+        "TimePeriod": "Q1 2026",
+        "Modified": "2026-01-10",
+        "Publisher": "dept-engineering",
+        "ProcessedBy": "agent-riskanalysis-ai",
+        "ConsumedByStep": "step-risk-assessment, step-metrics-analysis",
+        "PublisherName": "Engineering",
+        "ProcessedByName": "RiskAnalysis-AI"
+      },
+      {
+        "DatasetId": "dataset-sales-q1",
+        "Title": "Q1 2026 Sales Data",
+        "Description": "Quarterly sales: revenue by product line, customer segments, regional breakdown.",
+        "TimePeriod": "Q1 2026",
+        "Modified": "2026-01-08",
+        "Publisher": "dept-finance",
+        "ProcessedBy": "agent-etl-pipeline",
+        "ConsumedByStep": "step-data-collection",
+        "PublisherName": "Finance",
+        "ProcessedByName": "ETL Pipeline"
+      },
+      {
+        "DatasetId": "dataset-incidents-q1",
+        "Title": "Q1 2026 Incident Reports",
+        "Description": "Quarterly incidents: severity, resolution time, root cause analysis.",
+        "TimePeriod": "Q1 2026",
+        "Modified": "2026-01-09",
+        "Publisher": "dept-engineering",
+        "ProcessedBy": "agent-etl-pipeline",
+        "ConsumedByStep": "step-data-collection",
+        "PublisherName": "Engineering",
+        "ProcessedByName": "ETL Pipeline"
+      },
+      {
+        "DatasetId": "dataset-financials-q1",
+        "Title": "Q1 2026 Financial Statements",
+        "Description": "Quarterly financials: P&L, balance sheet, cash flow.",
+        "TimePeriod": "Q1 2026",
+        "Modified": "2026-01-12",
+        "Publisher": "dept-finance",
+        "ProcessedBy": "",
+        "ConsumedByStep": "step-financial-review",
+        "PublisherName": "Finance",
+        "ProcessedByName": ""
+      }
+    ]
+  },
+  "Departments": {
+    "Description": "Table: Departments. Subclass of schema:Organization. First-class entities for cross-departmental queries (CQ7).",
+    "schema": [
+      {"name": "DepartmentId", "datatype": "string", "type": "raw", "nullable": false},
+      {"name": "Name", "datatype": "string", "type": "raw", "nullable": true, "Description": "Department name. Maps to rdfs:label."},
+      {"name": "Description", "datatype": "string", "type": "raw", "nullable": true},
+      {"name": "Roles", "datatype": "string", "type": "relationship", "nullable": true, "RelatedTo": "Roles", "Description": "Roles owned. Inverse of Department."},
+      {"name": "CountOfRoles", "datatype": "integer", "type": "aggregation", "nullable": true, "formula": "=COUNTIFS(Roles!{{Department}}, Departments!{{DepartmentId}})"},
+      {"name": "PublishedDatasets", "datatype": "string", "type": "relationship", "nullable": true, "RelatedTo": "Datasets", "Description": "Datasets published. Inverse of Publisher."}
+    ],
+    "data": [
+      {
+        "DepartmentId": "dept-engineering",
+        "Name": "Engineering",
+        "Description": "Software engineering: development, deployment, technical operations. Owns Release Manager, VP Engineering, CTO, Risk Analyst, Deployment Engineer, Data Engineer roles.",
+        "Roles": "role-release-manager, role-vp-engineering, role-cto, role-risk-analyst, role-deployment-engineer, role-data-engineer",
+        "CountOfRoles": 6,
+        "PublishedDatasets": "dataset-risk-metrics-q1, dataset-incidents-q1"
+      },
+      {
+        "DepartmentId": "dept-legal",
+        "Name": "Legal",
+        "Description": "Legal and compliance: regulatory review, legal clearance. Owns Legal Compliance Reviewer, General Counsel. CQ7: 'Which workflows involve Engineering and Legal?'",
+        "Roles": "role-legal-reviewer, role-general-counsel",
+        "CountOfRoles": 2,
+        "PublishedDatasets": ""
+      },
+      {
+        "DepartmentId": "dept-finance",
+        "Name": "Finance",
+        "Description": "Finance: financial analysis, reporting, executive summaries. Owns Financial Analyst, CFO roles.",
+        "Roles": "role-financial-analyst, role-cfo",
+        "CountOfRoles": 2,
+        "PublishedDatasets": "dataset-sales-q1, dataset-financials-q1"
       }
     ]
   },
   "_meta": {
-    "_CMCC_Summary": "Airtable export with schema-first type mapping: Schemas, Data, Relationships (FK links), Lookups (INDEX/MATCH), Aggregations (SUMIFS/COUNTIFS/Rollups), and Calculated fields (formulas) in Excel dialect. Field types are determined from Airtable\u0027s schema metadata FIRST (no coercion), with intelligent fallback to formula/data analysis only when schema is unavailable.",
+    "_CMCC_Summary": "NTWF Workflow Ontology from Jessica Talisman's Ontology Series. Role-agent separation, PROV-O provenance chains, Dublin Core metadata, all three agent types working together in cross-departmental workflows.",
+    "_competency_questions": {
+      "CQ1": "What are all the steps in a workflow, and in what order? -> WorkflowSteps by IsStepOf, order by SequencePosition",
+      "CQ2": "Who is responsible for approving production deployment? -> step-release-approval.AssignedRole -> role-release-manager.FilledBy -> agent-maria-gonzalez",
+      "CQ3": "Which steps require human vs AI/automated? -> Filter WorkflowSteps by RequiresHumanApproval",
+      "CQ4": "What artifacts does each step produce, and lineage? -> Artifacts.GeneratedBy, Artifacts.DerivedFrom chain",
+      "CQ5": "Which workflows haven't been reviewed in 12 months? -> Filter Workflows by Modified < today - 12mo",
+      "CQ6": "Delegation chain? -> Roles.DelegatesTo: Release Manager -> VP Engineering -> CTO",
+      "CQ7": "Which workflows involve Engineering and Legal? -> production-deployment has steps owned by both",
+      "CQ8": "What datasets does QBR consume? -> step-data-collection, step-metrics-analysis, step-financial-review ConsumesDataset"
+    },
     "_conversion_metadata": {
-      "source_base_id": "app6afUqa0zBTiMzM",
-      "table_count": 10,
-      "tool_version": "2.0.0",
-      "field_type_mapping": "checkbox\u2192boolean, number\u2192number/integer, multipleRecordLinks\u2192relationship, multipleLookupValues\u2192lookup, rollup\u2192aggregation, count\u2192aggregation, formula\u2192calculated",
-      "export_mode": "schema_first_type_mapping",
-      "type_inference": {
-        "enabled": true,
-        "priority": "airtable_metadata (NO COERCION) \u2192 formula_analysis \u2192 reference_resolution \u2192 data_analysis (fallback only)",
-        "airtable_type_mapping": "checkbox\u2192boolean, singleLineText\u2192string, multilineText\u2192string, number\u2192number/integer, datetime\u2192datetime, singleSelect\u2192string, email\u2192string, url\u2192string, phoneNumber\u2192string",
-        "data_coercion_hierarchy": "Only used as fallback when Airtable schema unavailable: datetime \u2192 number \u2192 integer \u2192 boolean \u2192 base64 \u2192 json \u2192 string",
-        "nullable_support": true,
-        "error_value_handling": "#NUM!, #ERROR!, #N/A, #REF!, #DIV/0!, #VALUE!, #NAME? are treated as NULL"
-      }
+      "source": "Jessica Talisman Ontology Series Parts I-III",
+      "table_count": 10
     }
   }
 }
