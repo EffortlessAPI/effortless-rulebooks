@@ -31,8 +31,7 @@ SELECT
   calc_workflow_steps_assigned_role_label(t.workflow_step_id) AS assigned_role_label,
   calc_workflow_steps_assigned_role_comment(t.workflow_step_id) AS assigned_role_comment,
   calc_workflow_steps_assigned_role_filled_by(t.workflow_step_id) AS assigned_role_filled_by,
-  t.precedes_steps_from,
-  t.precedes_steps_to,
+  t.precedes_steps,
   t.approval_gate,
   t.step_duration_minutes,
   t.produces_artifact,
@@ -75,9 +74,9 @@ SELECT
   t.model_version,
   t.mbox,
   calc_agents_count_of_roles(t.agent_id) AS count_of_roles,
-  t.artifacts,
-  t.datasets,
   t.produced_artifacts,
+  t.datasets,
+  t.artifacts,
   t.processed_datasets
 FROM agents t;
 
@@ -87,22 +86,15 @@ SELECT
   t.name,
   t.description,
   t.produced_by,
+  t.generated_by,
+  t.attributed_to,
+  t.derived_from,
+  t.derived_artifacts,
   t.sequence_position,
   t.title,
   t.identifier,
-  t.created,
-  t.generated_by,
-  t.attributed_to,
-  t.derived_from
+  t.created
 FROM artifacts t;
-
-CREATE OR REPLACE VIEW vw_precedes_steps WITH (security_invoker = ON) AS
-SELECT
-  t.precedes_step_id,
-  t.name,
-  t.from_step,
-  t.to_step
-FROM precedes_steps t;
 
 CREATE OR REPLACE VIEW vw_datasets WITH (security_invoker = ON) AS
 SELECT
@@ -110,11 +102,11 @@ SELECT
   t.name,
   t.description,
   t.processed_by,
+  t.publisher,
+  t.consumed_by_step,
   t.time_period,
   t.title,
-  t.modified,
-  t.publisher,
-  t.consumed_by_step
+  t.modified
 FROM datasets t;
 
 CREATE OR REPLACE VIEW vw_departments WITH (security_invoker = ON) AS
@@ -123,8 +115,6 @@ SELECT
   t.name,
   t.description,
   t.roles,
-  t.count_of_roles,
-  t.roles_2,
   t.published_datasets
 FROM departments t;
 
@@ -136,6 +126,14 @@ SELECT
   calc_types_of_agents_agents(t.types_of_agent_id) AS agents,
   t.ontology_class,
   t.superclasses,
-  t.count_of_agents
+  calc_types_of_agents_count_of_agents(t.types_of_agent_id) AS count_of_agents
 FROM types_of_agents t;
+
+CREATE OR REPLACE VIEW vw_precedes_steps WITH (security_invoker = ON) AS
+SELECT
+  t.precedes_step_id,
+  t.name,
+  t.from_step,
+  t.to_step
+FROM precedes_steps t;
 
