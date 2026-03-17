@@ -30,6 +30,34 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
 
+CREATE OR REPLACE FUNCTION get_workflow_steps_step_duration_minutes(p_workflow_step_id TEXT)
+RETURNS INTEGER AS $$
+BEGIN
+  RETURN (SELECT step_duration_minutes FROM workflow_steps WHERE workflow_step_id = p_workflow_step_id);
+END;
+$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
+
+CREATE OR REPLACE FUNCTION get_workflow_steps_produces_artifact(p_workflow_step_id TEXT)
+RETURNS TEXT AS $$
+BEGIN
+  RETURN (SELECT produces_artifact FROM workflow_steps WHERE workflow_step_id = p_workflow_step_id);
+END;
+$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
+
+CREATE OR REPLACE FUNCTION get_workflow_steps_requires_artifact(p_workflow_step_id TEXT)
+RETURNS TEXT AS $$
+BEGIN
+  RETURN (SELECT requires_artifact FROM workflow_steps WHERE workflow_step_id = p_workflow_step_id);
+END;
+$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
+
+CREATE OR REPLACE FUNCTION get_workflow_steps_consumes_dataset(p_workflow_step_id TEXT)
+RETURNS TEXT AS $$
+BEGIN
+  RETURN (SELECT consumes_dataset FROM workflow_steps WHERE workflow_step_id = p_workflow_step_id);
+END;
+$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
+
 
 CREATE OR REPLACE FUNCTION calc_workflows_count_of_workflow_steps(p_workflow_id TEXT)
 RETURNS INTEGER AS $$
@@ -215,6 +243,13 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
 
+CREATE OR REPLACE FUNCTION get_departments_published_datasets(p_department_id TEXT)
+RETURNS TEXT AS $$
+BEGIN
+  RETURN (SELECT published_datasets FROM departments WHERE department_id = p_department_id);
+END;
+$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
+
 CREATE OR REPLACE FUNCTION get_agents_name(p_agent_id TEXT)
 RETURNS TEXT AS $$
 BEGIN
@@ -243,6 +278,20 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
 
+CREATE OR REPLACE FUNCTION get_agents_produced_artifacts(p_agent_id TEXT)
+RETURNS TEXT AS $$
+BEGIN
+  RETURN (SELECT produced_artifacts FROM agents WHERE agent_id = p_agent_id);
+END;
+$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
+
+CREATE OR REPLACE FUNCTION get_agents_processed_datasets(p_agent_id TEXT)
+RETURNS TEXT AS $$
+BEGIN
+  RETURN (SELECT processed_datasets FROM agents WHERE agent_id = p_agent_id);
+END;
+$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
+
 
 CREATE OR REPLACE FUNCTION calc_roles_count_of_workflow_steps(p_role_id TEXT)
 RETURNS INTEGER AS $$
@@ -262,6 +311,27 @@ CREATE OR REPLACE FUNCTION get_types_of_agents_description(p_types_of_agent_id T
 RETURNS TEXT AS $$
 BEGIN
   RETURN (SELECT description FROM types_of_agents WHERE types_of_agent_id = p_types_of_agent_id);
+END;
+$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
+
+CREATE OR REPLACE FUNCTION get_types_of_agents_ontology_class(p_types_of_agent_id TEXT)
+RETURNS TEXT AS $$
+BEGIN
+  RETURN (SELECT ontology_class FROM types_of_agents WHERE types_of_agent_id = p_types_of_agent_id);
+END;
+$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
+
+CREATE OR REPLACE FUNCTION get_types_of_agents_superclasses(p_types_of_agent_id TEXT)
+RETURNS TEXT AS $$
+BEGIN
+  RETURN (SELECT superclasses FROM types_of_agents WHERE types_of_agent_id = p_types_of_agent_id);
+END;
+$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
+
+CREATE OR REPLACE FUNCTION get_types_of_agents_count_of_agents(p_types_of_agent_id TEXT)
+RETURNS INTEGER AS $$
+BEGIN
+  RETURN (SELECT count_of_agents FROM types_of_agents WHERE types_of_agent_id = p_types_of_agent_id);
 END;
 $$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
 
@@ -286,6 +356,48 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
 
+CREATE OR REPLACE FUNCTION get_artifacts_title(p_artifact_id TEXT)
+RETURNS TEXT AS $$
+BEGIN
+  RETURN (SELECT title FROM artifacts WHERE artifact_id = p_artifact_id);
+END;
+$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
+
+CREATE OR REPLACE FUNCTION get_artifacts_identifier(p_artifact_id TEXT)
+RETURNS TEXT AS $$
+BEGIN
+  RETURN (SELECT identifier FROM artifacts WHERE artifact_id = p_artifact_id);
+END;
+$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
+
+CREATE OR REPLACE FUNCTION get_artifacts_created(p_artifact_id TEXT)
+RETURNS TIMESTAMPTZ AS $$
+BEGIN
+  RETURN (SELECT created FROM artifacts WHERE artifact_id = p_artifact_id);
+END;
+$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
+
+CREATE OR REPLACE FUNCTION get_artifacts_generated_by(p_artifact_id TEXT)
+RETURNS TEXT AS $$
+BEGIN
+  RETURN (SELECT generated_by FROM artifacts WHERE artifact_id = p_artifact_id);
+END;
+$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
+
+CREATE OR REPLACE FUNCTION get_artifacts_attributed_to(p_artifact_id TEXT)
+RETURNS TEXT AS $$
+BEGIN
+  RETURN (SELECT attributed_to FROM artifacts WHERE artifact_id = p_artifact_id);
+END;
+$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
+
+CREATE OR REPLACE FUNCTION get_artifacts_derived_from(p_artifact_id TEXT)
+RETURNS TEXT AS $$
+BEGIN
+  RETURN (SELECT derived_from FROM artifacts WHERE artifact_id = p_artifact_id);
+END;
+$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
+
 CREATE OR REPLACE FUNCTION get_datasets_name(p_dataset_id TEXT)
 RETURNS TEXT AS $$
 BEGIN
@@ -304,6 +416,34 @@ CREATE OR REPLACE FUNCTION get_datasets_time_period(p_dataset_id TEXT)
 RETURNS TEXT AS $$
 BEGIN
   RETURN (SELECT time_period FROM datasets WHERE dataset_id = p_dataset_id);
+END;
+$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
+
+CREATE OR REPLACE FUNCTION get_datasets_title(p_dataset_id TEXT)
+RETURNS TEXT AS $$
+BEGIN
+  RETURN (SELECT title FROM datasets WHERE dataset_id = p_dataset_id);
+END;
+$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
+
+CREATE OR REPLACE FUNCTION get_datasets_modified(p_dataset_id TEXT)
+RETURNS TIMESTAMPTZ AS $$
+BEGIN
+  RETURN (SELECT modified FROM datasets WHERE dataset_id = p_dataset_id);
+END;
+$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
+
+CREATE OR REPLACE FUNCTION get_datasets_publisher(p_dataset_id TEXT)
+RETURNS TEXT AS $$
+BEGIN
+  RETURN (SELECT publisher FROM datasets WHERE dataset_id = p_dataset_id);
+END;
+$$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
+
+CREATE OR REPLACE FUNCTION get_datasets_consumed_by_step(p_dataset_id TEXT)
+RETURNS TEXT AS $$
+BEGIN
+  RETURN (SELECT consumed_by_step FROM datasets WHERE dataset_id = p_dataset_id);
 END;
 $$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
 
