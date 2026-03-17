@@ -89,9 +89,13 @@ See the `execution-substrates/` directory for available format implementations.
 | `AssignedRoleLabel` | lookup | string | Yes | Denormalized lookup of assigned role label. |
 | `AssignedRoleComment` | lookup | string | Yes | Denormalized lookup of assigned role comment/description. |
 | `AssignedRoleFilledBy` | lookup | string | Yes | Denormalized lookup of agent currently filling the assigned role. |
-| `PrecedesSteps` | relationship | string | Yes | - |
-| `PrecedesSteps_2` | relationship | string | Yes | - |
-| `ApprovalGates` | relationship | string | Yes | - |
+| `PrecedesStepsFrom` | relationship | string | Yes | - |
+| `PrecedesStepsTo` | relationship | string | Yes | - |
+| `ApprovalGate` | relationship | string | Yes | Approval gate attached to this step, if any. Establishes double-typing per article. |
+| `StepDurationMinutes` | raw | integer | Yes | Expected duration of the step in minutes. Maps to ntwf:stepDurationMinutes. |
+| `ProducesArtifact` | raw | string | Yes | Artifact produced by this step. Maps to ntwf:producesArtifact. Aligned with prov:generated. |
+| `RequiresArtifact` | raw | string | Yes | Artifact required as input to this step. Maps to ntwf:requiresArtifact. Aligned with prov:used. |
+| `ConsumesDataset` | raw | string | Yes | Dataset consumed by this step. Maps to ntwf:consumesDataset. Answers NTWF CQ8. |
 
 **Formula for `IsStepOfTitle`:**
 ```
@@ -138,11 +142,15 @@ See the `execution-substrates/` directory for available format implementations.
 | `IsStepOfIdentifier` | WF-PROD-001 |
 | `AssignedRoleLabel` | Risk Analyst |
 | `AssignedRoleComment` | Role responsible for risk assessment. In full ontology, filled by AI agent. |
-| `PrecedesSteps` | step-1-to-2 |
+| `PrecedesStepsFrom` | step-1-to-2 |
 | `RequiresHumanApproval` | false |
 | `AssignedRoleFilledBy` |  |
-| `PrecedesSteps_2` |  |
-| `ApprovalGates` |  |
+| `PrecedesStepsTo` |  |
+| `ApprovalGate` |  |
+| `StepDurationMinutes` | 0 |
+| `ProducesArtifact` |  |
+| `RequiresArtifact` |  |
+| `ConsumesDataset` |  |
 
 ---
 
@@ -161,7 +169,7 @@ See the `execution-substrates/` directory for available format implementations.
 | `EscalationThresholdHours` | raw | integer | Yes | Hours that may elapse before delegation chain activates. Maps to ntwf:escalationThresholdHours. |
 
 
-#### Sample Data (1 records)
+#### Sample Data (3 records)
 
 | Field | Value |
 |-------|-------|
@@ -244,14 +252,16 @@ See the `execution-substrates/` directory for available format implementations.
 |-------|------|-----------|----------|-------------|
 | `AgentId` | raw | string | No | - |
 | `Name` | raw | string | Yes | Full name of the person. Maps to foaf:name per FOAF ontology. |
-| `TypeOfAgent` | relationship | string | Yes | - |
+| `TypeOfAgent` | relationship | string | Yes | Agent type classification: human, ai, or automatedpipeline. Determines which NTWF subclass applies. |
 | `Roles` | relationship | string | Yes | Roles filled by this agent. Inverse of FilledBy. |
-| `Description` | raw | string | Yes | - |
-| `ModelVersion` | raw | string | Yes | - |
+| `Description` | raw | string | Yes | Description of the agent's purpose and capabilities. |
+| `ModelVersion` | raw | string | Yes | AI model version string. Maps to ntwf:modelVersion. Only applicable to AIAgent type. Domain declaration means applying this to a HumanAgent would incorrectly infer AIAgent type. |
 | `Mbox` | raw | string | Yes | Email address of the person. Maps to foaf:mbox per FOAF ontology. Used for contact and identity resolution. |
 | `CountOfRoles` | aggregation | integer | Yes | Count of roles currently filled by this agent. |
 | `Artifacts` | relationship | string | Yes | - |
 | `Datasets` | relationship | string | Yes | - |
+| `ProducedArtifacts` | raw | string | Yes | Artifacts attributed to this agent. Maps to inverse of prov:wasAttributedTo. |
+| `ProcessedDatasets` | raw | string | Yes | Datasets processed by this agent (for AI agents). Inverse of ProcessedBy. |
 
 **Formula for `CountOfRoles`:**
 ```
@@ -259,7 +269,7 @@ See the `execution-substrates/` directory for available format implementations.
 ```
 
 
-#### Sample Data (4 records)
+#### Sample Data (13 records)
 
 | Field | Value |
 |-------|-------|
@@ -273,6 +283,8 @@ See the `execution-substrates/` directory for available format implementations.
 | `ModelVersion` |  |
 | `Artifacts` |  |
 | `Datasets` |  |
+| `ProducedArtifacts` |  |
+| `ProcessedDatasets` |  |
 
 ---
 
@@ -289,9 +301,15 @@ See the `execution-substrates/` directory for available format implementations.
 | `Description` | raw | string | Yes | Description of the artifact's content and purpose. |
 | `ProducedBy` | relationship | string | Yes | Workflow step that produces this artifact. Maps to ntwf:producedBy. |
 | `SequencePosition` | raw | integer | Yes | Position in the artifact provenance chain. |
+| `Title` | raw | string | Yes | Display name of the artifact. Maps to dct:title. |
+| `Identifier` | raw | string | Yes | External reference identifier (document ID, ticket number). Maps to dct:identifier. Join key to document management system. |
+| `Created` | raw | datetime | Yes | Date the artifact was created. Maps to dct:created. |
+| `GeneratedBy` | raw | string | Yes | Workflow step that produced this artifact. Maps to prov:wasGeneratedBy. |
+| `AttributedTo` | raw | string | Yes | Agent responsible for producing this artifact. Maps to prov:wasAttributedTo. |
+| `DerivedFrom` | raw | string | Yes | Upstream artifact this was derived from. Maps to prov:wasDerivedFrom. Forms provenance chain. |
 
 
-#### Sample Data (5 records)
+#### Sample Data (14 records)
 
 | Field | Value |
 |-------|-------|
@@ -300,6 +318,12 @@ See the `execution-substrates/` directory for available format implementations.
 | `Description` | Automated risk assessment output produced by the RiskAnalysis-AI agent. First artifact in the provenance chain. |
 | `SequencePosition` | 1 |
 | `ProducedBy` |  |
+| `Title` |  |
+| `Identifier` |  |
+| `Created` |  |
+| `GeneratedBy` |  |
+| `AttributedTo` |  |
+| `DerivedFrom` |  |
 
 ---
 
@@ -317,7 +341,7 @@ See the `execution-substrates/` directory for available format implementations.
 | `ToStep` | relationship | string | Yes | The step that comes AFTER (target of the precedes edge). |
 
 
-#### Sample Data (3 records)
+#### Sample Data (10 records)
 
 | Field | Value |
 |-------|-------|
@@ -341,9 +365,13 @@ See the `execution-substrates/` directory for available format implementations.
 | `Description` | raw | string | Yes | Description of the dataset's content and source. |
 | `ProcessedBy` | relationship | string | Yes | AI agent that processes this dataset. Inverse of ProcessesDatasets. |
 | `TimePeriod` | raw | string | Yes | Time period the dataset covers (e.g., 'Q1 2026'). |
+| `Title` | raw | string | Yes | Display name of the dataset. Maps to dct:title. |
+| `Modified` | raw | datetime | Yes | Date the dataset was last modified. Maps to dct:modified. |
+| `Publisher` | raw | string | Yes | Department that publishes/owns this dataset. Maps to dct:publisher. |
+| `ConsumedByStep` | raw | string | Yes | Workflow step(s) that consume this dataset. Inverse of ConsumesDataset. |
 
 
-#### Sample Data (1 records)
+#### Sample Data (5 records)
 
 | Field | Value |
 |-------|-------|
@@ -352,6 +380,10 @@ See the `execution-substrates/` directory for available format implementations.
 | `Description` | Quarterly risk metrics dataset containing historical deployment data, incident reports, and risk indicators. Processed by RiskAnalysis-AI to produce Risk Report. Article CQ8 answer. |
 | `TimePeriod` | Q1 2026 |
 | `ProcessedBy` |  |
+| `Title` |  |
+| `Modified` |  |
+| `Publisher` |  |
+| `ConsumedByStep` |  |
 
 ---
 
@@ -369,18 +401,20 @@ See the `execution-substrates/` directory for available format implementations.
 | `Roles` | raw | string | Yes | Roles owned by this department. Inverse of Department on Roles. |
 | `CountOfRoles` | raw | integer | Yes | Count of roles owned by this department. |
 | `Roles_2` | relationship | string | Yes | - |
+| `PublishedDatasets` | raw | string | Yes | Datasets published by this department. Inverse of Publisher. |
 
 
-#### Sample Data (2 records)
+#### Sample Data (3 records)
 
 | Field | Value |
 |-------|-------|
 | `DepartmentId` | engineering |
 | `Name` | Engineering |
-| `Description` | Software engineering department responsible for development, deployment, and technical operations. Owns Release Manager, VP Engineering, CTO, and Risk Analyst roles. |
+| `Description` | Software engineering department responsible for development, deployment, and technical operations. Owns Release Manager, VP Engineering, CTO, Risk Analyst, Deployment Engineer, and Data Engineer roles. |
 | `Roles` |  |
 | `CountOfRoles` | 0 |
 | `Roles_2` |  |
+| `PublishedDatasets` |  |
 
 ---
 
@@ -395,17 +429,23 @@ See the `execution-substrates/` directory for available format implementations.
 | `TypesOfAgentId` | raw | string | No | - |
 | `Name` | raw | string | Yes | Display name of the AI agent. Maps to schema:name. |
 | `Description` | raw | string | Yes | Description of the AI agent's purpose and capabilities. |
-| `Agents` | relationship | string | Yes | - |
+| `Agents` | relationship | string | Yes | Agents of this type. Inverse of TypeOfAgent. |
+| `OntologyClass` | raw | string | Yes | Corresponding NTWF/external ontology class. |
+| `Superclasses` | raw | string | Yes | Parent classes in ontology hierarchy. |
+| `CountOfAgents` | raw | integer | Yes | - |
 
 
-#### Sample Data (3 records)
+#### Sample Data (6 records)
 
 | Field | Value |
 |-------|-------|
 | `TypesOfAgentId` | human |
 | `Name` | Human |
 | `Description` | AI agent responsible for automated risk assessment. Processes Q1 2026 Risk Metrics dataset and produces Risk Report artifact. Article CQ8 demonstrates this agent's dataset processing. |
-| `Agents` | maria-gonzalez, james-okafor |
+| `Agents` | maria-gonzalez, james-okafor, james-okafor, david-kim, robert-williams |
+| `OntologyClass` |  |
+| `Superclasses` |  |
+| `CountOfAgents` | 0 |
 
 ---
 

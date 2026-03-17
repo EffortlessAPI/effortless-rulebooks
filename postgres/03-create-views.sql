@@ -31,9 +31,13 @@ SELECT
   calc_workflow_steps_assigned_role_label(t.workflow_step_id) AS assigned_role_label,
   calc_workflow_steps_assigned_role_comment(t.workflow_step_id) AS assigned_role_comment,
   calc_workflow_steps_assigned_role_filled_by(t.workflow_step_id) AS assigned_role_filled_by,
-  t.precedes_steps,
-  t.precedes_steps_2,
-  t.approval_gates
+  t.precedes_steps_from,
+  t.precedes_steps_to,
+  t.approval_gate,
+  t.step_duration_minutes,
+  t.produces_artifact,
+  t.requires_artifact,
+  t.consumes_dataset
 FROM workflow_steps t;
 
 CREATE OR REPLACE VIEW vw_approval_gates WITH (security_invoker = ON) AS
@@ -72,7 +76,9 @@ SELECT
   t.mbox,
   calc_agents_count_of_roles(t.agent_id) AS count_of_roles,
   t.artifacts,
-  t.datasets
+  t.datasets,
+  t.produced_artifacts,
+  t.processed_datasets
 FROM agents t;
 
 CREATE OR REPLACE VIEW vw_artifacts WITH (security_invoker = ON) AS
@@ -81,7 +87,13 @@ SELECT
   t.name,
   t.description,
   t.produced_by,
-  t.sequence_position
+  t.sequence_position,
+  t.title,
+  t.identifier,
+  t.created,
+  t.generated_by,
+  t.attributed_to,
+  t.derived_from
 FROM artifacts t;
 
 CREATE OR REPLACE VIEW vw_precedes_steps WITH (security_invoker = ON) AS
@@ -98,7 +110,11 @@ SELECT
   t.name,
   t.description,
   t.processed_by,
-  t.time_period
+  t.time_period,
+  t.title,
+  t.modified,
+  t.publisher,
+  t.consumed_by_step
 FROM datasets t;
 
 CREATE OR REPLACE VIEW vw_departments WITH (security_invoker = ON) AS
@@ -108,7 +124,8 @@ SELECT
   t.description,
   t.roles,
   t.count_of_roles,
-  t.roles_2
+  t.roles_2,
+  t.published_datasets
 FROM departments t;
 
 CREATE OR REPLACE VIEW vw_types_of_agents WITH (security_invoker = ON) AS
@@ -116,6 +133,9 @@ SELECT
   t.types_of_agent_id,
   t.name,
   t.description,
-  calc_types_of_agents_agents(t.types_of_agent_id) AS agents
+  calc_types_of_agents_agents(t.types_of_agent_id) AS agents,
+  t.ontology_class,
+  t.superclasses,
+  t.count_of_agents
 FROM types_of_agents t;
 
