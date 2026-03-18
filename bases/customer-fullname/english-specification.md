@@ -1,50 +1,60 @@
 # Specification Document for DEMO: Customer FullName Rulebook
 
 ## Overview
-This specification document outlines the rules and calculations for generating customer full names based on individual first and last names. The rulebook is derived from an Airtable base and provides a structured approach to computing the `FullName` field for each customer.
+This specification document outlines the structure and computation methods for the "DEMO: Customer FullName" rulebook, which is derived from an Airtable base. The primary purpose of this rulebook is to calculate the full names of customers based on their first and last names. The rulebook includes a schema defining the data types and relationships, along with the necessary formulas for calculated fields.
 
-## Entities and Calculated Fields
+## Entity: Customers
 
-### Customers
-The `Customers` entity contains the following input fields that are used to compute the `FullName`:
+### Input Fields
+The following input fields are defined in the "Customers" table, which are used to compute the calculated fields:
 
-#### Input Fields
-1. **FirstName**
-   - **Type**: String
-   - **Description**: The first name of the customer, used to create the full name.
+1. **CustomerId**
+   - **Type:** String
+   - **Description:** Unique identifier for each customer. This field is mandatory and cannot be null.
 
-2. **LastName**
-   - **Type**: String
-   - **Description**: The last name of the customer, used to create the full name.
+2. **Customer**
+   - **Type:** String
+   - **Description:** Identifier for the customers. This field is optional and can be null.
 
-#### Calculated Field
-1. **FullName**
-   - **Type**: String
-   - **Description**: The full name is computed by concatenating the first name and last name of the customer with a space in between.
-   - **Calculation Explanation**: To compute the `FullName`, take the value of the `FirstName` and append a space followed by the value of the `LastName`. If either the `FirstName` or `LastName` is missing, the full name will still be generated, but it may contain leading or trailing spaces.
-   - **Formula**: `={{FirstName}} & " " & {{LastName}}`
-   - **Example**: 
-     - For a customer with:
-       - `FirstName`: "Jane"
-       - `LastName`: "Smith"
-     - The computed `FullName` would be: "Jane Smith".
+3. **EmailAddress**
+   - **Type:** String
+   - **Description:** The customer's email address. This field is optional and can be null.
 
-### Example Data
-The following examples illustrate how the `FullName` is computed for each customer in the dataset:
+4. **FirstName**
+   - **Type:** String
+   - **Description:** First name of the customer, used to create the full name. This field is optional and can be null.
 
-1. **Customer 1**
-   - **FirstName**: "Jane"
-   - **LastName**: "Smith"
-   - **Computed FullName**: "Jane Smith"
+5. **LastName**
+   - **Type:** String
+   - **Description:** Last name of the customer, used to create the full name. This field is optional and can be null.
 
-2. **Customer 2**
-   - **FirstName**: "John"
-   - **LastName**: "Doe"
-   - **Computed FullName**: "John Doe"
+### Calculated Fields
 
-3. **Customer 3**
-   - **FirstName**: "Emily"
-   - **LastName**: "Jones"
-   - **Computed FullName**: "Emily Jones"
+#### FullName
+- **Type:** Calculated
+- **Description:** The full name is computed by concatenating the first name and last name of the customer, separated by a space.
+- **Computation Method:** 
+  To compute the `FullName`, take the value from the `FirstName` field and the value from the `LastName` field. If either the `FirstName` or `LastName` is null, the resulting `FullName` will only include the non-null value. If both are null, the `FullName` will also be null.
 
-This specification provides a clear guide on how to compute the `FullName` for each customer based on their first and last names, ensuring consistency and accuracy in the data representation.
+- **Formula for Reference:** 
+  ```
+  ={{FirstName}} & " " & {{LastName}}
+  ```
+
+- **Concrete Examples:**
+  1. For the customer with `CustomerId` "cust0001":
+     - `FirstName`: "Jannice"
+     - `LastName`: "Smith"
+     - **Computed FullName:** "Jannice Smith"
+
+  2. For the customer with `CustomerId` "cust0002":
+     - `FirstName`: "John"
+     - `LastName`: "Doe"
+     - **Computed FullName:** "John Doe"
+
+  3. For the customer with `CustomerId` "cust0003":
+     - `FirstName`: "Emily"
+     - `LastName`: "Jones"
+     - **Computed FullName:** "Emily Jones"
+
+This specification provides a clear understanding of how to compute the `FullName` field based on the provided input fields in the "Customers" table. By following the outlined method, one can accurately derive the full names of customers as intended in the rulebook.

@@ -9,7 +9,7 @@ erb:Customers_0 a erb:Customers ;
     erb:customerId "cust0001" ;
     erb:customer "CUST0001" ;
     erb:emailAddress "jane.smith@email.com" ;
-    erb:firstName "Jane" ;
+    erb:firstName "Jannice" ;
     erb:lastName "Smith" .
 
 erb:Customers_1 a erb:Customers ;
