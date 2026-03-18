@@ -5,7 +5,7 @@
 -- ============================================================================
 
 INSERT INTO customers (customer_id, customer, email_address, first_name, last_name)
-VALUES ('cust0001', 'CUST0001', 'jane.smith@email.com', 'Jane', 'Smith');
+VALUES ('cust0001', 'CUST0001', 'jane.smith@email.com', 'Jannice', 'Smith');
 
 INSERT INTO customers (customer_id, customer, email_address, first_name, last_name)
 VALUES ('cust0002', 'CUST0002', 'john.doe@email.com', 'John', 'Doe');

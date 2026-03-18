@@ -2,7 +2,7 @@
   "schema_version": "erb.explain_spec.v1",
   "rulebook": {
     "name": "DEMO: Customer FullName",
-    "rulebook_hash": "sha256:b65c756f983da023f7cfd8957e458251"
+    "rulebook_hash": "sha256:281e1c07bfb8103b69f875aaea560661"
   },
   "semantics": {
     "profile": "excel",
