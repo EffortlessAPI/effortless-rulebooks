@@ -1,7 +1,7 @@
 {
   "$schema": "https://example.com/cmcc-schema/v1",
-  "Name": "ACME: Corporation",
-  "Description": "Rulebook generated from Airtable base \u0027ACME: Corporation\u0027.",
+  "Name": "ACME Corporation (template)",
+  "Description": "Rulebook generated from Airtable base \u0027ACME Corporation (template)\u0027.",
   "Customers": {
     "Description": "Table: Customers",
     "schema": [
@@ -78,7 +78,7 @@
   "_meta": {
     "_CMCC_Summary": "Airtable export with schema-first type mapping: Schemas, Data, Relationships (FK links), Lookups (INDEX/MATCH), Aggregations (SUMIFS/COUNTIFS/Rollups), and Calculated fields (formulas) in Excel dialect. Field types are determined from Airtable\u0027s schema metadata FIRST (no coercion), with intelligent fallback to formula/data analysis only when schema is unavailable.",
     "_conversion_metadata": {
-      "source_base_id": "appWrXPvXbkgQGOxt",
+      "source_base_id": "appzkcmBFPWFGBtRo",
       "table_count": 1,
       "tool_version": "2.0.0",
       "field_type_mapping": "checkbox\u2192boolean, number\u2192number/integer, multipleRecordLinks\u2192relationship, multipleLookupValues\u2192lookup, rollup\u2192aggregation, count\u2192aggregation, formula\u2192calculated",

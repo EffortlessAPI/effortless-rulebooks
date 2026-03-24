@@ -88,8 +88,8 @@ pre { background: var(--code-bg); border: 1px solid var(--border-color); border-
             <h1>English (NLG) Execution Substrate</h1>
         </div>
         <div class="header-stats">
-            <div class="stat"><span>Score:</span><span class="stat-value score-danger">40.7%</span></div>
-            <div class="stat"><span>11/27 passed</span></div>
+            <div class="stat"><span>Score:</span><span class="stat-value score-perfect">100.0%</span></div>
+            <div class="stat"><span>3/3 passed</span></div>
         </div>
         <button id="theme-toggle" title="Toggle theme"><span class="sun">☀️</span><span class="moon">🌙</span></button>
     </header>
@@ -129,403 +129,41 @@ pre { background: var(--code-bg); border: 1px solid var(--border-color); border-
                 <h2>Graded Test Data</h2>
                 <p style="color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 1rem;">All columns shown. <span style="color: var(--accent-color); font-weight: 500;">Blue headers</span> indicate computed fields being tested. <span style="color: var(--success-color);">✓</span> = passed, <span style="color: var(--danger-color);">E/A</span> = failed (Expected vs Actual).</p>
                 <div class="entity-section">
-<h3 class="entity-name">approvals</h3>
+<h3 class="entity-name">customers</h3>
 <div class="table-scroll"><table class="graded-table"><thead><tr>
-<th class="">approval_id</th>
-<th class="computed-header">name</th>
-<th class="">workflow_steps</th>
-<th class="">escalation_threshold_hours</th>
-<th class="">display_name</th>
-<th class="">workflow_from_workflow_steps</th>
-<th class="">assigned_role_from_workflow_steps</th>
-<th class="">sequence_position_from_workflow_steps</th>
-<th class="">requires_human_approval_from_workflow_steps</th>
+<th class="">customer_id</th>
+<th class="">customer</th>
+<th class="">email_address</th>
+<th class="">first_name</th>
+<th class="">last_name</th>
+<th class="computed-header">full_name</th>
 </tr></thead><tbody>
 <tr>
-<td class="cell-raw" title="release-approval-gate">release-approval-gate</td>
-<td class="cell-passed computed" title="release-approval-gate">
-<span class="check">✓</span><code>release-approval-gate</code></td>
-<td class="cell-raw" title="release-approval-gate">release-approval-gate</td>
-<td class="cell-raw" title="24">24</td>
-<td class="cell-raw" title="Release Approval Gate">Release Approval Gate</td>
-<td class="cell-raw" title="production-deployment">production-deployment</td>
-<td class="cell-raw" title="release-manager">release-manager</td>
-<td class="cell-raw" title="3">3</td>
-<td class="cell-raw" title="True">True</td>
-</tr>
-</tbody></table></div></div>
-<div class="entity-section">
-<h3 class="entity-name">departments</h3>
-<div class="table-scroll"><table class="graded-table"><thead><tr>
-<th class="">department_id</th>
-<th class="computed-header">name</th>
-<th class="">roles</th>
-<th class="">display_name</th>
-<th class="">title</th>
-<th class="">all_owned_roles</th>
-<th class="">all_related_workflow_steps</th>
-<th class="">all_distinct_workflows_for_owned_roles</th>
-</tr></thead><tbody>
-<tr>
-<td class="cell-raw" title="engineering">engineering</td>
-<td class="cell-passed computed" title="engineering">
-<span class="check">✓</span><code>engineering</code></td>
-<td class="cell-raw" title="release-manager, vp-engineering, cto, risk-analysis-agent, deployment-engineer">release-manager, vp-engineering, cto, risk-analysis-agent, deployment-engineer</td>
-<td class="cell-raw" title="Engineering">Engineering</td>
-<td class="cell-raw" title="Engineering department responsible for software development and deployment.">Engineering department responsible for software development and deployment.</td>
-<td class="cell-raw" title="Release Manager, VP Engineering, CTO, Risk Analysis Agent, Deployment Engineer">Release Manager, VP Engineering, CTO, Risk Analysis Agent, Deployment Engineer</td>
-<td class="cell-raw" title="release-approval-gate, post-deployment-review, risk-analysis, deployment-execution">release-approval-gate, post-deployment-review, risk-analysis, deployment-execution</td>
-<td class="cell-raw" title="production-deployment, production-deployment, production-deployment, production-deployment">production-deployment, production-deployment, production-deployment, production-deployment</td>
+<td class="cell-raw" title="cust0001">cust0001</td>
+<td class="cell-raw" title="CUST0001">CUST0001</td>
+<td class="cell-raw" title="jane.smith@email.com">jane.smith@email.com</td>
+<td class="cell-raw" title="Larry">Larry</td>
+<td class="cell-raw" title="Smith">Smith</td>
+<td class="cell-passed computed" title="Smith, Larry">
+<span class="check">✓</span><code>Smith, Larry</code></td>
 </tr>
 <tr>
-<td class="cell-raw" title="legal">legal</td>
-<td class="cell-passed computed" title="legal">
-<span class="check">✓</span><code>legal</code></td>
-<td class="cell-raw" title="legal-compliance-reviewer">legal-compliance-reviewer</td>
-<td class="cell-raw" title="Legal">Legal</td>
-<td class="cell-raw" title="Legal department responsible for compliance review.">Legal department responsible for compliance review.</td>
-<td class="cell-raw" title="Legal Compliance Reviewer">Legal Compliance Reviewer</td>
-<td class="cell-raw" title="legal-clearance">legal-clearance</td>
-<td class="cell-raw" title="production-deployment">production-deployment</td>
-</tr>
-</tbody></table></div></div>
-<div class="entity-section">
-<h3 class="entity-name">precedes_steps</h3>
-<div class="table-scroll"><table class="graded-table"><thead><tr>
-<th class="">precedes_step_id</th>
-<th class="">name</th>
-<th class="">workflow_step</th>
-<th class="">step_number</th>
-<th class="computed-header">display_name</th>
-</tr></thead><tbody>
-<tr>
-<td class="cell-raw" title="step-1">step-1</td>
-<td class="cell-raw" title="step-1">step-1</td>
-<td class="cell-raw" title="legal-clearance">legal-clearance</td>
-<td class="cell-raw" title="32">32</td>
-<td class="cell-failed computed" title="Expected: Step-32&#10;Actual: Legal Clearance">
-<div class="exp-act"><span class="label">E:</span><code class="expected">Step-32</code></div>
-<div class="exp-act"><span class="label">A:</span><code class="actual">Legal Clearance</code></div></td>
+<td class="cell-raw" title="cust0002">cust0002</td>
+<td class="cell-raw" title="CUST0002">CUST0002</td>
+<td class="cell-raw" title="john.doe@email.com">john.doe@email.com</td>
+<td class="cell-raw" title="John">John</td>
+<td class="cell-raw" title="Doe">Doe</td>
+<td class="cell-passed computed" title="Doe, John">
+<span class="check">✓</span><code>Doe, John</code></td>
 </tr>
 <tr>
-<td class="cell-raw" title="step-2">step-2</td>
-<td class="cell-raw" title="step-2">step-2</td>
-<td class="cell-raw" title="release-approval-gate">release-approval-gate</td>
-<td class="cell-raw" title="33">33</td>
-<td class="cell-failed computed" title="Expected: Step-33&#10;Actual: Release Approval Gate">
-<div class="exp-act"><span class="label">E:</span><code class="expected">Step-33</code></div>
-<div class="exp-act"><span class="label">A:</span><code class="actual">Release Approval Gate</code></div></td>
-</tr>
-<tr>
-<td class="cell-raw" title="step-3">step-3</td>
-<td class="cell-raw" title="step-3">step-3</td>
-<td class="cell-raw" title="deployment-execution">deployment-execution</td>
-<td class="cell-raw" title="34">34</td>
-<td class="cell-failed computed" title="Expected: Step-34&#10;Actual: Deployment Execution">
-<div class="exp-act"><span class="label">E:</span><code class="expected">Step-34</code></div>
-<div class="exp-act"><span class="label">A:</span><code class="actual">Deployment Execution</code></div></td>
-</tr>
-<tr>
-<td class="cell-raw" title="step-4">step-4</td>
-<td class="cell-raw" title="step-4">step-4</td>
-<td class="cell-raw" title="post-deployment-review">post-deployment-review</td>
-<td class="cell-raw" title="35">35</td>
-<td class="cell-failed computed" title="Expected: Step-35&#10;Actual: Post Deployment Review">
-<div class="exp-act"><span class="label">E:</span><code class="expected">Step-35</code></div>
-<div class="exp-act"><span class="label">A:</span><code class="actual">Post Deployment Review</code></div></td>
-</tr>
-<tr>
-<td class="cell-raw" title="step-5">step-5</td>
-<td class="cell-raw" title="step-5">step-5</td>
-<td class="cell-raw" title=""></td>
-<td class="cell-raw" title="36">36</td>
-<td class="cell-failed computed" title="Expected: Step-36&#10;Actual: null">
-<div class="exp-act"><span class="label">E:</span><code class="expected">Step-36</code></div>
-<div class="exp-act"><span class="label">A:</span><code class="actual">null</code></div></td>
-</tr>
-</tbody></table></div></div>
-<div class="entity-section">
-<h3 class="entity-name">roles</h3>
-<div class="table-scroll"><table class="graded-table"><thead><tr>
-<th class="">role_id</th>
-<th class="computed-header">name</th>
-<th class="">label</th>
-<th class="">comment</th>
-<th class="">filled_by_human_agent</th>
-<th class="">owned_by</th>
-<th class="">from_delegates_to</th>
-<th class="">display_name</th>
-<th class="">filled_by_ai_agent</th>
-<th class="">filled_by_automated_pipeline</th>
-<th class="">delegates_to</th>
-<th class="">workflow_steps</th>
-<th class="">all_linked_workflow_steps</th>
-<th class="">distinct_workflows_for_linked_steps</th>
-<th class="">workflow_artifacts</th>
-</tr></thead><tbody>
-<tr>
-<td class="cell-raw" title="cto">cto</td>
-<td class="cell-passed computed" title="cto">
-<span class="check">✓</span><code>cto</code></td>
-<td class="cell-raw" title="CTO">CTO</td>
-<td class="cell-raw" title="Chief Technology Officer. Final authority in delegation chain for Release Approval Gate.">Chief Technology Officer. Final authority in delegation chain for Release Approval Gate.</td>
-<td class="cell-raw" title="chen-wei">chen-wei</td>
-<td class="cell-raw" title="engineering">engineering</td>
-<td class="cell-raw" title="vp-engineering">vp-engineering</td>
-<td class="cell-raw" title="CTO">CTO</td>
-<td class="cell-raw" title=""></td>
-<td class="cell-raw" title=""></td>
-<td class="cell-raw" title=""></td>
-<td class="cell-raw" title=""></td>
-<td class="cell-raw" title=""></td>
-<td class="cell-raw" title=""></td>
-<td class="cell-raw" title=""></td>
-</tr>
-<tr>
-<td class="cell-raw" title="deployment-engineer">deployment-engineer</td>
-<td class="cell-failed computed" title="Expected: deployment engineer&#10;Actual: deployment-engineer">
-<div class="exp-act"><span class="label">E:</span><code class="expected">deployment engineer</code></div>
-<div class="exp-act"><span class="label">A:</span><code class="actual">deployment-engineer</code></div></td>
-<td class="cell-raw" title="Deployment Engineer">Deployment Engineer</td>
-<td class="cell-raw" title="Role responsible for executing and monitoring production deployments.">Role responsible for executing and monitoring production deployments.</td>
-<td class="cell-raw" title=""></td>
-<td class="cell-raw" title="engineering">engineering</td>
-<td class="cell-raw" title=""></td>
-<td class="cell-raw" title="Deployment Engineer">Deployment Engineer</td>
-<td class="cell-raw" title=""></td>
-<td class="cell-raw" title="ci-pipeline">ci-pipeline</td>
-<td class="cell-raw" title=""></td>
-<td class="cell-raw" title="deployment-execution">deployment-execution</td>
-<td class="cell-raw" title="deployment-execution">deployment-execution</td>
-<td class="cell-raw" title="production-deployment">production-deployment</td>
-<td class="cell-raw" title=""></td>
-</tr>
-<tr>
-<td class="cell-raw" title="legal-compliance-reviewer">legal-compliance-reviewer</td>
-<td class="cell-failed computed" title="Expected: legal compliance reviewer&#10;Actual: legal-compliance-reviewer">
-<div class="exp-act"><span class="label">E:</span><code class="expected">legal compliance reviewer</code></div>
-<div class="exp-act"><span class="label">A:</span><code class="actual">legal-compliance-reviewer</code></div></td>
-<td class="cell-raw" title="Legal Compliance Reviewer">Legal Compliance Reviewer</td>
-<td class="cell-raw" title="Role responsible for legal and compliance review of releases.">Role responsible for legal and compliance review of releases.</td>
-<td class="cell-raw" title=""></td>
-<td class="cell-raw" title="legal">legal</td>
-<td class="cell-raw" title=""></td>
-<td class="cell-raw" title="Legal Compliance Reviewer">Legal Compliance Reviewer</td>
-<td class="cell-raw" title=""></td>
-<td class="cell-raw" title=""></td>
-<td class="cell-raw" title=""></td>
-<td class="cell-raw" title="legal-clearance">legal-clearance</td>
-<td class="cell-raw" title="legal-clearance">legal-clearance</td>
-<td class="cell-raw" title="production-deployment">production-deployment</td>
-<td class="cell-raw" title=""></td>
-</tr>
-<tr>
-<td class="cell-raw" title="release-manager">release-manager</td>
-<td class="cell-failed computed" title="Expected: release manager&#10;Actual: release-manager">
-<div class="exp-act"><span class="label">E:</span><code class="expected">release manager</code></div>
-<div class="exp-act"><span class="label">A:</span><code class="actual">release-manager</code></div></td>
-<td class="cell-raw" title="Release Manager">Release Manager</td>
-<td class="cell-raw" title="Primary role responsible for coordinating production releases. First in delegation chain for Release Approval Gate.">Primary role responsible for coordinating production releases. First in delegation chain for Release Approval Gate.</td>
-<td class="cell-raw" title="maria-gonzalez">maria-gonzalez</td>
-<td class="cell-raw" title="engineering">engineering</td>
-<td class="cell-raw" title=""></td>
-<td class="cell-raw" title="Release Manager">Release Manager</td>
-<td class="cell-raw" title=""></td>
-<td class="cell-raw" title=""></td>
-<td class="cell-raw" title="vp-engineering">vp-engineering</td>
-<td class="cell-raw" title="release-approval-gate, post-deployment-review">release-approval-gate, post-deployment-review</td>
-<td class="cell-raw" title="release-approval-gate, post-deployment-review">release-approval-gate, post-deployment-review</td>
-<td class="cell-raw" title="production-deployment, production-deployment">production-deployment, production-deployment</td>
-<td class="cell-raw" title=""></td>
-</tr>
-<tr>
-<td class="cell-raw" title="risk-analysis-agent">risk-analysis-agent</td>
-<td class="cell-failed computed" title="Expected: risk analysis agent&#10;Actual: risk-analysis-agent">
-<div class="exp-act"><span class="label">E:</span><code class="expected">risk analysis agent</code></div>
-<div class="exp-act"><span class="label">A:</span><code class="actual">risk-analysis-agent</code></div></td>
-<td class="cell-raw" title="Risk Analysis Agent">Risk Analysis Agent</td>
-<td class="cell-raw" title="Role assigned to AI systems performing automated risk assessment.">Role assigned to AI systems performing automated risk assessment.</td>
-<td class="cell-raw" title=""></td>
-<td class="cell-raw" title="engineering">engineering</td>
-<td class="cell-raw" title=""></td>
-<td class="cell-raw" title="Risk Analysis Agent">Risk Analysis Agent</td>
-<td class="cell-raw" title="risk-analysis-ai">risk-analysis-ai</td>
-<td class="cell-raw" title=""></td>
-<td class="cell-raw" title=""></td>
-<td class="cell-raw" title="risk-analysis">risk-analysis</td>
-<td class="cell-raw" title="risk-analysis">risk-analysis</td>
-<td class="cell-raw" title="production-deployment">production-deployment</td>
-<td class="cell-raw" title=""></td>
-</tr>
-<tr>
-<td class="cell-raw" title="vp-engineering">vp-engineering</td>
-<td class="cell-failed computed" title="Expected: vp engineering&#10;Actual: vp-engineering">
-<div class="exp-act"><span class="label">E:</span><code class="expected">vp engineering</code></div>
-<div class="exp-act"><span class="label">A:</span><code class="actual">vp-engineering</code></div></td>
-<td class="cell-raw" title="VP Engineering">VP Engineering</td>
-<td class="cell-raw" title="Vice President of Engineering. Second in delegation chain for Release Approval Gate.">Vice President of Engineering. Second in delegation chain for Release Approval Gate.</td>
-<td class="cell-raw" title="james-okafor">james-okafor</td>
-<td class="cell-raw" title="engineering">engineering</td>
-<td class="cell-raw" title="release-manager">release-manager</td>
-<td class="cell-raw" title="VP Engineering">VP Engineering</td>
-<td class="cell-raw" title=""></td>
-<td class="cell-raw" title=""></td>
-<td class="cell-raw" title="cto">cto</td>
-<td class="cell-raw" title=""></td>
-<td class="cell-raw" title=""></td>
-<td class="cell-raw" title=""></td>
-<td class="cell-raw" title=""></td>
-</tr>
-</tbody></table></div></div>
-<div class="entity-section">
-<h3 class="entity-name">workflow_steps</h3>
-<div class="table-scroll"><table class="graded-table"><thead><tr>
-<th class="">workflow_step_id</th>
-<th class="computed-header">name</th>
-<th class="">workflow</th>
-<th class="">sequence_position</th>
-<th class="">assigned_role</th>
-<th class="">preceded_by_steps</th>
-<th class="">display_name</th>
-<th class="">assigned_role_department</th>
-<th class="">requires_human_approval</th>
-<th class="">approval_gate</th>
-<th class="computed-header">execution_actor_type</th>
-<th class="">approval_gate_escalation_threshold_hours</th>
-<th class="">step_transitions_from_step</th>
-<th class="">step_transitions_to_step</th>
-<th class="">workflow_artifacts</th>
-</tr></thead><tbody>
-<tr>
-<td class="cell-raw" title="deployment-execution">deployment-execution</td>
-<td class="cell-passed computed" title="deployment-execution">
-<span class="check">✓</span><code>deployment-execution</code></td>
-<td class="cell-raw" title="production-deployment">production-deployment</td>
-<td class="cell-raw" title="4">4</td>
-<td class="cell-raw" title="deployment-engineer">deployment-engineer</td>
-<td class="cell-raw" title="step-3">step-3</td>
-<td class="cell-raw" title="Deployment Execution">Deployment Execution</td>
-<td class="cell-raw" title="engineering">engineering</td>
-<td class="cell-raw" title="False">False</td>
-<td class="cell-raw" title=""></td>
-<td class="cell-failed computed" title="Expected: &#10;Actual: HumanAgent">
-<div class="exp-act"><span class="label">E:</span><code class="expected"></code></div>
-<div class="exp-act"><span class="label">A:</span><code class="actual">HumanAgent</code></div></td>
-<td class="cell-raw" title="0">0</td>
-<td class="cell-raw" title=""></td>
-<td class="cell-raw" title=""></td>
-<td class="cell-raw" title=""></td>
-</tr>
-<tr>
-<td class="cell-raw" title="legal-clearance">legal-clearance</td>
-<td class="cell-passed computed" title="legal-clearance">
-<span class="check">✓</span><code>legal-clearance</code></td>
-<td class="cell-raw" title="production-deployment">production-deployment</td>
-<td class="cell-raw" title="2">2</td>
-<td class="cell-raw" title="legal-compliance-reviewer">legal-compliance-reviewer</td>
-<td class="cell-raw" title="step-1">step-1</td>
-<td class="cell-raw" title="Legal Clearance">Legal Clearance</td>
-<td class="cell-raw" title="legal">legal</td>
-<td class="cell-raw" title="True">True</td>
-<td class="cell-raw" title=""></td>
-<td class="cell-failed computed" title="Expected: &#10;Actual: HumanAgent">
-<div class="exp-act"><span class="label">E:</span><code class="expected"></code></div>
-<div class="exp-act"><span class="label">A:</span><code class="actual">HumanAgent</code></div></td>
-<td class="cell-raw" title="0">0</td>
-<td class="cell-raw" title=""></td>
-<td class="cell-raw" title=""></td>
-<td class="cell-raw" title=""></td>
-</tr>
-<tr>
-<td class="cell-raw" title="post-deployment-review">post-deployment-review</td>
-<td class="cell-passed computed" title="post-deployment-review">
-<span class="check">✓</span><code>post-deployment-review</code></td>
-<td class="cell-raw" title="production-deployment">production-deployment</td>
-<td class="cell-raw" title="5">5</td>
-<td class="cell-raw" title="release-manager">release-manager</td>
-<td class="cell-raw" title="step-4">step-4</td>
-<td class="cell-raw" title="Post-Deployment Review">Post-Deployment Review</td>
-<td class="cell-raw" title="engineering">engineering</td>
-<td class="cell-raw" title="True">True</td>
-<td class="cell-raw" title=""></td>
-<td class="cell-failed computed" title="Expected: &#10;Actual: HumanAgent">
-<div class="exp-act"><span class="label">E:</span><code class="expected"></code></div>
-<div class="exp-act"><span class="label">A:</span><code class="actual">HumanAgent</code></div></td>
-<td class="cell-raw" title="0">0</td>
-<td class="cell-raw" title=""></td>
-<td class="cell-raw" title=""></td>
-<td class="cell-raw" title=""></td>
-</tr>
-<tr>
-<td class="cell-raw" title="release-approval-gate">release-approval-gate</td>
-<td class="cell-passed computed" title="release-approval-gate">
-<span class="check">✓</span><code>release-approval-gate</code></td>
-<td class="cell-raw" title="production-deployment">production-deployment</td>
-<td class="cell-raw" title="3">3</td>
-<td class="cell-raw" title="release-manager">release-manager</td>
-<td class="cell-raw" title="step-2">step-2</td>
-<td class="cell-raw" title="Release Approval Gate">Release Approval Gate</td>
-<td class="cell-raw" title="engineering">engineering</td>
-<td class="cell-raw" title="True">True</td>
-<td class="cell-raw" title="release-approval-gate">release-approval-gate</td>
-<td class="cell-failed computed" title="Expected: &#10;Actual: HumanAgent">
-<div class="exp-act"><span class="label">E:</span><code class="expected"></code></div>
-<div class="exp-act"><span class="label">A:</span><code class="actual">HumanAgent</code></div></td>
-<td class="cell-raw" title="24">24</td>
-<td class="cell-raw" title=""></td>
-<td class="cell-raw" title=""></td>
-<td class="cell-raw" title=""></td>
-</tr>
-<tr>
-<td class="cell-raw" title="risk-analysis">risk-analysis</td>
-<td class="cell-passed computed" title="risk-analysis">
-<span class="check">✓</span><code>risk-analysis</code></td>
-<td class="cell-raw" title="production-deployment">production-deployment</td>
-<td class="cell-raw" title="1">1</td>
-<td class="cell-raw" title="risk-analysis-agent">risk-analysis-agent</td>
-<td class="cell-raw" title=""></td>
-<td class="cell-raw" title="Risk Analysis">Risk Analysis</td>
-<td class="cell-raw" title="engineering">engineering</td>
-<td class="cell-raw" title="False">False</td>
-<td class="cell-raw" title=""></td>
-<td class="cell-failed computed" title="Expected: &#10;Actual: HumanAgent">
-<div class="exp-act"><span class="label">E:</span><code class="expected"></code></div>
-<div class="exp-act"><span class="label">A:</span><code class="actual">HumanAgent</code></div></td>
-<td class="cell-raw" title="0">0</td>
-<td class="cell-raw" title=""></td>
-<td class="cell-raw" title=""></td>
-<td class="cell-raw" title=""></td>
-</tr>
-</tbody></table></div></div>
-<div class="entity-section">
-<h3 class="entity-name">workflows</h3>
-<div class="table-scroll"><table class="graded-table"><thead><tr>
-<th class="">workflow_id</th>
-<th class="computed-header">name</th>
-<th class="">title</th>
-<th class="">description</th>
-<th class="">identifier</th>
-<th class="">modified</th>
-<th class="">workflow_steps</th>
-<th class="computed-header">count_of_steps</th>
-<th class="">display_name</th>
-<th class="computed-header">has_more_than1_step</th>
-</tr></thead><tbody>
-<tr>
-<td class="cell-raw" title="production-deployment">production-deployment</td>
-<td class="cell-passed computed" title="production-deployment">
-<span class="check">✓</span><code>production-deployment</code></td>
-<td class="cell-raw" title="Production Deployment Workflow">Production Deployment Workflow</td>
-<td class="cell-raw" title="End-to-end workflow for deploying software releases to production, including risk analysis, legal clearance, and executive approval gates.">End-to-end workflow for deploying software releases to production, including risk analysis, legal clearance, and executive approval gates.</td>
-<td class="cell-raw" title="ss:workflow-production-deployment">ss:workflow-production-deployment</td>
-<td class="cell-raw" title="2026-01-15">2026-01-15</td>
-<td class="cell-raw" title="risk-analysis, legal-clearance, release-approval-gate, deployment-execution, post-deployment-review">risk-analysis, legal-clearance, release-approval-gate, deployment-execution, post-deployment-review</td>
-<td class="cell-failed computed" title="Expected: 5&#10;Actual: null">
-<div class="exp-act"><span class="label">E:</span><code class="expected">5</code></div>
-<div class="exp-act"><span class="label">A:</span><code class="actual">null</code></div></td>
-<td class="cell-raw" title="Production Deployment">Production Deployment</td>
-<td class="cell-passed computed" title="True">
-<span class="check">✓</span><code>True</code></td>
+<td class="cell-raw" title="cust0003">cust0003</td>
+<td class="cell-raw" title="CUST0003">CUST0003</td>
+<td class="cell-raw" title="emily.jones@email.com">emily.jones@email.com</td>
+<td class="cell-raw" title="Emily">Emily</td>
+<td class="cell-raw" title="Jones">Jones</td>
+<td class="cell-passed computed" title="Jones, Emily">
+<span class="check">✓</span><code>Jones, Emily</code></td>
 </tr>
 </tbody></table></div></div>
             </div>
@@ -541,122 +179,32 @@ Using ENGLISH PROSE documents (glossary.md, specification.md)
 ======================================================================
 
 Loading English specification documents...
-  Loaded specification.md (5665 chars)
+  Loaded specification.md (2229 chars)
 
 Loading rulebook for schema metadata...
-Discovered 13 entities: Workflows, WorkflowSteps, Approvals, PrecedesSteps, Roles, Departments, HumanAgents, AIAgents, AutomatedPipelines, StepTransitions, WorkflowArtifacts, ERBVersions, ERBCustomizations
+Discovered 1 entities: Customers
 
-Processing approvals...
-  Schema: 9 fields, 1 calculated
+Processing customers...
+  Schema: 6 fields, 1 calculated
     Using English prose documents (specification)
 ============================================================
 PROMPT (first 2 lines):
   You are taking a test. Your task is to fill in the computed columns for each record based on the Eng
   
-  ... (160 total lines, 7385 chars)
+  ... (123 total lines, 4088 chars)
 ============================================================
 Calling OpenAI (gpt-4o-mini)... please wait...
 ============================================================
 RESPONSE (first 2 lines):
   [
     {
-  ... (13 total lines, 447 chars)
+  ... (26 total lines, 589 chars)
 ============================================================
-  -&gt; approvals: 1 records, 1 computed fields filled
-
-Processing departments...
-  Schema: 8 fields, 1 calculated
-    Using English prose documents (specification)
-============================================================
-PROMPT (first 2 lines):
-  You are taking a test. Your task is to fill in the computed columns for each record based on the Eng
-  
-  ... (169 total lines, 7981 chars)
-============================================================
-Calling OpenAI (gpt-4o-mini)... please wait...
-============================================================
-RESPONSE (first 2 lines):
-  [
-    {
-  ... (22 total lines, 1034 chars)
-============================================================
-  -&gt; departments: 2 records, 2 computed fields filled
-
-Processing precedes_steps...
-  Schema: 5 fields, 1 calculated
-    Using English prose documents (specification)
-============================================================
-PROMPT (first 2 lines):
-  You are taking a test. Your task is to fill in the computed columns for each record based on the Eng
-  
-  ... (184 total lines, 7740 chars)
-============================================================
-Calling OpenAI (gpt-4o-mini)... please wait...
-============================================================
-RESPONSE (first 2 lines):
-  [
-    {
-  ... (37 total lines, 840 chars)
-============================================================
-  -&gt; precedes_steps: 5 records, 4 computed fields filled
-
-Processing roles...
-  Schema: 15 fields, 1 calculated
-    Using English prose documents (specification)
-============================================================
-PROMPT (first 2 lines):
-  You are taking a test. Your task is to fill in the computed columns for each record based on the Eng
-  
-  ... (251 total lines, 10708 chars)
-============================================================
-Calling OpenAI (gpt-4o-mini)... please wait...
-============================================================
-RESPONSE (first 2 lines):
-  [
-    {
-  ... (105 total lines, 3868 chars)
-============================================================
-  -&gt; roles: 6 records, 6 computed fields filled
-
-Processing workflow_steps...
-  Schema: 15 fields, 2 calculated
-    Using English prose documents (specification)
-============================================================
-PROMPT (first 2 lines):
-  You are taking a test. Your task is to fill in the computed columns for each record based on the Eng
-  
-  ... (234 total lines, 9798 chars)
-============================================================
-Calling OpenAI (gpt-4o-mini)... please wait...
-============================================================
-RESPONSE (first 2 lines):
-  [
-    {
-  ... (86 total lines, 2906 chars)
-============================================================
-  -&gt; workflow_steps: 5 records, 10 computed fields filled
-
-Processing workflows...
-  Schema: 10 fields, 2 calculated
-    Using English prose documents (specification)
-============================================================
-PROMPT (first 2 lines):
-  You are taking a test. Your task is to fill in the computed columns for each record based on the Eng
-  
-  ... (161 total lines, 7574 chars)
-============================================================
-Calling OpenAI (gpt-4o-mini)... please wait...
-============================================================
-RESPONSE (first 2 lines):
-  [
-    {
-  ... (14 total lines, 615 chars)
-============================================================
-  -&gt; workflows: 1 records, 2 computed fields filled
+  -&gt; customers: 3 records, 3 computed fields filled
 
 ======================================================================
-English substrate: Processed 6 entities, 20 total records
-Filled 25 computed fields total
+English substrate: Processed 1 entities, 3 total records
+Filled 3 computed fields total
 ======================================================================
 
 </pre>
@@ -666,103 +214,70 @@ Filled 25 computed fields total
             <div class="card">
                 <h2>Test Summary</h2>
                 <div class="results-summary">
-                    <div class="result-item"><div class="result-value score-danger">40.7%</div><div class="result-label">Score</div></div>
-                    <div class="result-item"><div class="result-value score-perfect">11</div><div class="result-label">Passed</div></div>
-                    <div class="result-item"><div class="result-value">16</div><div class="result-label">Failed</div></div>
-                    <div class="result-item"><div class="result-value">27</div><div class="result-label">Total</div></div>
+                    <div class="result-item"><div class="result-value score-perfect">100.0%</div><div class="result-label">Score</div></div>
+                    <div class="result-item"><div class="result-value score-perfect">3</div><div class="result-label">Passed</div></div>
+                    <div class="result-item"><div class="result-value">0</div><div class="result-label">Failed</div></div>
+                    <div class="result-item"><div class="result-value">3</div><div class="result-label">Total</div></div>
                 </div>
             </div>
         </div>
         <div id="specification" class="tab-content">
             <div class="card">
                 <h2>specification.md (LLM-Generated)</h2>
-                <div class="prose-container markdown-content"><h2>Specification Document for Jessica Talisman - ADVANCED Ontology Parts 1-3</h2>
+                <div class="prose-container markdown-content"><h2>ACME Corporation Rulebook Specification</h2>
 <h3>Overview</h3>
-<p>This document outlines the specifications for calculating fields within the "Jessica Talisman - ADVANCED Ontology Parts 1-3" rulebook. The rulebook is structured to manage workflows, workflow steps, approvals, roles, departments, and agents, providing a comprehensive framework for operational processes. The calculations are primarily based on raw data inputs and are designed to facilitate analysis and reporting.</p>
-<h3>Workflows</h3>
+<p>This specification document outlines the rules and calculations defined in the ACME Corporation rulebook. The rulebook is generated from an Airtable base and contains a schema for customer data, including raw input fields and calculated fields. The primary focus is on how to compute the calculated fields based on the provided raw data.</p>
+<h3>Customers Table</h3>
 <h4>Input Fields</h4>
-<p>1. <strong>WorkflowId</strong></p>
-<p>   - <strong>Type:</strong> string</p>
-<p>   - <strong>Description:</strong> Unique identifier for the workflow.</p>
-<p>2. <strong>DisplayName</strong></p>
-<p>   - <strong>Type:</strong> string</p>
-<p>   - <strong>Description:</strong> Human-readable name of the workflow.</p>
-<p>3. <strong>WorkflowSteps</strong></p>
-<p>   - <strong>Type:</strong> string</p>
-<p>   - <strong>Description:</strong> Reference to the steps that make up the workflow.</p>
+<p>The following input fields are defined in the Customers table:</p>
+<p>1. <strong>CustomerId</strong></p>
+<p>   - <strong>Type:</strong> String</p>
+<p>   - <strong>Description:</strong> A unique identifier for the customer. This field is mandatory.</p>
+<p>2. <strong>Customer</strong></p>
+<p>   - <strong>Type:</strong> String</p>
+<p>   - <strong>Description:</strong> An identifier for the customers. This field is optional.</p>
+<p>3. <strong>EmailAddress</strong></p>
+<p>   - <strong>Type:</strong> String</p>
+<p>   - <strong>Description:</strong> The customer's email address. This field is optional.</p>
+<p>4. <strong>FirstName</strong></p>
+<p>   - <strong>Type:</strong> String</p>
+<p>   - <strong>Description:</strong> The first name of the customer, used to create the full name. This field is optional.</p>
+<p>5. <strong>LastName</strong></p>
+<p>   - <strong>Type:</strong> String</p>
+<p>   - <strong>Description:</strong> The last name of the customer, used to create the full name. This field is optional.</p>
 <h4>Calculated Fields</h4>
-<p>1. <strong>Name</strong></p>
-<p>   - <strong>Description:</strong> A machine-friendly name for the workflow, used for programmatic reference and URL slug generation.</p>
-<p>   - <strong>Calculation:</strong> Convert the `DisplayName` to lowercase and replace spaces with hyphens.</p>
-<p>   - <strong>Formula:</strong> `=SUBSTITUTE(LOWER({{DisplayName}}), " ", "-")`</p>
-<p>   - <strong>Example:</strong> If `DisplayName` is "Production Deployment", then `Name` would be "production-deployment".</p>
-<p>2. <strong>CountOfSteps</strong></p>
-<p>   - <strong>Description:</strong> The total number of steps in the workflow.</p>
-<p>   - <strong>Calculation:</strong> Count the number of entries in `WorkflowSteps` that match the current `WorkflowId`.</p>
-<p>   - <strong>Formula:</strong> `=COUNTIFS(WorkflowSteps!{{Workflow}}, Workflows!{{WorkflowId}})`</p>
-<p>   - <strong>Example:</strong> If there are 5 steps listed under `WorkflowSteps` for `WorkflowId` "production-deployment", then `CountOfSteps` would be 5.</p>
-<p>3. <strong>HasMoreThan1Step</strong></p>
-<p>   - <strong>Description:</strong> A boolean indicating whether the workflow has more than one step.</p>
-<p>   - <strong>Calculation:</strong> Check if `CountOfSteps` is greater than 1.</p>
-<p>   - <strong>Formula:</strong> `={{CountOfSteps}} > 1`</p>
-<p>   - <strong>Example:</strong> If `CountOfSteps` is 5, then `HasMoreThan1Step` would be `true`.</p>
-<p>---</p>
-<h3>WorkflowSteps</h3>
-<h4>Input Fields</h4>
-<p>1. <strong>WorkflowStepId</strong></p>
-<p>   - <strong>Type:</strong> string</p>
-<p>   - <strong>Description:</strong> Unique identifier for the workflow step.</p>
-<p>2. <strong>DisplayName</strong></p>
-<p>   - <strong>Type:</strong> string</p>
-<p>   - <strong>Description:</strong> Human-readable name of the workflow step.</p>
-<p>3. <strong>AssignedRole</strong></p>
-<p>   - <strong>Type:</strong> string</p>
-<p>   - <strong>Description:</strong> Role responsible for executing this step.</p>
-<p>4. <strong>AssignedRoleDepartment</strong></p>
-<p>   - <strong>Type:</strong> string</p>
-<p>   - <strong>Description:</strong> Department that owns the assigned role.</p>
-<h4>Calculated Fields</h4>
-<p>1. <strong>Name</strong></p>
-<p>   - <strong>Description:</strong> A machine-friendly name for the workflow step.</p>
-<p>   - <strong>Calculation:</strong> Convert the `DisplayName` to lowercase and replace spaces with hyphens.</p>
-<p>   - <strong>Formula:</strong> `=SUBSTITUTE(LOWER({{DisplayName}}), " ", "-")`</p>
-<p>   - <strong>Example:</strong> If `DisplayName` is "Risk Analysis", then `Name` would be "risk-analysis".</p>
-<p>2. <strong>ExecutionActorType</strong></p>
-<p>   - <strong>Description:</strong> Defines the type of actor executing the step based on the department of the assigned role.</p>
-<p>   - <strong>Calculation:</strong> If `AssignedRoleDepartment` is "HumanAgent", return "HumanAgent"; if "AIAgent", return "AIAgent"; if "AutomatedPipeline", return "AutomatedPipeline"; otherwise, return blank.</p>
-<p>   - <strong>Formula:</strong> `=IF({{AssignedRoleDepartment}} = "HumanAgent", "HumanAgent", IF({{AssignedRoleDepartment}} = "AIAgent", "AIAgent", IF({{AssignedRoleDepartment}} = "AutomatedPipeline", "AutomatedPipeline", BLANK())))`</p>
-<p>   - <strong>Example:</strong> If `AssignedRoleDepartment` is "engineering", and the role is filled by a human agent, then `ExecutionActorType` would be "HumanAgent".</p>
-<p>3. <strong>ApprovalGateEscalationThresholdHours</strong></p>
-<p>   - <strong>Description:</strong> The number of hours that may elapse on a pending gate before escalation occurs.</p>
-<p>   - <strong>Calculation:</strong> Lookup the `EscalationThresholdHours` from the `Approvals` table based on the `ApprovalGate`.</p>
-<p>   - <strong>Formula:</strong> `=INDEX(Approvals!{{EscalationThresholdHours}}, MATCH(WorkflowSteps!{{ApprovalGate}}, Approvals!{{ApprovalId}}, 0))`</p>
-<p>   - <strong>Example:</strong> If the `ApprovalGate` is "release-approval-gate", and the corresponding `EscalationThresholdHours` is 24, then this field would return 24.</p>
-<p>---</p>
-<h3>Approvals</h3>
-<h4>Input Fields</h4>
-<p>1. <strong>ApprovalId</strong></p>
-<p>   - <strong>Type:</strong> string</p>
-<p>   - <strong>Description:</strong> Unique identifier for the approval gate.</p>
-<p>2. <strong>DisplayName</strong></p>
-<p>   - <strong>Type:</strong> string</p>
-<p>   - <strong>Description:</strong> Human-readable name of the approval gate.</p>
-<p>3. <strong>WorkflowSteps</strong></p>
-<p>   - <strong>Type:</strong> string</p>
-<p>   - <strong>Description:</strong> Reference to workflow steps that use this approval gate.</p>
-<h4>Calculated Fields</h4>
-<p>1. <strong>Name</strong></p>
-<p>   - <strong>Description:</strong> A machine-friendly name for the approval gate.</p>
-<p>   - <strong>Calculation:</strong> Convert the `DisplayName` to lowercase and replace spaces with hyphens.</p>
-<p>   - <strong>Formula:</strong> `=SUBSTITUTE(LOWER({{DisplayName}}), " ", "-")`</p>
-<p>   - <strong>Example:</strong> If `DisplayName` is "Release Approval Gate", then `Name` would be "release-approval-gate".</p>
-<p>2. <strong>Workflow_from_WorkflowSteps</strong></p>
-<p>   - <strong>Description:</strong> Lookup the workflow associated with the steps that require this approval gate.</p>
-<p>   - <strong>Calculation:</strong> Retrieve the `Workflow` from the `WorkflowSteps` table based on the `WorkflowSteps` reference.</p>
-<p>   - <strong>Formula:</strong> `=INDEX(WorkflowSteps!{{Workflow}}, MATCH(Approvals!{{WorkflowSteps}}, WorkflowSteps!{{WorkflowStepId}}, 0))`</p>
-<p>   - <strong>Example:</strong> If `WorkflowSteps` contains "release-approval-gate", it would return "production-deployment".</p>
-<p>---</p>
-<h3>Summary</h3>
-<p>This specification document provides a detailed guide on how to compute calculated fields within the "Jessica Talisman - ADVANCED Ontology Parts 1-3" rulebook. By following the outlined steps and examples, users can accurately derive the necessary values without needing to reference the original formulas directly.</p></div>
+<p>#### FullName</p>
+<ul>
+<li>**Type:** Calculated</li>
+<li>**Description:** The full name of the customer is computed by combining the last name and first name in the format &quot;LastName, FirstName&quot;.</li>
+</ul>
+<p><strong>Calculation Method:</strong></p>
+<p>To compute the FullName, concatenate the LastName and FirstName fields with a comma and a space in between. If either the LastName or FirstName is missing, the output should reflect that accordingly.</p>
+<p><strong>Formula:</strong></p>
+<pre>
+={{LastName}} &amp; &quot;, &quot; &amp; {{FirstName}}
+</pre>
+<p><strong>Example Calculation:</strong></p>
+<p>Using the provided data:</p>
+<ul>
+<li>For the first customer:</li>
+<p>  - <strong>LastName:</strong> Smith</p>
+<p>  - <strong>FirstName:</strong> Larry</p>
+<p>  - <strong>FullName Calculation:</strong> "Smith, Larry"</p>
+</ul>
+<ul>
+<li>For the second customer:</li>
+<p>  - <strong>LastName:</strong> Doe</p>
+<p>  - <strong>FirstName:</strong> John</p>
+<p>  - <strong>FullName Calculation:</strong> "Doe, John"</p>
+</ul>
+<ul>
+<li>For the third customer:</li>
+<p>  - <strong>LastName:</strong> Jones</p>
+<p>  - <strong>FirstName:</strong> Emily</p>
+<p>  - <strong>FullName Calculation:</strong> "Jones, Emily"</p>
+</ul>
+<p>This specification provides a clear understanding of how to compute the FullName field based on the raw input fields available in the Customers table of the ACME Corporation rulebook.</p></div>
             </div>
         </div>
     </main>
