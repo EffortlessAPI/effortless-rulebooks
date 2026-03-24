@@ -576,6 +576,10 @@
           "IsHypotenuse"
         ],
         [
+          "Length",
+          "LengthSquared"
+        ],
+        [
           "Label",
           "Name"
         ],
@@ -889,11 +893,50 @@
         },
         "LengthSquared": {
           "formula_source": "={{Length}} * {{Length}}",
-          "template_hash": "error",
-          "error": "Unexpected character '*' at position 11",
-          "root_node": null,
-          "nodes": {},
-          "edges": []
+          "template_hash": "sha256:c01ae708b61d2c94",
+          "root_node": "n_result_LengthSquared",
+          "nodes": {
+            "n_ref_1": {
+              "kind": "field_ref",
+              "field": "Length",
+              "field_snake": "length"
+            },
+            "n_ref_2": {
+              "kind": "field_ref",
+              "field": "Length",
+              "field_snake": "length"
+            },
+            "n_op_3": {
+              "kind": "op",
+              "name": "*",
+              "args": [
+                "n_ref_1",
+                "n_ref_2"
+              ]
+            },
+            "n_result_LengthSquared": {
+              "kind": "result",
+              "field": "LengthSquared",
+              "field_snake": "length_squared",
+              "in": [
+                "n_op_3"
+              ]
+            }
+          },
+          "edges": [
+            [
+              "n_ref_1",
+              "n_op_3"
+            ],
+            [
+              "n_ref_2",
+              "n_op_3"
+            ],
+            [
+              "n_op_3",
+              "n_result_LengthSquared"
+            ]
+          ]
         },
         "HypotenuseLengthSquared": {
           "formula_source": "=IF({{IsHypotenuse}}, {{LengthSquared}})",

@@ -242,7 +242,7 @@ func (tc *Side) CalcStatusOfTheorem() string {
 // CalcLengthSquared computes the LengthSquared calculated field
 // Formula: ={{Length}} * {{Length}}
 func (tc *Side) CalcLengthSquared() int {
-	return func() interface{} { panic("Formula parse error: Unexpected character '*' at position 11") }()
+	return (intVal(tc.Length) * intVal(tc.Length))
 }
 
 // CalcHypotenuseLengthSquared computes the HypotenuseLengthSquared calculated field
@@ -265,7 +265,7 @@ func (tc *Side) ComputeAll() *Side {
 	name := stringVal(tc.Shape) + "-Side-" + stringVal(tc.Label)
 	isHypotenuse := (boolVal(tc.IsTriangle) && (boolVal(tc.Length) > boolVal(tc.PreviousSideLength)) && (boolVal(tc.Length) > boolVal(tc.NextLength)))
 	statusOfTheorem := func() string { if boolVal(tc.IsTriangle) { return func() string { if (boolVal(tc.IsRightTriangle) && !boolVal(tc.PythagoreanTheoremHolds)) { return "PYTHAGOREAN THEOREM FALSIFIED!" }; return "Pythagorean Theorem Holds (obviously)." }() }; return "NA" }()
-	lengthSquared := func() interface{} { panic("Formula parse error: Unexpected character '*' at position 11") }()
+	lengthSquared := (intVal(tc.Length) * intVal(tc.Length))
 
 	// Level 2 calculations
 	hypotenuseLengthSquared := func() string { if isHypotenuse { return lengthSquared }; return "" }()

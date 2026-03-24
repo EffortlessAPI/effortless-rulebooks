@@ -399,7 +399,8 @@ def compile_to_sparql(expr: ExprNode, field_bindings: Dict[str, str] = None) -> 
     if isinstance(expr, BinaryOp):
         left = compile_to_sparql(expr.left, field_bindings)
         right = compile_to_sparql(expr.right, field_bindings)
-        op_map = {'=': '=', '<>': '!=', '<': '<', '<=': '<=', '>': '>', '>=': '>='}
+        op_map = {'=': '=', '<>': '!=', '<': '<', '<=': '<=', '>': '>', '>=': '>=',
+                  '+': '+', '-': '-', '*': '*', '/': '/'}
         sparql_op = op_map.get(expr.op, '=')
         return f'({left} {sparql_op} {right})'
 
