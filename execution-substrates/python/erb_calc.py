@@ -60,13 +60,9 @@ def compute_shapes_fields(record: dict) -> dict:
 
 # Level 1
 
-
-def calc_sides_length_squared():
-    """ERROR: Could not parse formula: ={{Length}} * {{Length}}
-    Error: Unexpected character '*' at position 11
-    """
-    raise NotImplementedError("Formula parsing failed")
-
+def calc_sides_length_squared(length):
+    """Formula: ={{Length}} * {{Length}}"""
+    return (length * length)
 
 # Level 2
 
@@ -118,7 +114,7 @@ def compute_sides_fields(record: dict) -> dict:
     result = dict(record)
 
     # Level 1 calculations
-    result['length_squared'] = calc_sides_length_squared()
+    result['length_squared'] = calc_sides_length_squared(result.get('length'))
 
     # Level 2 calculations
     result['name'] = calc_sides_name(result.get('shape'), result.get('label'))

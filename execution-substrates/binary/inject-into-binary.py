@@ -184,6 +184,14 @@ class IRSum(IRNode):
 
 
 @dataclass
+class IRArithmetic(IRNode):
+    """Arithmetic operation (+, -, *, /)."""
+    op: str  # 'add', 'sub', 'mul', 'div'
+    left: IRNode
+    right: IRNode
+
+
+@dataclass
 class IRLower(IRNode):
     """Convert string to lowercase."""
     operand: IRNode
@@ -553,8 +561,15 @@ class IRLowerer:
         if isinstance(expr, BinaryOp):
             left = self.lower(expr.left)
             right = self.lower(expr.right)
-            op_map = {'=': 'eq', '<>': 'ne', '<': 'lt', '<=': 'le', '>': 'gt', '>=': 'ge'}
-            return IRCompare(result_type=DataType.BOOL, op=op_map[expr.op], left=left, right=right)
+            # Comparison operators
+            if expr.op in ('=', '<>', '<', '<=', '>', '>='):
+                op_map = {'=': 'eq', '<>': 'ne', '<': 'lt', '<=': 'le', '>': 'gt', '>=': 'ge'}
+                return IRCompare(result_type=DataType.BOOL, op=op_map[expr.op], left=left, right=right)
+            # Arithmetic operators
+            if expr.op in ('+', '-', '*', '/'):
+                arith_map = {'+': 'add', '-': 'sub', '*': 'mul', '/': 'div'}
+                return IRArithmetic(result_type=DataType.INT, op=arith_map[expr.op], left=left, right=right)
+            raise ValueError(f"Unknown binary op: {expr.op}")
 
         if isinstance(expr, FuncCall):
             if expr.name == 'AND':
@@ -876,6 +891,38 @@ class AsmGenerator:
                     lines.append("    cset w0, ge")
 
             return ("w0", lines)
+
+        if isinstance(ir, IRArithmetic):
+            # Evaluate left operand
+            _, left_code = self.gen_ir(ir.left)
+            lines.extend(left_code)
+
+            # Save left result
+            lines.append("    mov x20, x0")
+
+            # Evaluate right operand
+            _, right_code = self.gen_ir(ir.right)
+            lines.extend(right_code)
+
+            # Perform arithmetic: x20 op x0 -> x0
+            if ir.op == 'add':
+                lines.append("    add x0, x20, x0")
+            elif ir.op == 'sub':
+                lines.append("    sub x0, x20, x0")
+            elif ir.op == 'mul':
+                lines.append("    mul x0, x20, x0")
+            elif ir.op == 'div':
+                # Check for division by zero - return 0
+                zero_label = self.new_label("div_zero")
+                end_label = self.new_label("div_end")
+                lines.append("    cbz x0, " + zero_label)
+                lines.append("    sdiv x0, x20, x0")
+                lines.append("    b " + end_label)
+                lines.append(f"{zero_label}:")
+                lines.append("    mov x0, #0")
+                lines.append(f"{end_label}:")
+
+            return ("x0", lines)
 
         if isinstance(ir, IRIf):
             else_label = self.new_label("if_else")

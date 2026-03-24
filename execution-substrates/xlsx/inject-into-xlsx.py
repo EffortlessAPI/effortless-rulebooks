@@ -262,7 +262,57 @@ def evaluate_formula(formula, row_data):
             new_str = str(new_text) if new_text is not None else ''
             return str(text).replace(old_str, new_str)
 
+        # Handle arithmetic operators (* and / before + and -)
+        # Multiplicative first (higher precedence)
+        for op, op_fn in [(' * ', lambda a, b: a * b),
+                          (' / ', lambda a, b: a / b if b != 0 else 0),
+                          ('*', lambda a, b: a * b),
+                          ('/', lambda a, b: a / b if b != 0 else 0)]:
+            if op in expr:
+                parts = expr.split(op, 1)
+                if len(parts) == 2:
+                    left = eval_expr(parts[0])
+                    right = eval_expr(parts[1])
+                    if left is not None and right is not None:
+                        try:
+                            left_num = float(left) if not isinstance(left, (int, float)) else left
+                            right_num = float(right) if not isinstance(right, (int, float)) else right
+                            result = op_fn(left_num, right_num)
+                            return int(result) if result == int(result) else result
+                        except (ValueError, TypeError):
+                            pass
+
+        # Additive operators (lower precedence than multiplicative)
+        for op, op_fn in [(' + ', lambda a, b: a + b),
+                          (' - ', lambda a, b: a - b),
+                          ('+', lambda a, b: a + b),
+                          ('-', lambda a, b: a - b)]:
+            if op in expr:
+                parts = expr.split(op, 1)
+                if len(parts) == 2:
+                    left = eval_expr(parts[0])
+                    right = eval_expr(parts[1])
+                    if left is not None and right is not None:
+                        try:
+                            left_num = float(left) if not isinstance(left, (int, float)) else left
+                            right_num = float(right) if not isinstance(right, (int, float)) else right
+                            result = op_fn(left_num, right_num)
+                            return int(result) if result == int(result) else result
+                        except (ValueError, TypeError):
+                            pass
+
         # Handle comparison operators (check multi-char operators first)
+        def safe_compare(a, b, op_fn):
+            """Compare values safely, coercing to same type if needed."""
+            # If both are numeric or can be converted to numeric, compare as numbers
+            try:
+                a_num = float(a) if not isinstance(a, (int, float, bool)) else (1 if a is True else 0 if a is False else a)
+                b_num = float(b) if not isinstance(b, (int, float, bool)) else (1 if b is True else 0 if b is False else b)
+                return op_fn(a_num, b_num)
+            except (ValueError, TypeError):
+                # Fall back to string comparison
+                return op_fn(str(a), str(b))
+
         for op, op_fn in [(' >= ', lambda a, b: a >= b),
                           (' <= ', lambda a, b: a <= b),
                           (' > ', lambda a, b: a > b),
@@ -277,7 +327,7 @@ def evaluate_formula(formula, row_data):
                     left = eval_expr(parts[0])
                     right = eval_expr(parts[1])
                     if left is not None and right is not None:
-                        return op_fn(left, right)
+                        return safe_compare(left, right, op_fn)
 
         # Handle equality: {{Field}} = value or value = value
         if ' = ' in expr or '=' in expr:

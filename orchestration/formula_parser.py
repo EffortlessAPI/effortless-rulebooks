@@ -52,7 +52,7 @@ class FieldRef(ExprNode):
 
 @dataclass
 class BinaryOp(ExprNode):
-    op: str  # '=', '<>', '<', '<=', '>', '>='
+    op: str  # '=', '<>', '<', '<=', '>', '>=', '+', '-', '*', '/'
     left: ExprNode
     right: ExprNode
 
@@ -93,6 +93,11 @@ class TokenType(Enum):
     LE = auto()
     GT = auto()
     GE = auto()
+    # Arithmetic operators
+    PLUS = auto()
+    MINUS = auto()
+    MULT = auto()
+    DIV = auto()
     EOF = auto()
 
 
@@ -145,11 +150,9 @@ def tokenize(formula: str) -> List[Token]:
             i = j + 2
             continue
 
-        # Number
-        if c.isdigit() or (c == '-' and i + 1 < len(formula) and formula[i+1].isdigit()):
+        # Number (positive only - negative numbers handled with MINUS operator logic)
+        if c.isdigit():
             j = i
-            if c == '-':
-                j += 1
             while j < len(formula) and formula[j].isdigit():
                 j += 1
             value = int(formula[i:j])
@@ -198,6 +201,49 @@ def tokenize(formula: str) -> List[Token]:
             tokens.append(Token(TokenType.COMMA, ',', i))
             i += 1
             continue
+
+        # Arithmetic operators
+        if c == '*':
+            tokens.append(Token(TokenType.MULT, '*', i))
+            i += 1
+            continue
+        if c == '/':
+            tokens.append(Token(TokenType.DIV, '/', i))
+            i += 1
+            continue
+        if c == '+':
+            tokens.append(Token(TokenType.PLUS, '+', i))
+            i += 1
+            continue
+        # Handle minus as subtraction operator (not part of negative number)
+        # Only treat as negative number if at start or after operator/open paren
+        if c == '-':
+            # Check if this could be a negative number
+            is_negative_number = False
+            if i + 1 < len(formula) and formula[i+1].isdigit():
+                # Check previous non-whitespace context
+                if not tokens:
+                    is_negative_number = True
+                elif tokens[-1].type in (TokenType.LPAREN, TokenType.COMMA, TokenType.EQUALS,
+                                         TokenType.NOT_EQUALS, TokenType.LT, TokenType.LE,
+                                         TokenType.GT, TokenType.GE, TokenType.PLUS,
+                                         TokenType.MINUS, TokenType.MULT, TokenType.DIV):
+                    is_negative_number = True
+
+            if is_negative_number:
+                # Parse as negative number
+                j = i + 1
+                while j < len(formula) and formula[j].isdigit():
+                    j += 1
+                value = int(formula[i:j])
+                tokens.append(Token(TokenType.NUMBER, value, i))
+                i = j
+                continue
+            else:
+                # It's a subtraction operator
+                tokens.append(Token(TokenType.MINUS, '-', i))
+                i += 1
+                continue
 
         # Function names / identifiers
         if c.isalpha() or c == '_':
@@ -254,7 +300,7 @@ class Parser:
         return Concat(parts=parts)
 
     def parse_comparison(self) -> ExprNode:
-        left = self.parse_primary()
+        left = self.parse_additive()
         op_map = {
             TokenType.EQUALS: '=',
             TokenType.NOT_EQUALS: '<>',
@@ -266,8 +312,28 @@ class Parser:
         if self.current().type in op_map:
             op = op_map[self.current().type]
             self.consume()
-            right = self.parse_primary()
+            right = self.parse_additive()
             return BinaryOp(op=op, left=left, right=right)
+        return left
+
+    def parse_additive(self) -> ExprNode:
+        """Parse additive expressions: +, -"""
+        left = self.parse_multiplicative()
+        while self.current().type in (TokenType.PLUS, TokenType.MINUS):
+            op = '+' if self.current().type == TokenType.PLUS else '-'
+            self.consume()
+            right = self.parse_multiplicative()
+            left = BinaryOp(op=op, left=left, right=right)
+        return left
+
+    def parse_multiplicative(self) -> ExprNode:
+        """Parse multiplicative expressions: *, /"""
+        left = self.parse_primary()
+        while self.current().type in (TokenType.MULT, TokenType.DIV):
+            op = '*' if self.current().type == TokenType.MULT else '/'
+            self.consume()
+            right = self.parse_primary()
+            left = BinaryOp(op=op, left=left, right=right)
         return left
 
     def parse_primary(self) -> ExprNode:
@@ -457,7 +523,8 @@ def compile_to_python(expr: ExprNode) -> str:
     if isinstance(expr, BinaryOp):
         left = compile_to_python(expr.left)
         right = compile_to_python(expr.right)
-        op_map = {'=': '==', '<>': '!=', '<': '<', '<=': '<=', '>': '>', '>=': '>='}
+        op_map = {'=': '==', '<>': '!=', '<': '<', '<=': '<=', '>': '>', '>=': '>=',
+                  '+': '+', '-': '-', '*': '*', '/': '/'}
         return f'({left} {op_map[expr.op]} {right})'
 
     if isinstance(expr, FuncCall):
@@ -576,7 +643,8 @@ def compile_to_javascript(expr: ExprNode, obj_name: str = 'candidate') -> str:
     if isinstance(expr, BinaryOp):
         left = compile_to_javascript(expr.left, obj_name)
         right = compile_to_javascript(expr.right, obj_name)
-        op_map = {'=': '===', '<>': '!==', '<': '<', '<=': '<=', '>': '>', '>=': '>='}
+        op_map = {'=': '===', '<>': '!==', '<': '<', '<=': '<=', '>': '>', '>=': '>=',
+                  '+': '+', '-': '-', '*': '*', '/': '/'}
         return f'({left} {op_map[expr.op]} {right})'
 
     if isinstance(expr, FuncCall):
@@ -717,6 +785,17 @@ def compile_to_go(expr: ExprNode, struct_name: str = 'lc', field_types: dict = N
         raise ValueError(f"Unknown unary op: {expr.op}")
 
     if isinstance(expr, BinaryOp):
+        # Handle arithmetic operations first (before comparison-specific handling)
+        if expr.op in ('+', '-', '*', '/'):
+            left = compile_to_go(expr.left, struct_name, field_types)
+            right = compile_to_go(expr.right, struct_name, field_types)
+            # Wrap field refs in intVal for nil-safe integer access
+            if isinstance(expr.left, FieldRef):
+                left = f'intVal({left})'
+            if isinstance(expr.right, FieldRef):
+                right = f'intVal({right})'
+            return f'({left} {expr.op} {right})'
+
         # Handle comparisons involving field refs (pointer fields in Go)
         if isinstance(expr.left, FieldRef) and isinstance(expr.right, FieldRef):
             # Both sides are field refs - wrap both in boolVal for nil-safe comparison
@@ -977,6 +1056,31 @@ def _eval_expr(node: ExprNode, ctx: dict) -> any:
             if left is None or right is None:
                 return False
             return left >= right
+        # Arithmetic operators
+        if node.op == '+':
+            if left is None:
+                left = 0
+            if right is None:
+                right = 0
+            return left + right
+        if node.op == '-':
+            if left is None:
+                left = 0
+            if right is None:
+                right = 0
+            return left - right
+        if node.op == '*':
+            if left is None:
+                left = 0
+            if right is None:
+                right = 0
+            return left * right
+        if node.op == '/':
+            if left is None:
+                left = 0
+            if right is None or right == 0:
+                return 0  # Division by zero or None returns 0
+            return left / right
         raise ValueError(f"Unknown binary op: {node.op}")
 
     if isinstance(node, FuncCall):

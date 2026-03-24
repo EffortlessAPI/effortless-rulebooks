@@ -379,7 +379,8 @@ def compile_to_ocl(expr: ExprNode) -> str:
     if isinstance(expr, BinaryOp):
         left = compile_to_ocl(expr.left)
         right = compile_to_ocl(expr.right)
-        op_map = {'=': '=', '<>': '<>', '<': '<', '<=': '<=', '>': '>', '>=': '>='}
+        op_map = {'=': '=', '<>': '<>', '<': '<', '<=': '<=', '>': '>', '>=': '>=',
+                  '+': '+', '-': '-', '*': '*', '/': '/'}
         ocl_op = op_map.get(expr.op, '=')
         return f'({left} {ocl_op} {right})'
 
