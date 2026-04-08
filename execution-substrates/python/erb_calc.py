@@ -17,13 +17,13 @@ from typing import Optional, Any
 
 # Level 1
 
-def calc_customers_full_name(last_name, first_name):
+def calc_customers_full_name(first_name, last_name):
     """
     Full name is computed from the first and last name of the customer
     
-    Formula: ={{LastName}} & ", " & {{FirstName}}
+    Formula: ={{FirstName}} & " " & {{LastName}}
     """
-    return (str(last_name or "") + ', ' + str(first_name or ""))
+    return (str(first_name or "") + ' ' + str(last_name or ""))
 
 
 def compute_customers_fields(record: dict) -> dict:
@@ -35,7 +35,7 @@ def compute_customers_fields(record: dict) -> dict:
     result = dict(record)
 
     # Level 1 calculations
-    result['full_name'] = calc_customers_full_name(result.get('last_name'), result.get('first_name'))
+    result['full_name'] = calc_customers_full_name(result.get('first_name'), result.get('last_name'))
 
     # Convert empty strings to None for string fields
     for key in ['full_name']:

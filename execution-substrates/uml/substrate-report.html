@@ -174,7 +174,7 @@ object &quot;Customers_0&quot; as Customers_0 {
   CustomerId = &quot;cust0001&quot;
   Customer = &quot;CUST0001&quot;
   EmailAddress = &quot;jane.smith@email.com&quot;
-  FirstName = &quot;Mary&quot;
+  FirstName = &quot;Robert&quot;
   LastName = &quot;Smith&quot;
 }
 
@@ -182,7 +182,7 @@ object &quot;Customers_1&quot; as Customers_1 {
   CustomerId = &quot;cust0002&quot;
   Customer = &quot;CUST0002&quot;
   EmailAddress = &quot;john.doe@email.com&quot;
-  FirstName = &quot;John&quot;
+  FirstName = &quot;Jimmy&quot;
   LastName = &quot;Doe&quot;
 }
 
@@ -190,7 +190,7 @@ object &quot;Customers_2&quot; as Customers_2 {
   CustomerId = &quot;cust0003&quot;
   Customer = &quot;CUST0003&quot;
   EmailAddress = &quot;emily.jones@email.com&quot;
-  FirstName = &quot;Emily&quot;
+  FirstName = &quot;Mary&quot;
   LastName = &quot;Jones&quot;
 }
 
@@ -210,8 +210,8 @@ object &quot;Customers_2&quot; as Customers_2 {
 context Customers
 
 -- Full name is computed from the first and last name of the customer
--- Formula: ={{LastName}} &amp; &quot;, &quot; &amp; {{FirstName}}
-derive FullName: self.lastName + &#x27;, &#x27; + self.firstName
+-- Formula: ={{FirstName}} &amp; &quot; &quot; &amp; {{LastName}}
+derive FullName: self.firstName + &#x27; &#x27; + self.lastName
 </pre>
             </div>
         </div>

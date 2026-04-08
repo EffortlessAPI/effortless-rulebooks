@@ -21,7 +21,7 @@ erb:CustomersShape a sh:NodeShape ;
     $this a erb:Customers .
     OPTIONAL { $this erb:firstName ?first_name . }
     OPTIONAL { $this erb:lastName ?last_name . }
-                BIND(CONCAT(?last_name, ", ", ?first_name) AS ?_result)
+                BIND(CONCAT(?first_name, " ", ?last_name) AS ?_result)
             }
         """ ;
     ] .

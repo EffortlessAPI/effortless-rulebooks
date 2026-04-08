@@ -9,19 +9,19 @@ erb:Customers_0 a erb:Customers ;
     erb:customerId "cust0001" ;
     erb:customer "CUST0001" ;
     erb:emailAddress "jane.smith@email.com" ;
-    erb:firstName "Mary" ;
+    erb:firstName "Robert" ;
     erb:lastName "Smith" .
 
 erb:Customers_1 a erb:Customers ;
     erb:customerId "cust0002" ;
     erb:customer "CUST0002" ;
     erb:emailAddress "john.doe@email.com" ;
-    erb:firstName "John" ;
+    erb:firstName "Jimmy" ;
     erb:lastName "Doe" .
 
 erb:Customers_2 a erb:Customers ;
     erb:customerId "cust0003" ;
     erb:customer "CUST0003" ;
     erb:emailAddress "emily.jones@email.com" ;
-    erb:firstName "Emily" ;
+    erb:firstName "Mary" ;
     erb:lastName "Jones" .

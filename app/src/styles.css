@@ -1,0 +1,44 @@
+* { box-sizing: border-box; }
+body, html, #root { margin: 0; height: 100%; font-family: -apple-system, system-ui, sans-serif; }
+
+.app { display: flex; height: 100vh; }
+
+.sidebar {
+  width: 260px;
+  background: #1e1e2e;
+  color: #cdd6f4;
+  padding: 16px;
+  overflow-y: auto;
+}
+.sidebar h2 { margin: 0 0 12px; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; color: #89b4fa; }
+.sidebar ul { list-style: none; padding: 0; margin: 0; }
+.sidebar li {
+  padding: 8px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 13px;
+  font-family: ui-monospace, monospace;
+}
+.sidebar li:hover { background: #313244; }
+.sidebar li.active { background: #89b4fa; color: #1e1e2e; font-weight: 600; }
+
+.main { flex: 1; padding: 24px; overflow: auto; background: #f5f5f7; }
+.main h1 { margin-top: 0; font-family: ui-monospace, monospace; }
+
+.error { color: #b00020; background: #fdecea; padding: 8px 12px; border-radius: 4px; }
+
+.grid-wrap { background: white; border-radius: 6px; padding: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+.grid { width: 100%; border-collapse: collapse; font-size: 13px; }
+.grid th, .grid td {
+  text-align: left;
+  padding: 6px 10px;
+  border-bottom: 1px solid #eee;
+  white-space: nowrap;
+  max-width: 320px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.grid th { background: #fafafa; position: sticky; top: 0; }
+.grid tr:hover td { background: #f9f9fb; }
+
+.meta { margin-top: 8px; font-size: 12px; color: #888; }

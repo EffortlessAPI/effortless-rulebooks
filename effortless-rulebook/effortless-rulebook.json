@@ -12,7 +12,7 @@
         "nullable": false
       },
       {
-        "name": "Customer",
+        "name": "Name",
         "datatype": "string",
         "type": "raw",
         "nullable": true,
@@ -45,33 +45,33 @@
         "type": "calculated",
         "nullable": true,
         "Description": "Full name is computed from the first and last name of the customer",
-        "formula": "={{LastName}} \u0026 \u0022, \u0022 \u0026 {{FirstName}}"
+        "formula": "={{FirstName}} \u0026 \u0022 \u0022 \u0026 {{LastName}}"
       }
     ],
     "data": [
       {
         "CustomerId": "cust0001",
-        "Customer": "CUST0001",
         "EmailAddress": "jane.smith@email.com",
-        "FirstName": "Mary",
         "LastName": "Smith",
-        "FullName": "Smith, Mary"
+        "Name": "CUST0001",
+        "FirstName": "Barry",
+        "FullName": "Barry Smith"
       },
       {
         "CustomerId": "cust0002",
-        "Customer": "CUST0002",
         "EmailAddress": "john.doe@email.com",
-        "FirstName": "John",
         "LastName": "Doe",
-        "FullName": "Doe, John"
+        "Name": "CUST0002",
+        "FirstName": "Jimmy",
+        "FullName": "Jimmy Doe"
       },
       {
         "CustomerId": "cust0003",
-        "Customer": "CUST0003",
         "EmailAddress": "emily.jones@email.com",
-        "FirstName": "Emily",
         "LastName": "Jones",
-        "FullName": "Jones, Emily"
+        "Name": "CUST0003",
+        "FirstName": "Mary",
+        "FullName": "Mary Jones"
       }
     ]
   },

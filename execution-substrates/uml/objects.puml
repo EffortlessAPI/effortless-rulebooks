@@ -4,7 +4,7 @@ object "Customers_0" as Customers_0 {
   CustomerId = "cust0001"
   Customer = "CUST0001"
   EmailAddress = "jane.smith@email.com"
-  FirstName = "Mary"
+  FirstName = "Robert"
   LastName = "Smith"
 }
 
@@ -12,7 +12,7 @@ object "Customers_1" as Customers_1 {
   CustomerId = "cust0002"
   Customer = "CUST0002"
   EmailAddress = "john.doe@email.com"
-  FirstName = "John"
+  FirstName = "Jimmy"
   LastName = "Doe"
 }
 
@@ -20,7 +20,7 @@ object "Customers_2" as Customers_2 {
   CustomerId = "cust0003"
   Customer = "CUST0003"
   EmailAddress = "emily.jones@email.com"
-  FirstName = "Emily"
+  FirstName = "Mary"
   LastName = "Jones"
 }
 

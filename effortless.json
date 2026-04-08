@@ -1,6 +1,9 @@
 {
   "ShowHidden": false,
   "ShowAllFiles": false,
+  "CurrentPath": "",
+  "SSoTmeProjectFiles": null,
+  "SSoTmeProjectId": "3bfc5aef-7d05-4b45-8d39-f67d06d44d38",
   "Name": "ACME, LLC",
   "Description": "IMPORTANT!!!! ** BASIC baseId: applThn0rikpCR9C3, ADVANCED baseId: appwN9EAp8IeIxM23",
   "ProjectSettings": [
@@ -23,21 +26,28 @@
       "Name": "rulebooktoairtable",
       "RelativePath": "/effortless-rulebook/push-to-airtable",
       "CommandLine": "rulebook-to-airtable -i ../effortless-rulebook.json -account airtable -w 300000",
-      "IsDisabled": true
+      "IsDisabled": true,
+      "PinnedVersion": "v2026.04.13.2259"
     },
     {
       "IsSSoTTranspiler": false,
       "Name": "airtabletorulebook",
       "RelativePath": "/effortless-rulebook",
       "CommandLine": "airtable-to-rulebook -o effortless-rulebook.json -account airtable -p \"view=Grid view\"",
-      "IsDisabled": false
+      "IsDisabled": false,
+      "PinnedVersion": "v2026.04.20.1736",
+      "LastVersionUsed": "v2026.04.20.1736",
+      "LastUrl": "https://effortless-airtable-to-rulebook-v2026-04-20-1736-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     },
     {
       "IsSSoTTranspiler": false,
       "Name": "rulebooktopostgres",
       "RelativePath": "/postgres",
       "CommandLine": "rulebook-to-postgres -i ../effortless-rulebook/effortless-rulebook.json",
-      "IsDisabled": false
+      "IsDisabled": false,
+      "PinnedVersion": "v2026.04.19.1717",
+      "LastVersionUsed": "v2026.04.19.1717",
+      "LastUrl": "https://effortless-rulebook-to-postgres-v2026-04-19-1717-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     },
     {
       "IsSSoTTranspiler": false,
@@ -51,14 +61,18 @@
       "Name": "JsonHbarsTransform",
       "RelativePath": "/docs",
       "CommandLine": "json-hbars-transform -i ../effortless-rulebook/effortless-rulebook.json -i generate-rulebook-md.hbars -o ../README.SCHEMA.md",
-      "IsDisabled": false
+      "IsDisabled": false,
+      "PinnedVersion": "v2026.04.14.0155",
+      "LastVersionUsed": "v2026.04.14.0155",
+      "LastUrl": "https://common-json-hbars-transform-v2026-04-14-0155-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     },
     {
       "IsSSoTTranspiler": false,
       "Name": "airtabletoodxml",
       "RelativePath": "/dotnet",
       "CommandLine": "airtable/airtable-to-odxml",
-      "IsDisabled": true
+      "IsDisabled": true,
+      "PinnedVersion": "v2026.04.14.1140"
     },
     {
       "IsSSoTTranspiler": false,

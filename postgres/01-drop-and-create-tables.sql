@@ -6,6 +6,8 @@
 -- Total Raw Fields: 5
 -- ============================================================================
 
+SET timezone = 'UTC';
+
 -- ============================================================================
 -- DROP SPECIFIC OBJECTS - Only dropping objects that will be recreated
 -- ============================================================================
@@ -25,18 +27,24 @@ DROP TABLE IF EXISTS name CASCADE;
 -- CREATE TABLES - Normalized data only (no calculated fields)
 -- ============================================================================
 
+-- ----------------------------------------------------------------------------
+-- Name: Table: Name
+-- ----------------------------------------------------------------------------
 CREATE TABLE name (
 );
 
+-- ----------------------------------------------------------------------------
+-- Customers: Table: Customers
+-- ----------------------------------------------------------------------------
 CREATE TABLE customers (
   customer_id                         TEXT                 PRIMARY KEY,
-  customer                            TEXT                ,
-  email_address                       TEXT                ,
-  first_name                          TEXT                ,
-  last_name                           TEXT                
+  name                                TEXT                ,                     -- Identifier for the customers.
+  email_address                       TEXT                ,                     -- Thec ustomers email address
+  first_name                          TEXT                ,                     -- First Name of the customer - used to make the full name
+  last_name                           TEXT                                      -- Last Name of the customer - used to make the full name
 );
 COMMENT ON TABLE customers IS 'Table: Customers';
-COMMENT ON COLUMN customers.customer IS 'Identifier for the customers.';
+COMMENT ON COLUMN customers.name IS 'Identifier for the customers.';
 COMMENT ON COLUMN customers.email_address IS 'Thec ustomers email address';
 COMMENT ON COLUMN customers.first_name IS 'First Name of the customer - used to make the full name';
 COMMENT ON COLUMN customers.last_name IS 'Last Name of the customer - used to make the full name';

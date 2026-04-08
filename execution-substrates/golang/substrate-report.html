@@ -251,9 +251,9 @@ type Customer struct {
 
 // CalcFullName computes the FullName calculated field
 // Full name is computed from the first and last name of the customer
-// Formula: ={{LastName}} &amp; &quot;, &quot; &amp; {{FirstName}}
+// Formula: ={{FirstName}} &amp; &quot; &quot; &amp; {{LastName}}
 func (tc *Customer) CalcFullName() string {
-	return stringVal(tc.LastName) + &quot;, &quot; + stringVal(tc.FirstName)
+	return stringVal(tc.FirstName) + &quot; &quot; + stringVal(tc.LastName)
 }
 
 // --- Compute All Calculated Fields ---
@@ -261,7 +261,7 @@ func (tc *Customer) CalcFullName() string {
 // ComputeAll computes all calculated fields and returns an updated struct
 func (tc *Customer) ComputeAll() *Customer {
 	// Level 1 calculations
-	fullName := stringVal(tc.LastName) + &quot;, &quot; + stringVal(tc.FirstName)
+	fullName := stringVal(tc.FirstName) + &quot; &quot; + stringVal(tc.LastName)
 
 	return &amp;Customer{
 		CustomerId: tc.CustomerId,
