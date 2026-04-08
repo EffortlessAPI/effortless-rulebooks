@@ -5,13 +5,17 @@
 -- Total Views: 2
 -- ============================================================================
 
+-- ----------------------------------------------------------------------------
+-- vw_customers: Table: Customers
+-- Combines base table columns with calculated/lookup/aggregation fields.
+-- ----------------------------------------------------------------------------
 CREATE OR REPLACE VIEW vw_customers WITH (security_invoker = ON) AS
 SELECT
   t.customer_id,
-  t.customer,
-  t.email_address,
-  t.first_name,
-  t.last_name,
-  calc_customers_full_name(t.customer_id) AS full_name
+  t.name,                                                                       -- Identifier for the customers.
+  t.email_address,                                                              -- Thec ustomers email address
+  t.first_name,                                                                 -- First Name of the customer - used to make the full name
+  t.last_name,                                                                  -- Last Name of the customer - used to make the full name
+  calc_customers_full_name(t.customer_id) AS full_name                          -- Full name is computed from the first and last name of the customer
 FROM customers t;
 

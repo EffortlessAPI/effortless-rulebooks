@@ -5,5 +5,5 @@
 context Customers
 
 -- Full name is computed from the first and last name of the customer
--- Formula: ={{LastName}} & ", " & {{FirstName}}
-derive FullName: self.lastName + ', ' + self.firstName
+-- Formula: ={{FirstName}} & " " & {{LastName}}
+derive FullName: self.firstName + ' ' + self.lastName

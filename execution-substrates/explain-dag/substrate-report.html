@@ -152,7 +152,7 @@ Explanations written to: /Users/eejai42/effortlessapi-app-root/users/user_ee42ai
   &quot;schema_version&quot;: &quot;erb.explain_spec.v1&quot;,
   &quot;rulebook&quot;: {
     &quot;name&quot;: &quot;ACME, LLC (template)&quot;,
-    &quot;rulebook_hash&quot;: &quot;sha256:a22f1a4ecec33e63549011cb3e37f9df&quot;
+    &quot;rulebook_hash&quot;: &quot;sha256:38a10da024a0bc66d7d617d81790eeb3&quot;
   },
   &quot;semantics&quot;: {
     &quot;profile&quot;: &quot;excel&quot;,
@@ -216,24 +216,24 @@ Explanations written to: /Users/eejai42/effortlessapi-app-root/users/user_ee42ai
       ],
       &quot;expr_templates&quot;: {
         &quot;FullName&quot;: {
-          &quot;formula_source&quot;: &quot;={{LastName}} &amp; \&quot;, \&quot; &amp; {{FirstName}}&quot;,
-          &quot;template_hash&quot;: &quot;sha256:87fca7e8a65752b8&quot;,
+          &quot;formula_source&quot;: &quot;={{FirstName}} &amp; \&quot; \&quot; &amp; {{LastName}}&quot;,
+          &quot;template_hash&quot;: &quot;sha256:ae6e94fd35af410b&quot;,
           &quot;root_node&quot;: &quot;n_result_FullName&quot;,
           &quot;nodes&quot;: {
             &quot;n_ref_1&quot;: {
               &quot;kind&quot;: &quot;field_ref&quot;,
-              &quot;field&quot;: &quot;LastName&quot;,
-              &quot;field_snake&quot;: &quot;last_name&quot;
+              &quot;field&quot;: &quot;FirstName&quot;,
+              &quot;field_snake&quot;: &quot;first_name&quot;
             },
             &quot;n_const_2&quot;: {
               &quot;kind&quot;: &quot;const&quot;,
-              &quot;value&quot;: &quot;, &quot;,
+              &quot;value&quot;: &quot; &quot;,
               &quot;type&quot;: &quot;string&quot;
             },
             &quot;n_ref_3&quot;: {
               &quot;kind&quot;: &quot;field_ref&quot;,
-              &quot;field&quot;: &quot;FirstName&quot;,
-              &quot;field_snake&quot;: &quot;first_name&quot;
+              &quot;field&quot;: &quot;LastName&quot;,
+              &quot;field_snake&quot;: &quot;last_name&quot;
             },
             &quot;n_op_4&quot;: {
               &quot;kind&quot;: &quot;op&quot;,

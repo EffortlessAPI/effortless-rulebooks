@@ -235,21 +235,21 @@ erb:Customers_0 a erb:Customers ;
     erb:customerId &quot;cust0001&quot; ;
     erb:customer &quot;CUST0001&quot; ;
     erb:emailAddress &quot;jane.smith@email.com&quot; ;
-    erb:firstName &quot;Mary&quot; ;
+    erb:firstName &quot;Robert&quot; ;
     erb:lastName &quot;Smith&quot; .
 
 erb:Customers_1 a erb:Customers ;
     erb:customerId &quot;cust0002&quot; ;
     erb:customer &quot;CUST0002&quot; ;
     erb:emailAddress &quot;john.doe@email.com&quot; ;
-    erb:firstName &quot;John&quot; ;
+    erb:firstName &quot;Jimmy&quot; ;
     erb:lastName &quot;Doe&quot; .
 
 erb:Customers_2 a erb:Customers ;
     erb:customerId &quot;cust0003&quot; ;
     erb:customer &quot;CUST0003&quot; ;
     erb:emailAddress &quot;emily.jones@email.com&quot; ;
-    erb:firstName &quot;Emily&quot; ;
+    erb:firstName &quot;Mary&quot; ;
     erb:lastName &quot;Jones&quot; .
 </pre>
             </div>
@@ -283,7 +283,7 @@ erb:CustomersShape a sh:NodeShape ;
     $this a erb:Customers .
     OPTIONAL { $this erb:firstName ?first_name . }
     OPTIONAL { $this erb:lastName ?last_name . }
-                BIND(CONCAT(?last_name, &quot;, &quot;, ?first_name) AS ?_result)
+                BIND(CONCAT(?first_name, &quot; &quot;, ?last_name) AS ?_result)
             }
         &quot;&quot;&quot; ;
     ] .

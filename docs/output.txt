@@ -1,0 +1,40 @@
+# Effortless Rulebook
+
+### Generated from:
+
+> This builds ssotme tools including those that are disabled which regenerates this file.
+
+```
+$ cd ./docs
+$ ssotme -build -id
+```
+
+
+> 
+
+**Model ID:** ``
+
+---
+
+## Formal Arguments
+
+The following logical argument establishes that "language" can be formalized as a computable classification, and demonstrates that not everything qualifies as a language under this definition.
+
+
+## Execution Substrates
+
+The following formats have been evaluated as execution substrates for this rulebook.
+
+See the `execution-substrates/` directory for available format implementations.
+
+---
+
+## Table Schemas
+
+
+## Metadata
+
+
+---
+
+*Generated from effortless-rulebook.json*

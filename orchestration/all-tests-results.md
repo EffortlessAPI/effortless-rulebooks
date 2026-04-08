@@ -17,11 +17,11 @@
 | binary | 3 | 0 | 3 | 100.0% | < 1s | PASS |
 | cobol | 3 | 0 | 3 | 100.0% | < 1s | PASS |
 | csv | 3 | 0 | 3 | 100.0% | < 1s | PASS |
-| golang | 3 | 0 | 3 | 100.0% | < 1s | PASS |
 | owl | 3 | 0 | 3 | 100.0% | < 1s | PASS |
 | xlsx | 3 | 0 | 3 | 100.0% | < 1s | PASS |
-| postgres | 3 | 0 | 3 | 100.0% | 2s | PASS |
-| english | 3 | 0 | 3 | 100.0% | 16s | PASS |
+| golang | 3 | 0 | 3 | 100.0% | 1s | PASS |
+| postgres | 3 | 0 | 3 | 100.0% | 32s | PASS |
+| english | 0 | 3 | 3 | 0.0% | 16s | FAIL |
 
 ## Overall Statistics
 
@@ -29,10 +29,10 @@
 |--------|-------|
 | Total Substrates | 12 |
 | Total Fields Tested | 36 |
-| Total Passed | 36 |
-| Total Failed | 0 |
-| Overall Score | 100.0% |
-| Total Duration | 21s |
+| Total Passed | 33 |
+| Total Failed | 3 |
+| Overall Score | 91.7% |
+| Total Duration | 52s |
 
 ---
 

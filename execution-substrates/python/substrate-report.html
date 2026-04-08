@@ -355,13 +355,13 @@ from typing import Optional, Any
 
 # Level 1
 
-def calc_customers_full_name(last_name, first_name):
+def calc_customers_full_name(first_name, last_name):
     &quot;&quot;&quot;
     Full name is computed from the first and last name of the customer
     
-    Formula: ={{LastName}} &amp; &quot;, &quot; &amp; {{FirstName}}
+    Formula: ={{FirstName}} &amp; &quot; &quot; &amp; {{LastName}}
     &quot;&quot;&quot;
-    return (str(last_name or &quot;&quot;) + &#x27;, &#x27; + str(first_name or &quot;&quot;))
+    return (str(first_name or &quot;&quot;) + &#x27; &#x27; + str(last_name or &quot;&quot;))
 
 
 def compute_customers_fields(record: dict) -&gt; dict:
@@ -373,7 +373,7 @@ def compute_customers_fields(record: dict) -&gt; dict:
     result = dict(record)
 
     # Level 1 calculations
-    result[&#x27;full_name&#x27;] = calc_customers_full_name(result.get(&#x27;last_name&#x27;), result.get(&#x27;first_name&#x27;))
+    result[&#x27;full_name&#x27;] = calc_customers_full_name(result.get(&#x27;first_name&#x27;), result.get(&#x27;last_name&#x27;))
 
     # Convert empty strings to None for string fields
     for key in [&#x27;full_name&#x27;]:

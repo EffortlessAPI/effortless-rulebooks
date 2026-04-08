@@ -2,7 +2,7 @@
   "schema_version": "erb.explain_spec.v1",
   "rulebook": {
     "name": "ACME, LLC (template)",
-    "rulebook_hash": "sha256:a22f1a4ecec33e63549011cb3e37f9df"
+    "rulebook_hash": "sha256:38a10da024a0bc66d7d617d81790eeb3"
   },
   "semantics": {
     "profile": "excel",
@@ -66,24 +66,24 @@
       ],
       "expr_templates": {
         "FullName": {
-          "formula_source": "={{LastName}} & \", \" & {{FirstName}}",
-          "template_hash": "sha256:87fca7e8a65752b8",
+          "formula_source": "={{FirstName}} & \" \" & {{LastName}}",
+          "template_hash": "sha256:ae6e94fd35af410b",
           "root_node": "n_result_FullName",
           "nodes": {
             "n_ref_1": {
               "kind": "field_ref",
-              "field": "LastName",
-              "field_snake": "last_name"
+              "field": "FirstName",
+              "field_snake": "first_name"
             },
             "n_const_2": {
               "kind": "const",
-              "value": ", ",
+              "value": " ",
               "type": "string"
             },
             "n_ref_3": {
               "kind": "field_ref",
-              "field": "FirstName",
-              "field_snake": "first_name"
+              "field": "LastName",
+              "field_snake": "last_name"
             },
             "n_op_4": {
               "kind": "op",

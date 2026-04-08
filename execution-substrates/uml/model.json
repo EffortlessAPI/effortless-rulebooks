@@ -27,7 +27,7 @@
         {
           "name": "FullName",
           "type": "string",
-          "formula": "={{LastName}} & \", \" & {{FirstName}}"
+          "formula": "={{FirstName}} & \" \" & {{LastName}}"
         }
       ]
     }
@@ -40,7 +40,7 @@
         "CustomerId": "cust0001",
         "Customer": "CUST0001",
         "EmailAddress": "jane.smith@email.com",
-        "FirstName": "Mary",
+        "FirstName": "Robert",
         "LastName": "Smith"
       }
     },
@@ -51,7 +51,7 @@
         "CustomerId": "cust0002",
         "Customer": "CUST0002",
         "EmailAddress": "john.doe@email.com",
-        "FirstName": "John",
+        "FirstName": "Jimmy",
         "LastName": "Doe"
       }
     },
@@ -62,7 +62,7 @@
         "CustomerId": "cust0003",
         "Customer": "CUST0003",
         "EmailAddress": "emily.jones@email.com",
-        "FirstName": "Emily",
+        "FirstName": "Mary",
         "LastName": "Jones"
       }
     }
