@@ -1,3 +1,4 @@
+
 # Effortless Rulebook (ERB) - Multi-Base Ontology Platform
 
 **One repo. 5+ ontologies. 10+ execution substrates. Complete conformance.**
@@ -5,6 +6,10 @@
 > Swap between completely different domains — workflows, media catalogs, philosophical arguments — and watch Python, Go, SQL, Excel, OWL, and English all regenerate in sync.
 
 > **[View Full Orchestration Report](orchestration/orchestration-report.html)** - See how execution substrates compute equivalent answers from the same rulebook.
+
+<p align="center">
+  <img src="docs/typical-build-stack.svg" alt="A typical full-stack application" width="100%">
+</p>
 
 ---
 
@@ -115,7 +120,13 @@ Each base has its own [documentation](bases/) explaining what it demonstrates.
 
 ## 2. The Architecture (Polymorphism)
 
-![Diagram showing Airtable UI exporting to effortless-rulebook.json, which generates code for multiple substrates (Python, Go, SQL, Excel, OWL) that all produce identical outputs verified by conformance tests](./effortless_rulebook_architecture.png)
+<p align="center">
+  <img src="docs/effortless-rulebook-architecture.svg" alt="Effortless Rulebook architecture" width="100%">
+</p>
+
+<div>
+Diagram showing Airtable UI exporting to effortless-rulebook.json, which generates code for multiple substrates (Python, Go, SQL, Excel, OWL) that all produce identical outputs verified by conformance tests
+</div>
 
 ### Hub and Spokes Around Airtable
 

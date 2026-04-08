@@ -45,7 +45,7 @@
         "type": "calculated",
         "nullable": true,
         "Description": "Full name is computed from the first and last name of the customer",
-        "formula": "={{LastName}} \u0026 \u0022, \u0022 \u0026 {{FirstName}}"
+        "formula": "={{FirstName}} \u0026 \u0022 \u0022 \u0026 {{LastName}}"
       }
     ],
     "data": [
@@ -53,9 +53,9 @@
         "CustomerId": "cust0001",
         "Customer": "CUST0001",
         "EmailAddress": "jane.smith@email.com",
-        "FirstName": "Mary",
+        "FirstName": "Bob",
         "LastName": "Smith",
-        "FullName": "Smith, Mary"
+        "FullName": "Bob Smith"
       },
       {
         "CustomerId": "cust0002",
@@ -63,15 +63,15 @@
         "EmailAddress": "john.doe@email.com",
         "FirstName": "John",
         "LastName": "Doe",
-        "FullName": "Doe, John"
+        "FullName": "John Doe"
       },
       {
         "CustomerId": "cust0003",
         "Customer": "CUST0003",
         "EmailAddress": "emily.jones@email.com",
-        "FirstName": "Emily",
+        "FirstName": "Mary",
         "LastName": "Jones",
-        "FullName": "Jones, Emily"
+        "FullName": "Mary Jones"
       }
     ]
   },

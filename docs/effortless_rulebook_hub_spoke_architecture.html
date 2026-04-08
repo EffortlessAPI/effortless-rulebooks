@@ -1,0 +1,145 @@
+
+<style>
+  @keyframes pulseOut { 0%{offset-distance:0%;opacity:0} 10%{opacity:1} 90%{opacity:1} 100%{offset-distance:100%;opacity:0} }
+  @keyframes pulseIn { 0%{offset-distance:100%;opacity:0} 10%{opacity:1} 90%{opacity:1} 100%{offset-distance:0%;opacity:0} }
+  @keyframes hubGlow { 0%,100%{opacity:.12} 50%{opacity:.25} }
+  .dot-out { width:6px;height:6px;border-radius:50%;position:absolute;animation: pulseOut 2.4s linear infinite; }
+  .dot-in  { width:6px;height:6px;border-radius:50%;position:absolute;animation: pulseIn 2.8s linear infinite; }
+  @media (prefers-reduced-motion: reduce) { .dot-out,.dot-in { animation: none; opacity:0; } }
+</style>
+<svg width="100%" viewBox="0 0 680 520">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker>
+    <marker id="arrowR" viewBox="0 0 10 10" refX="2" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M8 1L2 5L8 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker>
+  </defs>
+
+  <!-- Hub glow -->
+  <rect x="224" y="204" width="232" height="72" rx="16" fill="#534AB7" opacity=".12">
+    <animate attributeName="opacity" values=".08;.2;.08" dur="3s" repeatCount="indefinite"/>
+  </rect>
+
+  <!-- Central hub -->
+  <g class="c-purple">
+    <rect x="230" y="210" width="220" height="60" rx="12" stroke-width="1"/>
+    <text class="th" x="340" y="232" text-anchor="middle" dominant-baseline="central">Effortless rulebook</text>
+    <text class="ts" x="340" y="252" text-anchor="middle" dominant-baseline="central">Declarative hub</text>
+  </g>
+
+  <!-- Section labels -->
+  <text class="ts" x="100" y="32" text-anchor="middle" fill="#534AB7" font-style="italic">Bidirectional portals</text>
+  <text class="ts" x="570" y="32" text-anchor="middle" fill="#888780" font-style="italic">Read-only projections</text>
+
+  <!-- === LEFT SIDE: Bidirectional portals === -->
+
+  <!-- Airtable -->
+  <g class="c-amber">
+    <rect x="20" y="70" width="160" height="56" rx="8" stroke-width="0.5"/>
+    <text class="th" x="100" y="90" text-anchor="middle" dominant-baseline="central">Airtable</text>
+    <text class="ts" x="100" y="108" text-anchor="middle" dominant-baseline="central">Source of truth</text>
+  </g>
+  <path id="p-airtable" d="M180 98 Q240 98 260 210" fill="none" stroke="#BA7517" stroke-width="1" opacity=".5" marker-end="url(#arrow)" marker-start="url(#arrowR)"/>
+
+  <!-- XLSX -->
+  <g class="c-green">
+    <rect x="20" y="160" width="160" height="56" rx="8" stroke-width="0.5"/>
+    <text class="th" x="100" y="180" text-anchor="middle" dominant-baseline="central">XLSX</text>
+    <text class="ts" x="100" y="198" text-anchor="middle" dominant-baseline="central">Spreadsheet editing</text>
+  </g>
+  <path id="p-xlsx" d="M180 188 Q215 188 230 220" fill="none" stroke="#639922" stroke-width="1" opacity=".5" marker-end="url(#arrow)" marker-start="url(#arrowR)"/>
+
+  <!-- Baserow -->
+  <g class="c-teal">
+    <rect x="20" y="290" width="160" height="56" rx="8" stroke-width="0.5"/>
+    <text class="th" x="100" y="310" text-anchor="middle" dominant-baseline="central">Baserow</text>
+    <text class="ts" x="100" y="328" text-anchor="middle" dominant-baseline="central">Open-source DB UI</text>
+  </g>
+  <path id="p-baserow" d="M180 318 Q215 318 230 260" fill="none" stroke="#1D9E75" stroke-width="1" opacity=".5" marker-end="url(#arrow)" marker-start="url(#arrowR)"/>
+
+  <!-- PostgreSQL -->
+  <g class="c-blue">
+    <rect x="20" y="384" width="160" height="56" rx="8" stroke-width="0.5"/>
+    <text class="th" x="100" y="404" text-anchor="middle" dominant-baseline="central">PostgreSQL</text>
+    <text class="ts" x="100" y="422" text-anchor="middle" dominant-baseline="central">Computation engine</text>
+  </g>
+  <path id="p-pg" d="M180 412 Q240 412 260 270" fill="none" stroke="#378ADD" stroke-width="1" opacity=".5" marker-end="url(#arrow)" marker-start="url(#arrowR)"/>
+
+  <!-- === RIGHT SIDE: Read-only projections === -->
+
+  <!-- Golang -->
+  <g class="c-gray">
+    <rect x="500" y="56" width="150" height="44" rx="8" stroke-width="0.5"/>
+    <text class="th" x="575" y="78" text-anchor="middle" dominant-baseline="central">Golang</text>
+  </g>
+  <path id="p-go" d="M450 220 Q480 220 490 78" fill="none" stroke="#888780" stroke-width="0.8" opacity=".4" marker-end="url(#arrow)"/>
+
+  <!-- Django / Python -->
+  <g class="c-gray">
+    <rect x="500" y="114" width="150" height="44" rx="8" stroke-width="0.5"/>
+    <text class="th" x="575" y="136" text-anchor="middle" dominant-baseline="central">Django / Python</text>
+  </g>
+  <path id="p-django" d="M450 225 Q475 225 500 136" fill="none" stroke="#888780" stroke-width="0.8" opacity=".4" marker-end="url(#arrow)"/>
+
+  <!-- Entity Framework -->
+  <g class="c-gray">
+    <rect x="500" y="172" width="150" height="44" rx="8" stroke-width="0.5"/>
+    <text class="th" x="575" y="194" text-anchor="middle" dominant-baseline="central">Entity Framework</text>
+  </g>
+  <path id="p-ef" d="M450 232 Q470 232 500 194" fill="none" stroke="#888780" stroke-width="0.8" opacity=".4" marker-end="url(#arrow)"/>
+
+  <!-- English docs -->
+  <g class="c-gray">
+    <rect x="500" y="244" width="150" height="44" rx="8" stroke-width="0.5"/>
+    <text class="th" x="575" y="266" text-anchor="middle" dominant-baseline="central">English docs</text>
+  </g>
+  <path id="p-eng" d="M450 248 Q470 248 500 266" fill="none" stroke="#888780" stroke-width="0.8" opacity=".4" marker-end="url(#arrow)"/>
+
+  <!-- OWL -->
+  <g class="c-gray">
+    <rect x="500" y="302" width="150" height="44" rx="8" stroke-width="0.5"/>
+    <text class="th" x="575" y="324" text-anchor="middle" dominant-baseline="central">OWL</text>
+  </g>
+  <path id="p-owl" d="M450 258 Q475 258 500 324" fill="none" stroke="#888780" stroke-width="0.8" opacity=".4" marker-end="url(#arrow)"/>
+
+  <!-- UML -->
+  <g class="c-gray">
+    <rect x="500" y="360" width="150" height="44" rx="8" stroke-width="0.5"/>
+    <text class="th" x="575" y="382" text-anchor="middle" dominant-baseline="central">UML</text>
+  </g>
+  <path id="p-uml" d="M450 262 Q480 262 500 382" fill="none" stroke="#888780" stroke-width="0.8" opacity=".4" marker-end="url(#arrow)"/>
+
+  <!-- CSV / Binary / YAML -->
+  <g class="c-gray">
+    <rect x="500" y="418" width="150" height="44" rx="8" stroke-width="0.5"/>
+    <text class="th" x="575" y="440" text-anchor="middle" dominant-baseline="central">CSV / Binary / YAML</text>
+  </g>
+  <path id="p-csv" d="M450 268 Q485 268 500 440" fill="none" stroke="#888780" stroke-width="0.8" opacity=".4" marker-end="url(#arrow)"/>
+
+  <!-- answer-key.json badge -->
+  <g class="c-coral">
+    <rect x="240" y="480" width="200" height="32" rx="6" stroke-width="0.5"/>
+    <text class="ts" x="340" y="496" text-anchor="middle" dominant-baseline="central">answer-key.json validates all</text>
+  </g>
+  <line x1="340" y1="270" x2="340" y2="480" stroke="#D85A30" stroke-width="0.5" stroke-dasharray="3 4" opacity=".4"/>
+
+  <!-- Animated particles on bidirectional paths -->
+  <circle r="3" fill="#BA7517" opacity="0"><animateMotion dur="2.4s" repeatCount="indefinite" rotate="auto"><mpath href="#p-airtable"/></animateMotion><animate attributeName="opacity" values="0;1;1;0" dur="2.4s" repeatCount="indefinite"/></circle>
+  <circle r="3" fill="#BA7517" opacity="0"><animateMotion dur="2.8s" repeatCount="indefinite" rotate="auto" keyPoints="1;0" keyTimes="0;1"><mpath href="#p-airtable"/></animateMotion><animate attributeName="opacity" values="0;.7;.7;0" dur="2.8s" repeatCount="indefinite"/></circle>
+
+  <circle r="3" fill="#639922" opacity="0"><animateMotion dur="2.6s" repeatCount="indefinite" begin="0.3s"><mpath href="#p-xlsx"/></animateMotion><animate attributeName="opacity" values="0;1;1;0" dur="2.6s" repeatCount="indefinite" begin="0.3s"/></circle>
+  <circle r="3" fill="#639922" opacity="0"><animateMotion dur="3s" repeatCount="indefinite" begin="0.5s" keyPoints="1;0" keyTimes="0;1"><mpath href="#p-xlsx"/></animateMotion><animate attributeName="opacity" values="0;.7;.7;0" dur="3s" repeatCount="indefinite" begin="0.5s"/></circle>
+
+  <circle r="3" fill="#1D9E75" opacity="0"><animateMotion dur="2.5s" repeatCount="indefinite" begin="0.6s"><mpath href="#p-baserow"/></animateMotion><animate attributeName="opacity" values="0;1;1;0" dur="2.5s" repeatCount="indefinite" begin="0.6s"/></circle>
+  <circle r="3" fill="#1D9E75" opacity="0"><animateMotion dur="2.9s" repeatCount="indefinite" begin="0.8s" keyPoints="1;0" keyTimes="0;1"><mpath href="#p-baserow"/></animateMotion><animate attributeName="opacity" values="0;.7;.7;0" dur="2.9s" repeatCount="indefinite" begin="0.8s"/></circle>
+
+  <circle r="3" fill="#378ADD" opacity="0"><animateMotion dur="2.7s" repeatCount="indefinite" begin="0.2s"><mpath href="#p-pg"/></animateMotion><animate attributeName="opacity" values="0;1;1;0" dur="2.7s" repeatCount="indefinite" begin="0.2s"/></circle>
+  <circle r="3" fill="#378ADD" opacity="0"><animateMotion dur="3.1s" repeatCount="indefinite" begin="0.4s" keyPoints="1;0" keyTimes="0;1"><mpath href="#p-pg"/></animateMotion><animate attributeName="opacity" values="0;.7;.7;0" dur="3.1s" repeatCount="indefinite" begin="0.4s"/></circle>
+
+  <!-- One-way particles on read-only paths -->
+  <circle r="2.5" fill="#888780" opacity="0"><animateMotion dur="2.2s" repeatCount="indefinite" begin="0.1s"><mpath href="#p-go"/></animateMotion><animate attributeName="opacity" values="0;.6;.6;0" dur="2.2s" repeatCount="indefinite" begin="0.1s"/></circle>
+  <circle r="2.5" fill="#888780" opacity="0"><animateMotion dur="2.3s" repeatCount="indefinite" begin="0.4s"><mpath href="#p-django"/></animateMotion><animate attributeName="opacity" values="0;.6;.6;0" dur="2.3s" repeatCount="indefinite" begin="0.4s"/></circle>
+  <circle r="2.5" fill="#888780" opacity="0"><animateMotion dur="2.1s" repeatCount="indefinite" begin="0.7s"><mpath href="#p-ef"/></animateMotion><animate attributeName="opacity" values="0;.6;.6;0" dur="2.1s" repeatCount="indefinite" begin="0.7s"/></circle>
+  <circle r="2.5" fill="#888780" opacity="0"><animateMotion dur="2.4s" repeatCount="indefinite" begin="0.2s"><mpath href="#p-eng"/></animateMotion><animate attributeName="opacity" values="0;.6;.6;0" dur="2.4s" repeatCount="indefinite" begin="0.2s"/></circle>
+  <circle r="2.5" fill="#888780" opacity="0"><animateMotion dur="2.5s" repeatCount="indefinite" begin="0.5s"><mpath href="#p-owl"/></animateMotion><animate attributeName="opacity" values="0;.6;.6;0" dur="2.5s" repeatCount="indefinite" begin="0.5s"/></circle>
+  <circle r="2.5" fill="#888780" opacity="0"><animateMotion dur="2.6s" repeatCount="indefinite" begin="0.8s"><mpath href="#p-uml"/></animateMotion><animate attributeName="opacity" values="0;.6;.6;0" dur="2.6s" repeatCount="indefinite" begin="0.8s"/></circle>
+  <circle r="2.5" fill="#888780" opacity="0"><animateMotion dur="2.7s" repeatCount="indefinite" begin="0.3s"><mpath href="#p-csv"/></animateMotion><animate attributeName="opacity" values="0;.6;.6;0" dur="2.7s" repeatCount="indefinite" begin="0.3s"/></circle>
+</svg>

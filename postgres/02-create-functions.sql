@@ -13,12 +13,17 @@
 CREATE OR REPLACE FUNCTION calc_customers_full_name(p_customer_id TEXT)
 RETURNS TEXT AS $$
 BEGIN
-  RETURN (CONCAT((SELECT NULLIF(last_name, '') FROM customers WHERE customer_id = p_customer_id), ', ', (SELECT NULLIF(first_name, '') FROM customers WHERE customer_id = p_customer_id)))::text;
+  RETURN (CONCAT((SELECT NULLIF(first_name, '') FROM customers WHERE customer_id = p_customer_id), ' ', (SELECT NULLIF(last_name, '') FROM customers WHERE customer_id = p_customer_id)))::text;
 END;
 $$ LANGUAGE plpgsql STABLE SECURITY DEFINER;
 
 -- ============================================================================
 -- MANY-SIDE RELATIONSHIP FUNCTIONS
 -- These functions aggregate child records for many-side relationships
+-- ============================================================================
+
+-- ============================================================================
+-- INVERSE RELATIONSHIP FUNCTIONS
+-- These functions perform reverse FK lookups for inverse-side relationships
 -- ============================================================================
 

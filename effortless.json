@@ -1,0 +1,78 @@
+{
+  "ShowHidden": false,
+  "ShowAllFiles": false,
+  "CurrentPath": null,
+  "SSoTmeProjectFiles": null,
+  "SSoTmeProjectId": "3bfc5aef-7d05-4b45-8d39-f67d06d44d38",
+  "Name": "ACME, LLC",
+  "Description": "IMPORTANT!!!! ** BASIC baseId: applThn0rikpCR9C3, ADVANCED baseId: appwN9EAp8IeIxM23",
+  "ProjectSettings": [
+    {
+      "Name": "baseId",
+      "Value": "appWrXPvXbkgQGOxt"
+    },
+    {
+      "Name": "project-name",
+      "Value": "ACME, LLC"
+    },
+    {
+      "Name": "_apikey_",
+      "Value": "pat123xyz...a0b1c1234"
+    }
+  ],
+  "ProjectTranspilers": [
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "rulebooktoairtable",
+      "RelativePath": "/effortless-rulebook/push-to-airtable",
+      "CommandLine": "rulebook-to-airtable -i ../effortless-rulebook.json -account airtable -w 300000",
+      "IsDisabled": true
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "airtabletorulebook",
+      "RelativePath": "/effortless-rulebook",
+      "CommandLine": "airtable-to-rulebook -o effortless-rulebook.json -account airtable -p \"view=Grid view\"",
+      "IsDisabled": false,
+      "LastVersionUsed": "v2026.04.02.1605",
+      "LastUrl": "https://effortless-airtable-to-rulebook-v2026-04-02-1605-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "rulebooktopostgres",
+      "RelativePath": "/postgres",
+      "CommandLine": "rulebook-to-postgres -i ../effortless-rulebook/effortless-rulebook.json",
+      "IsDisabled": false,
+      "LastVersionUsed": "v2026.04.02.1900",
+      "LastUrl": "https://effortless-rulebook-to-postgres-v2026-04-02-1900-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "init-db",
+      "RelativePath": "/postgres",
+      "CommandLine": "-exec ./init-db.sh -w 90000",
+      "IsDisabled": false
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "JsonHbarsTransform",
+      "RelativePath": "/docs",
+      "CommandLine": "json-hbars-transform -i ../effortless-rulebook/effortless-rulebook.json -i generate-rulebook-md.hbars -o ../README.SCHEMA.md",
+      "IsDisabled": false
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "airtabletoodxml",
+      "RelativePath": "/dotnet",
+      "CommandLine": "airtable/airtable-to-odxml",
+      "IsDisabled": true
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "OdxmlToCSharpPOCOs",
+      "RelativePath": "/dotnet",
+      "CommandLine": "odxml-to-csharp-pocos -i DataSchema.odxml",
+      "IsDisabled": true
+    }
+  ]
+}

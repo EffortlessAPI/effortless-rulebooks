@@ -3,9 +3,9 @@
     "customer_id": "cust0001",
     "customer": "CUST0001",
     "email_address": "jane.smith@email.com",
-    "first_name": "Mary",
+    "first_name": "Bob",
     "last_name": "Smith",
-    "full_name": "Smith, Mary"
+    "full_name": "Bob Smith"
   },
   {
     "customer_id": "cust0002",
@@ -13,14 +13,14 @@
     "email_address": "john.doe@email.com",
     "first_name": "John",
     "last_name": "Doe",
-    "full_name": "Doe, John"
+    "full_name": "John Doe"
   },
   {
     "customer_id": "cust0003",
     "customer": "CUST0003",
     "email_address": "emily.jones@email.com",
-    "first_name": "Emily",
+    "first_name": "Mary",
     "last_name": "Jones",
-    "full_name": "Jones, Emily"
+    "full_name": "Mary Jones"
   }
 ]

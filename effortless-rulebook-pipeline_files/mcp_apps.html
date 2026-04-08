@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<!-- saved from url=(0357)https://4b5a4b034fdf4f2888f41a0c8ea1b764.claudemcpcontent.com/mcp_apps?connect-src=https%3A%2F%2Fesm.sh+https%3A%2F%2Fcdnjs.cloudflare.com+https%3A%2F%2Fcdn.jsdelivr.net+https%3A%2F%2Funpkg.com&resource-src=https%3A%2F%2Fesm.sh+https%3A%2F%2Fcdnjs.cloudflare.com+https%3A%2F%2Fcdn.jsdelivr.net+https%3A%2F%2Funpkg.com+https%3A%2F%2Fassets.claude.ai&dev=true -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="color-scheme" content="light dark">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>MCP-UI Proxy</title>
+    <style>
+      html,
+      body {
+        margin: 0;
+        height: 100vh;
+        width: 100vw;
+      }
+      body {
+        display: flex;
+        flex-direction: column;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      iframe {
+        background-color: transparent;
+        border: 0px none transparent;
+        padding: 0px;
+        overflow: hidden;
+        flex-grow: 1;
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      // Double-iframe raw HTML mode (HTML sent via postMessage)
+      const inner = document.createElement('iframe');
+      inner.style = 'width:100%; height:100%; border:none;';
+      inner.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-forms');
+      document.body.appendChild(inner);
+
+      let parentOrigin = '*';
+
+      const ALLOWED_ORIGIN_PATTERNS = ["https://claude.ai","https://preview.claude.ai"];
+
+      const isAllowedOrigin = function(origin) {
+        try {
+          const url = new URL(origin);
+          const originHost = url.host;
+          const originScheme = url.protocol.replace(':', '');
+          return ALLOWED_ORIGIN_PATTERNS.some(pattern => {
+            const [patternScheme, patternHost] = pattern.split('://');
+            if (originScheme !== patternScheme) return false;
+            if (patternHost === 'localhost:*') {
+              return originHost.startsWith('localhost:') || originHost === 'localhost';
+            }
+            if (patternHost.startsWith('*.')) {
+              const baseDomain = patternHost.slice(2);
+              return originHost === baseDomain || originHost.endsWith('.' + baseDomain);
+            }
+            return originHost === patternHost;
+          });
+        } catch {
+          return false;
+        }
+      };
+
+      // Build Permission Policy allow attribute from permissions object.
+      // Maps McpUiResourcePermissions keys to Permission Policy feature names.
+      // Uses '*' suffix for cross-origin permission delegation.
+      //
+      // NOTE: This is duplicated from packages/mcp-ext-apps-host/app-host-utils.ts
+      // because this runs as inline JS in the browser. Keep both in sync!
+      const buildAllowAttribute = function(permissions) {
+        if (!permissions || typeof permissions !== 'object') return '';
+        const mapping = {
+          camera: 'camera',
+          microphone: 'microphone',
+          geolocation: 'geolocation',
+          clipboardWrite: 'clipboard-write',
+        };
+        const features = Object.keys(permissions)
+          .filter(key => mapping[key] && permissions[key] != null)
+          .map(key => mapping[key] + ' *');
+        return features.join('; ');
+      };
+
+      // Handle messages from the parent (web: claude.ai via postMessage, mobile: native app via mcpAppBridgeReceive).
+      // onHandshake is called once during sandbox-resource-ready to lock in the parent origin (web only).
+      const handleParentMessage = function(data, onHandshake) {
+        if (data && data.method === 'ui/notifications/sandbox-resource-ready') {
+          const {html, permissions} = data.params;
+          if (typeof html === 'string') {
+            if (onHandshake) onHandshake();
+            // Set allow attribute for Permission Policy features
+            const allowValue = buildAllowAttribute(permissions);
+            if (allowValue) {
+              inner.setAttribute('allow', allowValue);
+            }
+
+            // Use document.write() instead of srcdoc to preserve origin.
+            // srcdoc creates an opaque origin that breaks WebGL canvas operations
+            // like toDataURL() and cross-origin resource access.
+            const doc = inner.contentDocument;
+            doc.open();
+            doc.write(html);
+            doc.close();
+          }
+        } else {
+          if (inner && inner.contentWindow) {
+            inner.contentWindow.postMessage(data, location.origin);
+          }
+        }
+      };
+
+      // Wait for HTML content from parent
+      window.addEventListener('message', async (event) => {
+        if (event.source === window.parent && isAllowedOrigin(event.origin)) {
+          handleParentMessage(event.data, function() { parentOrigin = event.origin; });
+        } else if (event.source === inner.contentWindow && event.origin === location.origin) {
+          // Relay messages from inner to parent (srcdoc + allow-same-origin = same origin as parent)
+          window.parent.postMessage(event.data, parentOrigin);
+        }
+      });
+
+      // Notify parent that proxy is ready to receive HTML (distinct event)
+      window.parent.postMessage({
+        jsonrpc: "2.0",
+        method: 'ui/notifications/sandbox-proxy-ready',
+        params: {}
+      }, '*');
+
+    </script><iframe sandbox="allow-scripts allow-same-origin allow-forms" allow="clipboard-write *" style="width: 100%; height: 100%; border: none;" src="./saved_resource.html"></iframe>
+  
+</body></html>
