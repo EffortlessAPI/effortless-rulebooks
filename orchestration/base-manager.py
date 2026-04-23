@@ -14,8 +14,25 @@ import urllib.error
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJECT_ROOT = os.path.dirname(SCRIPT_DIR)
-SSOTME_JSON = os.path.join(PROJECT_ROOT, "ssotme.json")
 BASES_FILE = os.path.join(SCRIPT_DIR, "bases.json")  # Separate file that ssotme won't touch
+
+
+def _find_config_path() -> str:
+    """Return the project config path: effortless.json (new) or ssotme.json (legacy).
+
+    Falls back to effortless.json even if neither exists, so writers that
+    create the file land on the canonical name.
+    """
+    eff = os.path.join(PROJECT_ROOT, "effortless.json")
+    legacy = os.path.join(PROJECT_ROOT, "ssotme.json")
+    if os.path.exists(eff):
+        return eff
+    if os.path.exists(legacy):
+        return legacy
+    return eff
+
+
+SSOTME_JSON = _find_config_path()
 
 
 def get_airtable_api_key():

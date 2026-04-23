@@ -1,0 +1,8 @@
+# Substrate-local build artifacts. (bin/, obj/, .last-run.log are also
+# covered by the repo-root .gitignore; we duplicate here for clarity.)
+bin/
+obj/
+
+# NOTE: test-answers/ is intentionally NOT ignored — matches the convention
+# used by every other substrate in this repo (results are committed so the
+# orchestration report can diff against the last-known-good run).

@@ -4,13 +4,10 @@ set -e
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR"
 
-# Regenerate Python erb_calc.py (used by take-test to produce test-answers)
-echo "=== Regenerating shared erb_calc.py from rulebook ==="
-python3 "$SCRIPT_DIR/../python/inject-into-python.py"
-
-# Regenerate COBOL from rulebook
+# Regenerate COBOL from rulebook (this substrate is fully self-contained;
+# it does NOT depend on the Python simulator at runtime).
 echo "=== Regenerating COBOL from rulebook ==="
 python3 inject-into-cobol.py
 
-# Run the test for this substrate (uses Python erb_calc to produce test-answers)
+# Run the test for this substrate (executes the compiled COBOL).
 "$SCRIPT_DIR/take-test.sh"

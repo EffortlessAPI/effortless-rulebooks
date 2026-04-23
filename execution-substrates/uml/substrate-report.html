@@ -68,7 +68,7 @@ pre { background: var(--code-bg); border: 1px solid var(--border-color); border-
         </div>
         <div class="header-stats">
             <div class="stat"><span>Score:</span><span class="stat-value score-perfect">100.0%</span></div>
-            <div class="stat"><span>3/3 passed</span></div>
+            <div class="stat"><span>6/6 passed</span></div>
         </div>
         <button id="theme-toggle" title="Toggle theme"><span class="sun">☀️</span><span class="moon">🌙</span></button>
     </header>
@@ -115,7 +115,7 @@ pre { background: var(--code-bg); border: 1px solid var(--border-color); border-
 UML Execution Substrate - Multi-Entity Test Execution (OCL)
 ======================================================================
 
-Loaded 1 OCL constraints from constraints.ocl
+Loaded 2 OCL constraints from constraints.ocl
 
   -&gt; customers: 3 records (via OCL)
 
@@ -130,9 +130,9 @@ UML substrate: Processed 1 entities, 3 total records
                 <h2>Test Summary</h2>
                 <div class="results-summary">
                     <div class="result-item"><div class="result-value score-perfect">100.0%</div><div class="result-label">Score</div></div>
-                    <div class="result-item"><div class="result-value score-perfect">3</div><div class="result-label">Passed</div></div>
+                    <div class="result-item"><div class="result-value score-perfect">6</div><div class="result-label">Passed</div></div>
                     <div class="result-item"><div class="result-value">0</div><div class="result-label">Failed</div></div>
-                    <div class="result-item"><div class="result-value">3</div><div class="result-label">Total</div></div>
+                    <div class="result-item"><div class="result-value">6</div><div class="result-label">Total</div></div>
                 </div>
             </div>
         </div>
@@ -151,11 +151,11 @@ end note
 
 class Customers {
   +CustomerId: String
-  +Customer: String -- Identifier for the customers.
   +EmailAddress: String -- Thec ustomers email address
   +FirstName: String -- First Name of the customer - used to make the full name
   +LastName: String -- Last Name of the customer - used to make the full name
   --
+  /Name: String  {derived} -- Identifier for the customers.
   /FullName: String  {derived} -- Full name is computed from the first and last name of the customer
 }
 
@@ -166,29 +166,26 @@ class Customers {
             <div class="card">
                 <div class="code-header">
                     <h2>objects.puml</h2>
-                    <div><span class="code-info">27 lines</span><button class="copy-btn" onclick="copyCode('objects-code')">Copy</button></div>
+                    <div><span class="code-info">24 lines</span><button class="copy-btn" onclick="copyCode('objects-code')">Copy</button></div>
                 </div>
                 <pre id="objects-code">@startuml
 
-object &quot;Customers_0&quot; as Customers_0 {
-  CustomerId = &quot;cust0001&quot;
-  Customer = &quot;CUST0001&quot;
+object &quot;jane.smith-email.com&quot; as Customers_0 {
+  CustomerId = &quot;jane-smith-email-com&quot;
   EmailAddress = &quot;jane.smith@email.com&quot;
-  FirstName = &quot;Robert&quot;
+  FirstName = &quot;Bob&quot;
   LastName = &quot;Smith&quot;
 }
 
-object &quot;Customers_1&quot; as Customers_1 {
-  CustomerId = &quot;cust0002&quot;
-  Customer = &quot;CUST0002&quot;
+object &quot;john.doe-email.com&quot; as Customers_1 {
+  CustomerId = &quot;john-doe-email-com&quot;
   EmailAddress = &quot;john.doe@email.com&quot;
   FirstName = &quot;Jimmy&quot;
   LastName = &quot;Doe&quot;
 }
 
-object &quot;Customers_2&quot; as Customers_2 {
-  CustomerId = &quot;cust0003&quot;
-  Customer = &quot;CUST0003&quot;
+object &quot;emily.jones-email.com&quot; as Customers_2 {
+  CustomerId = &quot;emily-jones-email-com&quot;
   EmailAddress = &quot;emily.jones@email.com&quot;
   FirstName = &quot;Mary&quot;
   LastName = &quot;Jones&quot;
@@ -201,13 +198,17 @@ object &quot;Customers_2&quot; as Customers_2 {
             <div class="card">
                 <div class="code-header">
                     <h2>constraints.ocl</h2>
-                    <div><span class="code-info">10 lines</span><button class="copy-btn" onclick="copyCode('ocl-code')">Copy</button></div>
+                    <div><span class="code-info">14 lines</span><button class="copy-btn" onclick="copyCode('ocl-code')">Copy</button></div>
                 </div>
                 <pre id="ocl-code">-- OCL Constraints for ERB
 -- Generated from effortless-rulebook.json
 
 -- Table: Customers
 context Customers
+
+-- Identifier for the customers.
+-- Formula: =SUBSTITUTE({{EmailAddress}}, &quot;@&quot;, &quot;-&quot;)
+derive Name: self.emailAddress.replace(&#x27;@&#x27;, &#x27;-&#x27;)
 
 -- Full name is computed from the first and last name of the customer
 -- Formula: ={{FirstName}} &amp; &quot; &quot; &amp; {{LastName}}

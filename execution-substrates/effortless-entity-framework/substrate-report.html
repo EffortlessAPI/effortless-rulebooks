@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>effortless-entity-framework - Substrate Report</title>
+    <style>
+        :root {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8f9fa;
+            --bg-code: #1e1e1e;
+            --text-primary: #212529;
+            --text-secondary: #6c757d;
+            --text-code: #d4d4d4;
+            --border-color: #dee2e6;
+            --accent-color: #0d6efd;
+            --success-color: #198754;
+            --warning-color: #ffc107;
+            --danger-color: #dc3545;
+            --radius: 6px;
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: #1a1a2e;
+            --bg-secondary: #16213e;
+            --bg-code: #0d1117;
+            --text-primary: #eaeaea;
+            --text-secondary: #b0b0b0;
+            --text-code: #c9d1d9;
+            --border-color: #3a3a5c;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            padding: 1rem;
+        }
+
+        header {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 1rem 1.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            font-size: 1.5rem;
+            color: var(--accent-color);
+        }
+
+        header .meta {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .tab {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            background: var(--bg-primary);
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+
+        .tab:hover {
+            border-color: var(--accent-color);
+        }
+
+        .tab.active {
+            background: var(--accent-color);
+            color: white;
+            border-color: var(--accent-color);
+        }
+
+        .tab-content {
+            display: none;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .section {
+            margin-bottom: 1.5rem;
+        }
+
+        .section h2 {
+            font-size: 1.2rem;
+            margin-bottom: 0.75rem;
+            color: var(--text-primary);
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 0.25rem;
+        }
+
+        pre {
+            background: var(--bg-code);
+            color: var(--text-code);
+            padding: 1rem;
+            border-radius: var(--radius);
+            overflow-x: auto;
+            font-family: 'SF Mono', Monaco, Consolas, monospace;
+            font-size: 0.85rem;
+            line-height: 1.5;
+            max-height: 600px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 2rem;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+        }
+
+        #theme-toggle {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div>
+            <h1>effortless-entity-framework</h1>
+            <div class="meta">Execution Substrate Report</div>
+        </div>
+        <div>
+            <button id="theme-toggle" onclick="toggleTheme()">&#127769;</button>
+        </div>
+    </header>
+
+    <div class="tabs">
+        <button class="tab active" onclick="showTab('overview')">Overview</button>
+        <button class="tab" onclick="showTab('results')">Test Results</button>
+        <button class="tab" onclick="showTab('log')">Execution Log</button>
+    </div>
+
+    <div id="overview" class="tab-content active">
+        <div class="section">
+            <h2>How This Substrate Works</h2>
+            <pre># Effortless Entity Framework Execution Substrate
+
+This is a **licensed Effortless** substrate. The C# Entity Framework data classes are produced by the `airtable-to-odxml` + `odxml-to-ef-dataclasses` transpiler pipeline (configured in `effortless.json` at `RelativePath: /licensed-effortless-tools/entity-framework-dotnet`). Lineage: the `.NET` codegen has been in use in production .NET applications since 2005 — calculated-field property getters ride on top of decades-tested CLR semantics.
+
+## How it works
+
+1. `inject-substrate.sh` runs `effortless -buildLocal` in `licensed-effortless-tools/entity-framework-dotnet/`. That regenerates `DataSchema.odxml` (from Airtable) and the C# DataClasses (from the ODXML).
+2. `EffortlessEntityFrameworkRunner.csproj` directly globs `..\..\licensed-effortless-tools\entity-framework-dotnet\DataClasses\**\*.cs` and `SqlOnAir\DotNet\Lib\*.cs` into the build. There is no copying, no codegen here — when the licensed transpiler updates the dataclasses, this substrate is automatically in sync.
+3. `Program.cs` discovers every concrete `SoAEntityBase` subclass via reflection, matches them to entities in `testing/blank-tests/*.json`, instantiates each one, copies the raw fields from JSON onto writable properties (snake_case → PascalCase), then reads every property back — including the `Formula` getters — and serializes to `test-answers/{entity}.json`.
+
+## Why this is expected to always score 100%
+
+The calculated fields are real C# property getters compiled from the rulebook by the Effortless transpiler. They execute on the .NET CLR, which has been the production runtime for major-bank, healthcare, and government software for two decades. There is no &quot;evaluator&quot; to drift; there is no formula parser to mis-implement — the formulas are just C# code.
+
+## Caveats
+
+- The first run will be slow because `dotnet build` downloads NuGet packages (EF Core, System.Text.Json). Subsequent runs are fast.
+- Guid primary keys (auto-generated by the dataclass) are not set from the test data — the runner preserves the original string `*_id` value in the output JSON. PKs are not scored against the answer key as calculated fields.
+
+## See also
+
+- [`licensed-effortless-tools/entity-framework-dotnet/`](../../licensed-effortless-tools/entity-framework-dotnet/) — the transpiler output (DataSchema.odxml + generated C# DataClasses + the SqlOnAir SDK)
+</pre>
+        </div>
+    </div>
+
+    <div id="results" class="tab-content">
+        <div class="section">
+            <h2>Test Results Summary</h2>
+            <pre># Test Results: effortless-entity-framework
+
+## Summary
+
+| Metric | Value |
+|--------|-------|
+| Total Fields Tested | 40 |
+| Passed | 40 |
+| Failed | 0 |
+| Score | 100.0% |
+| Duration | 1s |
+
+## Score by Field Class
+
+| Class | Passed | Tested | Score |
+|-------|--------|--------|-------|
+| Scalar (calculated) | 3 | 3 | 100.0% |
+| Lookup (INDEX/MATCH) | 30 | 30 | 100.0% |
+| Aggregation (COUNTIFS/SUMIFS) | 7 | 7 | 100.0% |
+
+## Results by Entity
+
+### roles
+
+- Fields: 3/3 (100.0%)
+- Computed columns: count_of_employees
+
+### customers
+
+- Fields: 3/3 (100.0%)
+- Computed columns: full_name
+
+### projects
+
+- Fields: 21/21 (100.0%)
+- Computed columns: project_type_name, project_type_description, project_type_requires_manager_approval, approved_by_role_is_manager, approved_by_name, approved_by_email_address, approved_by_phone_number
+
+### types_of_project
+
+- Fields: 4/4 (100.0%)
+- Computed columns: count_of_projects
+
+### employees
+
+- Fields: 9/9 (100.0%)
+- Computed columns: role_name, role_description, role_is_manager
+</pre>
+        </div>
+    </div>
+
+    <div id="log" class="tab-content">
+        <div class="section">
+            <h2>Execution Log</h2>
+            <pre>=== Effortless-EntityFramework Substrate Test Run ===
+
+Building runner...
+/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/effortless-entity-framework/obj/Patched/DataClasses/BaseClasses/RoleBase.cs(53,53): warning CS8622: Nullability of reference types in type of parameter &#x27;sender&#x27; of &#x27;void RoleBase.Employees_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)&#x27; doesn&#x27;t match the target delegate &#x27;NotifyCollectionChangedEventHandler&#x27; (possibly because of nullability attributes). [/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/effortless-entity-framework/EffortlessEntityFrameworkRunner.csproj]
+/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/effortless-entity-framework/obj/Patched/DataClasses/BaseClasses/TypesOfProjectBase.cs(53,52): warning CS8622: Nullability of reference types in type of parameter &#x27;sender&#x27; of &#x27;void TypesOfProjectBase.Projects_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)&#x27; doesn&#x27;t match the target delegate &#x27;NotifyCollectionChangedEventHandler&#x27; (possibly because of nullability attributes). [/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/effortless-entity-framework/EffortlessEntityFrameworkRunner.csproj]
+/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/effortless-entity-framework/obj/Patched/DataClasses/BaseClasses/RoleBase.cs(61,53): warning CS8622: Nullability of reference types in type of parameter &#x27;sender&#x27; of &#x27;void RoleBase.Employees_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)&#x27; doesn&#x27;t match the target delegate &#x27;NotifyCollectionChangedEventHandler&#x27; (possibly because of nullability attributes). [/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/effortless-entity-framework/EffortlessEntityFrameworkRunner.csproj]
+/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/effortless-entity-framework/obj/Patched/DataClasses/BaseClasses/RoleBase.cs(66,53): warning CS8622: Nullability of reference types in type of parameter &#x27;sender&#x27; of &#x27;void RoleBase.Employees_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)&#x27; doesn&#x27;t match the target delegate &#x27;NotifyCollectionChangedEventHandler&#x27; (possibly because of nullability attributes). [/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/effortless-entity-framework/EffortlessEntityFrameworkRunner.csproj]
+/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/effortless-entity-framework/obj/Patched/DataClasses/BaseClasses/EmployeeBase.cs(122,52): warning CS8622: Nullability of reference types in type of parameter &#x27;sender&#x27; of &#x27;void EmployeeBase.Projects_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)&#x27; doesn&#x27;t match the target delegate &#x27;NotifyCollectionChangedEventHandler&#x27; (possibly because of nullability attributes). [/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/effortless-entity-framework/EffortlessEntityFrameworkRunner.csproj]
+/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/effortless-entity-framework/obj/Patched/DataClasses/BaseClasses/TypesOfProjectBase.cs(61,52): warning CS8622: Nullability of reference types in type of parameter &#x27;sender&#x27; of &#x27;void TypesOfProjectBase.Projects_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)&#x27; doesn&#x27;t match the target delegate &#x27;NotifyCollectionChangedEventHandler&#x27; (possibly because of nullability attributes). [/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/effortless-entity-framework/EffortlessEntityFrameworkRunner.csproj]
+/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/effortless-entity-framework/obj/Patched/DataClasses/BaseClasses/TypesOfProjectBase.cs(66,52): warning CS8622: Nullability of reference types in type of parameter &#x27;sender&#x27; of &#x27;void TypesOfProjectBase.Projects_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)&#x27; doesn&#x27;t match the target delegate &#x27;NotifyCollectionChangedEventHandler&#x27; (possibly because of nullability attributes). [/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/effortless-entity-framework/EffortlessEntityFrameworkRunner.csproj]
+/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/effortless-entity-framework/obj/Patched/DataClasses/BaseClasses/EmployeeBase.cs(130,52): warning CS8622: Nullability of reference types in type of parameter &#x27;sender&#x27; of &#x27;void EmployeeBase.Projects_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)&#x27; doesn&#x27;t match the target delegate &#x27;NotifyCollectionChangedEventHandler&#x27; (possibly because of nullability attributes). [/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/effortless-entity-framework/EffortlessEntityFrameworkRunner.csproj]
+/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/effortless-entity-framework/obj/Patched/DataClasses/BaseClasses/EmployeeBase.cs(135,52): warning CS8622: Nullability of reference types in type of parameter &#x27;sender&#x27; of &#x27;void EmployeeBase.Projects_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)&#x27; doesn&#x27;t match the target delegate &#x27;NotifyCollectionChangedEventHandler&#x27; (possibly because of nullability attributes). [/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/effortless-entity-framework/EffortlessEntityFrameworkRunner.csproj]
+
+Build succeeded.
+
+/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/effortless-entity-framework/obj/Patched/DataClasses/BaseClasses/RoleBase.cs(53,53): warning CS8622: Nullability of reference types in type of parameter &#x27;sender&#x27; of &#x27;void RoleBase.Employees_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)&#x27; doesn&#x27;t match the target delegate &#x27;NotifyCollectionChangedEventHandler&#x27; (possibly because of nullability attributes). [/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/effortless-entity-framework/EffortlessEntityFrameworkRunner.csproj]
+/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/effortless-entity-framework/obj/Patched/DataClasses/BaseClasses/TypesOfProjectBase.cs(53,52): warning CS8622: Nullability of reference types in type of parameter &#x27;sender&#x27; of &#x27;void TypesOfProjectBase.Projects_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)&#x27; doesn&#x27;t match the target delegate &#x27;NotifyCollectionChangedEventHandler&#x27; (possibly because of nullability attributes). [/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/effortless-entity-framework/EffortlessEntityFrameworkRunner.csproj]
+/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/effortless-entity-framework/obj/Patched/DataClasses/BaseClasses/RoleBase.cs(61,53): warning CS8622: Nullability of reference types in type of parameter &#x27;sender&#x27; of &#x27;void RoleBase.Employees_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)&#x27; doesn&#x27;t match the target delegate &#x27;NotifyCollectionChangedEventHandler&#x27; (possibly because of nullability attributes). [/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/effortless-entity-framework/EffortlessEntityFrameworkRunner.csproj]
+/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/effortless-entity-framework/obj/Patched/DataClasses/BaseClasses/RoleBase.cs(66,53): warning CS8622: Nullability of reference types in type of parameter &#x27;sender&#x27; of &#x27;void RoleBase.Employees_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)&#x27; doesn&#x27;t match the target delegate &#x27;NotifyCollectionChangedEventHandler&#x27; (possibly because of nullability attributes). [/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/effortless-entity-framework/EffortlessEntityFrameworkRunner.csproj]
+/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/effortless-entity-framework/obj/Patched/DataClasses/BaseClasses/EmployeeBase.cs(122,52): warning CS8622: Nullability of reference types in type of parameter &#x27;sender&#x27; of &#x27;void EmployeeBase.Projects_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)&#x27; doesn&#x27;t match the target delegate &#x27;NotifyCollectionChangedEventHandler&#x27; (possibly because of nullability attributes). [/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/effortless-entity-framework/EffortlessEntityFrameworkRunner.csproj]
+/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/effortless-entity-framework/obj/Patched/DataClasses/BaseClasses/TypesOfProjectBase.cs(61,52): warning CS8622: Nullability of reference types in type of parameter &#x27;sender&#x27; of &#x27;void TypesOfProjectBase.Projects_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)&#x27; doesn&#x27;t match the target delegate &#x27;NotifyCollectionChangedEventHandler&#x27; (possibly because of nullability attributes). [/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/effortless-entity-framework/EffortlessEntityFrameworkRunner.csproj]
+/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/effortless-entity-framework/obj/Patched/DataClasses/BaseClasses/TypesOfProjectBase.cs(66,52): warning CS8622: Nullability of reference types in type of parameter &#x27;sender&#x27; of &#x27;void TypesOfProjectBase.Projects_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)&#x27; doesn&#x27;t match the target delegate &#x27;NotifyCollectionChangedEventHandler&#x27; (possibly because of nullability attributes). [/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/effortless-entity-framework/EffortlessEntityFrameworkRunner.csproj]
+/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/effortless-entity-framework/obj/Patched/DataClasses/BaseClasses/EmployeeBase.cs(130,52): warning CS8622: Nullability of reference types in type of parameter &#x27;sender&#x27; of &#x27;void EmployeeBase.Projects_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)&#x27; doesn&#x27;t match the target delegate &#x27;NotifyCollectionChangedEventHandler&#x27; (possibly because of nullability attributes). [/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/effortless-entity-framework/EffortlessEntityFrameworkRunner.csproj]
+/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/effortless-entity-framework/obj/Patched/DataClasses/BaseClasses/EmployeeBase.cs(135,52): warning CS8622: Nullability of reference types in type of parameter &#x27;sender&#x27; of &#x27;void EmployeeBase.Projects_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)&#x27; doesn&#x27;t match the target delegate &#x27;NotifyCollectionChangedEventHandler&#x27; (possibly because of nullability attributes). [/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/effortless-entity-framework/EffortlessEntityFrameworkRunner.csproj]
+    9 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:00.67
+
+Running runner...
+Effortless-EntityFramework Substrate Test Runner
+==================================================
+
+Discovered 5 EF entity classes:
+  - Customer
+  - Employee
+  - Project
+  - Role
+  - TypesOfProject
+
+  loaded customers (Customer): 3 records
+  loaded employees (Employee): 3 records
+  loaded projects (Project): 3 records
+  loaded roles (Role): 3 records
+  loaded types_of_project (TypesOfProject): 4 records
+  -&gt; customers (Customer): 3 records
+  -&gt; employees (Employee): 3 records
+  -&gt; projects (Project): 3 records
+  -&gt; roles (Role): 3 records
+  -&gt; types_of_project (TypesOfProject): 4 records
+
+effortless-entity-framework: Processed 5 entities, 16 total records
+
+</pre>
+        </div>
+    </div>
+
+    <footer>
+        Generated by ERB Substrate Report Generator
+    </footer>
+
+    <script>
+        function showTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        function toggleTheme() {
+            const body = document.body;
+            const isDark = body.getAttribute('data-theme') === 'dark';
+            body.setAttribute('data-theme', isDark ? '' : 'dark');
+            document.getElementById('theme-toggle').textContent = isDark ? '🌙' : '☀️';
+        }
+    </script>
+</body>
+</html>

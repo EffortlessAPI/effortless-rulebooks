@@ -7,10 +7,6 @@
           "type": "string"
         },
         {
-          "name": "Customer",
-          "type": "string"
-        },
-        {
           "name": "EmailAddress",
           "type": "string"
         },
@@ -25,6 +21,11 @@
       ],
       "derived": [
         {
+          "name": "Name",
+          "type": "string",
+          "formula": "=SUBSTITUTE({{EmailAddress}}, \"@\", \"-\")"
+        },
+        {
           "name": "FullName",
           "type": "string",
           "formula": "={{FirstName}} & \" \" & {{LastName}}"
@@ -37,10 +38,9 @@
       "class": "Customers",
       "id": "Customers_0",
       "values": {
-        "CustomerId": "cust0001",
-        "Customer": "CUST0001",
+        "CustomerId": "jane-smith-email-com",
         "EmailAddress": "jane.smith@email.com",
-        "FirstName": "Robert",
+        "FirstName": "Bob",
         "LastName": "Smith"
       }
     },
@@ -48,8 +48,7 @@
       "class": "Customers",
       "id": "Customers_1",
       "values": {
-        "CustomerId": "cust0002",
-        "Customer": "CUST0002",
+        "CustomerId": "john-doe-email-com",
         "EmailAddress": "john.doe@email.com",
         "FirstName": "Jimmy",
         "LastName": "Doe"
@@ -59,8 +58,7 @@
       "class": "Customers",
       "id": "Customers_2",
       "values": {
-        "CustomerId": "cust0003",
-        "Customer": "CUST0003",
+        "CustomerId": "emily-jones-email-com",
         "EmailAddress": "emily.jones@email.com",
         "FirstName": "Mary",
         "LastName": "Jones"

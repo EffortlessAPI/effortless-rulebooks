@@ -16,6 +16,7 @@ explanation of exactly how it was derived.
 
 import json
 import os
+import shutil
 import sys
 import glob
 from pathlib import Path
@@ -26,7 +27,12 @@ from dataclasses import dataclass
 script_dir = Path(__file__).resolve().parent
 sys.path.insert(0, str(script_dir.parent.parent))
 
-from orchestration.shared import to_snake_case, load_rulebook, compute_aggregations, compute_lookups
+# GUARD: This substrate's "engine" is the witnessed-inference DAG over the
+# generated explain_spec.json. It must NOT import compute_lookups /
+# compute_aggregations — those are the Python simulator's interpreters.
+# Fields the DAG cannot explain natively are left null and the grader counts
+# them as failures.
+from orchestration.shared import to_snake_case, load_rulebook
 
 
 # =============================================================================
@@ -401,11 +407,9 @@ def process_entity(
     with open(input_path, 'r') as f:
         records = json.load(f)
 
-    if rulebook is not None and project_root is not None:
-        # Compute lookup fields first (INDEX/MATCH)
-        records = compute_lookups(records, entity_name, rulebook, project_root)
-        # Then compute aggregation fields (COUNTIFS, SUMIFS)
-        records = compute_aggregations(records, entity_name, rulebook, project_root)
+    # Lookups and aggregations are not in the explain_spec for entities other
+    # than the calculated-field set; they remain null and the grader scores
+    # them 0. Cross-table inference is out of scope for this substrate today.
 
     evaluator = ExplainEvaluator(semantics)
     templates = entity_spec.get("expr_templates", {})
@@ -497,7 +501,13 @@ def main():
     entities = spec.get("entities", {})
     rulebook_hash = spec.get("rulebook", {}).get("rulebook_hash", "")
 
-    # Ensure output directories exist
+    # Clear stale outputs from prior runs so removed entities don't leave orphans.
+    # test-answers/ is also cleared by the test orchestrator; test-explanations/ is
+    # unique to this substrate, so we must clean it ourselves.
+    if test_answers_dir.exists():
+        shutil.rmtree(test_answers_dir)
+    if test_explanations_dir.exists():
+        shutil.rmtree(test_explanations_dir)
     test_answers_dir.mkdir(exist_ok=True)
     test_explanations_dir.mkdir(exist_ok=True)
 
@@ -523,17 +533,16 @@ def main():
                 break
 
         if not entity_spec:
-            # No calculated fields for this entity, but still compute lookups/aggregations
+            # No explain_spec entry for this entity: write raw passthrough.
+            # We do NOT borrow the Python simulator's lookup/aggregation
+            # interpreters; cross-table fields stay null and score 0.
             with open(input_path, 'r') as f:
                 records = json.load(f)
-            if rulebook is not None and project_root is not None:
-                records = compute_lookups(records, entity_name, rulebook, project_root)
-                records = compute_aggregations(records, entity_name, rulebook, project_root)
             with open(test_answers_dir / filename, 'w') as f:
                 json.dump(records, f, indent=2)
             total_records += len(records)
             entity_count += 1
-            print(f"  -> {entity_name}: {len(records)} records (lookups/aggregations only)")
+            print(f"  -> {entity_name}: {len(records)} records (raw passthrough)")
             continue
 
         answers_path = test_answers_dir / filename

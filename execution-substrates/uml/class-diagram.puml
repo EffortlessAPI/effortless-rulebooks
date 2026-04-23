@@ -7,11 +7,11 @@ end note
 
 class Customers {
   +CustomerId: String
-  +Customer: String -- Identifier for the customers.
   +EmailAddress: String -- Thec ustomers email address
   +FirstName: String -- First Name of the customer - used to make the full name
   +LastName: String -- Last Name of the customer - used to make the full name
   --
+  /Name: String  {derived} -- Identifier for the customers.
   /FullName: String  {derived} -- Full name is computed from the first and last name of the customer
 }
 

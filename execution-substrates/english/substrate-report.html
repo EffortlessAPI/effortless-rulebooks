@@ -89,7 +89,7 @@ pre { background: var(--code-bg); border: 1px solid var(--border-color); border-
         </div>
         <div class="header-stats">
             <div class="stat"><span>Score:</span><span class="stat-value score-perfect">100.0%</span></div>
-            <div class="stat"><span>3/3 passed</span></div>
+            <div class="stat"><span>6/6 passed</span></div>
         </div>
         <button id="theme-toggle" title="Toggle theme"><span class="sun">☀️</span><span class="moon">🌙</span></button>
     </header>
@@ -132,38 +132,41 @@ pre { background: var(--code-bg); border: 1px solid var(--border-color); border-
 <h3 class="entity-name">customers</h3>
 <div class="table-scroll"><table class="graded-table"><thead><tr>
 <th class="">customer_id</th>
-<th class="">customer</th>
 <th class="">email_address</th>
-<th class="">first_name</th>
 <th class="">last_name</th>
+<th class="computed-header">name</th>
+<th class="">first_name</th>
 <th class="computed-header">full_name</th>
 </tr></thead><tbody>
 <tr>
-<td class="cell-raw" title="cust0001">cust0001</td>
-<td class="cell-raw" title="CUST0001">CUST0001</td>
-<td class="cell-raw" title="jane.smith@email.com">jane.smith@email.com</td>
-<td class="cell-raw" title="Mary">Mary</td>
-<td class="cell-raw" title="Smith">Smith</td>
-<td class="cell-passed computed" title="Smith, Mary">
-<span class="check">✓</span><code>Smith, Mary</code></td>
-</tr>
-<tr>
-<td class="cell-raw" title="cust0002">cust0002</td>
-<td class="cell-raw" title="CUST0002">CUST0002</td>
-<td class="cell-raw" title="john.doe@email.com">john.doe@email.com</td>
-<td class="cell-raw" title="John">John</td>
-<td class="cell-raw" title="Doe">Doe</td>
-<td class="cell-passed computed" title="Doe, John">
-<span class="check">✓</span><code>Doe, John</code></td>
-</tr>
-<tr>
-<td class="cell-raw" title="cust0003">cust0003</td>
-<td class="cell-raw" title="CUST0003">CUST0003</td>
+<td class="cell-raw" title="emily-jones-email-com">emily-jones-email-com</td>
 <td class="cell-raw" title="emily.jones@email.com">emily.jones@email.com</td>
-<td class="cell-raw" title="Emily">Emily</td>
 <td class="cell-raw" title="Jones">Jones</td>
-<td class="cell-passed computed" title="Jones, Emily">
-<span class="check">✓</span><code>Jones, Emily</code></td>
+<td class="cell-passed computed" title="emily.jones-email.com">
+<span class="check">✓</span><code>emily.jones-email.com</code></td>
+<td class="cell-raw" title="Mary">Mary</td>
+<td class="cell-passed computed" title="Mary Jones">
+<span class="check">✓</span><code>Mary Jones</code></td>
+</tr>
+<tr>
+<td class="cell-raw" title="jane-smith-email-com">jane-smith-email-com</td>
+<td class="cell-raw" title="jane.smith@email.com">jane.smith@email.com</td>
+<td class="cell-raw" title="Smith">Smith</td>
+<td class="cell-passed computed" title="jane.smith-email.com">
+<span class="check">✓</span><code>jane.smith-email.com</code></td>
+<td class="cell-raw" title="Bob">Bob</td>
+<td class="cell-passed computed" title="Bob Smith">
+<span class="check">✓</span><code>Bob Smith</code></td>
+</tr>
+<tr>
+<td class="cell-raw" title="john-doe-email-com">john-doe-email-com</td>
+<td class="cell-raw" title="john.doe@email.com">john.doe@email.com</td>
+<td class="cell-raw" title="Doe">Doe</td>
+<td class="cell-passed computed" title="john.doe-email.com">
+<span class="check">✓</span><code>john.doe-email.com</code></td>
+<td class="cell-raw" title="Jimmy">Jimmy</td>
+<td class="cell-passed computed" title="Jimmy Doe">
+<span class="check">✓</span><code>Jimmy Doe</code></td>
 </tr>
 </tbody></table></div></div>
             </div>
@@ -174,37 +177,30 @@ pre { background: var(--code-bg); border: 1px solid var(--border-color); border-
                 <pre>=== English (LLM) Substrate Test Run ===
 
 ======================================================================
-English Execution Substrate - LLM Test Execution
-Using ENGLISH PROSE documents (glossary.md, specification.md)
+English Execution Substrate - One-Shot All-Entities LLM Run
 ======================================================================
 
-Loading English specification documents...
-  Loaded specification.md (2330 chars)
+  Loaded specification.md (3346 chars)
+  Loaded 1 entities, 3 records total
+    - customers: 3 records
 
-Loading rulebook for schema metadata...
-Discovered 1 entities: Customers
-
-Processing customers...
-  Schema: 6 fields, 1 calculated
-    Using English prose documents (specification)
 ============================================================
 PROMPT (first 2 lines):
-  You are taking a test. Your task is to fill in the computed columns for each record based on the Eng
-  
-  ... (108 total lines, 4188 chars)
+  You are taking a test. Follow the English specification below to fill in
+  every null derived field in the test data. The data spans multiple tables and many
+  ... (140 total lines, 5510 chars)
 ============================================================
 Calling OpenAI (gpt-4o-mini)... please wait...
 ============================================================
 RESPONSE (first 2 lines):
-  [
-    {
-  ... (26 total lines, 587 chars)
+  {
+    &quot;customers&quot;: [
+  ... (28 total lines, 709 chars)
 ============================================================
-  -&gt; customers: 3 records, 3 computed fields filled
+  -&gt; customers: 3 records written
 
 ======================================================================
-English substrate: Processed 1 entities, 3 total records
-Filled 3 computed fields total
+English substrate: filled 6 derived fields across 1 entities
 ======================================================================
 
 </pre>
@@ -215,9 +211,9 @@ Filled 3 computed fields total
                 <h2>Test Summary</h2>
                 <div class="results-summary">
                     <div class="result-item"><div class="result-value score-perfect">100.0%</div><div class="result-label">Score</div></div>
-                    <div class="result-item"><div class="result-value score-perfect">3</div><div class="result-label">Passed</div></div>
+                    <div class="result-item"><div class="result-value score-perfect">6</div><div class="result-label">Passed</div></div>
                     <div class="result-item"><div class="result-value">0</div><div class="result-label">Failed</div></div>
-                    <div class="result-item"><div class="result-value">3</div><div class="result-label">Total</div></div>
+                    <div class="result-item"><div class="result-value">6</div><div class="result-label">Total</div></div>
                 </div>
             </div>
         </div>
@@ -226,46 +222,67 @@ Filled 3 computed fields total
                 <h2>specification.md (LLM-Generated)</h2>
                 <div class="prose-container markdown-content"><h2>ACME, LLC Rulebook Specification Document</h2>
 <h3>Overview</h3>
-<p>This document outlines the specifications for the rulebook generated from the Airtable base "ACME, LLC (template)". It details the structure of the Customers table, including input fields and calculated fields, along with the methods for computing the values of these fields.</p>
-<h3>Customers Table</h3>
-<h4>Input Fields</h4>
-<p>The following are the input fields used in the Customers table:</p>
+<p>This document outlines the specifications for the ACME, LLC rulebook, which defines the structure and calculations for customer data. The rulebook includes raw input fields and derived fields that are calculated based on the input data. The goal is to provide a clear understanding of how to compute each derived field using the specified formulas and data.</p>
+<h3>Entity: Customers</h3>
+<h4>Input Fields (Type: Raw)</h4>
 <p>1. <strong>CustomerId</strong></p>
 <p>   - <strong>Type:</strong> String</p>
-<p>   - <strong>Description:</strong> A unique identifier for each customer. This field is required and cannot be null.</p>
-<p>2. <strong>Customer</strong></p>
+<p>   - <strong>Description:</strong> Unique identifier for each customer. This field is mandatory.</p>
+<p>2. <strong>EmailAddress</strong></p>
 <p>   - <strong>Type:</strong> String</p>
-<p>   - <strong>Description:</strong> An identifier for the customers. This field is optional and can be null.</p>
-<p>3. <strong>EmailAddress</strong></p>
+<p>   - <strong>Description:</strong> The customer's email address. This field is optional.</p>
+<p>3. <strong>FirstName</strong></p>
 <p>   - <strong>Type:</strong> String</p>
-<p>   - <strong>Description:</strong> The customer's email address. This field is optional and can be null.</p>
-<p>4. <strong>FirstName</strong></p>
+<p>   - <strong>Description:</strong> The first name of the customer, used to create the full name. This field is optional.</p>
+<p>4. <strong>LastName</strong></p>
 <p>   - <strong>Type:</strong> String</p>
-<p>   - <strong>Description:</strong> The first name of the customer, used to create the full name. This field is optional and can be null.</p>
-<p>5. <strong>LastName</strong></p>
-<p>   - <strong>Type:</strong> String</p>
-<p>   - <strong>Description:</strong> The last name of the customer, used to create the full name. This field is optional and can be null.</p>
-<h4>Calculated Fields</h4>
-<p>#### FullName</p>
+<p>   - <strong>Description:</strong> The last name of the customer, used to create the full name. This field is optional.</p>
+<h4>Derived Fields</h4>
+<p>1. <strong>Name</strong></p>
+<p>   - <strong>Type:</strong> Calculated</p>
+<p>   - <strong>Description:</strong> This field serves as an identifier for the customers. It is computed by replacing the "@" symbol in the customer's email address with a hyphen ("-").</p>
+<p>   - <strong>Computation:</strong> </p>
+<p>     - Take the value from the <strong>EmailAddress</strong> field.</p>
+<p>     - Replace "@" with "-".</p>
+<p>   - <strong>Original Formula:</strong> `=SUBSTITUTE({{EmailAddress}}, "@", "-")`</p>
+<p>   - <strong>Example:</strong> For a customer with the email address `jane.smith@email.com`, the computed Name would be `jane.smith-email.com`.</p>
+<p>2. <strong>FullName</strong></p>
+<p>   - <strong>Type:</strong> Calculated</p>
+<p>   - <strong>Description:</strong> This field represents the full name of the customer, which is derived from the combination of the first and last names.</p>
+<p>   - <strong>Computation:</strong> </p>
+<p>     - Concatenate the values from the <strong>FirstName</strong> and <strong>LastName</strong> fields, separated by a space.</p>
+<p>   - <strong>Original Formula:</strong> `={{FirstName}} & " " & {{LastName}}`</p>
+<p>   - <strong>Example:</strong> For a customer with FirstName as `Bob` and LastName as `Smith`, the computed FullName would be `Bob Smith`.</p>
+<h4>Example Data</h4>
+<p>Here are examples of how the derived fields are computed based on the provided customer data:</p>
 <ul>
-<li>**Type:** Calculated</li>
-<li>**Description:** The full name of the customer is computed by concatenating the last name and first name, separated by a comma and a space.</li>
-<li>**Calculation Method:** To compute the FullName, take the LastName and FirstName fields, and format them as follows:</li>
-<p>  - Combine the LastName and FirstName using the formula: `={{LastName}} & ", " & {{FirstName}}`</p>
+<li>**Customer 1:**</li>
+<p>  - <strong>CustomerId:</strong> `jane-smith-email-com`</p>
+<p>  - <strong>EmailAddress:</strong> `jane.smith@email.com`</p>
+<p>  - <strong>FirstName:</strong> `Bob`</p>
+<p>  - <strong>LastName:</strong> `Smith`</p>
+<p>  - <strong>Computed Name:</strong> `jane.smith-email.com` (derived from `jane.smith@email.com`)</p>
+<p>  - <strong>Computed FullName:</strong> `Bob Smith` (derived from `Bob` and `Smith`)</p>
 </ul>
 <ul>
-<li>**Example:**</li>
-<p>  - For the customer with `FirstName` "Mary" and `LastName` "Smith":</p>
-<p>    - <strong>Calculation:</strong> `="Smith" & ", " & "Mary"` results in "Smith, Mary".</p>
-<p>  - For the customer with `FirstName` "John" and `LastName` "Doe":</p>
-<p>    - <strong>Calculation:</strong> `="Doe" & ", " & "John"` results in "Doe, John".</p>
-<p>  - For the customer with `FirstName` "Emily" and `LastName` "Jones":</p>
-<p>    - <strong>Calculation:</strong> `="Jones" & ", " & "Emily"` results in "Jones, Emily".</p>
+<li>**Customer 2:**</li>
+<p>  - <strong>CustomerId:</strong> `john-doe-email-com`</p>
+<p>  - <strong>EmailAddress:</strong> `john.doe@email.com`</p>
+<p>  - <strong>FirstName:</strong> `Jimmy`</p>
+<p>  - <strong>LastName:</strong> `Doe`</p>
+<p>  - <strong>Computed Name:</strong> `john.doe-email.com` (derived from `john.doe@email.com`)</p>
+<p>  - <strong>Computed FullName:</strong> `Jimmy Doe` (derived from `Jimmy` and `Doe`)</p>
 </ul>
-<h4>Summary of Calculated Field</h4>
 <ul>
-<li>**FullName** is derived from the combination of the LastName and FirstName fields, formatted as &quot;LastName, FirstName&quot;. This allows for a standardized representation of customer names, which is useful for display purposes in reports and communications.</li>
-</ul></div>
+<li>**Customer 3:**</li>
+<p>  - <strong>CustomerId:</strong> `emily-jones-email-com`</p>
+<p>  - <strong>EmailAddress:</strong> `emily.jones@email.com`</p>
+<p>  - <strong>FirstName:</strong> `Mary`</p>
+<p>  - <strong>LastName:</strong> `Jones`</p>
+<p>  - <strong>Computed Name:</strong> `emily.jones-email.com` (derived from `emily.jones@email.com`)</p>
+<p>  - <strong>Computed FullName:</strong> `Mary Jones` (derived from `Mary` and `Jones`)</p>
+</ul>
+<p>This specification provides a comprehensive guide to understanding how to compute the derived fields in the Customers table of the ACME, LLC rulebook. Each calculation is based on the raw input fields, ensuring clarity and accuracy in data processing.</p></div>
             </div>
         </div>
     </main>

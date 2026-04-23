@@ -18,11 +18,12 @@ erb:customerId a owl:DatatypeProperty ;
     rdfs:range xsd:string ;
     rdfs:label "CustomerId" .
 
-erb:customer a owl:DatatypeProperty ;
+erb:name a owl:DatatypeProperty ;
     rdfs:domain erb:Customers ;
     rdfs:range xsd:string ;
-    rdfs:label "Customer" ;
+    rdfs:label "Name" ;
     rdfs:comment "Identifier for the customers." .
+    # calculated: calculated
 
 erb:emailAddress a owl:DatatypeProperty ;
     rdfs:domain erb:Customers ;

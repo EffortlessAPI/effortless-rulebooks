@@ -2,6 +2,14 @@
 """
 COBOL Substrate Test Runner
 
+GUARD: This substrate must compute calculated fields using its own native
+engine: compiled COBOL via GnuCOBOL (`cobc`). It must NOT import
+python_only_erb_simulator or call compute_lookups / compute_aggregations.
+The injector currently only emits COBOL for scalar calculated fields and
+for a single `target_entity`; everything else is silently skipped at run
+time, and the grader counts those skips as failures. (Adding a 2nd entity
+to the rulebook will demonstrably drop COBOL's score — that's the point.)
+
 Compiles and runs the generated COBOL program to compute test answers.
 1. Reads JSON from testing/blank-tests/
 2. Converts to tab-delimited input

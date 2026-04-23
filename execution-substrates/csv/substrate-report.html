@@ -75,7 +75,7 @@ pre { background: var(--code-bg); border: 1px solid var(--border-color); border-
         </div>
         <div class="header-stats">
             <div class="stat"><span>Score:</span><span class="stat-value score-perfect">100.0%</span></div>
-            <div class="stat"><span>3/3 passed</span></div>
+            <div class="stat"><span>6/6 passed</span></div>
         </div>
         <button id="theme-toggle" title="Toggle theme"><span class="sun">☀️</span><span class="moon">🌙</span></button>
     </header>
@@ -117,14 +117,16 @@ pre { background: var(--code-bg); border: 1px solid var(--border-color); border-
                 <pre>=== CSV Substrate Test Run ===
 
 
-  Processing customers from customers.csv...
+  Processing customers...
 Found 6 fields in test answers
 Primary key field: customer_id
-Loaded 3 rows from CSV
-Filled 3 null fields across 3 records
+Reading from worksheet: Customers
+Found 6 columns, matched 6 to JSON fields
+Loaded 3 rows from xlsx
+Filled 6 null fields across 3 records
 Updated /Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/csv/test-answers/customers.json
 
-csv: Processed 1 entities
+csv: Processed 1 entities from rulebook.xlsx
 
 </pre>
             </div>
@@ -134,9 +136,9 @@ csv: Processed 1 entities
                 <h2>Test Summary</h2>
                 <div class="results-summary">
                     <div class="result-item"><div class="result-value score-perfect">100.0%</div><div class="result-label">Score</div></div>
-                    <div class="result-item"><div class="result-value score-perfect">3</div><div class="result-label">Passed</div></div>
+                    <div class="result-item"><div class="result-value score-perfect">6</div><div class="result-label">Passed</div></div>
                     <div class="result-item"><div class="result-value">0</div><div class="result-label">Failed</div></div>
-                    <div class="result-item"><div class="result-value">3</div><div class="result-label">Total</div></div>
+                    <div class="result-item"><div class="result-value">6</div><div class="result-label">Total</div></div>
                 </div>
             </div>
         </div>
@@ -149,7 +151,7 @@ csv: Processed 1 entities
         <div id="formulas" class="tab-content">
             <div class="card">
                 <h2>column_formulas.csv</h2>
-                <div class="table-scroll"><table class="csv-table"><thead><tr><th>table_name</th><th>field_name</th><th>field_type</th><th>dag_level</th><th>formula</th><th>description</th></tr></thead><tbody><tr><td>Customers</td><td>customer_id</td><td>raw</td><td>0</td><td></td><td></td></tr><tr><td>Customers</td><td>customer</td><td>raw</td><td>0</td><td></td><td>Identifier for the customers.</td></tr><tr><td>Customers</td><td>email_address</td><td>raw</td><td>0</td><td></td><td>Thec ustomers email address</td></tr><tr><td>Customers</td><td>first_name</td><td>raw</td><td>0</td><td></td><td>First Name of the customer - used to make the full name</td></tr><tr><td>Customers</td><td>last_name</td><td>raw</td><td>0</td><td></td><td>Last Name of the customer - used to make the full name</td></tr><tr><td>Customers</td><td>full_name</td><td>calculated</td><td></td><td>={{FirstName}} &amp; &quot; &quot; &amp; {{LastName}}</td><td>Full name is computed from the first and last name of the customer</td></tr></tbody></table></div>
+                <div class="table-scroll"><table class="csv-table"><thead><tr><th>table_name</th><th>field_name</th><th>field_type</th><th>dag_level</th><th>formula</th><th>description</th></tr></thead><tbody><tr><td>Customers</td><td>customer_id</td><td>raw</td><td>0</td><td></td><td></td></tr><tr><td>Customers</td><td>name</td><td>calculated</td><td></td><td>=SUBSTITUTE({{EmailAddress}}, &quot;@&quot;, &quot;-&quot;)</td><td>Identifier for the customers.</td></tr><tr><td>Customers</td><td>email_address</td><td>raw</td><td>0</td><td></td><td>Thec ustomers email address</td></tr><tr><td>Customers</td><td>first_name</td><td>raw</td><td>0</td><td></td><td>First Name of the customer - used to make the full name</td></tr><tr><td>Customers</td><td>last_name</td><td>raw</td><td>0</td><td></td><td>Last Name of the customer - used to make the full name</td></tr><tr><td>Customers</td><td>full_name</td><td>calculated</td><td></td><td>={{FirstName}} &amp; &quot; &quot; &amp; {{LastName}}</td><td>Full name is computed from the first and last name of the customer</td></tr></tbody></table></div>
             </div>
         </div>
     </main>

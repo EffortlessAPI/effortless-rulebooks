@@ -68,7 +68,7 @@ pre { background: var(--code-bg); border: 1px solid var(--border-color); border-
         </div>
         <div class="header-stats">
             <div class="stat"><span>Score:</span><span class="stat-value score-perfect">100.0%</span></div>
-            <div class="stat"><span>3/3 passed</span></div>
+            <div class="stat"><span>6/6 passed</span></div>
         </div>
         <button id="theme-toggle" title="Toggle theme"><span class="sun">☀️</span><span class="moon">🌙</span></button>
     </header>
@@ -122,21 +122,21 @@ Tables with computed columns: Customers
 Loading ontology and data...
    Loaded: /Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/owl/ontology.owl
    Loaded: /Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/owl/individuals.ttl
-   Total triples: 53
+   Total triples: 50
 
 Loading SHACL rules...
    Loaded: /Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/owl/rules.shacl.ttl
-   Rule triples: 7
+   Rule triples: 12
 
 Running SHACL-SPARQL reasoning...
    (Multiple passes to resolve dependencies between computed fields)
-   Pass 1: 53 -&gt; 56 triples (3 added)
+   Pass 1: 50 -&gt; 56 triples (6 added)
    Pass 2: 56 -&gt; 56 triples (0 added)
    Completed in 2 passes
    Final triple count: 56
 
 Extracting computed values...
-   Customers: 3 records (1 computed fields)
+   Customers: 3 records (2 computed fields)
 
 Total: 3 records extracted
 Output: /Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/owl/test-answers/
@@ -153,9 +153,9 @@ SHACL reasoning complete!
                 <h2>Test Summary</h2>
                 <div class="results-summary">
                     <div class="result-item"><div class="result-value score-perfect">100.0%</div><div class="result-label">Score</div></div>
-                    <div class="result-item"><div class="result-value score-perfect">3</div><div class="result-label">Passed</div></div>
+                    <div class="result-item"><div class="result-value score-perfect">6</div><div class="result-label">Passed</div></div>
                     <div class="result-item"><div class="result-value">0</div><div class="result-label">Failed</div></div>
-                    <div class="result-item"><div class="result-value">3</div><div class="result-label">Total</div></div>
+                    <div class="result-item"><div class="result-value">6</div><div class="result-label">Total</div></div>
                 </div>
             </div>
         </div>
@@ -163,7 +163,7 @@ SHACL reasoning complete!
             <div class="card">
                 <div class="code-header">
                     <h2>ontology.owl</h2>
-                    <div><span class="code-info">51 lines</span><button class="copy-btn" onclick="copyCode('ontology-code')">Copy</button></div>
+                    <div><span class="code-info">52 lines</span><button class="copy-btn" onclick="copyCode('ontology-code')">Copy</button></div>
                 </div>
                 <pre id="ontology-code">@prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .
 @prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .
@@ -185,11 +185,12 @@ erb:customerId a owl:DatatypeProperty ;
     rdfs:range xsd:string ;
     rdfs:label &quot;CustomerId&quot; .
 
-erb:customer a owl:DatatypeProperty ;
+erb:name a owl:DatatypeProperty ;
     rdfs:domain erb:Customers ;
     rdfs:range xsd:string ;
-    rdfs:label &quot;Customer&quot; ;
+    rdfs:label &quot;Name&quot; ;
     rdfs:comment &quot;Identifier for the customers.&quot; .
+    # calculated: calculated
 
 erb:emailAddress a owl:DatatypeProperty ;
     rdfs:domain erb:Customers ;
@@ -222,7 +223,7 @@ erb:fullName a owl:DatatypeProperty ;
             <div class="card">
                 <div class="code-header">
                     <h2>individuals.ttl</h2>
-                    <div><span class="code-info">28 lines</span><button class="copy-btn" onclick="copyCode('individuals-code')">Copy</button></div>
+                    <div><span class="code-info">25 lines</span><button class="copy-btn" onclick="copyCode('individuals-code')">Copy</button></div>
                 </div>
                 <pre id="individuals-code">@prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .
 @prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .
@@ -232,22 +233,19 @@ erb:fullName a owl:DatatypeProperty ;
 # === Individuals: Customers ===
 
 erb:Customers_0 a erb:Customers ;
-    erb:customerId &quot;cust0001&quot; ;
-    erb:customer &quot;CUST0001&quot; ;
+    erb:customerId &quot;jane-smith-email-com&quot; ;
     erb:emailAddress &quot;jane.smith@email.com&quot; ;
-    erb:firstName &quot;Robert&quot; ;
+    erb:firstName &quot;Bob&quot; ;
     erb:lastName &quot;Smith&quot; .
 
 erb:Customers_1 a erb:Customers ;
-    erb:customerId &quot;cust0002&quot; ;
-    erb:customer &quot;CUST0002&quot; ;
+    erb:customerId &quot;john-doe-email-com&quot; ;
     erb:emailAddress &quot;john.doe@email.com&quot; ;
     erb:firstName &quot;Jimmy&quot; ;
     erb:lastName &quot;Doe&quot; .
 
 erb:Customers_2 a erb:Customers ;
-    erb:customerId &quot;cust0003&quot; ;
-    erb:customer &quot;CUST0003&quot; ;
+    erb:customerId &quot;emily-jones-email-com&quot; ;
     erb:emailAddress &quot;emily.jones@email.com&quot; ;
     erb:firstName &quot;Mary&quot; ;
     erb:lastName &quot;Jones&quot; .
@@ -258,7 +256,7 @@ erb:Customers_2 a erb:Customers ;
             <div class="card">
                 <div class="code-header">
                     <h2>rules.shacl.ttl</h2>
-                    <div><span class="code-info">29 lines</span><button class="copy-btn" onclick="copyCode('rules-code')">Copy</button></div>
+                    <div><span class="code-info">46 lines</span><button class="copy-btn" onclick="copyCode('rules-code')">Copy</button></div>
                 </div>
                 <pre id="rules-code">@prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .
 @prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .
@@ -269,6 +267,23 @@ erb:Customers_2 a erb:Customers ;
 # === Shape with rules for Customers ===
 erb:CustomersShape a sh:NodeShape ;
     sh:targetClass erb:Customers ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label &quot;rule_Customers_Name&quot; ;
+        sh:prefixes erb: ;
+        sh:construct &quot;&quot;&quot;
+            PREFIX erb: &lt;http://example.org/erb#&gt;
+            PREFIX xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt;
+            CONSTRUCT {
+                $this erb:name ?_result .
+            }
+            WHERE {
+    $this a erb:Customers .
+    OPTIONAL { $this erb:emailAddress ?email_address . }
+                BIND(REPLACE(?email_address, &quot;@&quot;, &quot;-&quot;) AS ?_result)
+            }
+        &quot;&quot;&quot; ;
+    ] ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label &quot;rule_Customers_FullName&quot; ;
@@ -288,7 +303,7 @@ erb:CustomersShape a sh:NodeShape ;
         &quot;&quot;&quot; ;
     ] .
 
-# Generated 1 SHACL rules</pre>
+# Generated 2 SHACL rules</pre>
             </div>
         </div>
     </main>

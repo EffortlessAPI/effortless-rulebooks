@@ -213,6 +213,27 @@ def datatype_to_go(datatype: str, nullable: bool = True) -> str:
         return '*string' if nullable else 'string'
 
 
+def _go_zero_value(datatype: str) -> str:
+    """Go zero-value literal for a rulebook datatype."""
+    dt = (datatype or 'string').lower()
+    if dt == 'boolean':
+        return 'false'
+    if dt == 'integer':
+        return '0'
+    return '""'
+
+
+def _field_datatype(rulebook: Dict, table_name: str, field_name: str) -> str:
+    """Look up a field's datatype from the rulebook. Defaults to 'string'."""
+    table = rulebook.get(table_name, {})
+    if not isinstance(table, dict):
+        return 'string'
+    for field in table.get('schema', []):
+        if field.get('name') == field_name:
+            return field.get('datatype', 'string')
+    return 'string'
+
+
 def table_name_to_struct_name(table_name: str) -> str:
     """Convert a table name to a Go struct name.
 
@@ -648,14 +669,40 @@ def generate_erb_sdk(rulebook: Dict) -> str:
             if has_computed:
                 tables_with_calc.append(table_name)
 
-    # Generate File I/O functions for ALL tables with computed fields
-    if tables_with_calc:
+    # Collect tables referenced by lookups/aggregations. These need Load<X>Records
+    # even if they don't themselves have computed fields, because main.go reads
+    # them to build lookup maps (e.g., Roles is read to resolve Employee.RoleIsManager).
+    related_tables: Set[str] = set()
+    for table_name in tables_with_calc:
+        for agg in get_table_aggregations(rulebook, table_name):
+            related_tables.add(agg['related_table'])
+        for lookup in get_table_lookups(rulebook, table_name):
+            related_tables.add(lookup['lookup_table'])
+
+    # Tables that need a Load function = tables_with_calc + related_tables,
+    # restricted to tables that actually exist in the rulebook.
+    tables_needing_load = []
+    seen = set()
+    for name in list(tables_with_calc) + sorted(related_tables):
+        if name in seen:
+            continue
+        if not isinstance(rulebook.get(name), dict) or 'schema' not in rulebook[name]:
+            continue
+        seen.add(name)
+        tables_needing_load.append(name)
+
+    # Generate File I/O functions for ALL tables that main.go will load.
+    # Save functions are only emitted for tables_with_calc (we never write back
+    # related-only tables like Roles or TypesOfProject).
+    if tables_needing_load:
         lines.append('// =============================================================================')
-        lines.append('// FILE I/O FUNCTIONS (for all tables with calculated fields)')
+        lines.append('// FILE I/O FUNCTIONS')
+        lines.append('// Load: all tables referenced by main.go (computed + lookup/aggregation targets)')
+        lines.append('// Save: only tables that have computed fields to write back')
         lines.append('// =============================================================================')
         lines.append('')
 
-        for table_name in tables_with_calc:
+        for table_name in tables_needing_load:
             struct_name = table_name_to_struct_name(table_name)
             lines.append(f'// Load{struct_name}Records loads {table_name} records from a JSON file')
             lines.append(f'func Load{struct_name}Records(path string) ([]{struct_name}, error) {{')
@@ -672,6 +719,9 @@ def generate_erb_sdk(rulebook: Dict) -> str:
             lines.append('\treturn records, nil')
             lines.append('}')
             lines.append('')
+            if table_name not in tables_with_calc:
+                # Related-only table: no Save function needed (never written back).
+                continue
             lines.append(f'// Save{struct_name}Records saves computed {table_name} records to a JSON file')
             lines.append(f'func Save{struct_name}Records(path string, records []{struct_name}) error {{')
             lines.append('\tdata, err := json.MarshalIndent(records, "", "  ")')
@@ -763,6 +813,48 @@ def get_table_lookups(rulebook: Dict, table_name: str) -> List[Dict]:
     return result
 
 
+def _topo_sort_tables(tables: List[str], table_lookups: Dict[str, list]) -> List[str]:
+    """Order tables so lookup-targets come before lookup-sources.
+
+    Dependency: if table A has a lookup into table B (and B is also in `tables`),
+    then B must be processed before A. Non-edges within `tables` keep their
+    relative order. Falls back to the original order on cycles.
+    """
+    tables_set = set(tables)
+    # adj[a] = set of tables a depends on (a's lookup targets that are in `tables`)
+    adj = {a: set() for a in tables}
+    for src, lookups in table_lookups.items():
+        if src not in tables_set:
+            continue
+        for lookup in lookups:
+            tgt = lookup.get('lookup_table')
+            if tgt in tables_set and tgt != src:
+                adj[src].add(tgt)
+
+    ordered: List[str] = []
+    visiting: Set[str] = set()
+    visited: Set[str] = set()
+
+    def visit(n: str) -> bool:
+        if n in visited:
+            return True
+        if n in visiting:
+            return False  # cycle
+        visiting.add(n)
+        for dep in adj.get(n, ()):
+            if not visit(dep):
+                return False
+        visiting.discard(n)
+        visited.add(n)
+        ordered.append(n)
+        return True
+
+    for t in tables:
+        if not visit(t):
+            return list(tables)  # cycle detected — preserve original order
+    return ordered
+
+
 def generate_main_go(tables_with_calc: list, rulebook: Dict) -> str:
     """Generate main.go content that processes ALL tables with computed fields.
 
@@ -788,6 +880,13 @@ def generate_main_go(tables_with_calc: list, rulebook: Dict) -> str:
             table_lookups[table_name] = lookups
             for lookup in lookups:
                 all_related_tables.add(lookup['lookup_table'])
+
+    # Topologically sort tables_with_calc so that a table's lookup targets are
+    # processed before it. This matters for chained lookups — e.g.
+    # Projects.ApprovedByRoleIsManager reads Employees.RoleIsManager, which is
+    # itself a lookup; if Projects runs before Employees, it sees Employees'
+    # raw (null) value instead of the resolved one.
+    tables_with_calc = _topo_sort_tables(tables_with_calc, table_lookups)
 
     lines = []
     lines.append('// ERB SDK - Go Test Runner (GENERATED - DO NOT EDIT)')
@@ -859,6 +958,20 @@ def generate_main_go(tables_with_calc: list, rulebook: Dict) -> str:
         for agg in aggs:
             if agg.get('type') == 'sumifs':
                 tables_needing_answer_keys.add(agg['related_table'])
+
+    # Lookup-target tables that have no computed fields of their own (e.g. Roles,
+    # TypesOfProject) don't get a blank-test file generated, so main.go must read
+    # their raw data from answer-keys. Answer-keys contain the full record
+    # including raw fields, which is exactly what a lookup needs.
+    for table_name in tables_with_calc:
+        for lookup in get_table_lookups(rulebook, table_name):
+            target = lookup['lookup_table']
+            target_schema = rulebook.get(target, {}).get('schema', [])
+            has_computed = (get_calculated_fields(target_schema)
+                            or get_lookup_fields(target_schema)
+                            or get_aggregation_fields(target_schema))
+            if not has_computed:
+                tables_needing_answer_keys.add(target)
 
     # If there are aggregations, load related tables first
     if all_related_tables:
@@ -1072,12 +1185,20 @@ def generate_main_go(tables_with_calc: list, rulebook: Dict) -> str:
                 key_field = lookup['key_field']
                 pk_field = lookup['pk_field']
 
+                # The lookup map's value type must match the return field's Go
+                # type, not always string — e.g. RoleIsManager is *bool in the
+                # source struct and *bool in the target struct, so the map value
+                # type is `bool` (not `string`).
+                return_field_datatype = _field_datatype(rulebook, lookup_table, return_field)
+                go_value_type = datatype_to_go(return_field_datatype, nullable=False)
+                go_zero_value = _go_zero_value(return_field_datatype)
+
                 # Build lookup map
-                lines.append(f'\t\t{field_snake}LookupMap := make(map[string]string)')
+                lines.append(f'\t\t{field_snake}LookupMap := make(map[string]{go_value_type})')
                 lines.append(f'\t\tif {lookup_table_snake}Data != nil {{')
                 lines.append(f'\t\t\tfor _, rel := range {lookup_table_snake}Data {{')
                 lines.append(f'\t\t\t\tif rel.{pk_field} != "" {{')
-                lines.append(f'\t\t\t\t\tvar val string')
+                lines.append(f'\t\t\t\t\tvar val {go_value_type} = {go_zero_value}')
                 lines.append(f'\t\t\t\t\tif rel.{return_field} != nil {{')
                 lines.append(f'\t\t\t\t\t\tval = *rel.{return_field}')
                 lines.append(f'\t\t\t\t\t}}')
@@ -1124,6 +1245,11 @@ def generate_main_go(tables_with_calc: list, rulebook: Dict) -> str:
         lines.append(f'\t\t\tfmt.Printf("  ✓ {table_snake}: %d records processed\\n", len(computed{struct_name}))')
         lines.append(f'\t\t\ttotalRecords += len(computed{struct_name})')
         lines.append('\t\t}')
+        # If this table is itself a lookup/aggregation source for later tables,
+        # swap the globally-loaded <table>Data to point at the freshly-computed
+        # records so subsequent tables see resolved values, not raw ones.
+        if table_name in all_related_tables:
+            lines.append(f'\t\t{table_snake}Data = computed{struct_name}')
         lines.append('\t}')
         lines.append('\tfmt.Println("")')
         lines.append('')

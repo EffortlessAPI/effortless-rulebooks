@@ -2,14 +2,10 @@
 """
 Python Substrate Test Runner
 =============================
-Computes all calculated fields using the generated erb_calc.py library.
-
-Supports two modes:
-1. Multi-entity (--multi-entity): Processes all files in blank-tests/ -> test-answers/
-2. Legacy: Processes single test-answers.json file
-
-This script uses the shared erb_calc.py library which is generated from the
-rulebook and contains all calculation functions.
+Computes all calculated fields using the generated python_only_erb_simulator
+library. This is the canonical Python simulator — it is allowed to use the
+regex-based INDEX/MATCH and COUNTIFS/SUMIFS interpreters because it IS the
+Python simulator. No other substrate may import this module.
 """
 
 import argparse
@@ -26,8 +22,12 @@ sys.path.insert(0, script_dir)
 # Add project root to path for shared imports
 sys.path.insert(0, str(Path(script_dir).parent.parent))
 
-from erb_calc import compute_all_calculated_fields
-from orchestration.shared import load_rulebook, compute_aggregations, compute_lookups
+from python_only_erb_simulator import (
+    compute_all_calculated_fields,
+    compute_aggregations,
+    compute_lookups,
+)
+from orchestration.shared import load_rulebook
 
 
 def process_entity(input_path: str, output_path: str, entity_name: str,

@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Substrate Report: effortless-postgres</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css">
+    <style>
+:root {
+    --bg-primary: #ffffff; --bg-secondary: #f8f9fa; --bg-tertiary: #e9ecef;
+    --text-primary: #212529; --text-secondary: #6c757d; --border-color: #dee2e6;
+    --accent-color: #0d6efd; --success-color: #198754; --warning-color: #ffc107;
+    --danger-color: #dc3545; --code-bg: #f6f8fa; --radius: 6px;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg-secondary); color: var(--text-primary); line-height: 1.5; min-height: 100vh; }
+header { background: var(--bg-primary); border-bottom: 1px solid var(--border-color); padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; }
+.header-left { display: flex; align-items: center; gap: 0.75rem; }
+.substrate-icon { font-size: 1.5rem; }
+h1 { font-size: 1.1rem; font-weight: 600; }
+.header-stats { display: flex; gap: 1rem; font-size: 0.8rem; }
+.stat { display: flex; align-items: center; gap: 0.25rem; }
+.stat-value { font-weight: 600; }
+.score-perfect { color: var(--success-color); }
+.score-good { color: #66bb6a; }
+.score-warning { color: var(--warning-color); }
+.score-danger { color: var(--danger-color); }
+main { max-width: 1300px; margin: 0 auto; padding: 1rem; }
+.tabs { display: flex; flex-wrap: wrap; gap: 0.25rem; border-bottom: 1px solid var(--border-color); margin-bottom: 1rem; }
+.tab { background: none; border: none; padding: 0.5rem 0.9rem; font-size: 0.85rem; cursor: pointer; color: var(--text-secondary); border-bottom: 2px solid transparent; }
+.tab:hover { color: var(--text-primary); }
+.tab.active { color: var(--accent-color); border-bottom-color: var(--accent-color); font-weight: 600; }
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+.card { background: var(--bg-primary); border: 1px solid var(--border-color); border-radius: var(--radius); padding: 1rem; margin-bottom: 1rem; }
+.card h2 { font-size: 1rem; margin-bottom: 0.75rem; }
+.card h3 { font-size: 0.9rem; margin: 0.75rem 0 0.5rem; }
+.card pre { background: #1e1e1e; color: #d4d4d4; padding: 0.75rem; border-radius: var(--radius); overflow-x: auto; font-family: 'SF Mono', Monaco, monospace; font-size: 0.75rem; line-height: 1.4; max-height: 560px; overflow-y: auto; }
+.code-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
+.code-info { font-size: 0.75rem; color: var(--text-secondary); }
+.section-label { font-size: 0.7rem; text-transform: uppercase; color: var(--text-secondary); padding: 0 0.5rem; align-self: center; letter-spacing: 0.05em; }
+.results-summary { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+.result-item { text-align: center; }
+.result-value { font-size: 1.5rem; font-weight: 700; }
+.result-label { font-size: 0.7rem; color: var(--text-secondary); text-transform: uppercase; }
+.arch-diagram { font-family: 'SF Mono', Monaco, monospace; font-size: 0.75rem; line-height: 1.25; white-space: pre; background: var(--code-bg); padding: 0.75rem; border-radius: var(--radius); overflow-x: auto; }
+ul, ol { margin-left: 1.25rem; }
+li { margin-bottom: 0.25rem; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-left">
+            <span class="substrate-icon">🐘</span>
+            <h1>Effortless-PostgreSQL Execution Substrate</h1>
+        </div>
+        <div class="header-stats">
+            <div class="stat"><span>Score:</span> <span class="stat-value score-perfect">100.0%</span></div>
+            <div class="stat"><span>6/6 passed</span></div>
+        </div>
+    </header>
+
+    <main>
+        <nav class="tabs">
+            <button class="tab active" data-tab="description">Description</button>
+            <button class="tab" data-tab="log">Run Log</button>
+            <button class="tab" data-tab="results">Test Results</button>
+            <span class="section-label">SQL</span>
+            <button class="tab" data-tab="sql-bootstrap">00 · Bootstrap</button>
+            <button class="tab" data-tab="sql-tables">01 · Tables</button>
+            <button class="tab" data-tab="sql-tables-b">01b · Customize</button>
+            <button class="tab" data-tab="sql-fns">02 · Functions</button>
+            <button class="tab" data-tab="sql-fns-b">02b · Customize</button>
+            <button class="tab" data-tab="sql-views">03 · Views</button>
+            <button class="tab" data-tab="sql-views-b">03b · Customize</button>
+            <button class="tab" data-tab="sql-policies">04 · Policies</button>
+            <button class="tab" data-tab="sql-policies-b">04b · Customize</button>
+            <button class="tab" data-tab="sql-data">05 · Data</button>
+            <button class="tab" data-tab="sql-data-b">05b · Customize</button>
+        </nav>
+
+        <div id="description" class="tab-content active">
+            <div class="card">
+                <h2>What This Substrate Does</h2>
+                <p>PostgreSQL is the reference substrate. The <code>rulebook-to-postgres</code>
+                transpiler emits a complete schema &mdash; tables, type-safe
+                <code>calc_*</code> and <code>get_*</code> functions, aggregating views, RLS
+                policies and seed data &mdash; so the database itself enforces every
+                rule in the rulebook. Unlike the other substrates, PostgreSQL has <strong>no
+                expressive gaps</strong>: full joins, aggregations, recursive queries, all
+                formula types.</p>
+            </div>
+            <div class="card">
+                <h2>Architecture</h2>
+                <div class="arch-diagram">┌─────────────────────────────────────────────────────────────┐
+│               effortless-rulebook.json                       │
+└─────────────────────────────┬───────────────────────────────┘
+                              │  rulebook-to-postgres
+                              ▼
+┌─────────────────────────────────────────────────────────────┐
+│  postgres/                                                   │
+│    00-bootstrap.sql          ← extensions, schemas, roles    │
+│    01-drop-and-create-tables.sql                             │
+│    01b-customize-schema.sql  ← hand edits survive rebuilds   │
+│    02-create-functions.sql   ← calc_*() per computed field   │
+│    02b-customize-functions.sql                               │
+│    03-create-views.sql       ← vw_* with full joins + aggs   │
+│    03b-customize-views.sql                                   │
+│    04-create-policies.sql    ← row-level security            │
+│    04b-customize-policies.sql                                │
+│    05-insert-data.sql        ← seed records                  │
+│    05b-customize-data.sql                                    │
+└─────────────────────────────────────────────────────────────┘</div>
+            </div>
+            <div class="card">
+                <h2>Key Features</h2>
+                <ul>
+                    <li><strong>Reference implementation</strong> — the other substrates are graded against the same behaviour PostgreSQL produces.</li>
+                    <li><strong><code>calc_*</code> functions</strong> — every calculated field becomes a SQL function with the right types.</li>
+                    <li><strong><code>vw_*</code> views</strong> — application code reads views, never base tables, so derived values stay consistent.</li>
+                    <li><strong><code>*b-customize-*</code> files</strong> — hand edits live in sibling files that survive regeneration.</li>
+                    <li><strong>Row-level security</strong> — tenant isolation and role gating generated from rulebook metadata.</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h2>Generated Files</h2>
+                <ul>
+                    <li><code>00-bootstrap.sql</code> — extensions, schema, utility functions</li>
+                    <li><code>01-drop-and-create-tables.sql</code> — base tables with FKs</li>
+                    <li><code>02-create-functions.sql</code> — <code>calc_*</code> functions for every computed field</li>
+                    <li><code>03-create-views.sql</code> — <code>vw_*</code> views joining raw+computed</li>
+                    <li><code>04-create-policies.sql</code> — RLS and role-based policies</li>
+                    <li><code>05-insert-data.sql</code> — seed records from the rulebook</li>
+                    <li><code>*b-customize-*.sql</code> — hand-edit companion files that survive regeneration</li>
+                </ul>
+            </div>
+        </div>
+
+        <div id="log" class="tab-content">
+            <div class="card">
+                <h2>Execution Log</h2>
+                <pre>=== PostgreSQL Substrate Test Run ===
+
+effortless-postgres: Starting test...
+effortless-postgres: Connecting to database and querying views...
+PostgreSQL Substrate: Starting test...
+PostgreSQL Substrate: Connected to database
+PostgreSQL Substrate: Found 1 views
+  -&gt; customers: 3 records
+PostgreSQL Substrate: Processed 1 views, 3 total records
+
+</pre>
+            </div>
+        </div>
+
+        <div id="results" class="tab-content">
+            <div class="card">
+                <h2>Test Summary</h2>
+                <div class="results-summary">
+                    <div class="result-item"><div class="result-value score-perfect">100.0%</div><div class="result-label">Score</div></div>
+                    <div class="result-item"><div class="result-value score-perfect">6</div><div class="result-label">Passed</div></div>
+                    <div class="result-item"><div class="result-value">0</div><div class="result-label">Failed</div></div>
+                    <div class="result-item"><div class="result-value">6</div><div class="result-label">Total</div></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="sql-bootstrap" class="tab-content">
+            <div class="card">
+                <div class="code-header">
+                    <h2>00 · Bootstrap</h2>
+                    <div>
+                        <span class="code-info">43 lines · 2 KB</span>
+                    </div>
+                </div>
+                <pre class="line-numbers"><code class="language-sql">-- ============================================================================
+-- 00-BOOTSTRAP - Run first by init-db.sh (overwrite Never)
+-- ============================================================================
+-- Use this file for one-time setup or to add your own bootstrap SQL.
+-- Below: commented-out script to remove all views, functions, and tables
+-- in this schema. Uncomment the block to run a full clean slate.
+-- ============================================================================
+
+-- -- ============================================================================
+-- -- DROP ALL OBJECTS - Clean slate for database
+-- -- ============================================================================
+-- -- Generated by rulebook-to-postgres tool
+-- -- ============================================================================
+
+DO $$
+DECLARE r RECORD; v_count INTEGER := 0;
+BEGIN
+    RAISE NOTICE &#x27;Dropping views...&#x27;;
+    FOR r IN (SELECT table_name FROM information_schema.views WHERE table_schema = &#x27;public&#x27;) LOOP
+        EXECUTE &#x27;DROP VIEW IF EXISTS &#x27; || quote_ident(r.table_name) || &#x27; CASCADE&#x27;;
+        v_count := v_count + 1;
+    END LOOP;
+    RAISE NOTICE &#x27;Dropped % views&#x27;, v_count; v_count := 0;
+
+    RAISE NOTICE &#x27;Dropping functions...&#x27;;
+    FOR r IN (SELECT DISTINCT p.proname as function_name, pg_get_function_identity_arguments(p.oid) as function_args
+              FROM pg_proc p JOIN pg_namespace n ON p.pronamespace = n.oid
+              WHERE n.nspname = &#x27;public&#x27; AND p.prokind = &#x27;f&#x27;) LOOP
+        EXECUTE &#x27;DROP FUNCTION IF EXISTS &#x27; || quote_ident(r.function_name) || &#x27;(&#x27; || r.function_args || &#x27;) CASCADE&#x27;;
+        v_count := v_count + 1;
+    END LOOP;
+    RAISE NOTICE &#x27;Dropped % functions&#x27;, v_count; v_count := 0;
+
+    RAISE NOTICE &#x27;Dropping tables...&#x27;;
+    FOR r IN (SELECT table_name FROM information_schema.tables WHERE table_schema = &#x27;public&#x27; AND table_type = &#x27;BASE TABLE&#x27;) LOOP
+        EXECUTE &#x27;DROP TABLE IF EXISTS &#x27; || quote_ident(r.table_name) || &#x27; CASCADE&#x27;;
+        v_count := v_count + 1;
+    END LOOP;
+    RAISE NOTICE &#x27;Dropped % tables&#x27;, v_count;
+END $$;
+
+
+</code></pre>
+            </div>
+        </div>
+        <div id="sql-tables" class="tab-content">
+            <div class="card">
+                <div class="code-header">
+                    <h2>01 · Tables</h2>
+                    <div>
+                        <span class="code-info">35 lines · 1 KB</span>
+                    </div>
+                </div>
+                <pre class="line-numbers"><code class="language-sql">-- ============================================================================
+-- CREATE TABLES (check-add mode) - Idempotent schema, never drops columns
+-- ============================================================================
+-- Generated by rulebook-to-postgres tool
+-- Mode: check-add    Stage: dev
+-- Total Tables: 1
+-- Total Raw Fields: 4
+-- ============================================================================
+
+SET timezone = &#x27;UTC&#x27;;
+
+-- ============================================================================
+-- CREATE TABLES - Normalized data only (no calculated fields)
+-- ============================================================================
+
+-- ----------------------------------------------------------------------------
+-- Customers: Table: Customers
+-- ----------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS customers (
+  customer_id                         TEXT                 PRIMARY KEY
+);
+ALTER TABLE customers ADD COLUMN IF NOT EXISTS email_address TEXT;                                  -- Thec ustomers email address
+ALTER TABLE customers ADD COLUMN IF NOT EXISTS first_name TEXT;                                     -- First Name of the customer - used to make the full name
+ALTER TABLE customers ADD COLUMN IF NOT EXISTS last_name TEXT;                                      -- Last Name of the customer - used to make the full name
+COMMENT ON TABLE customers IS &#x27;Table: Customers&#x27;;
+COMMENT ON COLUMN customers.email_address IS &#x27;Thec ustomers email address&#x27;;
+COMMENT ON COLUMN customers.first_name IS &#x27;First Name of the customer - used to make the full name&#x27;;
+COMMENT ON COLUMN customers.last_name IS &#x27;Last Name of the customer - used to make the full name&#x27;;
+
+-- ============================================================================
+-- FK INDEXES - Performance only, always applied
+-- ============================================================================
+
+-- (no FK fields detected in rulebook)
+</code></pre>
+            </div>
+        </div>
+        <div id="sql-tables-b" class="tab-content">
+            <div class="card">
+                <div class="code-header">
+                    <h2>01b · Customize</h2>
+                    <div>
+                        <span class="code-info">16 lines · 1 KB</span>
+                    </div>
+                </div>
+                <pre class="line-numbers"><code class="language-sql">-- ============================================================================
+-- CUSTOMIZE SCHEMA - User-defined schema customizations
+-- ============================================================================
+-- This file is for YOUR custom changes that should persist across
+-- regeneration of the base ERB files.
+--
+-- IMPORTANT:
+--   - This file runs AFTER the main schema script
+--   - Define your customizations in the ERBCustomizations table in Airtable
+--   - Those changes will appear here after the next build
+--
+-- ============================================================================
+
+-- Your custom schema changes will appear here:
+
+</code></pre>
+            </div>
+        </div>
+        <div id="sql-fns" class="tab-content">
+            <div class="card">
+                <div class="code-header">
+                    <h2>02 · Functions</h2>
+                    <div>
+                        <span class="code-info">51 lines · 2 KB</span>
+                    </div>
+                </div>
+                <pre class="line-numbers"><code class="language-sql">-- ============================================================================
+-- CREATE FUNCTIONS - Calculation functions for lookup/calculated fields
+-- ============================================================================
+-- Generated by rulebook-to-postgres tool
+-- Mode: check-add    Stage: dev
+-- ============================================================================
+
+
+-- Disable body validation so LANGUAGE sql functions can forward-reference
+-- each other within this file. (pg_dump does the same thing for the same
+-- reason.) Without this, SQL functions parse-check at CREATE time and fail
+-- on the first forward call site; plpgsql didn&#x27;t, which is how this file
+-- ever worked. Dependency order is still enforced at EXECUTION time.
+SET check_function_bodies = off;
+
+-- ============================================================================
+-- LOOKUP FUNCTIONS
+-- These functions perform lookups via foreign key relationships
+-- ============================================================================
+
+-- calc_customers_name
+-- Field: Customers.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_customers_name(p_customer_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (REPLACE((SELECT NULLIF(email_address, &#x27;&#x27;) FROM customers WHERE customer_id = p_customer_id), &#x27;@&#x27;, &#x27;-&#x27;))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_customers_full_name
+-- Field: Customers.FullName
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_customers_full_name(p_customer_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CONCAT((SELECT NULLIF(first_name, &#x27;&#x27;) FROM customers WHERE customer_id = p_customer_id), &#x27; &#x27;, (SELECT NULLIF(last_name, &#x27;&#x27;) FROM customers WHERE customer_id = p_customer_id)))::text;
+$$ LANGUAGE sql STABLE;
+
+-- ============================================================================
+-- MANY-SIDE RELATIONSHIP FUNCTIONS
+-- These functions aggregate child records for many-side relationships
+-- ============================================================================
+
+-- ============================================================================
+-- INVERSE RELATIONSHIP FUNCTIONS
+-- These functions perform reverse FK lookups for inverse-side relationships
+-- ============================================================================
+
+</code></pre>
+            </div>
+        </div>
+        <div id="sql-fns-b" class="tab-content">
+            <div class="card">
+                <div class="code-header">
+                    <h2>02b · Customize</h2>
+                    <div>
+                        <span class="code-info">18 lines · 1 KB</span>
+                    </div>
+                </div>
+                <pre class="line-numbers"><code class="language-sql">-- ============================================================================
+-- SOURCE: ERBCustomizations table, record: 03b-customize-functions.sql
+-- If you see SQL errors below, check this customization in Airtable
+-- ============================================================================
+
+-- ============================================================================
+-- CUSTOMIZE FUNCTIONS - User-defined calculation functions
+-- ============================================================================
+-- This file is for YOUR custom PostgreSQL functions that should persist
+-- across regeneration of the base ERB files.
+--
+-- IMPORTANT:
+--   - This file runs AFTER 02-create-functions.sql
+--   - Base ERB calc functions already exist when this runs
+--   - This file will NOT be overwritten by ERB regeneration
+--
+-- ============================================================================
+</code></pre>
+            </div>
+        </div>
+        <div id="sql-views" class="tab-content">
+            <div class="card">
+                <div class="code-header">
+                    <h2>03 · Views</h2>
+                    <div>
+                        <span class="code-info">23 lines · 1 KB</span>
+                    </div>
+                </div>
+                <pre class="line-numbers"><code class="language-sql">-- ============================================================================
+-- CREATE VIEWS - Combine raw data with calculated fields
+-- ============================================================================
+-- Generated by rulebook-to-postgres tool
+-- Mode: check-add    Stage: dev
+-- Total Views: 1
+-- ============================================================================
+
+-- ----------------------------------------------------------------------------
+-- vw_customers: Table: Customers
+-- Combines base table columns with calculated/lookup/aggregation fields.
+-- ----------------------------------------------------------------------------
+CREATE OR REPLACE VIEW vw_customers WITH (security_invoker = ON) AS
+SELECT
+  t.customer_id,
+  calc_customers_name(t.customer_id) AS name,                                   -- Identifier for the customers.
+  t.email_address,                                                              -- Thec ustomers email address
+  t.first_name,                                                                 -- First Name of the customer - used to make the full name
+  t.last_name,                                                                  -- Last Name of the customer - used to make the full name
+  calc_customers_full_name(t.customer_id) AS full_name                          -- Full name is computed from the first and last name of the customer
+FROM customers t;
+
+</code></pre>
+            </div>
+        </div>
+        <div id="sql-views-b" class="tab-content">
+            <div class="card">
+                <div class="code-header">
+                    <h2>03b · Customize</h2>
+                    <div>
+                        <span class="code-info">16 lines · 1 KB</span>
+                    </div>
+                </div>
+                <pre class="line-numbers"><code class="language-sql">-- ============================================================================
+-- CUSTOMIZE VIEWS - User-defined views customizations
+-- ============================================================================
+-- This file is for YOUR custom changes that should persist across
+-- regeneration of the base ERB files.
+--
+-- IMPORTANT:
+--   - This file runs AFTER the main views script
+--   - Define your customizations in the ERBCustomizations table in Airtable
+--   - Those changes will appear here after the next build
+--
+-- ============================================================================
+
+-- Your custom views changes will appear here:
+
+</code></pre>
+            </div>
+        </div>
+        <div id="sql-policies" class="tab-content">
+            <div class="card">
+                <div class="code-header">
+                    <h2>04 · Policies</h2>
+                    <div>
+                        <span class="code-info">17 lines · 1 KB</span>
+                    </div>
+                </div>
+                <pre class="line-numbers"><code class="language-sql">-- ============================================================================
+-- CREATE POLICIES - Row Level Security policies
+-- ============================================================================
+-- Generated by rulebook-to-postgres tool
+-- Mode: check-add    Stage: dev
+-- ============================================================================
+
+-- Enable RLS on all tables
+
+ALTER TABLE customers ENABLE ROW LEVEL SECURITY;
+
+-- TODO: Add specific RLS policies based on your security requirements
+-- Example:
+-- CREATE POLICY &quot;Users can view their own data&quot; ON app_user
+--   FOR SELECT USING (auth.uid() = user_id);
+
+</code></pre>
+            </div>
+        </div>
+        <div id="sql-policies-b" class="tab-content">
+            <div class="card">
+                <div class="code-header">
+                    <h2>04b · Customize</h2>
+                    <div>
+                        <span class="code-info">16 lines · 1 KB</span>
+                    </div>
+                </div>
+                <pre class="line-numbers"><code class="language-sql">-- ============================================================================
+-- CUSTOMIZE POLICIES - User-defined policies customizations
+-- ============================================================================
+-- This file is for YOUR custom changes that should persist across
+-- regeneration of the base ERB files.
+--
+-- IMPORTANT:
+--   - This file runs AFTER the main policies script
+--   - Define your customizations in the ERBCustomizations table in Airtable
+--   - Those changes will appear here after the next build
+--
+-- ============================================================================
+
+-- Your custom policies changes will appear here:
+
+</code></pre>
+            </div>
+        </div>
+        <div id="sql-data" class="tab-content">
+            <div class="card">
+                <div class="code-header">
+                    <h2>05 · Data</h2>
+                    <div>
+                        <span class="code-info">20 lines · 1 KB</span>
+                    </div>
+                </div>
+                <pre class="line-numbers"><code class="language-sql">-- ============================================================================
+-- INSERT DATA - Load data from rulebook
+-- ============================================================================
+-- Generated by rulebook-to-postgres tool
+-- Mode: check-add    Stage: dev
+-- ============================================================================
+
+-- ----------------------------------------------------------------------------
+-- Customers: Table: Customers
+-- ----------------------------------------------------------------------------
+INSERT INTO customers (customer_id, email_address, first_name, last_name)
+VALUES (&#x27;jane-smith-email-com&#x27;, &#x27;jane.smith@email.com&#x27;, &#x27;Bob&#x27;, &#x27;Smith&#x27;) ON CONFLICT (customer_id) DO NOTHING;
+
+INSERT INTO customers (customer_id, email_address, first_name, last_name)
+VALUES (&#x27;john-doe-email-com&#x27;, &#x27;john.doe@email.com&#x27;, &#x27;Jimmy&#x27;, &#x27;Doe&#x27;) ON CONFLICT (customer_id) DO NOTHING;
+
+INSERT INTO customers (customer_id, email_address, first_name, last_name)
+VALUES (&#x27;emily-jones-email-com&#x27;, &#x27;emily.jones@email.com&#x27;, &#x27;Mary&#x27;, &#x27;Jones&#x27;) ON CONFLICT (customer_id) DO NOTHING;
+
+</code></pre>
+            </div>
+        </div>
+        <div id="sql-data-b" class="tab-content">
+            <div class="card">
+                <div class="code-header">
+                    <h2>05b · Customize</h2>
+                    <div>
+                        <span class="code-info">16 lines · 1 KB</span>
+                    </div>
+                </div>
+                <pre class="line-numbers"><code class="language-sql">-- ============================================================================
+-- CUSTOMIZE DATA - User-defined data customizations
+-- ============================================================================
+-- This file is for YOUR custom changes that should persist across
+-- regeneration of the base ERB files.
+--
+-- IMPORTANT:
+--   - This file runs AFTER the main data script
+--   - Define your customizations in the ERBCustomizations table in Airtable
+--   - Those changes will appear here after the next build
+--
+-- ============================================================================
+
+-- Your custom data changes will appear here:
+
+</code></pre>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        document.querySelectorAll('.tab').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                var target = btn.getAttribute('data-tab');
+                document.querySelectorAll('.tab').forEach(function (b) { b.classList.remove('active'); });
+                document.querySelectorAll('.tab-content').forEach(function (c) { c.classList.remove('active'); });
+                btn.classList.add('active');
+                var el = document.getElementById(target);
+                if (el) el.classList.add('active');
+            });
+        });
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
+</body>
+</html>

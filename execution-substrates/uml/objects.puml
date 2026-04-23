@@ -1,24 +1,21 @@
 @startuml
 
-object "Customers_0" as Customers_0 {
-  CustomerId = "cust0001"
-  Customer = "CUST0001"
+object "jane.smith-email.com" as Customers_0 {
+  CustomerId = "jane-smith-email-com"
   EmailAddress = "jane.smith@email.com"
-  FirstName = "Robert"
+  FirstName = "Bob"
   LastName = "Smith"
 }
 
-object "Customers_1" as Customers_1 {
-  CustomerId = "cust0002"
-  Customer = "CUST0002"
+object "john.doe-email.com" as Customers_1 {
+  CustomerId = "john-doe-email-com"
   EmailAddress = "john.doe@email.com"
   FirstName = "Jimmy"
   LastName = "Doe"
 }
 
-object "Customers_2" as Customers_2 {
-  CustomerId = "cust0003"
-  Customer = "CUST0003"
+object "emily.jones-email.com" as Customers_2 {
+  CustomerId = "emily-jones-email-com"
   EmailAddress = "emily.jones@email.com"
   FirstName = "Mary"
   LastName = "Jones"

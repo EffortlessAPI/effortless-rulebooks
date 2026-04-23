@@ -39,11 +39,34 @@ RULEBOOK_DIR = os.path.join(PROJECT_ROOT, "effortless-rulebook")
 RULEBOOK_PATH = os.path.join(RULEBOOK_DIR, "effortless-rulebook.json")
 SUMMARY_PATH = os.path.join(SCRIPT_DIR, "all-tests-results.md")
 
+# Canonical substrate ordering — matches SUBSTRATE_ORDER in orchestrate.sh.
+# Substrates not in this list fall through to the end, alphabetically.
+SUBSTRATE_ORDER = [
+    "airtable",
+    "english",
+    "python",
+    "golang",
+    "owl",
+    "uml",
+    "xlsx",
+    "binary",
+    "cobol",
+    "csv",
+    "yaml",
+    "explain-dag",
+    # Effortless-licensed substrates render LAST in the report — they use
+    # the production rulebook-to-X transpiler pipelines and should always
+    # be 100% conformant.
+    "effortless-postgres",
+    "effortless-xlsx",
+    "effortless-entity-framework",
+]
+
 # Database connection (generic - uses environment variable or inferred from init-db.sh)
 DB_CONNECTION = os.environ.get("DATABASE_URL")
 if not DB_CONNECTION:
     # Try to infer from init-db.sh DEFAULT_CONN line
-    init_db_path = os.path.join(PROJECT_ROOT, "postgres", "init-db.sh")
+    init_db_path = os.path.join(PROJECT_ROOT, "licensed-effortless-tools", "postgres", "init-db.sh")
     if os.path.exists(init_db_path):
         with open(init_db_path, 'r') as f:
             for line in f:
@@ -360,10 +383,13 @@ def convert_record_to_snake_case(record: dict) -> dict:
 def coerce_record_types(record: dict, schema: list) -> dict:
     """Coerce record values to match their schema datatypes.
 
-    This ensures that values like "24" are converted to 24 for integer fields,
-    and "True"/"False" strings are converted to booleans.
+    - Integer/number fields: string numerics are parsed to numbers.
+    - Boolean fields: strings "true"/"false" and empty/null are canonicalized
+      to True/False. Airtable's lookup of an unchecked checkbox arrives as
+      an empty string, so boolean blanks must normalize to False here — not
+      treating them as booleans leaves the answer key out of sync with every
+      substrate that correctly computes False.
     """
-    # Build a mapping of field_name (snake_case) -> datatype
     type_map = {}
     for field in schema:
         field_name = to_snake_case(field.get('name', ''))
@@ -374,30 +400,38 @@ def coerce_record_types(record: dict, schema: list) -> dict:
     for key, value in record.items():
         datatype = type_map.get(key, 'string')
 
+        if datatype == 'boolean':
+            # Canonical: empty/null/"false"/0 -> False; "true"/1/True -> True
+            if value is None or value == '':
+                coerced[key] = False
+            elif isinstance(value, bool):
+                coerced[key] = value
+            elif isinstance(value, str):
+                coerced[key] = value.strip().lower() in ('true', '1', 'yes')
+            elif isinstance(value, (int, float)):
+                coerced[key] = bool(value)
+            else:
+                coerced[key] = value
+            continue
+
         if value is None or value == '':
             coerced[key] = value
-        elif datatype == 'integer':
-            # Convert string integers to int
+            continue
+
+        if datatype == 'integer':
             if isinstance(value, str):
                 try:
                     coerced[key] = int(value)
                 except ValueError:
-                    coerced[key] = 0 if value == '' else value
-            else:
-                coerced[key] = value
-        elif datatype == 'boolean':
-            # Convert string booleans to bool
-            if isinstance(value, str):
-                coerced[key] = value.lower() in ('true', '1', 'yes')
+                    coerced[key] = value
             else:
                 coerced[key] = value
         elif datatype == 'number':
-            # Convert string numbers to float
             if isinstance(value, str):
                 try:
                     coerced[key] = float(value)
                 except ValueError:
-                    coerced[key] = 0.0 if value == '' else value
+                    coerced[key] = value
             else:
                 coerced[key] = value
         else:
@@ -566,14 +600,22 @@ def generate_all_blank_tests(all_answer_keys: dict, rulebook: dict) -> dict:
 # =============================================================================
 
 def get_substrates() -> list:
-    """Get list of substrate directories"""
-    substrates = []
-    if os.path.isdir(SUBSTRATES_DIR):
-        for name in sorted(os.listdir(SUBSTRATES_DIR)):
-            path = os.path.join(SUBSTRATES_DIR, name)
-            if os.path.isdir(path) and not name.startswith('.'):
-                substrates.append(name)
-    return substrates
+    """Get computation substrate directories in SUBSTRATE_ORDER.
+
+    Any discovered substrate not in SUBSTRATE_ORDER is appended alphabetically
+    so new folders still surface.
+    """
+    if not os.path.isdir(SUBSTRATES_DIR):
+        return []
+
+    discovered = {
+        name for name in os.listdir(SUBSTRATES_DIR)
+        if not name.startswith('.')
+        and os.path.isdir(os.path.join(SUBSTRATES_DIR, name))
+    }
+    ordered = [n for n in SUBSTRATE_ORDER if n in discovered]
+    tail = sorted(discovered - set(SUBSTRATE_ORDER))
+    return ordered + tail
 
 
 def prepare_substrate_for_test(substrate_name: str) -> int:
@@ -690,28 +732,176 @@ def get_substrate_answers(substrate_name: str, rulebook: dict) -> dict:
 # STEP 4: Grade Substrates (Generic Field-by-Field Comparison)
 # =============================================================================
 
-def compare_values(expected, actual) -> bool:
-    """Compare two values, handling type differences.
+_NULL_STRINGS = {"", "none", "null", "n/a", "na"}
+# Across substrates, the empty/absent/zero/false slot gets serialized many ways
+# (Python None, SQL NULL, CSV empty string, "0", 0, False, "false", "no", etc).
+# For grading we treat all of them as one equivalence class — substrate-level
+# representational drift should never fail a conformance test on its own.
+_FALSY_STRINGS = _NULL_STRINGS | {"0", "0.0", "false", "f", "no"}
 
-    Treats empty strings and None/null as equivalent since many substrates
-    cannot distinguish between 'no value' representations.
+
+def _is_nullish(val) -> bool:
+    if val is None:
+        return True
+    if isinstance(val, bool):
+        return val is False
+    if isinstance(val, (int, float)):
+        return val == 0
+    if isinstance(val, str) and val.strip().lower() in _FALSY_STRINGS:
+        return True
+    return False
+
+
+def _try_number(val):
+    """Return val as float if it looks like a number, else None.
+
+    Handles ints, floats, numeric strings with optional whitespace and commas
+    (e.g. "1,000.0"). Returns None for booleans on purpose — bool comparison
+    is handled separately so True/1 don't accidentally collide with 1.0.
     """
-    # Normalize empty/null values - treat "", None, "None", "null" as equivalent
-    def normalize(val):
-        if val is None:
-            return ""
-        s = str(val)
-        if s in ("None", "null", "NULL"):
-            return ""
-        return s
+    if isinstance(val, bool):
+        return None
+    if isinstance(val, (int, float)):
+        return float(val)
+    if isinstance(val, str):
+        s = val.strip().replace(",", "")
+        if not s:
+            return None
+        try:
+            return float(s)
+        except ValueError:
+            return None
+    return None
 
-    return normalize(expected) == normalize(actual)
+
+def _normalize_string(val) -> str:
+    """Trim, collapse internal whitespace, and lowercase a string value."""
+    if val is None:
+        return ""
+    s = str(val).strip()
+    # Collapse any run of whitespace to a single space so " a  b " == "a b".
+    s = " ".join(s.split())
+    return s.lower()
+
+
+def compare_values(expected, actual, datatype: str = None) -> bool:
+    """Compare two values forgivingly across the type-representation drift that
+    naturally occurs between substrates (Python None vs SQL NULL vs CSV empty,
+    int vs float, "1,000" vs 1000, " Internal " vs "internal", etc.).
+
+    Order of comparison:
+      1. Both null-ish (None, "", "null", "none", "n/a") → equal.
+      2. Datatype-aware compare when datatype is provided
+         (boolean, integer/float/number/decimal, date/datetime).
+      3. Numeric-aware compare when BOTH values look numeric — within a small
+         epsilon, so 1 == 1.0 == "1" == "1.00".
+      4. List/tuple compare element-wise (order-insensitive — lookup multi-values
+         commonly come back in any order).
+      5. Otherwise, normalized-string compare (trim, collapse whitespace,
+         case-insensitive).
+
+    This is the conservative variant — it's still deterministic. Fuzzy/semantic
+    grading is a separate tool (llm-fuzzy-grader.py).
+    """
+    if _is_nullish(expected) and _is_nullish(actual):
+        return True
+    # One side null-ish, the other not, is a real disagreement.
+    if _is_nullish(expected) != _is_nullish(actual):
+        # Boolean is a special case: a null actual canonicalizes to False, which
+        # may legitimately equal a False expected — fall through to the boolean
+        # branch below for that one.
+        if (datatype or "").lower() != "boolean":
+            return False
+
+    dt = (datatype or "").lower()
+
+    # ---- Booleans -----------------------------------------------------------
+    def normalize_bool(val):
+        if val is None or (isinstance(val, str) and val.strip() == ""):
+            return False
+        if isinstance(val, bool):
+            return val
+        if isinstance(val, (int, float)):
+            return bool(val)
+        s = str(val).strip().lower()
+        if s in ("true", "1", "yes", "y", "t"):
+            return True
+        if s in ("false", "0", "no", "n", "f", "none", "null"):
+            return False
+        return val  # unknown — let it fall through to equality
+
+    if dt == "boolean":
+        return normalize_bool(expected) == normalize_bool(actual)
+
+    # ---- Numbers ------------------------------------------------------------
+    NUMERIC_DTS = {"integer", "int", "float", "number", "numeric", "decimal", "currency"}
+    if dt in NUMERIC_DTS:
+        e_num, a_num = _try_number(expected), _try_number(actual)
+        if e_num is not None and a_num is not None:
+            return abs(e_num - a_num) < 1e-9
+        # Datatype said numeric but one side wasn't parseable — fall through
+        # to string compare so a clearly-wrong text answer still fails.
+
+    # ---- Dates / datetimes --------------------------------------------------
+    if dt in {"date", "datetime", "timestamp"}:
+        e_norm = _normalize_string(expected).replace("t", " ").split(".")[0].rstrip("z")
+        a_norm = _normalize_string(actual).replace("t", " ").split(".")[0].rstrip("z")
+        # Trim trailing zero time so "2026-05-12" == "2026-05-12 00:00:00".
+        for suffix in (" 00:00:00", " 00:00"):
+            if e_norm.endswith(suffix):
+                e_norm = e_norm[: -len(suffix)].rstrip()
+            if a_norm.endswith(suffix):
+                a_norm = a_norm[: -len(suffix)].rstrip()
+        if e_norm == a_norm:
+            return True
+        # Fall through to give plain-string compare a chance too.
+
+    # ---- Lists --------------------------------------------------------------
+    if isinstance(expected, (list, tuple)) or isinstance(actual, (list, tuple)):
+        e_list = list(expected) if isinstance(expected, (list, tuple)) else [expected]
+        a_list = list(actual) if isinstance(actual, (list, tuple)) else [actual]
+        if len(e_list) != len(a_list):
+            return False
+        # Order-insensitive: every expected element must have a match in actual.
+        a_remaining = list(a_list)
+        for e in e_list:
+            for i, a in enumerate(a_remaining):
+                if compare_values(e, a, None):
+                    a_remaining.pop(i)
+                    break
+            else:
+                return False
+        return True
+
+    # ---- Generic numeric-aware compare --------------------------------------
+    # Even when datatype wasn't provided or wasn't numeric, if both sides
+    # happen to look numeric, compare numerically. Catches "3" vs 3 and 1.0 vs 1.
+    e_num, a_num = _try_number(expected), _try_number(actual)
+    if e_num is not None and a_num is not None:
+        return abs(e_num - a_num) < 1e-9
+
+    # ---- String compare (trim, collapse whitespace, case-insensitive) -------
+    return _normalize_string(expected) == _normalize_string(actual)
 
 
 def grade_substrate(substrate_name: str, all_answer_keys: dict, rulebook: dict) -> dict:
     """
-    Grade a substrate's answers against all answer keys.
-    Returns detailed results per entity.
+    Grade a substrate's answers against the answer keys.
+
+    Hardened on 2026-05-12 per CONFORMANCE_CLEANUP_PLAN.md Step 4. Three
+    behavioural rules now apply:
+
+    1. The denominator is every (record x computed field) pair in the answer
+       keys. We iterate over the answer keys, not over what the substrate
+       happened to submit.
+    2. Missing entity files, missing records, or null actuals where the
+       answer key has a real value all count as FAILURES (not skips).
+       Previously an entity where every actual was None was silently
+       dropped from the totals — that is the cheat we are eliminating.
+    3. The result breaks scores out by field class:
+       scalar (calculated) vs lookup vs aggregation. Reports can present
+       these independently so a substrate that does scalar math natively
+       but cannot do cross-table joins reads as partial-honest, not 0/100.
     """
     results = {
         "substrate": substrate_name,
@@ -719,30 +909,41 @@ def grade_substrate(substrate_name: str, all_answer_keys: dict, rulebook: dict) 
         "total_fields_tested": 0,
         "fields_passed": 0,
         "fields_failed": 0,
+        # Per-field-class breakdown (Step 4 of cleanup plan).
+        "by_class": {
+            "calculated":  {"tested": 0, "passed": 0, "failed": 0},
+            "lookup":      {"tested": 0, "passed": 0, "failed": 0},
+            "aggregation": {"tested": 0, "passed": 0, "failed": 0},
+        },
         "error": None,
         "elapsed_seconds": 0.0
     }
 
-    # Get substrate's answers
     substrate_answers = get_substrate_answers(substrate_name, rulebook)
+    if substrate_answers is None:
+        substrate_answers = {}
 
-    if not substrate_answers:
-        results["error"] = "No test-answers found"
-        return results
-
-    # Grade each entity the substrate attempted
-    for entity, test_records in substrate_answers.items():
-        if entity not in all_answer_keys:
-            continue
-
-        answer_key = all_answer_keys[entity]
+    # Iterate over the ANSWER KEYS, not the substrate's submissions. That way a
+    # substrate that didn't write a test-answers/{entity}.json file gets scored
+    # as zero on every (record x computed field) pair for that entity, instead
+    # of silently disappearing from the denominator.
+    for entity, answer_key in all_answer_keys.items():
         computed_cols = discover_computed_columns(rulebook, entity)
         pk = discover_primary_key(rulebook, entity)
 
         if not computed_cols:
-            continue  # Nothing to test
+            continue  # No computed fields to test on this entity.
 
-        # Index test answers by primary key
+        # Map column name -> (field_type, datatype) so we can both classify
+        # (scalar / lookup / aggregation) and apply boolean-aware comparison.
+        col_types = {}
+        col_datatypes = {}
+        for field in get_entity_schema(rulebook, entity):
+            snake = to_snake_case(field.get('name', ''))
+            col_types[snake] = field.get('type', 'calculated')
+            col_datatypes[snake] = field.get('datatype', 'string')
+
+        test_records = substrate_answers.get(entity, []) or []
         answers_by_pk = {}
         for record in test_records:
             pk_val = record.get(pk)
@@ -756,48 +957,67 @@ def grade_substrate(substrate_name: str, all_answer_keys: dict, rulebook: dict) 
             "fields_tested": 0,
             "fields_passed": 0,
             "fields_failed": 0,
-            "failures": []
+            "by_class": {
+                "calculated":  {"tested": 0, "passed": 0, "failed": 0},
+                "lookup":      {"tested": 0, "passed": 0, "failed": 0},
+                "aggregation": {"tested": 0, "passed": 0, "failed": 0},
+            },
+            "failures": [],
+            "missing_file": entity not in substrate_answers,
         }
 
-        # Compare each record
         for expected_record in answer_key:
             pk_val = str(expected_record.get(pk))
-            actual_record = answers_by_pk.get(pk_val, {})
+            actual_record = answers_by_pk.get(pk_val)  # may be None (missing record)
+            record_present = actual_record is not None
+            if actual_record is None:
+                actual_record = {}
 
             for col in computed_cols:
                 entity_result["fields_tested"] += 1
                 results["total_fields_tested"] += 1
+                field_class = col_types.get(col, 'calculated')
+                if field_class not in entity_result["by_class"]:
+                    field_class = 'calculated'
+
+                entity_result["by_class"][field_class]["tested"] += 1
+                results["by_class"][field_class]["tested"] += 1
 
                 expected_val = expected_record.get(col)
                 actual_val = actual_record.get(col)
 
-                if compare_values(expected_val, actual_val):
+                # If the expected value is null/empty, the substrate isn't on
+                # the hook for it. Compare normally — compare_values will pass.
+                passed = compare_values(expected_val, actual_val, col_datatypes.get(col))
+
+                if passed:
                     entity_result["fields_passed"] += 1
+                    entity_result["by_class"][field_class]["passed"] += 1
                     results["fields_passed"] += 1
+                    results["by_class"][field_class]["passed"] += 1
                 else:
                     entity_result["fields_failed"] += 1
+                    entity_result["by_class"][field_class]["failed"] += 1
                     results["fields_failed"] += 1
+                    results["by_class"][field_class]["failed"] += 1
                     entity_result["failures"].append({
                         "pk": pk_val,
                         "field": col,
+                        "field_class": field_class,
                         "expected": expected_val,
-                        "actual": actual_val
+                        "actual": actual_val,
+                        "reason": (
+                            "missing entity file" if entity_result["missing_file"]
+                            else "missing record" if not record_present
+                            else "wrong/null value"
+                        ),
                     })
 
-        # Skip entities with 0% (not attempted - all nulls still)
-        if entity_result["fields_passed"] == 0 and entity_result["fields_failed"] > 0:
-            # Check if all actuals are None (substrate didn't fill them in)
-            all_none = all(
-                f["actual"] is None or f["actual"] == "None"
-                for f in entity_result["failures"]
-            )
-            if all_none:
-                # Substrate didn't attempt this entity, remove from totals
-                results["total_fields_tested"] -= entity_result["fields_tested"]
-                results["fields_failed"] -= entity_result["fields_failed"]
-                continue
-
         results["entities"][entity] = entity_result
+
+    if not substrate_answers and results["total_fields_tested"] == 0:
+        # No answer keys had computed fields either; preserve old error signal.
+        results["error"] = "No test-answers found"
 
     return results
 
@@ -926,6 +1146,34 @@ def generate_substrate_report(substrate_name: str, results: dict, rulebook: dict
         f"| Duration | {format_duration(elapsed)} |",
         "",
     ])
+
+    # By-field-class breakdown (Step 5 of CONFORMANCE_CLEANUP_PLAN.md).
+    # Scalar (calculated) is what the substrate's native engine alone proves;
+    # lookup and aggregation require cross-table semantics that several
+    # substrates intentionally do not implement. Breaking these out lets the
+    # scoreboard show partial-honest substrates as such rather than collapsing
+    # everything into a single misleading percentage.
+    by_class = results.get("by_class") or {}
+    if any(c.get("tested", 0) for c in by_class.values()):
+        lines.extend([
+            "## Score by Field Class",
+            "",
+            "| Class | Passed | Tested | Score |",
+            "|-------|--------|--------|-------|",
+        ])
+        for cls_name, label in (
+            ("calculated",  "Scalar (calculated)"),
+            ("lookup",      "Lookup (INDEX/MATCH)"),
+            ("aggregation", "Aggregation (COUNTIFS/SUMIFS)"),
+        ):
+            c = by_class.get(cls_name, {})
+            t = c.get("tested", 0)
+            p = c.get("passed", 0)
+            if t == 0:
+                lines.append(f"| {label} | — | 0 | n/a |")
+            else:
+                lines.append(f"| {label} | {p} | {t} | {p / t * 100:.1f}% |")
+        lines.append("")
 
     if results.get("error"):
         lines.extend([

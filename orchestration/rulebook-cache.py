@@ -30,13 +30,24 @@ BOLD = '\033[1m'
 NC = '\033[0m'  # No Color
 
 
+def _project_config_path():
+    """Return effortless.json (new) or ssotme.json (legacy), whichever exists."""
+    eff = PROJECT_ROOT / "effortless.json"
+    legacy = PROJECT_ROOT / "ssotme.json"
+    if eff.exists():
+        return eff
+    if legacy.exists():
+        return legacy
+    return eff
+
+
 def get_current_base_id():
-    """Get the current base ID from ssotme.json."""
-    ssotme_path = PROJECT_ROOT / "ssotme.json"
-    if not ssotme_path.exists():
+    """Get the current base ID from the project config."""
+    config_path = _project_config_path()
+    if not config_path.exists():
         return None
     try:
-        with open(ssotme_path, 'r') as f:
+        with open(config_path, 'r') as f:
             config = json.load(f)
         for setting in config.get('ProjectSettings', []):
             if setting.get('Name') == 'baseId':
@@ -47,12 +58,12 @@ def get_current_base_id():
 
 
 def get_project_name():
-    """Get the current project name from ssotme.json."""
-    ssotme_path = PROJECT_ROOT / "ssotme.json"
-    if not ssotme_path.exists():
+    """Get the current project name from the project config."""
+    config_path = _project_config_path()
+    if not config_path.exists():
         return "Unknown"
     try:
-        with open(ssotme_path, 'r') as f:
+        with open(config_path, 'r') as f:
             config = json.load(f)
         return config.get('Name', 'Unknown')
     except Exception:

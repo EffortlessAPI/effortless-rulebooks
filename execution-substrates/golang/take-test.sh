@@ -5,6 +5,13 @@ set -o pipefail  # Catch errors in pipes
 # take-test.sh for golang execution substrate
 # Runs the Go SDK to compute test answers
 #
+# GUARD: This substrate computes calculated, lookup, and aggregation fields
+# using its own native engine: real Go code (`go run erb_sdk.go main.go`).
+# It must NOT import python_only_erb_simulator or call any orchestration
+# helper at runtime. As the only currently-honest non-Effortless substrate
+# with full 14/14 coverage, it doubles as the canary: this script must keep
+# passing even if `orchestration/shared.py` is removed entirely.
+#
 # Reads from shared testing/blank-tests/ and writes to local test-answers/
 #
 # IMPORTANT: This script WILL fail loudly if:
@@ -48,4 +55,4 @@ cd "$SCRIPT_DIR"
 echo "golang: test completed successfully"
 
 # Generate substrate report
-python3 "$PROJECT_ROOT/orchestration/create-substrate-report.py" golang --log "$LOG_FILE"
+python3 "$PROJECT_ROOT/orchestration/grade-and-record.py" golang --elapsed "$SECONDS" --log "$LOG_FILE"

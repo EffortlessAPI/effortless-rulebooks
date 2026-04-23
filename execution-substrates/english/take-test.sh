@@ -30,4 +30,4 @@ fi
 echo "english: test completed"
 
 # Generate substrate report
-python3 "$PROJECT_ROOT/orchestration/create-substrate-report.py" english --log "$LOG_FILE"
+python3 "$PROJECT_ROOT/orchestration/grade-and-record.py" english --elapsed "$SECONDS" --log "$LOG_FILE"

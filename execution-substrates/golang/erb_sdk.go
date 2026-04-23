@@ -12,6 +12,7 @@ import (
 	"fmt"
 	"os"
 	"strconv"
+	"strings"
 )
 
 // =============================================================================
@@ -97,14 +98,21 @@ func (f FlexibleString) String() string {
 // Table: Customers
 type Customer struct {
 	CustomerId string `json:"customer_id"`
-	Customer *string `json:"customer"` // Identifier for the customers.
 	EmailAddress *string `json:"email_address"` // Thec ustomers email address
 	FirstName *string `json:"first_name"` // First Name of the customer - used to make the full name
 	LastName *string `json:"last_name"` // Last Name of the customer - used to make the full name
+	Name *string `json:"name"` // Identifier for the customers.
 	FullName *string `json:"full_name"` // Full name is computed from the first and last name of the customer
 }
 
 // --- Individual Calculation Functions ---
+
+// CalcName computes the Name calculated field
+// Identifier for the customers.
+// Formula: =SUBSTITUTE({{EmailAddress}}, "@", "-")
+func (tc *Customer) CalcName() string {
+	return strings.ReplaceAll(stringVal(tc.EmailAddress), "@", "-")
+}
 
 // CalcFullName computes the FullName calculated field
 // Full name is computed from the first and last name of the customer
@@ -118,20 +126,23 @@ func (tc *Customer) CalcFullName() string {
 // ComputeAll computes all calculated fields and returns an updated struct
 func (tc *Customer) ComputeAll() *Customer {
 	// Level 1 calculations
+	name := strings.ReplaceAll(stringVal(tc.EmailAddress), "@", "-")
 	fullName := stringVal(tc.FirstName) + " " + stringVal(tc.LastName)
 
 	return &Customer{
 		CustomerId: tc.CustomerId,
-		Customer: tc.Customer,
 		EmailAddress: tc.EmailAddress,
 		FirstName: tc.FirstName,
 		LastName: tc.LastName,
+		Name: nilIfEmpty(name),
 		FullName: nilIfEmpty(fullName),
 	}
 }
 
 // =============================================================================
-// FILE I/O FUNCTIONS (for all tables with calculated fields)
+// FILE I/O FUNCTIONS
+// Load: all tables referenced by main.go (computed + lookup/aggregation targets)
+// Save: only tables that have computed fields to write back
 // =============================================================================
 
 // LoadCustomerRecords loads Customers records from a JSON file

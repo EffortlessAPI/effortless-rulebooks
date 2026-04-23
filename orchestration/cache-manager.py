@@ -1,17 +1,19 @@
 #!/usr/bin/env python3
 """
-Cache Manager - Comprehensive caching for ERB offline/Docker operation.
+Cache Manager - Offline fallback cache for the rulebook only.
 
-Manages two types of caches:
+Every substrate in this repo regenerates deterministically from the rulebook,
+so the only artifact that needs an offline-fallback cache is the output of the
+cloud `airtable-to-rulebook` tool:
+
 1. REPO CACHE (checked into git): bases/<name>/
-   - effortless-rulebook.json - The rulebook schema + data
-   - english-specification.md - Cached LLM output for English substrate
+   - effortless-rulebook.json - output of cloud airtable-to-rulebook
 
 2. USER CACHE (gitignored): effortless-rulebook/.cache/
-   - Working cache for live development
-   - Gets populated when pulling fresh from Airtable
+   - Working cache populated after a successful Airtable pull
 
-The repo cache enables "cold start" - clone the repo, run Docker, everything works.
+No other substrate output belongs in the cache - everything else is derived
+from the rulebook every run.
 """
 
 import json
@@ -28,10 +30,12 @@ PROJECT_ROOT = SCRIPT_DIR.parent
 # Paths
 BASES_DIR = PROJECT_ROOT / "bases"
 BASES_JSON = SCRIPT_DIR / "bases.json"
-SSOTME_JSON = PROJECT_ROOT / "ssotme.json"
+# Project config: prefer effortless.json (new), fall back to ssotme.json (legacy)
+_EFFORTLESS_JSON = PROJECT_ROOT / "effortless.json"
+_LEGACY_SSOTME_JSON = PROJECT_ROOT / "ssotme.json"
+SSOTME_JSON = _EFFORTLESS_JSON if _EFFORTLESS_JSON.exists() else _LEGACY_SSOTME_JSON
 RULEBOOK_PATH = PROJECT_ROOT / "effortless-rulebook" / "effortless-rulebook.json"
 USER_CACHE_DIR = PROJECT_ROOT / "effortless-rulebook" / ".cache"
-ENGLISH_SUBSTRATE_DIR = PROJECT_ROOT / "execution-substrates" / "english"
 
 # Colors
 RED = '\033[0;31m'
@@ -109,16 +113,6 @@ def get_repo_cache_rulebook(base_id: str) -> Optional[Path]:
     return None
 
 
-def get_repo_cache_english_spec(base_id: str) -> Optional[Path]:
-    """Get the repo-cached English specification path for a base."""
-    base_dir = get_base_dir(base_id)
-    if base_dir:
-        spec = base_dir / "english-specification.md"
-        if spec.exists():
-            return spec
-    return None
-
-
 def restore_rulebook_from_repo_cache(base_id: str = None) -> bool:
     """Restore the active rulebook from repo cache."""
     if base_id is None:
@@ -170,54 +164,6 @@ def save_rulebook_to_repo_cache(base_id: str = None) -> bool:
         return False
 
 
-def save_english_spec_to_repo_cache(base_id: str = None) -> bool:
-    """Save the current English specification to repo cache."""
-    if base_id is None:
-        base_id = get_current_base_id()
-    if not base_id:
-        return False
-
-    base_dir = get_base_dir(base_id)
-    if not base_dir:
-        return False
-
-    source = ENGLISH_SUBSTRATE_DIR / "specification.md"
-    if not source.exists():
-        print(f"{YELLOW}No specification.md to cache{NC}")
-        return False
-
-    try:
-        target = base_dir / "english-specification.md"
-        shutil.copy2(source, target)
-        print(f"{GREEN}Saved English specification to repo cache: {target.relative_to(PROJECT_ROOT)}{NC}")
-        return True
-    except Exception as e:
-        print(f"{RED}Error saving English spec to repo cache: {e}{NC}")
-        return False
-
-
-def restore_english_spec_from_repo_cache(base_id: str = None) -> bool:
-    """Restore English specification from repo cache."""
-    if base_id is None:
-        base_id = get_current_base_id()
-    if not base_id:
-        return False
-
-    cached = get_repo_cache_english_spec(base_id)
-    if not cached:
-        return False
-
-    try:
-        target = ENGLISH_SUBSTRATE_DIR / "specification.md"
-        ENGLISH_SUBSTRATE_DIR.mkdir(parents=True, exist_ok=True)
-        shutil.copy2(cached, target)
-        print(f"{GREEN}Restored English specification from repo cache{NC}")
-        return True
-    except Exception as e:
-        print(f"{RED}Error restoring English spec: {e}{NC}")
-        return False
-
-
 # =============================================================================
 # CACHE STATUS
 # =============================================================================
@@ -236,14 +182,12 @@ def get_cache_status(base_id: str = None) -> dict:
         'base_dir': str(base_dir.relative_to(PROJECT_ROOT)) if base_dir else None,
         'repo_cache': {
             'rulebook': None,
-            'english_spec': None,
         },
         'user_cache': {
             'rulebook': None,
         },
         'active': {
             'rulebook': RULEBOOK_PATH.exists(),
-            'english_spec': (ENGLISH_SUBSTRATE_DIR / "specification.md").exists(),
         }
     }
 
@@ -255,14 +199,6 @@ def get_cache_status(base_id: str = None) -> dict:
                 'path': str(rb.relative_to(PROJECT_ROOT)),
                 'size': rb.stat().st_size,
                 'modified': datetime.fromtimestamp(rb.stat().st_mtime).isoformat()
-            }
-
-        es = base_dir / "english-specification.md"
-        if es.exists():
-            status['repo_cache']['english_spec'] = {
-                'path': str(es.relative_to(PROJECT_ROOT)),
-                'size': es.stat().st_size,
-                'modified': datetime.fromtimestamp(es.stat().st_mtime).isoformat()
             }
 
     # Check user cache
@@ -299,11 +235,6 @@ def print_cache_status(base_id: str = None):
     else:
         print(f"  {RED}[--]{NC} Rulebook: not cached")
 
-    if rc['english_spec']:
-        print(f"  {GREEN}[OK]{NC} English spec: {rc['english_spec']['path']}")
-    else:
-        print(f"  {DIM}[--]{NC} English spec: not cached")
-
     print(f"\n{BOLD}User Cache{NC} (local, gitignored)")
     uc = status['user_cache']
     if uc['rulebook']:
@@ -317,11 +248,6 @@ def print_cache_status(base_id: str = None):
         print(f"  {GREEN}[OK]{NC} effortless-rulebook/effortless-rulebook.json")
     else:
         print(f"  {RED}[--]{NC} No active rulebook")
-
-    if active['english_spec']:
-        print(f"  {GREEN}[OK]{NC} execution-substrates/english/specification.md")
-    else:
-        print(f"  {DIM}[--]{NC} No English specification")
 
     print()
 
@@ -342,7 +268,6 @@ def list_all_bases():
 
         # Check cache status
         rb_cached = get_repo_cache_rulebook(base_id) is not None
-        es_cached = get_repo_cache_english_spec(base_id) is not None
 
         # Active indicator
         if base_id == current:
@@ -354,8 +279,6 @@ def list_all_bases():
         cache_status = []
         if rb_cached:
             cache_status.append(f"{GREEN}rulebook{NC}")
-        if es_cached:
-            cache_status.append(f"{GREEN}english{NC}")
 
         cache_str = ", ".join(cache_status) if cache_status else f"{DIM}no cache{NC}"
 
@@ -387,25 +310,13 @@ def setup_for_offline(base_id: str = None) -> bool:
     print(f"\n{BOLD}{CYAN}Setting up offline environment...{NC}")
     print(f"  Base: {base_id}\n")
 
-    success = True
-
-    # 1. Restore rulebook
-    print(f"{BLUE}[1/2]{NC} Restoring rulebook...")
     if not restore_rulebook_from_repo_cache(base_id):
         print(f"  {RED}Failed to restore rulebook{NC}")
-        success = False
+        return False
 
-    # 2. Restore English specification (optional)
-    print(f"{BLUE}[2/2]{NC} Restoring English specification...")
-    if not restore_english_spec_from_repo_cache(base_id):
-        print(f"  {DIM}No cached English specification (will require OPENAI_API_KEY){NC}")
-
-    if success:
-        print(f"\n{GREEN}Offline setup complete!{NC}")
-    else:
-        print(f"\n{YELLOW}Offline setup incomplete - some features may require API keys{NC}")
-
-    return success
+    print(f"\n{GREEN}Offline setup complete!{NC}")
+    print(f"{DIM}Substrates will regenerate from the rulebook on next run.{NC}")
+    return True
 
 
 def update_repo_cache(base_id: str = None) -> bool:
@@ -424,13 +335,7 @@ def update_repo_cache(base_id: str = None) -> bool:
     print(f"\n{BOLD}{CYAN}Updating repo cache...{NC}")
     print(f"  Base: {base_id}\n")
 
-    # Save rulebook
-    print(f"{BLUE}[1/2]{NC} Saving rulebook to repo cache...")
     save_rulebook_to_repo_cache(base_id)
-
-    # Save English spec if it exists
-    print(f"{BLUE}[2/2]{NC} Saving English specification to repo cache...")
-    save_english_spec_to_repo_cache(base_id)
 
     print(f"\n{GREEN}Repo cache updated!{NC}")
     print(f"{DIM}Remember to commit these changes to ship the updated cache.{NC}\n")
@@ -472,11 +377,6 @@ def main():
         help="Restore rulebook from repo cache")
     restore_rb_parser.add_argument("--base-id", help="Base ID (default: current)")
 
-    # restore-english command
-    restore_en_parser = subparsers.add_parser("restore-english",
-        help="Restore English specification from repo cache")
-    restore_en_parser.add_argument("--base-id", help="Base ID (default: current)")
-
     args = parser.parse_args()
 
     try:
@@ -496,10 +396,6 @@ def main():
 
         elif args.command == "restore-rulebook":
             success = restore_rulebook_from_repo_cache(args.base_id)
-            sys.exit(0 if success else 1)
-
-        elif args.command == "restore-english":
-            success = restore_english_spec_from_repo_cache(args.base_id)
             sys.exit(0 if success else 1)
 
         else:

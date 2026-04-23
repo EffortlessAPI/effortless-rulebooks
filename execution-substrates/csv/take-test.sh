@@ -25,4 +25,4 @@ mkdir -p "$SCRIPT_DIR/test-answers"
 echo "csv: test completed"
 
 # Generate substrate report
-python3 "$PROJECT_ROOT/orchestration/create-substrate-report.py" csv --log "$LOG_FILE"
+python3 "$PROJECT_ROOT/orchestration/grade-and-record.py" csv --elapsed "$SECONDS" --log "$LOG_FILE"

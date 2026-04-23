@@ -27,4 +27,4 @@ mkdir -p "$SCRIPT_DIR/test-explanations"
 echo "explain-dag: test completed"
 
 # Generate substrate report
-python3 "$PROJECT_ROOT/orchestration/create-substrate-report.py" explain-dag --log "$LOG_FILE"
+python3 "$PROJECT_ROOT/orchestration/grade-and-record.py" explain-dag --elapsed "$SECONDS" --log "$LOG_FILE"

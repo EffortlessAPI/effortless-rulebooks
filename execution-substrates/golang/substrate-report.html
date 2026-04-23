@@ -68,7 +68,7 @@ pre { background: var(--code-bg); border: 1px solid var(--border-color); border-
         </div>
         <div class="header-stats">
             <div class="stat"><span>Score:</span><span class="stat-value score-perfect">100.0%</span></div>
-            <div class="stat"><span>3/3 passed</span></div>
+            <div class="stat"><span>6/6 passed</span></div>
         </div>
         <button id="theme-toggle" title="Toggle theme"><span class="sun">☀️</span><span class="moon">🌙</span></button>
     </header>
@@ -129,9 +129,9 @@ Golang substrate: ALL 1 tables processed successfully (3 total records)
                 <h2>Test Summary</h2>
                 <div class="results-summary">
                     <div class="result-item"><div class="result-value score-perfect">100.0%</div><div class="result-label">Score</div></div>
-                    <div class="result-item"><div class="result-value score-perfect">3</div><div class="result-label">Passed</div></div>
+                    <div class="result-item"><div class="result-value score-perfect">6</div><div class="result-label">Passed</div></div>
                     <div class="result-item"><div class="result-value">0</div><div class="result-label">Failed</div></div>
-                    <div class="result-item"><div class="result-value">3</div><div class="result-label">Total</div></div>
+                    <div class="result-item"><div class="result-value">6</div><div class="result-label">Total</div></div>
                 </div>
             </div>
         </div>
@@ -139,7 +139,7 @@ Golang substrate: ALL 1 tables processed successfully (3 total records)
             <div class="card">
                 <div class="code-header">
                     <h2>erb_sdk.go</h2>
-                    <div><span class="code-info">165 lines</span><button class="copy-btn" onclick="copyCode('sdk-code')">Copy</button></div>
+                    <div><span class="code-info">176 lines</span><button class="copy-btn" onclick="copyCode('sdk-code')">Copy</button></div>
                 </div>
                 <pre id="sdk-code">// ERB SDK - Go Implementation (GENERATED - DO NOT EDIT)
 // ======================================================
@@ -155,6 +155,7 @@ import (
 	&quot;fmt&quot;
 	&quot;os&quot;
 	&quot;strconv&quot;
+	&quot;strings&quot;
 )
 
 // =============================================================================
@@ -240,14 +241,21 @@ func (f FlexibleString) String() string {
 // Table: Customers
 type Customer struct {
 	CustomerId string `json:&quot;customer_id&quot;`
-	Customer *string `json:&quot;customer&quot;` // Identifier for the customers.
 	EmailAddress *string `json:&quot;email_address&quot;` // Thec ustomers email address
 	FirstName *string `json:&quot;first_name&quot;` // First Name of the customer - used to make the full name
 	LastName *string `json:&quot;last_name&quot;` // Last Name of the customer - used to make the full name
+	Name *string `json:&quot;name&quot;` // Identifier for the customers.
 	FullName *string `json:&quot;full_name&quot;` // Full name is computed from the first and last name of the customer
 }
 
 // --- Individual Calculation Functions ---
+
+// CalcName computes the Name calculated field
+// Identifier for the customers.
+// Formula: =SUBSTITUTE({{EmailAddress}}, &quot;@&quot;, &quot;-&quot;)
+func (tc *Customer) CalcName() string {
+	return strings.ReplaceAll(stringVal(tc.EmailAddress), &quot;@&quot;, &quot;-&quot;)
+}
 
 // CalcFullName computes the FullName calculated field
 // Full name is computed from the first and last name of the customer
@@ -261,20 +269,23 @@ func (tc *Customer) CalcFullName() string {
 // ComputeAll computes all calculated fields and returns an updated struct
 func (tc *Customer) ComputeAll() *Customer {
 	// Level 1 calculations
+	name := strings.ReplaceAll(stringVal(tc.EmailAddress), &quot;@&quot;, &quot;-&quot;)
 	fullName := stringVal(tc.FirstName) + &quot; &quot; + stringVal(tc.LastName)
 
 	return &amp;Customer{
 		CustomerId: tc.CustomerId,
-		Customer: tc.Customer,
 		EmailAddress: tc.EmailAddress,
 		FirstName: tc.FirstName,
 		LastName: tc.LastName,
+		Name: nilIfEmpty(name),
 		FullName: nilIfEmpty(fullName),
 	}
 }
 
 // =============================================================================
-// FILE I/O FUNCTIONS (for all tables with calculated fields)
+// FILE I/O FUNCTIONS
+// Load: all tables referenced by main.go (computed + lookup/aggregation targets)
+// Save: only tables that have computed fields to write back
 // =============================================================================
 
 // LoadCustomerRecords loads Customers records from a JSON file

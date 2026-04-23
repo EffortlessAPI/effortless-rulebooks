@@ -31,6 +31,14 @@
 
        *> ========== CUSTOMERS ==========
        *> Level 1
+       CALC-NAME.
+           MOVE RECORD-EMAIL-ADDRESS TO WS-SUBST-INPUT
+           MOVE "@" TO WS-SUBST-OLD
+           MOVE "-" TO WS-SUBST-NEW
+           PERFORM SUBSTITUTE-ALL
+           MOVE WS-SUBST-OUTPUT TO RECORD-NAME
+       .
+
        CALC-FULL-NAME.
            MOVE SPACES TO RECORD-FULL-NAME
            STRING
@@ -41,6 +49,7 @@
        .
 
        COMPUTE-ALL-FIELDS.
+           PERFORM CALC-NAME
            PERFORM CALC-FULL-NAME
        .
        FIND-CONTAINS.

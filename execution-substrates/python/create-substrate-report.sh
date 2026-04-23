@@ -24,7 +24,7 @@ def read_file(path, default=""):
 readme = read_file('README.md', 'No README available')
 log_content = read_file('.last-run.log', 'No log available')
 test_results = read_file('test-results.md', 'No test results available')
-erb_calc = read_file('erb_calc.py', '# No generated code available')
+erb_calc = read_file('python_only_erb_simulator.py', '# No generated code available')
 erb_sdk = read_file('erb_sdk.py', '# No SDK code available')
 
 # Extract metrics from test-results.md

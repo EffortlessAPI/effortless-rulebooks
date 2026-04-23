@@ -2,11 +2,18 @@
 """
 Read test answers from the xlsx substrate.
 
-This script reads the rulebook.xlsx file and populates test-answers.json
-by matching xlsx columns to JSON fields.
+GUARD: This substrate must compute calculated fields using its own native
+engine: Excel formula evaluation. It must NOT import python_only_erb_simulator
+or call compute_lookups / compute_aggregations. The local engine here is
+openpyxl's AST walker — it will fail honestly on the limits of openpyxl's
+formula engine, which is the intended demonstration. The commercial
+`effortless-xlsx` Effortless tool uses a server-side commercial library with
+no such gaps and is the real-engine answer when one is needed.
 
-For cells containing Excel formulas, it evaluates the formulas using Python
-since newly generated xlsx files don't have cached computed values.
+This script reads the rulebook.xlsx file and populates test-answers.json
+by matching xlsx columns to JSON fields. For cells containing Excel
+formulas, it evaluates the formulas using openpyxl since newly generated
+xlsx files don't have cached computed values.
 """
 
 import json

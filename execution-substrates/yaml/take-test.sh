@@ -24,4 +24,4 @@ mkdir -p "$SCRIPT_DIR/test-answers"
 echo "yaml: test completed"
 
 # Generate substrate report
-python3 "$PROJECT_ROOT/orchestration/create-substrate-report.py" yaml --log "$LOG_FILE"
+python3 "$PROJECT_ROOT/orchestration/grade-and-record.py" yaml --elapsed "$SECONDS" --log "$LOG_FILE"

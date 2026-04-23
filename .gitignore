@@ -32,3 +32,5 @@ effortless-rulebook/.cache/
 
 # Note: bases/*/ is NOT gitignored - it contains the repo cache
 # that ships with the repo for cold-start Docker support
+testing/_substrate_results.json
+execution-substrates/cobol/erb_test
