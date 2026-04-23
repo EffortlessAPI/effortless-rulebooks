@@ -16,6 +16,38 @@
     "default": false
   },
   {
+    "id": "appgjoEcFNxluhbvK",
+    "name": "Naked Claude vs Effortless Claude v1",
+    "description": "A extended version of ACME, llc with additional business rules, inferences, and cross-entity calculations",
+    "docs": "bases/naked-claude-v2",
+    "complexity": "moderate",
+    "default": false
+  },
+  {
+    "id": "app7G5emeY7miM4WN",
+    "name": "Naked Claude vs Effortless Claude v2",
+    "description": "A extended version of ACME, llc with additional business rules, inferences, and cross-entity calculations",
+    "docs": "bases/naked-claude-v2",
+    "complexity": "moderate",
+    "default": false
+  },
+  {
+    "id": "appKLygCIXweUUKtM",
+    "name": "Naked Claude vs Effortless Claude v3",
+    "description": "A extended version of ACME, llc with additional business rules, inferences, and cross-entity calculations",
+    "docs": "bases/naked-claude-v3",
+    "complexity": "moderate",
+    "default": false
+  },
+  {
+    "id": "appeUOAaOIdoqPSx3",
+    "name": "Naked Claude vs Effortless Claude v4",
+    "description": "A extended version of ACME, llc with additional business rules, inferences, and cross-entity calculations",
+    "docs": "bases/naked-claude-v4",
+    "complexity": "moderate",
+    "default": false
+  },
+  {
     "id": "appwN9EAp8IeIxM23",
     "name": "Jessica Talisman's Special Solutions (v2)",
     "description": "Extends LLC's Ontology with additional business rules, inferences, and cross-entity calculations",

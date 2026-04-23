@@ -1,0 +1,40 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <RootNamespace>EffortlessEntityFrameworkRunner</RootNamespace>
+    <AssemblyName>EffortlessEntityFrameworkRunner</AssemblyName>
+    <NoWarn>$(NoWarn);CS8600;CS8601;CS8602;CS8603;CS8604;CS8618;CS8625;CS0108;CS0114</NoWarn>
+    <LicensedRoot>../../licensed-effortless-tools/entity-framework-dotnet/DataClasses</LicensedRoot>
+    <PatchedRoot>obj/Patched/DataClasses</PatchedRoot>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="$(LicensedRoot)/SoAEntityBase.cs" />
+    <Compile Include="../../licensed-effortless-tools/entity-framework-dotnet/SqlOnAir/DotNet/Lib/DataExtensions.cs" />
+  </ItemGroup>
+
+  <Target Name="PatchLicensedSources" BeforeTargets="BeforeCompile;CoreCompile">
+    <!-- The transpiler currently emits bool formula getters as
+         `... : null; set { }`, which doesn't compile. Patch a copy of
+         the licensed dataclasses before compile so we don't have to
+         touch the canonical sources. The patcher is surgical (only
+         bool-typed formula blocks are rewritten) and idempotent. -->
+    <Exec Command="bash &quot;$(MSBuildProjectDirectory)/patch-sources.sh&quot; &quot;$(MSBuildProjectDirectory)/$(LicensedRoot)&quot; &quot;$(MSBuildProjectDirectory)/$(PatchedRoot)&quot;" />
+    <ItemGroup>
+      <Compile Include="$(PatchedRoot)/Customer.cs" />
+      <Compile Include="$(PatchedRoot)/Employee.cs" />
+      <Compile Include="$(PatchedRoot)/Project.cs" />
+      <Compile Include="$(PatchedRoot)/Role.cs" />
+      <Compile Include="$(PatchedRoot)/TypesOfProject.cs" />
+      <Compile Include="$(PatchedRoot)/BaseClasses/CustomerBase.cs" />
+      <Compile Include="$(PatchedRoot)/BaseClasses/EmployeeBase.cs" />
+      <Compile Include="$(PatchedRoot)/BaseClasses/ProjectBase.cs" />
+      <Compile Include="$(PatchedRoot)/BaseClasses/RoleBase.cs" />
+      <Compile Include="$(PatchedRoot)/BaseClasses/TypesOfProjectBase.cs" />
+    </ItemGroup>
+  </Target>
+
+</Project>

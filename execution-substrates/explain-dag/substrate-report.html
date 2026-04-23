@@ -68,8 +68,8 @@ pre { background: var(--code-bg); border: 1px solid var(--border-color); border-
             <h1>Explain-DAG Execution Substrate</h1>
         </div>
         <div class="header-stats">
-            <div class="stat"><span>Score:</span><span class="stat-value score-perfect">100.0%</span></div>
-            <div class="stat"><span>3/3 passed</span></div>
+            <div class="stat"><span>Score:</span><span class="stat-value score-danger">20.0%</span></div>
+            <div class="stat"><span>8/40 passed</span></div>
         </div>
         <button id="theme-toggle" title="Toggle theme"><span class="sun">☀️</span><span class="moon">🌙</span></button>
     </header>
@@ -124,8 +124,12 @@ HasGrammar = true
                 <h2>Execution Log</h2>
                 <pre>=== ExplainDAG Substrate Test Run ===
 
-  -&gt; customers: 3 records with explanations
-ExplainDAG substrate: Processed 1 entities, 3 total records
+  -&gt; client: 3 records with explanations
+  -&gt; employees: 3 records (raw passthrough)
+  -&gt; projects: 3 records (raw passthrough)
+  -&gt; roles: 3 records (raw passthrough)
+  -&gt; types_of_project: 4 records (raw passthrough)
+ExplainDAG substrate: Processed 5 entities, 16 total records
 Explanations written to: /Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/explain-dag/test-explanations
 
 </pre>
@@ -135,10 +139,10 @@ Explanations written to: /Users/eejai42/effortlessapi-app-root/users/user_ee42ai
             <div class="card">
                 <h2>Test Summary</h2>
                 <div class="results-summary">
-                    <div class="result-item"><div class="result-value score-perfect">100.0%</div><div class="result-label">Score</div></div>
-                    <div class="result-item"><div class="result-value score-perfect">3</div><div class="result-label">Passed</div></div>
-                    <div class="result-item"><div class="result-value">0</div><div class="result-label">Failed</div></div>
-                    <div class="result-item"><div class="result-value">3</div><div class="result-label">Total</div></div>
+                    <div class="result-item"><div class="result-value score-danger">20.0%</div><div class="result-label">Score</div></div>
+                    <div class="result-item"><div class="result-value score-perfect">8</div><div class="result-label">Passed</div></div>
+                    <div class="result-item"><div class="result-value">32</div><div class="result-label">Failed</div></div>
+                    <div class="result-item"><div class="result-value">40</div><div class="result-label">Total</div></div>
                 </div>
             </div>
         </div>
@@ -151,8 +155,8 @@ Explanations written to: /Users/eejai42/effortlessapi-app-root/users/user_ee42ai
                 <pre id="spec-code">{
   &quot;schema_version&quot;: &quot;erb.explain_spec.v1&quot;,
   &quot;rulebook&quot;: {
-    &quot;name&quot;: &quot;ACME, LLC (template)&quot;,
-    &quot;rulebook_hash&quot;: &quot;sha256:38a10da024a0bc66d7d617d81790eeb3&quot;
+    &quot;name&quot;: &quot;ACME Corporation (template)&quot;,
+    &quot;rulebook_hash&quot;: &quot;sha256:8614809c5c9f718ff206ad3360842149&quot;
   },
   &quot;semantics&quot;: {
     &quot;profile&quot;: &quot;excel&quot;,
@@ -161,11 +165,11 @@ Explanations written to: /Users/eejai42/effortlessapi-app-root/users/user_ee42ai
     &quot;boolean_coercion&quot;: &quot;strict&quot;
   },
   &quot;entities&quot;: {
-    &quot;Customers&quot;: {
-      &quot;id_field&quot;: &quot;CustomerId&quot;,
-      &quot;id_field_snake&quot;: &quot;customer_id&quot;,
+    &quot;Client&quot;: {
+      &quot;id_field&quot;: &quot;ClientId&quot;,
+      &quot;id_field_snake&quot;: &quot;client_id&quot;,
       &quot;fields&quot;: {
-        &quot;CustomerId&quot;: {
+        &quot;ClientId&quot;: {
           &quot;datatype&quot;: &quot;string&quot;,
           &quot;nullable&quot;: false,
           &quot;type&quot;: &quot;raw&quot;
@@ -274,7 +278,7 @@ Explanations written to: /Users/eejai42/effortlessapi-app-root/users/user_ee42ai
           &quot;description&quot;: &quot;Full name is computed from the first and last name of the customer&quot;
         }
       },
-      &quot;description&quot;: &quot;Table: Customers&quot;
+      &quot;description&quot;: &quot;Table: Client&quot;
     }
   }
 }</pre>
@@ -284,7 +288,9 @@ Explanations written to: /Users/eejai42/effortlessapi-app-root/users/user_ee42ai
             <div class="card">
                 <h2>Sample Explanations (JSONL)</h2>
                 <div class="code-info">First few records from test-explanations/</div>
-                <pre>{&quot;schema_version&quot;: &quot;erb.explain_instance.v1&quot;, &quot;rulebook_hash&quot;: &quot;sha256:7541a29d0b939ee1757483b68fc06db8&quot;, &quot;entity&quot;: &quot;approvals&quot;, &quot;record_id&quot;: &quot;release-approval-gate&quot;, &quot;values&quot;: {&quot;name&quot;: &quot;release-approval-gate&quot;}, &quot;explanations&quot;: {&quot;Name&quot;: {&quot;template_hash&quot;: &quot;sha256:89d15a4a6be3f751&quot;, &quot;root&quot;: &quot;i_result_Name&quot;, &quot;nodes&quot;: {&quot;i_ref_1&quot;: {&quot;kind&quot;: &quot;field_ref&quot;, &quot;value&quot;: &quot;Release Approval Gate&quot;, &quot;type&quot;: &quot;string&quot;, &quot;field&quot;: &quot;DisplayName&quot;, &quot;field_snake&quot;: &quot;display_name&quot;}, &quot;i_const_3&quot;: {&quot;kind&quot;: &quot;const&quot;, &quot;value&quot;: &quot; &quot;, &quot;type&quot;: &quot;string&quot;}, &quot;i_const_4&quot;: {&quot;kind&quot;: &quot;const&quot;, &quot;value&quot;: &quot;-&quot;, &quot;type&quot;: &quot;string&quot;}, &quot;i_fn_2&quot;: {&quot;kind&quot;: &quot;fn&quot;, &quot;value&quot;: &quot;release approval gate&quot;, &quot;type&quot;: &quot;string&quot;, &quot;name&quot;: &quot;LOWER&quot;, &quot;args&quot;: [&quot;n_ref_1&quot;]}, &quot;i_fn_5&quot;: {&quot;kind&quot;: &quot;fn&quot;, &quot;value&quot;: &quot;release-approval-gate&quot;, &quot;type&quot;: &quot;string&quot;, &quot;name&quot;: &quot;SUBSTITUTE&quot;, &quot;args&quot;: [&quot;n_fn_2&quot;, &quot;n_const_3&quot;, &quot;n_const_4&quot;]}, &quot;i_result_Name&quot;: {&quot;kind&quot;: &quot;result&quot;, &quot;value&quot;: &quot;release-approval-gate&quot;, &quot;type&quot;: &quot;string&quot;, &quot;field&quot;: &quot;Name&quot;}}, &quot;edges&quot;: [[&quot;i_ref_1&quot;, &quot;i_fn_2&quot;], [&quot;i_fn_2&quot;, &quot;i_fn_5&quot;], [&quot;i_const_3&quot;, &quot;i_fn_5&quot;], [&quot;i_const_4&quot;, &quot;i_fn_5&quot;], [&quot;i_fn_5&quot;, &quot;i_result_Name&quot;]], &quot;evidence&quot;: {&quot;short_circuit&quot;: [], &quot;branches&quot;: []}}}}
+                <pre>{&quot;schema_version&quot;: &quot;erb.explain_instance.v1&quot;, &quot;rulebook_hash&quot;: &quot;sha256:8614809c5c9f718ff206ad3360842149&quot;, &quot;entity&quot;: &quot;client&quot;, &quot;record_id&quot;: &quot;cust0001&quot;, &quot;values&quot;: {&quot;full_name&quot;: &quot;Bob Smith&quot;}, &quot;explanations&quot;: {&quot;FullName&quot;: {&quot;template_hash&quot;: &quot;sha256:ae6e94fd35af410b&quot;, &quot;root&quot;: &quot;i_result_FullName&quot;, &quot;nodes&quot;: {&quot;i_ref_1&quot;: {&quot;kind&quot;: &quot;field_ref&quot;, &quot;value&quot;: &quot;Bob&quot;, &quot;type&quot;: &quot;string&quot;, &quot;field&quot;: &quot;FirstName&quot;, &quot;field_snake&quot;: &quot;first_name&quot;}, &quot;i_const_2&quot;: {&quot;kind&quot;: &quot;const&quot;, &quot;value&quot;: &quot; &quot;, &quot;type&quot;: &quot;string&quot;}, &quot;i_ref_3&quot;: {&quot;kind&quot;: &quot;field_ref&quot;, &quot;value&quot;: &quot;Smith&quot;, &quot;type&quot;: &quot;string&quot;, &quot;field&quot;: &quot;LastName&quot;, &quot;field_snake&quot;: &quot;last_name&quot;}, &quot;i_op_4&quot;: {&quot;kind&quot;: &quot;op&quot;, &quot;value&quot;: &quot;Bob Smith&quot;, &quot;type&quot;: &quot;string&quot;, &quot;name&quot;: &quot;CONCAT&quot;, &quot;args&quot;: [&quot;n_ref_1&quot;, &quot;n_const_2&quot;, &quot;n_ref_3&quot;]}, &quot;i_result_FullName&quot;: {&quot;kind&quot;: &quot;result&quot;, &quot;value&quot;: &quot;Bob Smith&quot;, &quot;type&quot;: &quot;string&quot;, &quot;field&quot;: &quot;FullName&quot;}}, &quot;edges&quot;: [[&quot;i_ref_1&quot;, &quot;i_op_4&quot;], [&quot;i_const_2&quot;, &quot;i_op_4&quot;], [&quot;i_ref_3&quot;, &quot;i_op_4&quot;], [&quot;i_op_4&quot;, &quot;i_result_FullName&quot;]], &quot;evidence&quot;: {&quot;short_circuit&quot;: [], &quot;branches&quot;: []}}}}
+{&quot;schema_version&quot;: &quot;erb.explain_instance.v1&quot;, &quot;rulebook_hash&quot;: &quot;sha256:8614809c5c9f718ff206ad3360842149&quot;, &quot;entity&quot;: &quot;client&quot;, &quot;record_id&quot;: &quot;cust0002&quot;, &quot;values&quot;: {&quot;full_name&quot;: &quot;John Doe&quot;}, &quot;explanations&quot;: {&quot;FullName&quot;: {&quot;template_hash&quot;: &quot;sha256:ae6e94fd35af410b&quot;, &quot;root&quot;: &quot;i_result_FullName&quot;, &quot;nodes&quot;: {&quot;i_ref_1&quot;: {&quot;kind&quot;: &quot;field_ref&quot;, &quot;value&quot;: &quot;John&quot;, &quot;type&quot;: &quot;string&quot;, &quot;field&quot;: &quot;FirstName&quot;, &quot;field_snake&quot;: &quot;first_name&quot;}, &quot;i_const_2&quot;: {&quot;kind&quot;: &quot;const&quot;, &quot;value&quot;: &quot; &quot;, &quot;type&quot;: &quot;string&quot;}, &quot;i_ref_3&quot;: {&quot;kind&quot;: &quot;field_ref&quot;, &quot;value&quot;: &quot;Doe&quot;, &quot;type&quot;: &quot;string&quot;, &quot;field&quot;: &quot;LastName&quot;, &quot;field_snake&quot;: &quot;last_name&quot;}, &quot;i_op_4&quot;: {&quot;kind&quot;: &quot;op&quot;, &quot;value&quot;: &quot;John Doe&quot;, &quot;type&quot;: &quot;string&quot;, &quot;name&quot;: &quot;CONCAT&quot;, &quot;args&quot;: [&quot;n_ref_1&quot;, &quot;n_const_2&quot;, &quot;n_ref_3&quot;]}, &quot;i_result_FullName&quot;: {&quot;kind&quot;: &quot;result&quot;, &quot;value&quot;: &quot;John Doe&quot;, &quot;type&quot;: &quot;string&quot;, &quot;field&quot;: &quot;FullName&quot;}}, &quot;edges&quot;: [[&quot;i_ref_1&quot;, &quot;i_op_4&quot;], [&quot;i_const_2&quot;, &quot;i_op_4&quot;], [&quot;i_ref_3&quot;, &quot;i_op_4&quot;], [&quot;i_op_4&quot;, &quot;i_result_FullName&quot;]], &quot;evidence&quot;: {&quot;short_circuit&quot;: [], &quot;branches&quot;: []}}}}
+{&quot;schema_version&quot;: &quot;erb.explain_instance.v1&quot;, &quot;rulebook_hash&quot;: &quot;sha256:8614809c5c9f718ff206ad3360842149&quot;, &quot;entity&quot;: &quot;client&quot;, &quot;record_id&quot;: &quot;cust0003&quot;, &quot;values&quot;: {&quot;full_name&quot;: &quot;Emily Jones&quot;}, &quot;explanations&quot;: {&quot;FullName&quot;: {&quot;template_hash&quot;: &quot;sha256:ae6e94fd35af410b&quot;, &quot;root&quot;: &quot;i_result_FullName&quot;, &quot;nodes&quot;: {&quot;i_ref_1&quot;: {&quot;kind&quot;: &quot;field_ref&quot;, &quot;value&quot;: &quot;Emily&quot;, &quot;type&quot;: &quot;string&quot;, &quot;field&quot;: &quot;FirstName&quot;, &quot;field_snake&quot;: &quot;first_name&quot;}, &quot;i_const_2&quot;: {&quot;kind&quot;: &quot;const&quot;, &quot;value&quot;: &quot; &quot;, &quot;type&quot;: &quot;string&quot;}, &quot;i_ref_3&quot;: {&quot;kind&quot;: &quot;field_ref&quot;, &quot;value&quot;: &quot;Jones&quot;, &quot;type&quot;: &quot;string&quot;, &quot;field&quot;: &quot;LastName&quot;, &quot;field_snake&quot;: &quot;last_name&quot;}, &quot;i_op_4&quot;: {&quot;kind&quot;: &quot;op&quot;, &quot;value&quot;: &quot;Emily Jones&quot;, &quot;type&quot;: &quot;string&quot;, &quot;name&quot;: &quot;CONCAT&quot;, &quot;args&quot;: [&quot;n_ref_1&quot;, &quot;n_const_2&quot;, &quot;n_ref_3&quot;]}, &quot;i_result_FullName&quot;: {&quot;kind&quot;: &quot;result&quot;, &quot;value&quot;: &quot;Emily Jones&quot;, &quot;type&quot;: &quot;string&quot;, &quot;field&quot;: &quot;FullName&quot;}}, &quot;edges&quot;: [[&quot;i_ref_1&quot;, &quot;i_op_4&quot;], [&quot;i_const_2&quot;, &quot;i_op_4&quot;], [&quot;i_ref_3&quot;, &quot;i_op_4&quot;], [&quot;i_op_4&quot;, &quot;i_result_FullName&quot;]], &quot;evidence&quot;: {&quot;short_circuit&quot;: [], &quot;branches&quot;: []}}}}
 </pre>
             </div>
         </div>

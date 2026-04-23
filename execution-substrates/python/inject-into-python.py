@@ -2,10 +2,12 @@
 """
 Generate Python calculation library from the Effortless Rulebook.
 
-This script reads formulas from the rulebook and generates erb_calc.py
-with proper calculation functions for ALL entities with calculated fields.
+This script reads formulas from the rulebook and generates
+python_only_erb_simulator.py with proper calculation functions for ALL
+entities with calculated fields.
 
-Generated file is shared by Python, English, YAML, and other substrates.
+The generated file is PYTHON SUBSTRATE ONLY. Other substrates importing it
+is cheating — see the banner at the top of the generated file.
 
 ================================================================================
 ARCHITECTURE OVERVIEW
@@ -54,6 +56,243 @@ from orchestration.formula_parser import (
     parse_formula, compile_to_python, get_field_dependencies,
     ExprNode, FieldRef, FuncCall, Concat, LiteralString
 )
+
+
+# =============================================================================
+# STATIC INTERPRETER BLOCK
+# =============================================================================
+# Hand-written cross-table interpreters (INDEX/MATCH lookups and COUNTIFS/SUMIFS
+# aggregations) that are appended verbatim to the generated file. These used to
+# live in orchestration/shared.py where any substrate could import them. They
+# now live inside the Python-only fence and are part of the Python simulator
+# by definition. Other substrates must implement these in their own engine.
+# =============================================================================
+
+LOOKUP_AGG_INTERPRETER_BLOCK = '''
+
+# =============================================================================
+# INDEX/MATCH LOOKUP INTERPRETER (PYTHON SIMULATOR — DO NOT CALL FROM OTHER SUBSTRATES)
+# =============================================================================
+
+
+def parse_index_match_formula(formula: str) -> tuple:
+    """
+    Parse an INDEX/MATCH formula to extract the lookup components.
+
+    Formula format: =INDEX(Table!{{FieldToReturn}}, MATCH(CurrentTable!{{KeyField}}, Table!{{PrimaryKeyField}}, 0))
+    Returns: (lookup_table, return_field, key_field, pk_field) or all None.
+    """
+    pattern = r"=INDEX\\((\\w+)!\\{\\{(\\w+)\\}\\},\\s*MATCH\\(\\w+!\\{\\{(\\w+)\\}\\},\\s*(\\w+)!\\{\\{(\\w+)\\}\\},\\s*0\\)\\)"
+    match = re.match(pattern, formula)
+    if match:
+        return (match.group(1), match.group(2), match.group(3), match.group(5))
+    return (None, None, None, None)
+
+
+def parse_countifs_formula(formula: str) -> tuple:
+    """Parse =COUNTIFS(RelatedTable!{{LookupField}}, CurrentTable!{{MatchField}})."""
+    pattern = r"=COUNTIFS\\((\\w+)!\\{\\{(\\w+)\\}\\},\\s*\\w+!\\{\\{(\\w+)\\}\\}\\)"
+    match = re.match(pattern, formula)
+    if match:
+        return (match.group(1), match.group(2), match.group(3))
+    return (None, None, None)
+
+
+def parse_sumifs_formula(formula: str) -> tuple:
+    """Parse =SUMIFS(RelatedTable!{{SumField}}, RelatedTable!{{CriteriaField}}, CurrentTable!{{MatchField}})."""
+    pattern = r"=SUMIFS\\((\\w+)!\\{\\{(\\w+)\\}\\},\\s*(\\w+)!\\{\\{(\\w+)\\}\\},\\s*\\w+!\\{\\{(\\w+)\\}\\}\\)"
+    match = re.match(pattern, formula)
+    if match:
+        return (match.group(1), match.group(2), match.group(4), match.group(5))
+    return (None, None, None, None)
+
+
+def load_related_data(project_root: Path, related_table: str) -> list:
+    """
+    Load data from testing/answer-keys for a related table; falls back to blank-tests.
+    Prefers answer-keys so that aggregations referencing computed fields in related
+    tables resolve correctly.
+    """
+    snake_name = to_snake_case(related_table)
+
+    answer_keys_path = project_root / "testing" / "answer-keys" / f"{snake_name}.json"
+    if answer_keys_path.exists():
+        with open(answer_keys_path, "r", encoding="utf-8") as f:
+            return json.load(f)
+
+    blank_tests_path = project_root / "testing" / "blank-tests" / f"{snake_name}.json"
+    if blank_tests_path.exists():
+        with open(blank_tests_path, "r", encoding="utf-8") as f:
+            return json.load(f)
+
+    return []
+
+
+def compute_lookups(records: list, entity_name: str, rulebook: dict, project_root: Path) -> list:
+    """INDEX/MATCH lookup interpreter. PYTHON SIMULATOR ONLY."""
+    schema = get_entity_schema(rulebook, entity_name)
+    lookup_fields = get_lookup_fields(schema)
+
+    if not lookup_fields:
+        return records
+
+    related_data_cache = {}
+
+    for field in lookup_fields:
+        field_name = field.get("name")
+        formula = field.get("formula", "")
+        snake_field_name = to_snake_case(field_name)
+
+        lookup_table, return_field, key_field, pk_field = parse_index_match_formula(formula)
+
+        if not lookup_table:
+            continue
+
+        if lookup_table not in related_data_cache:
+            related_data_cache[lookup_table] = load_related_data(project_root, lookup_table)
+
+        related_records = related_data_cache[lookup_table]
+        snake_return_field = to_snake_case(return_field)
+        snake_key_field = to_snake_case(key_field)
+        snake_pk_field = to_snake_case(pk_field)
+
+        lookup_map = {}
+        for related_record in related_records:
+            pk_value = related_record.get(snake_pk_field)
+            if pk_value is not None:
+                lookup_map[pk_value] = related_record.get(snake_return_field)
+
+        for record in records:
+            key_value = record.get(snake_key_field)
+            if key_value is not None and key_value in lookup_map:
+                record[snake_field_name] = lookup_map[key_value]
+            else:
+                record[snake_field_name] = None
+
+    return records
+
+
+def compute_aggregations(records: list, entity_name: str, rulebook: dict, project_root: Path) -> list:
+    """COUNTIFS / SUMIFS aggregation interpreter. PYTHON SIMULATOR ONLY."""
+    schema = get_entity_schema(rulebook, entity_name)
+    agg_fields = get_aggregation_fields(schema)
+
+    if not agg_fields:
+        return records
+
+    related_data_cache = {}
+
+    for field in agg_fields:
+        field_name = field.get("name")
+        formula = field.get("formula", "")
+        snake_field_name = to_snake_case(field_name)
+
+        related_table, lookup_field, match_field = parse_countifs_formula(formula)
+
+        if related_table:
+            if related_table not in related_data_cache:
+                related_data_cache[related_table] = load_related_data(project_root, related_table)
+
+            related_records = related_data_cache[related_table]
+            snake_lookup_field = to_snake_case(lookup_field)
+            snake_match_field = to_snake_case(match_field)
+
+            count_map = {}
+            for related_record in related_records:
+                lookup_value = related_record.get(snake_lookup_field)
+                if lookup_value is not None:
+                    count_map[lookup_value] = count_map.get(lookup_value, 0) + 1
+
+            for record in records:
+                match_value = record.get(snake_match_field)
+                if match_value is not None:
+                    record[snake_field_name] = count_map.get(match_value, 0)
+                else:
+                    record[snake_field_name] = 0
+            continue
+
+        related_table, sum_field, criteria_field, match_field = parse_sumifs_formula(formula)
+
+        if related_table:
+            if related_table not in related_data_cache:
+                related_data_cache[related_table] = load_related_data(project_root, related_table)
+
+            related_records = related_data_cache[related_table]
+            snake_sum_field = to_snake_case(sum_field)
+            snake_criteria_field = to_snake_case(criteria_field)
+            snake_match_field = to_snake_case(match_field)
+
+            is_distinct = "distinct" in field_name.lower()
+
+            related_pk_field = to_snake_case(related_table[:-1] + "Id")
+            pk_to_record = {}
+            for rec in related_records:
+                pk_val = rec.get(related_pk_field)
+                if pk_val:
+                    pk_to_record[pk_val] = rec
+
+            relationship_field = None
+            for f in schema:
+                if f.get("type") == "relationship" and f.get("RelatedTo") == related_table:
+                    relationship_field = to_snake_case(f.get("name"))
+                    break
+
+            for record in records:
+                match_value = record.get(snake_match_field)
+                values = []
+                has_any_match = False
+
+                if relationship_field and relationship_field in record and record[relationship_field]:
+                    rel_ids = [rid.strip() for rid in str(record[relationship_field]).split(",") if rid.strip()]
+                    for rel_id in rel_ids:
+                        rel_rec = pk_to_record.get(rel_id)
+                        if rel_rec:
+                            criteria_value = rel_rec.get(snake_criteria_field)
+                            if criteria_value == match_value:
+                                has_any_match = True
+                                sum_value = rel_rec.get(snake_sum_field)
+                                if sum_value is not None and sum_value != "" and sum_value != 0:
+                                    str_value = str(sum_value)
+                                    if is_distinct:
+                                        if str_value not in values:
+                                            values.append(str_value)
+                                    else:
+                                        values.append(str_value)
+                                else:
+                                    values.append("")
+                else:
+                    sorted_records = sorted(
+                        related_records,
+                        key=lambda r: r.get("sequence_position", 0) if r.get("sequence_position") is not None else 0,
+                    )
+                    for related_record in sorted_records:
+                        criteria_value = related_record.get(snake_criteria_field)
+                        if criteria_value == match_value:
+                            has_any_match = True
+                            sum_value = related_record.get(snake_sum_field)
+                            if sum_value is not None and sum_value != "" and sum_value != 0:
+                                str_value = str(sum_value)
+                                if is_distinct:
+                                    if str_value not in values:
+                                        values.append(str_value)
+                                else:
+                                    values.append(str_value)
+
+                non_empty_values = [v for v in values if v]
+                if non_empty_values:
+                    if is_distinct:
+                        record[snake_field_name] = ", ".join(non_empty_values)
+                    else:
+                        record[snake_field_name] = ", ".join(values)
+                elif has_any_match:
+                    record[snake_field_name] = 0
+                elif is_distinct:
+                    record[snake_field_name] = ""
+                else:
+                    record[snake_field_name] = 0
+
+    return records
+'''
 
 
 def build_dag_levels(calculated_fields: List[Dict], raw_field_names: Set[str]) -> List[List[Dict]]:
@@ -475,11 +714,36 @@ def generate_erb_calc(rulebook: Dict) -> str:
     lines.append('=================================================')
     lines.append('Generated from: effortless-rulebook/effortless-rulebook.json')
     lines.append('')
-    lines.append('This file contains pure functions that compute calculated fields')
-    lines.append('from raw field values. Supports multiple entities.')
+    lines.append('PYTHON SUBSTRATE ONLY. Importing this module from any other substrate')
+    lines.append('is cheating. That substrate must execute the rulebook in its own native')
+    lines.append('semantics (its $ENGINE). The whole point of ERB conformance is that each')
+    lines.append('substrate computes calculated, lookup, and aggregation fields by')
+    lines.append('interpreting/compiling the rulebook itself — not by calling out to a')
+    lines.append('Python simulator. If a substrate cannot natively compute a field, it must')
+    lines.append('leave it null and accept the 0 score for that field.')
+    lines.append('')
+    lines.append('This file contains:')
+    lines.append('  - Generated calc_* functions for calculated (scalar) fields')
+    lines.append('  - Generated compute_*_fields(record) dispatchers per entity')
+    lines.append('  - The compute_all_calculated_fields(record, entity_name) entry point')
+    lines.append('  - Hand-written compute_lookups() and compute_aggregations() — the')
+    lines.append('    INDEX/MATCH and COUNTIFS/SUMIFS interpreters. These used to live in')
+    lines.append('    orchestration/shared.py where any substrate could import them, which')
+    lines.append('    let 7 substrates report 100% without executing anything native. They')
+    lines.append('    now live inside the Python-only fence by design.')
     lines.append('"""')
     lines.append('')
+    lines.append('import json')
+    lines.append('import re')
+    lines.append('from pathlib import Path')
     lines.append('from typing import Optional, Any')
+    lines.append('')
+    lines.append('from orchestration.shared import (')
+    lines.append('    to_snake_case,')
+    lines.append('    get_entity_schema,')
+    lines.append('    get_lookup_fields,')
+    lines.append('    get_aggregation_fields,')
+    lines.append(')')
     lines.append('')
 
     # -------------------------------------------------------------------------
@@ -559,7 +823,12 @@ def generate_erb_calc(rulebook: Dict) -> str:
     lines.append('')
     lines.append(generate_dispatcher_function(entities_with_calcs))
 
-    return '\n'.join(lines)
+    # -------------------------------------------------------------------------
+    # Append the hand-written lookup/aggregation interpreter block.
+    # This block used to live in orchestration/shared.py where any substrate
+    # could import it. It now lives inside the Python-only fence by design.
+    # -------------------------------------------------------------------------
+    return '\n'.join(lines) + LOOKUP_AGG_INTERPRETER_BLOCK
 
 
 def main():
@@ -584,7 +853,8 @@ def main():
     # Configuration: files generated by this script
     # -------------------------------------------------------------------------
     GENERATED_FILES = [
-        'erb_calc.py',
+        'python_only_erb_simulator.py',
+        'erb_calc.py',  # legacy filename — clean it up if present
     ]
 
     # Handle --clean argument (removes generated files and exits)
@@ -635,12 +905,19 @@ def main():
     # -------------------------------------------------------------------------
     # Generate and write erb_calc.py
     # -------------------------------------------------------------------------
-    print("Generating erb_calc.py...")
+    print("Generating python_only_erb_simulator.py...")
     erb_calc_content = generate_erb_calc(rulebook)
 
-    erb_calc_path = script_dir / "erb_calc.py"
+    erb_calc_path = script_dir / "python_only_erb_simulator.py"
     erb_calc_path.write_text(erb_calc_content, encoding='utf-8')
     print(f"Wrote: {erb_calc_path} ({len(erb_calc_content)} bytes)")
+
+    # Remove the legacy filename if present from a prior build, so nothing
+    # imports the un-fenced version by accident.
+    legacy_path = script_dir / "erb_calc.py"
+    if legacy_path.exists():
+        legacy_path.unlink()
+        print(f"Removed legacy file: {legacy_path}")
 
     print()
     print("=" * 70)

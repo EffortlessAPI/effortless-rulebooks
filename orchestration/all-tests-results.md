@@ -3,36 +3,39 @@
 ## Configuration
 
 - **Rulebook:** `/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/effortless-rulebook/effortless-rulebook.json`
-- **Substrates Tested:** 12
-- **Computed Columns Tested:** 1
+- **Substrates Tested:** 15
+- **Computed Columns Tested:** 13
 
 ## Summary by Substrate
 
 | Substrate | Passed | Failed | Total | Score | Duration | Status |
 |-----------|--------|--------|-------|-------|----------|--------|
-| explain-dag | 3 | 0 | 3 | 100.0% | < 1s | PASS |
-| python | 3 | 0 | 3 | 100.0% | < 1s | PASS |
-| uml | 3 | 0 | 3 | 100.0% | < 1s | PASS |
-| yaml | 3 | 0 | 3 | 100.0% | < 1s | PASS |
-| binary | 3 | 0 | 3 | 100.0% | < 1s | PASS |
-| cobol | 3 | 0 | 3 | 100.0% | < 1s | PASS |
-| csv | 3 | 0 | 3 | 100.0% | < 1s | PASS |
-| owl | 3 | 0 | 3 | 100.0% | < 1s | PASS |
-| xlsx | 3 | 0 | 3 | 100.0% | < 1s | PASS |
-| golang | 3 | 0 | 3 | 100.0% | 1s | PASS |
-| postgres | 3 | 0 | 3 | 100.0% | 32s | PASS |
-| english | 0 | 3 | 3 | 0.0% | 16s | FAIL |
+| airtable | 40 | 0 | 40 | 100.0% | < 1s | PASS |
+| python | 40 | 0 | 40 | 100.0% | < 1s | PASS |
+| csv | 40 | 0 | 40 | 100.0% | < 1s | PASS |
+| golang | 40 | 0 | 40 | 100.0% | < 1s | PASS |
+| xlsx | 40 | 0 | 40 | 100.0% | < 1s | PASS |
+| effortless-postgres | 40 | 0 | 40 | 100.0% | 4s | PASS |
+| effortless-xlsx | 40 | 0 | 40 | 100.0% | 37s | PASS |
+| binary | 8 | 32 | 40 | 20.0% | < 1s | FAIL |
+| cobol | 8 | 32 | 40 | 20.0% | < 1s | FAIL |
+| explain-dag | 8 | 32 | 40 | 20.0% | < 1s | FAIL |
+| owl | 8 | 32 | 40 | 20.0% | < 1s | FAIL |
+| uml | 8 | 32 | 40 | 20.0% | < 1s | FAIL |
+| effortless-entity-framework | 5 | 35 | 40 | 12.5% | 47s | FAIL |
+| english | 5 | 35 | 40 | 12.5% | 19s | FAIL |
+| yaml | 5 | 35 | 40 | 12.5% | < 1s | FAIL |
 
 ## Overall Statistics
 
 | Metric | Value |
 |--------|-------|
-| Total Substrates | 12 |
-| Total Fields Tested | 36 |
-| Total Passed | 33 |
-| Total Failed | 3 |
-| Overall Score | 91.7% |
-| Total Duration | 52s |
+| Total Substrates | 15 |
+| Total Fields Tested | 600 |
+| Total Passed | 335 |
+| Total Failed | 265 |
+| Overall Score | 55.8% |
+| Total Duration | 1m 52s |
 
 ---
 

@@ -2,7 +2,7 @@
 """
 Generate English documentation from ANY Effortless Rulebook.
 
-ARCHITECTURE: Generic Rulebook → English Specification (LLM-Driven)
+ARCHITECTURE: Generic Rulebook -> English Specification (LLM-Driven)
 ====================================================================
 This substrate reads the effortless-rulebook.json and uses an LLM to generate:
 1. specification.md - Plain English explanation of all calculated fields
@@ -10,20 +10,18 @@ This substrate reads the effortless-rulebook.json and uses an LLM to generate:
 The core insight: Let the LLM do the work. Instead of writing formula parsers,
 just send the rulebook JSON to the LLM and ask it to write the specification.
 
-OFFLINE MODE:
-If no OPENAI_API_KEY (or ANTHROPIC_API_KEY) is set, the substrate will:
-1. Check for a cached specification in bases/<name>/english-specification.md
-2. If found, use it without making any LLM calls
-3. If not found, skip with a clear message
-
-This enables Docker/offline operation from a fresh clone.
+REGENERATION POLICY:
+- Default: regenerate when the rulebook is newer than specification.md (or spec missing)
+- --regenerate: force regeneration regardless of mtimes
+- If no LLM API key is available: leave whatever specification.md exists in place and
+  exit with a warning. There is no repo-committed cache to restore from - the English
+  spec is always derived from the rulebook on every run where the LLM is reachable.
 """
 
 import sys
 import os
 import argparse
 import json
-import shutil
 from pathlib import Path
 
 # Add project root to path for shared imports
@@ -33,13 +31,6 @@ sys.path.insert(0, str(PROJECT_ROOT))
 
 from orchestration.shared import load_rulebook, get_candidate_name_from_cwd, handle_clean_arg
 
-# =============================================================================
-# OFFLINE CACHE SUPPORT
-# =============================================================================
-
-BASES_JSON = PROJECT_ROOT / "orchestration" / "bases.json"
-SSOTME_JSON = PROJECT_ROOT / "ssotme.json"
-
 # Colors
 YELLOW = '\033[1;33m'
 GREEN = '\033[0;32m'
@@ -47,50 +38,7 @@ CYAN = '\033[0;36m'
 DIM = '\033[2m'
 NC = '\033[0m'
 
-
-def get_current_base_id():
-    """Get the current base ID from ssotme.json."""
-    if not SSOTME_JSON.exists():
-        return None
-    try:
-        with open(SSOTME_JSON, 'r') as f:
-            config = json.load(f)
-        for setting in config.get('ProjectSettings', []):
-            if setting.get('Name') == 'baseId':
-                return setting.get('Value')
-    except Exception:
-        pass
-    return None
-
-
-def get_base_by_id(base_id: str):
-    """Get base config by ID."""
-    if not BASES_JSON.exists():
-        return None
-    try:
-        with open(BASES_JSON, 'r') as f:
-            bases = json.load(f)
-        for base in bases:
-            if base.get('id') == base_id:
-                return base
-    except Exception:
-        pass
-    return None
-
-
-def get_cached_specification_path(base_id: str = None) -> Path:
-    """Get the path to cached specification in repo cache."""
-    if base_id is None:
-        base_id = get_current_base_id()
-    if not base_id:
-        return None
-
-    base = get_base_by_id(base_id)
-    if base and base.get('docs'):
-        cache_path = PROJECT_ROOT / base['docs'] / "english-specification.md"
-        if cache_path.exists():
-            return cache_path
-    return None
+RULEBOOK_PATH = PROJECT_ROOT / "effortless-rulebook" / "effortless-rulebook.json"
 
 
 def has_api_key(provider: str = "openai") -> bool:
@@ -102,46 +50,14 @@ def has_api_key(provider: str = "openai") -> bool:
     return False
 
 
-def restore_from_cache() -> bool:
-    """Restore specification from repo cache if available."""
-    cache_path = get_cached_specification_path()
-    if not cache_path:
-        return False
-
-    try:
-        target = SCRIPT_DIR / "specification.md"
-        shutil.copy2(cache_path, target)
-        print(f"  {GREEN}Restored specification from repo cache{NC}")
-        print(f"  {DIM}Source: {cache_path.relative_to(PROJECT_ROOT)}{NC}")
+def rulebook_is_newer_than_spec(spec_path: Path) -> bool:
+    """True if the rulebook has been updated since the spec was last written."""
+    if not spec_path.exists():
         return True
-    except Exception as e:
-        print(f"  {YELLOW}Warning: Failed to restore from cache: {e}{NC}")
+    if not RULEBOOK_PATH.exists():
         return False
+    return RULEBOOK_PATH.stat().st_mtime > spec_path.stat().st_mtime
 
-
-def save_to_cache() -> bool:
-    """Save current specification to repo cache."""
-    base_id = get_current_base_id()
-    if not base_id:
-        return False
-
-    base = get_base_by_id(base_id)
-    if not base or not base.get('docs'):
-        return False
-
-    source = SCRIPT_DIR / "specification.md"
-    if not source.exists():
-        return False
-
-    try:
-        target = PROJECT_ROOT / base['docs'] / "english-specification.md"
-        target.parent.mkdir(parents=True, exist_ok=True)
-        shutil.copy2(source, target)
-        print(f"  {GREEN}Saved specification to repo cache{NC}")
-        print(f"  {DIM}Target: {target.relative_to(PROJECT_ROOT)}{NC}")
-        return True
-    except Exception:
-        return False
 
 # =============================================================================
 # MODEL TIER CONFIGURATION
@@ -239,15 +155,23 @@ RULEBOOK:
 Write a specification document in Markdown format that includes:
 
 1. A title and brief overview of what this rulebook does
-2. For each entity that has calculated fields:
+2. For each entity:
    - List the input fields (type="raw") with their names, types, and descriptions
-   - For each calculated field (type="calculated"):
-     - Explain in plain English exactly how to compute it from the inputs
-     - Include the formula for reference
-     - Provide a concrete example using data from the rulebook if available
+   - For EVERY derived field — including type="calculated", type="lookup",
+     AND type="aggregation" — explain in plain English exactly how to compute it:
+     - For "calculated" fields: describe the computation from this entity's own inputs.
+     - For "lookup" fields: name the foreign table, the join key on each side, and
+       which column to return. E.g. "RoleName comes from the Roles table: find the
+       Roles row where Roles.RoleId equals this Employee's Role, then return its Name."
+     - For "aggregation" fields: name the source table, the filter predicate, and the
+       aggregation (count/sum/etc). E.g. "CountOfEmployees counts the rows in Employees
+       where Employees.Role equals this Role's RoleId."
+     - Include the original formula for reference.
+     - Provide a concrete example using data from the rulebook if available.
 
 The specification should be clear enough that someone could follow it to compute
-the correct values without seeing the original formulas.
+the correct values for every derived field — scalar, lookup, AND aggregation —
+without seeing the original formulas.
 
 IMPORTANT: Focus on the actual content of this specific rulebook ("{rulebook_name}").
 Do not include generic boilerplate about "language classification" or unrelated domains."""
@@ -288,88 +212,52 @@ def main():
     parser.add_argument(
         "--regenerate", "-r",
         action="store_true",
-        help="Force regeneration of all content without prompting"
+        help="Force regeneration regardless of rulebook/spec mtimes"
     )
     parser.add_argument(
         "--no-prompt",
         action="store_true",
-        help="Skip interactive prompts"
-    )
-    parser.add_argument(
-        "--use-cache",
-        action="store_true",
-        help="Use cached specification from repo (skip LLM)"
-    )
-    parser.add_argument(
-        "--save-cache",
-        action="store_true",
-        help="Save generated specification to repo cache after generation"
+        help="Skip the interactive LLM-confirmation prompt"
     )
 
     args = parser.parse_args()
 
     candidate_name = get_candidate_name_from_cwd()
     provider = args.provider
+    spec_file = Path("specification.md")
 
-    # ==========================================================================
-    # OFFLINE MODE: Check for API key, use cache if unavailable
-    # ==========================================================================
-    api_available = has_api_key(provider)
-    cache_path = get_cached_specification_path()
+    # ------------------------------------------------------------------
+    # Decide whether regeneration is needed.
+    #   - --regenerate: always regenerate
+    #   - default: regenerate iff rulebook is newer than spec (or spec missing)
+    # ------------------------------------------------------------------
+    needs_regen = args.regenerate or rulebook_is_newer_than_spec(spec_file)
 
-    if args.use_cache:
-        # Explicit cache usage requested
-        print(f"\n{CYAN}Using cached specification (--use-cache){NC}")
-        if restore_from_cache():
-            return 0
-        else:
-            print(f"  {YELLOW}No cached specification available{NC}")
+    if not needs_regen:
+        print(f"\n{DIM}specification.md is up to date (rulebook not newer). Skipping.{NC}")
+        return 0
+
+    # ------------------------------------------------------------------
+    # LLM reachability check. If no API key, leave spec untouched.
+    # There is no repo-committed cache to fall back to - the spec is
+    # deterministically derived from the rulebook whenever the LLM is
+    # reachable, so stale-but-present is the honest offline behavior.
+    # ------------------------------------------------------------------
+    if not has_api_key(provider):
+        print(f"\n{YELLOW}No API key found for {provider.upper()}.{NC}")
+        if spec_file.exists():
+            print(f"  {DIM}Leaving existing specification.md in place (it may be stale).{NC}")
+            print(f"  {DIM}Set {provider.upper()}_API_KEY to regenerate from the current rulebook.{NC}")
             return 2
-
-    if not api_available and not args.regenerate:
-        # No API key - try to use cache
-        print(f"\n{YELLOW}No API key found for {provider.upper()}{NC}")
-
-        if cache_path:
-            print(f"  Using cached specification from repo...")
-            if restore_from_cache():
-                return 0
-
-        # No cache available
-        print(f"\n  {YELLOW}No cached specification available for this base.{NC}")
-        print(f"  {DIM}To generate a specification, set {provider.upper()}_API_KEY environment variable.{NC}")
-        print(f"  {DIM}Or run with --use-cache after caching a specification.{NC}")
+        print(f"  {YELLOW}No specification.md exists and LLM is unreachable.{NC}")
+        print(f"  {DIM}Set {provider.upper()}_API_KEY to generate a specification.{NC}")
         return 2
 
-    # ==========================================================================
-    # NORMAL MODE: Generate via LLM
-    # ==========================================================================
-
-    # Check if specification already exists
-    spec_file = Path("specification.md")
-    if spec_file.exists() and not args.regenerate:
-        print(f"\nExisting specification.md found.")
-        if args.no_prompt:
-            print("Skipping regeneration (use --regenerate to force).")
-            return 2
-
-        if not sys.stdin.isatty():
-            print("Non-interactive mode detected. Skipping regeneration (use --regenerate to force).")
-            return 2
-
-        print(f"\nRegenerate English specification?")
-        try:
-            response = input("Regenerate? [y/N]: ").strip().lower()
-            if response not in ('y', 'yes'):
-                print("Skipping regeneration.")
-                return 2
-        except (EOFError, KeyboardInterrupt):
-            print("\nSkipping regeneration.")
-            return 2
-
+    # ------------------------------------------------------------------
+    # Generate via LLM
+    # ------------------------------------------------------------------
     print(f"Generating {candidate_name} substrate...")
 
-    # Load the rulebook
     try:
         rulebook = load_rulebook()
         rulebook_name = rulebook.get('Name', 'Unknown')
@@ -378,11 +266,8 @@ def main():
         print(f"Error: {e}")
         return 1
 
-    # Generate specification via LLM
     print("\n=== Generating Specification (LLM-driven) ===")
-    print(f"  Generating specification via LLM...")
 
-    # ALWAYS ask before making LLM call (unless --no-prompt or non-interactive)
     if not args.no_prompt and sys.stdin.isatty():
         model = get_model_for_tier(args.tier, args.provider)
         print(f"\n  This will call {args.provider.upper()} ({model}) to generate the specification.")
@@ -399,14 +284,6 @@ def main():
     with open("specification.md", 'w', encoding='utf-8') as f:
         f.write(spec_content)
     print("  Created specification.md")
-
-    # AUTO-SAVE to repo cache (self-maintaining system)
-    # This ensures the cache stays up-to-date as specs are generated
-    print("\n=== Auto-saving to Repo Cache ===")
-    if save_to_cache():
-        print(f"  {DIM}(Cache will be used for offline/Docker runs){NC}")
-    else:
-        print(f"  {DIM}(No cache location configured for this base){NC}")
 
     print(f"\nDone generating {candidate_name} substrate.")
     return 0

@@ -8,43 +8,250 @@ erb: a owl:Ontology ;
     rdfs:label "ERB Ontology" ;
     rdfs:comment "Generated from effortless-rulebook.json" .
 
-# === Class: Customers ===
-erb:Customers a owl:Class ;
-    rdfs:label "Customers" ;
-    rdfs:comment "Table: Customers" .
+# === Class: Client ===
+erb:Client a owl:Class ;
+    rdfs:label "Client" ;
+    rdfs:comment "Table: Client" .
 
-erb:customerId a owl:DatatypeProperty ;
-    rdfs:domain erb:Customers ;
+erb:clientId a owl:DatatypeProperty ;
+    rdfs:domain erb:Client ;
     rdfs:range xsd:string ;
-    rdfs:label "CustomerId" .
+    rdfs:label "ClientId" .
 
 erb:customer a owl:DatatypeProperty ;
-    rdfs:domain erb:Customers ;
+    rdfs:domain erb:Client ;
     rdfs:range xsd:string ;
     rdfs:label "Customer" ;
     rdfs:comment "Identifier for the customers." .
 
 erb:emailAddress a owl:DatatypeProperty ;
-    rdfs:domain erb:Customers ;
+    rdfs:domain erb:Client ;
     rdfs:range xsd:string ;
     rdfs:label "EmailAddress" ;
     rdfs:comment "Thec ustomers email address" .
 
 erb:firstName a owl:DatatypeProperty ;
-    rdfs:domain erb:Customers ;
+    rdfs:domain erb:Client ;
     rdfs:range xsd:string ;
     rdfs:label "FirstName" ;
     rdfs:comment "First Name of the customer - used to make the full name" .
 
 erb:lastName a owl:DatatypeProperty ;
-    rdfs:domain erb:Customers ;
+    rdfs:domain erb:Client ;
     rdfs:range xsd:string ;
     rdfs:label "LastName" ;
     rdfs:comment "Last Name of the customer - used to make the full name" .
 
 erb:fullName a owl:DatatypeProperty ;
-    rdfs:domain erb:Customers ;
+    rdfs:domain erb:Client ;
     rdfs:range xsd:string ;
     rdfs:label "FullName" ;
     rdfs:comment "Full name is computed from the first and last name of the customer" .
     # calculated: calculated
+
+# === Class: Employees ===
+erb:Employees a owl:Class ;
+    rdfs:label "Employees" ;
+    rdfs:comment "Table: Employees" .
+
+erb:employeeId a owl:DatatypeProperty ;
+    rdfs:domain erb:Employees ;
+    rdfs:range xsd:string ;
+    rdfs:label "EmployeeId" .
+
+erb:name a owl:DatatypeProperty ;
+    rdfs:domain erb:Employees ;
+    rdfs:range xsd:string ;
+    rdfs:label "Name" .
+
+erb:emailAddress a owl:DatatypeProperty ;
+    rdfs:domain erb:Employees ;
+    rdfs:range xsd:string ;
+    rdfs:label "EmailAddress" .
+
+erb:phoneNumber a owl:DatatypeProperty ;
+    rdfs:domain erb:Employees ;
+    rdfs:range xsd:string ;
+    rdfs:label "PhoneNumber" .
+
+erb:role a owl:DatatypeProperty ;
+    rdfs:domain erb:Employees ;
+    rdfs:range xsd:string ;
+    rdfs:label "Role" .
+
+erb:roleName a owl:DatatypeProperty ;
+    rdfs:domain erb:Employees ;
+    rdfs:range xsd:string ;
+    rdfs:label "RoleName" .
+    # calculated: lookup
+
+erb:roleDescription a owl:DatatypeProperty ;
+    rdfs:domain erb:Employees ;
+    rdfs:range xsd:string ;
+    rdfs:label "RoleDescription" .
+    # calculated: lookup
+
+erb:projects a owl:DatatypeProperty ;
+    rdfs:domain erb:Employees ;
+    rdfs:range xsd:string ;
+    rdfs:label "Projects" .
+
+erb:roleIsManager a owl:DatatypeProperty ;
+    rdfs:domain erb:Employees ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "RoleIsManager" .
+    # calculated: lookup
+
+# === Class: Projects ===
+erb:Projects a owl:Class ;
+    rdfs:label "Projects" ;
+    rdfs:comment "Table: Projects" .
+
+erb:projectId a owl:DatatypeProperty ;
+    rdfs:domain erb:Projects ;
+    rdfs:range xsd:string ;
+    rdfs:label "ProjectId" .
+
+erb:name a owl:DatatypeProperty ;
+    rdfs:domain erb:Projects ;
+    rdfs:range xsd:string ;
+    rdfs:label "Name" .
+
+erb:description a owl:DatatypeProperty ;
+    rdfs:domain erb:Projects ;
+    rdfs:range xsd:string ;
+    rdfs:label "Description" .
+
+erb:projectType a owl:DatatypeProperty ;
+    rdfs:domain erb:Projects ;
+    rdfs:range xsd:string ;
+    rdfs:label "ProjectType" .
+
+erb:projectTypeName a owl:DatatypeProperty ;
+    rdfs:domain erb:Projects ;
+    rdfs:range xsd:string ;
+    rdfs:label "ProjectTypeName" .
+    # calculated: lookup
+
+erb:projectTypeDescription a owl:DatatypeProperty ;
+    rdfs:domain erb:Projects ;
+    rdfs:range xsd:string ;
+    rdfs:label "ProjectTypeDescription" .
+    # calculated: lookup
+
+erb:projectTypeRequiresManagerApproval a owl:DatatypeProperty ;
+    rdfs:domain erb:Projects ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "ProjectTypeRequiresManagerApproval" .
+    # calculated: lookup
+
+erb:dueDate a owl:DatatypeProperty ;
+    rdfs:domain erb:Projects ;
+    rdfs:range xsd:string ;
+    rdfs:label "DueDate" .
+
+erb:isApproved a owl:DatatypeProperty ;
+    rdfs:domain erb:Projects ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "IsApproved" .
+
+erb:approvedBy a owl:DatatypeProperty ;
+    rdfs:domain erb:Projects ;
+    rdfs:range xsd:string ;
+    rdfs:label "ApprovedBy" .
+
+erb:approvedByRoleIsManager a owl:DatatypeProperty ;
+    rdfs:domain erb:Projects ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "ApprovedByRoleIsManager" .
+    # calculated: lookup
+
+erb:approvedByName a owl:DatatypeProperty ;
+    rdfs:domain erb:Projects ;
+    rdfs:range xsd:string ;
+    rdfs:label "ApprovedByName" .
+    # calculated: lookup
+
+erb:approvedByEmailAddress a owl:DatatypeProperty ;
+    rdfs:domain erb:Projects ;
+    rdfs:range xsd:string ;
+    rdfs:label "ApprovedByEmailAddress" .
+    # calculated: lookup
+
+erb:approvedByPhoneNumber a owl:DatatypeProperty ;
+    rdfs:domain erb:Projects ;
+    rdfs:range xsd:string ;
+    rdfs:label "ApprovedByPhoneNumber" .
+    # calculated: lookup
+
+# === Class: Roles ===
+erb:Roles a owl:Class ;
+    rdfs:label "Roles" ;
+    rdfs:comment "Table: Roles" .
+
+erb:roleId a owl:DatatypeProperty ;
+    rdfs:domain erb:Roles ;
+    rdfs:range xsd:string ;
+    rdfs:label "RoleId" .
+
+erb:name a owl:DatatypeProperty ;
+    rdfs:domain erb:Roles ;
+    rdfs:range xsd:string ;
+    rdfs:label "Name" .
+
+erb:description a owl:DatatypeProperty ;
+    rdfs:domain erb:Roles ;
+    rdfs:range xsd:string ;
+    rdfs:label "Description" .
+
+erb:isManager a owl:DatatypeProperty ;
+    rdfs:domain erb:Roles ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "IsManager" .
+
+erb:employees a owl:DatatypeProperty ;
+    rdfs:domain erb:Roles ;
+    rdfs:range xsd:string ;
+    rdfs:label "Employees" .
+
+erb:countOfEmployees a owl:DatatypeProperty ;
+    rdfs:domain erb:Roles ;
+    rdfs:range xsd:integer ;
+    rdfs:label "CountOfEmployees" .
+    # calculated: aggregation
+
+# === Class: TypesOfProject ===
+erb:TypesOfProject a owl:Class ;
+    rdfs:label "TypesOfProject" ;
+    rdfs:comment "Table: TypesOfProject" .
+
+erb:typesOfProjectId a owl:DatatypeProperty ;
+    rdfs:domain erb:TypesOfProject ;
+    rdfs:range xsd:string ;
+    rdfs:label "TypesOfProjectId" .
+
+erb:name a owl:DatatypeProperty ;
+    rdfs:domain erb:TypesOfProject ;
+    rdfs:range xsd:string ;
+    rdfs:label "Name" .
+
+erb:description a owl:DatatypeProperty ;
+    rdfs:domain erb:TypesOfProject ;
+    rdfs:range xsd:string ;
+    rdfs:label "Description" .
+
+erb:requiresManagerApproval a owl:DatatypeProperty ;
+    rdfs:domain erb:TypesOfProject ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "RequiresManagerApproval" .
+
+erb:projects a owl:DatatypeProperty ;
+    rdfs:domain erb:TypesOfProject ;
+    rdfs:range xsd:string ;
+    rdfs:label "Projects" .
+
+erb:countOfProjects a owl:DatatypeProperty ;
+    rdfs:domain erb:TypesOfProject ;
+    rdfs:range xsd:integer ;
+    rdfs:label "CountOfProjects" .
+    # calculated: aggregation

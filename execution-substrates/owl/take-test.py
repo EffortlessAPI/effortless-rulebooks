@@ -2,13 +2,20 @@
 """
 Take Test - OWL Execution Substrate
 
+GUARD: This substrate must compute calculated fields using its own native
+engine: SHACL via pyshacl. It must NOT import python_only_erb_simulator or
+call compute_lookups / compute_aggregations from any orchestration helper.
+Fields it cannot compute natively (SHACL rules that fail to compile, or
+formula classes the rulebook-to-owl translator doesn't yet support) must be
+left null and counted as failures by the grader. The forthcoming first-party
+`rulebook-to-owl` tool will close the gap; until then OWL is honestly partial.
+
 This script uses SHACL-SPARQL reasoning to compute derived values:
 1. Loads the generated ontology and SHACL rules
 2. Runs pyshacl multiple passes to resolve dependencies between computed fields
 3. Extracts results to test-answers/ directory
 
 The computation happens in the SHACL reasoner, not in Python code.
-This script is 100% domain-agnostic - all field names come from the rulebook.
 """
 
 import json
@@ -141,24 +148,35 @@ def extract_entity_results(
     """
     records = []
 
-    # Build field info map
+    # Build field info map and partition into raw vs computed.
+    # Conformance-cleanup fix 2026-05-12: only RAW field values are carried
+    # forward from the rulebook's data array. Computed/lookup/aggregation
+    # fields must come from the RDF graph (i.e. from SHACL inference) or
+    # remain absent — otherwise we were silently passing the answer key
+    # through the supposed reasoner.
     all_fields = []
+    raw_snake_keys = set()
     for col in schema:
+        col_type = col.get('type', 'raw')
+        snake_name = camel_to_snake(col.get('name', ''))
         all_fields.append({
             'name': col.get('name', ''),
             'datatype': col.get('datatype', 'string'),
-            'type': col.get('type', 'raw')
+            'type': col_type,
         })
+        if col_type == 'raw':
+            raw_snake_keys.add(snake_name)
 
     # Extract each individual
     for i, original_row in enumerate(data):
         ind_uri = ERB[f"{table_name}_{i}"]
 
-        # Start with original data (snake_case keys)
+        # Start with RAW data only; never carry pre-computed values through.
         record = {}
         for key, value in original_row.items():
             snake_key = camel_to_snake(key)
-            record[snake_key] = value
+            if snake_key in raw_snake_keys:
+                record[snake_key] = value
 
         # Query each field from the graph (includes computed values)
         for field_info in all_fields:

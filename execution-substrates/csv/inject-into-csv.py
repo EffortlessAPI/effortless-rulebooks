@@ -1,20 +1,20 @@
 #!/usr/bin/env python3
 """
-General-purpose Rulebook-to-XLSX+CSV transpiler.
+Rulebook-to-CSV transpiler.
 
-This script reads the effortless-rulebook.json and generates:
-1. An Excel workbook (rulebook.xlsx) with one worksheet per table
-2. CSV exports for each entity (e.g., {entity_name}.csv)
-3. A CSV export of column formulas (column_formulas.csv)
+The csv substrate mirrors the open-source xlsx substrate: it produces the
+same rulebook.xlsx (with Excel formulas) using the same generation and
+git-based smart-update logic. On top of that, it also exports flat CSV files
+to test-data/ (one per entity) plus a column_formulas.csv index. The xlsx
+file is the computation tape; the CSVs are the user-visible artifact.
 
-The xlsx generation is identical to the xlsx substrate, but this substrate
-also produces CSV files that can be used for testing without Excel dependencies.
+Correctness is graded by openpyxl evaluating rulebook.xlsx in take-test.py,
+identical to xlsx — so the two substrates score identically.
 """
 
+import csv
 import sys
 import re
-import csv
-import shutil
 from pathlib import Path
 
 # Add project root to path for shared imports
@@ -24,9 +24,10 @@ from orchestration.shared import load_rulebook, get_candidate_name_from_cwd, han
 
 # Try to import openpyxl, provide helpful error if missing
 try:
-    from openpyxl import Workbook
+    from openpyxl import Workbook, load_workbook
     from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
     from openpyxl.utils import get_column_letter
+    from openpyxl.comments import Comment
 except ImportError:
     print("Error: openpyxl is required. Install with: pip install openpyxl")
     sys.exit(1)
@@ -48,6 +49,39 @@ def build_column_map(schema):
         col_letter = get_column_letter(idx + 1)
         column_map[field['name']] = col_letter
     return column_map
+
+
+def convert_formula_to_excel(formula, column_map, row_num):
+    """Convert a rulebook formula to an Excel formula.
+
+    Converts {{FieldName}} placeholders to cell references like $B2.
+    The $ before the column letter makes it an absolute column reference,
+    while the row number remains relative.
+
+    Args:
+        formula: The formula string from the rulebook (e.g., "={{HasSyntax}} = TRUE()")
+        column_map: Dict mapping field names to column letters
+        row_num: The current row number (1-indexed, accounting for header row)
+
+    Returns:
+        Excel formula string with cell references
+    """
+    result = formula
+
+    # Find all {{FieldName}} patterns and replace with cell references
+    pattern = r'\{\{(\w+)\}\}'
+
+    def replace_field(match):
+        field_name = match.group(1)
+        if field_name in column_map:
+            col_letter = column_map[field_name]
+            return f'${col_letter}{row_num}'
+        else:
+            # Keep the placeholder if field not found (might be an error in rulebook)
+            return match.group(0)
+
+    result = re.sub(pattern, replace_field, result)
+    return result
 
 
 def evaluate_formula(formula, row_data):
@@ -309,7 +343,7 @@ def get_value_for_cell(field_schema, row_data, column_map, row_num):
     """Get the value to put in a cell.
 
     For raw fields, returns the data value.
-    For calculated fields, computes and returns the value.
+    For calculated fields with formulas, returns the Excel formula.
 
     Args:
         field_schema: The field definition from the schema
@@ -318,15 +352,15 @@ def get_value_for_cell(field_schema, row_data, column_map, row_num):
         row_num: The current row number (1-indexed)
 
     Returns:
-        The computed value for the cell
+        The value or Excel formula to put in the cell
     """
     field_name = field_schema['name']
     field_type = field_schema.get('type', 'raw')
 
     if field_type == 'calculated' and 'formula' in field_schema:
-        # This is a calculated field - compute the value
+        # This is a calculated field - use the Excel formula
         formula = field_schema['formula']
-        return evaluate_formula(formula, row_data)
+        return convert_formula_to_excel(formula, column_map, row_num)
     else:
         # This is a raw field - use the data value
         value = row_data.get(field_name)
@@ -399,6 +433,11 @@ def create_worksheet_from_table(workbook, table_name, table_data):
         cell = ws.cell(row=1, column=col_idx, value=field['name'])
         apply_header_style(cell)
 
+        # Add description as cell comment if available
+        description = field.get('Description', '')
+        if description:
+            cell.comment = Comment(description, "ERB Rulebook")
+
         # Set column width based on header length (minimum 12 chars)
         ws.column_dimensions[get_column_letter(col_idx)].width = max(len(field['name']) + 2, 12)
 
@@ -417,211 +456,143 @@ def create_worksheet_from_table(workbook, table_name, table_data):
     return ws
 
 
-def to_snake_case(name):
-    """Convert PascalCase or camelCase to snake_case.
+def export_xlsx_to_json(xlsx_path):
+    """Export xlsx content to a JSON-serializable structure for comparison.
 
-    Also handles fields with existing underscores: Bio_HockettScore -> bio_hockett_score
-    """
-    # Use [^_] to avoid doubling underscores when input already has them
-    s1 = re.sub('([^_])([A-Z][a-z]+)', r'\1_\2', name)
-    return re.sub('([a-z0-9])([A-Z])', r'\1_\2', s1).lower()
-
-
-def export_entity_csv(table_name, table_data, output_path):
-    """Export a single entity table as a CSV file.
-
-    This produces a flat CSV with computed values (not formulas).
-    """
-    schema = table_data.get('schema', [])
-    data = table_data.get('data', [])
-
-    if not schema:
-        print(f"Warning: {table_name} has no schema")
-        return 0
-
-    # Build column map for formula evaluation
-    column_map = build_column_map(schema)
-
-    # Write CSV
-    with open(output_path, 'w', newline='', encoding='utf-8') as f:
-        writer = csv.writer(f)
-
-        # Write header row using snake_case field names
-        headers = [to_snake_case(field['name']) for field in schema]
-        writer.writerow(headers)
-
-        # Write data rows with computed values
-        for row_data in data:
-            row = []
-            for field in schema:
-                value = get_value_for_cell(field, row_data, column_map, 0)
-                # Convert booleans to lowercase strings for CSV compatibility
-                if isinstance(value, bool):
-                    value = 'true' if value else 'false'
-                elif value is None:
-                    value = ''
-                row.append(value)
-            writer.writerow(row)
-
-    print(f"  -> {table_name}: {len(data)} rows -> {output_path.name}")
-    return len(data)
-
-
-def export_all_entities_csv(rulebook, output_dir):
-    """Export all entity tables as separate CSV files.
-
-    Each entity gets its own {entity_snake_case}.csv file.
-    """
-    table_names = get_table_names(rulebook)
-    total_rows = 0
-
-    for table_name in table_names:
-        table_data = rulebook.get(table_name)
-
-        # Skip if not a table structure (must have schema)
-        if not isinstance(table_data, dict) or 'schema' not in table_data:
-            continue
-
-        # Convert table name to snake_case for filename
-        csv_filename = to_snake_case(table_name) + '.csv'
-        output_path = output_dir / csv_filename
-
-        rows = export_entity_csv(table_name, table_data, output_path)
-        total_rows += rows
-
-    return total_rows
-
-
-def export_column_formulas_csv(rulebook, output_path):
-    """Export column formulas as a CSV file.
-
-    This produces a CSV with columns: table_name, field_name, field_type, dag_level, formula, description
-    """
-    rows = []
-
-    table_names = get_table_names(rulebook)
-
-    for table_name in table_names:
-        table_data = rulebook.get(table_name)
-        if not isinstance(table_data, dict) or 'schema' not in table_data:
-            continue
-
-        schema = table_data.get('schema', [])
-
-        for field in schema:
-            field_name = field.get('name', '')
-            field_type = field.get('type', 'raw')
-            dag_level = field.get('dag_level', 0 if field_type == 'raw' else '')
-            formula = field.get('formula', '')
-            description = field.get('Description', '')
-
-            rows.append({
-                'table_name': table_name,
-                'field_name': to_snake_case(field_name),
-                'field_type': field_type,
-                'dag_level': dag_level,
-                'formula': formula,
-                'description': description
-            })
-
-    # Write CSV
-    with open(output_path, 'w', newline='', encoding='utf-8') as f:
-        fieldnames = ['table_name', 'field_name', 'field_type', 'dag_level', 'formula', 'description']
-        writer = csv.DictWriter(f, fieldnames=fieldnames)
-        writer.writeheader()
-        writer.writerows(rows)
-
-    print(f"Exported {len(rows)} field definitions to {output_path}")
-
-
-def clean_test_data_dir(test_data_dir):
-    """Remove all CSV files from the test-data directory."""
-    if test_data_dir.exists():
-        csv_files = list(test_data_dir.glob('*.csv'))
-        if csv_files:
-            print(f"Cleaning {len(csv_files)} CSV files from {test_data_dir}/")
-            for f in csv_files:
-                f.unlink()
-    else:
-        test_data_dir.mkdir(parents=True)
-        print(f"Created {test_data_dir}/")
-
-
-def compute_table_values_to_csv(rulebook, table_name, csv_path):
-    """Compute values from rulebook and write to CSV for comparison.
+    Exports data and formulas (not volatile metadata like timestamps).
+    This allows comparing two xlsx files for meaningful content changes.
 
     Args:
-        rulebook: The loaded rulebook dict
-        table_name: Name of the table to export
-        csv_path: Path for the output CSV file
+        xlsx_path: Path to the xlsx file
 
     Returns:
-        True if export succeeded, False otherwise
+        Dict with sheet data, or None on error
     """
-    csv_path = Path(csv_path)
-
-    # Find the table (case-insensitive matching)
-    matching_table = None
-    for name in rulebook.keys():
-        if name.lower() == table_name.lower():
-            matching_table = name
-            break
-
-    if not matching_table:
-        return False
-
-    table_data = rulebook[matching_table]
-    if not isinstance(table_data, dict) or 'schema' not in table_data:
-        return False
-
-    schema = table_data.get('schema', [])
-    data = table_data.get('data', [])
-    column_map = build_column_map(schema)
-
     try:
-        with open(csv_path, 'w', newline='', encoding='utf-8') as f:
-            writer = csv.writer(f)
+        wb = load_workbook(xlsx_path)
+        result = {}
 
-            # Write header row
-            header = [field['name'] for field in schema]
-            writer.writerow(header)
+        for sheet_name in wb.sheetnames:
+            ws = wb[sheet_name]
+            sheet_data = []
 
-            # Write data rows with computed values
-            for row_data in data:
-                row = []
-                for field in schema:
-                    value = get_value_for_cell(field, row_data, column_map, 0)
-                    if value is None:
-                        row.append('')
-                    elif isinstance(value, bool):
-                        row.append(str(value))
+            for row in ws.iter_rows():
+                row_data = []
+                for cell in row:
+                    # Get the cell value (formula string if it's a formula, else value)
+                    if cell.value is None:
+                        row_data.append(None)
+                    elif isinstance(cell.value, str) and cell.value.startswith('='):
+                        # It's a formula - store the formula itself
+                        row_data.append(cell.value)
                     else:
-                        row.append(str(value))
-                writer.writerow(row)
+                        row_data.append(cell.value)
+                sheet_data.append(row_data)
 
-        return True
-    except Exception:
-        return False
+            result[sheet_name] = sheet_data
+
+        wb.close()
+        return result
+
+    except Exception as e:
+        print(f"  Error exporting xlsx to JSON: {e}")
+        return None
 
 
-def compare_csv_files(csv1_path, csv2_path):
-    """Compare two CSV files content.
+def get_git_file_content(file_path):
+    """Get the git HEAD version of a file as bytes.
 
-    Returns True if files are identical, False otherwise.
+    Args:
+        file_path: Path to the file (relative or absolute)
+
+    Returns:
+        Bytes content of the file from git HEAD, or None if not in git/doesn't exist
     """
-    csv1_path = Path(csv1_path)
-    csv2_path = Path(csv2_path)
-
-    if not csv1_path.exists() or not csv2_path.exists():
-        return False
+    import subprocess
 
     try:
-        with open(csv1_path, 'r', encoding='utf-8') as f1:
-            content1 = f1.read()
-        with open(csv2_path, 'r', encoding='utf-8') as f2:
-            content2 = f2.read()
-        return content1 == content2
-    except Exception:
+        # Get the relative path from the git root
+        result = subprocess.run(
+            ['git', 'rev-parse', '--show-toplevel'],
+            capture_output=True, text=True, check=True
+        )
+        git_root = Path(result.stdout.strip())
+
+        # Make path relative to git root
+        abs_path = Path(file_path).resolve()
+        try:
+            rel_path = abs_path.relative_to(git_root)
+        except ValueError:
+            print(f"  File {file_path} is not under git root")
+            return None
+
+        # Get file content from HEAD
+        result = subprocess.run(
+            ['git', 'show', f'HEAD:{rel_path}'],
+            capture_output=True, check=True
+        )
+        return result.stdout
+
+    except subprocess.CalledProcessError:
+        # File doesn't exist in git or not a git repo
+        return None
+    except Exception as e:
+        print(f"  Error getting git file: {e}")
+        return None
+
+
+def export_git_xlsx_to_json(file_path):
+    """Export the git HEAD version of an xlsx file to JSON for comparison.
+
+    Args:
+        file_path: Path to the xlsx file
+
+    Returns:
+        Dict with sheet data, or None if file not in git or on error
+    """
+    import tempfile
+
+    git_content = get_git_file_content(file_path)
+    if git_content is None:
+        return None
+
+    # Write to temp file and load with openpyxl
+    try:
+        with tempfile.NamedTemporaryFile(suffix='.xlsx', delete=False) as tmp:
+            tmp.write(git_content)
+            tmp_path = tmp.name
+
+        result = export_xlsx_to_json(tmp_path)
+
+        # Clean up temp file
+        Path(tmp_path).unlink()
+
+        return result
+
+    except Exception as e:
+        print(f"  Error loading git xlsx: {e}")
+        return None
+
+
+def git_checkout_file(file_path):
+    """Restore a file to its git HEAD version.
+
+    Args:
+        file_path: Path to the file
+
+    Returns:
+        True if successful, False otherwise
+    """
+    import subprocess
+
+    try:
+        subprocess.run(
+            ['git', 'checkout', 'HEAD', '--', str(file_path)],
+            capture_output=True, check=True
+        )
+        return True
+    except subprocess.CalledProcessError as e:
+        print(f"  Error checking out file: {e}")
         return False
 
 
@@ -632,30 +603,134 @@ def cleanup_file(path):
         path.unlink()
 
 
+def generate_workbook(rulebook, table_names):
+    """Generate the workbook from the rulebook.
+    
+    Args:
+        rulebook: The loaded rulebook dict
+        table_names: List of table names to process
+        
+    Returns:
+        The generated Workbook object
+    """
+    wb = Workbook()
+    default_sheet = wb.active
+
+    for table_name in table_names:
+        table_data = rulebook[table_name]
+
+        if not isinstance(table_data, dict) or 'schema' not in table_data:
+            print(f"  Skipping {table_name}: not a table structure")
+            continue
+
+        print(f"  Creating worksheet: {table_name}")
+        schema = table_data.get('schema', [])
+        data = table_data.get('data', [])
+
+        raw_count = sum(1 for f in schema if f.get('type', 'raw') == 'raw')
+        calc_count = sum(1 for f in schema if f.get('type') == 'calculated')
+
+        print(f"    - {len(schema)} columns ({raw_count} raw, {calc_count} calculated)")
+        print(f"    - {len(data)} data rows")
+
+        create_worksheet_from_table(wb, table_name, table_data)
+
+    if len(wb.sheetnames) > 1:
+        wb.remove(default_sheet)
+
+    return wb
+
+
+def to_snake_case(name):
+    s1 = re.sub('([^_])([A-Z][a-z]+)', r'\1_\2', name)
+    return re.sub('([a-z0-9])([A-Z])', r'\1_\2', s1).lower()
+
+
+def export_entity_csvs(rulebook, table_names, output_dir):
+    """Export each entity to a flat CSV with computed values (one file per table)."""
+    output_dir = Path(output_dir)
+    output_dir.mkdir(parents=True, exist_ok=True)
+    # Wipe any prior csv exports so removed entities don't linger.
+    for old in output_dir.glob('*.csv'):
+        old.unlink()
+
+    for table_name in table_names:
+        table_data = rulebook.get(table_name)
+        if not isinstance(table_data, dict) or 'schema' not in table_data:
+            continue
+
+        schema = table_data.get('schema', [])
+        data = table_data.get('data', [])
+        column_map = build_column_map(schema)
+
+        csv_path = output_dir / (to_snake_case(table_name) + '.csv')
+        with open(csv_path, 'w', newline='', encoding='utf-8') as f:
+            writer = csv.writer(f)
+            writer.writerow([to_snake_case(field['name']) for field in schema])
+            for row_idx, row_data in enumerate(data, 2):
+                row = []
+                for field in schema:
+                    if field.get('type') == 'calculated' and 'formula' in field:
+                        value = evaluate_formula(field['formula'], row_data)
+                    else:
+                        value = row_data.get(field['name'])
+                    if value is None:
+                        row.append('')
+                    elif isinstance(value, bool):
+                        row.append('true' if value else 'false')
+                    else:
+                        row.append(value)
+                writer.writerow(row)
+        print(f"  -> {table_name}: {len(data)} rows -> {csv_path.name}")
+
+
+def export_column_formulas_csv(rulebook, table_names, output_path):
+    """Export an index of every field across every table (type, formula, description)."""
+    rows = []
+    for table_name in table_names:
+        table_data = rulebook.get(table_name)
+        if not isinstance(table_data, dict) or 'schema' not in table_data:
+            continue
+        for field in table_data.get('schema', []):
+            field_type = field.get('type', 'raw')
+            rows.append({
+                'table_name': table_name,
+                'field_name': to_snake_case(field.get('name', '')),
+                'field_type': field_type,
+                'dag_level': field.get('dag_level', 0 if field_type == 'raw' else ''),
+                'formula': field.get('formula', ''),
+                'description': field.get('Description', ''),
+            })
+    with open(output_path, 'w', newline='', encoding='utf-8') as f:
+        fieldnames = ['table_name', 'field_name', 'field_type', 'dag_level', 'formula', 'description']
+        writer = csv.DictWriter(f, fieldnames=fieldnames)
+        writer.writeheader()
+        writer.writerows(rows)
+    print(f"Exported {len(rows)} field definitions to {output_path}")
+
+
 def main():
     # Define generated files for this substrate
-    # Note: Entity CSV files are now generated in test-data/ directory
     GENERATED_FILES = [
         'rulebook.xlsx',
+        'test-answers.json',
         'test-results.md',
     ]
 
     # Handle --clean argument
-    if handle_clean_arg(GENERATED_FILES, "CSV substrate: Removes generated CSV files and test outputs"):
-        # Also clean the test-data directory
+    if handle_clean_arg(GENERATED_FILES, "CSV substrate: Removes generated workbook, CSV exports, and test outputs"):
+        # Also wipe the test-data CSV exports.
         test_data_dir = Path('test-data')
         if test_data_dir.exists():
             for f in test_data_dir.glob('*.csv'):
                 f.unlink()
-            print(f"Cleaned test-data/ directory")
         return
 
     candidate_name = get_candidate_name_from_cwd()
     print(f"Generating {candidate_name} from rulebook...")
 
-    # Clean and prepare test-data directory
-    test_data_dir = Path('test-data')
-    clean_test_data_dir(test_data_dir)
+    # Define paths
+    output_path = Path('rulebook.xlsx')
 
     # Load the rulebook
     try:
@@ -673,110 +748,44 @@ def main():
 
     print(f"Found {len(table_names)} tables: {', '.join(table_names)}")
 
-    # --- SMART UPDATE WORKFLOW FOR XLSX ---
-    xlsx_path = Path('rulebook.xlsx')
-    backup_path = Path('rulebook.xlsx.backup')
-    csv_before_path = Path('.entity_before.csv')
-    csv_after_path = Path('.entity_after.csv')
-
-    # Find first valid table for comparison (must have schema)
-    comparison_table = None
-    for name in table_names:
-        table_data = rulebook.get(name)
-        if isinstance(table_data, dict) and 'schema' in table_data:
-            comparison_table = name
-            break
-
-    print(f"\n--- Smart Update: Checking for actual content changes ---")
-    has_existing_xlsx = xlsx_path.exists()
-    baseline_exported = False
-
-    if not comparison_table:
-        print(f"  No valid tables found for comparison - skipping smart update")
-    elif has_existing_xlsx:
-        print(f"Step 1: Computing baseline values for '{comparison_table}'...")
-        baseline_exported = compute_table_values_to_csv(rulebook, comparison_table, csv_before_path)
-
-        if baseline_exported:
-            print(f"  Exported baseline to: {csv_before_path}")
-
-            # Backup current xlsx
-            print(f"Step 2: Creating backup of existing xlsx...")
-            shutil.move(str(xlsx_path), str(backup_path))
-            print(f"  Backed up to: {backup_path}")
+    # Step 1: Get git's version of the file BEFORE we overwrite it
+    print(f"\n--- Smart Update: Getting git baseline ---")
+    git_content = export_git_xlsx_to_json(output_path)
+    if git_content:
+        print(f"  Exported git HEAD version for comparison")
     else:
-        print(f"  No existing xlsx found - this is a fresh generation")
+        print(f"  No git baseline (new file or not in git)")
 
-    # Create workbook
-    wb = Workbook()
+    # Step 2: Generate the new workbook (always)
+    print(f"\nGenerating new xlsx...")
+    wb = generate_workbook(rulebook, table_names)
 
-    # Remove the default sheet created by openpyxl
-    default_sheet = wb.active
-
-    # Create a worksheet for each table
-    for table_name in table_names:
-        table_data = rulebook[table_name]
-
-        # Skip if not a table structure (must have schema)
-        if not isinstance(table_data, dict) or 'schema' not in table_data:
-            print(f"  Skipping {table_name}: not a table structure")
-            continue
-
-        print(f"  Creating worksheet: {table_name}")
-        schema = table_data.get('schema', [])
-        data = table_data.get('data', [])
-
-        # Count raw vs calculated fields
-        raw_count = sum(1 for f in schema if f.get('type', 'raw') == 'raw')
-        calc_count = sum(1 for f in schema if f.get('type') == 'calculated')
-
-        print(f"    - {len(schema)} columns ({raw_count} raw, {calc_count} calculated)")
-        print(f"    - {len(data)} data rows")
-
-        create_worksheet_from_table(wb, table_name, table_data)
-
-    # Remove the default empty sheet if we created other sheets
-    if len(wb.sheetnames) > 1:
-        wb.remove(default_sheet)
-
-    # Save the workbook
-    wb.save(xlsx_path)
-
-    # Compare and decide whether to keep or rollback
-    if comparison_table and baseline_exported and backup_path.exists():
-        print(f"\nStep 3: Computing new values for comparison...")
-        after_exported = compute_table_values_to_csv(rulebook, comparison_table, csv_after_path)
-
-        if after_exported:
-            print(f"\nStep 4: Comparing content...")
-            content_changed = not compare_csv_files(csv_before_path, csv_after_path)
-
-            if content_changed:
-                print(f"  CONTENT CHANGED - keeping new xlsx")
-                cleanup_file(backup_path)
-                cleanup_file(csv_before_path)
-                cleanup_file(csv_after_path)
-            else:
-                print(f"  NO CONTENT CHANGE - rolling back to preserve original file")
-                cleanup_file(xlsx_path)
-                shutil.move(str(backup_path), str(xlsx_path))
-                cleanup_file(csv_before_path)
-                cleanup_file(csv_after_path)
-                print(f"\n*** XLSX NOT UPDATED (content unchanged) ***")
-        else:
-            cleanup_file(backup_path)
-            cleanup_file(csv_before_path)
-
-    print(f"\nGenerated: {xlsx_path}")
+    # Save the new workbook
+    wb.save(output_path)
+    print(f"\nGenerated: {output_path}")
     print(f"  - {len(wb.sheetnames)} worksheets")
 
-    # Export all entities as separate CSV files to test-data/
-    print(f"\nExporting entities as CSV to test-data/:")
-    export_all_entities_csv(rulebook, test_data_dir)
+    # Step 3: Compare with git and restore if identical
+    if git_content:
+        print(f"\n--- Smart Update: Comparing with git ---")
+        new_content = export_xlsx_to_json(output_path)
 
-    # Export column formulas as CSV to test-data/
-    formulas_path = test_data_dir / 'column_formulas.csv'
-    export_column_formulas_csv(rulebook, formulas_path)
+        if new_content == git_content:
+            # Content is identical - restore git's version to avoid dirty state
+            print(f"  NO CONTENT CHANGE - restoring git version")
+            if git_checkout_file(output_path):
+                print(f"  Restored {output_path} from git HEAD")
+                print(f"\n*** XLSX NOT UPDATED (content unchanged) ***")
+            else:
+                print(f"  Warning: Could not restore git version")
+        else:
+            print(f"  CONTENT CHANGED - keeping new xlsx")
+
+    # CSV exports — always regenerate so test-data/ tracks the current rulebook.
+    test_data_dir = Path('test-data')
+    print(f"\nExporting entities as CSV to {test_data_dir}/:")
+    export_entity_csvs(rulebook, table_names, test_data_dir)
+    export_column_formulas_csv(rulebook, table_names, test_data_dir / 'column_formulas.csv')
 
     print(f"\nDone generating {candidate_name}.")
 

@@ -68,7 +68,7 @@ pre { background: var(--code-bg); border: 1px solid var(--border-color); border-
         </div>
         <div class="header-stats">
             <div class="stat"><span>Score:</span><span class="stat-value score-perfect">100.0%</span></div>
-            <div class="stat"><span>3/3 passed</span></div>
+            <div class="stat"><span>40/40 passed</span></div>
         </div>
         <button id="theme-toggle" title="Toggle theme"><span class="sun">☀️</span><span class="moon">🌙</span></button>
     </header>
@@ -111,14 +111,26 @@ pre { background: var(--code-bg); border: 1px solid var(--border-color); border-
 
 golang: Starting test...
 golang: Compiling and running...
-Golang substrate: Processing 1 tables with calculated fields...
-  Expected tables: Customers
+Golang substrate: Processing 5 tables with calculated fields...
+  Expected tables: Client, Roles, Employees, TypesOfProject, Projects
 
-Processing Customers...
-  ✓ customers: 3 records processed
+Processing Client...
+  ✓ client: 3 records processed
+
+Processing Roles...
+  ✓ roles: 3 records processed
+
+Processing Employees...
+  ✓ employees: 3 records processed
+
+Processing TypesOfProject...
+  ✓ types_of_project: 4 records processed
+
+Processing Projects...
+  ✓ projects: 3 records processed
 
 ════════════════════════════════════════════════════════════════
-Golang substrate: ALL 1 tables processed successfully (3 total records)
+Golang substrate: ALL 5 tables processed successfully (16 total records)
 ════════════════════════════════════════════════════════════════
 
 </pre>
@@ -129,9 +141,9 @@ Golang substrate: ALL 1 tables processed successfully (3 total records)
                 <h2>Test Summary</h2>
                 <div class="results-summary">
                     <div class="result-item"><div class="result-value score-perfect">100.0%</div><div class="result-label">Score</div></div>
-                    <div class="result-item"><div class="result-value score-perfect">3</div><div class="result-label">Passed</div></div>
+                    <div class="result-item"><div class="result-value score-perfect">40</div><div class="result-label">Passed</div></div>
                     <div class="result-item"><div class="result-value">0</div><div class="result-label">Failed</div></div>
-                    <div class="result-item"><div class="result-value">3</div><div class="result-label">Total</div></div>
+                    <div class="result-item"><div class="result-value">40</div><div class="result-label">Total</div></div>
                 </div>
             </div>
         </div>
@@ -139,7 +151,7 @@ Golang substrate: ALL 1 tables processed successfully (3 total records)
             <div class="card">
                 <div class="code-header">
                     <h2>erb_sdk.go</h2>
-                    <div><span class="code-info">165 lines</span><button class="copy-btn" onclick="copyCode('sdk-code')">Copy</button></div>
+                    <div><span class="code-info">358 lines</span><button class="copy-btn" onclick="copyCode('sdk-code')">Copy</button></div>
                 </div>
                 <pre id="sdk-code">// ERB SDK - Go Implementation (GENERATED - DO NOT EDIT)
 // ======================================================
@@ -232,14 +244,14 @@ func (f FlexibleString) String() string {
 }
 
 // =============================================================================
-// CUSTOMERS TABLE
-// Table: Customers
+// CLIENT TABLE
+// Table: Client
 // =============================================================================
 
-// Customer represents a row in the Customers table
-// Table: Customers
-type Customer struct {
-	CustomerId string `json:&quot;customer_id&quot;`
+// Client represents a row in the Client table
+// Table: Client
+type Client struct {
+	ClientId string `json:&quot;client_id&quot;`
 	Customer *string `json:&quot;customer&quot;` // Identifier for the customers.
 	EmailAddress *string `json:&quot;email_address&quot;` // Thec ustomers email address
 	FirstName *string `json:&quot;first_name&quot;` // First Name of the customer - used to make the full name
@@ -252,19 +264,19 @@ type Customer struct {
 // CalcFullName computes the FullName calculated field
 // Full name is computed from the first and last name of the customer
 // Formula: ={{FirstName}} &amp; &quot; &quot; &amp; {{LastName}}
-func (tc *Customer) CalcFullName() string {
+func (tc *Client) CalcFullName() string {
 	return stringVal(tc.FirstName) + &quot; &quot; + stringVal(tc.LastName)
 }
 
 // --- Compute All Calculated Fields ---
 
 // ComputeAll computes all calculated fields and returns an updated struct
-func (tc *Customer) ComputeAll() *Customer {
+func (tc *Client) ComputeAll() *Client {
 	// Level 1 calculations
 	fullName := stringVal(tc.FirstName) + &quot; &quot; + stringVal(tc.LastName)
 
-	return &amp;Customer{
-		CustomerId: tc.CustomerId,
+	return &amp;Client{
+		ClientId: tc.ClientId,
 		Customer: tc.Customer,
 		EmailAddress: tc.EmailAddress,
 		FirstName: tc.FirstName,
@@ -274,17 +286,94 @@ func (tc *Customer) ComputeAll() *Customer {
 }
 
 // =============================================================================
-// FILE I/O FUNCTIONS (for all tables with calculated fields)
+// PROJECTS TABLE
+// Table: Projects
 // =============================================================================
 
-// LoadCustomerRecords loads Customers records from a JSON file
-func LoadCustomerRecords(path string) ([]Customer, error) {
+// Project represents a row in the Projects table
+// Table: Projects
+type Project struct {
+	ProjectId string `json:&quot;project_id&quot;`
+	Name *string `json:&quot;name&quot;`
+	Description *string `json:&quot;description&quot;`
+	ProjectType *string `json:&quot;project_type&quot;`
+	ProjectTypeName *string `json:&quot;project_type_name&quot;`
+	ProjectTypeDescription *string `json:&quot;project_type_description&quot;`
+	ProjectTypeRequiresManagerApproval *bool `json:&quot;project_type_requires_manager_approval&quot;`
+	DueDate *string `json:&quot;due_date&quot;`
+	IsApproved *bool `json:&quot;is_approved&quot;`
+	ApprovedBy *string `json:&quot;approved_by&quot;`
+	ApprovedByRoleIsManager *bool `json:&quot;approved_by_role_is_manager&quot;`
+	ApprovedByName *string `json:&quot;approved_by_name&quot;`
+	ApprovedByEmailAddress *string `json:&quot;approved_by_email_address&quot;`
+	ApprovedByPhoneNumber *string `json:&quot;approved_by_phone_number&quot;`
+}
+
+// =============================================================================
+// EMPLOYEES TABLE
+// Table: Employees
+// =============================================================================
+
+// Employee represents a row in the Employees table
+// Table: Employees
+type Employee struct {
+	EmployeeId string `json:&quot;employee_id&quot;`
+	Name *string `json:&quot;name&quot;`
+	EmailAddress *string `json:&quot;email_address&quot;`
+	PhoneNumber *string `json:&quot;phone_number&quot;`
+	Role *string `json:&quot;role&quot;`
+	RoleName *string `json:&quot;role_name&quot;`
+	RoleDescription *string `json:&quot;role_description&quot;`
+	Projects *string `json:&quot;projects&quot;`
+	RoleIsManager *bool `json:&quot;role_is_manager&quot;`
+}
+
+// =============================================================================
+// ROLES TABLE
+// Table: Roles
+// =============================================================================
+
+// Role represents a row in the Roles table
+// Table: Roles
+type Role struct {
+	RoleId string `json:&quot;role_id&quot;`
+	Name *string `json:&quot;name&quot;`
+	Description *string `json:&quot;description&quot;`
+	IsManager *bool `json:&quot;is_manager&quot;`
+	Employees *string `json:&quot;employees&quot;`
+	CountOfEmployees *int `json:&quot;count_of_employees&quot;`
+}
+
+// =============================================================================
+// TYPESOFPROJECT TABLE
+// Table: TypesOfProject
+// =============================================================================
+
+// TypesOfProject represents a row in the TypesOfProject table
+// Table: TypesOfProject
+type TypesOfProject struct {
+	TypesOfProjectId string `json:&quot;types_of_project_id&quot;`
+	Name *string `json:&quot;name&quot;`
+	Description *string `json:&quot;description&quot;`
+	RequiresManagerApproval *bool `json:&quot;requires_manager_approval&quot;`
+	Projects *string `json:&quot;projects&quot;`
+	CountOfProjects *int `json:&quot;count_of_projects&quot;`
+}
+
+// =============================================================================
+// FILE I/O FUNCTIONS
+// Load: all tables referenced by main.go (computed + lookup/aggregation targets)
+// Save: only tables that have computed fields to write back
+// =============================================================================
+
+// LoadClientRecords loads Client records from a JSON file
+func LoadClientRecords(path string) ([]Client, error) {
 	data, err := os.ReadFile(path)
 	if err != nil {
 		return nil, fmt.Errorf(&quot;failed to read file: %w&quot;, err)
 	}
 
-	var records []Customer
+	var records []Client
 	if err := json.Unmarshal(data, &amp;records); err != nil {
 		return nil, fmt.Errorf(&quot;failed to parse file: %w&quot;, err)
 	}
@@ -292,8 +381,124 @@ func LoadCustomerRecords(path string) ([]Customer, error) {
 	return records, nil
 }
 
-// SaveCustomerRecords saves computed Customers records to a JSON file
-func SaveCustomerRecords(path string, records []Customer) error {
+// SaveClientRecords saves computed Client records to a JSON file
+func SaveClientRecords(path string, records []Client) error {
+	data, err := json.MarshalIndent(records, &quot;&quot;, &quot;  &quot;)
+	if err != nil {
+		return fmt.Errorf(&quot;failed to marshal records: %w&quot;, err)
+	}
+
+	if err := os.WriteFile(path, data, 0644); err != nil {
+		return fmt.Errorf(&quot;failed to write records: %w&quot;, err)
+	}
+
+	return nil
+}
+
+// LoadProjectRecords loads Projects records from a JSON file
+func LoadProjectRecords(path string) ([]Project, error) {
+	data, err := os.ReadFile(path)
+	if err != nil {
+		return nil, fmt.Errorf(&quot;failed to read file: %w&quot;, err)
+	}
+
+	var records []Project
+	if err := json.Unmarshal(data, &amp;records); err != nil {
+		return nil, fmt.Errorf(&quot;failed to parse file: %w&quot;, err)
+	}
+
+	return records, nil
+}
+
+// SaveProjectRecords saves computed Projects records to a JSON file
+func SaveProjectRecords(path string, records []Project) error {
+	data, err := json.MarshalIndent(records, &quot;&quot;, &quot;  &quot;)
+	if err != nil {
+		return fmt.Errorf(&quot;failed to marshal records: %w&quot;, err)
+	}
+
+	if err := os.WriteFile(path, data, 0644); err != nil {
+		return fmt.Errorf(&quot;failed to write records: %w&quot;, err)
+	}
+
+	return nil
+}
+
+// LoadEmployeeRecords loads Employees records from a JSON file
+func LoadEmployeeRecords(path string) ([]Employee, error) {
+	data, err := os.ReadFile(path)
+	if err != nil {
+		return nil, fmt.Errorf(&quot;failed to read file: %w&quot;, err)
+	}
+
+	var records []Employee
+	if err := json.Unmarshal(data, &amp;records); err != nil {
+		return nil, fmt.Errorf(&quot;failed to parse file: %w&quot;, err)
+	}
+
+	return records, nil
+}
+
+// SaveEmployeeRecords saves computed Employees records to a JSON file
+func SaveEmployeeRecords(path string, records []Employee) error {
+	data, err := json.MarshalIndent(records, &quot;&quot;, &quot;  &quot;)
+	if err != nil {
+		return fmt.Errorf(&quot;failed to marshal records: %w&quot;, err)
+	}
+
+	if err := os.WriteFile(path, data, 0644); err != nil {
+		return fmt.Errorf(&quot;failed to write records: %w&quot;, err)
+	}
+
+	return nil
+}
+
+// LoadRoleRecords loads Roles records from a JSON file
+func LoadRoleRecords(path string) ([]Role, error) {
+	data, err := os.ReadFile(path)
+	if err != nil {
+		return nil, fmt.Errorf(&quot;failed to read file: %w&quot;, err)
+	}
+
+	var records []Role
+	if err := json.Unmarshal(data, &amp;records); err != nil {
+		return nil, fmt.Errorf(&quot;failed to parse file: %w&quot;, err)
+	}
+
+	return records, nil
+}
+
+// SaveRoleRecords saves computed Roles records to a JSON file
+func SaveRoleRecords(path string, records []Role) error {
+	data, err := json.MarshalIndent(records, &quot;&quot;, &quot;  &quot;)
+	if err != nil {
+		return fmt.Errorf(&quot;failed to marshal records: %w&quot;, err)
+	}
+
+	if err := os.WriteFile(path, data, 0644); err != nil {
+		return fmt.Errorf(&quot;failed to write records: %w&quot;, err)
+	}
+
+	return nil
+}
+
+// LoadTypesOfProjectRecords loads TypesOfProject records from a JSON file
+func LoadTypesOfProjectRecords(path string) ([]TypesOfProject, error) {
+	data, err := os.ReadFile(path)
+	if err != nil {
+		return nil, fmt.Errorf(&quot;failed to read file: %w&quot;, err)
+	}
+
+	var records []TypesOfProject
+	if err := json.Unmarshal(data, &amp;records); err != nil {
+		return nil, fmt.Errorf(&quot;failed to parse file: %w&quot;, err)
+	}
+
+	return records, nil
+}
+
+// SaveTypesOfProjectRecords saves computed TypesOfProject records to a JSON file
+func SaveTypesOfProjectRecords(path string, records []TypesOfProject) error {
 	data, err := json.MarshalIndent(records, &quot;&quot;, &quot;  &quot;)
 	if err != nil {
 		return fmt.Errorf(&quot;failed to marshal records: %w&quot;, err)
@@ -312,14 +517,16 @@ func SaveCustomerRecords(path string, records []Customer) error {
             <div class="card">
                 <div class="code-header">
                     <h2>main.go</h2>
-                    <div><span class="code-info">91 lines</span><button class="copy-btn" onclick="copyCode('main-code')">Copy</button></div>
+                    <div><span class="code-info">466 lines</span><button class="copy-btn" onclick="copyCode('main-code')">Copy</button></div>
                 </div>
                 <pre id="main-code">// ERB SDK - Go Test Runner (GENERATED - DO NOT EDIT)
 // =======================================================
 // This file is REGENERATED every time inject-into-golang.py runs.
 // It must stay in sync with erb_sdk.go and the rulebook.
 //
-// Tables with computed fields: Customers
+// Tables with computed fields: Client, Roles, Employees, TypesOfProject, Projects
+// Tables with aggregations: Roles, TypesOfProject
+// Tables with lookups: Projects, Employees
 //
 // IMPORTANT: This runner processes ALL tables, not just a &quot;primary&quot; one.
 // If ANY table fails to process, the entire run fails with exit code 1.
@@ -349,8 +556,8 @@ func main() {
 		os.Exit(1)
 	}
 
-	fmt.Println(&quot;Golang substrate: Processing 1 tables with calculated fields...&quot;)
-	fmt.Println(&quot;  Expected tables: Customers&quot;)
+	fmt.Println(&quot;Golang substrate: Processing 5 tables with calculated fields...&quot;)
+	fmt.Println(&quot;  Expected tables: Client, Roles, Employees, TypesOfProject, Projects&quot;)
 	fmt.Println(&quot;&quot;)
 
 	// Track success/failure for ALL tables
@@ -358,31 +565,404 @@ func main() {
 	var totalRecords int
 
 	// ─────────────────────────────────────────────────────────────────
-	// Process Customers
+	// Load related tables for aggregation calculations
 	// ─────────────────────────────────────────────────────────────────
-	fmt.Println(&quot;Processing Customers...&quot;)
-	customersInput := filepath.Join(blankTestsDir, &quot;customers.json&quot;)
-	customersOutput := filepath.Join(testAnswersDir, &quot;customers.json&quot;)
+	// Note: SUMIFS loads from answer-keys (has computed fields)
+	//       COUNTIFS loads from blank-tests
 
-	customersRecords, err := LoadCustomerRecords(customersInput)
+	employeesData, err := LoadEmployeeRecords(filepath.Join(blankTestsDir, &quot;employees.json&quot;))
 	if err != nil {
-		errMsg := fmt.Sprintf(&quot;Customers: failed to load - %v&quot;, err)
+		fmt.Fprintf(os.Stderr, &quot;Warning: Could not load Employees for aggregations: %v\n&quot;, err)
+		employeesData = nil
+	}
+	projectsData, err := LoadProjectRecords(filepath.Join(blankTestsDir, &quot;projects.json&quot;))
+	if err != nil {
+		fmt.Fprintf(os.Stderr, &quot;Warning: Could not load Projects for aggregations: %v\n&quot;, err)
+		projectsData = nil
+	}
+	rolesData, err := LoadRoleRecords(filepath.Join(blankTestsDir, &quot;roles.json&quot;))
+	if err != nil {
+		fmt.Fprintf(os.Stderr, &quot;Warning: Could not load Roles for aggregations: %v\n&quot;, err)
+		rolesData = nil
+	}
+	types_of_projectData, err := LoadTypesOfProjectRecords(filepath.Join(blankTestsDir, &quot;types_of_project.json&quot;))
+	if err != nil {
+		fmt.Fprintf(os.Stderr, &quot;Warning: Could not load TypesOfProject for aggregations: %v\n&quot;, err)
+		types_of_projectData = nil
+	}
+
+	// ─────────────────────────────────────────────────────────────────
+	// Process Client
+	// ─────────────────────────────────────────────────────────────────
+	fmt.Println(&quot;Processing Client...&quot;)
+	clientInput := filepath.Join(blankTestsDir, &quot;client.json&quot;)
+	clientOutput := filepath.Join(testAnswersDir, &quot;client.json&quot;)
+
+	clientRecords, err := LoadClientRecords(clientInput)
+	if err != nil {
+		errMsg := fmt.Sprintf(&quot;Client: failed to load - %v&quot;, err)
 		fmt.Fprintf(os.Stderr, &quot;ERROR: %s\n&quot;, errMsg)
 		errors = append(errors, errMsg)
 	} else {
-		var computedCustomer []Customer
-		for _, r := range customersRecords {
-			computedCustomer = append(computedCustomer, *r.ComputeAll())
+		var computedClient []Client
+		for _, r := range clientRecords {
+			computedClient = append(computedClient, *r.ComputeAll())
 		}
 
-		if err := SaveCustomerRecords(customersOutput, computedCustomer); err != nil {
-			errMsg := fmt.Sprintf(&quot;Customers: failed to save - %v&quot;, err)
+		if err := SaveClientRecords(clientOutput, computedClient); err != nil {
+			errMsg := fmt.Sprintf(&quot;Client: failed to save - %v&quot;, err)
 			fmt.Fprintf(os.Stderr, &quot;ERROR: %s\n&quot;, errMsg)
 			errors = append(errors, errMsg)
 		} else {
-			fmt.Printf(&quot;  ✓ customers: %d records processed\n&quot;, len(computedCustomer))
-			totalRecords += len(computedCustomer)
+			fmt.Printf(&quot;  ✓ client: %d records processed\n&quot;, len(computedClient))
+			totalRecords += len(computedClient)
 		}
+	}
+	fmt.Println(&quot;&quot;)
+
+	// ─────────────────────────────────────────────────────────────────
+	// Process Roles
+	// ─────────────────────────────────────────────────────────────────
+	fmt.Println(&quot;Processing Roles...&quot;)
+	rolesInput := filepath.Join(blankTestsDir, &quot;roles.json&quot;)
+	rolesOutput := filepath.Join(testAnswersDir, &quot;roles.json&quot;)
+
+	rolesRecords, err := LoadRoleRecords(rolesInput)
+	if err != nil {
+		errMsg := fmt.Sprintf(&quot;Roles: failed to load - %v&quot;, err)
+		fmt.Fprintf(os.Stderr, &quot;ERROR: %s\n&quot;, errMsg)
+		errors = append(errors, errMsg)
+	} else {
+		// Compute aggregations for Roles
+		count_of_employeesCountMap := make(map[string]int)
+		if employeesData != nil {
+			for _, rel := range employeesData {
+				if rel.Role != nil {
+					count_of_employeesCountMap[*rel.Role]++
+				}
+			}
+		}
+
+		// Update records with aggregation values
+		for i := range rolesRecords {
+			if rolesRecords[i].RoleId != &quot;&quot; {
+				count := count_of_employeesCountMap[rolesRecords[i].RoleId]
+				rolesRecords[i].CountOfEmployees = &amp;count
+			}
+		}
+
+		var computedRole []Role
+		for _, r := range rolesRecords {
+			computedRole = append(computedRole, r)
+		}
+
+		if err := SaveRoleRecords(rolesOutput, computedRole); err != nil {
+			errMsg := fmt.Sprintf(&quot;Roles: failed to save - %v&quot;, err)
+			fmt.Fprintf(os.Stderr, &quot;ERROR: %s\n&quot;, errMsg)
+			errors = append(errors, errMsg)
+		} else {
+			fmt.Printf(&quot;  ✓ roles: %d records processed\n&quot;, len(computedRole))
+			totalRecords += len(computedRole)
+		}
+		rolesData = computedRole
+	}
+	fmt.Println(&quot;&quot;)
+
+	// ─────────────────────────────────────────────────────────────────
+	// Process Employees
+	// ─────────────────────────────────────────────────────────────────
+	fmt.Println(&quot;Processing Employees...&quot;)
+	employeesInput := filepath.Join(blankTestsDir, &quot;employees.json&quot;)
+	employeesOutput := filepath.Join(testAnswersDir, &quot;employees.json&quot;)
+
+	employeesRecords, err := LoadEmployeeRecords(employeesInput)
+	if err != nil {
+		errMsg := fmt.Sprintf(&quot;Employees: failed to load - %v&quot;, err)
+		fmt.Fprintf(os.Stderr, &quot;ERROR: %s\n&quot;, errMsg)
+		errors = append(errors, errMsg)
+	} else {
+		// Compute lookups for Employees
+		role_nameLookupMap := make(map[string]string)
+		if rolesData != nil {
+			for _, rel := range rolesData {
+				if rel.RoleId != &quot;&quot; {
+					var val string = &quot;&quot;
+					if rel.Name != nil {
+						val = *rel.Name
+					}
+					role_nameLookupMap[rel.RoleId] = val
+				}
+			}
+		}
+
+		role_descriptionLookupMap := make(map[string]string)
+		if rolesData != nil {
+			for _, rel := range rolesData {
+				if rel.RoleId != &quot;&quot; {
+					var val string = &quot;&quot;
+					if rel.Description != nil {
+						val = *rel.Description
+					}
+					role_descriptionLookupMap[rel.RoleId] = val
+				}
+			}
+		}
+
+		role_is_managerLookupMap := make(map[string]bool)
+		if rolesData != nil {
+			for _, rel := range rolesData {
+				if rel.RoleId != &quot;&quot; {
+					var val bool = false
+					if rel.IsManager != nil {
+						val = *rel.IsManager
+					}
+					role_is_managerLookupMap[rel.RoleId] = val
+				}
+			}
+		}
+
+		// Apply lookup values to records
+		for i := range employeesRecords {
+			if employeesRecords[i].Role != nil &amp;&amp; *employeesRecords[i].Role != &quot;&quot; {
+				if val, ok := role_nameLookupMap[*employeesRecords[i].Role]; ok {
+					employeesRecords[i].RoleName = &amp;val
+				}
+			}
+			if employeesRecords[i].Role != nil &amp;&amp; *employeesRecords[i].Role != &quot;&quot; {
+				if val, ok := role_descriptionLookupMap[*employeesRecords[i].Role]; ok {
+					employeesRecords[i].RoleDescription = &amp;val
+				}
+			}
+			if employeesRecords[i].Role != nil &amp;&amp; *employeesRecords[i].Role != &quot;&quot; {
+				if val, ok := role_is_managerLookupMap[*employeesRecords[i].Role]; ok {
+					employeesRecords[i].RoleIsManager = &amp;val
+				}
+			}
+		}
+
+		var computedEmployee []Employee
+		for _, r := range employeesRecords {
+			computedEmployee = append(computedEmployee, r)
+		}
+
+		if err := SaveEmployeeRecords(employeesOutput, computedEmployee); err != nil {
+			errMsg := fmt.Sprintf(&quot;Employees: failed to save - %v&quot;, err)
+			fmt.Fprintf(os.Stderr, &quot;ERROR: %s\n&quot;, errMsg)
+			errors = append(errors, errMsg)
+		} else {
+			fmt.Printf(&quot;  ✓ employees: %d records processed\n&quot;, len(computedEmployee))
+			totalRecords += len(computedEmployee)
+		}
+		employeesData = computedEmployee
+	}
+	fmt.Println(&quot;&quot;)
+
+	// ─────────────────────────────────────────────────────────────────
+	// Process TypesOfProject
+	// ─────────────────────────────────────────────────────────────────
+	fmt.Println(&quot;Processing TypesOfProject...&quot;)
+	types_of_projectInput := filepath.Join(blankTestsDir, &quot;types_of_project.json&quot;)
+	types_of_projectOutput := filepath.Join(testAnswersDir, &quot;types_of_project.json&quot;)
+
+	types_of_projectRecords, err := LoadTypesOfProjectRecords(types_of_projectInput)
+	if err != nil {
+		errMsg := fmt.Sprintf(&quot;TypesOfProject: failed to load - %v&quot;, err)
+		fmt.Fprintf(os.Stderr, &quot;ERROR: %s\n&quot;, errMsg)
+		errors = append(errors, errMsg)
+	} else {
+		// Compute aggregations for TypesOfProject
+		count_of_projectsCountMap := make(map[string]int)
+		if projectsData != nil {
+			for _, rel := range projectsData {
+				if rel.ProjectType != nil {
+					count_of_projectsCountMap[*rel.ProjectType]++
+				}
+			}
+		}
+
+		// Update records with aggregation values
+		for i := range types_of_projectRecords {
+			if types_of_projectRecords[i].TypesOfProjectId != &quot;&quot; {
+				count := count_of_projectsCountMap[types_of_projectRecords[i].TypesOfProjectId]
+				types_of_projectRecords[i].CountOfProjects = &amp;count
+			}
+		}
+
+		var computedTypesOfProject []TypesOfProject
+		for _, r := range types_of_projectRecords {
+			computedTypesOfProject = append(computedTypesOfProject, r)
+		}
+
+		if err := SaveTypesOfProjectRecords(types_of_projectOutput, computedTypesOfProject); err != nil {
+			errMsg := fmt.Sprintf(&quot;TypesOfProject: failed to save - %v&quot;, err)
+			fmt.Fprintf(os.Stderr, &quot;ERROR: %s\n&quot;, errMsg)
+			errors = append(errors, errMsg)
+		} else {
+			fmt.Printf(&quot;  ✓ types_of_project: %d records processed\n&quot;, len(computedTypesOfProject))
+			totalRecords += len(computedTypesOfProject)
+		}
+		types_of_projectData = computedTypesOfProject
+	}
+	fmt.Println(&quot;&quot;)
+
+	// ─────────────────────────────────────────────────────────────────
+	// Process Projects
+	// ─────────────────────────────────────────────────────────────────
+	fmt.Println(&quot;Processing Projects...&quot;)
+	projectsInput := filepath.Join(blankTestsDir, &quot;projects.json&quot;)
+	projectsOutput := filepath.Join(testAnswersDir, &quot;projects.json&quot;)
+
+	projectsRecords, err := LoadProjectRecords(projectsInput)
+	if err != nil {
+		errMsg := fmt.Sprintf(&quot;Projects: failed to load - %v&quot;, err)
+		fmt.Fprintf(os.Stderr, &quot;ERROR: %s\n&quot;, errMsg)
+		errors = append(errors, errMsg)
+	} else {
+		// Compute lookups for Projects
+		project_type_nameLookupMap := make(map[string]string)
+		if types_of_projectData != nil {
+			for _, rel := range types_of_projectData {
+				if rel.TypesOfProjectId != &quot;&quot; {
+					var val string = &quot;&quot;
+					if rel.Name != nil {
+						val = *rel.Name
+					}
+					project_type_nameLookupMap[rel.TypesOfProjectId] = val
+				}
+			}
+		}
+
+		project_type_descriptionLookupMap := make(map[string]string)
+		if types_of_projectData != nil {
+			for _, rel := range types_of_projectData {
+				if rel.TypesOfProjectId != &quot;&quot; {
+					var val string = &quot;&quot;
+					if rel.Description != nil {
+						val = *rel.Description
+					}
+					project_type_descriptionLookupMap[rel.TypesOfProjectId] = val
+				}
+			}
+		}
+
+		project_type_requires_manager_approvalLookupMap := make(map[string]bool)
+		if types_of_projectData != nil {
+			for _, rel := range types_of_projectData {
+				if rel.TypesOfProjectId != &quot;&quot; {
+					var val bool = false
+					if rel.RequiresManagerApproval != nil {
+						val = *rel.RequiresManagerApproval
+					}
+					project_type_requires_manager_approvalLookupMap[rel.TypesOfProjectId] = val
+				}
+			}
+		}
+
+		approved_by_role_is_managerLookupMap := make(map[string]bool)
+		if employeesData != nil {
+			for _, rel := range employeesData {
+				if rel.EmployeeId != &quot;&quot; {
+					var val bool = false
+					if rel.RoleIsManager != nil {
+						val = *rel.RoleIsManager
+					}
+					approved_by_role_is_managerLookupMap[rel.EmployeeId] = val
+				}
+			}
+		}
+
+		approved_by_nameLookupMap := make(map[string]string)
+		if employeesData != nil {
+			for _, rel := range employeesData {
+				if rel.EmployeeId != &quot;&quot; {
+					var val string = &quot;&quot;
+					if rel.Name != nil {
+						val = *rel.Name
+					}
+					approved_by_nameLookupMap[rel.EmployeeId] = val
+				}
+			}
+		}
+
+		approved_by_email_addressLookupMap := make(map[string]string)
+		if employeesData != nil {
+			for _, rel := range employeesData {
+				if rel.EmployeeId != &quot;&quot; {
+					var val string = &quot;&quot;
+					if rel.EmailAddress != nil {
+						val = *rel.EmailAddress
+					}
+					approved_by_email_addressLookupMap[rel.EmployeeId] = val
+				}
+			}
+		}
+
+		approved_by_phone_numberLookupMap := make(map[string]string)
+		if employeesData != nil {
+			for _, rel := range employeesData {
+				if rel.EmployeeId != &quot;&quot; {
+					var val string = &quot;&quot;
+					if rel.PhoneNumber != nil {
+						val = *rel.PhoneNumber
+					}
+					approved_by_phone_numberLookupMap[rel.EmployeeId] = val
+				}
+			}
+		}
+
+		// Apply lookup values to records
+		for i := range projectsRecords {
+			if projectsRecords[i].ProjectType != nil &amp;&amp; *projectsRecords[i].ProjectType != &quot;&quot; {
+				if val, ok := project_type_nameLookupMap[*projectsRecords[i].ProjectType]; ok {
+					projectsRecords[i].ProjectTypeName = &amp;val
+				}
+			}
+			if projectsRecords[i].ProjectType != nil &amp;&amp; *projectsRecords[i].ProjectType != &quot;&quot; {
+				if val, ok := project_type_descriptionLookupMap[*projectsRecords[i].ProjectType]; ok {
+					projectsRecords[i].ProjectTypeDescription = &amp;val
+				}
+			}
+			if projectsRecords[i].ProjectType != nil &amp;&amp; *projectsRecords[i].ProjectType != &quot;&quot; {
+				if val, ok := project_type_requires_manager_approvalLookupMap[*projectsRecords[i].ProjectType]; ok {
+					projectsRecords[i].ProjectTypeRequiresManagerApproval = &amp;val
+				}
+			}
+			if projectsRecords[i].ApprovedBy != nil &amp;&amp; *projectsRecords[i].ApprovedBy != &quot;&quot; {
+				if val, ok := approved_by_role_is_managerLookupMap[*projectsRecords[i].ApprovedBy]; ok {
+					projectsRecords[i].ApprovedByRoleIsManager = &amp;val
+				}
+			}
+			if projectsRecords[i].ApprovedBy != nil &amp;&amp; *projectsRecords[i].ApprovedBy != &quot;&quot; {
+				if val, ok := approved_by_nameLookupMap[*projectsRecords[i].ApprovedBy]; ok {
+					projectsRecords[i].ApprovedByName = &amp;val
+				}
+			}
+			if projectsRecords[i].ApprovedBy != nil &amp;&amp; *projectsRecords[i].ApprovedBy != &quot;&quot; {
+				if val, ok := approved_by_email_addressLookupMap[*projectsRecords[i].ApprovedBy]; ok {
+					projectsRecords[i].ApprovedByEmailAddress = &amp;val
+				}
+			}
+			if projectsRecords[i].ApprovedBy != nil &amp;&amp; *projectsRecords[i].ApprovedBy != &quot;&quot; {
+				if val, ok := approved_by_phone_numberLookupMap[*projectsRecords[i].ApprovedBy]; ok {
+					projectsRecords[i].ApprovedByPhoneNumber = &amp;val
+				}
+			}
+		}
+
+		var computedProject []Project
+		for _, r := range projectsRecords {
+			computedProject = append(computedProject, r)
+		}
+
+		if err := SaveProjectRecords(projectsOutput, computedProject); err != nil {
+			errMsg := fmt.Sprintf(&quot;Projects: failed to save - %v&quot;, err)
+			fmt.Fprintf(os.Stderr, &quot;ERROR: %s\n&quot;, errMsg)
+			errors = append(errors, errMsg)
+		} else {
+			fmt.Printf(&quot;  ✓ projects: %d records processed\n&quot;, len(computedProject))
+			totalRecords += len(computedProject)
+		}
+		projectsData = computedProject
 	}
 	fmt.Println(&quot;&quot;)
 
@@ -402,7 +982,7 @@ func main() {
 	}
 
 	fmt.Println(&quot;════════════════════════════════════════════════════════════════&quot;)
-	fmt.Printf(&quot;Golang substrate: ALL %d tables processed successfully (%d total records)\n&quot;, 1, totalRecords)
+	fmt.Printf(&quot;Golang substrate: ALL %d tables processed successfully (%d total records)\n&quot;, 5, totalRecords)
 	fmt.Println(&quot;════════════════════════════════════════════════════════════════&quot;)
 }</pre>
             </div>

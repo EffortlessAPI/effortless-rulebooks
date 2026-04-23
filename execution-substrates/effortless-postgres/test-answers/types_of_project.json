@@ -1,0 +1,34 @@
+[
+  {
+    "types_of_project_id": "clientfacing",
+    "name": "ClientFacing",
+    "description": "Open, public facing communication",
+    "requires_manager_approval": true,
+    "projects": "customer-portal-redesign",
+    "count_of_projects": 1
+  },
+  {
+    "types_of_project_id": "compliance",
+    "name": "Compliance",
+    "description": "",
+    "requires_manager_approval": true,
+    "projects": "gdpr-compliance-audit",
+    "count_of_projects": 1
+  },
+  {
+    "types_of_project_id": "internal",
+    "name": "Internal",
+    "description": "An internal project that is not publicly accessible",
+    "requires_manager_approval": false,
+    "projects": "internal-tools-dashboard",
+    "count_of_projects": 1
+  },
+  {
+    "types_of_project_id": "research",
+    "name": "Research",
+    "description": "",
+    "requires_manager_approval": false,
+    "projects": "",
+    "count_of_projects": 0
+  }
+]

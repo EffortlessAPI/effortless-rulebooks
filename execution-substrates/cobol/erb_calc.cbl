@@ -29,7 +29,7 @@
            GOBACK.
        .
 
-       *> ========== CUSTOMERS ==========
+       *> ========== CLIENT ==========
        *> Level 1
        CALC-FULL-NAME.
            MOVE SPACES TO RECORD-FULL-NAME

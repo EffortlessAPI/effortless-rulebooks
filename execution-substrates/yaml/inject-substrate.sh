@@ -4,13 +4,12 @@ set -e
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR"
 
-# Regenerate Python's erb_calc.py from rulebook (shared by YAML tests)
-echo "=== Regenerating shared erb_calc.py from rulebook ==="
-python3 "$SCRIPT_DIR/../python/inject-into-python.py"
-
-# YAML schema is static - no generation needed
-# This script validates the schema exists
+# YAML schema is hand-maintained (or generated off-pipeline). YAML is a
+# schema/data format, not a computation engine, so there is nothing to
+# regenerate at inject time. Previously this script also regenerated the
+# Python simulator, which is no longer true — the YAML substrate is
+# explicitly forbidden from depending on the Python simulator.
 echo "YAML schema available at: execution-substrates/yaml/schema.yaml"
 
-# Run the test for this substrate
+# Run the test for this substrate (raw-passthrough only).
 "$SCRIPT_DIR/take-test.sh"

@@ -4,12 +4,12 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix erb: <http://example.org/erb#> .
 
-# === Shape with rules for Customers ===
-erb:CustomersShape a sh:NodeShape ;
-    sh:targetClass erb:Customers ;
+# === Shape with rules for Client ===
+erb:ClientShape a sh:NodeShape ;
+    sh:targetClass erb:Client ;
     sh:rule [
         a sh:SPARQLRule ;
-        rdfs:label "rule_Customers_FullName" ;
+        rdfs:label "rule_Client_FullName" ;
         sh:prefixes erb: ;
         sh:construct """
             PREFIX erb: <http://example.org/erb#>
@@ -18,12 +18,40 @@ erb:CustomersShape a sh:NodeShape ;
                 $this erb:fullName ?_result .
             }
             WHERE {
-    $this a erb:Customers .
+    $this a erb:Client .
     OPTIONAL { $this erb:firstName ?first_name . }
     OPTIONAL { $this erb:lastName ?last_name . }
                 BIND(CONCAT(?first_name, " ", ?last_name) AS ?_result)
             }
         """ ;
     ] .
+
+# === Shape with rules for Employees ===
+erb:EmployeesShape a sh:NodeShape ;
+    sh:targetClass erb:Employees .
+# Rule for RoleName - parse error: Unexpected character '!' at position 11
+# Rule for RoleDescription - parse error: Unexpected character '!' at position 11
+# Rule for RoleIsManager - parse error: Unexpected character '!' at position 11
+
+# === Shape with rules for Projects ===
+erb:ProjectsShape a sh:NodeShape ;
+    sh:targetClass erb:Projects .
+# Rule for ProjectTypeName - parse error: Unexpected character '!' at position 20
+# Rule for ProjectTypeDescription - parse error: Unexpected character '!' at position 20
+# Rule for ProjectTypeRequiresManagerApproval - parse error: Unexpected character '!' at position 20
+# Rule for ApprovedByRoleIsManager - parse error: Unexpected character '!' at position 15
+# Rule for ApprovedByName - parse error: Unexpected character '!' at position 15
+# Rule for ApprovedByEmailAddress - parse error: Unexpected character '!' at position 15
+# Rule for ApprovedByPhoneNumber - parse error: Unexpected character '!' at position 15
+
+# === Shape with rules for Roles ===
+erb:RolesShape a sh:NodeShape ;
+    sh:targetClass erb:Roles .
+# Rule for CountOfEmployees - parse error: Unexpected character '!' at position 18
+
+# === Shape with rules for TypesOfProject ===
+erb:TypesOfProjectShape a sh:NodeShape ;
+    sh:targetClass erb:TypesOfProject .
+# Rule for CountOfProjects - parse error: Unexpected character '!' at position 17
 
 # Generated 1 SHACL rules

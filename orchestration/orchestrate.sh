@@ -12,7 +12,14 @@ set -o pipefail  # CRITICAL: Catch failures in piped commands (e.g., bash script
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
 SUBSTRATES_DIR="$PROJECT_ROOT/execution-substrates"
-SSOTME_JSON="$PROJECT_ROOT/ssotme.json"
+
+# Project config: effortless.json (new) supersedes ssotme.json (legacy).
+# Prefer effortless.json when both exist; fall back to ssotme.json otherwise.
+if [ -f "$PROJECT_ROOT/effortless.json" ]; then
+    SSOTME_JSON="$PROJECT_ROOT/effortless.json"
+else
+    SSOTME_JSON="$PROJECT_ROOT/ssotme.json"
+fi
 
 # =============================================================================
 # COLORS
@@ -121,23 +128,68 @@ print(config.get('Name', 'Unknown'))
     fi
 }
 
+# Canonical substrate ordering — airtable first (utility: rulebook sync),
+# then computation substrates grouped roughly from "most feature-complete" to
+# "spreadsheet/binary/exotic" so the menu tells a story. Any substrate not
+# listed here falls through to the end in alphabetical order.
+SUBSTRATE_ORDER=(
+    airtable
+    english
+    python
+    golang
+    owl
+    uml
+    xlsx
+    binary
+    cobol
+    csv
+    yaml
+    explain-dag
+    # Effortless-licensed substrates render LAST.
+    effortless-postgres
+    effortless-xlsx
+    effortless-entity-framework
+)
+
 get_valid_substrates() {
-    # Returns substrates that have either an inject script OR a take-test script
-    # This allows test-only substrates (like postgres) to be included
-    local result=""
+    # Returns valid substrates in SUBSTRATE_ORDER, with unlisted ones appended
+    # alphabetically. "Valid" = has an inject script OR a take-test script.
+    local -a discovered=()
     for dir in "$SUBSTRATES_DIR"/*/; do
         [ -d "$dir" ] || continue
-        local name=$(basename "$dir")
-        [[ "$name" == .* ]] && continue  # Skip hidden directories
-        # Check for any valid substrate marker
+        local name
+        name=$(basename "$dir")
+        [[ "$name" == .* ]] && continue
         if [ -f "$dir/inject-substrate.sh" ] || \
            [ -f "$dir/inject-into-${name}.py" ] || \
            [ -f "$dir/take-test.py" ] || \
            [ -f "$dir/take-test.sh" ]; then
-            result="$result $name"
+            discovered+=("$name")
         fi
     done
-    echo $result
+
+    local -a ordered=()
+    # 1. Append names from SUBSTRATE_ORDER that are actually present on disk
+    local wanted present
+    for wanted in "${SUBSTRATE_ORDER[@]}"; do
+        for present in "${discovered[@]}"; do
+            if [ "$wanted" = "$present" ]; then
+                ordered+=("$wanted")
+                break
+            fi
+        done
+    done
+    # 2. Append any discovered substrates not in SUBSTRATE_ORDER (alphabetical)
+    local name known=0
+    for name in $(printf '%s\n' "${discovered[@]}" | sort); do
+        known=0
+        for wanted in "${SUBSTRATE_ORDER[@]}"; do
+            if [ "$wanted" = "$name" ]; then known=1; break; fi
+        done
+        [ $known -eq 0 ] && ordered+=("$name")
+    done
+
+    echo "${ordered[@]}"
 }
 
 get_bases_list() {
@@ -226,18 +278,11 @@ show_menu() {
         INDEX=$((INDEX + 1))
     done
 
-    # Airtable/Sync options
+    # Dev-Ops / utilities
     echo -e "  ${DIM}────────────────────────────────────────${NC}"
-    # Dev-Ops
     echo -e "  ${RED}[C]${NC} ${BOLD}CLEAN${NC} all generated files"
     echo -e "  ${YELLOW}[D]${NC} ${BOLD}DEV-OPS${NC} menu (PostgreSQL init, Effortless setup)"
-    if [ "$SSOTME_AVAILABLE" = true ]; then
-        echo -e "  ${CYAN}[P]${NC} ${BOLD}PULL${NC} & Inject (Airtable → Postgres → Substrates)"
-        echo -e "  ${CYAN}[B]${NC} ${BOLD}CHANGE BASE ID${NC} and pull"
-    else
-        echo -e "  ${DIM}[P] Pull & Inject (requires Effortless CLI)${NC}"
-        echo -e "  ${DIM}[B] Change Base ID (requires Effortless CLI)${NC}"
-    fi
+    echo -e "  ${DIM}Airtable sync is substrate [01] — it switches base & pulls rulebook${NC}"
 
     echo ""
 
@@ -683,7 +728,7 @@ action_init_postgres() {
     echo -e "${BOLD}${CYAN}Initialize PostgreSQL Database${NC}"
     echo ""
 
-    local init_script="$PROJECT_ROOT/postgres/init-db.sh"
+    local init_script="$PROJECT_ROOT/licensed-effortless-tools/postgres/init-db.sh"
 
     if [ ! -f "$init_script" ]; then
         echo -e "${RED}Error: init-db.sh not found at $init_script${NC}"
@@ -722,6 +767,37 @@ run_substrates() {
     TOTAL_SUBSTRATES=${#SUBSTRATES_ARRAY[@]}
 
     # -----------------------------------------------------------------------------
+    # AIRTABLE substrate: the rulebook source-of-truth sync.
+    #   - STEP 0 (before answer keys): call inject-into-airtable.py directly
+    #     so the rulebook is fresh before Step 1 generates answer keys.
+    #   - STEP 2: airtable is processed like any other test-only substrate —
+    #     its take-test.sh copies answer-keys into its test-answers/ so the
+    #     grader scores it 100% (airtable IS the oracle, by construction).
+    #   - Single-substrate mode ([01] alone): only run the sync, no grading.
+    # -----------------------------------------------------------------------------
+    local AIRTABLE_DIR="$SUBSTRATES_DIR/airtable"
+    local AIRTABLE_INJECT="$AIRTABLE_DIR/inject-into-airtable.py"
+
+    if [ "$RUN_SINGLE" = "airtable" ]; then
+        if [ -f "$AIRTABLE_INJECT" ]; then
+            python3 "$AIRTABLE_INJECT"
+            return $?
+        fi
+        echo -e "${RED}airtable substrate not installed at $AIRTABLE_DIR${NC}"
+        return 1
+    fi
+
+    if [ -z "$RUN_SINGLE" ] && [ -f "$AIRTABLE_INJECT" ]; then
+        echo -e "${BOLD}${BLUE}┌──────────────────────────────────────────────────────────────┐${NC}"
+        echo -e "${BOLD}${BLUE}│${NC} ${BOLD}${WHITE}STEP 0:${NC} ${YELLOW}Refreshing rulebook via airtable substrate...${NC}      ${BOLD}${BLUE}│${NC}"
+        echo -e "${BOLD}${BLUE}└──────────────────────────────────────────────────────────────┘${NC}"
+        (cd "$AIRTABLE_DIR" && python3 "$AIRTABLE_INJECT") || {
+            echo -e "${YELLOW}⚠ airtable sync had issues — continuing with existing rulebook${NC}"
+        }
+        echo ""
+    fi
+
+    # -----------------------------------------------------------------------------
     # Step 1: Generate answer key and blank test from database
     # -----------------------------------------------------------------------------
 echo -e "${BOLD}${BLUE}┌──────────────────────────────────────────────────────────────┐${NC}"
@@ -755,12 +831,14 @@ echo -e "${BOLD}${BLUE}│${NC} ${BOLD}${WHITE}STEP 2:${NC} ${YELLOW}Running inj
 echo -e "${BOLD}${BLUE}└──────────────────────────────────────────────────────────────┘${NC}"
 echo ""
 
-# Determine which substrates to process
+# Determine which substrates to process. Airtable is included; STEP 0 already
+# ran its inject, so it falls through to the test-only branch (take-test.sh),
+# which copies the fresh answer-keys into its test-answers/ for grading.
 if [ -n "$RUN_SINGLE" ]; then
     SUBSTRATES_TO_RUN="$RUN_SINGLE"
     TOTAL_TO_RUN=1
 else
-    SUBSTRATES_TO_RUN="$SUBSTRATES"  # Use already-discovered valid substrates
+    SUBSTRATES_TO_RUN="$SUBSTRATES"
     TOTAL_TO_RUN=$TOTAL_SUBSTRATES
 fi
 
@@ -1356,7 +1434,7 @@ while true; do
     SUBSTRATES_ARRAY=($SUBSTRATES)
     TOTAL_SUBSTRATES=${#SUBSTRATES_ARRAY[@]}
 
-    read -p "Enter choice [A, V, C, P, B, D, 1-$TOTAL_SUBSTRATES, Q] (default: A): " USER_CHOICE
+    read -p "Enter choice [A, V, C, D, 1-$TOTAL_SUBSTRATES, Q] (default: A): " USER_CHOICE
 
     # Default to 'A' if user just presses Enter
     if [ -z "$USER_CHOICE" ]; then
@@ -1374,12 +1452,6 @@ while true; do
             ;;
         [Cc])
             action_clean
-            ;;
-        [Pp])
-            action_pull_airtable
-            ;;
-        [Bb])
-            action_change_base_id
             ;;
         [Dd])
             action_devops_menu

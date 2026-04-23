@@ -316,18 +316,18 @@ str_0_len:
 
     // Static result buffers for string concatenation
     .bss
-    .globl _result_buf_eval_customers_full_name
+    .globl _result_buf_eval_client_full_name
     .p2align 3
-_result_buf_eval_customers_full_name:
+_result_buf_eval_client_full_name:
     .space 1024
 
     .text
 
 // Full name is computed from the first and last name of the customer
 // Formula: ={{FirstName}} & " " & {{LastName}}
-    .globl _eval_customers_full_name
+    .globl _eval_client_full_name
     .p2align 2
-_eval_customers_full_name:
+_eval_client_full_name:
     stp x29, x30, [sp, #-16]!
     mov x29, sp
     stp x19, x20, [sp, #-16]!
@@ -350,8 +350,8 @@ _eval_customers_full_name:
     str x1, [sp, #56]
     ldr x0, [sp, #16]
     ldr x1, [sp, #24]
-    adrp x22, _result_buf_eval_customers_full_name@PAGE
-    add x22, x22, _result_buf_eval_customers_full_name@PAGEOFF
+    adrp x22, _result_buf_eval_client_full_name@PAGE
+    add x22, x22, _result_buf_eval_client_full_name@PAGEOFF
     ldr x4, [sp, #40]
     ldr x3, [sp, #32]
     mov x2, x1

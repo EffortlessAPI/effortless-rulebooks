@@ -1,8 +1,8 @@
 {
   "schema_version": "erb.explain_spec.v1",
   "rulebook": {
-    "name": "ACME, LLC (template)",
-    "rulebook_hash": "sha256:38a10da024a0bc66d7d617d81790eeb3"
+    "name": "ACME Corporation (template)",
+    "rulebook_hash": "sha256:8614809c5c9f718ff206ad3360842149"
   },
   "semantics": {
     "profile": "excel",
@@ -11,11 +11,11 @@
     "boolean_coercion": "strict"
   },
   "entities": {
-    "Customers": {
-      "id_field": "CustomerId",
-      "id_field_snake": "customer_id",
+    "Client": {
+      "id_field": "ClientId",
+      "id_field_snake": "client_id",
       "fields": {
-        "CustomerId": {
+        "ClientId": {
           "datatype": "string",
           "nullable": false,
           "type": "raw"
@@ -124,7 +124,7 @@
           "description": "Full name is computed from the first and last name of the customer"
         }
       },
-      "description": "Table: Customers"
+      "description": "Table: Client"
     }
   }
 }

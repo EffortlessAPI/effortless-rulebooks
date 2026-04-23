@@ -36,7 +36,13 @@ from enum import Enum, auto
 # Add project root to path for shared imports
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 
-from orchestration.shared import load_rulebook, discover_entities, get_entity_schema, to_snake_case, get_calculated_fields, compute_aggregations, compute_lookups
+# GUARD: This substrate must compute calculated fields via its own native
+# engine (ARM64 assembly via ctypes). It must NOT import compute_lookups or
+# compute_aggregations — those are the Python simulator's interpreters and
+# live behind the python_only_erb_simulator fence. Fields the assembly cannot
+# compute natively (currently: lookups and aggregations) are left null and the
+# grader counts them as failures. That is the point of the conformance harness.
+from orchestration.shared import load_rulebook, discover_entities, get_entity_schema, to_snake_case, get_calculated_fields
 
 
 # =============================================================================
@@ -482,14 +488,14 @@ def run_multi_entity(script_dir: Path):
             print(f"  -> {entity}: 0 records (empty)")
             continue
 
-        # Compute lookup fields first (INDEX/MATCH)
-        data = compute_lookups(data, rulebook_entity, rulebook, project_root)
-        # Then compute aggregation fields (COUNTIFS, SUMIFS)
-        data = compute_aggregations(data, rulebook_entity, rulebook, project_root)
+        # Lookup (INDEX/MATCH) and aggregation (COUNTIFS/SUMIFS) fields are NOT
+        # computed here. The ARM64 assembly engine does not implement them yet.
+        # Per the conformance rubric, fields the substrate cannot compute
+        # natively are left null and counted as failures by the grader.
 
         if not available_funcs:
-            # No assembly functions - save with lookups/aggregations computed
-            print(f"  -> {entity}: No assembly functions, saved with lookups/aggregations only")
+            # No assembly functions - nothing native to run; write raw passthrough.
+            print(f"  -> {entity}: No assembly functions; writing raw passthrough")
             with open(output_path, 'w') as f:
                 json.dump(data, f, indent=2)
             total_records += len(data)

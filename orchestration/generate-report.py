@@ -29,9 +29,62 @@ BLANK_TESTS_DIR = os.path.join(TESTING_DIR, "blank-tests")
 SUBSTRATES_DIR = os.path.join(PROJECT_ROOT, "execution-substrates")
 RULEBOOK_DIR = os.path.join(PROJECT_ROOT, "effortless-rulebook")
 RULEBOOK_PATH = os.path.join(RULEBOOK_DIR, "effortless-rulebook.json")
-POSTGRES_DIR = os.path.join(PROJECT_ROOT, "postgres")
-SSOTME_JSON = os.path.join(PROJECT_ROOT, "ssotme.json")
+POSTGRES_DIR = os.path.join(PROJECT_ROOT, "licensed-effortless-tools", "postgres")
+_EFFORTLESS_JSON = os.path.join(PROJECT_ROOT, "effortless.json")
+_LEGACY_SSOTME_JSON = os.path.join(PROJECT_ROOT, "ssotme.json")
+SSOTME_JSON = _EFFORTLESS_JSON if os.path.exists(_EFFORTLESS_JSON) else _LEGACY_SSOTME_JSON
 DEFAULT_OUTPUT = os.path.join(SCRIPT_DIR, "orchestration-report.html")
+
+# Airtable was formerly treated as a "utility" substrate excluded from the
+# report. It's now a regular graded substrate — it scores 100% because it
+# IS the oracle (its own test-answers are the canonical answer keys).
+
+# Effortless-licensed substrates — rendered LAST in the report, in their own
+# visually-distinct group. These use production transpiler pipelines (some
+# with literally decades of in-the-field testing) and are expected to be
+# 100% conformant on every test.
+EFFORTLESS_SUBSTRATES = {
+    "effortless-postgres",
+    "effortless-xlsx",
+    "effortless-entity-framework",
+}
+
+# Stable per-substrate color palette. Each substrate keeps the same color
+# across runs so a viewer builds muscle memory ("green = cobol"). New
+# substrates fall back to neutral grey until added here.
+SUBSTRATE_COLORS = {
+    # Open-source / local substrates
+    "python":       "#3776AB",  # python blue
+    "golang":       "#00ADD8",  # gopher cyan
+    "cobol":        "#5CB85C",  # green (cobol = green)
+    "binary":       "#E37400",  # amber/orange (ARM64)
+    "xlsx":         "#1F7244",  # excel dark green
+    "csv":          "#8BC34A",  # leafy
+    "yaml":         "#CB171E",  # yaml red
+    "uml":          "#F26522",  # tomato
+    "owl":          "#7B1FA2",  # purple (RDF/semantic)
+    "english":      "#795548",  # text-brown
+    "explain-dag":  "#37474F",  # graphite
+    "airtable":     "#FCB400",  # airtable yellow
+    # Effortless-licensed substrates
+    "effortless-postgres":         "#336791",  # postgres elephant blue
+    "effortless-xlsx":             "#107C41",  # excel green
+    "effortless-entity-framework": "#512BD4",  # dotnet purple
+}
+
+
+def get_substrate_color(name: str) -> str:
+    return SUBSTRATE_COLORS.get(name, "#6c757d")
+
+
+def display_name(substrate: str) -> str:
+    """Drop the `effortless-` prefix when rendering — the visually-distinct
+    "EFFORTLESS LICENSED TOOLS" group already conveys that membership, so
+    the prefix in every label becomes redundant chrome. Internal identifiers
+    (data-substrate, file paths, etc.) keep the prefix."""
+    if substrate.startswith("effortless-"):
+        return substrate[len("effortless-"):]
+    return substrate
 
 
 # =============================================================================
@@ -186,7 +239,7 @@ def load_blank_tests():
 
 
 def get_substrates():
-    """Get list of all substrates from execution-substrates/"""
+    """Get list of all substrate directories visible in the report."""
     substrates = []
     if os.path.isdir(SUBSTRATES_DIR):
         for name in sorted(os.listdir(SUBSTRATES_DIR)):
@@ -317,9 +370,6 @@ def load_substrate_report_content(substrate_name: str) -> dict:
 
     Returns dict with 'tabs' list of {id, label} and 'contents' dict of {id: html_content}
     """
-    if substrate_name == 'postgres':
-        return {"tabs": [], "contents": {}}
-
     report_path = os.path.join(SUBSTRATES_DIR, substrate_name, "substrate-report.html")
     if not os.path.exists(report_path):
         return {"tabs": [], "contents": {}}
@@ -377,7 +427,7 @@ def load_substrate_report_content(substrate_name: str) -> dict:
 
 def load_substrate_test_answers(substrate_name: str) -> dict:
     """Load test answers from a substrate"""
-    if substrate_name == 'postgres':
+    if substrate_name == 'effortless-postgres':
         return load_answer_keys()
 
     answers = {}
@@ -420,9 +470,14 @@ def collect_all_data():
         run_meta = load_run_metadata(substrate)
         grades["run_metadata"] = run_meta
 
-        # Use duration from central metadata (last_successful_run) as source of truth
-        last_success = run_meta.get("last_successful_run")
-        if last_success and "duration_seconds" in last_success:
+        # Show the duration of the MOST RECENT run (so re-runs are visible even
+        # when they don't score 100%). Fall back to last_successful_run only if
+        # last_run is missing timing.
+        last_run = run_meta.get("last_run") or {}
+        last_success = run_meta.get("last_successful_run") or {}
+        if "duration_seconds" in last_run:
+            grades["elapsed_seconds"] = last_run["duration_seconds"]
+        elif "duration_seconds" in last_success:
             grades["elapsed_seconds"] = last_success["duration_seconds"]
 
         # Load test answers for this substrate
@@ -512,8 +567,14 @@ def collect_all_data():
 def generate_html(data: dict) -> str:
     """Generate self-contained HTML report"""
 
+    # Inject Python-side palette + group membership so the JS-rendered
+    # per-entity substrate tabs stay consistent with the matrix.
+    data_for_js = dict(data)
+    data_for_js["_effortless_substrates"] = sorted(EFFORTLESS_SUBSTRATES)
+    data_for_js["_substrate_colors"] = SUBSTRATE_COLORS
+
     # Escape data for embedding in JS
-    json_data = json.dumps(data, default=str, indent=2)
+    json_data = json.dumps(data_for_js, default=str, indent=2)
 
     html = f'''<!DOCTYPE html>
 <html lang="en">
@@ -521,6 +582,8 @@ def generate_html(data: dict) -> str:
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{escape(data["meta"]["project_name"])}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css">
     <style>
 {get_css()}
     </style>
@@ -626,6 +689,14 @@ const REPORT_DATA = {json_data};
 
 {get_javascript()}
     </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-go.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-yaml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-turtle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
 </body>
 </html>'''
 
@@ -645,21 +716,27 @@ def get_score_class(score: float) -> str:
 
 
 def sorted_substrates(data: dict) -> list:
-    """Sort substrates: 100% first (by time), <100% at bottom (by score desc)
+    """Sort substrates:
+       1. Open-source substrates first, Effortless-licensed substrates LAST.
+       2. Within each group, 100% first (by time), <100% by score desc.
 
     Uses 0.5s time buckets and name as tiebreaker for deterministic ordering.
     """
     def sort_key(name):
+        is_effortless = name in EFFORTLESS_SUBSTRATES
         g = data["substrates"][name]
         elapsed = g.get("elapsed_seconds", 0.0)
-        # Round to 0.5s buckets for sorting stability
         elapsed_bucket = round(elapsed * 2) / 2
         p = g["fields_passed"]
         t = g["total_fields_tested"]
         score = (p / t * 100) if t > 0 else 0
         is_perfect = score >= 100.0
-        # Use name as tiebreaker for deterministic ordering
-        return (0 if is_perfect else 1, elapsed_bucket if is_perfect else -score, name)
+        return (
+            1 if is_effortless else 0,
+            0 if is_perfect else 1,
+            elapsed_bucket if is_perfect else -score,
+            name,
+        )
     return sorted(data["substrates"].keys(), key=sort_key)
 
 
@@ -675,8 +752,21 @@ def generate_matrix_rows(data: dict) -> str:
     """Generate matrix rows for each substrate"""
     rows = []
     entities = sorted(data["entities"].keys())
+    ordered = sorted_substrates(data)
+    # Columns: substrate-name + one per entity + score + time
+    colspan = 1 + len(entities) + 2
+    divider_inserted = False
 
-    for substrate_name in sorted_substrates(data):
+    for substrate_name in ordered:
+        if not divider_inserted and substrate_name in EFFORTLESS_SUBSTRATES:
+            divider_inserted = True
+            rows.append(
+                f'<tr class="effortless-divider"><td colspan="{colspan}">'
+                f'<span class="effortless-divider-badge">EFFORTLESS LICENSED TOOLS</span>'
+                f' <span class="effortless-divider-sub">production transpiler pipelines &mdash; expected 100% conformance</span>'
+                f'</td></tr>'
+            )
+
         grades = data["substrates"][substrate_name]
 
         total = grades["total_fields_tested"]
@@ -702,7 +792,9 @@ def generate_matrix_rows(data: dict) -> str:
         if is_restored:
             error_msg = last_run.get("error_message", "Unknown error")
             warning_badge = f' <span class="warning-badge" title="Last run failed: {escape(error_msg)}">&#9888;</span>'
-        cells.append(f'<td class="substrate-name substrate-row-link" data-substrate="{escape(substrate_name)}">{escape(substrate_label)}{warning_badge}</td>')
+        color = get_substrate_color(substrate_name)
+        swatch = f'<span class="substrate-swatch" style="background:{color}"></span>'
+        cells.append(f'<td class="substrate-name substrate-row-link" data-substrate="{escape(substrate_name)}">{swatch}{escape(display_name(substrate_label))}{warning_badge}</td>')
 
         # Entity cells
         for entity in entities:
@@ -765,25 +857,73 @@ def generate_entity_tabs(data: dict) -> str:
 
 
 def generate_substrate_tabs(data: dict) -> str:
-    """Generate tab buttons for substrate selector"""
-    tabs = []
+    """Generate tab buttons for the Conformance Test Results sub-tab nav.
+
+    Inserts a divider between open-source and Effortless-licensed groups;
+    displayed labels drop the `effortless-` prefix (data-substrate keeps it).
+    """
+    parts = []
+    divider_inserted = False
     for i, substrate in enumerate(sorted_substrates(data)):
+        if not divider_inserted and substrate in EFFORTLESS_SUBSTRATES:
+            divider_inserted = True
+            parts.append(
+                '<span class="sub-tab-group-divider" title="Licensed Effortless tools">'
+                'EFFORTLESS LICENSED TOOLS'
+                '</span>'
+            )
         active = "active" if i == 0 else ""
-        tabs.append(f'<button class="sub-tab {active}" data-substrate="{escape(substrate)}">{escape(substrate)}</button>')
-    return '\n                '.join(tabs)
+        color = get_substrate_color(substrate)
+        swatch = f'<span class="substrate-swatch" style="background:{color}"></span>'
+        parts.append(
+            f'<button class="sub-tab {active}" data-substrate="{escape(substrate)}">'
+            f'{swatch}{escape(display_name(substrate))}</button>'
+        )
+    return '\n                '.join(parts)
 
 
 def generate_substrate_links(data: dict) -> str:
-    """Generate clickable substrate links for overview"""
-    links = []
-    for substrate in sorted_substrates(data):
+    """Generate clickable substrate links for the Overview tab.
+
+    Splits open-source vs Effortless-licensed substrates into two groups
+    so the licensed tools sit in their own labelled block. Labels in the
+    licensed group drop the `effortless-` prefix.
+    """
+    def link_for(substrate: str) -> str:
         grades = data["substrates"][substrate]
         total = grades["total_fields_tested"]
         passed = grades["fields_passed"]
         score = (passed / total * 100) if total > 0 else 0
         score_class = get_score_class(score)
-        links.append(f'<a href="#" class="substrate-link score-{score_class}" data-substrate="{escape(substrate)}">{escape(substrate)}: {score:.0f}%</a>')
-    return '\n                    '.join(links)
+        color = get_substrate_color(substrate)
+        swatch = f'<span class="substrate-swatch" style="background:{color}"></span>'
+        return (
+            f'<a href="#" class="substrate-link score-{score_class}" '
+            f'data-substrate="{escape(substrate)}">'
+            f'{swatch}{escape(display_name(substrate))}: {score:.0f}%</a>'
+        )
+
+    ordered = sorted_substrates(data)
+    open_source = [s for s in ordered if s not in EFFORTLESS_SUBSTRATES]
+    effortless  = [s for s in ordered if s in EFFORTLESS_SUBSTRATES]
+
+    blocks = []
+    if open_source:
+        blocks.append(
+            '<div class="substrate-link-group">\n'
+            '                        '
+            + '\n                        '.join(link_for(s) for s in open_source)
+            + '\n                    </div>'
+        )
+    if effortless:
+        blocks.append(
+            '<div class="substrate-link-group effortless-group">\n'
+            '                        <div class="substrate-link-group-label">Effortless Licensed Tools</div>\n'
+            '                        '
+            + '\n                        '.join(link_for(s) for s in effortless)
+            + '\n                    </div>'
+        )
+    return '\n                    '.join(blocks)
 
 
 def generate_failure_details(data: dict) -> str:
@@ -1036,6 +1176,89 @@ h2 { font-size: 1rem; font-weight: 600; margin-bottom: 0.75rem; color: var(--tex
 .warning-badge { color: var(--warning-color); font-size: 0.85rem; cursor: help; margin-left: 0.25rem; }
 .score-cell { font-weight: 600; }
 .time-cell { color: var(--text-secondary); font-family: monospace; font-size: 0.75rem; }
+
+/* Per-substrate color swatches — stable mapping so viewers build muscle
+   memory across runs (e.g. green always = cobol). Color comes from inline
+   style emitted by get_substrate_color() in generate-report.py. */
+.substrate-swatch {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    margin-right: 0.45rem;
+    vertical-align: middle;
+    box-shadow: 0 0 0 1px rgba(0,0,0,0.08);
+}
+
+/* Visual group divider that splits open-source substrates (above) from
+   Effortless-licensed substrates (below) in the health matrix. */
+tr.effortless-divider td {
+    background: linear-gradient(90deg, rgba(81,43,212,0.10), rgba(81,43,212,0.02) 70%);
+    border-top: 2px solid #512BD4;
+    border-bottom: 1px solid var(--border-color);
+    padding: 0.45rem 0.75rem;
+    font-size: 0.72rem;
+}
+.effortless-divider-badge {
+    display: inline-block;
+    background: #512BD4;
+    color: #fff;
+    padding: 0.15rem 0.55rem;
+    border-radius: 3px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 600;
+    font-size: 0.68rem;
+}
+.effortless-divider-sub {
+    color: var(--text-secondary);
+    margin-left: 0.5rem;
+    font-style: italic;
+}
+
+/* Divider label injected between open-source and Effortless-licensed
+   substrate tabs inside .sub-tabs (Conformance Test Results + per-entity). */
+.sub-tab-group-divider {
+    display: inline-flex;
+    align-items: center;
+    margin: 0 0.5rem 0 0.75rem;
+    padding: 0.15rem 0.55rem;
+    background: #512BD4;
+    color: #fff;
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border-radius: 3px;
+    line-height: 1.3;
+    align-self: center;
+    flex-shrink: 0;
+}
+
+/* Two-group layout for the overview substrate-link list. */
+.substrate-link-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+.substrate-link-group.effortless-group {
+    position: relative;
+    padding: 0.75rem 0.85rem 0.85rem;
+    border: 1px solid rgba(81,43,212,0.35);
+    border-radius: var(--radius);
+    background: linear-gradient(180deg, rgba(81,43,212,0.06), rgba(81,43,212,0.01));
+    margin-top: 0.5rem;
+}
+.substrate-link-group-label {
+    flex-basis: 100%;
+    margin-bottom: 0.35rem;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #512BD4;
+    font-weight: 700;
+}
 
 /* Runtime bar in health matrix */
 .runtime-bar-cell {
@@ -1553,6 +1776,26 @@ footer {
 def get_javascript() -> str:
     """Return embedded JavaScript - Desktop optimized with entity tabs"""
     return '''
+// Effortless-licensed substrate set + color palette, injected from
+// generate-report.py so JS-rendered surfaces match the Python-rendered ones.
+const EFFORTLESS_SUBSTRATES = new Set(REPORT_DATA._effortless_substrates || []);
+const SUBSTRATE_COLORS = REPORT_DATA._substrate_colors || {};
+
+function isEffortless(name) { return EFFORTLESS_SUBSTRATES.has(name); }
+function substrateColor(name) { return SUBSTRATE_COLORS[name] || '#6c757d'; }
+function displayName(name) {
+    return isEffortless(name) ? name.replace(/^effortless-/, '') : name;
+}
+function sortSubstrates(names) {
+    // Open-source first, effortless last; alpha within each group.
+    return [...names].sort((a, b) => {
+        const aE = isEffortless(a) ? 1 : 0;
+        const bE = isEffortless(b) ? 1 : 0;
+        if (aE !== bE) return aE - bE;
+        return a.localeCompare(b);
+    });
+}
+
 // Substrate report URL - hardcoded for htmlpreview.github.io
 function getSubstrateReportUrl(substrateName) {
     const localPath = `../execution-substrates/${substrateName}/substrate-report.html`;
@@ -1776,20 +2019,29 @@ function renderEntityDetails(entityName) {
     } else { html += '<p>No data</p>'; }
     html += '</details>';
 
-    // Substrate results tabs
+    // Substrate results tabs — open-source first, then a divider, then
+    // Effortless-licensed substrates. Labels drop the "effortless-" prefix.
     html += '<h4>Substrate Results</h4>';
     html += '<nav class="sub-tabs" id="entity-substrate-tabs">';
-    Object.keys(REPORT_DATA.substrates).sort().forEach((substrate, i) => {
+    const orderedSubs = sortSubstrates(Object.keys(REPORT_DATA.substrates));
+    let dividerInserted = false;
+    let renderedCount = 0;
+    orderedSubs.forEach(substrate => {
         const grades = REPORT_DATA.substrates[substrate];
         const entityGrades = grades.entities ? grades.entities[entityName] : null;
-        if (entityGrades) {
-            const passed = entityGrades.fields_passed;
-            const total = entityGrades.fields_tested;
-            const score = total > 0 ? (passed / total * 100).toFixed(0) : 0;
-            const scoreClass = getScoreClass(score);
-            const active = i === 0 ? 'active' : '';
-            html += `<button class="sub-tab ${active} score-${scoreClass}" data-substrate="${escapeHtml(substrate)}" data-entity="${escapeHtml(entityName)}">${escapeHtml(substrate)}: ${score}%</button>`;
+        if (!entityGrades) return;
+        if (!dividerInserted && isEffortless(substrate)) {
+            dividerInserted = true;
+            html += '<span class="sub-tab-group-divider" title="Licensed Effortless tools">EFFORTLESS LICENSED TOOLS</span>';
         }
+        const passed = entityGrades.fields_passed;
+        const total = entityGrades.fields_tested;
+        const score = total > 0 ? (passed / total * 100).toFixed(0) : 0;
+        const scoreClass = getScoreClass(score);
+        const active = renderedCount === 0 ? 'active' : '';
+        const swatch = `<span class="substrate-swatch" style="background:${substrateColor(substrate)}"></span>`;
+        html += `<button class="sub-tab ${active} score-${scoreClass}" data-substrate="${escapeHtml(substrate)}" data-entity="${escapeHtml(entityName)}">${swatch}${escapeHtml(displayName(substrate))}: ${score}%</button>`;
+        renderedCount++;
     });
     html += '</nav><div id="entity-substrate-details"></div>';
 
@@ -2313,6 +2565,12 @@ function loadSubstrateTabs(substrateName) {
         contentHtml += `<div id="substrate-dynamic-${tab.id}-view" class="substrate-view substrate-dynamic-view">${tabContent}</div>`;
     });
     dynamicContentContainer.innerHTML = contentHtml;
+
+    // Prism highlighting: the lifted tab content contains <code class="language-*">
+    // nodes that were never passed to Prism on initial page load.
+    if (window.Prism) {
+        Prism.highlightAllUnder(dynamicContentContainer);
+    }
 
     // Re-attach handlers to include the new tabs
     attachViewTabHandlers();

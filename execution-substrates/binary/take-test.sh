@@ -26,4 +26,4 @@ mkdir -p "$SCRIPT_DIR/test-answers"
 echo "binary: test completed"
 
 # Generate substrate report
-python3 "$PROJECT_ROOT/orchestration/create-substrate-report.py" binary --log "$LOG_FILE"
+python3 "$PROJECT_ROOT/orchestration/grade-and-record.py" binary --elapsed "$SECONDS" --log "$LOG_FILE"

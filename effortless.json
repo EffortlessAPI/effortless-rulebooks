@@ -1,19 +1,19 @@
 {
   "ShowHidden": false,
   "ShowAllFiles": false,
-  "CurrentPath": "",
+  "CurrentPath": "/licensed-effortless-tools/entity-framework-dotnet",
   "SSoTmeProjectFiles": null,
   "SSoTmeProjectId": "3bfc5aef-7d05-4b45-8d39-f67d06d44d38",
-  "Name": "ACME, LLC",
+  "Name": "ACME Corporation",
   "Description": "IMPORTANT!!!! ** BASIC baseId: applThn0rikpCR9C3, ADVANCED baseId: appwN9EAp8IeIxM23",
   "ProjectSettings": [
     {
       "Name": "baseId",
-      "Value": "appWrXPvXbkgQGOxt"
+      "Value": "appzkcmBFPWFGBtRo"
     },
     {
       "Name": "project-name",
-      "Value": "ACME, LLC"
+      "Value": "ACME Corporation"
     },
     {
       "Name": "_apikey_",
@@ -35,15 +35,15 @@
       "RelativePath": "/effortless-rulebook",
       "CommandLine": "airtable-to-rulebook -o effortless-rulebook.json -account airtable -p \"view=Grid view\"",
       "IsDisabled": false,
-      "PinnedVersion": "v2026.04.20.1736",
-      "LastVersionUsed": "v2026.04.20.1736",
-      "LastUrl": "https://effortless-airtable-to-rulebook-v2026-04-20-1736-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
+      "PinnedVersion": "v2026.04.23.1357",
+      "LastVersionUsed": "v2026.04.23.1357",
+      "LastUrl": "https://effortless-airtable-to-rulebook-v2026-04-23-1357-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     },
     {
       "IsSSoTTranspiler": false,
       "Name": "rulebooktopostgres",
-      "RelativePath": "/postgres",
-      "CommandLine": "rulebook-to-postgres -i ../effortless-rulebook/effortless-rulebook.json",
+      "RelativePath": "/licensed-effortless-tools/postgres",
+      "CommandLine": "rulebook-to-postgres -i ../../effortless-rulebook/effortless-rulebook.json",
       "IsDisabled": false,
       "PinnedVersion": "v2026.04.19.1717",
       "LastVersionUsed": "v2026.04.19.1717",
@@ -52,7 +52,7 @@
     {
       "IsSSoTTranspiler": false,
       "Name": "init-db",
-      "RelativePath": "/postgres",
+      "RelativePath": "/licensed-effortless-tools/postgres",
       "CommandLine": "-exec ./init-db.sh -w 90000",
       "IsDisabled": false
     },
@@ -80,6 +80,25 @@
       "RelativePath": "/dotnet",
       "CommandLine": "odxml-to-csharp-pocos -i DataSchema.odxml",
       "IsDisabled": true
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "rulebooktoxlsx",
+      "RelativePath": "/licensed-effortless-tools/xlsx",
+      "CommandLine": "rulebook-to-xlsx -i ../../effortless-rulebook/effortless-rulebook.json",
+      "IsDisabled": false,
+      "LastVersionUsed": "v2026.05.20.0330",
+      "LastUrl": "https://effortless-rulebook-to-xlsx-v2026-05-20-0330-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "entity-framework-dotnet",
+      "RelativePath": "/licensed-effortless-tools/entity-framework-dotnet",
+      "CommandLine": "rulebook-to-entity-framework -i ../../effortless-rulebook/effortless-rulebook.json",
+      "IsDisabled": false,
+      "PinnedVersion": "v2026.05.12.2324",
+      "LastVersionUsed": "v2026.05.12.2324",
+      "LastUrl": "https://effortless-rulebook-to-entity-fr-v2026-05-12-2324-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     }
   ]
 }

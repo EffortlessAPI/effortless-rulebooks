@@ -611,11 +611,15 @@ def generate_individuals_ttl(tables: Dict[str, Any]) -> str:
 
             lines.append(f'{ind_uri} a {class_uri} ;')
 
-            # Add raw data properties only (not calculated)
+            # Add raw data properties only. Calculated, lookup, and aggregation
+            # fields are NOT pre-baked into individuals.ttl — they are answers,
+            # not inputs. SHACL/SPARQL rules must produce them; if a rule fails
+            # to compile or doesn't fire, the field is correctly absent and
+            # the grader will score it 0. (Audit fix 2026-05-12.)
             props = []
             for col_name, info in col_info.items():
-                if info['type'] == 'calculated':
-                    continue  # Skip calculated - SHACL will compute these
+                if info['type'] in ('calculated', 'lookup', 'aggregation'):
+                    continue  # not raw data — SHACL/SPARQL must produce these
 
                 value = row.get(col_name)
                 if value is None:
@@ -727,8 +731,19 @@ def generate_shacl_rules(tables: Dict[str, Any]) -> str:
                 rule_count += 1
 
             except Exception as e:
-                # If formula parsing fails, track the error
-                parse_errors.append(f'# Rule for {calc["name"]} - parse error: {e}')
+                # Formula parsing failed — surface this loudly. Previously we
+                # silently swallowed every error as a TTL comment, which let
+                # the OWL substrate report 100% while 13 of 14 fields were
+                # actually pre-baked into individuals.ttl as if they were raw
+                # data. The audit on 2026-04-23 caught that. Now we (a) write
+                # the comment as before (so the failure is visible in the
+                # artifact) AND (b) emit a noisy stderr line so CI shows it.
+                err_msg = f'# Rule for {calc["name"]} - parse error: {e}'
+                parse_errors.append(err_msg)
+                print(
+                    f"OWL inject: PARSE ERROR for {table_name}.{calc['name']}: {e}",
+                    file=sys.stderr,
+                )
 
         # Now build the shape properly
         if rules_added:
