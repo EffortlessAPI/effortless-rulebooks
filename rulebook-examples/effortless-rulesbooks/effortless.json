@@ -6,14 +6,14 @@
     {
       "Name": "baseId",
       "Value": "",
-      "Description": "No Airtable base \u2014 rulebook is maintained directly in effortless-rulebook.json"
+      "Description": "No Airtable base \u2014 rulebook is maintained directly in effortless-rulesbooks-rulebook.json"
     }
   ],
-  "Transpilers": [
+  "ProjectTranspilers": [
     {
       "Name": "airtabletorulebook",
       "RelativePath": "/effortless-rulebook",
-      "CommandLine": "airtable-to-rulebook -o effortless-rulebook.json -account airtable -p \"view=Grid view\"",
+      "CommandLine": "airtable-to-rulebook -o effortless-rulesbooks-rulebook.json -account airtable -p \"view=Grid view\"",
       "Enabled": false,
       "Description": "Pull rulebook from Airtable (disabled \u2014 no Airtable base for this meta-ontology) [DISABLED: rulebook JSON is authoritative; re-enable only with explicit user consent]",
       "IsDisabled": true
@@ -21,7 +21,7 @@
     {
       "Name": "rulebooktoairtable",
       "RelativePath": "/effortless-rulebook/push-to-airtable",
-      "CommandLine": "rulebook-to-airtable -i ../effortless-rulebook.json -account airtable -w 300000",
+      "CommandLine": "rulebook-to-airtable -i ../effortless-rulesbooks-rulebook.json -account airtable -w 300000",
       "Enabled": false,
       "Description": "Reverse-sync: push rulebook changes back to Airtable (optional)"
     }

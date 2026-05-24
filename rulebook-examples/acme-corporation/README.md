@@ -138,7 +138,7 @@ effortless build
 
 ### Directly
 
-Edit `effortless-rulebook/effortless-rulebook.json`, then:
+Edit `effortless-rulebook/acme-corporation-rulebook.json`, then:
 
 ```bash
 effortless build
@@ -149,7 +149,7 @@ effortless build
 ## References
 
 - **ERB Methodology**: See the parent `effortless-rulebooks/README.md`
-- **This Project's Rulebook**: `effortless-rulebook/effortless-rulebook.json`
+- **This Project's Rulebook**: `effortless-rulebook/acme-corporation-rulebook.json`
 - **Generated Postgres**: `execution-substrates/postgres/`
 - **Test Results**: Run `./start.sh` to see conformance report
 

@@ -9,11 +9,11 @@
       "Description": "Airtable base ID for ACME Corporation (hardcoded)"
     }
   ],
-  "Transpilers": [
+  "ProjectTranspilers": [
     {
       "Name": "airtabletorulebook",
       "RelativePath": "/effortless-rulebook",
-      "CommandLine": "airtable-to-rulebook -o effortless-rulebook.json -account airtable -p \"view=Grid view\"",
+      "CommandLine": "airtable-to-rulebook -o acme-corporation-rulebook.json -account airtable -p \"view=Grid view\"",
       "Enabled": false,
       "Description": "Pull rulebook from Airtable [DISABLED: rulebook JSON is authoritative; re-enable only with explicit user consent]",
       "IsDisabled": true
@@ -21,7 +21,7 @@
     {
       "Name": "rulebooktoairtable",
       "RelativePath": "/effortless-rulebook/push-to-airtable",
-      "CommandLine": "rulebook-to-airtable -i ../effortless-rulebook.json -account airtable -w 300000",
+      "CommandLine": "rulebook-to-airtable -i ../acme-corporation-rulebook.json -account airtable -w 300000",
       "Enabled": false,
       "Description": "Reverse-sync: push rulebook changes back to Airtable"
     }

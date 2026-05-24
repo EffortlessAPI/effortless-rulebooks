@@ -606,7 +606,7 @@ config = {
     'ProjectSettings': [
         {'Name': 'baseId', 'Value': '$BASE_ID', 'Description': 'Airtable base ID (used for re-import only)'}
     ],
-    'Transpilers': [
+    'ProjectTranspilers': [
         {
             'Name': 'airtabletorulebook',
             'RelativePath': '/effortless-rulebook',

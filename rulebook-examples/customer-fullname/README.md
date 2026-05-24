@@ -132,7 +132,7 @@ After exploring this base, switch to **Jessica BASIC** to see:
 
 ## Files in This Directory
 
-- `effortless-rulebook.json` - Snapshot of the rulebook for this base
+- `customer-fullname-rulebook.json` - Snapshot of the rulebook for this base
 - `README.md` - This file
 
 ---

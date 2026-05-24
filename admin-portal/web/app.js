@@ -104,6 +104,15 @@ function App() {
 
   if (!rulebook || !me) return html`<div style=${{ padding: 30 }}>Loading ERB Admin Portal…</div>`;
 
+  // Diagnose portal-config presence BEFORE rendering the shell. Without these
+  // tables the sidebar and router have nothing to drive them and the page
+  // appears blank with a useless "No screen for /" message. Show a clear
+  // diagnostic instead so the failure is impossible to miss.
+  const portalDiag = diagnosePortalConfig({ me, rulebook, projects });
+  if (portalDiag.broken) {
+    return html`<${PortalSetupNeeded} diag=${portalDiag} projects=${projects} rulebook=${rulebook} reload=${reloadAll} />`;
+  }
+
   return html`
     <${TopBar} me=${me} projects=${projects} reload=${reloadAll} rulebook=${rulebook} />
     <div class="layout">
@@ -113,6 +122,83 @@ function App() {
       </div>
     </div>
     <${Toast} />
+  `;
+}
+
+// ---------------------------------------------------------------------------
+// Portal-config diagnostics — surface "the rulebook is missing the tables that
+// drive the admin portal itself" loudly, not silently.
+// ---------------------------------------------------------------------------
+const PORTAL_REQUIRED_TABLES = [
+  "UserRoles", "AppUsers", "AppPermissions", "AppNavigation", "AppScreens",
+];
+
+function diagnosePortalConfig({ me, rulebook, projects }) {
+  const missingTables = PORTAL_REQUIRED_TABLES.filter(
+    (t) => !rulebook[t] || !Array.isArray(rulebook[t].data) || rulebook[t].data.length === 0
+  );
+  const userError = me && me.error ? me.error : null;
+  const broken = missingTables.length > 0 || !!userError;
+  return { broken, missingTables, userError, activeProject: projects.active };
+}
+
+function PortalSetupNeeded({ diag, projects, rulebook, reload }) {
+  return html`
+    <div style=${{ padding: 32, maxWidth: 820, margin: "40px auto", fontFamily: "system-ui, sans-serif" }}>
+      <h1 style=${{ marginTop: 0 }}>⚠ ERB Admin Portal — setup needed</h1>
+      <p>
+        The portal is data-driven from a set of <strong>portal-config tables</strong> inside the
+        active rulebook. The current rulebook does not have what the portal needs to render,
+        so the UI is blank.
+      </p>
+
+      <div style=${{ background: "#fff8e6", border: "1px solid #f0c36d", padding: 16, borderRadius: 6, margin: "16px 0" }}>
+        <div><strong>Active project:</strong> <code>${diag.activeProject}</code></div>
+        <div><strong>Active rulebook:</strong> <code>${rulebook.Name}</code></div>
+        ${diag.userError ? html`<div style=${{ marginTop: 8, color: "#c0392b" }}>
+          <strong>/api/me error:</strong> ${diag.userError}
+        </div>` : null}
+        ${diag.missingTables.length > 0 ? html`<div style=${{ marginTop: 8 }}>
+          <strong>Missing or empty portal-config tables:</strong>
+          <ul style=${{ marginTop: 4 }}>
+            ${diag.missingTables.map((t) => html`<li key=${t}><code>${t}</code></li>`)}
+          </ul>
+        </div>` : null}
+      </div>
+
+      <h3>How to fix</h3>
+      <ol>
+        <li>
+          Seed the meta-rulebook at
+          <code>effortless-rulebook/effortless-rulebook.json</code>
+          with the five portal-config tables
+          (<code>UserRoles</code>, <code>AppUsers</code>, <code>AppPermissions</code>,
+          <code>AppNavigation</code>, <code>AppScreens</code>).
+          The server's <code>loadRulebookWithPortalFallback()</code> will splice these
+          into every project automatically.
+        </li>
+        <li>
+          Or switch to a project whose rulebook already defines them:
+          <select value=${projects.active} onChange=${async (e) => {
+            try {
+              await api.post(`/api/projects/${encodeURIComponent(e.target.value)}/activate`);
+              await reload();
+            } catch (err) { toast("Switch failed: " + err.message, "error"); }
+          }} style=${{ marginLeft: 8 }}>
+            ${projects.projects.map((p) => html`<option key=${p.id} value=${p.id}>${p.name}</option>`)}
+          </select>
+        </li>
+        <li>
+          Reload after fixing:
+          <button onClick=${() => reload()} style=${{ marginLeft: 8 }}>↻ Reload</button>
+        </li>
+      </ol>
+
+      <details style=${{ marginTop: 24 }}>
+        <summary>Raw diagnostic</summary>
+        <pre style=${{ background: "#f5f5f5", padding: 12, borderRadius: 4, overflow: "auto" }}>${JSON.stringify(diag, null, 2)}</pre>
+      </details>
+    </div>
   `;
 }
 
