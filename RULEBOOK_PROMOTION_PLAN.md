@@ -8,6 +8,7 @@ an `effortless-rulebooks/` folder with one subfolder per domain.
 
 ## Todo List
 
+- [ ] **Finish ACME rulebooks** — Complete effortless-rulebooks/acme-corporation/ and effortless-rulebooks/acme-llc/ with full substrate generation and conformance testing.
 - [ ] **Audit current start.sh** — Map every assumption that Airtable is HEAD so we know exactly what breaks.
   - `orchestration/orchestrate.sh`: Lines 131-152 (SUBSTRATE_ORDER array hardcodes "airtable" as first substrate)
   - `orchestration/orchestrate.sh`: Lines 252, 285 (menu displays Airtable link from effortless.json base ID)
@@ -27,14 +28,8 @@ an `effortless-rulebooks/` folder with one subfolder per domain.
   - `orchestration/test-orchestrator.py`: Line 388 references "airtable" as the oracle baseline
   - `README.md` & `README.TECHNICAL.md`: Marketing/docs frame Airtable as "the hub" and rulebook as "disposable IR"
   - `CLAUDE.md`: Project instructions state "Three tools form hub-and-spokes around Airtable"
-- [x] **Define effortless-rulebooks layout** — Nail the folder contract: what's required vs derived in each domain subfolder.
-  - Created root `effortless-rulebooks/README.md` explaining the hub-and-spokes pattern
-  - Each ontology is a self-contained Effortless project: `effortless.json` + `CLAUDE.md` + `effortless-rulebook/` + `README.md`
-  - Base ID hardcoded in each project's `effortless.json` (no more central `bases.json`)
-  - Templates provided: `TEMPLATE-effortless.json` + `TEMPLATE-CLAUDE.md`
-- [x] **Identify extractable sidecar artifacts** — Decide which 1-2 artifacts (README? DAG diagram?) auto-generate from the rulebook.
-  - **README.md (narrative)**: per-ontology, hand-written, explains what the domain models, key entities, example use cases
-  - **Auto-generated candidates**: DAG diagram (from calculated-field dependencies), schema snapshot (JSON schema export)
+- [ ] **Define effortless-rulebooks layout** — Nail the folder contract: what's required vs derived in each domain subfolder.
+- [ ] **Identify extractable sidecar artifacts** — Decide which 1-2 artifacts (README? DAG diagram?) auto-generate from the rulebook.
 - [ ] **Refactor runtime folder structure** — Restructure start.sh + inject.py to drive from `effortless-rulebooks/<domain>/` as root.
 - [ ] **Demote Airtable to spoke** — Update effortless.json / pipeline so Airtable is one optional input spoke, not required SSoT.
 - [ ] **Update conformance tests** — Ensure take-test.py and test-cases run cleanly against the new folder layout.
@@ -47,52 +42,3 @@ an `effortless-rulebooks/` folder with one subfolder per domain.
 
 **The work is: decoupling source (Airtable/LLM/direct JSON edits) from consumption (everything else).**
 
-## Implementation Progress
-
-### Completed
-
-1. **Hub structure & documentation**
-   - Created `effortless-rulebooks/README.md` explaining the pattern
-   - Each ontology is a self-contained project with its own `effortless.json`, `CLAUDE.md`, `README.md`
-   - Templates provided (`TEMPLATE-effortless.json`, `TEMPLATE-CLAUDE.md`)
-
-2. **ACME Corporation** (`effortless-rulebooks/acme-corporation/`)
-   - ✅ `effortless.json` with hardcoded base ID: `appzkcmBFPWFGBtRo`
-   - ✅ `CLAUDE.md` (project instructions)
-   - ✅ `README.md` (narrative: business process modeling, inventory, aggregations, status derivation)
-   - ✅ `effortless-rulebook/effortless-rulebook.json` (seeded from cache)
-
-3. **ACME, LLC** (`effortless-rulebooks/acme-llc/`)
-   - ✅ `effortless.json` with hardcoded base ID: `appWrXPvXbkgQGOxt`
-   - ✅ `CLAUDE.md` (project instructions)
-   - ✅ `README.md` (narrative: lean variant, simplified workflow)
-   - ✅ `effortless-rulebook/effortless-rulebook.json` (seeded from cache)
-
-### Ready to Test
-
-- Navigate to `effortless-rulebooks/acme-corporation/`
-- Run `effortless build` to generate all substrates from the rulebook
-- Or run `effortless airtabletorulebook` to sync fresh from Airtable
-- Run `./start.sh` (once substrate structure in place) to test conformance
-
-## Test Plan: Verify It Works
-
-1. **Navigate to an ontology**: `cd effortless-rulebooks/acme-corporation/`
-2. **Inspect the structure**: Should have `effortless.json`, `CLAUDE.md`, `README.md`, `effortless-rulebook/`
-3. **Pull fresh rulebook**: `effortless airtabletorulebook` (requires `AIRTABLE_API_KEY`)
-4. **Build substrates**: `effortless build`
-5. **Run conformance tests**: `./start.sh` (once orchestration is wired up)
-
-See **MIGRATION_EXAMPLE.md** for detailed before/after comparison.
-
-## Open Questions
-
-- Should old `/bases/` folder be archived or deleted once migration is complete?
-- Should orchestration tools (orchestrate.sh, start.sh) be moved into each ontology or kept at repo root?
-- Auto-generated artifacts: DAG diagram, schema snapshot — where should these live?
-
----
-
-## Notes
-
-*(Add context, decisions, and discoveries here as work progresses.)*
