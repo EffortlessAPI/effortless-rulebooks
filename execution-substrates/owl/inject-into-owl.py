@@ -12,6 +12,7 @@ The rulebook is the source of truth. OWL/SHACL is derived, not authored.
 This script is 100% domain-agnostic - all field names come from the rulebook.
 """
 
+import os
 import sys
 import re
 from pathlib import Path
@@ -790,7 +791,8 @@ def main():
     if handle_clean_arg(GENERATED_FILES, "OWL substrate: Removes generated ontology, individuals, and SHACL rules"):
         return
 
-    script_dir = Path(__file__).resolve().parent
+    env_output = os.environ.get("ERB_OUTPUT_DIR")
+    script_dir = Path(env_output).resolve() if env_output else Path(__file__).resolve().parent
 
     print("=" * 70)
     print("OWL Execution Substrate - Formula-to-SHACL Compiler")

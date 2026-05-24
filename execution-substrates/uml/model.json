@@ -1,13 +1,9 @@
 {
   "classes": {
-    "Client": {
+    "Customers": {
       "attributes": [
         {
-          "name": "ClientId",
-          "type": "string"
-        },
-        {
-          "name": "Customer",
+          "name": "CustomerId",
           "type": "string"
         },
         {
@@ -25,16 +21,21 @@
       ],
       "derived": [
         {
+          "name": "Name",
+          "type": "string",
+          "formula": "=SUBSTITUTE({{EmailAddress}}, \"@\", \"-\")"
+        },
+        {
           "name": "FullName",
           "type": "string",
-          "formula": "={{FirstName}} & \" \" & {{LastName}}"
+          "formula": "={{LastName}} & \", \" & {{FirstName}}"
         }
       ]
     },
-    "Employees": {
+    "ERBCustomizations": {
       "attributes": [
         {
-          "name": "EmployeeId",
+          "name": "ERBCustomizationId",
           "type": "string"
         },
         {
@@ -42,44 +43,32 @@
           "type": "string"
         },
         {
-          "name": "EmailAddress",
+          "name": "Title",
           "type": "string"
         },
         {
-          "name": "PhoneNumber",
+          "name": "SQLCode",
           "type": "string"
         },
         {
-          "name": "Role",
+          "name": "SQLTarget",
           "type": "string"
         },
         {
-          "name": "Projects",
+          "name": "CustomizationType",
           "type": "string"
         }
       ],
-      "derived": [
-        {
-          "name": "RoleName",
-          "type": "string",
-          "formula": "=INDEX(Roles!{{Name}}, MATCH(Employees!{{Role}}, Roles!{{RoleId}}, 0))"
-        },
-        {
-          "name": "RoleDescription",
-          "type": "string",
-          "formula": "=INDEX(Roles!{{Description}}, MATCH(Employees!{{Role}}, Roles!{{RoleId}}, 0))"
-        },
-        {
-          "name": "RoleIsManager",
-          "type": "boolean",
-          "formula": "=INDEX(Roles!{{IsManager}}, MATCH(Employees!{{Role}}, Roles!{{RoleId}}, 0))"
-        }
-      ]
+      "derived": []
     },
-    "Projects": {
+    "ERBVersions": {
       "attributes": [
         {
-          "name": "ProjectId",
+          "name": "ERBVersionId",
+          "type": "string"
+        },
+        {
+          "name": "BaseId",
           "type": "string"
         },
         {
@@ -87,348 +76,114 @@
           "type": "string"
         },
         {
-          "name": "Description",
+          "name": "Message",
           "type": "string"
         },
         {
-          "name": "ProjectType",
+          "name": "Notes",
           "type": "string"
         },
         {
-          "name": "DueDate",
+          "name": "CommitDate",
           "type": "datetime"
         },
         {
-          "name": "IsApproved",
+          "name": "IsPublished",
           "type": "boolean"
-        },
-        {
-          "name": "ApprovedBy",
-          "type": "string"
         }
       ],
-      "derived": [
-        {
-          "name": "ProjectTypeName",
-          "type": "string",
-          "formula": "=INDEX(TypesOfProject!{{Name}}, MATCH(Projects!{{ProjectType}}, TypesOfProject!{{TypesOfProjectId}}, 0))"
-        },
-        {
-          "name": "ProjectTypeDescription",
-          "type": "string",
-          "formula": "=INDEX(TypesOfProject!{{Description}}, MATCH(Projects!{{ProjectType}}, TypesOfProject!{{TypesOfProjectId}}, 0))"
-        },
-        {
-          "name": "ProjectTypeRequiresManagerApproval",
-          "type": "boolean",
-          "formula": "=INDEX(TypesOfProject!{{RequiresManagerApproval}}, MATCH(Projects!{{ProjectType}}, TypesOfProject!{{TypesOfProjectId}}, 0))"
-        },
-        {
-          "name": "ApprovedByRoleIsManager",
-          "type": "boolean",
-          "formula": "=INDEX(Employees!{{RoleIsManager}}, MATCH(Projects!{{ApprovedBy}}, Employees!{{EmployeeId}}, 0))"
-        },
-        {
-          "name": "ApprovedByName",
-          "type": "string",
-          "formula": "=INDEX(Employees!{{Name}}, MATCH(Projects!{{ApprovedBy}}, Employees!{{EmployeeId}}, 0))"
-        },
-        {
-          "name": "ApprovedByEmailAddress",
-          "type": "string",
-          "formula": "=INDEX(Employees!{{EmailAddress}}, MATCH(Projects!{{ApprovedBy}}, Employees!{{EmployeeId}}, 0))"
-        },
-        {
-          "name": "ApprovedByPhoneNumber",
-          "type": "string",
-          "formula": "=INDEX(Employees!{{PhoneNumber}}, MATCH(Projects!{{ApprovedBy}}, Employees!{{EmployeeId}}, 0))"
-        }
-      ]
-    },
-    "Roles": {
-      "attributes": [
-        {
-          "name": "RoleId",
-          "type": "string"
-        },
-        {
-          "name": "Name",
-          "type": "string"
-        },
-        {
-          "name": "Description",
-          "type": "string"
-        },
-        {
-          "name": "IsManager",
-          "type": "boolean"
-        },
-        {
-          "name": "Employees",
-          "type": "string"
-        }
-      ],
-      "derived": [
-        {
-          "name": "CountOfEmployees",
-          "type": "integer",
-          "formula": "=COUNTIFS(Employees!{{Role}}, Roles!{{RoleId}})"
-        }
-      ]
-    },
-    "TypesOfProject": {
-      "attributes": [
-        {
-          "name": "TypesOfProjectId",
-          "type": "string"
-        },
-        {
-          "name": "Name",
-          "type": "string"
-        },
-        {
-          "name": "Description",
-          "type": "string"
-        },
-        {
-          "name": "RequiresManagerApproval",
-          "type": "boolean"
-        },
-        {
-          "name": "Projects",
-          "type": "string"
-        }
-      ],
-      "derived": [
-        {
-          "name": "CountOfProjects",
-          "type": "integer",
-          "formula": "=COUNTIFS(Projects!{{ProjectType}}, TypesOfProject!{{TypesOfProjectId}})"
-        }
-      ]
+      "derived": []
     }
   },
   "instances": [
     {
-      "class": "Client",
-      "id": "Client_0",
+      "class": "Customers",
+      "id": "Customers_0",
       "values": {
-        "ClientId": "cust0001",
-        "Customer": "CUST0001",
-        "EmailAddress": "larry.smith@email.com",
-        "FirstName": "Bob",
+        "CustomerId": "jane-smith-email-com",
+        "EmailAddress": "jane.smith@email.com",
+        "FirstName": "Bobby",
         "LastName": "Smith"
       }
     },
     {
-      "class": "Client",
-      "id": "Client_1",
+      "class": "Customers",
+      "id": "Customers_1",
       "values": {
-        "ClientId": "cust0002",
-        "Customer": "CUST0002",
+        "CustomerId": "john-doe-email-com",
         "EmailAddress": "john.doe@email.com",
-        "FirstName": "John",
+        "FirstName": "Jimmy",
         "LastName": "Doe"
       }
     },
     {
-      "class": "Client",
-      "id": "Client_2",
+      "class": "Customers",
+      "id": "Customers_2",
       "values": {
-        "ClientId": "cust0003",
-        "Customer": "CUST0003",
+        "CustomerId": "emily-jones-email-com",
         "EmailAddress": "emily.jones@email.com",
-        "FirstName": "Emily",
+        "FirstName": "Mary",
         "LastName": "Jones"
       }
     },
     {
-      "class": "Employees",
-      "id": "Employees_0",
+      "class": "ERBCustomizations",
+      "id": "ERBCustomizations_0",
       "values": {
-        "EmployeeId": "sarah-chen",
-        "Name": "Sarah Chen",
-        "EmailAddress": "sarah.chen@acmecorp.example",
-        "PhoneNumber": "555-0101",
-        "Role": "projectmanager",
-        "RoleName": "ProjectManager",
-        "RoleDescription": "The project Manager makes sure that the developers do what the analysts ask for",
-        "Projects": "internal-tools-dashboard",
-        "RoleIsManager": "True"
+        "ERBCustomizationId": "03a-customize-schema-sql",
+        "Name": "03a-customize-schema.sql",
+        "Title": "Customize Schema",
+        "SQLCode": "-- ============================================================================\n-- CUSTOMIZE SCHEMA - User-defined tables and schema modifications\n-- ============================================================================\n-- This file is for YOUR custom schema changes that should persist across\n-- regeneration of the base ERB files.\n--\n-- USE THIS FILE FOR:\n--   - Additional tables not defined in the rulebook\n--   - Extra columns on existing tables (ALTER TABLE)\n--   - Custom indexes for performance tuning\n--   - Custom constraints or triggers\n--\n-- IMPORTANT:\n--   - This file runs AFTER 01-drop-and-create-tables.sql\n--   - The base tables already exist when this runs\n--   - This file will NOT be overwritten by ERB regeneration\n--\n-- ============================================================================\n\n-- Your custom schema changes go here:\n",
+        "SQLTarget": "Postgres",
+        "CustomizationType": "Schema"
       }
     },
     {
-      "class": "Employees",
-      "id": "Employees_1",
+      "class": "ERBCustomizations",
+      "id": "ERBCustomizations_1",
       "values": {
-        "EmployeeId": "mike-johnson",
-        "Name": "Mike Johnson",
-        "EmailAddress": "mike.johnson@acmecorp.example",
-        "PhoneNumber": "555-0102",
-        "Role": "developer",
-        "RoleName": "Developer",
-        "RoleDescription": "Developers handle the implementation and are responsible for making the final product do what is expected",
-        "Projects": "gdpr-compliance-audit",
-        "RoleIsManager": "True"
+        "ERBCustomizationId": "03b-customize-functions-sql",
+        "Name": "03b-customize-functions.sql",
+        "Title": "Customize Functions",
+        "SQLCode": "-- ============================================================================\n-- CUSTOMIZE FUNCTIONS - User-defined calculation functions\n-- ============================================================================\n-- This file is for YOUR custom PostgreSQL functions that should persist\n-- across regeneration of the base ERB files.\n--\n-- IMPORTANT:\n--   - This file runs AFTER 02-create-functions.sql\n--   - Base ERB calc functions already exist when this runs\n--   - This file will NOT be overwritten by ERB regeneration\n--\n-- ============================================================================\n\n-- Your custom functions go here:\n",
+        "SQLTarget": "Postgres",
+        "CustomizationType": "Functions"
       }
     },
     {
-      "class": "Employees",
-      "id": "Employees_2",
+      "class": "ERBCustomizations",
+      "id": "ERBCustomizations_2",
       "values": {
-        "EmployeeId": "priya-patel",
-        "Name": "Priya Patel",
-        "EmailAddress": "priya.patel@acmecorp.example",
-        "PhoneNumber": "555-0103",
-        "Role": "analyst",
-        "RoleName": "Analyst",
-        "RoleDescription": "The business analysis know what the customer's want.",
-        "Projects": "customer-portal-redesign",
-        "RoleIsManager": ""
+        "ERBCustomizationId": "03c-customize-views-sql",
+        "Name": "03c-customize-views.sql",
+        "Title": "Customize Views",
+        "SQLCode": "-- ============================================================================\n-- CUSTOMIZE VIEWS - User-defined views and view extensions\n-- ============================================================================\n-- This file is for YOUR custom views that should persist across\n-- regeneration of the base ERB files.\n--\n-- IMPORTANT:\n--   - This file runs AFTER 03-create-views.sql\n--   - All base vw_* views already exist when this runs\n--   - This file will NOT be overwritten by ERB regeneration\n--\n-- ============================================================================\n\n-- Your custom views go here:\n",
+        "SQLTarget": "Postgres",
+        "CustomizationType": "Views"
       }
     },
     {
-      "class": "Projects",
-      "id": "Projects_0",
+      "class": "ERBCustomizations",
+      "id": "ERBCustomizations_3",
       "values": {
-        "ProjectId": "internal-tools-dashboard",
-        "Name": "Internal Tools Dashboard",
-        "Description": "Build internal analytics dashboard for team productivity metrics",
-        "ProjectType": "internal",
-        "ProjectTypeName": "Internal",
-        "ProjectTypeDescription": "An internal project that is not publicly accessible",
-        "ProjectTypeRequiresManagerApproval": "",
-        "DueDate": "2026-06-15",
-        "IsApproved": true,
-        "ApprovedBy": "sarah-chen",
-        "ApprovedByRoleIsManager": "True",
-        "ApprovedByName": "Sarah Chen",
-        "ApprovedByEmailAddress": "sarah.chen@acmecorp.example",
-        "ApprovedByPhoneNumber": "555-0101"
+        "ERBCustomizationId": "03d-customize-rls-sql",
+        "Name": "03d-customize-rls.sql",
+        "Title": "Customize Policies (RLS)",
+        "SQLCode": "-- ============================================================================\n-- CUSTOMIZE POLICIES - User-defined Row Level Security policies\n-- ============================================================================\n-- This file is for YOUR custom RLS policies that should persist across\n-- regeneration of the base ERB files.\n--\n-- IMPORTANT:\n--   - This file runs AFTER 04-create-policies.sql\n--   - Base RLS policies already exist when this runs\n--   - This file will NOT be overwritten by ERB regeneration\n--\n-- ============================================================================\n\n-- Your custom policies go here:\n",
+        "SQLTarget": "Postgres",
+        "CustomizationType": "RLS"
       }
     },
     {
-      "class": "Projects",
-      "id": "Projects_1",
+      "class": "ERBCustomizations",
+      "id": "ERBCustomizations_4",
       "values": {
-        "ProjectId": "customer-portal-redesign",
-        "Name": "Customer Portal Redesign",
-        "Description": "Complete redesign of customer-facing portal with modern UX",
-        "ProjectType": "clientfacing",
-        "ProjectTypeName": "ClientFacing",
-        "ProjectTypeDescription": "Open, public facing communication",
-        "ProjectTypeRequiresManagerApproval": "True",
-        "DueDate": "2026-08-01",
-        "IsApproved": false,
-        "ApprovedBy": "priya-patel",
-        "ApprovedByRoleIsManager": "",
-        "ApprovedByName": "Priya Patel",
-        "ApprovedByEmailAddress": "priya.patel@acmecorp.example",
-        "ApprovedByPhoneNumber": "555-0103"
-      }
-    },
-    {
-      "class": "Projects",
-      "id": "Projects_2",
-      "values": {
-        "ProjectId": "gdpr-compliance-audit",
-        "Name": "GDPR Compliance Audit",
-        "Description": "Annual compliance audit and documentation update",
-        "ProjectType": "compliance",
-        "ProjectTypeName": "Compliance",
-        "ProjectTypeDescription": "",
-        "ProjectTypeRequiresManagerApproval": "True",
-        "DueDate": "2026-04-30",
-        "IsApproved": true,
-        "ApprovedBy": "mike-johnson",
-        "ApprovedByRoleIsManager": "True",
-        "ApprovedByName": "Mike Johnson",
-        "ApprovedByEmailAddress": "mike.johnson@acmecorp.example",
-        "ApprovedByPhoneNumber": "555-0102"
-      }
-    },
-    {
-      "class": "Roles",
-      "id": "Roles_0",
-      "values": {
-        "RoleId": "developer",
-        "Name": "Developer",
-        "Description": "Developers handle the implementation and are responsible for making the final product do what is expected",
-        "IsManager": true,
-        "Employees": "mike-johnson",
-        "CountOfEmployees": 1
-      }
-    },
-    {
-      "class": "Roles",
-      "id": "Roles_1",
-      "values": {
-        "RoleId": "projectmanager",
-        "Name": "ProjectManager",
-        "Description": "The project Manager makes sure that the developers do what the analysts ask for",
-        "IsManager": true,
-        "Employees": "sarah-chen",
-        "CountOfEmployees": 1
-      }
-    },
-    {
-      "class": "Roles",
-      "id": "Roles_2",
-      "values": {
-        "RoleId": "analyst",
-        "Name": "Analyst",
-        "Description": "The business analysis know what the customer's want.",
-        "IsManager": false,
-        "Employees": "priya-patel",
-        "CountOfEmployees": 1
-      }
-    },
-    {
-      "class": "TypesOfProject",
-      "id": "TypesOfProject_0",
-      "values": {
-        "TypesOfProjectId": "internal",
-        "Name": "Internal",
-        "Description": "An internal project that is not publicly accessible",
-        "RequiresManagerApproval": false,
-        "Projects": "internal-tools-dashboard",
-        "CountOfProjects": 1
-      }
-    },
-    {
-      "class": "TypesOfProject",
-      "id": "TypesOfProject_1",
-      "values": {
-        "TypesOfProjectId": "clientfacing",
-        "Name": "ClientFacing",
-        "Description": "Open, public facing communication",
-        "RequiresManagerApproval": true,
-        "Projects": "customer-portal-redesign",
-        "CountOfProjects": 1
-      }
-    },
-    {
-      "class": "TypesOfProject",
-      "id": "TypesOfProject_2",
-      "values": {
-        "TypesOfProjectId": "research",
-        "Name": "Research",
-        "Description": "",
-        "RequiresManagerApproval": false,
-        "Projects": "",
-        "CountOfProjects": 0
-      }
-    },
-    {
-      "class": "TypesOfProject",
-      "id": "TypesOfProject_3",
-      "values": {
-        "TypesOfProjectId": "compliance",
-        "Name": "Compliance",
-        "Description": "",
-        "RequiresManagerApproval": true,
-        "Projects": "gdpr-compliance-audit",
-        "CountOfProjects": 1
+        "ERBCustomizationId": "03e-customize-data-sql",
+        "Name": "03e-customize-data.sql",
+        "Title": "Customize Data (Seeds / Migrations)",
+        "SQLCode": "-- ============================================================================\n-- CUSTOMIZE DATA - User-defined seed data and data migrations\n-- ============================================================================\n-- This file is for YOUR custom seed data that should persist across\n-- regeneration of the base ERB files.\n--\n-- IMPORTANT:\n--   - This file runs AFTER 05-insert-data.sql\n--   - Base seed data already exists when this runs\n--   - This file will NOT be overwritten by ERB regeneration\n--\n-- ============================================================================\n\n-- Your custom data inserts go here:\n",
+        "SQLTarget": "Postgres",
+        "CustomizationType": "Data"
       }
     }
   ]

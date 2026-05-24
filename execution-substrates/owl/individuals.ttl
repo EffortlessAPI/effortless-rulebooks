@@ -3,133 +3,140 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix erb: <http://example.org/erb#> .
 
-# === Individuals: Client ===
+# === Individuals: Customers ===
 
-erb:Client_0 a erb:Client ;
-    erb:clientId "cust0001" ;
-    erb:customer "CUST0001" ;
-    erb:emailAddress "larry.smith@email.com" ;
-    erb:firstName "Bob" ;
+erb:Customers_0 a erb:Customers ;
+    erb:customerId "jane-smith-email-com" ;
+    erb:emailAddress "jane.smith@email.com" ;
+    erb:firstName "Bobby" ;
     erb:lastName "Smith" .
 
-erb:Client_1 a erb:Client ;
-    erb:clientId "cust0002" ;
-    erb:customer "CUST0002" ;
+erb:Customers_1 a erb:Customers ;
+    erb:customerId "john-doe-email-com" ;
     erb:emailAddress "john.doe@email.com" ;
-    erb:firstName "John" ;
+    erb:firstName "Jimmy" ;
     erb:lastName "Doe" .
 
-erb:Client_2 a erb:Client ;
-    erb:clientId "cust0003" ;
-    erb:customer "CUST0003" ;
+erb:Customers_2 a erb:Customers ;
+    erb:customerId "emily-jones-email-com" ;
     erb:emailAddress "emily.jones@email.com" ;
-    erb:firstName "Emily" ;
+    erb:firstName "Mary" ;
     erb:lastName "Jones" .
 
-# === Individuals: Employees ===
+# === Individuals: ERBCustomizations ===
 
-erb:Employees_0 a erb:Employees ;
-    erb:employeeId "sarah-chen" ;
-    erb:name "Sarah Chen" ;
-    erb:emailAddress "sarah.chen@acmecorp.example" ;
-    erb:phoneNumber "555-0101" ;
-    erb:role "projectmanager" ;
-    erb:projects "internal-tools-dashboard" .
+erb:ERBCustomizations_0 a erb:ERBCustomizations ;
+    erb:eRBCustomizationId "03a-customize-schema-sql" ;
+    erb:name "03a-customize-schema.sql" ;
+    erb:title "Customize Schema" ;
+    erb:sQLCode """-- ============================================================================
+-- CUSTOMIZE SCHEMA - User-defined tables and schema modifications
+-- ============================================================================
+-- This file is for YOUR custom schema changes that should persist across
+-- regeneration of the base ERB files.
+--
+-- USE THIS FILE FOR:
+--   - Additional tables not defined in the rulebook
+--   - Extra columns on existing tables (ALTER TABLE)
+--   - Custom indexes for performance tuning
+--   - Custom constraints or triggers
+--
+-- IMPORTANT:
+--   - This file runs AFTER 01-drop-and-create-tables.sql
+--   - The base tables already exist when this runs
+--   - This file will NOT be overwritten by ERB regeneration
+--
+-- ============================================================================
 
-erb:Employees_1 a erb:Employees ;
-    erb:employeeId "mike-johnson" ;
-    erb:name "Mike Johnson" ;
-    erb:emailAddress "mike.johnson@acmecorp.example" ;
-    erb:phoneNumber "555-0102" ;
-    erb:role "developer" ;
-    erb:projects "gdpr-compliance-audit" .
+-- Your custom schema changes go here:
+""" ;
+    erb:sQLTarget "Postgres" ;
+    erb:customizationType "Schema" .
 
-erb:Employees_2 a erb:Employees ;
-    erb:employeeId "priya-patel" ;
-    erb:name "Priya Patel" ;
-    erb:emailAddress "priya.patel@acmecorp.example" ;
-    erb:phoneNumber "555-0103" ;
-    erb:role "analyst" ;
-    erb:projects "customer-portal-redesign" .
+erb:ERBCustomizations_1 a erb:ERBCustomizations ;
+    erb:eRBCustomizationId "03b-customize-functions-sql" ;
+    erb:name "03b-customize-functions.sql" ;
+    erb:title "Customize Functions" ;
+    erb:sQLCode """-- ============================================================================
+-- CUSTOMIZE FUNCTIONS - User-defined calculation functions
+-- ============================================================================
+-- This file is for YOUR custom PostgreSQL functions that should persist
+-- across regeneration of the base ERB files.
+--
+-- IMPORTANT:
+--   - This file runs AFTER 02-create-functions.sql
+--   - Base ERB calc functions already exist when this runs
+--   - This file will NOT be overwritten by ERB regeneration
+--
+-- ============================================================================
 
-# === Individuals: Projects ===
+-- Your custom functions go here:
+""" ;
+    erb:sQLTarget "Postgres" ;
+    erb:customizationType "Functions" .
 
-erb:Projects_0 a erb:Projects ;
-    erb:projectId "internal-tools-dashboard" ;
-    erb:name "Internal Tools Dashboard" ;
-    erb:description "Build internal analytics dashboard for team productivity metrics" ;
-    erb:projectType "internal" ;
-    erb:dueDate "2026-06-15" ;
-    erb:isApproved true ;
-    erb:approvedBy "sarah-chen" .
+erb:ERBCustomizations_2 a erb:ERBCustomizations ;
+    erb:eRBCustomizationId "03c-customize-views-sql" ;
+    erb:name "03c-customize-views.sql" ;
+    erb:title "Customize Views" ;
+    erb:sQLCode """-- ============================================================================
+-- CUSTOMIZE VIEWS - User-defined views and view extensions
+-- ============================================================================
+-- This file is for YOUR custom views that should persist across
+-- regeneration of the base ERB files.
+--
+-- IMPORTANT:
+--   - This file runs AFTER 03-create-views.sql
+--   - All base vw_* views already exist when this runs
+--   - This file will NOT be overwritten by ERB regeneration
+--
+-- ============================================================================
 
-erb:Projects_1 a erb:Projects ;
-    erb:projectId "customer-portal-redesign" ;
-    erb:name "Customer Portal Redesign" ;
-    erb:description "Complete redesign of customer-facing portal with modern UX" ;
-    erb:projectType "clientfacing" ;
-    erb:dueDate "2026-08-01" ;
-    erb:isApproved false ;
-    erb:approvedBy "priya-patel" .
+-- Your custom views go here:
+""" ;
+    erb:sQLTarget "Postgres" ;
+    erb:customizationType "Views" .
 
-erb:Projects_2 a erb:Projects ;
-    erb:projectId "gdpr-compliance-audit" ;
-    erb:name "GDPR Compliance Audit" ;
-    erb:description "Annual compliance audit and documentation update" ;
-    erb:projectType "compliance" ;
-    erb:dueDate "2026-04-30" ;
-    erb:isApproved true ;
-    erb:approvedBy "mike-johnson" .
+erb:ERBCustomizations_3 a erb:ERBCustomizations ;
+    erb:eRBCustomizationId "03d-customize-rls-sql" ;
+    erb:name "03d-customize-rls.sql" ;
+    erb:title "Customize Policies (RLS)" ;
+    erb:sQLCode """-- ============================================================================
+-- CUSTOMIZE POLICIES - User-defined Row Level Security policies
+-- ============================================================================
+-- This file is for YOUR custom RLS policies that should persist across
+-- regeneration of the base ERB files.
+--
+-- IMPORTANT:
+--   - This file runs AFTER 04-create-policies.sql
+--   - Base RLS policies already exist when this runs
+--   - This file will NOT be overwritten by ERB regeneration
+--
+-- ============================================================================
 
-# === Individuals: Roles ===
+-- Your custom policies go here:
+""" ;
+    erb:sQLTarget "Postgres" ;
+    erb:customizationType "RLS" .
 
-erb:Roles_0 a erb:Roles ;
-    erb:roleId "developer" ;
-    erb:name "Developer" ;
-    erb:description "Developers handle the implementation and are responsible for making the final product do what is expected" ;
-    erb:isManager true ;
-    erb:employees "mike-johnson" .
+erb:ERBCustomizations_4 a erb:ERBCustomizations ;
+    erb:eRBCustomizationId "03e-customize-data-sql" ;
+    erb:name "03e-customize-data.sql" ;
+    erb:title "Customize Data (Seeds / Migrations)" ;
+    erb:sQLCode """-- ============================================================================
+-- CUSTOMIZE DATA - User-defined seed data and data migrations
+-- ============================================================================
+-- This file is for YOUR custom seed data that should persist across
+-- regeneration of the base ERB files.
+--
+-- IMPORTANT:
+--   - This file runs AFTER 05-insert-data.sql
+--   - Base seed data already exists when this runs
+--   - This file will NOT be overwritten by ERB regeneration
+--
+-- ============================================================================
 
-erb:Roles_1 a erb:Roles ;
-    erb:roleId "projectmanager" ;
-    erb:name "ProjectManager" ;
-    erb:description "The project Manager makes sure that the developers do what the analysts ask for" ;
-    erb:isManager true ;
-    erb:employees "sarah-chen" .
-
-erb:Roles_2 a erb:Roles ;
-    erb:roleId "analyst" ;
-    erb:name "Analyst" ;
-    erb:description "The business analysis know what the customer's want." ;
-    erb:isManager false ;
-    erb:employees "priya-patel" .
-
-# === Individuals: TypesOfProject ===
-
-erb:TypesOfProject_0 a erb:TypesOfProject ;
-    erb:typesOfProjectId "internal" ;
-    erb:name "Internal" ;
-    erb:description "An internal project that is not publicly accessible" ;
-    erb:requiresManagerApproval false ;
-    erb:projects "internal-tools-dashboard" .
-
-erb:TypesOfProject_1 a erb:TypesOfProject ;
-    erb:typesOfProjectId "clientfacing" ;
-    erb:name "ClientFacing" ;
-    erb:description "Open, public facing communication" ;
-    erb:requiresManagerApproval true ;
-    erb:projects "customer-portal-redesign" .
-
-erb:TypesOfProject_2 a erb:TypesOfProject ;
-    erb:typesOfProjectId "research" ;
-    erb:name "Research" ;
-    erb:description "" ;
-    erb:requiresManagerApproval false ;
-    erb:projects "" .
-
-erb:TypesOfProject_3 a erb:TypesOfProject ;
-    erb:typesOfProjectId "compliance" ;
-    erb:name "Compliance" ;
-    erb:description "" ;
-    erb:requiresManagerApproval true ;
-    erb:projects "gdpr-compliance-audit" .
+-- Your custom data inserts go here:
+""" ;
+    erb:sQLTarget "Postgres" ;
+    erb:customizationType "Data" .

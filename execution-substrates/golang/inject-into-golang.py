@@ -13,6 +13,7 @@ Generated files:
 - main.go - Test runner for all tables with calculated fields
 """
 
+import os
 import sys
 import re
 from pathlib import Path
@@ -1288,11 +1289,12 @@ def main():
     ]
 
     # Handle --clean argument
+    env_output = os.environ.get("ERB_OUTPUT_DIR")
     if handle_clean_arg(GENERATED_FILES, "Golang substrate: Removes generated erb_sdk.go"):
         return
 
     candidate_name = get_candidate_name_from_cwd()
-    script_dir = Path(__file__).resolve().parent
+    script_dir = Path(env_output).resolve() if env_output else Path(__file__).resolve().parent
 
     print("=" * 70)
     print("Golang Execution Substrate - Generic Rulebook Transpiler")

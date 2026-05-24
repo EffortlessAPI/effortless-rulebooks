@@ -13,6 +13,7 @@ The rulebook is the source of truth. UML/OCL is derived, not authored.
 This script is 100% domain-agnostic - all field names come from the rulebook.
 """
 
+import os
 import sys
 import re
 import json
@@ -687,7 +688,8 @@ def main():
     if handle_clean_arg(GENERATED_FILES, "UML substrate: Removes generated PlantUML diagrams, model, and OCL constraints"):
         return
 
-    script_dir = Path(__file__).resolve().parent
+    env_output = os.environ.get("ERB_OUTPUT_DIR")
+    script_dir = Path(env_output).resolve() if env_output else Path(__file__).resolve().parent
 
     print("=" * 70)
     print("UML Execution Substrate - Formula-to-OCL Compiler")

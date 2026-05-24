@@ -309,25 +309,41 @@ Lsubst_done:
     .data
     .globl str_0
 str_0:
-    .asciz " "
+    .asciz "@"
     .globl str_0_len
 str_0_len:
     .quad 1
+    .globl str_1
+str_1:
+    .asciz "-"
+    .globl str_1_len
+str_1_len:
+    .quad 1
+    .globl str_2
+str_2:
+    .asciz ", "
+    .globl str_2_len
+str_2_len:
+    .quad 2
 
     // Static result buffers for string concatenation
     .bss
-    .globl _result_buf_eval_client_full_name
+    .globl _result_buf_eval_customers_full_name
     .p2align 3
-_result_buf_eval_client_full_name:
+_result_buf_eval_customers_full_name:
+    .space 1024
+    .globl _result_buf_eval_customers_name
+    .p2align 3
+_result_buf_eval_customers_name:
     .space 1024
 
     .text
 
-// Full name is computed from the first and last name of the customer
-// Formula: ={{FirstName}} & " " & {{LastName}}
-    .globl _eval_client_full_name
+// Identifier for the customers.
+// Formula: =SUBSTITUTE({{EmailAddress}}, "@", "-")
+    .globl _eval_customers_name
     .p2align 2
-_eval_client_full_name:
+_eval_customers_name:
     stp x29, x30, [sp, #-16]!
     mov x29, sp
     stp x19, x20, [sp, #-16]!
@@ -335,8 +351,8 @@ _eval_client_full_name:
     stp x23, x24, [sp, #-16]!
     sub sp, sp, #256
     mov x19, x0
-    ldr x0, [x19, #48]
-    ldr x1, [x19, #56]
+    ldr x0, [x19, #32]
+    ldr x1, [x19, #40]
     str x0, [sp, #16]
     str x1, [sp, #24]
     adrp x0, str_0@PAGE
@@ -344,14 +360,57 @@ _eval_client_full_name:
     mov x1, #1
     str x0, [sp, #32]
     str x1, [sp, #40]
+    adrp x0, str_1@PAGE
+    add x0, x0, str_1@PAGEOFF
+    mov x1, #1
+    str x0, [sp, #48]
+    str x1, [sp, #56]
+    adrp x20, _result_buf_eval_customers_name@PAGE
+    add x20, x20, _result_buf_eval_customers_name@PAGEOFF
+    ldr x1, [sp, #16]
+    ldr x2, [sp, #24]
+    ldr x3, [sp, #32]
+    ldr x4, [sp, #40]
+    ldr x5, [sp, #48]
+    ldr x6, [sp, #56]
+    mov x0, x20
+    bl _string_substitute
+    add sp, sp, #256
+    ldp x23, x24, [sp], #16
+    ldp x21, x22, [sp], #16
+    ldp x19, x20, [sp], #16
+    ldp x29, x30, [sp], #16
+    ret
+
+// Full name is computed from the first and last name of the customer
+// Formula: ={{LastName}} & ", " & {{FirstName}}
+    .globl _eval_customers_full_name
+    .p2align 2
+_eval_customers_full_name:
+    stp x29, x30, [sp, #-16]!
+    mov x29, sp
+    stp x19, x20, [sp, #-16]!
+    stp x21, x22, [sp, #-16]!
+    stp x23, x24, [sp, #-16]!
+    sub sp, sp, #256
+    mov x19, x0
     ldr x0, [x19, #64]
     ldr x1, [x19, #72]
+    str x0, [sp, #16]
+    str x1, [sp, #24]
+    adrp x0, str_2@PAGE
+    add x0, x0, str_2@PAGEOFF
+    mov x1, #2
+    str x0, [sp, #32]
+    str x1, [sp, #40]
+    ldr x0, [x19, #48]
+    ldr x1, [x19, #56]
     str x0, [sp, #48]
     str x1, [sp, #56]
     ldr x0, [sp, #16]
     ldr x1, [sp, #24]
-    adrp x22, _result_buf_eval_client_full_name@PAGE
-    add x22, x22, _result_buf_eval_client_full_name@PAGEOFF
+    adrp x22, _result_buf_eval_customers_full_name@PAGE
+    add x22, x22, _result_buf_eval_customers_full_name@PAGEOFF
     ldr x4, [sp, #40]
     ldr x3, [sp, #32]
     mov x2, x1

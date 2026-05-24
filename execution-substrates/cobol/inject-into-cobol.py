@@ -13,6 +13,7 @@ Generated files:
 """
 
 import json
+import os
 import sys
 from pathlib import Path
 from typing import Dict, List, Any, Set
@@ -590,7 +591,8 @@ def main():
     if handle_clean_arg(GENERATED_FILES, "COBOL substrate: Removes generated COBOL and manifest"):
         return
 
-    script_dir = Path(__file__).resolve().parent
+    env_output = os.environ.get("ERB_OUTPUT_DIR")
+    script_dir = Path(env_output).resolve() if env_output else Path(__file__).resolve().parent
 
     print("=" * 70)
     print("COBOL Execution Substrate - Formula to COBOL Compiler")

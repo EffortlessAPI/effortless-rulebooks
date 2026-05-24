@@ -382,18 +382,18 @@ show_menu() {
         done <<< "$PROJECT_TRANSPILERS"
         echo ""
         if $PROXY_RUNNING; then
-            echo -e "  ${GREEN}[B]${NC} ${BOLD}BUILD${NC} — run all project transpilers ${DIM}(default)${NC}"
+            echo -e "  ${GREEN}[B]${NC} ${BOLD}BUILD${NC} — regenerate all ${WHITE}${PROJECT_NAME}${NC} substrates ${DIM}(default)${NC}"
         else
             echo -e "  ${RED}[B]${NC} ${BOLD}BUILD${NC} — ${RED}proxy offline${NC} — start it first:"
-            echo -e "      ${DIM}python3 $PROJECT_ROOT/ssotme-proxy/server.py &${NC}"
+            echo -e "      ${DIM}ssotme-proxy/start.sh${NC}"
         fi
     fi
 
-    echo -e "  ${MAGENTA}[V]${NC} ${BOLD}VIEW RESULTS${NC}"
-    echo -e "  ${YELLOW}[O]${NC} ${BOLD}SELECT ONTOLOGY${NC}"
-    echo -e "  ${BLUE}[I]${NC} ${BOLD}IMPORT FROM AIRTABLE${NC}"
-    echo -e "  ${RED}[C]${NC} ${BOLD}CLEAN${NC}"
-    echo -e "  ${YELLOW}[D]${NC} ${BOLD}DEV-OPS${NC}"
+    echo -e "  ${MAGENTA}[V]${NC} ${BOLD}VIEW${NC} — browse ${WHITE}${PROJECT_NAME}${NC}'s generated output"
+    echo -e "  ${YELLOW}[O]${NC} ${BOLD}ONTOLOGY${NC} — pick a different rulebook to work with"
+    echo -e "  ${BLUE}[I]${NC} ${BOLD}IMPORT${NC} — pull latest rulebook from Airtable"
+    echo -e "  ${RED}[C]${NC} ${BOLD}CLEAN${NC} — delete all generated files"
+    echo -e "  ${YELLOW}[D]${NC} ${BOLD}DEV-OPS${NC} — database & tooling setup"
     echo -e "  [${RED}Q${NC}] Quit"
     echo ""
 }

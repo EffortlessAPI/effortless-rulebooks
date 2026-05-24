@@ -1,177 +1,69 @@
 @startuml
 
-object "Client_0" as Client_0 {
-  ClientId = "cust0001"
-  Customer = "CUST0001"
-  EmailAddress = "larry.smith@email.com"
-  FirstName = "Bob"
+object "jane.smith-email.com" as Customers_0 {
+  CustomerId = "jane-smith-email-com"
+  EmailAddress = "jane.smith@email.com"
+  FirstName = "Bobby"
   LastName = "Smith"
 }
 
-object "Client_1" as Client_1 {
-  ClientId = "cust0002"
-  Customer = "CUST0002"
+object "john.doe-email.com" as Customers_1 {
+  CustomerId = "john-doe-email-com"
   EmailAddress = "john.doe@email.com"
-  FirstName = "John"
+  FirstName = "Jimmy"
   LastName = "Doe"
 }
 
-object "Client_2" as Client_2 {
-  ClientId = "cust0003"
-  Customer = "CUST0003"
+object "emily.jones-email.com" as Customers_2 {
+  CustomerId = "emily-jones-email-com"
   EmailAddress = "emily.jones@email.com"
-  FirstName = "Emily"
+  FirstName = "Mary"
   LastName = "Jones"
 }
 
-object "Sarah Chen" as Employees_0 {
-  EmployeeId = "sarah-chen"
-  Name = "Sarah Chen"
-  EmailAddress = "sarah.chen@acmecorp.example"
-  PhoneNumber = "555-0101"
-  Role = "projectmanager"
-  RoleName = "ProjectManager"
-  RoleDescription = "The project Manager makes s..."
-  Projects = "internal-tools-dashboard"
-  RoleIsManager = "True"
+object "03a-customize-schema.sql" as ERBCustomizations_0 {
+  ERBCustomizationId = "03a-customize-schema-sql"
+  Name = "03a-customize-schema.sql"
+  Title = "Customize Schema"
+  SQLCode = "-- ========================..."
+  SQLTarget = "Postgres"
+  CustomizationType = "Schema"
 }
 
-object "Mike Johnson" as Employees_1 {
-  EmployeeId = "mike-johnson"
-  Name = "Mike Johnson"
-  EmailAddress = "mike.johnson@acmecorp.example"
-  PhoneNumber = "555-0102"
-  Role = "developer"
-  RoleName = "Developer"
-  RoleDescription = "Developers handle the imple..."
-  Projects = "gdpr-compliance-audit"
-  RoleIsManager = "True"
+object "03b-customize-functions.sql" as ERBCustomizations_1 {
+  ERBCustomizationId = "03b-customize-functions-sql"
+  Name = "03b-customize-functions.sql"
+  Title = "Customize Functions"
+  SQLCode = "-- ========================..."
+  SQLTarget = "Postgres"
+  CustomizationType = "Functions"
 }
 
-object "Priya Patel" as Employees_2 {
-  EmployeeId = "priya-patel"
-  Name = "Priya Patel"
-  EmailAddress = "priya.patel@acmecorp.example"
-  PhoneNumber = "555-0103"
-  Role = "analyst"
-  RoleName = "Analyst"
-  RoleDescription = "The business analysis know ..."
-  Projects = "customer-portal-redesign"
-  RoleIsManager = ""
+object "03c-customize-views.sql" as ERBCustomizations_2 {
+  ERBCustomizationId = "03c-customize-views-sql"
+  Name = "03c-customize-views.sql"
+  Title = "Customize Views"
+  SQLCode = "-- ========================..."
+  SQLTarget = "Postgres"
+  CustomizationType = "Views"
 }
 
-object "Internal Tools Dashboard" as Projects_0 {
-  ProjectId = "internal-tools-dashboard"
-  Name = "Internal Tools Dashboard"
-  Description = "Build internal analytics da..."
-  ProjectType = "internal"
-  ProjectTypeName = "Internal"
-  ProjectTypeDescription = "An internal project that is..."
-  ProjectTypeRequiresManagerApproval = ""
-  DueDate = "2026-06-15"
-  IsApproved = true
-  ApprovedBy = "sarah-chen"
-  ApprovedByRoleIsManager = "True"
-  ApprovedByName = "Sarah Chen"
-  ApprovedByEmailAddress = "sarah.chen@acmecorp.example"
-  ApprovedByPhoneNumber = "555-0101"
+object "03d-customize-rls.sql" as ERBCustomizations_3 {
+  ERBCustomizationId = "03d-customize-rls-sql"
+  Name = "03d-customize-rls.sql"
+  Title = "Customize Policies (RLS)"
+  SQLCode = "-- ========================..."
+  SQLTarget = "Postgres"
+  CustomizationType = "RLS"
 }
 
-object "Customer Portal Redesign" as Projects_1 {
-  ProjectId = "customer-portal-redesign"
-  Name = "Customer Portal Redesign"
-  Description = "Complete redesign of custom..."
-  ProjectType = "clientfacing"
-  ProjectTypeName = "ClientFacing"
-  ProjectTypeDescription = "Open, public facing communi..."
-  ProjectTypeRequiresManagerApproval = "True"
-  DueDate = "2026-08-01"
-  IsApproved = false
-  ApprovedBy = "priya-patel"
-  ApprovedByRoleIsManager = ""
-  ApprovedByName = "Priya Patel"
-  ApprovedByEmailAddress = "priya.patel@acmecorp.example"
-  ApprovedByPhoneNumber = "555-0103"
-}
-
-object "GDPR Compliance Audit" as Projects_2 {
-  ProjectId = "gdpr-compliance-audit"
-  Name = "GDPR Compliance Audit"
-  Description = "Annual compliance audit and..."
-  ProjectType = "compliance"
-  ProjectTypeName = "Compliance"
-  ProjectTypeDescription = ""
-  ProjectTypeRequiresManagerApproval = "True"
-  DueDate = "2026-04-30"
-  IsApproved = true
-  ApprovedBy = "mike-johnson"
-  ApprovedByRoleIsManager = "True"
-  ApprovedByName = "Mike Johnson"
-  ApprovedByEmailAddress = "mike.johnson@acmecorp.example"
-  ApprovedByPhoneNumber = "555-0102"
-}
-
-object "Developer" as Roles_0 {
-  RoleId = "developer"
-  Name = "Developer"
-  Description = "Developers handle the imple..."
-  IsManager = true
-  Employees = "mike-johnson"
-  CountOfEmployees = 1
-}
-
-object "ProjectManager" as Roles_1 {
-  RoleId = "projectmanager"
-  Name = "ProjectManager"
-  Description = "The project Manager makes s..."
-  IsManager = true
-  Employees = "sarah-chen"
-  CountOfEmployees = 1
-}
-
-object "Analyst" as Roles_2 {
-  RoleId = "analyst"
-  Name = "Analyst"
-  Description = "The business analysis know ..."
-  IsManager = false
-  Employees = "priya-patel"
-  CountOfEmployees = 1
-}
-
-object "Internal" as TypesOfProject_0 {
-  TypesOfProjectId = "internal"
-  Name = "Internal"
-  Description = "An internal project that is..."
-  RequiresManagerApproval = false
-  Projects = "internal-tools-dashboard"
-  CountOfProjects = 1
-}
-
-object "ClientFacing" as TypesOfProject_1 {
-  TypesOfProjectId = "clientfacing"
-  Name = "ClientFacing"
-  Description = "Open, public facing communi..."
-  RequiresManagerApproval = true
-  Projects = "customer-portal-redesign"
-  CountOfProjects = 1
-}
-
-object "Research" as TypesOfProject_2 {
-  TypesOfProjectId = "research"
-  Name = "Research"
-  Description = ""
-  RequiresManagerApproval = false
-  Projects = ""
-  CountOfProjects = 0
-}
-
-object "Compliance" as TypesOfProject_3 {
-  TypesOfProjectId = "compliance"
-  Name = "Compliance"
-  Description = ""
-  RequiresManagerApproval = true
-  Projects = "gdpr-compliance-audit"
-  CountOfProjects = 1
+object "03e-customize-data.sql" as ERBCustomizations_4 {
+  ERBCustomizationId = "03e-customize-data-sql"
+  Name = "03e-customize-data.sql"
+  Title = "Customize Data (Seeds / Mig..."
+  SQLCode = "-- ========================..."
+  SQLTarget = "Postgres"
+  CustomizationType = "Data"
 }
 
 @enduml

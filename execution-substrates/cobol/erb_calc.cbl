@@ -29,18 +29,27 @@
            GOBACK.
        .
 
-       *> ========== CLIENT ==========
+       *> ========== CUSTOMERS ==========
        *> Level 1
+       CALC-NAME.
+           MOVE RECORD-EMAIL-ADDRESS TO WS-SUBST-INPUT
+           MOVE "@" TO WS-SUBST-OLD
+           MOVE "-" TO WS-SUBST-NEW
+           PERFORM SUBSTITUTE-ALL
+           MOVE WS-SUBST-OUTPUT TO RECORD-NAME
+       .
+
        CALC-FULL-NAME.
            MOVE SPACES TO RECORD-FULL-NAME
            STRING
-               FUNCTION TRIM(RECORD-FIRST-NAME TRAILING) DELIMITED SIZE
-               " " DELIMITED SIZE
                FUNCTION TRIM(RECORD-LAST-NAME TRAILING) DELIMITED SIZE
+               ", " DELIMITED SIZE
+               FUNCTION TRIM(RECORD-FIRST-NAME TRAILING) DELIMITED SIZE
                INTO RECORD-FULL-NAME
        .
 
        COMPUTE-ALL-FIELDS.
+           PERFORM CALC-NAME
            PERFORM CALC-FULL-NAME
        .
        FIND-CONTAINS.
