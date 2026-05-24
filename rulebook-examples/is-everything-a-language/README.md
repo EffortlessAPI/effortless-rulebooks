@@ -165,7 +165,7 @@ This demonstrates that the ERB platform isn't just for business domains:
 
 ## Files in This Directory
 
-- `effortless-rulebook.json` - Snapshot of the rulebook for this base
+- `is-everything-a-language-rulebook.json` - Snapshot of the rulebook for this base
 - `README.md` - This file
 
 ---

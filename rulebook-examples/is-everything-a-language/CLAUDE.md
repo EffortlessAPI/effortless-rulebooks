@@ -1,9 +1,9 @@
 # Is Everything a Language? — Effortless Project
 
 <!-- rulebook-authoritative-banner -->
-## Authoritative Source: `effortless-rulebook/effortless-rulebook.json` is HEAD
+## Authoritative Source: `effortless-rulebook/is-everything-a-language-rulebook.json` is HEAD
 
-For this project, **`effortless-rulebook/effortless-rulebook.json` is the single, authoritative source of truth.** Edit it directly. All other artifacts (Postgres SQL, Python, Go, Excel, OWL, etc.) are mechanically derived from it via `effortless build`.
+For this project, **`effortless-rulebook/is-everything-a-language-rulebook.json` is the single, authoritative source of truth.** Edit it directly. All other artifacts (Postgres SQL, Python, Go, Excel, OWL, etc.) are mechanically derived from it via `effortless build`.
 
 ### Airtable pull is disabled by default
 
@@ -15,18 +15,18 @@ If you want to re-enable Airtable pull as the source of truth for a single build
 2. Either:
    - Run the transpiler one-off:
      ```bash
-     effortless airtabletorulebook -o effortless-rulebook/effortless-rulebook.json -account airtable -p "view=Grid view"
+     effortless airtabletorulebook -o effortless-rulebook/is-everything-a-language-rulebook.json -account airtable -p "view=Grid view"
      ```
    - Or flip `IsDisabled` back to `false` in `effortless.json`, run `effortless build`, then flip it back to `true`.
 
 **Default rule for Claude / any agent operating in this project:** treat the JSON as authoritative; do not enable or invoke `airtabletorulebook` without explicit user consent on that specific turn. Memory or "we usually pull from Airtable" is not consent — every pull must be a fresh, in-context decision.
-### Never silently revert `effortless-rulebook.json`
+### Never silently revert `is-everything-a-language-rulebook.json`
 
-**Treat `effortless-rulebook/effortless-rulebook.json` as sacred.** It contains human-authored business rules and CANNOT be casually overwritten. Before running any command that could touch this file — `effortless build`, `effortless airtabletorulebook`, any transpiler that writes to it, any sync script, any `git checkout`/`git restore` against it — first run `git status` / `git diff` on it.
+**Treat `effortless-rulebook/is-everything-a-language-rulebook.json` as sacred.** It contains human-authored business rules and CANNOT be casually overwritten. Before running any command that could touch this file — `effortless build`, `effortless airtabletorulebook`, any transpiler that writes to it, any sync script, any `git checkout`/`git restore` against it — first run `git status` / `git diff` on it.
 
 - If the file has uncommitted changes that you (the agent) did NOT just make this turn, **stop**. Ask the user before proceeding.
 - It is only acceptable to let a regeneration touch this file when you are certain the *only* uncommitted edits in it are ones you just made in the current turn.
-- This applies to every `**/effortless-rulebook/effortless-rulebook.json` in this repo, not just the project-local one.
+- This applies to every `**/effortless-rulebook/is-everything-a-language-rulebook.json` in this repo, not just the project-local one.
 
 There is no upstream to "restore from." The JSON is the upstream.
 
@@ -43,7 +43,7 @@ This folder is a **self-contained Effortless Rulebook (ERB) project**. The ruleb
 
 ## Rulebook
 
-**Location:** `effortless-rulebook/effortless-rulebook.json`
+**Location:** `effortless-rulebook/is-everything-a-language-rulebook.json`
 
 This is the canonical specification for the domain. It defines:
 - Entity schemas (tables with fields)
@@ -55,7 +55,7 @@ This is the canonical specification for the domain. It defines:
 
 ### Option 1: Direct (no Airtable)
 
-Edit `effortless-rulebook/effortless-rulebook.json` directly. Then rebuild:
+Edit `effortless-rulebook/is-everything-a-language-rulebook.json` directly. Then rebuild:
 
 ```bash
 effortless build
@@ -119,7 +119,7 @@ All substrates should produce identical results.
 |------|---------|
 | `effortless.json` | Project config + transpiler settings |
 | `CLAUDE.md` | This file |
-| `effortless-rulebook/effortless-rulebook.json` | The rulebook (SSoT) |
+| `effortless-rulebook/is-everything-a-language-rulebook.json` | The rulebook (SSoT) |
 | `README.md` | Narrative: what this domain models |
 | `execution-substrates/*/` | Generated: do not edit |
 
@@ -138,15 +138,15 @@ The rulebook is a **declarative specification** of business logic. It is:
 
 ### Add a new entity (table)
 
-Edit `effortless-rulebook.json`: add a new top-level object with `schema` and `data` properties. Then `effortless build`.
+Edit `is-everything-a-language-rulebook.json`: add a new top-level object with `schema` and `data` properties. Then `effortless build`.
 
 ### Add a calculated field
 
-Edit the table's field list in `effortless-rulebook.json`: add a field with `type: "formula"` or `"lookup"` or `"aggregation"`. Then `effortless build`.
+Edit the table's field list in `is-everything-a-language-rulebook.json`: add a field with `type: "formula"` or `"lookup"` or `"aggregation"`. Then `effortless build`.
 
 ### Change seed data
 
-Edit the `data` section of a table in `effortless-rulebook.json`. Then rebuild to regenerate answer keys and test files.
+Edit the `data` section of a table in `is-everything-a-language-rulebook.json`. Then rebuild to regenerate answer keys and test files.
 
 ### Debug a formula
 

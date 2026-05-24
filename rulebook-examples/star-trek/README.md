@@ -182,7 +182,7 @@ This demonstrates real-world media catalog patterns:
 
 ## Files in This Directory
 
-- `effortless-rulebook.json` - Snapshot of the rulebook for this base
+- `star-trek-rulebook.json` - Snapshot of the rulebook for this base
 - `README.md` - This file
 
 ---

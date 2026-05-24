@@ -116,7 +116,7 @@ These patterns show how the same declarative approach scales to real enterprise 
 
 ## Files in This Directory
 
-- `effortless-rulebook.json` - Snapshot of the rulebook for this base
+- `jessica-advanced-rulebook.json` - Snapshot of the rulebook for this base
 - `README.md` - This file
 
 ---

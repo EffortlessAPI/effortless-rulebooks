@@ -107,7 +107,20 @@ set_active_domain() {
 
 get_domain_rulebook_path() {
     local domain="${1:-$(get_active_domain)}"
-    echo "$RULEBOOK_EXAMPLES_DIR/$domain/effortless-rulebook/effortless-rulebook.json"
+    local rb_dir="$RULEBOOK_EXAMPLES_DIR/$domain/effortless-rulebook"
+    # Project-named convention: <project>-rulebook.json. Fall back to
+    # the legacy effortless-rulebook.json, then to whichever single *.json
+    # exists in the dir (the canonical state today is one rulebook per project).
+    local named="$rb_dir/${domain}-rulebook.json"
+    if [ -f "$named" ]; then
+        echo "$named"; return
+    fi
+    if [ -f "$rb_dir/effortless-rulebook.json" ]; then
+        echo "$rb_dir/effortless-rulebook.json"; return
+    fi
+    local found
+    found=$(find "$rb_dir" -maxdepth 1 -type f -name '*.json' 2>/dev/null | head -1)
+    echo "$found"
 }
 
 get_project_name() {
@@ -660,7 +673,8 @@ action_view_results() {
     # Generate main orchestration report
     local domain
     domain=$(get_active_domain)
-    local rulebook="$RULEBOOK_EXAMPLES_DIR/$domain/effortless-rulebook/effortless-rulebook.json"
+    local rulebook
+    rulebook=$(get_domain_rulebook_path "$domain")
     python3 "$SCRIPT_DIR/generate-report.py" --rulebook "$rulebook"
     echo ""
     echo -e "${BOLD}${GREEN}╔════════════════════════════════════════════════════════════╗${NC}"
@@ -981,7 +995,7 @@ run_substrates() {
     _domain=$(get_active_domain)
     export ERB_DOMAIN_DIR="$RULEBOOK_EXAMPLES_DIR/$_domain"
     export ERB_TESTING_DIR="$ERB_DOMAIN_DIR/testing"
-    export ERB_RULEBOOK_PATH="$ERB_DOMAIN_DIR/effortless-rulebook/effortless-rulebook.json"
+    export ERB_RULEBOOK_PATH="$(get_domain_rulebook_path "$_domain")"
     mkdir -p "$ERB_TESTING_DIR"
 
     # Get list of valid substrates (those with inject or test scripts)
@@ -1495,7 +1509,7 @@ echo -e "${BOLD}${BLUE}│${NC} ${BOLD}${WHITE}STEP 5:${NC} ${YELLOW}Generating 
 echo -e "${BOLD}${BLUE}└──────────────────────────────────────────────────────────────┘${NC}"
 _active_domain=$(get_active_domain)
 python3 "$SCRIPT_DIR/generate-report.py" \
-    --rulebook "$RULEBOOK_EXAMPLES_DIR/$_active_domain/effortless-rulebook/effortless-rulebook.json"
+    --rulebook "$(get_domain_rulebook_path "$_active_domain")"
 echo ""
 
 # -----------------------------------------------------------------------------

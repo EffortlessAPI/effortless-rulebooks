@@ -9,7 +9,7 @@
       "Description": "Airtable base ID for this ontology (hardcoded per project)"
     }
   ],
-  "Transpilers": [
+  "ProjectTranspilers": [
     {
       "Name": "airtabletorulebook",
       "RelativePath": "/effortless-rulebook",

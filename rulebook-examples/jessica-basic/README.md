@@ -200,7 +200,7 @@ The ERB platform proves that all of this complexity compiles to equivalent imple
 
 ## Files in This Directory
 
-- `effortless-rulebook.json` - Snapshot of the rulebook for this base
+- `jessica-basic-rulebook.json` - Snapshot of the rulebook for this base
 - `README.md` - This file
 
 ---
