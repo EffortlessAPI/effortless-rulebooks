@@ -205,5 +205,41 @@
       "score": 0.0
     },
     "last_successful_run": null
+  },
+  "effortless-xlsx": {
+    "last_run": {
+      "status": "success",
+      "duration_seconds": 26.609529972076416,
+      "exit_code": 0,
+      "score": 0.0
+    },
+    "last_successful_run": null
+  },
+  "effortless-entity-framework": {
+    "last_run": {
+      "status": "success",
+      "duration_seconds": 28.491453170776367,
+      "exit_code": 0,
+      "score": 0.0
+    },
+    "last_successful_run": null
+  },
+  "airtable": {
+    "last_run": {
+      "status": "success",
+      "duration_seconds": 0.10103869438171387,
+      "exit_code": 0,
+      "score": 100.0
+    },
+    "last_successful_run": {
+      "duration_seconds": 0.10103869438171387,
+      "status": "success",
+      "test_results": {
+        "total_fields_tested": 3,
+        "fields_passed": 3,
+        "fields_failed": 0,
+        "score": 100.0
+      }
+    }
   }
 }

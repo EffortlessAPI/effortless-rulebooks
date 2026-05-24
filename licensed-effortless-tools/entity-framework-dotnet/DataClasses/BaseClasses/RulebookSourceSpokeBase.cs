@@ -9,19 +9,18 @@ using SqlOnAir.DotNet.Lib.DataClasses;
 
 namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 {
-    [Table("ProjectMetadata")]
-    public class ProjectMetadataBase : SoAEntityBase
+    [Table("RulebookSourceSpokes")]
+    public class RulebookSourceSpokeBase : SoAEntityBase
     {
         [Key]
-        public string ProjectId { get; set; }
+        public string SpokeId { get; set; }
 
         public string Name { get; set; }
+        public string Kind { get; set; }
+        public string Direction { get; set; }
+        public bool Required { get; set; }
         public string Purpose { get; set; }
-        public string? Architecture { get; set; }
-        public string? EntryPoint { get; set; }
-        public string? PortalUrl { get; set; }
-        public string? ProxyUrl { get; set; }
-        public string? RepositoryRoot { get; set; }
+        public string? Authority { get; set; }
 
 
 

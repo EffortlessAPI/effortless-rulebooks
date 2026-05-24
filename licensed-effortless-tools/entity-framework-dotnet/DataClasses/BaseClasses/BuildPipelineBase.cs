@@ -9,16 +9,16 @@ using SqlOnAir.DotNet.Lib.DataClasses;
 
 namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 {
-    [Table("AirtableIntegration")]
-    public class AirtableIntegrationBase : SoAEntityBase
+    [Table("BuildPipeline")]
+    public class BuildPipelineBase : SoAEntityBase
     {
         [Key]
-        public string ComponentId { get; set; }
+        public string AspectId { get; set; }
 
-        public string Name { get; set; }
-        public string? FilePath { get; set; }
-        public string Purpose { get; set; }
-        public string Role { get; set; }
+        public string Aspect { get; set; }
+        public string? PortalLocation { get; set; }
+        public string? CliEquivalent { get; set; }
+        public string Authority { get; set; }
 
 
 
@@ -28,7 +28,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         public override string ToString()
         {
-            return this.Name?.ToString() ?? base.ToString() ?? "";
+            return this.AspectId?.ToString() ?? base.ToString() ?? "";
         }
     }
 }

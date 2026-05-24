@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SqlOnAir.DotNet.Lib.DataClasses
 {
-    public class AirtableIntegration: AirtableIntegrationBase
+    public class SsotmeProxy: SsotmeProxyBase
     {
         // Any implementation here will not be overwritten
     }

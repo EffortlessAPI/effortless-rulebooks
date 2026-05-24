@@ -439,6 +439,7 @@ show_menu() {
 
     echo -e "  ${GREEN}[T]${NC} ${BOLD}TEST${NC} — run conformance tests for ${WHITE}${ACTIVE_DOMAIN}${NC} ${DIM}(opens report)${NC}"
     echo -e "  ${MAGENTA}[V]${NC} ${BOLD}VIEW${NC} — open last HTML report for ${WHITE}${ACTIVE_DOMAIN}${NC}"
+    echo -e "  ${CYAN}[W]${NC} ${BOLD}WEB${NC} — run Web Admin Portal ${DIM}(localhost:7777)${NC}"
     echo -e "  ${YELLOW}[M]${NC} ${BOLD}MORE${NC} — more options ${DIM}(pick rulebook, import, clean, dev-ops)${NC}"
     echo -e "  [${RED}Q${NC}] Quit"
     echo ""
@@ -703,6 +704,25 @@ action_clean() {
     echo -e "${BOLD}${GREEN}╔════════════════════════════════════════════════════════════╗${NC}"
     echo -e "${BOLD}${GREEN}║${NC}              ${BOLD}${WHITE}CLEAN COMPLETE${NC}                                ${BOLD}${GREEN}║${NC}"
     echo -e "${BOLD}${GREEN}╚════════════════════════════════════════════════════════════╝${NC}"
+    echo ""
+    read -p "Press Enter to continue..."
+}
+
+# =============================================================================
+# WEB ADMIN PORTAL
+# =============================================================================
+action_run_web_portal() {
+    local portal_script="$PROJECT_ROOT/run-web-portal.sh"
+    if [ ! -f "$portal_script" ]; then
+        echo ""
+        echo -e "${RED}run-web-portal.sh not found at: $portal_script${NC}"
+        read -p "Press Enter to continue..."
+        return
+    fi
+    echo ""
+    echo -e "${CYAN}▶ ${BOLD}Launching Web Admin Portal${NC} ${DIM}(Ctrl-C to return to menu)${NC}"
+    echo ""
+    bash "$portal_script" || true
     echo ""
     read -p "Press Enter to continue..."
 }
@@ -1616,9 +1636,9 @@ while true; do
     fi
 
     if [ -n "$PROJECT_TRANSPILERS" ]; then
-        read -p "Enter choice [1-$(echo "$PROJECT_TRANSPILERS" | wc -l | tr -d ' '), B, T, V, M, Q] (default: $DEFAULT_CHOICE): " USER_CHOICE
+        read -p "Enter choice [1-$(echo "$PROJECT_TRANSPILERS" | wc -l | tr -d ' '), B, T, V, W, M, Q] (default: $DEFAULT_CHOICE): " USER_CHOICE
     else
-        read -p "Enter choice [T, V, M, Q] (default: $DEFAULT_CHOICE): " USER_CHOICE
+        read -p "Enter choice [T, V, W, M, Q] (default: $DEFAULT_CHOICE): " USER_CHOICE
     fi
 
     if [ -z "$USER_CHOICE" ]; then
@@ -1685,6 +1705,9 @@ while true; do
             ;;
         [Vv])
             action_view_results
+            ;;
+        [Ww])
+            action_run_web_portal
             ;;
         [Mm])
             action_more_menu

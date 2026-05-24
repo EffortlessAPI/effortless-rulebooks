@@ -9,19 +9,18 @@ using SqlOnAir.DotNet.Lib.DataClasses;
 
 namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 {
-    [Table("ProjectMetadata")]
-    public class ProjectMetadataBase : SoAEntityBase
+    [Table("AdminPortalRuntime")]
+    public class AdminPortalRuntimeBase : SoAEntityBase
     {
         [Key]
-        public string ProjectId { get; set; }
+        public string ProcessId { get; set; }
 
         public string Name { get; set; }
+        public string Command { get; set; }
+        public decimal? Port { get; set; }
+        public string? DependsOn { get; set; }
+        public bool AutoRestart { get; set; }
         public string Purpose { get; set; }
-        public string? Architecture { get; set; }
-        public string? EntryPoint { get; set; }
-        public string? PortalUrl { get; set; }
-        public string? ProxyUrl { get; set; }
-        public string? RepositoryRoot { get; set; }
 
 
 

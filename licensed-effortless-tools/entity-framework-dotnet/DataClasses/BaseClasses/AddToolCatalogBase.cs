@@ -9,19 +9,24 @@ using SqlOnAir.DotNet.Lib.DataClasses;
 
 namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 {
-    [Table("ProjectMetadata")]
-    public class ProjectMetadataBase : SoAEntityBase
+    [Table("AddToolCatalog")]
+    public class AddToolCatalogBase : SoAEntityBase
     {
         [Key]
-        public string ProjectId { get; set; }
+        public string ToolId { get; set; }
 
         public string Name { get; set; }
-        public string Purpose { get; set; }
-        public string? Architecture { get; set; }
-        public string? EntryPoint { get; set; }
-        public string? PortalUrl { get; set; }
-        public string? ProxyUrl { get; set; }
-        public string? RepositoryRoot { get; set; }
+        public string Category { get; set; }
+        public string Source { get; set; }
+        public string InstallUrl { get; set; }
+        public string? OutputPath { get; set; }
+        // Formula SubstrateId
+        public string? SubstrateId
+        {
+            get => default /* TODO: translate formula:  */; set { }
+        }
+
+        public string Description { get; set; }
 
 
 

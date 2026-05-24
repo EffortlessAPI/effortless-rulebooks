@@ -9,17 +9,16 @@ using SqlOnAir.DotNet.Lib.DataClasses;
 
 namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 {
-    [Table("CoreDataFlows")]
-    public class CoreDataFlowBase : SoAEntityBase
+    [Table("SsotmeProxy")]
+    public class SsotmeProxyBase : SoAEntityBase
     {
         [Key]
-        public string FlowId { get; set; }
+        public string RouteId { get; set; }
 
-        public string Name { get; set; }
-        public string Steps { get; set; }
-        public string? Triggers { get; set; }
-        public string? Outputs { get; set; }
-        public string? Invariant { get; set; }
+        public string Route { get; set; }
+        public string? SubstrateId { get; set; }
+        public string? InjectorScript { get; set; }
+        public string Description { get; set; }
 
 
 
@@ -29,7 +28,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         public override string ToString()
         {
-            return this.Name?.ToString() ?? base.ToString() ?? "";
+            return this.RouteId?.ToString() ?? base.ToString() ?? "";
         }
     }
 }

@@ -32,12 +32,22 @@ namespace SqlOnAir.DotNet.Lib.DataClasses
         public DbSet<ProjectMetadata> ProjectMetadata { get; set; }
         public DbSet<ExecutionSubstrate> ExecutionSubstrates { get; set; }
         public DbSet<OrchestrationComponent> OrchestrationComponents { get; set; }
-        public DbSet<AirtableIntegration> AirtableIntegration { get; set; }
+        public DbSet<RulebookSourceSpoke> RulebookSourceSpokes { get; set; }
+        public DbSet<SsotmeProxy> SsotmeProxy { get; set; }
         public DbSet<TestingFramework> TestingFramework { get; set; }
         public DbSet<RulebookDomain> RulebookDomains { get; set; }
         public DbSet<CoreDataFlow> CoreDataFlows { get; set; }
         public DbSet<ProjectConfiguration> ProjectConfiguration { get; set; }
         public DbSet<Dependency> Dependencies { get; set; }
+        public DbSet<AppUser> AppUsers { get; set; }
+        public DbSet<UserRole> UserRoles { get; set; }
+        public DbSet<AppPermission> AppPermissions { get; set; }
+        public DbSet<AppNavigation> AppNavigation { get; set; }
+        public DbSet<AppScreen> AppScreens { get; set; }
+        public DbSet<AppAPI> AppAPIs { get; set; }
+        public DbSet<AddToolCatalog> AddToolCatalog { get; set; }
+        public DbSet<BuildPipeline> BuildPipeline { get; set; }
+        public DbSet<AdminPortalRuntime> AdminPortalRuntime { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
