@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SqlOnAir.DotNet.Lib.DataClasses
 {
-    public class BuildPipeline: BuildPipelineBase
+    public class Role: RoleBase
     {
         // Any implementation here will not be overwritten
     }

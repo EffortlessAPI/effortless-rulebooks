@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SqlOnAir.DotNet.Lib.DataClasses
 {
-    public class SsotmeProxy: SsotmeProxyBase
+    public class Project: ProjectBase
     {
         // Any implementation here will not be overwritten
     }

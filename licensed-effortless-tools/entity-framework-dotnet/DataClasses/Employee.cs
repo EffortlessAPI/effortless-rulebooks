@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SqlOnAir.DotNet.Lib.DataClasses
 {
-    public class ExecutionSubstrate: ExecutionSubstrateBase
+    public class Employee: EmployeeBase
     {
         // Any implementation here will not be overwritten
     }

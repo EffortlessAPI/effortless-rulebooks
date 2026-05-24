@@ -9,25 +9,20 @@ using SqlOnAir.DotNet.Lib.DataClasses;
 
 namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 {
-    [Table("Customers")]
-    public class CustomerBase : SoAEntityBase
+    [Table("Client")]
+    public class ClientBase : SoAEntityBase
     {
         [Key]
-        public string CustomerId { get; set; }
+        public string ClientId { get; set; }
 
-        // Formula Name (rulebook: =SUBSTITUTE({{EmailAddress}}, "@", "-"))
-        public string? Name
-        {
-            get => SUBSTITUTE(this.EmailAddress, "@", "-"); set { }
-        }
-
+        public string? Customer { get; set; }
         public string? EmailAddress { get; set; }
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
-        // Formula FullName (rulebook: ={{LastName}} & ", " & {{FirstName}})
+        // Formula FullName (rulebook: ={{FirstName}} & " " & {{LastName}})
         public string? FullName
         {
-            get => this.LastName + ", " + this.FirstName; set { }
+            get => this.FirstName + " " + this.LastName; set { }
         }
 
 
@@ -39,7 +34,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
 
         public override string ToString()
         {
-            return this.Name?.ToString() ?? base.ToString() ?? "";
+            return this.ClientId?.ToString() ?? base.ToString() ?? "";
         }
     }
 }

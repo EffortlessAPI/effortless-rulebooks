@@ -12,6 +12,7 @@ import (
 	"fmt"
 	"os"
 	"strconv"
+	"strings"
 )
 
 // =============================================================================
@@ -97,14 +98,21 @@ func (f FlexibleString) String() string {
 // Table: Customers
 type Customer struct {
 	CustomerId string `json:"customer_id"`
-	Customer *string `json:"customer"` // Identifier for the customers.
 	EmailAddress *string `json:"email_address"` // Thec ustomers email address
 	FirstName *string `json:"first_name"` // First Name of the customer - used to make the full name
 	LastName *string `json:"last_name"` // Last Name of the customer - used to make the full name
+	Name *string `json:"name"` // Identifier for the customers.
 	FullName *string `json:"full_name"` // Full name is computed from the first and last name of the customer
 }
 
 // --- Individual Calculation Functions ---
+
+// CalcName computes the Name calculated field
+// Identifier for the customers.
+// Formula: =SUBSTITUTE({{EmailAddress}}, "@", "-")
+func (tc *Customer) CalcName() string {
+	return strings.ReplaceAll(stringVal(tc.EmailAddress), "@", "-")
+}
 
 // CalcFullName computes the FullName calculated field
 // Full name is computed from the first and last name of the customer
@@ -118,16 +126,50 @@ func (tc *Customer) CalcFullName() string {
 // ComputeAll computes all calculated fields and returns an updated struct
 func (tc *Customer) ComputeAll() *Customer {
 	// Level 1 calculations
+	name := strings.ReplaceAll(stringVal(tc.EmailAddress), "@", "-")
 	fullName := stringVal(tc.LastName) + ", " + stringVal(tc.FirstName)
 
 	return &Customer{
 		CustomerId: tc.CustomerId,
-		Customer: tc.Customer,
 		EmailAddress: tc.EmailAddress,
 		FirstName: tc.FirstName,
 		LastName: tc.LastName,
+		Name: nilIfEmpty(name),
 		FullName: nilIfEmpty(fullName),
 	}
+}
+
+// =============================================================================
+// ERBVERSIONS TABLE
+// Table: ERBVersions
+// =============================================================================
+
+// ERBVersion represents a row in the ERBVersions table
+// Table: ERBVersions
+type ERBVersion struct {
+	ERBVersionId string `json:"erb_version_id"`
+	BaseId *string `json:"base_id"`
+	Name *string `json:"name"`
+	Message *string `json:"message"`
+	Notes *string `json:"notes"`
+	CommitDate *string `json:"commit_date"`
+	IsPublished *bool `json:"is_published"`
+}
+
+// =============================================================================
+// ERBCUSTOMIZATIONS TABLE
+// Table: ERBCustomizations
+// =============================================================================
+
+// ERBCustomization represents a row in the ERBCustomizations table
+// Table: ERBCustomizations
+type ERBCustomization struct {
+	ERBCustomizationId string `json:"erb_customization_id"`
+	Name *string `json:"name"`
+	Title *string `json:"title"`
+	SQLCode *string `json:"sql_code"`
+	SQLTarget *string `json:"sql_target"`
+	CustomizationType *string `json:"customization_type"`
 }
 
 // =============================================================================

@@ -29,28 +29,44 @@ namespace SqlOnAir.DotNet.Lib.DataClasses
             }
         }
 
-        public DbSet<ProjectMetadata> ProjectMetadata { get; set; }
-        public DbSet<ExecutionSubstrate> ExecutionSubstrates { get; set; }
-        public DbSet<OrchestrationComponent> OrchestrationComponents { get; set; }
-        public DbSet<RulebookSourceSpoke> RulebookSourceSpokes { get; set; }
-        public DbSet<SsotmeProxy> SsotmeProxy { get; set; }
-        public DbSet<TestingFramework> TestingFramework { get; set; }
-        public DbSet<RulebookDomain> RulebookDomains { get; set; }
-        public DbSet<CoreDataFlow> CoreDataFlows { get; set; }
-        public DbSet<ProjectConfiguration> ProjectConfiguration { get; set; }
-        public DbSet<Dependency> Dependencies { get; set; }
-        public DbSet<AppUser> AppUsers { get; set; }
-        public DbSet<UserRole> UserRoles { get; set; }
-        public DbSet<AppPermission> AppPermissions { get; set; }
-        public DbSet<AppNavigation> AppNavigation { get; set; }
-        public DbSet<AppScreen> AppScreens { get; set; }
-        public DbSet<AppAPI> AppAPIs { get; set; }
-        public DbSet<AddToolCatalog> AddToolCatalog { get; set; }
-        public DbSet<BuildPipeline> BuildPipeline { get; set; }
-        public DbSet<AdminPortalRuntime> AdminPortalRuntime { get; set; }
+        public DbSet<Client> Client { get; set; }
+        public DbSet<Project> Projects { get; set; }
+        public DbSet<Employee> Employees { get; set; }
+        public DbSet<Role> Roles { get; set; }
+        public DbSet<TypesOfProject> TypesOfProject { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Project>()
+                .HasOne(e => e.TypesOfProject)
+                .WithMany(f => f.Projects)
+                .HasForeignKey(f => f.ProjectType)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<Project>()
+                .HasOne(e => e.Employee)
+                .WithMany(f => f.Projects)
+                .HasForeignKey(f => f.ApprovedBy)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<Employee>()
+                .HasOne(e => e.Role)
+                .WithMany(f => f.Employees)
+                .HasForeignKey(f => f.Role)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<Employee>()
+                .HasOne(e => e.Project)
+                .WithMany(f => f.Employees)
+                .HasForeignKey(f => f.Projects)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<Role>()
+                .HasOne(e => e.Employee)
+                .WithMany(f => f.Roles)
+                .HasForeignKey(f => f.Employees)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<TypesOfProject>()
+                .HasOne(e => e.Project)
+                .WithMany(f => f.TypesOfProject)
+                .HasForeignKey(f => f.Projects)
+                .OnDelete(DeleteBehavior.Restrict);
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

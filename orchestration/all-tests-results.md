@@ -2,40 +2,38 @@
 
 ## Configuration
 
-- **Rulebook:** `/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/rulebook-examples/customer-fullname/effortless-rulebook/effortless-rulebook.json`
-- **Substrates Tested:** 15
-- **Computed Columns Tested:** 1
+- **Rulebook:** `/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/rulebook-examples/acme-llc/effortless-rulebook/effortless-rulebook.json`
+- **Substrates Tested:** 13
+- **Computed Columns Tested:** 2
 
 ## Summary by Substrate
 
 | Substrate | Passed | Failed | Total | Score | Duration | Status |
 |-----------|--------|--------|-------|-------|----------|--------|
-| airtable | 3 | 0 | 3 | 100.0% | < 1s | PASS |
-| explain-dag | 3 | 0 | 3 | 100.0% | < 1s | PASS |
-| python | 3 | 0 | 3 | 100.0% | < 1s | PASS |
-| uml | 3 | 0 | 3 | 100.0% | < 1s | PASS |
-| yaml | 3 | 0 | 3 | 100.0% | < 1s | PASS |
-| binary | 3 | 0 | 3 | 100.0% | < 1s | PASS |
-| cobol | 3 | 0 | 3 | 100.0% | < 1s | PASS |
-| csv | 3 | 0 | 3 | 100.0% | < 1s | PASS |
-| golang | 3 | 0 | 3 | 100.0% | < 1s | PASS |
-| owl | 3 | 0 | 3 | 100.0% | < 1s | PASS |
-| xlsx | 3 | 0 | 3 | 100.0% | < 1s | PASS |
-| english | 3 | 0 | 3 | 100.0% | 15s | PASS |
-| effortless-entity-framework | 0 | 3 | 3 | 0.0% | 28s | FAIL |
-| effortless-postgres | 0 | 3 | 3 | 0.0% | 5s | FAIL |
-| effortless-xlsx | 0 | 3 | 3 | 0.0% | 27s | FAIL |
+| explain-dag | 6 | 0 | 6 | 100.0% | < 1s | PASS |
+| python | 6 | 0 | 6 | 100.0% | < 1s | PASS |
+| uml | 6 | 0 | 6 | 100.0% | < 1s | PASS |
+| binary | 6 | 0 | 6 | 100.0% | < 1s | PASS |
+| cobol | 6 | 0 | 6 | 100.0% | < 1s | PASS |
+| csv | 6 | 0 | 6 | 100.0% | < 1s | PASS |
+| golang | 6 | 0 | 6 | 100.0% | < 1s | PASS |
+| owl | 6 | 0 | 6 | 100.0% | < 1s | PASS |
+| xlsx | 6 | 0 | 6 | 100.0% | < 1s | PASS |
+| effortless-postgres | 6 | 0 | 6 | 100.0% | 4s | PASS |
+| english | 6 | 0 | 6 | 100.0% | 19s | PASS |
+| effortless-xlsx | 6 | 0 | 6 | 100.0% | 30s | PASS |
+| effortless-entity-framework | 6 | 0 | 6 | 100.0% | 35s | PASS |
 
 ## Overall Statistics
 
 | Metric | Value |
 |--------|-------|
-| Total Substrates | 15 |
-| Total Fields Tested | 45 |
-| Total Passed | 36 |
-| Total Failed | 9 |
-| Overall Score | 80.0% |
-| Total Duration | 1m 18s |
+| Total Substrates | 13 |
+| Total Fields Tested | 78 |
+| Total Passed | 78 |
+| Total Failed | 0 |
+| Overall Score | 100.0% |
+| Total Duration | 1m 31s |
 
 ---
 

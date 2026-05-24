@@ -6,22 +6,137 @@
 # === Individuals: Customers ===
 
 erb:Customers_0 a erb:Customers ;
-    erb:customerId "cust0001" ;
-    erb:customer "CUST0001" ;
+    erb:customerId "jane-smith-email-com" ;
     erb:emailAddress "jane.smith@email.com" ;
-    erb:firstName "Jane" ;
+    erb:firstName "Bobby" ;
     erb:lastName "Smith" .
 
 erb:Customers_1 a erb:Customers ;
-    erb:customerId "cust0002" ;
-    erb:customer "CUST0002" ;
+    erb:customerId "john-doe-email-com" ;
     erb:emailAddress "john.doe@email.com" ;
-    erb:firstName "John" ;
+    erb:firstName "Jimmy" ;
     erb:lastName "Doe" .
 
 erb:Customers_2 a erb:Customers ;
-    erb:customerId "cust0003" ;
-    erb:customer "CUST0003" ;
+    erb:customerId "emily-jones-email-com" ;
     erb:emailAddress "emily.jones@email.com" ;
-    erb:firstName "Emily" ;
+    erb:firstName "Mary" ;
     erb:lastName "Jones" .
+
+# === Individuals: ERBCustomizations ===
+
+erb:ERBCustomizations_0 a erb:ERBCustomizations ;
+    erb:eRBCustomizationId "03a-customize-schema-sql" ;
+    erb:name "03a-customize-schema.sql" ;
+    erb:title "Customize Schema" ;
+    erb:sQLCode """-- ============================================================================
+-- CUSTOMIZE SCHEMA - User-defined tables and schema modifications
+-- ============================================================================
+-- This file is for YOUR custom schema changes that should persist across
+-- regeneration of the base ERB files.
+--
+-- USE THIS FILE FOR:
+--   - Additional tables not defined in the rulebook
+--   - Extra columns on existing tables (ALTER TABLE)
+--   - Custom indexes for performance tuning
+--   - Custom constraints or triggers
+--
+-- IMPORTANT:
+--   - This file runs AFTER 01-drop-and-create-tables.sql
+--   - The base tables already exist when this runs
+--   - This file will NOT be overwritten by ERB regeneration
+--
+-- ============================================================================
+
+-- Your custom schema changes go here:
+""" ;
+    erb:sQLTarget "Postgres" ;
+    erb:customizationType "Schema" .
+
+erb:ERBCustomizations_1 a erb:ERBCustomizations ;
+    erb:eRBCustomizationId "03b-customize-functions-sql" ;
+    erb:name "03b-customize-functions.sql" ;
+    erb:title "Customize Functions" ;
+    erb:sQLCode """-- ============================================================================
+-- CUSTOMIZE FUNCTIONS - User-defined calculation functions
+-- ============================================================================
+-- This file is for YOUR custom PostgreSQL functions that should persist
+-- across regeneration of the base ERB files.
+--
+-- IMPORTANT:
+--   - This file runs AFTER 02-create-functions.sql
+--   - Base ERB calc functions already exist when this runs
+--   - This file will NOT be overwritten by ERB regeneration
+--
+-- ============================================================================
+
+-- Your custom functions go here:
+""" ;
+    erb:sQLTarget "Postgres" ;
+    erb:customizationType "Functions" .
+
+erb:ERBCustomizations_2 a erb:ERBCustomizations ;
+    erb:eRBCustomizationId "03c-customize-views-sql" ;
+    erb:name "03c-customize-views.sql" ;
+    erb:title "Customize Views" ;
+    erb:sQLCode """-- ============================================================================
+-- CUSTOMIZE VIEWS - User-defined views and view extensions
+-- ============================================================================
+-- This file is for YOUR custom views that should persist across
+-- regeneration of the base ERB files.
+--
+-- IMPORTANT:
+--   - This file runs AFTER 03-create-views.sql
+--   - All base vw_* views already exist when this runs
+--   - This file will NOT be overwritten by ERB regeneration
+--
+-- ============================================================================
+
+-- Your custom views go here:
+""" ;
+    erb:sQLTarget "Postgres" ;
+    erb:customizationType "Views" .
+
+erb:ERBCustomizations_3 a erb:ERBCustomizations ;
+    erb:eRBCustomizationId "03d-customize-rls-sql" ;
+    erb:name "03d-customize-rls.sql" ;
+    erb:title "Customize Policies (RLS)" ;
+    erb:sQLCode """-- ============================================================================
+-- CUSTOMIZE POLICIES - User-defined Row Level Security policies
+-- ============================================================================
+-- This file is for YOUR custom RLS policies that should persist across
+-- regeneration of the base ERB files.
+--
+-- IMPORTANT:
+--   - This file runs AFTER 04-create-policies.sql
+--   - Base RLS policies already exist when this runs
+--   - This file will NOT be overwritten by ERB regeneration
+--
+-- ============================================================================
+
+-- Your custom policies go here:
+""" ;
+    erb:sQLTarget "Postgres" ;
+    erb:customizationType "RLS" .
+
+erb:ERBCustomizations_4 a erb:ERBCustomizations ;
+    erb:eRBCustomizationId "03e-customize-data-sql" ;
+    erb:name "03e-customize-data.sql" ;
+    erb:title "Customize Data (Seeds / Migrations)" ;
+    erb:sQLCode """-- ============================================================================
+-- CUSTOMIZE DATA - User-defined seed data and data migrations
+-- ============================================================================
+-- This file is for YOUR custom seed data that should persist across
+-- regeneration of the base ERB files.
+--
+-- IMPORTANT:
+--   - This file runs AFTER 05-insert-data.sql
+--   - Base seed data already exists when this runs
+--   - This file will NOT be overwritten by ERB regeneration
+--
+-- ============================================================================
+
+-- Your custom data inserts go here:
+""" ;
+    erb:sQLTarget "Postgres" ;
+    erb:customizationType "Data" .

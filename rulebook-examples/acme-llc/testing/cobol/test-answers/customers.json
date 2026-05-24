@@ -5,7 +5,7 @@
     "first_name": "Mary",
     "last_name": "Jones",
     "name": "emily.jones-email.com",
-    "full_name": "Mary Jones"
+    "full_name": "Jones, Mary"
   },
   {
     "customer_id": "jane-smith-email-com",
@@ -13,7 +13,7 @@
     "first_name": "Bobby",
     "last_name": "Smith",
     "name": "jane.smith-email.com",
-    "full_name": "Bobby Smith"
+    "full_name": "Smith, Bobby"
   },
   {
     "customer_id": "john-doe-email-com",
@@ -21,6 +21,6 @@
     "first_name": "Jimmy",
     "last_name": "Doe",
     "name": "john.doe-email.com",
-    "full_name": "Jimmy Doe"
+    "full_name": "Doe, Jimmy"
   }
 ]

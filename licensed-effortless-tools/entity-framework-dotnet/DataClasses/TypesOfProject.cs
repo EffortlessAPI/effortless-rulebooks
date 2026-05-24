@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SqlOnAir.DotNet.Lib.DataClasses
 {
-    public class ProjectMetadata: ProjectMetadataBase
+    public class TypesOfProject: TypesOfProjectBase
     {
         // Any implementation here will not be overwritten
     }

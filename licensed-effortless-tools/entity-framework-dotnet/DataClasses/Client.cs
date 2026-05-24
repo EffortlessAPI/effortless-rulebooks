@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SqlOnAir.DotNet.Lib.DataClasses
 {
-    public class CoreDataFlow: CoreDataFlowBase
+    public class Client: ClientBase
     {
         // Any implementation here will not be overwritten
     }

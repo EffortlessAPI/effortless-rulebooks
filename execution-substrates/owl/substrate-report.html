@@ -122,24 +122,24 @@ Tables with computed columns: Customers
 Loading ontology and data...
    Loaded: /Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/owl/ontology.owl
    Loaded: /Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/owl/individuals.ttl
-   Total triples: 53
+   Total triples: 137
 
 Loading SHACL rules...
    Loaded: /Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/owl/rules.shacl.ttl
-   Rule triples: 7
+   Rule triples: 12
 
 Running SHACL-SPARQL reasoning...
    (Multiple passes to resolve dependencies between computed fields)
-   Pass 1: 53 -&gt; 56 triples (3 added)
-   Pass 2: 56 -&gt; 56 triples (0 added)
+   Pass 1: 137 -&gt; 143 triples (6 added)
+   Pass 2: 143 -&gt; 143 triples (0 added)
    Completed in 2 passes
-   Final triple count: 56
+   Final triple count: 143
 
 Extracting computed values...
-   Customers: 3 records (1 computed fields)
+   Customers: 3 records (2 computed fields)
 
 Total: 3 records extracted
-Output: /Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/rulebook-examples/customer-fullname/testing/owl/test-answers/
+Output: /Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/rulebook-examples/acme-llc/testing/owl/test-answers/
 
 ======================================================================
 SHACL reasoning complete!
@@ -163,7 +163,7 @@ SHACL reasoning complete!
             <div class="card">
                 <div class="code-header">
                     <h2>ontology.owl</h2>
-                    <div><span class="code-info">51 lines</span><button class="copy-btn" onclick="copyCode('ontology-code')">Copy</button></div>
+                    <div><span class="code-info">127 lines</span><button class="copy-btn" onclick="copyCode('ontology-code')">Copy</button></div>
                 </div>
                 <pre id="ontology-code">@prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .
 @prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .
@@ -185,11 +185,12 @@ erb:customerId a owl:DatatypeProperty ;
     rdfs:range xsd:string ;
     rdfs:label &quot;CustomerId&quot; .
 
-erb:customer a owl:DatatypeProperty ;
+erb:name a owl:DatatypeProperty ;
     rdfs:domain erb:Customers ;
     rdfs:range xsd:string ;
-    rdfs:label &quot;Customer&quot; ;
+    rdfs:label &quot;Name&quot; ;
     rdfs:comment &quot;Identifier for the customers.&quot; .
+    # calculated: calculated
 
 erb:emailAddress a owl:DatatypeProperty ;
     rdfs:domain erb:Customers ;
@@ -215,6 +216,81 @@ erb:fullName a owl:DatatypeProperty ;
     rdfs:label &quot;FullName&quot; ;
     rdfs:comment &quot;Full name is computed from the first and last name of the customer&quot; .
     # calculated: calculated
+
+# === Class: ERBCustomizations ===
+erb:ERBCustomizations a owl:Class ;
+    rdfs:label &quot;ERBCustomizations&quot; ;
+    rdfs:comment &quot;Table: ERBCustomizations&quot; .
+
+erb:eRBCustomizationId a owl:DatatypeProperty ;
+    rdfs:domain erb:ERBCustomizations ;
+    rdfs:range xsd:string ;
+    rdfs:label &quot;ERBCustomizationId&quot; .
+
+erb:name a owl:DatatypeProperty ;
+    rdfs:domain erb:ERBCustomizations ;
+    rdfs:range xsd:string ;
+    rdfs:label &quot;Name&quot; .
+
+erb:title a owl:DatatypeProperty ;
+    rdfs:domain erb:ERBCustomizations ;
+    rdfs:range xsd:string ;
+    rdfs:label &quot;Title&quot; .
+
+erb:sQLCode a owl:DatatypeProperty ;
+    rdfs:domain erb:ERBCustomizations ;
+    rdfs:range xsd:string ;
+    rdfs:label &quot;SQLCode&quot; .
+
+erb:sQLTarget a owl:DatatypeProperty ;
+    rdfs:domain erb:ERBCustomizations ;
+    rdfs:range xsd:string ;
+    rdfs:label &quot;SQLTarget&quot; .
+
+erb:customizationType a owl:DatatypeProperty ;
+    rdfs:domain erb:ERBCustomizations ;
+    rdfs:range xsd:string ;
+    rdfs:label &quot;CustomizationType&quot; .
+
+# === Class: ERBVersions ===
+erb:ERBVersions a owl:Class ;
+    rdfs:label &quot;ERBVersions&quot; ;
+    rdfs:comment &quot;Table: ERBVersions&quot; .
+
+erb:eRBVersionId a owl:DatatypeProperty ;
+    rdfs:domain erb:ERBVersions ;
+    rdfs:range xsd:string ;
+    rdfs:label &quot;ERBVersionId&quot; .
+
+erb:baseId a owl:DatatypeProperty ;
+    rdfs:domain erb:ERBVersions ;
+    rdfs:range xsd:string ;
+    rdfs:label &quot;BaseId&quot; .
+
+erb:name a owl:DatatypeProperty ;
+    rdfs:domain erb:ERBVersions ;
+    rdfs:range xsd:string ;
+    rdfs:label &quot;Name&quot; .
+
+erb:message a owl:DatatypeProperty ;
+    rdfs:domain erb:ERBVersions ;
+    rdfs:range xsd:string ;
+    rdfs:label &quot;Message&quot; .
+
+erb:notes a owl:DatatypeProperty ;
+    rdfs:domain erb:ERBVersions ;
+    rdfs:range xsd:string ;
+    rdfs:label &quot;Notes&quot; .
+
+erb:commitDate a owl:DatatypeProperty ;
+    rdfs:domain erb:ERBVersions ;
+    rdfs:range xsd:string ;
+    rdfs:label &quot;CommitDate&quot; .
+
+erb:isPublished a owl:DatatypeProperty ;
+    rdfs:domain erb:ERBVersions ;
+    rdfs:range xsd:boolean ;
+    rdfs:label &quot;IsPublished&quot; .
 </pre>
             </div>
         </div>
@@ -222,7 +298,7 @@ erb:fullName a owl:DatatypeProperty ;
             <div class="card">
                 <div class="code-header">
                     <h2>individuals.ttl</h2>
-                    <div><span class="code-info">28 lines</span><button class="copy-btn" onclick="copyCode('individuals-code')">Copy</button></div>
+                    <div><span class="code-info">143 lines</span><button class="copy-btn" onclick="copyCode('individuals-code')">Copy</button></div>
                 </div>
                 <pre id="individuals-code">@prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .
 @prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .
@@ -232,25 +308,140 @@ erb:fullName a owl:DatatypeProperty ;
 # === Individuals: Customers ===
 
 erb:Customers_0 a erb:Customers ;
-    erb:customerId &quot;cust0001&quot; ;
-    erb:customer &quot;CUST0001&quot; ;
+    erb:customerId &quot;jane-smith-email-com&quot; ;
     erb:emailAddress &quot;jane.smith@email.com&quot; ;
-    erb:firstName &quot;Jane&quot; ;
+    erb:firstName &quot;Bobby&quot; ;
     erb:lastName &quot;Smith&quot; .
 
 erb:Customers_1 a erb:Customers ;
-    erb:customerId &quot;cust0002&quot; ;
-    erb:customer &quot;CUST0002&quot; ;
+    erb:customerId &quot;john-doe-email-com&quot; ;
     erb:emailAddress &quot;john.doe@email.com&quot; ;
-    erb:firstName &quot;John&quot; ;
+    erb:firstName &quot;Jimmy&quot; ;
     erb:lastName &quot;Doe&quot; .
 
 erb:Customers_2 a erb:Customers ;
-    erb:customerId &quot;cust0003&quot; ;
-    erb:customer &quot;CUST0003&quot; ;
+    erb:customerId &quot;emily-jones-email-com&quot; ;
     erb:emailAddress &quot;emily.jones@email.com&quot; ;
-    erb:firstName &quot;Emily&quot; ;
+    erb:firstName &quot;Mary&quot; ;
     erb:lastName &quot;Jones&quot; .
+
+# === Individuals: ERBCustomizations ===
+
+erb:ERBCustomizations_0 a erb:ERBCustomizations ;
+    erb:eRBCustomizationId &quot;03a-customize-schema-sql&quot; ;
+    erb:name &quot;03a-customize-schema.sql&quot; ;
+    erb:title &quot;Customize Schema&quot; ;
+    erb:sQLCode &quot;&quot;&quot;-- ============================================================================
+-- CUSTOMIZE SCHEMA - User-defined tables and schema modifications
+-- ============================================================================
+-- This file is for YOUR custom schema changes that should persist across
+-- regeneration of the base ERB files.
+--
+-- USE THIS FILE FOR:
+--   - Additional tables not defined in the rulebook
+--   - Extra columns on existing tables (ALTER TABLE)
+--   - Custom indexes for performance tuning
+--   - Custom constraints or triggers
+--
+-- IMPORTANT:
+--   - This file runs AFTER 01-drop-and-create-tables.sql
+--   - The base tables already exist when this runs
+--   - This file will NOT be overwritten by ERB regeneration
+--
+-- ============================================================================
+
+-- Your custom schema changes go here:
+&quot;&quot;&quot; ;
+    erb:sQLTarget &quot;Postgres&quot; ;
+    erb:customizationType &quot;Schema&quot; .
+
+erb:ERBCustomizations_1 a erb:ERBCustomizations ;
+    erb:eRBCustomizationId &quot;03b-customize-functions-sql&quot; ;
+    erb:name &quot;03b-customize-functions.sql&quot; ;
+    erb:title &quot;Customize Functions&quot; ;
+    erb:sQLCode &quot;&quot;&quot;-- ============================================================================
+-- CUSTOMIZE FUNCTIONS - User-defined calculation functions
+-- ============================================================================
+-- This file is for YOUR custom PostgreSQL functions that should persist
+-- across regeneration of the base ERB files.
+--
+-- IMPORTANT:
+--   - This file runs AFTER 02-create-functions.sql
+--   - Base ERB calc functions already exist when this runs
+--   - This file will NOT be overwritten by ERB regeneration
+--
+-- ============================================================================
+
+-- Your custom functions go here:
+&quot;&quot;&quot; ;
+    erb:sQLTarget &quot;Postgres&quot; ;
+    erb:customizationType &quot;Functions&quot; .
+
+erb:ERBCustomizations_2 a erb:ERBCustomizations ;
+    erb:eRBCustomizationId &quot;03c-customize-views-sql&quot; ;
+    erb:name &quot;03c-customize-views.sql&quot; ;
+    erb:title &quot;Customize Views&quot; ;
+    erb:sQLCode &quot;&quot;&quot;-- ============================================================================
+-- CUSTOMIZE VIEWS - User-defined views and view extensions
+-- ============================================================================
+-- This file is for YOUR custom views that should persist across
+-- regeneration of the base ERB files.
+--
+-- IMPORTANT:
+--   - This file runs AFTER 03-create-views.sql
+--   - All base vw_* views already exist when this runs
+--   - This file will NOT be overwritten by ERB regeneration
+--
+-- ============================================================================
+
+-- Your custom views go here:
+&quot;&quot;&quot; ;
+    erb:sQLTarget &quot;Postgres&quot; ;
+    erb:customizationType &quot;Views&quot; .
+
+erb:ERBCustomizations_3 a erb:ERBCustomizations ;
+    erb:eRBCustomizationId &quot;03d-customize-rls-sql&quot; ;
+    erb:name &quot;03d-customize-rls.sql&quot; ;
+    erb:title &quot;Customize Policies (RLS)&quot; ;
+    erb:sQLCode &quot;&quot;&quot;-- ============================================================================
+-- CUSTOMIZE POLICIES - User-defined Row Level Security policies
+-- ============================================================================
+-- This file is for YOUR custom RLS policies that should persist across
+-- regeneration of the base ERB files.
+--
+-- IMPORTANT:
+--   - This file runs AFTER 04-create-policies.sql
+--   - Base RLS policies already exist when this runs
+--   - This file will NOT be overwritten by ERB regeneration
+--
+-- ============================================================================
+
+-- Your custom policies go here:
+&quot;&quot;&quot; ;
+    erb:sQLTarget &quot;Postgres&quot; ;
+    erb:customizationType &quot;RLS&quot; .
+
+erb:ERBCustomizations_4 a erb:ERBCustomizations ;
+    erb:eRBCustomizationId &quot;03e-customize-data-sql&quot; ;
+    erb:name &quot;03e-customize-data.sql&quot; ;
+    erb:title &quot;Customize Data (Seeds / Migrations)&quot; ;
+    erb:sQLCode &quot;&quot;&quot;-- ============================================================================
+-- CUSTOMIZE DATA - User-defined seed data and data migrations
+-- ============================================================================
+-- This file is for YOUR custom seed data that should persist across
+-- regeneration of the base ERB files.
+--
+-- IMPORTANT:
+--   - This file runs AFTER 05-insert-data.sql
+--   - Base seed data already exists when this runs
+--   - This file will NOT be overwritten by ERB regeneration
+--
+-- ============================================================================
+
+-- Your custom data inserts go here:
+&quot;&quot;&quot; ;
+    erb:sQLTarget &quot;Postgres&quot; ;
+    erb:customizationType &quot;Data&quot; .
 </pre>
             </div>
         </div>
@@ -258,7 +449,7 @@ erb:Customers_2 a erb:Customers ;
             <div class="card">
                 <div class="code-header">
                     <h2>rules.shacl.ttl</h2>
-                    <div><span class="code-info">29 lines</span><button class="copy-btn" onclick="copyCode('rules-code')">Copy</button></div>
+                    <div><span class="code-info">46 lines</span><button class="copy-btn" onclick="copyCode('rules-code')">Copy</button></div>
                 </div>
                 <pre id="rules-code">@prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .
 @prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .
@@ -269,6 +460,23 @@ erb:Customers_2 a erb:Customers ;
 # === Shape with rules for Customers ===
 erb:CustomersShape a sh:NodeShape ;
     sh:targetClass erb:Customers ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label &quot;rule_Customers_Name&quot; ;
+        sh:prefixes erb: ;
+        sh:construct &quot;&quot;&quot;
+            PREFIX erb: &lt;http://example.org/erb#&gt;
+            PREFIX xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt;
+            CONSTRUCT {
+                $this erb:name ?_result .
+            }
+            WHERE {
+    $this a erb:Customers .
+    OPTIONAL { $this erb:emailAddress ?email_address . }
+                BIND(REPLACE(?email_address, &quot;@&quot;, &quot;-&quot;) AS ?_result)
+            }
+        &quot;&quot;&quot; ;
+    ] ;
     sh:rule [
         a sh:SPARQLRule ;
         rdfs:label &quot;rule_Customers_FullName&quot; ;
@@ -288,7 +496,7 @@ erb:CustomersShape a sh:NodeShape ;
         &quot;&quot;&quot; ;
     ] .
 
-# Generated 1 SHACL rules</pre>
+# Generated 2 SHACL rules</pre>
             </div>
         </div>
     </main>

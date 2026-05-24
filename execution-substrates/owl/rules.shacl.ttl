@@ -9,6 +9,23 @@ erb:CustomersShape a sh:NodeShape ;
     sh:targetClass erb:Customers ;
     sh:rule [
         a sh:SPARQLRule ;
+        rdfs:label "rule_Customers_Name" ;
+        sh:prefixes erb: ;
+        sh:construct """
+            PREFIX erb: <http://example.org/erb#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this erb:name ?_result .
+            }
+            WHERE {
+    $this a erb:Customers .
+    OPTIONAL { $this erb:emailAddress ?email_address . }
+                BIND(REPLACE(?email_address, "@", "-") AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
         rdfs:label "rule_Customers_FullName" ;
         sh:prefixes erb: ;
         sh:construct """
@@ -26,4 +43,4 @@ erb:CustomersShape a sh:NodeShape ;
         """ ;
     ] .
 
-# Generated 1 SHACL rules
+# Generated 2 SHACL rules
