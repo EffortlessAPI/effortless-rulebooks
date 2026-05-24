@@ -209,7 +209,7 @@ pre {
                 <span class="stat-value score-perfect">100.0%</span>
             </div>
             <div class="stat">
-                <span>40/40 passed</span>
+                <span>6/6 passed</span>
             </div>
         </div>
         <button id="theme-toggle" title="Toggle theme">
@@ -286,12 +286,8 @@ pre {
                 <h2>Execution Log</h2>
                 <pre>=== Python Substrate Test Run ===
 
-  -&gt; client: 3 records
-  -&gt; employees: 3 records
-  -&gt; projects: 3 records
-  -&gt; roles: 3 records
-  -&gt; types_of_project: 4 records
-Python substrate: Processed 5 entities, 16 total records
+  -&gt; customers: 3 records
+Python substrate: Processed 1 entities, 3 total records
 
 </pre>
             </div>
@@ -306,7 +302,7 @@ Python substrate: Processed 5 entities, 16 total records
                         <div class="result-label">Score</div>
                     </div>
                     <div class="result-item">
-                        <div class="result-value score-perfect">40</div>
+                        <div class="result-value score-perfect">6</div>
                         <div class="result-label">Passed</div>
                     </div>
                     <div class="result-item">
@@ -314,7 +310,7 @@ Python substrate: Processed 5 entities, 16 total records
                         <div class="result-label">Failed</div>
                     </div>
                     <div class="result-item">
-                        <div class="result-value">40</div>
+                        <div class="result-value">6</div>
                         <div class="result-label">Total</div>
                     </div>
                 </div>
@@ -324,7 +320,7 @@ Python substrate: Processed 5 entities, 16 total records
                 <div class="markdown-content">
                     <h3>language_candidates</h3>
                     <ul>
-                        <li>Fields: 40/40 (100.0%)</li>
+                        <li>Fields: 6/6 (100.0%)</li>
                         <li>Computed columns: has_grammar, question, predicted_answer, prediction_predicates, prediction_fail, is_description_of, is_open_closed_world_conflicted, relationship_to_concept</li>
                     </ul>
                 </div>
@@ -336,14 +332,14 @@ Python substrate: Processed 5 entities, 16 total records
                 <div class="code-header">
                     <h2>erb_calc.py</h2>
                     <div>
-                        <span class="code-info">326 lines</span>
+                        <span class="code-info">343 lines</span>
                         <button class="copy-btn" onclick="copyCode('calc-code')">Copy</button>
                     </div>
                 </div>
                 <pre id="calc-code">&quot;&quot;&quot;
 ERB Calculation Library (GENERATED - DO NOT EDIT)
 =================================================
-Generated from: effortless-rulebook/effortless-rulebook.json
+Generated from: effortless-rulebook/acme-llc-rulebook.json
 
 PYTHON SUBSTRATE ONLY. Importing this module from any other substrate
 is cheating. That substrate must execute the rulebook in its own native
@@ -378,34 +374,43 @@ from orchestration.shared import (
 
 
 # =============================================================================
-# CLIENT CALCULATIONS
-# Table: Client
+# CUSTOMERS CALCULATIONS
+# Table: Customers
 # =============================================================================
 
 # Level 1
 
-def calc_client_full_name(first_name, last_name):
+def calc_customers_name(email_address):
+    &quot;&quot;&quot;
+    Identifier for the customers.
+    
+    Formula: =SUBSTITUTE({{EmailAddress}}, &quot;@&quot;, &quot;-&quot;)
+    &quot;&quot;&quot;
+    return ((email_address or &quot;&quot;).replace(&#x27;@&#x27;, &#x27;-&#x27;))
+
+def calc_customers_full_name(last_name, first_name):
     &quot;&quot;&quot;
     Full name is computed from the first and last name of the customer
     
-    Formula: ={{FirstName}} &amp; &quot; &quot; &amp; {{LastName}}
+    Formula: ={{LastName}} &amp; &quot;, &quot; &amp; {{FirstName}}
     &quot;&quot;&quot;
-    return (str(first_name or &quot;&quot;) + &#x27; &#x27; + str(last_name or &quot;&quot;))
+    return (str(last_name or &quot;&quot;) + &#x27;, &#x27; + str(first_name or &quot;&quot;))
 
 
-def compute_client_fields(record: dict) -&gt; dict:
+def compute_customers_fields(record: dict) -&gt; dict:
     &quot;&quot;&quot;
-    Compute all calculated fields for Client.
+    Compute all calculated fields for Customers.
     
-    Table: Client
+    Table: Customers
     &quot;&quot;&quot;
     result = dict(record)
 
     # Level 1 calculations
-    result[&#x27;full_name&#x27;] = calc_client_full_name(result.get(&#x27;first_name&#x27;), result.get(&#x27;last_name&#x27;))
+    result[&#x27;name&#x27;] = calc_customers_name(result.get(&#x27;email_address&#x27;))
+    result[&#x27;full_name&#x27;] = calc_customers_full_name(result.get(&#x27;last_name&#x27;), result.get(&#x27;first_name&#x27;))
 
     # Convert empty strings to None for string fields
-    for key in [&#x27;full_name&#x27;]:
+    for key in [&#x27;name&#x27;, &#x27;full_name&#x27;]:
         if result.get(key) == &#x27;&#x27;:
             result[key] = None
 
@@ -437,8 +442,8 @@ def compute_all_calculated_fields(record: dict, entity_name: str = None) -&gt; d
     # Normalize to snake_case to support &quot;LineItem&quot;, &quot;line_item&quot;, &quot;line-item&quot;
     entity_lower = entity_name.lower().replace(&#x27;-&#x27;, &#x27;_&#x27;)
 
-    if entity_lower == &#x27;client&#x27;:
-        return compute_client_fields(record)
+    if entity_lower == &#x27;customers&#x27;:
+        return compute_customers_fields(record)
     else:
         # Unknown entity - return record unchanged (no error)
         return dict(record)
@@ -480,6 +485,13 @@ def parse_sumifs_formula(formula: str) -&gt; tuple:
     return (None, None, None, None)
 
 
+def _get_testing_dir(project_root: Path) -&gt; Path:
+    &quot;&quot;&quot;Return the domain-scoped testing dir (ERB_TESTING_DIR env var or fallback).&quot;&quot;&quot;
+    import os
+    erb = os.environ.get(&quot;ERB_TESTING_DIR&quot;)
+    return Path(erb) if erb else project_root / &quot;testing&quot;
+
+
 def load_related_data(project_root: Path, related_table: str) -&gt; list:
     &quot;&quot;&quot;
     Load data from testing/answer-keys for a related table; falls back to blank-tests.
@@ -487,13 +499,14 @@ def load_related_data(project_root: Path, related_table: str) -&gt; list:
     tables resolve correctly.
     &quot;&quot;&quot;
     snake_name = to_snake_case(related_table)
+    testing_dir = _get_testing_dir(project_root)
 
-    answer_keys_path = project_root / &quot;testing&quot; / &quot;answer-keys&quot; / f&quot;{snake_name}.json&quot;
+    answer_keys_path = testing_dir / &quot;answer-keys&quot; / f&quot;{snake_name}.json&quot;
     if answer_keys_path.exists():
         with open(answer_keys_path, &quot;r&quot;, encoding=&quot;utf-8&quot;) as f:
             return json.load(f)
 
-    blank_tests_path = project_root / &quot;testing&quot; / &quot;blank-tests&quot; / f&quot;{snake_name}.json&quot;
+    blank_tests_path = testing_dir / &quot;blank-tests&quot; / f&quot;{snake_name}.json&quot;
     if blank_tests_path.exists():
         with open(blank_tests_path, &quot;r&quot;, encoding=&quot;utf-8&quot;) as f:
             return json.load(f)

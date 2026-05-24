@@ -28,6 +28,33 @@ def read_file(path, default=""):
     except Exception:
         return default
 
+def _default_testing_dir():
+    """Default ERB_TESTING_DIR derived from active-domain.txt (the SSoT).
+
+    rulebook-examples/<active-domain>/testing/. This is a default (override
+    with ERB_TESTING_DIR), not a fallback. See CLAUDE.md.
+    """
+    repo_root = os.path.abspath(os.path.join(SCRIPT_DIR, '..', '..'))
+    active_domain_file = os.path.join(repo_root, 'orchestration', 'active-domain.txt')
+    with open(active_domain_file) as f:
+        domain = f.read().strip()
+    if not domain:
+        raise ValueError(f"active-domain.txt at {active_domain_file} is empty.")
+    return os.path.join(repo_root, 'rulebook-examples', domain, 'testing')
+
+
+def _resolve_test_results_path():
+    erb_testing = os.environ.get('ERB_TESTING_DIR') or _default_testing_dir()
+    path = os.path.join(erb_testing, SUBSTRATE_NAME, 'test-results.md')
+    if not os.path.exists(path):
+        raise FileNotFoundError(
+            f"test-results.md not found at {path}. "
+            f"The grader (grade-and-record.py) is supposed to write it before "
+            f"this report-generator runs. If you're seeing this, the grader "
+            f"failed silently — investigate it, do not substitute defaults."
+        )
+    return path
+
 
 # SQL files emitted by rulebook-to-postgres, in build order.
 # Each tuple: (file, tab_id, label, group)
@@ -50,7 +77,7 @@ for fname, tab_id, _label, _group in SQL_FILES:
     sql_sources[tab_id] = read_file(os.path.join(POSTGRES_DIR, fname), '-- (file not generated yet)')
 
 log_content = read_file('.last-run.log', 'No log available')
-test_results = read_file('test-results.md', 'No test results available')
+test_results = read_file(_resolve_test_results_path(), 'No test results available')
 readme = read_file(os.path.join(POSTGRES_DIR, 'README.md'), '')
 
 # Metrics from test-results.md

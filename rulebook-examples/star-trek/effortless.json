@@ -1,0 +1,37 @@
+{
+  "Name": "DEMO: StarTrek TV Shows",
+  "Description": "A hierarchical media catalog demonstrating multi-level aggregations and polymorphic relationships.",
+  "Version": "1.0",
+  "ProjectSettings": [
+    {
+      "Name": "baseId",
+      "Value": "appqwWQxIWFtyDsiL",
+      "Description": "Airtable base ID for this ontology (hardcoded per project)"
+    }
+  ],
+  "ProjectTranspilers": [
+    {
+      "Name": "airtabletorulebook",
+      "RelativePath": "/effortless-rulebook",
+      "CommandLine": "airtable-to-rulebook -o star-trek-rulebook.json -account airtable -p \"view=Grid view\"",
+      "Enabled": false,
+      "Description": "Pull rulebook from Airtable (optional; edit star-trek-rulebook.json directly if preferred) [DISABLED: rulebook JSON is authoritative; re-enable only with explicit user consent]",
+      "IsDisabled": true
+    },
+    {
+      "Name": "rulebooktoairtable",
+      "RelativePath": "/effortless-rulebook/push-to-airtable",
+      "CommandLine": "rulebook-to-airtable -i ../star-trek-rulebook.json -account airtable -w 300000",
+      "Enabled": false,
+      "Description": "Reverse-sync: push rulebook changes back to Airtable (optional)"
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "rulebooktopostgres",
+      "RelativePath": "/effortless-postgres",
+      "CommandLine": "rulebook-to-postgres -i ../effortless-rulebook/star-trek-rulebook.json",
+      "IsDisabled": false,
+      "Description": "Generate Postgres schema + seed data from the rulebook"
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+[
+  {
+    "customer_id": "jane-smith-email-com",
+    "email_address": "jane.smith@email.com",
+    "last_name": "Smith",
+    "first_name": "Bobby",
+    "name": "jane.smith-email.com",
+    "full_name": "Smith, Bobby"
+  },
+  {
+    "customer_id": "john-doe-email-com",
+    "email_address": "john.doe@email.com",
+    "last_name": "Doe",
+    "first_name": "Jimmy",
+    "name": "john.doe-email.com",
+    "full_name": "Doe, Jimmy"
+  },
+  {
+    "customer_id": "emily-jones-email-com",
+    "email_address": "emily.jones@email.com",
+    "last_name": "Jones",
+    "first_name": "Mary",
+    "name": "emily.jones-email.com",
+    "full_name": "Jones, Mary"
+  }
+]

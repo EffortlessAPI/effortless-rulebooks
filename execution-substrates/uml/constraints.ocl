@@ -1,57 +1,13 @@
 -- OCL Constraints for ERB
 -- Generated from effortless-rulebook.json
 
--- Table: Client
-context Client
+-- Table: Customers
+context Customers
+
+-- Identifier for the customers.
+-- Formula: =SUBSTITUTE({{EmailAddress}}, "@", "-")
+derive Name: self.emailAddress.replace('@', '-')
 
 -- Full name is computed from the first and last name of the customer
--- Formula: ={{FirstName}} & " " & {{LastName}}
-derive FullName: self.firstName + ' ' + self.lastName
-
--- Table: Employees
-context Employees
-
--- Formula for RoleName - parse error: Unexpected character '!' at position 11
--- Original: =INDEX(Roles!{{Name}}, MATCH(Employees!{{Role}}, Roles!{{RoleId}}, 0))
-
--- Formula for RoleDescription - parse error: Unexpected character '!' at position 11
--- Original: =INDEX(Roles!{{Description}}, MATCH(Employees!{{Role}}, Roles!{{RoleId}}, 0))
-
--- Formula for RoleIsManager - parse error: Unexpected character '!' at position 11
--- Original: =INDEX(Roles!{{IsManager}}, MATCH(Employees!{{Role}}, Roles!{{RoleId}}, 0))
-
--- Table: Projects
-context Projects
-
--- Formula for ProjectTypeName - parse error: Unexpected character '!' at position 20
--- Original: =INDEX(TypesOfProject!{{Name}}, MATCH(Projects!{{ProjectType}}, TypesOfProject!{{TypesOfProjectId}}, 0))
-
--- Formula for ProjectTypeDescription - parse error: Unexpected character '!' at position 20
--- Original: =INDEX(TypesOfProject!{{Description}}, MATCH(Projects!{{ProjectType}}, TypesOfProject!{{TypesOfProjectId}}, 0))
-
--- Formula for ProjectTypeRequiresManagerApproval - parse error: Unexpected character '!' at position 20
--- Original: =INDEX(TypesOfProject!{{RequiresManagerApproval}}, MATCH(Projects!{{ProjectType}}, TypesOfProject!{{TypesOfProjectId}}, 0))
-
--- Formula for ApprovedByRoleIsManager - parse error: Unexpected character '!' at position 15
--- Original: =INDEX(Employees!{{RoleIsManager}}, MATCH(Projects!{{ApprovedBy}}, Employees!{{EmployeeId}}, 0))
-
--- Formula for ApprovedByName - parse error: Unexpected character '!' at position 15
--- Original: =INDEX(Employees!{{Name}}, MATCH(Projects!{{ApprovedBy}}, Employees!{{EmployeeId}}, 0))
-
--- Formula for ApprovedByEmailAddress - parse error: Unexpected character '!' at position 15
--- Original: =INDEX(Employees!{{EmailAddress}}, MATCH(Projects!{{ApprovedBy}}, Employees!{{EmployeeId}}, 0))
-
--- Formula for ApprovedByPhoneNumber - parse error: Unexpected character '!' at position 15
--- Original: =INDEX(Employees!{{PhoneNumber}}, MATCH(Projects!{{ApprovedBy}}, Employees!{{EmployeeId}}, 0))
-
--- Table: Roles
-context Roles
-
--- Formula for CountOfEmployees - parse error: Unexpected character '!' at position 18
--- Original: =COUNTIFS(Employees!{{Role}}, Roles!{{RoleId}})
-
--- Table: TypesOfProject
-context TypesOfProject
-
--- Formula for CountOfProjects - parse error: Unexpected character '!' at position 17
--- Original: =COUNTIFS(Projects!{{ProjectType}}, TypesOfProject!{{TypesOfProjectId}})
+-- Formula: ={{LastName}} & ", " & {{FirstName}}
+derive FullName: self.lastName + ', ' + self.firstName

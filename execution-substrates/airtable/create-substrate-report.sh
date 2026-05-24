@@ -19,28 +19,41 @@ SUBSTRATE_ICON = "🗂️"
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__)) if '__file__' in globals() else os.getcwd()
 PROJECT_ROOT = os.path.abspath(os.path.join(SCRIPT_DIR, '..', '..'))
-RULEBOOK_PATH = os.path.join(PROJECT_ROOT, 'effortless-rulebook', 'effortless-rulebook.json')
+_erb_rulebook = os.environ.get('ERB_RULEBOOK_PATH')
+if not _erb_rulebook:
+    raise RuntimeError(
+        "ERB_RULEBOOK_PATH is not set. The airtable substrate report is "
+        "per-project; the orchestrator must export ERB_RULEBOOK_PATH before "
+        "calling create-substrate-report.sh."
+    )
+RULEBOOK_PATH = _erb_rulebook
+if not os.path.exists(RULEBOOK_PATH):
+    raise FileNotFoundError(f"Rulebook not found at ERB_RULEBOOK_PATH={RULEBOOK_PATH}.")
 
 
 def read_file(path, default=""):
-    try:
-        with open(path, 'r') as f:
-            return f.read()
-    except Exception:
+    """Read a file. A missing path returns the supplied default (legitimate
+    "no log yet" / "no README" rendering). A file that EXISTS but cannot be
+    opened raises — corruption is a bug, not a rendering edge case.
+    """
+    if not os.path.exists(path):
         return default
+    with open(path, 'r') as f:
+        return f.read()
 
 
 def _project_config_path():
-    eff = os.path.join(PROJECT_ROOT, 'effortless.json')
-    legacy = os.path.join(PROJECT_ROOT, 'ssotme.json')
-    return eff if os.path.exists(eff) else legacy
+    return os.path.join(PROJECT_ROOT, 'effortless.json')
 
 
-config_raw = read_file(_project_config_path(), '{}')
-try:
-    config = json.loads(config_raw) if config_raw.strip() else {}
-except json.JSONDecodeError:
-    config = {}
+config_path = _project_config_path()
+if not os.path.exists(config_path):
+    raise FileNotFoundError(
+        f"effortless.json missing at {config_path}. "
+        "Run 'effortless -init' to initialize this project."
+    )
+with open(config_path, 'r') as f:
+    config = json.load(f)  # JSONDecodeError MUST propagate — bad config is a bug
 
 base_id = ''
 for setting in config.get('ProjectSettings', []):
@@ -48,15 +61,11 @@ for setting in config.get('ProjectSettings', []):
         base_id = setting.get('Value', '')
         break
 
-rulebook_raw = read_file(RULEBOOK_PATH, '{}')
-try:
-    rulebook = json.loads(rulebook_raw) if rulebook_raw.strip() else {}
-except json.JSONDecodeError:
-    rulebook = {}
+with open(RULEBOOK_PATH, 'r') as f:
+    rulebook = json.load(f)  # JSONDecodeError MUST propagate — bad rulebook is a bug
 
-# Prefer the rulebook's own Name so the header and the JSON tab never diverge.
-# Fall back to effortless.json's Name if the rulebook is empty.
-project_name = rulebook.get('Name') or config.get('Name', 'Unknown')
+# The rulebook's own Name is canonical. If absent, use the domain folder name.
+project_name = rulebook.get('Name') or os.path.basename(PROJECT_ROOT)
 
 # Summarize the rulebook so the first tab isn't just the raw JSON dump.
 entities = []
@@ -74,10 +83,10 @@ for key, value in rulebook.items():
 log_content = read_file('.last-run.log', 'No sync has been run yet in this session.')
 
 bases_file = os.path.join(PROJECT_ROOT, 'orchestration', 'bases.json')
-bases_raw = read_file(bases_file, '[]')
-try:
-    bases = json.loads(bases_raw) if bases_raw.strip() else []
-except json.JSONDecodeError:
+if os.path.exists(bases_file):
+    with open(bases_file, 'r') as f:
+        bases = json.load(f)  # JSONDecodeError MUST propagate
+else:
     bases = []
 
 rulebook_pretty = json.dumps(rulebook, indent=2, default=str, ensure_ascii=False)
@@ -200,7 +209,7 @@ ul {{ margin-left: 1.25rem; }} li {{ margin-bottom: 0.25rem; }}
                 <table>
                     <tr><th style="width: 140px;">Project</th><td>{project_name}</td></tr>
                     <tr><th>Base ID</th><td><code>{base_id}</code></td></tr>
-                    <tr><th>Rulebook path</th><td><code>effortless-rulebook/effortless-rulebook.json</code></td></tr>
+                    <tr><th>Rulebook path</th><td><code>effortless-rulebook/{project_name}-rulebook.json</code></td></tr>
                     <tr><th>Rulebook size</th><td>{rulebook_size_kb} KB</td></tr>
                 </table>
             </div>

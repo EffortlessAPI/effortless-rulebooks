@@ -12,6 +12,7 @@ This compiler:
 The formula is the source of truth. Assembly is derived, not authored.
 """
 
+import os
 import sys
 import re
 import subprocess
@@ -1481,7 +1482,8 @@ def main():
     if handle_clean_arg(GENERATED_FILES, "Binary substrate: Removes generated assembly and compiled library"):
         return
 
-    script_dir = Path(__file__).resolve().parent
+    env_output = os.environ.get("ERB_OUTPUT_DIR")
+    script_dir = Path(env_output).resolve() if env_output else Path(__file__).resolve().parent
 
     print("=" * 70)
     print("Binary Execution Substrate - Formula-to-Assembly Compiler")

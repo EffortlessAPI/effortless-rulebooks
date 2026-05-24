@@ -1,0 +1,44 @@
+{
+  "ShowHidden": false,
+  "ShowAllFiles": false,
+  "CurrentPath": "/postgres",
+  "SSoTmeProjectFiles": null,
+  "SSoTmeProjectId": "3bfc5aef-7d05-4b45-8d39-f67d06d44d38",
+  "Name": "Effortlessly Invariant Rulesbooks (ERB) - Project Architecture",
+  "Description": "Root orchestration rulebook describing ERB itself and all sub-domain rulebooks.",
+  "ProjectSettings": [
+    {
+      "Name": "project-name",
+      "Value": "effortlessly-invariant-rulesbooks"
+    }
+  ],
+  "ProjectTranspilers": [ 
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "rulebooktopostgres",
+      "RelativePath": "/effortless-platform/postgres",
+      "CommandLine": "rulebook-to-postgres -i ../effortless-rulebook/effortless-rulebook.json",
+      "IsDisabled": false,
+      "PinnedVersion": "v2026.04.19.1717",
+      "LastVersionUsed": "v2026.04.19.1717",
+      "LastUrl": "https://effortless-rulebook-to-postgres-v2026-04-19-1717-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "init-db",
+      "RelativePath": "/postgres",
+      "CommandLine": "-exec ./init-db.sh -w 90000",
+      "IsDisabled": false
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "JsonHbarsTransform",
+      "RelativePath": "/docs",
+      "CommandLine": "json-hbars-transform -i ../effortless-platform/effortless-rulebook/effortless-rulebook.json -i generate-rulebook-md.hbars -o ../README.SCHEMA.md",
+      "IsDisabled": false,
+      "PinnedVersion": "v2026.04.14.0155",
+      "LastVersionUsed": "v2026.04.14.0155",
+      "LastUrl": "https://common-json-hbars-transform-v2026-04-14-0155-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
+    }
+  ]
+}

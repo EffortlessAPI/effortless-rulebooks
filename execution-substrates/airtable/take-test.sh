@@ -15,8 +15,15 @@ set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
-ANSWER_KEYS_DIR="$PROJECT_ROOT/testing/answer-keys"
-TEST_ANSWERS_DIR="$SCRIPT_DIR/test-answers"
+SUBSTRATE_NAME="$(basename "$SCRIPT_DIR")"
+if [ -z "$ERB_TESTING_DIR" ]; then
+    echo "FATAL: ERB_TESTING_DIR is not set. take-test.sh must be invoked by" >&2
+    echo "  the orchestrator with ERB_TESTING_DIR pointing at the active" >&2
+    echo "  domain's testing/ directory." >&2
+    exit 1
+fi
+ANSWER_KEYS_DIR="$ERB_TESTING_DIR/answer-keys"
+TEST_ANSWERS_DIR="$ERB_TESTING_DIR/$SUBSTRATE_NAME/test-answers"
 
 echo "=== Airtable substrate: copying answer keys (oracle is its own reference) ==="
 

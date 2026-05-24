@@ -1,0 +1,1661 @@
+{
+  "$schema": "https://example.com/cmcc-schema/v1",
+  "Name": "Effortlessly Invariant Rulesbooks (ERB) - Project Architecture",
+  "Description": "Top-level rulebook describing the ERB project itself: rulebook-as-hub, project-scoped builds via ssotme-proxy, admin portal UX, and conformance testing across substrates.",
+  "ProjectMetadata": {
+    "Description": "Project overview",
+    "schema": [
+      {
+        "name": "ProjectId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Effortlessly Invariant Rulesbooks (ERB)"
+      },
+      {
+        "name": "Purpose",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Demonstrate that a single declarative rulebook can generate working code in multiple execution substrates that all produce identical results"
+      },
+      {
+        "name": "Architecture",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Rulebook-as-hub: effortless-rulebook.json is the durable SSoT; Airtable / LLM edits / admin portal are peer input spokes"
+      },
+      {
+        "name": "EntryPoint",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "./start.sh boots the admin portal (web UI) — local dev experience for any rulebook project"
+      },
+      {
+        "name": "PortalUrl",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "http://localhost:7777 — admin portal served by run-web-portal.sh"
+      },
+      {
+        "name": "ProxyUrl",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "http://localhost:4242 — ssotme-proxy serving substrate transpilers as HTTP routes"
+      },
+      {
+        "name": "RepositoryRoot",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "effortlessly-invariant-rulesbooks/"
+      }
+    ],
+    "data": [
+      {
+        "ProjectId": "erb-001",
+        "Name": "Effortlessly Invariant Rulesbooks",
+        "Purpose": "Multi-substrate code generation from declarative rulebooks; rulebook JSON is the durable SSoT",
+        "Architecture": "effortless-rulebook.json (HUB / durable SSoT) ← input spokes: Airtable, LLM edits, admin portal Postgres editor → output spokes: 10+ substrates via ssotme-proxy",
+        "EntryPoint": "./start.sh",
+        "PortalUrl": "http://localhost:7777",
+        "ProxyUrl": "http://localhost:4242",
+        "RepositoryRoot": "effortlessly-invariant-rulesbooks/"
+      }
+    ]
+  },
+  "ExecutionSubstrates": {
+    "Description": "Runtime environments that execute business rules derived from the rulebook",
+    "schema": [
+      {
+        "name": "SubstrateId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Human-readable substrate name"
+      },
+      {
+        "name": "Technology",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Language/platform (PostgreSQL, Python, Go, Excel, OWL, PlantUML, etc.)"
+      },
+      {
+        "name": "RelativePath",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Path within repo: execution-substrates/{technology}/"
+      },
+      {
+        "name": "InjectorScript",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Code generation script: inject-into-{technology}.py"
+      },
+      {
+        "name": "TestScript",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Conformance test script: take-test.py"
+      },
+      {
+        "name": "IsProduction",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": false,
+        "Description": "True if backed by an official Effortless tool; false if local implementation"
+      },
+      {
+        "name": "Status",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Operational status (active, proof-of-concept, deprecated)"
+      },
+      {
+        "name": "Description",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Purpose and capabilities"
+      }
+    ],
+    "data": [
+      {
+        "SubstrateId": "substrate-001",
+        "Name": "Binary (ARM64)",
+        "Technology": "ARM64 Assembly",
+        "RelativePath": "execution-substrates/binary/",
+        "InjectorScript": "inject-into-binary.py",
+        "TestScript": "take-test.py",
+        "IsProduction": false,
+        "Status": "proof-of-concept",
+        "Description": "ARM64 assembly proof-of-concept; demonstrates lowest-level code generation"
+      },
+      {
+        "SubstrateId": "substrate-002",
+        "Name": "Python",
+        "Technology": "Python",
+        "RelativePath": "execution-substrates/python/",
+        "InjectorScript": "inject-into-python.py",
+        "TestScript": "take-test.py",
+        "IsProduction": false,
+        "Status": "active",
+        "Description": "Local Python implementation: dataclasses + calculated field functions"
+      },
+      {
+        "SubstrateId": "substrate-003",
+        "Name": "Go",
+        "Technology": "Go",
+        "RelativePath": "execution-substrates/golang/",
+        "InjectorScript": "inject-into-golang.py",
+        "TestScript": "take-test.py",
+        "IsProduction": false,
+        "Status": "active",
+        "Description": "Local Go implementation: structs + business logic"
+      },
+      {
+        "SubstrateId": "substrate-004",
+        "Name": "PostgreSQL",
+        "Technology": "PostgreSQL",
+        "RelativePath": "licensed-effortless-tools/postgres/",
+        "InjectorScript": "N/A (rulebook-to-postgres CLI)",
+        "TestScript": "take-test.py",
+        "IsProduction": true,
+        "Status": "active",
+        "Description": "Production tool: generates DDL, stored functions, views. Full formula support via SQL."
+      },
+      {
+        "SubstrateId": "substrate-005",
+        "Name": "CSV",
+        "Technology": "CSV",
+        "RelativePath": "execution-substrates/csv/",
+        "InjectorScript": "inject-into-csv.py",
+        "TestScript": null,
+        "IsProduction": false,
+        "Status": "active",
+        "Description": "Spreadsheet export: rows + headers"
+      },
+      {
+        "SubstrateId": "substrate-006",
+        "Name": "Excel",
+        "Technology": "Excel",
+        "RelativePath": "licensed-effortless-tools/xlsx/",
+        "InjectorScript": "N/A (rulebook-to-xlsx CLI)",
+        "TestScript": null,
+        "IsProduction": true,
+        "Status": "active",
+        "Description": "Production tool: generates .xlsx with formulas"
+      },
+      {
+        "SubstrateId": "substrate-007",
+        "Name": "PlantUML",
+        "Technology": "PlantUML",
+        "RelativePath": "execution-substrates/uml/",
+        "InjectorScript": "inject-into-uml.py",
+        "TestScript": null,
+        "IsProduction": false,
+        "Status": "active",
+        "Description": "Generates UML class diagrams with OCL constraints"
+      },
+      {
+        "SubstrateId": "substrate-008",
+        "Name": "OWL/RDF",
+        "Technology": "OWL/RDF",
+        "RelativePath": "execution-substrates/owl/",
+        "InjectorScript": "inject-into-owl.py",
+        "TestScript": null,
+        "IsProduction": false,
+        "Status": "active",
+        "Description": "RDF/OWL ontology for semantic web"
+      },
+      {
+        "SubstrateId": "substrate-009",
+        "Name": "Explain DAG",
+        "Technology": "JSON",
+        "RelativePath": "execution-substrates/explain-dag/",
+        "InjectorScript": "inject-into-explain-dag.py",
+        "TestScript": null,
+        "IsProduction": false,
+        "Status": "active",
+        "Description": "JSON spec for calculated-field derivation tracing; embedded React visualizer"
+      },
+      {
+        "SubstrateId": "substrate-010",
+        "Name": "Entity Framework",
+        "Technology": "C#/.NET",
+        "RelativePath": "licensed-effortless-tools/entity-framework-dotnet/",
+        "InjectorScript": "N/A (rulebook-to-entity-framework CLI)",
+        "TestScript": null,
+        "IsProduction": true,
+        "Status": "active",
+        "Description": "Production tool: generates C# POCOs and Entity Framework DbContext"
+      }
+    ]
+  },
+  "OrchestrationComponents": {
+    "Description": "Central orchestration logic that coordinates rulebook loading, injection, and testing",
+    "schema": [
+      {
+        "name": "ComponentId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "FilePath",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Relative path from repo root"
+      },
+      {
+        "name": "Language",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "Purpose",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "Dependencies",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Comma-separated list of other components"
+      }
+    ],
+    "data": [
+      {
+        "ComponentId": "orch-000",
+        "Name": "Start Entry",
+        "FilePath": "start.sh",
+        "Language": "Bash",
+        "Purpose": "Top-level entry point: boots the admin portal (web UI) for the active rulebook project; falls back to legacy CLI menu with --cli flag",
+        "Dependencies": "run-web-portal.sh, orchestrate.sh"
+      },
+      {
+        "ComponentId": "orch-001",
+        "Name": "Shared Utilities",
+        "FilePath": "orchestration/shared.py",
+        "Language": "Python",
+        "Purpose": "Common functions: load_rulebook(), parse formulas, type mapping",
+        "Dependencies": "None"
+      },
+      {
+        "ComponentId": "orch-002",
+        "Name": "Formula Parser",
+        "FilePath": "orchestration/formula_parser.py",
+        "Language": "Python",
+        "Purpose": "Parse and execute Excel-style formulas (IF, AND, OR, CONCAT, LEFT, RIGHT, etc.)",
+        "Dependencies": "shared.py"
+      },
+      {
+        "ComponentId": "orch-003",
+        "Name": "Main Injector",
+        "FilePath": "orchestration/inject.py",
+        "Language": "Python",
+        "Purpose": "Legacy: dispatch rulebook to all substrate injectors. Superseded by ssotme-proxy + `effortless build` per project, but retained for CI/cleanup.",
+        "Dependencies": "shared.py, all substrate injectors"
+      },
+      {
+        "ComponentId": "orch-004",
+        "Name": "Orchestrator Menu",
+        "FilePath": "orchestration/orchestrate.sh",
+        "Language": "Bash",
+        "Purpose": "Legacy interactive CLI menu: run substrates, manage Airtable sync, generate reports. Reachable via `./start.sh --cli`.",
+        "Dependencies": "inject.py, base-manager.py, effortless CLI"
+      },
+      {
+        "ComponentId": "orch-006",
+        "Name": "Base Manager",
+        "FilePath": "orchestration/base-manager.py",
+        "Language": "Python",
+        "Purpose": "List, select, and swap Airtable bases when Airtable is used as an input spoke",
+        "Dependencies": "shared.py"
+      },
+      {
+        "ComponentId": "orch-007",
+        "Name": "Test Orchestrator",
+        "FilePath": "orchestration/test-orchestrator.py",
+        "Language": "Python",
+        "Purpose": "Run all substrate tests; verify conformance (all substrates compute identically)",
+        "Dependencies": "shared.py, all substrate test scripts"
+      },
+      {
+        "ComponentId": "orch-008",
+        "Name": "Report Generator",
+        "FilePath": "orchestration/generate-report.py",
+        "Language": "Python",
+        "Purpose": "Generate HTML conformance report comparing substrate outputs",
+        "Dependencies": "test-orchestrator.py"
+      },
+      {
+        "ComponentId": "orch-009",
+        "Name": "Active Domain Pointer",
+        "FilePath": "orchestration/active-domain.txt",
+        "Language": "Text",
+        "Purpose": "Single line naming the active rulebook project under rulebook-examples/ — read by start.sh, admin portal, orchestrate.sh",
+        "Dependencies": "None"
+      }
+    ]
+  },
+  "RulebookSourceSpokes": {
+    "Description": "Peer input spokes that can write into effortless-rulebook.json. The rulebook JSON is the durable SSoT; these are interchangeable sources.",
+    "schema": [
+      {
+        "name": "SpokeId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "Kind",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "airtable | admin-portal | llm-direct | manual-json | reverse-sync"
+      },
+      {
+        "name": "Direction",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "input (writes into rulebook) | output (reads from rulebook) | bidirectional"
+      },
+      {
+        "name": "Required",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": false,
+        "Description": "False for all input spokes — any one is sufficient, none is required"
+      },
+      {
+        "name": "Purpose",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "Authority",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "On conflict, the rulebook JSON wins; spokes are the editors, not the SSoT"
+      }
+    ],
+    "data": [
+      {
+        "SpokeId": "spoke-001",
+        "Name": "Admin Portal (Postgres editor)",
+        "Kind": "admin-portal",
+        "Direction": "bidirectional",
+        "Required": false,
+        "Purpose": "Local web UI; edits flow through Postgres for real-time UX, write-through to rulebook JSON on every save. Primary developer experience.",
+        "Authority": "Rulebook JSON is durable SSoT; Postgres is the live editor only and can be dropped/rebuilt from JSON at any time."
+      },
+      {
+        "SpokeId": "spoke-002",
+        "Name": "Airtable (airtable-to-rulebook)",
+        "Kind": "airtable",
+        "Direction": "input",
+        "Required": false,
+        "Purpose": "Official Effortless tool: pull schema + data from an Airtable base into the rulebook JSON. Optional input spoke (was the historical HEAD).",
+        "Authority": "Rulebook JSON wins; reverse-sync is a separate spoke."
+      },
+      {
+        "SpokeId": "spoke-003",
+        "Name": "Reverse Sync (rulebook-to-airtable)",
+        "Kind": "reverse-sync",
+        "Direction": "output",
+        "Required": false,
+        "Purpose": "Push rulebook JSON edits back to an Airtable base for human review",
+        "Authority": "Output only; never reads from Airtable."
+      },
+      {
+        "SpokeId": "spoke-004",
+        "Name": "LLM Direct Edits",
+        "Kind": "llm-direct",
+        "Direction": "input",
+        "Required": false,
+        "Purpose": "Claude / agent edits effortless-rulebook.json directly via filesystem; admin portal reflects changes on reload.",
+        "Authority": "Rulebook JSON is the canonical surface for LLM edits."
+      },
+      {
+        "SpokeId": "spoke-005",
+        "Name": "Rulebook Cache (offline)",
+        "Kind": "airtable",
+        "Direction": "input",
+        "Required": false,
+        "Purpose": "Cache of previously-pulled Airtable rulebooks; used when Airtable API unavailable",
+        "Authority": "Last-known-good copy; superseded by any newer authoritative pull."
+      },
+      {
+        "SpokeId": "spoke-006",
+        "Name": "Manual JSON Edits",
+        "Kind": "manual-json",
+        "Direction": "input",
+        "Required": false,
+        "Purpose": "Developer hand-edits effortless-rulebook.json in their editor; no special tooling required.",
+        "Authority": "Rulebook JSON is the file under version control."
+      }
+    ]
+  },
+  "SsotmeProxy": {
+    "Description": "Local HTTP transpiler server on localhost:4242. Each transpiler is an HTTP route; injectors are the route bodies. Used by `effortless build` to call substrate generators uniformly.",
+    "schema": [
+      {
+        "name": "RouteId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "Route",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "POST /{route-name}"
+      },
+      {
+        "name": "SubstrateId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "FK to ExecutionSubstrates.SubstrateId"
+      },
+      {
+        "name": "InjectorScript",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Backing script that the route runs; null for upstream Effortless tools (e.g. airtable-to-rulebook)"
+      },
+      {
+        "name": "Description",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      }
+    ],
+    "data": [
+      {
+        "RouteId": "proxy-001",
+        "Route": "POST /airtable-to-rulebook",
+        "SubstrateId": null,
+        "InjectorScript": null,
+        "Description": "Pull rulebook from Airtable base (delegates to official Effortless tool)"
+      },
+      {
+        "RouteId": "proxy-002",
+        "Route": "POST /rulebook-to-python",
+        "SubstrateId": "substrate-002",
+        "InjectorScript": "execution-substrates/python/inject-into-python.py",
+        "Description": "Generate Python dataclass + calc library from rulebook"
+      },
+      {
+        "RouteId": "proxy-003",
+        "Route": "POST /rulebook-to-golang",
+        "SubstrateId": "substrate-003",
+        "InjectorScript": "execution-substrates/golang/inject-into-golang.py",
+        "Description": "Generate Go structs + business logic from rulebook"
+      },
+      {
+        "RouteId": "proxy-004",
+        "Route": "POST /rulebook-to-binary",
+        "SubstrateId": "substrate-001",
+        "InjectorScript": "execution-substrates/binary/inject-into-binary.py",
+        "Description": "Generate ARM64 assembly calculation stub from rulebook"
+      },
+      {
+        "RouteId": "proxy-005",
+        "Route": "POST /rulebook-to-cobol",
+        "SubstrateId": null,
+        "InjectorScript": "execution-substrates/cobol/inject-into-cobol.py",
+        "Description": "Generate COBOL computation program from rulebook"
+      },
+      {
+        "RouteId": "proxy-006",
+        "Route": "POST /rulebook-to-csv",
+        "SubstrateId": "substrate-005",
+        "InjectorScript": "execution-substrates/csv/inject-into-csv.py",
+        "Description": "Generate CSV exports + rulebook.xlsx from rulebook"
+      },
+      {
+        "RouteId": "proxy-007",
+        "Route": "POST /rulebook-to-xlsx",
+        "SubstrateId": "substrate-006",
+        "InjectorScript": "execution-substrates/xlsx/inject-into-xlsx.py",
+        "Description": "Generate Excel workbook with formulas from rulebook"
+      },
+      {
+        "RouteId": "proxy-008",
+        "Route": "POST /rulebook-to-uml",
+        "SubstrateId": "substrate-007",
+        "InjectorScript": "execution-substrates/uml/inject-into-uml.py",
+        "Description": "Generate PlantUML class diagram + OCL constraints from rulebook"
+      },
+      {
+        "RouteId": "proxy-009",
+        "Route": "POST /rulebook-to-owl",
+        "SubstrateId": "substrate-008",
+        "InjectorScript": "execution-substrates/owl/inject-into-owl.py",
+        "Description": "Generate RDF/OWL ontology from rulebook"
+      },
+      {
+        "RouteId": "proxy-010",
+        "Route": "POST /rulebook-to-english",
+        "SubstrateId": null,
+        "InjectorScript": "execution-substrates/english/inject-into-english.py",
+        "Description": "Generate plain-English business-rule narrative from rulebook"
+      },
+      {
+        "RouteId": "proxy-011",
+        "Route": "POST /rulebook-to-explain-dag",
+        "SubstrateId": "substrate-009",
+        "InjectorScript": "execution-substrates/explain-dag/inject-into-explain-dag.py",
+        "Description": "Generate JSON derivation-tracing DAG spec from rulebook"
+      },
+      {
+        "RouteId": "proxy-012",
+        "Route": "POST /rulebook-to-airtable",
+        "SubstrateId": null,
+        "InjectorScript": "execution-substrates/airtable/inject-into-airtable.py",
+        "Description": "Sync rulebook schema back into an Airtable base (output spoke)"
+      },
+      {
+        "RouteId": "proxy-013",
+        "Route": "GET /ping",
+        "SubstrateId": null,
+        "InjectorScript": null,
+        "Description": "Health check + transpiler catalog discovery"
+      }
+    ]
+  },
+  "TestingFramework": {
+    "Description": "Conformance testing: prove all substrates compute identically",
+    "schema": [
+      {
+        "name": "TestId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "FilePath",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "Purpose",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "Scope",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "global (all substrates) or per-substrate"
+      }
+    ],
+    "data": [
+      {
+        "TestId": "test-001",
+        "Name": "Test Case Definitions",
+        "FilePath": "test-cases/*.yaml",
+        "Purpose": "YAML scenarios defining inputs and expected outputs; shared across all substrates",
+        "Scope": "global"
+      },
+      {
+        "TestId": "test-002",
+        "Name": "Substrate-Specific Take-Test",
+        "FilePath": "execution-substrates/{technology}/take-test.py",
+        "Purpose": "Load rulebook, execute test cases, compare results against expected",
+        "Scope": "per-substrate"
+      },
+      {
+        "TestId": "test-003",
+        "Name": "Test Orchestrator",
+        "FilePath": "orchestration/test-orchestrator.py",
+        "Purpose": "Run all substrate tests; aggregate pass/fail; identify conformance gaps",
+        "Scope": "global"
+      },
+      {
+        "TestId": "test-004",
+        "Name": "Conformance Report",
+        "FilePath": "orchestration/conformance-report.html",
+        "Purpose": "Visual comparison of substrate outputs; highlight mismatches",
+        "Scope": "global"
+      }
+    ]
+  },
+  "RulebookDomains": {
+    "Description": "Customer ontologies: each domain has its own rulebook + substrate generation",
+    "schema": [
+      {
+        "name": "DomainId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "DomainName",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "RelativePath",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "rulebook-examples/{domain}/ — each domain is a self-contained Effortless project"
+      },
+      {
+        "name": "RulebookPath",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Path to effortless-rulebook.json within domain"
+      },
+      {
+        "name": "ComplexityLevel",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "minimal, moderate, advanced, or philosophical"
+      },
+      {
+        "name": "TableCount",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "KeyFeatures",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Comma-separated: string concat, relationships, aggregations, IF logic, meta-ontology, etc."
+      },
+      {
+        "name": "Purpose",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true
+      }
+    ],
+    "data": [
+      {
+        "DomainId": "domain-001",
+        "DomainName": "Customer FullName",
+        "RelativePath": "rulebook-examples/customer-fullname/",
+        "RulebookPath": "rulebook-examples/customer-fullname/effortless-rulebook/customer-fullname-rulebook.json",
+        "ComplexityLevel": "minimal",
+        "TableCount": 1,
+        "KeyFeatures": "string concatenation",
+        "Purpose": "Hello World: demonstrates basic schema and calculated field (CONCAT formula)"
+      },
+      {
+        "DomainId": "domain-002",
+        "DomainName": "Jessica BASIC",
+        "RelativePath": "rulebook-examples/jessica-basic/",
+        "RulebookPath": "rulebook-examples/jessica-basic/effortless-rulebook/jessica-basic-rulebook.json",
+        "ComplexityLevel": "moderate",
+        "TableCount": 9,
+        "KeyFeatures": "relationships, aggregations, role-agent separation",
+        "Purpose": "Real workflow modeling: task management with assigned agents"
+      },
+      {
+        "DomainId": "domain-003",
+        "DomainName": "Jessica ADVANCED",
+        "RelativePath": "rulebook-examples/jessica-advanced/",
+        "RulebookPath": "rulebook-examples/jessica-advanced/effortless-rulebook/jessica-advanced-rulebook.json",
+        "ComplexityLevel": "advanced",
+        "TableCount": 9,
+        "KeyFeatures": "cross-entity lookups, conditional IF logic, complex aggregations",
+        "Purpose": "Business rule complexity: demonstrates advanced formula patterns"
+      },
+      {
+        "DomainId": "domain-004",
+        "DomainName": "StarTrek",
+        "RelativePath": "rulebook-examples/star-trek/",
+        "RulebookPath": "rulebook-examples/star-trek/effortless-rulebook/star-trek-rulebook.json",
+        "ComplexityLevel": "moderate",
+        "TableCount": 7,
+        "KeyFeatures": "hierarchical rollups, polymorphic foreign keys",
+        "Purpose": "Media catalog: TV shows, seasons, episodes; demonstrates polymorphism"
+      },
+      {
+        "DomainId": "domain-005",
+        "DomainName": "Is Everything a Language?",
+        "RelativePath": "rulebook-examples/is-everything-a-language/",
+        "RulebookPath": "rulebook-examples/is-everything-a-language/effortless-rulebook/is-everything-a-language-rulebook.json",
+        "ComplexityLevel": "philosophical",
+        "TableCount": 3,
+        "KeyFeatures": "8-predicate AND logic, meta-ontology",
+        "Purpose": "Formal argument modeling: demonstrates schema expressivity for abstract domains"
+      },
+      {
+        "DomainId": "domain-006",
+        "DomainName": "ACME Corporation",
+        "RelativePath": "rulebook-examples/acme-corporation/",
+        "RulebookPath": "rulebook-examples/acme-corporation/effortless-rulebook/acme-corporation-rulebook.json",
+        "ComplexityLevel": "advanced",
+        "TableCount": null,
+        "KeyFeatures": "Hub promotion candidate; demonstrates rulebook-first workflow",
+        "Purpose": "Enterprise demo: ACME Corp operations"
+      },
+      {
+        "DomainId": "domain-007",
+        "DomainName": "ACME LLC",
+        "RelativePath": "rulebook-examples/acme-llc/",
+        "RulebookPath": "rulebook-examples/acme-llc/effortless-rulebook/acme-llc-rulebook.json",
+        "ComplexityLevel": "advanced",
+        "TableCount": null,
+        "KeyFeatures": "Hub promotion candidate; demonstrates rulebook-first workflow",
+        "Purpose": "Enterprise demo: ACME LLC operations"
+      },
+      {
+        "DomainId": "domain-008",
+        "DomainName": "Effortless Rulesbooks (self-referential demo)",
+        "RelativePath": "rulebook-examples/effortless-rulesbooks/",
+        "RulebookPath": "rulebook-examples/effortless-rulesbooks/effortless-rulebook/effortless-rulesbooks-rulebook.json",
+        "ComplexityLevel": "philosophical",
+        "TableCount": null,
+        "KeyFeatures": "self-referential; rulebook describes the ERB project itself",
+        "Purpose": "Demonstrates ERB modeling its own architecture as a domain rulebook"
+      }
+    ]
+  },
+  "CoreDataFlows": {
+    "Description": "End-to-end flows from rulebook to execution and testing",
+    "schema": [
+      {
+        "name": "FlowId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "Steps",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Pipe-delimited sequence of steps"
+      },
+      {
+        "name": "Triggers",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "When this flow runs"
+      },
+      {
+        "name": "Outputs",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Artifacts produced"
+      },
+      {
+        "name": "Invariant",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Hard rule the flow must preserve (e.g. write-through, SSoT precedence)"
+      }
+    ],
+    "data": [
+      {
+        "FlowId": "flow-001",
+        "Name": "Start → Admin Portal",
+        "Steps": "User runs ./start.sh | Detect active rulebook project | Start ssotme-proxy on :4242 if not running | Start admin portal backend on :7777 (auto-init Postgres + apply migrations from rulebook) | Open browser to http://localhost:7777",
+        "Triggers": "User runs `./start.sh` (default entry point)",
+        "Outputs": "Live admin portal in browser, ssotme-proxy + backend processes running"
+      },
+      {
+        "FlowId": "flow-002",
+        "Name": "Project Build (via ssotme-proxy)",
+        "Steps": "User triggers build in admin portal OR runs `effortless build` in active project | effortless CLI walks ProjectTranspilers in active project's effortless.json | For each transpiler with proxy URL, POST rulebook to localhost:4242 | Proxy invokes injector script | Generated files written to project's output folders",
+        "Triggers": "Admin portal Build button, CLI `effortless build`, or post-save hook after rulebook edit",
+        "Outputs": "Substrate code generated under rulebook-examples/{project}/{substrate}/"
+      },
+      {
+        "FlowId": "flow-003",
+        "Name": "Pull from Airtable (optional input spoke)",
+        "Steps": "User chooses 'Pull from Airtable' in admin portal | Call airtable-to-rulebook | Write effortless-rulebook.json | Reload portal Postgres editor from JSON",
+        "Triggers": "Admin portal action OR legacy CLI menu",
+        "Outputs": "Updated effortless-rulebook.json, portal Postgres rehydrated"
+      },
+      {
+        "FlowId": "flow-004",
+        "Name": "Admin Save (Write-Through Invariant)",
+        "Steps": "Developer edits in portal | Backend writes to Postgres (live editor state) | SAME REQUEST writes to effortless-rulebook.json on disk | Backend returns success only if BOTH writes succeeded | Optional: trigger flow-002 (rebuild substrates)",
+        "Triggers": "Any save action in admin portal (table edit, field edit, formula edit, sample data edit)",
+        "Outputs": "Updated Postgres row, updated effortless-rulebook.json, optional substrate rebuild",
+        "Invariant": "Postgres is the EDITOR; effortless-rulebook.json is the DURABLE SSoT. If Postgres is dropped, the rulebook reconstitutes it. If the JSON is dropped, the editor has no source of truth."
+      },
+      {
+        "FlowId": "flow-005",
+        "Name": "Portal Bootstrap (auto-create DB + migrate)",
+        "Steps": "Portal backend boots | Check if PG database 'erb_<domain>' exists | If missing, create it | Read effortless-rulebook.json | Run rulebook-to-portal-schema migration (creates tables for rulebook entities + AppUsers + AppRoles + AppNav) | Seed Postgres rows from rulebook JSON | Mark bootstrap complete",
+        "Triggers": "First boot of admin portal for a project, OR explicit reset action",
+        "Outputs": "Postgres database ready for editing, portal navigation populated"
+      },
+      {
+        "FlowId": "flow-006",
+        "Name": "Rehydrate Postgres from Rulebook JSON",
+        "Steps": "User drops or corrupts Postgres | User runs ./start.sh or clicks Reset Editor | Backend re-runs flow-005 | Editor is back online from JSON SSoT",
+        "Triggers": "Manual reset, DB loss, or version-control checkout to a different rulebook",
+        "Outputs": "Postgres editor rebuilt to match rulebook JSON exactly"
+      },
+      {
+        "FlowId": "flow-007",
+        "Name": "Conformance Testing",
+        "Steps": "Load test cases YAML | Run each substrate's take-test.py | Collect outputs | Compare results | Generate report | Display in admin portal Tests screen",
+        "Triggers": "Admin portal 'Run Tests' button or CLI option V",
+        "Outputs": "conformance-report.html, pass/fail matrix shown in portal"
+      },
+      {
+        "FlowId": "flow-008",
+        "Name": "Switch Active Project",
+        "Steps": "User selects a different rulebook project in portal | Update orchestration/active-domain.txt | Reload portal pointing at new project's rulebook | flow-005 if Postgres for that project not yet bootstrapped",
+        "Triggers": "Project switcher in admin portal nav",
+        "Outputs": "Portal now editing the chosen project's rulebook + Postgres editor"
+      },
+      {
+        "FlowId": "flow-009",
+        "Name": "Clean Generated Files",
+        "Steps": "User triggers Clean in portal Tech Tools OR CLI | Walks ProjectTranspilers | Each route invoked with clean=true | Generated outputs removed",
+        "Triggers": "Tech Tools → Clean Build, or CLI option C",
+        "Outputs": "Empty substrate output directories"
+      }
+    ]
+  },
+  "ProjectConfiguration": {
+    "Description": "Configuration files and their purposes",
+    "schema": [
+      {
+        "name": "ConfigId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "FileName",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "FilePath",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "Format",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "Purpose",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "MaintainedBy",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "human (manual edits) or tool (auto-generated)"
+      }
+    ],
+    "data": [
+      {
+        "ConfigId": "config-001",
+        "FileName": "effortless.json",
+        "FilePath": "./effortless.json",
+        "Format": "JSON",
+        "Purpose": "SSoTme project definition: transpilers, versions, base IDs, API keys",
+        "MaintainedBy": "human"
+      },
+      {
+        "ConfigId": "config-002",
+        "FileName": "CLAUDE.md",
+        "FilePath": "./CLAUDE.md",
+        "Format": "Markdown",
+        "Purpose": "Project instructions and architecture overview for Claude Code",
+        "MaintainedBy": "human"
+      },
+      {
+        "ConfigId": "config-003",
+        "FileName": "bases.json",
+        "FilePath": "orchestration/bases.json",
+        "Format": "JSON",
+        "Purpose": "Catalog of swappable Airtable bases with IDs, names, complexity levels",
+        "MaintainedBy": "human"
+      },
+      {
+        "ConfigId": "config-004",
+        "FileName": ".env",
+        "FilePath": "./.env",
+        "Format": "Shell",
+        "Purpose": "Environment variables: AIRTABLE_API_KEY, PostgreSQL credentials, etc.",
+        "MaintainedBy": "human"
+      },
+      {
+        "ConfigId": "config-005",
+        "FileName": "docker-compose.yml",
+        "FilePath": "./docker-compose.yml",
+        "Format": "YAML",
+        "Purpose": "Docker services: PostgreSQL, optional API server",
+        "MaintainedBy": "human"
+      },
+      {
+        "ConfigId": "config-006",
+        "FileName": "Dockerfile",
+        "FilePath": "./Dockerfile",
+        "Format": "Dockerfile",
+        "Purpose": "Container image for reproducible environment",
+        "MaintainedBy": "human"
+      },
+      {
+        "ConfigId": "config-007",
+        "FileName": "effortless-rulebook.json",
+        "FilePath": "effortless-rulebook/effortless-rulebook.json",
+        "Format": "JSON",
+        "Purpose": "DURABLE SSOT: entity schemas, field types, formulas, sample data, admin portal config (roles/nav/screens/AppUsers). Written by any input spoke; read by every output spoke.",
+        "MaintainedBy": "any spoke: admin portal save, airtable-to-rulebook pull, LLM direct edit, or human hand-edit"
+      },
+      {
+        "ConfigId": "config-010",
+        "FileName": "run-web-portal.sh",
+        "FilePath": "./run-web-portal.sh",
+        "Format": "Shell",
+        "Purpose": "Boot ssotme-proxy + admin portal backend + open browser. Invoked by ./start.sh.",
+        "MaintainedBy": "human"
+      },
+      {
+        "ConfigId": "config-011",
+        "FileName": "admin-portal/package.json",
+        "FilePath": "admin-portal/package.json",
+        "Format": "JSON",
+        "Purpose": "Express backend + Vite/React frontend dependencies for the admin portal",
+        "MaintainedBy": "human"
+      },
+      {
+        "ConfigId": "config-012",
+        "FileName": "admin-portal/.portal-state.json",
+        "FilePath": "admin-portal/.portal-state.json",
+        "Format": "JSON",
+        "Purpose": "Per-machine portal state: last-active project, last-logged-in dev user. Not committed.",
+        "MaintainedBy": "tool (portal backend)"
+      },
+      {
+        "ConfigId": "config-008",
+        "FileName": "README.md",
+        "FilePath": "./README.md",
+        "Format": "Markdown",
+        "Purpose": "User-facing documentation: quick start, base progression, key terms",
+        "MaintainedBy": "human"
+      },
+      {
+        "ConfigId": "config-009",
+        "FileName": "README.TECHNICAL.md",
+        "FilePath": "./README.TECHNICAL.md",
+        "Format": "Markdown",
+        "Purpose": "Technical deep-dive: architecture, internals, debugging",
+        "MaintainedBy": "human"
+      }
+    ]
+  },
+  "Dependencies": {
+    "Description": "External tools and their roles",
+    "schema": [
+      {
+        "name": "DependencyId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "Version",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "Type",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Language, tool, service, or external API"
+      },
+      {
+        "name": "Purpose",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "Required",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": false
+      }
+    ],
+    "data": [
+      {
+        "DependencyId": "dep-001",
+        "Name": "Python",
+        "Version": "3.8+",
+        "Type": "Language",
+        "Purpose": "Orchestration scripts, injectors, test runners",
+        "Required": true
+      },
+      {
+        "DependencyId": "dep-002",
+        "Name": "Bash",
+        "Version": "latest",
+        "Type": "Language",
+        "Purpose": "Menu orchestration, subprocess management",
+        "Required": true
+      },
+      {
+        "DependencyId": "dep-003",
+        "Name": "Go",
+        "Version": "1.19+",
+        "Type": "Language",
+        "Purpose": "Go substrate code generation and testing",
+        "Required": false
+      },
+      {
+        "DependencyId": "dep-004",
+        "Name": "PostgreSQL",
+        "Version": "13+",
+        "Type": "Database",
+        "Purpose": "SQL substrate execution; DDL/functions/views generation",
+        "Required": false
+      },
+      {
+        "DependencyId": "dep-005",
+        "Name": "Docker",
+        "Version": "latest",
+        "Type": "Tool",
+        "Purpose": "Container orchestration for PostgreSQL and reproducible environments",
+        "Required": false
+      },
+      {
+        "DependencyId": "dep-006",
+        "Name": "Airtable API",
+        "Version": "v0",
+        "Type": "External Service",
+        "Purpose": "Schema + data pull via airtable-to-rulebook; reverse sync via rulebook-to-airtable",
+        "Required": false
+      },
+      {
+        "DependencyId": "dep-007",
+        "Name": "Node.js",
+        "Version": "16+",
+        "Type": "Language",
+        "Purpose": "Report generation (HTML), optional utilities",
+        "Required": false
+      },
+      {
+        "DependencyId": "dep-008",
+        "Name": "SSoTme CLI (effortless)",
+        "Version": "latest",
+        "Type": "Tool",
+        "Purpose": "Transpiler registry and version management for effortless-rulebook-to-postgres, etc.",
+        "Required": false
+      },
+      {
+        "DependencyId": "dep-009",
+        "Name": "C# / Entity Framework",
+        "Version": ".NET 6+",
+        "Type": "Language",
+        "Purpose": "Entity Framework substrate code generation",
+        "Required": false
+      },
+      {
+        "DependencyId": "dep-010",
+        "Name": "Node.js (Express + Vite + React)",
+        "Version": "18+",
+        "Type": "Language",
+        "Purpose": "Admin portal: Express backend, Vite/React frontend. Required to run the default ./start.sh experience.",
+        "Required": true
+      },
+      {
+        "DependencyId": "dep-011",
+        "Name": "PostgreSQL (admin portal editor)",
+        "Version": "13+",
+        "Type": "Database",
+        "Purpose": "Live editor backend for the admin portal. Auto-created on first portal boot. SAFE TO DELETE — reconstitutes from rulebook JSON on next start.",
+        "Required": true
+      }
+    ]
+  },
+  "AppUsers": {
+    "Description": "Default users for local development and conformance testing. Lives in the rulebook so it travels with the project; production deployments should overlay these with a real identity provider.",
+    "schema": [
+      {
+        "name": "UserId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "Email",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Login identifier (no password in dev mode; presence in this list = authorized)"
+      },
+      {
+        "name": "DisplayName",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "RoleId",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": false,
+        "Description": "FK to UserRoles.RoleId (Viewer or Developer)"
+      },
+      {
+        "name": "IsDefault",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": false,
+        "Description": "True for the user the portal auto-selects on first boot"
+      },
+      {
+        "name": "Notes",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true
+      }
+    ],
+    "data": [
+      {
+        "UserId": "user-001",
+        "Email": "dev@example.com",
+        "DisplayName": "Local Developer",
+        "RoleId": "role-developer",
+        "IsDefault": true,
+        "Notes": "Default developer login for ./start.sh. Full admin everywhere."
+      },
+      {
+        "UserId": "user-002",
+        "Email": "viewer@example.com",
+        "DisplayName": "Local Viewer",
+        "RoleId": "role-viewer",
+        "IsDefault": false,
+        "Notes": "Read-only login for demos and stakeholder review."
+      },
+      {
+        "UserId": "user-003",
+        "Email": "test@example.com",
+        "DisplayName": "Conformance Test User",
+        "RoleId": "role-developer",
+        "IsDefault": false,
+        "Notes": "Used by automated conformance tests (CI mode)."
+      }
+    ]
+  },
+  "UserRoles": {
+    "Description": "Admin portal access tiers. Drives both the navigation visible to the user and the RLS policies that Postgres applies to portal writes.",
+    "schema": [
+      {
+        "name": "RoleId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "AccessLevel",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "read | full-admin"
+      },
+      {
+        "name": "CanEditRulebook",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "CanRunBuilds",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "CanAccessTechTools",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Tech Tools nest = raw Postgres explorer, ssotme-proxy logs, conformance internals"
+      },
+      {
+        "name": "CanSwitchProjects",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "CanManageUsers",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "Description",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true
+      }
+    ],
+    "data": [
+      {
+        "RoleId": "role-viewer",
+        "Name": "Viewer",
+        "AccessLevel": "read",
+        "CanEditRulebook": false,
+        "CanRunBuilds": false,
+        "CanAccessTechTools": false,
+        "CanSwitchProjects": true,
+        "CanManageUsers": false,
+        "Description": "Read-only walkthrough of the project: see rulebook, browse generated substrates, view test results. Cannot mutate anything."
+      },
+      {
+        "RoleId": "role-developer",
+        "Name": "Developer",
+        "AccessLevel": "full-admin",
+        "CanEditRulebook": true,
+        "CanRunBuilds": true,
+        "CanAccessTechTools": true,
+        "CanSwitchProjects": true,
+        "CanManageUsers": true,
+        "Description": "Full admin: edit rulebook, trigger builds, run tests, manage users, access Tech Tools (raw Postgres, proxy logs, conformance internals)."
+      }
+    ]
+  },
+  "AppPermissions": {
+    "Description": "RLS-style policy table: declarative per-role allow/deny on portal API endpoints and on Postgres tables. Generated into Postgres on portal bootstrap as RLS policies.",
+    "schema": [
+      {
+        "name": "PermissionId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "RoleId",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": false,
+        "Description": "FK to UserRoles.RoleId"
+      },
+      {
+        "name": "Resource",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Logical resource: rulebook.entity, rulebook.field, rulebook.formula, build, test, users, tech-tools.postgres, tech-tools.proxy"
+      },
+      {
+        "name": "Action",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "read | create | update | delete | execute"
+      },
+      {
+        "name": "Allow",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "RlsPredicate",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Postgres RLS USING clause (when applicable); null for endpoint-only checks"
+      }
+    ],
+    "data": [
+      {"PermissionId": "perm-001", "RoleId": "role-viewer", "Resource": "rulebook.entity", "Action": "read", "Allow": true, "RlsPredicate": "true"},
+      {"PermissionId": "perm-002", "RoleId": "role-viewer", "Resource": "rulebook.entity", "Action": "update", "Allow": false, "RlsPredicate": "false"},
+      {"PermissionId": "perm-003", "RoleId": "role-viewer", "Resource": "rulebook.field", "Action": "read", "Allow": true, "RlsPredicate": "true"},
+      {"PermissionId": "perm-004", "RoleId": "role-viewer", "Resource": "rulebook.formula", "Action": "read", "Allow": true, "RlsPredicate": "true"},
+      {"PermissionId": "perm-005", "RoleId": "role-viewer", "Resource": "build", "Action": "execute", "Allow": false, "RlsPredicate": null},
+      {"PermissionId": "perm-006", "RoleId": "role-viewer", "Resource": "test", "Action": "read", "Allow": true, "RlsPredicate": "true"},
+      {"PermissionId": "perm-007", "RoleId": "role-viewer", "Resource": "test", "Action": "execute", "Allow": false, "RlsPredicate": null},
+      {"PermissionId": "perm-008", "RoleId": "role-viewer", "Resource": "tech-tools.postgres", "Action": "read", "Allow": false, "RlsPredicate": null},
+      {"PermissionId": "perm-009", "RoleId": "role-viewer", "Resource": "users", "Action": "read", "Allow": true, "RlsPredicate": "true"},
+      {"PermissionId": "perm-010", "RoleId": "role-viewer", "Resource": "users", "Action": "update", "Allow": false, "RlsPredicate": "false"},
+
+      {"PermissionId": "perm-101", "RoleId": "role-developer", "Resource": "rulebook.entity", "Action": "read", "Allow": true, "RlsPredicate": "true"},
+      {"PermissionId": "perm-102", "RoleId": "role-developer", "Resource": "rulebook.entity", "Action": "create", "Allow": true, "RlsPredicate": "true"},
+      {"PermissionId": "perm-103", "RoleId": "role-developer", "Resource": "rulebook.entity", "Action": "update", "Allow": true, "RlsPredicate": "true"},
+      {"PermissionId": "perm-104", "RoleId": "role-developer", "Resource": "rulebook.entity", "Action": "delete", "Allow": true, "RlsPredicate": "true"},
+      {"PermissionId": "perm-105", "RoleId": "role-developer", "Resource": "rulebook.field", "Action": "update", "Allow": true, "RlsPredicate": "true"},
+      {"PermissionId": "perm-106", "RoleId": "role-developer", "Resource": "rulebook.formula", "Action": "update", "Allow": true, "RlsPredicate": "true"},
+      {"PermissionId": "perm-107", "RoleId": "role-developer", "Resource": "build", "Action": "execute", "Allow": true, "RlsPredicate": null},
+      {"PermissionId": "perm-108", "RoleId": "role-developer", "Resource": "test", "Action": "execute", "Allow": true, "RlsPredicate": null},
+      {"PermissionId": "perm-109", "RoleId": "role-developer", "Resource": "tech-tools.postgres", "Action": "read", "Allow": true, "RlsPredicate": "true"},
+      {"PermissionId": "perm-110", "RoleId": "role-developer", "Resource": "tech-tools.postgres", "Action": "execute", "Allow": true, "RlsPredicate": "true"},
+      {"PermissionId": "perm-111", "RoleId": "role-developer", "Resource": "tech-tools.proxy", "Action": "read", "Allow": true, "RlsPredicate": "true"},
+      {"PermissionId": "perm-112", "RoleId": "role-developer", "Resource": "users", "Action": "create", "Allow": true, "RlsPredicate": "true"},
+      {"PermissionId": "perm-113", "RoleId": "role-developer", "Resource": "users", "Action": "update", "Allow": true, "RlsPredicate": "true"},
+      {"PermissionId": "perm-114", "RoleId": "role-developer", "Resource": "users", "Action": "delete", "Allow": true, "RlsPredicate": "true"}
+    ]
+  },
+  "AppNavigation": {
+    "Description": "Primary navigation tree for the admin portal. Drives the left sidebar. Each node has a role gate and a target screen. This is the developer's narrative through a rulebook project.",
+    "schema": [
+      {
+        "name": "NavId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "ParentNavId",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "FK to AppNavigation.NavId; null for top-level nodes"
+      },
+      {
+        "name": "Label",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "Icon",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Lucide icon name"
+      },
+      {
+        "name": "ScreenId",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "FK to AppScreens.ScreenId; null for grouping-only nodes"
+      },
+      {
+        "name": "MinRoleId",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": false,
+        "Description": "FK to UserRoles.RoleId — minimum role required to see this node"
+      },
+      {
+        "name": "Order",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "StoryBeat",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "What this node teaches the developer in the rulebook narrative"
+      }
+    ],
+    "data": [
+      {"NavId": "nav-001", "ParentNavId": null, "Label": "Home",           "Icon": "home",        "ScreenId": "screen-home",         "MinRoleId": "role-viewer",    "Order": 10, "StoryBeat": "What this project is, why it exists, who's working on it. Cards: rulebook stats, last build, last test pass-rate, active spokes."},
+      {"NavId": "nav-002", "ParentNavId": null, "Label": "Rulebook",       "Icon": "book-open",   "ScreenId": null,                  "MinRoleId": "role-viewer",    "Order": 20, "StoryBeat": "The business semantics of the project — every table, field, formula, and sample row."},
+      {"NavId": "nav-002a","ParentNavId": "nav-002","Label": "Entities",   "Icon": "table",       "ScreenId": "screen-entities",     "MinRoleId": "role-viewer",    "Order": 1,  "StoryBeat": "List all entities. Click one to drill in to its fields, sample data, and computed columns."},
+      {"NavId": "nav-002b","ParentNavId": "nav-002","Label": "Formulas",   "Icon": "function-square","ScreenId": "screen-formulas",  "MinRoleId": "role-viewer",    "Order": 2,  "StoryBeat": "All calculated fields in one place. Click one to see its DAG (inputs → output) live from the rulebook."},
+      {"NavId": "nav-002c","ParentNavId": "nav-002","Label": "Relationships","Icon": "git-fork",   "ScreenId": "screen-relationships","MinRoleId": "role-viewer",    "Order": 3,  "StoryBeat": "FK graph of the project. Hover a node to highlight its inbound and outbound relationships."},
+      {"NavId": "nav-002d","ParentNavId": "nav-002","Label": "Sample Data","Icon": "database",     "ScreenId": "screen-sample-data",  "MinRoleId": "role-viewer",    "Order": 4,  "StoryBeat": "What the project looks like populated. Editable for developers; read-only for viewers."},
+      {"NavId": "nav-003", "ParentNavId": null, "Label": "Substrates",     "Icon": "boxes",       "ScreenId": "screen-substrates",   "MinRoleId": "role-viewer",    "Order": 30, "StoryBeat": "Every output substrate this project generates (Python, Go, Postgres, Excel, OWL, etc.). Click one to see the generated source and the conformance status."},
+      {"NavId": "nav-003z","ParentNavId": "nav-003","Label": "Add Tool",   "Icon": "plus-square", "ScreenId": "screen-add-tool",     "MinRoleId": "role-developer", "Order": 99, "StoryBeat": "Pick from the catalog of 15+ transpilers and install one into the active project. Same code path as `effortless -install` on the CLI."},
+      {"NavId": "nav-004", "ParentNavId": null, "Label": "Builds",         "Icon": "wrench",      "ScreenId": "screen-builds",       "MinRoleId": "role-viewer",    "Order": 40, "StoryBeat": "Build history: when, what changed, which substrates regenerated, how long. Developers can trigger a build here."},
+      {"NavId": "nav-005", "ParentNavId": null, "Label": "Tests",          "Icon": "check-circle","ScreenId": "screen-tests",        "MinRoleId": "role-viewer",    "Order": 50, "StoryBeat": "Conformance matrix: which substrate computed which test case correctly. Drill in to see input → expected → actual per substrate."},
+      {"NavId": "nav-006", "ParentNavId": null, "Label": "Input Spokes",   "Icon": "git-pull-request","ScreenId": "screen-input-spokes","MinRoleId": "role-viewer",  "Order": 60, "StoryBeat": "Where edits come from: admin portal, Airtable, LLM, manual JSON. Pull / push controls live here."},
+      {"NavId": "nav-007", "ParentNavId": null, "Label": "Users",          "Icon": "users",       "ScreenId": "screen-users",        "MinRoleId": "role-viewer",    "Order": 70, "StoryBeat": "Default dev/test users from the rulebook + their roles."},
+      {"NavId": "nav-008", "ParentNavId": null, "Label": "Tech Tools",     "Icon": "terminal",    "ScreenId": null,                  "MinRoleId": "role-developer", "Order": 80, "StoryBeat": "Developer-only escape hatches. Raw Postgres, proxy logs, file system, manual injection. Not part of the daily workflow."},
+      {"NavId": "nav-008a","ParentNavId": "nav-008","Label": "Postgres Explorer","Icon": "database","ScreenId": "screen-tech-postgres","MinRoleId": "role-developer","Order": 1, "StoryBeat": "Raw editor-DB browser: run SQL, inspect rows, drop/reset DB."},
+      {"NavId": "nav-008b","ParentNavId": "nav-008","Label": "ssotme-proxy","Icon": "server",     "ScreenId": "screen-tech-proxy",   "MinRoleId": "role-developer", "Order": 2,  "StoryBeat": "Live proxy status: registered routes, recent calls, response sizes, last error per route."},
+      {"NavId": "nav-008c","ParentNavId": "nav-008","Label": "Files",      "Icon": "folder",      "ScreenId": "screen-tech-files",   "MinRoleId": "role-developer", "Order": 3,  "StoryBeat": "Project filesystem browser. View any generated or hand-written file in the active project."},
+      {"NavId": "nav-008d","ParentNavId": "nav-008","Label": "Rulebook JSON","Icon": "file-json", "ScreenId": "screen-tech-json",    "MinRoleId": "role-developer", "Order": 4,  "StoryBeat": "Raw rulebook JSON viewer/editor. Save here goes through the same write-through invariant as the UI."},
+      {"NavId": "nav-008e","ParentNavId": "nav-008","Label": "Reset Editor","Icon": "rotate-ccw", "ScreenId": "screen-tech-reset",   "MinRoleId": "role-developer", "Order": 5,  "StoryBeat": "Drop the editor Postgres DB and re-bootstrap from rulebook JSON. Safe — JSON is SSoT."}
+    ]
+  },
+  "AppScreens": {
+    "Description": "Every screen in the admin portal. Each screen names the entities it reads/writes, the role it requires, and the story it tells.",
+    "schema": [
+      {"name": "ScreenId",     "datatype": "string",  "type": "raw", "nullable": false},
+      {"name": "Path",         "datatype": "string",  "type": "raw", "nullable": false, "Description": "React Router path"},
+      {"name": "Title",        "datatype": "string",  "type": "raw", "nullable": false},
+      {"name": "ReadsEntities","datatype": "string",  "type": "raw", "nullable": true,  "Description": "Comma-separated rulebook entities the screen reads"},
+      {"name": "WritesEntities","datatype": "string", "type": "raw", "nullable": true,  "Description": "Comma-separated rulebook entities the screen mutates (developer-only)"},
+      {"name": "MinRoleId",    "datatype": "string",  "type": "lookup", "nullable": false},
+      {"name": "Layout",       "datatype": "string",  "type": "raw", "nullable": true,  "Description": "split-detail | list | grid | dashboard | editor"},
+      {"name": "PrimaryAction","datatype": "string",  "type": "raw", "nullable": true},
+      {"name": "Story",        "datatype": "string",  "type": "raw", "nullable": true,  "Description": "What the developer learns / does on this screen"}
+    ],
+    "data": [
+      {"ScreenId": "screen-home",          "Path": "/",                  "Title": "Home",                     "ReadsEntities": "ProjectMetadata,RulebookProjects,RulebookSourceSpokes,ExecutionSubstrates",                "WritesEntities": null, "MinRoleId": "role-viewer",    "Layout": "dashboard",     "PrimaryAction": "Switch project",      "Story": "Land here on ./start.sh. Cards: current project, rulebook size, # substrates, last build time, last test pass-rate, which spokes are active, who you're signed in as."},
+      {"ScreenId": "screen-entities",      "Path": "/rulebook/entities", "Title": "Entities",                 "ReadsEntities": "<active-project-rulebook>",                                                                "WritesEntities": "<active-project-rulebook>", "MinRoleId": "role-viewer", "Layout": "split-detail", "PrimaryAction": "Add entity",          "Story": "Left: list of every entity in the active project's rulebook. Right: selected entity's fields, formulas, sample rows. Developer can add/rename/delete fields inline; viewer sees the same with controls disabled."},
+      {"ScreenId": "screen-formulas",      "Path": "/rulebook/formulas", "Title": "Formulas",                 "ReadsEntities": "<active-project-rulebook>",                                                                "WritesEntities": "<active-project-rulebook>", "MinRoleId": "role-viewer", "Layout": "split-detail", "PrimaryAction": "Edit formula",        "Story": "Every calculated field across all entities. Drill in to see live DAG visualization (inputs → intermediates → output) sourced from the rulebook's explain-dag substrate. Developer can edit Excel-style formula in place; portal auto-validates against the parser."},
+      {"ScreenId": "screen-relationships", "Path": "/rulebook/relationships","Title": "Relationships",        "ReadsEntities": "<active-project-rulebook>",                                                                "WritesEntities": null, "MinRoleId": "role-viewer",    "Layout": "grid",          "PrimaryAction": null,                   "Story": "FK graph (interactive). Hover a node to highlight its inbound/outbound edges. Click an edge to see which formula or column declares it."},
+      {"ScreenId": "screen-sample-data",   "Path": "/rulebook/data",     "Title": "Sample Data",              "ReadsEntities": "<active-project-rulebook>.data",                                                           "WritesEntities": "<active-project-rulebook>.data", "MinRoleId": "role-viewer", "Layout": "grid", "PrimaryAction": "Add row",      "Story": "Spreadsheet-style view of the data block of each entity. Developer can edit cells; computed columns are read-only and show the resolved value with a hoverable derivation popover."},
+      {"ScreenId": "screen-substrates",    "Path": "/substrates",        "Title": "Substrates",               "ReadsEntities": "ExecutionSubstrates,SsotmeProxy",                                                          "WritesEntities": null, "MinRoleId": "role-viewer",    "Layout": "split-detail", "PrimaryAction": "Rebuild substrate",   "Story": "Left: every substrate this project emits (with last-build timestamp + conformance status). Right: file tree of generated output + a preview pane for any file. Developer can trigger 'Rebuild just this substrate'."},
+      {"ScreenId": "screen-add-tool",      "Path": "/tools/add",         "Title": "Add Tool",                 "ReadsEntities": "AddToolCatalog,SsotmeProxy",                                                                "WritesEntities": "<active-project>/effortless.json (via effortless CLI)", "MinRoleId": "role-developer", "Layout": "grid", "PrimaryAction": "Install", "Story": "Browse the 15+ transpilers in the catalog. Click one, choose output path, hit Install. Portal shells out to `effortless -install <proxy-url>` so the result is byte-identical to the CLI path. Tool then shows up in /substrates and is ready for the next build."},
+      {"ScreenId": "screen-builds",        "Path": "/builds",            "Title": "Builds",                   "ReadsEntities": "BuildHistory",                                                                              "WritesEntities": "BuildHistory", "MinRoleId": "role-viewer", "Layout": "list", "PrimaryAction": "Trigger build", "Story": "Chronological list of builds. Click one to see which transpilers ran, duration each, stdout/stderr per route, and which files changed. Trigger-build button is gated by CanRunBuilds."},
+      {"ScreenId": "screen-tests",         "Path": "/tests",             "Title": "Tests",                    "ReadsEntities": "TestingFramework,TestRuns",                                                                 "WritesEntities": "TestRuns", "MinRoleId": "role-viewer", "Layout": "grid", "PrimaryAction": "Run all tests", "Story": "Matrix: rows = test cases, columns = substrates, cells = pass/fail. Click a failing cell to see input, expected, actual, and a diff. Trigger-tests button is gated by CanRunBuilds."},
+      {"ScreenId": "screen-input-spokes",  "Path": "/spokes",            "Title": "Input Spokes",             "ReadsEntities": "RulebookSourceSpokes",                                                                      "WritesEntities": null, "MinRoleId": "role-viewer",    "Layout": "list",          "PrimaryAction": "Pull from spoke",      "Story": "List of every configured input spoke for this project. Status (last-pulled time, last-error). Developer can trigger a pull from any spoke."},
+      {"ScreenId": "screen-users",         "Path": "/users",             "Title": "Users",                    "ReadsEntities": "AppUsers,UserRoles",                                                                        "WritesEntities": "AppUsers", "MinRoleId": "role-viewer", "Layout": "list", "PrimaryAction": "Add user", "Story": "Default dev/test users from the rulebook + roles. Developer can add new users (saved through the write-through invariant, so they end up in rulebook JSON)."},
+      {"ScreenId": "screen-tech-postgres", "Path": "/tech/postgres",     "Title": "Postgres Explorer",        "ReadsEntities": "<editor-postgres-tables>",                                                                  "WritesEntities": "<editor-postgres-tables>", "MinRoleId": "role-developer", "Layout": "editor", "PrimaryAction": "Run query", "Story": "Raw SQL console + table browser for the editor Postgres DB. Developer-only escape hatch. Background banner reminds: rulebook JSON is the SSoT, this DB is rebuildable."},
+      {"ScreenId": "screen-tech-proxy",    "Path": "/tech/proxy",        "Title": "ssotme-proxy",             "ReadsEntities": "SsotmeProxy",                                                                                "WritesEntities": null, "MinRoleId": "role-developer", "Layout": "list",          "PrimaryAction": "Ping proxy",           "Story": "Live status of localhost:4242: registered routes, recent calls (route, duration, status, response size), last error per route. Restart button."},
+      {"ScreenId": "screen-tech-files",    "Path": "/tech/files",        "Title": "Project Files",            "ReadsEntities": "<project-filesystem>",                                                                       "WritesEntities": null, "MinRoleId": "role-developer", "Layout": "split-detail", "PrimaryAction": null,                   "Story": "Browse the active project folder. View any file. Read-only — prevents drift from rulebook."},
+      {"ScreenId": "screen-tech-json",     "Path": "/tech/rulebook-json","Title": "Raw Rulebook JSON",        "ReadsEntities": "<active-project-rulebook>",                                                                  "WritesEntities": "<active-project-rulebook>", "MinRoleId": "role-developer", "Layout": "editor", "PrimaryAction": "Save JSON",    "Story": "Monaco editor on the raw effortless-rulebook.json. Save goes through the write-through invariant. Useful for bulk edits."},
+      {"ScreenId": "screen-tech-reset",    "Path": "/tech/reset",        "Title": "Reset Editor",             "ReadsEntities": null,                                                                                        "WritesEntities": null, "MinRoleId": "role-developer", "Layout": "dashboard",     "PrimaryAction": "Reset now",            "Story": "One-button reset: drops the editor Postgres DB and re-bootstraps from rulebook JSON. The reassurance screen — makes the JSON-as-SSoT promise tangible."}
+    ]
+  },
+  "AppAPIs": {
+    "Description": "Admin portal HTTP API surface. Express routes mounted by the portal backend.",
+    "schema": [
+      {"name": "ApiId",        "datatype": "string", "type": "raw", "nullable": false},
+      {"name": "Method",       "datatype": "string", "type": "raw", "nullable": false},
+      {"name": "Path",         "datatype": "string", "type": "raw", "nullable": false},
+      {"name": "Resource",     "datatype": "string", "type": "raw", "nullable": false, "Description": "Logical resource for permission check (matches AppPermissions.Resource)"},
+      {"name": "Action",       "datatype": "string", "type": "raw", "nullable": false},
+      {"name": "WritesThrough","datatype": "boolean","type": "raw", "nullable": false, "Description": "True if the endpoint must write to BOTH Postgres and the rulebook JSON"},
+      {"name": "Description",  "datatype": "string", "type": "raw", "nullable": false}
+    ],
+    "data": [
+      {"ApiId": "api-001", "Method": "GET",    "Path": "/api/me",                          "Resource": "users",          "Action": "read",    "WritesThrough": false, "Description": "Current user + role + permissions"},
+      {"ApiId": "api-002", "Method": "GET",    "Path": "/api/projects",                    "Resource": "rulebook.entity","Action": "read",    "WritesThrough": false, "Description": "List rulebook projects (rulebook-examples/* + this top-level rulebook)"},
+      {"ApiId": "api-003", "Method": "GET",    "Path": "/api/projects/:id",                "Resource": "rulebook.entity","Action": "read",    "WritesThrough": false, "Description": "Project summary: rulebook stats, substrates, last build"},
+      {"ApiId": "api-004", "Method": "POST",   "Path": "/api/projects/:id/activate",       "Resource": "rulebook.entity","Action": "execute", "WritesThrough": false, "Description": "Set active-domain pointer; rehydrate editor Postgres"},
+      {"ApiId": "api-005", "Method": "GET",    "Path": "/api/rulebook",                    "Resource": "rulebook.entity","Action": "read",    "WritesThrough": false, "Description": "Whole active rulebook (entities + meta)"},
+      {"ApiId": "api-006", "Method": "GET",    "Path": "/api/rulebook/entities",           "Resource": "rulebook.entity","Action": "read",    "WritesThrough": false, "Description": "List entities in active rulebook"},
+      {"ApiId": "api-007", "Method": "GET",    "Path": "/api/rulebook/entities/:name",     "Resource": "rulebook.entity","Action": "read",    "WritesThrough": false, "Description": "One entity with full schema + sample data"},
+      {"ApiId": "api-008", "Method": "PATCH",  "Path": "/api/rulebook/entities/:name",     "Resource": "rulebook.entity","Action": "update",  "WritesThrough": true,  "Description": "Update entity description / schema / sample row. Write-through: Postgres + JSON in same txn."},
+      {"ApiId": "api-009", "Method": "POST",   "Path": "/api/rulebook/entities",           "Resource": "rulebook.entity","Action": "create",  "WritesThrough": true,  "Description": "Add a new entity. Write-through."},
+      {"ApiId": "api-010", "Method": "DELETE", "Path": "/api/rulebook/entities/:name",     "Resource": "rulebook.entity","Action": "delete",  "WritesThrough": true,  "Description": "Remove entity. Write-through."},
+      {"ApiId": "api-011", "Method": "PATCH",  "Path": "/api/rulebook/entities/:name/fields/:fieldName","Resource": "rulebook.field","Action": "update", "WritesThrough": true, "Description": "Update field (datatype, formula, nullable, description). Write-through."},
+      {"ApiId": "api-012", "Method": "GET",    "Path": "/api/substrates",                  "Resource": "rulebook.entity","Action": "read",    "WritesThrough": false, "Description": "List substrates for active project + generated file index"},
+      {"ApiId": "api-013", "Method": "POST",   "Path": "/api/substrates/:name/build",      "Resource": "build",          "Action": "execute", "WritesThrough": false, "Description": "Trigger rebuild for one substrate via ssotme-proxy"},
+      {"ApiId": "api-014", "Method": "POST",   "Path": "/api/build/all",                   "Resource": "build",          "Action": "execute", "WritesThrough": false, "Description": "Rebuild every substrate in active project"},
+      {"ApiId": "api-015", "Method": "GET",    "Path": "/api/tests",                       "Resource": "test",           "Action": "read",    "WritesThrough": false, "Description": "Conformance matrix + last run"},
+      {"ApiId": "api-016", "Method": "POST",   "Path": "/api/tests/run",                   "Resource": "test",           "Action": "execute", "WritesThrough": false, "Description": "Run all substrate tests, return matrix"},
+      {"ApiId": "api-017", "Method": "GET",    "Path": "/api/spokes",                      "Resource": "rulebook.entity","Action": "read",    "WritesThrough": false, "Description": "List input spokes for active project"},
+      {"ApiId": "api-018", "Method": "POST",   "Path": "/api/spokes/:id/pull",             "Resource": "build",          "Action": "execute", "WritesThrough": false, "Description": "Pull from a spoke (e.g. Airtable). Writes into rulebook JSON via flow-003."},
+      {"ApiId": "api-019", "Method": "GET",    "Path": "/api/users",                       "Resource": "users",          "Action": "read",    "WritesThrough": false, "Description": "AppUsers from active rulebook"},
+      {"ApiId": "api-020", "Method": "POST",   "Path": "/api/users",                       "Resource": "users",          "Action": "create",  "WritesThrough": true,  "Description": "Add user. Write-through into rulebook AppUsers."},
+      {"ApiId": "api-021", "Method": "PATCH",  "Path": "/api/users/:id",                   "Resource": "users",          "Action": "update",  "WritesThrough": true,  "Description": "Update user role/email/displayName. Write-through."},
+      {"ApiId": "api-022", "Method": "DELETE", "Path": "/api/users/:id",                   "Resource": "users",          "Action": "delete",  "WritesThrough": true,  "Description": "Remove user. Write-through."},
+      {"ApiId": "api-023", "Method": "GET",    "Path": "/api/tech/postgres/tables",        "Resource": "tech-tools.postgres","Action": "read","WritesThrough": false, "Description": "List editor-DB tables"},
+      {"ApiId": "api-024", "Method": "POST",   "Path": "/api/tech/postgres/query",         "Resource": "tech-tools.postgres","Action": "execute","WritesThrough": false, "Description": "Run arbitrary SQL (developer-only)"},
+      {"ApiId": "api-025", "Method": "GET",    "Path": "/api/tech/proxy/status",           "Resource": "tech-tools.proxy","Action": "read",   "WritesThrough": false, "Description": "Mirror of localhost:4242/ping + recent call log"},
+      {"ApiId": "api-026", "Method": "POST",   "Path": "/api/tech/reset",                  "Resource": "tech-tools.postgres","Action": "execute","WritesThrough": false, "Description": "Drop editor DB; rerun flow-005 to rebuild from rulebook JSON"},
+      {"ApiId": "api-027", "Method": "GET",    "Path": "/api/tech/rulebook-json",          "Resource": "rulebook.entity","Action": "read",    "WritesThrough": false, "Description": "Raw current effortless-rulebook.json"},
+      {"ApiId": "api-028", "Method": "PUT",    "Path": "/api/tech/rulebook-json",          "Resource": "rulebook.entity","Action": "update",  "WritesThrough": true,  "Description": "Write raw JSON. Re-validates, rehydrates Postgres editor."},
+      {"ApiId": "api-029", "Method": "GET",    "Path": "/api/tools/catalog",               "Resource": "rulebook.entity","Action": "read",    "WritesThrough": false, "Description": "Available transpilers to add to active project. Sources: localhost:4242/ping (local) + Effortless registry. Drives the Add Tool screen."},
+      {"ApiId": "api-030", "Method": "GET",    "Path": "/api/tools/installed",             "Resource": "rulebook.entity","Action": "read",    "WritesThrough": false, "Description": "Currently installed transpilers from active project's effortless.json (ProjectTranspilers array)."},
+      {"ApiId": "api-031", "Method": "POST",   "Path": "/api/tools/install",               "Resource": "build",          "Action": "execute", "WritesThrough": false, "Description": "Add a tool to the active project: shells out to `effortless -install <proxy-url> -i <rulebook>`. Same CLI path the orchestrator uses — guarantees portal/CLI parity."},
+      {"ApiId": "api-032", "Method": "POST",   "Path": "/api/tools/:name/disable",         "Resource": "build",          "Action": "execute", "WritesThrough": false, "Description": "Toggle IsDisabled on a ProjectTranspilers entry."},
+      {"ApiId": "api-033", "Method": "DELETE", "Path": "/api/tools/:name",                 "Resource": "build",          "Action": "execute", "WritesThrough": false, "Description": "Remove a tool from active project's effortless.json."}
+    ]
+  },
+  "AddToolCatalog": {
+    "Description": "Tools the developer can install into the active project via the Add Tool screen. Same catalog the `effortless -install` CLI consumes; the portal is just a thin UI over the CLI so behaviour stays canonical.",
+    "schema": [
+      {"name": "ToolId",       "datatype": "string", "type": "raw", "nullable": false},
+      {"name": "Name",         "datatype": "string", "type": "raw", "nullable": false},
+      {"name": "Category",     "datatype": "string", "type": "raw", "nullable": false, "Description": "substrate | spoke-input | spoke-output | docs"},
+      {"name": "Source",       "datatype": "string", "type": "raw", "nullable": false, "Description": "local-proxy | effortless-registry"},
+      {"name": "InstallUrl",   "datatype": "string", "type": "raw", "nullable": false, "Description": "URL passed to `effortless -install`"},
+      {"name": "OutputPath",   "datatype": "string", "type": "raw", "nullable": true,  "Description": "Default RelativePath under the project (e.g. /python, /golang)"},
+      {"name": "SubstrateId",  "datatype": "string", "type": "lookup", "nullable": true, "Description": "FK to ExecutionSubstrates for code-gen tools"},
+      {"name": "Description",  "datatype": "string", "type": "raw", "nullable": false}
+    ],
+    "data": [
+      {"ToolId": "tool-001", "Name": "rulebook-to-python",       "Category": "substrate",     "Source": "local-proxy", "InstallUrl": "http://localhost:4242/rulebook-to-python",       "OutputPath": "/python",       "SubstrateId": "substrate-002", "Description": "Python dataclasses + calc library"},
+      {"ToolId": "tool-002", "Name": "rulebook-to-golang",       "Category": "substrate",     "Source": "local-proxy", "InstallUrl": "http://localhost:4242/rulebook-to-golang",       "OutputPath": "/golang",       "SubstrateId": "substrate-003", "Description": "Go structs + business logic"},
+      {"ToolId": "tool-003", "Name": "rulebook-to-binary",       "Category": "substrate",     "Source": "local-proxy", "InstallUrl": "http://localhost:4242/rulebook-to-binary",       "OutputPath": "/binary",       "SubstrateId": "substrate-001", "Description": "ARM64 assembly calc stub"},
+      {"ToolId": "tool-004", "Name": "rulebook-to-cobol",        "Category": "substrate",     "Source": "local-proxy", "InstallUrl": "http://localhost:4242/rulebook-to-cobol",        "OutputPath": "/cobol",        "SubstrateId": null,            "Description": "COBOL computation program"},
+      {"ToolId": "tool-005", "Name": "rulebook-to-csv",          "Category": "substrate",     "Source": "local-proxy", "InstallUrl": "http://localhost:4242/rulebook-to-csv",          "OutputPath": "/csv",          "SubstrateId": "substrate-005", "Description": "CSV exports"},
+      {"ToolId": "tool-006", "Name": "rulebook-to-xlsx",         "Category": "substrate",     "Source": "local-proxy", "InstallUrl": "http://localhost:4242/rulebook-to-xlsx",         "OutputPath": "/xlsx",         "SubstrateId": "substrate-006", "Description": "Excel workbook with formulas"},
+      {"ToolId": "tool-007", "Name": "rulebook-to-uml",          "Category": "substrate",     "Source": "local-proxy", "InstallUrl": "http://localhost:4242/rulebook-to-uml",          "OutputPath": "/uml",          "SubstrateId": "substrate-007", "Description": "PlantUML class diagram + OCL"},
+      {"ToolId": "tool-008", "Name": "rulebook-to-owl",          "Category": "substrate",     "Source": "local-proxy", "InstallUrl": "http://localhost:4242/rulebook-to-owl",          "OutputPath": "/owl",          "SubstrateId": "substrate-008", "Description": "RDF/OWL ontology"},
+      {"ToolId": "tool-009", "Name": "rulebook-to-english",      "Category": "docs",          "Source": "local-proxy", "InstallUrl": "http://localhost:4242/rulebook-to-english",      "OutputPath": "/english",      "SubstrateId": null,            "Description": "Plain-English narrative of business rules"},
+      {"ToolId": "tool-010", "Name": "rulebook-to-explain-dag",  "Category": "substrate",     "Source": "local-proxy", "InstallUrl": "http://localhost:4242/rulebook-to-explain-dag",  "OutputPath": "/explain-dag",  "SubstrateId": "substrate-009", "Description": "Derivation-DAG JSON for Formulas screen"},
+      {"ToolId": "tool-011", "Name": "rulebook-to-airtable",     "Category": "spoke-output",  "Source": "local-proxy", "InstallUrl": "http://localhost:4242/rulebook-to-airtable",     "OutputPath": "/airtable",     "SubstrateId": null,            "Description": "Push rulebook back into an Airtable base"},
+      {"ToolId": "tool-012", "Name": "airtable-to-rulebook",     "Category": "spoke-input",   "Source": "local-proxy", "InstallUrl": "http://localhost:4242/airtable-to-rulebook",     "OutputPath": "/effortless-rulebook", "SubstrateId": null,     "Description": "Pull from Airtable into rulebook JSON"},
+      {"ToolId": "tool-013", "Name": "rulebook-to-postgres",     "Category": "substrate",     "Source": "effortless-registry", "InstallUrl": "rulebook-to-postgres",                   "OutputPath": "/postgres",     "SubstrateId": "substrate-004", "Description": "Postgres DDL + functions + views (official Effortless tool)"},
+      {"ToolId": "tool-014", "Name": "rulebook-to-entity-framework","Category": "substrate",  "Source": "effortless-registry", "InstallUrl": "rulebook-to-entity-framework",           "OutputPath": "/entity-framework", "SubstrateId": "substrate-010","Description": "C# POCOs + EF DbContext (official Effortless tool)"},
+      {"ToolId": "tool-015", "Name": "rulebook-to-xlsx (licensed)","Category": "substrate",   "Source": "effortless-registry", "InstallUrl": "rulebook-to-xlsx",                       "OutputPath": "/xlsx-licensed","SubstrateId": "substrate-006", "Description": "Excel via official tool (alternative to local proxy)"}
+    ]
+  },
+  "BuildPipeline": {
+    "Description": "The effortless.json contract that both the admin portal and the CLI consume. There is ONE pipeline definition per project; both surfaces are thin wrappers around `effortless build` so they stay in lockstep.",
+    "schema": [
+      {"name": "AspectId",     "datatype": "string", "type": "raw", "nullable": false},
+      {"name": "Aspect",       "datatype": "string", "type": "raw", "nullable": false},
+      {"name": "PortalLocation","datatype": "string","type": "raw", "nullable": true, "Description": "Where in the portal this aspect surfaces"},
+      {"name": "CliEquivalent","datatype": "string", "type": "raw", "nullable": true},
+      {"name": "Authority",    "datatype": "string", "type": "raw", "nullable": false, "Description": "File or system that holds the canonical state"}
+    ],
+    "data": [
+      {"AspectId": "bp-001", "Aspect": "List installed transpilers", "PortalLocation": "/substrates + /tools",      "CliEquivalent": "cat effortless.json | jq .ProjectTranspilers",                "Authority": "{active-project}/effortless.json (ProjectTranspilers array)"},
+      {"AspectId": "bp-002", "Aspect": "Add a transpiler",           "PortalLocation": "/tools/add (Add Tool screen)","CliEquivalent": "effortless -install <proxy-url> -i <rulebook>",              "Authority": "Both invoke the same `effortless -install` command — portal shells out so behaviour matches CLI exactly."},
+      {"AspectId": "bp-003", "Aspect": "Remove a transpiler",        "PortalLocation": "/tools (delete action)",     "CliEquivalent": "edit effortless.json or `effortless -uninstall <name>`",     "Authority": "{active-project}/effortless.json"},
+      {"AspectId": "bp-004", "Aspect": "Disable a transpiler",       "PortalLocation": "/tools (toggle)",            "CliEquivalent": "edit effortless.json: IsDisabled=true",                     "Authority": "{active-project}/effortless.json"},
+      {"AspectId": "bp-005", "Aspect": "Run the pipeline",           "PortalLocation": "/builds (Trigger build)",    "CliEquivalent": "effortless build",                                          "Authority": "effortless CLI walks ProjectTranspilers and POSTs to each proxy URL"},
+      {"AspectId": "bp-006", "Aspect": "Clean generated output",     "PortalLocation": "/tech/reset OR /tools (clean)","CliEquivalent": "effortless clean",                                         "Authority": "Proxy receives clean=true; each transpiler clears its output dir"},
+      {"AspectId": "bp-007", "Aspect": "Catalog of available tools", "PortalLocation": "/tools/add (Add Tool screen)","CliEquivalent": "curl http://localhost:4242/ping",                          "Authority": "Local: GET /ping on ssotme-proxy. Remote: Effortless registry (effortless catalog)."},
+      {"AspectId": "bp-008", "Aspect": "Conformance status",         "PortalLocation": "/tests",                     "CliEquivalent": "./start.sh --cli → option T",                               "Authority": "execution-substrates/*/take-test.py outputs"}
+    ]
+  },
+  "AdminPortalRuntime": {
+    "Description": "Runtime processes that ./start.sh boots and supervises.",
+    "schema": [
+      {"name": "ProcessId",   "datatype": "string", "type": "raw", "nullable": false},
+      {"name": "Name",        "datatype": "string", "type": "raw", "nullable": false},
+      {"name": "Command",     "datatype": "string", "type": "raw", "nullable": false},
+      {"name": "Port",        "datatype": "number", "type": "raw", "nullable": true},
+      {"name": "DependsOn",   "datatype": "string", "type": "raw", "nullable": true},
+      {"name": "AutoRestart", "datatype": "boolean","type": "raw", "nullable": false},
+      {"name": "Purpose",     "datatype": "string", "type": "raw", "nullable": false}
+    ],
+    "data": [
+      {"ProcessId": "proc-001", "Name": "ssotme-proxy",          "Command": "ssotme-proxy/start.sh",            "Port": 4242, "DependsOn": null,                  "AutoRestart": true,  "Purpose": "Substrate transpiler HTTP server. Started before backend so build endpoints work immediately."},
+      {"ProcessId": "proc-002", "Name": "admin-portal-backend",  "Command": "admin-portal/server.js",           "Port": 7777, "DependsOn": "proc-001,postgres",   "AutoRestart": true,  "Purpose": "Express API + static frontend host. Owns the write-through invariant."},
+      {"ProcessId": "proc-003", "Name": "admin-portal-frontend-dev","Command": "vite (admin-portal/web)",      "Port": 7778, "DependsOn": "proc-002",            "AutoRestart": true,  "Purpose": "Vite dev server in dev mode. In production mode the backend serves built static files from port 7777."},
+      {"ProcessId": "proc-004", "Name": "postgres",              "Command": "docker compose up -d postgres (or system pg)","Port": 5432, "DependsOn": null,                  "AutoRestart": false, "Purpose": "Editor database. Auto-init on first portal boot via flow-005."}
+    ]
+  },
+  "_meta": {
+    "_CMCC_Summary": "Top-level rulebook describing the ERB project itself: rulebook-as-hub SSoT, ssotme-proxy (10+ substrate routes), admin portal (Viewer/Developer roles, navigation, screens, APIs, write-through invariant), AppUsers + permissions, build pipeline, conformance testing.",
+    "_ProjectGoal": "Demonstrate that a single declarative rulebook (effortless-rulebook.json) can generate working, conformant code in 10+ execution substrates that all produce identical results — AND that the developer experience on top of it (the admin portal) is itself driven entirely by rulebook entities (navigation, roles, screens, permissions, users).",
+    "_ArchitecturalHighlight": "effortless-rulebook.json is the DURABLE SSoT. Input spokes (admin portal, Airtable, LLM, manual JSON) all write into it. Output spokes (Python, Go, Postgres, Excel, OWL, PlantUML, Explain-DAG, English, COBOL, ARM64, Entity Framework, Airtable reverse-sync) all read from it. Every substrate passes the same conformance tests.",
+    "_WriteThroughInvariant": "The admin portal's Postgres database is the LIVE EDITOR; the rulebook JSON is the DURABLE SSOT. Every save in the portal must write to BOTH (in the same logical transaction). If Postgres is dropped, the editor rebuilds from JSON. If JSON is lost, the editor has no source of truth.",
+    "_PortalCliParity": "The admin portal and ./start.sh --cli are peer interfaces to the SAME effortless.json pipeline. Install Tool, Build, Clean, Test, and project switching all shell out to the same `effortless` CLI commands — so portal behaviour cannot drift from CLI behaviour.",
+    "_BootstrapStory": "Cold start: `git clone && ./start.sh` → start.sh boots ssotme-proxy on :4242, starts portal backend on :7777, backend auto-creates editor Postgres DB if missing and runs migrations derived from the rulebook, opens browser. Developer signs in as the default user from the rulebook's AppUsers entity. Land on Home. The whole story unfolds from one command.",
+    "_DeveloperJourney": "Home → pick a project (or accept active one) → Rulebook to see what the project means → Substrates to see what it generates → Builds to see how it built → Tests to verify conformance → Input Spokes to see where edits come from → Users to see who can edit. Tech Tools only for escape-hatch debugging.",
+    "_ResilienceClaim": "Drop the entire Postgres editor any time. ./start.sh rebuilds it from JSON. The rulebook JSON travels with the repo; the editor DB does not."
+  }
+}

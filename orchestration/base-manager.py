@@ -119,31 +119,21 @@ def remove_setting(config, name):
 
 
 def get_bases_list(config=None):
-    """Get the list of bases from separate bases.json file (or migrate from ssotme.json)."""
-    # Primary: read from separate bases.json file
-    if os.path.exists(BASES_FILE):
-        try:
-            with open(BASES_FILE, "r") as f:
-                bases = json.load(f)
-                if isinstance(bases, list):
-                    return bases
-        except (json.JSONDecodeError, IOError):
-            pass
+    """Get the list of bases from bases.json. Missing file means no bases yet.
 
-    # Fallback: migrate from ssotme.json if bases.json doesn't exist
-    if config is None:
-        config = load_ssotme_config()
-    bases_json = get_setting(config, "bases")
-    if bases_json:
-        try:
-            bases = json.loads(bases_json)
-            if isinstance(bases, list):
-                # Migrate to separate file
-                set_bases_list(None, bases)
-                return bases
-        except json.JSONDecodeError:
-            pass
-    return []
+    A corrupt bases.json is a bug — let the JSONDecodeError propagate so the
+    user sees the file path and can fix it, instead of silently returning [].
+    """
+    if not os.path.exists(BASES_FILE):
+        return []
+    with open(BASES_FILE, "r") as f:
+        bases = json.load(f)
+    if not isinstance(bases, list):
+        raise ValueError(
+            f"bases.json at {BASES_FILE} is not a JSON array (got {type(bases).__name__}). "
+            "Fix the file or delete it."
+        )
+    return bases
 
 
 def set_bases_list(config, bases):
@@ -175,7 +165,8 @@ def ensure_current_base_in_list(config=None):
         if base["id"] == current_base_id:
             return config  # Already exists, don't touch the name
 
-    # Base not in list - fetch name from Airtable and add it (NO FALLBACKS)
+    # Base not in list — Airtable is the only authority for the name; raise
+    # if it can't be fetched rather than guessing one from the base ID.
     base_name = fetch_base_name_or_fail(current_base_id)
     bases.append({"id": current_base_id, "name": base_name})
     set_bases_list(config, bases)
@@ -215,7 +206,9 @@ def add_or_update_base(base_id: str, base_name: str) -> dict:
 
 
 def fetch_base_name_or_fail(base_id: str) -> str:
-    """Fetch base name from Airtable. FAILS if it can't get the name. No fallbacks."""
+    """Fetch base name from Airtable. RAISES if it can't get the name —
+    Airtable is the only authority for the human-readable base name; do not
+    invent one from the base ID or anything else."""
     api_key = get_airtable_api_key()
     if not api_key:
         raise ValueError("No Airtable API key configured. Run 'effortless -setAccount airtable <your-pat>'")
@@ -326,6 +319,10 @@ if __name__ == "__main__":
     fetch_parser = subparsers.add_parser("fetch-name", help="Fetch base name from Airtable")
     fetch_parser.add_argument("base_id", help="Airtable base ID")
 
+    # get-name command: prints only the name (for use by shell scripts)
+    get_name_parser = subparsers.add_parser("get-name", help="Print bare base name (for shell capture)")
+    get_name_parser.add_argument("base_id", help="Airtable base ID")
+
     # Sync command
     subparsers.add_parser("sync", help="Sync bases list with current active base")
 
@@ -358,6 +355,12 @@ if __name__ == "__main__":
                 print(f"Base name: {name}")
             else:
                 print("Could not fetch base name")
+                sys.exit(1)
+        elif args.command == "get-name":
+            name = fetch_base_name_or_fail(args.base_id)
+            if name:
+                print(name)
+            else:
                 sys.exit(1)
         elif args.command == "sync":
             sync_bases()

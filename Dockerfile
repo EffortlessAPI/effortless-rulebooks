@@ -90,7 +90,7 @@ COPY . .
 
 # Make scripts executable
 RUN chmod +x orchestration/orchestrate.sh \
-    && chmod +x postgres/init-db.sh \
+    && chmod +x effortless-platform/postgres/init-db.sh \
     && chmod +x run-in-docker.sh 2>/dev/null || true
 
 # =============================================================================

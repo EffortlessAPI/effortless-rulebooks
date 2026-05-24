@@ -1,0 +1,20 @@
+table_name,field_name,field_type,dag_level,formula,description
+Customers,customer_id,raw,0,,
+Customers,name,calculated,,"=SUBSTITUTE({{EmailAddress}}, ""@"", ""-"")",Identifier for the customers.
+Customers,email_address,raw,0,,Thec ustomers email address
+Customers,first_name,raw,0,,First Name of the customer - used to make the full name
+Customers,last_name,raw,0,,Last Name of the customer - used to make the full name
+Customers,full_name,calculated,,"={{LastName}} & "", "" & {{FirstName}}",Full name is computed from the first and last name of the customer
+ERBVersions,erb_version_id,raw,0,,
+ERBVersions,base_id,raw,0,,
+ERBVersions,name,raw,0,,
+ERBVersions,message,raw,0,,
+ERBVersions,notes,raw,0,,
+ERBVersions,commit_date,raw,0,,
+ERBVersions,is_published,raw,0,,
+ERBCustomizations,erb_customization_id,raw,0,,
+ERBCustomizations,name,raw,0,,
+ERBCustomizations,title,raw,0,,
+ERBCustomizations,sql_code,raw,0,,
+ERBCustomizations,sql_target,raw,0,,
+ERBCustomizations,customization_type,raw,0,,

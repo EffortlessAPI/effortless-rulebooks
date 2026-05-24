@@ -27,12 +27,23 @@ mkdir -p "$SCRIPT_DIR/test-answers"
         exit 1
     fi
 
+    # EF_TOOL_DIR is propagated to MSBuild via -p so the csproj can resolve
+    # LicensedRoot to the active domain's generated DataClasses. Always
+    # clear obj/Patched first so the previous domain's patched copies don't
+    # leak into this build (a leftover BaseClass file referencing a now-
+    # removed entity would fail compilation).
+    rm -rf obj/Patched
+    EF_PROP_ARG=""
+    if [ -n "$EF_TOOL_DIR" ]; then
+        EF_PROP_ARG="-p:EF_TOOL_DIR=$EF_TOOL_DIR"
+    fi
+
     echo "Building runner..."
-    dotnet build EffortlessEntityFrameworkRunner.csproj --nologo -v quiet
+    dotnet build EffortlessEntityFrameworkRunner.csproj --nologo -v quiet $EF_PROP_ARG
     echo ""
 
     echo "Running runner..."
-    dotnet run --project EffortlessEntityFrameworkRunner.csproj --no-build
+    dotnet run --project EffortlessEntityFrameworkRunner.csproj --no-build $EF_PROP_ARG
     echo ""
 } 2>&1 | tee "$LOG_FILE"
 

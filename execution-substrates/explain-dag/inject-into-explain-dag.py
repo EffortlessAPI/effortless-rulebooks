@@ -9,6 +9,7 @@ This script reads formulas from the rulebook and generates:
 The key insight: separate TEMPLATE (formula structure) from INSTANCE (witnessed values).
 """
 
+import os
 import sys
 import json
 import hashlib
@@ -376,8 +377,9 @@ def main():
     ]
 
     # Handle --clean argument
+    _env_output = os.environ.get("ERB_OUTPUT_DIR")
     if '--clean' in sys.argv:
-        script_dir = Path(__file__).resolve().parent
+        script_dir = Path(_env_output).resolve() if _env_output else Path(__file__).resolve().parent
         print("=" * 60)
         print("CLEAN MODE: EXPLAIN-DAG")
         print("=" * 60)
@@ -406,7 +408,7 @@ def main():
 
         return
 
-    script_dir = Path(__file__).resolve().parent
+    script_dir = Path(_env_output).resolve() if _env_output else Path(__file__).resolve().parent
 
     print("=" * 70)
     print("ExplainDAG Execution Substrate - Expression Template Generator")

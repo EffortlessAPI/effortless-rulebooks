@@ -9,12 +9,16 @@ substrates consume. Concretely:
   1. Shows the current base (name + ID)
   2. Lists known bases (from orchestration/bases.json)
   3. Prompts for a selection — Enter keeps the current base, a number switches
-  4. Runs rulebook-cache.py sync to pull the latest schema/data from Airtable
+  4. Runs `effortless -buildLocal` in effortless-rulebook/ to pull the latest
+     schema/data from Airtable (this invokes the airtable-to-rulebook transpiler
+     and nothing else; substrate rebuilds are a separate concern)
 
-In CI / non-interactive mode it silently keeps the current base and syncs.
+In CI / non-interactive mode it keeps the current base and syncs.
+If Airtable is unreachable the sync fails LOUDLY — there is no cached copy
+to substitute. The rulebook JSON on disk IS the only source of truth.
 
 Environment:
-  ERB_DOCKER_MODE=true  — treated as CI (non-interactive, offline sync)
+  ERB_DOCKER_MODE=true  — treated as CI (non-interactive)
   --ci                  — CLI flag, same effect as ERB_DOCKER_MODE
   --non-interactive     — keep current base, no prompt
 """
@@ -28,7 +32,7 @@ SCRIPT_DIR = Path(__file__).parent.resolve()
 PROJECT_ROOT = SCRIPT_DIR.parent.parent
 ORCHESTRATION_DIR = PROJECT_ROOT / "orchestration"
 BASE_MANAGER = ORCHESTRATION_DIR / "base-manager.py"
-RULEBOOK_CACHE = ORCHESTRATION_DIR / "rulebook-cache.py"
+RULEBOOK_DIR = PROJECT_ROOT / "effortless-rulebook"
 
 sys.path.insert(0, str(ORCHESTRATION_DIR))
 import importlib.util
@@ -134,42 +138,48 @@ def prompt_for_base(current_base_id: str, bases: list):
 
 
 def select_and_sync(target_base_id: str, current_base_id: str) -> int:
-    """Switch base (if changed) and run rulebook-cache.py sync."""
+    """Switch base (if changed) and pull the rulebook from Airtable.
+
+    The pull invokes `effortless -buildLocal` in effortless-rulebook/, which runs
+    only the airtable-to-rulebook transpiler. If Airtable is unreachable the
+    transpiler exits non-zero and we propagate that — there is no cache to
+    substitute. The rulebook JSON on disk IS the source of truth.
+    """
     if target_base_id != current_base_id:
         print()
         print(f"{YELLOW}  Switching base...{NC}")
-        try:
-            bm.select_base(target_base_id)
-        except Exception as e:
-            print(f"{RED}  Failed to switch base: {e}{NC}")
-            return 1
+        bm.select_base(target_base_id)  # raises on failure — let it propagate
 
     print()
     print(f"{YELLOW}  Syncing rulebook from Airtable...{NC}")
     print()
 
-    cmd = [sys.executable, str(RULEBOOK_CACHE), "sync"]
-    if is_non_interactive():
-        cmd += ["--offline", "--non-interactive"]
-
-    result = subprocess.run(cmd, cwd=str(PROJECT_ROOT))
+    result = subprocess.run(
+        ["effortless", "-buildLocal"],
+        cwd=str(RULEBOOK_DIR),
+        timeout=120,
+    )
+    if result.returncode != 0:
+        print(
+            f"{RED}  Airtable sync failed (effortless -buildLocal returned "
+            f"{result.returncode}). The rulebook on disk was NOT modified.{NC}",
+            file=sys.stderr,
+        )
     return result.returncode
 
 
 def main() -> int:
     if "--clean" in sys.argv:
-        # Nothing to clean for the airtable substrate — the rulebook is the
-        # shared source of truth and is managed by rulebook-cache, not us.
+        # Nothing to clean for the airtable substrate — the rulebook JSON
+        # IS the source of truth and lives in effortless-rulebook/. We don't
+        # produce derived artifacts.
         return 0
 
     print_header()
 
-    # Make sure bases.json is populated with the current base
-    try:
-        bm.sync_bases()
-    except Exception:
-        # If Airtable is unreachable, keep going with whatever's in bases.json
-        pass
+    # Make sure bases.json is populated with the current base. If Airtable is
+    # unreachable, surface the error and exit — there is no offline mode.
+    bm.sync_bases()
 
     config = bm.load_ssotme_config()
     current_base_id = bm.get_setting(config, "baseId") or ""

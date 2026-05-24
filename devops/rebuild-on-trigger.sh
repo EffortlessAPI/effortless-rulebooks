@@ -212,14 +212,14 @@ append_output() {
 #   Data      -> 05b-customize-data.sql
 write_customizations() {
     local customizations_json="$1"
-    local postgres_dir="${REPO_ROOT}/postgres"
+    local postgres_dir="${REPO_ROOT}/effortless-platform/postgres"
 
     if [[ -z "$customizations_json" || "$customizations_json" == "null" || "$customizations_json" == "[]" ]]; then
         log "No customizations in payload to write"
         return 0
     fi
 
-    log "Writing customizations to postgres/*.sql files..."
+    log "Writing customizations to effortless-platform/postgres/*.sql files..."
     append_output "=== Writing customizations ==="
 
     # Write JSON to a temp file to avoid shell escaping issues
@@ -330,12 +330,13 @@ post_result() {
     local commit_message="${CHANGE_MESSAGE:-}"
     local notes="${CHANGE_NOTES:-}"
 
-    # Escape the output for JSON (handle newlines, quotes, backslashes)
+    # Escape the output for JSON (handle newlines, quotes, backslashes).
+    # Prefer jq for JSON escaping; if jq is not installed, use python
+    # (always present on this host).
     local escaped_output
     if command -v jq >/dev/null 2>&1; then
         escaped_output="$(printf '%s' "$output" | jq -Rs '.')"
     else
-        # Fallback: use python for JSON escaping
         escaped_output="$(python3 -c "import json,sys; print(json.dumps(sys.stdin.read()))" <<< "$output")"
     fi
 
@@ -565,9 +566,10 @@ get_repo_root() {
 }
 
 get_latest_demo_version_json() {
-    local repo_root
+    local repo_root domain
     repo_root="$(get_repo_root)"
-    echo "${repo_root}/effortless-rulebook/effortless-rulebook.json"
+    domain="$(tr -d '[:space:]' < "${repo_root}/orchestration/active-domain.txt")"
+    echo "${repo_root}/rulebook-examples/${domain}/effortless-rulebook/${domain}-rulebook.json"
 }
 
 extract_latest_release_notes() {
@@ -754,9 +756,10 @@ commit_snapshot_with_payload_notes() {
     subject="${CHANGE_MESSAGE:-}"
     notes_body="${CHANGE_NOTES:-}"
 
-    # Fallback to extracting from JSON if payload didn't provide message/notes
+    # Second attempt: if the check payload did not carry message/notes,
+    # extract them from the JSON.
     if [[ -z "$subject" ]]; then
-        log "No message in check payload, falling back to JSON extraction..."
+        log "No message in check payload; trying JSON extraction..."
         export JSON_FILE
         JSON_FILE="$(get_latest_demo_version_json)"
 

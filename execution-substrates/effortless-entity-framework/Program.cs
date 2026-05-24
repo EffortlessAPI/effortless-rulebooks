@@ -35,8 +35,15 @@ public static class Program
         var substrateDir = FindAncestorContaining(scriptDir, "Program.cs")
             ?? throw new InvalidOperationException("Cannot locate substrate directory.");
         var projectRoot = Path.GetFullPath(Path.Combine(substrateDir, "..", ".."));
-        var blankTestsDir = Path.Combine(projectRoot, "testing", "blank-tests");
-        var testAnswersDir = Path.Combine(substrateDir, "test-answers");
+        var erbTestingDir = Environment.GetEnvironmentVariable("ERB_TESTING_DIR");
+        var testingDir = string.IsNullOrEmpty(erbTestingDir)
+            ? Path.Combine(projectRoot, "testing")
+            : erbTestingDir;
+        var blankTestsDir = Path.Combine(testingDir, "blank-tests");
+        var substrateName = Path.GetFileName(substrateDir.TrimEnd(Path.DirectorySeparatorChar));
+        var testAnswersDir = string.IsNullOrEmpty(erbTestingDir)
+            ? Path.Combine(substrateDir, "test-answers")
+            : Path.Combine(erbTestingDir, substrateName, "test-answers");
         Directory.CreateDirectory(testAnswersDir);
 
         Console.WriteLine("Effortless-EntityFramework Substrate Test Runner");
@@ -94,17 +101,14 @@ public static class Program
             }
         }
 
-        // Hand-compute aggregations the transpiler doesn't yet emit.
-        // (TODO: push back into the EF transpiler — these should be
-        // formula getters like the lookups, not auto-properties.)
-        foreach (var role in ctx.Roles)
-        {
-            role.CountOfEmployees = ctx.Employees.Count(e => e.RoleId == role.RoleId);
-        }
-        foreach (var top in ctx.TypesOfProjects)
-        {
-            top.CountOfProjects = ctx.Projects.Count(p => p.ProjectTypeId == top.TypesOfProjectId);
-        }
+        // Cross-entity aggregations (CountOfX / SumOfX) that the EF transpiler
+        // does not yet emit must be hand-computed by the substrate. They used
+        // to be hardcoded here for one specific rulebook (Role/Employee/
+        // Project/TypesOfProject); the field-level conformance harness now
+        // catches missing aggregations as scored failures, so we leave them
+        // null rather than baking entity-specific code into this runner.
+        // (TODO: push back into the EF transpiler — these should be formula
+        //  getters like the lookups, not auto-properties.)
 
         // Emit answers.
         int totalRecords = 0, totalEntities = 0;
@@ -268,16 +272,9 @@ public static class Program
 
     private static void AddToContext(SoAEFContext ctx, Type entityType, object instance)
     {
-        // ctx.<Plural>.Add(instance) — pick the InMemorySet whose element type matches.
-        foreach (var setProp in typeof(SoAEFContext).GetProperties(BindingFlags.Public | BindingFlags.Instance))
-        {
-            if (!setProp.PropertyType.IsGenericType) continue;
-            if (setProp.PropertyType.GetGenericTypeDefinition() != typeof(InMemorySet<>)) continue;
-            if (setProp.PropertyType.GetGenericArguments()[0] != entityType) continue;
-            var set = setProp.GetValue(ctx)!;
-            set.GetType().GetMethod("Add")!.Invoke(set, new[] { instance });
-            return;
-        }
+        // ctx.SetByType(t) — reflection-driven dispatch, no per-entity wiring.
+        var set = ctx.SetByType(entityType);
+        set.GetType().GetMethod("Add")!.Invoke(set, new[] { instance });
     }
 
     // ------------------------------------------------------------------

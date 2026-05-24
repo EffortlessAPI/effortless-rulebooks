@@ -672,8 +672,7 @@ def _compile_to_go_int(expr: ExprNode, struct_name: str, field_types: dict) -> s
             cond = f'boolVal({cond})'
         return f'func() int {{ if {cond} {{ return {then_val} }}; return {else_val} }}()'
 
-    # For other expressions, fall back to the regular compiler
-    # (shouldn't happen in practice for SUM(IF(...), IF(...)))
+    # For other expression shapes, try the regular compiler.
     return compile_to_go(expr, struct_name, field_types)
 
 

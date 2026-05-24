@@ -1,0 +1,900 @@
+{
+  "$schema": "https://example.com/cmcc-schema/v1",
+  "Name": "Effortlessly Invariant Rulesbooks (ERB) - Project Architecture",
+  "Description": "Top-level rulebook describing the ERB project itself: all moving parts, orchestration flows, substrates, and their interdependencies.",
+  "ProjectMetadata": {
+    "Description": "Project overview",
+    "schema": [
+      {
+        "name": "ProjectId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Effortlessly Invariant Rulesbooks (ERB)"
+      },
+      {
+        "name": "Purpose",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Demonstrate that a single declarative rulebook can generate working code in multiple execution substrates (Python, Go, SQL, etc.) that all produce identical results"
+      },
+      {
+        "name": "Architecture",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Hub-and-spokes around Airtable; rulebook is the disposable IR"
+      },
+      {
+        "name": "RepositoryRoot",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "effortlessly-invariant-rulesbooks/"
+      }
+    ],
+    "data": [
+      {
+        "ProjectId": "erb-001",
+        "Name": "Effortlessly Invariant Rulesbooks",
+        "Purpose": "Multi-substrate code generation from declarative rulebooks",
+        "Architecture": "Airtable (UI) → effortless-rulebook.json (IR) → Substrates (Postgres, Python, Go, Excel, OWL, etc.)",
+        "RepositoryRoot": "effortlessly-invariant-rulesbooks/"
+      }
+    ]
+  },
+  "ExecutionSubstrates": {
+    "Description": "Runtime environments that execute business rules derived from the rulebook",
+    "schema": [
+      {
+        "name": "SubstrateId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Human-readable substrate name"
+      },
+      {
+        "name": "Technology",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Language/platform (PostgreSQL, Python, Go, Excel, OWL, PlantUML, etc.)"
+      },
+      {
+        "name": "RelativePath",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Path within repo: execution-substrates/{technology}/"
+      },
+      {
+        "name": "InjectorScript",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Code generation script: inject-into-{technology}.py"
+      },
+      {
+        "name": "TestScript",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Conformance test script: take-test.py"
+      },
+      {
+        "name": "IsProduction",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": false,
+        "Description": "True if backed by an official Effortless tool; false if local implementation"
+      },
+      {
+        "name": "Status",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Operational status (active, proof-of-concept, deprecated)"
+      },
+      {
+        "name": "Description",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Purpose and capabilities"
+      }
+    ],
+    "data": [
+      {
+        "SubstrateId": "substrate-001",
+        "Name": "Binary (ARM64)",
+        "Technology": "ARM64 Assembly",
+        "RelativePath": "execution-substrates/binary/",
+        "InjectorScript": "inject-into-binary.py",
+        "TestScript": "take-test.py",
+        "IsProduction": false,
+        "Status": "proof-of-concept",
+        "Description": "ARM64 assembly proof-of-concept; demonstrates lowest-level code generation"
+      },
+      {
+        "SubstrateId": "substrate-002",
+        "Name": "Python",
+        "Technology": "Python",
+        "RelativePath": "execution-substrates/python/",
+        "InjectorScript": "inject-into-python.py",
+        "TestScript": "take-test.py",
+        "IsProduction": false,
+        "Status": "active",
+        "Description": "Local Python implementation: dataclasses + calculated field functions"
+      },
+      {
+        "SubstrateId": "substrate-003",
+        "Name": "Go",
+        "Technology": "Go",
+        "RelativePath": "execution-substrates/golang/",
+        "InjectorScript": "inject-into-golang.py",
+        "TestScript": "take-test.py",
+        "IsProduction": false,
+        "Status": "active",
+        "Description": "Local Go implementation: structs + business logic"
+      },
+      {
+        "SubstrateId": "substrate-004",
+        "Name": "PostgreSQL",
+        "Technology": "PostgreSQL",
+        "RelativePath": "licensed-effortless-tools/postgres/",
+        "InjectorScript": "N/A (rulebook-to-postgres CLI)",
+        "TestScript": "take-test.py",
+        "IsProduction": true,
+        "Status": "active",
+        "Description": "Production tool: generates DDL, stored functions, views. Full formula support via SQL."
+      },
+      {
+        "SubstrateId": "substrate-005",
+        "Name": "CSV",
+        "Technology": "CSV",
+        "RelativePath": "execution-substrates/csv/",
+        "InjectorScript": "inject-into-csv.py",
+        "TestScript": null,
+        "IsProduction": false,
+        "Status": "active",
+        "Description": "Spreadsheet export: rows + headers"
+      },
+      {
+        "SubstrateId": "substrate-006",
+        "Name": "Excel",
+        "Technology": "Excel",
+        "RelativePath": "licensed-effortless-tools/xlsx/",
+        "InjectorScript": "N/A (rulebook-to-xlsx CLI)",
+        "TestScript": null,
+        "IsProduction": true,
+        "Status": "active",
+        "Description": "Production tool: generates .xlsx with formulas"
+      },
+      {
+        "SubstrateId": "substrate-007",
+        "Name": "PlantUML",
+        "Technology": "PlantUML",
+        "RelativePath": "execution-substrates/uml/",
+        "InjectorScript": "inject-into-uml.py",
+        "TestScript": null,
+        "IsProduction": false,
+        "Status": "active",
+        "Description": "Generates UML class diagrams with OCL constraints"
+      },
+      {
+        "SubstrateId": "substrate-008",
+        "Name": "OWL/RDF",
+        "Technology": "OWL/RDF",
+        "RelativePath": "execution-substrates/owl/",
+        "InjectorScript": "inject-into-owl.py",
+        "TestScript": null,
+        "IsProduction": false,
+        "Status": "active",
+        "Description": "RDF/OWL ontology for semantic web"
+      },
+      {
+        "SubstrateId": "substrate-009",
+        "Name": "Explain DAG",
+        "Technology": "JSON",
+        "RelativePath": "execution-substrates/explain-dag/",
+        "InjectorScript": "inject-into-explain-dag.py",
+        "TestScript": null,
+        "IsProduction": false,
+        "Status": "active",
+        "Description": "JSON spec for calculated-field derivation tracing; embedded React visualizer"
+      },
+      {
+        "SubstrateId": "substrate-010",
+        "Name": "Entity Framework",
+        "Technology": "C#/.NET",
+        "RelativePath": "licensed-effortless-tools/entity-framework-dotnet/",
+        "InjectorScript": "N/A (rulebook-to-entity-framework CLI)",
+        "TestScript": null,
+        "IsProduction": true,
+        "Status": "active",
+        "Description": "Production tool: generates C# POCOs and Entity Framework DbContext"
+      }
+    ]
+  },
+  "OrchestrationComponents": {
+    "Description": "Central orchestration logic that coordinates rulebook loading, injection, and testing",
+    "schema": [
+      {
+        "name": "ComponentId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "FilePath",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Relative path from repo root"
+      },
+      {
+        "name": "Language",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "Purpose",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "Dependencies",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Comma-separated list of other components"
+      }
+    ],
+    "data": [
+      {
+        "ComponentId": "orch-001",
+        "Name": "Shared Utilities",
+        "FilePath": "orchestration/shared.py",
+        "Language": "Python",
+        "Purpose": "Common functions: load_rulebook(), parse formulas, type mapping",
+        "Dependencies": "None"
+      },
+      {
+        "ComponentId": "orch-002",
+        "Name": "Formula Parser",
+        "FilePath": "orchestration/formula_parser.py",
+        "Language": "Python",
+        "Purpose": "Parse and execute Excel-style formulas (IF, AND, OR, CONCAT, LEFT, RIGHT, etc.)",
+        "Dependencies": "shared.py"
+      },
+      {
+        "ComponentId": "orch-003",
+        "Name": "Main Injector",
+        "FilePath": "orchestration/inject.py",
+        "Language": "Python",
+        "Purpose": "Dispatch rulebook to all substrate injectors; optionally clean generated files",
+        "Dependencies": "shared.py, all substrate injectors"
+      },
+      {
+        "ComponentId": "orch-004",
+        "Name": "Orchestrator Menu",
+        "FilePath": "orchestration/orchestrate.sh",
+        "Language": "Bash",
+        "Purpose": "Interactive CLI menu: run substrates, manage Airtable sync, generate reports",
+        "Dependencies": "inject.py, base-manager.py, effortless CLI"
+      },
+      {
+        "ComponentId": "orch-006",
+        "Name": "Base Manager",
+        "FilePath": "orchestration/base-manager.py",
+        "Language": "Python",
+        "Purpose": "List, select, and swap Airtable bases; fetch base metadata from API",
+        "Dependencies": "shared.py"
+      },
+      {
+        "ComponentId": "orch-007",
+        "Name": "Test Orchestrator",
+        "FilePath": "orchestration/test-orchestrator.py",
+        "Language": "Python",
+        "Purpose": "Run all substrate tests; verify conformance (all substrates compute identically)",
+        "Dependencies": "shared.py, all substrate test scripts"
+      },
+      {
+        "ComponentId": "orch-008",
+        "Name": "Report Generator",
+        "FilePath": "orchestration/generate-report.sh",
+        "Language": "Bash",
+        "Purpose": "Generate HTML conformance report comparing substrate outputs",
+        "Dependencies": "test-orchestrator.py"
+      }
+    ]
+  },
+  "AirtableIntegration": {
+    "Description": "Airtable as input spoke: schema + data source pulled into rulebook",
+    "schema": [
+      {
+        "name": "ComponentId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "FilePath",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "Purpose",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "Role",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "input (pull from Airtable), output (push to Airtable), or bidirectional"
+      }
+    ],
+    "data": [
+      {
+        "ComponentId": "airtable-001",
+        "Name": "airtable-to-rulebook CLI",
+        "FilePath": null,
+        "Purpose": "Official Effortless tool: exports schema + data from Airtable base to effortless-rulebook.json",
+        "Role": "input"
+      },
+      {
+        "ComponentId": "airtable-002",
+        "Name": "rulebook-to-airtable CLI",
+        "FilePath": null,
+        "Purpose": "Official Effortless tool: push formula updates back to Airtable (reverse sync)",
+        "Role": "output"
+      },
+      {
+        "ComponentId": "airtable-004",
+        "Name": "ACME Corporation Bases",
+        "FilePath": null,
+        "Purpose": "Demo Airtable bases for BASIC and ADVANCED ontologies; can be swapped at runtime",
+        "Role": "input"
+      }
+    ]
+  },
+  "TestingFramework": {
+    "Description": "Conformance testing: prove all substrates compute identically",
+    "schema": [
+      {
+        "name": "TestId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "FilePath",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "Purpose",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "Scope",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "global (all substrates) or per-substrate"
+      }
+    ],
+    "data": [
+      {
+        "TestId": "test-001",
+        "Name": "Test Case Definitions",
+        "FilePath": "test-cases/*.yaml",
+        "Purpose": "YAML scenarios defining inputs and expected outputs; shared across all substrates",
+        "Scope": "global"
+      },
+      {
+        "TestId": "test-002",
+        "Name": "Substrate-Specific Take-Test",
+        "FilePath": "execution-substrates/{technology}/take-test.py",
+        "Purpose": "Load rulebook, execute test cases, compare results against expected",
+        "Scope": "per-substrate"
+      },
+      {
+        "TestId": "test-003",
+        "Name": "Test Orchestrator",
+        "FilePath": "orchestration/test-orchestrator.py",
+        "Purpose": "Run all substrate tests; aggregate pass/fail; identify conformance gaps",
+        "Scope": "global"
+      },
+      {
+        "TestId": "test-004",
+        "Name": "Conformance Report",
+        "FilePath": "orchestration/conformance-report.html",
+        "Purpose": "Visual comparison of substrate outputs; highlight mismatches",
+        "Scope": "global"
+      }
+    ]
+  },
+  "RulebookDomains": {
+    "Description": "Customer ontologies: each domain has its own rulebook + substrate generation",
+    "schema": [
+      {
+        "name": "DomainId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "DomainName",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "RelativePath",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "rulebook-examples/{domain}/ — each domain is a self-contained Effortless project"
+      },
+      {
+        "name": "RulebookPath",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Path to effortless-rulebook.json within domain"
+      },
+      {
+        "name": "ComplexityLevel",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "minimal, moderate, advanced, or philosophical"
+      },
+      {
+        "name": "TableCount",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "KeyFeatures",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Comma-separated: string concat, relationships, aggregations, IF logic, meta-ontology, etc."
+      },
+      {
+        "name": "Purpose",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true
+      }
+    ],
+    "data": [
+      {
+        "DomainId": "domain-001",
+        "DomainName": "Customer FullName",
+        "RelativePath": "rulebook-examples/customer-fullname/",
+        "RulebookPath": "rulebook-examples/customer-fullname/effortless-rulebook/customer-fullname-rulebook.json",
+        "ComplexityLevel": "minimal",
+        "TableCount": 1,
+        "KeyFeatures": "string concatenation",
+        "Purpose": "Hello World: demonstrates basic schema and calculated field (CONCAT formula)"
+      },
+      {
+        "DomainId": "domain-002",
+        "DomainName": "Jessica BASIC",
+        "RelativePath": "rulebook-examples/jessica-basic/",
+        "RulebookPath": "rulebook-examples/jessica-basic/effortless-rulebook/jessica-basic-rulebook.json",
+        "ComplexityLevel": "moderate",
+        "TableCount": 9,
+        "KeyFeatures": "relationships, aggregations, role-agent separation",
+        "Purpose": "Real workflow modeling: task management with assigned agents"
+      },
+      {
+        "DomainId": "domain-003",
+        "DomainName": "Jessica ADVANCED",
+        "RelativePath": "rulebook-examples/jessica-advanced/",
+        "RulebookPath": "rulebook-examples/jessica-advanced/effortless-rulebook/jessica-advanced-rulebook.json",
+        "ComplexityLevel": "advanced",
+        "TableCount": 9,
+        "KeyFeatures": "cross-entity lookups, conditional IF logic, complex aggregations",
+        "Purpose": "Business rule complexity: demonstrates advanced formula patterns"
+      },
+      {
+        "DomainId": "domain-004",
+        "DomainName": "StarTrek",
+        "RelativePath": "rulebook-examples/star-trek/",
+        "RulebookPath": "rulebook-examples/star-trek/effortless-rulebook/star-trek-rulebook.json",
+        "ComplexityLevel": "moderate",
+        "TableCount": 7,
+        "KeyFeatures": "hierarchical rollups, polymorphic foreign keys",
+        "Purpose": "Media catalog: TV shows, seasons, episodes; demonstrates polymorphism"
+      },
+      {
+        "DomainId": "domain-005",
+        "DomainName": "Is Everything a Language?",
+        "RelativePath": "rulebook-examples/is-everything-a-language/",
+        "RulebookPath": "rulebook-examples/is-everything-a-language/effortless-rulebook/is-everything-a-language-rulebook.json",
+        "ComplexityLevel": "philosophical",
+        "TableCount": 3,
+        "KeyFeatures": "8-predicate AND logic, meta-ontology",
+        "Purpose": "Formal argument modeling: demonstrates schema expressivity for abstract domains"
+      },
+      {
+        "DomainId": "domain-006",
+        "DomainName": "ACME Corporation",
+        "RelativePath": "rulebook-examples/acme-corporation/",
+        "RulebookPath": "rulebook-examples/acme-corporation/effortless-rulebook/acme-corporation-rulebook.json",
+        "ComplexityLevel": "advanced",
+        "TableCount": null,
+        "KeyFeatures": "Hub promotion candidate; demonstrates rulebook-first workflow",
+        "Purpose": "Enterprise demo: ACME Corp operations"
+      },
+      {
+        "DomainId": "domain-007",
+        "DomainName": "ACME LLC",
+        "RelativePath": "rulebook-examples/acme-llc/",
+        "RulebookPath": "rulebook-examples/acme-llc/effortless-rulebook/acme-llc-rulebook.json",
+        "ComplexityLevel": "advanced",
+        "TableCount": null,
+        "KeyFeatures": "Hub promotion candidate; demonstrates rulebook-first workflow",
+        "Purpose": "Enterprise demo: ACME LLC operations"
+      }
+    ]
+  },
+  "CoreDataFlows": {
+    "Description": "End-to-end flows from rulebook to execution and testing",
+    "schema": [
+      {
+        "name": "FlowId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "Steps",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Pipe-delimited sequence of steps"
+      },
+      {
+        "name": "Triggers",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "When this flow runs"
+      },
+      {
+        "name": "Outputs",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Artifacts produced"
+      }
+    ],
+    "data": [
+      {
+        "FlowId": "flow-001",
+        "Name": "Standard Rulebook → Substrates",
+        "Steps": "Load rulebook.json | Dispatch to all injectors | Generate substrate code | Package artifacts",
+        "Triggers": "User selects option A in orchestrator menu",
+        "Outputs": "Generated code in each execution-substrates/{tech}/ folder"
+      },
+      {
+        "FlowId": "flow-002",
+        "Name": "Pull from Airtable",
+        "Steps": "Call airtable-to-rulebook CLI | Write effortless-rulebook.json | Cache offline version",
+        "Triggers": "User selects option P (Pull & Inject) or changes base via option B",
+        "Outputs": "effortless-rulebook/effortless-rulebook.json, rulebook cache"
+      },
+      {
+        "FlowId": "flow-003",
+        "Name": "Conformance Testing",
+        "Steps": "Load test cases YAML | Run each substrate's take-test.py | Collect outputs | Compare results | Generate report",
+        "Triggers": "User selects option V (View Results) or automatic after injection",
+        "Outputs": "conformance-report.html, pass/fail matrix, mismatch details"
+      },
+      {
+        "FlowId": "flow-004",
+        "Name": "Clean Generated Files",
+        "Steps": "Delete all generated outputs in each execution-substrates/ folder",
+        "Triggers": "User selects option C (Clean)",
+        "Outputs": "Empty substrate directories ready for fresh injection"
+      },
+      {
+        "FlowId": "flow-005",
+        "Name": "Swap Ontologies (Hub Promotion)",
+        "Steps": "User selects domain in effortless-rulebooks/ | Point orchestrator to domain's rulebook | Re-run injection & tests with new domain",
+        "Triggers": "Rulebook hub promotion complete; becomes the primary SSoT instead of Airtable",
+        "Outputs": "All substrates regenerated for new domain; conformance verified"
+      }
+    ]
+  },
+  "ProjectConfiguration": {
+    "Description": "Configuration files and their purposes",
+    "schema": [
+      {
+        "name": "ConfigId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "FileName",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "FilePath",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "Format",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "Purpose",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "MaintainedBy",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "human (manual edits) or tool (auto-generated)"
+      }
+    ],
+    "data": [
+      {
+        "ConfigId": "config-001",
+        "FileName": "effortless.json",
+        "FilePath": "./effortless.json",
+        "Format": "JSON",
+        "Purpose": "SSoTme project definition: transpilers, versions, base IDs, API keys",
+        "MaintainedBy": "human"
+      },
+      {
+        "ConfigId": "config-002",
+        "FileName": "CLAUDE.md",
+        "FilePath": "./CLAUDE.md",
+        "Format": "Markdown",
+        "Purpose": "Project instructions and architecture overview for Claude Code",
+        "MaintainedBy": "human"
+      },
+      {
+        "ConfigId": "config-003",
+        "FileName": "bases.json",
+        "FilePath": "orchestration/bases.json",
+        "Format": "JSON",
+        "Purpose": "Catalog of swappable Airtable bases with IDs, names, complexity levels",
+        "MaintainedBy": "human"
+      },
+      {
+        "ConfigId": "config-004",
+        "FileName": ".env",
+        "FilePath": "./.env",
+        "Format": "Shell",
+        "Purpose": "Environment variables: AIRTABLE_API_KEY, PostgreSQL credentials, etc.",
+        "MaintainedBy": "human"
+      },
+      {
+        "ConfigId": "config-005",
+        "FileName": "docker-compose.yml",
+        "FilePath": "./docker-compose.yml",
+        "Format": "YAML",
+        "Purpose": "Docker services: PostgreSQL, optional API server",
+        "MaintainedBy": "human"
+      },
+      {
+        "ConfigId": "config-006",
+        "FileName": "Dockerfile",
+        "FilePath": "./Dockerfile",
+        "Format": "Dockerfile",
+        "Purpose": "Container image for reproducible environment",
+        "MaintainedBy": "human"
+      },
+      {
+        "ConfigId": "config-007",
+        "FileName": "effortless-rulebook.json",
+        "FilePath": "effortless-rulebook/effortless-rulebook.json",
+        "Format": "JSON",
+        "Purpose": "Core rulebook: entity schemas, field types, formulas, sample data",
+        "MaintainedBy": "tool (airtable-to-rulebook CLI pulls from Airtable)"
+      },
+      {
+        "ConfigId": "config-008",
+        "FileName": "README.md",
+        "FilePath": "./README.md",
+        "Format": "Markdown",
+        "Purpose": "User-facing documentation: quick start, base progression, key terms",
+        "MaintainedBy": "human"
+      },
+      {
+        "ConfigId": "config-009",
+        "FileName": "README.TECHNICAL.md",
+        "FilePath": "./README.TECHNICAL.md",
+        "Format": "Markdown",
+        "Purpose": "Technical deep-dive: architecture, internals, debugging",
+        "MaintainedBy": "human"
+      }
+    ]
+  },
+  "Dependencies": {
+    "Description": "External tools and their roles",
+    "schema": [
+      {
+        "name": "DependencyId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "Version",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "Type",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Language, tool, service, or external API"
+      },
+      {
+        "name": "Purpose",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "Required",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": false
+      }
+    ],
+    "data": [
+      {
+        "DependencyId": "dep-001",
+        "Name": "Python",
+        "Version": "3.8+",
+        "Type": "Language",
+        "Purpose": "Orchestration scripts, injectors, test runners",
+        "Required": true
+      },
+      {
+        "DependencyId": "dep-002",
+        "Name": "Bash",
+        "Version": "latest",
+        "Type": "Language",
+        "Purpose": "Menu orchestration, subprocess management",
+        "Required": true
+      },
+      {
+        "DependencyId": "dep-003",
+        "Name": "Go",
+        "Version": "1.19+",
+        "Type": "Language",
+        "Purpose": "Go substrate code generation and testing",
+        "Required": false
+      },
+      {
+        "DependencyId": "dep-004",
+        "Name": "PostgreSQL",
+        "Version": "13+",
+        "Type": "Database",
+        "Purpose": "SQL substrate execution; DDL/functions/views generation",
+        "Required": false
+      },
+      {
+        "DependencyId": "dep-005",
+        "Name": "Docker",
+        "Version": "latest",
+        "Type": "Tool",
+        "Purpose": "Container orchestration for PostgreSQL and reproducible environments",
+        "Required": false
+      },
+      {
+        "DependencyId": "dep-006",
+        "Name": "Airtable API",
+        "Version": "v0",
+        "Type": "External Service",
+        "Purpose": "Schema + data pull via airtable-to-rulebook; reverse sync via rulebook-to-airtable",
+        "Required": false
+      },
+      {
+        "DependencyId": "dep-007",
+        "Name": "Node.js",
+        "Version": "16+",
+        "Type": "Language",
+        "Purpose": "Report generation (HTML), optional utilities",
+        "Required": false
+      },
+      {
+        "DependencyId": "dep-008",
+        "Name": "SSoTme CLI (effortless)",
+        "Version": "latest",
+        "Type": "Tool",
+        "Purpose": "Transpiler registry and version management for effortless-rulebook-to-postgres, etc.",
+        "Required": false
+      },
+      {
+        "DependencyId": "dep-009",
+        "Name": "C# / Entity Framework",
+        "Version": ".NET 6+",
+        "Type": "Language",
+        "Purpose": "Entity Framework substrate code generation",
+        "Required": false
+      }
+    ]
+  },
+  "_meta": {
+    "_CMCC_Summary": "Top-level rulebook describing the Effortlessly Invariant Rulesbooks (ERB) project itself: all execution substrates, orchestration components, Airtable integration, testing framework, customer domains, core data flows, configuration files, and external dependencies.",
+    "_ProjectGoal": "Demonstrate that a single declarative rulebook (effortless-rulebook.json) can generate working, conformant code in 10+ execution substrates (Python, Go, SQL, Excel, OWL, PlantUML, etc.) that all produce identical results for the same inputs.",
+    "_ArchitecturalHighlight": "Rulebook is the disposable IR; substrates are the execution targets. Hub-and-spokes around Airtable (or other sources like direct JSON edits). All 10+ substrates must pass the same conformance tests.",
+    "_HubPromotionPhase": "Transition from Airtable-as-SSoT to rulebook-as-SSoT. Customer domains (ACME Corp, ACME LLC) can be selected at runtime. Once complete, orchestration drives from effortless-rulebooks/<domain>/ instead of a single Airtable base."
+  }
+}

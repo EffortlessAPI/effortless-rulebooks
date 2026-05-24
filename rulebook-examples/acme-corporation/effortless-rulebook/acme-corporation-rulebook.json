@@ -1,0 +1,507 @@
+{
+  "$schema": "https://example.com/cmcc-schema/v1",
+  "Name": "ACME Corporation (template)",
+  "Description": "Rulebook generated from Airtable base \u0027ACME Corporation (template)\u0027.",
+  "Client": {
+    "Description": "Table: Client",
+    "schema": [
+      {
+        "name": "ClientId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "Customer",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Identifier for the customers."
+      },
+      {
+        "name": "EmailAddress",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Thec ustomers email address"
+      },
+      {
+        "name": "FirstName",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "First Name of the customer - used to make the full name"
+      },
+      {
+        "name": "LastName",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Last Name of the customer - used to make the full name"
+      },
+      {
+        "name": "FullName",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Full name is computed from the first and last name of the customer",
+        "formula": "={{FirstName}} \u0026 \u0022 \u0022 \u0026 {{LastName}}"
+      }
+    ],
+    "data": [
+      {
+        "ClientId": "cust0001",
+        "EmailAddress": "larry.smith@email.com",
+        "LastName": "Smith",
+        "Customer": "CUST0001",
+        "FirstName": "Bob",
+        "FullName": "Bob Smith"
+      },
+      {
+        "ClientId": "cust0002",
+        "EmailAddress": "john.doe@email.com",
+        "LastName": "Doe",
+        "Customer": "CUST0002",
+        "FirstName": "John",
+        "FullName": "John Doe"
+      },
+      {
+        "ClientId": "cust0003",
+        "EmailAddress": "emily.jones@email.com",
+        "LastName": "Jones",
+        "Customer": "CUST0003",
+        "FirstName": "Emily",
+        "FullName": "Emily Jones"
+      }
+    ]
+  },
+  "Projects": {
+    "Description": "Table: Projects",
+    "schema": [
+      {
+        "name": "ProjectId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "Description",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "ProjectType",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "RelatedTo": "TypesOfProject",
+        "isReversed": false,
+        "prefersSingleRecordLink": true,
+        "InverseField": "Projects"
+      },
+      {
+        "name": "ProjectTypeName",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "formula": "=INDEX(TypesOfProject!{{Name}}, MATCH(Projects!{{ProjectType}}, TypesOfProject!{{TypesOfProjectId}}, 0))"
+      },
+      {
+        "name": "ProjectTypeDescription",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "formula": "=INDEX(TypesOfProject!{{Description}}, MATCH(Projects!{{ProjectType}}, TypesOfProject!{{TypesOfProjectId}}, 0))"
+      },
+      {
+        "name": "ProjectTypeRequiresManagerApproval",
+        "datatype": "boolean",
+        "type": "lookup",
+        "nullable": true,
+        "formula": "=INDEX(TypesOfProject!{{RequiresManagerApproval}}, MATCH(Projects!{{ProjectType}}, TypesOfProject!{{TypesOfProjectId}}, 0))"
+      },
+      {
+        "name": "DueDate",
+        "datatype": "datetime",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "IsApproved",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "ApprovedBy",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "RelatedTo": "Employees",
+        "isReversed": false,
+        "prefersSingleRecordLink": true,
+        "InverseField": "Projects"
+      },
+      {
+        "name": "ApprovedByRoleIsManager",
+        "datatype": "boolean",
+        "type": "lookup",
+        "nullable": true,
+        "formula": "=INDEX(Employees!{{RoleIsManager}}, MATCH(Projects!{{ApprovedBy}}, Employees!{{EmployeeId}}, 0))"
+      },
+      {
+        "name": "ApprovedByName",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "formula": "=INDEX(Employees!{{Name}}, MATCH(Projects!{{ApprovedBy}}, Employees!{{EmployeeId}}, 0))"
+      },
+      {
+        "name": "ApprovedByEmailAddress",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "formula": "=INDEX(Employees!{{EmailAddress}}, MATCH(Projects!{{ApprovedBy}}, Employees!{{EmployeeId}}, 0))"
+      },
+      {
+        "name": "ApprovedByPhoneNumber",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "formula": "=INDEX(Employees!{{PhoneNumber}}, MATCH(Projects!{{ApprovedBy}}, Employees!{{EmployeeId}}, 0))"
+      }
+    ],
+    "data": [
+      {
+        "ProjectId": "internal-tools-dashboard",
+        "Name": "Internal Tools Dashboard",
+        "IsApproved": true,
+        "ApprovedBy": "sarah-chen",
+        "ApprovedByEmailAddress": "sarah.chen@acmecorp.example",
+        "ProjectTypeName": "Internal",
+        "Description": "Build internal analytics dashboard for team productivity metrics",
+        "ApprovedByPhoneNumber": "555-0101",
+        "DueDate": "2026-06-15",
+        "ApprovedByName": "Sarah Chen",
+        "ApprovedByRoleIsManager": "True",
+        "ProjectTypeRequiresManagerApproval": "",
+        "ProjectType": "internal",
+        "ProjectTypeDescription": "An internal project that is not publicly accessible"
+      },
+      {
+        "ProjectId": "customer-portal-redesign",
+        "Name": "Customer Portal Redesign",
+        "ApprovedBy": "priya-patel",
+        "ApprovedByEmailAddress": "priya.patel@acmecorp.example",
+        "ProjectTypeName": "ClientFacing",
+        "Description": "Complete redesign of customer-facing portal with modern UX",
+        "ApprovedByPhoneNumber": "555-0103",
+        "DueDate": "2026-08-01",
+        "ApprovedByName": "Priya Patel",
+        "ApprovedByRoleIsManager": "",
+        "ProjectTypeRequiresManagerApproval": "True",
+        "ProjectType": "clientfacing",
+        "ProjectTypeDescription": "Open, public facing communication",
+        "IsApproved": false
+      },
+      {
+        "ProjectId": "gdpr-compliance-audit",
+        "Name": "GDPR Compliance Audit",
+        "IsApproved": true,
+        "ApprovedBy": "mike-johnson",
+        "ApprovedByEmailAddress": "mike.johnson@acmecorp.example",
+        "ProjectTypeName": "Compliance",
+        "Description": "Annual compliance audit and documentation update",
+        "ApprovedByPhoneNumber": "555-0102",
+        "DueDate": "2026-04-30",
+        "ApprovedByName": "Mike Johnson",
+        "ApprovedByRoleIsManager": "True",
+        "ProjectTypeRequiresManagerApproval": "True",
+        "ProjectType": "compliance",
+        "ProjectTypeDescription": ""
+      }
+    ]
+  },
+  "Employees": {
+    "Description": "Table: Employees",
+    "schema": [
+      {
+        "name": "EmployeeId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "EmailAddress",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "PhoneNumber",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "Role",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "RelatedTo": "Roles",
+        "isReversed": false,
+        "prefersSingleRecordLink": true,
+        "InverseField": "Employees"
+      },
+      {
+        "name": "RoleName",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "formula": "=INDEX(Roles!{{Name}}, MATCH(Employees!{{Role}}, Roles!{{RoleId}}, 0))"
+      },
+      {
+        "name": "RoleDescription",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "formula": "=INDEX(Roles!{{Description}}, MATCH(Employees!{{Role}}, Roles!{{RoleId}}, 0))"
+      },
+      {
+        "name": "Projects",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "RelatedTo": "Projects",
+        "isReversed": false,
+        "prefersSingleRecordLink": false,
+        "InverseField": "ApprovedBy"
+      },
+      {
+        "name": "RoleIsManager",
+        "datatype": "boolean",
+        "type": "lookup",
+        "nullable": true,
+        "formula": "=INDEX(Roles!{{IsManager}}, MATCH(Employees!{{Role}}, Roles!{{RoleId}}, 0))"
+      }
+    ],
+    "data": [
+      {
+        "EmployeeId": "sarah-chen",
+        "Projects": "internal-tools-dashboard",
+        "RoleIsManager": "True",
+        "PhoneNumber": "555-0101",
+        "RoleDescription": "The project Manager makes sure that the developers do what the analysts ask for",
+        "RoleName": "ProjectManager",
+        "Name": "Sarah Chen",
+        "Role": "projectmanager",
+        "EmailAddress": "sarah.chen@acmecorp.example"
+      },
+      {
+        "EmployeeId": "mike-johnson",
+        "Projects": "gdpr-compliance-audit",
+        "RoleIsManager": "True",
+        "PhoneNumber": "555-0102",
+        "RoleDescription": "Developers handle the implementation and are responsible for making the final product do what is expected",
+        "RoleName": "Developer",
+        "Name": "Mike Johnson",
+        "Role": "developer",
+        "EmailAddress": "mike.johnson@acmecorp.example"
+      },
+      {
+        "EmployeeId": "priya-patel",
+        "Projects": "customer-portal-redesign",
+        "RoleIsManager": "",
+        "PhoneNumber": "555-0103",
+        "RoleDescription": "The business analysis know what the customer\u0027s want.",
+        "RoleName": "Analyst",
+        "Name": "Priya Patel",
+        "Role": "analyst",
+        "EmailAddress": "priya.patel@acmecorp.example"
+      }
+    ]
+  },
+  "Roles": {
+    "Description": "Table: Roles",
+    "schema": [
+      {
+        "name": "RoleId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "Description",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "IsManager",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "Employees",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "RelatedTo": "Employees",
+        "isReversed": false,
+        "prefersSingleRecordLink": false,
+        "InverseField": "Role"
+      },
+      {
+        "name": "CountOfEmployees",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "formula": "=COUNTIFS(Employees!{{Role}}, Roles!{{RoleId}})"
+      }
+    ],
+    "data": [
+      {
+        "RoleId": "developer",
+        "IsManager": true,
+        "Name": "Developer",
+        "CountOfEmployees": 1,
+        "Employees": "mike-johnson",
+        "Description": "Developers handle the implementation and are responsible for making the final product do what is expected"
+      },
+      {
+        "RoleId": "projectmanager",
+        "IsManager": true,
+        "Name": "ProjectManager",
+        "CountOfEmployees": 1,
+        "Employees": "sarah-chen",
+        "Description": "The project Manager makes sure that the developers do what the analysts ask for"
+      },
+      {
+        "RoleId": "analyst",
+        "Name": "Analyst",
+        "CountOfEmployees": 1,
+        "Employees": "priya-patel",
+        "Description": "The business analysis know what the customer\u0027s want.",
+        "IsManager": false
+      }
+    ]
+  },
+  "TypesOfProject": {
+    "Description": "Table: TypesOfProject",
+    "schema": [
+      {
+        "name": "TypesOfProjectId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "Description",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "RequiresManagerApproval",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "Projects",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "RelatedTo": "Projects",
+        "isReversed": false,
+        "prefersSingleRecordLink": false,
+        "InverseField": "ProjectType"
+      },
+      {
+        "name": "CountOfProjects",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "formula": "=COUNTIFS(Projects!{{ProjectType}}, TypesOfProject!{{TypesOfProjectId}})"
+      }
+    ],
+    "data": [
+      {
+        "TypesOfProjectId": "internal",
+        "Name": "Internal",
+        "CountOfProjects": 1,
+        "Description": "An internal project that is not publicly accessible",
+        "Projects": "internal-tools-dashboard",
+        "RequiresManagerApproval": false
+      },
+      {
+        "TypesOfProjectId": "clientfacing",
+        "Name": "ClientFacing",
+        "CountOfProjects": 1,
+        "RequiresManagerApproval": true,
+        "Description": "Open, public facing communication",
+        "Projects": "customer-portal-redesign"
+      },
+      {
+        "TypesOfProjectId": "research",
+        "Name": "Research",
+        "CountOfProjects": 0,
+        "Description": "",
+        "RequiresManagerApproval": false,
+        "Projects": ""
+      },
+      {
+        "TypesOfProjectId": "compliance",
+        "Name": "Compliance",
+        "CountOfProjects": 1,
+        "RequiresManagerApproval": true,
+        "Projects": "gdpr-compliance-audit",
+        "Description": ""
+      }
+    ]
+  },
+  "_meta": {
+    "_CMCC_Summary": "Airtable export with schema-first type mapping: Schemas, Data, Relationships (FK links), Lookups (INDEX/MATCH), Aggregations (SUMIFS/COUNTIFS/Rollups), and Calculated fields (formulas) in Excel dialect. Field types are determined from Airtable\u0027s schema metadata FIRST (no coercion); the build FAILS if metadata is unavailable rather than silently inferring from formula/data analysis.",
+    "_conversion_metadata": {
+      "source_base_id": "appzkcmBFPWFGBtRo",
+      "table_count": 5,
+      "tool_version": "2.0.0",
+      "field_type_mapping": "checkbox\u2192boolean, number\u2192number/integer, multipleRecordLinks\u2192relationship, multipleLookupValues\u2192lookup, rollup\u2192aggregation, count\u2192aggregation, formula\u2192calculated",
+      "export_mode": "schema_first_type_mapping",
+      "type_inference": {
+        "enabled": true,
+        "priority": "airtable_metadata (NO COERCION) \u2192 formula_analysis \u2192 reference_resolution \u2192 data_analysis (last-resort inference; build SHOULD FAIL rather than silently use this)",
+        "airtable_type_mapping": "checkbox\u2192boolean, singleLineText\u2192string, multilineText\u2192string, number\u2192number/integer, datetime\u2192datetime, singleSelect\u2192string, email\u2192string, url\u2192string, phoneNumber\u2192string",
+        "data_coercion_hierarchy": "Only invoked when Airtable schema is unavailable (which SHOULD make the build fail). Coercion order: datetime \u2192 number \u2192 integer \u2192 boolean \u2192 base64 \u2192 json \u2192 string",
+        "nullable_support": true,
+        "error_value_handling": "#NUM!, #ERROR!, #N/A, #REF!, #DIV/0!, #VALUE!, #NAME? are treated as NULL"
+      }
+    }
+  }
+}
