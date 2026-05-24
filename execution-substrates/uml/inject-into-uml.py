@@ -25,7 +25,7 @@ from enum import Enum, auto
 # Add project root to path for shared imports
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 
-from orchestration.shared import load_rulebook, handle_clean_arg
+from orchestration.shared import load_rulebook, handle_clean_arg, get_rulebook_path
 
 
 # =============================================================================
@@ -618,7 +618,7 @@ def generate_model_json(tables: Dict[str, Any]) -> str:
 
 def generate_ocl_constraints(tables: Dict[str, Any]) -> str:
     """Compile formulas to OCL derive expressions."""
-    lines = ['-- OCL Constraints for ERB', '-- Generated from effortless-rulebook.json', '']
+    lines = ['-- OCL Constraints for ERB', f'-- Generated from {get_rulebook_path().name}', '']
 
     for table_name, table_def in sorted(tables.items()):
         if table_name.startswith('_') or table_name.startswith('$'):

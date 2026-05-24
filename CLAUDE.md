@@ -1,5 +1,29 @@
 # Effortlessly Invariant Rulesbooks (ERB)
 
+## CRITICAL: Two categorically different kinds of rulebooks live in this repo
+
+There are **two** kinds of rulebook here and they are NOT the same thing. Confusing them will break the project. Read this before touching anything that references a rulebook path.
+
+### 1. The top-level meta-rulebook — the orchestration tool itself
+
+- **Path:** `./effortless-rulebook/effortless-rulebook.json`
+- **What it is:** The rulebook describing the ERB orchestration repo / admin tool itself. It is committed, hand-edited via VS Code, and built with manual `effortless build` runs at the repo root. **The admin app IS its own admin tool** — there is no second-level wrapper around this rulebook.
+- **Code that operates on it:** `tag-commit.sh`, `admin-portal/server.js` (`META_RULEBOOK`), `orchestration/rulebook-cache.py`, `orchestration/cache-manager.py`, `ssotme-proxy/server.py`, the root `effortless.json`. These all use the literal path `./effortless-rulebook/effortless-rulebook.json`.
+- **Do not** rewrite these to look up the active demo. They are *categorically* not about the demos.
+
+### 2. The per-project demo rulebooks — what the orchestration manages
+
+- **Path:** `./rulebook-examples/<project>/effortless-rulebook/<project>-rulebook.json`
+- **What they are:** The 8 example ontologies (`acme-corporation`, `acme-llc`, `customer-fullname`, `effortless-rulesbooks`, `is-everything-a-language`, `jessica-advanced`, `jessica-basic`, `star-trek`). These are containers/demos/widgets. The entire orchestration website/process/repo exists to manage *these*.
+- **Code that operates on them:** `orchestration/orchestrate.sh` (via `get_domain_rulebook_path`), `orchestration/shared.py` (`get_rulebook_path`), all `execution-substrates/*/inject-into-*.py` injectors, all `execution-substrates/*/take-test.py` runners, `orchestration/generate-report.py`, `orchestration/test-orchestrator.py`, `devops/rebuild-on-trigger.sh`. These resolve the active demo via `orchestration/active-domain.txt` or the `ERB_RULEBOOK_PATH` env var.
+- **Per-project filename is `<project>-rulebook.json`**, NOT `effortless-rulebook.json`. Each project's `effortless.json` (`ProjectTranspilers[*].CommandLine`) carries the `-o <project>-rulebook.json` flag accordingly.
+
+### Rules for agents
+
+- Before changing any code that references a rulebook path, decide which of the two categories above the code belongs to. The decision is non-negotiable — there is no "smart fallback" that handles both.
+- The top-level `./effortless-rulebook/effortless-rulebook.json` is a **fixed literal path**. Never rewrite it to read the active domain.
+- Per-project rulebook paths must be resolved dynamically — never hardcode `effortless-rulebook.json` for them. Use `get_domain_rulebook_path` (bash) or `get_rulebook_path()` (python).
+
 <!-- rulebook-authoritative-banner -->
 ## Authoritative Source: `effortless-rulebook/effortless-rulebook.json` is HEAD
 

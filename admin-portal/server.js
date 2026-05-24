@@ -58,12 +58,7 @@ function setActiveDomain(name) {
 function activeRulebookPath() {
   const domain = getActiveDomain();
   if (domain === "__meta__") return META_RULEBOOK;
-  const candidates = [
-    path.join(RULEBOOK_EXAMPLES, domain, "effortless-rulebook", "effortless-rulebook.json"),
-    path.join(RULEBOOK_EXAMPLES, domain, "effortless-rulebook.json"),
-  ];
-  for (const c of candidates) if (fs.existsSync(c)) return c;
-  return META_RULEBOOK;
+  return path.join(RULEBOOK_EXAMPLES, domain, "effortless-rulebook", `${domain}-rulebook.json`);
 }
 
 function activeProjectRoot() {
@@ -84,7 +79,7 @@ function listProjects() {
     for (const d of fs.readdirSync(RULEBOOK_EXAMPLES)) {
       const dirPath = path.join(RULEBOOK_EXAMPLES, d);
       if (!fs.statSync(dirPath).isDirectory()) continue;
-      const candidate = path.join(dirPath, "effortless-rulebook", "effortless-rulebook.json");
+      const candidate = path.join(dirPath, "effortless-rulebook", `${d}-rulebook.json`);
       if (!fs.existsSync(candidate)) continue;
       let desc = "";
       try {

@@ -23,7 +23,7 @@ from enum import Enum, auto
 # Add project root to path for shared imports
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 
-from orchestration.shared import load_rulebook, handle_clean_arg
+from orchestration.shared import load_rulebook, handle_clean_arg, get_rulebook_path
 
 
 # =============================================================================
@@ -514,7 +514,7 @@ def generate_ontology_owl(tables: Dict[str, Any]) -> str:
     lines.append('')
     lines.append('erb: a owl:Ontology ;')
     lines.append('    rdfs:label "ERB Ontology" ;')
-    lines.append('    rdfs:comment "Generated from effortless-rulebook.json" .')
+    lines.append(f'    rdfs:comment "Generated from {get_rulebook_path().name}" .')
     lines.append('')
 
     # Generate classes and properties for each table

@@ -37,16 +37,23 @@ SUMMARY_PATH = os.path.join(SCRIPT_DIR, "all-tests-results.md")
 
 def _get_active_domain():
     active_domain_file = os.path.join(SCRIPT_DIR, "active-domain.txt")
-    if os.path.exists(active_domain_file):
-        domain = open(active_domain_file).read().strip()
-        if domain:
-            return domain
-    return "customer-fullname"
+    if not os.path.exists(active_domain_file):
+        raise FileNotFoundError(
+            f"active-domain.txt missing at {active_domain_file}. "
+            "Write the active domain name (e.g. 'acme-llc') to that file."
+        )
+    domain = open(active_domain_file).read().strip()
+    if not domain:
+        raise ValueError(
+            f"active-domain.txt at {active_domain_file} is empty. "
+            "Write the active domain name (e.g. 'acme-llc')."
+        )
+    return domain
 
 ACTIVE_DOMAIN = _get_active_domain()
 DOMAIN_DIR = os.path.join(REPO_ROOT, "rulebook-examples", ACTIVE_DOMAIN)
 RULEBOOK_DIR = os.path.join(DOMAIN_DIR, "effortless-rulebook")
-RULEBOOK_PATH = os.path.join(RULEBOOK_DIR, "effortless-rulebook.json")
+RULEBOOK_PATH = os.path.join(RULEBOOK_DIR, f"{ACTIVE_DOMAIN}-rulebook.json")
 
 # All conformance artifacts live inside the domain folder so each rulebook
 # example is fully self-contained. The central testing/ folder at repo root
@@ -272,10 +279,13 @@ def to_pascal_case(name: str) -> str:
 
 
 def load_rulebook() -> dict:
-    """Load the effortless-rulebook.json file"""
+    """Load the active domain's <domain>-rulebook.json file. Fails loudly if missing."""
     if not os.path.exists(RULEBOOK_PATH):
-        print(f"  WARNING: Rulebook not found at {RULEBOOK_PATH}", flush=True)
-        return {}
+        raise FileNotFoundError(
+            f"Rulebook not found at {RULEBOOK_PATH}. "
+            f"Active domain is '{ACTIVE_DOMAIN}' — its rulebook MUST be at this exact path. "
+            "Do not invent fallbacks; fix the file/name."
+        )
     with open(RULEBOOK_PATH, 'r') as f:
         return json.load(f)
 

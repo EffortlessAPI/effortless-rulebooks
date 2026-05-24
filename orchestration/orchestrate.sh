@@ -440,7 +440,12 @@ show_menu() {
     echo -e "  ${GREEN}[T]${NC} ${BOLD}TEST${NC} — run conformance tests for ${WHITE}${ACTIVE_DOMAIN}${NC} ${DIM}(opens report)${NC}"
     echo -e "  ${MAGENTA}[V]${NC} ${BOLD}VIEW${NC} — open last HTML report for ${WHITE}${ACTIVE_DOMAIN}${NC}"
     echo -e "  ${CYAN}[W]${NC} ${BOLD}WEB${NC} — run Web Admin Portal ${DIM}(localhost:7777)${NC}"
-    echo -e "  ${YELLOW}[M]${NC} ${BOLD}MORE${NC} — more options ${DIM}(pick rulebook, import, clean, dev-ops)${NC}"
+    echo -e "  ${DIM}────────────────────────────────────────────────────────────${NC}"
+    echo -e "  ${YELLOW}[P]${NC} ${BOLD}PICK${NC} — switch to a different rulebook ${DIM}(ontology)${NC}"
+    echo -e "  ${YELLOW}[N]${NC} ${BOLD}NEW${NC} — create a new blank rulebook ${DIM}(ontology)${NC}"
+    echo -e "  ${BLUE}[I]${NC} ${BOLD}IMPORT${NC} — pull a new rulebook from Airtable"
+    echo -e "  ${RED}[C]${NC} ${BOLD}CLEAN${NC} — delete all generated files"
+    echo -e "  ${YELLOW}[D]${NC} ${BOLD}DEV-OPS${NC} — database & tooling setup"
     echo -e "  [${RED}Q${NC}] Quit"
     echo ""
 }
@@ -734,50 +739,118 @@ action_run_web_portal() {
 # =============================================================================
 # MORE OPTIONS MENU
 # =============================================================================
-action_more_menu() {
-    while true; do
-        echo ""
-        echo -e "${BOLD}${CYAN}╔════════════════════════════════════════════════════════════╗${NC}"
-        echo -e "${BOLD}${CYAN}║${NC}                    ${BOLD}${WHITE}MORE OPTIONS${NC}                           ${BOLD}${CYAN}║${NC}"
-        echo -e "${BOLD}${CYAN}╚════════════════════════════════════════════════════════════╝${NC}"
-        echo ""
-        echo -e "  ${YELLOW}[P]${NC} ${BOLD}Pick Different Rulebook${NC} ${DIM}(ontology)${NC}"
-        echo -e "  ${BLUE}[I]${NC} ${BOLD}IMPORT${NC} — pull latest rulebook from Airtable"
-        echo -e "  ${RED}[C]${NC} ${BOLD}CLEAN${NC} — delete all generated files"
-        echo -e "  ${YELLOW}[D]${NC} ${BOLD}DEV-OPS${NC} — database & tooling setup"
-        echo ""
-        echo -e "  [${RED}Q${NC}] Back to main menu"
-        echo ""
+action_new_rulebook() {
+    echo ""
+    echo -e "${BOLD}${CYAN}╔════════════════════════════════════════════════════════════╗${NC}"
+    echo -e "${BOLD}${CYAN}║${NC}              ${BOLD}${WHITE}NEW RULEBOOK (ONTOLOGY)${NC}                       ${BOLD}${CYAN}║${NC}"
+    echo -e "${BOLD}${CYAN}╚════════════════════════════════════════════════════════════╝${NC}"
+    echo ""
+    echo -e "  Creates a blank, self-contained ontology under ${WHITE}rulebook-examples/${NC}."
+    echo -e "  Name will be slugified (lowercase, dashes). e.g. ${DIM}\"My Demo\" → my-demo${NC}"
+    echo ""
 
-        read -p "Enter choice [P/I/C/D/Q]: " more_choice
+    read -p "  Name for the new rulebook (or [Q] to cancel): " RAW_NAME
+    case $RAW_NAME in
+        [Qq]|"")
+            echo -e "  ${DIM}Cancelled${NC}"
+            echo ""
+            return
+            ;;
+    esac
 
-        case $more_choice in
-            [Pp])
-                action_select_domain
-                return
-                ;;
-            [Ii])
-                action_import_from_airtable
-                return
-                ;;
-            [Cc])
-                action_clean
-                return
-                ;;
-            [Dd])
-                action_devops_menu
-                return
-                ;;
-            [Qq]|"")
-                return
-                ;;
-            *)
-                echo ""
-                echo -e "${RED}Invalid option: $more_choice${NC}"
-                sleep 1
-                ;;
-        esac
-    done
+    DOMAIN_NAME=$(echo "$RAW_NAME" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9]/-/g' | sed 's/--*/-/g' | sed 's/^-//;s/-$//')
+    if [ -z "$DOMAIN_NAME" ]; then
+        echo -e "${RED}Could not derive a valid slug from '$RAW_NAME'.${NC}"
+        read -p "Press Enter to continue..."
+        return
+    fi
+
+    DOMAIN_DIR="$RULEBOOK_EXAMPLES_DIR/$DOMAIN_NAME"
+    if [ -d "$DOMAIN_DIR" ]; then
+        echo -e "${RED}A rulebook already exists at: ${WHITE}rulebook-examples/$DOMAIN_NAME/${NC}"
+        echo -e "${DIM}Pick a different name, or use [P] to switch to it.${NC}"
+        read -p "Press Enter to continue..."
+        return
+    fi
+
+    RULEBOOK_FILENAME="${DOMAIN_NAME}-rulebook.json"
+    RULEBOOK_DIR_NEW="$DOMAIN_DIR/effortless-rulebook"
+    mkdir -p "$RULEBOOK_DIR_NEW"
+
+    # Write a starter rulebook with one Hello-World table so build is non-empty.
+    python3 - "$RULEBOOK_DIR_NEW/$RULEBOOK_FILENAME" "$RAW_NAME" <<'PYEOF'
+import json, sys
+out_path, display_name = sys.argv[1], sys.argv[2]
+rb = {
+    "$schema": "../../../effortless-rulebook/effortless-rulebook.json",
+    "Name": display_name,
+    "Description": f"Blank starter rulebook for {display_name}. Add your tables and fields here.",
+    "Tables": [
+        {
+            "Name": "HelloWorld",
+            "Description": "Starter table — replace with your own.",
+            "schema": [
+                {"Name": "id",      "type": "id",   "description": "Primary key"},
+                {"Name": "name",    "type": "text", "description": "Display name"},
+                {"Name": "created", "type": "date", "description": "Creation timestamp"}
+            ],
+            "data": []
+        }
+    ]
+}
+with open(out_path, "w") as f:
+    json.dump(rb, f, indent=2)
+print(f"Wrote {out_path}")
+PYEOF
+
+    # Write the project-level effortless.json (Airtable spokes disabled — JSON is authoritative).
+    python3 - "$DOMAIN_DIR/effortless.json" "$RAW_NAME" "$RULEBOOK_FILENAME" <<'PYEOF'
+import json, sys
+out_path, display_name, rb_filename = sys.argv[1], sys.argv[2], sys.argv[3]
+cfg = {
+    "Name": display_name,
+    "Description": f"Standalone rulebook for {display_name}.",
+    "Version": "1.0",
+    "ProjectSettings": [],
+    "ProjectTranspilers": [
+        {
+            "Name": "airtabletorulebook",
+            "RelativePath": "/effortless-rulebook",
+            "CommandLine": f"airtable-to-rulebook -o {rb_filename} -account airtable -p \"view=Grid view\"",
+            "Enabled": False,
+            "IsDisabled": True,
+            "Description": "Pull rulebook from Airtable [DISABLED: rulebook JSON is authoritative; re-enable only with explicit user consent]"
+        },
+        {
+            "Name": "rulebooktoairtable",
+            "RelativePath": "/effortless-rulebook/push-to-airtable",
+            "CommandLine": f"rulebook-to-airtable -i ../{rb_filename} -account airtable -w 300000",
+            "Enabled": False,
+            "Description": "Reverse-sync: push rulebook changes back to Airtable"
+        }
+    ]
+}
+with open(out_path, "w") as f:
+    json.dump(cfg, f, indent=2)
+print(f"Wrote {out_path}")
+PYEOF
+
+    # Switch to the new rulebook so it's the active domain.
+    set_active_domain "$DOMAIN_NAME"
+
+    echo ""
+    echo -e "${BOLD}${GREEN}╔════════════════════════════════════════════════════════════╗${NC}"
+    echo -e "${BOLD}${GREEN}║${NC}              ${BOLD}${WHITE}NEW RULEBOOK CREATED${NC}                          ${BOLD}${GREEN}║${NC}"
+    echo -e "${BOLD}${GREEN}╚════════════════════════════════════════════════════════════╝${NC}"
+    echo ""
+    echo -e "  Domain:   ${WHITE}$DOMAIN_NAME${NC} ${GREEN}(now active)${NC}"
+    echo -e "  Location: ${WHITE}rulebook-examples/$DOMAIN_NAME/${NC}"
+    echo -e "  Rulebook: ${WHITE}effortless-rulebook/$RULEBOOK_FILENAME${NC}"
+    echo ""
+    echo -e "  ${DIM}Edit the rulebook JSON to define your tables and formulas,${NC}"
+    echo -e "  ${DIM}then return here and press [B] to build, [T] to test.${NC}"
+    echo ""
+    read -p "Press Enter to continue..."
 }
 
 # =============================================================================
@@ -1087,6 +1160,10 @@ CURRENT=0
 FAILED_SUBSTRATES=""
 FAILED_OUTPUTS_DIR=$(mktemp -d)
 trap "rm -rf $FAILED_OUTPUTS_DIR" EXIT
+
+# When iterating multiple substrates, suppress per-substrate browser pop-ups —
+# the aggregate orchestration-report.html is opened at the end of the loop.
+export ERB_NO_OPEN=1
 
 for substrate in $SUBSTRATES_TO_RUN; do
     substrate_dir="$SUBSTRATES_DIR/$substrate"
@@ -1640,9 +1717,9 @@ while true; do
     fi
 
     if [ -n "$PROJECT_TRANSPILERS" ]; then
-        read -p "Enter choice [1-$(echo "$PROJECT_TRANSPILERS" | wc -l | tr -d ' '), B, T, V, W, M, Q] (default: $DEFAULT_CHOICE): " USER_CHOICE
+        read -p "Enter choice [1-$(echo "$PROJECT_TRANSPILERS" | wc -l | tr -d ' '), B, T, V, W, P, N, I, C, D, Q] (default: $DEFAULT_CHOICE): " USER_CHOICE
     else
-        read -p "Enter choice [T, V, W, M, Q] (default: $DEFAULT_CHOICE): " USER_CHOICE
+        read -p "Enter choice [T, V, W, P, N, I, C, D, Q] (default: $DEFAULT_CHOICE): " USER_CHOICE
     fi
 
     if [ -z "$USER_CHOICE" ]; then
@@ -1713,8 +1790,20 @@ while true; do
         [Ww])
             action_run_web_portal
             ;;
-        [Mm])
-            action_more_menu
+        [Pp])
+            action_select_domain
+            ;;
+        [Nn])
+            action_new_rulebook
+            ;;
+        [Ii])
+            action_import_from_airtable
+            ;;
+        [Cc])
+            action_clean
+            ;;
+        [Dd])
+            action_devops_menu
             ;;
         [Qq])
             echo ""

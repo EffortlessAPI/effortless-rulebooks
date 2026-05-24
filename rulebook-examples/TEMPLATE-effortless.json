@@ -1,6 +1,6 @@
 {
-  "Name": "Star Trek TV Shows",
-  "Description": "A hierarchical media catalog demonstrating multi-level aggregations and polymorphic ratings.",
+  "Name": "__PROJECT_NAME__",
+  "Description": "__PROJECT_DESCRIPTION__",
   "Version": "1.0",
   "ProjectSettings": [
     {
@@ -13,16 +13,17 @@
     {
       "Name": "airtabletorulebook",
       "RelativePath": "/effortless-rulebook",
-      "CommandLine": "airtable-to-rulebook -o effortless-rulebook.json -account airtable -p \"view=Grid view\"",
-      "Enabled": true,
-      "Description": "Pull rulebook from Airtable (optional; edit effortless-rulebook.json directly if preferred)"
+      "CommandLine": "airtable-to-rulebook -o __PROJECT__-rulebook.json -account airtable -p \"view=Grid view\"",
+      "Enabled": false,
+      "IsDisabled": true,
+      "Description": "Pull rulebook from Airtable [DISABLED: rulebook JSON is authoritative; re-enable only with explicit user consent]"
     },
     {
       "Name": "rulebooktoairtable",
       "RelativePath": "/effortless-rulebook/push-to-airtable",
-      "CommandLine": "rulebook-to-airtable -i ../effortless-rulebook.json -account airtable -w 300000",
+      "CommandLine": "rulebook-to-airtable -i ../__PROJECT__-rulebook.json -account airtable -w 300000",
       "Enabled": false,
-      "Description": "Reverse-sync: push rulebook changes back to Airtable (optional)"
+      "Description": "Reverse-sync: push rulebook changes back to Airtable"
     }
   ]
 }

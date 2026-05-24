@@ -28,6 +28,24 @@ def read_file(path, default=""):
     except Exception:
         return default
 
+def _resolve_test_results_path():
+    erb_testing = os.environ.get('ERB_TESTING_DIR')
+    if not erb_testing:
+        raise RuntimeError(
+            "ERB_TESTING_DIR is not set. create-substrate-report.sh must be invoked "
+            "via take-test.sh -> grade-and-record.py (which inherits the env from "
+            "orchestrate.sh). Do not run this script standalone."
+        )
+    path = os.path.join(erb_testing, SUBSTRATE_NAME, 'test-results.md')
+    if not os.path.exists(path):
+        raise FileNotFoundError(
+            f"test-results.md not found at {path}. "
+            f"The grader (grade-and-record.py) is supposed to write it before "
+            f"this report-generator runs. If you're seeing this, the grader "
+            f"failed silently — investigate it, do not fall back."
+        )
+    return path
+
 
 # SQL files emitted by rulebook-to-postgres, in build order.
 # Each tuple: (file, tab_id, label, group)
@@ -50,7 +68,7 @@ for fname, tab_id, _label, _group in SQL_FILES:
     sql_sources[tab_id] = read_file(os.path.join(POSTGRES_DIR, fname), '-- (file not generated yet)')
 
 log_content = read_file('.last-run.log', 'No log available')
-test_results = read_file('test-results.md', 'No test results available')
+test_results = read_file(_resolve_test_results_path(), 'No test results available')
 readme = read_file(os.path.join(POSTGRES_DIR, 'README.md'), '')
 
 # Metrics from test-results.md

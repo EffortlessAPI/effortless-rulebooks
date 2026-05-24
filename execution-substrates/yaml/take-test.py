@@ -173,7 +173,7 @@ def _call_func(name: str, args: list):
 
 def _load_rulebook_for_active_domain() -> dict:
     """Locate the rulebook for the active domain. Uses ERB_RULEBOOK_PATH if set
-    (orchestrate.sh exports it), otherwise falls back to active-domain.txt."""
+    (orchestrate.sh exports it), otherwise reads active-domain.txt."""
     env_path = os.environ.get("ERB_RULEBOOK_PATH")
     if env_path and Path(env_path).exists():
         with open(env_path) as f:
@@ -181,7 +181,7 @@ def _load_rulebook_for_active_domain() -> dict:
     project_root = Path(script_dir).parent.parent
     active_file = project_root / "orchestration" / "active-domain.txt"
     domain = active_file.read_text().strip() if active_file.exists() else "customer-fullname"
-    candidate = project_root / "rulebook-examples" / domain / "effortless-rulebook" / "effortless-rulebook.json"
+    candidate = project_root / "rulebook-examples" / domain / "effortless-rulebook" / f"{domain}-rulebook.json"
     if candidate.exists():
         with open(candidate) as f:
             return json.load(f)

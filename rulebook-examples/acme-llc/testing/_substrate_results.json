@@ -56,12 +56,12 @@
   "python": {
     "last_run": {
       "status": "success",
-      "duration_seconds": 0.16289901733398438,
+      "duration_seconds": 0.0,
       "exit_code": 0,
       "score": 100.0
     },
     "last_successful_run": {
-      "duration_seconds": 0.16289901733398438,
+      "duration_seconds": 0.0,
       "status": "success",
       "test_results": {
         "total_fields_tested": 6,

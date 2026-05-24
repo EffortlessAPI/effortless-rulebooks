@@ -112,6 +112,18 @@ def main():
             cmd += ['--log', args.log]
         subprocess.run(cmd)
 
+    # Pop the fresh report unless suppressed (ERB_NO_OPEN=1 used by orchestrate.sh
+    # when iterating many substrates — it opens the aggregate report at the end).
+    if not os.environ.get('ERB_NO_OPEN'):
+        report = substrate_dir / 'substrate-report.html'
+        if report.exists():
+            if sys.platform == 'darwin':
+                subprocess.run(['open', str(report)], check=False)
+            elif sys.platform.startswith('linux'):
+                subprocess.run(['xdg-open', str(report)], check=False)
+            elif sys.platform == 'win32':
+                os.startfile(str(report))  # type: ignore[attr-defined]
+
 
 if __name__ == '__main__':
     main()
