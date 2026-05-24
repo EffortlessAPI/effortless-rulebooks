@@ -49,17 +49,55 @@ PROJECT_ROOT = SCRIPT_DIR.parent
 # Transpiler registry  —  route → injector script
 # ---------------------------------------------------------------------------
 TRANSPILERS = {
-    "rulebook-to-python": {
-        "script": PROJECT_ROOT / "execution-substrates" / "python" / "inject-into-python.py",
-        "description": "Generate Python calculation library from rulebook",
-    },
-    "rulebook-to-postgres": {
-        "script": PROJECT_ROOT / "execution-substrates" / "effortless-postgres" / "inject-into-postgres.py",
-        "description": "Generate PostgreSQL schema/functions/views from rulebook",
-    },
+    # --- Airtable sync ---
     "airtable-to-rulebook": {
         "tool": "airtable-to-rulebook",
         "description": "Pull rulebook from Airtable base",
+    },
+    # --- Local inject-script substrates ---
+    "rulebook-to-python": {
+        "script": PROJECT_ROOT / "execution-substrates" / "python" / "inject-into-python.py",
+        "description": "Generate Python dataclass + calc library from rulebook",
+    },
+    "rulebook-to-golang": {
+        "script": PROJECT_ROOT / "execution-substrates" / "golang" / "inject-into-golang.py",
+        "description": "Generate Go structs + business-logic from rulebook",
+    },
+    "rulebook-to-binary": {
+        "script": PROJECT_ROOT / "execution-substrates" / "binary" / "inject-into-binary.py",
+        "description": "Generate ARM64 assembly calculation stub from rulebook",
+    },
+    "rulebook-to-cobol": {
+        "script": PROJECT_ROOT / "execution-substrates" / "cobol" / "inject-into-cobol.py",
+        "description": "Generate COBOL computation program from rulebook",
+    },
+    "rulebook-to-csv": {
+        "script": PROJECT_ROOT / "execution-substrates" / "csv" / "inject-into-csv.py",
+        "description": "Generate CSV exports + rulebook.xlsx from rulebook",
+    },
+    "rulebook-to-xlsx": {
+        "script": PROJECT_ROOT / "execution-substrates" / "xlsx" / "inject-into-xlsx.py",
+        "description": "Generate Excel workbook with formulas from rulebook",
+    },
+    "rulebook-to-uml": {
+        "script": PROJECT_ROOT / "execution-substrates" / "uml" / "inject-into-uml.py",
+        "description": "Generate PlantUML class diagram + OCL constraints from rulebook",
+    },
+    "rulebook-to-owl": {
+        "script": PROJECT_ROOT / "execution-substrates" / "owl" / "inject-into-owl.py",
+        "description": "Generate RDF/OWL ontology from rulebook",
+    },
+    "rulebook-to-english": {
+        "script": PROJECT_ROOT / "execution-substrates" / "english" / "inject-into-english.py",
+        "description": "Generate plain-English business-rule narrative from rulebook",
+    },
+    "rulebook-to-explain-dag": {
+        "script": PROJECT_ROOT / "execution-substrates" / "explain-dag" / "inject-into-explain-dag.py",
+        "description": "Generate JSON derivation-tracing DAG spec from rulebook",
+    },
+    "rulebook-to-airtable": {
+        "script": PROJECT_ROOT / "execution-substrates" / "airtable" / "inject-into-airtable.py",
+        "description": "Sync rulebook schema back into Airtable base",
     },
 }
 

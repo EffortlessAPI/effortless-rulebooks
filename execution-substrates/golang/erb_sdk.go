@@ -12,6 +12,7 @@ import (
 	"fmt"
 	"os"
 	"strconv"
+	"strings"
 )
 
 // =============================================================================
@@ -89,120 +90,86 @@ func (f FlexibleString) String() string {
 }
 
 // =============================================================================
-// CLIENT TABLE
-// Table: Client
+// CUSTOMERS TABLE
+// Table: Customers
 // =============================================================================
 
-// Client represents a row in the Client table
-// Table: Client
-type Client struct {
-	ClientId string `json:"client_id"`
-	Customer *string `json:"customer"` // Identifier for the customers.
+// Customer represents a row in the Customers table
+// Table: Customers
+type Customer struct {
+	CustomerId string `json:"customer_id"`
 	EmailAddress *string `json:"email_address"` // Thec ustomers email address
 	FirstName *string `json:"first_name"` // First Name of the customer - used to make the full name
 	LastName *string `json:"last_name"` // Last Name of the customer - used to make the full name
+	Name *string `json:"name"` // Identifier for the customers.
 	FullName *string `json:"full_name"` // Full name is computed from the first and last name of the customer
 }
 
 // --- Individual Calculation Functions ---
 
+// CalcName computes the Name calculated field
+// Identifier for the customers.
+// Formula: =SUBSTITUTE({{EmailAddress}}, "@", "-")
+func (tc *Customer) CalcName() string {
+	return strings.ReplaceAll(stringVal(tc.EmailAddress), "@", "-")
+}
+
 // CalcFullName computes the FullName calculated field
 // Full name is computed from the first and last name of the customer
-// Formula: ={{FirstName}} & " " & {{LastName}}
-func (tc *Client) CalcFullName() string {
-	return stringVal(tc.FirstName) + " " + stringVal(tc.LastName)
+// Formula: ={{LastName}} & ", " & {{FirstName}}
+func (tc *Customer) CalcFullName() string {
+	return stringVal(tc.LastName) + ", " + stringVal(tc.FirstName)
 }
 
 // --- Compute All Calculated Fields ---
 
 // ComputeAll computes all calculated fields and returns an updated struct
-func (tc *Client) ComputeAll() *Client {
+func (tc *Customer) ComputeAll() *Customer {
 	// Level 1 calculations
-	fullName := stringVal(tc.FirstName) + " " + stringVal(tc.LastName)
+	name := strings.ReplaceAll(stringVal(tc.EmailAddress), "@", "-")
+	fullName := stringVal(tc.LastName) + ", " + stringVal(tc.FirstName)
 
-	return &Client{
-		ClientId: tc.ClientId,
-		Customer: tc.Customer,
+	return &Customer{
+		CustomerId: tc.CustomerId,
 		EmailAddress: tc.EmailAddress,
 		FirstName: tc.FirstName,
 		LastName: tc.LastName,
+		Name: nilIfEmpty(name),
 		FullName: nilIfEmpty(fullName),
 	}
 }
 
 // =============================================================================
-// PROJECTS TABLE
-// Table: Projects
+// ERBVERSIONS TABLE
+// Table: ERBVersions
 // =============================================================================
 
-// Project represents a row in the Projects table
-// Table: Projects
-type Project struct {
-	ProjectId string `json:"project_id"`
+// ERBVersion represents a row in the ERBVersions table
+// Table: ERBVersions
+type ERBVersion struct {
+	ERBVersionId string `json:"erb_version_id"`
+	BaseId *string `json:"base_id"`
 	Name *string `json:"name"`
-	Description *string `json:"description"`
-	ProjectType *string `json:"project_type"`
-	ProjectTypeName *string `json:"project_type_name"`
-	ProjectTypeDescription *string `json:"project_type_description"`
-	ProjectTypeRequiresManagerApproval *bool `json:"project_type_requires_manager_approval"`
-	DueDate *string `json:"due_date"`
-	IsApproved *bool `json:"is_approved"`
-	ApprovedBy *string `json:"approved_by"`
-	ApprovedByRoleIsManager *bool `json:"approved_by_role_is_manager"`
-	ApprovedByName *string `json:"approved_by_name"`
-	ApprovedByEmailAddress *string `json:"approved_by_email_address"`
-	ApprovedByPhoneNumber *string `json:"approved_by_phone_number"`
+	Message *string `json:"message"`
+	Notes *string `json:"notes"`
+	CommitDate *string `json:"commit_date"`
+	IsPublished *bool `json:"is_published"`
 }
 
 // =============================================================================
-// EMPLOYEES TABLE
-// Table: Employees
+// ERBCUSTOMIZATIONS TABLE
+// Table: ERBCustomizations
 // =============================================================================
 
-// Employee represents a row in the Employees table
-// Table: Employees
-type Employee struct {
-	EmployeeId string `json:"employee_id"`
+// ERBCustomization represents a row in the ERBCustomizations table
+// Table: ERBCustomizations
+type ERBCustomization struct {
+	ERBCustomizationId string `json:"erb_customization_id"`
 	Name *string `json:"name"`
-	EmailAddress *string `json:"email_address"`
-	PhoneNumber *string `json:"phone_number"`
-	Role *string `json:"role"`
-	RoleName *string `json:"role_name"`
-	RoleDescription *string `json:"role_description"`
-	Projects *string `json:"projects"`
-	RoleIsManager *bool `json:"role_is_manager"`
-}
-
-// =============================================================================
-// ROLES TABLE
-// Table: Roles
-// =============================================================================
-
-// Role represents a row in the Roles table
-// Table: Roles
-type Role struct {
-	RoleId string `json:"role_id"`
-	Name *string `json:"name"`
-	Description *string `json:"description"`
-	IsManager *bool `json:"is_manager"`
-	Employees *string `json:"employees"`
-	CountOfEmployees *int `json:"count_of_employees"`
-}
-
-// =============================================================================
-// TYPESOFPROJECT TABLE
-// Table: TypesOfProject
-// =============================================================================
-
-// TypesOfProject represents a row in the TypesOfProject table
-// Table: TypesOfProject
-type TypesOfProject struct {
-	TypesOfProjectId string `json:"types_of_project_id"`
-	Name *string `json:"name"`
-	Description *string `json:"description"`
-	RequiresManagerApproval *bool `json:"requires_manager_approval"`
-	Projects *string `json:"projects"`
-	CountOfProjects *int `json:"count_of_projects"`
+	Title *string `json:"title"`
+	SQLCode *string `json:"sql_code"`
+	SQLTarget *string `json:"sql_target"`
+	CustomizationType *string `json:"customization_type"`
 }
 
 // =============================================================================
@@ -211,14 +178,14 @@ type TypesOfProject struct {
 // Save: only tables that have computed fields to write back
 // =============================================================================
 
-// LoadClientRecords loads Client records from a JSON file
-func LoadClientRecords(path string) ([]Client, error) {
+// LoadCustomerRecords loads Customers records from a JSON file
+func LoadCustomerRecords(path string) ([]Customer, error) {
 	data, err := os.ReadFile(path)
 	if err != nil {
 		return nil, fmt.Errorf("failed to read file: %w", err)
 	}
 
-	var records []Client
+	var records []Customer
 	if err := json.Unmarshal(data, &records); err != nil {
 		return nil, fmt.Errorf("failed to parse file: %w", err)
 	}
@@ -226,124 +193,8 @@ func LoadClientRecords(path string) ([]Client, error) {
 	return records, nil
 }
 
-// SaveClientRecords saves computed Client records to a JSON file
-func SaveClientRecords(path string, records []Client) error {
-	data, err := json.MarshalIndent(records, "", "  ")
-	if err != nil {
-		return fmt.Errorf("failed to marshal records: %w", err)
-	}
-
-	if err := os.WriteFile(path, data, 0644); err != nil {
-		return fmt.Errorf("failed to write records: %w", err)
-	}
-
-	return nil
-}
-
-// LoadProjectRecords loads Projects records from a JSON file
-func LoadProjectRecords(path string) ([]Project, error) {
-	data, err := os.ReadFile(path)
-	if err != nil {
-		return nil, fmt.Errorf("failed to read file: %w", err)
-	}
-
-	var records []Project
-	if err := json.Unmarshal(data, &records); err != nil {
-		return nil, fmt.Errorf("failed to parse file: %w", err)
-	}
-
-	return records, nil
-}
-
-// SaveProjectRecords saves computed Projects records to a JSON file
-func SaveProjectRecords(path string, records []Project) error {
-	data, err := json.MarshalIndent(records, "", "  ")
-	if err != nil {
-		return fmt.Errorf("failed to marshal records: %w", err)
-	}
-
-	if err := os.WriteFile(path, data, 0644); err != nil {
-		return fmt.Errorf("failed to write records: %w", err)
-	}
-
-	return nil
-}
-
-// LoadEmployeeRecords loads Employees records from a JSON file
-func LoadEmployeeRecords(path string) ([]Employee, error) {
-	data, err := os.ReadFile(path)
-	if err != nil {
-		return nil, fmt.Errorf("failed to read file: %w", err)
-	}
-
-	var records []Employee
-	if err := json.Unmarshal(data, &records); err != nil {
-		return nil, fmt.Errorf("failed to parse file: %w", err)
-	}
-
-	return records, nil
-}
-
-// SaveEmployeeRecords saves computed Employees records to a JSON file
-func SaveEmployeeRecords(path string, records []Employee) error {
-	data, err := json.MarshalIndent(records, "", "  ")
-	if err != nil {
-		return fmt.Errorf("failed to marshal records: %w", err)
-	}
-
-	if err := os.WriteFile(path, data, 0644); err != nil {
-		return fmt.Errorf("failed to write records: %w", err)
-	}
-
-	return nil
-}
-
-// LoadRoleRecords loads Roles records from a JSON file
-func LoadRoleRecords(path string) ([]Role, error) {
-	data, err := os.ReadFile(path)
-	if err != nil {
-		return nil, fmt.Errorf("failed to read file: %w", err)
-	}
-
-	var records []Role
-	if err := json.Unmarshal(data, &records); err != nil {
-		return nil, fmt.Errorf("failed to parse file: %w", err)
-	}
-
-	return records, nil
-}
-
-// SaveRoleRecords saves computed Roles records to a JSON file
-func SaveRoleRecords(path string, records []Role) error {
-	data, err := json.MarshalIndent(records, "", "  ")
-	if err != nil {
-		return fmt.Errorf("failed to marshal records: %w", err)
-	}
-
-	if err := os.WriteFile(path, data, 0644); err != nil {
-		return fmt.Errorf("failed to write records: %w", err)
-	}
-
-	return nil
-}
-
-// LoadTypesOfProjectRecords loads TypesOfProject records from a JSON file
-func LoadTypesOfProjectRecords(path string) ([]TypesOfProject, error) {
-	data, err := os.ReadFile(path)
-	if err != nil {
-		return nil, fmt.Errorf("failed to read file: %w", err)
-	}
-
-	var records []TypesOfProject
-	if err := json.Unmarshal(data, &records); err != nil {
-		return nil, fmt.Errorf("failed to parse file: %w", err)
-	}
-
-	return records, nil
-}
-
-// SaveTypesOfProjectRecords saves computed TypesOfProject records to a JSON file
-func SaveTypesOfProjectRecords(path string, records []TypesOfProject) error {
+// SaveCustomerRecords saves computed Customers records to a JSON file
+func SaveCustomerRecords(path string, records []Customer) error {
 	data, err := json.MarshalIndent(records, "", "  ")
 	if err != nil {
 		return fmt.Errorf("failed to marshal records: %w", err)
