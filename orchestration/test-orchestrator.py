@@ -35,14 +35,23 @@ TESTING_DIR = os.path.join(PROJECT_ROOT, "testing")
 ANSWER_KEYS_DIR = os.path.join(TESTING_DIR, "answer-keys")
 BLANK_TESTS_DIR = os.path.join(TESTING_DIR, "blank-tests")
 SUBSTRATES_DIR = os.path.join(PROJECT_ROOT, "execution-substrates")
-RULEBOOK_DIR = os.path.join(PROJECT_ROOT, "effortless-rulebook")
-RULEBOOK_PATH = os.path.join(RULEBOOK_DIR, "effortless-rulebook.json")
 SUMMARY_PATH = os.path.join(SCRIPT_DIR, "all-tests-results.md")
+
+def _get_active_domain():
+    active_domain_file = os.path.join(SCRIPT_DIR, "active-domain.txt")
+    if os.path.exists(active_domain_file):
+        domain = open(active_domain_file).read().strip()
+        if domain:
+            return domain
+    return "customer-fullname"
+
+ACTIVE_DOMAIN = _get_active_domain()
+RULEBOOK_DIR = os.path.join(PROJECT_ROOT, "rulebook-examples", ACTIVE_DOMAIN, "effortless-rulebook")
+RULEBOOK_PATH = os.path.join(RULEBOOK_DIR, "effortless-rulebook.json")
 
 # Canonical substrate ordering — matches SUBSTRATE_ORDER in orchestrate.sh.
 # Substrates not in this list fall through to the end, alphabetically.
 SUBSTRATE_ORDER = [
-    "airtable",
     "english",
     "python",
     "golang",

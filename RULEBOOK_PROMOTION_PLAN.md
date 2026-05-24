@@ -8,6 +8,8 @@ an `effortless-rulebooks/` folder with one subfolder per domain.
 
 ## Todo List
 
+- [x] **Update Orchestration: Rulebook-first, Airtable-as-import** ✓
+
 - [ ] **Finish ACME rulebooks** — Complete effortless-rulebooks/acme-corporation/ and effortless-rulebooks/acme-llc/ with full substrate generation and conformance testing.
 - [ ] **Audit current start.sh** — Map every assumption that Airtable is HEAD so we know exactly what breaks.
   - `orchestration/orchestrate.sh`: Lines 131-152 (SUBSTRATE_ORDER array hardcodes "airtable" as first substrate)

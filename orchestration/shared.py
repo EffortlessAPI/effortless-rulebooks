@@ -10,13 +10,30 @@ from pathlib import Path
 from datetime import datetime
 
 
-def get_rulebook_path():
-    """Get the path to the effortless-rulebook.json file.
+def get_active_domain():
+    """Return the active domain name from orchestration/active-domain.txt.
 
-    Scripts run from /execution-substrates/{candidate}/ so the rulebook
-    is at ../../effortless-rulebook/effortless-rulebook.json
+    Falls back to 'customer-fullname' if the file is missing.
+    Scripts may run from any directory, so resolve relative to this file.
     """
-    return Path("../../effortless-rulebook/effortless-rulebook.json")
+    active_domain_file = Path(__file__).parent / "active-domain.txt"
+    if active_domain_file.exists():
+        domain = active_domain_file.read_text(encoding="utf-8").strip()
+        if domain:
+            return domain
+    return "customer-fullname"
+
+
+def get_rulebook_path():
+    """Get the path to the effortless-rulebook.json for the active domain.
+
+    Resolves via orchestration/active-domain.txt →
+    rulebook-examples/<domain>/effortless-rulebook/effortless-rulebook.json
+    """
+    domain = get_active_domain()
+    # This file lives at orchestration/shared.py; project root is one level up.
+    project_root = Path(__file__).parent.parent
+    return project_root / "rulebook-examples" / domain / "effortless-rulebook" / "effortless-rulebook.json"
 
 
 def load_rulebook():

@@ -326,6 +326,10 @@ if __name__ == "__main__":
     fetch_parser = subparsers.add_parser("fetch-name", help="Fetch base name from Airtable")
     fetch_parser.add_argument("base_id", help="Airtable base ID")
 
+    # get-name command: prints only the name (for use by shell scripts)
+    get_name_parser = subparsers.add_parser("get-name", help="Print bare base name (for shell capture)")
+    get_name_parser.add_argument("base_id", help="Airtable base ID")
+
     # Sync command
     subparsers.add_parser("sync", help="Sync bases list with current active base")
 
@@ -358,6 +362,12 @@ if __name__ == "__main__":
                 print(f"Base name: {name}")
             else:
                 print("Could not fetch base name")
+                sys.exit(1)
+        elif args.command == "get-name":
+            name = fetch_base_name_or_fail(args.base_id)
+            if name:
+                print(name)
+            else:
                 sys.exit(1)
         elif args.command == "sync":
             sync_bases()

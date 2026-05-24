@@ -12,14 +12,8 @@ set -o pipefail  # CRITICAL: Catch failures in piped commands (e.g., bash script
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
 SUBSTRATES_DIR="$PROJECT_ROOT/execution-substrates"
-
-# Project config: effortless.json (new) supersedes ssotme.json (legacy).
-# Prefer effortless.json when both exist; fall back to ssotme.json otherwise.
-if [ -f "$PROJECT_ROOT/effortless.json" ]; then
-    SSOTME_JSON="$PROJECT_ROOT/effortless.json"
-else
-    SSOTME_JSON="$PROJECT_ROOT/ssotme.json"
-fi
+RULEBOOK_EXAMPLES_DIR="$PROJECT_ROOT/rulebook-examples"
+ACTIVE_DOMAIN_FILE="$SCRIPT_DIR/active-domain.txt"
 
 # =============================================================================
 # COLORS
@@ -99,41 +93,50 @@ fi
 # =============================================================================
 # HELPER FUNCTIONS
 # =============================================================================
-get_current_base_id() {
-    if [ -f "$SSOTME_JSON" ]; then
-        python3 -c "
-import json
-with open('$SSOTME_JSON', 'r') as f:
-    config = json.load(f)
-for setting in config.get('ProjectSettings', []):
-    if setting.get('Name') == 'baseId':
-        print(setting.get('Value', ''))
-        break
-"
+get_active_domain() {
+    if [ -f "$ACTIVE_DOMAIN_FILE" ]; then
+        cat "$ACTIVE_DOMAIN_FILE" | tr -d '[:space:]'
     else
-        echo ""
+        echo "customer-fullname"
     fi
+}
+
+set_active_domain() {
+    echo "$1" > "$ACTIVE_DOMAIN_FILE"
+}
+
+get_domain_rulebook_path() {
+    local domain="${1:-$(get_active_domain)}"
+    echo "$RULEBOOK_EXAMPLES_DIR/$domain/effortless-rulebook/effortless-rulebook.json"
 }
 
 get_project_name() {
-    if [ -f "$SSOTME_JSON" ]; then
+    local domain
+    domain=$(get_active_domain)
+    local effortless_json="$RULEBOOK_EXAMPLES_DIR/$domain/effortless.json"
+    if [ -f "$effortless_json" ]; then
         python3 -c "
 import json
-with open('$SSOTME_JSON', 'r') as f:
+with open('$effortless_json', 'r') as f:
     config = json.load(f)
-print(config.get('Name', 'Unknown'))
+print(config.get('Name', '$domain'))
 "
     else
-        echo "Unknown"
+        echo "$domain"
     fi
 }
 
-# Canonical substrate ordering — airtable first (utility: rulebook sync),
-# then computation substrates grouped roughly from "most feature-complete" to
-# "spreadsheet/binary/exotic" so the menu tells a story. Any substrate not
+list_domains() {
+    for d in "$RULEBOOK_EXAMPLES_DIR"/*/; do
+        [ -d "$d" ] || continue
+        basename "$d"
+    done
+}
+
+# Canonical substrate ordering — computation substrates grouped roughly from
+# "most feature-complete" to "spreadsheet/binary/exotic". Any substrate not
 # listed here falls through to the end in alphabetical order.
 SUBSTRATE_ORDER=(
-    airtable
     english
     python
     golang
@@ -192,56 +195,12 @@ get_valid_substrates() {
     echo "${ordered[@]}"
 }
 
-get_bases_list() {
-    # Read from separate bases.json file (primary) or fallback to ssotme.json
-    BASES_FILE="$SCRIPT_DIR/bases.json"
-    python3 -c "
-import json
-import os
-import sys
-
-bases_file = '$BASES_FILE'
-ssotme_file = '$SSOTME_JSON'
-
-# Try bases.json first
-if os.path.exists(bases_file):
-    try:
-        with open(bases_file, 'r') as f:
-            bases = json.load(f)
-            for base in bases:
-                print(base['id'] + '|' + base['name'])
-        sys.exit(0)
-    except SystemExit:
-        raise
-    except Exception:
-        pass
-
-# Fallback to ssotme.json
-if os.path.exists(ssotme_file):
-    try:
-        with open(ssotme_file, 'r') as f:
-            config = json.load(f)
-        for setting in config.get('ProjectSettings', []):
-            if setting.get('Name') == 'bases':
-                bases = json.loads(setting.get('Value', '[]'))
-                for base in bases:
-                    print(base['id'] + '|' + base['name'])
-                break
-    except Exception:
-        pass
-"
-}
-
-get_bases_count() {
-    get_bases_list | wc -l | tr -d ' '
-}
-
 # =============================================================================
 # MENU DISPLAY
 # =============================================================================
 show_menu() {
     PROJECT_NAME=$(get_project_name)
-    CURRENT_BASE=$(get_current_base_id)
+    ACTIVE_DOMAIN=$(get_active_domain)
 
     echo ""
     echo -e "${BOLD}${CYAN}╔════════════════════════════════════════════════════════════╗${NC}"
@@ -249,7 +208,7 @@ show_menu() {
     echo -e "${BOLD}${CYAN}╚════════════════════════════════════════════════════════════╝${NC}"
     echo ""
     echo -e "  Project:  ${WHITE}$PROJECT_NAME${NC}"
-    echo -e "  Airtable: ${CYAN}https://airtable.com/$CURRENT_BASE${NC}"
+    echo -e "  Domain:   ${CYAN}$ACTIVE_DOMAIN${NC}"
     echo ""
 
     # Get list of valid substrates for the menu
@@ -261,6 +220,8 @@ show_menu() {
     echo ""
     echo -e "  ${GREEN}[A]${NC} Run ${BOLD}ALL${NC} substrates ($TOTAL_SUBSTRATES total) ${DIM}(default)${NC}"
     echo -e "  ${MAGENTA}[V]${NC} ${BOLD}VIEW RESULTS${NC} - Generate and open HTML report"
+    echo -e "  ${YELLOW}[O]${NC} ${BOLD}SELECT ONTOLOGY${NC} - Switch active rulebook-examples domain"
+    echo -e "  ${BLUE}[I]${NC} ${BOLD}IMPORT FROM AIRTABLE${NC} - Pull a base by ID into rulebook-examples"
     echo ""
 
     echo -e "  ${DIM}────────────────────────────────────────${NC}"
@@ -282,7 +243,6 @@ show_menu() {
     echo -e "  ${DIM}────────────────────────────────────────${NC}"
     echo -e "  ${RED}[C]${NC} ${BOLD}CLEAN${NC} all generated files"
     echo -e "  ${YELLOW}[D]${NC} ${BOLD}DEV-OPS${NC} menu (PostgreSQL init, Effortless setup)"
-    echo -e "  ${DIM}Airtable sync is substrate [01] — it switches base & pulls rulebook${NC}"
 
     echo ""
 
@@ -294,12 +254,79 @@ show_menu() {
 # =============================================================================
 # ACTION FUNCTIONS
 # =============================================================================
-action_pull_airtable() {
-    CURRENT_BASE=$(get_current_base_id)
+action_select_domain() {
+    CURRENT_DOMAIN=$(get_active_domain)
 
+    echo ""
+    echo -e "${BOLD}${CYAN}╔════════════════════════════════════════════════════════════╗${NC}"
+    echo -e "${BOLD}${CYAN}║${NC}              ${BOLD}${WHITE}SELECT ONTOLOGY${NC}                               ${BOLD}${CYAN}║${NC}"
+    echo -e "${BOLD}${CYAN}╚════════════════════════════════════════════════════════════╝${NC}"
+    echo ""
+    echo -e "  Active: ${GREEN}${CURRENT_DOMAIN}${NC}"
+    echo ""
+
+    DOMAINS_ARRAY=()
+    INDEX=1
+    while IFS= read -r domain; do
+        DOMAINS_ARRAY+=("$domain")
+        if [ "$domain" = "$CURRENT_DOMAIN" ]; then
+            echo -e "  ${GREEN}[$INDEX]${NC} ${GREEN}${domain}${NC} ${DIM}(active)${NC}"
+        else
+            echo -e "  ${CYAN}[$INDEX]${NC} ${domain}"
+        fi
+        INDEX=$((INDEX + 1))
+    done < <(list_domains)
+
+    DOMAINS_COUNT=${#DOMAINS_ARRAY[@]}
+
+    echo ""
+    echo -e "  ${RED}[Q]${NC} Cancel"
+    echo ""
+
+    read -p "  Select domain [1-$DOMAINS_COUNT, Q]: " DOMAIN_CHOICE
+
+    case $DOMAIN_CHOICE in
+        [Qq]|"")
+            echo -e "  ${DIM}Cancelled - no changes made${NC}"
+            echo ""
+            return
+            ;;
+        [0-9]|[0-9][0-9])
+            if [ "$DOMAIN_CHOICE" -ge 1 ] && [ "$DOMAIN_CHOICE" -le "$DOMAINS_COUNT" ]; then
+                NEW_DOMAIN="${DOMAINS_ARRAY[$((DOMAIN_CHOICE - 1))]}"
+                if [ "$NEW_DOMAIN" = "$CURRENT_DOMAIN" ]; then
+                    echo -e "  ${DIM}Already using this domain${NC}"
+                    echo ""
+                    read -p "Press Enter to continue..."
+                    return
+                fi
+                RULEBOOK="$(get_domain_rulebook_path "$NEW_DOMAIN")"
+                if [ ! -f "$RULEBOOK" ]; then
+                    echo -e "${RED}No rulebook found at $RULEBOOK${NC}"
+                    read -p "Press Enter to continue..."
+                    return
+                fi
+                set_active_domain "$NEW_DOMAIN"
+                echo ""
+                echo -e "${BOLD}${GREEN}Switched to: ${WHITE}${NEW_DOMAIN}${NC}"
+                echo -e "${DIM}Run [A] to rebuild substrates against the new rulebook.${NC}"
+            else
+                echo -e "${RED}Invalid selection: $DOMAIN_CHOICE${NC}"
+            fi
+            ;;
+        *)
+            echo -e "${RED}Invalid option: $DOMAIN_CHOICE${NC}"
+            ;;
+    esac
+    echo ""
+    read -p "Press Enter to continue..."
+}
+
+action_import_from_airtable() {
     if [ "$SSOTME_AVAILABLE" != true ]; then
         echo ""
         echo -e "${RED}Effortless CLI is not installed.${NC}"
+        echo -e "Importing from Airtable requires the Effortless CLI."
         echo -e "Visit ${CYAN}https://www.effortlessapi.com${NC} for installation instructions."
         echo ""
         read -p "Press Enter to continue..."
@@ -308,260 +335,113 @@ action_pull_airtable() {
 
     echo ""
     echo -e "${BOLD}${CYAN}╔════════════════════════════════════════════════════════════╗${NC}"
-    echo -e "${BOLD}${CYAN}║${NC}              ${BOLD}${WHITE}PULL & INJECT RULEBOOK${NC}                        ${BOLD}${CYAN}║${NC}"
+    echo -e "${BOLD}${CYAN}║${NC}              ${BOLD}${WHITE}IMPORT FROM AIRTABLE${NC}                          ${BOLD}${CYAN}║${NC}"
     echo -e "${BOLD}${CYAN}╚════════════════════════════════════════════════════════════╝${NC}"
     echo ""
-    echo -e "  Base ID: ${WHITE}$CURRENT_BASE${NC}"
+    echo -e "  This pulls a base from Airtable and creates a new local rulebook-example."
+    echo -e "  After import the base becomes a standalone local ontology."
     echo ""
 
-    # Step 1: Pull from Airtable (with offline fallback)
-    echo -e "${BOLD}${BLUE}┌──────────────────────────────────────────────────────────────┐${NC}"
-    echo -e "${BOLD}${BLUE}│${NC} ${BOLD}${WHITE}STEP 1:${NC} ${YELLOW}Syncing rulebook (with offline fallback)...${NC}        ${BOLD}${BLUE}│${NC}"
-    echo -e "${BOLD}${BLUE}└──────────────────────────────────────────────────────────────┘${NC}"
-    echo ""
+    read -p "  Enter Airtable base ID (e.g., appXXXXX) or [Q] to cancel: " BASE_ID
 
-    cd "$PROJECT_ROOT"
-    python3 "$SCRIPT_DIR/rulebook-cache.py" sync
-
-    echo ""
-
-    # Step 2: Generate answer keys from rulebook
-    echo -e "${BOLD}${BLUE}┌──────────────────────────────────────────────────────────────┐${NC}"
-    echo -e "${BOLD}${BLUE}│${NC} ${BOLD}${WHITE}STEP 2:${NC} ${YELLOW}Generating answer keys from rulebook...${NC}            ${BOLD}${BLUE}│${NC}"
-    echo -e "${BOLD}${BLUE}└──────────────────────────────────────────────────────────────┘${NC}"
-    echo ""
-
-    python3 -c "
-import sys
-sys.path.insert(0, '$SCRIPT_DIR')
-from importlib.util import spec_from_loader, module_from_spec
-from importlib.machinery import SourceFileLoader
-
-# Load test-orchestrator module
-spec = spec_from_loader('test_orchestrator', SourceFileLoader('test_orchestrator', '$SCRIPT_DIR/test-orchestrator.py'))
-test_orch = module_from_spec(spec)
-spec.loader.exec_module(test_orch)
-
-# Load rulebook (no database connection needed - answer keys come from rulebook seed data)
-rulebook = test_orch.load_rulebook()
-
-# Generate answer keys and blank tests
-all_answer_keys = test_orch.generate_all_answer_keys(rulebook)
-test_orch.generate_all_blank_tests(all_answer_keys, rulebook)
-
-print('Answer keys and blank tests generated.')
-"
-
-    echo ""
-
-    # Step 3: Inject rulebook into all substrates
-    echo -e "${BOLD}${BLUE}┌──────────────────────────────────────────────────────────────┐${NC}"
-    echo -e "${BOLD}${BLUE}│${NC} ${BOLD}${WHITE}STEP 3:${NC} ${YELLOW}Injecting rulebook into all substrates...${NC}          ${BOLD}${BLUE}│${NC}"
-    echo -e "${BOLD}${BLUE}└──────────────────────────────────────────────────────────────┘${NC}"
-    echo ""
-
-    SUBSTRATES=$(ls -d "$SUBSTRATES_DIR"/*/ 2>/dev/null | xargs -n1 basename)
-    for substrate in $SUBSTRATES; do
-        substrate_dir="$SUBSTRATES_DIR/$substrate"
-        inject_script="$substrate_dir/inject-into-${substrate}.py"
-
-        if [ -f "$inject_script" ]; then
-            echo -e "  ${CYAN}▶${NC} Injecting into ${BOLD}$substrate${NC}..."
-            (cd "$substrate_dir" && python3 "inject-into-${substrate}.py" 2>&1) || {
-                echo -e "    ${YELLOW}⚠${NC} Warning: inject-into-${substrate}.py had issues"
-            }
-        else
-            echo -e "  ${DIM}○ $substrate: no inject script${NC}"
-        fi
-    done
-
-    echo ""
-    echo -e "${BOLD}${GREEN}╔════════════════════════════════════════════════════════════╗${NC}"
-    echo -e "${BOLD}${GREEN}║${NC}              ${BOLD}${WHITE}PULL & INJECT COMPLETE${NC}                        ${BOLD}${GREEN}║${NC}"
-    echo -e "${BOLD}${GREEN}╚════════════════════════════════════════════════════════════╝${NC}"
-    echo ""
-    echo -e "${DIM}Rulebook has been pulled from Airtable and injected into all substrates.${NC}"
-    echo -e "${DIM}Run tests with [A] to verify all substrates.${NC}"
-    echo ""
-    read -p "Press Enter to continue..."
-}
-
-action_change_base_id() {
-    CURRENT_BASE=$(get_current_base_id)
-    PROJECT_NAME=$(get_project_name)
-
-    if [ "$SSOTME_AVAILABLE" != true ]; then
-        echo ""
-        echo -e "${RED}Effortless CLI is not installed.${NC}"
-        echo -e "Base swapping requires the Effortless CLI to regenerate code after changing the base."
-        echo ""
-        read -p "Press Enter to continue..."
-        return
-    fi
-
-    echo ""
-    echo -e "${BOLD}${CYAN}╔════════════════════════════════════════════════════════════╗${NC}"
-    echo -e "${BOLD}${CYAN}║${NC}              ${BOLD}${WHITE}SELECT AIRTABLE BASE${NC}                          ${BOLD}${CYAN}║${NC}"
-    echo -e "${BOLD}${CYAN}╚════════════════════════════════════════════════════════════╝${NC}"
-    echo ""
-    echo -e "  Current: ${GREEN}${PROJECT_NAME}${NC} ${DIM}(${CURRENT_BASE})${NC}"
-    echo ""
-    echo -e "  ${DIM}────────────────────────────────────────${NC}"
-    echo -e "  ${BOLD}${WHITE}Known bases:${NC}"
-    echo ""
-
-    # Sync bases list to ensure current base is included (ignore errors)
-    python3 "$SCRIPT_DIR/base-manager.py" sync >/dev/null 2>&1 || true
-
-    # Get bases list and display with numbers
-    BASES_LIST=$(get_bases_list)
-    BASES_ARRAY=()
-    INDEX=1
-    while IFS= read -r line; do
-        if [ -n "$line" ]; then
-            BASE_ID=$(echo "$line" | cut -d'|' -f1)
-            BASE_NAME=$(echo "$line" | cut -d'|' -f2)
-            BASES_ARRAY+=("$line")
-            if [ "$BASE_ID" = "$CURRENT_BASE" ]; then
-                echo -e "  ${GREEN}[$INDEX]${NC} ${GREEN}${BASE_NAME}${NC} ${DIM}(active)${NC}"
-            else
-                echo -e "  ${CYAN}[$INDEX]${NC} ${BASE_NAME}"
-            fi
-            echo -e "      ${DIM}${BASE_ID}${NC}"
-            INDEX=$((INDEX + 1))
-        fi
-    done <<< "$BASES_LIST"
-
-    BASES_COUNT=${#BASES_ARRAY[@]}
-
-    echo ""
-    echo -e "  ${DIM}────────────────────────────────────────${NC}"
-    echo -e "  ${YELLOW}[N]${NC} Add ${BOLD}NEW${NC} base by ID"
-    echo -e "  ${RED}[Q]${NC} Cancel"
-    echo ""
-
-    read -p "  Select base [1-$BASES_COUNT, N, Q]: " BASE_CHOICE
-
-    case $BASE_CHOICE in
+    case $BASE_ID in
         [Qq]|"")
+            echo -e "  ${DIM}Cancelled${NC}"
             echo ""
-            echo -e "  ${DIM}Cancelled - no changes made${NC}"
-            echo ""
-            return
-            ;;
-        [Nn])
-            # Add new base
-            echo ""
-            read -p "  Enter new Airtable base ID (e.g., appXXXXX): " NEW_BASE_ID
-
-            if [ -z "$NEW_BASE_ID" ]; then
-                echo ""
-                echo -e "  ${DIM}Cancelled - no changes made${NC}"
-                echo ""
-                return
-            fi
-
-            # Validate format
-            if [[ ! "$NEW_BASE_ID" =~ ^app[A-Za-z0-9]+ ]]; then
-                echo ""
-                echo -e "${RED}Invalid Base ID format.${NC}"
-                echo -e "Airtable Base IDs start with 'app' followed by alphanumeric characters."
-                echo ""
-                read -p "Press Enter to continue..."
-                return
-            fi
-
-            echo ""
-            echo -e "${YELLOW}Fetching base name from Airtable...${NC}"
-
-            # Add the base - name is fetched from Airtable (NO FALLBACKS)
-            if ! python3 "$SCRIPT_DIR/base-manager.py" add "$NEW_BASE_ID"; then
-                echo ""
-                echo -e "${RED}Failed to add base - could not fetch name from Airtable${NC}"
-                echo ""
-                read -p "Press Enter to continue..."
-                return
-            fi
-
-            if ! python3 "$SCRIPT_DIR/base-manager.py" select "$NEW_BASE_ID"; then
-                echo ""
-                echo -e "${RED}Failed to select base${NC}"
-                echo ""
-                read -p "Press Enter to continue..."
-                return
-            fi
-            ;;
-        [0-9]|[0-9][0-9])
-            # Select existing base by number
-            if [ "$BASE_CHOICE" -ge 1 ] && [ "$BASE_CHOICE" -le "$BASES_COUNT" ]; then
-                SELECTED_LINE="${BASES_ARRAY[$((BASE_CHOICE - 1))]}"
-                NEW_BASE_ID=$(echo "$SELECTED_LINE" | cut -d'|' -f1)
-                NEW_BASE_NAME=$(echo "$SELECTED_LINE" | cut -d'|' -f2)
-
-                if [ "$NEW_BASE_ID" = "$CURRENT_BASE" ]; then
-                    echo ""
-                    echo -e "  ${DIM}Already using this base${NC}"
-                    echo ""
-                    read -p "Press Enter to continue..."
-                    return
-                fi
-
-                echo ""
-                echo -e "Switching to: ${WHITE}${NEW_BASE_NAME}${NC}"
-                if ! python3 "$SCRIPT_DIR/base-manager.py" select "$NEW_BASE_ID"; then
-                    echo ""
-                    echo -e "${RED}Failed to select base${NC}"
-                    echo ""
-                    read -p "Press Enter to continue..."
-                    return
-                fi
-            else
-                echo ""
-                echo -e "${RED}Invalid selection: $BASE_CHOICE${NC}"
-                echo ""
-                read -p "Press Enter to continue..."
-                return
-            fi
-            ;;
-        *)
-            echo ""
-            echo -e "${RED}Invalid option: $BASE_CHOICE${NC}"
-            echo ""
-            read -p "Press Enter to continue..."
             return
             ;;
     esac
 
-    # Sync rulebook from new base (does NOT rebuild substrates)
-    echo ""
-    echo -e "${YELLOW}Syncing rulebook from Airtable...${NC}"
-    echo ""
-
-    cd "$PROJECT_ROOT"
-    # Use || to prevent set -e from killing the script on failure
-    SYNC_FAILED=""
-    python3 "$SCRIPT_DIR/rulebook-cache.py" sync || SYNC_FAILED="true"
-
-    if [ -z "$SYNC_FAILED" ]; then
-        NEW_PROJECT_NAME=$(get_project_name)
-        NEW_BASE=$(get_current_base_id)
-        echo ""
-        echo -e "${BOLD}${GREEN}╔════════════════════════════════════════════════════════════╗${NC}"
-        echo -e "${BOLD}${GREEN}║${NC}              ${BOLD}${WHITE}BASE SWITCH COMPLETE${NC}                         ${BOLD}${GREEN}║${NC}"
-        echo -e "${BOLD}${GREEN}╚════════════════════════════════════════════════════════════╝${NC}"
-        echo ""
-        echo -e "  Project: ${WHITE}$NEW_PROJECT_NAME${NC}"
-        echo -e "  Base ID: ${WHITE}$NEW_BASE${NC}"
-        echo ""
-        echo -e "  ${DIM}Rulebook updated. Substrates NOT rebuilt.${NC}"
-        echo -e "  ${DIM}To update substrates:${NC}"
-        echo -e "    ${CYAN}effortless build${NC}         ${DIM}# all substrates${NC}"
-        echo -e "    ${CYAN}./orchestrate.sh${NC}         ${DIM}# run tests (rebuilds as needed)${NC}"
-    else
-        echo ""
-        echo -e "${RED}Rulebook sync failed.${NC}"
-        echo -e "You may need to restore the previous base: ${WHITE}$PROJECT_NAME${NC} (${CURRENT_BASE})"
+    if [[ ! "$BASE_ID" =~ ^app[A-Za-z0-9]+ ]]; then
+        echo -e "${RED}Invalid Base ID format. Airtable Base IDs start with 'app'.${NC}"
+        read -p "Press Enter to continue..."
+        return
     fi
+
+    # Fetch the base name from Airtable via base-manager
+    echo ""
+    echo -e "${YELLOW}Fetching base name from Airtable...${NC}"
+    BASE_NAME=$(python3 "$SCRIPT_DIR/base-manager.py" get-name "$BASE_ID" 2>/dev/null || echo "")
+
+    if [ -z "$BASE_NAME" ]; then
+        echo -e "${RED}Could not fetch base name from Airtable. Check your API key and base ID.${NC}"
+        read -p "Press Enter to continue..."
+        return
+    fi
+
+    # Derive a safe folder name from the base name
+    DOMAIN_NAME=$(echo "$BASE_NAME" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9]/-/g' | sed 's/--*/-/g' | sed 's/^-//;s/-$//')
+
+    DOMAIN_DIR="$RULEBOOK_EXAMPLES_DIR/$DOMAIN_NAME"
+    RULEBOOK_DIR_NEW="$DOMAIN_DIR/effortless-rulebook"
+
+    if [ -d "$DOMAIN_DIR" ]; then
+        echo -e "${YELLOW}Domain folder already exists: ${WHITE}$DOMAIN_NAME${NC}"
+        read -p "  Overwrite rulebook? [Y/n]: " OVERWRITE
+        if [[ "$OVERWRITE" =~ ^[Nn]$ ]]; then
+            echo -e "  ${DIM}Cancelled${NC}"
+            read -p "Press Enter to continue..."
+            return
+        fi
+    fi
+
+    mkdir -p "$RULEBOOK_DIR_NEW"
+
+    # Pull the rulebook from Airtable into the new domain folder
+    echo ""
+    echo -e "${YELLOW}Pulling rulebook from Airtable into ${WHITE}rulebook-examples/$DOMAIN_NAME/${NC}..."
+    cd "$RULEBOOK_DIR_NEW"
+    if ! effortless airtabletorulebook -o effortless-rulebook.json -account airtable -p "view=Grid view"; then
+        echo -e "${RED}Failed to pull rulebook from Airtable.${NC}"
+        read -p "Press Enter to continue..."
+        return
+    fi
+
+    # Write effortless.json for this domain (with baseId + airtabletorulebook enabled)
+    python3 -c "
+import json
+config = {
+    'Name': '$BASE_NAME',
+    'Description': 'Imported from Airtable base $BASE_ID',
+    'Version': '1.0',
+    'ProjectSettings': [
+        {'Name': 'baseId', 'Value': '$BASE_ID', 'Description': 'Airtable base ID (used for re-import only)'}
+    ],
+    'Transpilers': [
+        {
+            'Name': 'airtabletorulebook',
+            'RelativePath': '/effortless-rulebook',
+            'CommandLine': 'airtable-to-rulebook -o effortless-rulebook.json -account airtable -p \"view=Grid view\"',
+            'Enabled': True,
+            'Description': 'Re-import from Airtable (optional; edit effortless-rulebook.json directly otherwise)'
+        },
+        {
+            'Name': 'rulebooktoairtable',
+            'RelativePath': '/effortless-rulebook/push-to-airtable',
+            'CommandLine': 'rulebook-to-airtable -i ../effortless-rulebook.json -account airtable -w 300000',
+            'Enabled': False,
+            'Description': 'Reverse-sync: push rulebook changes back to Airtable (optional)'
+        }
+    ]
+}
+with open('$DOMAIN_DIR/effortless.json', 'w') as f:
+    json.dump(config, f, indent=2)
+print('Written effortless.json')
+"
+
+    # Switch active domain to the new import
+    set_active_domain "$DOMAIN_NAME"
+
+    echo ""
+    echo -e "${BOLD}${GREEN}╔════════════════════════════════════════════════════════════╗${NC}"
+    echo -e "${BOLD}${GREEN}║${NC}              ${BOLD}${WHITE}IMPORT COMPLETE${NC}                               ${BOLD}${GREEN}║${NC}"
+    echo -e "${BOLD}${GREEN}╚════════════════════════════════════════════════════════════╝${NC}"
+    echo ""
+    echo -e "  Domain:   ${WHITE}$DOMAIN_NAME${NC}"
+    echo -e "  Location: ${WHITE}rulebook-examples/$DOMAIN_NAME/${NC}"
+    echo ""
+    echo -e "  ${DIM}This is now a standalone local rulebook. Re-import is optional.${NC}"
+    echo -e "  ${DIM}Run [A] to build and test substrates against the new rulebook.${NC}"
     echo ""
     read -p "Press Enter to continue..."
 }
@@ -765,37 +645,6 @@ run_substrates() {
     SUBSTRATES=$(get_valid_substrates)
     SUBSTRATES_ARRAY=($SUBSTRATES)
     TOTAL_SUBSTRATES=${#SUBSTRATES_ARRAY[@]}
-
-    # -----------------------------------------------------------------------------
-    # AIRTABLE substrate: the rulebook source-of-truth sync.
-    #   - STEP 0 (before answer keys): call inject-into-airtable.py directly
-    #     so the rulebook is fresh before Step 1 generates answer keys.
-    #   - STEP 2: airtable is processed like any other test-only substrate —
-    #     its take-test.sh copies answer-keys into its test-answers/ so the
-    #     grader scores it 100% (airtable IS the oracle, by construction).
-    #   - Single-substrate mode ([01] alone): only run the sync, no grading.
-    # -----------------------------------------------------------------------------
-    local AIRTABLE_DIR="$SUBSTRATES_DIR/airtable"
-    local AIRTABLE_INJECT="$AIRTABLE_DIR/inject-into-airtable.py"
-
-    if [ "$RUN_SINGLE" = "airtable" ]; then
-        if [ -f "$AIRTABLE_INJECT" ]; then
-            python3 "$AIRTABLE_INJECT"
-            return $?
-        fi
-        echo -e "${RED}airtable substrate not installed at $AIRTABLE_DIR${NC}"
-        return 1
-    fi
-
-    if [ -z "$RUN_SINGLE" ] && [ -f "$AIRTABLE_INJECT" ]; then
-        echo -e "${BOLD}${BLUE}┌──────────────────────────────────────────────────────────────┐${NC}"
-        echo -e "${BOLD}${BLUE}│${NC} ${BOLD}${WHITE}STEP 0:${NC} ${YELLOW}Refreshing rulebook via airtable substrate...${NC}      ${BOLD}${BLUE}│${NC}"
-        echo -e "${BOLD}${BLUE}└──────────────────────────────────────────────────────────────┘${NC}"
-        (cd "$AIRTABLE_DIR" && python3 "$AIRTABLE_INJECT") || {
-            echo -e "${YELLOW}⚠ airtable sync had issues — continuing with existing rulebook${NC}"
-        }
-        echo ""
-    fi
 
     # -----------------------------------------------------------------------------
     # Step 1: Generate answer key and blank test from database
@@ -1434,7 +1283,7 @@ while true; do
     SUBSTRATES_ARRAY=($SUBSTRATES)
     TOTAL_SUBSTRATES=${#SUBSTRATES_ARRAY[@]}
 
-    read -p "Enter choice [A, V, C, D, 1-$TOTAL_SUBSTRATES, Q] (default: A): " USER_CHOICE
+    read -p "Enter choice [A, V, O, I, C, D, 1-$TOTAL_SUBSTRATES, Q] (default: A): " USER_CHOICE
 
     # Default to 'A' if user just presses Enter
     if [ -z "$USER_CHOICE" ]; then
@@ -1449,6 +1298,12 @@ while true; do
             ;;
         [Vv])
             action_view_results
+            ;;
+        [Oo])
+            action_select_domain
+            ;;
+        [Ii])
+            action_import_from_airtable
             ;;
         [Cc])
             action_clean
