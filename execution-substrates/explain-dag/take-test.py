@@ -488,6 +488,7 @@ def main():
     blank_tests_dir, test_answers_dir = _get_testing_paths()
     test_explanations_dir = script_dir / "test-explanations"
     spec_path = script_dir / "generated" / "explain_spec.json"
+    project_root = script_dir.parent.parent
 
     # Check for spec file
     if not spec_path.exists():

@@ -140,7 +140,7 @@ pre { background: var(--code-bg); border: 1px solid var(--border-color); border-
 English Execution Substrate - One-Shot All-Entities LLM Run
 ======================================================================
 
-  Loaded specification.md (4611 chars)
+  Loaded specification.md (3813 chars)
   Loaded 1 entities, 3 records total
     - customers: 3 records
 
@@ -148,7 +148,7 @@ English Execution Substrate - One-Shot All-Entities LLM Run
 PROMPT (first 2 lines):
   You are taking a test. Follow the English specification below to fill in
   every null derived field in the test data. The data spans multiple tables and many
-  ... (181 total lines, 6777 chars)
+  ... (181 total lines, 5979 chars)
 ============================================================
 Calling OpenAI (gpt-4o-mini)... please wait...
 ============================================================
@@ -180,14 +180,15 @@ English substrate: filled 6 derived fields across 1 entities
         <div id="specification" class="tab-content">
             <div class="card">
                 <h2>specification.md (LLM-Generated)</h2>
-                <div class="prose-container markdown-content"><h2>ACME, LLC Rulebook Specification Document</h2>
+                <div class="prose-container markdown-content"><h2>ACME, LLC Rulebook Specification</h2>
 <h3>Overview</h3>
-<p>This document provides a detailed specification for the ACME, LLC rulebook, which outlines the schema and calculations for customer data management. The rulebook defines how to derive calculated fields from raw input data, ensuring clarity in data processing and reporting.</p>
+<p>This rulebook outlines the schema and calculations for the ACME, LLC customer management system. It includes the definitions of various entities, their fields, and how to compute derived fields based on the input data. The primary focus is on the Customers, ERBVersions, and ERBCustomizations tables.</p>
+<p>---</p>
 <h3>Customers Table</h3>
 <h4>Input Fields</h4>
 <p>1. <strong>CustomerId</strong></p>
 <p>   - <strong>Type:</strong> String</p>
-<p>   - <strong>Description:</strong> Unique identifier for each customer. This field is mandatory.</p>
+<p>   - <strong>Description:</strong> Unique identifier for the customer. This field is mandatory.</p>
 <p>2. <strong>EmailAddress</strong></p>
 <p>   - <strong>Type:</strong> String</p>
 <p>   - <strong>Description:</strong> The customer's email address. This field is optional.</p>
@@ -197,33 +198,28 @@ English substrate: filled 6 derived fields across 1 entities
 <p>4. <strong>LastName</strong></p>
 <p>   - <strong>Type:</strong> String</p>
 <p>   - <strong>Description:</strong> The last name of the customer. This field is optional.</p>
-<h4>Calculated Fields</h4>
+<h4>Derived Fields</h4>
 <p>1. <strong>Name</strong></p>
 <p>   - <strong>Type:</strong> Calculated</p>
-<p>   - <strong>Description:</strong> A unique identifier for the customers, derived from their email address.</p>
-<p>   - <strong>Computation:</strong> The Name is computed by replacing the "@" symbol in the EmailAddress with a hyphen ("-"). </p>
+<p>   - <strong>Description:</strong> An identifier for the customers, derived from their email address.</p>
+<p>   - <strong>Computation:</strong> Replace the "@" symbol in the EmailAddress with a "-" to create a unique identifier.</p>
 <p>   - <strong>Original Formula:</strong> `=SUBSTITUTE({{EmailAddress}}, "@", "-")`</p>
-<p>   - <strong>Example:</strong> For a customer with the EmailAddress `jane.smith@email.com`, the Name would be `jane.smith-email.com`.</p>
+<p>   - <strong>Example:</strong> For the email `jane.smith@email.com`, the Name would be `jane.smith-email.com`.</p>
 <p>2. <strong>FullName</strong></p>
 <p>   - <strong>Type:</strong> Calculated</p>
 <p>   - <strong>Description:</strong> The full name of the customer, formatted as "LastName, FirstName".</p>
-<p>   - <strong>Computation:</strong> The FullName is constructed by concatenating the LastName and FirstName fields, separated by a comma and a space.</p>
+<p>   - <strong>Computation:</strong> Concatenate the LastName and FirstName fields, separated by a comma and a space.</p>
 <p>   - <strong>Original Formula:</strong> `={{LastName}} & ", " & {{FirstName}}`</p>
-<p>   - <strong>Example:</strong> For a customer with LastName `Smith` and FirstName `Bobby`, the FullName would be `Smith, Bobby`.</p>
-<h4>Example Data</h4>
-<p>| CustomerId                  | EmailAddress          | FirstName | LastName | Name                     | FullName       |</p>
-<p>|-----------------------------|-----------------------|-----------|----------|--------------------------|-----------------|</p>
-<p>| jane-smith-email-com        | jane.smith@email.com  | Bobby     | Smith    | jane.smith-email.com     | Smith, Bobby    |</p>
-<p>| john-doe-email-com         | john.doe@email.com    | Jimmy     | Doe      | john.doe-email.com       | Doe, Jimmy      |</p>
-<p>| emily-jones-email-com       | emily.jones@email.com | Mary      | Jones    | emily.jones-email.com    | Jones, Mary     |</p>
+<p>   - <strong>Example:</strong> For FirstName `Bobby` and LastName `Smith`, the FullName would be `Smith, Bobby`.</p>
+<p>---</p>
 <h3>ERBVersions Table</h3>
 <h4>Input Fields</h4>
 <p>1. <strong>ERBVersionId</strong></p>
 <p>   - <strong>Type:</strong> String</p>
-<p>   - <strong>Description:</strong> Unique identifier for each ERB version. This field is mandatory.</p>
+<p>   - <strong>Description:</strong> Unique identifier for the ERB version. This field is mandatory.</p>
 <p>2. <strong>BaseId</strong></p>
 <p>   - <strong>Type:</strong> String</p>
-<p>   - <strong>Description:</strong> Identifier for the base associated with the ERB version. This field is optional.</p>
+<p>   - <strong>Description:</strong> Identifier for the base associated with this ERB version. This field is optional.</p>
 <p>3. <strong>Name</strong></p>
 <p>   - <strong>Type:</strong> String</p>
 <p>   - <strong>Description:</strong> Name of the ERB version. This field is optional.</p>
@@ -235,17 +231,20 @@ English substrate: filled 6 derived fields across 1 entities
 <p>   - <strong>Description:</strong> Additional notes regarding the ERB version. This field is optional.</p>
 <p>6. <strong>CommitDate</strong></p>
 <p>   - <strong>Type:</strong> Datetime</p>
-<p>   - <strong>Description:</strong> The date and time when the ERB version was committed. This field is optional.</p>
+<p>   - <strong>Description:</strong> Date and time of the commit for this ERB version. This field is optional.</p>
 <p>7. <strong>IsPublished</strong></p>
 <p>   - <strong>Type:</strong> Boolean</p>
-<p>   - <strong>Description:</strong> Indicates whether the ERB version is published. This field is optional.</p>
-<h4>Calculated Fields</h4>
-<p>*No calculated fields are defined in the ERBVersions table.*</p>
+<p>   - <strong>Description:</strong> Indicates whether this ERB version is published. This field is optional.</p>
+<h4>Derived Fields</h4>
+<ul>
+<li>**No derived fields are defined for the ERBVersions table.**</li>
+</ul>
+<p>---</p>
 <h3>ERBCustomizations Table</h3>
 <h4>Input Fields</h4>
 <p>1. <strong>ERBCustomizationId</strong></p>
 <p>   - <strong>Type:</strong> String</p>
-<p>   - <strong>Description:</strong> Unique identifier for each ERB customization. This field is mandatory.</p>
+<p>   - <strong>Description:</strong> Unique identifier for the ERB customization. This field is mandatory.</p>
 <p>2. <strong>Name</strong></p>
 <p>   - <strong>Type:</strong> String</p>
 <p>   - <strong>Description:</strong> Name of the ERB customization. This field is optional.</p>
@@ -261,10 +260,12 @@ English substrate: filled 6 derived fields across 1 entities
 <p>6. <strong>CustomizationType</strong></p>
 <p>   - <strong>Type:</strong> String</p>
 <p>   - <strong>Description:</strong> Type of customization (e.g., Schema, Functions, Views, RLS, Data). This field is optional.</p>
-<h4>Calculated Fields</h4>
-<p>*No calculated fields are defined in the ERBCustomizations table.*</p>
-<h3>Conclusion</h3>
-<p>This specification document provides a comprehensive overview of how to compute derived fields within the ACME, LLC rulebook. By following the outlined computations, users can accurately derive customer names and full names from the provided raw input fields.</p></div>
+<h4>Derived Fields</h4>
+<ul>
+<li>**No derived fields are defined for the ERBCustomizations table.**</li>
+</ul>
+<p>---</p>
+<p>This specification provides a clear understanding of how to compute derived fields within the ACME, LLC rulebook, ensuring accurate data representation and processing.</p></div>
             </div>
         </div>
     </main>

@@ -32,7 +32,11 @@ else:
     TESTING_DIR = PROJECT_ROOT / "testing"
     BLANK_TESTS_DIR = TESTING_DIR / "blank-tests"
     TEST_ANSWERS_DIR = SCRIPT_DIR / "test-answers"
-POSTGRES_DIR = PROJECT_ROOT / "licensed-effortless-tools" / "postgres"
+_ERB_DOMAIN = os.environ.get("ERB_DOMAIN_DIR")
+if _ERB_DOMAIN and (Path(_ERB_DOMAIN) / "postgres").exists():
+    POSTGRES_DIR = Path(_ERB_DOMAIN) / "postgres"
+else:
+    POSTGRES_DIR = PROJECT_ROOT / "licensed-effortless-tools" / "postgres"
 
 # Add orchestration to path for shared utilities
 sys.path.insert(0, str(PROJECT_ROOT / "orchestration"))

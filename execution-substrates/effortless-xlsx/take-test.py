@@ -32,7 +32,11 @@ import os
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 PROJECT_ROOT = SCRIPT_DIR.parent.parent
-XLSX_TOOL_DIR = PROJECT_ROOT / "licensed-effortless-tools" / "xlsx"
+_ERB_DOMAIN = os.environ.get("ERB_DOMAIN_DIR")
+if _ERB_DOMAIN and (Path(_ERB_DOMAIN) / "effortless-xlsx").exists():
+    XLSX_TOOL_DIR = Path(_ERB_DOMAIN) / "effortless-xlsx"
+else:
+    XLSX_TOOL_DIR = PROJECT_ROOT / "licensed-effortless-tools" / "xlsx"
 _ERB_TESTING = os.environ.get("ERB_TESTING_DIR")
 if _ERB_TESTING:
     BLANK_TESTS_DIR = Path(_ERB_TESTING) / "blank-tests"

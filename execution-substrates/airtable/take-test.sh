@@ -15,8 +15,14 @@ set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
-ANSWER_KEYS_DIR="$PROJECT_ROOT/testing/answer-keys"
-TEST_ANSWERS_DIR="$SCRIPT_DIR/test-answers"
+SUBSTRATE_NAME="$(basename "$SCRIPT_DIR")"
+if [ -n "$ERB_TESTING_DIR" ]; then
+    ANSWER_KEYS_DIR="$ERB_TESTING_DIR/answer-keys"
+    TEST_ANSWERS_DIR="$ERB_TESTING_DIR/$SUBSTRATE_NAME/test-answers"
+else
+    ANSWER_KEYS_DIR="$PROJECT_ROOT/testing/answer-keys"
+    TEST_ANSWERS_DIR="$SCRIPT_DIR/test-answers"
+fi
 
 echo "=== Airtable substrate: copying answer keys (oracle is its own reference) ==="
 

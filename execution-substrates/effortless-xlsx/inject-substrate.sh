@@ -12,9 +12,14 @@ set -o pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
-XLSX_TOOL_DIR="$PROJECT_ROOT/licensed-effortless-tools/xlsx"
+if [ -n "$ERB_DOMAIN_DIR" ] && [ -d "$ERB_DOMAIN_DIR/effortless-xlsx" ]; then
+    XLSX_TOOL_DIR="$ERB_DOMAIN_DIR/effortless-xlsx"
+else
+    XLSX_TOOL_DIR="$PROJECT_ROOT/licensed-effortless-tools/xlsx"
+fi
 
 echo "=== Effortless-XLSX Substrate: Regenerating from rulebook ==="
+echo "  XLSX dir: $XLSX_TOOL_DIR"
 
 if command -v effortless &> /dev/null; then
     cd "$XLSX_TOOL_DIR"

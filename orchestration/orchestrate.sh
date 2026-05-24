@@ -860,11 +860,14 @@ action_test() {
 run_substrates() {
     local RUN_SINGLE="$1"
 
-    # Set domain-scoped testing dir and export it so all inject/take-test scripts
-    # know where to read blank-tests and write test-answers.
+    # Set domain-scoped paths and export them so all inject/take-test scripts
+    # know where to read blank-tests, write test-answers, and find domain-scoped
+    # generated artifacts (postgres SQL, xlsx workbook, entity-framework dir).
     local _domain
     _domain=$(get_active_domain)
-    export ERB_TESTING_DIR="$RULEBOOK_EXAMPLES_DIR/$_domain/testing"
+    export ERB_DOMAIN_DIR="$RULEBOOK_EXAMPLES_DIR/$_domain"
+    export ERB_TESTING_DIR="$ERB_DOMAIN_DIR/testing"
+    export ERB_RULEBOOK_PATH="$ERB_DOMAIN_DIR/effortless-rulebook/effortless-rulebook.json"
     mkdir -p "$ERB_TESTING_DIR"
 
     # Get list of valid substrates (those with inject or test scripts)

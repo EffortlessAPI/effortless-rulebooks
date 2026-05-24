@@ -10,6 +10,8 @@
 
 | Substrate | Passed | Failed | Total | Score | Duration | Status |
 |-----------|--------|--------|-------|-------|----------|--------|
+| airtable | 6 | 0 | 6 | 100.0% | < 1s | PASS |
+| explain-dag | 6 | 0 | 6 | 100.0% | < 1s | PASS |
 | python | 6 | 0 | 6 | 100.0% | < 1s | PASS |
 | uml | 6 | 0 | 6 | 100.0% | < 1s | PASS |
 | binary | 6 | 0 | 6 | 100.0% | < 1s | PASS |
@@ -18,12 +20,10 @@
 | golang | 6 | 0 | 6 | 100.0% | < 1s | PASS |
 | owl | 6 | 0 | 6 | 100.0% | < 1s | PASS |
 | xlsx | 6 | 0 | 6 | 100.0% | < 1s | PASS |
-| english | 6 | 0 | 6 | 100.0% | 24s | PASS |
-| airtable | 0 | 6 | 6 | 0.0% | < 1s | FAIL |
-| effortless-entity-framework | 0 | 6 | 6 | 0.0% | 45s | FAIL |
+| english | 6 | 0 | 6 | 100.0% | 22s | PASS |
+| effortless-xlsx | 6 | 0 | 6 | 100.0% | 45s | PASS |
+| effortless-entity-framework | 0 | 6 | 6 | 0.0% | 4s | FAIL |
 | effortless-postgres | 0 | 6 | 6 | 0.0% | 4s | FAIL |
-| effortless-xlsx | 0 | 6 | 6 | 0.0% | 35s | FAIL |
-| explain-dag | 0 | 6 | 6 | 0.0% | < 1s | FAIL |
 | yaml | 0 | 6 | 6 | 0.0% | < 1s | FAIL |
 
 ## Overall Statistics
@@ -32,10 +32,10 @@
 |--------|-------|
 | Total Substrates | 15 |
 | Total Fields Tested | 90 |
-| Total Passed | 54 |
-| Total Failed | 36 |
-| Overall Score | 60.0% |
-| Total Duration | 1m 52s |
+| Total Passed | 72 |
+| Total Failed | 18 |
+| Overall Score | 80.0% |
+| Total Duration | 1m 19s |
 
 ---
 

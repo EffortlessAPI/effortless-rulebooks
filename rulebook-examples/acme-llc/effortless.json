@@ -132,7 +132,9 @@
       "Name": "rulebooktoentityframework",
       "RelativePath": "/entity-framework",
       "CommandLine": "rulebook-to-entity-framework -i ../effortless-rulebook/effortless-rulebook.json",
-      "IsDisabled": false
+      "IsDisabled": false,
+      "LastVersionUsed": "v2026.05.12.2324",
+      "LastUrl": "https://effortless-rulebook-to-entity-fr-v2026-05-12-2324-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     }
   ]
 }

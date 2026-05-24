@@ -14,9 +14,16 @@ set -o pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
-EF_TOOL_DIR="$PROJECT_ROOT/licensed-effortless-tools/entity-framework-dotnet"
+if [ -n "$ERB_DOMAIN_DIR" ] && [ -d "$ERB_DOMAIN_DIR/entity-framework" ]; then
+    EF_TOOL_DIR="$ERB_DOMAIN_DIR/entity-framework"
+else
+    EF_TOOL_DIR="$PROJECT_ROOT/licensed-effortless-tools/entity-framework-dotnet"
+fi
+export EF_TOOL_DIR
+mkdir -p "$EF_TOOL_DIR"
 
 echo "=== Effortless-EntityFramework Substrate: Regenerating from rulebook ==="
+echo "  EF tool dir: $EF_TOOL_DIR"
 
 if command -v effortless &> /dev/null; then
     cd "$EF_TOOL_DIR"
