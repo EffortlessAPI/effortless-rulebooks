@@ -1,0 +1,18 @@
+{
+  "built_at": "2026-05-24T16:22:41Z",
+  "transpiler": "rulebook-to-postgres",
+  "mode": "check-add",
+  "stage": "dev",
+  "emit_erb_internals": false,
+  "drop_all": false,
+  "auth_schema_touched": false,
+  "files_emitted": [
+    "00-bootstrap.sql",
+    "01-drop-and-create-tables.sql",
+    "02-create-functions.sql",
+    "03-create-views.sql",
+    "04-create-policies.sql",
+    "05-insert-data.sql",
+    "99-fk-constraints.sql"
+  ]
+}
