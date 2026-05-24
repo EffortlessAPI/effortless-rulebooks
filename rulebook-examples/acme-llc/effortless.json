@@ -1,28 +1,50 @@
 {
-  "Name": "ACME, LLC",
+  "ShowHidden": false,
+  "ShowAllFiles": false,
+  "CurrentPath": "",
+  "SSoTmeProjectFiles": null,
+  "SSoTmeProjectId": "63484082-c6d6-4259-a92c-3169e1e4d75a",
+  "Name": "acme-llc",
   "Description": "A lean variant of ACME Corporation—demonstrating essential business rules in a simplified schema.",
-  "Version": "1.0",
   "ProjectSettings": [
     {
       "Name": "baseId",
-      "Value": "appWrXPvXbkgQGOxt",
-      "Description": "Airtable base ID for ACME, LLC (hardcoded)"
+      "Value": "appWrXPvXbkgQGOxt"
+    },
+    {
+      "Name": "project-name",
+      "Value": "acme-llc"
     }
   ],
-  "Transpilers": [
+  "ProjectTranspilers": [
     {
+      "IsSSoTTranspiler": false,
       "Name": "airtabletorulebook",
       "RelativePath": "/effortless-rulebook",
       "CommandLine": "airtable-to-rulebook -o effortless-rulebook.json -account airtable -p \"view=Grid view\"",
+      "IsDisabled": false,
+      "LastVersionUsed": "v2026.04.23.1357",
+      "LastUrl": "https://effortless-airtable-to-rulebook-v2026-04-23-1357-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
       "Enabled": true,
       "Description": "Pull rulebook from Airtable"
     },
     {
+      "IsSSoTTranspiler": false,
       "Name": "rulebooktoairtable",
       "RelativePath": "/effortless-rulebook/push-to-airtable",
       "CommandLine": "rulebook-to-airtable -i ../effortless-rulebook.json -account airtable -w 300000",
+      "IsDisabled": false,
+      "LastVersionUsed": "v2026.04.13.2259",
+      "LastUrl": "https://effortless-rulebook-to-airtable-v2026-04-13-2259-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
       "Enabled": false,
       "Description": "Reverse-sync: push rulebook changes back to Airtable"
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "httplocalhost4242rulebooktopython",
+      "RelativePath": "/python",
+      "CommandLine": "http://localhost:4242/rulebook-to-python -i ../effortless-rulebook/effortless-rulebook.json",
+      "IsDisabled": false
     }
   ]
 }

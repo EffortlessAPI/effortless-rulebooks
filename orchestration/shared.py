@@ -27,11 +27,14 @@ def get_active_domain():
 def get_rulebook_path():
     """Get the path to the effortless-rulebook.json for the active domain.
 
-    Resolves via orchestration/active-domain.txt →
-    rulebook-examples/<domain>/effortless-rulebook/effortless-rulebook.json
+    Priority:
+      1. ERB_RULEBOOK_PATH env var (set by ssotme-proxy for project-scoped runs)
+      2. orchestration/active-domain.txt → rulebook-examples/<domain>/...
     """
+    env_path = os.environ.get("ERB_RULEBOOK_PATH")
+    if env_path:
+        return Path(env_path)
     domain = get_active_domain()
-    # This file lives at orchestration/shared.py; project root is one level up.
     project_root = Path(__file__).parent.parent
     return project_root / "rulebook-examples" / domain / "effortless-rulebook" / "effortless-rulebook.json"
 

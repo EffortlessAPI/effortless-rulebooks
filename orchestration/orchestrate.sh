@@ -196,6 +196,151 @@ get_valid_substrates() {
 }
 
 # =============================================================================
+# PROJECT-SCOPED TRANSPILER HELPERS (ssotme-proxy)
+# =============================================================================
+
+# Returns the effortless.json path for the active domain (empty if none)
+get_active_effortless_json() {
+    local domain
+    domain=$(get_active_domain)
+    local path="$RULEBOOK_EXAMPLES_DIR/$domain/effortless.json"
+    [ -f "$path" ] && echo "$path" || echo ""
+}
+
+# Returns tab-separated (internal_name TAB display_name) for ALL enabled
+# ProjectTranspilers in the active domain's effortless.json.
+get_project_transpilers() {
+    local ej
+    ej=$(get_active_effortless_json)
+    [ -z "$ej" ] && return
+    python3 - "$ej" <<'PYEOF'
+import json, sys, re
+with open(sys.argv[1]) as f:
+    cfg = json.load(f)
+for t in cfg.get("ProjectTranspilers", []):
+    cmd = t.get("CommandLine", "")
+    # For proxy transpilers, show the URL path; otherwise use Name
+    m = re.search(r'http://localhost:\d+(/\S*)', cmd)
+    display = m.group(1).lstrip("/") if m else t["Name"]
+    print(f"{t['Name']}\t{display}")
+PYEOF
+}
+
+# Returns true if active project has any proxy transpilers
+project_has_proxy_transpilers() {
+    local result
+    result=$(get_project_transpilers)
+    [ -n "$result" ]
+}
+
+# Run a single proxy transpiler by name.
+# Usage: run_proxy_transpiler <name>
+run_proxy_transpiler() {
+    local name="$1"
+    local ej
+    ej=$(get_active_effortless_json)
+    if [ -z "$ej" ]; then
+        echo -e "${RED}No effortless.json for active domain${NC}"
+        return 1
+    fi
+
+    local domain_dir
+    domain_dir="$(dirname "$ej")"
+
+    python3 - "$ej" "$name" "$domain_dir" <<'PYEOF'
+import json, sys, urllib.request, os, re, subprocess
+
+ej_path, name, domain_dir = sys.argv[1], sys.argv[2], sys.argv[3]
+with open(ej_path) as f:
+    cfg = json.load(f)
+
+transpiler = next((t for t in cfg.get("ProjectTranspilers", []) if t["Name"] == name), None)
+if not transpiler:
+    print(f"Transpiler '{name}' not found in ProjectTranspilers")
+    sys.exit(1)
+
+cmd = transpiler.get("CommandLine", "")
+rel_path = transpiler.get("RelativePath", "").lstrip("/")
+run_dir = os.path.join(domain_dir, rel_path) if rel_path else domain_dir
+
+# Proxy transpiler: POST to localhost
+if "localhost:" in cmd:
+    match = re.search(r'(http://localhost:\d+\S*)', cmd)
+    proxy_url = match.group(1) if match else None
+    if not proxy_url:
+        print(f"Could not parse proxy URL from: {cmd}")
+        sys.exit(1)
+    input_match = re.search(r'-i\s+(\S+)', cmd)
+    input_file = os.path.abspath(os.path.join(run_dir, input_match.group(1))) if input_match else ""
+    output_dir = os.path.abspath(run_dir)
+    payload = json.dumps({"inputFile": input_file, "outputDir": output_dir, "clean": False}).encode()
+    req = urllib.request.Request(proxy_url, data=payload,
+        headers={"Content-Type": "application/json", "X-Working-Dir": domain_dir}, method="POST")
+    try:
+        with urllib.request.urlopen(req, timeout=120) as resp:
+            result = json.loads(resp.read())
+    except Exception as e:
+        print(f"ERROR calling proxy: {e}")
+        sys.exit(1)
+    print(result.get("output", ""))
+    sys.exit(0 if result.get("success") else 1)
+
+# Standard transpiler: run via effortless build -id from RelativePath dir
+else:
+    os.makedirs(run_dir, exist_ok=True)
+    result = subprocess.run(["effortless", "build", "-id"], cwd=run_dir, text=True)
+    sys.exit(result.returncode)
+PYEOF
+}
+
+# Run all enabled proxy transpilers for the active project.
+run_project_transpilers() {
+    local transpilers
+    transpilers=$(get_project_transpilers)
+    if [ -z "$transpilers" ]; then
+        echo -e "${YELLOW}No proxy transpilers configured for this project.${NC}"
+        return 0
+    fi
+
+    local domain
+    domain=$(get_active_domain)
+    echo ""
+    echo -e "${BOLD}${CYAN}Running transpilers for: ${WHITE}${domain}${NC}"
+    echo ""
+
+    local failed=0
+    while IFS=$'\t' read -r internal display; do
+        echo -e "${CYAN}▶ ${BOLD}${display}${NC}"
+        if run_proxy_transpiler "$internal"; then
+            echo -e "  ${GREEN}✓ ${display} OK${NC}"
+        else
+            echo -e "  ${RED}✗ ${display} FAILED${NC}"
+            failed=$((failed + 1))
+        fi
+        echo ""
+    done <<< "$transpilers"
+
+    if [ $failed -gt 0 ]; then
+        echo -e "${RED}${BOLD}$failed transpiler(s) failed.${NC}"
+        return 1
+    fi
+    echo -e "${GREEN}${BOLD}All transpilers complete.${NC}"
+    return 0
+}
+
+# Check if ssotme-proxy is running on localhost:4242
+proxy_is_running() {
+    python3 -c "
+import urllib.request
+try:
+    urllib.request.urlopen('http://localhost:4242/ping', timeout=2)
+    print('true')
+except:
+    print('false')
+" 2>/dev/null | grep -q true
+}
+
+# =============================================================================
 # MENU DISPLAY
 # =============================================================================
 show_menu() {
@@ -207,48 +352,50 @@ show_menu() {
     echo -e "${BOLD}${CYAN}║${NC}          ${BOLD}${WHITE}EXECUTION SUBSTRATE ORCHESTRATOR${NC}                  ${BOLD}${CYAN}║${NC}"
     echo -e "${BOLD}${CYAN}╚════════════════════════════════════════════════════════════╝${NC}"
     echo ""
+    local DOMAIN_PATH="$RULEBOOK_EXAMPLES_DIR/$ACTIVE_DOMAIN"
     echo -e "  Project:  ${WHITE}$PROJECT_NAME${NC}"
-    echo -e "  Domain:   ${CYAN}$ACTIVE_DOMAIN${NC}"
+    printf "  Domain:   \033]8;;file://%s\033\\\\%b%s%b\033]8;;\033\\\\  \033[2m%s\033[0m\n" \
+        "$DOMAIN_PATH" "$CYAN" "${ACTIVE_DOMAIN}" "$NC" "$DOMAIN_PATH"
+
+    # Check proxy status and collect project transpilers
+    PROJECT_TRANSPILERS=$(get_project_transpilers)
+    PROXY_RUNNING=false
+    if [ -n "$PROJECT_TRANSPILERS" ]; then
+        proxy_is_running && PROXY_RUNNING=true
+        if $PROXY_RUNNING; then
+            echo -e "  Proxy:    ${DIM}localhost:4242${NC} ${GREEN}● live${NC}"
+        else
+            echo -e "  Proxy:    ${DIM}localhost:4242${NC} ${RED}● offline${NC}"
+        fi
+    fi
+
     echo ""
-
-    # Get list of valid substrates for the menu
-    SUBSTRATES=$(get_valid_substrates)
-    SUBSTRATES_ARRAY=($SUBSTRATES)
-    TOTAL_SUBSTRATES=${#SUBSTRATES_ARRAY[@]}
-
     echo -e "${BOLD}${WHITE}Select an option:${NC}"
     echo ""
-    echo -e "  ${GREEN}[A]${NC} Run ${BOLD}ALL${NC} substrates ($TOTAL_SUBSTRATES total) ${DIM}(default)${NC}"
-    echo -e "  ${MAGENTA}[V]${NC} ${BOLD}VIEW RESULTS${NC} - Generate and open HTML report"
-    echo -e "  ${YELLOW}[O]${NC} ${BOLD}SELECT ONTOLOGY${NC} - Switch active rulebook-examples domain"
-    echo -e "  ${BLUE}[I]${NC} ${BOLD}IMPORT FROM AIRTABLE${NC} - Pull a base by ID into rulebook-examples"
-    echo ""
 
-    echo -e "  ${DIM}────────────────────────────────────────${NC}"
-    echo -e "  ${YELLOW}Or select a specific substrate:${NC}"
-    echo ""
-
-    # Display substrates with numbers (already filtered by get_valid_substrates)
-    INDEX=1
-    for substrate in $SUBSTRATES; do
-        if [ $INDEX -lt 10 ]; then
-            echo -e "  ${CYAN}[0$INDEX]${NC} $substrate"
+    # --- BUILD (primary action when proxy transpilers exist) ---
+    if [ -n "$PROJECT_TRANSPILERS" ]; then
+        T_INDEX=1
+        while IFS=$'\t' read -r internal display; do
+            echo -e "    ${DIM}${T_INDEX}.${NC} ${CYAN}${display}${NC}"
+            T_INDEX=$((T_INDEX + 1))
+        done <<< "$PROJECT_TRANSPILERS"
+        echo ""
+        if $PROXY_RUNNING; then
+            echo -e "  ${GREEN}[B]${NC} ${BOLD}BUILD${NC} — run all project transpilers ${DIM}(default)${NC}"
         else
-            echo -e "  ${CYAN}[$INDEX]${NC} $substrate"
+            echo -e "  ${RED}[B]${NC} ${BOLD}BUILD${NC} — ${RED}proxy offline${NC} — start it first:"
+            echo -e "      ${DIM}python3 $PROJECT_ROOT/ssotme-proxy/server.py &${NC}"
         fi
-        INDEX=$((INDEX + 1))
-    done
+    fi
 
-    # Dev-Ops / utilities
-    echo -e "  ${DIM}────────────────────────────────────────${NC}"
-    echo -e "  ${RED}[C]${NC} ${BOLD}CLEAN${NC} all generated files"
-    echo -e "  ${YELLOW}[D]${NC} ${BOLD}DEV-OPS${NC} menu (PostgreSQL init, Effortless setup)"
-
-    echo ""
-
+    echo -e "  ${MAGENTA}[V]${NC} ${BOLD}VIEW RESULTS${NC}"
+    echo -e "  ${YELLOW}[O]${NC} ${BOLD}SELECT ONTOLOGY${NC}"
+    echo -e "  ${BLUE}[I]${NC} ${BOLD}IMPORT FROM AIRTABLE${NC}"
+    echo -e "  ${RED}[C]${NC} ${BOLD}CLEAN${NC}"
+    echo -e "  ${YELLOW}[D]${NC} ${BOLD}DEV-OPS${NC}"
     echo -e "  [${RED}Q${NC}] Quit"
     echo ""
-
 }
 
 # =============================================================================
@@ -1278,23 +1425,78 @@ fi
 while true; do
     show_menu
 
-    # Get substrates for numbered selection (must match show_menu)
-    SUBSTRATES=$(get_valid_substrates)
-    SUBSTRATES_ARRAY=($SUBSTRATES)
-    TOTAL_SUBSTRATES=${#SUBSTRATES_ARRAY[@]}
+    # Determine default action
+    PROJECT_TRANSPILERS=$(get_project_transpilers)
+    if [ -n "$PROJECT_TRANSPILERS" ]; then
+        DEFAULT_CHOICE="B"
+    else
+        DEFAULT_CHOICE="V"
+    fi
 
-    read -p "Enter choice [A, V, O, I, C, D, 1-$TOTAL_SUBSTRATES, Q] (default: A): " USER_CHOICE
+    if [ -n "$PROJECT_TRANSPILERS" ]; then
+        read -p "Enter choice [1-$(echo "$PROJECT_TRANSPILERS" | wc -l | tr -d ' '), B, V, O, I, C, D, Q] (default: $DEFAULT_CHOICE): " USER_CHOICE
+    else
+        read -p "Enter choice [B, V, O, I, C, D, Q] (default: $DEFAULT_CHOICE): " USER_CHOICE
+    fi
 
-    # Default to 'A' if user just presses Enter
     if [ -z "$USER_CHOICE" ]; then
-        USER_CHOICE="A"
+        USER_CHOICE="$DEFAULT_CHOICE"
     fi
 
     case $USER_CHOICE in
-        [Aa])
+        [Bb])
             echo ""
-            echo -e "${GREEN}Running ALL substrates...${NC}"
-            run_substrates ""
+            if [ -n "$PROJECT_TRANSPILERS" ]; then
+                if proxy_is_running; then
+                    run_project_transpilers
+                else
+                    echo -e "${RED}ssotme-proxy is offline.${NC} Start it with:"
+                    echo -e "  ${WHITE}python3 $PROJECT_ROOT/ssotme-proxy/server.py &${NC}"
+                    echo ""
+                    read -p "Press Enter to continue..."
+                fi
+            else
+                echo -e "${YELLOW}No proxy transpilers configured for this project.${NC}"
+                sleep 1
+            fi
+            ;;
+        [0-9]|[0-9][0-9])
+            if [ -n "$PROJECT_TRANSPILERS" ]; then
+                TRANSPILER_INDEX=0
+                SELECTED_NAME=""
+                SELECTED_DISPLAY=""
+                while IFS=$'\t' read -r internal display; do
+                    TRANSPILER_INDEX=$((TRANSPILER_INDEX + 1))
+                    if [ "$TRANSPILER_INDEX" = "$USER_CHOICE" ]; then
+                        SELECTED_NAME="$internal"
+                        SELECTED_DISPLAY="$display"
+                    fi
+                done <<< "$PROJECT_TRANSPILERS"
+                if [ -n "$SELECTED_NAME" ]; then
+                    echo ""
+                    if proxy_is_running; then
+                        echo -e "${CYAN}▶ ${BOLD}${SELECTED_DISPLAY}${NC}"
+                        if run_proxy_transpiler "$SELECTED_NAME"; then
+                            echo -e "  ${GREEN}✓ ${SELECTED_DISPLAY} OK${NC}"
+                        else
+                            echo -e "  ${RED}✗ ${SELECTED_DISPLAY} FAILED${NC}"
+                        fi
+                    else
+                        echo -e "${RED}ssotme-proxy is offline.${NC} Start it with:"
+                        echo -e "  ${WHITE}python3 $PROJECT_ROOT/ssotme-proxy/server.py &${NC}"
+                    fi
+                    echo ""
+                    read -p "Press Enter to continue..."
+                else
+                    echo ""
+                    echo -e "${RED}Invalid option: $USER_CHOICE${NC}"
+                    sleep 1
+                fi
+            else
+                echo ""
+                echo -e "${RED}Invalid option: $USER_CHOICE${NC}"
+                sleep 1
+            fi
             ;;
         [Vv])
             action_view_results
@@ -1314,18 +1516,6 @@ while true; do
         [Qq])
             echo ""
             exit 0
-            ;;
-        [0-9]|[0-9][0-9])
-            if [ "$USER_CHOICE" -ge 1 ] && [ "$USER_CHOICE" -le "$TOTAL_SUBSTRATES" ]; then
-                RUN_SINGLE="${SUBSTRATES_ARRAY[$((USER_CHOICE - 1))]}"
-                echo ""
-                echo -e "${GREEN}Running single substrate: ${BOLD}$RUN_SINGLE${NC}"
-                run_substrates "$RUN_SINGLE"
-            else
-                echo ""
-                echo -e "${RED}Invalid substrate number: $USER_CHOICE${NC}"
-                sleep 1
-            fi
             ;;
         *)
             echo ""

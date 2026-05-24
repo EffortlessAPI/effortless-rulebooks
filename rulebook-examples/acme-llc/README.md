@@ -67,22 +67,47 @@ All logic lives in the rulebook; Postgres, Python, and Go all enforce it identic
 
 ---
 
-## Editing
+## Build Rules
 
-### From Airtable (base ID: `appWrXPvXbkgQGOxt`)
+`effortless build` is scoped to the folder it runs from. The folder determines which transpiler runs — not a flag, not a filter.
+
+| Run from | What rebuilds |
+|----------|--------------|
+| `acme-llc/` | All transpilers (full rebuild) |
+| `acme-llc/effortless-rulebook/` | Rulebook only (pull from Airtable) |
+| `acme-llc/python/` | Python substrate only |
+| `acme-llc/postgres/` | Postgres SQL only |
+
+### Full rebuild
 
 ```bash
-effortless airtabletorulebook
+cd acme-llc/
 effortless build
 ```
 
-### Directly
-
-Edit `effortless-rulebook/effortless-rulebook.json`, then:
+### Rulebook only (from Airtable)
 
 ```bash
+cd effortless-rulebook/
 effortless build
 ```
+
+### Single substrate
+
+```bash
+cd python/
+effortless build
+```
+
+### Proxy transpilers (localhost:4242)
+
+The `python` substrate runs through `ssotme-proxy`. Start the proxy first if it isn't running:
+
+```bash
+python3 ../../ssotme-proxy/server.py &
+```
+
+Then `effortless build` from `python/` calls `http://localhost:4242/rulebook-to-python` and writes output into this folder.
 
 ---
 

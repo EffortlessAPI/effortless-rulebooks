@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ACME Corporation (template)</title>
+    <title>Effortlessly Invariant Rulesbooks (ERB) - Project Architecture</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css">
     <style>
@@ -800,7 +800,7 @@ footer {
 <body>
     <header>
         <div class="header-content">
-            <h1>ACME Corporation (template)</h1>
+            <h1>Effortlessly Invariant Rulesbooks (ERB) - Project Architecture</h1>
             <div class="header-meta">
                 <span class="project-name">Orchestration Report</span>
             </div>
@@ -953,11 +953,11 @@ footer {
     <script>
 const REPORT_DATA = {
   "meta": {
-    "project_name": "ACME Corporation (template)",
+    "project_name": "Effortlessly Invariant Rulesbooks (ERB) - Project Architecture",
     "directory_name": "effortlessly-invariant-rulesbooks",
     "rulebook_path": "/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/effortless-rulebook/effortless-rulebook.json",
-    "rulebook_name": "ACME Corporation (template)",
-    "rulebook_description": "Rulebook generated from Airtable base 'ACME Corporation (template)'.",
+    "rulebook_name": "Effortlessly Invariant Rulesbooks (ERB) - Project Architecture",
+    "rulebook_description": "Meta-rulebook describing the ERB project itself: all moving parts, orchestration flows, substrates, and their interdependencies.",
     "base_id": "appzkcmBFPWFGBtRo"
   },
   "summary": {
@@ -981,56 +981,13 @@ const REPORT_DATA = {
       "computed_columns_info": [
         {
           "name": "full_name",
-          "formula": "=FirstName & \" \" & LastName",
-          "description": "Full name is computed from the first and last name of the customer"
+          "formula": "",
+          "description": ""
         }
       ],
       "record_count": 3,
-      "schema": [
-        {
-          "name": "ClientId",
-          "datatype": "string",
-          "type": "raw",
-          "nullable": false
-        },
-        {
-          "name": "Customer",
-          "datatype": "string",
-          "type": "raw",
-          "nullable": true,
-          "Description": "Identifier for the customers."
-        },
-        {
-          "name": "EmailAddress",
-          "datatype": "string",
-          "type": "raw",
-          "nullable": true,
-          "Description": "Thec ustomers email address"
-        },
-        {
-          "name": "FirstName",
-          "datatype": "string",
-          "type": "raw",
-          "nullable": true,
-          "Description": "First Name of the customer - used to make the full name"
-        },
-        {
-          "name": "LastName",
-          "datatype": "string",
-          "type": "raw",
-          "nullable": true,
-          "Description": "Last Name of the customer - used to make the full name"
-        },
-        {
-          "name": "FullName",
-          "datatype": "string",
-          "type": "calculated",
-          "nullable": true,
-          "Description": "Full name is computed from the first and last name of the customer",
-          "formula": "={{FirstName}} & \" \" & {{LastName}}"
-        }
-      ],
-      "description": "Table: Client",
+      "schema": [],
+      "description": "",
       "answer_key": [
         {
           "client_id": "cust0001",
@@ -1072,143 +1029,43 @@ const REPORT_DATA = {
       "computed_columns_info": [
         {
           "name": "project_type_name",
-          "formula": "=INDEX(TypesOfProject!Name, MATCH(Projects!ProjectType, TypesOfProject!TypesOfProjectId, 0))",
+          "formula": "",
           "description": ""
         },
         {
           "name": "project_type_description",
-          "formula": "=INDEX(TypesOfProject!Description, MATCH(Projects!ProjectType, TypesOfProject!TypesOfProjectId, 0))",
+          "formula": "",
           "description": ""
         },
         {
           "name": "project_type_requires_manager_approval",
-          "formula": "=INDEX(TypesOfProject!RequiresManagerApproval, MATCH(Projects!ProjectType, TypesOfProject!TypesOfProjectId, 0))",
+          "formula": "",
           "description": ""
         },
         {
           "name": "approved_by_role_is_manager",
-          "formula": "=INDEX(Employees!RoleIsManager, MATCH(Projects!ApprovedBy, Employees!EmployeeId, 0))",
+          "formula": "",
           "description": ""
         },
         {
           "name": "approved_by_name",
-          "formula": "=INDEX(Employees!Name, MATCH(Projects!ApprovedBy, Employees!EmployeeId, 0))",
+          "formula": "",
           "description": ""
         },
         {
           "name": "approved_by_email_address",
-          "formula": "=INDEX(Employees!EmailAddress, MATCH(Projects!ApprovedBy, Employees!EmployeeId, 0))",
+          "formula": "",
           "description": ""
         },
         {
           "name": "approved_by_phone_number",
-          "formula": "=INDEX(Employees!PhoneNumber, MATCH(Projects!ApprovedBy, Employees!EmployeeId, 0))",
+          "formula": "",
           "description": ""
         }
       ],
       "record_count": 3,
-      "schema": [
-        {
-          "name": "ProjectId",
-          "datatype": "string",
-          "type": "raw",
-          "nullable": false
-        },
-        {
-          "name": "Name",
-          "datatype": "string",
-          "type": "raw",
-          "nullable": true
-        },
-        {
-          "name": "Description",
-          "datatype": "string",
-          "type": "raw",
-          "nullable": true
-        },
-        {
-          "name": "ProjectType",
-          "datatype": "string",
-          "type": "relationship",
-          "nullable": true,
-          "RelatedTo": "TypesOfProject",
-          "isReversed": false,
-          "prefersSingleRecordLink": true,
-          "InverseField": "Projects"
-        },
-        {
-          "name": "ProjectTypeName",
-          "datatype": "string",
-          "type": "lookup",
-          "nullable": true,
-          "formula": "=INDEX(TypesOfProject!{{Name}}, MATCH(Projects!{{ProjectType}}, TypesOfProject!{{TypesOfProjectId}}, 0))"
-        },
-        {
-          "name": "ProjectTypeDescription",
-          "datatype": "string",
-          "type": "lookup",
-          "nullable": true,
-          "formula": "=INDEX(TypesOfProject!{{Description}}, MATCH(Projects!{{ProjectType}}, TypesOfProject!{{TypesOfProjectId}}, 0))"
-        },
-        {
-          "name": "ProjectTypeRequiresManagerApproval",
-          "datatype": "boolean",
-          "type": "lookup",
-          "nullable": true,
-          "formula": "=INDEX(TypesOfProject!{{RequiresManagerApproval}}, MATCH(Projects!{{ProjectType}}, TypesOfProject!{{TypesOfProjectId}}, 0))"
-        },
-        {
-          "name": "DueDate",
-          "datatype": "datetime",
-          "type": "raw",
-          "nullable": true
-        },
-        {
-          "name": "IsApproved",
-          "datatype": "boolean",
-          "type": "raw",
-          "nullable": true
-        },
-        {
-          "name": "ApprovedBy",
-          "datatype": "string",
-          "type": "relationship",
-          "nullable": true,
-          "RelatedTo": "Employees",
-          "isReversed": false,
-          "prefersSingleRecordLink": true,
-          "InverseField": "Projects"
-        },
-        {
-          "name": "ApprovedByRoleIsManager",
-          "datatype": "boolean",
-          "type": "lookup",
-          "nullable": true,
-          "formula": "=INDEX(Employees!{{RoleIsManager}}, MATCH(Projects!{{ApprovedBy}}, Employees!{{EmployeeId}}, 0))"
-        },
-        {
-          "name": "ApprovedByName",
-          "datatype": "string",
-          "type": "lookup",
-          "nullable": true,
-          "formula": "=INDEX(Employees!{{Name}}, MATCH(Projects!{{ApprovedBy}}, Employees!{{EmployeeId}}, 0))"
-        },
-        {
-          "name": "ApprovedByEmailAddress",
-          "datatype": "string",
-          "type": "lookup",
-          "nullable": true,
-          "formula": "=INDEX(Employees!{{EmailAddress}}, MATCH(Projects!{{ApprovedBy}}, Employees!{{EmployeeId}}, 0))"
-        },
-        {
-          "name": "ApprovedByPhoneNumber",
-          "datatype": "string",
-          "type": "lookup",
-          "nullable": true,
-          "formula": "=INDEX(Employees!{{PhoneNumber}}, MATCH(Projects!{{ApprovedBy}}, Employees!{{EmployeeId}}, 0))"
-        }
-      ],
-      "description": "Table: Projects",
+      "schema": [],
+      "description": "",
       "answer_key": [
         {
           "project_id": "customer-portal-redesign",
@@ -1270,89 +1127,23 @@ const REPORT_DATA = {
       "computed_columns_info": [
         {
           "name": "role_name",
-          "formula": "=INDEX(Roles!Name, MATCH(Employees!Role, Roles!RoleId, 0))",
+          "formula": "",
           "description": ""
         },
         {
           "name": "role_description",
-          "formula": "=INDEX(Roles!Description, MATCH(Employees!Role, Roles!RoleId, 0))",
+          "formula": "",
           "description": ""
         },
         {
           "name": "role_is_manager",
-          "formula": "=INDEX(Roles!IsManager, MATCH(Employees!Role, Roles!RoleId, 0))",
+          "formula": "",
           "description": ""
         }
       ],
       "record_count": 3,
-      "schema": [
-        {
-          "name": "EmployeeId",
-          "datatype": "string",
-          "type": "raw",
-          "nullable": false
-        },
-        {
-          "name": "Name",
-          "datatype": "string",
-          "type": "raw",
-          "nullable": true
-        },
-        {
-          "name": "EmailAddress",
-          "datatype": "string",
-          "type": "raw",
-          "nullable": true
-        },
-        {
-          "name": "PhoneNumber",
-          "datatype": "string",
-          "type": "raw",
-          "nullable": true
-        },
-        {
-          "name": "Role",
-          "datatype": "string",
-          "type": "relationship",
-          "nullable": true,
-          "RelatedTo": "Roles",
-          "isReversed": false,
-          "prefersSingleRecordLink": true,
-          "InverseField": "Employees"
-        },
-        {
-          "name": "RoleName",
-          "datatype": "string",
-          "type": "lookup",
-          "nullable": true,
-          "formula": "=INDEX(Roles!{{Name}}, MATCH(Employees!{{Role}}, Roles!{{RoleId}}, 0))"
-        },
-        {
-          "name": "RoleDescription",
-          "datatype": "string",
-          "type": "lookup",
-          "nullable": true,
-          "formula": "=INDEX(Roles!{{Description}}, MATCH(Employees!{{Role}}, Roles!{{RoleId}}, 0))"
-        },
-        {
-          "name": "Projects",
-          "datatype": "string",
-          "type": "relationship",
-          "nullable": true,
-          "RelatedTo": "Projects",
-          "isReversed": false,
-          "prefersSingleRecordLink": false,
-          "InverseField": "ApprovedBy"
-        },
-        {
-          "name": "RoleIsManager",
-          "datatype": "boolean",
-          "type": "lookup",
-          "nullable": true,
-          "formula": "=INDEX(Roles!{{IsManager}}, MATCH(Employees!{{Role}}, Roles!{{RoleId}}, 0))"
-        }
-      ],
-      "description": "Table: Employees",
+      "schema": [],
+      "description": "",
       "answer_key": [
         {
           "employee_id": "mike-johnson",
@@ -1397,55 +1188,13 @@ const REPORT_DATA = {
       "computed_columns_info": [
         {
           "name": "count_of_employees",
-          "formula": "=COUNTIFS(Employees!Role, Roles!RoleId)",
+          "formula": "",
           "description": ""
         }
       ],
       "record_count": 3,
-      "schema": [
-        {
-          "name": "RoleId",
-          "datatype": "string",
-          "type": "raw",
-          "nullable": false
-        },
-        {
-          "name": "Name",
-          "datatype": "string",
-          "type": "raw",
-          "nullable": true
-        },
-        {
-          "name": "Description",
-          "datatype": "string",
-          "type": "raw",
-          "nullable": true
-        },
-        {
-          "name": "IsManager",
-          "datatype": "boolean",
-          "type": "raw",
-          "nullable": true
-        },
-        {
-          "name": "Employees",
-          "datatype": "string",
-          "type": "relationship",
-          "nullable": true,
-          "RelatedTo": "Employees",
-          "isReversed": false,
-          "prefersSingleRecordLink": false,
-          "InverseField": "Role"
-        },
-        {
-          "name": "CountOfEmployees",
-          "datatype": "integer",
-          "type": "aggregation",
-          "nullable": true,
-          "formula": "=COUNTIFS(Employees!{{Role}}, Roles!{{RoleId}})"
-        }
-      ],
-      "description": "Table: Roles",
+      "schema": [],
+      "description": "",
       "answer_key": [
         {
           "role_id": "analyst",
@@ -1481,55 +1230,13 @@ const REPORT_DATA = {
       "computed_columns_info": [
         {
           "name": "count_of_projects",
-          "formula": "=COUNTIFS(Projects!ProjectType, TypesOfProject!TypesOfProjectId)",
+          "formula": "",
           "description": ""
         }
       ],
       "record_count": 4,
-      "schema": [
-        {
-          "name": "TypesOfProjectId",
-          "datatype": "string",
-          "type": "raw",
-          "nullable": false
-        },
-        {
-          "name": "Name",
-          "datatype": "string",
-          "type": "raw",
-          "nullable": true
-        },
-        {
-          "name": "Description",
-          "datatype": "string",
-          "type": "raw",
-          "nullable": true
-        },
-        {
-          "name": "RequiresManagerApproval",
-          "datatype": "boolean",
-          "type": "raw",
-          "nullable": true
-        },
-        {
-          "name": "Projects",
-          "datatype": "string",
-          "type": "relationship",
-          "nullable": true,
-          "RelatedTo": "Projects",
-          "isReversed": false,
-          "prefersSingleRecordLink": false,
-          "InverseField": "ProjectType"
-        },
-        {
-          "name": "CountOfProjects",
-          "datatype": "integer",
-          "type": "aggregation",
-          "nullable": true,
-          "formula": "=COUNTIFS(Projects!{{ProjectType}}, TypesOfProject!{{TypesOfProjectId}})"
-        }
-      ],
-      "description": "Table: TypesOfProject",
+      "schema": [],
+      "description": "",
       "answer_key": [
         {
           "types_of_project_id": "clientfacing",

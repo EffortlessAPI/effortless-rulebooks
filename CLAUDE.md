@@ -81,4 +81,55 @@ cd execution-substrates/python && python take-test.py
 ```
 
 ---
+
+## ssotme-proxy (localhost:4242)
+
+`ssotme-proxy` is a local HTTP server that makes the repo's injector scripts
+behave like first-class ssotme:// transpilers. It does NOT wrap a separate
+mechanism — it IS the mechanism. The injectors already work; the proxy just
+exposes them over HTTP using the ssotme fileset protocol.
+
+### Wire protocol
+
+Each transpiler is a **route**, not a body parameter:
+
+```
+POST http://localhost:4242/rulebook-to-python
+POST http://localhost:4242/rulebook-to-postgres
+POST http://localhost:4242/airtable-to-rulebook
+```
+
+The request body carries the ssotme fileset (input files as a JSON map of
+`filename → content`). The response is a fileset of output files.
+
+The server runs the corresponding injector script with:
+- `ERB_RULEBOOK_PATH` — path to the input `effortless-rulebook.json`
+- `ERB_OUTPUT_DIR` — the project-scoped output folder (e.g. `acme-llc/python/`)
+
+The injector runs, writes its files to `ERB_OUTPUT_DIR`, and the proxy
+collects the written files and returns them as a fileset response.
+
+### Installing a transpiler into a project
+
+The `effortless` CLI handles registration — never edit `effortless.json` by hand
+to add transpiler entries. Run from the project folder:
+
+```bash
+cd rulebook-examples/acme-llc/python/
+effortless -install http://localhost:4242/rulebook-to-python \
+    -i ../effortless-rulebook/effortless-rulebook.json
+```
+
+The CLI writes the correct `CommandLine`, `RelativePath`, and input/output
+mapping into `effortless.json`. After that, `effortless build` runs it like
+any other transpiler and clean works automatically.
+
+### Key distinction
+
+The orchestrator's `[B] BUILD` calls `run_project_transpilers`, which reads
+`effortless.json` transpiler entries that have `ProxyUrl` set and POSTs to
+the proxy route. The proxy delegates to the same injector scripts that have
+always existed — there is no duplication.
+
+---
 Local CLAUDE.md is also in ../api.effortlessapi.com/CLAUDE.md

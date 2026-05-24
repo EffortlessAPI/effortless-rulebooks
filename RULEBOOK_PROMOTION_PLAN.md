@@ -8,6 +8,15 @@ an `effortless-rulebooks/` folder with one subfolder per domain.
 
 ## Todo List
 
+- [ ] **Project-scoped orchestrator + ssotme-proxy**
+  - Make Acme LLC the "active tool" concept — orchestrator shows only tools from that project's `effortless.json`
+  - Add ability to install additional tools into the active project's `effortless.json`
+  - Stand up `ssotme-proxy` on `localhost:4242` as a first-class local transpiler server
+  - Register each execution substrate with the proxy (no `-exec` flag needed — proxy IS the protocol)
+  - Refactor each substrate to accept a root path so it reads rulebook from and writes output into that project's folder
+  - Replace orchestrator's substrate dispatch loop with `effortless build` per active project
+  - Wire `clean` through the proxy protocol so it works automatically
+
 - [x] **Update Orchestration: Rulebook-first, Airtable-as-import** ✓
 
 - [ ] **Finish ACME rulebooks** — Complete effortless-rulebooks/acme-corporation/ and effortless-rulebooks/acme-llc/ with full substrate generation and conformance testing.
