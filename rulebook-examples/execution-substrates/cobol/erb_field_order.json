@@ -1,0 +1,25 @@
+{
+  "Client": {
+    "fields": [
+      "ClientId",
+      "Customer",
+      "EmailAddress",
+      "FirstName",
+      "LastName",
+      "FullName"
+    ],
+    "raw_count": 5
+  },
+  "client": {
+    "fields": [
+      "ClientId",
+      "Customer",
+      "EmailAddress",
+      "FirstName",
+      "LastName",
+      "FullName"
+    ],
+    "raw_count": 5
+  },
+  "_target_entity": "client"
+}

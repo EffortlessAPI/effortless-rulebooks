@@ -1,0 +1,85 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+note top of Client
+  Table: Client
+end note
+
+class Client {
+  +ClientId: String
+  +Customer: String -- Identifier for the customers.
+  +EmailAddress: String -- Thec ustomers email address
+  +FirstName: String -- First Name of the customer - used to make the full name
+  +LastName: String -- Last Name of the customer - used to make the full name
+  --
+  /FullName: String  {derived} -- Full name is computed from the first and last name of the customer
+}
+
+note top of Employees
+  Table: Employees
+end note
+
+class Employees {
+  +EmployeeId: String
+  +Name: String
+  +EmailAddress: String
+  +PhoneNumber: String
+  +Role: String
+  +RoleName: String
+  +RoleDescription: String
+  +Projects: String
+  +RoleIsManager: Boolean
+  --
+}
+
+note top of Projects
+  Table: Projects
+end note
+
+class Projects {
+  +ProjectId: String
+  +Name: String
+  +Description: String
+  +ProjectType: String
+  +ProjectTypeName: String
+  +ProjectTypeDescription: String
+  +ProjectTypeRequiresManagerApproval: Boolean
+  +DueDate: String
+  +IsApproved: Boolean
+  +ApprovedBy: String
+  +ApprovedByRoleIsManager: Boolean
+  +ApprovedByName: String
+  +ApprovedByEmailAddress: String
+  +ApprovedByPhoneNumber: String
+  --
+}
+
+note top of Roles
+  Table: Roles
+end note
+
+class Roles {
+  +RoleId: String
+  +Name: String
+  +Description: String
+  +IsManager: Boolean
+  +Employees: String
+  +CountOfEmployees: Integer
+  --
+}
+
+note top of TypesOfProject
+  Table: TypesOfProject
+end note
+
+class TypesOfProject {
+  +TypesOfProjectId: String
+  +Name: String
+  +Description: String
+  +RequiresManagerApproval: Boolean
+  +Projects: String
+  +CountOfProjects: Integer
+  --
+}
+
+@enduml

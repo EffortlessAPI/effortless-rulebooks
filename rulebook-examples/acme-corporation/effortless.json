@@ -1,0 +1,28 @@
+{
+  "Name": "ACME Corporation",
+  "Description": "A comprehensive business process and inventory management system demonstrating real-world ERB patterns.",
+  "Version": "1.0",
+  "ProjectSettings": [
+    {
+      "Name": "baseId",
+      "Value": "appzkcmBFPWFGBtRo",
+      "Description": "Airtable base ID for ACME Corporation (hardcoded)"
+    }
+  ],
+  "Transpilers": [
+    {
+      "Name": "airtabletorulebook",
+      "RelativePath": "/effortless-rulebook",
+      "CommandLine": "airtable-to-rulebook -o effortless-rulebook.json -account airtable -p \"view=Grid view\"",
+      "Enabled": true,
+      "Description": "Pull rulebook from Airtable"
+    },
+    {
+      "Name": "rulebooktoairtable",
+      "RelativePath": "/effortless-rulebook/push-to-airtable",
+      "CommandLine": "rulebook-to-airtable -i ../effortless-rulebook.json -account airtable -w 300000",
+      "Enabled": false,
+      "Description": "Reverse-sync: push rulebook changes back to Airtable"
+    }
+  ]
+}

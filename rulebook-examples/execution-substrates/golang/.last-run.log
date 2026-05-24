@@ -1,0 +1,26 @@
+=== Go Substrate Test Run ===
+
+golang: Starting test...
+golang: Compiling and running...
+Golang substrate: Processing 5 tables with calculated fields...
+  Expected tables: Client, Roles, Employees, TypesOfProject, Projects
+
+Processing Client...
+  ✓ client: 3 records processed
+
+Processing Roles...
+  ✓ roles: 3 records processed
+
+Processing Employees...
+  ✓ employees: 3 records processed
+
+Processing TypesOfProject...
+  ✓ types_of_project: 4 records processed
+
+Processing Projects...
+  ✓ projects: 3 records processed
+
+════════════════════════════════════════════════════════════════
+Golang substrate: ALL 5 tables processed successfully (16 total records)
+════════════════════════════════════════════════════════════════
+

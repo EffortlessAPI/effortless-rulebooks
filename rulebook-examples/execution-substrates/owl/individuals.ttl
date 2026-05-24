@@ -1,0 +1,135 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix erb: <http://example.org/erb#> .
+
+# === Individuals: Client ===
+
+erb:Client_0 a erb:Client ;
+    erb:clientId "cust0001" ;
+    erb:customer "CUST0001" ;
+    erb:emailAddress "larry.smith@email.com" ;
+    erb:firstName "Bob" ;
+    erb:lastName "Smith" .
+
+erb:Client_1 a erb:Client ;
+    erb:clientId "cust0002" ;
+    erb:customer "CUST0002" ;
+    erb:emailAddress "john.doe@email.com" ;
+    erb:firstName "John" ;
+    erb:lastName "Doe" .
+
+erb:Client_2 a erb:Client ;
+    erb:clientId "cust0003" ;
+    erb:customer "CUST0003" ;
+    erb:emailAddress "emily.jones@email.com" ;
+    erb:firstName "Emily" ;
+    erb:lastName "Jones" .
+
+# === Individuals: Employees ===
+
+erb:Employees_0 a erb:Employees ;
+    erb:employeeId "sarah-chen" ;
+    erb:name "Sarah Chen" ;
+    erb:emailAddress "sarah.chen@acmecorp.example" ;
+    erb:phoneNumber "555-0101" ;
+    erb:role "projectmanager" ;
+    erb:projects "internal-tools-dashboard" .
+
+erb:Employees_1 a erb:Employees ;
+    erb:employeeId "mike-johnson" ;
+    erb:name "Mike Johnson" ;
+    erb:emailAddress "mike.johnson@acmecorp.example" ;
+    erb:phoneNumber "555-0102" ;
+    erb:role "developer" ;
+    erb:projects "gdpr-compliance-audit" .
+
+erb:Employees_2 a erb:Employees ;
+    erb:employeeId "priya-patel" ;
+    erb:name "Priya Patel" ;
+    erb:emailAddress "priya.patel@acmecorp.example" ;
+    erb:phoneNumber "555-0103" ;
+    erb:role "analyst" ;
+    erb:projects "customer-portal-redesign" .
+
+# === Individuals: Projects ===
+
+erb:Projects_0 a erb:Projects ;
+    erb:projectId "internal-tools-dashboard" ;
+    erb:name "Internal Tools Dashboard" ;
+    erb:description "Build internal analytics dashboard for team productivity metrics" ;
+    erb:projectType "internal" ;
+    erb:dueDate "2026-06-15" ;
+    erb:isApproved true ;
+    erb:approvedBy "sarah-chen" .
+
+erb:Projects_1 a erb:Projects ;
+    erb:projectId "customer-portal-redesign" ;
+    erb:name "Customer Portal Redesign" ;
+    erb:description "Complete redesign of customer-facing portal with modern UX" ;
+    erb:projectType "clientfacing" ;
+    erb:dueDate "2026-08-01" ;
+    erb:isApproved false ;
+    erb:approvedBy "priya-patel" .
+
+erb:Projects_2 a erb:Projects ;
+    erb:projectId "gdpr-compliance-audit" ;
+    erb:name "GDPR Compliance Audit" ;
+    erb:description "Annual compliance audit and documentation update" ;
+    erb:projectType "compliance" ;
+    erb:dueDate "2026-04-30" ;
+    erb:isApproved true ;
+    erb:approvedBy "mike-johnson" .
+
+# === Individuals: Roles ===
+
+erb:Roles_0 a erb:Roles ;
+    erb:roleId "developer" ;
+    erb:name "Developer" ;
+    erb:description "Developers handle the implementation and are responsible for making the final product do what is expected" ;
+    erb:isManager true ;
+    erb:employees "mike-johnson" .
+
+erb:Roles_1 a erb:Roles ;
+    erb:roleId "projectmanager" ;
+    erb:name "ProjectManager" ;
+    erb:description "The project Manager makes sure that the developers do what the analysts ask for" ;
+    erb:isManager true ;
+    erb:employees "sarah-chen" .
+
+erb:Roles_2 a erb:Roles ;
+    erb:roleId "analyst" ;
+    erb:name "Analyst" ;
+    erb:description "The business analysis know what the customer's want." ;
+    erb:isManager false ;
+    erb:employees "priya-patel" .
+
+# === Individuals: TypesOfProject ===
+
+erb:TypesOfProject_0 a erb:TypesOfProject ;
+    erb:typesOfProjectId "internal" ;
+    erb:name "Internal" ;
+    erb:description "An internal project that is not publicly accessible" ;
+    erb:requiresManagerApproval false ;
+    erb:projects "internal-tools-dashboard" .
+
+erb:TypesOfProject_1 a erb:TypesOfProject ;
+    erb:typesOfProjectId "clientfacing" ;
+    erb:name "ClientFacing" ;
+    erb:description "Open, public facing communication" ;
+    erb:requiresManagerApproval true ;
+    erb:projects "customer-portal-redesign" .
+
+erb:TypesOfProject_2 a erb:TypesOfProject ;
+    erb:typesOfProjectId "research" ;
+    erb:name "Research" ;
+    erb:description "" ;
+    erb:requiresManagerApproval false ;
+    erb:projects "" .
+
+erb:TypesOfProject_3 a erb:TypesOfProject ;
+    erb:typesOfProjectId "compliance" ;
+    erb:name "Compliance" ;
+    erb:description "" ;
+    erb:requiresManagerApproval true ;
+    erb:projects "gdpr-compliance-audit" .

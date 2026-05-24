@@ -1,0 +1,14 @@
+=== Effortless-EntityFramework Substrate Test Run ===
+
+Building runner...
+CSC : error CS2001: Source file '/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/effortless-entity-framework/obj/Patched/DataClasses/BaseClasses/CustomerBase.cs' could not be found. [/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/effortless-entity-framework/EffortlessEntityFrameworkRunner.csproj]
+CSC : error CS2001: Source file '/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/effortless-entity-framework/obj/Patched/DataClasses/Customer.cs' could not be found. [/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/effortless-entity-framework/EffortlessEntityFrameworkRunner.csproj]
+
+Build FAILED.
+
+CSC : error CS2001: Source file '/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/effortless-entity-framework/obj/Patched/DataClasses/BaseClasses/CustomerBase.cs' could not be found. [/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/effortless-entity-framework/EffortlessEntityFrameworkRunner.csproj]
+CSC : error CS2001: Source file '/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/effortless-entity-framework/obj/Patched/DataClasses/Customer.cs' could not be found. [/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/effortless-entity-framework/EffortlessEntityFrameworkRunner.csproj]
+    0 Warning(s)
+    2 Error(s)
+
+Time Elapsed 00:00:00.94

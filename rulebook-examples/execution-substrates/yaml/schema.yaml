@@ -1,0 +1,211 @@
+# ERB Schema - Jessica Talisman Workflow Ontology
+# Source: effortless-rulebook/effortless-rulebook.json
+# This is a schema-only file (no data) for LLM consumption
+
+entities:
+  Workflows:
+    description: "A workflow definition representing a business process with ordered steps"
+    primary_key: workflow_id
+
+    raw_fields:
+      workflow_id:
+        type: string
+        nullable: false
+      display_name:
+        type: string
+        nullable: true
+        description: "Human-readable display name for the workflow"
+      title:
+        type: string
+        nullable: true
+        description: "Human-readable title of the workflow. Maps to dct:title from Dublin Core."
+      description:
+        type: string
+        nullable: true
+        description: "Detailed description of the workflow's purpose and scope."
+      identifier:
+        type: string
+        nullable: true
+        description: "External system identifier for cross-referencing."
+      modified:
+        type: datetime
+        nullable: true
+        description: "Last modification timestamp. Maps to dct:modified from Dublin Core."
+      workflow_steps:
+        type: relationship
+        nullable: true
+        related_to: WorkflowSteps
+        description: "Reference to workflow steps via ntwf:hasStep relationship."
+      count_of_steps:
+        type: integer
+        nullable: true
+        description: "Aggregation: count of workflow steps in this workflow."
+
+    calculated_fields:
+      name:
+        type: string
+        nullable: true
+        dag_level: 1
+        formula: "=SUBSTITUTE(LOWER({{DisplayName}}), \" \", \"-\")"
+        description: "Short machine-friendly name for the workflow. Used for programmatic reference and URL slug generation."
+        example:
+          input: { display_name: "Employee Onboarding" }
+          output: "employee-onboarding"
+      has_more_than1_step:
+        type: boolean
+        nullable: true
+        dag_level: 2
+        formula: "={{CountOfSteps}} > 1"
+        description: "Boolean flag indicating if workflow has multiple steps."
+        example:
+          input: { count_of_steps: 3 }
+          output: true
+
+  WorkflowSteps:
+    description: "A single step within a workflow, assigned to a role"
+    primary_key: workflow_step_id
+
+    raw_fields:
+      workflow_step_id:
+        type: string
+        nullable: false
+      display_name:
+        type: string
+        nullable: true
+        description: "Human-readable display name for the step"
+      workflow:
+        type: relationship
+        nullable: true
+        related_to: Workflows
+        description: "Foreign key to the parent workflow (ntwf:isStepOf)."
+      sequence_position:
+        type: integer
+        nullable: true
+        description: "Integer ordinal position of the step within its workflow."
+      assigned_role:
+        type: relationship
+        nullable: true
+        related_to: Roles
+        description: "Foreign key to the Role responsible for executing this step."
+      requires_human_approval:
+        type: boolean
+        nullable: true
+        description: "Boolean flag indicating whether a human agent must fill the assigned role."
+      approval_gate:
+        type: relationship
+        nullable: true
+        related_to: ApprovalGates
+        description: "Foreign key to ApprovalGate if this step is a decision checkpoint."
+      preceded_by_steps:
+        type: relationship
+        nullable: true
+        related_to: PrecedesSteps
+        description: "Reference to steps that must complete before this step."
+
+    calculated_fields:
+      name:
+        type: string
+        nullable: true
+        dag_level: 1
+        formula: "=SUBSTITUTE(LOWER({{DisplayName}}), \" \", \"-\")"
+        description: "Machine-friendly slug name for the step."
+        example:
+          input: { display_name: "Manager Review" }
+          output: "manager-review"
+
+  Roles:
+    description: "A role that can be assigned to workflow steps and filled by agents"
+    primary_key: role_id
+
+    raw_fields:
+      role_id:
+        type: string
+        nullable: false
+      display_name:
+        type: string
+        nullable: true
+      description:
+        type: string
+        nullable: true
+        description: "Description of the role's responsibilities."
+      identifier:
+        type: string
+        nullable: true
+        description: "External system identifier for the role."
+
+    calculated_fields:
+      name:
+        type: string
+        nullable: true
+        dag_level: 1
+        formula: "=SUBSTITUTE(LOWER({{DisplayName}}), \" \", \"-\")"
+        description: "Machine-friendly slug name for the role."
+
+  ApprovalGates:
+    description: "A decision checkpoint that blocks workflow execution until authorization"
+    primary_key: approval_gate_id
+
+    raw_fields:
+      approval_gate_id:
+        type: string
+        nullable: false
+      display_name:
+        type: string
+        nullable: true
+      description:
+        type: string
+        nullable: true
+        description: "Description of what this gate approves."
+      gate_type:
+        type: string
+        nullable: true
+        description: "Type of approval gate (e.g., single-approver, multi-approver)."
+      approval_criteria:
+        type: string
+        nullable: true
+        description: "Criteria that must be met for approval."
+
+    calculated_fields:
+      name:
+        type: string
+        nullable: true
+        dag_level: 1
+        formula: "=SUBSTITUTE(LOWER({{DisplayName}}), \" \", \"-\")"
+        description: "Machine-friendly slug name for the gate."
+
+  PrecedesSteps:
+    description: "Junction table representing step ordering relationships"
+    primary_key: precedes_step_id
+
+    raw_fields:
+      precedes_step_id:
+        type: string
+        nullable: false
+      from_step:
+        type: relationship
+        nullable: true
+        related_to: WorkflowSteps
+        description: "The step that must complete first."
+      to_step:
+        type: relationship
+        nullable: true
+        related_to: WorkflowSteps
+        description: "The step that depends on from_step."
+      dependency_type:
+        type: string
+        nullable: true
+        description: "Type of dependency (e.g., finish-to-start, start-to-start)."
+
+    calculated_fields: {}
+
+# Calculation DAG Summary
+# =======================
+# Level 0: Raw fields (inputs)
+# Level 1: name (all entities) - depends only on display_name
+# Level 2: has_more_than1_step (Workflows) - depends on count_of_steps
+
+# Formula Types Used
+# ==================
+# SUBSTITUTE: Text replacement (spaces to hyphens)
+# LOWER: Convert to lowercase
+# Comparison: > operator for boolean expressions

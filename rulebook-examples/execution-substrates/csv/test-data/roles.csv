@@ -1,0 +1,4 @@
+role_id,name,description,is_manager,employees,count_of_employees
+developer,Developer,Developers handle the implementation and are responsible for making the final product do what is expected,true,mike-johnson,1
+projectmanager,ProjectManager,The project Manager makes sure that the developers do what the analysts ask for,true,sarah-chen,1
+analyst,Analyst,The business analysis know what the customer's want.,false,priya-patel,1

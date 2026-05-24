@@ -1,0 +1,5 @@
+# OWL Execution Substrate Dependencies
+# Install: pip install -r requirements.txt
+
+rdflib>=6.0.0       # RDF graph library
+pyshacl>=0.20.0     # SHACL validator with SPARQL rule support

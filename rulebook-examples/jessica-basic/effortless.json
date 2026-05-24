@@ -1,0 +1,28 @@
+{
+  "Name": "Jessica BASIC: Task Management Ontology",
+  "Description": "A real-world workflow demonstrating task management, agent assignments, and basic aggregations.",
+  "Version": "1.0",
+  "ProjectSettings": [
+    {
+      "Name": "baseId",
+      "Value": "applThn0rikpCR9C3",
+      "Description": "Airtable base ID for this ontology (hardcoded per project)"
+    }
+  ],
+  "Transpilers": [
+    {
+      "Name": "airtabletorulebook",
+      "RelativePath": "/effortless-rulebook",
+      "CommandLine": "airtable-to-rulebook -o effortless-rulebook.json -account airtable -p \"view=Grid view\"",
+      "Enabled": true,
+      "Description": "Pull rulebook from Airtable (optional; edit effortless-rulebook.json directly if preferred)"
+    },
+    {
+      "Name": "rulebooktoairtable",
+      "RelativePath": "/effortless-rulebook/push-to-airtable",
+      "CommandLine": "rulebook-to-airtable -i ../effortless-rulebook.json -account airtable -w 300000",
+      "Enabled": false,
+      "Description": "Reverse-sync: push rulebook changes back to Airtable (optional)"
+    }
+  ]
+}
