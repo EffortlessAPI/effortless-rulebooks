@@ -1,7 +1,7 @@
 {
   "$schema": "https://example.com/cmcc-schema/v1",
   "Name": "Effortlessly Invariant Rulesbooks (ERB) - Project Architecture",
-  "Description": "Meta-rulebook describing the ERB project itself: all moving parts, orchestration flows, substrates, and their interdependencies.",
+  "Description": "Top-level rulebook describing the ERB project itself: all moving parts, orchestration flows, substrates, and their interdependencies.",
   "ProjectMetadata": {
     "Description": "Project overview",
     "schema": [
@@ -907,7 +907,7 @@
     ]
   },
   "_meta": {
-    "_CMCC_Summary": "Meta-rulebook describing the Effortlessly Invariant Rulesbooks (ERB) project itself: all execution substrates, orchestration components, Airtable integration, testing framework, customer domains, core data flows, configuration files, and external dependencies.",
+    "_CMCC_Summary": "Top-level rulebook describing the Effortlessly Invariant Rulesbooks (ERB) project itself: all execution substrates, orchestration components, Airtable integration, testing framework, customer domains, core data flows, configuration files, and external dependencies.",
     "_ProjectGoal": "Demonstrate that a single declarative rulebook (effortless-rulebook.json) can generate working, conformant code in 10+ execution substrates (Python, Go, SQL, Excel, OWL, PlantUML, etc.) that all produce identical results for the same inputs.",
     "_ArchitecturalHighlight": "Rulebook is the disposable IR; substrates are the execution targets. Hub-and-spokes around Airtable (or other sources like direct JSON edits). All 10+ substrates must pass the same conformance tests.",
     "_HubPromotionPhase": "Transition from Airtable-as-SSoT to rulebook-as-SSoT. Customer domains (ACME Corp, ACME LLC) can be selected at runtime. Once complete, orchestration drives from effortless-rulebooks/<domain>/ instead of a single Airtable base."

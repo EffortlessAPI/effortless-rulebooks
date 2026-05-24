@@ -19,7 +19,16 @@ SUBSTRATE_ICON = "🗂️"
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__)) if '__file__' in globals() else os.getcwd()
 PROJECT_ROOT = os.path.abspath(os.path.join(SCRIPT_DIR, '..', '..'))
-RULEBOOK_PATH = os.path.join(PROJECT_ROOT, 'effortless-rulebook', 'effortless-rulebook.json')
+_erb_rulebook = os.environ.get('ERB_RULEBOOK_PATH')
+if not _erb_rulebook:
+    raise RuntimeError(
+        "ERB_RULEBOOK_PATH is not set. The airtable substrate report is "
+        "per-project; the orchestrator must export ERB_RULEBOOK_PATH before "
+        "calling create-substrate-report.sh. No fallback."
+    )
+RULEBOOK_PATH = _erb_rulebook
+if not os.path.exists(RULEBOOK_PATH):
+    raise FileNotFoundError(f"Rulebook not found at ERB_RULEBOOK_PATH={RULEBOOK_PATH}.")
 
 
 def read_file(path, default=""):

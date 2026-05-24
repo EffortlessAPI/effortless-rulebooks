@@ -13,15 +13,22 @@ from datetime import datetime
 def get_active_domain():
     """Return the active domain name from orchestration/active-domain.txt.
 
-    Falls back to 'customer-fullname' if the file is missing.
-    Scripts may run from any directory, so resolve relative to this file.
+    Fails loudly if the file is missing or empty. There is no default — the
+    repo is hours old; fix the file rather than guess.
     """
     active_domain_file = Path(__file__).parent / "active-domain.txt"
-    if active_domain_file.exists():
-        domain = active_domain_file.read_text(encoding="utf-8").strip()
-        if domain:
-            return domain
-    return "customer-fullname"
+    if not active_domain_file.exists():
+        raise FileNotFoundError(
+            f"active-domain.txt missing at {active_domain_file}. "
+            f"Write the active project name (e.g. 'acme-llc') to that file."
+        )
+    domain = active_domain_file.read_text(encoding="utf-8").strip()
+    if not domain:
+        raise ValueError(
+            f"active-domain.txt at {active_domain_file} is empty. "
+            f"Write the active project name (e.g. 'acme-llc')."
+        )
+    return domain
 
 
 def get_rulebook_path():
@@ -58,21 +65,21 @@ def get_active_project_substrates(domain=None):
     RelativePath. The Airtable in/out transpilers both map to the airtable
     substrate; transpilers under /effortless-* RelativePaths map to their
     effortless-prefixed substrate folders. Disabled transpilers are skipped.
-    Returns [] when the project has no effortless.json — callers should treat
-    that as "no filter, fall back to all substrates on disk".
+
+    Fails loudly if the project has no effortless.json or it can't be parsed —
+    every active domain MUST be a valid Effortless project.
     """
     if domain is None:
         domain = get_active_domain()
     project_root = Path(__file__).parent.parent
     ej = project_root / "rulebook-examples" / domain / "effortless.json"
     if not ej.exists():
-        return []
-
-    try:
-        with open(ej, 'r', encoding='utf-8') as f:
-            cfg = json.load(f)
-    except Exception:
-        return []
+        raise FileNotFoundError(
+            f"effortless.json not found at {ej}. "
+            f"Domain '{domain}' is not a valid Effortless project."
+        )
+    with open(ej, 'r', encoding='utf-8') as f:
+        cfg = json.load(f)
 
     substrates = []
     seen = set()

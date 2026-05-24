@@ -4,14 +4,23 @@
 
 | Metric | Value |
 |--------|-------|
-| Total Fields Tested | 0 |
-| Passed | 0 |
+| Total Fields Tested | 6 |
+| Passed | 6 |
 | Failed | 0 |
-| Score | 0.0% |
-| Duration | 14s |
+| Score | 100.0% |
+| Duration | 19s |
 
-## Error
+## Score by Field Class
 
-```
-No test-answers found
-```
+| Class | Passed | Tested | Score |
+|-------|--------|--------|-------|
+| Scalar (calculated) | 6 | 6 | 100.0% |
+| Lookup (INDEX/MATCH) | — | 0 | n/a |
+| Aggregation (COUNTIFS/SUMIFS) | — | 0 | n/a |
+
+## Results by Entity
+
+### customers
+
+- Fields: 6/6 (100.0%)
+- Computed columns: name, full_name

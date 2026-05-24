@@ -77,6 +77,11 @@ function Toast() {
 // ---------------------------------------------------------------------------
 function App() {
   const [me, setMe] = useState(null);
+  // `projectRulebook` = the wrapper rulebook (portal config: AppNavigation,
+  // AppScreens, AppUsers, UserRoles, AppPermissions, AddToolCatalog, etc.).
+  // `rulebook` = the active DEMO domain's rulebook (Customers, Episodes, etc.).
+  // These are NEVER mixed. See CLAUDE.md "THE PROJECT RULEBOOK ≠ A DEMO RULEBOOK".
+  const [projectRulebook, setProjectRulebook] = useState(null);
   const [rulebook, setRulebook] = useState(null);
   const [projects, setProjects] = useState({ active: null, projects: [] });
   const [route, setRoute] = useState(location.hash.slice(1) || "/");
@@ -89,12 +94,13 @@ function App() {
 
   const reloadAll = useCallback(async () => {
     try {
-      const [m, rb, pj] = await Promise.all([
+      const [m, prb, rb, pj] = await Promise.all([
         api.get("/api/me"),
+        api.get("/api/project-rulebook"),
         api.get("/api/rulebook"),
         api.get("/api/projects"),
       ]);
-      setMe(m); setRulebook(rb); setProjects(pj);
+      setMe(m); setProjectRulebook(prb); setRulebook(rb); setProjects(pj);
     } catch (e) {
       toast("Failed to load portal: " + e.message, "error");
     }
@@ -102,23 +108,21 @@ function App() {
 
   useEffect(() => { reloadAll(); }, [reloadAll]);
 
-  if (!rulebook || !me) return html`<div style=${{ padding: 30 }}>Loading ERB Admin Portal…</div>`;
+  if (!projectRulebook || !rulebook || !me) return html`<div style=${{ padding: 30 }}>Loading ERB Admin Portal…</div>`;
 
-  // Diagnose portal-config presence BEFORE rendering the shell. Without these
-  // tables the sidebar and router have nothing to drive them and the page
-  // appears blank with a useless "No screen for /" message. Show a clear
-  // diagnostic instead so the failure is impossible to miss.
-  const portalDiag = diagnosePortalConfig({ me, rulebook, projects });
+  // Diagnose portal-config presence in the PROJECT rulebook (the wrapper) —
+  // not the demo. Portal config NEVER lives in a demo rulebook.
+  const portalDiag = diagnosePortalConfig({ me, projectRulebook, projects });
   if (portalDiag.broken) {
-    return html`<${PortalSetupNeeded} diag=${portalDiag} projects=${projects} rulebook=${rulebook} reload=${reloadAll} />`;
+    return html`<${PortalSetupNeeded} diag=${portalDiag} projects=${projects} projectRulebook=${projectRulebook} reload=${reloadAll} />`;
   }
 
   return html`
     <${TopBar} me=${me} projects=${projects} reload=${reloadAll} rulebook=${rulebook} />
     <div class="layout">
-      <${Sidebar} rulebook=${rulebook} me=${me} route=${route} />
+      <${Sidebar} projectRulebook=${projectRulebook} me=${me} route=${route} />
       <div class="main">
-        <${Router} route=${route} rulebook=${rulebook} me=${me} projects=${projects} reload=${reloadAll} />
+        <${Router} route=${route} projectRulebook=${projectRulebook} rulebook=${rulebook} me=${me} projects=${projects} reload=${reloadAll} />
       </div>
     </div>
     <${Toast} />
@@ -133,33 +137,34 @@ const PORTAL_REQUIRED_TABLES = [
   "UserRoles", "AppUsers", "AppPermissions", "AppNavigation", "AppScreens",
 ];
 
-function diagnosePortalConfig({ me, rulebook, projects }) {
+function diagnosePortalConfig({ me, projectRulebook, projects }) {
   const missingTables = PORTAL_REQUIRED_TABLES.filter(
-    (t) => !rulebook[t] || !Array.isArray(rulebook[t].data) || rulebook[t].data.length === 0
+    (t) => !projectRulebook[t] || !Array.isArray(projectRulebook[t].data) || projectRulebook[t].data.length === 0
   );
   const userError = me && me.error ? me.error : null;
   const broken = missingTables.length > 0 || !!userError;
   return { broken, missingTables, userError, activeProject: projects.active };
 }
 
-function PortalSetupNeeded({ diag, projects, rulebook, reload }) {
+function PortalSetupNeeded({ diag, projects, projectRulebook, reload }) {
   return html`
     <div style=${{ padding: 32, maxWidth: 820, margin: "40px auto", fontFamily: "system-ui, sans-serif" }}>
       <h1 style=${{ marginTop: 0 }}>⚠ ERB Admin Portal — setup needed</h1>
       <p>
         The portal is data-driven from a set of <strong>portal-config tables</strong> inside the
-        active rulebook. The current rulebook does not have what the portal needs to render,
-        so the UI is blank.
+        PROJECT rulebook (the wrapper, not the active demo). The project
+        rulebook does not have what the portal needs to render, so the UI is
+        blank.
       </p>
 
       <div style=${{ background: "#fff8e6", border: "1px solid #f0c36d", padding: 16, borderRadius: 6, margin: "16px 0" }}>
-        <div><strong>Active project:</strong> <code>${diag.activeProject}</code></div>
-        <div><strong>Active rulebook:</strong> <code>${rulebook.Name}</code></div>
+        <div><strong>Active demo project:</strong> <code>${diag.activeProject}</code></div>
+        <div><strong>Project rulebook:</strong> <code>${projectRulebook.Name}</code></div>
         ${diag.userError ? html`<div style=${{ marginTop: 8, color: "#c0392b" }}>
           <strong>/api/me error:</strong> ${diag.userError}
         </div>` : null}
         ${diag.missingTables.length > 0 ? html`<div style=${{ marginTop: 8 }}>
-          <strong>Missing or empty portal-config tables:</strong>
+          <strong>Missing or empty portal-config tables in PROJECT rulebook:</strong>
           <ul style=${{ marginTop: 4 }}>
             ${diag.missingTables.map((t) => html`<li key=${t}><code>${t}</code></li>`)}
           </ul>
@@ -169,13 +174,13 @@ function PortalSetupNeeded({ diag, projects, rulebook, reload }) {
       <h3>How to fix</h3>
       <ol>
         <li>
-          Seed the meta-rulebook at
-          <code>effortless-rulebook/&lt;project&gt;-rulebook.json</code>
-          with the five portal-config tables
+          Add the five portal-config tables
           (<code>UserRoles</code>, <code>AppUsers</code>, <code>AppPermissions</code>,
-          <code>AppNavigation</code>, <code>AppScreens</code>).
-          The server's <code>loadRulebookWithPortalFallback()</code> will splice these
-          into every project automatically.
+          <code>AppNavigation</code>, <code>AppScreens</code>)
+          to the <strong>PROJECT</strong> rulebook at
+          <code>./effortless-rulebook/effortless-rulebook.json</code>.
+          They never go in a demo rulebook — the project is the wrapper, the
+          demos are children.
         </li>
         <li>
           Or switch to a project whose rulebook already defines them:
@@ -215,7 +220,7 @@ function TopBar({ me, projects, rulebook, reload }) {
         <span class="muted small"> · ${rulebook.Name}</span>
       </div>
       <${ProjectSwitcher} projects=${projects} reload=${reload} />
-      <${UserSwitcher} me=${me} rulebook=${rulebook} reload=${reload} />
+      <${UserSwitcher} me=${me} reload=${reload} />
     </div>
   `;
 }
@@ -236,9 +241,16 @@ function ProjectSwitcher({ projects, reload }) {
   `;
 }
 
-function UserSwitcher({ me, rulebook, reload }) {
-  const users = rulebook.AppUsers?.data || [];
-  const roles = rulebook.UserRoles?.data || [];
+function UserSwitcher({ me, reload }) {
+  // Users + roles are PROJECT-rulebook config. Fetch from /api/users which the
+  // server resolves against the project rulebook (not the active demo).
+  const [users, setUsers] = useState([]);
+  const [roles, setRoles] = useState([]);
+  useEffect(() => {
+    api.get("/api/users").then(({ users: u, roles: r }) => {
+      setUsers(u || []); setRoles(r || []);
+    }).catch(() => {});
+  }, []);
   const role = roles.find((r) => r.RoleId === me.RoleId);
   return html`
     <span class=${"pill " + (role?.Name?.toLowerCase() || "")}>${role?.Name || me.RoleId}</span>
@@ -263,11 +275,12 @@ function roleMeetsMin(myRole, minRoleId, roles) {
   return min.AccessLevel === "read";
 }
 
-function Sidebar({ rulebook, me, route }) {
-  const nav = (rulebook.AppNavigation?.data || []).slice().sort((a, b) => (a.Order ?? 0) - (b.Order ?? 0));
-  const roles = rulebook.UserRoles?.data || [];
+function Sidebar({ projectRulebook, me, route }) {
+  // Navigation, roles, screens all come from the PROJECT rulebook (the wrapper).
+  const nav = (projectRulebook.AppNavigation?.data || []).slice().sort((a, b) => (a.Order ?? 0) - (b.Order ?? 0));
+  const roles = projectRulebook.UserRoles?.data || [];
   const myRole = roles.find((r) => r.RoleId === me.RoleId);
-  const screens = rulebook.AppScreens?.data || [];
+  const screens = projectRulebook.AppScreens?.data || [];
   const screenPath = (sid) => screens.find((s) => s.ScreenId === sid)?.Path || "/";
   const topLevel = nav.filter((n) => !n.ParentNavId);
 
@@ -308,10 +321,12 @@ function Sidebar({ rulebook, me, route }) {
 // ---------------------------------------------------------------------------
 // Router
 // ---------------------------------------------------------------------------
-function Router({ route, rulebook, me, projects, reload }) {
-  const roles = rulebook.UserRoles?.data || [];
+function Router({ route, projectRulebook, rulebook, me, projects, reload }) {
+  // Roles and screens are PROJECT-rulebook config; child screens still receive
+  // `rulebook` (the active demo) for domain-data editing.
+  const roles = projectRulebook.UserRoles?.data || [];
   const myRole = roles.find((r) => r.RoleId === me.RoleId);
-  const screens = rulebook.AppScreens?.data || [];
+  const screens = projectRulebook.AppScreens?.data || [];
   const screen = screens.find((s) => s.Path === route) || screens.find((s) => s.Path === "/");
 
   if (!screen) return html`<div>No screen for ${route}</div>`;
@@ -325,7 +340,8 @@ function Router({ route, rulebook, me, projects, reload }) {
   }
 
   const isDev = myRole?.AccessLevel === "full-admin";
-  const props = { screen, rulebook, me, isDev, projects, reload };
+  // `projectRulebook` for portal-config reads, `rulebook` for active-demo data.
+  const props = { screen, projectRulebook, rulebook, me, isDev, projects, reload };
 
   switch (screen.ScreenId) {
     case "screen-home":          return html`<${HomeScreen} ...${props} />`;
@@ -361,11 +377,12 @@ function ScreenHeader({ screen }) {
 // ---------------------------------------------------------------------------
 // Home
 // ---------------------------------------------------------------------------
-function HomeScreen({ screen, rulebook, projects, me }) {
-  const subs = rulebook.ExecutionSubstrates?.data || [];
-  const spokes = rulebook.RulebookSourceSpokes?.data || [];
-  const flows = rulebook.CoreDataFlows?.data || [];
-  const meta = rulebook.ProjectMetadata?.data?.[0] || {};
+function HomeScreen({ screen, projectRulebook, rulebook, projects, me }) {
+  // Substrates, spokes, flows, ProjectMetadata describe the PROJECT itself.
+  const subs = projectRulebook.ExecutionSubstrates?.data || [];
+  const spokes = projectRulebook.RulebookSourceSpokes?.data || [];
+  const flows = projectRulebook.CoreDataFlows?.data || [];
+  const meta = projectRulebook.ProjectMetadata?.data?.[0] || {};
   return html`
     <${ScreenHeader} screen=${screen} />
     <div class="cards">
@@ -702,8 +719,9 @@ function BuildsScreen({ screen, isDev }) {
 // ---------------------------------------------------------------------------
 // Tests (placeholder — wires to /api/tests once tests are formally exposed)
 // ---------------------------------------------------------------------------
-function TestsScreen({ screen, rulebook }) {
-  const framework = rulebook.TestingFramework?.data || [];
+function TestsScreen({ screen, projectRulebook }) {
+  // TestingFramework describes the project's test infrastructure, not a demo.
+  const framework = projectRulebook.TestingFramework?.data || [];
   return html`
     <${ScreenHeader} screen=${screen} />
     <p class="muted">Conformance test runner is wired to the substrate take-test.py scripts; surfacing the matrix here is the next iteration.</p>
@@ -719,8 +737,9 @@ function TestsScreen({ screen, rulebook }) {
 // ---------------------------------------------------------------------------
 // Input spokes
 // ---------------------------------------------------------------------------
-function SpokesScreen({ screen, rulebook }) {
-  const spokes = rulebook.RulebookSourceSpokes?.data || [];
+function SpokesScreen({ screen, projectRulebook }) {
+  // RulebookSourceSpokes describes input/output spokes of the PROJECT.
+  const spokes = projectRulebook.RulebookSourceSpokes?.data || [];
   return html`
     <${ScreenHeader} screen=${screen} />
     <div class="cards">

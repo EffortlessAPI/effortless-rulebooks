@@ -1,7 +1,7 @@
 {
   "$schema": "https://example.com/cmcc-schema/v1",
   "Name": "Effortlessly Invariant Rulesbooks (ERB) - Project Architecture",
-  "Description": "Meta-rulebook describing the ERB project itself: rulebook-as-hub, project-scoped builds via ssotme-proxy, admin portal UX, and conformance testing across substrates.",
+  "Description": "Top-level rulebook describing the ERB project itself: rulebook-as-hub, project-scoped builds via ssotme-proxy, admin portal UX, and conformance testing across substrates.",
   "ProjectMetadata": {
     "Description": "Project overview",
     "schema": [
@@ -1554,7 +1554,7 @@
     ],
     "data": [
       {"ApiId": "api-001", "Method": "GET",    "Path": "/api/me",                          "Resource": "users",          "Action": "read",    "WritesThrough": false, "Description": "Current user + role + permissions"},
-      {"ApiId": "api-002", "Method": "GET",    "Path": "/api/projects",                    "Resource": "rulebook.entity","Action": "read",    "WritesThrough": false, "Description": "List rulebook projects (rulebook-examples/* + this meta-rulebook)"},
+      {"ApiId": "api-002", "Method": "GET",    "Path": "/api/projects",                    "Resource": "rulebook.entity","Action": "read",    "WritesThrough": false, "Description": "List rulebook projects (rulebook-examples/* + this top-level rulebook)"},
       {"ApiId": "api-003", "Method": "GET",    "Path": "/api/projects/:id",                "Resource": "rulebook.entity","Action": "read",    "WritesThrough": false, "Description": "Project summary: rulebook stats, substrates, last build"},
       {"ApiId": "api-004", "Method": "POST",   "Path": "/api/projects/:id/activate",       "Resource": "rulebook.entity","Action": "execute", "WritesThrough": false, "Description": "Set active-domain pointer; rehydrate editor Postgres"},
       {"ApiId": "api-005", "Method": "GET",    "Path": "/api/rulebook",                    "Resource": "rulebook.entity","Action": "read",    "WritesThrough": false, "Description": "Whole active rulebook (entities + meta)"},
@@ -1657,7 +1657,7 @@
     ]
   },
   "_meta": {
-    "_CMCC_Summary": "Meta-rulebook describing the ERB project itself: rulebook-as-hub SSoT, ssotme-proxy (10+ substrate routes), admin portal (Viewer/Developer roles, navigation, screens, APIs, write-through invariant), AppUsers + permissions, build pipeline, conformance testing.",
+    "_CMCC_Summary": "Top-level rulebook describing the ERB project itself: rulebook-as-hub SSoT, ssotme-proxy (10+ substrate routes), admin portal (Viewer/Developer roles, navigation, screens, APIs, write-through invariant), AppUsers + permissions, build pipeline, conformance testing.",
     "_ProjectGoal": "Demonstrate that a single declarative rulebook (effortless-rulebook.json) can generate working, conformant code in 10+ execution substrates that all produce identical results — AND that the developer experience on top of it (the admin portal) is itself driven entirely by rulebook entities (navigation, roles, screens, permissions, users).",
     "_ArchitecturalHighlight": "effortless-rulebook.json is the DURABLE SSoT. Input spokes (admin portal, Airtable, LLM, manual JSON) all write into it. Output spokes (Python, Go, Postgres, Excel, OWL, PlantUML, Explain-DAG, English, COBOL, ARM64, Entity Framework, Airtable reverse-sync) all read from it. Every substrate passes the same conformance tests.",
     "_WriteThroughInvariant": "The admin portal's Postgres database is the LIVE EDITOR; the rulebook JSON is the DURABLE SSOT. Every save in the portal must write to BOTH (in the same logical transaction). If Postgres is dropped, the editor rebuilds from JSON. If JSON is lost, the editor has no source of truth.",

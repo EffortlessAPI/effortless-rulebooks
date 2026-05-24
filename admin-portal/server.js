@@ -22,7 +22,7 @@ import http from "node:http";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = path.resolve(__dirname, "..");
-const META_RULEBOOK = path.join(REPO_ROOT, "effortless-rulebook", "effortless-rulebook.json");
+const TOP_RULEBOOK = path.join(REPO_ROOT, "effortless-rulebook", "effortless-rulebook.json");
 const ACTIVE_DOMAIN_FILE = path.join(REPO_ROOT, "orchestration", "active-domain.txt");
 const PORTAL_STATE_FILE = path.join(__dirname, ".portal-state.json");
 const RULEBOOK_EXAMPLES = path.join(REPO_ROOT, "rulebook-examples");
@@ -41,14 +41,20 @@ const PG_CONFIG = {
 // Active project helpers
 // ---------------------------------------------------------------------------
 function getActiveDomain() {
-  // Honor the orchestration active-domain.txt pointer when present, else default.
-  try {
-    if (fs.existsSync(ACTIVE_DOMAIN_FILE)) {
-      const v = fs.readFileSync(ACTIVE_DOMAIN_FILE, "utf8").trim();
-      if (v) return v;
-    }
-  } catch {}
-  return "__meta__"; // special sentinel for the top-level meta-rulebook
+  if (!fs.existsSync(ACTIVE_DOMAIN_FILE)) {
+    throw new Error(
+      `active-domain.txt missing at ${ACTIVE_DOMAIN_FILE}. ` +
+      `Write the active project name (e.g. 'acme-llc') or '__top__' to that file.`
+    );
+  }
+  const v = fs.readFileSync(ACTIVE_DOMAIN_FILE, "utf8").trim();
+  if (!v) {
+    throw new Error(
+      `active-domain.txt at ${ACTIVE_DOMAIN_FILE} is empty. ` +
+      `Write the active project name or '__top__'.`
+    );
+  }
+  return v;
 }
 
 function setActiveDomain(name) {
@@ -57,23 +63,23 @@ function setActiveDomain(name) {
 
 function activeRulebookPath() {
   const domain = getActiveDomain();
-  if (domain === "__meta__") return META_RULEBOOK;
+  if (domain === "__top__") return TOP_RULEBOOK;
   return path.join(RULEBOOK_EXAMPLES, domain, "effortless-rulebook", `${domain}-rulebook.json`);
 }
 
 function activeProjectRoot() {
   const domain = getActiveDomain();
-  if (domain === "__meta__") return REPO_ROOT;
+  if (domain === "__top__") return REPO_ROOT;
   return path.join(RULEBOOK_EXAMPLES, domain);
 }
 
 function listProjects() {
   const out = [{
-    id: "__meta__",
-    name: "ERB Meta-Rulebook (this repo)",
-    rulebookPath: META_RULEBOOK,
+    id: "__top__",
+    name: "ERB Orchestration (top-level)",
+    rulebookPath: TOP_RULEBOOK,
     projectRoot: REPO_ROOT,
-    description: "The repo's own meta-rulebook — describes ERB itself.",
+    description: "The repo's top-level rulebook — describes ERB itself.",
   }];
   if (fs.existsSync(RULEBOOK_EXAMPLES)) {
     for (const d of fs.readdirSync(RULEBOOK_EXAMPLES)) {
@@ -99,8 +105,22 @@ function listProjects() {
 }
 
 // ---------------------------------------------------------------------------
-// Rulebook IO (the write-through SSoT)
+// Rulebook IO — TWO categorically different reads:
+//   - loadProjectRulebook() : the wrapper/orchestration tool itself.
+//     Contains portal config: UserRoles, AppUsers, AppPermissions,
+//     AppNavigation, AppScreens, AppAPIs, AddToolCatalog, BuildPipeline,
+//     AdminPortalRuntime. PATH IS FIXED: ./effortless-rulebook/effortless-rulebook.json
+//   - loadRulebook()        : the active DEMO domain's rulebook.
+//     Contains the domain's business tables (Customers, Episodes, etc.).
+//     PATH IS DYNAMIC: ./rulebook-examples/<domain>/effortless-rulebook/<domain>-rulebook.json
+//
+// THESE ARE NEVER MIXED. The project is the PARENT, the demo is a CHILD.
+// See CLAUDE.md "THE PROJECT RULEBOOK ≠ A DEMO RULEBOOK".
 // ---------------------------------------------------------------------------
+function loadProjectRulebook() {
+  return JSON.parse(fs.readFileSync(TOP_RULEBOOK, "utf8"));
+}
+
 function loadRulebook(p = activeRulebookPath()) {
   return JSON.parse(fs.readFileSync(p, "utf8"));
 }
@@ -109,25 +129,8 @@ function saveRulebook(rb, p = activeRulebookPath()) {
   fs.writeFileSync(p, JSON.stringify(rb, null, 2) + "\n");
 }
 
-// Portal-config entities (driving nav / roles / users) live in the meta-rulebook
-// when the active project hasn't defined them. This makes every project get a
-// working admin portal out of the box without needing to copy boilerplate.
-const PORTAL_FALLBACK_ENTITIES = [
-  "UserRoles", "AppUsers", "AppPermissions",
-  "AppNavigation", "AppScreens", "AppAPIs",
-  "AddToolCatalog", "BuildPipeline", "AdminPortalRuntime",
-];
-
-function loadRulebookWithPortalFallback() {
-  const project = loadRulebook();
-  const activePath = activeRulebookPath();
-  if (activePath === META_RULEBOOK) return project;
-  let meta;
-  try { meta = JSON.parse(fs.readFileSync(META_RULEBOOK, "utf8")); } catch { return project; }
-  for (const k of PORTAL_FALLBACK_ENTITIES) {
-    if (!project[k] && meta[k]) project[k] = meta[k];
-  }
-  return project;
+function saveProjectRulebook(rb) {
+  fs.writeFileSync(TOP_RULEBOOK, JSON.stringify(rb, null, 2) + "\n");
 }
 
 // ---------------------------------------------------------------------------
@@ -259,15 +262,17 @@ async function getPool() {
 // Permissions
 // ---------------------------------------------------------------------------
 function getCurrentUser() {
+  // Users, roles, permissions are PORTAL config — they live in the PROJECT
+  // rulebook, never in a demo rulebook. See CLAUDE.md.
   const st = loadPortalState();
-  const rb = loadRulebookWithPortalFallback();
-  const users = (rb.AppUsers && rb.AppUsers.data) || [];
-  const roles = (rb.UserRoles && rb.UserRoles.data) || [];
+  const project = loadProjectRulebook();
+  const users = (project.AppUsers && project.AppUsers.data) || [];
+  const roles = (project.UserRoles && project.UserRoles.data) || [];
   let u = users.find((x) => x.UserId === st.currentUserId);
   if (!u) u = users.find((x) => x.IsDefault) || users[0];
   if (!u) return null;
   const role = roles.find((r) => r.RoleId === u.RoleId) || null;
-  const perms = ((rb.AppPermissions && rb.AppPermissions.data) || []).filter(
+  const perms = ((project.AppPermissions && project.AppPermissions.data) || []).filter(
     (p) => p.RoleId === u.RoleId
   );
   return { ...u, role, permissions: perms };
@@ -372,7 +377,13 @@ app.post("/api/projects/:id/activate", requireDeveloper, async (req, res) => {
 });
 
 // --- rulebook (read) ---
-app.get("/api/rulebook", (req, res) => res.json(loadRulebookWithPortalFallback()));
+// Active demo rulebook (domain tables: Customers, Episodes, etc.).
+app.get("/api/rulebook", (req, res) => res.json(loadRulebook()));
+
+// Project rulebook (portal config: UserRoles, AppUsers, AppPermissions,
+// AppNavigation, AppScreens, AppAPIs, AddToolCatalog, BuildPipeline,
+// AdminPortalRuntime). The wrapper, not the demo.
+app.get("/api/project-rulebook", (req, res) => res.json(loadProjectRulebook()));
 
 app.get("/api/rulebook/entities", (req, res) => {
   const rb = loadRulebook();
@@ -475,12 +486,12 @@ app.delete("/api/rulebook/entities/:name", requireDeveloper, async (req, res) =>
   }
 });
 
-// --- users (write-through to AppUsers) ---
+// --- users (PROJECT-rulebook resource; writes to project rulebook) ---
 app.get("/api/users", (req, res) => {
-  const rb = loadRulebookWithPortalFallback();
+  const project = loadProjectRulebook();
   res.json({
-    users: (rb.AppUsers && rb.AppUsers.data) || [],
-    roles: (rb.UserRoles && rb.UserRoles.data) || [],
+    users: (project.AppUsers && project.AppUsers.data) || [],
+    roles: (project.UserRoles && project.UserRoles.data) || [],
   });
 });
 
@@ -488,32 +499,41 @@ app.post("/api/users", requireDeveloper, async (req, res) => {
   const { userId, email, displayName, roleId } = req.body || {};
   if (!userId || !email || !roleId) return res.status(400).json({ error: "missing fields" });
   try {
-    await writeThrough({
-      pgWrite: async (c) =>
-        c.query(
-          `INSERT INTO portal_app_users (user_id, email, display_name, role_id) VALUES ($1,$2,$3,$4)`,
-          [userId, email, displayName || email, roleId]
-        ),
-      rulebookMutate: (rb) => {
-        rb.AppUsers = rb.AppUsers || { Description: "", schema: [], data: [] };
-        rb.AppUsers.data = rb.AppUsers.data || [];
-        rb.AppUsers.data.push({
-          UserId: userId, Email: email, DisplayName: displayName || email,
-          RoleId: roleId, IsDefault: false, Notes: null,
-        });
-        return rb;
-      },
-    });
+    // AppUsers lives in the PROJECT rulebook, not the active demo. Write to
+    // Postgres + project rulebook in the same logical transaction.
+    const p = await getPool();
+    const client = await p.connect();
+    try {
+      await client.query("BEGIN");
+      await client.query(
+        `INSERT INTO portal_app_users (user_id, email, display_name, role_id) VALUES ($1,$2,$3,$4)`,
+        [userId, email, displayName || email, roleId]
+      );
+      const project = loadProjectRulebook();
+      project.AppUsers = project.AppUsers || { Description: "", schema: [], data: [] };
+      project.AppUsers.data = project.AppUsers.data || [];
+      project.AppUsers.data.push({
+        UserId: userId, Email: email, DisplayName: displayName || email,
+        RoleId: roleId, IsDefault: false, Notes: null,
+      });
+      saveProjectRulebook(project);
+      await client.query("COMMIT");
+    } catch (e) {
+      await client.query("ROLLBACK").catch(() => {});
+      throw e;
+    } finally {
+      client.release();
+    }
     res.json({ ok: true });
   } catch (e) {
     res.status(500).json({ error: String(e.message || e) });
   }
 });
 
-// --- substrates ---
+// --- substrates (PROJECT-rulebook resource) ---
 app.get("/api/substrates", async (req, res) => {
-  const rb = loadRulebook();
-  const subs = (rb.ExecutionSubstrates && rb.ExecutionSubstrates.data) || [];
+  const project = loadProjectRulebook();
+  const subs = (project.ExecutionSubstrates && project.ExecutionSubstrates.data) || [];
   const root = activeProjectRoot();
   const enriched = subs.map((s) => {
     const rel = s.RelativePath || "";
@@ -538,10 +558,10 @@ app.post("/api/build/all", requireDeveloper, (req, res) => {
   });
 });
 
-// --- tools (Add Tool) ---
+// --- tools (Add Tool — PROJECT-rulebook resource: AddToolCatalog) ---
 app.get("/api/tools/catalog", async (req, res) => {
-  const rb = loadRulebookWithPortalFallback();
-  const fromRulebook = (rb.AddToolCatalog && rb.AddToolCatalog.data) || [];
+  const project = loadProjectRulebook();
+  const fromRulebook = (project.AddToolCatalog && project.AddToolCatalog.data) || [];
   let liveProxy = null;
   try {
     const p = await fetchJson(`${PROXY_URL}/ping`);

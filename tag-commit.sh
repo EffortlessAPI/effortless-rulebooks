@@ -5,7 +5,7 @@
 # If no hash provided, uses HEAD
 
 REPO_ROOT=$(git rev-parse --show-toplevel)
-# Top-level meta-rulebook (the orchestration tool itself) — see CLAUDE.md.
+# Top-level orchestration rulebook (the admin tool itself) — see CLAUDE.md.
 # This is NOT a per-project demo rulebook.
 RULEBOOK="$REPO_ROOT/effortless-rulebook/effortless-rulebook.json"
 

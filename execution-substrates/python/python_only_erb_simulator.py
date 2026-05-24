@@ -1,7 +1,7 @@
 """
 ERB Calculation Library (GENERATED - DO NOT EDIT)
 =================================================
-Generated from: effortless-rulebook/effortless-rulebook.json
+Generated from: effortless-rulebook/acme-llc-rulebook.json
 
 PYTHON SUBSTRATE ONLY. Importing this module from any other substrate
 is cheating. That substrate must execute the rulebook in its own native

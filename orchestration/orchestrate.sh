@@ -362,6 +362,32 @@ run_project_transpilers() {
     return 0
 }
 
+# Given a transpiler name from effortless.json, return the substrate folder
+# name (= last path segment of RelativePath, with leading slash stripped).
+# Empty string if not a substrate-y transpiler (e.g. airtable-to-rulebook).
+transpiler_to_substrate() {
+    local transpiler_name="$1"
+    local ej
+    ej=$(get_active_effortless_json)
+    [ -z "$ej" ] && return 0
+    python3 - "$ej" "$transpiler_name" <<'PYEOF'
+import json, sys, os
+ej_path, name = sys.argv[1], sys.argv[2]
+with open(ej_path) as f:
+    cfg = json.load(f)
+t = next((x for x in cfg.get("ProjectTranspilers", []) if x["Name"] == name), None)
+if not t:
+    sys.exit(0)
+rel = t.get("RelativePath", "").strip("/")
+# A substrate-y transpiler writes into a folder that exists under
+# execution-substrates/ in the repo root. RelativePath is the substrate folder.
+repo_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) if False else None
+# We can't easily know REPO_ROOT here; emit the candidate and let bash check.
+if rel and "/" not in rel and not rel.startswith("effortless-rulebook"):
+    print(rel)
+PYEOF
+}
+
 # Check if ssotme-proxy is running on localhost:4242
 proxy_is_running() {
     python3 -c "
@@ -430,14 +456,13 @@ show_menu() {
         fi
         echo ""
         if $PROXY_RUNNING; then
-            echo -e "  ${GREEN}[B]${NC} ${BOLD}BUILD${NC} — regenerate all ${WHITE}${PROJECT_NAME}${NC} substrates ${DIM}(default)${NC}"
+            echo -e "  ${GREEN}[B]${NC} ${BOLD}BUILD${NC} — regenerate AND test all ${WHITE}${PROJECT_NAME}${NC} substrates ${DIM}(default; opens report)${NC}"
         else
             echo -e "  ${RED}[B]${NC} ${BOLD}BUILD${NC} — ${RED}proxy offline${NC} — start it first:"
             echo -e "      ${DIM}ssotme-proxy/start.sh${NC}"
         fi
     fi
 
-    echo -e "  ${GREEN}[T]${NC} ${BOLD}TEST${NC} — run conformance tests for ${WHITE}${ACTIVE_DOMAIN}${NC} ${DIM}(opens report)${NC}"
     echo -e "  ${MAGENTA}[V]${NC} ${BOLD}VIEW${NC} — open last HTML report for ${WHITE}${ACTIVE_DOMAIN}${NC}"
     echo -e "  ${CYAN}[W]${NC} ${BOLD}WEB${NC} — run Web Admin Portal ${DIM}(localhost:7777)${NC}"
     echo -e "  ${DIM}────────────────────────────────────────────────────────────${NC}"
@@ -511,7 +536,7 @@ action_select_domain() {
                 echo ""
                 read -p "  Run conformance tests now for ${NEW_DOMAIN}? [Y/n] " RUN_NOW
                 if [[ ! "$RUN_NOW" =~ ^[Nn]$ ]]; then
-                    action_test
+                    run_substrates ""
                     return
                 fi
             else
@@ -988,66 +1013,11 @@ action_init_postgres() {
 }
 
 # =============================================================================
-# ACTION: TEST — run conformance tests (all substrates or pick one)
 # =============================================================================
-action_test() {
-    local ACTIVE_DOMAIN
-    ACTIVE_DOMAIN=$(get_active_domain)
-
-    echo ""
-    echo -e "${BOLD}${GREEN}╔════════════════════════════════════════════════════════════╗${NC}"
-    echo -e "${BOLD}${GREEN}║${NC}           ${BOLD}${WHITE}CONFORMANCE TEST — ${ACTIVE_DOMAIN}${NC}"
-    echo -e "${BOLD}${GREEN}╚════════════════════════════════════════════════════════════╝${NC}"
-    echo ""
-
-    # List available substrates
-    AVAILABLE_SUBSTRATES=$(get_valid_substrates)
-    echo -e "  ${BOLD}[A]${NC} Run ALL substrates"
-    echo ""
-    IDX=1
-    for sub in $AVAILABLE_SUBSTRATES; do
-        echo -e "  ${DIM}${IDX}.${NC} ${CYAN}${sub}${NC}"
-        IDX=$((IDX + 1))
-    done
-    echo ""
-    echo -e "  [${RED}X${NC}] Cancel"
-    echo ""
-    read -p "  Choice [A / 1-$((IDX-1)) / X]: " TEST_CHOICE
-
-    case $TEST_CHOICE in
-        [Aa])
-            run_substrates ""
-            ;;
-        [Xx]|"")
-            echo -e "  ${DIM}Cancelled.${NC}"
-            ;;
-        [0-9]|[0-9][0-9])
-            IDX=0
-            CHOSEN_SUB=""
-            for sub in $AVAILABLE_SUBSTRATES; do
-                IDX=$((IDX + 1))
-                if [ "$IDX" = "$TEST_CHOICE" ]; then
-                    CHOSEN_SUB="$sub"
-                    break
-                fi
-            done
-            if [ -n "$CHOSEN_SUB" ]; then
-                run_substrates "$CHOSEN_SUB"
-            else
-                echo -e "  ${RED}Invalid choice.${NC}"
-                sleep 1
-            fi
-            ;;
-        *)
-            echo -e "  ${RED}Invalid choice.${NC}"
-            sleep 1
-            ;;
-    esac
-}
-
+# RUN SUBSTRATES — generate + test + regen report + open
 # =============================================================================
-# RUN SUBSTRATES (extracted as function for reuse)
-# =============================================================================
+# Always called as part of BUILD. There is no standalone "test" action — build
+# IS test. See CLAUDE.md line 1.
 run_substrates() {
     local RUN_SINGLE="$1"
 
@@ -1713,13 +1683,13 @@ while true; do
     if [ -n "$PROJECT_TRANSPILERS" ]; then
         DEFAULT_CHOICE="B"
     else
-        DEFAULT_CHOICE="T"
+        DEFAULT_CHOICE="V"
     fi
 
     if [ -n "$PROJECT_TRANSPILERS" ]; then
-        read -p "Enter choice [1-$(echo "$PROJECT_TRANSPILERS" | wc -l | tr -d ' '), B, T, V, W, P, N, I, C, D, Q] (default: $DEFAULT_CHOICE): " USER_CHOICE
+        read -p "Enter choice [1-$(echo "$PROJECT_TRANSPILERS" | wc -l | tr -d ' '), B, V, W, P, N, I, C, D, Q] (default: $DEFAULT_CHOICE): " USER_CHOICE
     else
-        read -p "Enter choice [T, V, W, P, N, I, C, D, Q] (default: $DEFAULT_CHOICE): " USER_CHOICE
+        read -p "Enter choice [V, W, P, N, I, C, D, Q] (default: $DEFAULT_CHOICE): " USER_CHOICE
     fi
 
     if [ -z "$USER_CHOICE" ]; then
@@ -1732,6 +1702,13 @@ while true; do
             if [ -n "$PROJECT_TRANSPILERS" ]; then
                 if proxy_is_running; then
                     run_project_transpilers
+                    # Building without testing is meaningless — every rebuild
+                    # MUST re-run conformance tests, regenerate the report, and
+                    # open it. run_substrates "" handles all three.
+                    echo ""
+                    echo -e "${BOLD}${CYAN}═══ Running conformance tests on rebuilt substrates ═══${NC}"
+                    echo ""
+                    run_substrates ""
                 else
                     echo -e "${RED}ssotme-proxy is offline.${NC} Start it with:"
                     echo -e "  ${WHITE}python3 $PROJECT_ROOT/ssotme-proxy/server.py &${NC}"
@@ -1755,14 +1732,43 @@ while true; do
                         SELECTED_DISPLAY="$display"
                     fi
                 done <<< "$PROJECT_TRANSPILERS"
+                TRANSPILER_COUNT=$(echo "$PROJECT_TRANSPILERS" | wc -l | tr -d ' ')
+                if [ -z "$SELECTED_NAME" ]; then
+                    echo ""
+                    echo -e "${RED}Option ${USER_CHOICE} is out of range — there are only ${TRANSPILER_COUNT} transpilers (1-${TRANSPILER_COUNT}).${NC}"
+                    echo -e "${DIM}Pick a number from the menu above, or one of the letter options.${NC}"
+                    sleep 2
+                    continue
+                fi
                 if [ -n "$SELECTED_NAME" ]; then
                     echo ""
                     if proxy_is_running; then
-                        echo -e "${CYAN}▶ ${BOLD}${SELECTED_DISPLAY}${NC}"
+                        echo -e "${CYAN}▶ ${BOLD}${SELECTED_DISPLAY}${NC} ${DIM}(#${USER_CHOICE})${NC}"
                         if run_proxy_transpiler "$SELECTED_NAME"; then
                             echo -e "  ${GREEN}✓ ${SELECTED_DISPLAY} OK${NC}"
+                            # BUILD = generate + test + regen report + open.
+                            # No exceptions, no conditional skips. If the
+                            # transpiler doesn't map to a substrate with a
+                            # take-test.sh, that's a bug to fix — fail loudly.
+                            CANDIDATE_SUB=$(transpiler_to_substrate "$SELECTED_NAME")
+                            if [ -z "$CANDIDATE_SUB" ]; then
+                                echo -e "${RED}FAIL: transpiler '${SELECTED_NAME}' does not map to a substrate folder.${NC}"
+                                echo -e "${RED}Every project transpiler must write into a substrate under execution-substrates/.${NC}"
+                                exit 1
+                            fi
+                            if [ ! -f "$SUBSTRATES_DIR/$CANDIDATE_SUB/take-test.sh" ]; then
+                                echo -e "${RED}FAIL: substrate '${CANDIDATE_SUB}' has no take-test.sh.${NC}"
+                                echo -e "${RED}Every substrate MUST have a take-test.sh. Add one — do not skip the test.${NC}"
+                                echo -e "${RED}Expected: ${SUBSTRATES_DIR}/${CANDIDATE_SUB}/take-test.sh${NC}"
+                                exit 1
+                            fi
+                            echo ""
+                            echo -e "${BOLD}${CYAN}═══ Running conformance test on ${CANDIDATE_SUB} ═══${NC}"
+                            echo ""
+                            run_substrates "$CANDIDATE_SUB"
                         else
                             echo -e "  ${RED}✗ ${SELECTED_DISPLAY} FAILED${NC}"
+                            exit 1
                         fi
                     else
                         echo -e "${RED}ssotme-proxy is offline.${NC} Start it with:"
@@ -1772,17 +1778,15 @@ while true; do
                     read -p "Press Enter to continue..."
                 else
                     echo ""
-                    echo -e "${RED}Invalid option: $USER_CHOICE${NC}"
-                    sleep 1
+                    echo -e "${RED}Number ${USER_CHOICE} matched no transpiler (unreachable — bug).${NC}"
+                    sleep 2
                 fi
             else
                 echo ""
-                echo -e "${RED}Invalid option: $USER_CHOICE${NC}"
-                sleep 1
+                echo -e "${RED}You typed a number (${USER_CHOICE}), but this project has no transpilers configured.${NC}"
+                echo -e "${DIM}Use [N] to create a new project, or [P] to switch to one with transpilers.${NC}"
+                sleep 2
             fi
-            ;;
-        [Tt])
-            action_test
             ;;
         [Vv])
             action_view_results
@@ -1811,8 +1815,14 @@ while true; do
             ;;
         *)
             echo ""
-            echo -e "${RED}Invalid option: $USER_CHOICE${NC}"
-            sleep 1
+            echo -e "${RED}'${USER_CHOICE}' is not a valid menu choice.${NC}"
+            if [ -n "$PROJECT_TRANSPILERS" ]; then
+                TRANSPILER_COUNT=$(echo "$PROJECT_TRANSPILERS" | wc -l | tr -d ' ')
+                echo -e "${DIM}Valid choices: 1-${TRANSPILER_COUNT} (transpilers), B (build all), V, W, P, N, I, C, D, Q.${NC}"
+            else
+                echo -e "${DIM}Valid choices: V, W, P, N, I, C, D, Q.${NC}"
+            fi
+            sleep 2
             ;;
     esac
 done

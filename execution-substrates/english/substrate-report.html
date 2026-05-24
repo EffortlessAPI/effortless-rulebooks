@@ -88,8 +88,8 @@ pre { background: var(--code-bg); border: 1px solid var(--border-color); border-
             <h1>English (NLG) Execution Substrate</h1>
         </div>
         <div class="header-stats">
-            <div class="stat"><span>Score:</span><span class="stat-value score-danger">12.5%</span></div>
-            <div class="stat"><span>5/40 passed</span></div>
+            <div class="stat"><span>Score:</span><span class="stat-value score-perfect">100.0%</span></div>
+            <div class="stat"><span>6/6 passed</span></div>
         </div>
         <button id="theme-toggle" title="Toggle theme"><span class="sun">☀️</span><span class="moon">🌙</span></button>
     </header>
@@ -140,8 +140,28 @@ pre { background: var(--code-bg); border: 1px solid var(--border-color); border-
 English Execution Substrate - One-Shot All-Entities LLM Run
 ======================================================================
 
-  Loaded specification.md (3858 chars)
-ERROR: no blank-test files found in /Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/rulebook-examples/acme-llc/testing/blank-tests
+  Loaded specification.md (4063 chars)
+  Loaded 1 entities, 3 records total
+    - customers: 3 records
+
+============================================================
+PROMPT (first 2 lines):
+  You are taking a test. Follow the English specification below to fill in
+  every null derived field in the test data. The data spans multiple tables and many
+  ... (182 total lines, 6229 chars)
+============================================================
+Calling OpenAI (gpt-4o-mini)... please wait...
+============================================================
+RESPONSE (first 2 lines):
+  {
+    &quot;customers&quot;: [
+  ... (28 total lines, 716 chars)
+============================================================
+  -&gt; customers: 3 records written
+
+======================================================================
+English substrate: filled 6 derived fields across 1 entities
+======================================================================
 
 </pre>
             </div>
@@ -150,10 +170,10 @@ ERROR: no blank-test files found in /Users/eejai42/effortlessapi-app-root/users/
             <div class="card">
                 <h2>Test Summary</h2>
                 <div class="results-summary">
-                    <div class="result-item"><div class="result-value score-danger">12.5%</div><div class="result-label">Score</div></div>
-                    <div class="result-item"><div class="result-value score-perfect">5</div><div class="result-label">Passed</div></div>
-                    <div class="result-item"><div class="result-value">35</div><div class="result-label">Failed</div></div>
-                    <div class="result-item"><div class="result-value">40</div><div class="result-label">Total</div></div>
+                    <div class="result-item"><div class="result-value score-perfect">100.0%</div><div class="result-label">Score</div></div>
+                    <div class="result-item"><div class="result-value score-perfect">6</div><div class="result-label">Passed</div></div>
+                    <div class="result-item"><div class="result-value">0</div><div class="result-label">Failed</div></div>
+                    <div class="result-item"><div class="result-value">6</div><div class="result-label">Total</div></div>
                 </div>
             </div>
         </div>
@@ -162,128 +182,91 @@ ERROR: no blank-test files found in /Users/eejai42/effortlessapi-app-root/users/
                 <h2>specification.md (LLM-Generated)</h2>
                 <div class="prose-container markdown-content"><h2>ACME, LLC Rulebook Specification Document</h2>
 <h3>Overview</h3>
-<p>This document outlines the specifications for the ACME, LLC rulebook, which is generated from an Airtable base. It describes the structure of the data, including input fields and derived fields, along with detailed instructions on how to compute each derived field. The rulebook consists of three main entities: Customers, ERBVersions, and ERBCustomizations.</p>
+<p>This document outlines the specifications for the ACME, LLC rulebook, which is generated from an Airtable base. It details the structure of the data, including input fields and derived fields, along with the methods for computing each calculated field. The rulebook consists of three main entities: Customers, ERBVersions, and ERBCustomizations.</p>
 <p>---</p>
-<h3>1. Customers</h3>
+<h3>Entity: Customers</h3>
 <h4>Input Fields</h4>
-<ul>
-<li>**CustomerId**</li>
-<p>  - <strong>Type:</strong> string</p>
-<p>  - <strong>Description:</strong> Unique identifier for the customer. This field is mandatory.</p>
-</ul>
-<ul>
-<li>**EmailAddress**</li>
-<p>  - <strong>Type:</strong> string</p>
-<p>  - <strong>Description:</strong> The customer's email address. This field is optional.</p>
-</ul>
-<ul>
-<li>**FirstName**</li>
-<p>  - <strong>Type:</strong> string</p>
-<p>  - <strong>Description:</strong> The first name of the customer. This field is optional.</p>
-</ul>
-<ul>
-<li>**LastName**</li>
-<p>  - <strong>Type:</strong> string</p>
-<p>  - <strong>Description:</strong> The last name of the customer. This field is optional.</p>
-</ul>
+<p>1. <strong>CustomerId</strong></p>
+<p>   - <strong>Type:</strong> String</p>
+<p>   - <strong>Description:</strong> Unique identifier for the customer. This field is mandatory.</p>
+<p>2. <strong>EmailAddress</strong></p>
+<p>   - <strong>Type:</strong> String</p>
+<p>   - <strong>Description:</strong> The customer's email address. This field is optional.</p>
+<p>3. <strong>FirstName</strong></p>
+<p>   - <strong>Type:</strong> String</p>
+<p>   - <strong>Description:</strong> The first name of the customer. This field is optional.</p>
+<p>4. <strong>LastName</strong></p>
+<p>   - <strong>Type:</strong> String</p>
+<p>   - <strong>Description:</strong> The last name of the customer. This field is optional.</p>
+<h4>Derived Fields</h4>
+<p>1. <strong>Name</strong></p>
+<p>   - <strong>Type:</strong> Calculated</p>
+<p>   - <strong>Description:</strong> This field serves as an identifier for the customers.</p>
+<p>   - <strong>Computation:</strong> The Name is derived by replacing the "@" symbol in the EmailAddress with a hyphen ("-"). </p>
+<p>   - <strong>Original Formula:</strong> `=SUBSTITUTE({{EmailAddress}}, "@", "-")`</p>
+<p>   - <strong>Example:</strong> For the customer with EmailAddress `jane.smith@email.com`, the Name would be `jane.smith-email.com`.</p>
+<p>2. <strong>FullName</strong></p>
+<p>   - <strong>Type:</strong> Calculated</p>
+<p>   - <strong>Description:</strong> The full name is computed from the first and last names of the customer.</p>
+<p>   - <strong>Computation:</strong> The FullName is constructed by concatenating the LastName and FirstName with a comma and space in between.</p>
+<p>   - <strong>Original Formula:</strong> `={{LastName}} & ", " & {{FirstName}}`</p>
+<p>   - <strong>Example:</strong> For a customer with LastName `Smith` and FirstName `Bobby`, the FullName would be `Smith, Bobby`.</p>
+<p>---</p>
+<h3>Entity: ERBVersions</h3>
+<h4>Input Fields</h4>
+<p>1. <strong>ERBVersionId</strong></p>
+<p>   - <strong>Type:</strong> String</p>
+<p>   - <strong>Description:</strong> Unique identifier for the ERB version. This field is mandatory.</p>
+<p>2. <strong>BaseId</strong></p>
+<p>   - <strong>Type:</strong> String</p>
+<p>   - <strong>Description:</strong> Identifier for the base. This field is optional.</p>
+<p>3. <strong>Name</strong></p>
+<p>   - <strong>Type:</strong> String</p>
+<p>   - <strong>Description:</strong> Name of the ERB version. This field is optional.</p>
+<p>4. <strong>Message</strong></p>
+<p>   - <strong>Type:</strong> String</p>
+<p>   - <strong>Description:</strong> Message associated with the ERB version. This field is optional.</p>
+<p>5. <strong>Notes</strong></p>
+<p>   - <strong>Type:</strong> String</p>
+<p>   - <strong>Description:</strong> Additional notes related to the ERB version. This field is optional.</p>
+<p>6. <strong>CommitDate</strong></p>
+<p>   - <strong>Type:</strong> Datetime</p>
+<p>   - <strong>Description:</strong> The date and time when the ERB version was committed. This field is optional.</p>
+<p>7. <strong>IsPublished</strong></p>
+<p>   - <strong>Type:</strong> Boolean</p>
+<p>   - <strong>Description:</strong> Indicates whether the ERB version is published. This field is optional.</p>
 <h4>Derived Fields</h4>
 <ul>
-<li>**Name**</li>
-<p>  - <strong>Type:</strong> calculated</p>
-<p>  - <strong>Description:</strong> This field serves as an identifier for the customers, derived from the EmailAddress.</p>
-<p>  - <strong>Computation:</strong> Replace the "@" symbol in the EmailAddress with a hyphen ("-"). </p>
-<p>  - <strong>Original Formula:</strong> `=SUBSTITUTE({{EmailAddress}}, "@", "-")`</p>
-<p>  - <strong>Example:</strong> For the email `jane.smith@email.com`, the Name would be `jane.smith-email.com`.</p>
-</ul>
-<ul>
-<li>**FullName**</li>
-<p>  - <strong>Type:</strong> calculated</p>
-<p>  - <strong>Description:</strong> This field represents the full name of the customer, combining the LastName and FirstName.</p>
-<p>  - <strong>Computation:</strong> Concatenate the LastName, a comma, a space, and the FirstName.</p>
-<p>  - <strong>Original Formula:</strong> `={{LastName}} & ", " & {{FirstName}}`</p>
-<p>  - <strong>Example:</strong> For LastName `Smith` and FirstName `Bobby`, the FullName would be `Smith, Bobby`.</p>
+<li>**No derived fields are defined for the ERBVersions entity.**</li>
 </ul>
 <p>---</p>
-<h3>2. ERBVersions</h3>
+<h3>Entity: ERBCustomizations</h3>
 <h4>Input Fields</h4>
-<ul>
-<li>**ERBVersionId**</li>
-<p>  - <strong>Type:</strong> string</p>
-<p>  - <strong>Description:</strong> Unique identifier for the ERB version. This field is mandatory.</p>
-</ul>
-<ul>
-<li>**BaseId**</li>
-<p>  - <strong>Type:</strong> string</p>
-<p>  - <strong>Description:</strong> Identifier for the base. This field is optional.</p>
-</ul>
-<ul>
-<li>**Name**</li>
-<p>  - <strong>Type:</strong> string</p>
-<p>  - <strong>Description:</strong> Name of the ERB version. This field is optional.</p>
-</ul>
-<ul>
-<li>**Message**</li>
-<p>  - <strong>Type:</strong> string</p>
-<p>  - <strong>Description:</strong> Message associated with the ERB version. This field is optional.</p>
-</ul>
-<ul>
-<li>**Notes**</li>
-<p>  - <strong>Type:</strong> string</p>
-<p>  - <strong>Description:</strong> Additional notes for the ERB version. This field is optional.</p>
-</ul>
-<ul>
-<li>**CommitDate**</li>
-<p>  - <strong>Type:</strong> datetime</p>
-<p>  - <strong>Description:</strong> Date when the ERB version was committed. This field is optional.</p>
-</ul>
-<ul>
-<li>**IsPublished**</li>
-<p>  - <strong>Type:</strong> boolean</p>
-<p>  - <strong>Description:</strong> Indicates whether the ERB version is published. This field is optional.</p>
-</ul>
+<p>1. <strong>ERBCustomizationId</strong></p>
+<p>   - <strong>Type:</strong> String</p>
+<p>   - <strong>Description:</strong> Unique identifier for the ERB customization. This field is mandatory.</p>
+<p>2. <strong>Name</strong></p>
+<p>   - <strong>Type:</strong> String</p>
+<p>   - <strong>Description:</strong> Name of the ERB customization. This field is optional.</p>
+<p>3. <strong>Title</strong></p>
+<p>   - <strong>Type:</strong> String</p>
+<p>   - <strong>Description:</strong> Title of the ERB customization. This field is optional.</p>
+<p>4. <strong>SQLCode</strong></p>
+<p>   - <strong>Type:</strong> String</p>
+<p>   - <strong>Description:</strong> SQL code associated with the customization. This field is optional.</p>
+<p>5. <strong>SQLTarget</strong></p>
+<p>   - <strong>Type:</strong> String</p>
+<p>   - <strong>Description:</strong> Target database for the SQL code. This field is optional.</p>
+<p>6. <strong>CustomizationType</strong></p>
+<p>   - <strong>Type:</strong> String</p>
+<p>   - <strong>Description:</strong> Type of customization (e.g., Schema, Functions, Views, RLS, Data). This field is optional.</p>
 <h4>Derived Fields</h4>
 <ul>
-<li>**No derived fields are specified for the ERBVersions entity.**</li>
+<li>**No derived fields are defined for the ERBCustomizations entity.**</li>
 </ul>
 <p>---</p>
-<h3>3. ERBCustomizations</h3>
-<h4>Input Fields</h4>
-<ul>
-<li>**ERBCustomizationId**</li>
-<p>  - <strong>Type:</strong> string</p>
-<p>  - <strong>Description:</strong> Unique identifier for the ERB customization. This field is mandatory.</p>
-</ul>
-<ul>
-<li>**Name**</li>
-<p>  - <strong>Type:</strong> string</p>
-<p>  - <strong>Description:</strong> Name of the ERB customization. This field is optional.</p>
-</ul>
-<ul>
-<li>**Title**</li>
-<p>  - <strong>Type:</strong> string</p>
-<p>  - <strong>Description:</strong> Title of the ERB customization. This field is optional.</p>
-</ul>
-<ul>
-<li>**SQLCode**</li>
-<p>  - <strong>Type:</strong> string</p>
-<p>  - <strong>Description:</strong> SQL code associated with the ERB customization. This field is optional.</p>
-</ul>
-<ul>
-<li>**SQLTarget**</li>
-<p>  - <strong>Type:</strong> string</p>
-<p>  - <strong>Description:</strong> Target database for the SQL code. This field is optional.</p>
-</ul>
-<ul>
-<li>**CustomizationType**</li>
-<p>  - <strong>Type:</strong> string</p>
-<p>  - <strong>Description:</strong> Type of customization (e.g., Schema, Functions, Views, RLS, Data). This field is optional.</p>
-</ul>
-<h4>Derived Fields</h4>
-<ul>
-<li>**No derived fields are specified for the ERBCustomizations entity.**</li>
-</ul>
-<p>---</p>
-<p>This specification provides a comprehensive guide for computing derived fields within the ACME, LLC rulebook. Each derived field's computation is clearly defined, allowing for accurate value generation based on the input fields.</p></div>
+<h3>Conclusion</h3>
+<p>This specification document provides a comprehensive overview of the ACME, LLC rulebook's structure, detailing both input and derived fields for each entity. The methods for computing derived fields are clearly explained, allowing for accurate value computation without needing to reference the original formulas.</p></div>
             </div>
         </div>
     </main>

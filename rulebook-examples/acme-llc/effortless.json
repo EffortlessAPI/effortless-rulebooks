@@ -112,7 +112,7 @@
     {
       "IsSSoTTranspiler": false,
       "Name": "rulebooktopostgres",
-      "RelativePath": "/postgres",
+      "RelativePath": "/effortless-postgres",
       "CommandLine": "rulebook-to-postgres -i ../effortless-rulebook/acme-llc-rulebook.json",
       "IsDisabled": false,
       "LastVersionUsed": "v2026.05.09.1738",
@@ -130,7 +130,7 @@
     {
       "IsSSoTTranspiler": false,
       "Name": "rulebooktoentityframework",
-      "RelativePath": "/entity-framework",
+      "RelativePath": "/effortless-entity-framework",
       "CommandLine": "rulebook-to-entity-framework -i ../effortless-rulebook/acme-llc-rulebook.json",
       "IsDisabled": false,
       "LastVersionUsed": "v2026.05.12.2324",

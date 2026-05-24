@@ -24,21 +24,19 @@ from html import escape
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 REPO_ROOT = os.path.dirname(SCRIPT_DIR)
-# PROJECT_ROOT is the domain folder (rulebook-examples/<domain>); REPO_ROOT is
-# the repo root.  They start identical and diverge when --rulebook is supplied.
-PROJECT_ROOT = REPO_ROOT
-TESTING_DIR = os.path.join(PROJECT_ROOT, "testing")
-ANSWER_KEYS_DIR = os.path.join(TESTING_DIR, "answer-keys")
-BLANK_TESTS_DIR = os.path.join(TESTING_DIR, "blank-tests")
-# SUBSTRATES_DIR always points at the repo-root tool scripts, never the domain.
+# These globals are placeholders. The script REQUIRES --rulebook on the
+# command line; _apply_rulebook_override() re-derives every path from it.
+# Running without --rulebook intentionally fails — there is no default domain.
+PROJECT_ROOT = None
+TESTING_DIR = None
+ANSWER_KEYS_DIR = None
+BLANK_TESTS_DIR = None
 SUBSTRATES_DIR = os.path.join(REPO_ROOT, "execution-substrates")
-RULEBOOK_DIR = os.path.join(PROJECT_ROOT, "effortless-rulebook")
-RULEBOOK_PATH = os.path.join(RULEBOOK_DIR, "effortless-rulebook.json")
-POSTGRES_DIR = os.path.join(REPO_ROOT, "licensed-effortless-tools", "postgres")
-_EFFORTLESS_JSON = os.path.join(PROJECT_ROOT, "effortless.json")
-_LEGACY_SSOTME_JSON = os.path.join(PROJECT_ROOT, "ssotme.json")
-SSOTME_JSON = _EFFORTLESS_JSON if os.path.exists(_EFFORTLESS_JSON) else _LEGACY_SSOTME_JSON
-DEFAULT_OUTPUT = os.path.join(SCRIPT_DIR, "orchestration-report.html")
+RULEBOOK_DIR = None
+RULEBOOK_PATH = None
+POSTGRES_DIR = os.path.join(REPO_ROOT, "postgres")
+SSOTME_JSON = None
+DEFAULT_OUTPUT = None
 
 
 def _get_substrate_test_answers_dir(substrate_name: str) -> str:
@@ -47,22 +45,41 @@ def _get_substrate_test_answers_dir(substrate_name: str) -> str:
 
 
 def _apply_rulebook_override(rulebook_path: str):
-    """Re-derive all path globals from an explicit rulebook path."""
+    """Re-derive all path globals from an explicit rulebook path. Fails loudly
+    if the path doesn't exist or doesn't follow the <domain>-rulebook.json
+    convention inside rulebook-examples/<domain>/effortless-rulebook/."""
     global PROJECT_ROOT, TESTING_DIR, ANSWER_KEYS_DIR, BLANK_TESTS_DIR
     global RULEBOOK_DIR, RULEBOOK_PATH
-    global _EFFORTLESS_JSON, _LEGACY_SSOTME_JSON, SSOTME_JSON, DEFAULT_OUTPUT
-    # NOTE: SUBSTRATES_DIR and POSTGRES_DIR remain repo-root relative — they
-    # point at the tool scripts, not conformance artifacts.
+    global SSOTME_JSON, DEFAULT_OUTPUT
 
-    RULEBOOK_PATH = os.path.abspath(rulebook_path)
+    abs_path = os.path.abspath(rulebook_path)
+    if not os.path.exists(abs_path):
+        raise FileNotFoundError(
+            f"Rulebook not found: {abs_path}. "
+            "Pass the exact path to a <domain>-rulebook.json file."
+        )
+    RULEBOOK_PATH = abs_path
     RULEBOOK_DIR = os.path.dirname(RULEBOOK_PATH)
-    PROJECT_ROOT = os.path.dirname(RULEBOOK_DIR)  # = the domain dir
+    PROJECT_ROOT = os.path.dirname(RULEBOOK_DIR)
+    domain = os.path.basename(PROJECT_ROOT)
+    expected_filename = f"{domain}-rulebook.json"
+    actual_filename = os.path.basename(RULEBOOK_PATH)
+    if actual_filename != expected_filename:
+        raise ValueError(
+            f"Rulebook filename mismatch: got '{actual_filename}', "
+            f"expected '{expected_filename}' (derived from domain '{domain}'). "
+            "Rename the file or pass the correct path."
+        )
     TESTING_DIR = os.path.join(PROJECT_ROOT, "testing")
     ANSWER_KEYS_DIR = os.path.join(TESTING_DIR, "answer-keys")
     BLANK_TESTS_DIR = os.path.join(TESTING_DIR, "blank-tests")
-    _EFFORTLESS_JSON = os.path.join(PROJECT_ROOT, "effortless.json")
-    _LEGACY_SSOTME_JSON = os.path.join(PROJECT_ROOT, "ssotme.json")
-    SSOTME_JSON = _EFFORTLESS_JSON if os.path.exists(_EFFORTLESS_JSON) else _LEGACY_SSOTME_JSON
+    effortless_json = os.path.join(PROJECT_ROOT, "effortless.json")
+    if not os.path.exists(effortless_json):
+        raise FileNotFoundError(
+            f"effortless.json not found at {effortless_json}. "
+            f"Domain '{domain}' is not a valid Effortless project."
+        )
+    SSOTME_JSON = effortless_json
     DEFAULT_OUTPUT = os.path.join(PROJECT_ROOT, "orchestration-report.html")
 
 # Airtable was formerly treated as a "utility" substrate excluded from the
@@ -122,9 +139,12 @@ def display_name(substrate: str) -> str:
 # =============================================================================
 
 def load_rulebook():
-    """Load the effortless-rulebook.json file"""
-    if not os.path.exists(RULEBOOK_PATH):
-        return {}
+    """Load the rulebook JSON. Fails loudly if missing."""
+    if not RULEBOOK_PATH or not os.path.exists(RULEBOOK_PATH):
+        raise FileNotFoundError(
+            f"Rulebook not found at {RULEBOOK_PATH}. "
+            "Pass --rulebook with an exact path to a <domain>-rulebook.json."
+        )
     with open(RULEBOOK_PATH, 'r') as f:
         return json.load(f)
 
@@ -634,7 +654,10 @@ def generate_html(data: dict) -> str:
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{escape(data["meta"]["project_name"])}</title>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>{escape(data["meta"]["project_name"])} — {datetime.now().strftime("%H:%M:%S")}</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css">
     <style>
@@ -647,6 +670,9 @@ def generate_html(data: dict) -> str:
             <h1>{escape(data["meta"]["project_name"])}</h1>
             <div class="header-meta">
                 <span class="project-name">Orchestration Report</span>
+                <span class="build-stamp" style="margin-left:1rem;padding:0.15rem 0.5rem;background:rgba(255,255,255,0.1);border-radius:4px;font-family:monospace;font-size:0.85rem;">
+                    generated {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
+                </span>
             </div>
         </div>
         <div class="header-actions">
@@ -2686,8 +2712,9 @@ def main():
     )
     parser.add_argument(
         '--rulebook', '-r',
-        default=None,
-        help='Path to effortless-rulebook.json; report is written next to the domain root'
+        required=True,
+        help='Path to the active domain\'s <domain>-rulebook.json (REQUIRED). '
+             'There is no default — there is no "the rulebook" without a domain.'
     )
     parser.add_argument(
         '--output', '-o',
@@ -2696,8 +2723,7 @@ def main():
     )
     args = parser.parse_args()
 
-    if args.rulebook:
-        _apply_rulebook_override(args.rulebook)
+    _apply_rulebook_override(args.rulebook)
 
     output_path_default = DEFAULT_OUTPUT  # may have been updated by override
     args.output = args.output or output_path_default
