@@ -120,20 +120,13 @@ Binary Execution Substrate - Multi-Entity Test Execution
 
 Loaded library: /Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/binary/erb_calc.dylib
 Loading rulebook...
-Discovered 5 entities: Client, Projects, Employees, Roles, TypesOfProject
-  Schema for client: 6 fields, 96 bytes
-    Found: eval_client_full_name -&gt; string
-  -&gt; client: 3 records
-  Schema for employees: 9 fields, 136 bytes
-  -&gt; employees: No assembly functions; writing raw passthrough
-  Schema for projects: 14 fields, 200 bytes
-  -&gt; projects: No assembly functions; writing raw passthrough
-  Schema for roles: 6 fields, 80 bytes
-  -&gt; roles: No assembly functions; writing raw passthrough
-  Schema for types_of_project: 6 fields, 80 bytes
-  -&gt; types_of_project: No assembly functions; writing raw passthrough
+Discovered 3 entities: Customers, ERBVersions, ERBCustomizations
+  Schema for customers: 6 fields, 96 bytes
+    Found: eval_customers_name -&gt; string
+    Found: eval_customers_full_name -&gt; string
+  -&gt; customers: 3 records
 
-Binary substrate: Processed 5 entities, 16 total records
+Binary substrate: Processed 1 entities, 3 total records
 ======================================================================
 
 </pre>
@@ -154,7 +147,7 @@ Binary substrate: Processed 5 entities, 16 total records
             <div class="card">
                 <div class="code-header">
                     <h2>erb_calc.s (ARM64 Assembly)</h2>
-                    <div><span class="code-info">374 lines</span><button class="copy-btn" onclick="copyCode('asm-code')">Copy</button></div>
+                    <div><span class="code-info">433 lines</span><button class="copy-btn" onclick="copyCode('asm-code')">Copy</button></div>
                 </div>
                 <pre id="asm-code">
 // ERB Binary Substrate - Generated Assembly (ARM64 / Apple Silicon)
@@ -467,25 +460,41 @@ Lsubst_done:
     .data
     .globl str_0
 str_0:
-    .asciz &quot; &quot;
+    .asciz &quot;@&quot;
     .globl str_0_len
 str_0_len:
     .quad 1
+    .globl str_1
+str_1:
+    .asciz &quot;-&quot;
+    .globl str_1_len
+str_1_len:
+    .quad 1
+    .globl str_2
+str_2:
+    .asciz &quot;, &quot;
+    .globl str_2_len
+str_2_len:
+    .quad 2
 
     // Static result buffers for string concatenation
     .bss
-    .globl _result_buf_eval_client_full_name
+    .globl _result_buf_eval_customers_full_name
     .p2align 3
-_result_buf_eval_client_full_name:
+_result_buf_eval_customers_full_name:
+    .space 1024
+    .globl _result_buf_eval_customers_name
+    .p2align 3
+_result_buf_eval_customers_name:
     .space 1024
 
     .text
 
-// Full name is computed from the first and last name of the customer
-// Formula: ={{FirstName}} &amp; &quot; &quot; &amp; {{LastName}}
-    .globl _eval_client_full_name
+// Identifier for the customers.
+// Formula: =SUBSTITUTE({{EmailAddress}}, &quot;@&quot;, &quot;-&quot;)
+    .globl _eval_customers_name
     .p2align 2
-_eval_client_full_name:
+_eval_customers_name:
     stp x29, x30, [sp, #-16]!
     mov x29, sp
     stp x19, x20, [sp, #-16]!
@@ -493,8 +502,8 @@ _eval_client_full_name:
     stp x23, x24, [sp, #-16]!
     sub sp, sp, #256
     mov x19, x0
-    ldr x0, [x19, #48]
-    ldr x1, [x19, #56]
+    ldr x0, [x19, #32]
+    ldr x1, [x19, #40]
     str x0, [sp, #16]
     str x1, [sp, #24]
     adrp x0, str_0@PAGE
@@ -502,14 +511,57 @@ _eval_client_full_name:
     mov x1, #1
     str x0, [sp, #32]
     str x1, [sp, #40]
+    adrp x0, str_1@PAGE
+    add x0, x0, str_1@PAGEOFF
+    mov x1, #1
+    str x0, [sp, #48]
+    str x1, [sp, #56]
+    adrp x20, _result_buf_eval_customers_name@PAGE
+    add x20, x20, _result_buf_eval_customers_name@PAGEOFF
+    ldr x1, [sp, #16]
+    ldr x2, [sp, #24]
+    ldr x3, [sp, #32]
+    ldr x4, [sp, #40]
+    ldr x5, [sp, #48]
+    ldr x6, [sp, #56]
+    mov x0, x20
+    bl _string_substitute
+    add sp, sp, #256
+    ldp x23, x24, [sp], #16
+    ldp x21, x22, [sp], #16
+    ldp x19, x20, [sp], #16
+    ldp x29, x30, [sp], #16
+    ret
+
+// Full name is computed from the first and last name of the customer
+// Formula: ={{LastName}} &amp; &quot;, &quot; &amp; {{FirstName}}
+    .globl _eval_customers_full_name
+    .p2align 2
+_eval_customers_full_name:
+    stp x29, x30, [sp, #-16]!
+    mov x29, sp
+    stp x19, x20, [sp, #-16]!
+    stp x21, x22, [sp, #-16]!
+    stp x23, x24, [sp, #-16]!
+    sub sp, sp, #256
+    mov x19, x0
     ldr x0, [x19, #64]
     ldr x1, [x19, #72]
+    str x0, [sp, #16]
+    str x1, [sp, #24]
+    adrp x0, str_2@PAGE
+    add x0, x0, str_2@PAGEOFF
+    mov x1, #2
+    str x0, [sp, #32]
+    str x1, [sp, #40]
+    ldr x0, [x19, #48]
+    ldr x1, [x19, #56]
     str x0, [sp, #48]
     str x1, [sp, #56]
     ldr x0, [sp, #16]
     ldr x1, [sp, #24]
-    adrp x22, _result_buf_eval_client_full_name@PAGE
-    add x22, x22, _result_buf_eval_client_full_name@PAGEOFF
+    adrp x22, _result_buf_eval_customers_full_name@PAGE
+    add x22, x22, _result_buf_eval_customers_full_name@PAGEOFF
     ldr x4, [sp, #40]
     ldr x3, [sp, #32]
     mov x2, x1
@@ -537,15 +589,15 @@ _eval_client_full_name:
                 <h2>Generated Artifacts</h2>
                 <div class="binary-info">
                     <div class="binary-stat">
-                        <div class="binary-stat-value">33.0 KB</div>
+                        <div class="binary-stat-value">33.3 KB</div>
                         <div class="binary-stat-label">erb_calc.dylib</div>
                     </div>
                     <div class="binary-stat">
-                        <div class="binary-stat-value">1.7 KB</div>
+                        <div class="binary-stat-value">2.1 KB</div>
                         <div class="binary-stat-label">erb_calc.o</div>
                     </div>
                     <div class="binary-stat">
-                        <div class="binary-stat-value">9.4 KB</div>
+                        <div class="binary-stat-value">10.7 KB</div>
                         <div class="binary-stat-label">erb_calc.s</div>
                     </div>
                     <div class="binary-stat">

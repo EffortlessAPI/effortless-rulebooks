@@ -4,43 +4,32 @@
 
 | Metric | Value |
 |--------|-------|
-| Total Fields Tested | 40 |
-| Passed | 40 |
-| Failed | 0 |
-| Score | 100.0% |
+| Total Fields Tested | 6 |
+| Passed | 0 |
+| Failed | 6 |
+| Score | 0.0% |
 | Duration | < 1s |
 
 ## Score by Field Class
 
 | Class | Passed | Tested | Score |
 |-------|--------|--------|-------|
-| Scalar (calculated) | 3 | 3 | 100.0% |
-| Lookup (INDEX/MATCH) | 30 | 30 | 100.0% |
-| Aggregation (COUNTIFS/SUMIFS) | 7 | 7 | 100.0% |
+| Scalar (calculated) | 0 | 6 | 0.0% |
+| Lookup (INDEX/MATCH) | — | 0 | n/a |
+| Aggregation (COUNTIFS/SUMIFS) | — | 0 | n/a |
 
 ## Results by Entity
 
-### roles
+### customers
 
-- Fields: 3/3 (100.0%)
-- Computed columns: count_of_employees
+- Fields: 0/6 (0.0%)
+- Computed columns: name, full_name
 
-### projects
-
-- Fields: 21/21 (100.0%)
-- Computed columns: project_type_name, project_type_description, project_type_requires_manager_approval, approved_by_role_is_manager, approved_by_name, approved_by_email_address, approved_by_phone_number
-
-### types_of_project
-
-- Fields: 4/4 (100.0%)
-- Computed columns: count_of_projects
-
-### employees
-
-- Fields: 9/9 (100.0%)
-- Computed columns: role_name, role_description, role_is_manager
-
-### client
-
-- Fields: 3/3 (100.0%)
-- Computed columns: full_name
+| PK | Field | Expected | Actual |
+|-----|-------|----------|--------|
+| emily-jones-email-com | name | emily.jones-email.com | None |
+| emily-jones-email-com | full_name | Jones, Mary | None |
+| jane-smith-email-com | name | jane.smith-email.com | None |
+| jane-smith-email-com | full_name | Smith, Bobby | None |
+| john-doe-email-com | name | john.doe-email.com | None |
+| john-doe-email-com | full_name | Doe, Jimmy | None |

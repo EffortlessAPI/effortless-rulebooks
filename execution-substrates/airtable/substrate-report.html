@@ -91,10 +91,10 @@ ul { margin-left: 1.25rem; } li { margin-bottom: 0.25rem; }
             <div class="card">
                 <h2>Active Base</h2>
                 <table>
-                    <tr><th style="width: 140px;">Project</th><td>ACME Corporation (template)</td></tr>
+                    <tr><th style="width: 140px;">Project</th><td>Effortlessly Invariant Rulesbooks (ERB) - Project Architecture</td></tr>
                     <tr><th>Base ID</th><td><code>appzkcmBFPWFGBtRo</code></td></tr>
                     <tr><th>Rulebook path</th><td><code>effortless-rulebook/effortless-rulebook.json</code></td></tr>
-                    <tr><th>Rulebook size</th><td>15 KB</td></tr>
+                    <tr><th>Rulebook size</th><td>29 KB</td></tr>
                 </table>
             </div>
             <div class="card">
@@ -113,7 +113,7 @@ ul { margin-left: 1.25rem; } li { margin-bottom: 0.25rem; }
                 reflect the seed data embedded in the rulebook.</p>
                 <table>
                     <tr><th>Entity</th><th>Fields</th><th>Records</th><th>Description</th></tr>
-                    <tr><td><code>Client</code></td><td>6</td><td>3</td><td></td></tr><tr><td><code>Projects</code></td><td>14</td><td>3</td><td></td></tr><tr><td><code>Employees</code></td><td>9</td><td>3</td><td></td></tr><tr><td><code>Roles</code></td><td>6</td><td>3</td><td></td></tr><tr><td><code>TypesOfProject</code></td><td>6</td><td>4</td><td></td></tr>
+                    <tr><td><code>ProjectMetadata</code></td><td>5</td><td>1</td><td></td></tr><tr><td><code>ExecutionSubstrates</code></td><td>9</td><td>10</td><td></td></tr><tr><td><code>OrchestrationComponents</code></td><td>6</td><td>8</td><td></td></tr><tr><td><code>AirtableIntegration</code></td><td>5</td><td>4</td><td></td></tr><tr><td><code>TestingFramework</code></td><td>5</td><td>4</td><td></td></tr><tr><td><code>RulebookDomains</code></td><td>8</td><td>7</td><td></td></tr><tr><td><code>CoreDataFlows</code></td><td>5</td><td>5</td><td></td></tr><tr><td><code>ProjectConfiguration</code></td><td>6</td><td>9</td><td></td></tr><tr><td><code>Dependencies</code></td><td>6</td><td>9</td><td></td></tr>
                 </table>
             </div>
         </div>
@@ -122,87 +122,14 @@ ul { margin-left: 1.25rem; } li { margin-bottom: 0.25rem; }
             <div class="card">
                 <div class="code-header">
                     <h2>effortless-rulebook.json</h2>
-                    <span class="code-info">15 KB</span>
+                    <span class="code-info">29 KB</span>
                 </div>
                 <pre class="line-numbers"><code class="language-json">{
   &quot;$schema&quot;: &quot;https://example.com/cmcc-schema/v1&quot;,
-  &quot;Name&quot;: &quot;ACME Corporation (template)&quot;,
-  &quot;Description&quot;: &quot;Rulebook generated from Airtable base &#x27;ACME Corporation (template)&#x27;.&quot;,
-  &quot;Client&quot;: {
-    &quot;Description&quot;: &quot;Table: Client&quot;,
-    &quot;schema&quot;: [
-      {
-        &quot;name&quot;: &quot;ClientId&quot;,
-        &quot;datatype&quot;: &quot;string&quot;,
-        &quot;type&quot;: &quot;raw&quot;,
-        &quot;nullable&quot;: false
-      },
-      {
-        &quot;name&quot;: &quot;Customer&quot;,
-        &quot;datatype&quot;: &quot;string&quot;,
-        &quot;type&quot;: &quot;raw&quot;,
-        &quot;nullable&quot;: true,
-        &quot;Description&quot;: &quot;Identifier for the customers.&quot;
-      },
-      {
-        &quot;name&quot;: &quot;EmailAddress&quot;,
-        &quot;datatype&quot;: &quot;string&quot;,
-        &quot;type&quot;: &quot;raw&quot;,
-        &quot;nullable&quot;: true,
-        &quot;Description&quot;: &quot;Thec ustomers email address&quot;
-      },
-      {
-        &quot;name&quot;: &quot;FirstName&quot;,
-        &quot;datatype&quot;: &quot;string&quot;,
-        &quot;type&quot;: &quot;raw&quot;,
-        &quot;nullable&quot;: true,
-        &quot;Description&quot;: &quot;First Name of the customer - used to make the full name&quot;
-      },
-      {
-        &quot;name&quot;: &quot;LastName&quot;,
-        &quot;datatype&quot;: &quot;string&quot;,
-        &quot;type&quot;: &quot;raw&quot;,
-        &quot;nullable&quot;: true,
-        &quot;Description&quot;: &quot;Last Name of the customer - used to make the full name&quot;
-      },
-      {
-        &quot;name&quot;: &quot;FullName&quot;,
-        &quot;datatype&quot;: &quot;string&quot;,
-        &quot;type&quot;: &quot;calculated&quot;,
-        &quot;nullable&quot;: true,
-        &quot;Description&quot;: &quot;Full name is computed from the first and last name of the customer&quot;,
-        &quot;formula&quot;: &quot;={{FirstName}} &amp; \&quot; \&quot; &amp; {{LastName}}&quot;
-      }
-    ],
-    &quot;data&quot;: [
-      {
-        &quot;ClientId&quot;: &quot;cust0001&quot;,
-        &quot;EmailAddress&quot;: &quot;larry.smith@email.com&quot;,
-        &quot;LastName&quot;: &quot;Smith&quot;,
-        &quot;Customer&quot;: &quot;CUST0001&quot;,
-        &quot;FirstName&quot;: &quot;Bob&quot;,
-        &quot;FullName&quot;: &quot;Bob Smith&quot;
-      },
-      {
-        &quot;ClientId&quot;: &quot;cust0002&quot;,
-        &quot;EmailAddress&quot;: &quot;john.doe@email.com&quot;,
-        &quot;LastName&quot;: &quot;Doe&quot;,
-        &quot;Customer&quot;: &quot;CUST0002&quot;,
-        &quot;FirstName&quot;: &quot;John&quot;,
-        &quot;FullName&quot;: &quot;John Doe&quot;
-      },
-      {
-        &quot;ClientId&quot;: &quot;cust0003&quot;,
-        &quot;EmailAddress&quot;: &quot;emily.jones@email.com&quot;,
-        &quot;LastName&quot;: &quot;Jones&quot;,
-        &quot;Customer&quot;: &quot;CUST0003&quot;,
-        &quot;FirstName&quot;: &quot;Emily&quot;,
-        &quot;FullName&quot;: &quot;Emily Jones&quot;
-      }
-    ]
-  },
-  &quot;Projects&quot;: {
-    &quot;Description&quot;: &quot;Table: Projects&quot;,
+  &quot;Name&quot;: &quot;Effortlessly Invariant Rulesbooks (ERB) - Project Architecture&quot;,
+  &quot;Description&quot;: &quot;Meta-rulebook describing the ERB project itself: all moving parts, orchestration flows, substrates, and their interdependencies.&quot;,
+  &quot;ProjectMetadata&quot;: {
+    &quot;Description&quot;: &quot;Project overview&quot;,
     &quot;schema&quot;: [
       {
         &quot;name&quot;: &quot;ProjectId&quot;,
@@ -214,152 +141,46 @@ ul { margin-left: 1.25rem; } li { margin-bottom: 0.25rem; }
         &quot;name&quot;: &quot;Name&quot;,
         &quot;datatype&quot;: &quot;string&quot;,
         &quot;type&quot;: &quot;raw&quot;,
-        &quot;nullable&quot;: true
+        &quot;nullable&quot;: false,
+        &quot;Description&quot;: &quot;Effortlessly Invariant Rulesbooks (ERB)&quot;
       },
       {
-        &quot;name&quot;: &quot;Description&quot;,
+        &quot;name&quot;: &quot;Purpose&quot;,
         &quot;datatype&quot;: &quot;string&quot;,
         &quot;type&quot;: &quot;raw&quot;,
-        &quot;nullable&quot;: true
+        &quot;nullable&quot;: false,
+        &quot;Description&quot;: &quot;Demonstrate that a single declarative rulebook can generate working code in multiple execution substrates (Python, Go, SQL, etc.) that all produce identical results&quot;
       },
       {
-        &quot;name&quot;: &quot;ProjectType&quot;,
+        &quot;name&quot;: &quot;Architecture&quot;,
         &quot;datatype&quot;: &quot;string&quot;,
-        &quot;type&quot;: &quot;relationship&quot;,
-        &quot;nullable&quot;: true,
-        &quot;RelatedTo&quot;: &quot;TypesOfProject&quot;,
-        &quot;isReversed&quot;: false,
-        &quot;prefersSingleRecordLink&quot;: true,
-        &quot;InverseField&quot;: &quot;Projects&quot;
-      },
-      {
-        &quot;name&quot;: &quot;ProjectTypeName&quot;,
-        &quot;datatype&quot;: &quot;string&quot;,
-        &quot;type&quot;: &quot;lookup&quot;,
-        &quot;nullable&quot;: true,
-        &quot;formula&quot;: &quot;=INDEX(TypesOfProject!{{Name}}, MATCH(Projects!{{ProjectType}}, TypesOfProject!{{TypesOfProjectId}}, 0))&quot;
-      },
-      {
-        &quot;name&quot;: &quot;ProjectTypeDescription&quot;,
-        &quot;datatype&quot;: &quot;string&quot;,
-        &quot;type&quot;: &quot;lookup&quot;,
-        &quot;nullable&quot;: true,
-        &quot;formula&quot;: &quot;=INDEX(TypesOfProject!{{Description}}, MATCH(Projects!{{ProjectType}}, TypesOfProject!{{TypesOfProjectId}}, 0))&quot;
-      },
-      {
-        &quot;name&quot;: &quot;ProjectTypeRequiresManagerApproval&quot;,
-        &quot;datatype&quot;: &quot;boolean&quot;,
-        &quot;type&quot;: &quot;lookup&quot;,
-        &quot;nullable&quot;: true,
-        &quot;formula&quot;: &quot;=INDEX(TypesOfProject!{{RequiresManagerApproval}}, MATCH(Projects!{{ProjectType}}, TypesOfProject!{{TypesOfProjectId}}, 0))&quot;
-      },
-      {
-        &quot;name&quot;: &quot;DueDate&quot;,
-        &quot;datatype&quot;: &quot;datetime&quot;,
         &quot;type&quot;: &quot;raw&quot;,
-        &quot;nullable&quot;: true
+        &quot;nullable&quot;: true,
+        &quot;Description&quot;: &quot;Hub-and-spokes around Airtable; rulebook is the disposable IR&quot;
       },
       {
-        &quot;name&quot;: &quot;IsApproved&quot;,
-        &quot;datatype&quot;: &quot;boolean&quot;,
+        &quot;name&quot;: &quot;RepositoryRoot&quot;,
+        &quot;datatype&quot;: &quot;string&quot;,
         &quot;type&quot;: &quot;raw&quot;,
-        &quot;nullable&quot;: true
-      },
-      {
-        &quot;name&quot;: &quot;ApprovedBy&quot;,
-        &quot;datatype&quot;: &quot;string&quot;,
-        &quot;type&quot;: &quot;relationship&quot;,
         &quot;nullable&quot;: true,
-        &quot;RelatedTo&quot;: &quot;Employees&quot;,
-        &quot;isReversed&quot;: false,
-        &quot;prefersSingleRecordLink&quot;: true,
-        &quot;InverseField&quot;: &quot;Projects&quot;
-      },
-      {
-        &quot;name&quot;: &quot;ApprovedByRoleIsManager&quot;,
-        &quot;datatype&quot;: &quot;boolean&quot;,
-        &quot;type&quot;: &quot;lookup&quot;,
-        &quot;nullable&quot;: true,
-        &quot;formula&quot;: &quot;=INDEX(Employees!{{RoleIsManager}}, MATCH(Projects!{{ApprovedBy}}, Employees!{{EmployeeId}}, 0))&quot;
-      },
-      {
-        &quot;name&quot;: &quot;ApprovedByName&quot;,
-        &quot;datatype&quot;: &quot;string&quot;,
-        &quot;type&quot;: &quot;lookup&quot;,
-        &quot;nullable&quot;: true,
-        &quot;formula&quot;: &quot;=INDEX(Employees!{{Name}}, MATCH(Projects!{{ApprovedBy}}, Employees!{{EmployeeId}}, 0))&quot;
-      },
-      {
-        &quot;name&quot;: &quot;ApprovedByEmailAddress&quot;,
-        &quot;datatype&quot;: &quot;string&quot;,
-        &quot;type&quot;: &quot;lookup&quot;,
-        &quot;nullable&quot;: true,
-        &quot;formula&quot;: &quot;=INDEX(Employees!{{EmailAddress}}, MATCH(Projects!{{ApprovedBy}}, Employees!{{EmployeeId}}, 0))&quot;
-      },
-      {
-        &quot;name&quot;: &quot;ApprovedByPhoneNumber&quot;,
-        &quot;datatype&quot;: &quot;string&quot;,
-        &quot;type&quot;: &quot;lookup&quot;,
-        &quot;nullable&quot;: true,
-        &quot;formula&quot;: &quot;=INDEX(Employees!{{PhoneNumber}}, MATCH(Projects!{{ApprovedBy}}, Employees!{{EmployeeId}}, 0))&quot;
+        &quot;Description&quot;: &quot;effortlessly-invariant-rulesbooks/&quot;
       }
     ],
     &quot;data&quot;: [
       {
-        &quot;ProjectId&quot;: &quot;internal-tools-dashboard&quot;,
-        &quot;Name&quot;: &quot;Internal Tools Dashboard&quot;,
-        &quot;IsApproved&quot;: true,
-        &quot;ApprovedBy&quot;: &quot;sarah-chen&quot;,
-        &quot;ApprovedByEmailAddress&quot;: &quot;sarah.chen@acmecorp.example&quot;,
-        &quot;ProjectTypeName&quot;: &quot;Internal&quot;,
-        &quot;Description&quot;: &quot;Build internal analytics dashboard for team productivity metrics&quot;,
-        &quot;ApprovedByPhoneNumber&quot;: &quot;555-0101&quot;,
-        &quot;DueDate&quot;: &quot;2026-06-15&quot;,
-        &quot;ApprovedByName&quot;: &quot;Sarah Chen&quot;,
-        &quot;ApprovedByRoleIsManager&quot;: &quot;True&quot;,
-        &quot;ProjectTypeRequiresManagerApproval&quot;: &quot;&quot;,
-        &quot;ProjectType&quot;: &quot;internal&quot;,
-        &quot;ProjectTypeDescription&quot;: &quot;An internal project that is not publicly accessible&quot;
-      },
-      {
-        &quot;ProjectId&quot;: &quot;customer-portal-redesign&quot;,
-        &quot;Name&quot;: &quot;Customer Portal Redesign&quot;,
-        &quot;ApprovedBy&quot;: &quot;priya-patel&quot;,
-        &quot;ApprovedByEmailAddress&quot;: &quot;priya.patel@acmecorp.example&quot;,
-        &quot;ProjectTypeName&quot;: &quot;ClientFacing&quot;,
-        &quot;Description&quot;: &quot;Complete redesign of customer-facing portal with modern UX&quot;,
-        &quot;ApprovedByPhoneNumber&quot;: &quot;555-0103&quot;,
-        &quot;DueDate&quot;: &quot;2026-08-01&quot;,
-        &quot;ApprovedByName&quot;: &quot;Priya Patel&quot;,
-        &quot;ApprovedByRoleIsManager&quot;: &quot;&quot;,
-        &quot;ProjectTypeRequiresManagerApproval&quot;: &quot;True&quot;,
-        &quot;ProjectType&quot;: &quot;clientfacing&quot;,
-        &quot;ProjectTypeDescription&quot;: &quot;Open, public facing communication&quot;,
-        &quot;IsApproved&quot;: false
-      },
-      {
-        &quot;ProjectId&quot;: &quot;gdpr-compliance-audit&quot;,
-        &quot;Name&quot;: &quot;GDPR Compliance Audit&quot;,
-        &quot;IsApproved&quot;: true,
-        &quot;ApprovedBy&quot;: &quot;mike-johnson&quot;,
-        &quot;ApprovedByEmailAddress&quot;: &quot;mike.johnson@acmecorp.example&quot;,
-        &quot;ProjectTypeName&quot;: &quot;Compliance&quot;,
-        &quot;Description&quot;: &quot;Annual compliance audit and documentation update&quot;,
-        &quot;ApprovedByPhoneNumber&quot;: &quot;555-0102&quot;,
-        &quot;DueDate&quot;: &quot;2026-04-30&quot;,
-        &quot;ApprovedByName&quot;: &quot;Mike Johnson&quot;,
-        &quot;ApprovedByRoleIsManager&quot;: &quot;True&quot;,
-        &quot;ProjectTypeRequiresManagerApproval&quot;: &quot;True&quot;,
-        &quot;ProjectType&quot;: &quot;compliance&quot;,
-        &quot;ProjectTypeDescription&quot;: &quot;&quot;
+        &quot;ProjectId&quot;: &quot;erb-001&quot;,
+        &quot;Name&quot;: &quot;Effortlessly Invariant Rulesbooks&quot;,
+        &quot;Purpose&quot;: &quot;Multi-substrate code generation from declarative rulebooks&quot;,
+        &quot;Architecture&quot;: &quot;Airtable (UI) → effortless-rulebook.json (IR) → Substrates (Postgres, Python, Go, Excel, OWL, etc.)&quot;,
+        &quot;RepositoryRoot&quot;: &quot;effortlessly-invariant-rulesbooks/&quot;
       }
     ]
   },
-  &quot;Employees&quot;: {
-    &quot;Description&quot;: &quot;Table: Employees&quot;,
+  &quot;ExecutionSubstrates&quot;: {
+    &quot;Description&quot;: &quot;Runtime environments that execute business rules derived from the rulebook&quot;,
     &quot;schema&quot;: [
       {
-        &quot;name&quot;: &quot;EmployeeId&quot;,
+        &quot;name&quot;: &quot;SubstrateId&quot;,
         &quot;datatype&quot;: &quot;string&quot;,
         &quot;type&quot;: &quot;raw&quot;,
         &quot;nullable&quot;: false
@@ -368,103 +189,352 @@ ul { margin-left: 1.25rem; } li { margin-bottom: 0.25rem; }
         &quot;name&quot;: &quot;Name&quot;,
         &quot;datatype&quot;: &quot;string&quot;,
         &quot;type&quot;: &quot;raw&quot;,
-        &quot;nullable&quot;: true
+        &quot;nullable&quot;: false,
+        &quot;Description&quot;: &quot;Human-readable substrate name&quot;
       },
       {
-        &quot;name&quot;: &quot;EmailAddress&quot;,
+        &quot;name&quot;: &quot;Technology&quot;,
+        &quot;datatype&quot;: &quot;string&quot;,
+        &quot;type&quot;: &quot;raw&quot;,
+        &quot;nullable&quot;: false,
+        &quot;Description&quot;: &quot;Language/platform (PostgreSQL, Python, Go, Excel, OWL, PlantUML, etc.)&quot;
+      },
+      {
+        &quot;name&quot;: &quot;RelativePath&quot;,
+        &quot;datatype&quot;: &quot;string&quot;,
+        &quot;type&quot;: &quot;raw&quot;,
+        &quot;nullable&quot;: false,
+        &quot;Description&quot;: &quot;Path within repo: execution-substrates/{technology}/&quot;
+      },
+      {
+        &quot;name&quot;: &quot;InjectorScript&quot;,
+        &quot;datatype&quot;: &quot;string&quot;,
+        &quot;type&quot;: &quot;raw&quot;,
+        &quot;nullable&quot;: false,
+        &quot;Description&quot;: &quot;Code generation script: inject-into-{technology}.py&quot;
+      },
+      {
+        &quot;name&quot;: &quot;TestScript&quot;,
+        &quot;datatype&quot;: &quot;string&quot;,
+        &quot;type&quot;: &quot;raw&quot;,
+        &quot;nullable&quot;: true,
+        &quot;Description&quot;: &quot;Conformance test script: take-test.py&quot;
+      },
+      {
+        &quot;name&quot;: &quot;IsProduction&quot;,
+        &quot;datatype&quot;: &quot;boolean&quot;,
+        &quot;type&quot;: &quot;raw&quot;,
+        &quot;nullable&quot;: false,
+        &quot;Description&quot;: &quot;True if backed by an official Effortless tool; false if local implementation&quot;
+      },
+      {
+        &quot;name&quot;: &quot;Status&quot;,
+        &quot;datatype&quot;: &quot;string&quot;,
+        &quot;type&quot;: &quot;raw&quot;,
+        &quot;nullable&quot;: true,
+        &quot;Description&quot;: &quot;Operational status (active, proof-of-concept, deprecated)&quot;
+      },
+      {
+        &quot;name&quot;: &quot;Description&quot;,
+        &quot;datatype&quot;: &quot;string&quot;,
+        &quot;type&quot;: &quot;raw&quot;,
+        &quot;nullable&quot;: true,
+        &quot;Description&quot;: &quot;Purpose and capabilities&quot;
+      }
+    ],
+    &quot;data&quot;: [
+      {
+        &quot;SubstrateId&quot;: &quot;substrate-001&quot;,
+        &quot;Name&quot;: &quot;Binary (ARM64)&quot;,
+        &quot;Technology&quot;: &quot;ARM64 Assembly&quot;,
+        &quot;RelativePath&quot;: &quot;execution-substrates/binary/&quot;,
+        &quot;InjectorScript&quot;: &quot;inject-into-binary.py&quot;,
+        &quot;TestScript&quot;: &quot;take-test.py&quot;,
+        &quot;IsProduction&quot;: false,
+        &quot;Status&quot;: &quot;proof-of-concept&quot;,
+        &quot;Description&quot;: &quot;ARM64 assembly proof-of-concept; demonstrates lowest-level code generation&quot;
+      },
+      {
+        &quot;SubstrateId&quot;: &quot;substrate-002&quot;,
+        &quot;Name&quot;: &quot;Python&quot;,
+        &quot;Technology&quot;: &quot;Python&quot;,
+        &quot;RelativePath&quot;: &quot;execution-substrates/python/&quot;,
+        &quot;InjectorScript&quot;: &quot;inject-into-python.py&quot;,
+        &quot;TestScript&quot;: &quot;take-test.py&quot;,
+        &quot;IsProduction&quot;: false,
+        &quot;Status&quot;: &quot;active&quot;,
+        &quot;Description&quot;: &quot;Local Python implementation: dataclasses + calculated field functions&quot;
+      },
+      {
+        &quot;SubstrateId&quot;: &quot;substrate-003&quot;,
+        &quot;Name&quot;: &quot;Go&quot;,
+        &quot;Technology&quot;: &quot;Go&quot;,
+        &quot;RelativePath&quot;: &quot;execution-substrates/golang/&quot;,
+        &quot;InjectorScript&quot;: &quot;inject-into-golang.py&quot;,
+        &quot;TestScript&quot;: &quot;take-test.py&quot;,
+        &quot;IsProduction&quot;: false,
+        &quot;Status&quot;: &quot;active&quot;,
+        &quot;Description&quot;: &quot;Local Go implementation: structs + business logic&quot;
+      },
+      {
+        &quot;SubstrateId&quot;: &quot;substrate-004&quot;,
+        &quot;Name&quot;: &quot;PostgreSQL&quot;,
+        &quot;Technology&quot;: &quot;PostgreSQL&quot;,
+        &quot;RelativePath&quot;: &quot;licensed-effortless-tools/postgres/&quot;,
+        &quot;InjectorScript&quot;: &quot;N/A (rulebook-to-postgres CLI)&quot;,
+        &quot;TestScript&quot;: &quot;take-test.py&quot;,
+        &quot;IsProduction&quot;: true,
+        &quot;Status&quot;: &quot;active&quot;,
+        &quot;Description&quot;: &quot;Production tool: generates DDL, stored functions, views. Full formula support via SQL.&quot;
+      },
+      {
+        &quot;SubstrateId&quot;: &quot;substrate-005&quot;,
+        &quot;Name&quot;: &quot;CSV&quot;,
+        &quot;Technology&quot;: &quot;CSV&quot;,
+        &quot;RelativePath&quot;: &quot;execution-substrates/csv/&quot;,
+        &quot;InjectorScript&quot;: &quot;inject-into-csv.py&quot;,
+        &quot;TestScript&quot;: null,
+        &quot;IsProduction&quot;: false,
+        &quot;Status&quot;: &quot;active&quot;,
+        &quot;Description&quot;: &quot;Spreadsheet export: rows + headers&quot;
+      },
+      {
+        &quot;SubstrateId&quot;: &quot;substrate-006&quot;,
+        &quot;Name&quot;: &quot;Excel&quot;,
+        &quot;Technology&quot;: &quot;Excel&quot;,
+        &quot;RelativePath&quot;: &quot;licensed-effortless-tools/xlsx/&quot;,
+        &quot;InjectorScript&quot;: &quot;N/A (rulebook-to-xlsx CLI)&quot;,
+        &quot;TestScript&quot;: null,
+        &quot;IsProduction&quot;: true,
+        &quot;Status&quot;: &quot;active&quot;,
+        &quot;Description&quot;: &quot;Production tool: generates .xlsx with formulas&quot;
+      },
+      {
+        &quot;SubstrateId&quot;: &quot;substrate-007&quot;,
+        &quot;Name&quot;: &quot;PlantUML&quot;,
+        &quot;Technology&quot;: &quot;PlantUML&quot;,
+        &quot;RelativePath&quot;: &quot;execution-substrates/uml/&quot;,
+        &quot;InjectorScript&quot;: &quot;inject-into-uml.py&quot;,
+        &quot;TestScript&quot;: null,
+        &quot;IsProduction&quot;: false,
+        &quot;Status&quot;: &quot;active&quot;,
+        &quot;Description&quot;: &quot;Generates UML class diagrams with OCL constraints&quot;
+      },
+      {
+        &quot;SubstrateId&quot;: &quot;substrate-008&quot;,
+        &quot;Name&quot;: &quot;OWL/RDF&quot;,
+        &quot;Technology&quot;: &quot;OWL/RDF&quot;,
+        &quot;RelativePath&quot;: &quot;execution-substrates/owl/&quot;,
+        &quot;InjectorScript&quot;: &quot;inject-into-owl.py&quot;,
+        &quot;TestScript&quot;: null,
+        &quot;IsProduction&quot;: false,
+        &quot;Status&quot;: &quot;active&quot;,
+        &quot;Description&quot;: &quot;RDF/OWL ontology for semantic web&quot;
+      },
+      {
+        &quot;SubstrateId&quot;: &quot;substrate-009&quot;,
+        &quot;Name&quot;: &quot;Explain DAG&quot;,
+        &quot;Technology&quot;: &quot;JSON&quot;,
+        &quot;RelativePath&quot;: &quot;execution-substrates/explain-dag/&quot;,
+        &quot;InjectorScript&quot;: &quot;inject-into-explain-dag.py&quot;,
+        &quot;TestScript&quot;: null,
+        &quot;IsProduction&quot;: false,
+        &quot;Status&quot;: &quot;active&quot;,
+        &quot;Description&quot;: &quot;JSON spec for calculated-field derivation tracing; embedded React visualizer&quot;
+      },
+      {
+        &quot;SubstrateId&quot;: &quot;substrate-010&quot;,
+        &quot;Name&quot;: &quot;Entity Framework&quot;,
+        &quot;Technology&quot;: &quot;C#/.NET&quot;,
+        &quot;RelativePath&quot;: &quot;licensed-effortless-tools/entity-framework-dotnet/&quot;,
+        &quot;InjectorScript&quot;: &quot;N/A (rulebook-to-entity-framework CLI)&quot;,
+        &quot;TestScript&quot;: null,
+        &quot;IsProduction&quot;: true,
+        &quot;Status&quot;: &quot;active&quot;,
+        &quot;Description&quot;: &quot;Production tool: generates C# POCOs and Entity Framework DbContext&quot;
+      }
+    ]
+  },
+  &quot;OrchestrationComponents&quot;: {
+    &quot;Description&quot;: &quot;Central orchestration logic that coordinates rulebook loading, injection, and testing&quot;,
+    &quot;schema&quot;: [
+      {
+        &quot;name&quot;: &quot;ComponentId&quot;,
+        &quot;datatype&quot;: &quot;string&quot;,
+        &quot;type&quot;: &quot;raw&quot;,
+        &quot;nullable&quot;: false
+      },
+      {
+        &quot;name&quot;: &quot;Name&quot;,
+        &quot;datatype&quot;: &quot;string&quot;,
+        &quot;type&quot;: &quot;raw&quot;,
+        &quot;nullable&quot;: false
+      },
+      {
+        &quot;name&quot;: &quot;FilePath&quot;,
+        &quot;datatype&quot;: &quot;string&quot;,
+        &quot;type&quot;: &quot;raw&quot;,
+        &quot;nullable&quot;: false,
+        &quot;Description&quot;: &quot;Relative path from repo root&quot;
+      },
+      {
+        &quot;name&quot;: &quot;Language&quot;,
+        &quot;datatype&quot;: &quot;string&quot;,
+        &quot;type&quot;: &quot;raw&quot;,
+        &quot;nullable&quot;: false
+      },
+      {
+        &quot;name&quot;: &quot;Purpose&quot;,
+        &quot;datatype&quot;: &quot;string&quot;,
+        &quot;type&quot;: &quot;raw&quot;,
+        &quot;nullable&quot;: false
+      },
+      {
+        &quot;name&quot;: &quot;Dependencies&quot;,
+        &quot;datatype&quot;: &quot;string&quot;,
+        &quot;type&quot;: &quot;raw&quot;,
+        &quot;nullable&quot;: true,
+        &quot;Description&quot;: &quot;Comma-separated list of other components&quot;
+      }
+    ],
+    &quot;data&quot;: [
+      {
+        &quot;ComponentId&quot;: &quot;orch-001&quot;,
+        &quot;Name&quot;: &quot;Shared Utilities&quot;,
+        &quot;FilePath&quot;: &quot;orchestration/shared.py&quot;,
+        &quot;Language&quot;: &quot;Python&quot;,
+        &quot;Purpose&quot;: &quot;Common functions: load_rulebook(), parse formulas, type mapping&quot;,
+        &quot;Dependencies&quot;: &quot;None&quot;
+      },
+      {
+        &quot;ComponentId&quot;: &quot;orch-002&quot;,
+        &quot;Name&quot;: &quot;Formula Parser&quot;,
+        &quot;FilePath&quot;: &quot;orchestration/formula_parser.py&quot;,
+        &quot;Language&quot;: &quot;Python&quot;,
+        &quot;Purpose&quot;: &quot;Parse and execute Excel-style formulas (IF, AND, OR, CONCAT, LEFT, RIGHT, etc.)&quot;,
+        &quot;Dependencies&quot;: &quot;shared.py&quot;
+      },
+      {
+        &quot;ComponentId&quot;: &quot;orch-003&quot;,
+        &quot;Name&quot;: &quot;Main Injector&quot;,
+        &quot;FilePath&quot;: &quot;orchestration/inject.py&quot;,
+        &quot;Language&quot;: &quot;Python&quot;,
+        &quot;Purpose&quot;: &quot;Dispatch rulebook to all substrate injectors; optionally clean generated files&quot;,
+        &quot;Dependencies&quot;: &quot;shared.py, all substrate injectors&quot;
+      },
+      {
+        &quot;ComponentId&quot;: &quot;orch-004&quot;,
+        &quot;Name&quot;: &quot;Orchestrator Menu&quot;,
+        &quot;FilePath&quot;: &quot;orchestration/orchestrate.sh&quot;,
+        &quot;Language&quot;: &quot;Bash&quot;,
+        &quot;Purpose&quot;: &quot;Interactive CLI menu: run substrates, manage Airtable sync, generate reports&quot;,
+        &quot;Dependencies&quot;: &quot;inject.py, rulebook-cache.py, base-manager.py&quot;
+      },
+      {
+        &quot;ComponentId&quot;: &quot;orch-005&quot;,
+        &quot;Name&quot;: &quot;Rulebook Cache&quot;,
+        &quot;FilePath&quot;: &quot;orchestration/rulebook-cache.py&quot;,
+        &quot;Language&quot;: &quot;Python&quot;,
+        &quot;Purpose&quot;: &quot;Pull rulebook from Airtable API; fallback to offline cache if unavailable&quot;,
+        &quot;Dependencies&quot;: &quot;shared.py&quot;
+      },
+      {
+        &quot;ComponentId&quot;: &quot;orch-006&quot;,
+        &quot;Name&quot;: &quot;Base Manager&quot;,
+        &quot;FilePath&quot;: &quot;orchestration/base-manager.py&quot;,
+        &quot;Language&quot;: &quot;Python&quot;,
+        &quot;Purpose&quot;: &quot;List, select, and swap Airtable bases; fetch base metadata from API&quot;,
+        &quot;Dependencies&quot;: &quot;rulebook-cache.py&quot;
+      },
+      {
+        &quot;ComponentId&quot;: &quot;orch-007&quot;,
+        &quot;Name&quot;: &quot;Test Orchestrator&quot;,
+        &quot;FilePath&quot;: &quot;orchestration/test-orchestrator.py&quot;,
+        &quot;Language&quot;: &quot;Python&quot;,
+        &quot;Purpose&quot;: &quot;Run all substrate tests; verify conformance (all substrates compute identically)&quot;,
+        &quot;Dependencies&quot;: &quot;shared.py, all substrate test scripts&quot;
+      },
+      {
+        &quot;ComponentId&quot;: &quot;orch-008&quot;,
+        &quot;Name&quot;: &quot;Report Generator&quot;,
+        &quot;FilePath&quot;: &quot;orchestration/generate-report.sh&quot;,
+        &quot;Language&quot;: &quot;Bash&quot;,
+        &quot;Purpose&quot;: &quot;Generate HTML conformance report comparing substrate outputs&quot;,
+        &quot;Dependencies&quot;: &quot;test-orchestrator.py&quot;
+      }
+    ]
+  },
+  &quot;AirtableIntegration&quot;: {
+    &quot;Description&quot;: &quot;Airtable as input spoke: schema + data source pulled into rulebook&quot;,
+    &quot;schema&quot;: [
+      {
+        &quot;name&quot;: &quot;ComponentId&quot;,
+        &quot;datatype&quot;: &quot;string&quot;,
+        &quot;type&quot;: &quot;raw&quot;,
+        &quot;nullable&quot;: false
+      },
+      {
+        &quot;name&quot;: &quot;Name&quot;,
+        &quot;datatype&quot;: &quot;string&quot;,
+        &quot;type&quot;: &quot;raw&quot;,
+        &quot;nullable&quot;: false
+      },
+      {
+        &quot;name&quot;: &quot;FilePath&quot;,
         &quot;datatype&quot;: &quot;string&quot;,
         &quot;type&quot;: &quot;raw&quot;,
         &quot;nullable&quot;: true
       },
       {
-        &quot;name&quot;: &quot;PhoneNumber&quot;,
+        &quot;name&quot;: &quot;Purpose&quot;,
         &quot;datatype&quot;: &quot;string&quot;,
         &quot;type&quot;: &quot;raw&quot;,
-        &quot;nullable&quot;: true
+        &quot;nullable&quot;: false
       },
       {
         &quot;name&quot;: &quot;Role&quot;,
         &quot;datatype&quot;: &quot;string&quot;,
-        &quot;type&quot;: &quot;relationship&quot;,
-        &quot;nullable&quot;: true,
-        &quot;RelatedTo&quot;: &quot;Roles&quot;,
-        &quot;isReversed&quot;: false,
-        &quot;prefersSingleRecordLink&quot;: true,
-        &quot;InverseField&quot;: &quot;Employees&quot;
-      },
-      {
-        &quot;name&quot;: &quot;RoleName&quot;,
-        &quot;datatype&quot;: &quot;string&quot;,
-        &quot;type&quot;: &quot;lookup&quot;,
-        &quot;nullable&quot;: true,
-        &quot;formula&quot;: &quot;=INDEX(Roles!{{Name}}, MATCH(Employees!{{Role}}, Roles!{{RoleId}}, 0))&quot;
-      },
-      {
-        &quot;name&quot;: &quot;RoleDescription&quot;,
-        &quot;datatype&quot;: &quot;string&quot;,
-        &quot;type&quot;: &quot;lookup&quot;,
-        &quot;nullable&quot;: true,
-        &quot;formula&quot;: &quot;=INDEX(Roles!{{Description}}, MATCH(Employees!{{Role}}, Roles!{{RoleId}}, 0))&quot;
-      },
-      {
-        &quot;name&quot;: &quot;Projects&quot;,
-        &quot;datatype&quot;: &quot;string&quot;,
-        &quot;type&quot;: &quot;relationship&quot;,
-        &quot;nullable&quot;: true,
-        &quot;RelatedTo&quot;: &quot;Projects&quot;,
-        &quot;isReversed&quot;: false,
-        &quot;prefersSingleRecordLink&quot;: false,
-        &quot;InverseField&quot;: &quot;ApprovedBy&quot;
-      },
-      {
-        &quot;name&quot;: &quot;RoleIsManager&quot;,
-        &quot;datatype&quot;: &quot;boolean&quot;,
-        &quot;type&quot;: &quot;lookup&quot;,
-        &quot;nullable&quot;: true,
-        &quot;formula&quot;: &quot;=INDEX(Roles!{{IsManager}}, MATCH(Employees!{{Role}}, Roles!{{RoleId}}, 0))&quot;
+        &quot;type&quot;: &quot;raw&quot;,
+        &quot;nullable&quot;: false,
+        &quot;Description&quot;: &quot;input (pull from Airtable), output (push to Airtable), or bidirectional&quot;
       }
     ],
     &quot;data&quot;: [
       {
-        &quot;EmployeeId&quot;: &quot;sarah-chen&quot;,
-        &quot;Projects&quot;: &quot;internal-tools-dashboard&quot;,
-        &quot;RoleIsManager&quot;: &quot;True&quot;,
-        &quot;PhoneNumber&quot;: &quot;555-0101&quot;,
-        &quot;RoleDescription&quot;: &quot;The project Manager makes sure that the developers do what the analysts ask for&quot;,
-        &quot;RoleName&quot;: &quot;ProjectManager&quot;,
-        &quot;Name&quot;: &quot;Sarah Chen&quot;,
-        &quot;Role&quot;: &quot;projectmanager&quot;,
-        &quot;EmailAddress&quot;: &quot;sarah.chen@acmecorp.example&quot;
+        &quot;ComponentId&quot;: &quot;airtable-001&quot;,
+        &quot;Name&quot;: &quot;airtable-to-rulebook CLI&quot;,
+        &quot;FilePath&quot;: null,
+        &quot;Purpose&quot;: &quot;Official Effortless tool: exports schema + data from Airtable base to effortless-rulebook.json&quot;,
+        &quot;Role&quot;: &quot;input&quot;
       },
       {
-        &quot;EmployeeId&quot;: &quot;mike-johnson&quot;,
-        &quot;Projects&quot;: &quot;gdpr-compliance-audit&quot;,
-        &quot;RoleIsManager&quot;: &quot;True&quot;,
-        &quot;PhoneNumber&quot;: &quot;555-0102&quot;,
-        &quot;RoleDescription&quot;: &quot;Developers handle the implementation and are responsible for making the final product do what is expected&quot;,
-        &quot;RoleName&quot;: &quot;Developer&quot;,
-        &quot;Name&quot;: &quot;Mike Johnson&quot;,
-        &quot;Role&quot;: &quot;developer&quot;,
-        &quot;EmailAddress&quot;: &quot;mike.johnson@acmecorp.example&quot;
+        &quot;ComponentId&quot;: &quot;airtable-002&quot;,
+        &quot;Name&quot;: &quot;rulebook-to-airtable CLI&quot;,
+        &quot;FilePath&quot;: null,
+        &quot;Purpose&quot;: &quot;Official Effortless tool: push formula updates back to Airtable (reverse sync)&quot;,
+        &quot;Role&quot;: &quot;output&quot;
       },
       {
-        &quot;EmployeeId&quot;: &quot;priya-patel&quot;,
-        &quot;Projects&quot;: &quot;customer-portal-redesign&quot;,
-        &quot;RoleIsManager&quot;: &quot;&quot;,
-        &quot;PhoneNumber&quot;: &quot;555-0103&quot;,
-        &quot;RoleDescription&quot;: &quot;The business analysis know what the customer&#x27;s want.&quot;,
-        &quot;RoleName&quot;: &quot;Analyst&quot;,
-        &quot;Name&quot;: &quot;Priya Patel&quot;,
-        &quot;Role&quot;: &quot;analyst&quot;,
-        &quot;EmailAddress&quot;: &quot;priya.patel@acmecorp.example&quot;
+        &quot;ComponentId&quot;: &quot;airtable-003&quot;,
+        &quot;Name&quot;: &quot;Rulebook Cache (offline mode)&quot;,
+        &quot;FilePath&quot;: &quot;orchestration/rulebook-cache.py&quot;,
+        &quot;Purpose&quot;: &quot;Cache previously-pulled rulebooks; use offline if Airtable API unavailable&quot;,
+        &quot;Role&quot;: &quot;input&quot;
+      },
+      {
+        &quot;ComponentId&quot;: &quot;airtable-004&quot;,
+        &quot;Name&quot;: &quot;ACME Corporation Bases&quot;,
+        &quot;FilePath&quot;: null,
+        &quot;Purpose&quot;: &quot;Demo Airtable bases for BASIC and ADVANCED ontologies; can be swapped at runtime&quot;,
+        &quot;Role&quot;: &quot;input&quot;
       }
     ]
   },
-  &quot;Roles&quot;: {
-    &quot;Description&quot;: &quot;Table: Roles&quot;,
+  &quot;TestingFramework&quot;: {
+    &quot;Description&quot;: &quot;Conformance testing: prove all substrates compute identically&quot;,
     &quot;schema&quot;: [
       {
-        &quot;name&quot;: &quot;RoleId&quot;,
+        &quot;name&quot;: &quot;TestId&quot;,
         &quot;datatype&quot;: &quot;string&quot;,
         &quot;type&quot;: &quot;raw&quot;,
         &quot;nullable&quot;: false
@@ -473,70 +543,193 @@ ul { margin-left: 1.25rem; } li { margin-bottom: 0.25rem; }
         &quot;name&quot;: &quot;Name&quot;,
         &quot;datatype&quot;: &quot;string&quot;,
         &quot;type&quot;: &quot;raw&quot;,
-        &quot;nullable&quot;: true
+        &quot;nullable&quot;: false
       },
       {
-        &quot;name&quot;: &quot;Description&quot;,
+        &quot;name&quot;: &quot;FilePath&quot;,
         &quot;datatype&quot;: &quot;string&quot;,
         &quot;type&quot;: &quot;raw&quot;,
-        &quot;nullable&quot;: true
+        &quot;nullable&quot;: false
       },
       {
-        &quot;name&quot;: &quot;IsManager&quot;,
-        &quot;datatype&quot;: &quot;boolean&quot;,
-        &quot;type&quot;: &quot;raw&quot;,
-        &quot;nullable&quot;: true
-      },
-      {
-        &quot;name&quot;: &quot;Employees&quot;,
+        &quot;name&quot;: &quot;Purpose&quot;,
         &quot;datatype&quot;: &quot;string&quot;,
-        &quot;type&quot;: &quot;relationship&quot;,
-        &quot;nullable&quot;: true,
-        &quot;RelatedTo&quot;: &quot;Employees&quot;,
-        &quot;isReversed&quot;: false,
-        &quot;prefersSingleRecordLink&quot;: false,
-        &quot;InverseField&quot;: &quot;Role&quot;
+        &quot;type&quot;: &quot;raw&quot;,
+        &quot;nullable&quot;: false
       },
       {
-        &quot;name&quot;: &quot;CountOfEmployees&quot;,
-        &quot;datatype&quot;: &quot;integer&quot;,
-        &quot;type&quot;: &quot;aggregation&quot;,
+        &quot;name&quot;: &quot;Scope&quot;,
+        &quot;datatype&quot;: &quot;string&quot;,
+        &quot;type&quot;: &quot;raw&quot;,
         &quot;nullable&quot;: true,
-        &quot;formula&quot;: &quot;=COUNTIFS(Employees!{{Role}}, Roles!{{RoleId}})&quot;
+        &quot;Description&quot;: &quot;global (all substrates) or per-substrate&quot;
       }
     ],
     &quot;data&quot;: [
       {
-        &quot;RoleId&quot;: &quot;developer&quot;,
-        &quot;IsManager&quot;: true,
-        &quot;Name&quot;: &quot;Developer&quot;,
-        &quot;CountOfEmployees&quot;: 1,
-        &quot;Employees&quot;: &quot;mike-johnson&quot;,
-        &quot;Description&quot;: &quot;Developers handle the implementation and are responsible for making the final product do what is expected&quot;
+        &quot;TestId&quot;: &quot;test-001&quot;,
+        &quot;Name&quot;: &quot;Test Case Definitions&quot;,
+        &quot;FilePath&quot;: &quot;test-cases/*.yaml&quot;,
+        &quot;Purpose&quot;: &quot;YAML scenarios defining inputs and expected outputs; shared across all substrates&quot;,
+        &quot;Scope&quot;: &quot;global&quot;
       },
       {
-        &quot;RoleId&quot;: &quot;projectmanager&quot;,
-        &quot;IsManager&quot;: true,
-        &quot;Name&quot;: &quot;ProjectManager&quot;,
-        &quot;CountOfEmployees&quot;: 1,
-        &quot;Employees&quot;: &quot;sarah-chen&quot;,
-        &quot;Description&quot;: &quot;The project Manager makes sure that the developers do what the analysts ask for&quot;
+        &quot;TestId&quot;: &quot;test-002&quot;,
+        &quot;Name&quot;: &quot;Substrate-Specific Take-Test&quot;,
+        &quot;FilePath&quot;: &quot;execution-substrates/{technology}/take-test.py&quot;,
+        &quot;Purpose&quot;: &quot;Load rulebook, execute test cases, compare results against expected&quot;,
+        &quot;Scope&quot;: &quot;per-substrate&quot;
       },
       {
-        &quot;RoleId&quot;: &quot;analyst&quot;,
-        &quot;Name&quot;: &quot;Analyst&quot;,
-        &quot;CountOfEmployees&quot;: 1,
-        &quot;Employees&quot;: &quot;priya-patel&quot;,
-        &quot;Description&quot;: &quot;The business analysis know what the customer&#x27;s want.&quot;,
-        &quot;IsManager&quot;: false
+        &quot;TestId&quot;: &quot;test-003&quot;,
+        &quot;Name&quot;: &quot;Test Orchestrator&quot;,
+        &quot;FilePath&quot;: &quot;orchestration/test-orchestrator.py&quot;,
+        &quot;Purpose&quot;: &quot;Run all substrate tests; aggregate pass/fail; identify conformance gaps&quot;,
+        &quot;Scope&quot;: &quot;global&quot;
+      },
+      {
+        &quot;TestId&quot;: &quot;test-004&quot;,
+        &quot;Name&quot;: &quot;Conformance Report&quot;,
+        &quot;FilePath&quot;: &quot;orchestration/conformance-report.html&quot;,
+        &quot;Purpose&quot;: &quot;Visual comparison of substrate outputs; highlight mismatches&quot;,
+        &quot;Scope&quot;: &quot;global&quot;
       }
     ]
   },
-  &quot;TypesOfProject&quot;: {
-    &quot;Description&quot;: &quot;Table: TypesOfProject&quot;,
+  &quot;RulebookDomains&quot;: {
+    &quot;Description&quot;: &quot;Customer ontologies: each domain has its own rulebook + substrate generation&quot;,
     &quot;schema&quot;: [
       {
-        &quot;name&quot;: &quot;TypesOfProjectId&quot;,
+        &quot;name&quot;: &quot;DomainId&quot;,
+        &quot;datatype&quot;: &quot;string&quot;,
+        &quot;type&quot;: &quot;raw&quot;,
+        &quot;nullable&quot;: false
+      },
+      {
+        &quot;name&quot;: &quot;DomainName&quot;,
+        &quot;datatype&quot;: &quot;string&quot;,
+        &quot;type&quot;: &quot;raw&quot;,
+        &quot;nullable&quot;: false
+      },
+      {
+        &quot;name&quot;: &quot;RelativePath&quot;,
+        &quot;datatype&quot;: &quot;string&quot;,
+        &quot;type&quot;: &quot;raw&quot;,
+        &quot;nullable&quot;: false,
+        &quot;Description&quot;: &quot;rulebook-examples/{domain}/ — each domain is a self-contained Effortless project&quot;
+      },
+      {
+        &quot;name&quot;: &quot;RulebookPath&quot;,
+        &quot;datatype&quot;: &quot;string&quot;,
+        &quot;type&quot;: &quot;raw&quot;,
+        &quot;nullable&quot;: false,
+        &quot;Description&quot;: &quot;Path to effortless-rulebook.json within domain&quot;
+      },
+      {
+        &quot;name&quot;: &quot;ComplexityLevel&quot;,
+        &quot;datatype&quot;: &quot;string&quot;,
+        &quot;type&quot;: &quot;raw&quot;,
+        &quot;nullable&quot;: true,
+        &quot;Description&quot;: &quot;minimal, moderate, advanced, or philosophical&quot;
+      },
+      {
+        &quot;name&quot;: &quot;TableCount&quot;,
+        &quot;datatype&quot;: &quot;number&quot;,
+        &quot;type&quot;: &quot;raw&quot;,
+        &quot;nullable&quot;: true
+      },
+      {
+        &quot;name&quot;: &quot;KeyFeatures&quot;,
+        &quot;datatype&quot;: &quot;string&quot;,
+        &quot;type&quot;: &quot;raw&quot;,
+        &quot;nullable&quot;: true,
+        &quot;Description&quot;: &quot;Comma-separated: string concat, relationships, aggregations, IF logic, meta-ontology, etc.&quot;
+      },
+      {
+        &quot;name&quot;: &quot;Purpose&quot;,
+        &quot;datatype&quot;: &quot;string&quot;,
+        &quot;type&quot;: &quot;raw&quot;,
+        &quot;nullable&quot;: true
+      }
+    ],
+    &quot;data&quot;: [
+      {
+        &quot;DomainId&quot;: &quot;domain-001&quot;,
+        &quot;DomainName&quot;: &quot;Customer FullName&quot;,
+        &quot;RelativePath&quot;: &quot;rulebook-examples/customer-fullname/&quot;,
+        &quot;RulebookPath&quot;: &quot;rulebook-examples/customer-fullname/effortless-rulebook/effortless-rulebook.json&quot;,
+        &quot;ComplexityLevel&quot;: &quot;minimal&quot;,
+        &quot;TableCount&quot;: 1,
+        &quot;KeyFeatures&quot;: &quot;string concatenation&quot;,
+        &quot;Purpose&quot;: &quot;Hello World: demonstrates basic schema and calculated field (CONCAT formula)&quot;
+      },
+      {
+        &quot;DomainId&quot;: &quot;domain-002&quot;,
+        &quot;DomainName&quot;: &quot;Jessica BASIC&quot;,
+        &quot;RelativePath&quot;: &quot;rulebook-examples/jessica-basic/&quot;,
+        &quot;RulebookPath&quot;: &quot;rulebook-examples/jessica-basic/effortless-rulebook/effortless-rulebook.json&quot;,
+        &quot;ComplexityLevel&quot;: &quot;moderate&quot;,
+        &quot;TableCount&quot;: 9,
+        &quot;KeyFeatures&quot;: &quot;relationships, aggregations, role-agent separation&quot;,
+        &quot;Purpose&quot;: &quot;Real workflow modeling: task management with assigned agents&quot;
+      },
+      {
+        &quot;DomainId&quot;: &quot;domain-003&quot;,
+        &quot;DomainName&quot;: &quot;Jessica ADVANCED&quot;,
+        &quot;RelativePath&quot;: &quot;rulebook-examples/jessica-advanced/&quot;,
+        &quot;RulebookPath&quot;: &quot;rulebook-examples/jessica-advanced/effortless-rulebook/effortless-rulebook.json&quot;,
+        &quot;ComplexityLevel&quot;: &quot;advanced&quot;,
+        &quot;TableCount&quot;: 9,
+        &quot;KeyFeatures&quot;: &quot;cross-entity lookups, conditional IF logic, complex aggregations&quot;,
+        &quot;Purpose&quot;: &quot;Business rule complexity: demonstrates advanced formula patterns&quot;
+      },
+      {
+        &quot;DomainId&quot;: &quot;domain-004&quot;,
+        &quot;DomainName&quot;: &quot;StarTrek&quot;,
+        &quot;RelativePath&quot;: &quot;rulebook-examples/star-trek/&quot;,
+        &quot;RulebookPath&quot;: &quot;rulebook-examples/star-trek/effortless-rulebook/effortless-rulebook.json&quot;,
+        &quot;ComplexityLevel&quot;: &quot;moderate&quot;,
+        &quot;TableCount&quot;: 7,
+        &quot;KeyFeatures&quot;: &quot;hierarchical rollups, polymorphic foreign keys&quot;,
+        &quot;Purpose&quot;: &quot;Media catalog: TV shows, seasons, episodes; demonstrates polymorphism&quot;
+      },
+      {
+        &quot;DomainId&quot;: &quot;domain-005&quot;,
+        &quot;DomainName&quot;: &quot;Is Everything a Language?&quot;,
+        &quot;RelativePath&quot;: &quot;rulebook-examples/is-everything-a-language/&quot;,
+        &quot;RulebookPath&quot;: &quot;rulebook-examples/is-everything-a-language/effortless-rulebook/effortless-rulebook.json&quot;,
+        &quot;ComplexityLevel&quot;: &quot;philosophical&quot;,
+        &quot;TableCount&quot;: 3,
+        &quot;KeyFeatures&quot;: &quot;8-predicate AND logic, meta-ontology&quot;,
+        &quot;Purpose&quot;: &quot;Formal argument modeling: demonstrates schema expressivity for abstract domains&quot;
+      },
+      {
+        &quot;DomainId&quot;: &quot;domain-006&quot;,
+        &quot;DomainName&quot;: &quot;ACME Corporation&quot;,
+        &quot;RelativePath&quot;: &quot;rulebook-examples/acme-corporation/&quot;,
+        &quot;RulebookPath&quot;: &quot;rulebook-examples/acme-corporation/effortless-rulebook/effortless-rulebook.json&quot;,
+        &quot;ComplexityLevel&quot;: &quot;advanced&quot;,
+        &quot;TableCount&quot;: null,
+        &quot;KeyFeatures&quot;: &quot;Hub promotion candidate; demonstrates rulebook-first workflow&quot;,
+        &quot;Purpose&quot;: &quot;Enterprise demo: ACME Corp operations&quot;
+      },
+      {
+        &quot;DomainId&quot;: &quot;domain-007&quot;,
+        &quot;DomainName&quot;: &quot;ACME LLC&quot;,
+        &quot;RelativePath&quot;: &quot;rulebook-examples/acme-llc/&quot;,
+        &quot;RulebookPath&quot;: &quot;rulebook-examples/acme-llc/effortless-rulebook/effortless-rulebook.json&quot;,
+        &quot;ComplexityLevel&quot;: &quot;advanced&quot;,
+        &quot;TableCount&quot;: null,
+        &quot;KeyFeatures&quot;: &quot;Hub promotion candidate; demonstrates rulebook-first workflow&quot;,
+        &quot;Purpose&quot;: &quot;Enterprise demo: ACME LLC operations&quot;
+      }
+    ]
+  },
+  &quot;CoreDataFlows&quot;: {
+    &quot;Description&quot;: &quot;End-to-end flows from rulebook to execution and testing&quot;,
+    &quot;schema&quot;: [
+      {
+        &quot;name&quot;: &quot;FlowId&quot;,
         &quot;datatype&quot;: &quot;string&quot;,
         &quot;type&quot;: &quot;raw&quot;,
         &quot;nullable&quot;: false
@@ -545,90 +738,305 @@ ul { margin-left: 1.25rem; } li { margin-bottom: 0.25rem; }
         &quot;name&quot;: &quot;Name&quot;,
         &quot;datatype&quot;: &quot;string&quot;,
         &quot;type&quot;: &quot;raw&quot;,
-        &quot;nullable&quot;: true
+        &quot;nullable&quot;: false
       },
       {
-        &quot;name&quot;: &quot;Description&quot;,
+        &quot;name&quot;: &quot;Steps&quot;,
         &quot;datatype&quot;: &quot;string&quot;,
         &quot;type&quot;: &quot;raw&quot;,
-        &quot;nullable&quot;: true
+        &quot;nullable&quot;: false,
+        &quot;Description&quot;: &quot;Pipe-delimited sequence of steps&quot;
       },
       {
-        &quot;name&quot;: &quot;RequiresManagerApproval&quot;,
-        &quot;datatype&quot;: &quot;boolean&quot;,
-        &quot;type&quot;: &quot;raw&quot;,
-        &quot;nullable&quot;: true
-      },
-      {
-        &quot;name&quot;: &quot;Projects&quot;,
+        &quot;name&quot;: &quot;Triggers&quot;,
         &quot;datatype&quot;: &quot;string&quot;,
-        &quot;type&quot;: &quot;relationship&quot;,
+        &quot;type&quot;: &quot;raw&quot;,
         &quot;nullable&quot;: true,
-        &quot;RelatedTo&quot;: &quot;Projects&quot;,
-        &quot;isReversed&quot;: false,
-        &quot;prefersSingleRecordLink&quot;: false,
-        &quot;InverseField&quot;: &quot;ProjectType&quot;
+        &quot;Description&quot;: &quot;When this flow runs&quot;
       },
       {
-        &quot;name&quot;: &quot;CountOfProjects&quot;,
-        &quot;datatype&quot;: &quot;integer&quot;,
-        &quot;type&quot;: &quot;aggregation&quot;,
+        &quot;name&quot;: &quot;Outputs&quot;,
+        &quot;datatype&quot;: &quot;string&quot;,
+        &quot;type&quot;: &quot;raw&quot;,
         &quot;nullable&quot;: true,
-        &quot;formula&quot;: &quot;=COUNTIFS(Projects!{{ProjectType}}, TypesOfProject!{{TypesOfProjectId}})&quot;
+        &quot;Description&quot;: &quot;Artifacts produced&quot;
       }
     ],
     &quot;data&quot;: [
       {
-        &quot;TypesOfProjectId&quot;: &quot;internal&quot;,
-        &quot;Name&quot;: &quot;Internal&quot;,
-        &quot;CountOfProjects&quot;: 1,
-        &quot;Description&quot;: &quot;An internal project that is not publicly accessible&quot;,
-        &quot;Projects&quot;: &quot;internal-tools-dashboard&quot;,
-        &quot;RequiresManagerApproval&quot;: false
+        &quot;FlowId&quot;: &quot;flow-001&quot;,
+        &quot;Name&quot;: &quot;Standard Rulebook → Substrates&quot;,
+        &quot;Steps&quot;: &quot;Load rulebook.json | Dispatch to all injectors | Generate substrate code | Package artifacts&quot;,
+        &quot;Triggers&quot;: &quot;User selects option A in orchestrator menu&quot;,
+        &quot;Outputs&quot;: &quot;Generated code in each execution-substrates/{tech}/ folder&quot;
       },
       {
-        &quot;TypesOfProjectId&quot;: &quot;clientfacing&quot;,
-        &quot;Name&quot;: &quot;ClientFacing&quot;,
-        &quot;CountOfProjects&quot;: 1,
-        &quot;RequiresManagerApproval&quot;: true,
-        &quot;Description&quot;: &quot;Open, public facing communication&quot;,
-        &quot;Projects&quot;: &quot;customer-portal-redesign&quot;
+        &quot;FlowId&quot;: &quot;flow-002&quot;,
+        &quot;Name&quot;: &quot;Pull from Airtable&quot;,
+        &quot;Steps&quot;: &quot;Call airtable-to-rulebook CLI | Write effortless-rulebook.json | Cache offline version&quot;,
+        &quot;Triggers&quot;: &quot;User selects option P (Pull &amp; Inject) or changes base via option B&quot;,
+        &quot;Outputs&quot;: &quot;effortless-rulebook/effortless-rulebook.json, rulebook cache&quot;
       },
       {
-        &quot;TypesOfProjectId&quot;: &quot;research&quot;,
-        &quot;Name&quot;: &quot;Research&quot;,
-        &quot;CountOfProjects&quot;: 0,
-        &quot;Description&quot;: &quot;&quot;,
-        &quot;RequiresManagerApproval&quot;: false,
-        &quot;Projects&quot;: &quot;&quot;
+        &quot;FlowId&quot;: &quot;flow-003&quot;,
+        &quot;Name&quot;: &quot;Conformance Testing&quot;,
+        &quot;Steps&quot;: &quot;Load test cases YAML | Run each substrate&#x27;s take-test.py | Collect outputs | Compare results | Generate report&quot;,
+        &quot;Triggers&quot;: &quot;User selects option V (View Results) or automatic after injection&quot;,
+        &quot;Outputs&quot;: &quot;conformance-report.html, pass/fail matrix, mismatch details&quot;
       },
       {
-        &quot;TypesOfProjectId&quot;: &quot;compliance&quot;,
-        &quot;Name&quot;: &quot;Compliance&quot;,
-        &quot;CountOfProjects&quot;: 1,
-        &quot;RequiresManagerApproval&quot;: true,
-        &quot;Projects&quot;: &quot;gdpr-compliance-audit&quot;,
-        &quot;Description&quot;: &quot;&quot;
+        &quot;FlowId&quot;: &quot;flow-004&quot;,
+        &quot;Name&quot;: &quot;Clean Generated Files&quot;,
+        &quot;Steps&quot;: &quot;Delete all generated outputs in each execution-substrates/ folder&quot;,
+        &quot;Triggers&quot;: &quot;User selects option C (Clean)&quot;,
+        &quot;Outputs&quot;: &quot;Empty substrate directories ready for fresh injection&quot;
+      },
+      {
+        &quot;FlowId&quot;: &quot;flow-005&quot;,
+        &quot;Name&quot;: &quot;Swap Ontologies (Hub Promotion)&quot;,
+        &quot;Steps&quot;: &quot;User selects domain in effortless-rulebooks/ | Point orchestrator to domain&#x27;s rulebook | Re-run injection &amp; tests with new domain&quot;,
+        &quot;Triggers&quot;: &quot;Rulebook hub promotion complete; becomes the primary SSoT instead of Airtable&quot;,
+        &quot;Outputs&quot;: &quot;All substrates regenerated for new domain; conformance verified&quot;
+      }
+    ]
+  },
+  &quot;ProjectConfiguration&quot;: {
+    &quot;Description&quot;: &quot;Configuration files and their purposes&quot;,
+    &quot;schema&quot;: [
+      {
+        &quot;name&quot;: &quot;ConfigId&quot;,
+        &quot;datatype&quot;: &quot;string&quot;,
+        &quot;type&quot;: &quot;raw&quot;,
+        &quot;nullable&quot;: false
+      },
+      {
+        &quot;name&quot;: &quot;FileName&quot;,
+        &quot;datatype&quot;: &quot;string&quot;,
+        &quot;type&quot;: &quot;raw&quot;,
+        &quot;nullable&quot;: false
+      },
+      {
+        &quot;name&quot;: &quot;FilePath&quot;,
+        &quot;datatype&quot;: &quot;string&quot;,
+        &quot;type&quot;: &quot;raw&quot;,
+        &quot;nullable&quot;: false
+      },
+      {
+        &quot;name&quot;: &quot;Format&quot;,
+        &quot;datatype&quot;: &quot;string&quot;,
+        &quot;type&quot;: &quot;raw&quot;,
+        &quot;nullable&quot;: false
+      },
+      {
+        &quot;name&quot;: &quot;Purpose&quot;,
+        &quot;datatype&quot;: &quot;string&quot;,
+        &quot;type&quot;: &quot;raw&quot;,
+        &quot;nullable&quot;: false
+      },
+      {
+        &quot;name&quot;: &quot;MaintainedBy&quot;,
+        &quot;datatype&quot;: &quot;string&quot;,
+        &quot;type&quot;: &quot;raw&quot;,
+        &quot;nullable&quot;: true,
+        &quot;Description&quot;: &quot;human (manual edits) or tool (auto-generated)&quot;
+      }
+    ],
+    &quot;data&quot;: [
+      {
+        &quot;ConfigId&quot;: &quot;config-001&quot;,
+        &quot;FileName&quot;: &quot;effortless.json&quot;,
+        &quot;FilePath&quot;: &quot;./effortless.json&quot;,
+        &quot;Format&quot;: &quot;JSON&quot;,
+        &quot;Purpose&quot;: &quot;SSoTme project definition: transpilers, versions, base IDs, API keys&quot;,
+        &quot;MaintainedBy&quot;: &quot;human&quot;
+      },
+      {
+        &quot;ConfigId&quot;: &quot;config-002&quot;,
+        &quot;FileName&quot;: &quot;CLAUDE.md&quot;,
+        &quot;FilePath&quot;: &quot;./CLAUDE.md&quot;,
+        &quot;Format&quot;: &quot;Markdown&quot;,
+        &quot;Purpose&quot;: &quot;Project instructions and architecture overview for Claude Code&quot;,
+        &quot;MaintainedBy&quot;: &quot;human&quot;
+      },
+      {
+        &quot;ConfigId&quot;: &quot;config-003&quot;,
+        &quot;FileName&quot;: &quot;bases.json&quot;,
+        &quot;FilePath&quot;: &quot;orchestration/bases.json&quot;,
+        &quot;Format&quot;: &quot;JSON&quot;,
+        &quot;Purpose&quot;: &quot;Catalog of swappable Airtable bases with IDs, names, complexity levels&quot;,
+        &quot;MaintainedBy&quot;: &quot;human&quot;
+      },
+      {
+        &quot;ConfigId&quot;: &quot;config-004&quot;,
+        &quot;FileName&quot;: &quot;.env&quot;,
+        &quot;FilePath&quot;: &quot;./.env&quot;,
+        &quot;Format&quot;: &quot;Shell&quot;,
+        &quot;Purpose&quot;: &quot;Environment variables: AIRTABLE_API_KEY, PostgreSQL credentials, etc.&quot;,
+        &quot;MaintainedBy&quot;: &quot;human&quot;
+      },
+      {
+        &quot;ConfigId&quot;: &quot;config-005&quot;,
+        &quot;FileName&quot;: &quot;docker-compose.yml&quot;,
+        &quot;FilePath&quot;: &quot;./docker-compose.yml&quot;,
+        &quot;Format&quot;: &quot;YAML&quot;,
+        &quot;Purpose&quot;: &quot;Docker services: PostgreSQL, optional API server&quot;,
+        &quot;MaintainedBy&quot;: &quot;human&quot;
+      },
+      {
+        &quot;ConfigId&quot;: &quot;config-006&quot;,
+        &quot;FileName&quot;: &quot;Dockerfile&quot;,
+        &quot;FilePath&quot;: &quot;./Dockerfile&quot;,
+        &quot;Format&quot;: &quot;Dockerfile&quot;,
+        &quot;Purpose&quot;: &quot;Container image for reproducible environment&quot;,
+        &quot;MaintainedBy&quot;: &quot;human&quot;
+      },
+      {
+        &quot;ConfigId&quot;: &quot;config-007&quot;,
+        &quot;FileName&quot;: &quot;effortless-rulebook.json&quot;,
+        &quot;FilePath&quot;: &quot;effortless-rulebook/effortless-rulebook.json&quot;,
+        &quot;Format&quot;: &quot;JSON&quot;,
+        &quot;Purpose&quot;: &quot;Core rulebook: entity schemas, field types, formulas, sample data&quot;,
+        &quot;MaintainedBy&quot;: &quot;tool (airtable-to-rulebook CLI pulls from Airtable)&quot;
+      },
+      {
+        &quot;ConfigId&quot;: &quot;config-008&quot;,
+        &quot;FileName&quot;: &quot;README.md&quot;,
+        &quot;FilePath&quot;: &quot;./README.md&quot;,
+        &quot;Format&quot;: &quot;Markdown&quot;,
+        &quot;Purpose&quot;: &quot;User-facing documentation: quick start, base progression, key terms&quot;,
+        &quot;MaintainedBy&quot;: &quot;human&quot;
+      },
+      {
+        &quot;ConfigId&quot;: &quot;config-009&quot;,
+        &quot;FileName&quot;: &quot;README.TECHNICAL.md&quot;,
+        &quot;FilePath&quot;: &quot;./README.TECHNICAL.md&quot;,
+        &quot;Format&quot;: &quot;Markdown&quot;,
+        &quot;Purpose&quot;: &quot;Technical deep-dive: architecture, internals, debugging&quot;,
+        &quot;MaintainedBy&quot;: &quot;human&quot;
+      }
+    ]
+  },
+  &quot;Dependencies&quot;: {
+    &quot;Description&quot;: &quot;External tools and their roles&quot;,
+    &quot;schema&quot;: [
+      {
+        &quot;name&quot;: &quot;DependencyId&quot;,
+        &quot;datatype&quot;: &quot;string&quot;,
+        &quot;type&quot;: &quot;raw&quot;,
+        &quot;nullable&quot;: false
+      },
+      {
+        &quot;name&quot;: &quot;Name&quot;,
+        &quot;datatype&quot;: &quot;string&quot;,
+        &quot;type&quot;: &quot;raw&quot;,
+        &quot;nullable&quot;: false
+      },
+      {
+        &quot;name&quot;: &quot;Version&quot;,
+        &quot;datatype&quot;: &quot;string&quot;,
+        &quot;type&quot;: &quot;raw&quot;,
+        &quot;nullable&quot;: true
+      },
+      {
+        &quot;name&quot;: &quot;Type&quot;,
+        &quot;datatype&quot;: &quot;string&quot;,
+        &quot;type&quot;: &quot;raw&quot;,
+        &quot;nullable&quot;: false,
+        &quot;Description&quot;: &quot;Language, tool, service, or external API&quot;
+      },
+      {
+        &quot;name&quot;: &quot;Purpose&quot;,
+        &quot;datatype&quot;: &quot;string&quot;,
+        &quot;type&quot;: &quot;raw&quot;,
+        &quot;nullable&quot;: false
+      },
+      {
+        &quot;name&quot;: &quot;Required&quot;,
+        &quot;datatype&quot;: &quot;boolean&quot;,
+        &quot;type&quot;: &quot;raw&quot;,
+        &quot;nullable&quot;: false
+      }
+    ],
+    &quot;data&quot;: [
+      {
+        &quot;DependencyId&quot;: &quot;dep-001&quot;,
+        &quot;Name&quot;: &quot;Python&quot;,
+        &quot;Version&quot;: &quot;3.8+&quot;,
+        &quot;Type&quot;: &quot;Language&quot;,
+        &quot;Purpose&quot;: &quot;Orchestration scripts, injectors, test runners&quot;,
+        &quot;Required&quot;: true
+      },
+      {
+        &quot;DependencyId&quot;: &quot;dep-002&quot;,
+        &quot;Name&quot;: &quot;Bash&quot;,
+        &quot;Version&quot;: &quot;latest&quot;,
+        &quot;Type&quot;: &quot;Language&quot;,
+        &quot;Purpose&quot;: &quot;Menu orchestration, subprocess management&quot;,
+        &quot;Required&quot;: true
+      },
+      {
+        &quot;DependencyId&quot;: &quot;dep-003&quot;,
+        &quot;Name&quot;: &quot;Go&quot;,
+        &quot;Version&quot;: &quot;1.19+&quot;,
+        &quot;Type&quot;: &quot;Language&quot;,
+        &quot;Purpose&quot;: &quot;Go substrate code generation and testing&quot;,
+        &quot;Required&quot;: false
+      },
+      {
+        &quot;DependencyId&quot;: &quot;dep-004&quot;,
+        &quot;Name&quot;: &quot;PostgreSQL&quot;,
+        &quot;Version&quot;: &quot;13+&quot;,
+        &quot;Type&quot;: &quot;Database&quot;,
+        &quot;Purpose&quot;: &quot;SQL substrate execution; DDL/functions/views generation&quot;,
+        &quot;Required&quot;: false
+      },
+      {
+        &quot;DependencyId&quot;: &quot;dep-005&quot;,
+        &quot;Name&quot;: &quot;Docker&quot;,
+        &quot;Version&quot;: &quot;latest&quot;,
+        &quot;Type&quot;: &quot;Tool&quot;,
+        &quot;Purpose&quot;: &quot;Container orchestration for PostgreSQL and reproducible environments&quot;,
+        &quot;Required&quot;: false
+      },
+      {
+        &quot;DependencyId&quot;: &quot;dep-006&quot;,
+        &quot;Name&quot;: &quot;Airtable API&quot;,
+        &quot;Version&quot;: &quot;v0&quot;,
+        &quot;Type&quot;: &quot;External Service&quot;,
+        &quot;Purpose&quot;: &quot;Schema + data pull via airtable-to-rulebook; reverse sync via rulebook-to-airtable&quot;,
+        &quot;Required&quot;: false
+      },
+      {
+        &quot;DependencyId&quot;: &quot;dep-007&quot;,
+        &quot;Name&quot;: &quot;Node.js&quot;,
+        &quot;Version&quot;: &quot;16+&quot;,
+        &quot;Type&quot;: &quot;Language&quot;,
+        &quot;Purpose&quot;: &quot;Report generation (HTML), optional utilities&quot;,
+        &quot;Required&quot;: false
+      },
+      {
+        &quot;DependencyId&quot;: &quot;dep-008&quot;,
+        &quot;Name&quot;: &quot;SSoTme CLI (effortless)&quot;,
+        &quot;Version&quot;: &quot;latest&quot;,
+        &quot;Type&quot;: &quot;Tool&quot;,
+        &quot;Purpose&quot;: &quot;Transpiler registry and version management for effortless-rulebook-to-postgres, etc.&quot;,
+        &quot;Required&quot;: false
+      },
+      {
+        &quot;DependencyId&quot;: &quot;dep-009&quot;,
+        &quot;Name&quot;: &quot;C# / Entity Framework&quot;,
+        &quot;Version&quot;: &quot;.NET 6+&quot;,
+        &quot;Type&quot;: &quot;Language&quot;,
+        &quot;Purpose&quot;: &quot;Entity Framework substrate code generation&quot;,
+        &quot;Required&quot;: false
       }
     ]
   },
   &quot;_meta&quot;: {
-    &quot;_CMCC_Summary&quot;: &quot;Airtable export with schema-first type mapping: Schemas, Data, Relationships (FK links), Lookups (INDEX/MATCH), Aggregations (SUMIFS/COUNTIFS/Rollups), and Calculated fields (formulas) in Excel dialect. Field types are determined from Airtable&#x27;s schema metadata FIRST (no coercion), with intelligent fallback to formula/data analysis only when schema is unavailable.&quot;,
-    &quot;_conversion_metadata&quot;: {
-      &quot;source_base_id&quot;: &quot;appzkcmBFPWFGBtRo&quot;,
-      &quot;table_count&quot;: 5,
-      &quot;tool_version&quot;: &quot;2.0.0&quot;,
-      &quot;field_type_mapping&quot;: &quot;checkbox→boolean, number→number/integer, multipleRecordLinks→relationship, multipleLookupValues→lookup, rollup→aggregation, count→aggregation, formula→calculated&quot;,
-      &quot;export_mode&quot;: &quot;schema_first_type_mapping&quot;,
-      &quot;type_inference&quot;: {
-        &quot;enabled&quot;: true,
-        &quot;priority&quot;: &quot;airtable_metadata (NO COERCION) → formula_analysis → reference_resolution → data_analysis (fallback only)&quot;,
-        &quot;airtable_type_mapping&quot;: &quot;checkbox→boolean, singleLineText→string, multilineText→string, number→number/integer, datetime→datetime, singleSelect→string, email→string, url→string, phoneNumber→string&quot;,
-        &quot;data_coercion_hierarchy&quot;: &quot;Only used as fallback when Airtable schema unavailable: datetime → number → integer → boolean → base64 → json → string&quot;,
-        &quot;nullable_support&quot;: true,
-        &quot;error_value_handling&quot;: &quot;#NUM!, #ERROR!, #N/A, #REF!, #DIV/0!, #VALUE!, #NAME? are treated as NULL&quot;
-      }
-    }
+    &quot;_CMCC_Summary&quot;: &quot;Meta-rulebook describing the Effortlessly Invariant Rulesbooks (ERB) project itself: all execution substrates, orchestration components, Airtable integration, testing framework, customer domains, core data flows, configuration files, and external dependencies.&quot;,
+    &quot;_ProjectGoal&quot;: &quot;Demonstrate that a single declarative rulebook (effortless-rulebook.json) can generate working, conformant code in 10+ execution substrates (Python, Go, SQL, Excel, OWL, PlantUML, etc.) that all produce identical results for the same inputs.&quot;,
+    &quot;_ArchitecturalHighlight&quot;: &quot;Rulebook is the disposable IR; substrates are the execution targets. Hub-and-spokes around Airtable (or other sources like direct JSON edits). All 10+ substrates must pass the same conformance tests.&quot;,
+    &quot;_HubPromotionPhase&quot;: &quot;Transition from Airtable-as-SSoT to rulebook-as-SSoT. Customer domains (ACME Corp, ACME LLC) can be selected at runtime. Once complete, orchestration drives from effortless-rulebooks/&lt;domain&gt;/ instead of a single Airtable base.&quot;
   }
 }</code></pre>
             </div>

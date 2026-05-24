@@ -2722,7 +2722,7 @@ def main():
             -- Look for existing tab with this file
             repeat with w in windows
                 repeat with t in tabs of w
-                    if URL of t starts with "file://" and URL of t contains "substrate-report.html" then
+                    if URL of t starts with "file://" and URL of t contains "orchestration-report.html" then
                         set URL of t to targetURL
                         set active tab index of w to (index of t)
                         set index of w to 1

@@ -117,33 +117,29 @@ OWL Execution Substrate - SHACL Reasoning Test
 ======================================================================
 
 Loading rulebook...
-Tables with computed columns: Client, Projects, Employees, Roles, TypesOfProject
+Tables with computed columns: Customers
 
 Loading ontology and data...
    Loaded: /Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/owl/ontology.owl
    Loaded: /Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/owl/individuals.ttl
-   Total triples: 271
+   Total triples: 137
 
 Loading SHACL rules...
    Loaded: /Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/owl/rules.shacl.ttl
-   Rule triples: 15
+   Rule triples: 12
 
 Running SHACL-SPARQL reasoning...
    (Multiple passes to resolve dependencies between computed fields)
-   Pass 1: 271 -&gt; 274 triples (3 added)
-   Pass 2: 274 -&gt; 274 triples (0 added)
+   Pass 1: 137 -&gt; 143 triples (6 added)
+   Pass 2: 143 -&gt; 143 triples (0 added)
    Completed in 2 passes
-   Final triple count: 274
+   Final triple count: 143
 
 Extracting computed values...
-   Client: 3 records (1 computed fields)
-   Projects: 3 records (7 computed fields)
-   Employees: 3 records (3 computed fields)
-   Roles: 3 records (1 computed fields)
-   TypesOfProject: 4 records (1 computed fields)
+   Customers: 3 records (2 computed fields)
 
-Total: 16 records extracted
-Output: /Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/owl/test-answers/
+Total: 3 records extracted
+Output: /Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/rulebook-examples/acme-llc/testing/owl/test-answers/
 
 ======================================================================
 SHACL reasoning complete!
@@ -167,7 +163,7 @@ SHACL reasoning complete!
             <div class="card">
                 <div class="code-header">
                     <h2>ontology.owl</h2>
-                    <div><span class="code-info">258 lines</span><button class="copy-btn" onclick="copyCode('ontology-code')">Copy</button></div>
+                    <div><span class="code-info">127 lines</span><button class="copy-btn" onclick="copyCode('ontology-code')">Copy</button></div>
                 </div>
                 <pre id="ontology-code">@prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .
 @prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .
@@ -179,253 +175,122 @@ erb: a owl:Ontology ;
     rdfs:label &quot;ERB Ontology&quot; ;
     rdfs:comment &quot;Generated from effortless-rulebook.json&quot; .
 
-# === Class: Client ===
-erb:Client a owl:Class ;
-    rdfs:label &quot;Client&quot; ;
-    rdfs:comment &quot;Table: Client&quot; .
+# === Class: Customers ===
+erb:Customers a owl:Class ;
+    rdfs:label &quot;Customers&quot; ;
+    rdfs:comment &quot;Table: Customers&quot; .
 
-erb:clientId a owl:DatatypeProperty ;
-    rdfs:domain erb:Client ;
+erb:customerId a owl:DatatypeProperty ;
+    rdfs:domain erb:Customers ;
     rdfs:range xsd:string ;
-    rdfs:label &quot;ClientId&quot; .
+    rdfs:label &quot;CustomerId&quot; .
 
-erb:customer a owl:DatatypeProperty ;
-    rdfs:domain erb:Client ;
+erb:name a owl:DatatypeProperty ;
+    rdfs:domain erb:Customers ;
     rdfs:range xsd:string ;
-    rdfs:label &quot;Customer&quot; ;
+    rdfs:label &quot;Name&quot; ;
     rdfs:comment &quot;Identifier for the customers.&quot; .
+    # calculated: calculated
 
 erb:emailAddress a owl:DatatypeProperty ;
-    rdfs:domain erb:Client ;
+    rdfs:domain erb:Customers ;
     rdfs:range xsd:string ;
     rdfs:label &quot;EmailAddress&quot; ;
     rdfs:comment &quot;Thec ustomers email address&quot; .
 
 erb:firstName a owl:DatatypeProperty ;
-    rdfs:domain erb:Client ;
+    rdfs:domain erb:Customers ;
     rdfs:range xsd:string ;
     rdfs:label &quot;FirstName&quot; ;
     rdfs:comment &quot;First Name of the customer - used to make the full name&quot; .
 
 erb:lastName a owl:DatatypeProperty ;
-    rdfs:domain erb:Client ;
+    rdfs:domain erb:Customers ;
     rdfs:range xsd:string ;
     rdfs:label &quot;LastName&quot; ;
     rdfs:comment &quot;Last Name of the customer - used to make the full name&quot; .
 
 erb:fullName a owl:DatatypeProperty ;
-    rdfs:domain erb:Client ;
+    rdfs:domain erb:Customers ;
     rdfs:range xsd:string ;
     rdfs:label &quot;FullName&quot; ;
     rdfs:comment &quot;Full name is computed from the first and last name of the customer&quot; .
     # calculated: calculated
 
-# === Class: Employees ===
-erb:Employees a owl:Class ;
-    rdfs:label &quot;Employees&quot; ;
-    rdfs:comment &quot;Table: Employees&quot; .
+# === Class: ERBCustomizations ===
+erb:ERBCustomizations a owl:Class ;
+    rdfs:label &quot;ERBCustomizations&quot; ;
+    rdfs:comment &quot;Table: ERBCustomizations&quot; .
 
-erb:employeeId a owl:DatatypeProperty ;
-    rdfs:domain erb:Employees ;
+erb:eRBCustomizationId a owl:DatatypeProperty ;
+    rdfs:domain erb:ERBCustomizations ;
     rdfs:range xsd:string ;
-    rdfs:label &quot;EmployeeId&quot; .
+    rdfs:label &quot;ERBCustomizationId&quot; .
 
 erb:name a owl:DatatypeProperty ;
-    rdfs:domain erb:Employees ;
+    rdfs:domain erb:ERBCustomizations ;
     rdfs:range xsd:string ;
     rdfs:label &quot;Name&quot; .
 
-erb:emailAddress a owl:DatatypeProperty ;
-    rdfs:domain erb:Employees ;
+erb:title a owl:DatatypeProperty ;
+    rdfs:domain erb:ERBCustomizations ;
     rdfs:range xsd:string ;
-    rdfs:label &quot;EmailAddress&quot; .
+    rdfs:label &quot;Title&quot; .
 
-erb:phoneNumber a owl:DatatypeProperty ;
-    rdfs:domain erb:Employees ;
+erb:sQLCode a owl:DatatypeProperty ;
+    rdfs:domain erb:ERBCustomizations ;
     rdfs:range xsd:string ;
-    rdfs:label &quot;PhoneNumber&quot; .
+    rdfs:label &quot;SQLCode&quot; .
 
-erb:role a owl:DatatypeProperty ;
-    rdfs:domain erb:Employees ;
+erb:sQLTarget a owl:DatatypeProperty ;
+    rdfs:domain erb:ERBCustomizations ;
     rdfs:range xsd:string ;
-    rdfs:label &quot;Role&quot; .
+    rdfs:label &quot;SQLTarget&quot; .
 
-erb:roleName a owl:DatatypeProperty ;
-    rdfs:domain erb:Employees ;
+erb:customizationType a owl:DatatypeProperty ;
+    rdfs:domain erb:ERBCustomizations ;
     rdfs:range xsd:string ;
-    rdfs:label &quot;RoleName&quot; .
-    # calculated: lookup
+    rdfs:label &quot;CustomizationType&quot; .
 
-erb:roleDescription a owl:DatatypeProperty ;
-    rdfs:domain erb:Employees ;
+# === Class: ERBVersions ===
+erb:ERBVersions a owl:Class ;
+    rdfs:label &quot;ERBVersions&quot; ;
+    rdfs:comment &quot;Table: ERBVersions&quot; .
+
+erb:eRBVersionId a owl:DatatypeProperty ;
+    rdfs:domain erb:ERBVersions ;
     rdfs:range xsd:string ;
-    rdfs:label &quot;RoleDescription&quot; .
-    # calculated: lookup
+    rdfs:label &quot;ERBVersionId&quot; .
 
-erb:projects a owl:DatatypeProperty ;
-    rdfs:domain erb:Employees ;
+erb:baseId a owl:DatatypeProperty ;
+    rdfs:domain erb:ERBVersions ;
     rdfs:range xsd:string ;
-    rdfs:label &quot;Projects&quot; .
-
-erb:roleIsManager a owl:DatatypeProperty ;
-    rdfs:domain erb:Employees ;
-    rdfs:range xsd:boolean ;
-    rdfs:label &quot;RoleIsManager&quot; .
-    # calculated: lookup
-
-# === Class: Projects ===
-erb:Projects a owl:Class ;
-    rdfs:label &quot;Projects&quot; ;
-    rdfs:comment &quot;Table: Projects&quot; .
-
-erb:projectId a owl:DatatypeProperty ;
-    rdfs:domain erb:Projects ;
-    rdfs:range xsd:string ;
-    rdfs:label &quot;ProjectId&quot; .
+    rdfs:label &quot;BaseId&quot; .
 
 erb:name a owl:DatatypeProperty ;
-    rdfs:domain erb:Projects ;
+    rdfs:domain erb:ERBVersions ;
     rdfs:range xsd:string ;
     rdfs:label &quot;Name&quot; .
 
-erb:description a owl:DatatypeProperty ;
-    rdfs:domain erb:Projects ;
+erb:message a owl:DatatypeProperty ;
+    rdfs:domain erb:ERBVersions ;
     rdfs:range xsd:string ;
-    rdfs:label &quot;Description&quot; .
+    rdfs:label &quot;Message&quot; .
 
-erb:projectType a owl:DatatypeProperty ;
-    rdfs:domain erb:Projects ;
+erb:notes a owl:DatatypeProperty ;
+    rdfs:domain erb:ERBVersions ;
     rdfs:range xsd:string ;
-    rdfs:label &quot;ProjectType&quot; .
+    rdfs:label &quot;Notes&quot; .
 
-erb:projectTypeName a owl:DatatypeProperty ;
-    rdfs:domain erb:Projects ;
+erb:commitDate a owl:DatatypeProperty ;
+    rdfs:domain erb:ERBVersions ;
     rdfs:range xsd:string ;
-    rdfs:label &quot;ProjectTypeName&quot; .
-    # calculated: lookup
+    rdfs:label &quot;CommitDate&quot; .
 
-erb:projectTypeDescription a owl:DatatypeProperty ;
-    rdfs:domain erb:Projects ;
-    rdfs:range xsd:string ;
-    rdfs:label &quot;ProjectTypeDescription&quot; .
-    # calculated: lookup
-
-erb:projectTypeRequiresManagerApproval a owl:DatatypeProperty ;
-    rdfs:domain erb:Projects ;
+erb:isPublished a owl:DatatypeProperty ;
+    rdfs:domain erb:ERBVersions ;
     rdfs:range xsd:boolean ;
-    rdfs:label &quot;ProjectTypeRequiresManagerApproval&quot; .
-    # calculated: lookup
-
-erb:dueDate a owl:DatatypeProperty ;
-    rdfs:domain erb:Projects ;
-    rdfs:range xsd:string ;
-    rdfs:label &quot;DueDate&quot; .
-
-erb:isApproved a owl:DatatypeProperty ;
-    rdfs:domain erb:Projects ;
-    rdfs:range xsd:boolean ;
-    rdfs:label &quot;IsApproved&quot; .
-
-erb:approvedBy a owl:DatatypeProperty ;
-    rdfs:domain erb:Projects ;
-    rdfs:range xsd:string ;
-    rdfs:label &quot;ApprovedBy&quot; .
-
-erb:approvedByRoleIsManager a owl:DatatypeProperty ;
-    rdfs:domain erb:Projects ;
-    rdfs:range xsd:boolean ;
-    rdfs:label &quot;ApprovedByRoleIsManager&quot; .
-    # calculated: lookup
-
-erb:approvedByName a owl:DatatypeProperty ;
-    rdfs:domain erb:Projects ;
-    rdfs:range xsd:string ;
-    rdfs:label &quot;ApprovedByName&quot; .
-    # calculated: lookup
-
-erb:approvedByEmailAddress a owl:DatatypeProperty ;
-    rdfs:domain erb:Projects ;
-    rdfs:range xsd:string ;
-    rdfs:label &quot;ApprovedByEmailAddress&quot; .
-    # calculated: lookup
-
-erb:approvedByPhoneNumber a owl:DatatypeProperty ;
-    rdfs:domain erb:Projects ;
-    rdfs:range xsd:string ;
-    rdfs:label &quot;ApprovedByPhoneNumber&quot; .
-    # calculated: lookup
-
-# === Class: Roles ===
-erb:Roles a owl:Class ;
-    rdfs:label &quot;Roles&quot; ;
-    rdfs:comment &quot;Table: Roles&quot; .
-
-erb:roleId a owl:DatatypeProperty ;
-    rdfs:domain erb:Roles ;
-    rdfs:range xsd:string ;
-    rdfs:label &quot;RoleId&quot; .
-
-erb:name a owl:DatatypeProperty ;
-    rdfs:domain erb:Roles ;
-    rdfs:range xsd:string ;
-    rdfs:label &quot;Name&quot; .
-
-erb:description a owl:DatatypeProperty ;
-    rdfs:domain erb:Roles ;
-    rdfs:range xsd:string ;
-    rdfs:label &quot;Description&quot; .
-
-erb:isManager a owl:DatatypeProperty ;
-    rdfs:domain erb:Roles ;
-    rdfs:range xsd:boolean ;
-    rdfs:label &quot;IsManager&quot; .
-
-erb:employees a owl:DatatypeProperty ;
-    rdfs:domain erb:Roles ;
-    rdfs:range xsd:string ;
-    rdfs:label &quot;Employees&quot; .
-
-erb:countOfEmployees a owl:DatatypeProperty ;
-    rdfs:domain erb:Roles ;
-    rdfs:range xsd:integer ;
-    rdfs:label &quot;CountOfEmployees&quot; .
-    # calculated: aggregation
-
-# === Class: TypesOfProject ===
-erb:TypesOfProject a owl:Class ;
-    rdfs:label &quot;TypesOfProject&quot; ;
-    rdfs:comment &quot;Table: TypesOfProject&quot; .
-
-erb:typesOfProjectId a owl:DatatypeProperty ;
-    rdfs:domain erb:TypesOfProject ;
-    rdfs:range xsd:string ;
-    rdfs:label &quot;TypesOfProjectId&quot; .
-
-erb:name a owl:DatatypeProperty ;
-    rdfs:domain erb:TypesOfProject ;
-    rdfs:range xsd:string ;
-    rdfs:label &quot;Name&quot; .
-
-erb:description a owl:DatatypeProperty ;
-    rdfs:domain erb:TypesOfProject ;
-    rdfs:range xsd:string ;
-    rdfs:label &quot;Description&quot; .
-
-erb:requiresManagerApproval a owl:DatatypeProperty ;
-    rdfs:domain erb:TypesOfProject ;
-    rdfs:range xsd:boolean ;
-    rdfs:label &quot;RequiresManagerApproval&quot; .
-
-erb:projects a owl:DatatypeProperty ;
-    rdfs:domain erb:TypesOfProject ;
-    rdfs:range xsd:string ;
-    rdfs:label &quot;Projects&quot; .
-
-erb:countOfProjects a owl:DatatypeProperty ;
-    rdfs:domain erb:TypesOfProject ;
-    rdfs:range xsd:integer ;
-    rdfs:label &quot;CountOfProjects&quot; .
-    # calculated: aggregation
+    rdfs:label &quot;IsPublished&quot; .
 </pre>
             </div>
         </div>
@@ -433,143 +298,150 @@ erb:countOfProjects a owl:DatatypeProperty ;
             <div class="card">
                 <div class="code-header">
                     <h2>individuals.ttl</h2>
-                    <div><span class="code-info">136 lines</span><button class="copy-btn" onclick="copyCode('individuals-code')">Copy</button></div>
+                    <div><span class="code-info">143 lines</span><button class="copy-btn" onclick="copyCode('individuals-code')">Copy</button></div>
                 </div>
                 <pre id="individuals-code">@prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .
 @prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .
 @prefix xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt; .
 @prefix erb: &lt;http://example.org/erb#&gt; .
 
-# === Individuals: Client ===
+# === Individuals: Customers ===
 
-erb:Client_0 a erb:Client ;
-    erb:clientId &quot;cust0001&quot; ;
-    erb:customer &quot;CUST0001&quot; ;
-    erb:emailAddress &quot;larry.smith@email.com&quot; ;
-    erb:firstName &quot;Bob&quot; ;
+erb:Customers_0 a erb:Customers ;
+    erb:customerId &quot;jane-smith-email-com&quot; ;
+    erb:emailAddress &quot;jane.smith@email.com&quot; ;
+    erb:firstName &quot;Bobby&quot; ;
     erb:lastName &quot;Smith&quot; .
 
-erb:Client_1 a erb:Client ;
-    erb:clientId &quot;cust0002&quot; ;
-    erb:customer &quot;CUST0002&quot; ;
+erb:Customers_1 a erb:Customers ;
+    erb:customerId &quot;john-doe-email-com&quot; ;
     erb:emailAddress &quot;john.doe@email.com&quot; ;
-    erb:firstName &quot;John&quot; ;
+    erb:firstName &quot;Jimmy&quot; ;
     erb:lastName &quot;Doe&quot; .
 
-erb:Client_2 a erb:Client ;
-    erb:clientId &quot;cust0003&quot; ;
-    erb:customer &quot;CUST0003&quot; ;
+erb:Customers_2 a erb:Customers ;
+    erb:customerId &quot;emily-jones-email-com&quot; ;
     erb:emailAddress &quot;emily.jones@email.com&quot; ;
-    erb:firstName &quot;Emily&quot; ;
+    erb:firstName &quot;Mary&quot; ;
     erb:lastName &quot;Jones&quot; .
 
-# === Individuals: Employees ===
+# === Individuals: ERBCustomizations ===
 
-erb:Employees_0 a erb:Employees ;
-    erb:employeeId &quot;sarah-chen&quot; ;
-    erb:name &quot;Sarah Chen&quot; ;
-    erb:emailAddress &quot;sarah.chen@acmecorp.example&quot; ;
-    erb:phoneNumber &quot;555-0101&quot; ;
-    erb:role &quot;projectmanager&quot; ;
-    erb:projects &quot;internal-tools-dashboard&quot; .
+erb:ERBCustomizations_0 a erb:ERBCustomizations ;
+    erb:eRBCustomizationId &quot;03a-customize-schema-sql&quot; ;
+    erb:name &quot;03a-customize-schema.sql&quot; ;
+    erb:title &quot;Customize Schema&quot; ;
+    erb:sQLCode &quot;&quot;&quot;-- ============================================================================
+-- CUSTOMIZE SCHEMA - User-defined tables and schema modifications
+-- ============================================================================
+-- This file is for YOUR custom schema changes that should persist across
+-- regeneration of the base ERB files.
+--
+-- USE THIS FILE FOR:
+--   - Additional tables not defined in the rulebook
+--   - Extra columns on existing tables (ALTER TABLE)
+--   - Custom indexes for performance tuning
+--   - Custom constraints or triggers
+--
+-- IMPORTANT:
+--   - This file runs AFTER 01-drop-and-create-tables.sql
+--   - The base tables already exist when this runs
+--   - This file will NOT be overwritten by ERB regeneration
+--
+-- ============================================================================
 
-erb:Employees_1 a erb:Employees ;
-    erb:employeeId &quot;mike-johnson&quot; ;
-    erb:name &quot;Mike Johnson&quot; ;
-    erb:emailAddress &quot;mike.johnson@acmecorp.example&quot; ;
-    erb:phoneNumber &quot;555-0102&quot; ;
-    erb:role &quot;developer&quot; ;
-    erb:projects &quot;gdpr-compliance-audit&quot; .
+-- Your custom schema changes go here:
+&quot;&quot;&quot; ;
+    erb:sQLTarget &quot;Postgres&quot; ;
+    erb:customizationType &quot;Schema&quot; .
 
-erb:Employees_2 a erb:Employees ;
-    erb:employeeId &quot;priya-patel&quot; ;
-    erb:name &quot;Priya Patel&quot; ;
-    erb:emailAddress &quot;priya.patel@acmecorp.example&quot; ;
-    erb:phoneNumber &quot;555-0103&quot; ;
-    erb:role &quot;analyst&quot; ;
-    erb:projects &quot;customer-portal-redesign&quot; .
+erb:ERBCustomizations_1 a erb:ERBCustomizations ;
+    erb:eRBCustomizationId &quot;03b-customize-functions-sql&quot; ;
+    erb:name &quot;03b-customize-functions.sql&quot; ;
+    erb:title &quot;Customize Functions&quot; ;
+    erb:sQLCode &quot;&quot;&quot;-- ============================================================================
+-- CUSTOMIZE FUNCTIONS - User-defined calculation functions
+-- ============================================================================
+-- This file is for YOUR custom PostgreSQL functions that should persist
+-- across regeneration of the base ERB files.
+--
+-- IMPORTANT:
+--   - This file runs AFTER 02-create-functions.sql
+--   - Base ERB calc functions already exist when this runs
+--   - This file will NOT be overwritten by ERB regeneration
+--
+-- ============================================================================
 
-# === Individuals: Projects ===
+-- Your custom functions go here:
+&quot;&quot;&quot; ;
+    erb:sQLTarget &quot;Postgres&quot; ;
+    erb:customizationType &quot;Functions&quot; .
 
-erb:Projects_0 a erb:Projects ;
-    erb:projectId &quot;internal-tools-dashboard&quot; ;
-    erb:name &quot;Internal Tools Dashboard&quot; ;
-    erb:description &quot;Build internal analytics dashboard for team productivity metrics&quot; ;
-    erb:projectType &quot;internal&quot; ;
-    erb:dueDate &quot;2026-06-15&quot; ;
-    erb:isApproved true ;
-    erb:approvedBy &quot;sarah-chen&quot; .
+erb:ERBCustomizations_2 a erb:ERBCustomizations ;
+    erb:eRBCustomizationId &quot;03c-customize-views-sql&quot; ;
+    erb:name &quot;03c-customize-views.sql&quot; ;
+    erb:title &quot;Customize Views&quot; ;
+    erb:sQLCode &quot;&quot;&quot;-- ============================================================================
+-- CUSTOMIZE VIEWS - User-defined views and view extensions
+-- ============================================================================
+-- This file is for YOUR custom views that should persist across
+-- regeneration of the base ERB files.
+--
+-- IMPORTANT:
+--   - This file runs AFTER 03-create-views.sql
+--   - All base vw_* views already exist when this runs
+--   - This file will NOT be overwritten by ERB regeneration
+--
+-- ============================================================================
 
-erb:Projects_1 a erb:Projects ;
-    erb:projectId &quot;customer-portal-redesign&quot; ;
-    erb:name &quot;Customer Portal Redesign&quot; ;
-    erb:description &quot;Complete redesign of customer-facing portal with modern UX&quot; ;
-    erb:projectType &quot;clientfacing&quot; ;
-    erb:dueDate &quot;2026-08-01&quot; ;
-    erb:isApproved false ;
-    erb:approvedBy &quot;priya-patel&quot; .
+-- Your custom views go here:
+&quot;&quot;&quot; ;
+    erb:sQLTarget &quot;Postgres&quot; ;
+    erb:customizationType &quot;Views&quot; .
 
-erb:Projects_2 a erb:Projects ;
-    erb:projectId &quot;gdpr-compliance-audit&quot; ;
-    erb:name &quot;GDPR Compliance Audit&quot; ;
-    erb:description &quot;Annual compliance audit and documentation update&quot; ;
-    erb:projectType &quot;compliance&quot; ;
-    erb:dueDate &quot;2026-04-30&quot; ;
-    erb:isApproved true ;
-    erb:approvedBy &quot;mike-johnson&quot; .
+erb:ERBCustomizations_3 a erb:ERBCustomizations ;
+    erb:eRBCustomizationId &quot;03d-customize-rls-sql&quot; ;
+    erb:name &quot;03d-customize-rls.sql&quot; ;
+    erb:title &quot;Customize Policies (RLS)&quot; ;
+    erb:sQLCode &quot;&quot;&quot;-- ============================================================================
+-- CUSTOMIZE POLICIES - User-defined Row Level Security policies
+-- ============================================================================
+-- This file is for YOUR custom RLS policies that should persist across
+-- regeneration of the base ERB files.
+--
+-- IMPORTANT:
+--   - This file runs AFTER 04-create-policies.sql
+--   - Base RLS policies already exist when this runs
+--   - This file will NOT be overwritten by ERB regeneration
+--
+-- ============================================================================
 
-# === Individuals: Roles ===
+-- Your custom policies go here:
+&quot;&quot;&quot; ;
+    erb:sQLTarget &quot;Postgres&quot; ;
+    erb:customizationType &quot;RLS&quot; .
 
-erb:Roles_0 a erb:Roles ;
-    erb:roleId &quot;developer&quot; ;
-    erb:name &quot;Developer&quot; ;
-    erb:description &quot;Developers handle the implementation and are responsible for making the final product do what is expected&quot; ;
-    erb:isManager true ;
-    erb:employees &quot;mike-johnson&quot; .
+erb:ERBCustomizations_4 a erb:ERBCustomizations ;
+    erb:eRBCustomizationId &quot;03e-customize-data-sql&quot; ;
+    erb:name &quot;03e-customize-data.sql&quot; ;
+    erb:title &quot;Customize Data (Seeds / Migrations)&quot; ;
+    erb:sQLCode &quot;&quot;&quot;-- ============================================================================
+-- CUSTOMIZE DATA - User-defined seed data and data migrations
+-- ============================================================================
+-- This file is for YOUR custom seed data that should persist across
+-- regeneration of the base ERB files.
+--
+-- IMPORTANT:
+--   - This file runs AFTER 05-insert-data.sql
+--   - Base seed data already exists when this runs
+--   - This file will NOT be overwritten by ERB regeneration
+--
+-- ============================================================================
 
-erb:Roles_1 a erb:Roles ;
-    erb:roleId &quot;projectmanager&quot; ;
-    erb:name &quot;ProjectManager&quot; ;
-    erb:description &quot;The project Manager makes sure that the developers do what the analysts ask for&quot; ;
-    erb:isManager true ;
-    erb:employees &quot;sarah-chen&quot; .
-
-erb:Roles_2 a erb:Roles ;
-    erb:roleId &quot;analyst&quot; ;
-    erb:name &quot;Analyst&quot; ;
-    erb:description &quot;The business analysis know what the customer&#x27;s want.&quot; ;
-    erb:isManager false ;
-    erb:employees &quot;priya-patel&quot; .
-
-# === Individuals: TypesOfProject ===
-
-erb:TypesOfProject_0 a erb:TypesOfProject ;
-    erb:typesOfProjectId &quot;internal&quot; ;
-    erb:name &quot;Internal&quot; ;
-    erb:description &quot;An internal project that is not publicly accessible&quot; ;
-    erb:requiresManagerApproval false ;
-    erb:projects &quot;internal-tools-dashboard&quot; .
-
-erb:TypesOfProject_1 a erb:TypesOfProject ;
-    erb:typesOfProjectId &quot;clientfacing&quot; ;
-    erb:name &quot;ClientFacing&quot; ;
-    erb:description &quot;Open, public facing communication&quot; ;
-    erb:requiresManagerApproval true ;
-    erb:projects &quot;customer-portal-redesign&quot; .
-
-erb:TypesOfProject_2 a erb:TypesOfProject ;
-    erb:typesOfProjectId &quot;research&quot; ;
-    erb:name &quot;Research&quot; ;
-    erb:description &quot;&quot; ;
-    erb:requiresManagerApproval false ;
-    erb:projects &quot;&quot; .
-
-erb:TypesOfProject_3 a erb:TypesOfProject ;
-    erb:typesOfProjectId &quot;compliance&quot; ;
-    erb:name &quot;Compliance&quot; ;
-    erb:description &quot;&quot; ;
-    erb:requiresManagerApproval true ;
-    erb:projects &quot;gdpr-compliance-audit&quot; .
+-- Your custom data inserts go here:
+&quot;&quot;&quot; ;
+    erb:sQLTarget &quot;Postgres&quot; ;
+    erb:customizationType &quot;Data&quot; .
 </pre>
             </div>
         </div>
@@ -577,7 +449,7 @@ erb:TypesOfProject_3 a erb:TypesOfProject ;
             <div class="card">
                 <div class="code-header">
                     <h2>rules.shacl.ttl</h2>
-                    <div><span class="code-info">57 lines</span><button class="copy-btn" onclick="copyCode('rules-code')">Copy</button></div>
+                    <div><span class="code-info">46 lines</span><button class="copy-btn" onclick="copyCode('rules-code')">Copy</button></div>
                 </div>
                 <pre id="rules-code">@prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .
 @prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .
@@ -585,12 +457,29 @@ erb:TypesOfProject_3 a erb:TypesOfProject ;
 @prefix xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt; .
 @prefix erb: &lt;http://example.org/erb#&gt; .
 
-# === Shape with rules for Client ===
-erb:ClientShape a sh:NodeShape ;
-    sh:targetClass erb:Client ;
+# === Shape with rules for Customers ===
+erb:CustomersShape a sh:NodeShape ;
+    sh:targetClass erb:Customers ;
     sh:rule [
         a sh:SPARQLRule ;
-        rdfs:label &quot;rule_Client_FullName&quot; ;
+        rdfs:label &quot;rule_Customers_Name&quot; ;
+        sh:prefixes erb: ;
+        sh:construct &quot;&quot;&quot;
+            PREFIX erb: &lt;http://example.org/erb#&gt;
+            PREFIX xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt;
+            CONSTRUCT {
+                $this erb:name ?_result .
+            }
+            WHERE {
+    $this a erb:Customers .
+    OPTIONAL { $this erb:emailAddress ?email_address . }
+                BIND(REPLACE(?email_address, &quot;@&quot;, &quot;-&quot;) AS ?_result)
+            }
+        &quot;&quot;&quot; ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label &quot;rule_Customers_FullName&quot; ;
         sh:prefixes erb: ;
         sh:construct &quot;&quot;&quot;
             PREFIX erb: &lt;http://example.org/erb#&gt;
@@ -599,43 +488,15 @@ erb:ClientShape a sh:NodeShape ;
                 $this erb:fullName ?_result .
             }
             WHERE {
-    $this a erb:Client .
+    $this a erb:Customers .
     OPTIONAL { $this erb:firstName ?first_name . }
     OPTIONAL { $this erb:lastName ?last_name . }
-                BIND(CONCAT(?first_name, &quot; &quot;, ?last_name) AS ?_result)
+                BIND(CONCAT(?last_name, &quot;, &quot;, ?first_name) AS ?_result)
             }
         &quot;&quot;&quot; ;
     ] .
 
-# === Shape with rules for Employees ===
-erb:EmployeesShape a sh:NodeShape ;
-    sh:targetClass erb:Employees .
-# Rule for RoleName - parse error: Unexpected character &#x27;!&#x27; at position 11
-# Rule for RoleDescription - parse error: Unexpected character &#x27;!&#x27; at position 11
-# Rule for RoleIsManager - parse error: Unexpected character &#x27;!&#x27; at position 11
-
-# === Shape with rules for Projects ===
-erb:ProjectsShape a sh:NodeShape ;
-    sh:targetClass erb:Projects .
-# Rule for ProjectTypeName - parse error: Unexpected character &#x27;!&#x27; at position 20
-# Rule for ProjectTypeDescription - parse error: Unexpected character &#x27;!&#x27; at position 20
-# Rule for ProjectTypeRequiresManagerApproval - parse error: Unexpected character &#x27;!&#x27; at position 20
-# Rule for ApprovedByRoleIsManager - parse error: Unexpected character &#x27;!&#x27; at position 15
-# Rule for ApprovedByName - parse error: Unexpected character &#x27;!&#x27; at position 15
-# Rule for ApprovedByEmailAddress - parse error: Unexpected character &#x27;!&#x27; at position 15
-# Rule for ApprovedByPhoneNumber - parse error: Unexpected character &#x27;!&#x27; at position 15
-
-# === Shape with rules for Roles ===
-erb:RolesShape a sh:NodeShape ;
-    sh:targetClass erb:Roles .
-# Rule for CountOfEmployees - parse error: Unexpected character &#x27;!&#x27; at position 18
-
-# === Shape with rules for TypesOfProject ===
-erb:TypesOfProjectShape a sh:NodeShape ;
-    sh:targetClass erb:TypesOfProject .
-# Rule for CountOfProjects - parse error: Unexpected character &#x27;!&#x27; at position 17
-
-# Generated 1 SHACL rules</pre>
+# Generated 2 SHACL rules</pre>
             </div>
         </div>
     </main>

@@ -117,52 +117,16 @@ pre { background: var(--code-bg); border: 1px solid var(--border-color); border-
                 <pre>=== CSV Substrate Test Run ===
 
 
-  Processing client...
+  Processing customers...
 Found 6 fields in test answers
-Primary key field: client_id
-Reading from worksheet: Client
+Primary key field: customer_id
+Reading from worksheet: Customers
 Found 6 columns, matched 6 to JSON fields
 Loaded 3 rows from xlsx
-Filled 3 null fields across 3 records
-Updated /Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/csv/test-answers/client.json
+Filled 6 null fields across 3 records
+Updated /Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/rulebook-examples/acme-llc/testing/csv/test-answers/customers.json
 
-  Processing employees...
-Found 9 fields in test answers
-Primary key field: employee_id
-Reading from worksheet: Employees
-Found 9 columns, matched 9 to JSON fields
-Loaded 3 rows from xlsx
-Filled 8 null fields across 3 records
-Updated /Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/csv/test-answers/employees.json
-
-  Processing projects...
-Found 14 fields in test answers
-Primary key field: project_id
-Reading from worksheet: Projects
-Found 14 columns, matched 14 to JSON fields
-Loaded 3 rows from xlsx
-Filled 18 null fields across 3 records
-Updated /Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/csv/test-answers/projects.json
-
-  Processing roles...
-Found 6 fields in test answers
-Primary key field: role_id
-Reading from worksheet: Roles
-Found 6 columns, matched 6 to JSON fields
-Loaded 3 rows from xlsx
-Filled 3 null fields across 3 records
-Updated /Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/csv/test-answers/roles.json
-
-  Processing types_of_project...
-Found 6 fields in test answers
-Primary key field: types_of_project_id
-Reading from worksheet: TypesOfProject
-Found 6 columns, matched 6 to JSON fields
-Loaded 4 rows from xlsx
-Filled 4 null fields across 4 records
-Updated /Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/csv/test-answers/types_of_project.json
-
-csv: Processed 5 entities from rulebook.xlsx
+csv: Processed 1 entities from rulebook.xlsx
 
 </pre>
             </div>
@@ -187,7 +151,7 @@ csv: Processed 5 entities from rulebook.xlsx
         <div id="formulas" class="tab-content">
             <div class="card">
                 <h2>column_formulas.csv</h2>
-                <div class="table-scroll"><table class="csv-table"><thead><tr><th>table_name</th><th>field_name</th><th>field_type</th><th>dag_level</th><th>formula</th><th>description</th></tr></thead><tbody><tr><td>Client</td><td>client_id</td><td>raw</td><td>0</td><td></td><td></td></tr><tr><td>Client</td><td>customer</td><td>raw</td><td>0</td><td></td><td>Identifier for the customers.</td></tr><tr><td>Client</td><td>email_address</td><td>raw</td><td>0</td><td></td><td>Thec ustomers email address</td></tr><tr><td>Client</td><td>first_name</td><td>raw</td><td>0</td><td></td><td>First Name of the customer - used to make the full name</td></tr><tr><td>Client</td><td>last_name</td><td>raw</td><td>0</td><td></td><td>Last Name of the customer - used to make the full name</td></tr><tr><td>Client</td><td>full_name</td><td>calculated</td><td></td><td>={{FirstName}} &amp; &quot; &quot; &amp; {{LastName}}</td><td>Full name is computed from the first and last name of the customer</td></tr><tr><td>Projects</td><td>project_id</td><td>raw</td><td>0</td><td></td><td></td></tr><tr><td>Projects</td><td>name</td><td>raw</td><td>0</td><td></td><td></td></tr><tr><td>Projects</td><td>description</td><td>raw</td><td>0</td><td></td><td></td></tr><tr><td>Projects</td><td>project_type</td><td>relationship</td><td></td><td></td><td></td></tr><tr><td>Projects</td><td>project_type_name</td><td>lookup</td><td></td><td>=INDEX(TypesOfProject!{{Name}}, MATCH(Projects!{{ProjectType}}, TypesOfProject!{{TypesOfProjectId}}, 0))</td><td></td></tr><tr><td>Projects</td><td>project_type_description</td><td>lookup</td><td></td><td>=INDEX(TypesOfProject!{{Description}}, MATCH(Projects!{{ProjectType}}, TypesOfProject!{{TypesOfProjectId}}, 0))</td><td></td></tr><tr><td>Projects</td><td>project_type_requires_manager_approval</td><td>lookup</td><td></td><td>=INDEX(TypesOfProject!{{RequiresManagerApproval}}, MATCH(Projects!{{ProjectType}}, TypesOfProject!{{TypesOfProjectId}}, 0))</td><td></td></tr><tr><td>Projects</td><td>due_date</td><td>raw</td><td>0</td><td></td><td></td></tr><tr><td>Projects</td><td>is_approved</td><td>raw</td><td>0</td><td></td><td></td></tr><tr><td>Projects</td><td>approved_by</td><td>relationship</td><td></td><td></td><td></td></tr><tr><td>Projects</td><td>approved_by_role_is_manager</td><td>lookup</td><td></td><td>=INDEX(Employees!{{RoleIsManager}}, MATCH(Projects!{{ApprovedBy}}, Employees!{{EmployeeId}}, 0))</td><td></td></tr><tr><td>Projects</td><td>approved_by_name</td><td>lookup</td><td></td><td>=INDEX(Employees!{{Name}}, MATCH(Projects!{{ApprovedBy}}, Employees!{{EmployeeId}}, 0))</td><td></td></tr><tr><td>Projects</td><td>approved_by_email_address</td><td>lookup</td><td></td><td>=INDEX(Employees!{{EmailAddress}}, MATCH(Projects!{{ApprovedBy}}, Employees!{{EmployeeId}}, 0))</td><td></td></tr><tr><td>Projects</td><td>approved_by_phone_number</td><td>lookup</td><td></td><td>=INDEX(Employees!{{PhoneNumber}}, MATCH(Projects!{{ApprovedBy}}, Employees!{{EmployeeId}}, 0))</td><td></td></tr><tr><td>Employees</td><td>employee_id</td><td>raw</td><td>0</td><td></td><td></td></tr><tr><td>Employees</td><td>name</td><td>raw</td><td>0</td><td></td><td></td></tr><tr><td>Employees</td><td>email_address</td><td>raw</td><td>0</td><td></td><td></td></tr><tr><td>Employees</td><td>phone_number</td><td>raw</td><td>0</td><td></td><td></td></tr><tr><td>Employees</td><td>role</td><td>relationship</td><td></td><td></td><td></td></tr><tr><td>Employees</td><td>role_name</td><td>lookup</td><td></td><td>=INDEX(Roles!{{Name}}, MATCH(Employees!{{Role}}, Roles!{{RoleId}}, 0))</td><td></td></tr><tr><td>Employees</td><td>role_description</td><td>lookup</td><td></td><td>=INDEX(Roles!{{Description}}, MATCH(Employees!{{Role}}, Roles!{{RoleId}}, 0))</td><td></td></tr><tr><td>Employees</td><td>projects</td><td>relationship</td><td></td><td></td><td></td></tr><tr><td>Employees</td><td>role_is_manager</td><td>lookup</td><td></td><td>=INDEX(Roles!{{IsManager}}, MATCH(Employees!{{Role}}, Roles!{{RoleId}}, 0))</td><td></td></tr><tr><td>Roles</td><td>role_id</td><td>raw</td><td>0</td><td></td><td></td></tr><tr><td>Roles</td><td>name</td><td>raw</td><td>0</td><td></td><td></td></tr><tr><td>Roles</td><td>description</td><td>raw</td><td>0</td><td></td><td></td></tr><tr><td>Roles</td><td>is_manager</td><td>raw</td><td>0</td><td></td><td></td></tr><tr><td>Roles</td><td>employees</td><td>relationship</td><td></td><td></td><td></td></tr><tr><td>Roles</td><td>count_of_employees</td><td>aggregation</td><td></td><td>=COUNTIFS(Employees!{{Role}}, Roles!{{RoleId}})</td><td></td></tr><tr><td>TypesOfProject</td><td>types_of_project_id</td><td>raw</td><td>0</td><td></td><td></td></tr><tr><td>TypesOfProject</td><td>name</td><td>raw</td><td>0</td><td></td><td></td></tr><tr><td>TypesOfProject</td><td>description</td><td>raw</td><td>0</td><td></td><td></td></tr><tr><td>TypesOfProject</td><td>requires_manager_approval</td><td>raw</td><td>0</td><td></td><td></td></tr><tr><td>TypesOfProject</td><td>projects</td><td>relationship</td><td></td><td></td><td></td></tr><tr><td>TypesOfProject</td><td>count_of_projects</td><td>aggregation</td><td></td><td>=COUNTIFS(Projects!{{ProjectType}}, TypesOfProject!{{TypesOfProjectId}})</td><td></td></tr></tbody></table></div>
+                <div class="table-scroll"><table class="csv-table"><thead><tr><th>table_name</th><th>field_name</th><th>field_type</th><th>dag_level</th><th>formula</th><th>description</th></tr></thead><tbody><tr><td>Customers</td><td>customer_id</td><td>raw</td><td>0</td><td></td><td></td></tr><tr><td>Customers</td><td>name</td><td>calculated</td><td></td><td>=SUBSTITUTE({{EmailAddress}}, &quot;@&quot;, &quot;-&quot;)</td><td>Identifier for the customers.</td></tr><tr><td>Customers</td><td>email_address</td><td>raw</td><td>0</td><td></td><td>Thec ustomers email address</td></tr><tr><td>Customers</td><td>first_name</td><td>raw</td><td>0</td><td></td><td>First Name of the customer - used to make the full name</td></tr><tr><td>Customers</td><td>last_name</td><td>raw</td><td>0</td><td></td><td>Last Name of the customer - used to make the full name</td></tr><tr><td>Customers</td><td>full_name</td><td>calculated</td><td></td><td>={{LastName}} &amp; &quot;, &quot; &amp; {{FirstName}}</td><td>Full name is computed from the first and last name of the customer</td></tr><tr><td>ERBVersions</td><td>erb_version_id</td><td>raw</td><td>0</td><td></td><td></td></tr><tr><td>ERBVersions</td><td>base_id</td><td>raw</td><td>0</td><td></td><td></td></tr><tr><td>ERBVersions</td><td>name</td><td>raw</td><td>0</td><td></td><td></td></tr><tr><td>ERBVersions</td><td>message</td><td>raw</td><td>0</td><td></td><td></td></tr><tr><td>ERBVersions</td><td>notes</td><td>raw</td><td>0</td><td></td><td></td></tr><tr><td>ERBVersions</td><td>commit_date</td><td>raw</td><td>0</td><td></td><td></td></tr><tr><td>ERBVersions</td><td>is_published</td><td>raw</td><td>0</td><td></td><td></td></tr><tr><td>ERBCustomizations</td><td>erb_customization_id</td><td>raw</td><td>0</td><td></td><td></td></tr><tr><td>ERBCustomizations</td><td>name</td><td>raw</td><td>0</td><td></td><td></td></tr><tr><td>ERBCustomizations</td><td>title</td><td>raw</td><td>0</td><td></td><td></td></tr><tr><td>ERBCustomizations</td><td>sql_code</td><td>raw</td><td>0</td><td></td><td></td></tr><tr><td>ERBCustomizations</td><td>sql_target</td><td>raw</td><td>0</td><td></td><td></td></tr><tr><td>ERBCustomizations</td><td>customization_type</td><td>raw</td><td>0</td><td></td><td></td></tr></tbody></table></div>
             </div>
         </div>
     </main>

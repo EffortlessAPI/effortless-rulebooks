@@ -389,7 +389,8 @@ show_menu() {
         fi
     fi
 
-    echo -e "  ${MAGENTA}[V]${NC} ${BOLD}VIEW${NC} — browse ${WHITE}${PROJECT_NAME}${NC}'s generated output"
+    echo -e "  ${GREEN}[T]${NC} ${BOLD}TEST${NC} — run conformance tests for ${WHITE}${ACTIVE_DOMAIN}${NC} ${DIM}(opens report)${NC}"
+    echo -e "  ${MAGENTA}[V]${NC} ${BOLD}VIEW${NC} — open last HTML report for ${WHITE}${ACTIVE_DOMAIN}${NC}"
     echo -e "  ${YELLOW}[O]${NC} ${BOLD}ONTOLOGY${NC} — pick a different rulebook to work with"
     echo -e "  ${BLUE}[I]${NC} ${BOLD}IMPORT${NC} — pull latest rulebook from Airtable"
     echo -e "  ${RED}[C]${NC} ${BOLD}CLEAN${NC} — delete all generated files"
@@ -456,7 +457,12 @@ action_select_domain() {
                 set_active_domain "$NEW_DOMAIN"
                 echo ""
                 echo -e "${BOLD}${GREEN}Switched to: ${WHITE}${NEW_DOMAIN}${NC}"
-                echo -e "${DIM}Run [A] to rebuild substrates against the new rulebook.${NC}"
+                echo ""
+                read -p "  Run conformance tests now for ${NEW_DOMAIN}? [Y/n] " RUN_NOW
+                if [[ ! "$RUN_NOW" =~ ^[Nn]$ ]]; then
+                    action_test
+                    return
+                fi
             else
                 echo -e "${RED}Invalid selection: $DOMAIN_CHOICE${NC}"
             fi
@@ -614,6 +620,11 @@ action_view_results() {
     echo -e "${BOLD}${GREEN}╔════════════════════════════════════════════════════════════╗${NC}"
     echo -e "${BOLD}${GREEN}║${NC}              ${BOLD}${WHITE}REPORT GENERATED${NC}                              ${BOLD}${GREEN}║${NC}"
     echo -e "${BOLD}${GREEN}╚════════════════════════════════════════════════════════════╝${NC}"
+    echo ""
+    echo -e "${CYAN}Opening HTML report in browser...${NC}"
+    open "$RULEBOOK_EXAMPLES_DIR/$domain/orchestration-report.html" 2>/dev/null || \
+        xdg-open "$RULEBOOK_EXAMPLES_DIR/$domain/orchestration-report.html" 2>/dev/null || \
+        echo -e "  ${DIM}Report: $RULEBOOK_EXAMPLES_DIR/$domain/orchestration-report.html${NC}"
     echo ""
     read -p "Press Enter to continue..."
 }
@@ -783,6 +794,64 @@ action_init_postgres() {
 
     echo ""
     read -p "Press Enter to continue..."
+}
+
+# =============================================================================
+# ACTION: TEST — run conformance tests (all substrates or pick one)
+# =============================================================================
+action_test() {
+    local ACTIVE_DOMAIN
+    ACTIVE_DOMAIN=$(get_active_domain)
+
+    echo ""
+    echo -e "${BOLD}${GREEN}╔════════════════════════════════════════════════════════════╗${NC}"
+    echo -e "${BOLD}${GREEN}║${NC}           ${BOLD}${WHITE}CONFORMANCE TEST — ${ACTIVE_DOMAIN}${NC}"
+    echo -e "${BOLD}${GREEN}╚════════════════════════════════════════════════════════════╝${NC}"
+    echo ""
+
+    # List available substrates
+    AVAILABLE_SUBSTRATES=$(get_valid_substrates)
+    echo -e "  ${BOLD}[A]${NC} Run ALL substrates"
+    echo ""
+    IDX=1
+    for sub in $AVAILABLE_SUBSTRATES; do
+        echo -e "  ${DIM}${IDX}.${NC} ${CYAN}${sub}${NC}"
+        IDX=$((IDX + 1))
+    done
+    echo ""
+    echo -e "  [${RED}X${NC}] Cancel"
+    echo ""
+    read -p "  Choice [A / 1-$((IDX-1)) / X]: " TEST_CHOICE
+
+    case $TEST_CHOICE in
+        [Aa])
+            run_substrates ""
+            ;;
+        [Xx]|"")
+            echo -e "  ${DIM}Cancelled.${NC}"
+            ;;
+        [0-9]|[0-9][0-9])
+            IDX=0
+            CHOSEN_SUB=""
+            for sub in $AVAILABLE_SUBSTRATES; do
+                IDX=$((IDX + 1))
+                if [ "$IDX" = "$TEST_CHOICE" ]; then
+                    CHOSEN_SUB="$sub"
+                    break
+                fi
+            done
+            if [ -n "$CHOSEN_SUB" ]; then
+                run_substrates "$CHOSEN_SUB"
+            else
+                echo -e "  ${RED}Invalid choice.${NC}"
+                sleep 1
+            fi
+            ;;
+        *)
+            echo -e "  ${RED}Invalid choice.${NC}"
+            sleep 1
+            ;;
+    esac
 }
 
 # =============================================================================
@@ -1363,13 +1432,14 @@ else
 fi
 echo ""
 echo -e "${CYAN}Results written to:${NC}"
+_active_domain_results=$(get_active_domain)
 if [ -n "$RUN_SINGLE" ]; then
-    echo -e "  ${DIM}•${NC} Per-substrate: ${WHITE}execution-substrates/$RUN_SINGLE/test-results.md${NC}"
+    echo -e "  ${DIM}•${NC} Test results:  ${WHITE}rulebook-examples/$_active_domain_results/testing/$RUN_SINGLE/test-results.md${NC}"
 else
-    echo -e "  ${DIM}•${NC} Per-substrate: ${WHITE}execution-substrates/*/test-results.md${NC}"
+    echo -e "  ${DIM}•${NC} Test results:  ${WHITE}rulebook-examples/$_active_domain_results/testing/*/test-results.md${NC}"
     echo -e "  ${DIM}•${NC} Summary:       ${WHITE}orchestration/all-tests-results.md${NC}"
 fi
-echo -e "  ${DIM}•${NC} HTML Report:   ${WHITE}rulebook-examples/$(get_active_domain)/orchestration-report.html${NC}"
+echo -e "  ${DIM}•${NC} HTML Report:   ${WHITE}rulebook-examples/$_active_domain_results/orchestration-report.html${NC}"
 echo ""
 
 # Open browser (skip in CI mode)
@@ -1445,13 +1515,13 @@ while true; do
     if [ -n "$PROJECT_TRANSPILERS" ]; then
         DEFAULT_CHOICE="B"
     else
-        DEFAULT_CHOICE="V"
+        DEFAULT_CHOICE="T"
     fi
 
     if [ -n "$PROJECT_TRANSPILERS" ]; then
-        read -p "Enter choice [1-$(echo "$PROJECT_TRANSPILERS" | wc -l | tr -d ' '), B, V, O, I, C, D, Q] (default: $DEFAULT_CHOICE): " USER_CHOICE
+        read -p "Enter choice [1-$(echo "$PROJECT_TRANSPILERS" | wc -l | tr -d ' '), B, T, V, O, I, C, D, Q] (default: $DEFAULT_CHOICE): " USER_CHOICE
     else
-        read -p "Enter choice [B, V, O, I, C, D, Q] (default: $DEFAULT_CHOICE): " USER_CHOICE
+        read -p "Enter choice [T, V, O, I, C, D, Q] (default: $DEFAULT_CHOICE): " USER_CHOICE
     fi
 
     if [ -z "$USER_CHOICE" ]; then
@@ -1512,6 +1582,9 @@ while true; do
                 echo -e "${RED}Invalid option: $USER_CHOICE${NC}"
                 sleep 1
             fi
+            ;;
+        [Tt])
+            action_test
             ;;
         [Vv])
             action_view_results

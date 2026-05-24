@@ -1,0 +1,126 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix erb: <http://example.org/erb#> .
+
+erb: a owl:Ontology ;
+    rdfs:label "ERB Ontology" ;
+    rdfs:comment "Generated from effortless-rulebook.json" .
+
+# === Class: Customers ===
+erb:Customers a owl:Class ;
+    rdfs:label "Customers" ;
+    rdfs:comment "Table: Customers" .
+
+erb:customerId a owl:DatatypeProperty ;
+    rdfs:domain erb:Customers ;
+    rdfs:range xsd:string ;
+    rdfs:label "CustomerId" .
+
+erb:name a owl:DatatypeProperty ;
+    rdfs:domain erb:Customers ;
+    rdfs:range xsd:string ;
+    rdfs:label "Name" ;
+    rdfs:comment "Identifier for the customers." .
+    # calculated: calculated
+
+erb:emailAddress a owl:DatatypeProperty ;
+    rdfs:domain erb:Customers ;
+    rdfs:range xsd:string ;
+    rdfs:label "EmailAddress" ;
+    rdfs:comment "Thec ustomers email address" .
+
+erb:firstName a owl:DatatypeProperty ;
+    rdfs:domain erb:Customers ;
+    rdfs:range xsd:string ;
+    rdfs:label "FirstName" ;
+    rdfs:comment "First Name of the customer - used to make the full name" .
+
+erb:lastName a owl:DatatypeProperty ;
+    rdfs:domain erb:Customers ;
+    rdfs:range xsd:string ;
+    rdfs:label "LastName" ;
+    rdfs:comment "Last Name of the customer - used to make the full name" .
+
+erb:fullName a owl:DatatypeProperty ;
+    rdfs:domain erb:Customers ;
+    rdfs:range xsd:string ;
+    rdfs:label "FullName" ;
+    rdfs:comment "Full name is computed from the first and last name of the customer" .
+    # calculated: calculated
+
+# === Class: ERBCustomizations ===
+erb:ERBCustomizations a owl:Class ;
+    rdfs:label "ERBCustomizations" ;
+    rdfs:comment "Table: ERBCustomizations" .
+
+erb:eRBCustomizationId a owl:DatatypeProperty ;
+    rdfs:domain erb:ERBCustomizations ;
+    rdfs:range xsd:string ;
+    rdfs:label "ERBCustomizationId" .
+
+erb:name a owl:DatatypeProperty ;
+    rdfs:domain erb:ERBCustomizations ;
+    rdfs:range xsd:string ;
+    rdfs:label "Name" .
+
+erb:title a owl:DatatypeProperty ;
+    rdfs:domain erb:ERBCustomizations ;
+    rdfs:range xsd:string ;
+    rdfs:label "Title" .
+
+erb:sQLCode a owl:DatatypeProperty ;
+    rdfs:domain erb:ERBCustomizations ;
+    rdfs:range xsd:string ;
+    rdfs:label "SQLCode" .
+
+erb:sQLTarget a owl:DatatypeProperty ;
+    rdfs:domain erb:ERBCustomizations ;
+    rdfs:range xsd:string ;
+    rdfs:label "SQLTarget" .
+
+erb:customizationType a owl:DatatypeProperty ;
+    rdfs:domain erb:ERBCustomizations ;
+    rdfs:range xsd:string ;
+    rdfs:label "CustomizationType" .
+
+# === Class: ERBVersions ===
+erb:ERBVersions a owl:Class ;
+    rdfs:label "ERBVersions" ;
+    rdfs:comment "Table: ERBVersions" .
+
+erb:eRBVersionId a owl:DatatypeProperty ;
+    rdfs:domain erb:ERBVersions ;
+    rdfs:range xsd:string ;
+    rdfs:label "ERBVersionId" .
+
+erb:baseId a owl:DatatypeProperty ;
+    rdfs:domain erb:ERBVersions ;
+    rdfs:range xsd:string ;
+    rdfs:label "BaseId" .
+
+erb:name a owl:DatatypeProperty ;
+    rdfs:domain erb:ERBVersions ;
+    rdfs:range xsd:string ;
+    rdfs:label "Name" .
+
+erb:message a owl:DatatypeProperty ;
+    rdfs:domain erb:ERBVersions ;
+    rdfs:range xsd:string ;
+    rdfs:label "Message" .
+
+erb:notes a owl:DatatypeProperty ;
+    rdfs:domain erb:ERBVersions ;
+    rdfs:range xsd:string ;
+    rdfs:label "Notes" .
+
+erb:commitDate a owl:DatatypeProperty ;
+    rdfs:domain erb:ERBVersions ;
+    rdfs:range xsd:string ;
+    rdfs:label "CommitDate" .
+
+erb:isPublished a owl:DatatypeProperty ;
+    rdfs:domain erb:ERBVersions ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "IsPublished" .

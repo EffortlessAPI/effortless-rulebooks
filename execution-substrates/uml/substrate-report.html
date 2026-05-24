@@ -115,19 +115,11 @@ pre { background: var(--code-bg); border: 1px solid var(--border-color); border-
 UML Execution Substrate - Multi-Entity Test Execution (OCL)
 ======================================================================
 
-Loaded 1 OCL constraints from constraints.ocl
+Loaded 2 OCL constraints from constraints.ocl
 
-  -&gt; client: 3 records (via OCL)
-   Warning: No OCL constraints found for class &#x27;Employees&#x27;
-  -&gt; employees: 3 records (via OCL)
-   Warning: No OCL constraints found for class &#x27;Projects&#x27;
-  -&gt; projects: 3 records (via OCL)
-   Warning: No OCL constraints found for class &#x27;Roles&#x27;
-  -&gt; roles: 3 records (via OCL)
-   Warning: No OCL constraints found for class &#x27;TypesOfProject&#x27;
-  -&gt; types_of_project: 4 records (via OCL)
+  -&gt; customers: 3 records (via OCL)
 
-UML substrate: Processed 5 entities, 16 total records
+UML substrate: Processed 1 entities, 3 total records
 ======================================================================
 
 </pre>
@@ -148,89 +140,51 @@ UML substrate: Processed 5 entities, 16 total records
             <div class="card">
                 <div class="code-header">
                     <h2>class-diagram.puml</h2>
-                    <div><span class="code-info">85 lines</span><button class="copy-btn" onclick="copyCode('class-code')">Copy</button></div>
+                    <div><span class="code-info">47 lines</span><button class="copy-btn" onclick="copyCode('class-code')">Copy</button></div>
                 </div>
                 <pre id="class-code">@startuml
 skinparam classAttributeIconSize 0
 
-note top of Client
-  Table: Client
+note top of Customers
+  Table: Customers
 end note
 
-class Client {
-  +ClientId: String
-  +Customer: String -- Identifier for the customers.
+class Customers {
+  +CustomerId: String
   +EmailAddress: String -- Thec ustomers email address
   +FirstName: String -- First Name of the customer - used to make the full name
   +LastName: String -- Last Name of the customer - used to make the full name
   --
+  /Name: String  {derived} -- Identifier for the customers.
   /FullName: String  {derived} -- Full name is computed from the first and last name of the customer
 }
 
-note top of Employees
-  Table: Employees
+note top of ERBCustomizations
+  Table: ERBCustomizations
 end note
 
-class Employees {
-  +EmployeeId: String
+class ERBCustomizations {
+  +ERBCustomizationId: String
   +Name: String
-  +EmailAddress: String
-  +PhoneNumber: String
-  +Role: String
-  +RoleName: String
-  +RoleDescription: String
-  +Projects: String
-  +RoleIsManager: Boolean
+  +Title: String
+  +SQLCode: String
+  +SQLTarget: String
+  +CustomizationType: String
   --
 }
 
-note top of Projects
-  Table: Projects
+note top of ERBVersions
+  Table: ERBVersions
 end note
 
-class Projects {
-  +ProjectId: String
+class ERBVersions {
+  +ERBVersionId: String
+  +BaseId: String
   +Name: String
-  +Description: String
-  +ProjectType: String
-  +ProjectTypeName: String
-  +ProjectTypeDescription: String
-  +ProjectTypeRequiresManagerApproval: Boolean
-  +DueDate: String
-  +IsApproved: Boolean
-  +ApprovedBy: String
-  +ApprovedByRoleIsManager: Boolean
-  +ApprovedByName: String
-  +ApprovedByEmailAddress: String
-  +ApprovedByPhoneNumber: String
-  --
-}
-
-note top of Roles
-  Table: Roles
-end note
-
-class Roles {
-  +RoleId: String
-  +Name: String
-  +Description: String
-  +IsManager: Boolean
-  +Employees: String
-  +CountOfEmployees: Integer
-  --
-}
-
-note top of TypesOfProject
-  Table: TypesOfProject
-end note
-
-class TypesOfProject {
-  +TypesOfProjectId: String
-  +Name: String
-  +Description: String
-  +RequiresManagerApproval: Boolean
-  +Projects: String
-  +CountOfProjects: Integer
+  +Message: String
+  +Notes: String
+  +CommitDate: String
+  +IsPublished: Boolean
   --
 }
 
@@ -241,182 +195,74 @@ class TypesOfProject {
             <div class="card">
                 <div class="code-header">
                     <h2>objects.puml</h2>
-                    <div><span class="code-info">177 lines</span><button class="copy-btn" onclick="copyCode('objects-code')">Copy</button></div>
+                    <div><span class="code-info">69 lines</span><button class="copy-btn" onclick="copyCode('objects-code')">Copy</button></div>
                 </div>
                 <pre id="objects-code">@startuml
 
-object &quot;Client_0&quot; as Client_0 {
-  ClientId = &quot;cust0001&quot;
-  Customer = &quot;CUST0001&quot;
-  EmailAddress = &quot;larry.smith@email.com&quot;
-  FirstName = &quot;Bob&quot;
+object &quot;jane.smith-email.com&quot; as Customers_0 {
+  CustomerId = &quot;jane-smith-email-com&quot;
+  EmailAddress = &quot;jane.smith@email.com&quot;
+  FirstName = &quot;Bobby&quot;
   LastName = &quot;Smith&quot;
 }
 
-object &quot;Client_1&quot; as Client_1 {
-  ClientId = &quot;cust0002&quot;
-  Customer = &quot;CUST0002&quot;
+object &quot;john.doe-email.com&quot; as Customers_1 {
+  CustomerId = &quot;john-doe-email-com&quot;
   EmailAddress = &quot;john.doe@email.com&quot;
-  FirstName = &quot;John&quot;
+  FirstName = &quot;Jimmy&quot;
   LastName = &quot;Doe&quot;
 }
 
-object &quot;Client_2&quot; as Client_2 {
-  ClientId = &quot;cust0003&quot;
-  Customer = &quot;CUST0003&quot;
+object &quot;emily.jones-email.com&quot; as Customers_2 {
+  CustomerId = &quot;emily-jones-email-com&quot;
   EmailAddress = &quot;emily.jones@email.com&quot;
-  FirstName = &quot;Emily&quot;
+  FirstName = &quot;Mary&quot;
   LastName = &quot;Jones&quot;
 }
 
-object &quot;Sarah Chen&quot; as Employees_0 {
-  EmployeeId = &quot;sarah-chen&quot;
-  Name = &quot;Sarah Chen&quot;
-  EmailAddress = &quot;sarah.chen@acmecorp.example&quot;
-  PhoneNumber = &quot;555-0101&quot;
-  Role = &quot;projectmanager&quot;
-  RoleName = &quot;ProjectManager&quot;
-  RoleDescription = &quot;The project Manager makes s...&quot;
-  Projects = &quot;internal-tools-dashboard&quot;
-  RoleIsManager = &quot;True&quot;
+object &quot;03a-customize-schema.sql&quot; as ERBCustomizations_0 {
+  ERBCustomizationId = &quot;03a-customize-schema-sql&quot;
+  Name = &quot;03a-customize-schema.sql&quot;
+  Title = &quot;Customize Schema&quot;
+  SQLCode = &quot;-- ========================...&quot;
+  SQLTarget = &quot;Postgres&quot;
+  CustomizationType = &quot;Schema&quot;
 }
 
-object &quot;Mike Johnson&quot; as Employees_1 {
-  EmployeeId = &quot;mike-johnson&quot;
-  Name = &quot;Mike Johnson&quot;
-  EmailAddress = &quot;mike.johnson@acmecorp.example&quot;
-  PhoneNumber = &quot;555-0102&quot;
-  Role = &quot;developer&quot;
-  RoleName = &quot;Developer&quot;
-  RoleDescription = &quot;Developers handle the imple...&quot;
-  Projects = &quot;gdpr-compliance-audit&quot;
-  RoleIsManager = &quot;True&quot;
+object &quot;03b-customize-functions.sql&quot; as ERBCustomizations_1 {
+  ERBCustomizationId = &quot;03b-customize-functions-sql&quot;
+  Name = &quot;03b-customize-functions.sql&quot;
+  Title = &quot;Customize Functions&quot;
+  SQLCode = &quot;-- ========================...&quot;
+  SQLTarget = &quot;Postgres&quot;
+  CustomizationType = &quot;Functions&quot;
 }
 
-object &quot;Priya Patel&quot; as Employees_2 {
-  EmployeeId = &quot;priya-patel&quot;
-  Name = &quot;Priya Patel&quot;
-  EmailAddress = &quot;priya.patel@acmecorp.example&quot;
-  PhoneNumber = &quot;555-0103&quot;
-  Role = &quot;analyst&quot;
-  RoleName = &quot;Analyst&quot;
-  RoleDescription = &quot;The business analysis know ...&quot;
-  Projects = &quot;customer-portal-redesign&quot;
-  RoleIsManager = &quot;&quot;
+object &quot;03c-customize-views.sql&quot; as ERBCustomizations_2 {
+  ERBCustomizationId = &quot;03c-customize-views-sql&quot;
+  Name = &quot;03c-customize-views.sql&quot;
+  Title = &quot;Customize Views&quot;
+  SQLCode = &quot;-- ========================...&quot;
+  SQLTarget = &quot;Postgres&quot;
+  CustomizationType = &quot;Views&quot;
 }
 
-object &quot;Internal Tools Dashboard&quot; as Projects_0 {
-  ProjectId = &quot;internal-tools-dashboard&quot;
-  Name = &quot;Internal Tools Dashboard&quot;
-  Description = &quot;Build internal analytics da...&quot;
-  ProjectType = &quot;internal&quot;
-  ProjectTypeName = &quot;Internal&quot;
-  ProjectTypeDescription = &quot;An internal project that is...&quot;
-  ProjectTypeRequiresManagerApproval = &quot;&quot;
-  DueDate = &quot;2026-06-15&quot;
-  IsApproved = true
-  ApprovedBy = &quot;sarah-chen&quot;
-  ApprovedByRoleIsManager = &quot;True&quot;
-  ApprovedByName = &quot;Sarah Chen&quot;
-  ApprovedByEmailAddress = &quot;sarah.chen@acmecorp.example&quot;
-  ApprovedByPhoneNumber = &quot;555-0101&quot;
+object &quot;03d-customize-rls.sql&quot; as ERBCustomizations_3 {
+  ERBCustomizationId = &quot;03d-customize-rls-sql&quot;
+  Name = &quot;03d-customize-rls.sql&quot;
+  Title = &quot;Customize Policies (RLS)&quot;
+  SQLCode = &quot;-- ========================...&quot;
+  SQLTarget = &quot;Postgres&quot;
+  CustomizationType = &quot;RLS&quot;
 }
 
-object &quot;Customer Portal Redesign&quot; as Projects_1 {
-  ProjectId = &quot;customer-portal-redesign&quot;
-  Name = &quot;Customer Portal Redesign&quot;
-  Description = &quot;Complete redesign of custom...&quot;
-  ProjectType = &quot;clientfacing&quot;
-  ProjectTypeName = &quot;ClientFacing&quot;
-  ProjectTypeDescription = &quot;Open, public facing communi...&quot;
-  ProjectTypeRequiresManagerApproval = &quot;True&quot;
-  DueDate = &quot;2026-08-01&quot;
-  IsApproved = false
-  ApprovedBy = &quot;priya-patel&quot;
-  ApprovedByRoleIsManager = &quot;&quot;
-  ApprovedByName = &quot;Priya Patel&quot;
-  ApprovedByEmailAddress = &quot;priya.patel@acmecorp.example&quot;
-  ApprovedByPhoneNumber = &quot;555-0103&quot;
-}
-
-object &quot;GDPR Compliance Audit&quot; as Projects_2 {
-  ProjectId = &quot;gdpr-compliance-audit&quot;
-  Name = &quot;GDPR Compliance Audit&quot;
-  Description = &quot;Annual compliance audit and...&quot;
-  ProjectType = &quot;compliance&quot;
-  ProjectTypeName = &quot;Compliance&quot;
-  ProjectTypeDescription = &quot;&quot;
-  ProjectTypeRequiresManagerApproval = &quot;True&quot;
-  DueDate = &quot;2026-04-30&quot;
-  IsApproved = true
-  ApprovedBy = &quot;mike-johnson&quot;
-  ApprovedByRoleIsManager = &quot;True&quot;
-  ApprovedByName = &quot;Mike Johnson&quot;
-  ApprovedByEmailAddress = &quot;mike.johnson@acmecorp.example&quot;
-  ApprovedByPhoneNumber = &quot;555-0102&quot;
-}
-
-object &quot;Developer&quot; as Roles_0 {
-  RoleId = &quot;developer&quot;
-  Name = &quot;Developer&quot;
-  Description = &quot;Developers handle the imple...&quot;
-  IsManager = true
-  Employees = &quot;mike-johnson&quot;
-  CountOfEmployees = 1
-}
-
-object &quot;ProjectManager&quot; as Roles_1 {
-  RoleId = &quot;projectmanager&quot;
-  Name = &quot;ProjectManager&quot;
-  Description = &quot;The project Manager makes s...&quot;
-  IsManager = true
-  Employees = &quot;sarah-chen&quot;
-  CountOfEmployees = 1
-}
-
-object &quot;Analyst&quot; as Roles_2 {
-  RoleId = &quot;analyst&quot;
-  Name = &quot;Analyst&quot;
-  Description = &quot;The business analysis know ...&quot;
-  IsManager = false
-  Employees = &quot;priya-patel&quot;
-  CountOfEmployees = 1
-}
-
-object &quot;Internal&quot; as TypesOfProject_0 {
-  TypesOfProjectId = &quot;internal&quot;
-  Name = &quot;Internal&quot;
-  Description = &quot;An internal project that is...&quot;
-  RequiresManagerApproval = false
-  Projects = &quot;internal-tools-dashboard&quot;
-  CountOfProjects = 1
-}
-
-object &quot;ClientFacing&quot; as TypesOfProject_1 {
-  TypesOfProjectId = &quot;clientfacing&quot;
-  Name = &quot;ClientFacing&quot;
-  Description = &quot;Open, public facing communi...&quot;
-  RequiresManagerApproval = true
-  Projects = &quot;customer-portal-redesign&quot;
-  CountOfProjects = 1
-}
-
-object &quot;Research&quot; as TypesOfProject_2 {
-  TypesOfProjectId = &quot;research&quot;
-  Name = &quot;Research&quot;
-  Description = &quot;&quot;
-  RequiresManagerApproval = false
-  Projects = &quot;&quot;
-  CountOfProjects = 0
-}
-
-object &quot;Compliance&quot; as TypesOfProject_3 {
-  TypesOfProjectId = &quot;compliance&quot;
-  Name = &quot;Compliance&quot;
-  Description = &quot;&quot;
-  RequiresManagerApproval = true
-  Projects = &quot;gdpr-compliance-audit&quot;
-  CountOfProjects = 1
+object &quot;03e-customize-data.sql&quot; as ERBCustomizations_4 {
+  ERBCustomizationId = &quot;03e-customize-data-sql&quot;
+  Name = &quot;03e-customize-data.sql&quot;
+  Title = &quot;Customize Data (Seeds / Mig...&quot;
+  SQLCode = &quot;-- ========================...&quot;
+  SQLTarget = &quot;Postgres&quot;
+  CustomizationType = &quot;Data&quot;
 }
 
 @enduml</pre>
@@ -426,65 +272,21 @@ object &quot;Compliance&quot; as TypesOfProject_3 {
             <div class="card">
                 <div class="code-header">
                     <h2>constraints.ocl</h2>
-                    <div><span class="code-info">58 lines</span><button class="copy-btn" onclick="copyCode('ocl-code')">Copy</button></div>
+                    <div><span class="code-info">14 lines</span><button class="copy-btn" onclick="copyCode('ocl-code')">Copy</button></div>
                 </div>
                 <pre id="ocl-code">-- OCL Constraints for ERB
 -- Generated from effortless-rulebook.json
 
--- Table: Client
-context Client
+-- Table: Customers
+context Customers
+
+-- Identifier for the customers.
+-- Formula: =SUBSTITUTE({{EmailAddress}}, &quot;@&quot;, &quot;-&quot;)
+derive Name: self.emailAddress.replace(&#x27;@&#x27;, &#x27;-&#x27;)
 
 -- Full name is computed from the first and last name of the customer
--- Formula: ={{FirstName}} &amp; &quot; &quot; &amp; {{LastName}}
-derive FullName: self.firstName + &#x27; &#x27; + self.lastName
-
--- Table: Employees
-context Employees
-
--- Formula for RoleName - parse error: Unexpected character &#x27;!&#x27; at position 11
--- Original: =INDEX(Roles!{{Name}}, MATCH(Employees!{{Role}}, Roles!{{RoleId}}, 0))
-
--- Formula for RoleDescription - parse error: Unexpected character &#x27;!&#x27; at position 11
--- Original: =INDEX(Roles!{{Description}}, MATCH(Employees!{{Role}}, Roles!{{RoleId}}, 0))
-
--- Formula for RoleIsManager - parse error: Unexpected character &#x27;!&#x27; at position 11
--- Original: =INDEX(Roles!{{IsManager}}, MATCH(Employees!{{Role}}, Roles!{{RoleId}}, 0))
-
--- Table: Projects
-context Projects
-
--- Formula for ProjectTypeName - parse error: Unexpected character &#x27;!&#x27; at position 20
--- Original: =INDEX(TypesOfProject!{{Name}}, MATCH(Projects!{{ProjectType}}, TypesOfProject!{{TypesOfProjectId}}, 0))
-
--- Formula for ProjectTypeDescription - parse error: Unexpected character &#x27;!&#x27; at position 20
--- Original: =INDEX(TypesOfProject!{{Description}}, MATCH(Projects!{{ProjectType}}, TypesOfProject!{{TypesOfProjectId}}, 0))
-
--- Formula for ProjectTypeRequiresManagerApproval - parse error: Unexpected character &#x27;!&#x27; at position 20
--- Original: =INDEX(TypesOfProject!{{RequiresManagerApproval}}, MATCH(Projects!{{ProjectType}}, TypesOfProject!{{TypesOfProjectId}}, 0))
-
--- Formula for ApprovedByRoleIsManager - parse error: Unexpected character &#x27;!&#x27; at position 15
--- Original: =INDEX(Employees!{{RoleIsManager}}, MATCH(Projects!{{ApprovedBy}}, Employees!{{EmployeeId}}, 0))
-
--- Formula for ApprovedByName - parse error: Unexpected character &#x27;!&#x27; at position 15
--- Original: =INDEX(Employees!{{Name}}, MATCH(Projects!{{ApprovedBy}}, Employees!{{EmployeeId}}, 0))
-
--- Formula for ApprovedByEmailAddress - parse error: Unexpected character &#x27;!&#x27; at position 15
--- Original: =INDEX(Employees!{{EmailAddress}}, MATCH(Projects!{{ApprovedBy}}, Employees!{{EmployeeId}}, 0))
-
--- Formula for ApprovedByPhoneNumber - parse error: Unexpected character &#x27;!&#x27; at position 15
--- Original: =INDEX(Employees!{{PhoneNumber}}, MATCH(Projects!{{ApprovedBy}}, Employees!{{EmployeeId}}, 0))
-
--- Table: Roles
-context Roles
-
--- Formula for CountOfEmployees - parse error: Unexpected character &#x27;!&#x27; at position 18
--- Original: =COUNTIFS(Employees!{{Role}}, Roles!{{RoleId}})
-
--- Table: TypesOfProject
-context TypesOfProject
-
--- Formula for CountOfProjects - parse error: Unexpected character &#x27;!&#x27; at position 17
--- Original: =COUNTIFS(Projects!{{ProjectType}}, TypesOfProject!{{TypesOfProjectId}})
+-- Formula: ={{LastName}} &amp; &quot;, &quot; &amp; {{FirstName}}
+derive FullName: self.lastName + &#x27;, &#x27; + self.firstName
 </pre>
             </div>
         </div>

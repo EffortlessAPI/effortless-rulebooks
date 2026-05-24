@@ -763,6 +763,7 @@ def _get_testing_paths():
 def run_multi_entity():
     """Process all entity files from shared testing/blank-tests/ directory using OCL."""
     blank_tests_dir, test_answers_dir = _get_testing_paths()
+    project_root = Path(script_dir).parent.parent
 
     if not blank_tests_dir.is_dir():
         print(f"Error: {blank_tests_dir} not found")

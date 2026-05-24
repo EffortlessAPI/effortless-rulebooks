@@ -124,13 +124,13 @@ HasGrammar = true
                 <h2>Execution Log</h2>
                 <pre>=== ExplainDAG Substrate Test Run ===
 
-  -&gt; client: 3 records with explanations
-  -&gt; employees: 3 records (raw passthrough)
-  -&gt; projects: 3 records (raw passthrough)
-  -&gt; roles: 3 records (raw passthrough)
-  -&gt; types_of_project: 4 records (raw passthrough)
-ExplainDAG substrate: Processed 5 entities, 16 total records
-Explanations written to: /Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/explain-dag/test-explanations
+Traceback (most recent call last):
+  File &quot;/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/explain-dag/take-test.py&quot;, line 579, in &lt;module&gt;
+    main()
+    ~~~~^^
+  File &quot;/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/explain-dag/take-test.py&quot;, line 567, in main
+    project_root
+NameError: name &#x27;project_root&#x27; is not defined
 
 </pre>
             </div>
@@ -150,13 +150,13 @@ Explanations written to: /Users/eejai42/effortlessapi-app-root/users/user_ee42ai
             <div class="card">
                 <div class="code-header">
                     <h2>explain_spec.json</h2>
-                    <div><span class="code-info">130 lines</span><button class="copy-btn" onclick="copyCode('spec-code')">Copy</button></div>
+                    <div><span class="code-info">193 lines</span><button class="copy-btn" onclick="copyCode('spec-code')">Copy</button></div>
                 </div>
                 <pre id="spec-code">{
   &quot;schema_version&quot;: &quot;erb.explain_spec.v1&quot;,
   &quot;rulebook&quot;: {
-    &quot;name&quot;: &quot;ACME Corporation (template)&quot;,
-    &quot;rulebook_hash&quot;: &quot;sha256:8614809c5c9f718ff206ad3360842149&quot;
+    &quot;name&quot;: &quot;ACME, LLC (template)&quot;,
+    &quot;rulebook_hash&quot;: &quot;sha256:872b42da05c084b8fe97edf17015c1f6&quot;
   },
   &quot;semantics&quot;: {
     &quot;profile&quot;: &quot;excel&quot;,
@@ -165,19 +165,19 @@ Explanations written to: /Users/eejai42/effortlessapi-app-root/users/user_ee42ai
     &quot;boolean_coercion&quot;: &quot;strict&quot;
   },
   &quot;entities&quot;: {
-    &quot;Client&quot;: {
-      &quot;id_field&quot;: &quot;ClientId&quot;,
-      &quot;id_field_snake&quot;: &quot;client_id&quot;,
+    &quot;Customers&quot;: {
+      &quot;id_field&quot;: &quot;CustomerId&quot;,
+      &quot;id_field_snake&quot;: &quot;customer_id&quot;,
       &quot;fields&quot;: {
-        &quot;ClientId&quot;: {
+        &quot;CustomerId&quot;: {
           &quot;datatype&quot;: &quot;string&quot;,
           &quot;nullable&quot;: false,
           &quot;type&quot;: &quot;raw&quot;
         },
-        &quot;Customer&quot;: {
+        &quot;Name&quot;: {
           &quot;datatype&quot;: &quot;string&quot;,
           &quot;nullable&quot;: true,
-          &quot;type&quot;: &quot;raw&quot;,
+          &quot;type&quot;: &quot;calculated&quot;,
           &quot;description&quot;: &quot;Identifier for the customers.&quot;
         },
         &quot;EmailAddress&quot;: {
@@ -206,7 +206,8 @@ Explanations written to: /Users/eejai42/effortlessapi-app-root/users/user_ee42ai
         }
       },
       &quot;calc_order&quot;: [
-        &quot;FullName&quot;
+        &quot;FullName&quot;,
+        &quot;Name&quot;
       ],
       &quot;dep_edges&quot;: [
         [
@@ -216,28 +217,90 @@ Explanations written to: /Users/eejai42/effortlessapi-app-root/users/user_ee42ai
         [
           &quot;LastName&quot;,
           &quot;FullName&quot;
+        ],
+        [
+          &quot;EmailAddress&quot;,
+          &quot;Name&quot;
         ]
       ],
       &quot;expr_templates&quot;: {
+        &quot;Name&quot;: {
+          &quot;formula_source&quot;: &quot;=SUBSTITUTE({{EmailAddress}}, \&quot;@\&quot;, \&quot;-\&quot;)&quot;,
+          &quot;template_hash&quot;: &quot;sha256:4f66494237ffb7cf&quot;,
+          &quot;root_node&quot;: &quot;n_result_Name&quot;,
+          &quot;nodes&quot;: {
+            &quot;n_ref_1&quot;: {
+              &quot;kind&quot;: &quot;field_ref&quot;,
+              &quot;field&quot;: &quot;EmailAddress&quot;,
+              &quot;field_snake&quot;: &quot;email_address&quot;
+            },
+            &quot;n_const_2&quot;: {
+              &quot;kind&quot;: &quot;const&quot;,
+              &quot;value&quot;: &quot;@&quot;,
+              &quot;type&quot;: &quot;string&quot;
+            },
+            &quot;n_const_3&quot;: {
+              &quot;kind&quot;: &quot;const&quot;,
+              &quot;value&quot;: &quot;-&quot;,
+              &quot;type&quot;: &quot;string&quot;
+            },
+            &quot;n_fn_4&quot;: {
+              &quot;kind&quot;: &quot;fn&quot;,
+              &quot;name&quot;: &quot;SUBSTITUTE&quot;,
+              &quot;args&quot;: [
+                &quot;n_ref_1&quot;,
+                &quot;n_const_2&quot;,
+                &quot;n_const_3&quot;
+              ]
+            },
+            &quot;n_result_Name&quot;: {
+              &quot;kind&quot;: &quot;result&quot;,
+              &quot;field&quot;: &quot;Name&quot;,
+              &quot;field_snake&quot;: &quot;name&quot;,
+              &quot;in&quot;: [
+                &quot;n_fn_4&quot;
+              ]
+            }
+          },
+          &quot;edges&quot;: [
+            [
+              &quot;n_ref_1&quot;,
+              &quot;n_fn_4&quot;
+            ],
+            [
+              &quot;n_const_2&quot;,
+              &quot;n_fn_4&quot;
+            ],
+            [
+              &quot;n_const_3&quot;,
+              &quot;n_fn_4&quot;
+            ],
+            [
+              &quot;n_fn_4&quot;,
+              &quot;n_result_Name&quot;
+            ]
+          ],
+          &quot;description&quot;: &quot;Identifier for the customers.&quot;
+        },
         &quot;FullName&quot;: {
-          &quot;formula_source&quot;: &quot;={{FirstName}} &amp; \&quot; \&quot; &amp; {{LastName}}&quot;,
-          &quot;template_hash&quot;: &quot;sha256:ae6e94fd35af410b&quot;,
+          &quot;formula_source&quot;: &quot;={{LastName}} &amp; \&quot;, \&quot; &amp; {{FirstName}}&quot;,
+          &quot;template_hash&quot;: &quot;sha256:87fca7e8a65752b8&quot;,
           &quot;root_node&quot;: &quot;n_result_FullName&quot;,
           &quot;nodes&quot;: {
             &quot;n_ref_1&quot;: {
               &quot;kind&quot;: &quot;field_ref&quot;,
-              &quot;field&quot;: &quot;FirstName&quot;,
-              &quot;field_snake&quot;: &quot;first_name&quot;
+              &quot;field&quot;: &quot;LastName&quot;,
+              &quot;field_snake&quot;: &quot;last_name&quot;
             },
             &quot;n_const_2&quot;: {
               &quot;kind&quot;: &quot;const&quot;,
-              &quot;value&quot;: &quot; &quot;,
+              &quot;value&quot;: &quot;, &quot;,
               &quot;type&quot;: &quot;string&quot;
             },
             &quot;n_ref_3&quot;: {
               &quot;kind&quot;: &quot;field_ref&quot;,
-              &quot;field&quot;: &quot;LastName&quot;,
-              &quot;field_snake&quot;: &quot;last_name&quot;
+              &quot;field&quot;: &quot;FirstName&quot;,
+              &quot;field_snake&quot;: &quot;first_name&quot;
             },
             &quot;n_op_4&quot;: {
               &quot;kind&quot;: &quot;op&quot;,
@@ -278,7 +341,7 @@ Explanations written to: /Users/eejai42/effortlessapi-app-root/users/user_ee42ai
           &quot;description&quot;: &quot;Full name is computed from the first and last name of the customer&quot;
         }
       },
-      &quot;description&quot;: &quot;Table: Client&quot;
+      &quot;description&quot;: &quot;Table: Customers&quot;
     }
   }
 }</pre>
@@ -288,10 +351,7 @@ Explanations written to: /Users/eejai42/effortlessapi-app-root/users/user_ee42ai
             <div class="card">
                 <h2>Sample Explanations (JSONL)</h2>
                 <div class="code-info">First few records from test-explanations/</div>
-                <pre>{&quot;schema_version&quot;: &quot;erb.explain_instance.v1&quot;, &quot;rulebook_hash&quot;: &quot;sha256:8614809c5c9f718ff206ad3360842149&quot;, &quot;entity&quot;: &quot;client&quot;, &quot;record_id&quot;: &quot;cust0001&quot;, &quot;values&quot;: {&quot;full_name&quot;: &quot;Bob Smith&quot;}, &quot;explanations&quot;: {&quot;FullName&quot;: {&quot;template_hash&quot;: &quot;sha256:ae6e94fd35af410b&quot;, &quot;root&quot;: &quot;i_result_FullName&quot;, &quot;nodes&quot;: {&quot;i_ref_1&quot;: {&quot;kind&quot;: &quot;field_ref&quot;, &quot;value&quot;: &quot;Bob&quot;, &quot;type&quot;: &quot;string&quot;, &quot;field&quot;: &quot;FirstName&quot;, &quot;field_snake&quot;: &quot;first_name&quot;}, &quot;i_const_2&quot;: {&quot;kind&quot;: &quot;const&quot;, &quot;value&quot;: &quot; &quot;, &quot;type&quot;: &quot;string&quot;}, &quot;i_ref_3&quot;: {&quot;kind&quot;: &quot;field_ref&quot;, &quot;value&quot;: &quot;Smith&quot;, &quot;type&quot;: &quot;string&quot;, &quot;field&quot;: &quot;LastName&quot;, &quot;field_snake&quot;: &quot;last_name&quot;}, &quot;i_op_4&quot;: {&quot;kind&quot;: &quot;op&quot;, &quot;value&quot;: &quot;Bob Smith&quot;, &quot;type&quot;: &quot;string&quot;, &quot;name&quot;: &quot;CONCAT&quot;, &quot;args&quot;: [&quot;n_ref_1&quot;, &quot;n_const_2&quot;, &quot;n_ref_3&quot;]}, &quot;i_result_FullName&quot;: {&quot;kind&quot;: &quot;result&quot;, &quot;value&quot;: &quot;Bob Smith&quot;, &quot;type&quot;: &quot;string&quot;, &quot;field&quot;: &quot;FullName&quot;}}, &quot;edges&quot;: [[&quot;i_ref_1&quot;, &quot;i_op_4&quot;], [&quot;i_const_2&quot;, &quot;i_op_4&quot;], [&quot;i_ref_3&quot;, &quot;i_op_4&quot;], [&quot;i_op_4&quot;, &quot;i_result_FullName&quot;]], &quot;evidence&quot;: {&quot;short_circuit&quot;: [], &quot;branches&quot;: []}}}}
-{&quot;schema_version&quot;: &quot;erb.explain_instance.v1&quot;, &quot;rulebook_hash&quot;: &quot;sha256:8614809c5c9f718ff206ad3360842149&quot;, &quot;entity&quot;: &quot;client&quot;, &quot;record_id&quot;: &quot;cust0002&quot;, &quot;values&quot;: {&quot;full_name&quot;: &quot;John Doe&quot;}, &quot;explanations&quot;: {&quot;FullName&quot;: {&quot;template_hash&quot;: &quot;sha256:ae6e94fd35af410b&quot;, &quot;root&quot;: &quot;i_result_FullName&quot;, &quot;nodes&quot;: {&quot;i_ref_1&quot;: {&quot;kind&quot;: &quot;field_ref&quot;, &quot;value&quot;: &quot;John&quot;, &quot;type&quot;: &quot;string&quot;, &quot;field&quot;: &quot;FirstName&quot;, &quot;field_snake&quot;: &quot;first_name&quot;}, &quot;i_const_2&quot;: {&quot;kind&quot;: &quot;const&quot;, &quot;value&quot;: &quot; &quot;, &quot;type&quot;: &quot;string&quot;}, &quot;i_ref_3&quot;: {&quot;kind&quot;: &quot;field_ref&quot;, &quot;value&quot;: &quot;Doe&quot;, &quot;type&quot;: &quot;string&quot;, &quot;field&quot;: &quot;LastName&quot;, &quot;field_snake&quot;: &quot;last_name&quot;}, &quot;i_op_4&quot;: {&quot;kind&quot;: &quot;op&quot;, &quot;value&quot;: &quot;John Doe&quot;, &quot;type&quot;: &quot;string&quot;, &quot;name&quot;: &quot;CONCAT&quot;, &quot;args&quot;: [&quot;n_ref_1&quot;, &quot;n_const_2&quot;, &quot;n_ref_3&quot;]}, &quot;i_result_FullName&quot;: {&quot;kind&quot;: &quot;result&quot;, &quot;value&quot;: &quot;John Doe&quot;, &quot;type&quot;: &quot;string&quot;, &quot;field&quot;: &quot;FullName&quot;}}, &quot;edges&quot;: [[&quot;i_ref_1&quot;, &quot;i_op_4&quot;], [&quot;i_const_2&quot;, &quot;i_op_4&quot;], [&quot;i_ref_3&quot;, &quot;i_op_4&quot;], [&quot;i_op_4&quot;, &quot;i_result_FullName&quot;]], &quot;evidence&quot;: {&quot;short_circuit&quot;: [], &quot;branches&quot;: []}}}}
-{&quot;schema_version&quot;: &quot;erb.explain_instance.v1&quot;, &quot;rulebook_hash&quot;: &quot;sha256:8614809c5c9f718ff206ad3360842149&quot;, &quot;entity&quot;: &quot;client&quot;, &quot;record_id&quot;: &quot;cust0003&quot;, &quot;values&quot;: {&quot;full_name&quot;: &quot;Emily Jones&quot;}, &quot;explanations&quot;: {&quot;FullName&quot;: {&quot;template_hash&quot;: &quot;sha256:ae6e94fd35af410b&quot;, &quot;root&quot;: &quot;i_result_FullName&quot;, &quot;nodes&quot;: {&quot;i_ref_1&quot;: {&quot;kind&quot;: &quot;field_ref&quot;, &quot;value&quot;: &quot;Emily&quot;, &quot;type&quot;: &quot;string&quot;, &quot;field&quot;: &quot;FirstName&quot;, &quot;field_snake&quot;: &quot;first_name&quot;}, &quot;i_const_2&quot;: {&quot;kind&quot;: &quot;const&quot;, &quot;value&quot;: &quot; &quot;, &quot;type&quot;: &quot;string&quot;}, &quot;i_ref_3&quot;: {&quot;kind&quot;: &quot;field_ref&quot;, &quot;value&quot;: &quot;Jones&quot;, &quot;type&quot;: &quot;string&quot;, &quot;field&quot;: &quot;LastName&quot;, &quot;field_snake&quot;: &quot;last_name&quot;}, &quot;i_op_4&quot;: {&quot;kind&quot;: &quot;op&quot;, &quot;value&quot;: &quot;Emily Jones&quot;, &quot;type&quot;: &quot;string&quot;, &quot;name&quot;: &quot;CONCAT&quot;, &quot;args&quot;: [&quot;n_ref_1&quot;, &quot;n_const_2&quot;, &quot;n_ref_3&quot;]}, &quot;i_result_FullName&quot;: {&quot;kind&quot;: &quot;result&quot;, &quot;value&quot;: &quot;Emily Jones&quot;, &quot;type&quot;: &quot;string&quot;, &quot;field&quot;: &quot;FullName&quot;}}, &quot;edges&quot;: [[&quot;i_ref_1&quot;, &quot;i_op_4&quot;], [&quot;i_const_2&quot;, &quot;i_op_4&quot;], [&quot;i_ref_3&quot;, &quot;i_op_4&quot;], [&quot;i_op_4&quot;, &quot;i_result_FullName&quot;]], &quot;evidence&quot;: {&quot;short_circuit&quot;: [], &quot;branches&quot;: []}}}}
-</pre>
+                <pre></pre>
             </div>
         </div>
     </main>

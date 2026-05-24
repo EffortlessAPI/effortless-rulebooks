@@ -1,0 +1,30 @@
+[
+  {
+    "component_id": "airtable-001",
+    "name": "airtable-to-rulebook CLI",
+    "file_path": null,
+    "purpose": "Official Effortless tool: exports schema + data from Airtable base to effortless-rulebook.json",
+    "role": "input"
+  },
+  {
+    "component_id": "airtable-002",
+    "name": "rulebook-to-airtable CLI",
+    "file_path": null,
+    "purpose": "Official Effortless tool: push formula updates back to Airtable (reverse sync)",
+    "role": "output"
+  },
+  {
+    "component_id": "airtable-003",
+    "name": "Rulebook Cache (offline mode)",
+    "file_path": "orchestration/rulebook-cache.py",
+    "purpose": "Cache previously-pulled rulebooks; use offline if Airtable API unavailable",
+    "role": "input"
+  },
+  {
+    "component_id": "airtable-004",
+    "name": "ACME Corporation Bases",
+    "file_path": null,
+    "purpose": "Demo Airtable bases for BASIC and ADVANCED ontologies; can be swapped at runtime",
+    "role": "input"
+  }
+]
