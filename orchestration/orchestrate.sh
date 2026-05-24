@@ -155,8 +155,15 @@ SUBSTRATE_ORDER=(
 )
 
 get_valid_substrates() {
-    # Returns valid substrates in SUBSTRATE_ORDER, with unlisted ones appended
-    # alphabetically. "Valid" = has an inject script OR a take-test script.
+    # Returns the substrates this project actually exercises, in display order.
+    #
+    # If the active project has an effortless.json, the substrate list is the
+    # intersection of (substrates declared by its ProjectTranspilers) and
+    # (substrate directories that exist on disk with a runnable script). This
+    # is the SCOPING RULE: only what the project wires up shows up.
+    #
+    # If no effortless.json exists (legacy / un-initialized project), fall
+    # back to "every substrate folder on disk that has a runnable script".
     local -a discovered=()
     for dir in "$SUBSTRATES_DIR"/*/; do
         [ -d "$dir" ] || continue
@@ -171,20 +178,47 @@ get_valid_substrates() {
         fi
     done
 
+    # Substrates declared by the active project's effortless.json (empty
+    # string when there's no effortless.json — see shared.get_active_project_substrates).
+    local declared
+    declared=$(python3 -c "
+import sys
+sys.path.insert(0, '$SCRIPT_DIR')
+from shared import get_active_project_substrates
+print(' '.join(get_active_project_substrates()))
+")
+
+    local -a allowed=()
+    if [ -n "$declared" ]; then
+        # Intersect declared with discovered.
+        local d
+        for d in $declared; do
+            for present in "${discovered[@]}"; do
+                if [ "$d" = "$present" ]; then
+                    allowed+=("$d")
+                    break
+                fi
+            done
+        done
+    else
+        # No effortless.json — fall back to everything on disk.
+        allowed=("${discovered[@]}")
+    fi
+
     local -a ordered=()
-    # 1. Append names from SUBSTRATE_ORDER that are actually present on disk
+    # 1. Append names from SUBSTRATE_ORDER that are in the allowed set
     local wanted present
     for wanted in "${SUBSTRATE_ORDER[@]}"; do
-        for present in "${discovered[@]}"; do
+        for present in "${allowed[@]}"; do
             if [ "$wanted" = "$present" ]; then
                 ordered+=("$wanted")
                 break
             fi
         done
     done
-    # 2. Append any discovered substrates not in SUBSTRATE_ORDER (alphabetical)
+    # 2. Append any allowed substrates not in SUBSTRATE_ORDER (alphabetical)
     local name known=0
-    for name in $(printf '%s\n' "${discovered[@]}" | sort); do
+    for name in $(printf '%s\n' "${allowed[@]}" | sort); do
         known=0
         for wanted in "${SUBSTRATE_ORDER[@]}"; do
             if [ "$wanted" = "$name" ]; then known=1; break; fi
@@ -376,10 +410,24 @@ show_menu() {
     # --- BUILD (primary action when proxy transpilers exist) ---
     if [ -n "$PROJECT_TRANSPILERS" ]; then
         T_INDEX=1
+        LEFT_NUM=""
+        LEFT_DISPLAY=""
         while IFS=$'\t' read -r internal display; do
-            echo -e "    ${DIM}${T_INDEX}.${NC} ${CYAN}${display}${NC}"
+            if [ -z "$LEFT_NUM" ]; then
+                LEFT_NUM="$T_INDEX"
+                LEFT_DISPLAY="$display"
+            else
+                printf "    ${DIM}%2s.${NC} ${CYAN}%-28s${NC}    ${DIM}%2s.${NC} ${CYAN}%s${NC}\n" \
+                    "$LEFT_NUM" "$LEFT_DISPLAY" "$T_INDEX" "$display"
+                LEFT_NUM=""
+                LEFT_DISPLAY=""
+            fi
             T_INDEX=$((T_INDEX + 1))
         done <<< "$PROJECT_TRANSPILERS"
+        # Flush any trailing odd item in the left column
+        if [ -n "$LEFT_NUM" ]; then
+            printf "    ${DIM}%2s.${NC} ${CYAN}%s${NC}\n" "$LEFT_NUM" "$LEFT_DISPLAY"
+        fi
         echo ""
         if $PROXY_RUNNING; then
             echo -e "  ${GREEN}[B]${NC} ${BOLD}BUILD${NC} — regenerate all ${WHITE}${PROJECT_NAME}${NC} substrates ${DIM}(default)${NC}"
@@ -391,10 +439,7 @@ show_menu() {
 
     echo -e "  ${GREEN}[T]${NC} ${BOLD}TEST${NC} — run conformance tests for ${WHITE}${ACTIVE_DOMAIN}${NC} ${DIM}(opens report)${NC}"
     echo -e "  ${MAGENTA}[V]${NC} ${BOLD}VIEW${NC} — open last HTML report for ${WHITE}${ACTIVE_DOMAIN}${NC}"
-    echo -e "  ${YELLOW}[O]${NC} ${BOLD}ONTOLOGY${NC} — pick a different rulebook to work with"
-    echo -e "  ${BLUE}[I]${NC} ${BOLD}IMPORT${NC} — pull latest rulebook from Airtable"
-    echo -e "  ${RED}[C]${NC} ${BOLD}CLEAN${NC} — delete all generated files"
-    echo -e "  ${YELLOW}[D]${NC} ${BOLD}DEV-OPS${NC} — database & tooling setup"
+    echo -e "  ${YELLOW}[M]${NC} ${BOLD}MORE${NC} — more options ${DIM}(pick rulebook, import, clean, dev-ops)${NC}"
     echo -e "  [${RED}Q${NC}] Quit"
     echo ""
 }
@@ -660,6 +705,55 @@ action_clean() {
     echo -e "${BOLD}${GREEN}╚════════════════════════════════════════════════════════════╝${NC}"
     echo ""
     read -p "Press Enter to continue..."
+}
+
+# =============================================================================
+# MORE OPTIONS MENU
+# =============================================================================
+action_more_menu() {
+    while true; do
+        echo ""
+        echo -e "${BOLD}${CYAN}╔════════════════════════════════════════════════════════════╗${NC}"
+        echo -e "${BOLD}${CYAN}║${NC}                    ${BOLD}${WHITE}MORE OPTIONS${NC}                           ${BOLD}${CYAN}║${NC}"
+        echo -e "${BOLD}${CYAN}╚════════════════════════════════════════════════════════════╝${NC}"
+        echo ""
+        echo -e "  ${YELLOW}[P]${NC} ${BOLD}Pick Different Rulebook${NC} ${DIM}(ontology)${NC}"
+        echo -e "  ${BLUE}[I]${NC} ${BOLD}IMPORT${NC} — pull latest rulebook from Airtable"
+        echo -e "  ${RED}[C]${NC} ${BOLD}CLEAN${NC} — delete all generated files"
+        echo -e "  ${YELLOW}[D]${NC} ${BOLD}DEV-OPS${NC} — database & tooling setup"
+        echo ""
+        echo -e "  [${RED}Q${NC}] Back to main menu"
+        echo ""
+
+        read -p "Enter choice [P/I/C/D/Q]: " more_choice
+
+        case $more_choice in
+            [Pp])
+                action_select_domain
+                return
+                ;;
+            [Ii])
+                action_import_from_airtable
+                return
+                ;;
+            [Cc])
+                action_clean
+                return
+                ;;
+            [Dd])
+                action_devops_menu
+                return
+                ;;
+            [Qq]|"")
+                return
+                ;;
+            *)
+                echo ""
+                echo -e "${RED}Invalid option: $more_choice${NC}"
+                sleep 1
+                ;;
+        esac
+    done
 }
 
 # =============================================================================
@@ -1522,9 +1616,9 @@ while true; do
     fi
 
     if [ -n "$PROJECT_TRANSPILERS" ]; then
-        read -p "Enter choice [1-$(echo "$PROJECT_TRANSPILERS" | wc -l | tr -d ' '), B, T, V, O, I, C, D, Q] (default: $DEFAULT_CHOICE): " USER_CHOICE
+        read -p "Enter choice [1-$(echo "$PROJECT_TRANSPILERS" | wc -l | tr -d ' '), B, T, V, M, Q] (default: $DEFAULT_CHOICE): " USER_CHOICE
     else
-        read -p "Enter choice [T, V, O, I, C, D, Q] (default: $DEFAULT_CHOICE): " USER_CHOICE
+        read -p "Enter choice [T, V, M, Q] (default: $DEFAULT_CHOICE): " USER_CHOICE
     fi
 
     if [ -z "$USER_CHOICE" ]; then
@@ -1592,17 +1686,8 @@ while true; do
         [Vv])
             action_view_results
             ;;
-        [Oo])
-            action_select_domain
-            ;;
-        [Ii])
-            action_import_from_airtable
-            ;;
-        [Cc])
-            action_clean
-            ;;
-        [Dd])
-            action_devops_menu
+        [Mm])
+            action_more_menu
             ;;
         [Qq])
             echo ""

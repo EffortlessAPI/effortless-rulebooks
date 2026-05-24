@@ -3,8 +3,8 @@
        01 RECORD.
 
           02 CUSTOMER-ID PIC X(500).
+          02 CUSTOMER PIC X(500).
           02 EMAIL-ADDRESS PIC X(500).
           02 FIRST-NAME PIC X(500).
           02 LAST-NAME PIC X(500).
-          02 NAME PIC X(500).
           02 FULL-NAME PIC X(500).

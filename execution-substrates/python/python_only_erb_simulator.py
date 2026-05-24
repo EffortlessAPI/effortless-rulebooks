@@ -42,14 +42,6 @@ from orchestration.shared import (
 
 # Level 1
 
-def calc_customers_name(email_address):
-    """
-    Identifier for the customers.
-    
-    Formula: =SUBSTITUTE({{EmailAddress}}, "@", "-")
-    """
-    return ((email_address or "").replace('@', '-'))
-
 def calc_customers_full_name(last_name, first_name):
     """
     Full name is computed from the first and last name of the customer
@@ -68,11 +60,10 @@ def compute_customers_fields(record: dict) -> dict:
     result = dict(record)
 
     # Level 1 calculations
-    result['name'] = calc_customers_name(result.get('email_address'))
     result['full_name'] = calc_customers_full_name(result.get('last_name'), result.get('first_name'))
 
     # Convert empty strings to None for string fields
-    for key in ['name', 'full_name']:
+    for key in ['full_name']:
         if result.get(key) == '':
             result[key] = None
 

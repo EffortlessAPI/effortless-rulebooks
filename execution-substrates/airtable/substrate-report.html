@@ -94,7 +94,7 @@ ul { margin-left: 1.25rem; } li { margin-bottom: 0.25rem; }
                     <tr><th style="width: 140px;">Project</th><td>Effortlessly Invariant Rulesbooks (ERB) - Project Architecture</td></tr>
                     <tr><th>Base ID</th><td><code>appzkcmBFPWFGBtRo</code></td></tr>
                     <tr><th>Rulebook path</th><td><code>effortless-rulebook/effortless-rulebook.json</code></td></tr>
-                    <tr><th>Rulebook size</th><td>29 KB</td></tr>
+                    <tr><th>Rulebook size</th><td>42 KB</td></tr>
                 </table>
             </div>
             <div class="card">
@@ -113,7 +113,7 @@ ul { margin-left: 1.25rem; } li { margin-bottom: 0.25rem; }
                 reflect the seed data embedded in the rulebook.</p>
                 <table>
                     <tr><th>Entity</th><th>Fields</th><th>Records</th><th>Description</th></tr>
-                    <tr><td><code>ProjectMetadata</code></td><td>5</td><td>1</td><td></td></tr><tr><td><code>ExecutionSubstrates</code></td><td>9</td><td>10</td><td></td></tr><tr><td><code>OrchestrationComponents</code></td><td>6</td><td>8</td><td></td></tr><tr><td><code>AirtableIntegration</code></td><td>5</td><td>4</td><td></td></tr><tr><td><code>TestingFramework</code></td><td>5</td><td>4</td><td></td></tr><tr><td><code>RulebookDomains</code></td><td>8</td><td>7</td><td></td></tr><tr><td><code>CoreDataFlows</code></td><td>5</td><td>5</td><td></td></tr><tr><td><code>ProjectConfiguration</code></td><td>6</td><td>9</td><td></td></tr><tr><td><code>Dependencies</code></td><td>6</td><td>9</td><td></td></tr>
+                    <tr><td><code>ProjectMetadata</code></td><td>8</td><td>1</td><td></td></tr><tr><td><code>ExecutionSubstrates</code></td><td>9</td><td>10</td><td></td></tr><tr><td><code>OrchestrationComponents</code></td><td>6</td><td>10</td><td></td></tr><tr><td><code>RulebookSourceSpokes</code></td><td>7</td><td>6</td><td></td></tr><tr><td><code>SsotmeProxy</code></td><td>5</td><td>13</td><td></td></tr><tr><td><code>TestingFramework</code></td><td>5</td><td>4</td><td></td></tr><tr><td><code>RulebookDomains</code></td><td>8</td><td>7</td><td></td></tr><tr><td><code>CoreDataFlows</code></td><td>6</td><td>9</td><td></td></tr><tr><td><code>ProjectConfiguration</code></td><td>6</td><td>12</td><td></td></tr><tr><td><code>Dependencies</code></td><td>6</td><td>9</td><td></td></tr>
                 </table>
             </div>
         </div>
@@ -122,12 +122,12 @@ ul { margin-left: 1.25rem; } li { margin-bottom: 0.25rem; }
             <div class="card">
                 <div class="code-header">
                     <h2>effortless-rulebook.json</h2>
-                    <span class="code-info">29 KB</span>
+                    <span class="code-info">42 KB</span>
                 </div>
                 <pre class="line-numbers"><code class="language-json">{
   &quot;$schema&quot;: &quot;https://example.com/cmcc-schema/v1&quot;,
   &quot;Name&quot;: &quot;Effortlessly Invariant Rulesbooks (ERB) - Project Architecture&quot;,
-  &quot;Description&quot;: &quot;Meta-rulebook describing the ERB project itself: all moving parts, orchestration flows, substrates, and their interdependencies.&quot;,
+  &quot;Description&quot;: &quot;Meta-rulebook describing the ERB project itself: rulebook-as-hub, project-scoped builds via ssotme-proxy, admin portal UX, and conformance testing across substrates.&quot;,
   &quot;ProjectMetadata&quot;: {
     &quot;Description&quot;: &quot;Project overview&quot;,
     &quot;schema&quot;: [
@@ -149,14 +149,35 @@ ul { margin-left: 1.25rem; } li { margin-bottom: 0.25rem; }
         &quot;datatype&quot;: &quot;string&quot;,
         &quot;type&quot;: &quot;raw&quot;,
         &quot;nullable&quot;: false,
-        &quot;Description&quot;: &quot;Demonstrate that a single declarative rulebook can generate working code in multiple execution substrates (Python, Go, SQL, etc.) that all produce identical results&quot;
+        &quot;Description&quot;: &quot;Demonstrate that a single declarative rulebook can generate working code in multiple execution substrates that all produce identical results&quot;
       },
       {
         &quot;name&quot;: &quot;Architecture&quot;,
         &quot;datatype&quot;: &quot;string&quot;,
         &quot;type&quot;: &quot;raw&quot;,
         &quot;nullable&quot;: true,
-        &quot;Description&quot;: &quot;Hub-and-spokes around Airtable; rulebook is the disposable IR&quot;
+        &quot;Description&quot;: &quot;Rulebook-as-hub: effortless-rulebook.json is the durable SSoT; Airtable / LLM edits / admin portal are peer input spokes&quot;
+      },
+      {
+        &quot;name&quot;: &quot;EntryPoint&quot;,
+        &quot;datatype&quot;: &quot;string&quot;,
+        &quot;type&quot;: &quot;raw&quot;,
+        &quot;nullable&quot;: true,
+        &quot;Description&quot;: &quot;./start.sh boots the admin portal (web UI) — local dev experience for any rulebook project&quot;
+      },
+      {
+        &quot;name&quot;: &quot;PortalUrl&quot;,
+        &quot;datatype&quot;: &quot;string&quot;,
+        &quot;type&quot;: &quot;raw&quot;,
+        &quot;nullable&quot;: true,
+        &quot;Description&quot;: &quot;http://localhost:7777 — admin portal served by run-web-portal.sh&quot;
+      },
+      {
+        &quot;name&quot;: &quot;ProxyUrl&quot;,
+        &quot;datatype&quot;: &quot;string&quot;,
+        &quot;type&quot;: &quot;raw&quot;,
+        &quot;nullable&quot;: true,
+        &quot;Description&quot;: &quot;http://localhost:4242 — ssotme-proxy serving substrate transpilers as HTTP routes&quot;
       },
       {
         &quot;name&quot;: &quot;RepositoryRoot&quot;,
@@ -170,8 +191,11 @@ ul { margin-left: 1.25rem; } li { margin-bottom: 0.25rem; }
       {
         &quot;ProjectId&quot;: &quot;erb-001&quot;,
         &quot;Name&quot;: &quot;Effortlessly Invariant Rulesbooks&quot;,
-        &quot;Purpose&quot;: &quot;Multi-substrate code generation from declarative rulebooks&quot;,
-        &quot;Architecture&quot;: &quot;Airtable (UI) → effortless-rulebook.json (IR) → Substrates (Postgres, Python, Go, Excel, OWL, etc.)&quot;,
+        &quot;Purpose&quot;: &quot;Multi-substrate code generation from declarative rulebooks; rulebook JSON is the durable SSoT&quot;,
+        &quot;Architecture&quot;: &quot;effortless-rulebook.json (HUB / durable SSoT) ← input spokes: Airtable, LLM edits, admin portal Postgres editor → output spokes: 10+ substrates via ssotme-proxy&quot;,
+        &quot;EntryPoint&quot;: &quot;./start.sh&quot;,
+        &quot;PortalUrl&quot;: &quot;http://localhost:7777&quot;,
+        &quot;ProxyUrl&quot;: &quot;http://localhost:4242&quot;,
         &quot;RepositoryRoot&quot;: &quot;effortlessly-invariant-rulesbooks/&quot;
       }
     ]
@@ -399,6 +423,14 @@ ul { margin-left: 1.25rem; } li { margin-bottom: 0.25rem; }
     ],
     &quot;data&quot;: [
       {
+        &quot;ComponentId&quot;: &quot;orch-000&quot;,
+        &quot;Name&quot;: &quot;Start Entry&quot;,
+        &quot;FilePath&quot;: &quot;start.sh&quot;,
+        &quot;Language&quot;: &quot;Bash&quot;,
+        &quot;Purpose&quot;: &quot;Top-level entry point: boots the admin portal (web UI) for the active rulebook project; falls back to legacy CLI menu with --cli flag&quot;,
+        &quot;Dependencies&quot;: &quot;run-web-portal.sh, orchestrate.sh&quot;
+      },
+      {
         &quot;ComponentId&quot;: &quot;orch-001&quot;,
         &quot;Name&quot;: &quot;Shared Utilities&quot;,
         &quot;FilePath&quot;: &quot;orchestration/shared.py&quot;,
@@ -419,7 +451,7 @@ ul { margin-left: 1.25rem; } li { margin-bottom: 0.25rem; }
         &quot;Name&quot;: &quot;Main Injector&quot;,
         &quot;FilePath&quot;: &quot;orchestration/inject.py&quot;,
         &quot;Language&quot;: &quot;Python&quot;,
-        &quot;Purpose&quot;: &quot;Dispatch rulebook to all substrate injectors; optionally clean generated files&quot;,
+        &quot;Purpose&quot;: &quot;Legacy: dispatch rulebook to all substrate injectors. Superseded by ssotme-proxy + `effortless build` per project, but retained for CI/cleanup.&quot;,
         &quot;Dependencies&quot;: &quot;shared.py, all substrate injectors&quot;
       },
       {
@@ -427,7 +459,7 @@ ul { margin-left: 1.25rem; } li { margin-bottom: 0.25rem; }
         &quot;Name&quot;: &quot;Orchestrator Menu&quot;,
         &quot;FilePath&quot;: &quot;orchestration/orchestrate.sh&quot;,
         &quot;Language&quot;: &quot;Bash&quot;,
-        &quot;Purpose&quot;: &quot;Interactive CLI menu: run substrates, manage Airtable sync, generate reports&quot;,
+        &quot;Purpose&quot;: &quot;Legacy interactive CLI menu: run substrates, manage Airtable sync, generate reports. Reachable via `./start.sh --cli`.&quot;,
         &quot;Dependencies&quot;: &quot;inject.py, rulebook-cache.py, base-manager.py&quot;
       },
       {
@@ -435,7 +467,7 @@ ul { margin-left: 1.25rem; } li { margin-bottom: 0.25rem; }
         &quot;Name&quot;: &quot;Rulebook Cache&quot;,
         &quot;FilePath&quot;: &quot;orchestration/rulebook-cache.py&quot;,
         &quot;Language&quot;: &quot;Python&quot;,
-        &quot;Purpose&quot;: &quot;Pull rulebook from Airtable API; fallback to offline cache if unavailable&quot;,
+        &quot;Purpose&quot;: &quot;Pull rulebook from an Airtable base into the rulebook JSON; fallback to offline cache if API unavailable. One of several input spokes.&quot;,
         &quot;Dependencies&quot;: &quot;shared.py&quot;
       },
       {
@@ -443,7 +475,7 @@ ul { margin-left: 1.25rem; } li { margin-bottom: 0.25rem; }
         &quot;Name&quot;: &quot;Base Manager&quot;,
         &quot;FilePath&quot;: &quot;orchestration/base-manager.py&quot;,
         &quot;Language&quot;: &quot;Python&quot;,
-        &quot;Purpose&quot;: &quot;List, select, and swap Airtable bases; fetch base metadata from API&quot;,
+        &quot;Purpose&quot;: &quot;List, select, and swap Airtable bases when Airtable is used as an input spoke&quot;,
         &quot;Dependencies&quot;: &quot;rulebook-cache.py&quot;
       },
       {
@@ -457,18 +489,26 @@ ul { margin-left: 1.25rem; } li { margin-bottom: 0.25rem; }
       {
         &quot;ComponentId&quot;: &quot;orch-008&quot;,
         &quot;Name&quot;: &quot;Report Generator&quot;,
-        &quot;FilePath&quot;: &quot;orchestration/generate-report.sh&quot;,
-        &quot;Language&quot;: &quot;Bash&quot;,
+        &quot;FilePath&quot;: &quot;orchestration/generate-report.py&quot;,
+        &quot;Language&quot;: &quot;Python&quot;,
         &quot;Purpose&quot;: &quot;Generate HTML conformance report comparing substrate outputs&quot;,
         &quot;Dependencies&quot;: &quot;test-orchestrator.py&quot;
+      },
+      {
+        &quot;ComponentId&quot;: &quot;orch-009&quot;,
+        &quot;Name&quot;: &quot;Active Domain Pointer&quot;,
+        &quot;FilePath&quot;: &quot;orchestration/active-domain.txt&quot;,
+        &quot;Language&quot;: &quot;Text&quot;,
+        &quot;Purpose&quot;: &quot;Single line naming the active rulebook project under rulebook-examples/ — read by start.sh, admin portal, orchestrate.sh&quot;,
+        &quot;Dependencies&quot;: &quot;None&quot;
       }
     ]
   },
-  &quot;AirtableIntegration&quot;: {
-    &quot;Description&quot;: &quot;Airtable as input spoke: schema + data source pulled into rulebook&quot;,
+  &quot;RulebookSourceSpokes&quot;: {
+    &quot;Description&quot;: &quot;Peer input spokes that can write into effortless-rulebook.json. The rulebook JSON is the durable SSoT; these are interchangeable sources.&quot;,
     &quot;schema&quot;: [
       {
-        &quot;name&quot;: &quot;ComponentId&quot;,
+        &quot;name&quot;: &quot;SpokeId&quot;,
         &quot;datatype&quot;: &quot;string&quot;,
         &quot;type&quot;: &quot;raw&quot;,
         &quot;nullable&quot;: false
@@ -480,10 +520,25 @@ ul { margin-left: 1.25rem; } li { margin-bottom: 0.25rem; }
         &quot;nullable&quot;: false
       },
       {
-        &quot;name&quot;: &quot;FilePath&quot;,
+        &quot;name&quot;: &quot;Kind&quot;,
         &quot;datatype&quot;: &quot;string&quot;,
         &quot;type&quot;: &quot;raw&quot;,
-        &quot;nullable&quot;: true
+        &quot;nullable&quot;: false,
+        &quot;Description&quot;: &quot;airtable | admin-portal | llm-direct | manual-json | reverse-sync&quot;
+      },
+      {
+        &quot;name&quot;: &quot;Direction&quot;,
+        &quot;datatype&quot;: &quot;string&quot;,
+        &quot;type&quot;: &quot;raw&quot;,
+        &quot;nullable&quot;: false,
+        &quot;Description&quot;: &quot;input (writes into rulebook) | output (reads from rulebook) | bidirectional&quot;
+      },
+      {
+        &quot;name&quot;: &quot;Required&quot;,
+        &quot;datatype&quot;: &quot;boolean&quot;,
+        &quot;type&quot;: &quot;raw&quot;,
+        &quot;nullable&quot;: false,
+        &quot;Description&quot;: &quot;False for all input spokes — any one is sufficient, none is required&quot;
       },
       {
         &quot;name&quot;: &quot;Purpose&quot;,
@@ -492,41 +547,198 @@ ul { margin-left: 1.25rem; } li { margin-bottom: 0.25rem; }
         &quot;nullable&quot;: false
       },
       {
-        &quot;name&quot;: &quot;Role&quot;,
+        &quot;name&quot;: &quot;Authority&quot;,
         &quot;datatype&quot;: &quot;string&quot;,
         &quot;type&quot;: &quot;raw&quot;,
-        &quot;nullable&quot;: false,
-        &quot;Description&quot;: &quot;input (pull from Airtable), output (push to Airtable), or bidirectional&quot;
+        &quot;nullable&quot;: true,
+        &quot;Description&quot;: &quot;On conflict, the rulebook JSON wins; spokes are the editors, not the SSoT&quot;
       }
     ],
     &quot;data&quot;: [
       {
-        &quot;ComponentId&quot;: &quot;airtable-001&quot;,
-        &quot;Name&quot;: &quot;airtable-to-rulebook CLI&quot;,
-        &quot;FilePath&quot;: null,
-        &quot;Purpose&quot;: &quot;Official Effortless tool: exports schema + data from Airtable base to effortless-rulebook.json&quot;,
-        &quot;Role&quot;: &quot;input&quot;
+        &quot;SpokeId&quot;: &quot;spoke-001&quot;,
+        &quot;Name&quot;: &quot;Admin Portal (Postgres editor)&quot;,
+        &quot;Kind&quot;: &quot;admin-portal&quot;,
+        &quot;Direction&quot;: &quot;bidirectional&quot;,
+        &quot;Required&quot;: false,
+        &quot;Purpose&quot;: &quot;Local web UI; edits flow through Postgres for real-time UX, write-through to rulebook JSON on every save. Primary developer experience.&quot;,
+        &quot;Authority&quot;: &quot;Rulebook JSON is durable SSoT; Postgres is the live editor only and can be dropped/rebuilt from JSON at any time.&quot;
       },
       {
-        &quot;ComponentId&quot;: &quot;airtable-002&quot;,
-        &quot;Name&quot;: &quot;rulebook-to-airtable CLI&quot;,
-        &quot;FilePath&quot;: null,
-        &quot;Purpose&quot;: &quot;Official Effortless tool: push formula updates back to Airtable (reverse sync)&quot;,
-        &quot;Role&quot;: &quot;output&quot;
+        &quot;SpokeId&quot;: &quot;spoke-002&quot;,
+        &quot;Name&quot;: &quot;Airtable (airtable-to-rulebook)&quot;,
+        &quot;Kind&quot;: &quot;airtable&quot;,
+        &quot;Direction&quot;: &quot;input&quot;,
+        &quot;Required&quot;: false,
+        &quot;Purpose&quot;: &quot;Official Effortless tool: pull schema + data from an Airtable base into the rulebook JSON. Optional input spoke (was the historical HEAD).&quot;,
+        &quot;Authority&quot;: &quot;Rulebook JSON wins; reverse-sync is a separate spoke.&quot;
       },
       {
-        &quot;ComponentId&quot;: &quot;airtable-003&quot;,
-        &quot;Name&quot;: &quot;Rulebook Cache (offline mode)&quot;,
-        &quot;FilePath&quot;: &quot;orchestration/rulebook-cache.py&quot;,
-        &quot;Purpose&quot;: &quot;Cache previously-pulled rulebooks; use offline if Airtable API unavailable&quot;,
-        &quot;Role&quot;: &quot;input&quot;
+        &quot;SpokeId&quot;: &quot;spoke-003&quot;,
+        &quot;Name&quot;: &quot;Reverse Sync (rulebook-to-airtable)&quot;,
+        &quot;Kind&quot;: &quot;reverse-sync&quot;,
+        &quot;Direction&quot;: &quot;output&quot;,
+        &quot;Required&quot;: false,
+        &quot;Purpose&quot;: &quot;Push rulebook JSON edits back to an Airtable base for human review&quot;,
+        &quot;Authority&quot;: &quot;Output only; never reads from Airtable.&quot;
       },
       {
-        &quot;ComponentId&quot;: &quot;airtable-004&quot;,
-        &quot;Name&quot;: &quot;ACME Corporation Bases&quot;,
-        &quot;FilePath&quot;: null,
-        &quot;Purpose&quot;: &quot;Demo Airtable bases for BASIC and ADVANCED ontologies; can be swapped at runtime&quot;,
-        &quot;Role&quot;: &quot;input&quot;
+        &quot;SpokeId&quot;: &quot;spoke-004&quot;,
+        &quot;Name&quot;: &quot;LLM Direct Edits&quot;,
+        &quot;Kind&quot;: &quot;llm-direct&quot;,
+        &quot;Direction&quot;: &quot;input&quot;,
+        &quot;Required&quot;: false,
+        &quot;Purpose&quot;: &quot;Claude / agent edits effortless-rulebook.json directly via filesystem; admin portal reflects changes on reload.&quot;,
+        &quot;Authority&quot;: &quot;Rulebook JSON is the canonical surface for LLM edits.&quot;
+      },
+      {
+        &quot;SpokeId&quot;: &quot;spoke-005&quot;,
+        &quot;Name&quot;: &quot;Rulebook Cache (offline)&quot;,
+        &quot;Kind&quot;: &quot;airtable&quot;,
+        &quot;Direction&quot;: &quot;input&quot;,
+        &quot;Required&quot;: false,
+        &quot;Purpose&quot;: &quot;Cache of previously-pulled Airtable rulebooks; used when Airtable API unavailable&quot;,
+        &quot;Authority&quot;: &quot;Last-known-good copy; superseded by any newer authoritative pull.&quot;
+      },
+      {
+        &quot;SpokeId&quot;: &quot;spoke-006&quot;,
+        &quot;Name&quot;: &quot;Manual JSON Edits&quot;,
+        &quot;Kind&quot;: &quot;manual-json&quot;,
+        &quot;Direction&quot;: &quot;input&quot;,
+        &quot;Required&quot;: false,
+        &quot;Purpose&quot;: &quot;Developer hand-edits effortless-rulebook.json in their editor; no special tooling required.&quot;,
+        &quot;Authority&quot;: &quot;Rulebook JSON is the file under version control.&quot;
+      }
+    ]
+  },
+  &quot;SsotmeProxy&quot;: {
+    &quot;Description&quot;: &quot;Local HTTP transpiler server on localhost:4242. Each transpiler is an HTTP route; injectors are the route bodies. Used by `effortless build` to call substrate generators uniformly.&quot;,
+    &quot;schema&quot;: [
+      {
+        &quot;name&quot;: &quot;RouteId&quot;,
+        &quot;datatype&quot;: &quot;string&quot;,
+        &quot;type&quot;: &quot;raw&quot;,
+        &quot;nullable&quot;: false
+      },
+      {
+        &quot;name&quot;: &quot;Route&quot;,
+        &quot;datatype&quot;: &quot;string&quot;,
+        &quot;type&quot;: &quot;raw&quot;,
+        &quot;nullable&quot;: false,
+        &quot;Description&quot;: &quot;POST /{route-name}&quot;
+      },
+      {
+        &quot;name&quot;: &quot;SubstrateId&quot;,
+        &quot;datatype&quot;: &quot;string&quot;,
+        &quot;type&quot;: &quot;raw&quot;,
+        &quot;nullable&quot;: true,
+        &quot;Description&quot;: &quot;FK to ExecutionSubstrates.SubstrateId&quot;
+      },
+      {
+        &quot;name&quot;: &quot;InjectorScript&quot;,
+        &quot;datatype&quot;: &quot;string&quot;,
+        &quot;type&quot;: &quot;raw&quot;,
+        &quot;nullable&quot;: true,
+        &quot;Description&quot;: &quot;Backing script that the route runs; null for upstream Effortless tools (e.g. airtable-to-rulebook)&quot;
+      },
+      {
+        &quot;name&quot;: &quot;Description&quot;,
+        &quot;datatype&quot;: &quot;string&quot;,
+        &quot;type&quot;: &quot;raw&quot;,
+        &quot;nullable&quot;: false
+      }
+    ],
+    &quot;data&quot;: [
+      {
+        &quot;RouteId&quot;: &quot;proxy-001&quot;,
+        &quot;Route&quot;: &quot;POST /airtable-to-rulebook&quot;,
+        &quot;SubstrateId&quot;: null,
+        &quot;InjectorScript&quot;: null,
+        &quot;Description&quot;: &quot;Pull rulebook from Airtable base (delegates to official Effortless tool)&quot;
+      },
+      {
+        &quot;RouteId&quot;: &quot;proxy-002&quot;,
+        &quot;Route&quot;: &quot;POST /rulebook-to-python&quot;,
+        &quot;SubstrateId&quot;: &quot;substrate-002&quot;,
+        &quot;InjectorScript&quot;: &quot;execution-substrates/python/inject-into-python.py&quot;,
+        &quot;Description&quot;: &quot;Generate Python dataclass + calc library from rulebook&quot;
+      },
+      {
+        &quot;RouteId&quot;: &quot;proxy-003&quot;,
+        &quot;Route&quot;: &quot;POST /rulebook-to-golang&quot;,
+        &quot;SubstrateId&quot;: &quot;substrate-003&quot;,
+        &quot;InjectorScript&quot;: &quot;execution-substrates/golang/inject-into-golang.py&quot;,
+        &quot;Description&quot;: &quot;Generate Go structs + business logic from rulebook&quot;
+      },
+      {
+        &quot;RouteId&quot;: &quot;proxy-004&quot;,
+        &quot;Route&quot;: &quot;POST /rulebook-to-binary&quot;,
+        &quot;SubstrateId&quot;: &quot;substrate-001&quot;,
+        &quot;InjectorScript&quot;: &quot;execution-substrates/binary/inject-into-binary.py&quot;,
+        &quot;Description&quot;: &quot;Generate ARM64 assembly calculation stub from rulebook&quot;
+      },
+      {
+        &quot;RouteId&quot;: &quot;proxy-005&quot;,
+        &quot;Route&quot;: &quot;POST /rulebook-to-cobol&quot;,
+        &quot;SubstrateId&quot;: null,
+        &quot;InjectorScript&quot;: &quot;execution-substrates/cobol/inject-into-cobol.py&quot;,
+        &quot;Description&quot;: &quot;Generate COBOL computation program from rulebook&quot;
+      },
+      {
+        &quot;RouteId&quot;: &quot;proxy-006&quot;,
+        &quot;Route&quot;: &quot;POST /rulebook-to-csv&quot;,
+        &quot;SubstrateId&quot;: &quot;substrate-005&quot;,
+        &quot;InjectorScript&quot;: &quot;execution-substrates/csv/inject-into-csv.py&quot;,
+        &quot;Description&quot;: &quot;Generate CSV exports + rulebook.xlsx from rulebook&quot;
+      },
+      {
+        &quot;RouteId&quot;: &quot;proxy-007&quot;,
+        &quot;Route&quot;: &quot;POST /rulebook-to-xlsx&quot;,
+        &quot;SubstrateId&quot;: &quot;substrate-006&quot;,
+        &quot;InjectorScript&quot;: &quot;execution-substrates/xlsx/inject-into-xlsx.py&quot;,
+        &quot;Description&quot;: &quot;Generate Excel workbook with formulas from rulebook&quot;
+      },
+      {
+        &quot;RouteId&quot;: &quot;proxy-008&quot;,
+        &quot;Route&quot;: &quot;POST /rulebook-to-uml&quot;,
+        &quot;SubstrateId&quot;: &quot;substrate-007&quot;,
+        &quot;InjectorScript&quot;: &quot;execution-substrates/uml/inject-into-uml.py&quot;,
+        &quot;Description&quot;: &quot;Generate PlantUML class diagram + OCL constraints from rulebook&quot;
+      },
+      {
+        &quot;RouteId&quot;: &quot;proxy-009&quot;,
+        &quot;Route&quot;: &quot;POST /rulebook-to-owl&quot;,
+        &quot;SubstrateId&quot;: &quot;substrate-008&quot;,
+        &quot;InjectorScript&quot;: &quot;execution-substrates/owl/inject-into-owl.py&quot;,
+        &quot;Description&quot;: &quot;Generate RDF/OWL ontology from rulebook&quot;
+      },
+      {
+        &quot;RouteId&quot;: &quot;proxy-010&quot;,
+        &quot;Route&quot;: &quot;POST /rulebook-to-english&quot;,
+        &quot;SubstrateId&quot;: null,
+        &quot;InjectorScript&quot;: &quot;execution-substrates/english/inject-into-english.py&quot;,
+        &quot;Description&quot;: &quot;Generate plain-English business-rule narrative from rulebook&quot;
+      },
+      {
+        &quot;RouteId&quot;: &quot;proxy-011&quot;,
+        &quot;Route&quot;: &quot;POST /rulebook-to-explain-dag&quot;,
+        &quot;SubstrateId&quot;: &quot;substrate-009&quot;,
+        &quot;InjectorScript&quot;: &quot;execution-substrates/explain-dag/inject-into-explain-dag.py&quot;,
+        &quot;Description&quot;: &quot;Generate JSON derivation-tracing DAG spec from rulebook&quot;
+      },
+      {
+        &quot;RouteId&quot;: &quot;proxy-012&quot;,
+        &quot;Route&quot;: &quot;POST /rulebook-to-airtable&quot;,
+        &quot;SubstrateId&quot;: null,
+        &quot;InjectorScript&quot;: &quot;execution-substrates/airtable/inject-into-airtable.py&quot;,
+        &quot;Description&quot;: &quot;Sync rulebook schema back into an Airtable base (output spoke)&quot;
+      },
+      {
+        &quot;RouteId&quot;: &quot;proxy-013&quot;,
+        &quot;Route&quot;: &quot;GET /ping&quot;,
+        &quot;SubstrateId&quot;: null,
+        &quot;InjectorScript&quot;: null,
+        &quot;Description&quot;: &quot;Health check + transpiler catalog discovery&quot;
       }
     ]
   },
@@ -760,43 +972,79 @@ ul { margin-left: 1.25rem; } li { margin-bottom: 0.25rem; }
         &quot;type&quot;: &quot;raw&quot;,
         &quot;nullable&quot;: true,
         &quot;Description&quot;: &quot;Artifacts produced&quot;
+      },
+      {
+        &quot;name&quot;: &quot;Invariant&quot;,
+        &quot;datatype&quot;: &quot;string&quot;,
+        &quot;type&quot;: &quot;raw&quot;,
+        &quot;nullable&quot;: true,
+        &quot;Description&quot;: &quot;Hard rule the flow must preserve (e.g. write-through, SSoT precedence)&quot;
       }
     ],
     &quot;data&quot;: [
       {
         &quot;FlowId&quot;: &quot;flow-001&quot;,
-        &quot;Name&quot;: &quot;Standard Rulebook → Substrates&quot;,
-        &quot;Steps&quot;: &quot;Load rulebook.json | Dispatch to all injectors | Generate substrate code | Package artifacts&quot;,
-        &quot;Triggers&quot;: &quot;User selects option A in orchestrator menu&quot;,
-        &quot;Outputs&quot;: &quot;Generated code in each execution-substrates/{tech}/ folder&quot;
+        &quot;Name&quot;: &quot;Start → Admin Portal&quot;,
+        &quot;Steps&quot;: &quot;User runs ./start.sh | Detect active rulebook project | Start ssotme-proxy on :4242 if not running | Start admin portal backend on :7777 (auto-init Postgres + apply migrations from rulebook) | Open browser to http://localhost:7777&quot;,
+        &quot;Triggers&quot;: &quot;User runs `./start.sh` (default entry point)&quot;,
+        &quot;Outputs&quot;: &quot;Live admin portal in browser, ssotme-proxy + backend processes running&quot;
       },
       {
         &quot;FlowId&quot;: &quot;flow-002&quot;,
-        &quot;Name&quot;: &quot;Pull from Airtable&quot;,
-        &quot;Steps&quot;: &quot;Call airtable-to-rulebook CLI | Write effortless-rulebook.json | Cache offline version&quot;,
-        &quot;Triggers&quot;: &quot;User selects option P (Pull &amp; Inject) or changes base via option B&quot;,
-        &quot;Outputs&quot;: &quot;effortless-rulebook/effortless-rulebook.json, rulebook cache&quot;
+        &quot;Name&quot;: &quot;Project Build (via ssotme-proxy)&quot;,
+        &quot;Steps&quot;: &quot;User triggers build in admin portal OR runs `effortless build` in active project | effortless CLI walks ProjectTranspilers in active project&#x27;s effortless.json | For each transpiler with proxy URL, POST rulebook to localhost:4242 | Proxy invokes injector script | Generated files written to project&#x27;s output folders&quot;,
+        &quot;Triggers&quot;: &quot;Admin portal Build button, CLI `effortless build`, or post-save hook after rulebook edit&quot;,
+        &quot;Outputs&quot;: &quot;Substrate code generated under rulebook-examples/{project}/{substrate}/&quot;
       },
       {
         &quot;FlowId&quot;: &quot;flow-003&quot;,
-        &quot;Name&quot;: &quot;Conformance Testing&quot;,
-        &quot;Steps&quot;: &quot;Load test cases YAML | Run each substrate&#x27;s take-test.py | Collect outputs | Compare results | Generate report&quot;,
-        &quot;Triggers&quot;: &quot;User selects option V (View Results) or automatic after injection&quot;,
-        &quot;Outputs&quot;: &quot;conformance-report.html, pass/fail matrix, mismatch details&quot;
+        &quot;Name&quot;: &quot;Pull from Airtable (optional input spoke)&quot;,
+        &quot;Steps&quot;: &quot;User chooses &#x27;Pull from Airtable&#x27; in admin portal | Call airtable-to-rulebook | Write effortless-rulebook.json | Reload portal Postgres editor from JSON&quot;,
+        &quot;Triggers&quot;: &quot;Admin portal action OR legacy CLI menu&quot;,
+        &quot;Outputs&quot;: &quot;Updated effortless-rulebook.json, portal Postgres rehydrated&quot;
       },
       {
         &quot;FlowId&quot;: &quot;flow-004&quot;,
-        &quot;Name&quot;: &quot;Clean Generated Files&quot;,
-        &quot;Steps&quot;: &quot;Delete all generated outputs in each execution-substrates/ folder&quot;,
-        &quot;Triggers&quot;: &quot;User selects option C (Clean)&quot;,
-        &quot;Outputs&quot;: &quot;Empty substrate directories ready for fresh injection&quot;
+        &quot;Name&quot;: &quot;Admin Save (Write-Through Invariant)&quot;,
+        &quot;Steps&quot;: &quot;Developer edits in portal | Backend writes to Postgres (live editor state) | SAME REQUEST writes to effortless-rulebook.json on disk | Backend returns success only if BOTH writes succeeded | Optional: trigger flow-002 (rebuild substrates)&quot;,
+        &quot;Triggers&quot;: &quot;Any save action in admin portal (table edit, field edit, formula edit, sample data edit)&quot;,
+        &quot;Outputs&quot;: &quot;Updated Postgres row, updated effortless-rulebook.json, optional substrate rebuild&quot;,
+        &quot;Invariant&quot;: &quot;Postgres is the EDITOR; effortless-rulebook.json is the DURABLE SSoT. If Postgres is dropped, the rulebook reconstitutes it. If the JSON is dropped, the editor has no source of truth.&quot;
       },
       {
         &quot;FlowId&quot;: &quot;flow-005&quot;,
-        &quot;Name&quot;: &quot;Swap Ontologies (Hub Promotion)&quot;,
-        &quot;Steps&quot;: &quot;User selects domain in effortless-rulebooks/ | Point orchestrator to domain&#x27;s rulebook | Re-run injection &amp; tests with new domain&quot;,
-        &quot;Triggers&quot;: &quot;Rulebook hub promotion complete; becomes the primary SSoT instead of Airtable&quot;,
-        &quot;Outputs&quot;: &quot;All substrates regenerated for new domain; conformance verified&quot;
+        &quot;Name&quot;: &quot;Portal Bootstrap (auto-create DB + migrate)&quot;,
+        &quot;Steps&quot;: &quot;Portal backend boots | Check if PG database &#x27;erb_admin_&lt;project&gt;&#x27; exists | If missing, create it | Read effortless-rulebook.json | Run rulebook-to-portal-schema migration (creates tables for rulebook entities + AppUsers + AppRoles + AppNav) | Seed Postgres rows from rulebook JSON | Mark bootstrap complete&quot;,
+        &quot;Triggers&quot;: &quot;First boot of admin portal for a project, OR explicit reset action&quot;,
+        &quot;Outputs&quot;: &quot;Postgres database ready for editing, portal navigation populated&quot;
+      },
+      {
+        &quot;FlowId&quot;: &quot;flow-006&quot;,
+        &quot;Name&quot;: &quot;Rehydrate Postgres from Rulebook JSON&quot;,
+        &quot;Steps&quot;: &quot;User drops or corrupts Postgres | User runs ./start.sh or clicks Reset Editor | Backend re-runs flow-005 | Editor is back online from JSON SSoT&quot;,
+        &quot;Triggers&quot;: &quot;Manual reset, DB loss, or version-control checkout to a different rulebook&quot;,
+        &quot;Outputs&quot;: &quot;Postgres editor rebuilt to match rulebook JSON exactly&quot;
+      },
+      {
+        &quot;FlowId&quot;: &quot;flow-007&quot;,
+        &quot;Name&quot;: &quot;Conformance Testing&quot;,
+        &quot;Steps&quot;: &quot;Load test cases YAML | Run each substrate&#x27;s take-test.py | Collect outputs | Compare results | Generate report | Display in admin portal Tests screen&quot;,
+        &quot;Triggers&quot;: &quot;Admin portal &#x27;Run Tests&#x27; button or CLI option V&quot;,
+        &quot;Outputs&quot;: &quot;conformance-report.html, pass/fail matrix shown in portal&quot;
+      },
+      {
+        &quot;FlowId&quot;: &quot;flow-008&quot;,
+        &quot;Name&quot;: &quot;Switch Active Project&quot;,
+        &quot;Steps&quot;: &quot;User selects a different rulebook project in portal | Update orchestration/active-domain.txt | Reload portal pointing at new project&#x27;s rulebook | flow-005 if Postgres for that project not yet bootstrapped&quot;,
+        &quot;Triggers&quot;: &quot;Project switcher in admin portal nav&quot;,
+        &quot;Outputs&quot;: &quot;Portal now editing the chosen project&#x27;s rulebook + Postgres editor&quot;
+      },
+      {
+        &quot;FlowId&quot;: &quot;flow-009&quot;,
+        &quot;Name&quot;: &quot;Clean Generated Files&quot;,
+        &quot;Steps&quot;: &quot;User triggers Clean in portal Tech Tools OR CLI | Walks ProjectTranspilers | Each route invoked with clean=true | Generated outputs removed&quot;,
+        &quot;Triggers&quot;: &quot;Tech Tools → Clean Build, or CLI option C&quot;,
+        &quot;Outputs&quot;: &quot;Empty substrate output directories&quot;
       }
     ]
   },
@@ -895,8 +1143,32 @@ ul { margin-left: 1.25rem; } li { margin-bottom: 0.25rem; }
         &quot;FileName&quot;: &quot;effortless-rulebook.json&quot;,
         &quot;FilePath&quot;: &quot;effortless-rulebook/effortless-rulebook.json&quot;,
         &quot;Format&quot;: &quot;JSON&quot;,
-        &quot;Purpose&quot;: &quot;Core rulebook: entity schemas, field types, formulas, sample data&quot;,
-        &quot;MaintainedBy&quot;: &quot;tool (airtable-to-rulebook CLI pulls from Airtable)&quot;
+        &quot;Purpose&quot;: &quot;DURABLE SSOT: entity schemas, field types, formulas, sample data, admin portal config (roles/nav/screens/AppUsers). Written by any input spoke; read by every output spoke.&quot;,
+        &quot;MaintainedBy&quot;: &quot;any spoke: admin portal save, airtable-to-rulebook pull, LLM direct edit, or human hand-edit&quot;
+      },
+      {
+        &quot;ConfigId&quot;: &quot;config-010&quot;,
+        &quot;FileName&quot;: &quot;run-web-portal.sh&quot;,
+        &quot;FilePath&quot;: &quot;./run-web-portal.sh&quot;,
+        &quot;Format&quot;: &quot;Shell&quot;,
+        &quot;Purpose&quot;: &quot;Boot ssotme-proxy + admin portal backend + open browser. Invoked by ./start.sh.&quot;,
+        &quot;MaintainedBy&quot;: &quot;human&quot;
+      },
+      {
+        &quot;ConfigId&quot;: &quot;config-011&quot;,
+        &quot;FileName&quot;: &quot;admin-portal/package.json&quot;,
+        &quot;FilePath&quot;: &quot;admin-portal/package.json&quot;,
+        &quot;Format&quot;: &quot;JSON&quot;,
+        &quot;Purpose&quot;: &quot;Express backend + Vite/React frontend dependencies for the admin portal&quot;,
+        &quot;MaintainedBy&quot;: &quot;human&quot;
+      },
+      {
+        &quot;ConfigId&quot;: &quot;config-012&quot;,
+        &quot;FileName&quot;: &quot;admin-portal/.portal-state.json&quot;,
+        &quot;FilePath&quot;: &quot;admin-portal/.portal-state.json&quot;,
+        &quot;Format&quot;: &quot;JSON&quot;,
+        &quot;Purpose&quot;: &quot;Per-machine portal state: last-active project, last-logged-in dev user. Not committed.&quot;,
+        &quot;MaintainedBy&quot;: &quot;tool (portal backend)&quot;
       },
       {
         &quot;ConfigId&quot;: &quot;config-008&quot;,

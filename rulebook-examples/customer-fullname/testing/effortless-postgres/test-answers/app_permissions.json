@@ -1,0 +1,170 @@
+[
+  {
+    "permission_id": "perm-001",
+    "resource": "rulebook.entity",
+    "action": "read",
+    "allow": true,
+    "rls_predicate": "true"
+  },
+  {
+    "permission_id": "perm-002",
+    "resource": "rulebook.entity",
+    "action": "update",
+    "allow": false,
+    "rls_predicate": "false"
+  },
+  {
+    "permission_id": "perm-003",
+    "resource": "rulebook.field",
+    "action": "read",
+    "allow": true,
+    "rls_predicate": "true"
+  },
+  {
+    "permission_id": "perm-004",
+    "resource": "rulebook.formula",
+    "action": "read",
+    "allow": true,
+    "rls_predicate": "true"
+  },
+  {
+    "permission_id": "perm-005",
+    "resource": "build",
+    "action": "execute",
+    "allow": false,
+    "rls_predicate": null
+  },
+  {
+    "permission_id": "perm-006",
+    "resource": "test",
+    "action": "read",
+    "allow": true,
+    "rls_predicate": "true"
+  },
+  {
+    "permission_id": "perm-007",
+    "resource": "test",
+    "action": "execute",
+    "allow": false,
+    "rls_predicate": null
+  },
+  {
+    "permission_id": "perm-008",
+    "resource": "tech-tools.postgres",
+    "action": "read",
+    "allow": false,
+    "rls_predicate": null
+  },
+  {
+    "permission_id": "perm-009",
+    "resource": "users",
+    "action": "read",
+    "allow": true,
+    "rls_predicate": "true"
+  },
+  {
+    "permission_id": "perm-010",
+    "resource": "users",
+    "action": "update",
+    "allow": false,
+    "rls_predicate": "false"
+  },
+  {
+    "permission_id": "perm-101",
+    "resource": "rulebook.entity",
+    "action": "read",
+    "allow": true,
+    "rls_predicate": "true"
+  },
+  {
+    "permission_id": "perm-102",
+    "resource": "rulebook.entity",
+    "action": "create",
+    "allow": true,
+    "rls_predicate": "true"
+  },
+  {
+    "permission_id": "perm-103",
+    "resource": "rulebook.entity",
+    "action": "update",
+    "allow": true,
+    "rls_predicate": "true"
+  },
+  {
+    "permission_id": "perm-104",
+    "resource": "rulebook.entity",
+    "action": "delete",
+    "allow": true,
+    "rls_predicate": "true"
+  },
+  {
+    "permission_id": "perm-105",
+    "resource": "rulebook.field",
+    "action": "update",
+    "allow": true,
+    "rls_predicate": "true"
+  },
+  {
+    "permission_id": "perm-106",
+    "resource": "rulebook.formula",
+    "action": "update",
+    "allow": true,
+    "rls_predicate": "true"
+  },
+  {
+    "permission_id": "perm-107",
+    "resource": "build",
+    "action": "execute",
+    "allow": true,
+    "rls_predicate": null
+  },
+  {
+    "permission_id": "perm-108",
+    "resource": "test",
+    "action": "execute",
+    "allow": true,
+    "rls_predicate": null
+  },
+  {
+    "permission_id": "perm-109",
+    "resource": "tech-tools.postgres",
+    "action": "read",
+    "allow": true,
+    "rls_predicate": "true"
+  },
+  {
+    "permission_id": "perm-110",
+    "resource": "tech-tools.postgres",
+    "action": "execute",
+    "allow": true,
+    "rls_predicate": "true"
+  },
+  {
+    "permission_id": "perm-111",
+    "resource": "tech-tools.proxy",
+    "action": "read",
+    "allow": true,
+    "rls_predicate": "true"
+  },
+  {
+    "permission_id": "perm-112",
+    "resource": "users",
+    "action": "create",
+    "allow": true,
+    "rls_predicate": "true"
+  },
+  {
+    "permission_id": "perm-113",
+    "resource": "users",
+    "action": "update",
+    "allow": true,
+    "rls_predicate": "true"
+  },
+  {
+    "permission_id": "perm-114",
+    "resource": "users",
+    "action": "delete",
+    "allow": true,
+    "rls_predicate": "true"
+  }
+]

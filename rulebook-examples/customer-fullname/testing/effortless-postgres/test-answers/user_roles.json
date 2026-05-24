@@ -1,0 +1,24 @@
+[
+  {
+    "role_id": "role-viewer",
+    "name": "Viewer",
+    "access_level": "read",
+    "can_edit_rulebook": false,
+    "can_run_builds": false,
+    "can_access_tech_tools": false,
+    "can_switch_projects": true,
+    "can_manage_users": false,
+    "description": "Read-only walkthrough of the project: see rulebook, browse generated substrates, view test results. Cannot mutate anything."
+  },
+  {
+    "role_id": "role-developer",
+    "name": "Developer",
+    "access_level": "full-admin",
+    "can_edit_rulebook": true,
+    "can_run_builds": true,
+    "can_access_tech_tools": true,
+    "can_switch_projects": true,
+    "can_manage_users": true,
+    "description": "Full admin: edit rulebook, trigger builds, run tests, manage users, access Tech Tools (raw Postgres, proxy logs, conformance internals)."
+  }
+]

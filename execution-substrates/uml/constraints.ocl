@@ -4,10 +4,6 @@
 -- Table: Customers
 context Customers
 
--- Identifier for the customers.
--- Formula: =SUBSTITUTE({{EmailAddress}}, "@", "-")
-derive Name: self.emailAddress.replace('@', '-')
-
 -- Full name is computed from the first and last name of the customer
 -- Formula: ={{LastName}} & ", " & {{FirstName}}
 derive FullName: self.lastName + ', ' + self.firstName

@@ -34,3 +34,7 @@ effortless-rulebook/.cache/
 # that ships with the repo for cold-start Docker support
 testing/_substrate_results.json
 execution-substrates/cobol/erb_test
+
+# Admin portal: per-machine state, proxy log
+admin-portal/.portal-state.json
+admin-portal/.proxy.log

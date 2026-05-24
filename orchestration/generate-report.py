@@ -14,6 +14,7 @@ import json
 import os
 import pickle
 import re
+import sys
 from datetime import datetime
 from html import escape
 
@@ -268,14 +269,37 @@ def load_blank_tests():
 
 
 def get_substrates():
-    """Get list of all substrate directories visible in the report."""
-    substrates = []
+    """Return the substrates this project actually exercises.
+
+    Scoping rule (mirrors orchestrate.sh::get_valid_substrates): intersect
+    the substrates declared by the active project's effortless.json
+    ProjectTranspilers with the substrate directories that exist on disk.
+    Falls back to "everything on disk" only when no effortless.json is
+    present — keeps legacy / un-initialized projects working.
+    """
+    on_disk = []
     if os.path.isdir(SUBSTRATES_DIR):
         for name in sorted(os.listdir(SUBSTRATES_DIR)):
             path = os.path.join(SUBSTRATES_DIR, name)
             if os.path.isdir(path) and not name.startswith('.'):
-                substrates.append(name)
-    return substrates
+                on_disk.append(name)
+
+    # Derive the active domain from PROJECT_ROOT — _apply_rulebook_override
+    # set PROJECT_ROOT to the domain dir (rulebook-examples/<domain>).
+    try:
+        sys.path.insert(0, SCRIPT_DIR)
+        from shared import get_active_project_substrates
+        domain = os.path.basename(PROJECT_ROOT.rstrip(os.sep))
+        declared = get_active_project_substrates(domain)
+    except Exception:
+        declared = []
+
+    if not declared:
+        # No effortless.json — show everything on disk.
+        return on_disk
+
+    on_disk_set = set(on_disk)
+    return [s for s in declared if s in on_disk_set]
 
 
 def load_run_metadata(substrate_name: str) -> dict:

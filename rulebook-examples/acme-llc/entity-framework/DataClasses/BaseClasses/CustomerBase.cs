@@ -24,10 +24,10 @@ namespace SqlOnAir.DotNet.Lib.DataClasses.BaseClasses
         public string? EmailAddress { get; set; }
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
-        // Formula FullName (rulebook: ={{LastName}} & ", " & {{FirstName}})
+        // Formula FullName (rulebook: ={{FirstName}} & " " & {{LastName}})
         public string? FullName
         {
-            get => this.LastName + ", " + this.FirstName; set { }
+            get => this.FirstName + " " + this.LastName; set { }
         }
 
 

@@ -50,6 +50,64 @@ def load_rulebook():
         return json.load(f)
 
 
+def get_active_project_substrates(domain=None):
+    """Return the ordered list of execution substrate names declared by the
+    active project's effortless.json.
+
+    The mapping is: take the last path segment of each transpiler's
+    RelativePath. The Airtable in/out transpilers both map to the airtable
+    substrate; transpilers under /effortless-* RelativePaths map to their
+    effortless-prefixed substrate folders. Disabled transpilers are skipped.
+    Returns [] when the project has no effortless.json — callers should treat
+    that as "no filter, fall back to all substrates on disk".
+    """
+    if domain is None:
+        domain = get_active_domain()
+    project_root = Path(__file__).parent.parent
+    ej = project_root / "rulebook-examples" / domain / "effortless.json"
+    if not ej.exists():
+        return []
+
+    try:
+        with open(ej, 'r', encoding='utf-8') as f:
+            cfg = json.load(f)
+    except Exception:
+        return []
+
+    substrates = []
+    seen = set()
+    for t in cfg.get("ProjectTranspilers", []):
+        if t.get("IsDisabled") or t.get("Enabled") is False:
+            continue
+        rp = (t.get("RelativePath") or "").strip("/")
+        # Airtable in/out spokes both live under /effortless-rulebook[/...].
+        # They aren't computation substrates by themselves — they map to the
+        # airtable oracle substrate.
+        if rp.startswith("effortless-rulebook"):
+            substrate = "airtable"
+        else:
+            # Last segment of the relative path is the substrate folder name
+            # (e.g. /python -> python, /effortless-xlsx -> effortless-xlsx,
+            #  /entity-framework -> effortless-entity-framework via the table
+            #  below).
+            substrate = rp.rsplit("/", 1)[-1] if rp else ""
+
+        # The Effortless-licensed transpilers write to /postgres, /effortless-xlsx,
+        # /entity-framework, but the conformance test runners live under the
+        # effortless-prefixed folders. Apply the small alias table.
+        EFFORTLESS_ALIASES = {
+            "postgres": "effortless-postgres",
+            "entity-framework": "effortless-entity-framework",
+        }
+        substrate = EFFORTLESS_ALIASES.get(substrate, substrate)
+
+        if substrate and substrate not in seen:
+            seen.add(substrate)
+            substrates.append(substrate)
+
+    return substrates
+
+
 def ensure_output_folder():
     """Ensure the current working directory exists (it should, since we run from there)."""
     cwd = Path.cwd()

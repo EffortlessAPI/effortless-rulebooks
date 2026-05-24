@@ -6,7 +6,7 @@
     {
       "Name": "baseId",
       "Value": "",
-      "Description": "No Airtable base — rulebook is maintained directly in effortless-rulebook.json"
+      "Description": "No Airtable base \u2014 rulebook is maintained directly in effortless-rulebook.json"
     }
   ],
   "Transpilers": [
@@ -15,7 +15,8 @@
       "RelativePath": "/effortless-rulebook",
       "CommandLine": "airtable-to-rulebook -o effortless-rulebook.json -account airtable -p \"view=Grid view\"",
       "Enabled": false,
-      "Description": "Pull rulebook from Airtable (disabled — no Airtable base for this meta-ontology)"
+      "Description": "Pull rulebook from Airtable (disabled \u2014 no Airtable base for this meta-ontology) [DISABLED: rulebook JSON is authoritative; re-enable only with explicit user consent]",
+      "IsDisabled": true
     },
     {
       "Name": "rulebooktoairtable",

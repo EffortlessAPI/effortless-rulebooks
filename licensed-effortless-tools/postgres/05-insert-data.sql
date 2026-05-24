@@ -8,8 +8,8 @@
 -- ----------------------------------------------------------------------------
 -- ProjectMetadata: Project overview
 -- ----------------------------------------------------------------------------
-INSERT INTO project_metadata (project_id, name, purpose, architecture, repository_root)
-VALUES ('erb-001', 'Effortlessly Invariant Rulesbooks', 'Multi-substrate code generation from declarative rulebooks', 'Airtable (UI) → effortless-rulebook.json (IR) → Substrates (Postgres, Python, Go, Excel, OWL, etc.)', 'effortlessly-invariant-rulesbooks/') ON CONFLICT (project_id) DO NOTHING;
+INSERT INTO project_metadata (project_id, name, purpose, architecture, entry_point, portal_url, proxy_url, repository_root)
+VALUES ('erb-001', 'Effortlessly Invariant Rulesbooks', 'Multi-substrate code generation from declarative rulebooks; rulebook JSON is the durable SSoT', 'effortless-rulebook.json (HUB / durable SSoT) ← input spokes: Airtable, LLM edits, admin portal Postgres editor → output spokes: 10+ substrates via ssotme-proxy', './start.sh', 'http://localhost:7777', 'http://localhost:4242', 'effortlessly-invariant-rulesbooks/') ON CONFLICT (project_id) DO NOTHING;
 
 -- ----------------------------------------------------------------------------
 -- ExecutionSubstrates: Runtime environments that execute business rules derived from the rulebook
@@ -48,43 +48,97 @@ VALUES ('substrate-010', 'Entity Framework', 'C#/.NET', 'licensed-effortless-too
 -- OrchestrationComponents: Central orchestration logic that coordinates rulebook loading, injection, and testing
 -- ----------------------------------------------------------------------------
 INSERT INTO orchestration_components (component_id, name, file_path, language, purpose, dependencies)
+VALUES ('orch-000', 'Start Entry', 'start.sh', 'Bash', 'Top-level entry point: boots the admin portal (web UI) for the active rulebook project; falls back to legacy CLI menu with --cli flag', 'run-web-portal.sh, orchestrate.sh') ON CONFLICT (component_id) DO NOTHING;
+
+INSERT INTO orchestration_components (component_id, name, file_path, language, purpose, dependencies)
 VALUES ('orch-001', 'Shared Utilities', 'orchestration/shared.py', 'Python', 'Common functions: load_rulebook(), parse formulas, type mapping', 'None') ON CONFLICT (component_id) DO NOTHING;
 
 INSERT INTO orchestration_components (component_id, name, file_path, language, purpose, dependencies)
 VALUES ('orch-002', 'Formula Parser', 'orchestration/formula_parser.py', 'Python', 'Parse and execute Excel-style formulas (IF, AND, OR, CONCAT, LEFT, RIGHT, etc.)', 'shared.py') ON CONFLICT (component_id) DO NOTHING;
 
 INSERT INTO orchestration_components (component_id, name, file_path, language, purpose, dependencies)
-VALUES ('orch-003', 'Main Injector', 'orchestration/inject.py', 'Python', 'Dispatch rulebook to all substrate injectors; optionally clean generated files', 'shared.py, all substrate injectors') ON CONFLICT (component_id) DO NOTHING;
+VALUES ('orch-003', 'Main Injector', 'orchestration/inject.py', 'Python', 'Legacy: dispatch rulebook to all substrate injectors. Superseded by ssotme-proxy + `effortless build` per project, but retained for CI/cleanup.', 'shared.py, all substrate injectors') ON CONFLICT (component_id) DO NOTHING;
 
 INSERT INTO orchestration_components (component_id, name, file_path, language, purpose, dependencies)
-VALUES ('orch-004', 'Orchestrator Menu', 'orchestration/orchestrate.sh', 'Bash', 'Interactive CLI menu: run substrates, manage Airtable sync, generate reports', 'inject.py, rulebook-cache.py, base-manager.py') ON CONFLICT (component_id) DO NOTHING;
+VALUES ('orch-004', 'Orchestrator Menu', 'orchestration/orchestrate.sh', 'Bash', 'Legacy interactive CLI menu: run substrates, manage Airtable sync, generate reports. Reachable via `./start.sh --cli`.', 'inject.py, rulebook-cache.py, base-manager.py') ON CONFLICT (component_id) DO NOTHING;
 
 INSERT INTO orchestration_components (component_id, name, file_path, language, purpose, dependencies)
-VALUES ('orch-005', 'Rulebook Cache', 'orchestration/rulebook-cache.py', 'Python', 'Pull rulebook from Airtable API; fallback to offline cache if unavailable', 'shared.py') ON CONFLICT (component_id) DO NOTHING;
+VALUES ('orch-005', 'Rulebook Cache', 'orchestration/rulebook-cache.py', 'Python', 'Pull rulebook from an Airtable base into the rulebook JSON; fallback to offline cache if API unavailable. One of several input spokes.', 'shared.py') ON CONFLICT (component_id) DO NOTHING;
 
 INSERT INTO orchestration_components (component_id, name, file_path, language, purpose, dependencies)
-VALUES ('orch-006', 'Base Manager', 'orchestration/base-manager.py', 'Python', 'List, select, and swap Airtable bases; fetch base metadata from API', 'rulebook-cache.py') ON CONFLICT (component_id) DO NOTHING;
+VALUES ('orch-006', 'Base Manager', 'orchestration/base-manager.py', 'Python', 'List, select, and swap Airtable bases when Airtable is used as an input spoke', 'rulebook-cache.py') ON CONFLICT (component_id) DO NOTHING;
 
 INSERT INTO orchestration_components (component_id, name, file_path, language, purpose, dependencies)
 VALUES ('orch-007', 'Test Orchestrator', 'orchestration/test-orchestrator.py', 'Python', 'Run all substrate tests; verify conformance (all substrates compute identically)', 'shared.py, all substrate test scripts') ON CONFLICT (component_id) DO NOTHING;
 
 INSERT INTO orchestration_components (component_id, name, file_path, language, purpose, dependencies)
-VALUES ('orch-008', 'Report Generator', 'orchestration/generate-report.sh', 'Bash', 'Generate HTML conformance report comparing substrate outputs', 'test-orchestrator.py') ON CONFLICT (component_id) DO NOTHING;
+VALUES ('orch-008', 'Report Generator', 'orchestration/generate-report.py', 'Python', 'Generate HTML conformance report comparing substrate outputs', 'test-orchestrator.py') ON CONFLICT (component_id) DO NOTHING;
+
+INSERT INTO orchestration_components (component_id, name, file_path, language, purpose, dependencies)
+VALUES ('orch-009', 'Active Domain Pointer', 'orchestration/active-domain.txt', 'Text', 'Single line naming the active rulebook project under rulebook-examples/ — read by start.sh, admin portal, orchestrate.sh', 'None') ON CONFLICT (component_id) DO NOTHING;
 
 -- ----------------------------------------------------------------------------
--- AirtableIntegration: Airtable as input spoke: schema + data source pulled into rulebook
+-- RulebookSourceSpokes: Peer input spokes that can write into effortless-rulebook.json. The rulebook JSON is the durable SSoT; these are interchangeable sources.
 -- ----------------------------------------------------------------------------
-INSERT INTO airtable_integration (component_id, name, file_path, purpose, role)
-VALUES ('airtable-001', 'airtable-to-rulebook CLI', NULL, 'Official Effortless tool: exports schema + data from Airtable base to effortless-rulebook.json', 'input') ON CONFLICT (component_id) DO NOTHING;
+INSERT INTO rulebook_source_spokes (spoke_id, name, kind, direction, required, purpose, authority)
+VALUES ('spoke-001', 'Admin Portal (Postgres editor)', 'admin-portal', 'bidirectional', FALSE, 'Local web UI; edits flow through Postgres for real-time UX, write-through to rulebook JSON on every save. Primary developer experience.', 'Rulebook JSON is durable SSoT; Postgres is the live editor only and can be dropped/rebuilt from JSON at any time.') ON CONFLICT (spoke_id) DO NOTHING;
 
-INSERT INTO airtable_integration (component_id, name, file_path, purpose, role)
-VALUES ('airtable-002', 'rulebook-to-airtable CLI', NULL, 'Official Effortless tool: push formula updates back to Airtable (reverse sync)', 'output') ON CONFLICT (component_id) DO NOTHING;
+INSERT INTO rulebook_source_spokes (spoke_id, name, kind, direction, required, purpose, authority)
+VALUES ('spoke-002', 'Airtable (airtable-to-rulebook)', 'airtable', 'input', FALSE, 'Official Effortless tool: pull schema + data from an Airtable base into the rulebook JSON. Optional input spoke (was the historical HEAD).', 'Rulebook JSON wins; reverse-sync is a separate spoke.') ON CONFLICT (spoke_id) DO NOTHING;
 
-INSERT INTO airtable_integration (component_id, name, file_path, purpose, role)
-VALUES ('airtable-003', 'Rulebook Cache (offline mode)', 'orchestration/rulebook-cache.py', 'Cache previously-pulled rulebooks; use offline if Airtable API unavailable', 'input') ON CONFLICT (component_id) DO NOTHING;
+INSERT INTO rulebook_source_spokes (spoke_id, name, kind, direction, required, purpose, authority)
+VALUES ('spoke-003', 'Reverse Sync (rulebook-to-airtable)', 'reverse-sync', 'output', FALSE, 'Push rulebook JSON edits back to an Airtable base for human review', 'Output only; never reads from Airtable.') ON CONFLICT (spoke_id) DO NOTHING;
 
-INSERT INTO airtable_integration (component_id, name, file_path, purpose, role)
-VALUES ('airtable-004', 'ACME Corporation Bases', NULL, 'Demo Airtable bases for BASIC and ADVANCED ontologies; can be swapped at runtime', 'input') ON CONFLICT (component_id) DO NOTHING;
+INSERT INTO rulebook_source_spokes (spoke_id, name, kind, direction, required, purpose, authority)
+VALUES ('spoke-004', 'LLM Direct Edits', 'llm-direct', 'input', FALSE, 'Claude / agent edits effortless-rulebook.json directly via filesystem; admin portal reflects changes on reload.', 'Rulebook JSON is the canonical surface for LLM edits.') ON CONFLICT (spoke_id) DO NOTHING;
+
+INSERT INTO rulebook_source_spokes (spoke_id, name, kind, direction, required, purpose, authority)
+VALUES ('spoke-005', 'Rulebook Cache (offline)', 'airtable', 'input', FALSE, 'Cache of previously-pulled Airtable rulebooks; used when Airtable API unavailable', 'Last-known-good copy; superseded by any newer authoritative pull.') ON CONFLICT (spoke_id) DO NOTHING;
+
+INSERT INTO rulebook_source_spokes (spoke_id, name, kind, direction, required, purpose, authority)
+VALUES ('spoke-006', 'Manual JSON Edits', 'manual-json', 'input', FALSE, 'Developer hand-edits effortless-rulebook.json in their editor; no special tooling required.', 'Rulebook JSON is the file under version control.') ON CONFLICT (spoke_id) DO NOTHING;
+
+-- ----------------------------------------------------------------------------
+-- SsotmeProxy: Local HTTP transpiler server on localhost:4242. Each transpiler is an HTTP route; injectors are the route bodies. Used by `effortless build` to call substrate generators uniformly.
+-- ----------------------------------------------------------------------------
+INSERT INTO ssotme_proxy (route_id, route, substrate_id, injector_script, description)
+VALUES ('proxy-001', 'POST /airtable-to-rulebook', '24e2281c-ba60-0139-87fd-305ae45031a5', NULL, 'Pull rulebook from Airtable base (delegates to official Effortless tool)') ON CONFLICT (route_id) DO NOTHING;
+
+INSERT INTO ssotme_proxy (route_id, route, substrate_id, injector_script, description)
+VALUES ('proxy-002', 'POST /rulebook-to-python', 'substrate-002', 'execution-substrates/python/inject-into-python.py', 'Generate Python dataclass + calc library from rulebook') ON CONFLICT (route_id) DO NOTHING;
+
+INSERT INTO ssotme_proxy (route_id, route, substrate_id, injector_script, description)
+VALUES ('proxy-003', 'POST /rulebook-to-golang', 'substrate-003', 'execution-substrates/golang/inject-into-golang.py', 'Generate Go structs + business logic from rulebook') ON CONFLICT (route_id) DO NOTHING;
+
+INSERT INTO ssotme_proxy (route_id, route, substrate_id, injector_script, description)
+VALUES ('proxy-004', 'POST /rulebook-to-binary', 'substrate-001', 'execution-substrates/binary/inject-into-binary.py', 'Generate ARM64 assembly calculation stub from rulebook') ON CONFLICT (route_id) DO NOTHING;
+
+INSERT INTO ssotme_proxy (route_id, route, substrate_id, injector_script, description)
+VALUES ('proxy-005', 'POST /rulebook-to-cobol', '40bac77b-bd8b-9797-ef64-a352edbf9a58', 'execution-substrates/cobol/inject-into-cobol.py', 'Generate COBOL computation program from rulebook') ON CONFLICT (route_id) DO NOTHING;
+
+INSERT INTO ssotme_proxy (route_id, route, substrate_id, injector_script, description)
+VALUES ('proxy-006', 'POST /rulebook-to-csv', 'substrate-005', 'execution-substrates/csv/inject-into-csv.py', 'Generate CSV exports + rulebook.xlsx from rulebook') ON CONFLICT (route_id) DO NOTHING;
+
+INSERT INTO ssotme_proxy (route_id, route, substrate_id, injector_script, description)
+VALUES ('proxy-007', 'POST /rulebook-to-xlsx', 'substrate-006', 'execution-substrates/xlsx/inject-into-xlsx.py', 'Generate Excel workbook with formulas from rulebook') ON CONFLICT (route_id) DO NOTHING;
+
+INSERT INTO ssotme_proxy (route_id, route, substrate_id, injector_script, description)
+VALUES ('proxy-008', 'POST /rulebook-to-uml', 'substrate-007', 'execution-substrates/uml/inject-into-uml.py', 'Generate PlantUML class diagram + OCL constraints from rulebook') ON CONFLICT (route_id) DO NOTHING;
+
+INSERT INTO ssotme_proxy (route_id, route, substrate_id, injector_script, description)
+VALUES ('proxy-009', 'POST /rulebook-to-owl', 'substrate-008', 'execution-substrates/owl/inject-into-owl.py', 'Generate RDF/OWL ontology from rulebook') ON CONFLICT (route_id) DO NOTHING;
+
+INSERT INTO ssotme_proxy (route_id, route, substrate_id, injector_script, description)
+VALUES ('proxy-010', 'POST /rulebook-to-english', '8824b83a-1d8f-221b-c23c-44d19cc0619d', 'execution-substrates/english/inject-into-english.py', 'Generate plain-English business-rule narrative from rulebook') ON CONFLICT (route_id) DO NOTHING;
+
+INSERT INTO ssotme_proxy (route_id, route, substrate_id, injector_script, description)
+VALUES ('proxy-011', 'POST /rulebook-to-explain-dag', 'substrate-009', 'execution-substrates/explain-dag/inject-into-explain-dag.py', 'Generate JSON derivation-tracing DAG spec from rulebook') ON CONFLICT (route_id) DO NOTHING;
+
+INSERT INTO ssotme_proxy (route_id, route, substrate_id, injector_script, description)
+VALUES ('proxy-012', 'POST /rulebook-to-airtable', '4af53b6c-f546-c84c-2571-aa9dce250640', 'execution-substrates/airtable/inject-into-airtable.py', 'Sync rulebook schema back into an Airtable base (output spoke)') ON CONFLICT (route_id) DO NOTHING;
+
+INSERT INTO ssotme_proxy (route_id, route, substrate_id, injector_script, description)
+VALUES ('proxy-013', 'GET /ping', '209213b6-805d-5447-4a7e-a58a4c02e047', NULL, 'Health check + transpiler catalog discovery') ON CONFLICT (route_id) DO NOTHING;
 
 -- ----------------------------------------------------------------------------
 -- TestingFramework: Conformance testing: prove all substrates compute identically
@@ -128,20 +182,32 @@ VALUES ('domain-007', 'ACME LLC', 'rulebook-examples/acme-llc/', 'rulebook-examp
 -- ----------------------------------------------------------------------------
 -- CoreDataFlows: End-to-end flows from rulebook to execution and testing
 -- ----------------------------------------------------------------------------
-INSERT INTO core_data_flows (flow_id, name, steps, triggers, outputs)
-VALUES ('flow-001', 'Standard Rulebook → Substrates', 'Load rulebook.json | Dispatch to all injectors | Generate substrate code | Package artifacts', 'User selects option A in orchestrator menu', 'Generated code in each execution-substrates/{tech}/ folder') ON CONFLICT (flow_id) DO NOTHING;
+INSERT INTO core_data_flows (flow_id, name, steps, triggers, outputs, invariant)
+VALUES ('flow-001', 'Start → Admin Portal', 'User runs ./start.sh | Detect active rulebook project | Start ssotme-proxy on :4242 if not running | Start admin portal backend on :7777 (auto-init Postgres + apply migrations from rulebook) | Open browser to http://localhost:7777', 'User runs `./start.sh` (default entry point)', 'Live admin portal in browser, ssotme-proxy + backend processes running', NULL) ON CONFLICT (flow_id) DO NOTHING;
 
-INSERT INTO core_data_flows (flow_id, name, steps, triggers, outputs)
-VALUES ('flow-002', 'Pull from Airtable', 'Call airtable-to-rulebook CLI | Write effortless-rulebook.json | Cache offline version', 'User selects option P (Pull & Inject) or changes base via option B', 'effortless-rulebook/effortless-rulebook.json, rulebook cache') ON CONFLICT (flow_id) DO NOTHING;
+INSERT INTO core_data_flows (flow_id, name, steps, triggers, outputs, invariant)
+VALUES ('flow-002', 'Project Build (via ssotme-proxy)', 'User triggers build in admin portal OR runs `effortless build` in active project | effortless CLI walks ProjectTranspilers in active project''s effortless.json | For each transpiler with proxy URL, POST rulebook to localhost:4242 | Proxy invokes injector script | Generated files written to project''s output folders', 'Admin portal Build button, CLI `effortless build`, or post-save hook after rulebook edit', 'Substrate code generated under rulebook-examples/{project}/{substrate}/', NULL) ON CONFLICT (flow_id) DO NOTHING;
 
-INSERT INTO core_data_flows (flow_id, name, steps, triggers, outputs)
-VALUES ('flow-003', 'Conformance Testing', 'Load test cases YAML | Run each substrate''s take-test.py | Collect outputs | Compare results | Generate report', 'User selects option V (View Results) or automatic after injection', 'conformance-report.html, pass/fail matrix, mismatch details') ON CONFLICT (flow_id) DO NOTHING;
+INSERT INTO core_data_flows (flow_id, name, steps, triggers, outputs, invariant)
+VALUES ('flow-003', 'Pull from Airtable (optional input spoke)', 'User chooses ''Pull from Airtable'' in admin portal | Call airtable-to-rulebook | Write effortless-rulebook.json | Reload portal Postgres editor from JSON', 'Admin portal action OR legacy CLI menu', 'Updated effortless-rulebook.json, portal Postgres rehydrated', NULL) ON CONFLICT (flow_id) DO NOTHING;
 
-INSERT INTO core_data_flows (flow_id, name, steps, triggers, outputs)
-VALUES ('flow-004', 'Clean Generated Files', 'Delete all generated outputs in each execution-substrates/ folder', 'User selects option C (Clean)', 'Empty substrate directories ready for fresh injection') ON CONFLICT (flow_id) DO NOTHING;
+INSERT INTO core_data_flows (flow_id, name, steps, triggers, outputs, invariant)
+VALUES ('flow-004', 'Admin Save (Write-Through Invariant)', 'Developer edits in portal | Backend writes to Postgres (live editor state) | SAME REQUEST writes to effortless-rulebook.json on disk | Backend returns success only if BOTH writes succeeded | Optional: trigger flow-002 (rebuild substrates)', 'Any save action in admin portal (table edit, field edit, formula edit, sample data edit)', 'Updated Postgres row, updated effortless-rulebook.json, optional substrate rebuild', 'Postgres is the EDITOR; effortless-rulebook.json is the DURABLE SSoT. If Postgres is dropped, the rulebook reconstitutes it. If the JSON is dropped, the editor has no source of truth.') ON CONFLICT (flow_id) DO NOTHING;
 
-INSERT INTO core_data_flows (flow_id, name, steps, triggers, outputs)
-VALUES ('flow-005', 'Swap Ontologies (Hub Promotion)', 'User selects domain in effortless-rulebooks/ | Point orchestrator to domain''s rulebook | Re-run injection & tests with new domain', 'Rulebook hub promotion complete; becomes the primary SSoT instead of Airtable', 'All substrates regenerated for new domain; conformance verified') ON CONFLICT (flow_id) DO NOTHING;
+INSERT INTO core_data_flows (flow_id, name, steps, triggers, outputs, invariant)
+VALUES ('flow-005', 'Portal Bootstrap (auto-create DB + migrate)', 'Portal backend boots | Check if PG database ''erb_admin_<project>'' exists | If missing, create it | Read effortless-rulebook.json | Run rulebook-to-portal-schema migration (creates tables for rulebook entities + AppUsers + AppRoles + AppNav) | Seed Postgres rows from rulebook JSON | Mark bootstrap complete', 'First boot of admin portal for a project, OR explicit reset action', 'Postgres database ready for editing, portal navigation populated', NULL) ON CONFLICT (flow_id) DO NOTHING;
+
+INSERT INTO core_data_flows (flow_id, name, steps, triggers, outputs, invariant)
+VALUES ('flow-006', 'Rehydrate Postgres from Rulebook JSON', 'User drops or corrupts Postgres | User runs ./start.sh or clicks Reset Editor | Backend re-runs flow-005 | Editor is back online from JSON SSoT', 'Manual reset, DB loss, or version-control checkout to a different rulebook', 'Postgres editor rebuilt to match rulebook JSON exactly', NULL) ON CONFLICT (flow_id) DO NOTHING;
+
+INSERT INTO core_data_flows (flow_id, name, steps, triggers, outputs, invariant)
+VALUES ('flow-007', 'Conformance Testing', 'Load test cases YAML | Run each substrate''s take-test.py | Collect outputs | Compare results | Generate report | Display in admin portal Tests screen', 'Admin portal ''Run Tests'' button or CLI option V', 'conformance-report.html, pass/fail matrix shown in portal', NULL) ON CONFLICT (flow_id) DO NOTHING;
+
+INSERT INTO core_data_flows (flow_id, name, steps, triggers, outputs, invariant)
+VALUES ('flow-008', 'Switch Active Project', 'User selects a different rulebook project in portal | Update orchestration/active-domain.txt | Reload portal pointing at new project''s rulebook | flow-005 if Postgres for that project not yet bootstrapped', 'Project switcher in admin portal nav', 'Portal now editing the chosen project''s rulebook + Postgres editor', NULL) ON CONFLICT (flow_id) DO NOTHING;
+
+INSERT INTO core_data_flows (flow_id, name, steps, triggers, outputs, invariant)
+VALUES ('flow-009', 'Clean Generated Files', 'User triggers Clean in portal Tech Tools OR CLI | Walks ProjectTranspilers | Each route invoked with clean=true | Generated outputs removed', 'Tech Tools → Clean Build, or CLI option C', 'Empty substrate output directories', NULL) ON CONFLICT (flow_id) DO NOTHING;
 
 -- ----------------------------------------------------------------------------
 -- ProjectConfiguration: Configuration files and their purposes
@@ -165,7 +231,16 @@ INSERT INTO project_configuration (config_id, file_name, file_path, format, purp
 VALUES ('config-006', 'Dockerfile', './Dockerfile', 'Dockerfile', 'Container image for reproducible environment', 'human') ON CONFLICT (config_id) DO NOTHING;
 
 INSERT INTO project_configuration (config_id, file_name, file_path, format, purpose, maintained_by)
-VALUES ('config-007', 'effortless-rulebook.json', 'effortless-rulebook/effortless-rulebook.json', 'JSON', 'Core rulebook: entity schemas, field types, formulas, sample data', 'tool (airtable-to-rulebook CLI pulls from Airtable)') ON CONFLICT (config_id) DO NOTHING;
+VALUES ('config-007', 'effortless-rulebook.json', 'effortless-rulebook/effortless-rulebook.json', 'JSON', 'DURABLE SSOT: entity schemas, field types, formulas, sample data, admin portal config (roles/nav/screens/AppUsers). Written by any input spoke; read by every output spoke.', 'any spoke: admin portal save, airtable-to-rulebook pull, LLM direct edit, or human hand-edit') ON CONFLICT (config_id) DO NOTHING;
+
+INSERT INTO project_configuration (config_id, file_name, file_path, format, purpose, maintained_by)
+VALUES ('config-010', 'run-web-portal.sh', './run-web-portal.sh', 'Shell', 'Boot ssotme-proxy + admin portal backend + open browser. Invoked by ./start.sh.', 'human') ON CONFLICT (config_id) DO NOTHING;
+
+INSERT INTO project_configuration (config_id, file_name, file_path, format, purpose, maintained_by)
+VALUES ('config-011', 'admin-portal/package.json', 'admin-portal/package.json', 'JSON', 'Express backend + Vite/React frontend dependencies for the admin portal', 'human') ON CONFLICT (config_id) DO NOTHING;
+
+INSERT INTO project_configuration (config_id, file_name, file_path, format, purpose, maintained_by)
+VALUES ('config-012', 'admin-portal/.portal-state.json', 'admin-portal/.portal-state.json', 'JSON', 'Per-machine portal state: last-active project, last-logged-in dev user. Not committed.', 'tool (portal backend)') ON CONFLICT (config_id) DO NOTHING;
 
 INSERT INTO project_configuration (config_id, file_name, file_path, format, purpose, maintained_by)
 VALUES ('config-008', 'README.md', './README.md', 'Markdown', 'User-facing documentation: quick start, base progression, key terms', 'human') ON CONFLICT (config_id) DO NOTHING;
@@ -202,4 +277,406 @@ VALUES ('dep-008', 'SSoTme CLI (effortless)', 'latest', 'Tool', 'Transpiler regi
 
 INSERT INTO dependencies (dependency_id, name, version, type, purpose, required)
 VALUES ('dep-009', 'C# / Entity Framework', '.NET 6+', 'Language', 'Entity Framework substrate code generation', FALSE) ON CONFLICT (dependency_id) DO NOTHING;
+
+INSERT INTO dependencies (dependency_id, name, version, type, purpose, required)
+VALUES ('dep-010', 'Node.js (Express + Vite + React)', '18+', 'Language', 'Admin portal: Express backend, Vite/React frontend. Required to run the default ./start.sh experience.', TRUE) ON CONFLICT (dependency_id) DO NOTHING;
+
+INSERT INTO dependencies (dependency_id, name, version, type, purpose, required)
+VALUES ('dep-011', 'PostgreSQL (admin portal editor)', '13+', 'Database', 'Live editor backend for the admin portal. Auto-created on first portal boot. SAFE TO DELETE — reconstitutes from rulebook JSON on next start.', TRUE) ON CONFLICT (dependency_id) DO NOTHING;
+
+-- ----------------------------------------------------------------------------
+-- AppUsers: Default users for local development and conformance testing. Lives in the rulebook so it travels with the project; production deployments should overlay these with a real identity provider.
+-- ----------------------------------------------------------------------------
+INSERT INTO app_users (user_id, email, display_name, is_default, notes)
+VALUES ('user-001', 'dev@example.com', 'Local Developer', TRUE, 'Default developer login for ./start.sh. Full admin everywhere.') ON CONFLICT (user_id) DO NOTHING;
+
+INSERT INTO app_users (user_id, email, display_name, is_default, notes)
+VALUES ('user-002', 'viewer@example.com', 'Local Viewer', FALSE, 'Read-only login for demos and stakeholder review.') ON CONFLICT (user_id) DO NOTHING;
+
+INSERT INTO app_users (user_id, email, display_name, is_default, notes)
+VALUES ('user-003', 'test@example.com', 'Conformance Test User', FALSE, 'Used by automated conformance tests (CI mode).') ON CONFLICT (user_id) DO NOTHING;
+
+-- ----------------------------------------------------------------------------
+-- UserRoles: Admin portal access tiers. Drives both the navigation visible to the user and the RLS policies that Postgres applies to portal writes.
+-- ----------------------------------------------------------------------------
+INSERT INTO user_roles (role_id, name, access_level, can_edit_rulebook, can_run_builds, can_access_tech_tools, can_switch_projects, can_manage_users, description)
+VALUES ('role-viewer', 'Viewer', 'read', FALSE, FALSE, FALSE, TRUE, FALSE, 'Read-only walkthrough of the project: see rulebook, browse generated substrates, view test results. Cannot mutate anything.') ON CONFLICT (role_id) DO NOTHING;
+
+INSERT INTO user_roles (role_id, name, access_level, can_edit_rulebook, can_run_builds, can_access_tech_tools, can_switch_projects, can_manage_users, description)
+VALUES ('role-developer', 'Developer', 'full-admin', TRUE, TRUE, TRUE, TRUE, TRUE, 'Full admin: edit rulebook, trigger builds, run tests, manage users, access Tech Tools (raw Postgres, proxy logs, conformance internals).') ON CONFLICT (role_id) DO NOTHING;
+
+-- ----------------------------------------------------------------------------
+-- AppPermissions: RLS-style policy table: declarative per-role allow/deny on portal API endpoints and on Postgres tables. Generated into Postgres on portal bootstrap as RLS policies.
+-- ----------------------------------------------------------------------------
+INSERT INTO app_permissions (permission_id, resource, "action", allow, rls_predicate)
+VALUES ('perm-001', 'rulebook.entity', 'read', TRUE, 'true') ON CONFLICT (permission_id) DO NOTHING;
+
+INSERT INTO app_permissions (permission_id, resource, "action", allow, rls_predicate)
+VALUES ('perm-002', 'rulebook.entity', 'update', FALSE, 'false') ON CONFLICT (permission_id) DO NOTHING;
+
+INSERT INTO app_permissions (permission_id, resource, "action", allow, rls_predicate)
+VALUES ('perm-003', 'rulebook.field', 'read', TRUE, 'true') ON CONFLICT (permission_id) DO NOTHING;
+
+INSERT INTO app_permissions (permission_id, resource, "action", allow, rls_predicate)
+VALUES ('perm-004', 'rulebook.formula', 'read', TRUE, 'true') ON CONFLICT (permission_id) DO NOTHING;
+
+INSERT INTO app_permissions (permission_id, resource, "action", allow, rls_predicate)
+VALUES ('perm-005', 'build', 'execute', FALSE, NULL) ON CONFLICT (permission_id) DO NOTHING;
+
+INSERT INTO app_permissions (permission_id, resource, "action", allow, rls_predicate)
+VALUES ('perm-006', 'test', 'read', TRUE, 'true') ON CONFLICT (permission_id) DO NOTHING;
+
+INSERT INTO app_permissions (permission_id, resource, "action", allow, rls_predicate)
+VALUES ('perm-007', 'test', 'execute', FALSE, NULL) ON CONFLICT (permission_id) DO NOTHING;
+
+INSERT INTO app_permissions (permission_id, resource, "action", allow, rls_predicate)
+VALUES ('perm-008', 'tech-tools.postgres', 'read', FALSE, NULL) ON CONFLICT (permission_id) DO NOTHING;
+
+INSERT INTO app_permissions (permission_id, resource, "action", allow, rls_predicate)
+VALUES ('perm-009', 'users', 'read', TRUE, 'true') ON CONFLICT (permission_id) DO NOTHING;
+
+INSERT INTO app_permissions (permission_id, resource, "action", allow, rls_predicate)
+VALUES ('perm-010', 'users', 'update', FALSE, 'false') ON CONFLICT (permission_id) DO NOTHING;
+
+INSERT INTO app_permissions (permission_id, resource, "action", allow, rls_predicate)
+VALUES ('perm-101', 'rulebook.entity', 'read', TRUE, 'true') ON CONFLICT (permission_id) DO NOTHING;
+
+INSERT INTO app_permissions (permission_id, resource, "action", allow, rls_predicate)
+VALUES ('perm-102', 'rulebook.entity', 'create', TRUE, 'true') ON CONFLICT (permission_id) DO NOTHING;
+
+INSERT INTO app_permissions (permission_id, resource, "action", allow, rls_predicate)
+VALUES ('perm-103', 'rulebook.entity', 'update', TRUE, 'true') ON CONFLICT (permission_id) DO NOTHING;
+
+INSERT INTO app_permissions (permission_id, resource, "action", allow, rls_predicate)
+VALUES ('perm-104', 'rulebook.entity', 'delete', TRUE, 'true') ON CONFLICT (permission_id) DO NOTHING;
+
+INSERT INTO app_permissions (permission_id, resource, "action", allow, rls_predicate)
+VALUES ('perm-105', 'rulebook.field', 'update', TRUE, 'true') ON CONFLICT (permission_id) DO NOTHING;
+
+INSERT INTO app_permissions (permission_id, resource, "action", allow, rls_predicate)
+VALUES ('perm-106', 'rulebook.formula', 'update', TRUE, 'true') ON CONFLICT (permission_id) DO NOTHING;
+
+INSERT INTO app_permissions (permission_id, resource, "action", allow, rls_predicate)
+VALUES ('perm-107', 'build', 'execute', TRUE, NULL) ON CONFLICT (permission_id) DO NOTHING;
+
+INSERT INTO app_permissions (permission_id, resource, "action", allow, rls_predicate)
+VALUES ('perm-108', 'test', 'execute', TRUE, NULL) ON CONFLICT (permission_id) DO NOTHING;
+
+INSERT INTO app_permissions (permission_id, resource, "action", allow, rls_predicate)
+VALUES ('perm-109', 'tech-tools.postgres', 'read', TRUE, 'true') ON CONFLICT (permission_id) DO NOTHING;
+
+INSERT INTO app_permissions (permission_id, resource, "action", allow, rls_predicate)
+VALUES ('perm-110', 'tech-tools.postgres', 'execute', TRUE, 'true') ON CONFLICT (permission_id) DO NOTHING;
+
+INSERT INTO app_permissions (permission_id, resource, "action", allow, rls_predicate)
+VALUES ('perm-111', 'tech-tools.proxy', 'read', TRUE, 'true') ON CONFLICT (permission_id) DO NOTHING;
+
+INSERT INTO app_permissions (permission_id, resource, "action", allow, rls_predicate)
+VALUES ('perm-112', 'users', 'create', TRUE, 'true') ON CONFLICT (permission_id) DO NOTHING;
+
+INSERT INTO app_permissions (permission_id, resource, "action", allow, rls_predicate)
+VALUES ('perm-113', 'users', 'update', TRUE, 'true') ON CONFLICT (permission_id) DO NOTHING;
+
+INSERT INTO app_permissions (permission_id, resource, "action", allow, rls_predicate)
+VALUES ('perm-114', 'users', 'delete', TRUE, 'true') ON CONFLICT (permission_id) DO NOTHING;
+
+-- ----------------------------------------------------------------------------
+-- AppNavigation: Primary navigation tree for the admin portal. Drives the left sidebar. Each node has a role gate and a target screen. This is the developer's narrative through a rulebook project.
+-- ----------------------------------------------------------------------------
+INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat)
+VALUES ('nav-001', 'Home', 'home', 10, 'What this project is, why it exists, who''s working on it. Cards: rulebook stats, last build, last test pass-rate, active spokes.') ON CONFLICT (nav_id) DO NOTHING;
+
+INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat)
+VALUES ('nav-002', 'Rulebook', 'book-open', 20, 'The business semantics of the project — every table, field, formula, and sample row.') ON CONFLICT (nav_id) DO NOTHING;
+
+INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat)
+VALUES ('nav-002a', 'Entities', 'table', 1, 'List all entities. Click one to drill in to its fields, sample data, and computed columns.') ON CONFLICT (nav_id) DO NOTHING;
+
+INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat)
+VALUES ('nav-002b', 'Formulas', 'function-square', 2, 'All calculated fields in one place. Click one to see its DAG (inputs → output) live from the rulebook.') ON CONFLICT (nav_id) DO NOTHING;
+
+INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat)
+VALUES ('nav-002c', 'Relationships', 'git-fork', 3, 'FK graph of the project. Hover a node to highlight its inbound and outbound relationships.') ON CONFLICT (nav_id) DO NOTHING;
+
+INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat)
+VALUES ('nav-002d', 'Sample Data', 'database', 4, 'What the project looks like populated. Editable for developers; read-only for viewers.') ON CONFLICT (nav_id) DO NOTHING;
+
+INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat)
+VALUES ('nav-003', 'Substrates', 'boxes', 30, 'Every output substrate this project generates (Python, Go, Postgres, Excel, OWL, etc.). Click one to see the generated source and the conformance status.') ON CONFLICT (nav_id) DO NOTHING;
+
+INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat)
+VALUES ('nav-003z', 'Add Tool', 'plus-square', 99, 'Pick from the catalog of 15+ transpilers and install one into the active project. Same code path as `effortless -install` on the CLI.') ON CONFLICT (nav_id) DO NOTHING;
+
+INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat)
+VALUES ('nav-004', 'Builds', 'wrench', 40, 'Build history: when, what changed, which substrates regenerated, how long. Developers can trigger a build here.') ON CONFLICT (nav_id) DO NOTHING;
+
+INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat)
+VALUES ('nav-005', 'Tests', 'check-circle', 50, 'Conformance matrix: which substrate computed which test case correctly. Drill in to see input → expected → actual per substrate.') ON CONFLICT (nav_id) DO NOTHING;
+
+INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat)
+VALUES ('nav-006', 'Input Spokes', 'git-pull-request', 60, 'Where edits come from: admin portal, Airtable, LLM, manual JSON. Pull / push controls live here.') ON CONFLICT (nav_id) DO NOTHING;
+
+INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat)
+VALUES ('nav-007', 'Users', 'users', 70, 'Default dev/test users from the rulebook + their roles.') ON CONFLICT (nav_id) DO NOTHING;
+
+INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat)
+VALUES ('nav-008', 'Tech Tools', 'terminal', 80, 'Developer-only escape hatches. Raw Postgres, proxy logs, file system, manual injection. Not part of the daily workflow.') ON CONFLICT (nav_id) DO NOTHING;
+
+INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat)
+VALUES ('nav-008a', 'Postgres Explorer', 'database', 1, 'Raw editor-DB browser: run SQL, inspect rows, drop/reset DB.') ON CONFLICT (nav_id) DO NOTHING;
+
+INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat)
+VALUES ('nav-008b', 'ssotme-proxy', 'server', 2, 'Live proxy status: registered routes, recent calls, response sizes, last error per route.') ON CONFLICT (nav_id) DO NOTHING;
+
+INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat)
+VALUES ('nav-008c', 'Files', 'folder', 3, 'Project filesystem browser. View any generated or hand-written file in the active project.') ON CONFLICT (nav_id) DO NOTHING;
+
+INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat)
+VALUES ('nav-008d', 'Rulebook JSON', 'file-json', 4, 'Raw rulebook JSON viewer/editor. Save here goes through the same write-through invariant as the UI.') ON CONFLICT (nav_id) DO NOTHING;
+
+INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat)
+VALUES ('nav-008e', 'Reset Editor', 'rotate-ccw', 5, 'Drop the editor Postgres DB and re-bootstrap from rulebook JSON. Safe — JSON is SSoT.') ON CONFLICT (nav_id) DO NOTHING;
+
+-- ----------------------------------------------------------------------------
+-- AppScreens: Every screen in the admin portal. Each screen names the entities it reads/writes, the role it requires, and the story it tells.
+-- ----------------------------------------------------------------------------
+INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story)
+VALUES ('screen-home', '/', 'Home', 'ProjectMetadata,RulebookProjects,RulebookSourceSpokes,ExecutionSubstrates', NULL, 'dashboard', 'Switch project', 'Land here on ./start.sh. Cards: current project, rulebook size, # substrates, last build time, last test pass-rate, which spokes are active, who you''re signed in as.') ON CONFLICT (screen_id) DO NOTHING;
+
+INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story)
+VALUES ('screen-entities', '/rulebook/entities', 'Entities', '<active-project-rulebook>', '<active-project-rulebook>', 'split-detail', 'Add entity', 'Left: list of every entity in the active project''s rulebook. Right: selected entity''s fields, formulas, sample rows. Developer can add/rename/delete fields inline; viewer sees the same with controls disabled.') ON CONFLICT (screen_id) DO NOTHING;
+
+INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story)
+VALUES ('screen-formulas', '/rulebook/formulas', 'Formulas', '<active-project-rulebook>', '<active-project-rulebook>', 'split-detail', 'Edit formula', 'Every calculated field across all entities. Drill in to see live DAG visualization (inputs → intermediates → output) sourced from the rulebook''s explain-dag substrate. Developer can edit Excel-style formula in place; portal auto-validates against the parser.') ON CONFLICT (screen_id) DO NOTHING;
+
+INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story)
+VALUES ('screen-relationships', '/rulebook/relationships', 'Relationships', '<active-project-rulebook>', NULL, 'grid', NULL, 'FK graph (interactive). Hover a node to highlight its inbound/outbound edges. Click an edge to see which formula or column declares it.') ON CONFLICT (screen_id) DO NOTHING;
+
+INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story)
+VALUES ('screen-sample-data', '/rulebook/data', 'Sample Data', '<active-project-rulebook>.data', '<active-project-rulebook>.data', 'grid', 'Add row', 'Spreadsheet-style view of the data block of each entity. Developer can edit cells; computed columns are read-only and show the resolved value with a hoverable derivation popover.') ON CONFLICT (screen_id) DO NOTHING;
+
+INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story)
+VALUES ('screen-substrates', '/substrates', 'Substrates', 'ExecutionSubstrates,SsotmeProxy', NULL, 'split-detail', 'Rebuild substrate', 'Left: every substrate this project emits (with last-build timestamp + conformance status). Right: file tree of generated output + a preview pane for any file. Developer can trigger ''Rebuild just this substrate''.') ON CONFLICT (screen_id) DO NOTHING;
+
+INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story)
+VALUES ('screen-add-tool', '/tools/add', 'Add Tool', 'AddToolCatalog,SsotmeProxy', '<active-project>/effortless.json (via effortless CLI)', 'grid', 'Install', 'Browse the 15+ transpilers in the catalog. Click one, choose output path, hit Install. Portal shells out to `effortless -install <proxy-url>` so the result is byte-identical to the CLI path. Tool then shows up in /substrates and is ready for the next build.') ON CONFLICT (screen_id) DO NOTHING;
+
+INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story)
+VALUES ('screen-builds', '/builds', 'Builds', 'BuildHistory', 'BuildHistory', 'list', 'Trigger build', 'Chronological list of builds. Click one to see which transpilers ran, duration each, stdout/stderr per route, and which files changed. Trigger-build button is gated by CanRunBuilds.') ON CONFLICT (screen_id) DO NOTHING;
+
+INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story)
+VALUES ('screen-tests', '/tests', 'Tests', 'TestingFramework,TestRuns', 'TestRuns', 'grid', 'Run all tests', 'Matrix: rows = test cases, columns = substrates, cells = pass/fail. Click a failing cell to see input, expected, actual, and a diff. Trigger-tests button is gated by CanRunBuilds.') ON CONFLICT (screen_id) DO NOTHING;
+
+INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story)
+VALUES ('screen-input-spokes', '/spokes', 'Input Spokes', 'RulebookSourceSpokes', NULL, 'list', 'Pull from spoke', 'List of every configured input spoke for this project. Status (last-pulled time, last-error). Developer can trigger a pull from any spoke.') ON CONFLICT (screen_id) DO NOTHING;
+
+INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story)
+VALUES ('screen-users', '/users', 'Users', 'AppUsers,UserRoles', 'AppUsers', 'list', 'Add user', 'Default dev/test users from the rulebook + roles. Developer can add new users (saved through the write-through invariant, so they end up in rulebook JSON).') ON CONFLICT (screen_id) DO NOTHING;
+
+INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story)
+VALUES ('screen-tech-postgres', '/tech/postgres', 'Postgres Explorer', '<editor-postgres-tables>', '<editor-postgres-tables>', 'editor', 'Run query', 'Raw SQL console + table browser for the editor Postgres DB. Developer-only escape hatch. Background banner reminds: rulebook JSON is the SSoT, this DB is rebuildable.') ON CONFLICT (screen_id) DO NOTHING;
+
+INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story)
+VALUES ('screen-tech-proxy', '/tech/proxy', 'ssotme-proxy', 'SsotmeProxy', NULL, 'list', 'Ping proxy', 'Live status of localhost:4242: registered routes, recent calls (route, duration, status, response size), last error per route. Restart button.') ON CONFLICT (screen_id) DO NOTHING;
+
+INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story)
+VALUES ('screen-tech-files', '/tech/files', 'Project Files', '<project-filesystem>', NULL, 'split-detail', NULL, 'Browse the active project folder. View any file. Read-only — prevents drift from rulebook.') ON CONFLICT (screen_id) DO NOTHING;
+
+INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story)
+VALUES ('screen-tech-json', '/tech/rulebook-json', 'Raw Rulebook JSON', '<active-project-rulebook>', '<active-project-rulebook>', 'editor', 'Save JSON', 'Monaco editor on the raw effortless-rulebook.json. Save goes through the write-through invariant. Useful for bulk edits.') ON CONFLICT (screen_id) DO NOTHING;
+
+INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story)
+VALUES ('screen-tech-reset', '/tech/reset', 'Reset Editor', NULL, NULL, 'dashboard', 'Reset now', 'One-button reset: drops the editor Postgres DB and re-bootstraps from rulebook JSON. The reassurance screen — makes the JSON-as-SSoT promise tangible.') ON CONFLICT (screen_id) DO NOTHING;
+
+-- ----------------------------------------------------------------------------
+-- AppAPIs: Admin portal HTTP API surface. Express routes mounted by the portal backend.
+-- ----------------------------------------------------------------------------
+INSERT INTO app_apis (api_id, method, path, resource, "action", writes_through, description)
+VALUES ('api-001', 'GET', '/api/me', 'users', 'read', FALSE, 'Current user + role + permissions') ON CONFLICT (api_id) DO NOTHING;
+
+INSERT INTO app_apis (api_id, method, path, resource, "action", writes_through, description)
+VALUES ('api-002', 'GET', '/api/projects', 'rulebook.entity', 'read', FALSE, 'List rulebook projects (rulebook-examples/* + this meta-rulebook)') ON CONFLICT (api_id) DO NOTHING;
+
+INSERT INTO app_apis (api_id, method, path, resource, "action", writes_through, description)
+VALUES ('api-003', 'GET', '/api/projects/:id', 'rulebook.entity', 'read', FALSE, 'Project summary: rulebook stats, substrates, last build') ON CONFLICT (api_id) DO NOTHING;
+
+INSERT INTO app_apis (api_id, method, path, resource, "action", writes_through, description)
+VALUES ('api-004', 'POST', '/api/projects/:id/activate', 'rulebook.entity', 'execute', FALSE, 'Set active-domain pointer; rehydrate editor Postgres') ON CONFLICT (api_id) DO NOTHING;
+
+INSERT INTO app_apis (api_id, method, path, resource, "action", writes_through, description)
+VALUES ('api-005', 'GET', '/api/rulebook', 'rulebook.entity', 'read', FALSE, 'Whole active rulebook (entities + meta)') ON CONFLICT (api_id) DO NOTHING;
+
+INSERT INTO app_apis (api_id, method, path, resource, "action", writes_through, description)
+VALUES ('api-006', 'GET', '/api/rulebook/entities', 'rulebook.entity', 'read', FALSE, 'List entities in active rulebook') ON CONFLICT (api_id) DO NOTHING;
+
+INSERT INTO app_apis (api_id, method, path, resource, "action", writes_through, description)
+VALUES ('api-007', 'GET', '/api/rulebook/entities/:name', 'rulebook.entity', 'read', FALSE, 'One entity with full schema + sample data') ON CONFLICT (api_id) DO NOTHING;
+
+INSERT INTO app_apis (api_id, method, path, resource, "action", writes_through, description)
+VALUES ('api-008', 'PATCH', '/api/rulebook/entities/:name', 'rulebook.entity', 'update', TRUE, 'Update entity description / schema / sample row. Write-through: Postgres + JSON in same txn.') ON CONFLICT (api_id) DO NOTHING;
+
+INSERT INTO app_apis (api_id, method, path, resource, "action", writes_through, description)
+VALUES ('api-009', 'POST', '/api/rulebook/entities', 'rulebook.entity', 'create', TRUE, 'Add a new entity. Write-through.') ON CONFLICT (api_id) DO NOTHING;
+
+INSERT INTO app_apis (api_id, method, path, resource, "action", writes_through, description)
+VALUES ('api-010', 'DELETE', '/api/rulebook/entities/:name', 'rulebook.entity', 'delete', TRUE, 'Remove entity. Write-through.') ON CONFLICT (api_id) DO NOTHING;
+
+INSERT INTO app_apis (api_id, method, path, resource, "action", writes_through, description)
+VALUES ('api-011', 'PATCH', '/api/rulebook/entities/:name/fields/:fieldName', 'rulebook.field', 'update', TRUE, 'Update field (datatype, formula, nullable, description). Write-through.') ON CONFLICT (api_id) DO NOTHING;
+
+INSERT INTO app_apis (api_id, method, path, resource, "action", writes_through, description)
+VALUES ('api-012', 'GET', '/api/substrates', 'rulebook.entity', 'read', FALSE, 'List substrates for active project + generated file index') ON CONFLICT (api_id) DO NOTHING;
+
+INSERT INTO app_apis (api_id, method, path, resource, "action", writes_through, description)
+VALUES ('api-013', 'POST', '/api/substrates/:name/build', 'build', 'execute', FALSE, 'Trigger rebuild for one substrate via ssotme-proxy') ON CONFLICT (api_id) DO NOTHING;
+
+INSERT INTO app_apis (api_id, method, path, resource, "action", writes_through, description)
+VALUES ('api-014', 'POST', '/api/build/all', 'build', 'execute', FALSE, 'Rebuild every substrate in active project') ON CONFLICT (api_id) DO NOTHING;
+
+INSERT INTO app_apis (api_id, method, path, resource, "action", writes_through, description)
+VALUES ('api-015', 'GET', '/api/tests', 'test', 'read', FALSE, 'Conformance matrix + last run') ON CONFLICT (api_id) DO NOTHING;
+
+INSERT INTO app_apis (api_id, method, path, resource, "action", writes_through, description)
+VALUES ('api-016', 'POST', '/api/tests/run', 'test', 'execute', FALSE, 'Run all substrate tests, return matrix') ON CONFLICT (api_id) DO NOTHING;
+
+INSERT INTO app_apis (api_id, method, path, resource, "action", writes_through, description)
+VALUES ('api-017', 'GET', '/api/spokes', 'rulebook.entity', 'read', FALSE, 'List input spokes for active project') ON CONFLICT (api_id) DO NOTHING;
+
+INSERT INTO app_apis (api_id, method, path, resource, "action", writes_through, description)
+VALUES ('api-018', 'POST', '/api/spokes/:id/pull', 'build', 'execute', FALSE, 'Pull from a spoke (e.g. Airtable). Writes into rulebook JSON via flow-003.') ON CONFLICT (api_id) DO NOTHING;
+
+INSERT INTO app_apis (api_id, method, path, resource, "action", writes_through, description)
+VALUES ('api-019', 'GET', '/api/users', 'users', 'read', FALSE, 'AppUsers from active rulebook') ON CONFLICT (api_id) DO NOTHING;
+
+INSERT INTO app_apis (api_id, method, path, resource, "action", writes_through, description)
+VALUES ('api-020', 'POST', '/api/users', 'users', 'create', TRUE, 'Add user. Write-through into rulebook AppUsers.') ON CONFLICT (api_id) DO NOTHING;
+
+INSERT INTO app_apis (api_id, method, path, resource, "action", writes_through, description)
+VALUES ('api-021', 'PATCH', '/api/users/:id', 'users', 'update', TRUE, 'Update user role/email/displayName. Write-through.') ON CONFLICT (api_id) DO NOTHING;
+
+INSERT INTO app_apis (api_id, method, path, resource, "action", writes_through, description)
+VALUES ('api-022', 'DELETE', '/api/users/:id', 'users', 'delete', TRUE, 'Remove user. Write-through.') ON CONFLICT (api_id) DO NOTHING;
+
+INSERT INTO app_apis (api_id, method, path, resource, "action", writes_through, description)
+VALUES ('api-023', 'GET', '/api/tech/postgres/tables', 'tech-tools.postgres', 'read', FALSE, 'List editor-DB tables') ON CONFLICT (api_id) DO NOTHING;
+
+INSERT INTO app_apis (api_id, method, path, resource, "action", writes_through, description)
+VALUES ('api-024', 'POST', '/api/tech/postgres/query', 'tech-tools.postgres', 'execute', FALSE, 'Run arbitrary SQL (developer-only)') ON CONFLICT (api_id) DO NOTHING;
+
+INSERT INTO app_apis (api_id, method, path, resource, "action", writes_through, description)
+VALUES ('api-025', 'GET', '/api/tech/proxy/status', 'tech-tools.proxy', 'read', FALSE, 'Mirror of localhost:4242/ping + recent call log') ON CONFLICT (api_id) DO NOTHING;
+
+INSERT INTO app_apis (api_id, method, path, resource, "action", writes_through, description)
+VALUES ('api-026', 'POST', '/api/tech/reset', 'tech-tools.postgres', 'execute', FALSE, 'Drop editor DB; rerun flow-005 to rebuild from rulebook JSON') ON CONFLICT (api_id) DO NOTHING;
+
+INSERT INTO app_apis (api_id, method, path, resource, "action", writes_through, description)
+VALUES ('api-027', 'GET', '/api/tech/rulebook-json', 'rulebook.entity', 'read', FALSE, 'Raw current effortless-rulebook.json') ON CONFLICT (api_id) DO NOTHING;
+
+INSERT INTO app_apis (api_id, method, path, resource, "action", writes_through, description)
+VALUES ('api-028', 'PUT', '/api/tech/rulebook-json', 'rulebook.entity', 'update', TRUE, 'Write raw JSON. Re-validates, rehydrates Postgres editor.') ON CONFLICT (api_id) DO NOTHING;
+
+INSERT INTO app_apis (api_id, method, path, resource, "action", writes_through, description)
+VALUES ('api-029', 'GET', '/api/tools/catalog', 'rulebook.entity', 'read', FALSE, 'Available transpilers to add to active project. Sources: localhost:4242/ping (local) + Effortless registry. Drives the Add Tool screen.') ON CONFLICT (api_id) DO NOTHING;
+
+INSERT INTO app_apis (api_id, method, path, resource, "action", writes_through, description)
+VALUES ('api-030', 'GET', '/api/tools/installed', 'rulebook.entity', 'read', FALSE, 'Currently installed transpilers from active project''s effortless.json (ProjectTranspilers array).') ON CONFLICT (api_id) DO NOTHING;
+
+INSERT INTO app_apis (api_id, method, path, resource, "action", writes_through, description)
+VALUES ('api-031', 'POST', '/api/tools/install', 'build', 'execute', FALSE, 'Add a tool to the active project: shells out to `effortless -install <proxy-url> -i <rulebook>`. Same CLI path the orchestrator uses — guarantees portal/CLI parity.') ON CONFLICT (api_id) DO NOTHING;
+
+INSERT INTO app_apis (api_id, method, path, resource, "action", writes_through, description)
+VALUES ('api-032', 'POST', '/api/tools/:name/disable', 'build', 'execute', FALSE, 'Toggle IsDisabled on a ProjectTranspilers entry.') ON CONFLICT (api_id) DO NOTHING;
+
+INSERT INTO app_apis (api_id, method, path, resource, "action", writes_through, description)
+VALUES ('api-033', 'DELETE', '/api/tools/:name', 'build', 'execute', FALSE, 'Remove a tool from active project''s effortless.json.') ON CONFLICT (api_id) DO NOTHING;
+
+-- ----------------------------------------------------------------------------
+-- AddToolCatalog: Tools the developer can install into the active project via the Add Tool screen. Same catalog the `effortless -install` CLI consumes; the portal is just a thin UI over the CLI so behaviour stays canonical.
+-- ----------------------------------------------------------------------------
+INSERT INTO add_tool_catalog (tool_id, name, category, source, install_url, output_path, description)
+VALUES ('tool-001', 'rulebook-to-python', 'substrate', 'local-proxy', 'http://localhost:4242/rulebook-to-python', '/python', 'Python dataclasses + calc library') ON CONFLICT (tool_id) DO NOTHING;
+
+INSERT INTO add_tool_catalog (tool_id, name, category, source, install_url, output_path, description)
+VALUES ('tool-002', 'rulebook-to-golang', 'substrate', 'local-proxy', 'http://localhost:4242/rulebook-to-golang', '/golang', 'Go structs + business logic') ON CONFLICT (tool_id) DO NOTHING;
+
+INSERT INTO add_tool_catalog (tool_id, name, category, source, install_url, output_path, description)
+VALUES ('tool-003', 'rulebook-to-binary', 'substrate', 'local-proxy', 'http://localhost:4242/rulebook-to-binary', '/binary', 'ARM64 assembly calc stub') ON CONFLICT (tool_id) DO NOTHING;
+
+INSERT INTO add_tool_catalog (tool_id, name, category, source, install_url, output_path, description)
+VALUES ('tool-004', 'rulebook-to-cobol', 'substrate', 'local-proxy', 'http://localhost:4242/rulebook-to-cobol', '/cobol', 'COBOL computation program') ON CONFLICT (tool_id) DO NOTHING;
+
+INSERT INTO add_tool_catalog (tool_id, name, category, source, install_url, output_path, description)
+VALUES ('tool-005', 'rulebook-to-csv', 'substrate', 'local-proxy', 'http://localhost:4242/rulebook-to-csv', '/csv', 'CSV exports') ON CONFLICT (tool_id) DO NOTHING;
+
+INSERT INTO add_tool_catalog (tool_id, name, category, source, install_url, output_path, description)
+VALUES ('tool-006', 'rulebook-to-xlsx', 'substrate', 'local-proxy', 'http://localhost:4242/rulebook-to-xlsx', '/xlsx', 'Excel workbook with formulas') ON CONFLICT (tool_id) DO NOTHING;
+
+INSERT INTO add_tool_catalog (tool_id, name, category, source, install_url, output_path, description)
+VALUES ('tool-007', 'rulebook-to-uml', 'substrate', 'local-proxy', 'http://localhost:4242/rulebook-to-uml', '/uml', 'PlantUML class diagram + OCL') ON CONFLICT (tool_id) DO NOTHING;
+
+INSERT INTO add_tool_catalog (tool_id, name, category, source, install_url, output_path, description)
+VALUES ('tool-008', 'rulebook-to-owl', 'substrate', 'local-proxy', 'http://localhost:4242/rulebook-to-owl', '/owl', 'RDF/OWL ontology') ON CONFLICT (tool_id) DO NOTHING;
+
+INSERT INTO add_tool_catalog (tool_id, name, category, source, install_url, output_path, description)
+VALUES ('tool-009', 'rulebook-to-english', 'docs', 'local-proxy', 'http://localhost:4242/rulebook-to-english', '/english', 'Plain-English narrative of business rules') ON CONFLICT (tool_id) DO NOTHING;
+
+INSERT INTO add_tool_catalog (tool_id, name, category, source, install_url, output_path, description)
+VALUES ('tool-010', 'rulebook-to-explain-dag', 'substrate', 'local-proxy', 'http://localhost:4242/rulebook-to-explain-dag', '/explain-dag', 'Derivation-DAG JSON for Formulas screen') ON CONFLICT (tool_id) DO NOTHING;
+
+INSERT INTO add_tool_catalog (tool_id, name, category, source, install_url, output_path, description)
+VALUES ('tool-011', 'rulebook-to-airtable', 'spoke-output', 'local-proxy', 'http://localhost:4242/rulebook-to-airtable', '/airtable', 'Push rulebook back into an Airtable base') ON CONFLICT (tool_id) DO NOTHING;
+
+INSERT INTO add_tool_catalog (tool_id, name, category, source, install_url, output_path, description)
+VALUES ('tool-012', 'airtable-to-rulebook', 'spoke-input', 'local-proxy', 'http://localhost:4242/airtable-to-rulebook', '/effortless-rulebook', 'Pull from Airtable into rulebook JSON') ON CONFLICT (tool_id) DO NOTHING;
+
+INSERT INTO add_tool_catalog (tool_id, name, category, source, install_url, output_path, description)
+VALUES ('tool-013', 'rulebook-to-postgres', 'substrate', 'effortless-registry', 'rulebook-to-postgres', '/postgres', 'Postgres DDL + functions + views (official Effortless tool)') ON CONFLICT (tool_id) DO NOTHING;
+
+INSERT INTO add_tool_catalog (tool_id, name, category, source, install_url, output_path, description)
+VALUES ('tool-014', 'rulebook-to-entity-framework', 'substrate', 'effortless-registry', 'rulebook-to-entity-framework', '/entity-framework', 'C# POCOs + EF DbContext (official Effortless tool)') ON CONFLICT (tool_id) DO NOTHING;
+
+INSERT INTO add_tool_catalog (tool_id, name, category, source, install_url, output_path, description)
+VALUES ('tool-015', 'rulebook-to-xlsx (licensed)', 'substrate', 'effortless-registry', 'rulebook-to-xlsx', '/xlsx-licensed', 'Excel via official tool (alternative to local proxy)') ON CONFLICT (tool_id) DO NOTHING;
+
+-- ----------------------------------------------------------------------------
+-- BuildPipeline: The effortless.json contract that both the admin portal and the CLI consume. There is ONE pipeline definition per project; both surfaces are thin wrappers around `effortless build` so they stay in lockstep.
+-- ----------------------------------------------------------------------------
+INSERT INTO build_pipeline (aspect_id, aspect, portal_location, cli_equivalent, authority)
+VALUES ('bp-001', 'List installed transpilers', '/substrates + /tools', 'cat effortless.json | jq .ProjectTranspilers', '{active-project}/effortless.json (ProjectTranspilers array)') ON CONFLICT (aspect_id) DO NOTHING;
+
+INSERT INTO build_pipeline (aspect_id, aspect, portal_location, cli_equivalent, authority)
+VALUES ('bp-002', 'Add a transpiler', '/tools/add (Add Tool screen)', 'effortless -install <proxy-url> -i <rulebook>', 'Both invoke the same `effortless -install` command — portal shells out so behaviour matches CLI exactly.') ON CONFLICT (aspect_id) DO NOTHING;
+
+INSERT INTO build_pipeline (aspect_id, aspect, portal_location, cli_equivalent, authority)
+VALUES ('bp-003', 'Remove a transpiler', '/tools (delete action)', 'edit effortless.json or `effortless -uninstall <name>`', '{active-project}/effortless.json') ON CONFLICT (aspect_id) DO NOTHING;
+
+INSERT INTO build_pipeline (aspect_id, aspect, portal_location, cli_equivalent, authority)
+VALUES ('bp-004', 'Disable a transpiler', '/tools (toggle)', 'edit effortless.json: IsDisabled=true', '{active-project}/effortless.json') ON CONFLICT (aspect_id) DO NOTHING;
+
+INSERT INTO build_pipeline (aspect_id, aspect, portal_location, cli_equivalent, authority)
+VALUES ('bp-005', 'Run the pipeline', '/builds (Trigger build)', 'effortless build', 'effortless CLI walks ProjectTranspilers and POSTs to each proxy URL') ON CONFLICT (aspect_id) DO NOTHING;
+
+INSERT INTO build_pipeline (aspect_id, aspect, portal_location, cli_equivalent, authority)
+VALUES ('bp-006', 'Clean generated output', '/tech/reset OR /tools (clean)', 'effortless clean', 'Proxy receives clean=true; each transpiler clears its output dir') ON CONFLICT (aspect_id) DO NOTHING;
+
+INSERT INTO build_pipeline (aspect_id, aspect, portal_location, cli_equivalent, authority)
+VALUES ('bp-007', 'Catalog of available tools', '/tools/add (Add Tool screen)', 'curl http://localhost:4242/ping', 'Local: GET /ping on ssotme-proxy. Remote: Effortless registry (effortless catalog).') ON CONFLICT (aspect_id) DO NOTHING;
+
+INSERT INTO build_pipeline (aspect_id, aspect, portal_location, cli_equivalent, authority)
+VALUES ('bp-008', 'Conformance status', '/tests', './start.sh --cli → option T', 'execution-substrates/*/take-test.py outputs') ON CONFLICT (aspect_id) DO NOTHING;
+
+-- ----------------------------------------------------------------------------
+-- AdminPortalRuntime: Runtime processes that ./start.sh boots and supervises.
+-- ----------------------------------------------------------------------------
+INSERT INTO admin_portal_runtime (process_id, name, command, port, depends_on, auto_restart, purpose)
+VALUES ('proc-001', 'ssotme-proxy', 'ssotme-proxy/start.sh', 4242, NULL, TRUE, 'Substrate transpiler HTTP server. Started before backend so build endpoints work immediately.') ON CONFLICT (process_id) DO NOTHING;
+
+INSERT INTO admin_portal_runtime (process_id, name, command, port, depends_on, auto_restart, purpose)
+VALUES ('proc-002', 'admin-portal-backend', 'admin-portal/server.js', 7777, 'proc-001,postgres', TRUE, 'Express API + static frontend host. Owns the write-through invariant.') ON CONFLICT (process_id) DO NOTHING;
+
+INSERT INTO admin_portal_runtime (process_id, name, command, port, depends_on, auto_restart, purpose)
+VALUES ('proc-003', 'admin-portal-frontend-dev', 'vite (admin-portal/web)', 7778, 'proc-002', TRUE, 'Vite dev server in dev mode. In production mode the backend serves built static files from port 7777.') ON CONFLICT (process_id) DO NOTHING;
+
+INSERT INTO admin_portal_runtime (process_id, name, command, port, depends_on, auto_restart, purpose)
+VALUES ('proc-004', 'postgres', 'docker compose up -d postgres (or system pg)', 5432, NULL, FALSE, 'Editor database. Auto-init on first portal boot via flow-005.') ON CONFLICT (process_id) DO NOTHING;
 

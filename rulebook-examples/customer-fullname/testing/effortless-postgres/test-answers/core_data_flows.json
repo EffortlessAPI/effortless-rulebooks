@@ -1,0 +1,74 @@
+[
+  {
+    "flow_id": "flow-001",
+    "name": "Start \u2192 Admin Portal",
+    "steps": "User runs ./start.sh | Detect active rulebook project | Start ssotme-proxy on :4242 if not running | Start admin portal backend on :7777 (auto-init Postgres + apply migrations from rulebook) | Open browser to http://localhost:7777",
+    "triggers": "User runs `./start.sh` (default entry point)",
+    "outputs": "Live admin portal in browser, ssotme-proxy + backend processes running",
+    "invariant": null
+  },
+  {
+    "flow_id": "flow-002",
+    "name": "Project Build (via ssotme-proxy)",
+    "steps": "User triggers build in admin portal OR runs `effortless build` in active project | effortless CLI walks ProjectTranspilers in active project's effortless.json | For each transpiler with proxy URL, POST rulebook to localhost:4242 | Proxy invokes injector script | Generated files written to project's output folders",
+    "triggers": "Admin portal Build button, CLI `effortless build`, or post-save hook after rulebook edit",
+    "outputs": "Substrate code generated under rulebook-examples/{project}/{substrate}/",
+    "invariant": null
+  },
+  {
+    "flow_id": "flow-003",
+    "name": "Pull from Airtable (optional input spoke)",
+    "steps": "User chooses 'Pull from Airtable' in admin portal | Call airtable-to-rulebook | Write effortless-rulebook.json | Reload portal Postgres editor from JSON",
+    "triggers": "Admin portal action OR legacy CLI menu",
+    "outputs": "Updated effortless-rulebook.json, portal Postgres rehydrated",
+    "invariant": null
+  },
+  {
+    "flow_id": "flow-004",
+    "name": "Admin Save (Write-Through Invariant)",
+    "steps": "Developer edits in portal | Backend writes to Postgres (live editor state) | SAME REQUEST writes to effortless-rulebook.json on disk | Backend returns success only if BOTH writes succeeded | Optional: trigger flow-002 (rebuild substrates)",
+    "triggers": "Any save action in admin portal (table edit, field edit, formula edit, sample data edit)",
+    "outputs": "Updated Postgres row, updated effortless-rulebook.json, optional substrate rebuild",
+    "invariant": "Postgres is the EDITOR; effortless-rulebook.json is the DURABLE SSoT. If Postgres is dropped, the rulebook reconstitutes it. If the JSON is dropped, the editor has no source of truth."
+  },
+  {
+    "flow_id": "flow-005",
+    "name": "Portal Bootstrap (auto-create DB + migrate)",
+    "steps": "Portal backend boots | Check if PG database 'erb_admin_<project>' exists | If missing, create it | Read effortless-rulebook.json | Run rulebook-to-portal-schema migration (creates tables for rulebook entities + AppUsers + AppRoles + AppNav) | Seed Postgres rows from rulebook JSON | Mark bootstrap complete",
+    "triggers": "First boot of admin portal for a project, OR explicit reset action",
+    "outputs": "Postgres database ready for editing, portal navigation populated",
+    "invariant": null
+  },
+  {
+    "flow_id": "flow-006",
+    "name": "Rehydrate Postgres from Rulebook JSON",
+    "steps": "User drops or corrupts Postgres | User runs ./start.sh or clicks Reset Editor | Backend re-runs flow-005 | Editor is back online from JSON SSoT",
+    "triggers": "Manual reset, DB loss, or version-control checkout to a different rulebook",
+    "outputs": "Postgres editor rebuilt to match rulebook JSON exactly",
+    "invariant": null
+  },
+  {
+    "flow_id": "flow-007",
+    "name": "Conformance Testing",
+    "steps": "Load test cases YAML | Run each substrate's take-test.py | Collect outputs | Compare results | Generate report | Display in admin portal Tests screen",
+    "triggers": "Admin portal 'Run Tests' button or CLI option V",
+    "outputs": "conformance-report.html, pass/fail matrix shown in portal",
+    "invariant": null
+  },
+  {
+    "flow_id": "flow-008",
+    "name": "Switch Active Project",
+    "steps": "User selects a different rulebook project in portal | Update orchestration/active-domain.txt | Reload portal pointing at new project's rulebook | flow-005 if Postgres for that project not yet bootstrapped",
+    "triggers": "Project switcher in admin portal nav",
+    "outputs": "Portal now editing the chosen project's rulebook + Postgres editor",
+    "invariant": null
+  },
+  {
+    "flow_id": "flow-009",
+    "name": "Clean Generated Files",
+    "steps": "User triggers Clean in portal Tech Tools OR CLI | Walks ProjectTranspilers | Each route invoked with clean=true | Generated outputs removed",
+    "triggers": "Tech Tools \u2192 Clean Build, or CLI option C",
+    "outputs": "Empty substrate output directories",
+    "invariant": null
+  }
+]

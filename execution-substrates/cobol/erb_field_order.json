@@ -2,24 +2,24 @@
   "Customers": {
     "fields": [
       "CustomerId",
+      "Customer",
       "EmailAddress",
       "FirstName",
       "LastName",
-      "Name",
       "FullName"
     ],
-    "raw_count": 4
+    "raw_count": 5
   },
   "customers": {
     "fields": [
       "CustomerId",
+      "Customer",
       "EmailAddress",
       "FirstName",
       "LastName",
-      "Name",
       "FullName"
     ],
-    "raw_count": 4
+    "raw_count": 5
   },
   "_target_entity": "customers"
 }

@@ -1,0 +1,82 @@
+[
+  {
+    "component_id": "orch-000",
+    "name": "Start Entry",
+    "file_path": "start.sh",
+    "language": "Bash",
+    "purpose": "Top-level entry point: boots the admin portal (web UI) for the active rulebook project; falls back to legacy CLI menu with --cli flag",
+    "dependencies": "run-web-portal.sh, orchestrate.sh"
+  },
+  {
+    "component_id": "orch-001",
+    "name": "Shared Utilities",
+    "file_path": "orchestration/shared.py",
+    "language": "Python",
+    "purpose": "Common functions: load_rulebook(), parse formulas, type mapping",
+    "dependencies": "None"
+  },
+  {
+    "component_id": "orch-002",
+    "name": "Formula Parser",
+    "file_path": "orchestration/formula_parser.py",
+    "language": "Python",
+    "purpose": "Parse and execute Excel-style formulas (IF, AND, OR, CONCAT, LEFT, RIGHT, etc.)",
+    "dependencies": "shared.py"
+  },
+  {
+    "component_id": "orch-003",
+    "name": "Main Injector",
+    "file_path": "orchestration/inject.py",
+    "language": "Python",
+    "purpose": "Legacy: dispatch rulebook to all substrate injectors. Superseded by ssotme-proxy + `effortless build` per project, but retained for CI/cleanup.",
+    "dependencies": "shared.py, all substrate injectors"
+  },
+  {
+    "component_id": "orch-004",
+    "name": "Orchestrator Menu",
+    "file_path": "orchestration/orchestrate.sh",
+    "language": "Bash",
+    "purpose": "Legacy interactive CLI menu: run substrates, manage Airtable sync, generate reports. Reachable via `./start.sh --cli`.",
+    "dependencies": "inject.py, rulebook-cache.py, base-manager.py"
+  },
+  {
+    "component_id": "orch-005",
+    "name": "Rulebook Cache",
+    "file_path": "orchestration/rulebook-cache.py",
+    "language": "Python",
+    "purpose": "Pull rulebook from an Airtable base into the rulebook JSON; fallback to offline cache if API unavailable. One of several input spokes.",
+    "dependencies": "shared.py"
+  },
+  {
+    "component_id": "orch-006",
+    "name": "Base Manager",
+    "file_path": "orchestration/base-manager.py",
+    "language": "Python",
+    "purpose": "List, select, and swap Airtable bases when Airtable is used as an input spoke",
+    "dependencies": "rulebook-cache.py"
+  },
+  {
+    "component_id": "orch-007",
+    "name": "Test Orchestrator",
+    "file_path": "orchestration/test-orchestrator.py",
+    "language": "Python",
+    "purpose": "Run all substrate tests; verify conformance (all substrates compute identically)",
+    "dependencies": "shared.py, all substrate test scripts"
+  },
+  {
+    "component_id": "orch-008",
+    "name": "Report Generator",
+    "file_path": "orchestration/generate-report.py",
+    "language": "Python",
+    "purpose": "Generate HTML conformance report comparing substrate outputs",
+    "dependencies": "test-orchestrator.py"
+  },
+  {
+    "component_id": "orch-009",
+    "name": "Active Domain Pointer",
+    "file_path": "orchestration/active-domain.txt",
+    "language": "Text",
+    "purpose": "Single line naming the active rulebook project under rulebook-examples/ \u2014 read by start.sh, admin portal, orchestrate.sh",
+    "dependencies": "None"
+  }
+]

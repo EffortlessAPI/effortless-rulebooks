@@ -459,6 +459,38 @@ def coerce_record_types(record: dict, schema: list) -> dict:
     return coerced
 
 
+def _recompute_calculated_fields(record: dict, schema: list) -> dict:
+    """Re-evaluate scalar `type=calculated` formulas against `record` so the
+    answer-keys reflect the current schema, not stale values that might be
+    baked into the rulebook's seed data. Fields where evaluation fails or
+    returns None (e.g. unsupported function, missing reference) keep their
+    existing seed value — that way we degrade to "trust the data" instead of
+    silently nulling something useful.
+    """
+    try:
+        from formula_parser import evaluate_field
+    except Exception:
+        # If the formula parser blows up at import time, fall back to the
+        # un-recomputed record — better stale than crashed.
+        return record
+
+    out = dict(record)
+    for field in schema:
+        if field.get('type') != 'calculated':
+            continue
+        formula = field.get('formula')
+        if not formula:
+            continue
+        snake = to_snake_case(field['name'])
+        try:
+            value = evaluate_field(formula, out)
+        except Exception:
+            continue
+        if value is not None:
+            out[snake] = value
+    return out
+
+
 def generate_all_answer_keys(rulebook: dict) -> dict:
     """
     Generate answer keys directly from the rulebook's seed data.
@@ -503,6 +535,16 @@ def generate_all_answer_keys(rulebook: dict) -> dict:
         # Coerce values to match schema datatypes (e.g., "24" -> 24 for integers)
         schema = get_entity_schema(rulebook, entity_pascal)
         records = [coerce_record_types(r, schema) for r in records]
+
+        # Recompute calculated fields from schema formulas. The rulebook's
+        # seed `data` block can drift from the schema (e.g. an Airtable export
+        # captures values from a previous formula version). The answer-keys
+        # are supposed to be the authoritative output of evaluating the
+        # current formulas, so we evaluate them here rather than trusting
+        # potentially-stale seed values. Cross-table fields (lookups /
+        # aggregations) are still left to substrate-side computation; only
+        # scalar `type=calculated` formulas are evaluated here.
+        records = [_recompute_calculated_fields(r, schema) for r in records]
 
         # Sort by primary key if available
         if pk and records and pk in records[0]:
@@ -619,10 +661,14 @@ def generate_all_blank_tests(all_answer_keys: dict, rulebook: dict) -> dict:
 # =============================================================================
 
 def get_substrates() -> list:
-    """Get computation substrate directories in SUBSTRATE_ORDER.
+    """Return the substrates this project actually exercises.
 
-    Any discovered substrate not in SUBSTRATE_ORDER is appended alphabetically
-    so new folders still surface.
+    Scoping rule (mirrors orchestrate.sh::get_valid_substrates and
+    generate-report.py::get_substrates): intersect the substrates declared
+    by the active project's effortless.json ProjectTranspilers with the
+    substrate directories that exist on disk, then place them in
+    SUBSTRATE_ORDER. Falls back to "everything on disk" only when the
+    project has no effortless.json (legacy / un-initialized projects).
     """
     if not os.path.isdir(SUBSTRATES_DIR):
         return []
@@ -632,6 +678,22 @@ def get_substrates() -> list:
         if not name.startswith('.')
         and os.path.isdir(os.path.join(SUBSTRATES_DIR, name))
     }
+
+    try:
+        from shared import get_active_project_substrates
+        domain = os.path.basename(DOMAIN_DIR.rstrip(os.sep))
+        declared = get_active_project_substrates(domain)
+    except Exception:
+        declared = []
+
+    if declared:
+        allowed = [s for s in declared if s in discovered]
+        allowed_set = set(allowed)
+        ordered = [n for n in SUBSTRATE_ORDER if n in allowed_set]
+        tail = sorted(allowed_set - set(SUBSTRATE_ORDER))
+        return ordered + tail
+
+    # No effortless.json — fall back to everything on disk.
     ordered = [n for n in SUBSTRATE_ORDER if n in discovered]
     tail = sorted(discovered - set(SUBSTRATE_ORDER))
     return ordered + tail

@@ -1,8 +1,8 @@
 {
   "schema_version": "erb.explain_spec.v1",
   "rulebook": {
-    "name": "ACME, LLC (template)",
-    "rulebook_hash": "sha256:872b42da05c084b8fe97edf17015c1f6"
+    "name": "DEMO: Customer FullName",
+    "rulebook_hash": "sha256:fc5baec006076835eeecd2be23742af0"
   },
   "semantics": {
     "profile": "excel",
@@ -20,10 +20,10 @@
           "nullable": false,
           "type": "raw"
         },
-        "Name": {
+        "Customer": {
           "datatype": "string",
           "nullable": true,
-          "type": "calculated",
+          "type": "raw",
           "description": "Identifier for the customers."
         },
         "EmailAddress": {
@@ -52,8 +52,7 @@
         }
       },
       "calc_order": [
-        "FullName",
-        "Name"
+        "FullName"
       ],
       "dep_edges": [
         [
@@ -63,71 +62,9 @@
         [
           "LastName",
           "FullName"
-        ],
-        [
-          "EmailAddress",
-          "Name"
         ]
       ],
       "expr_templates": {
-        "Name": {
-          "formula_source": "=SUBSTITUTE({{EmailAddress}}, \"@\", \"-\")",
-          "template_hash": "sha256:4f66494237ffb7cf",
-          "root_node": "n_result_Name",
-          "nodes": {
-            "n_ref_1": {
-              "kind": "field_ref",
-              "field": "EmailAddress",
-              "field_snake": "email_address"
-            },
-            "n_const_2": {
-              "kind": "const",
-              "value": "@",
-              "type": "string"
-            },
-            "n_const_3": {
-              "kind": "const",
-              "value": "-",
-              "type": "string"
-            },
-            "n_fn_4": {
-              "kind": "fn",
-              "name": "SUBSTITUTE",
-              "args": [
-                "n_ref_1",
-                "n_const_2",
-                "n_const_3"
-              ]
-            },
-            "n_result_Name": {
-              "kind": "result",
-              "field": "Name",
-              "field_snake": "name",
-              "in": [
-                "n_fn_4"
-              ]
-            }
-          },
-          "edges": [
-            [
-              "n_ref_1",
-              "n_fn_4"
-            ],
-            [
-              "n_const_2",
-              "n_fn_4"
-            ],
-            [
-              "n_const_3",
-              "n_fn_4"
-            ],
-            [
-              "n_fn_4",
-              "n_result_Name"
-            ]
-          ],
-          "description": "Identifier for the customers."
-        },
         "FullName": {
           "formula_source": "={{LastName}} & \", \" & {{FirstName}}",
           "template_hash": "sha256:87fca7e8a65752b8",

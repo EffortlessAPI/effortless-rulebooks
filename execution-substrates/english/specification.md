@@ -1,112 +1,59 @@
-# ACME, LLC Rulebook Specification
+# Specification Document for DEMO: Customer FullName Rulebook
 
 ## Overview
-This rulebook outlines the schema and calculations for the ACME, LLC customer management system. It includes the definitions of various entities, their fields, and how to compute derived fields based on the input data. The primary focus is on the Customers, ERBVersions, and ERBCustomizations tables.
+This document provides a detailed specification for the rulebook generated from the Airtable base titled "DEMO: Customer FullName." The rulebook defines the structure and computation of customer data, including how to derive the full name of each customer based on their first and last names.
 
----
+## Entities
 
-## Customers Table
+### Customers
+**Description**: This entity represents the customers in the system.
 
-### Input Fields
+#### Input Fields
 1. **CustomerId**
-   - **Type:** String
-   - **Description:** Unique identifier for the customer. This field is mandatory.
+   - **Type**: String
+   - **Description**: A unique identifier for each customer. This field is mandatory and cannot be null.
 
-2. **EmailAddress**
-   - **Type:** String
-   - **Description:** The customer's email address. This field is optional.
+2. **Customer**
+   - **Type**: String
+   - **Description**: An identifier for the customers. This field is optional and can be null.
 
-3. **FirstName**
-   - **Type:** String
-   - **Description:** The first name of the customer. This field is optional.
+3. **EmailAddress**
+   - **Type**: String
+   - **Description**: The customer's email address. This field is optional and can be null.
 
-4. **LastName**
-   - **Type:** String
-   - **Description:** The last name of the customer. This field is optional.
+4. **FirstName**
+   - **Type**: String
+   - **Description**: The first name of the customer, used to construct the full name. This field is optional and can be null.
 
-### Derived Fields
-1. **Name**
-   - **Type:** Calculated
-   - **Description:** An identifier for the customers, derived from their email address.
-   - **Computation:** Replace the "@" symbol in the EmailAddress with a "-" to create a unique identifier.
-   - **Original Formula:** `=SUBSTITUTE({{EmailAddress}}, "@", "-")`
-   - **Example:** For the email `jane.smith@email.com`, the Name would be `jane.smith-email.com`.
+5. **LastName**
+   - **Type**: String
+   - **Description**: The last name of the customer, used to construct the full name. This field is optional and can be null.
 
-2. **FullName**
-   - **Type:** Calculated
-   - **Description:** The full name of the customer, formatted as "LastName, FirstName".
-   - **Computation:** Concatenate the LastName and FirstName fields, separated by a comma and a space.
-   - **Original Formula:** `={{LastName}} & ", " & {{FirstName}}`
-   - **Example:** For FirstName `Bobby` and LastName `Smith`, the FullName would be `Smith, Bobby`.
+#### Derived Fields
+1. **FullName**
+   - **Type**: Calculated
+   - **Description**: The full name of the customer is computed by combining the last name and first name.
+   - **Computation**: The full name is derived by concatenating the `LastName` and `FirstName` fields, formatted as "LastName, FirstName". If either `FirstName` or `LastName` is null, the resulting `FullName` will also be null.
+   - **Original Formula**: `={{LastName}} & ", " & {{FirstName}}`
+   - **Example**: 
+     - For a customer with `FirstName` = "Jane" and `LastName` = "Smith", the `FullName` will be computed as "Smith, Jane".
+     - For a customer with `FirstName` = "John" and `LastName` = "Doe", the `FullName` will be computed as "Doe, John".
+     - For a customer with `FirstName` = null and `LastName` = "Jones", the `FullName` will be null.
 
----
+### Summary of Example Data
+- Customer with `CustomerId` "cust0001":
+  - **FirstName**: "Jane"
+  - **LastName**: "Smith"
+  - **FullName**: "Smith, Jane"
+  
+- Customer with `CustomerId` "cust0002":
+  - **FirstName**: "John"
+  - **LastName**: "Doe"
+  - **FullName**: "Doe, John"
+  
+- Customer with `CustomerId` "cust0003":
+  - **FirstName**: "Emily"
+  - **LastName**: "Jones"
+  - **FullName**: "Jones, Emily"
 
-## ERBVersions Table
-
-### Input Fields
-1. **ERBVersionId**
-   - **Type:** String
-   - **Description:** Unique identifier for the ERB version. This field is mandatory.
-
-2. **BaseId**
-   - **Type:** String
-   - **Description:** Identifier for the base associated with this ERB version. This field is optional.
-
-3. **Name**
-   - **Type:** String
-   - **Description:** Name of the ERB version. This field is optional.
-
-4. **Message**
-   - **Type:** String
-   - **Description:** Message associated with the ERB version. This field is optional.
-
-5. **Notes**
-   - **Type:** String
-   - **Description:** Additional notes regarding the ERB version. This field is optional.
-
-6. **CommitDate**
-   - **Type:** Datetime
-   - **Description:** Date and time of the commit for this ERB version. This field is optional.
-
-7. **IsPublished**
-   - **Type:** Boolean
-   - **Description:** Indicates whether this ERB version is published. This field is optional.
-
-### Derived Fields
-- **No derived fields are defined for the ERBVersions table.**
-
----
-
-## ERBCustomizations Table
-
-### Input Fields
-1. **ERBCustomizationId**
-   - **Type:** String
-   - **Description:** Unique identifier for the ERB customization. This field is mandatory.
-
-2. **Name**
-   - **Type:** String
-   - **Description:** Name of the ERB customization. This field is optional.
-
-3. **Title**
-   - **Type:** String
-   - **Description:** Title of the ERB customization. This field is optional.
-
-4. **SQLCode**
-   - **Type:** String
-   - **Description:** SQL code associated with the customization. This field is optional.
-
-5. **SQLTarget**
-   - **Type:** String
-   - **Description:** The target database for the SQL code. This field is optional.
-
-6. **CustomizationType**
-   - **Type:** String
-   - **Description:** Type of customization (e.g., Schema, Functions, Views, RLS, Data). This field is optional.
-
-### Derived Fields
-- **No derived fields are defined for the ERBCustomizations table.**
-
----
-
-This specification provides a clear understanding of how to compute derived fields within the ACME, LLC rulebook, ensuring accurate data representation and processing.
+This specification document provides a clear understanding of how to derive the `FullName` field from the `FirstName` and `LastName` fields within the Customers entity, ensuring accurate computation of customer full names based on the provided data.

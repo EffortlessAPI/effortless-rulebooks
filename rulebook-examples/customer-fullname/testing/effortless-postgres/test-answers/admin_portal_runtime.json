@@ -1,0 +1,38 @@
+[
+  {
+    "process_id": "proc-001",
+    "name": "ssotme-proxy",
+    "command": "ssotme-proxy/start.sh",
+    "port": "4242",
+    "depends_on": null,
+    "auto_restart": true,
+    "purpose": "Substrate transpiler HTTP server. Started before backend so build endpoints work immediately."
+  },
+  {
+    "process_id": "proc-002",
+    "name": "admin-portal-backend",
+    "command": "admin-portal/server.js",
+    "port": "7777",
+    "depends_on": "proc-001,postgres",
+    "auto_restart": true,
+    "purpose": "Express API + static frontend host. Owns the write-through invariant."
+  },
+  {
+    "process_id": "proc-003",
+    "name": "admin-portal-frontend-dev",
+    "command": "vite (admin-portal/web)",
+    "port": "7778",
+    "depends_on": "proc-002",
+    "auto_restart": true,
+    "purpose": "Vite dev server in dev mode. In production mode the backend serves built static files from port 7777."
+  },
+  {
+    "process_id": "proc-004",
+    "name": "postgres",
+    "command": "docker compose up -d postgres (or system pg)",
+    "port": "5432",
+    "depends_on": null,
+    "auto_restart": false,
+    "purpose": "Editor database. Auto-init on first portal boot via flow-005."
+  }
+]

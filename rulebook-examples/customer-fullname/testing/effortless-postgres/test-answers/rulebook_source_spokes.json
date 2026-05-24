@@ -1,0 +1,56 @@
+[
+  {
+    "spoke_id": "spoke-001",
+    "name": "Admin Portal (Postgres editor)",
+    "kind": "admin-portal",
+    "direction": "bidirectional",
+    "required": false,
+    "purpose": "Local web UI; edits flow through Postgres for real-time UX, write-through to rulebook JSON on every save. Primary developer experience.",
+    "authority": "Rulebook JSON is durable SSoT; Postgres is the live editor only and can be dropped/rebuilt from JSON at any time."
+  },
+  {
+    "spoke_id": "spoke-002",
+    "name": "Airtable (airtable-to-rulebook)",
+    "kind": "airtable",
+    "direction": "input",
+    "required": false,
+    "purpose": "Official Effortless tool: pull schema + data from an Airtable base into the rulebook JSON. Optional input spoke (was the historical HEAD).",
+    "authority": "Rulebook JSON wins; reverse-sync is a separate spoke."
+  },
+  {
+    "spoke_id": "spoke-003",
+    "name": "Reverse Sync (rulebook-to-airtable)",
+    "kind": "reverse-sync",
+    "direction": "output",
+    "required": false,
+    "purpose": "Push rulebook JSON edits back to an Airtable base for human review",
+    "authority": "Output only; never reads from Airtable."
+  },
+  {
+    "spoke_id": "spoke-004",
+    "name": "LLM Direct Edits",
+    "kind": "llm-direct",
+    "direction": "input",
+    "required": false,
+    "purpose": "Claude / agent edits effortless-rulebook.json directly via filesystem; admin portal reflects changes on reload.",
+    "authority": "Rulebook JSON is the canonical surface for LLM edits."
+  },
+  {
+    "spoke_id": "spoke-005",
+    "name": "Rulebook Cache (offline)",
+    "kind": "airtable",
+    "direction": "input",
+    "required": false,
+    "purpose": "Cache of previously-pulled Airtable rulebooks; used when Airtable API unavailable",
+    "authority": "Last-known-good copy; superseded by any newer authoritative pull."
+  },
+  {
+    "spoke_id": "spoke-006",
+    "name": "Manual JSON Edits",
+    "kind": "manual-json",
+    "direction": "input",
+    "required": false,
+    "purpose": "Developer hand-edits effortless-rulebook.json in their editor; no special tooling required.",
+    "authority": "Rulebook JSON is the file under version control."
+  }
+]

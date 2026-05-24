@@ -1,0 +1,58 @@
+[
+  {
+    "aspect_id": "bp-001",
+    "aspect": "List installed transpilers",
+    "portal_location": "/substrates + /tools",
+    "cli_equivalent": "cat effortless.json | jq .ProjectTranspilers",
+    "authority": "{active-project}/effortless.json (ProjectTranspilers array)"
+  },
+  {
+    "aspect_id": "bp-002",
+    "aspect": "Add a transpiler",
+    "portal_location": "/tools/add (Add Tool screen)",
+    "cli_equivalent": "effortless -install <proxy-url> -i <rulebook>",
+    "authority": "Both invoke the same `effortless -install` command \u2014 portal shells out so behaviour matches CLI exactly."
+  },
+  {
+    "aspect_id": "bp-003",
+    "aspect": "Remove a transpiler",
+    "portal_location": "/tools (delete action)",
+    "cli_equivalent": "edit effortless.json or `effortless -uninstall <name>`",
+    "authority": "{active-project}/effortless.json"
+  },
+  {
+    "aspect_id": "bp-004",
+    "aspect": "Disable a transpiler",
+    "portal_location": "/tools (toggle)",
+    "cli_equivalent": "edit effortless.json: IsDisabled=true",
+    "authority": "{active-project}/effortless.json"
+  },
+  {
+    "aspect_id": "bp-005",
+    "aspect": "Run the pipeline",
+    "portal_location": "/builds (Trigger build)",
+    "cli_equivalent": "effortless build",
+    "authority": "effortless CLI walks ProjectTranspilers and POSTs to each proxy URL"
+  },
+  {
+    "aspect_id": "bp-006",
+    "aspect": "Clean generated output",
+    "portal_location": "/tech/reset OR /tools (clean)",
+    "cli_equivalent": "effortless clean",
+    "authority": "Proxy receives clean=true; each transpiler clears its output dir"
+  },
+  {
+    "aspect_id": "bp-007",
+    "aspect": "Catalog of available tools",
+    "portal_location": "/tools/add (Add Tool screen)",
+    "cli_equivalent": "curl http://localhost:4242/ping",
+    "authority": "Local: GET /ping on ssotme-proxy. Remote: Effortless registry (effortless catalog)."
+  },
+  {
+    "aspect_id": "bp-008",
+    "aspect": "Conformance status",
+    "portal_location": "/tests",
+    "cli_equivalent": "./start.sh --cli \u2192 option T",
+    "authority": "execution-substrates/*/take-test.py outputs"
+  }
+]

@@ -200,45 +200,95 @@ The calculated fields are real C# property getters compiled from the rulebook by
 | Metric | Value |
 |--------|-------|
 | Total Fields Tested | 40 |
-| Passed | 40 |
-| Failed | 0 |
-| Score | 100.0% |
-| Duration | 1s |
+| Passed | 5 |
+| Failed | 35 |
+| Score | 12.5% |
+| Duration | 47s |
 
 ## Score by Field Class
 
 | Class | Passed | Tested | Score |
 |-------|--------|--------|-------|
-| Scalar (calculated) | 3 | 3 | 100.0% |
-| Lookup (INDEX/MATCH) | 30 | 30 | 100.0% |
-| Aggregation (COUNTIFS/SUMIFS) | 7 | 7 | 100.0% |
+| Scalar (calculated) | 0 | 3 | 0.0% |
+| Lookup (INDEX/MATCH) | 4 | 30 | 13.3% |
+| Aggregation (COUNTIFS/SUMIFS) | 1 | 7 | 14.3% |
 
 ## Results by Entity
 
 ### roles
 
-- Fields: 3/3 (100.0%)
+- Fields: 0/3 (0.0%)
 - Computed columns: count_of_employees
 
-### customers
-
-- Fields: 3/3 (100.0%)
-- Computed columns: full_name
+| PK | Field | Expected | Actual |
+|-----|-------|----------|--------|
+| analyst | count_of_employees | 1 | None |
+| developer | count_of_employees | 1 | None |
+| projectmanager | count_of_employees | 1 | None |
 
 ### projects
 
-- Fields: 21/21 (100.0%)
+- Fields: 3/21 (14.3%)
 - Computed columns: project_type_name, project_type_description, project_type_requires_manager_approval, approved_by_role_is_manager, approved_by_name, approved_by_email_address, approved_by_phone_number
+
+| PK | Field | Expected | Actual |
+|-----|-------|----------|--------|
+| customer-portal-redesign | project_type_name | ClientFacing | None |
+| customer-portal-redesign | project_type_description | Open, public facing communicat | None |
+| customer-portal-redesign | project_type_requires_manager_approval | True | None |
+| customer-portal-redesign | approved_by_name | Priya Patel | None |
+| customer-portal-redesign | approved_by_email_address | priya.patel@acmecorp.example | None |
+| customer-portal-redesign | approved_by_phone_number | 555-0103 | None |
+| gdpr-compliance-audit | project_type_name | Compliance | None |
+| gdpr-compliance-audit | project_type_requires_manager_approval | True | None |
+| gdpr-compliance-audit | approved_by_role_is_manager | True | None |
+| gdpr-compliance-audit | approved_by_name | Mike Johnson | None |
+| gdpr-compliance-audit | approved_by_email_address | mike.johnson@acmecorp.example | None |
+| gdpr-compliance-audit | approved_by_phone_number | 555-0102 | None |
+| internal-tools-dashboard | project_type_name | Internal | None |
+| internal-tools-dashboard | project_type_description | An internal project that is no | None |
+| internal-tools-dashboard | approved_by_role_is_manager | True | None |
+| internal-tools-dashboard | approved_by_name | Sarah Chen | None |
+| internal-tools-dashboard | approved_by_email_address | sarah.chen@acmecorp.example | None |
+| internal-tools-dashboard | approved_by_phone_number | 555-0101 | None |
 
 ### types_of_project
 
-- Fields: 4/4 (100.0%)
+- Fields: 1/4 (25.0%)
 - Computed columns: count_of_projects
+
+| PK | Field | Expected | Actual |
+|-----|-------|----------|--------|
+| clientfacing | count_of_projects | 1 | None |
+| compliance | count_of_projects | 1 | None |
+| internal | count_of_projects | 1 | None |
 
 ### employees
 
-- Fields: 9/9 (100.0%)
+- Fields: 1/9 (11.1%)
 - Computed columns: role_name, role_description, role_is_manager
+
+| PK | Field | Expected | Actual |
+|-----|-------|----------|--------|
+| mike-johnson | role_name | Developer | None |
+| mike-johnson | role_description | Developers handle the implemen | None |
+| mike-johnson | role_is_manager | True | None |
+| priya-patel | role_name | Analyst | None |
+| priya-patel | role_description | The business analysis know wha | None |
+| sarah-chen | role_name | ProjectManager | None |
+| sarah-chen | role_description | The project Manager makes sure | None |
+| sarah-chen | role_is_manager | True | None |
+
+### client
+
+- Fields: 0/3 (0.0%)
+- Computed columns: full_name
+
+| PK | Field | Expected | Actual |
+|-----|-------|----------|--------|
+| cust0001 | full_name | Bob Smith | None |
+| cust0002 | full_name | John Doe | None |
+| cust0003 | full_name | Emily Jones | None |
 </pre>
         </div>
     </div>
@@ -249,55 +299,26 @@ The calculated fields are real C# property getters compiled from the rulebook by
             <pre>=== Effortless-EntityFramework Substrate Test Run ===
 
 Building runner...
-/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/effortless-entity-framework/obj/Patched/DataClasses/BaseClasses/RoleBase.cs(53,53): warning CS8622: Nullability of reference types in type of parameter &#x27;sender&#x27; of &#x27;void RoleBase.Employees_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)&#x27; doesn&#x27;t match the target delegate &#x27;NotifyCollectionChangedEventHandler&#x27; (possibly because of nullability attributes). [/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/effortless-entity-framework/EffortlessEntityFrameworkRunner.csproj]
-/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/effortless-entity-framework/obj/Patched/DataClasses/BaseClasses/TypesOfProjectBase.cs(53,52): warning CS8622: Nullability of reference types in type of parameter &#x27;sender&#x27; of &#x27;void TypesOfProjectBase.Projects_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)&#x27; doesn&#x27;t match the target delegate &#x27;NotifyCollectionChangedEventHandler&#x27; (possibly because of nullability attributes). [/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/effortless-entity-framework/EffortlessEntityFrameworkRunner.csproj]
-/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/effortless-entity-framework/obj/Patched/DataClasses/BaseClasses/RoleBase.cs(61,53): warning CS8622: Nullability of reference types in type of parameter &#x27;sender&#x27; of &#x27;void RoleBase.Employees_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)&#x27; doesn&#x27;t match the target delegate &#x27;NotifyCollectionChangedEventHandler&#x27; (possibly because of nullability attributes). [/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/effortless-entity-framework/EffortlessEntityFrameworkRunner.csproj]
-/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/effortless-entity-framework/obj/Patched/DataClasses/BaseClasses/RoleBase.cs(66,53): warning CS8622: Nullability of reference types in type of parameter &#x27;sender&#x27; of &#x27;void RoleBase.Employees_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)&#x27; doesn&#x27;t match the target delegate &#x27;NotifyCollectionChangedEventHandler&#x27; (possibly because of nullability attributes). [/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/effortless-entity-framework/EffortlessEntityFrameworkRunner.csproj]
-/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/effortless-entity-framework/obj/Patched/DataClasses/BaseClasses/EmployeeBase.cs(122,52): warning CS8622: Nullability of reference types in type of parameter &#x27;sender&#x27; of &#x27;void EmployeeBase.Projects_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)&#x27; doesn&#x27;t match the target delegate &#x27;NotifyCollectionChangedEventHandler&#x27; (possibly because of nullability attributes). [/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/effortless-entity-framework/EffortlessEntityFrameworkRunner.csproj]
-/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/effortless-entity-framework/obj/Patched/DataClasses/BaseClasses/TypesOfProjectBase.cs(61,52): warning CS8622: Nullability of reference types in type of parameter &#x27;sender&#x27; of &#x27;void TypesOfProjectBase.Projects_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)&#x27; doesn&#x27;t match the target delegate &#x27;NotifyCollectionChangedEventHandler&#x27; (possibly because of nullability attributes). [/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/effortless-entity-framework/EffortlessEntityFrameworkRunner.csproj]
-/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/effortless-entity-framework/obj/Patched/DataClasses/BaseClasses/TypesOfProjectBase.cs(66,52): warning CS8622: Nullability of reference types in type of parameter &#x27;sender&#x27; of &#x27;void TypesOfProjectBase.Projects_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)&#x27; doesn&#x27;t match the target delegate &#x27;NotifyCollectionChangedEventHandler&#x27; (possibly because of nullability attributes). [/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/effortless-entity-framework/EffortlessEntityFrameworkRunner.csproj]
-/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/effortless-entity-framework/obj/Patched/DataClasses/BaseClasses/EmployeeBase.cs(130,52): warning CS8622: Nullability of reference types in type of parameter &#x27;sender&#x27; of &#x27;void EmployeeBase.Projects_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)&#x27; doesn&#x27;t match the target delegate &#x27;NotifyCollectionChangedEventHandler&#x27; (possibly because of nullability attributes). [/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/effortless-entity-framework/EffortlessEntityFrameworkRunner.csproj]
-/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/effortless-entity-framework/obj/Patched/DataClasses/BaseClasses/EmployeeBase.cs(135,52): warning CS8622: Nullability of reference types in type of parameter &#x27;sender&#x27; of &#x27;void EmployeeBase.Projects_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)&#x27; doesn&#x27;t match the target delegate &#x27;NotifyCollectionChangedEventHandler&#x27; (possibly because of nullability attributes). [/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/effortless-entity-framework/EffortlessEntityFrameworkRunner.csproj]
 
 Build succeeded.
-
-/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/effortless-entity-framework/obj/Patched/DataClasses/BaseClasses/RoleBase.cs(53,53): warning CS8622: Nullability of reference types in type of parameter &#x27;sender&#x27; of &#x27;void RoleBase.Employees_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)&#x27; doesn&#x27;t match the target delegate &#x27;NotifyCollectionChangedEventHandler&#x27; (possibly because of nullability attributes). [/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/effortless-entity-framework/EffortlessEntityFrameworkRunner.csproj]
-/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/effortless-entity-framework/obj/Patched/DataClasses/BaseClasses/TypesOfProjectBase.cs(53,52): warning CS8622: Nullability of reference types in type of parameter &#x27;sender&#x27; of &#x27;void TypesOfProjectBase.Projects_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)&#x27; doesn&#x27;t match the target delegate &#x27;NotifyCollectionChangedEventHandler&#x27; (possibly because of nullability attributes). [/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/effortless-entity-framework/EffortlessEntityFrameworkRunner.csproj]
-/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/effortless-entity-framework/obj/Patched/DataClasses/BaseClasses/RoleBase.cs(61,53): warning CS8622: Nullability of reference types in type of parameter &#x27;sender&#x27; of &#x27;void RoleBase.Employees_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)&#x27; doesn&#x27;t match the target delegate &#x27;NotifyCollectionChangedEventHandler&#x27; (possibly because of nullability attributes). [/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/effortless-entity-framework/EffortlessEntityFrameworkRunner.csproj]
-/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/effortless-entity-framework/obj/Patched/DataClasses/BaseClasses/RoleBase.cs(66,53): warning CS8622: Nullability of reference types in type of parameter &#x27;sender&#x27; of &#x27;void RoleBase.Employees_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)&#x27; doesn&#x27;t match the target delegate &#x27;NotifyCollectionChangedEventHandler&#x27; (possibly because of nullability attributes). [/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/effortless-entity-framework/EffortlessEntityFrameworkRunner.csproj]
-/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/effortless-entity-framework/obj/Patched/DataClasses/BaseClasses/EmployeeBase.cs(122,52): warning CS8622: Nullability of reference types in type of parameter &#x27;sender&#x27; of &#x27;void EmployeeBase.Projects_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)&#x27; doesn&#x27;t match the target delegate &#x27;NotifyCollectionChangedEventHandler&#x27; (possibly because of nullability attributes). [/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/effortless-entity-framework/EffortlessEntityFrameworkRunner.csproj]
-/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/effortless-entity-framework/obj/Patched/DataClasses/BaseClasses/TypesOfProjectBase.cs(61,52): warning CS8622: Nullability of reference types in type of parameter &#x27;sender&#x27; of &#x27;void TypesOfProjectBase.Projects_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)&#x27; doesn&#x27;t match the target delegate &#x27;NotifyCollectionChangedEventHandler&#x27; (possibly because of nullability attributes). [/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/effortless-entity-framework/EffortlessEntityFrameworkRunner.csproj]
-/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/effortless-entity-framework/obj/Patched/DataClasses/BaseClasses/TypesOfProjectBase.cs(66,52): warning CS8622: Nullability of reference types in type of parameter &#x27;sender&#x27; of &#x27;void TypesOfProjectBase.Projects_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)&#x27; doesn&#x27;t match the target delegate &#x27;NotifyCollectionChangedEventHandler&#x27; (possibly because of nullability attributes). [/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/effortless-entity-framework/EffortlessEntityFrameworkRunner.csproj]
-/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/effortless-entity-framework/obj/Patched/DataClasses/BaseClasses/EmployeeBase.cs(130,52): warning CS8622: Nullability of reference types in type of parameter &#x27;sender&#x27; of &#x27;void EmployeeBase.Projects_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)&#x27; doesn&#x27;t match the target delegate &#x27;NotifyCollectionChangedEventHandler&#x27; (possibly because of nullability attributes). [/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/effortless-entity-framework/EffortlessEntityFrameworkRunner.csproj]
-/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/effortless-entity-framework/obj/Patched/DataClasses/BaseClasses/EmployeeBase.cs(135,52): warning CS8622: Nullability of reference types in type of parameter &#x27;sender&#x27; of &#x27;void EmployeeBase.Projects_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)&#x27; doesn&#x27;t match the target delegate &#x27;NotifyCollectionChangedEventHandler&#x27; (possibly because of nullability attributes). [/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/effortless-entity-framework/EffortlessEntityFrameworkRunner.csproj]
-    9 Warning(s)
+    0 Warning(s)
     0 Error(s)
 
-Time Elapsed 00:00:00.67
+Time Elapsed 00:00:01.39
 
 Running runner...
 Effortless-EntityFramework Substrate Test Runner
 ==================================================
 
-Discovered 5 EF entity classes:
+Discovered 3 EF entity classes:
   - Customer
-  - Employee
-  - Project
-  - Role
-  - TypesOfProject
+  - ERBCustomization
+  - ERBVersion
 
   loaded customers (Customer): 3 records
-  loaded employees (Employee): 3 records
-  loaded projects (Project): 3 records
-  loaded roles (Role): 3 records
-  loaded types_of_project (TypesOfProject): 4 records
   -&gt; customers (Customer): 3 records
-  -&gt; employees (Employee): 3 records
-  -&gt; projects (Project): 3 records
-  -&gt; roles (Role): 3 records
-  -&gt; types_of_project (TypesOfProject): 4 records
 
-effortless-entity-framework: Processed 5 entities, 16 total records
+effortless-entity-framework: Processed 1 entities, 3 total records
 
 </pre>
         </div>

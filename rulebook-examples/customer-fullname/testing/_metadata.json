@@ -1,0 +1,9 @@
+{
+  "customers": {
+    "primary_key": "customer_id",
+    "computed_columns": [
+      "full_name"
+    ],
+    "record_count": 3
+  }
+}

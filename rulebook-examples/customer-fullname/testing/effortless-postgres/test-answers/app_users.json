@@ -1,0 +1,23 @@
+[
+  {
+    "user_id": "user-001",
+    "email": "dev@example.com",
+    "display_name": "Local Developer",
+    "is_default": true,
+    "notes": "Default developer login for ./start.sh. Full admin everywhere."
+  },
+  {
+    "user_id": "user-002",
+    "email": "viewer@example.com",
+    "display_name": "Local Viewer",
+    "is_default": false,
+    "notes": "Read-only login for demos and stakeholder review."
+  },
+  {
+    "user_id": "user-003",
+    "email": "test@example.com",
+    "display_name": "Conformance Test User",
+    "is_default": false,
+    "notes": "Used by automated conformance tests (CI mode)."
+  }
+]

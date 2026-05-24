@@ -1,0 +1,299 @@
+[
+  {
+    "api_id": "api-001",
+    "method": "GET",
+    "path": "/api/me",
+    "resource": "users",
+    "action": "read",
+    "writes_through": false,
+    "description": "Current user + role + permissions"
+  },
+  {
+    "api_id": "api-002",
+    "method": "GET",
+    "path": "/api/projects",
+    "resource": "rulebook.entity",
+    "action": "read",
+    "writes_through": false,
+    "description": "List rulebook projects (rulebook-examples/* + this meta-rulebook)"
+  },
+  {
+    "api_id": "api-003",
+    "method": "GET",
+    "path": "/api/projects/:id",
+    "resource": "rulebook.entity",
+    "action": "read",
+    "writes_through": false,
+    "description": "Project summary: rulebook stats, substrates, last build"
+  },
+  {
+    "api_id": "api-004",
+    "method": "POST",
+    "path": "/api/projects/:id/activate",
+    "resource": "rulebook.entity",
+    "action": "execute",
+    "writes_through": false,
+    "description": "Set active-domain pointer; rehydrate editor Postgres"
+  },
+  {
+    "api_id": "api-005",
+    "method": "GET",
+    "path": "/api/rulebook",
+    "resource": "rulebook.entity",
+    "action": "read",
+    "writes_through": false,
+    "description": "Whole active rulebook (entities + meta)"
+  },
+  {
+    "api_id": "api-006",
+    "method": "GET",
+    "path": "/api/rulebook/entities",
+    "resource": "rulebook.entity",
+    "action": "read",
+    "writes_through": false,
+    "description": "List entities in active rulebook"
+  },
+  {
+    "api_id": "api-007",
+    "method": "GET",
+    "path": "/api/rulebook/entities/:name",
+    "resource": "rulebook.entity",
+    "action": "read",
+    "writes_through": false,
+    "description": "One entity with full schema + sample data"
+  },
+  {
+    "api_id": "api-008",
+    "method": "PATCH",
+    "path": "/api/rulebook/entities/:name",
+    "resource": "rulebook.entity",
+    "action": "update",
+    "writes_through": true,
+    "description": "Update entity description / schema / sample row. Write-through: Postgres + JSON in same txn."
+  },
+  {
+    "api_id": "api-009",
+    "method": "POST",
+    "path": "/api/rulebook/entities",
+    "resource": "rulebook.entity",
+    "action": "create",
+    "writes_through": true,
+    "description": "Add a new entity. Write-through."
+  },
+  {
+    "api_id": "api-010",
+    "method": "DELETE",
+    "path": "/api/rulebook/entities/:name",
+    "resource": "rulebook.entity",
+    "action": "delete",
+    "writes_through": true,
+    "description": "Remove entity. Write-through."
+  },
+  {
+    "api_id": "api-011",
+    "method": "PATCH",
+    "path": "/api/rulebook/entities/:name/fields/:fieldName",
+    "resource": "rulebook.field",
+    "action": "update",
+    "writes_through": true,
+    "description": "Update field (datatype, formula, nullable, description). Write-through."
+  },
+  {
+    "api_id": "api-012",
+    "method": "GET",
+    "path": "/api/substrates",
+    "resource": "rulebook.entity",
+    "action": "read",
+    "writes_through": false,
+    "description": "List substrates for active project + generated file index"
+  },
+  {
+    "api_id": "api-013",
+    "method": "POST",
+    "path": "/api/substrates/:name/build",
+    "resource": "build",
+    "action": "execute",
+    "writes_through": false,
+    "description": "Trigger rebuild for one substrate via ssotme-proxy"
+  },
+  {
+    "api_id": "api-014",
+    "method": "POST",
+    "path": "/api/build/all",
+    "resource": "build",
+    "action": "execute",
+    "writes_through": false,
+    "description": "Rebuild every substrate in active project"
+  },
+  {
+    "api_id": "api-015",
+    "method": "GET",
+    "path": "/api/tests",
+    "resource": "test",
+    "action": "read",
+    "writes_through": false,
+    "description": "Conformance matrix + last run"
+  },
+  {
+    "api_id": "api-016",
+    "method": "POST",
+    "path": "/api/tests/run",
+    "resource": "test",
+    "action": "execute",
+    "writes_through": false,
+    "description": "Run all substrate tests, return matrix"
+  },
+  {
+    "api_id": "api-017",
+    "method": "GET",
+    "path": "/api/spokes",
+    "resource": "rulebook.entity",
+    "action": "read",
+    "writes_through": false,
+    "description": "List input spokes for active project"
+  },
+  {
+    "api_id": "api-018",
+    "method": "POST",
+    "path": "/api/spokes/:id/pull",
+    "resource": "build",
+    "action": "execute",
+    "writes_through": false,
+    "description": "Pull from a spoke (e.g. Airtable). Writes into rulebook JSON via flow-003."
+  },
+  {
+    "api_id": "api-019",
+    "method": "GET",
+    "path": "/api/users",
+    "resource": "users",
+    "action": "read",
+    "writes_through": false,
+    "description": "AppUsers from active rulebook"
+  },
+  {
+    "api_id": "api-020",
+    "method": "POST",
+    "path": "/api/users",
+    "resource": "users",
+    "action": "create",
+    "writes_through": true,
+    "description": "Add user. Write-through into rulebook AppUsers."
+  },
+  {
+    "api_id": "api-021",
+    "method": "PATCH",
+    "path": "/api/users/:id",
+    "resource": "users",
+    "action": "update",
+    "writes_through": true,
+    "description": "Update user role/email/displayName. Write-through."
+  },
+  {
+    "api_id": "api-022",
+    "method": "DELETE",
+    "path": "/api/users/:id",
+    "resource": "users",
+    "action": "delete",
+    "writes_through": true,
+    "description": "Remove user. Write-through."
+  },
+  {
+    "api_id": "api-023",
+    "method": "GET",
+    "path": "/api/tech/postgres/tables",
+    "resource": "tech-tools.postgres",
+    "action": "read",
+    "writes_through": false,
+    "description": "List editor-DB tables"
+  },
+  {
+    "api_id": "api-024",
+    "method": "POST",
+    "path": "/api/tech/postgres/query",
+    "resource": "tech-tools.postgres",
+    "action": "execute",
+    "writes_through": false,
+    "description": "Run arbitrary SQL (developer-only)"
+  },
+  {
+    "api_id": "api-025",
+    "method": "GET",
+    "path": "/api/tech/proxy/status",
+    "resource": "tech-tools.proxy",
+    "action": "read",
+    "writes_through": false,
+    "description": "Mirror of localhost:4242/ping + recent call log"
+  },
+  {
+    "api_id": "api-026",
+    "method": "POST",
+    "path": "/api/tech/reset",
+    "resource": "tech-tools.postgres",
+    "action": "execute",
+    "writes_through": false,
+    "description": "Drop editor DB; rerun flow-005 to rebuild from rulebook JSON"
+  },
+  {
+    "api_id": "api-027",
+    "method": "GET",
+    "path": "/api/tech/rulebook-json",
+    "resource": "rulebook.entity",
+    "action": "read",
+    "writes_through": false,
+    "description": "Raw current effortless-rulebook.json"
+  },
+  {
+    "api_id": "api-028",
+    "method": "PUT",
+    "path": "/api/tech/rulebook-json",
+    "resource": "rulebook.entity",
+    "action": "update",
+    "writes_through": true,
+    "description": "Write raw JSON. Re-validates, rehydrates Postgres editor."
+  },
+  {
+    "api_id": "api-029",
+    "method": "GET",
+    "path": "/api/tools/catalog",
+    "resource": "rulebook.entity",
+    "action": "read",
+    "writes_through": false,
+    "description": "Available transpilers to add to active project. Sources: localhost:4242/ping (local) + Effortless registry. Drives the Add Tool screen."
+  },
+  {
+    "api_id": "api-030",
+    "method": "GET",
+    "path": "/api/tools/installed",
+    "resource": "rulebook.entity",
+    "action": "read",
+    "writes_through": false,
+    "description": "Currently installed transpilers from active project's effortless.json (ProjectTranspilers array)."
+  },
+  {
+    "api_id": "api-031",
+    "method": "POST",
+    "path": "/api/tools/install",
+    "resource": "build",
+    "action": "execute",
+    "writes_through": false,
+    "description": "Add a tool to the active project: shells out to `effortless -install <proxy-url> -i <rulebook>`. Same CLI path the orchestrator uses \u2014 guarantees portal/CLI parity."
+  },
+  {
+    "api_id": "api-032",
+    "method": "POST",
+    "path": "/api/tools/:name/disable",
+    "resource": "build",
+    "action": "execute",
+    "writes_through": false,
+    "description": "Toggle IsDisabled on a ProjectTranspilers entry."
+  },
+  {
+    "api_id": "api-033",
+    "method": "DELETE",
+    "path": "/api/tools/:name",
+    "resource": "build",
+    "action": "execute",
+    "writes_through": false,
+    "description": "Remove a tool from active project's effortless.json."
+  }
+]

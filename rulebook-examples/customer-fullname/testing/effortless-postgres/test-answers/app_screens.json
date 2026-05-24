@@ -1,0 +1,162 @@
+[
+  {
+    "screen_id": "screen-home",
+    "path": "/",
+    "title": "Home",
+    "reads_entities": "ProjectMetadata,RulebookProjects,RulebookSourceSpokes,ExecutionSubstrates",
+    "writes_entities": null,
+    "layout": "dashboard",
+    "primary_action": "Switch project",
+    "story": "Land here on ./start.sh. Cards: current project, rulebook size, # substrates, last build time, last test pass-rate, which spokes are active, who you're signed in as."
+  },
+  {
+    "screen_id": "screen-entities",
+    "path": "/rulebook/entities",
+    "title": "Entities",
+    "reads_entities": "<active-project-rulebook>",
+    "writes_entities": "<active-project-rulebook>",
+    "layout": "split-detail",
+    "primary_action": "Add entity",
+    "story": "Left: list of every entity in the active project's rulebook. Right: selected entity's fields, formulas, sample rows. Developer can add/rename/delete fields inline; viewer sees the same with controls disabled."
+  },
+  {
+    "screen_id": "screen-formulas",
+    "path": "/rulebook/formulas",
+    "title": "Formulas",
+    "reads_entities": "<active-project-rulebook>",
+    "writes_entities": "<active-project-rulebook>",
+    "layout": "split-detail",
+    "primary_action": "Edit formula",
+    "story": "Every calculated field across all entities. Drill in to see live DAG visualization (inputs \u2192 intermediates \u2192 output) sourced from the rulebook's explain-dag substrate. Developer can edit Excel-style formula in place; portal auto-validates against the parser."
+  },
+  {
+    "screen_id": "screen-relationships",
+    "path": "/rulebook/relationships",
+    "title": "Relationships",
+    "reads_entities": "<active-project-rulebook>",
+    "writes_entities": null,
+    "layout": "grid",
+    "primary_action": null,
+    "story": "FK graph (interactive). Hover a node to highlight its inbound/outbound edges. Click an edge to see which formula or column declares it."
+  },
+  {
+    "screen_id": "screen-sample-data",
+    "path": "/rulebook/data",
+    "title": "Sample Data",
+    "reads_entities": "<active-project-rulebook>.data",
+    "writes_entities": "<active-project-rulebook>.data",
+    "layout": "grid",
+    "primary_action": "Add row",
+    "story": "Spreadsheet-style view of the data block of each entity. Developer can edit cells; computed columns are read-only and show the resolved value with a hoverable derivation popover."
+  },
+  {
+    "screen_id": "screen-substrates",
+    "path": "/substrates",
+    "title": "Substrates",
+    "reads_entities": "ExecutionSubstrates,SsotmeProxy",
+    "writes_entities": null,
+    "layout": "split-detail",
+    "primary_action": "Rebuild substrate",
+    "story": "Left: every substrate this project emits (with last-build timestamp + conformance status). Right: file tree of generated output + a preview pane for any file. Developer can trigger 'Rebuild just this substrate'."
+  },
+  {
+    "screen_id": "screen-add-tool",
+    "path": "/tools/add",
+    "title": "Add Tool",
+    "reads_entities": "AddToolCatalog,SsotmeProxy",
+    "writes_entities": "<active-project>/effortless.json (via effortless CLI)",
+    "layout": "grid",
+    "primary_action": "Install",
+    "story": "Browse the 15+ transpilers in the catalog. Click one, choose output path, hit Install. Portal shells out to `effortless -install <proxy-url>` so the result is byte-identical to the CLI path. Tool then shows up in /substrates and is ready for the next build."
+  },
+  {
+    "screen_id": "screen-builds",
+    "path": "/builds",
+    "title": "Builds",
+    "reads_entities": "BuildHistory",
+    "writes_entities": "BuildHistory",
+    "layout": "list",
+    "primary_action": "Trigger build",
+    "story": "Chronological list of builds. Click one to see which transpilers ran, duration each, stdout/stderr per route, and which files changed. Trigger-build button is gated by CanRunBuilds."
+  },
+  {
+    "screen_id": "screen-tests",
+    "path": "/tests",
+    "title": "Tests",
+    "reads_entities": "TestingFramework,TestRuns",
+    "writes_entities": "TestRuns",
+    "layout": "grid",
+    "primary_action": "Run all tests",
+    "story": "Matrix: rows = test cases, columns = substrates, cells = pass/fail. Click a failing cell to see input, expected, actual, and a diff. Trigger-tests button is gated by CanRunBuilds."
+  },
+  {
+    "screen_id": "screen-input-spokes",
+    "path": "/spokes",
+    "title": "Input Spokes",
+    "reads_entities": "RulebookSourceSpokes",
+    "writes_entities": null,
+    "layout": "list",
+    "primary_action": "Pull from spoke",
+    "story": "List of every configured input spoke for this project. Status (last-pulled time, last-error). Developer can trigger a pull from any spoke."
+  },
+  {
+    "screen_id": "screen-users",
+    "path": "/users",
+    "title": "Users",
+    "reads_entities": "AppUsers,UserRoles",
+    "writes_entities": "AppUsers",
+    "layout": "list",
+    "primary_action": "Add user",
+    "story": "Default dev/test users from the rulebook + roles. Developer can add new users (saved through the write-through invariant, so they end up in rulebook JSON)."
+  },
+  {
+    "screen_id": "screen-tech-postgres",
+    "path": "/tech/postgres",
+    "title": "Postgres Explorer",
+    "reads_entities": "<editor-postgres-tables>",
+    "writes_entities": "<editor-postgres-tables>",
+    "layout": "editor",
+    "primary_action": "Run query",
+    "story": "Raw SQL console + table browser for the editor Postgres DB. Developer-only escape hatch. Background banner reminds: rulebook JSON is the SSoT, this DB is rebuildable."
+  },
+  {
+    "screen_id": "screen-tech-proxy",
+    "path": "/tech/proxy",
+    "title": "ssotme-proxy",
+    "reads_entities": "SsotmeProxy",
+    "writes_entities": null,
+    "layout": "list",
+    "primary_action": "Ping proxy",
+    "story": "Live status of localhost:4242: registered routes, recent calls (route, duration, status, response size), last error per route. Restart button."
+  },
+  {
+    "screen_id": "screen-tech-files",
+    "path": "/tech/files",
+    "title": "Project Files",
+    "reads_entities": "<project-filesystem>",
+    "writes_entities": null,
+    "layout": "split-detail",
+    "primary_action": null,
+    "story": "Browse the active project folder. View any file. Read-only \u2014 prevents drift from rulebook."
+  },
+  {
+    "screen_id": "screen-tech-json",
+    "path": "/tech/rulebook-json",
+    "title": "Raw Rulebook JSON",
+    "reads_entities": "<active-project-rulebook>",
+    "writes_entities": "<active-project-rulebook>",
+    "layout": "editor",
+    "primary_action": "Save JSON",
+    "story": "Monaco editor on the raw effortless-rulebook.json. Save goes through the write-through invariant. Useful for bulk edits."
+  },
+  {
+    "screen_id": "screen-tech-reset",
+    "path": "/tech/reset",
+    "title": "Reset Editor",
+    "reads_entities": null,
+    "writes_entities": null,
+    "layout": "dashboard",
+    "primary_action": "Reset now",
+    "story": "One-button reset: drops the editor Postgres DB and re-bootstraps from rulebook JSON. The reassurance screen \u2014 makes the JSON-as-SSoT promise tangible."
+  }
+]
