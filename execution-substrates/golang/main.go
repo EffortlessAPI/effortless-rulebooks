@@ -23,9 +23,16 @@ func main() {
 		os.Exit(1)
 	}
 
-	// Shared blank-tests directory at project root
-	blankTestsDir := filepath.Join(scriptDir, "..", "..", "testing", "blank-tests")
-	testAnswersDir := filepath.Join(scriptDir, "test-answers")
+	// Resolve testing dirs from ERB_TESTING_DIR env var (domain-scoped) or fallback
+	erbTesting := os.Getenv("ERB_TESTING_DIR")
+	var blankTestsDir, testAnswersDir string
+	if erbTesting != "" {
+		blankTestsDir = filepath.Join(erbTesting, "blank-tests")
+		testAnswersDir = filepath.Join(erbTesting, "golang", "test-answers")
+	} else {
+		blankTestsDir = filepath.Join(scriptDir, "..", "..", "testing", "blank-tests")
+		testAnswersDir = filepath.Join(scriptDir, "test-answers")
+	}
 
 	// Ensure output directory exists
 	if err := os.MkdirAll(testAnswersDir, 0755); err != nil {

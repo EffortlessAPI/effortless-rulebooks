@@ -5,8 +5,8 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(dirname "$(dirname "$SCRIPT_DIR")")"
 cd "$SCRIPT_DIR"
 
-# Copy blank-tests from central testing directory
-TESTING_BLANK_TESTS="$PROJECT_ROOT/testing/blank-tests"
+# Copy blank-tests from the domain-scoped testing directory (ERB_TESTING_DIR) or fallback
+TESTING_BLANK_TESTS="${ERB_TESTING_DIR:-$PROJECT_ROOT/testing}/blank-tests"
 LOCAL_BLANK_TESTS="$SCRIPT_DIR/blank-tests"
 
 if [ -d "$TESTING_BLANK_TESTS" ] && [ -n "$(ls -A "$TESTING_BLANK_TESTS" 2>/dev/null)" ]; then

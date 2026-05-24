@@ -25,7 +25,16 @@ import sys
 from pathlib import Path
 
 script_dir = Path(__file__).resolve().parent
-project_root = script_dir.parent.parent
+
+
+def _get_testing_paths():
+    """Resolve blank-tests and test-answers dirs from ERB_TESTING_DIR env var."""
+    erb_testing = os.environ.get("ERB_TESTING_DIR")
+    if erb_testing:
+        substrate_name = Path(script_dir).name
+        return Path(erb_testing) / "blank-tests", Path(erb_testing) / substrate_name / "test-answers"
+    project_root = Path(script_dir).parent.parent
+    return project_root / "testing" / "blank-tests", Path(script_dir) / "test-answers"
 
 
 def check_gnucobol():
@@ -179,8 +188,7 @@ def process_entity(input_path: Path, output_path: Path, entity_name: str, field_
 
 
 def main():
-    blank_tests_dir = project_root / "testing" / "blank-tests"
-    test_answers_dir = script_dir / "test-answers"
+    blank_tests_dir, test_answers_dir = _get_testing_paths()
 
     print("COBOL Substrate Test Runner")
     print("=" * 50)

@@ -35,8 +35,15 @@ public static class Program
         var substrateDir = FindAncestorContaining(scriptDir, "Program.cs")
             ?? throw new InvalidOperationException("Cannot locate substrate directory.");
         var projectRoot = Path.GetFullPath(Path.Combine(substrateDir, "..", ".."));
-        var blankTestsDir = Path.Combine(projectRoot, "testing", "blank-tests");
-        var testAnswersDir = Path.Combine(substrateDir, "test-answers");
+        var erbTestingDir = Environment.GetEnvironmentVariable("ERB_TESTING_DIR");
+        var testingDir = string.IsNullOrEmpty(erbTestingDir)
+            ? Path.Combine(projectRoot, "testing")
+            : erbTestingDir;
+        var blankTestsDir = Path.Combine(testingDir, "blank-tests");
+        var substrateName = Path.GetFileName(substrateDir.TrimEnd(Path.DirectorySeparatorChar));
+        var testAnswersDir = string.IsNullOrEmpty(erbTestingDir)
+            ? Path.Combine(substrateDir, "test-answers")
+            : Path.Combine(erbTestingDir, substrateName, "test-answers");
         Directory.CreateDirectory(testAnswersDir);
 
         Console.WriteLine("Effortless-EntityFramework Substrate Test Runner");

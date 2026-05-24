@@ -606,7 +606,10 @@ action_view_results() {
     # The orchestration report reads from the existing substrate-report.html files
 
     # Generate main orchestration report
-    python3 "$SCRIPT_DIR/generate-report.py"
+    local domain
+    domain=$(get_active_domain)
+    local rulebook="$RULEBOOK_EXAMPLES_DIR/$domain/effortless-rulebook/effortless-rulebook.json"
+    python3 "$SCRIPT_DIR/generate-report.py" --rulebook "$rulebook"
     echo ""
     echo -e "${BOLD}${GREEN}╔════════════════════════════════════════════════════════════╗${NC}"
     echo -e "${BOLD}${GREEN}║${NC}              ${BOLD}${WHITE}REPORT GENERATED${NC}                              ${BOLD}${GREEN}║${NC}"
@@ -788,6 +791,13 @@ action_init_postgres() {
 run_substrates() {
     local RUN_SINGLE="$1"
 
+    # Set domain-scoped testing dir and export it so all inject/take-test scripts
+    # know where to read blank-tests and write test-answers.
+    local _domain
+    _domain=$(get_active_domain)
+    export ERB_TESTING_DIR="$RULEBOOK_EXAMPLES_DIR/$_domain/testing"
+    mkdir -p "$ERB_TESTING_DIR"
+
     # Get list of valid substrates (those with inject or test scripts)
     SUBSTRATES=$(get_valid_substrates)
     SUBSTRATES_ARRAY=($SUBSTRATES)
@@ -904,8 +914,10 @@ for substrate in $SUBSTRATES_TO_RUN; do
         echo -e "${COLOR}╚══════════════════════════════════════════════════════════════╝${NC}"
 
         # Backup/restore mechanism to preserve successful results on failure
-        test_answers_dir="$substrate_dir/test-answers"
-        test_answers_backup="$substrate_dir/test-answers.bak"
+        # test-answers live under the domain testing folder, not the substrate tool dir
+        test_answers_dir="$ERB_TESTING_DIR/$substrate/test-answers"
+        test_answers_backup="$ERB_TESTING_DIR/$substrate/test-answers.bak"
+        mkdir -p "$ERB_TESTING_DIR/$substrate"
 
         # Backup existing test-answers before clearing (if they exist and have files)
         if [ -d "$test_answers_dir" ] && [ "$(ls -A "$test_answers_dir" 2>/dev/null)" ]; then
@@ -1069,18 +1081,18 @@ if os.path.exists(custom_script) and not preserve_timing:
 
 # Save grades to temp file for final summary
 import pickle
-grades_file = os.path.join(test_orch.SUBSTRATES_DIR, substrate, '.grades.pkl')
+grades_file = os.path.join(test_orch.TESTING_DIR, substrate, '.grades.pkl')
 with open(grades_file, 'wb') as f:
     pickle.dump(grades, f)
 
 # Also write score to a simple file for bash to check
-score_file = os.path.join(test_orch.SUBSTRATES_DIR, substrate, '.score')
+score_file = os.path.join(test_orch.TESTING_DIR, substrate, '.score')
 score = grades.get('score', -1)
 with open(score_file, 'w') as f:
     f.write(str(score))
 "
         # Check for 0% score and pause if so (similar to execution failure)
-        score_file="$SUBSTRATES_DIR/$substrate/.score"
+        score_file="$ERB_TESTING_DIR/$substrate/.score"
         if [ -f "$score_file" ]; then
             SCORE=$(cat "$score_file")
             rm -f "$score_file"  # Clean up
@@ -1128,9 +1140,10 @@ with open(score_file, 'w') as f:
         echo -e "${COLOR}║${NC} ${BOLD}[$CURRENT/$TOTAL_TO_RUN]${NC} ${COLOR}▶ ${BOLD}${substrate_upper}${NC} ${DIM}(test-only)${NC}"
         echo -e "${COLOR}╚══════════════════════════════════════════════════════════════╝${NC}"
 
-        # Setup test-answers directory
-        test_answers_dir="$substrate_dir/test-answers"
-        test_answers_backup="$substrate_dir/test-answers.bak"
+        # Setup test-answers directory (domain-scoped)
+        test_answers_dir="$ERB_TESTING_DIR/$substrate/test-answers"
+        test_answers_backup="$ERB_TESTING_DIR/$substrate/test-answers.bak"
+        mkdir -p "$ERB_TESTING_DIR/$substrate"
         if [ -d "$test_answers_dir" ] && [ "$(ls -A "$test_answers_dir" 2>/dev/null)" ]; then
             rm -rf "$test_answers_backup"
             cp -r "$test_answers_dir" "$test_answers_backup"
@@ -1206,11 +1219,11 @@ test_orch.generate_substrate_report(substrate, grades, rulebook)
 test_orch.print_substrate_test_summary(substrate, grades, rulebook)
 
 import pickle
-grades_file = os.path.join(test_orch.SUBSTRATES_DIR, substrate, '.grades.pkl')
+grades_file = os.path.join(test_orch.TESTING_DIR, substrate, '.grades.pkl')
 with open(grades_file, 'wb') as f:
     pickle.dump(grades, f)
 
-score_file = os.path.join(test_orch.SUBSTRATES_DIR, substrate, '.score')
+score_file = os.path.join(test_orch.TESTING_DIR, substrate, '.score')
 with open(score_file, 'w') as f:
     f.write(str(grades.get('score', -1)))
 "
@@ -1254,7 +1267,7 @@ else:
 
 all_grades = {}
 for substrate in substrates:
-    grades_file = os.path.join(test_orch.SUBSTRATES_DIR, substrate, '.grades.pkl')
+    grades_file = os.path.join(test_orch.TESTING_DIR, substrate, '.grades.pkl')
     if os.path.exists(grades_file):
         with open(grades_file, 'rb') as f:
             all_grades[substrate] = pickle.load(f)
@@ -1294,7 +1307,9 @@ test_orch.cleanup_unchanged_files()
 echo -e "${BOLD}${BLUE}┌──────────────────────────────────────────────────────────────┐${NC}"
 echo -e "${BOLD}${BLUE}│${NC} ${BOLD}${WHITE}STEP 5:${NC} ${YELLOW}Generating HTML report...${NC}                            ${BOLD}${BLUE}│${NC}"
 echo -e "${BOLD}${BLUE}└──────────────────────────────────────────────────────────────┘${NC}"
-python3 "$SCRIPT_DIR/generate-report.py"
+_active_domain=$(get_active_domain)
+python3 "$SCRIPT_DIR/generate-report.py" \
+    --rulebook "$RULEBOOK_EXAMPLES_DIR/$_active_domain/effortless-rulebook/effortless-rulebook.json"
 echo ""
 
 # -----------------------------------------------------------------------------
@@ -1354,13 +1369,13 @@ else
     echo -e "  ${DIM}•${NC} Per-substrate: ${WHITE}execution-substrates/*/test-results.md${NC}"
     echo -e "  ${DIM}•${NC} Summary:       ${WHITE}orchestration/all-tests-results.md${NC}"
 fi
-echo -e "  ${DIM}•${NC} HTML Report:   ${WHITE}orchestration/orchestration-report.html${NC}"
+echo -e "  ${DIM}•${NC} HTML Report:   ${WHITE}rulebook-examples/$(get_active_domain)/orchestration-report.html${NC}"
 echo ""
 
 # Open browser (skip in CI mode)
 if ! $CI_MODE; then
     echo -e "${CYAN}Opening HTML report in browser...${NC}"
-    open "$SCRIPT_DIR/orchestration-report.html"
+    open "$RULEBOOK_EXAMPLES_DIR/$(get_active_domain)/orchestration-report.html"
     echo ""
 fi
 
@@ -1410,7 +1425,7 @@ if $CI_MODE; then
         echo -e "${BOLD}${GREEN}════════════════════════════════════════════════════════════════${NC}"
         echo ""
         echo -e "  ${BOLD}Reports generated:${NC}"
-        echo -e "    • orchestration/orchestration-report.html"
+        echo -e "    • rulebook-examples/$(get_active_domain)/orchestration-report.html"
         echo -e "    • orchestration/all-tests-results.md"
         echo -e "    • execution-substrates/*/substrate-report.html"
         echo ""

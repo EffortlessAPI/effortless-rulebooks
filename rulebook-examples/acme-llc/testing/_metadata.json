@@ -1,0 +1,45 @@
+{
+  "client": {
+    "primary_key": "client_id",
+    "computed_columns": [
+      "full_name"
+    ],
+    "record_count": 3
+  },
+  "projects": {
+    "primary_key": "project_id",
+    "computed_columns": [
+      "project_type_name",
+      "project_type_description",
+      "project_type_requires_manager_approval",
+      "approved_by_role_is_manager",
+      "approved_by_name",
+      "approved_by_email_address",
+      "approved_by_phone_number"
+    ],
+    "record_count": 3
+  },
+  "employees": {
+    "primary_key": "employee_id",
+    "computed_columns": [
+      "role_name",
+      "role_description",
+      "role_is_manager"
+    ],
+    "record_count": 3
+  },
+  "roles": {
+    "primary_key": "role_id",
+    "computed_columns": [
+      "count_of_employees"
+    ],
+    "record_count": 3
+  },
+  "types_of_project": {
+    "primary_key": "types_of_project_id",
+    "computed_columns": [
+      "count_of_projects"
+    ],
+    "record_count": 4
+  }
+}

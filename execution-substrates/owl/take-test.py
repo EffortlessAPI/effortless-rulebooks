@@ -206,6 +206,16 @@ def extract_entity_results(
 # MAIN
 # =============================================================================
 
+def _get_testing_paths():
+    """Resolve blank-tests and test-answers dirs from ERB_TESTING_DIR env var."""
+    erb_testing = os.environ.get("ERB_TESTING_DIR")
+    if erb_testing:
+        substrate_name = Path(script_dir).name
+        return Path(erb_testing) / "blank-tests", Path(erb_testing) / substrate_name / "test-answers"
+    project_root = Path(script_dir).parent.parent
+    return project_root / "testing" / "blank-tests", Path(script_dir) / "test-answers"
+
+
 def main():
     print("=" * 70)
     print("OWL Execution Substrate - SHACL Reasoning Test")
@@ -284,7 +294,7 @@ def main():
     # Extract results and save to test-answers/
     print("\nExtracting computed values...")
 
-    test_answers_dir = script_dir / "test-answers"
+    _, test_answers_dir = _get_testing_paths()
     test_answers_dir.mkdir(parents=True, exist_ok=True)
 
     total_records = 0

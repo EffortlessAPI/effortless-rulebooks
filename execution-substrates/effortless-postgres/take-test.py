@@ -24,9 +24,14 @@ from psycopg2.extras import RealDictCursor
 # Setup paths
 SCRIPT_DIR = Path(__file__).parent.resolve()
 PROJECT_ROOT = SCRIPT_DIR.parent.parent
-TESTING_DIR = PROJECT_ROOT / "testing"
-BLANK_TESTS_DIR = TESTING_DIR / "blank-tests"
-TEST_ANSWERS_DIR = SCRIPT_DIR / "test-answers"
+_ERB_TESTING = os.environ.get("ERB_TESTING_DIR")
+if _ERB_TESTING:
+    BLANK_TESTS_DIR = Path(_ERB_TESTING) / "blank-tests"
+    TEST_ANSWERS_DIR = Path(_ERB_TESTING) / SCRIPT_DIR.name / "test-answers"
+else:
+    TESTING_DIR = PROJECT_ROOT / "testing"
+    BLANK_TESTS_DIR = TESTING_DIR / "blank-tests"
+    TEST_ANSWERS_DIR = SCRIPT_DIR / "test-answers"
 POSTGRES_DIR = PROJECT_ROOT / "licensed-effortless-tools" / "postgres"
 
 # Add orchestration to path for shared utilities

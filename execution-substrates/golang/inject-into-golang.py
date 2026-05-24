@@ -934,9 +934,16 @@ def generate_main_go(tables_with_calc: list, rulebook: Dict) -> str:
     lines.append('\t\tos.Exit(1)')
     lines.append('\t}')
     lines.append('')
-    lines.append('\t// Shared blank-tests directory at project root')
-    lines.append('\tblankTestsDir := filepath.Join(scriptDir, "..", "..", "testing", "blank-tests")')
-    lines.append('\ttestAnswersDir := filepath.Join(scriptDir, "test-answers")')
+    lines.append('\t// Resolve testing dirs from ERB_TESTING_DIR env var (domain-scoped) or fallback')
+    lines.append('\terbTesting := os.Getenv("ERB_TESTING_DIR")')
+    lines.append('\tvar blankTestsDir, testAnswersDir string')
+    lines.append('\tif erbTesting != "" {')
+    lines.append('\t\tblankTestsDir = filepath.Join(erbTesting, "blank-tests")')
+    lines.append('\t\ttestAnswersDir = filepath.Join(erbTesting, "golang", "test-answers")')
+    lines.append('\t} else {')
+    lines.append('\t\tblankTestsDir = filepath.Join(scriptDir, "..", "..", "testing", "blank-tests")')
+    lines.append('\t\ttestAnswersDir = filepath.Join(scriptDir, "test-answers")')
+    lines.append('\t}')
     lines.append('')
     lines.append('\t// Ensure output directory exists')
     lines.append('\tif err := os.MkdirAll(testAnswersDir, 0755); err != nil {')
@@ -983,7 +990,12 @@ def generate_main_go(tables_with_calc: list, rulebook: Dict) -> str:
         lines.append('\t//       COUNTIFS loads from blank-tests')
         # Only declare answerKeysDir if it will be used
         if tables_needing_answer_keys:
-            lines.append('\tanswerKeysDir := filepath.Join(scriptDir, "..", "..", "testing", "answer-keys")')
+            lines.append('\tvar answerKeysDir string')
+            lines.append('\tif erbTesting != "" {')
+            lines.append('\t\tanswerKeysDir = filepath.Join(erbTesting, "answer-keys")')
+            lines.append('\t} else {')
+            lines.append('\t\tanswerKeysDir = filepath.Join(scriptDir, "..", "..", "testing", "answer-keys")')
+            lines.append('\t}')
         lines.append('')
 
         for related_table in sorted(all_related_tables):

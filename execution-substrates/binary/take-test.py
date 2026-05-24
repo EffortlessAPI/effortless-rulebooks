@@ -30,6 +30,8 @@ import struct
 import sys
 from pathlib import Path
 from dataclasses import dataclass
+
+script_dir = Path(__file__).resolve().parent
 from typing import Dict, List, Any, Optional
 from enum import Enum, auto
 
@@ -395,12 +397,19 @@ def load_binary_library(script_dir: Path) -> tuple:
 # MULTI-ENTITY MODE
 # =============================================================================
 
+def _get_testing_paths():
+    """Resolve blank-tests and test-answers dirs from ERB_TESTING_DIR env var."""
+    erb_testing = os.environ.get("ERB_TESTING_DIR")
+    if erb_testing:
+        substrate_name = Path(script_dir).name
+        return Path(erb_testing) / "blank-tests", Path(erb_testing) / substrate_name / "test-answers"
+    project_root = Path(script_dir).parent.parent
+    return project_root / "testing" / "blank-tests", Path(script_dir) / "test-answers"
+
+
 def run_multi_entity(script_dir: Path):
     """Process all entity files from shared testing/blank-tests/ directory."""
-    # Use shared blank-tests directory at project root
-    project_root = script_dir.parent.parent
-    blank_tests_dir = project_root / "testing" / "blank-tests"
-    test_answers_dir = script_dir / "test-answers"
+    blank_tests_dir, test_answers_dir = _get_testing_paths()
 
     if not blank_tests_dir.is_dir():
         print(f"Error: {blank_tests_dir} not found")

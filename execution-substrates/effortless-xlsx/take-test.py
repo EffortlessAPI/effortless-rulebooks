@@ -28,11 +28,18 @@ except ImportError:
     print("FATAL: openpyxl not installed. pip install openpyxl", file=sys.stderr)
     sys.exit(1)
 
+import os
+
 SCRIPT_DIR = Path(__file__).resolve().parent
 PROJECT_ROOT = SCRIPT_DIR.parent.parent
 XLSX_TOOL_DIR = PROJECT_ROOT / "licensed-effortless-tools" / "xlsx"
-BLANK_TESTS_DIR = PROJECT_ROOT / "testing" / "blank-tests"
-TEST_ANSWERS_DIR = SCRIPT_DIR / "test-answers"
+_ERB_TESTING = os.environ.get("ERB_TESTING_DIR")
+if _ERB_TESTING:
+    BLANK_TESTS_DIR = Path(_ERB_TESTING) / "blank-tests"
+    TEST_ANSWERS_DIR = Path(_ERB_TESTING) / SCRIPT_DIR.name / "test-answers"
+else:
+    BLANK_TESTS_DIR = PROJECT_ROOT / "testing" / "blank-tests"
+    TEST_ANSWERS_DIR = SCRIPT_DIR / "test-answers"
 
 
 def to_snake_case(name: str) -> str:

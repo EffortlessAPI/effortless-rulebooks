@@ -30,11 +30,9 @@ from psycopg2.extras import RealDictCursor
 # =============================================================================
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-PROJECT_ROOT = os.path.dirname(SCRIPT_DIR)
-TESTING_DIR = os.path.join(PROJECT_ROOT, "testing")
-ANSWER_KEYS_DIR = os.path.join(TESTING_DIR, "answer-keys")
-BLANK_TESTS_DIR = os.path.join(TESTING_DIR, "blank-tests")
-SUBSTRATES_DIR = os.path.join(PROJECT_ROOT, "execution-substrates")
+REPO_ROOT = os.path.dirname(SCRIPT_DIR)
+PROJECT_ROOT = REPO_ROOT  # kept for backward-compat; prefer REPO_ROOT below
+SUBSTRATES_DIR = os.path.join(REPO_ROOT, "execution-substrates")
 SUMMARY_PATH = os.path.join(SCRIPT_DIR, "all-tests-results.md")
 
 def _get_active_domain():
@@ -46,8 +44,20 @@ def _get_active_domain():
     return "customer-fullname"
 
 ACTIVE_DOMAIN = _get_active_domain()
-RULEBOOK_DIR = os.path.join(PROJECT_ROOT, "rulebook-examples", ACTIVE_DOMAIN, "effortless-rulebook")
+DOMAIN_DIR = os.path.join(REPO_ROOT, "rulebook-examples", ACTIVE_DOMAIN)
+RULEBOOK_DIR = os.path.join(DOMAIN_DIR, "effortless-rulebook")
 RULEBOOK_PATH = os.path.join(RULEBOOK_DIR, "effortless-rulebook.json")
+
+# All conformance artifacts live inside the domain folder so each rulebook
+# example is fully self-contained. The central testing/ folder at repo root
+# is no longer used.
+TESTING_DIR = os.path.join(DOMAIN_DIR, "testing")
+ANSWER_KEYS_DIR = os.path.join(TESTING_DIR, "answer-keys")
+BLANK_TESTS_DIR = os.path.join(TESTING_DIR, "blank-tests")
+
+def get_substrate_test_answers_dir(substrate_name: str) -> str:
+    """Return the domain-scoped test-answers dir for a substrate."""
+    return os.path.join(TESTING_DIR, substrate_name, "test-answers")
 
 # Canonical substrate ordering — matches SUBSTRATE_ORDER in orchestrate.sh.
 # Substrates not in this list fall through to the end, alphabetically.
@@ -630,13 +640,13 @@ def get_substrates() -> list:
 def prepare_substrate_for_test(substrate_name: str) -> int:
     """
     Prepare a substrate for testing by clearing its test-answers/ directory.
-    Substrates now read blank-tests from the shared testing/blank-tests/ location.
+    Substrates read blank-tests from the domain's testing/blank-tests/ location
+    and write answers to the domain's testing/<substrate>/test-answers/.
     Returns number of test files that will be processed.
     """
     import shutil
 
-    substrate_dir = os.path.join(SUBSTRATES_DIR, substrate_name)
-    substrate_test_answers = os.path.join(substrate_dir, "test-answers")
+    substrate_test_answers = get_substrate_test_answers_dir(substrate_name)
 
     # Clear and recreate test-answers directory
     if os.path.exists(substrate_test_answers):
@@ -693,8 +703,7 @@ def get_substrate_answers(substrate_name: str, rulebook: dict) -> dict:
     Get all test-answers from a substrate.
     Returns dict of entity_name -> list of records.
     """
-    substrate_dir = os.path.join(SUBSTRATES_DIR, substrate_name)
-    answers_dir = os.path.join(substrate_dir, "test-answers")
+    answers_dir = get_substrate_test_answers_dir(substrate_name)
 
     # Check for new multi-entity structure
     if os.path.isdir(answers_dir):
@@ -709,8 +718,8 @@ def get_substrate_answers(substrate_name: str, rulebook: dict) -> dict:
         if answers:
             return answers
 
-    # Fall back to old single-file structure (test-answers.json)
-    old_path = os.path.join(substrate_dir, "test-answers.json")
+    # Fall back to old single-file structure (test-answers.json in the domain testing dir)
+    old_path = os.path.join(get_substrate_test_answers_dir(substrate_name), "..", "test-answers.json")
     if os.path.exists(old_path):
         try:
             with open(old_path, 'r') as f:
@@ -1099,9 +1108,10 @@ def format_duration(seconds: float) -> str:
 
 
 def generate_substrate_report(substrate_name: str, results: dict, rulebook: dict):
-    """Generate test-results.md for a substrate"""
-    substrate_dir = os.path.join(SUBSTRATES_DIR, substrate_name)
-    report_path = os.path.join(substrate_dir, "test-results.md")
+    """Generate test-results.md for a substrate (written into the domain testing folder)"""
+    substrate_testing_dir = os.path.join(TESTING_DIR, substrate_name)
+    os.makedirs(substrate_testing_dir, exist_ok=True)
+    report_path = os.path.join(substrate_testing_dir, "test-results.md")
 
     total = results["total_fields_tested"]
     passed = results["fields_passed"]
@@ -1878,7 +1888,7 @@ def cleanup_unchanged_files():
                     reverted_count += 1
 
             # Check per-substrate test-results.md files
-            elif rel_path.endswith('test-results.md') and 'execution-substrates/' in rel_path:
+            elif rel_path.endswith('test-results.md') and ('execution-substrates/' in rel_path or 'testing/' in rel_path):
                 if revert_md_if_only_timing_changes(full_path):
                     reverted_count += 1
 

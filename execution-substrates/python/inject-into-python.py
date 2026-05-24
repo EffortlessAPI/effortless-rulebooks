@@ -108,6 +108,13 @@ def parse_sumifs_formula(formula: str) -> tuple:
     return (None, None, None, None)
 
 
+def _get_testing_dir(project_root: Path) -> Path:
+    """Return the domain-scoped testing dir (ERB_TESTING_DIR env var or fallback)."""
+    import os
+    erb = os.environ.get("ERB_TESTING_DIR")
+    return Path(erb) if erb else project_root / "testing"
+
+
 def load_related_data(project_root: Path, related_table: str) -> list:
     """
     Load data from testing/answer-keys for a related table; falls back to blank-tests.
@@ -115,13 +122,14 @@ def load_related_data(project_root: Path, related_table: str) -> list:
     tables resolve correctly.
     """
     snake_name = to_snake_case(related_table)
+    testing_dir = _get_testing_dir(project_root)
 
-    answer_keys_path = project_root / "testing" / "answer-keys" / f"{snake_name}.json"
+    answer_keys_path = testing_dir / "answer-keys" / f"{snake_name}.json"
     if answer_keys_path.exists():
         with open(answer_keys_path, "r", encoding="utf-8") as f:
             return json.load(f)
 
-    blank_tests_path = project_root / "testing" / "blank-tests" / f"{snake_name}.json"
+    blank_tests_path = testing_dir / "blank-tests" / f"{snake_name}.json"
     if blank_tests_path.exists():
         with open(blank_tests_path, "r", encoding="utf-8") as f:
             return json.load(f)

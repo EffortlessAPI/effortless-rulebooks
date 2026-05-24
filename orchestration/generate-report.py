@@ -22,18 +22,47 @@ from html import escape
 # =============================================================================
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-PROJECT_ROOT = os.path.dirname(SCRIPT_DIR)
+REPO_ROOT = os.path.dirname(SCRIPT_DIR)
+# PROJECT_ROOT is the domain folder (rulebook-examples/<domain>); REPO_ROOT is
+# the repo root.  They start identical and diverge when --rulebook is supplied.
+PROJECT_ROOT = REPO_ROOT
 TESTING_DIR = os.path.join(PROJECT_ROOT, "testing")
 ANSWER_KEYS_DIR = os.path.join(TESTING_DIR, "answer-keys")
 BLANK_TESTS_DIR = os.path.join(TESTING_DIR, "blank-tests")
-SUBSTRATES_DIR = os.path.join(PROJECT_ROOT, "execution-substrates")
+# SUBSTRATES_DIR always points at the repo-root tool scripts, never the domain.
+SUBSTRATES_DIR = os.path.join(REPO_ROOT, "execution-substrates")
 RULEBOOK_DIR = os.path.join(PROJECT_ROOT, "effortless-rulebook")
 RULEBOOK_PATH = os.path.join(RULEBOOK_DIR, "effortless-rulebook.json")
-POSTGRES_DIR = os.path.join(PROJECT_ROOT, "licensed-effortless-tools", "postgres")
+POSTGRES_DIR = os.path.join(REPO_ROOT, "licensed-effortless-tools", "postgres")
 _EFFORTLESS_JSON = os.path.join(PROJECT_ROOT, "effortless.json")
 _LEGACY_SSOTME_JSON = os.path.join(PROJECT_ROOT, "ssotme.json")
 SSOTME_JSON = _EFFORTLESS_JSON if os.path.exists(_EFFORTLESS_JSON) else _LEGACY_SSOTME_JSON
 DEFAULT_OUTPUT = os.path.join(SCRIPT_DIR, "orchestration-report.html")
+
+
+def _get_substrate_test_answers_dir(substrate_name: str) -> str:
+    """Return the domain-scoped test-answers dir for a substrate."""
+    return os.path.join(TESTING_DIR, substrate_name, "test-answers")
+
+
+def _apply_rulebook_override(rulebook_path: str):
+    """Re-derive all path globals from an explicit rulebook path."""
+    global PROJECT_ROOT, TESTING_DIR, ANSWER_KEYS_DIR, BLANK_TESTS_DIR
+    global RULEBOOK_DIR, RULEBOOK_PATH
+    global _EFFORTLESS_JSON, _LEGACY_SSOTME_JSON, SSOTME_JSON, DEFAULT_OUTPUT
+    # NOTE: SUBSTRATES_DIR and POSTGRES_DIR remain repo-root relative — they
+    # point at the tool scripts, not conformance artifacts.
+
+    RULEBOOK_PATH = os.path.abspath(rulebook_path)
+    RULEBOOK_DIR = os.path.dirname(RULEBOOK_PATH)
+    PROJECT_ROOT = os.path.dirname(RULEBOOK_DIR)  # = the domain dir
+    TESTING_DIR = os.path.join(PROJECT_ROOT, "testing")
+    ANSWER_KEYS_DIR = os.path.join(TESTING_DIR, "answer-keys")
+    BLANK_TESTS_DIR = os.path.join(TESTING_DIR, "blank-tests")
+    _EFFORTLESS_JSON = os.path.join(PROJECT_ROOT, "effortless.json")
+    _LEGACY_SSOTME_JSON = os.path.join(PROJECT_ROOT, "ssotme.json")
+    SSOTME_JSON = _EFFORTLESS_JSON if os.path.exists(_EFFORTLESS_JSON) else _LEGACY_SSOTME_JSON
+    DEFAULT_OUTPUT = os.path.join(PROJECT_ROOT, "orchestration-report.html")
 
 # Airtable was formerly treated as a "utility" substrate excluded from the
 # report. It's now a regular graded substrate — it scores 100% because it
@@ -266,16 +295,16 @@ def load_run_metadata(substrate_name: str) -> dict:
 
 def load_substrate_grades(substrate_name: str) -> dict:
     """Load grades for a substrate from pickle or reconstruct from results"""
-    # Try pickle file first (exists during orchestration)
-    substrate_dir = os.path.join(SUBSTRATES_DIR, substrate_name)
-    grades_file = os.path.join(substrate_dir, ".grades.pkl")
+    # Conformance artifacts live in the domain testing folder.
+    substrate_testing_dir = os.path.join(TESTING_DIR, substrate_name)
+    grades_file = os.path.join(substrate_testing_dir, ".grades.pkl")
 
     if os.path.exists(grades_file):
         with open(grades_file, 'rb') as f:
             return pickle.load(f)
 
     # Try to reconstruct from test-results.md
-    results_file = os.path.join(substrate_dir, "test-results.md")
+    results_file = os.path.join(substrate_testing_dir, "test-results.md")
     if os.path.exists(results_file):
         return parse_test_results_md(results_file, substrate_name)
 
@@ -431,7 +460,7 @@ def load_substrate_test_answers(substrate_name: str) -> dict:
         return load_answer_keys()
 
     answers = {}
-    answers_dir = os.path.join(SUBSTRATES_DIR, substrate_name, "test-answers")
+    answers_dir = _get_substrate_test_answers_dir(substrate_name)
     if os.path.isdir(answers_dir):
         for file in glob.glob(os.path.join(answers_dir, "*.json")):
             entity = os.path.basename(file).replace('.json', '')
@@ -2632,11 +2661,22 @@ def main():
         description='Generate HTML orchestration report'
     )
     parser.add_argument(
+        '--rulebook', '-r',
+        default=None,
+        help='Path to effortless-rulebook.json; report is written next to the domain root'
+    )
+    parser.add_argument(
         '--output', '-o',
-        default=DEFAULT_OUTPUT,
-        help=f'Output path for HTML report (default: {DEFAULT_OUTPUT})'
+        default=None,
+        help='Output path for HTML report (overrides --rulebook default)'
     )
     args = parser.parse_args()
+
+    if args.rulebook:
+        _apply_rulebook_override(args.rulebook)
+
+    output_path_default = DEFAULT_OUTPUT  # may have been updated by override
+    args.output = args.output or output_path_default
 
     print("=" * 60)
     print("GENERATING ORCHESTRATION REPORT")
