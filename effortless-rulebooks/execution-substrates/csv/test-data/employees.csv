@@ -1,4 +1,0 @@
-employee_id,name,email_address,phone_number,role,role_name,role_description,projects,role_is_manager
-sarah-chen,Sarah Chen,sarah.chen@acmecorp.example,555-0101,projectmanager,ProjectManager,The project Manager makes sure that the developers do what the analysts ask for,internal-tools-dashboard,True
-mike-johnson,Mike Johnson,mike.johnson@acmecorp.example,555-0102,developer,Developer,Developers handle the implementation and are responsible for making the final product do what is expected,gdpr-compliance-audit,True
-priya-patel,Priya Patel,priya.patel@acmecorp.example,555-0103,analyst,Analyst,The business analysis know what the customer's want.,customer-portal-redesign,

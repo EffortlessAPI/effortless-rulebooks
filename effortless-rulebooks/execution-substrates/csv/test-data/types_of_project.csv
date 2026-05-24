@@ -1,5 +1,0 @@
-types_of_project_id,name,description,requires_manager_approval,projects,count_of_projects
-internal,Internal,An internal project that is not publicly accessible,false,internal-tools-dashboard,1
-clientfacing,ClientFacing,"Open, public facing communication",true,customer-portal-redesign,1
-research,Research,,false,,0
-compliance,Compliance,,true,gdpr-compliance-audit,1
