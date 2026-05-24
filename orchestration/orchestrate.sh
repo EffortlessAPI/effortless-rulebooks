@@ -107,20 +107,7 @@ set_active_domain() {
 
 get_domain_rulebook_path() {
     local domain="${1:-$(get_active_domain)}"
-    local rb_dir="$RULEBOOK_EXAMPLES_DIR/$domain/effortless-rulebook"
-    # Project-named convention: <project>-rulebook.json. Fall back to
-    # the legacy effortless-rulebook.json, then to whichever single *.json
-    # exists in the dir (the canonical state today is one rulebook per project).
-    local named="$rb_dir/${domain}-rulebook.json"
-    if [ -f "$named" ]; then
-        echo "$named"; return
-    fi
-    if [ -f "$rb_dir/effortless-rulebook.json" ]; then
-        echo "$rb_dir/effortless-rulebook.json"; return
-    fi
-    local found
-    found=$(find "$rb_dir" -maxdepth 1 -type f -name '*.json' 2>/dev/null | head -1)
-    echo "$found"
+    echo "$RULEBOOK_EXAMPLES_DIR/$domain/effortless-rulebook/${domain}-rulebook.json"
 }
 
 get_project_name() {
@@ -600,16 +587,18 @@ action_import_from_airtable() {
     mkdir -p "$RULEBOOK_DIR_NEW"
 
     # Pull the rulebook from Airtable into the new domain folder
+    RULEBOOK_FILENAME="${DOMAIN_NAME}-rulebook.json"
     echo ""
     echo -e "${YELLOW}Pulling rulebook from Airtable into ${WHITE}rulebook-examples/$DOMAIN_NAME/${NC}..."
     cd "$RULEBOOK_DIR_NEW"
-    if ! effortless airtabletorulebook -o effortless-rulebook.json -account airtable -p "view=Grid view"; then
+    if ! effortless airtabletorulebook -o "$RULEBOOK_FILENAME" -account airtable -p "view=Grid view"; then
         echo -e "${RED}Failed to pull rulebook from Airtable.${NC}"
         read -p "Press Enter to continue..."
         return
     fi
 
-    # Write effortless.json for this domain (with baseId + airtabletorulebook enabled)
+    # Write effortless.json for this domain (Airtable pull disabled by default —
+    # the rulebook JSON is authoritative; re-enable only with explicit consent).
     python3 -c "
 import json
 config = {
@@ -623,16 +612,17 @@ config = {
         {
             'Name': 'airtabletorulebook',
             'RelativePath': '/effortless-rulebook',
-            'CommandLine': 'airtable-to-rulebook -o effortless-rulebook.json -account airtable -p \"view=Grid view\"',
-            'Enabled': True,
-            'Description': 'Re-import from Airtable (optional; edit effortless-rulebook.json directly otherwise)'
+            'CommandLine': 'airtable-to-rulebook -o $RULEBOOK_FILENAME -account airtable -p \"view=Grid view\"',
+            'Enabled': False,
+            'IsDisabled': True,
+            'Description': 'Pull rulebook from Airtable [DISABLED: rulebook JSON is authoritative; re-enable only with explicit user consent]'
         },
         {
             'Name': 'rulebooktoairtable',
             'RelativePath': '/effortless-rulebook/push-to-airtable',
-            'CommandLine': 'rulebook-to-airtable -i ../effortless-rulebook.json -account airtable -w 300000',
+            'CommandLine': 'rulebook-to-airtable -i ../$RULEBOOK_FILENAME -account airtable -w 300000',
             'Enabled': False,
-            'Description': 'Reverse-sync: push rulebook changes back to Airtable (optional)'
+            'Description': 'Reverse-sync: push rulebook changes back to Airtable'
         }
     ]
 }

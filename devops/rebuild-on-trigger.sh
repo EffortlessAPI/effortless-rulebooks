@@ -565,9 +565,10 @@ get_repo_root() {
 }
 
 get_latest_demo_version_json() {
-    local repo_root
+    local repo_root domain
     repo_root="$(get_repo_root)"
-    echo "${repo_root}/effortless-rulebook/effortless-rulebook.json"
+    domain="$(tr -d '[:space:]' < "${repo_root}/orchestration/active-domain.txt")"
+    echo "${repo_root}/rulebook-examples/${domain}/effortless-rulebook/${domain}-rulebook.json"
 }
 
 extract_latest_release_notes() {

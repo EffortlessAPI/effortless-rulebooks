@@ -170,7 +170,7 @@ function PortalSetupNeeded({ diag, projects, rulebook, reload }) {
       <ol>
         <li>
           Seed the meta-rulebook at
-          <code>effortless-rulebook/effortless-rulebook.json</code>
+          <code>effortless-rulebook/&lt;project&gt;-rulebook.json</code>
           with the five portal-config tables
           (<code>UserRoles</code>, <code>AppUsers</code>, <code>AppPermissions</code>,
           <code>AppNavigation</code>, <code>AppScreens</code>).

@@ -28,7 +28,7 @@ ERB_RULEBOOK_PATH + ERB_OUTPUT_DIR and runs it.  No separate mechanism.
 
 Install into a project:
     effortless -install http://localhost:4242/rulebook-to-python \\
-        -i effortless-rulebook/effortless-rulebook.json \\
+        -i effortless-rulebook/<project>-rulebook.json \\
         -o python/
 """
 

@@ -5,7 +5,8 @@
 # If no hash provided, uses HEAD
 
 REPO_ROOT=$(git rev-parse --show-toplevel)
-RULEBOOK="$REPO_ROOT/effortless-rulebook/effortless-rulebook.json"
+DOMAIN=$(cat "$REPO_ROOT/orchestration/active-domain.txt" | tr -d '[:space:]')
+RULEBOOK="$REPO_ROOT/rulebook-examples/$DOMAIN/effortless-rulebook/${DOMAIN}-rulebook.json"
 
 # Get commit (default to HEAD)
 COMMIT="${1:-HEAD}"

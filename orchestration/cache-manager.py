@@ -245,7 +245,7 @@ def print_cache_status(base_id: str = None):
     print(f"\n{BOLD}Active Files{NC}")
     active = status['active']
     if active['rulebook']:
-        print(f"  {GREEN}[OK]{NC} effortless-rulebook/effortless-rulebook.json")
+        print(f"  {GREEN}[OK]{NC} {active['rulebook']}")
     else:
         print(f"  {RED}[--]{NC} No active rulebook")
 

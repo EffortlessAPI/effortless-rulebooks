@@ -20,9 +20,9 @@
   "english": {
     "last_run": {
       "status": "success",
-      "duration_seconds": 18.757915019989014,
+      "duration_seconds": 14.070410013198853,
       "exit_code": 0,
-      "score": 100.0
+      "score": 0.0
     },
     "last_successful_run": {
       "duration_seconds": 18.757915019989014,

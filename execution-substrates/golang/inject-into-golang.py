@@ -22,7 +22,7 @@ from typing import Dict, List, Any, Set
 # Add project root to path for shared imports
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 
-from orchestration.shared import load_rulebook, get_candidate_name_from_cwd, handle_clean_arg
+from orchestration.shared import load_rulebook, get_candidate_name_from_cwd, handle_clean_arg, get_rulebook_path
 from orchestration.formula_parser import (
     parse_formula, compile_to_go, get_field_dependencies,
     to_snake_case, to_pascal_case, ExprNode, FuncCall
@@ -552,7 +552,7 @@ def generate_erb_sdk(rulebook: Dict) -> str:
     # Header
     lines.append('// ERB SDK - Go Implementation (GENERATED - DO NOT EDIT)')
     lines.append('// ======================================================')
-    lines.append('// Generated from: effortless-rulebook/effortless-rulebook.json')
+    lines.append(f'// Generated from: effortless-rulebook/{get_rulebook_path().name}')
     lines.append('//')
     lines.append('// This file contains structs and calculation functions')
     lines.append('// for all tables defined in the rulebook.')

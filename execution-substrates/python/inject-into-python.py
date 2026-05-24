@@ -49,7 +49,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 from orchestration.shared import (
     load_rulebook, get_candidate_name_from_cwd, handle_clean_arg,
     discover_entities, get_entity_schema, to_snake_case,
-    get_calculated_fields, get_raw_fields
+    get_calculated_fields, get_raw_fields, get_rulebook_path
 )
 
 # Formula parsing utilities to convert ERB formula syntax to Python expressions
@@ -721,7 +721,7 @@ def generate_erb_calc(rulebook: Dict) -> str:
     lines.append('"""')
     lines.append('ERB Calculation Library (GENERATED - DO NOT EDIT)')
     lines.append('=================================================')
-    lines.append('Generated from: effortless-rulebook/effortless-rulebook.json')
+    lines.append(f'Generated from: effortless-rulebook/{get_rulebook_path().name}')
     lines.append('')
     lines.append('PYTHON SUBSTRATE ONLY. Importing this module from any other substrate')
     lines.append('is cheating. That substrate must execute the rulebook in its own native')

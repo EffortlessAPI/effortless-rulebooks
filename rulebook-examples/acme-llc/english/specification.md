@@ -1,105 +1,106 @@
 # ACME, LLC Rulebook Specification Document
 
 ## Overview
-This document provides a detailed specification for the ACME, LLC rulebook, which defines the schema and calculations for customer data, ERB versions, and ERB customizations. The rulebook includes raw input fields as well as derived fields that are calculated based on the input data.
+This document outlines the specifications for the ACME, LLC rulebook, which is generated from an Airtable base. It describes the structure of the data, including input fields and how to compute derived fields for the Customers, ERBVersions, and ERBCustomizations entities.
 
-## Entity: Customers
+## Customers Entity
 
 ### Input Fields
 1. **CustomerId**
-   - **Type**: String
-   - **Description**: Unique identifier for the customer. This field is mandatory.
+   - **Type**: String (raw)
+   - **Description**: Unique identifier for each customer.
 
 2. **EmailAddress**
-   - **Type**: String
-   - **Description**: The customer's email address. This field is optional.
+   - **Type**: String (raw)
+   - **Description**: The customer's email address.
 
 3. **FirstName**
-   - **Type**: String
-   - **Description**: The first name of the customer. This field is optional.
+   - **Type**: String (raw)
+   - **Description**: The first name of the customer.
 
 4. **LastName**
-   - **Type**: String
-   - **Description**: The last name of the customer. This field is optional.
+   - **Type**: String (raw)
+   - **Description**: The last name of the customer.
 
 ### Derived Fields
+
 1. **Name**
-   - **Type**: Calculated
-   - **Description**: This field serves as an identifier for the customers, derived from the customer's email address.
-   - **Computation**: The `Name` is computed by replacing the "@" symbol in the `EmailAddress` with a hyphen ("-"). 
-   - **Formula**: `=SUBSTITUTE({{EmailAddress}}, "@", "-")`
-   - **Example**: For `EmailAddress` "jane.smith@email.com", the computed `Name` would be "jane.smith-email.com".
+   - **Type**: String (calculated)
+   - **Description**: An identifier for the customers, derived from their email address.
+   - **Computation**: Replace the "@" symbol in the EmailAddress with a "-" to create a unique identifier.
+   - **Original Formula**: `=SUBSTITUTE({{EmailAddress}}, "@", "-")`
+   - **Example**: For the email `jane.smith@email.com`, the computed Name would be `jane.smith-email.com`.
 
 2. **FullName**
-   - **Type**: Calculated
-   - **Description**: This field represents the full name of the customer, constructed from their first and last names.
-   - **Computation**: The `FullName` is created by concatenating the `LastName`, a comma and a space, and the `FirstName`.
-   - **Formula**: `={{LastName}} & ", " & {{FirstName}}`
-   - **Example**: For `FirstName` "Bobby" and `LastName` "Smith", the computed `FullName` would be "Smith, Bobby".
+   - **Type**: String (calculated)
+   - **Description**: The full name of the customer, formatted as "LastName, FirstName".
+   - **Computation**: Concatenate the LastName and FirstName fields with a comma and a space in between.
+   - **Original Formula**: `={{LastName}} & ", " & {{FirstName}}`
+   - **Example**: For FirstName `Bobby` and LastName `Smith`, the computed FullName would be `Smith, Bobby`.
 
-## Entity: ERBVersions
+## ERBVersions Entity
 
 ### Input Fields
 1. **ERBVersionId**
-   - **Type**: String
-   - **Description**: Unique identifier for the ERB version. This field is mandatory.
+   - **Type**: String (raw)
+   - **Description**: Unique identifier for each ERB version.
 
 2. **BaseId**
-   - **Type**: String
-   - **Description**: Identifier for the base associated with the ERB version. This field is optional.
+   - **Type**: String (raw)
+   - **Description**: Identifier for the base associated with the ERB version.
 
 3. **Name**
-   - **Type**: String
-   - **Description**: Name of the ERB version. This field is optional.
+   - **Type**: String (raw)
+   - **Description**: Name of the ERB version.
 
 4. **Message**
-   - **Type**: String
-   - **Description**: Message associated with the ERB version. This field is optional.
+   - **Type**: String (raw)
+   - **Description**: Message associated with the ERB version.
 
 5. **Notes**
-   - **Type**: String
-   - **Description**: Additional notes related to the ERB version. This field is optional.
+   - **Type**: String (raw)
+   - **Description**: Additional notes related to the ERB version.
 
 6. **CommitDate**
-   - **Type**: Datetime
-   - **Description**: Date and time when the ERB version was committed. This field is optional.
+   - **Type**: Datetime (raw)
+   - **Description**: The date and time when the ERB version was committed.
 
 7. **IsPublished**
-   - **Type**: Boolean
-   - **Description**: Indicates whether the ERB version is published. This field is optional.
+   - **Type**: Boolean (raw)
+   - **Description**: Indicates whether the ERB version is published.
 
 ### Derived Fields
-*There are no derived fields in the ERBVersions entity.*
+There are no derived fields in the ERBVersions entity.
 
-## Entity: ERBCustomizations
+## ERBCustomizations Entity
 
 ### Input Fields
 1. **ERBCustomizationId**
-   - **Type**: String
-   - **Description**: Unique identifier for the ERB customization. This field is mandatory.
+   - **Type**: String (raw)
+   - **Description**: Unique identifier for each ERB customization.
 
 2. **Name**
-   - **Type**: String
-   - **Description**: Name of the ERB customization. This field is optional.
+   - **Type**: String (raw)
+   - **Description**: Name of the ERB customization.
 
 3. **Title**
-   - **Type**: String
-   - **Description**: Title of the ERB customization. This field is optional.
+   - **Type**: String (raw)
+   - **Description**: Title of the ERB customization.
 
 4. **SQLCode**
-   - **Type**: String
-   - **Description**: SQL code associated with the ERB customization. This field is optional.
+   - **Type**: String (raw)
+   - **Description**: SQL code associated with the customization.
 
 5. **SQLTarget**
-   - **Type**: String
-   - **Description**: Target database for the SQL code. This field is optional.
+   - **Type**: String (raw)
+   - **Description**: The target database for the SQL code.
 
 6. **CustomizationType**
-   - **Type**: String
-   - **Description**: Type of customization (e.g., Schema, Functions, Views, RLS, Data). This field is optional.
+   - **Type**: String (raw)
+   - **Description**: Type of customization (e.g., Schema, Functions, Views, RLS, Data).
 
 ### Derived Fields
-*There are no derived fields in the ERBCustomizations entity.*
+There are no derived fields in the ERBCustomizations entity.
 
 ## Summary
-This specification document outlines the input fields and derived fields for the ACME, LLC rulebook. The calculations for the derived fields are clearly defined, allowing for accurate computation based on the provided input data.
+This specification document provides a detailed description of how to compute derived fields for the Customers entity, including the input fields and their descriptions. The ERBVersions and ERBCustomizations entities contain only raw input fields without derived fields. This guide should enable users to accurately compute the necessary values based on the provided rules and examples.

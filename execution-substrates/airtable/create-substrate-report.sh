@@ -200,7 +200,7 @@ ul {{ margin-left: 1.25rem; }} li {{ margin-bottom: 0.25rem; }}
                 <table>
                     <tr><th style="width: 140px;">Project</th><td>{project_name}</td></tr>
                     <tr><th>Base ID</th><td><code>{base_id}</code></td></tr>
-                    <tr><th>Rulebook path</th><td><code>effortless-rulebook/effortless-rulebook.json</code></td></tr>
+                    <tr><th>Rulebook path</th><td><code>effortless-rulebook/{project_name}-rulebook.json</code></td></tr>
                     <tr><th>Rulebook size</th><td>{rulebook_size_kb} KB</td></tr>
                 </table>
             </div>
