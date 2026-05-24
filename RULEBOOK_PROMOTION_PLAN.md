@@ -47,11 +47,49 @@ an `effortless-rulebooks/` folder with one subfolder per domain.
 
 **The work is: decoupling source (Airtable/LLM/direct JSON edits) from consumption (everything else).**
 
+## Implementation Progress
+
+### Completed
+
+1. **Hub structure & documentation**
+   - Created `effortless-rulebooks/README.md` explaining the pattern
+   - Each ontology is a self-contained project with its own `effortless.json`, `CLAUDE.md`, `README.md`
+   - Templates provided (`TEMPLATE-effortless.json`, `TEMPLATE-CLAUDE.md`)
+
+2. **ACME Corporation** (`effortless-rulebooks/acme-corporation/`)
+   - ✅ `effortless.json` with hardcoded base ID: `appzkcmBFPWFGBtRo`
+   - ✅ `CLAUDE.md` (project instructions)
+   - ✅ `README.md` (narrative: business process modeling, inventory, aggregations, status derivation)
+   - ✅ `effortless-rulebook/effortless-rulebook.json` (seeded from cache)
+
+3. **ACME, LLC** (`effortless-rulebooks/acme-llc/`)
+   - ✅ `effortless.json` with hardcoded base ID: `appWrXPvXbkgQGOxt`
+   - ✅ `CLAUDE.md` (project instructions)
+   - ✅ `README.md` (narrative: lean variant, simplified workflow)
+   - ✅ `effortless-rulebook/effortless-rulebook.json` (seeded from cache)
+
+### Ready to Test
+
+- Navigate to `effortless-rulebooks/acme-corporation/`
+- Run `effortless build` to generate all substrates from the rulebook
+- Or run `effortless airtabletorulebook` to sync fresh from Airtable
+- Run `./start.sh` (once substrate structure in place) to test conformance
+
+## Test Plan: Verify It Works
+
+1. **Navigate to an ontology**: `cd effortless-rulebooks/acme-corporation/`
+2. **Inspect the structure**: Should have `effortless.json`, `CLAUDE.md`, `README.md`, `effortless-rulebook/`
+3. **Pull fresh rulebook**: `effortless airtabletorulebook` (requires `AIRTABLE_API_KEY`)
+4. **Build substrates**: `effortless build`
+5. **Run conformance tests**: `./start.sh` (once orchestration is wired up)
+
+See **MIGRATION_EXAMPLE.md** for detailed before/after comparison.
+
 ## Open Questions
 
-- Is "one subfolder per domain" supporting multiple independent rulebooks in one repo, or scoping the existing single rulebook under a named domain?
-- Second sidecar artifact: still open — candidate is a DAG diagram or schema snapshot.
-- Is Airtable demotion a config change (effortless.json wiring only) or does it also touch the airtable-to-rulebook transpiler?
+- Should old `/bases/` folder be archived or deleted once migration is complete?
+- Should orchestration tools (orchestrate.sh, start.sh) be moved into each ontology or kept at repo root?
+- Auto-generated artifacts: DAG diagram, schema snapshot — where should these live?
 
 ---
 

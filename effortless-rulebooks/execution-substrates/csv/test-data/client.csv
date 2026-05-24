@@ -1,0 +1,4 @@
+client_id,customer,email_address,first_name,last_name,full_name
+cust0001,CUST0001,larry.smith@email.com,Bob,Smith,Bob Smith
+cust0002,CUST0002,john.doe@email.com,John,Doe,John Doe
+cust0003,CUST0003,emily.jones@email.com,Emily,Jones,Emily Jones

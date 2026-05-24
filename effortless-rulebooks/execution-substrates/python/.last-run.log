@@ -1,0 +1,9 @@
+=== Python Substrate Test Run ===
+
+  -> client: 3 records
+  -> employees: 3 records
+  -> projects: 3 records
+  -> roles: 3 records
+  -> types_of_project: 4 records
+Python substrate: Processed 5 entities, 16 total records
+

@@ -1,0 +1,21 @@
+=== UML/OCL Substrate Test Run ===
+
+======================================================================
+UML Execution Substrate - Multi-Entity Test Execution (OCL)
+======================================================================
+
+Loaded 1 OCL constraints from constraints.ocl
+
+  -> client: 3 records (via OCL)
+   Warning: No OCL constraints found for class 'Employees'
+  -> employees: 3 records (via OCL)
+   Warning: No OCL constraints found for class 'Projects'
+  -> projects: 3 records (via OCL)
+   Warning: No OCL constraints found for class 'Roles'
+  -> roles: 3 records (via OCL)
+   Warning: No OCL constraints found for class 'TypesOfProject'
+  -> types_of_project: 4 records (via OCL)
+
+UML substrate: Processed 5 entities, 16 total records
+======================================================================
+

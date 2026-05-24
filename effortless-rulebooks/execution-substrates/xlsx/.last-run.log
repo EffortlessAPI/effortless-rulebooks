@@ -1,0 +1,50 @@
+=== XLSX (Excel) Substrate Test Run ===
+
+
+  Processing client...
+Found 6 fields in test answers
+Primary key field: client_id
+Reading from worksheet: Client
+Found 6 columns, matched 6 to JSON fields
+Loaded 3 rows from xlsx
+Filled 3 null fields across 3 records
+Updated /Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/xlsx/test-answers/client.json
+
+  Processing employees...
+Found 9 fields in test answers
+Primary key field: employee_id
+Reading from worksheet: Employees
+Found 9 columns, matched 9 to JSON fields
+Loaded 3 rows from xlsx
+Filled 8 null fields across 3 records
+Updated /Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/xlsx/test-answers/employees.json
+
+  Processing projects...
+Found 14 fields in test answers
+Primary key field: project_id
+Reading from worksheet: Projects
+Found 14 columns, matched 14 to JSON fields
+Loaded 3 rows from xlsx
+Filled 18 null fields across 3 records
+Updated /Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/xlsx/test-answers/projects.json
+
+  Processing roles...
+Found 6 fields in test answers
+Primary key field: role_id
+Reading from worksheet: Roles
+Found 6 columns, matched 6 to JSON fields
+Loaded 3 rows from xlsx
+Filled 3 null fields across 3 records
+Updated /Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/xlsx/test-answers/roles.json
+
+  Processing types_of_project...
+Found 6 fields in test answers
+Primary key field: types_of_project_id
+Reading from worksheet: TypesOfProject
+Found 6 columns, matched 6 to JSON fields
+Loaded 4 rows from xlsx
+Filled 4 null fields across 4 records
+Updated /Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/execution-substrates/xlsx/test-answers/types_of_project.json
+
+xlsx: Processed 5 entities from rulebook.xlsx
+
