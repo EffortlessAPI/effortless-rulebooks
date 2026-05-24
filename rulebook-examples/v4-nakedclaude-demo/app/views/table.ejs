@@ -1,0 +1,33 @@
+<%- include('partials/header', { title: t.label }) %>
+<h1><%= t.label %> <span class="muted">(<code><%= t.key %></code>)</span></h1>
+<p>
+  <a class="btn" href="/t/<%= t.key %>/new">+ New</a>
+  <a class="btn ghost" href="/">← Tables</a>
+</p>
+<div class="scroll">
+<table class="grid">
+  <thead>
+    <tr>
+      <th></th>
+      <% columns.forEach(c => { %><th><%= c %></th><% }) %>
+    </tr>
+  </thead>
+  <tbody>
+    <% rows.forEach(r => { %>
+      <tr>
+        <td class="nowrap">
+          <a class="btn small" href="/t/<%= t.key %>/<%= r[t.pk] %>/edit">edit</a>
+          <form method="post" action="/t/<%= t.key %>/<%= r[t.pk] %>/delete" style="display:inline"
+                onsubmit="return confirm('Delete this row?')">
+            <button class="btn small danger" type="submit">x</button>
+          </form>
+        </td>
+        <% columns.forEach(c => { %>
+          <td><%= r[c] === null || r[c] === undefined ? '' : (typeof r[c] === 'object' ? JSON.stringify(r[c]) : String(r[c])) %></td>
+        <% }) %>
+      </tr>
+    <% }) %>
+  </tbody>
+</table>
+</div>
+<%- include('partials/footer') %>

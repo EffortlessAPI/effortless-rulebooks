@@ -21,6 +21,24 @@ def read_file(path, default=""):
     except:
         return default
 
+def _resolve_test_results_path():
+    erb_testing = os.environ.get('ERB_TESTING_DIR')
+    if not erb_testing:
+        raise RuntimeError(
+            "ERB_TESTING_DIR is not set. create-substrate-report.sh must be invoked "
+            "via take-test.sh -> grade-and-record.py (which inherits the env from "
+            "orchestrate.sh). Do not run this script standalone."
+        )
+    path = os.path.join(erb_testing, SUBSTRATE_NAME, 'test-results.md')
+    if not os.path.exists(path):
+        raise FileNotFoundError(
+            f"test-results.md not found at {path}. "
+            f"The grader (grade-and-record.py) is supposed to write it before "
+            f"this report-generator runs. If you're seeing this, the grader "
+            f"failed silently — investigate it, do not substitute defaults."
+        )
+    return path
+
 def read_csv_as_html_table(path, max_rows=50):
     try:
         with open(path, 'r') as f:
@@ -51,7 +69,7 @@ def read_csv_as_html_table(path, max_rows=50):
         return f"<p>Error reading CSV: {e}</p>"
 
 log_content = read_file('.last-run.log', 'No log available')
-test_results = read_file('test-results.md', 'No test results available')
+test_results = read_file(_resolve_test_results_path(), 'No test results available')
 
 # Read CSVs
 entities_table = read_csv_as_html_table('test-data/workflows.csv')

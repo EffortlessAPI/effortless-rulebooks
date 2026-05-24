@@ -1,0 +1,21 @@
+<%- include('../partials/header', { title: 'Orders' }) %>
+<h1>Orders · <%= customer.name %></h1>
+<nav class="subnav"><a href="/shop/account/<%= customer.client_id %>">Overview</a> <a href="/shop/account/<%= customer.client_id %>/orders">Orders</a> <a href="/shop/account/<%= customer.client_id %>/payments">Payments</a> <a href="/shop/account/<%= customer.client_id %>/profile">Profile</a> <span class="muted">· <%= customer.name %></span></nav>
+<table class="grid">
+  <thead><tr><th>#</th><th>Date</th><th>Status</th><th>Items</th><th>Total</th><th>Paid</th><th>Due</th></tr></thead>
+  <tbody>
+    <% orders.forEach(o => { %>
+      <tr>
+        <td><a href="/shop/account/<%= customer.client_id %>/orders/<%= o.invoice_id %>"><%= o.invoice_number %></a></td>
+        <td><%= o.order_date ? new Date(o.order_date).toISOString().slice(0,10) : '' %></td>
+        <td><%= o.order_status %></td>
+        <td><%= o.item_count %></td>
+        <td>$<%= Number(o.invoice_total || 0).toFixed(2) %></td>
+        <td>$<%= Number(o.total_paid || 0).toFixed(2) %></td>
+        <td>$<%= Number(o.amount_due || 0).toFixed(2) %></td>
+      </tr>
+    <% }) %>
+    <% if (!orders.length) { %><tr><td colspan="7" class="muted">No orders.</td></tr><% } %>
+  </tbody>
+</table>
+<%- include('../partials/footer') %>

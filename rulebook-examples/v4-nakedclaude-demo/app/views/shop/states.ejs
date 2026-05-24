@@ -1,0 +1,19 @@
+<%- include('../partials/header', { title: 'Tax Rates' }) %>
+<h1>State Tax Rates</h1>
+<p class="muted">Editing a rate re-rates every invoice for clients whose billing address is in that state.</p>
+<table class="grid">
+  <thead><tr><th>State</th><th>Code</th><th>Tax rate</th><th></th></tr></thead>
+  <tbody>
+    <% states.forEach(s => { %>
+      <tr>
+        <form method="post" action="/shop/states/<%= s.state_id %>">
+          <td><%= s.text %></td>
+          <td><%= s.code %></td>
+          <td><input type="number" step="0.0001" name="tax_rate" value="<%= s.tax_rate ?? 0 %>" style="width:6rem" /></td>
+          <td><button class="btn small" type="submit">Save</button></td>
+        </form>
+      </tr>
+    <% }) %>
+  </tbody>
+</table>
+<%- include('../partials/footer') %>

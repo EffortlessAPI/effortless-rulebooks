@@ -1,0 +1,305 @@
+{
+  "$schema": "https://example.com/cmcc-schema/v1",
+  "Name": "Small Business Banking Client Manager",
+  "Description": "Community-bank (CommunityBank) commercial relationship-management platform — built for the kind of bank that competes with the RegionalBank tier and the Fintech tier on RelationshipDepth, not rate. The promise to every Customer is a SinglePointOfContact: their RM stays in the loop end-to-end. This ERB rulebook is the single source of truth; `effortless build` generates the Postgres schema and `vw_*` views directly.\n\nDomain coverage (DAG-resident concepts not modeled as separate tables but tracked through fields and lifecycle states): the LoanPipeline / LoanOrigination journey runs through every UnderwritingStage from Inquiry → PreQualification → LoanApplication → automated CreditPull (Experian, DnB / D&B, Equifax — the three CreditBureau integrations) → RM packaging → CreditAnalysis (StatementSpreading, DebtServiceCoverageRatio / DSCR, LoanToValue / LTV, GlobalCashFlow) → CommitteeApproval (routed by ApprovalRouting in the WorkflowEngine with SLA tracking) → ClosingPrep → Signing (via ESignature) → Funding. Post-funding the loan enters LoanServicing: PaymentProcessing, DelinquencyWorkflow, CollectionsWorkflow, LossMitigation. CovenantMonitoring runs the TicklerCalendar over each Covenant TestSchedule; failures are CovenantBreach events surfaced as SystemEvent Interactions (the InteractionLog stream), and may resolve as a CovenantWaiver or CovenantException. RiskGrade and RiskGradeMigration changes are captured in RiskRatingHistory; loans crossing the substandard threshold become a ClassifiedAsset on the Watchlist.\n\nExternal integrations: CoreBanking is the SystemOfRecord for DepositAccount Balance data (JackHenry, FIS, Fiserv vendors). PublicRecords (SecretaryOfState filings, UCC liens via UCCLienSearch, CourtRecord lookups) feed underwriting. Live AccountingFeed data pulls from QuickBooks and Xero via Plaid. BSA/AML TransactionMonitoring runs through Verafin and produces CTR and SAR filings; SanctionsScreening hits OFAC lists; CDD-driven BeneficialOwnership collection meets FinCEN's rule (BeneficialOwners table including any ControlPerson designation). RegulatoryReporting covers FFIEC examinations, the OCC, state banking regulators, CallReport submissions, and HMDA where applicable. CECL / ALLL reserve calculations are produced by ReportingAndAnalytics, alongside the PortfolioDashboard and the quarterly BoardPack.\n\nPlatform services and surfaces: the DocumentVault stores every Document with OCR indexing for GlobalSearch (SearchAndIndexing) and ESignature for closing. IdentityAndAccess provides SSO, MFA, RoleBasedAccess, and SegregationOfDuties enforcement. CashManagement / TreasuryServices (ACH, Wire, Card) attach to accounts. Pipeline (non-loan variant) handles Prospect tracking, Referral capture, and CrossSell opportunities. NotificationChannel options (email, SMS, in-app) deliver each Notification. The four surfaces are the RMDashboard, the BranchBankerPortal, the BusinessClientPortal, and the AdminConsole — with BranchBanker, Signer, APClerk, Officer, and ControlPerson all named roles in the domain. PII is held under FieldLevelEncryption / EncryptedAtRest; DataResidency constraints may bound deployment. The complete AuditTrail traces every change back to a User.",
+
+  "Users": {
+    "Description": "Bank employees: relationship managers, underwriters, branch bankers, and admins. Used for portfolio assignment, audit trails, and segregation-of-duties enforcement.",
+    "schema": [
+      { "name": "Name",  "datatype": "string", "type": "calculated", "nullable": false, "Description": "Kebab-cased compound primary key derived from FullName.", "formula": "=SUBSTITUTE(LOWER({{FullName}}), \" \", \"-\")" },
+      { "name": "FullName", "datatype": "string", "type": "raw", "nullable": false, "Description": "Display label of the bank employee." },
+      { "name": "Role",     "datatype": "string", "type": "raw", "nullable": false, "Description": "Role discriminator: RM, Underwriter, BranchBanker, or Admin." },
+      { "name": "Email",    "datatype": "string", "type": "raw", "nullable": false, "Description": "Bank email used for SSO and notifications." },
+      { "name": "IsRM",           "datatype": "boolean", "type": "calculated", "nullable": false, "Description": "True when Role = 'RM' (relationship manager).", "formula": "={{Role}} = \"RM\"" },
+      { "name": "IsUnderwriter",  "datatype": "boolean", "type": "calculated", "nullable": false, "Description": "True when Role = 'Underwriter'.", "formula": "={{Role}} = \"Underwriter\"" },
+      { "name": "IsBranchBanker", "datatype": "boolean", "type": "calculated", "nullable": false, "Description": "True when Role = 'BranchBanker'.", "formula": "={{Role}} = \"BranchBanker\"" },
+      { "name": "IsAdmin",        "datatype": "boolean", "type": "calculated", "nullable": false, "Description": "True when Role = 'Admin'.", "formula": "={{Role}} = \"Admin\"" },
+      { "name": "CountOfPortfolioBusinesses", "datatype": "integer", "type": "aggregation", "nullable": false, "Description": "Number of Businesses whose RelationshipManager is this user.", "formula": "=COUNTIFS(Businesses!{{RelationshipManager}}, {{Name}})" },
+      { "name": "CountOfOriginatedLoans",     "datatype": "integer", "type": "aggregation", "nullable": false, "Description": "Number of Loans this user originated as the RM of record.", "formula": "=COUNTIFS(Loans!{{OriginatingRm}}, {{Name}})" },
+      { "name": "CountOfUnderwrittenLoans",   "datatype": "integer", "type": "aggregation", "nullable": false, "Description": "Number of Loans this user underwrote.", "formula": "=COUNTIFS(Loans!{{Underwriter}}, {{Name}})" }
+    ],
+    "data": [
+      { "Name": "devon-marshall",  "FullName": "Devon Marshall",  "Role": "RM",           "Email": "devon.marshall@firstvalley.bank" },
+      { "Name": "priya-iyer",      "FullName": "Priya Iyer",      "Role": "Underwriter",  "Email": "priya.iyer@firstvalley.bank" },
+      { "Name": "thomas-bell",     "FullName": "Thomas Bell",     "Role": "Underwriter",  "Email": "thomas.bell@firstvalley.bank" },
+      { "Name": "maya-chen",       "FullName": "Maya Chen",       "Role": "BranchBanker", "Email": "maya.chen@firstvalley.bank" },
+      { "Name": "renee-okafor",    "FullName": "Renee Okafor",    "Role": "Admin",        "Email": "renee.okafor@firstvalley.bank" }
+    ]
+  },
+
+  "Businesses": {
+    "Description": "Small-business customers (and prospects) of the bank. Central entity: BeneficialOwners, Contacts, Accounts, Loans, Documents, and Interactions all hang off a Business. BusinessProfile information (legal name, structure, NAICS code) lives directly on this table.",
+    "schema": [
+      { "name": "Name", "datatype": "string", "type": "calculated", "nullable": false, "Description": "Kebab-cased compound PK derived from LegalName (punctuation stripped).", "formula": "=SUBSTITUTE(SUBSTITUTE(LOWER({{LegalName}}), \" \", \"-\"), \".\", \"\")" },
+      { "name": "LegalName",         "datatype": "string", "type": "raw", "nullable": false, "Description": "Registered legal name of the business." },
+      { "name": "BusinessStructure", "datatype": "string", "type": "raw", "nullable": false, "Description": "Entity structure: LLC, C-Corp, S-Corp, Partnership, Sole Proprietor, etc." },
+      { "name": "NaicsCode",         "datatype": "string", "type": "raw", "nullable": false, "Description": "North American Industry Classification System code for the business." },
+      { "name": "NaicsDescription",  "datatype": "string", "type": "raw", "nullable": true,  "Description": "Human-readable label for the NAICS code." },
+      { "name": "AnnualRevenueUsd",  "datatype": "number", "type": "raw", "nullable": true,  "Description": "Most-recent annual revenue, USD." },
+      { "name": "Status",            "datatype": "string", "type": "raw", "nullable": false, "Description": "Lifecycle status: Prospect, Customer, or Closed." },
+      { "name": "OnboardedAt",       "datatype": "datetime", "type": "raw", "nullable": true, "Description": "Date onboarding completed (KYB cleared, first account opened)." },
+      { "name": "RelationshipManager", "datatype": "string", "type": "relationship", "nullable": false, "RelatedTo": "Users", "Description": "FK to Users: the RM who owns this business relationship (the SinglePointOfContact)." },
+      { "name": "ReferralSource",      "datatype": "string", "type": "relationship", "nullable": true,  "RelatedTo": "Businesses", "Description": "Optional FK to another Business that referred this prospect/customer in." },
+      { "name": "RelationshipManagerLabel", "datatype": "string", "type": "lookup", "nullable": false, "Description": "Display label of the assigned RM, pulled from Users.", "formula": "=INDEX(Users!{{FullName}}, MATCH({{RelationshipManager}}, Users!{{Name}}, 0))" },
+      { "name": "IsCustomer",  "datatype": "boolean", "type": "calculated", "nullable": false, "Description": "True when Status = 'Customer'.", "formula": "={{Status}} = \"Customer\"" },
+      { "name": "IsProspect",  "datatype": "boolean", "type": "calculated", "nullable": false, "Description": "True when Status = 'Prospect'.", "formula": "={{Status}} = \"Prospect\"" },
+      { "name": "WasReferred", "datatype": "boolean", "type": "calculated", "nullable": false, "Description": "True when this business was referred in by another business.", "formula": "=NOT(COALESCE({{ReferralSource}}, \"\") = \"\")" },
+      { "name": "CountOfBeneficialOwners", "datatype": "integer", "type": "aggregation", "nullable": false, "Description": "Number of BeneficialOwner rows attached.", "formula": "=COUNTIFS(BeneficialOwners!{{Business}}, {{Name}})" },
+      { "name": "CountOfContacts",         "datatype": "integer", "type": "aggregation", "nullable": false, "Description": "Number of Contact rows attached.", "formula": "=COUNTIFS(Contacts!{{Business}}, {{Name}})" },
+      { "name": "CountOfAccounts",         "datatype": "integer", "type": "aggregation", "nullable": false, "Description": "Number of Account rows attached.", "formula": "=COUNTIFS(Accounts!{{Business}}, {{Name}})" },
+      { "name": "CountOfLoans",            "datatype": "integer", "type": "aggregation", "nullable": false, "Description": "Number of Loan rows attached.", "formula": "=COUNTIFS(Loans!{{Business}}, {{Name}})" },
+      { "name": "CountOfInteractions",     "datatype": "integer", "type": "aggregation", "nullable": false, "Description": "Number of Interaction rows attached (the activity feed).", "formula": "=COUNTIFS(Interactions!{{Business}}, {{Name}})" },
+      { "name": "CountOfDocuments",        "datatype": "integer", "type": "aggregation", "nullable": false, "Description": "Number of Documents attached directly to this Business.", "formula": "=COUNTIFS(Documents!{{Business}}, {{Name}})" },
+      { "name": "TotalDepositBalanceUsd",  "datatype": "number",  "type": "aggregation", "nullable": false, "Description": "Sum of CurrentBalanceUsd across this Business's Accounts.", "formula": "=SUMIFS(Accounts!{{CurrentBalanceUsd}}, Accounts!{{Business}}, {{Name}})" },
+      { "name": "TotalLoanPrincipalUsd",   "datatype": "number",  "type": "aggregation", "nullable": false, "Description": "Sum of PrincipalUsd across this Business's Loans.", "formula": "=SUMIFS(Loans!{{PrincipalUsd}}, Loans!{{Business}}, {{Name}})" },
+      { "name": "CountOfClassifiedLoans",  "datatype": "integer", "type": "aggregation", "nullable": false, "Description": "Number of Loans on this Business whose risk grade is substandard or worse (>=7).", "formula": "=COUNTIFS(Loans!{{Business}}, {{Name}}, Loans!{{IsClassifiedAsset}}, TRUE())" },
+      { "name": "HasClassifiedLoan",       "datatype": "boolean", "type": "calculated",  "nullable": false, "Description": "True when at least one loan on this Business is a classified asset.", "formula": "={{CountOfClassifiedLoans}} > 0" },
+      { "name": "BeneficialOwnersAtCddThreshold", "datatype": "integer", "type": "aggregation", "nullable": false, "Description": "Count of BeneficialOwners meeting FinCEN's 25% threshold or marked as the control person.", "formula": "=COUNTIFS(BeneficialOwners!{{Business}}, {{Name}}, BeneficialOwners!{{MeetsCddThreshold}}, TRUE())" },
+      { "name": "MeetsCddRule", "datatype": "boolean", "type": "calculated", "nullable": false, "Description": "True when CDD beneficial-ownership collection is satisfied: at least one owner crosses the 25% threshold, or a control person is designated.", "formula": "={{BeneficialOwnersAtCddThreshold}} > 0" },
+      { "name": "PortfolioPriority", "datatype": "string", "type": "calculated", "nullable": false, "Description": "Higher-order: portfolio-management priority bucket for this business. 'High' when classified loan present, 'Medium' when CDD or onboarding incomplete or no loans yet, otherwise 'Low'.", "formula": "=IF({{HasClassifiedLoan}}, \"High\", IF(OR(NOT({{MeetsCddRule}}), {{IsProspect}}, {{CountOfLoans}} = 0), \"Medium\", \"Low\"))" }
+    ],
+    "data": [
+      { "Name": "stillwater-roasters-llc", "LegalName": "Stillwater Roasters LLC", "BusinessStructure": "LLC", "NaicsCode": "311920", "NaicsDescription": "Coffee and Tea Manufacturing", "AnnualRevenueUsd": 4200000, "Status": "Customer", "OnboardedAt": "2024-03-12", "RelationshipManager": "devon-marshall", "ReferralSource": null },
+      { "Name": "ridgeway-consulting-llc", "LegalName": "Ridgeway Consulting LLC", "BusinessStructure": "LLC", "NaicsCode": "541611", "NaicsDescription": "Administrative Management Consulting", "AnnualRevenueUsd": 1800000, "Status": "Customer", "OnboardedAt": "2023-09-05", "RelationshipManager": "devon-marshall", "ReferralSource": null },
+      { "Name": "pine-hardware-inc",       "LegalName": "Pine Hardware Inc.",      "BusinessStructure": "C-Corp", "NaicsCode": "444110", "NaicsDescription": "Home Centers", "AnnualRevenueUsd": 12500000, "Status": "Customer", "OnboardedAt": "2019-06-21", "RelationshipManager": "devon-marshall", "ReferralSource": null },
+      { "Name": "sunset-auto-body-llc",    "LegalName": "Sunset Auto Body LLC",    "BusinessStructure": "LLC", "NaicsCode": "811121", "NaicsDescription": "Automotive Body, Paint, and Interior Repair", "AnnualRevenueUsd": 2300000, "Status": "Customer", "OnboardedAt": "2022-11-02", "RelationshipManager": "devon-marshall", "ReferralSource": null },
+      { "Name": "hilltop-bakery-llc",      "LegalName": "Hilltop Bakery LLC",      "BusinessStructure": "LLC", "NaicsCode": "311811", "NaicsDescription": "Retail Bakeries", "AnnualRevenueUsd": 850000, "Status": "Prospect", "OnboardedAt": null, "RelationshipManager": "devon-marshall", "ReferralSource": "pine-hardware-inc" }
+    ]
+  },
+
+  "BeneficialOwners": {
+    "Description": "Individuals owning 25%+ of a Business plus designated control persons, per FinCEN's CDD rule. PII (SSN, DOB, address) is stored encrypted at rest via field-level encryption.",
+    "schema": [
+      { "name": "Name", "datatype": "string", "type": "calculated", "nullable": false, "Description": "Kebab-cased compound PK: {Business}-{FullName slug}.", "formula": "={{Business}} & \"-\" & SUBSTITUTE(LOWER({{FullName}}), \" \", \"-\")" },
+      { "name": "Business", "datatype": "string", "type": "relationship", "nullable": false, "RelatedTo": "Businesses", "Description": "FK to the parent Business." },
+      { "name": "FullName",             "datatype": "string", "type": "raw", "nullable": false, "Description": "Owner's full legal name." },
+      { "name": "DateOfBirthEncrypted", "datatype": "string", "type": "raw", "nullable": false, "Description": "Encrypted date of birth (PII, FieldLevelEncryption)." },
+      { "name": "SsnEncrypted",         "datatype": "string", "type": "raw", "nullable": false, "Description": "Encrypted Social Security Number (PII, FieldLevelEncryption)." },
+      { "name": "AddressEncrypted",     "datatype": "string", "type": "raw", "nullable": false, "Description": "Encrypted home address (PII, FieldLevelEncryption)." },
+      { "name": "OwnershipPercentage",  "datatype": "number", "type": "raw", "nullable": false, "Description": "Percent of the Business owned by this individual (0-100)." },
+      { "name": "IsControlPerson",      "datatype": "boolean", "type": "raw", "nullable": false, "Description": "True when this individual is the designated control person per CDD (one is required when no owner crosses 25%)." },
+      { "name": "BusinessLabel", "datatype": "string", "type": "lookup", "nullable": false, "Description": "Display label of the parent Business.", "formula": "=INDEX(Businesses!{{LegalName}}, MATCH({{Business}}, Businesses!{{Name}}, 0))" },
+      { "name": "Meets25PercentThreshold", "datatype": "boolean", "type": "calculated", "nullable": false, "Description": "True when OwnershipPercentage >= 25.", "formula": "={{OwnershipPercentage}} >= 25" },
+      { "name": "MeetsCddThreshold",       "datatype": "boolean", "type": "calculated", "nullable": false, "Description": "True when this row counts toward CDD compliance: meets 25% OR is the control person.", "formula": "=OR({{Meets25PercentThreshold}}, {{IsControlPerson}})" }
+    ],
+    "data": [
+      { "Name": "stillwater-roasters-llc-jordan-park", "Business": "stillwater-roasters-llc", "FullName": "Jordan Park", "DateOfBirthEncrypted": "ENC(1981-04-17)", "SsnEncrypted": "ENC(xxx-xx-1234)", "AddressEncrypted": "ENC(742 Evergreen Way, Stillwater)", "OwnershipPercentage": 60.0, "IsControlPerson": true },
+      { "Name": "stillwater-roasters-llc-sam-rivera",  "Business": "stillwater-roasters-llc", "FullName": "Sam Rivera",  "DateOfBirthEncrypted": "ENC(1978-11-02)", "SsnEncrypted": "ENC(xxx-xx-5678)", "AddressEncrypted": "ENC(15 Hillcrest Rd, Stillwater)",   "OwnershipPercentage": 40.0, "IsControlPerson": false },
+      { "Name": "ridgeway-consulting-llc-alex-ridgeway", "Business": "ridgeway-consulting-llc", "FullName": "Alex Ridgeway", "DateOfBirthEncrypted": "ENC(1972-02-14)", "SsnEncrypted": "ENC(xxx-xx-9012)", "AddressEncrypted": "ENC(204 Birch Ln, Ridgeway)", "OwnershipPercentage": 0.0, "IsControlPerson": true },
+      { "Name": "pine-hardware-inc-elena-novak",  "Business": "pine-hardware-inc", "FullName": "Elena Novak",  "DateOfBirthEncrypted": "ENC(1965-08-30)", "SsnEncrypted": "ENC(xxx-xx-3456)", "AddressEncrypted": "ENC(99 Oak St, Pinehurst)", "OwnershipPercentage": 51.0, "IsControlPerson": true },
+      { "Name": "pine-hardware-inc-robert-novak", "Business": "pine-hardware-inc", "FullName": "Robert Novak", "DateOfBirthEncrypted": "ENC(1962-01-19)", "SsnEncrypted": "ENC(xxx-xx-7890)", "AddressEncrypted": "ENC(99 Oak St, Pinehurst)", "OwnershipPercentage": 49.0, "IsControlPerson": false }
+    ]
+  },
+
+  "Contacts": {
+    "Description": "Non-owner individuals associated with a Business: officers, AP clerks, authorized signers, additional points of contact. Distinct from BeneficialOwners (which carries PII/CDD weight).",
+    "schema": [
+      { "name": "Name", "datatype": "string", "type": "calculated", "nullable": false, "Description": "Kebab-cased compound PK: {Business}-{FullName slug}-{Title slug}.", "formula": "={{Business}} & \"-\" & SUBSTITUTE(LOWER({{FullName}}), \" \", \"-\") & \"-\" & SUBSTITUTE(LOWER({{Title}}), \" \", \"-\")" },
+      { "name": "Business", "datatype": "string", "type": "relationship", "nullable": false, "RelatedTo": "Businesses", "Description": "FK to the parent Business." },
+      { "name": "FullName",          "datatype": "string", "type": "raw", "nullable": false, "Description": "Contact's full name." },
+      { "name": "Title",             "datatype": "string", "type": "raw", "nullable": false, "Description": "Job title at the business (CEO, CFO, AP Clerk, etc.)." },
+      { "name": "Email",             "datatype": "string", "type": "raw", "nullable": true,  "Description": "Contact email." },
+      { "name": "Phone",             "datatype": "string", "type": "raw", "nullable": true,  "Description": "Contact phone." },
+      { "name": "ContactType",       "datatype": "string", "type": "raw", "nullable": false, "Description": "Discriminator: Officer, APClerk, AuthorizedSigner, Other." },
+      { "name": "IsAuthorizedSigner","datatype": "boolean", "type": "raw", "nullable": false, "Description": "True when this contact can sign on the business's accounts." },
+      { "name": "BusinessLabel", "datatype": "string", "type": "lookup", "nullable": false, "Description": "Display label of the parent Business.", "formula": "=INDEX(Businesses!{{LegalName}}, MATCH({{Business}}, Businesses!{{Name}}, 0))" },
+      { "name": "IsOfficer",  "datatype": "boolean", "type": "calculated", "nullable": false, "Description": "True when ContactType = 'Officer'.", "formula": "={{ContactType}} = \"Officer\"" },
+      { "name": "IsApClerk",  "datatype": "boolean", "type": "calculated", "nullable": false, "Description": "True when ContactType = 'APClerk'.", "formula": "={{ContactType}} = \"APClerk\"" }
+    ],
+    "data": [
+      { "Name": "stillwater-roasters-llc-jordan-park-ceo", "Business": "stillwater-roasters-llc", "FullName": "Jordan Park", "Title": "CEO", "Email": "jordan@stillwaterroasters.com", "Phone": "555-0142", "ContactType": "Officer", "IsAuthorizedSigner": true },
+      { "Name": "stillwater-roasters-llc-sam-rivera-cfo",  "Business": "stillwater-roasters-llc", "FullName": "Sam Rivera",  "Title": "CFO", "Email": "sam@stillwaterroasters.com",  "Phone": "555-0143", "ContactType": "Officer", "IsAuthorizedSigner": true },
+      { "Name": "pine-hardware-inc-marta-keene-ap-clerk",  "Business": "pine-hardware-inc",       "FullName": "Marta Keene", "Title": "AP Clerk", "Email": "ap@pinehardware.com", "Phone": "555-0188", "ContactType": "APClerk",  "IsAuthorizedSigner": false },
+      { "Name": "ridgeway-consulting-llc-alex-ridgeway-ceo", "Business": "ridgeway-consulting-llc", "FullName": "Alex Ridgeway", "Title": "CEO", "Email": "alex@ridgeway.co", "Phone": "555-0260", "ContactType": "Officer", "IsAuthorizedSigner": true }
+    ]
+  },
+
+  "Accounts": {
+    "Description": "Deposit accounts the Business holds at the bank (checking, savings, money market). Balances feed GlobalCashFlow during credit analysis. TreasuryServices enrollment flags (ACH, Wire, Card) are stored per-account.",
+    "schema": [
+      { "name": "Name", "datatype": "string", "type": "calculated", "nullable": false, "Description": "Kebab-cased compound PK: {Business}-{AccountType}-{Last4}.", "formula": "={{Business}} & \"-\" & LOWER({{AccountType}}) & \"-\" & {{AccountNumberLast4}}" },
+      { "name": "Business", "datatype": "string", "type": "relationship", "nullable": false, "RelatedTo": "Businesses", "Description": "FK to the parent Business." },
+      { "name": "AccountType",        "datatype": "string",  "type": "raw", "nullable": false, "Description": "Checking, Savings, MoneyMarket, etc." },
+      { "name": "AccountNumberLast4", "datatype": "string",  "type": "raw", "nullable": false, "Description": "Last 4 digits of the account number for display." },
+      { "name": "CurrentBalanceUsd",  "datatype": "number",  "type": "raw", "nullable": false, "Description": "Current balance in USD; sourced from CoreBanking." },
+      { "name": "HasAch",             "datatype": "boolean", "type": "raw", "nullable": false, "Description": "ACH treasury service enrolled on this account." },
+      { "name": "HasWire",            "datatype": "boolean", "type": "raw", "nullable": false, "Description": "Wire transfer treasury service enrolled on this account." },
+      { "name": "HasCard",            "datatype": "boolean", "type": "raw", "nullable": false, "Description": "Business card product issued against this account." },
+      { "name": "OpenedAt",           "datatype": "datetime", "type": "raw", "nullable": false, "Description": "Date the account was opened." },
+      { "name": "BusinessLabel", "datatype": "string", "type": "lookup", "nullable": false, "Description": "Display label of the parent Business.", "formula": "=INDEX(Businesses!{{LegalName}}, MATCH({{Business}}, Businesses!{{Name}}, 0))" },
+      { "name": "TreasuryServiceCount", "datatype": "integer", "type": "calculated", "nullable": false, "Description": "Number of treasury services enrolled on this account.", "formula": "=IF({{HasAch}}, 1, 0) + IF({{HasWire}}, 1, 0) + IF({{HasCard}}, 1, 0)" },
+      { "name": "HasAnyTreasuryService", "datatype": "boolean", "type": "calculated", "nullable": false, "Description": "True when at least one treasury service is enrolled.", "formula": "={{TreasuryServiceCount}} > 0" }
+    ],
+    "data": [
+      { "Name": "stillwater-roasters-llc-checking-0001", "Business": "stillwater-roasters-llc", "AccountType": "Checking", "AccountNumberLast4": "0001", "CurrentBalanceUsd": 184250.13, "HasAch": true,  "HasWire": true,  "HasCard": false, "OpenedAt": "2024-03-13" },
+      { "Name": "stillwater-roasters-llc-savings-0101",  "Business": "stillwater-roasters-llc", "AccountType": "Savings",  "AccountNumberLast4": "0101", "CurrentBalanceUsd": 75000.00,  "HasAch": false, "HasWire": false, "HasCard": false, "OpenedAt": "2024-03-13" },
+      { "Name": "pine-hardware-inc-checking-0200",       "Business": "pine-hardware-inc",       "AccountType": "Checking", "AccountNumberLast4": "0200", "CurrentBalanceUsd": 612430.55, "HasAch": true,  "HasWire": true,  "HasCard": true,  "OpenedAt": "2019-06-22" },
+      { "Name": "ridgeway-consulting-llc-checking-0300", "Business": "ridgeway-consulting-llc", "AccountType": "Checking", "AccountNumberLast4": "0300", "CurrentBalanceUsd": 92800.00,  "HasAch": true,  "HasWire": false, "HasCard": false, "OpenedAt": "2023-09-06" },
+      { "Name": "sunset-auto-body-llc-checking-0400",    "Business": "sunset-auto-body-llc",    "AccountType": "Checking", "AccountNumberLast4": "0400", "CurrentBalanceUsd": 41250.00,  "HasAch": false, "HasWire": false, "HasCard": false, "OpenedAt": "2022-11-03" }
+    ]
+  },
+
+  "Loans": {
+    "Description": "Credit facilities extended to a Business, tracked from inquiry through funding, servicing, and payoff. RiskRating is denormalized here for fast reads; every change is captured in RiskRatingHistory.",
+    "schema": [
+      { "name": "Name", "datatype": "string", "type": "calculated", "nullable": false, "Description": "Kebab-cased PK derived from LoanNumber (e.g. 'L-0051' -> 'l-0051').", "formula": "=SUBSTITUTE(LOWER({{LoanNumber}}), \" \", \"-\")" },
+      { "name": "LoanNumber",          "datatype": "string", "type": "raw", "nullable": false, "Description": "Bank-assigned loan number (e.g. 'L-0051')." },
+      { "name": "Business",            "datatype": "string", "type": "relationship", "nullable": false, "RelatedTo": "Businesses", "Description": "FK to the borrower Business." },
+      { "name": "OriginatingRm",       "datatype": "string", "type": "relationship", "nullable": false, "RelatedTo": "Users", "Description": "FK to Users: the RM who originated this loan." },
+      { "name": "Underwriter",         "datatype": "string", "type": "relationship", "nullable": false, "RelatedTo": "Users", "Description": "FK to Users: the underwriter who underwrote this loan." },
+      { "name": "LoanPurpose",         "datatype": "string", "type": "raw", "nullable": false, "Description": "Equipment, CRE, LOC, WorkingCapital, etc." },
+      { "name": "PrincipalUsd",        "datatype": "number", "type": "raw", "nullable": false, "Description": "Loan principal at origination, USD." },
+      { "name": "RatePct",             "datatype": "number", "type": "raw", "nullable": false, "Description": "Interest rate, percent (e.g. 7.25)." },
+      { "name": "TermMonths",          "datatype": "integer", "type": "raw", "nullable": false, "Description": "Loan term in months." },
+      { "name": "UnderwritingStage",   "datatype": "string", "type": "raw", "nullable": false, "Description": "Current pipeline stage: Inquiry, PreQualification, Application, KYBAndBureauPull, Packaging, CreditAnalysis, CommitteeApproval, ClosingPrep, Signing, Funded." },
+      { "name": "RiskRating",          "datatype": "integer", "type": "raw", "nullable": false, "Description": "Current risk grade (1=Pass strongest ... 7=Substandard ... 9=Loss). Denormalized; every change is captured in RiskRatingHistory." },
+      { "name": "RiskRatingLabel",     "datatype": "string", "type": "raw", "nullable": false, "Description": "Human-readable label for the current risk grade." },
+      { "name": "Dscr",                "datatype": "number", "type": "raw", "nullable": true,  "Description": "Most recent debt service coverage ratio." },
+      { "name": "Ltv",                 "datatype": "number", "type": "raw", "nullable": true,  "Description": "Most recent loan-to-value ratio (0-1); null for unsecured loans." },
+      { "name": "GlobalCashFlowUsd",   "datatype": "number", "type": "raw", "nullable": true,  "Description": "Most recent global cash flow figure across business, owners, and affiliates." },
+      { "name": "OriginatedAt",        "datatype": "datetime", "type": "raw", "nullable": false, "Description": "Date the application was created." },
+      { "name": "FundedAt",            "datatype": "datetime", "type": "raw", "nullable": true,  "Description": "Date the loan funded; null until funding completes." },
+      { "name": "BusinessLabel",        "datatype": "string", "type": "lookup", "nullable": false, "Description": "Display label of the borrower Business.", "formula": "=INDEX(Businesses!{{LegalName}}, MATCH({{Business}}, Businesses!{{Name}}, 0))" },
+      { "name": "BusinessNaicsCode",    "datatype": "string", "type": "lookup", "nullable": false, "Description": "NAICS code of the borrower Business (concentration analytics).", "formula": "=INDEX(Businesses!{{NaicsCode}}, MATCH({{Business}}, Businesses!{{Name}}, 0))" },
+      { "name": "OriginatingRmLabel",   "datatype": "string", "type": "lookup", "nullable": false, "Description": "Display label of the originating RM.", "formula": "=INDEX(Users!{{FullName}}, MATCH({{OriginatingRm}}, Users!{{Name}}, 0))" },
+      { "name": "UnderwriterLabel",     "datatype": "string", "type": "lookup", "nullable": false, "Description": "Display label of the underwriter.", "formula": "=INDEX(Users!{{FullName}}, MATCH({{Underwriter}}, Users!{{Name}}, 0))" },
+      { "name": "IsFunded",             "datatype": "boolean", "type": "calculated", "nullable": false, "Description": "True when UnderwritingStage = 'Funded'.", "formula": "={{UnderwritingStage}} = \"Funded\"" },
+      { "name": "IsClassifiedAsset",    "datatype": "boolean", "type": "calculated", "nullable": false, "Description": "True when RiskRating is substandard (7) or worse.", "formula": "={{RiskRating}} >= 7" },
+      { "name": "DscrInBand",           "datatype": "boolean", "type": "calculated", "nullable": false, "Description": "True when DSCR meets or exceeds the 1.20 minimum band.", "formula": "=COALESCE({{Dscr}}, 0) >= 1.20" },
+      { "name": "LtvInBand",            "datatype": "boolean", "type": "calculated", "nullable": false, "Description": "True when LTV is at or below 0.80, or null (unsecured).", "formula": "=COALESCE({{Ltv}}, 0) <= 0.80" },
+      { "name": "SegregationOfDutiesOk","datatype": "boolean", "type": "calculated", "nullable": false, "Description": "True when the originating RM and the underwriter are different Users (segregation-of-duties check).", "formula": "=NOT({{OriginatingRm}} = {{Underwriter}})" },
+      { "name": "CountOfCovenants",         "datatype": "integer", "type": "aggregation", "nullable": false, "Description": "Number of Covenants attached to this loan.", "formula": "=COUNTIFS(Covenants!{{Loan}}, {{Name}})" },
+      { "name": "CountOfBreachedCovenants", "datatype": "integer", "type": "aggregation", "nullable": false, "Description": "Number of Covenants currently in Breached status on this loan.", "formula": "=COUNTIFS(Covenants!{{Loan}}, {{Name}}, Covenants!{{IsBreached}}, TRUE())" },
+      { "name": "CountOfRiskRatingHistory", "datatype": "integer", "type": "aggregation", "nullable": false, "Description": "Number of RiskRatingHistory rows for this loan.", "formula": "=COUNTIFS(RiskRatingHistory!{{Loan}}, {{Name}})" },
+      { "name": "CountOfDocuments",         "datatype": "integer", "type": "aggregation", "nullable": false, "Description": "Number of Documents attached directly to this Loan.", "formula": "=COUNTIFS(Documents!{{Loan}}, {{Name}})" },
+      { "name": "HasBreachedCovenant",      "datatype": "boolean", "type": "calculated", "nullable": false, "Description": "True when at least one covenant is in breach.", "formula": "={{CountOfBreachedCovenants}} > 0" },
+      { "name": "OnWatchlist",              "datatype": "boolean", "type": "calculated", "nullable": false, "Description": "Higher-order: on the watchlist when the loan is a classified asset OR has any breached covenant.", "formula": "=OR({{IsClassifiedAsset}}, {{HasBreachedCovenant}})" },
+      { "name": "HealthScore",              "datatype": "integer", "type": "calculated", "nullable": false, "Description": "Higher-order composite health score (0-4): +1 for DscrInBand, +1 for LtvInBand, +1 for NOT IsClassifiedAsset, +1 for NOT HasBreachedCovenant.", "formula": "=IF({{DscrInBand}}, 1, 0) + IF({{LtvInBand}}, 1, 0) + IF({{IsClassifiedAsset}}, 0, 1) + IF({{HasBreachedCovenant}}, 0, 1)" }
+    ],
+    "data": [
+      { "Name": "l-0051", "LoanNumber": "L-0051", "Business": "stillwater-roasters-llc", "OriginatingRm": "devon-marshall", "Underwriter": "priya-iyer", "LoanPurpose": "Equipment", "PrincipalUsd": 250000, "RatePct": 7.25, "TermMonths": 60, "UnderwritingStage": "Funded", "RiskRating": 4, "RiskRatingLabel": "Pass", "Dscr": 1.42, "Ltv": 0.78, "GlobalCashFlowUsd": 612000, "OriginatedAt": "2025-02-10", "FundedAt": "2025-03-01" },
+      { "Name": "l-0042", "LoanNumber": "L-0042", "Business": "pine-hardware-inc",       "OriginatingRm": "devon-marshall", "Underwriter": "thomas-bell", "LoanPurpose": "CRE",       "PrincipalUsd": 1850000, "RatePct": 6.50, "TermMonths": 240, "UnderwritingStage": "Funded", "RiskRating": 7, "RiskRatingLabel": "Substandard", "Dscr": 1.08, "Ltv": 0.71, "GlobalCashFlowUsd": 2100000, "OriginatedAt": "2021-04-14", "FundedAt": "2021-05-20" },
+      { "Name": "l-0078", "LoanNumber": "L-0078", "Business": "ridgeway-consulting-llc", "OriginatingRm": "devon-marshall", "Underwriter": "priya-iyer", "LoanPurpose": "LOC",       "PrincipalUsd": 100000, "RatePct": 8.00, "TermMonths": 12,  "UnderwritingStage": "Funded", "RiskRating": 3, "RiskRatingLabel": "Pass",        "Dscr": 1.85, "Ltv": null, "GlobalCashFlowUsd": 320000,  "OriginatedAt": "2024-08-01", "FundedAt": "2024-08-22" }
+    ]
+  },
+
+  "Covenants": {
+    "Description": "Conditions attached to a Loan that must be tested on a recurring schedule (e.g. minimum DSCR each quarter). CovenantMonitoring runs the tickler calendar ahead of NextTestDate; breaches surface as SystemEvent Interactions.",
+    "schema": [
+      { "name": "Name", "datatype": "string", "type": "calculated", "nullable": false, "Description": "Kebab-cased compound PK: {Loan}-{CovenantType slug}.", "formula": "={{Loan}} & \"-\" & SUBSTITUTE(LOWER({{CovenantType}}), \" \", \"-\")" },
+      { "name": "Loan", "datatype": "string", "type": "relationship", "nullable": false, "RelatedTo": "Loans", "Description": "FK to the parent Loan." },
+      { "name": "CovenantType",          "datatype": "string", "type": "raw", "nullable": false, "Description": "MinDSCR, MaxLeverage, ReportingFinancials, etc." },
+      { "name": "ThresholdValue",        "datatype": "number", "type": "raw", "nullable": true,  "Description": "Numeric threshold for the test (e.g. 1.20 for MinDSCR); null for non-numeric covenants." },
+      { "name": "TestFrequency",         "datatype": "string", "type": "raw", "nullable": false, "Description": "Quarterly, Annual, Monthly, etc." },
+      { "name": "NextTestDate",          "datatype": "datetime", "type": "raw", "nullable": false, "Description": "Date of the next scheduled covenant test." },
+      { "name": "Status",                "datatype": "string", "type": "raw", "nullable": false, "Description": "Active, Breached, Waived, Cured, Closed." },
+      { "name": "CurrentWaiverThrough",  "datatype": "datetime", "type": "raw", "nullable": true,  "Description": "Date through which an active CovenantWaiver is in effect; null when no active waiver." },
+      { "name": "LoanLabel", "datatype": "string", "type": "lookup", "nullable": false, "Description": "Display label of the parent Loan.", "formula": "=INDEX(Loans!{{LoanNumber}}, MATCH({{Loan}}, Loans!{{Name}}, 0))" },
+      { "name": "LoanBusiness", "datatype": "string", "type": "lookup", "nullable": false, "Description": "Business of the parent Loan (chained lookup).", "formula": "=INDEX(Loans!{{Business}}, MATCH({{Loan}}, Loans!{{Name}}, 0))" },
+      { "name": "IsBreached",     "datatype": "boolean", "type": "calculated", "nullable": false, "Description": "True when Status = 'Breached'.", "formula": "={{Status}} = \"Breached\"" },
+      { "name": "HasActiveWaiver","datatype": "boolean", "type": "calculated", "nullable": false, "Description": "True when CurrentWaiverThrough is set (waiver is on file).", "formula": "=NOT(COALESCE({{CurrentWaiverThrough}}, \"\") = \"\")" }
+    ],
+    "data": [
+      { "Name": "l-0051-mindscr",             "Loan": "l-0051", "CovenantType": "MinDSCR",             "ThresholdValue": 1.20, "TestFrequency": "Quarterly", "NextTestDate": "2025-06-30", "Status": "Active",   "CurrentWaiverThrough": null },
+      { "Name": "l-0051-maxleverage",         "Loan": "l-0051", "CovenantType": "MaxLeverage",         "ThresholdValue": 3.00, "TestFrequency": "Annual",    "NextTestDate": "2026-03-01", "Status": "Active",   "CurrentWaiverThrough": null },
+      { "Name": "l-0051-reportingfinancials", "Loan": "l-0051", "CovenantType": "ReportingFinancials", "ThresholdValue": null, "TestFrequency": "Annual",    "NextTestDate": "2026-03-31", "Status": "Active",   "CurrentWaiverThrough": null },
+      { "Name": "l-0042-mindscr",             "Loan": "l-0042", "CovenantType": "MinDSCR",             "ThresholdValue": 1.20, "TestFrequency": "Quarterly", "NextTestDate": "2026-06-30", "Status": "Breached", "CurrentWaiverThrough": "2026-06-30" }
+    ]
+  },
+
+  "RiskRatingHistory": {
+    "Description": "Time-series of risk-grade changes on a Loan. Regulators audit rating drift, so every migration is captured here. AnnualReview also writes a row even when the grade is reaffirmed unchanged.",
+    "schema": [
+      { "name": "Name", "datatype": "string", "type": "calculated", "nullable": false, "Description": "Kebab-cased compound PK: {Loan}-{EffectiveDate}-grade-{NewGrade}.", "formula": "={{Loan}} & \"-\" & TEXT({{EffectiveDate}}, \"yyyy-mm-dd\") & \"-grade-\" & TEXT({{NewGrade}}, \"0\")" },
+      { "name": "Loan",          "datatype": "string", "type": "relationship", "nullable": false, "RelatedTo": "Loans", "Description": "FK to the Loan whose grade changed." },
+      { "name": "ChangedByUser", "datatype": "string", "type": "relationship", "nullable": false, "RelatedTo": "Users", "Description": "FK to Users: who recorded the migration." },
+      { "name": "EffectiveDate", "datatype": "datetime", "type": "raw", "nullable": false, "Description": "Date the new grade takes effect." },
+      { "name": "PriorGrade",    "datatype": "integer", "type": "raw", "nullable": true,  "Description": "Grade before this change; null on initial rating." },
+      { "name": "NewGrade",      "datatype": "integer", "type": "raw", "nullable": false, "Description": "Grade after this change." },
+      { "name": "Reason",        "datatype": "string",  "type": "raw", "nullable": false, "Description": "Free-text justification for the migration." },
+      { "name": "LoanLabel",            "datatype": "string", "type": "lookup", "nullable": false, "Description": "Display label of the parent Loan.", "formula": "=INDEX(Loans!{{LoanNumber}}, MATCH({{Loan}}, Loans!{{Name}}, 0))" },
+      { "name": "ChangedByUserLabel",   "datatype": "string", "type": "lookup", "nullable": false, "Description": "Display label of the user who recorded the change.", "formula": "=INDEX(Users!{{FullName}}, MATCH({{ChangedByUser}}, Users!{{Name}}, 0))" },
+      { "name": "GradeDelta",       "datatype": "integer", "type": "calculated", "nullable": false, "Description": "NewGrade - PriorGrade (positive = downgrade in this scale); equals 0 on initial rating.", "formula": "={{NewGrade}} - COALESCE({{PriorGrade}}, {{NewGrade}})" },
+      { "name": "IsDowngrade",      "datatype": "boolean", "type": "calculated", "nullable": false, "Description": "True when the migration represents a downgrade (higher grade number = worse risk).", "formula": "={{GradeDelta}} > 0" },
+      { "name": "IsInitialRating",  "datatype": "boolean", "type": "calculated", "nullable": false, "Description": "True when this is the loan's first rating row (no PriorGrade).", "formula": "=COALESCE({{PriorGrade}}, 0) = 0" },
+      { "name": "CrossedClassifiedThreshold", "datatype": "boolean", "type": "calculated", "nullable": false, "Description": "Higher-order: true when this migration is the moment a loan crossed from non-classified to classified (PriorGrade < 7 and NewGrade >= 7).", "formula": "=AND(COALESCE({{PriorGrade}}, 0) < 7, {{NewGrade}} >= 7)" }
+    ],
+    "data": [
+      { "Name": "l-0042-2021-05-20-grade-4", "Loan": "l-0042", "ChangedByUser": "thomas-bell", "EffectiveDate": "2021-05-20", "PriorGrade": null, "NewGrade": 4, "Reason": "Initial rating at funding." },
+      { "Name": "l-0042-2025-05-02-grade-6", "Loan": "l-0042", "ChangedByUser": "thomas-bell", "EffectiveDate": "2025-05-02", "PriorGrade": 4,    "NewGrade": 6, "Reason": "DSCR covenant breach; downgrade to Special Mention." },
+      { "Name": "l-0042-2025-08-15-grade-7", "Loan": "l-0042", "ChangedByUser": "thomas-bell", "EffectiveDate": "2025-08-15", "PriorGrade": 6,    "NewGrade": 7, "Reason": "Sustained underperformance; downgrade to Substandard. Added to Watchlist." },
+      { "Name": "l-0051-2025-03-01-grade-4", "Loan": "l-0051", "ChangedByUser": "priya-iyer",  "EffectiveDate": "2025-03-01", "PriorGrade": null, "NewGrade": 4, "Reason": "Initial rating at funding." },
+      { "Name": "l-0078-2024-08-22-grade-3", "Loan": "l-0078", "ChangedByUser": "priya-iyer",  "EffectiveDate": "2024-08-22", "PriorGrade": null, "NewGrade": 3, "Reason": "Initial rating at funding; strong cash flow coverage." }
+    ]
+  },
+
+  "Documents": {
+    "Description": "Files in the DocumentVault. A document attaches to either a Business (tax returns, formation docs) or a Loan (note, security agreement, appraisal). Both FKs are nullable so a document can hang off the appropriate parent.",
+    "schema": [
+      { "name": "Name", "datatype": "string", "type": "calculated", "nullable": false, "Description": "Kebab-cased PK derived from the filename.", "formula": "=SUBSTITUTE(SUBSTITUTE(LOWER({{Filename}}), \" \", \"-\"), \".\", \"-\")" },
+      { "name": "Business",       "datatype": "string", "type": "relationship", "nullable": true,  "RelatedTo": "Businesses", "Description": "Optional FK to a Business (nullable for loan-only docs)." },
+      { "name": "Loan",           "datatype": "string", "type": "relationship", "nullable": true,  "RelatedTo": "Loans",      "Description": "Optional FK to a Loan (nullable for business-only docs)." },
+      { "name": "UploadedByUser", "datatype": "string", "type": "relationship", "nullable": true,  "RelatedTo": "Users",      "Description": "Optional FK to the User who uploaded (null when uploaded via the BusinessClientPortal)." },
+      { "name": "Filename",       "datatype": "string", "type": "raw", "nullable": false, "Description": "Original filename in the vault." },
+      { "name": "DocumentType",   "datatype": "string", "type": "raw", "nullable": false, "Description": "TaxReturn, FormationDoc, FinancialStatement, Note, SecurityAgreement, Appraisal, etc." },
+      { "name": "OcrIndexed",     "datatype": "boolean", "type": "raw", "nullable": false, "Description": "True once OCR has indexed the document into SearchAndIndexing." },
+      { "name": "UploadedVia",    "datatype": "string", "type": "raw", "nullable": true,  "Description": "Source surface: RMDashboard, BranchBankerPortal, BusinessClientPortal, AdminConsole, API." },
+      { "name": "UploadedAt",     "datatype": "datetime", "type": "raw", "nullable": false, "Description": "Upload timestamp." },
+      { "name": "BusinessLabel",       "datatype": "string", "type": "lookup", "nullable": true, "Description": "Display label of the attached Business (if any).", "formula": "=INDEX(Businesses!{{LegalName}}, MATCH({{Business}}, Businesses!{{Name}}, 0))" },
+      { "name": "LoanLabel",           "datatype": "string", "type": "lookup", "nullable": true, "Description": "Display label of the attached Loan (if any).", "formula": "=INDEX(Loans!{{LoanNumber}}, MATCH({{Loan}}, Loans!{{Name}}, 0))" },
+      { "name": "UploadedByUserLabel", "datatype": "string", "type": "lookup", "nullable": true, "Description": "Display label of the uploader (if known).", "formula": "=INDEX(Users!{{FullName}}, MATCH({{UploadedByUser}}, Users!{{Name}}, 0))" },
+      { "name": "AttachedTo", "datatype": "string", "type": "calculated", "nullable": false, "Description": "Which parent this document hangs off: 'Loan', 'Business', or 'Orphan' (neither set).", "formula": "=IF(NOT(COALESCE({{Loan}}, \"\") = \"\"), \"Loan\", IF(NOT(COALESCE({{Business}}, \"\") = \"\"), \"Business\", \"Orphan\"))" },
+      { "name": "FromCustomerPortal", "datatype": "boolean", "type": "calculated", "nullable": false, "Description": "True when uploaded by the customer themselves via the BusinessClientPortal.", "formula": "={{UploadedVia}} = \"BusinessClientPortal\"" }
+    ],
+    "data": [
+      { "Name": "stillwater-2024-tax-return-pdf",    "Business": "stillwater-roasters-llc", "Loan": null,     "UploadedByUser": "devon-marshall", "Filename": "stillwater-2024-tax-return.pdf",  "DocumentType": "TaxReturn",          "OcrIndexed": true, "UploadedVia": "RMDashboard",          "UploadedAt": "2025-01-22" },
+      { "Name": "l-0051-promissory-note-pdf",        "Business": null,                      "Loan": "l-0051", "UploadedByUser": "priya-iyer",     "Filename": "l-0051-promissory-note.pdf",      "DocumentType": "Note",               "OcrIndexed": true, "UploadedVia": "RMDashboard",          "UploadedAt": "2025-02-28" },
+      { "Name": "l-0051-security-agreement-pdf",     "Business": null,                      "Loan": "l-0051", "UploadedByUser": "priya-iyer",     "Filename": "l-0051-security-agreement.pdf",   "DocumentType": "SecurityAgreement",  "OcrIndexed": true, "UploadedVia": "RMDashboard",          "UploadedAt": "2025-02-28" },
+      { "Name": "stillwater-q4-2024-pl-pdf",         "Business": "stillwater-roasters-llc", "Loan": null,     "UploadedByUser": null,             "Filename": "stillwater-q4-2024-pl.pdf",       "DocumentType": "FinancialStatement", "OcrIndexed": true, "UploadedVia": "BusinessClientPortal", "UploadedAt": "2025-01-15" },
+      { "Name": "pine-articles-of-incorporation-pdf","Business": "pine-hardware-inc",       "Loan": null,     "UploadedByUser": "devon-marshall", "Filename": "pine-articles-of-incorporation.pdf", "DocumentType": "FormationDoc",    "OcrIndexed": true, "UploadedVia": "RMDashboard",          "UploadedAt": "2019-06-21" }
+    ]
+  },
+
+  "Interactions": {
+    "Description": "Unified activity-log feed for a Business. An Interaction is intentionally generic: InteractionType discriminates Note, Call, Visit, Task, Meeting, or SystemEvent. Covenant breaches, document requests, and other machine actions are written as SystemEvent interactions so they appear in the same stream as human-logged activity.",
+    "schema": [
+      { "name": "Name", "datatype": "string", "type": "calculated", "nullable": false, "Description": "Kebab-cased compound PK: {Business}-{InteractionDate}-{InteractionType slug}-{Subject slug}.", "formula": "={{Business}} & \"-\" & TEXT({{InteractionDate}}, \"yyyy-mm-dd\") & \"-\" & LOWER({{InteractionType}}) & \"-\" & SUBSTITUTE(LOWER({{Subject}}), \" \", \"-\")" },
+      { "name": "Business",        "datatype": "string", "type": "relationship", "nullable": false, "RelatedTo": "Businesses", "Description": "FK to the parent Business." },
+      { "name": "User",            "datatype": "string", "type": "relationship", "nullable": true,  "RelatedTo": "Users",      "Description": "FK to Users: who logged the interaction (null for system-generated or customer-portal-originated rows)." },
+      { "name": "InteractionType", "datatype": "string", "type": "raw", "nullable": false, "Description": "Note, Call, Visit, Task, Meeting, or SystemEvent." },
+      { "name": "Subject",         "datatype": "string", "type": "raw", "nullable": false, "Description": "Short subject line (used in compound PK)." },
+      { "name": "Body",            "datatype": "string", "type": "raw", "nullable": true,  "Description": "Long-form body of the interaction." },
+      { "name": "InteractionDate", "datatype": "datetime", "type": "raw", "nullable": false, "Description": "Date the interaction occurred or was logged." },
+      { "name": "DueDate",         "datatype": "datetime", "type": "raw", "nullable": true,  "Description": "For Task-type interactions: due date." },
+      { "name": "Source",          "datatype": "string", "type": "raw", "nullable": true,  "Description": "Origin surface: RMDashboard, BusinessClientPortal, BranchBankerPortal, SystemEvent." },
+      { "name": "BusinessLabel", "datatype": "string", "type": "lookup", "nullable": false, "Description": "Display label of the parent Business.", "formula": "=INDEX(Businesses!{{LegalName}}, MATCH({{Business}}, Businesses!{{Name}}, 0))" },
+      { "name": "UserLabel",     "datatype": "string", "type": "lookup", "nullable": true,  "Description": "Display label of the logging user (if any).", "formula": "=INDEX(Users!{{FullName}}, MATCH({{User}}, Users!{{Name}}, 0))" },
+      { "name": "IsSystemEvent", "datatype": "boolean", "type": "calculated", "nullable": false, "Description": "True for system-generated rows.", "formula": "={{InteractionType}} = \"SystemEvent\"" },
+      { "name": "IsTask",        "datatype": "boolean", "type": "calculated", "nullable": false, "Description": "True for Task-type rows.", "formula": "={{InteractionType}} = \"Task\"" },
+      { "name": "FromCustomer",  "datatype": "boolean", "type": "calculated", "nullable": false, "Description": "True when sourced from the BusinessClientPortal (customer-originated).", "formula": "={{Source}} = \"BusinessClientPortal\"" },
+      { "name": "IsCovenantEvent", "datatype": "boolean", "type": "calculated", "nullable": false, "Description": "Higher-order: true when this is a covenant-related system event (subject contains 'covenant').", "formula": "=AND({{IsSystemEvent}}, NOT(IFERROR(FIND(\"covenant\", LOWER({{Subject}})), 0) = 0))" }
+    ],
+    "data": [
+      { "Name": "stillwater-roasters-llc-2025-04-15-note-q2-pnl-review",            "Business": "stillwater-roasters-llc", "User": "devon-marshall", "InteractionType": "Note",        "Subject": "Q2 PnL review",                  "Body": "Reviewed Q2 P&L. Margins compressed slightly on green-coffee cost spike but volume up 12% YoY.", "InteractionDate": "2025-04-15", "DueDate": null,         "Source": "RMDashboard" },
+      { "Name": "stillwater-roasters-llc-2025-04-15-call-wire-fee-question",        "Business": "stillwater-roasters-llc", "User": "devon-marshall", "InteractionType": "Call",        "Subject": "Wire fee question",              "Body": "Sam called re: $30 outbound wire fee. Confirmed price; offered ACH-international as alternative.", "InteractionDate": "2025-04-15", "DueDate": null,         "Source": "RMDashboard" },
+      { "Name": "pine-hardware-inc-2025-04-15-visit-refi-discussion",               "Business": "pine-hardware-inc",       "User": "devon-marshall", "InteractionType": "Visit",       "Subject": "Refi discussion",                "Body": "On-site visit. Discussed potential refinance of L-0042 once classified-asset status resolves.",   "InteractionDate": "2025-04-15", "DueDate": null,         "Source": "RMDashboard" },
+      { "Name": "ridgeway-consulting-llc-2025-04-22-meeting-annual-review-prep",    "Business": "ridgeway-consulting-llc", "User": "devon-marshall", "InteractionType": "Meeting",     "Subject": "Annual review prep",             "Body": "Scheduled annual review meeting. Documentation requested in advance.",                            "InteractionDate": "2025-04-22", "DueDate": null,         "Source": "RMDashboard" },
+      { "Name": "pine-hardware-inc-2025-04-15-task-refi-term-sheet",                "Business": "pine-hardware-inc",       "User": "devon-marshall", "InteractionType": "Task",        "Subject": "Refi term sheet",                "Body": "Draft and send proposed refinance term sheet to Elena Novak.",                                    "InteractionDate": "2025-04-15", "DueDate": "2025-04-18", "Source": "RMDashboard" },
+      { "Name": "pine-hardware-inc-2025-04-15-systemevent-covenant-test-approaching","Business": "pine-hardware-inc",      "User": null,             "InteractionType": "SystemEvent", "Subject": "Covenant test approaching",      "Body": "Auto-generated by CovenantMonitoring: DSCR test for L-0042 due in 15 days.",                      "InteractionDate": "2025-04-15", "DueDate": null,         "Source": "SystemEvent" },
+      { "Name": "pine-hardware-inc-2025-05-02-systemevent-covenant-breach",         "Business": "pine-hardware-inc",       "User": null,             "InteractionType": "SystemEvent", "Subject": "Covenant breach L-0042 DSCR",   "Body": "DSCR test failed on L-0042. Computed 1.08; covenant threshold 1.20. Status: Breached.",            "InteractionDate": "2025-05-02", "DueDate": null,         "Source": "SystemEvent" },
+      { "Name": "sunset-auto-body-llc-2025-05-04-systemevent-sar-filed",            "Business": "sunset-auto-body-llc",    "User": "renee-okafor",   "InteractionType": "SystemEvent", "Subject": "SAR filed BSA AML",              "Body": "Verafin flagged structuring pattern. SAR drafted and filed via RegulatoryReporting to FinCEN.",   "InteractionDate": "2025-05-04", "DueDate": null,         "Source": "SystemEvent" },
+      { "Name": "stillwater-roasters-llc-2025-01-15-note-customer-portal-message",  "Business": "stillwater-roasters-llc", "User": null,             "InteractionType": "Note",        "Subject": "Customer portal message",        "Body": "Customer message: 'Uploaded Q4 P&L. Want to discuss a $25K LOC.'",                                "InteractionDate": "2025-01-15", "DueDate": null,         "Source": "BusinessClientPortal" }
+    ]
+  },
+
+  "_meta": {
+    "_CMCC_Summary": "Authored-direct ERB rulebook for a community-bank commercial relationship management platform. No Airtable round-trip; this rulebook is the SSoT at the top of the Leopold loop. Targets Postgres via effortless build.",
+    "_conversion_metadata": {
+      "source": "authored-from-narrative",
+      "table_count": 10,
+      "tool_version": "shadle-bootstrap-1.0",
+      "ssot": "effortless-rulebook.json",
+      "next_step": "effortless build -> generated Postgres schema and vw_* views"
+    }
+  }
+}

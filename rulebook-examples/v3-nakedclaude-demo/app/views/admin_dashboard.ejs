@@ -1,0 +1,13 @@
+<%- include('_header', { user: user }) %>
+<h1>Admin Dashboard</h1>
+<div class="cards">
+  <% counts.forEach(c => { %>
+    <div class="card">
+      <div class="muted"><%= c.status || '(no status)' %></div>
+      <div style="font-size:1.8em"><%= c.n %></div>
+      <% if (c.stopped) { %><span class="badge stopped"><%= c.stopped %> stopped</span><% } %>
+    </div>
+  <% }) %>
+</div>
+<p><a href="/admin/customers">Manage customers →</a></p>
+<%- include('_footer') %>

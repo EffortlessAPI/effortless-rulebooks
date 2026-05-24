@@ -474,12 +474,29 @@ def process_entity(
     return len(records)
 
 
+def _get_testing_paths():
+    """Resolve blank-tests and test-answers dirs. ERB_TESTING_DIR is required.
+
+    There is no implicit per-substrate testing dir — running with no env var
+    silently mixed results across domains. The orchestrator MUST set
+    ERB_TESTING_DIR before invoking this substrate.
+    """
+    erb_testing = os.environ.get("ERB_TESTING_DIR")
+    if not erb_testing:
+        raise RuntimeError(
+            "ERB_TESTING_DIR is not set. take-test.py must be invoked by the "
+            "orchestrator with ERB_TESTING_DIR pointing at the active domain's "
+            "testing/ directory."
+        )
+    substrate_name = Path(script_dir).name
+    return Path(erb_testing) / "blank-tests", Path(erb_testing) / substrate_name / "test-answers"
+
+
 def main():
-    project_root = script_dir.parent.parent
-    blank_tests_dir = project_root / "testing" / "blank-tests"
-    test_answers_dir = script_dir / "test-answers"
+    blank_tests_dir, test_answers_dir = _get_testing_paths()
     test_explanations_dir = script_dir / "test-explanations"
     spec_path = script_dir / "generated" / "explain_spec.json"
+    project_root = script_dir.parent.parent
 
     # Check for spec file
     if not spec_path.exists():

@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title><%= typeof title !== 'undefined' ? title : 'NakedClaude Demo' %></title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><a href="/">NakedClaude Demo</a></div>
+    <nav class="topnav">
+      <a href="/shop">Shop</a>
+      <a href="/shop/products">Products</a>
+      <a href="/shop/cart">Cart<% if (typeof cartCount !== 'undefined' && cartCount) { %> (<%= cartCount %>)<% } %></a>
+      <a href="/shop/account">Account</a>
+      <a href="/shop/states">Tax</a>
+      <a href="/">Admin</a>
+    </nav>
+  </header>
+  <main class="main">

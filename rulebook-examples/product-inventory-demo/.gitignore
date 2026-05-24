@@ -1,0 +1,12 @@
+node_modules/
+dist/
+.vite/
+.ssotme/
+postgres/
+.env
+.env.local
+*.log
+.DS_Store
+
+excel-export/effortless-export.json
+excel-export/rulebook.xlsx

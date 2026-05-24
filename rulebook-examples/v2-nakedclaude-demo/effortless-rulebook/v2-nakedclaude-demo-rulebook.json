@@ -1,0 +1,353 @@
+{
+  "$schema": "https://example.com/cmcc-schema/v1",
+  "Name": "v2: NakedClaude Demo",
+  "Description": "Rulebook generated from Airtable base \u0027v2: NakedClaude Demo\u0027.",
+  "Customers": {
+    "Description": "Table: Customers",
+    "schema": [
+      {
+        "name": "CustomerId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "formula": "=SUBSTITUTE(LOWER({{FullName}}), \u0022 \u0022, \u0022-\u0022)"
+      },
+      {
+        "name": "FirstName",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "LastName",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "FullName",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "formula": "={{FirstName}} \u0026 \u0022 \u0022 \u0026 {{LastName}}"
+      },
+      {
+        "name": "Notes",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "StatusDisplayName",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "formula": "=INDEX(Statuses!{{DisplayName}}, MATCH(Customers!{{Status}}, Statuses!{{StatuseId}}, 0))"
+      },
+      {
+        "name": "StatusIsBlocking",
+        "datatype": "boolean",
+        "type": "lookup",
+        "nullable": true,
+        "formula": "=INDEX(Statuses!{{IsBlocking}}, MATCH(Customers!{{Status}}, Statuses!{{StatuseId}}, 0))"
+      },
+      {
+        "name": "IsStopped",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "formula": "=IF(AND({{StatusIsBlocking}}, {{FirstName}} = \u0022Bob\u0022), TRUE(), FALSE())"
+      },
+      {
+        "name": "StatusDescription",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "formula": "=INDEX(Statuses!{{Description}}, MATCH(Customers!{{Status}}, Statuses!{{StatuseId}}, 0))"
+      },
+      {
+        "name": "Status",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "RelatedTo": "Statuses",
+        "isReversed": false,
+        "prefersSingleRecordLink": true,
+        "InverseField": "Customers"
+      },
+      {
+        "name": "OwnerEmail",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Email address of the user who owns this customer record. Used by Row-Level Security to scope visibility to the JWT email of the requester."
+      }
+    ],
+    "data": [
+      {
+        "CustomerId": "bob",
+        "IsStopped": true,
+        "StatusDisplayName": "On-Hold",
+        "Name": "bob-",
+        "Notes": "A customer currently in launch.",
+        "StatusIsBlocking": "True",
+        "OwnerEmail": "eejai42@gmail.com",
+        "Status": "on-hold",
+        "StatusDescription": "This status indicates the customer or request is on hold and temporarily paused.",
+        "FirstName": "Bob",
+        "FullName": "Bob ",
+        "LastName": ""
+      },
+      {
+        "CustomerId": "alice-johnson",
+        "LastName": "Johnson",
+        "StatusDisplayName": "Pending",
+        "Name": "alice-johnson",
+        "Notes": "Initial mock entry for Alice.",
+        "StatusIsBlocking": "True",
+        "OwnerEmail": "eejai42@gmail.com",
+        "Status": "pending",
+        "StatusDescription": "This status shows the customer or request is pending further action or review.",
+        "FirstName": "Alice",
+        "FullName": "Alice Johnson",
+        "IsStopped": false
+      },
+      {
+        "CustomerId": "brian-lee",
+        "LastName": "Lee",
+        "StatusDisplayName": "New",
+        "Name": "brian-lee",
+        "Notes": "Initial mock entry for Brian.",
+        "StatusIsBlocking": "",
+        "OwnerEmail": "eejai42@gmail.com",
+        "Status": "new",
+        "StatusDescription": "This status indicates a newly created customer or request that has not yet been processed.",
+        "FirstName": "Brian",
+        "FullName": "Brian Lee",
+        "IsStopped": false
+      },
+      {
+        "CustomerId": "carla-smith",
+        "LastName": "Smith",
+        "StatusDisplayName": "Delayed",
+        "Name": "carla-smith",
+        "Notes": "Initial mock entry for Carla.",
+        "StatusIsBlocking": "",
+        "OwnerEmail": "alice@example.com",
+        "Status": "delayed",
+        "StatusDescription": "This status is used when the customer or request has been delayed and is not progressing as scheduled.",
+        "FirstName": "Carla",
+        "FullName": "Carla Smith",
+        "IsStopped": false
+      },
+      {
+        "CustomerId": "caroline",
+        "StatusDisplayName": "Processing",
+        "Name": "caroline-",
+        "StatusIsBlocking": "",
+        "OwnerEmail": "alice@example.com",
+        "Status": "processing",
+        "StatusDescription": "This status means the customer or request is currently being processed.",
+        "FirstName": "Caroline",
+        "FullName": "Caroline ",
+        "LastName": "",
+        "Notes": "",
+        "IsStopped": false
+      }
+    ]
+  },
+  "Statuses": {
+    "Description": "Table: Statuses",
+    "schema": [
+      {
+        "name": "StatuseId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "formula": "=LOWER({{DisplayName}})"
+      },
+      {
+        "name": "DisplayName",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "Description",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "IsBlocking",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "Customers",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "RelatedTo": "Customers",
+        "isReversed": false,
+        "prefersSingleRecordLink": false,
+        "InverseField": "Status"
+      },
+      {
+        "name": "OwnerEmail",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Email address of the user who owns this status. Used by Row-Level Security to scope visibility."
+      }
+    ],
+    "data": [
+      {
+        "StatuseId": "delayed",
+        "OwnerEmail": "ej@ssot.me",
+        "DisplayName": "Delayed",
+        "Customers": "carla-smith",
+        "Name": "delayed",
+        "Description": "This status is used when the customer or request has been delayed and is not progressing as scheduled.",
+        "IsBlocking": false
+      },
+      {
+        "StatuseId": "cancelled",
+        "IsBlocking": true,
+        "OwnerEmail": "ej@ssot.me",
+        "DisplayName": "Cancelled",
+        "Name": "cancelled",
+        "Description": "This status means the customer or request has been cancelled and will not proceed further.",
+        "Customers": ""
+      },
+      {
+        "StatuseId": "processing",
+        "OwnerEmail": "ej@ssot.me",
+        "DisplayName": "Processing",
+        "Customers": "caroline",
+        "Name": "processing",
+        "Description": "This status means the customer or request is currently being processed.",
+        "IsBlocking": false
+      },
+      {
+        "StatuseId": "new",
+        "OwnerEmail": "ej@ssot.me",
+        "DisplayName": "New",
+        "Customers": "brian-lee",
+        "Name": "new",
+        "Description": "This status indicates a newly created customer or request that has not yet been processed.",
+        "IsBlocking": false
+      },
+      {
+        "StatuseId": "in-review",
+        "OwnerEmail": "ej@ssot.me",
+        "DisplayName": "In-Review",
+        "Name": "in-review",
+        "Description": "This status is for customers or requests that are currently under review.",
+        "IsBlocking": false,
+        "Customers": ""
+      },
+      {
+        "StatuseId": "pending",
+        "IsBlocking": true,
+        "OwnerEmail": "ej@ssot.me",
+        "DisplayName": "Pending",
+        "Customers": "alice-johnson",
+        "Name": "pending",
+        "Description": "This status shows the customer or request is pending further action or review."
+      },
+      {
+        "StatuseId": "on-hold",
+        "IsBlocking": true,
+        "OwnerEmail": "ej@ssot.me",
+        "DisplayName": "On-Hold",
+        "Customers": "bob",
+        "Name": "on-hold",
+        "Description": "This status indicates the customer or request is on hold and temporarily paused."
+      }
+    ]
+  },
+  "AppUsers": {
+    "Description": "Table: AppUsers",
+    "schema": [
+      {
+        "name": "AppUserId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "formula": "=LOWER(SUBSTITUTE(SUBSTITUTE({{EmailAddress}}, \u0022. \u0022, \u0022-\u0022), \u0022@\u0022, \u0022-\u0022))"
+      },
+      {
+        "name": "EmailAddress",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Primary identity \u2014 matches the JWT email of the signed-in user."
+      },
+      {
+        "name": "Role",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "admin = full access; customer = sees only owned customers (RLS DAG)."
+      }
+    ],
+    "data": [
+      {
+        "AppUserId": "eejai42-gmail-com",
+        "Name": "eejai42-gmail.com",
+        "EmailAddress": "eejai42@gmail.com",
+        "Role": "customer"
+      },
+      {
+        "AppUserId": "ej-ssot-me",
+        "Name": "ej-ssot.me",
+        "EmailAddress": "ej@ssot.me",
+        "Role": "admin"
+      },
+      {
+        "AppUserId": "alice-example-com",
+        "Name": "alice-example.com",
+        "EmailAddress": "alice@example.com",
+        "Role": "customer"
+      }
+    ]
+  },
+  "_meta": {
+    "_CMCC_Summary": "Airtable export with schema-first type mapping: Schemas, Data, Relationships (FK links), Lookups (INDEX/MATCH), Aggregations (SUMIFS/COUNTIFS/Rollups), and Calculated fields (formulas) in Excel dialect. Field types are determined from Airtable\u0027s schema metadata FIRST (no coercion), with intelligent fallback to formula/data analysis only when schema is unavailable.",
+    "_conversion_metadata": {
+      "source_base_id": "app7G5emeY7miM4WN",
+      "table_count": 3,
+      "tool_version": "2.0.0",
+      "field_type_mapping": "checkbox\u2192boolean, number\u2192number/integer, multipleRecordLinks\u2192relationship, multipleLookupValues\u2192lookup, rollup\u2192aggregation, count\u2192aggregation, formula\u2192calculated",
+      "export_mode": "schema_first_type_mapping",
+      "type_inference": {
+        "enabled": true,
+        "priority": "airtable_metadata (NO COERCION) \u2192 formula_analysis \u2192 reference_resolution \u2192 data_analysis (fallback only)",
+        "airtable_type_mapping": "checkbox\u2192boolean, singleLineText\u2192string, multilineText\u2192string, number\u2192number/integer, datetime\u2192datetime, singleSelect\u2192string, email\u2192string, url\u2192string, phoneNumber\u2192string",
+        "data_coercion_hierarchy": "Only used as fallback when Airtable schema unavailable: datetime \u2192 number \u2192 integer \u2192 boolean \u2192 base64 \u2192 json \u2192 string",
+        "nullable_support": true,
+        "error_value_handling": "#NUM!, #ERROR!, #N/A, #REF!, #DIV/0!, #VALUE!, #NAME? are treated as NULL"
+      }
+    }
+  }
+}

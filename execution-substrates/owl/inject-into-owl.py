@@ -12,6 +12,7 @@ The rulebook is the source of truth. OWL/SHACL is derived, not authored.
 This script is 100% domain-agnostic - all field names come from the rulebook.
 """
 
+import os
 import sys
 import re
 from pathlib import Path
@@ -22,7 +23,7 @@ from enum import Enum, auto
 # Add project root to path for shared imports
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 
-from orchestration.shared import load_rulebook, handle_clean_arg
+from orchestration.shared import load_rulebook, handle_clean_arg, get_rulebook_path
 
 
 # =============================================================================
@@ -513,7 +514,7 @@ def generate_ontology_owl(tables: Dict[str, Any]) -> str:
     lines.append('')
     lines.append('erb: a owl:Ontology ;')
     lines.append('    rdfs:label "ERB Ontology" ;')
-    lines.append('    rdfs:comment "Generated from effortless-rulebook.json" .')
+    lines.append(f'    rdfs:comment "Generated from {get_rulebook_path().name}" .')
     lines.append('')
 
     # Generate classes and properties for each table
@@ -790,7 +791,8 @@ def main():
     if handle_clean_arg(GENERATED_FILES, "OWL substrate: Removes generated ontology, individuals, and SHACL rules"):
         return
 
-    script_dir = Path(__file__).resolve().parent
+    env_output = os.environ.get("ERB_OUTPUT_DIR")
+    script_dir = Path(env_output).resolve() if env_output else Path(__file__).resolve().parent
 
     print("=" * 70)
     print("OWL Execution Substrate - Formula-to-SHACL Compiler")

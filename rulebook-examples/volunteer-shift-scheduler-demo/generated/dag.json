@@ -1,0 +1,667 @@
+{
+  "generatedAt": "2026-05-22T18:10:57.281Z",
+  "tableCount": 6,
+  "computedCount": 21,
+  "rawColumnCount": 25,
+  "computedOrder": [
+    "shifts.assigned_count",
+    "shifts.duration_hours",
+    "shifts.coverage_delta",
+    "shifts.coverage_status",
+    "shifts.weighted_reliability",
+    "shifts.skill_match_pct",
+    "events.shift_count",
+    "events.total_required",
+    "events.total_assigned",
+    "events.coverage_pct",
+    "events.understaffed_shift_count",
+    "events.overstaffed_shift_count",
+    "events.fully_staffed_shift_count",
+    "events.volunteer_count",
+    "events.avg_reliability",
+    "events.skill_match_avg",
+    "events.score",
+    "events.grade",
+    "volunteer_event.assigned_hours",
+    "volunteer_event.shift_count",
+    "volunteer_event.load_status"
+  ],
+  "constants": {
+    "GRADE_WEIGHTS": {
+      "coverage_pct": 0.6,
+      "avg_reliability": 0.3,
+      "skill_match_avg": 0.1
+    },
+    "GRADE_BANDS": [
+      {
+        "min": 0.93,
+        "grade": "A"
+      },
+      {
+        "min": 0.85,
+        "grade": "B"
+      },
+      {
+        "min": 0.75,
+        "grade": "C"
+      },
+      {
+        "min": 0.65,
+        "grade": "D"
+      },
+      {
+        "min": 0,
+        "grade": "F"
+      }
+    ],
+    "LOAD_BANDS": {
+      "under_factor": 0.75,
+      "over_factor": 1.25
+    }
+  },
+  "graph": {
+    "events.id": {
+      "key": "events.id",
+      "kind": "raw",
+      "table": "events",
+      "field": "id",
+      "description": "Raw column events.id (serial).",
+      "formula": null,
+      "excelFormula": null,
+      "sqlFormula": null,
+      "depends": []
+    },
+    "events.name": {
+      "key": "events.name",
+      "kind": "raw",
+      "table": "events",
+      "field": "name",
+      "description": "Raw column events.name (text).",
+      "formula": null,
+      "excelFormula": null,
+      "sqlFormula": null,
+      "depends": []
+    },
+    "events.location": {
+      "key": "events.location",
+      "kind": "raw",
+      "table": "events",
+      "field": "location",
+      "description": "Raw column events.location (text).",
+      "formula": null,
+      "excelFormula": null,
+      "sqlFormula": null,
+      "depends": []
+    },
+    "events.event_date": {
+      "key": "events.event_date",
+      "kind": "raw",
+      "table": "events",
+      "field": "event_date",
+      "description": "Raw column events.event_date (date).",
+      "formula": null,
+      "excelFormula": null,
+      "sqlFormula": null,
+      "depends": []
+    },
+    "events.target_hours_per_volunteer": {
+      "key": "events.target_hours_per_volunteer",
+      "kind": "raw",
+      "table": "events",
+      "field": "target_hours_per_volunteer",
+      "description": "Raw column events.target_hours_per_volunteer (numeric(5,2)).",
+      "formula": null,
+      "excelFormula": null,
+      "sqlFormula": null,
+      "depends": []
+    },
+    "skills.id": {
+      "key": "skills.id",
+      "kind": "raw",
+      "table": "skills",
+      "field": "id",
+      "description": "Raw column skills.id (serial).",
+      "formula": null,
+      "excelFormula": null,
+      "sqlFormula": null,
+      "depends": []
+    },
+    "skills.name": {
+      "key": "skills.name",
+      "kind": "raw",
+      "table": "skills",
+      "field": "name",
+      "description": "Raw column skills.name (text).",
+      "formula": null,
+      "excelFormula": null,
+      "sqlFormula": null,
+      "depends": []
+    },
+    "volunteers.id": {
+      "key": "volunteers.id",
+      "kind": "raw",
+      "table": "volunteers",
+      "field": "id",
+      "description": "Raw column volunteers.id (serial).",
+      "formula": null,
+      "excelFormula": null,
+      "sqlFormula": null,
+      "depends": []
+    },
+    "volunteers.name": {
+      "key": "volunteers.name",
+      "kind": "raw",
+      "table": "volunteers",
+      "field": "name",
+      "description": "Raw column volunteers.name (text).",
+      "formula": null,
+      "excelFormula": null,
+      "sqlFormula": null,
+      "depends": []
+    },
+    "volunteers.email": {
+      "key": "volunteers.email",
+      "kind": "raw",
+      "table": "volunteers",
+      "field": "email",
+      "description": "Raw column volunteers.email (text).",
+      "formula": null,
+      "excelFormula": null,
+      "sqlFormula": null,
+      "depends": []
+    },
+    "volunteers.reliability_score": {
+      "key": "volunteers.reliability_score",
+      "kind": "raw",
+      "table": "volunteers",
+      "field": "reliability_score",
+      "description": "Raw column volunteers.reliability_score (numeric(3,2)).",
+      "formula": null,
+      "excelFormula": null,
+      "sqlFormula": null,
+      "depends": []
+    },
+    "volunteers.max_hours": {
+      "key": "volunteers.max_hours",
+      "kind": "raw",
+      "table": "volunteers",
+      "field": "max_hours",
+      "description": "Raw column volunteers.max_hours (numeric(5,2)).",
+      "formula": null,
+      "excelFormula": null,
+      "sqlFormula": null,
+      "depends": []
+    },
+    "volunteer_skills.volunteer_id": {
+      "key": "volunteer_skills.volunteer_id",
+      "kind": "raw",
+      "table": "volunteer_skills",
+      "field": "volunteer_id",
+      "description": "Raw column volunteer_skills.volunteer_id (integer).",
+      "formula": null,
+      "excelFormula": null,
+      "sqlFormula": null,
+      "depends": []
+    },
+    "volunteer_skills.skill_id": {
+      "key": "volunteer_skills.skill_id",
+      "kind": "raw",
+      "table": "volunteer_skills",
+      "field": "skill_id",
+      "description": "Raw column volunteer_skills.skill_id (integer).",
+      "formula": null,
+      "excelFormula": null,
+      "sqlFormula": null,
+      "depends": []
+    },
+    "shifts.id": {
+      "key": "shifts.id",
+      "kind": "raw",
+      "table": "shifts",
+      "field": "id",
+      "description": "Raw column shifts.id (serial).",
+      "formula": null,
+      "excelFormula": null,
+      "sqlFormula": null,
+      "depends": []
+    },
+    "shifts.event_id": {
+      "key": "shifts.event_id",
+      "kind": "raw",
+      "table": "shifts",
+      "field": "event_id",
+      "description": "Raw column shifts.event_id (integer).",
+      "formula": null,
+      "excelFormula": null,
+      "sqlFormula": null,
+      "depends": []
+    },
+    "shifts.name": {
+      "key": "shifts.name",
+      "kind": "raw",
+      "table": "shifts",
+      "field": "name",
+      "description": "Raw column shifts.name (text).",
+      "formula": null,
+      "excelFormula": null,
+      "sqlFormula": null,
+      "depends": []
+    },
+    "shifts.starts_at": {
+      "key": "shifts.starts_at",
+      "kind": "raw",
+      "table": "shifts",
+      "field": "starts_at",
+      "description": "Raw column shifts.starts_at (timestamp).",
+      "formula": null,
+      "excelFormula": null,
+      "sqlFormula": null,
+      "depends": []
+    },
+    "shifts.ends_at": {
+      "key": "shifts.ends_at",
+      "kind": "raw",
+      "table": "shifts",
+      "field": "ends_at",
+      "description": "Raw column shifts.ends_at (timestamp).",
+      "formula": null,
+      "excelFormula": null,
+      "sqlFormula": null,
+      "depends": []
+    },
+    "shifts.required_count": {
+      "key": "shifts.required_count",
+      "kind": "raw",
+      "table": "shifts",
+      "field": "required_count",
+      "description": "Raw column shifts.required_count (integer).",
+      "formula": null,
+      "excelFormula": null,
+      "sqlFormula": null,
+      "depends": []
+    },
+    "shifts.required_skill_id": {
+      "key": "shifts.required_skill_id",
+      "kind": "raw",
+      "table": "shifts",
+      "field": "required_skill_id",
+      "description": "Raw column shifts.required_skill_id (integer).",
+      "formula": null,
+      "excelFormula": null,
+      "sqlFormula": null,
+      "depends": []
+    },
+    "assignments.id": {
+      "key": "assignments.id",
+      "kind": "raw",
+      "table": "assignments",
+      "field": "id",
+      "description": "Raw column assignments.id (serial).",
+      "formula": null,
+      "excelFormula": null,
+      "sqlFormula": null,
+      "depends": []
+    },
+    "assignments.shift_id": {
+      "key": "assignments.shift_id",
+      "kind": "raw",
+      "table": "assignments",
+      "field": "shift_id",
+      "description": "Raw column assignments.shift_id (integer).",
+      "formula": null,
+      "excelFormula": null,
+      "sqlFormula": null,
+      "depends": []
+    },
+    "assignments.volunteer_id": {
+      "key": "assignments.volunteer_id",
+      "kind": "raw",
+      "table": "assignments",
+      "field": "volunteer_id",
+      "description": "Raw column assignments.volunteer_id (integer).",
+      "formula": null,
+      "excelFormula": null,
+      "sqlFormula": null,
+      "depends": []
+    },
+    "assignments.created_at": {
+      "key": "assignments.created_at",
+      "kind": "raw",
+      "table": "assignments",
+      "field": "created_at",
+      "description": "Raw column assignments.created_at (timestamp).",
+      "formula": null,
+      "excelFormula": null,
+      "sqlFormula": null,
+      "depends": []
+    },
+    "shifts.assigned_count": {
+      "key": "shifts.assigned_count",
+      "kind": "aggregation",
+      "table": "shifts",
+      "field": "assigned_count",
+      "description": "Number of volunteers assigned to this shift.",
+      "formula": "COUNT(assignments WHERE shift_id = this.id)",
+      "excelFormula": "=COUNTIF(assignments[shift_id], [@id])",
+      "sqlFormula": "(SELECT COUNT(*)::int FROM assignments a WHERE a.shift_id = s.id)",
+      "depends": [
+        "assignments.shift_id"
+      ],
+      "constants": []
+    },
+    "shifts.duration_hours": {
+      "key": "shifts.duration_hours",
+      "kind": "calc",
+      "table": "shifts",
+      "field": "duration_hours",
+      "description": "Length of the shift in hours.",
+      "formula": "(ends_at − starts_at) / 1 hour",
+      "excelFormula": "=(([@ends_at]-[@starts_at])*24)",
+      "sqlFormula": "EXTRACT(EPOCH FROM (s.ends_at - s.starts_at))/3600.0",
+      "depends": [
+        "shifts.starts_at",
+        "shifts.ends_at"
+      ],
+      "constants": []
+    },
+    "shifts.coverage_delta": {
+      "key": "shifts.coverage_delta",
+      "kind": "calc",
+      "table": "shifts",
+      "field": "coverage_delta",
+      "description": "Signed gap between assigned and required volunteers.",
+      "formula": "assigned_count − required_count",
+      "excelFormula": "=[@assigned_count]-[@required_count]",
+      "sqlFormula": null,
+      "depends": [
+        "shifts.assigned_count",
+        "shifts.required_count"
+      ],
+      "constants": []
+    },
+    "shifts.coverage_status": {
+      "key": "shifts.coverage_status",
+      "kind": "calc",
+      "table": "shifts",
+      "field": "coverage_status",
+      "description": "under / full / over relative to required_count.",
+      "formula": "IF(assigned < required, 'under', IF(assigned > required, 'over', 'full'))",
+      "excelFormula": "=IF([@assigned_count]<[@required_count],\"under\",IF([@assigned_count]>[@required_count],\"over\",\"full\"))",
+      "sqlFormula": null,
+      "depends": [
+        "shifts.assigned_count",
+        "shifts.required_count"
+      ],
+      "constants": []
+    },
+    "shifts.weighted_reliability": {
+      "key": "shifts.weighted_reliability",
+      "kind": "aggregation",
+      "table": "shifts",
+      "field": "weighted_reliability",
+      "description": "Mean reliability_score of the volunteers assigned to this shift (0 if none).",
+      "formula": "AVG(assigned_volunteers.reliability_score)",
+      "excelFormula": "=IFERROR(AVERAGEIFS(volunteers[reliability_score], volunteers[id], assignments[volunteer_id], assignments[shift_id], [@id]), 0)",
+      "sqlFormula": null,
+      "depends": [
+        "assignments.shift_id",
+        "assignments.volunteer_id",
+        "volunteers.reliability_score"
+      ],
+      "constants": []
+    },
+    "shifts.skill_match_pct": {
+      "key": "shifts.skill_match_pct",
+      "kind": "aggregation",
+      "table": "shifts",
+      "field": "skill_match_pct",
+      "description": "Fraction of assigned volunteers who hold the required skill. Null if no required skill.",
+      "formula": "IF(required_skill IS NULL, NULL, COUNT(assigned WHERE has(required_skill)) / COUNT(assigned))",
+      "excelFormula": "=IF([@required_skill_id]=\"\",\"\",COUNTIFS(volunteer_skills[skill_id], [@required_skill_id], volunteer_skills[volunteer_id], assignments[volunteer_id], assignments[shift_id], [@id]) / [@assigned_count])",
+      "sqlFormula": null,
+      "depends": [
+        "shifts.required_skill_id",
+        "assignments.shift_id",
+        "volunteer_skills.skill_id"
+      ],
+      "constants": []
+    },
+    "events.shift_count": {
+      "key": "events.shift_count",
+      "kind": "aggregation",
+      "table": "events",
+      "field": "shift_count",
+      "description": "Number of shifts in this event.",
+      "formula": "COUNT(shifts WHERE event_id = this.id)",
+      "excelFormula": "=COUNTIF(shifts[event_id], [@id])",
+      "sqlFormula": "(SELECT COUNT(*)::int FROM shifts s WHERE s.event_id = e.id)",
+      "depends": [
+        "shifts.event_id"
+      ],
+      "constants": []
+    },
+    "events.total_required": {
+      "key": "events.total_required",
+      "kind": "aggregation",
+      "table": "events",
+      "field": "total_required",
+      "description": "Sum of required_count across the event's shifts.",
+      "formula": "SUM(shifts.required_count WHERE event_id = this.id)",
+      "excelFormula": "=SUMIF(shifts[event_id], [@id], shifts[required_count])",
+      "sqlFormula": "(SELECT COALESCE(SUM(s.required_count),0)::int FROM shifts s WHERE s.event_id = e.id)",
+      "depends": [
+        "shifts.event_id",
+        "shifts.required_count"
+      ],
+      "constants": []
+    },
+    "events.total_assigned": {
+      "key": "events.total_assigned",
+      "kind": "aggregation",
+      "table": "events",
+      "field": "total_assigned",
+      "description": "Sum of assigned_count across the event's shifts.",
+      "formula": "SUM(shifts.assigned_count WHERE event_id = this.id)",
+      "excelFormula": null,
+      "sqlFormula": null,
+      "depends": [
+        "shifts.event_id",
+        "shifts.assigned_count"
+      ],
+      "constants": []
+    },
+    "events.coverage_pct": {
+      "key": "events.coverage_pct",
+      "kind": "calc",
+      "table": "events",
+      "field": "coverage_pct",
+      "description": "total_assigned / total_required (1.0 when nothing is required).",
+      "formula": "IF(total_required = 0, 1, total_assigned / total_required)",
+      "excelFormula": "=IF([@total_required]=0,1,[@total_assigned]/[@total_required])",
+      "sqlFormula": null,
+      "depends": [
+        "events.total_required",
+        "events.total_assigned"
+      ],
+      "constants": []
+    },
+    "events.understaffed_shift_count": {
+      "key": "events.understaffed_shift_count",
+      "kind": "aggregation",
+      "table": "events",
+      "field": "understaffed_shift_count",
+      "description": "Number of shifts in this event with coverage_status = under.",
+      "formula": "COUNT(shifts WHERE event_id = this.id AND coverage_status = 'under')",
+      "excelFormula": null,
+      "sqlFormula": null,
+      "depends": [
+        "shifts.event_id",
+        "shifts.coverage_status"
+      ],
+      "constants": []
+    },
+    "events.overstaffed_shift_count": {
+      "key": "events.overstaffed_shift_count",
+      "kind": "aggregation",
+      "table": "events",
+      "field": "overstaffed_shift_count",
+      "description": "Number of shifts in this event with coverage_status = over.",
+      "formula": "COUNT(shifts WHERE event_id = this.id AND coverage_status = 'over')",
+      "excelFormula": null,
+      "sqlFormula": null,
+      "depends": [
+        "shifts.event_id",
+        "shifts.coverage_status"
+      ],
+      "constants": []
+    },
+    "events.fully_staffed_shift_count": {
+      "key": "events.fully_staffed_shift_count",
+      "kind": "aggregation",
+      "table": "events",
+      "field": "fully_staffed_shift_count",
+      "description": "Number of shifts in this event with coverage_status = full.",
+      "formula": "COUNT(shifts WHERE event_id = this.id AND coverage_status = 'full')",
+      "excelFormula": null,
+      "sqlFormula": null,
+      "depends": [
+        "shifts.event_id",
+        "shifts.coverage_status"
+      ],
+      "constants": []
+    },
+    "events.volunteer_count": {
+      "key": "events.volunteer_count",
+      "kind": "aggregation",
+      "table": "events",
+      "field": "volunteer_count",
+      "description": "Number of distinct volunteers assigned to any shift in this event.",
+      "formula": "COUNT(DISTINCT assignments.volunteer_id WHERE shift.event_id = this.id)",
+      "excelFormula": null,
+      "sqlFormula": null,
+      "depends": [
+        "shifts.event_id",
+        "assignments.shift_id",
+        "assignments.volunteer_id"
+      ],
+      "constants": []
+    },
+    "events.avg_reliability": {
+      "key": "events.avg_reliability",
+      "kind": "aggregation",
+      "table": "events",
+      "field": "avg_reliability",
+      "description": "Mean reliability_score over distinct volunteers assigned to any shift in this event.",
+      "formula": "AVG(reliability_score) over distinct assigned volunteers",
+      "excelFormula": null,
+      "sqlFormula": null,
+      "depends": [
+        "shifts.event_id",
+        "assignments.shift_id",
+        "assignments.volunteer_id",
+        "volunteers.reliability_score"
+      ],
+      "constants": []
+    },
+    "events.skill_match_avg": {
+      "key": "events.skill_match_avg",
+      "kind": "aggregation",
+      "table": "events",
+      "field": "skill_match_avg",
+      "description": "Mean of shift.skill_match_pct over shifts that declare a required_skill_id (1.0 when no skills are required anywhere).",
+      "formula": "AVG(shifts.skill_match_pct WHERE skill_match_pct IS NOT NULL)",
+      "excelFormula": null,
+      "sqlFormula": null,
+      "depends": [
+        "shifts.event_id",
+        "shifts.skill_match_pct"
+      ],
+      "constants": []
+    },
+    "events.score": {
+      "key": "events.score",
+      "kind": "calc",
+      "table": "events",
+      "field": "score",
+      "description": "Weighted composite score in [0..1] — the input to the letter grade.",
+      "formula": "GRADE_WEIGHTS.coverage_pct · min(1, coverage_pct) + GRADE_WEIGHTS.avg_reliability · avg_reliability + GRADE_WEIGHTS.skill_match_avg · skill_match_avg",
+      "excelFormula": "=0.6*MIN(1,[@coverage_pct])+0.3*[@avg_reliability]+0.1*[@skill_match_avg]",
+      "sqlFormula": null,
+      "depends": [
+        "events.coverage_pct",
+        "events.avg_reliability",
+        "events.skill_match_avg"
+      ],
+      "constants": [
+        "GRADE_WEIGHTS"
+      ]
+    },
+    "events.grade": {
+      "key": "events.grade",
+      "kind": "calc",
+      "table": "events",
+      "field": "grade",
+      "description": "A–F letter grade derived from score via GRADE_BANDS.",
+      "formula": "first(band ∈ GRADE_BANDS WHERE score ≥ band.min).grade",
+      "excelFormula": "=IF([@score]>=0.93,\"A\",IF([@score]>=0.85,\"B\",IF([@score]>=0.75,\"C\",IF([@score]>=0.65,\"D\",\"F\"))))",
+      "sqlFormula": null,
+      "depends": [
+        "events.score"
+      ],
+      "constants": [
+        "GRADE_BANDS"
+      ]
+    },
+    "volunteer_event.assigned_hours": {
+      "key": "volunteer_event.assigned_hours",
+      "kind": "aggregation",
+      "table": "volunteer_event",
+      "field": "assigned_hours",
+      "description": "Sum of duration_hours over shifts in this event that this volunteer is assigned to.",
+      "formula": "SUM(shift.duration_hours WHERE shift.event_id = event.id AND assigned(volunteer, shift))",
+      "excelFormula": null,
+      "sqlFormula": null,
+      "depends": [
+        "shifts.event_id",
+        "shifts.duration_hours",
+        "assignments.shift_id",
+        "assignments.volunteer_id"
+      ],
+      "constants": []
+    },
+    "volunteer_event.shift_count": {
+      "key": "volunteer_event.shift_count",
+      "kind": "aggregation",
+      "table": "volunteer_event",
+      "field": "shift_count",
+      "description": "Number of shifts in this event the volunteer is on.",
+      "formula": "COUNT(shifts WHERE event_id = event.id AND assigned(volunteer, shift))",
+      "excelFormula": null,
+      "sqlFormula": null,
+      "depends": [
+        "shifts.event_id",
+        "assignments.shift_id",
+        "assignments.volunteer_id"
+      ],
+      "constants": []
+    },
+    "volunteer_event.load_status": {
+      "key": "volunteer_event.load_status",
+      "kind": "calc",
+      "table": "volunteer_event",
+      "field": "load_status",
+      "description": "unassigned / under / ok / over, derived from assigned_hours vs event.target and volunteer.max_hours.",
+      "formula": "IF(assigned_hours = 0, 'unassigned', IF(assigned_hours > volunteer.max_hours OR assigned_hours > LOAD_BANDS.over_factor × event.target_hours_per_volunteer, 'over', IF(assigned_hours < LOAD_BANDS.under_factor × event.target_hours_per_volunteer, 'under', 'ok')))",
+      "excelFormula": null,
+      "sqlFormula": null,
+      "depends": [
+        "volunteer_event.assigned_hours",
+        "events.target_hours_per_volunteer",
+        "volunteers.max_hours"
+      ],
+      "constants": [
+        "LOAD_BANDS"
+      ]
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "board": "ziprecruiter",
+  "external_id": "zr-test-001",
+  "title": "Staff Platform Architect",
+  "company": "Acme Corp",
+  "location": "Remote (USA)",
+  "url": "https://www.ziprecruiter.com/jobs/staff-platform-architect/zr-test-001",
+  "full_text": "We are seeking a Staff Platform Architect to define technical strategy and architecture for our distributed systems platform. You will drive cross-team alignment, own the technology roadmap, and design cloud-native infrastructure patterns. This is a leadership role focused on architecture, not an individual contributor coding position. Requirements: 10+ years of software engineering experience, 5+ years in architecture or principal-level roles, deep experience with cloud platforms (AWS/GCP/Azure), API design and governance, distributed systems patterns.",
+  "posted_at": "2026-02-10T00:00:00",
+  "metadata": {
+    "salary_range": "$200,000 - $280,000"
+  }
+}

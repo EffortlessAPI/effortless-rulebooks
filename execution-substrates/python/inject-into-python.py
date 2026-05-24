@@ -37,6 +37,7 @@ GENERATED OUTPUT:
 ================================================================================
 """
 
+import os
 import sys
 from pathlib import Path
 from typing import Dict, List, Any, Set
@@ -48,7 +49,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 from orchestration.shared import (
     load_rulebook, get_candidate_name_from_cwd, handle_clean_arg,
     discover_entities, get_entity_schema, to_snake_case,
-    get_calculated_fields, get_raw_fields
+    get_calculated_fields, get_raw_fields, get_rulebook_path
 )
 
 # Formula parsing utilities to convert ERB formula syntax to Python expressions
@@ -107,6 +108,23 @@ def parse_sumifs_formula(formula: str) -> tuple:
     return (None, None, None, None)
 
 
+def _get_testing_dir(project_root: Path) -> Path:
+    """Return the active domain's testing/ dir. ERB_TESTING_DIR is required.
+
+    The injector runs at build time and must operate on the same domain the
+    orchestrator chose. There is no implicit per-substrate testing dir.
+    """
+    import os
+    erb = os.environ.get("ERB_TESTING_DIR")
+    if not erb:
+        raise RuntimeError(
+            "ERB_TESTING_DIR is not set. inject-into-python.py must be invoked "
+            "by the orchestrator with ERB_TESTING_DIR pointing at the active "
+            "domain's testing/ directory."
+        )
+    return Path(erb)
+
+
 def load_related_data(project_root: Path, related_table: str) -> list:
     """
     Load data from testing/answer-keys for a related table; falls back to blank-tests.
@@ -114,13 +132,14 @@ def load_related_data(project_root: Path, related_table: str) -> list:
     tables resolve correctly.
     """
     snake_name = to_snake_case(related_table)
+    testing_dir = _get_testing_dir(project_root)
 
-    answer_keys_path = project_root / "testing" / "answer-keys" / f"{snake_name}.json"
+    answer_keys_path = testing_dir / "answer-keys" / f"{snake_name}.json"
     if answer_keys_path.exists():
         with open(answer_keys_path, "r", encoding="utf-8") as f:
             return json.load(f)
 
-    blank_tests_path = project_root / "testing" / "blank-tests" / f"{snake_name}.json"
+    blank_tests_path = testing_dir / "blank-tests" / f"{snake_name}.json"
     if blank_tests_path.exists():
         with open(blank_tests_path, "r", encoding="utf-8") as f:
             return json.load(f)
@@ -557,12 +576,20 @@ def generate_entity_compute_function(
             name = field['name']
             snake_name = to_snake_case(name)
 
-            # Re-parse formula to get dependencies for the function call
+            # Re-parse formula to get dependencies for the function call.
+            # A parse error here means the formula in the rulebook is invalid
+            # — surface it with the entity + field so the user can fix it,
+            # rather than silently emitting a no-arg call that will be wrong.
+            formula_text = field.get('formula', '')
             try:
-                expr = parse_formula(field.get('formula', ''))
+                expr = parse_formula(formula_text)
                 deps = get_field_dependencies(expr)
-            except:
-                deps = []
+            except Exception as e:
+                raise ValueError(
+                    f"Failed to parse formula for {entity_snake}.{snake_name}: "
+                    f"{type(e).__name__}: {e}\n"
+                    f"  formula: {formula_text!r}"
+                ) from e
 
             # Generate the function call with arguments pulled from result dict
             func_name = f"calc_{entity_snake}_{snake_name}"
@@ -652,16 +679,25 @@ def generate_dispatcher_function(entities_with_calcs: List[str]) -> str:
 
     # Generate dispatch logic using if/elif chain
     if entities_with_calcs:
+        known_entities = [to_snake_case(e) for e in entities_with_calcs]
         for i, entity in enumerate(entities_with_calcs):
             entity_snake = to_snake_case(entity)
             prefix = 'if' if i == 0 else 'elif'
             lines.append(f"    {prefix} entity_lower == '{entity_snake}':")
             lines.append(f"        return compute_{entity_snake}_fields(record)")
 
-        # Fallback for unknown entities
+        # An unknown entity name is a bug in the caller — RAISE so the user
+        # sees what was passed, what was expected, and which generated file
+        # they're hitting. Silently returning the record unchanged hides the
+        # mismatch between the rulebook used to generate this file and the
+        # data being computed.
         lines.append('    else:')
-        lines.append('        # Unknown entity - return record unchanged (no error)')
-        lines.append('        return dict(record)')
+        lines.append(
+            "        raise KeyError("
+            f"f\"compute_all_calculated_fields called with unknown entity {{entity_name!r}}. \""
+            f"f\"Known entities in this generated erb_calc.py: {known_entities!r}. \""
+            "f\"Check that the rulebook used to generate this file matches the data being computed.\")"
+        )
     else:
         # No entities with calculated fields - just return record unchanged
         lines.append('    # No entities have calculated fields in this rulebook')
@@ -712,7 +748,7 @@ def generate_erb_calc(rulebook: Dict) -> str:
     lines.append('"""')
     lines.append('ERB Calculation Library (GENERATED - DO NOT EDIT)')
     lines.append('=================================================')
-    lines.append('Generated from: effortless-rulebook/effortless-rulebook.json')
+    lines.append(f'Generated from: effortless-rulebook/{get_rulebook_path().name}')
     lines.append('')
     lines.append('PYTHON SUBSTRATE ONLY. Importing this module from any other substrate')
     lines.append('is cheating. That substrate must execute the rulebook in its own native')
@@ -861,7 +897,9 @@ def main():
     if handle_clean_arg(GENERATED_FILES, "Python substrate: Removes generated calculation library"):
         return
 
-    script_dir = Path(__file__).resolve().parent
+    # ERB_OUTPUT_DIR allows ssotme-proxy to redirect output into a project folder
+    env_output = os.environ.get("ERB_OUTPUT_DIR")
+    script_dir = Path(env_output).resolve() if env_output else Path(__file__).resolve().parent
 
     # -------------------------------------------------------------------------
     # Print banner and load rulebook

@@ -1,0 +1,411 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 640" font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif">
+  <title>Effortlessly Invariant Rulebooks (ERB)</title>
+  <desc>One rulebook fans out to many execution substrates; a conformance harness proves all substrates return identical results against the same answer key.</desc>
+
+  <defs>
+    <!-- Background gradient -->
+    <radialGradient id="bg" cx="50%" cy="40%" r="70%">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#020617"/>
+    </radialGradient>
+
+    <!-- Rulebook hub gradient -->
+    <radialGradient id="hub" cx="50%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#fde68a"/>
+      <stop offset="55%" stop-color="#f59e0b"/>
+      <stop offset="100%" stop-color="#b45309"/>
+    </radialGradient>
+
+    <!-- Substrate node gradient -->
+    <linearGradient id="node" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#1e293b"/>
+      <stop offset="100%" stop-color="#0b1220"/>
+    </linearGradient>
+
+    <!-- Pass / fail glow -->
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="3" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+
+    <!-- Spoke style -->
+    <marker id="dot" viewBox="0 0 6 6" refX="3" refY="3" markerWidth="6" markerHeight="6">
+      <circle cx="3" cy="3" r="2.5" fill="#fbbf24"/>
+    </marker>
+  </defs>
+
+  <!-- ============================================================ -->
+  <!-- Background                                                   -->
+  <!-- ============================================================ -->
+  <rect width="1000" height="640" fill="url(#bg)"/>
+
+  <!-- Title -->
+  <text x="500" y="38" text-anchor="middle" fill="#e2e8f0" font-size="22" font-weight="700" letter-spacing="0.5">
+    Effortlessly Invariant Rulebooks
+  </text>
+  <text x="500" y="60" text-anchor="middle" fill="#94a3b8" font-size="13">
+    one declarative rulebook → many substrates → one answer key
+  </text>
+
+  <!-- ============================================================ -->
+  <!-- Substrate ring (15 nodes around the hub)                     -->
+  <!-- ============================================================ -->
+  <g id="substrates" transform="translate(500 350)">
+    <!--
+      Positions on a circle of radius 230. Each substrate is drawn as a
+      small rounded card with its name. The spoke from hub→card pulses,
+      then the card flashes green = "conforms to answer key".
+    -->
+    <g font-size="11" fill="#e2e8f0" text-anchor="middle">
+
+      <!-- 15 substrates @ 24° spacing -->
+      <!-- index 0: angle = -90° (top) -->
+      <g transform="rotate(-90) translate(230 0) rotate(90)">
+        <line x1="0" y1="0" x2="-230" y2="0" stroke="#1e293b" stroke-width="1" transform="rotate(0)"/>
+        <rect x="-42" y="-14" width="84" height="28" rx="6" fill="url(#node)" stroke="#334155"/>
+        <text y="4">postgres</text>
+      </g>
+
+      <!-- helper: each substrate is a <g> on its angle. We hand-roll
+           them so spoke + card share the same rotation.                -->
+
+      <!-- 1 -->
+      <g transform="rotate(-66)">
+        <line x1="60" y1="0" x2="200" y2="0" stroke="#334155" stroke-width="1.2">
+          <animate attributeName="stroke" values="#334155;#fbbf24;#334155" dur="6s" begin="0.2s" repeatCount="indefinite"/>
+        </line>
+        <g transform="translate(230 0) rotate(66)">
+          <rect x="-42" y="-14" width="84" height="28" rx="6" fill="url(#node)" stroke="#334155">
+            <animate attributeName="stroke" values="#334155;#22c55e;#334155" dur="6s" begin="0.4s" repeatCount="indefinite"/>
+          </rect>
+          <text y="4">python</text>
+        </g>
+      </g>
+
+      <!-- 2 -->
+      <g transform="rotate(-42)">
+        <line x1="60" y1="0" x2="200" y2="0" stroke="#334155" stroke-width="1.2">
+          <animate attributeName="stroke" values="#334155;#fbbf24;#334155" dur="6s" begin="0.6s" repeatCount="indefinite"/>
+        </line>
+        <g transform="translate(230 0) rotate(42)">
+          <rect x="-42" y="-14" width="84" height="28" rx="6" fill="url(#node)" stroke="#334155">
+            <animate attributeName="stroke" values="#334155;#22c55e;#334155" dur="6s" begin="0.8s" repeatCount="indefinite"/>
+          </rect>
+          <text y="4">golang</text>
+        </g>
+      </g>
+
+      <!-- 3 -->
+      <g transform="rotate(-18)">
+        <line x1="60" y1="0" x2="200" y2="0" stroke="#334155" stroke-width="1.2">
+          <animate attributeName="stroke" values="#334155;#fbbf24;#334155" dur="6s" begin="1.0s" repeatCount="indefinite"/>
+        </line>
+        <g transform="translate(230 0) rotate(18)">
+          <rect x="-42" y="-14" width="84" height="28" rx="6" fill="url(#node)" stroke="#334155">
+            <animate attributeName="stroke" values="#334155;#22c55e;#334155" dur="6s" begin="1.2s" repeatCount="indefinite"/>
+          </rect>
+          <text y="4">cobol</text>
+        </g>
+      </g>
+
+      <!-- 4 -->
+      <g transform="rotate(6)">
+        <line x1="60" y1="0" x2="200" y2="0" stroke="#334155" stroke-width="1.2">
+          <animate attributeName="stroke" values="#334155;#fbbf24;#334155" dur="6s" begin="1.4s" repeatCount="indefinite"/>
+        </line>
+        <g transform="translate(230 0) rotate(-6)">
+          <rect x="-42" y="-14" width="84" height="28" rx="6" fill="url(#node)" stroke="#334155">
+            <animate attributeName="stroke" values="#334155;#22c55e;#334155" dur="6s" begin="1.6s" repeatCount="indefinite"/>
+          </rect>
+          <text y="4">xlsx</text>
+        </g>
+      </g>
+
+      <!-- 5 -->
+      <g transform="rotate(30)">
+        <line x1="60" y1="0" x2="200" y2="0" stroke="#334155" stroke-width="1.2">
+          <animate attributeName="stroke" values="#334155;#fbbf24;#334155" dur="6s" begin="1.8s" repeatCount="indefinite"/>
+        </line>
+        <g transform="translate(230 0) rotate(-30)">
+          <rect x="-42" y="-14" width="84" height="28" rx="6" fill="url(#node)" stroke="#334155">
+            <animate attributeName="stroke" values="#334155;#22c55e;#334155" dur="6s" begin="2.0s" repeatCount="indefinite"/>
+          </rect>
+          <text y="4">owl</text>
+        </g>
+      </g>
+
+      <!-- 6 -->
+      <g transform="rotate(54)">
+        <line x1="60" y1="0" x2="200" y2="0" stroke="#334155" stroke-width="1.2">
+          <animate attributeName="stroke" values="#334155;#fbbf24;#334155" dur="6s" begin="2.2s" repeatCount="indefinite"/>
+        </line>
+        <g transform="translate(230 0) rotate(-54)">
+          <rect x="-42" y="-14" width="84" height="28" rx="6" fill="url(#node)" stroke="#334155">
+            <animate attributeName="stroke" values="#334155;#22c55e;#334155" dur="6s" begin="2.4s" repeatCount="indefinite"/>
+          </rect>
+          <text y="4">english</text>
+        </g>
+      </g>
+
+      <!-- 7 (bottom-ish) -->
+      <g transform="rotate(78)">
+        <line x1="60" y1="0" x2="200" y2="0" stroke="#334155" stroke-width="1.2">
+          <animate attributeName="stroke" values="#334155;#fbbf24;#334155" dur="6s" begin="2.6s" repeatCount="indefinite"/>
+        </line>
+        <g transform="translate(230 0) rotate(-78)">
+          <rect x="-42" y="-14" width="84" height="28" rx="6" fill="url(#node)" stroke="#334155">
+            <animate attributeName="stroke" values="#334155;#22c55e;#334155" dur="6s" begin="2.8s" repeatCount="indefinite"/>
+          </rect>
+          <text y="4">uml</text>
+        </g>
+      </g>
+
+      <!-- 8 -->
+      <g transform="rotate(102)">
+        <line x1="60" y1="0" x2="200" y2="0" stroke="#334155" stroke-width="1.2">
+          <animate attributeName="stroke" values="#334155;#fbbf24;#334155" dur="6s" begin="3.0s" repeatCount="indefinite"/>
+        </line>
+        <g transform="translate(230 0) rotate(-102)">
+          <rect x="-42" y="-14" width="84" height="28" rx="6" fill="url(#node)" stroke="#334155">
+            <animate attributeName="stroke" values="#334155;#22c55e;#334155" dur="6s" begin="3.2s" repeatCount="indefinite"/>
+          </rect>
+          <text y="4">yaml</text>
+        </g>
+      </g>
+
+      <!-- 9 -->
+      <g transform="rotate(126)">
+        <line x1="60" y1="0" x2="200" y2="0" stroke="#334155" stroke-width="1.2">
+          <animate attributeName="stroke" values="#334155;#fbbf24;#334155" dur="6s" begin="3.4s" repeatCount="indefinite"/>
+        </line>
+        <g transform="translate(230 0) rotate(-126)">
+          <rect x="-42" y="-14" width="84" height="28" rx="6" fill="url(#node)" stroke="#334155">
+            <animate attributeName="stroke" values="#334155;#22c55e;#334155" dur="6s" begin="3.6s" repeatCount="indefinite"/>
+          </rect>
+          <text y="4">csv</text>
+        </g>
+      </g>
+
+      <!-- 10 -->
+      <g transform="rotate(150)">
+        <line x1="60" y1="0" x2="200" y2="0" stroke="#334155" stroke-width="1.2">
+          <animate attributeName="stroke" values="#334155;#fbbf24;#334155" dur="6s" begin="3.8s" repeatCount="indefinite"/>
+        </line>
+        <g transform="translate(230 0) rotate(-150)">
+          <rect x="-42" y="-14" width="84" height="28" rx="6" fill="url(#node)" stroke="#334155">
+            <animate attributeName="stroke" values="#334155;#22c55e;#334155" dur="6s" begin="4.0s" repeatCount="indefinite"/>
+          </rect>
+          <text y="4">binary</text>
+        </g>
+      </g>
+
+      <!-- 11 -->
+      <g transform="rotate(174)">
+        <line x1="60" y1="0" x2="200" y2="0" stroke="#334155" stroke-width="1.2">
+          <animate attributeName="stroke" values="#334155;#fbbf24;#334155" dur="6s" begin="4.2s" repeatCount="indefinite"/>
+        </line>
+        <g transform="translate(230 0) rotate(-174)">
+          <rect x="-50" y="-14" width="100" height="28" rx="6" fill="url(#node)" stroke="#334155">
+            <animate attributeName="stroke" values="#334155;#22c55e;#334155" dur="6s" begin="4.4s" repeatCount="indefinite"/>
+          </rect>
+          <text y="4">airtable</text>
+        </g>
+      </g>
+
+      <!-- 12 -->
+      <g transform="rotate(-162)">
+        <line x1="60" y1="0" x2="200" y2="0" stroke="#334155" stroke-width="1.2">
+          <animate attributeName="stroke" values="#334155;#fbbf24;#334155" dur="6s" begin="4.6s" repeatCount="indefinite"/>
+        </line>
+        <g transform="translate(230 0) rotate(162)">
+          <rect x="-56" y="-14" width="112" height="28" rx="6" fill="url(#node)" stroke="#334155">
+            <animate attributeName="stroke" values="#334155;#22c55e;#334155" dur="6s" begin="4.8s" repeatCount="indefinite"/>
+          </rect>
+          <text y="4">explain-dag</text>
+        </g>
+      </g>
+
+      <!-- 13 -->
+      <g transform="rotate(-138)">
+        <line x1="60" y1="0" x2="200" y2="0" stroke="#334155" stroke-width="1.2">
+          <animate attributeName="stroke" values="#334155;#fbbf24;#334155" dur="6s" begin="5.0s" repeatCount="indefinite"/>
+        </line>
+        <g transform="translate(230 0) rotate(138)">
+          <rect x="-50" y="-14" width="100" height="28" rx="6" fill="url(#node)" stroke="#334155">
+            <animate attributeName="stroke" values="#334155;#22c55e;#334155" dur="6s" begin="5.2s" repeatCount="indefinite"/>
+          </rect>
+          <text y="4">ef-core</text>
+        </g>
+      </g>
+
+      <!-- 14 -->
+      <g transform="rotate(-114)">
+        <line x1="60" y1="0" x2="200" y2="0" stroke="#334155" stroke-width="1.2">
+          <animate attributeName="stroke" values="#334155;#fbbf24;#334155" dur="6s" begin="5.4s" repeatCount="indefinite"/>
+        </line>
+        <g transform="translate(230 0) rotate(114)">
+          <rect x="-50" y="-14" width="100" height="28" rx="6" fill="url(#node)" stroke="#334155">
+            <animate attributeName="stroke" values="#334155;#22c55e;#334155" dur="6s" begin="5.6s" repeatCount="indefinite"/>
+          </rect>
+          <text y="4">ef-xlsx</text>
+        </g>
+      </g>
+    </g>
+
+    <!-- ============================================================ -->
+    <!-- Central HUB: the rulebook                                    -->
+    <!-- ============================================================ -->
+    <g>
+      <!-- Pulsing aura -->
+      <circle r="80" fill="url(#hub)" opacity="0.18">
+        <animate attributeName="r" values="78;92;78" dur="4s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0.10;0.28;0.10" dur="4s" repeatCount="indefinite"/>
+      </circle>
+      <circle r="62" fill="url(#hub)" filter="url(#glow)"/>
+      <circle r="62" fill="none" stroke="#fde68a" stroke-width="1.2" opacity="0.6"/>
+
+      <text y="-6" text-anchor="middle" fill="#1c1917" font-size="13" font-weight="700">effortless-</text>
+      <text y="10" text-anchor="middle" fill="#1c1917" font-size="13" font-weight="700">rulebook.json</text>
+      <text y="28" text-anchor="middle" fill="#451a03" font-size="10" font-style="italic">SSoT · answer key</text>
+    </g>
+  </g>
+
+  <!-- ============================================================ -->
+  <!-- Top-left: SDLAF primitives                                   -->
+  <!-- ============================================================ -->
+  <g transform="translate(30 95)" fill="#e2e8f0" font-size="11">
+    <rect width="200" height="118" rx="10" fill="#0b1220" stroke="#1e293b"/>
+    <text x="14" y="22" font-size="12" font-weight="700" fill="#fbbf24">SDLAF primitives</text>
+    <text x="14" y="42">S — Schema</text>
+    <text x="14" y="58">D — Data</text>
+    <text x="14" y="74">L — Lookups</text>
+    <text x="14" y="90">A — Aggregations</text>
+    <text x="14" y="106">F — Formulas (Excel-style)</text>
+  </g>
+
+  <!-- ============================================================ -->
+  <!-- Top-right: swappable demo domains                            -->
+  <!-- ============================================================ -->
+  <g transform="translate(770 95)" fill="#e2e8f0" font-size="11">
+    <rect width="200" height="158" rx="10" fill="#0b1220" stroke="#1e293b"/>
+    <text x="14" y="22" font-size="12" font-weight="700" fill="#fbbf24">swappable demos</text>
+
+    <!--
+      Each row is the "active-domain.txt" pointer. We animate which
+      row is highlighted to suggest swapping domains.
+    -->
+    <g font-size="11" fill="#94a3b8">
+      <g>
+        <rect x="10" y="32" width="180" height="16" rx="3" fill="#1e293b" opacity="0">
+          <animate attributeName="opacity" values="0;0.9;0;0;0;0;0;0" dur="16s" repeatCount="indefinite"/>
+        </rect>
+        <text x="18" y="44">acme-llc</text>
+      </g>
+      <g>
+        <rect x="10" y="50" width="180" height="16" rx="3" fill="#1e293b" opacity="0">
+          <animate attributeName="opacity" values="0;0;0.9;0;0;0;0;0" dur="16s" repeatCount="indefinite"/>
+        </rect>
+        <text x="18" y="62">acme-corporation</text>
+      </g>
+      <g>
+        <rect x="10" y="68" width="180" height="16" rx="3" fill="#1e293b" opacity="0">
+          <animate attributeName="opacity" values="0;0;0;0.9;0;0;0;0" dur="16s" repeatCount="indefinite"/>
+        </rect>
+        <text x="18" y="80">star-trek</text>
+      </g>
+      <g>
+        <rect x="10" y="86" width="180" height="16" rx="3" fill="#1e293b" opacity="0">
+          <animate attributeName="opacity" values="0;0;0;0;0.9;0;0;0" dur="16s" repeatCount="indefinite"/>
+        </rect>
+        <text x="18" y="98">jessica-basic</text>
+      </g>
+      <g>
+        <rect x="10" y="104" width="180" height="16" rx="3" fill="#1e293b" opacity="0">
+          <animate attributeName="opacity" values="0;0;0;0;0;0.9;0;0" dur="16s" repeatCount="indefinite"/>
+        </rect>
+        <text x="18" y="116">jessica-advanced</text>
+      </g>
+      <g>
+        <rect x="10" y="122" width="180" height="16" rx="3" fill="#1e293b" opacity="0">
+          <animate attributeName="opacity" values="0;0;0;0;0;0;0.9;0" dur="16s" repeatCount="indefinite"/>
+        </rect>
+        <text x="18" y="134">is-everything-a-language</text>
+      </g>
+      <g>
+        <rect x="10" y="140" width="180" height="16" rx="3" fill="#1e293b" opacity="0">
+          <animate attributeName="opacity" values="0;0;0;0;0;0;0;0.9" dur="16s" repeatCount="indefinite"/>
+        </rect>
+        <text x="18" y="152">customer-fullname</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- ============================================================ -->
+  <!-- Bottom: conformance bar — all 15 substrates report identical -->
+  <!-- ============================================================ -->
+  <g transform="translate(50 580)">
+    <rect width="900" height="40" rx="10" fill="#0b1220" stroke="#1e293b"/>
+    <text x="20" y="25" fill="#fbbf24" font-size="12" font-weight="700">conformance harness</text>
+
+    <!-- Pass dots: each lights up green in sequence, then they all hold green together -->
+    <g>
+      <circle cx="160" cy="20" r="5" fill="#334155">
+        <animate attributeName="fill" values="#334155;#22c55e;#22c55e;#22c55e;#334155" keyTimes="0;0.15;0.85;0.95;1" dur="6s" begin="0.4s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="190" cy="20" r="5" fill="#334155">
+        <animate attributeName="fill" values="#334155;#22c55e;#22c55e;#22c55e;#334155" keyTimes="0;0.18;0.85;0.95;1" dur="6s" begin="0.8s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="220" cy="20" r="5" fill="#334155">
+        <animate attributeName="fill" values="#334155;#22c55e;#22c55e;#22c55e;#334155" keyTimes="0;0.20;0.85;0.95;1" dur="6s" begin="1.2s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="250" cy="20" r="5" fill="#334155">
+        <animate attributeName="fill" values="#334155;#22c55e;#22c55e;#22c55e;#334155" keyTimes="0;0.22;0.85;0.95;1" dur="6s" begin="1.6s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="280" cy="20" r="5" fill="#334155">
+        <animate attributeName="fill" values="#334155;#22c55e;#22c55e;#22c55e;#334155" keyTimes="0;0.24;0.85;0.95;1" dur="6s" begin="2.0s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="310" cy="20" r="5" fill="#334155">
+        <animate attributeName="fill" values="#334155;#22c55e;#22c55e;#22c55e;#334155" keyTimes="0;0.26;0.85;0.95;1" dur="6s" begin="2.4s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="340" cy="20" r="5" fill="#334155">
+        <animate attributeName="fill" values="#334155;#22c55e;#22c55e;#22c55e;#334155" keyTimes="0;0.28;0.85;0.95;1" dur="6s" begin="2.8s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="370" cy="20" r="5" fill="#334155">
+        <animate attributeName="fill" values="#334155;#22c55e;#22c55e;#22c55e;#334155" keyTimes="0;0.30;0.85;0.95;1" dur="6s" begin="3.2s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="400" cy="20" r="5" fill="#334155">
+        <animate attributeName="fill" values="#334155;#22c55e;#22c55e;#22c55e;#334155" keyTimes="0;0.32;0.85;0.95;1" dur="6s" begin="3.6s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="430" cy="20" r="5" fill="#334155">
+        <animate attributeName="fill" values="#334155;#22c55e;#22c55e;#22c55e;#334155" keyTimes="0;0.34;0.85;0.95;1" dur="6s" begin="4.0s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="460" cy="20" r="5" fill="#334155">
+        <animate attributeName="fill" values="#334155;#22c55e;#22c55e;#22c55e;#334155" keyTimes="0;0.36;0.85;0.95;1" dur="6s" begin="4.4s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="490" cy="20" r="5" fill="#334155">
+        <animate attributeName="fill" values="#334155;#22c55e;#22c55e;#22c55e;#334155" keyTimes="0;0.38;0.85;0.95;1" dur="6s" begin="4.8s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="520" cy="20" r="5" fill="#334155">
+        <animate attributeName="fill" values="#334155;#22c55e;#22c55e;#22c55e;#334155" keyTimes="0;0.40;0.85;0.95;1" dur="6s" begin="5.2s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="550" cy="20" r="5" fill="#334155">
+        <animate attributeName="fill" values="#334155;#22c55e;#22c55e;#22c55e;#334155" keyTimes="0;0.42;0.85;0.95;1" dur="6s" begin="5.6s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="580" cy="20" r="5" fill="#334155">
+        <animate attributeName="fill" values="#334155;#22c55e;#22c55e;#22c55e;#334155" keyTimes="0;0.44;0.85;0.95;1" dur="6s" begin="6.0s" repeatCount="indefinite"/>
+      </circle>
+    </g>
+
+    <text x="880" y="25" text-anchor="end" fill="#22c55e" font-size="12" font-weight="700">15 / 15 identical
+      <animate attributeName="opacity" values="0;0;0;1;1;1;1;0" dur="6s" repeatCount="indefinite"/>
+    </text>
+  </g>
+
+  <!-- ============================================================ -->
+  <!-- Footnote                                                     -->
+  <!-- ============================================================ -->
+  <text x="500" y="630" text-anchor="middle" fill="#475569" font-size="10">
+    rulebook is the answer key — substrate agreement is corroboration, not the test
+  </text>
+</svg>

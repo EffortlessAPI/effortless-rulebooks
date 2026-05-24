@@ -1,0 +1,14 @@
+<%- include('_header', { user: user }) %>
+<h1>My Customers</h1>
+<p class="muted">Showing customers where <code>owner_email = <%= user.email %></code>.</p>
+<% if (!customers.length) { %>
+  <div class="card">No customers assigned to you.</div>
+<% } else { %>
+<table><thead><tr><th>Name</th><th>Status</th></tr></thead><tbody>
+<% customers.forEach(c => { %>
+  <tr><td><a href="/customer/customers/<%= c.customer_id %>"><%= c.name %></a></td>
+  <td><span class="badge <%= c.is_stopped ? 'stopped':'ok' %>"><%= c.status_display_name %></span></td></tr>
+<% }) %>
+</tbody></table>
+<% } %>
+<%- include('_footer') %>

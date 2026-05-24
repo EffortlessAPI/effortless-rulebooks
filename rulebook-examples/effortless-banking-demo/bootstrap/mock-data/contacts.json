@@ -1,0 +1,50 @@
+[
+  {
+    "id": "ct-stillwater-park-ceo",
+    "name": "stillwater-roasters-llc-jordan-park-ceo",
+    "label": "Jordan Park — CEO, Stillwater Roasters",
+    "business_id": "biz-stillwater-roasters",
+    "full_name": "Jordan Park",
+    "title": "CEO",
+    "email": "jordan@stillwaterroasters.com",
+    "phone": "555-0142",
+    "contact_type": "Officer",
+    "is_authorized_signer": true
+  },
+  {
+    "id": "ct-stillwater-rivera-cfo",
+    "name": "stillwater-roasters-llc-sam-rivera-cfo",
+    "label": "Sam Rivera — CFO, Stillwater Roasters",
+    "business_id": "biz-stillwater-roasters",
+    "full_name": "Sam Rivera",
+    "title": "CFO",
+    "email": "sam@stillwaterroasters.com",
+    "phone": "555-0143",
+    "contact_type": "Officer",
+    "is_authorized_signer": true
+  },
+  {
+    "id": "ct-pine-ap-clerk",
+    "name": "pine-hardware-inc-marta-keene-ap-clerk",
+    "label": "Marta Keene — AP Clerk, Pine Hardware",
+    "business_id": "biz-pine-hardware",
+    "full_name": "Marta Keene",
+    "title": "AP Clerk",
+    "email": "ap@pinehardware.com",
+    "phone": "555-0188",
+    "contact_type": "APClerk",
+    "is_authorized_signer": false
+  },
+  {
+    "id": "ct-ridgeway-ceo",
+    "name": "ridgeway-consulting-llc-alex-ridgeway-ceo",
+    "label": "Alex Ridgeway — CEO, Ridgeway Consulting",
+    "business_id": "biz-ridgeway-consulting",
+    "full_name": "Alex Ridgeway",
+    "title": "CEO",
+    "email": "alex@ridgeway.co",
+    "phone": "555-0260",
+    "contact_type": "Officer",
+    "is_authorized_signer": true
+  }
+]

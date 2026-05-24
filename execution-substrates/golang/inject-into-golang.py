@@ -13,6 +13,7 @@ Generated files:
 - main.go - Test runner for all tables with calculated fields
 """
 
+import os
 import sys
 import re
 from pathlib import Path
@@ -21,7 +22,7 @@ from typing import Dict, List, Any, Set
 # Add project root to path for shared imports
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 
-from orchestration.shared import load_rulebook, get_candidate_name_from_cwd, handle_clean_arg
+from orchestration.shared import load_rulebook, get_candidate_name_from_cwd, handle_clean_arg, get_rulebook_path
 from orchestration.formula_parser import (
     parse_formula, compile_to_go, get_field_dependencies,
     to_snake_case, to_pascal_case, ExprNode, FuncCall
@@ -551,7 +552,7 @@ def generate_erb_sdk(rulebook: Dict) -> str:
     # Header
     lines.append('// ERB SDK - Go Implementation (GENERATED - DO NOT EDIT)')
     lines.append('// ======================================================')
-    lines.append('// Generated from: effortless-rulebook/effortless-rulebook.json')
+    lines.append(f'// Generated from: effortless-rulebook/{get_rulebook_path().name}')
     lines.append('//')
     lines.append('// This file contains structs and calculation functions')
     lines.append('// for all tables defined in the rulebook.')
@@ -933,9 +934,17 @@ def generate_main_go(tables_with_calc: list, rulebook: Dict) -> str:
     lines.append('\t\tos.Exit(1)')
     lines.append('\t}')
     lines.append('')
-    lines.append('\t// Shared blank-tests directory at project root')
-    lines.append('\tblankTestsDir := filepath.Join(scriptDir, "..", "..", "testing", "blank-tests")')
-    lines.append('\ttestAnswersDir := filepath.Join(scriptDir, "test-answers")')
+    lines.append('\t// ERB_TESTING_DIR is required — defaulting to the repo testing dir')
+    lines.append('\t// silently uses the wrong domain.')
+    lines.append('\terbTesting := os.Getenv("ERB_TESTING_DIR")')
+    lines.append('\tif erbTesting == "" {')
+    lines.append('\t\tfmt.Fprintln(os.Stderr, "FATAL: ERB_TESTING_DIR is not set. main.go must be")')
+    lines.append('\t\tfmt.Fprintln(os.Stderr, "  invoked by the orchestrator with ERB_TESTING_DIR pointing")')
+    lines.append('\t\tfmt.Fprintln(os.Stderr, "  at the active domain\\u0027s testing/ directory.")')
+    lines.append('\t\tos.Exit(1)')
+    lines.append('\t}')
+    lines.append('\tblankTestsDir := filepath.Join(erbTesting, "blank-tests")')
+    lines.append('\ttestAnswersDir := filepath.Join(erbTesting, "golang", "test-answers")')
     lines.append('')
     lines.append('\t// Ensure output directory exists')
     lines.append('\tif err := os.MkdirAll(testAnswersDir, 0755); err != nil {')
@@ -982,7 +991,12 @@ def generate_main_go(tables_with_calc: list, rulebook: Dict) -> str:
         lines.append('\t//       COUNTIFS loads from blank-tests')
         # Only declare answerKeysDir if it will be used
         if tables_needing_answer_keys:
-            lines.append('\tanswerKeysDir := filepath.Join(scriptDir, "..", "..", "testing", "answer-keys")')
+            lines.append('\tvar answerKeysDir string')
+            lines.append('\tif erbTesting != "" {')
+            lines.append('\t\tanswerKeysDir = filepath.Join(erbTesting, "answer-keys")')
+            lines.append('\t} else {')
+            lines.append('\t\tanswerKeysDir = filepath.Join(scriptDir, "..", "..", "testing", "answer-keys")')
+            lines.append('\t}')
         lines.append('')
 
         for related_table in sorted(all_related_tables):
@@ -1288,11 +1302,12 @@ def main():
     ]
 
     # Handle --clean argument
+    env_output = os.environ.get("ERB_OUTPUT_DIR")
     if handle_clean_arg(GENERATED_FILES, "Golang substrate: Removes generated erb_sdk.go"):
         return
 
     candidate_name = get_candidate_name_from_cwd()
-    script_dir = Path(__file__).resolve().parent
+    script_dir = Path(env_output).resolve() if env_output else Path(__file__).resolve().parent
 
     print("=" * 70)
     print("Golang Execution Substrate - Generic Rulebook Transpiler")

@@ -1,0 +1,35 @@
+<%- include('../partials/header', { title: customer.name }) %>
+<h1><%= customer.name %></h1>
+<nav class="subnav"><a href="/shop/account/<%= customer.client_id %>">Overview</a> <a href="/shop/account/<%= customer.client_id %>/orders">Orders</a> <a href="/shop/account/<%= customer.client_id %>/payments">Payments</a> <a href="/shop/account/<%= customer.client_id %>/profile">Profile</a> <span class="muted">· <%= customer.name %></span></nav>
+<div class="cards">
+  <div class="card">
+    <h3>Lifetime value</h3>
+    <p class="price">$<%= Number(agg.lifetime).toFixed(2) %></p>
+  </div>
+  <div class="card">
+    <h3>Open balance</h3>
+    <p class="price">$<%= Number(agg.open_balance).toFixed(2) %></p>
+  </div>
+  <div class="card">
+    <h3>Status</h3>
+    <p><%= customer.status_display_name || '—' %></p>
+    <p class="muted"><%= customer.category_name || '—' %> · discount <%= ((Number(customer.category_discount)||0) * 100).toFixed(0) %>%</p>
+  </div>
+</div>
+<h2>Recent orders</h2>
+<table class="grid">
+  <thead><tr><th>#</th><th>Date</th><th>Status</th><th>Total</th><th>Due</th></tr></thead>
+  <tbody>
+    <% orders.forEach(o => { %>
+      <tr>
+        <td><a href="/shop/account/<%= customer.client_id %>/orders/<%= o.invoice_id %>"><%= o.invoice_number %></a></td>
+        <td><%= o.order_date ? new Date(o.order_date).toISOString().slice(0,10) : '' %></td>
+        <td><%= o.order_status %></td>
+        <td>$<%= Number(o.invoice_total || 0).toFixed(2) %></td>
+        <td>$<%= Number(o.amount_due || 0).toFixed(2) %></td>
+      </tr>
+    <% }) %>
+    <% if (!orders.length) { %><tr><td colspan="5" class="muted">No orders yet.</td></tr><% } %>
+  </tbody>
+</table>
+<%- include('../partials/footer') %>

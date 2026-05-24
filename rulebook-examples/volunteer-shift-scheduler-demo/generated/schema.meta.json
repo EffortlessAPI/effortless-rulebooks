@@ -1,0 +1,693 @@
+{
+  "generatedAt": "2026-05-22T18:10:57.281Z",
+  "tables": {
+    "events": {
+      "description": "A volunteer event — festival, food bank shift block, conference, etc.",
+      "columns": [
+        {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": false,
+          "unique": false,
+          "default": null,
+          "check": null,
+          "references": null
+        },
+        {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "unique": false,
+          "default": null,
+          "check": null,
+          "references": null
+        },
+        {
+          "name": "location",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "unique": false,
+          "default": "''",
+          "check": null,
+          "references": null
+        },
+        {
+          "name": "event_date",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": true,
+          "unique": false,
+          "default": null,
+          "check": null,
+          "references": null
+        },
+        {
+          "name": "target_hours_per_volunteer",
+          "type": "numeric(5,2)",
+          "primaryKey": false,
+          "notNull": true,
+          "unique": false,
+          "default": 4,
+          "check": null,
+          "references": null
+        }
+      ]
+    },
+    "skills": {
+      "description": "A discrete capability a volunteer can hold (e.g. First Aid).",
+      "columns": [
+        {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": false,
+          "unique": false,
+          "default": null,
+          "check": null,
+          "references": null
+        },
+        {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "unique": true,
+          "default": null,
+          "check": null,
+          "references": null
+        }
+      ]
+    },
+    "volunteers": {
+      "description": "A person who can be assigned to shifts.",
+      "columns": [
+        {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": false,
+          "unique": false,
+          "default": null,
+          "check": null,
+          "references": null
+        },
+        {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "unique": false,
+          "default": null,
+          "check": null,
+          "references": null
+        },
+        {
+          "name": "email",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "unique": true,
+          "default": null,
+          "check": null,
+          "references": null
+        },
+        {
+          "name": "reliability_score",
+          "type": "numeric(3,2)",
+          "primaryKey": false,
+          "notNull": true,
+          "unique": false,
+          "default": 0.85,
+          "check": "reliability_score BETWEEN 0 AND 1",
+          "references": null
+        },
+        {
+          "name": "max_hours",
+          "type": "numeric(5,2)",
+          "primaryKey": false,
+          "notNull": true,
+          "unique": false,
+          "default": 8,
+          "check": null,
+          "references": null
+        }
+      ]
+    },
+    "volunteer_skills": {
+      "description": "Many-to-many: which volunteers hold which skills.",
+      "columns": [
+        {
+          "name": "volunteer_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "unique": false,
+          "default": null,
+          "check": null,
+          "references": {
+            "table": "volunteers",
+            "column": "id",
+            "onDelete": "CASCADE"
+          }
+        },
+        {
+          "name": "skill_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "unique": false,
+          "default": null,
+          "check": null,
+          "references": {
+            "table": "skills",
+            "column": "id",
+            "onDelete": "CASCADE"
+          }
+        }
+      ]
+    },
+    "shifts": {
+      "description": "A time block within an event that needs `required_count` volunteers.",
+      "columns": [
+        {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": false,
+          "unique": false,
+          "default": null,
+          "check": null,
+          "references": null
+        },
+        {
+          "name": "event_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "unique": false,
+          "default": null,
+          "check": null,
+          "references": {
+            "table": "events",
+            "column": "id",
+            "onDelete": "CASCADE"
+          }
+        },
+        {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "unique": false,
+          "default": null,
+          "check": null,
+          "references": null
+        },
+        {
+          "name": "starts_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "unique": false,
+          "default": null,
+          "check": null,
+          "references": null
+        },
+        {
+          "name": "ends_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "unique": false,
+          "default": null,
+          "check": null,
+          "references": null
+        },
+        {
+          "name": "required_count",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "unique": false,
+          "default": 1,
+          "check": "required_count >= 0",
+          "references": null
+        },
+        {
+          "name": "required_skill_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "unique": false,
+          "default": null,
+          "check": null,
+          "references": {
+            "table": "skills",
+            "column": "id",
+            "onDelete": "SET NULL"
+          }
+        }
+      ]
+    },
+    "assignments": {
+      "description": "Pins a volunteer to a shift. (shift_id, volunteer_id) is unique.",
+      "columns": [
+        {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": false,
+          "unique": false,
+          "default": null,
+          "check": null,
+          "references": null
+        },
+        {
+          "name": "shift_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "unique": false,
+          "default": null,
+          "check": null,
+          "references": {
+            "table": "shifts",
+            "column": "id",
+            "onDelete": "CASCADE"
+          }
+        },
+        {
+          "name": "volunteer_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "unique": false,
+          "default": null,
+          "check": null,
+          "references": {
+            "table": "volunteers",
+            "column": "id",
+            "onDelete": "CASCADE"
+          }
+        },
+        {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "unique": false,
+          "default": "NOW()",
+          "check": null,
+          "references": null
+        }
+      ]
+    }
+  },
+  "computed": [
+    {
+      "key": "shifts.assigned_count",
+      "table": "shifts",
+      "field": "assigned_count",
+      "kind": "aggregation",
+      "returns": "integer",
+      "description": "Number of volunteers assigned to this shift.",
+      "formula": "COUNT(assignments WHERE shift_id = this.id)",
+      "excelFormula": "=COUNTIF(assignments[shift_id], [@id])",
+      "sqlFormula": "(SELECT COUNT(*)::int FROM assignments a WHERE a.shift_id = s.id)",
+      "depends": [
+        "assignments.shift_id"
+      ],
+      "constants": []
+    },
+    {
+      "key": "shifts.duration_hours",
+      "table": "shifts",
+      "field": "duration_hours",
+      "kind": "calc",
+      "returns": "numeric",
+      "description": "Length of the shift in hours.",
+      "formula": "(ends_at − starts_at) / 1 hour",
+      "excelFormula": "=(([@ends_at]-[@starts_at])*24)",
+      "sqlFormula": "EXTRACT(EPOCH FROM (s.ends_at - s.starts_at))/3600.0",
+      "depends": [
+        "shifts.starts_at",
+        "shifts.ends_at"
+      ],
+      "constants": []
+    },
+    {
+      "key": "shifts.coverage_delta",
+      "table": "shifts",
+      "field": "coverage_delta",
+      "kind": "calc",
+      "returns": "integer",
+      "description": "Signed gap between assigned and required volunteers.",
+      "formula": "assigned_count − required_count",
+      "excelFormula": "=[@assigned_count]-[@required_count]",
+      "sqlFormula": null,
+      "depends": [
+        "shifts.assigned_count",
+        "shifts.required_count"
+      ],
+      "constants": []
+    },
+    {
+      "key": "shifts.coverage_status",
+      "table": "shifts",
+      "field": "coverage_status",
+      "kind": "calc",
+      "returns": "text",
+      "description": "under / full / over relative to required_count.",
+      "formula": "IF(assigned < required, 'under', IF(assigned > required, 'over', 'full'))",
+      "excelFormula": "=IF([@assigned_count]<[@required_count],\"under\",IF([@assigned_count]>[@required_count],\"over\",\"full\"))",
+      "sqlFormula": null,
+      "depends": [
+        "shifts.assigned_count",
+        "shifts.required_count"
+      ],
+      "constants": []
+    },
+    {
+      "key": "shifts.weighted_reliability",
+      "table": "shifts",
+      "field": "weighted_reliability",
+      "kind": "aggregation",
+      "returns": "numeric",
+      "description": "Mean reliability_score of the volunteers assigned to this shift (0 if none).",
+      "formula": "AVG(assigned_volunteers.reliability_score)",
+      "excelFormula": "=IFERROR(AVERAGEIFS(volunteers[reliability_score], volunteers[id], assignments[volunteer_id], assignments[shift_id], [@id]), 0)",
+      "sqlFormula": null,
+      "depends": [
+        "assignments.shift_id",
+        "assignments.volunteer_id",
+        "volunteers.reliability_score"
+      ],
+      "constants": []
+    },
+    {
+      "key": "shifts.skill_match_pct",
+      "table": "shifts",
+      "field": "skill_match_pct",
+      "kind": "aggregation",
+      "returns": "numeric | null",
+      "description": "Fraction of assigned volunteers who hold the required skill. Null if no required skill.",
+      "formula": "IF(required_skill IS NULL, NULL, COUNT(assigned WHERE has(required_skill)) / COUNT(assigned))",
+      "excelFormula": "=IF([@required_skill_id]=\"\",\"\",COUNTIFS(volunteer_skills[skill_id], [@required_skill_id], volunteer_skills[volunteer_id], assignments[volunteer_id], assignments[shift_id], [@id]) / [@assigned_count])",
+      "sqlFormula": null,
+      "depends": [
+        "shifts.required_skill_id",
+        "assignments.shift_id",
+        "volunteer_skills.skill_id"
+      ],
+      "constants": []
+    },
+    {
+      "key": "events.shift_count",
+      "table": "events",
+      "field": "shift_count",
+      "kind": "aggregation",
+      "returns": "integer",
+      "description": "Number of shifts in this event.",
+      "formula": "COUNT(shifts WHERE event_id = this.id)",
+      "excelFormula": "=COUNTIF(shifts[event_id], [@id])",
+      "sqlFormula": "(SELECT COUNT(*)::int FROM shifts s WHERE s.event_id = e.id)",
+      "depends": [
+        "shifts.event_id"
+      ],
+      "constants": []
+    },
+    {
+      "key": "events.total_required",
+      "table": "events",
+      "field": "total_required",
+      "kind": "aggregation",
+      "returns": "integer",
+      "description": "Sum of required_count across the event's shifts.",
+      "formula": "SUM(shifts.required_count WHERE event_id = this.id)",
+      "excelFormula": "=SUMIF(shifts[event_id], [@id], shifts[required_count])",
+      "sqlFormula": "(SELECT COALESCE(SUM(s.required_count),0)::int FROM shifts s WHERE s.event_id = e.id)",
+      "depends": [
+        "shifts.event_id",
+        "shifts.required_count"
+      ],
+      "constants": []
+    },
+    {
+      "key": "events.total_assigned",
+      "table": "events",
+      "field": "total_assigned",
+      "kind": "aggregation",
+      "returns": "integer",
+      "description": "Sum of assigned_count across the event's shifts.",
+      "formula": "SUM(shifts.assigned_count WHERE event_id = this.id)",
+      "excelFormula": null,
+      "sqlFormula": null,
+      "depends": [
+        "shifts.event_id",
+        "shifts.assigned_count"
+      ],
+      "constants": []
+    },
+    {
+      "key": "events.coverage_pct",
+      "table": "events",
+      "field": "coverage_pct",
+      "kind": "calc",
+      "returns": "numeric",
+      "description": "total_assigned / total_required (1.0 when nothing is required).",
+      "formula": "IF(total_required = 0, 1, total_assigned / total_required)",
+      "excelFormula": "=IF([@total_required]=0,1,[@total_assigned]/[@total_required])",
+      "sqlFormula": null,
+      "depends": [
+        "events.total_required",
+        "events.total_assigned"
+      ],
+      "constants": []
+    },
+    {
+      "key": "events.understaffed_shift_count",
+      "table": "events",
+      "field": "understaffed_shift_count",
+      "kind": "aggregation",
+      "returns": "integer",
+      "description": "Number of shifts in this event with coverage_status = under.",
+      "formula": "COUNT(shifts WHERE event_id = this.id AND coverage_status = 'under')",
+      "excelFormula": null,
+      "sqlFormula": null,
+      "depends": [
+        "shifts.event_id",
+        "shifts.coverage_status"
+      ],
+      "constants": []
+    },
+    {
+      "key": "events.overstaffed_shift_count",
+      "table": "events",
+      "field": "overstaffed_shift_count",
+      "kind": "aggregation",
+      "returns": "integer",
+      "description": "Number of shifts in this event with coverage_status = over.",
+      "formula": "COUNT(shifts WHERE event_id = this.id AND coverage_status = 'over')",
+      "excelFormula": null,
+      "sqlFormula": null,
+      "depends": [
+        "shifts.event_id",
+        "shifts.coverage_status"
+      ],
+      "constants": []
+    },
+    {
+      "key": "events.fully_staffed_shift_count",
+      "table": "events",
+      "field": "fully_staffed_shift_count",
+      "kind": "aggregation",
+      "returns": "integer",
+      "description": "Number of shifts in this event with coverage_status = full.",
+      "formula": "COUNT(shifts WHERE event_id = this.id AND coverage_status = 'full')",
+      "excelFormula": null,
+      "sqlFormula": null,
+      "depends": [
+        "shifts.event_id",
+        "shifts.coverage_status"
+      ],
+      "constants": []
+    },
+    {
+      "key": "events.volunteer_count",
+      "table": "events",
+      "field": "volunteer_count",
+      "kind": "aggregation",
+      "returns": "integer",
+      "description": "Number of distinct volunteers assigned to any shift in this event.",
+      "formula": "COUNT(DISTINCT assignments.volunteer_id WHERE shift.event_id = this.id)",
+      "excelFormula": null,
+      "sqlFormula": null,
+      "depends": [
+        "shifts.event_id",
+        "assignments.shift_id",
+        "assignments.volunteer_id"
+      ],
+      "constants": []
+    },
+    {
+      "key": "events.avg_reliability",
+      "table": "events",
+      "field": "avg_reliability",
+      "kind": "aggregation",
+      "returns": "numeric",
+      "description": "Mean reliability_score over distinct volunteers assigned to any shift in this event.",
+      "formula": "AVG(reliability_score) over distinct assigned volunteers",
+      "excelFormula": null,
+      "sqlFormula": null,
+      "depends": [
+        "shifts.event_id",
+        "assignments.shift_id",
+        "assignments.volunteer_id",
+        "volunteers.reliability_score"
+      ],
+      "constants": []
+    },
+    {
+      "key": "events.skill_match_avg",
+      "table": "events",
+      "field": "skill_match_avg",
+      "kind": "aggregation",
+      "returns": "numeric",
+      "description": "Mean of shift.skill_match_pct over shifts that declare a required_skill_id (1.0 when no skills are required anywhere).",
+      "formula": "AVG(shifts.skill_match_pct WHERE skill_match_pct IS NOT NULL)",
+      "excelFormula": null,
+      "sqlFormula": null,
+      "depends": [
+        "shifts.event_id",
+        "shifts.skill_match_pct"
+      ],
+      "constants": []
+    },
+    {
+      "key": "events.score",
+      "table": "events",
+      "field": "score",
+      "kind": "calc",
+      "returns": "numeric",
+      "description": "Weighted composite score in [0..1] — the input to the letter grade.",
+      "formula": "GRADE_WEIGHTS.coverage_pct · min(1, coverage_pct) + GRADE_WEIGHTS.avg_reliability · avg_reliability + GRADE_WEIGHTS.skill_match_avg · skill_match_avg",
+      "excelFormula": "=0.6*MIN(1,[@coverage_pct])+0.3*[@avg_reliability]+0.1*[@skill_match_avg]",
+      "sqlFormula": null,
+      "depends": [
+        "events.coverage_pct",
+        "events.avg_reliability",
+        "events.skill_match_avg"
+      ],
+      "constants": [
+        "GRADE_WEIGHTS"
+      ]
+    },
+    {
+      "key": "events.grade",
+      "table": "events",
+      "field": "grade",
+      "kind": "calc",
+      "returns": "text",
+      "description": "A–F letter grade derived from score via GRADE_BANDS.",
+      "formula": "first(band ∈ GRADE_BANDS WHERE score ≥ band.min).grade",
+      "excelFormula": "=IF([@score]>=0.93,\"A\",IF([@score]>=0.85,\"B\",IF([@score]>=0.75,\"C\",IF([@score]>=0.65,\"D\",\"F\"))))",
+      "sqlFormula": null,
+      "depends": [
+        "events.score"
+      ],
+      "constants": [
+        "GRADE_BANDS"
+      ]
+    },
+    {
+      "key": "volunteer_event.assigned_hours",
+      "table": "volunteer_event",
+      "field": "assigned_hours",
+      "kind": "aggregation",
+      "returns": "numeric",
+      "description": "Sum of duration_hours over shifts in this event that this volunteer is assigned to.",
+      "formula": "SUM(shift.duration_hours WHERE shift.event_id = event.id AND assigned(volunteer, shift))",
+      "excelFormula": null,
+      "sqlFormula": null,
+      "depends": [
+        "shifts.event_id",
+        "shifts.duration_hours",
+        "assignments.shift_id",
+        "assignments.volunteer_id"
+      ],
+      "constants": []
+    },
+    {
+      "key": "volunteer_event.shift_count",
+      "table": "volunteer_event",
+      "field": "shift_count",
+      "kind": "aggregation",
+      "returns": "integer",
+      "description": "Number of shifts in this event the volunteer is on.",
+      "formula": "COUNT(shifts WHERE event_id = event.id AND assigned(volunteer, shift))",
+      "excelFormula": null,
+      "sqlFormula": null,
+      "depends": [
+        "shifts.event_id",
+        "assignments.shift_id",
+        "assignments.volunteer_id"
+      ],
+      "constants": []
+    },
+    {
+      "key": "volunteer_event.load_status",
+      "table": "volunteer_event",
+      "field": "load_status",
+      "kind": "calc",
+      "returns": "text",
+      "description": "unassigned / under / ok / over, derived from assigned_hours vs event.target and volunteer.max_hours.",
+      "formula": "IF(assigned_hours = 0, 'unassigned', IF(assigned_hours > volunteer.max_hours OR assigned_hours > LOAD_BANDS.over_factor × event.target_hours_per_volunteer, 'over', IF(assigned_hours < LOAD_BANDS.under_factor × event.target_hours_per_volunteer, 'under', 'ok')))",
+      "excelFormula": null,
+      "sqlFormula": null,
+      "depends": [
+        "volunteer_event.assigned_hours",
+        "events.target_hours_per_volunteer",
+        "volunteers.max_hours"
+      ],
+      "constants": [
+        "LOAD_BANDS"
+      ]
+    }
+  ],
+  "constants": {
+    "GRADE_WEIGHTS": {
+      "coverage_pct": 0.6,
+      "avg_reliability": 0.3,
+      "skill_match_avg": 0.1
+    },
+    "GRADE_BANDS": [
+      {
+        "min": 0.93,
+        "grade": "A"
+      },
+      {
+        "min": 0.85,
+        "grade": "B"
+      },
+      {
+        "min": 0.75,
+        "grade": "C"
+      },
+      {
+        "min": 0.65,
+        "grade": "D"
+      },
+      {
+        "min": 0,
+        "grade": "F"
+      }
+    ],
+    "LOAD_BANDS": {
+      "under_factor": 0.75,
+      "over_factor": 1.25
+    }
+  }
+}

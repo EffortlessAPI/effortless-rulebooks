@@ -1,0 +1,9 @@
+/**/obj/**/*
+/**/bin/**/*
+/**/.ssotme/**/*
+/**/DSPXml/**/*
+/SSoT/__patch.json
+/**/.vs/**/*
+/**/node_modules/**/*
+/**/.vscode/**/*
+ssotme.env

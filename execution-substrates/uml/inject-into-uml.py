@@ -13,6 +13,7 @@ The rulebook is the source of truth. UML/OCL is derived, not authored.
 This script is 100% domain-agnostic - all field names come from the rulebook.
 """
 
+import os
 import sys
 import re
 import json
@@ -24,7 +25,7 @@ from enum import Enum, auto
 # Add project root to path for shared imports
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 
-from orchestration.shared import load_rulebook, handle_clean_arg
+from orchestration.shared import load_rulebook, handle_clean_arg, get_rulebook_path
 
 
 # =============================================================================
@@ -617,7 +618,7 @@ def generate_model_json(tables: Dict[str, Any]) -> str:
 
 def generate_ocl_constraints(tables: Dict[str, Any]) -> str:
     """Compile formulas to OCL derive expressions."""
-    lines = ['-- OCL Constraints for ERB', '-- Generated from effortless-rulebook.json', '']
+    lines = ['-- OCL Constraints for ERB', f'-- Generated from {get_rulebook_path().name}', '']
 
     for table_name, table_def in sorted(tables.items()):
         if table_name.startswith('_') or table_name.startswith('$'):
@@ -687,7 +688,8 @@ def main():
     if handle_clean_arg(GENERATED_FILES, "UML substrate: Removes generated PlantUML diagrams, model, and OCL constraints"):
         return
 
-    script_dir = Path(__file__).resolve().parent
+    env_output = os.environ.get("ERB_OUTPUT_DIR")
+    script_dir = Path(env_output).resolve() if env_output else Path(__file__).resolve().parent
 
     print("=" * 70)
     print("UML Execution Substrate - Formula-to-OCL Compiler")

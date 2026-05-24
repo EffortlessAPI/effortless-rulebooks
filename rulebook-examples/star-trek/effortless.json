@@ -1,0 +1,41 @@
+{
+  "ShowHidden": false,
+  "ShowAllFiles": false,
+  "CurrentPath": null,
+  "SSoTmeProjectFiles": null,
+  "SSoTmeProjectId": "db8a3de1-1a27-47d0-9a1b-53dc225fe08f",
+  "Name": "DEMO: StarTrek TV Shows",
+  "Description": "A hierarchical media catalog demonstrating multi-level aggregations and polymorphic relationships.",
+  "ProjectSettings": [
+    {
+      "Name": "project-name",
+      "Value": "DEMO: StarTrek TV Shows"
+    }
+  ],
+  "ProjectTranspilers": [
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "rulebooktopostgres",
+      "RelativePath": "/postgres-bootstrap",
+      "CommandLine": "rulebook-to-postgres -i ../effortless-rulebook/star-trek-rulebook.json",
+      "IsDisabled": false,
+      "LastVersionUsed": "v2026.05.09.1738",
+      "LastUrl": "https://effortless-rulebook-to-postgres-v2026-05-09-1738-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
+      "Description": "Generate Postgres schema + seed data from the rulebook"
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "execute",
+      "RelativePath": "/postgres-bootstrap",
+      "CommandLine": "-exec ./init-db.sh",
+      "IsDisabled": false
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "httplocalhost4242rulebooktoxlsx",
+      "RelativePath": "/xlsx",
+      "CommandLine": "http://localhost:4242/rulebook-to-xlsx -i ../effortless-rulebook/star-trek-rulebook.json",
+      "IsDisabled": false
+    }
+  ]
+}

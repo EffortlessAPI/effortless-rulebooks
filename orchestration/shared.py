@@ -10,24 +10,135 @@ from pathlib import Path
 from datetime import datetime
 
 
-def get_rulebook_path():
-    """Get the path to the effortless-rulebook.json file.
+def get_active_domain():
+    """Return the active domain name from orchestration/active-domain.txt.
 
-    Scripts run from /execution-substrates/{candidate}/ so the rulebook
-    is at ../../effortless-rulebook/effortless-rulebook.json
+    Fails loudly if the file is missing or empty. There is no default — the
+    repo is hours old; fix the file rather than guess.
     """
-    return Path("../../effortless-rulebook/effortless-rulebook.json")
+    active_domain_file = Path(__file__).parent / "active-domain.txt"
+    if not active_domain_file.exists():
+        raise FileNotFoundError(
+            f"active-domain.txt missing at {active_domain_file}. "
+            f"Write the active project name (e.g. 'acme-llc') to that file."
+        )
+    domain = active_domain_file.read_text(encoding="utf-8").strip()
+    if not domain:
+        raise ValueError(
+            f"active-domain.txt at {active_domain_file} is empty. "
+            f"Write the active project name (e.g. 'acme-llc')."
+        )
+    return domain
+
+
+def get_default_database_url():
+    """Default DATABASE_URL derived from the active domain.
+
+    erb_<domain> on localhost (hyphens → underscores per PG identifier rules).
+    Mirrors the formula in orchestrate.sh. DATABASE_URL overrides.
+    """
+    domain = get_active_domain()
+    db_name = "erb_" + domain.replace("-", "_")
+    return f"postgresql://postgres@localhost:5432/{db_name}"
+
+
+def get_rulebook_path():
+    """Get the path to the rulebook JSON for the active domain.
+
+    Priority:
+      1. ERB_RULEBOOK_PATH env var (set by ssotme-proxy for project-scoped runs)
+      2. orchestration/active-domain.txt → rulebook-examples/<domain>/effortless-rulebook/<domain>-rulebook.json
+
+    Fails loudly if ERB_RULEBOOK_PATH points at a directory or doesn't end in
+    -rulebook.json — callers MUST pass an exact file path.
+    """
+    env_path = os.environ.get("ERB_RULEBOOK_PATH")
+    if env_path:
+        p = Path(env_path)
+        if p.is_dir():
+            raise IsADirectoryError(
+                f"ERB_RULEBOOK_PATH points at a directory: {p}. "
+                f"Pass an exact file path to a <domain>-rulebook.json."
+            )
+        return p
+    domain = get_active_domain()
+    project_root = Path(__file__).parent.parent
+    return project_root / "rulebook-examples" / domain / "effortless-rulebook" / f"{domain}-rulebook.json"
 
 
 def load_rulebook():
-    """Load and parse the effortless-rulebook.json file."""
+    """Load and parse the rulebook JSON. Fails loudly if missing or not a file."""
     rulebook_path = get_rulebook_path()
-
     if not rulebook_path.exists():
-        raise FileNotFoundError(f"Rulebook not found at {rulebook_path}")
-
+        raise FileNotFoundError(
+            f"Rulebook not found at {rulebook_path}. "
+            f"(ERB_RULEBOOK_PATH={os.environ.get('ERB_RULEBOOK_PATH')!r})"
+        )
+    if rulebook_path.is_dir():
+        raise IsADirectoryError(
+            f"Rulebook path is a directory, not a file: {rulebook_path}. "
+            f"Pass an exact <domain>-rulebook.json path."
+        )
     with open(rulebook_path, 'r', encoding='utf-8') as f:
         return json.load(f)
+
+
+def get_active_project_substrates(domain=None):
+    """Return the ordered list of execution substrate names declared by the
+    active project's effortless.json.
+
+    The mapping is: take the last path segment of each transpiler's
+    RelativePath. The Airtable in/out transpilers both map to the airtable
+    substrate; transpilers under /effortless-* RelativePaths map to their
+    effortless-prefixed substrate folders. Disabled transpilers are skipped.
+
+    Fails loudly if the project has no effortless.json or it can't be parsed —
+    every active domain MUST be a valid Effortless project.
+    """
+    if domain is None:
+        domain = get_active_domain()
+    project_root = Path(__file__).parent.parent
+    ej = project_root / "rulebook-examples" / domain / "effortless.json"
+    if not ej.exists():
+        raise FileNotFoundError(
+            f"effortless.json not found at {ej}. "
+            f"Domain '{domain}' is not a valid Effortless project."
+        )
+    with open(ej, 'r', encoding='utf-8') as f:
+        cfg = json.load(f)
+
+    substrates = []
+    seen = set()
+    for t in cfg.get("ProjectTranspilers", []):
+        if t.get("IsDisabled"):
+            continue
+        rp = (t.get("RelativePath") or "").strip("/")
+        # Airtable in/out spokes both live under /effortless-rulebook[/...].
+        # They aren't computation substrates by themselves — they map to the
+        # airtable oracle substrate.
+        if rp.startswith("effortless-rulebook"):
+            substrate = "airtable"
+        else:
+            # Last segment of the relative path is the substrate folder name
+            # (e.g. /python -> python, /effortless-xlsx -> effortless-xlsx,
+            #  /entity-framework -> effortless-entity-framework via the table
+            #  below).
+            substrate = rp.rsplit("/", 1)[-1] if rp else ""
+
+        # The Effortless-licensed transpilers write to /postgres, /effortless-xlsx,
+        # /entity-framework, but the conformance test runners live under the
+        # effortless-prefixed folders. Apply the small alias table.
+        EFFORTLESS_ALIASES = {
+            "postgres": "effortless-postgres",
+            "entity-framework": "effortless-entity-framework",
+        }
+        substrate = EFFORTLESS_ALIASES.get(substrate, substrate)
+
+        if substrate and substrate not in seen:
+            seen.add(substrate)
+            substrates.append(substrate)
+
+    return substrates
 
 
 def ensure_output_folder():
@@ -56,6 +167,8 @@ def write_readme(candidate_name, description=None, technology=None):
     if technology:
         technology_section = f"\n## Technology\n\n{technology}\n"
 
+    rulebook_rel = get_rulebook_path().name
+
     content = f"""# {candidate_name.title()} Execution Substrate
 
 {description}
@@ -66,7 +179,7 @@ This is a placeholder generated by the ERB orchestration system.
 
 ## Source
 
-Generated from: `effortless-rulebook/effortless-rulebook.json`
+Generated from: `effortless-rulebook/{rulebook_rel}`
 
 """
 
@@ -239,38 +352,58 @@ def get_entity_data(rulebook: dict, entity_name: str) -> list:
 
 def discover_primary_key(rulebook: dict, entity_name: str) -> str:
     """
-    Discover the primary key for an entity.
-    Returns the first non-nullable field, or first field ending in 'Id'.
+    Discover the primary key for an entity by trying the legitimate ERB PK
+    shapes in order. Each strategy is a SUPPORTED convention, not a guess
+    around a missing one.
+
+    Strategies (in order):
+      1. First non-nullable field — the canonical ERB convention.
+      2. First field ending in 'Id' — accepted when nullable flags are missing.
+      3. First field in the schema — accepted for tiny entities that have a
+         single natural-key column.
+
+    If the schema is empty there is no PK to discover and downstream code
+    cannot build a valid JOIN — RAISE rather than returning None and letting
+    the caller silently produce wrong output.
     """
     schema = get_entity_schema(rulebook, entity_name)
 
-    # First try: find first non-nullable field
+    if not schema:
+        raise ValueError(
+            f"Cannot discover primary key for {entity_name!r}: schema is empty. "
+            f"Check the rulebook entity definition."
+        )
+
+    # Strategy 1: first non-nullable field (canonical ERB)
     for field in schema:
         if field.get('nullable') == False:
             return to_snake_case(field['name'])
 
-    # Second try: find first field ending in 'Id'
+    # Strategy 2: first field ending in 'Id'
     for field in schema:
         if field['name'].endswith('Id'):
             return to_snake_case(field['name'])
 
-    # Fallback: first field
-    if schema:
-        return to_snake_case(schema[0]['name'])
-
-    return None
+    # Strategy 3: first field in the schema
+    return to_snake_case(schema[0]['name'])
 
 
-def discover_computed_columns(rulebook: dict, entity_name: str) -> list:
+def discover_computed_columns(
+    rulebook: dict,
+    entity_name: str,
+    include: tuple = ('calculated', 'aggregation', 'lookup'),
+) -> list:
     """
     Discover computed columns for an entity.
-    Returns list of snake_case column names where type == "calculated".
+    Returns list of snake_case column names where field type is in `include`.
+    Default includes all three computed kinds: calculated, aggregation, lookup.
+    Pass `include=('calculated',)` for scalar-only.
     """
     schema = get_entity_schema(rulebook, entity_name)
 
     computed = []
     for field in schema:
-        if field.get('type') == 'calculated':
+        if field.get('type') in include:
             computed.append(to_snake_case(field['name']))
 
     return computed

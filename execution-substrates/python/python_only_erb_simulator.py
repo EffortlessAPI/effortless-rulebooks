@@ -1,7 +1,7 @@
 """
 ERB Calculation Library (GENERATED - DO NOT EDIT)
 =================================================
-Generated from: effortless-rulebook/effortless-rulebook.json
+Generated from: effortless-rulebook/acme-llc-rulebook.json
 
 PYTHON SUBSTRATE ONLY. Importing this module from any other substrate
 is cheating. That substrate must execute the rulebook in its own native
@@ -36,34 +36,43 @@ from orchestration.shared import (
 
 
 # =============================================================================
-# CLIENT CALCULATIONS
-# Table: Client
+# CUSTOMERS CALCULATIONS
+# Table: Customers
 # =============================================================================
 
 # Level 1
 
-def calc_client_full_name(first_name, last_name):
+def calc_customers_name(email_address):
+    """
+    Identifier for the customers.
+    
+    Formula: =SUBSTITUTE({{EmailAddress}}, "@", "-")
+    """
+    return ((email_address or "").replace('@', '-'))
+
+def calc_customers_full_name(last_name, first_name):
     """
     Full name is computed from the first and last name of the customer
     
-    Formula: ={{FirstName}} & " " & {{LastName}}
+    Formula: ={{LastName}} & ", " & {{FirstName}}
     """
-    return (str(first_name or "") + ' ' + str(last_name or ""))
+    return (str(last_name or "") + ', ' + str(first_name or ""))
 
 
-def compute_client_fields(record: dict) -> dict:
+def compute_customers_fields(record: dict) -> dict:
     """
-    Compute all calculated fields for Client.
+    Compute all calculated fields for Customers.
     
-    Table: Client
+    Table: Customers
     """
     result = dict(record)
 
     # Level 1 calculations
-    result['full_name'] = calc_client_full_name(result.get('first_name'), result.get('last_name'))
+    result['name'] = calc_customers_name(result.get('email_address'))
+    result['full_name'] = calc_customers_full_name(result.get('last_name'), result.get('first_name'))
 
     # Convert empty strings to None for string fields
-    for key in ['full_name']:
+    for key in ['name', 'full_name']:
         if result.get(key) == '':
             result[key] = None
 
@@ -95,8 +104,8 @@ def compute_all_calculated_fields(record: dict, entity_name: str = None) -> dict
     # Normalize to snake_case to support "LineItem", "line_item", "line-item"
     entity_lower = entity_name.lower().replace('-', '_')
 
-    if entity_lower == 'client':
-        return compute_client_fields(record)
+    if entity_lower == 'customers':
+        return compute_customers_fields(record)
     else:
         # Unknown entity - return record unchanged (no error)
         return dict(record)
@@ -138,6 +147,23 @@ def parse_sumifs_formula(formula: str) -> tuple:
     return (None, None, None, None)
 
 
+def _get_testing_dir(project_root: Path) -> Path:
+    """Return the active domain's testing/ dir. ERB_TESTING_DIR is required.
+
+    The simulator must operate on the same domain the orchestrator chose;
+    there is no implicit per-substrate testing dir.
+    """
+    import os
+    erb = os.environ.get("ERB_TESTING_DIR")
+    if not erb:
+        raise RuntimeError(
+            "ERB_TESTING_DIR is not set. python_only_erb_simulator must be "
+            "invoked by the orchestrator with ERB_TESTING_DIR pointing at the "
+            "active domain's testing/ directory."
+        )
+    return Path(erb)
+
+
 def load_related_data(project_root: Path, related_table: str) -> list:
     """
     Load data from testing/answer-keys for a related table; falls back to blank-tests.
@@ -145,13 +171,14 @@ def load_related_data(project_root: Path, related_table: str) -> list:
     tables resolve correctly.
     """
     snake_name = to_snake_case(related_table)
+    testing_dir = _get_testing_dir(project_root)
 
-    answer_keys_path = project_root / "testing" / "answer-keys" / f"{snake_name}.json"
+    answer_keys_path = testing_dir / "answer-keys" / f"{snake_name}.json"
     if answer_keys_path.exists():
         with open(answer_keys_path, "r", encoding="utf-8") as f:
             return json.load(f)
 
-    blank_tests_path = project_root / "testing" / "blank-tests" / f"{snake_name}.json"
+    blank_tests_path = testing_dir / "blank-tests" / f"{snake_name}.json"
     if blank_tests_path.exists():
         with open(blank_tests_path, "r", encoding="utf-8") as f:
             return json.load(f)

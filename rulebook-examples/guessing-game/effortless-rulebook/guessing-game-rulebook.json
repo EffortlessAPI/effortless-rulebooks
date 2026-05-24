@@ -1,0 +1,350 @@
+{
+  "$schema": "https://example.com/cmcc-schema/v1",
+  "model_name": "appC6Tnt2ZKm3t16e",
+  "Description": "CMCC rulebook generated directly from Airtable base.",
+  "形状": {
+    "Description": "Table: 形状",
+    "schema": [
+      {
+        "name": "形状Id",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "名称",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "Edges",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "RelatedTo": "边"
+      },
+      {
+        "name": "边的类型",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "formula": "=SWITCH({{边的数量}},\r\n  0, \"空\",\r\n  1, \"点\",\r\n  2, \"线\",\r\n  3, \"三角形\",\r\n  4, \"正方形\",\r\n  \"--\"\r\n)"
+      },
+      {
+        "name": "边标签",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "formula": "=INDEX(边!{{标签}}, MATCH(形状!{{???}}, 边!{{边Id}}, 0))"
+      },
+      {
+        "name": "边长",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "formula": "=INDEX(边!{{长度}}, MATCH(形状!{{???}}, 边!{{边Id}}, 0))"
+      },
+      {
+        "name": "边的数量",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "formula": "=COUNTIFS(边!{{形状}}, 形状!{{形状Id}})"
+      },
+      {
+        "name": "边角",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "formula": "=INDEX(边!{{角度}}, MATCH(形状!{{???}}, 边!{{边Id}}, 0))"
+      },
+      {
+        "name": "角度总和",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "formula": "=SUMIFS(边!{{角度}}, 边!{{形状}}, 形状!{{形状Id}})"
+      },
+      {
+        "name": "最大边长",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "formula": "=SUMIFS(边!{{长度}}, 边!{{形状}}, 形状!{{形状Id}})"
+      },
+      {
+        "name": "非斜边角度总和",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "formula": "=SUMIFS(边!{{长度平方}}, 边!{{形状}}, 形状!{{形状Id}})"
+      },
+      {
+        "name": "勾股定理成立",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "formula": "=IF({{边的数量}} = 3,\r\n    {{非斜边角度总和}} = {{最大边长}} * {{最大边长}},\r\n  BLANK()\r\n)\r\n"
+      }
+    ],
+    "data": [
+      {
+        "形状Id": "2",
+        "名称": "形状2",
+        "边的数量": 4,
+        "边的类型": "正方形",
+        "边角": "90, 90, 90, 90",
+        "边长": "5, 5, 5, 5",
+        "边标签": "阿, 比, 西, 迪",
+        "角度总和": 360,
+        "最大边长": 5,
+        "非斜边角度总和": 0,
+        "勾股定理成立": "",
+        "Edges": "2, 2, 2, 2"
+      },
+      {
+        "形状Id": "1",
+        "名称": "形状1",
+        "边的数量": 3,
+        "边的类型": "三角形",
+        "边角": "37, 53, 90",
+        "边长": "3, 4, 5",
+        "边标签": "阿, 比, 西",
+        "角度总和": 180,
+        "最大边长": 5,
+        "非斜边角度总和": 25,
+        "勾股定理成立": true,
+        "Edges": "1, 1, 1"
+      },
+      {
+        "形状Id": "3",
+        "名称": "形状3",
+        "边的数量": 2,
+        "边的类型": "线",
+        "边角": "180, 180",
+        "边长": "14, 14",
+        "边标签": "阿, 比",
+        "角度总和": 360,
+        "最大边长": 14,
+        "非斜边角度总和": 0,
+        "勾股定理成立": "",
+        "Edges": "3, 3"
+      }
+    ]
+  },
+  "边": {
+    "Description": "Table: 边",
+    "schema": [
+      {
+        "name": "边Id",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "名称",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "formula": "={{形状}} & \"-\" & {{标签}}"
+      },
+      {
+        "name": "形状",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "RelatedTo": "形状"
+      },
+      {
+        "name": "形状的最大边长",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "formula": "=INDEX(形状!{{最大边长}}, MATCH(边!{{形状}}, 形状!{{形状Id}}, 0))"
+      },
+      {
+        "name": "边的数量",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "formula": "=INDEX(形状!{{边的数量}}, MATCH(边!{{形状}}, 形状!{{形状Id}}, 0))"
+      },
+      {
+        "name": "是否为斜边",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "formula": "={{长度}} = {{形状的最大边长}}"
+      },
+      {
+        "name": "形状类型",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "formula": "=INDEX(形状!{{边的类型}}, MATCH(边!{{形状}}, 形状!{{形状Id}}, 0))"
+      },
+      {
+        "name": "标签",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "长度",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "长度平方",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "formula": "={{长度}} * {{长度}}"
+      },
+      {
+        "name": "角度",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true
+      }
+    ],
+    "data": [
+      {
+        "边Id": "3",
+        "名称": "形状3-比",
+        "形状": "3",
+        "标签": "比",
+        "形状类型": "线",
+        "长度": 14,
+        "角度": 180,
+        "边的数量": "2",
+        "形状的最大边长": "14",
+        "是否为斜边": true,
+        "长度平方": 196
+      },
+      {
+        "边Id": "1",
+        "名称": "形状1-比",
+        "形状": "1",
+        "标签": "比",
+        "形状类型": "三角形",
+        "长度": 4,
+        "角度": 53,
+        "边的数量": "3",
+        "形状的最大边长": "5",
+        "长度平方": 16,
+        "是否为斜边": ""
+      },
+      {
+        "边Id": "2",
+        "名称": "形状2-迪",
+        "形状": "2",
+        "标签": "迪",
+        "形状类型": "正方形",
+        "长度": 5,
+        "角度": 90,
+        "边的数量": "4",
+        "形状的最大边长": "5",
+        "是否为斜边": true,
+        "长度平方": 25
+      },
+      {
+        "边Id": "2",
+        "名称": "形状2-阿",
+        "形状": "2",
+        "标签": "阿",
+        "形状类型": "正方形",
+        "长度": 5,
+        "角度": 90,
+        "边的数量": "4",
+        "形状的最大边长": "5",
+        "是否为斜边": true,
+        "长度平方": 25
+      },
+      {
+        "边Id": "1",
+        "名称": "形状1-阿",
+        "形状": "1",
+        "标签": "阿",
+        "形状类型": "三角形",
+        "长度": 3,
+        "角度": 37,
+        "边的数量": "3",
+        "形状的最大边长": "5",
+        "长度平方": 9,
+        "是否为斜边": ""
+      },
+      {
+        "边Id": "1",
+        "名称": "形状1-西",
+        "形状": "1",
+        "标签": "西",
+        "形状类型": "三角形",
+        "长度": 5,
+        "角度": 90,
+        "边的数量": "3",
+        "形状的最大边长": "5",
+        "是否为斜边": true,
+        "长度平方": 25
+      },
+      {
+        "边Id": "3",
+        "名称": "形状3-阿",
+        "形状": "3",
+        "标签": "阿",
+        "形状类型": "线",
+        "长度": 14,
+        "角度": 180,
+        "边的数量": "2",
+        "形状的最大边长": "14",
+        "是否为斜边": true,
+        "长度平方": 196
+      },
+      {
+        "边Id": "2",
+        "名称": "形状2-西",
+        "形状": "2",
+        "标签": "西",
+        "形状类型": "正方形",
+        "长度": 5,
+        "角度": 90,
+        "边的数量": "4",
+        "形状的最大边长": "5",
+        "是否为斜边": true,
+        "长度平方": 25
+      },
+      {
+        "边Id": "2",
+        "名称": "形状2-比",
+        "形状": "2",
+        "标签": "比",
+        "形状类型": "正方形",
+        "长度": 5,
+        "角度": 90,
+        "边的数量": "4",
+        "形状的最大边长": "5",
+        "是否为斜边": true,
+        "长度平方": 25
+      }
+    ]
+  },
+  "_meta": {
+    "_CMCC_Summary": "Airtable export with intelligent type inference: Schemas, Data, Relationships (FK links), Lookups (INDEX/MATCH), Aggregations (SUMIFS/COUNTIFS/Rollups), and Calculated fields (formulas) in Excel dialect. Field types are inferred from actual data values with priority: DateTime → Decimal → Integer → Boolean → Base64 → JSON → String.",
+    "_conversion_metadata": {
+      "source_base_id": "appC6Tnt2ZKm3t16e",
+      "table_count": 2,
+      "tool_version": "2.0.0",
+      "field_type_mapping": "multipleRecordLinks→relationship, multipleLookupValues→lookup, rollup→aggregation, count→aggregation, formula→calculated",
+      "export_mode": "intelligent_type_inference",
+      "type_inference": {
+        "enabled": true,
+        "priority": "data_analysis → formula_analysis → reference_resolution → airtable_metadata",
+        "type_hierarchy": "datetime → number → integer → boolean → base64 → json → string",
+        "nullable_support": true,
+        "error_value_handling": "#NUM!, #ERROR!, #N/A, #REF!, #DIV/0!, #VALUE!, #NAME? are treated as NULL"
+      }
+    }
+  }
+}

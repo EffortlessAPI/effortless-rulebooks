@@ -1,0 +1,20 @@
+<%- include('../partials/header', { title: 'Account' }) %>
+<h1>Account</h1>
+<p class="muted">Pick a client to act as.</p>
+<form method="post" action="/shop/account/switch" class="stacked">
+  <select name="client_id">
+    <option value="">— pick —</option>
+    <% clients.forEach(c => { %>
+      <option value="<%= c.client_id %>" <%= activeCustomerId === c.client_id ? 'selected' : '' %>>
+        <%= c.name %><%= c.email ? ' (' + c.email + ')' : '' %>
+      </option>
+    <% }) %>
+  </select>
+  <button class="btn" type="submit">Switch</button>
+</form>
+<ul>
+  <% clients.forEach(c => { %>
+    <li><a href="/shop/account/<%= c.client_id %>"><%= c.name %></a></li>
+  <% }) %>
+</ul>
+<%- include('../partials/footer') %>

@@ -1,49 +1,113 @@
 # ACME, LLC Rulebook Specification Document
 
 ## Overview
-This document provides a detailed specification for the rulebook generated from the Airtable base "ACME, LLC (template)". It outlines the input fields and explains how to compute each derived field within the Customers table.
+This document outlines the specifications for the ACME, LLC rulebook, which is generated from an Airtable base. It details the structure of the data, including input fields and derived fields, along with the methods for computing each calculated field. The rulebook consists of three main entities: Customers, ERBVersions, and ERBCustomizations.
 
-## Customers Table
+---
+
+## Entity: Customers
 
 ### Input Fields
-The following fields are defined as raw inputs in the Customers table:
-
 1. **CustomerId**
    - **Type:** String
-   - **Description:** Unique identifier for each customer. This field is mandatory (not nullable).
+   - **Description:** Unique identifier for the customer. This field is mandatory.
 
 2. **EmailAddress**
    - **Type:** String
-   - **Description:** The customer's email address. This field is optional (nullable).
+   - **Description:** The customer's email address. This field is optional.
 
 3. **FirstName**
    - **Type:** String
-   - **Description:** The first name of the customer, used to create the full name. This field is optional (nullable).
+   - **Description:** The first name of the customer. This field is optional.
 
 4. **LastName**
    - **Type:** String
-   - **Description:** The last name of the customer, used to create the full name. This field is optional (nullable).
+   - **Description:** The last name of the customer. This field is optional.
 
 ### Derived Fields
-The following fields are calculated based on the input fields:
-
 1. **Name**
    - **Type:** Calculated
-   - **Description:** Identifier for the customers.
-   - **Computation:** This field is computed by taking the customer's email address, replacing the "@" symbol with a "-" symbol. 
+   - **Description:** This field serves as an identifier for the customers.
+   - **Computation:** The Name is derived by replacing the "@" symbol in the EmailAddress with a hyphen ("-"). 
    - **Original Formula:** `=SUBSTITUTE({{EmailAddress}}, "@", "-")`
-   - **Example:** For a customer with the email address `jane.smith@email.com`, the computed Name would be `jane.smith-email.com`.
+   - **Example:** For the customer with EmailAddress `jane.smith@email.com`, the Name would be `jane.smith-email.com`.
 
 2. **FullName**
    - **Type:** Calculated
-   - **Description:** Full name is computed from the first and last name of the customer.
-   - **Computation:** This field is created by concatenating the FirstName and LastName fields with a space in between.
-   - **Original Formula:** `={{FirstName}} & " " & {{LastName}}`
-   - **Example:** For a customer with FirstName as `Bob` and LastName as `Smith`, the computed FullName would be `Bob Smith`.
+   - **Description:** The full name is computed from the first and last names of the customer.
+   - **Computation:** The FullName is constructed by concatenating the LastName and FirstName with a comma and space in between.
+   - **Original Formula:** `={{LastName}} & ", " & {{FirstName}}`
+   - **Example:** For a customer with LastName `Smith` and FirstName `Bobby`, the FullName would be `Smith, Bobby`.
 
-### Summary of Examples
-- For the customer with `EmailAddress` `jane.smith@email.com`, the computed `Name` is `jane.smith-email.com` and `FullName` is `Bob Smith`.
-- For the customer with `EmailAddress` `john.doe@email.com`, the computed `Name` is `john.doe-email.com` and `FullName` is `Jimmy Doe`.
-- For the customer with `EmailAddress` `emily.jones@email.com`, the computed `Name` is `emily.jones-email.com` and `FullName` is `Mary Jones`.
+---
 
-This specification provides a clear guide to computing the derived fields in the Customers table of the ACME, LLC rulebook, ensuring accurate and consistent results based on the defined inputs.
+## Entity: ERBVersions
+
+### Input Fields
+1. **ERBVersionId**
+   - **Type:** String
+   - **Description:** Unique identifier for the ERB version. This field is mandatory.
+
+2. **BaseId**
+   - **Type:** String
+   - **Description:** Identifier for the base. This field is optional.
+
+3. **Name**
+   - **Type:** String
+   - **Description:** Name of the ERB version. This field is optional.
+
+4. **Message**
+   - **Type:** String
+   - **Description:** Message associated with the ERB version. This field is optional.
+
+5. **Notes**
+   - **Type:** String
+   - **Description:** Additional notes related to the ERB version. This field is optional.
+
+6. **CommitDate**
+   - **Type:** Datetime
+   - **Description:** The date and time when the ERB version was committed. This field is optional.
+
+7. **IsPublished**
+   - **Type:** Boolean
+   - **Description:** Indicates whether the ERB version is published. This field is optional.
+
+### Derived Fields
+- **No derived fields are defined for the ERBVersions entity.**
+
+---
+
+## Entity: ERBCustomizations
+
+### Input Fields
+1. **ERBCustomizationId**
+   - **Type:** String
+   - **Description:** Unique identifier for the ERB customization. This field is mandatory.
+
+2. **Name**
+   - **Type:** String
+   - **Description:** Name of the ERB customization. This field is optional.
+
+3. **Title**
+   - **Type:** String
+   - **Description:** Title of the ERB customization. This field is optional.
+
+4. **SQLCode**
+   - **Type:** String
+   - **Description:** SQL code associated with the customization. This field is optional.
+
+5. **SQLTarget**
+   - **Type:** String
+   - **Description:** Target database for the SQL code. This field is optional.
+
+6. **CustomizationType**
+   - **Type:** String
+   - **Description:** Type of customization (e.g., Schema, Functions, Views, RLS, Data). This field is optional.
+
+### Derived Fields
+- **No derived fields are defined for the ERBCustomizations entity.**
+
+---
+
+## Conclusion
+This specification document provides a comprehensive overview of the ACME, LLC rulebook's structure, detailing both input and derived fields for each entity. The methods for computing derived fields are clearly explained, allowing for accurate value computation without needing to reference the original formulas.

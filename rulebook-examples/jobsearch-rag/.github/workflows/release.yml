@@ -1,0 +1,54 @@
+name: Release
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write    # create tags and GitHub Releases
+
+jobs:
+  release:
+    # Only run after CI passes (ci.yml must succeed on this same push)
+    runs-on: ubuntu-latest
+    # Skip release commits made by semantic-release itself
+    if: "!startsWith(github.event.head_commit.message, 'chore(release):')"
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0          # full history needed for commit analysis
+          fetch-tags: true
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+
+      - name: Set up Python
+        run: uv python install 3.13
+
+      - name: Install python-semantic-release
+        run: uv tool install python-semantic-release
+
+      - name: Run semantic-release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: semantic-release version --no-commit --no-push --no-vcs-release --skip-build
+
+      - name: Push tag if created
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # --no-commit means the tag sits on HEAD (the real commit on main),
+          # not on an orphan version-bump commit.
+          NEW_TAG=$(git tag --points-at HEAD | grep '^v' | head -1)
+          if [ -n "$NEW_TAG" ]; then
+            echo "New version: $NEW_TAG"
+            git push origin "$NEW_TAG"
+            gh release create "$NEW_TAG" \
+              --title "$NEW_TAG" \
+              --generate-notes \
+              --latest
+          else
+            echo "No new version — no feat: or fix: commits since last tag"
+          fi

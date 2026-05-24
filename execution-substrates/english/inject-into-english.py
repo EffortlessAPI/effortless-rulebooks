@@ -38,7 +38,19 @@ CYAN = '\033[0;36m'
 DIM = '\033[2m'
 NC = '\033[0m'
 
-RULEBOOK_PATH = PROJECT_ROOT / "effortless-rulebook" / "effortless-rulebook.json"
+_erb_rulebook = os.environ.get("ERB_RULEBOOK_PATH")
+if not _erb_rulebook:
+    raise RuntimeError(
+        "ERB_RULEBOOK_PATH is not set. inject-into-english.py is per-project — "
+        "it MUST be invoked with ERB_RULEBOOK_PATH pointing at the active "
+        "domain's <domain>-rulebook.json. Do not run this script standalone."
+    )
+RULEBOOK_PATH = Path(_erb_rulebook)
+if not RULEBOOK_PATH.exists():
+    raise FileNotFoundError(
+        f"Rulebook not found at ERB_RULEBOOK_PATH={RULEBOOK_PATH}. "
+        "Pass the exact path; this script never substitutes a different one."
+    )
 
 
 def has_api_key(provider: str = "openai") -> bool:
@@ -239,7 +251,7 @@ def main():
 
     # ------------------------------------------------------------------
     # LLM reachability check. If no API key, leave spec untouched.
-    # There is no repo-committed cache to fall back to - the spec is
+    # There is no repo-committed cache to substitute — the spec is
     # deterministically derived from the rulebook whenever the LLM is
     # reachable, so stale-but-present is the honest offline behavior.
     # ------------------------------------------------------------------

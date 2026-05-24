@@ -1,0 +1,9 @@
+<%- include('_header', { user: user }) %>
+<h1>Statuses</h1>
+<table><thead><tr><th>Display</th><th>Description</th><th>Blocking</th></tr></thead><tbody>
+<% statuses.forEach(s => { %>
+  <tr><td><%= s.display_name %></td><td><%= s.description %></td>
+  <td><span class="badge <%= s.is_blocking ? 'stopped':'ok' %>"><%= s.is_blocking ? 'yes':'no' %></span></td></tr>
+<% }) %>
+</tbody></table>
+<%- include('_footer') %>

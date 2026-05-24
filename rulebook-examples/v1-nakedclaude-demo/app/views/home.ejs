@@ -1,0 +1,6 @@
+<%- include('_header', { user: user }) %>
+<h1>v2: NakedClaude Demo</h1>
+<p>Customer & status management — secured with magic-link email auth.</p>
+<p><a href="/login"><button>Sign in with email</button></a></p>
+<p class="muted">Admin users (per <code>vw_app_users.role = 'admin'</code>) land on the admin dashboard. Everyone else sees only their own customers (filtered by <code>owner_email</code>).</p>
+<%- include('_footer') %>

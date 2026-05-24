@@ -1,0 +1,117 @@
+# ---------------------------------------------------------------------------
+# Role Archetypes — descriptions, positive signals, and negative signals
+# ---------------------------------------------------------------------------
+
+[[archetypes]]
+name = "AI Systems Engineer / AI Platform Architect"
+description = """
+Designs and builds the infrastructure, tooling, and architectural patterns
+that enable reliable, deterministic, and scalable AI systems. Works across
+platform engineering, data engineering, and applied ML to create agentic
+workflows, retrieval pipelines, evaluation frameworks, and AI-assisted
+developer tooling. Owns the architecture for LLM integration, context
+management, safety guardrails, and observability for AI systems. Defines
+standards for prompt engineering, model interfaces, vector storage, and
+evaluation loops. Operates at Staff/Principal altitude with cross-team
+influence and long-horizon design responsibilities.
+"""
+signals_positive = [
+    "AI platform architecture and LLM systems integration",
+    "Agentic workflow design and orchestration frameworks",
+    "Retrieval pipelines, context management, and vector databases",
+    "Evaluation frameworks, safety guardrails, and deterministic AI tooling",
+    "AI-assisted SDLC, MCP tools, or developer productivity automation",
+    "Cross-functional work across platform, data, and ML engineering",
+    "Staff/Principal-level ownership of AI infrastructure and standards",
+]
+signals_negative = [
+    "ML model development or data science as primary function",
+    "Prompt engineering role without systems or platform responsibilities",
+    "AI research scientist or applied ML modeling role",
+    "Product-focused AI feature development without platform scope",
+    "Data labeling, annotation, or evaluation-only responsibilities",
+]
+
+[[archetypes]]
+name = "Staff Platform Architect"
+description = """
+Defines technical strategy and architecture for distributed systems platforms.
+Cross-team influence and alignment across engineering organizations. Roadmap
+ownership for infrastructure and platform capabilities. Cloud-native design
+patterns — Kubernetes, service mesh, API gateways. Drives architectural
+decisions through RFCs and design reviews. Mentors senior engineers. Reports
+to VP Engineering or CTO. IC-track leadership without direct management.
+Expects autonomy in technical direction. Not primarily a hands-on coding role.
+"""
+signals_positive = [
+    "Cross-team architecture ownership and technical strategy",
+    "Distributed systems design and cloud-native infrastructure",
+    "API governance, platform reliability, and scalability patterns",
+    "RFC and design review leadership across engineering orgs",
+    "IC-track staff+ with mentorship responsibilities",
+    "Reporting to VP Engineering or CTO level",
+    "Long-horizon architectural decision making",
+]
+signals_negative = [
+    "Primarily hands-on feature development in a single codebase",
+    "No mention of cross-team scope or organizational influence",
+    "Team lead or engineering manager with direct reports",
+    "Full-stack web application development focus",
+    "On-call heavy SRE or operations-focused responsibilities",
+]
+
+[[archetypes]]
+name = "Principal Data Platform Engineer"
+description = """
+Leads architecture of data pipelines, data quality frameworks, and platform
+governance across the data organization. Works across data engineering,
+analytics, ML platform, and product teams. Owns the technical roadmap for
+data infrastructure — streaming, batch, lakehouse, and observability.
+Deep hands-on experience with Spark, Kafka, Flink, dbt, or equivalent.
+Mentors data engineers. Establishes data contracts and quality SLAs.
+Cloud data stack expertise — AWS, GCP, or Azure data services.
+"""
+signals_positive = [
+    "Data pipeline architecture and platform governance ownership",
+    "Stream processing, batch pipelines, and lakehouse design",
+    "Data quality frameworks, contracts, and observability",
+    "Cross-functional work with analytics, ML, and product teams",
+    "Cloud data stack expertise — Spark, Kafka, Flink, dbt",
+    "Principal or staff-level data engineering leadership",
+    "Enterprise data lineage, cataloging, and metadata systems",
+]
+signals_negative = [
+    "Data analyst or BI developer role with no infrastructure scope",
+    "Junior data engineering with no architecture responsibilities",
+    "ETL scripting without platform design or governance",
+    "Data science or ML model development as primary function",
+    "Model training, feature engineering, or experimentation platform focus",
+]
+
+[[archetypes]]
+name = "Developer Relations / Technical Evangelist"
+description = """
+Technical writing, conference speaking, and developer community engagement
+at scale. Builds SDKs, API examples, quickstart guides, and reference
+documentation. Bridges product engineering and the external developer
+audience. Measures success through developer adoption, community growth,
+and content reach. Strong public speaking and written communication
+alongside genuine engineering depth. Comfortable creating video content,
+blog posts, and live-coding demos.
+"""
+signals_positive = [
+    "Developer community engagement and technical evangelism",
+    "SDK development, API documentation, and developer experience",
+    "Conference speaking, blog writing, and content creation",
+    "Bridging product engineering and external developer audience",
+    "Developer adoption metrics and community growth ownership",
+    "Engineering depth combined with communication skills",
+    "Hands-on creation of developer tooling, examples, and demos",
+]
+signals_negative = [
+    "Marketing or product marketing role with no engineering work",
+    "Technical writer with no community or evangelism component",
+    "Sales engineering or solutions architecture for enterprise deals",
+    "Support engineering or customer success as primary function",
+    "Director-level DevRel management with people leadership focus",
+]

@@ -1,0 +1,193 @@
+{
+  "schema_version": "erb.explain_spec.v1",
+  "rulebook": {
+    "name": "ACME, LLC (template)",
+    "rulebook_hash": "sha256:79d49dfd9a07ddbe1d536c794dcd199e"
+  },
+  "semantics": {
+    "profile": "excel",
+    "version": "v1",
+    "null_handling": "three_valued_logic",
+    "boolean_coercion": "strict"
+  },
+  "entities": {
+    "Customers": {
+      "id_field": "CustomerId",
+      "id_field_snake": "customer_id",
+      "fields": {
+        "CustomerId": {
+          "datatype": "string",
+          "nullable": false,
+          "type": "raw"
+        },
+        "Name": {
+          "datatype": "string",
+          "nullable": true,
+          "type": "calculated",
+          "description": "Identifier for the customers."
+        },
+        "EmailAddress": {
+          "datatype": "string",
+          "nullable": true,
+          "type": "raw",
+          "description": "Thec ustomers email address"
+        },
+        "FirstName": {
+          "datatype": "string",
+          "nullable": true,
+          "type": "raw",
+          "description": "First Name of the customer - used to make the full name"
+        },
+        "LastName": {
+          "datatype": "string",
+          "nullable": true,
+          "type": "raw",
+          "description": "Last Name of the customer - used to make the full name"
+        },
+        "FullName": {
+          "datatype": "string",
+          "nullable": true,
+          "type": "calculated",
+          "description": "Full name is computed from the first and last name of the customer"
+        }
+      },
+      "calc_order": [
+        "FullName",
+        "Name"
+      ],
+      "dep_edges": [
+        [
+          "FirstName",
+          "FullName"
+        ],
+        [
+          "LastName",
+          "FullName"
+        ],
+        [
+          "EmailAddress",
+          "Name"
+        ]
+      ],
+      "expr_templates": {
+        "Name": {
+          "formula_source": "=SUBSTITUTE({{EmailAddress}}, \"@\", \"-\")",
+          "template_hash": "sha256:4f66494237ffb7cf",
+          "root_node": "n_result_Name",
+          "nodes": {
+            "n_ref_1": {
+              "kind": "field_ref",
+              "field": "EmailAddress",
+              "field_snake": "email_address"
+            },
+            "n_const_2": {
+              "kind": "const",
+              "value": "@",
+              "type": "string"
+            },
+            "n_const_3": {
+              "kind": "const",
+              "value": "-",
+              "type": "string"
+            },
+            "n_fn_4": {
+              "kind": "fn",
+              "name": "SUBSTITUTE",
+              "args": [
+                "n_ref_1",
+                "n_const_2",
+                "n_const_3"
+              ]
+            },
+            "n_result_Name": {
+              "kind": "result",
+              "field": "Name",
+              "field_snake": "name",
+              "in": [
+                "n_fn_4"
+              ]
+            }
+          },
+          "edges": [
+            [
+              "n_ref_1",
+              "n_fn_4"
+            ],
+            [
+              "n_const_2",
+              "n_fn_4"
+            ],
+            [
+              "n_const_3",
+              "n_fn_4"
+            ],
+            [
+              "n_fn_4",
+              "n_result_Name"
+            ]
+          ],
+          "description": "Identifier for the customers."
+        },
+        "FullName": {
+          "formula_source": "={{LastName}} & \", \" & {{FirstName}}",
+          "template_hash": "sha256:87fca7e8a65752b8",
+          "root_node": "n_result_FullName",
+          "nodes": {
+            "n_ref_1": {
+              "kind": "field_ref",
+              "field": "LastName",
+              "field_snake": "last_name"
+            },
+            "n_const_2": {
+              "kind": "const",
+              "value": ", ",
+              "type": "string"
+            },
+            "n_ref_3": {
+              "kind": "field_ref",
+              "field": "FirstName",
+              "field_snake": "first_name"
+            },
+            "n_op_4": {
+              "kind": "op",
+              "name": "CONCAT",
+              "args": [
+                "n_ref_1",
+                "n_const_2",
+                "n_ref_3"
+              ]
+            },
+            "n_result_FullName": {
+              "kind": "result",
+              "field": "FullName",
+              "field_snake": "full_name",
+              "in": [
+                "n_op_4"
+              ]
+            }
+          },
+          "edges": [
+            [
+              "n_ref_1",
+              "n_op_4"
+            ],
+            [
+              "n_const_2",
+              "n_op_4"
+            ],
+            [
+              "n_ref_3",
+              "n_op_4"
+            ],
+            [
+              "n_op_4",
+              "n_result_FullName"
+            ]
+          ],
+          "description": "Full name is computed from the first and last name of the customer"
+        }
+      },
+      "description": "Table: Customers"
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "name": "customer-fullname-demo",
+  "version": "1.0.0",
+  "description": "Effortless demo: customer full name calculation",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}

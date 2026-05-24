@@ -1,0 +1,41 @@
+{
+  "ShowHidden": false,
+  "ShowAllFiles": false,
+  "CurrentPath": null,
+  "SSoTmeProjectFiles": null,
+  "SSoTmeProjectId": "cdc49f6d-3c0c-4713-98a0-f7a4f7b1917b",
+  "Name": "therapist-helper-portal",
+  "ProjectSettings": [
+    {
+      "Name": "project-name",
+      "Value": "therapist-helper-portal"
+    }
+  ],
+  "ProjectTranspilers": [
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "rulebooktopostgres",
+      "RelativePath": "/postgres-bootstrap",
+      "CommandLine": "rulebook-to-postgres -i ../effortless-rulebook/therapist-helper-portal-rulebook.json -w 300000",
+      "IsDisabled": false,
+      "LastVersionUsed": "v2026.05.09.1738",
+      "LastUrl": "https://effortless-rulebook-to-postgres-v2026-05-09-1738-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "execute",
+      "RelativePath": "/postgres-bootstrap",
+      "CommandLine": "-exec ./init-db.sh",
+      "IsDisabled": false
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "rulebooktoreactexplainerdag",
+      "RelativePath": "/web/src",
+      "CommandLine": "rulebook-to-react-explainer-dag -i ../../effortless-rulebook/therapist-helper-portal-rulebook.json",
+      "IsDisabled": false,
+      "LastVersionUsed": "v2026.05.20.0229",
+      "LastUrl": "https://effortless-rulebook-to-react-exp-v2026-05-20-0229-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
+    }
+  ]
+}

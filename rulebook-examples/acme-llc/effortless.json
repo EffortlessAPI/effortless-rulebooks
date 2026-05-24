@@ -1,0 +1,147 @@
+{
+  "ShowHidden": false,
+  "ShowAllFiles": false,
+  "CurrentPath": "",
+  "SSoTmeProjectFiles": null,
+  "SSoTmeProjectId": "63484082-c6d6-4259-a92c-3169e1e4d75a",
+  "Name": "acme-llc",
+  "Description": "A lean variant of ACME Corporation\u2014demonstrating essential business rules in a simplified schema.",
+  "ProjectSettings": [
+    {
+      "Name": "baseId",
+      "Value": "appWrXPvXbkgQGOxt"
+    },
+    {
+      "Name": "project-name",
+      "Value": "acme-llc"
+    }
+  ],
+  "ProjectTranspilers": [
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "airtabletorulebook",
+      "RelativePath": "/effortless-rulebook",
+      "CommandLine": "airtable-to-rulebook -o acme-llc-rulebook.json -account airtable -p \"view=Grid view\"",
+      "IsDisabled": true,
+      "LastVersionUsed": "v2026.04.23.1357",
+      "LastUrl": "https://effortless-airtable-to-rulebook-v2026-04-23-1357-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
+      "Enabled": false,
+      "Description": "Pull rulebook from Airtable [DISABLED: rulebook JSON is authoritative; re-enable only with explicit user consent]"
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "rulebooktoairtable",
+      "RelativePath": "/effortless-rulebook/push-to-airtable",
+      "CommandLine": "rulebook-to-airtable -i ../acme-llc-rulebook.json -account airtable -w 300000",
+      "IsDisabled": true,
+      "LastVersionUsed": "v2026.04.13.2259",
+      "LastUrl": "https://effortless-rulebook-to-airtable-v2026-04-13-2259-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
+      "Enabled": false,
+      "Description": "Reverse-sync: push rulebook changes back to Airtable"
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "httplocalhost4242rulebooktopython",
+      "RelativePath": "/python",
+      "CommandLine": "http://localhost:4242/rulebook-to-python -i ../effortless-rulebook/acme-llc-rulebook.json",
+      "IsDisabled": false
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "httplocalhost4242rulebooktogolang",
+      "RelativePath": "/golang",
+      "CommandLine": "http://localhost:4242/rulebook-to-golang -i ../effortless-rulebook/acme-llc-rulebook.json",
+      "IsDisabled": false
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "httplocalhost4242rulebooktobinary",
+      "RelativePath": "/binary",
+      "CommandLine": "http://localhost:4242/rulebook-to-binary -i ../effortless-rulebook/acme-llc-rulebook.json",
+      "IsDisabled": false
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "httplocalhost4242rulebooktocobcol",
+      "RelativePath": "/cobol",
+      "CommandLine": "http://localhost:4242/rulebook-to-cobol -i ../effortless-rulebook/acme-llc-rulebook.json",
+      "IsDisabled": false
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "httplocalhost4242rulebooktocsv",
+      "RelativePath": "/csv",
+      "CommandLine": "http://localhost:4242/rulebook-to-csv -i ../effortless-rulebook/acme-llc-rulebook.json",
+      "IsDisabled": false
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "httplocalhost4242rulebooktoxlsx",
+      "RelativePath": "/xlsx",
+      "CommandLine": "http://localhost:4242/rulebook-to-xlsx -i ../effortless-rulebook/acme-llc-rulebook.json",
+      "IsDisabled": false
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "httplocalhost4242rulebooktouml",
+      "RelativePath": "/uml",
+      "CommandLine": "http://localhost:4242/rulebook-to-uml -i ../effortless-rulebook/acme-llc-rulebook.json",
+      "IsDisabled": false
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "httplocalhost4242rulebooktoowl",
+      "RelativePath": "/owl",
+      "CommandLine": "http://localhost:4242/rulebook-to-owl -i ../effortless-rulebook/acme-llc-rulebook.json",
+      "IsDisabled": false
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "httplocalhost4242rulebooktoenglish",
+      "RelativePath": "/english",
+      "CommandLine": "http://localhost:4242/rulebook-to-english -i ../effortless-rulebook/acme-llc-rulebook.json",
+      "IsDisabled": false
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "httplocalhost4242rulebooktoexplainddag",
+      "RelativePath": "/explain-dag",
+      "CommandLine": "http://localhost:4242/rulebook-to-explain-dag -i ../effortless-rulebook/acme-llc-rulebook.json",
+      "IsDisabled": false
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "rulebooktopostgres",
+      "RelativePath": "/postgres-bootstrap",
+      "CommandLine": "rulebook-to-postgres -i ../effortless-rulebook/acme-llc-rulebook.json",
+      "IsDisabled": false,
+      "LastVersionUsed": "v2026.05.09.1738",
+      "LastUrl": "https://effortless-rulebook-to-postgres-v2026-05-09-1738-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "execute",
+      "RelativePath": "/postgres-bootstrap",
+      "CommandLine": "-exec ./init-db.sh",
+      "IsDisabled": false
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "rulebooktoxlsx-effortless",
+      "RelativePath": "/effortless-xlsx",
+      "CommandLine": "rulebook-to-xlsx -i ../effortless-rulebook/acme-llc-rulebook.json",
+      "IsDisabled": false,
+      "LastVersionUsed": "v2026.05.20.0330",
+      "LastUrl": "https://effortless-rulebook-to-xlsx-v2026-05-20-0330-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "rulebooktoentityframework",
+      "RelativePath": "/effortless-entity-framework",
+      "CommandLine": "rulebook-to-entity-framework -i ../effortless-rulebook/acme-llc-rulebook.json",
+      "IsDisabled": false,
+      "LastVersionUsed": "v2026.05.12.2324",
+      "LastUrl": "https://effortless-rulebook-to-entity-fr-v2026-05-12-2324-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
+    }
+  ]
+}

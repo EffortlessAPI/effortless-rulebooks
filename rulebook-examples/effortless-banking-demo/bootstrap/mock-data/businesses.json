@@ -1,0 +1,68 @@
+[
+  {
+    "id": "biz-stillwater-roasters",
+    "name": "stillwater-roasters-llc",
+    "label": "Stillwater Roasters LLC",
+    "legal_name": "Stillwater Roasters LLC",
+    "structure": "LLC",
+    "naics_code": "311920",
+    "naics_description": "Coffee and Tea Manufacturing",
+    "annual_revenue_usd": 4200000,
+    "relationship_manager_id": "usr-devon-marshall",
+    "onboarded_at": "2024-03-12",
+    "status": "Customer"
+  },
+  {
+    "id": "biz-ridgeway-consulting",
+    "name": "ridgeway-consulting-llc",
+    "label": "Ridgeway Consulting LLC",
+    "legal_name": "Ridgeway Consulting LLC",
+    "structure": "LLC (owned by holding entity)",
+    "naics_code": "541611",
+    "naics_description": "Administrative Management Consulting",
+    "annual_revenue_usd": 1800000,
+    "relationship_manager_id": "usr-devon-marshall",
+    "onboarded_at": "2023-09-05",
+    "status": "Customer"
+  },
+  {
+    "id": "biz-pine-hardware",
+    "name": "pine-hardware-inc",
+    "label": "Pine Hardware Inc.",
+    "legal_name": "Pine Hardware Inc.",
+    "structure": "C-Corp",
+    "naics_code": "444110",
+    "naics_description": "Home Centers",
+    "annual_revenue_usd": 12500000,
+    "relationship_manager_id": "usr-devon-marshall",
+    "onboarded_at": "2019-06-21",
+    "status": "Customer"
+  },
+  {
+    "id": "biz-sunset-auto-body",
+    "name": "sunset-auto-body-llc",
+    "label": "Sunset Auto Body LLC",
+    "legal_name": "Sunset Auto Body LLC",
+    "structure": "LLC",
+    "naics_code": "811121",
+    "naics_description": "Automotive Body, Paint, and Interior Repair",
+    "annual_revenue_usd": 2300000,
+    "relationship_manager_id": "usr-devon-marshall",
+    "onboarded_at": "2022-11-02",
+    "status": "Customer"
+  },
+  {
+    "id": "biz-hilltop-bakery",
+    "name": "hilltop-bakery",
+    "label": "Hilltop Bakery",
+    "legal_name": "Hilltop Bakery LLC",
+    "structure": "LLC",
+    "naics_code": "311811",
+    "naics_description": "Retail Bakeries",
+    "annual_revenue_usd": 850000,
+    "relationship_manager_id": "usr-devon-marshall",
+    "onboarded_at": null,
+    "status": "Prospect",
+    "referral_source": "biz-pine-hardware"
+  }
+]

@@ -1,0 +1,63 @@
+<%- include('../partials/header', { title: order.invoice_number }) %>
+<h1>Order <%= order.invoice_number %></h1>
+<nav class="subnav"><a href="/shop/account/<%= customer.client_id %>">Overview</a> <a href="/shop/account/<%= customer.client_id %>/orders">Orders</a> <a href="/shop/account/<%= customer.client_id %>/payments">Payments</a> <a href="/shop/account/<%= customer.client_id %>/profile">Profile</a> <span class="muted">· <%= customer.name %></span></nav>
+<p class="muted">
+  Status: <strong><%= order.order_status %></strong>
+  · Date: <%= order.order_date ? new Date(order.order_date).toISOString().slice(0,10) : '' %>
+</p>
+<table class="grid">
+  <thead><tr><th>#</th><th>Product</th><th>Qty</th><th>Unit</th><th>Discount</th><th>Subtotal</th></tr></thead>
+  <tbody>
+    <% items.forEach(li => { %>
+      <tr>
+        <td><%= li.line_number %></td>
+        <td><%= li.product_display_name %></td>
+        <td><%= li.quantity %></td>
+        <td>$<%= Number(li.unit_price || 0).toFixed(2) %></td>
+        <td>$<%= Number(li.discount_amount || 0).toFixed(2) %></td>
+        <td>$<%= Number(li.sub_total || 0).toFixed(2) %></td>
+      </tr>
+    <% }) %>
+  </tbody>
+  <tfoot>
+    <tr><th colspan="5" style="text-align:right">Sub-total</th><th>$<%= Number(order.sub_total || 0).toFixed(2) %></th></tr>
+    <tr><th colspan="5" style="text-align:right">Tax (<%= ((Number(order.tax_rate)||0)*100).toFixed(2) %>%)</th><th>$<%= Number(order.tax_amount || 0).toFixed(2) %></th></tr>
+    <tr><th colspan="5" style="text-align:right">Total</th><th>$<%= Number(order.invoice_total || 0).toFixed(2) %></th></tr>
+    <tr><th colspan="5" style="text-align:right">Paid</th><th>$<%= Number(order.total_paid || 0).toFixed(2) %></th></tr>
+    <tr><th colspan="5" style="text-align:right">Amount Due</th><th>$<%= Number(order.amount_due || 0).toFixed(2) %></th></tr>
+  </tfoot>
+</table>
+
+<h2>Payments</h2>
+<table class="grid">
+  <thead><tr><th>#</th><th>Date</th><th>Method</th><th>Status</th><th>Amount</th></tr></thead>
+  <tbody>
+    <% payments.forEach(p => { %>
+      <tr>
+        <td><%= p.payment_number %></td>
+        <td><%= p.payment_date ? new Date(p.payment_date).toISOString().slice(0,10) : '' %></td>
+        <td><%= p.payment_method %></td>
+        <td><%= p.payment_status %></td>
+        <td>$<%= Number(p.amount || 0).toFixed(2) %></td>
+      </tr>
+    <% }) %>
+    <% if (!payments.length) { %><tr><td colspan="5" class="muted">No payments.</td></tr><% } %>
+  </tbody>
+</table>
+
+<% if (Number(order.amount_due) > 0) { %>
+<h2>Record a payment</h2>
+<form method="post" action="/shop/account/<%= customer.client_id %>/orders/<%= order.invoice_id %>/pay" class="row">
+  <label><span>Amount</span><input type="number" step="0.01" name="amount" value="<%= Number(order.amount_due).toFixed(2) %>" /></label>
+  <label><span>Method</span>
+    <select name="payment_method">
+      <option value="card">Card</option>
+      <option value="ach">ACH</option>
+      <option value="check">Check</option>
+      <option value="cash">Cash</option>
+    </select>
+  </label>
+  <button class="btn" type="submit">Pay</button>
+</form>
+<% } %>
+<%- include('../partials/footer') %>

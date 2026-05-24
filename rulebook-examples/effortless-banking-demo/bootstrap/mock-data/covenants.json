@@ -1,0 +1,48 @@
+[
+  {
+    "id": "cv-l0051-dscr",
+    "name": "l-0051-min-dscr-1-20",
+    "label": "L-0051 — Min DSCR 1.20 (Quarterly)",
+    "loan_id": "ln-l-0051",
+    "covenant_type": "MinDSCR",
+    "threshold_value": 1.20,
+    "test_frequency": "Quarterly",
+    "next_test_date": "2025-06-30",
+    "status": "Active"
+  },
+  {
+    "id": "cv-l0051-leverage",
+    "name": "l-0051-max-debt-ebitda-3-0",
+    "label": "L-0051 — Max Debt/EBITDA 3.0 (Annual)",
+    "loan_id": "ln-l-0051",
+    "covenant_type": "MaxLeverage",
+    "threshold_value": 3.00,
+    "test_frequency": "Annual",
+    "next_test_date": "2026-03-01",
+    "status": "Active"
+  },
+  {
+    "id": "cv-l0051-fin-sub",
+    "name": "l-0051-annual-financial-submission",
+    "label": "L-0051 — Annual Financial Statement Submission",
+    "loan_id": "ln-l-0051",
+    "covenant_type": "ReportingFinancials",
+    "threshold_value": null,
+    "test_frequency": "Annual",
+    "next_test_date": "2026-03-31",
+    "status": "Active"
+  },
+  {
+    "id": "cv-l0042-dscr",
+    "name": "l-0042-min-dscr-1-20",
+    "label": "L-0042 — Min DSCR 1.20 (Quarterly)",
+    "loan_id": "ln-l-0042",
+    "covenant_type": "MinDSCR",
+    "threshold_value": 1.20,
+    "test_frequency": "Quarterly",
+    "next_test_date": "2026-06-30",
+    "status": "Breached",
+    "current_breach": true,
+    "current_waiver_through": "2026-06-30"
+  }
+]

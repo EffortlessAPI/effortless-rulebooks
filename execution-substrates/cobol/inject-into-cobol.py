@@ -13,6 +13,7 @@ Generated files:
 """
 
 import json
+import os
 import sys
 from pathlib import Path
 from typing import Dict, List, Any, Set
@@ -29,6 +30,7 @@ from orchestration.shared import (
     to_snake_case,
     get_calculated_fields,
     get_raw_fields,
+    get_rulebook_path,
 )
 from orchestration.formula_parser import (
     parse_formula,
@@ -275,7 +277,7 @@ def generate_erb_calc(rulebook: Dict) -> str:
 
     lines = [
         "       *> ERB Calculation Module (GENERATED - DO NOT EDIT)",
-        "       *> Generated from: effortless-rulebook/effortless-rulebook.json",
+        f"       *> Generated from: effortless-rulebook/{get_rulebook_path().name}",
         "       *> GnuCOBOL free-format: cobc -free -m erb_calc.cbl",
         "       IDENTIFICATION DIVISION.",
         "       PROGRAM-ID. ERBCALC.",
@@ -590,7 +592,8 @@ def main():
     if handle_clean_arg(GENERATED_FILES, "COBOL substrate: Removes generated COBOL and manifest"):
         return
 
-    script_dir = Path(__file__).resolve().parent
+    env_output = os.environ.get("ERB_OUTPUT_DIR")
+    script_dir = Path(env_output).resolve() if env_output else Path(__file__).resolve().parent
 
     print("=" * 70)
     print("COBOL Execution Substrate - Formula to COBOL Compiler")

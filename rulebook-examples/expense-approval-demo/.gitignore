@@ -1,0 +1,7 @@
+.DS_Store
+.ssotme/
+
+node_modules/
+dist/
+.vite/
+*.log

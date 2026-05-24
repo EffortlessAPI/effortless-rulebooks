@@ -1,0 +1,8 @@
+<%- include('_header', { user: user }) %>
+<h1>App Users</h1>
+<table><thead><tr><th>Email</th><th>Role</th></tr></thead><tbody>
+<% users.forEach(u => { %>
+  <tr><td><%= u.email_address %></td><td><span class="badge"><%= u.role %></span></td></tr>
+<% }) %>
+</tbody></table>
+<%- include('_footer') %>

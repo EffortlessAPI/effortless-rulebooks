@@ -1,0 +1,57 @@
+[
+  {
+    "id": "rrh-l0042-2021-05-20",
+    "name": "l-0042-2021-05-20-grade-4",
+    "label": "L-0042 — Initial grade 4 (Pass) at funding",
+    "loan_id": "ln-l-0042",
+    "effective_date": "2021-05-20",
+    "prior_grade": null,
+    "new_grade": 4,
+    "reason": "Initial rating at funding",
+    "changed_by_user_id": "usr-thomas-bell"
+  },
+  {
+    "id": "rrh-l0042-2025-05-02",
+    "name": "l-0042-2025-05-02-grade-6",
+    "label": "L-0042 — Migrated to 6 (Special Mention) after covenant breach",
+    "loan_id": "ln-l-0042",
+    "effective_date": "2025-05-02",
+    "prior_grade": 4,
+    "new_grade": 6,
+    "reason": "DSCR covenant breach; recommend Special Mention",
+    "changed_by_user_id": "usr-thomas-bell"
+  },
+  {
+    "id": "rrh-l0042-2025-08-15",
+    "name": "l-0042-2025-08-15-grade-7",
+    "label": "L-0042 — Migrated to 7 (Substandard); now classified asset",
+    "loan_id": "ln-l-0042",
+    "effective_date": "2025-08-15",
+    "prior_grade": 6,
+    "new_grade": 7,
+    "reason": "Sustained underperformance; downgrade to Substandard. Added to Watchlist.",
+    "changed_by_user_id": "usr-thomas-bell"
+  },
+  {
+    "id": "rrh-l0051-2025-03-01",
+    "name": "l-0051-2025-03-01-grade-4",
+    "label": "L-0051 — Initial grade 4 (Pass) at funding",
+    "loan_id": "ln-l-0051",
+    "effective_date": "2025-03-01",
+    "prior_grade": null,
+    "new_grade": 4,
+    "reason": "Initial rating at funding",
+    "changed_by_user_id": "usr-priya-iyer"
+  },
+  {
+    "id": "rrh-l0078-2024-08-22",
+    "name": "l-0078-2024-08-22-grade-3",
+    "label": "L-0078 — Initial grade 3 (Pass) at funding",
+    "loan_id": "ln-l-0078",
+    "effective_date": "2024-08-22",
+    "prior_grade": null,
+    "new_grade": 3,
+    "reason": "Initial rating at funding; strong cash flow coverage",
+    "changed_by_user_id": "usr-priya-iyer"
+  }
+]

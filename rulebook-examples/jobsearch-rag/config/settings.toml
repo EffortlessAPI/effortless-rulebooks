@@ -1,0 +1,64 @@
+# ---------------------------------------------------------------------------
+# Job Search RAG Assistant — Settings
+# ---------------------------------------------------------------------------
+
+[boards]
+enabled = ["ziprecruiter", "weworkremotely"]
+overnight_boards = ["linkedin"]
+
+[boards.ziprecruiter]
+searches = [
+    "https://www.ziprecruiter.com/jobs-search?search=staff+platform+architect&location=Remote+(USA)",
+    "https://www.ziprecruiter.com/jobs-search?search=principal+engineer+data+platform&location=Remote+(USA)",
+    "https://www.ziprecruiter.com/jobs-search?search=developer+relations+engineer&location=Remote+(USA)",
+]
+max_pages = 3
+headless = false  # Cloudflare blocks headless; must be headed
+browser_channel = "msedge"  # Chromium detected by Cloudflare; Edge passes
+
+[boards.indeed]
+searches = [
+    "https://www.indeed.com/jobs?q=staff+platform+architect&l=Remote&sc=0kf%3Aattr%28DSQF7%29%3B",
+    "https://www.indeed.com/jobs?q=principal+engineer+data+platform&l=Remote&sc=0kf%3Aattr%28DSQF7%29%3B",
+]
+max_pages = 3
+headless = true
+
+[boards.weworkremotely]
+searches = [
+    "https://weworkremotely.com/remote-jobs/search?term=staff+engineer",
+    "https://weworkremotely.com/remote-jobs/search?term=principal+architect",
+]
+max_pages = 2
+headless = true
+
+[boards.linkedin]
+searches = [
+    "https://www.linkedin.com/jobs/search/?keywords=staff+platform+architect&f_WT=2",
+]
+max_pages = 2
+headless = false  # Must be headed; LinkedIn detects headless
+
+[scoring]
+archetype_weight = 0.5
+fit_weight = 0.3
+history_weight = 0.2
+comp_weight = 0.15
+negative_weight = 0.4
+culture_weight = 0.2
+base_salary = 220000
+disqualify_on_llm_flag = true
+min_score_threshold = 0.45
+
+[ollama]
+base_url = "http://localhost:11434"
+llm_model = "mistral:7b"
+embed_model = "nomic-embed-text"
+
+[output]
+default_format = "markdown"
+output_dir = "./output"
+open_top_n = 5
+
+[chroma]
+persist_dir = "./data/chroma_db"

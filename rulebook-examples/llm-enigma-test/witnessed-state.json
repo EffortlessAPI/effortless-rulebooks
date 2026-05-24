@@ -1,0 +1,538 @@
+{
+    "cams": [
+        {
+            "cam_id": "egg timer cam",
+            "on_arbor": "egg timer arbor",
+            "notch_angle_deg": 0
+        },
+        {
+            "cam_id": "pasta timer cam",
+            "on_arbor": "pasta timer arbor",
+            "notch_angle_deg": 0
+        },
+        {
+            "cam_id": "roast timer cam",
+            "on_arbor": "roast timer arbor",
+            "notch_angle_deg": 0
+        }
+    ],
+    "bells": [
+        {
+            "bell_id": "egg timer bell",
+            "tone_hz": 1800,
+            "times_rung": 1,
+            "diameter_mm": 40,
+            "has_ever_rung": true,
+            "mounted_on_case": "egg timer case"
+        },
+        {
+            "bell_id": "pasta timer bell",
+            "tone_hz": 1800,
+            "times_rung": 0,
+            "diameter_mm": 40,
+            "has_ever_rung": false,
+            "mounted_on_case": "pasta timer case"
+        },
+        {
+            "bell_id": "roast timer bell",
+            "tone_hz": 1800,
+            "times_rung": 0,
+            "diameter_mm": 40,
+            "has_ever_rung": false,
+            "mounted_on_case": "roast timer case"
+        }
+    ],
+    "cases": [
+        {
+            "case_id": "egg timer case",
+            "material": "chromed steel",
+            "houses_timer": "egg timer"
+        },
+        {
+            "case_id": "pasta timer case",
+            "material": "brushed aluminum",
+            "houses_timer": "pasta timer"
+        },
+        {
+            "case_id": "roast timer case",
+            "material": "chromed steel",
+            "houses_timer": "roast timer"
+        }
+    ],
+    "gears": [
+        {
+            "gear_id": "egg timer first gear",
+            "tooth_count": 48,
+            "in_gear_train": "egg timer gear train",
+            "position_in_chain": 1
+        },
+        {
+            "gear_id": "egg timer second gear",
+            "tooth_count": 36,
+            "in_gear_train": "egg timer gear train",
+            "position_in_chain": 2
+        },
+        {
+            "gear_id": "egg timer third gear",
+            "tooth_count": 24,
+            "in_gear_train": "egg timer gear train",
+            "position_in_chain": 3
+        },
+        {
+            "gear_id": "pasta timer first gear",
+            "tooth_count": 48,
+            "in_gear_train": "pasta timer gear train",
+            "position_in_chain": 1
+        },
+        {
+            "gear_id": "pasta timer second gear",
+            "tooth_count": 36,
+            "in_gear_train": "pasta timer gear train",
+            "position_in_chain": 2
+        },
+        {
+            "gear_id": "pasta timer third gear",
+            "tooth_count": 24,
+            "in_gear_train": "pasta timer gear train",
+            "position_in_chain": 3
+        },
+        {
+            "gear_id": "roast timer first gear",
+            "tooth_count": 48,
+            "in_gear_train": "roast timer gear train",
+            "position_in_chain": 1
+        },
+        {
+            "gear_id": "roast timer second gear",
+            "tooth_count": 36,
+            "in_gear_train": "roast timer gear train",
+            "position_in_chain": 2
+        },
+        {
+            "gear_id": "roast timer third gear",
+            "tooth_count": 24,
+            "in_gear_train": "roast timer gear train",
+            "position_in_chain": 3
+        }
+    ],
+    "users": [
+        {
+            "user_id": "the chef",
+            "wind_count": 2,
+            "display_name": "Chef"
+        },
+        {
+            "user_id": "the baker",
+            "wind_count": 1,
+            "display_name": "Baker"
+        }
+    ],
+    "arbors": [
+        {
+            "arbor_id": "egg timer arbor",
+            "in_timer": "egg timer",
+            "diameter_mm": 3
+        },
+        {
+            "arbor_id": "pasta timer arbor",
+            "in_timer": "pasta timer",
+            "diameter_mm": 3
+        },
+        {
+            "arbor_id": "roast timer arbor",
+            "in_timer": "roast timer",
+            "diameter_mm": 3
+        }
+    ],
+    "timers": [
+        {
+            "label": "Egg Timer",
+            "has_rung": true,
+            "is_armed": false,
+            "timer_id": "egg timer",
+            "ring_count": 1,
+            "tick_count": 3,
+            "wind_state": "Unwound",
+            "wind_fraction": 0.00000000000000000000,
+            "max_wind_degrees": 360,
+            "stored_torque_nm": 0.0000000000000000000000,
+            "remaining_minutes": 0.00000000000000000000,
+            "escapement_base_hz": 4,
+            "wind_angle_degrees": 0,
+            "max_spring_torque_nm": 0.08
+        },
+        {
+            "label": "Pasta Timer",
+            "has_rung": false,
+            "is_armed": true,
+            "timer_id": "pasta timer",
+            "ring_count": 0,
+            "tick_count": 2,
+            "wind_state": "Partial",
+            "wind_fraction": 0.33333333333333333333,
+            "max_wind_degrees": 360,
+            "stored_torque_nm": 0.0266666666666666666664,
+            "remaining_minutes": 20.0000000000000000,
+            "escapement_base_hz": 4,
+            "wind_angle_degrees": 120,
+            "max_spring_torque_nm": 0.08
+        },
+        {
+            "label": "Roast Timer",
+            "has_rung": false,
+            "is_armed": true,
+            "timer_id": "roast timer",
+            "ring_count": 0,
+            "tick_count": 1,
+            "wind_state": "Full",
+            "wind_fraction": 1.00000000000000000000,
+            "max_wind_degrees": 360,
+            "stored_torque_nm": 0.0800000000000000000000,
+            "remaining_minutes": 60.0000000000000000,
+            "escapement_base_hz": 4,
+            "wind_angle_degrees": 360,
+            "max_spring_torque_nm": 0.08
+        }
+    ],
+    "pallets": [
+        {
+            "pallet_id": "egg timer pallet",
+            "mass_grams": 0.8,
+            "prong_count": 2,
+            "in_escapement": "egg timer escapement"
+        },
+        {
+            "pallet_id": "pasta timer pallet",
+            "mass_grams": 0.8,
+            "prong_count": 2,
+            "in_escapement": "pasta timer escapement"
+        },
+        {
+            "pallet_id": "roast timer pallet",
+            "mass_grams": 0.8,
+            "prong_count": 2,
+            "in_escapement": "roast timer escapement"
+        }
+    ],
+    "strikers": [
+        {
+            "on_arm": "egg timer hammer arm",
+            "material": "steel",
+            "striker_id": "egg timer striker"
+        },
+        {
+            "on_arm": "pasta timer hammer arm",
+            "material": "steel",
+            "striker_id": "pasta timer striker"
+        },
+        {
+            "on_arm": "roast timer hammer arm",
+            "material": "steel",
+            "striker_id": "roast timer striker"
+        }
+    ],
+    "escapements": [
+        {
+            "in_timer": "egg timer",
+            "escapement_id": "egg timer escapement"
+        },
+        {
+            "in_timer": "pasta timer",
+            "escapement_id": "pasta timer escapement"
+        },
+        {
+            "in_timer": "roast timer",
+            "escapement_id": "roast timer escapement"
+        }
+    ],
+    "gear_trains": [
+        {
+            "in_timer": "egg timer",
+            "gear_count": 3,
+            "gear_train_id": "egg timer gear train",
+            "reduction_ratio": 240,
+            "output_shaft_rpm": 1.00000000000000000000,
+            "timer_escapement_hz": 4
+        },
+        {
+            "in_timer": "pasta timer",
+            "gear_count": 3,
+            "gear_train_id": "pasta timer gear train",
+            "reduction_ratio": 240,
+            "output_shaft_rpm": 1.00000000000000000000,
+            "timer_escapement_hz": 4
+        },
+        {
+            "in_timer": "roast timer",
+            "gear_count": 3,
+            "gear_train_id": "roast timer gear train",
+            "reduction_ratio": 240,
+            "output_shaft_rpm": 1.00000000000000000000,
+            "timer_escapement_hz": 4
+        }
+    ],
+    "hairsprings": [
+        {
+            "hairspring_id": "egg timer hairspring",
+            "attached_to_pallet": "egg timer pallet",
+            "stiffness_nm_per_rad": 0.0004
+        },
+        {
+            "hairspring_id": "pasta timer hairspring",
+            "attached_to_pallet": "pasta timer pallet",
+            "stiffness_nm_per_rad": 0.0004
+        },
+        {
+            "hairspring_id": "roast timer hairspring",
+            "attached_to_pallet": "roast timer pallet",
+            "stiffness_nm_per_rad": 0.0004
+        }
+    ],
+    "hammer_arms": [
+        {
+            "length_mm": 22,
+            "hammer_arm_id": "egg timer hammer arm",
+            "of_bell_hammer": "egg timer bell hammer"
+        },
+        {
+            "length_mm": 22,
+            "hammer_arm_id": "pasta timer hammer arm",
+            "of_bell_hammer": "pasta timer bell hammer"
+        },
+        {
+            "length_mm": 22,
+            "hammer_arm_id": "roast timer hammer arm",
+            "of_bell_hammer": "roast timer bell hammer"
+        }
+    ],
+    "mainsprings": [
+        {
+            "material": "spring steel",
+            "mainspring_id": "egg timer mainspring",
+            "drum_diameter_mm": 18,
+            "inner_end_anchor": "Arbor",
+            "outer_end_anchor": "Case",
+            "wrapped_on_arbor": "egg timer arbor"
+        },
+        {
+            "material": "spring steel",
+            "mainspring_id": "pasta timer mainspring",
+            "drum_diameter_mm": 18,
+            "inner_end_anchor": "Arbor",
+            "outer_end_anchor": "Case",
+            "wrapped_on_arbor": "pasta timer arbor"
+        },
+        {
+            "material": "spring steel",
+            "mainspring_id": "roast timer mainspring",
+            "drum_diameter_mm": 18,
+            "inner_end_anchor": "Arbor",
+            "outer_end_anchor": "Case",
+            "wrapped_on_arbor": "roast timer arbor"
+        }
+    ],
+    "ring_events": [
+        {
+            "struck": "egg timer bell",
+            "occurred_at": "2026-05-21T02:55:00-05:00",
+            "ring_event_id": "egg timer ding",
+            "happened_on_timer": "egg timer"
+        }
+    ],
+    "tick_events": [
+        {
+            "occurred_at": "2026-05-21T02:45:15-05:00",
+            "at_escapement": "egg timer escapement",
+            "tick_event_id": "first egg tick",
+            "happened_on_timer": "egg timer"
+        },
+        {
+            "occurred_at": "2026-05-21T02:50:00-05:00",
+            "at_escapement": "egg timer escapement",
+            "tick_event_id": "second egg tick",
+            "happened_on_timer": "egg timer"
+        },
+        {
+            "occurred_at": "2026-05-21T02:54:59-05:00",
+            "at_escapement": "egg timer escapement",
+            "tick_event_id": "third egg tick",
+            "happened_on_timer": "egg timer"
+        },
+        {
+            "occurred_at": "2026-05-21T04:30:15-05:00",
+            "at_escapement": "pasta timer escapement",
+            "tick_event_id": "first pasta tick",
+            "happened_on_timer": "pasta timer"
+        },
+        {
+            "occurred_at": "2026-05-21T04:35:00-05:00",
+            "at_escapement": "pasta timer escapement",
+            "tick_event_id": "second pasta tick",
+            "happened_on_timer": "pasta timer"
+        },
+        {
+            "occurred_at": "2026-05-21T05:00:15-05:00",
+            "at_escapement": "roast timer escapement",
+            "tick_event_id": "first roast tick",
+            "happened_on_timer": "roast timer"
+        }
+    ],
+    "bell_hammers": [
+        {
+            "in_timer": "egg timer",
+            "arm_torque_nm": 0.02,
+            "release_state": "Released",
+            "bell_hammer_id": "egg timer bell hammer",
+            "timer_has_rung": true
+        },
+        {
+            "in_timer": "pasta timer",
+            "arm_torque_nm": 0.02,
+            "release_state": "Held",
+            "bell_hammer_id": "pasta timer bell hammer",
+            "timer_has_rung": false
+        },
+        {
+            "in_timer": "roast timer",
+            "arm_torque_nm": 0.02,
+            "release_state": "Held",
+            "bell_hammer_id": "roast timer bell hammer",
+            "timer_has_rung": false
+        }
+    ],
+    "wind_actions": [
+        {
+            "occurred_at": "2026-05-21T02:45:00-05:00",
+            "turned_knob": "egg timer knob",
+            "performed_by": "the chef",
+            "wind_action_id": "the chef wound the egg timer",
+            "target_angle_deg": 60
+        },
+        {
+            "occurred_at": "2026-05-21T04:30:00-05:00",
+            "turned_knob": "pasta timer knob",
+            "performed_by": "the baker",
+            "wind_action_id": "the baker wound the pasta timer",
+            "target_angle_deg": 120
+        },
+        {
+            "occurred_at": "2026-05-21T05:00:00-05:00",
+            "turned_knob": "roast timer knob",
+            "performed_by": "the chef",
+            "wind_action_id": "the chef wound the roast timer",
+            "target_angle_deg": 360
+        }
+    ],
+    "dial_pointers": [
+        {
+            "length_mm": 14,
+            "dial_pointer_id": "egg timer dial pointer",
+            "on_output_shaft": "egg timer output shaft"
+        },
+        {
+            "length_mm": 14,
+            "dial_pointer_id": "pasta timer dial pointer",
+            "on_output_shaft": "pasta timer output shaft"
+        },
+        {
+            "length_mm": 14,
+            "dial_pointer_id": "roast timer dial pointer",
+            "on_output_shaft": "roast timer output shaft"
+        }
+    ],
+    "output_shafts": [
+        {
+            "current_rpm": 1.00000000000000000000,
+            "in_gear_train": "egg timer gear train",
+            "output_shaft_id": "egg timer output shaft"
+        },
+        {
+            "current_rpm": 1.00000000000000000000,
+            "in_gear_train": "pasta timer gear train",
+            "output_shaft_id": "pasta timer output shaft"
+        },
+        {
+            "current_rpm": 1.00000000000000000000,
+            "in_gear_train": "roast timer gear train",
+            "output_shaft_id": "roast timer output shaft"
+        }
+    ],
+    "winding_knobs": [
+        {
+            "scale_max": 60,
+            "scale_min": 0,
+            "pointer_fixed": true,
+            "scale_reading": 0.00000000000000000000,
+            "fixed_to_timer": "egg timer",
+            "timer_max_wind": 360,
+            "wind_direction": "clockwise",
+            "winding_knob_id": "egg timer knob",
+            "timer_wind_angle": 0,
+            "shaft_diameter_mm": 4
+        },
+        {
+            "scale_max": 60,
+            "scale_min": 0,
+            "pointer_fixed": true,
+            "scale_reading": 19.99999999999999999980,
+            "fixed_to_timer": "pasta timer",
+            "timer_max_wind": 360,
+            "wind_direction": "clockwise",
+            "winding_knob_id": "pasta timer knob",
+            "timer_wind_angle": 120,
+            "shaft_diameter_mm": 4
+        },
+        {
+            "scale_max": 60,
+            "scale_min": 0,
+            "pointer_fixed": true,
+            "scale_reading": 60.00000000000000000000,
+            "fixed_to_timer": "roast timer",
+            "timer_max_wind": 360,
+            "wind_direction": "clockwise",
+            "winding_knob_id": "roast timer knob",
+            "timer_wind_angle": 360,
+            "shaft_diameter_mm": 4
+        }
+    ],
+    "hammer_catches": [
+        {
+            "is_engaged": false,
+            "of_bell_hammer": "egg timer bell hammer",
+            "hammer_catch_id": "egg timer hammer catch",
+            "engaged_with_cam": "egg timer cam",
+            "hammer_release_state": "Released"
+        },
+        {
+            "is_engaged": true,
+            "of_bell_hammer": "pasta timer bell hammer",
+            "hammer_catch_id": "pasta timer hammer catch",
+            "engaged_with_cam": "pasta timer cam",
+            "hammer_release_state": "Held"
+        },
+        {
+            "is_engaged": true,
+            "of_bell_hammer": "roast timer bell hammer",
+            "hammer_catch_id": "roast timer hammer catch",
+            "engaged_with_cam": "roast timer cam",
+            "hammer_release_state": "Held"
+        }
+    ],
+    "escapement_wheels": [
+        {
+            "tooth_count": 30,
+            "in_escapement": "egg timer escapement",
+            "escapement_wheel_id": "egg timer escapement wheel"
+        },
+        {
+            "tooth_count": 30,
+            "in_escapement": "pasta timer escapement",
+            "escapement_wheel_id": "pasta timer escapement wheel"
+        },
+        {
+            "tooth_count": 30,
+            "in_escapement": "roast timer escapement",
+            "escapement_wheel_id": "roast timer escapement wheel"
+        }
+    ]
+}

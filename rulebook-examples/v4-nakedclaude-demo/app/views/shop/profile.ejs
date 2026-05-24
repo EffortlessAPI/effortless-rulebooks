@@ -1,0 +1,70 @@
+<%- include('../partials/header', { title: 'Profile' }) %>
+<h1>Profile · <%= customer.name %></h1>
+<nav class="subnav"><a href="/shop/account/<%= customer.client_id %>">Overview</a> <a href="/shop/account/<%= customer.client_id %>/orders">Orders</a> <a href="/shop/account/<%= customer.client_id %>/payments">Payments</a> <a href="/shop/account/<%= customer.client_id %>/profile">Profile</a> <span class="muted">· <%= customer.name %></span></nav>
+
+<form method="post" action="/shop/account/<%= customer.client_id %>/profile" class="stacked">
+  <label><span>Name</span><input type="text" name="name" value="<%= customer.name || '' %>" /></label>
+  <label><span>Email</span><input type="email" name="email" value="<%= customer.email || '' %>" /></label>
+  <label><span>Phone</span><input type="text" name="phone" value="<%= customer.phone || '' %>" /></label>
+  <label><span>Company</span><input type="text" name="company_name" value="<%= customer.company_name || '' %>" /></label>
+  <label><span>Notes</span><textarea name="notes" rows="3"><%= customer.notes || '' %></textarea></label>
+  <button class="btn" type="submit">Save</button>
+</form>
+
+<h2>Addresses</h2>
+<% addresses.forEach(a => { %>
+  <form method="post" action="/shop/account/<%= customer.client_id %>/addresses/<%= a.addresse_id %>" class="card stacked">
+    <label><span>Type</span>
+      <select name="type_of_address">
+        <option value="">— none —</option>
+        <% types.forEach(t => { %>
+          <option value="<%= t.types_of_addresse_id %>" <%= a.type_of_address === t.types_of_addresse_id ? 'selected' : '' %>><%= t.name %></option>
+        <% }) %>
+      </select>
+    </label>
+    <label><span>Attention</span><input type="text" name="attention" value="<%= a.attention || '' %>" /></label>
+    <label><span>Address 1</span><input type="text" name="address1" value="<%= a.address1 || '' %>" /></label>
+    <label><span>Address 2</span><input type="text" name="address2" value="<%= a.address2 || '' %>" /></label>
+    <label><span>City</span><input type="text" name="city" value="<%= a.city || '' %>" /></label>
+    <label><span>State</span>
+      <select name="state">
+        <option value="">— none —</option>
+        <% states.forEach(s => { %>
+          <option value="<%= s.state_id %>" <%= a.state === s.state_id ? 'selected' : '' %>><%= s.text %> (<%= s.code %>)</option>
+        <% }) %>
+      </select>
+    </label>
+    <label><span>Zip</span><input type="text" name="zip" value="<%= a.zip || '' %>" /></label>
+    <div class="row">
+      <button class="btn" type="submit">Save</button>
+      <button class="btn danger" type="submit" formaction="/shop/account/<%= customer.client_id %>/addresses/<%= a.addresse_id %>/delete" formmethod="post" onclick="return confirm('Delete address?')">Delete</button>
+    </div>
+  </form>
+<% }) %>
+
+<h3>Add new address</h3>
+<form method="post" action="/shop/account/<%= customer.client_id %>/addresses" class="card stacked">
+  <label><span>Type</span>
+    <select name="type_of_address">
+      <option value="">— none —</option>
+      <% types.forEach(t => { %>
+        <option value="<%= t.types_of_addresse_id %>"><%= t.name %></option>
+      <% }) %>
+    </select>
+  </label>
+  <label><span>Attention</span><input type="text" name="attention" /></label>
+  <label><span>Address 1</span><input type="text" name="address1" /></label>
+  <label><span>Address 2</span><input type="text" name="address2" /></label>
+  <label><span>City</span><input type="text" name="city" /></label>
+  <label><span>State</span>
+    <select name="state">
+      <option value="">— none —</option>
+      <% states.forEach(s => { %>
+        <option value="<%= s.state_id %>"><%= s.text %> (<%= s.code %>)</option>
+      <% }) %>
+    </select>
+  </label>
+  <label><span>Zip</span><input type="text" name="zip" /></label>
+  <button class="btn" type="submit">Add address</button>
+</form>
+<%- include('../partials/footer') %>

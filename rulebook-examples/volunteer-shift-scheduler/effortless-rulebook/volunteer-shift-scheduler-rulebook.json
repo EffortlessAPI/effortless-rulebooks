@@ -1,0 +1,520 @@
+{
+  "$schema": "https://example.com/cmcc-schema/v1",
+  "Name": "Volunteer Shift Scheduler",
+  "Description": "Coordinate volunteers across event shifts. The live cascade: coordinator edits raw inputs (needed count, shift hours, required skill, volunteer reliability, assignments) → per-shift coverage status, per-volunteer load (under/ok/over), and an event-level A-F staffing grade all fall out automatically.",
+  "Events": {
+    "Description": "Table: Events — top-level container (a festival, food bank shift, conference, etc.).",
+    "schema": [
+      {
+        "name": "EventId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Display name of the event."
+      },
+      {
+        "name": "EventDate",
+        "datatype": "datetime",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "ShiftCount",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Total shifts attached to this event.",
+        "formula": "=COUNTIFS(Shifts!{{Event}}, Events!{{EventId}})"
+      },
+      {
+        "name": "TotalSlotsNeeded",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Sum of needed-count across all shifts in this event.",
+        "formula": "=SUMIFS(Shifts!{{NeededCount}}, Shifts!{{Event}}, Events!{{EventId}})"
+      },
+      {
+        "name": "TotalSlotsFilled",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Sum of filled-count across all shifts in this event.",
+        "formula": "=SUMIFS(Shifts!{{FilledCount}}, Shifts!{{Event}}, Events!{{EventId}})"
+      },
+      {
+        "name": "CoveragePercent",
+        "datatype": "number",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TotalSlotsFilled / TotalSlotsNeeded (0..1).",
+        "formula": "=IF({{TotalSlotsNeeded}}>0, {{TotalSlotsFilled}}/{{TotalSlotsNeeded}}, 0)"
+      },
+      {
+        "name": "StaffingGrade",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "A-F letter grade from CoveragePercent. A: >=95%, B: >=85%, C: >=70%, D: >=50%, F: below.",
+        "formula": "=IF({{CoveragePercent}}>=0.95, \"A\", IF({{CoveragePercent}}>=0.85, \"B\", IF({{CoveragePercent}}>=0.70, \"C\", IF({{CoveragePercent}}>=0.50, \"D\", \"F\"))))"
+      }
+    ],
+    "data": [
+      {
+        "EventId": "harvest-festival-2026",
+        "Name": "Harvest Festival",
+        "EventDate": "2026-10-12T09:00:00Z",
+        "ShiftCount": 4,
+        "TotalSlotsNeeded": 14,
+        "TotalSlotsFilled": 12,
+        "CoveragePercent": 0.857,
+        "StaffingGrade": "B"
+      },
+      {
+        "EventId": "food-bank-saturday",
+        "Name": "Food Bank Saturday",
+        "EventDate": "2026-11-07T08:00:00Z",
+        "ShiftCount": 2,
+        "TotalSlotsNeeded": 6,
+        "TotalSlotsFilled": 6,
+        "CoveragePercent": 1.0,
+        "StaffingGrade": "A"
+      }
+    ]
+  },
+  "Volunteers": {
+    "Description": "Table: Volunteers — people available to be slotted into shifts.",
+    "schema": [
+      {
+        "name": "VolunteerId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Display name.",
+        "formula": "={{FirstName}} & \" \" & {{LastName}}"
+      },
+      {
+        "name": "FirstName",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "LastName",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "EmailAddress",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Used as the click-to-login identity."
+      },
+      {
+        "name": "ReliabilityScore",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": true,
+        "Description": "0..1 — coordinator's confidence the volunteer will show up. Drives per-shift coverage weighting."
+      },
+      {
+        "name": "MaxHours",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Volunteer's stated maximum hours for this scheduling period."
+      },
+      {
+        "name": "AssignmentCount",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Number of shifts this volunteer is assigned to.",
+        "formula": "=COUNTIFS(Assignments!{{Volunteer}}, Volunteers!{{VolunteerId}})"
+      },
+      {
+        "name": "AssignedHours",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Sum of DurationHours across this volunteer's assigned shifts.",
+        "formula": "=SUMIFS(Assignments!{{ShiftDurationHours}}, Assignments!{{Volunteer}}, Volunteers!{{VolunteerId}})"
+      },
+      {
+        "name": "LoadStatus",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "under | ok | over. Under: <50% of MaxHours. Over: >100%. Otherwise ok.",
+        "formula": "=IF({{MaxHours}}>0, IF({{AssignedHours}}>{{MaxHours}}, \"over\", IF({{AssignedHours}}<({{MaxHours}}*0.5), \"under\", \"ok\")), \"under\")"
+      }
+    ],
+    "data": [
+      {
+        "VolunteerId": "morgan-lee",
+        "FirstName": "Morgan",
+        "LastName": "Lee",
+        "EmailAddress": "morgan@example.com",
+        "ReliabilityScore": 0.95,
+        "MaxHours": 10,
+        "Name": "Morgan Lee",
+        "AssignmentCount": 2,
+        "AssignedHours": 7,
+        "LoadStatus": "ok"
+      },
+      {
+        "VolunteerId": "sam-park",
+        "FirstName": "Sam",
+        "LastName": "Park",
+        "EmailAddress": "sam@example.com",
+        "ReliabilityScore": 0.80,
+        "MaxHours": 8,
+        "Name": "Sam Park",
+        "AssignmentCount": 3,
+        "AssignedHours": 10,
+        "LoadStatus": "over"
+      },
+      {
+        "VolunteerId": "jamie-rivera",
+        "FirstName": "Jamie",
+        "LastName": "Rivera",
+        "EmailAddress": "jamie@example.com",
+        "ReliabilityScore": 0.90,
+        "MaxHours": 12,
+        "Name": "Jamie Rivera",
+        "AssignmentCount": 1,
+        "AssignedHours": 3,
+        "LoadStatus": "under"
+      },
+      {
+        "VolunteerId": "alex-kim",
+        "FirstName": "Alex",
+        "LastName": "Kim",
+        "EmailAddress": "alex@example.com",
+        "ReliabilityScore": 0.85,
+        "MaxHours": 10,
+        "Name": "Alex Kim",
+        "AssignmentCount": 2,
+        "AssignedHours": 7,
+        "LoadStatus": "ok"
+      },
+      {
+        "VolunteerId": "casey-coordinator",
+        "FirstName": "Casey",
+        "LastName": "Cole",
+        "EmailAddress": "casey@example.com",
+        "ReliabilityScore": 1.0,
+        "MaxHours": 20,
+        "Name": "Casey Cole",
+        "AssignmentCount": 0,
+        "AssignedHours": 0,
+        "LoadStatus": "under"
+      }
+    ]
+  },
+  "Shifts": {
+    "Description": "Table: Shifts — a time block within an event needing N people with a required skill.",
+    "schema": [
+      {
+        "name": "ShiftId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Short label (e.g. \"Setup Morning\")."
+      },
+      {
+        "name": "Event",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "RelatedTo": "Events",
+        "isReversed": false,
+        "prefersSingleRecordLink": true,
+        "Description": "Parent event."
+      },
+      {
+        "name": "EventName",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "formula": "=INDEX(Events!{{Name}}, MATCH(Shifts!{{Event}}, Events!{{EventId}}, 0))"
+      },
+      {
+        "name": "RequiredSkill",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Free-text skill tag (e.g. \"setup\", \"intake\", \"food-handler\")."
+      },
+      {
+        "name": "DurationHours",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Length of the shift in hours; drives per-volunteer load."
+      },
+      {
+        "name": "NeededCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true,
+        "Description": "How many volunteers the coordinator wants on this shift."
+      },
+      {
+        "name": "FilledCount",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Number of volunteers currently assigned.",
+        "formula": "=COUNTIFS(Assignments!{{Shift}}, Shifts!{{ShiftId}})"
+      },
+      {
+        "name": "CoverageStatus",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "understaffed | covered | overstaffed.",
+        "formula": "=IF({{FilledCount}}<{{NeededCount}}, \"understaffed\", IF({{FilledCount}}>{{NeededCount}}, \"overstaffed\", \"covered\"))"
+      }
+    ],
+    "data": [
+      {
+        "ShiftId": "harvest-setup-morning",
+        "Name": "Setup Morning",
+        "Event": "harvest-festival-2026",
+        "EventName": "Harvest Festival",
+        "RequiredSkill": "setup",
+        "DurationHours": 3,
+        "NeededCount": 4,
+        "FilledCount": 3,
+        "CoverageStatus": "understaffed"
+      },
+      {
+        "ShiftId": "harvest-intake-midday",
+        "Name": "Intake Midday",
+        "Event": "harvest-festival-2026",
+        "EventName": "Harvest Festival",
+        "RequiredSkill": "intake",
+        "DurationHours": 4,
+        "NeededCount": 3,
+        "FilledCount": 3,
+        "CoverageStatus": "covered"
+      },
+      {
+        "ShiftId": "harvest-food-afternoon",
+        "Name": "Food Service Afternoon",
+        "Event": "harvest-festival-2026",
+        "EventName": "Harvest Festival",
+        "RequiredSkill": "food-handler",
+        "DurationHours": 4,
+        "NeededCount": 4,
+        "FilledCount": 3,
+        "CoverageStatus": "understaffed"
+      },
+      {
+        "ShiftId": "harvest-teardown-evening",
+        "Name": "Teardown Evening",
+        "Event": "harvest-festival-2026",
+        "EventName": "Harvest Festival",
+        "RequiredSkill": "setup",
+        "DurationHours": 3,
+        "NeededCount": 3,
+        "FilledCount": 3,
+        "CoverageStatus": "covered"
+      },
+      {
+        "ShiftId": "foodbank-sort-morning",
+        "Name": "Sort Morning",
+        "Event": "food-bank-saturday",
+        "EventName": "Food Bank Saturday",
+        "RequiredSkill": "intake",
+        "DurationHours": 3,
+        "NeededCount": 3,
+        "FilledCount": 3,
+        "CoverageStatus": "covered"
+      },
+      {
+        "ShiftId": "foodbank-distrib-afternoon",
+        "Name": "Distribution Afternoon",
+        "Event": "food-bank-saturday",
+        "EventName": "Food Bank Saturday",
+        "RequiredSkill": "food-handler",
+        "DurationHours": 3,
+        "NeededCount": 3,
+        "FilledCount": 3,
+        "CoverageStatus": "covered"
+      }
+    ]
+  },
+  "Assignments": {
+    "Description": "Table: Assignments — a volunteer slotted into a shift. Join table between Volunteers and Shifts (ERB does not allow direct many-to-many).",
+    "schema": [
+      {
+        "name": "AssignmentId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Display label (VolunteerName @ ShiftName).",
+        "formula": "={{VolunteerName}} & \" @ \" & {{ShiftName}}"
+      },
+      {
+        "name": "Volunteer",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "RelatedTo": "Volunteers",
+        "isReversed": false,
+        "prefersSingleRecordLink": true
+      },
+      {
+        "name": "Shift",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "RelatedTo": "Shifts",
+        "isReversed": false,
+        "prefersSingleRecordLink": true
+      },
+      {
+        "name": "VolunteerName",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "formula": "=INDEX(Volunteers!{{Name}}, MATCH(Assignments!{{Volunteer}}, Volunteers!{{VolunteerId}}, 0))"
+      },
+      {
+        "name": "ShiftName",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "formula": "=INDEX(Shifts!{{Name}}, MATCH(Assignments!{{Shift}}, Shifts!{{ShiftId}}, 0))"
+      },
+      {
+        "name": "ShiftDurationHours",
+        "datatype": "number",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Pulled through to support per-volunteer AssignedHours aggregation.",
+        "formula": "=INDEX(Shifts!{{DurationHours}}, MATCH(Assignments!{{Shift}}, Shifts!{{ShiftId}}, 0))"
+      }
+    ],
+    "data": [
+      {
+        "AssignmentId": "a-morgan-setup",
+        "Volunteer": "morgan-lee",
+        "Shift": "harvest-setup-morning",
+        "VolunteerName": "Morgan Lee",
+        "ShiftName": "Setup Morning",
+        "ShiftDurationHours": 3,
+        "Name": "Morgan Lee @ Setup Morning"
+      },
+      {
+        "AssignmentId": "a-morgan-intake",
+        "Volunteer": "morgan-lee",
+        "Shift": "harvest-intake-midday",
+        "VolunteerName": "Morgan Lee",
+        "ShiftName": "Intake Midday",
+        "ShiftDurationHours": 4,
+        "Name": "Morgan Lee @ Intake Midday"
+      },
+      {
+        "AssignmentId": "a-sam-setup",
+        "Volunteer": "sam-park",
+        "Shift": "harvest-setup-morning",
+        "VolunteerName": "Sam Park",
+        "ShiftName": "Setup Morning",
+        "ShiftDurationHours": 3,
+        "Name": "Sam Park @ Setup Morning"
+      },
+      {
+        "AssignmentId": "a-sam-intake",
+        "Volunteer": "sam-park",
+        "Shift": "harvest-intake-midday",
+        "VolunteerName": "Sam Park",
+        "ShiftName": "Intake Midday",
+        "ShiftDurationHours": 4,
+        "Name": "Sam Park @ Intake Midday"
+      },
+      {
+        "AssignmentId": "a-sam-teardown",
+        "Volunteer": "sam-park",
+        "Shift": "harvest-teardown-evening",
+        "VolunteerName": "Sam Park",
+        "ShiftName": "Teardown Evening",
+        "ShiftDurationHours": 3,
+        "Name": "Sam Park @ Teardown Evening"
+      },
+      {
+        "AssignmentId": "a-jamie-setup",
+        "Volunteer": "jamie-rivera",
+        "Shift": "harvest-setup-morning",
+        "VolunteerName": "Jamie Rivera",
+        "ShiftName": "Setup Morning",
+        "ShiftDurationHours": 3,
+        "Name": "Jamie Rivera @ Setup Morning"
+      },
+      {
+        "AssignmentId": "a-alex-intake",
+        "Volunteer": "alex-kim",
+        "Shift": "harvest-intake-midday",
+        "VolunteerName": "Alex Kim",
+        "ShiftName": "Intake Midday",
+        "ShiftDurationHours": 4,
+        "Name": "Alex Kim @ Intake Midday"
+      },
+      {
+        "AssignmentId": "a-alex-teardown",
+        "Volunteer": "alex-kim",
+        "Shift": "harvest-teardown-evening",
+        "VolunteerName": "Alex Kim",
+        "ShiftName": "Teardown Evening",
+        "ShiftDurationHours": 3,
+        "Name": "Alex Kim @ Teardown Evening"
+      },
+      {
+        "AssignmentId": "a-morgan-foodbank-sort",
+        "Volunteer": "morgan-lee",
+        "Shift": "foodbank-sort-morning",
+        "VolunteerName": "Morgan Lee",
+        "ShiftName": "Sort Morning",
+        "ShiftDurationHours": 3,
+        "Name": "Morgan Lee @ Sort Morning"
+      },
+      {
+        "AssignmentId": "a-jamie-foodbank-distrib",
+        "Volunteer": "jamie-rivera",
+        "Shift": "foodbank-distrib-afternoon",
+        "VolunteerName": "Jamie Rivera",
+        "ShiftName": "Distribution Afternoon",
+        "ShiftDurationHours": 3,
+        "Name": "Jamie Rivera @ Distribution Afternoon"
+      }
+    ]
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "timestamp": "2026-04-20-1700",
+  "created_at": "2026-04-20T22:18:56.264Z",
+  "naked_dir": "/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/naked-claude-vs-effortless-claude/Naked-Claude-Experiments/2026-04-20-1700-naked",
+  "effortless_dir": "/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/naked-claude-vs-effortless-claude/Naked-Claude-Experiments/2026-04-20-1700-effortless",
+  "db_naked": "2026-04-20-1700-naked",
+  "db_effortless": "2026-04-20-1700-effortless",
+  "completed_phases": [
+    1,
+    2,
+    3,
+    4
+  ],
+  "phase_history": {
+    "2": {
+      "started_at": "2026-04-20T22:50:15.954Z",
+      "ended_at": "2026-04-20T23:01:39.919Z",
+      "naked_exit": 0,
+      "naked_elapsed": 542,
+      "effortless_exit": 0,
+      "effortless_elapsed": 684
+    },
+    "3": {
+      "started_at": "2026-04-20T23:10:45.850Z",
+      "ended_at": "2026-04-20T23:30:43.564Z",
+      "naked_exit": 0,
+      "naked_elapsed": 1198,
+      "effortless_exit": 1,
+      "effortless_elapsed": 1046
+    },
+    "4": {
+      "started_at": "2026-04-21T00:57:06.676Z",
+      "ended_at": "2026-04-21T01:13:11.699Z",
+      "naked_exit": 0,
+      "naked_elapsed": 557,
+      "effortless_exit": 0,
+      "effortless_elapsed": 965
+    }
+  },
+  "last_run_at": "2026-04-21T01:13:11.910Z"
+}

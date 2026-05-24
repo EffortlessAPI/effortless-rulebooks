@@ -1,0 +1,50 @@
+{
+  "ShowHidden": false,
+  "ShowAllFiles": false,
+  "CurrentPath": null,
+  "SSoTmeProjectFiles": null,
+  "SSoTmeProjectId": "2625c357-c514-4901-805c-284c094d9352",
+  "Name": "product-inventory-demo",
+  "ProjectSettings": [
+    {
+      "Name": "project-name",
+      "Value": "product-inventory-demo"
+    }
+  ],
+  "ProjectTranspilers": [
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "rulebooktopostgres",
+      "RelativePath": "/postgres-bootstrap",
+      "CommandLine": "rulebook-to-postgres -i ../effortless-rulebook/product-inventory-demo-rulebook.json",
+      "IsDisabled": false,
+      "PinnedVersion": "v2026.05.09.1738",
+      "LastVersionUsed": "v2026.05.09.1738",
+      "LastUrl": "https://effortless-rulebook-to-postgres-v2026-05-09-1738-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "execute",
+      "RelativePath": "/postgres-bootstrap",
+      "CommandLine": "-exec ./init-db.sh",
+      "IsDisabled": false
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "rulebooktoreactexplainerdag",
+      "RelativePath": "/web/src",
+      "CommandLine": "rulebook-to-react-explainer-dag -i ../../effortless-rulebook/product-inventory-demo-rulebook.json",
+      "IsDisabled": false,
+      "LastVersionUsed": "v2026.05.20.0229",
+      "LastUrl": "https://effortless-rulebook-to-react-exp-v2026-05-20-0229-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "rulebooktoxlsx",
+      "RelativePath": "/excel-export",
+      "CommandLine": "rulebook-to-xlsx -i effortless-export.json -o rulebook.xlsx",
+      "IsDisabled": true,
+      "PinnedVersion": "v2026.05.20.0330"
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+<%- include('_header', { user: user }) %>
+<h1><%= c.name %></h1>
+<div class="card">
+  <p><strong>Status:</strong>
+    <span class="badge <%= c.is_stopped ? 'stopped':'ok' %>"><%= c.status_display_name %></span>
+  </p>
+  <p><%= c.status_description || '' %></p>
+  <p><strong>Notes:</strong> <%= c.notes || '' %></p>
+</div>
+<p><a href="/customer">← back</a></p>
+<%- include('_footer') %>

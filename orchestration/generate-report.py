@@ -14,6 +14,7 @@ import json
 import os
 import pickle
 import re
+import sys
 from datetime import datetime
 from html import escape
 
@@ -22,18 +23,64 @@ from html import escape
 # =============================================================================
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-PROJECT_ROOT = os.path.dirname(SCRIPT_DIR)
-TESTING_DIR = os.path.join(PROJECT_ROOT, "testing")
-ANSWER_KEYS_DIR = os.path.join(TESTING_DIR, "answer-keys")
-BLANK_TESTS_DIR = os.path.join(TESTING_DIR, "blank-tests")
-SUBSTRATES_DIR = os.path.join(PROJECT_ROOT, "execution-substrates")
-RULEBOOK_DIR = os.path.join(PROJECT_ROOT, "effortless-rulebook")
-RULEBOOK_PATH = os.path.join(RULEBOOK_DIR, "effortless-rulebook.json")
-POSTGRES_DIR = os.path.join(PROJECT_ROOT, "licensed-effortless-tools", "postgres")
-_EFFORTLESS_JSON = os.path.join(PROJECT_ROOT, "effortless.json")
-_LEGACY_SSOTME_JSON = os.path.join(PROJECT_ROOT, "ssotme.json")
-SSOTME_JSON = _EFFORTLESS_JSON if os.path.exists(_EFFORTLESS_JSON) else _LEGACY_SSOTME_JSON
-DEFAULT_OUTPUT = os.path.join(SCRIPT_DIR, "orchestration-report.html")
+REPO_ROOT = os.path.dirname(SCRIPT_DIR)
+# These globals are placeholders. The script REQUIRES --rulebook on the
+# command line; _apply_rulebook_override() re-derives every path from it.
+# Running without --rulebook intentionally fails — there is no default domain.
+PROJECT_ROOT = None
+TESTING_DIR = None
+ANSWER_KEYS_DIR = None
+BLANK_TESTS_DIR = None
+SUBSTRATES_DIR = os.path.join(REPO_ROOT, "execution-substrates")
+RULEBOOK_DIR = None
+RULEBOOK_PATH = None
+POSTGRES_DIR = os.path.join(REPO_ROOT, "postgres")
+SSOTME_JSON = None
+DEFAULT_OUTPUT = None
+
+
+def _get_substrate_test_answers_dir(substrate_name: str) -> str:
+    """Return the domain-scoped test-answers dir for a substrate."""
+    return os.path.join(TESTING_DIR, substrate_name, "test-answers")
+
+
+def _apply_rulebook_override(rulebook_path: str):
+    """Re-derive all path globals from an explicit rulebook path. Fails loudly
+    if the path doesn't exist or doesn't follow the <domain>-rulebook.json
+    convention inside rulebook-examples/<domain>/effortless-rulebook/."""
+    global PROJECT_ROOT, TESTING_DIR, ANSWER_KEYS_DIR, BLANK_TESTS_DIR
+    global RULEBOOK_DIR, RULEBOOK_PATH
+    global SSOTME_JSON, DEFAULT_OUTPUT
+
+    abs_path = os.path.abspath(rulebook_path)
+    if not os.path.exists(abs_path):
+        raise FileNotFoundError(
+            f"Rulebook not found: {abs_path}. "
+            "Pass the exact path to a <domain>-rulebook.json file."
+        )
+    RULEBOOK_PATH = abs_path
+    RULEBOOK_DIR = os.path.dirname(RULEBOOK_PATH)
+    PROJECT_ROOT = os.path.dirname(RULEBOOK_DIR)
+    domain = os.path.basename(PROJECT_ROOT)
+    expected_filename = f"{domain}-rulebook.json"
+    actual_filename = os.path.basename(RULEBOOK_PATH)
+    if actual_filename != expected_filename:
+        raise ValueError(
+            f"Rulebook filename mismatch: got '{actual_filename}', "
+            f"expected '{expected_filename}' (derived from domain '{domain}'). "
+            "Rename the file or pass the correct path."
+        )
+    TESTING_DIR = os.path.join(PROJECT_ROOT, "testing")
+    ANSWER_KEYS_DIR = os.path.join(TESTING_DIR, "answer-keys")
+    BLANK_TESTS_DIR = os.path.join(TESTING_DIR, "blank-tests")
+    effortless_json = os.path.join(PROJECT_ROOT, "effortless.json")
+    if not os.path.exists(effortless_json):
+        raise FileNotFoundError(
+            f"effortless.json not found at {effortless_json}. "
+            f"Domain '{domain}' is not a valid Effortless project."
+        )
+    SSOTME_JSON = effortless_json
+    DEFAULT_OUTPUT = os.path.join(PROJECT_ROOT, "orchestration-report.html")
 
 # Airtable was formerly treated as a "utility" substrate excluded from the
 # report. It's now a regular graded substrate — it scores 100% because it
@@ -50,8 +97,8 @@ EFFORTLESS_SUBSTRATES = {
 }
 
 # Stable per-substrate color palette. Each substrate keeps the same color
-# across runs so a viewer builds muscle memory ("green = cobol"). New
-# substrates fall back to neutral grey until added here.
+# across runs so a viewer builds muscle memory ("green = cobol"). Substrates
+# not listed below render as neutral grey until added here.
 SUBSTRATE_COLORS = {
     # Open-source / local substrates
     "python":       "#3776AB",  # python blue
@@ -92,9 +139,12 @@ def display_name(substrate: str) -> str:
 # =============================================================================
 
 def load_rulebook():
-    """Load the effortless-rulebook.json file"""
-    if not os.path.exists(RULEBOOK_PATH):
-        return {}
+    """Load the rulebook JSON. Fails loudly if missing."""
+    if not RULEBOOK_PATH or not os.path.exists(RULEBOOK_PATH):
+        raise FileNotFoundError(
+            f"Rulebook not found at {RULEBOOK_PATH}. "
+            "Pass --rulebook with an exact path to a <domain>-rulebook.json."
+        )
     with open(RULEBOOK_PATH, 'r') as f:
         return json.load(f)
 
@@ -239,43 +289,66 @@ def load_blank_tests():
 
 
 def get_substrates():
-    """Get list of all substrate directories visible in the report."""
-    substrates = []
+    """Return the substrates this project actually exercises.
+
+    Scoping rule (mirrors orchestrate.sh::get_valid_substrates): intersect
+    the substrates declared by the active project's effortless.json
+    ProjectTranspilers with the substrate directories that exist on disk.
+    Falls back to "everything on disk" only when no effortless.json is
+    present — keeps legacy / un-initialized projects working.
+    """
+    on_disk = []
     if os.path.isdir(SUBSTRATES_DIR):
         for name in sorted(os.listdir(SUBSTRATES_DIR)):
             path = os.path.join(SUBSTRATES_DIR, name)
             if os.path.isdir(path) and not name.startswith('.'):
-                substrates.append(name)
-    return substrates
+                on_disk.append(name)
+
+    # Derive the active domain from PROJECT_ROOT — _apply_rulebook_override
+    # set PROJECT_ROOT to the domain dir (rulebook-examples/<domain>).
+    try:
+        sys.path.insert(0, SCRIPT_DIR)
+        from shared import get_active_project_substrates
+        domain = os.path.basename(PROJECT_ROOT.rstrip(os.sep))
+        declared = get_active_project_substrates(domain)
+    except Exception:
+        declared = []
+
+    if not declared:
+        # No effortless.json — show everything on disk.
+        return on_disk
+
+    on_disk_set = set(on_disk)
+    return [s for s in declared if s in on_disk_set]
 
 
 def load_run_metadata(substrate_name: str) -> dict:
-    """Load metadata for a substrate from the CENTRAL results file in testing/"""
+    """Load metadata for a substrate from the CENTRAL results file in testing/.
+
+    Returns an empty-run sentinel when the central file does not yet exist
+    (legitimate "first run / no history yet" state). If the file exists but is
+    corrupt, json.load raises and the report build fails loudly.
+    """
     central_path = os.path.join(TESTING_DIR, "_substrate_results.json")
-    if os.path.exists(central_path):
-        with open(central_path, 'r') as f:
-            central = json.load(f)
-            return central.get(substrate_name, {"last_run": None, "last_successful_run": None})
-    # Fallback to old per-substrate file for migration
-    metadata_path = os.path.join(SUBSTRATES_DIR, substrate_name, "_run_metadata.json")
-    if os.path.exists(metadata_path):
-        with open(metadata_path, 'r') as f:
-            return json.load(f)
-    return {"last_run": None, "last_successful_run": None}
+    if not os.path.exists(central_path):
+        return {"last_run": None, "last_successful_run": None}
+    with open(central_path, 'r') as f:
+        central = json.load(f)
+    return central.get(substrate_name, {"last_run": None, "last_successful_run": None})
 
 
 def load_substrate_grades(substrate_name: str) -> dict:
     """Load grades for a substrate from pickle or reconstruct from results"""
-    # Try pickle file first (exists during orchestration)
-    substrate_dir = os.path.join(SUBSTRATES_DIR, substrate_name)
-    grades_file = os.path.join(substrate_dir, ".grades.pkl")
+    # Conformance artifacts live in the domain testing folder.
+    substrate_testing_dir = os.path.join(TESTING_DIR, substrate_name)
+    grades_file = os.path.join(substrate_testing_dir, ".grades.pkl")
 
     if os.path.exists(grades_file):
         with open(grades_file, 'rb') as f:
             return pickle.load(f)
 
     # Try to reconstruct from test-results.md
-    results_file = os.path.join(substrate_dir, "test-results.md")
+    results_file = os.path.join(substrate_testing_dir, "test-results.md")
     if os.path.exists(results_file):
         return parse_test_results_md(results_file, substrate_name)
 
@@ -420,26 +493,40 @@ def load_substrate_report_content(substrate_name: str) -> dict:
                     pos = next_close + 6
 
         return {"tabs": tabs, "contents": contents}
-    except Exception as e:
-        print(f"Warning: Could not parse substrate report for {substrate_name}: {e}")
-        return {"tabs": [], "contents": {}}
+    except (OSError, UnicodeDecodeError) as e:
+        # File can't be read at all — this is a fixable bug; surface it loudly
+        # with the substrate name and path rather than silently producing an
+        # empty report section.
+        raise RuntimeError(
+            f"Failed to read substrate report at {report_path} "
+            f"(substrate={substrate_name}): {type(e).__name__}: {e}"
+        ) from e
 
 
 def load_substrate_test_answers(substrate_name: str) -> dict:
-    """Load test answers from a substrate"""
+    """Load test answers from a substrate.
+
+    A missing test-answers/ directory is legitimate (substrate was skipped or
+    crashed before writing) and returns {}. Invalid JSON in a written file is
+    a bug and RAISES with the offending file path.
+    """
     if substrate_name == 'effortless-postgres':
         return load_answer_keys()
 
     answers = {}
-    answers_dir = os.path.join(SUBSTRATES_DIR, substrate_name, "test-answers")
+    answers_dir = _get_substrate_test_answers_dir(substrate_name)
     if os.path.isdir(answers_dir):
         for file in glob.glob(os.path.join(answers_dir, "*.json")):
             entity = os.path.basename(file).replace('.json', '')
-            try:
-                with open(file, 'r') as f:
+            with open(file, 'r') as f:
+                try:
                     answers[entity] = json.load(f)
-            except:
-                pass
+                except json.JSONDecodeError as e:
+                    raise json.JSONDecodeError(
+                        f"Invalid JSON in {file} (substrate={substrate_name}, "
+                        f"entity={entity}): {e.msg}",
+                        e.doc, e.pos,
+                    ) from e
     return answers
 
 
@@ -470,9 +557,11 @@ def collect_all_data():
         run_meta = load_run_metadata(substrate)
         grades["run_metadata"] = run_meta
 
-        # Show the duration of the MOST RECENT run (so re-runs are visible even
-        # when they don't score 100%). Fall back to last_successful_run only if
-        # last_run is missing timing.
+        # Show the duration of the MOST RECENT run so re-runs are visible even
+        # when they don't score 100%. If the current run did not capture a
+        # duration (e.g. crash before timing was recorded), PRESERVE the
+        # previously captured value so the report still shows the last known
+        # timing instead of going blank.
         last_run = run_meta.get("last_run") or {}
         last_success = run_meta.get("last_successful_run") or {}
         if "duration_seconds" in last_run:
@@ -489,7 +578,7 @@ def collect_all_data():
         all_grades[substrate] = grades
 
     # Build report data structure
-    # Use Name from rulebook as the report title, fallback to directory name
+    # Use Name from rulebook as the report title; if absent, use the domain folder name.
     rulebook_name = rulebook.get("Name", os.path.basename(PROJECT_ROOT))
     report_data = {
         "meta": {
@@ -581,7 +670,10 @@ def generate_html(data: dict) -> str:
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{escape(data["meta"]["project_name"])}</title>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>{escape(data["meta"]["project_name"])} — {datetime.now().strftime("%H:%M:%S")}</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css">
     <style>
@@ -594,6 +686,9 @@ def generate_html(data: dict) -> str:
             <h1>{escape(data["meta"]["project_name"])}</h1>
             <div class="header-meta">
                 <span class="project-name">Orchestration Report</span>
+                <span class="build-stamp" style="margin-left:1rem;padding:0.15rem 0.5rem;background:rgba(255,255,255,0.1);border-radius:4px;font-family:monospace;font-size:0.85rem;">
+                    generated {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
+                </span>
             </div>
         </div>
         <div class="header-actions">
@@ -2328,7 +2423,7 @@ function renderSubstrateDetails(substrateName, restoreViewTab = null, restoreEnt
         });
     });
 
-    // Restore view tab from URL if provided, or fall back to 'data'
+    // Restore view tab from URL if provided; otherwise default to 'data'
     if (restoreViewTab) {
         const viewTabBtn = document.querySelector(`#substrate-view-tabs .sub-tab[data-view="${restoreViewTab}"]`);
         if (viewTabBtn) {
@@ -2338,7 +2433,7 @@ function renderSubstrateDetails(substrateName, restoreViewTab = null, restoreEnt
             document.getElementById(`substrate-${restoreViewTab}-view`)?.classList.add('active');
             currentViewTab = restoreViewTab;
         } else {
-            // Tab doesn't exist on this substrate, fall back to 'data'
+            // Tab doesn't exist on this substrate; default to 'data'
             currentViewTab = 'data';
             // Data tab is already active by default from the HTML
         }
@@ -2632,11 +2727,22 @@ def main():
         description='Generate HTML orchestration report'
     )
     parser.add_argument(
+        '--rulebook', '-r',
+        required=True,
+        help='Path to the active domain\'s <domain>-rulebook.json (REQUIRED). '
+             'There is no default — there is no "the rulebook" without a domain.'
+    )
+    parser.add_argument(
         '--output', '-o',
-        default=DEFAULT_OUTPUT,
-        help=f'Output path for HTML report (default: {DEFAULT_OUTPUT})'
+        default=None,
+        help='Output path for HTML report (overrides --rulebook default)'
     )
     args = parser.parse_args()
+
+    _apply_rulebook_override(args.rulebook)
+
+    output_path_default = DEFAULT_OUTPUT  # may have been updated by override
+    args.output = args.output or output_path_default
 
     print("=" * 60)
     print("GENERATING ORCHESTRATION REPORT")
@@ -2682,7 +2788,7 @@ def main():
             -- Look for existing tab with this file
             repeat with w in windows
                 repeat with t in tabs of w
-                    if URL of t starts with "file://" and URL of t contains "substrate-report.html" then
+                    if URL of t starts with "file://" and URL of t contains "orchestration-report.html" then
                         set URL of t to targetURL
                         set active tab index of w to (index of t)
                         set index of w to 1
@@ -2708,7 +2814,8 @@ def main():
         '''
         result = subprocess.run(['osascript', '-e', applescript], capture_output=True)
         if result.returncode != 0:
-            # Fallback to regular open if Chrome not available
+            # If the Chrome AppleScript failed, request the OS to open the
+            # file with its default handler.
             subprocess.run(['open', abs_path], check=False)
     elif platform.system() == 'Windows':
         print("Opening report in browser...")
