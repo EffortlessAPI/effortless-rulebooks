@@ -489,7 +489,8 @@ function HomeScreen({ screen, projectRulebook, rulebook, projects, me }) {
 // ---------------------------------------------------------------------------
 // Entities
 // ---------------------------------------------------------------------------
-function EntitiesScreen({ screen, rulebook, isDev }) {
+function EntitiesScreen({ screen, rulebook, me }) {
+  const canEdit = me.role?.CanEditRulebook;
   const [entities, setEntities] = useState([]);
   const [selected, setSelected] = useState(null);
   const [entity, setEntity] = useState(null);
@@ -534,9 +535,9 @@ function EntitiesScreen({ screen, rulebook, isDev }) {
           <div class="kv">
             <div class="k">Description</div>
             <div class="v">
-              <textarea rows="2" disabled=${!isDev} value=${editingDesc}
+              <textarea rows="2" disabled=${!canEdit} value=${editingDesc}
                 onChange=${(e) => setEditingDesc(e.target.value)} />
-              ${isDev ? html`<div style=${{ marginTop: 6 }}><button class="btn" onClick=${saveDesc}>Save (write-through)</button></div>` : null}
+              ${canEdit ? html`<div style=${{ marginTop: 6 }}><button class="btn" onClick=${saveDesc}>Save (write-through)</button></div>` : null}
             </div>
             <div class="k">Fields</div>
             <div class="v">${(entity.schema || []).length}</div>
@@ -548,7 +549,16 @@ function EntitiesScreen({ screen, rulebook, isDev }) {
             <thead><tr><th>name</th><th>type</th><th>datatype</th><th>nullable</th><th>description</th></tr></thead>
             <tbody>
               ${(entity.schema || []).map((f) => html`
-                <tr key=${f.name}><td>${f.name}</td><td>${f.type || ""}</td><td>${f.datatype || ""}</td><td>${String(f.nullable ?? "")}</td><td>${f.Description || ""}</td></tr>
+                <tr key=${f.name}>
+                  <td>${f.name}</td>
+                  <td>${f.type
+                    ? html`<span class="tag" style=${{ cursor: "pointer", textDecoration: "underline dotted" }}
+                            onClick=${() => { location.hash = "#/rulebook/framing?tab=field-types&type=" + encodeURIComponent(f.type); }}>${f.type}</span>`
+                    : ""}</td>
+                  <td>${f.datatype || ""}</td>
+                  <td>${String(f.nullable ?? "")}</td>
+                  <td>${f.Description || ""}</td>
+                </tr>
               `)}
             </tbody>
           </table>
@@ -783,10 +793,11 @@ function AddToolScreen({ screen, rulebook }) {
 // ---------------------------------------------------------------------------
 // Builds (lightweight — show installed tools + trigger)
 // ---------------------------------------------------------------------------
-function BuildsScreen({ screen, isDev }) {
+function BuildsScreen({ screen, me }) {
   const [installed, setInstalled] = useState({ transpilers: [] });
   const [last, setLast] = useState(null);
   useEffect(() => { api.get("/api/tools/installed").then(setInstalled); }, []);
+  const canBuild = me.role?.CanRunBuilds;
   const run = async () => {
     toast("Building all…");
     const r = await api.post("/api/build/all");
@@ -798,7 +809,7 @@ function BuildsScreen({ screen, isDev }) {
     <div class="flex" style=${{ marginBottom: 10 }}>
       <div class="muted small">Installed transpilers: ${(installed.transpilers || []).length}</div>
       <div class="spacer" />
-      ${isDev ? html`<button class="btn" onClick=${run}>Trigger build</button>` : null}
+      ${canBuild ? html`<button class="btn" onClick=${run}>Trigger build</button>` : null}
     </div>
     <table class="grid">
       <thead><tr><th>name</th><th>path</th><th>disabled</th><th>pinned</th></tr></thead>
@@ -855,7 +866,8 @@ function SpokesScreen({ screen, projectRulebook }) {
 // ---------------------------------------------------------------------------
 // Users (write-through)
 // ---------------------------------------------------------------------------
-function UsersScreen({ screen, isDev, reload }) {
+function UsersScreen({ screen, me, reload }) {
+  const canManage = me.role?.CanManageUsers;
   const [data, setData] = useState({ users: [], roles: [] });
   const [form, setForm] = useState({ userId: "", email: "", displayName: "", roleId: "role-viewer" });
   const load = () => api.get("/api/users").then(setData);
@@ -882,7 +894,7 @@ function UsersScreen({ screen, isDev, reload }) {
           </tr>`;
       })}</tbody>
     </table>
-    ${isDev ? html`
+    ${canManage ? html`
       <h4 style=${{ marginTop: 20 }}>Add user</h4>
       <div class="cards" style=${{ gridTemplateColumns: "1fr 1fr 1fr 1fr" }}>
         <input placeholder="UserId" value=${form.userId} onChange=${(e) => setForm({ ...form, userId: e.target.value })} />
@@ -982,6 +994,283 @@ function TechResetScreen({ screen }) {
         <p>This drops the per-project editor Postgres database and re-bootstraps it from the rulebook JSON on disk. The rulebook JSON is the durable SSoT, so no business data is lost.</p>
         <button class="btn danger" disabled=${busy} onClick=${reset}>${busy ? "Resetting…" : "Reset editor DB now"}</button>
       </div>
+    </div>
+  `;
+}
+
+// ---------------------------------------------------------------------------
+// Framing — FramingInvariants + OntologyAxioms
+// ---------------------------------------------------------------------------
+function FramingScreen({ screen, projectRulebook, query }) {
+  const invariants = projectRulebook.FramingInvariants?.data || [];
+  const axioms = projectRulebook.OntologyAxioms?.data || [];
+  const fieldTypes = projectRulebook.FieldTypeTaxonomy?.data || [];
+  const tab = query.tab === "axioms" ? "axioms"
+            : query.tab === "field-types" ? "field-types"
+            : "invariants";
+  const initial = query.invariant || query.axiom || query.type
+    || (tab === "axioms" ? axioms[0]?.AxiomId : tab === "field-types" ? fieldTypes[0]?.TypeName : invariants[0]?.InvariantId);
+  const [selectedId, setSelectedId] = useState(initial);
+
+  // Re-sync the selection when the URL filter changes.
+  useEffect(() => {
+    if (query.invariant) setSelectedId(query.invariant);
+    else if (query.axiom) setSelectedId(query.axiom);
+    else if (query.type) setSelectedId(query.type);
+  }, [query.invariant, query.axiom, query.type]);
+
+  const setTab = (t) => { location.hash = "#/rulebook/framing?tab=" + t; };
+  const selected = tab === "axioms"
+    ? axioms.find((a) => a.AxiomId === selectedId)
+    : tab === "field-types"
+    ? fieldTypes.find((ft) => ft.TypeName === selectedId)
+    : invariants.find((i) => i.InvariantId === selectedId);
+
+  return html`
+    <${ScreenHeader} screen=${screen} />
+    <div class="flex" style=${{ marginBottom: 12 }}>
+      <button class=${"btn " + (tab === "invariants" ? "" : "secondary")} onClick=${() => setTab("invariants")}>Framing invariants (${invariants.length})</button>
+      <button class=${"btn " + (tab === "axioms" ? "" : "secondary")} onClick=${() => setTab("axioms")}>Ontology axioms (${axioms.length})</button>
+      <button class=${"btn " + (tab === "field-types" ? "" : "secondary")} onClick=${() => setTab("field-types")}>Field types (${fieldTypes.length})</button>
+    </div>
+    ${tab === "field-types" ? html`
+      <div class="split">
+        <div class="list-panel">
+          ${fieldTypes.map((ft) => html`
+            <div key=${ft.TypeId}
+                 class=${"list-item " + (ft.TypeName === selected?.TypeName ? "active" : "")}
+                 onClick=${() => { location.hash = "#/rulebook/framing?tab=field-types&type=" + encodeURIComponent(ft.TypeName); }}>
+              <div class="name"><span class="tag">${ft.TypeName}</span></div>
+              <div class="meta">${ft.Intent}</div>
+            </div>
+          `)}
+        </div>
+        <div class="detail-panel">
+          ${selected && selected.TypeName ? html`
+            <h3 style=${{ marginTop: 0 }}><span class="tag">${selected.TypeName}</span></h3>
+            <div class="kv">
+              <div class="k">Intent</div>            <div class="v">${selected.Intent}</div>
+              <div class="k">Storage mode</div>      <div class="v"><span class="pill">${selected.StorageMode}</span></div>
+              <div class="k">Read-only in UI</div>   <div class="v">${selected.ReadOnlyInUi ? "yes" : "no"}</div>
+              <div class="k">Expressive tier</div>   <div class="v"><span class="pill">${selected.ExpressiveTier}</span></div>
+              <div class="k">Example formula</div>  <div class="v mono">${selected.ExampleFormula || "—"}</div>
+            </div>
+          ` : html`<div class="muted">Select a field type on the left.</div>`}
+        </div>
+      </div>
+    ` : null}
+    ${tab === "invariants" ? html`
+      <div class="split">
+        <div class="list-panel" key="inv-list">
+          ${invariants.map((i) => html`
+            <div key=${i.InvariantId}
+                 class=${"list-item " + (i.InvariantId === selected?.InvariantId ? "active" : "")}
+                 onClick=${() => { location.hash = "#/rulebook/framing?invariant=" + encodeURIComponent(i.InvariantId); }}>
+              <div class="name">${i.Name}</div>
+              <div class="meta">
+                <span class="tag">${i.Category}</span> · <span class=${"pill " + (i.Severity === "critical" ? "warn" : "")}>${i.Severity}</span>
+              </div>
+            </div>
+          `)}
+        </div>
+        <div class="detail-panel">
+          ${selected ? html`
+            <h3 style=${{ marginTop: 0 }}>${selected.Name}</h3>
+            <div class="kv">
+              <div class="k">Category</div>  <div class="v"><span class="tag">${selected.Category}</span></div>
+              <div class="k">Severity</div>  <div class="v"><span class=${"pill " + (selected.Severity === "critical" ? "warn" : "")}>${selected.Severity}</span></div>
+              <div class="k">Status</div>    <div class="v">${selected.Status}</div>
+              <div class="k">Violates</div>  <div class="v">
+                ${selected.ViolatedAxiomId ? html`<span class="pill" style=${{ cursor: "pointer", textDecoration: "underline dotted" }}
+                  onClick=${() => { location.hash = "#/rulebook/framing?tab=axioms&axiom=" + encodeURIComponent(selected.ViolatedAxiomId); }}>${selected.ViolatedAxiomId}</span>` : "—"}
+              </div>
+            </div>
+            <div class="cards" style=${{ gridTemplateColumns: "1fr 1fr", marginTop: 16 }}>
+              <div class="card" style=${{ borderLeft: "4px solid #c0392b" }}>
+                <h3 style=${{ color: "#c0392b" }}>WRONG</h3>
+                <p>${selected.WrongFraming}</p>
+              </div>
+              <div class="card" style=${{ borderLeft: "4px solid #4a8d70" }}>
+                <h3 style=${{ color: "#4a8d70" }}>RIGHT</h3>
+                <p>${selected.CorrectFraming}</p>
+              </div>
+            </div>
+            <h4>Why</h4>
+            <p>${selected.Why}</p>
+            ${selected.ExampleContext ? html`<p class="muted small"><b>Example context:</b> ${selected.ExampleContext}</p>` : null}
+          ` : html`<div class="muted">Select an invariant on the left.</div>`}
+        </div>
+      </div>
+    ` : tab === "axioms" ? html`
+      <div class="split">
+        <div class="list-panel" key="ax-list">
+          ${axioms.map((a) => html`
+            <div key=${a.AxiomId}
+                 class=${"list-item " + (a.AxiomId === selected?.AxiomId ? "active" : "")}
+                 onClick=${() => { location.hash = "#/rulebook/framing?tab=axioms&axiom=" + encodeURIComponent(a.AxiomId); }}>
+              <div class="name">${a.ShortName}</div>
+              <div class="meta"><span class="tag">${a.AxiomId}</span></div>
+            </div>
+          `)}
+        </div>
+        <div class="detail-panel">
+          ${selected ? html`
+            <h3 style=${{ marginTop: 0 }}>${selected.ShortName}</h3>
+            <p style=${{ fontSize: 18 }}>${selected.Statement}</p>
+            <h4>Why</h4><p>${selected.Why}</p>
+            ${selected.Implication ? html`<h4>Implication</h4><p>${selected.Implication}</p>` : null}
+            <h4>Framing invariants that violate this axiom</h4>
+            <ul>
+              ${(invariants.filter((i) => i.ViolatedAxiomId === selected.AxiomId)).map((i) => html`
+                <li key=${i.InvariantId} style=${{ cursor: "pointer", textDecoration: "underline dotted" }}
+                    onClick=${() => { location.hash = "#/rulebook/framing?invariant=" + encodeURIComponent(i.InvariantId); }}>
+                  ${i.Name}
+                </li>
+              `)}
+            </ul>
+          ` : html`<div class="muted">Select an axiom on the left.</div>`}
+        </div>
+      </div>
+    ` : null}
+  `;
+}
+
+// ---------------------------------------------------------------------------
+// Roles & Personas
+// ---------------------------------------------------------------------------
+function RolesScreen({ screen, projectRulebook, query }) {
+  const roles = projectRulebook.UserRoles?.data || [];
+  const users = projectRulebook.AppUsers?.data || [];
+  const screens = projectRulebook.AppScreens?.data || [];
+  const hints = projectRulebook.RoleScreenHints?.data || [];
+  const [selectedId, setSelectedId] = useState(query.role || roles[0]?.RoleId);
+  useEffect(() => { if (query.role) setSelectedId(query.role); }, [query.role]);
+  const sel = roles.find((r) => r.RoleId === selectedId) || roles[0];
+  const usersForRole = users.filter((u) => u.RoleId === sel?.RoleId);
+  const hintsForRole = hints.filter((h) => h.RoleId === sel?.RoleId);
+  const landing = screens.find((s) => s.ScreenId === sel?.LandingScreenId);
+
+  return html`
+    <${ScreenHeader} screen=${screen} />
+    <div class="split">
+      <div class="list-panel">
+        ${roles.map((r) => html`
+          <div key=${r.RoleId}
+               class=${"list-item " + (r.RoleId === sel?.RoleId ? "active" : "")}
+               onClick=${() => { location.hash = "#/users/roles?role=" + encodeURIComponent(r.RoleId); }}>
+            <div class="name">
+              <span class="pill" style=${{ background: r.ColorTheme || "#888", color: "white" }}>${r.Name}</span>
+            </div>
+            <div class="meta">${r.Persona || ""}</div>
+          </div>
+        `)}
+      </div>
+      <div class="detail-panel">
+        ${sel ? html`
+          <h3 style=${{ marginTop: 0 }}>
+            <span class="pill" style=${{ background: sel.ColorTheme || "#888", color: "white" }}>${sel.Name}</span>
+          </h3>
+          ${sel.Tagline ? html`<div class="story-banner" style=${{ borderLeftColor: sel.ColorTheme || "#888" }}>${sel.Tagline}</div>` : null}
+          <div class="kv">
+            <div class="k">Persona</div>           <div class="v">${sel.Persona || "—"}</div>
+            <div class="k">Primary concerns</div>  <div class="v">${sel.PrimaryConcerns || "—"}</div>
+            <div class="k">Access level</div>      <div class="v"><span class="pill">${sel.AccessLevel}</span></div>
+            <div class="k">Lands on</div>          <div class="v">
+              ${landing ? html`<span style=${{ cursor: "pointer", textDecoration: "underline dotted" }}
+                  onClick=${() => { location.hash = "#" + landing.Path; }}>${landing.Title}</span>` : "—"}
+            </div>
+            <div class="k">Capabilities</div>      <div class="v">
+              ${sel.CanEditRulebook    ? html`<span class="pill good">edit rulebook</span> ` : ""}
+              ${sel.CanRunBuilds       ? html`<span class="pill good">run builds</span> ` : ""}
+              ${sel.CanManageUsers     ? html`<span class="pill good">manage users</span> ` : ""}
+              ${sel.CanAccessTechTools ? html`<span class="pill good">tech tools</span> ` : ""}
+              ${sel.CanSwitchProjects  ? html`<span class="pill">switch projects</span>` : ""}
+            </div>
+          </div>
+          <p style=${{ marginTop: 14 }}>${sel.Description}</p>
+
+          <h4>Users with this role (${usersForRole.length})</h4>
+          ${usersForRole.length ? html`
+            <ul>
+              ${usersForRole.map((u) => html`
+                <li key=${u.UserId} style=${{ cursor: "pointer", textDecoration: "underline dotted" }}
+                    onClick=${() => { location.hash = "#/users?user=" + encodeURIComponent(u.UserId); }}>
+                  ${u.DisplayName} (${u.Email})${u.IsDefault ? " — default" : ""}
+                </li>
+              `)}
+            </ul>
+          ` : html`<div class="muted">No users assigned.</div>`}
+
+          ${hintsForRole.length ? html`
+            <h4>Bespoke screen hints for this role</h4>
+            <table class="grid">
+              <thead><tr><th>screen</th><th>emphasis</th><th>primary actions</th><th>implementation hints</th></tr></thead>
+              <tbody>
+                ${hintsForRole.map((h) => {
+                  const screenObj = screens.find((s) => s.ScreenId === h.ScreenId);
+                  return html`
+                    <tr key=${h.HintId}>
+                      <td style=${{ cursor: "pointer", textDecoration: "underline dotted" }}
+                          onClick=${() => screenObj && (location.hash = "#" + screenObj.Path)}>
+                        ${screenObj?.Title || h.ScreenId}
+                      </td>
+                      <td>${h.Emphasis}</td>
+                      <td>${h.PrimaryActions || "—"}</td>
+                      <td style=${{ maxWidth: 480 }}>${h.ImplementationHints}</td>
+                    </tr>
+                  `;
+                })}
+              </tbody>
+            </table>
+          ` : null}
+        ` : html`<div class="muted">No role selected.</div>`}
+      </div>
+    </div>
+  `;
+}
+
+// ---------------------------------------------------------------------------
+// Flavours — classify each demo rulebook
+// ---------------------------------------------------------------------------
+function FlavorsScreen({ screen, projectRulebook, query, reload }) {
+  const flavors = projectRulebook.RulebookFlavors?.data || [];
+  const filter = query.flavor || null;
+  const shown = filter ? flavors.filter((f) => f.Flavor === filter) : flavors;
+  const groups = [...new Set(flavors.map((f) => f.Flavor))];
+  const switchProject = async (slug) => {
+    try {
+      await api.post(`/api/projects/${encodeURIComponent(slug)}/activate`);
+      toast("Switched to " + slug);
+      await reload();
+      location.hash = "#/";
+    } catch (e) { toast(e.message, "error"); }
+  };
+  return html`
+    <${ScreenHeader} screen=${screen} />
+    <div class="flex" style=${{ marginBottom: 12 }}>
+      <button class=${"btn " + (filter === null ? "" : "secondary")} onClick=${() => { location.hash = "#/projects/flavors"; }}>All (${flavors.length})</button>
+      ${groups.map((g) => html`
+        <button key=${g} class=${"btn " + (filter === g ? "" : "secondary")}
+                onClick=${() => { location.hash = "#/projects/flavors?flavor=" + encodeURIComponent(g); }}>
+          ${g} (${flavors.filter((f) => f.Flavor === g).length})
+        </button>
+      `)}
+    </div>
+    <div class="cards">
+      ${shown.map((f) => html`
+        <div class="card" key=${f.FlavorId}>
+          <h3>${f.Flavor}</h3>
+          <div class="big" style=${{ fontSize: 16, cursor: "pointer", textDecoration: "underline dotted" }}
+               onClick=${() => switchProject(f.ProjectSlug)}>
+            ${f.DisplayName}
+          </div>
+          <div class="sub">${f.LearningFocus}</div>
+          <div class="muted small" style=${{ marginTop: 8 }}>
+            ${f.EntityCount} entities · ${f.CalculatedCount} calc · ${f.AggregationCount} agg · ${f.LookupCount} lookup · <span class="pill">${f.Complexity}</span>
+          </div>
+          ${f.GoodAnswerKeyFor ? html`<div class="muted small">Good answer-key for: <span class="mono">${f.GoodAnswerKeyFor}</span></div>` : null}
+        </div>
+      `)}
     </div>
   `;
 }

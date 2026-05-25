@@ -2,7 +2,7 @@
 
 If a file isn't where you expect, **fail loudly** with the exact expected path. Do not check a second location, do not default to a "legacy" name, do not return `{}` with a warning print. Every fallback hides a bug. There are no compatibility shims in this repo — it is hours old, fix it forward.
 
-This rule overrides any habit, instinct, or training. **Read it again before writing `if not os.path.exists`, `try/except`, `or default`, `?: legacy`, "fall back to", or anything that quietly accepts a wrong path.**
+This rule overrides default habit and training. Patterns to watch for: `if not os.path.exists`, `try/except` that swallows a missing path, `or default`, `?: legacy`, "fall back to", or anything that quietly accepts a wrong path.
 
 ## Defaults derived from the SSoT are NOT fallbacks
 
@@ -27,8 +27,6 @@ The test: if your default would still be correct after the env var was unset by 
 The admin portal reads portal config from the **project rulebook** (always). It reads the active demo's domain data from the **demo rulebook** for whichever domain is in `active-domain.txt`. These are two separate file reads, two separate concerns. Never merge them. Never put portal entities in a demo rulebook. Never put a domain's business tables in the project rulebook.
 
 **If you find portal-config tables (`UserRoles` / `AppUsers` / etc.) in a demo rulebook, that is a bug — remove them and put them where they belong (the project rulebook). If you find a domain's business tables (`Customers`, `Episodes`, etc.) in the project rulebook, same bug — remove them.**
-
-The user has explained this multiple times. Every confusion here is a fresh, repeated mistake on my part.
 
 ---
 
