@@ -47,27 +47,6 @@
         "nullable": true,
         "Description": "Full name is computed from the first and last name of the customer",
         "formula": "={{LastName}} \u0026 \u0022, \u0022 \u0026 {{FirstName}}"
-      },
-      {
-        "name": "Customer",
-        "datatype": "string",
-        "type": "relationship",
-        "nullable": true,
-        "Description": "Identifier for the customers.",
-        "RelatedTo": "Customers",
-        "isReversed": false,
-        "prefersSingleRecordLink": false,
-        "InverseField": "From_field_Customer"
-      },
-      {
-        "name": "From_field_Customer",
-        "datatype": "string",
-        "type": "relationship",
-        "nullable": true,
-        "RelatedTo": "Customers",
-        "isReversed": false,
-        "prefersSingleRecordLink": false,
-        "InverseField": "Customer"
       }
     ],
     "data": [
@@ -77,9 +56,7 @@
         "LastName": "Smith",
         "Name": "jane.smith-email.com",
         "FirstName": "Bobby",
-        "FullName": "Smith, Bobby",
-        "Customer": "",
-        "From_field_Customer": ""
+        "FullName": "Smith, Bobby"
       },
       {
         "CustomerId": "john-doe-email-com",
@@ -87,9 +64,7 @@
         "LastName": "Doe",
         "Name": "john.doe-email.com",
         "FirstName": "Jimmy",
-        "FullName": "Doe, Jimmy",
-        "Customer": "",
-        "From_field_Customer": ""
+        "FullName": "Doe, Jimmy"
       },
       {
         "CustomerId": "emily-jones-email-com",
@@ -97,140 +72,7 @@
         "LastName": "Jones",
         "Name": "emily.jones-email.com",
         "FirstName": "Mary",
-        "FullName": "Jones, Mary",
-        "Customer": "",
-        "From_field_Customer": ""
-      }
-    ]
-  },
-  "ERBVersions": {
-    "Description": "Table: ERBVersions",
-    "schema": [
-      {
-        "name": "ERBVersionId",
-        "datatype": "string",
-        "type": "raw",
-        "nullable": false
-      },
-      {
-        "name": "BaseId",
-        "datatype": "string",
-        "type": "raw",
-        "nullable": true
-      },
-      {
-        "name": "Name",
-        "datatype": "string",
-        "type": "raw",
-        "nullable": true
-      },
-      {
-        "name": "Message",
-        "datatype": "string",
-        "type": "raw",
-        "nullable": true
-      },
-      {
-        "name": "Notes",
-        "datatype": "string",
-        "type": "raw",
-        "nullable": true
-      },
-      {
-        "name": "CommitDate",
-        "datatype": "datetime",
-        "type": "raw",
-        "nullable": true
-      },
-      {
-        "name": "IsPublished",
-        "datatype": "boolean",
-        "type": "raw",
-        "nullable": true
-      }
-    ],
-    "data": []
-  },
-  "ERBCustomizations": {
-    "Description": "Table: ERBCustomizations",
-    "schema": [
-      {
-        "name": "ERBCustomizationId",
-        "datatype": "string",
-        "type": "raw",
-        "nullable": false
-      },
-      {
-        "name": "Name",
-        "datatype": "string",
-        "type": "raw",
-        "nullable": true
-      },
-      {
-        "name": "Title",
-        "datatype": "string",
-        "type": "raw",
-        "nullable": true
-      },
-      {
-        "name": "SQLCode",
-        "datatype": "string",
-        "type": "raw",
-        "nullable": true
-      },
-      {
-        "name": "SQLTarget",
-        "datatype": "string",
-        "type": "raw",
-        "nullable": true
-      },
-      {
-        "name": "CustomizationType",
-        "datatype": "string",
-        "type": "raw",
-        "nullable": true
-      }
-    ],
-    "data": [
-      {
-        "ERBCustomizationId": "03a-customize-schema-sql",
-        "Title": "Customize Schema",
-        "SQLTarget": "Postgres",
-        "Name": "03a-customize-schema.sql",
-        "SQLCode": "-- ============================================================================\n-- CUSTOMIZE SCHEMA - User-defined tables and schema modifications\n-- ============================================================================\n-- This file is for YOUR custom schema changes that should persist across\n-- regeneration of the base ERB files.\n--\n-- USE THIS FILE FOR:\n--   - Additional tables not defined in the rulebook\n--   - Extra columns on existing tables (ALTER TABLE)\n--   - Custom indexes for performance tuning\n--   - Custom constraints or triggers\n--\n-- IMPORTANT:\n--   - This file runs AFTER 01-drop-and-create-tables.sql\n--   - The base tables already exist when this runs\n--   - This file will NOT be overwritten by ERB regeneration\n--\n-- ============================================================================\n\n-- Your custom schema changes go here:\n",
-        "CustomizationType": "Schema"
-      },
-      {
-        "ERBCustomizationId": "03b-customize-functions-sql",
-        "Title": "Customize Functions",
-        "SQLTarget": "Postgres",
-        "Name": "03b-customize-functions.sql",
-        "SQLCode": "-- ============================================================================\n-- CUSTOMIZE FUNCTIONS - User-defined calculation functions\n-- ============================================================================\n-- This file is for YOUR custom PostgreSQL functions that should persist\n-- across regeneration of the base ERB files.\n--\n-- IMPORTANT:\n--   - This file runs AFTER 02-create-functions.sql\n--   - Base ERB calc functions already exist when this runs\n--   - This file will NOT be overwritten by ERB regeneration\n--\n-- ============================================================================\n\n-- Your custom functions go here:\n",
-        "CustomizationType": "Functions"
-      },
-      {
-        "ERBCustomizationId": "03c-customize-views-sql",
-        "Title": "Customize Views",
-        "SQLTarget": "Postgres",
-        "Name": "03c-customize-views.sql",
-        "SQLCode": "-- ============================================================================\n-- CUSTOMIZE VIEWS - User-defined views and view extensions\n-- ============================================================================\n-- This file is for YOUR custom views that should persist across\n-- regeneration of the base ERB files.\n--\n-- IMPORTANT:\n--   - This file runs AFTER 03-create-views.sql\n--   - All base vw_* views already exist when this runs\n--   - This file will NOT be overwritten by ERB regeneration\n--\n-- ============================================================================\n\n-- Your custom views go here:\n",
-        "CustomizationType": "Views"
-      },
-      {
-        "ERBCustomizationId": "03d-customize-rls-sql",
-        "Title": "Customize Policies (RLS)",
-        "SQLTarget": "Postgres",
-        "Name": "03d-customize-rls.sql",
-        "SQLCode": "-- ============================================================================\n-- CUSTOMIZE POLICIES - User-defined Row Level Security policies\n-- ============================================================================\n-- This file is for YOUR custom RLS policies that should persist across\n-- regeneration of the base ERB files.\n--\n-- IMPORTANT:\n--   - This file runs AFTER 04-create-policies.sql\n--   - Base RLS policies already exist when this runs\n--   - This file will NOT be overwritten by ERB regeneration\n--\n-- ============================================================================\n\n-- Your custom policies go here:\n",
-        "CustomizationType": "RLS"
-      },
-      {
-        "ERBCustomizationId": "03e-customize-data-sql",
-        "Title": "Customize Data (Seeds / Migrations)",
-        "SQLTarget": "Postgres",
-        "Name": "03e-customize-data.sql",
-        "SQLCode": "-- ============================================================================\n-- CUSTOMIZE DATA - User-defined seed data and data migrations\n-- ============================================================================\n-- This file is for YOUR custom seed data that should persist across\n-- regeneration of the base ERB files.\n--\n-- IMPORTANT:\n--   - This file runs AFTER 05-insert-data.sql\n--   - Base seed data already exists when this runs\n--   - This file will NOT be overwritten by ERB regeneration\n--\n-- ============================================================================\n\n-- Your custom data inserts go here:\n",
-        "CustomizationType": "Data"
+        "FullName": "Jones, Mary"
       }
     ]
   },
@@ -238,7 +80,7 @@
     "_CMCC_Summary": "Airtable export with schema-first type mapping: Schemas, Data, Relationships (FK links), Lookups (INDEX/MATCH), Aggregations (SUMIFS/COUNTIFS/Rollups), and Calculated fields (formulas) in Excel dialect. Field types are determined from Airtable\u0027s schema metadata FIRST (no coercion), with intelligent fallback to formula/data analysis only when schema is unavailable.",
     "_conversion_metadata": {
       "source_base_id": "appWrXPvXbkgQGOxt",
-      "table_count": 3,
+      "table_count": 1,
       "tool_version": "2.0.0",
       "field_type_mapping": "checkbox\u2192boolean, number\u2192number/integer, multipleRecordLinks\u2192relationship, multipleLookupValues\u2192lookup, rollup\u2192aggregation, count\u2192aggregation, formula\u2192calculated",
       "export_mode": "schema_first_type_mapping",

@@ -254,8 +254,10 @@ get_active_effortless_json() {
     [ -f "$path" ] && echo "$path" || echo ""
 }
 
-# Returns tab-separated (internal_name TAB display_name) for ALL enabled
-# ProjectTranspilers in the active domain's effortless.json.
+# Returns tab-separated (internal_name TAB display_name TAB IsDisabled) for ALL
+# ProjectTranspilers in the active domain's effortless.json. IsDisabled is the
+# literal value from the JSON ("true" or "false"). Callers decide what to do
+# with disabled entries — the menu dims them; BUILD skips them.
 get_project_transpilers() {
     local ej
     ej=$(get_active_effortless_json)
@@ -269,7 +271,8 @@ for t in cfg.get("ProjectTranspilers", []):
     # For proxy transpilers, show the URL path; otherwise use Name
     m = re.search(r'http://localhost:\d+(/\S*)', cmd)
     display = m.group(1).lstrip("/") if m else t["Name"]
-    print(f"{t['Name']}\t{display}")
+    is_disabled = "true" if t.get("IsDisabled") else "false"
+    print(f"{t['Name']}\t{display}\t{is_disabled}")
 PYEOF
 }
 
@@ -332,14 +335,23 @@ if "localhost:" in cmd:
     output_dir = os.path.abspath(run_dir)
     payload = json.dumps({"inputFile": input_file, "outputDir": output_dir, "clean": False}).encode()
     req = urllib.request.Request(proxy_url, data=payload,
-        headers={"Content-Type": "application/json", "X-Working-Dir": domain_dir}, method="POST")
+        headers={"Content-Type": "application/json", "X-Working-Dir": run_dir}, method="POST")
+    # The proxy ignores the body and the X-Working-Dir header — it reads the
+    # socket-owning process's actual cwd via lsof/ps and demands it be
+    # rulebook-examples/<domain>/<substrate>/. So we must chdir into run_dir
+    # before opening the connection, otherwise the guard fires with
+    # "CLI cwd is not under .../rulebook-examples".
+    os.makedirs(run_dir, exist_ok=True)
+    os.chdir(run_dir)
     try:
         with urllib.request.urlopen(req, timeout=120) as resp:
             result = json.loads(resp.read())
     except Exception as e:
         print(f"ERROR calling proxy: {e}")
         sys.exit(1)
-    print(result.get("output", ""))
+    output = result.get("output", "") or result.get("error", "")
+    if output:
+        print(output)
     sys.exit(0 if result.get("success") else 1)
 
 # Standard transpiler: run via effortless build -id from RelativePath dir
@@ -350,7 +362,10 @@ else:
 PYEOF
 }
 
-# Run all enabled proxy transpilers for the active project.
+# Run all NON-DISABLED proxy transpilers for the active project. Transpilers
+# with IsDisabled=true in effortless.json are skipped here (printed as [SKIP]).
+# To run a disabled transpiler, pick it by number from the menu — that path
+# will prompt for confirmation.
 run_project_transpilers() {
     local transpilers
     transpilers=$(get_project_transpilers)
@@ -366,7 +381,12 @@ run_project_transpilers() {
     echo ""
 
     local failed=0
-    while IFS=$'\t' read -r internal display; do
+    while IFS=$'\t' read -r internal display is_disabled; do
+        if [ "$is_disabled" = "true" ]; then
+            echo -e "${DIM}⊘ ${display} [SKIP — IsDisabled=true]${NC}"
+            echo ""
+            continue
+        fi
         echo -e "${CYAN}▶ ${BOLD}${display}${NC}"
         if run_proxy_transpiler "$internal"; then
             echo -e "  ${GREEN}✓ ${display} OK${NC}"
@@ -457,25 +477,39 @@ show_menu() {
     echo ""
 
     # --- BUILD (primary action when proxy transpilers exist) ---
+    # Disabled transpilers (IsDisabled=true in effortless.json) get a
+    # " (disabled)" suffix on the display name and render in DIM instead of
+    # CYAN. They are still numbered so the user can pick them by number —
+    # that path prompts for confirmation. BUILD ([B]) skips them.
     if [ -n "$PROJECT_TRANSPILERS" ]; then
         T_INDEX=1
         LEFT_NUM=""
         LEFT_DISPLAY=""
-        while IFS=$'\t' read -r internal display; do
+        LEFT_COLOR=""
+        while IFS=$'\t' read -r internal display is_disabled; do
+            if [ "$is_disabled" = "true" ]; then
+                row_display="${display} (disabled)"
+                row_color="$DIM"
+            else
+                row_display="$display"
+                row_color="$CYAN"
+            fi
             if [ -z "$LEFT_NUM" ]; then
                 LEFT_NUM="$T_INDEX"
-                LEFT_DISPLAY="$display"
+                LEFT_DISPLAY="$row_display"
+                LEFT_COLOR="$row_color"
             else
-                printf "    ${DIM}%2s.${NC} ${CYAN}%-28s${NC}    ${DIM}%2s.${NC} ${CYAN}%s${NC}\n" \
-                    "$LEFT_NUM" "$LEFT_DISPLAY" "$T_INDEX" "$display"
+                printf "    ${DIM}%2s.${NC} ${LEFT_COLOR}%-32s${NC}    ${DIM}%2s.${NC} ${row_color}%s${NC}\n" \
+                    "$LEFT_NUM" "$LEFT_DISPLAY" "$T_INDEX" "$row_display"
                 LEFT_NUM=""
                 LEFT_DISPLAY=""
+                LEFT_COLOR=""
             fi
             T_INDEX=$((T_INDEX + 1))
         done <<< "$PROJECT_TRANSPILERS"
         # Flush any trailing odd item in the left column
         if [ -n "$LEFT_NUM" ]; then
-            printf "    ${DIM}%2s.${NC} ${CYAN}%s${NC}\n" "$LEFT_NUM" "$LEFT_DISPLAY"
+            printf "    ${DIM}%2s.${NC} ${LEFT_COLOR}%s${NC}\n" "$LEFT_NUM" "$LEFT_DISPLAY"
         fi
         echo ""
         if $PROXY_RUNNING; then
@@ -676,6 +710,14 @@ config = {
             'CommandLine': 'rulebook-to-airtable -i ../$RULEBOOK_FILENAME -account airtable -w 300000',
             'Enabled': False,
             'Description': 'Reverse-sync: push rulebook changes back to Airtable'
+        },
+        {
+            'IsSSoTTranspiler': False,
+            'Name': 'rulebooktopostgres',
+            'RelativePath': '/effortless-postgres',
+            'CommandLine': 'rulebook-to-postgres -i ../effortless-rulebook/$RULEBOOK_FILENAME',
+            'IsDisabled': False,
+            'Description': 'Generate Postgres schema + seed data from the rulebook'
         }
     ]
 }
@@ -875,6 +917,14 @@ cfg = {
             "CommandLine": f"rulebook-to-airtable -i ../{rb_filename} -account airtable -w 300000",
             "Enabled": False,
             "Description": "Reverse-sync: push rulebook changes back to Airtable"
+        },
+        {
+            "IsSSoTTranspiler": False,
+            "Name": "rulebooktopostgres",
+            "RelativePath": "/effortless-postgres",
+            "CommandLine": f"rulebook-to-postgres -i ../effortless-rulebook/{rb_filename}",
+            "IsDisabled": False,
+            "Description": "Generate Postgres schema + seed data from the rulebook"
         }
     ]
 }
@@ -1004,22 +1054,30 @@ action_init_postgres() {
         return
     fi
 
-    echo ""
-    echo -e "${BOLD}${CYAN}Initialize PostgreSQL Database${NC}"
-    echo ""
+    local _domain
+    _domain=$(get_active_domain)
+    local _db_name="erb_${_domain//-/_}"
+    local _db_url="postgresql://postgres@localhost:5432/${_db_name}"
+    local init_script="$RULEBOOK_EXAMPLES_DIR/$_domain/effortless-postgres/init-db.sh"
 
-    local init_script="$PROJECT_ROOT/licensed-effortless-tools/postgres/init-db.sh"
+    echo ""
+    echo -e "${BOLD}${CYAN}Initialize PostgreSQL Database for ${WHITE}${_domain}${NC}"
+    echo ""
+    echo -e "  Target DB: ${WHITE}${_db_name}${NC}"
+    echo -e "  Script:    ${WHITE}${init_script}${NC}"
+    echo ""
 
     if [ ! -f "$init_script" ]; then
         echo -e "${RED}Error: init-db.sh not found at $init_script${NC}"
+        echo -e "${YELLOW}Run [B] BUILD first so rulebooktopostgres generates it.${NC}"
         read -p "Press Enter to continue..."
         return
     fi
 
     echo -e "${YELLOW}This will:${NC}"
-    echo -e "  1. Drop existing tables (if any)"
-    echo -e "  2. Create tables, functions, and views"
-    echo -e "  3. Insert seed data"
+    echo -e "  1. Create database ${_db_name} if missing"
+    echo -e "  2. Drop and recreate tables, functions, views"
+    echo -e "  3. Insert seed data from the rulebook"
     echo ""
 
     read -p "Proceed? [Y/n]: " confirm
@@ -1029,7 +1087,8 @@ action_init_postgres() {
     fi
 
     echo ""
-    bash "$init_script"
+    createdb "$_db_name" 2>/dev/null || true
+    bash "$init_script" "$_db_url"
 
     echo ""
     read -p "Press Enter to continue..."
@@ -1053,6 +1112,32 @@ run_substrates() {
     export ERB_TESTING_DIR="$ERB_DOMAIN_DIR/testing"
     export ERB_RULEBOOK_PATH="$(get_domain_rulebook_path "$_domain")"
     mkdir -p "$ERB_TESTING_DIR"
+
+    # Per-domain Postgres DB: erb_<domain> (hyphens → underscores per PG ID
+    # rules). This matches the category split in CLAUDE.md — the admin portal
+    # lives in erb_admin_portal; each domain ("document") lives in its own
+    # erb_<domain>. test-orchestrator.py refuses to run without DATABASE_URL.
+    local _db_name="erb_${_domain//-/_}"
+    export DATABASE_URL="postgresql://postgres@localhost:5432/${_db_name}"
+
+    # Ensure the per-domain DB exists with current schema before tests query it.
+    # Every domain has rulebooktopostgres registered now, so this script must
+    # exist after a build — fail loudly if it doesn't.
+    local _init_script="$ERB_DOMAIN_DIR/effortless-postgres/init-db.sh"
+    if [ ! -f "$_init_script" ]; then
+        echo -e "${RED}FAIL: per-domain init-db.sh missing for '${_domain}'.${NC}"
+        echo -e "${RED}Expected: ${_init_script}${NC}"
+        echo -e "${RED}Run BUILD first so rulebooktopostgres generates it.${NC}"
+        return 1
+    fi
+    # createdb is a no-op when the DB already exists (we discard stderr only
+    # for that specific case; psql errors below will still surface).
+    createdb "$_db_name" 2>/dev/null || true
+    echo -e "${DIM}[db] applying schema to ${_db_name} via $(basename "$(dirname "$_init_script")")/init-db.sh${NC}"
+    if ! bash "$_init_script" "$DATABASE_URL" > /dev/null; then
+        echo -e "${RED}FAIL: init-db.sh failed against ${DATABASE_URL}${NC}"
+        return 1
+    fi
 
     # Get list of valid substrates (those with inject or test scripts)
     SUBSTRATES=$(get_valid_substrates)
@@ -1742,11 +1827,13 @@ while true; do
                 TRANSPILER_INDEX=0
                 SELECTED_NAME=""
                 SELECTED_DISPLAY=""
-                while IFS=$'\t' read -r internal display; do
+                SELECTED_DISABLED=""
+                while IFS=$'\t' read -r internal display is_disabled; do
                     TRANSPILER_INDEX=$((TRANSPILER_INDEX + 1))
                     if [ "$TRANSPILER_INDEX" = "$USER_CHOICE" ]; then
                         SELECTED_NAME="$internal"
                         SELECTED_DISPLAY="$display"
+                        SELECTED_DISABLED="$is_disabled"
                     fi
                 done <<< "$PROJECT_TRANSPILERS"
                 TRANSPILER_COUNT=$(echo "$PROJECT_TRANSPILERS" | wc -l | tr -d ' ')
@@ -1756,6 +1843,22 @@ while true; do
                     echo -e "${DIM}Pick a number from the menu above, or one of the letter options.${NC}"
                     sleep 2
                     continue
+                fi
+                # If the picked transpiler is disabled in effortless.json, ask
+                # for explicit confirmation before running it. The flag is
+                # there for a reason (CLAUDE.md: airtabletorulebook is disabled
+                # by default so a routine build can't overwrite the rulebook
+                # JSON). One-shot manual run is fine — but only on purpose.
+                if [ "$SELECTED_DISABLED" = "true" ]; then
+                    echo ""
+                    echo -e "${YELLOW}⚠  ${SELECTED_DISPLAY} is marked IsDisabled=true in effortless.json.${NC}"
+                    echo -e "${DIM}It is skipped by [B] BUILD on purpose. Running it once now will not change the flag.${NC}"
+                    read -p "Run it anyway? [y/N]: " CONFIRM_DISABLED
+                    if [ "$CONFIRM_DISABLED" != "y" ] && [ "$CONFIRM_DISABLED" != "Y" ]; then
+                        echo -e "${DIM}Skipped.${NC}"
+                        sleep 1
+                        continue
+                    fi
                 fi
                 if [ -n "$SELECTED_NAME" ]; then
                     echo ""

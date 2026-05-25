@@ -2,38 +2,27 @@
 
 ## Configuration
 
-- **Rulebook:** `/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/rulebook-examples/acme-llc/effortless-rulebook/effortless-rulebook.json`
-- **Substrates Tested:** 13
+- **Rulebook:** `/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/rulebook-examples/customer-fullname/effortless-rulebook/customer-fullname-rulebook.json`
+- **Substrates Tested:** 2
 - **Computed Columns Tested:** 2
 
 ## Summary by Substrate
 
 | Substrate | Passed | Failed | Total | Score | Duration | Status |
 |-----------|--------|--------|-------|-------|----------|--------|
-| explain-dag | 6 | 0 | 6 | 100.0% | < 1s | PASS |
-| python | 6 | 0 | 6 | 100.0% | < 1s | PASS |
-| uml | 6 | 0 | 6 | 100.0% | < 1s | PASS |
-| binary | 6 | 0 | 6 | 100.0% | < 1s | PASS |
-| cobol | 6 | 0 | 6 | 100.0% | < 1s | PASS |
-| csv | 6 | 0 | 6 | 100.0% | < 1s | PASS |
-| golang | 6 | 0 | 6 | 100.0% | < 1s | PASS |
-| owl | 6 | 0 | 6 | 100.0% | < 1s | PASS |
 | xlsx | 6 | 0 | 6 | 100.0% | < 1s | PASS |
-| effortless-postgres | 6 | 0 | 6 | 100.0% | 4s | PASS |
-| english | 6 | 0 | 6 | 100.0% | 19s | PASS |
-| effortless-xlsx | 6 | 0 | 6 | 100.0% | 30s | PASS |
-| effortless-entity-framework | 6 | 0 | 6 | 100.0% | 35s | PASS |
+| effortless-postgres | 0 | 6 | 6 | 0.0% | < 1s | FAIL |
 
 ## Overall Statistics
 
 | Metric | Value |
 |--------|-------|
-| Total Substrates | 13 |
-| Total Fields Tested | 78 |
-| Total Passed | 78 |
-| Total Failed | 0 |
-| Overall Score | 100.0% |
-| Total Duration | 1m 31s |
+| Total Substrates | 2 |
+| Total Fields Tested | 12 |
+| Total Passed | 6 |
+| Total Failed | 6 |
+| Overall Score | 50.0% |
+| Total Duration | < 1s |
 
 ---
 

@@ -24,6 +24,14 @@
       "CommandLine": "rulebook-to-airtable -i ../jessica-advanced-rulebook.json -account airtable -w 300000",
       "Enabled": false,
       "Description": "Reverse-sync: push rulebook changes back to Airtable (optional)"
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "rulebooktopostgres",
+      "RelativePath": "/effortless-postgres",
+      "CommandLine": "rulebook-to-postgres -i ../effortless-rulebook/jessica-advanced-rulebook.json",
+      "IsDisabled": false,
+      "Description": "Generate Postgres schema + seed data from the rulebook"
     }
   ]
 }

@@ -6,7 +6,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <title>DEMO: Customer FullName — 16:10:29</title>
+    <title>ACME, LLC (template) — 22:43:16</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css">
     <style>
@@ -803,11 +803,11 @@ footer {
 <body>
     <header>
         <div class="header-content">
-            <h1>DEMO: Customer FullName</h1>
+            <h1>ACME, LLC (template)</h1>
             <div class="header-meta">
                 <span class="project-name">Orchestration Report</span>
                 <span class="build-stamp" style="margin-left:1rem;padding:0.15rem 0.5rem;background:rgba(255,255,255,0.1);border-radius:4px;font-family:monospace;font-size:0.85rem;">
-                    generated 2026-05-24 16:10:29
+                    generated 2026-05-24 22:43:16
                 </span>
             </div>
         </div>
@@ -831,13 +831,13 @@ footer {
             <div class="stats-grid">
                 <div class="stat-card">
                     <div class="stat-value" id="passing-count">
-                        1 / 1
+                        1 / 2
                     </div>
                     <div class="stat-label">Tests Passing</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-value score-perfect">
-                        100.0%
+                    <div class="stat-value score-danger">
+                        50.0%
                     </div>
                     <div class="stat-label">Overall Score</div>
                 </div>
@@ -860,6 +860,10 @@ footer {
                 <div class="substrate-link-group">
                         <a href="#" class="substrate-link score-perfect" data-substrate="xlsx"><span class="substrate-swatch" style="background:#1F7244"></span>xlsx: 100%</a>
                     </div>
+                    <div class="substrate-link-group effortless-group">
+                        <div class="substrate-link-group-label">Effortless Licensed Tools</div>
+                        <a href="#" class="substrate-link score-danger" data-substrate="effortless-postgres"><span class="substrate-swatch" style="background:#336791"></span>postgres: 0%</a>
+                    </div>
             </div>
 
             <h2>Conformance Test Matrix</h2>
@@ -875,7 +879,9 @@ footer {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class=""><td class="substrate-name substrate-row-link" data-substrate="xlsx"><span class="substrate-swatch" style="background:#1F7244"></span>xlsx</td><td class="cell-pass" data-substrate="xlsx" data-entity="customers" title="3/3">&#10003;</td><td class="score-cell score-perfect">100.0%</td><td class="time-cell">0.5s</td></tr>
+                        <tr class=""><td class="substrate-name substrate-row-link" data-substrate="xlsx"><span class="substrate-swatch" style="background:#1F7244"></span>xlsx</td><td class="cell-pass" data-substrate="xlsx" data-entity="customers" title="6/6">&#10003;</td><td class="score-cell score-perfect">100.0%</td><td class="time-cell">0.5s</td></tr>
+                        <tr class="effortless-divider"><td colspan="4"><span class="effortless-divider-badge">EFFORTLESS LICENSED TOOLS</span> <span class="effortless-divider-sub">production transpiler pipelines &mdash; expected 100% conformance</span></td></tr>
+                        <tr class=""><td class="substrate-name substrate-row-link" data-substrate="effortless-postgres"><span class="substrate-swatch" style="background:#336791"></span>postgres</td><td class="cell-fail" data-substrate="effortless-postgres" data-entity="customers" title="0/6">6</td><td class="score-cell score-danger">0.0%</td><td class="time-cell">0.0s</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -884,6 +890,8 @@ footer {
         <section id="substrates" class="tab-content">
             <nav class="sub-tabs" id="substrate-tabs">
                 <button class="sub-tab active" data-substrate="xlsx"><span class="substrate-swatch" style="background:#1F7244"></span>xlsx</button>
+                <span class="sub-tab-group-divider" title="Licensed Effortless tools">EFFORTLESS LICENSED TOOLS</span>
+                <button class="sub-tab " data-substrate="effortless-postgres"><span class="substrate-swatch" style="background:#336791"></span>postgres</button>
             </nav>
             <div id="substrate-details"></div>
         </section>
@@ -904,32 +912,38 @@ footer {
     <script>
 const REPORT_DATA = {
   "meta": {
-    "project_name": "DEMO: Customer FullName",
+    "project_name": "ACME, LLC (template)",
     "directory_name": "customer-fullname",
     "rulebook_path": "/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/rulebook-examples/customer-fullname/effortless-rulebook/customer-fullname-rulebook.json",
-    "rulebook_name": "DEMO: Customer FullName",
-    "rulebook_description": "Rulebook generated from Airtable base 'DEMO: Customer FullName'.",
+    "rulebook_name": "ACME, LLC (template)",
+    "rulebook_description": "Rulebook generated from Airtable base 'ACME, LLC (template)'.",
     "base_id": "appWrXPvXbkgQGOxt"
   },
   "summary": {
-    "total_substrates": 1,
+    "total_substrates": 2,
     "passing_substrates": 1,
     "total_entities": 1,
-    "total_computed_columns": 1,
+    "total_computed_columns": 2,
     "total_records": 3,
-    "overall_score": 100.0,
-    "total_runtime_seconds": 0.49579691886901855,
-    "total_fields_tested": 3,
-    "total_passed": 3,
-    "total_failed": 0
+    "overall_score": 50.0,
+    "total_runtime_seconds": 0.49694061279296875,
+    "total_fields_tested": 12,
+    "total_passed": 6,
+    "total_failed": 6
   },
   "entities": {
     "customers": {
       "primary_key": "customer_id",
       "computed_columns": [
+        "name",
         "full_name"
       ],
       "computed_columns_info": [
+        {
+          "name": "name",
+          "formula": "=SUBSTITUTE(EmailAddress, \"@\", \"-\")",
+          "description": "Identifier for the customers."
+        },
         {
           "name": "full_name",
           "formula": "=LastName & \", \" & FirstName",
@@ -945,11 +959,12 @@ const REPORT_DATA = {
           "nullable": false
         },
         {
-          "name": "Customer",
+          "name": "Name",
           "datatype": "string",
-          "type": "raw",
+          "type": "calculated",
           "nullable": true,
-          "Description": "Identifier for the customers."
+          "Description": "Identifier for the customers.",
+          "formula": "=SUBSTITUTE({{EmailAddress}}, \"@\", \"-\")"
         },
         {
           "name": "EmailAddress",
@@ -984,28 +999,28 @@ const REPORT_DATA = {
       "description": "Table: Customers",
       "answer_key": [
         {
-          "customer_id": "cust0001",
-          "customer": "CUST0001",
-          "email_address": "jane.smith@email.com",
-          "first_name": "Jane",
-          "last_name": "Smith",
-          "full_name": "Smith, Jane"
-        },
-        {
-          "customer_id": "cust0002",
-          "customer": "CUST0002",
-          "email_address": "john.doe@email.com",
-          "first_name": "John",
-          "last_name": "Doe",
-          "full_name": "Doe, John"
-        },
-        {
-          "customer_id": "cust0003",
-          "customer": "CUST0003",
+          "customer_id": "emily-jones-email-com",
           "email_address": "emily.jones@email.com",
-          "first_name": "Emily",
           "last_name": "Jones",
-          "full_name": "Jones, Emily"
+          "name": "emily.jones-email.com",
+          "first_name": "Mary",
+          "full_name": "Jones, Mary"
+        },
+        {
+          "customer_id": "jane-smith-email-com",
+          "email_address": "jane.smith@email.com",
+          "last_name": "Smith",
+          "name": "jane.smith-email.com",
+          "first_name": "Bobby",
+          "full_name": "Smith, Bobby"
+        },
+        {
+          "customer_id": "john-doe-email-com",
+          "email_address": "john.doe@email.com",
+          "last_name": "Doe",
+          "name": "john.doe-email.com",
+          "first_name": "Jimmy",
+          "full_name": "Doe, Jimmy"
         }
       ]
     }
@@ -1013,14 +1028,14 @@ const REPORT_DATA = {
   "substrates": {
     "xlsx": {
       "substrate": "xlsx",
-      "total_fields_tested": 3,
-      "fields_passed": 3,
+      "total_fields_tested": 6,
+      "fields_passed": 6,
       "fields_failed": 0,
-      "elapsed_seconds": 0.49579691886901855,
+      "elapsed_seconds": 0.47772693634033203,
       "entities": {
         "customers": {
-          "fields_tested": 3,
-          "fields_passed": 3,
+          "fields_tested": 6,
+          "fields_passed": 6,
           "fields_failed": 0,
           "failures": []
         }
@@ -1029,16 +1044,16 @@ const REPORT_DATA = {
       "run_metadata": {
         "last_run": {
           "status": "success",
-          "duration_seconds": 0.49579691886901855,
+          "duration_seconds": 0.47772693634033203,
           "exit_code": 0,
           "score": 100.0
         },
         "last_successful_run": {
-          "duration_seconds": 0.49579691886901855,
+          "duration_seconds": 0.47772693634033203,
           "status": "success",
           "test_results": {
-            "total_fields_tested": 3,
-            "fields_passed": 3,
+            "total_fields_tested": 6,
+            "fields_passed": 6,
             "fields_failed": 0,
             "score": 100.0
           }
@@ -1047,28 +1062,28 @@ const REPORT_DATA = {
       "test_answers": {
         "customers": [
           {
-            "customer_id": "cust0001",
-            "customer": "CUST0001",
-            "email_address": "jane.smith@email.com",
-            "first_name": "Jane",
-            "last_name": "Smith",
-            "full_name": "Smith, Jane"
-          },
-          {
-            "customer_id": "cust0002",
-            "customer": "CUST0002",
-            "email_address": "john.doe@email.com",
-            "first_name": "John",
-            "last_name": "Doe",
-            "full_name": "Doe, John"
-          },
-          {
-            "customer_id": "cust0003",
-            "customer": "CUST0003",
+            "customer_id": "emily-jones-email-com",
             "email_address": "emily.jones@email.com",
-            "first_name": "Emily",
             "last_name": "Jones",
-            "full_name": "Jones, Emily"
+            "name": "emily.jones-email.com",
+            "first_name": "Mary",
+            "full_name": "Jones, Mary"
+          },
+          {
+            "customer_id": "jane-smith-email-com",
+            "email_address": "jane.smith@email.com",
+            "last_name": "Smith",
+            "name": "jane.smith-email.com",
+            "first_name": "Bobby",
+            "full_name": "Smith, Bobby"
+          },
+          {
+            "customer_id": "john-doe-email-com",
+            "email_address": "john.doe@email.com",
+            "last_name": "Doe",
+            "name": "john.doe-email.com",
+            "first_name": "Jimmy",
+            "full_name": "Doe, Jimmy"
           }
         ]
       },
@@ -1097,10 +1112,176 @@ const REPORT_DATA = {
         ],
         "contents": {
           "description": "<div class=\"card\">\n                <h2>What This Substrate Does</h2>\n                <div class=\"markdown-content\">\n                    <p>The XLSX substrate generates native Excel workbooks with embedded formulas, allowing the rulebook logic to execute directly within Microsoft Excel.</p>\n                    <h3>Orchestration Pattern</h3>\n                    <ol>\n                        <li><strong>Generate</strong>: <code>inject-into-xlsx.py</code> creates Excel workbook using openpyxl</li>\n                        <li><strong>Inject Formulas</strong>: Converts rulebook formulas to Excel cell references</li>\n                        <li><strong>Test</strong>: Opens workbook and validates calculated values match expected</li>\n                    </ol>\n                </div>\n            </div>\n            <div class=\"card\">\n                <h2>Key Features</h2>\n                <ul class=\"markdown-content\">\n                    <li><strong>Native Excel Formulas</strong>: Calculations run directly in Excel</li>\n                    <li><strong>Cell Reference Translation</strong>: <code>{{FieldRef}}</code> becomes <code>$B2</code>, etc.</li>\n                    <li><strong>Multi-Sheet Support</strong>: Each entity gets its own worksheet</li>\n                    <li><strong>Portable</strong>: Works offline without any dependencies</li>\n                </ul>\n            </div>",
-          "log": "<div class=\"card\">\n                <h2>Execution Log</h2>\n                <pre>=== XLSX (Excel) Substrate Test Run ===\n\n\n  Processing customers...\nFound 6 fields in test answers\nPrimary key field: customer_id\nReading from worksheet: Customers\nFound 6 columns, matched 6 to JSON fields\nLoaded 3 rows from xlsx\nFilled 3 null fields across 3 records\nUpdated /Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/rulebook-examples/customer-fullname/testing/xlsx/test-answers/customers.json\n\nxlsx: Processed 1 entities from rulebook.xlsx\n\n</pre>\n            </div>",
-          "results": "<div class=\"card\">\n                <h2>Test Summary</h2>\n                <div class=\"results-summary\">\n                    <div class=\"result-item\"><div class=\"result-value score-perfect\">100.0%</div><div class=\"result-label\">Score</div></div>\n                    <div class=\"result-item\"><div class=\"result-value score-perfect\">3</div><div class=\"result-label\">Passed</div></div>\n                    <div class=\"result-item\"><div class=\"result-value\">0</div><div class=\"result-label\">Failed</div></div>\n                    <div class=\"result-item\"><div class=\"result-value\">3</div><div class=\"result-label\">Total</div></div>\n                </div>\n            </div>",
+          "log": "<div class=\"card\">\n                <h2>Execution Log</h2>\n                <pre>=== XLSX (Excel) Substrate Test Run ===\n\n\n  Processing customers...\nFound 6 fields in test answers\nPrimary key field: customer_id\nReading from worksheet: Customers\nFound 6 columns, matched 6 to JSON fields\nLoaded 3 rows from xlsx\nFilled 6 null fields across 3 records\nUpdated /Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/rulebook-examples/customer-fullname/testing/xlsx/test-answers/customers.json\n\nxlsx: Processed 1 entities from rulebook.xlsx\n\n</pre>\n            </div>",
+          "results": "<div class=\"card\">\n                <h2>Test Summary</h2>\n                <div class=\"results-summary\">\n                    <div class=\"result-item\"><div class=\"result-value score-perfect\">100.0%</div><div class=\"result-label\">Score</div></div>\n                    <div class=\"result-item\"><div class=\"result-value score-perfect\">6</div><div class=\"result-label\">Passed</div></div>\n                    <div class=\"result-item\"><div class=\"result-value\">0</div><div class=\"result-label\">Failed</div></div>\n                    <div class=\"result-item\"><div class=\"result-value\">6</div><div class=\"result-label\">Total</div></div>\n                </div>\n            </div>",
           "workbook": "<div class=\"card\">\n                <h2>Generated Workbook</h2>\n                <div class=\"file-card\">\n                    <span class=\"file-icon\">\ud83d\udcd7</span>\n                    <div class=\"file-info\">\n                        <h3>rulebook.xlsx</h3>\n                        <div class=\"file-meta\">Size: 6.7 KB</div>\n                    </div>\n                </div>\n                <div class=\"markdown-content\" style=\"margin-top: 1rem;\">\n                    <h3>Sheets</h3>\n                    <ul>\n                        <li>One sheet per entity in the rulebook, each with all fields and calculated values</li>\n                    </ul>\n                </div>\n            </div>",
           "formulas": "<div class=\"card\">\n                <h2>Formula Translation</h2>\n                <div class=\"markdown-content\">\n                    <p>Rulebook formulas are converted to Excel formulas with cell references:</p>\n                </div>\n                <div class=\"formula-example\">\n                    <strong>Rulebook:</strong> =SUBSTITUTE(LOWER({{DisplayName}}), \" \", \"-\")<br>\n                    <strong>Excel:</strong> =SUBSTITUTE(LOWER($B2), \" \", \"-\")\n                </div>\n                <div class=\"formula-example\">\n                    <strong>Rulebook:</strong> ={{FieldA}} &amp; \" - \" &amp; {{FieldB}}<br>\n                    <strong>Excel:</strong> =$C2 &amp; \" - \" &amp; $D2\n                </div>\n            </div>"
+        }
+      }
+    },
+    "effortless-postgres": {
+      "substrate": "effortless-postgres",
+      "total_fields_tested": 6,
+      "fields_passed": 0,
+      "fields_failed": 6,
+      "elapsed_seconds": 0.01921367645263672,
+      "entities": {
+        "customers": {
+          "fields_tested": 6,
+          "fields_passed": 0,
+          "fields_failed": 6,
+          "failures": [
+            {
+              "pk": "emily-jones-email-com",
+              "field": "name",
+              "expected": "emily.jones-email.com",
+              "actual": "None"
+            },
+            {
+              "pk": "emily-jones-email-com",
+              "field": "full_name",
+              "expected": "Jones, Mary",
+              "actual": "None"
+            },
+            {
+              "pk": "jane-smith-email-com",
+              "field": "name",
+              "expected": "jane.smith-email.com",
+              "actual": "None"
+            },
+            {
+              "pk": "jane-smith-email-com",
+              "field": "full_name",
+              "expected": "Smith, Bobby",
+              "actual": "None"
+            },
+            {
+              "pk": "john-doe-email-com",
+              "field": "name",
+              "expected": "john.doe-email.com",
+              "actual": "None"
+            },
+            {
+              "pk": "john-doe-email-com",
+              "field": "full_name",
+              "expected": "Doe, Jimmy",
+              "actual": "None"
+            }
+          ]
+        }
+      },
+      "error": null,
+      "run_metadata": {
+        "last_run": {
+          "status": "success",
+          "duration_seconds": 0.01921367645263672,
+          "exit_code": 0,
+          "score": 0.0
+        },
+        "last_successful_run": null
+      },
+      "test_answers": {
+        "customers": [
+          {
+            "customer_id": "emily-jones-email-com",
+            "email_address": "emily.jones@email.com",
+            "last_name": "Jones",
+            "name": "emily.jones-email.com",
+            "first_name": "Mary",
+            "full_name": "Jones, Mary"
+          },
+          {
+            "customer_id": "jane-smith-email-com",
+            "email_address": "jane.smith@email.com",
+            "last_name": "Smith",
+            "name": "jane.smith-email.com",
+            "first_name": "Bobby",
+            "full_name": "Smith, Bobby"
+          },
+          {
+            "customer_id": "john-doe-email-com",
+            "email_address": "john.doe@email.com",
+            "last_name": "Doe",
+            "name": "john.doe-email.com",
+            "first_name": "Jimmy",
+            "full_name": "Doe, Jimmy"
+          }
+        ]
+      },
+      "report_content": {
+        "tabs": [
+          {
+            "id": "description",
+            "label": "Description"
+          },
+          {
+            "id": "log",
+            "label": "Run Log"
+          },
+          {
+            "id": "results",
+            "label": "Test Results"
+          },
+          {
+            "id": "sql-bootstrap",
+            "label": "00 \u00b7 Bootstrap"
+          },
+          {
+            "id": "sql-tables",
+            "label": "01 \u00b7 Tables"
+          },
+          {
+            "id": "sql-tables-b",
+            "label": "01b \u00b7 Customize"
+          },
+          {
+            "id": "sql-fns",
+            "label": "02 \u00b7 Functions"
+          },
+          {
+            "id": "sql-fns-b",
+            "label": "02b \u00b7 Customize"
+          },
+          {
+            "id": "sql-views",
+            "label": "03 \u00b7 Views"
+          },
+          {
+            "id": "sql-views-b",
+            "label": "03b \u00b7 Customize"
+          },
+          {
+            "id": "sql-policies",
+            "label": "04 \u00b7 Policies"
+          },
+          {
+            "id": "sql-policies-b",
+            "label": "04b \u00b7 Customize"
+          },
+          {
+            "id": "sql-data",
+            "label": "05 \u00b7 Data"
+          },
+          {
+            "id": "sql-data-b",
+            "label": "05b \u00b7 Customize"
+          }
+        ],
+        "contents": {
+          "description": "<div class=\"card\">\n                <h2>What This Substrate Does</h2>\n                <p>PostgreSQL is the reference substrate. The <code>rulebook-to-postgres</code>\n                transpiler emits a complete schema &mdash; tables, type-safe\n                <code>calc_*</code> and <code>get_*</code> functions, aggregating views, RLS\n                policies and seed data &mdash; so the database itself enforces every\n                rule in the rulebook. Unlike the other substrates, PostgreSQL has <strong>no\n                expressive gaps</strong>: full joins, aggregations, recursive queries, all\n                formula types.</p>\n            </div>\n            <div class=\"card\">\n                <h2>Architecture</h2>\n                <div class=\"arch-diagram\">\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n\u2502               effortless-rulebook.json                       \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n                              \u2502  rulebook-to-postgres\n                              \u25bc\n\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n\u2502  postgres/                                                   \u2502\n\u2502    00-bootstrap.sql          \u2190 extensions, schemas, roles    \u2502\n\u2502    01-drop-and-create-tables.sql                             \u2502\n\u2502    01b-customize-schema.sql  \u2190 hand edits survive rebuilds   \u2502\n\u2502    02-create-functions.sql   \u2190 calc_*() per computed field   \u2502\n\u2502    02b-customize-functions.sql                               \u2502\n\u2502    03-create-views.sql       \u2190 vw_* with full joins + aggs   \u2502\n\u2502    03b-customize-views.sql                                   \u2502\n\u2502    04-create-policies.sql    \u2190 row-level security            \u2502\n\u2502    04b-customize-policies.sql                                \u2502\n\u2502    05-insert-data.sql        \u2190 seed records                  \u2502\n\u2502    05b-customize-data.sql                                    \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518</div>\n            </div>\n            <div class=\"card\">\n                <h2>Key Features</h2>\n                <ul>\n                    <li><strong>Reference implementation</strong> \u2014 the other substrates are graded against the same behaviour PostgreSQL produces.</li>\n                    <li><strong><code>calc_*</code> functions</strong> \u2014 every calculated field becomes a SQL function with the right types.</li>\n                    <li><strong><code>vw_*</code> views</strong> \u2014 application code reads views, never base tables, so derived values stay consistent.</li>\n                    <li><strong><code>*b-customize-*</code> files</strong> \u2014 hand edits live in sibling files that survive regeneration.</li>\n                    <li><strong>Row-level security</strong> \u2014 tenant isolation and role gating generated from rulebook metadata.</li>\n                </ul>\n            </div>\n            <div class=\"card\">\n                <h2>Generated Files</h2>\n                <ul>\n                    <li><code>00-bootstrap.sql</code> \u2014 extensions, schema, utility functions</li>\n                    <li><code>01-drop-and-create-tables.sql</code> \u2014 base tables with FKs</li>\n                    <li><code>02-create-functions.sql</code> \u2014 <code>calc_*</code> functions for every computed field</li>\n                    <li><code>03-create-views.sql</code> \u2014 <code>vw_*</code> views joining raw+computed</li>\n                    <li><code>04-create-policies.sql</code> \u2014 RLS and role-based policies</li>\n                    <li><code>05-insert-data.sql</code> \u2014 seed records from the rulebook</li>\n                    <li><code>*b-customize-*.sql</code> \u2014 hand-edit companion files that survive regeneration</li>\n                </ul>\n            </div>",
+          "log": "<div class=\"card\">\n                <h2>Execution Log</h2>\n                <pre>=== PostgreSQL Substrate Test Run ===\n\neffortless-postgres: Starting test...\neffortless-postgres: Connecting to database and querying views...\nPostgreSQL Substrate: Starting test...\nPostgreSQL Substrate: Connected to database\nPostgreSQL Substrate: Found 1 views\n  -&gt; customers: 3 records\nPostgreSQL Substrate: Processed 1 views, 3 total records\n\n</pre>\n            </div>",
+          "results": "<div class=\"card\">\n                <h2>Test Summary</h2>\n                <div class=\"results-summary\">\n                    <div class=\"result-item\"><div class=\"result-value score-danger\">0.0%</div><div class=\"result-label\">Score</div></div>\n                    <div class=\"result-item\"><div class=\"result-value score-perfect\">0</div><div class=\"result-label\">Passed</div></div>\n                    <div class=\"result-item\"><div class=\"result-value\">6</div><div class=\"result-label\">Failed</div></div>\n                    <div class=\"result-item\"><div class=\"result-value\">6</div><div class=\"result-label\">Total</div></div>\n                </div>\n            </div>",
+          "sql-bootstrap": "<div class=\"card\">\n                <div class=\"code-header\">\n                    <h2>00 \u00b7 Bootstrap</h2>\n                    <div>\n                        <span class=\"code-info\">1 lines \u00b7 1 KB</span>\n                    </div>\n                </div>\n                <pre class=\"line-numbers\"><code class=\"language-sql\">-- (file not generated yet)</code></pre>\n            </div>",
+          "sql-tables": "<div class=\"card\">\n                <div class=\"code-header\">\n                    <h2>01 \u00b7 Tables</h2>\n                    <div>\n                        <span class=\"code-info\">1 lines \u00b7 1 KB</span>\n                    </div>\n                </div>\n                <pre class=\"line-numbers\"><code class=\"language-sql\">-- (file not generated yet)</code></pre>\n            </div>",
+          "sql-tables-b": "<div class=\"card\">\n                <div class=\"code-header\">\n                    <h2>01b \u00b7 Customize</h2>\n                    <div>\n                        <span class=\"code-info\">1 lines \u00b7 1 KB</span>\n                    </div>\n                </div>\n                <pre class=\"line-numbers\"><code class=\"language-sql\">-- (file not generated yet)</code></pre>\n            </div>",
+          "sql-fns": "<div class=\"card\">\n                <div class=\"code-header\">\n                    <h2>02 \u00b7 Functions</h2>\n                    <div>\n                        <span class=\"code-info\">1 lines \u00b7 1 KB</span>\n                    </div>\n                </div>\n                <pre class=\"line-numbers\"><code class=\"language-sql\">-- (file not generated yet)</code></pre>\n            </div>",
+          "sql-fns-b": "<div class=\"card\">\n                <div class=\"code-header\">\n                    <h2>02b \u00b7 Customize</h2>\n                    <div>\n                        <span class=\"code-info\">1 lines \u00b7 1 KB</span>\n                    </div>\n                </div>\n                <pre class=\"line-numbers\"><code class=\"language-sql\">-- (file not generated yet)</code></pre>\n            </div>",
+          "sql-views": "<div class=\"card\">\n                <div class=\"code-header\">\n                    <h2>03 \u00b7 Views</h2>\n                    <div>\n                        <span class=\"code-info\">1 lines \u00b7 1 KB</span>\n                    </div>\n                </div>\n                <pre class=\"line-numbers\"><code class=\"language-sql\">-- (file not generated yet)</code></pre>\n            </div>",
+          "sql-views-b": "<div class=\"card\">\n                <div class=\"code-header\">\n                    <h2>03b \u00b7 Customize</h2>\n                    <div>\n                        <span class=\"code-info\">1 lines \u00b7 1 KB</span>\n                    </div>\n                </div>\n                <pre class=\"line-numbers\"><code class=\"language-sql\">-- (file not generated yet)</code></pre>\n            </div>",
+          "sql-policies": "<div class=\"card\">\n                <div class=\"code-header\">\n                    <h2>04 \u00b7 Policies</h2>\n                    <div>\n                        <span class=\"code-info\">1 lines \u00b7 1 KB</span>\n                    </div>\n                </div>\n                <pre class=\"line-numbers\"><code class=\"language-sql\">-- (file not generated yet)</code></pre>\n            </div>",
+          "sql-policies-b": "<div class=\"card\">\n                <div class=\"code-header\">\n                    <h2>04b \u00b7 Customize</h2>\n                    <div>\n                        <span class=\"code-info\">1 lines \u00b7 1 KB</span>\n                    </div>\n                </div>\n                <pre class=\"line-numbers\"><code class=\"language-sql\">-- (file not generated yet)</code></pre>\n            </div>",
+          "sql-data": "<div class=\"card\">\n                <div class=\"code-header\">\n                    <h2>05 \u00b7 Data</h2>\n                    <div>\n                        <span class=\"code-info\">1 lines \u00b7 1 KB</span>\n                    </div>\n                </div>\n                <pre class=\"line-numbers\"><code class=\"language-sql\">-- (file not generated yet)</code></pre>\n            </div>",
+          "sql-data-b": "<div class=\"card\">\n                <div class=\"code-header\">\n                    <h2>05b \u00b7 Customize</h2>\n                    <div>\n                        <span class=\"code-info\">1 lines \u00b7 1 KB</span>\n                    </div>\n                </div>\n                <pre class=\"line-numbers\"><code class=\"language-sql\">-- (file not generated yet)</code></pre>\n            </div>"
         }
       }
     }
@@ -1108,28 +1289,28 @@ const REPORT_DATA = {
   "answer_keys": {
     "customers": [
       {
-        "customer_id": "cust0001",
-        "customer": "CUST0001",
-        "email_address": "jane.smith@email.com",
-        "first_name": "Jane",
-        "last_name": "Smith",
-        "full_name": "Smith, Jane"
-      },
-      {
-        "customer_id": "cust0002",
-        "customer": "CUST0002",
-        "email_address": "john.doe@email.com",
-        "first_name": "John",
-        "last_name": "Doe",
-        "full_name": "Doe, John"
-      },
-      {
-        "customer_id": "cust0003",
-        "customer": "CUST0003",
+        "customer_id": "emily-jones-email-com",
         "email_address": "emily.jones@email.com",
-        "first_name": "Emily",
         "last_name": "Jones",
-        "full_name": "Jones, Emily"
+        "name": "emily.jones-email.com",
+        "first_name": "Mary",
+        "full_name": "Jones, Mary"
+      },
+      {
+        "customer_id": "jane-smith-email-com",
+        "email_address": "jane.smith@email.com",
+        "last_name": "Smith",
+        "name": "jane.smith-email.com",
+        "first_name": "Bobby",
+        "full_name": "Smith, Bobby"
+      },
+      {
+        "customer_id": "john-doe-email-com",
+        "email_address": "john.doe@email.com",
+        "last_name": "Doe",
+        "name": "john.doe-email.com",
+        "first_name": "Jimmy",
+        "full_name": "Doe, Jimmy"
       }
     ]
   },
@@ -1710,7 +1891,7 @@ function renderSubstrateDetails(substrateName, restoreViewTab = null, restoreEnt
         });
     });
 
-    // Restore view tab from URL if provided, or fall back to 'data'
+    // Restore view tab from URL if provided; otherwise default to 'data'
     if (restoreViewTab) {
         const viewTabBtn = document.querySelector(`#substrate-view-tabs .sub-tab[data-view="${restoreViewTab}"]`);
         if (viewTabBtn) {
@@ -1720,7 +1901,7 @@ function renderSubstrateDetails(substrateName, restoreViewTab = null, restoreEnt
             document.getElementById(`substrate-${restoreViewTab}-view`)?.classList.add('active');
             currentViewTab = restoreViewTab;
         } else {
-            // Tab doesn't exist on this substrate, fall back to 'data'
+            // Tab doesn't exist on this substrate; default to 'data'
             currentViewTab = 'data';
             // Data tab is already active by default from the HTML
         }

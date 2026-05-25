@@ -92,16 +92,16 @@
   "xlsx": {
     "last_run": {
       "status": "success",
-      "duration_seconds": 0.49579691886901855,
+      "duration_seconds": 0.47772693634033203,
       "exit_code": 0,
       "score": 100.0
     },
     "last_successful_run": {
-      "duration_seconds": 0.49579691886901855,
+      "duration_seconds": 0.47772693634033203,
       "status": "success",
       "test_results": {
-        "total_fields_tested": 3,
-        "fields_passed": 3,
+        "total_fields_tested": 6,
+        "fields_passed": 6,
         "fields_failed": 0,
         "score": 100.0
       }
@@ -200,7 +200,7 @@
   "effortless-postgres": {
     "last_run": {
       "status": "success",
-      "duration_seconds": 4.821129083633423,
+      "duration_seconds": 0.01921367645263672,
       "exit_code": 0,
       "score": 0.0
     },

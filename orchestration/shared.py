@@ -99,7 +99,7 @@ def get_active_project_substrates(domain=None):
     substrates = []
     seen = set()
     for t in cfg.get("ProjectTranspilers", []):
-        if t.get("IsDisabled") or t.get("Enabled") is False:
+        if t.get("IsDisabled"):
             continue
         rp = (t.get("RelativePath") or "").strip("/")
         # Airtable in/out spokes both live under /effortless-rulebook[/...].
