@@ -150,6 +150,185 @@ function savePortalState(s) {
 }
 
 // ---------------------------------------------------------------------------
+// RulebookFlavors reconciliation
+//
+// The project rulebook carries a `RulebookFlavors` table — one row per demo
+// under rulebook-examples/. The UI reads it directly. When new demos get added
+// to the filesystem, that table goes stale.
+//
+// On boot we scan rulebook-examples/, count entities/calc/agg/lookup from each
+// demo's rulebook, then:
+//   - add rows for demos that are on disk but missing from the table
+//   - refresh the COUNT fields on existing rows (so numbers stay live)
+//   - leave hand-authored fields (Flavor, Complexity, LearningFocus,
+//     GoodAnswerKeyFor, DisplayName) alone once a row exists
+//
+// Default Flavor/Complexity heuristics fire only when adding a NEW row — so
+// the first time a demo shows up it gets a reasonable guess, and after that
+// the table is hand-tunable without the reconciler clobbering it.
+// ---------------------------------------------------------------------------
+function countFieldTypes(rulebook) {
+  let entities = 0, calc = 0, agg = 0, lookup = 0;
+  for (const [name, value] of Object.entries(rulebook)) {
+    if (name.startsWith("$") || name.startsWith("_")) continue;
+    if (name === "Name" || name === "Description") continue;
+    if (!value || typeof value !== "object" || !Array.isArray(value.schema)) continue;
+    entities += 1;
+    for (const f of value.schema) {
+      if (f.type === "calculated") calc += 1;
+      else if (f.type === "aggregation") agg += 1;
+      else if (f.type === "lookup") lookup += 1;
+    }
+  }
+  return { entities, calc, agg, lookup };
+}
+
+function classifyFlavor({ entities, calc, agg }) {
+  if (agg >= 3) return "aggregation-heavy";
+  if (calc >= 6 && agg < 3) return "computation-heavy";
+  if (entities <= 3 && calc <= 2) return "tutorial-ladder";
+  return "crud-template";
+}
+
+function classifyComplexity(entities) {
+  if (entities <= 3) return "minimal";
+  if (entities <= 6) return "basic";
+  return "advanced";
+}
+
+function scanDemoRulebooks() {
+  // Returns array of { slug, rulebookPath, entities, calc, agg, lookup }.
+  // Only includes demos that actually have a <slug>-rulebook.json file.
+  const out = [];
+  if (!fs.existsSync(RULEBOOK_EXAMPLES)) return out;
+  for (const slug of fs.readdirSync(RULEBOOK_EXAMPLES).sort()) {
+    const dir = path.join(RULEBOOK_EXAMPLES, slug);
+    if (!fs.statSync(dir).isDirectory()) continue;
+    const rbPath = path.join(dir, "effortless-rulebook", `${slug}-rulebook.json`);
+    if (!fs.existsSync(rbPath)) continue;
+    let rb;
+    try {
+      rb = JSON.parse(fs.readFileSync(rbPath, "utf8"));
+    } catch (e) {
+      console.warn(`[flavors] skipping ${slug}: rulebook unparseable (${e.message})`);
+      continue;
+    }
+    const counts = countFieldTypes(rb);
+    if (counts.entities === 0) continue;
+    out.push({ slug, rulebookPath: rbPath, ...counts });
+  }
+  return out;
+}
+
+function nextFlavorId(existing) {
+  let max = 0;
+  for (const r of existing) {
+    const m = /^flav-(\d+)$/.exec(r.FlavorId || "");
+    if (m) max = Math.max(max, parseInt(m[1], 10));
+  }
+  return (n) => `flav-${String(max + n).padStart(3, "0")}`;
+}
+
+function reconcileFlavors() {
+  // Returns { added: [...], updated: [...], unchanged: number }.
+  const project = loadProjectRulebook();
+  if (!project.RulebookFlavors || !Array.isArray(project.RulebookFlavors.data)) {
+    console.warn("[flavors] RulebookFlavors table missing from project rulebook — skipping reconcile");
+    return { added: [], updated: [], unchanged: 0 };
+  }
+  const rows = project.RulebookFlavors.data;
+  const onDisk = scanDemoRulebooks();
+  const bySlug = new Map(rows.map((r) => [r.ProjectSlug, r]));
+  const minted = nextFlavorId(rows);
+  const added = [];
+  const updated = [];
+  let unchanged = 0;
+  let newIdx = 1;
+
+  for (const d of onDisk) {
+    const existing = bySlug.get(d.slug);
+    if (!existing) {
+      const flavor = classifyFlavor(d);
+      const complexity = classifyComplexity(d.entities);
+      const row = {
+        FlavorId:         minted(newIdx++),
+        ProjectSlug:      d.slug,
+        DisplayName:      d.slug,
+        Flavor:           flavor,
+        Complexity:       complexity,
+        EntityCount:      d.entities,
+        CalculatedCount:  d.calc,
+        AggregationCount: d.agg,
+        LookupCount:      d.lookup,
+        LearningFocus:    `Auto-discovered demo. Replace this stub with a one-line description of what ${d.slug} is designed to teach.`,
+        GoodAnswerKeyFor: null,
+      };
+      rows.push(row);
+      added.push(row);
+    } else {
+      const drift =
+        existing.EntityCount      !== d.entities ||
+        existing.CalculatedCount  !== d.calc ||
+        existing.AggregationCount !== d.agg ||
+        existing.LookupCount      !== d.lookup;
+      if (drift) {
+        existing.EntityCount      = d.entities;
+        existing.CalculatedCount  = d.calc;
+        existing.AggregationCount = d.agg;
+        existing.LookupCount      = d.lookup;
+        updated.push(existing);
+      } else {
+        unchanged += 1;
+      }
+    }
+  }
+
+  if (added.length || updated.length) {
+    saveProjectRulebook(project);
+  }
+  return { added, updated, unchanged };
+}
+
+async function reconcileFlavorsOnBoot() {
+  let result;
+  try {
+    result = reconcileFlavors();
+  } catch (e) {
+    console.error(`[flavors] reconcile failed: ${e.message}`);
+    return;
+  }
+  const { added, updated, unchanged } = result;
+  if (!added.length && !updated.length) {
+    console.log(`[flavors] up to date (${unchanged} demos)`);
+    return;
+  }
+  for (const r of added) {
+    console.log(`[flavors] + added ${r.FlavorId}: ${r.ProjectSlug} (${r.Flavor}, ${r.Complexity})`);
+  }
+  for (const r of updated) {
+    console.log(`[flavors] ~ refreshed counts: ${r.ProjectSlug} (${r.EntityCount}e/${r.CalculatedCount}c/${r.AggregationCount}a/${r.LookupCount}l)`);
+  }
+
+  // Mirror into Postgres so the editor view stays consistent. Only attempt if
+  // the active project IS the platform rulebook — otherwise the pool is
+  // pointing at a demo DB and PlatformFeatures-style mirroring doesn't apply.
+  if (getActiveDomain() === "__top__") {
+    try {
+      const p = await getPool();
+      const project = loadProjectRulebook();
+      await p.query(
+        `UPDATE portal_rulebook_entities
+            SET data_json = $2, updated_at = now()
+          WHERE entity_name = 'RulebookFlavors'`,
+        ["RulebookFlavors", JSON.stringify(project.RulebookFlavors.data)]
+      );
+    } catch (e) {
+      console.warn(`[flavors] postgres mirror skipped: ${e.message}`);
+    }
+  }
+}
+
+// ---------------------------------------------------------------------------
 // Editor Postgres database (per-project)
 // ---------------------------------------------------------------------------
 function domainDbName() {
@@ -818,6 +997,7 @@ app.use("/", express.static(path.join(__dirname, "web")));
     console.error(`[portal] WARNING — could not init editor Postgres: ${e.message}`);
     console.error(`[portal] portal will still serve, but DB-backed features will fail.`);
   }
+  await reconcileFlavorsOnBoot();
   app.listen(PORT, () => {
     const rb = activeRulebookPath();
     console.log(`[portal] http://localhost:${PORT}`);
