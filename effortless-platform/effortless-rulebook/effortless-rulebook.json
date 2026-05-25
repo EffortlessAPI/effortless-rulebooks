@@ -74,6 +74,56 @@
       }
     ]
   },
+  "OntologyAxioms": {
+    "Description": "Positive-form invariants the project is built on. These are the load-bearing claims; if any one is dropped, the methodology no longer holds. FramingInvariants are mistakes that violate these axioms.",
+    "schema": [
+      {"name": "AxiomId",     "datatype": "string", "type": "raw", "nullable": false},
+      {"name": "ShortName",   "datatype": "string", "type": "raw", "nullable": false},
+      {"name": "Statement",   "datatype": "string", "type": "raw", "nullable": false, "Description": "The axiom in one sentence"},
+      {"name": "Why",         "datatype": "string", "type": "raw", "nullable": false, "Description": "What collapses if you give this up"},
+      {"name": "Implication", "datatype": "string", "type": "raw", "nullable": true,  "Description": "Concrete consequence for how the project is built / discussed"},
+      {"name": "Status",      "datatype": "string", "type": "raw", "nullable": false, "Description": "active | revising | retired"}
+    ],
+    "data": [
+      {"AxiomId": "ax-001", "ShortName": "Rulebook is the IR",                  "Statement": "The rulebook JSON is the portable intermediate representation. Every other artifact is mechanically derivable from it.",                                                            "Why": "If any artifact is hand-edited authoritatively, conformance no longer follows from a single source. The 'all substrates compute identically' claim depends on one IR.", "Implication": "Generated files are disposable; the rulebook JSON is the only file that is sacred.", "Status": "active"},
+      {"AxiomId": "ax-002", "ShortName": "No privileged substrate",             "Statement": "Postgres, Airtable, Excel, Python, Go, OWL, COBOL — every substrate is a peer projection of the rulebook. None is the reference.",                                                       "Why": "Privileging one substrate quietly redefines 'correct' as 'matches that substrate' instead of 'matches the rulebook', which is the actual SSoT.",                          "Implication": "Substrate properties (maturity, transpiler source, expressive completeness) are facts about implementations, not authority rankings.", "Status": "active"},
+      {"AxiomId": "ax-003", "ShortName": "SSoT is locally designated",          "Statement": "The 'answer key' for a conformance run is whichever substrate the user designates as SSoT for that run — Airtable export, Excel workbook, hand-edited JSON, or a Postgres dump.",     "Why": "If the answer key is fixed, the methodology only works in one deployment mode. Locality lets the same harness validate Airtable-driven, Excel-driven, or JSON-driven projects.", "Implication": "Conformance reports must name the chosen SSoT for the run; trustworthy substrates witness, they do not crown.", "Status": "active"},
+      {"AxiomId": "ax-004", "ShortName": "Hub-and-spoke topology",              "Statement": "The rulebook is the hub. Input spokes (Airtable, LLM, admin portal, hand edits) write to it. Output spokes (substrates) read from it. Spokes never talk to each other.",            "Why": "Direct spoke-to-spoke traffic re-introduces the n×n integration problem the rulebook was created to eliminate.",                                                       "Implication": "If you find yourself wiring a substrate to consume another substrate's output, you are violating the topology — route through the rulebook.", "Status": "active"},
+      {"AxiomId": "ax-005", "ShortName": "Fail loudly, never fall back",        "Statement": "When a file or value is not where it is expected, the code fails with the exact expected path. It does not check a second location, default to a guess, or return an empty object with a warning.", "Why": "Silent fallbacks mask the bug they are working around and cause 100% conformance against the wrong data.",                                                              "Implication": "Defaults derived from the SSoT are fine. Defaults that substitute a guess are not.", "Status": "active"},
+      {"AxiomId": "ax-006", "ShortName": "Project rulebook ≠ demo rulebook",    "Statement": "The platform rulebook (this file) is the parent describing ERB itself. Demo rulebooks under rulebook-examples/ are children describing one business domain each. They never mix.",      "Why": "Mixing platform-meta with business-data couples the wrapper to a domain, which destroys the wrapper's portability.",                                                   "Implication": "Portal config tables (AppUsers, AppNavigation, etc.) live ONLY in this file. Business tables (Customers, Episodes, etc.) live ONLY in their demo rulebook.", "Status": "active"},
+      {"AxiomId": "ax-007", "ShortName": "Admin portal ≠ a domain",             "Statement": "The admin portal is the app; a domain is a document the app opens. Their databases are separate (erb_admin_portal vs erb_<domain>) and the names never merge.",                  "Why": "Names like erb_admin_<domain> conflate the editor with the thing being edited, which leads to drift between portal state and document state.",                          "Implication": "Two Postgres connections at all times: one to the portal's own DB, one to the active document's DB.", "Status": "active"},
+      {"AxiomId": "ax-008", "ShortName": "Build = generate + test + report",    "Statement": "Every build runs all transpilers, then runs every substrate's conformance test, then regenerates and opens the report.",                                                          "Why": "A build that skips the test step produces output of unknown correctness; the methodology's value is the conformance proof, not the codegen.",                          "Implication": "There is no 'build without testing' menu option. If a substrate has no take-test.sh, that is a bug to fix, not a case to handle.", "Status": "active"},
+      {"AxiomId": "ax-009", "ShortName": "Portal/CLI parity",                   "Statement": "The admin portal and ./start.sh --cli are peer interfaces to the same effortless.json pipeline. Every portal mutation shells out to the same `effortless` CLI command.",                "Why": "Two divergent implementations of 'install a tool' or 'run a build' will drift; conformance claims become qualified ('works in CLI, fails in portal').",                "Implication": "If the portal grows logic the CLI does not have, that logic moves into the CLI and the portal calls it.", "Status": "active"},
+      {"AxiomId": "ax-010", "ShortName": "Write-through invariant",             "Statement": "The portal's editor Postgres DB is live; the rulebook JSON is durable. Every save writes to BOTH in the same logical transaction.",                                                "Why": "If Postgres ever wins alone, JSON drifts and the SSoT property is violated. If JSON ever wins alone, the live editor lies about state.",                                 "Implication": "Drop Postgres at any time and rebuild from JSON; never the other direction.", "Status": "active"}
+    ]
+  },
+  "FramingInvariants": {
+    "Description": "Mistakes-to-avoid catalog. Each row is one wrong framing that has been caught and corrected, paired with the right framing and the axiom it violates. The portal surfaces these so future agents (and humans) can be re-grounded without rediscovering them.",
+    "schema": [
+      {"name": "InvariantId",   "datatype": "string", "type": "raw",    "nullable": false},
+      {"name": "Name",          "datatype": "string", "type": "raw",    "nullable": false, "Description": "Short title for grouping / display"},
+      {"name": "Category",      "datatype": "string", "type": "raw",    "nullable": false, "Description": "substrate-equality | ssot-locality | hub-spoke-topology | category-error | fail-loud | role-confusion | naming"},
+      {"name": "WrongFraming",  "datatype": "string", "type": "raw",    "nullable": false, "Description": "The mistake verbatim"},
+      {"name": "CorrectFraming","datatype": "string", "type": "raw",    "nullable": false, "Description": "The right framing"},
+      {"name": "Why",           "datatype": "string", "type": "raw",    "nullable": false, "Description": "The reasoning that anchors it"},
+      {"name": "ViolatedAxiomId","datatype": "string","type": "lookup", "nullable": true,  "Description": "FK to OntologyAxioms.AxiomId — which axiom the wrong framing violates"},
+      {"name": "Severity",      "datatype": "string", "type": "raw",    "nullable": false, "Description": "critical | important | nuance"},
+      {"name": "ExampleContext","datatype": "string", "type": "raw",    "nullable": true,  "Description": "Where this came up — useful so future agents can recognise the situation"},
+      {"name": "Status",        "datatype": "string", "type": "raw",    "nullable": false, "Description": "active | retired"}
+    ],
+    "data": [
+      {"InvariantId": "framing-001", "Name": "Postgres is the reference substrate",          "Category": "substrate-equality",   "WrongFraming": "Postgres is the reference substrate with no expressive gaps; other substrates are demonstrations with gaps relative to it.",                                                       "CorrectFraming": "Postgres is one of N peer substrates. It happens to have few expressive gaps in practice, which makes it a convenient witness — but witnessing is not the same as crowning.",                                                                "Why": "Calling Postgres 'the reference' redefines 'correct' as 'matches Postgres'. The actual SSoT is the rulebook (or the user-designated answer-key substrate for that run). Postgres being trustworthy doesn't make it privileged.", "ViolatedAxiomId": "ax-002", "Severity": "critical",  "ExampleContext": "Said by Claude when describing the repo on 2026-05-25. Caught by user in the same turn.", "Status": "active"},
+      {"InvariantId": "framing-002", "Name": "The rulebook JSON is always the SSoT",         "Category": "ssot-locality",         "WrongFraming": "The rulebook JSON file is the single source of truth in every deployment.",                                                                                                              "CorrectFraming": "The rulebook is the portable IR. The SSoT for a given conformance run is whichever spoke the user designates — Airtable export, Excel workbook, hand-edited JSON, etc. If Airtable is the SSoT, the rulebook JSON is downstream from it.",  "Why": "Treating the JSON as universally authoritative ignores that input spokes can BE the SSoT. The framework supports several deployment modes; only one of them has the JSON as primary.",                       "ViolatedAxiomId": "ax-003", "Severity": "critical",  "ExampleContext": "Implicit in any phrasing like 'the JSON is the SSoT, period' without naming the deployment mode.", "Status": "active"},
+      {"InvariantId": "framing-003", "Name": "IsProduction = trustworthy",                   "Category": "substrate-equality",    "WrongFraming": "Substrates with IsProduction=true (Postgres, Excel, Entity Framework) are the trustworthy ones; the others are proof-of-concept.",                                                       "CorrectFraming": "'Production' here means 'backed by an officially-licensed transpiler' — a fact about who built the generator, not about whether the substrate computes correctly. Trustworthiness is measured by passing the conformance tests.",            "Why": "Using one column to mean both 'authorized vendor built it' AND 'we trust its output' conflates provenance with correctness. They are independent properties; conformance is what proves correctness.",       "ViolatedAxiomId": "ax-002", "Severity": "important", "ExampleContext": "The original ExecutionSubstrates.IsProduction column collapses these two meanings.", "Status": "active"},
+      {"InvariantId": "framing-004", "Name": "Project rulebook is a demo rulebook",          "Category": "category-error",        "WrongFraming": "Portal-config tables (UserRoles, AppUsers, AppNavigation) belong in whichever rulebook is active.",                                                                                       "CorrectFraming": "Portal-config tables live ONLY in the project rulebook (this file). Demo rulebooks contain only their domain's business tables. Two file reads, two concerns, never merged.",                                                                "Why": "Mixing platform-meta with business-data couples the wrapper to one domain. The wrapper has to work for every demo; the demo has to travel without portal config.",                                          "ViolatedAxiomId": "ax-006", "Severity": "critical",  "ExampleContext": "Anytime someone proposes 'just add UserRoles to acme-llc-rulebook.json so the portal works against it'.", "Status": "active"},
+      {"InvariantId": "framing-005", "Name": "Admin portal is named after a domain",         "Category": "naming",                "WrongFraming": "Database names like erb_admin_acme_llc, erb_admin_star_trek — admin portal plus the active domain.",                                                                                       "CorrectFraming": "erb_admin_portal (singular) for the portal's own state; erb_<domain> for each document. The word 'admin' appears only in the portal's own DB name and never with a domain suffix.",                                                          "Why": "The naming itself proves the category error: the app is not named after the document it opens. Word's install directory is not 'Word_my_resume'.",                                                          "ViolatedAxiomId": "ax-007", "Severity": "critical",  "ExampleContext": "If you see erb_admin_<domain> in code, the code is wrong — flag it as a category-error bug, not as fact.", "Status": "active"},
+      {"InvariantId": "framing-006", "Name": "Silent fallback when a path is missing",       "Category": "fail-loud",             "WrongFraming": "If a rulebook file is not at the expected path, check a legacy location or return {} with a warning.",                                                                                     "CorrectFraming": "Fail loudly with the exact expected path. Every fallback hides a bug; there are no compatibility shims in a project this young.",                                                                                                            "Why": "Fallbacks make conformance run against the wrong data and report 100% pass, masking the real failure. A loud failure produces a fixable stack trace.",                                                       "ViolatedAxiomId": "ax-005", "Severity": "critical",  "ExampleContext": "Any `if not os.path.exists` followed by a default that isn't derived from the SSoT.", "Status": "active"},
+      {"InvariantId": "framing-007", "Name": "Defaults are fallbacks",                       "Category": "fail-loud",             "WrongFraming": "All `or`-defaults are fallbacks and should be removed.",                                                                                                                                 "CorrectFraming": "A default computed from the SSoT (e.g. `or f\"erb_{active_domain}\"`) is NOT a fallback — it's the deterministically-correct value the env var would override. A fallback is one that silently substitutes a guess.",                          "Why": "Over-correcting on the 'no fallbacks' rule removes correct SSoT-derived defaults and forces every caller to set env vars. The test: if the default would still be correct after the env var was unset by accident, it's a default.",                "ViolatedAxiomId": "ax-005", "Severity": "nuance",    "ExampleContext": "DATABASE_URL with a default of `erb_{active_domain}` is fine. DATABASE_URL with a default of `postgres` is a bug.", "Status": "active"},
+      {"InvariantId": "framing-008", "Name": "Build can run without testing",                "Category": "category-error",        "WrongFraming": "Add a 'build without testing' option so users can iterate faster.",                                                                                                                       "CorrectFraming": "Build = generate + test + regenerate report + open. The conformance proof is the point of the build; codegen alone produces output of unknown correctness.",                                                                                "Why": "Splitting build from test makes 'did this work' ambiguous and silently allows substrates to drift apart between formal runs.",                                                                              "ViolatedAxiomId": "ax-008", "Severity": "important", "ExampleContext": "Any menu addition like '[B] Build only' or '[R] Regenerate report only'.", "Status": "active"},
+      {"InvariantId": "framing-009", "Name": "Portal grows logic the CLI lacks",             "Category": "role-confusion",        "WrongFraming": "It's easier to implement 'install a tool' directly in the portal backend than to call the effortless CLI.",                                                                              "CorrectFraming": "The portal shells out to the same `effortless` CLI command the user would run by hand. Both surfaces are peer interfaces to the same pipeline.",                                                                                            "Why": "Two implementations of the same operation will drift; conformance claims become qualified by interface.",                                                                                                   "ViolatedAxiomId": "ax-009", "Severity": "important", "ExampleContext": "Anywhere the portal backend reaches into effortless.json directly instead of invoking `effortless -install`.", "Status": "active"},
+      {"InvariantId": "framing-010", "Name": "Postgres editor wins over JSON",               "Category": "ssot-locality",         "WrongFraming": "Persist edits to Postgres now and write them to JSON on demand (lazy sync).",                                                                                                              "CorrectFraming": "Every save is write-through: Postgres and JSON in the same logical transaction. Postgres is the live editor; JSON is the durable SSoT.",                                                                                                    "Why": "Lazy sync means a crash leaves the JSON behind the editor — and the JSON is the only file that travels with the repo.",                                                                                     "ViolatedAxiomId": "ax-010", "Severity": "critical",  "ExampleContext": "Anywhere a PATCH endpoint touches the DB but defers writing JSON.", "Status": "active"}
+    ]
+  },
   "ExecutionSubstrates": {
     "Description": "Runtime environments that execute business rules derived from the rulebook",
     "schema": [
@@ -119,18 +169,53 @@
         "Description": "Conformance test script: take-test.py"
       },
       {
-        "name": "IsProduction",
+        "name": "TranspilerSource",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "licensed-effortless-tool | local-injector | external. WHO BUILT THE GENERATOR — provenance, not trustworthiness. Replaces the old IsProduction column. See FramingInvariants.framing-003."
+      },
+      {
+        "name": "Maturity",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "prototype | demonstrating | reference-quality — how complete THIS substrate's implementation is. Independent of TranspilerSource."
+      },
+      {
+        "name": "ExpressiveCompleteness",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "full | partial-aggregation | partial-formula | shape-only — which formula classes this substrate can faithfully evaluate. A factual property of the substrate engine."
+      },
+      {
+        "name": "CanBeAnswerKey",
         "datatype": "boolean",
         "type": "raw",
         "nullable": false,
-        "Description": "True if backed by an official Effortless tool; false if local implementation"
+        "Description": "Can serve as the oracle (SSoT) in a conformance run if the user designates it. True for any substrate whose output is fully witnessable. NOT an authority ranking — see ax-002."
+      },
+      {
+        "name": "Determinism",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "deterministic | stochastic | externally-influenced — pure-function reproducibility class of the substrate"
+      },
+      {
+        "name": "RuntimeKind",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "database | spreadsheet | binary | text-emit | graph | docs — what kind of artifact this substrate produces / runs as"
       },
       {
         "name": "Status",
         "datatype": "string",
         "type": "raw",
         "nullable": true,
-        "Description": "Operational status (active, proof-of-concept, deprecated)"
+        "Description": "Operational status (active, proof-of-concept, deprecated). Lifecycle, not trustworthiness."
       },
       {
         "name": "Description",
@@ -148,7 +233,12 @@
         "RelativePath": "execution-substrates/binary/",
         "InjectorScript": "inject-into-binary.py",
         "TestScript": "take-test.py",
-        "IsProduction": false,
+        "TranspilerSource": "local-injector",
+        "Maturity": "prototype",
+        "ExpressiveCompleteness": "partial-formula",
+        "CanBeAnswerKey": false,
+        "Determinism": "deterministic",
+        "RuntimeKind": "binary",
         "Status": "proof-of-concept",
         "Description": "ARM64 assembly proof-of-concept; demonstrates lowest-level code generation"
       },
@@ -159,7 +249,12 @@
         "RelativePath": "execution-substrates/python/",
         "InjectorScript": "inject-into-python.py",
         "TestScript": "take-test.py",
-        "IsProduction": false,
+        "TranspilerSource": "local-injector",
+        "Maturity": "demonstrating",
+        "ExpressiveCompleteness": "full",
+        "CanBeAnswerKey": true,
+        "Determinism": "deterministic",
+        "RuntimeKind": "text-emit",
         "Status": "active",
         "Description": "Local Python implementation: dataclasses + calculated field functions"
       },
@@ -170,7 +265,12 @@
         "RelativePath": "execution-substrates/golang/",
         "InjectorScript": "inject-into-golang.py",
         "TestScript": "take-test.py",
-        "IsProduction": false,
+        "TranspilerSource": "local-injector",
+        "Maturity": "demonstrating",
+        "ExpressiveCompleteness": "full",
+        "CanBeAnswerKey": true,
+        "Determinism": "deterministic",
+        "RuntimeKind": "text-emit",
         "Status": "active",
         "Description": "Local Go implementation: structs + business logic"
       },
@@ -181,9 +281,14 @@
         "RelativePath": "licensed-effortless-tools/postgres/",
         "InjectorScript": "N/A (rulebook-to-postgres CLI)",
         "TestScript": "take-test.py",
-        "IsProduction": true,
+        "TranspilerSource": "licensed-effortless-tool",
+        "Maturity": "reference-quality",
+        "ExpressiveCompleteness": "full",
+        "CanBeAnswerKey": true,
+        "Determinism": "deterministic",
+        "RuntimeKind": "database",
         "Status": "active",
-        "Description": "Production tool: generates DDL, stored functions, views. Full formula support via SQL."
+        "Description": "Licensed transpiler: generates DDL, stored functions, views. Full formula coverage in SQL. Convenient witness when JSON is SSoT — peer, not reference."
       },
       {
         "SubstrateId": "substrate-005",
@@ -192,9 +297,14 @@
         "RelativePath": "execution-substrates/csv/",
         "InjectorScript": "inject-into-csv.py",
         "TestScript": null,
-        "IsProduction": false,
+        "TranspilerSource": "local-injector",
+        "Maturity": "demonstrating",
+        "ExpressiveCompleteness": "shape-only",
+        "CanBeAnswerKey": false,
+        "Determinism": "deterministic",
+        "RuntimeKind": "text-emit",
         "Status": "active",
-        "Description": "Spreadsheet export: rows + headers"
+        "Description": "Spreadsheet export: rows + headers. No formula evaluation — values are materialised at emit time."
       },
       {
         "SubstrateId": "substrate-006",
@@ -203,9 +313,14 @@
         "RelativePath": "licensed-effortless-tools/xlsx/",
         "InjectorScript": "N/A (rulebook-to-xlsx CLI)",
         "TestScript": null,
-        "IsProduction": true,
+        "TranspilerSource": "licensed-effortless-tool",
+        "Maturity": "reference-quality",
+        "ExpressiveCompleteness": "full",
+        "CanBeAnswerKey": true,
+        "Determinism": "deterministic",
+        "RuntimeKind": "spreadsheet",
         "Status": "active",
-        "Description": "Production tool: generates .xlsx with formulas"
+        "Description": "Licensed transpiler: generates .xlsx with live formulas. Natural SSoT when the source of truth is a workbook."
       },
       {
         "SubstrateId": "substrate-007",
@@ -214,9 +329,14 @@
         "RelativePath": "execution-substrates/uml/",
         "InjectorScript": "inject-into-uml.py",
         "TestScript": null,
-        "IsProduction": false,
+        "TranspilerSource": "local-injector",
+        "Maturity": "demonstrating",
+        "ExpressiveCompleteness": "shape-only",
+        "CanBeAnswerKey": false,
+        "Determinism": "deterministic",
+        "RuntimeKind": "docs",
         "Status": "active",
-        "Description": "Generates UML class diagrams with OCL constraints"
+        "Description": "Generates UML class diagrams with OCL constraints. Documents structure; does not evaluate."
       },
       {
         "SubstrateId": "substrate-008",
@@ -225,9 +345,14 @@
         "RelativePath": "execution-substrates/owl/",
         "InjectorScript": "inject-into-owl.py",
         "TestScript": null,
-        "IsProduction": false,
+        "TranspilerSource": "local-injector",
+        "Maturity": "demonstrating",
+        "ExpressiveCompleteness": "partial-formula",
+        "CanBeAnswerKey": false,
+        "Determinism": "deterministic",
+        "RuntimeKind": "graph",
         "Status": "active",
-        "Description": "RDF/OWL ontology for semantic web"
+        "Description": "RDF/OWL ontology for semantic web. Captures relationships and some constraints; not a full evaluator."
       },
       {
         "SubstrateId": "substrate-009",
@@ -236,9 +361,14 @@
         "RelativePath": "execution-substrates/explain-dag/",
         "InjectorScript": "inject-into-explain-dag.py",
         "TestScript": null,
-        "IsProduction": false,
+        "TranspilerSource": "local-injector",
+        "Maturity": "demonstrating",
+        "ExpressiveCompleteness": "full",
+        "CanBeAnswerKey": false,
+        "Determinism": "deterministic",
+        "RuntimeKind": "graph",
         "Status": "active",
-        "Description": "JSON spec for calculated-field derivation tracing; embedded React visualizer"
+        "Description": "JSON spec for calculated-field derivation tracing; embedded React visualizer. Witnesses derivation structure, not numeric output."
       },
       {
         "SubstrateId": "substrate-010",
@@ -247,9 +377,14 @@
         "RelativePath": "licensed-effortless-tools/entity-framework-dotnet/",
         "InjectorScript": "N/A (rulebook-to-entity-framework CLI)",
         "TestScript": null,
-        "IsProduction": true,
+        "TranspilerSource": "licensed-effortless-tool",
+        "Maturity": "reference-quality",
+        "ExpressiveCompleteness": "full",
+        "CanBeAnswerKey": true,
+        "Determinism": "deterministic",
+        "RuntimeKind": "text-emit",
         "Status": "active",
-        "Description": "Production tool: generates C# POCOs and Entity Framework DbContext"
+        "Description": "Licensed transpiler: C# POCOs + EF DbContext. Targets .NET runtime; conformance via running app."
       }
     ]
   },
@@ -1263,91 +1398,131 @@
         "RoleId": "role-developer",
         "IsDefault": false,
         "Notes": "Used by automated conformance tests (CI mode)."
+      },
+      {
+        "UserId": "user-004",
+        "Email": "author@example.com",
+        "DisplayName": "Domain Author",
+        "RoleId": "role-author",
+        "IsDefault": false,
+        "Notes": "Edits rulebook semantics — entities, fields, formulas, sample data. Lands on /rulebook/entities."
+      },
+      {
+        "UserId": "user-005",
+        "Email": "reviewer@example.com",
+        "DisplayName": "Conformance Reviewer",
+        "RoleId": "role-reviewer",
+        "IsDefault": false,
+        "Notes": "Read-only stakeholder. Lands on /tests to see the conformance matrix."
+      },
+      {
+        "UserId": "user-006",
+        "Email": "ops@example.com",
+        "DisplayName": "Build Ops",
+        "RoleId": "role-ops",
+        "IsDefault": false,
+        "Notes": "Runs builds, pulls spokes, watches health. Lands on /builds."
       }
     ]
   },
   "UserRoles": {
-    "Description": "Admin portal access tiers. Drives both the navigation visible to the user and the RLS policies that Postgres applies to portal writes.",
+    "Description": "Admin portal access tiers. Each role is a PERSONA with its own landing screen, tagline, and bespoke screen overrides (see RoleScreenHints). NOT a CRUD form — every role gets a UX shaped for what that person actually cares about. Also drives RLS policies that Postgres applies to portal writes.",
     "schema": [
-      {
-        "name": "RoleId",
-        "datatype": "string",
-        "type": "raw",
-        "nullable": false
-      },
-      {
-        "name": "Name",
-        "datatype": "string",
-        "type": "raw",
-        "nullable": false
-      },
-      {
-        "name": "AccessLevel",
-        "datatype": "string",
-        "type": "raw",
-        "nullable": false,
-        "Description": "read | full-admin"
-      },
-      {
-        "name": "CanEditRulebook",
-        "datatype": "boolean",
-        "type": "raw",
-        "nullable": false
-      },
-      {
-        "name": "CanRunBuilds",
-        "datatype": "boolean",
-        "type": "raw",
-        "nullable": false
-      },
-      {
-        "name": "CanAccessTechTools",
-        "datatype": "boolean",
-        "type": "raw",
-        "nullable": false,
-        "Description": "Tech Tools nest = raw Postgres explorer, ssotme-proxy logs, conformance internals"
-      },
-      {
-        "name": "CanSwitchProjects",
-        "datatype": "boolean",
-        "type": "raw",
-        "nullable": false
-      },
-      {
-        "name": "CanManageUsers",
-        "datatype": "boolean",
-        "type": "raw",
-        "nullable": false
-      },
-      {
-        "name": "Description",
-        "datatype": "string",
-        "type": "raw",
-        "nullable": true
-      }
+      {"name": "RoleId",             "datatype": "string",  "type": "raw", "nullable": false},
+      {"name": "Name",               "datatype": "string",  "type": "raw", "nullable": false},
+      {"name": "Persona",            "datatype": "string",  "type": "raw", "nullable": true,  "Description": "One-line description of WHO this role is — the kind of person who logs in as this role"},
+      {"name": "Tagline",            "datatype": "string",  "type": "raw", "nullable": true,  "Description": "Short motto shown on the role's landing screen — sets the mood"},
+      {"name": "PrimaryConcerns",    "datatype": "string",  "type": "raw", "nullable": true,  "Description": "What this role spends time on. Comma-separated, used by the home screen to bubble these things up."},
+      {"name": "LandingScreenId",    "datatype": "string",  "type": "lookup", "nullable": true, "Description": "FK to AppScreens.ScreenId — where this role lands after login. Different from home for non-default roles."},
+      {"name": "ColorTheme",         "datatype": "string",  "type": "raw", "nullable": true,  "Description": "CSS accent colour for the role's pill / chrome — quick visual identity"},
+      {"name": "AccessLevel",        "datatype": "string",  "type": "raw", "nullable": false, "Description": "read | write | full-admin"},
+      {"name": "CanEditRulebook",    "datatype": "boolean", "type": "raw", "nullable": false},
+      {"name": "CanRunBuilds",       "datatype": "boolean", "type": "raw", "nullable": false},
+      {"name": "CanAccessTechTools", "datatype": "boolean", "type": "raw", "nullable": false, "Description": "Tech Tools nest = raw Postgres explorer, ssotme-proxy logs, conformance internals"},
+      {"name": "CanSwitchProjects",  "datatype": "boolean", "type": "raw", "nullable": false},
+      {"name": "CanManageUsers",     "datatype": "boolean", "type": "raw", "nullable": false},
+      {"name": "Description",        "datatype": "string",  "type": "raw", "nullable": true}
     ],
     "data": [
       {
         "RoleId": "role-viewer",
         "Name": "Viewer",
+        "Persona": "Curious newcomer poking at the project for the first time — wants to understand what it is and what it does without touching anything.",
+        "Tagline": "See the whole project at a glance.",
+        "PrimaryConcerns": "what the project is, what its parts are, what makes it conformant",
+        "LandingScreenId": "screen-home",
+        "ColorTheme": "#7280ad",
         "AccessLevel": "read",
         "CanEditRulebook": false,
         "CanRunBuilds": false,
         "CanAccessTechTools": false,
         "CanSwitchProjects": true,
         "CanManageUsers": false,
-        "Description": "Read-only walkthrough of the project: see rulebook, browse generated substrates, view test results. Cannot mutate anything."
+        "Description": "Read-only walkthrough. Sees the rulebook, browses substrates, reads test results. Every page is reading; no mutation controls render."
+      },
+      {
+        "RoleId": "role-author",
+        "Name": "Author",
+        "Persona": "Domain expert who owns the business rules — thinks in entities, fields, formulas, and example rows, not in transpilers or Postgres.",
+        "Tagline": "The rulebook is your editor. Make it say what you mean.",
+        "PrimaryConcerns": "entity meaning, formula correctness, sample data realism, plain-English narrative",
+        "LandingScreenId": "screen-entities",
+        "ColorTheme": "#4a8d70",
+        "AccessLevel": "write",
+        "CanEditRulebook": true,
+        "CanRunBuilds": false,
+        "CanAccessTechTools": false,
+        "CanSwitchProjects": true,
+        "CanManageUsers": false,
+        "Description": "Authors and edits rulebook semantics: entities, fields, formulas, descriptions, sample rows. Cannot run builds or touch substrate internals — that's Ops/Developer."
+      },
+      {
+        "RoleId": "role-reviewer",
+        "Name": "Reviewer",
+        "Persona": "Stakeholder or auditor reading the conformance story — wants to see that the substrates agree, and where they disagree wants the reasons.",
+        "Tagline": "Do all the substrates agree? Where don't they, and why?",
+        "PrimaryConcerns": "conformance matrix, test pass-rate, which substrate witnessed which run, framing invariants",
+        "LandingScreenId": "screen-tests",
+        "ColorTheme": "#9a6cb0",
+        "AccessLevel": "read",
+        "CanEditRulebook": false,
+        "CanRunBuilds": false,
+        "CanAccessTechTools": false,
+        "CanSwitchProjects": true,
+        "CanManageUsers": false,
+        "Description": "Read-only with a Tests-first landing. Sees the conformance matrix, can drill into any failing cell to see input/expected/actual, and reads the Framing invariants — but cannot mutate or trigger anything."
+      },
+      {
+        "RoleId": "role-ops",
+        "Name": "Ops",
+        "Persona": "Build/release engineer keeping the pipeline green — cares about builds, spokes, freshness, and what's installed where, not about the meaning of the rules.",
+        "Tagline": "Builds green. Spokes flowing. Tests passing.",
+        "PrimaryConcerns": "last build status, installed transpilers, spoke pull freshness, conformance matrix health",
+        "LandingScreenId": "screen-builds",
+        "ColorTheme": "#c97a3d",
+        "AccessLevel": "write",
+        "CanEditRulebook": false,
+        "CanRunBuilds": true,
+        "CanAccessTechTools": false,
+        "CanSwitchProjects": true,
+        "CanManageUsers": false,
+        "Description": "Triggers builds, pulls from spokes, watches the matrix. Cannot edit business rules. Tech Tools off — Ops uses the same surfaces as everyone else."
       },
       {
         "RoleId": "role-developer",
         "Name": "Developer",
+        "Persona": "Person extending the platform itself — adds substrates, writes injectors, debugs the proxy, edits the project rulebook. Has all the dials.",
+        "Tagline": "The whole stack is yours. Don't break the SSoT.",
+        "PrimaryConcerns": "transpiler catalog, raw SQL, proxy routes, rulebook JSON, write-through invariant",
+        "LandingScreenId": "screen-home",
+        "ColorTheme": "#c0392b",
         "AccessLevel": "full-admin",
         "CanEditRulebook": true,
         "CanRunBuilds": true,
         "CanAccessTechTools": true,
         "CanSwitchProjects": true,
         "CanManageUsers": true,
-        "Description": "Full admin: edit rulebook, trigger builds, run tests, manage users, access Tech Tools (raw Postgres, proxy logs, conformance internals)."
+        "Description": "Full admin. Edit rulebook, run builds, manage users, access Tech Tools (raw Postgres, proxy logs, rulebook JSON, reset editor). Reserved for platform maintainers."
       }
     ]
   },
@@ -1487,12 +1662,15 @@
       {"NavId": "nav-002b","ParentNavId": "nav-002","Label": "Formulas",   "Icon": "function-square","ScreenId": "screen-formulas",  "MinRoleId": "role-viewer",    "Order": 2,  "StoryBeat": "All calculated fields in one place. Click one to see its DAG (inputs → output) live from the rulebook."},
       {"NavId": "nav-002c","ParentNavId": "nav-002","Label": "Relationships","Icon": "git-fork",   "ScreenId": "screen-relationships","MinRoleId": "role-viewer",    "Order": 3,  "StoryBeat": "FK graph of the project. Hover a node to highlight its inbound and outbound relationships."},
       {"NavId": "nav-002d","ParentNavId": "nav-002","Label": "Sample Data","Icon": "database",     "ScreenId": "screen-sample-data",  "MinRoleId": "role-viewer",    "Order": 4,  "StoryBeat": "What the project looks like populated. Editable for developers; read-only for viewers."},
+      {"NavId": "nav-002e","ParentNavId": "nav-002","Label": "Framing",    "Icon": "compass",       "ScreenId": "screen-framing",      "MinRoleId": "role-viewer",    "Order": 5,  "StoryBeat": "The mistakes-to-avoid catalog and the axioms it protects. Read this before claiming any substrate is 'the reference'."},
       {"NavId": "nav-003", "ParentNavId": null, "Label": "Substrates",     "Icon": "boxes",       "ScreenId": "screen-substrates",   "MinRoleId": "role-viewer",    "Order": 30, "StoryBeat": "Every output substrate this project generates (Python, Go, Postgres, Excel, OWL, etc.). Click one to see the generated source and the conformance status."},
       {"NavId": "nav-003z","ParentNavId": "nav-003","Label": "Add Tool",   "Icon": "plus-square", "ScreenId": "screen-add-tool",     "MinRoleId": "role-developer", "Order": 99, "StoryBeat": "Pick from the catalog of 15+ transpilers and install one into the active project. Same code path as `effortless -install` on the CLI."},
       {"NavId": "nav-004", "ParentNavId": null, "Label": "Builds",         "Icon": "wrench",      "ScreenId": "screen-builds",       "MinRoleId": "role-viewer",    "Order": 40, "StoryBeat": "Build history: when, what changed, which substrates regenerated, how long. Developers can trigger a build here."},
       {"NavId": "nav-005", "ParentNavId": null, "Label": "Tests",          "Icon": "check-circle","ScreenId": "screen-tests",        "MinRoleId": "role-viewer",    "Order": 50, "StoryBeat": "Conformance matrix: which substrate computed which test case correctly. Drill in to see input → expected → actual per substrate."},
       {"NavId": "nav-006", "ParentNavId": null, "Label": "Input Spokes",   "Icon": "git-pull-request","ScreenId": "screen-input-spokes","MinRoleId": "role-viewer",  "Order": 60, "StoryBeat": "Where edits come from: admin portal, Airtable, LLM, manual JSON. Pull / push controls live here."},
       {"NavId": "nav-007", "ParentNavId": null, "Label": "Users",          "Icon": "users",       "ScreenId": "screen-users",        "MinRoleId": "role-viewer",    "Order": 70, "StoryBeat": "Default dev/test users from the rulebook + their roles."},
+      {"NavId": "nav-007a","ParentNavId": "nav-007","Label": "Roles & Personas","Icon": "id-card", "ScreenId": "screen-roles",        "MinRoleId": "role-viewer",    "Order": 1,  "StoryBeat": "Persona cards for each role — what they care about, where they land, who's assigned. Click anything to navigate."},
+      {"NavId": "nav-001a","ParentNavId": "nav-001","Label": "Project Flavours","Icon": "tags",    "ScreenId": "screen-flavors",      "MinRoleId": "role-viewer",    "Order": 1,  "StoryBeat": "Classification of every demo rulebook — crud-template, computation-heavy, aggregation-heavy, graph-ontology, etc."},
       {"NavId": "nav-008", "ParentNavId": null, "Label": "Tech Tools",     "Icon": "terminal",    "ScreenId": null,                  "MinRoleId": "role-developer", "Order": 80, "StoryBeat": "Developer-only escape hatches. Raw Postgres, proxy logs, file system, manual injection. Not part of the daily workflow."},
       {"NavId": "nav-008a","ParentNavId": "nav-008","Label": "Postgres Explorer","Icon": "database","ScreenId": "screen-tech-postgres","MinRoleId": "role-developer","Order": 1, "StoryBeat": "Raw editor-DB browser: run SQL, inspect rows, drop/reset DB."},
       {"NavId": "nav-008b","ParentNavId": "nav-008","Label": "ssotme-proxy","Icon": "server",     "ScreenId": "screen-tech-proxy",   "MinRoleId": "role-developer", "Order": 2,  "StoryBeat": "Live proxy status: registered routes, recent calls, response sizes, last error per route."},
@@ -1530,7 +1708,10 @@
       {"ScreenId": "screen-tech-proxy",    "Path": "/tech/proxy",        "Title": "ssotme-proxy",             "ReadsEntities": "SsotmeProxy",                                                                                "WritesEntities": null, "MinRoleId": "role-developer", "Layout": "list",          "PrimaryAction": "Ping proxy",           "Story": "Live status of localhost:4242: registered routes, recent calls (route, duration, status, response size), last error per route. Restart button."},
       {"ScreenId": "screen-tech-files",    "Path": "/tech/files",        "Title": "Project Files",            "ReadsEntities": "<project-filesystem>",                                                                       "WritesEntities": null, "MinRoleId": "role-developer", "Layout": "split-detail", "PrimaryAction": null,                   "Story": "Browse the active project folder. View any file. Read-only — prevents drift from rulebook."},
       {"ScreenId": "screen-tech-json",     "Path": "/tech/rulebook-json","Title": "Raw Rulebook JSON",        "ReadsEntities": "<active-project-rulebook>",                                                                  "WritesEntities": "<active-project-rulebook>", "MinRoleId": "role-developer", "Layout": "editor", "PrimaryAction": "Save JSON",    "Story": "Monaco editor on the raw effortless-rulebook.json. Save goes through the write-through invariant. Useful for bulk edits."},
-      {"ScreenId": "screen-tech-reset",    "Path": "/tech/reset",        "Title": "Reset Editor",             "ReadsEntities": null,                                                                                        "WritesEntities": null, "MinRoleId": "role-developer", "Layout": "dashboard",     "PrimaryAction": "Reset now",            "Story": "One-button reset: drops the editor Postgres DB and re-bootstraps from rulebook JSON. The reassurance screen — makes the JSON-as-SSoT promise tangible."}
+      {"ScreenId": "screen-tech-reset",    "Path": "/tech/reset",        "Title": "Reset Editor",             "ReadsEntities": null,                                                                                        "WritesEntities": null, "MinRoleId": "role-developer", "Layout": "dashboard",     "PrimaryAction": "Reset now",            "Story": "One-button reset: drops the editor Postgres DB and re-bootstraps from rulebook JSON. The reassurance screen — makes the JSON-as-SSoT promise tangible."},
+      {"ScreenId": "screen-framing",       "Path": "/rulebook/framing",  "Title": "Framing",                  "ReadsEntities": "FramingInvariants,OntologyAxioms",                                                          "WritesEntities": null, "MinRoleId": "role-viewer",    "Layout": "split-detail", "PrimaryAction": null,                   "Story": "Left: FramingInvariants — the mistakes-to-avoid catalog. Right: the wrong framing, the correct framing, why, and the axiom it violates. Toggle to Axioms tab to see the positive-form invariants. Reviewer's favourite page; required reading before defending the methodology."},
+      {"ScreenId": "screen-roles",         "Path": "/users/roles",       "Title": "Roles & Personas",         "ReadsEntities": "UserRoles,AppUsers,RoleScreenHints",                                                       "WritesEntities": "UserRoles", "MinRoleId": "role-viewer", "Layout": "split-detail", "PrimaryAction": null,             "Story": "Left: each role with its colour-themed pill, persona, tagline. Right: the role's primary concerns, landing screen (clickable), bespoke screen overrides, and the users currently assigned to it (clickable to filter the Users page)."},
+      {"ScreenId": "screen-flavors",       "Path": "/projects/flavors",  "Title": "Project Flavours",         "ReadsEntities": "RulebookFlavors,RulebookProjects",                                                          "WritesEntities": null, "MinRoleId": "role-viewer",    "Layout": "grid",          "PrimaryAction": null,                   "Story": "Each demo rulebook classified by Flavor (crud-template, computation-heavy, aggregation-heavy, graph-ontology, meta-rulebook, tutorial-ladder), Complexity, and density metrics. Click a flavour to filter the project switcher to that flavour."}
     ]
   },
   "AppAPIs": {
@@ -1646,6 +1827,118 @@
       {"ProcessId": "proc-002", "Name": "admin-portal-backend",  "Command": "admin-portal/server.js",           "Port": 7777, "DependsOn": "proc-001,postgres",   "AutoRestart": true,  "Purpose": "Express API + static frontend host. Owns the write-through invariant."},
       {"ProcessId": "proc-003", "Name": "admin-portal-frontend-dev","Command": "vite (admin-portal/web)",      "Port": 7778, "DependsOn": "proc-002",            "AutoRestart": true,  "Purpose": "Vite dev server in dev mode. In production mode the backend serves built static files from port 7777."},
       {"ProcessId": "proc-004", "Name": "postgres",              "Command": "docker compose up -d postgres (or system pg)","Port": 5432, "DependsOn": null,                  "AutoRestart": false, "Purpose": "Editor database. Auto-init on first portal boot via flow-005."}
+    ]
+  },
+  "RulebookFlavors": {
+    "Description": "Classification of each demo rulebook under rulebook-examples/. Lets the UI group projects by what they're TEACHING — a tutorial ladder is a different beast from a computation-heavy ontology. Density numbers come from a static analysis of each rulebook (calculated/aggregation/lookup counts).",
+    "schema": [
+      {"name": "FlavorId",         "datatype": "string",  "type": "raw", "nullable": false},
+      {"name": "ProjectSlug",      "datatype": "string",  "type": "raw", "nullable": false, "Description": "Folder under rulebook-examples/ — also the active-domain.txt value"},
+      {"name": "DisplayName",      "datatype": "string",  "type": "raw", "nullable": false},
+      {"name": "Flavor",           "datatype": "string",  "type": "raw", "nullable": false, "Description": "crud-template | computation-heavy | aggregation-heavy | graph-ontology | meta-rulebook | tutorial-ladder"},
+      {"name": "Complexity",       "datatype": "string",  "type": "raw", "nullable": false, "Description": "minimal | basic | advanced"},
+      {"name": "EntityCount",      "datatype": "number",  "type": "raw", "nullable": false},
+      {"name": "CalculatedCount",  "datatype": "number",  "type": "raw", "nullable": false, "Description": "Number of calculated fields"},
+      {"name": "AggregationCount", "datatype": "number",  "type": "raw", "nullable": false},
+      {"name": "LookupCount",      "datatype": "number",  "type": "raw", "nullable": false},
+      {"name": "LearningFocus",    "datatype": "string",  "type": "raw", "nullable": false, "Description": "What this demo is designed to teach"},
+      {"name": "GoodAnswerKeyFor", "datatype": "string",  "type": "raw", "nullable": true,  "Description": "Substrate(s) this demo makes a particularly good answer-key witness for — when applicable"}
+    ],
+    "data": [
+      {"FlavorId": "flav-001", "ProjectSlug": "acme-corporation",        "DisplayName": "ACME Corporation (template)",                  "Flavor": "crud-template",      "Complexity": "basic",    "EntityCount": 5, "CalculatedCount": 1, "AggregationCount": 2, "LookupCount": 10, "LearningFocus": "Classic relational CRUD template — clients, projects, employees, roles. The 'starter sized' demo for new authors.",                                          "GoodAnswerKeyFor": "postgres,entity-framework"},
+      {"FlavorId": "flav-002", "ProjectSlug": "acme-llc",                "DisplayName": "ACME, LLC (template)",                          "Flavor": "tutorial-ladder",    "Complexity": "minimal",  "EntityCount": 3, "CalculatedCount": 2, "AggregationCount": 0, "LookupCount": 0,  "LearningFocus": "Smallest viable rulebook with a calculated field — the 'Hello, formulas' tutorial.",                                                                       "GoodAnswerKeyFor": null},
+      {"FlavorId": "flav-003", "ProjectSlug": "customer-fullname",       "DisplayName": "Customer FullName (tutorial)",                  "Flavor": "tutorial-ladder",    "Complexity": "minimal",  "EntityCount": 1, "CalculatedCount": 2, "AggregationCount": 0, "LookupCount": 0,  "LearningFocus": "One entity, one calculated field (CONCAT(First, ' ', Last)). The 'absolute minimum' demo — proves the toolchain end-to-end with no relationships.",            "GoodAnswerKeyFor": null},
+      {"FlavorId": "flav-004", "ProjectSlug": "effortless-rulesbooks",   "DisplayName": "ERB self-describing rulebook",                  "Flavor": "meta-rulebook",      "Complexity": "advanced", "EntityCount": 9, "CalculatedCount": 0, "AggregationCount": 0, "LookupCount": 0,  "LearningFocus": "The rulebook that describes the ERB project itself (sibling of this platform rulebook). Demonstrates eating-the-dog-food — meta over business data.",            "GoodAnswerKeyFor": null},
+      {"FlavorId": "flav-005", "ProjectSlug": "is-everything-a-language","DisplayName": "Is Everything A Language? (semiotics)",          "Flavor": "graph-ontology",     "Complexity": "advanced", "EntityCount": 3, "CalculatedCount": 8, "AggregationCount": 0, "LookupCount": 0,  "LearningFocus": "Heavy formulas evaluating linguistic / semiotic candidates. Shows that the substrate equality claim holds even for non-CRUD ontologies.",                          "GoodAnswerKeyFor": "owl,python"},
+      {"FlavorId": "flav-006", "ProjectSlug": "jessica-advanced",        "DisplayName": "Jessica Talisman — Advanced (workflows)",       "Flavor": "computation-heavy",  "Complexity": "advanced", "EntityCount": 9, "CalculatedCount": 8, "AggregationCount": 1, "LookupCount": 2,  "LearningFocus": "Workflow/approval ontology with intermediate computed fields. Demonstrates multi-step derivation across entities.",                                                "GoodAnswerKeyFor": "postgres"},
+      {"FlavorId": "flav-007", "ProjectSlug": "jessica-basic",           "DisplayName": "Jessica Talisman — Basic (workflows)",          "Flavor": "tutorial-ladder",    "Complexity": "basic",    "EntityCount": 9, "CalculatedCount": 7, "AggregationCount": 1, "LookupCount": 0,  "LearningFocus": "Same workflow concepts as advanced but without cross-entity lookups — useful for stepping authors up the formula ladder.",                                       "GoodAnswerKeyFor": null},
+      {"FlavorId": "flav-008", "ProjectSlug": "star-trek",               "DisplayName": "Star Trek (series/seasons/episodes)",            "Flavor": "aggregation-heavy",  "Complexity": "advanced", "EntityCount": 6, "CalculatedCount": 7, "AggregationCount": 4, "LookupCount": 9,  "LearningFocus": "Aggregations over nested relationships (avg rating per episode, per season, per series). The canonical aggregation demo.",                                       "GoodAnswerKeyFor": "postgres,xlsx"}
+    ]
+  },
+  "FieldTypeTaxonomy": {
+    "Description": "Names every field-type the rulebook supports, with intent and example formula shape. Lets the UI explain what makes a calculated field different from a lookup field from an aggregation, instead of just showing a type tag.",
+    "schema": [
+      {"name": "TypeId",        "datatype": "string", "type": "raw", "nullable": false},
+      {"name": "TypeName",      "datatype": "string", "type": "raw", "nullable": false, "Description": "The string that appears in schema[].type"},
+      {"name": "Intent",        "datatype": "string", "type": "raw", "nullable": false, "Description": "What this type is FOR — one sentence"},
+      {"name": "ExampleFormula","datatype": "string", "type": "raw", "nullable": true,  "Description": "A representative formula or definition shape"},
+      {"name": "StorageMode",   "datatype": "string", "type": "raw", "nullable": false, "Description": "stored | derived-at-read | derived-at-write — where this field's value lives"},
+      {"name": "ReadOnlyInUi",  "datatype": "boolean","type": "raw", "nullable": false, "Description": "True if the portal should never let users edit this field's value directly"},
+      {"name": "ExpressiveTier","datatype": "string", "type": "raw", "nullable": false, "Description": "Which substrate ExpressiveCompleteness tier is required to faithfully evaluate this — full | partial-formula | partial-aggregation | shape-only"}
+    ],
+    "data": [
+      {"TypeId": "ft-001", "TypeName": "raw",         "Intent": "Stored scalar with no derivation. The bread-and-butter of every entity.",                                                "ExampleFormula": null,                                                "StorageMode": "stored",          "ReadOnlyInUi": false, "ExpressiveTier": "shape-only"},
+      {"TypeId": "ft-002", "TypeName": "calculated",  "Intent": "Excel-style formula evaluated from other fields on the SAME row.",                                                      "ExampleFormula": "CONCAT(First, ' ', Last)",                          "StorageMode": "derived-at-read", "ReadOnlyInUi": true,  "ExpressiveTier": "partial-formula"},
+      {"TypeId": "ft-003", "TypeName": "lookup",      "Intent": "Foreign-key reference to another entity. Description should say 'FK to <Entity>'.",                                     "ExampleFormula": "FK to Customers",                                   "StorageMode": "stored",          "ReadOnlyInUi": false, "ExpressiveTier": "shape-only"},
+      {"TypeId": "ft-004", "TypeName": "aggregation", "Intent": "Reduce over a related entity's rows (SUM, AVG, COUNT, MIN, MAX). Requires substrate that can join + reduce.",          "ExampleFormula": "AVG(Episodes.Rating) WHERE Episodes.SeasonId = Self.Id", "StorageMode": "derived-at-read","ReadOnlyInUi": true,  "ExpressiveTier": "partial-aggregation"},
+      {"TypeId": "ft-005", "TypeName": "formula",     "Intent": "Alias used by some demos for 'calculated'. Treated identically.",                                                       "ExampleFormula": "IF(Rating > 8, 'great', 'meh')",                    "StorageMode": "derived-at-read", "ReadOnlyInUi": true,  "ExpressiveTier": "partial-formula"}
+    ]
+  },
+  "RoleScreenHints": {
+    "Description": "Per-(role, screen) bespoke UX overrides. The base AppScreens row says WHAT the screen is; this table says HOW IT SHOULD FEEL FOR THIS ROLE. The hints are intentionally prescriptive enough that two different agents implementing the screen for the same role would land on the same flow.",
+    "schema": [
+      {"name": "HintId",              "datatype": "string", "type": "raw",    "nullable": false},
+      {"name": "RoleId",              "datatype": "string", "type": "lookup", "nullable": false, "Description": "FK to UserRoles.RoleId"},
+      {"name": "ScreenId",            "datatype": "string", "type": "lookup", "nullable": false, "Description": "FK to AppScreens.ScreenId"},
+      {"name": "Layout",              "datatype": "string", "type": "raw",    "nullable": true,  "Description": "Override AppScreens.Layout for this role (e.g. Reviewer sees Tests as 'matrix-first', Ops sees Builds as 'last-build-banner')"},
+      {"name": "Emphasis",            "datatype": "string", "type": "raw",    "nullable": false, "Description": "What this role wants to see first when they land here — the dominant visual element"},
+      {"name": "Hide",                "datatype": "string", "type": "raw",    "nullable": true,  "Description": "Comma-separated list of UI elements this role should not see on this screen"},
+      {"name": "PrimaryActions",      "datatype": "string", "type": "raw",    "nullable": true,  "Description": "Comma-separated, the buttons that should be prominent for this role"},
+      {"name": "ImplementationHints", "datatype": "string", "type": "raw",    "nullable": false, "Description": "Prescriptive description of the screen for this role. Detailed enough that two agents building it would land on the same flow."}
+    ],
+    "data": [
+      {"HintId": "hint-001", "RoleId": "role-viewer",    "ScreenId": "screen-home",        "Layout": "dashboard",         "Emphasis": "what this project IS",                                "Hide": "Trigger build,Add tool,Reset", "PrimaryActions": "Switch project",                "ImplementationHints": "Hero card with project Name, Purpose, Architecture (from ProjectMetadata). Below: cards for #entities, #substrates, #spokes, last test pass-rate. Every number is a clickable link — 5 substrates → /substrates filtered to this project. No mutation buttons. The list 'What you can do here' is the rest of the page; each bullet links to the screen it describes."},
+      {"HintId": "hint-002", "RoleId": "role-viewer",    "ScreenId": "screen-entities",    "Layout": "split-detail",      "Emphasis": "the Description of each entity",                       "Hide": "Save,Add entity,Delete entity", "PrimaryActions": null,                          "ImplementationHints": "Same split-detail as developer, but every input becomes a label. Field rows show name + type + description in plain prose — no datatype-jargon column. Sample data is rendered but read-only. Each FK lookup field's value is a link to that row in its parent entity."},
+      {"HintId": "hint-003", "RoleId": "role-viewer",    "ScreenId": "screen-tests",       "Layout": "matrix",             "Emphasis": "overall pass-rate",                                    "Hide": "Run all tests",                 "PrimaryActions": null,                          "ImplementationHints": "Big top-of-page pass-rate ring (e.g. 87% green). Conformance matrix below: test cases × substrates. Cells are coloured pass/fail. Click a failing cell to navigate to /tests/<test-id>?substrate=<sub-id> (the cell's diff view). No 'run' button."},
+      {"HintId": "hint-101", "RoleId": "role-author",    "ScreenId": "screen-home",        "Layout": "dashboard",         "Emphasis": "Author's open questions",                              "Hide": "Tech Tools nest",               "PrimaryActions": "Open entities",                "ImplementationHints": "Top card: 'Where you left off' — most-recently-touched entity (link). Cards: 'Entities with no description' (link, filtered), 'Formulas with no test sample' (link), 'Lookups with broken FK targets' (link). Author needs a TODO surface. Avoid showing build/test plumbing."},
+      {"HintId": "hint-102", "RoleId": "role-author",    "ScreenId": "screen-entities",    "Layout": "split-detail",      "Emphasis": "fields as sentences",                                  "Hide": "datatype enum picker",          "PrimaryActions": "Save (write-through)",         "ImplementationHints": "Field rows render as one editable line each: '<FieldName> is a <Type> describing <Description>'. Clicking expands a focused editor for that field. Author edits formula as plain text; portal autovalidates against the parser and surfaces parse errors inline. Save runs the write-through invariant. Sample data is an editable spreadsheet."},
+      {"HintId": "hint-103", "RoleId": "role-author",    "ScreenId": "screen-formulas",    "Layout": "split-detail",      "Emphasis": "formula as text + plain-English",                       "Hide": "InjectorScript column",         "PrimaryActions": "Edit formula",                 "ImplementationHints": "Left list: every calculated field, grouped by entity. Right: the formula in a Monaco editor with autocompletion for sibling field names. Below the editor, the plain-English explanation pulled from rulebook-to-english output. Save triggers write-through. NOT the Explain-DAG — that's its own thing; this is text-editing."},
+      {"HintId": "hint-201", "RoleId": "role-reviewer",  "ScreenId": "screen-tests",       "Layout": "matrix",            "Emphasis": "which substrates disagree and why",                    "Hide": "Run all tests,Add tool",        "PrimaryActions": null,                          "ImplementationHints": "Reviewer's headline page. Top: ring chart 'N/M tests passed across K substrates'. Matrix below. Each row is a test case; each column is a substrate. Hover a substrate header to see its TranspilerSource + ExpressiveCompleteness pills. Click a failing cell → diff view: input row, expected, actual, the formula being evaluated, the FramingInvariant most likely to explain it (if any)."},
+      {"HintId": "hint-202", "RoleId": "role-reviewer",  "ScreenId": "screen-framing",     "Layout": "split-detail",      "Emphasis": "WrongFraming → CorrectFraming pairs",                  "Hide": null,                            "PrimaryActions": null,                          "ImplementationHints": "Left: all FramingInvariants grouped by Category (chips). Right: the selected invariant rendered as two side-by-side cards — 'WRONG' (red border) and 'RIGHT' (green border) — with the Why beneath, and a pill linking to the violated OntologyAxiom. Tab to 'Axioms' view shows all 10 axioms one per row."},
+      {"HintId": "hint-203", "RoleId": "role-reviewer",  "ScreenId": "screen-substrates",  "Layout": "list",              "Emphasis": "TranspilerSource + ExpressiveCompleteness pills",      "Hide": "Rebuild substrate,Build all",   "PrimaryActions": null,                          "ImplementationHints": "Strip the Substrate detail of any 'production' badge. Each row shows pills: TranspilerSource, Maturity, ExpressiveCompleteness, CanBeAnswerKey (✓/✗), Determinism, RuntimeKind. Reviewer's goal here is to assess WHY two substrates might disagree — surface the engineering facts, not authority."},
+      {"HintId": "hint-301", "RoleId": "role-ops",       "ScreenId": "screen-home",        "Layout": "dashboard",         "Emphasis": "build/health banner",                                   "Hide": "Add tool",                      "PrimaryActions": "Trigger build,Pull spokes",   "ImplementationHints": "Top banner: 'Last build: <timestamp> · <pass-rate>%'. Cards: 'Spokes (N)', 'Substrates (M, K not built)', 'Tests (X passing of Y)'. Each card click filters to that screen. Banner colour reflects last-build state (green/amber/red)."},
+      {"HintId": "hint-302", "RoleId": "role-ops",       "ScreenId": "screen-builds",      "Layout": "list",              "Emphasis": "last build at top, rolling history below",              "Hide": null,                            "PrimaryActions": "Trigger build,Build one substrate", "ImplementationHints": "Sticky 'Last build' card at the top with stdout/stderr collapsed; chronological list below. Each list row clickable to see that build's stdout/stderr/diff. 'Trigger build' is the dominant CTA. Per-substrate rebuild also surfaced as a row action."},
+      {"HintId": "hint-303", "RoleId": "role-ops",       "ScreenId": "screen-input-spokes","Layout": "list",              "Emphasis": "last-pulled freshness per spoke",                       "Hide": null,                            "PrimaryActions": "Pull from spoke",              "ImplementationHints": "Each spoke shown with last-pulled timestamp coloured by age (green <1h, amber <1d, red >1d or 'never'). Click a spoke → its detail (recent pulls, last error). Pull button on each row + bulk-pull at the top."},
+      {"HintId": "hint-401", "RoleId": "role-developer", "ScreenId": "screen-home",        "Layout": "dashboard",         "Emphasis": "everything — no hides",                                 "Hide": null,                            "PrimaryActions": "Switch project,Trigger build,Open Tech Tools","ImplementationHints": "Full dashboard, all cards. Tech Tools nest visible in the sidebar. This role IS the platform maintainer — surfaces every dial."},
+      {"HintId": "hint-402", "RoleId": "role-developer", "ScreenId": "screen-tech-postgres","Layout": "editor",           "Emphasis": "SQL editor + result grid",                              "Hide": null,                            "PrimaryActions": "Run query,Reset editor",       "ImplementationHints": "As today. Plus: pre-populated query dropdown sourced from a 'common queries' subset of the rulebook. Show a persistent banner: 'rulebook JSON is the SSoT, this DB is rebuildable' to keep the developer honest."}
+    ]
+  },
+  "ClickTargets": {
+    "Description": "Canonical in-app navigation affordances. Every clickable element in the portal should be listed here with where the click goes. Two agents implementing different screens would both consult this table to wire up cross-screen jumps. NOT the Explain-DAG — this is page-to-page navigation: 'Orders: 5' is clickable and goes to a page filtered to those 5 orders. NOT documentation-style 'learn more' links.",
+    "schema": [
+      {"name": "ClickId",      "datatype": "string", "type": "raw", "nullable": false},
+      {"name": "FromKind",     "datatype": "string", "type": "raw", "nullable": false, "Description": "What you're clicking on — entity-row,field-row,formula-cell,substrate-row,test-cell,role-pill,user-row,nav-card,count-number,fk-value,flavor-tag,framing-invariant,axiom"},
+      {"name": "FromContext",  "datatype": "string", "type": "raw", "nullable": false, "Description": "Where this click affordance lives — e.g. 'home-card:substrates' or 'entity-detail:fk-field'"},
+      {"name": "ToPath",       "datatype": "string", "type": "raw", "nullable": false, "Description": "React-router-style path, with :param tokens that the caller fills in. e.g. /rulebook/entities/:entity?field=:field"},
+      {"name": "Filter",       "datatype": "string", "type": "raw", "nullable": true,  "Description": "Query-string filter the target page should pre-apply"},
+      {"name": "Story",        "datatype": "string", "type": "raw", "nullable": false, "Description": "Plain-English: 'Click Orders: 5 → see those 5 orders'. Anchor for implementer."}
+    ],
+    "data": [
+      {"ClickId": "click-001", "FromKind": "count-number",   "FromContext": "home-card:entities",          "ToPath": "/rulebook/entities",                          "Filter": null,                              "Story": "Click 'Entities: N' on Home → /rulebook/entities (the list of all N)."},
+      {"ClickId": "click-002", "FromKind": "count-number",   "FromContext": "home-card:substrates",        "ToPath": "/substrates",                                 "Filter": null,                              "Story": "Click 'Substrates: N' on Home → /substrates."},
+      {"ClickId": "click-003", "FromKind": "count-number",   "FromContext": "home-card:spokes",            "ToPath": "/spokes",                                     "Filter": null,                              "Story": "Click 'Input spokes: N' on Home → /spokes."},
+      {"ClickId": "click-004", "FromKind": "count-number",   "FromContext": "home-card:tests-passing",     "ToPath": "/tests",                                      "Filter": "status=passing",                  "Story": "Click 'Tests passing: X/Y' on Home → /tests with passing filter."},
+      {"ClickId": "click-005", "FromKind": "count-number",   "FromContext": "home-card:tests-failing",     "ToPath": "/tests",                                      "Filter": "status=failing",                  "Story": "Click the failing-count chip on Home → /tests filtered to failing rows."},
+      {"ClickId": "click-006", "FromKind": "entity-row",     "FromContext": "entities-list",               "ToPath": "/rulebook/entities/:entity",                  "Filter": null,                              "Story": "Click an entity in the left list → the entity's own page (it already happens via setSelected — should also become a URL)."},
+      {"ClickId": "click-007", "FromKind": "field-row",      "FromContext": "entity-detail:schema-table",  "ToPath": "/rulebook/entities/:entity",                  "Filter": "field=:field",                    "Story": "Click a field row in the schema grid → the same entity page but with that field expanded / scrolled to."},
+      {"ClickId": "click-008", "FromKind": "fk-value",       "FromContext": "entity-detail:sample-data",   "ToPath": "/rulebook/entities/:targetEntity",            "Filter": "row=:fkValue",                    "Story": "Click an FK lookup value in sample data (e.g. CustomerId='cust-007') → /rulebook/entities/Customers?row=cust-007. The OTHER side of the relationship."},
+      {"ClickId": "click-009", "FromKind": "formula-cell",   "FromContext": "entity-detail:schema-table",  "ToPath": "/rulebook/formulas",                          "Filter": "entity=:entity&field=:field",     "Story": "Click a formula expression in the schema grid → /rulebook/formulas filtered to that formula."},
+      {"ClickId": "click-010", "FromKind": "formula-cell",   "FromContext": "formulas-list",               "ToPath": "/rulebook/entities/:entity",                  "Filter": "field=:field",                    "Story": "Click a formula row in the formulas list → the entity page with that field highlighted."},
+      {"ClickId": "click-011", "FromKind": "substrate-row",  "FromContext": "substrates-list",             "ToPath": "/substrates/:substrateId",                    "Filter": null,                              "Story": "Click a substrate in the list → its detail page (we use ?selected today; should become a route)."},
+      {"ClickId": "click-012", "FromKind": "substrate-row",  "FromContext": "tests-matrix:column-header",  "ToPath": "/substrates/:substrateId",                    "Filter": null,                              "Story": "Click a substrate column header on the Tests matrix → that substrate's page."},
+      {"ClickId": "click-013", "FromKind": "test-cell",      "FromContext": "tests-matrix",                "ToPath": "/tests/:testId",                              "Filter": "substrate=:substrateId",          "Story": "Click a cell in the conformance matrix → the test detail showing input/expected/actual for that substrate."},
+      {"ClickId": "click-014", "FromKind": "role-pill",      "FromContext": "users-list",                  "ToPath": "/users/roles",                                "Filter": "role=:roleId",                    "Story": "Click a role pill anywhere → /users/roles focused on that role."},
+      {"ClickId": "click-015", "FromKind": "role-pill",      "FromContext": "topbar:current-user",         "ToPath": "/users/roles",                                "Filter": "role=:roleId",                    "Story": "Click your own role pill in the top bar → see what that role gets / who else has it."},
+      {"ClickId": "click-016", "FromKind": "user-row",       "FromContext": "roles-detail",                "ToPath": "/users",                                      "Filter": "user=:userId",                    "Story": "Click a user listed under a role → /users with that user selected."},
+      {"ClickId": "click-017", "FromKind": "nav-card",       "FromContext": "framing-list",                "ToPath": "/rulebook/framing",                           "Filter": "invariant=:invariantId",          "Story": "Click a FramingInvariant card → its detail (WrongFraming vs CorrectFraming side-by-side)."},
+      {"ClickId": "click-018", "FromKind": "axiom-link",     "FromContext": "framing-detail",              "ToPath": "/rulebook/framing",                           "Filter": "axiom=:axiomId&tab=axioms",        "Story": "Click the violated-axiom pill on a FramingInvariant detail → the Axioms tab focused on that axiom."},
+      {"ClickId": "click-019", "FromKind": "flavor-tag",     "FromContext": "topbar:project-switcher",     "ToPath": "/projects/flavors",                           "Filter": "flavor=:flavor",                  "Story": "Click the flavour tag next to a project name → /projects/flavors filtered to that flavour."},
+      {"ClickId": "click-020", "FromKind": "flavor-tag",     "FromContext": "flavors-grid:card",           "ToPath": "/projects/flavors",                           "Filter": "flavor=:flavor",                  "Story": "Click a flavour card on the Flavours screen → drill in to that flavour's projects."},
+      {"ClickId": "click-021", "FromKind": "framing-invariant","FromContext": "test-detail:explain",       "ToPath": "/rulebook/framing",                           "Filter": "invariant=:invariantId",          "Story": "From a failing test's detail, click the 'most-likely framing-invariant' suggestion → that invariant's page."},
+      {"ClickId": "click-022", "FromKind": "spoke-row",      "FromContext": "spokes-list",                 "ToPath": "/spokes/:spokeId",                            "Filter": null,                              "Story": "Click a spoke card → its detail (recent pulls / last error)."},
+      {"ClickId": "click-023", "FromKind": "tool-row",       "FromContext": "add-tool:catalog",            "ToPath": "/substrates/:substrateId",                    "Filter": null,                              "Story": "Click an already-installed tool in the Add Tool catalog → that substrate's detail page."},
+      {"ClickId": "click-024", "FromKind": "process-row",    "FromContext": "tech-proxy:routes-list",      "ToPath": "/substrates/:substrateId",                    "Filter": "viaProxy=:proxyRoute",            "Story": "Click a proxy route on Tech → ssotme-proxy → the substrate that route corresponds to."},
+      {"ClickId": "click-025", "FromKind": "field-type-tag", "FromContext": "schema-grid",                 "ToPath": "/rulebook/framing",                           "Filter": "tab=field-types&type=:typeName",  "Story": "Click a field's type tag ('calculated', 'aggregation', etc.) → FieldTypeTaxonomy explanation for that type."}
     ]
   },
   "_meta": {

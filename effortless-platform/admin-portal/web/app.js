@@ -101,6 +101,12 @@ function App() {
         api.get("/api/projects"),
       ]);
       setMe(m); setProjectRulebook(prb); setRulebook(rb); setProjects(pj);
+      // Persona landing: when the user just signed in (hash is "/" or empty)
+      // and their role declares a LandingScreenId, redirect to that screen.
+      if (m?.role?.LandingScreenId && (location.hash === "" || location.hash === "#/")) {
+        const lp = (prb.AppScreens?.data || []).find((s) => s.ScreenId === m.role.LandingScreenId);
+        if (lp && lp.Path !== "/") location.hash = "#" + lp.Path;
+      }
     } catch (e) {
       toast("Failed to load portal: " + e.message, "error");
     }
@@ -252,13 +258,21 @@ function UserSwitcher({ me, reload }) {
     }).catch(() => {});
   }, []);
   const role = roles.find((r) => r.RoleId === me.RoleId);
+  const pillStyle = role?.ColorTheme ? { background: role.ColorTheme, color: "white", cursor: "pointer" } : { cursor: "pointer" };
   return html`
-    <span class=${"pill " + (role?.Name?.toLowerCase() || "")}>${role?.Name || me.RoleId}</span>
+    <span class=${"pill " + (role?.Name?.toLowerCase() || "")}
+          style=${pillStyle}
+          title=${role?.Tagline || ""}
+          onClick=${() => { location.hash = "#/users/roles?role=" + encodeURIComponent(role?.RoleId || ""); }}>
+      ${role?.Name || me.RoleId}
+    </span>
     <select value=${me.UserId} onChange=${async (e) => {
       await api.post("/api/me/switch", { userId: e.target.value });
       toast("Signed in as new user");
+      // Hop to "/" so the persona-landing kicks in on the next reload.
+      location.hash = "#/";
       await reload();
-    }} style=${{ width: 180 }}>
+    }} style=${{ width: 200 }}>
       ${users.map((u) => html`<option key=${u.UserId} value=${u.UserId}>${u.DisplayName} (${u.Email})</option>`)}
     </select>
   `;
@@ -268,11 +282,41 @@ function UserSwitcher({ me, reload }) {
 // Sidebar (driven by AppNavigation in the rulebook)
 // ---------------------------------------------------------------------------
 function roleMeetsMin(myRole, minRoleId, roles) {
+  // Multi-role ladder: full-admin > write > read.
+  // A screen tagged role-viewer is visible to everyone; one tagged role-developer
+  // is only visible to full-admin. Mid-tier roles (author/ops) can see anything
+  // up to their AccessLevel, with capability flags refining what they can DO.
   const min = roles.find((r) => r.RoleId === minRoleId);
   if (!min) return true;
-  // Developer satisfies all; viewer only satisfies viewer
-  if (myRole?.AccessLevel === "full-admin") return true;
-  return min.AccessLevel === "read";
+  const tier = { read: 0, write: 1, "full-admin": 2 };
+  const mine = tier[myRole?.AccessLevel] ?? 0;
+  const required = tier[min.AccessLevel] ?? 0;
+  return mine >= required;
+}
+
+// ClickTargets — read the rulebook's ClickTargets table to resolve a click
+// affordance to a URL. Two agents reading the same rulebook would land on the
+// same routes. Tokens like :entity / :substrate / :substrateId / :flavor are
+// filled in from the params object.
+function resolveClickTarget(projectRulebook, fromKind, fromContext, params = {}) {
+  const targets = projectRulebook.ClickTargets?.data || [];
+  const t = targets.find((x) => x.FromKind === fromKind && x.FromContext === fromContext);
+  if (!t) return null;
+  let path = t.ToPath;
+  for (const [k, v] of Object.entries(params)) {
+    path = path.replaceAll(`:${k}`, encodeURIComponent(v));
+  }
+  let qs = "";
+  if (t.Filter) {
+    let f = t.Filter;
+    for (const [k, v] of Object.entries(params)) f = f.replaceAll(`:${k}`, encodeURIComponent(v));
+    qs = "?" + f;
+  }
+  return path + qs;
+}
+function navigate(projectRulebook, fromKind, fromContext, params = {}) {
+  const url = resolveClickTarget(projectRulebook, fromKind, fromContext, params);
+  if (url) location.hash = "#" + url;
 }
 
 function Sidebar({ projectRulebook, me, route }) {
@@ -327,7 +371,10 @@ function Router({ route, projectRulebook, rulebook, me, projects, reload }) {
   const roles = projectRulebook.UserRoles?.data || [];
   const myRole = roles.find((r) => r.RoleId === me.RoleId);
   const screens = projectRulebook.AppScreens?.data || [];
-  const screen = screens.find((s) => s.Path === route) || screens.find((s) => s.Path === "/");
+  // ClickTargets can append ?key=value to routes; split before matching.
+  const [pathOnly, queryString] = route.split("?");
+  const screen = screens.find((s) => s.Path === pathOnly) || screens.find((s) => s.Path === "/");
+  const query = Object.fromEntries(new URLSearchParams(queryString || ""));
 
   if (!screen) return html`<div>No screen for ${route}</div>`;
   if (!roleMeetsMin(myRole, screen.MinRoleId, roles)) {
@@ -341,7 +388,8 @@ function Router({ route, projectRulebook, rulebook, me, projects, reload }) {
 
   const isDev = myRole?.AccessLevel === "full-admin";
   // `projectRulebook` for portal-config reads, `rulebook` for active-demo data.
-  const props = { screen, projectRulebook, rulebook, me, isDev, projects, reload };
+  // `query` carries any ClickTargets filter (e.g. ?role=role-author).
+  const props = { screen, projectRulebook, rulebook, me, isDev, projects, reload, query };
 
   switch (screen.ScreenId) {
     case "screen-home":          return html`<${HomeScreen} ...${props} />`;
@@ -355,6 +403,9 @@ function Router({ route, projectRulebook, rulebook, me, projects, reload }) {
     case "screen-tests":         return html`<${TestsScreen} ...${props} />`;
     case "screen-input-spokes":  return html`<${SpokesScreen} ...${props} />`;
     case "screen-users":         return html`<${UsersScreen} ...${props} />`;
+    case "screen-framing":       return html`<${FramingScreen} ...${props} />`;
+    case "screen-roles":         return html`<${RolesScreen} ...${props} />`;
+    case "screen-flavors":       return html`<${FlavorsScreen} ...${props} />`;
     case "screen-tech-postgres": return html`<${TechPostgresScreen} ...${props} />`;
     case "screen-tech-proxy":    return html`<${TechProxyScreen} ...${props} />`;
     case "screen-tech-files":    return html`<${TechFilesScreen} ...${props} />`;
@@ -383,25 +434,54 @@ function HomeScreen({ screen, projectRulebook, rulebook, projects, me }) {
   const spokes = projectRulebook.RulebookSourceSpokes?.data || [];
   const flows = projectRulebook.CoreDataFlows?.data || [];
   const meta = projectRulebook.ProjectMetadata?.data?.[0] || {};
+  const flavors = projectRulebook.RulebookFlavors?.data || [];
+  const flav = flavors.find((f) => f.ProjectSlug === projects.active);
+  const entityCount = Object.keys(rulebook).filter(k => !k.startsWith("$") && !k.startsWith("_") && rulebook[k]?.schema).length;
+  const clickable = { cursor: "pointer", textDecoration: "underline dotted" };
+  const go = (kind, ctx, params = {}) => navigate(projectRulebook, kind, ctx, params);
+
   return html`
     <${ScreenHeader} screen=${screen} />
+    ${me.role?.Tagline ? html`<div class="story-banner" style=${{ borderLeftColor: me.role.ColorTheme || "#888" }}><b>${me.role.Name}:</b> ${me.role.Tagline}</div>` : null}
     <div class="cards">
-      <div class="card"><h3>Active project</h3><div class="big">${projects.active}</div><div class="sub">${meta.Architecture || ""}</div></div>
-      <div class="card"><h3>Rulebook entities</h3><div class="big">${Object.keys(rulebook).filter(k => !k.startsWith("$") && !k.startsWith("_") && rulebook[k]?.schema).length}</div></div>
-      <div class="card"><h3>Substrates</h3><div class="big">${subs.length}</div><div class="sub">${subs.filter(s=>s.IsProduction).length} production</div></div>
-      <div class="card"><h3>Input spokes</h3><div class="big">${spokes.length}</div><div class="sub">all peer; rulebook JSON wins</div></div>
+      <div class="card">
+        <h3>Active project</h3>
+        <div class="big">${projects.active}</div>
+        <div class="sub">
+          ${flav ? html`<span class="tag" style=${clickable} onClick=${() => go("flavor-tag", "topbar:project-switcher", { flavor: flav.Flavor })}>${flav.Flavor}</span> · ${flav.Complexity}` : meta.Architecture || ""}
+        </div>
+      </div>
+      <div class="card">
+        <h3>Rulebook entities</h3>
+        <div class="big" style=${clickable} onClick=${() => go("count-number", "home-card:entities")}>${entityCount}</div>
+      </div>
+      <div class="card">
+        <h3>Substrates</h3>
+        <div class="big" style=${clickable} onClick=${() => go("count-number", "home-card:substrates")}>${subs.length}</div>
+        <div class="sub">${subs.filter(s => s.CanBeAnswerKey).length} eligible as answer key · all peer</div>
+      </div>
+      <div class="card">
+        <h3>Input spokes</h3>
+        <div class="big" style=${clickable} onClick=${() => go("count-number", "home-card:spokes")}>${spokes.length}</div>
+        <div class="sub">peer inputs; SSoT chosen per run</div>
+      </div>
       <div class="card"><h3>Core flows</h3><div class="big">${flows.length}</div></div>
-      <div class="card"><h3>Signed in as</h3><div class="big">${me.DisplayName}</div><div class="sub">${me.role?.Name}</div></div>
+      <div class="card">
+        <h3>Signed in as</h3>
+        <div class="big">${me.DisplayName}</div>
+        <div class="sub" style=${clickable} onClick=${() => location.hash = "#/users/roles?role=" + encodeURIComponent(me.RoleId)}>
+          ${me.role?.Name}
+        </div>
+      </div>
       <div class="card"><h3>Portal URL</h3><div class="big mono">${location.host}</div><div class="sub">${meta.ProxyUrl || ""}</div></div>
       <div class="card"><h3>Repo root</h3><div class="big mono">${meta.RepositoryRoot || ""}</div></div>
     </div>
     <h3 style=${{ marginTop: 28 }}>What you can do here</h3>
     <ul class="muted">
-      <li>Click <b>Rulebook → Entities</b> to see (and as Developer, edit) the business semantics of this project.</li>
-      <li>Click <b>Substrates</b> to see every output target — Python, Go, Postgres, Excel, OWL, etc.</li>
-      <li>Click <b>Substrates → Add Tool</b> to install another transpiler from the catalog of 15+.</li>
-      <li>Click <b>Tests</b> to see the conformance matrix proving all substrates compute identically.</li>
-      <li>Use <b>Tech Tools</b> only when something looks off — raw Postgres, proxy logs, reset DB.</li>
+      <li>Click any number on a card above to jump to its detail screen.</li>
+      <li><b>Rulebook → Entities</b> shows what the project MEANS; <b>Framing</b> shows what NOT to assume about it.</li>
+      <li><b>Substrates</b> are peer projections of the rulebook — no substrate is the reference; conformance is the proof.</li>
+      <li><b>Tests</b> is the conformance matrix proving all substrates compute the same answers.</li>
     </ul>
   `;
 }
@@ -581,18 +661,24 @@ function SampleDataScreen({ screen, rulebook }) {
 // ---------------------------------------------------------------------------
 // Substrates
 // ---------------------------------------------------------------------------
-function SubstratesScreen({ screen, isDev }) {
+function SubstratesScreen({ screen, projectRulebook, me }) {
   const [subs, setSubs] = useState([]);
   const [selected, setSelected] = useState(null);
   useEffect(() => { api.get("/api/substrates").then(setSubs); }, []);
   const sel = subs.find((s) => s.SubstrateId === selected) || subs[0];
+  const canBuild = me.role?.CanRunBuilds;
   return html`
     <${ScreenHeader} screen=${screen} />
+    <div class="story-banner" style=${{ borderLeftColor: "#888" }}>
+      All substrates here are PEER projections of the rulebook. The pills below
+      are facts about each implementation (who built the generator, how complete
+      it is, what formula classes it supports) — never an authority ranking.
+    </div>
     <div class="flex" style=${{ marginBottom: 12 }}>
       <div class="muted small">${subs.length} substrates registered in this project.</div>
       <div class="spacer" />
       <button class="btn secondary" onClick=${() => { location.hash = "#/tools/add"; }}>+ Add Tool</button>
-      ${isDev ? html`<button class="btn" onClick=${async () => {
+      ${canBuild ? html`<button class="btn" onClick=${async () => {
         toast("Building…");
         const r = await api.post("/api/build/all");
         toast(r.ok ? "Build complete" : "Build failed", r.ok ? "ok" : "error");
@@ -604,7 +690,13 @@ function SubstratesScreen({ screen, isDev }) {
           <div key=${s.SubstrateId} class=${"list-item " + (s.SubstrateId === sel?.SubstrateId ? "active" : "")}
                onClick=${() => setSelected(s.SubstrateId)}>
             <div class="name">${s.Name} <span class="tag">${s.Technology}</span></div>
-            <div class="meta">${s.RelativePath}${s.IsProduction ? html` · <span class="pill good">prod</span>` : ""}${!s.exists ? html` · <span class="pill warn">not built</span>` : ""}</div>
+            <div class="meta">
+              ${s.RelativePath}
+              ${s.TranspilerSource ? html` · <span class="pill">${s.TranspilerSource}</span>` : ""}
+              ${s.Maturity ? html` · <span class="pill">${s.Maturity}</span>` : ""}
+              ${s.CanBeAnswerKey ? html` · <span class="pill good">can-be-answer-key</span>` : ""}
+              ${s.exists === false ? html` · <span class="pill warn">not built</span>` : ""}
+            </div>
           </div>
         `)}
       </div>
@@ -612,11 +704,16 @@ function SubstratesScreen({ screen, isDev }) {
         ${sel ? html`
           <h3 style=${{ marginTop: 0 }}>${sel.Name}</h3>
           <div class="kv">
-            <div class="k">Technology</div><div class="v">${sel.Technology}</div>
-            <div class="k">Path</div><div class="v">${sel.RelativePath}</div>
-            <div class="k">Injector</div><div class="v">${sel.InjectorScript}</div>
-            <div class="k">Production</div><div class="v">${sel.IsProduction ? "yes" : "local-only demo"}</div>
-            <div class="k">Status</div><div class="v">${sel.Status}</div>
+            <div class="k">Technology</div>           <div class="v">${sel.Technology}</div>
+            <div class="k">Path</div>                 <div class="v">${sel.RelativePath}</div>
+            <div class="k">Injector</div>             <div class="v">${sel.InjectorScript}</div>
+            <div class="k">Transpiler source</div>    <div class="v"><span class="pill">${sel.TranspilerSource || "—"}</span> <span class="muted small">who built the generator</span></div>
+            <div class="k">Maturity</div>             <div class="v"><span class="pill">${sel.Maturity || "—"}</span> <span class="muted small">implementation completeness</span></div>
+            <div class="k">Expressive completeness</div><div class="v"><span class="pill">${sel.ExpressiveCompleteness || "—"}</span> <span class="muted small">which formula classes this substrate supports</span></div>
+            <div class="k">Can be answer key?</div>   <div class="v">${sel.CanBeAnswerKey ? "yes — eligible witness when user designates SSoT" : "no — not a full evaluator"}</div>
+            <div class="k">Determinism</div>          <div class="v">${sel.Determinism || "—"}</div>
+            <div class="k">Runtime kind</div>         <div class="v">${sel.RuntimeKind || "—"}</div>
+            <div class="k">Status</div>               <div class="v">${sel.Status || "—"}</div>
           </div>
           <p>${sel.Description}</p>
         ` : html`<div class="muted">No substrate selected.</div>`}

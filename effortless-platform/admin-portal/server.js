@@ -280,6 +280,7 @@ function getCurrentUser() {
 }
 
 function requireDeveloper(req, res, next) {
+  // Full-admin only — Tech Tools and other platform-maintainer surfaces.
   const u = getCurrentUser();
   if (!u || !u.role || u.role.AccessLevel !== "full-admin") {
     return res.status(403).json({ error: "Developer role required." });
@@ -287,6 +288,20 @@ function requireDeveloper(req, res, next) {
   req.currentUser = u;
   next();
 }
+function requireCapability(flag, label) {
+  // CanEditRulebook / CanRunBuilds / CanManageUsers — capability-driven gates.
+  return (req, res, next) => {
+    const u = getCurrentUser();
+    if (!u || !u.role || !u.role[flag]) {
+      return res.status(403).json({ error: `${label} required.` });
+    }
+    req.currentUser = u;
+    next();
+  };
+}
+const requireEditor      = requireCapability("CanEditRulebook", "Rulebook edit capability");
+const requireBuilder     = requireCapability("CanRunBuilds",    "Build capability");
+const requireUserManager = requireCapability("CanManageUsers",  "User-management capability");
 
 // ---------------------------------------------------------------------------
 // Write-through helper
@@ -411,7 +426,7 @@ app.get("/api/rulebook/entities/:name", (req, res) => {
 });
 
 // --- rulebook (write-through) ---
-app.patch("/api/rulebook/entities/:name", requireDeveloper, async (req, res) => {
+app.patch("/api/rulebook/entities/:name", requireEditor, async (req, res) => {
   const { description, schema, data } = req.body || {};
   const name = req.params.name;
   try {
@@ -446,7 +461,7 @@ app.patch("/api/rulebook/entities/:name", requireDeveloper, async (req, res) => 
   }
 });
 
-app.post("/api/rulebook/entities", requireDeveloper, async (req, res) => {
+app.post("/api/rulebook/entities", requireEditor, async (req, res) => {
   const { name, description = "", schema = [], data = [] } = req.body || {};
   if (!name) return res.status(400).json({ error: "name required" });
   try {
@@ -470,7 +485,7 @@ app.post("/api/rulebook/entities", requireDeveloper, async (req, res) => {
   }
 });
 
-app.delete("/api/rulebook/entities/:name", requireDeveloper, async (req, res) => {
+app.delete("/api/rulebook/entities/:name", requireEditor, async (req, res) => {
   const name = req.params.name;
   try {
     await writeThrough({
@@ -496,7 +511,7 @@ app.get("/api/users", (req, res) => {
   });
 });
 
-app.post("/api/users", requireDeveloper, async (req, res) => {
+app.post("/api/users", requireUserManager, async (req, res) => {
   const { userId, email, displayName, roleId } = req.body || {};
   if (!userId || !email || !roleId) return res.status(400).json({ error: "missing fields" });
   try {
@@ -546,7 +561,7 @@ app.get("/api/substrates", async (req, res) => {
 });
 
 // --- build ---
-app.post("/api/build/all", requireDeveloper, (req, res) => {
+app.post("/api/build/all", requireBuilder, (req, res) => {
   const cwd = activeProjectRoot();
   exec("effortless build", { cwd }, (err, stdout, stderr) => {
     res.json({
@@ -585,7 +600,7 @@ app.get("/api/tools/installed", (req, res) => {
   }
 });
 
-app.post("/api/tools/install", requireDeveloper, (req, res) => {
+app.post("/api/tools/install", requireBuilder, (req, res) => {
   const { installUrl, outputPath } = req.body || {};
   if (!installUrl) return res.status(400).json({ error: "installUrl required" });
   const cwd = activeProjectRoot();
