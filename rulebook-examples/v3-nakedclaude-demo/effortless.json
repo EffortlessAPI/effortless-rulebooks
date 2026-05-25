@@ -1,0 +1,49 @@
+{
+  "ShowHidden": false,
+  "ShowAllFiles": false,
+  "CurrentPath": null,
+  "SSoTmeProjectFiles": null,
+  "SSoTmeProjectId": "b9b4bf6e-a95f-405a-9c46-64584e7daf30",
+  "Name": "_bootstrap",
+  "ProjectSettings": [
+    {
+      "Name": "project-name",
+      "Value": "_bootstrap"
+    },
+    {
+      "Name": "baseId",
+      "Value": "appeUOAaOIdoqPSx3"
+    }
+  ],
+  "ProjectTranspilers": [
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "airtabletorulebook",
+      "RelativePath": "/effortless-rulebook",
+      "CommandLine": "airtable-to-rulebook -account airtable -o v3-nakedclaude-demo-rulebook.json",
+      "IsDisabled": true,
+      "PinnedVersion": "v2026.04.23.1357",
+      "LastVersionUsed": "v2026.04.23.1357",
+      "LastUrl": "https://effortless-airtable-to-rulebook-v2026-04-23-1357-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
+      "Enabled": false,
+      "Description": "Pull rulebook from Airtable [DISABLED: rulebook JSON is authoritative; re-enable only with explicit user consent]"
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "rulebooktopostgres",
+      "RelativePath": "/postgres",
+      "CommandLine": "rulebook-to-postgres -i ../effortless-rulebook/v3-nakedclaude-demo-rulebook.json",
+      "IsDisabled": false,
+      "PinnedVersion": "v2026.04.23.1316",
+      "LastVersionUsed": "v2026.04.23.1316",
+      "LastUrl": "https://effortless-rulebook-to-postgres-v2026-04-23-1316-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "execute",
+      "RelativePath": "/postgres",
+      "CommandLine": "-exec ./init-db.sh",
+      "IsDisabled": false
+    }
+  ]
+}

@@ -406,6 +406,7 @@ function Router({ route, projectRulebook, rulebook, me, projects, reload }) {
     case "screen-framing":       return html`<${FramingScreen} ...${props} />`;
     case "screen-roles":         return html`<${RolesScreen} ...${props} />`;
     case "screen-flavors":       return html`<${FlavorsScreen} ...${props} />`;
+    case "screen-features":      return html`<${FeaturesScreen} ...${props} />`;
     case "screen-tech-postgres": return html`<${TechPostgresScreen} ...${props} />`;
     case "screen-tech-proxy":    return html`<${TechProxyScreen} ...${props} />`;
     case "screen-tech-files":    return html`<${TechFilesScreen} ...${props} />`;
@@ -1132,6 +1133,153 @@ function FramingScreen({ screen, projectRulebook, query }) {
         </div>
       </div>
     ` : null}
+  `;
+}
+
+// ---------------------------------------------------------------------------
+// Platform Features — the formal catalog of what ERB does.
+// The rulebook is authoritative; the per-feature README files (one per row)
+// must conform to these summaries. IsReadmeStub is computed on the server
+// from on-disk file size so "missing READMEs" is a queryable fact.
+// ---------------------------------------------------------------------------
+function FeaturesScreen({ screen, me, query }) {
+  const [data, setData] = useState({ headline: [], additional: [] });
+  const [selectedId, setSelectedId] = useState(query.feature || null);
+  const [detail, setDetail] = useState(null);
+  const [editing, setEditing] = useState(false);
+  const [draft, setDraft] = useState(null);
+  const [err, setErr] = useState(null);
+
+  const reload = useCallback(async () => {
+    const d = await api.get("/api/features");
+    setData(d);
+    const firstId = (d.headline[0] || d.additional[0])?.FeatureId;
+    if (!selectedId && firstId) setSelectedId(firstId);
+  }, [selectedId]);
+
+  useEffect(() => { reload(); }, []);
+
+  useEffect(() => {
+    if (!selectedId) { setDetail(null); return; }
+    api.get(`/api/features/${encodeURIComponent(selectedId)}`).then(setDetail).catch((e) => setErr(String(e)));
+  }, [selectedId]);
+
+  useEffect(() => {
+    if (query.feature && query.feature !== selectedId) setSelectedId(query.feature);
+  }, [query.feature]);
+
+  const canEdit = !!(me?.permissions || []).find((p) => p.Resource === "rulebook.entity" && p.Action === "update");
+
+  const startEdit = () => {
+    if (!detail) return;
+    setDraft({
+      Name: detail.Name,
+      ShortName: detail.ShortName,
+      Tier: detail.Tier,
+      Priority: detail.Priority,
+      OneLineSummary: detail.OneLineSummary,
+      ReadmeFilePath: detail.ReadmeFilePath,
+      ReadmeStubContent: detail.ReadmeStubContent,
+      Status: detail.Status,
+      RelatedAxiomId: detail.RelatedAxiomId || "",
+    });
+    setEditing(true);
+    setErr(null);
+  };
+
+  const saveEdit = async () => {
+    try {
+      const payload = { ...draft, Priority: Number(draft.Priority) || 0,
+                        RelatedAxiomId: draft.RelatedAxiomId || null };
+      await api.patch(`/api/features/${encodeURIComponent(selectedId)}`, payload);
+      setEditing(false);
+      await reload();
+      const fresh = await api.get(`/api/features/${encodeURIComponent(selectedId)}`);
+      setDetail(fresh);
+    } catch (e) { setErr(String(e.message || e)); }
+  };
+
+  const renderListItem = (f) => html`
+    <div key=${f.FeatureId}
+         class=${"list-item " + (f.FeatureId === selectedId ? "active" : "")}
+         onClick=${() => { location.hash = "#/features?feature=" + encodeURIComponent(f.FeatureId); setSelectedId(f.FeatureId); }}>
+      <div class="name">${f.ShortName} <span class="muted small">· ${f.Name}</span></div>
+      <div class="meta">
+        <span class="pill">${f.Status}</span>
+        ${f.IsReadmeStub ? html` <span class="pill warn" title="README still placeholder">stub README</span>` : ""}
+        ${f.RelatedAxiomId ? html` · <span class="tag">${f.RelatedAxiomId}</span>` : ""}
+      </div>
+    </div>
+  `;
+
+  return html`
+    <${ScreenHeader} screen=${screen} />
+    <div class="split">
+      <div class="list-panel">
+        <h4 style=${{ margin: "4px 8px" }}>Headline (${data.headline.length})</h4>
+        ${data.headline.map(renderListItem)}
+        <h4 style=${{ margin: "16px 8px 4px" }}>Additional (${data.additional.length})</h4>
+        ${data.additional.map(renderListItem)}
+      </div>
+      <div class="detail-panel">
+        ${!detail ? html`<div class="muted">Select a feature on the left.</div>` : editing ? html`
+          <h3 style=${{ marginTop: 0 }}>Edit ${detail.ShortName}</h3>
+          <div class="kv">
+            <div class="k">Name</div>             <div class="v"><input style=${{ width: "100%" }} value=${draft.Name} onInput=${(e) => setDraft({ ...draft, Name: e.target.value })} /></div>
+            <div class="k">Short name</div>       <div class="v"><input value=${draft.ShortName} onInput=${(e) => setDraft({ ...draft, ShortName: e.target.value })} /></div>
+            <div class="k">Tier</div>             <div class="v">
+              <select value=${draft.Tier} onChange=${(e) => setDraft({ ...draft, Tier: e.target.value })}>
+                <option value="headline">headline</option>
+                <option value="additional">additional</option>
+              </select>
+            </div>
+            <div class="k">Priority</div>         <div class="v"><input type="number" value=${draft.Priority} onInput=${(e) => setDraft({ ...draft, Priority: e.target.value })} /></div>
+            <div class="k">Status</div>           <div class="v">
+              <select value=${draft.Status} onChange=${(e) => setDraft({ ...draft, Status: e.target.value })}>
+                <option value="shipped">shipped</option>
+                <option value="partial">partial</option>
+                <option value="planned">planned</option>
+              </select>
+            </div>
+            <div class="k">Related axiom</div>    <div class="v"><input value=${draft.RelatedAxiomId} placeholder="ax-001" onInput=${(e) => setDraft({ ...draft, RelatedAxiomId: e.target.value })} /></div>
+            <div class="k">README file path</div> <div class="v mono"><input style=${{ width: "100%" }} value=${draft.ReadmeFilePath} onInput=${(e) => setDraft({ ...draft, ReadmeFilePath: e.target.value })} /></div>
+          </div>
+          <h4>One-line summary</h4>
+          <textarea style=${{ width: "100%", minHeight: 60 }} value=${draft.OneLineSummary}
+                    onInput=${(e) => setDraft({ ...draft, OneLineSummary: e.target.value })} />
+          <h4>README stub content (seed body for the README file)</h4>
+          <textarea style=${{ width: "100%", minHeight: 100 }} value=${draft.ReadmeStubContent}
+                    onInput=${(e) => setDraft({ ...draft, ReadmeStubContent: e.target.value })} />
+          ${err ? html`<p style=${{ color: "#c0392b" }}>${err}</p>` : null}
+          <div class="flex" style=${{ marginTop: 12 }}>
+            <button class="btn" onClick=${saveEdit}>Save</button>
+            <button class="btn secondary" onClick=${() => { setEditing(false); setErr(null); }}>Cancel</button>
+          </div>
+        ` : html`
+          <div class="flex" style=${{ justifyContent: "space-between", alignItems: "baseline" }}>
+            <h3 style=${{ marginTop: 0 }}>${detail.Name}</h3>
+            ${canEdit ? html`<button class="btn secondary" onClick=${startEdit}>Edit</button>` : null}
+          </div>
+          <div class="kv">
+            <div class="k">Short name</div>     <div class="v"><span class="tag">${detail.ShortName}</span></div>
+            <div class="k">Tier</div>           <div class="v"><span class="pill">${detail.Tier}</span> · priority ${detail.Priority}</div>
+            <div class="k">Status</div>         <div class="v"><span class=${"pill " + (detail.Status === "shipped" ? "" : "warn")}>${detail.Status}</span></div>
+            <div class="k">Related axiom</div>  <div class="v">
+              ${detail.RelatedAxiomId ? html`<span class="pill" style=${{ cursor: "pointer", textDecoration: "underline dotted" }}
+                onClick=${() => { location.hash = "#/rulebook/framing?tab=axioms&axiom=" + encodeURIComponent(detail.RelatedAxiomId); }}>${detail.RelatedAxiomId}</span>${detail.Axiom ? html` — ${detail.Axiom.ShortName}` : ""}` : "—"}
+            </div>
+            <div class="k">README file</div>    <div class="v mono">${detail.ReadmeFilePath} ${detail.IsReadmeStub ? html`<span class="pill warn" style=${{ marginLeft: 8 }}>stub${detail.ReadmeOnDiskLength == null ? " (file missing)" : ""}</span>` : html`<span class="pill" style=${{ marginLeft: 8 }}>on disk: ${detail.EffectiveReadmeLength} bytes</span>`}</div>
+          </div>
+          <h4>One-line summary</h4>
+          <p>${detail.OneLineSummary}</p>
+          <h4>README stub content (rulebook-authored seed)</h4>
+          <p class="muted">${detail.ReadmeStubContent}</p>
+          <h4>README on disk</h4>
+          ${detail.ReadmeOnDisk ? html`<pre style=${{ whiteSpace: "pre-wrap", background: "#f6f6f6", padding: 12 }}>${detail.ReadmeOnDisk}</pre>`
+                                : html`<p class="muted">No file at <span class="mono">${detail.ReadmeFilePath}</span>. The rulebook stub content above is the formal seed; create the file to flesh it out.</p>`}
+        `}
+      </div>
+    </div>
   `;
 }
 

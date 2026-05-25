@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="960" viewBox="0 0 1440 960" font-family="Inter, system-ui, sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#5F5E5A"/>
+    </marker>
+  </defs>
+
+  <rect width="1440" height="960" fill="#FAFAF7"/>
+
+  <text x="60" y="60" font-size="28" font-weight="600" fill="#2C2C2A">Small Business Banking Client Manager</text>
+  <text x="60" y="88" font-size="14" fill="#5F5E5A">Community Bank · System Architecture v1.0</text>
+
+  <g id="presentation-layer">
+    <rect x="60" y="130" width="1320" height="120" rx="12" fill="#FFFFFF" stroke="#D3D1C7" stroke-width="1"/>
+    <text x="80" y="158" font-size="12" font-weight="600" fill="#5F5E5A" letter-spacing="1">PRESENTATION LAYER</text>
+
+    <rect x="80" y="172" width="295" height="64" rx="8" fill="#E1F5EE" stroke="#0F6E56" stroke-width="1"/>
+    <text x="100" y="198" font-size="14" font-weight="600" fill="#085041">RM Dashboard</text>
+    <text x="100" y="218" font-size="12" fill="#0F6E56">Web app · primary RM workspace</text>
+
+    <rect x="395" y="172" width="295" height="64" rx="8" fill="#E1F5EE" stroke="#0F6E56" stroke-width="1"/>
+    <text x="415" y="198" font-size="14" font-weight="600" fill="#085041">Branch Banker Portal</text>
+    <text x="415" y="218" font-size="12" fill="#0F6E56">Tablet · in-branch onboarding</text>
+
+    <rect x="710" y="172" width="295" height="64" rx="8" fill="#FAECE7" stroke="#993C1D" stroke-width="1"/>
+    <text x="730" y="198" font-size="14" font-weight="600" fill="#712B13">Business Client Portal</text>
+    <text x="730" y="218" font-size="12" fill="#993C1D">Web + mobile · customer self-service</text>
+
+    <rect x="1025" y="172" width="335" height="64" rx="8" fill="#FAECE7" stroke="#993C1D" stroke-width="1"/>
+    <text x="1045" y="198" font-size="14" font-weight="600" fill="#712B13">Admin Console</text>
+    <text x="1045" y="218" font-size="12" fill="#993C1D">Compliance, audit, user management</text>
+  </g>
+
+  <g id="client-management">
+    <rect x="60" y="290" width="640" height="280" rx="12" fill="#FFFFFF" stroke="#0F6E56" stroke-width="1.5"/>
+    <text x="80" y="318" font-size="12" font-weight="600" fill="#0F6E56" letter-spacing="1">CLIENT MANAGEMENT DOMAIN</text>
+
+    <rect x="80" y="335" width="290" height="68" rx="8" fill="#E1F5EE" stroke="#5DCAA5" stroke-width="1"/>
+    <text x="100" y="362" font-size="14" font-weight="600" fill="#085041">Business Profile</text>
+    <text x="100" y="382" font-size="12" fill="#0F6E56">EIN · NAICS · ownership structure</text>
+    <text x="100" y="396" font-size="12" fill="#0F6E56">Officers · contacts · authorized signers</text>
+
+    <rect x="390" y="335" width="290" height="68" rx="8" fill="#E1F5EE" stroke="#5DCAA5" stroke-width="1"/>
+    <text x="410" y="362" font-size="14" font-weight="600" fill="#085041">KYB &amp; Onboarding</text>
+    <text x="410" y="382" font-size="12" fill="#0F6E56">Beneficial ownership · CDD/EDD</text>
+    <text x="410" y="396" font-size="12" fill="#0F6E56">Document collection · verification</text>
+
+    <rect x="80" y="415" width="290" height="68" rx="8" fill="#E1F5EE" stroke="#5DCAA5" stroke-width="1"/>
+    <text x="100" y="442" font-size="14" font-weight="600" fill="#085041">Interaction Log</text>
+    <text x="100" y="462" font-size="12" fill="#0F6E56">Calls · visits · meeting notes</text>
+    <text x="100" y="476" font-size="12" fill="#0F6E56">Tasks · follow-ups · reminders</text>
+
+    <rect x="390" y="415" width="290" height="68" rx="8" fill="#E1F5EE" stroke="#5DCAA5" stroke-width="1"/>
+    <text x="410" y="442" font-size="14" font-weight="600" fill="#085041">Accounts &amp; Treasury</text>
+    <text x="410" y="462" font-size="12" fill="#0F6E56">Deposits · ACH · wires · cards</text>
+    <text x="410" y="476" font-size="12" fill="#0F6E56">Cash management · positive pay</text>
+
+    <rect x="80" y="495" width="600" height="60" rx="8" fill="#E1F5EE" stroke="#5DCAA5" stroke-width="1"/>
+    <text x="100" y="522" font-size="14" font-weight="600" fill="#085041">Pipeline &amp; Opportunity Tracking</text>
+    <text x="100" y="542" font-size="12" fill="#0F6E56">Prospects · referrals · cross-sell opportunities · win/loss tracking</text>
+  </g>
+
+  <g id="lending-risk">
+    <rect x="740" y="290" width="640" height="280" rx="12" fill="#FFFFFF" stroke="#3C3489" stroke-width="1.5"/>
+    <text x="760" y="318" font-size="12" font-weight="600" fill="#3C3489" letter-spacing="1">LENDING &amp; RISK DOMAIN</text>
+
+    <rect x="760" y="335" width="290" height="68" rx="8" fill="#EEEDFE" stroke="#7F77DD" stroke-width="1"/>
+    <text x="780" y="362" font-size="14" font-weight="600" fill="#3C3489">Loan Pipeline</text>
+    <text x="780" y="382" font-size="12" fill="#534AB7">Application · underwriting · approval</text>
+    <text x="780" y="396" font-size="12" fill="#534AB7">Closing · funding · booking</text>
+
+    <rect x="1070" y="335" width="290" height="68" rx="8" fill="#EEEDFE" stroke="#7F77DD" stroke-width="1"/>
+    <text x="1090" y="362" font-size="14" font-weight="600" fill="#3C3489">Credit Analysis</text>
+    <text x="1090" y="382" font-size="12" fill="#534AB7">Financial spreads · DSCR · LTV</text>
+    <text x="1090" y="396" font-size="12" fill="#534AB7">Global cash flow · debt schedule</text>
+
+    <rect x="760" y="415" width="290" height="68" rx="8" fill="#EEEDFE" stroke="#7F77DD" stroke-width="1"/>
+    <text x="780" y="442" font-size="14" font-weight="600" fill="#3C3489">Covenant Monitoring</text>
+    <text x="780" y="462" font-size="12" fill="#534AB7">Tickler calendar · financial covenants</text>
+    <text x="780" y="476" font-size="12" fill="#534AB7">Exception tracking · waivers</text>
+
+    <rect x="1070" y="415" width="290" height="68" rx="8" fill="#EEEDFE" stroke="#7F77DD" stroke-width="1"/>
+    <text x="1090" y="442" font-size="14" font-weight="600" fill="#3C3489">Risk Rating &amp; Review</text>
+    <text x="1090" y="462" font-size="12" fill="#534AB7">Annual review · risk grade migration</text>
+    <text x="1090" y="476" font-size="12" fill="#534AB7">Watchlist · classified assets</text>
+
+    <rect x="760" y="495" width="600" height="60" rx="8" fill="#EEEDFE" stroke="#7F77DD" stroke-width="1"/>
+    <text x="780" y="522" font-size="14" font-weight="600" fill="#3C3489">Loan Servicing &amp; Collections</text>
+    <text x="780" y="542" font-size="12" fill="#534AB7">Payment processing · delinquency workflows · loss mitigation</text>
+  </g>
+
+  <g id="platform-services">
+    <rect x="60" y="610" width="1320" height="160" rx="12" fill="#FFFFFF" stroke="#D3D1C7" stroke-width="1"/>
+    <text x="80" y="638" font-size="12" font-weight="600" fill="#5F5E5A" letter-spacing="1">PLATFORM SERVICES</text>
+
+    <rect x="80" y="655" width="200" height="98" rx="8" fill="#F1EFE8" stroke="#B4B2A9" stroke-width="1"/>
+    <text x="100" y="682" font-size="14" font-weight="600" fill="#2C2C2A">Document Vault</text>
+    <text x="100" y="702" font-size="12" fill="#5F5E5A">Tax returns</text>
+    <text x="100" y="718" font-size="12" fill="#5F5E5A">Financial statements</text>
+    <text x="100" y="734" font-size="12" fill="#5F5E5A">Loan docs · OCR · e-sign</text>
+
+    <rect x="295" y="655" width="200" height="98" rx="8" fill="#F1EFE8" stroke="#B4B2A9" stroke-width="1"/>
+    <text x="315" y="682" font-size="14" font-weight="600" fill="#2C2C2A">Reporting &amp; Analytics</text>
+    <text x="315" y="702" font-size="12" fill="#5F5E5A">Portfolio dashboards</text>
+    <text x="315" y="718" font-size="12" fill="#5F5E5A">CECL · ALLL · concentration</text>
+    <text x="315" y="734" font-size="12" fill="#5F5E5A">Board &amp; regulatory packs</text>
+
+    <rect x="510" y="655" width="200" height="98" rx="8" fill="#F1EFE8" stroke="#B4B2A9" stroke-width="1"/>
+    <text x="530" y="682" font-size="14" font-weight="600" fill="#2C2C2A">Notifications</text>
+    <text x="530" y="702" font-size="12" fill="#5F5E5A">Email · SMS · in-app</text>
+    <text x="530" y="718" font-size="12" fill="#5F5E5A">Tickler alerts</text>
+    <text x="530" y="734" font-size="12" fill="#5F5E5A">Workflow assignments</text>
+
+    <rect x="725" y="655" width="200" height="98" rx="8" fill="#F1EFE8" stroke="#B4B2A9" stroke-width="1"/>
+    <text x="745" y="682" font-size="14" font-weight="600" fill="#2C2C2A">Workflow Engine</text>
+    <text x="745" y="702" font-size="12" fill="#5F5E5A">Approval routing</text>
+    <text x="745" y="718" font-size="12" fill="#5F5E5A">SLA tracking</text>
+    <text x="745" y="734" font-size="12" fill="#5F5E5A">Configurable rules</text>
+
+    <rect x="940" y="655" width="200" height="98" rx="8" fill="#F1EFE8" stroke="#B4B2A9" stroke-width="1"/>
+    <text x="960" y="682" font-size="14" font-weight="600" fill="#2C2C2A">Identity &amp; Access</text>
+    <text x="960" y="702" font-size="12" fill="#5F5E5A">SSO · MFA · RBAC</text>
+    <text x="960" y="718" font-size="12" fill="#5F5E5A">Segregation of duties</text>
+    <text x="960" y="734" font-size="12" fill="#5F5E5A">Audit log</text>
+
+    <rect x="1155" y="655" width="205" height="98" rx="8" fill="#F1EFE8" stroke="#B4B2A9" stroke-width="1"/>
+    <text x="1175" y="682" font-size="14" font-weight="600" fill="#2C2C2A">Search &amp; Index</text>
+    <text x="1175" y="702" font-size="12" fill="#5F5E5A">Global client search</text>
+    <text x="1175" y="718" font-size="12" fill="#5F5E5A">Full-text doc search</text>
+    <text x="1175" y="734" font-size="12" fill="#5F5E5A">Tag-based filtering</text>
+  </g>
+
+  <g id="integrations">
+    <rect x="60" y="810" width="1320" height="120" rx="12" fill="#FFFFFF" stroke="#5F5E5A" stroke-width="1" stroke-dasharray="4 4"/>
+    <text x="80" y="838" font-size="12" font-weight="600" fill="#5F5E5A" letter-spacing="1">EXTERNAL INTEGRATIONS</text>
+
+    <rect x="80" y="855" width="200" height="60" rx="8" fill="#FFFFFF" stroke="#888780" stroke-width="1"/>
+    <text x="100" y="880" font-size="13" font-weight="600" fill="#2C2C2A">Core Banking</text>
+    <text x="100" y="898" font-size="11" fill="#5F5E5A">Jack Henry · FIS · Fiserv</text>
+
+    <rect x="295" y="855" width="200" height="60" rx="8" fill="#FFFFFF" stroke="#888780" stroke-width="1"/>
+    <text x="315" y="880" font-size="13" font-weight="600" fill="#2C2C2A">BSA / AML</text>
+    <text x="315" y="898" font-size="11" fill="#5F5E5A">Verafin · CTR/SAR · OFAC</text>
+
+    <rect x="510" y="855" width="200" height="60" rx="8" fill="#FFFFFF" stroke="#888780" stroke-width="1"/>
+    <text x="530" y="880" font-size="13" font-weight="600" fill="#2C2C2A">Credit Bureaus</text>
+    <text x="530" y="898" font-size="11" fill="#5F5E5A">Experian · D&amp;B · Equifax</text>
+
+    <rect x="725" y="855" width="200" height="60" rx="8" fill="#FFFFFF" stroke="#888780" stroke-width="1"/>
+    <text x="745" y="880" font-size="13" font-weight="600" fill="#2C2C2A">Public Records</text>
+    <text x="745" y="898" font-size="11" fill="#5F5E5A">SOS · UCC · court records</text>
+
+    <rect x="940" y="855" width="200" height="60" rx="8" fill="#FFFFFF" stroke="#888780" stroke-width="1"/>
+    <text x="960" y="880" font-size="13" font-weight="600" fill="#2C2C2A">Accounting Data</text>
+    <text x="960" y="898" font-size="11" fill="#5F5E5A">QuickBooks · Xero · Plaid</text>
+
+    <rect x="1155" y="855" width="205" height="60" rx="8" fill="#FFFFFF" stroke="#888780" stroke-width="1"/>
+    <text x="1175" y="880" font-size="13" font-weight="600" fill="#2C2C2A">Regulatory</text>
+    <text x="1175" y="898" font-size="11" fill="#5F5E5A">FFIEC · Call Report · HMDA</text>
+  </g>
+
+  <line x1="227" y1="236" x2="227" y2="289" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="542" y1="236" x2="380" y2="289" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="857" y1="236" x2="857" y2="289" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="1192" y1="236" x2="1192" y2="289" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <line x1="700" y1="395" x2="740" y2="395" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="740" y1="455" x2="700" y2="455" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <line x1="380" y1="570" x2="380" y2="609" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="1060" y1="570" x2="1060" y2="609" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <line x1="180" y1="770" x2="180" y2="809" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="395" y1="770" x2="395" y2="809" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="610" y1="770" x2="610" y2="809" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="825" y1="770" x2="825" y2="809" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="1040" y1="770" x2="1040" y2="809" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="1257" y1="770" x2="1257" y2="809" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#arrow)"/>
+</svg>

@@ -1,0 +1,16 @@
+/**/obj/**/*
+/**/bin/**/*
+/**/.ssotme/**/*
+/**/DSPXml/**/*
+/SSoT/__patch.json
+/**/.vs/**/*
+/**/node_modules/**/*
+/**/.vscode/**/*
+ssotme.env
+effortless.env
+omni-debug-input.png
+omni-result.png
+airtable-screenshot.png
+omni-debug2.png
+.DS_Store
+omni-debug-after-click.png

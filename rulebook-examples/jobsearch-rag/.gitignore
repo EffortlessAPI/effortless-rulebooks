@@ -1,0 +1,54 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Virtual environments
+.venv/
+venv/
+
+# IDE
+.vscode/
+.idea/
+
+# Data (user-specific, not committed)
+data/chroma_db/*
+!data/chroma_db/.gitkeep
+data/decisions/*
+!data/decisions/.gitkeep
+data/logs/*
+!data/logs/.gitkeep
+
+# Playwright session cookies (sensitive)
+data/*_session.json
+
+# Output
+output/
+
+# direnv
+.direnv/
+.envrc.local
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Coverage
+.coverage
+coverage.json
+htmlcov/
+
+# mypy / ruff / pytest caches
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+
+# Copilot work plans
+.copilot/*
+!.copilot/README.md
+
+effortless.env
+**/node_modules/**/*

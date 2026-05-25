@@ -1,0 +1,682 @@
+/* ============================================================================
+ * DAG Explorer styles. Vocabulary-recursion UX:
+ *   - cells = either ground truth or a one-line function
+ *   - each {{ref}} is a chip you can drill into
+ *   - the page reads like a dictionary entry
+ * ========================================================================== */
+
+:root {
+  --dag-raw:    #003a70;  /* bank blue — ground truth */
+  --dag-calc:   #5a3aa0;  /* violet — calculated      */
+  --dag-agg:    #0a7b78;  /* teal — aggregation       */
+  --dag-rel:    #666666;  /* grey — relationship      */
+  --dag-lookup: #9a6708;  /* amber — lookup           */
+
+  --dag-raw-bg:    #eaf0f8;
+  --dag-calc-bg:   #f1ebfb;
+  --dag-agg-bg:    #e5f4f3;
+  --dag-rel-bg:    #f0f0f0;
+  --dag-lookup-bg: #fbf2dd;
+}
+
+/* ─── DagToggle (floating top-right) ─────────────────────────────────────── */
+
+.dag-toggle {
+  position: fixed;
+  top: 14px;
+  right: 18px;
+  z-index: 100;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 10px 5px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--dag-calc);
+  background: #fff;
+  color: var(--dag-calc);
+  font: 600 11px/1 system-ui, -apple-system, sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  transition: background 100ms ease, box-shadow 100ms ease, opacity 100ms ease;
+}
+.dag-toggle:hover {
+  box-shadow: 0 2px 8px rgba(0,0,0,0.14);
+}
+.dag-toggle-glyph {
+  display: inline-grid; place-items: center;
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  background: var(--dag-calc);
+  color: #fff;
+  font-style: italic;
+  font-family: Georgia, serif;
+  font-size: 13px;
+  font-weight: 700;
+}
+.dag-toggle-label { padding-right: 4px; }
+.dag-toggle-knob {
+  display: inline-block; width: 22px; height: 12px;
+  background: var(--dag-calc);
+  border-radius: 7px;
+  position: relative;
+}
+.dag-toggle-knob::after {
+  content: ""; position: absolute;
+  top: 2px; left: 12px;
+  width: 8px; height: 8px;
+  background: #fff;
+  border-radius: 50%;
+  transition: left 120ms ease;
+}
+.dag-toggle.is-off {
+  color: #777;
+  border-color: #ccc;
+}
+.dag-toggle.is-off .dag-toggle-glyph {
+  background: #bbb;
+}
+.dag-toggle.is-off .dag-toggle-knob {
+  background: #ccc;
+}
+.dag-toggle.is-off .dag-toggle-knob::after {
+  left: 2px;
+}
+
+/* ─── DagCell (the in-page wrapper) ──────────────────────────────────────── */
+
+.dag-cell {
+  position: relative;
+  display: inline-block;
+  border-radius: 3px;
+  transition: background-color 120ms ease-in-out;
+}
+.dag-cell-block { display: block; }
+.dag-cell:hover { background-color: rgba(90, 58, 160, 0.06); cursor: pointer; }
+
+.dag-cell-badge-wrap {
+  position: absolute;
+  top: -10px; right: -10px;
+  /* The wrap itself has no size — it just anchors the badge + popover. */
+}
+
+.dag-cell-fx {
+  display: grid; place-items: center;
+  width: 20px; height: 20px;
+  font-style: italic;
+  font-family: "Georgia", serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+  background: var(--dag-calc);
+  border: 1.5px solid #fff;
+  border-radius: 50%;
+  opacity: 0;
+  transform: scale(0.7);
+  transition: opacity 120ms ease, transform 120ms ease, background 100ms ease;
+  text-decoration: none;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  pointer-events: none;
+}
+.dag-cell:hover .dag-cell-fx,
+.dag-cell:focus-within .dag-cell-fx,
+.dag-cell-badge-wrap:hover .dag-cell-fx {
+  opacity: 1;
+  transform: scale(1);
+  pointer-events: auto;
+}
+.dag-cell-fx-glyph {
+  display: inline-grid; place-items: center;
+  width: 100%; height: 100%;
+  line-height: 1;
+}
+
+/* Type-coded badge: color + border reinforces the type icon. */
+.dag-cell-fx-raw    { background: var(--dag-raw);    box-shadow: 0 1px 3px rgba(0,58,112,0.35); }
+.dag-cell-fx-calc   { background: var(--dag-calc);   box-shadow: 0 1px 3px rgba(90,58,160,0.35); }
+.dag-cell-fx-agg    { background: var(--dag-agg);    box-shadow: 0 1px 3px rgba(10,123,120,0.35); }
+.dag-cell-fx-rel    { background: var(--dag-rel);    box-shadow: 0 1px 3px rgba(102,102,102,0.35); }
+.dag-cell-fx-lookup { background: var(--dag-lookup); box-shadow: 0 1px 3px rgba(154,103,8,0.35); }
+
+.dag-cell-fx-raw:hover    { background: #002a55; }
+.dag-cell-fx-calc:hover   { background: #3a1f78; }
+.dag-cell-fx-agg:hover    { background: #075c5a; }
+.dag-cell-fx-rel:hover    { background: #4a4a4a; }
+.dag-cell-fx-lookup:hover { background: #774e02; }
+
+/* ─── Sticky hover micro-page ───────────────────────────────────────────── */
+
+/* The shell is a transparent "safety zone" ~15px wider than the visible card,
+   so the mouse can travel between trigger and card (and around the card edges)
+   without leaving the hover region. */
+.dag-hovercard-shell {
+  position: absolute;
+  top: 18px;
+  right: -10px;
+  padding: 15px;
+  z-index: 200;
+  display: block;
+  pointer-events: auto;
+}
+
+.dag-hovercard {
+  display: block;
+  width: 360px;
+  max-width: 90vw;
+  background: #fff;
+  border: 1px solid var(--border, #e0e0e0);
+  border-left: 4px solid var(--dag-calc);
+  border-radius: 8px;
+  box-shadow: 0 8px 28px rgba(0,0,0,0.18);
+  padding: 14px 16px 12px;
+  font: 13px/1.5 system-ui, -apple-system, sans-serif;
+  color: #222;
+  text-transform: none;
+  letter-spacing: 0;
+}
+.dag-hovercard-raw    { border-left-color: var(--dag-raw); }
+.dag-hovercard-calc   { border-left-color: var(--dag-calc); }
+.dag-hovercard-agg    { border-left-color: var(--dag-agg); }
+.dag-hovercard-rel    { border-left-color: var(--dag-rel); }
+.dag-hovercard-lookup { border-left-color: var(--dag-lookup); }
+
+.dag-hovercard > * { display: block; }
+.dag-hovercard-head {
+  display: flex !important;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.dag-hovercard-where {
+  display: inline-flex !important;
+  align-items: baseline;
+  gap: 6px;
+  font-size: 12px;
+  color: #555;
+}
+.dag-hovercard-table { font-weight: 600; color: #666; }
+.dag-hovercard-dot { color: #ccc; }
+.dag-hovercard-field { font-weight: 600; color: #222; font-size: 13px; }
+
+.dag-hovercard-desc {
+  font-size: 12.5px;
+  color: #444;
+  margin-bottom: 10px;
+}
+.dag-hovercard-gt {
+  font-size: 12.5px;
+  color: #333;
+  margin-bottom: 8px;
+}
+.dag-hovercard-gt code {
+  background: #f3f3f3; padding: 1px 5px; border-radius: 3px; font-size: 11px;
+}
+
+.dag-hovercard-label {
+  display: block !important;
+  font-size: 9.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #888;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.dag-hovercard-count {
+  display: inline-block;
+  font-size: 10px;
+  padding: 0 6px;
+  background: #ececec;
+  color: #555;
+  border-radius: 99px;
+  margin-left: 4px;
+  letter-spacing: 0;
+}
+
+.dag-hovercard-english {
+  margin-bottom: 10px;
+  padding: 8px 10px;
+  background: var(--dag-calc-bg);
+  border-radius: 5px;
+}
+.dag-hovercard-english-text {
+  display: block;
+  font-size: 14px;
+  line-height: 1.4;
+  color: #2a1c4a;
+  font-weight: 500;
+}
+.dag-hovercard-english-text::first-letter { text-transform: uppercase; }
+
+.dag-hovercard-formula {
+  margin-bottom: 10px;
+}
+.dag-hovercard-formula-code {
+  display: block !important;
+  padding: 6px 8px;
+  background: #fafafa;
+  border: 1px solid #ececec;
+  border-radius: 4px;
+  font-size: 12px;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+.dag-hovercard-formula-code .fx { font-size: 12px; line-height: 1.8; }
+
+.dag-hovercard-inputs { margin-bottom: 8px; }
+.dag-hovercard-input-row {
+  display: flex !important;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+.dag-hovercard-input-row .fc-pill {
+  padding: 3px 8px 4px;
+  font-size: 11.5px;
+}
+
+.dag-hovercard-hint {
+  font-size: 11px;
+  font-style: italic;
+  color: #999;
+  border-top: 1px dashed #eee;
+  padding-top: 6px;
+  margin-top: 4px;
+}
+
+/* ─── Type badges ────────────────────────────────────────────────────────── */
+
+.tb {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 9px;
+  border-radius: 99px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  line-height: 1;
+  white-space: nowrap;
+}
+.tb-sm { padding: 2px 7px; font-size: 10px; }
+.tb-glyph { font-weight: 700; }
+.tb-raw    { color: var(--dag-raw);    background: var(--dag-raw-bg); }
+.tb-calc   { color: var(--dag-calc);   background: var(--dag-calc-bg); }
+.tb-agg    { color: var(--dag-agg);    background: var(--dag-agg-bg); }
+.tb-rel    { color: var(--dag-rel);    background: var(--dag-rel-bg); }
+.tb-lookup { color: var(--dag-lookup); background: var(--dag-lookup-bg); }
+
+/* ─── Field chips (for formula refs + upstream/downstream pills) ─────────── */
+
+.fc {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 4px;
+  padding: 1px 8px 2px;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.4;
+  text-decoration: none;
+  vertical-align: baseline;
+  border: 1px solid transparent;
+  transition: background 100ms ease, border-color 100ms ease;
+}
+.fc:hover { text-decoration: none; }
+
+.fc-glyph { font-size: 11px; opacity: 0.85; font-weight: 700; }
+.fc-table { font-weight: 400; opacity: 0.7; font-style: italic; margin-right: 1px; }
+.fc-name  { font-weight: 500; }
+
+.fc-chip { /* inline-formula variant */ }
+
+.fc-pill {
+  padding: 6px 10px 7px;
+  font-size: 13px;
+  border-radius: 999px;
+  border: 1px solid currentColor;
+  background: #fff;
+}
+
+.fc-raw     { color: var(--dag-raw);    background: var(--dag-raw-bg); }
+.fc-raw:hover     { background: #d9e6f4; border-color: var(--dag-raw); }
+.fc-calc    { color: var(--dag-calc);   background: var(--dag-calc-bg); }
+.fc-calc:hover    { background: #e5d7f6; border-color: var(--dag-calc); }
+.fc-agg     { color: var(--dag-agg);    background: var(--dag-agg-bg); }
+.fc-agg:hover     { background: #cfeae7; border-color: var(--dag-agg); }
+.fc-rel     { color: var(--dag-rel);    background: var(--dag-rel-bg); }
+.fc-rel:hover     { background: #e0e0e0; border-color: var(--dag-rel); }
+.fc-lookup  { color: var(--dag-lookup); background: var(--dag-lookup-bg); }
+.fc-lookup:hover  { background: #f5e5b6; border-color: var(--dag-lookup); }
+
+/* Pills hold their own background colors */
+.fc-pill.fc-raw    { background: var(--dag-raw-bg); }
+.fc-pill.fc-calc   { background: var(--dag-calc-bg); }
+.fc-pill.fc-agg    { background: var(--dag-agg-bg); }
+.fc-pill.fc-rel    { background: var(--dag-rel-bg); }
+.fc-pill.fc-lookup { background: var(--dag-lookup-bg); }
+
+/* ─── Formula syntax (the inline expression) ────────────────────────────── */
+
+.fx {
+  display: inline;
+  font-family: "SF Mono", Menlo, Consolas, monospace;
+  font-size: 14px;
+  line-height: 2.2;
+}
+.fx-eq    { color: #999; }
+.fx-fn    { color: #444; font-weight: 600; font-style: italic; }
+.fx-paren { color: #999; }
+.fx-comma { color: #999; }
+.fx-op    { color: #444; padding: 0 3px; font-weight: 600; }
+.fx-num   { color: #ad5b00; font-variant-numeric: tabular-nums; }
+.fx-str   { color: #1f7a3a; }
+.fx-bool  { color: #1f7a3a; font-weight: 700; }
+.fx-raw   { background: #f3f3f3; padding: 6px 10px; border-radius: 4px; font-size: 13px; display: block; }
+
+/* ─── Page layout ────────────────────────────────────────────────────────── */
+
+.dag-page {
+  max-width: 880px;
+  margin: 0 auto;
+  padding-bottom: 4em;
+}
+.dag-loading { padding: 3em 1em; text-align: center; }
+
+/* ─── Breadcrumb ─────────────────────────────────────────────────────────── */
+
+.dag-crumb {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 12px; color: var(--muted);
+  margin-bottom: 1.5em;
+  text-transform: uppercase; letter-spacing: 0.06em;
+}
+.dag-back {
+  background: none; border: none; color: var(--accent);
+  cursor: pointer; font: inherit; padding: 0;
+  text-transform: uppercase; letter-spacing: 0.06em;
+}
+.dag-back:hover { text-decoration: underline; }
+.dag-crumb-sep { color: #ccc; }
+.dag-crumb-table { color: var(--muted); }
+.dag-crumb-field { color: var(--fg); font-weight: 600; }
+
+/* ─── Hero ───────────────────────────────────────────────────────────────── */
+
+.dag-hero {
+  padding: 1.8em 2em 2em;
+  margin-bottom: 1.8em;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-left: 6px solid var(--dag-rel);
+  border-radius: 8px;
+}
+.dag-hero-raw    { border-left-color: var(--dag-raw); }
+.dag-hero-calc   { border-left-color: var(--dag-calc); }
+.dag-hero-agg    { border-left-color: var(--dag-agg); }
+.dag-hero-rel    { border-left-color: var(--dag-rel); }
+.dag-hero-lookup { border-left-color: var(--dag-lookup); }
+
+.dag-hero-meta {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
+  margin-bottom: 0.8em;
+}
+.dag-pill {
+  display: inline-block;
+  padding: 3px 9px;
+  border-radius: 99px;
+  font-size: 11px;
+  font-weight: 500;
+  background: #f3f3f3;
+  color: #555;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  line-height: 1.5;
+}
+.dag-pill-depth { background: #f3eafe; color: var(--dag-calc); }
+.dag-pill-muted { background: #f3f3f3; color: #999; }
+
+.dag-title {
+  font-size: 34px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin: 0 0 0.2em;
+  color: var(--fg);
+  line-height: 1.15;
+}
+.dag-subtitle {
+  font-size: 14px;
+  color: var(--muted);
+  margin: 0 0 1em;
+}
+.dag-subtitle-table { font-weight: 600; color: #555; }
+.dag-subtitle-human { font-style: italic; }
+
+.dag-description {
+  margin: 0.8em 0 0;
+  font-size: 15px;
+  line-height: 1.55;
+  color: #444;
+}
+
+/* ─── Generic card ───────────────────────────────────────────────────────── */
+
+.dag-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.5em 1.8em;
+  margin-bottom: 1.8em;
+}
+.dag-card-title {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  margin: 0 0 1em;
+  font-weight: 600;
+}
+
+/* ─── Ground-truth card ─────────────────────────────────────────────────── */
+
+.dag-gt {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 1.2em;
+  align-items: center;
+  border-left: 6px solid var(--dag-raw);
+  background: linear-gradient(180deg, var(--dag-raw-bg), #fff);
+}
+.dag-gt-glyph {
+  font-size: 42px;
+  font-weight: 700;
+  color: var(--dag-raw);
+  line-height: 1;
+  width: 56px; text-align: center;
+}
+.dag-gt-title {
+  font-size: 18px;
+  margin: 0 0 0.3em;
+  color: var(--dag-raw);
+  font-weight: 600;
+}
+.dag-gt-body {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.55;
+  color: #333;
+}
+.dag-gt-body code {
+  background: #fff; border: 1px solid #d4dded; color: var(--dag-raw);
+  padding: 1px 6px; border-radius: 3px; font-size: 12px;
+}
+
+/* ─── Formula card ───────────────────────────────────────────────────────── */
+
+.dag-formula {
+  border-left: 6px solid var(--dag-calc);
+}
+
+.dag-english {
+  padding: 0.8em 1em;
+  margin-bottom: 1.2em;
+  background: var(--dag-calc-bg);
+  border-radius: 6px;
+}
+.dag-english-label {
+  display: block;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--dag-calc);
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+.dag-english-text {
+  margin: 0;
+  font-size: 17px;
+  line-height: 1.45;
+  color: #2a1c4a;
+  font-weight: 500;
+}
+
+.dag-formula-syntax { margin-top: 0.6em; }
+.dag-formula-label {
+  display: block;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+.dag-formula-code {
+  padding: 1em 1.2em;
+  background: #fafafa;
+  border: 1px solid #ececec;
+  border-radius: 6px;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+.dag-formula-hint {
+  margin: 1em 0 0;
+  font-size: 12px;
+  font-style: italic;
+}
+
+/* ─── Sections (Inputs / Consumers / Leaves) ────────────────────────────── */
+
+.dag-section { margin-bottom: 2em; }
+.dag-section-title {
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--fg);
+  margin: 0 0 0.3em;
+  font-weight: 700;
+  display: flex; align-items: center; gap: 10px;
+}
+.dag-count {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 1px 8px;
+  background: #ececec;
+  color: #555;
+  border-radius: 99px;
+  text-transform: none;
+  letter-spacing: 0;
+}
+.dag-count-muted { background: #f5f5f5; color: #999; }
+
+.dag-section-lead {
+  font-size: 13px;
+  margin: 0 0 1em;
+}
+
+/* Inputs: grid of clickable cards */
+.dag-input-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 12px;
+}
+.dag-input {
+  display: block;
+  padding: 1em 1.1em;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--dag-rel);
+  border-radius: 6px;
+  text-decoration: none;
+  color: var(--fg);
+  transition: box-shadow 100ms ease, border-color 100ms ease, transform 100ms ease;
+}
+.dag-input:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  transform: translateY(-1px);
+}
+.dag-input-raw    { border-left-color: var(--dag-raw); }
+.dag-input-calc   { border-left-color: var(--dag-calc); }
+.dag-input-agg    { border-left-color: var(--dag-agg); }
+.dag-input-rel    { border-left-color: var(--dag-rel); }
+.dag-input-lookup { border-left-color: var(--dag-lookup); }
+
+.dag-input-head {
+  display: flex; align-items: center; gap: 8px;
+  margin-bottom: 0.55em;
+  flex-wrap: wrap;
+}
+.dag-input-name {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--fg);
+}
+.dag-input-table {
+  font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em;
+  color: var(--muted);
+  margin-left: auto;
+}
+.dag-input-english {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #333;
+}
+.dag-input-english::first-letter { text-transform: uppercase; }
+.dag-input-desc {
+  margin: 0;
+  font-size: 12px;
+  color: var(--muted);
+  font-style: italic;
+  line-height: 1.5;
+}
+
+/* Pill rows for consumers + leaves */
+.dag-pill-row {
+  display: flex; flex-wrap: wrap; gap: 8px;
+  margin-bottom: 0.6em;
+}
+.dag-pill-row-faded .fc {
+  opacity: 0.7;
+}
+.dag-pill-row-faded .fc:hover {
+  opacity: 1;
+}
+
+.dag-transitive {
+  margin-top: 0.6em;
+  font-size: 13px;
+}
+.dag-transitive summary {
+  cursor: pointer; color: var(--accent); padding: 4px 0;
+  font-size: 12px;
+}
+.dag-transitive summary:hover { text-decoration: underline; }
+.dag-transitive[open] summary { margin-bottom: 0.6em; }
+
+/* Leaves: more subdued, since they're often many */
+.dag-section-leaves .fc-pill {
+  font-size: 12px;
+  padding: 4px 9px 5px;
+}

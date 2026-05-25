@@ -7,7 +7,7 @@ The canonical collection of example ontologies and domain-specific rulesets, eac
 This folder contains **multiple independent ERB projects**, each with a complete rulebook and README. Every ontology here:
 
 - Is a **self-contained Effortless project** (has `effortless.json` + `CLAUDE.md`)
-- Contains **one rulebook** (`effortless-rulebook.json`) as the single source of truth
+- Contains **one rulebook** (`<project-name>-rulebook.json`) as the single source of truth
 - Can pull from **Airtable** (optional, base ID hardcoded in its local `effortless.json`)
 - Can be edited **directly** (JSON or LLM-direct, no Airtable required)
 - Generates **all substrates** (Postgres, Python, Go, Excel, OWL, etc.) from its rulebook
@@ -25,7 +25,7 @@ effortless-rulebooks/
 │   ├── effortless.json          # Project config (hardcoded base ID for Airtable)
 │   ├── CLAUDE.md                # Project instructions (ERB methodology)
 │   ├── effortless-rulebook/
-│   │   └── effortless-rulebook.json  # The rulebook — source of truth
+│   │   └── star-trek-rulebook.json  # The rulebook — named after the project
 │   ├── README.md                # Narrative: what this ontology demonstrates
 │   └── execution-substrates/    # Generated: Postgres, Python, Go, etc.
 │
@@ -33,7 +33,7 @@ effortless-rulebooks/
 │   ├── effortless.json
 │   ├── CLAUDE.md
 │   ├── effortless-rulebook/
-│   │   └── effortless-rulebook.json
+│   │   └── jessica-advanced-rulebook.json
 │   ├── README.md
 │   └── execution-substrates/
 │
@@ -58,7 +58,7 @@ To add a new domain/ontology to this hub:
 
 3. **Set up the rulebook source** (choose one):
    - **From Airtable**: Edit `effortless.json`, set the base ID under `airtabletorulebook` transpiler, then run `effortless airtabletorulebook`
-   - **Directly**: Hand-edit `effortless-rulebook/effortless-rulebook.json` (start from a template or copy from an existing ontology)
+   - **Directly**: Hand-edit `effortless-rulebook/<project-name>-rulebook.json` (start from a template or copy from an existing ontology)
 
 4. **Write narrative documentation**: Create `README.md` with:
    - Brief description of what the ontology models
@@ -79,13 +79,48 @@ To add a new domain/ontology to this hub:
 
 ## Examples Included
 
-| Ontology | What It Demonstrates | Status |
-|----------|----------------------|--------|
-| `star-trek` | Hierarchical relationships, polymorphic FKs, multi-level aggregations | Complete |
-| `jessica-advanced` | Complex workflow modeling, computed statuses, temporal reasoning | Complete |
-| `jessica-basic` | Simple task tracking, basic formulas, aggregations | Complete |
-| `customer-fullname` | Name derivation, string concatenation | Complete |
-| `is-everything-a-language` | Linguistic ontology, self-referential models | Complete |
+### Canonical rulebook-driven examples
+
+| Ontology | What It Demonstrates |
+|----------|----------------------|
+| `star-trek` | Hierarchical relationships, polymorphic FKs, multi-level aggregations |
+| `jessica-advanced` | Complex workflow modeling, computed statuses, temporal reasoning |
+| `jessica-basic` | Simple task tracking, basic formulas, aggregations |
+| `customer-fullname` | Name derivation, string concatenation |
+| `is-everything-a-language` | Linguistic ontology, self-referential models |
+| `acme-llc` | Lean order-to-fulfillment, essential business rules |
+| `acme-corporation` | Full ACME variant — fuller schema |
+| `effortless-rulesbooks` | Meta-ontology: rulebooks about rulebooks |
+| `community-event-planner-demo` | Event scheduling, attendees, venues |
+| `customer-crm-demo` | Generic CRM: contacts, opportunities, pipeline |
+| `effortless-banking-demo` | Generic banking: accounts, transactions, ledger |
+| `fantasy-football-demo` | Leagues, teams, players, scoring rules |
+| `gym-trainer-invoicing` | Sessions, trainers, invoicing |
+| `intelligence-taxonomy-demo` | Taxonomy / classification modeling |
+| `jobsearch-rag` | Job-search domain (rulebook was at root pre-migration) |
+| `product-inventory-demo` | Products, SKUs, stock levels |
+| `therapist-helper-portal` | Therapy practice: clients, sessions, notes |
+| `wedding-seating-optimizer` | Guests, tables, constraint modeling |
+
+### Experiments (rulebook present; experimental scope)
+
+| Project | What It Demonstrates |
+|---------|----------------------|
+| `guessing-game` | Tiny game domain — minimal rulebook test |
+| `llm-enigma-test` | LLM-against-rulebook test (Mechanical Kitchen Timer) |
+| `v2-nakedclaude-demo` | Naked-Claude vs. Effortless-Claude — v2 |
+| `v3-nakedclaude-demo` | Naked-Claude vs. Effortless-Claude — v3 |
+
+### Different-shape projects (no rulebook — intentional)
+
+These do **not** follow the canonical shape. Each has a `README.SHAPE-NOTE.md` explaining why.
+
+| Project | Why different |
+|---------|----------------|
+| `expense-approval-demo` | README-only spec; never initialized as ERB project |
+| `volunteer-shift-scheduler-demo` | Naked-Claude project — xlsx + schema.mjs, no rulebook JSON |
+| `naked-claude-vs-effortless-claude` | Orchestration harness for the comparison experiment |
+| `v3-nakedclaude-demo-naked` | Naked-Claude baseline (control sample) for the v3 experiment |
 
 ## Philosophy
 
@@ -107,7 +142,7 @@ The rulebook is the specification. Everything else — Postgres migrations, Pyth
 
 ### If your ontology is rulebook-direct (no Airtable):
 
-1. Edit `effortless-rulebook/effortless-rulebook.json` directly (or via LLM)
+1. Edit `effortless-rulebook/<project-name>-rulebook.json` directly (or via LLM)
 2. Rebuild substrates: `effortless build`
 
 ### Reverse-sync (rulebook → Airtable):

@@ -29,11 +29,7 @@ def read_file(path, default=""):
         return default
 
 def _default_testing_dir():
-    """Default ERB_TESTING_DIR derived from active-domain.txt (the SSoT).
-
-    rulebook-examples/<active-domain>/testing/. This is a default (override
-    with ERB_TESTING_DIR), not a fallback. See CLAUDE.md.
-    """
+    """Default ERB_TESTING_DIR: rulebook-examples/<active-domain>/testing/."""
     repo_root = os.path.abspath(os.path.join(SCRIPT_DIR, '..', '..'))
     active_domain_file = os.path.join(repo_root, 'orchestration', 'active-domain.txt')
     with open(active_domain_file) as f:

@@ -1,0 +1,62 @@
+<%- include('../partials/header', { title: 'Checkout' }) %>
+<h1>Checkout</h1>
+<% if (!cart.items.length) { %>
+  <p class="muted">Cart is empty.</p>
+<% } else { %>
+<table class="grid">
+  <thead><tr><th>Product</th><th>Qty</th><th>Line total</th></tr></thead>
+  <tbody>
+    <% cart.items.forEach(it => { %>
+      <tr><td><%= it.display_name %></td><td><%= it.qty %></td><td>$<%= it.lineTotal.toFixed(2) %></td></tr>
+    <% }) %>
+  </tbody>
+  <tfoot><tr><th colspan="2" style="text-align:right">Subtotal</th><th>$<%= cart.subTotal.toFixed(2) %></th></tr></tfoot>
+</table>
+
+<form method="post" class="stacked">
+  <fieldset>
+    <legend>Customer</legend>
+    <label><input type="radio" name="customer_mode" value="existing" checked /> Existing</label>
+    <label>
+      <select name="client_id">
+        <option value="">— pick a client —</option>
+        <% clients.forEach(c => { %>
+          <option value="<%= c.client_id %>"><%= c.name %><%= c.email ? ' (' + c.email + ')' : '' %></option>
+        <% }) %>
+      </select>
+    </label>
+    <hr />
+    <label><input type="radio" name="customer_mode" value="new" /> New customer</label>
+    <label><span>Name</span><input type="text" name="name" /></label>
+    <label><span>Email</span><input type="email" name="email" /></label>
+    <label><span>Phone</span><input type="text" name="phone" /></label>
+    <label><span>Company</span><input type="text" name="company_name" /></label>
+  </fieldset>
+
+  <fieldset>
+    <legend>Addresses (optional)</legend>
+    <label>
+      <span>Shipping address</span>
+      <select name="shipping_address">
+        <option value="">— none —</option>
+        <% addresses.forEach(a => { %><option value="<%= a.addresse_id %>"><%= a.name %></option><% }) %>
+      </select>
+    </label>
+    <label>
+      <span>Billing address</span>
+      <select name="billing_address">
+        <option value="">— none —</option>
+        <% addresses.forEach(a => { %><option value="<%= a.addresse_id %>"><%= a.name %></option><% }) %>
+      </select>
+    </label>
+  </fieldset>
+
+  <label><span>Order notes</span><textarea name="notes" rows="3"></textarea></label>
+
+  <div class="row">
+    <button class="btn" type="submit">Place order</button>
+    <a class="btn ghost" href="/shop/cart">Back to cart</a>
+  </div>
+</form>
+<% } %>
+<%- include('../partials/footer') %>

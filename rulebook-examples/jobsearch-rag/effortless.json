@@ -1,0 +1,30 @@
+{
+  "ShowHidden": false,
+  "ShowAllFiles": false,
+  "CurrentPath": null,
+  "SSoTmeProjectFiles": null,
+  "SSoTmeProjectId": "7bda0edc-d6ba-4d9e-9989-9aa9d92f964e",
+  "Name": "jobsearch-rag",
+  "ProjectSettings": [
+    {
+      "Name": "project-name",
+      "Value": "jobsearch-rag"
+    }
+  ],
+  "ProjectTranspilers": [
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "rulebooktopostgres",
+      "RelativePath": "/postgres",
+      "CommandLine": "rulebook-to-postgres -i ../jobsearch-rag-rulebook.json",
+      "IsDisabled": false
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "rulebooktoxlsx",
+      "RelativePath": "/xlsx",
+      "CommandLine": "rulebook-to-xlsx -i ../jobsearch-rag-rulebook.json",
+      "IsDisabled": false
+    }
+  ]
+}

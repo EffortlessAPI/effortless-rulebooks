@@ -1,0 +1,188 @@
+:root {
+  color-scheme: light;
+  --fg: #1a1a1a;
+  --fg-dim: #6b6b6b;
+  --bg: #fafafa;
+  --bg-card: #ffffff;
+  --border: #e5e5e5;
+  --border-strong: #c8c8c8;
+  --accent: #2d6cdf;
+  --accent-bg: #e9f0fc;
+  --good: #1f8a4c;
+  --warn: #b8741a;
+  --err: #b3261e;
+}
+
+* { box-sizing: border-box; }
+html, body, #root { height: 100%; }
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 14px;
+  color: var(--fg);
+  background: var(--bg);
+}
+
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+code { font-family: ui-monospace, "SF Mono", Menlo, monospace; background: #f0f0f0; padding: 0 4px; border-radius: 3px; font-size: 0.92em; }
+
+/* ----- Shell -----
+   Sidebar is position:fixed and the content has matching margin-left, so
+   neither needs overflow:auto. This lets the DAG popup (position:absolute
+   inside cells) escape the page and not get clipped. */
+.app-shell { min-height: 100vh; }
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 240px;
+  height: 100vh;
+  background: #fff;
+  border-right: 1px solid var(--border);
+  padding: 20px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  z-index: 50;
+}
+.brand { display: block; color: inherit; }
+.brand-title { font-size: 1.05rem; font-weight: 600; line-height: 1.2; }
+.brand-sub { font-size: 0.75rem; color: var(--fg-dim); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.04em; }
+.nav { display: flex; flex-direction: column; gap: 2px; }
+.nav-item {
+  display: block;
+  padding: 7px 10px;
+  border-radius: 6px;
+  color: var(--fg);
+  font-weight: 500;
+}
+.nav-item:hover { background: #f4f4f4; text-decoration: none; }
+.nav-item.active { background: var(--accent-bg); color: var(--accent); }
+
+.who { margin-top: auto; font-size: 0.85rem; }
+.who-name { font-weight: 600; }
+.who-email { color: var(--fg-dim); }
+.signout { margin-top: 8px; font-size: 0.8rem; padding: 4px 8px; border: 1px solid var(--border); background: #fff; border-radius: 4px; cursor: pointer; }
+.signout:hover { background: #f4f4f4; }
+
+.content { margin-left: 240px; min-height: 100vh; display: flex; flex-direction: column; }
+.content-top {
+  padding: 12px 24px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: flex-end;
+  background: #fff;
+  position: sticky;
+  top: 0;
+  z-index: 40;
+}
+.content-body { padding: 24px 32px; }
+
+/* ----- Pages ----- */
+.page h1 { font-size: 1.5rem; margin: 0 0 8px; }
+.page h2 { font-size: 1.1rem; margin: 24px 0 8px; }
+.lede { color: var(--fg-dim); margin: 0 0 20px; max-width: 70ch; line-height: 1.5; }
+.hint { color: var(--fg-dim); font-size: 0.9rem; margin: 0 0 12px; max-width: 70ch; }
+.err { color: var(--err); }
+
+/* ----- Tables -----
+   NB: no `overflow: hidden` on .table or .matrix — it would clip the DAG
+   hovercard that DagCell absolute-positions out of the cell. Rounded corners
+   are applied to the corner cells instead. */
+.table {
+  border-collapse: collapse;
+  width: 100%;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+.table th, .table td { padding: 9px 12px; text-align: left; border-bottom: 1px solid var(--border); }
+.table th { background: #f7f7f7; font-weight: 600; font-size: 0.85rem; color: #444; }
+.table tr:first-child th:first-child, .table thead tr:first-child th:first-child { border-top-left-radius: 6px; }
+.table tr:first-child th:last-child,  .table thead tr:first-child th:last-child  { border-top-right-radius: 6px; }
+.table tr:last-child td:first-child  { border-bottom-left-radius: 6px; }
+.table tr:last-child td:last-child   { border-bottom-right-radius: 6px; }
+.table tr:last-child td { border-bottom: none; }
+.table .num { text-align: right; font-variant-numeric: tabular-nums; }
+
+/* ----- Stats ----- */
+.stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 12px 0 24px; max-width: 540px; }
+.stat { background: var(--bg-card); border: 1px solid var(--border); border-radius: 6px; padding: 14px 16px; }
+.stat-label { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--fg-dim); }
+.stat-value { font-size: 1.6rem; font-weight: 600; margin-top: 2px; }
+
+/* ----- Key-value boxes ----- */
+.kvs { display: flex; gap: 12px; flex-wrap: wrap; margin: 12px 0 24px; }
+.kv { background: var(--bg-card); border: 1px solid var(--border); border-radius: 6px; padding: 10px 14px; min-width: 140px; }
+.kv-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--fg-dim); }
+.kv-value { font-size: 1.05rem; font-weight: 500; margin-top: 2px; }
+
+/* ----- Badges ----- */
+.badge { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 0.78rem; font-weight: 600; }
+.badge-generalist { background: #d9f1e1; color: var(--good); }
+.badge-broad      { background: #fdebd1; color: var(--warn); }
+.badge-narrow     { background: #f5d8d6; color: var(--err); }
+
+.tier { display: inline-block; padding: 1px 6px; border-radius: 4px; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.03em; }
+.tier-foundational { background: #eee; color: #555; }
+.tier-composite    { background: #e3eafd; color: #2d6cdf; }
+.tier-emergent     { background: #f4e4fb; color: #6f3aa3; }
+
+/* ----- Matrix ----- */
+.matrix-wrap { /* no overflow clipping — would hide the DAG popup; the matrix is narrow enough */ }
+.matrix { border-collapse: collapse; background: var(--bg-card); border: 1px solid var(--border); border-radius: 6px; }
+.matrix th, .matrix td { padding: 8px 10px; border-bottom: 1px solid var(--border); border-right: 1px solid var(--border); vertical-align: top; }
+.matrix th { background: #f7f7f7; font-weight: 600; font-size: 0.8rem; }
+.matrix th:last-child, .matrix td:last-child { border-right: none; }
+.matrix tr:first-child th:first-child, .matrix thead tr:first-child th:first-child { border-top-left-radius: 6px; }
+.matrix tr:first-child th:last-child,  .matrix thead tr:first-child th:last-child  { border-top-right-radius: 6px; }
+.matrix tr:last-child td:first-child { border-bottom-left-radius: 6px; }
+.matrix tr:last-child td:last-child  { border-bottom-right-radius: 6px; }
+.matrix tr:last-child td { border-bottom: none; }
+.matrix .num { text-align: right; font-variant-numeric: tabular-nums; padding-right: 12px; }
+.matrix .row-head { background: #f7f7f7; font-weight: 600; text-align: left; }
+.matrix .row-head-sub { font-weight: 400; font-size: 0.72rem; color: var(--fg-dim); }
+.matrix-cap { display: flex; flex-direction: column; gap: 2px; min-width: 110px; }
+.matrix-cap-sub { display: flex; gap: 6px; align-items: center; font-size: 0.72rem; font-weight: 400; }
+.matrix-cap-sub .weight { color: var(--fg-dim); font-variant-numeric: tabular-nums; }
+.matrix-cell { padding: 6px 8px; }
+.matrix-cell-inner { display: flex; flex-direction: column; gap: 2px; align-items: flex-end; }
+.matrix-weighted { font-size: 0.75rem; color: var(--fg-dim); font-variant-numeric: tabular-nums; }
+.dim { color: var(--fg-dim); }
+
+/* ----- Inputs ----- */
+.score-input {
+  width: 60px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  padding: 4px 6px;
+  border: 1px solid var(--border-strong);
+  border-radius: 4px;
+  background: #fff;
+  font-family: inherit;
+  font-size: 0.95rem;
+}
+.score-input:focus { outline: 2px solid var(--accent); outline-offset: -1px; }
+.score-input:disabled { opacity: 0.5; }
+
+/* ----- Login ----- */
+.login-page { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px; }
+.login-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 28px 32px; max-width: 640px; width: 100%; }
+.login-card h1 { margin: 0 0 8px; font-size: 1.5rem; }
+.login-users { display: grid; gap: 10px; margin-top: 16px; }
+.login-user {
+  text-align: left;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #fff;
+  cursor: pointer;
+  font-family: inherit;
+}
+.login-user:hover { border-color: var(--accent); background: var(--accent-bg); }
+.login-user-name { font-weight: 600; }
+.login-user-role { font-size: 0.78rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.04em; }
+.login-user-blurb { font-size: 0.88rem; color: var(--fg-dim); margin-top: 4px; }
+
+.placeholder .role-tag { font-size: 0.78rem; text-transform: uppercase; color: var(--fg-dim); letter-spacing: 0.04em; }

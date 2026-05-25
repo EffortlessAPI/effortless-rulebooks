@@ -1,0 +1,19 @@
+<%- include('../partials/header', { title: 'Shop' }) %>
+<h1>Featured Products</h1>
+<div class="cards">
+  <% products.forEach(p => { %>
+    <div class="card">
+      <h3><a href="/shop/products/<%= p.product_id %>"><%= p.display_name %></a></h3>
+      <p class="muted"><%= p.sku %></p>
+      <p class="price">$<%= Number(p.unit_price).toFixed(2) %></p>
+      <p class="muted"><%= p.description || '' %></p>
+      <form method="post" action="/shop/cart/add">
+        <input type="hidden" name="productId" value="<%= p.product_id %>" />
+        <input type="number" name="qty" value="1" min="1" style="width:4rem" />
+        <button class="btn" type="submit">Add to cart</button>
+      </form>
+    </div>
+  <% }) %>
+</div>
+<p><a class="btn ghost" href="/shop/products">Browse full catalog →</a></p>
+<%- include('../partials/footer') %>

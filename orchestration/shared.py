@@ -35,9 +35,7 @@ def get_default_database_url():
     """Default DATABASE_URL derived from the active domain.
 
     erb_<domain> on localhost (hyphens → underscores per PG identifier rules).
-    Mirrors the formula in orchestrate.sh. Callers should prefer
-    os.environ['DATABASE_URL'] if set, and fall through to this only when
-    unset — this is a default, not a fallback. See CLAUDE.md.
+    Mirrors the formula in orchestrate.sh. DATABASE_URL overrides.
     """
     domain = get_active_domain()
     db_name = "erb_" + domain.replace("-", "_")

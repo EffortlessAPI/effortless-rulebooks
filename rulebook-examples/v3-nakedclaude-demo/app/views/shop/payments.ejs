@@ -1,0 +1,20 @@
+<%- include('../partials/header', { title: 'Payments' }) %>
+<h1>Payments · <%= customer.name %></h1>
+<nav class="subnav"><a href="/shop/account/<%= customer.client_id %>">Overview</a> <a href="/shop/account/<%= customer.client_id %>/orders">Orders</a> <a href="/shop/account/<%= customer.client_id %>/payments">Payments</a> <a href="/shop/account/<%= customer.client_id %>/profile">Profile</a> <span class="muted">· <%= customer.name %></span></nav>
+<table class="grid">
+  <thead><tr><th>#</th><th>Date</th><th>Order</th><th>Method</th><th>Status</th><th>Amount</th></tr></thead>
+  <tbody>
+    <% payments.forEach(p => { %>
+      <tr>
+        <td><%= p.payment_number %></td>
+        <td><%= p.payment_date ? new Date(p.payment_date).toISOString().slice(0,10) : '' %></td>
+        <td><%= p.invoice_number %></td>
+        <td><%= p.payment_method %></td>
+        <td><%= p.payment_status %></td>
+        <td>$<%= Number(p.amount || 0).toFixed(2) %></td>
+      </tr>
+    <% }) %>
+    <% if (!payments.length) { %><tr><td colspan="6" class="muted">No payments.</td></tr><% } %>
+  </tbody>
+</table>
+<%- include('../partials/footer') %>

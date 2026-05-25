@@ -1,0 +1,33 @@
+<%- include('partials/header', { title: (isNew ? 'New ' : 'Edit ') + t.label }) %>
+<h1><%= isNew ? 'New' : 'Edit' %> <%= t.label %></h1>
+<% if (error) { %><div class="error"><%= error %></div><% } %>
+<form method="post" class="stacked">
+  <% t.fields.forEach(f => { %>
+    <label>
+      <span><%= f.name %></span>
+      <% if (f.type === 'textarea') { %>
+        <textarea name="<%= f.name %>" rows="3"><%= row[f.name] || '' %></textarea>
+      <% } else if (f.type === 'bool') { %>
+        <input type="checkbox" name="<%= f.name %>" <%= row[f.name] ? 'checked' : '' %> />
+      <% } else if (f.type === 'number') { %>
+        <input type="number" step="any" name="<%= f.name %>" value="<%= row[f.name] === null || row[f.name] === undefined ? '' : row[f.name] %>" />
+      <% } else if (f.type === 'datetime') { %>
+        <input type="datetime-local" name="<%= f.name %>" value="<%= row[f.name] ? new Date(row[f.name]).toISOString().slice(0,16) : '' %>" />
+      <% } else if (f.type.startsWith('fk:')) { %>
+        <select name="<%= f.name %>">
+          <option value="">— none —</option>
+          <% (fkData[f.name] || []).forEach(o => { %>
+            <option value="<%= o.id %>" <%= row[f.name] === o.id ? 'selected' : '' %>><%= o.label || o.id %></option>
+          <% }) %>
+        </select>
+      <% } else { %>
+        <input type="text" name="<%= f.name %>" value="<%= row[f.name] === null || row[f.name] === undefined ? '' : row[f.name] %>" />
+      <% } %>
+    </label>
+  <% }) %>
+  <div class="row">
+    <button class="btn" type="submit">Save</button>
+    <a class="btn ghost" href="/t/<%= t.key %>">Cancel</a>
+  </div>
+</form>
+<%- include('partials/footer') %>

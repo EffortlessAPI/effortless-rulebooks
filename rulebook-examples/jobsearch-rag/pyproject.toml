@@ -1,0 +1,164 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "jobsearch-rag"
+version = "0.1.0"
+description = "Local LLM + RAG pipeline for intelligent job search filtering"
+readme = "README.md"
+requires-python = ">=3.11,<3.14"
+license = { text = "PolyForm-Noncommercial-1.0.0" }
+authors = [{ name = "Jack Pines" }]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: Other/Proprietary License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Typing :: Typed",
+]
+
+dependencies = [
+    "actionable-errors>=0.1.0",
+    "chromadb>=1.5,<2",
+    "httpx>=0.27,<1",
+    "ollama>=0.4,<1",
+    "playwright>=1.49,<2",
+    "playwright-stealth>=2.0,<3",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pyright>=1.1,<2",
+    "pre-commit>=4,<5",
+    "pytest>=8,<9",
+    "pytest-asyncio>=0.24,<1",
+    "pytest-cov>=6,<7",
+    "ruff>=0.8,<1",
+    "taskipy>=1.14,<2",
+]
+
+[project.scripts]
+jobsearch-rag = "jobsearch_rag.__main__:main"
+
+# ---------------------------------------------------------------------------
+# Taskipy
+# ---------------------------------------------------------------------------
+[tool.taskipy.tasks]
+lint   = "uv run ruff check --fix src/ tests/"
+format = "uv run ruff format src/ tests/"
+type   = "uv run pyright src/ tests/"
+test   = "uv run pytest tests/ -v"
+cov    = "uv run pytest tests/ --cov=jobsearch_rag --cov-report=term-missing"
+check  = "task format && task lint && task type && task test"
+
+# ---------------------------------------------------------------------------
+# Ruff
+# ---------------------------------------------------------------------------
+[tool.ruff]
+target-version = "py311"
+line-length = 99
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+preview = true
+explicit-preview-rules = true
+select = [
+    "E",    # pycodestyle errors
+    "W",    # pycodestyle warnings
+    "F",    # pyflakes
+    "I",    # isort
+    "N",    # pep8-naming
+    "UP",   # pyupgrade
+    "B",    # flake8-bugbear
+    "SIM",  # flake8-simplify
+    "TCH",  # flake8-type-checking
+    "RUF",  # ruff-specific rules
+    "D",    # pydocstyle
+    "PLC0415",  # import-outside-top-level
+    "PLC2701",  # import-private-name (preview)
+]
+ignore = [
+    "E501",   # line length (handled by formatter)
+    "D212",   # multi-line-summary-first-line (conflicts with D213)
+    "D203",   # one-blank-line-before-class (conflicts with D211)
+]
+
+[tool.ruff.lint.isort]
+known-first-party = ["jobsearch_rag"]
+combine-as-imports = true
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**/*.py" = [
+    "PLC2701",  # import-private-name — testing internal state is intentional
+    "D205",     # BDD Given/When/Then blocks aren't summary+body
+    "D400",     # BDD steps don't end with periods
+    "D415",     # same as D400
+    "D401",     # fixture docstrings are descriptive, not imperative
+]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+
+# ---------------------------------------------------------------------------
+# Pyright
+# ---------------------------------------------------------------------------
+[tool.pyright]
+pythonVersion = "3.11"
+typeCheckingMode = "strict"
+stubPath = "typings"
+venvPath = "."
+venv = ".venv"
+
+# ---------------------------------------------------------------------------
+# Coverage
+# ---------------------------------------------------------------------------
+[tool.coverage.run]
+source = ["jobsearch_rag"]
+branch = true
+omit = ["tests/*"]
+
+[tool.coverage.report]
+show_missing = true
+exclude_also = [
+    "if __name__ == .__main__.",
+]
+
+# ---------------------------------------------------------------------------
+# Pytest
+# ---------------------------------------------------------------------------
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+python_files = ["*_test.py", "test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "-v --strict-markers -m 'not integration and not live'"
+markers = [
+    "integration: marks tests requiring live services (Ollama, browser)",
+    "live: marks tests requiring live external sites (ZipRecruiter, etc.)",
+]
+
+# ---------------------------------------------------------------------------
+# python-semantic-release
+# ---------------------------------------------------------------------------
+[tool.semantic_release]
+version_toml = ["pyproject.toml:project.version"]
+version_variables = []
+major_on_zero = false
+allow_zero_version = true
+commit_message = "chore(release): {version}"
+tag_format = "v{version}"
+branch = "main"
+build_command = ""
+upload_to_pypi = false
+changelog_file = "CHANGELOG.md"
+
+[tool.semantic_release.commit_parser_options]
+allowed_tags = ["feat", "fix", "perf", "refactor", "docs", "style", "test", "build", "ci", "chore"]
+minor_tags = ["feat"]
+patch_tags = ["fix", "perf"]

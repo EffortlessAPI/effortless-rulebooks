@@ -1,0 +1,163 @@
+# ---------------------------------------------------------------------------
+# Global Rubric — Universal evaluation dimensions and signals
+# ---------------------------------------------------------------------------
+# These dimensions apply to ALL job listings regardless of archetype.
+# Each dimension defines signals that indicate structural misalignment
+# (negative) or alignment (positive) with the candidate's career
+# trajectory and preferences.
+#
+# The negative signals in each dimension are embedded into a
+# `negative_signals` ChromaDB collection and used to compute a
+# continuous penalty score (negative_score) for every listing.
+#
+# The positive signals in each dimension are embedded into a
+# `global_positive_signals` ChromaDB collection and used to compute
+# a continuous culture score (culture_score) — an orthogonal axis
+# measuring environment and culture quality.
+# ---------------------------------------------------------------------------
+
+[[dimensions]]
+name = "Role Scope"
+signals_positive = [
+    "Cross-team architectural influence and organizational scope",
+    "Strategic technical leadership spanning multiple domains",
+    "Platform or infrastructure decisions affecting entire engineering org",
+    "Long-horizon design and technical stewardship",
+    "Ownership of platform-wide standards or governance",
+]
+signals_negative = [
+    "Individual contributor coding role disguised with architect title",
+    "No cross-team influence or organizational scope mentioned",
+    "Primarily hands-on feature development with no strategic component",
+    "Role limited to a single product team with no architectural reach",
+]
+
+[[dimensions]]
+name = "Technical Depth"
+signals_positive = [
+    "Deep infrastructure, platform, or distributed systems work",
+    "Data pipeline architecture or large-scale data platform design",
+    "Developer experience tooling and internal platform engineering",
+    "Cloud-native architecture, Kubernetes, or service mesh expertise",
+    "Event-driven or streaming systems at scale",
+]
+signals_negative = [
+    "Full-stack web development with no infrastructure or platform focus",
+    "Front-end heavy role with minimal backend or systems work",
+    "WordPress, Shopify, or CMS-centric stack",
+    "Mobile-only engineering with no platform or systems component",
+]
+
+[[dimensions]]
+name = "Operational Burden"
+signals_positive = [
+    "Engineering-led observability and reliability without on-call ownership",
+    "Platform team that builds tooling for other teams to operate their own services",
+    "Focus on developer productivity and reducing operational toil",
+    "Clear separation between platform engineering and SRE operations",
+]
+signals_negative = [
+    "Primary on-call or pager duty ownership",
+    "SRE rotation with incident command responsibilities",
+    "NOC or operations center staffing model",
+    "High operational load with unclear boundaries",
+]
+
+[[dimensions]]
+name = "Industry Alignment"
+signals_positive = [
+    "Developer tools, cloud infrastructure, or platform company",
+    "Open-source-first culture with community engagement",
+    "Education technology, health tech, or climate tech mission",
+    "AI infrastructure, workflow automation, or distributed systems",
+]
+signals_negative = [
+    "Adtech, surveillance, or behavioral tracking platform",
+    "Gambling, casino, or sports betting technology",
+    "Crypto or blockchain-first company with no traditional infrastructure",
+    "Exploitative or extractive business models",
+]
+
+[[dimensions]]
+name = "Employment Structure"
+signals_positive = [
+    "Direct hire with transparent reporting structure",
+    "Clear IC track with Staff/Principal altitude expectations",
+]
+signals_negative = [
+    "Staffing agency or vendor-chain posting",
+    "Contract-to-hire with no direct employment path",
+    "Offshore outsourcing firm recruiting for unnamed client",
+    "Role posted by third-party recruiter with no company details",
+]
+
+[[dimensions]]
+name = "Seniority Mismatch"
+signals_positive = [
+    "Explicit Staff, Senior Staff, Principal, or Architect-level expectations",
+    "Role requiring 10+ years experience with architectural influence",
+]
+signals_negative = [
+    "Junior or mid-level role requiring less than 5 years experience",
+    "Entry-level position with no mention of architecture or strategy",
+    "Internship or apprenticeship program",
+    "Role requiring seniority but offering mid-level compensation",
+]
+
+[[dimensions]]
+name = "Compensation Red Flags"
+signals_positive = [
+    "Transparent compensation range aligned with Staff/Principal market",
+    "Top-of-range compensation meets or exceeds target minimum",
+]
+signals_negative = [
+    "Equity-only compensation with no base salary",
+    "Unpaid or volunteer position",
+    "Compensation significantly below market for principal-level roles",
+    "Hourly contractor rate far below equivalent salary expectations",
+]
+
+[[dimensions]]
+name = "Culture & Work Model"
+signals_positive = [
+    "Remote-first or async-first distributed team culture",
+    "Explicit work-life balance policies and sustainable pace expectations",
+    "Engineering autonomy with bottom-up technical decision making",
+    "Written communication culture with documentation-first approach",
+    "High-trust, low-chaos environment with clear expectations",
+]
+signals_negative = [
+    "Mandatory return-to-office or hybrid with 4+ days on-site",
+    "Startup expecting 60+ hour weeks as cultural norm",
+    "Military-style command structure with no engineering autonomy",
+    "Fast-paced, high-pressure, or urgency-driven environment",
+    "Ambiguous expectations with no support structure",
+]
+
+[[dimensions]]
+name = "Ethical Alignment"
+signals_positive = [
+    "Mission-driven organization with humane impact",
+    "Privacy-respecting technology and user empowerment",
+    "Healthcare, education, or public-good orientation (non-extractive)",
+]
+signals_negative = [
+    "Weapons manufacturing or military contracting",
+    "Surveillance technology or behavioral profiling",
+    "Exploitative financial products or predatory lending",
+]
+
+[[dimensions]]
+name = "Neurodivergence Compatibility"
+signals_positive = [
+    "Clear communication norms and structured processes",
+    "Predictable workflows with low context-switching",
+    "Low-meeting culture with async-first collaboration",
+    "Psychological safety and explicit boundary-respecting norms",
+]
+signals_negative = [
+    "Constant context switching or interrupt-driven work",
+    "Ambiguity without support or structure",
+    "High-meeting culture with synchronous dependency",
+    "Chaotic environment with unclear expectations",
+]

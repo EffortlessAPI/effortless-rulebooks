@@ -1,0 +1,59 @@
+* { box-sizing: border-box; }
+body { font: 14px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+       margin: 0; color: #1f2328; background: #f6f8fa; }
+a { color: #0969da; text-decoration: none; }
+a:hover { text-decoration: underline; }
+code { background: #eef1f4; padding: 0 .25rem; border-radius: 3px; }
+
+.topbar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: .75rem 1.25rem; background: #24292f; color: #fff;
+}
+.topbar a { color: #fff; }
+.topbar .brand a { font-weight: 600; }
+.topnav a { margin-left: 1rem; }
+
+.main { max-width: 1100px; margin: 1.25rem auto; padding: 0 1.25rem 3rem; }
+h1 { margin-top: 0; }
+.muted { color: #6e7781; }
+
+.btn { display: inline-block; padding: .35rem .75rem; border-radius: 6px;
+       background: #1f883d; color: #fff; border: 1px solid #1f883d; cursor: pointer;
+       font: inherit; text-decoration: none; }
+.btn:hover { filter: brightness(1.07); text-decoration: none; }
+.btn.ghost { background: #fff; color: #24292f; border-color: #d0d7de; }
+.btn.danger { background: #cf222e; border-color: #cf222e; }
+.btn.small { padding: .15rem .45rem; font-size: 12px; }
+
+.grid { width: 100%; border-collapse: collapse; background: #fff;
+        border: 1px solid #d0d7de; border-radius: 6px; overflow: hidden; }
+.grid th, .grid td { padding: .45rem .6rem; border-bottom: 1px solid #eaeef2;
+                     text-align: left; vertical-align: top; }
+.grid thead th { background: #f6f8fa; font-weight: 600; }
+.grid tfoot th { background: #f6f8fa; }
+.scroll { overflow: auto; }
+.nowrap { white-space: nowrap; }
+
+form.stacked label { display: block; margin: .5rem 0; }
+form.stacked label > span { display: block; font-size: 12px; color: #57606a; margin-bottom: 2px; }
+form.stacked input[type=text], form.stacked input[type=email],
+form.stacked input[type=number], form.stacked input[type=datetime-local],
+form.stacked select, form.stacked textarea {
+  width: 100%; padding: .35rem .5rem; border: 1px solid #d0d7de; border-radius: 6px;
+  font: inherit; background: #fff;
+}
+.row { display: flex; gap: .75rem; align-items: end; flex-wrap: wrap; margin-top: .75rem; }
+.filters { display: flex; gap: .5rem; align-items: center; margin: .75rem 0; }
+.filters input[type=text] { padding: .35rem .5rem; border: 1px solid #d0d7de; border-radius: 6px; }
+
+.cards { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); margin: 1rem 0; }
+.card { border: 1px solid #d0d7de; background: #fff; padding: 1rem; border-radius: 8px; }
+.card h3 { margin: 0 0 .25rem; }
+.card .price { font-size: 1.1rem; font-weight: 600; color: #1f883d; }
+
+.subnav { margin: .75rem 0 1.25rem; padding: .5rem .75rem;
+          background: #fff; border: 1px solid #d0d7de; border-radius: 6px; }
+.subnav a { margin-right: 1rem; }
+
+.error { background: #ffebe9; border: 1px solid #ff8182; padding: .5rem .75rem; border-radius: 6px; margin-bottom: 1rem; }
+.foot { text-align: center; color: #6e7781; padding: 1rem; font-size: 12px; }

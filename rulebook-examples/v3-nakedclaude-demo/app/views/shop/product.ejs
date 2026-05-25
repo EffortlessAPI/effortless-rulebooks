@@ -1,0 +1,12 @@
+<%- include('../partials/header', { title: product.display_name }) %>
+<h1><%= product.display_name %></h1>
+<p class="muted"><%= product.sku %> · stock: <%= product.stock_quantity ?? 0 %></p>
+<p class="price">$<%= Number(product.unit_price).toFixed(2) %></p>
+<p><%= product.description || '' %></p>
+<form method="post" action="/shop/cart/add">
+  <input type="hidden" name="productId" value="<%= product.product_id %>" />
+  <label>Qty <input type="number" name="qty" value="1" min="1" style="width:5rem" /></label>
+  <button class="btn" type="submit">Add to cart</button>
+</form>
+<p><a href="/shop/products">← back to catalog</a></p>
+<%- include('../partials/footer') %>

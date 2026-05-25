@@ -1,0 +1,139 @@
+{
+  "$schema": "https://example.com/cmcc-schema/v1",
+  "model_name": "wedding-seating-optimizer",
+  "Description": "Wedding seating plan as a calculated-field DAG. Coordinators move guests between tables; per-table happiness, capacity flags, and per-guest satisfaction all recompute through the inference graph.",
+  "Users": {
+    "Description": "Login identities for the demo (stub auth).",
+    "schema": [
+      { "name": "UserId", "datatype": "string", "type": "raw", "nullable": false },
+      { "name": "Name", "datatype": "string", "type": "raw", "nullable": true },
+      { "name": "Email", "datatype": "string", "type": "raw", "nullable": true },
+      { "name": "Role", "datatype": "string", "type": "raw", "nullable": true, "Description": "coordinator | bride | groom" },
+      { "name": "DisplayName", "datatype": "string", "type": "raw", "nullable": true }
+    ],
+    "data": [
+      { "UserId": "u-coord",  "Name": "coord@wed.test", "Email": "coord@wed.test", "Role": "coordinator", "DisplayName": "Casey (Coordinator)" },
+      { "UserId": "u-bride",  "Name": "bride@wed.test", "Email": "bride@wed.test", "Role": "bride",       "DisplayName": "Alex (Bride)" },
+      { "UserId": "u-groom",  "Name": "groom@wed.test", "Email": "groom@wed.test", "Role": "groom",       "DisplayName": "Sam (Groom)" }
+    ]
+  },
+  "Tables": {
+    "Description": "Physical reception tables. Guests are assigned to one Table each.",
+    "schema": [
+      { "name": "TableId",    "datatype": "string",  "type": "raw", "nullable": false },
+      { "name": "Name",       "datatype": "string",  "type": "raw", "nullable": true },
+      { "name": "Label",      "datatype": "string",  "type": "raw", "nullable": true, "Description": "Friendly label e.g. 'Head Table', 'Cousins'." },
+      { "name": "Seats",      "datatype": "integer", "type": "raw", "nullable": true, "Description": "Physical capacity." },
+      { "name": "HeadCount",      "datatype": "integer", "type": "aggregation", "nullable": true, "formula": "=COUNTIFS(Guests!{{AssignedTable}}, Tables!{{TableId}})" },
+      { "name": "OpenSeats",      "datatype": "integer", "type": "calculated",  "nullable": true, "formula": "={{Seats}} - {{HeadCount}}" },
+      { "name": "OverCapacity",   "datatype": "boolean", "type": "calculated",  "nullable": true, "formula": "={{HeadCount}} > {{Seats}}" },
+      { "name": "RawHappiness",   "datatype": "number",  "type": "aggregation", "nullable": true, "Description": "Sum of EffectiveScore for relationships whose seated table matches this one.", "formula": "=SUMIFS(Relationships!{{EffectiveScore}}, Relationships!{{SeatedTable}}, Tables!{{TableId}})" },
+      { "name": "ViolationCount", "datatype": "integer", "type": "aggregation", "nullable": true, "Description": "Number of must-not pairs seated at this table.", "formula": "=SUMIFS(Relationships!{{ViolationFlag}}, Relationships!{{SeatedTable}}, Tables!{{TableId}})" },
+      { "name": "Happiness",      "datatype": "number",  "type": "calculated",  "nullable": true, "Description": "Net happiness: raw affinity minus capacity penalty minus side-skew penalty.", "formula": "={{RawHappiness}} - (IF({{OverCapacity}}, 25, 0) + {{SideSkew}})" },
+      { "name": "Grade",          "datatype": "string",  "type": "calculated",  "nullable": true, "formula": "=IF({{ViolationCount}}>0, \"Conflict\", IF({{OverCapacity}}, \"Over Capacity\", IF({{Happiness}}>=15, \"Great\", IF({{Happiness}}>=5, \"OK\", \"Cold\"))))" },
+      { "name": "BrideSideCount", "datatype": "integer", "type": "aggregation", "nullable": true, "Description": "Number of bride-side guests at this table.", "formula": "=SUMIFS(Guests!{{BrideFlag}}, Guests!{{AssignedTable}}, Tables!{{TableId}})" },
+      { "name": "GroomSideCount", "datatype": "integer", "type": "aggregation", "nullable": true, "Description": "Number of groom-side guests at this table.", "formula": "=SUMIFS(Guests!{{GroomFlag}}, Guests!{{AssignedTable}}, Tables!{{TableId}})" },
+      { "name": "SideSkew",       "datatype": "integer", "type": "calculated",  "nullable": true, "Description": "Absolute difference between bride and groom side counts.", "formula": "=IF({{BrideSideCount}}>{{GroomSideCount}}, {{BrideSideCount}}-{{GroomSideCount}}, {{GroomSideCount}}-{{BrideSideCount}})" }
+    ],
+    "data": [
+      { "TableId": "t-head",    "Name": "t-head",    "Label": "Head Table",    "Seats": 6 },
+      { "TableId": "t-family-b","Name": "t-family-b","Label": "Bride Family",  "Seats": 8 },
+      { "TableId": "t-family-g","Name": "t-family-g","Label": "Groom Family",  "Seats": 8 },
+      { "TableId": "t-friends", "Name": "t-friends", "Label": "College Friends","Seats": 6 },
+      { "TableId": "t-misc",    "Name": "t-misc",    "Label": "Plus Ones",     "Seats": 4 }
+    ]
+  },
+  "Guests": {
+    "Description": "Wedding guests. Each is assigned to one Table.",
+    "schema": [
+      { "name": "GuestId",       "datatype": "string", "type": "raw",         "nullable": false },
+      { "name": "Name",          "datatype": "string", "type": "raw",         "nullable": true },
+      { "name": "FullName",      "datatype": "string", "type": "raw",         "nullable": true },
+      { "name": "Side",          "datatype": "string", "type": "raw",         "nullable": true, "Description": "bride | groom | both" },
+      { "name": "Dietary",       "datatype": "string", "type": "raw",         "nullable": true, "Description": "none | veg | vegan | gf | kosher" },
+      { "name": "Language",      "datatype": "string", "type": "raw",         "nullable": true, "Description": "en | es | fr" },
+      { "name": "AgeBand",       "datatype": "string", "type": "raw",         "nullable": true, "Description": "child | adult | senior" },
+      { "name": "AssignedTable", "datatype": "string", "type": "relationship","nullable": true, "RelatedTo": "Tables", "Description": "FK to Tables.TableId. Editable — moves the guest." },
+      { "name": "TableLabel",    "datatype": "string", "type": "lookup",      "nullable": true, "formula": "=INDEX(Tables!{{Label}}, MATCH(Guests!{{AssignedTable}}, Tables!{{TableId}}, 0))" },
+      { "name": "TableSeats",    "datatype": "integer","type": "lookup",      "nullable": true, "formula": "=INDEX(Tables!{{Seats}}, MATCH(Guests!{{AssignedTable}}, Tables!{{TableId}}, 0))" },
+      { "name": "TableHeadCount","datatype": "integer","type": "lookup",      "nullable": true, "formula": "=INDEX(Tables!{{HeadCount}}, MATCH(Guests!{{AssignedTable}}, Tables!{{TableId}}, 0))" },
+      { "name": "RelationshipsAsA", "datatype": "integer", "type": "aggregation", "nullable": true, "formula": "=COUNTIFS(Relationships!{{GuestA}}, Guests!{{GuestId}})" },
+      { "name": "RelationshipsAsB", "datatype": "integer", "type": "aggregation", "nullable": true, "formula": "=COUNTIFS(Relationships!{{GuestB}}, Guests!{{GuestId}})" },
+      { "name": "SatisfactionA",    "datatype": "number",  "type": "aggregation", "nullable": true, "Description": "Sum of EffectiveScore on relationships where this guest is GuestA and the pair is co-seated.", "formula": "=SUMIFS(Relationships!{{EffectiveScore}}, Relationships!{{GuestA}}, Guests!{{GuestId}})" },
+      { "name": "SatisfactionB",    "datatype": "number",  "type": "aggregation", "nullable": true, "formula": "=SUMIFS(Relationships!{{EffectiveScore}}, Relationships!{{GuestB}}, Guests!{{GuestId}})" },
+      { "name": "Satisfaction",     "datatype": "number",  "type": "calculated",  "nullable": true, "Description": "Per-guest happiness rollup.", "formula": "={{SatisfactionA}} + {{SatisfactionB}}" },
+      { "name": "Mood",             "datatype": "string",  "type": "calculated",  "nullable": true, "formula": "=IF({{Satisfaction}}>=10, \"Happy\", IF({{Satisfaction}}>=0, \"Neutral\", \"Unhappy\"))" },
+      { "name": "BrideFlag",        "datatype": "number",  "type": "calculated",  "nullable": true, "Description": "1 if bride-side guest; else 0. Feeds Tables.BrideSideCount.", "formula": "=IF({{Side}}=\"bride\", 1, 0)" },
+      { "name": "GroomFlag",        "datatype": "number",  "type": "calculated",  "nullable": true, "Description": "1 if groom-side guest; else 0. Feeds Tables.GroomSideCount.", "formula": "=IF({{Side}}=\"groom\", 1, 0)" }
+    ],
+    "data": [
+      { "GuestId": "g-alex",    "Name": "g-alex",    "FullName": "Alex Stone",       "Side": "bride", "Dietary": "none",   "Language": "en", "AgeBand": "adult",  "AssignedTable": "t-head"     },
+      { "GuestId": "g-sam",     "Name": "g-sam",     "FullName": "Sam Rivera",       "Side": "groom", "Dietary": "none",   "Language": "en", "AgeBand": "adult",  "AssignedTable": "t-head"     },
+      { "GuestId": "g-mom-b",   "Name": "g-mom-b",   "FullName": "Marie Stone",      "Side": "bride", "Dietary": "veg",    "Language": "en", "AgeBand": "senior", "AssignedTable": "t-head"     },
+      { "GuestId": "g-dad-b",   "Name": "g-dad-b",   "FullName": "Tom Stone",        "Side": "bride", "Dietary": "none",   "Language": "en", "AgeBand": "senior", "AssignedTable": "t-head"     },
+      { "GuestId": "g-mom-g",   "Name": "g-mom-g",   "FullName": "Lucia Rivera",     "Side": "groom", "Dietary": "none",   "Language": "es", "AgeBand": "senior", "AssignedTable": "t-head"     },
+      { "GuestId": "g-dad-g",   "Name": "g-dad-g",   "FullName": "Hector Rivera",    "Side": "groom", "Dietary": "none",   "Language": "es", "AgeBand": "senior", "AssignedTable": "t-head"     },
+      { "GuestId": "g-aunt-b",  "Name": "g-aunt-b",  "FullName": "Carol Stone",      "Side": "bride", "Dietary": "gf",     "Language": "en", "AgeBand": "senior", "AssignedTable": "t-family-b" },
+      { "GuestId": "g-uncle-b", "Name": "g-uncle-b", "FullName": "Pete Stone",       "Side": "bride", "Dietary": "none",   "Language": "en", "AgeBand": "senior", "AssignedTable": "t-family-b" },
+      { "GuestId": "g-cuz-b1",  "Name": "g-cuz-b1",  "FullName": "Jamie Stone",      "Side": "bride", "Dietary": "vegan",  "Language": "en", "AgeBand": "adult",  "AssignedTable": "t-family-b" },
+      { "GuestId": "g-cuz-b2",  "Name": "g-cuz-b2",  "FullName": "Riley Stone",      "Side": "bride", "Dietary": "none",   "Language": "en", "AgeBand": "child",  "AssignedTable": "t-family-b" },
+      { "GuestId": "g-tia-g",   "Name": "g-tia-g",   "FullName": "Ana Rivera",       "Side": "groom", "Dietary": "none",   "Language": "es", "AgeBand": "senior", "AssignedTable": "t-family-g" },
+      { "GuestId": "g-tio-g",   "Name": "g-tio-g",   "FullName": "Miguel Rivera",    "Side": "groom", "Dietary": "none",   "Language": "es", "AgeBand": "senior", "AssignedTable": "t-family-g" },
+      { "GuestId": "g-prim-g1", "Name": "g-prim-g1", "FullName": "Diego Rivera",     "Side": "groom", "Dietary": "none",   "Language": "es", "AgeBand": "adult",  "AssignedTable": "t-family-g" },
+      { "GuestId": "g-prim-g2", "Name": "g-prim-g2", "FullName": "Sofia Rivera",     "Side": "groom", "Dietary": "veg",    "Language": "es", "AgeBand": "adult",  "AssignedTable": "t-family-g" },
+      { "GuestId": "g-fr-1",    "Name": "g-fr-1",    "FullName": "Morgan Lee",       "Side": "bride", "Dietary": "none",   "Language": "en", "AgeBand": "adult",  "AssignedTable": "t-friends"  },
+      { "GuestId": "g-fr-2",    "Name": "g-fr-2",    "FullName": "Taylor Brooks",    "Side": "bride", "Dietary": "veg",    "Language": "en", "AgeBand": "adult",  "AssignedTable": "t-friends"  },
+      { "GuestId": "g-fr-3",    "Name": "g-fr-3",    "FullName": "Jordan Pham",      "Side": "groom", "Dietary": "none",   "Language": "en", "AgeBand": "adult",  "AssignedTable": "t-friends"  },
+      { "GuestId": "g-fr-4",    "Name": "g-fr-4",    "FullName": "Robin Cole",       "Side": "groom", "Dietary": "none",   "Language": "en", "AgeBand": "adult",  "AssignedTable": "t-friends"  },
+      { "GuestId": "g-ex",      "Name": "g-ex",      "FullName": "Drew Hart (the ex)","Side":"bride", "Dietary": "none",   "Language": "en", "AgeBand": "adult",  "AssignedTable": "t-misc"     },
+      { "GuestId": "g-plus-1",  "Name": "g-plus-1",  "FullName": "Avery Quinn",      "Side": "groom", "Dietary": "none",   "Language": "fr", "AgeBand": "adult",  "AssignedTable": "t-misc"     },
+      { "GuestId": "g-plus-2",  "Name": "g-plus-2",  "FullName": "Skyler Park",      "Side": "groom", "Dietary": "kosher", "Language": "en", "AgeBand": "adult",  "AssignedTable": "t-misc"     },
+      { "GuestId": "g-kid-1",   "Name": "g-kid-1",   "FullName": "Mateo Rivera",     "Side": "groom", "Dietary": "none",   "Language": "es", "AgeBand": "child",  "AssignedTable": "t-misc"     },
+      { "GuestId": "g-kid-2",   "Name": "g-kid-2",   "FullName": "Lily Stone",       "Side": "bride", "Dietary": "none",   "Language": "en", "AgeBand": "child",  "AssignedTable": "t-misc"     }
+    ]
+  },
+  "Relationships": {
+    "Description": "Directed-but-symmetric guest-pair affinities. Kind is loves | prefers | avoid | must-not, with a Weight (positive = affinity, negative = friction).",
+    "schema": [
+      { "name": "RelId",     "datatype": "string", "type": "raw",         "nullable": false },
+      { "name": "Name",      "datatype": "string", "type": "raw",         "nullable": true },
+      { "name": "GuestA",    "datatype": "string", "type": "relationship","nullable": true, "RelatedTo": "Guests" },
+      { "name": "GuestB",    "datatype": "string", "type": "relationship","nullable": true, "RelatedTo": "Guests" },
+      { "name": "Kind",      "datatype": "string", "type": "raw",         "nullable": true, "Description": "loves | prefers | avoid | must-not" },
+      { "name": "Weight",    "datatype": "number", "type": "raw",         "nullable": true, "Description": "Signed magnitude (positive = wants near, negative = wants apart)." },
+      { "name": "GuestAName",  "datatype": "string", "type": "lookup", "nullable": true, "formula": "=INDEX(Guests!{{FullName}}, MATCH(Relationships!{{GuestA}}, Guests!{{GuestId}}, 0))" },
+      { "name": "GuestBName",  "datatype": "string", "type": "lookup", "nullable": true, "formula": "=INDEX(Guests!{{FullName}}, MATCH(Relationships!{{GuestB}}, Guests!{{GuestId}}, 0))" },
+      { "name": "GuestATable", "datatype": "string", "type": "lookup", "nullable": true, "formula": "=INDEX(Guests!{{AssignedTable}}, MATCH(Relationships!{{GuestA}}, Guests!{{GuestId}}, 0))" },
+      { "name": "GuestBTable", "datatype": "string", "type": "lookup", "nullable": true, "formula": "=INDEX(Guests!{{AssignedTable}}, MATCH(Relationships!{{GuestB}}, Guests!{{GuestId}}, 0))" },
+      { "name": "SameTable",   "datatype": "boolean","type": "calculated", "nullable": true, "Description": "True iff both ends sit at the same non-empty table.", "formula": "=AND({{GuestATable}}<>\"\", {{GuestATable}}={{GuestBTable}})" },
+      { "name": "SeatedTable", "datatype": "string", "type": "calculated", "nullable": true, "Description": "If both guests share a table, that table's id; else blank. Drives the per-table aggregations.", "formula": "=IF({{SameTable}}, {{GuestATable}}, \"\")" },
+      { "name": "EffectiveScore",     "datatype": "number",  "type": "calculated", "nullable": true, "Description": "Weight when co-seated; else 0. Must-not pairs co-seated produce a large penalty regardless of Weight sign.", "formula": "=IF({{SameTable}}, IF({{Kind}}=\"must-not\", -50, {{Weight}}), 0)" },
+      { "name": "IsMustNotViolation", "datatype": "boolean", "type": "calculated", "nullable": true, "formula": "=AND({{Kind}}=\"must-not\", {{SameTable}})" },
+      { "name": "IsSatisfied",        "datatype": "boolean", "type": "calculated", "nullable": true, "Description": "Positive-affinity pair sitting together, or negative-affinity pair sitting apart.", "formula": "=OR(AND({{Weight}}>0, {{SameTable}}), AND({{Weight}}<0, NOT({{SameTable}})))" },
+      { "name": "ViolationTable",     "datatype": "string",  "type": "calculated", "nullable": true, "Description": "TableId if this is a must-not violation; else blank.", "formula": "=IF({{IsMustNotViolation}}, {{GuestATable}}, \"\")" },
+      { "name": "ViolationFlag",      "datatype": "number",  "type": "calculated", "nullable": true, "Description": "1 if must-not pair co-seated; else 0. Feeds the per-table ViolationCount aggregation.", "formula": "=IF({{IsMustNotViolation}}, 1, 0)" }
+    ],
+    "data": [
+      { "RelId": "r-couple",    "Name": "r-couple",    "GuestA": "g-alex",    "GuestB": "g-sam",     "Kind": "loves",    "Weight": 30 },
+      { "RelId": "r-mom-b-alex","Name": "r-mom-b-alex","GuestA": "g-mom-b",   "GuestB": "g-alex",    "Kind": "prefers",  "Weight": 10 },
+      { "RelId": "r-dad-b-alex","Name": "r-dad-b-alex","GuestA": "g-dad-b",   "GuestB": "g-alex",    "Kind": "prefers",  "Weight": 10 },
+      { "RelId": "r-mom-g-sam", "Name": "r-mom-g-sam", "GuestA": "g-mom-g",   "GuestB": "g-sam",     "Kind": "prefers",  "Weight": 10 },
+      { "RelId": "r-dad-g-sam", "Name": "r-dad-g-sam", "GuestA": "g-dad-g",   "GuestB": "g-sam",     "Kind": "prefers",  "Weight": 10 },
+      { "RelId": "r-parents-b", "Name": "r-parents-b", "GuestA": "g-mom-b",   "GuestB": "g-dad-b",   "Kind": "loves",    "Weight": 20 },
+      { "RelId": "r-parents-g", "Name": "r-parents-g", "GuestA": "g-mom-g",   "GuestB": "g-dad-g",   "Kind": "loves",    "Weight": 20 },
+      { "RelId": "r-aunt-uncle","Name": "r-aunt-uncle","GuestA": "g-aunt-b",  "GuestB": "g-uncle-b", "Kind": "loves",    "Weight": 15 },
+      { "RelId": "r-cousins-b", "Name": "r-cousins-b", "GuestA": "g-cuz-b1",  "GuestB": "g-cuz-b2",  "Kind": "prefers",  "Weight": 8 },
+      { "RelId": "r-tia-tio",   "Name": "r-tia-tio",   "GuestA": "g-tia-g",   "GuestB": "g-tio-g",   "Kind": "loves",    "Weight": 15 },
+      { "RelId": "r-prims",     "Name": "r-prims",     "GuestA": "g-prim-g1", "GuestB": "g-prim-g2", "Kind": "loves",    "Weight": 15 },
+      { "RelId": "r-fr-12",     "Name": "r-fr-12",     "GuestA": "g-fr-1",    "GuestB": "g-fr-2",    "Kind": "prefers",  "Weight": 8 },
+      { "RelId": "r-fr-34",     "Name": "r-fr-34",     "GuestA": "g-fr-3",    "GuestB": "g-fr-4",    "Kind": "prefers",  "Weight": 8 },
+      { "RelId": "r-fr-13",     "Name": "r-fr-13",     "GuestA": "g-fr-1",    "GuestB": "g-fr-3",    "Kind": "prefers",  "Weight": 5 },
+      { "RelId": "r-ex-bride",  "Name": "r-ex-bride",  "GuestA": "g-ex",      "GuestB": "g-alex",    "Kind": "must-not", "Weight": -100 },
+      { "RelId": "r-ex-groom",  "Name": "r-ex-groom",  "GuestA": "g-ex",      "GuestB": "g-sam",     "Kind": "avoid",    "Weight": -20 },
+      { "RelId": "r-aunt-ex",   "Name": "r-aunt-ex",   "GuestA": "g-aunt-b",  "GuestB": "g-ex",      "Kind": "avoid",    "Weight": -15 },
+      { "RelId": "r-kids",      "Name": "r-kids",      "GuestA": "g-kid-1",   "GuestB": "g-kid-2",   "Kind": "prefers",  "Weight": 12 },
+      { "RelId": "r-plus-lang", "Name": "r-plus-lang", "GuestA": "g-plus-1",  "GuestB": "g-plus-2",  "Kind": "prefers",  "Weight": 5 },
+      { "RelId": "r-uncle-tio", "Name": "r-uncle-tio", "GuestA": "g-uncle-b", "GuestB": "g-tio-g",   "Kind": "avoid",    "Weight": -10 }
+    ]
+  }
+}

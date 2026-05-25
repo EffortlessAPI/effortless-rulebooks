@@ -1,0 +1,345 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>naked-claude-demo · admin</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<style>
+  :root { --fg: #1f2933; --muted: #6b7280; --bg: #f7f8fa; --card: #fff; --line: #e5e7eb; --accent: #2563eb; --danger: #dc2626; --warn: #d97706; --ok: #059669; }
+  * { box-sizing: border-box; }
+  body { margin: 0; font: 14px/1.4 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: var(--bg); color: var(--fg); }
+  header { background: #111827; color: #fff; padding: 10px 16px; display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+  header .brand { font-weight: 700; letter-spacing: .5px; }
+  header .links { display: flex; gap: 6px; flex-wrap: wrap; }
+  header a, header button.tab {
+    color: #d1d5db; text-decoration: none; padding: 6px 10px; border-radius: 6px;
+    background: transparent; border: 0; cursor: pointer; font: inherit;
+  }
+  header a:hover, header button.tab:hover { background: #1f2937; color: #fff; }
+  header button.tab.active { background: #2563eb; color: #fff; }
+  header .right { margin-left: auto; }
+  header .right a { color: #93c5fd; }
+  main { padding: 16px; }
+  .toolbar { display: flex; gap: 8px; margin-bottom: 12px; align-items: center; flex-wrap: wrap; }
+  .toolbar input[type=text] { padding: 6px 10px; border: 1px solid var(--line); border-radius: 6px; min-width: 240px; }
+  button.primary { background: var(--accent); color: #fff; border: 0; padding: 7px 12px; border-radius: 6px; cursor: pointer; }
+  button.primary:hover { background: #1d4ed8; }
+  button.ghost { background: #fff; border: 1px solid var(--line); padding: 7px 12px; border-radius: 6px; cursor: pointer; }
+  button.danger { background: #fff; color: var(--danger); border: 1px solid #fecaca; padding: 5px 10px; border-radius: 6px; cursor: pointer; }
+  button.danger:hover { background: #fef2f2; }
+  .count { color: var(--muted); }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th, td { padding: 8px 10px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+  th { background: #f3f4f6; cursor: pointer; user-select: none; white-space: nowrap; position: sticky; top: 0; }
+  th .arrow { color: var(--muted); margin-left: 4px; }
+  tbody tr:hover { background: #f9fafb; }
+  td.actions { white-space: nowrap; }
+  .pill { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 12px; font-weight: 600; }
+  .pill.ok    { background: #d1fae5; color: #065f46; }
+  .pill.warn  { background: #fef3c7; color: #92400e; }
+  .pill.bad   { background: #fee2e2; color: #991b1b; }
+  .pill.muted { background: #e5e7eb; color: #374151; }
+  /* modal */
+  .modal-backdrop { position: fixed; inset: 0; background: rgba(17,24,39,.5); display: flex; align-items: center; justify-content: center; z-index: 100; }
+  .modal { background: #fff; border-radius: 10px; width: min(640px, 95vw); max-height: 92vh; overflow: auto; box-shadow: 0 20px 50px rgba(0,0,0,.2); }
+  .modal h2 { margin: 0; padding: 14px 18px; border-bottom: 1px solid var(--line); font-size: 16px; }
+  .modal form { padding: 14px 18px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .modal form .row { display: flex; flex-direction: column; gap: 4px; }
+  .modal form .row.full { grid-column: 1 / -1; }
+  .modal label { font-weight: 600; font-size: 12px; color: #374151; }
+  .modal input, .modal select, .modal textarea { padding: 6px 8px; border: 1px solid var(--line); border-radius: 6px; font: inherit; }
+  .modal textarea { min-height: 70px; resize: vertical; }
+  .modal .actions { padding: 12px 18px; display: flex; gap: 8px; justify-content: flex-end; border-top: 1px solid var(--line); }
+  .empty { padding: 30px; text-align: center; color: var(--muted); }
+  .err { color: var(--danger); margin: 10px 0; }
+  code.id { font-family: ui-monospace, SFMono-Regular, monospace; color: var(--muted); font-size: 12px; }
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">naked-claude-demo · admin</div>
+  <nav class="links" id="tabs"></nav>
+  <div class="right">
+    <a href="/portal/">Customer portal →</a>
+  </div>
+</header>
+<main>
+  <div class="toolbar">
+    <input id="filter" type="text" placeholder="Filter rows…" />
+    <span class="count" id="count"></span>
+    <span style="flex:1"></span>
+    <button class="primary" id="newBtn">+ New</button>
+  </div>
+  <div class="err" id="err"></div>
+  <div class="card">
+    <table id="grid">
+      <thead><tr id="hdr"></tr></thead>
+      <tbody id="rows"></tbody>
+    </table>
+    <div id="empty" class="empty" hidden>No rows.</div>
+  </div>
+</main>
+
+<div id="modalRoot"></div>
+
+<script>
+const $ = sel => document.querySelector(sel);
+const state = {
+  schema: null,
+  table: null,
+  rows: [],
+  filter: '',
+  sort: { col: null, dir: 1 },
+  fkCache: {}      // table -> rows[]
+};
+
+async function jget(url) {
+  const r = await fetch(url);
+  if (!r.ok) throw new Error(`${url}: ${r.status}`);
+  return r.json();
+}
+async function jsend(method, url, body) {
+  const r = await fetch(url, {
+    method,
+    headers: { 'content-type': 'application/json' },
+    body: body ? JSON.stringify(body) : undefined
+  });
+  if (!r.ok && r.status !== 204) {
+    const t = await r.text();
+    throw new Error(`${url}: ${r.status} ${t}`);
+  }
+  return r.status === 204 ? null : r.json();
+}
+
+async function getFkOptions(table) {
+  if (state.fkCache[table]) return state.fkCache[table];
+  state.fkCache[table] = await jget(`/api/${table}`);
+  return state.fkCache[table];
+}
+
+function setError(msg) { $('#err').textContent = msg || ''; }
+
+async function init() {
+  state.schema = await jget('/api/_schema');
+  renderTabs();
+  const initial = location.hash.slice(1) || Object.keys(state.schema)[0];
+  await selectTable(initial);
+  $('#filter').addEventListener('input', e => { state.filter = e.target.value.toLowerCase(); renderRows(); });
+  $('#newBtn').addEventListener('click', () => openEditor(null));
+  window.addEventListener('hashchange', () => {
+    const t = location.hash.slice(1);
+    if (state.schema[t]) selectTable(t);
+  });
+}
+
+function renderTabs() {
+  const wrap = $('#tabs');
+  wrap.innerHTML = '';
+  for (const [key, def] of Object.entries(state.schema)) {
+    const b = document.createElement('button');
+    b.className = 'tab';
+    b.textContent = def.label || key;
+    b.dataset.table = key;
+    b.onclick = () => { location.hash = key; selectTable(key); };
+    wrap.appendChild(b);
+  }
+}
+
+async function selectTable(table) {
+  if (!state.schema[table]) return;
+  state.table = table;
+  state.sort = { col: null, dir: 1 };
+  state.fkCache = {};
+  document.querySelectorAll('#tabs .tab').forEach(b => {
+    b.classList.toggle('active', b.dataset.table === table);
+  });
+  setError('');
+  try {
+    state.rows = await jget(`/api/${table}`);
+  } catch (e) { setError(e.message); state.rows = []; }
+  renderHeader();
+  renderRows();
+}
+
+function visibleColumns() {
+  const tbl = state.table;
+  if (!state.rows.length) return Object.keys(state.schema[tbl].fields);
+  const sample = state.rows[0];
+  // show editable fields first, then well-known derived columns
+  const editable = Object.keys(state.schema[tbl].fields);
+  const derivedOrder = Object.keys(sample).filter(k => !editable.includes(k) && k !== 'airtable_id' && k !== 'synced_at');
+  return [...editable, ...derivedOrder];
+}
+
+function renderHeader() {
+  const cols = visibleColumns();
+  const hdr = $('#hdr');
+  hdr.innerHTML = '<th>id</th>' +
+    cols.map(c => `<th data-col="${c}">${c}<span class="arrow"></span></th>`).join('') +
+    '<th></th>';
+  hdr.querySelectorAll('th[data-col]').forEach(th => {
+    th.onclick = () => {
+      const c = th.dataset.col;
+      if (state.sort.col === c) state.sort.dir = -state.sort.dir;
+      else state.sort = { col: c, dir: 1 };
+      renderRows();
+    };
+  });
+}
+
+function fmt(v, key, row) {
+  if (v === null || v === undefined) return '';
+  if (typeof v === 'boolean') {
+    if (key === 'is_blocking' || key === 'is_stopped') return `<span class="pill ${v ? 'bad' : 'muted'}">${v ? 'blocking' : 'ok'}</span>`;
+    if (key === 'is_vip')        return v ? `<span class="pill ok">VIP</span>` : '';
+    if (key === 'is_high_margin')return v ? `<span class="pill ok">high</span>` : '';
+    if (key === 'is_big_order')  return v ? `<span class="pill warn">big</span>` : '';
+    if (key === 'is_paid_in_full') return v ? `<span class="pill ok">paid</span>` : '';
+    if (key === 'is_approved')   return v ? `<span class="pill ok">approved</span>` : `<span class="pill warn">pending</span>`;
+    return v ? '✓' : '';
+  }
+  if (typeof v === 'number') {
+    if (/(_rate|discount|margin)$/.test(key)) return (v * 100).toFixed(2) + '%';
+    if (/(price|cost|amount|total|revenue|profit|cogs|due|paid)/.test(key)) return '$' + Number(v).toFixed(2);
+    return String(v);
+  }
+  if (typeof v === 'string' && /^\d{4}-\d{2}-\d{2}/.test(v)) return v.slice(0,10);
+  if (key === 'payment_status_label') {
+    const cls = v === 'Paid' ? 'ok' : v === 'Partial' ? 'warn' : 'bad';
+    return `<span class="pill ${cls}">${v}</span>`;
+  }
+  if (key === 'status_name' && row?.is_stopped) return `<span class="pill bad">${escapeHtml(v)}</span>`;
+  return escapeHtml(String(v));
+}
+
+function escapeHtml(s) { return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+function renderRows() {
+  const cols = visibleColumns();
+  let rows = state.rows.slice();
+  if (state.filter) {
+    const f = state.filter;
+    rows = rows.filter(r => Object.values(r).some(v => v != null && String(v).toLowerCase().includes(f)));
+  }
+  if (state.sort.col) {
+    const c = state.sort.col, d = state.sort.dir;
+    rows.sort((a,b) => {
+      const av = a[c], bv = b[c];
+      if (av == null && bv == null) return 0;
+      if (av == null) return 1;
+      if (bv == null) return -1;
+      if (typeof av === 'number' && typeof bv === 'number') return (av - bv) * d;
+      return String(av).localeCompare(String(bv)) * d;
+    });
+  }
+  $('#count').textContent = `${rows.length} row${rows.length===1?'':'s'}`;
+  $('#empty').hidden = rows.length > 0;
+  $('#rows').innerHTML = rows.map(r => {
+    const cells = cols.map(c => `<td>${fmt(r[c], c, r)}</td>`).join('');
+    return `<tr data-id="${r.airtable_id}">
+      <td><code class="id">${r.airtable_id}</code></td>
+      ${cells}
+      <td class="actions">
+        <button class="ghost" data-act="edit">Edit</button>
+        <button class="danger" data-act="delete">Del</button>
+      </td>
+    </tr>`;
+  }).join('');
+  $('#rows').querySelectorAll('tr').forEach(tr => {
+    const id = tr.dataset.id;
+    tr.querySelector('[data-act=edit]').onclick = () => openEditor(id);
+    tr.querySelector('[data-act=delete]').onclick = () => deleteRow(id);
+  });
+  // sort arrows
+  document.querySelectorAll('#hdr th[data-col]').forEach(th => {
+    const a = th.querySelector('.arrow');
+    a.textContent = state.sort.col === th.dataset.col ? (state.sort.dir > 0 ? '▲' : '▼') : '';
+  });
+}
+
+async function deleteRow(id) {
+  if (!confirm(`Delete ${id}?`)) return;
+  try {
+    await jsend('DELETE', `/api/${state.table}/${id}`);
+    state.rows = state.rows.filter(r => r.airtable_id !== id);
+    renderRows();
+  } catch (e) { setError(e.message); }
+}
+
+async function openEditor(id) {
+  const fields = state.schema[state.table].fields;
+  const row = id ? state.rows.find(r => r.airtable_id === id) : {};
+  // pre-fetch FK options
+  for (const def of Object.values(fields)) {
+    if (def.type === 'fk') await getFkOptions(def.fk.table);
+  }
+  const html = `
+    <div class="modal-backdrop" id="back">
+      <div class="modal">
+        <h2>${id ? 'Edit' : 'New'} ${state.schema[state.table].label}</h2>
+        <form id="form">
+          ${Object.entries(fields).map(([k, def]) => fieldHtml(k, def, row?.[k])).join('')}
+        </form>
+        <div class="actions">
+          <button class="ghost" id="cancel" type="button">Cancel</button>
+          <button class="primary" id="save" type="button">${id ? 'Save' : 'Create'}</button>
+        </div>
+      </div>
+    </div>`;
+  $('#modalRoot').innerHTML = html;
+  $('#cancel').onclick = () => ($('#modalRoot').innerHTML = '');
+  $('#back').addEventListener('click', e => { if (e.target.id === 'back') $('#modalRoot').innerHTML = ''; });
+  $('#save').onclick = () => saveEditor(id);
+}
+
+function fieldHtml(name, def, value) {
+  const v = value ?? '';
+  if (def.type === 'fk') {
+    const options = state.fkCache[def.fk.table] || [];
+    const opts = ['<option value="">— none —</option>',
+      ...options.map(o => `<option value="${o.airtable_id}" ${o.airtable_id===v?'selected':''}>${escapeHtml(o[def.fk.label] || o.name || o.airtable_id)}</option>`)
+    ].join('');
+    return `<div class="row"><label>${name}</label><select name="${name}">${opts}</select></div>`;
+  }
+  if (def.type === 'bool')
+    return `<div class="row"><label>${name}</label><select name="${name}">
+      <option value="false" ${!value?'selected':''}>false</option>
+      <option value="true"  ${value?'selected':''}>true</option></select></div>`;
+  if (def.type === 'numeric' || def.type === 'int')
+    return `<div class="row"><label>${name}</label><input name="${name}" type="number" step="any" value="${v}"></div>`;
+  if (def.type === 'date')
+    return `<div class="row"><label>${name}</label><input name="${name}" type="date" value="${(v||'').toString().slice(0,10)}"></div>`;
+  if (def.type === 'timestamp')
+    return `<div class="row"><label>${name}</label><input name="${name}" type="datetime-local" value="${(v||'').toString().slice(0,16)}"></div>`;
+  // text
+  if (name === 'description' || name === 'notes')
+    return `<div class="row full"><label>${name}</label><textarea name="${name}">${escapeHtml(String(v))}</textarea></div>`;
+  return `<div class="row"><label>${name}</label><input name="${name}" type="text" value="${escapeHtml(String(v))}"></div>`;
+}
+
+async function saveEditor(id) {
+  const form = $('#form');
+  const data = {};
+  for (const el of form.elements) {
+    if (!el.name) continue;
+    data[el.name] = el.value === '' ? null : el.value;
+  }
+  try {
+    if (id) {
+      const updated = await jsend('PATCH', `/api/${state.table}/${id}`, data);
+      const i = state.rows.findIndex(r => r.airtable_id === id);
+      if (i >= 0) state.rows[i] = updated;
+    } else {
+      const created = await jsend('POST', `/api/${state.table}`, data);
+      state.rows.unshift(created);
+    }
+    $('#modalRoot').innerHTML = '';
+    renderRows();
+  } catch (e) { alert(e.message); }
+}
+
+init().catch(e => setError(e.message));
+</script>
+</body>
+</html>

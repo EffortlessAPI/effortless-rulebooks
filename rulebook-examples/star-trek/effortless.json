@@ -1,27 +1,37 @@
 {
+  "ShowHidden": false,
+  "ShowAllFiles": false,
+  "CurrentPath": null,
+  "SSoTmeProjectFiles": null,
+  "SSoTmeProjectId": "db8a3de1-1a27-47d0-9a1b-53dc225fe08f",
   "Name": "DEMO: StarTrek TV Shows",
   "Description": "A hierarchical media catalog demonstrating multi-level aggregations and polymorphic relationships.",
-  "Version": "1.0",
   "ProjectSettings": [
     {
       "Name": "baseId",
-      "Value": "appqwWQxIWFtyDsiL",
-      "Description": "Airtable base ID for this ontology (hardcoded per project)"
+      "Value": "appqwWQxIWFtyDsiL"
+    },
+    {
+      "Name": "project-name",
+      "Value": "DEMO: StarTrek TV Shows"
     }
   ],
   "ProjectTranspilers": [
     {
+      "IsSSoTTranspiler": false,
       "Name": "airtabletorulebook",
       "RelativePath": "/effortless-rulebook",
       "CommandLine": "airtable-to-rulebook -o star-trek-rulebook.json -account airtable -p \"view=Grid view\"",
+      "IsDisabled": true,
       "Enabled": false,
-      "Description": "Pull rulebook from Airtable (optional; edit star-trek-rulebook.json directly if preferred) [DISABLED: rulebook JSON is authoritative; re-enable only with explicit user consent]",
-      "IsDisabled": true
+      "Description": "Pull rulebook from Airtable (optional; edit star-trek-rulebook.json directly if preferred) [DISABLED: rulebook JSON is authoritative; re-enable only with explicit user consent]"
     },
     {
+      "IsSSoTTranspiler": false,
       "Name": "rulebooktoairtable",
       "RelativePath": "/effortless-rulebook/push-to-airtable",
       "CommandLine": "rulebook-to-airtable -i ../star-trek-rulebook.json -account airtable -w 300000",
+      "IsDisabled": false,
       "Enabled": false,
       "Description": "Reverse-sync: push rulebook changes back to Airtable (optional)"
     },
@@ -32,6 +42,13 @@
       "CommandLine": "rulebook-to-postgres -i ../effortless-rulebook/star-trek-rulebook.json",
       "IsDisabled": false,
       "Description": "Generate Postgres schema + seed data from the rulebook"
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "httplocalhost4242rulebooktoxlsx",
+      "RelativePath": "/xlsx",
+      "CommandLine": "http://localhost:4242/rulebook-to-xlsx -i ../effortless-rulebook/star-trek-rulebook.json",
+      "IsDisabled": false
     }
   ]
 }

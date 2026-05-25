@@ -1,26 +1,38 @@
 # Effortlessly Invariant Rulebooks (ERB)
 
-One declarative rulebook → many execution substrates, each conforming to the **same answer key**.
+One declarative rulebook, many execution substrates, all conforming to the same answer key.
 
-Write your business rules once in `effortless-rulebook.json`. ERB mechanically generates working implementations across [14 execution substrates](execution-substrates/) — Postgres, Python, Go, COBOL, Excel, OWL, English, UML, and more — then runs a conformance harness that proves every substrate returns identical results for the same inputs. Swap to a different domain ([acme-llc](rulebook-examples/acme-llc/), [star-trek](rulebook-examples/star-trek/), [jessica-advanced](rulebook-examples/jessica-advanced/), …) and the whole stack regenerates.
+Write your business rules once in `effortless-rulebook.json`. ERB mechanically projects them into 14+ substrates (Postgres, Python, Go, COBOL, Excel, OWL, English, UML, …) and runs a conformance harness that proves every substrate returns identical results for the same inputs.
 
-The rulebook is the answer key; substrates pass or fail against it. Substrate agreement is corroboration, not the test.
+This repo wraps a catalog of independent demo rulebooks under `[rulebook-examples/](rulebook-examples/)` ([acme-llc](rulebook-examples/acme-llc/), [star-trek](rulebook-examples/star-trek/), [jessica-advanced](rulebook-examples/jessica-advanced/), …). Each project owns its own rulebook and picks the subset of substrates it needs. The platform itself (`[effortless-platform/](effortless-platform/)`) is one such project — ERB describing its own admin portal, orchestration tool, and ssotme-proxy.
 
-This repo is itself ERB-shaped. The [`effortless-platform/`](effortless-platform/) folder holds the orchestration tool, admin portal, and ssotme-proxy — built from their own rulebook, eating the same dog food. The [`rulebook-examples/`](rulebook-examples/) folder holds the demo domains the orchestrator manages. See [CLAUDE.md](CLAUDE.md) for the architectural rules (rulebook-as-SSoT, no fallbacks, project vs. demo rulebook category split).
-
-## Features
-
-- **One rulebook, many substrates** — write business rules once in `effortless-rulebook.json` and generate working implementations across 14 targets.
-- **Conformance harness** — every substrate is tested against the same answer key, so cross-substrate agreement is mechanically verifiable.
-- **SDLAF primitives** — Schema, Data, Lookups, Aggregations, and Formulas cover the full design-time surface with no procedural sidecar.
-- **Bitemporal ACID DAG substrate** — every fact carries transaction-time and valid-time, transactions are consistent, and schema relationships are acyclic.
-- **Swappable demo domains** — switch the active domain (acme-llc, star-trek, jessica-advanced, …) and the entire stack regenerates against it.
-- **Self-hosting platform** — the orchestrator, admin portal, and ssotme-proxy are themselves generated from their own rulebook.
-- **ssotme-proxy transpiler bus** — a local HTTP server (`localhost:4242`) exposes each injector as a first-class ssotme:// transpiler route.
-- **Fail-loud discipline** — no silent fallbacks anywhere, so a wrong rulebook or wrong database surfaces immediately instead of faking conformance.
-- **Project / demo rulebook category split** — the platform's own rulebook and the domain demo rulebooks are kept strictly separate to preserve the conformance claim.
-- **Excel-compatible formula semantics** — calculated fields use `IF()`, `AND()`, `OR()`, `CONCAT()`, `LEFT()`, `RIGHT()`, etc., so domain experts can read and write them directly.
+See [CLAUDE.md](CLAUDE.md) for the architectural rules (rulebook-as-SSoT, no fallbacks, project vs. demo rulebook category split).
 
 ---
 
-> See [`LEGACY_PLANs/`](LEGACY_PLANs/) for foundational concepts not yet extracted into the main docs.
+## Headline features
+
+1. **[Abstract Derivative Percentage (ADP)](docs/features/README.ADP.md)** — a first-class, measurable percentage of any ERB project that is derivative (mechanically rebuildable) vs. hand-written. `effortless -clean` plus a rebuild gives you the number.
+2. `**[effortless -clean` / implicit clean before build](docs/features/README.clean.md)** — every build runs an implicit clean first. Derivative Code is whatever clean removes; Hand Code is whatever survives.
+3. **[Rulebook as IR / Hub-and-Spoke topology](docs/features/README.hub-and-spoke.md)** — the rulebook JSON is the hub; every input and every output is a spoke. Spokes never talk to each other.
+4. **[Convergent builds (not additive codegen)](docs/features/README.convergent-build.md)** — additions appear, removals disappear, renames propagate. The rulebook stays authoritative in both directions.
+5. **[No privileged substrate / portability](docs/features/README.substrate-equivalence.md)** — every substrate is a peer projection. Languages not yet invented can be plugged in down the road.
+6. **[Conformance testing across substrates](docs/features/README.conformance.md)** — substrate agreement is the empirical receipt that the rulebook is the SSoT.
+7. **[Locally-designated SSoT](docs/features/README.local-ssot.md)** — the answer key for a run is whichever spoke the user designates (Airtable export, Excel workbook, JSON, Postgres dump).
+8. **[Portal / CLI parity](docs/features/README.portal-cli-parity.md)** — the admin portal and `./start.sh --cli` are peer interfaces to the same pipeline; portal mutations shell out to the same `effortless` CLI commands.
+9. **[Write-through invariant](docs/features/README.write-through.md)** — every portal save writes to Postgres AND the rulebook JSON in the same logical transaction. Drop Postgres at any time and rebuild from JSON.
+10. **[Fail loudly, never fall back](docs/features/README.fail-loud.md)** — missing paths fail with the exact expected path; defaults derived from the SSoT are fine, guess-defaults are forbidden.
+
+## Additional features
+
+- **[Rulebook is a complete spec](docs/features/README.complete-spec.md)** — a rulebook alone is sufficient for any frontier LLM to answer any question about the domain.
+- **[Per-rulebook formula dialect](docs/features/README.dialect-binding.md)** — each rulebook declares its dialect (Excel, Airtable, …); substrates honor whatever is declared.
+- **[Project rulebook ≠ demo rulebook](docs/features/README.project-vs-demo.md)** — the platform rulebook and the domain rulebooks never mix.
+- **[Admin portal ≠ a domain](docs/features/README.portal-vs-domain.md)** — `erb_admin_portal` (the app) and `erb_<domain>` (the document) are categorically different; `erb_admin_<domain>` is a category-error red flag.
+- **[ssotme-proxy transpiler bus](docs/features/README.ssotme-proxy.md)** — `localhost:4242` exposes every injector as a first-class `ssotme://` route.
+- **[Self-hosting platform](docs/features/README.self-hosting.md)** — the orchestrator, admin portal, and ssotme-proxy are themselves generated from the platform rulebook.
+
+---
+
+> The [platform rulebook](effortless-platform/effortless-rulebook/effortless-rulebook.json) is the formal SSoT for this repository's own tooling, including this feature list. The `PlatformFeatures` table is authoritative; the READMEs linked above are hand-maintained but MUST conform to those rows. See `[LEGACY_PLANs/](LEGACY_PLANs/)` for foundational concepts not yet extracted into the main docs.
+

@@ -1,0 +1,1048 @@
+{
+  "$schema": "https://example.com/cmcc-schema/v1",
+  "Name": "Job Search RAG",
+  "Description": "Rulebook for a local LLM + RAG pipeline that automates intelligent job filtering across multiple job boards using semantic search.",
+  "JobBoards": {
+    "Description": "Table: JobBoards - Configured job board sources that can be crawled for listings.",
+    "schema": [
+      {
+        "name": "JobBoardId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Primary key for job boards."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Display name of the job board (e.g., ZipRecruiter, Indeed, LinkedIn, WeWorkRemotely)."
+      },
+      {
+        "name": "Description",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Notes about this board's behavior, rate limits, or special handling requirements."
+      },
+      {
+        "name": "IsEnabled",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Whether this board is active for search runs."
+      },
+      {
+        "name": "MaxPages",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Maximum number of result pages to crawl per search URL. Default is 3."
+      },
+      {
+        "name": "IsHeadless",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Whether to run the Playwright browser in headless mode for this board."
+      },
+      {
+        "name": "BrowserChannel",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Optional browser variant to use (e.g., msedge). NULL means default Chromium."
+      },
+      {
+        "name": "JobListings",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Count of job listings scraped from this board.",
+        "formula": "=COUNTIFS(JobListings!{{JobBoard}}, JobBoards!{{JobBoardId}})"
+      }
+    ],
+    "data": [
+      {
+        "JobBoardId": "ziprecruiter",
+        "Name": "ZipRecruiter",
+        "Description": "Primary board. Uses Next.js SERP structure. Full adapter implemented.",
+        "IsEnabled": true,
+        "MaxPages": 3,
+        "IsHeadless": true,
+        "BrowserChannel": null
+      },
+      {
+        "JobBoardId": "indeed",
+        "Name": "Indeed",
+        "Description": "High-volume general board. Adapter planned.",
+        "IsEnabled": false,
+        "MaxPages": 3,
+        "IsHeadless": true,
+        "BrowserChannel": null
+      },
+      {
+        "JobBoardId": "linkedin",
+        "Name": "LinkedIn",
+        "Description": "Overnight mode recommended. Stealth browsing, throttled requests. Stricter bot detection.",
+        "IsEnabled": false,
+        "MaxPages": 2,
+        "IsHeadless": false,
+        "BrowserChannel": "msedge"
+      },
+      {
+        "JobBoardId": "weworkremotely",
+        "Name": "WeWorkRemotely",
+        "Description": "Remote-focused board. Smaller volume, higher signal for remote roles.",
+        "IsEnabled": false,
+        "MaxPages": 3,
+        "IsHeadless": true,
+        "BrowserChannel": null
+      }
+    ]
+  },
+  "SearchUrls": {
+    "Description": "Table: SearchUrls - Individual search URLs configured per board, each representing a specific query to crawl.",
+    "schema": [
+      {
+        "name": "SearchUrlId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Primary key for search URLs."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Descriptive label for this search query (e.g., 'Staff Engineer - Remote')."
+      },
+      {
+        "name": "JobBoard",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Which job board this search URL belongs to.",
+        "RelatedTo": "JobBoards"
+      },
+      {
+        "name": "Url",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "The full search URL to crawl on this board."
+      },
+      {
+        "name": "IsEnabled",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Whether this search URL is active for crawling."
+      },
+      {
+        "name": "JobBoardName",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Display name of the parent job board.",
+        "formula": "=INDEX(JobBoards!{{Name}}, MATCH({{JobBoard}}, JobBoards!{{JobBoardId}}, 0))"
+      }
+    ],
+    "data": [
+      {
+        "SearchUrlId": "zr-staff-platform-architect",
+        "Name": "Staff Platform Architect - Remote",
+        "JobBoard": "ziprecruiter",
+        "Url": "https://www.ziprecruiter.com/jobs-search?search=staff+platform+architect&location=Remote+(USA)",
+        "IsEnabled": true
+      },
+      {
+        "SearchUrlId": "zr-principal-data-platform",
+        "Name": "Principal Engineer Data Platform - Remote",
+        "JobBoard": "ziprecruiter",
+        "Url": "https://www.ziprecruiter.com/jobs-search?search=principal+engineer+data+platform&location=Remote+(USA)",
+        "IsEnabled": true
+      },
+      {
+        "SearchUrlId": "zr-devrel-engineer",
+        "Name": "Developer Relations Engineer - Remote",
+        "JobBoard": "ziprecruiter",
+        "Url": "https://www.ziprecruiter.com/jobs-search?search=developer+relations+engineer&location=Remote+(USA)",
+        "IsEnabled": true
+      },
+      {
+        "SearchUrlId": "indeed-staff-platform-architect",
+        "Name": "Staff Platform Architect - Remote",
+        "JobBoard": "indeed",
+        "Url": "https://www.indeed.com/jobs?q=staff+platform+architect&l=Remote&sc=0kf%3Aattr%28DSQF7%29%3B",
+        "IsEnabled": true
+      },
+      {
+        "SearchUrlId": "indeed-principal-data-platform",
+        "Name": "Principal Engineer Data Platform - Remote",
+        "JobBoard": "indeed",
+        "Url": "https://www.indeed.com/jobs?q=principal+engineer+data+platform&l=Remote&sc=0kf%3Aattr%28DSQF7%29%3B",
+        "IsEnabled": true
+      },
+      {
+        "SearchUrlId": "wwr-staff-engineer",
+        "Name": "Staff Engineer",
+        "JobBoard": "weworkremotely",
+        "Url": "https://weworkremotely.com/remote-jobs/search?term=staff+engineer",
+        "IsEnabled": true
+      },
+      {
+        "SearchUrlId": "wwr-principal-architect",
+        "Name": "Principal Architect",
+        "JobBoard": "weworkremotely",
+        "Url": "https://weworkremotely.com/remote-jobs/search?term=principal+architect",
+        "IsEnabled": true
+      },
+      {
+        "SearchUrlId": "li-staff-platform-architect",
+        "Name": "Staff Platform Architect - Remote",
+        "JobBoard": "linkedin",
+        "Url": "https://www.linkedin.com/jobs/search/?keywords=staff+platform+architect&f_WT=2",
+        "IsEnabled": true
+      }
+    ]
+  },
+  "RoleArchetypes": {
+    "Description": "Table: RoleArchetypes - Target role descriptions that define ideal job types for semantic matching.",
+    "schema": [
+      {
+        "name": "RoleArchetypeId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Primary key for role archetypes."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Archetype title (e.g., 'Staff Platform Architect', 'AI Systems Engineer')."
+      },
+      {
+        "name": "Description",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Natural language description of this ideal role type. Embedded into ChromaDB for archetype scoring."
+      },
+      {
+        "name": "SignalsPositive",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Comma-separated keywords or phrases indicating strong fit for this archetype."
+      },
+      {
+        "name": "SignalsNegative",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Comma-separated keywords or phrases indicating misfit for this archetype."
+      }
+    ],
+    "data": [
+      {
+        "RoleArchetypeId": "ai-systems-engineer",
+        "Name": "AI Systems Engineer / AI Platform Architect",
+        "Description": "Designs and builds production ML/AI infrastructure: model serving, training pipelines, vector stores, embedding services, and LLM orchestration layers.",
+        "SignalsPositive": "ML infrastructure, model serving, training pipeline, vector database, LLM orchestration, embedding service, MLOps, GPU cluster",
+        "SignalsNegative": "frontend only, marketing automation, junior data analyst, manual QA"
+      },
+      {
+        "RoleArchetypeId": "staff-platform-architect",
+        "Name": "Staff Platform Architect",
+        "Description": "Cross-team technical leadership for platform and infrastructure. Drives architectural decisions, defines system boundaries, and mentors engineering teams.",
+        "SignalsPositive": "platform architecture, system design, cross-team influence, technical strategy, API design, distributed systems, mentorship",
+        "SignalsNegative": "individual contributor only, no architecture scope, ticket taker, single-team"
+      },
+      {
+        "RoleArchetypeId": "principal-data-platform",
+        "Name": "Principal Data Platform Engineer",
+        "Description": "Owns data infrastructure at scale: data pipelines, warehousing, streaming, and analytical platform services.",
+        "SignalsPositive": "data platform, data pipeline, streaming, data warehouse, Spark, Kafka, Flink, dbt, analytical infrastructure",
+        "SignalsNegative": "BI analyst, dashboard builder, Excel reporting, entry-level data"
+      },
+      {
+        "RoleArchetypeId": "devrel-evangelist",
+        "Name": "Developer Relations / Technical Evangelist",
+        "Description": "External-facing technical role bridging engineering and developer community. Produces technical content, speaks at conferences, and drives API/SDK adoption.",
+        "SignalsPositive": "developer relations, developer advocacy, technical writing, conference speaking, SDK adoption, API evangelism, community building",
+        "SignalsNegative": "sales quota, cold calling, non-technical marketing, pure product management"
+      }
+    ]
+  },
+  "RubricDimensions": {
+    "Description": "Table: RubricDimensions - Universal evaluation criteria applied to all listings for culture and quality scoring.",
+    "schema": [
+      {
+        "name": "RubricDimensionId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Primary key for rubric dimensions."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Dimension name (e.g., 'Role Scope', 'Technical Depth')."
+      },
+      {
+        "name": "Description",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "What this dimension evaluates and why it matters."
+      },
+      {
+        "name": "SignalsPositive",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Comma-separated positive indicators for this dimension. Embedded into global_positive_signals collection."
+      },
+      {
+        "name": "SignalsNegative",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Comma-separated red flags for this dimension. Embedded into negative_signals collection."
+      }
+    ],
+    "data": [
+      {
+        "RubricDimensionId": "role-scope",
+        "Name": "Role Scope",
+        "Description": "Cross-team influence and architectural reach vs. narrow single-team execution.",
+        "SignalsPositive": "cross-team, architectural influence, system design ownership, technical strategy",
+        "SignalsNegative": "ticket taker, narrow scope, single feature team, no design authority"
+      },
+      {
+        "RubricDimensionId": "technical-depth",
+        "Name": "Technical Depth",
+        "Description": "Infrastructure and platform work vs. web/feature dev.",
+        "SignalsPositive": "infrastructure, platform, distributed systems, systems programming, performance engineering",
+        "SignalsNegative": "WordPress, Squarespace, basic CRUD, landing pages, no-code"
+      },
+      {
+        "RubricDimensionId": "operational-burden",
+        "Name": "Operational Burden",
+        "Description": "On-call/SRE load vs. platform engineering focus.",
+        "SignalsPositive": "platform engineering, build tools, developer experience, automation",
+        "SignalsNegative": "24/7 on-call, pager duty primary, incident commander rotation, SRE-heavy"
+      },
+      {
+        "RubricDimensionId": "industry-alignment",
+        "Name": "Industry Alignment",
+        "Description": "Company mission and product category alignment with candidate interests.",
+        "SignalsPositive": "developer tools, AI/ML, data infrastructure, open source, cloud platform",
+        "SignalsNegative": "adtech, gambling, payday lending, surveillance"
+      },
+      {
+        "RubricDimensionId": "employment-structure",
+        "Name": "Employment Structure",
+        "Description": "Direct hire vs. staffing agency/contract positions.",
+        "SignalsPositive": "direct hire, full-time, equity, benefits",
+        "SignalsNegative": "staffing agency, contract-to-hire, vendor chain, W2 through third party, corp-to-corp"
+      },
+      {
+        "RubricDimensionId": "seniority-mismatch",
+        "Name": "Seniority Mismatch",
+        "Description": "Role level vs. candidate expectations for staff+ positions.",
+        "SignalsPositive": "staff, principal, distinguished, fellow, architect, VP engineering, director",
+        "SignalsNegative": "junior, entry-level, associate, new grad, 0-2 years experience, intern"
+      },
+      {
+        "RubricDimensionId": "compensation-red-flags",
+        "Name": "Compensation Red Flags",
+        "Description": "Compensation transparency and alignment with staff/principal market expectations.",
+        "SignalsPositive": "transparent compensation range, top-of-range meets target minimum, staff/principal market rate",
+        "SignalsNegative": "equity-only compensation, unpaid or volunteer, below market for principal-level, hourly contractor rate far below salary"
+      },
+      {
+        "RubricDimensionId": "culture-work-model",
+        "Name": "Culture & Work Model",
+        "Description": "Remote-first culture, work-life balance, and engineering autonomy indicators.",
+        "SignalsPositive": "remote-first, async-first, work-life balance, engineering autonomy, written communication culture, high-trust low-chaos",
+        "SignalsNegative": "mandatory return-to-office, 4+ days on-site, 60+ hour weeks, military-style command, fast-paced high-pressure, ambiguous expectations"
+      },
+      {
+        "RubricDimensionId": "ethical-alignment",
+        "Name": "Ethical Alignment",
+        "Description": "Company mission alignment with humane and privacy-respecting values.",
+        "SignalsPositive": "mission-driven, humane impact, privacy-respecting, healthcare, education, public-good",
+        "SignalsNegative": "weapons manufacturing, military contracting, surveillance technology, behavioral profiling, predatory lending"
+      },
+      {
+        "RubricDimensionId": "neurodivergence-compatibility",
+        "Name": "Neurodivergence Compatibility",
+        "Description": "Structured processes, predictable workflows, and low-meeting culture for neurodivergent-friendly work environments.",
+        "SignalsPositive": "clear communication norms, structured processes, predictable workflows, low-meeting culture, async-first, psychological safety",
+        "SignalsNegative": "constant context switching, interrupt-driven, ambiguity without support, high-meeting culture, synchronous dependency, chaotic environment"
+      }
+    ]
+  },
+  "Resumes": {
+    "Description": "Table: Resumes - Candidate resumes that anchor the entire RAG scoring pipeline. Every search run scores job listings against a specific resume's embeddings.",
+    "schema": [
+      {
+        "name": "ResumeId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Primary key for resumes."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Display name for this resume version (e.g., 'Platform Engineer - 2026Q1')."
+      },
+      {
+        "name": "Description",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Notes about what this resume version emphasizes or targets."
+      },
+      {
+        "name": "FilePath",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Path to the resume markdown file relative to project root (e.g., 'data/resume.md')."
+      },
+      {
+        "name": "IndexedAt",
+        "datatype": "datetime",
+        "type": "raw",
+        "nullable": true,
+        "Description": "When this resume was last chunked and embedded into ChromaDB. NULL means not yet indexed."
+      },
+      {
+        "name": "ResumeSections",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Count of sections (## heading chunks) extracted from this resume.",
+        "formula": "=COUNTIFS(ResumeSections!{{Resume}}, Resumes!{{ResumeId}})"
+      },
+      {
+        "name": "SearchRuns",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Count of search runs that scored against this resume.",
+        "formula": "=COUNTIFS(SearchRuns!{{Resume}}, Resumes!{{ResumeId}})"
+      }
+    ],
+    "data": [
+      {
+        "ResumeId": "resume-platform-2026q1",
+        "Name": "Platform Engineer - 2026 Q1",
+        "Description": "Emphasizes distributed systems, platform architecture, and AI/ML infrastructure. Targets staff+ IC and architect roles.",
+        "FilePath": "data/resume.md",
+        "IndexedAt": "2026-04-01T07:45:00Z"
+      }
+    ]
+  },
+  "ResumeSections": {
+    "Description": "Table: ResumeSections - Individual chunks of a resume, split by ## headings. Each section is embedded separately into ChromaDB for granular semantic matching against job descriptions.",
+    "schema": [
+      {
+        "name": "ResumeSectionId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Primary key. Slug of the section heading (e.g., 'resume-core-strengths')."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Section heading text (e.g., 'Core Strengths', 'Experience')."
+      },
+      {
+        "name": "Resume",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Which resume this section belongs to.",
+        "RelatedTo": "Resumes"
+      },
+      {
+        "name": "SectionOrder",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Order of this section within the resume (1-based). Preserves document structure."
+      },
+      {
+        "name": "Content",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Full text of this section including the ## heading and all body content up to the next ## heading. This is the document embedded into ChromaDB."
+      },
+      {
+        "name": "ChromaDocId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Document ID in the ChromaDB resume collection (e.g., 'resume-core-strengths'). Used for idempotent upserts."
+      },
+      {
+        "name": "ResumeName",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Display name of the parent resume.",
+        "formula": "=INDEX(Resumes!{{Name}}, MATCH({{Resume}}, Resumes!{{ResumeId}}, 0))"
+      }
+    ],
+    "data": [
+      {
+        "ResumeSectionId": "resume-platform-2026q1-summary",
+        "Name": "Summary",
+        "Resume": "resume-platform-2026q1",
+        "SectionOrder": 1,
+        "Content": "## Summary\nSenior platform engineer with 15+ years building distributed systems, data pipelines, and AI/ML infrastructure. Track record of cross-team technical leadership at scale.",
+        "ChromaDocId": "resume-summary"
+      },
+      {
+        "ResumeSectionId": "resume-platform-2026q1-core-strengths",
+        "Name": "Core Strengths",
+        "Resume": "resume-platform-2026q1",
+        "SectionOrder": 2,
+        "Content": "## Core Strengths\n- Distributed systems architecture (Kubernetes, gRPC, service mesh)\n- ML/AI platform engineering (model serving, training pipelines, vector stores)\n- Technical strategy and mentorship across 50+ engineer orgs\n- Data infrastructure (Kafka, Spark, Flink, dbt)",
+        "ChromaDocId": "resume-core-strengths"
+      },
+      {
+        "ResumeSectionId": "resume-platform-2026q1-experience",
+        "Name": "Experience",
+        "Resume": "resume-platform-2026q1",
+        "SectionOrder": 3,
+        "Content": "## Experience\n### Staff Platform Engineer — CloudScale Inc (2022-2026)\nLed platform architecture for ML serving infrastructure. Designed multi-region Kubernetes deployment strategy. Reduced model inference latency 40%.\n### Senior Engineer — DataForge (2018-2022)\nBuilt real-time data pipelines processing 2M events/sec. Migrated monolith to event-driven microservices.",
+        "ChromaDocId": "resume-experience"
+      },
+      {
+        "ResumeSectionId": "resume-platform-2026q1-earlier-roles",
+        "Name": "Earlier Roles",
+        "Resume": "resume-platform-2026q1",
+        "SectionOrder": 4,
+        "Content": "## Earlier Roles\n### Software Engineer — StartupCo (2014-2018)\nFull-stack development, API design, early DevOps adoption.\n### Junior Developer — Agency LLC (2011-2014)\nWeb application development, client projects, learned software engineering fundamentals.",
+        "ChromaDocId": "resume-earlier-roles"
+      }
+    ]
+  },
+  "SearchRuns": {
+    "Description": "Table: SearchRuns - Individual pipeline execution runs that crawl boards, score listings, and produce ranked results. Each run scores against a specific resume.",
+    "schema": [
+      {
+        "name": "SearchRunId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Primary key for search runs."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Human-readable run label (typically date + time)."
+      },
+      {
+        "name": "Resume",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Which resume was used for fit_score computation in this run. The central link in the RAG pipeline.",
+        "RelatedTo": "Resumes"
+      },
+      {
+        "name": "RunDate",
+        "datatype": "datetime",
+        "type": "raw",
+        "nullable": false,
+        "Description": "When this search run was executed."
+      },
+      {
+        "name": "ArchetypeWeight",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Weight applied to archetype match score (0.0 - 1.0)."
+      },
+      {
+        "name": "FitWeight",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Weight applied to resume fit score (0.0 - 1.0)."
+      },
+      {
+        "name": "HistoryWeight",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Weight applied to decision history score (0.0 - 1.0)."
+      },
+      {
+        "name": "CompWeight",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Weight applied to compensation alignment score (0.0 - 1.0)."
+      },
+      {
+        "name": "NegativeWeight",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Penalty multiplier for negative signal score (0.0 - 1.0)."
+      },
+      {
+        "name": "CultureWeight",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Weight applied to culture/quality dimension score (0.0 - 1.0)."
+      },
+      {
+        "name": "BaseSalary",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Target annual salary for compensation scoring. Default $220,000."
+      },
+      {
+        "name": "MinScoreThreshold",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Minimum final score to include in results (0.0 - 1.0). Default 0.45."
+      },
+      {
+        "name": "DisqualifyOnLlmFlag",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Whether to run the LLM disqualifier pass on listings."
+      },
+      {
+        "name": "TotalFound",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Total listings collected from boards in this run."
+      },
+      {
+        "name": "TotalScored",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Total listings that passed through the scorer."
+      },
+      {
+        "name": "TotalExcluded",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Listings filtered below min_score_threshold."
+      },
+      {
+        "name": "TotalDeduplicated",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Duplicate listings collapsed during this run."
+      },
+      {
+        "name": "FailedListings",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Count of listings that failed scoring."
+      },
+      {
+        "name": "ResumeName",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Display name of the resume used for this run.",
+        "formula": "=INDEX(Resumes!{{Name}}, MATCH({{Resume}}, Resumes!{{ResumeId}}, 0))"
+      },
+      {
+        "name": "ScoreResults",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Count of score results produced in this run.",
+        "formula": "=COUNTIFS(ScoreResults!{{SearchRun}}, SearchRuns!{{SearchRunId}})"
+      }
+    ],
+    "data": []
+  },
+  "JobListings": {
+    "Description": "Table: JobListings - Individual job postings scraped from job boards, normalized to a common data contract.",
+    "schema": [
+      {
+        "name": "JobListingId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Primary key. Composite of board and external ID (e.g., 'ziprecruiter-abc123')."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Job title as listed on the board, sanitized for filesystem safety."
+      },
+      {
+        "name": "JobBoard",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Which job board this listing was scraped from.",
+        "RelatedTo": "JobBoards"
+      },
+      {
+        "name": "ExternalId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "The job board's unique identifier for this posting."
+      },
+      {
+        "name": "Company",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Company name, sanitized for filesystem safety."
+      },
+      {
+        "name": "Location",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Job location (city, state, remote, hybrid, etc.)."
+      },
+      {
+        "name": "Url",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Direct URL link to the job posting on the board."
+      },
+      {
+        "name": "FullText",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Complete job description text. Max 250,000 characters. Embedded into ChromaDB for scoring."
+      },
+      {
+        "name": "PostedAt",
+        "datatype": "datetime",
+        "type": "raw",
+        "nullable": true,
+        "Description": "When the job was posted on the board."
+      },
+      {
+        "name": "CompMin",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Minimum compensation in USD, parsed from job description."
+      },
+      {
+        "name": "CompMax",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Maximum compensation in USD, parsed from job description."
+      },
+      {
+        "name": "CompSource",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Source of compensation data: 'employer' (from JD) or 'estimated' (board-generated)."
+      },
+      {
+        "name": "CompText",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Raw compensation text matched from the job description (e.g., '$180,000 - $220,000/year')."
+      },
+      {
+        "name": "JobBoardName",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Display name of the source job board.",
+        "formula": "=INDEX(JobBoards!{{Name}}, MATCH({{JobBoard}}, JobBoards!{{JobBoardId}}, 0))"
+      },
+      {
+        "name": "ScoreResults",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Number of times this listing has been scored across search runs.",
+        "formula": "=COUNTIFS(ScoreResults!{{JobListing}}, JobListings!{{JobListingId}})"
+      },
+      {
+        "name": "Decisions",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Number of decisions recorded for this listing.",
+        "formula": "=COUNTIFS(Decisions!{{JobListing}}, JobListings!{{JobListingId}})"
+      }
+    ],
+    "data": []
+  },
+  "ScoreResults": {
+    "Description": "Table: ScoreResults - Component and final scores for a job listing within a specific search run.",
+    "schema": [
+      {
+        "name": "ScoreResultId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Primary key for score results."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "Display label combining job title and search run.",
+        "formula": "=CONCAT({{JobListingName}}, \" - \", {{SearchRunName}})"
+      },
+      {
+        "name": "JobListing",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "The job listing that was scored.",
+        "RelatedTo": "JobListings"
+      },
+      {
+        "name": "SearchRun",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "The search run during which this score was produced.",
+        "RelatedTo": "SearchRuns"
+      },
+      {
+        "name": "FitScore",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Semantic similarity to resume (0.0 - 1.0). Based on cosine distance in resume ChromaDB collection."
+      },
+      {
+        "name": "ArchetypeScore",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Match to role archetypes (0.0 - 1.0). Based on cosine distance in role_archetypes collection."
+      },
+      {
+        "name": "HistoryScore",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Match to past accepted decisions (0.0 - 1.0). Only 'yes' verdicts contribute."
+      },
+      {
+        "name": "CompScore",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Compensation alignment with base salary (0.0 - 1.0). Non-linear curve; 0.5 when comp is missing."
+      },
+      {
+        "name": "NegativeScore",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Penalty score from negative signal matches (0.0 - 1.0). Subtracted from positive scores."
+      },
+      {
+        "name": "CultureScore",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Match to positive culture/quality dimensions (0.0 - 1.0)."
+      },
+      {
+        "name": "IsDisqualified",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Whether the LLM disqualifier flagged this listing. If true, final score is forced to 0.0."
+      },
+      {
+        "name": "DisqualifierReason",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Free-text explanation from the LLM disqualifier about why the role was flagged."
+      },
+      {
+        "name": "FinalScore",
+        "datatype": "number",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "Weighted fusion of all component scores. Zeroed if disqualified. Formula: max(0, positive_sum - negative_weight * negative_score).",
+        "formula": "=IF({{IsDisqualified}}, 0, MAX(0, {{FitScore}} + {{ArchetypeScore}} + {{HistoryScore}} + {{CompScore}} + {{CultureScore}} - {{NegativeScore}}))"
+      },
+      {
+        "name": "DuplicateBoards",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Comma-separated list of other boards where this same job appeared (cross-board deduplication)."
+      },
+      {
+        "name": "JobListingName",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Title of the scored job listing.",
+        "formula": "=INDEX(JobListings!{{Name}}, MATCH({{JobListing}}, JobListings!{{JobListingId}}, 0))"
+      },
+      {
+        "name": "SearchRunName",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Label of the parent search run.",
+        "formula": "=INDEX(SearchRuns!{{Name}}, MATCH({{SearchRun}}, SearchRuns!{{SearchRunId}}, 0))"
+      },
+      {
+        "name": "Company",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Company name from the scored listing.",
+        "formula": "=INDEX(JobListings!{{Company}}, MATCH({{JobListing}}, JobListings!{{JobListingId}}, 0))"
+      }
+    ],
+    "data": []
+  },
+  "Decisions": {
+    "Description": "Table: Decisions - Operator verdicts on reviewed job listings, used as training signal for future scoring.",
+    "schema": [
+      {
+        "name": "DecisionId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Primary key for decisions."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "Display label combining verdict and job title.",
+        "formula": "=CONCAT(UPPER({{Verdict}}), \": \", {{JobListingName}})"
+      },
+      {
+        "name": "JobListing",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "The job listing this decision is about.",
+        "RelatedTo": "JobListings"
+      },
+      {
+        "name": "Verdict",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Operator's judgment: 'yes' (interested), 'no' (rejected), 'maybe' (uncertain), or 'removed' (retracted)."
+      },
+      {
+        "name": "Reason",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Free-text explanation for the verdict. Stored for audit purposes."
+      },
+      {
+        "name": "RecordedAt",
+        "datatype": "datetime",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Timestamp when this decision was recorded."
+      },
+      {
+        "name": "IsScoringSignal",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "Whether this verdict contributes to history_score. Only 'yes' verdicts are scoring signals.",
+        "formula": "=IF({{Verdict}} = \"yes\", TRUE(), FALSE())"
+      },
+      {
+        "name": "JobListingName",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Title of the decided job listing.",
+        "formula": "=INDEX(JobListings!{{Name}}, MATCH({{JobListing}}, JobListings!{{JobListingId}}, 0))"
+      },
+      {
+        "name": "Company",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Company name from the decided listing.",
+        "formula": "=INDEX(JobListings!{{Company}}, MATCH({{JobListing}}, JobListings!{{JobListingId}}, 0))"
+      },
+      {
+        "name": "Board",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Job board the decided listing came from.",
+        "formula": "=INDEX(JobListings!{{JobBoard}}, MATCH({{JobListing}}, JobListings!{{JobListingId}}, 0))"
+      }
+    ],
+    "data": []
+  },
+  "_meta": {
+    "_CMCC_Summary": "Rulebook for Job Search RAG - a local LLM + RAG pipeline for intelligent job filtering using semantic search across multiple job boards.",
+    "_conversion_metadata": {
+      "source_base_id": "manual",
+      "table_count": 9,
+      "tool_version": "2.0.0",
+      "field_type_mapping": "manual schema design from domain model analysis",
+      "export_mode": "schema_first_type_mapping",
+      "type_inference": {
+        "priority": "manual domain analysis",
+        "error_value_handling": "#NUM!, #ERROR!, #N/A, #REF!, #DIV/0!, #VALUE!, #NAME? are treated as NULL"
+      }
+    }
+  }
+}

@@ -1,0 +1,84 @@
+{
+  "ShowHidden": false,
+  "ShowAllFiles": false,
+  "CurrentPath": "",
+  "SSoTmeProjectFiles": null,
+  "SSoTmeProjectId": "a33c1da6-1456-4b89-be7f-30c7bc016491",
+  "Name": "naked-claude-vs-effortless-claude",
+  "ProjectSettings": [
+    {
+      "Name": "project-name",
+      "Value": "naked-claude-vs-effortless-claude"
+    },
+    {
+      "Name": "baseId",
+      "Value": "appgjoEcFNxluhbvK"
+    },
+    {
+      "Name": "v1-base-id",
+      "Value": "appgjoEcFNxluhbvK"
+    },
+    {
+      "Name": "v2-base-id",
+      "Value": "app7G5emeY7miM4WN"
+    },
+    {
+      "Name": "v3-base-id",
+      "Value": "appKLygCIXweUUKtM"
+    },
+    {
+      "Name": "v4-base-id",
+      "Value": "appeUOAaOIdoqPSx3"
+    }
+  ],
+  "ProjectTranspilers": [
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "airtabletorulebook",
+      "RelativePath": "/effortless-rulebook",
+      "CommandLine": "airtable-to-rulebook -account airtable -o effortless-rulebook.json",
+      "IsDisabled": false,
+      "PinnedVersion": "v2026.04.02.1605",
+      "LastVersionUsed": "v2026.04.02.1605",
+      "LastUrl": "https://effortless-airtable-to-rulebook-v2026-04-02-1605-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "build-db",
+      "RelativePath": "/postgres",
+      "CommandLine": "rulebook-to-postgres -i ../effortless-rulebook/effortless-rulebook.json",
+      "IsDisabled": false,
+      "PinnedVersion": "v2026.04.02.1900",
+      "LastVersionUsed": "v2026.04.02.1900",
+      "LastUrl": "https://effortless-rulebook-to-postgres-v2026-04-02-1900-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "rulebooktopostgres",
+      "RelativePath": "/postgres",
+      "CommandLine": "-exec ./init-db.sh",
+      "IsDisabled": false,
+      "PinnedVersion": "v2026.04.02.1900"
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "airtabletoodxml",
+      "RelativePath": "/ODXML",
+      "CommandLine": "airtable-to-odxml -account airtable",
+      "IsDisabled": false,
+      "PinnedVersion": "v2026.04.06.2211",
+      "LastVersionUsed": "v2026.04.06.2211",
+      "LastUrl": "https://airtable-airtable-to-odxml-v2026-04-06-2211-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "odxmltoefdataclasses",
+      "RelativePath": "/dotnet",
+      "CommandLine": "odxml-to-ef-dataclasses -i ../ODXML/DataSchema.odxml",
+      "IsDisabled": false,
+      "PinnedVersion": "v2025.11.02.2347",
+      "LastVersionUsed": "v2025.11.02.2347",
+      "LastUrl": "https://odxml-odxml-to-ef-dataclasses-v2025-11-02-2347-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
+    }
+  ]
+}

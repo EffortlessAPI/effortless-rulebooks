@@ -95,9 +95,7 @@ SUBSTRATE_ORDER = [
 ]
 
 # Database connection — DATABASE_URL overrides; otherwise default to the
-# active domain's per-domain DB (erb_<domain>). This is a default derived
-# from the SSoT (active-domain.txt), NOT a fallback to a generic database.
-# See CLAUDE.md.
+# active domain's per-domain DB (erb_<domain>), derived from active-domain.txt.
 DB_CONNECTION = os.environ.get("DATABASE_URL") or (
     "postgresql://postgres@localhost:5432/erb_" + ACTIVE_DOMAIN.replace("-", "_")
 )

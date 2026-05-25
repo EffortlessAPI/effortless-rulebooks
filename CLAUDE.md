@@ -155,7 +155,6 @@ There is no `[T]est` menu option. Testing is part of build. If a substrate has n
 2. **Modify injectors, not generated files** — `inject-into-*.py` scripts generate the code.
 3. **Formula semantics are Excel-compatible** — IF(), AND(), OR(), CONCAT(), LEFT(), RIGHT(), etc.
 4. **Every substrate must pass the same tests** — conformance ensures identical results.
-5. **Fail loudly. No fallbacks.** (See line 1.)
 
 ## ssotme-proxy (localhost:4242)
 

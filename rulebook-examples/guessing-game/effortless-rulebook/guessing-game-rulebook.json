@@ -1,0 +1,350 @@
+{
+  "$schema": "https://example.com/cmcc-schema/v1",
+  "model_name": "appC6Tnt2ZKm3t16e",
+  "Description": "CMCC rulebook generated directly from Airtable base.",
+  "\u5F62\u72B6": {
+    "Description": "Table: \u5F62\u72B6",
+    "schema": [
+      {
+        "name": "\u5F62\u72B6Id",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "\u540D\u79F0",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "???",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "RelatedTo": "\u8FB9"
+      },
+      {
+        "name": "\u8FB9\u7684\u7C7B\u578B",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "formula": "=SWITCH({{\u8FB9\u7684\u6570\u91CF}},\r\n  0, \u0022\u7A7A\u0022,\r\n  1, \u0022\u70B9\u0022,\r\n  2, \u0022\u7EBF\u0022,\r\n  3, \u0022\u4E09\u89D2\u5F62\u0022,\r\n  4, \u0022\u6B63\u65B9\u5F62\u0022,\r\n  \u0022--\u0022\r\n)"
+      },
+      {
+        "name": "\u8FB9\u6807\u7B7E",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "formula": "=INDEX(\u8FB9!{{\u6807\u7B7E}}, MATCH(\u5F62\u72B6!{{???}}, \u8FB9!{{\u8FB9Id}}, 0))"
+      },
+      {
+        "name": "\u8FB9\u957F",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "formula": "=INDEX(\u8FB9!{{\u957F\u5EA6}}, MATCH(\u5F62\u72B6!{{???}}, \u8FB9!{{\u8FB9Id}}, 0))"
+      },
+      {
+        "name": "\u8FB9\u7684\u6570\u91CF",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "formula": "=COUNTIFS(\u8FB9!{{\u5F62\u72B6}}, \u5F62\u72B6!{{\u5F62\u72B6Id}})"
+      },
+      {
+        "name": "\u8FB9\u89D2",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "formula": "=INDEX(\u8FB9!{{\u89D2\u5EA6}}, MATCH(\u5F62\u72B6!{{???}}, \u8FB9!{{\u8FB9Id}}, 0))"
+      },
+      {
+        "name": "\u89D2\u5EA6\u603B\u548C",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "formula": "=SUMIFS(\u8FB9!{{\u89D2\u5EA6}}, \u8FB9!{{\u5F62\u72B6}}, \u5F62\u72B6!{{\u5F62\u72B6Id}})"
+      },
+      {
+        "name": "\u6700\u5927\u8FB9\u957F",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "formula": "=SUMIFS(\u8FB9!{{\u957F\u5EA6}}, \u8FB9!{{\u5F62\u72B6}}, \u5F62\u72B6!{{\u5F62\u72B6Id}})"
+      },
+      {
+        "name": "\u975E\u659C\u8FB9\u89D2\u5EA6\u603B\u548C",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "formula": "=SUMIFS(\u8FB9!{{\u957F\u5EA6\u5E73\u65B9}}, \u8FB9!{{\u5F62\u72B6}}, \u5F62\u72B6!{{\u5F62\u72B6Id}})"
+      },
+      {
+        "name": "\u52FE\u80A1\u5B9A\u7406\u6210\u7ACB",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "formula": "=IF({{\u8FB9\u7684\u6570\u91CF}} = 3,\r\n    {{\u975E\u659C\u8FB9\u89D2\u5EA6\u603B\u548C}} = {{\u6700\u5927\u8FB9\u957F}} * {{\u6700\u5927\u8FB9\u957F}},\r\n  BLANK()\r\n)\r\n"
+      }
+    ],
+    "data": [
+      {
+        "\u5F62\u72B6Id": "2",
+        "\u540D\u79F0": "\u5F62\u72B62",
+        "???": "2, 2, 2, 2",
+        "\u8FB9\u7684\u6570\u91CF": 4,
+        "\u8FB9\u7684\u7C7B\u578B": "\u6B63\u65B9\u5F62",
+        "\u8FB9\u89D2": "90, 90, 90, 90",
+        "\u8FB9\u957F": "5, 5, 5, 5",
+        "\u8FB9\u6807\u7B7E": "\u963F, \u6BD4, \u897F, \u8FEA",
+        "\u89D2\u5EA6\u603B\u548C": 360,
+        "\u6700\u5927\u8FB9\u957F": 5,
+        "\u975E\u659C\u8FB9\u89D2\u5EA6\u603B\u548C": 0,
+        "\u52FE\u80A1\u5B9A\u7406\u6210\u7ACB": ""
+      },
+      {
+        "\u5F62\u72B6Id": "1",
+        "\u540D\u79F0": "\u5F62\u72B61",
+        "???": "1, 1, 1",
+        "\u8FB9\u7684\u6570\u91CF": 3,
+        "\u8FB9\u7684\u7C7B\u578B": "\u4E09\u89D2\u5F62",
+        "\u8FB9\u89D2": "37, 53, 90",
+        "\u8FB9\u957F": "3, 4, 5",
+        "\u8FB9\u6807\u7B7E": "\u963F, \u6BD4, \u897F",
+        "\u89D2\u5EA6\u603B\u548C": 180,
+        "\u6700\u5927\u8FB9\u957F": 5,
+        "\u975E\u659C\u8FB9\u89D2\u5EA6\u603B\u548C": 25,
+        "\u52FE\u80A1\u5B9A\u7406\u6210\u7ACB": true
+      },
+      {
+        "\u5F62\u72B6Id": "3",
+        "\u540D\u79F0": "\u5F62\u72B63",
+        "???": "3, 3",
+        "\u8FB9\u7684\u6570\u91CF": 2,
+        "\u8FB9\u7684\u7C7B\u578B": "\u7EBF",
+        "\u8FB9\u89D2": "180, 180",
+        "\u8FB9\u957F": "14, 14",
+        "\u8FB9\u6807\u7B7E": "\u963F, \u6BD4",
+        "\u89D2\u5EA6\u603B\u548C": 360,
+        "\u6700\u5927\u8FB9\u957F": 14,
+        "\u975E\u659C\u8FB9\u89D2\u5EA6\u603B\u548C": 0,
+        "\u52FE\u80A1\u5B9A\u7406\u6210\u7ACB": ""
+      }
+    ]
+  },
+  "\u8FB9": {
+    "Description": "Table: \u8FB9",
+    "schema": [
+      {
+        "name": "\u8FB9Id",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "\u540D\u79F0",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "formula": "={{\u5F62\u72B6}} \u0026 \u0022-\u0022 \u0026 {{\u6807\u7B7E}}"
+      },
+      {
+        "name": "\u5F62\u72B6",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "RelatedTo": "\u5F62\u72B6"
+      },
+      {
+        "name": "\u5F62\u72B6\u7684\u6700\u5927\u8FB9\u957F",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "formula": "=INDEX(\u5F62\u72B6!{{\u6700\u5927\u8FB9\u957F}}, MATCH(\u8FB9!{{\u5F62\u72B6}}, \u5F62\u72B6!{{\u5F62\u72B6Id}}, 0))"
+      },
+      {
+        "name": "\u8FB9\u7684\u6570\u91CF",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "formula": "=INDEX(\u5F62\u72B6!{{\u8FB9\u7684\u6570\u91CF}}, MATCH(\u8FB9!{{\u5F62\u72B6}}, \u5F62\u72B6!{{\u5F62\u72B6Id}}, 0))"
+      },
+      {
+        "name": "\u662F\u5426\u4E3A\u659C\u8FB9",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "formula": "={{\u957F\u5EA6}} = {{\u5F62\u72B6\u7684\u6700\u5927\u8FB9\u957F}}"
+      },
+      {
+        "name": "\u5F62\u72B6\u7C7B\u578B",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "formula": "=INDEX(\u5F62\u72B6!{{\u8FB9\u7684\u7C7B\u578B}}, MATCH(\u8FB9!{{\u5F62\u72B6}}, \u5F62\u72B6!{{\u5F62\u72B6Id}}, 0))"
+      },
+      {
+        "name": "\u6807\u7B7E",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "\u957F\u5EA6",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "\u957F\u5EA6\u5E73\u65B9",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "formula": "={{\u957F\u5EA6}} * {{\u957F\u5EA6}}"
+      },
+      {
+        "name": "\u89D2\u5EA6",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true
+      }
+    ],
+    "data": [
+      {
+        "\u8FB9Id": "3",
+        "\u540D\u79F0": "\u5F62\u72B63-\u6BD4",
+        "\u5F62\u72B6": "3",
+        "\u6807\u7B7E": "\u6BD4",
+        "\u5F62\u72B6\u7C7B\u578B": "\u7EBF",
+        "\u957F\u5EA6": 14,
+        "\u89D2\u5EA6": 180,
+        "\u8FB9\u7684\u6570\u91CF": "2",
+        "\u5F62\u72B6\u7684\u6700\u5927\u8FB9\u957F": "14",
+        "\u662F\u5426\u4E3A\u659C\u8FB9": true,
+        "\u957F\u5EA6\u5E73\u65B9": 196
+      },
+      {
+        "\u8FB9Id": "1",
+        "\u540D\u79F0": "\u5F62\u72B61-\u6BD4",
+        "\u5F62\u72B6": "1",
+        "\u6807\u7B7E": "\u6BD4",
+        "\u5F62\u72B6\u7C7B\u578B": "\u4E09\u89D2\u5F62",
+        "\u957F\u5EA6": 4,
+        "\u89D2\u5EA6": 53,
+        "\u8FB9\u7684\u6570\u91CF": "3",
+        "\u5F62\u72B6\u7684\u6700\u5927\u8FB9\u957F": "5",
+        "\u957F\u5EA6\u5E73\u65B9": 16,
+        "\u662F\u5426\u4E3A\u659C\u8FB9": ""
+      },
+      {
+        "\u8FB9Id": "2",
+        "\u540D\u79F0": "\u5F62\u72B62-\u8FEA",
+        "\u5F62\u72B6": "2",
+        "\u6807\u7B7E": "\u8FEA",
+        "\u5F62\u72B6\u7C7B\u578B": "\u6B63\u65B9\u5F62",
+        "\u957F\u5EA6": 5,
+        "\u89D2\u5EA6": 90,
+        "\u8FB9\u7684\u6570\u91CF": "4",
+        "\u5F62\u72B6\u7684\u6700\u5927\u8FB9\u957F": "5",
+        "\u662F\u5426\u4E3A\u659C\u8FB9": true,
+        "\u957F\u5EA6\u5E73\u65B9": 25
+      },
+      {
+        "\u8FB9Id": "2",
+        "\u540D\u79F0": "\u5F62\u72B62-\u963F",
+        "\u5F62\u72B6": "2",
+        "\u6807\u7B7E": "\u963F",
+        "\u5F62\u72B6\u7C7B\u578B": "\u6B63\u65B9\u5F62",
+        "\u957F\u5EA6": 5,
+        "\u89D2\u5EA6": 90,
+        "\u8FB9\u7684\u6570\u91CF": "4",
+        "\u5F62\u72B6\u7684\u6700\u5927\u8FB9\u957F": "5",
+        "\u662F\u5426\u4E3A\u659C\u8FB9": true,
+        "\u957F\u5EA6\u5E73\u65B9": 25
+      },
+      {
+        "\u8FB9Id": "1",
+        "\u540D\u79F0": "\u5F62\u72B61-\u963F",
+        "\u5F62\u72B6": "1",
+        "\u6807\u7B7E": "\u963F",
+        "\u5F62\u72B6\u7C7B\u578B": "\u4E09\u89D2\u5F62",
+        "\u957F\u5EA6": 3,
+        "\u89D2\u5EA6": 37,
+        "\u8FB9\u7684\u6570\u91CF": "3",
+        "\u5F62\u72B6\u7684\u6700\u5927\u8FB9\u957F": "5",
+        "\u957F\u5EA6\u5E73\u65B9": 9,
+        "\u662F\u5426\u4E3A\u659C\u8FB9": ""
+      },
+      {
+        "\u8FB9Id": "1",
+        "\u540D\u79F0": "\u5F62\u72B61-\u897F",
+        "\u5F62\u72B6": "1",
+        "\u6807\u7B7E": "\u897F",
+        "\u5F62\u72B6\u7C7B\u578B": "\u4E09\u89D2\u5F62",
+        "\u957F\u5EA6": 5,
+        "\u89D2\u5EA6": 90,
+        "\u8FB9\u7684\u6570\u91CF": "3",
+        "\u5F62\u72B6\u7684\u6700\u5927\u8FB9\u957F": "5",
+        "\u662F\u5426\u4E3A\u659C\u8FB9": true,
+        "\u957F\u5EA6\u5E73\u65B9": 25
+      },
+      {
+        "\u8FB9Id": "3",
+        "\u540D\u79F0": "\u5F62\u72B63-\u963F",
+        "\u5F62\u72B6": "3",
+        "\u6807\u7B7E": "\u963F",
+        "\u5F62\u72B6\u7C7B\u578B": "\u7EBF",
+        "\u957F\u5EA6": 14,
+        "\u89D2\u5EA6": 180,
+        "\u8FB9\u7684\u6570\u91CF": "2",
+        "\u5F62\u72B6\u7684\u6700\u5927\u8FB9\u957F": "14",
+        "\u662F\u5426\u4E3A\u659C\u8FB9": true,
+        "\u957F\u5EA6\u5E73\u65B9": 196
+      },
+      {
+        "\u8FB9Id": "2",
+        "\u540D\u79F0": "\u5F62\u72B62-\u897F",
+        "\u5F62\u72B6": "2",
+        "\u6807\u7B7E": "\u897F",
+        "\u5F62\u72B6\u7C7B\u578B": "\u6B63\u65B9\u5F62",
+        "\u957F\u5EA6": 5,
+        "\u89D2\u5EA6": 90,
+        "\u8FB9\u7684\u6570\u91CF": "4",
+        "\u5F62\u72B6\u7684\u6700\u5927\u8FB9\u957F": "5",
+        "\u662F\u5426\u4E3A\u659C\u8FB9": true,
+        "\u957F\u5EA6\u5E73\u65B9": 25
+      },
+      {
+        "\u8FB9Id": "2",
+        "\u540D\u79F0": "\u5F62\u72B62-\u6BD4",
+        "\u5F62\u72B6": "2",
+        "\u6807\u7B7E": "\u6BD4",
+        "\u5F62\u72B6\u7C7B\u578B": "\u6B63\u65B9\u5F62",
+        "\u957F\u5EA6": 5,
+        "\u89D2\u5EA6": 90,
+        "\u8FB9\u7684\u6570\u91CF": "4",
+        "\u5F62\u72B6\u7684\u6700\u5927\u8FB9\u957F": "5",
+        "\u662F\u5426\u4E3A\u659C\u8FB9": true,
+        "\u957F\u5EA6\u5E73\u65B9": 25
+      }
+    ]
+  },
+  "_meta": {
+    "_CMCC_Summary": "Airtable export with intelligent type inference: Schemas, Data, Relationships (FK links), Lookups (INDEX/MATCH), Aggregations (SUMIFS/COUNTIFS/Rollups), and Calculated fields (formulas) in Excel dialect. Field types are inferred from actual data values with priority: DateTime \u2192 Decimal \u2192 Integer \u2192 Boolean \u2192 Base64 \u2192 JSON \u2192 String.",
+    "_conversion_metadata": {
+      "source_base_id": "appC6Tnt2ZKm3t16e",
+      "table_count": 2,
+      "tool_version": "2.0.0",
+      "field_type_mapping": "multipleRecordLinks\u2192relationship, multipleLookupValues\u2192lookup, rollup\u2192aggregation, count\u2192aggregation, formula\u2192calculated",
+      "export_mode": "intelligent_type_inference",
+      "type_inference": {
+        "enabled": true,
+        "priority": "data_analysis \u2192 formula_analysis \u2192 reference_resolution \u2192 airtable_metadata",
+        "type_hierarchy": "datetime \u2192 number \u2192 integer \u2192 boolean \u2192 base64 \u2192 json \u2192 string",
+        "nullable_support": true,
+        "error_value_handling": "#NUM!, #ERROR!, #N/A, #REF!, #DIV/0!, #VALUE!, #NAME? are treated as NULL"
+      }
+    }
+  }
+}

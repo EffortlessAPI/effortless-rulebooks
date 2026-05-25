@@ -1,0 +1,23 @@
+<%- include('../partials/header', { title: 'Products' }) %>
+<h1>Products</h1>
+<form method="get" class="filters">
+  <input type="text" name="q" placeholder="search…" value="<%= q %>" />
+  <label><input type="checkbox" name="in_stock" value="1" <%= inStock ? 'checked' : '' %> /> in stock only</label>
+  <button class="btn" type="submit">Filter</button>
+</form>
+<div class="cards">
+  <% products.forEach(p => { %>
+    <div class="card">
+      <h3><a href="/shop/products/<%= p.product_id %>"><%= p.display_name %></a></h3>
+      <p class="muted"><%= p.sku %> · stock: <%= p.stock_quantity ?? 0 %></p>
+      <p class="price">$<%= Number(p.unit_price).toFixed(2) %></p>
+      <form method="post" action="/shop/cart/add">
+        <input type="hidden" name="productId" value="<%= p.product_id %>" />
+        <input type="number" name="qty" value="1" min="1" style="width:4rem" />
+        <button class="btn" type="submit">Add</button>
+      </form>
+    </div>
+  <% }) %>
+  <% if (!products.length) { %><p class="muted">No products match.</p><% } %>
+</div>
+<%- include('../partials/footer') %>

@@ -1,0 +1,12 @@
+{
+  "timestamp": "2026-04-20-1639",
+  "created_at": "2026-04-20T22:18:56.262Z",
+  "naked_dir": "/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/naked-claude-vs-effortless-claude/Naked-Claude-Experiments/2026-04-20-1639-naked",
+  "effortless_dir": "/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/naked-claude-vs-effortless-claude/Naked-Claude-Experiments/2026-04-20-1639-effortless",
+  "db_naked": "2026-04-20-1639-naked",
+  "db_effortless": "2026-04-20-1639-effortless",
+  "completed_phases": [
+    1
+  ],
+  "phase_history": {}
+}

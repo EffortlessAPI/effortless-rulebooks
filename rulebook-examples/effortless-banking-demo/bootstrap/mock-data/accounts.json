@@ -1,0 +1,57 @@
+[
+  {
+    "id": "acct-stillwater-chk-001",
+    "name": "stillwater-roasters-llc-checking-0001",
+    "label": "Stillwater Roasters — Operating Checking",
+    "business_id": "biz-stillwater-roasters",
+    "account_type": "Checking",
+    "account_number_last4": "0001",
+    "current_balance_usd": 184250.13,
+    "treasury_services": ["ACH", "Wire"],
+    "opened_at": "2024-03-13"
+  },
+  {
+    "id": "acct-stillwater-sav-101",
+    "name": "stillwater-roasters-llc-savings-0101",
+    "label": "Stillwater Roasters — Reserve Savings",
+    "business_id": "biz-stillwater-roasters",
+    "account_type": "Savings",
+    "account_number_last4": "0101",
+    "current_balance_usd": 75000.00,
+    "treasury_services": [],
+    "opened_at": "2024-03-13"
+  },
+  {
+    "id": "acct-pine-chk-200",
+    "name": "pine-hardware-inc-checking-0200",
+    "label": "Pine Hardware — Operating Checking",
+    "business_id": "biz-pine-hardware",
+    "account_type": "Checking",
+    "account_number_last4": "0200",
+    "current_balance_usd": 612430.55,
+    "treasury_services": ["ACH", "Wire", "Card"],
+    "opened_at": "2019-06-22"
+  },
+  {
+    "id": "acct-ridgeway-chk-300",
+    "name": "ridgeway-consulting-llc-checking-0300",
+    "label": "Ridgeway Consulting — Checking",
+    "business_id": "biz-ridgeway-consulting",
+    "account_type": "Checking",
+    "account_number_last4": "0300",
+    "current_balance_usd": 92800.00,
+    "treasury_services": ["ACH"],
+    "opened_at": "2023-09-06"
+  },
+  {
+    "id": "acct-sunset-chk-400",
+    "name": "sunset-auto-body-llc-checking-0400",
+    "label": "Sunset Auto Body — Checking",
+    "business_id": "biz-sunset-auto-body",
+    "account_type": "Checking",
+    "account_number_last4": "0400",
+    "current_balance_usd": 41250.00,
+    "treasury_services": [],
+    "opened_at": "2022-11-03"
+  }
+]

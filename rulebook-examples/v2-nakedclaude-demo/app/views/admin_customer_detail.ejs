@@ -1,0 +1,15 @@
+<%- include('_header', { user: user }) %>
+<h1><%= c.name %></h1>
+<div class="card">
+  <p><strong>Customer ID:</strong> <%= c.customer_id %></p>
+  <p><strong>Owner:</strong> <%= c.owner_email %></p>
+  <p><strong>Status:</strong>
+    <span class="badge <%= c.is_stopped ? 'stopped':'ok' %>"><%= c.status_display_name %></span>
+    <span class="muted"><%= c.status_description || '' %></span>
+  </p>
+  <p><strong>First name:</strong> <%= c.first_name %></p>
+  <p><strong>Last name:</strong> <%= c.last_name %></p>
+  <p><strong>Notes:</strong> <%= c.notes || '' %></p>
+</div>
+<p><a href="/admin/customers">← back</a></p>
+<%- include('_footer') %>

@@ -50,13 +50,7 @@ from shared import load_rulebook, to_snake_case, discover_primary_key, get_defau
 
 
 def get_db_connection_string():
-    """Return DATABASE_URL from env, or the active-domain default.
-
-    The default is `erb_<active-domain>` on localhost — derived from
-    orchestration/active-domain.txt, which is the SSoT. This is a default
-    (override with DATABASE_URL), NOT a fallback to some generic database.
-    See CLAUDE.md.
-    """
+    """Return DATABASE_URL from env, or `erb_<active-domain>` on localhost."""
     return os.environ.get("DATABASE_URL") or get_default_database_url()
 
 

@@ -1,0 +1,56 @@
+kind: workload
+name: WORKLOAD_NAME
+description: DESCRIPTION
+tags:
+  project: PROJECT_TAG
+spec:
+  type: serverless
+  containers:
+    - name: CONTAINER_NAME
+      cpu: 250m
+      memory: 512Mi
+      image: /org/ORG_NAME/image/IMAGE_NAME_TAG
+      inheritEnv: false
+      env:
+        - name: NODE_ENV
+          value: production
+        - name: PORT
+          value: "4000"
+        - name: SERVE_STATIC
+          value: "true"
+        - name: STATIC_DIR
+          value: /app/web/dist
+        - name: DATABASE_URL
+          value: cpln://secret/SECRET_NAME.DATABASE_URL
+      ports:
+        - number: 4000
+          protocol: http
+  defaultOptions:
+    autoscaling:
+      maxScale: 2
+      minScale: 1
+      metric: concurrency
+      scaleToZeroDelay: 300
+      target: 100
+    capacityAI: false
+    debug: false
+    suspend: false
+    timeoutSeconds: 60
+  identityLink: //gvc/CPLN_GVC/identity/WORKLOAD_NAME
+  firewallConfig:
+    external:
+      inboundAllowCIDR:
+        - 0.0.0.0/0
+      inboundBlockedCIDR: []
+      outboundAllowCIDR:
+        - 0.0.0.0/0
+      outboundAllowHostname: []
+      outboundAllowPort: []
+      outboundBlockedCIDR: []
+    internal:
+      inboundAllowType: same-gvc
+      inboundAllowWorkload: []
+  rolloutOptions:
+    maxSurgeReplicas: 100%
+    minReadySeconds: 10
+    scalingPolicy: OrderedReady

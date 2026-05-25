@@ -1,0 +1,3458 @@
+{
+  "$schema": "https://example.com/cmcc-schema/v1",
+  "Name": "v4: NakedClaude Demo",
+  "Description": "Rulebook generated from Airtable base \u0027v4: NakedClaude Demo\u0027.",
+  "AppUsers": {
+    "Description": "Table: AppUsers",
+    "schema": [
+      {
+        "name": "AppUserId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "formula": "=SUBSTITUTE(LOWER({{EmailAddress}} \u0026 \u0022-\u0022 \u0026 {{Role}}), \u0022@\u0022, \u0022-\u0022)"
+      },
+      {
+        "name": "ContactName",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "EmailAddress",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "PhoneNumber",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "Role",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "Notes",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "ClientApprovals",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "RelatedTo": "ClientApprovals",
+        "isReversed": false,
+        "prefersSingleRecordLink": false,
+        "InverseField": "ApprovedBy"
+      }
+    ],
+    "data": [
+      {
+        "AppUserId": "customer-ssot-me-customer",
+        "EmailAddress": "customer@ssot.me",
+        "ContactName": "Bob Customer",
+        "PhoneNumber": "(555) 555-1234",
+        "Role": "Customer",
+        "Name": "customer-ssot.me-customer",
+        "Notes": "",
+        "ClientApprovals": ""
+      },
+      {
+        "AppUserId": "ej-ssot-me-admin",
+        "EmailAddress": "ej@ssot.me",
+        "ContactName": "EJ Alexandra",
+        "ClientApprovals": "brian-lee-apvd, alice-johnson-apvd",
+        "PhoneNumber": "(555) 555-1111",
+        "Role": "Admin",
+        "Name": "ej-ssot.me-admin",
+        "Notes": ""
+      },
+      {
+        "AppUserId": "manager-ssot-me-manager",
+        "EmailAddress": "manager@ssot.me",
+        "ContactName": "Mark Manager",
+        "PhoneNumber": "(555) 555-4321",
+        "Role": "Manager",
+        "Name": "manager-ssot.me-manager",
+        "Notes": "",
+        "ClientApprovals": ""
+      }
+    ]
+  },
+  "Clients": {
+    "Description": "Table: Clients",
+    "schema": [
+      {
+        "name": "ClientId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Human-readable customer name."
+      },
+      {
+        "name": "Notes",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Free-form notes about the customer."
+      },
+      {
+        "name": "Category",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "RelatedTo": "ClientCategories",
+        "isReversed": false,
+        "prefersSingleRecordLink": true,
+        "InverseField": "Clients"
+      },
+      {
+        "name": "CategoryName",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "formula": "=INDEX(ClientCategories!{{Name}}, MATCH(Clients!{{Category}}, ClientCategories!{{ClientCategorieId}}, 0))"
+      },
+      {
+        "name": "CategoryDiscount",
+        "datatype": "number",
+        "type": "lookup",
+        "nullable": true,
+        "formula": "=INDEX(ClientCategories!{{Discount}}, MATCH(Clients!{{Category}}, ClientCategories!{{ClientCategorieId}}, 0))"
+      },
+      {
+        "name": "IsStopped",
+        "datatype": "boolean",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "True when the customer\u0027s current Status is a blocking status. Lookup of Statuses.IsBlocking.",
+        "formula": "=INDEX(Statuses!{{IsBlocking}}, MATCH(Clients!{{Status}}, Statuses!{{StatuseId}}, 0))"
+      },
+      {
+        "name": "Status",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Link to the customer\u0027s current Status in the Statuses table.",
+        "RelatedTo": "Statuses",
+        "isReversed": false,
+        "prefersSingleRecordLink": true,
+        "InverseField": "Clients"
+      },
+      {
+        "name": "StatusDisplayName",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Human-readable display name of the customer\u0027s current Status. Lookup of Statuses.DisplayName.",
+        "formula": "=INDEX(Statuses!{{DisplayName}}, MATCH(Clients!{{Status}}, Statuses!{{StatuseId}}, 0))"
+      },
+      {
+        "name": "StatusDescription",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Description of the customer\u0027s current Status. Lookup of Statuses.Description.",
+        "formula": "=INDEX(Statuses!{{Description}}, MATCH(Clients!{{Status}}, Statuses!{{StatuseId}}, 0))"
+      },
+      {
+        "name": "Invoices",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Reverse link to all Orders placed by this customer.",
+        "RelatedTo": "Invoices",
+        "isReversed": false,
+        "prefersSingleRecordLink": false,
+        "InverseField": "Client"
+      },
+      {
+        "name": "CountOfBigInvoices",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "formula": "=COUNTIFS(Invoices!{{Client}}, Clients!{{ClientId}})"
+      },
+      {
+        "name": "Email",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Primary email address for the customer."
+      },
+      {
+        "name": "Phone",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Primary phone number for the customer."
+      },
+      {
+        "name": "CompanyName",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Company the customer represents, if applicable."
+      },
+      {
+        "name": "Addresses",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "RelatedTo": "Addresses",
+        "isReversed": false,
+        "prefersSingleRecordLink": true,
+        "InverseField": "Clients"
+      },
+      {
+        "name": "BillingAddressStateTaxRate",
+        "datatype": "number",
+        "type": "lookup",
+        "nullable": true,
+        "formula": "=INDEX(Addresses!{{StateTaxRate}}, MATCH(Clients!{{Addresses}}, Addresses!{{AddresseId}}, 0))"
+      },
+      {
+        "name": "BillingAddress",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Default billing address for the customer.",
+        "formula": "=INDEX(Addresses!{{Name}}, MATCH(Clients!{{Addresses}}, Addresses!{{AddresseId}}, 0))"
+      },
+      {
+        "name": "ShippingAddress",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Default shipping address for the customer.",
+        "formula": "=INDEX(Addresses!{{Name}}, MATCH(Clients!{{Addresses}}, Addresses!{{AddresseId}}, 0))"
+      },
+      {
+        "name": "CreatedAt",
+        "datatype": "datetime",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Timestamp when the customer record was created."
+      },
+      {
+        "name": "AverageOrderValue",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "formula": "=AVERAGEIFS(Invoices!{{InvoiceTotal}}, Invoices!{{Client}}, Clients!{{ClientId}})"
+      },
+      {
+        "name": "IsVIP",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "formula": "=IF(AND({{AverageOrderValue}} \u003E 500, {{HasRecentInvoices}}), TRUE(), FALSE())"
+      },
+      {
+        "name": "HasRecentInvoices",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "formula": "=IF({{LastInvoice}} \u003E DATEADD(TODAY(), -220, \u0027days\u0027), TRUE(), FALSE())"
+      },
+      {
+        "name": "LastInvoice",
+        "datatype": "datetime",
+        "type": "aggregation",
+        "nullable": true,
+        "formula": "=SUMIFS(Invoices!{{OrderDate}}, Invoices!{{Client}}, Clients!{{ClientId}})"
+      },
+      {
+        "name": "CustomerSinceDays",
+        "datatype": "integer",
+        "type": "calculated",
+        "nullable": true,
+        "formula": "=IF({{CreatedAt}}, DATETIME_DIFF(NOW(), {{CreatedAt}}, \u0027days\u0027), BLANK())"
+      },
+      {
+        "name": "ClientApprovals",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "RelatedTo": "ClientApprovals",
+        "isReversed": false,
+        "prefersSingleRecordLink": false,
+        "InverseField": "Client"
+      }
+    ],
+    "data": [
+      {
+        "ClientId": "bob",
+        "Addresses": "742-evergreen-terrace-springfield-il-illinois-97477",
+        "Category": "active",
+        "Email": "bob@launchpad.example",
+        "Name": "Bob",
+        "CompanyName": "Launchpad LLC",
+        "CreatedAt": "2025-08-14T09:30:00Z",
+        "Notes": "A customer currently in launch.",
+        "Phone": "\u002B1-415-555-0101",
+        "Invoices": "bob-1001",
+        "Status": "on-hold",
+        "IsStopped": "True",
+        "StatusDisplayName": "On-Hold",
+        "StatusDescription": "This status indicates the customer or request is on hold and temporarily paused.",
+        "BillingAddress": "742 Evergreen Terrace, Springfield, il-illinois 97477",
+        "CustomerSinceDays": 254,
+        "CategoryDiscount": "0.05",
+        "CountOfBigInvoices": 0,
+        "BillingAddressStateTaxRate": "0.0625",
+        "AverageOrderValue": 150.3565,
+        "LastInvoice": "2025-09-15T10:30:00Z",
+        "CategoryName": "Active",
+        "ShippingAddress": "",
+        "IsVIP": false,
+        "HasRecentInvoices": false,
+        "ClientApprovals": ""
+      },
+      {
+        "ClientId": "alice-johnson",
+        "Addresses": "500-pine-st-suite-200-seattle-wa-washington-98101",
+        "Category": "active",
+        "Email": "alice.johnson@northwind.example",
+        "Name": "Alice Johnson",
+        "CompanyName": "Northwind Traders",
+        "CreatedAt": "2025-09-02T14:15:00Z",
+        "Notes": "Initial mock entry for Alice.",
+        "Phone": "\u002B1-206-555-0142",
+        "Invoices": "alice-johnson-1010",
+        "ClientApprovals": "alice-johnson-apvd",
+        "Status": "pending",
+        "IsStopped": "True",
+        "StatusDisplayName": "Pending",
+        "StatusDescription": "This status shows the customer or request is pending further action or review.",
+        "BillingAddress": "500 Pine St, Suite 200, Seattle, wa-washington 98101",
+        "CustomerSinceDays": 235,
+        "CategoryDiscount": "0.05",
+        "CountOfBigInvoices": 1,
+        "BillingAddressStateTaxRate": "0.065",
+        "AverageOrderValue": 5412.103687499999,
+        "LastInvoice": "2025-10-05T09:00:00Z",
+        "HasRecentInvoices": true,
+        "IsVIP": true,
+        "CategoryName": "Active",
+        "ShippingAddress": ""
+      },
+      {
+        "ClientId": "brian-lee",
+        "Addresses": "88-industrial-way-austin-tx-texas-78701",
+        "Category": "prospect",
+        "Email": "brian.lee@contoso.example",
+        "Name": "Brian Lee",
+        "CompanyName": "Contoso Manufacturing",
+        "CreatedAt": "2025-10-11T11:00:00Z",
+        "Notes": "Initial mock entry for Brian.",
+        "Phone": "\u002B1-512-555-0177",
+        "Invoices": "brian-lee-1018, brian-lee-1037, brian-lee-1042",
+        "ClientApprovals": "brian-lee-apvd, brian-lee-pend",
+        "Status": "new",
+        "IsStopped": "",
+        "StatusDisplayName": "New",
+        "StatusDescription": "This status indicates a newly created customer or request that has not yet been processed.",
+        "BillingAddress": "88 Industrial Way, Austin, tx-texas 78701",
+        "CustomerSinceDays": 196,
+        "CategoryDiscount": "0",
+        "CountOfBigInvoices": 2,
+        "BillingAddressStateTaxRate": "0.0625",
+        "AverageOrderValue": 657.6414583333334,
+        "LastInvoice": "2026-02-20T13:15:00Z",
+        "HasRecentInvoices": true,
+        "IsVIP": true,
+        "CategoryName": "Prospect",
+        "ShippingAddress": ""
+      },
+      {
+        "ClientId": "carla-smith",
+        "Addresses": "1200-ocean-dr-miami-fl-florida-33139",
+        "Category": "active",
+        "Email": "carla.smith@bluewave.example",
+        "Name": "Carla Smith",
+        "CompanyName": "Bluewave Logistics",
+        "CreatedAt": "2025-11-22T16:45:00Z",
+        "Notes": "Initial mock entry for Carla.",
+        "Phone": "\u002B1-305-555-0188",
+        "Invoices": "carla-smith-1024",
+        "Status": "delayed",
+        "IsStopped": "",
+        "StatusDisplayName": "Delayed",
+        "StatusDescription": "This status is used when the customer or request has been delayed and is not progressing as scheduled.",
+        "BillingAddress": "1200 Ocean Dr, Miami, fl-florida 33139",
+        "CustomerSinceDays": 154,
+        "CategoryDiscount": "0.05",
+        "CountOfBigInvoices": 0,
+        "BillingAddressStateTaxRate": "0.06",
+        "AverageOrderValue": 225.568,
+        "LastInvoice": "2025-12-01T11:20:00Z",
+        "HasRecentInvoices": true,
+        "CategoryName": "Active",
+        "ShippingAddress": "",
+        "IsVIP": false,
+        "ClientApprovals": ""
+      },
+      {
+        "ClientId": "caroline",
+        "Addresses": "23-hudson-lane-brooklyn-ny-new-york-11201",
+        "Category": "gold",
+        "Email": "caroline@solo.example",
+        "Name": "Caroline",
+        "CompanyName": "Solo Studio",
+        "CreatedAt": "2026-01-08T08:20:00Z",
+        "Phone": "\u002B1-718-555-0199",
+        "Invoices": "caroline-1045",
+        "Status": "delayed",
+        "IsStopped": "",
+        "StatusDisplayName": "Delayed",
+        "StatusDescription": "This status is used when the customer or request has been delayed and is not progressing as scheduled.",
+        "BillingAddress": "23 Hudson Lane, Brooklyn, ny-new-york 11201",
+        "CustomerSinceDays": 107,
+        "CategoryDiscount": "0.15",
+        "CountOfBigInvoices": 0,
+        "BillingAddressStateTaxRate": "0.04",
+        "AverageOrderValue": 102.96832,
+        "LastInvoice": "2026-03-12T10:00:00Z",
+        "HasRecentInvoices": true,
+        "CategoryName": "Gold",
+        "Notes": "",
+        "ShippingAddress": "",
+        "IsVIP": false,
+        "ClientApprovals": ""
+      }
+    ]
+  },
+  "ClientApprovals": {
+    "Description": "Table: ClientApprovals",
+    "schema": [
+      {
+        "name": "ClientApprovalId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "formula": "= {{Client}} \u0026 \u0022-\u0022 \u0026 IF({{IsApproved}}, \u0022APVD\u0022, \u0022PEND\u0022)"
+      },
+      {
+        "name": "Client",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "RelatedTo": "Clients",
+        "isReversed": false,
+        "prefersSingleRecordLink": true,
+        "InverseField": "ClientApprovals"
+      },
+      {
+        "name": "ApprovedBy",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "RelatedTo": "AppUsers",
+        "isReversed": false,
+        "prefersSingleRecordLink": true,
+        "InverseField": "ClientApprovals"
+      },
+      {
+        "name": "ApprovedByContactName",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "formula": "=INDEX(AppUsers!{{ContactName}}, MATCH(ClientApprovals!{{ApprovedBy}}, AppUsers!{{AppUserId}}, 0))"
+      },
+      {
+        "name": "ApprovedByEmailAddress",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "formula": "=INDEX(AppUsers!{{EmailAddress}}, MATCH(ClientApprovals!{{ApprovedBy}}, AppUsers!{{AppUserId}}, 0))"
+      },
+      {
+        "name": "ApprovedByPhoneNumber",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "formula": "=INDEX(AppUsers!{{PhoneNumber}}, MATCH(ClientApprovals!{{ApprovedBy}}, AppUsers!{{AppUserId}}, 0))"
+      },
+      {
+        "name": "ApprovedByRole",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "formula": "=INDEX(AppUsers!{{Role}}, MATCH(ClientApprovals!{{ApprovedBy}}, AppUsers!{{AppUserId}}, 0))"
+      },
+      {
+        "name": "IsApproved",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "formula": "=NOT({{ApprovedBy}} = BLANK())"
+      },
+      {
+        "name": "Notes",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "ClientName",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "formula": "=INDEX(Clients!{{Name}}, MATCH(ClientApprovals!{{Client}}, Clients!{{ClientId}}, 0))"
+      },
+      {
+        "name": "ClientEmail",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "formula": "=INDEX(Clients!{{Email}}, MATCH(ClientApprovals!{{Client}}, Clients!{{ClientId}}, 0))"
+      },
+      {
+        "name": "ClientPhone",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "formula": "=INDEX(Clients!{{Phone}}, MATCH(ClientApprovals!{{Client}}, Clients!{{ClientId}}, 0))"
+      },
+      {
+        "name": "ClientCategory",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "formula": "=INDEX(Clients!{{Category}}, MATCH(ClientApprovals!{{Client}}, Clients!{{ClientId}}, 0))"
+      }
+    ],
+    "data": [
+      {
+        "ClientApprovalId": "alice-johnson-apvd",
+        "ApprovedBy": "ej-ssot-me-admin",
+        "Client": "alice-johnson",
+        "IsApproved": true,
+        "Name": "Alice Johnson-APVD",
+        "ClientPhone": "\u002B1-206-555-0142",
+        "ClientEmail": "alice.johnson@northwind.example",
+        "ClientCategory": "active",
+        "ClientName": "Alice Johnson",
+        "ApprovedByRole": "Admin",
+        "ApprovedByPhoneNumber": "(555) 555-1111",
+        "ApprovedByEmailAddress": "ej@ssot.me",
+        "ApprovedByContactName": "EJ Alexandra",
+        "Notes": ""
+      },
+      {
+        "ClientApprovalId": "brian-lee-apvd",
+        "ApprovedBy": "ej-ssot-me-admin",
+        "Client": "brian-lee",
+        "IsApproved": true,
+        "Name": "Brian Lee-APVD",
+        "ClientPhone": "\u002B1-512-555-0177",
+        "ClientEmail": "brian.lee@contoso.example",
+        "ClientCategory": "prospect",
+        "ClientName": "Brian Lee",
+        "ApprovedByRole": "Admin",
+        "ApprovedByPhoneNumber": "(555) 555-1111",
+        "ApprovedByEmailAddress": "ej@ssot.me",
+        "ApprovedByContactName": "EJ Alexandra",
+        "Notes": ""
+      },
+      {
+        "ClientApprovalId": "brian-lee-pend",
+        "Client": "brian-lee",
+        "Name": "Brian Lee-PEND",
+        "ClientPhone": "\u002B1-512-555-0177",
+        "ClientEmail": "brian.lee@contoso.example",
+        "ClientCategory": "prospect",
+        "ClientName": "Brian Lee",
+        "ApprovedBy": "",
+        "ApprovedByContactName": "",
+        "ApprovedByEmailAddress": "",
+        "ApprovedByPhoneNumber": "",
+        "ApprovedByRole": "",
+        "IsApproved": false,
+        "Notes": ""
+      }
+    ]
+  },
+  "ClientCategories": {
+    "Description": "Table: ClientCategories",
+    "schema": [
+      {
+        "name": "ClientCategorieId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "Clients",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "RelatedTo": "Clients",
+        "isReversed": false,
+        "prefersSingleRecordLink": false,
+        "InverseField": "Category"
+      },
+      {
+        "name": "Discount",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "Notes",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "CountOfClients",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "formula": "=COUNTIFS(Clients!{{Category}}, ClientCategories!{{ClientCategorieId}})"
+      }
+    ],
+    "data": [
+      {
+        "ClientCategorieId": "prospect",
+        "Name": "Prospect",
+        "Clients": "brian-lee",
+        "Discount": 0,
+        "CountOfClients": 1,
+        "Notes": ""
+      },
+      {
+        "ClientCategorieId": "gold",
+        "Name": "Gold",
+        "Clients": "caroline",
+        "Discount": 0.15,
+        "CountOfClients": 1,
+        "Notes": ""
+      },
+      {
+        "ClientCategorieId": "active",
+        "Name": "Active",
+        "Clients": "alice-johnson, carla-smith, bob",
+        "Discount": 0.05,
+        "CountOfClients": 3,
+        "Notes": ""
+      }
+    ]
+  },
+  "Statuses": {
+    "Description": "Table: Statuses",
+    "schema": [
+      {
+        "name": "StatuseId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Lowercase, dash-separated compound key derived from DisplayName. Used as the natural key for the status.",
+        "formula": "=LOWER({{DisplayName}})"
+      },
+      {
+        "name": "DisplayName",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Human-readable display name of the status (e.g., \u0022On-Hold\u0022, \u0022In-Review\u0022)."
+      },
+      {
+        "name": "Description",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Free-form description of what this status means and when it applies."
+      },
+      {
+        "name": "IsBlocking",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": true,
+        "Description": "True when customers in this status should be considered stopped (blocked from progressing)."
+      },
+      {
+        "name": "Clients",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Reverse link to all Customers currently in this status.",
+        "RelatedTo": "Clients",
+        "isReversed": false,
+        "prefersSingleRecordLink": false,
+        "InverseField": "Status"
+      },
+      {
+        "name": "CountOfClients",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "formula": "=COUNTIFS(Clients!{{Status}}, Statuses!{{StatuseId}})"
+      },
+      {
+        "name": "SortOrder",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Display order for this status in lists."
+      }
+    ],
+    "data": [
+      {
+        "StatuseId": "delayed",
+        "DisplayName": "Delayed",
+        "SortOrder": 6,
+        "Clients": "carla-smith, caroline",
+        "Description": "This status is used when the customer or request has been delayed and is not progressing as scheduled.",
+        "Name": "delayed",
+        "CountOfClients": 2,
+        "IsBlocking": false
+      },
+      {
+        "StatuseId": "cancelled",
+        "DisplayName": "Cancelled",
+        "SortOrder": 7,
+        "Description": "This status means the customer or request has been cancelled and will not proceed further.",
+        "Name": "cancelled",
+        "CountOfClients": 0,
+        "IsBlocking": false,
+        "Clients": ""
+      },
+      {
+        "StatuseId": "processing",
+        "DisplayName": "Processing",
+        "SortOrder": 2,
+        "Description": "This status means the customer or request is currently being processed.",
+        "Name": "processing",
+        "CountOfClients": 0,
+        "IsBlocking": false,
+        "Clients": ""
+      },
+      {
+        "StatuseId": "new",
+        "DisplayName": "New",
+        "SortOrder": 1,
+        "Clients": "brian-lee",
+        "Description": "This status indicates a newly created customer or request that has not yet been processed.",
+        "Name": "new",
+        "CountOfClients": 1,
+        "IsBlocking": false
+      },
+      {
+        "StatuseId": "in-review",
+        "IsBlocking": true,
+        "DisplayName": "In-Review",
+        "SortOrder": 3,
+        "Description": "This status is for customers or requests that are currently under review.",
+        "Name": "in-review",
+        "CountOfClients": 0,
+        "Clients": ""
+      },
+      {
+        "StatuseId": "pending",
+        "IsBlocking": true,
+        "DisplayName": "Pending",
+        "SortOrder": 4,
+        "Clients": "alice-johnson",
+        "Description": "This status shows the customer or request is pending further action or review.",
+        "Name": "pending",
+        "CountOfClients": 1
+      },
+      {
+        "StatuseId": "on-hold",
+        "IsBlocking": true,
+        "DisplayName": "On-Hold",
+        "SortOrder": 5,
+        "Clients": "bob",
+        "Description": "This status indicates the customer or request is on hold and temporarily paused.",
+        "Name": "on-hold",
+        "CountOfClients": 1
+      }
+    ]
+  },
+  "Products": {
+    "Description": "Table: Products",
+    "schema": [
+      {
+        "name": "ProductId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Lowercase, dash-separated compound key derived from SKU. Used as the natural key for the product.",
+        "formula": "=LOWER(SUBSTITUTE({{SKU}}, \u0022 \u0022, \u0022-\u0022))"
+      },
+      {
+        "name": "SKU",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Stock-keeping unit identifier for the product. The natural compound key."
+      },
+      {
+        "name": "InvoiceLineItems",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Reverse link to all OrderLineItems that reference this product.",
+        "RelatedTo": "InvoiceLineItems",
+        "isReversed": false,
+        "prefersSingleRecordLink": false,
+        "InverseField": "Product"
+      },
+      {
+        "name": "DisplayName",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Human-readable product name shown in catalogs and orders."
+      },
+      {
+        "name": "Description",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Long-form product description."
+      },
+      {
+        "name": "UnitPrice",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Default list price per unit."
+      },
+      {
+        "name": "Cost",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Internal cost per unit."
+      },
+      {
+        "name": "Profit",
+        "datatype": "number",
+        "type": "calculated",
+        "nullable": true,
+        "formula": "={{UnitPrice}} - {{Cost}}"
+      },
+      {
+        "name": "Margin",
+        "datatype": "number",
+        "type": "calculated",
+        "nullable": true,
+        "formula": "=1 - ({{Cost}} / {{UnitPrice}})"
+      },
+      {
+        "name": "IsActive",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": true,
+        "Description": "True when the product is currently sellable."
+      },
+      {
+        "name": "IsHighMargin",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "formula": "={{Margin}} \u003E 0.65"
+      },
+      {
+        "name": "StockQuantity",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Number of units currently in stock.",
+        "formula": "=SUMIFS(InventoryAdjustments!{{Quantity}}, InventoryAdjustments!{{Product}}, Products!{{ProductId}})"
+      },
+      {
+        "name": "COGS",
+        "datatype": "number",
+        "type": "calculated",
+        "nullable": true,
+        "formula": "={{StockQuantity}} * {{Cost}}"
+      },
+      {
+        "name": "InventoryAdjustments",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "RelatedTo": "InventoryAdjustments",
+        "isReversed": false,
+        "prefersSingleRecordLink": false,
+        "InverseField": "Product"
+      },
+      {
+        "name": "CountOfVIPOrders",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "formula": "=COUNTIFS(InvoiceLineItems!{{Product}}, Products!{{ProductId}})"
+      },
+      {
+        "name": "HasBeenOrderedByVIPCustomers",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "formula": "=IF(AND({{CountOfVIPOrders}} \u003E 0, {{StockQuantity}} \u003E 250), TRUE(), FALSE())"
+      }
+    ],
+    "data": [
+      {
+        "ProductId": "gadget-200",
+        "InventoryAdjustments": "gadget-200-2026-04-06-qty75",
+        "Description": "Professional-grade gadget with extended battery life.",
+        "DisplayName": "Pro Gadget",
+        "InvoiceLineItems": "brian-lee-1042-line-1, carla-smith-1024-line-2, brian-lee-1037-line-2",
+        "SKU": "GADGET-200",
+        "Cost": 32,
+        "IsActive": true,
+        "UnitPrice": 89,
+        "Name": "gadget-200",
+        "StockQuantity": 75,
+        "COGS": 2400,
+        "Profit": 57,
+        "Margin": 0.6404494382022472,
+        "CountOfVIPOrders": 2,
+        "IsHighMargin": false,
+        "HasBeenOrderedByVIPCustomers": false
+      },
+      {
+        "ProductId": "hub-7port",
+        "InventoryAdjustments": "hub-7port-2026-04-25-qty240",
+        "Description": "Powered 7-port USB-A hub with individual switches.",
+        "DisplayName": "7-Port USB Hub",
+        "InvoiceLineItems": "brian-lee-1042-line-2, brian-lee-1018-line-1",
+        "SKU": "HUB-7PORT",
+        "Cost": 11.8,
+        "IsActive": true,
+        "UnitPrice": 34.99,
+        "Name": "hub-7port",
+        "StockQuantity": 240,
+        "COGS": 2832,
+        "Profit": 23.19,
+        "Margin": 0.662760788796799,
+        "IsHighMargin": true,
+        "CountOfVIPOrders": 2,
+        "HasBeenOrderedByVIPCustomers": false
+      },
+      {
+        "ProductId": "cable-usb-c",
+        "InventoryAdjustments": "cable-usb-c-2026-04-22-qty1240",
+        "Description": "Two-meter braided USB-C to USB-C cable, 100W power delivery.",
+        "DisplayName": "USB-C Cable (2m)",
+        "InvoiceLineItems": "bob-1001-line-2, alice-johnson-1010-line-4, brian-lee-1018-line-2, caroline-1045-line-3",
+        "SKU": "CABLE-USB-C",
+        "Cost": 3.4,
+        "IsActive": true,
+        "UnitPrice": 12,
+        "Name": "cable-usb-c",
+        "StockQuantity": 1240,
+        "COGS": 4216,
+        "Profit": 8.6,
+        "Margin": 0.7166666666666667,
+        "IsHighMargin": true,
+        "CountOfVIPOrders": 2,
+        "HasBeenOrderedByVIPCustomers": true
+      },
+      {
+        "ProductId": "stand-alu",
+        "InventoryAdjustments": "stand-alu-2026-04-16-qty92",
+        "Description": "Adjustable aluminum stand for laptops and tablets.",
+        "DisplayName": "Aluminum Stand",
+        "InvoiceLineItems": "bob-1001-line-3, carla-smith-1024-line-1, brian-lee-1037-line-1",
+        "SKU": "STAND-ALU",
+        "Cost": 18.75,
+        "IsActive": true,
+        "UnitPrice": 45,
+        "Name": "stand-alu",
+        "StockQuantity": 92,
+        "COGS": 1725,
+        "Profit": 26.25,
+        "Margin": 0.5833333333333333,
+        "CountOfVIPOrders": 1,
+        "IsHighMargin": false,
+        "HasBeenOrderedByVIPCustomers": false
+      },
+      {
+        "ProductId": "widget-002",
+        "InventoryAdjustments": "widget-002-2026-04-01-qty180",
+        "Description": "Premium widget with reinforced housing and extended warranty.",
+        "DisplayName": "Deluxe Widget",
+        "InvoiceLineItems": "alice-johnson-1010-line-2, caroline-1045-line-1",
+        "SKU": "WIDGET-002",
+        "Cost": 14.2,
+        "IsActive": true,
+        "UnitPrice": 39.99,
+        "Name": "widget-002",
+        "StockQuantity": 180,
+        "COGS": 2556,
+        "Profit": 25.790000000000003,
+        "Margin": 0.6449112278069518,
+        "CountOfVIPOrders": 1,
+        "IsHighMargin": false,
+        "HasBeenOrderedByVIPCustomers": false
+      },
+      {
+        "ProductId": "widget-001",
+        "InventoryAdjustments": "widget-001-2026-04-01-qty425",
+        "Description": "Our flagship widget. Multipurpose, durable, and affordable.",
+        "DisplayName": "Standard Widget",
+        "InvoiceLineItems": "bob-1001-line-1, alice-johnson-1010-line-1",
+        "SKU": "WIDGET-001",
+        "Cost": 7.5,
+        "IsActive": true,
+        "UnitPrice": 19.99,
+        "Name": "widget-001",
+        "StockQuantity": 425,
+        "COGS": 3187.5,
+        "Profit": 12.489999999999998,
+        "Margin": 0.6248124062031015,
+        "CountOfVIPOrders": 1,
+        "HasBeenOrderedByVIPCustomers": true,
+        "IsHighMargin": false
+      },
+      {
+        "ProductId": "case-leather",
+        "InventoryAdjustments": "case-leather-2026-04-08-qty0",
+        "Description": "Hand-stitched full-grain leather carrying case.",
+        "DisplayName": "Leather Case",
+        "SKU": "CASE-LEATHER",
+        "Cost": 22.5,
+        "UnitPrice": 65,
+        "Name": "case-leather",
+        "StockQuantity": 0,
+        "COGS": 0,
+        "Profit": 42.5,
+        "Margin": 0.6538461538461539,
+        "IsHighMargin": true,
+        "CountOfVIPOrders": 0,
+        "InvoiceLineItems": "",
+        "IsActive": false,
+        "HasBeenOrderedByVIPCustomers": false
+      },
+      {
+        "ProductId": "gadget-100",
+        "InventoryAdjustments": "gadget-100-2026-04-09-qty612",
+        "Description": "Compact gadget that fits in your pocket. Bestseller for two years running.",
+        "DisplayName": "Pocket Gadget",
+        "InvoiceLineItems": "alice-johnson-1010-line-3, caroline-1045-line-2",
+        "SKU": "GADGET-100",
+        "Cost": 9.1,
+        "IsActive": true,
+        "UnitPrice": 24.5,
+        "Name": "gadget-100",
+        "StockQuantity": 612,
+        "COGS": 5569.2,
+        "Profit": 15.4,
+        "Margin": 0.6285714285714286,
+        "CountOfVIPOrders": 1,
+        "HasBeenOrderedByVIPCustomers": true,
+        "IsHighMargin": false
+      }
+    ]
+  },
+  "Invoices": {
+    "Description": "Table: Invoices",
+    "schema": [
+      {
+        "name": "InvoiceId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Lowercase compound key combining the linked Customer and OrderNumber (e.g. \u0027bob-1001\u0027). Used as the natural key for the order.",
+        "formula": "=LOWER(SUBSTITUTE({{Client}} \u0026 \u0022-\u0022 \u0026 {{invoiceNumber}}, \u0022 \u0022, \u0022-\u0022))"
+      },
+      {
+        "name": "invoiceNumber",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Sequential or human-assigned order identifier (e.g. \u00271001\u0027). Combined with Customer to form the order\u0027s natural key."
+      },
+      {
+        "name": "Client",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Link to the Customer who placed this order.",
+        "RelatedTo": "Clients",
+        "isReversed": false,
+        "prefersSingleRecordLink": true,
+        "InverseField": "Invoices"
+      },
+      {
+        "name": "ClientIsVIP",
+        "datatype": "boolean",
+        "type": "lookup",
+        "nullable": true,
+        "formula": "=INDEX(Clients!{{IsVIP}}, MATCH(Invoices!{{Client}}, Clients!{{ClientId}}, 0))"
+      },
+      {
+        "name": "ClientHastRecentInvoices",
+        "datatype": "boolean",
+        "type": "lookup",
+        "nullable": true,
+        "formula": "=INDEX(Clients!{{HasRecentInvoices}}, MATCH(Invoices!{{Client}}, Clients!{{ClientId}}, 0))"
+      },
+      {
+        "name": "ClientEmail",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "formula": "=INDEX(Clients!{{Email}}, MATCH(Invoices!{{Client}}, Clients!{{ClientId}}, 0))"
+      },
+      {
+        "name": "ClientPhone",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "formula": "=INDEX(Clients!{{Phone}}, MATCH(Invoices!{{Client}}, Clients!{{ClientId}}, 0))"
+      },
+      {
+        "name": "ClientCompanyName",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "formula": "=INDEX(Clients!{{CompanyName}}, MATCH(Invoices!{{Client}}, Clients!{{ClientId}}, 0))"
+      },
+      {
+        "name": "ClientCategoryName",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "formula": "=INDEX(Clients!{{CategoryName}}, MATCH(Invoices!{{Client}}, Clients!{{ClientId}}, 0))"
+      },
+      {
+        "name": "ClientCategoryDiscount",
+        "datatype": "number",
+        "type": "lookup",
+        "nullable": true,
+        "formula": "=INDEX(Clients!{{CategoryDiscount}}, MATCH(Invoices!{{Client}}, Clients!{{ClientId}}, 0))"
+      },
+      {
+        "name": "InvoiceLineItems",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Reverse link to all OrderLineItems on this order.",
+        "RelatedTo": "InvoiceLineItems",
+        "isReversed": false,
+        "prefersSingleRecordLink": false,
+        "InverseField": "Invoice"
+      },
+      {
+        "name": "Payments",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Reverse link to all Payments applied to this order.",
+        "RelatedTo": "Payments",
+        "isReversed": false,
+        "prefersSingleRecordLink": false,
+        "InverseField": "Invoice"
+      },
+      {
+        "name": "OrderDate",
+        "datatype": "datetime",
+        "type": "raw",
+        "nullable": true,
+        "Description": "When the order was placed."
+      },
+      {
+        "name": "OrderStatus",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Lifecycle state of the order."
+      },
+      {
+        "name": "ShippingAddress",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Where this specific order ships to."
+      },
+      {
+        "name": "BillingAddress",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Billing address used for this specific order."
+      },
+      {
+        "name": "Notes",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Free-form notes about this order."
+      },
+      {
+        "name": "ItemCount",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "formula": "=COUNTIFS(InvoiceLineItems!{{Invoice}}, Invoices!{{InvoiceId}})"
+      },
+      {
+        "name": "TotalQuantity",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "formula": "=SUMIFS(InvoiceLineItems!{{Quantity}}, InvoiceLineItems!{{Invoice}}, Invoices!{{InvoiceId}})"
+      },
+      {
+        "name": "SubTotal",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "formula": "=SUMIFS(InvoiceLineItems!{{SubTotal}}, InvoiceLineItems!{{Invoice}}, Invoices!{{InvoiceId}})"
+      },
+      {
+        "name": "IsBigOrder",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "formula": "={{SubTotal}} \u003E 350"
+      },
+      {
+        "name": "TaxRate",
+        "datatype": "number",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Sales tax rate applied to this order.",
+        "formula": "=INDEX(Clients!{{BillingAddressStateTaxRate}}, MATCH(Invoices!{{Client}}, Clients!{{ClientId}}, 0))"
+      },
+      {
+        "name": "TaxAmount",
+        "datatype": "number",
+        "type": "calculated",
+        "nullable": true,
+        "formula": "={{SubTotal}} * {{TaxRate}}"
+      },
+      {
+        "name": "InvoiceTotal",
+        "datatype": "number",
+        "type": "calculated",
+        "nullable": true,
+        "formula": "={{SubTotal}} \u002B {{TaxAmount}}"
+      },
+      {
+        "name": "TotalPaid",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "formula": "=SUMIFS(Payments!{{CompletedAmount}}, Payments!{{Invoice}}, Invoices!{{InvoiceId}})"
+      },
+      {
+        "name": "AmountDue",
+        "datatype": "number",
+        "type": "calculated",
+        "nullable": true,
+        "formula": "=ROUND({{InvoiceTotal}} - {{TotalPaid}}, 2)"
+      },
+      {
+        "name": "IsPaidInFull",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "formula": "=IF({{AmountDue}} \u003C= 0, TRUE(), FALSE())"
+      },
+      {
+        "name": "PaymentCount",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "formula": "=COUNTIFS(Payments!{{Invoice}}, Invoices!{{InvoiceId}})"
+      },
+      {
+        "name": "LastPaymentDate",
+        "datatype": "datetime",
+        "type": "aggregation",
+        "nullable": true,
+        "formula": "=SUMIFS(Payments!{{PaymentDate}}, Payments!{{Invoice}}, Invoices!{{InvoiceId}})"
+      },
+      {
+        "name": "PaymentStatusLabel",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "formula": "=IF({{IsPaidInFull}}, \u0022Paid\u0022, IF({{TotalPaid}} = 0, \u0022Unpaid\u0022, \u0022Partial\u0022))"
+      }
+    ],
+    "data": [
+      {
+        "InvoiceId": "brian-lee-1042",
+        "ShippingAddress": "742 Evergreen Terrace\nSpringfield, OR 97477",
+        "OrderDate": "2026-02-20T13:15:00Z",
+        "OrderStatus": "Pending",
+        "Notes": "Awaiting payment confirmation. Customer is on-hold.",
+        "InvoiceLineItems": "brian-lee-1042-line-1, brian-lee-1042-line-2",
+        "BillingAddress": "742 Evergreen Terrace\nSpringfield, OR 97477",
+        "invoiceNumber": "1042",
+        "Payments": "brian-lee-1042-pmt-1",
+        "Client": "brian-lee",
+        "Name": "brian-lee-1042",
+        "ClientCategoryDiscount": "0",
+        "SubTotal": 123.99000000000001,
+        "TaxRate": "0.0625",
+        "TaxAmount": 7.749375000000001,
+        "InvoiceTotal": 131.739375,
+        "ClientIsVIP": "True",
+        "ItemCount": 2,
+        "TotalQuantity": 2,
+        "PaymentCount": 1,
+        "LastPaymentDate": "2026-02-20",
+        "TotalPaid": 0,
+        "AmountDue": 131.74,
+        "PaymentStatusLabel": "Unpaid",
+        "ClientCategoryName": "Prospect",
+        "ClientCompanyName": "Contoso Manufacturing",
+        "ClientPhone": "\u002B1-512-555-0177",
+        "ClientEmail": "brian.lee@contoso.example",
+        "ClientHastRecentInvoices": "True",
+        "IsBigOrder": false,
+        "IsPaidInFull": false
+      },
+      {
+        "InvoiceId": "caroline-1045",
+        "ShippingAddress": "23 Hudson Lane\nBrooklyn, NY 11201",
+        "OrderDate": "2026-03-12T10:00:00Z",
+        "OrderStatus": "New",
+        "Notes": "First-time customer. Marketing wants white-glove handling.",
+        "InvoiceLineItems": "caroline-1045-line-1, caroline-1045-line-2, caroline-1045-line-3",
+        "BillingAddress": "23 Hudson Lane\nBrooklyn, NY 11201",
+        "invoiceNumber": "1045",
+        "Payments": "caroline-1045-pmt-1, caroline-1045-pmt-2",
+        "Client": "caroline",
+        "Name": "caroline-1045",
+        "ClientCategoryDiscount": "0.15",
+        "SubTotal": 99.00800000000001,
+        "TaxRate": "0.04",
+        "TaxAmount": 3.9603200000000003,
+        "InvoiceTotal": 102.96832,
+        "ItemCount": 3,
+        "TotalQuantity": 4,
+        "PaymentCount": 2,
+        "LastPaymentDate": "2026-03-12",
+        "TotalPaid": 126.82,
+        "AmountDue": -23.85,
+        "IsPaidInFull": true,
+        "PaymentStatusLabel": "Paid",
+        "ClientCategoryName": "Gold",
+        "ClientCompanyName": "Solo Studio",
+        "ClientPhone": "\u002B1-718-555-0199",
+        "ClientEmail": "caroline@solo.example",
+        "ClientHastRecentInvoices": "True",
+        "ClientIsVIP": false,
+        "IsBigOrder": false
+      },
+      {
+        "InvoiceId": "alice-johnson-1010",
+        "ShippingAddress": "500 Pine St, Suite 200\nSeattle, WA 98101",
+        "OrderDate": "2025-10-05T09:00:00Z",
+        "OrderStatus": "Shipped",
+        "Notes": "Bulk order for Q4 inventory.",
+        "InvoiceLineItems": "alice-johnson-1010-line-1, alice-johnson-1010-line-2, alice-johnson-1010-line-3, alice-johnson-1010-line-4",
+        "BillingAddress": "500 Pine St, Suite 200\nSeattle, WA 98101",
+        "invoiceNumber": "1010",
+        "Payments": "alice-johnson-1010-pmt-1, alice-johnson-1010-pmt-2",
+        "Client": "alice-johnson",
+        "Name": "alice-johnson-1010",
+        "ClientCategoryDiscount": "0.05",
+        "SubTotal": 5081.787499999999,
+        "IsBigOrder": true,
+        "TaxRate": "0.065",
+        "TaxAmount": 330.31618749999996,
+        "InvoiceTotal": 5412.103687499999,
+        "ClientIsVIP": "True",
+        "ItemCount": 4,
+        "TotalQuantity": 250,
+        "PaymentCount": 2,
+        "LastPaymentDate": "2025-10-12",
+        "TotalPaid": 4770.4400000000005,
+        "AmountDue": 641.66,
+        "PaymentStatusLabel": "Partial",
+        "ClientCategoryName": "Active",
+        "ClientCompanyName": "Northwind Traders",
+        "ClientPhone": "\u002B1-206-555-0142",
+        "ClientEmail": "alice.johnson@northwind.example",
+        "ClientHastRecentInvoices": "True",
+        "IsPaidInFull": false
+      },
+      {
+        "InvoiceId": "bob-1001",
+        "ShippingAddress": "742 Evergreen Terrace\nSpringfield, OR 97477",
+        "OrderDate": "2025-09-15T10:30:00Z",
+        "OrderStatus": "Delivered",
+        "Notes": "Customer requested gift wrap.",
+        "InvoiceLineItems": "bob-1001-line-1, bob-1001-line-2, bob-1001-line-3",
+        "BillingAddress": "742 Evergreen Terrace\nSpringfield, OR 97477",
+        "invoiceNumber": "1001",
+        "Payments": "bob-1001-pmt-1",
+        "Client": "bob",
+        "Name": "bob-1001",
+        "ClientCategoryDiscount": "0.05",
+        "SubTotal": 141.512,
+        "TaxRate": "0.0625",
+        "TaxAmount": 8.8445,
+        "InvoiceTotal": 150.3565,
+        "ItemCount": 3,
+        "TotalQuantity": 7,
+        "PaymentCount": 1,
+        "LastPaymentDate": "2025-09-15",
+        "TotalPaid": 156.74,
+        "AmountDue": -6.38,
+        "IsPaidInFull": true,
+        "PaymentStatusLabel": "Paid",
+        "ClientCategoryName": "Active",
+        "ClientCompanyName": "Launchpad LLC",
+        "ClientPhone": "\u002B1-415-555-0101",
+        "ClientEmail": "bob@launchpad.example",
+        "ClientIsVIP": false,
+        "ClientHastRecentInvoices": false,
+        "IsBigOrder": false
+      },
+      {
+        "InvoiceId": "carla-smith-1024",
+        "ShippingAddress": "1200 Ocean Dr\nMiami, FL 33139",
+        "OrderDate": "2025-12-01T11:20:00Z",
+        "OrderStatus": "Returned",
+        "Notes": "Customer reported damaged shipment; full return processed.",
+        "InvoiceLineItems": "carla-smith-1024-line-1, carla-smith-1024-line-2",
+        "BillingAddress": "1200 Ocean Dr\nMiami, FL 33139",
+        "invoiceNumber": "1024",
+        "Payments": "carla-smith-1024-pmt-1",
+        "Client": "carla-smith",
+        "Name": "carla-smith-1024",
+        "ClientCategoryDiscount": "0.05",
+        "SubTotal": 212.8,
+        "TaxRate": "0.06",
+        "TaxAmount": 12.768,
+        "InvoiceTotal": 225.568,
+        "ItemCount": 2,
+        "TotalQuantity": 4,
+        "PaymentCount": 1,
+        "LastPaymentDate": "2025-12-01",
+        "TotalPaid": 0,
+        "AmountDue": 225.57,
+        "PaymentStatusLabel": "Unpaid",
+        "ClientCategoryName": "Active",
+        "ClientCompanyName": "Bluewave Logistics",
+        "ClientPhone": "\u002B1-305-555-0188",
+        "ClientEmail": "carla.smith@bluewave.example",
+        "ClientHastRecentInvoices": "True",
+        "ClientIsVIP": false,
+        "IsBigOrder": false,
+        "IsPaidInFull": false
+      },
+      {
+        "InvoiceId": "brian-lee-1037",
+        "ShippingAddress": "1200 Ocean Dr\nMiami, FL 33139",
+        "OrderDate": "2026-01-28T14:00:00Z",
+        "OrderStatus": "Processing",
+        "Notes": "Replacement order following 1024.",
+        "InvoiceLineItems": "brian-lee-1037-line-1, brian-lee-1037-line-2",
+        "BillingAddress": "1200 Ocean Dr\nMiami, FL 33139",
+        "invoiceNumber": "1037",
+        "Payments": "brian-lee-1037-pmt-1",
+        "Client": "brian-lee",
+        "Name": "brian-lee-1037",
+        "ClientCategoryDiscount": "0",
+        "SubTotal": 1025,
+        "IsBigOrder": true,
+        "TaxRate": "0.0625",
+        "TaxAmount": 64.0625,
+        "InvoiceTotal": 1089.0625,
+        "ClientIsVIP": "True",
+        "ItemCount": 2,
+        "TotalQuantity": 13,
+        "PaymentCount": 1,
+        "LastPaymentDate": "2026-01-28",
+        "TotalPaid": 203.73,
+        "AmountDue": 885.33,
+        "PaymentStatusLabel": "Partial",
+        "ClientCategoryName": "Prospect",
+        "ClientCompanyName": "Contoso Manufacturing",
+        "ClientPhone": "\u002B1-512-555-0177",
+        "ClientEmail": "brian.lee@contoso.example",
+        "ClientHastRecentInvoices": "True",
+        "IsPaidInFull": false
+      },
+      {
+        "InvoiceId": "brian-lee-1018",
+        "ShippingAddress": "90 Industrial Way (Loading Dock B)\nAustin, TX 78701",
+        "OrderDate": "2025-11-12T15:45:00Z",
+        "OrderStatus": "Delivered",
+        "Notes": "Deliver to loading dock B between 8am-4pm.",
+        "InvoiceLineItems": "brian-lee-1018-line-1, brian-lee-1018-line-2",
+        "BillingAddress": "88 Industrial Way\nAustin, TX 78701",
+        "invoiceNumber": "1018",
+        "Payments": "brian-lee-1018-pmt-1",
+        "Client": "brian-lee",
+        "Name": "brian-lee-1018",
+        "ClientCategoryDiscount": "0",
+        "SubTotal": 707.88,
+        "IsBigOrder": true,
+        "TaxRate": "0.0625",
+        "TaxAmount": 44.2425,
+        "InvoiceTotal": 752.1225,
+        "ClientIsVIP": "True",
+        "ItemCount": 2,
+        "TotalQuantity": 36,
+        "PaymentCount": 1,
+        "LastPaymentDate": "2025-11-15",
+        "TotalPaid": 649.51,
+        "AmountDue": 102.61,
+        "PaymentStatusLabel": "Partial",
+        "ClientCategoryName": "Prospect",
+        "ClientCompanyName": "Contoso Manufacturing",
+        "ClientPhone": "\u002B1-512-555-0177",
+        "ClientEmail": "brian.lee@contoso.example",
+        "ClientHastRecentInvoices": "True",
+        "IsPaidInFull": false
+      }
+    ]
+  },
+  "InvoiceLineItems": {
+    "Description": "Table: InvoiceLineItems",
+    "schema": [
+      {
+        "name": "InvoiceLineItemId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Lowercase compound key combining the linked Order and LineNumber (e.g. \u0027bob-1001-line-1\u0027). Used as the natural key for the line item.",
+        "formula": "=LOWER(SUBSTITUTE({{Invoice}} \u0026 \u0022-line-\u0022 \u0026 {{LineNumber}}, \u0022 \u0022, \u0022-\u0022))"
+      },
+      {
+        "name": "LineNumber",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Position of this line within its parent Order (e.g. \u00271\u0027, \u00272\u0027). Combined with Order to form the line item\u0027s natural key."
+      },
+      {
+        "name": "Invoice",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Link to the parent Order this line item belongs to.",
+        "RelatedTo": "Invoices",
+        "isReversed": false,
+        "prefersSingleRecordLink": true,
+        "InverseField": "InvoiceLineItems"
+      },
+      {
+        "name": "ClientIsVIP",
+        "datatype": "boolean",
+        "type": "lookup",
+        "nullable": true,
+        "formula": "=INDEX(Invoices!{{ClientIsVIP}}, MATCH(InvoiceLineItems!{{Invoice}}, Invoices!{{InvoiceId}}, 0))"
+      },
+      {
+        "name": "ClientHastRecentInvoices",
+        "datatype": "boolean",
+        "type": "lookup",
+        "nullable": true,
+        "formula": "=INDEX(Invoices!{{ClientHastRecentInvoices}}, MATCH(InvoiceLineItems!{{Invoice}}, Invoices!{{InvoiceId}}, 0))"
+      },
+      {
+        "name": "invoiceNumber",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "formula": "=INDEX(Invoices!{{invoiceNumber}}, MATCH(InvoiceLineItems!{{Invoice}}, Invoices!{{InvoiceId}}, 0))"
+      },
+      {
+        "name": "InvoiceTotal",
+        "datatype": "number",
+        "type": "lookup",
+        "nullable": true,
+        "formula": "=INDEX(Invoices!{{InvoiceTotal}}, MATCH(InvoiceLineItems!{{Invoice}}, Invoices!{{InvoiceId}}, 0))"
+      },
+      {
+        "name": "InvoiceTotalPaid",
+        "datatype": "number",
+        "type": "lookup",
+        "nullable": true,
+        "formula": "=INDEX(Invoices!{{TotalPaid}}, MATCH(InvoiceLineItems!{{Invoice}}, Invoices!{{InvoiceId}}, 0))"
+      },
+      {
+        "name": "Product",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Link to the Product being ordered on this line.",
+        "RelatedTo": "Products",
+        "isReversed": false,
+        "prefersSingleRecordLink": true,
+        "InverseField": "InvoiceLineItems"
+      },
+      {
+        "name": "ProductSKU",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "formula": "=INDEX(Products!{{SKU}}, MATCH(InvoiceLineItems!{{Product}}, Products!{{ProductId}}, 0))"
+      },
+      {
+        "name": "ProductDisplayName",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "formula": "=INDEX(Products!{{DisplayName}}, MATCH(InvoiceLineItems!{{Product}}, Products!{{ProductId}}, 0))"
+      },
+      {
+        "name": "Quantity",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Number of units ordered on this line."
+      },
+      {
+        "name": "UnitPrice",
+        "datatype": "number",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Price per unit captured at the time of ordering (may differ from current Product.UnitPrice).",
+        "formula": "=INDEX(Products!{{UnitPrice}}, MATCH(InvoiceLineItems!{{Product}}, Products!{{ProductId}}, 0))"
+      },
+      {
+        "name": "PreDiscount",
+        "datatype": "number",
+        "type": "calculated",
+        "nullable": true,
+        "formula": "={{Quantity}} * {{UnitPrice}}"
+      },
+      {
+        "name": "DiscountPercent",
+        "datatype": "number",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Per-line discount applied to this item.",
+        "formula": "=INDEX(Invoices!{{ClientCategoryDiscount}}, MATCH(InvoiceLineItems!{{Invoice}}, Invoices!{{InvoiceId}}, 0))"
+      },
+      {
+        "name": "DiscountAmount",
+        "datatype": "number",
+        "type": "calculated",
+        "nullable": true,
+        "formula": "={{PreDiscount}} * {{DiscountPercent}}"
+      },
+      {
+        "name": "SubTotal",
+        "datatype": "number",
+        "type": "calculated",
+        "nullable": true,
+        "formula": "={{PreDiscount}} - {{DiscountAmount}}"
+      },
+      {
+        "name": "Notes",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Free-form notes about this line item."
+      }
+    ],
+    "data": [
+      {
+        "InvoiceLineItemId": "brian-lee-1037-line-2",
+        "Invoice": "brian-lee-1037",
+        "Quantity": 10,
+        "Notes": "Goodwill discount for prior return.",
+        "LineNumber": "2",
+        "Product": "gadget-200",
+        "Name": "brian-lee-1037-line-2",
+        "UnitPrice": "89",
+        "PreDiscount": 890,
+        "DiscountPercent": "0",
+        "DiscountAmount": 0,
+        "SubTotal": 890,
+        "ClientIsVIP": "True",
+        "ProductDisplayName": "Pro Gadget",
+        "ProductSKU": "GADGET-200",
+        "InvoiceTotalPaid": "203.73",
+        "InvoiceTotal": "1089.0625",
+        "invoiceNumber": "1037",
+        "ClientHastRecentInvoices": "True"
+      },
+      {
+        "InvoiceLineItemId": "carla-smith-1024-line-2",
+        "Invoice": "carla-smith-1024",
+        "Quantity": 1,
+        "Notes": "Returned: damaged in transit.",
+        "LineNumber": "2",
+        "Product": "gadget-200",
+        "Name": "carla-smith-1024-line-2",
+        "UnitPrice": "89",
+        "PreDiscount": 89,
+        "DiscountPercent": "0.05",
+        "DiscountAmount": 4.45,
+        "SubTotal": 84.55,
+        "ProductDisplayName": "Pro Gadget",
+        "ProductSKU": "GADGET-200",
+        "InvoiceTotalPaid": "0",
+        "InvoiceTotal": "225.568",
+        "invoiceNumber": "1024",
+        "ClientHastRecentInvoices": "True",
+        "ClientIsVIP": false
+      },
+      {
+        "InvoiceLineItemId": "caroline-1045-line-3",
+        "Invoice": "caroline-1045",
+        "Quantity": 1,
+        "Notes": "Free with welcome bundle.",
+        "LineNumber": "3",
+        "Product": "cable-usb-c",
+        "Name": "caroline-1045-line-3",
+        "UnitPrice": "12",
+        "PreDiscount": 12,
+        "DiscountPercent": "0.15",
+        "DiscountAmount": 1.7999999999999998,
+        "SubTotal": 10.2,
+        "ProductDisplayName": "USB-C Cable (2m)",
+        "ProductSKU": "CABLE-USB-C",
+        "InvoiceTotalPaid": "126.82",
+        "InvoiceTotal": "102.96832",
+        "invoiceNumber": "1045",
+        "ClientHastRecentInvoices": "True",
+        "ClientIsVIP": false
+      },
+      {
+        "InvoiceLineItemId": "brian-lee-1037-line-1",
+        "Invoice": "brian-lee-1037",
+        "Quantity": 3,
+        "Notes": "Goodwill discount for prior return.",
+        "LineNumber": "1",
+        "Product": "stand-alu",
+        "Name": "brian-lee-1037-line-1",
+        "UnitPrice": "45",
+        "PreDiscount": 135,
+        "DiscountPercent": "0",
+        "DiscountAmount": 0,
+        "SubTotal": 135,
+        "ClientIsVIP": "True",
+        "ProductDisplayName": "Aluminum Stand",
+        "ProductSKU": "STAND-ALU",
+        "InvoiceTotalPaid": "203.73",
+        "InvoiceTotal": "1089.0625",
+        "invoiceNumber": "1037",
+        "ClientHastRecentInvoices": "True"
+      },
+      {
+        "InvoiceLineItemId": "alice-johnson-1010-line-2",
+        "Invoice": "alice-johnson-1010",
+        "Quantity": 25,
+        "Notes": "Bulk pricing tier 1.",
+        "LineNumber": "2",
+        "Product": "widget-002",
+        "Name": "alice-johnson-1010-line-2",
+        "UnitPrice": "39.99",
+        "PreDiscount": 999.75,
+        "DiscountPercent": "0.05",
+        "DiscountAmount": 49.987500000000004,
+        "SubTotal": 949.7625,
+        "ClientIsVIP": "True",
+        "ProductDisplayName": "Deluxe Widget",
+        "ProductSKU": "WIDGET-002",
+        "InvoiceTotalPaid": "4770.4400000000005",
+        "InvoiceTotal": "5412.103687499999",
+        "invoiceNumber": "1010",
+        "ClientHastRecentInvoices": "True"
+      },
+      {
+        "InvoiceLineItemId": "brian-lee-1018-line-2",
+        "Invoice": "brian-lee-1018",
+        "Quantity": 24,
+        "Notes": "Volume discount.",
+        "LineNumber": "2",
+        "Product": "cable-usb-c",
+        "Name": "brian-lee-1018-line-2",
+        "UnitPrice": "12",
+        "PreDiscount": 288,
+        "DiscountPercent": "0",
+        "DiscountAmount": 0,
+        "SubTotal": 288,
+        "ClientIsVIP": "True",
+        "ProductDisplayName": "USB-C Cable (2m)",
+        "ProductSKU": "CABLE-USB-C",
+        "InvoiceTotalPaid": "649.51",
+        "InvoiceTotal": "752.1225",
+        "invoiceNumber": "1018",
+        "ClientHastRecentInvoices": "True"
+      },
+      {
+        "InvoiceLineItemId": "brian-lee-1042-line-1",
+        "Invoice": "brian-lee-1042",
+        "Quantity": 1,
+        "Notes": "Backordered until 2026-04-15.",
+        "LineNumber": "1",
+        "Product": "gadget-200",
+        "Name": "brian-lee-1042-line-1",
+        "UnitPrice": "89",
+        "PreDiscount": 89,
+        "DiscountPercent": "0",
+        "DiscountAmount": 0,
+        "SubTotal": 89,
+        "ClientIsVIP": "True",
+        "ProductDisplayName": "Pro Gadget",
+        "ProductSKU": "GADGET-200",
+        "InvoiceTotalPaid": "0",
+        "InvoiceTotal": "131.739375",
+        "invoiceNumber": "1042",
+        "ClientHastRecentInvoices": "True"
+      },
+      {
+        "InvoiceLineItemId": "brian-lee-1018-line-1",
+        "Invoice": "brian-lee-1018",
+        "Quantity": 12,
+        "Notes": "Volume discount.",
+        "LineNumber": "1",
+        "Product": "hub-7port",
+        "Name": "brian-lee-1018-line-1",
+        "UnitPrice": "34.99",
+        "PreDiscount": 419.88,
+        "DiscountPercent": "0",
+        "DiscountAmount": 0,
+        "SubTotal": 419.88,
+        "ClientIsVIP": "True",
+        "ProductDisplayName": "7-Port USB Hub",
+        "ProductSKU": "HUB-7PORT",
+        "InvoiceTotalPaid": "649.51",
+        "InvoiceTotal": "752.1225",
+        "invoiceNumber": "1018",
+        "ClientHastRecentInvoices": "True"
+      },
+      {
+        "InvoiceLineItemId": "caroline-1045-line-2",
+        "Invoice": "caroline-1045",
+        "Quantity": 1,
+        "LineNumber": "2",
+        "Product": "gadget-100",
+        "Name": "caroline-1045-line-2",
+        "UnitPrice": "24.5",
+        "PreDiscount": 24.5,
+        "DiscountPercent": "0.15",
+        "DiscountAmount": 3.675,
+        "SubTotal": 20.825,
+        "ProductDisplayName": "Pocket Gadget",
+        "ProductSKU": "GADGET-100",
+        "InvoiceTotalPaid": "126.82",
+        "InvoiceTotal": "102.96832",
+        "invoiceNumber": "1045",
+        "ClientHastRecentInvoices": "True",
+        "ClientIsVIP": false,
+        "Notes": ""
+      },
+      {
+        "InvoiceLineItemId": "bob-1001-line-2",
+        "Invoice": "bob-1001",
+        "Quantity": 2,
+        "Notes": "Add to gift wrap.",
+        "LineNumber": "2",
+        "Product": "cable-usb-c",
+        "Name": "bob-1001-line-2",
+        "UnitPrice": "12",
+        "PreDiscount": 24,
+        "DiscountPercent": "0.05",
+        "DiscountAmount": 1.2000000000000002,
+        "SubTotal": 22.8,
+        "ProductDisplayName": "USB-C Cable (2m)",
+        "ProductSKU": "CABLE-USB-C",
+        "InvoiceTotalPaid": "156.74",
+        "InvoiceTotal": "150.3565",
+        "invoiceNumber": "1001",
+        "ClientIsVIP": false,
+        "ClientHastRecentInvoices": false
+      },
+      {
+        "InvoiceLineItemId": "carla-smith-1024-line-1",
+        "Invoice": "carla-smith-1024",
+        "Quantity": 3,
+        "Notes": "Returned: damaged in transit.",
+        "LineNumber": "1",
+        "Product": "stand-alu",
+        "Name": "carla-smith-1024-line-1",
+        "UnitPrice": "45",
+        "PreDiscount": 135,
+        "DiscountPercent": "0.05",
+        "DiscountAmount": 6.75,
+        "SubTotal": 128.25,
+        "ProductDisplayName": "Aluminum Stand",
+        "ProductSKU": "STAND-ALU",
+        "InvoiceTotalPaid": "0",
+        "InvoiceTotal": "225.568",
+        "invoiceNumber": "1024",
+        "ClientHastRecentInvoices": "True",
+        "ClientIsVIP": false
+      },
+      {
+        "InvoiceLineItemId": "caroline-1045-line-1",
+        "Invoice": "caroline-1045",
+        "Quantity": 2,
+        "Notes": "First-order welcome bundle.",
+        "LineNumber": "1",
+        "Product": "widget-002",
+        "Name": "caroline-1045-line-1",
+        "UnitPrice": "39.99",
+        "PreDiscount": 79.98,
+        "DiscountPercent": "0.15",
+        "DiscountAmount": 11.997,
+        "SubTotal": 67.983,
+        "ProductDisplayName": "Deluxe Widget",
+        "ProductSKU": "WIDGET-002",
+        "InvoiceTotalPaid": "126.82",
+        "InvoiceTotal": "102.96832",
+        "invoiceNumber": "1045",
+        "ClientHastRecentInvoices": "True",
+        "ClientIsVIP": false
+      },
+      {
+        "InvoiceLineItemId": "alice-johnson-1010-line-1",
+        "Invoice": "alice-johnson-1010",
+        "Quantity": 50,
+        "Notes": "Bulk pricing tier 1.",
+        "LineNumber": "1",
+        "Product": "widget-001",
+        "Name": "alice-johnson-1010-line-1",
+        "UnitPrice": "19.99",
+        "PreDiscount": 999.4999999999999,
+        "DiscountPercent": "0.05",
+        "DiscountAmount": 49.974999999999994,
+        "SubTotal": 949.5249999999999,
+        "ClientIsVIP": "True",
+        "ProductDisplayName": "Standard Widget",
+        "ProductSKU": "WIDGET-001",
+        "InvoiceTotalPaid": "4770.4400000000005",
+        "InvoiceTotal": "5412.103687499999",
+        "invoiceNumber": "1010",
+        "ClientHastRecentInvoices": "True"
+      },
+      {
+        "InvoiceLineItemId": "bob-1001-line-3",
+        "Invoice": "bob-1001",
+        "Quantity": 1,
+        "Notes": "Loyalty discount applied.",
+        "LineNumber": "3",
+        "Product": "stand-alu",
+        "Name": "bob-1001-line-3",
+        "UnitPrice": "45",
+        "PreDiscount": 45,
+        "DiscountPercent": "0.05",
+        "DiscountAmount": 2.25,
+        "SubTotal": 42.75,
+        "ProductDisplayName": "Aluminum Stand",
+        "ProductSKU": "STAND-ALU",
+        "InvoiceTotalPaid": "156.74",
+        "InvoiceTotal": "150.3565",
+        "invoiceNumber": "1001",
+        "ClientIsVIP": false,
+        "ClientHastRecentInvoices": false
+      },
+      {
+        "InvoiceLineItemId": "alice-johnson-1010-line-3",
+        "Invoice": "alice-johnson-1010",
+        "Quantity": 100,
+        "Notes": "Bulk pricing tier 2.",
+        "LineNumber": "3",
+        "Product": "gadget-100",
+        "Name": "alice-johnson-1010-line-3",
+        "UnitPrice": "24.5",
+        "PreDiscount": 2450,
+        "DiscountPercent": "0.05",
+        "DiscountAmount": 122.5,
+        "SubTotal": 2327.5,
+        "ClientIsVIP": "True",
+        "ProductDisplayName": "Pocket Gadget",
+        "ProductSKU": "GADGET-100",
+        "InvoiceTotalPaid": "4770.4400000000005",
+        "InvoiceTotal": "5412.103687499999",
+        "invoiceNumber": "1010",
+        "ClientHastRecentInvoices": "True"
+      },
+      {
+        "InvoiceLineItemId": "brian-lee-1042-line-2",
+        "Invoice": "brian-lee-1042",
+        "Quantity": 1,
+        "LineNumber": "2",
+        "Product": "hub-7port",
+        "Name": "brian-lee-1042-line-2",
+        "UnitPrice": "34.99",
+        "PreDiscount": 34.99,
+        "DiscountPercent": "0",
+        "DiscountAmount": 0,
+        "SubTotal": 34.99,
+        "ClientIsVIP": "True",
+        "ProductDisplayName": "7-Port USB Hub",
+        "ProductSKU": "HUB-7PORT",
+        "InvoiceTotalPaid": "0",
+        "InvoiceTotal": "131.739375",
+        "invoiceNumber": "1042",
+        "ClientHastRecentInvoices": "True",
+        "Notes": ""
+      },
+      {
+        "InvoiceLineItemId": "bob-1001-line-1",
+        "Invoice": "bob-1001",
+        "Quantity": 4,
+        "Notes": "Standard packaging.",
+        "LineNumber": "1",
+        "Product": "widget-001",
+        "Name": "bob-1001-line-1",
+        "UnitPrice": "19.99",
+        "PreDiscount": 79.96,
+        "DiscountPercent": "0.05",
+        "DiscountAmount": 3.9979999999999998,
+        "SubTotal": 75.96199999999999,
+        "ProductDisplayName": "Standard Widget",
+        "ProductSKU": "WIDGET-001",
+        "InvoiceTotalPaid": "156.74",
+        "InvoiceTotal": "150.3565",
+        "invoiceNumber": "1001",
+        "ClientIsVIP": false,
+        "ClientHastRecentInvoices": false
+      },
+      {
+        "InvoiceLineItemId": "alice-johnson-1010-line-4",
+        "Invoice": "alice-johnson-1010",
+        "Quantity": 75,
+        "Notes": "Bulk pricing tier 2.",
+        "LineNumber": "4",
+        "Product": "cable-usb-c",
+        "Name": "alice-johnson-1010-line-4",
+        "UnitPrice": "12",
+        "PreDiscount": 900,
+        "DiscountPercent": "0.05",
+        "DiscountAmount": 45,
+        "SubTotal": 855,
+        "ClientIsVIP": "True",
+        "ProductDisplayName": "USB-C Cable (2m)",
+        "ProductSKU": "CABLE-USB-C",
+        "InvoiceTotalPaid": "4770.4400000000005",
+        "InvoiceTotal": "5412.103687499999",
+        "invoiceNumber": "1010",
+        "ClientHastRecentInvoices": "True"
+      }
+    ]
+  },
+  "InventoryAdjustments": {
+    "Description": "Table: InventoryAdjustments",
+    "schema": [
+      {
+        "name": "InventoryAdjustmentId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "Adjustment_Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "formula": "={{Product}} \u0026 \u0022-\u0022 \u0026 LEFT({{Date}}, 10) \u0026 \u0022-qty\u0022 \u0026 {{Quantity}}"
+      },
+      {
+        "name": "Product",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "RelatedTo": "Products",
+        "isReversed": false,
+        "prefersSingleRecordLink": true,
+        "InverseField": "InventoryAdjustments"
+      },
+      {
+        "name": "Date",
+        "datatype": "datetime",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "AdjustmentType",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "Quantity",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "Reason",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "Notes",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "Adjusted_By",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true
+      }
+    ],
+    "data": [
+      {
+        "InventoryAdjustmentId": "widget-002-2026-04-01-qty180",
+        "AdjustmentType": "Correction",
+        "Date": "2026-04-01T22:10:00Z",
+        "Product": "widget-002",
+        "Reason": "Transfer",
+        "Adjusted_By": "bob",
+        "Quantity": 180,
+        "Adjustment_Name": "widget-002-2026-04-01-qty180",
+        "Notes": ""
+      },
+      {
+        "InventoryAdjustmentId": "hub-7port-2026-04-25-qty240",
+        "AdjustmentType": "Correction",
+        "Date": "2026-04-25T22:11:00Z",
+        "Product": "hub-7port",
+        "Reason": "Transfer",
+        "Adjusted_By": "larry",
+        "Quantity": 240,
+        "Adjustment_Name": "hub-7port-2026-04-25-qty240",
+        "Notes": ""
+      },
+      {
+        "InventoryAdjustmentId": "gadget-100-2026-04-09-qty612",
+        "AdjustmentType": "Correction",
+        "Date": "2026-04-09T22:10:00Z",
+        "Product": "gadget-100",
+        "Reason": "Transfer",
+        "Adjusted_By": "larry",
+        "Quantity": 612,
+        "Adjustment_Name": "gadget-100-2026-04-09-qty612",
+        "Notes": ""
+      },
+      {
+        "InventoryAdjustmentId": "gadget-200-2026-04-06-qty75",
+        "AdjustmentType": "Correction",
+        "Date": "2026-04-06T22:10:00Z",
+        "Product": "gadget-200",
+        "Reason": "Transfer",
+        "Adjusted_By": "ej",
+        "Quantity": 75,
+        "Adjustment_Name": "gadget-200-2026-04-06-qty75",
+        "Notes": ""
+      },
+      {
+        "InventoryAdjustmentId": "case-leather-2026-04-08-qty0",
+        "AdjustmentType": "Correction",
+        "Date": "2026-04-08T22:11:00Z",
+        "Product": "case-leather",
+        "Reason": "Transfer",
+        "Adjusted_By": "bob",
+        "Quantity": 0,
+        "Adjustment_Name": "case-leather-2026-04-08-qty0",
+        "Notes": ""
+      },
+      {
+        "InventoryAdjustmentId": "widget-001-2026-04-01-qty425",
+        "AdjustmentType": "Correction",
+        "Date": "2026-04-01T22:10:00Z",
+        "Product": "widget-001",
+        "Reason": "Transfer",
+        "Adjusted_By": "ej",
+        "Quantity": 425,
+        "Adjustment_Name": "widget-001-2026-04-01-qty425",
+        "Notes": ""
+      },
+      {
+        "InventoryAdjustmentId": "cable-usb-c-2026-04-22-qty1240",
+        "AdjustmentType": "Correction",
+        "Date": "2026-04-22T22:11:00Z",
+        "Product": "cable-usb-c",
+        "Reason": "Transfer",
+        "Adjusted_By": "bob",
+        "Quantity": 1240,
+        "Adjustment_Name": "cable-usb-c-2026-04-22-qty1240",
+        "Notes": ""
+      },
+      {
+        "InventoryAdjustmentId": "stand-alu-2026-04-16-qty92",
+        "AdjustmentType": "Correction",
+        "Date": "2026-04-16T22:10:00Z",
+        "Product": "stand-alu",
+        "Reason": "Transfer",
+        "Adjusted_By": "b",
+        "Quantity": 92,
+        "Adjustment_Name": "stand-alu-2026-04-16-qty92",
+        "Notes": ""
+      }
+    ]
+  },
+  "Payments": {
+    "Description": "Table: Payments",
+    "schema": [
+      {
+        "name": "PaymentId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Lowercase compound key combining the linked Order and PaymentNumber (e.g. \u0027bob-1001-pmt-1\u0027). Used as the natural key for the payment.",
+        "formula": "=LOWER(SUBSTITUTE({{Invoice}} \u0026 \u0022-pmt-\u0022 \u0026 {{PaymentNumber}}, \u0022 \u0022, \u0022-\u0022))"
+      },
+      {
+        "name": "PaymentNumber",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Sequential payment identifier within the parent Order (e.g. \u00271\u0027, \u00272\u0027). Combined with Order to form the payment\u0027s natural key."
+      },
+      {
+        "name": "Invoice",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Link to the Order this payment is being applied to.",
+        "RelatedTo": "Invoices",
+        "isReversed": false,
+        "prefersSingleRecordLink": true,
+        "InverseField": "Payments"
+      },
+      {
+        "name": "PaymentDate",
+        "datatype": "datetime",
+        "type": "raw",
+        "nullable": true,
+        "Description": "When the payment was received."
+      },
+      {
+        "name": "PaymentMethod",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "How the payment was made."
+      },
+      {
+        "name": "TransactionId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "External processor transaction identifier."
+      },
+      {
+        "name": "Notes",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Free-form notes about this payment."
+      },
+      {
+        "name": "InvoiceDate",
+        "datatype": "datetime",
+        "type": "lookup",
+        "nullable": true,
+        "formula": "=INDEX(Invoices!{{OrderDate}}, MATCH(Payments!{{Invoice}}, Invoices!{{InvoiceId}}, 0))"
+      },
+      {
+        "name": "InvoiceNumber",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "formula": "=INDEX(Invoices!{{invoiceNumber}}, MATCH(Payments!{{Invoice}}, Invoices!{{InvoiceId}}, 0))"
+      },
+      {
+        "name": "InvoiceStatus",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "formula": "=INDEX(Invoices!{{OrderStatus}}, MATCH(Payments!{{Invoice}}, Invoices!{{InvoiceId}}, 0))"
+      },
+      {
+        "name": "InvoiceTotal",
+        "datatype": "number",
+        "type": "lookup",
+        "nullable": true,
+        "formula": "=INDEX(Invoices!{{InvoiceTotal}}, MATCH(Payments!{{Invoice}}, Invoices!{{InvoiceId}}, 0))"
+      },
+      {
+        "name": "Amount",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Amount paid."
+      },
+      {
+        "name": "PaymentStatus",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Lifecycle state of the payment."
+      },
+      {
+        "name": "IsCompleted",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "formula": "=IF({{PaymentStatus}} = \u0022Completed\u0022, TRUE(), FALSE())"
+      },
+      {
+        "name": "CompletedAmount",
+        "datatype": "number",
+        "type": "calculated",
+        "nullable": true,
+        "formula": "=IF({{PaymentStatus}} = \u0022Completed\u0022, {{Amount}}, 0)"
+      },
+      {
+        "name": "OrderAmountDue",
+        "datatype": "number",
+        "type": "lookup",
+        "nullable": true,
+        "formula": "=INDEX(Invoices!{{AmountDue}}, MATCH(Payments!{{Invoice}}, Invoices!{{InvoiceId}}, 0))"
+      },
+      {
+        "name": "OrderIsPaidInFull",
+        "datatype": "boolean",
+        "type": "lookup",
+        "nullable": true,
+        "formula": "=INDEX(Invoices!{{IsPaidInFull}}, MATCH(Payments!{{Invoice}}, Invoices!{{InvoiceId}}, 0))"
+      }
+    ],
+    "data": [
+      {
+        "PaymentId": "caroline-1045-pmt-1",
+        "PaymentStatus": "Failed",
+        "PaymentDate": "2026-03-12T10:05:00Z",
+        "Amount": 126.82,
+        "Notes": "Card declined; customer to retry.",
+        "TransactionId": "ch_failed_9981",
+        "PaymentMethod": "CreditCard",
+        "PaymentNumber": "1",
+        "Invoice": "caroline-1045",
+        "Name": "caroline-1045-pmt-1",
+        "CompletedAmount": 0,
+        "InvoiceNumber": "1045",
+        "InvoiceDate": "2026-03-12",
+        "InvoiceStatus": "New",
+        "InvoiceTotal": "102.96832",
+        "OrderAmountDue": "-23.85",
+        "OrderIsPaidInFull": "True",
+        "IsCompleted": false
+      },
+      {
+        "PaymentId": "caroline-1045-pmt-2",
+        "PaymentStatus": "Completed",
+        "PaymentDate": "2026-03-12T11:30:00Z",
+        "Amount": 126.82,
+        "Notes": "Customer paid in cash at pickup.",
+        "TransactionId": "CASH-NY-20260312-001",
+        "PaymentMethod": "Cash",
+        "PaymentNumber": "2",
+        "Invoice": "caroline-1045",
+        "Name": "caroline-1045-pmt-2",
+        "CompletedAmount": 126.82,
+        "InvoiceNumber": "1045",
+        "InvoiceDate": "2026-03-12",
+        "InvoiceStatus": "New",
+        "IsCompleted": true,
+        "InvoiceTotal": "102.96832",
+        "OrderAmountDue": "-23.85",
+        "OrderIsPaidInFull": "True"
+      },
+      {
+        "PaymentId": "alice-johnson-1010-pmt-2",
+        "PaymentStatus": "Completed",
+        "PaymentDate": "2025-10-12T11:30:00Z",
+        "Amount": 3270.44,
+        "Notes": "Final balance.",
+        "TransactionId": "wire_NWT_20251012_b",
+        "PaymentMethod": "BankTransfer",
+        "PaymentNumber": "2",
+        "Invoice": "alice-johnson-1010",
+        "Name": "alice-johnson-1010-pmt-2",
+        "CompletedAmount": 3270.44,
+        "InvoiceNumber": "1010",
+        "InvoiceDate": "2025-10-05",
+        "InvoiceStatus": "Shipped",
+        "IsCompleted": true,
+        "InvoiceTotal": "5412.103687499999",
+        "OrderAmountDue": "641.66",
+        "OrderIsPaidInFull": false
+      },
+      {
+        "PaymentId": "carla-smith-1024-pmt-1",
+        "PaymentStatus": "Refunded",
+        "PaymentDate": "2025-12-01T11:25:00Z",
+        "Amount": 239.68,
+        "Notes": "Refunded in full on 2025-12-08 due to damaged shipment.",
+        "TransactionId": "ch_3PrB9y3lM8No0OcS",
+        "PaymentMethod": "CreditCard",
+        "PaymentNumber": "1",
+        "Invoice": "carla-smith-1024",
+        "Name": "carla-smith-1024-pmt-1",
+        "CompletedAmount": 0,
+        "InvoiceNumber": "1024",
+        "InvoiceDate": "2025-12-01",
+        "InvoiceStatus": "Returned",
+        "InvoiceTotal": "225.568",
+        "OrderAmountDue": "225.57",
+        "IsCompleted": false,
+        "OrderIsPaidInFull": false
+      },
+      {
+        "PaymentId": "brian-lee-1018-pmt-1",
+        "PaymentStatus": "Completed",
+        "PaymentDate": "2025-11-15T09:00:00Z",
+        "Amount": 649.51,
+        "Notes": "Net-30 paid early.",
+        "TransactionId": "CHK-4471",
+        "PaymentMethod": "Check",
+        "PaymentNumber": "1",
+        "Invoice": "brian-lee-1018",
+        "Name": "brian-lee-1018-pmt-1",
+        "CompletedAmount": 649.51,
+        "InvoiceNumber": "1018",
+        "InvoiceDate": "2025-11-12",
+        "InvoiceStatus": "Delivered",
+        "IsCompleted": true,
+        "InvoiceTotal": "752.1225",
+        "OrderAmountDue": "102.61",
+        "OrderIsPaidInFull": false
+      },
+      {
+        "PaymentId": "alice-johnson-1010-pmt-1",
+        "PaymentStatus": "Completed",
+        "PaymentDate": "2025-10-05T09:05:00Z",
+        "Amount": 1500,
+        "Notes": "Deposit payment.",
+        "TransactionId": "wire_NWT_20251005_a",
+        "PaymentMethod": "BankTransfer",
+        "PaymentNumber": "1",
+        "Invoice": "alice-johnson-1010",
+        "Name": "alice-johnson-1010-pmt-1",
+        "CompletedAmount": 1500,
+        "InvoiceNumber": "1010",
+        "InvoiceDate": "2025-10-05",
+        "InvoiceStatus": "Shipped",
+        "IsCompleted": true,
+        "InvoiceTotal": "5412.103687499999",
+        "OrderAmountDue": "641.66",
+        "OrderIsPaidInFull": false
+      },
+      {
+        "PaymentId": "bob-1001-pmt-1",
+        "PaymentStatus": "Completed",
+        "PaymentDate": "2025-09-15T10:35:00Z",
+        "Amount": 156.74,
+        "Notes": "Visa ending 4242. Authorized at checkout.",
+        "TransactionId": "ch_3PqA8x2jK7Lm9NbR",
+        "PaymentMethod": "CreditCard",
+        "PaymentNumber": "1",
+        "Invoice": "bob-1001",
+        "Name": "bob-1001-pmt-1",
+        "CompletedAmount": 156.74,
+        "InvoiceNumber": "1001",
+        "InvoiceDate": "2025-09-15",
+        "InvoiceStatus": "Delivered",
+        "IsCompleted": true,
+        "InvoiceTotal": "150.3565",
+        "OrderAmountDue": "-6.38",
+        "OrderIsPaidInFull": "True"
+      },
+      {
+        "PaymentId": "brian-lee-1037-pmt-1",
+        "PaymentStatus": "Completed",
+        "PaymentDate": "2026-01-28T14:05:00Z",
+        "Amount": 203.73,
+        "Notes": "Charged to card on file.",
+        "TransactionId": "ch_3PsC0z4mN9Op1PdT",
+        "PaymentMethod": "CreditCard",
+        "PaymentNumber": "1",
+        "Invoice": "brian-lee-1037",
+        "Name": "brian-lee-1037-pmt-1",
+        "CompletedAmount": 203.73,
+        "InvoiceNumber": "1037",
+        "InvoiceDate": "2026-01-28",
+        "InvoiceStatus": "Processing",
+        "IsCompleted": true,
+        "InvoiceTotal": "1089.0625",
+        "OrderAmountDue": "885.33",
+        "OrderIsPaidInFull": false
+      },
+      {
+        "PaymentId": "brian-lee-1042-pmt-1",
+        "PaymentStatus": "Pending",
+        "PaymentDate": "2026-02-20T13:20:00Z",
+        "Amount": 134.53,
+        "Notes": "ACH initiated; awaiting clearance.",
+        "TransactionId": "ach_pending_8821",
+        "PaymentMethod": "BankTransfer",
+        "PaymentNumber": "1",
+        "Invoice": "brian-lee-1042",
+        "Name": "brian-lee-1042-pmt-1",
+        "CompletedAmount": 0,
+        "InvoiceNumber": "1042",
+        "InvoiceDate": "2026-02-20",
+        "InvoiceStatus": "Pending",
+        "InvoiceTotal": "131.739375",
+        "OrderAmountDue": "131.74",
+        "IsCompleted": false,
+        "OrderIsPaidInFull": false
+      }
+    ]
+  },
+  "Addresses": {
+    "Description": "Table: Addresses",
+    "schema": [
+      {
+        "name": "AddresseId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "formula": "={{Address1}} \u0026 \u0022, \u0022 \u0026 {{City}} \u0026 \u0022, \u0022 \u0026 {{State}} \u0026 \u0022 \u0022 \u0026 {{Zip}}"
+      },
+      {
+        "name": "Clients",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "RelatedTo": "Clients",
+        "isReversed": false,
+        "prefersSingleRecordLink": false,
+        "InverseField": "Addresses"
+      },
+      {
+        "name": "TypeOfAddress",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "RelatedTo": "TypesOfAddresses",
+        "isReversed": false,
+        "prefersSingleRecordLink": true,
+        "InverseField": "Addresses"
+      },
+      {
+        "name": "TypeOfAddressIsShippingAddress",
+        "datatype": "boolean",
+        "type": "lookup",
+        "nullable": true,
+        "formula": "=INDEX(TypesOfAddresses!{{IsShippingAddress}}, MATCH(Addresses!{{TypeOfAddress}}, TypesOfAddresses!{{TypesOfAddresseId}}, 0))"
+      },
+      {
+        "name": "TypeOfAddressIsBillingAddress",
+        "datatype": "boolean",
+        "type": "lookup",
+        "nullable": true,
+        "formula": "=INDEX(TypesOfAddresses!{{IsBillingAddress}}, MATCH(Addresses!{{TypeOfAddress}}, TypesOfAddresses!{{TypesOfAddresseId}}, 0))"
+      },
+      {
+        "name": "Attention",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "Address1",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "Address2",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "City",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "State",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "RelatedTo": "States",
+        "isReversed": false,
+        "prefersSingleRecordLink": true,
+        "InverseField": "Addresses"
+      },
+      {
+        "name": "StateCode",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "formula": "=INDEX(States!{{Code}}, MATCH(Addresses!{{State}}, States!{{StateId}}, 0))"
+      },
+      {
+        "name": "StateTaxRate",
+        "datatype": "number",
+        "type": "lookup",
+        "nullable": true,
+        "formula": "=INDEX(States!{{TaxRate}}, MATCH(Addresses!{{State}}, States!{{StateId}}, 0))"
+      },
+      {
+        "name": "Zip",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true
+      }
+    ],
+    "data": [
+      {
+        "AddresseId": "500-pine-st-suite-200-seattle-wa-washington-98101",
+        "State": "wa-washington",
+        "City": "Seattle",
+        "Zip": "98101",
+        "Address1": "500 Pine St, Suite 200",
+        "Clients": "alice-johnson",
+        "TypeOfAddress": "billing",
+        "Name": "500 Pine St, Suite 200, Seattle, wa-washington 98101",
+        "TypeOfAddressIsShippingAddress": "",
+        "StateTaxRate": "0.065",
+        "TypeOfAddressIsBillingAddress": "True",
+        "StateCode": "WA",
+        "Attention": "",
+        "Address2": ""
+      },
+      {
+        "AddresseId": "742-evergreen-terrace-springfield-il-illinois-97477",
+        "State": "il-illinois",
+        "City": "Springfield",
+        "Zip": "97477",
+        "Address1": "742 Evergreen Terrace",
+        "Clients": "bob",
+        "TypeOfAddress": "billing",
+        "Name": "742 Evergreen Terrace, Springfield, il-illinois 97477",
+        "TypeOfAddressIsShippingAddress": "",
+        "StateTaxRate": "0.0625",
+        "TypeOfAddressIsBillingAddress": "True",
+        "StateCode": "IL",
+        "Attention": "",
+        "Address2": ""
+      },
+      {
+        "AddresseId": "23-hudson-lane-brooklyn-ny-new-york-11201",
+        "State": "ny-new-york",
+        "City": "Brooklyn",
+        "Zip": "11201",
+        "Address1": "23 Hudson Lane",
+        "Clients": "caroline",
+        "TypeOfAddress": "billing",
+        "Name": "23 Hudson Lane, Brooklyn, ny-new-york 11201",
+        "TypeOfAddressIsShippingAddress": "",
+        "StateTaxRate": "0.04",
+        "TypeOfAddressIsBillingAddress": "True",
+        "StateCode": "NY",
+        "Attention": "",
+        "Address2": ""
+      },
+      {
+        "AddresseId": "90-industrial-way-loading-dock-b-austin-tx-texas-78701",
+        "State": "tx-texas",
+        "City": "Austin",
+        "Zip": "78701",
+        "Address1": "90 Industrial Way (Loading Dock B)",
+        "TypeOfAddress": "shipping",
+        "Name": "90 Industrial Way (Loading Dock B), Austin, tx-texas 78701",
+        "TypeOfAddressIsShippingAddress": "True",
+        "StateTaxRate": "0.0625",
+        "TypeOfAddressIsBillingAddress": "",
+        "StateCode": "TX",
+        "Clients": "",
+        "Attention": "",
+        "Address2": ""
+      },
+      {
+        "AddresseId": "88-industrial-way-austin-tx-texas-78701",
+        "State": "tx-texas",
+        "City": "Austin",
+        "Zip": "78701",
+        "Address1": "88 Industrial Way",
+        "Clients": "brian-lee",
+        "TypeOfAddress": "billing",
+        "Name": "88 Industrial Way, Austin, tx-texas 78701",
+        "TypeOfAddressIsShippingAddress": "",
+        "StateTaxRate": "0.0625",
+        "TypeOfAddressIsBillingAddress": "True",
+        "StateCode": "TX",
+        "Attention": "",
+        "Address2": ""
+      },
+      {
+        "AddresseId": "1200-ocean-dr-miami-fl-florida-33139",
+        "State": "fl-florida",
+        "City": "Miami",
+        "Zip": "33139",
+        "Address1": "1200 Ocean Dr",
+        "Clients": "carla-smith",
+        "TypeOfAddress": "billing",
+        "Name": "1200 Ocean Dr, Miami, fl-florida 33139",
+        "TypeOfAddressIsShippingAddress": "",
+        "StateTaxRate": "0.06",
+        "TypeOfAddressIsBillingAddress": "True",
+        "StateCode": "FL",
+        "Attention": "",
+        "Address2": ""
+      }
+    ]
+  },
+  "States": {
+    "Description": "Table: States",
+    "schema": [
+      {
+        "name": "StateId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "formula": "=LOWER({{Code}} \u0026 \u0022-\u0022 \u0026 SUBSTITUTE({{Text}}, \u0022 \u0022, \u0022-\u0022))"
+      },
+      {
+        "name": "Code",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "Text",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "TaxRate",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "Addresses",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "RelatedTo": "Addresses",
+        "isReversed": false,
+        "prefersSingleRecordLink": false,
+        "InverseField": "State"
+      }
+    ],
+    "data": [
+      {
+        "StateId": "ia-iowa",
+        "Code": "IA",
+        "TaxRate": 0.06,
+        "Text": "Iowa",
+        "Name": "ia-iowa",
+        "Addresses": ""
+      },
+      {
+        "StateId": "mo-missouri",
+        "Code": "MO",
+        "TaxRate": 0.04225,
+        "Text": "Missouri",
+        "Name": "mo-missouri",
+        "Addresses": ""
+      },
+      {
+        "StateId": "az-arizona",
+        "Code": "AZ",
+        "TaxRate": 0.056,
+        "Text": "Arizona",
+        "Name": "az-arizona",
+        "Addresses": ""
+      },
+      {
+        "StateId": "nj-new-jersey",
+        "Code": "NJ",
+        "TaxRate": 0.066625,
+        "Text": "New Jersey",
+        "Name": "nj-new-jersey",
+        "Addresses": ""
+      },
+      {
+        "StateId": "sd-south-dakota",
+        "Code": "SD",
+        "TaxRate": 0.045,
+        "Text": "South Dakota",
+        "Name": "sd-south-dakota",
+        "Addresses": ""
+      },
+      {
+        "StateId": "vt-vermont",
+        "Code": "VT",
+        "TaxRate": 0.06,
+        "Text": "Vermont",
+        "Name": "vt-vermont",
+        "Addresses": ""
+      },
+      {
+        "StateId": "or-oregon",
+        "Code": "OR",
+        "TaxRate": 0,
+        "Text": "Oregon",
+        "Name": "or-oregon",
+        "Addresses": ""
+      },
+      {
+        "StateId": "ne-nebraska",
+        "Code": "NE",
+        "TaxRate": 0.055,
+        "Text": "Nebraska",
+        "Name": "ne-nebraska",
+        "Addresses": ""
+      },
+      {
+        "StateId": "ri-rhode-island",
+        "Code": "RI",
+        "TaxRate": 0.07,
+        "Text": "Rhode Island",
+        "Name": "ri-rhode-island",
+        "Addresses": ""
+      },
+      {
+        "StateId": "la-louisiana",
+        "Code": "LA",
+        "TaxRate": 0.0445,
+        "Text": "Louisiana",
+        "Name": "la-louisiana",
+        "Addresses": ""
+      },
+      {
+        "StateId": "nc-north-carolina",
+        "Code": "NC",
+        "TaxRate": 0.0475,
+        "Text": "North Carolina",
+        "Name": "nc-north-carolina",
+        "Addresses": ""
+      },
+      {
+        "StateId": "ut-utah",
+        "Code": "UT",
+        "TaxRate": 0.0485,
+        "Text": "Utah",
+        "Name": "ut-utah",
+        "Addresses": ""
+      },
+      {
+        "StateId": "ar-arkansas",
+        "Code": "AR",
+        "TaxRate": 0.065,
+        "Text": "Arkansas",
+        "Name": "ar-arkansas",
+        "Addresses": ""
+      },
+      {
+        "StateId": "ma-massachusetts",
+        "Code": "MA",
+        "TaxRate": 0.0625,
+        "Text": "Massachusetts",
+        "Name": "ma-massachusetts",
+        "Addresses": ""
+      },
+      {
+        "StateId": "co-colorado",
+        "Code": "CO",
+        "TaxRate": 0.029,
+        "Text": "Colorado",
+        "Name": "co-colorado",
+        "Addresses": ""
+      },
+      {
+        "StateId": "md-maryland",
+        "Code": "MD",
+        "TaxRate": 0.06,
+        "Text": "Maryland",
+        "Name": "md-maryland",
+        "Addresses": ""
+      },
+      {
+        "StateId": "me-maine",
+        "Code": "ME",
+        "TaxRate": 0.055,
+        "Text": "Maine",
+        "Name": "me-maine",
+        "Addresses": ""
+      },
+      {
+        "StateId": "al-alabama",
+        "Code": "AL",
+        "TaxRate": 0.04,
+        "Text": "Alabama",
+        "Name": "al-alabama",
+        "Addresses": ""
+      },
+      {
+        "StateId": "wi-wisconsin",
+        "Code": "WI",
+        "TaxRate": 0.05,
+        "Text": "Wisconsin",
+        "Name": "wi-wisconsin",
+        "Addresses": ""
+      },
+      {
+        "StateId": "ms-mississippi",
+        "Code": "MS",
+        "TaxRate": 0.07,
+        "Text": "Mississippi",
+        "Name": "ms-mississippi",
+        "Addresses": ""
+      },
+      {
+        "StateId": "va-virginia",
+        "Code": "VA",
+        "TaxRate": 0.053,
+        "Text": "Virginia",
+        "Name": "va-virginia",
+        "Addresses": ""
+      },
+      {
+        "StateId": "in-indiana",
+        "Code": "IN",
+        "TaxRate": 0.07,
+        "Text": "Indiana",
+        "Name": "in-indiana",
+        "Addresses": ""
+      },
+      {
+        "StateId": "wa-washington",
+        "Code": "WA",
+        "TaxRate": 0.065,
+        "Text": "Washington",
+        "Addresses": "500-pine-st-suite-200-seattle-wa-washington-98101",
+        "Name": "wa-washington"
+      },
+      {
+        "StateId": "fl-florida",
+        "Code": "FL",
+        "TaxRate": 0.06,
+        "Text": "Florida",
+        "Addresses": "1200-ocean-dr-miami-fl-florida-33139",
+        "Name": "fl-florida"
+      },
+      {
+        "StateId": "ny-new-york",
+        "Code": "NY",
+        "TaxRate": 0.04,
+        "Text": "New York",
+        "Addresses": "23-hudson-lane-brooklyn-ny-new-york-11201",
+        "Name": "ny-new-york"
+      },
+      {
+        "StateId": "nv-nevada",
+        "Code": "NV",
+        "TaxRate": 0.0686,
+        "Text": "Nevada",
+        "Name": "nv-nevada",
+        "Addresses": ""
+      },
+      {
+        "StateId": "pa-pennsylvania",
+        "Code": "PA",
+        "TaxRate": 0.06,
+        "Text": "Pennsylvania",
+        "Name": "pa-pennsylvania",
+        "Addresses": ""
+      },
+      {
+        "StateId": "oh-ohio",
+        "Code": "OH",
+        "TaxRate": 0.0575,
+        "Text": "Ohio",
+        "Name": "oh-ohio",
+        "Addresses": ""
+      },
+      {
+        "StateId": "ok-oklahoma",
+        "Code": "OK",
+        "TaxRate": 0.045,
+        "Text": "Oklahoma",
+        "Name": "ok-oklahoma",
+        "Addresses": ""
+      },
+      {
+        "StateId": "ky-kentucky",
+        "Code": "KY",
+        "TaxRate": 0.06,
+        "Text": "Kentucky",
+        "Name": "ky-kentucky",
+        "Addresses": ""
+      },
+      {
+        "StateId": "mn-minnesota",
+        "Code": "MN",
+        "TaxRate": 0.0687,
+        "Text": "Minnesota",
+        "Name": "mn-minnesota",
+        "Addresses": ""
+      },
+      {
+        "StateId": "nh-new-hampshire",
+        "Code": "NH",
+        "TaxRate": 0,
+        "Text": "New Hampshire",
+        "Name": "nh-new-hampshire",
+        "Addresses": ""
+      },
+      {
+        "StateId": "ks-kansas",
+        "Code": "KS",
+        "TaxRate": 0.065,
+        "Text": "Kansas",
+        "Name": "ks-kansas",
+        "Addresses": ""
+      },
+      {
+        "StateId": "id-idaho",
+        "Code": "ID",
+        "TaxRate": 0.06,
+        "Text": "Idaho",
+        "Name": "id-idaho",
+        "Addresses": ""
+      },
+      {
+        "StateId": "ct-connecticut",
+        "Code": "CT",
+        "TaxRate": 0.0635,
+        "Text": "Connecticut",
+        "Name": "ct-connecticut",
+        "Addresses": ""
+      },
+      {
+        "StateId": "tx-texas",
+        "Code": "TX",
+        "TaxRate": 0.0625,
+        "Text": "Texas",
+        "Addresses": "88-industrial-way-austin-tx-texas-78701, 90-industrial-way-loading-dock-b-austin-tx-texas-78701",
+        "Name": "tx-texas"
+      },
+      {
+        "StateId": "wy-wyoming",
+        "Code": "WY",
+        "TaxRate": 0.04,
+        "Text": "Wyoming",
+        "Name": "wy-wyoming",
+        "Addresses": ""
+      },
+      {
+        "StateId": "wv-west-virginia",
+        "Code": "WV",
+        "TaxRate": 0.06,
+        "Text": "West Virginia",
+        "Name": "wv-west-virginia",
+        "Addresses": ""
+      },
+      {
+        "StateId": "ga-georgia",
+        "Code": "GA",
+        "TaxRate": 0.04,
+        "Text": "Georgia",
+        "Name": "ga-georgia",
+        "Addresses": ""
+      },
+      {
+        "StateId": "tn-tennessee",
+        "Code": "TN",
+        "TaxRate": 0.07,
+        "Text": "Tennessee",
+        "Name": "tn-tennessee",
+        "Addresses": ""
+      },
+      {
+        "StateId": "il-illinois",
+        "Code": "IL",
+        "TaxRate": 0.0625,
+        "Text": "Illinois",
+        "Addresses": "742-evergreen-terrace-springfield-il-illinois-97477",
+        "Name": "il-illinois"
+      },
+      {
+        "StateId": "mt-montana",
+        "Code": "MT",
+        "TaxRate": 0,
+        "Text": "Montana",
+        "Name": "mt-montana",
+        "Addresses": ""
+      },
+      {
+        "StateId": "mi-michigan",
+        "Code": "MI",
+        "TaxRate": 0.06,
+        "Text": "Michigan",
+        "Name": "mi-michigan",
+        "Addresses": ""
+      },
+      {
+        "StateId": "sc-south-carolina",
+        "Code": "SC",
+        "TaxRate": 0.06,
+        "Text": "South Carolina",
+        "Name": "sc-south-carolina",
+        "Addresses": ""
+      },
+      {
+        "StateId": "de-delaware",
+        "Code": "DE",
+        "TaxRate": 0,
+        "Text": "Delaware",
+        "Name": "de-delaware",
+        "Addresses": ""
+      },
+      {
+        "StateId": "nm-new-mexico",
+        "Code": "NM",
+        "TaxRate": 0.05125,
+        "Text": "New Mexico",
+        "Name": "nm-new-mexico",
+        "Addresses": ""
+      },
+      {
+        "StateId": "hi-hawaii",
+        "Code": "HI",
+        "TaxRate": 0.04,
+        "Text": "Hawaii",
+        "Name": "hi-hawaii",
+        "Addresses": ""
+      },
+      {
+        "StateId": "nd-north-dakota",
+        "Code": "ND",
+        "TaxRate": 0.05,
+        "Text": "North Dakota",
+        "Name": "nd-north-dakota",
+        "Addresses": ""
+      },
+      {
+        "StateId": "ak-alaska",
+        "Code": "AK",
+        "TaxRate": 0,
+        "Text": "Alaska",
+        "Name": "ak-alaska",
+        "Addresses": ""
+      },
+      {
+        "StateId": "ca-california",
+        "Code": "CA",
+        "TaxRate": 0.0725,
+        "Text": "California",
+        "Name": "ca-california",
+        "Addresses": ""
+      }
+    ]
+  },
+  "TypesOfAddresses": {
+    "Description": "Table: TypesOfAddresses",
+    "schema": [
+      {
+        "name": "TypesOfAddresseId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "Addresses",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "RelatedTo": "Addresses",
+        "isReversed": false,
+        "prefersSingleRecordLink": false,
+        "InverseField": "TypeOfAddress"
+      },
+      {
+        "name": "IsShippingAddress",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "IsBillingAddress",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": true
+      }
+    ],
+    "data": [
+      {
+        "TypesOfAddresseId": "shipping",
+        "Name": "Shipping",
+        "IsShippingAddress": true,
+        "Addresses": "90-industrial-way-loading-dock-b-austin-tx-texas-78701",
+        "IsBillingAddress": false
+      },
+      {
+        "TypesOfAddresseId": "billing",
+        "Name": "Billing",
+        "IsBillingAddress": true,
+        "Addresses": "88-industrial-way-austin-tx-texas-78701, 500-pine-st-suite-200-seattle-wa-washington-98101, 1200-ocean-dr-miami-fl-florida-33139, 742-evergreen-terrace-springfield-il-illinois-97477, 23-hudson-lane-brooklyn-ny-new-york-11201",
+        "IsShippingAddress": false
+      }
+    ]
+  },
+  "ERBVersions": {
+    "Description": "Table: ERBVersions",
+    "schema": [
+      {
+        "name": "ERBVersionId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "BaseId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "Version",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "Message",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "Notes",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "CommitDate",
+        "datatype": "datetime",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "IsPublished",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "Author",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true
+      }
+    ],
+    "data": [
+      {
+        "ERBVersionId": "v2026-04-07t00-45-14-766z",
+        "BaseId": "8d009876-5ceb-47a0-9b94-db653e0774dd",
+        "Name": "v2026-04-07t00-45-14-766z",
+        "Version": "Version 2026-04-07 00:45:14",
+        "Message": "Testing function fixes.",
+        "CommitDate": "2026-04-07",
+        "Author": "ej@ssot.me",
+        "Notes": "",
+        "IsPublished": false
+      },
+      {
+        "ERBVersionId": "version-2026-04-07-01-56-19",
+        "BaseId": "8d009876-5ceb-47a0-9b94-db653e0774dd",
+        "Name": "Version 2026-04-07 01:56:19",
+        "Message": "fixed payments",
+        "CommitDate": "2026-04-07",
+        "Author": "ej@ssot.me",
+        "Version": "",
+        "Notes": "",
+        "IsPublished": false
+      },
+      {
+        "ERBVersionId": "version-2026-04-07-01-54-04",
+        "BaseId": "8d009876-5ceb-47a0-9b94-db653e0774dd",
+        "Name": "Version 2026-04-07 01:54:04",
+        "Message": "tixed functions",
+        "CommitDate": "2026-04-07",
+        "Author": "ej@ssot.me",
+        "Version": "",
+        "Notes": "",
+        "IsPublished": false
+      }
+    ]
+  },
+  "ERBCustomizations": {
+    "Description": "Table: ERBCustomizations",
+    "schema": [
+      {
+        "name": "ERBCustomizationId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "Title",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "SQLCode",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "SQLTarget",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "CustomizationType",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true
+      }
+    ],
+    "data": [
+      {
+        "ERBCustomizationId": "calc-orders-item-count",
+        "SQLCode": "-- FunctionOverride: calc_orders_item_count\n-- Errors in this file are non-fatal (runs without ON_ERROR_STOP).\n\nCREATE OR REPLACE FUNCTION public.calc_orders_item_count(p_order_id text)\n RETURNS integer\n LANGUAGE plpgsql\n STABLE SECURITY DEFINER\nAS $function$\nBEGIN\n  RETURN ((SELECT COUNT(*) FROM order_line_items WHERE \u0022order\u0022 = p_order_id))::integer;\nEND;\n$function$;\n",
+        "Name": "calc_orders_item_count",
+        "SQLTarget": "Postgres",
+        "CustomizationType": "FunctionOverride",
+        "Title": ""
+      },
+      {
+        "ERBCustomizationId": "calc-orders-last-payment-date",
+        "SQLCode": "-- FunctionOverride: calc_orders_last_payment_date\n-- Errors in this file are non-fatal (runs without ON_ERROR_STOP).\n\nCREATE OR REPLACE FUNCTION public.calc_orders_last_payment_date(p_order_id text)\n RETURNS timestamp with time zone\n LANGUAGE plpgsql\n STABLE SECURITY DEFINER\nAS $function$\nBEGIN\n  RETURN (SELECT MAX(payment_date) FROM payments WHERE \u0022order\u0022 = p_order_id);\nEND;\n$function$;\n",
+        "Name": "calc_orders_last_payment_date",
+        "SQLTarget": "Postgres",
+        "CustomizationType": "FunctionOverride",
+        "Title": ""
+      },
+      {
+        "ERBCustomizationId": "calc-clients-hast-recent-invoices",
+        "SQLCode": "-- FunctionOverride: calc_clients_hast_recent_invoices\n-- Errors in this file are non-fatal (runs without ON_ERROR_STOP).\n-- Original Airtable formula: =IF({{LastInvoice}} \u003E DATEADD(TODAY(), -180, \u0027days\u0027), TRUE(), FALSE())\n-- Translation failed because DATEADD unit \u0027days\u0027 is unsupported. Reimplement directly.\n\nCREATE OR REPLACE FUNCTION public.calc_clients_hast_recent_invoices(p_client_id text)\n RETURNS boolean\n LANGUAGE plpgsql\n STABLE SECURITY DEFINER\nAS $function$\nBEGIN\n  RETURN COALESCE(\n    (SELECT MAX(order_date) FROM invoices WHERE client = p_client_id) \u003E (NOW() - INTERVAL \u0027180 days\u0027),\n    FALSE\n  );\nEND;\n$function$;\n",
+        "Name": "calc_clients_hast_recent_invoices",
+        "SQLTarget": "Postgres",
+        "CustomizationType": "FunctionOverride",
+        "Title": ""
+      },
+      {
+        "ERBCustomizationId": "calc-orders-payment-count",
+        "SQLCode": "-- FunctionOverride: calc_orders_payment_count\n-- Errors in this file are non-fatal (runs without ON_ERROR_STOP).\n\nCREATE OR REPLACE FUNCTION public.calc_orders_payment_count(p_order_id text)\n RETURNS integer\n LANGUAGE plpgsql\n STABLE SECURITY DEFINER\nAS $function$\nBEGIN\n  RETURN ((SELECT COUNT(*) FROM payments WHERE \u0022order\u0022 = p_order_id))::integer;\nEND;\n$function$;\n",
+        "Name": "calc_orders_payment_count",
+        "SQLTarget": "Postgres",
+        "CustomizationType": "FunctionOverride",
+        "Title": ""
+      }
+    ]
+  },
+  "_meta": {
+    "_CMCC_Summary": "Airtable export with schema-first type mapping: Schemas, Data, Relationships (FK links), Lookups (INDEX/MATCH), Aggregations (SUMIFS/COUNTIFS/Rollups), and Calculated fields (formulas) in Excel dialect. Field types are determined from Airtable\u0027s schema metadata FIRST (no coercion), with intelligent fallback to formula/data analysis only when schema is unavailable.",
+    "_conversion_metadata": {
+      "source_base_id": "appeUOAaOIdoqPSx3",
+      "table_count": 15,
+      "tool_version": "2.0.0",
+      "field_type_mapping": "checkbox\u2192boolean, number\u2192number/integer, multipleRecordLinks\u2192relationship, multipleLookupValues\u2192lookup, rollup\u2192aggregation, count\u2192aggregation, formula\u2192calculated",
+      "export_mode": "schema_first_type_mapping",
+      "type_inference": {
+        "enabled": true,
+        "priority": "airtable_metadata (NO COERCION) \u2192 formula_analysis \u2192 reference_resolution \u2192 data_analysis (fallback only)",
+        "airtable_type_mapping": "checkbox\u2192boolean, singleLineText\u2192string, multilineText\u2192string, number\u2192number/integer, datetime\u2192datetime, singleSelect\u2192string, email\u2192string, url\u2192string, phoneNumber\u2192string",
+        "data_coercion_hierarchy": "Only used as fallback when Airtable schema unavailable: datetime \u2192 number \u2192 integer \u2192 boolean \u2192 base64 \u2192 json \u2192 string",
+        "nullable_support": true,
+        "error_value_handling": "#NUM!, #ERROR!, #N/A, #REF!, #DIV/0!, #VALUE!, #NAME? are treated as NULL"
+      }
+    }
+  }
+}

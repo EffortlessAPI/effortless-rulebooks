@@ -1,0 +1,16 @@
+<%- include('partials/header', { title: 'Admin · Tables' }) %>
+<h1>Admin · Tables</h1>
+<p class="muted">Generic CRUD over every <code>vw_*</code> view in the rulebook.</p>
+<table class="grid">
+  <thead><tr><th>Table</th><th>View</th><th>Rows</th></tr></thead>
+  <tbody>
+    <% TABLES.forEach(t => { %>
+      <tr>
+        <td><a href="/t/<%= t.key %>"><%= t.label %></a></td>
+        <td><code><%= t.key %></code></td>
+        <td><%= counts[t.key] %></td>
+      </tr>
+    <% }) %>
+  </tbody>
+</table>
+<%- include('partials/footer') %>

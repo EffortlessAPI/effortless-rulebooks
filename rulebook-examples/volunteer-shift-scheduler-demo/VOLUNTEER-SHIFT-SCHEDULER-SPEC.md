@@ -1,0 +1,13 @@
+# Volunteer Shift Scheduler — Spec
+
+A small tool for coordinating volunteers across shifts at an event — a festival, food bank, conference, neighborhood cleanup, anything where a handful of people need to be slotted into a handful of time blocks with the right skills. One person, the **coordinator**, owns the schedule. Volunteers see only the shifts they're assigned to. Anyone else (a board member, a co-organizer) can sign in as a **viewer** for a read-only operational picture. There is no real authentication — sign-in is a pick-an-identity dev login, and the demo ships with seed data so the app is interesting from the moment it opens.  
+
+- user friendly admin portal
+- express app / vite react on the front end
+- local postgres db (volunteer-shift-scheduler)
+- no auth - dev login as relevant roles
+
+**Long Term Roadmap Stretch Goals:**  
+The thing that makes this app worth building is the **live cascade**. The coordinator only ever edits a handful of raw inputs — how many people a shift needs, how long it is, what skill it requires, how reliable each volunteer is, and which volunteers are assigned to which shifts. Everything else — per-shift coverage status, per-volunteer load (under / ok / over), an event-level A–F staffing grade — falls out automatically and updates the moment an input changes. Add a volunteer to an under-staffed shift and you see the shift's status flip, the volunteer's hours climb, and the event's grade tick up, all on the next page read. Every derived number on screen is **clickable**: clicking it opens a small graph that shows the formula and the immediate inputs that produced it, so anyone looking at a grade can trace it all the way back to the raw fields that drove it.
+
+The app should feel like one thing, not a dashboard glued to an editor. The coordinator lands on an event dashboard, drills into events, drills into shifts, makes a change, and watches the dashboard update. Volunteers and viewers get a labeled stub that describes what their view *would* show — enough to communicate scope without doubling the implementation. The whole thing should boot with a single command, survive a hard refresh on any URL, and offer a one-click download of the schema as an Excel workbook for anyone who wants to poke at the model offline. Out of scope: production auth, notifications, calendar sync, mobile, tests beyond a manual smoke check. The point is the cascade — show that, and the demo is done.

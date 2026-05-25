@@ -1,0 +1,31 @@
+[00:00] Welcome to the Community Event Planner. Every number on screen comes from a Postgres view generated from one rulebook.
+
+[00:06] Header-based login with four dev roles. We'll pick Admin so we can show the edit flow later.
+
+[00:12] The dashboard. Four stat boxes — each an aggregation over the Events table: total, ready to publish, attendees, and events with issues.
+
+[00:22] Below, four upcoming events. Each row shows speakers, attendees, seats left, and a calculated status. Yellow flags mark venue conflicts.
+
+[00:32] Now the interesting part. I turn on provenance mode. Every derived value gets a function glyph showing it was computed, not stored.
+
+[00:40] Clicking 'Ready to Publish' opens the explainer for Events dot EventStatus. The formula is an IF over HasSpeakers, AtCapacity, and HasVenueConflict — three sub-calculations with their own DAGs.
+
+[00:52] Back, then 'Total Attendees'. This opens BookedCapacity — a COUNTIFS aggregation over RSVPs filtered to confirmed status.
+
+[01:02] Back to the dashboard. Provenance off, and into tech-talk-1.
+
+[01:10] The Event Status block breaks the status into a checklist: speakers, capacity, venue conflicts. Every check or X is itself a calculated field.
+
+[01:22] Further down, Registration. Deadline and Open or Closed are both calculated from the close-days setting and the current time.
+
+[01:32] As admin I get a pencil to edit. The form changes raw inputs — name, venue, date, duration, close window, category.
+
+[01:44] Watch this: I change Registration Closes from one day to thirty days before. One raw field, RegistrationCloseDaysBeforeEvent.
+
+[01:56] Save fires a PATCH. The view recomputes. UI updates — no frontend math.
+
+[02:02] Now the Speakers tab — a calculated view over the Speakers table.
+
+[02:10] Each speaker shows an AssignmentCount aggregation. If anyone went over three, the page would surface an Overbooked warning at the top.
+
+[02:20] Last hop: clicking AssignmentCount opens its DAG — an aggregation over Assignments. Every number you saw came from the rulebook.

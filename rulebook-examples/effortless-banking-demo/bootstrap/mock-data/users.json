@@ -1,0 +1,7 @@
+[
+  { "id": "usr-devon-marshall",  "name": "devon-marshall",  "label": "Devon Marshall",  "role": "RM",            "email": "devon.marshall@firstvalley.bank" },
+  { "id": "usr-priya-iyer",      "name": "priya-iyer",      "label": "Priya Iyer",      "role": "Underwriter",   "email": "priya.iyer@firstvalley.bank" },
+  { "id": "usr-maya-chen",       "name": "maya-chen",       "label": "Maya Chen",       "role": "BranchBanker",  "email": "maya.chen@firstvalley.bank" },
+  { "id": "usr-renee-okafor",    "name": "renee-okafor",    "label": "Renee Okafor",    "role": "Admin",         "email": "renee.okafor@firstvalley.bank" },
+  { "id": "usr-thomas-bell",     "name": "thomas-bell",     "label": "Thomas Bell",     "role": "Underwriter",   "email": "thomas.bell@firstvalley.bank" }
+]

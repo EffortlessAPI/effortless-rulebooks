@@ -1,0 +1,40 @@
+{
+  "ShowHidden": false,
+  "ShowAllFiles": false,
+  "CurrentPath": null,
+  "SSoTmeProjectFiles": null,
+  "SSoTmeProjectId": "4fb8ddc6-c81c-4ab4-ac01-15721d7ef31c",
+  "Name": "2026-04-20-1639-effortless",
+  "ProjectSettings": [
+    {
+      "Name": "project-name",
+      "Value": "2026-04-20-1639-effortless"
+    },
+    {
+      "Name": "baseId",
+      "Value": "appgjoEcFNxluhbvK"
+    }
+  ],
+  "ProjectTranspilers": [
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "airtabletorulebook",
+      "RelativePath": "/effortless-rulebook",
+      "CommandLine": "airtable-to-rulebook -p baseId=appgjoEcFNxluhbvK -account airtable -o effortless-rulebook.json",
+      "IsDisabled": false,
+      "PinnedVersion": "v2026.04.15.1205",
+      "LastVersionUsed": "v2026.04.15.1205",
+      "LastUrl": "https://effortless-airtable-to-rulebook-v2026-04-15-1205-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "rulebooktopostgres",
+      "RelativePath": "/postgres",
+      "CommandLine": "rulebook-to-postgres -i ../effortless-rulebook/effortless-rulebook.json",
+      "IsDisabled": false,
+      "PinnedVersion": "v2026.04.19.1717",
+      "LastVersionUsed": "v2026.04.19.1717",
+      "LastUrl": "https://effortless-rulebook-to-postgres-v2026-04-19-1717-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
+    }
+  ]
+}

@@ -546,6 +546,109 @@ app.post("/api/users", requireUserManager, async (req, res) => {
   }
 });
 
+// --- platform features (PROJECT-rulebook resource) ---
+// PlatformFeatures is the formal SSoT for what ERB does. Hand-maintained
+// per-feature README files MUST conform to these rows. IsReadmeStub is
+// computed from the README's on-disk length (overrides the rulebook's
+// optional ReadmeLength when the file exists).
+function readmeOnDiskLength(relPath) {
+  if (!relPath) return null;
+  const abs = path.join(REPO_ROOT, relPath);
+  if (!fs.existsSync(abs)) return 0;
+  return fs.statSync(abs).size;
+}
+function decorateFeature(row) {
+  const onDisk = readmeOnDiskLength(row.ReadmeFilePath);
+  const len = onDisk == null ? row.ReadmeLength : onDisk;
+  return {
+    ...row,
+    ReadmeOnDiskLength: onDisk,
+    EffectiveReadmeLength: len,
+    IsReadmeStub: len == null || len < 400,
+  };
+}
+
+app.get("/api/features", (req, res) => {
+  const project = loadProjectRulebook();
+  const rows = (project.PlatformFeatures && project.PlatformFeatures.data) || [];
+  const decorated = rows.map(decorateFeature).sort((a, b) => {
+    if (a.Tier !== b.Tier) return a.Tier === "headline" ? -1 : 1;
+    return (a.Priority || 0) - (b.Priority || 0);
+  });
+  res.json({
+    headline: decorated.filter((r) => r.Tier === "headline"),
+    additional: decorated.filter((r) => r.Tier !== "headline"),
+  });
+});
+
+app.get("/api/features/:id", (req, res) => {
+  const project = loadProjectRulebook();
+  const rows = (project.PlatformFeatures && project.PlatformFeatures.data) || [];
+  const row = rows.find((r) => r.FeatureId === req.params.id);
+  if (!row) return res.status(404).json({ error: "not found" });
+  const axiom = row.RelatedAxiomId
+    ? (project.OntologyAxioms?.data || []).find((a) => a.AxiomId === row.RelatedAxiomId) || null
+    : null;
+  // Resolve on-disk README content (best-effort; null if missing).
+  let readmeOnDisk = null;
+  if (row.ReadmeFilePath) {
+    const abs = path.join(REPO_ROOT, row.ReadmeFilePath);
+    if (fs.existsSync(abs)) readmeOnDisk = fs.readFileSync(abs, "utf8");
+  }
+  res.json({ ...decorateFeature(row), Axiom: axiom, ReadmeOnDisk: readmeOnDisk });
+});
+
+const FEATURE_PATCHABLE = new Set([
+  "Name", "ShortName", "Tier", "Priority", "OneLineSummary",
+  "ReadmeFilePath", "ReadmeStubContent", "Status", "RelatedAxiomId",
+]);
+app.patch("/api/features/:id", requireEditor, async (req, res) => {
+  const id = req.params.id;
+  const updates = {};
+  for (const [k, v] of Object.entries(req.body || {})) {
+    if (FEATURE_PATCHABLE.has(k)) updates[k] = v;
+  }
+  if (!Object.keys(updates).length) {
+    return res.status(400).json({ error: "no patchable fields in body" });
+  }
+  try {
+    const p = await getPool();
+    const client = await p.connect();
+    try {
+      await client.query("BEGIN");
+      const project = loadProjectRulebook();
+      if (!project.PlatformFeatures || !Array.isArray(project.PlatformFeatures.data)) {
+        throw new Error("PlatformFeatures table missing from project rulebook");
+      }
+      const idx = project.PlatformFeatures.data.findIndex((r) => r.FeatureId === id);
+      if (idx === -1) throw new Error(`Feature ${id} not found`);
+      Object.assign(project.PlatformFeatures.data[idx], updates);
+      // Mirror into the portal_rulebook_entities row so the editor view stays consistent.
+      await client.query(
+        `UPDATE portal_rulebook_entities
+            SET data_json = $2, updated_at = now()
+          WHERE entity_name = 'PlatformFeatures'`,
+        ["PlatformFeatures", JSON.stringify(project.PlatformFeatures.data)]
+      );
+      await client.query(
+        `INSERT INTO portal_audit_log (user_id, action, target, payload)
+         VALUES ($1, 'feature.update', $2, $3)`,
+        [getCurrentUser()?.UserId || null, id, JSON.stringify(updates)]
+      );
+      saveProjectRulebook(project);
+      await client.query("COMMIT");
+      res.json({ ok: true, feature: decorateFeature(project.PlatformFeatures.data[idx]) });
+    } catch (e) {
+      await client.query("ROLLBACK").catch(() => {});
+      throw e;
+    } finally {
+      client.release();
+    }
+  } catch (e) {
+    res.status(500).json({ error: String(e.message || e) });
+  }
+});
+
 // --- substrates (PROJECT-rulebook resource) ---
 app.get("/api/substrates", async (req, res) => {
   const project = loadProjectRulebook();

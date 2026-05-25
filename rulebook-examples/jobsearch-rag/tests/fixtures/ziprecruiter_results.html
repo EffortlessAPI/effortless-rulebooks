@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>3 Staff Platform Architect Jobs in Remote (USA)</title>
+  </head>
+  <body>
+    <header id="jobseeker-header"></header>
+    <main>
+      <!-- JSON-LD structured data with job URLs -->
+      <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "ItemList",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": "1",
+              "name": "Staff Platform Architect",
+              "url": "https://www.ziprecruiter.com/c/Acme-Corp/Job/Staff-Platform-Architect/-in-Remote,US?jid=abc123"
+            },
+            {
+              "@type": "ListItem",
+              "position": "2",
+              "name": "Senior Staff Engineer",
+              "url": "https://www.ziprecruiter.com/c/Globex/Job/Senior-Staff-Engineer/-in-New-York,NY?jid=def456"
+            },
+            {
+              "@type": "ListItem",
+              "position": "3",
+              "name": "Principal Software Architect",
+              "url": "https://www.ziprecruiter.com/c/Initech/Job/Principal-Software-Architect/-in-San-Francisco,CA?jid=ghi789"
+            }
+          ]
+        }
+      </script>
+
+      <!-- Job card articles (server-rendered by Next.js) -->
+      <div class="job_result_two_pane_v2">
+        <!-- Desktop card 1 -->
+        <div class="hidden md:block">
+          <article class="relative flex flex-col" id="job-card-abc123key">
+            <section class="flex flex-col gap-8 w-full">
+              <div class="flex justify-between items-center">
+                <p class="text-primary"><a href="/co/Acme-Corp/Jobs" data-testid="job-card-company">Acme Corp</a></p>
+              </div>
+              <div class="flex flex-col w-full gap-8">
+                <button type="button" aria-label="View Staff Platform Architect">
+                  <h2 class="font-bold text-primary">Staff Platform Architect</h2>
+                </button>
+                <div class="flex flex-col mt-4">
+                  <p class="text-primary"><a href="/jobs-search?location=Remote" data-testid="job-card-location">Remote (USA)</a></p>
+                </div>
+                <div class="flex flex-row flex-wrap gap-8">
+                  <p class="text-secondary">$210K - $250K/yr</p>
+                </div>
+              </div>
+            </section>
+          </article>
+        </div>
+        <!-- Mobile card 1 (duplicate) -->
+        <div class="block md:hidden">
+          <article class="relative flex flex-col" id="job-card-abc123key">
+            <section><p><a data-testid="job-card-company">Acme Corp</a></p>
+            <h2>Staff Platform Architect</h2>
+            <p><a data-testid="job-card-location">Remote (USA)</a></p>
+            <p>$210K - $250K/yr</p></section>
+          </article>
+        </div>
+
+        <!-- Desktop card 2 -->
+        <div class="hidden md:block">
+          <article class="relative flex flex-col" id="job-card-def456key">
+            <section class="flex flex-col gap-8 w-full">
+              <div class="flex justify-between items-center">
+                <p class="text-primary"><a href="/co/Globex/Jobs" data-testid="job-card-company">Globex Corporation</a></p>
+              </div>
+              <div class="flex flex-col w-full gap-8">
+                <button type="button" aria-label="View Senior Staff Engineer">
+                  <h2 class="font-bold text-primary">Senior Staff Engineer</h2>
+                </button>
+                <div class="flex flex-col mt-4">
+                  <p class="text-primary"><a href="/jobs-search?location=New+York" data-testid="job-card-location">New York, NY</a></p>
+                </div>
+                <div class="flex flex-row flex-wrap gap-8">
+                  <p class="text-secondary">$230K - $280K/yr</p>
+                </div>
+              </div>
+            </section>
+          </article>
+        </div>
+        <!-- Mobile card 2 (duplicate) -->
+        <div class="block md:hidden">
+          <article class="relative flex flex-col" id="job-card-def456key">
+            <section><p><a data-testid="job-card-company">Globex Corporation</a></p>
+            <h2>Senior Staff Engineer</h2>
+            <p><a data-testid="job-card-location">New York, NY</a></p>
+            <p>$230K - $280K/yr</p></section>
+          </article>
+        </div>
+
+        <!-- Desktop card 3 (no salary) -->
+        <div class="hidden md:block">
+          <article class="relative flex flex-col" id="job-card-ghi789key">
+            <section class="flex flex-col gap-8 w-full">
+              <div class="flex justify-between items-center">
+                <p class="text-primary"><a href="/co/Initech/Jobs" data-testid="job-card-company">Initech</a></p>
+              </div>
+              <div class="flex flex-col w-full gap-8">
+                <button type="button" aria-label="View Principal Software Architect">
+                  <h2 class="font-bold text-primary">Principal Software Architect</h2>
+                </button>
+                <div class="flex flex-col mt-4">
+                  <p class="text-primary"><a href="/jobs-search?location=San+Francisco" data-testid="job-card-location">San Francisco, CA</a></p>
+                </div>
+              </div>
+            </section>
+          </article>
+        </div>
+        <!-- Mobile card 3 (duplicate) -->
+        <div class="block md:hidden">
+          <article class="relative flex flex-col" id="job-card-ghi789key">
+            <section><p><a data-testid="job-card-company">Initech</a></p>
+            <h2>Principal Software Architect</h2>
+            <p><a data-testid="job-card-location">San Francisco, CA</a></p></section>
+          </article>
+        </div>
+      </div>
+
+      <!-- Detail panel (populated by click-through) -->
+      <div data-testid="job-details-scroll-container">
+        <div class="job-details-content">
+          <!-- Detail content loaded dynamically on card click -->
+        </div>
+      </div>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,42 @@
+<%- include('../partials/header', { title: 'Cart' }) %>
+<h1>Your Cart</h1>
+<% if (!cart.items.length) { %>
+  <p class="muted">Cart is empty. <a href="/shop/products">Browse products →</a></p>
+<% } else { %>
+<table class="grid">
+  <thead><tr><th>Product</th><th>SKU</th><th>Price</th><th>Qty</th><th>Line total</th><th></th></tr></thead>
+  <tbody>
+    <% cart.items.forEach(it => { %>
+      <tr>
+        <td><a href="/shop/products/<%= it.product_id %>"><%= it.display_name %></a></td>
+        <td><%= it.sku %></td>
+        <td>$<%= Number(it.unit_price).toFixed(2) %></td>
+        <td>
+          <form method="post" action="/shop/cart/update" style="display:inline">
+            <input type="hidden" name="productId" value="<%= it.product_id %>" />
+            <input type="number" name="qty" value="<%= it.qty %>" min="0" style="width:4rem" />
+            <button class="btn small" type="submit">Update</button>
+          </form>
+        </td>
+        <td>$<%= it.lineTotal.toFixed(2) %></td>
+        <td>
+          <form method="post" action="/shop/cart/update">
+            <input type="hidden" name="productId" value="<%= it.product_id %>" />
+            <input type="hidden" name="qty" value="0" />
+            <button class="btn small danger" type="submit">remove</button>
+          </form>
+        </td>
+      </tr>
+    <% }) %>
+  </tbody>
+  <tfoot>
+    <tr><th colspan="4" style="text-align:right">Subtotal</th><th>$<%= cart.subTotal.toFixed(2) %></th><th></th></tr>
+  </tfoot>
+</table>
+<p class="muted">Tax is computed at read-time from the client's billing-address state.</p>
+<form method="post" action="/shop/cart/clear" style="display:inline">
+  <button class="btn ghost" type="submit">Clear cart</button>
+</form>
+<a class="btn" href="/shop/checkout">Checkout →</a>
+<% } %>
+<%- include('../partials/footer') %>

@@ -4,7 +4,9 @@ This folder is a **self-contained Effortless Rulebook (ERB) project**. The ruleb
 
 ## Rulebook
 
-**Location:** `effortless-rulebook/effortless-rulebook.json`
+**Location:** `effortless-rulebook/<project-name>-rulebook.json`
+
+The rulebook file is always named after its containing folder — e.g. `acme-llc/effortless-rulebook/acme-llc-rulebook.json`. The generic name `effortless-rulebook.json` is **not** used for per-project rulebooks; that name is reserved for the top-level platform/orchestration rulebook at `effortless-platform/effortless-rulebook/effortless-rulebook.json`.
 
 This is the canonical specification for the domain. It defines:
 - Entity schemas (tables with fields)
@@ -16,7 +18,7 @@ This is the canonical specification for the domain. It defines:
 
 ### Option 1: Direct (no Airtable)
 
-Edit `effortless-rulebook/effortless-rulebook.json` directly. Then rebuild:
+Edit `effortless-rulebook/<project-name>-rulebook.json` directly. Then rebuild:
 
 ```bash
 effortless build
@@ -80,7 +82,7 @@ All substrates should produce identical results.
 |------|---------|
 | `effortless.json` | Project config + transpiler settings |
 | `CLAUDE.md` | This file |
-| `effortless-rulebook/effortless-rulebook.json` | The rulebook (SSoT) |
+| `effortless-rulebook/<project-name>-rulebook.json` | The rulebook (SSoT) |
 | `README.md` | Narrative: what this domain models |
 | `execution-substrates/*/` | Generated: do not edit |
 
@@ -99,15 +101,15 @@ The rulebook is a **declarative specification** of business logic. It is:
 
 ### Add a new entity (table)
 
-Edit `effortless-rulebook.json`: add a new top-level object with `schema` and `data` properties. Then `effortless build`.
+Edit `<project-name>-rulebook.json`: add a new top-level object with `schema` and `data` properties. Then `effortless build`.
 
 ### Add a calculated field
 
-Edit the table's field list in `effortless-rulebook.json`: add a field with `type: "formula"` or `"lookup"` or `"aggregation"`. Then `effortless build`.
+Edit the table's field list in `<project-name>-rulebook.json`: add a field with `type: "formula"` or `"lookup"` or `"aggregation"`. Then `effortless build`.
 
 ### Change seed data
 
-Edit the `data` section of a table in `effortless-rulebook.json`. Then rebuild to regenerate answer keys and test files.
+Edit the `data` section of a table in `<project-name>-rulebook.json`. Then rebuild to regenerate answer keys and test files.
 
 ### Debug a formula
 

@@ -1,0 +1,63 @@
+[
+  {
+    "id": "doc-stw-2024-tax",
+    "name": "biz-stillwater-2024-tax-return-pdf",
+    "label": "Stillwater Roasters — 2024 Federal Tax Return",
+    "business_id": "biz-stillwater-roasters",
+    "loan_id": null,
+    "document_type": "TaxReturn",
+    "filename": "stillwater-2024-tax-return.pdf",
+    "ocr_indexed": true,
+    "uploaded_by_user_id": "usr-devon-marshall",
+    "uploaded_at": "2025-01-22"
+  },
+  {
+    "id": "doc-l0051-note",
+    "name": "l-0051-promissory-note-pdf",
+    "label": "L-0051 — Promissory Note",
+    "business_id": null,
+    "loan_id": "ln-l-0051",
+    "document_type": "Note",
+    "filename": "l-0051-promissory-note.pdf",
+    "ocr_indexed": true,
+    "uploaded_by_user_id": "usr-priya-iyer",
+    "uploaded_at": "2025-02-28"
+  },
+  {
+    "id": "doc-l0051-sec-agree",
+    "name": "l-0051-security-agreement-pdf",
+    "label": "L-0051 — Security Agreement",
+    "business_id": null,
+    "loan_id": "ln-l-0051",
+    "document_type": "SecurityAgreement",
+    "filename": "l-0051-security-agreement.pdf",
+    "ocr_indexed": true,
+    "uploaded_by_user_id": "usr-priya-iyer",
+    "uploaded_at": "2025-02-28"
+  },
+  {
+    "id": "doc-stw-q4-pl",
+    "name": "biz-stillwater-q4-2024-pl-pdf",
+    "label": "Stillwater Roasters — Q4 2024 P&L (customer upload)",
+    "business_id": "biz-stillwater-roasters",
+    "loan_id": null,
+    "document_type": "FinancialStatement",
+    "filename": "stillwater-q4-2024-pl.pdf",
+    "ocr_indexed": true,
+    "uploaded_by_user_id": null,
+    "uploaded_via": "BusinessClientPortal",
+    "uploaded_at": "2025-01-15"
+  },
+  {
+    "id": "doc-pine-formation",
+    "name": "biz-pine-hardware-articles-pdf",
+    "label": "Pine Hardware — Articles of Incorporation",
+    "business_id": "biz-pine-hardware",
+    "loan_id": null,
+    "document_type": "FormationDoc",
+    "filename": "pine-articles-of-incorporation.pdf",
+    "ocr_indexed": true,
+    "uploaded_by_user_id": "usr-devon-marshall",
+    "uploaded_at": "2019-06-21"
+  }
+]
