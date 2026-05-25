@@ -39,6 +39,14 @@
       "PinnedVersion": "v2026.04.14.0155",
       "LastVersionUsed": "v2026.04.14.0155",
       "LastUrl": "https://common-json-hbars-transform-v2026-04-14-0155-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "platform-rulebook-to-docs",
+      "RelativePath": "/effortless-platform/transpilers",
+      "CommandLine": "-exec python3 ./platform-rulebook-to-docs.py",
+      "IsDisabled": false,
+      "Description": "Projects the platform rulebook into docs/derived/*.md (one file per platform table). Generated files carry DO-NOT-EDIT headers and are removed by effortless -clean."
     }
   ]
 }
