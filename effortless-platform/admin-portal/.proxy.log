@@ -1,0 +1,78 @@
+ssotme-proxy  http://localhost:4242
+  POST /airtable-to-rulebook  —  Pull rulebook from Airtable base
+  POST /rulebook-to-python  —  Generate Python dataclass + calc library from rulebook
+  POST /rulebook-to-golang  —  Generate Go structs + business-logic from rulebook
+  POST /rulebook-to-binary  —  Generate ARM64 assembly calculation stub from rulebook
+  POST /rulebook-to-cobol  —  Generate COBOL computation program from rulebook
+  POST /rulebook-to-csv  —  Generate CSV exports + rulebook.xlsx from rulebook
+  POST /rulebook-to-xlsx  —  Generate Excel workbook with formulas from rulebook
+  POST /rulebook-to-uml  —  Generate PlantUML class diagram + OCL constraints from rulebook
+  POST /rulebook-to-owl  —  Generate RDF/OWL ontology from rulebook
+  POST /rulebook-to-english  —  Generate plain-English business-rule narrative from rulebook
+  POST /rulebook-to-explain-dag  —  Generate JSON derivation-tracing DAG spec from rulebook
+  POST /rulebook-to-airtable  —  Sync rulebook schema back into Airtable base
+  GET  /ping
+[ssotme-proxy] "GET /ping HTTP/1.1" 200 -
+[ssotme-proxy] "GET /ping HTTP/1.1" 200 -
+[ssotme-proxy] POST /rulebook-to-xlsx from client_port=53262
+[ssotme-proxy] "POST /rulebook-to-xlsx HTTP/1.1" 400 -
+[ssotme-proxy] POST /rulebook-to-xlsx from client_port=55931
+[ssotme-proxy]   resolved: socket_pid=61314 domain=customer-fullname input=/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/rulebook-examples/customer-fullname/effortless-rulebook/customer-fullname-rulebook.json output=/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/rulebook-examples/customer-fullname/xlsx
+[ssotme-proxy] "POST /rulebook-to-xlsx HTTP/1.1" 200 -
+[ssotme-proxy] "GET /ping HTTP/1.1" 200 -
+[ssotme-proxy] "GET /ping HTTP/1.1" 200 -
+[ssotme-proxy] POST /rulebook-to-xlsx from client_port=54671
+[ssotme-proxy] "POST /rulebook-to-xlsx HTTP/1.1" 400 -
+[ssotme-proxy] "GET /ping HTTP/1.1" 200 -
+[ssotme-proxy] "GET /ping HTTP/1.1" 200 -
+[ssotme-proxy] "GET /ping HTTP/1.1" 200 -
+[ssotme-proxy] "GET /ping HTTP/1.1" 200 -
+[ssotme-proxy] "GET /ping HTTP/1.1" 200 -
+[ssotme-proxy] "GET /ping HTTP/1.1" 200 -
+[ssotme-proxy] "GET /ping HTTP/1.1" 200 -
+[ssotme-proxy] POST /rulebook-to-xlsx from client_port=61778
+[ssotme-proxy] "POST /rulebook-to-xlsx HTTP/1.1" 400 -
+[ssotme-proxy] "GET /ping HTTP/1.1" 200 -
+[ssotme-proxy] "GET /ping HTTP/1.1" 200 -
+[ssotme-proxy] "GET /ping HTTP/1.1" 200 -
+[ssotme-proxy] "GET /ping HTTP/1.1" 200 -
+[ssotme-proxy] "GET /ping HTTP/1.1" 200 -
+[ssotme-proxy] POST /rulebook-to-xlsx from client_port=63821
+[ssotme-proxy] "POST /rulebook-to-xlsx HTTP/1.1" 400 -
+[ssotme-proxy] "GET /ping HTTP/1.1" 200 -
+[ssotme-proxy] "GET /ping HTTP/1.1" 200 -
+[ssotme-proxy] POST /rulebook-to-xlsx from client_port=49909
+[ssotme-proxy] "POST /rulebook-to-xlsx HTTP/1.1" 400 -
+[ssotme-proxy] POST /rulebook-to-xlsx from client_port=50221
+[ssotme-proxy] "POST /rulebook-to-xlsx HTTP/1.1" 400 -
+[ssotme-proxy] "GET /ping HTTP/1.1" 200 -
+[ssotme-proxy] "GET /ping HTTP/1.1" 200 -
+[ssotme-proxy] POST /rulebook-to-xlsx from client_port=50636
+[ssotme-proxy]   resolved: socket_pid=30338 domain=customer-fullname input=/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/rulebook-examples/customer-fullname/effortless-rulebook/customer-fullname-rulebook.json output=/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/rulebook-examples/customer-fullname/xlsx
+[ssotme-proxy] "POST /rulebook-to-xlsx HTTP/1.1" 200 -
+[ssotme-proxy] "GET /ping HTTP/1.1" 200 -
+[ssotme-proxy] "GET /ping HTTP/1.1" 200 -
+[ssotme-proxy] POST /rulebook-to-xlsx from client_port=50971
+[ssotme-proxy]   resolved: socket_pid=33413 domain=customer-fullname input=/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/rulebook-examples/customer-fullname/effortless-rulebook/customer-fullname-rulebook.json output=/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/rulebook-examples/customer-fullname/xlsx
+[ssotme-proxy] "POST /rulebook-to-xlsx HTTP/1.1" 200 -
+[ssotme-proxy] "GET /ping HTTP/1.1" 200 -
+[ssotme-proxy] "GET /ping HTTP/1.1" 200 -
+[ssotme-proxy] "GET /ping HTTP/1.1" 200 -
+[ssotme-proxy] POST /rulebook-to-xlsx from client_port=59943
+[ssotme-proxy]   resolved: socket_pid=6654 domain=customer-fullname input=/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/rulebook-examples/customer-fullname/effortless-rulebook/customer-fullname-rulebook.json output=/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/rulebook-examples/customer-fullname/xlsx
+[ssotme-proxy] "POST /rulebook-to-xlsx HTTP/1.1" 200 -
+[ssotme-proxy] "GET /ping HTTP/1.1" 200 -
+[ssotme-proxy] "GET /ping HTTP/1.1" 200 -
+[ssotme-proxy] POST /rulebook-to-xlsx from client_port=64702
+[ssotme-proxy]   resolved: socket_pid=45298 domain=customer-fullname input=/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/rulebook-examples/customer-fullname/effortless-rulebook/customer-fullname-rulebook.json output=/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/rulebook-examples/customer-fullname/xlsx
+[ssotme-proxy] "POST /rulebook-to-xlsx HTTP/1.1" 200 -
+[ssotme-proxy] "GET /ping HTTP/1.1" 200 -
+[ssotme-proxy] "GET /ping HTTP/1.1" 200 -
+[ssotme-proxy] POST /rulebook-to-xlsx from client_port=65240
+[ssotme-proxy]   resolved: socket_pid=50098 domain=customer-fullname input=/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/rulebook-examples/customer-fullname/effortless-rulebook/customer-fullname-rulebook.json output=/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/rulebook-examples/customer-fullname/xlsx
+[ssotme-proxy] "POST /rulebook-to-xlsx HTTP/1.1" 200 -
+[ssotme-proxy] "GET /ping HTTP/1.1" 200 -
+[ssotme-proxy] "GET /ping HTTP/1.1" 200 -
+[ssotme-proxy] "GET /ping HTTP/1.1" 200 -
+[ssotme-proxy] POST /rulebook-to-xlsx from client_port=53917
+[ssotme-proxy]   resolved: socket_pid=91473 domain=customer-fullname input=/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/rulebook-examples/customer-fullname/effortless-rulebook/customer-fullname-rulebook.json output=/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/rulebook-examples/customer-fullname/xlsx
