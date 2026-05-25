@@ -1443,7 +1443,7 @@
     ]
   },
   "RulebookDomains": {
-    "Description": "Customer ontologies: each domain has its own rulebook + substrate generation",
+    "Description": "Customer ontologies: each domain has its own rulebook + substrate generation. Domains form a TREE — ParentDomainId links a more-elaborate domain back to the simpler one it grew out of (e.g. Jessica ADVANCED ← Jessica BASIC). The UI uses this to present related rulebooks as a set rather than a flat list, and to drive 'next step in the progression' navigation.",
     "schema": [
       {
         "name": "DomainId",
@@ -1496,6 +1496,20 @@
         "datatype": "string",
         "type": "raw",
         "nullable": true
+      },
+      {
+        "name": "ParentDomainId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "FK to RulebookDomains.DomainId — the simpler domain this one was derived from / builds on. Null for root-level demos (independent starting points). Lets the UI present rulebooks as a tree of related domains."
+      },
+      {
+        "name": "ProgressionNote",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "One sentence describing what this domain ADDS over its parent — the specific concept the progression is meant to demonstrate at this step."
       }
     ],
     "data": [
@@ -1507,7 +1521,9 @@
         "ComplexityLevel": "minimal",
         "TableCount": 1,
         "KeyFeatures": "string concatenation",
-        "Purpose": "Hello World: demonstrates basic schema and calculated field (CONCAT formula)"
+        "Purpose": "Hello World: demonstrates basic schema and calculated field (CONCAT formula)",
+        "ParentDomainId": null,
+        "ProgressionNote": "Root of the formula-progression tree: one table, one calculated field, one CONCAT formula. The smallest possible rulebook that still demonstrates the contract."
       },
       {
         "DomainId": "domain-002",
@@ -1517,7 +1533,9 @@
         "ComplexityLevel": "moderate",
         "TableCount": 9,
         "KeyFeatures": "relationships, aggregations, role-agent separation",
-        "Purpose": "Real workflow modeling: task management with assigned agents"
+        "Purpose": "Real workflow modeling: task management with assigned agents",
+        "ParentDomainId": "domain-001",
+        "ProgressionNote": "Adds multi-table relationships, aggregations, and role/agent separation on top of single-table formulas — first ontology that's recognizable as a real application."
       },
       {
         "DomainId": "domain-003",
@@ -1527,7 +1545,9 @@
         "ComplexityLevel": "advanced",
         "TableCount": 9,
         "KeyFeatures": "cross-entity lookups, conditional IF logic, complex aggregations",
-        "Purpose": "Business rule complexity: demonstrates advanced formula patterns"
+        "Purpose": "Business rule complexity: demonstrates advanced formula patterns",
+        "ParentDomainId": "domain-002",
+        "ProgressionNote": "Same shape as Jessica BASIC but adds cross-entity lookups, conditional IF logic, and richer aggregations. Demonstrates that elaboration can happen without substrate edits — pure rulebook change."
       },
       {
         "DomainId": "domain-004",
@@ -1537,7 +1557,9 @@
         "ComplexityLevel": "moderate",
         "TableCount": 7,
         "KeyFeatures": "hierarchical rollups, polymorphic foreign keys",
-        "Purpose": "Media catalog: TV shows, seasons, episodes; demonstrates polymorphism"
+        "Purpose": "Media catalog: TV shows, seasons, episodes; demonstrates polymorphism",
+        "ParentDomainId": null,
+        "ProgressionNote": "Independent root — different domain from Jessica entirely. Demonstrates that swapping domains, not just elaborating one, is also a pure rulebook change. Hierarchical rollups + polymorphic FKs."
       },
       {
         "DomainId": "domain-005",
@@ -1547,7 +1569,9 @@
         "ComplexityLevel": "philosophical",
         "TableCount": 3,
         "KeyFeatures": "8-predicate AND logic, meta-ontology",
-        "Purpose": "Formal argument modeling: demonstrates schema expressivity for abstract domains"
+        "Purpose": "Formal argument modeling: demonstrates schema expressivity for abstract domains",
+        "ParentDomainId": null,
+        "ProgressionNote": "Independent root — abstract/philosophical rather than business. Demonstrates that the rulebook formalism can encode argument structure, not just CRUD entities."
       },
       {
         "DomainId": "domain-006",
@@ -1557,7 +1581,9 @@
         "ComplexityLevel": "advanced",
         "TableCount": null,
         "KeyFeatures": "Hub promotion candidate; demonstrates rulebook-first workflow",
-        "Purpose": "Enterprise demo: ACME Corp operations"
+        "Purpose": "Enterprise demo: ACME Corp operations",
+        "ParentDomainId": null,
+        "ProgressionNote": "Independent root for the ACME enterprise progression. Targets all 15 substrates; serves as the wide-coverage demo for license-quality transpilers."
       },
       {
         "DomainId": "domain-007",
@@ -1567,7 +1593,9 @@
         "ComplexityLevel": "advanced",
         "TableCount": null,
         "KeyFeatures": "Hub promotion candidate; demonstrates rulebook-first workflow",
-        "Purpose": "Enterprise demo: ACME LLC operations"
+        "Purpose": "Enterprise demo: ACME LLC operations",
+        "ParentDomainId": "domain-006",
+        "ProgressionNote": "Smaller-scope variant of ACME Corporation — same enterprise universe, narrower operational slice. Demonstrates rulebook reuse across related but distinct legal entities."
       },
       {
         "DomainId": "domain-008",
@@ -1577,7 +1605,9 @@
         "ComplexityLevel": "philosophical",
         "TableCount": null,
         "KeyFeatures": "self-referential; rulebook describes the ERB project itself",
-        "Purpose": "Demonstrates ERB modeling its own architecture as a domain rulebook"
+        "Purpose": "Demonstrates ERB modeling its own architecture as a domain rulebook",
+        "ParentDomainId": null,
+        "ProgressionNote": "Independent root, self-referential — a rulebook whose domain IS ERB. Demonstrates that the formalism is rich enough to describe itself (dogfooding)."
       }
     ]
   },
@@ -4722,7 +4752,7 @@
     ]
   },
   "SubstrateContractPhases": {
-    "Description": "The three-phase contract every execution substrate implements. Inject is structural (schema → SDK), Execute is functional (compute), Grade is comparison. All three are 100% domain-agnostic — they translate whatever the rulebook defines without knowing what it means.",
+    "Description": "The three-phase contract every execution substrate implements. Inject is structural (schema → SDK), Execute is functional (compute), Grade is comparison. All three are 100% domain-agnostic — they translate whatever the rulebook defines without knowing what it means. Together with EvaluationSteps (the substeps within each phase) and EvaluationArtifacts (the JSON files that flow between phases), this forms the full evaluation subgraph: Phase → Steps → Artifacts.",
     "schema": [
       { "name": "PhaseId", "datatype": "string", "type": "raw", "nullable": false },
       { "name": "Order", "datatype": "integer", "type": "raw", "nullable": false },
@@ -4732,7 +4762,10 @@
       { "name": "Output", "datatype": "string", "type": "raw", "nullable": false },
       { "name": "ScriptPattern", "datatype": "string", "type": "raw", "nullable": true, "Description": "Filename pattern under each execution-substrates/<technology>/ folder." },
       { "name": "Description", "datatype": "string", "type": "raw", "nullable": false },
-      { "name": "WhyDomainAgnostic", "datatype": "string", "type": "raw", "nullable": true, "Description": "Explains how this phase remains generic — i.e. what it must NOT contain." }
+      { "name": "WhyDomainAgnostic", "datatype": "string", "type": "raw", "nullable": true, "Description": "Explains how this phase remains generic — i.e. what it must NOT contain." },
+      { "name": "InputArtifactId", "datatype": "string", "type": "raw", "nullable": true, "Description": "FK to EvaluationArtifacts.ArtifactId — the canonical input artifact this phase consumes." },
+      { "name": "OutputArtifactId", "datatype": "string", "type": "raw", "nullable": true, "Description": "FK to EvaluationArtifacts.ArtifactId — the canonical output artifact this phase produces." },
+      { "name": "FailureMode", "datatype": "string", "type": "raw", "nullable": true, "Description": "What going wrong in this phase actually looks like — e.g. injector emits a domain word, execute calls a hand-written helper, grader hides field-level disagreement." }
     ],
     "data": [
       {
@@ -4744,7 +4777,10 @@
         "Output": "Runnable substrate artifact (SDK / schema / workbook / ontology / DDL)",
         "ScriptPattern": "execution-substrates/<technology>/inject-into-<technology>.py",
         "Description": "Reads the rulebook schema and generates entity structures (1:1 with entities) plus computation functions (1:1 with computed columns). When the rulebook changes, re-running the injector regenerates the substrate artifact — the injector itself never changes.",
-        "WhyDomainAgnostic": "The injector script must contain ZERO domain words (no 'language', 'workflow', 'syntax', 'customer'). It only translates generic rulebook structures into target-language constructs."
+        "WhyDomainAgnostic": "The injector script must contain ZERO domain words (no 'language', 'workflow', 'syntax', 'customer'). It only translates generic rulebook structures into target-language constructs.",
+        "InputArtifactId": "artifact-rulebook",
+        "OutputArtifactId": "artifact-substrate",
+        "FailureMode": "Injector mentions any domain word — that's the signature of a leak. The fix is in the injector, never in a hand-edit to the substrate output."
       },
       {
         "PhaseId": "phase-execute",
@@ -4755,7 +4791,10 @@
         "Output": "test-answers.json (all fields, including computed)",
         "ScriptPattern": "execution-substrates/<technology>/take-test.{py,go,sh}",
         "Description": "Reads blank-test.json, populates the generated entity structures, calls the generated Calc*() functions to fill in computed columns, emits test-answers.json.",
-        "WhyDomainAgnostic": "The test runner does NOT know what fields mean. It just unmarshals JSON, calls the generated functions, and remarshal the result. Same main() pattern works for every rulebook."
+        "WhyDomainAgnostic": "The test runner does NOT know what fields mean. It just unmarshals JSON, calls the generated functions, and remarshal the result. Same main() pattern works for every rulebook.",
+        "InputArtifactId": "artifact-blank-test",
+        "OutputArtifactId": "artifact-test-answers",
+        "FailureMode": "take-test calls a hand-written helper instead of a generated Calc*() function — substrate now encodes business logic instead of just hosting it."
       },
       {
         "PhaseId": "phase-grade",
@@ -4766,8 +4805,179 @@
         "Output": "test-results.md (per-substrate) + all-tests-results.md (aggregate)",
         "ScriptPattern": "orchestration/test-orchestrator.py",
         "Description": "Field-by-field, row-by-row comparison of every substrate's test-answers.json against the canonical answer-key.json derived from the rulebook seed data. No substrate holds a privileged position; answer keys come from the rulebook, not from any one substrate.",
-        "WhyDomainAgnostic": "The grader compares JSON structures. It has no opinion about which fields exist or what they mean — disagreement is reported field-by-field."
+        "WhyDomainAgnostic": "The grader compares JSON structures. It has no opinion about which fields exist or what they mean — disagreement is reported field-by-field.",
+        "InputArtifactId": "artifact-test-answers",
+        "OutputArtifactId": "artifact-test-results",
+        "FailureMode": "Grader pre-decides which substrate is authoritative — that's a privileged-substrate bug (violates ax-002). Or it aggregates pass/fail without preserving the field-level diff."
       }
+    ]
+  },
+  "EvaluationSteps": {
+    "Description": "Substeps within each SubstrateContractPhase. Inject, Execute, and Grade each decompose into a small number of concrete substeps the orchestrator executes in order. This is the layer below SubstrateContractPhases — it answers 'what specifically happens inside phase-execute?' Used by the admin portal's Tests screen to render the actual stages a substrate run goes through.",
+    "schema": [
+      { "name": "StepId", "datatype": "string", "type": "raw", "nullable": false },
+      { "name": "PhaseId", "datatype": "string", "type": "raw", "nullable": false, "Description": "FK to SubstrateContractPhases.PhaseId." },
+      { "name": "Order", "datatype": "integer", "type": "raw", "nullable": false, "Description": "Order within the parent phase." },
+      { "name": "Name", "datatype": "string", "type": "raw", "nullable": false },
+      { "name": "Description", "datatype": "string", "type": "raw", "nullable": false },
+      { "name": "Mechanism", "datatype": "string", "type": "raw", "nullable": true, "Description": "The actual code path — script file, function, or pipeline stage." },
+      { "name": "Invariant", "datatype": "string", "type": "raw", "nullable": true, "Description": "A rule this step must preserve to remain domain-agnostic / conformance-preserving." }
+    ],
+    "data": [
+      { "StepId": "step-inject-01", "PhaseId": "phase-inject", "Order": 1, "Name": "Load rulebook JSON", "Description": "Read effortless-rulebook.json from disk (or POST body via ssotme-proxy). Validate that it parses and has a schema block per table.", "Mechanism": "orchestration/shared.py: get_rulebook_path() + json.load()", "Invariant": "No domain knowledge encoded in the loader — it parses generic JSON." },
+      { "StepId": "step-inject-02", "PhaseId": "phase-inject", "Order": 2, "Name": "Walk entities", "Description": "Iterate every top-level table in the rulebook; for each, emit one entity structure in the target language (class, struct, table, OWL class, etc.).", "Mechanism": "inject-into-<tech>.py main loop", "Invariant": "Emission is purely structural — entity name and field names come from the rulebook, never hardcoded." },
+      { "StepId": "step-inject-03", "PhaseId": "phase-inject", "Order": 3, "Name": "Compile formulas", "Description": "For every calculated/lookup/aggregation field, transpile its formula expression into a target-language function (Calc<Field>).", "Mechanism": "orchestration/formula_parser.py + per-substrate emit step", "Invariant": "Compiler honors the rulebook's declared FormulaDialect; substrate-specific extensions are an error, not a feature." },
+      { "StepId": "step-inject-04", "PhaseId": "phase-inject", "Order": 4, "Name": "Write substrate artifact", "Description": "Persist the generated code/schema/workbook under execution-substrates/<technology>/ or licensed-effortless-tools/<technology>/.", "Mechanism": "Filesystem write; never an in-memory-only artifact.", "Invariant": "Artifact is reproducible: same rulebook + same injector version = byte-equivalent output (modulo deterministic ordering)." },
+      { "StepId": "step-execute-01", "PhaseId": "phase-execute", "Order": 1, "Name": "Load blank-test", "Description": "Read blank-test.json — rows with raw fields populated and all calculated fields nulled out.", "Mechanism": "take-test.<lang> JSON unmarshal", "Invariant": "Blank-test is the SAME file for every substrate in a given run — substrates do not pre-process it." },
+      { "StepId": "step-execute-02", "PhaseId": "phase-execute", "Order": 2, "Name": "Hydrate entities", "Description": "Construct in-memory entity instances from the rows, using the substrate's generated structures.", "Mechanism": "Generated constructor / DDL insert / workbook row", "Invariant": "Hydration uses only generated code; no manual entity construction." },
+      { "StepId": "step-execute-03", "PhaseId": "phase-execute", "Order": 3, "Name": "Compute calculated fields", "Description": "Invoke each generated Calc<Field>() function to fill in calculated, lookup, and aggregation fields.", "Mechanism": "Per-substrate Calc* dispatch", "Invariant": "Substrate executes generated functions only — it does NOT recompute formulas itself or inline business logic." },
+      { "StepId": "step-execute-04", "PhaseId": "phase-execute", "Order": 4, "Name": "Emit test-answers", "Description": "Serialize the fully-populated row set to test-answers.json.", "Mechanism": "JSON marshal", "Invariant": "Output schema matches blank-test schema row-for-row, field-for-field." },
+      { "StepId": "step-grade-01", "PhaseId": "phase-grade", "Order": 1, "Name": "Load answer-key", "Description": "Read answer-key.json — the canonical expected values derived directly from the rulebook seed data (NOT from any one substrate's output).", "Mechanism": "orchestration/test-orchestrator.py: load_answer_key()", "Invariant": "Answer key is rulebook-derived. If it comes from a substrate, you have a privileged-substrate bug." },
+      { "StepId": "step-grade-02", "PhaseId": "phase-grade", "Order": 2, "Name": "Collect substrate outputs", "Description": "Gather every substrate's test-answers.json from execution-substrates/<tech>/ output directories.", "Mechanism": "Filesystem glob + load", "Invariant": "All substrates are gathered as peers; none is treated as the reference." },
+      { "StepId": "step-grade-03", "PhaseId": "phase-grade", "Order": 3, "Name": "Compare field-by-field", "Description": "For each (row, field) pair, compare substrate value to answer-key value. For the English substrate, hand off to FuzzyGradingProviders for LLM-graded comparison.", "Mechanism": "Deep equality for deterministic substrates; orchestration/llm-fuzzy-grader.py for English.", "Invariant": "Disagreement is reported at the field level, not as a binary pass/fail per substrate." },
+      { "StepId": "step-grade-04", "PhaseId": "phase-grade", "Order": 4, "Name": "Emit report", "Description": "Write per-substrate test-results.md and aggregate all-tests-results.md; render orchestration-report.html for the portal Tests screen.", "Mechanism": "orchestration/generate-report.py", "Invariant": "Report preserves field-level disagreement; aggregate pass-rates never erase the diff." }
+    ]
+  },
+  "EvaluationArtifacts": {
+    "Description": "The JSON / Markdown files that flow between SubstrateContractPhases. Each artifact is a contract: a file with a known schema produced by one phase and consumed by the next. This table is the artifact registry — what each file IS, where it lives, who writes it, who reads it. Together with SubstrateContractPhases.InputArtifactId/OutputArtifactId, this gives the evaluation pipeline a fully-witnessed data-flow graph.",
+    "schema": [
+      { "name": "ArtifactId", "datatype": "string", "type": "raw", "nullable": false },
+      { "name": "Name", "datatype": "string", "type": "raw", "nullable": false },
+      { "name": "Format", "datatype": "string", "type": "raw", "nullable": false, "Description": "json | markdown | html | binary | source-tree" },
+      { "name": "PathPattern", "datatype": "string", "type": "raw", "nullable": false, "Description": "Where the artifact lives on disk, with <placeholders> for variable parts." },
+      { "name": "ProducedByPhaseId", "datatype": "string", "type": "raw", "nullable": true, "Description": "FK to SubstrateContractPhases.PhaseId — the phase that writes this artifact. Null for inputs that come from outside the evaluation pipeline (e.g. the rulebook itself)." },
+      { "name": "ConsumedByPhaseId", "datatype": "string", "type": "raw", "nullable": true, "Description": "FK to SubstrateContractPhases.PhaseId — the phase that reads this artifact. Null for terminal outputs (e.g. the human-facing report)." },
+      { "name": "DerivedFrom", "datatype": "string", "type": "raw", "nullable": true, "Description": "Plain-text description of how this artifact is derived — important for proving no substrate is privileged." },
+      { "name": "Description", "datatype": "string", "type": "raw", "nullable": false }
+    ],
+    "data": [
+      { "ArtifactId": "artifact-rulebook", "Name": "Rulebook JSON", "Format": "json", "PathPattern": "rulebook-examples/<domain>/effortless-rulebook/<domain>-rulebook.json (or effortless-platform/effortless-rulebook/effortless-rulebook.json for the platform itself)", "ProducedByPhaseId": null, "ConsumedByPhaseId": "phase-inject", "DerivedFrom": "Hand-authored OR pulled from Airtable via airtable-to-rulebook (an input spoke, not a phase output).", "Description": "The single durable SSoT for a project. All other artifacts in this table are mechanically derivable from this one." },
+      { "ArtifactId": "artifact-substrate", "Name": "Substrate artifact", "Format": "source-tree", "PathPattern": "execution-substrates/<technology>/ OR licensed-effortless-tools/<technology>/", "ProducedByPhaseId": "phase-inject", "ConsumedByPhaseId": "phase-execute", "DerivedFrom": "Rulebook JSON via inject-into-<technology>.py.", "Description": "A runnable artifact in the target technology — Python module, Go package, Postgres DDL, OWL ontology, Excel workbook, ARM64 binary, etc." },
+      { "ArtifactId": "artifact-blank-test", "Name": "blank-test.json", "Format": "json", "PathPattern": "rulebook-examples/<domain>/testing/blank-test.json", "ProducedByPhaseId": null, "ConsumedByPhaseId": "phase-execute", "DerivedFrom": "Rulebook seed data with all calculated/lookup/aggregation fields nulled out. Produced by orchestration, not by any substrate.", "Description": "The exam: rows with raw fields populated and computed fields blank. Every substrate gets the SAME blank-test for a given run." },
+      { "ArtifactId": "artifact-test-answers", "Name": "test-answers.json", "Format": "json", "PathPattern": "execution-substrates/<technology>/test-answers.json (one per substrate per run)", "ProducedByPhaseId": "phase-execute", "ConsumedByPhaseId": "phase-grade", "DerivedFrom": "blank-test.json + substrate's generated Calc*() functions.", "Description": "A substrate's exam answers — the same rows as blank-test, with computed fields filled in by THAT substrate." },
+      { "ArtifactId": "artifact-answer-key", "Name": "answer-key.json", "Format": "json", "PathPattern": "rulebook-examples/<domain>/testing/answer-key.json", "ProducedByPhaseId": null, "ConsumedByPhaseId": "phase-grade", "DerivedFrom": "Rulebook seed data — every field including computed ones, evaluated FROM THE RULEBOOK (not from any substrate). The canonical oracle.", "Description": "The grader's reference. Rulebook-derived so no substrate is privileged. If you find yourself sourcing answer-key from one substrate's output, that's a bug (violates ax-002)." },
+      { "ArtifactId": "artifact-test-results", "Name": "test-results.md / all-tests-results.md", "Format": "markdown", "PathPattern": "rulebook-examples/<domain>/testing/test-results.md (per-substrate) + all-tests-results.md (aggregate)", "ProducedByPhaseId": "phase-grade", "ConsumedByPhaseId": null, "DerivedFrom": "Field-level diff of every substrate's test-answers.json against answer-key.json.", "Description": "Human-readable grade report. Aggregated by orchestration/generate-report.py into orchestration-report.html for the portal Tests screen." }
+    ]
+  },
+  "SubstrateTradeoffDimensions": {
+    "Description": "The fixed taxonomy of dimensions used to characterize every substrate. Pro/con statements in SubstrateTradeoffs are scoped to one of these dimensions, so substrates can be compared apples-to-apples (e.g. 'who's fastest?' = filter SubstrateTradeoffs by DimensionId=dim-speed). Adding a dimension here means committing to fill it in for every substrate.",
+    "schema": [
+      { "name": "DimensionId", "datatype": "string", "type": "raw", "nullable": false },
+      { "name": "Name", "datatype": "string", "type": "raw", "nullable": false },
+      { "name": "Description", "datatype": "string", "type": "raw", "nullable": false },
+      { "name": "Order", "datatype": "integer", "type": "raw", "nullable": false, "Description": "Display order in UI." }
+    ],
+    "data": [
+      { "DimensionId": "dim-speed", "Name": "Speed", "Description": "How fast a single conformance run completes for this substrate. Spans <1s to multi-minute.", "Order": 1 },
+      { "DimensionId": "dim-accuracy", "Name": "Accuracy", "Description": "Observed conformance rate on the answer-key — deterministic substrates are 100% by construction; stochastic substrates are bounded by their grading model.", "Order": 2 },
+      { "DimensionId": "dim-expressive-completeness", "Name": "Expressive completeness", "Description": "Which formula classes the substrate can faithfully evaluate: full | partial-aggregation | partial-formula | shape-only.", "Order": 3 },
+      { "DimensionId": "dim-witnessability", "Name": "Witnessability", "Description": "Whether the substrate's output is structured enough to serve as an answer-key oracle in a conformance run. See ExecutionSubstrates.CanBeAnswerKey.", "Order": 4 },
+      { "DimensionId": "dim-provenance", "Name": "Provenance", "Description": "Who built the generator — licensed-effortless-tool | local-injector | external. Distinct from quality; see FramingInvariants.framing-003.", "Order": 5 },
+      { "DimensionId": "dim-debuggability", "Name": "Debuggability", "Description": "How easy it is to investigate a failure: stepping through generated code, inspecting intermediate state, reading the artifact in a familiar tool.", "Order": 6 },
+      { "DimensionId": "dim-portability", "Name": "Portability", "Description": "How easily the substrate artifact moves to a different host environment — copy a file, ship a binary, require a database server, require an LLM API key.", "Order": 7 },
+      { "DimensionId": "dim-runtime-cost", "Name": "Runtime cost", "Description": "Money cost per run. Deterministic substrates are effectively zero; LLM-graded substrates cost API tokens.", "Order": 8 }
+    ]
+  },
+  "SubstrateTradeoffs": {
+    "Description": "Per-(Substrate × Dimension) Pro/Con/Note. The same fixed dimension set (see SubstrateTradeoffDimensions) is applied to every substrate, so 'why pick Postgres over Python?' or 'why does English cost so much?' is answerable by filtering this table. NOT a ranking — see ax-002 (no privileged substrate). Each row records a factual property along one comparable axis.",
+    "schema": [
+      { "name": "TradeoffId", "datatype": "string", "type": "raw", "nullable": false },
+      { "name": "SubstrateId", "datatype": "string", "type": "raw", "nullable": false, "Description": "FK to ExecutionSubstrates.SubstrateId." },
+      { "name": "DimensionId", "datatype": "string", "type": "raw", "nullable": false, "Description": "FK to SubstrateTradeoffDimensions.DimensionId." },
+      { "name": "Pro", "datatype": "string", "type": "raw", "nullable": true, "Description": "What this substrate does WELL along this dimension. Null if neutral or weak." },
+      { "name": "Con", "datatype": "string", "type": "raw", "nullable": true, "Description": "What this substrate does POORLY along this dimension. Null if neutral or strong." },
+      { "name": "Note", "datatype": "string", "type": "raw", "nullable": true, "Description": "Additional context — e.g. quantitative observation, edge case, source of measurement." }
+    ],
+    "data": [
+      { "TradeoffId": "tr-binary-speed", "SubstrateId": "substrate-001", "DimensionId": "dim-speed", "Pro": "Native execution — once compiled, runs at ARM64 speed.", "Con": "Inject + assemble + link adds compile-time overhead; not interactive.", "Note": "Proof-of-concept; speed has not been benchmarked head-to-head with Python/Go." },
+      { "TradeoffId": "tr-binary-accuracy", "SubstrateId": "substrate-001", "DimensionId": "dim-accuracy", "Pro": "Deterministic — same input always produces same output.", "Con": "Partial-formula coverage means it fails conformance on formula classes it doesn't yet handle.", "Note": null },
+      { "TradeoffId": "tr-binary-expr", "SubstrateId": "substrate-001", "DimensionId": "dim-expressive-completeness", "Pro": null, "Con": "partial-formula — many higher-level formula constructs are not yet emitted.", "Note": "Demonstrates the floor: a binary substrate is possible at all, not that it's complete." },
+      { "TradeoffId": "tr-binary-witness", "SubstrateId": "substrate-001", "DimensionId": "dim-witnessability", "Pro": null, "Con": "Cannot serve as answer-key — binary output is not structurally inspectable as JSON.", "Note": "CanBeAnswerKey=false." },
+      { "TradeoffId": "tr-binary-prov", "SubstrateId": "substrate-001", "DimensionId": "dim-provenance", "Pro": "Local injector — fully open and inspectable.", "Con": null, "Note": null },
+      { "TradeoffId": "tr-binary-debug", "SubstrateId": "substrate-001", "DimensionId": "dim-debuggability", "Pro": null, "Con": "Stepping through ARM64 assembly is impractical for business-rule debugging.", "Note": null },
+      { "TradeoffId": "tr-binary-port", "SubstrateId": "substrate-001", "DimensionId": "dim-portability", "Pro": "Single binary file — copy and run on any ARM64 host.", "Con": "Architecture-locked: an x86 box needs a re-compile or emulator.", "Note": null },
+      { "TradeoffId": "tr-binary-cost", "SubstrateId": "substrate-001", "DimensionId": "dim-runtime-cost", "Pro": "Effectively free per run.", "Con": null, "Note": null },
+
+      { "TradeoffId": "tr-python-speed", "SubstrateId": "substrate-002", "DimensionId": "dim-speed", "Pro": "Sub-second on the demo ontologies.", "Con": null, "Note": "Python startup dominates small runs; per-row compute is negligible." },
+      { "TradeoffId": "tr-python-accuracy", "SubstrateId": "substrate-002", "DimensionId": "dim-accuracy", "Pro": "100% on the answer-key by construction — formulas compile deterministically.", "Con": null, "Note": null },
+      { "TradeoffId": "tr-python-expr", "SubstrateId": "substrate-002", "DimensionId": "dim-expressive-completeness", "Pro": "Full — handles raw, calculated, lookup, and aggregation fields.", "Con": null, "Note": null },
+      { "TradeoffId": "tr-python-witness", "SubstrateId": "substrate-002", "DimensionId": "dim-witnessability", "Pro": "CanBeAnswerKey=true — JSON output is fully structured.", "Con": null, "Note": "Convenient witness when JSON is SSoT — peer, not reference (ax-002)." },
+      { "TradeoffId": "tr-python-prov", "SubstrateId": "substrate-002", "DimensionId": "dim-provenance", "Pro": "Local injector — readable and modifiable.", "Con": null, "Note": null },
+      { "TradeoffId": "tr-python-debug", "SubstrateId": "substrate-002", "DimensionId": "dim-debuggability", "Pro": "Generated Python is plain dataclasses + functions — easy to step through with pdb or print.", "Con": null, "Note": "Best substrate for explaining what a formula 'does' to a new developer." },
+      { "TradeoffId": "tr-python-port", "SubstrateId": "substrate-002", "DimensionId": "dim-portability", "Pro": "Runs anywhere Python runs.", "Con": "Requires Python 3 + a tiny stdlib footprint.", "Note": null },
+      { "TradeoffId": "tr-python-cost", "SubstrateId": "substrate-002", "DimensionId": "dim-runtime-cost", "Pro": "Effectively free.", "Con": null, "Note": null },
+
+      { "TradeoffId": "tr-go-speed", "SubstrateId": "substrate-003", "DimensionId": "dim-speed", "Pro": "Sub-second; faster than Python on larger row counts due to native compilation.", "Con": null, "Note": null },
+      { "TradeoffId": "tr-go-accuracy", "SubstrateId": "substrate-003", "DimensionId": "dim-accuracy", "Pro": "100% by construction.", "Con": null, "Note": null },
+      { "TradeoffId": "tr-go-expr", "SubstrateId": "substrate-003", "DimensionId": "dim-expressive-completeness", "Pro": "Full.", "Con": null, "Note": null },
+      { "TradeoffId": "tr-go-witness", "SubstrateId": "substrate-003", "DimensionId": "dim-witnessability", "Pro": "CanBeAnswerKey=true.", "Con": null, "Note": null },
+      { "TradeoffId": "tr-go-prov", "SubstrateId": "substrate-003", "DimensionId": "dim-provenance", "Pro": "Local injector.", "Con": null, "Note": null },
+      { "TradeoffId": "tr-go-debug", "SubstrateId": "substrate-003", "DimensionId": "dim-debuggability", "Pro": "Generated structs + funcs are idiomatic Go.", "Con": "Compile-edit-run loop slightly slower than Python's edit-run.", "Note": null },
+      { "TradeoffId": "tr-go-port", "SubstrateId": "substrate-003", "DimensionId": "dim-portability", "Pro": "Cross-compiles to a single static binary — ship anywhere.", "Con": null, "Note": null },
+      { "TradeoffId": "tr-go-cost", "SubstrateId": "substrate-003", "DimensionId": "dim-runtime-cost", "Pro": "Effectively free.", "Con": null, "Note": null },
+
+      { "TradeoffId": "tr-pg-speed", "SubstrateId": "substrate-004", "DimensionId": "dim-speed", "Pro": "Sub-second on small ontologies; scales to millions of rows with proper indexing.", "Con": "Requires a running Postgres server — adds infra overhead vs. a file-based substrate.", "Note": null },
+      { "TradeoffId": "tr-pg-accuracy", "SubstrateId": "substrate-004", "DimensionId": "dim-accuracy", "Pro": "100% by construction.", "Con": null, "Note": null },
+      { "TradeoffId": "tr-pg-expr", "SubstrateId": "substrate-004", "DimensionId": "dim-expressive-completeness", "Pro": "Full — including complex aggregations and JOINs that other substrates approximate.", "Con": null, "Note": "Reference-quality implementation; PostgreSQL has no formula-class limitations." },
+      { "TradeoffId": "tr-pg-witness", "SubstrateId": "substrate-004", "DimensionId": "dim-witnessability", "Pro": "CanBeAnswerKey=true — every cell is queryable.", "Con": null, "Note": "Natural witness when the source of truth is a database. Peer, not reference (ax-002)." },
+      { "TradeoffId": "tr-pg-prov", "SubstrateId": "substrate-004", "DimensionId": "dim-provenance", "Pro": "Licensed Effortless tool — externally maintained and battle-tested.", "Con": null, "Note": "Provenance ≠ trustworthiness; see framing-003." },
+      { "TradeoffId": "tr-pg-debug", "SubstrateId": "substrate-004", "DimensionId": "dim-debuggability", "Pro": "EXPLAIN, psql, generated functions are inspectable.", "Con": "Debugging a generated function requires SQL fluency.", "Note": null },
+      { "TradeoffId": "tr-pg-port", "SubstrateId": "substrate-004", "DimensionId": "dim-portability", "Pro": "DDL + functions are portable across any Postgres host.", "Con": "Postgres-specific — not directly portable to MySQL/SQLite without re-emit.", "Note": null },
+      { "TradeoffId": "tr-pg-cost", "SubstrateId": "substrate-004", "DimensionId": "dim-runtime-cost", "Pro": "Free at the substrate level; host cost depends on deployment.", "Con": null, "Note": null },
+
+      { "TradeoffId": "tr-csv-speed", "SubstrateId": "substrate-005", "DimensionId": "dim-speed", "Pro": "Emit is near-instant — just serialize rows.", "Con": null, "Note": null },
+      { "TradeoffId": "tr-csv-accuracy", "SubstrateId": "substrate-005", "DimensionId": "dim-accuracy", "Pro": "Materialized values are exactly what was computed upstream.", "Con": "CSV has no evaluator — it can only mirror values it was given.", "Note": null },
+      { "TradeoffId": "tr-csv-expr", "SubstrateId": "substrate-005", "DimensionId": "dim-expressive-completeness", "Pro": null, "Con": "shape-only — no formula evaluation. Values are materialized at emit time.", "Note": null },
+      { "TradeoffId": "tr-csv-witness", "SubstrateId": "substrate-005", "DimensionId": "dim-witnessability", "Pro": null, "Con": "CanBeAnswerKey=false — CSV cannot recompute, only reflect.", "Note": null },
+      { "TradeoffId": "tr-csv-prov", "SubstrateId": "substrate-005", "DimensionId": "dim-provenance", "Pro": "Local injector.", "Con": null, "Note": null },
+      { "TradeoffId": "tr-csv-debug", "SubstrateId": "substrate-005", "DimensionId": "dim-debuggability", "Pro": "Open in any spreadsheet or text editor.", "Con": null, "Note": null },
+      { "TradeoffId": "tr-csv-port", "SubstrateId": "substrate-005", "DimensionId": "dim-portability", "Pro": "Universal format — every tool reads CSV.", "Con": null, "Note": null },
+      { "TradeoffId": "tr-csv-cost", "SubstrateId": "substrate-005", "DimensionId": "dim-runtime-cost", "Pro": "Effectively free.", "Con": null, "Note": null },
+
+      { "TradeoffId": "tr-xlsx-speed", "SubstrateId": "substrate-006", "DimensionId": "dim-speed", "Pro": "Workbook generation completes in seconds; recalc is Excel-native afterwards.", "Con": null, "Note": null },
+      { "TradeoffId": "tr-xlsx-accuracy", "SubstrateId": "substrate-006", "DimensionId": "dim-accuracy", "Pro": "100% — live Excel formulas, same dialect as Excel.", "Con": null, "Note": null },
+      { "TradeoffId": "tr-xlsx-expr", "SubstrateId": "substrate-006", "DimensionId": "dim-expressive-completeness", "Pro": "Full — formulas are emitted as live Excel formulas.", "Con": null, "Note": null },
+      { "TradeoffId": "tr-xlsx-witness", "SubstrateId": "substrate-006", "DimensionId": "dim-witnessability", "Pro": "CanBeAnswerKey=true — every cell is addressable.", "Con": null, "Note": "Natural SSoT when the source of truth is a workbook." },
+      { "TradeoffId": "tr-xlsx-prov", "SubstrateId": "substrate-006", "DimensionId": "dim-provenance", "Pro": "Licensed Effortless tool.", "Con": null, "Note": null },
+      { "TradeoffId": "tr-xlsx-debug", "SubstrateId": "substrate-006", "DimensionId": "dim-debuggability", "Pro": "Click a cell — see the formula bar. Most accessible debugger of all substrates.", "Con": null, "Note": "Often the right substrate for finance / non-developer stakeholders." },
+      { "TradeoffId": "tr-xlsx-port", "SubstrateId": "substrate-006", "DimensionId": "dim-portability", "Pro": "Workbook opens in Excel, Numbers, LibreOffice, Google Sheets.", "Con": "Some advanced formulas may not survive every reader.", "Note": null },
+      { "TradeoffId": "tr-xlsx-cost", "SubstrateId": "substrate-006", "DimensionId": "dim-runtime-cost", "Pro": "Effectively free.", "Con": null, "Note": null },
+
+      { "TradeoffId": "tr-uml-speed", "SubstrateId": "substrate-007", "DimensionId": "dim-speed", "Pro": "Diagram render is fast.", "Con": null, "Note": null },
+      { "TradeoffId": "tr-uml-accuracy", "SubstrateId": "substrate-007", "DimensionId": "dim-accuracy", "Pro": "Structure is mirrored exactly.", "Con": "No formula evaluation — accuracy claim is about structure, not values.", "Note": null },
+      { "TradeoffId": "tr-uml-expr", "SubstrateId": "substrate-007", "DimensionId": "dim-expressive-completeness", "Pro": null, "Con": "shape-only — documents structure; does not evaluate.", "Note": null },
+      { "TradeoffId": "tr-uml-witness", "SubstrateId": "substrate-007", "DimensionId": "dim-witnessability", "Pro": null, "Con": "CanBeAnswerKey=false — a diagram is not a queryable oracle.", "Note": null },
+      { "TradeoffId": "tr-uml-prov", "SubstrateId": "substrate-007", "DimensionId": "dim-provenance", "Pro": "Local injector.", "Con": null, "Note": null },
+      { "TradeoffId": "tr-uml-debug", "SubstrateId": "substrate-007", "DimensionId": "dim-debuggability", "Pro": "Visual diagram makes structural mistakes obvious.", "Con": null, "Note": "Often the fastest substrate for sanity-checking schema design." },
+      { "TradeoffId": "tr-uml-port", "SubstrateId": "substrate-007", "DimensionId": "dim-portability", "Pro": "PlantUML text renders in any PlantUML viewer.", "Con": null, "Note": null },
+      { "TradeoffId": "tr-uml-cost", "SubstrateId": "substrate-007", "DimensionId": "dim-runtime-cost", "Pro": "Free.", "Con": null, "Note": null },
+
+      { "TradeoffId": "tr-owl-speed", "SubstrateId": "substrate-008", "DimensionId": "dim-speed", "Pro": "Emit is fast.", "Con": "Reasoning over the ontology with a full OWL reasoner is slower than the deterministic substrates — ~10s on demo runs.", "Note": null },
+      { "TradeoffId": "tr-owl-accuracy", "SubstrateId": "substrate-008", "DimensionId": "dim-accuracy", "Pro": "Structurally faithful — relationships and some constraints are captured.", "Con": "Not a full evaluator; partial-formula coverage limits accuracy on computed-field conformance.", "Note": null },
+      { "TradeoffId": "tr-owl-expr", "SubstrateId": "substrate-008", "DimensionId": "dim-expressive-completeness", "Pro": null, "Con": "partial-formula — captures relationships and some constraints; not a full formula evaluator.", "Note": null },
+      { "TradeoffId": "tr-owl-witness", "SubstrateId": "substrate-008", "DimensionId": "dim-witnessability", "Pro": null, "Con": "CanBeAnswerKey=false — RDF triples don't directly map to row-level computed fields.", "Note": null },
+      { "TradeoffId": "tr-owl-prov", "SubstrateId": "substrate-008", "DimensionId": "dim-provenance", "Pro": "Local injector.", "Con": null, "Note": null },
+      { "TradeoffId": "tr-owl-debug", "SubstrateId": "substrate-008", "DimensionId": "dim-debuggability", "Pro": "SPARQL queries against the ontology can answer structural questions.", "Con": "Requires RDF / OWL fluency.", "Note": null },
+      { "TradeoffId": "tr-owl-port", "SubstrateId": "substrate-008", "DimensionId": "dim-portability", "Pro": "Standard W3C formats — readable by any OWL / RDF tool.", "Con": null, "Note": null },
+      { "TradeoffId": "tr-owl-cost", "SubstrateId": "substrate-008", "DimensionId": "dim-runtime-cost", "Pro": "Free.", "Con": null, "Note": null },
+
+      { "TradeoffId": "tr-dag-speed", "SubstrateId": "substrate-009", "DimensionId": "dim-speed", "Pro": "Emit is near-instant.", "Con": null, "Note": null },
+      { "TradeoffId": "tr-dag-accuracy", "SubstrateId": "substrate-009", "DimensionId": "dim-accuracy", "Pro": "Derivation structure is exact — every dependency is recorded.", "Con": "Does not produce numeric output; conformance is about DAG shape, not values.", "Note": null },
+      { "TradeoffId": "tr-dag-expr", "SubstrateId": "substrate-009", "DimensionId": "dim-expressive-completeness", "Pro": "Full coverage of dependency tracing.", "Con": null, "Note": "Witnesses derivation structure, not numeric output." },
+      { "TradeoffId": "tr-dag-witness", "SubstrateId": "substrate-009", "DimensionId": "dim-witnessability", "Pro": null, "Con": "CanBeAnswerKey=false — answers the 'how' but not the 'what'.", "Note": "Critical for ExplainDAG-style visualizations." },
+      { "TradeoffId": "tr-dag-prov", "SubstrateId": "substrate-009", "DimensionId": "dim-provenance", "Pro": "Local injector.", "Con": null, "Note": null },
+      { "TradeoffId": "tr-dag-debug", "SubstrateId": "substrate-009", "DimensionId": "dim-debuggability", "Pro": "Click a calculated field in the portal, see its full derivation tree.", "Con": null, "Note": "The substrate users reach for to ANSWER 'why is this value what it is?'" },
+      { "TradeoffId": "tr-dag-port", "SubstrateId": "substrate-009", "DimensionId": "dim-portability", "Pro": "Plain JSON — embeddable anywhere.", "Con": null, "Note": null },
+      { "TradeoffId": "tr-dag-cost", "SubstrateId": "substrate-009", "DimensionId": "dim-runtime-cost", "Pro": "Free.", "Con": null, "Note": null },
+
+      { "TradeoffId": "tr-ef-speed", "SubstrateId": "substrate-010", "DimensionId": "dim-speed", "Pro": "Compiled .NET runtime — fast at execution time.", "Con": "Build step adds compile-time overhead.", "Note": null },
+      { "TradeoffId": "tr-ef-accuracy", "SubstrateId": "substrate-010", "DimensionId": "dim-accuracy", "Pro": "100% by construction.", "Con": null, "Note": null },
+      { "TradeoffId": "tr-ef-expr", "SubstrateId": "substrate-010", "DimensionId": "dim-expressive-completeness", "Pro": "Full.", "Con": null, "Note": null },
+      { "TradeoffId": "tr-ef-witness", "SubstrateId": "substrate-010", "DimensionId": "dim-witnessability", "Pro": "CanBeAnswerKey=true.", "Con": null, "Note": null },
+      { "TradeoffId": "tr-ef-prov", "SubstrateId": "substrate-010", "DimensionId": "dim-provenance", "Pro": "Licensed Effortless tool.", "Con": null, "Note": null },
+      { "TradeoffId": "tr-ef-debug", "SubstrateId": "substrate-010", "DimensionId": "dim-debuggability", "Pro": "Visual Studio / Rider — full IDE debugging on generated POCOs.", "Con": null, "Note": null },
+      { "TradeoffId": "tr-ef-port", "SubstrateId": "substrate-010", "DimensionId": "dim-portability", "Pro": "Runs on any .NET-supported platform.", "Con": "Requires .NET runtime.", "Note": null },
+      { "TradeoffId": "tr-ef-cost", "SubstrateId": "substrate-010", "DimensionId": "dim-runtime-cost", "Pro": "Effectively free.", "Con": null, "Note": null }
     ]
   },
   "FuzzyGradingProviders": {
@@ -4861,7 +5071,7 @@
     ]
   },
   "DemoNarratives": {
-    "Description": "Curated commit-sequence narratives that demonstrate ERB capabilities in motion: the substrates 'follow along' as the rulebook changes. Used by docs and demos to walk a viewer through what changes, what does not change, and where the cost of change actually lives.",
+    "Description": "Curated narratives that demonstrate ERB capabilities in motion: substrates 'follow along' as the rulebook changes. Two narrative styles coexist: (1) commit-sequence narratives (legacy) where a single demo rulebook evolves over commits; (2) cross-rulebook narratives (current) where the same demo is observed across DIFFERENT rulebooks side-by-side. Cross-rulebook supersedes commit-sequence because RulebookDomains now form a tree (ParentDomainId) — the progression is data, not git history.",
     "schema": [
       { "name": "NarrativeId", "datatype": "string", "type": "raw", "nullable": false },
       { "name": "Order", "datatype": "integer", "type": "raw", "nullable": false, "Description": "Order within the narrative sequence." },
@@ -4870,7 +5080,10 @@
       { "name": "RelatedDomainId", "datatype": "string", "type": "raw", "nullable": true, "Description": "FK to RulebookDomains.DomainId, when this step uses a specific demo rulebook." },
       { "name": "WhatHappens", "datatype": "string", "type": "raw", "nullable": false },
       { "name": "KeyLesson", "datatype": "string", "type": "raw", "nullable": false },
-      { "name": "ObservedCost", "datatype": "string", "type": "raw", "nullable": true, "Description": "Per-substrate cost observation (e.g. 'OWL 10s, English 5min')." }
+      { "name": "ObservedCost", "datatype": "string", "type": "raw", "nullable": true, "Description": "Per-substrate cost observation (e.g. 'OWL 10s, English 5min')." },
+      { "name": "NarrativeStyle", "datatype": "string", "type": "raw", "nullable": true, "Description": "commit-sequence (legacy) | cross-rulebook (current) — how the steps are realized at demo time." },
+      { "name": "Status", "datatype": "string", "type": "raw", "nullable": true, "Description": "active | deprecated. Deprecated narratives are preserved for historical context but should not be used for new demos." },
+      { "name": "SupersededBy", "datatype": "string", "type": "raw", "nullable": true, "Description": "NarrativeName that replaces this one, when Status=deprecated." }
     ],
     "data": [
       {
@@ -4878,31 +5091,180 @@
         "Order": 1,
         "NarrativeName": "Substrate Drift (BASIC → ADVANCED → NEW ONTOLOGY)",
         "StepName": "BASIC",
-        "RelatedDomainId": "domain-jessica-basic",
+        "RelatedDomainId": "domain-002",
         "WhatHappens": "All substrates pass at 100% on a 9-table workflow ontology with relationships, aggregations, and boolean derivations.",
         "KeyLesson": "Substrates have wildly different regeneration costs even at full conformance.",
-        "ObservedCost": "Python/Go/Postgres < 1s, OWL ~10s, English ~5min (~85% LLM-graded)"
+        "ObservedCost": "Python/Go/Postgres < 1s, OWL ~10s, English ~5min (~85% LLM-graded)",
+        "NarrativeStyle": "commit-sequence",
+        "Status": "deprecated",
+        "SupersededBy": "Substrate Drift (cross-rulebook progression)"
       },
       {
         "NarrativeId": "narrative-drift-02",
         "Order": 2,
         "NarrativeName": "Substrate Drift (BASIC → ADVANCED → NEW ONTOLOGY)",
         "StepName": "ADVANCED",
-        "RelatedDomainId": "domain-jessica-advanced",
+        "RelatedDomainId": "domain-003",
         "WhatHappens": "Rename and modify elements within the same ontology — add cross-entity lookups and conditional logic. Every substrate follows along with no edits to substrate code.",
         "KeyLesson": "Interface changes propagate automatically. This is the polymorphism payoff.",
-        "ObservedCost": "Cost profile unchanged from BASIC — work is in the rulebook, not in substrate code."
+        "ObservedCost": "Cost profile unchanged from BASIC — work is in the rulebook, not in substrate code.",
+        "NarrativeStyle": "commit-sequence",
+        "Status": "deprecated",
+        "SupersededBy": "Substrate Drift (cross-rulebook progression)"
       },
       {
         "NarrativeId": "narrative-drift-03",
         "Order": 3,
         "NarrativeName": "Substrate Drift (BASIC → ADVANCED → NEW ONTOLOGY)",
         "StepName": "NEW ONTOLOGY",
-        "RelatedDomainId": "domain-star-trek",
+        "RelatedDomainId": "domain-004",
         "WhatHappens": "Swap to an entirely different domain (e.g. star-trek media catalog). Deterministic substrates regenerate and conform. The English substrate is now 100% wrong against the new answer key until its prose is regenerated by the LLM.",
         "KeyLesson": "The static English content is 100% stale across domain swaps. Regenerating it costs time and money — the dominant cost lives in the slowest substrate, not in the rulebook.",
-        "ObservedCost": "Deterministic substrates < 1s; English regeneration ~5min and ~$0.10-$1 in LLM tokens."
+        "ObservedCost": "Deterministic substrates < 1s; English regeneration ~5min and ~$0.10-$1 in LLM tokens.",
+        "NarrativeStyle": "commit-sequence",
+        "Status": "deprecated",
+        "SupersededBy": "Substrate Drift (cross-rulebook progression)"
+      },
+      {
+        "NarrativeId": "narrative-cross-01",
+        "Order": 1,
+        "NarrativeName": "Substrate Drift (cross-rulebook progression)",
+        "StepName": "CustomerFullName (root)",
+        "RelatedDomainId": "domain-001",
+        "WhatHappens": "Start at the simplest rulebook in the tree — one table, one CONCAT formula. Every substrate emits its analog. Conformance is 100% across the board.",
+        "KeyLesson": "The contract is observable at minimum scale. A 1-table rulebook is enough to exercise inject + execute + grade end-to-end.",
+        "ObservedCost": "All substrates < 1s; English regeneration ~30s.",
+        "NarrativeStyle": "cross-rulebook",
+        "Status": "active",
+        "SupersededBy": null
+      },
+      {
+        "NarrativeId": "narrative-cross-02",
+        "Order": 2,
+        "NarrativeName": "Substrate Drift (cross-rulebook progression)",
+        "StepName": "Jessica BASIC (child of root)",
+        "RelatedDomainId": "domain-002",
+        "WhatHappens": "Walk down the progression tree to Jessica BASIC — adds relationships, aggregations, role/agent separation. Every substrate handles the elaboration with no substrate-side edits.",
+        "KeyLesson": "Walking the tree of rulebooks (ParentDomainId) IS the demo — no git rewind required. The viewer can see N rulebooks side-by-side rather than replaying commits.",
+        "ObservedCost": "Python/Go/Postgres < 1s, OWL ~10s, English ~5min.",
+        "NarrativeStyle": "cross-rulebook",
+        "Status": "active",
+        "SupersededBy": null
+      },
+      {
+        "NarrativeId": "narrative-cross-03",
+        "Order": 3,
+        "NarrativeName": "Substrate Drift (cross-rulebook progression)",
+        "StepName": "Jessica ADVANCED (child of BASIC)",
+        "RelatedDomainId": "domain-003",
+        "WhatHappens": "Walk further down: Jessica ADVANCED elaborates BASIC with cross-entity lookups and conditional IF logic. Conformance still 100% across deterministic substrates.",
+        "KeyLesson": "Elaboration within a tree of rulebooks costs the SAME as elaboration within a commit history — proving that 'commits' was never the load-bearing thing; the progression structure was.",
+        "ObservedCost": "Cost profile unchanged from BASIC.",
+        "NarrativeStyle": "cross-rulebook",
+        "Status": "active",
+        "SupersededBy": null
+      },
+      {
+        "NarrativeId": "narrative-cross-04",
+        "Order": 4,
+        "NarrativeName": "Substrate Drift (cross-rulebook progression)",
+        "StepName": "Star Trek (sibling root)",
+        "RelatedDomainId": "domain-004",
+        "WhatHappens": "Jump to a sibling root in the tree — different domain entirely. Deterministic substrates regenerate and conform. The English substrate is 100% stale until regenerated.",
+        "KeyLesson": "Cross-rulebook navigation makes the 'domain swap' observable as a tree traversal, not a git checkout. Same lesson as the legacy commit-sequence demo, but now data-driven.",
+        "ObservedCost": "Deterministic substrates < 1s; English regeneration ~5min and ~$0.10-$1.",
+        "NarrativeStyle": "cross-rulebook",
+        "Status": "active",
+        "SupersededBy": null
       }
+    ]
+  },
+  "Glossary": {
+    "Description": "Authoritative glossary for the ERB platform. Every term used in orchestration code, docs, the admin portal UI, or rulebook tables appears here EXACTLY ONCE, with a definition AND an ImplementedAs pointer back into this rulebook (or to source files when the implementation is code rather than data). If a term appears in repo prose but has no row here, that's a documentation bug. If a term has a row here but no ImplementedAs target, that's an architecture bug — every concept should be data, code, or a value.",
+    "schema": [
+      { "name": "TermId", "datatype": "string", "type": "raw", "nullable": false },
+      { "name": "Term", "datatype": "string", "type": "raw", "nullable": false, "Description": "The canonical word/phrase as it appears in code and docs." },
+      { "name": "Category", "datatype": "string", "type": "raw", "nullable": false, "Description": "concept | role | artifact | phase | substrate | dimension | pattern | tool | location | invariant — what KIND of thing this term refers to." },
+      { "name": "Definition", "datatype": "string", "type": "raw", "nullable": false, "Description": "One precise sentence. Do not restate the term itself." },
+      { "name": "ImplementedAs", "datatype": "string", "type": "raw", "nullable": false, "Description": "Pointer to where this term is realized: 'table:X', 'column:X.Y', 'value:X.Y=Z', 'file:path/to/file', or 'axiom:axiom-id'. The promise is that a reader can follow this pointer and find the concept's actual realization." },
+      { "name": "Aliases", "datatype": "string", "type": "raw", "nullable": true, "Description": "Comma-separated other names that should resolve to this term. The canonical spelling is in Term; aliases redirect to it." },
+      { "name": "Notes", "datatype": "string", "type": "raw", "nullable": true }
+    ],
+    "data": [
+      { "TermId": "glo-rulebook", "Term": "Rulebook", "Category": "concept", "Definition": "A single JSON file (effortless-rulebook.json or <domain>-rulebook.json) that declaratively encodes the schema, formulas, and seed data for one project; the durable SSoT from which every substrate is mechanically derived.", "ImplementedAs": "file:effortless-platform/effortless-rulebook/effortless-rulebook.json (platform); file:rulebook-examples/<domain>/effortless-rulebook/<domain>-rulebook.json (demos)", "Aliases": "effortless-rulebook, rulebook JSON", "Notes": null },
+      { "TermId": "glo-platform-rulebook", "Term": "Platform Rulebook", "Category": "concept", "Definition": "The single rulebook that describes the ERB orchestration tool ITSELF — admin portal, build pipeline, substrates, framing invariants. Distinct from demo rulebooks; the parent, not a sibling.", "ImplementedAs": "file:effortless-platform/effortless-rulebook/effortless-rulebook.json", "Aliases": "project rulebook, meta-rulebook, top-level rulebook", "Notes": "See CLAUDE.md — THE PROJECT RULEBOOK ≠ A DEMO RULEBOOK." },
+      { "TermId": "glo-demo-rulebook", "Term": "Demo Rulebook", "Category": "concept", "Definition": "A per-domain rulebook under rulebook-examples/ that captures one business ontology. Categorically not the platform rulebook.", "ImplementedAs": "file:rulebook-examples/<domain>/effortless-rulebook/<domain>-rulebook.json", "Aliases": "domain rulebook, project rulebook (demo)", "Notes": null },
+      { "TermId": "glo-substrate", "Term": "Substrate", "Category": "concept", "Definition": "An execution environment — language, database, spreadsheet, ontology, binary — into which the rulebook is mechanically projected. All substrates are peers (ax-002).", "ImplementedAs": "table:ExecutionSubstrates", "Aliases": "execution substrate, target", "Notes": null },
+      { "TermId": "glo-injector", "Term": "Injector", "Category": "tool", "Definition": "A per-substrate Python script that reads the rulebook JSON and emits the substrate artifact. Must contain ZERO domain words to remain domain-agnostic.", "ImplementedAs": "column:ExecutionSubstrates.InjectorScript", "Aliases": "inject-into-X, transpiler-injector", "Notes": "See SubstrateContractPhases.phase-inject.FailureMode." },
+      { "TermId": "glo-take-test", "Term": "take-test", "Category": "tool", "Definition": "A per-substrate script that runs blank-test.json through the substrate's generated functions and emits test-answers.json.", "ImplementedAs": "column:ExecutionSubstrates.TestScript", "Aliases": "test runner, conformance runner", "Notes": null },
+      { "TermId": "glo-test-orchestrator", "Term": "Test Orchestrator", "Category": "tool", "Definition": "The orchestration-level script that loads answer-key.json, collects each substrate's test-answers.json, compares them, and emits the grade report.", "ImplementedAs": "file:orchestration/test-orchestrator.py", "Aliases": "grader", "Notes": null },
+      { "TermId": "glo-ssotme-proxy", "Term": "ssotme-proxy", "Category": "tool", "Definition": "Local HTTP server on :4242 that exposes each injector as a transpiler route. The effortless CLI POSTs to these routes during a build.", "ImplementedAs": "table:SsotmeProxy", "Aliases": "proxy, transpiler proxy", "Notes": null },
+      { "TermId": "glo-effortless-cli", "Term": "effortless CLI", "Category": "tool", "Definition": "Command-line front end (`effortless build`, `-init`, `-install`) that drives the build pipeline. Also known as ssotme/aicapture/aic.", "ImplementedAs": "table:Dependencies (effortless row)", "Aliases": "ssotme, aicapture, aic, the CLI", "Notes": null },
+      { "TermId": "glo-effortless-json", "Term": "effortless.json", "Category": "artifact", "Definition": "Per-project configuration file naming the rulebook input and the list of project transpilers (with their proxy URLs).", "ImplementedAs": "table:BuildPipeline; table:ProjectConfiguration", "Aliases": null, "Notes": null },
+      { "TermId": "glo-airtable-to-rulebook", "Term": "airtable-to-rulebook", "Category": "tool", "Definition": "Transpiler that pulls Airtable schema and data INTO the rulebook JSON. An input spoke. Disabled by default; explicit consent required.", "ImplementedAs": "row:RulebookSourceSpokes (Airtable kind)", "Aliases": null, "Notes": "See CLAUDE.md — Airtable pull is disabled by default." },
+      { "TermId": "glo-rulebook-to-postgres", "Term": "rulebook-to-postgres", "Category": "tool", "Definition": "Licensed Effortless transpiler that generates DDL, stored functions, and views from the rulebook. Reference-quality substrate output.", "ImplementedAs": "row:ExecutionSubstrates.substrate-004", "Aliases": null, "Notes": null },
+      { "TermId": "glo-rulebook-to-airtable", "Term": "rulebook-to-airtable", "Category": "tool", "Definition": "Reverse-sync transpiler that pushes rulebook changes BACK to Airtable. An output spoke (Airtable becomes a downstream view).", "ImplementedAs": "row:ExecutionSubstrates (when registered as output spoke)", "Aliases": "airtable reverse-sync", "Notes": null },
+      { "TermId": "glo-hub", "Term": "Hub", "Category": "concept", "Definition": "The rulebook JSON acting as the SSoT center; all inputs (Airtable, LLM edits, admin portal saves) write INTO it and all outputs (substrates) read FROM it.", "ImplementedAs": "axiom:ax-004", "Aliases": "rulebook-as-hub, hub-and-spoke", "Notes": null },
+      { "TermId": "glo-spoke", "Term": "Spoke", "Category": "concept", "Definition": "Any peer system connected to the hub — either an input spoke writing into the rulebook, or an output spoke (substrate) reading from it.", "ImplementedAs": "table:RulebookSourceSpokes (input); table:ExecutionSubstrates (output)", "Aliases": null, "Notes": null },
+      { "TermId": "glo-input-spoke", "Term": "Input Spoke", "Category": "concept", "Definition": "A peer that writes into the rulebook JSON: admin portal save, Airtable pull, LLM-direct edit, hand-edit.", "ImplementedAs": "table:RulebookSourceSpokes", "Aliases": null, "Notes": null },
+      { "TermId": "glo-output-spoke", "Term": "Output Spoke", "Category": "concept", "Definition": "A substrate that reads from the rulebook JSON to produce a derived artifact. Plural; the rulebook drives N output spokes per project.", "ImplementedAs": "table:ExecutionSubstrates", "Aliases": null, "Notes": null },
+      { "TermId": "glo-ssot", "Term": "SSoT", "Category": "concept", "Definition": "Single Source of Truth. The rulebook JSON is the durable SSoT; every other artifact is mechanically rederivable.", "ImplementedAs": "axiom:ax-001; axiom:ax-004", "Aliases": "single source of truth, source of truth", "Notes": null },
+      { "TermId": "glo-inject", "Term": "Inject", "Category": "phase", "Definition": "Phase 1 of the substrate contract: read the rulebook and emit a runnable substrate artifact (SDK / schema / workbook).", "ImplementedAs": "row:SubstrateContractPhases.phase-inject", "Aliases": null, "Notes": null },
+      { "TermId": "glo-execute", "Term": "Execute", "Category": "phase", "Definition": "Phase 2 of the substrate contract: run blank-test.json through the substrate's generated functions and emit test-answers.json.", "ImplementedAs": "row:SubstrateContractPhases.phase-execute", "Aliases": null, "Notes": null },
+      { "TermId": "glo-grade", "Term": "Grade", "Category": "phase", "Definition": "Phase 3 of the substrate contract: compare every substrate's test-answers.json against the canonical answer-key.json, field by field.", "ImplementedAs": "row:SubstrateContractPhases.phase-grade", "Aliases": null, "Notes": null },
+      { "TermId": "glo-blank-test", "Term": "blank-test.json", "Category": "artifact", "Definition": "The exam: rows with raw fields populated and all computed fields nulled. Every substrate in a run receives the same blank-test.", "ImplementedAs": "row:EvaluationArtifacts.artifact-blank-test", "Aliases": null, "Notes": null },
+      { "TermId": "glo-test-answers", "Term": "test-answers.json", "Category": "artifact", "Definition": "A substrate's exam answers — blank-test with that substrate's computed values filled in.", "ImplementedAs": "row:EvaluationArtifacts.artifact-test-answers", "Aliases": null, "Notes": null },
+      { "TermId": "glo-answer-key", "Term": "answer-key.json", "Category": "artifact", "Definition": "The canonical expected values, derived directly from rulebook seed data — never from a substrate. The oracle for grading.", "ImplementedAs": "row:EvaluationArtifacts.artifact-answer-key", "Aliases": null, "Notes": "If answer-key comes from a substrate, that's a privileged-substrate bug (ax-002)." },
+      { "TermId": "glo-test-results", "Term": "test-results", "Category": "artifact", "Definition": "Field-level diff report (Markdown) comparing each substrate's test-answers.json to answer-key.json.", "ImplementedAs": "row:EvaluationArtifacts.artifact-test-results", "Aliases": "conformance report, grade report", "Notes": null },
+      { "TermId": "glo-conformance", "Term": "Conformance", "Category": "concept", "Definition": "The property that all substrates compute IDENTICAL field-level values from the same rulebook + blank-test. Measured per-run.", "ImplementedAs": "table:TestingFramework", "Aliases": "conformance testing", "Notes": null },
+      { "TermId": "glo-domain-agnostic", "Term": "Domain-agnostic", "Category": "invariant", "Definition": "Property of orchestration code: contains ZERO words from any business domain (no 'customer', 'workflow', 'episode'). Translates generic rulebook structures only.", "ImplementedAs": "column:SubstrateContractPhases.DomainAgnostic; column:SubstrateContractPhases.WhyDomainAgnostic", "Aliases": null, "Notes": "Violation = domain leak." },
+      { "TermId": "glo-fuzzy-grader", "Term": "Fuzzy Grader", "Category": "tool", "Definition": "LLM-based grader for the English substrate — the only non-deterministic substrate. Uses one of the FuzzyGradingProviders.", "ImplementedAs": "table:FuzzyGradingProviders; file:orchestration/llm-fuzzy-grader.py", "Aliases": "llm-fuzzy-grader", "Notes": null },
+      { "TermId": "glo-formula-dialect", "Term": "Formula Dialect", "Category": "concept", "Definition": "The flavor of formula language a rulebook declares (Excel, Airtable, …). Substrates honor the declaration; substrate-specific extensions are an error.", "ImplementedAs": "table:FormulaDialects", "Aliases": null, "Notes": null },
+      { "TermId": "glo-field-type", "Term": "Field Type", "Category": "concept", "Definition": "The kind of field on a rulebook table: raw, calculated, lookup, aggregation, relationship.", "ImplementedAs": "table:FieldTypeTaxonomy", "Aliases": null, "Notes": null },
+      { "TermId": "glo-raw-field", "Term": "Raw Field", "Category": "concept", "Definition": "A field whose value is stored, not computed. Populated by input spokes; carried through unchanged by every substrate.", "ImplementedAs": "value:FieldTypeTaxonomy (type=raw)", "Aliases": null, "Notes": null },
+      { "TermId": "glo-calculated-field", "Term": "Calculated Field", "Category": "concept", "Definition": "A field whose value is computed from a formula over other fields in the same row. Filled in by each substrate's generated Calc*() function.", "ImplementedAs": "value:FieldTypeTaxonomy (type=calculated)", "Aliases": null, "Notes": null },
+      { "TermId": "glo-lookup-field", "Term": "Lookup Field", "Category": "concept", "Definition": "A calculated field that resolves a value from a related row in another table.", "ImplementedAs": "value:FieldTypeTaxonomy (type=lookup)", "Aliases": null, "Notes": null },
+      { "TermId": "glo-aggregation-field", "Term": "Aggregation Field", "Category": "concept", "Definition": "A calculated field that summarizes many related rows (SUM, COUNT, ARRAY).", "ImplementedAs": "value:FieldTypeTaxonomy (type=aggregation)", "Aliases": null, "Notes": null },
+      { "TermId": "glo-admin-portal", "Term": "Admin Portal", "Category": "tool", "Definition": "Local web app on :7777 that edits the active project's rulebook. Categorically NOT a domain — like Word vs. a .docx (see CLAUDE.md).", "ImplementedAs": "table:AdminPortalRuntime; table:AppScreens; table:AppNavigation", "Aliases": "portal, admin tool", "Notes": null },
+      { "TermId": "glo-ssotme-proxy-route", "Term": "Proxy Route", "Category": "concept", "Definition": "An HTTP route on ssotme-proxy (e.g. POST /rulebook-to-python) that invokes the matching injector with ERB_RULEBOOK_PATH and ERB_OUTPUT_DIR.", "ImplementedAs": "table:SsotmeProxy", "Aliases": null, "Notes": null },
+      { "TermId": "glo-active-domain", "Term": "Active Domain", "Category": "concept", "Definition": "The currently-selected demo rulebook project. Recorded in orchestration/active-domain.txt; consulted by every orchestration script.", "ImplementedAs": "file:orchestration/active-domain.txt", "Aliases": "active project, current rulebook", "Notes": null },
+      { "TermId": "glo-write-through", "Term": "Write-Through Invariant", "Category": "invariant", "Definition": "Every admin-portal save writes to BOTH Postgres (live editor) AND the rulebook JSON (durable SSoT) in the same logical transaction.", "ImplementedAs": "row:CoreDataFlows.flow-004", "Aliases": null, "Notes": null },
+      { "TermId": "glo-portal-cli-parity", "Term": "Portal/CLI Parity", "Category": "invariant", "Definition": "Admin portal and `./start.sh --cli` are peers over the same effortless.json pipeline. Anything one can do, the other can do; behavior cannot diverge.", "ImplementedAs": "value:_meta._PortalCliParity", "Aliases": null, "Notes": null },
+      { "TermId": "glo-app-user", "Term": "AppUser", "Category": "role", "Definition": "A user account for the admin portal, declared in the rulebook (not in a separate auth DB).", "ImplementedAs": "table:AppUsers", "Aliases": null, "Notes": null },
+      { "TermId": "glo-user-role", "Term": "User Role", "Category": "role", "Definition": "An admin-portal access tier (Viewer, Developer, …). Each role is a PERSONA with a landing screen and a permission set.", "ImplementedAs": "table:UserRoles", "Aliases": null, "Notes": null },
+      { "TermId": "glo-app-permission", "Term": "AppPermission", "Category": "concept", "Definition": "Declarative per-(role, route) allow/deny rule for the admin portal API surface.", "ImplementedAs": "table:AppPermissions", "Aliases": null, "Notes": null },
+      { "TermId": "glo-app-navigation", "Term": "AppNavigation", "Category": "concept", "Definition": "Tree of navigation entries driving the admin portal sidebar.", "ImplementedAs": "table:AppNavigation", "Aliases": null, "Notes": null },
+      { "TermId": "glo-app-screen", "Term": "AppScreen", "Category": "concept", "Definition": "A named screen in the admin portal, with declared entity reads/writes.", "ImplementedAs": "table:AppScreens", "Aliases": null, "Notes": null },
+      { "TermId": "glo-app-api", "Term": "AppAPI", "Category": "concept", "Definition": "An HTTP route on the admin portal backend, governed by AppPermissions.", "ImplementedAs": "table:AppAPIs", "Aliases": null, "Notes": null },
+      { "TermId": "glo-add-tool", "Term": "Add Tool", "Category": "concept", "Definition": "Catalog of transpilers the developer can install into the active project from the admin portal.", "ImplementedAs": "table:AddToolCatalog", "Aliases": null, "Notes": null },
+      { "TermId": "glo-build-pipeline", "Term": "Build Pipeline", "Category": "concept", "Definition": "The effortless.json contract describing input rulebook + list of project transpilers, consumed by both the portal and the CLI.", "ImplementedAs": "table:BuildPipeline", "Aliases": null, "Notes": null },
+      { "TermId": "glo-axiom", "Term": "Axiom", "Category": "concept", "Definition": "A positive-form invariant the project is built on; load-bearing — if dropped, the methodology no longer holds.", "ImplementedAs": "table:OntologyAxioms", "Aliases": null, "Notes": null },
+      { "TermId": "glo-framing-invariant", "Term": "Framing Invariant", "Category": "concept", "Definition": "A wrong framing of the project that has been caught and is now blocked. Mistake-to-avoid catalog; the contrapositive of an axiom.", "ImplementedAs": "table:FramingInvariants", "Aliases": null, "Notes": null },
+      { "TermId": "glo-privileged-substrate", "Term": "Privileged Substrate", "Category": "concept", "Definition": "An anti-pattern: treating one substrate (e.g. Airtable, Postgres) as the authoritative oracle rather than a peer. Forbidden by ax-002.", "ImplementedAs": "axiom:ax-002", "Aliases": null, "Notes": null },
+      { "TermId": "glo-canbeanswerkey", "Term": "CanBeAnswerKey", "Category": "concept", "Definition": "Property of a substrate: whether its output is structurally complete enough to serve as the oracle in a conformance run. NOT a trust ranking.", "ImplementedAs": "column:ExecutionSubstrates.CanBeAnswerKey", "Aliases": null, "Notes": null },
+      { "TermId": "glo-maturity", "Term": "Maturity", "Category": "dimension", "Definition": "Per-substrate implementation completeness: prototype | demonstrating | reference-quality. Independent of TranspilerSource.", "ImplementedAs": "column:ExecutionSubstrates.Maturity", "Aliases": null, "Notes": null },
+      { "TermId": "glo-expressive-completeness", "Term": "Expressive Completeness", "Category": "dimension", "Definition": "Which formula classes a substrate can faithfully evaluate: full | partial-aggregation | partial-formula | shape-only.", "ImplementedAs": "column:ExecutionSubstrates.ExpressiveCompleteness; row:SubstrateTradeoffDimensions.dim-expressive-completeness", "Aliases": null, "Notes": null },
+      { "TermId": "glo-transpiler-source", "Term": "Transpiler Source", "Category": "dimension", "Definition": "Provenance of a substrate's generator: licensed-effortless-tool | local-injector | external. WHO built it, not how trustworthy it is.", "ImplementedAs": "column:ExecutionSubstrates.TranspilerSource; row:SubstrateTradeoffDimensions.dim-provenance", "Aliases": null, "Notes": "See FramingInvariants.framing-003." },
+      { "TermId": "glo-determinism", "Term": "Determinism", "Category": "dimension", "Definition": "Reproducibility class of a substrate: deterministic | stochastic | externally-influenced.", "ImplementedAs": "column:ExecutionSubstrates.Determinism", "Aliases": null, "Notes": null },
+      { "TermId": "glo-runtime-kind", "Term": "Runtime Kind", "Category": "dimension", "Definition": "What kind of artifact a substrate produces / runs as: database | spreadsheet | binary | text-emit | graph | docs.", "ImplementedAs": "column:ExecutionSubstrates.RuntimeKind", "Aliases": null, "Notes": null },
+      { "TermId": "glo-rulebook-domain", "Term": "Rulebook Domain", "Category": "concept", "Definition": "One demo ontology under rulebook-examples/. Domains form a tree via ParentDomainId.", "ImplementedAs": "table:RulebookDomains", "Aliases": "domain, demo", "Notes": null },
+      { "TermId": "glo-parent-domain", "Term": "Parent Domain", "Category": "concept", "Definition": "The simpler rulebook a more-elaborate one was derived from. Forms the progression tree of demos.", "ImplementedAs": "column:RulebookDomains.ParentDomainId", "Aliases": null, "Notes": null },
+      { "TermId": "glo-rulebook-flavor", "Term": "Rulebook Flavor", "Category": "concept", "Definition": "Classification of a demo rulebook (business, philosophical, self-referential, etc.) so the UI can group related demos.", "ImplementedAs": "table:RulebookFlavors", "Aliases": null, "Notes": null },
+      { "TermId": "glo-demo-narrative", "Term": "Demo Narrative", "Category": "concept", "Definition": "A scripted sequence of demo steps illustrating substrate behavior under rulebook change. Two styles: commit-sequence (legacy) and cross-rulebook (current).", "ImplementedAs": "table:DemoNarratives", "Aliases": null, "Notes": null },
+      { "TermId": "glo-tradeoff", "Term": "Substrate Tradeoff", "Category": "concept", "Definition": "A per-(substrate × dimension) Pro/Con/Note record. The matrix is complete: every substrate is rated on every dimension.", "ImplementedAs": "table:SubstrateTradeoffs", "Aliases": null, "Notes": null },
+      { "TermId": "glo-tradeoff-dimension", "Term": "Tradeoff Dimension", "Category": "dimension", "Definition": "One axis of comparison applied to every substrate (speed, accuracy, debuggability, …).", "ImplementedAs": "table:SubstrateTradeoffDimensions", "Aliases": null, "Notes": null },
+      { "TermId": "glo-evaluation-step", "Term": "Evaluation Step", "Category": "phase", "Definition": "A substep within a SubstrateContractPhase (e.g. load rulebook, walk entities, compile formulas).", "ImplementedAs": "table:EvaluationSteps", "Aliases": null, "Notes": null },
+      { "TermId": "glo-evaluation-artifact", "Term": "Evaluation Artifact", "Category": "artifact", "Definition": "A file flowing between phases of the contract (rulebook, blank-test, test-answers, answer-key, test-results, substrate artifact).", "ImplementedAs": "table:EvaluationArtifacts", "Aliases": null, "Notes": null },
+      { "TermId": "glo-click-target", "Term": "Click Target", "Category": "concept", "Definition": "A canonical clickable affordance in the portal — every interactive element MUST resolve to a row here.", "ImplementedAs": "table:ClickTargets", "Aliases": null, "Notes": null },
+      { "TermId": "glo-role-screen-hint", "Term": "Role-Screen Hint", "Category": "concept", "Definition": "Per-(role, screen) UX override on top of the base AppScreens definition.", "ImplementedAs": "table:RoleScreenHints", "Aliases": null, "Notes": null },
+      { "TermId": "glo-cmcc", "Term": "CMCC", "Category": "concept", "Definition": "Conjecture: a sufficiently expressive rulebook can be projected into ANY substrate while preserving identical observable behavior. The conjecture ERB tests.", "ImplementedAs": "value:_meta._CMCC_Summary", "Aliases": null, "Notes": null },
+      { "TermId": "glo-orchestration-dir", "Term": "orchestration/", "Category": "location", "Definition": "Folder holding the build/test runners that drive every demo: orchestrate.sh, shared.py, formula_parser.py, test-orchestrator.py, generate-report.py, active-domain.txt.", "ImplementedAs": "file:orchestration/", "Aliases": null, "Notes": null },
+      { "TermId": "glo-execution-substrates-dir", "Term": "execution-substrates/", "Category": "location", "Definition": "Folder containing each local substrate's injector + take-test scripts.", "ImplementedAs": "file:execution-substrates/", "Aliases": null, "Notes": null },
+      { "TermId": "glo-licensed-effortless-tools-dir", "Term": "licensed-effortless-tools/", "Category": "location", "Definition": "Folder where the licensed Effortless transpilers (Postgres, Excel, Entity Framework) land their outputs.", "ImplementedAs": "file:licensed-effortless-tools/", "Aliases": null, "Notes": null },
+      { "TermId": "glo-rulebook-examples-dir", "Term": "rulebook-examples/", "Category": "location", "Definition": "Folder containing N independent demo Effortless projects, each its own rulebook + effortless.json + outputs.", "ImplementedAs": "file:rulebook-examples/", "Aliases": null, "Notes": null },
+      { "TermId": "glo-effortless-platform-dir", "Term": "effortless-platform/", "Category": "location", "Definition": "Folder containing the platform itself as an Effortless project — the orchestration tool 'eating its own dog food'.", "ImplementedAs": "file:effortless-platform/", "Aliases": null, "Notes": null },
+      { "TermId": "glo-no-fallback-rule", "Term": "No Fallback Rule", "Category": "invariant", "Definition": "Repo-wide policy: if a file is missing, fail loudly with the exact expected path. No silent path-guessing, no try/except that swallows missing files. Defaults derived deterministically from the SSoT are not fallbacks.", "ImplementedAs": "file:CLAUDE.md (NEVER ADD FALLBACKS section)", "Aliases": null, "Notes": null },
+      { "TermId": "glo-rulebook-promotion", "Term": "Rulebook Promotion", "Category": "concept", "Definition": "The architectural decision to promote effortless-rulebook.json from disposable IR to durable hub/SSoT, demoting Airtable from authority to peer input spoke. Largely complete.", "ImplementedAs": "axiom:ax-004; file:LEGACY_PLANs/RULEBOOK_PROMOTION_PLAN.md", "Aliases": null, "Notes": null }
     ]
   },
   "_meta": {
