@@ -334,15 +334,7 @@
         "FilePath": "orchestration/orchestrate.sh",
         "Language": "Bash",
         "Purpose": "Legacy interactive CLI menu: run substrates, manage Airtable sync, generate reports. Reachable via `./start.sh --cli`.",
-        "Dependencies": "inject.py, rulebook-cache.py, base-manager.py"
-      },
-      {
-        "ComponentId": "orch-005",
-        "Name": "Rulebook Cache",
-        "FilePath": "orchestration/rulebook-cache.py",
-        "Language": "Python",
-        "Purpose": "Pull rulebook from an Airtable base into the rulebook JSON; fallback to offline cache if API unavailable. One of several input spokes.",
-        "Dependencies": "shared.py"
+        "Dependencies": "inject.py, base-manager.py, effortless CLI"
       },
       {
         "ComponentId": "orch-006",
@@ -350,7 +342,7 @@
         "FilePath": "orchestration/base-manager.py",
         "Language": "Python",
         "Purpose": "List, select, and swap Airtable bases when Airtable is used as an input spoke",
-        "Dependencies": "rulebook-cache.py"
+        "Dependencies": "shared.py"
       },
       {
         "ComponentId": "orch-007",

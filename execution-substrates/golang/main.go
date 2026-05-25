@@ -17,22 +17,23 @@ import (
 )
 
 func main() {
-	scriptDir, err := os.Getwd()
+	_, err := os.Getwd()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "FATAL: Failed to get working directory: %v\n", err)
 		os.Exit(1)
 	}
 
-	// Resolve testing dirs from ERB_TESTING_DIR env var (domain-scoped) or fallback
+	// ERB_TESTING_DIR is required — defaulting to the repo testing dir
+	// silently uses the wrong domain.
 	erbTesting := os.Getenv("ERB_TESTING_DIR")
-	var blankTestsDir, testAnswersDir string
-	if erbTesting != "" {
-		blankTestsDir = filepath.Join(erbTesting, "blank-tests")
-		testAnswersDir = filepath.Join(erbTesting, "golang", "test-answers")
-	} else {
-		blankTestsDir = filepath.Join(scriptDir, "..", "..", "testing", "blank-tests")
-		testAnswersDir = filepath.Join(scriptDir, "test-answers")
+	if erbTesting == "" {
+		fmt.Fprintln(os.Stderr, "FATAL: ERB_TESTING_DIR is not set. main.go must be")
+		fmt.Fprintln(os.Stderr, "  invoked by the orchestrator with ERB_TESTING_DIR pointing")
+		fmt.Fprintln(os.Stderr, "  at the active domain's testing/ directory.")
+		os.Exit(1)
 	}
+	blankTestsDir := filepath.Join(erbTesting, "blank-tests")
+	testAnswersDir := filepath.Join(erbTesting, "golang", "test-answers")
 
 	// Ensure output directory exists
 	if err := os.MkdirAll(testAnswersDir, 0755); err != nil {

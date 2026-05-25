@@ -56,13 +56,21 @@ def process_entity(input_path: str, output_path: str, entity_name: str,
 
 
 def _get_testing_paths():
-    """Resolve blank-tests and test-answers dirs from ERB_TESTING_DIR env var."""
+    """Resolve blank-tests and test-answers dirs. ERB_TESTING_DIR is required.
+
+    There is no implicit per-substrate testing dir — running with no env var
+    silently mixed results across domains. The orchestrator MUST set
+    ERB_TESTING_DIR before invoking this substrate.
+    """
     erb_testing = os.environ.get("ERB_TESTING_DIR")
-    if erb_testing:
-        substrate_name = Path(script_dir).name
-        return Path(erb_testing) / "blank-tests", Path(erb_testing) / substrate_name / "test-answers"
-    project_root = Path(script_dir).parent.parent
-    return project_root / "testing" / "blank-tests", Path(script_dir) / "test-answers"
+    if not erb_testing:
+        raise RuntimeError(
+            "ERB_TESTING_DIR is not set. take-test.py must be invoked by the "
+            "orchestrator with ERB_TESTING_DIR pointing at the active domain's "
+            "testing/ directory."
+        )
+    substrate_name = Path(script_dir).name
+    return Path(erb_testing) / "blank-tests", Path(erb_testing) / substrate_name / "test-answers"
 
 
 def run_multi_entity():

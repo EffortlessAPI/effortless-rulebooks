@@ -32,18 +32,32 @@ import os
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 PROJECT_ROOT = SCRIPT_DIR.parent.parent
+
+# Both env vars are required — defaulting to the repo's own dirs silently
+# uses a different domain's tool output and testing data.
 _ERB_DOMAIN = os.environ.get("ERB_DOMAIN_DIR")
-if _ERB_DOMAIN and (Path(_ERB_DOMAIN) / "effortless-xlsx").exists():
-    XLSX_TOOL_DIR = Path(_ERB_DOMAIN) / "effortless-xlsx"
-else:
-    XLSX_TOOL_DIR = PROJECT_ROOT / "licensed-effortless-tools" / "xlsx"
+if not _ERB_DOMAIN:
+    raise RuntimeError(
+        "ERB_DOMAIN_DIR is not set. effortless-xlsx/take-test.py must be invoked "
+        "by the orchestrator with ERB_DOMAIN_DIR pointing at the active domain's "
+        "directory (e.g. rulebook-examples/acme-llc)."
+    )
+XLSX_TOOL_DIR = Path(_ERB_DOMAIN) / "effortless-xlsx"
+if not XLSX_TOOL_DIR.exists():
+    raise FileNotFoundError(
+        f"effortless-xlsx tool dir not found at {XLSX_TOOL_DIR}. "
+        f"Run 'effortless build' in {_ERB_DOMAIN} with rulebooktoxlsx enabled."
+    )
+
 _ERB_TESTING = os.environ.get("ERB_TESTING_DIR")
-if _ERB_TESTING:
-    BLANK_TESTS_DIR = Path(_ERB_TESTING) / "blank-tests"
-    TEST_ANSWERS_DIR = Path(_ERB_TESTING) / SCRIPT_DIR.name / "test-answers"
-else:
-    BLANK_TESTS_DIR = PROJECT_ROOT / "testing" / "blank-tests"
-    TEST_ANSWERS_DIR = SCRIPT_DIR / "test-answers"
+if not _ERB_TESTING:
+    raise RuntimeError(
+        "ERB_TESTING_DIR is not set. effortless-xlsx/take-test.py must be "
+        "invoked by the orchestrator with ERB_TESTING_DIR pointing at the "
+        "active domain's testing/ directory."
+    )
+BLANK_TESTS_DIR = Path(_ERB_TESTING) / "blank-tests"
+TEST_ANSWERS_DIR = Path(_ERB_TESTING) / SCRIPT_DIR.name / "test-answers"
 
 
 def to_snake_case(name: str) -> str:

@@ -25,6 +25,12 @@ from datetime import datetime
 import psycopg2
 from psycopg2.extras import RealDictCursor
 
+# The formula parser is a hard dependency of answer-key generation. If it
+# can't be imported, this entire process is bogus — we cannot validate any
+# substrate's output. Let the ImportError propagate.
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from formula_parser import evaluate_field
+
 # =============================================================================
 # PATHS (Generic - No Domain-Specific Names)
 # =============================================================================
@@ -88,22 +94,16 @@ SUBSTRATE_ORDER = [
     "effortless-entity-framework",
 ]
 
-# Database connection (generic - uses environment variable or inferred from init-db.sh)
+# Database connection — DATABASE_URL is required. Different domains have
+# different per-domain databases; defaulting silently runs the test against
+# whatever happens to be in `postgres`, masking missing schema as conformance.
 DB_CONNECTION = os.environ.get("DATABASE_URL")
 if not DB_CONNECTION:
-    # Try to infer from init-db.sh DEFAULT_CONN line
-    init_db_path = os.path.join(PROJECT_ROOT, "licensed-effortless-tools", "postgres", "init-db.sh")
-    if os.path.exists(init_db_path):
-        with open(init_db_path, 'r') as f:
-            for line in f:
-                if 'DEFAULT_CONN=' in line:
-                    # Extract connection string from: DEFAULT_CONN="postgresql://..."
-                    match = re.search(r'DEFAULT_CONN="([^"]+)"', line)
-                    if match:
-                        DB_CONNECTION = match.group(1)
-                        break
-    if not DB_CONNECTION:
-        DB_CONNECTION = "postgresql://postgres@localhost:5432/postgres"
+    raise RuntimeError(
+        "DATABASE_URL is not set. test-orchestrator.py must be invoked with "
+        "DATABASE_URL pointing at the active domain's per-domain database "
+        "(see <domain>/postgres/init-db.sh)."
+    )
 
 # =============================================================================
 # ANSI Color Codes (Unchanged)
@@ -263,101 +263,29 @@ def update_run_metadata(substrate_name: str, grades: dict, success: bool, error_
 # AUTO-DISCOVERY: Views, Computed Columns, Primary Keys
 # =============================================================================
 
-def to_snake_case(name: str) -> str:
-    """Convert PascalCase to snake_case: FamilyFuedQuestion -> family_fued_question
-
-    Also handles fields with existing underscores: Bio_HockettScore -> bio_hockett_score
-    """
-    # Use [^_] to avoid doubling underscores when input already has them
-    s1 = re.sub('([^_])([A-Z][a-z]+)', r'\1_\2', name)
-    return re.sub('([a-z0-9])([A-Z])', r'\1_\2', s1).lower()
-
-
-def to_pascal_case(name: str) -> str:
-    """Convert snake_case to PascalCase: user_accounts -> UserAccounts"""
-    return ''.join(word.capitalize() for word in name.split('_'))
-
-
 def load_rulebook() -> dict:
     """Load the active domain's <domain>-rulebook.json file. Fails loudly if missing."""
     if not os.path.exists(RULEBOOK_PATH):
         raise FileNotFoundError(
             f"Rulebook not found at {RULEBOOK_PATH}. "
             f"Active domain is '{ACTIVE_DOMAIN}' — its rulebook MUST be at this exact path. "
-            "Do not invent fallbacks; fix the file/name."
+            "Fix the file/name rather than substituting a different rulebook."
         )
     with open(RULEBOOK_PATH, 'r') as f:
         return json.load(f)
 
 
-def discover_entities(rulebook: dict) -> list:
-    """
-    Discover all entities from the rulebook.
-    Entities are top-level keys that have a 'schema' array.
-    """
-    entities = []
-    skip_keys = {'$schema', 'model_name', 'Description', '_meta'}
-
-    for key, value in rulebook.items():
-        if key in skip_keys:
-            continue
-        if isinstance(value, dict) and 'schema' in value:
-            entities.append(key)
-
-    return entities
-
-
-def get_entity_schema(rulebook: dict, entity_name: str) -> list:
-    """Get the schema array for an entity (handles both PascalCase and snake_case)"""
-    # Try PascalCase first
-    if entity_name in rulebook:
-        return rulebook[entity_name].get('schema', [])
-
-    # Try converting from snake_case
-    pascal_name = to_pascal_case(entity_name)
-    if pascal_name in rulebook:
-        return rulebook[pascal_name].get('schema', [])
-
-    return []
-
-
-def discover_primary_key(rulebook: dict, entity_name: str) -> str:
-    """
-    Discover the primary key for an entity.
-    First non-nullable field, or first field ending in 'Id'.
-    """
-    schema = get_entity_schema(rulebook, entity_name)
-
-    # First try: find first non-nullable field
-    for field in schema:
-        if field.get('nullable') == False:
-            return to_snake_case(field['name'])
-
-    # Second try: find first field ending in 'Id'
-    for field in schema:
-        if field['name'].endswith('Id'):
-            return to_snake_case(field['name'])
-
-    # Fallback: first field
-    if schema:
-        return to_snake_case(schema[0]['name'])
-
-    return None
-
-
-def discover_computed_columns(rulebook: dict, entity_name: str) -> list:
-    """
-    Discover computed columns for an entity.
-    Returns list of snake_case column names where type is "calculated", "aggregation", or "lookup".
-    """
-    schema = get_entity_schema(rulebook, entity_name)
-
-    computed = []
-    for field in schema:
-        if field.get('type') in ('calculated', 'aggregation', 'lookup'):
-            computed.append(to_snake_case(field['name']))
-
-    return computed
+# Schema-introspection helpers are defined ONCE in shared.py. Importing them
+# here keeps test-orchestrator and every other orchestration script in sync.
+from shared import (
+    to_snake_case,
+    to_pascal_case,
+    discover_entities,
+    get_entity_schema,
+    get_entity_data,
+    discover_primary_key,
+    discover_computed_columns,
+)
 
 
 def discover_views(conn) -> list:
@@ -385,23 +313,7 @@ def view_to_entity_name(view_name: str) -> str:
 # Answer keys are generated directly from the rulebook's seed data.
 # The rulebook is the single source of truth - no database required.
 # All substrates (including Postgres) are tested against these answer keys.
-
-def get_entity_data(rulebook: dict, entity_name: str) -> list:
-    """
-    Get the data array for an entity from the rulebook.
-    Handles both PascalCase and snake_case entity names.
-    Returns empty list if entity or data not found.
-    """
-    # Try direct lookup
-    if entity_name in rulebook:
-        return rulebook[entity_name].get('data', [])
-
-    # Try converting from snake_case to PascalCase
-    pascal_name = to_pascal_case(entity_name)
-    if pascal_name in rulebook:
-        return rulebook[pascal_name].get('data', [])
-
-    return []
+# (get_entity_data is imported from shared.py above.)
 
 
 def convert_record_to_snake_case(record: dict) -> dict:
@@ -469,22 +381,31 @@ def coerce_record_types(record: dict, schema: list) -> dict:
     return coerced
 
 
-def _recompute_calculated_fields(record: dict, schema: list) -> dict:
-    """Re-evaluate scalar `type=calculated` formulas against `record` so the
-    answer-keys reflect the current schema, not stale values that might be
-    baked into the rulebook's seed data. Fields where evaluation fails or
-    returns None (e.g. unsupported function, missing reference) keep their
-    existing seed value — that way we degrade to "trust the data" instead of
-    silently nulling something useful.
-    """
-    try:
-        from formula_parser import evaluate_field
-    except Exception:
-        # If the formula parser blows up at import time, fall back to the
-        # un-recomputed record — better stale than crashed.
-        return record
+def _recompute_calculated_fields(
+    record: dict,
+    schema: list,
+    entity_pascal: str,
+    failures: list,
+) -> dict:
+    """Re-evaluate scalar `type=calculated` formulas against `record`.
 
+    The rulebook's seed `data` can drift from the current `formula` definitions
+    (e.g. an Airtable export captures values from a previous formula version).
+    The answer-keys must reflect the CURRENT formulas, so we evaluate them here.
+
+    Per-field evaluation failures are appended to `failures` (with full context:
+    entity, field, formula, error) and the caller decides what to do at the
+    end. We continue evaluating other fields so the user sees ALL the failures
+    from a single broken record in one report, not just the first one.
+    """
     out = dict(record)
+    pk_name = None
+    for f in schema:
+        if f.get('nullable') is False:
+            pk_name = to_snake_case(f['name'])
+            break
+    record_id = out.get(pk_name) if pk_name else None
+
     for field in schema:
         if field.get('type') != 'calculated':
             continue
@@ -494,7 +415,14 @@ def _recompute_calculated_fields(record: dict, schema: list) -> dict:
         snake = to_snake_case(field['name'])
         try:
             value = evaluate_field(formula, out)
-        except Exception:
+        except Exception as e:
+            failures.append({
+                'entity': entity_pascal,
+                'field': field['name'],
+                'formula': formula,
+                'record_id': record_id,
+                'error': f"{type(e).__name__}: {e}",
+            })
             continue
         if value is not None:
             out[snake] = value
@@ -527,6 +455,7 @@ def generate_all_answer_keys(rulebook: dict) -> dict:
     print(f"  Found {len(entities)} entities in rulebook", flush=True)
 
     all_answer_keys = {}
+    recompute_failures: list = []
 
     for entity_pascal in entities:
         entity_snake = to_snake_case(entity_pascal)
@@ -546,15 +475,14 @@ def generate_all_answer_keys(rulebook: dict) -> dict:
         schema = get_entity_schema(rulebook, entity_pascal)
         records = [coerce_record_types(r, schema) for r in records]
 
-        # Recompute calculated fields from schema formulas. The rulebook's
-        # seed `data` block can drift from the schema (e.g. an Airtable export
-        # captures values from a previous formula version). The answer-keys
-        # are supposed to be the authoritative output of evaluating the
-        # current formulas, so we evaluate them here rather than trusting
-        # potentially-stale seed values. Cross-table fields (lookups /
-        # aggregations) are still left to substrate-side computation; only
-        # scalar `type=calculated` formulas are evaluated here.
-        records = [_recompute_calculated_fields(r, schema) for r in records]
+        # Recompute scalar `type=calculated` formulas from the current schema.
+        # Cross-table fields (lookups / aggregations) are left to substrate-side
+        # computation; only scalar calculated formulas are evaluated here.
+        # Per-field eval errors accumulate in recompute_failures (see below).
+        records = [
+            _recompute_calculated_fields(r, schema, entity_pascal, recompute_failures)
+            for r in records
+        ]
 
         # Sort by primary key if available
         if pk and records and pk in records[0]:
@@ -567,6 +495,26 @@ def generate_all_answer_keys(rulebook: dict) -> dict:
 
         all_answer_keys[entity_snake] = records
         print(f"  -> {entity_snake}: {len(records)} records", flush=True)
+
+    if recompute_failures:
+        # Persist the failure list so generate-report.py can surface every
+        # broken formula in the report. Then raise so the build does not
+        # silently pretend the rulebook is healthy.
+        failures_path = os.path.join(TESTING_DIR, "_recompute_failures.json")
+        with open(failures_path, 'w') as f:
+            json.dump(recompute_failures, f, indent=2, default=str)
+
+        summary_lines = [
+            f"Formula recomputation FAILED for {len(recompute_failures)} field(s):"
+        ]
+        for fail in recompute_failures:
+            summary_lines.append(
+                f"  - {fail['entity']}.{fail['field']} "
+                f"(record_id={fail['record_id']!r}): {fail['error']}"
+            )
+            summary_lines.append(f"      formula: {fail['formula']}")
+        summary_lines.append(f"Full details: {failures_path}")
+        raise RuntimeError("\n".join(summary_lines))
 
     return all_answer_keys
 
@@ -689,23 +637,32 @@ def get_substrates() -> list:
         and os.path.isdir(os.path.join(SUBSTRATES_DIR, name))
     }
 
-    try:
-        from shared import get_active_project_substrates
-        domain = os.path.basename(DOMAIN_DIR.rstrip(os.sep))
-        declared = get_active_project_substrates(domain)
-    except Exception:
-        declared = []
+    from shared import get_active_project_substrates
+    domain = os.path.basename(DOMAIN_DIR.rstrip(os.sep))
 
-    if declared:
-        allowed = [s for s in declared if s in discovered]
-        allowed_set = set(allowed)
-        ordered = [n for n in SUBSTRATE_ORDER if n in allowed_set]
-        tail = sorted(allowed_set - set(SUBSTRATE_ORDER))
-        return ordered + tail
+    # If the active domain has no effortless.json, self-heal by running
+    # `effortless -init` in the domain dir, then re-read.
+    domain_dir_abs = os.path.join(REPO_ROOT, "rulebook-examples", domain)
+    effortless_json = os.path.join(domain_dir_abs, "effortless.json")
+    if not os.path.exists(effortless_json):
+        print(
+            f"effortless.json missing in {domain_dir_abs} — running "
+            f"'effortless -init' to initialize the project...",
+            flush=True,
+        )
+        subprocess.run(["effortless", "-init"], cwd=domain_dir_abs, check=True)
 
-    # No effortless.json — fall back to everything on disk.
-    ordered = [n for n in SUBSTRATE_ORDER if n in discovered]
-    tail = sorted(discovered - set(SUBSTRATE_ORDER))
+    declared = get_active_project_substrates(domain)  # raises if still missing
+    if not declared:
+        raise RuntimeError(
+            f"effortless.json in {domain_dir_abs} has no enabled "
+            "ProjectTranspilers. Add transpilers and rebuild."
+        )
+
+    allowed = [s for s in declared if s in discovered]
+    allowed_set = set(allowed)
+    ordered = [n for n in SUBSTRATE_ORDER if n in allowed_set]
+    tail = sorted(allowed_set - set(SUBSTRATE_ORDER))
     return ordered + tail
 
 
@@ -772,50 +729,35 @@ def run_substrate_test(substrate_name: str) -> tuple:
 
 def get_substrate_answers(substrate_name: str, rulebook: dict) -> dict:
     """
-    Get all test-answers from a substrate.
+    Get all test-answers from a substrate's answer dir.
     Returns dict of entity_name -> list of records.
+
+    If the substrate's test-answers/ dir does not exist, returns {} — that's a
+    legitimate state (substrate was skipped, or crashed before writing). The
+    grader records every expected (entity, field) pair as a miss in that case.
+
+    If the dir exists but a JSON file inside is invalid, RAISE with the exact
+    file path — corrupt output is a bug, not a "score it zero" situation.
+    Substrates MUST write to the multi-entity test-answers/<entity>.json
+    layout; there is no legacy single-file path.
     """
     answers_dir = get_substrate_test_answers_dir(substrate_name)
 
-    # Check for new multi-entity structure
-    if os.path.isdir(answers_dir):
-        answers = {}
-        for file in glob.glob(os.path.join(answers_dir, "*.json")):
-            entity = os.path.basename(file).replace('.json', '')
+    if not os.path.isdir(answers_dir):
+        return {}
+
+    answers: dict = {}
+    for file in sorted(glob.glob(os.path.join(answers_dir, "*.json"))):
+        entity = os.path.basename(file).replace('.json', '')
+        with open(file, 'r') as f:
             try:
-                with open(file, 'r') as f:
-                    answers[entity] = json.load(f)
-            except:
-                pass
-        if answers:
-            return answers
-
-    # Fall back to old single-file structure (test-answers.json in the domain testing dir)
-    old_path = os.path.join(get_substrate_test_answers_dir(substrate_name), "..", "test-answers.json")
-    if os.path.exists(old_path):
-        try:
-            with open(old_path, 'r') as f:
-                records = json.load(f)
-
-            if records:
-                # Try to identify entity from record keys
-                sample = records[0] if records else {}
-
-                # Find first entity with computed columns that matches record keys
-                for entity_file in glob.glob(os.path.join(BLANK_TESTS_DIR, "*.json")):
-                    entity = os.path.basename(entity_file).replace('.json', '')
-                    pk = discover_primary_key(rulebook, entity)
-                    if pk and pk in sample:
-                        return {entity: records}
-
-                # Fallback: use first entity with computed columns
-                for entity_file in glob.glob(os.path.join(BLANK_TESTS_DIR, "*.json")):
-                    entity = os.path.basename(entity_file).replace('.json', '')
-                    return {entity: records}
-        except:
-            pass
-
-    return {}
+                answers[entity] = json.load(f)
+            except json.JSONDecodeError as e:
+                raise json.JSONDecodeError(
+                    f"Invalid JSON in {file}: {e.msg}",
+                    e.doc, e.pos,
+                ) from e
+    return answers
 
 
 # =============================================================================

@@ -341,38 +341,58 @@ def get_entity_data(rulebook: dict, entity_name: str) -> list:
 
 def discover_primary_key(rulebook: dict, entity_name: str) -> str:
     """
-    Discover the primary key for an entity.
-    Returns the first non-nullable field, or first field ending in 'Id'.
+    Discover the primary key for an entity by trying the legitimate ERB PK
+    shapes in order. Each strategy is a SUPPORTED convention, not a guess
+    around a missing one.
+
+    Strategies (in order):
+      1. First non-nullable field — the canonical ERB convention.
+      2. First field ending in 'Id' — accepted when nullable flags are missing.
+      3. First field in the schema — accepted for tiny entities that have a
+         single natural-key column.
+
+    If the schema is empty there is no PK to discover and downstream code
+    cannot build a valid JOIN — RAISE rather than returning None and letting
+    the caller silently produce wrong output.
     """
     schema = get_entity_schema(rulebook, entity_name)
 
-    # First try: find first non-nullable field
+    if not schema:
+        raise ValueError(
+            f"Cannot discover primary key for {entity_name!r}: schema is empty. "
+            f"Check the rulebook entity definition."
+        )
+
+    # Strategy 1: first non-nullable field (canonical ERB)
     for field in schema:
         if field.get('nullable') == False:
             return to_snake_case(field['name'])
 
-    # Second try: find first field ending in 'Id'
+    # Strategy 2: first field ending in 'Id'
     for field in schema:
         if field['name'].endswith('Id'):
             return to_snake_case(field['name'])
 
-    # Fallback: first field
-    if schema:
-        return to_snake_case(schema[0]['name'])
-
-    return None
+    # Strategy 3: first field in the schema
+    return to_snake_case(schema[0]['name'])
 
 
-def discover_computed_columns(rulebook: dict, entity_name: str) -> list:
+def discover_computed_columns(
+    rulebook: dict,
+    entity_name: str,
+    include: tuple = ('calculated', 'aggregation', 'lookup'),
+) -> list:
     """
     Discover computed columns for an entity.
-    Returns list of snake_case column names where type == "calculated".
+    Returns list of snake_case column names where field type is in `include`.
+    Default includes all three computed kinds: calculated, aggregation, lookup.
+    Pass `include=('calculated',)` for scalar-only.
     """
     schema = get_entity_schema(rulebook, entity_name)
 
     computed = []
     for field in schema:
-        if field.get('type') == 'calculated':
+        if field.get('type') in include:
             computed.append(to_snake_case(field['name']))
 
     return computed

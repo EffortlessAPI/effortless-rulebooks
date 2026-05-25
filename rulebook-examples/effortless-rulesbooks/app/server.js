@@ -13,17 +13,23 @@ const pool = new Pool({
 
 const app = express();
 
-// List user views (prefer vw_* views; fall back to base tables)
+// List vw_* views. Per ERB methodology the app MUST read computed values from
+// views, not base tables (base tables don't include calculated fields). If no
+// views exist, something has gone off the rails — fail loudly, do not list
+// base tables.
 app.get('/api/tables', async (_req, res) => {
   try {
     const { rows } = await pool.query(`
       SELECT table_name
-      FROM information_schema.tables
-      WHERE table_schema = 'public'
-      ORDER BY
-        CASE WHEN table_name LIKE 'vw\\_%' THEN 0 ELSE 1 END,
-        table_name
+      FROM information_schema.views
+      WHERE table_schema = 'public' AND table_name LIKE 'vw\\_%'
+      ORDER BY table_name
     `);
+    if (rows.length === 0) {
+      return res.status(500).json({
+        error: 'No vw_* views found in postgres. The rulebook-to-postgres build has not run, or it produced no views.'
+      });
+    }
     res.json(rows.map(r => r.table_name));
   } catch (e) {
     res.status(500).json({ error: e.message });

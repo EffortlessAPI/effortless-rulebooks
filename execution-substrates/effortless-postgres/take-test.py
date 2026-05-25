@@ -14,7 +14,6 @@ implementation matches the canonical specification.
 
 import json
 import os
-import re
 import sys
 from pathlib import Path
 
@@ -24,43 +23,48 @@ from psycopg2.extras import RealDictCursor
 # Setup paths
 SCRIPT_DIR = Path(__file__).parent.resolve()
 PROJECT_ROOT = SCRIPT_DIR.parent.parent
-_ERB_TESTING = os.environ.get("ERB_TESTING_DIR")
-if _ERB_TESTING:
-    BLANK_TESTS_DIR = Path(_ERB_TESTING) / "blank-tests"
-    TEST_ANSWERS_DIR = Path(_ERB_TESTING) / SCRIPT_DIR.name / "test-answers"
-else:
-    TESTING_DIR = PROJECT_ROOT / "testing"
-    BLANK_TESTS_DIR = TESTING_DIR / "blank-tests"
-    TEST_ANSWERS_DIR = SCRIPT_DIR / "test-answers"
-_ERB_DOMAIN = os.environ.get("ERB_DOMAIN_DIR")
-if _ERB_DOMAIN and (Path(_ERB_DOMAIN) / "postgres").exists():
-    POSTGRES_DIR = Path(_ERB_DOMAIN) / "postgres"
-else:
-    POSTGRES_DIR = PROJECT_ROOT / "licensed-effortless-tools" / "postgres"
+
+# This substrate is repo-level but operates on the active domain's testing dir.
+# The active domain is the SINGLE source of truth: orchestration/active-domain.txt.
+# Everything derives from that — no env vars.
+_active_domain_file = PROJECT_ROOT / "orchestration" / "active-domain.txt"
+if not _active_domain_file.exists():
+    raise FileNotFoundError(
+        f"active-domain.txt missing at {_active_domain_file}. "
+        "Write the active domain name (e.g. 'acme-llc') to that file."
+    )
+ACTIVE_DOMAIN = _active_domain_file.read_text().strip()
+if not ACTIVE_DOMAIN:
+    raise ValueError(
+        f"active-domain.txt at {_active_domain_file} is empty. "
+        "Write the active domain name (e.g. 'acme-llc')."
+    )
+DOMAIN_DIR = PROJECT_ROOT / "rulebook-examples" / ACTIVE_DOMAIN
+TESTING_DIR = DOMAIN_DIR / "testing"
+BLANK_TESTS_DIR = TESTING_DIR / "blank-tests"
+TEST_ANSWERS_DIR = TESTING_DIR / SCRIPT_DIR.name / "test-answers"
 
 # Add orchestration to path for shared utilities
 sys.path.insert(0, str(PROJECT_ROOT / "orchestration"))
-from shared import load_rulebook, to_snake_case
+from shared import load_rulebook, to_snake_case, discover_primary_key
 
 
 def get_db_connection_string():
-    """Get database connection string from environment or init-db.sh"""
+    """Return DATABASE_URL from env. Required — no inference, no default.
+
+    Different domains have different per-domain databases. Defaulting to
+    `postgresql://postgres@localhost:5432/postgres` silently runs the test
+    against whatever happens to live in `postgres`, masking missing schema
+    bugs as 100% conformance.
+    """
     conn_str = os.environ.get("DATABASE_URL")
-    if conn_str:
-        return conn_str
-
-    # Try to infer from init-db.sh
-    init_db_path = POSTGRES_DIR / "init-db.sh"
-    if init_db_path.exists():
-        with open(init_db_path, 'r') as f:
-            for line in f:
-                if 'DEFAULT_CONN=' in line:
-                    match = re.search(r'DEFAULT_CONN="([^"]+)"', line)
-                    if match:
-                        return match.group(1)
-
-    # Default fallback
-    return "postgresql://postgres@localhost:5432/postgres"
+    if not conn_str:
+        raise RuntimeError(
+            "DATABASE_URL is not set. The effortless-postgres substrate must "
+            "be invoked with DATABASE_URL pointing at the active domain's "
+            "per-domain database (see <domain>/postgres/init-db.sh)."
+        )
+    return conn_str
 
 
 def discover_views(conn) -> list:
@@ -97,59 +101,22 @@ def query_view(conn, view_name: str, pk: str = None) -> list:
     return records
 
 
-def get_primary_key(rulebook: dict, entity_name: str) -> str:
-    """
-    Discover the primary key for an entity.
-    First non-nullable field, or first field ending in 'Id'.
-    """
-    # Get schema (handle PascalCase conversion)
-    entity_data = None
-    for key in rulebook:
-        if to_snake_case(key) == entity_name or key == entity_name:
-            entity_data = rulebook[key]
-            break
-
-    if not entity_data:
-        return None
-
-    schema = entity_data.get('schema', [])
-
-    # First try: find first non-nullable field
-    for field in schema:
-        if field.get('nullable') == False:
-            return to_snake_case(field['name'])
-
-    # Second try: find first field ending in 'Id'
-    for field in schema:
-        if field['name'].endswith('Id'):
-            return to_snake_case(field['name'])
-
-    # Fallback: first field
-    if schema:
-        return to_snake_case(schema[0]['name'])
-
-    return None
+# Primary-key discovery lives in orchestration/shared.discover_primary_key —
+# imported above. Do NOT duplicate it here; if you change PK semantics in one
+# place and forget the other, substrates score against wrong keys.
 
 
 def main():
     print("PostgreSQL Substrate: Starting test...")
 
-    # Load rulebook for primary key discovery
-    try:
-        rulebook = load_rulebook()
-    except FileNotFoundError as e:
-        print(f"Warning: Could not load rulebook: {e}")
-        rulebook = {}
+    # Load rulebook — required for primary-key discovery. Without it we cannot
+    # score the views against the right keys, so we fail loudly.
+    rulebook = load_rulebook()
 
     # Connect to database
     conn_str = get_db_connection_string()
-    try:
-        conn = psycopg2.connect(conn_str)
-        print(f"PostgreSQL Substrate: Connected to database")
-    except Exception as e:
-        print(f"FATAL: Failed to connect to database: {e}")
-        print(f"  Connection string: {conn_str}")
-        sys.exit(1)
+    conn = psycopg2.connect(conn_str)
+    print(f"PostgreSQL Substrate: Connected to database")
 
     # Ensure output directory exists
     TEST_ANSWERS_DIR.mkdir(parents=True, exist_ok=True)
@@ -157,11 +124,17 @@ def main():
     # Discover and query all views
     views = discover_views(conn)
     print(f"PostgreSQL Substrate: Found {len(views)} views")
+    if not views:
+        raise RuntimeError(
+            f"No vw_* views found in postgres at {conn_str}. "
+            f"The rulebook-to-postgres build has not run, or it produced no "
+            f"views. Run 'effortless build' in the postgres dir first."
+        )
 
     total_records = 0
     for view in views:
         entity = view_to_entity_name(view)
-        pk = get_primary_key(rulebook, entity)
+        pk = discover_primary_key(rulebook, entity)
 
         records = query_view(conn, view, pk)
 

@@ -34,7 +34,7 @@ def _resolve_test_results_path():
             f"test-results.md not found at {path}. "
             f"The grader (grade-and-record.py) is supposed to write it before "
             f"this report-generator runs. If you're seeing this, the grader "
-            f"failed silently — investigate it, do not fall back."
+            f"failed silently — investigate it, do not substitute defaults."
         )
     return path
 

@@ -13,13 +13,15 @@ SUBSTRATE_NAME = "python"
 SUBSTRATE_TITLE = "Python Execution Substrate"
 SUBSTRATE_ICON = "🐍"
 
-# Read source files
+# Read source files. A missing file legitimately renders as the supplied
+# default ("No README available", etc) so the report still composes.
+# A file that EXISTS but cannot be read is a bug — let the OSError raise
+# rather than silently substituting the default and hiding the corruption.
 def read_file(path, default=""):
-    try:
-        with open(path, 'r') as f:
-            return f.read()
-    except:
+    if not os.path.exists(path):
         return default
+    with open(path, 'r') as f:
+        return f.read()
 
 def _resolve_test_results_path():
     erb_testing = os.environ.get('ERB_TESTING_DIR')
@@ -35,7 +37,7 @@ def _resolve_test_results_path():
             f"test-results.md not found at {path}. "
             f"The grader (grade-and-record.py) is supposed to write it before "
             f"this report-generator runs. If you're seeing this, the grader "
-            f"failed silently — investigate it, do not fall back."
+            f"failed silently — investigate it, do not substitute defaults."
         )
     return path
 

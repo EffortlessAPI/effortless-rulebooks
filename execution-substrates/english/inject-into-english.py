@@ -49,7 +49,7 @@ RULEBOOK_PATH = Path(_erb_rulebook)
 if not RULEBOOK_PATH.exists():
     raise FileNotFoundError(
         f"Rulebook not found at ERB_RULEBOOK_PATH={RULEBOOK_PATH}. "
-        "Pass the exact path; no fallback."
+        "Pass the exact path; this script never substitutes a different one."
     )
 
 
@@ -251,7 +251,7 @@ def main():
 
     # ------------------------------------------------------------------
     # LLM reachability check. If no API key, leave spec untouched.
-    # There is no repo-committed cache to fall back to - the spec is
+    # There is no repo-committed cache to substitute — the spec is
     # deterministically derived from the rulebook whenever the LLM is
     # reachable, so stale-but-present is the honest offline behavior.
     # ------------------------------------------------------------------

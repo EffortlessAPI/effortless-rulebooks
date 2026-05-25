@@ -302,15 +302,7 @@
         "FilePath": "orchestration/orchestrate.sh",
         "Language": "Bash",
         "Purpose": "Interactive CLI menu: run substrates, manage Airtable sync, generate reports",
-        "Dependencies": "inject.py, rulebook-cache.py, base-manager.py"
-      },
-      {
-        "ComponentId": "orch-005",
-        "Name": "Rulebook Cache",
-        "FilePath": "orchestration/rulebook-cache.py",
-        "Language": "Python",
-        "Purpose": "Pull rulebook from Airtable API; fallback to offline cache if unavailable",
-        "Dependencies": "shared.py"
+        "Dependencies": "inject.py, base-manager.py, effortless CLI"
       },
       {
         "ComponentId": "orch-006",
@@ -318,7 +310,7 @@
         "FilePath": "orchestration/base-manager.py",
         "Language": "Python",
         "Purpose": "List, select, and swap Airtable bases; fetch base metadata from API",
-        "Dependencies": "rulebook-cache.py"
+        "Dependencies": "shared.py"
       },
       {
         "ComponentId": "orch-007",
@@ -387,13 +379,6 @@
         "FilePath": null,
         "Purpose": "Official Effortless tool: push formula updates back to Airtable (reverse sync)",
         "Role": "output"
-      },
-      {
-        "ComponentId": "airtable-003",
-        "Name": "Rulebook Cache (offline mode)",
-        "FilePath": "orchestration/rulebook-cache.py",
-        "Purpose": "Cache previously-pulled rulebooks; use offline if Airtable API unavailable",
-        "Role": "input"
       },
       {
         "ComponentId": "airtable-004",

@@ -157,13 +157,11 @@ SUBSTRATE_ORDER=(
 get_valid_substrates() {
     # Returns the substrates this project actually exercises, in display order.
     #
-    # If the active project has an effortless.json, the substrate list is the
-    # intersection of (substrates declared by its ProjectTranspilers) and
-    # (substrate directories that exist on disk with a runnable script). This
-    # is the SCOPING RULE: only what the project wires up shows up.
-    #
-    # If no effortless.json exists (legacy / un-initialized project), fall
-    # back to "every substrate folder on disk that has a runnable script".
+    # The substrate list is the intersection of:
+    #   (substrates declared by the active project's effortless.json ProjectTranspilers)
+    #   AND (substrate directories that exist on disk with a runnable script)
+    # If the active project has no effortless.json, we self-heal by running
+    # `effortless -init` in the domain dir before re-reading.
     local -a discovered=()
     for dir in "$SUBSTRATES_DIR"/*/; do
         [ -d "$dir" ] || continue
@@ -178,32 +176,47 @@ get_valid_substrates() {
         fi
     done
 
-    # Substrates declared by the active project's effortless.json (empty
-    # string when there's no effortless.json — see shared.get_active_project_substrates).
+    # Make sure the active domain has an effortless.json. If not, initialize.
+    local _domain _domain_dir
+    _domain=$(get_active_domain)
+    _domain_dir="$RULEBOOK_EXAMPLES_DIR/$_domain"
+    if [ ! -f "$_domain_dir/effortless.json" ]; then
+        echo "  ${YELLOW}effortless.json missing in $_domain_dir — running 'effortless -init'...${NC}" >&2
+        ( cd "$_domain_dir" && effortless -init ) >&2 || {
+            echo "  ${RED}FATAL: effortless -init failed in $_domain_dir${NC}" >&2
+            exit 1
+        }
+    fi
+
+    # Substrates declared by the active project's effortless.json. This call
+    # raises FileNotFoundError if effortless.json is still missing (which
+    # would mean -init didn't actually create it — a real bug).
     local declared
     declared=$(python3 -c "
 import sys
 sys.path.insert(0, '$SCRIPT_DIR')
 from shared import get_active_project_substrates
 print(' '.join(get_active_project_substrates()))
-")
+") || {
+        echo "  ${RED}FATAL: could not read substrates from effortless.json after -init${NC}" >&2
+        exit 1
+    }
 
     local -a allowed=()
-    if [ -n "$declared" ]; then
-        # Intersect declared with discovered.
-        local d
-        for d in $declared; do
-            for present in "${discovered[@]}"; do
-                if [ "$d" = "$present" ]; then
-                    allowed+=("$d")
-                    break
-                fi
-            done
-        done
-    else
-        # No effortless.json — fall back to everything on disk.
-        allowed=("${discovered[@]}")
+    if [ -z "$declared" ]; then
+        echo "  ${RED}FATAL: effortless.json in $_domain_dir contains no enabled ProjectTranspilers${NC}" >&2
+        exit 1
     fi
+    # Intersect declared with discovered.
+    local d
+    for d in $declared; do
+        for present in "${discovered[@]}"; do
+            if [ "$d" = "$present" ]; then
+                allowed+=("$d")
+                break
+            fi
+        done
+    done
 
     local -a ordered=()
     # 1. Append names from SUBSTRATE_ORDER that are in the allowed set
@@ -307,7 +320,7 @@ if "localhost:" in cmd:
     input_match = re.search(r'-i\s+(\S+)', cmd)
     if not input_match:
         print(f"ERROR: transpiler '{name}' is missing '-i <rulebook>' in CommandLine: {cmd!r}", file=sys.stderr)
-        print(f"Every proxy transpiler MUST pass -i pointing at the domain's <domain>-rulebook.json. No fallback.", file=sys.stderr)
+        print(f"Every proxy transpiler MUST pass -i pointing at the domain's <domain>-rulebook.json. Fix the CommandLine instead of guessing one.", file=sys.stderr)
         sys.exit(1)
     input_file = os.path.abspath(os.path.join(run_dir, input_match.group(1)))
     if not os.path.exists(input_file):
@@ -1648,16 +1661,10 @@ if $CI_MODE; then
     echo ""
 
     if $DOCKER_MODE; then
-        echo -e "${BOLD}Running in Docker mode - using cached data...${NC}"
+        echo -e "${BOLD}Running in Docker mode - executing all substrates...${NC}"
         echo ""
-
-        # Step 0: Set up from cache (use repo cache if no user cache)
-        echo -e "${BLUE}Setting up from cache...${NC}"
-        python3 "$SCRIPT_DIR/cache-manager.py" setup-offline 2>/dev/null || {
-            echo -e "${YELLOW}Cache manager not available, trying rulebook-cache...${NC}"
-            python3 "$SCRIPT_DIR/rulebook-cache.py" sync --offline --non-interactive || true
-        }
-        echo ""
+        # The rulebook JSON on disk IS the source of truth. There is no cache
+        # to "set up from" — substrates regenerate deterministically from it.
     else
         echo -e "${BOLD}Running in CI mode - executing all substrates...${NC}"
     fi

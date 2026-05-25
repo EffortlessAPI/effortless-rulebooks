@@ -850,8 +850,9 @@ function validateSchema() {
       //   - prefersSingleRecordLink: false/undefined = "many" side (can link to multiple)
       //   - BOTH sides allowing multiple = true Many-to-Many (not supported)
       //
-      // We use prefersSingleRecordLink as the primary check, with naming convention as fallback
-      // when the option isn't set. This handles cases like "Targeted Keywords for SEO" where
+      // We use prefersSingleRecordLink as the primary check; when the option
+      // is undefined (legacy Airtable link fields), we use the naming
+      // convention. This handles cases like "Targeted Keywords for SEO" where
       // the field name ends with an acronym, not 's'.
       if (fieldType === "multipleRecordLinks") {
         const linkedTableId = field.options?.linkedTableId;
@@ -868,7 +869,7 @@ function validateSchema() {
                 const inverseSidePrefersSingle = inverseField.options?.prefersSingleRecordLink;
 
                 // A side is "many" if prefersSingleRecordLink is explicitly false,
-                // OR if it's undefined and the field name is plural (fallback heuristic)
+                // OR if it's undefined and the field name is plural.
                 const thisSideIsMany =
                   thisSidePrefersSingle === false ||
                   (thisSidePrefersSingle === undefined && isPlural(fieldName));

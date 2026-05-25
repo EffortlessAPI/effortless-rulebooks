@@ -148,10 +148,20 @@ def parse_sumifs_formula(formula: str) -> tuple:
 
 
 def _get_testing_dir(project_root: Path) -> Path:
-    """Return the domain-scoped testing dir (ERB_TESTING_DIR env var or fallback)."""
+    """Return the active domain's testing/ dir. ERB_TESTING_DIR is required.
+
+    The simulator must operate on the same domain the orchestrator chose;
+    there is no implicit per-substrate testing dir.
+    """
     import os
     erb = os.environ.get("ERB_TESTING_DIR")
-    return Path(erb) if erb else project_root / "testing"
+    if not erb:
+        raise RuntimeError(
+            "ERB_TESTING_DIR is not set. python_only_erb_simulator must be "
+            "invoked by the orchestrator with ERB_TESTING_DIR pointing at the "
+            "active domain's testing/ directory."
+        )
+    return Path(erb)
 
 
 def load_related_data(project_root: Path, related_table: str) -> list:

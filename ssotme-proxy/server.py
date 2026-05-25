@@ -172,9 +172,10 @@ def _client_cwd_from_pid(pid: int):
 
 def resolve_request(route: str, client_port):
     """
-    Resolve (input_file, output_dir) for the proxy request. ONE path, no
-    fallbacks: read the CLI process's argv via lsof+ps, parse `-i <rulebook>`,
-    resolve relative to the CLI's cwd. Anything missing = raise.
+    Resolve (input_file, output_dir) for the proxy request. ONE deterministic
+    path, no alternates: read the CLI process's argv via lsof+ps, parse
+    `-i <rulebook>`, resolve relative to the CLI's cwd. Anything missing
+    raises — we never guess a different path.
 
     Why this is the one path: the `effortless` CLI sends an empty POST body
     and the X-Working-Dir header is set to the repo root (not the project),

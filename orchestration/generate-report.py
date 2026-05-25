@@ -97,8 +97,8 @@ EFFORTLESS_SUBSTRATES = {
 }
 
 # Stable per-substrate color palette. Each substrate keeps the same color
-# across runs so a viewer builds muscle memory ("green = cobol"). New
-# substrates fall back to neutral grey until added here.
+# across runs so a viewer builds muscle memory ("green = cobol"). Substrates
+# not listed below render as neutral grey until added here.
 SUBSTRATE_COLORS = {
     # Open-source / local substrates
     "python":       "#3776AB",  # python blue
@@ -323,18 +323,18 @@ def get_substrates():
 
 
 def load_run_metadata(substrate_name: str) -> dict:
-    """Load metadata for a substrate from the CENTRAL results file in testing/"""
+    """Load metadata for a substrate from the CENTRAL results file in testing/.
+
+    Returns an empty-run sentinel when the central file does not yet exist
+    (legitimate "first run / no history yet" state). If the file exists but is
+    corrupt, json.load raises and the report build fails loudly.
+    """
     central_path = os.path.join(TESTING_DIR, "_substrate_results.json")
-    if os.path.exists(central_path):
-        with open(central_path, 'r') as f:
-            central = json.load(f)
-            return central.get(substrate_name, {"last_run": None, "last_successful_run": None})
-    # Fallback to old per-substrate file for migration
-    metadata_path = os.path.join(SUBSTRATES_DIR, substrate_name, "_run_metadata.json")
-    if os.path.exists(metadata_path):
-        with open(metadata_path, 'r') as f:
-            return json.load(f)
-    return {"last_run": None, "last_successful_run": None}
+    if not os.path.exists(central_path):
+        return {"last_run": None, "last_successful_run": None}
+    with open(central_path, 'r') as f:
+        central = json.load(f)
+    return central.get(substrate_name, {"last_run": None, "last_successful_run": None})
 
 
 def load_substrate_grades(substrate_name: str) -> dict:
@@ -493,13 +493,23 @@ def load_substrate_report_content(substrate_name: str) -> dict:
                     pos = next_close + 6
 
         return {"tabs": tabs, "contents": contents}
-    except Exception as e:
-        print(f"Warning: Could not parse substrate report for {substrate_name}: {e}")
-        return {"tabs": [], "contents": {}}
+    except (OSError, UnicodeDecodeError) as e:
+        # File can't be read at all — this is a fixable bug; surface it loudly
+        # with the substrate name and path rather than silently producing an
+        # empty report section.
+        raise RuntimeError(
+            f"Failed to read substrate report at {report_path} "
+            f"(substrate={substrate_name}): {type(e).__name__}: {e}"
+        ) from e
 
 
 def load_substrate_test_answers(substrate_name: str) -> dict:
-    """Load test answers from a substrate"""
+    """Load test answers from a substrate.
+
+    A missing test-answers/ directory is legitimate (substrate was skipped or
+    crashed before writing) and returns {}. Invalid JSON in a written file is
+    a bug and RAISES with the offending file path.
+    """
     if substrate_name == 'effortless-postgres':
         return load_answer_keys()
 
@@ -508,11 +518,15 @@ def load_substrate_test_answers(substrate_name: str) -> dict:
     if os.path.isdir(answers_dir):
         for file in glob.glob(os.path.join(answers_dir, "*.json")):
             entity = os.path.basename(file).replace('.json', '')
-            try:
-                with open(file, 'r') as f:
+            with open(file, 'r') as f:
+                try:
                     answers[entity] = json.load(f)
-            except:
-                pass
+                except json.JSONDecodeError as e:
+                    raise json.JSONDecodeError(
+                        f"Invalid JSON in {file} (substrate={substrate_name}, "
+                        f"entity={entity}): {e.msg}",
+                        e.doc, e.pos,
+                    ) from e
     return answers
 
 
@@ -543,9 +557,11 @@ def collect_all_data():
         run_meta = load_run_metadata(substrate)
         grades["run_metadata"] = run_meta
 
-        # Show the duration of the MOST RECENT run (so re-runs are visible even
-        # when they don't score 100%). Fall back to last_successful_run only if
-        # last_run is missing timing.
+        # Show the duration of the MOST RECENT run so re-runs are visible even
+        # when they don't score 100%. If the current run did not capture a
+        # duration (e.g. crash before timing was recorded), PRESERVE the
+        # previously captured value so the report still shows the last known
+        # timing instead of going blank.
         last_run = run_meta.get("last_run") or {}
         last_success = run_meta.get("last_successful_run") or {}
         if "duration_seconds" in last_run:
@@ -562,7 +578,7 @@ def collect_all_data():
         all_grades[substrate] = grades
 
     # Build report data structure
-    # Use Name from rulebook as the report title, fallback to directory name
+    # Use Name from rulebook as the report title; if absent, use the domain folder name.
     rulebook_name = rulebook.get("Name", os.path.basename(PROJECT_ROOT))
     report_data = {
         "meta": {
@@ -2407,7 +2423,7 @@ function renderSubstrateDetails(substrateName, restoreViewTab = null, restoreEnt
         });
     });
 
-    // Restore view tab from URL if provided, or fall back to 'data'
+    // Restore view tab from URL if provided; otherwise default to 'data'
     if (restoreViewTab) {
         const viewTabBtn = document.querySelector(`#substrate-view-tabs .sub-tab[data-view="${restoreViewTab}"]`);
         if (viewTabBtn) {
@@ -2417,7 +2433,7 @@ function renderSubstrateDetails(substrateName, restoreViewTab = null, restoreEnt
             document.getElementById(`substrate-${restoreViewTab}-view`)?.classList.add('active');
             currentViewTab = restoreViewTab;
         } else {
-            // Tab doesn't exist on this substrate, fall back to 'data'
+            // Tab doesn't exist on this substrate; default to 'data'
             currentViewTab = 'data';
             // Data tab is already active by default from the HTML
         }
@@ -2798,7 +2814,8 @@ def main():
         '''
         result = subprocess.run(['osascript', '-e', applescript], capture_output=True)
         if result.returncode != 0:
-            # Fallback to regular open if Chrome not available
+            # If the Chrome AppleScript failed, request the OS to open the
+            # file with its default handler.
             subprocess.run(['open', abs_path], check=False)
     elif platform.system() == 'Windows':
         print("Opening report in browser...")
