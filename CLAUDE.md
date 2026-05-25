@@ -21,6 +21,26 @@ The user has explained this multiple times. Every confusion here is a fresh, rep
 
 ---
 
+# THE ADMIN PORTAL ≠ A DOMAIN (same category error, different surface)
+
+**The admin portal is like Microsoft Word. A domain (acme-llc, star-trek, jessica-basic, etc.) is like a .docx document.** Word's install directory is not named after any document. A document is not named after the app. They are categorically different things and must never be mixed in any identifier — DB name, file path, function name, env var, table prefix, anything.
+
+**Database naming (enforced):**
+- `erb_admin_portal` — the admin portal's own database. **Singular.** Holds portal config (`AppUsers`, `AppRoles`, `AppNav`, etc.). The word `admin` appears here and **only** here. Never with a domain suffix.
+- `erb_<domain>` — per-domain document database (`erb_acme_llc`, `erb_star_trek`, `erb_jessica_basic`, …). Holds that domain's business data. The word `admin` **never** appears in these names.
+
+**Forbidden pattern: `erb_admin_<domain>`.** This is the category-error red flag. If you see it in code, the code is wrong. If you are about to write it, stop — the naming itself proves you have conflated the app with a document.
+
+The admin portal opens two connections for two different reasons:
+1. To `erb_admin_portal` — to read/write its own state (which user is logged in, navigation, etc.).
+2. To `erb_<domain>` — to edit the document currently open (whichever domain is in `active-domain.txt`).
+
+Two connections. Two purposes. Two categories. Same logic as the rulebook split above.
+
+**Rule for agents:** When CLAUDE.md declares a category boundary and the code appears to cross it, the code is the suspect — not the doctrine. Flag it as "this looks like a category-error bug in the code" rather than reporting it as fact. Do not pattern-match on bad names and assume they describe reality.
+
+---
+
 # Effortlessly Invariant Rulesbooks (ERB)
 
 ## Two categorically different kinds of rulebooks live in this repo

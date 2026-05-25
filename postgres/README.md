@@ -2,7 +2,7 @@
 
 **Schema:** `public`
 **Database:** `demo`
-**Timestamp:** 2026-05-24 21:09:33 UTC
+**Timestamp:** 2026-05-25 02:19:27 UTC
 
 ## Parsing Rulebook
 
@@ -11,7 +11,7 @@ Found **19** tables in rulebook
 
   - **ProjectMetadata** (8 fields, 1 records)
   - **ExecutionSubstrates** (9 fields, 10 records)
-  - **OrchestrationComponents** (6 fields, 10 records)
+  - **OrchestrationComponents** (6 fields, 9 records)
   - **RulebookSourceSpokes** (7 fields, 6 records)
   - **SsotmeProxy** (5 fields, 13 records)
   - **TestingFramework** (5 fields, 4 records)
@@ -33,7 +33,7 @@ Generated **19** table definitions with **124** raw fields (mode=check-add)
 Generated **0** calculation functions
 Generated **19** views
 Enabled RLS on **19** tables
-Generated insert statements for **207** records
+Generated insert statements for **206** records
 ## Script Generation Complete
 
 Generated files:

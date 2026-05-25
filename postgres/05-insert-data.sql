@@ -60,13 +60,10 @@ INSERT INTO orchestration_components (component_id, name, file_path, language, p
 VALUES ('orch-003', 'Main Injector', 'orchestration/inject.py', 'Python', 'Legacy: dispatch rulebook to all substrate injectors. Superseded by ssotme-proxy + `effortless build` per project, but retained for CI/cleanup.', 'shared.py, all substrate injectors') ON CONFLICT (component_id) DO NOTHING;
 
 INSERT INTO orchestration_components (component_id, name, file_path, language, purpose, dependencies)
-VALUES ('orch-004', 'Orchestrator Menu', 'orchestration/orchestrate.sh', 'Bash', 'Legacy interactive CLI menu: run substrates, manage Airtable sync, generate reports. Reachable via `./start.sh --cli`.', 'inject.py, rulebook-cache.py, base-manager.py') ON CONFLICT (component_id) DO NOTHING;
+VALUES ('orch-004', 'Orchestrator Menu', 'orchestration/orchestrate.sh', 'Bash', 'Legacy interactive CLI menu: run substrates, manage Airtable sync, generate reports. Reachable via `./start.sh --cli`.', 'inject.py, base-manager.py, effortless CLI') ON CONFLICT (component_id) DO NOTHING;
 
 INSERT INTO orchestration_components (component_id, name, file_path, language, purpose, dependencies)
-VALUES ('orch-005', 'Rulebook Cache', 'orchestration/rulebook-cache.py', 'Python', 'Pull rulebook from an Airtable base into the rulebook JSON; fallback to offline cache if API unavailable. One of several input spokes.', 'shared.py') ON CONFLICT (component_id) DO NOTHING;
-
-INSERT INTO orchestration_components (component_id, name, file_path, language, purpose, dependencies)
-VALUES ('orch-006', 'Base Manager', 'orchestration/base-manager.py', 'Python', 'List, select, and swap Airtable bases when Airtable is used as an input spoke', 'rulebook-cache.py') ON CONFLICT (component_id) DO NOTHING;
+VALUES ('orch-006', 'Base Manager', 'orchestration/base-manager.py', 'Python', 'List, select, and swap Airtable bases when Airtable is used as an input spoke', 'shared.py') ON CONFLICT (component_id) DO NOTHING;
 
 INSERT INTO orchestration_components (component_id, name, file_path, language, purpose, dependencies)
 VALUES ('orch-007', 'Test Orchestrator', 'orchestration/test-orchestrator.py', 'Python', 'Run all substrate tests; verify conformance (all substrates compute identically)', 'shared.py, all substrate test scripts') ON CONFLICT (component_id) DO NOTHING;
@@ -102,7 +99,7 @@ VALUES ('spoke-006', 'Manual JSON Edits', 'manual-json', 'input', FALSE, 'Develo
 -- SsotmeProxy: Local HTTP transpiler server on localhost:4242. Each transpiler is an HTTP route; injectors are the route bodies. Used by `effortless build` to call substrate generators uniformly.
 -- ----------------------------------------------------------------------------
 INSERT INTO ssotme_proxy (route_id, route, substrate_id, injector_script, description)
-VALUES ('proxy-001', 'POST /airtable-to-rulebook', '24e2281c-ba60-0139-87fd-305ae45031a5', NULL, 'Pull rulebook from Airtable base (delegates to official Effortless tool)') ON CONFLICT (route_id) DO NOTHING;
+VALUES ('proxy-001', 'POST /airtable-to-rulebook', 'e9d22a75-60c7-ecd7-a6d5-ade27865a3a3', NULL, 'Pull rulebook from Airtable base (delegates to official Effortless tool)') ON CONFLICT (route_id) DO NOTHING;
 
 INSERT INTO ssotme_proxy (route_id, route, substrate_id, injector_script, description)
 VALUES ('proxy-002', 'POST /rulebook-to-python', 'substrate-002', 'execution-substrates/python/inject-into-python.py', 'Generate Python dataclass + calc library from rulebook') ON CONFLICT (route_id) DO NOTHING;
@@ -114,7 +111,7 @@ INSERT INTO ssotme_proxy (route_id, route, substrate_id, injector_script, descri
 VALUES ('proxy-004', 'POST /rulebook-to-binary', 'substrate-001', 'execution-substrates/binary/inject-into-binary.py', 'Generate ARM64 assembly calculation stub from rulebook') ON CONFLICT (route_id) DO NOTHING;
 
 INSERT INTO ssotme_proxy (route_id, route, substrate_id, injector_script, description)
-VALUES ('proxy-005', 'POST /rulebook-to-cobol', '40bac77b-bd8b-9797-ef64-a352edbf9a58', 'execution-substrates/cobol/inject-into-cobol.py', 'Generate COBOL computation program from rulebook') ON CONFLICT (route_id) DO NOTHING;
+VALUES ('proxy-005', 'POST /rulebook-to-cobol', 'f28d4ce2-c19e-03cf-80c5-c5860f22a549', 'execution-substrates/cobol/inject-into-cobol.py', 'Generate COBOL computation program from rulebook') ON CONFLICT (route_id) DO NOTHING;
 
 INSERT INTO ssotme_proxy (route_id, route, substrate_id, injector_script, description)
 VALUES ('proxy-006', 'POST /rulebook-to-csv', 'substrate-005', 'execution-substrates/csv/inject-into-csv.py', 'Generate CSV exports + rulebook.xlsx from rulebook') ON CONFLICT (route_id) DO NOTHING;
@@ -129,16 +126,16 @@ INSERT INTO ssotme_proxy (route_id, route, substrate_id, injector_script, descri
 VALUES ('proxy-009', 'POST /rulebook-to-owl', 'substrate-008', 'execution-substrates/owl/inject-into-owl.py', 'Generate RDF/OWL ontology from rulebook') ON CONFLICT (route_id) DO NOTHING;
 
 INSERT INTO ssotme_proxy (route_id, route, substrate_id, injector_script, description)
-VALUES ('proxy-010', 'POST /rulebook-to-english', '8824b83a-1d8f-221b-c23c-44d19cc0619d', 'execution-substrates/english/inject-into-english.py', 'Generate plain-English business-rule narrative from rulebook') ON CONFLICT (route_id) DO NOTHING;
+VALUES ('proxy-010', 'POST /rulebook-to-english', 'a904278f-e47d-8272-ad3c-ff23a8e34ca0', 'execution-substrates/english/inject-into-english.py', 'Generate plain-English business-rule narrative from rulebook') ON CONFLICT (route_id) DO NOTHING;
 
 INSERT INTO ssotme_proxy (route_id, route, substrate_id, injector_script, description)
 VALUES ('proxy-011', 'POST /rulebook-to-explain-dag', 'substrate-009', 'execution-substrates/explain-dag/inject-into-explain-dag.py', 'Generate JSON derivation-tracing DAG spec from rulebook') ON CONFLICT (route_id) DO NOTHING;
 
 INSERT INTO ssotme_proxy (route_id, route, substrate_id, injector_script, description)
-VALUES ('proxy-012', 'POST /rulebook-to-airtable', '4af53b6c-f546-c84c-2571-aa9dce250640', 'execution-substrates/airtable/inject-into-airtable.py', 'Sync rulebook schema back into an Airtable base (output spoke)') ON CONFLICT (route_id) DO NOTHING;
+VALUES ('proxy-012', 'POST /rulebook-to-airtable', '3e0c60c6-d647-4bcd-b26d-97bd556097ae', 'execution-substrates/airtable/inject-into-airtable.py', 'Sync rulebook schema back into an Airtable base (output spoke)') ON CONFLICT (route_id) DO NOTHING;
 
 INSERT INTO ssotme_proxy (route_id, route, substrate_id, injector_script, description)
-VALUES ('proxy-013', 'GET /ping', '209213b6-805d-5447-4a7e-a58a4c02e047', NULL, 'Health check + transpiler catalog discovery') ON CONFLICT (route_id) DO NOTHING;
+VALUES ('proxy-013', 'GET /ping', '0df40e7b-072a-1284-19f8-78ec15131914', NULL, 'Health check + transpiler catalog discovery') ON CONFLICT (route_id) DO NOTHING;
 
 -- ----------------------------------------------------------------------------
 -- TestingFramework: Conformance testing: prove all substrates compute identically
@@ -198,7 +195,7 @@ INSERT INTO core_data_flows (flow_id, name, steps, triggers, outputs, invariant)
 VALUES ('flow-004', 'Admin Save (Write-Through Invariant)', 'Developer edits in portal | Backend writes to Postgres (live editor state) | SAME REQUEST writes to effortless-rulebook.json on disk | Backend returns success only if BOTH writes succeeded | Optional: trigger flow-002 (rebuild substrates)', 'Any save action in admin portal (table edit, field edit, formula edit, sample data edit)', 'Updated Postgres row, updated effortless-rulebook.json, optional substrate rebuild', 'Postgres is the EDITOR; effortless-rulebook.json is the DURABLE SSoT. If Postgres is dropped, the rulebook reconstitutes it. If the JSON is dropped, the editor has no source of truth.') ON CONFLICT (flow_id) DO NOTHING;
 
 INSERT INTO core_data_flows (flow_id, name, steps, triggers, outputs, invariant)
-VALUES ('flow-005', 'Portal Bootstrap (auto-create DB + migrate)', 'Portal backend boots | Check if PG database ''erb_admin_<project>'' exists | If missing, create it | Read effortless-rulebook.json | Run rulebook-to-portal-schema migration (creates tables for rulebook entities + AppUsers + AppRoles + AppNav) | Seed Postgres rows from rulebook JSON | Mark bootstrap complete', 'First boot of admin portal for a project, OR explicit reset action', 'Postgres database ready for editing, portal navigation populated', NULL) ON CONFLICT (flow_id) DO NOTHING;
+VALUES ('flow-005', 'Portal Bootstrap (auto-create DB + migrate)', 'Portal backend boots | Check if PG database ''erb_<domain>'' exists | If missing, create it | Read effortless-rulebook.json | Run rulebook-to-portal-schema migration (creates tables for rulebook entities + AppUsers + AppRoles + AppNav) | Seed Postgres rows from rulebook JSON | Mark bootstrap complete', 'First boot of admin portal for a project, OR explicit reset action', 'Postgres database ready for editing, portal navigation populated', NULL) ON CONFLICT (flow_id) DO NOTHING;
 
 INSERT INTO core_data_flows (flow_id, name, steps, triggers, outputs, invariant)
 VALUES ('flow-006', 'Rehydrate Postgres from Rulebook JSON', 'User drops or corrupts Postgres | User runs ./start.sh or clicks Reset Editor | Backend re-runs flow-005 | Editor is back online from JSON SSoT', 'Manual reset, DB loss, or version-control checkout to a different rulebook', 'Postgres editor rebuilt to match rulebook JSON exactly', NULL) ON CONFLICT (flow_id) DO NOTHING;

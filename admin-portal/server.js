@@ -4,7 +4,7 @@
 // Boots:
 //   - localhost:7777 — admin portal API + static frontend host
 //   - Connects to Postgres (system pg on 5432 or override via PG* env)
-//   - Auto-creates editor database `erb_admin_<project>` on first boot
+//   - Auto-creates per-domain document database `erb_<domain>` on first boot
 //   - Auto-migrates editor DB schema from the active rulebook
 //   - Enforces the write-through invariant: every mutating endpoint writes to
 //     BOTH Postgres AND the rulebook JSON in the same logical transaction
@@ -151,14 +151,14 @@ function savePortalState(s) {
 // ---------------------------------------------------------------------------
 // Editor Postgres database (per-project)
 // ---------------------------------------------------------------------------
-function editorDbName() {
+function domainDbName() {
   const domain = getActiveDomain();
   const safe = domain.replace(/[^a-z0-9_]/gi, "_").toLowerCase();
-  return `erb_admin_${safe}`;
+  return `erb_${safe}`;
 }
 
 async function ensureEditorDatabase() {
-  const dbName = editorDbName();
+  const dbName = domainDbName();
   // Connect to default db to issue CREATE DATABASE if needed.
   const root = new pg.Client({ ...PG_CONFIG, database: "postgres" });
   await root.connect();
@@ -616,7 +616,7 @@ app.get("/api/tech/postgres/tables", requireDeveloper, async (req, res) => {
         WHERE table_schema NOT IN ('pg_catalog', 'information_schema')
         ORDER BY 1, 2`
     );
-    res.json({ database: editorDbName(), tables: r.rows });
+    res.json({ database: domainDbName(), tables: r.rows });
   } catch (e) {
     res.status(500).json({ error: String(e.message || e) });
   }
@@ -672,7 +672,7 @@ app.post("/api/tech/reset", requireDeveloper, async (req, res) => {
     try { await pool.end(); } catch {}
     pool = null;
   }
-  const dbName = editorDbName();
+  const dbName = domainDbName();
   const root = new pg.Client({ ...PG_CONFIG, database: "postgres" });
   await root.connect();
   try {
@@ -694,7 +694,7 @@ app.use("/", express.static(path.join(__dirname, "web")));
 (async () => {
   try {
     await getPool();
-    console.log(`[portal] editor DB ready: ${editorDbName()}`);
+    console.log(`[portal] domain DB ready: ${domainDbName()}`);
   } catch (e) {
     console.error(`[portal] WARNING — could not init editor Postgres: ${e.message}`);
     console.error(`[portal] portal will still serve, but DB-backed features will fail.`);

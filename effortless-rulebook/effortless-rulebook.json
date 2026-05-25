@@ -890,7 +890,7 @@
       {
         "FlowId": "flow-005",
         "Name": "Portal Bootstrap (auto-create DB + migrate)",
-        "Steps": "Portal backend boots | Check if PG database 'erb_admin_<project>' exists | If missing, create it | Read effortless-rulebook.json | Run rulebook-to-portal-schema migration (creates tables for rulebook entities + AppUsers + AppRoles + AppNav) | Seed Postgres rows from rulebook JSON | Mark bootstrap complete",
+        "Steps": "Portal backend boots | Check if PG database 'erb_<domain>' exists | If missing, create it | Read effortless-rulebook.json | Run rulebook-to-portal-schema migration (creates tables for rulebook entities + AppUsers + AppRoles + AppNav) | Seed Postgres rows from rulebook JSON | Mark bootstrap complete",
         "Triggers": "First boot of admin portal for a project, OR explicit reset action",
         "Outputs": "Postgres database ready for editing, portal navigation populated"
       },
