@@ -6,7 +6,7 @@ Write your business rules once in `effortless-rulebook.json`. ERB mechanically p
 
 This repo wraps a catalog of independent demo rulebooks under `[rulebook-examples/](rulebook-examples/)` ([acme-llc](rulebook-examples/acme-llc/), [star-trek](rulebook-examples/star-trek/), [jessica-advanced](rulebook-examples/jessica-advanced/), …). Each project owns its own rulebook and picks the subset of substrates it needs. The platform itself (`[effortless-platform/](effortless-platform/)`) is one such project — ERB describing its own admin portal, orchestration tool, and ssotme-proxy.
 
-See [CLAUDE.md](CLAUDE.md) for the architectural rules (rulebook-as-SSoT, no fallbacks, project vs. demo rulebook category split).
+See [CLAUDE.md](CLAUDE.md) for the architectural rules (rulebook-as-SSoT, project vs. demo rulebook category split).
 
 ---
 
@@ -21,11 +21,11 @@ See [CLAUDE.md](CLAUDE.md) for the architectural rules (rulebook-as-SSoT, no fal
 7. **[Locally-designated SSoT](docs/features/README.local-ssot.md)** — the answer key for a run is whichever spoke the user designates (Airtable export, Excel workbook, JSON, Postgres dump).
 8. **[Portal / CLI parity](docs/features/README.portal-cli-parity.md)** — the admin portal and `./start.sh --cli` are peer interfaces to the same pipeline; portal mutations shell out to the same `effortless` CLI commands.
 9. **[Write-through invariant](docs/features/README.write-through.md)** — every portal save writes to Postgres AND the rulebook JSON in the same logical transaction. Drop Postgres at any time and rebuild from JSON.
-10. **[Fail loudly, never fall back](docs/features/README.fail-loud.md)** — missing paths fail with the exact expected path; defaults derived from the SSoT are fine, guess-defaults are forbidden.
 
 ## Additional features
 
 - **[Rulebook is a complete spec](docs/features/README.complete-spec.md)** — a rulebook alone is sufficient for any frontier LLM to answer any question about the domain.
+- **[Fail loudly, never fall back](docs/features/README.fail-loud.md)** — coding discipline: missing paths fail with the exact expected path; defaults derived from the SSoT are fine, guess-defaults are forbidden.
 - **[Per-rulebook formula dialect](docs/features/README.dialect-binding.md)** — each rulebook declares its dialect (Excel, Airtable, …); substrates honor whatever is declared.
 - **[Project rulebook ≠ demo rulebook](docs/features/README.project-vs-demo.md)** — the platform rulebook and the domain rulebooks never mix.
 - **[Admin portal ≠ a domain](docs/features/README.portal-vs-domain.md)** — `erb_admin_portal` (the app) and `erb_<domain>` (the document) are categorically different; `erb_admin_<domain>` is a category-error red flag.

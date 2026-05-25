@@ -668,8 +668,8 @@
         "FeatureId": "feature-010",
         "Name": "Fail Loudly, Never Fall Back",
         "ShortName": "Fail Loud",
-        "Tier": "headline",
-        "Priority": 100,
+        "Tier": "additional",
+        "Priority": 10,
         "OneLineSummary": "When a file or value isn't where it's expected, the code fails with the exact expected path. No silent fallbacks. Defaults derived from the SSoT are fine; defaults that substitute a guess are not.",
         "ReadmeFilePath": "docs/features/README.fail-loud.md",
         "ReadmeStubContent": "Silent fallbacks make conformance run against the wrong data and report 100% pass, masking the real failure. A loud failure produces a fixable stack trace.",
@@ -3037,7 +3037,7 @@
         "MinRoleId": "role-viewer",
         "Layout": "split-detail",
         "PrimaryAction": "Edit feature",
-        "Story": "Two sections: Headline features (ADP, clean, hub-and-spoke, convergent build, substrate equivalence, conformance, local SSoT, portal/CLI parity, write-through, fail-loud) and Additional features. Left list, right detail. Detail shows one-line summary, status, related axiom (clickable), README file path, IsReadmeStub badge, and the seed README content. Developer can edit summary/tier/priority/README path in place — saves write-through into rulebook JSON."
+        "Story": "Two sections: Headline features (ADP, clean, hub-and-spoke, convergent build, substrate equivalence, conformance, local SSoT, portal/CLI parity, write-through) and Additional features (fail-loud, complete spec, dialect binding, etc.). Left list, right detail. Detail shows one-line summary, status, related axiom (clickable), README file path, IsReadmeStub badge, and the seed README content. Developer can edit summary/tier/priority/README path in place — saves write-through into rulebook JSON."
       }
     ]
   },
