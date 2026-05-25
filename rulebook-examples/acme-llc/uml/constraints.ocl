@@ -1,5 +1,5 @@
 -- OCL Constraints for ERB
--- Generated from effortless-rulebook.json
+-- Generated from acme-llc-rulebook.json
 
 -- Table: Customers
 context Customers

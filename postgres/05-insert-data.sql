@@ -498,7 +498,7 @@ INSERT INTO app_apis (api_id, method, path, resource, "action", writes_through, 
 VALUES ('api-001', 'GET', '/api/me', 'users', 'read', FALSE, 'Current user + role + permissions') ON CONFLICT (api_id) DO NOTHING;
 
 INSERT INTO app_apis (api_id, method, path, resource, "action", writes_through, description)
-VALUES ('api-002', 'GET', '/api/projects', 'rulebook.entity', 'read', FALSE, 'List rulebook projects (rulebook-examples/* + this meta-rulebook)') ON CONFLICT (api_id) DO NOTHING;
+VALUES ('api-002', 'GET', '/api/projects', 'rulebook.entity', 'read', FALSE, 'List rulebook projects (rulebook-examples/* + this top-level rulebook)') ON CONFLICT (api_id) DO NOTHING;
 
 INSERT INTO app_apis (api_id, method, path, resource, "action", writes_through, description)
 VALUES ('api-003', 'GET', '/api/projects/:id', 'rulebook.entity', 'read', FALSE, 'Project summary: rulebook stats, substrates, last build') ON CONFLICT (api_id) DO NOTHING;

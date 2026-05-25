@@ -32,6 +32,8 @@ Install into a project:
         -o python/
 """
 
+import base64
+import gzip
 import json
 import os
 import subprocess
@@ -40,6 +42,34 @@ import traceback
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from pathlib import Path
 from urllib.parse import urlparse
+
+
+# Empty fileset that the ssotme/effortless CLI will happily parse, leaving the
+# injector-written files on disk untouched. The CLI's SaveFileSet path requires
+# a non-null TranspileRequest.ZippedOutputFileSet (it null-derefs otherwise).
+_EMPTY_FILESET_XML = '<?xml version="1.0" encoding="utf-8"?><FileSet></FileSet>'
+_EMPTY_ZIPPED_FILESET_B64 = base64.b64encode(gzip.compress(_EMPTY_FILESET_XML.encode("utf-8"))).decode("ascii")
+
+
+def build_cli_payload(route: str, success: bool, output: str) -> dict:
+    """Return a JSON payload shaped like what the ssotme/effortless CLI's
+    SSOTMEPayload deserializer expects, so it doesn't crash trying to read
+    Transpiler.Name or TranspileRequest.ZippedOutputFileSet.
+    """
+    return {
+        "Transpiler": {
+            "Name": route,
+            "LowerHyphenName": route,
+        },
+        "TranspileRequest": {
+            "ZippedOutputFileSet": _EMPTY_ZIPPED_FILESET_B64,
+        },
+        "Logs": [],
+        # legacy/lowercase mirror — kept so manual curl-based use still works.
+        "success": success,
+        "output": output,
+        "files": {},
+    }
 
 PORT = 4242
 SCRIPT_DIR = Path(__file__).resolve().parent
@@ -102,9 +132,110 @@ TRANSPILERS = {
 }
 
 
-def resolve_path(s: str, working_dir: str) -> Path:
-    p = Path(s)
-    return p if p.is_absolute() else (Path(working_dir) / p).resolve()
+def _client_pid_from_port(client_port: int):
+    """Find the PID of the process on the other end of the TCP connection
+    that has source port == client_port (i.e. the CLI that POSTed to us).
+    """
+    try:
+        out = subprocess.run(
+            ["lsof", "-nP", "-iTCP:" + str(client_port), "-sTCP:ESTABLISHED"],
+            capture_output=True, text=True, timeout=2,
+        ).stdout
+        for line in out.splitlines()[1:]:
+            parts = line.split()
+            if len(parts) < 9:
+                continue
+            # Format: COMMAND PID USER ... NAME(127.0.0.1:CLIENT->127.0.0.1:4242)
+            # We want the row where client_port appears BEFORE the "->" (source side).
+            name = parts[-2]
+            if f":{client_port}->" in name:
+                return int(parts[1])
+    except Exception as e:
+        print(f"[ssotme-proxy]   client pid lookup failed: {e}", flush=True)
+    return None
+
+
+def _client_cwd_from_pid(pid: int):
+    """Return the cwd of pid via lsof -d cwd, or None."""
+    try:
+        cwd_out = subprocess.run(
+            ["lsof", "-a", "-p", str(pid), "-d", "cwd", "-Fn"],
+            capture_output=True, text=True, timeout=2,
+        ).stdout
+        for cwd_line in cwd_out.splitlines():
+            if cwd_line.startswith("n"):
+                return Path(cwd_line[1:])
+    except Exception:
+        pass
+    return None
+
+
+def resolve_request(route: str, client_port):
+    """
+    Resolve (input_file, output_dir) for the proxy request. ONE path, no
+    fallbacks: read the CLI process's argv via lsof+ps, parse `-i <rulebook>`,
+    resolve relative to the CLI's cwd. Anything missing = raise.
+
+    Why this is the one path: the `effortless` CLI sends an empty POST body
+    and the X-Working-Dir header is set to the repo root (not the project),
+    so the only signal that tells us which project the user is building is
+    the CLI process's own argv + cwd. active-domain.txt is unreliable (set
+    by a different command); the working_dir header is unreliable (CLI
+    overwrites it); the body is empty.
+    """
+    if client_port is None:
+        raise RuntimeError("Request has no client_port — cannot identify CLI process.")
+
+    socket_pid = _client_pid_from_port(client_port)
+    if socket_pid is None:
+        raise RuntimeError(
+            f"No PID found for client TCP port {client_port}. The CLI process "
+            f"must be alive and ESTABLISHED on that port when we look."
+        )
+
+    # The socket-talking process's cwd IS the substrate folder. The effortless
+    # CLI runs each transpiler from its substrate dir (e.g. customer-fullname/xlsx/)
+    # before POSTing to us. That single fact pins down everything:
+    #   - domain     = <socket_cwd>.parent.name (it's rulebook-examples/<domain>/<sub>/)
+    #   - output_dir = <socket_cwd>
+    #   - input_file = <socket_cwd>.parent / 'effortless-rulebook' / '<domain>-rulebook.json'
+    socket_cwd = _client_cwd_from_pid(socket_pid)
+    if socket_cwd is None:
+        raise RuntimeError(f"Could not read cwd of socket pid {socket_pid}.")
+    socket_cwd = socket_cwd.resolve()
+
+    examples_root = (PROJECT_ROOT / "rulebook-examples").resolve()
+    try:
+        rel = socket_cwd.relative_to(examples_root)
+    except ValueError:
+        raise RuntimeError(
+            f"CLI cwd is not under {examples_root}: {socket_cwd}. "
+            f"`effortless build` must be invoked from inside a "
+            f"rulebook-examples/<domain>/<substrate>/ directory."
+        )
+
+    if len(rel.parts) < 2:
+        raise RuntimeError(
+            f"CLI cwd {socket_cwd} is at the domain root, not a substrate folder. "
+            f"Each transpiler must run from rulebook-examples/<domain>/<substrate>/. "
+            f"rel parts: {rel.parts}"
+        )
+
+    domain = rel.parts[0]
+    domain_dir = (examples_root / domain).resolve()
+    output_dir = socket_cwd
+    input_file = (domain_dir / "effortless-rulebook" / f"{domain}-rulebook.json").resolve()
+
+    if not input_file.exists():
+        raise FileNotFoundError(
+            f"Rulebook not found at expected path: {input_file}. "
+            f"Domain '{domain}' must have a rulebook at that exact location."
+        )
+    if input_file.is_dir():
+        raise IsADirectoryError(f"Rulebook path is a directory, not a file: {input_file}")
+
+    print(f"[ssotme-proxy]   resolved: socket_pid={socket_pid} domain={domain} input={input_file} output={output_dir}", flush=True)
+    return input_file, output_dir
 
 
 def run_injector(cfg: dict, input_file: Path, output_dir: Path, clean: bool) -> dict:
@@ -132,19 +263,17 @@ def run_injector(cfg: dict, input_file: Path, output_dir: Path, clean: bool) -> 
     result = subprocess.run(cmd, cwd=str(output_dir), env=env,
                             capture_output=True, text=True)
 
-    # Collect written files as fileset
-    files = {}
-    for f in output_dir.rglob("*"):
-        if f.is_file():
-            try:
-                files[str(f.relative_to(output_dir))] = f.read_text(encoding="utf-8")
-            except Exception:
-                files[str(f.relative_to(output_dir))] = "<binary>"
-
+    # The injector already wrote every output file directly to output_dir on
+    # disk — there's nothing for the CLI to re-write. The CLI still requires
+    # a Transpiler + TranspileRequest.ZippedOutputFileSet in the JSON response
+    # (otherwise it null-derefs in SaveFileSet). build_cli_payload supplies an
+    # EMPTY zipped fileset so the CLI iterates zero files and writes nothing,
+    # leaving the injector's on-disk output intact.
     return {
         "success": result.returncode == 0,
         "output": result.stdout + result.stderr,
-        "files": files,
+        "files": {},
+        "returncode": result.returncode,
     }
 
 
@@ -174,7 +303,6 @@ class ProxyHandler(BaseHTTPRequestHandler):
 
     def do_POST(self):
         route = urlparse(self.path).path.lstrip("/")
-        working_dir = self.headers.get("X-Working-Dir", os.getcwd())
 
         if route not in TRANSPILERS:
             self.send_json(404, {
@@ -183,24 +311,36 @@ class ProxyHandler(BaseHTTPRequestHandler):
             })
             return
 
+        # Consume request body (we don't use it — the effortless CLI sends an
+        # empty body anyway). Resolution comes ONLY from inspecting the CLI
+        # process's argv + cwd. No body parsing, no working_dir header, no
+        # active-domain.txt — one path, fail loudly if it doesn't work.
         length = int(self.headers.get("Content-Length", 0))
-        body_bytes = self.rfile.read(length) if length else b"{}"
+        if length:
+            self.rfile.read(length)
+
+        client_port = self.client_address[1] if self.client_address else None
+        print(f"[ssotme-proxy] POST /{route} from client_port={client_port}", flush=True)
+
         try:
-            req = json.loads(body_bytes)
-        except json.JSONDecodeError as e:
-            self.send_json(400, {"error": f"Invalid JSON: {e}"})
+            input_file, output_dir = resolve_request(route, client_port)
+        except Exception as e:
+            self.send_json(400, {
+                "success": False,
+                "error": f"resolve_request failed for /{route}: {e}",
+                "files": {},
+            })
             return
 
-        input_file = resolve_path(req.get("inputFile", ""), working_dir)
-        output_dir = resolve_path(req.get("outputDir", route), working_dir)
-        clean = bool(req.get("clean", False))
-
         try:
-            result = run_injector(TRANSPILERS[route], input_file, output_dir, clean)
+            result = run_injector(TRANSPILERS[route], input_file, output_dir, clean=False)
         except Exception:
             result = {"success": False, "output": traceback.format_exc(), "files": {}}
 
-        self.send_json(200 if result["success"] else 500, result)
+        cli_payload = build_cli_payload(route, result.get("success", False), result.get("output", ""))
+        cli_payload["files"] = result.get("files", {})
+        status = 200 if result.get("success") else 500
+        self.send_json(status, cli_payload)
 
 
 def main():

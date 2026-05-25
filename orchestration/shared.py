@@ -37,22 +37,37 @@ def get_rulebook_path():
     Priority:
       1. ERB_RULEBOOK_PATH env var (set by ssotme-proxy for project-scoped runs)
       2. orchestration/active-domain.txt → rulebook-examples/<domain>/effortless-rulebook/<domain>-rulebook.json
+
+    Fails loudly if ERB_RULEBOOK_PATH points at a directory or doesn't end in
+    -rulebook.json — callers MUST pass an exact file path.
     """
     env_path = os.environ.get("ERB_RULEBOOK_PATH")
     if env_path:
-        return Path(env_path)
+        p = Path(env_path)
+        if p.is_dir():
+            raise IsADirectoryError(
+                f"ERB_RULEBOOK_PATH points at a directory: {p}. "
+                f"Pass an exact file path to a <domain>-rulebook.json."
+            )
+        return p
     domain = get_active_domain()
     project_root = Path(__file__).parent.parent
     return project_root / "rulebook-examples" / domain / "effortless-rulebook" / f"{domain}-rulebook.json"
 
 
 def load_rulebook():
-    """Load and parse the effortless-rulebook.json file."""
+    """Load and parse the rulebook JSON. Fails loudly if missing or not a file."""
     rulebook_path = get_rulebook_path()
-
     if not rulebook_path.exists():
-        raise FileNotFoundError(f"Rulebook not found at {rulebook_path}")
-
+        raise FileNotFoundError(
+            f"Rulebook not found at {rulebook_path}. "
+            f"(ERB_RULEBOOK_PATH={os.environ.get('ERB_RULEBOOK_PATH')!r})"
+        )
+    if rulebook_path.is_dir():
+        raise IsADirectoryError(
+            f"Rulebook path is a directory, not a file: {rulebook_path}. "
+            f"Pass an exact <domain>-rulebook.json path."
+        )
     with open(rulebook_path, 'r', encoding='utf-8') as f:
         return json.load(f)
 

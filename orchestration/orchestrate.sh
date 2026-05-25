@@ -305,7 +305,17 @@ if "localhost:" in cmd:
         print(f"Could not parse proxy URL from: {cmd}")
         sys.exit(1)
     input_match = re.search(r'-i\s+(\S+)', cmd)
-    input_file = os.path.abspath(os.path.join(run_dir, input_match.group(1))) if input_match else ""
+    if not input_match:
+        print(f"ERROR: transpiler '{name}' is missing '-i <rulebook>' in CommandLine: {cmd!r}", file=sys.stderr)
+        print(f"Every proxy transpiler MUST pass -i pointing at the domain's <domain>-rulebook.json. No fallback.", file=sys.stderr)
+        sys.exit(1)
+    input_file = os.path.abspath(os.path.join(run_dir, input_match.group(1)))
+    if not os.path.exists(input_file):
+        print(f"ERROR: rulebook not found at {input_file} (resolved from -i {input_match.group(1)} in run_dir={run_dir}).", file=sys.stderr)
+        sys.exit(1)
+    if os.path.isdir(input_file):
+        print(f"ERROR: -i resolved to a directory, not a file: {input_file}.", file=sys.stderr)
+        sys.exit(1)
     output_dir = os.path.abspath(run_dir)
     payload = json.dumps({"inputFile": input_file, "outputDir": output_dir, "clean": False}).encode()
     req = urllib.request.Request(proxy_url, data=payload,

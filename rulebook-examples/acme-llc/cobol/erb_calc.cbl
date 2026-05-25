@@ -1,5 +1,5 @@
        *> ERB Calculation Module (GENERATED - DO NOT EDIT)
-       *> Generated from: effortless-rulebook/effortless-rulebook.json
+       *> Generated from: effortless-rulebook/acme-llc-rulebook.json
        *> GnuCOBOL free-format: cobc -free -m erb_calc.cbl
        IDENTIFICATION DIVISION.
        PROGRAM-ID. ERBCALC.

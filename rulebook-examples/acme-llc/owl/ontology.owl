@@ -6,7 +6,7 @@
 
 erb: a owl:Ontology ;
     rdfs:label "ERB Ontology" ;
-    rdfs:comment "Generated from effortless-rulebook.json" .
+    rdfs:comment "Generated from acme-llc-rulebook.json" .
 
 # === Class: Customers ===
 erb:Customers a owl:Class ;

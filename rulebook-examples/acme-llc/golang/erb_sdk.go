@@ -1,6 +1,6 @@
 // ERB SDK - Go Implementation (GENERATED - DO NOT EDIT)
 // ======================================================
-// Generated from: effortless-rulebook/effortless-rulebook.json
+// Generated from: effortless-rulebook/acme-llc-rulebook.json
 //
 // This file contains structs and calculation functions
 // for all tables defined in the rulebook.
