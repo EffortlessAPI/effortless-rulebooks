@@ -212,14 +212,14 @@ append_output() {
 #   Data      -> 05b-customize-data.sql
 write_customizations() {
     local customizations_json="$1"
-    local postgres_dir="${REPO_ROOT}/postgres"
+    local postgres_dir="${REPO_ROOT}/effortless-platform/postgres"
 
     if [[ -z "$customizations_json" || "$customizations_json" == "null" || "$customizations_json" == "[]" ]]; then
         log "No customizations in payload to write"
         return 0
     fi
 
-    log "Writing customizations to postgres/*.sql files..."
+    log "Writing customizations to effortless-platform/postgres/*.sql files..."
     append_output "=== Writing customizations ==="
 
     # Write JSON to a temp file to avoid shell escaping issues

@@ -9,7 +9,7 @@
 **/sync-report.md
 **/.DS_Store
 **/*.DS_Store/**/*
-effortless-rulebook/push-to-airtable/sync-report.md
+effortless-platform/effortless-rulebook/push-to-airtable/sync-report.md
 **/.vite/**/*
 postgresql-18.1/**/*
 **/*.pyc
@@ -38,3 +38,7 @@ execution-substrates/cobol/erb_test
 # Admin portal: per-machine state, proxy log
 admin-portal/.portal-state.json
 admin-portal/.proxy.log
+**/.proxy.log
+**/.applied-manifest.json
+**/_substrate_results.json
+**/.build-manifest.json

@@ -14,8 +14,9 @@
 
 set -e
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PORTAL_DIR="$SCRIPT_DIR/admin-portal"
-PROXY_DIR="$SCRIPT_DIR/ssotme-proxy"
+PLATFORM_DIR="$SCRIPT_DIR/effortless-platform"
+PORTAL_DIR="$PLATFORM_DIR/admin-portal"
+PROXY_DIR="$PLATFORM_DIR/ssotme-proxy"
 
 PORTAL_PORT=7777
 PROXY_PORT=4242

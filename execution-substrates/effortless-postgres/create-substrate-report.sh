@@ -28,14 +28,23 @@ def read_file(path, default=""):
     except Exception:
         return default
 
+def _default_testing_dir():
+    """Default ERB_TESTING_DIR derived from active-domain.txt (the SSoT).
+
+    rulebook-examples/<active-domain>/testing/. This is a default (override
+    with ERB_TESTING_DIR), not a fallback. See CLAUDE.md.
+    """
+    repo_root = os.path.abspath(os.path.join(SCRIPT_DIR, '..', '..'))
+    active_domain_file = os.path.join(repo_root, 'orchestration', 'active-domain.txt')
+    with open(active_domain_file) as f:
+        domain = f.read().strip()
+    if not domain:
+        raise ValueError(f"active-domain.txt at {active_domain_file} is empty.")
+    return os.path.join(repo_root, 'rulebook-examples', domain, 'testing')
+
+
 def _resolve_test_results_path():
-    erb_testing = os.environ.get('ERB_TESTING_DIR')
-    if not erb_testing:
-        raise RuntimeError(
-            "ERB_TESTING_DIR is not set. create-substrate-report.sh must be invoked "
-            "via take-test.sh -> grade-and-record.py (which inherits the env from "
-            "orchestrate.sh). Do not run this script standalone."
-        )
+    erb_testing = os.environ.get('ERB_TESTING_DIR') or _default_testing_dir()
     path = os.path.join(erb_testing, SUBSTRATE_NAME, 'test-results.md')
     if not os.path.exists(path):
         raise FileNotFoundError(

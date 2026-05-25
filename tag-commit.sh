@@ -7,7 +7,7 @@
 REPO_ROOT=$(git rev-parse --show-toplevel)
 # Top-level orchestration rulebook (the admin tool itself) — see CLAUDE.md.
 # This is NOT a per-project demo rulebook.
-RULEBOOK="$REPO_ROOT/effortless-rulebook/effortless-rulebook.json"
+RULEBOOK="$REPO_ROOT/effortless-platform/effortless-rulebook/effortless-rulebook.json"
 
 # Get commit (default to HEAD)
 COMMIT="${1:-HEAD}"

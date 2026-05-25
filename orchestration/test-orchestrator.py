@@ -94,16 +94,13 @@ SUBSTRATE_ORDER = [
     "effortless-entity-framework",
 ]
 
-# Database connection — DATABASE_URL is required. Different domains have
-# different per-domain databases; defaulting silently runs the test against
-# whatever happens to be in `postgres`, masking missing schema as conformance.
-DB_CONNECTION = os.environ.get("DATABASE_URL")
-if not DB_CONNECTION:
-    raise RuntimeError(
-        "DATABASE_URL is not set. test-orchestrator.py must be invoked with "
-        "DATABASE_URL pointing at the active domain's per-domain database "
-        "(see <domain>/postgres/init-db.sh)."
-    )
+# Database connection — DATABASE_URL overrides; otherwise default to the
+# active domain's per-domain DB (erb_<domain>). This is a default derived
+# from the SSoT (active-domain.txt), NOT a fallback to a generic database.
+# See CLAUDE.md.
+DB_CONNECTION = os.environ.get("DATABASE_URL") or (
+    "postgresql://postgres@localhost:5432/erb_" + ACTIVE_DOMAIN.replace("-", "_")
+)
 
 # =============================================================================
 # ANSI Color Codes (Unchanged)

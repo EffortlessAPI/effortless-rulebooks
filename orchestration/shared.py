@@ -31,6 +31,19 @@ def get_active_domain():
     return domain
 
 
+def get_default_database_url():
+    """Default DATABASE_URL derived from the active domain.
+
+    erb_<domain> on localhost (hyphens → underscores per PG identifier rules).
+    Mirrors the formula in orchestrate.sh. Callers should prefer
+    os.environ['DATABASE_URL'] if set, and fall through to this only when
+    unset — this is a default, not a fallback. See CLAUDE.md.
+    """
+    domain = get_active_domain()
+    db_name = "erb_" + domain.replace("-", "_")
+    return f"postgresql://postgres@localhost:5432/{db_name}"
+
+
 def get_rulebook_path():
     """Get the path to the rulebook JSON for the active domain.
 

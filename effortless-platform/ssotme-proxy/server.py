@@ -73,7 +73,8 @@ def build_cli_payload(route: str, success: bool, output: str) -> dict:
 
 PORT = 4242
 SCRIPT_DIR = Path(__file__).resolve().parent
-PROJECT_ROOT = SCRIPT_DIR.parent
+PLATFORM_DIR = SCRIPT_DIR.parent
+PROJECT_ROOT = PLATFORM_DIR.parent
 
 # ---------------------------------------------------------------------------
 # Transpiler registry  —  route → injector script

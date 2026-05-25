@@ -46,25 +46,18 @@ TEST_ANSWERS_DIR = TESTING_DIR / SCRIPT_DIR.name / "test-answers"
 
 # Add orchestration to path for shared utilities
 sys.path.insert(0, str(PROJECT_ROOT / "orchestration"))
-from shared import load_rulebook, to_snake_case, discover_primary_key
+from shared import load_rulebook, to_snake_case, discover_primary_key, get_default_database_url
 
 
 def get_db_connection_string():
-    """Return DATABASE_URL from env. Required — no inference, no default.
+    """Return DATABASE_URL from env, or the active-domain default.
 
-    Different domains have different per-domain databases. Defaulting to
-    `postgresql://postgres@localhost:5432/postgres` silently runs the test
-    against whatever happens to live in `postgres`, masking missing schema
-    bugs as 100% conformance.
+    The default is `erb_<active-domain>` on localhost — derived from
+    orchestration/active-domain.txt, which is the SSoT. This is a default
+    (override with DATABASE_URL), NOT a fallback to some generic database.
+    See CLAUDE.md.
     """
-    conn_str = os.environ.get("DATABASE_URL")
-    if not conn_str:
-        raise RuntimeError(
-            "DATABASE_URL is not set. The effortless-postgres substrate must "
-            "be invoked with DATABASE_URL pointing at the active domain's "
-            "per-domain database (see <domain>/postgres/init-db.sh)."
-        )
-    return conn_str
+    return os.environ.get("DATABASE_URL") or get_default_database_url()
 
 
 def discover_views(conn) -> list:

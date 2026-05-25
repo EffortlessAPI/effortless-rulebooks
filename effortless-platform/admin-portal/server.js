@@ -21,8 +21,9 @@ import { fileURLToPath } from "node:url";
 import http from "node:http";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const REPO_ROOT = path.resolve(__dirname, "..");
-const TOP_RULEBOOK = path.join(REPO_ROOT, "effortless-rulebook", "effortless-rulebook.json");
+const PLATFORM_DIR = path.resolve(__dirname, "..");
+const REPO_ROOT = path.resolve(PLATFORM_DIR, "..");
+const TOP_RULEBOOK = path.join(PLATFORM_DIR, "effortless-rulebook", "effortless-rulebook.json");
 const ACTIVE_DOMAIN_FILE = path.join(REPO_ROOT, "orchestration", "active-domain.txt");
 const PORTAL_STATE_FILE = path.join(__dirname, ".portal-state.json");
 const RULEBOOK_EXAMPLES = path.join(REPO_ROOT, "rulebook-examples");

@@ -516,7 +516,7 @@ show_menu() {
             echo -e "  ${GREEN}[B]${NC} ${BOLD}BUILD${NC} — regenerate AND test all ${WHITE}${PROJECT_NAME}${NC} substrates ${DIM}(default; opens report)${NC}"
         else
             echo -e "  ${RED}[B]${NC} ${BOLD}BUILD${NC} — ${RED}proxy offline${NC} — start it first:"
-            echo -e "      ${DIM}ssotme-proxy/start.sh${NC}"
+            echo -e "      ${DIM}effortless-platform/ssotme-proxy/start.sh${NC}"
         fi
     fi
 
@@ -1196,11 +1196,13 @@ fi
 export ENGLISH_SKIP_LLM="false"
 
 # Show English warning when: running ALL substrates OR explicitly running english
-# Skip warning in CI mode or non-interactive shells
-if ! $CI_MODE && [[ -t 0 ]]; then
+# Skip warning in CI mode or non-interactive shells.
+# Only ask if the active project actually exercises the english substrate —
+# i.e. "english" appears in SUBSTRATES_TO_RUN (which was already filtered by
+# the project's effortless.json ProjectTranspilers in get_valid_substrates).
+if ! $CI_MODE && [[ -t 0 ]] && [[ " $SUBSTRATES_TO_RUN " == *" english "* ]]; then
     ENGLISH_DIR="$SUBSTRATES_DIR/english"
-    # Show if: (running all AND english exists) OR (running only english)
-    if [ -d "$ENGLISH_DIR" ] && { [ -z "$RUN_SINGLE" ] || [ "$RUN_SINGLE" = "english" ]; }; then
+    if [ -d "$ENGLISH_DIR" ]; then
         # Calculate time estimate based on rulebook size
         ESTIMATE=$(python3 -c "
 import sys
@@ -1813,7 +1815,7 @@ while true; do
                     run_substrates ""
                 else
                     echo -e "${RED}ssotme-proxy is offline.${NC} Start it with:"
-                    echo -e "  ${WHITE}python3 $PROJECT_ROOT/ssotme-proxy/server.py &${NC}"
+                    echo -e "  ${WHITE}python3 $PROJECT_ROOT/effortless-platform/ssotme-proxy/server.py &${NC}"
                     echo ""
                     read -p "Press Enter to continue..."
                 fi
@@ -1892,7 +1894,7 @@ while true; do
                         fi
                     else
                         echo -e "${RED}ssotme-proxy is offline.${NC} Start it with:"
-                        echo -e "  ${WHITE}python3 $PROJECT_ROOT/ssotme-proxy/server.py &${NC}"
+                        echo -e "  ${WHITE}python3 $PROJECT_ROOT/effortless-platform/ssotme-proxy/server.py &${NC}"
                     fi
                     echo ""
                     read -p "Press Enter to continue..."

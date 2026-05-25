@@ -4,13 +4,24 @@ If a file isn't where you expect, **fail loudly** with the exact expected path. 
 
 This rule overrides any habit, instinct, or training. **Read it again before writing `if not os.path.exists`, `try/except`, `or default`, `?: legacy`, "fall back to", or anything that quietly accepts a wrong path.**
 
+## Defaults derived from the SSoT are NOT fallbacks
+
+A **default** computed from the single source of truth is fine — even encouraged. The thing that makes a fallback bad is that it silently substitutes a *guess* for the right value. A default derived from `orchestration/active-domain.txt` is not a guess; it's the deterministically-correct value computed from the SSoT. The environment variable just exists for override.
+
+- ✅ `os.environ.get("DATABASE_URL") or f"postgresql://postgres@localhost:5432/erb_{active_domain.replace('-','_')}"` — the default IS the right answer (matches the formula in `orchestrate.sh`); DATABASE_URL only overrides.
+- ✅ `os.environ.get("ERB_TESTING_DIR") or f"{repo_root}/rulebook-examples/{active_domain}/testing"` — same shape.
+- ❌ `os.environ.get("DATABASE_URL") or "postgresql://postgres@localhost:5432/postgres"` — defaults to a generic DB that has nothing to do with the active domain. This is the kind of fallback that masks bugs as 100% conformance.
+- ❌ `path or "/some/legacy/location"` when the active path is missing — guessing.
+
+The test: if your default would still be correct after the env var was unset by accident, it's a default. If it would silently run against the wrong thing, it's a fallback — delete it and fail loudly instead.
+
 ---
 
 # THE PROJECT RULEBOOK ≠ A DEMO RULEBOOK
 
 **This repo is a project that WRAPS a bunch of demo rulebooks. The project rulebook is the PARENT. The demo rulebooks are CHILDREN. They are NEVER mixed.**
 
-- The **project rulebook** is `./effortless-rulebook/effortless-rulebook.json`. It describes ERB itself — the orchestration tool, the admin portal, the build pipeline, the conformance testing framework. Things like `UserRoles`, `AppUsers`, `AppPermissions`, `AppNavigation`, `AppScreens`, `AppAPIs`, `AddToolCatalog`, `BuildPipeline`, `AdminPortalRuntime` belong **here and only here**. They are about *the wrapper*.
+- The **project rulebook** is `./effortless-platform/effortless-rulebook/effortless-rulebook.json`. It describes ERB itself — the orchestration tool, the admin portal, the build pipeline, the conformance testing framework. Things like `UserRoles`, `AppUsers`, `AppPermissions`, `AppNavigation`, `AppScreens`, `AppAPIs`, `AddToolCatalog`, `BuildPipeline`, `AdminPortalRuntime` belong **here and only here**. They are about *the wrapper*. (See `./effortless-platform/README.md` — the platform folder is the wrapper "eating its own dog food.")
 - The **demo rulebooks** are `./rulebook-examples/<domain>/effortless-rulebook/<domain>-rulebook.json`. Each one describes ONE business domain (acme-llc's customers, star-trek's episodes, jessica-basic's tasks, etc.). They contain **only that domain's tables**. They never contain portal config.
 
 The admin portal reads portal config from the **project rulebook** (always). It reads the active demo's domain data from the **demo rulebook** for whichever domain is in `active-domain.txt`. These are two separate file reads, two separate concerns. Never merge them. Never put portal entities in a demo rulebook. Never put a domain's business tables in the project rulebook.
@@ -49,10 +60,11 @@ There are **two** kinds of rulebook here and they are NOT the same thing. Confus
 
 ### 1. The top-level orchestration rulebook — the admin tool itself
 
-- **Path (literal, fixed):** `./effortless-rulebook/effortless-rulebook.json`
-- **What it is:** The rulebook describing the ERB orchestration repo / admin tool itself. Hand-edited, built with `effortless build` at the repo root. The admin app IS its own admin tool — no second-level wrapper.
-- **Code that operates on it:** `tag-commit.sh`, `admin-portal/server.js`, `orchestration/rulebook-cache.py`, `orchestration/cache-manager.py`, `ssotme-proxy/server.py`, the root `effortless.json`. These use the literal path.
+- **Path (literal, fixed):** `./effortless-platform/effortless-rulebook/effortless-rulebook.json`
+- **What it is:** The rulebook describing the ERB orchestration repo / admin tool itself. Hand-edited, built with `effortless build` run from inside `./effortless-platform/`. The admin app IS its own admin tool — no second-level wrapper.
+- **Code that operates on it:** `tag-commit.sh`, `effortless-platform/admin-portal/server.js`, `orchestration/rulebook-cache.py`, `orchestration/cache-manager.py`, `effortless-platform/ssotme-proxy/server.py`, `effortless-platform/effortless.json`. These use the literal path.
 - Do not rewrite these to look up the active demo. They are *categorically* not about the demos.
+- **Why under `effortless-platform/`:** the platform folder is the wrapper "eating its own dog food" — the admin portal, postgres scripts, ssotme-proxy, the meta-rulebook and its own `effortless.json` live there together because they are *one* effortless project that happens to manage all the other ones. They are NOT required to run the tooling itself. See `./effortless-platform/README.md`.
 
 ### 2. The per-project demo rulebooks — what the orchestration manages
 
