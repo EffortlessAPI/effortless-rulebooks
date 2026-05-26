@@ -67,7 +67,7 @@ Local JSON is the SSoT. Default behavior. Build downstream transpilers against t
 |---|---|---|---|---|
 | 13 | `customer-fullname` | Y | ✅ | Clean build, exit 0. Reclassified to ERB-only this turn — no Airtable wiring at all. Postgres SQL + xlsx generated. |
 | 14 | `community-event-planner-demo` | Y | ✅ | Clean build, exit 0. DB `erb_community_event_planner_demo` (re)created, 12 tables. Full app project (server+web+walkthrough). |
-| 15 | `customer-crm-demo` | Y | ❓ | |
+| 15 | `customer-crm-demo` | Y | ✅ | Clean build, exit 0. DB `erb_customer_crm_demo` (re)created via injected DROP+CREATE in init-db.sh. |
 | 16 | `effortless-banking-demo` | Y | ❓ | |
 | 17 | `fantasy-football-demo` | Y | ❓ | |
 | 18 | `gym-trainer-invoicing` | Y | ❓ | |

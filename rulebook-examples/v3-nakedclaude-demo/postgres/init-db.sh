@@ -39,6 +39,17 @@ if [ -z "$CONNECTION_STRING" ]; then
     exit 1
 fi
 
+# ---- Ensure target DB exists (drop+create for clean per-build reset) ----
+CONNECTION_STRING_DB_NAME=$(echo "$CONNECTION_STRING" | sed -n 's|.*//[^/]*/\([^?]*\).*|\1|p')
+if [ -z "$CONNECTION_STRING_DB_NAME" ]; then
+    echo "init-db.sh: could not extract DB name from $CONNECTION_STRING=$CONNECTION_STRING" >&2
+    exit 1
+fi
+CONNECTION_STRING_ADMIN_CONN="${CONNECTION_STRING%/*}/postgres"
+echo "[init-db] (re)creating database: $CONNECTION_STRING_DB_NAME"
+psql "$CONNECTION_STRING_ADMIN_CONN" -v ON_ERROR_STOP=1 -c "DROP DATABASE IF EXISTS \"$CONNECTION_STRING_DB_NAME\";" >/dev/null 2>&1 || true
+psql "$CONNECTION_STRING_ADMIN_CONN" -v ON_ERROR_STOP=1 -c "CREATE DATABASE \"$CONNECTION_STRING_DB_NAME\";"
+
 echo "Initializing database: $CONNECTION_STRING"
 echo ""
 

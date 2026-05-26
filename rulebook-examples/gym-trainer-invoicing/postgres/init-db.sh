@@ -26,6 +26,17 @@ if [ -z "$DATABASE_URL" ]; then
     exit 1
 fi
 
+# ---- Ensure target DB exists (drop+create for clean per-build reset) ----
+DATABASE_URL_DB_NAME=$(echo "$DATABASE_URL" | sed -n 's|.*//[^/]*/\([^?]*\).*|\1|p')
+if [ -z "$DATABASE_URL_DB_NAME" ]; then
+    echo "init-db.sh: could not extract DB name from $DATABASE_URL=$DATABASE_URL" >&2
+    exit 1
+fi
+DATABASE_URL_ADMIN_CONN="${DATABASE_URL%/*}/postgres"
+echo "[init-db] (re)creating database: $DATABASE_URL_DB_NAME"
+psql "$DATABASE_URL_ADMIN_CONN" -v ON_ERROR_STOP=1 -c "DROP DATABASE IF EXISTS \"$DATABASE_URL_DB_NAME\";" >/dev/null 2>&1 || true
+psql "$DATABASE_URL_ADMIN_CONN" -v ON_ERROR_STOP=1 -c "CREATE DATABASE \"$DATABASE_URL_DB_NAME\";"
+
 # ----------------------------------------------------------------------
 # Plan 04 §8: bases-URL refusal (defense in depth).
 # bases.effortlessapi.com is migration-only. Any rebuild against it
