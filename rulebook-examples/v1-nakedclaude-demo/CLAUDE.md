@@ -1,28 +1,20 @@
 # V1 Nakedclaude Demo — Effortless Project
 
-## Authoritative Source: `effortless-rulebook/v1-nakedclaude-demo-rulebook.json` is HEAD
+## Authoritative Source: Airtable base `appgjoEcFNxluhbvK` is HEAD
 
-For this project, **`effortless-rulebook/v1-nakedclaude-demo-rulebook.json` is the single, authoritative source of truth.** Edit it directly. All other artifacts (Postgres SQL, Python, Go, Excel, OWL, etc.) are mechanically derived from it via `effortless build`.
+For this project, **Airtable base `appgjoEcFNxluhbvK` is the single, authoritative source of truth.** Edit the schema and data in Airtable. The local `effortless-rulebook/v1-nakedclaude-demo-rulebook.json` is a generated IR — every `effortless build` pulls fresh from Airtable and overwrites it.
 
-### Airtable pull is disabled by default
+This is a project-specific override of the default ERB pattern. Most projects in this repo are rulebook-first (JSON is HEAD). This one is Airtable-first because `airtabletorulebook` in `effortless.json` is `IsDisabled: false` / `Enabled: true`.
 
-The `airtabletorulebook` transpiler in `effortless.json` is set to `IsDisabled: true` / `Enabled: false` so that **a routine `effortless build` will never silently overwrite your JSON edits with whatever is in Airtable**.
+### What this means in practice
 
-If you want to re-enable Airtable pull as the source of truth for a single build, you must do it explicitly and with intent:
+- **Do not hand-edit `v1-nakedclaude-demo-rulebook.json` and expect changes to stick.** The next `effortless build` will overwrite them with whatever is in Airtable.
+- To change schema or business rules: change them in Airtable, then run `effortless build`.
+- To freeze the JSON temporarily (e.g. to bisect a regression): flip `airtabletorulebook` to `IsDisabled: true` / `Enabled: false`, work against the frozen JSON, then re-enable when done.
 
-1. Confirm with the user that the rulebook JSON should be overwritten from Airtable.
-2. Either run the transpiler one-off, or flip `IsDisabled` to `false` in `effortless.json`, run `effortless build`, then flip it back to `true`.
+### Reversibility
 
-**Default rule for Claude / any agent operating in this project:** treat the JSON as authoritative; do not enable or invoke `airtabletorulebook` without explicit user consent on that specific turn. Memory or "we usually pull from Airtable" is not consent — every pull must be a fresh, in-context decision.
-
-### Never silently revert `v1-nakedclaude-demo-rulebook.json`
-
-**Treat `effortless-rulebook/v1-nakedclaude-demo-rulebook.json` as sacred.** It contains human-authored business rules and CANNOT be casually overwritten. Before running any command that could touch this file — `effortless build`, `effortless airtabletorulebook`, any transpiler that writes to it, any sync script, any `git checkout`/`git restore` against it — first run `git status` / `git diff` on it.
-
-- If the file has uncommitted changes that you (the agent) did NOT just make this turn, **stop**. Ask the user before proceeding.
-- It is only acceptable to let a regeneration touch this file when you are certain the *only* uncommitted edits in it are ones you just made in the current turn.
-
-There is no upstream to "restore from." The JSON is the upstream.
+To switch this project to rulebook-first (JSON becomes HEAD): flip `airtabletorulebook` in `effortless.json` to `IsDisabled: true` / `Enabled: false`, then update this banner to the rulebook-first version (see e.g. `rulebook-examples/acme-llc/CLAUDE.md`). Until that flip happens, Airtable wins.
 
 ## Quick Start
 

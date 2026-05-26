@@ -2,15 +2,22 @@
 
 **Goal:** Every rulebook under `rulebook-examples/` must `effortless build` cleanly. That is the conformance litmus test for these ontologies.
 
-**Authorship rule:**
-- If a rulebook has a real Airtable base (per `orchestration/bases.json`), Airtable is the SSoT. `airtabletorulebook` must be a registered, enabled tool, and the pulled JSON must build.
-- If a rulebook has no Airtable base (or only a placeholder like `appXXXXXXXXXXXXXX`), the JSON itself is the SSoT. No `airtabletorulebook` entry. Build straight from the local JSON.
+## Classification rule (mechanical)
 
-**Fix discipline:**
+For each project, read its `effortless.json`:
+
+- **Airtable-first**: `airtabletorulebook` is registered AND `IsDisabled: false` AND `Enabled: true`. Airtable is the SSoT. The project's CLAUDE.md must say so. `effortless build` pulls from Airtable, overwriting the local JSON, before running downstream transpilers.
+- **Rulebook-first**: everything else. The local JSON is the SSoT. CLAUDE.md says "JSON is authoritative" (the default ERB banner). `effortless build` runs downstream transpilers against the committed JSON. If `airtabletorulebook` is registered-but-disabled, leave it that way.
+- **Not a rulebook project**: no `effortless.json`, or an `effortless.json` with no rulebook output. Either fix or delete; do not try to build.
+
+## Fix discipline
+
 1. First try: fix the rulebook JSON / fix the Airtable schema until generated SQL builds cleanly.
 2. **Last resort only:** override a function in `02b-customize-functions.sql` (or `03b-customize-views.sql` for view conflicts, etc.). This should be rare — flag it explicitly per project when used.
 
-**Side-effect awareness:** `effortless build` runs the whole transpiler chain in order. If `rulebooktopostgres` + `execute ./init-db.sh` are registered, every build will (re)create a Postgres DB. Per-domain DB names follow `erb_<domain_underscored>` (see global `CLAUDE.md`). Plan accordingly — a "build" is also a DB rebuild.
+## Side-effect awareness
+
+`effortless build` runs the whole transpiler chain in order. If `rulebooktopostgres` + `execute ./init-db.sh` are registered, every build will (re)create a Postgres DB. Per-domain DB names follow `erb_<domain_underscored>` (see global `CLAUDE.md`). Plan accordingly — a "build" is also a DB rebuild.
 
 ---
 
@@ -26,40 +33,42 @@
 
 ## Inventory (28 entries under `rulebook-examples/`)
 
-### Group A — Airtable-backed (real base IDs from `orchestration/bases.json`)
+### Group 1 — Airtable-first (4)
 
-These must have `airtabletorulebook` registered and enabled. The Airtable base is the SSoT; the local rulebook JSON is the IR.
-
-| # | Project | Base ID | Status | Notes |
-|---|---|---|---|---|
-| 1 | `acme-llc` | `appWrXPvXbkgQGOxt` | ❓ | Default base. Postgres present. The reference simplest case. |
-| 2 | `acme-corporation` | `appzkcmBFPWFGBtRo` | ❓ | Extended ACME. No postgres dir. |
-| 3 | `customer-fullname` | `appWrXPvXbkgQGOxt` | ❓ | **Shares ACME LLC's base** — verify this is intentional, not a copy/paste leftover. |
-| 4 | `is-everything-a-language` | `appC8XTj95lubn6hz` | ❓ | Meta-ontology. No postgres dir. |
-| 5 | `jessica-advanced` | `appwN9EAp8IeIxM23` | ❓ | No postgres dir. |
-| 6 | `jessica-basic` | `applThn0rikpCR9C3` | ❓ | **Base ID is NOT in `bases.json`** — either add it there or replace with the right ID. |
-| 7 | `star-trek` | `appqwWQxIWFtyDsiL` | ❓ | No postgres dir. |
-| 8 | `v1-nakedclaude-demo` | `appgjoEcFNxluhbvK` | 🟡 | Airtable pull succeeded this session. `effortless build` fails at `03-create-views.sql:20: cannot drop columns from view`. |
-| 9 | `v2-nakedclaude-demo` | `app7G5emeY7miM4WN` | ❓ | Not yet rebuilt this session. Was working before. |
-| 10 | `v3-nakedclaude-demo` | `appKLygCIXweUUKtM` | ❓ | New this session — never built. |
-| 11 | `v4-nakedclaude-demo` | `appeUOAaOIdoqPSx3` | ❓ | Renamed from old mislabeled "v3" this session. |
-
-### Group B — Airtable-backed with placeholder ID
+`airtabletorulebook` registered, `IsDisabled: false`, `Enabled: true`. Airtable is the SSoT for these. Building WILL overwrite the local JSON.
 
 | # | Project | Base ID | Status | Notes |
 |---|---|---|---|---|
-| 12 | `guessing-game` | `appXXXXXXXXXXXXXX` | ❓ | **Placeholder base ID.** Either reclassify as Group C (JSON-only) and remove the `airtabletorulebook` entry, or replace with a real Airtable base. |
+| 1 | `v1-nakedclaude-demo` | `appgjoEcFNxluhbvK` | 🟡 | Airtable pull works. Build fails at `03-create-views.sql:20: cannot drop columns from view`. Try `DROP DATABASE erb_v1_nakedclaude_demo` first; if it still fails, structural problem in rulebook. CLAUDE.md banner: needs flip to Airtable-first. |
+| 2 | `v2-nakedclaude-demo` | `app7G5emeY7miM4WN` | ❓ | Was working before. CLAUDE.md banner: needs flip to Airtable-first. |
+| 3 | `v3-nakedclaude-demo` | `appKLygCIXweUUKtM` | ❓ | New this session — never built. CLAUDE.md banner: needs flip to Airtable-first. |
+| 4 | `v4-nakedclaude-demo` | `appeUOAaOIdoqPSx3` | ❓ | Renamed from old mislabeled "v3" this session. CLAUDE.md banner: needs flip to Airtable-first. |
 
-### Group C — JSON-only rulebooks (no Airtable SSoT)
+### Group 2 — Rulebook-first (19)
 
-These should have NO `airtabletorulebook` entry. The local JSON is the source of truth. They must still build downstream (postgres, etc.) cleanly.
+Local JSON is the SSoT. Default behavior. Build downstream transpilers against the committed JSON. Some have `airtabletorulebook` registered-but-disabled — leave it disabled; do not flip without explicit per-turn user consent.
+
+**Registered-but-disabled (9)** — has a `baseId`, Airtable pull available but not active. JSON is HEAD.
+
+| # | Project | Base ID | Status | Notes |
+|---|---|---|---|---|
+| 5 | `acme-llc` | `appWrXPvXbkgQGOxt` | ❓ | The reference simplest case. |
+| 6 | `acme-corporation` | `appzkcmBFPWFGBtRo` | ❓ | Extended ACME. No postgres dir. |
+| 7 | `customer-fullname` | `appWrXPvXbkgQGOxt` | ❓ | Shares ACME LLC's base (intentional dual-projection per user). |
+| 8 | `is-everything-a-language` | `appC8XTj95lubn6hz` | ❓ | Meta-ontology. No postgres dir. |
+| 9 | `jessica-advanced` | `appwN9EAp8IeIxM23` | ❓ | No postgres dir. |
+| 10 | `jessica-basic` | `applThn0rikpCR9C3` | ❓ | Base ID not in `orchestration/bases.json` — add it. |
+| 11 | `star-trek` | `appqwWQxIWFtyDsiL` | ❓ | No postgres dir. |
+| 12 | `effortless-rulesbooks` | _(empty)_ | ❓ | Has `airtabletorulebook` entry but empty baseId. Acts as JSON-only. |
+| 13 | `guessing-game` | `appXXXXXXXXXXXXXX` | ❓ | Placeholder base ID — treat as JSON-only; do not enable Airtable pull. |
+
+**Not registered (10)** — no Airtable wiring at all. Pure JSON projects.
 
 | # | Project | Has postgres? | Status | Notes |
 |---|---|---|---|---|
-| 13 | `community-event-planner-demo` | Y | ❓ | |
-| 14 | `customer-crm-demo` | Y | ❓ | |
-| 15 | `effortless-banking-demo` | Y | ❓ | |
-| 16 | `effortless-rulesbooks` | N | ❓ | |
+| 14 | `community-event-planner-demo` | Y | ❓ | |
+| 15 | `customer-crm-demo` | Y | ❓ | |
+| 16 | `effortless-banking-demo` | Y | ❓ | |
 | 17 | `fantasy-football-demo` | Y | ❓ | |
 | 18 | `gym-trainer-invoicing` | Y | ❓ | |
 | 19 | `intelligence-taxonomy-demo` | Y | ❓ | |
@@ -69,20 +78,22 @@ These should have NO `airtabletorulebook` entry. The local JSON is the source of
 | 23 | `therapist-helper-portal` | Y | ❓ | |
 | 24 | `wedding-seating-optimizer` | Y | ❓ | |
 
-### Group D — Broken / incomplete (need decision before building)
+(Note: 11 entries above — `wedding-seating-optimizer` is the 11th; the count of "Not registered" is 11, plus 9 "Registered-but-disabled" = 20 in Group 2. Inventory totals: 4 + 20 + 4 broken = 28.)
 
-| # | Project | Problem | Status | Notes |
+### Group 3 — Broken / not a rulebook project (4)
+
+| # | Project | Problem | Status | Decision needed |
 |---|---|---|---|---|
-| 25 | `expense-approval-demo` | No `effortless.json`, no rulebook. Only README. | ❌ | **Decide:** scaffold from template, or delete. |
-| 26 | `volunteer-shift-scheduler-demo` | No `effortless.json`, no rulebook. Has `.xlsx`, `schema/`, `server/`, `web/`, etc. — looks like a vibe-coded shape with a spec doc. | ❌ | **Decide:** generate rulebook from spec, or delete. |
-| 27 | `naked-claude-vs-effortless-claude` | Umbrella folder. Has `effortless.json` but no `effortless-rulebook/` dir. Holds `v1_SPECIFICATION.md`…`v4_SPECIFICATION.md`, `tale-orchestrator.mjs`, comparison HTMLs, `Naked-Claude-Experiments/` archive. | ➖ | Not an ontology — it's the comparison harness. Either remove the stray `effortless.json` or accept that it won't `effortless build`. |
-| 28 | `v3-nakedclaude-demo-naked` | Empty dir (only `.DS_Store`) — leftover from this session's cleanup. | ➖ | Delete `.DS_Store` and `rmdir`. |
+| 25 | `expense-approval-demo` | No `effortless.json`, no rulebook. Only README. | ❌ | Scaffold from template, or delete. |
+| 26 | `volunteer-shift-scheduler-demo` | No `effortless.json`, no rulebook. Has `.xlsx`, `schema/`, `server/`, `web/`. | ❌ | Generate rulebook from spec, or delete. |
+| 27 | `naked-claude-vs-effortless-claude` | Comparison harness, not an ontology. Has `effortless.json` with `airtabletorulebook` active pointing at v1's base. | ➖ | Disable `airtabletorulebook` here (mechanical-classifier false positive) or remove the `effortless.json` entirely. |
+| 28 | `v3-nakedclaude-demo-naked` | Empty dir (only `.DS_Store`) — leftover from this session's cleanup. | ➖ | Delete. |
 
 ---
 
 ## Per-project recipe
 
-For each project in Groups A, B, C, in order:
+For each project in Group 2 (rulebook-first) and Group 1 (Airtable-first), in order:
 
 ### 0. Pre-flight
 ```bash
@@ -93,18 +104,20 @@ git status .           # rulebook JSON must not have uncommitted edits not made 
 ### 1. Audit `effortless.json`
 - `Name` matches dir name.
 - `SSoTmeProjectId` is unique.
-- For Group A: `baseId` matches `bases.json` AND matches what `airtabletorulebook` expects.
-- For Group A: `airtabletorulebook` entry exists, `IsDisabled: false`, `Enabled: true`.
-- For Group C: NO `airtabletorulebook` entry. (Remove if present.)
 - `CommandLine` strings reference the correct `<project>-rulebook.json` filename.
+- Classification matches actual state:
+  - Group 1 (Airtable-first): `airtabletorulebook` entry exists, `IsDisabled: false`, `Enabled: true`.
+  - Group 2 (Rulebook-first): if `airtabletorulebook` is present, it must be `IsDisabled: true` and `Enabled: false`. Do not flip without per-turn user consent.
 
 ### 2. Audit `CLAUDE.md`
 - Project name and rulebook filename references are correct.
-- "Authoritative Source" line matches the chosen SSoT (Airtable for A, JSON for C).
+- "Authoritative Source" line matches the classification:
+  - Group 1: "Airtable base `<baseId>` is the authoritative source. `effortless build` pulls from Airtable and overwrites the local JSON."
+  - Group 2: "Local rulebook JSON is the authoritative source. Airtable pull is disabled by default."
 
 ### 3. Run `effortless build`
-- For Group A: this will pull from Airtable (overwriting the local JSON), then run downstream transpilers.
-- For Group C: this just runs downstream transpilers against the local JSON.
+- Group 1: Airtable pull runs first, overwriting the local JSON; then downstream transpilers.
+- Group 2: just runs downstream transpilers against the local JSON.
 - **Watch for postgres side effects** — every build with a `rulebooktopostgres` + `execute ./init-db.sh` chain will (re)create the per-domain Postgres DB.
 
 ### 4. Fix any errors
@@ -112,27 +125,22 @@ git status .           # rulebook JSON must not have uncommitted edits not made 
 - **View regeneration errors** (`cannot drop columns from view`) → typically means a previous run left an incompatible view. First try `DROP DATABASE erb_<domain>` and re-build clean. If the error persists from a clean DB, the rulebook itself has a structural problem — fix it.
 - **Function errors** → fix the rulebook formula. Only as last resort, override the function body in `02b-customize-functions.sql`.
 
-### 5. Re-disable Airtable pull (Group A only)
-Per global `CLAUDE.md`: after a successful Airtable pull, flip `IsDisabled` back to `true` and `Enabled` back to `false` so routine builds don't silently re-pull.
-
-### 6. Mark status in this doc
+### 5. Mark status in this doc
 Update the status column (`✅`, `🟡`, `❌`) with a one-line note on what was fixed.
 
-### 7. Commit per-project
+### 6. Commit per-project
 One commit per project, scoped to that project's directory + this doc's status update. Makes failure recovery surgical.
 
 ---
 
 ## Execution order
 
-Suggested sweep order (simplest first, hardest last):
+Rulebook-first projects first (no upstream-overwrite risk), Airtable-first last:
 
-1. **Group A simple cases:** `acme-llc`, `acme-corporation`, `customer-fullname`, `jessica-basic`, `jessica-advanced`, `star-trek`, `is-everything-a-language`
-2. **Group A v1–v4 (this session's focus):** `v1-`, `v2-`, `v3-`, `v4-nakedclaude-demo`
-3. **Group B decision:** `guessing-game` — reclassify, then build
-4. **Group C postgres-backed:** all 11 (`community-event-planner-demo` … `wedding-seating-optimizer`)
-5. **Group C JSON-only:** `effortless-rulesbooks`
-6. **Group D decisions:** `expense-approval-demo`, `volunteer-shift-scheduler-demo`, `naked-claude-vs-effortless-claude`, `v3-nakedclaude-demo-naked`
+1. **Group 2 — Registered-but-disabled (9):** `acme-llc`, `acme-corporation`, `customer-fullname`, `jessica-basic`, `jessica-advanced`, `star-trek`, `is-everything-a-language`, `effortless-rulesbooks`, `guessing-game`
+2. **Group 2 — Not registered (11):** `community-event-planner-demo`, `customer-crm-demo`, `effortless-banking-demo`, `fantasy-football-demo`, `gym-trainer-invoicing`, `intelligence-taxonomy-demo`, `jobsearch-rag`, `llm-enigma-test`, `product-inventory-demo`, `therapist-helper-portal`, `wedding-seating-optimizer`
+3. **Group 1 — Airtable-first (4):** `v1-nakedclaude-demo`, `v2-nakedclaude-demo`, `v3-nakedclaude-demo`, `v4-nakedclaude-demo`
+4. **Group 3 — decisions:** `expense-approval-demo`, `volunteer-shift-scheduler-demo`, `naked-claude-vs-effortless-claude`, `v3-nakedclaude-demo-naked`
 
 ---
 
@@ -149,10 +157,7 @@ Each session should pick a contiguous slice and:
 
 ---
 
-## Open questions to resolve before sweeping
+## Open questions to resolve
 
-1. `customer-fullname` shares `acme-llc`'s base — intentional dual-projection, or stale copy?
-2. `jessica-basic`'s base ID (`applThn0rikpCR9C3`) isn't in `bases.json` — add it or replace it?
-3. `guessing-game`'s placeholder base ID — is there a real base for it, or is it JSON-only?
-4. `expense-approval-demo` and `volunteer-shift-scheduler-demo` — build or delete?
-5. `naked-claude-vs-effortless-claude/effortless.json` — keep as umbrella config (and accept it won't build) or remove?
+1. `jessica-basic`'s base ID (`applThn0rikpCR9C3`) isn't in `bases.json` — add it.
+2. `naked-claude-vs-effortless-claude/effortless.json` has `airtabletorulebook` enabled but is the harness, not a rulebook. Disable the entry or remove the whole `effortless.json`.
