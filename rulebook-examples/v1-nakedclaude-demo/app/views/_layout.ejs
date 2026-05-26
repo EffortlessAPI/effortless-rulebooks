@@ -1,0 +1,41 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>v2: NakedClaude Demo</title>
+<link rel="stylesheet" href="/style.css">
+<script>
+  function logout(){ localStorage.removeItem('jwt'); document.cookie='jwt=; Max-Age=0; path=/'; location.href='/'; }
+  // Mirror localStorage JWT into a cookie so server-rendered routes pick it up.
+  (function(){
+    const t = localStorage.getItem('jwt');
+    if (t && !document.cookie.includes('jwt=')) {
+      document.cookie = 'jwt=' + t + '; path=/; SameSite=Lax';
+    }
+  })();
+</script>
+</head><body>
+<header>
+  <div>
+    <a href="/"><strong>v2: NakedClaude</strong></a>
+    <% if (typeof user !== 'undefined' && user) { %>
+      <a href="/portal">Portal</a>
+      <% if (user.role === 'admin') { %>
+        <a href="/admin">Dashboard</a>
+        <a href="/admin/customers">Customers</a>
+        <a href="/admin/statuses">Statuses</a>
+        <a href="/admin/users">Users</a>
+      <% } else { %>
+        <a href="/customer">My Customers</a>
+      <% } %>
+    <% } %>
+  </div>
+  <div class="user">
+    <% if (typeof user !== 'undefined' && user) { %>
+      <%= user.email %> · <%= user.role %> · <a href="#" onclick="logout();return false;">logout</a>
+    <% } else { %>
+      <a href="/login">Login</a>
+    <% } %>
+  </div>
+</header>
+<main>
+<%- body %>
+</main>
+</body></html>

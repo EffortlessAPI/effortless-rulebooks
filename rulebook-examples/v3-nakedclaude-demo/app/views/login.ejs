@@ -1,0 +1,58 @@
+<%- include('_header', { user: null }) %>
+<script>
+  (function () {
+    var t = localStorage.getItem('jwt');
+    if (t && !/(^|;\s*)jwt=/.test(document.cookie)) {
+      document.cookie = 'jwt=' + t + '; path=/; SameSite=Lax';
+      location.replace('/portal');
+    }
+  })();
+</script>
+<h1>Sign in</h1>
+<div class="card">
+  <div id="step1">
+    <label>Email <input id="email" type="email" placeholder="you@example.com" autofocus></label>
+    <button onclick="sendCode()">Send code</button>
+  </div>
+  <div id="step2" style="display:none">
+    <p>Code sent to <span id="emailEcho"></span>. Check your inbox.</p>
+    <label>Code <input id="code" type="text" inputmode="numeric" maxlength="6"></label>
+    <button onclick="verify()">Verify</button>
+  </div>
+  <p id="msg" class="muted"></p>
+</div>
+<script>
+async function sendCode() {
+  const email = document.getElementById('email').value.trim();
+  if (!email) return;
+  const r = await fetch('/api/auth/request-code', {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({email})
+  });
+  if (r.ok) {
+    document.getElementById('step1').style.display='none';
+    document.getElementById('step2').style.display='block';
+    document.getElementById('emailEcho').textContent = email;
+    sessionStorage.setItem('pendingEmail', email);
+  } else {
+    document.getElementById('msg').textContent = 'Failed to send code.';
+  }
+}
+async function verify() {
+  const email = sessionStorage.getItem('pendingEmail');
+  const code = document.getElementById('code').value.trim();
+  const r = await fetch('/api/auth/verify-code', {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({email, code})
+  });
+  const d = await r.json();
+  if (r.ok && d.jwt) {
+    localStorage.setItem('jwt', d.jwt);
+    document.cookie = 'jwt=' + d.jwt + '; path=/; SameSite=Lax';
+    location.href = '/portal';
+  } else {
+    document.getElementById('msg').textContent = 'Invalid code: ' + (d.error || JSON.stringify(d));
+  }
+}
+</script>
+<%- include('_footer') %>
