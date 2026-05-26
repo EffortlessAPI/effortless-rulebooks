@@ -1,0 +1,37 @@
+[
+  {
+    "user_id": "u-admin",
+    "name": "admin@gym.test",
+    "email": "admin@gym.test",
+    "role": "admin",
+    "display_name": "Gym Admin"
+  },
+  {
+    "user_id": "u-alex",
+    "name": "alex@gym.test",
+    "email": "alex@gym.test",
+    "role": "trainer",
+    "display_name": "Alex Reyes"
+  },
+  {
+    "user_id": "u-jamie",
+    "name": "jamie@gym.test",
+    "email": "jamie@gym.test",
+    "role": "trainer",
+    "display_name": "Jamie Lin"
+  },
+  {
+    "user_id": "u-robin",
+    "name": "robin@example.com",
+    "email": "robin@example.com",
+    "role": "client",
+    "display_name": "Robin Cole"
+  },
+  {
+    "user_id": "u-sam",
+    "name": "sam@example.com",
+    "email": "sam@example.com",
+    "role": "client",
+    "display_name": "Sam Patel"
+  }
+]

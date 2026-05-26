@@ -1,0 +1,359 @@
+[
+  {
+    "entity": "Invoices",
+    "field": "TaxAmount",
+    "formula": "={{Subtotal}} * {{TaxRate}}",
+    "record_id": "inv-001",
+    "error": "SyntaxError: Unexpected character '*' at position 13"
+  },
+  {
+    "entity": "Invoices",
+    "field": "DaysSinceDueDate",
+    "formula": "=DATETIME_DIFF(NOW(), {{DueDate}}, \"day\")",
+    "record_id": "inv-001",
+    "error": "ValueError: Unknown function: DATETIME_DIFF"
+  },
+  {
+    "entity": "Invoices",
+    "field": "DaysPastDue",
+    "formula": "=MAX(0, {{DaysSinceDueDate}} - {{GraceDays}})",
+    "record_id": "inv-001",
+    "error": "SyntaxError: Unexpected character '-' at position 28"
+  },
+  {
+    "entity": "Invoices",
+    "field": "Total",
+    "formula": "={{Subtotal}} + {{TaxAmount}} + {{LateFee}} - {{DiscountAmount}}",
+    "record_id": "inv-001",
+    "error": "SyntaxError: Unexpected character '+' at position 13"
+  },
+  {
+    "entity": "Invoices",
+    "field": "Balance",
+    "formula": "={{Total}} - {{PaidAmount}}",
+    "record_id": "inv-001",
+    "error": "SyntaxError: Unexpected character '-' at position 10"
+  },
+  {
+    "entity": "Invoices",
+    "field": "TaxAmount",
+    "formula": "={{Subtotal}} * {{TaxRate}}",
+    "record_id": "inv-002",
+    "error": "SyntaxError: Unexpected character '*' at position 13"
+  },
+  {
+    "entity": "Invoices",
+    "field": "DaysSinceDueDate",
+    "formula": "=DATETIME_DIFF(NOW(), {{DueDate}}, \"day\")",
+    "record_id": "inv-002",
+    "error": "ValueError: Unknown function: DATETIME_DIFF"
+  },
+  {
+    "entity": "Invoices",
+    "field": "DaysPastDue",
+    "formula": "=MAX(0, {{DaysSinceDueDate}} - {{GraceDays}})",
+    "record_id": "inv-002",
+    "error": "SyntaxError: Unexpected character '-' at position 28"
+  },
+  {
+    "entity": "Invoices",
+    "field": "Total",
+    "formula": "={{Subtotal}} + {{TaxAmount}} + {{LateFee}} - {{DiscountAmount}}",
+    "record_id": "inv-002",
+    "error": "SyntaxError: Unexpected character '+' at position 13"
+  },
+  {
+    "entity": "Invoices",
+    "field": "Balance",
+    "formula": "={{Total}} - {{PaidAmount}}",
+    "record_id": "inv-002",
+    "error": "SyntaxError: Unexpected character '-' at position 10"
+  },
+  {
+    "entity": "Invoices",
+    "field": "TaxAmount",
+    "formula": "={{Subtotal}} * {{TaxRate}}",
+    "record_id": "inv-003",
+    "error": "SyntaxError: Unexpected character '*' at position 13"
+  },
+  {
+    "entity": "Invoices",
+    "field": "DaysSinceDueDate",
+    "formula": "=DATETIME_DIFF(NOW(), {{DueDate}}, \"day\")",
+    "record_id": "inv-003",
+    "error": "ValueError: Unknown function: DATETIME_DIFF"
+  },
+  {
+    "entity": "Invoices",
+    "field": "DaysPastDue",
+    "formula": "=MAX(0, {{DaysSinceDueDate}} - {{GraceDays}})",
+    "record_id": "inv-003",
+    "error": "SyntaxError: Unexpected character '-' at position 28"
+  },
+  {
+    "entity": "Invoices",
+    "field": "Total",
+    "formula": "={{Subtotal}} + {{TaxAmount}} + {{LateFee}} - {{DiscountAmount}}",
+    "record_id": "inv-003",
+    "error": "SyntaxError: Unexpected character '+' at position 13"
+  },
+  {
+    "entity": "Invoices",
+    "field": "Balance",
+    "formula": "={{Total}} - {{PaidAmount}}",
+    "record_id": "inv-003",
+    "error": "SyntaxError: Unexpected character '-' at position 10"
+  },
+  {
+    "entity": "Invoices",
+    "field": "TaxAmount",
+    "formula": "={{Subtotal}} * {{TaxRate}}",
+    "record_id": "inv-004",
+    "error": "SyntaxError: Unexpected character '*' at position 13"
+  },
+  {
+    "entity": "Invoices",
+    "field": "DaysSinceDueDate",
+    "formula": "=DATETIME_DIFF(NOW(), {{DueDate}}, \"day\")",
+    "record_id": "inv-004",
+    "error": "ValueError: Unknown function: DATETIME_DIFF"
+  },
+  {
+    "entity": "Invoices",
+    "field": "DaysPastDue",
+    "formula": "=MAX(0, {{DaysSinceDueDate}} - {{GraceDays}})",
+    "record_id": "inv-004",
+    "error": "SyntaxError: Unexpected character '-' at position 28"
+  },
+  {
+    "entity": "Invoices",
+    "field": "Total",
+    "formula": "={{Subtotal}} + {{TaxAmount}} + {{LateFee}} - {{DiscountAmount}}",
+    "record_id": "inv-004",
+    "error": "SyntaxError: Unexpected character '+' at position 13"
+  },
+  {
+    "entity": "Invoices",
+    "field": "Balance",
+    "formula": "={{Total}} - {{PaidAmount}}",
+    "record_id": "inv-004",
+    "error": "SyntaxError: Unexpected character '-' at position 10"
+  },
+  {
+    "entity": "Invoices",
+    "field": "TaxAmount",
+    "formula": "={{Subtotal}} * {{TaxRate}}",
+    "record_id": "inv-005",
+    "error": "SyntaxError: Unexpected character '*' at position 13"
+  },
+  {
+    "entity": "Invoices",
+    "field": "DaysSinceDueDate",
+    "formula": "=DATETIME_DIFF(NOW(), {{DueDate}}, \"day\")",
+    "record_id": "inv-005",
+    "error": "ValueError: Unknown function: DATETIME_DIFF"
+  },
+  {
+    "entity": "Invoices",
+    "field": "DaysPastDue",
+    "formula": "=MAX(0, {{DaysSinceDueDate}} - {{GraceDays}})",
+    "record_id": "inv-005",
+    "error": "SyntaxError: Unexpected character '-' at position 28"
+  },
+  {
+    "entity": "Invoices",
+    "field": "Total",
+    "formula": "={{Subtotal}} + {{TaxAmount}} + {{LateFee}} - {{DiscountAmount}}",
+    "record_id": "inv-005",
+    "error": "SyntaxError: Unexpected character '+' at position 13"
+  },
+  {
+    "entity": "Invoices",
+    "field": "Balance",
+    "formula": "={{Total}} - {{PaidAmount}}",
+    "record_id": "inv-005",
+    "error": "SyntaxError: Unexpected character '-' at position 10"
+  },
+  {
+    "entity": "Sessions",
+    "field": "LineTotal",
+    "formula": "={{EffectiveRate}} * {{DurationHours}}",
+    "record_id": "s-001",
+    "error": "SyntaxError: Unexpected character '*' at position 18"
+  },
+  {
+    "entity": "Sessions",
+    "field": "IsBilled",
+    "formula": "=NOT(ISBLANK({{Invoice}}))",
+    "record_id": "s-001",
+    "error": "ValueError: Unknown function: ISBLANK"
+  },
+  {
+    "entity": "Sessions",
+    "field": "LineTotal",
+    "formula": "={{EffectiveRate}} * {{DurationHours}}",
+    "record_id": "s-002",
+    "error": "SyntaxError: Unexpected character '*' at position 18"
+  },
+  {
+    "entity": "Sessions",
+    "field": "IsBilled",
+    "formula": "=NOT(ISBLANK({{Invoice}}))",
+    "record_id": "s-002",
+    "error": "ValueError: Unknown function: ISBLANK"
+  },
+  {
+    "entity": "Sessions",
+    "field": "LineTotal",
+    "formula": "={{EffectiveRate}} * {{DurationHours}}",
+    "record_id": "s-003",
+    "error": "SyntaxError: Unexpected character '*' at position 18"
+  },
+  {
+    "entity": "Sessions",
+    "field": "IsBilled",
+    "formula": "=NOT(ISBLANK({{Invoice}}))",
+    "record_id": "s-003",
+    "error": "ValueError: Unknown function: ISBLANK"
+  },
+  {
+    "entity": "Sessions",
+    "field": "LineTotal",
+    "formula": "={{EffectiveRate}} * {{DurationHours}}",
+    "record_id": "s-004",
+    "error": "SyntaxError: Unexpected character '*' at position 18"
+  },
+  {
+    "entity": "Sessions",
+    "field": "IsBilled",
+    "formula": "=NOT(ISBLANK({{Invoice}}))",
+    "record_id": "s-004",
+    "error": "ValueError: Unknown function: ISBLANK"
+  },
+  {
+    "entity": "Sessions",
+    "field": "LineTotal",
+    "formula": "={{EffectiveRate}} * {{DurationHours}}",
+    "record_id": "s-005",
+    "error": "SyntaxError: Unexpected character '*' at position 18"
+  },
+  {
+    "entity": "Sessions",
+    "field": "IsBilled",
+    "formula": "=NOT(ISBLANK({{Invoice}}))",
+    "record_id": "s-005",
+    "error": "ValueError: Unknown function: ISBLANK"
+  },
+  {
+    "entity": "Sessions",
+    "field": "LineTotal",
+    "formula": "={{EffectiveRate}} * {{DurationHours}}",
+    "record_id": "s-006",
+    "error": "SyntaxError: Unexpected character '*' at position 18"
+  },
+  {
+    "entity": "Sessions",
+    "field": "IsBilled",
+    "formula": "=NOT(ISBLANK({{Invoice}}))",
+    "record_id": "s-006",
+    "error": "ValueError: Unknown function: ISBLANK"
+  },
+  {
+    "entity": "Sessions",
+    "field": "LineTotal",
+    "formula": "={{EffectiveRate}} * {{DurationHours}}",
+    "record_id": "s-007",
+    "error": "SyntaxError: Unexpected character '*' at position 18"
+  },
+  {
+    "entity": "Sessions",
+    "field": "IsBilled",
+    "formula": "=NOT(ISBLANK({{Invoice}}))",
+    "record_id": "s-007",
+    "error": "ValueError: Unknown function: ISBLANK"
+  },
+  {
+    "entity": "Sessions",
+    "field": "LineTotal",
+    "formula": "={{EffectiveRate}} * {{DurationHours}}",
+    "record_id": "s-008",
+    "error": "SyntaxError: Unexpected character '*' at position 18"
+  },
+  {
+    "entity": "Sessions",
+    "field": "IsBilled",
+    "formula": "=NOT(ISBLANK({{Invoice}}))",
+    "record_id": "s-008",
+    "error": "ValueError: Unknown function: ISBLANK"
+  },
+  {
+    "entity": "Sessions",
+    "field": "LineTotal",
+    "formula": "={{EffectiveRate}} * {{DurationHours}}",
+    "record_id": "s-009",
+    "error": "SyntaxError: Unexpected character '*' at position 18"
+  },
+  {
+    "entity": "Sessions",
+    "field": "IsBilled",
+    "formula": "=NOT(ISBLANK({{Invoice}}))",
+    "record_id": "s-009",
+    "error": "ValueError: Unknown function: ISBLANK"
+  },
+  {
+    "entity": "Sessions",
+    "field": "LineTotal",
+    "formula": "={{EffectiveRate}} * {{DurationHours}}",
+    "record_id": "s-010",
+    "error": "SyntaxError: Unexpected character '*' at position 18"
+  },
+  {
+    "entity": "Sessions",
+    "field": "IsBilled",
+    "formula": "=NOT(ISBLANK({{Invoice}}))",
+    "record_id": "s-010",
+    "error": "ValueError: Unknown function: ISBLANK"
+  },
+  {
+    "entity": "Sessions",
+    "field": "LineTotal",
+    "formula": "={{EffectiveRate}} * {{DurationHours}}",
+    "record_id": "s-011",
+    "error": "SyntaxError: Unexpected character '*' at position 18"
+  },
+  {
+    "entity": "Sessions",
+    "field": "IsBilled",
+    "formula": "=NOT(ISBLANK({{Invoice}}))",
+    "record_id": "s-011",
+    "error": "ValueError: Unknown function: ISBLANK"
+  },
+  {
+    "entity": "Sessions",
+    "field": "LineTotal",
+    "formula": "={{EffectiveRate}} * {{DurationHours}}",
+    "record_id": "s-012",
+    "error": "SyntaxError: Unexpected character '*' at position 18"
+  },
+  {
+    "entity": "Sessions",
+    "field": "IsBilled",
+    "formula": "=NOT(ISBLANK({{Invoice}}))",
+    "record_id": "s-012",
+    "error": "ValueError: Unknown function: ISBLANK"
+  },
+  {
+    "entity": "Sessions",
+    "field": "LineTotal",
+    "formula": "={{EffectiveRate}} * {{DurationHours}}",
+    "record_id": "s-013",
+    "error": "SyntaxError: Unexpected character '*' at position 18"
+  },
+  {
+    "entity": "Sessions",
+    "field": "IsBilled",
+    "formula": "=NOT(ISBLANK({{Invoice}}))",
+    "record_id": "s-013",
+    "error": "ValueError: Unknown function: ISBLANK"
+  }
+]

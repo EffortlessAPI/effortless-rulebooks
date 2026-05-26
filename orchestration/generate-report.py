@@ -673,7 +673,7 @@ def generate_html(data: dict) -> str:
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <title>{escape(data["meta"]["project_name"])} — {datetime.now().strftime("%H:%M:%S")}</title>
+    <title>{escape(data["meta"]["project_name"])}</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css">
     <style>
@@ -686,9 +686,6 @@ def generate_html(data: dict) -> str:
             <h1>{escape(data["meta"]["project_name"])}</h1>
             <div class="header-meta">
                 <span class="project-name">Orchestration Report</span>
-                <span class="build-stamp" style="margin-left:1rem;padding:0.15rem 0.5rem;background:rgba(255,255,255,0.1);border-radius:4px;font-family:monospace;font-size:0.85rem;">
-                    generated {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
-                </span>
             </div>
         </div>
         <div class="header-actions">

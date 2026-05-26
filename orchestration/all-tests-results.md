@@ -3,24 +3,25 @@
 ## Configuration
 
 - **Rulebook:** `/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-rulebooks/rulebook-examples/acme-corporation/effortless-rulebook/acme-corporation-rulebook.json`
-- **Substrates Tested:** 0
-- **Computed Columns Tested:** 0
+- **Substrates Tested:** 1
+- **Computed Columns Tested:** 13
 
 ## Summary by Substrate
 
 | Substrate | Passed | Failed | Total | Score | Duration | Status |
 |-----------|--------|--------|-------|-------|----------|--------|
+| effortless-postgres | 5 | 35 | 40 | 12.5% | 4s | FAIL |
 
 ## Overall Statistics
 
 | Metric | Value |
 |--------|-------|
-| Total Substrates | 0 |
-| Total Fields Tested | 0 |
-| Total Passed | 0 |
-| Total Failed | 0 |
-| Overall Score | 0.0% |
-| Total Duration | < 1s |
+| Total Substrates | 1 |
+| Total Fields Tested | 40 |
+| Total Passed | 5 |
+| Total Failed | 35 |
+| Overall Score | 12.5% |
+| Total Duration | 4s |
 
 ---
 
