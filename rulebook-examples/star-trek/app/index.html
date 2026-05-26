@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Star Trek Explorer</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+      color: #e0e0e0;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    .container { max-width: 1200px; margin: 0 auto; }
+    header {
+      text-align: center;
+      padding: 30px 0;
+      border-bottom: 2px solid #00d4ff;
+      margin-bottom: 30px;
+    }
+    h1 { font-size: 2.5em; color: #00d4ff; text-shadow: 0 0 10px rgba(0, 212, 255, 0.5); }
+    .subtitle { color: #888; margin-top: 10px; }
+    .content { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+    .panel {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid #00d4ff;
+      border-radius: 8px;
+      padding: 20px;
+      backdrop-filter: blur(10px);
+    }
+    .panel h2 { color: #00d4ff; margin-bottom: 15px; font-size: 1.3em; }
+    .series-list { list-style: none; }
+    .series-item {
+      padding: 12px;
+      margin-bottom: 8px;
+      background: rgba(0, 212, 255, 0.1);
+      border-left: 3px solid #00d4ff;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: all 0.2s;
+    }
+    .series-item:hover {
+      background: rgba(0, 212, 255, 0.2);
+      transform: translateX(5px);
+    }
+    .series-name { font-weight: bold; color: #00d4ff; }
+    .series-title { font-size: 0.9em; color: #aaa; margin-top: 4px; }
+    .series-stats { font-size: 0.85em; color: #666; margin-top: 4px; }
+    .details { margin-top: 20px; }
+    .detail-field { margin-bottom: 12px; }
+    .label { color: #00d4ff; font-weight: bold; }
+    .value { color: #ccc; margin-top: 4px; }
+    .seasons-list { list-style: none; margin-top: 15px; }
+    .season-item {
+      padding: 10px;
+      background: rgba(255, 255, 255, 0.03);
+      margin-bottom: 6px;
+      border-radius: 4px;
+      cursor: pointer;
+      border-left: 2px solid #666;
+      transition: all 0.2s;
+    }
+    .season-item:hover {
+      background: rgba(0, 212, 255, 0.1);
+      border-left-color: #00d4ff;
+    }
+    .season-name { color: #00d4ff; font-weight: bold; }
+    .episode-count { font-size: 0.85em; color: #888; margin-top: 2px; }
+    .loading { text-align: center; color: #888; padding: 20px; }
+    .error { color: #ff6b6b; padding: 10px; background: rgba(255, 107, 107, 0.1); border-radius: 4px; }
+    @media (max-width: 768px) {
+      .content { grid-template-columns: 1fr; }
+      h1 { font-size: 1.8em; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🚀 Star Trek Explorer</h1>
+      <p class="subtitle">Browse TV series, seasons, and episodes from the Star Trek universe</p>
+    </header>
+
+    <div class="content">
+      <div class="panel">
+        <h2>Series</h2>
+        <div id="seriesList" class="loading">Loading series...</div>
+      </div>
+
+      <div class="panel">
+        <h2>Details</h2>
+        <div id="details" style="color: #888; text-align: center; padding: 40px 0;">Select a series to view details</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const API_BASE = 'http://localhost:3000/api';
+    let selectedSeries = null;
+
+    async function loadSeries() {
+      try {
+        const response = await fetch(`${API_BASE}/series`);
+        const series = await response.json();
+
+        const list = document.getElementById('seriesList');
+        list.innerHTML = '';
+
+        series.forEach(s => {
+          const item = document.createElement('div');
+          item.className = 'series-item';
+          item.innerHTML = `
+            <div class="series-name">${s.show_code}</div>
+            <div class="series-title">${s.title}</div>
+            <div class="series-stats">Series ${s.series_number}</div>
+          `;
+          item.onclick = () => showSeriesDetails(s);
+          list.appendChild(item);
+        });
+      } catch (err) {
+        console.error('Error loading series:', err);
+        document.getElementById('seriesList').innerHTML = '<div class="error">Failed to load series</div>';
+      }
+    }
+
+    async function showSeriesDetails(series) {
+      selectedSeries = series;
+      const details = document.getElementById('details');
+      details.innerHTML = `
+        <div class="details">
+          <div class="detail-field">
+            <div class="label">Code</div>
+            <div class="value">${series.show_code}</div>
+          </div>
+          <div class="detail-field">
+            <div class="label">Title</div>
+            <div class="value">${series.title}</div>
+          </div>
+          <div class="detail-field">
+            <div class="label">Network</div>
+            <div class="value">${series.network || 'Unknown'}</div>
+          </div>
+          <div class="detail-field">
+            <div class="label">Premiere Date</div>
+            <div class="value">${series.premiere_date ? new Date(series.premiere_date).toLocaleDateString() : 'Unknown'}</div>
+          </div>
+          <div class="detail-field">
+            <div class="label">Description</div>
+            <div class="value">${series.description || 'No description'}</div>
+          </div>
+        </div>
+        <div id="seasonsList" class="loading" style="margin-top: 20px;">Loading seasons...</div>
+      `;
+      loadSeasons(series.serie_id);
+    }
+
+    async function loadSeasons(seriesId) {
+      try {
+        const response = await fetch(`${API_BASE}/series/${seriesId}/seasons`);
+        const seasons = await response.json();
+
+        const list = document.getElementById('seasonsList');
+        list.innerHTML = '';
+
+        if (seasons.length === 0) {
+          list.innerHTML = '<div style="color: #666;">No seasons found</div>';
+          return;
+        }
+
+        seasons.forEach(s => {
+          const item = document.createElement('div');
+          item.className = 'season-item';
+          item.innerHTML = `
+            <div class="season-name">Season ${s.season_number}</div>
+            <div class="episode-count">${s.title || 'Season ' + s.season_number}</div>
+          `;
+          item.onclick = () => loadEpisodes(s.season_id);
+          list.appendChild(item);
+        });
+      } catch (err) {
+        console.error('Error loading seasons:', err);
+        document.getElementById('seasonsList').innerHTML = '<div class="error">Failed to load seasons</div>';
+      }
+    }
+
+    async function loadEpisodes(seasonId) {
+      try {
+        const response = await fetch(`${API_BASE}/seasons/${seasonId}/episodes`);
+        const episodes = await response.json();
+
+        const list = document.getElementById('seasonsList');
+        list.innerHTML = '<div class="label" style="margin-bottom: 10px;">Episodes:</div>';
+
+        episodes.forEach(ep => {
+          const item = document.createElement('div');
+          item.className = 'season-item';
+          item.innerHTML = `
+            <div class="season-name">Ep ${ep.episode_number}: ${ep.title}</div>
+            <div class="episode-count">${ep.airdate ? new Date(ep.airdate).toLocaleDateString() : 'N/A'}</div>
+          `;
+          list.appendChild(item);
+        });
+      } catch (err) {
+        console.error('Error loading episodes:', err);
+      }
+    }
+
+    loadSeries();
+  </script>
+</body>
+</html>
