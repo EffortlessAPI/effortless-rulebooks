@@ -1,0 +1,471 @@
+{
+  "$schema": "https://example.com/cmcc-schema/v1",
+  "Name": "v2: NakedClaude Demo",
+  "Description": "Rulebook generated from Airtable base 'v2: NakedClaude Demo'.",
+  "Customers": {
+    "Description": "Table: Customers",
+    "schema": [
+      {
+        "name": "CustomerId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "formula": "=SUBSTITUTE(LOWER({{FullName}}), \" \", \"-\")"
+      },
+      {
+        "name": "FirstName",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "LastName",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "FullName",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "formula": "={{FirstName}} & \" \" & {{LastName}}",
+        "important": true,
+        "explanation_rich": "**The smallest chain in the rulebook — v2's opening DAG edge.** v1 had a single calculated boolean off one raw field; v2 stacks two calculated fields on two raw fields. `FullName = FirstName & \" \" & LastName`, and then the slug `Name` is computed *from* `FullName` via `SUBSTITUTE(LOWER({{FullName}}), \" \", \"-\")`. Worked example: `FirstName = \"Alice\"`, `LastName = \"Johnson\"` → `FullName = \"Alice Johnson\"` → `Name = \"alice-johnson\"`. Edit `FirstName` to `Alicia` and both downstream values recompute in every substrate on the next read — no glue code."
+      },
+      {
+        "name": "Notes",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "StatusDisplayName",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "formula": "=INDEX(Statuses!{{DisplayName}}, MATCH(Customers!{{Status}}, Statuses!{{StatuseId}}, 0))"
+      },
+      {
+        "name": "StatusIsBlocking",
+        "datatype": "boolean",
+        "type": "lookup",
+        "nullable": true,
+        "formula": "=INDEX(Statuses!{{IsBlocking}}, MATCH(Customers!{{Status}}, Statuses!{{StatuseId}}, 0))",
+        "important": true,
+        "explanation_rich": "**v2's headline capability: a lookup that reaches across a foreign key.** `Customers.Status` is an FK into `Statuses`; this field uses Excel-dialect `INDEX(Statuses!{{IsBlocking}}, MATCH(Customers!{{Status}}, Statuses!{{StatuseId}}, 0))` to read the target row's `IsBlocking` flag *as if it were a local column*. Worked example: Alice's `Status = \"pending\"`; the `pending` row in `Statuses` has `IsBlocking = TRUE`; so Alice's `StatusIsBlocking` is `TRUE` — the same value every substrate reads. Flip `pending.IsBlocking` to `FALSE` in `Statuses` and Alice's lookup flips with it on the next read, no customer-row edit required."
+      },
+      {
+        "name": "IsStopped",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "formula": "=IF(AND({{StatusIsBlocking}}, {{FirstName}} = \"Bob\"), TRUE(), FALSE())",
+        "important": true,
+        "explanation_rich": "**A composite rule that mixes a lookup result with a raw field.** `IsStopped = IF(AND({{StatusIsBlocking}}, {{FirstName}} = \"Bob\"), TRUE(), FALSE())`. This is v2's first *multi-input* business rule: one input comes across the FK lookup chain (`StatusIsBlocking`), the other is a local raw field (`FirstName`). Worked example: of v2's five customers, only **Bob** is both named `\"Bob\"` *and* sitting in a blocking status (`on-hold`), so only Bob's `IsStopped` is `TRUE`. Rename Bob to `Robert` *or* flip `on-hold.IsBlocking` to `FALSE` and the same rule, evaluated in every substrate, drops Bob out of the stopped set."
+      },
+      {
+        "name": "StatusDescription",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "formula": "=INDEX(Statuses!{{Description}}, MATCH(Customers!{{Status}}, Statuses!{{StatuseId}}, 0))"
+      },
+      {
+        "name": "Status",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "RelatedTo": "Statuses",
+        "isReversed": false,
+        "prefersSingleRecordLink": true,
+        "InverseField": "Customers"
+      },
+      {
+        "name": "OwnerEmail",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Email address of the user who owns this customer record. Used by Row-Level Security to scope visibility to the JWT email of the requester."
+      }
+    ],
+    "data": [
+      {
+        "CustomerId": "bob",
+        "IsStopped": true,
+        "StatusDisplayName": "On-Hold",
+        "Name": "bob-",
+        "Notes": "A customer currently in launch.",
+        "StatusIsBlocking": "True",
+        "OwnerEmail": "eejai42@gmail.com",
+        "Status": "on-hold",
+        "StatusDescription": "This status indicates the customer or request is on hold and temporarily paused.",
+        "FirstName": "Bob",
+        "FullName": "Bob ",
+        "LastName": ""
+      },
+      {
+        "CustomerId": "alice-johnson",
+        "LastName": "Johnson",
+        "StatusDisplayName": "Pending",
+        "Name": "alice-johnson",
+        "Notes": "Initial mock entry for Alice.",
+        "StatusIsBlocking": "True",
+        "OwnerEmail": "eejai42@gmail.com",
+        "Status": "pending",
+        "StatusDescription": "This status shows the customer or request is pending further action or review.",
+        "FirstName": "Alice",
+        "FullName": "Alice Johnson",
+        "IsStopped": false
+      },
+      {
+        "CustomerId": "brian-lee",
+        "LastName": "Lee",
+        "StatusDisplayName": "New",
+        "Name": "brian-lee",
+        "Notes": "Initial mock entry for Brian.",
+        "StatusIsBlocking": "",
+        "OwnerEmail": "eejai42@gmail.com",
+        "Status": "new",
+        "StatusDescription": "This status indicates a newly created customer or request that has not yet been processed.",
+        "FirstName": "Brian",
+        "FullName": "Brian Lee",
+        "IsStopped": false
+      },
+      {
+        "CustomerId": "carla-smith",
+        "LastName": "Smith",
+        "StatusDisplayName": "Delayed",
+        "Name": "carla-smith",
+        "Notes": "Initial mock entry for Carla.",
+        "StatusIsBlocking": "",
+        "OwnerEmail": "alice@example.com",
+        "Status": "delayed",
+        "StatusDescription": "This status is used when the customer or request has been delayed and is not progressing as scheduled.",
+        "FirstName": "Carla",
+        "FullName": "Carla Smith",
+        "IsStopped": false
+      },
+      {
+        "CustomerId": "caroline",
+        "StatusDisplayName": "Processing",
+        "Name": "caroline-",
+        "StatusIsBlocking": "",
+        "OwnerEmail": "alice@example.com",
+        "Status": "processing",
+        "StatusDescription": "This status means the customer or request is currently being processed.",
+        "FirstName": "Caroline",
+        "FullName": "Caroline ",
+        "LastName": "",
+        "Notes": "",
+        "IsStopped": false
+      }
+    ],
+    "important": true,
+    "summary_rich": "The **central table** in v2. Each row carries a foreign key to `Statuses` and an `OwnerEmail` for Row-Level Security. v1 only had raw fields and a single boolean calc; v2 stacks a real chain on top — raw `FirstName` + `LastName` → calculated `FullName` → calculated slug `Name`, *and* a lookup chain that reaches across the FK into `Statuses` (`StatusDisplayName`, `StatusIsBlocking`, `StatusDescription`). The whole DAG fires identically in every substrate.",
+    "important_fields": [
+      "FullName",
+      "Name",
+      "StatusDisplayName",
+      "IsStopped",
+      "OwnerEmail"
+    ]
+  },
+  "Statuses": {
+    "Description": "Table: Statuses",
+    "schema": [
+      {
+        "name": "StatuseId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "formula": "=LOWER({{DisplayName}})"
+      },
+      {
+        "name": "DisplayName",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "Description",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "IsBlocking",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "Customers",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "RelatedTo": "Customers",
+        "isReversed": false,
+        "prefersSingleRecordLink": false,
+        "InverseField": "Status"
+      },
+      {
+        "name": "OwnerEmail",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Email address of the user who owns this status. Used by Row-Level Security to scope visibility."
+      }
+    ],
+    "data": [
+      {
+        "StatuseId": "delayed",
+        "OwnerEmail": "ej@ssot.me",
+        "DisplayName": "Delayed",
+        "Customers": "carla-smith",
+        "Name": "delayed",
+        "Description": "This status is used when the customer or request has been delayed and is not progressing as scheduled.",
+        "IsBlocking": false
+      },
+      {
+        "StatuseId": "cancelled",
+        "IsBlocking": true,
+        "OwnerEmail": "ej@ssot.me",
+        "DisplayName": "Cancelled",
+        "Name": "cancelled",
+        "Description": "This status means the customer or request has been cancelled and will not proceed further.",
+        "Customers": ""
+      },
+      {
+        "StatuseId": "processing",
+        "OwnerEmail": "ej@ssot.me",
+        "DisplayName": "Processing",
+        "Customers": "caroline",
+        "Name": "processing",
+        "Description": "This status means the customer or request is currently being processed.",
+        "IsBlocking": false
+      },
+      {
+        "StatuseId": "new",
+        "OwnerEmail": "ej@ssot.me",
+        "DisplayName": "New",
+        "Customers": "brian-lee",
+        "Name": "new",
+        "Description": "This status indicates a newly created customer or request that has not yet been processed.",
+        "IsBlocking": false
+      },
+      {
+        "StatuseId": "in-review",
+        "OwnerEmail": "ej@ssot.me",
+        "DisplayName": "In-Review",
+        "Name": "in-review",
+        "Description": "This status is for customers or requests that are currently under review.",
+        "IsBlocking": false,
+        "Customers": ""
+      },
+      {
+        "StatuseId": "pending",
+        "IsBlocking": true,
+        "OwnerEmail": "ej@ssot.me",
+        "DisplayName": "Pending",
+        "Customers": "alice-johnson",
+        "Name": "pending",
+        "Description": "This status shows the customer or request is pending further action or review."
+      },
+      {
+        "StatuseId": "on-hold",
+        "IsBlocking": true,
+        "OwnerEmail": "ej@ssot.me",
+        "DisplayName": "On-Hold",
+        "Customers": "bob",
+        "Name": "on-hold",
+        "Description": "This status indicates the customer or request is on hold and temporarily paused."
+      }
+    ],
+    "important": true,
+    "summary_rich": "The **lookup target**. `Customers.Status` is a foreign-key relationship into this table; v2's lookup fields (`StatusDisplayName`, `StatusIsBlocking`, `StatusDescription`) pull values across that FK using Excel-dialect `INDEX(...,MATCH(...))`. Flipping `IsBlocking` on a row here propagates through the lookup into every customer that points at this status — and, via the composite rule `IsStopped`, can re-decide whether a customer is stopped without touching the customer row at all.",
+    "important_fields": [
+      "DisplayName",
+      "IsBlocking",
+      "Description"
+    ]
+  },
+  "AppUsers": {
+    "Description": "Table: AppUsers",
+    "schema": [
+      {
+        "name": "AppUserId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "formula": "=LOWER(SUBSTITUTE(SUBSTITUTE({{EmailAddress}}, \". \", \"-\"), \"@\", \"-\"))"
+      },
+      {
+        "name": "EmailAddress",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Primary identity — matches the JWT email of the signed-in user."
+      },
+      {
+        "name": "Role",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "admin = full access; customer = sees only owned customers (RLS DAG)."
+      }
+    ],
+    "data": [
+      {
+        "AppUserId": "eejai42-gmail-com",
+        "Name": "eejai42-gmail.com",
+        "EmailAddress": "eejai42@gmail.com",
+        "Role": "customer"
+      },
+      {
+        "AppUserId": "ej-ssot-me",
+        "Name": "ej-ssot.me",
+        "EmailAddress": "ej@ssot.me",
+        "Role": "admin"
+      },
+      {
+        "AppUserId": "alice-example-com",
+        "Name": "alice-example.com",
+        "EmailAddress": "alice@example.com",
+        "Role": "customer"
+      }
+    ]
+  },
+  "__meta__": {
+    "Description": "Project-level metadata that travels with the rulebook: tagline, motif, narrative descriptions, substrate list, signature rows, etc. One row per metadata key. Use ValueType to interpret StringValue vs JsonValue.",
+    "important": false,
+    "schema": [
+      {
+        "name": "MetaKey",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "The metadata key (e.g. 'tagline', 'motif_palette', 'substrates'). Unique within the table."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "formula": "={{MetaKey}}",
+        "Description": "Identifier for this metadata entry. Mirrors MetaKey so the row is addressable by Name like every other table."
+      },
+      {
+        "name": "ValueType",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "How to interpret the value columns: 'string' (use StringValue), 'object' (parse JsonValue as JSON object), 'array' (parse JsonValue as JSON array)."
+      },
+      {
+        "name": "StringValue",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Plain string value. Populated when ValueType == 'string'; null otherwise."
+      },
+      {
+        "name": "JsonValue",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "JSON-encoded value. Populated when ValueType == 'object' or 'array'; null when ValueType == 'string'."
+      }
+    ],
+    "data": [
+      {
+        "MetaKey": "CMCC_Summary",
+        "Name": "CMCC_Summary",
+        "ValueType": "string",
+        "StringValue": "Airtable export with schema-first type mapping: Schemas, Data, Relationships (FK links), Lookups (INDEX/MATCH), Aggregations (SUMIFS/COUNTIFS/Rollups), and Calculated fields (formulas) in Excel dialect. Field types are determined from Airtable's schema metadata FIRST (no coercion), with intelligent fallback to formula/data analysis only when schema is unavailable.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "conversion_metadata",
+        "Name": "conversion_metadata",
+        "ValueType": "object",
+        "StringValue": null,
+        "JsonValue": "{\"source_base_id\": \"app7G5emeY7miM4WN\", \"table_count\": 3, \"tool_version\": \"2.0.0\", \"field_type_mapping\": \"checkbox→boolean, number→number/integer, multipleRecordLinks→relationship, multipleLookupValues→lookup, rollup→aggregation, count→aggregation, formula→calculated\", \"export_mode\": \"schema_first_type_mapping\", \"type_inference\": {\"enabled\": true, \"priority\": \"airtable_metadata (NO COERCION) → formula_analysis → reference_resolution → data_analysis (fallback only)\", \"airtable_type_mapping\": \"checkbox→boolean, singleLineText→string, multilineText→string, number→number/integer, datetime→datetime, singleSelect→string, email→string, url→string, phoneNumber→string\", \"data_coercion_hierarchy\": \"Only used as fallback when Airtable schema unavailable: datetime → number → integer → boolean → base64 → json → string\", \"nullable_support\": true, \"error_value_handling\": \"#NUM!, #ERROR!, #N/A, #REF!, #DIV/0!, #VALUE!, #NAME? are treated as NULL\"}}"
+      },
+      {
+        "MetaKey": "tagline",
+        "Name": "tagline",
+        "ValueType": "string",
+        "StringValue": "Two tables joined by an FK — and a rule that fires across the join.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "motif",
+        "Name": "motif",
+        "ValueType": "string",
+        "StringValue": "default",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "motif_palette",
+        "Name": "motif_palette",
+        "ValueType": "object",
+        "StringValue": null,
+        "JsonValue": "{\"primary\": \"#3b4d61\", \"accent\": \"#7fb069\", \"ink\": \"#1c2530\"}"
+      },
+      {
+        "MetaKey": "description_rich",
+        "Name": "description_rich",
+        "ValueType": "string",
+        "StringValue": "NakedClaude **v2** is the second rung of a four-rung ladder. v1 had one entity and one calculated field. v2 adds a *second* entity — `Statuses` — and wires `Customers` to it through a foreign key. That single FK unlocks three new rulebook capabilities: **relationships** (`Customer.Status` → `Statuses`), **lookups** (`StatusDisplayName`, `StatusIsBlocking`, `StatusDescription`, all via Excel-dialect `INDEX`/`MATCH`), and **chained calculated fields** (raw → `FullName` → slug `Name`). On top of that, v2 introduces an `OwnerEmail` column on every business entity plus an `AppUsers` table — the *scaffolding* for Row-Level Security that v3 and v4 will exercise more fully. The headline rule is `IsStopped`: a customer is stopped when their *status* is blocking **and** their first name is `\"Bob\"`. One side of that AND comes across the join; the other is local. Same answer in Postgres, Python, Excel, and OWL.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "use_cases",
+        "Name": "use_cases",
+        "ValueType": "array",
+        "StringValue": null,
+        "JsonValue": "[\"**Reach across a foreign key without writing a JOIN.** Open Alice (`Status = pending`) and see `StatusDisplayName`, `StatusIsBlocking`, and `StatusDescription` already populated from the `Statuses` row — every substrate computed them from the FK, no application code.\", \"**Flip a flag in one table, watch dependent customers re-decide.** Change `pending.IsBlocking` from `TRUE` to `FALSE` in `Statuses` — Alice's `StatusIsBlocking` flips on the next read, and any `IsStopped` rule that depended on it re-evaluates.\", \"**Stack two calculated fields on two raw fields.** Edit `Carla` → `Smith` to `Carla` → `Smithson` and watch `FullName` recompute to `Carla Smithson`, then `Name` recompute to `carla-smithson` — the rulebook's first real DAG edge.\", \"**Combine a lookup result with a local field in one rule.** `IsStopped = AND(StatusIsBlocking, FirstName = \\\"Bob\\\")` mixes a cross-join lookup with a local raw value — only Bob (on-hold + named Bob) lights up.\", \"**Scaffold for RLS without enforcing it yet.** Every business row carries an `OwnerEmail`; `AppUsers` carries email + role. v2 records the ownership; v3/v4 enforce it.\"]"
+      },
+      {
+        "MetaKey": "signature_rows",
+        "Name": "signature_rows",
+        "ValueType": "array",
+        "StringValue": null,
+        "JsonValue": "[{\"entity\": \"Customers\", \"ids\": [\"bob\", \"alice-johnson\", \"brian-lee\"]}, {\"entity\": \"Statuses\", \"ids\": [\"on-hold\", \"pending\", \"new\"]}]"
+      },
+      {
+        "MetaKey": "journal_seed",
+        "Name": "journal_seed",
+        "ValueType": "string",
+        "StringValue": "Five customers, seven statuses, one foreign key wiring them together. Bob is the only one stopped — he's both named `Bob` and sitting in a blocking status. The rule that decides that mixes a value from across the join with a value from the same row.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "substrates",
+        "Name": "substrates",
+        "ValueType": "array",
+        "StringValue": null,
+        "JsonValue": "[{\"key\": \"postgres\", \"important\": true, \"chip_label\": \"Postgres\"}, {\"key\": \"python\", \"important\": true, \"chip_label\": \"Python\"}, {\"key\": \"excel\", \"important\": false, \"chip_label\": \"Excel\"}, {\"key\": \"owl\", \"important\": false, \"chip_label\": \"OWL\"}]"
+      }
+    ]
+  }
+}

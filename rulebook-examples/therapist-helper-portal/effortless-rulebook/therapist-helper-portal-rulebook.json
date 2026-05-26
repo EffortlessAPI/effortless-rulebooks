@@ -1,135 +1,778 @@
 {
   "$schema": "https://example.com/cmcc-schema/v1",
   "model_name": "therapist_helper_portal",
-  "Description": "Therapist helper portal - sessions and treatment progress. 3-hop DAG: GoalUpdate.ScoreAchieved -> Goal.ProgressPct -> {Goal.IsOnTrack, Client.AvgGoalProgress} -> Client.IsAtRisk.",
+  "Description": "Sessions and treatment progress: GoalUpdate → Goal.ProgressPct → Client.IsAtRisk three-hop DAG.",
   "Users": {
     "Description": "Application users. Therapists, supervisors, and clients log in via dev-login by user id (email).",
     "schema": [
-      { "name": "UsersId", "datatype": "string", "type": "raw", "nullable": false, "Description": "PK: the user's email." },
-      { "name": "FullName", "datatype": "string", "type": "raw", "nullable": false },
-      { "name": "Role", "datatype": "string", "type": "raw", "nullable": false, "Description": "therapist | supervisor | client" },
-      { "name": "Name", "datatype": "string", "type": "calculated", "formula": "={{UsersId}}" },
-      { "name": "ClientCount", "datatype": "integer", "type": "aggregation", "formula": "=COUNTIF(Clients!{{Therapist}}, Users!{{UsersId}})" }
+      {
+        "name": "UsersId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "PK: the user's email."
+      },
+      {
+        "name": "FullName",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "Role",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "therapist | supervisor | client"
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "formula": "={{UsersId}}"
+      },
+      {
+        "name": "ClientCount",
+        "datatype": "integer",
+        "type": "aggregation",
+        "formula": "=COUNTIF(Clients!{{Therapist}}, Users!{{UsersId}})"
+      }
     ],
     "data": [
-      { "UsersId": "tess@example.com",   "FullName": "Dr. Tess Brennan",         "Role": "therapist" },
-      { "UsersId": "rob@example.com",    "FullName": "Dr. Rob Singh",            "Role": "therapist" },
-      { "UsersId": "sue@example.com",    "FullName": "Dr. Sue Chen (Supervisor)", "Role": "supervisor" },
-      { "UsersId": "client@example.com", "FullName": "Alex Rivera",              "Role": "client" }
+      {
+        "UsersId": "tess@example.com",
+        "FullName": "Dr. Tess Brennan",
+        "Role": "therapist"
+      },
+      {
+        "UsersId": "rob@example.com",
+        "FullName": "Dr. Rob Singh",
+        "Role": "therapist"
+      },
+      {
+        "UsersId": "sue@example.com",
+        "FullName": "Dr. Sue Chen (Supervisor)",
+        "Role": "supervisor"
+      },
+      {
+        "UsersId": "client@example.com",
+        "FullName": "Alex Rivera",
+        "Role": "client"
+      }
     ]
   },
   "Clients": {
     "Description": "People in treatment. Each has an assigned therapist, a set of goals, and a stream of sessions.",
+    "important": true,
+    "summary_rich": "The **people in care**. Each client has an assigned therapist, a handful of treatment goals, and a stream of sessions. The interesting wiring lives here: a client's at-risk status is not a column anyone types — it falls out of the rollups across that client's goals and sessions. Bump a single `ScoreAchieved` on one `GoalUpdate` and the same client's `AvgGoalProgress`, `IsAtRisk`, and `StatusLabel` all re-derive without a single line of application code.",
+    "important_fields": [
+      "ClientName",
+      "TherapistName",
+      "AvgGoalProgress",
+      "StatusLabel"
+    ],
     "schema": [
-      { "name": "ClientsId", "datatype": "string", "type": "raw", "nullable": false, "Description": "PK: short slug." },
-      { "name": "ClientName", "datatype": "string", "type": "raw", "nullable": false },
-      { "name": "Therapist", "datatype": "string", "type": "relationship", "RelatedTo": "Users", "Description": "FK to Users.UsersId." },
-      { "name": "TherapistName", "datatype": "string", "type": "lookup", "formula": "=INDEX(Users!{{FullName}}, MATCH(Clients!{{Therapist}}, Users!{{UsersId}}, 0))" },
-      { "name": "StartDate", "datatype": "string", "type": "raw", "nullable": true },
-      { "name": "Name", "datatype": "string", "type": "calculated", "formula": "={{ClientsId}}" },
-      { "name": "SessionCount", "datatype": "integer", "type": "aggregation", "formula": "=COUNTIF(Sessions!{{Client}}, Clients!{{ClientsId}})" },
-      { "name": "AvgMoodRating", "datatype": "number", "type": "aggregation", "formula": "=AVERAGEIFS(Sessions!{{MoodRating}}, Sessions!{{Client}}, Clients!{{ClientsId}})" },
-      { "name": "GoalCount", "datatype": "integer", "type": "aggregation", "formula": "=COUNTIF(Goals!{{Client}}, Clients!{{ClientsId}})" },
-      { "name": "AvgGoalProgress", "datatype": "number", "type": "aggregation", "formula": "=AVERAGEIFS(Goals!{{ProgressPct}}, Goals!{{Client}}, Clients!{{ClientsId}})", "Description": "2nd-order: aggregates Goal.ProgressPct (a calc)." },
-      { "name": "LastSessionLabel", "datatype": "string", "type": "aggregation", "formula": "=MAXIFS(Sessions!{{SessionLabel}}, Sessions!{{Client}}, Clients!{{ClientsId}})", "Description": "Most recent session label for this client." },
-      { "name": "IsAtRisk", "datatype": "boolean", "type": "calculated", "formula": "=OR({{AvgMoodRating}} < 5, {{AvgGoalProgress}} < 50)", "Description": "3rd-order: low mood OR low avg goal progress." },
-      { "name": "StatusLabel", "datatype": "string", "type": "calculated", "formula": "=IF({{IsAtRisk}}, \"At risk\", \"On track\")", "Description": "4th-order: human-readable client status derived from IsAtRisk." }
+      {
+        "name": "ClientsId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "PK: short slug."
+      },
+      {
+        "name": "ClientName",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "Therapist",
+        "datatype": "string",
+        "type": "relationship",
+        "RelatedTo": "Users",
+        "Description": "FK to Users.UsersId."
+      },
+      {
+        "name": "TherapistName",
+        "datatype": "string",
+        "type": "lookup",
+        "formula": "=INDEX(Users!{{FullName}}, MATCH(Clients!{{Therapist}}, Users!{{UsersId}}, 0))"
+      },
+      {
+        "name": "StartDate",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "formula": "={{ClientsId}}"
+      },
+      {
+        "name": "SessionCount",
+        "datatype": "integer",
+        "type": "aggregation",
+        "formula": "=COUNTIF(Sessions!{{Client}}, Clients!{{ClientsId}})"
+      },
+      {
+        "name": "AvgMoodRating",
+        "datatype": "number",
+        "type": "aggregation",
+        "formula": "=AVERAGEIFS(Sessions!{{MoodRating}}, Sessions!{{Client}}, Clients!{{ClientsId}})"
+      },
+      {
+        "name": "GoalCount",
+        "datatype": "integer",
+        "type": "aggregation",
+        "formula": "=COUNTIF(Goals!{{Client}}, Clients!{{ClientsId}})"
+      },
+      {
+        "name": "AvgGoalProgress",
+        "datatype": "number",
+        "type": "aggregation",
+        "formula": "=AVERAGEIFS(Goals!{{ProgressPct}}, Goals!{{Client}}, Clients!{{ClientsId}})",
+        "Description": "2nd-order: aggregates Goal.ProgressPct (a calc)."
+      },
+      {
+        "name": "LastSessionLabel",
+        "datatype": "string",
+        "type": "aggregation",
+        "formula": "=MAXIFS(Sessions!{{SessionLabel}}, Sessions!{{Client}}, Clients!{{ClientsId}})",
+        "Description": "Most recent session label for this client."
+      },
+      {
+        "name": "IsAtRisk",
+        "datatype": "boolean",
+        "type": "calculated",
+        "formula": "=OR({{AvgMoodRating}} < 5, {{AvgGoalProgress}} < 50)",
+        "Description": "3rd-order: low mood OR low avg goal progress.",
+        "important": true,
+        "explanation_rich": "**The clinical-attention signal — derived, never typed.** A client is flagged at-risk when *either* their session-averaged `MoodRating` drops below 5 *or* their average goal `ProgressPct` falls below 50. No one writes \"at risk\" into a column; it falls out of the data. Worked example: Blair Morgan's three sessions averaged a mood of 4.0 — below the threshold — so this resolves to `TRUE` and Blair surfaces on the supervisor's at-risk roster the same instant the session is saved. Bump the next session's `MoodRating` up to 6 and the same field flips back to `FALSE` without anyone editing a status column."
+      },
+      {
+        "name": "StatusLabel",
+        "datatype": "string",
+        "type": "calculated",
+        "formula": "=IF({{IsAtRisk}}, \"At risk\", \"On track\")",
+        "Description": "4th-order: human-readable client status derived from IsAtRisk.",
+        "important": true,
+        "explanation_rich": "**The label the supervisor actually reads.** `StatusLabel` is the fourth hop in the chain — it just translates the boolean `IsAtRisk` into the words \"At risk\" or \"On track\" so a human can scan the client roster at a glance. Worked example: Alex Rivera's sessions averaged a mood of 7.3 and goal progress around 76%, so `IsAtRisk` is `FALSE` and this resolves to **\"On track\"**. Blair Morgan's lower mood average flips both fields the other way — **\"At risk\"** — and the same string appears identically in the Postgres view, the Python `Client` dataclass, the Excel cell, and the OWL ontology."
+      }
     ],
     "data": [
-      { "ClientsId": "alex-r",  "ClientName": "Alex Rivera",  "Therapist": "tess@example.com", "StartDate": "2026-01-15" },
-      { "ClientsId": "blair-m", "ClientName": "Blair Morgan", "Therapist": "tess@example.com", "StartDate": "2026-02-03" },
-      { "ClientsId": "casey-l", "ClientName": "Casey Lin",    "Therapist": "rob@example.com",  "StartDate": "2025-11-22" },
-      { "ClientsId": "drew-p",  "ClientName": "Drew Patel",   "Therapist": "rob@example.com",  "StartDate": "2026-03-01" }
+      {
+        "ClientsId": "alex-r",
+        "ClientName": "Alex Rivera",
+        "Therapist": "tess@example.com",
+        "StartDate": "2026-01-15"
+      },
+      {
+        "ClientsId": "blair-m",
+        "ClientName": "Blair Morgan",
+        "Therapist": "tess@example.com",
+        "StartDate": "2026-02-03"
+      },
+      {
+        "ClientsId": "casey-l",
+        "ClientName": "Casey Lin",
+        "Therapist": "rob@example.com",
+        "StartDate": "2025-11-22"
+      },
+      {
+        "ClientsId": "drew-p",
+        "ClientName": "Drew Patel",
+        "Therapist": "rob@example.com",
+        "StartDate": "2026-03-01"
+      }
     ]
   },
   "Goals": {
     "Description": "Treatment goals owned by a client. TargetScore is editable.",
+    "important": true,
+    "summary_rich": "The **treatment plan**, one row per goal. Each goal carries a `TargetScore` set by the therapist and accumulates `GoalUpdate` rows from sessions. `ProgressPct` is the middle hop of the three-hop DAG — it averages every recorded score against the target, and that number is what the client-level `IsAtRisk` rule reads.",
+    "important_fields": [
+      "Title",
+      "ClientName",
+      "TargetScore",
+      "ProgressPct"
+    ],
     "schema": [
-      { "name": "GoalsId", "datatype": "string", "type": "raw", "nullable": false },
-      { "name": "Title", "datatype": "string", "type": "raw", "nullable": false },
-      { "name": "Client", "datatype": "string", "type": "relationship", "RelatedTo": "Clients" },
-      { "name": "ClientName", "datatype": "string", "type": "lookup", "formula": "=INDEX(Clients!{{ClientName}}, MATCH(Goals!{{Client}}, Clients!{{ClientsId}}, 0))" },
-      { "name": "ClientTherapist", "datatype": "string", "type": "lookup", "formula": "=INDEX(Clients!{{Therapist}}, MATCH(Goals!{{Client}}, Clients!{{ClientsId}}, 0))" },
-      { "name": "TargetScore", "datatype": "number", "type": "raw", "nullable": false, "Description": "0-10. EDITABLE." },
-      { "name": "Name", "datatype": "string", "type": "calculated", "formula": "={{GoalsId}}" },
-      { "name": "UpdateCount", "datatype": "integer", "type": "aggregation", "formula": "=COUNTIF(GoalUpdates!{{Goal}}, Goals!{{GoalsId}})" },
-      { "name": "AvgScoreAchieved", "datatype": "number", "type": "aggregation", "formula": "=AVERAGEIFS(GoalUpdates!{{ScoreAchieved}}, GoalUpdates!{{Goal}}, Goals!{{GoalsId}})" },
-      { "name": "LatestScore", "datatype": "number", "type": "aggregation", "formula": "=MAXIFS(GoalUpdates!{{ScoreAchieved}}, GoalUpdates!{{Goal}}, Goals!{{GoalsId}})", "Description": "Best score recorded against this goal." },
-      { "name": "ProgressPct", "datatype": "number", "type": "calculated", "formula": "=IFERROR({{AvgScoreAchieved}} / {{TargetScore}} * 100, 0)", "Description": "2nd-order." },
-      { "name": "RemainingGap", "datatype": "number", "type": "calculated", "formula": "=MAX(0, {{TargetScore}} - {{AvgScoreAchieved}})", "Description": "2nd-order: distance to target." },
-      { "name": "IsOnTrack", "datatype": "boolean", "type": "calculated", "formula": "={{ProgressPct}} >= 70", "Description": "3rd-order." }
+      {
+        "name": "GoalsId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "Title",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "Client",
+        "datatype": "string",
+        "type": "relationship",
+        "RelatedTo": "Clients"
+      },
+      {
+        "name": "ClientName",
+        "datatype": "string",
+        "type": "lookup",
+        "formula": "=INDEX(Clients!{{ClientName}}, MATCH(Goals!{{Client}}, Clients!{{ClientsId}}, 0))"
+      },
+      {
+        "name": "ClientTherapist",
+        "datatype": "string",
+        "type": "lookup",
+        "formula": "=INDEX(Clients!{{Therapist}}, MATCH(Goals!{{Client}}, Clients!{{ClientsId}}, 0))"
+      },
+      {
+        "name": "TargetScore",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": false,
+        "Description": "0-10. EDITABLE."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "formula": "={{GoalsId}}"
+      },
+      {
+        "name": "UpdateCount",
+        "datatype": "integer",
+        "type": "aggregation",
+        "formula": "=COUNTIF(GoalUpdates!{{Goal}}, Goals!{{GoalsId}})"
+      },
+      {
+        "name": "AvgScoreAchieved",
+        "datatype": "number",
+        "type": "aggregation",
+        "formula": "=AVERAGEIFS(GoalUpdates!{{ScoreAchieved}}, GoalUpdates!{{Goal}}, Goals!{{GoalsId}})"
+      },
+      {
+        "name": "LatestScore",
+        "datatype": "number",
+        "type": "aggregation",
+        "formula": "=MAXIFS(GoalUpdates!{{ScoreAchieved}}, GoalUpdates!{{Goal}}, Goals!{{GoalsId}})",
+        "Description": "Best score recorded against this goal."
+      },
+      {
+        "name": "ProgressPct",
+        "datatype": "number",
+        "type": "calculated",
+        "formula": "=IFERROR({{AvgScoreAchieved}} / {{TargetScore}} * 100, 0)",
+        "Description": "2nd-order.",
+        "important": true,
+        "explanation_rich": "**The middle hop of the three-hop DAG.** `ProgressPct` is the bridge from raw session entries to a client-level risk signal. It averages every `ScoreAchieved` recorded against this goal, divides by the editable `TargetScore`, and reports a percentage. Worked example: *Reduce anxiety in social settings* (TargetScore = 8) has three `GoalUpdate` rows scoring 5, 6, and 7. Average = 6; 6 / 8 * 100 = **75%**, so `IsOnTrack` is true. Edit any one of those three scores and this field — plus the client's `AvgGoalProgress`, `IsAtRisk`, and `StatusLabel` — all recompute in the same read."
+      },
+      {
+        "name": "RemainingGap",
+        "datatype": "number",
+        "type": "calculated",
+        "formula": "=MAX(0, {{TargetScore}} - {{AvgScoreAchieved}})",
+        "Description": "2nd-order: distance to target."
+      },
+      {
+        "name": "IsOnTrack",
+        "datatype": "boolean",
+        "type": "calculated",
+        "formula": "={{ProgressPct}} >= 70",
+        "Description": "3rd-order."
+      }
     ],
     "data": [
-      { "GoalsId": "alex-anxiety",  "Title": "Reduce anxiety in social settings", "Client": "alex-r",  "TargetScore": 8 },
-      { "GoalsId": "alex-sleep",    "Title": "Improve sleep quality",              "Client": "alex-r",  "TargetScore": 7 },
-      { "GoalsId": "blair-mood",    "Title": "Stabilize daily mood",                "Client": "blair-m", "TargetScore": 8 },
-      { "GoalsId": "blair-journal", "Title": "Daily journaling",                    "Client": "blair-m", "TargetScore": 6 },
-      { "GoalsId": "casey-grief",   "Title": "Work through grief",                  "Client": "casey-l", "TargetScore": 9 },
-      { "GoalsId": "casey-routine", "Title": "Establish morning routine",           "Client": "casey-l", "TargetScore": 7 },
-      { "GoalsId": "drew-focus",    "Title": "Improve work focus",                  "Client": "drew-p",  "TargetScore": 8 },
-      { "GoalsId": "drew-exercise", "Title": "Exercise 3x per week",                "Client": "drew-p",  "TargetScore": 7 }
+      {
+        "GoalsId": "alex-anxiety",
+        "Title": "Reduce anxiety in social settings",
+        "Client": "alex-r",
+        "TargetScore": 8
+      },
+      {
+        "GoalsId": "alex-sleep",
+        "Title": "Improve sleep quality",
+        "Client": "alex-r",
+        "TargetScore": 7
+      },
+      {
+        "GoalsId": "blair-mood",
+        "Title": "Stabilize daily mood",
+        "Client": "blair-m",
+        "TargetScore": 8
+      },
+      {
+        "GoalsId": "blair-journal",
+        "Title": "Daily journaling",
+        "Client": "blair-m",
+        "TargetScore": 6
+      },
+      {
+        "GoalsId": "casey-grief",
+        "Title": "Work through grief",
+        "Client": "casey-l",
+        "TargetScore": 9
+      },
+      {
+        "GoalsId": "casey-routine",
+        "Title": "Establish morning routine",
+        "Client": "casey-l",
+        "TargetScore": 7
+      },
+      {
+        "GoalsId": "drew-focus",
+        "Title": "Improve work focus",
+        "Client": "drew-p",
+        "TargetScore": 8
+      },
+      {
+        "GoalsId": "drew-exercise",
+        "Title": "Exercise 3x per week",
+        "Client": "drew-p",
+        "TargetScore": 7
+      }
     ]
   },
   "Sessions": {
     "Description": "Therapy sessions. MoodRating is editable and feeds the client-level rollup.",
+    "important": true,
+    "summary_rich": "The **session stream** — one row per appointment. Each session captures a mood rating and a set of `GoalUpdate` entries. Mood ratings feed the client-level `AvgMoodRating`; goal updates feed `Goal.ProgressPct`. Edit a single `MoodRating` here and the whole chain — session → client → at-risk roster — re-derives.",
+    "important_fields": [
+      "SessionLabel",
+      "ClientName",
+      "MoodRating",
+      "StatusLabel"
+    ],
     "schema": [
-      { "name": "SessionsId", "datatype": "string", "type": "raw", "nullable": false },
-      { "name": "Client", "datatype": "string", "type": "relationship", "RelatedTo": "Clients" },
-      { "name": "ClientName", "datatype": "string", "type": "lookup", "formula": "=INDEX(Clients!{{ClientName}}, MATCH(Sessions!{{Client}}, Clients!{{ClientsId}}, 0))" },
-      { "name": "ClientTherapist", "datatype": "string", "type": "lookup", "formula": "=INDEX(Clients!{{Therapist}}, MATCH(Sessions!{{Client}}, Clients!{{ClientsId}}, 0))" },
-      { "name": "SessionLabel", "datatype": "string", "type": "raw", "nullable": false },
-      { "name": "DurationMinutes", "datatype": "integer", "type": "raw", "nullable": true },
-      { "name": "MoodRating", "datatype": "integer", "type": "raw", "nullable": false, "Description": "1-10. EDITABLE." },
-      { "name": "Notes", "datatype": "string", "type": "raw", "nullable": true },
-      { "name": "Name", "datatype": "string", "type": "calculated", "formula": "={{SessionsId}}" },
-      { "name": "UpdateCount", "datatype": "integer", "type": "aggregation", "formula": "=COUNTIFS(GoalUpdates!{{Session}}, Sessions!{{SessionsId}})", "Description": "Goal updates recorded this session." },
-      { "name": "AvgScoreAchieved", "datatype": "number", "type": "aggregation", "formula": "=AVERAGEIFS(GoalUpdates!{{ScoreAchieved}}, GoalUpdates!{{Session}}, Sessions!{{SessionsId}})", "Description": "Average update score for this session." },
-      { "name": "IsProductive", "datatype": "boolean", "type": "calculated", "formula": "=AND({{UpdateCount}} >= 2, {{AvgScoreAchieved}} >= 5)", "Description": "2nd-order: session captured >=2 goal updates AND avg score >=5." },
-      { "name": "StatusLabel", "datatype": "string", "type": "calculated", "formula": "=IF({{IsProductive}}, \"Productive\", \"Light\")", "Description": "3rd-order: human-readable session status derived from IsProductive." }
+      {
+        "name": "SessionsId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "Client",
+        "datatype": "string",
+        "type": "relationship",
+        "RelatedTo": "Clients"
+      },
+      {
+        "name": "ClientName",
+        "datatype": "string",
+        "type": "lookup",
+        "formula": "=INDEX(Clients!{{ClientName}}, MATCH(Sessions!{{Client}}, Clients!{{ClientsId}}, 0))"
+      },
+      {
+        "name": "ClientTherapist",
+        "datatype": "string",
+        "type": "lookup",
+        "formula": "=INDEX(Clients!{{Therapist}}, MATCH(Sessions!{{Client}}, Clients!{{ClientsId}}, 0))"
+      },
+      {
+        "name": "SessionLabel",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "DurationMinutes",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "MoodRating",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "1-10. EDITABLE."
+      },
+      {
+        "name": "Notes",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "formula": "={{SessionsId}}"
+      },
+      {
+        "name": "UpdateCount",
+        "datatype": "integer",
+        "type": "aggregation",
+        "formula": "=COUNTIFS(GoalUpdates!{{Session}}, Sessions!{{SessionsId}})",
+        "Description": "Goal updates recorded this session."
+      },
+      {
+        "name": "AvgScoreAchieved",
+        "datatype": "number",
+        "type": "aggregation",
+        "formula": "=AVERAGEIFS(GoalUpdates!{{ScoreAchieved}}, GoalUpdates!{{Session}}, Sessions!{{SessionsId}})",
+        "Description": "Average update score for this session."
+      },
+      {
+        "name": "IsProductive",
+        "datatype": "boolean",
+        "type": "calculated",
+        "formula": "=AND({{UpdateCount}} >= 2, {{AvgScoreAchieved}} >= 5)",
+        "Description": "2nd-order: session captured >=2 goal updates AND avg score >=5.",
+        "important": true,
+        "explanation_rich": "**Did this session actually move the treatment plan?** A session is flagged productive only when *both* signals line up: the therapist recorded at least two `GoalUpdate` entries (so progress was actually captured) *and* the average score across those updates was 5 or higher. Worked example: session `ses-002` for Alex Rivera captured two updates (anxiety = 6, sleep = 6), averaging 6.0 — both checks pass, so `IsProductive` resolves to `TRUE` and `StatusLabel` reads \"Productive\". A session with only one update, or with an average below 5, drops to \"Light\" without anyone editing a status field."
+      },
+      {
+        "name": "StatusLabel",
+        "datatype": "string",
+        "type": "calculated",
+        "formula": "=IF({{IsProductive}}, \"Productive\", \"Light\")",
+        "Description": "3rd-order: human-readable session status derived from IsProductive."
+      }
     ],
     "data": [
-      { "SessionsId": "ses-001", "Client": "alex-r",  "SessionLabel": "2026-04-02 am", "DurationMinutes": 50, "MoodRating": 7, "Notes": "Good engagement." },
-      { "SessionsId": "ses-002", "Client": "alex-r",  "SessionLabel": "2026-04-09 am", "DurationMinutes": 50, "MoodRating": 8, "Notes": "Reported better sleep." },
-      { "SessionsId": "ses-003", "Client": "alex-r",  "SessionLabel": "2026-04-16 am", "DurationMinutes": 50, "MoodRating": 7, "Notes": "" },
-      { "SessionsId": "ses-004", "Client": "blair-m", "SessionLabel": "2026-04-03 pm", "DurationMinutes": 45, "MoodRating": 4, "Notes": "Tough week." },
-      { "SessionsId": "ses-005", "Client": "blair-m", "SessionLabel": "2026-04-10 pm", "DurationMinutes": 45, "MoodRating": 5, "Notes": "" },
-      { "SessionsId": "ses-006", "Client": "blair-m", "SessionLabel": "2026-04-17 pm", "DurationMinutes": 45, "MoodRating": 3, "Notes": "Sleep poor." },
-      { "SessionsId": "ses-007", "Client": "casey-l", "SessionLabel": "2026-04-04 am", "DurationMinutes": 60, "MoodRating": 6, "Notes": "Grief work." },
-      { "SessionsId": "ses-008", "Client": "casey-l", "SessionLabel": "2026-04-11 am", "DurationMinutes": 60, "MoodRating": 7, "Notes": "" },
-      { "SessionsId": "ses-009", "Client": "drew-p",  "SessionLabel": "2026-04-05 pm", "DurationMinutes": 50, "MoodRating": 8, "Notes": "Strong." },
-      { "SessionsId": "ses-010", "Client": "drew-p",  "SessionLabel": "2026-04-12 pm", "DurationMinutes": 50, "MoodRating": 9, "Notes": "Excellent." }
+      {
+        "SessionsId": "ses-001",
+        "Client": "alex-r",
+        "SessionLabel": "2026-04-02 am",
+        "DurationMinutes": 50,
+        "MoodRating": 7,
+        "Notes": "Good engagement."
+      },
+      {
+        "SessionsId": "ses-002",
+        "Client": "alex-r",
+        "SessionLabel": "2026-04-09 am",
+        "DurationMinutes": 50,
+        "MoodRating": 8,
+        "Notes": "Reported better sleep."
+      },
+      {
+        "SessionsId": "ses-003",
+        "Client": "alex-r",
+        "SessionLabel": "2026-04-16 am",
+        "DurationMinutes": 50,
+        "MoodRating": 7,
+        "Notes": ""
+      },
+      {
+        "SessionsId": "ses-004",
+        "Client": "blair-m",
+        "SessionLabel": "2026-04-03 pm",
+        "DurationMinutes": 45,
+        "MoodRating": 4,
+        "Notes": "Tough week."
+      },
+      {
+        "SessionsId": "ses-005",
+        "Client": "blair-m",
+        "SessionLabel": "2026-04-10 pm",
+        "DurationMinutes": 45,
+        "MoodRating": 5,
+        "Notes": ""
+      },
+      {
+        "SessionsId": "ses-006",
+        "Client": "blair-m",
+        "SessionLabel": "2026-04-17 pm",
+        "DurationMinutes": 45,
+        "MoodRating": 3,
+        "Notes": "Sleep poor."
+      },
+      {
+        "SessionsId": "ses-007",
+        "Client": "casey-l",
+        "SessionLabel": "2026-04-04 am",
+        "DurationMinutes": 60,
+        "MoodRating": 6,
+        "Notes": "Grief work."
+      },
+      {
+        "SessionsId": "ses-008",
+        "Client": "casey-l",
+        "SessionLabel": "2026-04-11 am",
+        "DurationMinutes": 60,
+        "MoodRating": 7,
+        "Notes": ""
+      },
+      {
+        "SessionsId": "ses-009",
+        "Client": "drew-p",
+        "SessionLabel": "2026-04-05 pm",
+        "DurationMinutes": 50,
+        "MoodRating": 8,
+        "Notes": "Strong."
+      },
+      {
+        "SessionsId": "ses-010",
+        "Client": "drew-p",
+        "SessionLabel": "2026-04-12 pm",
+        "DurationMinutes": 50,
+        "MoodRating": 9,
+        "Notes": "Excellent."
+      }
     ]
   },
   "GoalUpdates": {
     "Description": "Per-session goal progress entries. ScoreAchieved is editable.",
     "schema": [
-      { "name": "GoalUpdatesId", "datatype": "string", "type": "raw", "nullable": false },
-      { "name": "Goal", "datatype": "string", "type": "relationship", "RelatedTo": "Goals" },
-      { "name": "GoalTitle", "datatype": "string", "type": "lookup", "formula": "=INDEX(Goals!{{Title}}, MATCH(GoalUpdates!{{Goal}}, Goals!{{GoalsId}}, 0))" },
-      { "name": "GoalClient", "datatype": "string", "type": "lookup", "formula": "=INDEX(Goals!{{Client}}, MATCH(GoalUpdates!{{Goal}}, Goals!{{GoalsId}}, 0))" },
-      { "name": "GoalTargetScore", "datatype": "number", "type": "lookup", "formula": "=INDEX(Goals!{{TargetScore}}, MATCH(GoalUpdates!{{Goal}}, Goals!{{GoalsId}}, 0))" },
-      { "name": "GoalClientTherapist", "datatype": "string", "type": "lookup", "formula": "=INDEX(Goals!{{ClientTherapist}}, MATCH(GoalUpdates!{{Goal}}, Goals!{{GoalsId}}, 0))" },
-      { "name": "Session", "datatype": "string", "type": "relationship", "RelatedTo": "Sessions" },
-      { "name": "SessionLabel", "datatype": "string", "type": "lookup", "formula": "=INDEX(Sessions!{{SessionLabel}}, MATCH(GoalUpdates!{{Session}}, Sessions!{{SessionsId}}, 0))" },
-      { "name": "ScoreAchieved", "datatype": "number", "type": "raw", "nullable": false, "Description": "0-10. EDITABLE." },
-      { "name": "Name", "datatype": "string", "type": "calculated", "formula": "={{GoalUpdatesId}}" }
+      {
+        "name": "GoalUpdatesId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "Goal",
+        "datatype": "string",
+        "type": "relationship",
+        "RelatedTo": "Goals"
+      },
+      {
+        "name": "GoalTitle",
+        "datatype": "string",
+        "type": "lookup",
+        "formula": "=INDEX(Goals!{{Title}}, MATCH(GoalUpdates!{{Goal}}, Goals!{{GoalsId}}, 0))"
+      },
+      {
+        "name": "GoalClient",
+        "datatype": "string",
+        "type": "lookup",
+        "formula": "=INDEX(Goals!{{Client}}, MATCH(GoalUpdates!{{Goal}}, Goals!{{GoalsId}}, 0))"
+      },
+      {
+        "name": "GoalTargetScore",
+        "datatype": "number",
+        "type": "lookup",
+        "formula": "=INDEX(Goals!{{TargetScore}}, MATCH(GoalUpdates!{{Goal}}, Goals!{{GoalsId}}, 0))"
+      },
+      {
+        "name": "GoalClientTherapist",
+        "datatype": "string",
+        "type": "lookup",
+        "formula": "=INDEX(Goals!{{ClientTherapist}}, MATCH(GoalUpdates!{{Goal}}, Goals!{{GoalsId}}, 0))"
+      },
+      {
+        "name": "Session",
+        "datatype": "string",
+        "type": "relationship",
+        "RelatedTo": "Sessions"
+      },
+      {
+        "name": "SessionLabel",
+        "datatype": "string",
+        "type": "lookup",
+        "formula": "=INDEX(Sessions!{{SessionLabel}}, MATCH(GoalUpdates!{{Session}}, Sessions!{{SessionsId}}, 0))"
+      },
+      {
+        "name": "ScoreAchieved",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": false,
+        "Description": "0-10. EDITABLE."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "formula": "={{GoalUpdatesId}}"
+      }
     ],
     "data": [
-      { "GoalUpdatesId": "upd-001", "Goal": "alex-anxiety",  "Session": "ses-001", "ScoreAchieved": 5 },
-      { "GoalUpdatesId": "upd-002", "Goal": "alex-anxiety",  "Session": "ses-002", "ScoreAchieved": 6 },
-      { "GoalUpdatesId": "upd-003", "Goal": "alex-anxiety",  "Session": "ses-003", "ScoreAchieved": 7 },
-      { "GoalUpdatesId": "upd-004", "Goal": "alex-sleep",    "Session": "ses-002", "ScoreAchieved": 6 },
-      { "GoalUpdatesId": "upd-005", "Goal": "alex-sleep",    "Session": "ses-003", "ScoreAchieved": 6 },
-      { "GoalUpdatesId": "upd-006", "Goal": "blair-mood",    "Session": "ses-004", "ScoreAchieved": 3 },
-      { "GoalUpdatesId": "upd-007", "Goal": "blair-mood",    "Session": "ses-005", "ScoreAchieved": 3 },
-      { "GoalUpdatesId": "upd-008", "Goal": "blair-mood",    "Session": "ses-006", "ScoreAchieved": 2 },
-      { "GoalUpdatesId": "upd-009", "Goal": "blair-journal", "Session": "ses-005", "ScoreAchieved": 4 },
-      { "GoalUpdatesId": "upd-010", "Goal": "casey-grief",   "Session": "ses-007", "ScoreAchieved": 4 },
-      { "GoalUpdatesId": "upd-011", "Goal": "casey-grief",   "Session": "ses-008", "ScoreAchieved": 5 },
-      { "GoalUpdatesId": "upd-012", "Goal": "casey-routine", "Session": "ses-008", "ScoreAchieved": 6 },
-      { "GoalUpdatesId": "upd-013", "Goal": "drew-focus",    "Session": "ses-009", "ScoreAchieved": 7 },
-      { "GoalUpdatesId": "upd-014", "Goal": "drew-focus",    "Session": "ses-010", "ScoreAchieved": 8 },
-      { "GoalUpdatesId": "upd-015", "Goal": "drew-exercise", "Session": "ses-010", "ScoreAchieved": 6 }
+      {
+        "GoalUpdatesId": "upd-001",
+        "Goal": "alex-anxiety",
+        "Session": "ses-001",
+        "ScoreAchieved": 5
+      },
+      {
+        "GoalUpdatesId": "upd-002",
+        "Goal": "alex-anxiety",
+        "Session": "ses-002",
+        "ScoreAchieved": 6
+      },
+      {
+        "GoalUpdatesId": "upd-003",
+        "Goal": "alex-anxiety",
+        "Session": "ses-003",
+        "ScoreAchieved": 7
+      },
+      {
+        "GoalUpdatesId": "upd-004",
+        "Goal": "alex-sleep",
+        "Session": "ses-002",
+        "ScoreAchieved": 6
+      },
+      {
+        "GoalUpdatesId": "upd-005",
+        "Goal": "alex-sleep",
+        "Session": "ses-003",
+        "ScoreAchieved": 6
+      },
+      {
+        "GoalUpdatesId": "upd-006",
+        "Goal": "blair-mood",
+        "Session": "ses-004",
+        "ScoreAchieved": 3
+      },
+      {
+        "GoalUpdatesId": "upd-007",
+        "Goal": "blair-mood",
+        "Session": "ses-005",
+        "ScoreAchieved": 3
+      },
+      {
+        "GoalUpdatesId": "upd-008",
+        "Goal": "blair-mood",
+        "Session": "ses-006",
+        "ScoreAchieved": 2
+      },
+      {
+        "GoalUpdatesId": "upd-009",
+        "Goal": "blair-journal",
+        "Session": "ses-005",
+        "ScoreAchieved": 4
+      },
+      {
+        "GoalUpdatesId": "upd-010",
+        "Goal": "casey-grief",
+        "Session": "ses-007",
+        "ScoreAchieved": 4
+      },
+      {
+        "GoalUpdatesId": "upd-011",
+        "Goal": "casey-grief",
+        "Session": "ses-008",
+        "ScoreAchieved": 5
+      },
+      {
+        "GoalUpdatesId": "upd-012",
+        "Goal": "casey-routine",
+        "Session": "ses-008",
+        "ScoreAchieved": 6
+      },
+      {
+        "GoalUpdatesId": "upd-013",
+        "Goal": "drew-focus",
+        "Session": "ses-009",
+        "ScoreAchieved": 7
+      },
+      {
+        "GoalUpdatesId": "upd-014",
+        "Goal": "drew-focus",
+        "Session": "ses-010",
+        "ScoreAchieved": 8
+      },
+      {
+        "GoalUpdatesId": "upd-015",
+        "Goal": "drew-exercise",
+        "Session": "ses-010",
+        "ScoreAchieved": 6
+      }
+    ]
+  },
+  "Name": "Therapist Helper Portal",
+  "__meta__": {
+    "Description": "Project-level metadata that travels with the rulebook: tagline, motif, narrative descriptions, substrate list, signature rows, etc. One row per metadata key. Use ValueType to interpret StringValue vs JsonValue.",
+    "important": false,
+    "schema": [
+      {
+        "name": "MetaKey",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "The metadata key (e.g. 'tagline', 'motif_palette', 'substrates'). Unique within the table."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "formula": "={{MetaKey}}",
+        "Description": "Identifier for this metadata entry. Mirrors MetaKey so the row is addressable by Name like every other table."
+      },
+      {
+        "name": "ValueType",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "How to interpret the value columns: 'string' (use StringValue), 'object' (parse JsonValue as JSON object), 'array' (parse JsonValue as JSON array)."
+      },
+      {
+        "name": "StringValue",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Plain string value. Populated when ValueType == 'string'; null otherwise."
+      },
+      {
+        "name": "JsonValue",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "JSON-encoded value. Populated when ValueType == 'object' or 'array'; null when ValueType == 'string'."
+      }
+    ],
+    "data": [
+      {
+        "MetaKey": "tagline",
+        "Name": "tagline",
+        "ValueType": "string",
+        "StringValue": "A warm clinical workspace where session notes feed an at-risk roster — no status column required.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "motif",
+        "Name": "motif",
+        "ValueType": "string",
+        "StringValue": "corkboard",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "motif_palette",
+        "Name": "motif_palette",
+        "ValueType": "object",
+        "StringValue": null,
+        "JsonValue": "{\"primary\": \"#6e4b2a\", \"accent\": \"#d4a574\", \"ink\": \"#2a1e10\"}"
+      },
+      {
+        "MetaKey": "description_rich",
+        "Name": "description_rich",
+        "ValueType": "string",
+        "StringValue": "Therapist Helper Portal is a small clinical-care workspace — a handful of therapists, the clients in their care, the treatment goals on each client's plan, and the session-by-session entries that move those goals forward. The interesting thing isn't the schedule, it's the **three-hop DAG**: a therapist saves a `ScoreAchieved` on one `GoalUpdate`, that re-derives `Goal.ProgressPct`, which re-derives `Client.AvgGoalProgress`, which re-derives `Client.IsAtRisk` and the supervisor-facing `StatusLabel`. No one ever types \"at risk\" into a column — it falls out of the data the moment the session is saved, identically in Postgres, Python, Excel, and OWL.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "use_cases",
+        "Name": "use_cases",
+        "ValueType": "array",
+        "StringValue": null,
+        "JsonValue": "[\"**Save a productive session.** Open `ses-006` for Blair Morgan, raise `MoodRating` from 3 to 7, and watch `AvgMoodRating`, `IsAtRisk`, and `StatusLabel` recompute on the same client row.\", \"**Bump a goal score.** Edit `upd-008` (Blair's mood goal) and watch `Goal.ProgressPct` slide, `Goal.IsOnTrack` flip, and the client-level `AvgGoalProgress` follow — all without touching the client record.\", \"**Reassign a client to another therapist.** Change `Clients.Therapist` for Casey Lin and the `TherapistName` lookup, plus every session and goal that joins through it, re-resolves on the next read.\", \"**Ask the at-risk question in two substrates.** Run *\\\"which clients are at risk this week?\\\"* against the Postgres view, then against the Python module — same client list, no glue code.\", \"**Tighten a treatment plan.** Raise `Goal.TargetScore` for *Reduce anxiety in social settings* from 8 to 9 and watch `ProgressPct` drop without touching a single `GoalUpdate`.\"]"
+      },
+      {
+        "MetaKey": "signature_rows",
+        "Name": "signature_rows",
+        "ValueType": "array",
+        "StringValue": null,
+        "JsonValue": "[{\"entity\": \"Clients\", \"ids\": [\"alex-r\", \"blair-m\", \"casey-l\", \"drew-p\"]}, {\"entity\": \"Goals\", \"ids\": [\"alex-anxiety\", \"blair-mood\", \"drew-focus\"]}, {\"entity\": \"Sessions\", \"ids\": [\"ses-002\", \"ses-006\", \"ses-010\"]}]"
+      },
+      {
+        "MetaKey": "journal_seed",
+        "Name": "journal_seed",
+        "ValueType": "string",
+        "StringValue": "Four clients in care this month. Alex and Drew are on track; Casey is mid-plan; Blair's mood ratings drifted low enough to surface on the at-risk roster — a single strong session would flip the label back.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "substrates",
+        "Name": "substrates",
+        "ValueType": "array",
+        "StringValue": null,
+        "JsonValue": "[{\"key\": \"postgres\", \"important\": true, \"chip_label\": \"Postgres\"}, {\"key\": \"python\", \"important\": true, \"chip_label\": \"Python\"}, {\"key\": \"excel\", \"important\": false, \"chip_label\": \"Excel\"}, {\"key\": \"owl\", \"important\": false, \"chip_label\": \"OWL\"}]"
+      }
     ]
   }
 }

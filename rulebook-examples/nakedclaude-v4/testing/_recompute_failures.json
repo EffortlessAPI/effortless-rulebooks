@@ -1,0 +1,821 @@
+[
+  {
+    "entity": "Clients",
+    "field": "HasRecentInvoices",
+    "formula": "=IF({{LastInvoice}} > DATEADD(TODAY(), -220, 'days'), TRUE(), FALSE())",
+    "record_id": "bob",
+    "error": "SyntaxError: Unexpected character ''' at position 44"
+  },
+  {
+    "entity": "Clients",
+    "field": "CustomerSinceDays",
+    "formula": "=IF({{CreatedAt}}, DATETIME_DIFF(NOW(), {{CreatedAt}}, 'days'), BLANK())",
+    "record_id": "bob",
+    "error": "SyntaxError: Unexpected character ''' at position 54"
+  },
+  {
+    "entity": "Clients",
+    "field": "HasRecentInvoices",
+    "formula": "=IF({{LastInvoice}} > DATEADD(TODAY(), -220, 'days'), TRUE(), FALSE())",
+    "record_id": "alice-johnson",
+    "error": "SyntaxError: Unexpected character ''' at position 44"
+  },
+  {
+    "entity": "Clients",
+    "field": "CustomerSinceDays",
+    "formula": "=IF({{CreatedAt}}, DATETIME_DIFF(NOW(), {{CreatedAt}}, 'days'), BLANK())",
+    "record_id": "alice-johnson",
+    "error": "SyntaxError: Unexpected character ''' at position 54"
+  },
+  {
+    "entity": "Clients",
+    "field": "HasRecentInvoices",
+    "formula": "=IF({{LastInvoice}} > DATEADD(TODAY(), -220, 'days'), TRUE(), FALSE())",
+    "record_id": "brian-lee",
+    "error": "SyntaxError: Unexpected character ''' at position 44"
+  },
+  {
+    "entity": "Clients",
+    "field": "CustomerSinceDays",
+    "formula": "=IF({{CreatedAt}}, DATETIME_DIFF(NOW(), {{CreatedAt}}, 'days'), BLANK())",
+    "record_id": "brian-lee",
+    "error": "SyntaxError: Unexpected character ''' at position 54"
+  },
+  {
+    "entity": "Clients",
+    "field": "HasRecentInvoices",
+    "formula": "=IF({{LastInvoice}} > DATEADD(TODAY(), -220, 'days'), TRUE(), FALSE())",
+    "record_id": "carla-smith",
+    "error": "SyntaxError: Unexpected character ''' at position 44"
+  },
+  {
+    "entity": "Clients",
+    "field": "CustomerSinceDays",
+    "formula": "=IF({{CreatedAt}}, DATETIME_DIFF(NOW(), {{CreatedAt}}, 'days'), BLANK())",
+    "record_id": "carla-smith",
+    "error": "SyntaxError: Unexpected character ''' at position 54"
+  },
+  {
+    "entity": "Clients",
+    "field": "HasRecentInvoices",
+    "formula": "=IF({{LastInvoice}} > DATEADD(TODAY(), -220, 'days'), TRUE(), FALSE())",
+    "record_id": "caroline",
+    "error": "SyntaxError: Unexpected character ''' at position 44"
+  },
+  {
+    "entity": "Clients",
+    "field": "CustomerSinceDays",
+    "formula": "=IF({{CreatedAt}}, DATETIME_DIFF(NOW(), {{CreatedAt}}, 'days'), BLANK())",
+    "record_id": "caroline",
+    "error": "SyntaxError: Unexpected character ''' at position 54"
+  },
+  {
+    "entity": "Products",
+    "field": "Profit",
+    "formula": "={{UnitPrice}} - {{Cost}}",
+    "record_id": "gadget-200",
+    "error": "SyntaxError: Unexpected character '-' at position 14"
+  },
+  {
+    "entity": "Products",
+    "field": "Margin",
+    "formula": "=1 - ({{Cost}} / {{UnitPrice}})",
+    "record_id": "gadget-200",
+    "error": "SyntaxError: Unexpected character '-' at position 2"
+  },
+  {
+    "entity": "Products",
+    "field": "IsHighMargin",
+    "formula": "={{Margin}} > 0.65",
+    "record_id": "gadget-200",
+    "error": "SyntaxError: Unexpected character '.' at position 14"
+  },
+  {
+    "entity": "Products",
+    "field": "COGS",
+    "formula": "={{StockQuantity}} * {{Cost}}",
+    "record_id": "gadget-200",
+    "error": "SyntaxError: Unexpected character '*' at position 18"
+  },
+  {
+    "entity": "Products",
+    "field": "Profit",
+    "formula": "={{UnitPrice}} - {{Cost}}",
+    "record_id": "hub-7port",
+    "error": "SyntaxError: Unexpected character '-' at position 14"
+  },
+  {
+    "entity": "Products",
+    "field": "Margin",
+    "formula": "=1 - ({{Cost}} / {{UnitPrice}})",
+    "record_id": "hub-7port",
+    "error": "SyntaxError: Unexpected character '-' at position 2"
+  },
+  {
+    "entity": "Products",
+    "field": "IsHighMargin",
+    "formula": "={{Margin}} > 0.65",
+    "record_id": "hub-7port",
+    "error": "SyntaxError: Unexpected character '.' at position 14"
+  },
+  {
+    "entity": "Products",
+    "field": "COGS",
+    "formula": "={{StockQuantity}} * {{Cost}}",
+    "record_id": "hub-7port",
+    "error": "SyntaxError: Unexpected character '*' at position 18"
+  },
+  {
+    "entity": "Products",
+    "field": "Profit",
+    "formula": "={{UnitPrice}} - {{Cost}}",
+    "record_id": "cable-usb-c",
+    "error": "SyntaxError: Unexpected character '-' at position 14"
+  },
+  {
+    "entity": "Products",
+    "field": "Margin",
+    "formula": "=1 - ({{Cost}} / {{UnitPrice}})",
+    "record_id": "cable-usb-c",
+    "error": "SyntaxError: Unexpected character '-' at position 2"
+  },
+  {
+    "entity": "Products",
+    "field": "IsHighMargin",
+    "formula": "={{Margin}} > 0.65",
+    "record_id": "cable-usb-c",
+    "error": "SyntaxError: Unexpected character '.' at position 14"
+  },
+  {
+    "entity": "Products",
+    "field": "COGS",
+    "formula": "={{StockQuantity}} * {{Cost}}",
+    "record_id": "cable-usb-c",
+    "error": "SyntaxError: Unexpected character '*' at position 18"
+  },
+  {
+    "entity": "Products",
+    "field": "Profit",
+    "formula": "={{UnitPrice}} - {{Cost}}",
+    "record_id": "stand-alu",
+    "error": "SyntaxError: Unexpected character '-' at position 14"
+  },
+  {
+    "entity": "Products",
+    "field": "Margin",
+    "formula": "=1 - ({{Cost}} / {{UnitPrice}})",
+    "record_id": "stand-alu",
+    "error": "SyntaxError: Unexpected character '-' at position 2"
+  },
+  {
+    "entity": "Products",
+    "field": "IsHighMargin",
+    "formula": "={{Margin}} > 0.65",
+    "record_id": "stand-alu",
+    "error": "SyntaxError: Unexpected character '.' at position 14"
+  },
+  {
+    "entity": "Products",
+    "field": "COGS",
+    "formula": "={{StockQuantity}} * {{Cost}}",
+    "record_id": "stand-alu",
+    "error": "SyntaxError: Unexpected character '*' at position 18"
+  },
+  {
+    "entity": "Products",
+    "field": "Profit",
+    "formula": "={{UnitPrice}} - {{Cost}}",
+    "record_id": "widget-002",
+    "error": "SyntaxError: Unexpected character '-' at position 14"
+  },
+  {
+    "entity": "Products",
+    "field": "Margin",
+    "formula": "=1 - ({{Cost}} / {{UnitPrice}})",
+    "record_id": "widget-002",
+    "error": "SyntaxError: Unexpected character '-' at position 2"
+  },
+  {
+    "entity": "Products",
+    "field": "IsHighMargin",
+    "formula": "={{Margin}} > 0.65",
+    "record_id": "widget-002",
+    "error": "SyntaxError: Unexpected character '.' at position 14"
+  },
+  {
+    "entity": "Products",
+    "field": "COGS",
+    "formula": "={{StockQuantity}} * {{Cost}}",
+    "record_id": "widget-002",
+    "error": "SyntaxError: Unexpected character '*' at position 18"
+  },
+  {
+    "entity": "Products",
+    "field": "Profit",
+    "formula": "={{UnitPrice}} - {{Cost}}",
+    "record_id": "widget-001",
+    "error": "SyntaxError: Unexpected character '-' at position 14"
+  },
+  {
+    "entity": "Products",
+    "field": "Margin",
+    "formula": "=1 - ({{Cost}} / {{UnitPrice}})",
+    "record_id": "widget-001",
+    "error": "SyntaxError: Unexpected character '-' at position 2"
+  },
+  {
+    "entity": "Products",
+    "field": "IsHighMargin",
+    "formula": "={{Margin}} > 0.65",
+    "record_id": "widget-001",
+    "error": "SyntaxError: Unexpected character '.' at position 14"
+  },
+  {
+    "entity": "Products",
+    "field": "COGS",
+    "formula": "={{StockQuantity}} * {{Cost}}",
+    "record_id": "widget-001",
+    "error": "SyntaxError: Unexpected character '*' at position 18"
+  },
+  {
+    "entity": "Products",
+    "field": "Profit",
+    "formula": "={{UnitPrice}} - {{Cost}}",
+    "record_id": "case-leather",
+    "error": "SyntaxError: Unexpected character '-' at position 14"
+  },
+  {
+    "entity": "Products",
+    "field": "Margin",
+    "formula": "=1 - ({{Cost}} / {{UnitPrice}})",
+    "record_id": "case-leather",
+    "error": "SyntaxError: Unexpected character '-' at position 2"
+  },
+  {
+    "entity": "Products",
+    "field": "IsHighMargin",
+    "formula": "={{Margin}} > 0.65",
+    "record_id": "case-leather",
+    "error": "SyntaxError: Unexpected character '.' at position 14"
+  },
+  {
+    "entity": "Products",
+    "field": "COGS",
+    "formula": "={{StockQuantity}} * {{Cost}}",
+    "record_id": "case-leather",
+    "error": "SyntaxError: Unexpected character '*' at position 18"
+  },
+  {
+    "entity": "Products",
+    "field": "Profit",
+    "formula": "={{UnitPrice}} - {{Cost}}",
+    "record_id": "gadget-100",
+    "error": "SyntaxError: Unexpected character '-' at position 14"
+  },
+  {
+    "entity": "Products",
+    "field": "Margin",
+    "formula": "=1 - ({{Cost}} / {{UnitPrice}})",
+    "record_id": "gadget-100",
+    "error": "SyntaxError: Unexpected character '-' at position 2"
+  },
+  {
+    "entity": "Products",
+    "field": "IsHighMargin",
+    "formula": "={{Margin}} > 0.65",
+    "record_id": "gadget-100",
+    "error": "SyntaxError: Unexpected character '.' at position 14"
+  },
+  {
+    "entity": "Products",
+    "field": "COGS",
+    "formula": "={{StockQuantity}} * {{Cost}}",
+    "record_id": "gadget-100",
+    "error": "SyntaxError: Unexpected character '*' at position 18"
+  },
+  {
+    "entity": "Invoices",
+    "field": "TaxAmount",
+    "formula": "={{SubTotal}} * {{TaxRate}}",
+    "record_id": "brian-lee-1042",
+    "error": "SyntaxError: Unexpected character '*' at position 13"
+  },
+  {
+    "entity": "Invoices",
+    "field": "InvoiceTotal",
+    "formula": "={{SubTotal}} + {{TaxAmount}}",
+    "record_id": "brian-lee-1042",
+    "error": "SyntaxError: Unexpected character '+' at position 13"
+  },
+  {
+    "entity": "Invoices",
+    "field": "AmountDue",
+    "formula": "=ROUND({{InvoiceTotal}} - {{TotalPaid}}, 2)",
+    "record_id": "brian-lee-1042",
+    "error": "SyntaxError: Unexpected character '-' at position 23"
+  },
+  {
+    "entity": "Invoices",
+    "field": "TaxAmount",
+    "formula": "={{SubTotal}} * {{TaxRate}}",
+    "record_id": "caroline-1045",
+    "error": "SyntaxError: Unexpected character '*' at position 13"
+  },
+  {
+    "entity": "Invoices",
+    "field": "InvoiceTotal",
+    "formula": "={{SubTotal}} + {{TaxAmount}}",
+    "record_id": "caroline-1045",
+    "error": "SyntaxError: Unexpected character '+' at position 13"
+  },
+  {
+    "entity": "Invoices",
+    "field": "AmountDue",
+    "formula": "=ROUND({{InvoiceTotal}} - {{TotalPaid}}, 2)",
+    "record_id": "caroline-1045",
+    "error": "SyntaxError: Unexpected character '-' at position 23"
+  },
+  {
+    "entity": "Invoices",
+    "field": "TaxAmount",
+    "formula": "={{SubTotal}} * {{TaxRate}}",
+    "record_id": "alice-johnson-1010",
+    "error": "SyntaxError: Unexpected character '*' at position 13"
+  },
+  {
+    "entity": "Invoices",
+    "field": "InvoiceTotal",
+    "formula": "={{SubTotal}} + {{TaxAmount}}",
+    "record_id": "alice-johnson-1010",
+    "error": "SyntaxError: Unexpected character '+' at position 13"
+  },
+  {
+    "entity": "Invoices",
+    "field": "AmountDue",
+    "formula": "=ROUND({{InvoiceTotal}} - {{TotalPaid}}, 2)",
+    "record_id": "alice-johnson-1010",
+    "error": "SyntaxError: Unexpected character '-' at position 23"
+  },
+  {
+    "entity": "Invoices",
+    "field": "TaxAmount",
+    "formula": "={{SubTotal}} * {{TaxRate}}",
+    "record_id": "bob-1001",
+    "error": "SyntaxError: Unexpected character '*' at position 13"
+  },
+  {
+    "entity": "Invoices",
+    "field": "InvoiceTotal",
+    "formula": "={{SubTotal}} + {{TaxAmount}}",
+    "record_id": "bob-1001",
+    "error": "SyntaxError: Unexpected character '+' at position 13"
+  },
+  {
+    "entity": "Invoices",
+    "field": "AmountDue",
+    "formula": "=ROUND({{InvoiceTotal}} - {{TotalPaid}}, 2)",
+    "record_id": "bob-1001",
+    "error": "SyntaxError: Unexpected character '-' at position 23"
+  },
+  {
+    "entity": "Invoices",
+    "field": "TaxAmount",
+    "formula": "={{SubTotal}} * {{TaxRate}}",
+    "record_id": "carla-smith-1024",
+    "error": "SyntaxError: Unexpected character '*' at position 13"
+  },
+  {
+    "entity": "Invoices",
+    "field": "InvoiceTotal",
+    "formula": "={{SubTotal}} + {{TaxAmount}}",
+    "record_id": "carla-smith-1024",
+    "error": "SyntaxError: Unexpected character '+' at position 13"
+  },
+  {
+    "entity": "Invoices",
+    "field": "AmountDue",
+    "formula": "=ROUND({{InvoiceTotal}} - {{TotalPaid}}, 2)",
+    "record_id": "carla-smith-1024",
+    "error": "SyntaxError: Unexpected character '-' at position 23"
+  },
+  {
+    "entity": "Invoices",
+    "field": "TaxAmount",
+    "formula": "={{SubTotal}} * {{TaxRate}}",
+    "record_id": "brian-lee-1037",
+    "error": "SyntaxError: Unexpected character '*' at position 13"
+  },
+  {
+    "entity": "Invoices",
+    "field": "InvoiceTotal",
+    "formula": "={{SubTotal}} + {{TaxAmount}}",
+    "record_id": "brian-lee-1037",
+    "error": "SyntaxError: Unexpected character '+' at position 13"
+  },
+  {
+    "entity": "Invoices",
+    "field": "AmountDue",
+    "formula": "=ROUND({{InvoiceTotal}} - {{TotalPaid}}, 2)",
+    "record_id": "brian-lee-1037",
+    "error": "SyntaxError: Unexpected character '-' at position 23"
+  },
+  {
+    "entity": "Invoices",
+    "field": "TaxAmount",
+    "formula": "={{SubTotal}} * {{TaxRate}}",
+    "record_id": "brian-lee-1018",
+    "error": "SyntaxError: Unexpected character '*' at position 13"
+  },
+  {
+    "entity": "Invoices",
+    "field": "InvoiceTotal",
+    "formula": "={{SubTotal}} + {{TaxAmount}}",
+    "record_id": "brian-lee-1018",
+    "error": "SyntaxError: Unexpected character '+' at position 13"
+  },
+  {
+    "entity": "Invoices",
+    "field": "AmountDue",
+    "formula": "=ROUND({{InvoiceTotal}} - {{TotalPaid}}, 2)",
+    "record_id": "brian-lee-1018",
+    "error": "SyntaxError: Unexpected character '-' at position 23"
+  },
+  {
+    "entity": "InvoiceLineItems",
+    "field": "PreDiscount",
+    "formula": "={{Quantity}} * {{UnitPrice}}",
+    "record_id": "brian-lee-1037-line-2",
+    "error": "SyntaxError: Unexpected character '*' at position 13"
+  },
+  {
+    "entity": "InvoiceLineItems",
+    "field": "DiscountAmount",
+    "formula": "={{PreDiscount}} * {{DiscountPercent}}",
+    "record_id": "brian-lee-1037-line-2",
+    "error": "SyntaxError: Unexpected character '*' at position 16"
+  },
+  {
+    "entity": "InvoiceLineItems",
+    "field": "SubTotal",
+    "formula": "={{PreDiscount}} - {{DiscountAmount}}",
+    "record_id": "brian-lee-1037-line-2",
+    "error": "SyntaxError: Unexpected character '-' at position 16"
+  },
+  {
+    "entity": "InvoiceLineItems",
+    "field": "PreDiscount",
+    "formula": "={{Quantity}} * {{UnitPrice}}",
+    "record_id": "carla-smith-1024-line-2",
+    "error": "SyntaxError: Unexpected character '*' at position 13"
+  },
+  {
+    "entity": "InvoiceLineItems",
+    "field": "DiscountAmount",
+    "formula": "={{PreDiscount}} * {{DiscountPercent}}",
+    "record_id": "carla-smith-1024-line-2",
+    "error": "SyntaxError: Unexpected character '*' at position 16"
+  },
+  {
+    "entity": "InvoiceLineItems",
+    "field": "SubTotal",
+    "formula": "={{PreDiscount}} - {{DiscountAmount}}",
+    "record_id": "carla-smith-1024-line-2",
+    "error": "SyntaxError: Unexpected character '-' at position 16"
+  },
+  {
+    "entity": "InvoiceLineItems",
+    "field": "PreDiscount",
+    "formula": "={{Quantity}} * {{UnitPrice}}",
+    "record_id": "caroline-1045-line-3",
+    "error": "SyntaxError: Unexpected character '*' at position 13"
+  },
+  {
+    "entity": "InvoiceLineItems",
+    "field": "DiscountAmount",
+    "formula": "={{PreDiscount}} * {{DiscountPercent}}",
+    "record_id": "caroline-1045-line-3",
+    "error": "SyntaxError: Unexpected character '*' at position 16"
+  },
+  {
+    "entity": "InvoiceLineItems",
+    "field": "SubTotal",
+    "formula": "={{PreDiscount}} - {{DiscountAmount}}",
+    "record_id": "caroline-1045-line-3",
+    "error": "SyntaxError: Unexpected character '-' at position 16"
+  },
+  {
+    "entity": "InvoiceLineItems",
+    "field": "PreDiscount",
+    "formula": "={{Quantity}} * {{UnitPrice}}",
+    "record_id": "brian-lee-1037-line-1",
+    "error": "SyntaxError: Unexpected character '*' at position 13"
+  },
+  {
+    "entity": "InvoiceLineItems",
+    "field": "DiscountAmount",
+    "formula": "={{PreDiscount}} * {{DiscountPercent}}",
+    "record_id": "brian-lee-1037-line-1",
+    "error": "SyntaxError: Unexpected character '*' at position 16"
+  },
+  {
+    "entity": "InvoiceLineItems",
+    "field": "SubTotal",
+    "formula": "={{PreDiscount}} - {{DiscountAmount}}",
+    "record_id": "brian-lee-1037-line-1",
+    "error": "SyntaxError: Unexpected character '-' at position 16"
+  },
+  {
+    "entity": "InvoiceLineItems",
+    "field": "PreDiscount",
+    "formula": "={{Quantity}} * {{UnitPrice}}",
+    "record_id": "alice-johnson-1010-line-2",
+    "error": "SyntaxError: Unexpected character '*' at position 13"
+  },
+  {
+    "entity": "InvoiceLineItems",
+    "field": "DiscountAmount",
+    "formula": "={{PreDiscount}} * {{DiscountPercent}}",
+    "record_id": "alice-johnson-1010-line-2",
+    "error": "SyntaxError: Unexpected character '*' at position 16"
+  },
+  {
+    "entity": "InvoiceLineItems",
+    "field": "SubTotal",
+    "formula": "={{PreDiscount}} - {{DiscountAmount}}",
+    "record_id": "alice-johnson-1010-line-2",
+    "error": "SyntaxError: Unexpected character '-' at position 16"
+  },
+  {
+    "entity": "InvoiceLineItems",
+    "field": "PreDiscount",
+    "formula": "={{Quantity}} * {{UnitPrice}}",
+    "record_id": "brian-lee-1018-line-2",
+    "error": "SyntaxError: Unexpected character '*' at position 13"
+  },
+  {
+    "entity": "InvoiceLineItems",
+    "field": "DiscountAmount",
+    "formula": "={{PreDiscount}} * {{DiscountPercent}}",
+    "record_id": "brian-lee-1018-line-2",
+    "error": "SyntaxError: Unexpected character '*' at position 16"
+  },
+  {
+    "entity": "InvoiceLineItems",
+    "field": "SubTotal",
+    "formula": "={{PreDiscount}} - {{DiscountAmount}}",
+    "record_id": "brian-lee-1018-line-2",
+    "error": "SyntaxError: Unexpected character '-' at position 16"
+  },
+  {
+    "entity": "InvoiceLineItems",
+    "field": "PreDiscount",
+    "formula": "={{Quantity}} * {{UnitPrice}}",
+    "record_id": "brian-lee-1042-line-1",
+    "error": "SyntaxError: Unexpected character '*' at position 13"
+  },
+  {
+    "entity": "InvoiceLineItems",
+    "field": "DiscountAmount",
+    "formula": "={{PreDiscount}} * {{DiscountPercent}}",
+    "record_id": "brian-lee-1042-line-1",
+    "error": "SyntaxError: Unexpected character '*' at position 16"
+  },
+  {
+    "entity": "InvoiceLineItems",
+    "field": "SubTotal",
+    "formula": "={{PreDiscount}} - {{DiscountAmount}}",
+    "record_id": "brian-lee-1042-line-1",
+    "error": "SyntaxError: Unexpected character '-' at position 16"
+  },
+  {
+    "entity": "InvoiceLineItems",
+    "field": "PreDiscount",
+    "formula": "={{Quantity}} * {{UnitPrice}}",
+    "record_id": "brian-lee-1018-line-1",
+    "error": "SyntaxError: Unexpected character '*' at position 13"
+  },
+  {
+    "entity": "InvoiceLineItems",
+    "field": "DiscountAmount",
+    "formula": "={{PreDiscount}} * {{DiscountPercent}}",
+    "record_id": "brian-lee-1018-line-1",
+    "error": "SyntaxError: Unexpected character '*' at position 16"
+  },
+  {
+    "entity": "InvoiceLineItems",
+    "field": "SubTotal",
+    "formula": "={{PreDiscount}} - {{DiscountAmount}}",
+    "record_id": "brian-lee-1018-line-1",
+    "error": "SyntaxError: Unexpected character '-' at position 16"
+  },
+  {
+    "entity": "InvoiceLineItems",
+    "field": "PreDiscount",
+    "formula": "={{Quantity}} * {{UnitPrice}}",
+    "record_id": "caroline-1045-line-2",
+    "error": "SyntaxError: Unexpected character '*' at position 13"
+  },
+  {
+    "entity": "InvoiceLineItems",
+    "field": "DiscountAmount",
+    "formula": "={{PreDiscount}} * {{DiscountPercent}}",
+    "record_id": "caroline-1045-line-2",
+    "error": "SyntaxError: Unexpected character '*' at position 16"
+  },
+  {
+    "entity": "InvoiceLineItems",
+    "field": "SubTotal",
+    "formula": "={{PreDiscount}} - {{DiscountAmount}}",
+    "record_id": "caroline-1045-line-2",
+    "error": "SyntaxError: Unexpected character '-' at position 16"
+  },
+  {
+    "entity": "InvoiceLineItems",
+    "field": "PreDiscount",
+    "formula": "={{Quantity}} * {{UnitPrice}}",
+    "record_id": "bob-1001-line-2",
+    "error": "SyntaxError: Unexpected character '*' at position 13"
+  },
+  {
+    "entity": "InvoiceLineItems",
+    "field": "DiscountAmount",
+    "formula": "={{PreDiscount}} * {{DiscountPercent}}",
+    "record_id": "bob-1001-line-2",
+    "error": "SyntaxError: Unexpected character '*' at position 16"
+  },
+  {
+    "entity": "InvoiceLineItems",
+    "field": "SubTotal",
+    "formula": "={{PreDiscount}} - {{DiscountAmount}}",
+    "record_id": "bob-1001-line-2",
+    "error": "SyntaxError: Unexpected character '-' at position 16"
+  },
+  {
+    "entity": "InvoiceLineItems",
+    "field": "PreDiscount",
+    "formula": "={{Quantity}} * {{UnitPrice}}",
+    "record_id": "carla-smith-1024-line-1",
+    "error": "SyntaxError: Unexpected character '*' at position 13"
+  },
+  {
+    "entity": "InvoiceLineItems",
+    "field": "DiscountAmount",
+    "formula": "={{PreDiscount}} * {{DiscountPercent}}",
+    "record_id": "carla-smith-1024-line-1",
+    "error": "SyntaxError: Unexpected character '*' at position 16"
+  },
+  {
+    "entity": "InvoiceLineItems",
+    "field": "SubTotal",
+    "formula": "={{PreDiscount}} - {{DiscountAmount}}",
+    "record_id": "carla-smith-1024-line-1",
+    "error": "SyntaxError: Unexpected character '-' at position 16"
+  },
+  {
+    "entity": "InvoiceLineItems",
+    "field": "PreDiscount",
+    "formula": "={{Quantity}} * {{UnitPrice}}",
+    "record_id": "caroline-1045-line-1",
+    "error": "SyntaxError: Unexpected character '*' at position 13"
+  },
+  {
+    "entity": "InvoiceLineItems",
+    "field": "DiscountAmount",
+    "formula": "={{PreDiscount}} * {{DiscountPercent}}",
+    "record_id": "caroline-1045-line-1",
+    "error": "SyntaxError: Unexpected character '*' at position 16"
+  },
+  {
+    "entity": "InvoiceLineItems",
+    "field": "SubTotal",
+    "formula": "={{PreDiscount}} - {{DiscountAmount}}",
+    "record_id": "caroline-1045-line-1",
+    "error": "SyntaxError: Unexpected character '-' at position 16"
+  },
+  {
+    "entity": "InvoiceLineItems",
+    "field": "PreDiscount",
+    "formula": "={{Quantity}} * {{UnitPrice}}",
+    "record_id": "alice-johnson-1010-line-1",
+    "error": "SyntaxError: Unexpected character '*' at position 13"
+  },
+  {
+    "entity": "InvoiceLineItems",
+    "field": "DiscountAmount",
+    "formula": "={{PreDiscount}} * {{DiscountPercent}}",
+    "record_id": "alice-johnson-1010-line-1",
+    "error": "SyntaxError: Unexpected character '*' at position 16"
+  },
+  {
+    "entity": "InvoiceLineItems",
+    "field": "SubTotal",
+    "formula": "={{PreDiscount}} - {{DiscountAmount}}",
+    "record_id": "alice-johnson-1010-line-1",
+    "error": "SyntaxError: Unexpected character '-' at position 16"
+  },
+  {
+    "entity": "InvoiceLineItems",
+    "field": "PreDiscount",
+    "formula": "={{Quantity}} * {{UnitPrice}}",
+    "record_id": "bob-1001-line-3",
+    "error": "SyntaxError: Unexpected character '*' at position 13"
+  },
+  {
+    "entity": "InvoiceLineItems",
+    "field": "DiscountAmount",
+    "formula": "={{PreDiscount}} * {{DiscountPercent}}",
+    "record_id": "bob-1001-line-3",
+    "error": "SyntaxError: Unexpected character '*' at position 16"
+  },
+  {
+    "entity": "InvoiceLineItems",
+    "field": "SubTotal",
+    "formula": "={{PreDiscount}} - {{DiscountAmount}}",
+    "record_id": "bob-1001-line-3",
+    "error": "SyntaxError: Unexpected character '-' at position 16"
+  },
+  {
+    "entity": "InvoiceLineItems",
+    "field": "PreDiscount",
+    "formula": "={{Quantity}} * {{UnitPrice}}",
+    "record_id": "alice-johnson-1010-line-3",
+    "error": "SyntaxError: Unexpected character '*' at position 13"
+  },
+  {
+    "entity": "InvoiceLineItems",
+    "field": "DiscountAmount",
+    "formula": "={{PreDiscount}} * {{DiscountPercent}}",
+    "record_id": "alice-johnson-1010-line-3",
+    "error": "SyntaxError: Unexpected character '*' at position 16"
+  },
+  {
+    "entity": "InvoiceLineItems",
+    "field": "SubTotal",
+    "formula": "={{PreDiscount}} - {{DiscountAmount}}",
+    "record_id": "alice-johnson-1010-line-3",
+    "error": "SyntaxError: Unexpected character '-' at position 16"
+  },
+  {
+    "entity": "InvoiceLineItems",
+    "field": "PreDiscount",
+    "formula": "={{Quantity}} * {{UnitPrice}}",
+    "record_id": "brian-lee-1042-line-2",
+    "error": "SyntaxError: Unexpected character '*' at position 13"
+  },
+  {
+    "entity": "InvoiceLineItems",
+    "field": "DiscountAmount",
+    "formula": "={{PreDiscount}} * {{DiscountPercent}}",
+    "record_id": "brian-lee-1042-line-2",
+    "error": "SyntaxError: Unexpected character '*' at position 16"
+  },
+  {
+    "entity": "InvoiceLineItems",
+    "field": "SubTotal",
+    "formula": "={{PreDiscount}} - {{DiscountAmount}}",
+    "record_id": "brian-lee-1042-line-2",
+    "error": "SyntaxError: Unexpected character '-' at position 16"
+  },
+  {
+    "entity": "InvoiceLineItems",
+    "field": "PreDiscount",
+    "formula": "={{Quantity}} * {{UnitPrice}}",
+    "record_id": "bob-1001-line-1",
+    "error": "SyntaxError: Unexpected character '*' at position 13"
+  },
+  {
+    "entity": "InvoiceLineItems",
+    "field": "DiscountAmount",
+    "formula": "={{PreDiscount}} * {{DiscountPercent}}",
+    "record_id": "bob-1001-line-1",
+    "error": "SyntaxError: Unexpected character '*' at position 16"
+  },
+  {
+    "entity": "InvoiceLineItems",
+    "field": "SubTotal",
+    "formula": "={{PreDiscount}} - {{DiscountAmount}}",
+    "record_id": "bob-1001-line-1",
+    "error": "SyntaxError: Unexpected character '-' at position 16"
+  },
+  {
+    "entity": "InvoiceLineItems",
+    "field": "PreDiscount",
+    "formula": "={{Quantity}} * {{UnitPrice}}",
+    "record_id": "alice-johnson-1010-line-4",
+    "error": "SyntaxError: Unexpected character '*' at position 13"
+  },
+  {
+    "entity": "InvoiceLineItems",
+    "field": "DiscountAmount",
+    "formula": "={{PreDiscount}} * {{DiscountPercent}}",
+    "record_id": "alice-johnson-1010-line-4",
+    "error": "SyntaxError: Unexpected character '*' at position 16"
+  },
+  {
+    "entity": "InvoiceLineItems",
+    "field": "SubTotal",
+    "formula": "={{PreDiscount}} - {{DiscountAmount}}",
+    "record_id": "alice-johnson-1010-line-4",
+    "error": "SyntaxError: Unexpected character '-' at position 16"
+  }
+]

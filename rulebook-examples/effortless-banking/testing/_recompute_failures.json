@@ -1,0 +1,422 @@
+[
+  {
+    "entity": "Businesses",
+    "field": "WasReferred",
+    "formula": "=NOT(COALESCE({{ReferralSource}}, \"\") = \"\")",
+    "record_id": "stillwater-roasters-llc",
+    "error": "ValueError: Unknown function: COALESCE"
+  },
+  {
+    "entity": "Businesses",
+    "field": "WasReferred",
+    "formula": "=NOT(COALESCE({{ReferralSource}}, \"\") = \"\")",
+    "record_id": "ridgeway-consulting-llc",
+    "error": "ValueError: Unknown function: COALESCE"
+  },
+  {
+    "entity": "Businesses",
+    "field": "WasReferred",
+    "formula": "=NOT(COALESCE({{ReferralSource}}, \"\") = \"\")",
+    "record_id": "pine-hardware-inc",
+    "error": "ValueError: Unknown function: COALESCE"
+  },
+  {
+    "entity": "Businesses",
+    "field": "WasReferred",
+    "formula": "=NOT(COALESCE({{ReferralSource}}, \"\") = \"\")",
+    "record_id": "sunset-auto-body-llc",
+    "error": "ValueError: Unknown function: COALESCE"
+  },
+  {
+    "entity": "Businesses",
+    "field": "WasReferred",
+    "formula": "=NOT(COALESCE({{ReferralSource}}, \"\") = \"\")",
+    "record_id": "hilltop-bakery-llc",
+    "error": "ValueError: Unknown function: COALESCE"
+  },
+  {
+    "entity": "Accounts",
+    "field": "TreasuryServiceCount",
+    "formula": "=IF({{HasAch}}, 1, 0) + IF({{HasWire}}, 1, 0) + IF({{HasCard}}, 1, 0)",
+    "record_id": "stillwater-roasters-llc-checking-0001",
+    "error": "SyntaxError: Unexpected character '+' at position 21"
+  },
+  {
+    "entity": "Accounts",
+    "field": "TreasuryServiceCount",
+    "formula": "=IF({{HasAch}}, 1, 0) + IF({{HasWire}}, 1, 0) + IF({{HasCard}}, 1, 0)",
+    "record_id": "stillwater-roasters-llc-savings-0101",
+    "error": "SyntaxError: Unexpected character '+' at position 21"
+  },
+  {
+    "entity": "Accounts",
+    "field": "TreasuryServiceCount",
+    "formula": "=IF({{HasAch}}, 1, 0) + IF({{HasWire}}, 1, 0) + IF({{HasCard}}, 1, 0)",
+    "record_id": "pine-hardware-inc-checking-0200",
+    "error": "SyntaxError: Unexpected character '+' at position 21"
+  },
+  {
+    "entity": "Accounts",
+    "field": "TreasuryServiceCount",
+    "formula": "=IF({{HasAch}}, 1, 0) + IF({{HasWire}}, 1, 0) + IF({{HasCard}}, 1, 0)",
+    "record_id": "ridgeway-consulting-llc-checking-0300",
+    "error": "SyntaxError: Unexpected character '+' at position 21"
+  },
+  {
+    "entity": "Accounts",
+    "field": "TreasuryServiceCount",
+    "formula": "=IF({{HasAch}}, 1, 0) + IF({{HasWire}}, 1, 0) + IF({{HasCard}}, 1, 0)",
+    "record_id": "sunset-auto-body-llc-checking-0400",
+    "error": "SyntaxError: Unexpected character '+' at position 21"
+  },
+  {
+    "entity": "Loans",
+    "field": "DscrInBand",
+    "formula": "=COALESCE({{Dscr}}, 0) >= 1.20",
+    "record_id": "l-0051",
+    "error": "SyntaxError: Unexpected character '.' at position 26"
+  },
+  {
+    "entity": "Loans",
+    "field": "LtvInBand",
+    "formula": "=COALESCE({{Ltv}}, 0) <= 0.80",
+    "record_id": "l-0051",
+    "error": "SyntaxError: Unexpected character '.' at position 25"
+  },
+  {
+    "entity": "Loans",
+    "field": "HealthScore",
+    "formula": "=IF({{DscrInBand}}, 1, 0) + IF({{LtvInBand}}, 1, 0) + IF({{IsClassifiedAsset}}, 0, 1) + IF({{HasBreachedCovenant}}, 0, 1)",
+    "record_id": "l-0051",
+    "error": "SyntaxError: Unexpected character '+' at position 25"
+  },
+  {
+    "entity": "Loans",
+    "field": "DscrInBand",
+    "formula": "=COALESCE({{Dscr}}, 0) >= 1.20",
+    "record_id": "l-0042",
+    "error": "SyntaxError: Unexpected character '.' at position 26"
+  },
+  {
+    "entity": "Loans",
+    "field": "LtvInBand",
+    "formula": "=COALESCE({{Ltv}}, 0) <= 0.80",
+    "record_id": "l-0042",
+    "error": "SyntaxError: Unexpected character '.' at position 25"
+  },
+  {
+    "entity": "Loans",
+    "field": "HealthScore",
+    "formula": "=IF({{DscrInBand}}, 1, 0) + IF({{LtvInBand}}, 1, 0) + IF({{IsClassifiedAsset}}, 0, 1) + IF({{HasBreachedCovenant}}, 0, 1)",
+    "record_id": "l-0042",
+    "error": "SyntaxError: Unexpected character '+' at position 25"
+  },
+  {
+    "entity": "Loans",
+    "field": "DscrInBand",
+    "formula": "=COALESCE({{Dscr}}, 0) >= 1.20",
+    "record_id": "l-0078",
+    "error": "SyntaxError: Unexpected character '.' at position 26"
+  },
+  {
+    "entity": "Loans",
+    "field": "LtvInBand",
+    "formula": "=COALESCE({{Ltv}}, 0) <= 0.80",
+    "record_id": "l-0078",
+    "error": "SyntaxError: Unexpected character '.' at position 25"
+  },
+  {
+    "entity": "Loans",
+    "field": "HealthScore",
+    "formula": "=IF({{DscrInBand}}, 1, 0) + IF({{LtvInBand}}, 1, 0) + IF({{IsClassifiedAsset}}, 0, 1) + IF({{HasBreachedCovenant}}, 0, 1)",
+    "record_id": "l-0078",
+    "error": "SyntaxError: Unexpected character '+' at position 25"
+  },
+  {
+    "entity": "Covenants",
+    "field": "HasActiveWaiver",
+    "formula": "=NOT(COALESCE({{CurrentWaiverThrough}}, \"\") = \"\")",
+    "record_id": "l-0051-mindscr",
+    "error": "ValueError: Unknown function: COALESCE"
+  },
+  {
+    "entity": "Covenants",
+    "field": "HasActiveWaiver",
+    "formula": "=NOT(COALESCE({{CurrentWaiverThrough}}, \"\") = \"\")",
+    "record_id": "l-0051-maxleverage",
+    "error": "ValueError: Unknown function: COALESCE"
+  },
+  {
+    "entity": "Covenants",
+    "field": "HasActiveWaiver",
+    "formula": "=NOT(COALESCE({{CurrentWaiverThrough}}, \"\") = \"\")",
+    "record_id": "l-0051-reportingfinancials",
+    "error": "ValueError: Unknown function: COALESCE"
+  },
+  {
+    "entity": "Covenants",
+    "field": "HasActiveWaiver",
+    "formula": "=NOT(COALESCE({{CurrentWaiverThrough}}, \"\") = \"\")",
+    "record_id": "l-0042-mindscr",
+    "error": "ValueError: Unknown function: COALESCE"
+  },
+  {
+    "entity": "RiskRatingHistory",
+    "field": "Name",
+    "formula": "={{Loan}} & \"-\" & TEXT({{EffectiveDate}}, \"yyyy-mm-dd\") & \"-grade-\" & TEXT({{NewGrade}}, \"0\")",
+    "record_id": "l-0042-2021-05-20-grade-4",
+    "error": "ValueError: Unknown function: TEXT"
+  },
+  {
+    "entity": "RiskRatingHistory",
+    "field": "GradeDelta",
+    "formula": "={{NewGrade}} - COALESCE({{PriorGrade}}, {{NewGrade}})",
+    "record_id": "l-0042-2021-05-20-grade-4",
+    "error": "SyntaxError: Unexpected character '-' at position 13"
+  },
+  {
+    "entity": "RiskRatingHistory",
+    "field": "IsInitialRating",
+    "formula": "=COALESCE({{PriorGrade}}, 0) = 0",
+    "record_id": "l-0042-2021-05-20-grade-4",
+    "error": "ValueError: Unknown function: COALESCE"
+  },
+  {
+    "entity": "RiskRatingHistory",
+    "field": "CrossedClassifiedThreshold",
+    "formula": "=AND(COALESCE({{PriorGrade}}, 0) < 7, {{NewGrade}} >= 7)",
+    "record_id": "l-0042-2021-05-20-grade-4",
+    "error": "ValueError: Unknown function: COALESCE"
+  },
+  {
+    "entity": "RiskRatingHistory",
+    "field": "Name",
+    "formula": "={{Loan}} & \"-\" & TEXT({{EffectiveDate}}, \"yyyy-mm-dd\") & \"-grade-\" & TEXT({{NewGrade}}, \"0\")",
+    "record_id": "l-0042-2025-05-02-grade-6",
+    "error": "ValueError: Unknown function: TEXT"
+  },
+  {
+    "entity": "RiskRatingHistory",
+    "field": "GradeDelta",
+    "formula": "={{NewGrade}} - COALESCE({{PriorGrade}}, {{NewGrade}})",
+    "record_id": "l-0042-2025-05-02-grade-6",
+    "error": "SyntaxError: Unexpected character '-' at position 13"
+  },
+  {
+    "entity": "RiskRatingHistory",
+    "field": "IsInitialRating",
+    "formula": "=COALESCE({{PriorGrade}}, 0) = 0",
+    "record_id": "l-0042-2025-05-02-grade-6",
+    "error": "ValueError: Unknown function: COALESCE"
+  },
+  {
+    "entity": "RiskRatingHistory",
+    "field": "CrossedClassifiedThreshold",
+    "formula": "=AND(COALESCE({{PriorGrade}}, 0) < 7, {{NewGrade}} >= 7)",
+    "record_id": "l-0042-2025-05-02-grade-6",
+    "error": "ValueError: Unknown function: COALESCE"
+  },
+  {
+    "entity": "RiskRatingHistory",
+    "field": "Name",
+    "formula": "={{Loan}} & \"-\" & TEXT({{EffectiveDate}}, \"yyyy-mm-dd\") & \"-grade-\" & TEXT({{NewGrade}}, \"0\")",
+    "record_id": "l-0042-2025-08-15-grade-7",
+    "error": "ValueError: Unknown function: TEXT"
+  },
+  {
+    "entity": "RiskRatingHistory",
+    "field": "GradeDelta",
+    "formula": "={{NewGrade}} - COALESCE({{PriorGrade}}, {{NewGrade}})",
+    "record_id": "l-0042-2025-08-15-grade-7",
+    "error": "SyntaxError: Unexpected character '-' at position 13"
+  },
+  {
+    "entity": "RiskRatingHistory",
+    "field": "IsInitialRating",
+    "formula": "=COALESCE({{PriorGrade}}, 0) = 0",
+    "record_id": "l-0042-2025-08-15-grade-7",
+    "error": "ValueError: Unknown function: COALESCE"
+  },
+  {
+    "entity": "RiskRatingHistory",
+    "field": "CrossedClassifiedThreshold",
+    "formula": "=AND(COALESCE({{PriorGrade}}, 0) < 7, {{NewGrade}} >= 7)",
+    "record_id": "l-0042-2025-08-15-grade-7",
+    "error": "ValueError: Unknown function: COALESCE"
+  },
+  {
+    "entity": "RiskRatingHistory",
+    "field": "Name",
+    "formula": "={{Loan}} & \"-\" & TEXT({{EffectiveDate}}, \"yyyy-mm-dd\") & \"-grade-\" & TEXT({{NewGrade}}, \"0\")",
+    "record_id": "l-0051-2025-03-01-grade-4",
+    "error": "ValueError: Unknown function: TEXT"
+  },
+  {
+    "entity": "RiskRatingHistory",
+    "field": "GradeDelta",
+    "formula": "={{NewGrade}} - COALESCE({{PriorGrade}}, {{NewGrade}})",
+    "record_id": "l-0051-2025-03-01-grade-4",
+    "error": "SyntaxError: Unexpected character '-' at position 13"
+  },
+  {
+    "entity": "RiskRatingHistory",
+    "field": "IsInitialRating",
+    "formula": "=COALESCE({{PriorGrade}}, 0) = 0",
+    "record_id": "l-0051-2025-03-01-grade-4",
+    "error": "ValueError: Unknown function: COALESCE"
+  },
+  {
+    "entity": "RiskRatingHistory",
+    "field": "CrossedClassifiedThreshold",
+    "formula": "=AND(COALESCE({{PriorGrade}}, 0) < 7, {{NewGrade}} >= 7)",
+    "record_id": "l-0051-2025-03-01-grade-4",
+    "error": "ValueError: Unknown function: COALESCE"
+  },
+  {
+    "entity": "RiskRatingHistory",
+    "field": "Name",
+    "formula": "={{Loan}} & \"-\" & TEXT({{EffectiveDate}}, \"yyyy-mm-dd\") & \"-grade-\" & TEXT({{NewGrade}}, \"0\")",
+    "record_id": "l-0078-2024-08-22-grade-3",
+    "error": "ValueError: Unknown function: TEXT"
+  },
+  {
+    "entity": "RiskRatingHistory",
+    "field": "GradeDelta",
+    "formula": "={{NewGrade}} - COALESCE({{PriorGrade}}, {{NewGrade}})",
+    "record_id": "l-0078-2024-08-22-grade-3",
+    "error": "SyntaxError: Unexpected character '-' at position 13"
+  },
+  {
+    "entity": "RiskRatingHistory",
+    "field": "IsInitialRating",
+    "formula": "=COALESCE({{PriorGrade}}, 0) = 0",
+    "record_id": "l-0078-2024-08-22-grade-3",
+    "error": "ValueError: Unknown function: COALESCE"
+  },
+  {
+    "entity": "RiskRatingHistory",
+    "field": "CrossedClassifiedThreshold",
+    "formula": "=AND(COALESCE({{PriorGrade}}, 0) < 7, {{NewGrade}} >= 7)",
+    "record_id": "l-0078-2024-08-22-grade-3",
+    "error": "ValueError: Unknown function: COALESCE"
+  },
+  {
+    "entity": "Documents",
+    "field": "AttachedTo",
+    "formula": "=IF(NOT(COALESCE({{Loan}}, \"\") = \"\"), \"Loan\", IF(NOT(COALESCE({{Business}}, \"\") = \"\"), \"Business\", \"Orphan\"))",
+    "record_id": "stillwater-2024-tax-return-pdf",
+    "error": "ValueError: Unknown function: COALESCE"
+  },
+  {
+    "entity": "Documents",
+    "field": "AttachedTo",
+    "formula": "=IF(NOT(COALESCE({{Loan}}, \"\") = \"\"), \"Loan\", IF(NOT(COALESCE({{Business}}, \"\") = \"\"), \"Business\", \"Orphan\"))",
+    "record_id": "l-0051-promissory-note-pdf",
+    "error": "ValueError: Unknown function: COALESCE"
+  },
+  {
+    "entity": "Documents",
+    "field": "AttachedTo",
+    "formula": "=IF(NOT(COALESCE({{Loan}}, \"\") = \"\"), \"Loan\", IF(NOT(COALESCE({{Business}}, \"\") = \"\"), \"Business\", \"Orphan\"))",
+    "record_id": "l-0051-security-agreement-pdf",
+    "error": "ValueError: Unknown function: COALESCE"
+  },
+  {
+    "entity": "Documents",
+    "field": "AttachedTo",
+    "formula": "=IF(NOT(COALESCE({{Loan}}, \"\") = \"\"), \"Loan\", IF(NOT(COALESCE({{Business}}, \"\") = \"\"), \"Business\", \"Orphan\"))",
+    "record_id": "stillwater-q4-2024-pl-pdf",
+    "error": "ValueError: Unknown function: COALESCE"
+  },
+  {
+    "entity": "Documents",
+    "field": "AttachedTo",
+    "formula": "=IF(NOT(COALESCE({{Loan}}, \"\") = \"\"), \"Loan\", IF(NOT(COALESCE({{Business}}, \"\") = \"\"), \"Business\", \"Orphan\"))",
+    "record_id": "pine-articles-of-incorporation-pdf",
+    "error": "ValueError: Unknown function: COALESCE"
+  },
+  {
+    "entity": "Interactions",
+    "field": "Name",
+    "formula": "={{Business}} & \"-\" & TEXT({{InteractionDate}}, \"yyyy-mm-dd\") & \"-\" & LOWER({{InteractionType}}) & \"-\" & SUBSTITUTE(LOWER({{Subject}}), \" \", \"-\")",
+    "record_id": "stillwater-roasters-llc-2025-04-15-note-q2-pnl-review",
+    "error": "ValueError: Unknown function: TEXT"
+  },
+  {
+    "entity": "Interactions",
+    "field": "Name",
+    "formula": "={{Business}} & \"-\" & TEXT({{InteractionDate}}, \"yyyy-mm-dd\") & \"-\" & LOWER({{InteractionType}}) & \"-\" & SUBSTITUTE(LOWER({{Subject}}), \" \", \"-\")",
+    "record_id": "stillwater-roasters-llc-2025-04-15-call-wire-fee-question",
+    "error": "ValueError: Unknown function: TEXT"
+  },
+  {
+    "entity": "Interactions",
+    "field": "Name",
+    "formula": "={{Business}} & \"-\" & TEXT({{InteractionDate}}, \"yyyy-mm-dd\") & \"-\" & LOWER({{InteractionType}}) & \"-\" & SUBSTITUTE(LOWER({{Subject}}), \" \", \"-\")",
+    "record_id": "pine-hardware-inc-2025-04-15-visit-refi-discussion",
+    "error": "ValueError: Unknown function: TEXT"
+  },
+  {
+    "entity": "Interactions",
+    "field": "Name",
+    "formula": "={{Business}} & \"-\" & TEXT({{InteractionDate}}, \"yyyy-mm-dd\") & \"-\" & LOWER({{InteractionType}}) & \"-\" & SUBSTITUTE(LOWER({{Subject}}), \" \", \"-\")",
+    "record_id": "ridgeway-consulting-llc-2025-04-22-meeting-annual-review-prep",
+    "error": "ValueError: Unknown function: TEXT"
+  },
+  {
+    "entity": "Interactions",
+    "field": "Name",
+    "formula": "={{Business}} & \"-\" & TEXT({{InteractionDate}}, \"yyyy-mm-dd\") & \"-\" & LOWER({{InteractionType}}) & \"-\" & SUBSTITUTE(LOWER({{Subject}}), \" \", \"-\")",
+    "record_id": "pine-hardware-inc-2025-04-15-task-refi-term-sheet",
+    "error": "ValueError: Unknown function: TEXT"
+  },
+  {
+    "entity": "Interactions",
+    "field": "Name",
+    "formula": "={{Business}} & \"-\" & TEXT({{InteractionDate}}, \"yyyy-mm-dd\") & \"-\" & LOWER({{InteractionType}}) & \"-\" & SUBSTITUTE(LOWER({{Subject}}), \" \", \"-\")",
+    "record_id": "pine-hardware-inc-2025-04-15-systemevent-covenant-test-approaching",
+    "error": "ValueError: Unknown function: TEXT"
+  },
+  {
+    "entity": "Interactions",
+    "field": "IsCovenantEvent",
+    "formula": "=AND({{IsSystemEvent}}, NOT(IFERROR(FIND(\"covenant\", LOWER({{Subject}})), 0) = 0))",
+    "record_id": "pine-hardware-inc-2025-04-15-systemevent-covenant-test-approaching",
+    "error": "ValueError: Unknown function: IFERROR"
+  },
+  {
+    "entity": "Interactions",
+    "field": "Name",
+    "formula": "={{Business}} & \"-\" & TEXT({{InteractionDate}}, \"yyyy-mm-dd\") & \"-\" & LOWER({{InteractionType}}) & \"-\" & SUBSTITUTE(LOWER({{Subject}}), \" \", \"-\")",
+    "record_id": "pine-hardware-inc-2025-05-02-systemevent-covenant-breach",
+    "error": "ValueError: Unknown function: TEXT"
+  },
+  {
+    "entity": "Interactions",
+    "field": "IsCovenantEvent",
+    "formula": "=AND({{IsSystemEvent}}, NOT(IFERROR(FIND(\"covenant\", LOWER({{Subject}})), 0) = 0))",
+    "record_id": "pine-hardware-inc-2025-05-02-systemevent-covenant-breach",
+    "error": "ValueError: Unknown function: IFERROR"
+  },
+  {
+    "entity": "Interactions",
+    "field": "Name",
+    "formula": "={{Business}} & \"-\" & TEXT({{InteractionDate}}, \"yyyy-mm-dd\") & \"-\" & LOWER({{InteractionType}}) & \"-\" & SUBSTITUTE(LOWER({{Subject}}), \" \", \"-\")",
+    "record_id": "sunset-auto-body-llc-2025-05-04-systemevent-sar-filed",
+    "error": "ValueError: Unknown function: TEXT"
+  },
+  {
+    "entity": "Interactions",
+    "field": "IsCovenantEvent",
+    "formula": "=AND({{IsSystemEvent}}, NOT(IFERROR(FIND(\"covenant\", LOWER({{Subject}})), 0) = 0))",
+    "record_id": "sunset-auto-body-llc-2025-05-04-systemevent-sar-filed",
+    "error": "ValueError: Unknown function: IFERROR"
+  },
+  {
+    "entity": "Interactions",
+    "field": "Name",
+    "formula": "={{Business}} & \"-\" & TEXT({{InteractionDate}}, \"yyyy-mm-dd\") & \"-\" & LOWER({{InteractionType}}) & \"-\" & SUBSTITUTE(LOWER({{Subject}}), \" \", \"-\")",
+    "record_id": "stillwater-roasters-llc-2025-01-15-note-customer-portal-message",
+    "error": "ValueError: Unknown function: TEXT"
+  }
+]

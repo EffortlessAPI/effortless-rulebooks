@@ -1,0 +1,57 @@
+{
+  "ShowHidden": false,
+  "ShowAllFiles": false,
+  "CurrentPath": null,
+  "SSoTmeProjectFiles": null,
+  "SSoTmeProjectId": "75e1c68c-dab9-425e-9524-8e72bb93ffd4",
+  "Name": "nakedclaude-v1",
+  "ProjectSettings": [
+    {
+      "Name": "project-name",
+      "Value": "nakedclaude-v1"
+    },
+    {
+      "Name": "baseId",
+      "Value": "appgjoEcFNxluhbvK"
+    }
+  ],
+  "ProjectTranspilers": [
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "airtabletorulebook",
+      "RelativePath": "/effortless-rulebook",
+      "CommandLine": "airtable-to-rulebook -account airtable -o nakedclaude-v1-rulebook.json",
+      "IsDisabled": true,
+      "PinnedVersion": "v2026.04.23.1357",
+      "LastVersionUsed": "v2026.04.23.1357",
+      "LastUrl": "https://effortless-airtable-to-rulebook-v2026-04-23-1357-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
+      "Enabled": true,
+      "Description": "Pull rulebook from Airtable [DISABLED: rulebook JSON is authoritative; re-enable only with explicit user consent]"
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "rulebooktopostgres",
+      "RelativePath": "/postgres-bootstrap",
+      "CommandLine": "rulebook-to-postgres -i ../effortless-rulebook/nakedclaude-v1-rulebook.json -p mode=drop-all -p stage=dev -p drop_all=true",
+      "IsDisabled": false,
+      "PinnedVersion": "v2026.04.23.1316",
+      "LastVersionUsed": "v2026.04.23.1316",
+      "LastUrl": "https://effortless-rulebook-to-postgres-v2026-04-23-1316-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "execute",
+      "RelativePath": "/postgres-bootstrap",
+      "CommandLine": "-exec ./init-db.sh",
+      "IsDisabled": false
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "httplocalhost4242postgrescalculatedtorulebook",
+      "RelativePath": "/postgres-bootstrap",
+      "CommandLine": "http://localhost:4242/postgres-calculated-to-rulebook -i ../effortless-rulebook/nakedclaude-v1-rulebook.json",
+      "IsDisabled": false,
+      "Description": "Reverse spoke: refresh rulebook derived-field display copies from Postgres views after the destructive rebuild (raws verified, never written)."
+    }
+  ]
+}

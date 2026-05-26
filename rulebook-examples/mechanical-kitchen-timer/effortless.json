@@ -1,0 +1,41 @@
+{
+  "ShowHidden": false,
+  "ShowAllFiles": false,
+  "CurrentPath": null,
+  "SSoTmeProjectFiles": null,
+  "SSoTmeProjectId": "64097516-4ed0-4251-a101-d1cd6e776f21",
+  "Name": "mechanical-kitchen-timer",
+  "ProjectSettings": [
+    {
+      "Name": "project-name",
+      "Value": "mechanical-kitchen-timer"
+    }
+  ],
+  "ProjectTranspilers": [
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "rulebooktopostgres",
+      "RelativePath": "/postgres-bootstrap",
+      "CommandLine": "rulebook-to-postgres -i ../effortless-rulebook/mechanical-kitchen-timer-rulebook.json -p mode=drop-all -p stage=dev -p drop_all=true",
+      "IsDisabled": false,
+      "PinnedVersion": "v2026.05.09.1738",
+      "LastVersionUsed": "v2026.05.09.1738",
+      "LastUrl": "https://effortless-rulebook-to-postgres-v2026-05-09-1738-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "execute",
+      "RelativePath": "/postgres-bootstrap",
+      "CommandLine": "-exec ./init-db.sh",
+      "IsDisabled": false
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "httplocalhost4242postgrescalculatedtorulebook",
+      "RelativePath": "/postgres-bootstrap",
+      "CommandLine": "http://localhost:4242/postgres-calculated-to-rulebook -i ../effortless-rulebook/mechanical-kitchen-timer-rulebook.json",
+      "IsDisabled": false,
+      "Description": "Reverse spoke: refresh rulebook derived-field display copies from Postgres views after the destructive rebuild (raws verified, never written)."
+    }
+  ]
+}

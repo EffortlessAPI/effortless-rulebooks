@@ -1,0 +1,92 @@
+[
+  {
+    "assignment_id": "a-alex-intake",
+    "volunteer": "alex-kim",
+    "shift": "harvest-intake-midday",
+    "volunteer_name": "Alex Kim",
+    "shift_name": "Intake Midday",
+    "shift_duration_hours": 4,
+    "name": "Alex Kim @ Intake Midday"
+  },
+  {
+    "assignment_id": "a-alex-teardown",
+    "volunteer": "alex-kim",
+    "shift": "harvest-teardown-evening",
+    "volunteer_name": "Alex Kim",
+    "shift_name": "Teardown Evening",
+    "shift_duration_hours": 3,
+    "name": "Alex Kim @ Teardown Evening"
+  },
+  {
+    "assignment_id": "a-jamie-foodbank-distrib",
+    "volunteer": "jamie-rivera",
+    "shift": "foodbank-distrib-afternoon",
+    "volunteer_name": "Jamie Rivera",
+    "shift_name": "Distribution Afternoon",
+    "shift_duration_hours": 3,
+    "name": "Jamie Rivera @ Distribution Afternoon"
+  },
+  {
+    "assignment_id": "a-jamie-setup",
+    "volunteer": "jamie-rivera",
+    "shift": "harvest-setup-morning",
+    "volunteer_name": "Jamie Rivera",
+    "shift_name": "Setup Morning",
+    "shift_duration_hours": 3,
+    "name": "Jamie Rivera @ Setup Morning"
+  },
+  {
+    "assignment_id": "a-morgan-foodbank-sort",
+    "volunteer": "morgan-lee",
+    "shift": "foodbank-sort-morning",
+    "volunteer_name": "Morgan Lee",
+    "shift_name": "Sort Morning",
+    "shift_duration_hours": 3,
+    "name": "Morgan Lee @ Sort Morning"
+  },
+  {
+    "assignment_id": "a-morgan-intake",
+    "volunteer": "morgan-lee",
+    "shift": "harvest-intake-midday",
+    "volunteer_name": "Morgan Lee",
+    "shift_name": "Intake Midday",
+    "shift_duration_hours": 4,
+    "name": "Morgan Lee @ Intake Midday"
+  },
+  {
+    "assignment_id": "a-morgan-setup",
+    "volunteer": "morgan-lee",
+    "shift": "harvest-setup-morning",
+    "volunteer_name": "Morgan Lee",
+    "shift_name": "Setup Morning",
+    "shift_duration_hours": 3,
+    "name": "Morgan Lee @ Setup Morning"
+  },
+  {
+    "assignment_id": "a-sam-intake",
+    "volunteer": "sam-park",
+    "shift": "harvest-intake-midday",
+    "volunteer_name": "Sam Park",
+    "shift_name": "Intake Midday",
+    "shift_duration_hours": 4,
+    "name": "Sam Park @ Intake Midday"
+  },
+  {
+    "assignment_id": "a-sam-setup",
+    "volunteer": "sam-park",
+    "shift": "harvest-setup-morning",
+    "volunteer_name": "Sam Park",
+    "shift_name": "Setup Morning",
+    "shift_duration_hours": 3,
+    "name": "Sam Park @ Setup Morning"
+  },
+  {
+    "assignment_id": "a-sam-teardown",
+    "volunteer": "sam-park",
+    "shift": "harvest-teardown-evening",
+    "volunteer_name": "Sam Park",
+    "shift_name": "Teardown Evening",
+    "shift_duration_hours": 3,
+    "name": "Sam Park @ Teardown Evening"
+  }
+]

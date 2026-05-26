@@ -1,0 +1,20 @@
+[
+  {
+    "users_id": "alice@example.com",
+    "email": "alice@example.com",
+    "first_name": "Alice",
+    "last_name": "Anderson",
+    "role": "admin",
+    "name": "alice@example.com",
+    "full_name": "Anderson, Alice"
+  },
+  {
+    "users_id": "bob@example.com",
+    "email": "bob@example.com",
+    "first_name": "Bob",
+    "last_name": "Baker",
+    "role": "viewer",
+    "name": "bob@example.com",
+    "full_name": "Baker, Bob"
+  }
+]

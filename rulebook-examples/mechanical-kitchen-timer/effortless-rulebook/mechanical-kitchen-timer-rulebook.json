@@ -1,0 +1,2771 @@
+{
+  "$schema": "https://example.com/cmcc-schema/v1",
+  "Name": "Mechanical Kitchen Timer",
+  "Description": "Five-part mechanical timer modeled with every README noun as a table — a hardware-ontology stress test.",
+  "Users": {
+    "Description": "People who wind timers.",
+    "schema": [
+      {
+        "name": "UserId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Primary key."
+      },
+      {
+        "name": "DisplayName",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Human name."
+      },
+      {
+        "name": "WindCount",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": false,
+        "Description": "Total wind actions performed by this user.",
+        "formula": "=COUNTIFS(WindActions!{{PerformedBy}}, Users!{{UserId}})"
+      },
+      {
+        "name": "CookCount",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": false,
+        "Description": "Total cooks this user has prepared today.",
+        "formula": "=COUNTIFS(Cooks!{{PreparedBy}}, Users!{{UserId}})"
+      },
+      {
+        "name": "CompletedCookCount",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": false,
+        "Description": "Cooks this user has prepared that have finished (their timer has rung).",
+        "formula": "=COUNTIFS(Cooks!{{PreparedBy}}, Users!{{UserId}}, Cooks!{{TimerHasRung}}, TRUE())"
+      },
+      {
+        "name": "ActivityLevel",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "Fuzzy take on how active this user is today: idle if no winds, casual for one or two, busy for three or more.",
+        "formula": "=IF({{WindCount}} = 0, \"idle\", IF({{WindCount}} <= 2, \"casual\", \"busy\"))"
+      },
+      {
+        "name": "TotalRecipeMinutesAttempted",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": false,
+        "Description": "Sum of recommended-minutes across recipes this user has cooked today. Zig-zags User -> Cook -> Recipe.RecommendedMinutes.",
+        "formula": "=SUMIFS(Cooks!{{RecommendedMinutes}}, Cooks!{{PreparedBy}}, Users!{{UserId}})"
+      },
+      {
+        "name": "AvgRecipeMinutesAttempted",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": false,
+        "Description": "Mean recommended-minutes across this user's cooks today. Zig-zags User -> Cook -> Recipe.RecommendedMinutes.",
+        "formula": "=AVERAGEIFS(Cooks!{{RecommendedMinutes}}, Cooks!{{PreparedBy}}, Users!{{UserId}})"
+      },
+      {
+        "name": "CookingStyle",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "Fuzzy verdict on this user's day, off the zig-zag aggregate AvgRecipeMinutesAttempted: 'snacking' under 10 min average, 'short-order' under 30, 'slow-cooking' beyond.",
+        "formula": "=IF({{CookCount}} = 0, \"not cooking\", IF({{AvgRecipeMinutesAttempted}} < 10, \"snacking\", IF({{AvgRecipeMinutesAttempted}} < 30, \"short-order\", \"slow-cooking\")))"
+      }
+    ],
+    "data": [
+      {
+        "UserId": "Marcus",
+        "DisplayName": "Chef"
+      },
+      {
+        "UserId": "Lena",
+        "DisplayName": "Baker"
+      },
+      {
+        "UserId": "Eli",
+        "DisplayName": "Apprentice"
+      },
+      {
+        "UserId": "Carmen",
+        "DisplayName": "Sous Chef"
+      },
+      {
+        "UserId": "Tomas",
+        "DisplayName": "Dishwasher"
+      },
+      {
+        "UserId": "Diego",
+        "DisplayName": "Line Cook"
+      },
+      {
+        "UserId": "Iris",
+        "DisplayName": "Pastry Chef"
+      },
+      {
+        "UserId": "Wendell",
+        "DisplayName": "Food Critic"
+      }
+    ]
+  },
+  "Timers": {
+    "Description": "Top-level timer assembly. Holds the raw mechanical parameters and the headline runtime DAG: stored torque, remaining minutes, wind state, and whether the bell has rung.",
+    "important": true,
+    "summary_rich": "The **whole machine on a napkin**. Each timer is a tiny finite state machine driven by one raw field — `WindAngleDegrees`. From that one number the DAG derives `WindFraction`, `RemainingMinutes`, the discrete `WindState` (Unwound → Partial → Full), and finally the terminal `HasRung` flag. Wind the knob and the row walks itself through every state with no application code.",
+    "important_fields": [
+      "TimerId",
+      "Label",
+      "WindAngleDegrees",
+      "WindState",
+      "RemainingMinutes",
+      "HasRung"
+    ],
+    "schema": [
+      {
+        "name": "TimerId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Primary key."
+      },
+      {
+        "name": "Label",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "User-facing label."
+      },
+      {
+        "name": "WindAngleDegrees",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Current angular position of the winding knob, 0..MaxWindDegrees."
+      },
+      {
+        "name": "MaxWindDegrees",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Full-wind knob travel; 360 deg = 60 min on a standard dial."
+      },
+      {
+        "name": "MaxSpringTorqueNm",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Mainspring torque at full wind, newton-meters."
+      },
+      {
+        "name": "EscapementBaseHz",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Pallet oscillation frequency in §4."
+      },
+      {
+        "name": "WindFraction",
+        "datatype": "number",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "Fraction of full wind currently stored.",
+        "formula": "={{WindAngleDegrees}} / {{MaxWindDegrees}}"
+      },
+      {
+        "name": "StoredTorqueNm",
+        "datatype": "number",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "Torque currently stored in the mainspring (§2).",
+        "formula": "={{WindFraction}} * {{MaxSpringTorqueNm}}"
+      },
+      {
+        "name": "RemainingMinutes",
+        "datatype": "number",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "Minutes left until the cam trips §5.",
+        "formula": "={{WindAngleDegrees}} / 6"
+      },
+      {
+        "name": "WindState",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "Coarse state: Unwound, Partial, or Full.",
+        "formula": "=IF({{WindAngleDegrees}} <= 0, \"Unwound\", IF({{WindAngleDegrees}} >= {{MaxWindDegrees}}, \"Full\", \"Partial\"))",
+        "important": true,
+        "explanation_rich": "**The FSM state, written as one IF.** A mechanical timer has three discrete positions and one raw input — the angle of the knob. This rule lands the row in `Unwound` at 0°, `Full` at the upper stop, and `Partial` everywhere in between. Worked example: **Bessie** sits at 0° → `Unwound`; **Olive** at 120° (of 360°) → `Partial`; **Rufus** at 360° → `Full`. Turn Bessie's knob to 60° and the same row re-derives to `Partial` on the next read, in every substrate."
+      },
+      {
+        "name": "IsArmed",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "True while the mainspring still holds energy.",
+        "formula": "={{RemainingMinutes}} > 0"
+      },
+      {
+        "name": "HasRung",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "True once §5 has fired.",
+        "formula": "=NOT({{IsArmed}})",
+        "important": true,
+        "explanation_rich": "**The terminal state of the FSM.** A timer is in the `Counting` phase exactly while the mainspring still has energy (`IsArmed = TRUE`). The instant `RemainingMinutes` hits zero, `IsArmed` flips false and `HasRung` flips true — the discrete `Counting → Rung` transition. Worked example: **Bessie** sat at 0° this morning, so `RemainingMinutes = 0`, `IsArmed = FALSE`, `HasRung = TRUE` — and `RingEvents` already has her ding logged at 07:55. **Olive** at 120° has 20 minutes left and `HasRung = FALSE`. Same rule, opposite branches, two rows."
+      },
+      {
+        "name": "TickCount",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": false,
+        "Description": "Total escapement ticks recorded for this timer.",
+        "formula": "=COUNTIFS(TickEvents!{{HappenedOnTimer}}, Timers!{{TimerId}})"
+      },
+      {
+        "name": "RingCount",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": false,
+        "Description": "Total ding events recorded for this timer.",
+        "formula": "=COUNTIFS(RingEvents!{{HappenedOnTimer}}, Timers!{{TimerId}})"
+      },
+      {
+        "name": "CookCount",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": false,
+        "Description": "Number of cooks currently or recently timed on this timer.",
+        "formula": "=COUNTIFS(Cooks!{{OnTimer}}, Timers!{{TimerId}})"
+      },
+      {
+        "name": "TotalRecipeMinutesUsed",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": false,
+        "Description": "Sum of recommended minutes across recipes the cooks on this timer are following. Zig-zags through Cook to Recipe.",
+        "formula": "=SUMIFS(Cooks!{{RecommendedMinutes}}, Cooks!{{OnTimer}}, Timers!{{TimerId}})"
+      },
+      {
+        "name": "AvgRecipeMinutesUsed",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": false,
+        "Description": "Average recommended-minutes across the recipes any cook on this timer is following. Goes Timer -> Cook (rollup) -> Recipe (the underlying lookup).",
+        "formula": "=AVERAGEIFS(Cooks!{{RecommendedMinutes}}, Cooks!{{OnTimer}}, Timers!{{TimerId}})"
+      },
+      {
+        "name": "WindDurationMinutes",
+        "datatype": "number",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "How many minutes one full wind buys on this timer. Derived from MaxWindDegrees at 6 deg per minute.",
+        "formula": "={{MaxWindDegrees}} / 6"
+      },
+      {
+        "name": "ExpectedTicksPerMinute",
+        "datatype": "number",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "Escapement ticks expected per minute on this timer.",
+        "formula": "={{EscapementBaseHz}} * 60"
+      },
+      {
+        "name": "ExpectedTotalTicks",
+        "datatype": "number",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "Ticks expected across a full wind, end to end.",
+        "formula": "={{ExpectedTicksPerMinute}} * {{WindDurationMinutes}}"
+      },
+      {
+        "name": "TicksElapsedExpected",
+        "datatype": "number",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "Ticks that should have occurred so far on this timer based on how much the spring has unwound.",
+        "formula": "={{ExpectedTicksPerMinute}} * ({{WindDurationMinutes}} - {{RemainingMinutes}})"
+      },
+      {
+        "name": "TickEfficiencyPercent",
+        "datatype": "number",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "Observed ticks divided by expected ticks so far, as a percentage. A timer that has just been wound returns 100 since no ticks were expected yet.",
+        "formula": "=IF({{TicksElapsedExpected}} > 0, ({{TickCount}} / {{TicksElapsedExpected}}) * 100, 100)"
+      },
+      {
+        "name": "HasSparseTickRecord",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "True when the recorded tick count is well below what should have happened by now.",
+        "formula": "=IF({{TicksElapsedExpected}} > 0, {{TickCount}} < {{TicksElapsedExpected}}, FALSE())"
+      },
+      {
+        "name": "MechanicalPhase",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "Fuzzy lifecycle phase. A timer is freshly-wound if barely any of its wind has been spent, mid-run if it is well into its travel, nearly-done if it is almost out of energy, and rung once it has fired.",
+        "formula": "=IF({{HasRung}}, \"rung\", IF({{WindFraction}} > 0.8, \"freshly-wound\", IF({{WindFraction}} > 0.25, \"mid-run\", \"nearly-done\")))"
+      }
+    ],
+    "data": [
+      {
+        "TimerId": "Bessie",
+        "Label": "Egg Timer",
+        "WindAngleDegrees": 0,
+        "MaxWindDegrees": 360,
+        "MaxSpringTorqueNm": 0.08,
+        "EscapementBaseHz": 4
+      },
+      {
+        "TimerId": "Olive",
+        "Label": "Pasta Timer",
+        "WindAngleDegrees": 120,
+        "MaxWindDegrees": 360,
+        "MaxSpringTorqueNm": 0.08,
+        "EscapementBaseHz": 4
+      },
+      {
+        "TimerId": "Rufus",
+        "Label": "Roast Timer",
+        "WindAngleDegrees": 360,
+        "MaxWindDegrees": 360,
+        "MaxSpringTorqueNm": 0.08,
+        "EscapementBaseHz": 4
+      },
+      {
+        "TimerId": "Twigs",
+        "Label": "Tea Timer",
+        "WindAngleDegrees": 30,
+        "MaxWindDegrees": 360,
+        "MaxSpringTorqueNm": 0.08,
+        "EscapementBaseHz": 4
+      }
+    ]
+  },
+  "Cases": {
+    "Description": "The outer housing of a timer. The bell is mounted on top of the case.",
+    "schema": [
+      {
+        "name": "CaseId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Primary key."
+      },
+      {
+        "name": "HousesTimer",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Parent timer.",
+        "RelatedTo": "Timers"
+      },
+      {
+        "name": "Material",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Case material."
+      }
+    ],
+    "data": [
+      {
+        "CaseId": "Bessie's case",
+        "HousesTimer": "Bessie",
+        "Material": "chromed steel"
+      },
+      {
+        "CaseId": "Olive's case",
+        "HousesTimer": "Olive",
+        "Material": "brushed aluminum"
+      },
+      {
+        "CaseId": "Rufus's case",
+        "HousesTimer": "Rufus",
+        "Material": "chromed steel"
+      },
+      {
+        "CaseId": "Twigs's case",
+        "HousesTimer": "Twigs",
+        "Material": "chromed steel"
+      }
+    ]
+  },
+  "Bells": {
+    "Description": "The bell mounted on top of the case. Struck by the hammer striker when §5 fires.",
+    "schema": [
+      {
+        "name": "BellId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Primary key."
+      },
+      {
+        "name": "MountedOnCase",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Case the bell sits on.",
+        "RelatedTo": "Cases"
+      },
+      {
+        "name": "DiameterMm",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Bell diameter, mm."
+      },
+      {
+        "name": "ToneHz",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Dominant tone, Hz."
+      },
+      {
+        "name": "TimesRung",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": false,
+        "Description": "Number of ding events for this bell.",
+        "formula": "=COUNTIFS(RingEvents!{{Struck}}, Bells!{{BellId}})"
+      },
+      {
+        "name": "HasEverRung",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "True if at least one ding has been recorded.",
+        "formula": "={{TimesRung}} > 0"
+      }
+    ],
+    "data": [
+      {
+        "BellId": "Bessie's bell",
+        "MountedOnCase": "Bessie's case",
+        "DiameterMm": 40,
+        "ToneHz": 1800
+      },
+      {
+        "BellId": "Olive's bell",
+        "MountedOnCase": "Olive's case",
+        "DiameterMm": 40,
+        "ToneHz": 1800
+      },
+      {
+        "BellId": "Rufus's bell",
+        "MountedOnCase": "Rufus's case",
+        "DiameterMm": 40,
+        "ToneHz": 1800
+      },
+      {
+        "BellId": "Twigs's bell",
+        "MountedOnCase": "Twigs's case",
+        "DiameterMm": 40,
+        "ToneHz": 1800
+      }
+    ]
+  },
+  "WindingKnobs": {
+    "Description": "§1 — the dial on the front. Shaft is fixed to the mainspring arbor. Rim carries a printed scale 0..60 read against a fixed pointer on the case.",
+    "schema": [
+      {
+        "name": "WindingKnobId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Primary key."
+      },
+      {
+        "name": "FixedToTimer",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Parent timer.",
+        "RelatedTo": "Timers"
+      },
+      {
+        "name": "ScaleMin",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Lower bound of the printed scale."
+      },
+      {
+        "name": "ScaleMax",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Upper bound of the printed scale."
+      },
+      {
+        "name": "WindDirection",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Clockwise or counter-clockwise."
+      },
+      {
+        "name": "ShaftDiameterMm",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Diameter of the knob shaft."
+      },
+      {
+        "name": "PointerFixed",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": false,
+        "Description": "True if the case pointer is fixed (it always is on this design)."
+      },
+      {
+        "name": "TimerWindAngle",
+        "datatype": "number",
+        "type": "lookup",
+        "nullable": false,
+        "Description": "Parent timer's current wind angle.",
+        "formula": "=INDEX(Timers!{{WindAngleDegrees}}, MATCH({{FixedToTimer}}, Timers!{{TimerId}}, 0))"
+      },
+      {
+        "name": "TimerMaxWind",
+        "datatype": "number",
+        "type": "lookup",
+        "nullable": false,
+        "Description": "Parent timer's max wind angle.",
+        "formula": "=INDEX(Timers!{{MaxWindDegrees}}, MATCH({{FixedToTimer}}, Timers!{{TimerId}}, 0))"
+      },
+      {
+        "name": "ScaleReading",
+        "datatype": "number",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "Number the printed scale currently shows against the pointer.",
+        "formula": "={{ScaleMin}} + ({{TimerWindAngle}} / {{TimerMaxWind}}) * ({{ScaleMax}} - {{ScaleMin}})"
+      }
+    ],
+    "data": [
+      {
+        "WindingKnobId": "Bessie's knob",
+        "FixedToTimer": "Bessie",
+        "ScaleMin": 0,
+        "ScaleMax": 60,
+        "WindDirection": "clockwise",
+        "ShaftDiameterMm": 4,
+        "PointerFixed": true
+      },
+      {
+        "WindingKnobId": "Olive's knob",
+        "FixedToTimer": "Olive",
+        "ScaleMin": 0,
+        "ScaleMax": 60,
+        "WindDirection": "clockwise",
+        "ShaftDiameterMm": 4,
+        "PointerFixed": true
+      },
+      {
+        "WindingKnobId": "Rufus's knob",
+        "FixedToTimer": "Rufus",
+        "ScaleMin": 0,
+        "ScaleMax": 60,
+        "WindDirection": "clockwise",
+        "ShaftDiameterMm": 4,
+        "PointerFixed": true
+      },
+      {
+        "WindingKnobId": "Twigs's knob",
+        "FixedToTimer": "Twigs",
+        "ScaleMin": 0,
+        "ScaleMax": 60,
+        "WindDirection": "clockwise",
+        "ShaftDiameterMm": 4,
+        "PointerFixed": true
+      }
+    ]
+  },
+  "Arbors": {
+    "Description": "The shaft driven by the mainspring. Connects §1 (knob shaft) to §2 (mainspring), and carries the §5 cam.",
+    "schema": [
+      {
+        "name": "ArborId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Primary key."
+      },
+      {
+        "name": "InTimer",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Parent timer.",
+        "RelatedTo": "Timers"
+      },
+      {
+        "name": "DiameterMm",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Arbor diameter."
+      }
+    ],
+    "data": [
+      {
+        "ArborId": "Bessie's arbor",
+        "InTimer": "Bessie",
+        "DiameterMm": 3
+      },
+      {
+        "ArborId": "Olive's arbor",
+        "InTimer": "Olive",
+        "DiameterMm": 3
+      },
+      {
+        "ArborId": "Rufus's arbor",
+        "InTimer": "Rufus",
+        "DiameterMm": 3
+      },
+      {
+        "ArborId": "Twigs's arbor",
+        "InTimer": "Twigs",
+        "DiameterMm": 3
+      }
+    ]
+  },
+  "Mainsprings": {
+    "Description": "§2 — flat coiled steel spring in a drum. Inner end anchors to the arbor; outer end anchors to the case.",
+    "schema": [
+      {
+        "name": "MainspringId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Primary key."
+      },
+      {
+        "name": "WrappedOnArbor",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Arbor this mainspring drives.",
+        "RelatedTo": "Arbors"
+      },
+      {
+        "name": "DrumDiameterMm",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Diameter of the spring drum."
+      },
+      {
+        "name": "Material",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Spring material."
+      },
+      {
+        "name": "InnerEndAnchor",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Where the inner end anchors (always Arbor)."
+      },
+      {
+        "name": "OuterEndAnchor",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Where the outer end anchors (always Case)."
+      }
+    ],
+    "data": [
+      {
+        "MainspringId": "Bessie's mainspring",
+        "WrappedOnArbor": "Bessie's arbor",
+        "DrumDiameterMm": 18,
+        "Material": "spring steel",
+        "InnerEndAnchor": "Arbor",
+        "OuterEndAnchor": "Case"
+      },
+      {
+        "MainspringId": "Olive's mainspring",
+        "WrappedOnArbor": "Olive's arbor",
+        "DrumDiameterMm": 18,
+        "Material": "spring steel",
+        "InnerEndAnchor": "Arbor",
+        "OuterEndAnchor": "Case"
+      },
+      {
+        "MainspringId": "Rufus's mainspring",
+        "WrappedOnArbor": "Rufus's arbor",
+        "DrumDiameterMm": 18,
+        "Material": "spring steel",
+        "InnerEndAnchor": "Arbor",
+        "OuterEndAnchor": "Case"
+      },
+      {
+        "MainspringId": "Twigs's mainspring",
+        "WrappedOnArbor": "Twigs's arbor",
+        "DrumDiameterMm": 18,
+        "Material": "spring steel",
+        "InnerEndAnchor": "Arbor",
+        "OuterEndAnchor": "Case"
+      }
+    ]
+  },
+  "GearTrains": {
+    "Description": "§3 — the three-gear stack between mainspring arbor and escapement. Carries the output shaft that drives the dial pointer.",
+    "schema": [
+      {
+        "name": "GearTrainId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Primary key."
+      },
+      {
+        "name": "InTimer",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Parent timer.",
+        "RelatedTo": "Timers"
+      },
+      {
+        "name": "ReductionRatio",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Total speed-up from arbor to escapement."
+      },
+      {
+        "name": "TimerEscapementHz",
+        "datatype": "number",
+        "type": "lookup",
+        "nullable": false,
+        "Description": "Parent timer's escapement frequency.",
+        "formula": "=INDEX(Timers!{{EscapementBaseHz}}, MATCH({{InTimer}}, Timers!{{TimerId}}, 0))"
+      },
+      {
+        "name": "OutputShaftRPM",
+        "datatype": "number",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "Speed of the output shaft (the one carrying the dial pointer).",
+        "formula": "=({{TimerEscapementHz}} * 60) / {{ReductionRatio}}"
+      },
+      {
+        "name": "GearCount",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": false,
+        "Description": "Number of gears in this train. Always 3 on this design.",
+        "formula": "=COUNTIFS(Gears!{{InGearTrain}}, GearTrains!{{GearTrainId}})"
+      },
+      {
+        "name": "TotalTeeth",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": false,
+        "Description": "Sum of tooth counts across the three gears.",
+        "formula": "=SUMIFS(Gears!{{ToothCount}}, Gears!{{InGearTrain}}, GearTrains!{{GearTrainId}})"
+      },
+      {
+        "name": "AverageToothCount",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": false,
+        "Description": "Mean tooth count across the gears in this train.",
+        "formula": "=AVERAGEIFS(Gears!{{ToothCount}}, Gears!{{InGearTrain}}, GearTrains!{{GearTrainId}})"
+      }
+    ],
+    "data": [
+      {
+        "GearTrainId": "Bessie's gear train",
+        "InTimer": "Bessie",
+        "ReductionRatio": 240
+      },
+      {
+        "GearTrainId": "Olive's gear train",
+        "InTimer": "Olive",
+        "ReductionRatio": 240
+      },
+      {
+        "GearTrainId": "Rufus's gear train",
+        "InTimer": "Rufus",
+        "ReductionRatio": 240
+      },
+      {
+        "GearTrainId": "Twigs's gear train",
+        "InTimer": "Twigs",
+        "ReductionRatio": 240
+      }
+    ]
+  },
+  "Gears": {
+    "Description": "Individual gears in a gear train. Each has a tooth count and a position in the chain (1, 2, or 3).",
+    "schema": [
+      {
+        "name": "GearId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Primary key."
+      },
+      {
+        "name": "InGearTrain",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Parent gear train.",
+        "RelatedTo": "GearTrains"
+      },
+      {
+        "name": "PositionInChain",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "1, 2, or 3 — arbor side to escapement side."
+      },
+      {
+        "name": "ToothCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Number of teeth on this gear."
+      },
+      {
+        "name": "IsFirstInChain",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "True for the gear nearest the arbor.",
+        "formula": "={{PositionInChain}} = 1"
+      },
+      {
+        "name": "IsLastInChain",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "True for the gear nearest the escapement.",
+        "formula": "={{PositionInChain}} = 3"
+      },
+      {
+        "name": "SizeClass",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "Fuzzy size based on tooth count: large 40+, medium 25-39, small under 25.",
+        "formula": "=IF({{ToothCount}} >= 40, \"large\", IF({{ToothCount}} >= 25, \"medium\", \"small\"))"
+      },
+      {
+        "name": "OnTimer",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": false,
+        "Description": "Timer the gear's gear-train belongs to (chained lookup through GearTrains).",
+        "formula": "=INDEX(GearTrains!{{InTimer}}, MATCH({{InGearTrain}}, GearTrains!{{GearTrainId}}, 0))"
+      }
+    ],
+    "data": [
+      {
+        "GearId": "Bessie's first gear",
+        "InGearTrain": "Bessie's gear train",
+        "PositionInChain": 1,
+        "ToothCount": 48
+      },
+      {
+        "GearId": "Bessie's second gear",
+        "InGearTrain": "Bessie's gear train",
+        "PositionInChain": 2,
+        "ToothCount": 36
+      },
+      {
+        "GearId": "Bessie's third gear",
+        "InGearTrain": "Bessie's gear train",
+        "PositionInChain": 3,
+        "ToothCount": 24
+      },
+      {
+        "GearId": "Olive's first gear",
+        "InGearTrain": "Olive's gear train",
+        "PositionInChain": 1,
+        "ToothCount": 48
+      },
+      {
+        "GearId": "Olive's second gear",
+        "InGearTrain": "Olive's gear train",
+        "PositionInChain": 2,
+        "ToothCount": 36
+      },
+      {
+        "GearId": "Olive's third gear",
+        "InGearTrain": "Olive's gear train",
+        "PositionInChain": 3,
+        "ToothCount": 24
+      },
+      {
+        "GearId": "Rufus's first gear",
+        "InGearTrain": "Rufus's gear train",
+        "PositionInChain": 1,
+        "ToothCount": 48
+      },
+      {
+        "GearId": "Rufus's second gear",
+        "InGearTrain": "Rufus's gear train",
+        "PositionInChain": 2,
+        "ToothCount": 36
+      },
+      {
+        "GearId": "Rufus's third gear",
+        "InGearTrain": "Rufus's gear train",
+        "PositionInChain": 3,
+        "ToothCount": 24
+      },
+      {
+        "GearId": "Twigs's first gear",
+        "InGearTrain": "Twigs's gear train",
+        "PositionInChain": 1,
+        "ToothCount": 48
+      },
+      {
+        "GearId": "Twigs's second gear",
+        "InGearTrain": "Twigs's gear train",
+        "PositionInChain": 2,
+        "ToothCount": 36
+      },
+      {
+        "GearId": "Twigs's third gear",
+        "InGearTrain": "Twigs's gear train",
+        "PositionInChain": 3,
+        "ToothCount": 24
+      }
+    ]
+  },
+  "OutputShafts": {
+    "Description": "The shaft at the end of the gear train. Carries the dial pointer.",
+    "schema": [
+      {
+        "name": "OutputShaftId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Primary key."
+      },
+      {
+        "name": "InGearTrain",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Parent gear train.",
+        "RelatedTo": "GearTrains"
+      },
+      {
+        "name": "CurrentRPM",
+        "datatype": "number",
+        "type": "lookup",
+        "nullable": false,
+        "Description": "Inherits the gear train's output RPM.",
+        "formula": "=INDEX(GearTrains!{{OutputShaftRPM}}, MATCH({{InGearTrain}}, GearTrains!{{GearTrainId}}, 0))"
+      }
+    ],
+    "data": [
+      {
+        "OutputShaftId": "Bessie's output shaft",
+        "InGearTrain": "Bessie's gear train"
+      },
+      {
+        "OutputShaftId": "Olive's output shaft",
+        "InGearTrain": "Olive's gear train"
+      },
+      {
+        "OutputShaftId": "Rufus's output shaft",
+        "InGearTrain": "Rufus's gear train"
+      },
+      {
+        "OutputShaftId": "Twigs's output shaft",
+        "InGearTrain": "Twigs's gear train"
+      }
+    ]
+  },
+  "DialPointers": {
+    "Description": "Pointer mounted on the output shaft. Reads against the printed scale on the knob rim.",
+    "schema": [
+      {
+        "name": "DialPointerId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Primary key."
+      },
+      {
+        "name": "OnOutputShaft",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Shaft this pointer is mounted on.",
+        "RelatedTo": "OutputShafts"
+      },
+      {
+        "name": "LengthMm",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Pointer length."
+      }
+    ],
+    "data": [
+      {
+        "DialPointerId": "Bessie's dial pointer",
+        "OnOutputShaft": "Bessie's output shaft",
+        "LengthMm": 14
+      },
+      {
+        "DialPointerId": "Olive's dial pointer",
+        "OnOutputShaft": "Olive's output shaft",
+        "LengthMm": 14
+      },
+      {
+        "DialPointerId": "Rufus's dial pointer",
+        "OnOutputShaft": "Rufus's output shaft",
+        "LengthMm": 14
+      },
+      {
+        "DialPointerId": "Twigs's dial pointer",
+        "OnOutputShaft": "Twigs's output shaft",
+        "LengthMm": 14
+      }
+    ]
+  },
+  "Escapements": {
+    "Description": "§4 — escapement assembly: toothed wheel plus two-pronged pallet plus hairspring. Defines the time base.",
+    "schema": [
+      {
+        "name": "EscapementId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Primary key."
+      },
+      {
+        "name": "InTimer",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Parent timer.",
+        "RelatedTo": "Timers"
+      },
+      {
+        "name": "TickCount",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": false,
+        "Description": "Ticks recorded at this escapement.",
+        "formula": "=COUNTIFS(TickEvents!{{AtEscapement}}, Escapements!{{EscapementId}})"
+      },
+      {
+        "name": "HasTicked",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "True if this escapement has recorded at least one tick.",
+        "formula": "={{TickCount}} > 0"
+      }
+    ],
+    "data": [
+      {
+        "EscapementId": "Bessie's escapement",
+        "InTimer": "Bessie"
+      },
+      {
+        "EscapementId": "Olive's escapement",
+        "InTimer": "Olive"
+      },
+      {
+        "EscapementId": "Rufus's escapement",
+        "InTimer": "Rufus"
+      },
+      {
+        "EscapementId": "Twigs's escapement",
+        "InTimer": "Twigs"
+      }
+    ]
+  },
+  "EscapementWheels": {
+    "Description": "The toothed wheel of the escapement. Each pallet rock releases exactly one tooth.",
+    "schema": [
+      {
+        "name": "EscapementWheelId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Primary key."
+      },
+      {
+        "name": "InEscapement",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Parent escapement.",
+        "RelatedTo": "Escapements"
+      },
+      {
+        "name": "ToothCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Number of teeth around the wheel."
+      }
+    ],
+    "data": [
+      {
+        "EscapementWheelId": "Bessie's escapement wheel",
+        "InEscapement": "Bessie's escapement",
+        "ToothCount": 30
+      },
+      {
+        "EscapementWheelId": "Olive's escapement wheel",
+        "InEscapement": "Olive's escapement",
+        "ToothCount": 30
+      },
+      {
+        "EscapementWheelId": "Rufus's escapement wheel",
+        "InEscapement": "Rufus's escapement",
+        "ToothCount": 30
+      },
+      {
+        "EscapementWheelId": "Twigs's escapement wheel",
+        "InEscapement": "Twigs's escapement",
+        "ToothCount": 30
+      }
+    ]
+  },
+  "Pallets": {
+    "Description": "Pivoting piece sitting across the escapement-wheel teeth. Two prongs (the README's 'two-pronged pallet'). Rocking is set by pallet mass plus the hairspring.",
+    "schema": [
+      {
+        "name": "PalletId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Primary key."
+      },
+      {
+        "name": "InEscapement",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Parent escapement.",
+        "RelatedTo": "Escapements"
+      },
+      {
+        "name": "ProngCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Number of prongs. Always 2 on this design."
+      },
+      {
+        "name": "MassGrams",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Pallet mass. Co-determines rocking rate."
+      }
+    ],
+    "data": [
+      {
+        "PalletId": "Bessie's pallet",
+        "InEscapement": "Bessie's escapement",
+        "ProngCount": 2,
+        "MassGrams": 0.8
+      },
+      {
+        "PalletId": "Olive's pallet",
+        "InEscapement": "Olive's escapement",
+        "ProngCount": 2,
+        "MassGrams": 0.8
+      },
+      {
+        "PalletId": "Rufus's pallet",
+        "InEscapement": "Rufus's escapement",
+        "ProngCount": 2,
+        "MassGrams": 0.8
+      },
+      {
+        "PalletId": "Twigs's pallet",
+        "InEscapement": "Twigs's escapement",
+        "ProngCount": 2,
+        "MassGrams": 0.8
+      }
+    ]
+  },
+  "Hairsprings": {
+    "Description": "Tiny coiled spring attached to the pallet. Sets the pallet's rocking rate together with pallet mass.",
+    "schema": [
+      {
+        "name": "HairspringId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Primary key."
+      },
+      {
+        "name": "AttachedToPallet",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Parent pallet.",
+        "RelatedTo": "Pallets"
+      },
+      {
+        "name": "StiffnessNmPerRad",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Torsional stiffness."
+      }
+    ],
+    "data": [
+      {
+        "HairspringId": "Bessie's hairspring",
+        "AttachedToPallet": "Bessie's pallet",
+        "StiffnessNmPerRad": 0.0004
+      },
+      {
+        "HairspringId": "Olive's hairspring",
+        "AttachedToPallet": "Olive's pallet",
+        "StiffnessNmPerRad": 0.0004
+      },
+      {
+        "HairspringId": "Rufus's hairspring",
+        "AttachedToPallet": "Rufus's pallet",
+        "StiffnessNmPerRad": 0.0004
+      },
+      {
+        "HairspringId": "Twigs's hairspring",
+        "AttachedToPallet": "Twigs's pallet",
+        "StiffnessNmPerRad": 0.0004
+      }
+    ]
+  },
+  "Cams": {
+    "Description": "Profile on the arbor of §2. Its notch aligns with the hammer catch at the zero position; that alignment is what trips §5.",
+    "schema": [
+      {
+        "name": "CamId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Primary key."
+      },
+      {
+        "name": "OnArbor",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Arbor this cam rides on.",
+        "RelatedTo": "Arbors"
+      },
+      {
+        "name": "NotchAngleDeg",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Arbor angle at which the notch aligns with the catch."
+      }
+    ],
+    "data": [
+      {
+        "CamId": "Bessie's cam",
+        "OnArbor": "Bessie's arbor",
+        "NotchAngleDeg": 0
+      },
+      {
+        "CamId": "Olive's cam",
+        "OnArbor": "Olive's arbor",
+        "NotchAngleDeg": 0
+      },
+      {
+        "CamId": "Rufus's cam",
+        "OnArbor": "Rufus's arbor",
+        "NotchAngleDeg": 0
+      },
+      {
+        "CamId": "Twigs's cam",
+        "OnArbor": "Twigs's arbor",
+        "NotchAngleDeg": 0
+      }
+    ]
+  },
+  "BellHammers": {
+    "Description": "§5 — spring-loaded arm with a steel striker, held back by the hammer catch. When the cam notch reaches the catch, the catch releases and the arm's own spring snaps the striker against the bell.",
+    "important": true,
+    "summary_rich": "The **state-transition trigger**. While the timer is armed, the catch holds the hammer back (`Held`). The instant `Timer.HasRung` flips to true, this row's `ReleaseState` flips to `Released` — and the same flip cascades through `HammerCatches.IsEngaged` and lights up the bell's ding. One boolean change in `Timers`, four downstream cells re-derived.",
+    "important_fields": [
+      "BellHammerId",
+      "InTimer",
+      "TimerHasRung",
+      "ReleaseState"
+    ],
+    "schema": [
+      {
+        "name": "BellHammerId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Primary key."
+      },
+      {
+        "name": "InTimer",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Parent timer.",
+        "RelatedTo": "Timers"
+      },
+      {
+        "name": "ArmTorqueNm",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Spring torque stored in the hammer arm."
+      },
+      {
+        "name": "TimerHasRung",
+        "datatype": "boolean",
+        "type": "lookup",
+        "nullable": false,
+        "Description": "Whether the parent timer has rung.",
+        "formula": "=INDEX(Timers!{{HasRung}}, MATCH({{InTimer}}, Timers!{{TimerId}}, 0))"
+      },
+      {
+        "name": "ReleaseState",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "Held while the cam still restrains the catch; Released once the timer has rung.",
+        "formula": "=IF({{TimerHasRung}}, \"Released\", \"Held\")",
+        "important": true,
+        "explanation_rich": "**The state-transition trigger, in one IF.** The hammer is `Held` while the cam catch still restrains it; the moment the parent timer's `HasRung` flips true, this row reads `Released`. Worked example: **Bessie's bell hammer** inherits `TimerHasRung = TRUE` from Bessie (already rung) → `ReleaseState = Released`. **Olive's bell hammer** inherits `FALSE` → still `Held`. Edit Olive's `WindAngleDegrees` down to 0 and the cascade — `Timer.HasRung` → `BellHammer.ReleaseState` → `HammerCatch.IsEngaged` — fires in lockstep across every substrate."
+      }
+    ],
+    "data": [
+      {
+        "BellHammerId": "Bessie's bell hammer",
+        "InTimer": "Bessie",
+        "ArmTorqueNm": 0.02
+      },
+      {
+        "BellHammerId": "Olive's bell hammer",
+        "InTimer": "Olive",
+        "ArmTorqueNm": 0.02
+      },
+      {
+        "BellHammerId": "Rufus's bell hammer",
+        "InTimer": "Rufus",
+        "ArmTorqueNm": 0.02
+      },
+      {
+        "BellHammerId": "Twigs's bell hammer",
+        "InTimer": "Twigs",
+        "ArmTorqueNm": 0.02
+      }
+    ]
+  },
+  "HammerArms": {
+    "Description": "The spring-loaded arm of the bell hammer. Carries the striker at its tip.",
+    "schema": [
+      {
+        "name": "HammerArmId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Primary key."
+      },
+      {
+        "name": "OfBellHammer",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Parent bell hammer.",
+        "RelatedTo": "BellHammers"
+      },
+      {
+        "name": "LengthMm",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Arm length."
+      }
+    ],
+    "data": [
+      {
+        "HammerArmId": "Bessie's hammer arm",
+        "OfBellHammer": "Bessie's bell hammer",
+        "LengthMm": 22
+      },
+      {
+        "HammerArmId": "Olive's hammer arm",
+        "OfBellHammer": "Olive's bell hammer",
+        "LengthMm": 22
+      },
+      {
+        "HammerArmId": "Rufus's hammer arm",
+        "OfBellHammer": "Rufus's bell hammer",
+        "LengthMm": 22
+      },
+      {
+        "HammerArmId": "Twigs's hammer arm",
+        "OfBellHammer": "Twigs's bell hammer",
+        "LengthMm": 22
+      }
+    ]
+  },
+  "Strikers": {
+    "Description": "The small steel head at the tip of the hammer arm. Whatever actually contacts the bell.",
+    "schema": [
+      {
+        "name": "StrikerId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Primary key."
+      },
+      {
+        "name": "OnArm",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Hammer arm this striker is mounted on.",
+        "RelatedTo": "HammerArms"
+      },
+      {
+        "name": "Material",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Striker material."
+      }
+    ],
+    "data": [
+      {
+        "StrikerId": "Bessie's striker",
+        "OnArm": "Bessie's hammer arm",
+        "Material": "steel"
+      },
+      {
+        "StrikerId": "Olive's striker",
+        "OnArm": "Olive's hammer arm",
+        "Material": "steel"
+      },
+      {
+        "StrikerId": "Rufus's striker",
+        "OnArm": "Rufus's hammer arm",
+        "Material": "steel"
+      },
+      {
+        "StrikerId": "Twigs's striker",
+        "OnArm": "Twigs's hammer arm",
+        "Material": "steel"
+      }
+    ]
+  },
+  "HammerCatches": {
+    "Description": "Catch that holds the hammer back until the cam notch aligns. Once released, the arm spring snaps the striker against the bell.",
+    "schema": [
+      {
+        "name": "HammerCatchId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Primary key."
+      },
+      {
+        "name": "OfBellHammer",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Parent bell hammer.",
+        "RelatedTo": "BellHammers"
+      },
+      {
+        "name": "EngagedWithCam",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Cam this catch rides against.",
+        "RelatedTo": "Cams"
+      },
+      {
+        "name": "HammerReleaseState",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": false,
+        "Description": "Inherits parent hammer's release state.",
+        "formula": "=INDEX(BellHammers!{{ReleaseState}}, MATCH({{OfBellHammer}}, BellHammers!{{BellHammerId}}, 0))"
+      },
+      {
+        "name": "IsEngaged",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "True while the catch still restrains the hammer.",
+        "formula": "=IF({{HammerReleaseState}} = \"Held\", TRUE(), FALSE())"
+      }
+    ],
+    "data": [
+      {
+        "HammerCatchId": "Bessie's hammer catch",
+        "OfBellHammer": "Bessie's bell hammer",
+        "EngagedWithCam": "Bessie's cam"
+      },
+      {
+        "HammerCatchId": "Olive's hammer catch",
+        "OfBellHammer": "Olive's bell hammer",
+        "EngagedWithCam": "Olive's cam"
+      },
+      {
+        "HammerCatchId": "Rufus's hammer catch",
+        "OfBellHammer": "Rufus's bell hammer",
+        "EngagedWithCam": "Rufus's cam"
+      },
+      {
+        "HammerCatchId": "Twigs's hammer catch",
+        "OfBellHammer": "Twigs's bell hammer",
+        "EngagedWithCam": "Twigs's cam"
+      }
+    ]
+  },
+  "WindActions": {
+    "Description": "Event: a user rotates the winding knob to a target angle at a point in time. The README's §1 input event.",
+    "schema": [
+      {
+        "name": "WindActionId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Primary key."
+      },
+      {
+        "name": "PerformedBy",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Acting user.",
+        "RelatedTo": "Users"
+      },
+      {
+        "name": "TurnedKnob",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Knob that was turned.",
+        "RelatedTo": "WindingKnobs"
+      },
+      {
+        "name": "TargetAngleDeg",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Angle wound to, in degrees."
+      },
+      {
+        "name": "OccurredAt",
+        "datatype": "datetime",
+        "type": "raw",
+        "nullable": false,
+        "Description": "When the wind happened."
+      },
+      {
+        "name": "AppliedToTimer",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": false,
+        "Description": "Timer the turned knob is fixed to.",
+        "formula": "=INDEX(WindingKnobs!{{FixedToTimer}}, MATCH({{TurnedKnob}}, WindingKnobs!{{WindingKnobId}}, 0))"
+      },
+      {
+        "name": "ResultedInRing",
+        "datatype": "boolean",
+        "type": "lookup",
+        "nullable": false,
+        "Description": "True if the timer this wind action wound has since rung.",
+        "formula": "=INDEX(Timers!{{HasRung}}, MATCH({{AppliedToTimer}}, Timers!{{TimerId}}, 0))"
+      }
+    ],
+    "data": [
+      {
+        "WindActionId": "Marcus wound Bessie",
+        "PerformedBy": "Marcus",
+        "TurnedKnob": "Bessie's knob",
+        "TargetAngleDeg": 60,
+        "OccurredAt": "2026-05-21T07:45:00Z"
+      },
+      {
+        "WindActionId": "Lena wound Olive",
+        "PerformedBy": "Lena",
+        "TurnedKnob": "Olive's knob",
+        "TargetAngleDeg": 120,
+        "OccurredAt": "2026-05-21T09:30:00Z"
+      },
+      {
+        "WindActionId": "Marcus wound Rufus",
+        "PerformedBy": "Marcus",
+        "TurnedKnob": "Rufus's knob",
+        "TargetAngleDeg": 360,
+        "OccurredAt": "2026-05-21T10:00:00Z"
+      },
+      {
+        "WindActionId": "Marcus readjusted Bessie",
+        "PerformedBy": "Marcus",
+        "TurnedKnob": "Bessie's knob",
+        "TargetAngleDeg": 60,
+        "OccurredAt": "2026-05-21T11:30:00Z"
+      },
+      {
+        "WindActionId": "Marcus wound Twigs",
+        "PerformedBy": "Marcus",
+        "TurnedKnob": "Twigs's knob",
+        "TargetAngleDeg": 30,
+        "OccurredAt": "2026-05-21T11:25:00Z"
+      }
+    ]
+  },
+  "TickEvents": {
+    "Description": "Event: the escapement releases one tooth — one 'tick' from the README.",
+    "schema": [
+      {
+        "name": "TickEventId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Primary key."
+      },
+      {
+        "name": "HappenedOnTimer",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Parent timer.",
+        "RelatedTo": "Timers"
+      },
+      {
+        "name": "AtEscapement",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Escapement that ticked.",
+        "RelatedTo": "Escapements"
+      },
+      {
+        "name": "OccurredAt",
+        "datatype": "datetime",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Tick timestamp."
+      },
+      {
+        "name": "TimerLabel",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": false,
+        "Description": "Parent timer's label.",
+        "formula": "=INDEX(Timers!{{Label}}, MATCH({{HappenedOnTimer}}, Timers!{{TimerId}}, 0))"
+      },
+      {
+        "name": "OnTimerThatHasRung",
+        "datatype": "boolean",
+        "type": "lookup",
+        "nullable": false,
+        "Description": "Whether the parent timer has rung.",
+        "formula": "=INDEX(Timers!{{HasRung}}, MATCH({{HappenedOnTimer}}, Timers!{{TimerId}}, 0))"
+      },
+      {
+        "name": "OnTimerInPhase",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": false,
+        "Description": "Parent timer's current mechanical phase.",
+        "formula": "=INDEX(Timers!{{MechanicalPhase}}, MATCH({{HappenedOnTimer}}, Timers!{{TimerId}}, 0))"
+      }
+    ],
+    "data": [
+      {
+        "TickEventId": "Bessie's tick 1",
+        "HappenedOnTimer": "Bessie",
+        "AtEscapement": "Bessie's escapement",
+        "OccurredAt": "2026-05-21T07:46:15Z"
+      },
+      {
+        "TickEventId": "Bessie's tick 2",
+        "HappenedOnTimer": "Bessie",
+        "AtEscapement": "Bessie's escapement",
+        "OccurredAt": "2026-05-21T07:47:30Z"
+      },
+      {
+        "TickEventId": "Bessie's tick 3",
+        "HappenedOnTimer": "Bessie",
+        "AtEscapement": "Bessie's escapement",
+        "OccurredAt": "2026-05-21T07:48:45Z"
+      },
+      {
+        "TickEventId": "Bessie's tick 4",
+        "HappenedOnTimer": "Bessie",
+        "AtEscapement": "Bessie's escapement",
+        "OccurredAt": "2026-05-21T07:50:00Z"
+      },
+      {
+        "TickEventId": "Bessie's tick 5",
+        "HappenedOnTimer": "Bessie",
+        "AtEscapement": "Bessie's escapement",
+        "OccurredAt": "2026-05-21T07:51:15Z"
+      },
+      {
+        "TickEventId": "Bessie's tick 6",
+        "HappenedOnTimer": "Bessie",
+        "AtEscapement": "Bessie's escapement",
+        "OccurredAt": "2026-05-21T07:52:30Z"
+      },
+      {
+        "TickEventId": "Bessie's tick 7",
+        "HappenedOnTimer": "Bessie",
+        "AtEscapement": "Bessie's escapement",
+        "OccurredAt": "2026-05-21T07:53:45Z"
+      },
+      {
+        "TickEventId": "Bessie's tick 8",
+        "HappenedOnTimer": "Bessie",
+        "AtEscapement": "Bessie's escapement",
+        "OccurredAt": "2026-05-21T07:55:00Z"
+      },
+      {
+        "TickEventId": "Olive's tick 1",
+        "HappenedOnTimer": "Olive",
+        "AtEscapement": "Olive's escapement",
+        "OccurredAt": "2026-05-21T09:35:00Z"
+      },
+      {
+        "TickEventId": "Olive's tick 2",
+        "HappenedOnTimer": "Olive",
+        "AtEscapement": "Olive's escapement",
+        "OccurredAt": "2026-05-21T09:40:00Z"
+      },
+      {
+        "TickEventId": "Olive's tick 3",
+        "HappenedOnTimer": "Olive",
+        "AtEscapement": "Olive's escapement",
+        "OccurredAt": "2026-05-21T09:45:00Z"
+      },
+      {
+        "TickEventId": "Olive's tick 4",
+        "HappenedOnTimer": "Olive",
+        "AtEscapement": "Olive's escapement",
+        "OccurredAt": "2026-05-21T09:50:00Z"
+      },
+      {
+        "TickEventId": "Olive's tick 5",
+        "HappenedOnTimer": "Olive",
+        "AtEscapement": "Olive's escapement",
+        "OccurredAt": "2026-05-21T09:55:00Z"
+      },
+      {
+        "TickEventId": "Olive's tick 6",
+        "HappenedOnTimer": "Olive",
+        "AtEscapement": "Olive's escapement",
+        "OccurredAt": "2026-05-21T10:00:00Z"
+      },
+      {
+        "TickEventId": "Olive's tick 7",
+        "HappenedOnTimer": "Olive",
+        "AtEscapement": "Olive's escapement",
+        "OccurredAt": "2026-05-21T10:05:00Z"
+      },
+      {
+        "TickEventId": "Olive's tick 8",
+        "HappenedOnTimer": "Olive",
+        "AtEscapement": "Olive's escapement",
+        "OccurredAt": "2026-05-21T10:10:00Z"
+      },
+      {
+        "TickEventId": "Rufus's tick 1",
+        "HappenedOnTimer": "Rufus",
+        "AtEscapement": "Rufus's escapement",
+        "OccurredAt": "2026-05-21T10:00:30Z"
+      },
+      {
+        "TickEventId": "Rufus's tick 2",
+        "HappenedOnTimer": "Rufus",
+        "AtEscapement": "Rufus's escapement",
+        "OccurredAt": "2026-05-21T10:01:00Z"
+      },
+      {
+        "TickEventId": "Rufus's tick 3",
+        "HappenedOnTimer": "Rufus",
+        "AtEscapement": "Rufus's escapement",
+        "OccurredAt": "2026-05-21T10:01:30Z"
+      },
+      {
+        "TickEventId": "Rufus's tick 4",
+        "HappenedOnTimer": "Rufus",
+        "AtEscapement": "Rufus's escapement",
+        "OccurredAt": "2026-05-21T10:02:00Z"
+      },
+      {
+        "TickEventId": "Twigs's tick 1",
+        "HappenedOnTimer": "Twigs",
+        "AtEscapement": "Twigs's escapement",
+        "OccurredAt": "2026-05-21T11:26:00Z"
+      },
+      {
+        "TickEventId": "Twigs's tick 2",
+        "HappenedOnTimer": "Twigs",
+        "AtEscapement": "Twigs's escapement",
+        "OccurredAt": "2026-05-21T11:27:00Z"
+      },
+      {
+        "TickEventId": "Twigs's tick 3",
+        "HappenedOnTimer": "Twigs",
+        "AtEscapement": "Twigs's escapement",
+        "OccurredAt": "2026-05-21T11:28:00Z"
+      }
+    ]
+  },
+  "RingEvents": {
+    "Description": "Event: the bell hammer strikes the bell — the README's 'ding'. Recorded once per fired §5.",
+    "schema": [
+      {
+        "name": "RingEventId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Primary key."
+      },
+      {
+        "name": "HappenedOnTimer",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Parent timer.",
+        "RelatedTo": "Timers"
+      },
+      {
+        "name": "Struck",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Bell that was struck.",
+        "RelatedTo": "Bells"
+      },
+      {
+        "name": "OccurredAt",
+        "datatype": "datetime",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Ring timestamp."
+      }
+    ],
+    "data": [
+      {
+        "RingEventId": "Bessie's ding",
+        "HappenedOnTimer": "Bessie",
+        "Struck": "Bessie's bell",
+        "OccurredAt": "2026-05-21T07:55:00Z"
+      }
+    ]
+  },
+  "Cooks": {
+    "Description": "A dish being timed on a timer. Each cook started at the moment a user wound the timer; its status mirrors the timer's lifecycle.",
+    "schema": [
+      {
+        "name": "CookId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Primary key."
+      },
+      {
+        "name": "OnTimer",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Timer being used.",
+        "RelatedTo": "Timers"
+      },
+      {
+        "name": "PreparedBy",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "User preparing the dish.",
+        "RelatedTo": "Users"
+      },
+      {
+        "name": "DishName",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Name of the dish."
+      },
+      {
+        "name": "StartedAt",
+        "datatype": "datetime",
+        "type": "raw",
+        "nullable": false,
+        "Description": "When the dish was started — i.e. when the timer was wound."
+      },
+      {
+        "name": "TimerHasRung",
+        "datatype": "boolean",
+        "type": "lookup",
+        "nullable": false,
+        "Description": "Whether the cook's timer has rung yet.",
+        "formula": "=INDEX(Timers!{{HasRung}}, MATCH({{OnTimer}}, Timers!{{TimerId}}, 0))"
+      },
+      {
+        "name": "TimerIsArmed",
+        "datatype": "boolean",
+        "type": "lookup",
+        "nullable": false,
+        "Description": "Whether the cook's timer is still armed.",
+        "formula": "=INDEX(Timers!{{IsArmed}}, MATCH({{OnTimer}}, Timers!{{TimerId}}, 0))"
+      },
+      {
+        "name": "TimerRemainingMin",
+        "datatype": "number",
+        "type": "lookup",
+        "nullable": false,
+        "Description": "Minutes the cook's timer has left.",
+        "formula": "=INDEX(Timers!{{RemainingMinutes}}, MATCH({{OnTimer}}, Timers!{{TimerId}}, 0))"
+      },
+      {
+        "name": "Status",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "Done if the timer has rung, Cooking if it is still armed, otherwise Pending.",
+        "formula": "=IF({{TimerHasRung}}, \"Done\", IF({{TimerIsArmed}}, \"Cooking\", \"Pending\"))"
+      },
+      {
+        "name": "FollowsRecipe",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Recipe being followed.",
+        "RelatedTo": "Recipes"
+      },
+      {
+        "name": "RecommendedMinutes",
+        "datatype": "number",
+        "type": "lookup",
+        "nullable": false,
+        "Description": "Minutes the recipe calls for.",
+        "formula": "=INDEX(Recipes!{{RecommendedMinutes}}, MATCH({{FollowsRecipe}}, Recipes!{{RecipeId}}, 0))"
+      },
+      {
+        "name": "TimerWindDuration",
+        "datatype": "number",
+        "type": "lookup",
+        "nullable": false,
+        "Description": "Maximum minutes the chosen timer can run.",
+        "formula": "=INDEX(Timers!{{WindDurationMinutes}}, MATCH({{OnTimer}}, Timers!{{TimerId}}, 0))"
+      },
+      {
+        "name": "TimerCanCoverRecipe",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "True if the chosen timer can run for at least as long as the recipe calls for.",
+        "formula": "={{TimerWindDuration}} >= {{RecommendedMinutes}}"
+      },
+      {
+        "name": "SuitabilityVerdict",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "Fuzzy verdict on the cook's choice of timer: insufficient if the timer is too short for the recipe, overkill if it can run more than three times as long as needed, otherwise appropriate.",
+        "formula": "=IF({{TimerWindDuration}} < {{RecommendedMinutes}}, \"insufficient\", IF({{TimerWindDuration}} > ({{RecommendedMinutes}} * 3), \"overkill\", \"appropriate\"))"
+      },
+      {
+        "name": "PreparedByName",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": false,
+        "Description": "Display name of the user preparing this cook.",
+        "formula": "=INDEX(Users!{{DisplayName}}, MATCH({{PreparedBy}}, Users!{{UserId}}, 0))"
+      },
+      {
+        "name": "PreparedByActivityLevel",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": false,
+        "Description": "Activity-level verdict on the user preparing this cook (chained lookup through Users).",
+        "formula": "=INDEX(Users!{{ActivityLevel}}, MATCH({{PreparedBy}}, Users!{{UserId}}, 0))"
+      },
+      {
+        "name": "RecipeDurationCategory",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": false,
+        "Description": "Duration-category of the recipe being followed (chained lookup through Recipes).",
+        "formula": "=INDEX(Recipes!{{DurationCategory}}, MATCH({{FollowsRecipe}}, Recipes!{{RecipeId}}, 0))"
+      },
+      {
+        "name": "RecipeTempProfile",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": false,
+        "Description": "Cooking-temp profile of the recipe (chained lookup through Recipes).",
+        "formula": "=INDEX(Recipes!{{CookingTempProfile}}, MATCH({{FollowsRecipe}}, Recipes!{{RecipeId}}, 0))"
+      },
+      {
+        "name": "TimerMechanicalPhase",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": false,
+        "Description": "Mechanical phase of the timer this cook is on (chained lookup through Timers).",
+        "formula": "=INDEX(Timers!{{MechanicalPhase}}, MATCH({{OnTimer}}, Timers!{{TimerId}}, 0))"
+      }
+    ],
+    "data": [
+      {
+        "CookId": "soft-boiled egg",
+        "OnTimer": "Bessie",
+        "PreparedBy": "Marcus",
+        "DishName": "soft-boiled egg",
+        "StartedAt": "2026-05-21T07:45:00Z",
+        "FollowsRecipe": "soft-boiled egg recipe"
+      },
+      {
+        "CookId": "spaghetti al pomodoro",
+        "OnTimer": "Olive",
+        "PreparedBy": "Lena",
+        "DishName": "spaghetti al pomodoro",
+        "StartedAt": "2026-05-21T09:30:00Z",
+        "FollowsRecipe": "spaghetti recipe"
+      },
+      {
+        "CookId": "rib roast",
+        "OnTimer": "Rufus",
+        "PreparedBy": "Marcus",
+        "DishName": "rib roast",
+        "StartedAt": "2026-05-21T10:00:00Z",
+        "FollowsRecipe": "rib roast recipe"
+      },
+      {
+        "CookId": "steamed broccoli side",
+        "OnTimer": "Olive",
+        "PreparedBy": "Lena",
+        "DishName": "steamed broccoli",
+        "StartedAt": "2026-05-21T09:32:00Z",
+        "FollowsRecipe": "broccoli recipe"
+      },
+      {
+        "CookId": "afternoon tea",
+        "OnTimer": "Twigs",
+        "PreparedBy": "Marcus",
+        "DishName": "Earl Grey tea",
+        "StartedAt": "2026-05-21T11:25:00Z",
+        "FollowsRecipe": "tea recipe"
+      },
+      {
+        "CookId": "morning coffee",
+        "OnTimer": "Bessie",
+        "PreparedBy": "Marcus",
+        "DishName": "instant coffee",
+        "StartedAt": "2026-05-21T07:40:00Z",
+        "FollowsRecipe": "instant coffee recipe"
+      },
+      {
+        "CookId": "baker's espresso",
+        "OnTimer": "Olive",
+        "PreparedBy": "Lena",
+        "DishName": "instant coffee",
+        "StartedAt": "2026-05-21T09:25:00Z",
+        "FollowsRecipe": "instant coffee recipe"
+      },
+      {
+        "CookId": "preheat for pizza",
+        "OnTimer": "Rufus",
+        "PreparedBy": "Marcus",
+        "DishName": "pizza margherita",
+        "StartedAt": "2026-05-21T10:02:00Z",
+        "FollowsRecipe": "pizza recipe"
+      },
+      {
+        "CookId": "late cake bake",
+        "OnTimer": "Rufus",
+        "PreparedBy": "Marcus",
+        "DishName": "vanilla cake",
+        "StartedAt": "2026-05-21T10:25:00Z",
+        "FollowsRecipe": "cake recipe"
+      },
+      {
+        "CookId": "overnight yogurt",
+        "OnTimer": "Olive",
+        "PreparedBy": "Lena",
+        "DishName": "homemade yogurt",
+        "StartedAt": "2026-05-21T09:35:00Z",
+        "FollowsRecipe": "yogurt recipe"
+      },
+      {
+        "CookId": "morning coffee",
+        "OnTimer": "Bessie",
+        "PreparedBy": "Marcus",
+        "DishName": "instant coffee",
+        "StartedAt": "2026-05-21T07:40:00Z",
+        "FollowsRecipe": "instant coffee recipe"
+      },
+      {
+        "CookId": "baker's espresso",
+        "OnTimer": "Olive",
+        "PreparedBy": "Lena",
+        "DishName": "instant coffee",
+        "StartedAt": "2026-05-21T09:25:00Z",
+        "FollowsRecipe": "instant coffee recipe"
+      },
+      {
+        "CookId": "late cake bake",
+        "OnTimer": "Rufus",
+        "PreparedBy": "Marcus",
+        "DishName": "vanilla cake",
+        "StartedAt": "2026-05-21T10:25:00Z",
+        "FollowsRecipe": "cake recipe"
+      },
+      {
+        "CookId": "overnight yogurt",
+        "OnTimer": "Olive",
+        "PreparedBy": "Lena",
+        "DishName": "homemade yogurt",
+        "StartedAt": "2026-05-21T09:35:00Z",
+        "FollowsRecipe": "yogurt recipe"
+      },
+      {
+        "CookId": "croissant batch",
+        "OnTimer": "Rufus",
+        "PreparedBy": "Iris",
+        "DishName": "butter croissant",
+        "StartedAt": "2026-05-21T10:05:00Z",
+        "FollowsRecipe": "croissant recipe"
+      },
+      {
+        "CookId": "risotto dinner",
+        "OnTimer": "Olive",
+        "PreparedBy": "Carmen",
+        "DishName": "mushroom risotto",
+        "StartedAt": "2026-05-21T09:40:00Z",
+        "FollowsRecipe": "risotto recipe"
+      },
+      {
+        "CookId": "ramen lunch",
+        "OnTimer": "Twigs",
+        "PreparedBy": "Diego",
+        "DishName": "tonkotsu ramen",
+        "StartedAt": "2026-05-21T11:26:00Z",
+        "FollowsRecipe": "ramen recipe"
+      },
+      {
+        "CookId": "paella special",
+        "OnTimer": "Rufus",
+        "PreparedBy": "Carmen",
+        "DishName": "paella valenciana",
+        "StartedAt": "2026-05-21T10:10:00Z",
+        "FollowsRecipe": "paella recipe"
+      },
+      {
+        "CookId": "soup of the day",
+        "OnTimer": "Olive",
+        "PreparedBy": "Diego",
+        "DishName": "vegetable soup",
+        "StartedAt": "2026-05-21T09:45:00Z",
+        "FollowsRecipe": "soup recipe"
+      },
+      {
+        "CookId": "steak dinner",
+        "OnTimer": "Rufus",
+        "PreparedBy": "Marcus",
+        "DishName": "ribeye steak",
+        "StartedAt": "2026-05-21T10:30:00Z",
+        "FollowsRecipe": "steak recipe"
+      },
+      {
+        "CookId": "flan dessert",
+        "OnTimer": "Rufus",
+        "PreparedBy": "Iris",
+        "DishName": "caramel flan",
+        "StartedAt": "2026-05-21T10:35:00Z",
+        "FollowsRecipe": "flan recipe"
+      },
+      {
+        "CookId": "salad starter",
+        "OnTimer": "Bessie",
+        "PreparedBy": "Carmen",
+        "DishName": "garden salad",
+        "StartedAt": "2026-05-21T07:46:00Z",
+        "FollowsRecipe": "salad recipe"
+      }
+    ]
+  },
+  "Recipes": {
+    "Description": "Cooking recipes a cook can follow. Each names a dish and the minutes it should run.",
+    "schema": [
+      {
+        "name": "RecipeId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Primary key."
+      },
+      {
+        "name": "DishName",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Name of the dish."
+      },
+      {
+        "name": "RecommendedMinutes",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Recommended cook time, in minutes."
+      },
+      {
+        "name": "IdealTemperatureC",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Recommended cooking temperature, in degrees Celsius."
+      },
+      {
+        "name": "TimesUsedToday",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": false,
+        "Description": "Cooks following this recipe today.",
+        "formula": "=COUNTIFS(Cooks!{{FollowsRecipe}}, Recipes!{{RecipeId}})"
+      },
+      {
+        "name": "DurationCategory",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "A loose verbal classification of how long this recipe takes: quick under 5 min, short under 15, medium under 45, long beyond that.",
+        "formula": "=IF({{RecommendedMinutes}} < 5, \"quick\", IF({{RecommendedMinutes}} < 15, \"short\", IF({{RecommendedMinutes}} < 45, \"medium\", \"long\")))"
+      },
+      {
+        "name": "CookingTempProfile",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "Loose verbal classification of cooking temperature: boiling, hot oven, warm oven, or low.",
+        "formula": "=IF({{IdealTemperatureC}} >= 200, \"hot oven\", IF({{IdealTemperatureC}} >= 150, \"warm oven\", IF({{IdealTemperatureC}} >= 90, \"boiling\", \"low\")))"
+      },
+      {
+        "name": "AvgTimerCapacity",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": false,
+        "Description": "Average wind-duration of the timers cooks have used for this recipe. Zig-zags Recipe -> Cook -> Timer.WindDurationMinutes.",
+        "formula": "=AVERAGEIFS(Cooks!{{TimerWindDuration}}, Cooks!{{FollowsRecipe}}, Recipes!{{RecipeId}})"
+      },
+      {
+        "name": "TotalTimerCapacity",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": false,
+        "Description": "Sum of timer wind-durations allocated to this recipe today. Zig-zags Recipe -> Cook -> Timer.WindDurationMinutes.",
+        "formula": "=SUMIFS(Cooks!{{TimerWindDuration}}, Cooks!{{FollowsRecipe}}, Recipes!{{RecipeId}})"
+      },
+      {
+        "name": "AssignmentVerdict",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "Fuzzy verdict on how well this recipe's actual timer assignments match what it needs. Drives off the zig-zag aggregate AvgTimerCapacity vs the recipe's own RecommendedMinutes.",
+        "formula": "=IF({{TimesUsedToday}} = 0, \"unused\", IF({{AvgTimerCapacity}} < {{RecommendedMinutes}}, \"under-provisioned\", IF({{AvgTimerCapacity}} > ({{RecommendedMinutes}} * 3), \"over-provisioned\", \"well-matched\")))"
+      }
+    ],
+    "data": [
+      {
+        "RecipeId": "soft-boiled egg recipe",
+        "DishName": "soft-boiled egg",
+        "RecommendedMinutes": 10,
+        "IdealTemperatureC": 100
+      },
+      {
+        "RecipeId": "spaghetti recipe",
+        "DishName": "spaghetti al pomodoro",
+        "RecommendedMinutes": 12,
+        "IdealTemperatureC": 100
+      },
+      {
+        "RecipeId": "rib roast recipe",
+        "DishName": "rib roast",
+        "RecommendedMinutes": 90,
+        "IdealTemperatureC": 175
+      },
+      {
+        "RecipeId": "broccoli recipe",
+        "DishName": "steamed broccoli",
+        "RecommendedMinutes": 25,
+        "IdealTemperatureC": 100
+      },
+      {
+        "RecipeId": "tea recipe",
+        "DishName": "Earl Grey tea",
+        "RecommendedMinutes": 4,
+        "IdealTemperatureC": 95
+      },
+      {
+        "RecipeId": "cake recipe",
+        "DishName": "vanilla cake",
+        "RecommendedMinutes": 35,
+        "IdealTemperatureC": 180
+      },
+      {
+        "RecipeId": "pizza recipe",
+        "DishName": "pizza margherita",
+        "RecommendedMinutes": 8,
+        "IdealTemperatureC": 240
+      },
+      {
+        "RecipeId": "yogurt recipe",
+        "DishName": "homemade yogurt",
+        "RecommendedMinutes": 360,
+        "IdealTemperatureC": 40
+      },
+      {
+        "RecipeId": "instant coffee recipe",
+        "DishName": "instant coffee",
+        "RecommendedMinutes": 2,
+        "IdealTemperatureC": 90
+      },
+      {
+        "RecipeId": "croissant recipe",
+        "DishName": "butter croissant",
+        "RecommendedMinutes": 18,
+        "IdealTemperatureC": 200
+      },
+      {
+        "RecipeId": "risotto recipe",
+        "DishName": "mushroom risotto",
+        "RecommendedMinutes": 30,
+        "IdealTemperatureC": 100
+      },
+      {
+        "RecipeId": "sourdough recipe",
+        "DishName": "sourdough loaf",
+        "RecommendedMinutes": 45,
+        "IdealTemperatureC": 220
+      },
+      {
+        "RecipeId": "creme brulee recipe",
+        "DishName": "creme brulee",
+        "RecommendedMinutes": 55,
+        "IdealTemperatureC": 165
+      },
+      {
+        "RecipeId": "paella recipe",
+        "DishName": "paella valenciana",
+        "RecommendedMinutes": 40,
+        "IdealTemperatureC": 100
+      },
+      {
+        "RecipeId": "ramen recipe",
+        "DishName": "tonkotsu ramen",
+        "RecommendedMinutes": 5,
+        "IdealTemperatureC": 100
+      },
+      {
+        "RecipeId": "salad recipe",
+        "DishName": "garden salad",
+        "RecommendedMinutes": 7,
+        "IdealTemperatureC": 20
+      },
+      {
+        "RecipeId": "steak recipe",
+        "DishName": "ribeye steak",
+        "RecommendedMinutes": 11,
+        "IdealTemperatureC": 230
+      },
+      {
+        "RecipeId": "soup recipe",
+        "DishName": "vegetable soup",
+        "RecommendedMinutes": 25,
+        "IdealTemperatureC": 100
+      },
+      {
+        "RecipeId": "flan recipe",
+        "DishName": "caramel flan",
+        "RecommendedMinutes": 50,
+        "IdealTemperatureC": 170
+      }
+    ]
+  },
+  "Kitchens": {
+    "Description": "A kitchen, top of the rollup tree. Aggregates everything below it.",
+    "schema": [
+      {
+        "name": "KitchenId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Primary key."
+      },
+      {
+        "name": "DisplayName",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Human name."
+      },
+      {
+        "name": "TotalTimers",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": false,
+        "Description": "Count of timers in the world.",
+        "formula": "=COUNT(Timers!{{TimerId}})"
+      },
+      {
+        "name": "TotalCases",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": false,
+        "Description": "Count of cases.",
+        "formula": "=COUNT(Cases!{{CaseId}})"
+      },
+      {
+        "name": "TotalBells",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": false,
+        "Description": "Count of bells.",
+        "formula": "=COUNT(Bells!{{BellId}})"
+      },
+      {
+        "name": "TotalUsers",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": false,
+        "Description": "Count of users.",
+        "formula": "=COUNT(Users!{{UserId}})"
+      },
+      {
+        "name": "TotalCooks",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": false,
+        "Description": "Count of cooks today.",
+        "formula": "=COUNT(Cooks!{{CookId}})"
+      },
+      {
+        "name": "TotalRecipes",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": false,
+        "Description": "Count of recipes.",
+        "formula": "=COUNT(Recipes!{{RecipeId}})"
+      },
+      {
+        "name": "TotalWindActions",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": false,
+        "Description": "Wind actions today.",
+        "formula": "=COUNT(WindActions!{{WindActionId}})"
+      },
+      {
+        "name": "TotalTickEvents",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": false,
+        "Description": "Tick events recorded today.",
+        "formula": "=COUNT(TickEvents!{{TickEventId}})"
+      },
+      {
+        "name": "TotalRingEvents",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": false,
+        "Description": "Ring events recorded today.",
+        "formula": "=COUNT(RingEvents!{{RingEventId}})"
+      },
+      {
+        "name": "TimersFreshlyWound",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": false,
+        "Description": "Timers currently freshly-wound.",
+        "formula": "=COUNTIFS(Timers!{{MechanicalPhase}}, \"freshly-wound\")"
+      },
+      {
+        "name": "TimersMidRun",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": false,
+        "Description": "Timers currently mid-run.",
+        "formula": "=COUNTIFS(Timers!{{MechanicalPhase}}, \"mid-run\")"
+      },
+      {
+        "name": "TimersNearlyDone",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": false,
+        "Description": "Timers currently nearly-done.",
+        "formula": "=COUNTIFS(Timers!{{MechanicalPhase}}, \"nearly-done\")"
+      },
+      {
+        "name": "TimersRung",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": false,
+        "Description": "Timers that have rung.",
+        "formula": "=COUNTIFS(Timers!{{MechanicalPhase}}, \"rung\")"
+      },
+      {
+        "name": "CooksDone",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": false,
+        "Description": "Cooks whose status is Done.",
+        "formula": "=COUNTIFS(Cooks!{{Status}}, \"Done\")"
+      },
+      {
+        "name": "CooksCooking",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": false,
+        "Description": "Cooks whose status is Cooking.",
+        "formula": "=COUNTIFS(Cooks!{{Status}}, \"Cooking\")"
+      },
+      {
+        "name": "RecipesUnused",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": false,
+        "Description": "Recipes nobody cooked today.",
+        "formula": "=COUNTIFS(Recipes!{{AssignmentVerdict}}, \"unused\")"
+      },
+      {
+        "name": "RecipesUnderProvisioned",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": false,
+        "Description": "Recipes whose chosen timer can't cover them.",
+        "formula": "=COUNTIFS(Recipes!{{AssignmentVerdict}}, \"under-provisioned\")"
+      },
+      {
+        "name": "RecipesWellMatched",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": false,
+        "Description": "Recipes whose timer assignment was well-matched.",
+        "formula": "=COUNTIFS(Recipes!{{AssignmentVerdict}}, \"well-matched\")"
+      },
+      {
+        "name": "BusyUsers",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": false,
+        "Description": "Users with activity-level busy.",
+        "formula": "=COUNTIFS(Users!{{ActivityLevel}}, \"busy\")"
+      },
+      {
+        "name": "IdleUsers",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": false,
+        "Description": "Users with activity-level idle.",
+        "formula": "=COUNTIFS(Users!{{ActivityLevel}}, \"idle\")"
+      },
+      {
+        "name": "TotalRecipeMinutes",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": false,
+        "Description": "Sum of recommended-minutes across all recipes.",
+        "formula": "=SUM(Recipes!{{RecommendedMinutes}})"
+      },
+      {
+        "name": "AvgRecipeMinutes",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": false,
+        "Description": "Mean recommended-minutes across all recipes.",
+        "formula": "=AVERAGE(Recipes!{{RecommendedMinutes}})"
+      },
+      {
+        "name": "MinRecipeMinutes",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": false,
+        "Description": "Shortest recipe in minutes.",
+        "formula": "=MIN(Recipes!{{RecommendedMinutes}})"
+      },
+      {
+        "name": "MaxRecipeMinutes",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": false,
+        "Description": "Longest recipe in minutes.",
+        "formula": "=MAX(Recipes!{{RecommendedMinutes}})"
+      },
+      {
+        "name": "HasAnyTimerRung",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "True if any timer has rung today.",
+        "formula": "={{TimersRung}} > 0"
+      },
+      {
+        "name": "HasMisprovisionedRecipe",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "True if any recipe is currently under-provisioned.",
+        "formula": "={{RecipesUnderProvisioned}} > 0"
+      },
+      {
+        "name": "OperationalStatus",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "Fuzzy overall status: 'quiet' if no cooks active, 'busy' if many, 'active' otherwise.",
+        "formula": "=IF({{CooksCooking}} = 0, \"quiet\", IF({{CooksCooking}} >= 3, \"busy\", \"active\"))"
+      }
+    ],
+    "data": [
+      {
+        "KitchenId": "Main",
+        "DisplayName": "Main Kitchen"
+      }
+    ]
+  },
+  "__meta__": {
+    "Description": "Project-level metadata that travels with the rulebook: tagline, motif, narrative descriptions, substrate list, signature rows, etc. One row per metadata key. Use ValueType to interpret StringValue vs JsonValue.",
+    "important": false,
+    "schema": [
+      {
+        "name": "MetaKey",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "The metadata key (e.g. 'tagline', 'motif_palette', 'substrates'). Unique within the table."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "formula": "={{MetaKey}}",
+        "Description": "Identifier for this metadata entry. Mirrors MetaKey so the row is addressable by Name like every other table."
+      },
+      {
+        "name": "ValueType",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "How to interpret the value columns: 'string' (use StringValue), 'object' (parse JsonValue as JSON object), 'array' (parse JsonValue as JSON array)."
+      },
+      {
+        "name": "StringValue",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Plain string value. Populated when ValueType == 'string'; null otherwise."
+      },
+      {
+        "name": "JsonValue",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "JSON-encoded value. Populated when ValueType == 'object' or 'array'; null when ValueType == 'string'."
+      }
+    ],
+    "data": [
+      {
+        "MetaKey": "tagline",
+        "Name": "tagline",
+        "ValueType": "string",
+        "StringValue": "A mechanical kitchen timer as a finite state machine — Unwound, Partial, Full, Counting, Rung. The whole machine on a napkin.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "motif",
+        "Name": "motif",
+        "ValueType": "string",
+        "StringValue": "default",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "motif_palette",
+        "Name": "motif_palette",
+        "ValueType": "object",
+        "StringValue": null,
+        "JsonValue": "{\"primary\": \"#7a4a1f\", \"accent\": \"#d99744\", \"ink\": \"#2a1a0a\"}"
+      },
+      {
+        "MetaKey": "description_rich",
+        "Name": "description_rich",
+        "ValueType": "string",
+        "StringValue": "A mechanical kitchen timer modeled as a small finite state machine. One raw field — `WindAngleDegrees` — drives the whole rulebook: `WindFraction`, `RemainingMinutes`, the discrete `WindState` (Unwound → Partial → Full), `IsArmed`, and finally the terminal `HasRung`. When `HasRung` flips, the cascade lights up `BellHammer.ReleaseState` (Held → Released) and `HammerCatch.IsEngaged`, and a `RingEvent` lands. Three timers (Bessie, Olive, Rufus, plus a tea-timer Twigs) sit in different states so every IF branch fires on the first read. No application code — just rulebook cells deriving each other.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "use_cases",
+        "Name": "use_cases",
+        "ValueType": "array",
+        "StringValue": null,
+        "JsonValue": "[\"**Watch the FSM advance.** Edit `Bessie.WindAngleDegrees` from 0 to 240 and watch `WindState` flip Unwound → Partial, `IsArmed` flip true, `HasRung` flip false, and `BellHammer.ReleaseState` flip Released → Held — all in one save.\", \"**Trip the bell from the data.** Drop `Olive.WindAngleDegrees` to 0 and the same row's `HasRung` lands TRUE, the bell hammer releases, and the cook on Olive (*spaghetti al pomodoro*) flips from Cooking → Done — without touching any code.\", \"**Walk the three branches in one read.** `WindState` has three branches (Unwound / Partial / Full); the sample data hits all three at once (Bessie / Olive / Rufus) so a single SELECT covers the whole IF tree.\", \"**Ask the same FSM question in two substrates.** Query `SELECT COUNT(*) FROM vw_timers WHERE wind_state = 'Partial'` in Postgres and the equivalent Python expression — same number, same rulebook source.\", \"**Pick a recipe that overflows the timer.** Assign a cook a long recipe (yogurt, 360 min) on a short timer (Bessie, 60 min) and `SuitabilityVerdict` lands `insufficient` instantly via the lookup chain.\"]"
+      },
+      {
+        "MetaKey": "signature_rows",
+        "Name": "signature_rows",
+        "ValueType": "array",
+        "StringValue": null,
+        "JsonValue": "[{\"entity\": \"Timers\", \"ids\": [\"Bessie\", \"Olive\", \"Rufus\"]}, {\"entity\": \"BellHammers\", \"ids\": [\"Bessie's bell hammer\", \"Olive's bell hammer\", \"Rufus's bell hammer\"]}]"
+      },
+      {
+        "MetaKey": "journal_seed",
+        "Name": "journal_seed",
+        "ValueType": "string",
+        "StringValue": "Bessie has already rung this morning at 07:55. Olive is mid-pasta with twenty minutes left. Rufus is freshly-wound for a roast — sixty minutes on the clock. Three rows, three FSM states, one rulebook.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "substrates",
+        "Name": "substrates",
+        "ValueType": "array",
+        "StringValue": null,
+        "JsonValue": "[{\"key\": \"postgres\", \"important\": true, \"chip_label\": \"Postgres\"}, {\"key\": \"python\", \"important\": true, \"chip_label\": \"Python\"}, {\"key\": \"excel\", \"important\": false, \"chip_label\": \"Excel\"}, {\"key\": \"owl\", \"important\": false, \"chip_label\": \"OWL\"}]"
+      },
+      {
+        "MetaKey": "CMCC_Summary",
+        "Name": "CMCC_Summary",
+        "ValueType": "string",
+        "StringValue": "Hand-authored ERB rulebook for the kitchen-timer README. 18 tables span every noun. Headline DAG: WindAngleDegrees -> WindFraction -> StoredTorqueNm; WindAngleDegrees -> RemainingMinutes -> WindState -> IsArmed -> HasRung; EscapementBaseHz -> GearTrain.OutputShaftRPM -> OutputShaft.CurrentRPM; Timer.HasRung -> BellHammer.ReleaseState -> HammerCatch.IsEngaged; RingEvents -> Bells.TimesRung -> Bells.HasEverRung. Sample data is a single morning's narrative: Chef winds Egg Timer at 07:45, it rings at 07:55; Baker winds Pasta Timer at 09:30 (still ticking); Chef winds Roast Timer at 10:00 (just started). The three timers exercise every IF branch — Unwound/Partial/Full, Armed/Rung, HasEverRung true/false.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "conversion_metadata",
+        "Name": "conversion_metadata",
+        "ValueType": "object",
+        "StringValue": null,
+        "JsonValue": "{\"source\": \"README.md (hand-authored, no Airtable base)\", \"table_count\": 18, \"tool_version\": \"hand-authored\", \"export_mode\": \"schema_first_type_mapping\"}"
+      }
+    ]
+  }
+}

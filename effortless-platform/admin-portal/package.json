@@ -5,9 +5,13 @@
   "description": "Admin portal for any Effortlessly Invariant Rulesbooks (ERB) project. Driven by the rulebook itself (navigation, roles, screens, AppUsers).",
   "type": "module",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "dev": "concurrently \"node server.js\" \"cd client && npm run dev\"",
+    "build": "cd client && npm run build",
+    "preview": "node server.js"
   },
   "dependencies": {
+    "concurrently": "^9.1.2",
     "cors": "^2.8.5",
     "express": "^4.19.2",
     "pg": "^8.11.5"

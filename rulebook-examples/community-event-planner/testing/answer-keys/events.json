@@ -1,0 +1,58 @@
+[
+  {
+    "event_id": "meetup-1",
+    "venue": "main-hall",
+    "event_date": "2026-05-23 18:00:00",
+    "duration_minutes": 120,
+    "registration_close_days_before_event": 1,
+    "category": "Community",
+    "name": "meetup-1",
+    "event_end": "2026-05-23 18:00:00",
+    "has_speakers": false,
+    "at_capacity": false,
+    "has_venue_conflict": false,
+    "event_status": "issues"
+  },
+  {
+    "event_id": "panel-1",
+    "venue": "outdoor-amphitheater",
+    "event_date": "2026-05-25 15:00:00",
+    "duration_minutes": 90,
+    "registration_close_days_before_event": 1,
+    "category": "Community",
+    "name": "panel-1",
+    "event_end": "2026-05-25 15:00:00",
+    "has_speakers": false,
+    "at_capacity": false,
+    "has_venue_conflict": false,
+    "event_status": "issues"
+  },
+  {
+    "event_id": "tech-talk-1",
+    "venue": "main-hall",
+    "event_date": "2026-05-24 14:00:00",
+    "duration_minutes": 60,
+    "registration_close_days_before_event": 0,
+    "category": "Tech",
+    "name": "tech-talk-1",
+    "event_end": "2026-05-24 14:00:00",
+    "has_speakers": false,
+    "at_capacity": false,
+    "has_venue_conflict": false,
+    "event_status": "issues"
+  },
+  {
+    "event_id": "workshop-1",
+    "venue": "conference-room",
+    "event_date": "2026-05-25 10:00:00",
+    "duration_minutes": 120,
+    "registration_close_days_before_event": 1,
+    "category": "Learning",
+    "name": "workshop-1",
+    "event_end": "2026-05-25 10:00:00",
+    "has_speakers": false,
+    "at_capacity": false,
+    "has_venue_conflict": false,
+    "event_status": "issues"
+  }
+]

@@ -1,0 +1,92 @@
+[
+  {
+    "transaction_id": "TXN-001",
+    "product": "WIDGET-A",
+    "transaction_type": "PURCHASE",
+    "quantity": 100,
+    "transaction_date": "2026-05-01T10:00:00Z",
+    "notes": "Initial stock delivery",
+    "name": "TXN-001"
+  },
+  {
+    "transaction_id": "TXN-002",
+    "product": "WIDGET-A",
+    "transaction_type": "SALE",
+    "quantity": -25,
+    "transaction_date": "2026-05-05T14:30:00Z",
+    "notes": "Bulk order",
+    "name": "TXN-002"
+  },
+  {
+    "transaction_id": "TXN-003",
+    "product": "WIDGET-A",
+    "transaction_type": "SALE",
+    "quantity": -30,
+    "transaction_date": "2026-05-10T09:00:00Z",
+    "notes": "Customer purchase",
+    "name": "TXN-003"
+  },
+  {
+    "transaction_id": "TXN-004",
+    "product": "GADGET-B",
+    "transaction_type": "PURCHASE",
+    "quantity": 50,
+    "transaction_date": "2026-05-02T11:00:00Z",
+    "notes": null,
+    "name": "TXN-004"
+  },
+  {
+    "transaction_id": "TXN-005",
+    "product": "GADGET-B",
+    "transaction_type": "SALE",
+    "quantity": -35,
+    "transaction_date": "2026-05-08T13:15:00Z",
+    "notes": "Order fulfillment",
+    "name": "TXN-005"
+  },
+  {
+    "transaction_id": "TXN-006",
+    "product": "PART-C",
+    "transaction_type": "PURCHASE",
+    "quantity": 200,
+    "transaction_date": "2026-05-01T08:00:00Z",
+    "notes": "Bulk purchase from supplier",
+    "name": "TXN-006"
+  },
+  {
+    "transaction_id": "TXN-007",
+    "product": "PART-C",
+    "transaction_type": "SALE",
+    "quantity": -80,
+    "transaction_date": "2026-05-06T10:30:00Z",
+    "notes": null,
+    "name": "TXN-007"
+  },
+  {
+    "transaction_id": "TXN-008",
+    "product": "PART-C",
+    "transaction_type": "SALE",
+    "quantity": -50,
+    "transaction_date": "2026-05-12T15:45:00Z",
+    "notes": "Retail sale",
+    "name": "TXN-008"
+  },
+  {
+    "transaction_id": "TXN-009",
+    "product": "TOOL-D",
+    "transaction_type": "PURCHASE",
+    "quantity": 8,
+    "transaction_date": "2026-05-03T09:30:00Z",
+    "notes": "Premium tool restock",
+    "name": "TXN-009"
+  },
+  {
+    "transaction_id": "TXN-010",
+    "product": "TOOL-D",
+    "transaction_type": "SALE",
+    "quantity": -3,
+    "transaction_date": "2026-05-09T16:00:00Z",
+    "notes": "Professional customer order",
+    "name": "TXN-010"
+  }
+]

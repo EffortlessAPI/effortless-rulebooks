@@ -1,7 +1,6 @@
 <!-- GENERATED FILE — DO NOT EDIT. -->
 <!-- Source: effortless-platform/effortless-rulebook/effortless-rulebook.json (table: `AppPermissions`) -->
 <!-- Regenerate with: cd effortless-platform && effortless build -->
-<!-- Generated: 2026-05-25T22:56:16Z -->
 
 # Permissions
 
@@ -9,7 +8,7 @@ RLS-style policy table: declarative per-role allow/deny on portal API endpoints 
 
 ## Role: Developer
 
-_The whole stack is yours. Don't break the SSoT._
+_Edit the rulebook. Build. Confirm._
 
 | Resource | Action | Allow | RLS Predicate |
 | --- | --- | --- | --- |
@@ -30,7 +29,7 @@ _The whole stack is yours. Don't break the SSoT._
 
 ## Role: Viewer
 
-_See the whole project at a glance._
+_See the whole project. Comment when you must._
 
 | Resource | Action | Allow | RLS Predicate |
 | --- | --- | --- | --- |

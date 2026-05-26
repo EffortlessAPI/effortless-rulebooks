@@ -1,0 +1,65 @@
+[
+  {
+    "entity": "Events",
+    "field": "CoveragePercent",
+    "formula": "=IF({{TotalSlotsNeeded}}>0, {{TotalSlotsFilled}}/{{TotalSlotsNeeded}}, 0)",
+    "record_id": "harvest-festival-2026",
+    "error": "SyntaxError: Unexpected character '/' at position 47"
+  },
+  {
+    "entity": "Events",
+    "field": "StaffingGrade",
+    "formula": "=IF({{CoveragePercent}}>=0.95, \"A\", IF({{CoveragePercent}}>=0.85, \"B\", IF({{CoveragePercent}}>=0.70, \"C\", IF({{CoveragePercent}}>=0.50, \"D\", \"F\"))))",
+    "record_id": "harvest-festival-2026",
+    "error": "SyntaxError: Unexpected character '.' at position 25"
+  },
+  {
+    "entity": "Events",
+    "field": "CoveragePercent",
+    "formula": "=IF({{TotalSlotsNeeded}}>0, {{TotalSlotsFilled}}/{{TotalSlotsNeeded}}, 0)",
+    "record_id": "food-bank-saturday",
+    "error": "SyntaxError: Unexpected character '/' at position 47"
+  },
+  {
+    "entity": "Events",
+    "field": "StaffingGrade",
+    "formula": "=IF({{CoveragePercent}}>=0.95, \"A\", IF({{CoveragePercent}}>=0.85, \"B\", IF({{CoveragePercent}}>=0.70, \"C\", IF({{CoveragePercent}}>=0.50, \"D\", \"F\"))))",
+    "record_id": "food-bank-saturday",
+    "error": "SyntaxError: Unexpected character '.' at position 25"
+  },
+  {
+    "entity": "Volunteers",
+    "field": "LoadStatus",
+    "formula": "=IF({{MaxHours}}>0, IF({{AssignedHours}}>{{MaxHours}}, \"over\", IF({{AssignedHours}}<({{MaxHours}}*0.5), \"under\", \"ok\")), \"under\")",
+    "record_id": "morgan-lee",
+    "error": "SyntaxError: Unexpected character '*' at position 96"
+  },
+  {
+    "entity": "Volunteers",
+    "field": "LoadStatus",
+    "formula": "=IF({{MaxHours}}>0, IF({{AssignedHours}}>{{MaxHours}}, \"over\", IF({{AssignedHours}}<({{MaxHours}}*0.5), \"under\", \"ok\")), \"under\")",
+    "record_id": "sam-park",
+    "error": "SyntaxError: Unexpected character '*' at position 96"
+  },
+  {
+    "entity": "Volunteers",
+    "field": "LoadStatus",
+    "formula": "=IF({{MaxHours}}>0, IF({{AssignedHours}}>{{MaxHours}}, \"over\", IF({{AssignedHours}}<({{MaxHours}}*0.5), \"under\", \"ok\")), \"under\")",
+    "record_id": "jamie-rivera",
+    "error": "SyntaxError: Unexpected character '*' at position 96"
+  },
+  {
+    "entity": "Volunteers",
+    "field": "LoadStatus",
+    "formula": "=IF({{MaxHours}}>0, IF({{AssignedHours}}>{{MaxHours}}, \"over\", IF({{AssignedHours}}<({{MaxHours}}*0.5), \"under\", \"ok\")), \"under\")",
+    "record_id": "alex-kim",
+    "error": "SyntaxError: Unexpected character '*' at position 96"
+  },
+  {
+    "entity": "Volunteers",
+    "field": "LoadStatus",
+    "formula": "=IF({{MaxHours}}>0, IF({{AssignedHours}}>{{MaxHours}}, \"over\", IF({{AssignedHours}}<({{MaxHours}}*0.5), \"under\", \"ok\")), \"under\")",
+    "record_id": "casey-coordinator",
+    "error": "SyntaxError: Unexpected character '*' at position 96"
+  }
+]

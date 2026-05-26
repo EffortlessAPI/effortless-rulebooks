@@ -1,0 +1,18 @@
+[
+  {
+    "output_shaft_id": "Bessie's output shaft",
+    "in_gear_train": "Bessie's gear train"
+  },
+  {
+    "output_shaft_id": "Olive's output shaft",
+    "in_gear_train": "Olive's gear train"
+  },
+  {
+    "output_shaft_id": "Rufus's output shaft",
+    "in_gear_train": "Rufus's gear train"
+  },
+  {
+    "output_shaft_id": "Twigs's output shaft",
+    "in_gear_train": "Twigs's gear train"
+  }
+]

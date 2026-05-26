@@ -1,0 +1,26 @@
+[
+  {
+    "pallet_id": "Bessie's pallet",
+    "in_escapement": "Bessie's escapement",
+    "prong_count": 2,
+    "mass_grams": 0.8
+  },
+  {
+    "pallet_id": "Olive's pallet",
+    "in_escapement": "Olive's escapement",
+    "prong_count": 2,
+    "mass_grams": 0.8
+  },
+  {
+    "pallet_id": "Rufus's pallet",
+    "in_escapement": "Rufus's escapement",
+    "prong_count": 2,
+    "mass_grams": 0.8
+  },
+  {
+    "pallet_id": "Twigs's pallet",
+    "in_escapement": "Twigs's escapement",
+    "prong_count": 2,
+    "mass_grams": 0.8
+  }
+]

@@ -1,0 +1,34 @@
+[
+  {
+    "resume_section_id": "resume-platform-2026q1-core-strengths",
+    "name": "Core Strengths",
+    "resume": "resume-platform-2026q1",
+    "section_order": 2,
+    "content": "## Core Strengths\n- Distributed systems architecture (Kubernetes, gRPC, service mesh)\n- ML/AI platform engineering (model serving, training pipelines, vector stores)\n- Technical strategy and mentorship across 50+ engineer orgs\n- Data infrastructure (Kafka, Spark, Flink, dbt)",
+    "chroma_doc_id": "resume-core-strengths"
+  },
+  {
+    "resume_section_id": "resume-platform-2026q1-earlier-roles",
+    "name": "Earlier Roles",
+    "resume": "resume-platform-2026q1",
+    "section_order": 4,
+    "content": "## Earlier Roles\n### Software Engineer \u2014 StartupCo (2014-2018)\nFull-stack development, API design, early DevOps adoption.\n### Junior Developer \u2014 Agency LLC (2011-2014)\nWeb application development, client projects, learned software engineering fundamentals.",
+    "chroma_doc_id": "resume-earlier-roles"
+  },
+  {
+    "resume_section_id": "resume-platform-2026q1-experience",
+    "name": "Experience",
+    "resume": "resume-platform-2026q1",
+    "section_order": 3,
+    "content": "## Experience\n### Staff Platform Engineer \u2014 CloudScale Inc (2022-2026)\nLed platform architecture for ML serving infrastructure. Designed multi-region Kubernetes deployment strategy. Reduced model inference latency 40%.\n### Senior Engineer \u2014 DataForge (2018-2022)\nBuilt real-time data pipelines processing 2M events/sec. Migrated monolith to event-driven microservices.",
+    "chroma_doc_id": "resume-experience"
+  },
+  {
+    "resume_section_id": "resume-platform-2026q1-summary",
+    "name": "Summary",
+    "resume": "resume-platform-2026q1",
+    "section_order": 1,
+    "content": "## Summary\nSenior platform engineer with 15+ years building distributed systems, data pipelines, and AI/ML infrastructure. Track record of cross-team technical leadership at scale.",
+    "chroma_doc_id": "resume-summary"
+  }
+]

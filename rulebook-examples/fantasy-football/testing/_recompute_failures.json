@@ -1,0 +1,464 @@
+[
+  {
+    "entity": "Players",
+    "field": "TotalTouchdowns",
+    "formula": "={{PassingTouchdowns}} + {{RushingTouchdowns}} + {{ReceivedTouchdowns}}",
+    "record_id": "patrick-mahomes",
+    "error": "SyntaxError: Unexpected character '+' at position 22"
+  },
+  {
+    "entity": "Players",
+    "field": "ProjectedScore",
+    "formula": "=ROUND(({{PassingYards}} / 25) + ({{TotalTouchdowns}} * 6) - ({{Interceptions}} * 2), 2)",
+    "record_id": "patrick-mahomes",
+    "error": "SyntaxError: Unexpected character '/' at position 24"
+  },
+  {
+    "entity": "Players",
+    "field": "TotalTouchdowns",
+    "formula": "={{PassingTouchdowns}} + {{RushingTouchdowns}} + {{ReceivedTouchdowns}}",
+    "record_id": "travis-kelce",
+    "error": "SyntaxError: Unexpected character '+' at position 22"
+  },
+  {
+    "entity": "Players",
+    "field": "ProjectedScore",
+    "formula": "=ROUND(({{PassingYards}} / 25) + ({{TotalTouchdowns}} * 6) - ({{Interceptions}} * 2), 2)",
+    "record_id": "travis-kelce",
+    "error": "SyntaxError: Unexpected character '/' at position 24"
+  },
+  {
+    "entity": "Players",
+    "field": "TotalTouchdowns",
+    "formula": "={{PassingTouchdowns}} + {{RushingTouchdowns}} + {{ReceivedTouchdowns}}",
+    "record_id": "christian-mccaffrey",
+    "error": "SyntaxError: Unexpected character '+' at position 22"
+  },
+  {
+    "entity": "Players",
+    "field": "ProjectedScore",
+    "formula": "=ROUND(({{PassingYards}} / 25) + ({{TotalTouchdowns}} * 6) - ({{Interceptions}} * 2), 2)",
+    "record_id": "christian-mccaffrey",
+    "error": "SyntaxError: Unexpected character '/' at position 24"
+  },
+  {
+    "entity": "Players",
+    "field": "TotalTouchdowns",
+    "formula": "={{PassingTouchdowns}} + {{RushingTouchdowns}} + {{ReceivedTouchdowns}}",
+    "record_id": "jalen-hurts",
+    "error": "SyntaxError: Unexpected character '+' at position 22"
+  },
+  {
+    "entity": "Players",
+    "field": "ProjectedScore",
+    "formula": "=ROUND(({{PassingYards}} / 25) + ({{TotalTouchdowns}} * 6) - ({{Interceptions}} * 2), 2)",
+    "record_id": "jalen-hurts",
+    "error": "SyntaxError: Unexpected character '/' at position 24"
+  },
+  {
+    "entity": "Players",
+    "field": "TotalTouchdowns",
+    "formula": "={{PassingTouchdowns}} + {{RushingTouchdowns}} + {{ReceivedTouchdowns}}",
+    "record_id": "saquon-barkley",
+    "error": "SyntaxError: Unexpected character '+' at position 22"
+  },
+  {
+    "entity": "Players",
+    "field": "ProjectedScore",
+    "formula": "=ROUND(({{PassingYards}} / 25) + ({{TotalTouchdowns}} * 6) - ({{Interceptions}} * 2), 2)",
+    "record_id": "saquon-barkley",
+    "error": "SyntaxError: Unexpected character '/' at position 24"
+  },
+  {
+    "entity": "Players",
+    "field": "TotalTouchdowns",
+    "formula": "={{PassingTouchdowns}} + {{RushingTouchdowns}} + {{ReceivedTouchdowns}}",
+    "record_id": "ja-marr-chase",
+    "error": "SyntaxError: Unexpected character '+' at position 22"
+  },
+  {
+    "entity": "Players",
+    "field": "ProjectedScore",
+    "formula": "=ROUND(({{PassingYards}} / 25) + ({{TotalTouchdowns}} * 6) - ({{Interceptions}} * 2), 2)",
+    "record_id": "ja-marr-chase",
+    "error": "SyntaxError: Unexpected character '/' at position 24"
+  },
+  {
+    "entity": "Players",
+    "field": "TotalTouchdowns",
+    "formula": "={{PassingTouchdowns}} + {{RushingTouchdowns}} + {{ReceivedTouchdowns}}",
+    "record_id": "josh-allen",
+    "error": "SyntaxError: Unexpected character '+' at position 22"
+  },
+  {
+    "entity": "Players",
+    "field": "ProjectedScore",
+    "formula": "=ROUND(({{PassingYards}} / 25) + ({{TotalTouchdowns}} * 6) - ({{Interceptions}} * 2), 2)",
+    "record_id": "josh-allen",
+    "error": "SyntaxError: Unexpected character '/' at position 24"
+  },
+  {
+    "entity": "Players",
+    "field": "TotalTouchdowns",
+    "formula": "={{PassingTouchdowns}} + {{RushingTouchdowns}} + {{ReceivedTouchdowns}}",
+    "record_id": "derrick-henry",
+    "error": "SyntaxError: Unexpected character '+' at position 22"
+  },
+  {
+    "entity": "Players",
+    "field": "ProjectedScore",
+    "formula": "=ROUND(({{PassingYards}} / 25) + ({{TotalTouchdowns}} * 6) - ({{Interceptions}} * 2), 2)",
+    "record_id": "derrick-henry",
+    "error": "SyntaxError: Unexpected character '/' at position 24"
+  },
+  {
+    "entity": "Players",
+    "field": "TotalTouchdowns",
+    "formula": "={{PassingTouchdowns}} + {{RushingTouchdowns}} + {{ReceivedTouchdowns}}",
+    "record_id": "tyreek-hill",
+    "error": "SyntaxError: Unexpected character '+' at position 22"
+  },
+  {
+    "entity": "Players",
+    "field": "ProjectedScore",
+    "formula": "=ROUND(({{PassingYards}} / 25) + ({{TotalTouchdowns}} * 6) - ({{Interceptions}} * 2), 2)",
+    "record_id": "tyreek-hill",
+    "error": "SyntaxError: Unexpected character '/' at position 24"
+  },
+  {
+    "entity": "Players",
+    "field": "TotalTouchdowns",
+    "formula": "={{PassingTouchdowns}} + {{RushingTouchdowns}} + {{ReceivedTouchdowns}}",
+    "record_id": "lamar-jackson",
+    "error": "SyntaxError: Unexpected character '+' at position 22"
+  },
+  {
+    "entity": "Players",
+    "field": "ProjectedScore",
+    "formula": "=ROUND(({{PassingYards}} / 25) + ({{TotalTouchdowns}} * 6) - ({{Interceptions}} * 2), 2)",
+    "record_id": "lamar-jackson",
+    "error": "SyntaxError: Unexpected character '/' at position 24"
+  },
+  {
+    "entity": "Players",
+    "field": "TotalTouchdowns",
+    "formula": "={{PassingTouchdowns}} + {{RushingTouchdowns}} + {{ReceivedTouchdowns}}",
+    "record_id": "davante-adams",
+    "error": "SyntaxError: Unexpected character '+' at position 22"
+  },
+  {
+    "entity": "Players",
+    "field": "ProjectedScore",
+    "formula": "=ROUND(({{PassingYards}} / 25) + ({{TotalTouchdowns}} * 6) - ({{Interceptions}} * 2), 2)",
+    "record_id": "davante-adams",
+    "error": "SyntaxError: Unexpected character '/' at position 24"
+  },
+  {
+    "entity": "Players",
+    "field": "TotalTouchdowns",
+    "formula": "={{PassingTouchdowns}} + {{RushingTouchdowns}} + {{ReceivedTouchdowns}}",
+    "record_id": "aj-brown",
+    "error": "SyntaxError: Unexpected character '+' at position 22"
+  },
+  {
+    "entity": "Players",
+    "field": "ProjectedScore",
+    "formula": "=ROUND(({{PassingYards}} / 25) + ({{TotalTouchdowns}} * 6) - ({{Interceptions}} * 2), 2)",
+    "record_id": "aj-brown",
+    "error": "SyntaxError: Unexpected character '/' at position 24"
+  },
+  {
+    "entity": "Players",
+    "field": "TotalTouchdowns",
+    "formula": "={{PassingTouchdowns}} + {{RushingTouchdowns}} + {{ReceivedTouchdowns}}",
+    "record_id": "bryce-young",
+    "error": "SyntaxError: Unexpected character '+' at position 22"
+  },
+  {
+    "entity": "Players",
+    "field": "ProjectedScore",
+    "formula": "=ROUND(({{PassingYards}} / 25) + ({{TotalTouchdowns}} * 6) - ({{Interceptions}} * 2), 2)",
+    "record_id": "bryce-young",
+    "error": "SyntaxError: Unexpected character '/' at position 24"
+  },
+  {
+    "entity": "Players",
+    "field": "TotalTouchdowns",
+    "formula": "={{PassingTouchdowns}} + {{RushingTouchdowns}} + {{ReceivedTouchdowns}}",
+    "record_id": "de-aaron-henry",
+    "error": "SyntaxError: Unexpected character '+' at position 22"
+  },
+  {
+    "entity": "Players",
+    "field": "ProjectedScore",
+    "formula": "=ROUND(({{PassingYards}} / 25) + ({{TotalTouchdowns}} * 6) - ({{Interceptions}} * 2), 2)",
+    "record_id": "de-aaron-henry",
+    "error": "SyntaxError: Unexpected character '/' at position 24"
+  },
+  {
+    "entity": "Players",
+    "field": "TotalTouchdowns",
+    "formula": "={{PassingTouchdowns}} + {{RushingTouchdowns}} + {{ReceivedTouchdowns}}",
+    "record_id": "ceedee-lamb",
+    "error": "SyntaxError: Unexpected character '+' at position 22"
+  },
+  {
+    "entity": "Players",
+    "field": "ProjectedScore",
+    "formula": "=ROUND(({{PassingYards}} / 25) + ({{TotalTouchdowns}} * 6) - ({{Interceptions}} * 2), 2)",
+    "record_id": "ceedee-lamb",
+    "error": "SyntaxError: Unexpected character '/' at position 24"
+  },
+  {
+    "entity": "Players",
+    "field": "TotalTouchdowns",
+    "formula": "={{PassingTouchdowns}} + {{RushingTouchdowns}} + {{ReceivedTouchdowns}}",
+    "record_id": "russell-wilson",
+    "error": "SyntaxError: Unexpected character '+' at position 22"
+  },
+  {
+    "entity": "Players",
+    "field": "ProjectedScore",
+    "formula": "=ROUND(({{PassingYards}} / 25) + ({{TotalTouchdowns}} * 6) - ({{Interceptions}} * 2), 2)",
+    "record_id": "russell-wilson",
+    "error": "SyntaxError: Unexpected character '/' at position 24"
+  },
+  {
+    "entity": "Players",
+    "field": "TotalTouchdowns",
+    "formula": "={{PassingTouchdowns}} + {{RushingTouchdowns}} + {{ReceivedTouchdowns}}",
+    "record_id": "miles-sanders",
+    "error": "SyntaxError: Unexpected character '+' at position 22"
+  },
+  {
+    "entity": "Players",
+    "field": "ProjectedScore",
+    "formula": "=ROUND(({{PassingYards}} / 25) + ({{TotalTouchdowns}} * 6) - ({{Interceptions}} * 2), 2)",
+    "record_id": "miles-sanders",
+    "error": "SyntaxError: Unexpected character '/' at position 24"
+  },
+  {
+    "entity": "Players",
+    "field": "TotalTouchdowns",
+    "formula": "={{PassingTouchdowns}} + {{RushingTouchdowns}} + {{ReceivedTouchdowns}}",
+    "record_id": "stefon-diggs",
+    "error": "SyntaxError: Unexpected character '+' at position 22"
+  },
+  {
+    "entity": "Players",
+    "field": "ProjectedScore",
+    "formula": "=ROUND(({{PassingYards}} / 25) + ({{TotalTouchdowns}} * 6) - ({{Interceptions}} * 2), 2)",
+    "record_id": "stefon-diggs",
+    "error": "SyntaxError: Unexpected character '/' at position 24"
+  },
+  {
+    "entity": "Rosters",
+    "field": "ProjectedScore",
+    "formula": "=ROUND(({{TotalPassingYards}} / 25) + ({{TotalRushingYards}} / 10) + ({{TotalReceivingYards}} / 10) + ({{TotalTouchdowns}} * 6) - ({{TotalInterceptions}} * 2), 2)",
+    "record_id": "mahomes-mob",
+    "error": "SyntaxError: Unexpected character '/' at position 29"
+  },
+  {
+    "entity": "Rosters",
+    "field": "ProjectedScore",
+    "formula": "=ROUND(({{TotalPassingYards}} / 25) + ({{TotalRushingYards}} / 10) + ({{TotalReceivingYards}} / 10) + ({{TotalTouchdowns}} * 6) - ({{TotalInterceptions}} * 2), 2)",
+    "record_id": "hurts-hustlers",
+    "error": "SyntaxError: Unexpected character '/' at position 29"
+  },
+  {
+    "entity": "Rosters",
+    "field": "ProjectedScore",
+    "formula": "=ROUND(({{TotalPassingYards}} / 25) + ({{TotalRushingYards}} / 10) + ({{TotalReceivingYards}} / 10) + ({{TotalTouchdowns}} * 6) - ({{TotalInterceptions}} * 2), 2)",
+    "record_id": "allens-arsenal",
+    "error": "SyntaxError: Unexpected character '/' at position 29"
+  },
+  {
+    "entity": "Rosters",
+    "field": "ProjectedScore",
+    "formula": "=ROUND(({{TotalPassingYards}} / 25) + ({{TotalRushingYards}} / 10) + ({{TotalReceivingYards}} / 10) + ({{TotalTouchdowns}} * 6) - ({{TotalInterceptions}} * 2), 2)",
+    "record_id": "davantes-dynasty",
+    "error": "SyntaxError: Unexpected character '/' at position 29"
+  },
+  {
+    "entity": "Rosters",
+    "field": "ProjectedScore",
+    "formula": "=ROUND(({{TotalPassingYards}} / 25) + ({{TotalRushingYards}} / 10) + ({{TotalReceivingYards}} / 10) + ({{TotalTouchdowns}} * 6) - ({{TotalInterceptions}} * 2), 2)",
+    "record_id": "hurts-limit",
+    "error": "SyntaxError: Unexpected character '/' at position 29"
+  },
+  {
+    "entity": "Rosters",
+    "field": "ProjectedScore",
+    "formula": "=ROUND(({{TotalPassingYards}} / 25) + ({{TotalRushingYards}} / 10) + ({{TotalReceivingYards}} / 10) + ({{TotalTouchdowns}} * 6) - ({{TotalInterceptions}} * 2), 2)",
+    "record_id": "defense-wins",
+    "error": "SyntaxError: Unexpected character '/' at position 29"
+  },
+  {
+    "entity": "Matchups",
+    "field": "Margin",
+    "formula": "={{Team1Score}} - {{Team2Score}}",
+    "record_id": "week1-mob-hustlers",
+    "error": "SyntaxError: Unexpected character '-' at position 15"
+  },
+  {
+    "entity": "Matchups",
+    "field": "Margin",
+    "formula": "={{Team1Score}} - {{Team2Score}}",
+    "record_id": "week1-arsenal-dynasty",
+    "error": "SyntaxError: Unexpected character '-' at position 15"
+  },
+  {
+    "entity": "Matchups",
+    "field": "Margin",
+    "formula": "={{Team1Score}} - {{Team2Score}}",
+    "record_id": "week1-limit-wins",
+    "error": "SyntaxError: Unexpected character '-' at position 15"
+  },
+  {
+    "entity": "Matchups",
+    "field": "Margin",
+    "formula": "={{Team1Score}} - {{Team2Score}}",
+    "record_id": "week2-hustlers-wins",
+    "error": "SyntaxError: Unexpected character '-' at position 15"
+  },
+  {
+    "entity": "Matchups",
+    "field": "Margin",
+    "formula": "={{Team1Score}} - {{Team2Score}}",
+    "record_id": "week2-mob-arsenal",
+    "error": "SyntaxError: Unexpected character '-' at position 15"
+  },
+  {
+    "entity": "Matchups",
+    "field": "Margin",
+    "formula": "={{Team1Score}} - {{Team2Score}}",
+    "record_id": "week2-dynasty-limit",
+    "error": "SyntaxError: Unexpected character '-' at position 15"
+  },
+  {
+    "entity": "Matchups",
+    "field": "Margin",
+    "formula": "={{Team1Score}} - {{Team2Score}}",
+    "record_id": "week3-arsenal-mob",
+    "error": "SyntaxError: Unexpected character '-' at position 15"
+  },
+  {
+    "entity": "Matchups",
+    "field": "Margin",
+    "formula": "={{Team1Score}} - {{Team2Score}}",
+    "record_id": "week3-hustlers-dynasty",
+    "error": "SyntaxError: Unexpected character '-' at position 15"
+  },
+  {
+    "entity": "Matchups",
+    "field": "Margin",
+    "formula": "={{Team1Score}} - {{Team2Score}}",
+    "record_id": "week3-wins-limit",
+    "error": "SyntaxError: Unexpected character '-' at position 15"
+  },
+  {
+    "entity": "Matchups",
+    "field": "Margin",
+    "formula": "={{Team1Score}} - {{Team2Score}}",
+    "record_id": "week4-mob-dynasty",
+    "error": "SyntaxError: Unexpected character '-' at position 15"
+  },
+  {
+    "entity": "Matchups",
+    "field": "Margin",
+    "formula": "={{Team1Score}} - {{Team2Score}}",
+    "record_id": "week4-arsenal-wins",
+    "error": "SyntaxError: Unexpected character '-' at position 15"
+  },
+  {
+    "entity": "Matchups",
+    "field": "Margin",
+    "formula": "={{Team1Score}} - {{Team2Score}}",
+    "record_id": "week4-hustlers-limit",
+    "error": "SyntaxError: Unexpected character '-' at position 15"
+  },
+  {
+    "entity": "Matchups",
+    "field": "Margin",
+    "formula": "={{Team1Score}} - {{Team2Score}}",
+    "record_id": "week5-dynasty-wins",
+    "error": "SyntaxError: Unexpected character '-' at position 15"
+  },
+  {
+    "entity": "Matchups",
+    "field": "Margin",
+    "formula": "={{Team1Score}} - {{Team2Score}}",
+    "record_id": "week5-limit-mob",
+    "error": "SyntaxError: Unexpected character '-' at position 15"
+  },
+  {
+    "entity": "Matchups",
+    "field": "Margin",
+    "formula": "={{Team1Score}} - {{Team2Score}}",
+    "record_id": "week5-arsenal-hustlers",
+    "error": "SyntaxError: Unexpected character '-' at position 15"
+  },
+  {
+    "entity": "Matchups",
+    "field": "Margin",
+    "formula": "={{Team1Score}} - {{Team2Score}}",
+    "record_id": "week6-mob-wins",
+    "error": "SyntaxError: Unexpected character '-' at position 15"
+  },
+  {
+    "entity": "Matchups",
+    "field": "Margin",
+    "formula": "={{Team1Score}} - {{Team2Score}}",
+    "record_id": "week6-hustlers-arsenal",
+    "error": "SyntaxError: Unexpected character '-' at position 15"
+  },
+  {
+    "entity": "Matchups",
+    "field": "Margin",
+    "formula": "={{Team1Score}} - {{Team2Score}}",
+    "record_id": "week6-dynasty-limit",
+    "error": "SyntaxError: Unexpected character '-' at position 15"
+  },
+  {
+    "entity": "Standings",
+    "field": "Name",
+    "formula": "=INDEX(Rosters!{{Name}}, MATCH({{StandingId}}, Rosters!{{RosterId}}, 0))",
+    "record_id": "mahomes-mob",
+    "error": "SyntaxError: Unexpected character '!' at position 13"
+  },
+  {
+    "entity": "Standings",
+    "field": "Name",
+    "formula": "=INDEX(Rosters!{{Name}}, MATCH({{StandingId}}, Rosters!{{RosterId}}, 0))",
+    "record_id": "hurts-hustlers",
+    "error": "SyntaxError: Unexpected character '!' at position 13"
+  },
+  {
+    "entity": "Standings",
+    "field": "Name",
+    "formula": "=INDEX(Rosters!{{Name}}, MATCH({{StandingId}}, Rosters!{{RosterId}}, 0))",
+    "record_id": "davantes-dynasty",
+    "error": "SyntaxError: Unexpected character '!' at position 13"
+  },
+  {
+    "entity": "Standings",
+    "field": "Name",
+    "formula": "=INDEX(Rosters!{{Name}}, MATCH({{StandingId}}, Rosters!{{RosterId}}, 0))",
+    "record_id": "allens-arsenal",
+    "error": "SyntaxError: Unexpected character '!' at position 13"
+  },
+  {
+    "entity": "Standings",
+    "field": "Name",
+    "formula": "=INDEX(Rosters!{{Name}}, MATCH({{StandingId}}, Rosters!{{RosterId}}, 0))",
+    "record_id": "defense-wins",
+    "error": "SyntaxError: Unexpected character '!' at position 13"
+  },
+  {
+    "entity": "Standings",
+    "field": "Name",
+    "formula": "=INDEX(Rosters!{{Name}}, MATCH({{StandingId}}, Rosters!{{RosterId}}, 0))",
+    "record_id": "hurts-limit",
+    "error": "SyntaxError: Unexpected character '!' at position 13"
+  }
+]

@@ -1,0 +1,38 @@
+[
+  {
+    "expense_report_id": "alice-nyc-client-visit",
+    "name": "NYC Client Visit",
+    "employee": "alice-employee",
+    "approval_status": "pending",
+    "employee_name": "Alice Anderson",
+    "employee_budget_limit": 500,
+    "total_amount": 695,
+    "is_over_budget": true,
+    "is_approved": false,
+    "requires_escalation": true
+  },
+  {
+    "expense_report_id": "alice-office-supplies",
+    "name": "Office Supplies Q1",
+    "employee": "alice-employee",
+    "approval_status": "approved",
+    "employee_name": "Alice Anderson",
+    "employee_budget_limit": 500,
+    "total_amount": 142,
+    "is_over_budget": false,
+    "is_approved": true,
+    "requires_escalation": false
+  },
+  {
+    "expense_report_id": "dave-team-lunch",
+    "name": "Team Lunch",
+    "employee": "dave-employee",
+    "approval_status": "pending",
+    "employee_name": "Dave Davies",
+    "employee_budget_limit": 200,
+    "total_amount": 87,
+    "is_over_budget": false,
+    "is_approved": false,
+    "requires_escalation": false
+  }
+]

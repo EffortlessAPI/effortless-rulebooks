@@ -1,7 +1,7 @@
 {
   "$schema": "https://example.com/cmcc-schema/v1",
   "Name": "Volunteer Shift Scheduler",
-  "Description": "Coordinate volunteers across event shifts. The live cascade: coordinator edits raw inputs (needed count, shift hours, required skill, volunteer reliability, assignments) → per-shift coverage status, per-volunteer load (under/ok/over), and an event-level A-F staffing grade all fall out automatically.",
+  "Description": "Coverage status, volunteer load (under/ok/over), and event-level A–F staffing grade all fall out automatically.",
   "Events": {
     "Description": "Table: Events — top-level container (a festival, food bank shift, conference, etc.).",
     "schema": [
@@ -62,7 +62,9 @@
         "type": "calculated",
         "nullable": true,
         "Description": "A-F letter grade from CoveragePercent. A: >=95%, B: >=85%, C: >=70%, D: >=50%, F: below.",
-        "formula": "=IF({{CoveragePercent}}>=0.95, \"A\", IF({{CoveragePercent}}>=0.85, \"B\", IF({{CoveragePercent}}>=0.70, \"C\", IF({{CoveragePercent}}>=0.50, \"D\", \"F\"))))"
+        "formula": "=IF({{CoveragePercent}}>=0.95, \"A\", IF({{CoveragePercent}}>=0.85, \"B\", IF({{CoveragePercent}}>=0.70, \"C\", IF({{CoveragePercent}}>=0.50, \"D\", \"F\"))))",
+        "important": true,
+        "explanation_rich": "**The event-level rollup of every per-shift constraint.** Each shift's `FilledCount` and `NeededCount` aggregate into `TotalSlotsFilled` / `TotalSlotsNeeded`, divide into `CoveragePercent`, then bucket into an A-F grade. Worked example: *Harvest Festival* needs 14 total slots across 4 shifts and has 12 filled — `CoveragePercent` is 0.857, which lands in the `>=0.85` bucket, so `StaffingGrade = B`. Fill one more slot on any understaffed shift (Setup Morning or Food Service Afternoon) and the festival's grade promotes to `A` automatically — the cascade reaches all the way from a single new `Assignments` row to the event's headline letter."
       }
     ],
     "data": [
@@ -90,6 +92,15 @@
   },
   "Volunteers": {
     "Description": "Table: Volunteers — people available to be slotted into shifts.",
+    "important": true,
+    "summary_rich": "The **availability side of the constraint**. Each volunteer has a `MaxHours` ceiling and a `ReliabilityScore`. `AssignedHours` rolls up from their `Assignments`; `LoadStatus` (under / ok / over) is the live verdict on whether the coordinator has slotted them well. Push someone past `MaxHours` and they flip to `over` before you close the editor.",
+    "important_fields": [
+      "Name",
+      "ReliabilityScore",
+      "MaxHours",
+      "AssignedHours",
+      "LoadStatus"
+    ],
     "schema": [
       {
         "name": "VolunteerId",
@@ -160,7 +171,9 @@
         "type": "calculated",
         "nullable": true,
         "Description": "under | ok | over. Under: <50% of MaxHours. Over: >100%. Otherwise ok.",
-        "formula": "=IF({{MaxHours}}>0, IF({{AssignedHours}}>{{MaxHours}}, \"over\", IF({{AssignedHours}}<({{MaxHours}}*0.5), \"under\", \"ok\")), \"under\")"
+        "formula": "=IF({{MaxHours}}>0, IF({{AssignedHours}}>{{MaxHours}}, \"over\", IF({{AssignedHours}}<({{MaxHours}}*0.5), \"under\", \"ok\")), \"under\")",
+        "important": true,
+        "explanation_rich": "**The per-volunteer availability constraint.** `AssignedHours` aggregates `DurationHours` across every shift this volunteer is slotted into; the rule compares it against the volunteer's stated `MaxHours` ceiling. Worked example: **Sam Park** has `MaxHours = 8` but is currently assigned to three Harvest shifts totalling 10 hours — so `AssignedHours` (10) exceeds `MaxHours` (8) and `LoadStatus` resolves to `over`. Drop one of Sam's three assignments and the same field flips back to `ok` the same instant. Casey Cole, by contrast, sits at `AssignedHours = 0` and resolves to `under` — the coordinator's hint that there's slack to absorb a re-shuffle."
       }
     ],
     "data": [
@@ -181,7 +194,7 @@
         "FirstName": "Sam",
         "LastName": "Park",
         "EmailAddress": "sam@example.com",
-        "ReliabilityScore": 0.80,
+        "ReliabilityScore": 0.8,
         "MaxHours": 8,
         "Name": "Sam Park",
         "AssignmentCount": 3,
@@ -193,7 +206,7 @@
         "FirstName": "Jamie",
         "LastName": "Rivera",
         "EmailAddress": "jamie@example.com",
-        "ReliabilityScore": 0.90,
+        "ReliabilityScore": 0.9,
         "MaxHours": 12,
         "Name": "Jamie Rivera",
         "AssignmentCount": 1,
@@ -228,6 +241,16 @@
   },
   "Shifts": {
     "Description": "Table: Shifts — a time block within an event needing N people with a required skill.",
+    "important": true,
+    "summary_rich": "The **unit of constraint**. Each shift is a hard coverage requirement: N volunteers, a required skill tag, a duration. `FilledCount` is the live tally from `Assignments`; `CoverageStatus` is the constraint satisfaction verdict (understaffed / covered / overstaffed). The coordinator's whole job is to drive every shift to `covered` without pushing any volunteer's load past `MaxHours`.",
+    "important_fields": [
+      "Name",
+      "EventName",
+      "RequiredSkill",
+      "NeededCount",
+      "FilledCount",
+      "CoverageStatus"
+    ],
     "schema": [
       {
         "name": "ShiftId",
@@ -294,7 +317,9 @@
         "type": "calculated",
         "nullable": true,
         "Description": "understaffed | covered | overstaffed.",
-        "formula": "=IF({{FilledCount}}<{{NeededCount}}, \"understaffed\", IF({{FilledCount}}>{{NeededCount}}, \"overstaffed\", \"covered\"))"
+        "formula": "=IF({{FilledCount}}<{{NeededCount}}, \"understaffed\", IF({{FilledCount}}>{{NeededCount}}, \"overstaffed\", \"covered\"))",
+        "important": true,
+        "explanation_rich": "**The per-shift constraint verdict.** Every shift declares a `NeededCount`; every assignment increments `FilledCount` through the `COUNTIFS` aggregation. This field compares the two and labels the gap. Worked example: *Setup Morning* on the Harvest Festival needs 4 volunteers and currently has 3 assignments — Morgan, Sam, Jamie — so `FilledCount` is 3, less than 4, and `CoverageStatus` resolves to `understaffed`. Add an `Assignments` row for Alex on that shift and the same field flips to `covered` on the next read — no application code touched, no recompute button pressed."
       }
     ],
     "data": [
@@ -514,6 +539,106 @@
         "ShiftName": "Distribution Afternoon",
         "ShiftDurationHours": 3,
         "Name": "Jamie Rivera @ Distribution Afternoon"
+      }
+    ]
+  },
+  "__meta__": {
+    "Description": "Project-level metadata that travels with the rulebook: tagline, motif, narrative descriptions, substrate list, signature rows, etc. One row per metadata key. Use ValueType to interpret StringValue vs JsonValue.",
+    "important": false,
+    "schema": [
+      {
+        "name": "MetaKey",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "The metadata key (e.g. 'tagline', 'motif_palette', 'substrates'). Unique within the table."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "formula": "={{MetaKey}}",
+        "Description": "Identifier for this metadata entry. Mirrors MetaKey so the row is addressable by Name like every other table."
+      },
+      {
+        "name": "ValueType",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "How to interpret the value columns: 'string' (use StringValue), 'object' (parse JsonValue as JSON object), 'array' (parse JsonValue as JSON array)."
+      },
+      {
+        "name": "StringValue",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Plain string value. Populated when ValueType == 'string'; null otherwise."
+      },
+      {
+        "name": "JsonValue",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "JSON-encoded value. Populated when ValueType == 'object' or 'array'; null when ValueType == 'string'."
+      }
+    ],
+    "data": [
+      {
+        "MetaKey": "tagline",
+        "Name": "tagline",
+        "ValueType": "string",
+        "StringValue": "Coverage requirements, availability windows, skill tags — the constraints solve themselves.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "motif",
+        "Name": "motif",
+        "ValueType": "string",
+        "StringValue": "corkboard",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "motif_palette",
+        "Name": "motif_palette",
+        "ValueType": "object",
+        "StringValue": null,
+        "JsonValue": "{\"primary\": \"#6e4b2a\", \"accent\": \"#d4a574\", \"ink\": \"#2a1e10\"}"
+      },
+      {
+        "MetaKey": "description_rich",
+        "Name": "description_rich",
+        "ValueType": "string",
+        "StringValue": "Volunteer Shift Scheduler is a **constraint-satisfaction demo, not a calendar app.** Every shift declares a hard requirement — *N volunteers, this skill tag, this duration*. Every volunteer declares an availability window — *MaxHours, ReliabilityScore*. `Assignments` are the proposed solutions, and the rulebook is the live judge: each shift's `CoverageStatus` (understaffed / covered / overstaffed), each volunteer's `LoadStatus` (under / ok / over), and the event's A–F `StaffingGrade` all fall out automatically. Pin a new index card to the corkboard — add one `Assignments` row — and watch three layers of verdicts recompute on the next read, in every substrate, with no application code in the middle.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "use_cases",
+        "Name": "use_cases",
+        "ValueType": "array",
+        "StringValue": null,
+        "JsonValue": "[\"**Resolve an understaffed shift.** Open *Setup Morning* on the Harvest Festival (`CoverageStatus = understaffed`, 3 of 4 filled), add an `Assignments` row for Casey Cole, and watch the shift flip to `covered` and the event's `StaffingGrade` climb from B toward A.\", \"**Catch an over-booked volunteer.** Sam Park sits at `LoadStatus = over` (10 assigned hours against an 8-hour `MaxHours`). Drop one of Sam's three assignments and the rule flips back to `ok` — the cascade does not need a recompute button.\", \"**Match a required skill to who's actually available.** Each shift carries a `RequiredSkill` tag (`setup`, `intake`, `food-handler`); use it to filter who you can pin to that card before the constraint engine even runs.\", \"**Promote an event's grade by one letter.** Watch how a single new `Assignments` row propagates: `Shifts.FilledCount` → `Events.TotalSlotsFilled` → `Events.CoveragePercent` → `Events.StaffingGrade`. Four aggregations and one bucket function — no JOIN written by hand.\", \"**Read the same coverage answer in two substrates.** Ask *\\\"which shifts are understaffed?\\\"* in the generated Postgres view and again in Python — same answer, no glue code, no drift.\"]"
+      },
+      {
+        "MetaKey": "signature_rows",
+        "Name": "signature_rows",
+        "ValueType": "array",
+        "StringValue": null,
+        "JsonValue": "[{\"entity\": \"Shifts\", \"ids\": [\"harvest-setup-morning\", \"harvest-food-afternoon\", \"foodbank-sort-morning\"]}, {\"entity\": \"Volunteers\", \"ids\": [\"sam-park\", \"casey-coordinator\", \"jamie-rivera\"]}, {\"entity\": \"Events\", \"ids\": [\"harvest-festival-2026\", \"food-bank-saturday\"]}]"
+      },
+      {
+        "MetaKey": "journal_seed",
+        "Name": "journal_seed",
+        "ValueType": "string",
+        "StringValue": "Two events on the corkboard. Food Bank Saturday is fully staffed (grade A); Harvest Festival is two slots short of an A. Sam is over by two hours; Casey hasn't been pinned to anything yet.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "substrates",
+        "Name": "substrates",
+        "ValueType": "array",
+        "StringValue": null,
+        "JsonValue": "[{\"key\": \"postgres\", \"important\": true, \"chip_label\": \"Postgres\"}, {\"key\": \"python\", \"important\": true, \"chip_label\": \"Python\"}, {\"key\": \"excel\", \"important\": false, \"chip_label\": \"Excel\"}, {\"key\": \"owl\", \"important\": false, \"chip_label\": \"OWL\"}]"
       }
     ]
   }

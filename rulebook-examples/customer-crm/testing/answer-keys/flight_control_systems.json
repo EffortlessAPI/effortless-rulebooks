@@ -1,0 +1,68 @@
+[
+  {
+    "flight_control_systems_id": "FCS-F16-FBW3",
+    "fcs_code": "FCS-F16-FBW3",
+    "jet_model_id": "F-16C",
+    "architecture": "fly-by-wire",
+    "redundancy_channels": 3,
+    "unit_price": 4.2,
+    "is_triple_redundant": true,
+    "is_quad_redundant": false,
+    "meets_fifth_gen_spec": false
+  },
+  {
+    "flight_control_systems_id": "FCS-F16-HYB2",
+    "fcs_code": "FCS-F16-HYB2",
+    "jet_model_id": "F-16C",
+    "architecture": "analog-hybrid",
+    "redundancy_channels": 2,
+    "unit_price": 2.1,
+    "is_triple_redundant": false,
+    "is_quad_redundant": false,
+    "meets_fifth_gen_spec": false
+  },
+  {
+    "flight_control_systems_id": "FCS-F22-FBL4",
+    "fcs_code": "FCS-F22-FBL4",
+    "jet_model_id": "F-22A",
+    "architecture": "fly-by-light",
+    "redundancy_channels": 4,
+    "unit_price": 18.5,
+    "is_triple_redundant": true,
+    "is_quad_redundant": true,
+    "meets_fifth_gen_spec": false
+  },
+  {
+    "flight_control_systems_id": "FCS-F35-FBW4",
+    "fcs_code": "FCS-F35-FBW4",
+    "jet_model_id": "F-35A",
+    "architecture": "fly-by-wire",
+    "redundancy_channels": 4,
+    "unit_price": 12.0,
+    "is_triple_redundant": true,
+    "is_quad_redundant": true,
+    "meets_fifth_gen_spec": false
+  },
+  {
+    "flight_control_systems_id": "FCS-F18-FBW3",
+    "fcs_code": "FCS-F18-FBW3",
+    "jet_model_id": "F-18E",
+    "architecture": "fly-by-wire",
+    "redundancy_channels": 3,
+    "unit_price": 5.8,
+    "is_triple_redundant": true,
+    "is_quad_redundant": false,
+    "meets_fifth_gen_spec": false
+  },
+  {
+    "flight_control_systems_id": "FCS-EF2K-FBW4",
+    "fcs_code": "FCS-EF2K-FBW4",
+    "jet_model_id": "EF-2000",
+    "architecture": "fly-by-wire",
+    "redundancy_channels": 4,
+    "unit_price": 9.3,
+    "is_triple_redundant": true,
+    "is_quad_redundant": true,
+    "meets_fifth_gen_spec": false
+  }
+]

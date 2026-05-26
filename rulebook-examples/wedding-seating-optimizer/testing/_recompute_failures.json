@@ -1,0 +1,268 @@
+[
+  {
+    "entity": "Tables",
+    "field": "OpenSeats",
+    "formula": "={{Seats}} - {{HeadCount}}",
+    "record_id": "t-head",
+    "error": "SyntaxError: Unexpected character '-' at position 10"
+  },
+  {
+    "entity": "Tables",
+    "field": "Happiness",
+    "formula": "={{RawHappiness}} - (IF({{OverCapacity}}, 25, 0) + {{SideSkew}})",
+    "record_id": "t-head",
+    "error": "SyntaxError: Unexpected character '-' at position 17"
+  },
+  {
+    "entity": "Tables",
+    "field": "SideSkew",
+    "formula": "=IF({{BrideSideCount}}>{{GroomSideCount}}, {{BrideSideCount}}-{{GroomSideCount}}, {{GroomSideCount}}-{{BrideSideCount}})",
+    "record_id": "t-head",
+    "error": "SyntaxError: Unexpected character '-' at position 60"
+  },
+  {
+    "entity": "Tables",
+    "field": "OpenSeats",
+    "formula": "={{Seats}} - {{HeadCount}}",
+    "record_id": "t-family-b",
+    "error": "SyntaxError: Unexpected character '-' at position 10"
+  },
+  {
+    "entity": "Tables",
+    "field": "Happiness",
+    "formula": "={{RawHappiness}} - (IF({{OverCapacity}}, 25, 0) + {{SideSkew}})",
+    "record_id": "t-family-b",
+    "error": "SyntaxError: Unexpected character '-' at position 17"
+  },
+  {
+    "entity": "Tables",
+    "field": "SideSkew",
+    "formula": "=IF({{BrideSideCount}}>{{GroomSideCount}}, {{BrideSideCount}}-{{GroomSideCount}}, {{GroomSideCount}}-{{BrideSideCount}})",
+    "record_id": "t-family-b",
+    "error": "SyntaxError: Unexpected character '-' at position 60"
+  },
+  {
+    "entity": "Tables",
+    "field": "OpenSeats",
+    "formula": "={{Seats}} - {{HeadCount}}",
+    "record_id": "t-family-g",
+    "error": "SyntaxError: Unexpected character '-' at position 10"
+  },
+  {
+    "entity": "Tables",
+    "field": "Happiness",
+    "formula": "={{RawHappiness}} - (IF({{OverCapacity}}, 25, 0) + {{SideSkew}})",
+    "record_id": "t-family-g",
+    "error": "SyntaxError: Unexpected character '-' at position 17"
+  },
+  {
+    "entity": "Tables",
+    "field": "SideSkew",
+    "formula": "=IF({{BrideSideCount}}>{{GroomSideCount}}, {{BrideSideCount}}-{{GroomSideCount}}, {{GroomSideCount}}-{{BrideSideCount}})",
+    "record_id": "t-family-g",
+    "error": "SyntaxError: Unexpected character '-' at position 60"
+  },
+  {
+    "entity": "Tables",
+    "field": "OpenSeats",
+    "formula": "={{Seats}} - {{HeadCount}}",
+    "record_id": "t-friends",
+    "error": "SyntaxError: Unexpected character '-' at position 10"
+  },
+  {
+    "entity": "Tables",
+    "field": "Happiness",
+    "formula": "={{RawHappiness}} - (IF({{OverCapacity}}, 25, 0) + {{SideSkew}})",
+    "record_id": "t-friends",
+    "error": "SyntaxError: Unexpected character '-' at position 17"
+  },
+  {
+    "entity": "Tables",
+    "field": "SideSkew",
+    "formula": "=IF({{BrideSideCount}}>{{GroomSideCount}}, {{BrideSideCount}}-{{GroomSideCount}}, {{GroomSideCount}}-{{BrideSideCount}})",
+    "record_id": "t-friends",
+    "error": "SyntaxError: Unexpected character '-' at position 60"
+  },
+  {
+    "entity": "Tables",
+    "field": "OpenSeats",
+    "formula": "={{Seats}} - {{HeadCount}}",
+    "record_id": "t-misc",
+    "error": "SyntaxError: Unexpected character '-' at position 10"
+  },
+  {
+    "entity": "Tables",
+    "field": "Happiness",
+    "formula": "={{RawHappiness}} - (IF({{OverCapacity}}, 25, 0) + {{SideSkew}})",
+    "record_id": "t-misc",
+    "error": "SyntaxError: Unexpected character '-' at position 17"
+  },
+  {
+    "entity": "Tables",
+    "field": "SideSkew",
+    "formula": "=IF({{BrideSideCount}}>{{GroomSideCount}}, {{BrideSideCount}}-{{GroomSideCount}}, {{GroomSideCount}}-{{BrideSideCount}})",
+    "record_id": "t-misc",
+    "error": "SyntaxError: Unexpected character '-' at position 60"
+  },
+  {
+    "entity": "Guests",
+    "field": "Satisfaction",
+    "formula": "={{SatisfactionA}} + {{SatisfactionB}}",
+    "record_id": "g-alex",
+    "error": "SyntaxError: Unexpected character '+' at position 18"
+  },
+  {
+    "entity": "Guests",
+    "field": "Satisfaction",
+    "formula": "={{SatisfactionA}} + {{SatisfactionB}}",
+    "record_id": "g-sam",
+    "error": "SyntaxError: Unexpected character '+' at position 18"
+  },
+  {
+    "entity": "Guests",
+    "field": "Satisfaction",
+    "formula": "={{SatisfactionA}} + {{SatisfactionB}}",
+    "record_id": "g-mom-b",
+    "error": "SyntaxError: Unexpected character '+' at position 18"
+  },
+  {
+    "entity": "Guests",
+    "field": "Satisfaction",
+    "formula": "={{SatisfactionA}} + {{SatisfactionB}}",
+    "record_id": "g-dad-b",
+    "error": "SyntaxError: Unexpected character '+' at position 18"
+  },
+  {
+    "entity": "Guests",
+    "field": "Satisfaction",
+    "formula": "={{SatisfactionA}} + {{SatisfactionB}}",
+    "record_id": "g-mom-g",
+    "error": "SyntaxError: Unexpected character '+' at position 18"
+  },
+  {
+    "entity": "Guests",
+    "field": "Satisfaction",
+    "formula": "={{SatisfactionA}} + {{SatisfactionB}}",
+    "record_id": "g-dad-g",
+    "error": "SyntaxError: Unexpected character '+' at position 18"
+  },
+  {
+    "entity": "Guests",
+    "field": "Satisfaction",
+    "formula": "={{SatisfactionA}} + {{SatisfactionB}}",
+    "record_id": "g-aunt-b",
+    "error": "SyntaxError: Unexpected character '+' at position 18"
+  },
+  {
+    "entity": "Guests",
+    "field": "Satisfaction",
+    "formula": "={{SatisfactionA}} + {{SatisfactionB}}",
+    "record_id": "g-uncle-b",
+    "error": "SyntaxError: Unexpected character '+' at position 18"
+  },
+  {
+    "entity": "Guests",
+    "field": "Satisfaction",
+    "formula": "={{SatisfactionA}} + {{SatisfactionB}}",
+    "record_id": "g-cuz-b1",
+    "error": "SyntaxError: Unexpected character '+' at position 18"
+  },
+  {
+    "entity": "Guests",
+    "field": "Satisfaction",
+    "formula": "={{SatisfactionA}} + {{SatisfactionB}}",
+    "record_id": "g-cuz-b2",
+    "error": "SyntaxError: Unexpected character '+' at position 18"
+  },
+  {
+    "entity": "Guests",
+    "field": "Satisfaction",
+    "formula": "={{SatisfactionA}} + {{SatisfactionB}}",
+    "record_id": "g-tia-g",
+    "error": "SyntaxError: Unexpected character '+' at position 18"
+  },
+  {
+    "entity": "Guests",
+    "field": "Satisfaction",
+    "formula": "={{SatisfactionA}} + {{SatisfactionB}}",
+    "record_id": "g-tio-g",
+    "error": "SyntaxError: Unexpected character '+' at position 18"
+  },
+  {
+    "entity": "Guests",
+    "field": "Satisfaction",
+    "formula": "={{SatisfactionA}} + {{SatisfactionB}}",
+    "record_id": "g-prim-g1",
+    "error": "SyntaxError: Unexpected character '+' at position 18"
+  },
+  {
+    "entity": "Guests",
+    "field": "Satisfaction",
+    "formula": "={{SatisfactionA}} + {{SatisfactionB}}",
+    "record_id": "g-prim-g2",
+    "error": "SyntaxError: Unexpected character '+' at position 18"
+  },
+  {
+    "entity": "Guests",
+    "field": "Satisfaction",
+    "formula": "={{SatisfactionA}} + {{SatisfactionB}}",
+    "record_id": "g-fr-1",
+    "error": "SyntaxError: Unexpected character '+' at position 18"
+  },
+  {
+    "entity": "Guests",
+    "field": "Satisfaction",
+    "formula": "={{SatisfactionA}} + {{SatisfactionB}}",
+    "record_id": "g-fr-2",
+    "error": "SyntaxError: Unexpected character '+' at position 18"
+  },
+  {
+    "entity": "Guests",
+    "field": "Satisfaction",
+    "formula": "={{SatisfactionA}} + {{SatisfactionB}}",
+    "record_id": "g-fr-3",
+    "error": "SyntaxError: Unexpected character '+' at position 18"
+  },
+  {
+    "entity": "Guests",
+    "field": "Satisfaction",
+    "formula": "={{SatisfactionA}} + {{SatisfactionB}}",
+    "record_id": "g-fr-4",
+    "error": "SyntaxError: Unexpected character '+' at position 18"
+  },
+  {
+    "entity": "Guests",
+    "field": "Satisfaction",
+    "formula": "={{SatisfactionA}} + {{SatisfactionB}}",
+    "record_id": "g-ex",
+    "error": "SyntaxError: Unexpected character '+' at position 18"
+  },
+  {
+    "entity": "Guests",
+    "field": "Satisfaction",
+    "formula": "={{SatisfactionA}} + {{SatisfactionB}}",
+    "record_id": "g-plus-1",
+    "error": "SyntaxError: Unexpected character '+' at position 18"
+  },
+  {
+    "entity": "Guests",
+    "field": "Satisfaction",
+    "formula": "={{SatisfactionA}} + {{SatisfactionB}}",
+    "record_id": "g-plus-2",
+    "error": "SyntaxError: Unexpected character '+' at position 18"
+  },
+  {
+    "entity": "Guests",
+    "field": "Satisfaction",
+    "formula": "={{SatisfactionA}} + {{SatisfactionB}}",
+    "record_id": "g-kid-1",
+    "error": "SyntaxError: Unexpected character '+' at position 18"
+  },
+  {
+    "entity": "Guests",
+    "field": "Satisfaction",
+    "formula": "={{SatisfactionA}} + {{SatisfactionB}}",
+    "record_id": "g-kid-2",
+    "error": "SyntaxError: Unexpected character '+' at position 18"
+  }
+]

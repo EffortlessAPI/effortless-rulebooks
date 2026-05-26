@@ -1,0 +1,154 @@
+[
+  {
+    "recipe_id": "broccoli recipe",
+    "dish_name": "steamed broccoli",
+    "recommended_minutes": 25,
+    "ideal_temperature_c": 100,
+    "duration_category": "medium",
+    "cooking_temp_profile": "boiling"
+  },
+  {
+    "recipe_id": "cake recipe",
+    "dish_name": "vanilla cake",
+    "recommended_minutes": 35,
+    "ideal_temperature_c": 180,
+    "duration_category": "medium",
+    "cooking_temp_profile": "warm oven"
+  },
+  {
+    "recipe_id": "creme brulee recipe",
+    "dish_name": "creme brulee",
+    "recommended_minutes": 55,
+    "ideal_temperature_c": 165,
+    "duration_category": "long",
+    "cooking_temp_profile": "warm oven"
+  },
+  {
+    "recipe_id": "croissant recipe",
+    "dish_name": "butter croissant",
+    "recommended_minutes": 18,
+    "ideal_temperature_c": 200,
+    "duration_category": "medium",
+    "cooking_temp_profile": "hot oven"
+  },
+  {
+    "recipe_id": "flan recipe",
+    "dish_name": "caramel flan",
+    "recommended_minutes": 50,
+    "ideal_temperature_c": 170,
+    "duration_category": "long",
+    "cooking_temp_profile": "warm oven"
+  },
+  {
+    "recipe_id": "instant coffee recipe",
+    "dish_name": "instant coffee",
+    "recommended_minutes": 2,
+    "ideal_temperature_c": 90,
+    "duration_category": "quick",
+    "cooking_temp_profile": "boiling"
+  },
+  {
+    "recipe_id": "paella recipe",
+    "dish_name": "paella valenciana",
+    "recommended_minutes": 40,
+    "ideal_temperature_c": 100,
+    "duration_category": "medium",
+    "cooking_temp_profile": "boiling"
+  },
+  {
+    "recipe_id": "pizza recipe",
+    "dish_name": "pizza margherita",
+    "recommended_minutes": 8,
+    "ideal_temperature_c": 240,
+    "duration_category": "short",
+    "cooking_temp_profile": "hot oven"
+  },
+  {
+    "recipe_id": "ramen recipe",
+    "dish_name": "tonkotsu ramen",
+    "recommended_minutes": 5,
+    "ideal_temperature_c": 100,
+    "duration_category": "short",
+    "cooking_temp_profile": "boiling"
+  },
+  {
+    "recipe_id": "rib roast recipe",
+    "dish_name": "rib roast",
+    "recommended_minutes": 90,
+    "ideal_temperature_c": 175,
+    "duration_category": "long",
+    "cooking_temp_profile": "warm oven"
+  },
+  {
+    "recipe_id": "risotto recipe",
+    "dish_name": "mushroom risotto",
+    "recommended_minutes": 30,
+    "ideal_temperature_c": 100,
+    "duration_category": "medium",
+    "cooking_temp_profile": "boiling"
+  },
+  {
+    "recipe_id": "salad recipe",
+    "dish_name": "garden salad",
+    "recommended_minutes": 7,
+    "ideal_temperature_c": 20,
+    "duration_category": "short",
+    "cooking_temp_profile": "low"
+  },
+  {
+    "recipe_id": "soft-boiled egg recipe",
+    "dish_name": "soft-boiled egg",
+    "recommended_minutes": 10,
+    "ideal_temperature_c": 100,
+    "duration_category": "short",
+    "cooking_temp_profile": "boiling"
+  },
+  {
+    "recipe_id": "soup recipe",
+    "dish_name": "vegetable soup",
+    "recommended_minutes": 25,
+    "ideal_temperature_c": 100,
+    "duration_category": "medium",
+    "cooking_temp_profile": "boiling"
+  },
+  {
+    "recipe_id": "sourdough recipe",
+    "dish_name": "sourdough loaf",
+    "recommended_minutes": 45,
+    "ideal_temperature_c": 220,
+    "duration_category": "long",
+    "cooking_temp_profile": "hot oven"
+  },
+  {
+    "recipe_id": "spaghetti recipe",
+    "dish_name": "spaghetti al pomodoro",
+    "recommended_minutes": 12,
+    "ideal_temperature_c": 100,
+    "duration_category": "short",
+    "cooking_temp_profile": "boiling"
+  },
+  {
+    "recipe_id": "steak recipe",
+    "dish_name": "ribeye steak",
+    "recommended_minutes": 11,
+    "ideal_temperature_c": 230,
+    "duration_category": "short",
+    "cooking_temp_profile": "hot oven"
+  },
+  {
+    "recipe_id": "tea recipe",
+    "dish_name": "Earl Grey tea",
+    "recommended_minutes": 4,
+    "ideal_temperature_c": 95,
+    "duration_category": "quick",
+    "cooking_temp_profile": "boiling"
+  },
+  {
+    "recipe_id": "yogurt recipe",
+    "dish_name": "homemade yogurt",
+    "recommended_minutes": 360,
+    "ideal_temperature_c": 40,
+    "duration_category": "long",
+    "cooking_temp_profile": "low"
+  }
+]

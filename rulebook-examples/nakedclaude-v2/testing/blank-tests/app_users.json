@@ -1,0 +1,20 @@
+[
+  {
+    "app_user_id": "alice-example-com",
+    "name": null,
+    "email_address": "alice@example.com",
+    "role": "customer"
+  },
+  {
+    "app_user_id": "eejai42-gmail-com",
+    "name": null,
+    "email_address": "eejai42@gmail.com",
+    "role": "customer"
+  },
+  {
+    "app_user_id": "ej-ssot-me",
+    "name": null,
+    "email_address": "ej@ssot.me",
+    "role": "admin"
+  }
+]

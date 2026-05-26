@@ -1,0 +1,22 @@
+[
+  {
+    "dial_pointer_id": "Bessie's dial pointer",
+    "on_output_shaft": "Bessie's output shaft",
+    "length_mm": 14
+  },
+  {
+    "dial_pointer_id": "Olive's dial pointer",
+    "on_output_shaft": "Olive's output shaft",
+    "length_mm": 14
+  },
+  {
+    "dial_pointer_id": "Rufus's dial pointer",
+    "on_output_shaft": "Rufus's output shaft",
+    "length_mm": 14
+  },
+  {
+    "dial_pointer_id": "Twigs's dial pointer",
+    "on_output_shaft": "Twigs's output shaft",
+    "length_mm": 14
+  }
+]

@@ -1,0 +1,38 @@
+[
+  {
+    "winding_knob_id": "Bessie's knob",
+    "fixed_to_timer": "Bessie",
+    "scale_min": 0,
+    "scale_max": 60,
+    "wind_direction": "clockwise",
+    "shaft_diameter_mm": 4,
+    "pointer_fixed": true
+  },
+  {
+    "winding_knob_id": "Olive's knob",
+    "fixed_to_timer": "Olive",
+    "scale_min": 0,
+    "scale_max": 60,
+    "wind_direction": "clockwise",
+    "shaft_diameter_mm": 4,
+    "pointer_fixed": true
+  },
+  {
+    "winding_knob_id": "Rufus's knob",
+    "fixed_to_timer": "Rufus",
+    "scale_min": 0,
+    "scale_max": 60,
+    "wind_direction": "clockwise",
+    "shaft_diameter_mm": 4,
+    "pointer_fixed": true
+  },
+  {
+    "winding_knob_id": "Twigs's knob",
+    "fixed_to_timer": "Twigs",
+    "scale_min": 0,
+    "scale_max": 60,
+    "wind_direction": "clockwise",
+    "shaft_diameter_mm": 4,
+    "pointer_fixed": true
+  }
+]

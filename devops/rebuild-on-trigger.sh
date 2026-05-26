@@ -566,10 +566,13 @@ get_repo_root() {
 }
 
 get_latest_demo_version_json() {
-    local repo_root domain
+    local repo_root
     repo_root="$(get_repo_root)"
-    domain="$(tr -d '[:space:]' < "${repo_root}/orchestration/active-domain.txt")"
-    echo "${repo_root}/rulebook-examples/${domain}/effortless-rulebook/${domain}-rulebook.json"
+    if [[ -z "${ERB_DOMAIN:-}" ]]; then
+        echo "ERROR: ERB_DOMAIN is not set; rebuild-on-trigger requires the trigger payload to identify the domain." >&2
+        return 1
+    fi
+    echo "${repo_root}/rulebook-examples/${ERB_DOMAIN}/effortless-rulebook/${ERB_DOMAIN}-rulebook.json"
 }
 
 extract_latest_release_notes() {

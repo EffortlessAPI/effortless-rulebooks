@@ -1,0 +1,50 @@
+[
+  {
+    "timer_id": "Bessie",
+    "label": "Egg Timer",
+    "wind_angle_degrees": 0,
+    "max_wind_degrees": 360,
+    "max_spring_torque_nm": 0.08,
+    "escapement_base_hz": 4,
+    "wind_state": "Unwound",
+    "is_armed": false,
+    "has_rung": true,
+    "has_sparse_tick_record": false
+  },
+  {
+    "timer_id": "Olive",
+    "label": "Pasta Timer",
+    "wind_angle_degrees": 120,
+    "max_wind_degrees": 360,
+    "max_spring_torque_nm": 0.08,
+    "escapement_base_hz": 4,
+    "wind_state": "Partial",
+    "is_armed": false,
+    "has_rung": true,
+    "has_sparse_tick_record": false
+  },
+  {
+    "timer_id": "Rufus",
+    "label": "Roast Timer",
+    "wind_angle_degrees": 360,
+    "max_wind_degrees": 360,
+    "max_spring_torque_nm": 0.08,
+    "escapement_base_hz": 4,
+    "wind_state": "Full",
+    "is_armed": false,
+    "has_rung": true,
+    "has_sparse_tick_record": false
+  },
+  {
+    "timer_id": "Twigs",
+    "label": "Tea Timer",
+    "wind_angle_degrees": 30,
+    "max_wind_degrees": 360,
+    "max_spring_torque_nm": 0.08,
+    "escapement_base_hz": 4,
+    "wind_state": "Partial",
+    "is_armed": false,
+    "has_rung": true,
+    "has_sparse_tick_record": false
+  }
+]

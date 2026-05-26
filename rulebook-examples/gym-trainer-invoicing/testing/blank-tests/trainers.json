@@ -1,0 +1,16 @@
+[
+  {
+    "trainer_id": "t-alex",
+    "name": "alex@gym.test",
+    "email": "alex@gym.test",
+    "full_name": "Alex Reyes",
+    "hourly_rate": 80
+  },
+  {
+    "trainer_id": "t-jamie",
+    "name": "jamie@gym.test",
+    "email": "jamie@gym.test",
+    "full_name": "Jamie Lin",
+    "hourly_rate": 95
+  }
+]

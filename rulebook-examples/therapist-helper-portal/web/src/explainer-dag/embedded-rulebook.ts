@@ -4,136 +4,647 @@
 export const rulebook = {
   "$schema": "https://example.com/cmcc-schema/v1",
   "model_name": "therapist_helper_portal",
-  "Description": "Therapist helper portal - sessions and treatment progress. 3-hop DAG: GoalUpdate.ScoreAchieved -> Goal.ProgressPct -> {Goal.IsOnTrack, Client.AvgGoalProgress} -> Client.IsAtRisk.",
+  "Description": "Sessions and treatment progress: GoalUpdate \u2192 Goal.ProgressPct \u2192 Client.IsAtRisk three-hop DAG.",
   "Users": {
     "Description": "Application users. Therapists, supervisors, and clients log in via dev-login by user id (email).",
     "schema": [
-      { "name": "UsersId", "datatype": "string", "type": "raw", "nullable": false, "Description": "PK: the user's email." },
-      { "name": "FullName", "datatype": "string", "type": "raw", "nullable": false },
-      { "name": "Role", "datatype": "string", "type": "raw", "nullable": false, "Description": "therapist | supervisor | client" },
-      { "name": "Name", "datatype": "string", "type": "calculated", "formula": "={{UsersId}}" },
-      { "name": "ClientCount", "datatype": "integer", "type": "aggregation", "formula": "=COUNTIF(Clients!{{Therapist}}, Users!{{UsersId}})" }
+      {
+        "name": "UsersId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "PK: the user's email."
+      },
+      {
+        "name": "FullName",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "Role",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "therapist | supervisor | client"
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "formula": "={{UsersId}}"
+      },
+      {
+        "name": "ClientCount",
+        "datatype": "integer",
+        "type": "aggregation",
+        "formula": "=COUNTIF(Clients!{{Therapist}}, Users!{{UsersId}})"
+      }
     ],
     "data": [
-      { "UsersId": "tess@example.com",   "FullName": "Dr. Tess Brennan",         "Role": "therapist" },
-      { "UsersId": "rob@example.com",    "FullName": "Dr. Rob Singh",            "Role": "therapist" },
-      { "UsersId": "sue@example.com",    "FullName": "Dr. Sue Chen (Supervisor)", "Role": "supervisor" },
-      { "UsersId": "client@example.com", "FullName": "Alex Rivera",              "Role": "client" }
+      {
+        "UsersId": "tess@example.com",
+        "FullName": "Dr. Tess Brennan",
+        "Role": "therapist"
+      },
+      {
+        "UsersId": "rob@example.com",
+        "FullName": "Dr. Rob Singh",
+        "Role": "therapist"
+      },
+      {
+        "UsersId": "sue@example.com",
+        "FullName": "Dr. Sue Chen (Supervisor)",
+        "Role": "supervisor"
+      },
+      {
+        "UsersId": "client@example.com",
+        "FullName": "Alex Rivera",
+        "Role": "client"
+      }
     ]
   },
   "Clients": {
     "Description": "People in treatment. Each has an assigned therapist, a set of goals, and a stream of sessions.",
     "schema": [
-      { "name": "ClientsId", "datatype": "string", "type": "raw", "nullable": false, "Description": "PK: short slug." },
-      { "name": "ClientName", "datatype": "string", "type": "raw", "nullable": false },
-      { "name": "Therapist", "datatype": "string", "type": "relationship", "RelatedTo": "Users", "Description": "FK to Users.UsersId." },
-      { "name": "TherapistName", "datatype": "string", "type": "lookup", "formula": "=INDEX(Users!{{FullName}}, MATCH(Clients!{{Therapist}}, Users!{{UsersId}}, 0))" },
-      { "name": "StartDate", "datatype": "string", "type": "raw", "nullable": true },
-      { "name": "Name", "datatype": "string", "type": "calculated", "formula": "={{ClientsId}}" },
-      { "name": "SessionCount", "datatype": "integer", "type": "aggregation", "formula": "=COUNTIF(Sessions!{{Client}}, Clients!{{ClientsId}})" },
-      { "name": "AvgMoodRating", "datatype": "number", "type": "aggregation", "formula": "=AVERAGEIFS(Sessions!{{MoodRating}}, Sessions!{{Client}}, Clients!{{ClientsId}})" },
-      { "name": "GoalCount", "datatype": "integer", "type": "aggregation", "formula": "=COUNTIF(Goals!{{Client}}, Clients!{{ClientsId}})" },
-      { "name": "AvgGoalProgress", "datatype": "number", "type": "aggregation", "formula": "=AVERAGEIFS(Goals!{{ProgressPct}}, Goals!{{Client}}, Clients!{{ClientsId}})", "Description": "2nd-order: aggregates Goal.ProgressPct (a calc)." },
-      { "name": "LastSessionLabel", "datatype": "string", "type": "aggregation", "formula": "=MAXIFS(Sessions!{{SessionLabel}}, Sessions!{{Client}}, Clients!{{ClientsId}})", "Description": "Most recent session label for this client." },
-      { "name": "IsAtRisk", "datatype": "boolean", "type": "calculated", "formula": "=OR({{AvgMoodRating}} < 5, {{AvgGoalProgress}} < 50)", "Description": "3rd-order: low mood OR low avg goal progress." },
-      { "name": "StatusLabel", "datatype": "string", "type": "calculated", "formula": "=IF({{IsAtRisk}}, \"At risk\", \"On track\")", "Description": "4th-order: human-readable client status derived from IsAtRisk." }
+      {
+        "name": "ClientsId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "PK: short slug."
+      },
+      {
+        "name": "ClientName",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "Therapist",
+        "datatype": "string",
+        "type": "relationship",
+        "RelatedTo": "Users",
+        "Description": "FK to Users.UsersId."
+      },
+      {
+        "name": "TherapistName",
+        "datatype": "string",
+        "type": "lookup",
+        "formula": "=INDEX(Users!{{FullName}}, MATCH(Clients!{{Therapist}}, Users!{{UsersId}}, 0))"
+      },
+      {
+        "name": "StartDate",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "formula": "={{ClientsId}}"
+      },
+      {
+        "name": "SessionCount",
+        "datatype": "integer",
+        "type": "aggregation",
+        "formula": "=COUNTIF(Sessions!{{Client}}, Clients!{{ClientsId}})"
+      },
+      {
+        "name": "AvgMoodRating",
+        "datatype": "number",
+        "type": "aggregation",
+        "formula": "=AVERAGEIFS(Sessions!{{MoodRating}}, Sessions!{{Client}}, Clients!{{ClientsId}})"
+      },
+      {
+        "name": "GoalCount",
+        "datatype": "integer",
+        "type": "aggregation",
+        "formula": "=COUNTIF(Goals!{{Client}}, Clients!{{ClientsId}})"
+      },
+      {
+        "name": "AvgGoalProgress",
+        "datatype": "number",
+        "type": "aggregation",
+        "formula": "=AVERAGEIFS(Goals!{{ProgressPct}}, Goals!{{Client}}, Clients!{{ClientsId}})",
+        "Description": "2nd-order: aggregates Goal.ProgressPct (a calc)."
+      },
+      {
+        "name": "LastSessionLabel",
+        "datatype": "string",
+        "type": "aggregation",
+        "formula": "=MAXIFS(Sessions!{{SessionLabel}}, Sessions!{{Client}}, Clients!{{ClientsId}})",
+        "Description": "Most recent session label for this client."
+      },
+      {
+        "name": "IsAtRisk",
+        "datatype": "boolean",
+        "type": "calculated",
+        "formula": "=OR({{AvgMoodRating}} < 5, {{AvgGoalProgress}} < 50)",
+        "Description": "3rd-order: low mood OR low avg goal progress."
+      },
+      {
+        "name": "StatusLabel",
+        "datatype": "string",
+        "type": "calculated",
+        "formula": "=IF({{IsAtRisk}}, \"At risk\", \"On track\")",
+        "Description": "4th-order: human-readable client status derived from IsAtRisk."
+      }
     ],
     "data": [
-      { "ClientsId": "alex-r",  "ClientName": "Alex Rivera",  "Therapist": "tess@example.com", "StartDate": "2026-01-15" },
-      { "ClientsId": "blair-m", "ClientName": "Blair Morgan", "Therapist": "tess@example.com", "StartDate": "2026-02-03" },
-      { "ClientsId": "casey-l", "ClientName": "Casey Lin",    "Therapist": "rob@example.com",  "StartDate": "2025-11-22" },
-      { "ClientsId": "drew-p",  "ClientName": "Drew Patel",   "Therapist": "rob@example.com",  "StartDate": "2026-03-01" }
+      {
+        "ClientsId": "alex-r",
+        "ClientName": "Alex Rivera",
+        "Therapist": "tess@example.com",
+        "StartDate": "2026-01-15"
+      },
+      {
+        "ClientsId": "blair-m",
+        "ClientName": "Blair Morgan",
+        "Therapist": "tess@example.com",
+        "StartDate": "2026-02-03"
+      },
+      {
+        "ClientsId": "casey-l",
+        "ClientName": "Casey Lin",
+        "Therapist": "rob@example.com",
+        "StartDate": "2025-11-22"
+      },
+      {
+        "ClientsId": "drew-p",
+        "ClientName": "Drew Patel",
+        "Therapist": "rob@example.com",
+        "StartDate": "2026-03-01"
+      }
     ]
   },
   "Goals": {
     "Description": "Treatment goals owned by a client. TargetScore is editable.",
     "schema": [
-      { "name": "GoalsId", "datatype": "string", "type": "raw", "nullable": false },
-      { "name": "Title", "datatype": "string", "type": "raw", "nullable": false },
-      { "name": "Client", "datatype": "string", "type": "relationship", "RelatedTo": "Clients" },
-      { "name": "ClientName", "datatype": "string", "type": "lookup", "formula": "=INDEX(Clients!{{ClientName}}, MATCH(Goals!{{Client}}, Clients!{{ClientsId}}, 0))" },
-      { "name": "ClientTherapist", "datatype": "string", "type": "lookup", "formula": "=INDEX(Clients!{{Therapist}}, MATCH(Goals!{{Client}}, Clients!{{ClientsId}}, 0))" },
-      { "name": "TargetScore", "datatype": "number", "type": "raw", "nullable": false, "Description": "0-10. EDITABLE." },
-      { "name": "Name", "datatype": "string", "type": "calculated", "formula": "={{GoalsId}}" },
-      { "name": "UpdateCount", "datatype": "integer", "type": "aggregation", "formula": "=COUNTIF(GoalUpdates!{{Goal}}, Goals!{{GoalsId}})" },
-      { "name": "AvgScoreAchieved", "datatype": "number", "type": "aggregation", "formula": "=AVERAGEIFS(GoalUpdates!{{ScoreAchieved}}, GoalUpdates!{{Goal}}, Goals!{{GoalsId}})" },
-      { "name": "LatestScore", "datatype": "number", "type": "aggregation", "formula": "=MAXIFS(GoalUpdates!{{ScoreAchieved}}, GoalUpdates!{{Goal}}, Goals!{{GoalsId}})", "Description": "Best score recorded against this goal." },
-      { "name": "ProgressPct", "datatype": "number", "type": "calculated", "formula": "=IFERROR({{AvgScoreAchieved}} / {{TargetScore}} * 100, 0)", "Description": "2nd-order." },
-      { "name": "RemainingGap", "datatype": "number", "type": "calculated", "formula": "=MAX(0, {{TargetScore}} - {{AvgScoreAchieved}})", "Description": "2nd-order: distance to target." },
-      { "name": "IsOnTrack", "datatype": "boolean", "type": "calculated", "formula": "={{ProgressPct}} >= 70", "Description": "3rd-order." }
+      {
+        "name": "GoalsId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "Title",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "Client",
+        "datatype": "string",
+        "type": "relationship",
+        "RelatedTo": "Clients"
+      },
+      {
+        "name": "ClientName",
+        "datatype": "string",
+        "type": "lookup",
+        "formula": "=INDEX(Clients!{{ClientName}}, MATCH(Goals!{{Client}}, Clients!{{ClientsId}}, 0))"
+      },
+      {
+        "name": "ClientTherapist",
+        "datatype": "string",
+        "type": "lookup",
+        "formula": "=INDEX(Clients!{{Therapist}}, MATCH(Goals!{{Client}}, Clients!{{ClientsId}}, 0))"
+      },
+      {
+        "name": "TargetScore",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": false,
+        "Description": "0-10. EDITABLE."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "formula": "={{GoalsId}}"
+      },
+      {
+        "name": "UpdateCount",
+        "datatype": "integer",
+        "type": "aggregation",
+        "formula": "=COUNTIF(GoalUpdates!{{Goal}}, Goals!{{GoalsId}})"
+      },
+      {
+        "name": "AvgScoreAchieved",
+        "datatype": "number",
+        "type": "aggregation",
+        "formula": "=AVERAGEIFS(GoalUpdates!{{ScoreAchieved}}, GoalUpdates!{{Goal}}, Goals!{{GoalsId}})"
+      },
+      {
+        "name": "LatestScore",
+        "datatype": "number",
+        "type": "aggregation",
+        "formula": "=MAXIFS(GoalUpdates!{{ScoreAchieved}}, GoalUpdates!{{Goal}}, Goals!{{GoalsId}})",
+        "Description": "Best score recorded against this goal."
+      },
+      {
+        "name": "ProgressPct",
+        "datatype": "number",
+        "type": "calculated",
+        "formula": "=IFERROR({{AvgScoreAchieved}} / {{TargetScore}} * 100, 0)",
+        "Description": "2nd-order."
+      },
+      {
+        "name": "RemainingGap",
+        "datatype": "number",
+        "type": "calculated",
+        "formula": "=MAX(0, {{TargetScore}} - {{AvgScoreAchieved}})",
+        "Description": "2nd-order: distance to target."
+      },
+      {
+        "name": "IsOnTrack",
+        "datatype": "boolean",
+        "type": "calculated",
+        "formula": "={{ProgressPct}} >= 70",
+        "Description": "3rd-order."
+      }
     ],
     "data": [
-      { "GoalsId": "alex-anxiety",  "Title": "Reduce anxiety in social settings", "Client": "alex-r",  "TargetScore": 8 },
-      { "GoalsId": "alex-sleep",    "Title": "Improve sleep quality",              "Client": "alex-r",  "TargetScore": 7 },
-      { "GoalsId": "blair-mood",    "Title": "Stabilize daily mood",                "Client": "blair-m", "TargetScore": 8 },
-      { "GoalsId": "blair-journal", "Title": "Daily journaling",                    "Client": "blair-m", "TargetScore": 6 },
-      { "GoalsId": "casey-grief",   "Title": "Work through grief",                  "Client": "casey-l", "TargetScore": 9 },
-      { "GoalsId": "casey-routine", "Title": "Establish morning routine",           "Client": "casey-l", "TargetScore": 7 },
-      { "GoalsId": "drew-focus",    "Title": "Improve work focus",                  "Client": "drew-p",  "TargetScore": 8 },
-      { "GoalsId": "drew-exercise", "Title": "Exercise 3x per week",                "Client": "drew-p",  "TargetScore": 7 }
+      {
+        "GoalsId": "alex-anxiety",
+        "Title": "Reduce anxiety in social settings",
+        "Client": "alex-r",
+        "TargetScore": 8
+      },
+      {
+        "GoalsId": "alex-sleep",
+        "Title": "Improve sleep quality",
+        "Client": "alex-r",
+        "TargetScore": 7
+      },
+      {
+        "GoalsId": "blair-mood",
+        "Title": "Stabilize daily mood",
+        "Client": "blair-m",
+        "TargetScore": 8
+      },
+      {
+        "GoalsId": "blair-journal",
+        "Title": "Daily journaling",
+        "Client": "blair-m",
+        "TargetScore": 6
+      },
+      {
+        "GoalsId": "casey-grief",
+        "Title": "Work through grief",
+        "Client": "casey-l",
+        "TargetScore": 9
+      },
+      {
+        "GoalsId": "casey-routine",
+        "Title": "Establish morning routine",
+        "Client": "casey-l",
+        "TargetScore": 7
+      },
+      {
+        "GoalsId": "drew-focus",
+        "Title": "Improve work focus",
+        "Client": "drew-p",
+        "TargetScore": 8
+      },
+      {
+        "GoalsId": "drew-exercise",
+        "Title": "Exercise 3x per week",
+        "Client": "drew-p",
+        "TargetScore": 7
+      }
     ]
   },
   "Sessions": {
     "Description": "Therapy sessions. MoodRating is editable and feeds the client-level rollup.",
     "schema": [
-      { "name": "SessionsId", "datatype": "string", "type": "raw", "nullable": false },
-      { "name": "Client", "datatype": "string", "type": "relationship", "RelatedTo": "Clients" },
-      { "name": "ClientName", "datatype": "string", "type": "lookup", "formula": "=INDEX(Clients!{{ClientName}}, MATCH(Sessions!{{Client}}, Clients!{{ClientsId}}, 0))" },
-      { "name": "ClientTherapist", "datatype": "string", "type": "lookup", "formula": "=INDEX(Clients!{{Therapist}}, MATCH(Sessions!{{Client}}, Clients!{{ClientsId}}, 0))" },
-      { "name": "SessionLabel", "datatype": "string", "type": "raw", "nullable": false },
-      { "name": "DurationMinutes", "datatype": "integer", "type": "raw", "nullable": true },
-      { "name": "MoodRating", "datatype": "integer", "type": "raw", "nullable": false, "Description": "1-10. EDITABLE." },
-      { "name": "Notes", "datatype": "string", "type": "raw", "nullable": true },
-      { "name": "Name", "datatype": "string", "type": "calculated", "formula": "={{SessionsId}}" },
-      { "name": "UpdateCount", "datatype": "integer", "type": "aggregation", "formula": "=COUNTIFS(GoalUpdates!{{Session}}, Sessions!{{SessionsId}})", "Description": "Goal updates recorded this session." },
-      { "name": "AvgScoreAchieved", "datatype": "number", "type": "aggregation", "formula": "=AVERAGEIFS(GoalUpdates!{{ScoreAchieved}}, GoalUpdates!{{Session}}, Sessions!{{SessionsId}})", "Description": "Average update score for this session." },
-      { "name": "IsProductive", "datatype": "boolean", "type": "calculated", "formula": "=AND({{UpdateCount}} >= 2, {{AvgScoreAchieved}} >= 5)", "Description": "2nd-order: session captured >=2 goal updates AND avg score >=5." },
-      { "name": "StatusLabel", "datatype": "string", "type": "calculated", "formula": "=IF({{IsProductive}}, \"Productive\", \"Light\")", "Description": "3rd-order: human-readable session status derived from IsProductive." }
+      {
+        "name": "SessionsId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "Client",
+        "datatype": "string",
+        "type": "relationship",
+        "RelatedTo": "Clients"
+      },
+      {
+        "name": "ClientName",
+        "datatype": "string",
+        "type": "lookup",
+        "formula": "=INDEX(Clients!{{ClientName}}, MATCH(Sessions!{{Client}}, Clients!{{ClientsId}}, 0))"
+      },
+      {
+        "name": "ClientTherapist",
+        "datatype": "string",
+        "type": "lookup",
+        "formula": "=INDEX(Clients!{{Therapist}}, MATCH(Sessions!{{Client}}, Clients!{{ClientsId}}, 0))"
+      },
+      {
+        "name": "SessionLabel",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "DurationMinutes",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "MoodRating",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "1-10. EDITABLE."
+      },
+      {
+        "name": "Notes",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "formula": "={{SessionsId}}"
+      },
+      {
+        "name": "UpdateCount",
+        "datatype": "integer",
+        "type": "aggregation",
+        "formula": "=COUNTIFS(GoalUpdates!{{Session}}, Sessions!{{SessionsId}})",
+        "Description": "Goal updates recorded this session."
+      },
+      {
+        "name": "AvgScoreAchieved",
+        "datatype": "number",
+        "type": "aggregation",
+        "formula": "=AVERAGEIFS(GoalUpdates!{{ScoreAchieved}}, GoalUpdates!{{Session}}, Sessions!{{SessionsId}})",
+        "Description": "Average update score for this session."
+      },
+      {
+        "name": "IsProductive",
+        "datatype": "boolean",
+        "type": "calculated",
+        "formula": "=AND({{UpdateCount}} >= 2, {{AvgScoreAchieved}} >= 5)",
+        "Description": "2nd-order: session captured >=2 goal updates AND avg score >=5."
+      },
+      {
+        "name": "StatusLabel",
+        "datatype": "string",
+        "type": "calculated",
+        "formula": "=IF({{IsProductive}}, \"Productive\", \"Light\")",
+        "Description": "3rd-order: human-readable session status derived from IsProductive."
+      }
     ],
     "data": [
-      { "SessionsId": "ses-001", "Client": "alex-r",  "SessionLabel": "2026-04-02 am", "DurationMinutes": 50, "MoodRating": 7, "Notes": "Good engagement." },
-      { "SessionsId": "ses-002", "Client": "alex-r",  "SessionLabel": "2026-04-09 am", "DurationMinutes": 50, "MoodRating": 8, "Notes": "Reported better sleep." },
-      { "SessionsId": "ses-003", "Client": "alex-r",  "SessionLabel": "2026-04-16 am", "DurationMinutes": 50, "MoodRating": 7, "Notes": "" },
-      { "SessionsId": "ses-004", "Client": "blair-m", "SessionLabel": "2026-04-03 pm", "DurationMinutes": 45, "MoodRating": 4, "Notes": "Tough week." },
-      { "SessionsId": "ses-005", "Client": "blair-m", "SessionLabel": "2026-04-10 pm", "DurationMinutes": 45, "MoodRating": 5, "Notes": "" },
-      { "SessionsId": "ses-006", "Client": "blair-m", "SessionLabel": "2026-04-17 pm", "DurationMinutes": 45, "MoodRating": 3, "Notes": "Sleep poor." },
-      { "SessionsId": "ses-007", "Client": "casey-l", "SessionLabel": "2026-04-04 am", "DurationMinutes": 60, "MoodRating": 6, "Notes": "Grief work." },
-      { "SessionsId": "ses-008", "Client": "casey-l", "SessionLabel": "2026-04-11 am", "DurationMinutes": 60, "MoodRating": 7, "Notes": "" },
-      { "SessionsId": "ses-009", "Client": "drew-p",  "SessionLabel": "2026-04-05 pm", "DurationMinutes": 50, "MoodRating": 8, "Notes": "Strong." },
-      { "SessionsId": "ses-010", "Client": "drew-p",  "SessionLabel": "2026-04-12 pm", "DurationMinutes": 50, "MoodRating": 9, "Notes": "Excellent." }
+      {
+        "SessionsId": "ses-001",
+        "Client": "alex-r",
+        "SessionLabel": "2026-04-02 am",
+        "DurationMinutes": 50,
+        "MoodRating": 7,
+        "Notes": "Good engagement."
+      },
+      {
+        "SessionsId": "ses-002",
+        "Client": "alex-r",
+        "SessionLabel": "2026-04-09 am",
+        "DurationMinutes": 50,
+        "MoodRating": 8,
+        "Notes": "Reported better sleep."
+      },
+      {
+        "SessionsId": "ses-003",
+        "Client": "alex-r",
+        "SessionLabel": "2026-04-16 am",
+        "DurationMinutes": 50,
+        "MoodRating": 7,
+        "Notes": ""
+      },
+      {
+        "SessionsId": "ses-004",
+        "Client": "blair-m",
+        "SessionLabel": "2026-04-03 pm",
+        "DurationMinutes": 45,
+        "MoodRating": 4,
+        "Notes": "Tough week."
+      },
+      {
+        "SessionsId": "ses-005",
+        "Client": "blair-m",
+        "SessionLabel": "2026-04-10 pm",
+        "DurationMinutes": 45,
+        "MoodRating": 5,
+        "Notes": ""
+      },
+      {
+        "SessionsId": "ses-006",
+        "Client": "blair-m",
+        "SessionLabel": "2026-04-17 pm",
+        "DurationMinutes": 45,
+        "MoodRating": 3,
+        "Notes": "Sleep poor."
+      },
+      {
+        "SessionsId": "ses-007",
+        "Client": "casey-l",
+        "SessionLabel": "2026-04-04 am",
+        "DurationMinutes": 60,
+        "MoodRating": 6,
+        "Notes": "Grief work."
+      },
+      {
+        "SessionsId": "ses-008",
+        "Client": "casey-l",
+        "SessionLabel": "2026-04-11 am",
+        "DurationMinutes": 60,
+        "MoodRating": 7,
+        "Notes": ""
+      },
+      {
+        "SessionsId": "ses-009",
+        "Client": "drew-p",
+        "SessionLabel": "2026-04-05 pm",
+        "DurationMinutes": 50,
+        "MoodRating": 8,
+        "Notes": "Strong."
+      },
+      {
+        "SessionsId": "ses-010",
+        "Client": "drew-p",
+        "SessionLabel": "2026-04-12 pm",
+        "DurationMinutes": 50,
+        "MoodRating": 9,
+        "Notes": "Excellent."
+      }
     ]
   },
   "GoalUpdates": {
     "Description": "Per-session goal progress entries. ScoreAchieved is editable.",
     "schema": [
-      { "name": "GoalUpdatesId", "datatype": "string", "type": "raw", "nullable": false },
-      { "name": "Goal", "datatype": "string", "type": "relationship", "RelatedTo": "Goals" },
-      { "name": "GoalTitle", "datatype": "string", "type": "lookup", "formula": "=INDEX(Goals!{{Title}}, MATCH(GoalUpdates!{{Goal}}, Goals!{{GoalsId}}, 0))" },
-      { "name": "GoalClient", "datatype": "string", "type": "lookup", "formula": "=INDEX(Goals!{{Client}}, MATCH(GoalUpdates!{{Goal}}, Goals!{{GoalsId}}, 0))" },
-      { "name": "GoalTargetScore", "datatype": "number", "type": "lookup", "formula": "=INDEX(Goals!{{TargetScore}}, MATCH(GoalUpdates!{{Goal}}, Goals!{{GoalsId}}, 0))" },
-      { "name": "GoalClientTherapist", "datatype": "string", "type": "lookup", "formula": "=INDEX(Goals!{{ClientTherapist}}, MATCH(GoalUpdates!{{Goal}}, Goals!{{GoalsId}}, 0))" },
-      { "name": "Session", "datatype": "string", "type": "relationship", "RelatedTo": "Sessions" },
-      { "name": "SessionLabel", "datatype": "string", "type": "lookup", "formula": "=INDEX(Sessions!{{SessionLabel}}, MATCH(GoalUpdates!{{Session}}, Sessions!{{SessionsId}}, 0))" },
-      { "name": "ScoreAchieved", "datatype": "number", "type": "raw", "nullable": false, "Description": "0-10. EDITABLE." },
-      { "name": "Name", "datatype": "string", "type": "calculated", "formula": "={{GoalUpdatesId}}" }
+      {
+        "name": "GoalUpdatesId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "Goal",
+        "datatype": "string",
+        "type": "relationship",
+        "RelatedTo": "Goals"
+      },
+      {
+        "name": "GoalTitle",
+        "datatype": "string",
+        "type": "lookup",
+        "formula": "=INDEX(Goals!{{Title}}, MATCH(GoalUpdates!{{Goal}}, Goals!{{GoalsId}}, 0))"
+      },
+      {
+        "name": "GoalClient",
+        "datatype": "string",
+        "type": "lookup",
+        "formula": "=INDEX(Goals!{{Client}}, MATCH(GoalUpdates!{{Goal}}, Goals!{{GoalsId}}, 0))"
+      },
+      {
+        "name": "GoalTargetScore",
+        "datatype": "number",
+        "type": "lookup",
+        "formula": "=INDEX(Goals!{{TargetScore}}, MATCH(GoalUpdates!{{Goal}}, Goals!{{GoalsId}}, 0))"
+      },
+      {
+        "name": "GoalClientTherapist",
+        "datatype": "string",
+        "type": "lookup",
+        "formula": "=INDEX(Goals!{{ClientTherapist}}, MATCH(GoalUpdates!{{Goal}}, Goals!{{GoalsId}}, 0))"
+      },
+      {
+        "name": "Session",
+        "datatype": "string",
+        "type": "relationship",
+        "RelatedTo": "Sessions"
+      },
+      {
+        "name": "SessionLabel",
+        "datatype": "string",
+        "type": "lookup",
+        "formula": "=INDEX(Sessions!{{SessionLabel}}, MATCH(GoalUpdates!{{Session}}, Sessions!{{SessionsId}}, 0))"
+      },
+      {
+        "name": "ScoreAchieved",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": false,
+        "Description": "0-10. EDITABLE."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "formula": "={{GoalUpdatesId}}"
+      }
     ],
     "data": [
-      { "GoalUpdatesId": "upd-001", "Goal": "alex-anxiety",  "Session": "ses-001", "ScoreAchieved": 5 },
-      { "GoalUpdatesId": "upd-002", "Goal": "alex-anxiety",  "Session": "ses-002", "ScoreAchieved": 6 },
-      { "GoalUpdatesId": "upd-003", "Goal": "alex-anxiety",  "Session": "ses-003", "ScoreAchieved": 7 },
-      { "GoalUpdatesId": "upd-004", "Goal": "alex-sleep",    "Session": "ses-002", "ScoreAchieved": 6 },
-      { "GoalUpdatesId": "upd-005", "Goal": "alex-sleep",    "Session": "ses-003", "ScoreAchieved": 6 },
-      { "GoalUpdatesId": "upd-006", "Goal": "blair-mood",    "Session": "ses-004", "ScoreAchieved": 3 },
-      { "GoalUpdatesId": "upd-007", "Goal": "blair-mood",    "Session": "ses-005", "ScoreAchieved": 3 },
-      { "GoalUpdatesId": "upd-008", "Goal": "blair-mood",    "Session": "ses-006", "ScoreAchieved": 2 },
-      { "GoalUpdatesId": "upd-009", "Goal": "blair-journal", "Session": "ses-005", "ScoreAchieved": 4 },
-      { "GoalUpdatesId": "upd-010", "Goal": "casey-grief",   "Session": "ses-007", "ScoreAchieved": 4 },
-      { "GoalUpdatesId": "upd-011", "Goal": "casey-grief",   "Session": "ses-008", "ScoreAchieved": 5 },
-      { "GoalUpdatesId": "upd-012", "Goal": "casey-routine", "Session": "ses-008", "ScoreAchieved": 6 },
-      { "GoalUpdatesId": "upd-013", "Goal": "drew-focus",    "Session": "ses-009", "ScoreAchieved": 7 },
-      { "GoalUpdatesId": "upd-014", "Goal": "drew-focus",    "Session": "ses-010", "ScoreAchieved": 8 },
-      { "GoalUpdatesId": "upd-015", "Goal": "drew-exercise", "Session": "ses-010", "ScoreAchieved": 6 }
+      {
+        "GoalUpdatesId": "upd-001",
+        "Goal": "alex-anxiety",
+        "Session": "ses-001",
+        "ScoreAchieved": 5
+      },
+      {
+        "GoalUpdatesId": "upd-002",
+        "Goal": "alex-anxiety",
+        "Session": "ses-002",
+        "ScoreAchieved": 6
+      },
+      {
+        "GoalUpdatesId": "upd-003",
+        "Goal": "alex-anxiety",
+        "Session": "ses-003",
+        "ScoreAchieved": 7
+      },
+      {
+        "GoalUpdatesId": "upd-004",
+        "Goal": "alex-sleep",
+        "Session": "ses-002",
+        "ScoreAchieved": 6
+      },
+      {
+        "GoalUpdatesId": "upd-005",
+        "Goal": "alex-sleep",
+        "Session": "ses-003",
+        "ScoreAchieved": 6
+      },
+      {
+        "GoalUpdatesId": "upd-006",
+        "Goal": "blair-mood",
+        "Session": "ses-004",
+        "ScoreAchieved": 3
+      },
+      {
+        "GoalUpdatesId": "upd-007",
+        "Goal": "blair-mood",
+        "Session": "ses-005",
+        "ScoreAchieved": 3
+      },
+      {
+        "GoalUpdatesId": "upd-008",
+        "Goal": "blair-mood",
+        "Session": "ses-006",
+        "ScoreAchieved": 2
+      },
+      {
+        "GoalUpdatesId": "upd-009",
+        "Goal": "blair-journal",
+        "Session": "ses-005",
+        "ScoreAchieved": 4
+      },
+      {
+        "GoalUpdatesId": "upd-010",
+        "Goal": "casey-grief",
+        "Session": "ses-007",
+        "ScoreAchieved": 4
+      },
+      {
+        "GoalUpdatesId": "upd-011",
+        "Goal": "casey-grief",
+        "Session": "ses-008",
+        "ScoreAchieved": 5
+      },
+      {
+        "GoalUpdatesId": "upd-012",
+        "Goal": "casey-routine",
+        "Session": "ses-008",
+        "ScoreAchieved": 6
+      },
+      {
+        "GoalUpdatesId": "upd-013",
+        "Goal": "drew-focus",
+        "Session": "ses-009",
+        "ScoreAchieved": 7
+      },
+      {
+        "GoalUpdatesId": "upd-014",
+        "Goal": "drew-focus",
+        "Session": "ses-010",
+        "ScoreAchieved": 8
+      },
+      {
+        "GoalUpdatesId": "upd-015",
+        "Goal": "drew-exercise",
+        "Session": "ses-010",
+        "ScoreAchieved": 6
+      }
     ]
-  }
+  },
+  "Name": "Therapist Helper Portal"
 } as const;
 export type Rulebook = typeof rulebook;

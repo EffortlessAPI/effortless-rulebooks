@@ -1,0 +1,30 @@
+[
+  {
+    "bell_id": "Bessie's bell",
+    "mounted_on_case": "Bessie's case",
+    "diameter_mm": 40,
+    "tone_hz": 1800,
+    "has_ever_rung": false
+  },
+  {
+    "bell_id": "Olive's bell",
+    "mounted_on_case": "Olive's case",
+    "diameter_mm": 40,
+    "tone_hz": 1800,
+    "has_ever_rung": false
+  },
+  {
+    "bell_id": "Rufus's bell",
+    "mounted_on_case": "Rufus's case",
+    "diameter_mm": 40,
+    "tone_hz": 1800,
+    "has_ever_rung": false
+  },
+  {
+    "bell_id": "Twigs's bell",
+    "mounted_on_case": "Twigs's case",
+    "diameter_mm": 40,
+    "tone_hz": 1800,
+    "has_ever_rung": false
+  }
+]

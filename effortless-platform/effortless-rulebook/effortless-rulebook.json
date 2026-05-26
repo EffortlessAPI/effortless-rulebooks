@@ -66,7 +66,7 @@
         "ProjectId": "erb-001",
         "Name": "Effortlessly Invariant Rulesbooks",
         "Purpose": "Host a catalog of independent Effortless projects under rulebook-examples/, each a self-contained rulebook that fully captures one domain and selects the subset of platform substrates it needs. A rulebook alone is sufficient for any frontier LLM to answer any question about the domain or produce a faithful implementation in any language / platform.",
-        "Architecture": "rulebook-examples/<project>/ — N independent Effortless projects (acme-llc, star-trek, jessica-advanced, jessica-basic, customer-fullname, acme-corporation, is-everything-a-language, effortless-rulesbooks, …). Each project's rulebook JSON is its own hub / durable SSoT; each picks the subset of the platform's 15 substrates it needs (acme-llc exercises all 15; most use 3+). Builds are convergent: downstream artifacts mirror the current rulebook (additions appear, removals disappear). The platform itself (effortless-platform/) is one such project, describing ERB.",
+        "Architecture": "rulebook-examples/<project>/ — every subdirectory that contains a <project>-rulebook.json is an independent Effortless project. The filesystem is authoritative; there is no curated partial \"canonical\" subset. Each project's rulebook JSON is its own hub / durable SSoT; each picks the subset of the platform's substrates it needs (some exercise all of them; most use a handful). Builds are convergent: downstream artifacts mirror the current rulebook (additions appear, removals disappear). Two subdirs deliberately carry no rulebook file — naked-claude-vs-effortless-claude/ (experiment tree) and volunteer-shift-scheduler-demo/ (demo-app scaffold that consumes its sibling's rulebook); these are not demos and are not in any \"demos\" denominator. The platform itself (effortless-platform/) is one such project, describing ERB.",
         "EntryPoint": "./start.sh",
         "PortalUrl": "http://localhost:7777",
         "ProxyUrl": "http://localhost:4242",
@@ -754,6 +754,19 @@
         "ReadmeLength": null,
         "RelatedAxiomId": null,
         "Status": "partial"
+      },
+      {
+        "FeatureId": "feature-017",
+        "Name": "Skills as LLM force multiplier",
+        "ShortName": "Claude Skills",
+        "Tier": "headline",
+        "Priority": 95,
+        "OneLineSummary": "The rulebook gives the LLM something to operate on; the skills give it the instructions for how to operate — together they replace a learning curve that previously cost weeks.",
+        "ReadmeFilePath": "docs/features/README.claude-skills.md",
+        "ReadmeStubContent": "Before ERB, every developer had to teach their LLM the ERB conventions from scratch. Skills pre-encode that learning — naming rules, pipeline mechanics, formula semantics, the Leopold loop — so the LLM arrives already trained. The rulebook is the subject matter; the skills are the curriculum. Without the rulebook there is nothing for the skills to operate on. Without the skills the LLM has to rediscover the conventions by trial and error.",
+        "ReadmeLength": null,
+        "RelatedAxiomId": null,
+        "Status": "shipped"
       }
     ]
   },
@@ -1608,6 +1621,222 @@
         "Purpose": "Demonstrates ERB modeling its own architecture as a domain rulebook",
         "ParentDomainId": null,
         "ProgressionNote": "Independent root, self-referential — a rulebook whose domain IS ERB. Demonstrates that the formalism is rich enough to describe itself (dogfooding)."
+      },
+      {
+        "DomainId": "domain-009",
+        "DomainName": "Guessing Game",
+        "RelativePath": "rulebook-examples/guessing-game/",
+        "RulebookPath": "rulebook-examples/guessing-game/effortless-rulebook/guessing-game-rulebook.json",
+        "ComplexityLevel": "minimal",
+        "TableCount": 2,
+        "KeyFeatures": "relationships, calculated fields, lookups, aggregations, IF/AND/OR logic",
+        "Purpose": "Number-guessing game tracking guesses, hints, and best-score records per player.",
+        "ParentDomainId": "domain-001",
+        "ProgressionNote": "First two-table domain on top of single-table CONCAT — adds a FK and a 'best score' aggregation, the smallest example with cross-row state."
+      },
+      {
+        "DomainId": "domain-010",
+        "DomainName": "NakedClaude v1",
+        "RelativePath": "rulebook-examples/nakedclaude-v1/",
+        "RulebookPath": "rulebook-examples/nakedclaude-v1/effortless-rulebook/nakedclaude-v1-rulebook.json",
+        "ComplexityLevel": "minimal",
+        "TableCount": 1,
+        "KeyFeatures": "calculated fields, IF/AND/OR logic",
+        "Purpose": "Rulebook generated from Airtable base 'v1: NakedClaude Demo'.",
+        "ParentDomainId": null,
+        "ProgressionNote": "Root of the NakedClaude progression: one table, calculated fields with IF logic. The starting point for showing what a naked LLM produces without methodology."
+      },
+      {
+        "DomainId": "domain-011",
+        "DomainName": "NakedClaude v2",
+        "RelativePath": "rulebook-examples/nakedclaude-v2/",
+        "RulebookPath": "rulebook-examples/nakedclaude-v2/effortless-rulebook/nakedclaude-v2-rulebook.json",
+        "ComplexityLevel": "moderate",
+        "TableCount": 3,
+        "KeyFeatures": "relationships, calculated fields, lookups, IF/AND/OR logic",
+        "Purpose": "Rulebook generated from Airtable base 'v2: NakedClaude Demo'.",
+        "ParentDomainId": "domain-010",
+        "ProgressionNote": "Adds relationships and lookups across three tables — first NakedClaude iteration with cross-table inference."
+      },
+      {
+        "DomainId": "domain-012",
+        "DomainName": "NakedClaude v3",
+        "RelativePath": "rulebook-examples/nakedclaude-v3/",
+        "RulebookPath": "rulebook-examples/nakedclaude-v3/effortless-rulebook/nakedclaude-v3-rulebook.json",
+        "ComplexityLevel": "moderate",
+        "TableCount": 8,
+        "KeyFeatures": "relationships, calculated fields, lookups, aggregations, IF/AND/OR logic",
+        "Purpose": "Rulebook generated from Airtable base 'v3: NakedClaude Demo'.",
+        "ParentDomainId": "domain-011",
+        "ProgressionNote": "Adds aggregations across eight tables — first NakedClaude iteration that exercises rollups."
+      },
+      {
+        "DomainId": "domain-013",
+        "DomainName": "NakedClaude v4",
+        "RelativePath": "rulebook-examples/nakedclaude-v4/",
+        "RulebookPath": "rulebook-examples/nakedclaude-v4/effortless-rulebook/nakedclaude-v4-rulebook.json",
+        "ComplexityLevel": "advanced",
+        "TableCount": 15,
+        "KeyFeatures": "relationships, calculated fields, lookups, aggregations, IF/AND/OR logic",
+        "Purpose": "Rulebook generated from Airtable base 'v4: NakedClaude Demo'.",
+        "ParentDomainId": "domain-012",
+        "ProgressionNote": "Adds 15-table breadth on top of the v3 pattern — largest of the NakedClaude progression series."
+      },
+      {
+        "DomainId": "domain-014",
+        "DomainName": "Product Inventory",
+        "RelativePath": "rulebook-examples/product-inventory/",
+        "RulebookPath": "rulebook-examples/product-inventory/effortless-rulebook/product-inventory-rulebook.json",
+        "ComplexityLevel": "moderate",
+        "TableCount": 3,
+        "KeyFeatures": "relationships, calculated fields, lookups, aggregations, IF/AND/OR logic",
+        "Purpose": "Products with transactions adjusting quantities and low-stock alerts.",
+        "ParentDomainId": "domain-002",
+        "ProgressionNote": "Adds running-balance aggregation (transactions roll up into product quantities) and threshold-based IF flags for low-stock alerts."
+      },
+      {
+        "DomainId": "domain-015",
+        "DomainName": "Expense Approval",
+        "RelativePath": "rulebook-examples/expense-approval/",
+        "RulebookPath": "rulebook-examples/expense-approval/effortless-rulebook/expense-approval-rulebook.json",
+        "ComplexityLevel": "moderate",
+        "TableCount": 3,
+        "KeyFeatures": "relationships, calculated fields, lookups, aggregations, IF/AND/OR logic",
+        "Purpose": "Employees submit line-item reports; totals, over-budget, and escalation flags cascade automatically.",
+        "ParentDomainId": "domain-002",
+        "ProgressionNote": "Adds approval-state propagation: line-item totals roll into reports, reports cascade over-budget and escalation flags via IF."
+      },
+      {
+        "DomainId": "domain-016",
+        "DomainName": "Volunteer Shift Scheduler",
+        "RelativePath": "rulebook-examples/volunteer-shift-scheduler/",
+        "RulebookPath": "rulebook-examples/volunteer-shift-scheduler/effortless-rulebook/volunteer-shift-scheduler-rulebook.json",
+        "ComplexityLevel": "moderate",
+        "TableCount": 4,
+        "KeyFeatures": "relationships, calculated fields, lookups, aggregations, IF/AND/OR logic",
+        "Purpose": "Coverage status, volunteer load (under/ok/over), and event-level A–F staffing grade all fall out automatically.",
+        "ParentDomainId": "domain-002",
+        "ProgressionNote": "Adds multi-axis grading: coverage status per shift, per-volunteer load (under/ok/over), and an event-level A–F grade — all derived."
+      },
+      {
+        "DomainId": "domain-017",
+        "DomainName": "Wedding Seating Optimizer",
+        "RelativePath": "rulebook-examples/wedding-seating-optimizer/",
+        "RulebookPath": "rulebook-examples/wedding-seating-optimizer/effortless-rulebook/wedding-seating-optimizer-rulebook.json",
+        "ComplexityLevel": "moderate",
+        "TableCount": 4,
+        "KeyFeatures": "relationships, calculated fields, lookups, aggregations, IF/AND/OR logic",
+        "Purpose": "Seating plan as a DAG — per-table happiness, capacity flags, per-guest satisfaction recompute on every move.",
+        "ParentDomainId": "domain-002",
+        "ProgressionNote": "Adds a moves-recompute-everything DAG: per-table happiness, capacity flags, and per-guest satisfaction all recompute on every seat change."
+      },
+      {
+        "DomainId": "domain-018",
+        "DomainName": "Gym Trainer Invoicing",
+        "RelativePath": "rulebook-examples/gym-trainer-invoicing/",
+        "RulebookPath": "rulebook-examples/gym-trainer-invoicing/effortless-rulebook/gym-trainer-invoicing-rulebook.json",
+        "ComplexityLevel": "moderate",
+        "TableCount": 5,
+        "KeyFeatures": "relationships, calculated fields, lookups, aggregations, IF/AND/OR logic",
+        "Purpose": "Sessions roll up into invoices; invoices roll up into client outstanding balances.",
+        "ParentDomainId": "domain-002",
+        "ProgressionNote": "Adds two-level rollup: sessions roll into invoice totals; invoice balances roll into client outstanding balances."
+      },
+      {
+        "DomainId": "domain-019",
+        "DomainName": "Therapist Helper Portal",
+        "RelativePath": "rulebook-examples/therapist-helper-portal/",
+        "RulebookPath": "rulebook-examples/therapist-helper-portal/effortless-rulebook/therapist-helper-portal-rulebook.json",
+        "ComplexityLevel": "moderate",
+        "TableCount": 5,
+        "KeyFeatures": "relationships, calculated fields, lookups, aggregations, IF/AND/OR logic",
+        "Purpose": "Sessions and treatment progress: GoalUpdate → Goal.ProgressPct → Client.IsAtRisk three-hop DAG.",
+        "ParentDomainId": "domain-002",
+        "ProgressionNote": "Adds an explicit three-hop DAG: GoalUpdate → Goal.ProgressPct → Client.IsAtRisk — the smallest domain that exercises real cascading inference."
+      },
+      {
+        "DomainId": "domain-020",
+        "DomainName": "Community Event Planner",
+        "RelativePath": "rulebook-examples/community-event-planner/",
+        "RulebookPath": "rulebook-examples/community-event-planner/effortless-rulebook/community-event-planner-rulebook.json",
+        "ComplexityLevel": "moderate",
+        "TableCount": 6,
+        "KeyFeatures": "relationships, calculated fields, lookups, aggregations, IF/AND/OR logic",
+        "Purpose": "Venues, events, speakers, attendees with capacity, scheduling, and attendance-forecast cascades.",
+        "ParentDomainId": "domain-002",
+        "ProgressionNote": "Adds attendance-forecast cascades and capacity-vs-RSVP logic across venues, events, speakers, and attendees."
+      },
+      {
+        "DomainId": "domain-021",
+        "DomainName": "Customer CRM",
+        "RelativePath": "rulebook-examples/customer-crm/",
+        "RulebookPath": "rulebook-examples/customer-crm/effortless-rulebook/customer-crm-rulebook.json",
+        "ComplexityLevel": "advanced",
+        "TableCount": 7,
+        "KeyFeatures": "relationships, calculated fields, lookups, aggregations, IF/AND/OR logic",
+        "Purpose": "Fighter-jet FCS sales pipeline rolling revenue up by order, FCS variant, and jet model.",
+        "ParentDomainId": "domain-002",
+        "ProgressionNote": "Adds multi-axis pipeline rollup: revenue aggregates by order, by FCS variant, and by jet model — three rollup dimensions over the same fact table."
+      },
+      {
+        "DomainId": "domain-022",
+        "DomainName": "Fantasy Football",
+        "RelativePath": "rulebook-examples/fantasy-football/",
+        "RulebookPath": "rulebook-examples/fantasy-football/effortless-rulebook/fantasy-football-rulebook.json",
+        "ComplexityLevel": "advanced",
+        "TableCount": 6,
+        "KeyFeatures": "relationships, calculated fields, lookups, aggregations, IF/AND/OR logic",
+        "Purpose": "Multi-hop DAG: raw player stats → roster aggregations → matchup scoring → standings & seeding.",
+        "ParentDomainId": "domain-002",
+        "ProgressionNote": "Adds a four-hop DAG: raw player stats → roster aggregations → matchup scoring → standings & seeding — every standings cell traces back to raw stats."
+      },
+      {
+        "DomainId": "domain-023",
+        "DomainName": "Taxonomy of Intelligence",
+        "RelativePath": "rulebook-examples/intelligence-taxonomy/",
+        "RulebookPath": "rulebook-examples/intelligence-taxonomy/effortless-rulebook/intelligence-taxonomy-rulebook.json",
+        "ComplexityLevel": "philosophical",
+        "TableCount": 3,
+        "KeyFeatures": "relationships, calculated fields, lookups, aggregations, IF/AND/OR logic",
+        "Purpose": "Classifies intelligences (humans, animals, AI) by per-capability assessments through a multi-hop DAG.",
+        "ParentDomainId": "domain-005",
+        "ProgressionNote": "Adds an empirical classification DAG: humans, animals, and AI all get scored per-capability and rolled up into intelligence-type tiers."
+      },
+      {
+        "DomainId": "domain-024",
+        "DomainName": "Job Search RAG",
+        "RelativePath": "rulebook-examples/job-search-rag/",
+        "RulebookPath": "rulebook-examples/job-search-rag/effortless-rulebook/job-search-rag-rulebook.json",
+        "ComplexityLevel": "advanced",
+        "TableCount": 10,
+        "KeyFeatures": "relationships, calculated fields, lookups, aggregations, IF/AND/OR logic",
+        "Purpose": "Local LLM + RAG pipeline filtering jobs across boards using semantic search.",
+        "ParentDomainId": "domain-002",
+        "ProgressionNote": "Adds an AI-pipeline ontology: job postings flow through embedding, RAG retrieval, and semantic-filter stages — demonstrates that AI pipelines themselves are expressible as rulebooks."
+      },
+      {
+        "DomainId": "domain-025",
+        "DomainName": "Effortless Banking",
+        "RelativePath": "rulebook-examples/effortless-banking/",
+        "RulebookPath": "rulebook-examples/effortless-banking/effortless-rulebook/effortless-banking-rulebook.json",
+        "ComplexityLevel": "advanced",
+        "TableCount": 10,
+        "KeyFeatures": "relationships, calculated fields, lookups, aggregations, IF/AND/OR logic",
+        "Purpose": "Community-bank commercial RM platform — loans, deposits, covenants, BSA/AML.",
+        "ParentDomainId": "domain-002",
+        "ProgressionNote": "Adds a regulated-financial-domain stress test: loans, deposits, covenants, BSA/AML monitoring, four-surface portal — shows the methodology holds at enterprise complexity."
+      },
+      {
+        "DomainId": "domain-026",
+        "DomainName": "Mechanical Kitchen Timer",
+        "RelativePath": "rulebook-examples/mechanical-kitchen-timer/",
+        "RulebookPath": "rulebook-examples/mechanical-kitchen-timer/effortless-rulebook/mechanical-kitchen-timer-rulebook.json",
+        "ComplexityLevel": "advanced",
+        "TableCount": 26,
+        "KeyFeatures": "relationships, calculated fields, lookups, aggregations, IF/AND/OR logic",
+        "Purpose": "Five-part mechanical timer modeled with every README noun as a table — a hardware-ontology stress test.",
+        "ParentDomainId": null,
+        "ProgressionNote": "Hardware-ontology stress test: every noun in the kitchen-timer README becomes a table (26 of them). Proves the methodology isn't limited to information systems."
       }
     ]
   },
@@ -2066,7 +2295,7 @@
         "UserId": "user-004",
         "Email": "author@example.com",
         "DisplayName": "Domain Author",
-        "RoleId": "role-author",
+        "RoleId": "role-developer",
         "IsDefault": false,
         "Notes": "Edits rulebook semantics — entities, fields, formulas, sample data. Lands on /rulebook/entities."
       },
@@ -2074,7 +2303,7 @@
         "UserId": "user-005",
         "Email": "reviewer@example.com",
         "DisplayName": "Conformance Reviewer",
-        "RoleId": "role-reviewer",
+        "RoleId": "role-viewer",
         "IsDefault": false,
         "Notes": "Read-only stakeholder. Lands on /tests to see the conformance matrix."
       },
@@ -2082,9 +2311,17 @@
         "UserId": "user-006",
         "Email": "ops@example.com",
         "DisplayName": "Build Ops",
-        "RoleId": "role-ops",
+        "RoleId": "role-developer",
         "IsDefault": false,
         "Notes": "Runs builds, pulls spokes, watches health. Lands on /builds."
+      },
+      {
+        "UserId": "user-admin",
+        "Email": "admin@example.com",
+        "DisplayName": "Local Admin",
+        "RoleId": "role-admin",
+        "IsDefault": false,
+        "Notes": "Demo admin user. Manages platform config — no domain edits."
       }
     ]
   },
@@ -2187,10 +2424,10 @@
       {
         "RoleId": "role-viewer",
         "Name": "Viewer",
-        "Persona": "Curious newcomer poking at the project for the first time — wants to understand what it is and what it does without touching anything.",
-        "Tagline": "See the whole project at a glance.",
-        "PrimaryConcerns": "what the project is, what its parts are, what makes it conformant",
-        "LandingScreenId": "screen-home",
+        "Persona": "Read-only browser of the project — reviewers, stakeholders, and curious onlookers all live here.",
+        "Tagline": "See the whole project. Comment when you must.",
+        "PrimaryConcerns": "rulebook meaning, conformance matrix, framing, comments on review items",
+        "LandingScreenId": "screen-viewer-home",
         "ColorTheme": "#7280ad",
         "AccessLevel": "read",
         "CanEditRulebook": false,
@@ -2198,71 +2435,39 @@
         "CanAccessTechTools": false,
         "CanSwitchProjects": true,
         "CanManageUsers": false,
-        "Description": "Read-only walkthrough. Sees the rulebook, browses substrates, reads test results. Every page is reading; no mutation controls render."
-      },
-      {
-        "RoleId": "role-author",
-        "Name": "Author",
-        "Persona": "Domain expert who owns the business rules — thinks in entities, fields, formulas, and example rows, not in transpilers or Postgres.",
-        "Tagline": "The rulebook is your editor. Make it say what you mean.",
-        "PrimaryConcerns": "entity meaning, formula correctness, sample data realism, plain-English narrative",
-        "LandingScreenId": "screen-entities",
-        "ColorTheme": "#4a8d70",
-        "AccessLevel": "write",
-        "CanEditRulebook": true,
-        "CanRunBuilds": false,
-        "CanAccessTechTools": false,
-        "CanSwitchProjects": true,
-        "CanManageUsers": false,
-        "Description": "Authors and edits rulebook semantics: entities, fields, formulas, descriptions, sample rows. Cannot run builds or touch substrate internals — that's Ops/Developer."
-      },
-      {
-        "RoleId": "role-reviewer",
-        "Name": "Reviewer",
-        "Persona": "Stakeholder or auditor reading the conformance story — wants to see that the substrates agree, and where they disagree wants the reasons.",
-        "Tagline": "Do all the substrates agree? Where don't they, and why?",
-        "PrimaryConcerns": "conformance matrix, test pass-rate, which substrate witnessed which run, framing invariants",
-        "LandingScreenId": "screen-tests",
-        "ColorTheme": "#9a6cb0",
-        "AccessLevel": "read",
-        "CanEditRulebook": false,
-        "CanRunBuilds": false,
-        "CanAccessTechTools": false,
-        "CanSwitchProjects": true,
-        "CanManageUsers": false,
-        "Description": "Read-only with a Tests-first landing. Sees the conformance matrix, can drill into any failing cell to see input/expected/actual, and reads the Framing invariants — but cannot mutate or trigger anything."
-      },
-      {
-        "RoleId": "role-ops",
-        "Name": "Ops",
-        "Persona": "Build/release engineer keeping the pipeline green — cares about builds, spokes, freshness, and what's installed where, not about the meaning of the rules.",
-        "Tagline": "Builds green. Spokes flowing. Tests passing.",
-        "PrimaryConcerns": "last build status, installed transpilers, spoke pull freshness, conformance matrix health",
-        "LandingScreenId": "screen-builds",
-        "ColorTheme": "#c97a3d",
-        "AccessLevel": "write",
-        "CanEditRulebook": false,
-        "CanRunBuilds": true,
-        "CanAccessTechTools": false,
-        "CanSwitchProjects": true,
-        "CanManageUsers": false,
-        "Description": "Triggers builds, pulls from spokes, watches the matrix. Cannot edit business rules. Tech Tools off — Ops uses the same surfaces as everyone else."
+        "Description": "Read-only across all domains plus reviewer-style comments on test results and entities. Cannot mutate the rulebook or run builds."
       },
       {
         "RoleId": "role-developer",
         "Name": "Developer",
-        "Persona": "Person extending the platform itself — adds substrates, writes injectors, debugs the proxy, edits the project rulebook. Has all the dials.",
-        "Tagline": "The whole stack is yours. Don't break the SSoT.",
-        "PrimaryConcerns": "transpiler catalog, raw SQL, proxy routes, rulebook JSON, write-through invariant",
-        "LandingScreenId": "screen-home",
-        "ColorTheme": "#c0392b",
-        "AccessLevel": "full-admin",
+        "Persona": "Per-domain rulebook author and builder — edits the rulebook, runs builds, watches the conformance matrix, explores the generated database.",
+        "Tagline": "Edit the rulebook. Build. Confirm.",
+        "PrimaryConcerns": "entities, formulas, sample data, substrates installed, builds green, tests green, the generated DB",
+        "LandingScreenId": "screen-dev-home",
+        "ColorTheme": "#b48cff",
+        "AccessLevel": "write",
         "CanEditRulebook": true,
         "CanRunBuilds": true,
         "CanAccessTechTools": true,
         "CanSwitchProjects": true,
+        "CanManageUsers": false,
+        "Description": "Domain-scoped work. Authors rulebooks, runs builds, runs tests, inspects the generated Postgres DB. Always works within one domain at a time."
+      },
+      {
+        "RoleId": "role-admin",
+        "Name": "Admin",
+        "Persona": "Platform operator — manages users, roles, navigation, and watches devops health across every domain. Never opens a single document.",
+        "Tagline": "The platform runs. The team has access.",
+        "PrimaryConcerns": "users, roles, permissions, platform-wide build health, proxy and infrastructure",
+        "LandingScreenId": "screen-admin-home",
+        "ColorTheme": "#f3b03e",
+        "AccessLevel": "full-admin",
+        "CanEditRulebook": false,
+        "CanRunBuilds": true,
+        "CanAccessTechTools": true,
+        "CanSwitchProjects": false,
         "CanManageUsers": true,
-        "Description": "Full admin. Edit rulebook, run builds, manage users, access Tech Tools (raw Postgres, proxy logs, rulebook JSON, reset editor). Reserved for platform maintainers."
+        "Description": "Full admin of the platform itself — users, roles, navigation, permissions, plus cross-domain build monitoring and proxy health. Does not edit any domain's rulebook."
       }
     ]
   },
@@ -2392,7 +2597,7 @@
         "RlsPredicate": "false"
       },
       {
-        "PermissionId": "perm-101",
+        "PermissionId": "perm-011",
         "RoleId": "role-developer",
         "Resource": "rulebook.entity",
         "Action": "read",
@@ -2400,7 +2605,7 @@
         "RlsPredicate": "true"
       },
       {
-        "PermissionId": "perm-102",
+        "PermissionId": "perm-012",
         "RoleId": "role-developer",
         "Resource": "rulebook.entity",
         "Action": "create",
@@ -2408,7 +2613,7 @@
         "RlsPredicate": "true"
       },
       {
-        "PermissionId": "perm-103",
+        "PermissionId": "perm-013",
         "RoleId": "role-developer",
         "Resource": "rulebook.entity",
         "Action": "update",
@@ -2416,7 +2621,7 @@
         "RlsPredicate": "true"
       },
       {
-        "PermissionId": "perm-104",
+        "PermissionId": "perm-014",
         "RoleId": "role-developer",
         "Resource": "rulebook.entity",
         "Action": "delete",
@@ -2424,7 +2629,7 @@
         "RlsPredicate": "true"
       },
       {
-        "PermissionId": "perm-105",
+        "PermissionId": "perm-015",
         "RoleId": "role-developer",
         "Resource": "rulebook.field",
         "Action": "update",
@@ -2432,7 +2637,7 @@
         "RlsPredicate": "true"
       },
       {
-        "PermissionId": "perm-106",
+        "PermissionId": "perm-016",
         "RoleId": "role-developer",
         "Resource": "rulebook.formula",
         "Action": "update",
@@ -2440,7 +2645,7 @@
         "RlsPredicate": "true"
       },
       {
-        "PermissionId": "perm-107",
+        "PermissionId": "perm-017",
         "RoleId": "role-developer",
         "Resource": "build",
         "Action": "execute",
@@ -2448,7 +2653,7 @@
         "RlsPredicate": null
       },
       {
-        "PermissionId": "perm-108",
+        "PermissionId": "perm-018",
         "RoleId": "role-developer",
         "Resource": "test",
         "Action": "execute",
@@ -2456,7 +2661,7 @@
         "RlsPredicate": null
       },
       {
-        "PermissionId": "perm-109",
+        "PermissionId": "perm-019",
         "RoleId": "role-developer",
         "Resource": "tech-tools.postgres",
         "Action": "read",
@@ -2464,7 +2669,7 @@
         "RlsPredicate": "true"
       },
       {
-        "PermissionId": "perm-110",
+        "PermissionId": "perm-020",
         "RoleId": "role-developer",
         "Resource": "tech-tools.postgres",
         "Action": "execute",
@@ -2472,7 +2677,7 @@
         "RlsPredicate": "true"
       },
       {
-        "PermissionId": "perm-111",
+        "PermissionId": "perm-021",
         "RoleId": "role-developer",
         "Resource": "tech-tools.proxy",
         "Action": "read",
@@ -2480,7 +2685,7 @@
         "RlsPredicate": "true"
       },
       {
-        "PermissionId": "perm-112",
+        "PermissionId": "perm-022",
         "RoleId": "role-developer",
         "Resource": "users",
         "Action": "create",
@@ -2488,7 +2693,7 @@
         "RlsPredicate": "true"
       },
       {
-        "PermissionId": "perm-113",
+        "PermissionId": "perm-023",
         "RoleId": "role-developer",
         "Resource": "users",
         "Action": "update",
@@ -2496,7 +2701,7 @@
         "RlsPredicate": "true"
       },
       {
-        "PermissionId": "perm-114",
+        "PermissionId": "perm-024",
         "RoleId": "role-developer",
         "Resource": "users",
         "Action": "delete",
@@ -2560,228 +2765,415 @@
         "type": "raw",
         "nullable": true,
         "Description": "What this node teaches the developer in the rulebook narrative"
+      },
+      {
+        "name": "NavArea",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Persona/area bucket: main (everyone), admin (CRUD ops), developer (build/test/tech), docs (educational/training). Drives sidebar section grouping and route prefix."
       }
     ],
     "data": [
       {
         "NavId": "nav-001",
-        "ParentNavId": null,
         "Label": "Home",
-        "Icon": "home",
-        "ScreenId": "screen-home",
-        "MinRoleId": "role-viewer",
+        "NavArea": "viewer",
+        "ParentNavId": null,
+        "ScreenId": "screen-viewer-home",
+        "Icon": "Home",
         "Order": 10,
-        "StoryBeat": "What this project is, why it exists, who's working on it. Cards: rulebook stats, last build, last test pass-rate, active spokes."
+        "MinRoleId": "role-viewer"
       },
       {
         "NavId": "nav-002",
+        "Label": "Browse Domains",
+        "NavArea": "viewer",
         "ParentNavId": null,
-        "Label": "Rulebook",
-        "Icon": "book-open",
-        "ScreenId": null,
-        "MinRoleId": "role-viewer",
+        "ScreenId": "screen-viewer-domains",
+        "Icon": "LayoutGrid",
         "Order": 20,
-        "StoryBeat": "The business semantics of the project — every table, field, formula, and sample row."
-      },
-      {
-        "NavId": "nav-002a",
-        "ParentNavId": "nav-002",
-        "Label": "Entities",
-        "Icon": "table",
-        "ScreenId": "screen-entities",
-        "MinRoleId": "role-viewer",
-        "Order": 1,
-        "StoryBeat": "List all entities. Click one to drill in to its fields, sample data, and computed columns."
-      },
-      {
-        "NavId": "nav-002b",
-        "ParentNavId": "nav-002",
-        "Label": "Formulas",
-        "Icon": "function-square",
-        "ScreenId": "screen-formulas",
-        "MinRoleId": "role-viewer",
-        "Order": 2,
-        "StoryBeat": "All calculated fields in one place. Click one to see its DAG (inputs → output) live from the rulebook."
-      },
-      {
-        "NavId": "nav-002c",
-        "ParentNavId": "nav-002",
-        "Label": "Relationships",
-        "Icon": "git-fork",
-        "ScreenId": "screen-relationships",
-        "MinRoleId": "role-viewer",
-        "Order": 3,
-        "StoryBeat": "FK graph of the project. Hover a node to highlight its inbound and outbound relationships."
-      },
-      {
-        "NavId": "nav-002d",
-        "ParentNavId": "nav-002",
-        "Label": "Sample Data",
-        "Icon": "database",
-        "ScreenId": "screen-sample-data",
-        "MinRoleId": "role-viewer",
-        "Order": 4,
-        "StoryBeat": "What the project looks like populated. Editable for developers; read-only for viewers."
-      },
-      {
-        "NavId": "nav-002e",
-        "ParentNavId": "nav-002",
-        "Label": "Framing",
-        "Icon": "compass",
-        "ScreenId": "screen-framing",
-        "MinRoleId": "role-viewer",
-        "Order": 5,
-        "StoryBeat": "The mistakes-to-avoid catalog and the axioms it protects. Read this before claiming any substrate is 'the reference'."
+        "MinRoleId": "role-viewer"
       },
       {
         "NavId": "nav-003",
+        "Label": "Flavours",
+        "NavArea": "viewer",
         "ParentNavId": null,
-        "Label": "Substrates",
-        "Icon": "boxes",
-        "ScreenId": "screen-substrates",
-        "MinRoleId": "role-viewer",
+        "ScreenId": "screen-viewer-flavors",
+        "Icon": "Tag",
         "Order": 30,
-        "StoryBeat": "Every output substrate this project generates (Python, Go, Postgres, Excel, OWL, etc.). Click one to see the generated source and the conformance status."
-      },
-      {
-        "NavId": "nav-003z",
-        "ParentNavId": "nav-003",
-        "Label": "Add Tool",
-        "Icon": "plus-square",
-        "ScreenId": "screen-add-tool",
-        "MinRoleId": "role-developer",
-        "Order": 99,
-        "StoryBeat": "Pick from the catalog of 15+ transpilers and install one into the active project. Same code path as `effortless -install` on the CLI."
+        "MinRoleId": "role-viewer"
       },
       {
         "NavId": "nav-004",
+        "Label": "Platform Features",
+        "NavArea": "viewer",
         "ParentNavId": null,
-        "Label": "Builds",
-        "Icon": "wrench",
-        "ScreenId": "screen-builds",
-        "MinRoleId": "role-viewer",
+        "ScreenId": "screen-viewer-features",
+        "Icon": "Sparkles",
         "Order": 40,
-        "StoryBeat": "Build history: when, what changed, which substrates regenerated, how long. Developers can trigger a build here."
+        "MinRoleId": "role-viewer"
       },
       {
         "NavId": "nav-005",
+        "Label": "Current Domain",
+        "NavArea": "viewer",
         "ParentNavId": null,
-        "Label": "Tests",
-        "Icon": "check-circle",
-        "ScreenId": "screen-tests",
-        "MinRoleId": "role-viewer",
+        "ScreenId": null,
+        "Icon": "Folder",
         "Order": 50,
-        "StoryBeat": "Conformance matrix: which substrate computed which test case correctly. Drill in to see input → expected → actual per substrate."
+        "MinRoleId": "role-viewer"
       },
       {
         "NavId": "nav-006",
-        "ParentNavId": null,
-        "Label": "Input Spokes",
-        "Icon": "git-pull-request",
-        "ScreenId": "screen-input-spokes",
-        "MinRoleId": "role-viewer",
+        "Label": "Overview",
+        "NavArea": "viewer",
+        "ParentNavId": "nav-005",
+        "ScreenId": "screen-viewer-domain",
+        "Icon": "Eye",
         "Order": 60,
-        "StoryBeat": "Where edits come from: admin portal, Airtable, LLM, manual JSON. Pull / push controls live here."
+        "MinRoleId": "role-viewer"
       },
       {
         "NavId": "nav-007",
-        "ParentNavId": null,
-        "Label": "Users",
-        "Icon": "users",
-        "ScreenId": "screen-users",
-        "MinRoleId": "role-viewer",
+        "Label": "Entities",
+        "NavArea": "viewer",
+        "ParentNavId": "nav-005",
+        "ScreenId": "screen-viewer-entities",
+        "Icon": "Table",
         "Order": 70,
-        "StoryBeat": "Default dev/test users from the rulebook + their roles."
-      },
-      {
-        "NavId": "nav-007a",
-        "ParentNavId": "nav-007",
-        "Label": "Roles & Personas",
-        "Icon": "id-card",
-        "ScreenId": "screen-roles",
-        "MinRoleId": "role-viewer",
-        "Order": 1,
-        "StoryBeat": "Persona cards for each role — what they care about, where they land, who's assigned. Click anything to navigate."
-      },
-      {
-        "NavId": "nav-001a",
-        "ParentNavId": "nav-001",
-        "Label": "Project Flavours",
-        "Icon": "tags",
-        "ScreenId": "screen-flavors",
-        "MinRoleId": "role-viewer",
-        "Order": 1,
-        "StoryBeat": "Classification of every demo rulebook — crud-template, computation-heavy, aggregation-heavy, graph-ontology, etc."
-      },
-      {
-        "NavId": "nav-001b",
-        "ParentNavId": "nav-001",
-        "Label": "Platform Features",
-        "Icon": "sparkles",
-        "ScreenId": "screen-features",
-        "MinRoleId": "role-viewer",
-        "Order": 2,
-        "StoryBeat": "What ERB actually does — headline features (ADP, clean, hub-and-spoke, convergent build, substrate equivalence, …) and additional ones. Each row links to its per-feature README; developers can edit the catalog here."
+        "MinRoleId": "role-viewer"
       },
       {
         "NavId": "nav-008",
-        "ParentNavId": null,
-        "Label": "Tech Tools",
-        "Icon": "terminal",
-        "ScreenId": null,
-        "MinRoleId": "role-developer",
+        "Label": "Formulas",
+        "NavArea": "viewer",
+        "ParentNavId": "nav-005",
+        "ScreenId": "screen-viewer-formulas",
+        "Icon": "FunctionSquare",
         "Order": 80,
-        "StoryBeat": "Developer-only escape hatches. Raw Postgres, proxy logs, file system, manual injection. Not part of the daily workflow."
+        "MinRoleId": "role-viewer"
       },
       {
-        "NavId": "nav-008a",
-        "ParentNavId": "nav-008",
-        "Label": "Postgres Explorer",
-        "Icon": "database",
-        "ScreenId": "screen-tech-postgres",
-        "MinRoleId": "role-developer",
-        "Order": 1,
-        "StoryBeat": "Raw editor-DB browser: run SQL, inspect rows, drop/reset DB."
+        "NavId": "nav-009",
+        "Label": "Relationships",
+        "NavArea": "viewer",
+        "ParentNavId": "nav-005",
+        "ScreenId": "screen-viewer-relations",
+        "Icon": "GitBranch",
+        "Order": 90,
+        "MinRoleId": "role-viewer"
       },
       {
-        "NavId": "nav-008b",
-        "ParentNavId": "nav-008",
-        "Label": "ssotme-proxy",
-        "Icon": "server",
-        "ScreenId": "screen-tech-proxy",
-        "MinRoleId": "role-developer",
-        "Order": 2,
-        "StoryBeat": "Live proxy status: registered routes, recent calls, response sizes, last error per route."
+        "NavId": "nav-010",
+        "Label": "Sample Data",
+        "NavArea": "viewer",
+        "ParentNavId": "nav-005",
+        "ScreenId": "screen-viewer-data",
+        "Icon": "Database",
+        "Order": 100,
+        "MinRoleId": "role-viewer"
       },
       {
-        "NavId": "nav-008c",
-        "ParentNavId": "nav-008",
+        "NavId": "nav-011",
+        "Label": "Tests",
+        "NavArea": "viewer",
+        "ParentNavId": "nav-005",
+        "ScreenId": "screen-viewer-tests",
+        "Icon": "CheckCheck",
+        "Order": 110,
+        "MinRoleId": "role-viewer"
+      },
+      {
+        "NavId": "nav-012",
+        "Label": "Comments",
+        "NavArea": "viewer",
+        "ParentNavId": "nav-005",
+        "ScreenId": "screen-viewer-comments",
+        "Icon": "MessageSquare",
+        "Order": 120,
+        "MinRoleId": "role-viewer"
+      },
+      {
+        "NavId": "nav-013",
+        "Label": "Home",
+        "NavArea": "developer",
+        "ParentNavId": null,
+        "ScreenId": "screen-dev-home",
+        "Icon": "Home",
+        "Order": 10,
+        "MinRoleId": "role-developer"
+      },
+      {
+        "NavId": "nav-014",
+        "Label": "Pick Domain",
+        "NavArea": "developer",
+        "ParentNavId": null,
+        "ScreenId": "screen-dev-domains",
+        "Icon": "LayoutGrid",
+        "Order": 20,
+        "MinRoleId": "role-developer"
+      },
+      {
+        "NavId": "nav-015",
+        "Label": "Current Domain",
+        "NavArea": "developer",
+        "ParentNavId": null,
+        "ScreenId": null,
+        "Icon": "Folder",
+        "Order": 30,
+        "MinRoleId": "role-developer"
+      },
+      {
+        "NavId": "nav-016",
+        "Label": "Overview",
+        "NavArea": "developer",
+        "ParentNavId": "nav-015",
+        "ScreenId": "screen-dev-domain",
+        "Icon": "Eye",
+        "Order": 40,
+        "MinRoleId": "role-developer"
+      },
+      {
+        "NavId": "nav-018",
+        "Label": "Formulas",
+        "NavArea": "developer",
+        "ParentNavId": "nav-015",
+        "ScreenId": "screen-dev-formulas",
+        "Icon": "FunctionSquare",
+        "Order": 60,
+        "MinRoleId": "role-developer"
+      },
+      {
+        "NavId": "nav-019",
+        "Label": "Relationships",
+        "NavArea": "developer",
+        "ParentNavId": "nav-015",
+        "ScreenId": "screen-dev-relations",
+        "Icon": "GitBranch",
+        "Order": 70,
+        "MinRoleId": "role-developer"
+      },
+      {
+        "NavId": "nav-021",
+        "Label": "Effortless Tools",
+        "NavArea": "developer",
+        "ParentNavId": "nav-015",
+        "ScreenId": "screen-dev-substrates",
+        "Icon": "Wrench",
+        "Order": 90,
+        "MinRoleId": "role-developer"
+      },
+      {
+        "NavId": "nav-023",
+        "Label": "Tests",
+        "NavArea": "developer",
+        "ParentNavId": "nav-015",
+        "ScreenId": "screen-dev-tests",
+        "Icon": "CheckCheck",
+        "Order": 110,
+        "MinRoleId": "role-developer"
+      },
+      {
+        "NavId": "nav-024",
+        "Label": "Input Spokes",
+        "NavArea": "developer",
+        "ParentNavId": "nav-015",
+        "ScreenId": "screen-dev-spokes",
+        "Icon": "Plug",
+        "Order": 120,
+        "MinRoleId": "role-developer"
+      },
+      {
+        "NavId": "nav-025",
         "Label": "Files",
-        "Icon": "folder",
-        "ScreenId": "screen-tech-files",
-        "MinRoleId": "role-developer",
-        "Order": 3,
-        "StoryBeat": "Project filesystem browser. View any generated or hand-written file in the active project."
+        "NavArea": "developer",
+        "ParentNavId": "nav-015",
+        "ScreenId": "screen-dev-files",
+        "Icon": "Files",
+        "Order": 130,
+        "MinRoleId": "role-developer"
       },
       {
-        "NavId": "nav-008d",
-        "ParentNavId": "nav-008",
+        "NavId": "nav-026",
+        "Label": "Explorer",
+        "NavArea": "developer",
+        "ParentNavId": "nav-015",
+        "ScreenId": "screen-dev-explorer",
+        "Icon": "Compass",
+        "Order": 50,
+        "MinRoleId": "role-developer"
+      },
+      {
+        "NavId": "nav-027",
         "Label": "Rulebook JSON",
-        "Icon": "file-json",
-        "ScreenId": "screen-tech-json",
-        "MinRoleId": "role-developer",
-        "Order": 4,
-        "StoryBeat": "Raw rulebook JSON viewer/editor. Save here goes through the same write-through invariant as the UI."
+        "NavArea": "developer",
+        "ParentNavId": "nav-015",
+        "ScreenId": "screen-dev-rulebook-json",
+        "Icon": "Braces",
+        "Order": 150,
+        "MinRoleId": "role-developer"
       },
       {
-        "NavId": "nav-008e",
-        "ParentNavId": "nav-008",
-        "Label": "Reset Editor",
-        "Icon": "rotate-ccw",
-        "ScreenId": "screen-tech-reset",
-        "MinRoleId": "role-developer",
-        "Order": 5,
-        "StoryBeat": "Drop the editor Postgres DB and re-bootstrap from rulebook JSON. Safe — JSON is SSoT."
+        "NavId": "nav-028",
+        "Label": "App & Data Tools",
+        "NavArea": "developer",
+        "ParentNavId": "nav-015",
+        "ScreenId": "screen-dev-reset",
+        "Icon": "AppWindow",
+        "Order": 160,
+        "MinRoleId": "role-developer"
+      },
+      {
+        "NavId": "nav-029",
+        "Label": "Home",
+        "NavArea": "admin",
+        "ParentNavId": null,
+        "ScreenId": "screen-admin-home",
+        "Icon": "Home",
+        "Order": 10,
+        "MinRoleId": "role-admin"
+      },
+      {
+        "NavId": "nav-030",
+        "Label": "Platform",
+        "NavArea": "admin",
+        "ParentNavId": null,
+        "ScreenId": null,
+        "Icon": "Shield",
+        "Order": 20,
+        "MinRoleId": "role-admin"
+      },
+      {
+        "NavId": "nav-031",
+        "Label": "Users",
+        "NavArea": "admin",
+        "ParentNavId": "nav-030",
+        "ScreenId": "screen-admin-users",
+        "Icon": "Users",
+        "Order": 30,
+        "MinRoleId": "role-admin"
+      },
+      {
+        "NavId": "nav-032",
+        "Label": "Roles",
+        "NavArea": "admin",
+        "ParentNavId": "nav-030",
+        "ScreenId": "screen-admin-roles",
+        "Icon": "ShieldCheck",
+        "Order": 40,
+        "MinRoleId": "role-admin"
+      },
+      {
+        "NavId": "nav-033",
+        "Label": "Permissions",
+        "NavArea": "admin",
+        "ParentNavId": "nav-030",
+        "ScreenId": "screen-admin-perms",
+        "Icon": "Key",
+        "Order": 50,
+        "MinRoleId": "role-admin"
+      },
+      {
+        "NavId": "nav-034",
+        "Label": "Navigation",
+        "NavArea": "admin",
+        "ParentNavId": "nav-030",
+        "ScreenId": "screen-admin-nav",
+        "Icon": "Compass",
+        "Order": 60,
+        "MinRoleId": "role-admin"
+      },
+      {
+        "NavId": "nav-035",
+        "Label": "Screens",
+        "NavArea": "admin",
+        "ParentNavId": "nav-030",
+        "ScreenId": "screen-admin-screens",
+        "Icon": "Monitor",
+        "Order": 70,
+        "MinRoleId": "role-admin"
+      },
+      {
+        "NavId": "nav-036",
+        "Label": "DevOps",
+        "NavArea": "admin",
+        "ParentNavId": null,
+        "ScreenId": null,
+        "Icon": "Activity",
+        "Order": 80,
+        "MinRoleId": "role-admin"
+      },
+      {
+        "NavId": "nav-037",
+        "Label": "Builds",
+        "NavArea": "admin",
+        "ParentNavId": "nav-036",
+        "ScreenId": "screen-admin-builds",
+        "Icon": "Hammer",
+        "Order": 90,
+        "MinRoleId": "role-admin"
+      },
+      {
+        "NavId": "nav-038",
+        "Label": "Proxy",
+        "NavArea": "admin",
+        "ParentNavId": "nav-036",
+        "ScreenId": "screen-admin-proxy",
+        "Icon": "Network",
+        "Order": 100,
+        "MinRoleId": "role-admin"
+      },
+      {
+        "NavId": "nav-039",
+        "Label": "Docs",
+        "NavArea": "docs",
+        "ParentNavId": null,
+        "ScreenId": null,
+        "Icon": "BookOpen",
+        "Order": 10,
+        "MinRoleId": "role-viewer"
+      },
+      {
+        "NavId": "nav-040",
+        "Label": "Framing",
+        "NavArea": "docs",
+        "ParentNavId": "nav-039",
+        "ScreenId": "screen-docs-framing",
+        "Icon": "Compass",
+        "Order": 20,
+        "MinRoleId": "role-viewer"
+      },
+      {
+        "NavId": "nav-041",
+        "Label": "Methodology",
+        "NavArea": "docs",
+        "ParentNavId": "nav-039",
+        "ScreenId": "screen-docs-methodology",
+        "Icon": "GraduationCap",
+        "Order": 30,
+        "MinRoleId": "role-viewer"
+      },
+      {
+        "NavId": "nav-042",
+        "Label": "Field Types",
+        "NavArea": "docs",
+        "ParentNavId": "nav-039",
+        "ScreenId": "screen-docs-field-types",
+        "Icon": "Type",
+        "Order": 40,
+        "MinRoleId": "role-viewer"
+      },
+      {
+        "NavId": "nav-043",
+        "Label": "Glossary",
+        "NavArea": "docs",
+        "ParentNavId": "nav-039",
+        "ScreenId": "screen-docs-glossary",
+        "Icon": "BookA",
+        "Order": 50,
+        "MinRoleId": "role-viewer"
       }
     ]
   },
@@ -2846,228 +3238,311 @@
         "type": "raw",
         "nullable": true,
         "Description": "What the developer learns / does on this screen"
+      },
+      {
+        "name": "NavArea",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Which persona area this screen belongs to. Drives route prefix and sidebar section."
       }
     ],
     "data": [
       {
-        "ScreenId": "screen-home",
+        "ScreenId": "screen-role-picker",
         "Path": "/",
-        "Title": "Home",
-        "ReadsEntities": "ProjectMetadata,RulebookProjects,RulebookSourceSpokes,ExecutionSubstrates",
-        "WritesEntities": null,
+        "NavArea": "root",
+        "Title": "Choose Role",
+        "MinRoleId": null,
+        "Description": "Three role cards: Viewer, Developer, Admin."
+      },
+      {
+        "ScreenId": "screen-viewer-home",
+        "Path": "/viewer",
+        "NavArea": "viewer",
+        "Title": "Viewer Home",
         "MinRoleId": "role-viewer",
-        "Layout": "dashboard",
-        "PrimaryAction": "Switch project",
-        "Story": "Land here on ./start.sh. Cards: current project, rulebook size, # substrates, last build time, last test pass-rate, which spokes are active, who you're signed in as."
+        "Description": "Viewer dashboard: recent domains, links into docs."
       },
       {
-        "ScreenId": "screen-entities",
-        "Path": "/rulebook/entities",
-        "Title": "Entities",
-        "ReadsEntities": "<active-project-rulebook>",
-        "WritesEntities": "<active-project-rulebook>",
+        "ScreenId": "screen-viewer-domains",
+        "Path": "/viewer/domains",
+        "NavArea": "viewer",
+        "Title": "Browse Domains",
         "MinRoleId": "role-viewer",
-        "Layout": "split-detail",
-        "PrimaryAction": "Add entity",
-        "Story": "Left: list of every entity in the active project's rulebook. Right: selected entity's fields, formulas, sample rows. Developer can add/rename/delete fields inline; viewer sees the same with controls disabled."
+        "Description": "All RulebookDomains as cards."
       },
       {
-        "ScreenId": "screen-formulas",
-        "Path": "/rulebook/formulas",
-        "Title": "Formulas",
-        "ReadsEntities": "<active-project-rulebook>",
-        "WritesEntities": "<active-project-rulebook>",
-        "MinRoleId": "role-viewer",
-        "Layout": "split-detail",
-        "PrimaryAction": "Edit formula",
-        "Story": "Every calculated field across all entities. Drill in to see live DAG visualization (inputs → intermediates → output) sourced from the rulebook's explain-dag substrate. Developer can edit Excel-style formula in place; portal auto-validates against the parser."
-      },
-      {
-        "ScreenId": "screen-relationships",
-        "Path": "/rulebook/relationships",
-        "Title": "Relationships",
-        "ReadsEntities": "<active-project-rulebook>",
-        "WritesEntities": null,
-        "MinRoleId": "role-viewer",
-        "Layout": "grid",
-        "PrimaryAction": null,
-        "Story": "FK graph (interactive). Hover a node to highlight its inbound/outbound edges. Click an edge to see which formula or column declares it."
-      },
-      {
-        "ScreenId": "screen-sample-data",
-        "Path": "/rulebook/data",
-        "Title": "Sample Data",
-        "ReadsEntities": "<active-project-rulebook>.data",
-        "WritesEntities": "<active-project-rulebook>.data",
-        "MinRoleId": "role-viewer",
-        "Layout": "grid",
-        "PrimaryAction": "Add row",
-        "Story": "Spreadsheet-style view of the data block of each entity. Developer can edit cells; computed columns are read-only and show the resolved value with a hoverable derivation popover."
-      },
-      {
-        "ScreenId": "screen-substrates",
-        "Path": "/substrates",
-        "Title": "Substrates",
-        "ReadsEntities": "ExecutionSubstrates,SsotmeProxy",
-        "WritesEntities": null,
-        "MinRoleId": "role-viewer",
-        "Layout": "split-detail",
-        "PrimaryAction": "Rebuild substrate",
-        "Story": "Left: every substrate this project emits (with last-build timestamp + conformance status). Right: file tree of generated output + a preview pane for any file. Developer can trigger 'Rebuild just this substrate'."
-      },
-      {
-        "ScreenId": "screen-add-tool",
-        "Path": "/tools/add",
-        "Title": "Add Tool",
-        "ReadsEntities": "AddToolCatalog,SsotmeProxy",
-        "WritesEntities": "<active-project>/effortless.json (via effortless CLI)",
-        "MinRoleId": "role-developer",
-        "Layout": "grid",
-        "PrimaryAction": "Install",
-        "Story": "Browse the 15+ transpilers in the catalog. Click one, choose output path, hit Install. Portal shells out to `effortless -install <proxy-url>` so the result is byte-identical to the CLI path. Tool then shows up in /substrates and is ready for the next build."
-      },
-      {
-        "ScreenId": "screen-builds",
-        "Path": "/builds",
-        "Title": "Builds",
-        "ReadsEntities": "BuildHistory",
-        "WritesEntities": "BuildHistory",
-        "MinRoleId": "role-viewer",
-        "Layout": "list",
-        "PrimaryAction": "Trigger build",
-        "Story": "Chronological list of builds. Click one to see which transpilers ran, duration each, stdout/stderr per route, and which files changed. Trigger-build button is gated by CanRunBuilds."
-      },
-      {
-        "ScreenId": "screen-tests",
-        "Path": "/tests",
-        "Title": "Tests",
-        "ReadsEntities": "TestingFramework,TestRuns",
-        "WritesEntities": "TestRuns",
-        "MinRoleId": "role-viewer",
-        "Layout": "grid",
-        "PrimaryAction": "Run all tests",
-        "Story": "Matrix: rows = test cases, columns = substrates, cells = pass/fail. Click a failing cell to see input, expected, actual, and a diff. Trigger-tests button is gated by CanRunBuilds."
-      },
-      {
-        "ScreenId": "screen-input-spokes",
-        "Path": "/spokes",
-        "Title": "Input Spokes",
-        "ReadsEntities": "RulebookSourceSpokes",
-        "WritesEntities": null,
-        "MinRoleId": "role-viewer",
-        "Layout": "list",
-        "PrimaryAction": "Pull from spoke",
-        "Story": "List of every configured input spoke for this project. Status (last-pulled time, last-error). Developer can trigger a pull from any spoke."
-      },
-      {
-        "ScreenId": "screen-users",
-        "Path": "/users",
-        "Title": "Users",
-        "ReadsEntities": "AppUsers,UserRoles",
-        "WritesEntities": "AppUsers",
-        "MinRoleId": "role-viewer",
-        "Layout": "list",
-        "PrimaryAction": "Add user",
-        "Story": "Default dev/test users from the rulebook + roles. Developer can add new users (saved through the write-through invariant, so they end up in rulebook JSON)."
-      },
-      {
-        "ScreenId": "screen-tech-postgres",
-        "Path": "/tech/postgres",
-        "Title": "Postgres Explorer",
-        "ReadsEntities": "<editor-postgres-tables>",
-        "WritesEntities": "<editor-postgres-tables>",
-        "MinRoleId": "role-developer",
-        "Layout": "editor",
-        "PrimaryAction": "Run query",
-        "Story": "Raw SQL console + table browser for the editor Postgres DB. Developer-only escape hatch. Background banner reminds: rulebook JSON is the SSoT, this DB is rebuildable."
-      },
-      {
-        "ScreenId": "screen-tech-proxy",
-        "Path": "/tech/proxy",
-        "Title": "ssotme-proxy",
-        "ReadsEntities": "SsotmeProxy",
-        "WritesEntities": null,
-        "MinRoleId": "role-developer",
-        "Layout": "list",
-        "PrimaryAction": "Ping proxy",
-        "Story": "Live status of localhost:4242: registered routes, recent calls (route, duration, status, response size), last error per route. Restart button."
-      },
-      {
-        "ScreenId": "screen-tech-files",
-        "Path": "/tech/files",
-        "Title": "Project Files",
-        "ReadsEntities": "<project-filesystem>",
-        "WritesEntities": null,
-        "MinRoleId": "role-developer",
-        "Layout": "split-detail",
-        "PrimaryAction": null,
-        "Story": "Browse the active project folder. View any file. Read-only — prevents drift from rulebook."
-      },
-      {
-        "ScreenId": "screen-tech-json",
-        "Path": "/tech/rulebook-json",
-        "Title": "Raw Rulebook JSON",
-        "ReadsEntities": "<active-project-rulebook>",
-        "WritesEntities": "<active-project-rulebook>",
-        "MinRoleId": "role-developer",
-        "Layout": "editor",
-        "PrimaryAction": "Save JSON",
-        "Story": "Monaco editor on the raw effortless-rulebook.json. Save goes through the write-through invariant. Useful for bulk edits."
-      },
-      {
-        "ScreenId": "screen-tech-reset",
-        "Path": "/tech/reset",
-        "Title": "Reset Editor",
-        "ReadsEntities": null,
-        "WritesEntities": null,
-        "MinRoleId": "role-developer",
-        "Layout": "dashboard",
-        "PrimaryAction": "Reset now",
-        "Story": "One-button reset: drops the editor Postgres DB and re-bootstraps from rulebook JSON. The reassurance screen — makes the JSON-as-SSoT promise tangible."
-      },
-      {
-        "ScreenId": "screen-framing",
-        "Path": "/rulebook/framing",
-        "Title": "Framing",
-        "ReadsEntities": "FramingInvariants,OntologyAxioms",
-        "WritesEntities": null,
-        "MinRoleId": "role-viewer",
-        "Layout": "split-detail",
-        "PrimaryAction": null,
-        "Story": "Left: FramingInvariants — the mistakes-to-avoid catalog. Right: the wrong framing, the correct framing, why, and the axiom it violates. Toggle to Axioms tab to see the positive-form invariants. Reviewer's favourite page; required reading before defending the methodology."
-      },
-      {
-        "ScreenId": "screen-roles",
-        "Path": "/users/roles",
-        "Title": "Roles & Personas",
-        "ReadsEntities": "UserRoles,AppUsers,RoleScreenHints",
-        "WritesEntities": "UserRoles",
-        "MinRoleId": "role-viewer",
-        "Layout": "split-detail",
-        "PrimaryAction": null,
-        "Story": "Left: each role with its colour-themed pill, persona, tagline. Right: the role's primary concerns, landing screen (clickable), bespoke screen overrides, and the users currently assigned to it (clickable to filter the Users page)."
-      },
-      {
-        "ScreenId": "screen-flavors",
-        "Path": "/projects/flavors",
+        "ScreenId": "screen-viewer-flavors",
+        "Path": "/viewer/flavors",
+        "NavArea": "viewer",
         "Title": "Project Flavours",
-        "ReadsEntities": "RulebookFlavors,RulebookProjects",
-        "WritesEntities": null,
         "MinRoleId": "role-viewer",
-        "Layout": "grid",
-        "PrimaryAction": null,
-        "Story": "Each demo rulebook classified by Flavor (crud-template, computation-heavy, aggregation-heavy, graph-ontology, meta-rulebook, tutorial-ladder), Complexity, and density metrics. Click a flavour to filter the project switcher to that flavour."
+        "Description": "Flavors faceted by tag."
       },
       {
-        "ScreenId": "screen-features",
-        "Path": "/features",
+        "ScreenId": "screen-viewer-features",
+        "Path": "/viewer/features",
+        "NavArea": "viewer",
         "Title": "Platform Features",
-        "ReadsEntities": "PlatformFeatures,OntologyAxioms",
-        "WritesEntities": "PlatformFeatures",
         "MinRoleId": "role-viewer",
-        "Layout": "split-detail",
-        "PrimaryAction": "Edit feature",
-        "Story": "Two sections: Headline features (ADP, clean, hub-and-spoke, convergent build, substrate equivalence, conformance, local SSoT, portal/CLI parity, write-through) and Additional features (fail-loud, complete spec, dialect binding, etc.). Left list, right detail. Detail shows one-line summary, status, related axiom (clickable), README file path, IsReadmeStub badge, and the seed README content. Developer can edit summary/tier/priority/README path in place — saves write-through into rulebook JSON."
+        "Description": "What ERB itself can do."
+      },
+      {
+        "ScreenId": "screen-viewer-domain",
+        "Path": "/viewer/:domain",
+        "NavArea": "viewer",
+        "Title": "Domain Overview",
+        "MinRoleId": "role-viewer",
+        "Description": "Read-only landing for a chosen domain."
+      },
+      {
+        "ScreenId": "screen-viewer-entities",
+        "Path": "/viewer/:domain/entities",
+        "NavArea": "viewer",
+        "Title": "Entities",
+        "MinRoleId": "role-viewer",
+        "Description": "Read-only entity browser."
+      },
+      {
+        "ScreenId": "screen-viewer-formulas",
+        "Path": "/viewer/:domain/formulas",
+        "NavArea": "viewer",
+        "Title": "Formulas",
+        "MinRoleId": "role-viewer",
+        "Description": "Read-only formula list."
+      },
+      {
+        "ScreenId": "screen-viewer-relations",
+        "Path": "/viewer/:domain/relationships",
+        "NavArea": "viewer",
+        "Title": "Relationships",
+        "MinRoleId": "role-viewer",
+        "Description": "FK adjacency, read-only."
+      },
+      {
+        "ScreenId": "screen-viewer-data",
+        "Path": "/viewer/:domain/data",
+        "NavArea": "viewer",
+        "Title": "Sample Data",
+        "MinRoleId": "role-viewer",
+        "Description": "Read-only inline data."
+      },
+      {
+        "ScreenId": "screen-viewer-tests",
+        "Path": "/viewer/:domain/tests",
+        "NavArea": "viewer",
+        "Title": "Tests",
+        "MinRoleId": "role-viewer",
+        "Description": "Conformance matrix, read-only."
+      },
+      {
+        "ScreenId": "screen-viewer-comments",
+        "Path": "/viewer/:domain/comments",
+        "NavArea": "viewer",
+        "Title": "Comments",
+        "MinRoleId": "role-viewer",
+        "Description": "Review comments (reviewer folded in)."
+      },
+      {
+        "ScreenId": "screen-dev-home",
+        "Path": "/developer",
+        "NavArea": "developer",
+        "Title": "Developer Home",
+        "MinRoleId": "role-developer",
+        "Description": "Developer dashboard; forces domain pick if none active."
+      },
+      {
+        "ScreenId": "screen-dev-domains",
+        "Path": "/developer/domains",
+        "NavArea": "developer",
+        "Title": "Pick Domain",
+        "MinRoleId": "role-developer",
+        "Description": "Domain picker for developer work."
+      },
+      {
+        "ScreenId": "screen-dev-domain",
+        "Path": "/developer/:domain",
+        "NavArea": "developer",
+        "Title": "Domain Landing",
+        "MinRoleId": "role-developer",
+        "Description": "Landing for a specific domain in dev mode."
+      },
+      {
+        "ScreenId": "screen-dev-formulas",
+        "Path": "/developer/:domain/formulas",
+        "NavArea": "developer",
+        "Title": "Formulas",
+        "MinRoleId": "role-developer",
+        "Description": "Formula list across the domain."
+      },
+      {
+        "ScreenId": "screen-dev-relations",
+        "Path": "/developer/:domain/relationships",
+        "NavArea": "developer",
+        "Title": "Relationships",
+        "MinRoleId": "role-developer",
+        "Description": "FK graph for this domain."
+      },
+      {
+        "ScreenId": "screen-dev-substrates",
+        "Path": "/developer/:domain/substrates",
+        "NavArea": "developer",
+        "Title": "Effortless Tools",
+        "MinRoleId": "role-developer",
+        "Description": "Every tool driven by effortless.json: installed transpilers (peer substrates), the build/test orchestrator, and the catalog of tools available to install."
+      },
+      {
+        "ScreenId": "screen-dev-tests",
+        "Path": "/developer/:domain/tests",
+        "NavArea": "developer",
+        "Title": "Tests",
+        "MinRoleId": "role-developer",
+        "Description": "Conformance matrix for this domain."
+      },
+      {
+        "ScreenId": "screen-dev-spokes",
+        "Path": "/developer/:domain/spokes",
+        "NavArea": "developer",
+        "Title": "Input Spokes",
+        "MinRoleId": "role-developer",
+        "Description": "Inbound rulebook sources (Airtable, OWL)."
+      },
+      {
+        "ScreenId": "screen-dev-files",
+        "Path": "/developer/:domain/files",
+        "NavArea": "developer",
+        "Title": "Files",
+        "MinRoleId": "role-developer",
+        "Description": "Filesystem tree for rulebook-examples/<domain>/."
+      },
+      {
+        "ScreenId": "screen-dev-explorer",
+        "Path": "/developer/:domain/explorer",
+        "NavArea": "developer",
+        "Title": "Explorer",
+        "MinRoleId": "role-developer",
+        "Description": "Walk the DAG: left-nav tree of entity instances and their relationships; right pane shows schema and data as combined metadata. Replaces the old Entities, Sample Data, and SQL Explorer pages."
+      },
+      {
+        "ScreenId": "screen-dev-rulebook-json",
+        "Path": "/developer/:domain/rulebook-json",
+        "NavArea": "developer",
+        "Title": "Rulebook JSON",
+        "MinRoleId": "role-developer",
+        "Description": "Raw JSON view of this domain's rulebook."
+      },
+      {
+        "ScreenId": "screen-dev-reset",
+        "Path": "/developer/:domain/reset",
+        "NavArea": "developer",
+        "Title": "App & Data Tools",
+        "MinRoleId": "role-developer",
+        "Description": "Launch this domain's app, import Postgres data back into the rulebook, or reset the editor DB."
+      },
+      {
+        "ScreenId": "screen-admin-home",
+        "Path": "/admin",
+        "NavArea": "admin",
+        "Title": "Admin Home",
+        "MinRoleId": "role-admin",
+        "Description": "Admin dashboard: counts and recent platform activity."
+      },
+      {
+        "ScreenId": "screen-admin-users",
+        "Path": "/admin/users",
+        "NavArea": "admin",
+        "Title": "Users",
+        "MinRoleId": "role-admin",
+        "Description": "CRUD AppUsers."
+      },
+      {
+        "ScreenId": "screen-admin-roles",
+        "Path": "/admin/roles",
+        "NavArea": "admin",
+        "Title": "Roles",
+        "MinRoleId": "role-admin",
+        "Description": "CRUD UserRoles (tagline, color, description)."
+      },
+      {
+        "ScreenId": "screen-admin-perms",
+        "Path": "/admin/permissions",
+        "NavArea": "admin",
+        "Title": "Permissions",
+        "MinRoleId": "role-admin",
+        "Description": "Read AppPermissions."
+      },
+      {
+        "ScreenId": "screen-admin-nav",
+        "Path": "/admin/nav",
+        "NavArea": "admin",
+        "Title": "Navigation",
+        "MinRoleId": "role-admin",
+        "Description": "Read AppNavigation by role."
+      },
+      {
+        "ScreenId": "screen-admin-screens",
+        "Path": "/admin/screens",
+        "NavArea": "admin",
+        "Title": "Screens",
+        "MinRoleId": "role-admin",
+        "Description": "Read AppScreens."
+      },
+      {
+        "ScreenId": "screen-admin-builds",
+        "Path": "/admin/builds",
+        "NavArea": "admin",
+        "Title": "Builds",
+        "MinRoleId": "role-admin",
+        "Description": "Cross-domain build status (devops view)."
+      },
+      {
+        "ScreenId": "screen-admin-proxy",
+        "Path": "/admin/proxy",
+        "NavArea": "admin",
+        "Title": "Proxy",
+        "MinRoleId": "role-admin",
+        "Description": "localhost:4242 ssotme-proxy health."
+      },
+      {
+        "ScreenId": "screen-docs-home",
+        "Path": "/docs",
+        "NavArea": "docs",
+        "Title": "Docs Home",
+        "MinRoleId": "role-viewer",
+        "Description": "Table of contents."
+      },
+      {
+        "ScreenId": "screen-docs-framing",
+        "Path": "/docs/framing",
+        "NavArea": "docs",
+        "Title": "Framing",
+        "MinRoleId": "role-viewer",
+        "Description": "FramingInvariants browser."
+      },
+      {
+        "ScreenId": "screen-docs-methodology",
+        "Path": "/docs/methodology",
+        "NavArea": "docs",
+        "Title": "Methodology",
+        "MinRoleId": "role-viewer",
+        "Description": "OntologyAxioms and CMCC."
+      },
+      {
+        "ScreenId": "screen-docs-field-types",
+        "Path": "/docs/field-types",
+        "NavArea": "docs",
+        "Title": "Field Types",
+        "MinRoleId": "role-viewer",
+        "Description": "FieldTypeTaxonomy browser."
+      },
+      {
+        "ScreenId": "screen-docs-glossary",
+        "Path": "/docs/glossary",
+        "NavArea": "docs",
+        "Title": "Glossary",
+        "MinRoleId": "role-viewer",
+        "Description": "Defined terms."
       }
     ]
   },
@@ -3866,6 +4341,18 @@
         "nullable": false
       },
       {
+        "name": "Tagline",
+        "type": "raw",
+        "datatype": "string",
+        "description": "One-sentence (~120 chars) summary used in the admin UI and as the rulebook Description."
+      },
+      {
+        "name": "LogoPath",
+        "type": "raw",
+        "datatype": "string",
+        "description": "Repo-relative path to the demo's effortless-logo.png (300x300, cartoon style)."
+      },
+      {
         "name": "Flavor",
         "datatype": "string",
         "type": "raw",
@@ -3923,7 +4410,7 @@
       {
         "FlavorId": "flav-001",
         "ProjectSlug": "acme-corporation",
-        "DisplayName": "ACME Corporation (template)",
+        "DisplayName": "ACME Corporation",
         "Flavor": "crud-template",
         "Complexity": "basic",
         "EntityCount": 5,
@@ -3932,40 +4419,46 @@
         "LookupCount": 10,
         "LearningFocus": "Classic relational CRUD template — clients, projects, employees, roles. The 'starter sized' demo for new authors.",
         "GoodAnswerKeyFor": "postgres,entity-framework",
-        "SortOrder": 50
+        "SortOrder": 50,
+        "Tagline": "CRUD starter template — clients, projects, employees, roles. The \"starter-sized\" demo for new authors.",
+        "LogoPath": "rulebook-examples/acme-corporation/effortless-logo.png"
       },
       {
         "FlavorId": "flav-002",
         "ProjectSlug": "acme-llc",
-        "DisplayName": "ACME, LLC (template)",
+        "DisplayName": "ACME, LLC",
         "Flavor": "tutorial-ladder",
         "Complexity": "minimal",
         "EntityCount": 3,
-        "CalculatedCount": 2,
+        "CalculatedCount": 3,
         "AggregationCount": 0,
         "LookupCount": 0,
         "LearningFocus": "Smallest viable rulebook with a calculated field — the 'Hello, formulas' tutorial.",
         "GoodAnswerKeyFor": null,
-        "SortOrder": 20
+        "SortOrder": 20,
+        "Tagline": "Smallest viable rulebook with a calculated field — the \"Hello, formulas\" tutorial.",
+        "LogoPath": "rulebook-examples/acme-llc/effortless-logo.png"
       },
       {
         "FlavorId": "flav-003",
         "ProjectSlug": "customer-fullname",
-        "DisplayName": "Customer FullName (tutorial)",
+        "DisplayName": "Customer FullName",
         "Flavor": "tutorial-ladder",
         "Complexity": "minimal",
         "EntityCount": 1,
-        "CalculatedCount": 2,
+        "CalculatedCount": 3,
         "AggregationCount": 0,
         "LookupCount": 0,
         "LearningFocus": "One entity, one calculated field (CONCAT(First, ' ', Last)). The 'absolute minimum' demo — proves the toolchain end-to-end with no relationships.",
         "GoodAnswerKeyFor": null,
-        "SortOrder": 10
+        "SortOrder": 10,
+        "Tagline": "One entity, one calculated field (CONCAT(First,' ',Last)) — proves the toolchain end-to-end with no relations.",
+        "LogoPath": "rulebook-examples/customer-fullname/effortless-logo.png"
       },
       {
         "FlavorId": "flav-004",
         "ProjectSlug": "effortless-rulesbooks",
-        "DisplayName": "ERB self-describing rulebook",
+        "DisplayName": "ERB Self-Describing Rulebook",
         "Flavor": "meta-rulebook",
         "Complexity": "advanced",
         "EntityCount": 9,
@@ -3974,12 +4467,14 @@
         "LookupCount": 0,
         "LearningFocus": "The rulebook that describes the ERB project itself (sibling of this platform rulebook). Demonstrates eating-the-dog-food — meta over business data.",
         "GoodAnswerKeyFor": null,
-        "SortOrder": 250
+        "SortOrder": 250,
+        "Tagline": "The rulebook that describes the ERB project itself — the platform eating its own dog food.",
+        "LogoPath": "rulebook-examples/effortless-rulesbooks/effortless-logo.png"
       },
       {
         "FlavorId": "flav-005",
         "ProjectSlug": "is-everything-a-language",
-        "DisplayName": "Is Everything A Language? (semiotics)",
+        "DisplayName": "Is Everything a Language?",
         "Flavor": "graph-ontology",
         "Complexity": "advanced",
         "EntityCount": 3,
@@ -3988,12 +4483,14 @@
         "LookupCount": 0,
         "LearningFocus": "Heavy formulas evaluating linguistic / semiotic candidates. Shows that the substrate equality claim holds even for non-CRUD ontologies.",
         "GoodAnswerKeyFor": "owl,python",
-        "SortOrder": 260
+        "SortOrder": 260,
+        "Tagline": "Semiotic candidates evaluated by formula — shows substrate-equality holds for non-CRUD ontologies too.",
+        "LogoPath": "rulebook-examples/is-everything-a-language/effortless-logo.png"
       },
       {
         "FlavorId": "flav-006",
         "ProjectSlug": "jessica-advanced",
-        "DisplayName": "Jessica Talisman — Advanced (workflows)",
+        "DisplayName": "Jessica Talisman: Advanced",
         "Flavor": "computation-heavy",
         "Complexity": "advanced",
         "EntityCount": 10,
@@ -4002,12 +4499,14 @@
         "LookupCount": 2,
         "LearningFocus": "Workflow/approval ontology with intermediate computed fields. Demonstrates multi-step derivation across entities.",
         "GoodAnswerKeyFor": "postgres",
-        "SortOrder": 160
+        "SortOrder": 160,
+        "Tagline": "Workflow / approval ontology with cross-entity lookups and multi-step derivation.",
+        "LogoPath": "rulebook-examples/jessica-advanced/effortless-logo.png"
       },
       {
         "FlavorId": "flav-007",
         "ProjectSlug": "jessica-basic",
-        "DisplayName": "Jessica Talisman — Basic (workflows)",
+        "DisplayName": "Jessica Talisman: Basic",
         "Flavor": "tutorial-ladder",
         "Complexity": "basic",
         "EntityCount": 9,
@@ -4016,12 +4515,14 @@
         "LookupCount": 0,
         "LearningFocus": "Same workflow concepts as advanced but without cross-entity lookups — useful for stepping authors up the formula ladder.",
         "GoodAnswerKeyFor": null,
-        "SortOrder": 30
+        "SortOrder": 30,
+        "Tagline": "Workflow ontology without cross-entity lookups — for stepping authors up the formula ladder.",
+        "LogoPath": "rulebook-examples/jessica-basic/effortless-logo.png"
       },
       {
         "FlavorId": "flav-008",
         "ProjectSlug": "star-trek",
-        "DisplayName": "Star Trek (series/seasons/episodes)",
+        "DisplayName": "Star Trek",
         "Flavor": "aggregation-heavy",
         "Complexity": "advanced",
         "EntityCount": 10,
@@ -4030,68 +4531,78 @@
         "LookupCount": 12,
         "LearningFocus": "Aggregations over nested relationships (avg rating per episode, per season, per series). The canonical aggregation demo.",
         "GoodAnswerKeyFor": "postgres,xlsx",
-        "SortOrder": 200
+        "SortOrder": 200,
+        "Tagline": "Aggregations over nested series → seasons → episodes (avg rating roll-ups). The canonical aggregation demo.",
+        "LogoPath": "rulebook-examples/star-trek/effortless-logo.png"
       },
       {
         "FlavorId": "flav-009",
-        "ProjectSlug": "community-event-planner-demo",
-        "DisplayName": "community-event-planner-demo",
+        "ProjectSlug": "community-event-planner",
+        "DisplayName": "Community Event Planner",
         "Flavor": "aggregation-heavy",
         "Complexity": "basic",
         "EntityCount": 6,
         "CalculatedCount": 19,
         "AggregationCount": 4,
         "LookupCount": 9,
-        "LearningFocus": "Auto-discovered demo. Replace this stub with a one-line description of what community-event-planner-demo is designed to teach.",
+        "LearningFocus": "Auto-discovered demo. Replace this stub with a one-line description of what community-event-planner is designed to teach.",
         "GoodAnswerKeyFor": null,
-        "SortOrder": 100
+        "SortOrder": 100,
+        "Tagline": "Venues, events, speakers, attendees with capacity, scheduling, and attendance-forecast cascades.",
+        "LogoPath": "rulebook-examples/community-event-planner/effortless-logo.png"
       },
       {
         "FlavorId": "flav-010",
-        "ProjectSlug": "customer-crm-demo",
-        "DisplayName": "customer-crm-demo",
+        "ProjectSlug": "customer-crm",
+        "DisplayName": "Customer CRM",
         "Flavor": "aggregation-heavy",
         "Complexity": "advanced",
         "EntityCount": 7,
         "CalculatedCount": 20,
         "AggregationCount": 11,
         "LookupCount": 21,
-        "LearningFocus": "Auto-discovered demo. Replace this stub with a one-line description of what customer-crm-demo is designed to teach.",
+        "LearningFocus": "Auto-discovered demo. Replace this stub with a one-line description of what customer-crm is designed to teach.",
         "GoodAnswerKeyFor": null,
-        "SortOrder": 110
+        "SortOrder": 110,
+        "Tagline": "Fighter-jet FCS sales pipeline rolling revenue up by order, FCS variant, and jet model.",
+        "LogoPath": "rulebook-examples/customer-crm/effortless-logo.png"
       },
       {
         "FlavorId": "flav-011",
-        "ProjectSlug": "effortless-banking-demo",
-        "DisplayName": "effortless-banking-demo",
+        "ProjectSlug": "effortless-banking",
+        "DisplayName": "Effortless Banking",
         "Flavor": "aggregation-heavy",
         "Complexity": "advanced",
         "EntityCount": 10,
         "CalculatedCount": 46,
         "AggregationCount": 17,
         "LookupCount": 17,
-        "LearningFocus": "Auto-discovered demo. Replace this stub with a one-line description of what effortless-banking-demo is designed to teach.",
+        "LearningFocus": "Auto-discovered demo. Replace this stub with a one-line description of what effortless-banking is designed to teach.",
         "GoodAnswerKeyFor": null,
-        "SortOrder": 210
+        "SortOrder": 210,
+        "Tagline": "Community-bank commercial RM platform — loans, deposits, covenants, BSA/AML.",
+        "LogoPath": "rulebook-examples/effortless-banking/effortless-logo.png"
       },
       {
         "FlavorId": "flav-012",
-        "ProjectSlug": "fantasy-football-demo",
-        "DisplayName": "fantasy-football-demo",
+        "ProjectSlug": "fantasy-football",
+        "DisplayName": "Fantasy Football",
         "Flavor": "aggregation-heavy",
         "Complexity": "basic",
         "EntityCount": 6,
         "CalculatedCount": 13,
         "AggregationCount": 5,
         "LookupCount": 15,
-        "LearningFocus": "Auto-discovered demo. Replace this stub with a one-line description of what fantasy-football-demo is designed to teach.",
+        "LearningFocus": "Auto-discovered demo. Replace this stub with a one-line description of what fantasy-football is designed to teach.",
         "GoodAnswerKeyFor": null,
-        "SortOrder": 150
+        "SortOrder": 150,
+        "Tagline": "Multi-hop DAG: raw player stats → roster aggregations → matchup scoring → standings & seeding.",
+        "LogoPath": "rulebook-examples/fantasy-football/effortless-logo.png"
       },
       {
         "FlavorId": "flav-013",
         "ProjectSlug": "guessing-game",
-        "DisplayName": "guessing-game",
+        "DisplayName": "Guessing Game",
         "Flavor": "aggregation-heavy",
         "Complexity": "minimal",
         "EntityCount": 2,
@@ -4100,12 +4611,14 @@
         "LookupCount": 6,
         "LearningFocus": "Auto-discovered demo. Replace this stub with a one-line description of what guessing-game is designed to teach.",
         "GoodAnswerKeyFor": null,
-        "SortOrder": 190
+        "SortOrder": 190,
+        "Tagline": "Number-guessing game tracking guesses, hints, and best-score records per player.",
+        "LogoPath": "rulebook-examples/guessing-game/effortless-logo.png"
       },
       {
         "FlavorId": "flav-014",
         "ProjectSlug": "gym-trainer-invoicing",
-        "DisplayName": "gym-trainer-invoicing",
+        "DisplayName": "Gym Trainer Invoicing",
         "Flavor": "aggregation-heavy",
         "Complexity": "basic",
         "EntityCount": 5,
@@ -4114,68 +4627,78 @@
         "LookupCount": 11,
         "LearningFocus": "Auto-discovered demo. Replace this stub with a one-line description of what gym-trainer-invoicing is designed to teach.",
         "GoodAnswerKeyFor": null,
-        "SortOrder": 120
+        "SortOrder": 120,
+        "Tagline": "Sessions roll up into invoices; invoices roll up into client outstanding balances.",
+        "LogoPath": "rulebook-examples/gym-trainer-invoicing/effortless-logo.png"
       },
       {
         "FlavorId": "flav-015",
-        "ProjectSlug": "intelligence-taxonomy-demo",
-        "DisplayName": "intelligence-taxonomy-demo",
+        "ProjectSlug": "intelligence-taxonomy",
+        "DisplayName": "Taxonomy of Intelligence",
         "Flavor": "crud-template",
         "Complexity": "minimal",
         "EntityCount": 3,
         "CalculatedCount": 5,
         "AggregationCount": 2,
         "LookupCount": 4,
-        "LearningFocus": "Auto-discovered demo. Replace this stub with a one-line description of what intelligence-taxonomy-demo is designed to teach.",
+        "LearningFocus": "Auto-discovered demo. Replace this stub with a one-line description of what intelligence-taxonomy is designed to teach.",
         "GoodAnswerKeyFor": null,
-        "SortOrder": 70
+        "SortOrder": 70,
+        "Tagline": "Classifies intelligences (humans, animals, AI) by per-capability assessments through a multi-hop DAG.",
+        "LogoPath": "rulebook-examples/intelligence-taxonomy/effortless-logo.png"
       },
       {
         "FlavorId": "flav-016",
-        "ProjectSlug": "jobsearch-rag",
-        "DisplayName": "jobsearch-rag",
+        "ProjectSlug": "job-search-rag",
+        "DisplayName": "Job Search RAG",
         "Flavor": "aggregation-heavy",
         "Complexity": "advanced",
         "EntityCount": 10,
         "CalculatedCount": 4,
         "AggregationCount": 6,
         "LookupCount": 10,
-        "LearningFocus": "Auto-discovered demo. Replace this stub with a one-line description of what jobsearch-rag is designed to teach.",
+        "LearningFocus": "Auto-discovered demo. Replace this stub with a one-line description of what job-search-rag is designed to teach.",
         "GoodAnswerKeyFor": null,
-        "SortOrder": 180
+        "SortOrder": 180,
+        "Tagline": "Local LLM + RAG pipeline filtering jobs across boards using semantic search.",
+        "LogoPath": "rulebook-examples/job-search-rag/effortless-logo.png"
       },
       {
         "FlavorId": "flav-017",
-        "ProjectSlug": "llm-enigma-test",
-        "DisplayName": "llm-enigma-test",
+        "ProjectSlug": "mechanical-kitchen-timer",
+        "DisplayName": "Mechanical Kitchen Timer",
         "Flavor": "aggregation-heavy",
         "Complexity": "advanced",
         "EntityCount": 26,
         "CalculatedCount": 33,
         "AggregationCount": 42,
         "LookupCount": 22,
-        "LearningFocus": "Auto-discovered demo. Replace this stub with a one-line description of what llm-enigma-test is designed to teach.",
+        "LearningFocus": "Auto-discovered demo. Replace this stub with a one-line description of what mechanical-kitchen-timer is designed to teach.",
         "GoodAnswerKeyFor": null,
-        "SortOrder": 220
+        "SortOrder": 220,
+        "Tagline": "Five-part mechanical timer modeled with every README noun as a table — a hardware-ontology stress test.",
+        "LogoPath": "rulebook-examples/mechanical-kitchen-timer/effortless-logo.png"
       },
       {
         "FlavorId": "flav-018",
-        "ProjectSlug": "product-inventory-demo",
-        "DisplayName": "product-inventory-demo",
+        "ProjectSlug": "product-inventory",
+        "DisplayName": "Product Inventory",
         "Flavor": "computation-heavy",
         "Complexity": "minimal",
         "EntityCount": 3,
         "CalculatedCount": 6,
         "AggregationCount": 1,
         "LookupCount": 3,
-        "LearningFocus": "Auto-discovered demo. Replace this stub with a one-line description of what product-inventory-demo is designed to teach.",
+        "LearningFocus": "Auto-discovered demo. Replace this stub with a one-line description of what product-inventory is designed to teach.",
         "GoodAnswerKeyFor": null,
-        "SortOrder": 60
+        "SortOrder": 60,
+        "Tagline": "Products with transactions adjusting quantities and low-stock alerts.",
+        "LogoPath": "rulebook-examples/product-inventory/effortless-logo.png"
       },
       {
         "FlavorId": "flav-019",
         "ProjectSlug": "therapist-helper-portal",
-        "DisplayName": "therapist-helper-portal",
+        "DisplayName": "Therapist Helper Portal",
         "Flavor": "aggregation-heavy",
         "Complexity": "basic",
         "EntityCount": 5,
@@ -4184,40 +4707,46 @@
         "LookupCount": 10,
         "LearningFocus": "Auto-discovered demo. Replace this stub with a one-line description of what therapist-helper-portal is designed to teach.",
         "GoodAnswerKeyFor": null,
-        "SortOrder": 170
+        "SortOrder": 170,
+        "Tagline": "Sessions and treatment progress: GoalUpdate → Goal.ProgressPct → Client.IsAtRisk three-hop DAG.",
+        "LogoPath": "rulebook-examples/therapist-helper-portal/effortless-logo.png"
       },
       {
         "FlavorId": "flav-020",
-        "ProjectSlug": "v2-nakedclaude-demo",
-        "DisplayName": "v2-nakedclaude-demo",
+        "ProjectSlug": "nakedclaude-v2",
+        "DisplayName": "NakedClaude (v2)",
         "Flavor": "crud-template",
         "Complexity": "minimal",
         "EntityCount": 3,
         "CalculatedCount": 5,
         "AggregationCount": 0,
         "LookupCount": 3,
-        "LearningFocus": "Auto-discovered demo. Replace this stub with a one-line description of what v2-nakedclaude-demo is designed to teach.",
+        "LearningFocus": "Auto-discovered demo. Replace this stub with a one-line description of what nakedclaude-v2 is designed to teach.",
         "GoodAnswerKeyFor": null,
-        "SortOrder": 90
+        "SortOrder": 90,
+        "Tagline": "3-entity domain (Customers, Statuses, AppUsers) — plain Claude adds state and auth.",
+        "LogoPath": "rulebook-examples/nakedclaude-v2/effortless-logo.png"
       },
       {
         "FlavorId": "flav-021",
-        "ProjectSlug": "v3-nakedclaude-demo",
-        "DisplayName": "v3-nakedclaude-demo",
+        "ProjectSlug": "nakedclaude-v3",
+        "DisplayName": "NakedClaude (v3)",
         "Flavor": "aggregation-heavy",
         "Complexity": "advanced",
         "EntityCount": 8,
         "CalculatedCount": 22,
         "AggregationCount": 7,
         "LookupCount": 9,
-        "LearningFocus": "Auto-discovered demo. Replace this stub with a one-line description of what v3-nakedclaude-demo is designed to teach.",
+        "LearningFocus": "Auto-discovered demo. Replace this stub with a one-line description of what nakedclaude-v3 is designed to teach.",
         "GoodAnswerKeyFor": null,
-        "SortOrder": 230
+        "SortOrder": 230,
+        "Tagline": "8-entity orders/payments domain — plain Claude scales to e-commerce basics.",
+        "LogoPath": "rulebook-examples/nakedclaude-v3/effortless-logo.png"
       },
       {
         "FlavorId": "flav-022",
         "ProjectSlug": "wedding-seating-optimizer",
-        "DisplayName": "wedding-seating-optimizer",
+        "DisplayName": "Wedding Seating Optimizer",
         "Flavor": "aggregation-heavy",
         "Complexity": "basic",
         "EntityCount": 4,
@@ -4226,54 +4755,62 @@
         "LookupCount": 7,
         "LearningFocus": "Auto-discovered demo. Replace this stub with a one-line description of what wedding-seating-optimizer is designed to teach.",
         "GoodAnswerKeyFor": null,
-        "SortOrder": 140
+        "SortOrder": 140,
+        "Tagline": "Seating plan as a DAG — per-table happiness, capacity flags, per-guest satisfaction recompute on every move.",
+        "LogoPath": "rulebook-examples/wedding-seating-optimizer/effortless-logo.png"
       },
       {
         "FlavorId": "flav-023",
-        "ProjectSlug": "expense-approval-demo",
-        "DisplayName": "expense-approval-demo",
+        "ProjectSlug": "expense-approval",
+        "DisplayName": "Expense Approval",
         "Flavor": "crud-template",
         "Complexity": "minimal",
         "EntityCount": 3,
         "CalculatedCount": 4,
         "AggregationCount": 1,
         "LookupCount": 2,
-        "LearningFocus": "Auto-discovered demo. Replace this stub with a one-line description of what expense-approval-demo is designed to teach.",
+        "LearningFocus": "Auto-discovered demo. Replace this stub with a one-line description of what expense-approval is designed to teach.",
         "GoodAnswerKeyFor": null,
-        "SortOrder": 80
+        "SortOrder": 80,
+        "Tagline": "Employees submit line-item reports; totals, over-budget, and escalation flags cascade automatically.",
+        "LogoPath": "rulebook-examples/expense-approval/effortless-logo.png"
       },
       {
         "FlavorId": "flav-024",
-        "ProjectSlug": "v1-nakedclaude-demo",
-        "DisplayName": "v1-nakedclaude-demo",
+        "ProjectSlug": "nakedclaude-v1",
+        "DisplayName": "NakedClaude (v1)",
         "Flavor": "tutorial-ladder",
         "Complexity": "minimal",
         "EntityCount": 1,
         "CalculatedCount": 1,
         "AggregationCount": 0,
         "LookupCount": 0,
-        "LearningFocus": "Auto-discovered demo. Replace this stub with a one-line description of what v1-nakedclaude-demo is designed to teach.",
+        "LearningFocus": "Auto-discovered demo. Replace this stub with a one-line description of what nakedclaude-v1 is designed to teach.",
         "GoodAnswerKeyFor": null,
-        "SortOrder": 40
+        "SortOrder": 40,
+        "Tagline": "1-entity Customers schema — baseline of what plain Claude produces with minimal prompting.",
+        "LogoPath": "rulebook-examples/nakedclaude-v1/effortless-logo.png"
       },
       {
         "FlavorId": "flav-025",
-        "ProjectSlug": "v4-nakedclaude-demo",
-        "DisplayName": "v4-nakedclaude-demo",
+        "ProjectSlug": "nakedclaude-v4",
+        "DisplayName": "NakedClaude (v4)",
         "Flavor": "aggregation-heavy",
         "Complexity": "advanced",
         "EntityCount": 15,
         "CalculatedCount": 30,
         "AggregationCount": 13,
         "LookupCount": 43,
-        "LearningFocus": "Auto-discovered demo. Replace this stub with a one-line description of what v4-nakedclaude-demo is designed to teach.",
+        "LearningFocus": "Auto-discovered demo. Replace this stub with a one-line description of what nakedclaude-v4 is designed to teach.",
         "GoodAnswerKeyFor": null,
-        "SortOrder": 240
+        "SortOrder": 240,
+        "Tagline": "15-entity invoicing + inventory domain — plain Claude's most-evolved output.",
+        "LogoPath": "rulebook-examples/nakedclaude-v4/effortless-logo.png"
       },
       {
         "FlavorId": "flav-026",
         "ProjectSlug": "volunteer-shift-scheduler",
-        "DisplayName": "volunteer-shift-scheduler",
+        "DisplayName": "Volunteer Shift Scheduler",
         "Flavor": "aggregation-heavy",
         "Complexity": "basic",
         "EntityCount": 4,
@@ -4282,7 +4819,22 @@
         "LookupCount": 4,
         "LearningFocus": "Auto-discovered demo. Replace this stub with a one-line description of what volunteer-shift-scheduler is designed to teach.",
         "GoodAnswerKeyFor": null,
-        "SortOrder": 130
+        "SortOrder": 130,
+        "Tagline": "Coverage status, volunteer load (under/ok/over), and event-level A–F staffing grade all fall out automatically.",
+        "LogoPath": "rulebook-examples/volunteer-shift-scheduler/effortless-logo.png"
+      },
+      {
+        "FlavorId": "flav-027",
+        "ProjectSlug": "planar-unit-discovery",
+        "DisplayName": "planar-unit-discovery",
+        "Flavor": "aggregation-heavy",
+        "Complexity": "advanced",
+        "EntityCount": 36,
+        "CalculatedCount": 110,
+        "AggregationCount": 33,
+        "LookupCount": 49,
+        "LearningFocus": "Auto-discovered demo. Replace this stub with a one-line description of what planar-unit-discovery is designed to teach.",
+        "GoodAnswerKeyFor": null
       }
     ]
   },
@@ -4638,7 +5190,7 @@
         "ClickId": "click-001",
         "FromKind": "count-number",
         "FromContext": "home-card:entities",
-        "ToPath": "/rulebook/entities",
+        "ToPath": "/developer/:domain/entities",
         "Filter": null,
         "Story": "Click 'Entities: N' on Home → /rulebook/entities (the list of all N)."
       },
@@ -4646,7 +5198,7 @@
         "ClickId": "click-002",
         "FromKind": "count-number",
         "FromContext": "home-card:substrates",
-        "ToPath": "/substrates",
+        "ToPath": "/developer/:domain/substrates",
         "Filter": null,
         "Story": "Click 'Substrates: N' on Home → /substrates."
       },
@@ -4654,7 +5206,7 @@
         "ClickId": "click-003",
         "FromKind": "count-number",
         "FromContext": "home-card:spokes",
-        "ToPath": "/spokes",
+        "ToPath": "/developer/:domain/spokes",
         "Filter": null,
         "Story": "Click 'Input spokes: N' on Home → /spokes."
       },
@@ -4662,7 +5214,7 @@
         "ClickId": "click-004",
         "FromKind": "count-number",
         "FromContext": "home-card:tests-passing",
-        "ToPath": "/tests",
+        "ToPath": "/developer/:domain/tests",
         "Filter": "status=passing",
         "Story": "Click 'Tests passing: X/Y' on Home → /tests with passing filter."
       },
@@ -4670,7 +5222,7 @@
         "ClickId": "click-005",
         "FromKind": "count-number",
         "FromContext": "home-card:tests-failing",
-        "ToPath": "/tests",
+        "ToPath": "/developer/:domain/tests",
         "Filter": "status=failing",
         "Story": "Click the failing-count chip on Home → /tests filtered to failing rows."
       },
@@ -4678,7 +5230,7 @@
         "ClickId": "click-006",
         "FromKind": "entity-row",
         "FromContext": "entities-list",
-        "ToPath": "/rulebook/entities/:entity",
+        "ToPath": "/developer/:domain/entities/:entity",
         "Filter": null,
         "Story": "Click an entity in the left list → the entity's own page (it already happens via setSelected — should also become a URL)."
       },
@@ -4686,7 +5238,7 @@
         "ClickId": "click-007",
         "FromKind": "field-row",
         "FromContext": "entity-detail:schema-table",
-        "ToPath": "/rulebook/entities/:entity",
+        "ToPath": "/developer/:domain/entities/:entity",
         "Filter": "field=:field",
         "Story": "Click a field row in the schema grid → the same entity page but with that field expanded / scrolled to."
       },
@@ -4702,7 +5254,7 @@
         "ClickId": "click-009",
         "FromKind": "formula-cell",
         "FromContext": "entity-detail:schema-table",
-        "ToPath": "/rulebook/formulas",
+        "ToPath": "/developer/:domain/formulas",
         "Filter": "entity=:entity&field=:field",
         "Story": "Click a formula expression in the schema grid → /rulebook/formulas filtered to that formula."
       },
@@ -4710,7 +5262,7 @@
         "ClickId": "click-010",
         "FromKind": "formula-cell",
         "FromContext": "formulas-list",
-        "ToPath": "/rulebook/entities/:entity",
+        "ToPath": "/developer/:domain/entities/:entity",
         "Filter": "field=:field",
         "Story": "Click a formula row in the formulas list → the entity page with that field highlighted."
       },
@@ -4742,7 +5294,7 @@
         "ClickId": "click-014",
         "FromKind": "role-pill",
         "FromContext": "users-list",
-        "ToPath": "/users/roles",
+        "ToPath": "/admin/roles",
         "Filter": "role=:roleId",
         "Story": "Click a role pill anywhere → /users/roles focused on that role."
       },
@@ -4750,7 +5302,7 @@
         "ClickId": "click-015",
         "FromKind": "role-pill",
         "FromContext": "topbar:current-user",
-        "ToPath": "/users/roles",
+        "ToPath": "/admin/roles",
         "Filter": "role=:roleId",
         "Story": "Click your own role pill in the top bar → see what that role gets / who else has it."
       },
@@ -4758,7 +5310,7 @@
         "ClickId": "click-016",
         "FromKind": "user-row",
         "FromContext": "roles-detail",
-        "ToPath": "/users",
+        "ToPath": "/admin/users",
         "Filter": "user=:userId",
         "Story": "Click a user listed under a role → /users with that user selected."
       },
@@ -4766,7 +5318,7 @@
         "ClickId": "click-017",
         "FromKind": "nav-card",
         "FromContext": "framing-list",
-        "ToPath": "/rulebook/framing",
+        "ToPath": "/docs/framing",
         "Filter": "invariant=:invariantId",
         "Story": "Click a FramingInvariant card → its detail (WrongFraming vs CorrectFraming side-by-side)."
       },
@@ -4774,7 +5326,7 @@
         "ClickId": "click-018",
         "FromKind": "axiom-link",
         "FromContext": "framing-detail",
-        "ToPath": "/rulebook/framing",
+        "ToPath": "/docs/framing",
         "Filter": "axiom=:axiomId&tab=axioms",
         "Story": "Click the violated-axiom pill on a FramingInvariant detail → the Axioms tab focused on that axiom."
       },
@@ -4782,7 +5334,7 @@
         "ClickId": "click-019",
         "FromKind": "flavor-tag",
         "FromContext": "topbar:project-switcher",
-        "ToPath": "/projects/flavors",
+        "ToPath": "/viewer/flavors",
         "Filter": "flavor=:flavor",
         "Story": "Click the flavour tag next to a project name → /projects/flavors filtered to that flavour."
       },
@@ -4790,7 +5342,7 @@
         "ClickId": "click-020",
         "FromKind": "flavor-tag",
         "FromContext": "flavors-grid:card",
-        "ToPath": "/projects/flavors",
+        "ToPath": "/viewer/flavors",
         "Filter": "flavor=:flavor",
         "Story": "Click a flavour card on the Flavours screen → drill in to that flavour's projects."
       },
@@ -4798,7 +5350,7 @@
         "ClickId": "click-021",
         "FromKind": "framing-invariant",
         "FromContext": "test-detail:explain",
-        "ToPath": "/rulebook/framing",
+        "ToPath": "/docs/framing",
         "Filter": "invariant=:invariantId",
         "Story": "From a failing test's detail, click the 'most-likely framing-invariant' suggestion → that invariant's page."
       },
@@ -4830,7 +5382,7 @@
         "ClickId": "click-025",
         "FromKind": "field-type-tag",
         "FromContext": "schema-grid",
-        "ToPath": "/rulebook/framing",
+        "ToPath": "/docs/framing",
         "Filter": "tab=field-types&type=:typeName",
         "Story": "Click a field's type tag ('calculated', 'aggregation', etc.) → FieldTypeTaxonomy explanation for that type."
       }
@@ -7098,16 +7650,6 @@
       }
     ]
   },
-  "_meta": {
-    "_CMCC_Summary": "Top-level rulebook describing the ERB project itself: rulebook-as-hub SSoT, ssotme-proxy (10+ substrate routes), admin portal (Viewer/Developer roles, navigation, screens, APIs, write-through invariant), AppUsers + permissions, build pipeline, conformance testing.",
-    "_ProjectGoal": "Demonstrate that a single declarative rulebook (effortless-rulebook.json) can generate working, conformant code in 10+ execution substrates that all produce identical results — AND that the developer experience on top of it (the admin portal) is itself driven entirely by rulebook entities (navigation, roles, screens, permissions, users).",
-    "_ArchitecturalHighlight": "effortless-rulebook.json is the DURABLE SSoT. Input spokes (admin portal, Airtable, LLM, manual JSON) all write into it. Output spokes (Python, Go, Postgres, Excel, OWL, PlantUML, Explain-DAG, English, COBOL, ARM64, Entity Framework, Airtable reverse-sync) all read from it. Every substrate passes the same conformance tests.",
-    "_WriteThroughInvariant": "The admin portal's Postgres database is the LIVE EDITOR; the rulebook JSON is the DURABLE SSOT. Every save in the portal must write to BOTH (in the same logical transaction). If Postgres is dropped, the editor rebuilds from JSON. If JSON is lost, the editor has no source of truth.",
-    "_PortalCliParity": "The admin portal and ./start.sh --cli are peer interfaces to the SAME effortless.json pipeline. Install Tool, Build, Clean, Test, and project switching all shell out to the same `effortless` CLI commands — so portal behaviour cannot drift from CLI behaviour.",
-    "_BootstrapStory": "Cold start: `git clone && ./start.sh` → start.sh boots ssotme-proxy on :4242, starts portal backend on :7777, backend auto-creates editor Postgres DB if missing and runs migrations derived from the rulebook, opens browser. Developer signs in as the default user from the rulebook's AppUsers entity. Land on Home. The whole story unfolds from one command.",
-    "_DeveloperJourney": "Home → pick a project (or accept active one) → Rulebook to see what the project means → Substrates to see what it generates → Builds to see how it built → Tests to verify conformance → Input Spokes to see where edits come from → Users to see who can edit. Tech Tools only for escape-hatch debugging.",
-    "_ResilienceClaim": "Drop the entire Postgres editor any time. ./start.sh rebuilds it from JSON. The rulebook JSON travels with the repo; the editor DB does not."
-  },
   "RulebookTags": {
     "Description": "Tag catalog for RulebookFlavors. Each tag has a color and emoji so it renders as a visible chip in the portal. Tags are flexible attributes — a flavor can have many tags. Browse/filter the flavors grid by any combination of tags.",
     "schema": [
@@ -7971,6 +8513,672 @@
         "FlavorTagId": "ft-129",
         "Flavor": "flav-026",
         "Tag": "tag-basic"
+      }
+    ]
+  },
+  "ClaudeSkills": {
+    "Description": "The catalog of Claude Code skills that make up the effortless-claude skill set. Each skill is a loadable instruction set that pre-teaches Claude everything it needs to work in an ERB project — naming conventions, pipeline mechanics, formula semantics, etc. Skills are the answer to the LLM learning-curve problem: instead of every user teaching Claude from scratch, the learning is encoded once and loaded on demand. LocalMirrorPath is a derived artifact: clone-skills.sh pulls a live copy of each skill from the source repo so the docs/skills/ mirror stays current.",
+    "schema": [
+      {
+        "name": "SkillId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stable PK, e.g. skill-001"
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Skill directory name, matches the slash command without the leading /"
+      },
+      {
+        "name": "SlashCommand",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "Formula": "=\"/\"+{{Name}}",
+        "Description": "The slash command users invoke, e.g. /effortless-cmcc"
+      },
+      {
+        "name": "Category",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "theory | modeling | pipeline | setup | tooling | data | ecosystem | features"
+      },
+      {
+        "name": "OneLineSummary",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "One sentence describing when to use this skill"
+      },
+      {
+        "name": "Audience",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "customer | general — who this skill is written for"
+      },
+      {
+        "name": "LocalMirrorPath",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "Formula": "\"docs/skills/\"+{{Name}}+\"/SKILL.md\"",
+        "Description": "Path to the derived local mirror of this skill. Generated by clone-skills.sh; DO NOT EDIT by hand."
+      },
+      {
+        "name": "CloneUrl",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Raw GitHub URL from which clone-skills.sh pulls a fresh copy of this skill"
+      },
+      {
+        "name": "HighlightInReadme",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": false,
+        "Description": "True if this skill should appear in the README skills highlights table — the ones most directly relevant to building with this repo"
+      }
+    ],
+    "data": [
+      {
+        "SkillId": "skill-002",
+        "Name": "effortless-airtable",
+        "SlashCommand": "/effortless-airtable",
+        "Category": "data",
+        "OneLineSummary": "Use when making schema or data changes via the Airtable API in an ERB project — adding fields, creating tables, modifying existing fields, or when you need to understand Airtable API limitations (e.",
+        "Audience": "customer",
+        "LocalMirrorPath": "docs/skills/effortless-airtable/SKILL.md",
+        "CloneUrl": "https://raw.githubusercontent.com/effortlessapi/effortless-claude/main/skills/effortless-airtable/SKILL.md",
+        "HighlightInReadme": false
+      },
+      {
+        "SkillId": "skill-003",
+        "Name": "effortless-airtable-omni",
+        "SlashCommand": "/effortless-airtable-omni",
+        "Category": "data",
+        "OneLineSummary": "Use ONLY for Airtable schema changes that the API cannot handle — formula fields, lookup fields, rollup fields, and new table creation (which requires the Name formula).",
+        "Audience": "customer",
+        "LocalMirrorPath": "docs/skills/effortless-airtable-omni/SKILL.md",
+        "CloneUrl": "https://raw.githubusercontent.com/effortlessapi/effortless-claude/main/skills/effortless-airtable-omni/SKILL.md",
+        "HighlightInReadme": false
+      },
+      {
+        "SkillId": "skill-004",
+        "Name": "effortless-bases",
+        "SlashCommand": "/effortless-bases",
+        "Category": "setup",
+        "OneLineSummary": "Use when the user wants to spin up a Postgres base on bases.",
+        "Audience": "customer",
+        "LocalMirrorPath": "docs/skills/effortless-bases/SKILL.md",
+        "CloneUrl": "https://raw.githubusercontent.com/effortlessapi/effortless-claude/main/skills/effortless-bases/SKILL.md",
+        "HighlightInReadme": false
+      },
+      {
+        "SkillId": "skill-005",
+        "Name": "effortless-bootstrap",
+        "SlashCommand": "/effortless-bootstrap",
+        "Category": "setup",
+        "OneLineSummary": "Use when the user wants to bootstrap a new effortless project from raw text, requirements, or a description of a platform.",
+        "Audience": "customer",
+        "LocalMirrorPath": "docs/skills/effortless-bootstrap/SKILL.md",
+        "CloneUrl": "https://raw.githubusercontent.com/effortlessapi/effortless-claude/main/skills/effortless-bootstrap/SKILL.md",
+        "HighlightInReadme": true
+      },
+      {
+        "SkillId": "skill-006",
+        "Name": "effortless-claude-updates",
+        "SlashCommand": "/effortless-claude-updates",
+        "Category": "ecosystem",
+        "OneLineSummary": "Use for anything about the effortless-claude **skill set** itself — both CHECKING for updates and APPLYING them.",
+        "Audience": "customer",
+        "LocalMirrorPath": "docs/skills/effortless-claude-updates/SKILL.md",
+        "CloneUrl": "https://raw.githubusercontent.com/effortlessapi/effortless-claude/main/skills/effortless-claude-updates/SKILL.md",
+        "HighlightInReadme": false
+      },
+      {
+        "SkillId": "skill-007",
+        "Name": "effortless-cli",
+        "SlashCommand": "/effortless-cli",
+        "Category": "tooling",
+        "OneLineSummary": "Use for the `effortless` CLI — both **installing/updating the binary** AND **using its commands**.",
+        "Audience": "customer",
+        "LocalMirrorPath": "docs/skills/effortless-cli/SKILL.md",
+        "CloneUrl": "https://raw.githubusercontent.com/effortlessapi/effortless-claude/main/skills/effortless-cli/SKILL.md",
+        "HighlightInReadme": false
+      },
+      {
+        "SkillId": "skill-008",
+        "Name": "effortless-cmcc",
+        "SlashCommand": "/effortless-cmcc",
+        "Category": "theory",
+        "OneLineSummary": "Use whenever the user asks an evaluative or \"why\" question about effortless / ERB — including the friendly-but-exploratory framings, not just defensive ones.",
+        "Audience": "customer",
+        "LocalMirrorPath": "docs/skills/effortless-cmcc/SKILL.md",
+        "CloneUrl": "https://raw.githubusercontent.com/effortlessapi/effortless-claude/main/skills/effortless-cmcc/SKILL.md",
+        "HighlightInReadme": true
+      },
+      {
+        "SkillId": "skill-009",
+        "Name": "effortless-conventions",
+        "SlashCommand": "/effortless-conventions",
+        "Category": "modeling",
+        "OneLineSummary": "Use when you need ERB naming conventions, DAG structure rules, PascalCase table names, primary key and foreign key patterns, the Name field requirement, or understanding why many-to-many relationships are not allowed.",
+        "Audience": "customer",
+        "LocalMirrorPath": "docs/skills/effortless-conventions/SKILL.md",
+        "CloneUrl": "https://raw.githubusercontent.com/effortlessapi/effortless-claude/main/skills/effortless-conventions/SKILL.md",
+        "HighlightInReadme": true
+      },
+      {
+        "SkillId": "skill-011",
+        "Name": "effortless-diagnostics",
+        "SlashCommand": "/effortless-diagnostics",
+        "Category": "tooling",
+        "OneLineSummary": "Use when diagnosing ERB project health — validating DAG integrity, checking for broken FK targets, finding JOIN anti-patterns in application code, migrating legacy code from base table reads to view reads, or running diagnostic queries.",
+        "Audience": "customer",
+        "LocalMirrorPath": "docs/skills/effortless-diagnostics/SKILL.md",
+        "CloneUrl": "https://raw.githubusercontent.com/effortlessapi/effortless-claude/main/skills/effortless-diagnostics/SKILL.md",
+        "HighlightInReadme": false
+      },
+      {
+        "SkillId": "skill-012",
+        "Name": "effortless-ecosystem",
+        "SlashCommand": "/effortless-ecosystem",
+        "Category": "ecosystem",
+        "OneLineSummary": "Use when the user asks what repos exist in the effortless / SSoTme ecosystem, where to find the source for a specific tool, \"is there a repo for X\", \"what transpilers exist\", \"show me the open source projects\", or any question about how the various GitHub repos fit together.",
+        "Audience": "customer",
+        "LocalMirrorPath": "docs/skills/effortless-ecosystem/SKILL.md",
+        "CloneUrl": "https://raw.githubusercontent.com/effortlessapi/effortless-claude/main/skills/effortless-ecosystem/SKILL.md",
+        "HighlightInReadme": false
+      },
+      {
+        "SkillId": "skill-013",
+        "Name": "effortless-excel-export",
+        "SlashCommand": "/effortless-excel-export",
+        "Category": "features",
+        "OneLineSummary": "Use when adding Excel export to any Effortless project backed by a Postgres database.",
+        "Audience": "customer",
+        "LocalMirrorPath": "docs/skills/effortless-excel-export/SKILL.md",
+        "CloneUrl": "https://raw.githubusercontent.com/effortlessapi/effortless-claude/main/skills/effortless-excel-export/SKILL.md",
+        "HighlightInReadme": false
+      },
+      {
+        "SkillId": "skill-014",
+        "Name": "effortless-init",
+        "SlashCommand": "/effortless-init",
+        "Category": "setup",
+        "OneLineSummary": "Use when initializing a new effortless project: \"make this an effortless project\", \"init effortless\", \"init effortless project\", \"set up effortless here\", \"connect to Airtable\", \"hook up Airtable\", or when an existing project is missing CLAUDE.",
+        "Audience": "customer",
+        "LocalMirrorPath": "docs/skills/effortless-init/SKILL.md",
+        "CloneUrl": "https://raw.githubusercontent.com/effortlessapi/effortless-claude/main/skills/effortless-init/SKILL.md",
+        "HighlightInReadme": false
+      },
+      {
+        "SkillId": "skill-015",
+        "Name": "effortless-leopold-loop",
+        "SlashCommand": "/effortless-leopold-loop",
+        "Category": "pipeline",
+        "OneLineSummary": "Use whenever the user mentions the \"Leopold loop\", \"the loop\", \"a turn of the loop\", \"do a turn\", \"rebuild the rulebook\", \"update the app to match the rules\", or any reference to the iterative ERB development cycle.",
+        "Audience": "customer",
+        "LocalMirrorPath": "docs/skills/effortless-leopold-loop/SKILL.md",
+        "CloneUrl": "https://raw.githubusercontent.com/effortlessapi/effortless-claude/main/skills/effortless-leopold-loop/SKILL.md",
+        "HighlightInReadme": true
+      },
+      {
+        "SkillId": "skill-016",
+        "Name": "effortless-magic-links",
+        "SlashCommand": "/effortless-magic-links",
+        "Category": "features",
+        "OneLineSummary": "Use when the user wants to add passwordless email-code (magic-link) auth to any project backed by a Postgres database — not just bases.",
+        "Audience": "general",
+        "LocalMirrorPath": "docs/skills/effortless-magic-links/SKILL.md",
+        "CloneUrl": "https://raw.githubusercontent.com/effortlessapi/effortless-claude/main/skills/effortless-magic-links/SKILL.md",
+        "HighlightInReadme": false
+      },
+      {
+        "SkillId": "skill-017",
+        "Name": "effortless-mcp",
+        "SlashCommand": "/effortless-mcp",
+        "Category": "tooling",
+        "OneLineSummary": "Use for the **Effortless MCP server** — the always-on Model Context Protocol endpoint that exposes the entire Effortless transpiler catalog (~54 tools) plus the effortless-claude skill set (resources) to any MCP-compatible agent (Claude Code, Cursor, Windsurf, ChatGPT, etc.",
+        "Audience": "customer",
+        "LocalMirrorPath": "docs/skills/effortless-mcp/SKILL.md",
+        "CloneUrl": "https://raw.githubusercontent.com/effortlessapi/effortless-claude/main/skills/effortless-mcp/SKILL.md",
+        "HighlightInReadme": false
+      },
+      {
+        "SkillId": "skill-018",
+        "Name": "effortless-orchestrator",
+        "SlashCommand": "/effortless-orchestrator",
+        "Category": "pipeline",
+        "OneLineSummary": "Top-level orchestrator for Effortless Rulebook (ERB) projects — Airtable-sourced schema-first business rules, `effortless.",
+        "Audience": "customer",
+        "LocalMirrorPath": "docs/skills/effortless-orchestrator/SKILL.md",
+        "CloneUrl": "https://raw.githubusercontent.com/effortlessapi/effortless-claude/main/skills/effortless-orchestrator/SKILL.md",
+        "HighlightInReadme": true
+      },
+      {
+        "SkillId": "skill-019",
+        "Name": "effortless-pipeline",
+        "SlashCommand": "/effortless-pipeline",
+        "Category": "pipeline",
+        "OneLineSummary": "Use when working with the ERB build pipeline — effortless.",
+        "Audience": "customer",
+        "LocalMirrorPath": "docs/skills/effortless-pipeline/SKILL.md",
+        "CloneUrl": "https://raw.githubusercontent.com/effortlessapi/effortless-claude/main/skills/effortless-pipeline/SKILL.md",
+        "HighlightInReadme": false
+      },
+      {
+        "SkillId": "skill-020",
+        "Name": "effortless-query",
+        "SlashCommand": "/effortless-query",
+        "Category": "tooling",
+        "OneLineSummary": "Use when querying an effortless-rulebook.",
+        "Audience": "customer",
+        "LocalMirrorPath": "docs/skills/effortless-query/SKILL.md",
+        "CloneUrl": "https://raw.githubusercontent.com/effortlessapi/effortless-claude/main/skills/effortless-query/SKILL.md",
+        "HighlightInReadme": false
+      },
+      {
+        "SkillId": "skill-021",
+        "Name": "effortless-rationale",
+        "SlashCommand": "/effortless-rationale",
+        "Category": "theory",
+        "OneLineSummary": "Use when explaining or defending the effortless / CMCC methodology to a skeptic — \"why use this instead of just writing code\", \"isn't this overkill\", \"convince me\", \"what's wrong with ORM / microservices / hand-written SQL\", \"why Airtable\", \"isn't this just MDE\", \"how is this different from low-code",
+        "Audience": "customer",
+        "LocalMirrorPath": "docs/skills/effortless-rationale/SKILL.md",
+        "CloneUrl": "https://raw.githubusercontent.com/effortlessapi/effortless-claude/main/skills/effortless-rationale/SKILL.md",
+        "HighlightInReadme": false
+      },
+      {
+        "SkillId": "skill-022",
+        "Name": "effortless-react-explainer-dag",
+        "SlashCommand": "/effortless-react-explainer-dag",
+        "Category": "features",
+        "OneLineSummary": "Use when adding the React Explainer DAG to an Effortless project — a generated, embedded visualization of the rulebook's calculated-field DAG that lets users click any cell/field and see exactly how it was derived (raw inputs → lookups → 1st/2nd/3rd-order calcs → aggregations).",
+        "Audience": "customer",
+        "LocalMirrorPath": "docs/skills/effortless-react-explainer-dag/SKILL.md",
+        "CloneUrl": "https://raw.githubusercontent.com/effortlessapi/effortless-claude/main/skills/effortless-react-explainer-dag/SKILL.md",
+        "HighlightInReadme": true
+      },
+      {
+        "SkillId": "skill-023",
+        "Name": "effortless-rulebooks",
+        "SlashCommand": "/effortless-rulebooks",
+        "Category": "modeling",
+        "OneLineSummary": "Use when the user wants empirical proof that CMCC actually works — show me the receipts, does this run in code, ExplainDAG, witnessed inference graph, conformance testing, answer-key.",
+        "Audience": "customer",
+        "LocalMirrorPath": "docs/skills/effortless-rulebooks/SKILL.md",
+        "CloneUrl": "https://raw.githubusercontent.com/effortlessapi/effortless-claude/main/skills/effortless-rulebooks/SKILL.md",
+        "HighlightInReadme": true
+      },
+      {
+        "SkillId": "skill-024",
+        "Name": "effortless-schema",
+        "SlashCommand": "/effortless-schema",
+        "Category": "modeling",
+        "OneLineSummary": "Use to understand the **structure** of effortless-rulebook.",
+        "Audience": "customer",
+        "LocalMirrorPath": "docs/skills/effortless-schema/SKILL.md",
+        "CloneUrl": "https://raw.githubusercontent.com/effortlessapi/effortless-claude/main/skills/effortless-schema/SKILL.md",
+        "HighlightInReadme": false
+      },
+      {
+        "SkillId": "skill-025",
+        "Name": "effortless-setup-postgres",
+        "SlashCommand": "/effortless-setup-postgres",
+        "Category": "setup",
+        "OneLineSummary": "Use when setting up an Effortless project with a postgres database from an existing Airtable base.",
+        "Audience": "customer",
+        "LocalMirrorPath": "docs/skills/effortless-setup-postgres/SKILL.md",
+        "CloneUrl": "https://raw.githubusercontent.com/effortlessapi/effortless-claude/main/skills/effortless-setup-postgres/SKILL.md",
+        "HighlightInReadme": true
+      },
+      {
+        "SkillId": "skill-026",
+        "Name": "effortless-sql",
+        "SlashCommand": "/effortless-sql",
+        "Category": "data",
+        "OneLineSummary": "Use when working with ERB-generated SQL — reading from vw_* views vs base tables, understanding generated files (00-05), using *b-customize-* files, SQL function patterns (calc_*, get_*), view structure, or ERBCustomizations table.",
+        "Audience": "customer",
+        "LocalMirrorPath": "docs/skills/effortless-sql/SKILL.md",
+        "CloneUrl": "https://raw.githubusercontent.com/effortlessapi/effortless-claude/main/skills/effortless-sql/SKILL.md",
+        "HighlightInReadme": false
+      },
+      {
+        "SkillId": "skill-027",
+        "Name": "effortless-ssotme-protocol",
+        "SlashCommand": "/effortless-ssotme-protocol",
+        "Category": "pipeline",
+        "OneLineSummary": "Use when writing or editing effortless.",
+        "Audience": "customer",
+        "LocalMirrorPath": "docs/skills/effortless-ssotme-protocol/SKILL.md",
+        "CloneUrl": "https://raw.githubusercontent.com/effortlessapi/effortless-claude/main/skills/effortless-ssotme-protocol/SKILL.md",
+        "HighlightInReadme": false
+      },
+      {
+        "SkillId": "skill-028",
+        "Name": "effortless-workflow",
+        "SlashCommand": "/effortless-workflow",
+        "Category": "pipeline",
+        "OneLineSummary": "Use when making changes to an ERB project — modifying effortless-rulebook.",
+        "Audience": "customer",
+        "LocalMirrorPath": "docs/skills/effortless-workflow/SKILL.md",
+        "CloneUrl": "https://raw.githubusercontent.com/effortlessapi/effortless-claude/main/skills/effortless-workflow/SKILL.md",
+        "HighlightInReadme": true
+      }
+    ]
+  },
+  "CMCCSummary": {
+    "Description": "One-line CMCC framing for the platform rulebook itself: what it is, what it generates, and what conformance it claims.",
+    "important": false,
+    "schema": [
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Identifier for this narrative entry (single-row tables use 'primary')."
+      },
+      {
+        "name": "Description",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "The full narrative content for this concept."
+      }
+    ],
+    "data": [
+      {
+        "Name": "primary",
+        "Description": "Top-level rulebook describing the ERB project itself: rulebook-as-hub SSoT, ssotme-proxy (10+ substrate routes), admin portal (Viewer/Developer roles, navigation, screens, APIs, write-through invariant), AppUsers + permissions, build pipeline, conformance testing."
+      }
+    ]
+  },
+  "ProjectGoal": {
+    "Description": "The primary goal of the platform: the load-bearing claim the project is built to demonstrate.",
+    "important": false,
+    "schema": [
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Identifier for this narrative entry (single-row tables use 'primary')."
+      },
+      {
+        "name": "Description",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "The full narrative content for this concept."
+      }
+    ],
+    "data": [
+      {
+        "Name": "primary",
+        "Description": "Demonstrate that a single declarative rulebook (effortless-rulebook.json) can generate working, conformant code in 10+ execution substrates that all produce identical results — AND that the developer experience on top of it (the admin portal) is itself driven entirely by rulebook entities (navigation, roles, screens, permissions, users)."
+      }
+    ]
+  },
+  "ArchitecturalHighlight": {
+    "Description": "The architectural pattern that makes the platform work: input spokes write to the rulebook, output spokes read from it, conformance binds them.",
+    "important": false,
+    "schema": [
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Identifier for this narrative entry (single-row tables use 'primary')."
+      },
+      {
+        "name": "Description",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "The full narrative content for this concept."
+      }
+    ],
+    "data": [
+      {
+        "Name": "primary",
+        "Description": "effortless-rulebook.json is the DURABLE SSoT. Input spokes (admin portal, Airtable, LLM, manual JSON) all write into it. Output spokes (Python, Go, Postgres, Excel, OWL, PlantUML, Explain-DAG, English, COBOL, ARM64, Entity Framework, Airtable reverse-sync) all read from it. Every substrate passes the same conformance tests."
+      }
+    ]
+  },
+  "WriteThroughInvariant": {
+    "Description": "The portal-vs-rulebook write-through invariant: Postgres is the live editor, JSON is the durable SSoT, every save writes to both.",
+    "important": false,
+    "schema": [
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Identifier for this narrative entry (single-row tables use 'primary')."
+      },
+      {
+        "name": "Description",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "The full narrative content for this concept."
+      }
+    ],
+    "data": [
+      {
+        "Name": "primary",
+        "Description": "The admin portal's Postgres database is the LIVE EDITOR; the rulebook JSON is the DURABLE SSOT. Every save in the portal must write to BOTH (in the same logical transaction). If Postgres is dropped, the editor rebuilds from JSON. If JSON is lost, the editor has no source of truth."
+      }
+    ]
+  },
+  "PortalCliParity": {
+    "Description": "The portal and the `./start.sh --cli` interface are peer interfaces to the same effortless.json pipeline; portal behaviour cannot drift from CLI behaviour.",
+    "important": false,
+    "schema": [
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Identifier for this narrative entry (single-row tables use 'primary')."
+      },
+      {
+        "name": "Description",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "The full narrative content for this concept."
+      }
+    ],
+    "data": [
+      {
+        "Name": "primary",
+        "Description": "The admin portal and ./start.sh --cli are peer interfaces to the SAME effortless.json pipeline. Install Tool, Build, Clean, Test, and project switching all shell out to the same `effortless` CLI commands — so portal behaviour cannot drift from CLI behaviour."
+      }
+    ]
+  },
+  "BootstrapStory": {
+    "Description": "The cold-start story: from `git clone` to a running portal with a default user landing on Home.",
+    "important": false,
+    "schema": [
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Identifier for this narrative entry (single-row tables use 'primary')."
+      },
+      {
+        "name": "Description",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "The full narrative content for this concept."
+      }
+    ],
+    "data": [
+      {
+        "Name": "primary",
+        "Description": "Cold start: `git clone && ./start.sh` → start.sh boots ssotme-proxy on :4242, starts portal backend on :7777, backend auto-creates editor Postgres DB if missing and runs migrations derived from the rulebook, opens browser. Developer signs in as the default user from the rulebook's AppUsers entity. Land on Home. The whole story unfolds from one command."
+      }
+    ]
+  },
+  "DeveloperJourney": {
+    "Description": "The intended developer path through the portal: Home → project → Rulebook → Substrates → Builds → Tests → Input Spokes → Users.",
+    "important": false,
+    "schema": [
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Identifier for this narrative entry (single-row tables use 'primary')."
+      },
+      {
+        "name": "Description",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "The full narrative content for this concept."
+      }
+    ],
+    "data": [
+      {
+        "Name": "primary",
+        "Description": "Home → pick a project (or accept active one) → Rulebook to see what the project means → Substrates to see what it generates → Builds to see how it built → Tests to verify conformance → Input Spokes to see where edits come from → Users to see who can edit. Tech Tools only for escape-hatch debugging."
+      }
+    ]
+  },
+  "ResilienceClaim": {
+    "Description": "The resilience claim: dropping the Postgres editor at any time is safe, because `./start.sh` rebuilds it from JSON.",
+    "important": false,
+    "schema": [
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Identifier for this narrative entry (single-row tables use 'primary')."
+      },
+      {
+        "name": "Description",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "The full narrative content for this concept."
+      }
+    ],
+    "data": [
+      {
+        "Name": "primary",
+        "Description": "Drop the entire Postgres editor any time. ./start.sh rebuilds it from JSON. The rulebook JSON travels with the repo; the editor DB does not."
+      }
+    ]
+  },
+  "__meta__": {
+    "Description": "Project-level metadata that travels with the rulebook: tagline, motif, narrative descriptions, substrate list, signature rows, etc. One row per metadata key. Use ValueType to interpret StringValue vs JsonValue.",
+    "important": false,
+    "schema": [
+      {
+        "name": "MetaKey",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "The metadata key (e.g. 'tagline', 'motif_palette', 'substrates'). Unique within the table."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "formula": "={{MetaKey}}",
+        "Description": "Identifier for this metadata entry. Mirrors MetaKey so the row is addressable by Name like every other table."
+      },
+      {
+        "name": "ValueType",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "How to interpret the value columns: 'string' (use StringValue), 'object' (parse JsonValue as JSON object), 'array' (parse JsonValue as JSON array)."
+      },
+      {
+        "name": "StringValue",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Plain string value. Populated when ValueType == 'string'; null otherwise."
+      },
+      {
+        "name": "JsonValue",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "JSON-encoded value. Populated when ValueType == 'object' or 'array'; null when ValueType == 'string'."
+      }
+    ],
+    "data": [
+      {
+        "MetaKey": "tagline",
+        "Name": "tagline",
+        "ValueType": "string",
+        "StringValue": "The admin portal that builds itself from its own rulebook.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "motif",
+        "Name": "motif",
+        "ValueType": "string",
+        "StringValue": "platform",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "motif_palette",
+        "Name": "motif_palette",
+        "ValueType": "object",
+        "StringValue": null,
+        "JsonValue": "{\"primary\": \"#1b2a44\", \"accent\": \"#4cc2c4\", \"ink\": \"#0b1220\"}"
+      },
+      {
+        "MetaKey": "description_rich",
+        "Name": "description_rich",
+        "ValueType": "string",
+        "StringValue": "Top-level rulebook describing the ERB project itself: rulebook-as-hub SSoT, ssotme-proxy (10+ substrate routes), admin portal (Viewer/Developer roles, navigation, screens, APIs, write-through invariant), AppUsers + permissions, build pipeline, conformance testing.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "use_cases",
+        "Name": "use_cases",
+        "ValueType": "array",
+        "StringValue": null,
+        "JsonValue": "[]"
+      },
+      {
+        "MetaKey": "signature_rows",
+        "Name": "signature_rows",
+        "ValueType": "array",
+        "StringValue": null,
+        "JsonValue": "[]"
+      },
+      {
+        "MetaKey": "journal_seed",
+        "Name": "journal_seed",
+        "ValueType": "string",
+        "StringValue": "Cold start: `git clone && ./start.sh` → start.sh boots ssotme-proxy on :4242, starts portal backend on :7777, backend auto-creates editor Postgres DB if missing and runs migrations derived from the rulebook, opens browser. Developer signs in as the default user from the rulebook's AppUsers entity. Land on Home. The whole story unfolds from one command.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "substrates",
+        "Name": "substrates",
+        "ValueType": "array",
+        "StringValue": null,
+        "JsonValue": "[{\"key\": \"binary-(arm64)\", \"important\": false, \"chip_label\": \"Binary (ARM64)\"}, {\"key\": \"python\", \"important\": false, \"chip_label\": \"Python\"}, {\"key\": \"go\", \"important\": false, \"chip_label\": \"Go\"}, {\"key\": \"postgresql\", \"important\": false, \"chip_label\": \"PostgreSQL\"}, {\"key\": \"csv\", \"important\": false, \"chip_label\": \"CSV\"}, {\"key\": \"excel\", \"important\": false, \"chip_label\": \"Excel\"}, {\"key\": \"plantuml\", \"important\": false, \"chip_label\": \"PlantUML\"}, {\"key\": \"owl-rdf\", \"important\": false, \"chip_label\": \"OWL/RDF\"}, {\"key\": \"explain-dag\", \"important\": false, \"chip_label\": \"Explain DAG\"}, {\"key\": \"entity-framework\", \"important\": false, \"chip_label\": \"Entity Framework\"}]"
       }
     ]
   }

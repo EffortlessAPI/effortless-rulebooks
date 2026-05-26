@@ -1,0 +1,110 @@
+[
+  {
+    "assignment_id": "allens-arsenal-qb",
+    "roster": "allens-arsenal",
+    "player": "josh-allen",
+    "name": "allens-arsenal-qb"
+  },
+  {
+    "assignment_id": "allens-arsenal-rb",
+    "roster": "allens-arsenal",
+    "player": "derrick-henry",
+    "name": "allens-arsenal-rb"
+  },
+  {
+    "assignment_id": "allens-arsenal-wr",
+    "roster": "allens-arsenal",
+    "player": "tyreek-hill",
+    "name": "allens-arsenal-wr"
+  },
+  {
+    "assignment_id": "davantes-dynasty-qb",
+    "roster": "davantes-dynasty",
+    "player": "lamar-jackson",
+    "name": "davantes-dynasty-qb"
+  },
+  {
+    "assignment_id": "davantes-dynasty-wr1",
+    "roster": "davantes-dynasty",
+    "player": "davante-adams",
+    "name": "davantes-dynasty-wr1"
+  },
+  {
+    "assignment_id": "davantes-dynasty-wr2",
+    "roster": "davantes-dynasty",
+    "player": "aj-brown",
+    "name": "davantes-dynasty-wr2"
+  },
+  {
+    "assignment_id": "defense-wins-qb",
+    "roster": "defense-wins",
+    "player": "russell-wilson",
+    "name": "defense-wins-qb"
+  },
+  {
+    "assignment_id": "defense-wins-rb",
+    "roster": "defense-wins",
+    "player": "miles-sanders",
+    "name": "defense-wins-rb"
+  },
+  {
+    "assignment_id": "defense-wins-wr",
+    "roster": "defense-wins",
+    "player": "stefon-diggs",
+    "name": "defense-wins-wr"
+  },
+  {
+    "assignment_id": "hurts-hustlers-qb",
+    "roster": "hurts-hustlers",
+    "player": "jalen-hurts",
+    "name": "hurts-hustlers-qb"
+  },
+  {
+    "assignment_id": "hurts-hustlers-rb",
+    "roster": "hurts-hustlers",
+    "player": "saquon-barkley",
+    "name": "hurts-hustlers-rb"
+  },
+  {
+    "assignment_id": "hurts-hustlers-wr",
+    "roster": "hurts-hustlers",
+    "player": "ja-marr-chase",
+    "name": "hurts-hustlers-wr"
+  },
+  {
+    "assignment_id": "hurts-limit-qb",
+    "roster": "hurts-limit",
+    "player": "bryce-young",
+    "name": "hurts-limit-qb"
+  },
+  {
+    "assignment_id": "hurts-limit-rb",
+    "roster": "hurts-limit",
+    "player": "de-aaron-henry",
+    "name": "hurts-limit-rb"
+  },
+  {
+    "assignment_id": "hurts-limit-wr",
+    "roster": "hurts-limit",
+    "player": "ceedee-lamb",
+    "name": "hurts-limit-wr"
+  },
+  {
+    "assignment_id": "mahomes-mob-qb",
+    "roster": "mahomes-mob",
+    "player": "patrick-mahomes",
+    "name": "mahomes-mob-qb"
+  },
+  {
+    "assignment_id": "mahomes-mob-rb",
+    "roster": "mahomes-mob",
+    "player": "christian-mccaffrey",
+    "name": "mahomes-mob-rb"
+  },
+  {
+    "assignment_id": "mahomes-mob-te",
+    "roster": "mahomes-mob",
+    "player": "travis-kelce",
+    "name": "mahomes-mob-te"
+  }
+]

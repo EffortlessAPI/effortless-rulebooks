@@ -17,7 +17,7 @@
       "IsSSoTTranspiler": false,
       "Name": "rulebooktopostgres",
       "RelativePath": "/postgres-bootstrap",
-      "CommandLine": "rulebook-to-postgres -i ../effortless-rulebook/star-trek-rulebook.json",
+      "CommandLine": "rulebook-to-postgres -i ../effortless-rulebook/star-trek-rulebook.json -p mode=drop-all -p stage=dev -p drop_all=true",
       "IsDisabled": false,
       "LastVersionUsed": "v2026.05.09.1738",
       "LastUrl": "https://effortless-rulebook-to-postgres-v2026-05-09-1738-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
@@ -36,6 +36,14 @@
       "RelativePath": "/xlsx",
       "CommandLine": "http://localhost:4242/rulebook-to-xlsx -i ../effortless-rulebook/star-trek-rulebook.json",
       "IsDisabled": false
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "httplocalhost4242postgrescalculatedtorulebook",
+      "RelativePath": "/postgres-bootstrap",
+      "CommandLine": "http://localhost:4242/postgres-calculated-to-rulebook -i ../effortless-rulebook/star-trek-rulebook.json",
+      "IsDisabled": false,
+      "Description": "Reverse spoke: refresh rulebook derived-field display copies from Postgres views after the destructive rebuild (raws verified, never written)."
     }
   ]
 }

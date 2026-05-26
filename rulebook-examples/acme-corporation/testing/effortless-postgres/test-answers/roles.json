@@ -1,0 +1,26 @@
+[
+  {
+    "role_id": "analyst",
+    "name": "Analyst",
+    "description": "The business analysis know what the customer's want.",
+    "is_manager": false,
+    "employees": "priya-patel",
+    "count_of_employees": 1
+  },
+  {
+    "role_id": "developer",
+    "name": "Developer",
+    "description": "Developers handle the implementation and are responsible for making the final product do what is expected",
+    "is_manager": true,
+    "employees": "mike-johnson",
+    "count_of_employees": 1
+  },
+  {
+    "role_id": "projectmanager",
+    "name": "ProjectManager",
+    "description": "The project Manager makes sure that the developers do what the analysts ask for",
+    "is_manager": true,
+    "employees": "sarah-chen",
+    "count_of_employees": 1
+  }
+]

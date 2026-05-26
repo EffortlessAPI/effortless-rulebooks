@@ -1,9 +1,17 @@
 {
   "$schema": "https://example.com/cmcc-schema/v1",
-  "Name": "DEMO: StarTrek",
-  "Description": "Rulebook generated from Airtable base 'DEMO: StarTrek'.",
+  "Name": "Star Trek",
+  "Description": "Aggregations over nested series → seasons → episodes (avg rating roll-ups). The canonical aggregation demo.",
   "Series": {
     "Description": "Table: Series",
+    "important": true,
+    "summary_rich": "Each row is a **Star Trek show** — TOS, TNG, DS9, all the way through *Strange New Worlds*. A series is the **top of the hierarchy**: it has many `Seasons`, each Season has many `Episodes`, and `Ratings` can hang off either a series directly or off a specific episode. The interesting columns are the rolled-up ones — `TotalEpisodes` sums the episode counts of every season; `Rating` averages every fan rating attached to the show; `IsLongRunning` and `IsGood` are *derived booleans* that update the instant the underlying data changes.",
+    "important_fields": [
+      "Title",
+      "Network",
+      "TotalEpisodes",
+      "Rating"
+    ],
     "schema": [
       {
         "name": "SerieId",
@@ -72,14 +80,18 @@
         "datatype": "number",
         "type": "aggregation",
         "nullable": true,
-        "formula": "=SUMIFS(Seasons!{{EpisodeCount}}, Seasons!{{Series}}, Series!{{SerieId}})"
+        "formula": "=SUMIFS(Seasons!{{EpisodeCount}}, Seasons!{{Series}}, Series!{{SerieId}})",
+        "important": true,
+        "explanation_rich": "**A two-level roll-up.** Each `Season` already knows its own `EpisodeCount` (a `COUNTIFS` over `Episodes`); `TotalEpisodes` then sums *those* counts across every season of the show. Worked example: *Star Trek: The Next Generation* (`2-tng`) has seven seasons; their episode counts sum to **178**, which is exactly what the field reports for the series. Add an episode to TNG Season 4 and both the season's `EpisodeCount` and the series' `TotalEpisodes` re-derive on the next read — no application code, no manual roll-up."
       },
       {
         "name": "IsLongRunning",
         "datatype": "boolean",
         "type": "calculated",
         "nullable": true,
-        "formula": "={{TotalEpisodes}} > 50"
+        "formula": "={{TotalEpisodes}} > 50",
+        "important": true,
+        "explanation_rich": "**The threshold rule that separates the long-haul shows from the recent ones.** Compares the rolled-up `TotalEpisodes` to `50`. Worked example: *TOS* has **76 episodes** → `TRUE`; *Picard* has **30 episodes** → `FALSE`. Lower the threshold to `25` and *Lower Decks* (42 episodes) flips to `TRUE` the same instant the rulebook recomputes — across Postgres, Python, Excel and OWL identically."
       },
       {
         "name": "Seasons",
@@ -107,7 +119,9 @@
         "datatype": "boolean",
         "type": "calculated",
         "nullable": true,
-        "formula": "={{Rating}} >= 4.5"
+        "formula": "={{Rating}} >= 4.5",
+        "important": true,
+        "explanation_rich": "**The verdict line.** `Rating` is the average of every fan rating attached to the show; `IsGood` is the editorial threshold — `4.5` or higher. Worked example: *TNG* has one rating (Avery Chen, **5**) → average `5.0` → `IsGood = TRUE`. *TOS* has three ratings (5, 5, 3) → average `4.33` → `IsGood = FALSE`. Add one more 5-star *TOS* review and the average climbs to `4.5` exactly — `IsGood` flips to `TRUE` the next time anything reads the row. This is the smallest possible *editorial* rule: change the threshold in one place, every substrate agrees instantly."
       }
     ],
     "data": [
@@ -241,7 +255,7 @@
         "SerieId": "8-lds",
         "Name": "8-LDS",
         "Title": "Star Trek: Lower Decks",
-        "Description": "The support crew of one of Starfleet\u2019s least important ships.",
+        "Description": "The support crew of one of Starfleet’s least important ships.",
         "Network": "Paramount+",
         "PremiereDate": "2020-08-06",
         "TotalSeasons": 4,
@@ -277,7 +291,7 @@
         "SerieId": "10-snw",
         "Name": "10-SNW",
         "Title": "Star Trek: Strange New Worlds",
-        "Description": "Captain Pike leads the Enterprise before Kirk\u2019s command.",
+        "Description": "Captain Pike leads the Enterprise before Kirk’s command.",
         "Network": "Paramount+",
         "PremiereDate": "2022-05-05",
         "TotalSeasons": 2,
@@ -965,6 +979,14 @@
   },
   "Episodes": {
     "Description": "Table: Episodes",
+    "important": true,
+    "summary_rich": "The **atomic unit of the franchise** — one airing, one runtime, one airdate, one director. Each episode belongs to exactly one `Season` and inherits the show's identity through lookup fields (`SeasonTitle`, `SeasonDescription`). Fan `Ratings` attach directly to an episode, which then roll up into the season's episode count and ultimately into the series-level `Rating` average. Edit an episode's `RuntimeMinutes` and only that row changes; edit its `Season` link and the whole hierarchy re-derives.",
+    "important_fields": [
+      "Name",
+      "SeasonTitle",
+      "Airdate",
+      "Director"
+    ],
     "schema": [
       {
         "name": "EpisodeId",
@@ -14441,22 +14463,118 @@
       }
     ]
   },
-  "_meta": {
-    "_CMCC_Summary": "Airtable export with schema-first type mapping: Schemas, Data, Relationships (FK links), Lookups (INDEX/MATCH), Aggregations (SUMIFS/COUNTIFS/Rollups), and Calculated fields (formulas) in Excel dialect. Field types are determined from Airtable's schema metadata FIRST (no coercion); the build FAILS if metadata is unavailable rather than silently inferring from formula/data analysis.",
-    "_conversion_metadata": {
-      "source_base_id": "appqwWQxIWFtyDsiL",
-      "table_count": 6,
-      "tool_version": "2.0.0",
-      "field_type_mapping": "checkbox\u2192boolean, number\u2192number/integer, multipleRecordLinks\u2192relationship, multipleLookupValues\u2192lookup, rollup\u2192aggregation, count\u2192aggregation, formula\u2192calculated",
-      "export_mode": "schema_first_type_mapping",
-      "type_inference": {
-        "enabled": true,
-        "priority": "airtable_metadata (NO COERCION) \u2192 formula_analysis \u2192 reference_resolution \u2192 data_analysis (last-resort inference; build SHOULD FAIL rather than silently use this)",
-        "airtable_type_mapping": "checkbox\u2192boolean, singleLineText\u2192string, multilineText\u2192string, number\u2192number/integer, datetime\u2192datetime, singleSelect\u2192string, email\u2192string, url\u2192string, phoneNumber\u2192string",
-        "data_coercion_hierarchy": "Only invoked when Airtable schema is unavailable (which SHOULD make the build fail). Coercion order: datetime \u2192 number \u2192 integer \u2192 boolean \u2192 base64 \u2192 json \u2192 string",
-        "nullable_support": true,
-        "error_value_handling": "#NUM!, #ERROR!, #N/A, #REF!, #DIV/0!, #VALUE!, #NAME? are treated as NULL"
+  "__meta__": {
+    "Description": "Project-level metadata that travels with the rulebook: tagline, motif, narrative descriptions, substrate list, signature rows, etc. One row per metadata key. Use ValueType to interpret StringValue vs JsonValue.",
+    "important": false,
+    "schema": [
+      {
+        "name": "MetaKey",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "The metadata key (e.g. 'tagline', 'motif_palette', 'substrates'). Unique within the table."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "formula": "={{MetaKey}}",
+        "Description": "Identifier for this metadata entry. Mirrors MetaKey so the row is addressable by Name like every other table."
+      },
+      {
+        "name": "ValueType",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "How to interpret the value columns: 'string' (use StringValue), 'object' (parse JsonValue as JSON object), 'array' (parse JsonValue as JSON array)."
+      },
+      {
+        "name": "StringValue",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Plain string value. Populated when ValueType == 'string'; null otherwise."
+      },
+      {
+        "name": "JsonValue",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "JSON-encoded value. Populated when ValueType == 'object' or 'array'; null when ValueType == 'string'."
       }
-    }
+    ],
+    "data": [
+      {
+        "MetaKey": "tagline",
+        "Name": "tagline",
+        "ValueType": "string",
+        "StringValue": "Ten Star Trek shows, hundreds of episodes, fan ratings — and roll-ups that survive a re-canon.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "motif",
+        "Name": "motif",
+        "ValueType": "string",
+        "StringValue": "lcars",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "motif_palette",
+        "Name": "motif_palette",
+        "ValueType": "object",
+        "StringValue": null,
+        "JsonValue": "{\"primary\": \"#663d6b\", \"accent\": \"#ff9966\", \"ink\": \"#1a0d20\"}"
+      },
+      {
+        "MetaKey": "description_rich",
+        "Name": "description_rich",
+        "ValueType": "string",
+        "StringValue": "A media catalog of the entire **Star Trek** television franchise — ten series from *TOS* through *Strange New Worlds*, every season, every episode, every fan rating. The interesting thing isn't the catalog, it's the **roll-ups**: `Episodes` count up into `Seasons.EpisodeCount`, those counts sum up into `Series.TotalEpisodes`, and individual `Ratings` average up into `Series.Rating`. Derived booleans like `IsLongRunning` (more than 50 episodes) and `IsGood` (average rating ≥ 4.5) sit on top — change a single rating, and every level of the hierarchy re-derives identically in Postgres, Python, Excel, and OWL.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "use_cases",
+        "Name": "use_cases",
+        "ValueType": "array",
+        "StringValue": null,
+        "JsonValue": "[\"**Add a 5-star *TOS* rating** and watch `Series.Rating` climb from `4.33` to exactly `4.5` — `IsGood` flips from `FALSE` to `TRUE` on the next read, with no application code in between.\", \"**Lower the *long-running* threshold** from `50` episodes to `25` and *Lower Decks* (42 episodes) instantly joins the long-running club; *Strange New Worlds* (20) stays a newcomer.\", \"**Reassign an episode to a different season** — `Seasons.EpisodeCount` shifts on both old and new season, and `Series.TotalEpisodes` re-derives across the whole show without a single manual update.\", \"**Ask *\\\"which series are good and long-running?\\\"*** in the Postgres view, then ask the same question of the generated Python module — same answer, same row order, no glue code.\"]"
+      },
+      {
+        "MetaKey": "signature_rows",
+        "Name": "signature_rows",
+        "ValueType": "array",
+        "StringValue": null,
+        "JsonValue": "[{\"entity\": \"Series\", \"ids\": [\"1-tos\", \"2-tng\", \"3-ds9\"]}, {\"entity\": \"Episodes\", \"ids\": [\"1-tos-season-1-episode-01\", \"1-tos-season-1-episode-07\", \"1-tos-season-1-episode-10\"]}]"
+      },
+      {
+        "MetaKey": "journal_seed",
+        "Name": "journal_seed",
+        "ValueType": "string",
+        "StringValue": "Ten shows on the bridge — TOS still the highest-rated when the votes are in; Picard and Strange New Worlds still awaiting their first ratings.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "substrates",
+        "Name": "substrates",
+        "ValueType": "array",
+        "StringValue": null,
+        "JsonValue": "[{\"key\": \"postgres\", \"important\": true, \"chip_label\": \"Postgres\"}, {\"key\": \"python\", \"important\": true, \"chip_label\": \"Python\"}, {\"key\": \"excel\", \"important\": false, \"chip_label\": \"Excel\"}, {\"key\": \"owl\", \"important\": false, \"chip_label\": \"OWL\"}, {\"key\": \"csv\", \"important\": false, \"chip_label\": \"CSV\"}]"
+      },
+      {
+        "MetaKey": "CMCC_Summary",
+        "Name": "CMCC_Summary",
+        "ValueType": "string",
+        "StringValue": "Airtable export with schema-first type mapping: Schemas, Data, Relationships (FK links), Lookups (INDEX/MATCH), Aggregations (SUMIFS/COUNTIFS/Rollups), and Calculated fields (formulas) in Excel dialect. Field types are determined from Airtable's schema metadata FIRST (no coercion); the build FAILS if metadata is unavailable rather than silently inferring from formula/data analysis.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "conversion_metadata",
+        "Name": "conversion_metadata",
+        "ValueType": "object",
+        "StringValue": null,
+        "JsonValue": "{\"source_base_id\": \"appqwWQxIWFtyDsiL\", \"table_count\": 6, \"tool_version\": \"2.0.0\", \"field_type_mapping\": \"checkbox→boolean, number→number/integer, multipleRecordLinks→relationship, multipleLookupValues→lookup, rollup→aggregation, count→aggregation, formula→calculated\", \"export_mode\": \"schema_first_type_mapping\", \"type_inference\": {\"enabled\": true, \"priority\": \"airtable_metadata (NO COERCION) → formula_analysis → reference_resolution → data_analysis (last-resort inference; build SHOULD FAIL rather than silently use this)\", \"airtable_type_mapping\": \"checkbox→boolean, singleLineText→string, multilineText→string, number→number/integer, datetime→datetime, singleSelect→string, email→string, url→string, phoneNumber→string\", \"data_coercion_hierarchy\": \"Only invoked when Airtable schema is unavailable (which SHOULD make the build fail). Coercion order: datetime → number → integer → boolean → base64 → json → string\", \"nullable_support\": true, \"error_value_handling\": \"#NUM!, #ERROR!, #N/A, #REF!, #DIV/0!, #VALUE!, #NAME? are treated as NULL\"}}"
+      }
+    ]
   }
 }

@@ -1,0 +1,2529 @@
+{
+  "$schema": "https://example.com/cmcc-schema/v1",
+  "model_name": "ERB_euclidean-unit-distance-neighborhood_v0_1",
+  "Description": "A single CMCC-style semantic mirror for the planar unit-distance theorem neighborhood. It treats concepts, structures, invariants, transformations, projections, formulas, and theorem anchors as first-class typed objects in a bitemporal ACID DAG intended for PostgreSQL testing.",
+  "design_principles": [
+    "Use the final theorem as a fixed-point anchor, not as a proof target.",
+    "Model semantic topology densely enough that routes across domains are inspectable.",
+    "Separate semantic adjacency from derivation/evaluation dependencies; only dependency edges must be acyclic.",
+    "Represent infinite mathematical objects intensionally by definitions, invariants, and construction maps.",
+    "Store raw assertions; calculate derived consequences through explicit formulas and aggregations.",
+    "Make unknown, conjectural, or not-yet-modeled edges explicit rather than pretending they are absent."
+  ],
+  "contexts": {
+    "Description": "Mathematical or modeling context in which assertions are interpreted.",
+    "primary_key": [
+      "ContextID"
+    ],
+    "schema": [
+      {
+        "name": "ContextID",
+        "datatype": "string",
+        "type": "raw",
+        "is_primary_key": true
+      },
+      {
+        "name": "DisplayName",
+        "datatype": "string",
+        "type": "raw"
+      },
+      {
+        "name": "Kind",
+        "datatype": "string",
+        "type": "raw"
+      },
+      {
+        "name": "AssumptionsJSON",
+        "datatype": "string",
+        "type": "raw"
+      },
+      {
+        "name": "Description",
+        "datatype": "string",
+        "type": "raw"
+      }
+    ],
+    "data": [
+      {
+        "ContextID": "CTX_MODEL_V0_1",
+        "DisplayName": "Semantic mirror sketch v0.1",
+        "Kind": "model_version",
+        "AssumptionsJSON": "{\"status\":\"draft\",\"purpose\":\"schema_alignment\"}",
+        "Description": "The modeling context for this initial sketch."
+      },
+      {
+        "ContextID": "CTX_EUCLIDEAN_PLANE",
+        "DisplayName": "Euclidean plane R^2",
+        "Kind": "mathematical_context",
+        "AssumptionsJSON": "{\"ambient_space\":\"R^2\",\"metric\":\"standard_euclidean\"}",
+        "Description": "Ordinary two-dimensional Euclidean geometry."
+      },
+      {
+        "ContextID": "CTX_PLANAR_UNIT_DISTANCE_PROBLEM",
+        "DisplayName": "Planar unit-distance problem",
+        "Kind": "problem_context",
+        "AssumptionsJSON": "{\"object\":\"finite point sets in R^2\",\"edge_rule\":\"distance equals one\"}",
+        "Description": "Maximize the number of unit-distance pairs among n points in the plane."
+      },
+      {
+        "ContextID": "CTX_SUPERLINEAR_LOWER_BOUND",
+        "DisplayName": "Superlinear lower-bound theorem neighborhood",
+        "Kind": "theorem_context",
+        "AssumptionsJSON": "{\"target\":\"U(n) > n^(1+epsilon) infinitely often or for arbitrarily large n\"}",
+        "Description": "Context anchored by a superlinear construction for planar unit distances."
+      }
+    ]
+  },
+  "domains": {
+    "Description": "Top-level mathematical neighborhoods included in the single model.",
+    "primary_key": [
+      "DomainID"
+    ],
+    "schema": [
+      {
+        "name": "DomainID",
+        "datatype": "string",
+        "type": "raw",
+        "is_primary_key": true
+      },
+      {
+        "name": "DisplayName",
+        "datatype": "string",
+        "type": "raw"
+      },
+      {
+        "name": "RoleInModel",
+        "datatype": "string",
+        "type": "raw"
+      },
+      {
+        "name": "NeighborDomainIDs",
+        "datatype": "string",
+        "type": "raw"
+      },
+      {
+        "name": "Description",
+        "datatype": "string",
+        "type": "raw"
+      }
+    ],
+    "data": [
+      {
+        "DomainID": "DOM_META",
+        "DisplayName": "Metamodel",
+        "RoleInModel": "typing_and_governance",
+        "NeighborDomainIDs": "[\"DOM_EG\",\"DOM_GT\",\"DOM_ANT\",\"DOM_LE\",\"DOM_AC\",\"DOM_THM\"]",
+        "Description": "Types, relation signatures, field definitions, and temporal governance."
+      },
+      {
+        "DomainID": "DOM_EG",
+        "DisplayName": "Euclidean geometry",
+        "RoleInModel": "ambient_space_and_metric_predicate",
+        "NeighborDomainIDs": "[\"DOM_GT\",\"DOM_LE\"]",
+        "Description": "Points, configurations, distance, unit-distance predicates, transformations."
+      },
+      {
+        "DomainID": "DOM_GT",
+        "DisplayName": "Graph theory",
+        "RoleInModel": "combinatorial_shadow_of_geometry",
+        "NeighborDomainIDs": "[\"DOM_EG\",\"DOM_AC\"]",
+        "Description": "Unit-distance graphs, edges, edge counts, graph invariants, realizability."
+      },
+      {
+        "DomainID": "DOM_ANT",
+        "DisplayName": "Algebraic number theory",
+        "RoleInModel": "source_of_structured_constructions",
+        "NeighborDomainIDs": "[\"DOM_LE\",\"DOM_AC\"]",
+        "Description": "Number fields, rings of integers, field norms, discriminants, prime ideals."
+      },
+      {
+        "DomainID": "DOM_LE",
+        "DisplayName": "Lattice embeddings",
+        "RoleInModel": "bridge_between_algebra_and_geometry",
+        "NeighborDomainIDs": "[\"DOM_ANT\",\"DOM_EG\"]",
+        "Description": "Minkowski embeddings, lattices, Gram matrices, projections into Euclidean spaces."
+      },
+      {
+        "DomainID": "DOM_AC",
+        "DisplayName": "Asymptotic combinatorics",
+        "RoleInModel": "growth_accounting_and_bounds",
+        "NeighborDomainIDs": "[\"DOM_GT\",\"DOM_THM\",\"DOM_ANT\"]",
+        "Description": "Asymptotic functions, exponents, lower bounds, construction families."
+      },
+      {
+        "DomainID": "DOM_THM",
+        "DisplayName": "Theorem layer",
+        "RoleInModel": "fixed_point_anchor",
+        "NeighborDomainIDs": "[\"DOM_EG\",\"DOM_GT\",\"DOM_AC\"]",
+        "Description": "Final theorem anchors, versions, proof objects, and semantic route targets."
+      }
+    ]
+  },
+  "object_types": {
+    "Description": "Strong types for first-class mathematical objects. ParentTypeID gives a simple inheritance tree.",
+    "primary_key": [
+      "TypeID"
+    ],
+    "schema": [
+      {
+        "name": "TypeID",
+        "datatype": "string",
+        "type": "raw",
+        "is_primary_key": true
+      },
+      {
+        "name": "ParentTypeID",
+        "datatype": "string",
+        "type": "relationship",
+        "Description": "FK to object_types.TypeID; nullable only for root."
+      },
+      {
+        "name": "DomainID",
+        "datatype": "string",
+        "type": "relationship",
+        "Description": "FK to domains.DomainID."
+      },
+      {
+        "name": "DisplayName",
+        "datatype": "string",
+        "type": "raw"
+      },
+      {
+        "name": "Kind",
+        "datatype": "string",
+        "type": "raw"
+      },
+      {
+        "name": "Description",
+        "datatype": "string",
+        "type": "raw"
+      }
+    ],
+    "data": [
+      {
+        "TypeID": "T_MATH_OBJECT",
+        "ParentTypeID": "",
+        "DomainID": "DOM_META",
+        "DisplayName": "Mathematical object",
+        "Kind": "root",
+        "Description": "Root type for all objects."
+      },
+      {
+        "TypeID": "T_CONCEPT",
+        "ParentTypeID": "T_MATH_OBJECT",
+        "DomainID": "DOM_META",
+        "DisplayName": "Concept",
+        "Kind": "abstract",
+        "Description": "Named conceptual object or semantic atom."
+      },
+      {
+        "TypeID": "T_STRUCTURE",
+        "ParentTypeID": "T_MATH_OBJECT",
+        "DomainID": "DOM_META",
+        "DisplayName": "Structure",
+        "Kind": "abstract",
+        "Description": "Object with internal parts, operations, relations, or axioms."
+      },
+      {
+        "TypeID": "T_SET",
+        "ParentTypeID": "T_STRUCTURE",
+        "DomainID": "DOM_META",
+        "DisplayName": "Set",
+        "Kind": "abstract",
+        "Description": "Collection or intensional family."
+      },
+      {
+        "TypeID": "T_FUNCTION",
+        "ParentTypeID": "T_STRUCTURE",
+        "DomainID": "DOM_META",
+        "DisplayName": "Function",
+        "Kind": "abstract",
+        "Description": "Typed map or formula object."
+      },
+      {
+        "TypeID": "T_PREDICATE",
+        "ParentTypeID": "T_FUNCTION",
+        "DomainID": "DOM_META",
+        "DisplayName": "Predicate",
+        "Kind": "abstract",
+        "Description": "Boolean-valued typed function."
+      },
+      {
+        "TypeID": "T_INVARIANT",
+        "ParentTypeID": "T_CONCEPT",
+        "DomainID": "DOM_META",
+        "DisplayName": "Invariant",
+        "Kind": "abstract",
+        "Description": "Quantity or property preserved by a class of transformations."
+      },
+      {
+        "TypeID": "T_TRANSFORMATION",
+        "ParentTypeID": "T_FUNCTION",
+        "DomainID": "DOM_META",
+        "DisplayName": "Transformation",
+        "Kind": "abstract",
+        "Description": "Map acting on objects while preserving or modifying structure."
+      },
+      {
+        "TypeID": "T_PROJECTION",
+        "ParentTypeID": "T_TRANSFORMATION",
+        "DomainID": "DOM_META",
+        "DisplayName": "Projection",
+        "Kind": "abstract",
+        "Description": "Dimension-reducing or view-defining transformation."
+      },
+      {
+        "TypeID": "T_CONSTRUCTION_FAMILY",
+        "ParentTypeID": "T_STRUCTURE",
+        "DomainID": "DOM_META",
+        "DisplayName": "Construction family",
+        "Kind": "abstract",
+        "Description": "Parametrized family of objects used to realize an asymptotic claim."
+      },
+      {
+        "TypeID": "T_THEOREM",
+        "ParentTypeID": "T_MATH_OBJECT",
+        "DomainID": "DOM_THM",
+        "DisplayName": "Theorem",
+        "Kind": "claim",
+        "Description": "Mathematical claim with status and optional proof/provenance."
+      },
+      {
+        "TypeID": "T_BOUND",
+        "ParentTypeID": "T_THEOREM",
+        "DomainID": "DOM_AC",
+        "DisplayName": "Bound",
+        "Kind": "claim",
+        "Description": "Inequality or asymptotic estimate."
+      },
+      {
+        "TypeID": "T_EUCLIDEAN_PLANE",
+        "ParentTypeID": "T_STRUCTURE",
+        "DomainID": "DOM_EG",
+        "DisplayName": "Euclidean plane",
+        "Kind": "ambient_space",
+        "Description": "The structure R^2 with its standard metric."
+      },
+      {
+        "TypeID": "T_POINT",
+        "ParentTypeID": "T_MATH_OBJECT",
+        "DomainID": "DOM_EG",
+        "DisplayName": "Point",
+        "Kind": "geometric_object",
+        "Description": "Point in an ambient space."
+      },
+      {
+        "TypeID": "T_POINT_SET",
+        "ParentTypeID": "T_SET",
+        "DomainID": "DOM_EG",
+        "DisplayName": "Finite point set",
+        "Kind": "configuration",
+        "Description": "Finite set of points in the Euclidean plane."
+      },
+      {
+        "TypeID": "T_METRIC",
+        "ParentTypeID": "T_FUNCTION",
+        "DomainID": "DOM_EG",
+        "DisplayName": "Metric",
+        "Kind": "function",
+        "Description": "Distance function on a space."
+      },
+      {
+        "TypeID": "T_DISTANCE_PREDICATE",
+        "ParentTypeID": "T_PREDICATE",
+        "DomainID": "DOM_EG",
+        "DisplayName": "Distance predicate",
+        "Kind": "predicate",
+        "Description": "Predicate defined by distance constraints."
+      },
+      {
+        "TypeID": "T_GRAPH",
+        "ParentTypeID": "T_STRUCTURE",
+        "DomainID": "DOM_GT",
+        "DisplayName": "Graph",
+        "Kind": "combinatorial_structure",
+        "Description": "Vertices and edges, possibly induced by geometry."
+      },
+      {
+        "TypeID": "T_GRAPH_INVARIANT",
+        "ParentTypeID": "T_INVARIANT",
+        "DomainID": "DOM_GT",
+        "DisplayName": "Graph invariant",
+        "Kind": "invariant",
+        "Description": "Graph quantity independent of labeling."
+      },
+      {
+        "TypeID": "T_GRAPH_EMBEDDING",
+        "ParentTypeID": "T_FUNCTION",
+        "DomainID": "DOM_GT",
+        "DisplayName": "Graph embedding",
+        "Kind": "map",
+        "Description": "Map from graph vertices into a geometric space."
+      },
+      {
+        "TypeID": "T_NUMBER_FIELD",
+        "ParentTypeID": "T_STRUCTURE",
+        "DomainID": "DOM_ANT",
+        "DisplayName": "Number field",
+        "Kind": "algebraic_structure",
+        "Description": "Finite extension of Q."
+      },
+      {
+        "TypeID": "T_RING",
+        "ParentTypeID": "T_STRUCTURE",
+        "DomainID": "DOM_ANT",
+        "DisplayName": "Ring",
+        "Kind": "algebraic_structure",
+        "Description": "Ring object such as the ring of integers of a number field."
+      },
+      {
+        "TypeID": "T_IDEAL",
+        "ParentTypeID": "T_STRUCTURE",
+        "DomainID": "DOM_ANT",
+        "DisplayName": "Ideal",
+        "Kind": "algebraic_structure",
+        "Description": "Ideal inside a ring."
+      },
+      {
+        "TypeID": "T_PRIME_IDEAL",
+        "ParentTypeID": "T_IDEAL",
+        "DomainID": "DOM_ANT",
+        "DisplayName": "Prime ideal",
+        "Kind": "algebraic_structure",
+        "Description": "Prime ideal, often tracked by norm and splitting behavior."
+      },
+      {
+        "TypeID": "T_FIELD_INVARIANT",
+        "ParentTypeID": "T_INVARIANT",
+        "DomainID": "DOM_ANT",
+        "DisplayName": "Field invariant",
+        "Kind": "invariant",
+        "Description": "Degree, discriminant, norm counts, ramification data."
+      },
+      {
+        "TypeID": "T_FIELD_EMBEDDING",
+        "ParentTypeID": "T_FUNCTION",
+        "DomainID": "DOM_ANT",
+        "DisplayName": "Field embedding",
+        "Kind": "map",
+        "Description": "Embedding of a number field into R or C."
+      },
+      {
+        "TypeID": "T_LATTICE",
+        "ParentTypeID": "T_STRUCTURE",
+        "DomainID": "DOM_LE",
+        "DisplayName": "Lattice",
+        "Kind": "geometric_algebraic_structure",
+        "Description": "Discrete subgroup of Euclidean space with basis/Gram data."
+      },
+      {
+        "TypeID": "T_GRAM_MATRIX",
+        "ParentTypeID": "T_INVARIANT",
+        "DomainID": "DOM_LE",
+        "DisplayName": "Gram matrix",
+        "Kind": "invariant",
+        "Description": "Matrix encoding inner products of a basis."
+      },
+      {
+        "TypeID": "T_MINKOWSKI_EMBEDDING",
+        "ParentTypeID": "T_FIELD_EMBEDDING",
+        "DomainID": "DOM_LE",
+        "DisplayName": "Minkowski embedding",
+        "Kind": "map",
+        "Description": "Canonical embedding of a number field/ring into Euclidean space."
+      },
+      {
+        "TypeID": "T_ASYMPTOTIC_FUNCTION",
+        "ParentTypeID": "T_FUNCTION",
+        "DomainID": "DOM_AC",
+        "DisplayName": "Asymptotic function",
+        "Kind": "function",
+        "Description": "Function considered up to growth behavior."
+      },
+      {
+        "TypeID": "T_GROWTH_BOUND",
+        "ParentTypeID": "T_BOUND",
+        "DomainID": "DOM_AC",
+        "DisplayName": "Growth bound",
+        "Kind": "claim",
+        "Description": "Asymptotic lower/upper bound or exponent statement."
+      },
+      {
+        "TypeID": "T_SEMANTIC_BRIDGE",
+        "ParentTypeID": "T_CONCEPT",
+        "DomainID": "DOM_META",
+        "DisplayName": "Semantic bridge",
+        "Kind": "bridge",
+        "Description": "Intermediate concept that connects two otherwise distant neighborhoods."
+      }
+    ]
+  },
+  "relation_types": {
+    "Description": "Typed edge kinds. IsDAGEdge means the edge participates in the acyclic dependency/evaluation graph.",
+    "primary_key": [
+      "RelationTypeID"
+    ],
+    "schema": [
+      {
+        "name": "RelationTypeID",
+        "datatype": "string",
+        "type": "raw",
+        "is_primary_key": true
+      },
+      {
+        "name": "DisplayName",
+        "datatype": "string",
+        "type": "raw"
+      },
+      {
+        "name": "DomainID",
+        "datatype": "string",
+        "type": "relationship"
+      },
+      {
+        "name": "IsDAGEdge",
+        "datatype": "boolean",
+        "type": "raw"
+      },
+      {
+        "name": "IsSymmetric",
+        "datatype": "boolean",
+        "type": "raw"
+      },
+      {
+        "name": "IsTransitive",
+        "datatype": "boolean",
+        "type": "raw"
+      },
+      {
+        "name": "InverseRelationTypeID",
+        "datatype": "string",
+        "type": "relationship"
+      },
+      {
+        "name": "Description",
+        "datatype": "string",
+        "type": "raw"
+      }
+    ],
+    "data": [
+      {
+        "RelationTypeID": "REL_IS_A",
+        "DisplayName": "is a",
+        "DomainID": "DOM_META",
+        "IsDAGEdge": true,
+        "IsSymmetric": false,
+        "IsTransitive": true,
+        "InverseRelationTypeID": "",
+        "Description": "Type or specialization edge."
+      },
+      {
+        "RelationTypeID": "REL_PART_OF",
+        "DisplayName": "part of",
+        "DomainID": "DOM_META",
+        "IsDAGEdge": true,
+        "IsSymmetric": false,
+        "IsTransitive": true,
+        "InverseRelationTypeID": "REL_HAS_PART",
+        "Description": "Constituent relation."
+      },
+      {
+        "RelationTypeID": "REL_HAS_PART",
+        "DisplayName": "has part",
+        "DomainID": "DOM_META",
+        "IsDAGEdge": false,
+        "IsSymmetric": false,
+        "IsTransitive": false,
+        "InverseRelationTypeID": "REL_PART_OF",
+        "Description": "Reverse constituent relation; usually not used for dependency evaluation."
+      },
+      {
+        "RelationTypeID": "REL_DEFINED_BY",
+        "DisplayName": "defined by",
+        "DomainID": "DOM_META",
+        "IsDAGEdge": true,
+        "IsSymmetric": false,
+        "IsTransitive": false,
+        "InverseRelationTypeID": "REL_DEFINES",
+        "Description": "Definition dependency."
+      },
+      {
+        "RelationTypeID": "REL_DEFINES",
+        "DisplayName": "defines",
+        "DomainID": "DOM_META",
+        "IsDAGEdge": false,
+        "IsSymmetric": false,
+        "IsTransitive": false,
+        "InverseRelationTypeID": "REL_DEFINED_BY",
+        "Description": "Reverse definition relation."
+      },
+      {
+        "RelationTypeID": "REL_DEPENDS_ON",
+        "DisplayName": "depends on",
+        "DomainID": "DOM_META",
+        "IsDAGEdge": true,
+        "IsSymmetric": false,
+        "IsTransitive": true,
+        "InverseRelationTypeID": "",
+        "Description": "Dependency edge for evaluation and route explanations."
+      },
+      {
+        "RelationTypeID": "REL_INDUCES",
+        "DisplayName": "induces",
+        "DomainID": "DOM_META",
+        "IsDAGEdge": true,
+        "IsSymmetric": false,
+        "IsTransitive": false,
+        "InverseRelationTypeID": "REL_INDUCED_BY",
+        "Description": "One structure canonically generates another."
+      },
+      {
+        "RelationTypeID": "REL_INDUCED_BY",
+        "DisplayName": "induced by",
+        "DomainID": "DOM_META",
+        "IsDAGEdge": false,
+        "IsSymmetric": false,
+        "IsTransitive": false,
+        "InverseRelationTypeID": "REL_INDUCES",
+        "Description": "Reverse induced relation."
+      },
+      {
+        "RelationTypeID": "REL_HAS_INVARIANT",
+        "DisplayName": "has invariant",
+        "DomainID": "DOM_META",
+        "IsDAGEdge": true,
+        "IsSymmetric": false,
+        "IsTransitive": false,
+        "InverseRelationTypeID": "",
+        "Description": "Object is characterized by invariant."
+      },
+      {
+        "RelationTypeID": "REL_PRESERVES",
+        "DisplayName": "preserves",
+        "DomainID": "DOM_META",
+        "IsDAGEdge": false,
+        "IsSymmetric": false,
+        "IsTransitive": false,
+        "InverseRelationTypeID": "",
+        "Description": "Transformation preserves invariant or predicate."
+      },
+      {
+        "RelationTypeID": "REL_EMBEDS_IN",
+        "DisplayName": "embeds in",
+        "DomainID": "DOM_META",
+        "IsDAGEdge": true,
+        "IsSymmetric": false,
+        "IsTransitive": true,
+        "InverseRelationTypeID": "",
+        "Description": "Embedding into another structure/space."
+      },
+      {
+        "RelationTypeID": "REL_PROJECTS_TO",
+        "DisplayName": "projects to",
+        "DomainID": "DOM_META",
+        "IsDAGEdge": true,
+        "IsSymmetric": false,
+        "IsTransitive": false,
+        "InverseRelationTypeID": "",
+        "Description": "Projection or coordinate map to another object."
+      },
+      {
+        "RelationTypeID": "REL_REALIZES",
+        "DisplayName": "realizes",
+        "DomainID": "DOM_META",
+        "IsDAGEdge": true,
+        "IsSymmetric": false,
+        "IsTransitive": false,
+        "InverseRelationTypeID": "",
+        "Description": "Construction realizes a predicate, configuration, or theorem condition."
+      },
+      {
+        "RelationTypeID": "REL_COUNTS",
+        "DisplayName": "counts",
+        "DomainID": "DOM_AC",
+        "IsDAGEdge": true,
+        "IsSymmetric": false,
+        "IsTransitive": false,
+        "InverseRelationTypeID": "",
+        "Description": "Quantity counts objects or relations."
+      },
+      {
+        "RelationTypeID": "REL_BOUNDS",
+        "DisplayName": "bounds",
+        "DomainID": "DOM_AC",
+        "IsDAGEdge": true,
+        "IsSymmetric": false,
+        "IsTransitive": false,
+        "InverseRelationTypeID": "",
+        "Description": "Inequality or asymptotic bound targets a function/quantity."
+      },
+      {
+        "RelationTypeID": "REL_ASYMPTOTIC_LOWER_BOUND_FOR",
+        "DisplayName": "asymptotic lower bound for",
+        "DomainID": "DOM_AC",
+        "IsDAGEdge": true,
+        "IsSymmetric": false,
+        "IsTransitive": false,
+        "InverseRelationTypeID": "",
+        "Description": "Lower-bound relation to an asymptotic function."
+      },
+      {
+        "RelationTypeID": "REL_COMPUTED_FROM",
+        "DisplayName": "computed from",
+        "DomainID": "DOM_META",
+        "IsDAGEdge": true,
+        "IsSymmetric": false,
+        "IsTransitive": true,
+        "InverseRelationTypeID": "",
+        "Description": "Calculated field or derived object dependency."
+      },
+      {
+        "RelationTypeID": "REL_LOOKUP_FROM",
+        "DisplayName": "lookup from",
+        "DomainID": "DOM_META",
+        "IsDAGEdge": true,
+        "IsSymmetric": false,
+        "IsTransitive": false,
+        "InverseRelationTypeID": "",
+        "Description": "Lookup-style dependency from one table/object to another."
+      },
+      {
+        "RelationTypeID": "REL_AGGREGATES_OVER",
+        "DisplayName": "aggregates over",
+        "DomainID": "DOM_META",
+        "IsDAGEdge": true,
+        "IsSymmetric": false,
+        "IsTransitive": false,
+        "InverseRelationTypeID": "",
+        "Description": "Aggregation over a family or relation set."
+      },
+      {
+        "RelationTypeID": "REL_SEMANTIC_BRIDGE_TO",
+        "DisplayName": "semantic bridge to",
+        "DomainID": "DOM_META",
+        "IsDAGEdge": false,
+        "IsSymmetric": true,
+        "IsTransitive": false,
+        "InverseRelationTypeID": "REL_SEMANTIC_BRIDGE_TO",
+        "Description": "Non-evaluative semantic adjacency across neighborhoods."
+      },
+      {
+        "RelationTypeID": "REL_ANALOGOUS_TO",
+        "DisplayName": "analogous to",
+        "DomainID": "DOM_META",
+        "IsDAGEdge": false,
+        "IsSymmetric": true,
+        "IsTransitive": false,
+        "InverseRelationTypeID": "REL_ANALOGOUS_TO",
+        "Description": "Analogy edge; not a dependency."
+      },
+      {
+        "RelationTypeID": "REL_ANCHORS",
+        "DisplayName": "anchors",
+        "DomainID": "DOM_THM",
+        "IsDAGEdge": true,
+        "IsSymmetric": false,
+        "IsTransitive": false,
+        "InverseRelationTypeID": "",
+        "Description": "Anchor object pins a region of the semantic topology."
+      }
+    ]
+  },
+  "relation_type_signatures": {
+    "Description": "Allowed source and target type pairs. T_MATH_OBJECT acts as a broad supertype signature.",
+    "primary_key": [
+      "SignatureID"
+    ],
+    "schema": [
+      {
+        "name": "SignatureID",
+        "datatype": "string",
+        "type": "raw",
+        "is_primary_key": true
+      },
+      {
+        "name": "RelationTypeID",
+        "datatype": "string",
+        "type": "relationship"
+      },
+      {
+        "name": "SourceTypeID",
+        "datatype": "string",
+        "type": "relationship"
+      },
+      {
+        "name": "TargetTypeID",
+        "datatype": "string",
+        "type": "relationship"
+      },
+      {
+        "name": "Description",
+        "datatype": "string",
+        "type": "raw"
+      }
+    ],
+    "data": [
+      {
+        "SignatureID": "SIG_GENERIC_DEFINED_BY",
+        "RelationTypeID": "REL_DEFINED_BY",
+        "SourceTypeID": "T_MATH_OBJECT",
+        "TargetTypeID": "T_MATH_OBJECT",
+        "Description": "Any object may be defined by another typed object."
+      },
+      {
+        "SignatureID": "SIG_GENERIC_DEPENDS_ON",
+        "RelationTypeID": "REL_DEPENDS_ON",
+        "SourceTypeID": "T_MATH_OBJECT",
+        "TargetTypeID": "T_MATH_OBJECT",
+        "Description": "Any object may depend on another object in the dependency DAG."
+      },
+      {
+        "SignatureID": "SIG_POINTSET_INDUCES_GRAPH",
+        "RelationTypeID": "REL_INDUCES",
+        "SourceTypeID": "T_POINT_SET",
+        "TargetTypeID": "T_GRAPH",
+        "Description": "Finite point set induces its unit-distance graph."
+      },
+      {
+        "SignatureID": "SIG_POINTSET_EMBEDS_PLANE",
+        "RelationTypeID": "REL_EMBEDS_IN",
+        "SourceTypeID": "T_POINT_SET",
+        "TargetTypeID": "T_EUCLIDEAN_PLANE",
+        "Description": "Point set embeds in the Euclidean plane."
+      },
+      {
+        "SignatureID": "SIG_GRAPH_COUNTS_INVARIANT",
+        "RelationTypeID": "REL_COUNTS",
+        "SourceTypeID": "T_GRAPH_INVARIANT",
+        "TargetTypeID": "T_GRAPH",
+        "Description": "A graph invariant counts a graph feature."
+      },
+      {
+        "SignatureID": "SIG_FIELD_HAS_INVARIANT",
+        "RelationTypeID": "REL_HAS_INVARIANT",
+        "SourceTypeID": "T_NUMBER_FIELD",
+        "TargetTypeID": "T_FIELD_INVARIANT",
+        "Description": "Number fields have field invariants."
+      },
+      {
+        "SignatureID": "SIG_RING_EMBEDS_LATTICE",
+        "RelationTypeID": "REL_EMBEDS_IN",
+        "SourceTypeID": "T_RING",
+        "TargetTypeID": "T_LATTICE",
+        "Description": "Ring of integers embeds into a lattice through a Minkowski embedding."
+      },
+      {
+        "SignatureID": "SIG_LATTICE_PROJECTS_POINTSET",
+        "RelationTypeID": "REL_PROJECTS_TO",
+        "SourceTypeID": "T_LATTICE",
+        "TargetTypeID": "T_POINT_SET",
+        "Description": "Lattice construction projects to a finite planar point set."
+      },
+      {
+        "SignatureID": "SIG_CONSTRUCTION_REALIZES_BOUND",
+        "RelationTypeID": "REL_REALIZES",
+        "SourceTypeID": "T_CONSTRUCTION_FAMILY",
+        "TargetTypeID": "T_GROWTH_BOUND",
+        "Description": "Construction family realizes an asymptotic bound."
+      },
+      {
+        "SignatureID": "SIG_BOUND_FOR_FUNCTION",
+        "RelationTypeID": "REL_ASYMPTOTIC_LOWER_BOUND_FOR",
+        "SourceTypeID": "T_GROWTH_BOUND",
+        "TargetTypeID": "T_ASYMPTOTIC_FUNCTION",
+        "Description": "Growth bound targets an asymptotic function."
+      },
+      {
+        "SignatureID": "SIG_THEOREM_ANCHORS_OBJECT",
+        "RelationTypeID": "REL_ANCHORS",
+        "SourceTypeID": "T_THEOREM",
+        "TargetTypeID": "T_MATH_OBJECT",
+        "Description": "A theorem anchors objects and routes in the topology."
+      },
+      {
+        "SignatureID": "SIG_GENERIC_BRIDGE",
+        "RelationTypeID": "REL_SEMANTIC_BRIDGE_TO",
+        "SourceTypeID": "T_MATH_OBJECT",
+        "TargetTypeID": "T_MATH_OBJECT",
+        "Description": "Broad semantic bridge relation."
+      }
+    ]
+  },
+  "math_objects": {
+    "Description": "First-class mathematical objects. Infinite objects are encoded intensionally with descriptions/formal payloads.",
+    "primary_key": [
+      "ObjectID"
+    ],
+    "schema": [
+      {
+        "name": "ObjectID",
+        "datatype": "string",
+        "type": "raw",
+        "is_primary_key": true
+      },
+      {
+        "name": "TypeID",
+        "datatype": "string",
+        "type": "relationship",
+        "Description": "FK to object_types.TypeID."
+      },
+      {
+        "name": "DomainID",
+        "datatype": "string",
+        "type": "relationship",
+        "Description": "FK to domains.DomainID."
+      },
+      {
+        "name": "Label",
+        "datatype": "string",
+        "type": "raw"
+      },
+      {
+        "name": "Symbol",
+        "datatype": "string",
+        "type": "raw"
+      },
+      {
+        "name": "Description",
+        "datatype": "string",
+        "type": "raw"
+      },
+      {
+        "name": "FormalPayloadJSON",
+        "datatype": "string",
+        "type": "raw"
+      },
+      {
+        "name": "AnchorRole",
+        "datatype": "string",
+        "type": "raw"
+      },
+      {
+        "name": "IsTheoremAnchor",
+        "datatype": "boolean",
+        "type": "raw"
+      },
+      {
+        "name": "TypeLabel",
+        "datatype": "string",
+        "type": "lookup",
+        "formula": "=_xlfn.INDEX(object_types!DisplayName,_xlfn.MATCH({{TypeID}},object_types!TypeID,0))"
+      },
+      {
+        "name": "DomainLabel",
+        "datatype": "string",
+        "type": "lookup",
+        "formula": "=_xlfn.INDEX(domains!DisplayName,_xlfn.MATCH({{DomainID}},domains!DomainID,0))"
+      }
+    ],
+    "data": [
+      {
+        "ObjectID": "OBJ_EUCLIDEAN_PLANE_R2",
+        "TypeID": "T_EUCLIDEAN_PLANE",
+        "DomainID": "DOM_EG",
+        "Label": "Euclidean plane R^2",
+        "Symbol": "R^2",
+        "Description": "The ambient plane with standard Euclidean metric.",
+        "FormalPayloadJSON": "{\"structure\":\"real_vector_space\",\"dimension\":2,\"metric\":\"l2\"}",
+        "AnchorRole": "ambient_space",
+        "IsTheoremAnchor": false
+      },
+      {
+        "ObjectID": "OBJ_FINITE_POINT_SET",
+        "TypeID": "T_POINT_SET",
+        "DomainID": "DOM_EG",
+        "Label": "Finite point configuration",
+        "Symbol": "P ⊂ R^2, |P|=n",
+        "Description": "A finite set of n points in the Euclidean plane.",
+        "FormalPayloadJSON": "{\"set\":\"finite\",\"ambient\":\"OBJ_EUCLIDEAN_PLANE_R2\"}",
+        "AnchorRole": "geometry_carrier",
+        "IsTheoremAnchor": false
+      },
+      {
+        "ObjectID": "OBJ_EUCLIDEAN_DISTANCE",
+        "TypeID": "T_METRIC",
+        "DomainID": "DOM_EG",
+        "Label": "Euclidean distance",
+        "Symbol": "d(p,q)",
+        "Description": "Standard Euclidean distance between two points.",
+        "FormalPayloadJSON": "{\"formula\":\"sqrt((x2-x1)^2+(y2-y1)^2)\",\"arity\":2}",
+        "AnchorRole": "metric",
+        "IsTheoremAnchor": false
+      },
+      {
+        "ObjectID": "OBJ_UNIT_DISTANCE_PREDICATE",
+        "TypeID": "T_DISTANCE_PREDICATE",
+        "DomainID": "DOM_EG",
+        "Label": "Unit-distance predicate",
+        "Symbol": "d(p,q)=1",
+        "Description": "Boolean predicate saying two points are exactly one unit apart.",
+        "FormalPayloadJSON": "{\"predicate\":\"distance_equals\",\"value\":1,\"metric\":\"OBJ_EUCLIDEAN_DISTANCE\"}",
+        "AnchorRole": "edge_rule",
+        "IsTheoremAnchor": false
+      },
+      {
+        "ObjectID": "OBJ_UNIT_DISTANCE_PAIR",
+        "TypeID": "T_CONCEPT",
+        "DomainID": "DOM_EG",
+        "Label": "Unit-distance pair",
+        "Symbol": "{p,q}: d(p,q)=1",
+        "Description": "Unordered pair of points satisfying the unit-distance predicate.",
+        "FormalPayloadJSON": "{\"arity\":2,\"unordered\":true,\"predicate\":\"OBJ_UNIT_DISTANCE_PREDICATE\"}",
+        "AnchorRole": "counted_atom",
+        "IsTheoremAnchor": false
+      },
+      {
+        "ObjectID": "OBJ_UNIT_DISTANCE_GRAPH",
+        "TypeID": "T_GRAPH",
+        "DomainID": "DOM_GT",
+        "Label": "Unit-distance graph of a point set",
+        "Symbol": "G(P)",
+        "Description": "Graph whose vertices are points of P and whose edges are unit-distance pairs.",
+        "FormalPayloadJSON": "{\"vertices\":\"P\",\"edges\":\"{{p,q}: d(p,q)=1}\"}",
+        "AnchorRole": "combinatorial_shadow",
+        "IsTheoremAnchor": false
+      },
+      {
+        "ObjectID": "OBJ_GRAPH_EDGE_COUNT",
+        "TypeID": "T_GRAPH_INVARIANT",
+        "DomainID": "DOM_GT",
+        "Label": "Graph edge count",
+        "Symbol": "e(G)",
+        "Description": "Number of edges in a finite graph; equals unit-distance pair count for G(P).",
+        "FormalPayloadJSON": "{\"invariant\":\"edge_count\"}",
+        "AnchorRole": "measured_quantity",
+        "IsTheoremAnchor": false
+      },
+      {
+        "ObjectID": "OBJ_UNIT_DISTANCE_MAX_FUNCTION",
+        "TypeID": "T_ASYMPTOTIC_FUNCTION",
+        "DomainID": "DOM_AC",
+        "Label": "Maximum unit-distance count function",
+        "Symbol": "U(n)",
+        "Description": "Maximum number of unit-distance pairs determined by n planar points.",
+        "FormalPayloadJSON": "{\"definition\":\"max_{P subset R^2, |P|=n} e(G(P))\"}",
+        "AnchorRole": "target_function",
+        "IsTheoremAnchor": false
+      },
+      {
+        "ObjectID": "OBJ_SUPERLINEAR_LOWER_BOUND",
+        "TypeID": "T_GROWTH_BOUND",
+        "DomainID": "DOM_AC",
+        "Label": "Superlinear lower bound",
+        "Symbol": "U(n) ≥ n^(1+ε)",
+        "Description": "Existence of an exponent epsilon greater than zero giving superlinear lower growth along arbitrarily large n or a specified range.",
+        "FormalPayloadJSON": "{\"bound_type\":\"lower\",\"expression\":\"n^(1+epsilon)\",\"epsilon\":\"positive\"}",
+        "AnchorRole": "theorem_content",
+        "IsTheoremAnchor": false
+      },
+      {
+        "ObjectID": "OBJ_EXPLICIT_N_1_014_BOUND",
+        "TypeID": "T_GROWTH_BOUND",
+        "DomainID": "DOM_AC",
+        "Label": "Explicit n^1.014 lower bound",
+        "Symbol": "U(n) > n^1.014",
+        "Description": "Explicit lower-bound anchor reported in a later writeup; useful as a stronger coordinate if adopted.",
+        "FormalPayloadJSON": "{\"bound_type\":\"lower\",\"expression\":\"n^1.014\",\"status\":\"external_explicit_anchor\"}",
+        "AnchorRole": "optional_explicit_anchor",
+        "IsTheoremAnchor": false
+      },
+      {
+        "ObjectID": "OBJ_THEOREM_SUPERLINEAR_UNIT_DISTANCE",
+        "TypeID": "T_THEOREM",
+        "DomainID": "DOM_THM",
+        "Label": "Superlinear planar unit-distance theorem anchor",
+        "Symbol": "∃ε>0: U(n) ≥ n^(1+ε)",
+        "Description": "The fixed-point theorem anchor for the semantic mirror.",
+        "FormalPayloadJSON": "{\"claim\":\"superlinear lower bound for planar unit distances\",\"proof_status\":\"external/human-reviewed or to be attached\"}",
+        "AnchorRole": "fixed_point_anchor",
+        "IsTheoremAnchor": true
+      },
+      {
+        "ObjectID": "OBJ_NUMBER_FIELD_K",
+        "TypeID": "T_NUMBER_FIELD",
+        "DomainID": "DOM_ANT",
+        "Label": "Number field source object",
+        "Symbol": "K/Q",
+        "Description": "A finite extension of Q used as a source of structured algebraic data.",
+        "FormalPayloadJSON": "{\"structure\":\"finite_extension_Q\",\"parameters\":[\"degree\",\"discriminant\",\"small_norm_primes\"]}",
+        "AnchorRole": "algebraic_source",
+        "IsTheoremAnchor": false
+      },
+      {
+        "ObjectID": "OBJ_RING_OF_INTEGERS_OK",
+        "TypeID": "T_RING",
+        "DomainID": "DOM_ANT",
+        "Label": "Ring of integers",
+        "Symbol": "O_K",
+        "Description": "Integral closure of Z in a number field K.",
+        "FormalPayloadJSON": "{\"belongs_to\":\"OBJ_NUMBER_FIELD_K\"}",
+        "AnchorRole": "discrete_algebraic_carrier",
+        "IsTheoremAnchor": false
+      },
+      {
+        "ObjectID": "OBJ_FIELD_DEGREE",
+        "TypeID": "T_FIELD_INVARIANT",
+        "DomainID": "DOM_ANT",
+        "Label": "Field degree",
+        "Symbol": "[K:Q]",
+        "Description": "Degree of the number field over Q.",
+        "FormalPayloadJSON": "{\"invariant\":\"degree\"}",
+        "AnchorRole": "scale_parameter",
+        "IsTheoremAnchor": false
+      },
+      {
+        "ObjectID": "OBJ_FIELD_DISCRIMINANT",
+        "TypeID": "T_FIELD_INVARIANT",
+        "DomainID": "DOM_ANT",
+        "Label": "Field discriminant",
+        "Symbol": "Disc(K)",
+        "Description": "Discriminant controlling arithmetic/geometric complexity of K.",
+        "FormalPayloadJSON": "{\"invariant\":\"discriminant\"}",
+        "AnchorRole": "complexity_control",
+        "IsTheoremAnchor": false
+      },
+      {
+        "ObjectID": "OBJ_SMALL_NORM_PRIME_IDEALS",
+        "TypeID": "T_FIELD_INVARIANT",
+        "DomainID": "DOM_ANT",
+        "Label": "Many small-norm prime ideals",
+        "Symbol": "#{𝔭: N𝔭 small}",
+        "Description": "Arithmetic feature that can drive many short/algebraically controlled differences.",
+        "FormalPayloadJSON": "{\"invariant\":\"small_norm_prime_ideal_count\"}",
+        "AnchorRole": "multiplicity_source",
+        "IsTheoremAnchor": false
+      },
+      {
+        "ObjectID": "OBJ_FIELD_NORM",
+        "TypeID": "T_FUNCTION",
+        "DomainID": "DOM_ANT",
+        "Label": "Field norm",
+        "Symbol": "N_{K/Q}(x)",
+        "Description": "Multiplicative norm from K to Q.",
+        "FormalPayloadJSON": "{\"function\":\"field_norm\",\"domain\":\"K\",\"codomain\":\"Q\"}",
+        "AnchorRole": "algebraic_metric_proxy",
+        "IsTheoremAnchor": false
+      },
+      {
+        "ObjectID": "OBJ_GOLOD_SHAFAREVICH_CRITERION",
+        "TypeID": "T_CONCEPT",
+        "DomainID": "DOM_ANT",
+        "Label": "Golod-Shafarevich criterion bridge",
+        "Symbol": "GS",
+        "Description": "Criterion appearing in arithmetic constructions with many small-norm primes and controlled discriminant.",
+        "FormalPayloadJSON": "{\"role\":\"arithmetic_existence_criterion\"}",
+        "AnchorRole": "deep_arithmetic_bridge",
+        "IsTheoremAnchor": false
+      },
+      {
+        "ObjectID": "OBJ_MINKOWSKI_EMBEDDING",
+        "TypeID": "T_MINKOWSKI_EMBEDDING",
+        "DomainID": "DOM_LE",
+        "Label": "Minkowski embedding",
+        "Symbol": "σ: O_K → R^r × C^s",
+        "Description": "Embedding from algebraic integers into a Euclidean lattice representation.",
+        "FormalPayloadJSON": "{\"map\":\"minkowski_embedding\",\"source\":\"OBJ_RING_OF_INTEGERS_OK\"}",
+        "AnchorRole": "algebra_to_geometry_map",
+        "IsTheoremAnchor": false
+      },
+      {
+        "ObjectID": "OBJ_MINKOWSKI_LATTICE",
+        "TypeID": "T_LATTICE",
+        "DomainID": "DOM_LE",
+        "Label": "Minkowski lattice",
+        "Symbol": "σ(O_K)",
+        "Description": "Lattice obtained by embedding the ring of integers into Euclidean space.",
+        "FormalPayloadJSON": "{\"lattice\":\"image_of_ring_of_integers\",\"embedding\":\"OBJ_MINKOWSKI_EMBEDDING\"}",
+        "AnchorRole": "high_dimensional_carrier",
+        "IsTheoremAnchor": false
+      },
+      {
+        "ObjectID": "OBJ_GRAM_MATRIX",
+        "TypeID": "T_GRAM_MATRIX",
+        "DomainID": "DOM_LE",
+        "Label": "Gram matrix of embedding",
+        "Symbol": "Gram(σ)",
+        "Description": "Inner-product matrix controlling Euclidean distances in the lattice embedding.",
+        "FormalPayloadJSON": "{\"matrix\":\"basis_inner_products\"}",
+        "AnchorRole": "distance_translator",
+        "IsTheoremAnchor": false
+      },
+      {
+        "ObjectID": "OBJ_SHORT_VECTOR_RELATION",
+        "TypeID": "T_CONCEPT",
+        "DomainID": "DOM_LE",
+        "Label": "Short-vector/unit-edge relation",
+        "Symbol": "||v-w||=1 after normalization",
+        "Description": "Bridge object connecting algebraic difference structure to geometric unit edges.",
+        "FormalPayloadJSON": "{\"relation\":\"controlled_difference_becomes_unit_distance\"}",
+        "AnchorRole": "hidden_intermediate_candidate",
+        "IsTheoremAnchor": false
+      },
+      {
+        "ObjectID": "OBJ_PLANAR_PROJECTION",
+        "TypeID": "T_PROJECTION",
+        "DomainID": "DOM_LE",
+        "Label": "Planar projection/coordinate map",
+        "Symbol": "π: lattice → R^2",
+        "Description": "Projection or coordinate selection mapping a higher-dimensional lattice construction into the plane.",
+        "FormalPayloadJSON": "{\"projection_target\":\"OBJ_EUCLIDEAN_PLANE_R2\"}",
+        "AnchorRole": "dimension_bridge",
+        "IsTheoremAnchor": false
+      },
+      {
+        "ObjectID": "OBJ_ALGEBRAIC_CONSTRUCTION_FAMILY",
+        "TypeID": "T_CONSTRUCTION_FAMILY",
+        "DomainID": "DOM_AC",
+        "Label": "Algebraic unit-distance construction family",
+        "Symbol": "P_K(n)",
+        "Description": "Parametrized family of planar point configurations arising from algebraic/lattice data.",
+        "FormalPayloadJSON": "{\"parameters\":[\"K\",\"box_size\",\"projection\",\"normalization\"],\"output\":\"point_set\"}",
+        "AnchorRole": "route_spine",
+        "IsTheoremAnchor": false
+      },
+      {
+        "ObjectID": "OBJ_BRIDGE_METRIC_TO_GRAPH",
+        "TypeID": "T_SEMANTIC_BRIDGE",
+        "DomainID": "DOM_META",
+        "Label": "Metric-to-edge bridge",
+        "Symbol": "d=1 ↔ edge",
+        "Description": "Semantic bridge from Euclidean metric predicates to graph adjacency.",
+        "FormalPayloadJSON": "{\"from\":\"DOM_EG\",\"to\":\"DOM_GT\"}",
+        "AnchorRole": "bridge",
+        "IsTheoremAnchor": false
+      },
+      {
+        "ObjectID": "OBJ_BRIDGE_FIELD_TO_LATTICE",
+        "TypeID": "T_SEMANTIC_BRIDGE",
+        "DomainID": "DOM_META",
+        "Label": "Field-to-lattice bridge",
+        "Symbol": "O_K ↦ σ(O_K)",
+        "Description": "Semantic bridge from algebraic integers to lattice points.",
+        "FormalPayloadJSON": "{\"from\":\"DOM_ANT\",\"to\":\"DOM_LE\"}",
+        "AnchorRole": "bridge",
+        "IsTheoremAnchor": false
+      },
+      {
+        "ObjectID": "OBJ_BRIDGE_LATTICE_TO_PLANE",
+        "TypeID": "T_SEMANTIC_BRIDGE",
+        "DomainID": "DOM_META",
+        "Label": "Lattice-to-plane bridge",
+        "Symbol": "π(Λ) ⊂ R^2",
+        "Description": "Semantic bridge from high-dimensional lattice construction to planar configuration.",
+        "FormalPayloadJSON": "{\"from\":\"DOM_LE\",\"to\":\"DOM_EG\"}",
+        "AnchorRole": "bridge",
+        "IsTheoremAnchor": false
+      },
+      {
+        "ObjectID": "OBJ_BRIDGE_LOCAL_TO_ASYMPTOTIC",
+        "TypeID": "T_SEMANTIC_BRIDGE",
+        "DomainID": "DOM_META",
+        "Label": "Local-count-to-asymptotic bridge",
+        "Symbol": "e(G(P_n)) ↦ growth exponent",
+        "Description": "Semantic bridge from finite edge counts to asymptotic lower bounds.",
+        "FormalPayloadJSON": "{\"from\":\"DOM_GT\",\"to\":\"DOM_AC\"}",
+        "AnchorRole": "bridge",
+        "IsTheoremAnchor": false
+      }
+    ]
+  },
+  "math_relations": {
+    "Description": "Typed relation assertions. Valid/transaction ranges are represented as ISO strings in this sketch; PostgreSQL should use tstzrange.",
+    "primary_key": [
+      "RelationID"
+    ],
+    "schema": [
+      {
+        "name": "RelationID",
+        "datatype": "string",
+        "type": "raw",
+        "is_primary_key": true
+      },
+      {
+        "name": "SourceObjectID",
+        "datatype": "string",
+        "type": "relationship"
+      },
+      {
+        "name": "RelationTypeID",
+        "datatype": "string",
+        "type": "relationship"
+      },
+      {
+        "name": "TargetObjectID",
+        "datatype": "string",
+        "type": "relationship"
+      },
+      {
+        "name": "ContextID",
+        "datatype": "string",
+        "type": "relationship"
+      },
+      {
+        "name": "Confidence",
+        "datatype": "number",
+        "type": "raw"
+      },
+      {
+        "name": "ValidFrom",
+        "datatype": "datetime",
+        "type": "raw"
+      },
+      {
+        "name": "ValidTo",
+        "datatype": "datetime",
+        "type": "raw"
+      },
+      {
+        "name": "TxFrom",
+        "datatype": "datetime",
+        "type": "raw"
+      },
+      {
+        "name": "TxTo",
+        "datatype": "datetime",
+        "type": "raw"
+      },
+      {
+        "name": "SourceLabel",
+        "datatype": "string",
+        "type": "lookup",
+        "formula": "=_xlfn.INDEX(math_objects!Label,_xlfn.MATCH({{SourceObjectID}},math_objects!ObjectID,0))"
+      },
+      {
+        "name": "RelationName",
+        "datatype": "string",
+        "type": "lookup",
+        "formula": "=_xlfn.INDEX(relation_types!DisplayName,_xlfn.MATCH({{RelationTypeID}},relation_types!RelationTypeID,0))"
+      },
+      {
+        "name": "TargetLabel",
+        "datatype": "string",
+        "type": "lookup",
+        "formula": "=_xlfn.INDEX(math_objects!Label,_xlfn.MATCH({{TargetObjectID}},math_objects!ObjectID,0))"
+      },
+      {
+        "name": "IsDAGEdge",
+        "datatype": "boolean",
+        "type": "lookup",
+        "formula": "=_xlfn.INDEX(relation_types!IsDAGEdge,_xlfn.MATCH({{RelationTypeID}},relation_types!RelationTypeID,0))"
+      },
+      {
+        "name": "Description",
+        "datatype": "string",
+        "type": "raw"
+      }
+    ],
+    "data": [
+      {
+        "RelationID": "MR001",
+        "SourceObjectID": "OBJ_FINITE_POINT_SET",
+        "RelationTypeID": "REL_EMBEDS_IN",
+        "TargetObjectID": "OBJ_EUCLIDEAN_PLANE_R2",
+        "ContextID": "CTX_EUCLIDEAN_PLANE",
+        "Confidence": 1.0,
+        "ValidFrom": "-infinity",
+        "ValidTo": "infinity",
+        "TxFrom": "2026-05-27T00:00:00Z",
+        "TxTo": "infinity",
+        "Description": "Finite planar configuration lives in the Euclidean plane."
+      },
+      {
+        "RelationID": "MR002",
+        "SourceObjectID": "OBJ_UNIT_DISTANCE_PREDICATE",
+        "RelationTypeID": "REL_DEFINED_BY",
+        "TargetObjectID": "OBJ_EUCLIDEAN_DISTANCE",
+        "ContextID": "CTX_EUCLIDEAN_PLANE",
+        "Confidence": 1.0,
+        "ValidFrom": "-infinity",
+        "ValidTo": "infinity",
+        "TxFrom": "2026-05-27T00:00:00Z",
+        "TxTo": "infinity",
+        "Description": "Unit distance is defined using Euclidean distance."
+      },
+      {
+        "RelationID": "MR003",
+        "SourceObjectID": "OBJ_UNIT_DISTANCE_PAIR",
+        "RelationTypeID": "REL_DEFINED_BY",
+        "TargetObjectID": "OBJ_UNIT_DISTANCE_PREDICATE",
+        "ContextID": "CTX_PLANAR_UNIT_DISTANCE_PROBLEM",
+        "Confidence": 1.0,
+        "ValidFrom": "-infinity",
+        "ValidTo": "infinity",
+        "TxFrom": "2026-05-27T00:00:00Z",
+        "TxTo": "infinity",
+        "Description": "A unit-distance pair is a pair satisfying the unit-distance predicate."
+      },
+      {
+        "RelationID": "MR004",
+        "SourceObjectID": "OBJ_FINITE_POINT_SET",
+        "RelationTypeID": "REL_INDUCES",
+        "TargetObjectID": "OBJ_UNIT_DISTANCE_GRAPH",
+        "ContextID": "CTX_PLANAR_UNIT_DISTANCE_PROBLEM",
+        "Confidence": 1.0,
+        "ValidFrom": "-infinity",
+        "ValidTo": "infinity",
+        "TxFrom": "2026-05-27T00:00:00Z",
+        "TxTo": "infinity",
+        "Description": "A point set induces its unit-distance graph."
+      },
+      {
+        "RelationID": "MR005",
+        "SourceObjectID": "OBJ_UNIT_DISTANCE_GRAPH",
+        "RelationTypeID": "REL_DEFINED_BY",
+        "TargetObjectID": "OBJ_UNIT_DISTANCE_PREDICATE",
+        "ContextID": "CTX_PLANAR_UNIT_DISTANCE_PROBLEM",
+        "Confidence": 1.0,
+        "ValidFrom": "-infinity",
+        "ValidTo": "infinity",
+        "TxFrom": "2026-05-27T00:00:00Z",
+        "TxTo": "infinity",
+        "Description": "Graph adjacency is defined by the unit-distance predicate."
+      },
+      {
+        "RelationID": "MR006",
+        "SourceObjectID": "OBJ_GRAPH_EDGE_COUNT",
+        "RelationTypeID": "REL_COUNTS",
+        "TargetObjectID": "OBJ_UNIT_DISTANCE_GRAPH",
+        "ContextID": "CTX_PLANAR_UNIT_DISTANCE_PROBLEM",
+        "Confidence": 1.0,
+        "ValidFrom": "-infinity",
+        "ValidTo": "infinity",
+        "TxFrom": "2026-05-27T00:00:00Z",
+        "TxTo": "infinity",
+        "Description": "Edge count counts unit-distance pairs."
+      },
+      {
+        "RelationID": "MR007",
+        "SourceObjectID": "OBJ_UNIT_DISTANCE_MAX_FUNCTION",
+        "RelationTypeID": "REL_AGGREGATES_OVER",
+        "TargetObjectID": "OBJ_FINITE_POINT_SET",
+        "ContextID": "CTX_PLANAR_UNIT_DISTANCE_PROBLEM",
+        "Confidence": 1.0,
+        "ValidFrom": "-infinity",
+        "ValidTo": "infinity",
+        "TxFrom": "2026-05-27T00:00:00Z",
+        "TxTo": "infinity",
+        "Description": "U(n) aggregates maximum edge counts across all n-point configurations."
+      },
+      {
+        "RelationID": "MR008",
+        "SourceObjectID": "OBJ_SUPERLINEAR_LOWER_BOUND",
+        "RelationTypeID": "REL_ASYMPTOTIC_LOWER_BOUND_FOR",
+        "TargetObjectID": "OBJ_UNIT_DISTANCE_MAX_FUNCTION",
+        "ContextID": "CTX_SUPERLINEAR_LOWER_BOUND",
+        "Confidence": 0.95,
+        "ValidFrom": "-infinity",
+        "ValidTo": "infinity",
+        "TxFrom": "2026-05-27T00:00:00Z",
+        "TxTo": "infinity",
+        "Description": "Superlinear bound targets U(n)."
+      },
+      {
+        "RelationID": "MR009",
+        "SourceObjectID": "OBJ_THEOREM_SUPERLINEAR_UNIT_DISTANCE",
+        "RelationTypeID": "REL_ANCHORS",
+        "TargetObjectID": "OBJ_SUPERLINEAR_LOWER_BOUND",
+        "ContextID": "CTX_SUPERLINEAR_LOWER_BOUND",
+        "Confidence": 0.95,
+        "ValidFrom": "-infinity",
+        "ValidTo": "infinity",
+        "TxFrom": "2026-05-27T00:00:00Z",
+        "TxTo": "infinity",
+        "Description": "The theorem anchors the lower-bound claim."
+      },
+      {
+        "RelationID": "MR010",
+        "SourceObjectID": "OBJ_EXPLICIT_N_1_014_BOUND",
+        "RelationTypeID": "REL_ASYMPTOTIC_LOWER_BOUND_FOR",
+        "TargetObjectID": "OBJ_UNIT_DISTANCE_MAX_FUNCTION",
+        "ContextID": "CTX_SUPERLINEAR_LOWER_BOUND",
+        "Confidence": 0.9,
+        "ValidFrom": "-infinity",
+        "ValidTo": "infinity",
+        "TxFrom": "2026-05-27T00:00:00Z",
+        "TxTo": "infinity",
+        "Description": "Optional explicit n^1.014 coordinate for U(n)."
+      },
+      {
+        "RelationID": "MR011",
+        "SourceObjectID": "OBJ_NUMBER_FIELD_K",
+        "RelationTypeID": "REL_HAS_INVARIANT",
+        "TargetObjectID": "OBJ_FIELD_DEGREE",
+        "ContextID": "CTX_SUPERLINEAR_LOWER_BOUND",
+        "Confidence": 1.0,
+        "ValidFrom": "-infinity",
+        "ValidTo": "infinity",
+        "TxFrom": "2026-05-27T00:00:00Z",
+        "TxTo": "infinity",
+        "Description": "Number field has degree."
+      },
+      {
+        "RelationID": "MR012",
+        "SourceObjectID": "OBJ_NUMBER_FIELD_K",
+        "RelationTypeID": "REL_HAS_INVARIANT",
+        "TargetObjectID": "OBJ_FIELD_DISCRIMINANT",
+        "ContextID": "CTX_SUPERLINEAR_LOWER_BOUND",
+        "Confidence": 1.0,
+        "ValidFrom": "-infinity",
+        "ValidTo": "infinity",
+        "TxFrom": "2026-05-27T00:00:00Z",
+        "TxTo": "infinity",
+        "Description": "Number field has discriminant."
+      },
+      {
+        "RelationID": "MR013",
+        "SourceObjectID": "OBJ_NUMBER_FIELD_K",
+        "RelationTypeID": "REL_HAS_INVARIANT",
+        "TargetObjectID": "OBJ_SMALL_NORM_PRIME_IDEALS",
+        "ContextID": "CTX_SUPERLINEAR_LOWER_BOUND",
+        "Confidence": 0.85,
+        "ValidFrom": "-infinity",
+        "ValidTo": "infinity",
+        "TxFrom": "2026-05-27T00:00:00Z",
+        "TxTo": "infinity",
+        "Description": "Small-norm prime ideals are a key arithmetic multiplicity feature."
+      },
+      {
+        "RelationID": "MR014",
+        "SourceObjectID": "OBJ_RING_OF_INTEGERS_OK",
+        "RelationTypeID": "REL_DEFINED_BY",
+        "TargetObjectID": "OBJ_NUMBER_FIELD_K",
+        "ContextID": "CTX_SUPERLINEAR_LOWER_BOUND",
+        "Confidence": 1.0,
+        "ValidFrom": "-infinity",
+        "ValidTo": "infinity",
+        "TxFrom": "2026-05-27T00:00:00Z",
+        "TxTo": "infinity",
+        "Description": "Ring of integers is defined relative to K."
+      },
+      {
+        "RelationID": "MR015",
+        "SourceObjectID": "OBJ_RING_OF_INTEGERS_OK",
+        "RelationTypeID": "REL_EMBEDS_IN",
+        "TargetObjectID": "OBJ_MINKOWSKI_LATTICE",
+        "ContextID": "CTX_SUPERLINEAR_LOWER_BOUND",
+        "Confidence": 0.95,
+        "ValidFrom": "-infinity",
+        "ValidTo": "infinity",
+        "TxFrom": "2026-05-27T00:00:00Z",
+        "TxTo": "infinity",
+        "Description": "O_K embeds in a Minkowski lattice."
+      },
+      {
+        "RelationID": "MR016",
+        "SourceObjectID": "OBJ_MINKOWSKI_LATTICE",
+        "RelationTypeID": "REL_DEFINED_BY",
+        "TargetObjectID": "OBJ_MINKOWSKI_EMBEDDING",
+        "ContextID": "CTX_SUPERLINEAR_LOWER_BOUND",
+        "Confidence": 0.95,
+        "ValidFrom": "-infinity",
+        "ValidTo": "infinity",
+        "TxFrom": "2026-05-27T00:00:00Z",
+        "TxTo": "infinity",
+        "Description": "The lattice is defined by the Minkowski embedding."
+      },
+      {
+        "RelationID": "MR017",
+        "SourceObjectID": "OBJ_MINKOWSKI_LATTICE",
+        "RelationTypeID": "REL_HAS_INVARIANT",
+        "TargetObjectID": "OBJ_GRAM_MATRIX",
+        "ContextID": "CTX_SUPERLINEAR_LOWER_BOUND",
+        "Confidence": 0.95,
+        "ValidFrom": "-infinity",
+        "ValidTo": "infinity",
+        "TxFrom": "2026-05-27T00:00:00Z",
+        "TxTo": "infinity",
+        "Description": "Gram matrix controls lattice distances."
+      },
+      {
+        "RelationID": "MR018",
+        "SourceObjectID": "OBJ_SHORT_VECTOR_RELATION",
+        "RelationTypeID": "REL_COMPUTED_FROM",
+        "TargetObjectID": "OBJ_GRAM_MATRIX",
+        "ContextID": "CTX_SUPERLINEAR_LOWER_BOUND",
+        "Confidence": 0.75,
+        "ValidFrom": "-infinity",
+        "ValidTo": "infinity",
+        "TxFrom": "2026-05-27T00:00:00Z",
+        "TxTo": "infinity",
+        "Description": "Short vector/unit-edge relation is computed from Gram data and normalization."
+      },
+      {
+        "RelationID": "MR019",
+        "SourceObjectID": "OBJ_PLANAR_PROJECTION",
+        "RelationTypeID": "REL_DEFINED_BY",
+        "TargetObjectID": "OBJ_MINKOWSKI_LATTICE",
+        "ContextID": "CTX_SUPERLINEAR_LOWER_BOUND",
+        "Confidence": 0.75,
+        "ValidFrom": "-infinity",
+        "ValidTo": "infinity",
+        "TxFrom": "2026-05-27T00:00:00Z",
+        "TxTo": "infinity",
+        "Description": "Planar projection is defined on lattice construction data."
+      },
+      {
+        "RelationID": "MR020",
+        "SourceObjectID": "OBJ_MINKOWSKI_LATTICE",
+        "RelationTypeID": "REL_PROJECTS_TO",
+        "TargetObjectID": "OBJ_FINITE_POINT_SET",
+        "ContextID": "CTX_SUPERLINEAR_LOWER_BOUND",
+        "Confidence": 0.7,
+        "ValidFrom": "-infinity",
+        "ValidTo": "infinity",
+        "TxFrom": "2026-05-27T00:00:00Z",
+        "TxTo": "infinity",
+        "Description": "A finite portion/projection of lattice data yields a planar point set."
+      },
+      {
+        "RelationID": "MR021",
+        "SourceObjectID": "OBJ_ALGEBRAIC_CONSTRUCTION_FAMILY",
+        "RelationTypeID": "REL_DEPENDS_ON",
+        "TargetObjectID": "OBJ_NUMBER_FIELD_K",
+        "ContextID": "CTX_SUPERLINEAR_LOWER_BOUND",
+        "Confidence": 0.9,
+        "ValidFrom": "-infinity",
+        "ValidTo": "infinity",
+        "TxFrom": "2026-05-27T00:00:00Z",
+        "TxTo": "infinity",
+        "Description": "Construction family depends on a number field."
+      },
+      {
+        "RelationID": "MR022",
+        "SourceObjectID": "OBJ_ALGEBRAIC_CONSTRUCTION_FAMILY",
+        "RelationTypeID": "REL_DEPENDS_ON",
+        "TargetObjectID": "OBJ_PLANAR_PROJECTION",
+        "ContextID": "CTX_SUPERLINEAR_LOWER_BOUND",
+        "Confidence": 0.8,
+        "ValidFrom": "-infinity",
+        "ValidTo": "infinity",
+        "TxFrom": "2026-05-27T00:00:00Z",
+        "TxTo": "infinity",
+        "Description": "Construction family depends on projection to the plane."
+      },
+      {
+        "RelationID": "MR023",
+        "SourceObjectID": "OBJ_ALGEBRAIC_CONSTRUCTION_FAMILY",
+        "RelationTypeID": "REL_REALIZES",
+        "TargetObjectID": "OBJ_SUPERLINEAR_LOWER_BOUND",
+        "ContextID": "CTX_SUPERLINEAR_LOWER_BOUND",
+        "Confidence": 0.8,
+        "ValidFrom": "-infinity",
+        "ValidTo": "infinity",
+        "TxFrom": "2026-05-27T00:00:00Z",
+        "TxTo": "infinity",
+        "Description": "Construction family realizes the superlinear lower bound."
+      },
+      {
+        "RelationID": "MR024",
+        "SourceObjectID": "OBJ_BRIDGE_METRIC_TO_GRAPH",
+        "RelationTypeID": "REL_SEMANTIC_BRIDGE_TO",
+        "TargetObjectID": "OBJ_UNIT_DISTANCE_PREDICATE",
+        "ContextID": "CTX_PLANAR_UNIT_DISTANCE_PROBLEM",
+        "Confidence": 1.0,
+        "ValidFrom": "-infinity",
+        "ValidTo": "infinity",
+        "TxFrom": "2026-05-27T00:00:00Z",
+        "TxTo": "infinity",
+        "Description": "Bridge points to the metric predicate side."
+      },
+      {
+        "RelationID": "MR025",
+        "SourceObjectID": "OBJ_BRIDGE_METRIC_TO_GRAPH",
+        "RelationTypeID": "REL_SEMANTIC_BRIDGE_TO",
+        "TargetObjectID": "OBJ_UNIT_DISTANCE_GRAPH",
+        "ContextID": "CTX_PLANAR_UNIT_DISTANCE_PROBLEM",
+        "Confidence": 1.0,
+        "ValidFrom": "-infinity",
+        "ValidTo": "infinity",
+        "TxFrom": "2026-05-27T00:00:00Z",
+        "TxTo": "infinity",
+        "Description": "Bridge points to the graph adjacency side."
+      },
+      {
+        "RelationID": "MR026",
+        "SourceObjectID": "OBJ_BRIDGE_FIELD_TO_LATTICE",
+        "RelationTypeID": "REL_SEMANTIC_BRIDGE_TO",
+        "TargetObjectID": "OBJ_RING_OF_INTEGERS_OK",
+        "ContextID": "CTX_SUPERLINEAR_LOWER_BOUND",
+        "Confidence": 1.0,
+        "ValidFrom": "-infinity",
+        "ValidTo": "infinity",
+        "TxFrom": "2026-05-27T00:00:00Z",
+        "TxTo": "infinity",
+        "Description": "Bridge points to algebraic source."
+      },
+      {
+        "RelationID": "MR027",
+        "SourceObjectID": "OBJ_BRIDGE_FIELD_TO_LATTICE",
+        "RelationTypeID": "REL_SEMANTIC_BRIDGE_TO",
+        "TargetObjectID": "OBJ_MINKOWSKI_LATTICE",
+        "ContextID": "CTX_SUPERLINEAR_LOWER_BOUND",
+        "Confidence": 1.0,
+        "ValidFrom": "-infinity",
+        "ValidTo": "infinity",
+        "TxFrom": "2026-05-27T00:00:00Z",
+        "TxTo": "infinity",
+        "Description": "Bridge points to lattice target."
+      },
+      {
+        "RelationID": "MR028",
+        "SourceObjectID": "OBJ_BRIDGE_LATTICE_TO_PLANE",
+        "RelationTypeID": "REL_SEMANTIC_BRIDGE_TO",
+        "TargetObjectID": "OBJ_MINKOWSKI_LATTICE",
+        "ContextID": "CTX_SUPERLINEAR_LOWER_BOUND",
+        "Confidence": 0.9,
+        "ValidFrom": "-infinity",
+        "ValidTo": "infinity",
+        "TxFrom": "2026-05-27T00:00:00Z",
+        "TxTo": "infinity",
+        "Description": "Bridge points to lattice side."
+      },
+      {
+        "RelationID": "MR029",
+        "SourceObjectID": "OBJ_BRIDGE_LATTICE_TO_PLANE",
+        "RelationTypeID": "REL_SEMANTIC_BRIDGE_TO",
+        "TargetObjectID": "OBJ_FINITE_POINT_SET",
+        "ContextID": "CTX_SUPERLINEAR_LOWER_BOUND",
+        "Confidence": 0.9,
+        "ValidFrom": "-infinity",
+        "ValidTo": "infinity",
+        "TxFrom": "2026-05-27T00:00:00Z",
+        "TxTo": "infinity",
+        "Description": "Bridge points to planar point-set side."
+      },
+      {
+        "RelationID": "MR030",
+        "SourceObjectID": "OBJ_BRIDGE_LOCAL_TO_ASYMPTOTIC",
+        "RelationTypeID": "REL_SEMANTIC_BRIDGE_TO",
+        "TargetObjectID": "OBJ_GRAPH_EDGE_COUNT",
+        "ContextID": "CTX_SUPERLINEAR_LOWER_BOUND",
+        "Confidence": 1.0,
+        "ValidFrom": "-infinity",
+        "ValidTo": "infinity",
+        "TxFrom": "2026-05-27T00:00:00Z",
+        "TxTo": "infinity",
+        "Description": "Bridge points to finite edge counts."
+      },
+      {
+        "RelationID": "MR031",
+        "SourceObjectID": "OBJ_BRIDGE_LOCAL_TO_ASYMPTOTIC",
+        "RelationTypeID": "REL_SEMANTIC_BRIDGE_TO",
+        "TargetObjectID": "OBJ_UNIT_DISTANCE_MAX_FUNCTION",
+        "ContextID": "CTX_SUPERLINEAR_LOWER_BOUND",
+        "Confidence": 1.0,
+        "ValidFrom": "-infinity",
+        "ValidTo": "infinity",
+        "TxFrom": "2026-05-27T00:00:00Z",
+        "TxTo": "infinity",
+        "Description": "Bridge points to asymptotic function."
+      },
+      {
+        "RelationID": "MR032",
+        "SourceObjectID": "OBJ_GOLOD_SHAFAREVICH_CRITERION",
+        "RelationTypeID": "REL_SEMANTIC_BRIDGE_TO",
+        "TargetObjectID": "OBJ_SMALL_NORM_PRIME_IDEALS",
+        "ContextID": "CTX_SUPERLINEAR_LOWER_BOUND",
+        "Confidence": 0.7,
+        "ValidFrom": "-infinity",
+        "ValidTo": "infinity",
+        "TxFrom": "2026-05-27T00:00:00Z",
+        "TxTo": "infinity",
+        "Description": "Candidate bridge from existence criterion to small-norm prime abundance."
+      }
+    ]
+  },
+  "property_types": {
+    "Description": "Typed scalar/JSON attributes for objects and assertions.",
+    "primary_key": [
+      "PropertyTypeID"
+    ],
+    "schema": [
+      {
+        "name": "PropertyTypeID",
+        "datatype": "string",
+        "type": "raw",
+        "is_primary_key": true
+      },
+      {
+        "name": "AppliesToTypeID",
+        "datatype": "string",
+        "type": "relationship"
+      },
+      {
+        "name": "DisplayName",
+        "datatype": "string",
+        "type": "raw"
+      },
+      {
+        "name": "Datatype",
+        "datatype": "string",
+        "type": "raw"
+      },
+      {
+        "name": "Unit",
+        "datatype": "string",
+        "type": "raw"
+      },
+      {
+        "name": "IsInvariant",
+        "datatype": "boolean",
+        "type": "raw"
+      },
+      {
+        "name": "Description",
+        "datatype": "string",
+        "type": "raw"
+      }
+    ],
+    "data": [
+      {
+        "PropertyTypeID": "PT_AMBIENT_DIMENSION",
+        "AppliesToTypeID": "T_STRUCTURE",
+        "DisplayName": "Ambient dimension",
+        "Datatype": "number",
+        "Unit": "dimension",
+        "IsInvariant": true,
+        "Description": "Dimension of ambient Euclidean or embedding space."
+      },
+      {
+        "PropertyTypeID": "PT_ARITY",
+        "AppliesToTypeID": "T_FUNCTION",
+        "DisplayName": "Arity",
+        "Datatype": "number",
+        "Unit": "",
+        "IsInvariant": true,
+        "Description": "Number of inputs."
+      },
+      {
+        "PropertyTypeID": "PT_CARDINALITY_N",
+        "AppliesToTypeID": "T_POINT_SET",
+        "DisplayName": "Point count n",
+        "Datatype": "number",
+        "Unit": "points",
+        "IsInvariant": false,
+        "Description": "Number of points in a finite configuration."
+      },
+      {
+        "PropertyTypeID": "PT_EDGE_COUNT_M",
+        "AppliesToTypeID": "T_GRAPH",
+        "DisplayName": "Edge count m",
+        "Datatype": "number",
+        "Unit": "edges",
+        "IsInvariant": true,
+        "Description": "Number of edges in a finite graph."
+      },
+      {
+        "PropertyTypeID": "PT_GROWTH_EXPONENT_ALPHA",
+        "AppliesToTypeID": "T_GROWTH_BOUND",
+        "DisplayName": "Growth exponent alpha",
+        "Datatype": "number",
+        "Unit": "",
+        "IsInvariant": false,
+        "Description": "Exponent in a lower bound such as n^alpha."
+      },
+      {
+        "PropertyTypeID": "PT_LOWER_BOUND_EXPRESSION",
+        "AppliesToTypeID": "T_GROWTH_BOUND",
+        "DisplayName": "Lower-bound expression",
+        "Datatype": "string",
+        "Unit": "",
+        "IsInvariant": false,
+        "Description": "Human/formal expression of the lower bound."
+      },
+      {
+        "PropertyTypeID": "PT_FIELD_DEGREE_VALUE",
+        "AppliesToTypeID": "T_NUMBER_FIELD",
+        "DisplayName": "Field degree value",
+        "Datatype": "number",
+        "Unit": "",
+        "IsInvariant": true,
+        "Description": "Numerical field degree when known."
+      },
+      {
+        "PropertyTypeID": "PT_DISCRIMINANT_VALUE",
+        "AppliesToTypeID": "T_NUMBER_FIELD",
+        "DisplayName": "Discriminant value or class",
+        "Datatype": "string",
+        "Unit": "",
+        "IsInvariant": true,
+        "Description": "Exact value or asymptotic class of discriminant."
+      },
+      {
+        "PropertyTypeID": "PT_SMALL_NORM_PRIME_COUNT",
+        "AppliesToTypeID": "T_NUMBER_FIELD",
+        "DisplayName": "Small-norm prime count",
+        "Datatype": "number",
+        "Unit": "prime ideals",
+        "IsInvariant": false,
+        "Description": "Count of prime ideals below a norm threshold."
+      },
+      {
+        "PropertyTypeID": "PT_GRAM_MATRIX_JSON",
+        "AppliesToTypeID": "T_GRAM_MATRIX",
+        "DisplayName": "Gram matrix JSON",
+        "Datatype": "json",
+        "Unit": "",
+        "IsInvariant": true,
+        "Description": "Matrix entries for basis inner products."
+      },
+      {
+        "PropertyTypeID": "PT_ROUTE_DISTANCE_TO_ANCHOR",
+        "AppliesToTypeID": "T_MATH_OBJECT",
+        "DisplayName": "Route distance to theorem anchor",
+        "Datatype": "number",
+        "Unit": "edges",
+        "IsInvariant": false,
+        "Description": "Shortest path distance in selected semantic/dependency graph."
+      },
+      {
+        "PropertyTypeID": "PT_GAP_STATUS",
+        "AppliesToTypeID": "T_MATH_OBJECT",
+        "DisplayName": "Topology gap status",
+        "Datatype": "string",
+        "Unit": "",
+        "IsInvariant": false,
+        "Description": "known, candidate, conjectural, missing, or rejected."
+      },
+      {
+        "PropertyTypeID": "PT_SOURCE_REFERENCE",
+        "AppliesToTypeID": "T_MATH_OBJECT",
+        "DisplayName": "Source reference",
+        "Datatype": "json",
+        "Unit": "",
+        "IsInvariant": false,
+        "Description": "External or internal source metadata."
+      }
+    ]
+  },
+  "property_values": {
+    "Description": "Initial attribute assertions. Use ValueNumber, ValueString, ValueBoolean, or ValueJSON depending on PropertyType.Datatype.",
+    "primary_key": [
+      "PropertyValueID"
+    ],
+    "schema": [
+      {
+        "name": "PropertyValueID",
+        "datatype": "string",
+        "type": "raw",
+        "is_primary_key": true
+      },
+      {
+        "name": "ObjectID",
+        "datatype": "string",
+        "type": "relationship"
+      },
+      {
+        "name": "PropertyTypeID",
+        "datatype": "string",
+        "type": "relationship"
+      },
+      {
+        "name": "ContextID",
+        "datatype": "string",
+        "type": "relationship"
+      },
+      {
+        "name": "ValueNumber",
+        "datatype": "number",
+        "type": "raw"
+      },
+      {
+        "name": "ValueString",
+        "datatype": "string",
+        "type": "raw"
+      },
+      {
+        "name": "ValueBoolean",
+        "datatype": "boolean",
+        "type": "raw"
+      },
+      {
+        "name": "ValueJSON",
+        "datatype": "string",
+        "type": "raw"
+      },
+      {
+        "name": "Confidence",
+        "datatype": "number",
+        "type": "raw"
+      },
+      {
+        "name": "ObjectLabel",
+        "datatype": "string",
+        "type": "lookup",
+        "formula": "=_xlfn.INDEX(math_objects!Label,_xlfn.MATCH({{ObjectID}},math_objects!ObjectID,0))"
+      },
+      {
+        "name": "PropertyLabel",
+        "datatype": "string",
+        "type": "lookup",
+        "formula": "=_xlfn.INDEX(property_types!DisplayName,_xlfn.MATCH({{PropertyTypeID}},property_types!PropertyTypeID,0))"
+      },
+      {
+        "name": "Description",
+        "datatype": "string",
+        "type": "raw"
+      }
+    ],
+    "data": [
+      {
+        "PropertyValueID": "PV001",
+        "ObjectID": "OBJ_EUCLIDEAN_PLANE_R2",
+        "PropertyTypeID": "PT_AMBIENT_DIMENSION",
+        "ContextID": "CTX_EUCLIDEAN_PLANE",
+        "ValueNumber": 2,
+        "ValueString": "",
+        "ValueBoolean": false,
+        "ValueJSON": "",
+        "Confidence": 1.0,
+        "Description": "Plane is two-dimensional."
+      },
+      {
+        "PropertyValueID": "PV002",
+        "ObjectID": "OBJ_EUCLIDEAN_DISTANCE",
+        "PropertyTypeID": "PT_ARITY",
+        "ContextID": "CTX_EUCLIDEAN_PLANE",
+        "ValueNumber": 2,
+        "ValueString": "",
+        "ValueBoolean": false,
+        "ValueJSON": "",
+        "Confidence": 1.0,
+        "Description": "Distance takes two point inputs."
+      },
+      {
+        "PropertyValueID": "PV003",
+        "ObjectID": "OBJ_UNIT_DISTANCE_PREDICATE",
+        "PropertyTypeID": "PT_ARITY",
+        "ContextID": "CTX_EUCLIDEAN_PLANE",
+        "ValueNumber": 2,
+        "ValueString": "",
+        "ValueBoolean": false,
+        "ValueJSON": "",
+        "Confidence": 1.0,
+        "Description": "Unit-distance predicate takes two point inputs."
+      },
+      {
+        "PropertyValueID": "PV004",
+        "ObjectID": "OBJ_SUPERLINEAR_LOWER_BOUND",
+        "PropertyTypeID": "PT_LOWER_BOUND_EXPRESSION",
+        "ContextID": "CTX_SUPERLINEAR_LOWER_BOUND",
+        "ValueNumber": 0,
+        "ValueString": "U(n) >= n^(1+epsilon) for some epsilon > 0, in the relevant asymptotic sense",
+        "ValueBoolean": false,
+        "ValueJSON": "",
+        "Confidence": 0.9,
+        "Description": "Generic superlinear lower bound statement."
+      },
+      {
+        "PropertyValueID": "PV005",
+        "ObjectID": "OBJ_EXPLICIT_N_1_014_BOUND",
+        "PropertyTypeID": "PT_GROWTH_EXPONENT_ALPHA",
+        "ContextID": "CTX_SUPERLINEAR_LOWER_BOUND",
+        "ValueNumber": 1.014,
+        "ValueString": "",
+        "ValueBoolean": false,
+        "ValueJSON": "",
+        "Confidence": 0.9,
+        "Description": "Explicit exponent coordinate."
+      },
+      {
+        "PropertyValueID": "PV006",
+        "ObjectID": "OBJ_EXPLICIT_N_1_014_BOUND",
+        "PropertyTypeID": "PT_LOWER_BOUND_EXPRESSION",
+        "ContextID": "CTX_SUPERLINEAR_LOWER_BOUND",
+        "ValueNumber": 0,
+        "ValueString": "U(n) > n^1.014 for arbitrarily large n / n sufficiently large depending on theorem formulation",
+        "ValueBoolean": false,
+        "ValueJSON": "",
+        "Confidence": 0.85,
+        "Description": "Expression should be reconciled with attached source/proof before promotion."
+      },
+      {
+        "PropertyValueID": "PV007",
+        "ObjectID": "OBJ_SHORT_VECTOR_RELATION",
+        "PropertyTypeID": "PT_GAP_STATUS",
+        "ContextID": "CTX_MODEL_V0_1",
+        "ValueNumber": 0,
+        "ValueString": "candidate_hidden_intermediate",
+        "ValueBoolean": false,
+        "ValueJSON": "",
+        "Confidence": 0.6,
+        "Description": "A likely intermediate semantic object, not yet formalized."
+      },
+      {
+        "PropertyValueID": "PV008",
+        "ObjectID": "OBJ_GOLOD_SHAFAREVICH_CRITERION",
+        "PropertyTypeID": "PT_GAP_STATUS",
+        "ContextID": "CTX_MODEL_V0_1",
+        "ValueNumber": 0,
+        "ValueString": "known_external_but_unformalized_in_model",
+        "ValueBoolean": false,
+        "ValueJSON": "",
+        "Confidence": 0.7,
+        "Description": "Known mathematical criterion, route details not encoded here."
+      }
+    ]
+  },
+  "formula_definitions": {
+    "Description": "Executable formula objects; formula language intentionally resembles the existing ERB pattern.",
+    "primary_key": [
+      "FormulaID"
+    ],
+    "schema": [
+      {
+        "name": "FormulaID",
+        "datatype": "string",
+        "type": "raw",
+        "is_primary_key": true
+      },
+      {
+        "name": "OwnerObjectID",
+        "datatype": "string",
+        "type": "relationship"
+      },
+      {
+        "name": "FormulaKind",
+        "datatype": "string",
+        "type": "raw",
+        "Description": "lookup, calculated, aggregation, predicate, or route_metric."
+      },
+      {
+        "name": "OutputPropertyTypeID",
+        "datatype": "string",
+        "type": "relationship"
+      },
+      {
+        "name": "Formula",
+        "datatype": "string",
+        "type": "raw"
+      },
+      {
+        "name": "DependsOnObjectIDs",
+        "datatype": "string",
+        "type": "raw"
+      },
+      {
+        "name": "Description",
+        "datatype": "string",
+        "type": "raw"
+      }
+    ],
+    "data": [
+      {
+        "FormulaID": "F_DISTANCE_SQUARED",
+        "OwnerObjectID": "OBJ_EUCLIDEAN_DISTANCE",
+        "FormulaKind": "calculated",
+        "OutputPropertyTypeID": "",
+        "Formula": "=POWER({{x2}}-{{x1}},2)+POWER({{y2}}-{{y1}},2)",
+        "DependsOnObjectIDs": "[\"OBJ_EUCLIDEAN_PLANE_R2\"]",
+        "Description": "Squared Euclidean distance for point-coordinate rows."
+      },
+      {
+        "FormulaID": "F_IS_UNIT_DISTANCE",
+        "OwnerObjectID": "OBJ_UNIT_DISTANCE_PREDICATE",
+        "FormulaKind": "predicate",
+        "OutputPropertyTypeID": "",
+        "Formula": "=ABS({{DistanceSquared}}-1) <= {{Tolerance}}",
+        "DependsOnObjectIDs": "[\"OBJ_EUCLIDEAN_DISTANCE\"]",
+        "Description": "Practical exact/near-exact unit-distance predicate for finite computed data."
+      },
+      {
+        "FormulaID": "F_INDUCED_EDGE_COUNT",
+        "OwnerObjectID": "OBJ_GRAPH_EDGE_COUNT",
+        "FormulaKind": "aggregation",
+        "OutputPropertyTypeID": "PT_EDGE_COUNT_M",
+        "Formula": "=COUNTROWS(FILTER(point_pairs, {{IsUnitDistance}}=TRUE))",
+        "DependsOnObjectIDs": "[\"OBJ_UNIT_DISTANCE_GRAPH\",\"OBJ_UNIT_DISTANCE_PREDICATE\"]",
+        "Description": "Counts unit-distance edges in a finite configuration."
+      },
+      {
+        "FormulaID": "F_UNIT_DISTANCE_MAX",
+        "OwnerObjectID": "OBJ_UNIT_DISTANCE_MAX_FUNCTION",
+        "FormulaKind": "aggregation",
+        "OutputPropertyTypeID": "PT_EDGE_COUNT_M",
+        "Formula": "=MAX(FILTER(configurations, {{PointCount}}={{n}}).{{EdgeCount}})",
+        "DependsOnObjectIDs": "[\"OBJ_FINITE_POINT_SET\",\"OBJ_GRAPH_EDGE_COUNT\"]",
+        "Description": "Maximum edge count over n-point configurations."
+      },
+      {
+        "FormulaID": "F_DENSITY_EXPONENT_ESTIMATE",
+        "OwnerObjectID": "OBJ_SUPERLINEAR_LOWER_BOUND",
+        "FormulaKind": "calculated",
+        "OutputPropertyTypeID": "PT_GROWTH_EXPONENT_ALPHA",
+        "Formula": "=LOG({{EdgeCount}})/LOG({{PointCount}})",
+        "DependsOnObjectIDs": "[\"OBJ_GRAPH_EDGE_COUNT\",\"OBJ_FINITE_POINT_SET\"]",
+        "Description": "Finite empirical exponent; useful for test data and candidate construction evaluation."
+      },
+      {
+        "FormulaID": "F_SUPERLINEAR_MARGIN",
+        "OwnerObjectID": "OBJ_SUPERLINEAR_LOWER_BOUND",
+        "FormulaKind": "calculated",
+        "OutputPropertyTypeID": "",
+        "Formula": "={{DensityExponentEstimate}}-1",
+        "DependsOnObjectIDs": "[\"OBJ_SUPERLINEAR_LOWER_BOUND\"]",
+        "Description": "Positive margin indicates finite superlinear behavior."
+      },
+      {
+        "FormulaID": "F_MINKOWSKI_GRAM_DISTANCE",
+        "OwnerObjectID": "OBJ_GRAM_MATRIX",
+        "FormulaKind": "calculated",
+        "OutputPropertyTypeID": "",
+        "Formula": "=TRANSPOSE({{delta_vector}}) * {{GramMatrix}} * {{delta_vector}}",
+        "DependsOnObjectIDs": "[\"OBJ_MINKOWSKI_LATTICE\"]",
+        "Description": "Distance squared in a lattice basis using Gram matrix."
+      },
+      {
+        "FormulaID": "F_ROUTE_DISTANCE_TO_ANCHOR",
+        "OwnerObjectID": "OBJ_THEOREM_SUPERLINEAR_UNIT_DISTANCE",
+        "FormulaKind": "route_metric",
+        "OutputPropertyTypeID": "PT_ROUTE_DISTANCE_TO_ANCHOR",
+        "Formula": "=SHORTEST_PATH_LENGTH(math_relations, {{ObjectID}}, \"OBJ_THEOREM_SUPERLINEAR_UNIT_DISTANCE\", allowed_edges=[semantic_bridge,dag])",
+        "DependsOnObjectIDs": "[\"OBJ_THEOREM_SUPERLINEAR_UNIT_DISTANCE\"]",
+        "Description": "Semantic navigation distance to fixed-point theorem anchor."
+      }
+    ]
+  },
+  "semantic_routes": {
+    "Description": "Named route skeletons through the topology. These are not proofs; they are navigational spines.",
+    "primary_key": [
+      "RouteID"
+    ],
+    "schema": [
+      {
+        "name": "RouteID",
+        "datatype": "string",
+        "type": "raw",
+        "is_primary_key": true
+      },
+      {
+        "name": "StartObjectID",
+        "datatype": "string",
+        "type": "relationship"
+      },
+      {
+        "name": "EndObjectID",
+        "datatype": "string",
+        "type": "relationship"
+      },
+      {
+        "name": "RouteKind",
+        "datatype": "string",
+        "type": "raw"
+      },
+      {
+        "name": "Status",
+        "datatype": "string",
+        "type": "raw"
+      },
+      {
+        "name": "Description",
+        "datatype": "string",
+        "type": "raw"
+      }
+    ],
+    "data": [
+      {
+        "RouteID": "RTE_GEOMETRY_TO_GRAPH",
+        "StartObjectID": "OBJ_FINITE_POINT_SET",
+        "EndObjectID": "OBJ_GRAPH_EDGE_COUNT",
+        "RouteKind": "domain_bridge",
+        "Status": "explicit",
+        "Description": "Point set → unit-distance predicate → unit-distance graph → edge count."
+      },
+      {
+        "RouteID": "RTE_FIELD_TO_LATTICE_TO_PLANE",
+        "StartObjectID": "OBJ_NUMBER_FIELD_K",
+        "EndObjectID": "OBJ_FINITE_POINT_SET",
+        "RouteKind": "construction_bridge",
+        "Status": "partial_candidate",
+        "Description": "Number field → ring of integers → Minkowski lattice → projection → planar point configuration."
+      },
+      {
+        "RouteID": "RTE_LOCAL_TO_ASYMPTOTIC",
+        "StartObjectID": "OBJ_GRAPH_EDGE_COUNT",
+        "EndObjectID": "OBJ_SUPERLINEAR_LOWER_BOUND",
+        "RouteKind": "asymptotic_bridge",
+        "Status": "explicit_schema_partial_math",
+        "Description": "Finite edge counts across a construction family become an asymptotic lower-bound claim."
+      },
+      {
+        "RouteID": "RTE_FULL_SEMANTIC_SPINE",
+        "StartObjectID": "OBJ_NUMBER_FIELD_K",
+        "EndObjectID": "OBJ_THEOREM_SUPERLINEAR_UNIT_DISTANCE",
+        "RouteKind": "full_neighborhood_spine",
+        "Status": "partial_candidate",
+        "Description": "Algebraic source → lattice/geometry → graph counts → asymptotic lower bound → theorem anchor."
+      }
+    ]
+  },
+  "semantic_route_steps": {
+    "Description": "Ordered route steps; each step is a typed edge candidate that can be tested/refined.",
+    "primary_key": [
+      "StepID"
+    ],
+    "schema": [
+      {
+        "name": "StepID",
+        "datatype": "string",
+        "type": "raw",
+        "is_primary_key": true
+      },
+      {
+        "name": "RouteID",
+        "datatype": "string",
+        "type": "relationship"
+      },
+      {
+        "name": "StepOrder",
+        "datatype": "number",
+        "type": "raw"
+      },
+      {
+        "name": "FromObjectID",
+        "datatype": "string",
+        "type": "relationship"
+      },
+      {
+        "name": "RelationTypeID",
+        "datatype": "string",
+        "type": "relationship"
+      },
+      {
+        "name": "ToObjectID",
+        "datatype": "string",
+        "type": "relationship"
+      },
+      {
+        "name": "GapStatus",
+        "datatype": "string",
+        "type": "raw"
+      },
+      {
+        "name": "BridgeRole",
+        "datatype": "string",
+        "type": "raw"
+      },
+      {
+        "name": "Description",
+        "datatype": "string",
+        "type": "raw"
+      }
+    ],
+    "data": [
+      {
+        "StepID": "RS001",
+        "RouteID": "RTE_GEOMETRY_TO_GRAPH",
+        "StepOrder": 1,
+        "FromObjectID": "OBJ_FINITE_POINT_SET",
+        "RelationTypeID": "REL_INDUCES",
+        "ToObjectID": "OBJ_UNIT_DISTANCE_GRAPH",
+        "GapStatus": "known",
+        "BridgeRole": "geometry_to_graph",
+        "Description": "Point configuration induces graph."
+      },
+      {
+        "StepID": "RS002",
+        "RouteID": "RTE_GEOMETRY_TO_GRAPH",
+        "StepOrder": 2,
+        "FromObjectID": "OBJ_UNIT_DISTANCE_GRAPH",
+        "RelationTypeID": "REL_DEFINED_BY",
+        "ToObjectID": "OBJ_UNIT_DISTANCE_PREDICATE",
+        "GapStatus": "known",
+        "BridgeRole": "edge_rule",
+        "Description": "Graph edge relation is defined by metric predicate."
+      },
+      {
+        "StepID": "RS003",
+        "RouteID": "RTE_GEOMETRY_TO_GRAPH",
+        "StepOrder": 3,
+        "FromObjectID": "OBJ_GRAPH_EDGE_COUNT",
+        "RelationTypeID": "REL_COUNTS",
+        "ToObjectID": "OBJ_UNIT_DISTANCE_GRAPH",
+        "GapStatus": "known",
+        "BridgeRole": "finite_count",
+        "Description": "Edge count summarizes induced graph."
+      },
+      {
+        "StepID": "RS010",
+        "RouteID": "RTE_FIELD_TO_LATTICE_TO_PLANE",
+        "StepOrder": 1,
+        "FromObjectID": "OBJ_NUMBER_FIELD_K",
+        "RelationTypeID": "REL_HAS_INVARIANT",
+        "ToObjectID": "OBJ_SMALL_NORM_PRIME_IDEALS",
+        "GapStatus": "known_external",
+        "BridgeRole": "multiplicity_source",
+        "Description": "Arithmetic feature supplies many controlled relationships."
+      },
+      {
+        "StepID": "RS011",
+        "RouteID": "RTE_FIELD_TO_LATTICE_TO_PLANE",
+        "StepOrder": 2,
+        "FromObjectID": "OBJ_RING_OF_INTEGERS_OK",
+        "RelationTypeID": "REL_EMBEDS_IN",
+        "ToObjectID": "OBJ_MINKOWSKI_LATTICE",
+        "GapStatus": "known",
+        "BridgeRole": "algebra_to_lattice",
+        "Description": "Ring embeds as a lattice."
+      },
+      {
+        "StepID": "RS012",
+        "RouteID": "RTE_FIELD_TO_LATTICE_TO_PLANE",
+        "StepOrder": 3,
+        "FromObjectID": "OBJ_MINKOWSKI_LATTICE",
+        "RelationTypeID": "REL_HAS_INVARIANT",
+        "ToObjectID": "OBJ_GRAM_MATRIX",
+        "GapStatus": "known",
+        "BridgeRole": "distance_translator",
+        "Description": "Gram matrix converts algebraic/lattice differences into Euclidean distances."
+      },
+      {
+        "StepID": "RS013",
+        "RouteID": "RTE_FIELD_TO_LATTICE_TO_PLANE",
+        "StepOrder": 4,
+        "FromObjectID": "OBJ_GRAM_MATRIX",
+        "RelationTypeID": "REL_COMPUTED_FROM",
+        "ToObjectID": "OBJ_SHORT_VECTOR_RELATION",
+        "GapStatus": "candidate_direction_check",
+        "BridgeRole": "hidden_intermediate_candidate",
+        "Description": "The edge-producing relation should be formalized here."
+      },
+      {
+        "StepID": "RS014",
+        "RouteID": "RTE_FIELD_TO_LATTICE_TO_PLANE",
+        "StepOrder": 5,
+        "FromObjectID": "OBJ_MINKOWSKI_LATTICE",
+        "RelationTypeID": "REL_PROJECTS_TO",
+        "ToObjectID": "OBJ_FINITE_POINT_SET",
+        "GapStatus": "candidate",
+        "BridgeRole": "dimension_bridge",
+        "Description": "Projection/selection yields planar point configurations."
+      },
+      {
+        "StepID": "RS020",
+        "RouteID": "RTE_LOCAL_TO_ASYMPTOTIC",
+        "StepOrder": 1,
+        "FromObjectID": "OBJ_GRAPH_EDGE_COUNT",
+        "RelationTypeID": "REL_AGGREGATES_OVER",
+        "ToObjectID": "OBJ_ALGEBRAIC_CONSTRUCTION_FAMILY",
+        "GapStatus": "needs_direction_refinement",
+        "BridgeRole": "family_counting",
+        "Description": "Across the construction family, edge count becomes a growth sequence."
+      },
+      {
+        "StepID": "RS021",
+        "RouteID": "RTE_LOCAL_TO_ASYMPTOTIC",
+        "StepOrder": 2,
+        "FromObjectID": "OBJ_ALGEBRAIC_CONSTRUCTION_FAMILY",
+        "RelationTypeID": "REL_REALIZES",
+        "ToObjectID": "OBJ_SUPERLINEAR_LOWER_BOUND",
+        "GapStatus": "partial_candidate",
+        "BridgeRole": "asymptotic_claim",
+        "Description": "Construction family realizes lower bound."
+      },
+      {
+        "StepID": "RS022",
+        "RouteID": "RTE_LOCAL_TO_ASYMPTOTIC",
+        "StepOrder": 3,
+        "FromObjectID": "OBJ_SUPERLINEAR_LOWER_BOUND",
+        "RelationTypeID": "REL_ASYMPTOTIC_LOWER_BOUND_FOR",
+        "ToObjectID": "OBJ_UNIT_DISTANCE_MAX_FUNCTION",
+        "GapStatus": "known",
+        "BridgeRole": "target_function",
+        "Description": "Bound applies to maximum unit-distance function."
+      },
+      {
+        "StepID": "RS023",
+        "RouteID": "RTE_LOCAL_TO_ASYMPTOTIC",
+        "StepOrder": 4,
+        "FromObjectID": "OBJ_THEOREM_SUPERLINEAR_UNIT_DISTANCE",
+        "RelationTypeID": "REL_ANCHORS",
+        "ToObjectID": "OBJ_SUPERLINEAR_LOWER_BOUND",
+        "GapStatus": "known_anchor",
+        "BridgeRole": "fixed_point",
+        "Description": "The theorem object anchors the bound."
+      }
+    ]
+  },
+  "model_tests": {
+    "Description": "Tests an AI agent should implement first in PostgreSQL.",
+    "primary_key": [
+      "TestID"
+    ],
+    "schema": [
+      {
+        "name": "TestID",
+        "datatype": "string",
+        "type": "raw",
+        "is_primary_key": true
+      },
+      {
+        "name": "TestName",
+        "datatype": "string",
+        "type": "raw"
+      },
+      {
+        "name": "TestKind",
+        "datatype": "string",
+        "type": "raw"
+      },
+      {
+        "name": "QuerySketch",
+        "datatype": "string",
+        "type": "raw"
+      },
+      {
+        "name": "ExpectedResult",
+        "datatype": "string",
+        "type": "raw"
+      },
+      {
+        "name": "Description",
+        "datatype": "string",
+        "type": "raw"
+      }
+    ],
+    "data": [
+      {
+        "TestID": "TEST_TYPE_SIGNATURES",
+        "TestName": "All relation assertions satisfy type signatures",
+        "TestKind": "constraint",
+        "QuerySketch": "select relation_id from math_relations where not exists allowed signature through type ancestry",
+        "ExpectedResult": "0 rows",
+        "Description": "Ensures strong typing of relation edges."
+      },
+      {
+        "TestID": "TEST_DAG_ACYCLIC",
+        "TestName": "DAG edge subset is acyclic",
+        "TestKind": "recursive_cte",
+        "QuerySketch": "recursive traversal over math_relations where IsDAGEdge=true; detect source reachable from target",
+        "ExpectedResult": "0 cycles",
+        "Description": "Semantic adjacency can cycle; dependency/evaluation edges cannot."
+      },
+      {
+        "TestID": "TEST_THEOREM_REACHABLE",
+        "TestName": "The theorem anchor is reachable from core domains",
+        "TestKind": "graph_query",
+        "QuerySketch": "shortest paths from OBJ_NUMBER_FIELD_K, OBJ_FINITE_POINT_SET, OBJ_UNIT_DISTANCE_GRAPH to OBJ_THEOREM_SUPERLINEAR_UNIT_DISTANCE",
+        "ExpectedResult": "paths exist",
+        "Description": "Validates the single model is connected around the theorem anchor."
+      },
+      {
+        "TestID": "TEST_FORMULA_DEPENDENCY_SORT",
+        "TestName": "Formula dependencies topologically sort",
+        "TestKind": "generator",
+        "QuerySketch": "build formula dependency graph from DependsOnObjectIDs and math_relations REL_COMPUTED_FROM/REL_LOOKUP_FROM/REL_AGGREGATES_OVER",
+        "ExpectedResult": "topological order exists",
+        "Description": "Ensures generated SQL views/functions can be ordered."
+      },
+      {
+        "TestID": "TEST_UNKNOWN_GAPS_EXPLICIT",
+        "TestName": "Candidate gaps are explicit",
+        "TestKind": "quality",
+        "QuerySketch": "select route steps where GapStatus in ('candidate','partial_candidate','candidate_direction_check','needs_direction_refinement')",
+        "ExpectedResult": "nonzero rows with descriptions",
+        "Description": "Ensures the model does not hide missing semantic infrastructure."
+      }
+    ]
+  }
+}

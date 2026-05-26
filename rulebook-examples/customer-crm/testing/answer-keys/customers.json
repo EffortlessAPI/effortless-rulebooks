@@ -1,0 +1,47 @@
+[
+  {
+    "customers_id": "ada.lovelace@analytical.engine",
+    "email": "ada.lovelace@analytical.engine",
+    "first_name": "Ada",
+    "last_name": "Lovelace",
+    "name": "ada.lovelace@analytical.engine",
+    "full_name": "Lovelace, Ada",
+    "is_vip": false
+  },
+  {
+    "customers_id": "alan.turing@bletchley.uk",
+    "email": "alan.turing@bletchley.uk",
+    "first_name": "Alan",
+    "last_name": "Turing",
+    "name": "alan.turing@bletchley.uk",
+    "full_name": "Turing, Alan",
+    "is_vip": false
+  },
+  {
+    "customers_id": "grace.hopper@nautical.mil",
+    "email": "grace.hopper@nautical.mil",
+    "first_name": "Grace",
+    "last_name": "Hopper",
+    "name": "grace.hopper@nautical.mil",
+    "full_name": "Hopper, Grace",
+    "is_vip": false
+  },
+  {
+    "customers_id": "katherine.johnson@nasa.gov",
+    "email": "katherine.johnson@nasa.gov",
+    "first_name": "Katherine",
+    "last_name": "Johnson",
+    "name": "katherine.johnson@nasa.gov",
+    "full_name": "Johnson, Katherine",
+    "is_vip": false
+  },
+  {
+    "customers_id": "linus.torvalds@kernel.org",
+    "email": "linus.torvalds@kernel.org",
+    "first_name": "Linus",
+    "last_name": "Torvalds",
+    "name": "linus.torvalds@kernel.org",
+    "full_name": "Torvalds, Linus",
+    "is_vip": false
+  }
+]

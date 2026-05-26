@@ -1,0 +1,46 @@
+[
+  {
+    "crew_assignment_id": "crew-roddenberry-generations-producer",
+    "name": "Gene Roddenberry-Producer-Star Trek: Generations",
+    "person": "person-gene-roddenberry",
+    "person_name": "Gene Roddenberry",
+    "movie": "movie-1-generations",
+    "movie_title": "Star Trek: Generations",
+    "crew_type": "crew-producer",
+    "crew_type_name": "Producer",
+    "notes": "Creator and executive producer (posthumous)"
+  },
+  {
+    "crew_assignment_id": "crew-shatner-kirk-generations",
+    "name": "William Shatner-Actor-Star Trek: Generations",
+    "person": "person-william-shatner",
+    "person_name": "William Shatner",
+    "movie": "movie-1-generations",
+    "movie_title": "Star Trek: Generations",
+    "crew_type": "crew-actor",
+    "crew_type_name": "Actor",
+    "notes": "Reprised role as Captain Kirk"
+  },
+  {
+    "crew_assignment_id": "crew-stewart-picard-first-contact",
+    "name": "Patrick Stewart-Actor-Star Trek: First Contact",
+    "person": "person-patrick-stewart",
+    "person_name": "Patrick Stewart",
+    "movie": "movie-2-first-contact",
+    "movie_title": "Star Trek: First Contact",
+    "crew_type": "crew-actor",
+    "crew_type_name": "Actor",
+    "notes": "Captain Picard"
+  },
+  {
+    "crew_assignment_id": "crew-stewart-picard-generations",
+    "name": "Patrick Stewart-Actor-Star Trek: Generations",
+    "person": "person-patrick-stewart",
+    "person_name": "Patrick Stewart",
+    "movie": "movie-1-generations",
+    "movie_title": "Star Trek: Generations",
+    "crew_type": "crew-actor",
+    "crew_type_name": "Actor",
+    "notes": "Captain Picard"
+  }
+]

@@ -1,0 +1,90 @@
+[
+  {
+    "inventory_adjustment_id": "cable-usb-c-2026-04-22-qty1240",
+    "adjustment_type": "Correction",
+    "adjustment_name": "cable-usb-c-2026-04-22-qty1240",
+    "date": "2026-04-22T22:11:00Z",
+    "product": "cable-usb-c",
+    "reason": "Transfer",
+    "adjusted_by": "bob",
+    "quantity": 1240,
+    "notes": ""
+  },
+  {
+    "inventory_adjustment_id": "case-leather-2026-04-08-qty0",
+    "adjustment_type": "Correction",
+    "adjustment_name": "case-leather-2026-04-08-qty0",
+    "date": "2026-04-08T22:11:00Z",
+    "product": "case-leather",
+    "reason": "Transfer",
+    "adjusted_by": "bob",
+    "quantity": 0,
+    "notes": ""
+  },
+  {
+    "inventory_adjustment_id": "gadget-100-2026-04-09-qty612",
+    "adjustment_type": "Correction",
+    "adjustment_name": "gadget-100-2026-04-09-qty612",
+    "date": "2026-04-09T22:10:00Z",
+    "product": "gadget-100",
+    "reason": "Transfer",
+    "adjusted_by": "larry",
+    "quantity": 612,
+    "notes": ""
+  },
+  {
+    "inventory_adjustment_id": "gadget-200-2026-04-06-qty75",
+    "adjustment_type": "Correction",
+    "adjustment_name": "gadget-200-2026-04-06-qty75",
+    "date": "2026-04-06T22:10:00Z",
+    "product": "gadget-200",
+    "reason": "Transfer",
+    "adjusted_by": "ej",
+    "quantity": 75,
+    "notes": ""
+  },
+  {
+    "inventory_adjustment_id": "hub-7port-2026-04-25-qty240",
+    "adjustment_type": "Correction",
+    "adjustment_name": "hub-7port-2026-04-25-qty240",
+    "date": "2026-04-25T22:11:00Z",
+    "product": "hub-7port",
+    "reason": "Transfer",
+    "adjusted_by": "larry",
+    "quantity": 240,
+    "notes": ""
+  },
+  {
+    "inventory_adjustment_id": "stand-alu-2026-04-16-qty92",
+    "adjustment_type": "Correction",
+    "adjustment_name": "stand-alu-2026-04-16-qty92",
+    "date": "2026-04-16T22:10:00Z",
+    "product": "stand-alu",
+    "reason": "Transfer",
+    "adjusted_by": "b",
+    "quantity": 92,
+    "notes": ""
+  },
+  {
+    "inventory_adjustment_id": "widget-001-2026-04-01-qty425",
+    "adjustment_type": "Correction",
+    "adjustment_name": "widget-001-2026-04-01-qty425",
+    "date": "2026-04-01T22:10:00Z",
+    "product": "widget-001",
+    "reason": "Transfer",
+    "adjusted_by": "ej",
+    "quantity": 425,
+    "notes": ""
+  },
+  {
+    "inventory_adjustment_id": "widget-002-2026-04-01-qty180",
+    "adjustment_type": "Correction",
+    "adjustment_name": "widget-002-2026-04-01-qty180",
+    "date": "2026-04-01T22:10:00Z",
+    "product": "widget-002",
+    "reason": "Transfer",
+    "adjusted_by": "bob",
+    "quantity": 180,
+    "notes": ""
+  }
+]

@@ -1,0 +1,103 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  security-paths-check:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check for security-sensitive path changes
+        run: |
+          SECURITY_PATHS=(
+            "src/jobsearch_rag/adapters/"
+            "src/jobsearch_rag/rag/scorer.py"
+            "src/jobsearch_rag/output/jd_files.py"
+          )
+
+          CHANGED_FILES=$(git diff --name-only origin/${{ github.base_ref }}...HEAD)
+
+          FLAGGED=()
+          for path in "${SECURITY_PATHS[@]}"; do
+            MATCHES=$(echo "$CHANGED_FILES" | grep "^${path}" || true)
+            if [ -n "$MATCHES" ]; then
+              FLAGGED+=($MATCHES)
+            fi
+          done
+
+          if [ ${#FLAGGED[@]} -gt 0 ]; then
+            echo "::warning::⚠️ SECURITY-SENSITIVE PATHS MODIFIED — review required per CONTRIBUTING.md"
+            echo ""
+            echo "The following security-sensitive files were changed:"
+            for f in "${FLAGGED[@]}"; do
+              echo "::warning file=${f}::Security-sensitive path — see SECURITY.md threat model"
+              echo "  - $f"
+            done
+            echo ""
+            echo "Please include a security justification in the PR description."
+            echo "See SECURITY.md for the threat model and CONTRIBUTING.md for review policy."
+          else
+            echo "✅ No security-sensitive paths modified."
+          fi
+
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12", "3.13"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        run: uv python install ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: uv sync --extra dev
+
+      - name: Lint with ruff
+        if: matrix.python-version == '3.13'
+        run: uv run ruff check src/ tests/
+
+      - name: Type check with pyright
+        if: matrix.python-version == '3.13'
+        run: uv run pyright src/ tests/
+
+      - name: Run tests with coverage
+        run: uv run pytest --cov=jobsearch_rag --cov-report=term-missing --cov-report=json
+
+      - name: Extract coverage percentage
+        id: coverage
+        if: github.ref == 'refs/heads/main' && matrix.python-version == '3.13'
+        run: |
+          COVERAGE=$(python -c "import json; print(int(json.load(open('coverage.json'))['totals']['percent_covered']))")
+          echo "pct=$COVERAGE" >> $GITHUB_OUTPUT
+
+      - name: Update coverage badge
+        if: github.ref == 'refs/heads/main' && matrix.python-version == '3.13'
+        uses: schneegans/dynamic-badges-action@v1.7.0
+        with:
+          auth: ${{ secrets.GIST_SECRET }}
+          gistID: ${{ vars.COVERAGE_GIST_ID }}
+          filename: job-search-rag-coverage.json
+          label: coverage
+          message: ${{ steps.coverage.outputs.pct }}%
+          valColorRange: ${{ steps.coverage.outputs.pct }}
+          minColorRange: 50
+          maxColorRange: 100

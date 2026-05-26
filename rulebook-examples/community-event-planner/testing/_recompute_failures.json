@@ -1,0 +1,170 @@
+[
+  {
+    "entity": "Events",
+    "field": "AvailableCapacity",
+    "formula": "={{VenueCapacity}} - {{BookedCapacity}}",
+    "record_id": "tech-talk-1",
+    "error": "SyntaxError: Unexpected character '-' at position 18"
+  },
+  {
+    "entity": "Events",
+    "field": "RegistrationDeadline",
+    "formula": "={{EventDate}} - {{RegistrationCloseDaysBeforeEvent}}",
+    "record_id": "tech-talk-1",
+    "error": "SyntaxError: Unexpected character '-' at position 14"
+  },
+  {
+    "entity": "Events",
+    "field": "IsRegistrationOpen",
+    "formula": "={{RegistrationDeadline}} > NOW()",
+    "record_id": "tech-talk-1",
+    "error": "ValueError: Unknown function: NOW"
+  },
+  {
+    "entity": "Events",
+    "field": "CapacityHeadroom",
+    "formula": "={{AvailableCapacity}} - {{BookedCapacity}}",
+    "record_id": "tech-talk-1",
+    "error": "SyntaxError: Unexpected character '-' at position 22"
+  },
+  {
+    "entity": "Events",
+    "field": "HasHeadroomForOverbooking",
+    "formula": "={{CapacityHeadroom}} >= ({{BookedCapacity}} * 0.2)",
+    "record_id": "tech-talk-1",
+    "error": "SyntaxError: Unexpected character '*' at position 44"
+  },
+  {
+    "entity": "Events",
+    "field": "RecommendedOverbookingFactor",
+    "formula": "=IF({{HasHeadroomForOverbooking}}, 1.2, 1.0)",
+    "record_id": "tech-talk-1",
+    "error": "SyntaxError: Unexpected character '.' at position 35"
+  },
+  {
+    "entity": "Events",
+    "field": "AvailableCapacity",
+    "formula": "={{VenueCapacity}} - {{BookedCapacity}}",
+    "record_id": "workshop-1",
+    "error": "SyntaxError: Unexpected character '-' at position 18"
+  },
+  {
+    "entity": "Events",
+    "field": "RegistrationDeadline",
+    "formula": "={{EventDate}} - {{RegistrationCloseDaysBeforeEvent}}",
+    "record_id": "workshop-1",
+    "error": "SyntaxError: Unexpected character '-' at position 14"
+  },
+  {
+    "entity": "Events",
+    "field": "IsRegistrationOpen",
+    "formula": "={{RegistrationDeadline}} > NOW()",
+    "record_id": "workshop-1",
+    "error": "ValueError: Unknown function: NOW"
+  },
+  {
+    "entity": "Events",
+    "field": "CapacityHeadroom",
+    "formula": "={{AvailableCapacity}} - {{BookedCapacity}}",
+    "record_id": "workshop-1",
+    "error": "SyntaxError: Unexpected character '-' at position 22"
+  },
+  {
+    "entity": "Events",
+    "field": "HasHeadroomForOverbooking",
+    "formula": "={{CapacityHeadroom}} >= ({{BookedCapacity}} * 0.2)",
+    "record_id": "workshop-1",
+    "error": "SyntaxError: Unexpected character '*' at position 44"
+  },
+  {
+    "entity": "Events",
+    "field": "RecommendedOverbookingFactor",
+    "formula": "=IF({{HasHeadroomForOverbooking}}, 1.2, 1.0)",
+    "record_id": "workshop-1",
+    "error": "SyntaxError: Unexpected character '.' at position 35"
+  },
+  {
+    "entity": "Events",
+    "field": "AvailableCapacity",
+    "formula": "={{VenueCapacity}} - {{BookedCapacity}}",
+    "record_id": "panel-1",
+    "error": "SyntaxError: Unexpected character '-' at position 18"
+  },
+  {
+    "entity": "Events",
+    "field": "RegistrationDeadline",
+    "formula": "={{EventDate}} - {{RegistrationCloseDaysBeforeEvent}}",
+    "record_id": "panel-1",
+    "error": "SyntaxError: Unexpected character '-' at position 14"
+  },
+  {
+    "entity": "Events",
+    "field": "IsRegistrationOpen",
+    "formula": "={{RegistrationDeadline}} > NOW()",
+    "record_id": "panel-1",
+    "error": "ValueError: Unknown function: NOW"
+  },
+  {
+    "entity": "Events",
+    "field": "CapacityHeadroom",
+    "formula": "={{AvailableCapacity}} - {{BookedCapacity}}",
+    "record_id": "panel-1",
+    "error": "SyntaxError: Unexpected character '-' at position 22"
+  },
+  {
+    "entity": "Events",
+    "field": "HasHeadroomForOverbooking",
+    "formula": "={{CapacityHeadroom}} >= ({{BookedCapacity}} * 0.2)",
+    "record_id": "panel-1",
+    "error": "SyntaxError: Unexpected character '*' at position 44"
+  },
+  {
+    "entity": "Events",
+    "field": "RecommendedOverbookingFactor",
+    "formula": "=IF({{HasHeadroomForOverbooking}}, 1.2, 1.0)",
+    "record_id": "panel-1",
+    "error": "SyntaxError: Unexpected character '.' at position 35"
+  },
+  {
+    "entity": "Events",
+    "field": "AvailableCapacity",
+    "formula": "={{VenueCapacity}} - {{BookedCapacity}}",
+    "record_id": "meetup-1",
+    "error": "SyntaxError: Unexpected character '-' at position 18"
+  },
+  {
+    "entity": "Events",
+    "field": "RegistrationDeadline",
+    "formula": "={{EventDate}} - {{RegistrationCloseDaysBeforeEvent}}",
+    "record_id": "meetup-1",
+    "error": "SyntaxError: Unexpected character '-' at position 14"
+  },
+  {
+    "entity": "Events",
+    "field": "IsRegistrationOpen",
+    "formula": "={{RegistrationDeadline}} > NOW()",
+    "record_id": "meetup-1",
+    "error": "ValueError: Unknown function: NOW"
+  },
+  {
+    "entity": "Events",
+    "field": "CapacityHeadroom",
+    "formula": "={{AvailableCapacity}} - {{BookedCapacity}}",
+    "record_id": "meetup-1",
+    "error": "SyntaxError: Unexpected character '-' at position 22"
+  },
+  {
+    "entity": "Events",
+    "field": "HasHeadroomForOverbooking",
+    "formula": "={{CapacityHeadroom}} >= ({{BookedCapacity}} * 0.2)",
+    "record_id": "meetup-1",
+    "error": "SyntaxError: Unexpected character '*' at position 44"
+  },
+  {
+    "entity": "Events",
+    "field": "RecommendedOverbookingFactor",
+    "formula": "=IF({{HasHeadroomForOverbooking}}, 1.2, 1.0)",
+    "record_id": "meetup-1",
+    "error": "SyntaxError: Unexpected character '.' at position 35"
+  }
+]

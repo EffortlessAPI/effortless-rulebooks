@@ -1,0 +1,1565 @@
+{
+  "$schema": "https://example.com/cmcc-schema/v1",
+  "Name": "Customer CRM",
+  "Description": "Fighter-jet FCS sales pipeline rolling revenue up by order, FCS variant, and jet model.",
+  "Users": {
+    "Description": "Dev-login identities for the demo app. Email is the PK.",
+    "schema": [
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "PK = Email",
+        "formula": "={{Email}}"
+      },
+      {
+        "name": "UsersId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Synthetic PK = Email."
+      },
+      {
+        "name": "Email",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Login email (PK source)."
+      },
+      {
+        "name": "FirstName",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Given name."
+      },
+      {
+        "name": "LastName",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Family name."
+      },
+      {
+        "name": "Role",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "admin or viewer."
+      },
+      {
+        "name": "FullName",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "LastName, FirstName.",
+        "formula": "=CONCAT({{LastName}}, \", \", {{FirstName}})"
+      }
+    ],
+    "data": [
+      {
+        "UsersId": "alice@example.com",
+        "Email": "alice@example.com",
+        "FirstName": "Alice",
+        "LastName": "Anderson",
+        "Role": "admin",
+        "Name": "alice@example.com",
+        "FullName": "Anderson, Alice"
+      },
+      {
+        "UsersId": "bob@example.com",
+        "Email": "bob@example.com",
+        "FirstName": "Bob",
+        "LastName": "Baker",
+        "Role": "viewer",
+        "Name": "bob@example.com",
+        "FullName": "Baker, Bob"
+      }
+    ]
+  },
+  "Customers": {
+    "Description": "A CRM contact. Email is the PK.",
+    "important": true,
+    "summary_rich": "The **accounts** side of the pipeline. Each customer's row computes a 60-day rolling `LifetimeSales`, an `UnpaidOrderCount`, and an `IsVIP` flag — all derived from `Orders` and `Payments`, never typed in by hand. Record a payment and the same customer's VIP status can flip on the next read, in every substrate, with no application code in the middle.",
+    "important_fields": [
+      "Email",
+      "FullName",
+      "LifetimeSales",
+      "UnpaidOrderCount",
+      "IsVIP"
+    ],
+    "schema": [
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "PK = Email",
+        "formula": "={{Email}}"
+      },
+      {
+        "name": "CustomersId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Synthetic PK = Email."
+      },
+      {
+        "name": "Email",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Customer email (PK source)."
+      },
+      {
+        "name": "FirstName",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Given name."
+      },
+      {
+        "name": "LastName",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Family name."
+      },
+      {
+        "name": "FullName",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "LastName, FirstName.",
+        "formula": "=CONCAT({{LastName}}, \", \", {{FirstName}})"
+      },
+      {
+        "name": "LifetimeSales",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Sum of this customer's order totals from the last 60 days (orders older than 60 days do not count).",
+        "formula": "=SUMIFS(Orders!{{RecentTotal}}, Orders!{{Customer}}, {{Name}})"
+      },
+      {
+        "name": "UnpaidOrderCount",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Number of this customer's orders that are not yet paid in full.",
+        "formula": "=SUMIFS(Orders!{{UnpaidFlag}}, Orders!{{Customer}}, {{Name}})"
+      },
+      {
+        "name": "LargeOrderCount",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Number of this customer's orders with a Total over $500. SUMIFS expression-mode workaround: agg_range yields 1 per row, then a real WHERE clause filters via the operator criterion \">500\" (Program.cs ExtractCriteriaOp, supported on SUMIFS but not yet on COUNTIFS).",
+        "formula": "=SUMIFS(Orders!{{Total}}*0+1, Orders!{{Customer}}, {{Name}}, Orders!{{Total}}, \">500\")",
+        "important": true,
+        "explanation_rich": "**This rule is also a transpiler stress-test.** The intuitive way to count orders over $500 is `COUNTIFS(..., \">500\")`, but the operator-criterion form (`\">500\"`) is not yet wired through `COUNTIFS` in the current transpiler. The workaround is `SUMIFS(Orders!Total*0+1, ...)`: the `*0+1` makes every matched row contribute exactly 1, so the SUM degenerates into a COUNT — and `SUMIFS` *does* accept the operator criterion. Worked example: **Katherine Johnson** has `ORD-1006` ($540) and `ORD-1007` ($612). Both exceed $500, so `LargeOrderCount = 2`. The same answer falls out of the Postgres view, the Python module, and the Excel sheet because the rule lives in the rulebook, not in each substrate."
+      },
+      {
+        "name": "IsVIP",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "True when LifetimeSales > 1000 AND the customer has at most 1 unpaid order.",
+        "formula": "=AND({{LifetimeSales}} > 1000, {{UnpaidOrderCount}} <= 1)",
+        "important": true,
+        "explanation_rich": "**A VIP earns the tag two ways at once.** The flag fires only when the rolling-window `LifetimeSales` exceeds $1,000 AND the customer has at most one unpaid order — so a big spender with a stack of overdue invoices does not qualify. Worked example: **Linus Torvalds** has `ORD-1008` ($2,400, fully paid by two $1,200 wires) and `ORD-1009` ($180, unpaid). `UnpaidOrderCount = 1` and the recent-window total clears $1,000, so `IsVIP = TRUE`. **Grace Hopper** has `ORD-1003` ($1,499.99, only $1,000 paid → unpaid) and `ORD-1004` ($320.50, unpaid). `UnpaidOrderCount = 2`, so `IsVIP = FALSE` regardless of how much she has bought. Record one more payment that zeros either of Grace's balances and the same row flips to TRUE on the next read."
+      }
+    ],
+    "data": [
+      {
+        "CustomersId": "ada.lovelace@analytical.engine",
+        "Email": "ada.lovelace@analytical.engine",
+        "FirstName": "Ada",
+        "LastName": "Lovelace",
+        "Name": "ada.lovelace@analytical.engine",
+        "FullName": "Lovelace, Ada",
+        "LifetimeSales": 50.0,
+        "UnpaidOrderCount": 0,
+        "LargeOrderCount": 1.0,
+        "IsVIP": false
+      },
+      {
+        "CustomersId": "grace.hopper@nautical.mil",
+        "Email": "grace.hopper@nautical.mil",
+        "FirstName": "Grace",
+        "LastName": "Hopper",
+        "Name": "grace.hopper@nautical.mil",
+        "FullName": "Hopper, Grace",
+        "LifetimeSales": 320.5,
+        "UnpaidOrderCount": 2,
+        "LargeOrderCount": 1.0,
+        "IsVIP": false
+      },
+      {
+        "CustomersId": "alan.turing@bletchley.uk",
+        "Email": "alan.turing@bletchley.uk",
+        "FirstName": "Alan",
+        "LastName": "Turing",
+        "Name": "alan.turing@bletchley.uk",
+        "FullName": "Turing, Alan",
+        "LifetimeSales": 99.0,
+        "UnpaidOrderCount": 0,
+        "LargeOrderCount": 0,
+        "IsVIP": false
+      },
+      {
+        "CustomersId": "katherine.johnson@nasa.gov",
+        "Email": "katherine.johnson@nasa.gov",
+        "FirstName": "Katherine",
+        "LastName": "Johnson",
+        "Name": "katherine.johnson@nasa.gov",
+        "FullName": "Johnson, Katherine",
+        "LifetimeSales": 1152.0,
+        "UnpaidOrderCount": 1,
+        "LargeOrderCount": 2.0,
+        "IsVIP": true
+      },
+      {
+        "CustomersId": "linus.torvalds@kernel.org",
+        "Email": "linus.torvalds@kernel.org",
+        "FirstName": "Linus",
+        "LastName": "Torvalds",
+        "Name": "linus.torvalds@kernel.org",
+        "FullName": "Torvalds, Linus",
+        "LifetimeSales": 2580.0,
+        "UnpaidOrderCount": 1,
+        "LargeOrderCount": 1.0,
+        "IsVIP": true
+      }
+    ]
+  },
+  "Orders": {
+    "Description": "A customer order. OrderNumber is the PK.",
+    "schema": [
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "PK = OrderNumber",
+        "formula": "={{OrderNumber}}"
+      },
+      {
+        "name": "OrdersId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Synthetic PK = OrderNumber."
+      },
+      {
+        "name": "OrderNumber",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Human-readable order number (PK source)."
+      },
+      {
+        "name": "OrderDate",
+        "datatype": "date",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Date the order was placed."
+      },
+      {
+        "name": "Customer",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "FK -> Customers.Name (the customer's email)."
+      },
+      {
+        "name": "CustomerFirstName",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Customer's first name, looked up via Customer FK.",
+        "formula": "=INDEX(Customers!{{FirstName}}, MATCH({{Customer}}, Customers!{{CustomersId}}, 0))"
+      },
+      {
+        "name": "CustomerLastName",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Customer's last name, looked up via Customer FK.",
+        "formula": "=INDEX(Customers!{{LastName}}, MATCH({{Customer}}, Customers!{{CustomersId}}, 0))"
+      },
+      {
+        "name": "CustomerFullName",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Customer's full name, looked up via Customer FK.",
+        "formula": "=INDEX(Customers!{{FullName}}, MATCH({{Customer}}, Customers!{{CustomersId}}, 0))"
+      },
+      {
+        "name": "CustomerEmail",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Customer's email, looked up via Customer FK.",
+        "formula": "=INDEX(Customers!{{Email}}, MATCH({{Customer}}, Customers!{{CustomersId}}, 0))"
+      },
+      {
+        "name": "Total",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Order total in dollars."
+      },
+      {
+        "name": "AmountPaid",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Sum of all payments recorded against this order.",
+        "formula": "=SUMIFS(Payments!{{Amount}}, Payments!{{OrderId}}, {{Name}})"
+      },
+      {
+        "name": "Balance",
+        "datatype": "number",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Outstanding balance: Total - AmountPaid.",
+        "formula": "={{Total}} - {{AmountPaid}}"
+      },
+      {
+        "name": "IsPaid",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "True when Balance <= 0.",
+        "formula": "={{Balance}} <= 0"
+      },
+      {
+        "name": "UnpaidFlag",
+        "datatype": "number",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "1 when the order is unpaid, 0 otherwise — summed by Customers.UnpaidOrderCount.",
+        "formula": "=IF({{IsPaid}}, 0, 1)"
+      },
+      {
+        "name": "IsRecent",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "True when OrderDate is within the last 60 days. Drives the 60-day window on Customers.LifetimeSales.",
+        "formula": "=DATEDIFF(TODAY(), {{OrderDate}}, \"days\") <= 90"
+      },
+      {
+        "name": "RecentTotal",
+        "datatype": "number",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Total if the order is recent, 0 otherwise — summed by Customers.LifetimeSales.",
+        "formula": "=IF({{IsRecent}}, {{Total}}, 0)"
+      },
+      {
+        "name": "FCSSubtotal",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Sum of LineTotal across this order's FCS line items (in $M).",
+        "formula": "=SUMIFS(OrderLines!{{LineTotal}}, OrderLines!{{OrderId}}, {{Name}})"
+      },
+      {
+        "name": "FCSUnitCount",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Total FCS units shipped on this order.",
+        "formula": "=SUMIFS(OrderLines!{{Quantity}}, OrderLines!{{OrderId}}, {{Name}})"
+      }
+    ],
+    "data": [
+      {
+        "OrdersId": "ORD-1001",
+        "OrderNumber": "ORD-1001",
+        "OrderDate": "2026-01-15",
+        "Customer": "ada.lovelace@analytical.engine",
+        "Total": 250.0,
+        "Name": "ORD-1001",
+        "CustomerFirstName": "Ada",
+        "CustomerLastName": "Lovelace",
+        "CustomerFullName": "Lovelace, Ada",
+        "CustomerEmail": "ada.lovelace@analytical.engine",
+        "AmountPaid": 250.0,
+        "Balance": 0.0,
+        "IsPaid": true,
+        "UnpaidFlag": 0,
+        "IsRecent": false,
+        "RecentTotal": 0,
+        "FCSSubtotal": 0,
+        "FCSUnitCount": 0
+      },
+      {
+        "OrdersId": "ORD-1002",
+        "OrderNumber": "ORD-1002",
+        "OrderDate": "2026-02-03",
+        "Customer": "ada.lovelace@analytical.engine",
+        "Total": 875.0,
+        "Name": "ORD-1002",
+        "CustomerFirstName": "Ada",
+        "CustomerLastName": "Lovelace",
+        "CustomerFullName": "Lovelace, Ada",
+        "CustomerEmail": "ada.lovelace@analytical.engine",
+        "AmountPaid": 875.0,
+        "Balance": 0.0,
+        "IsPaid": true,
+        "UnpaidFlag": 0,
+        "IsRecent": false,
+        "RecentTotal": 0,
+        "FCSSubtotal": 0,
+        "FCSUnitCount": 0
+      },
+      {
+        "OrdersId": "ORD-1003",
+        "OrderNumber": "ORD-1003",
+        "OrderDate": "2026-02-20",
+        "Customer": "grace.hopper@nautical.mil",
+        "Total": 1499.99,
+        "Name": "ORD-1003",
+        "CustomerFirstName": "Grace",
+        "CustomerLastName": "Hopper",
+        "CustomerFullName": "Hopper, Grace",
+        "CustomerEmail": "grace.hopper@nautical.mil",
+        "AmountPaid": 1000.0,
+        "Balance": 499.99,
+        "IsPaid": false,
+        "UnpaidFlag": 1,
+        "IsRecent": false,
+        "RecentTotal": 0,
+        "FCSSubtotal": 29.4,
+        "FCSUnitCount": 8
+      },
+      {
+        "OrdersId": "ORD-1004",
+        "OrderNumber": "ORD-1004",
+        "OrderDate": "2026-03-10",
+        "Customer": "grace.hopper@nautical.mil",
+        "Total": 320.5,
+        "Name": "ORD-1004",
+        "CustomerFirstName": "Grace",
+        "CustomerLastName": "Hopper",
+        "CustomerFullName": "Hopper, Grace",
+        "CustomerEmail": "grace.hopper@nautical.mil",
+        "AmountPaid": 0,
+        "Balance": 320.5,
+        "IsPaid": false,
+        "UnpaidFlag": 1,
+        "IsRecent": true,
+        "RecentTotal": 320.5,
+        "FCSSubtotal": 4.2,
+        "FCSUnitCount": 1
+      },
+      {
+        "OrdersId": "ORD-1005",
+        "OrderNumber": "ORD-1005",
+        "OrderDate": "2026-03-22",
+        "Customer": "alan.turing@bletchley.uk",
+        "Total": 99.0,
+        "Name": "ORD-1005",
+        "CustomerFirstName": "Alan",
+        "CustomerLastName": "Turing",
+        "CustomerFullName": "Turing, Alan",
+        "CustomerEmail": "alan.turing@bletchley.uk",
+        "AmountPaid": 99.0,
+        "Balance": 0.0,
+        "IsPaid": true,
+        "UnpaidFlag": 0,
+        "IsRecent": true,
+        "RecentTotal": 99.0,
+        "FCSSubtotal": 0,
+        "FCSUnitCount": 0
+      },
+      {
+        "OrdersId": "ORD-1006",
+        "OrderNumber": "ORD-1006",
+        "OrderDate": "2026-04-01",
+        "Customer": "katherine.johnson@nasa.gov",
+        "Total": 540.0,
+        "Name": "ORD-1006",
+        "CustomerFirstName": "Katherine",
+        "CustomerLastName": "Johnson",
+        "CustomerFullName": "Johnson, Katherine",
+        "CustomerEmail": "katherine.johnson@nasa.gov",
+        "AmountPaid": 540.0,
+        "Balance": 0.0,
+        "IsPaid": true,
+        "UnpaidFlag": 0,
+        "IsRecent": true,
+        "RecentTotal": 540.0,
+        "FCSSubtotal": 48.0,
+        "FCSUnitCount": 4
+      },
+      {
+        "OrdersId": "ORD-1007",
+        "OrderNumber": "ORD-1007",
+        "OrderDate": "2026-04-12",
+        "Customer": "katherine.johnson@nasa.gov",
+        "Total": 612.0,
+        "Name": "ORD-1007",
+        "CustomerFirstName": "Katherine",
+        "CustomerLastName": "Johnson",
+        "CustomerFullName": "Johnson, Katherine",
+        "CustomerEmail": "katherine.johnson@nasa.gov",
+        "AmountPaid": 0,
+        "Balance": 612.0,
+        "IsPaid": false,
+        "UnpaidFlag": 1,
+        "IsRecent": true,
+        "RecentTotal": 612.0,
+        "FCSSubtotal": 73.0,
+        "FCSUnitCount": 5
+      },
+      {
+        "OrdersId": "ORD-1008",
+        "OrderNumber": "ORD-1008",
+        "OrderDate": "2026-04-28",
+        "Customer": "linus.torvalds@kernel.org",
+        "Total": 2400.0,
+        "Name": "ORD-1008",
+        "CustomerFirstName": "Linus",
+        "CustomerLastName": "Torvalds",
+        "CustomerFullName": "Torvalds, Linus",
+        "CustomerEmail": "linus.torvalds@kernel.org",
+        "AmountPaid": 2400.0,
+        "Balance": 0.0,
+        "IsPaid": true,
+        "UnpaidFlag": 0,
+        "IsRecent": true,
+        "RecentTotal": 2400.0,
+        "FCSSubtotal": 92.9,
+        "FCSUnitCount": 13
+      },
+      {
+        "OrdersId": "ORD-1009",
+        "OrderNumber": "ORD-1009",
+        "OrderDate": "2026-05-05",
+        "Customer": "linus.torvalds@kernel.org",
+        "Total": 180.0,
+        "Name": "ORD-1009",
+        "CustomerFirstName": "Linus",
+        "CustomerLastName": "Torvalds",
+        "CustomerFullName": "Torvalds, Linus",
+        "CustomerEmail": "linus.torvalds@kernel.org",
+        "AmountPaid": 0,
+        "Balance": 180.0,
+        "IsPaid": false,
+        "UnpaidFlag": 1,
+        "IsRecent": true,
+        "RecentTotal": 180.0,
+        "FCSSubtotal": 0,
+        "FCSUnitCount": 0
+      },
+      {
+        "OrdersId": "ORD-1010",
+        "OrderNumber": "ORD-1010",
+        "OrderDate": "2026-05-15",
+        "Customer": "ada.lovelace@analytical.engine",
+        "Total": 50.0,
+        "Name": "ORD-1010",
+        "CustomerFirstName": "Ada",
+        "CustomerLastName": "Lovelace",
+        "CustomerFullName": "Lovelace, Ada",
+        "CustomerEmail": "ada.lovelace@analytical.engine",
+        "AmountPaid": 50.0,
+        "Balance": 0.0,
+        "IsPaid": true,
+        "UnpaidFlag": 0,
+        "IsRecent": true,
+        "RecentTotal": 50.0,
+        "FCSSubtotal": 0,
+        "FCSUnitCount": 0
+      }
+    ]
+  },
+  "Payments": {
+    "Description": "A payment recorded against an order. PaymentNumber is the PK.",
+    "schema": [
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "PK = PaymentNumber",
+        "formula": "={{PaymentNumber}}"
+      },
+      {
+        "name": "PaymentsId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Synthetic PK = PaymentNumber."
+      },
+      {
+        "name": "PaymentNumber",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Human-readable payment number (PK source)."
+      },
+      {
+        "name": "OrderId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "FK -> Orders.Name (the order number)."
+      },
+      {
+        "name": "PaymentDate",
+        "datatype": "date",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Date the payment was received."
+      },
+      {
+        "name": "Amount",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Payment amount in dollars."
+      },
+      {
+        "name": "Method",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Payment method: card, check, cash, wire, ach."
+      },
+      {
+        "name": "OrderNumber",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Parent order's human-readable number.",
+        "formula": "=INDEX(Orders!{{OrderNumber}}, MATCH({{OrderId}}, Orders!{{OrdersId}}, 0))"
+      },
+      {
+        "name": "OrderDate",
+        "datatype": "date",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Parent order's date.",
+        "formula": "=INDEX(Orders!{{OrderDate}}, MATCH({{OrderId}}, Orders!{{OrdersId}}, 0))"
+      },
+      {
+        "name": "OrderTotal",
+        "datatype": "number",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Parent order's total.",
+        "formula": "=INDEX(Orders!{{Total}}, MATCH({{OrderId}}, Orders!{{OrdersId}}, 0))"
+      },
+      {
+        "name": "OrderAmountPaid",
+        "datatype": "number",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Parent order's total paid (across all its payments).",
+        "formula": "=INDEX(Orders!{{AmountPaid}}, MATCH({{OrderId}}, Orders!{{OrdersId}}, 0))"
+      },
+      {
+        "name": "OrderBalance",
+        "datatype": "number",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Parent order's outstanding balance.",
+        "formula": "=INDEX(Orders!{{Balance}}, MATCH({{OrderId}}, Orders!{{OrdersId}}, 0))"
+      },
+      {
+        "name": "OrderIsPaid",
+        "datatype": "boolean",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Parent order's paid-in-full flag.",
+        "formula": "=INDEX(Orders!{{IsPaid}}, MATCH({{OrderId}}, Orders!{{OrdersId}}, 0))"
+      },
+      {
+        "name": "OrderCustomer",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Parent order's customer FK (email).",
+        "formula": "=INDEX(Orders!{{Customer}}, MATCH({{OrderId}}, Orders!{{OrdersId}}, 0))"
+      },
+      {
+        "name": "CustomerFullName",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Parent order's customer full name (two-hop).",
+        "formula": "=INDEX(Orders!{{CustomerFullName}}, MATCH({{OrderId}}, Orders!{{OrdersId}}, 0))"
+      },
+      {
+        "name": "CustomerEmail",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Parent order's customer email (two-hop).",
+        "formula": "=INDEX(Orders!{{CustomerEmail}}, MATCH({{OrderId}}, Orders!{{OrdersId}}, 0))"
+      }
+    ],
+    "data": [
+      {
+        "PaymentsId": "PMT-2001",
+        "PaymentNumber": "PMT-2001",
+        "OrderId": "ORD-1001",
+        "PaymentDate": "2026-01-16",
+        "Amount": 250.0,
+        "Method": "card",
+        "Name": "PMT-2001",
+        "OrderNumber": "ORD-1001",
+        "OrderDate": "2026-01-15",
+        "OrderTotal": 250.0,
+        "OrderAmountPaid": 250.0,
+        "OrderBalance": 0.0,
+        "OrderIsPaid": true,
+        "OrderCustomer": "ada.lovelace@analytical.engine",
+        "CustomerFullName": "Lovelace, Ada",
+        "CustomerEmail": "ada.lovelace@analytical.engine"
+      },
+      {
+        "PaymentsId": "PMT-2002",
+        "PaymentNumber": "PMT-2002",
+        "OrderId": "ORD-1002",
+        "PaymentDate": "2026-02-04",
+        "Amount": 500.0,
+        "Method": "card",
+        "Name": "PMT-2002",
+        "OrderNumber": "ORD-1002",
+        "OrderDate": "2026-02-03",
+        "OrderTotal": 875.0,
+        "OrderAmountPaid": 875.0,
+        "OrderBalance": 0.0,
+        "OrderIsPaid": true,
+        "OrderCustomer": "ada.lovelace@analytical.engine",
+        "CustomerFullName": "Lovelace, Ada",
+        "CustomerEmail": "ada.lovelace@analytical.engine"
+      },
+      {
+        "PaymentsId": "PMT-2003",
+        "PaymentNumber": "PMT-2003",
+        "OrderId": "ORD-1002",
+        "PaymentDate": "2026-02-18",
+        "Amount": 375.0,
+        "Method": "ach",
+        "Name": "PMT-2003",
+        "OrderNumber": "ORD-1002",
+        "OrderDate": "2026-02-03",
+        "OrderTotal": 875.0,
+        "OrderAmountPaid": 875.0,
+        "OrderBalance": 0.0,
+        "OrderIsPaid": true,
+        "OrderCustomer": "ada.lovelace@analytical.engine",
+        "CustomerFullName": "Lovelace, Ada",
+        "CustomerEmail": "ada.lovelace@analytical.engine"
+      },
+      {
+        "PaymentsId": "PMT-2004",
+        "PaymentNumber": "PMT-2004",
+        "OrderId": "ORD-1003",
+        "PaymentDate": "2026-02-21",
+        "Amount": 1000.0,
+        "Method": "wire",
+        "Name": "PMT-2004",
+        "OrderNumber": "ORD-1003",
+        "OrderDate": "2026-02-20",
+        "OrderTotal": 1499.99,
+        "OrderAmountPaid": 1000.0,
+        "OrderBalance": 499.99,
+        "OrderIsPaid": false,
+        "OrderCustomer": "grace.hopper@nautical.mil",
+        "CustomerFullName": "Hopper, Grace",
+        "CustomerEmail": "grace.hopper@nautical.mil"
+      },
+      {
+        "PaymentsId": "PMT-2005",
+        "PaymentNumber": "PMT-2005",
+        "OrderId": "ORD-1005",
+        "PaymentDate": "2026-03-23",
+        "Amount": 99.0,
+        "Method": "cash",
+        "Name": "PMT-2005",
+        "OrderNumber": "ORD-1005",
+        "OrderDate": "2026-03-22",
+        "OrderTotal": 99.0,
+        "OrderAmountPaid": 99.0,
+        "OrderBalance": 0.0,
+        "OrderIsPaid": true,
+        "OrderCustomer": "alan.turing@bletchley.uk",
+        "CustomerFullName": "Turing, Alan",
+        "CustomerEmail": "alan.turing@bletchley.uk"
+      },
+      {
+        "PaymentsId": "PMT-2006",
+        "PaymentNumber": "PMT-2006",
+        "OrderId": "ORD-1006",
+        "PaymentDate": "2026-04-02",
+        "Amount": 540.0,
+        "Method": "check",
+        "Name": "PMT-2006",
+        "OrderNumber": "ORD-1006",
+        "OrderDate": "2026-04-01",
+        "OrderTotal": 540.0,
+        "OrderAmountPaid": 540.0,
+        "OrderBalance": 0.0,
+        "OrderIsPaid": true,
+        "OrderCustomer": "katherine.johnson@nasa.gov",
+        "CustomerFullName": "Johnson, Katherine",
+        "CustomerEmail": "katherine.johnson@nasa.gov"
+      },
+      {
+        "PaymentsId": "PMT-2007",
+        "PaymentNumber": "PMT-2007",
+        "OrderId": "ORD-1008",
+        "PaymentDate": "2026-04-29",
+        "Amount": 1200.0,
+        "Method": "wire",
+        "Name": "PMT-2007",
+        "OrderNumber": "ORD-1008",
+        "OrderDate": "2026-04-28",
+        "OrderTotal": 2400.0,
+        "OrderAmountPaid": 2400.0,
+        "OrderBalance": 0.0,
+        "OrderIsPaid": true,
+        "OrderCustomer": "linus.torvalds@kernel.org",
+        "CustomerFullName": "Torvalds, Linus",
+        "CustomerEmail": "linus.torvalds@kernel.org"
+      },
+      {
+        "PaymentsId": "PMT-2008",
+        "PaymentNumber": "PMT-2008",
+        "OrderId": "ORD-1008",
+        "PaymentDate": "2026-05-10",
+        "Amount": 1200.0,
+        "Method": "wire",
+        "Name": "PMT-2008",
+        "OrderNumber": "ORD-1008",
+        "OrderDate": "2026-04-28",
+        "OrderTotal": 2400.0,
+        "OrderAmountPaid": 2400.0,
+        "OrderBalance": 0.0,
+        "OrderIsPaid": true,
+        "OrderCustomer": "linus.torvalds@kernel.org",
+        "CustomerFullName": "Torvalds, Linus",
+        "CustomerEmail": "linus.torvalds@kernel.org"
+      },
+      {
+        "PaymentsId": "PMT-2009",
+        "PaymentNumber": "PMT-2009",
+        "OrderId": "ORD-1010",
+        "PaymentDate": "2026-05-16",
+        "Amount": 50.0,
+        "Method": "card",
+        "Name": "PMT-2009",
+        "OrderNumber": "ORD-1010",
+        "OrderDate": "2026-05-15",
+        "OrderTotal": 50.0,
+        "OrderAmountPaid": 50.0,
+        "OrderBalance": 0.0,
+        "OrderIsPaid": true,
+        "OrderCustomer": "ada.lovelace@analytical.engine",
+        "CustomerFullName": "Lovelace, Ada",
+        "CustomerEmail": "ada.lovelace@analytical.engine"
+      }
+    ]
+  },
+  "JetModels": {
+    "Description": "Catalog of fighter-jet airframes that flight-control systems are built for. ModelCode is the PK.",
+    "schema": [
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "PK = ModelCode",
+        "formula": "={{ModelCode}}"
+      },
+      {
+        "name": "JetModelsId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Synthetic PK = ModelCode."
+      },
+      {
+        "name": "ModelCode",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Short model designation, e.g. F-16C."
+      },
+      {
+        "name": "Manufacturer",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Airframe OEM."
+      },
+      {
+        "name": "Generation",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Fighter generation (4, 4.5, 5)."
+      },
+      {
+        "name": "IsFifthGen",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "True for 5th-generation airframes (stealth-era).",
+        "formula": "={{Generation}} >= 5"
+      },
+      {
+        "name": "FCSVariantCount",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Number of distinct FCS variants offered for this airframe.",
+        "formula": "=SUMIFS(FlightControlSystems!{{UnitPrice}}*0+1, FlightControlSystems!{{JetModelId}}, {{Name}})"
+      },
+      {
+        "name": "TotalUnitsOrdered",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Total FCS units ordered across all variants for this airframe.",
+        "formula": "=SUMIFS(FlightControlSystems!{{TotalUnitsOrdered}}, FlightControlSystems!{{JetModelId}}, {{Name}})"
+      },
+      {
+        "name": "TotalRevenue",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Total FCS revenue (in $M) across all variants for this airframe.",
+        "formula": "=SUMIFS(FlightControlSystems!{{TotalRevenue}}, FlightControlSystems!{{JetModelId}}, {{Name}})"
+      }
+    ],
+    "data": [
+      {
+        "JetModelsId": "F-16C",
+        "ModelCode": "F-16C",
+        "Manufacturer": "Lockheed Martin",
+        "Generation": 4,
+        "Name": "F-16C",
+        "IsFifthGen": false,
+        "FCSVariantCount": 2.0,
+        "TotalUnitsOrdered": 9,
+        "TotalRevenue": 33.6
+      },
+      {
+        "JetModelsId": "F-22A",
+        "ModelCode": "F-22A",
+        "Manufacturer": "Lockheed Martin",
+        "Generation": 5,
+        "Name": "F-22A",
+        "IsFifthGen": true,
+        "FCSVariantCount": 1.0,
+        "TotalUnitsOrdered": 2,
+        "TotalRevenue": 37.0
+      },
+      {
+        "JetModelsId": "F-35A",
+        "ModelCode": "F-35A",
+        "Manufacturer": "Lockheed Martin",
+        "Generation": 5,
+        "Name": "F-35A",
+        "IsFifthGen": true,
+        "FCSVariantCount": 1.0,
+        "TotalUnitsOrdered": 7,
+        "TotalRevenue": 84.0
+      },
+      {
+        "JetModelsId": "F-18E",
+        "ModelCode": "F-18E",
+        "Manufacturer": "Boeing",
+        "Generation": 4,
+        "Name": "F-18E",
+        "IsFifthGen": false,
+        "FCSVariantCount": 1.0,
+        "TotalUnitsOrdered": 8,
+        "TotalRevenue": 46.4
+      },
+      {
+        "JetModelsId": "EF-2000",
+        "ModelCode": "EF-2000",
+        "Manufacturer": "Eurofighter",
+        "Generation": 4,
+        "Name": "EF-2000",
+        "IsFifthGen": false,
+        "FCSVariantCount": 1.0,
+        "TotalUnitsOrdered": 5,
+        "TotalRevenue": 46.5
+      }
+    ]
+  },
+  "FlightControlSystems": {
+    "Description": "Flight-control-system product variants. Each variant targets one jet model with a specific control architecture and redundancy level. FCSCode is the PK.",
+    "important": true,
+    "summary_rich": "The **catalog** side of the pipeline — a flight-control-system variant per (jet model, architecture, redundancy) combination. Each variant rolls its own `TotalUnitsOrdered` and `TotalRevenue` up from `OrderLines`, and a `MeetsFifthGenSpec` flag combines its own redundancy + architecture with a two-hop lookup to the airframe's generation. This is where the rulebook ties product engineering rules (quad-redundant fly-by-wire on 5th-gen) to sales rollups in one DAG.",
+    "important_fields": [
+      "FCSCode",
+      "JetModelId",
+      "Architecture",
+      "RedundancyChannels",
+      "MeetsFifthGenSpec",
+      "TotalRevenue"
+    ],
+    "schema": [
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "PK = FCSCode",
+        "formula": "={{FCSCode}}"
+      },
+      {
+        "name": "FlightControlSystemsId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Synthetic PK = FCSCode."
+      },
+      {
+        "name": "FCSCode",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Product code, e.g. FCS-F35-FBW4."
+      },
+      {
+        "name": "JetModelId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "FK -> JetModels.Name."
+      },
+      {
+        "name": "JetManufacturer",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Airframe manufacturer, via JetModelId.",
+        "formula": "=INDEX(JetModels!{{Manufacturer}}, MATCH({{JetModelId}}, JetModels!{{JetModelsId}}, 0))"
+      },
+      {
+        "name": "JetGeneration",
+        "datatype": "number",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Airframe generation, via JetModelId.",
+        "formula": "=INDEX(JetModels!{{Generation}}, MATCH({{JetModelId}}, JetModels!{{JetModelsId}}, 0))"
+      },
+      {
+        "name": "Architecture",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Control architecture: fly-by-wire, fly-by-light, analog-hybrid."
+      },
+      {
+        "name": "RedundancyChannels",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Number of independent control channels (2, 3, or 4)."
+      },
+      {
+        "name": "UnitPrice",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Per-unit price in $M USD."
+      },
+      {
+        "name": "IsTripleRedundant",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "True when RedundancyChannels >= 3 (meets typical fighter airworthiness floor).",
+        "formula": "={{RedundancyChannels}} >= 3"
+      },
+      {
+        "name": "IsQuadRedundant",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "True when RedundancyChannels >= 4 (5th-gen / carrier-grade).",
+        "formula": "={{RedundancyChannels}} >= 4"
+      },
+      {
+        "name": "MeetsFifthGenSpec",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Quad-redundant fly-by-wire or fly-by-light on a 5th-gen airframe.",
+        "formula": "=AND({{IsQuadRedundant}}, OR({{Architecture}}=\"fly-by-wire\", {{Architecture}}=\"fly-by-light\"), {{JetGeneration}} >= 5)",
+        "important": true,
+        "explanation_rich": "**An airworthiness rule wired across two tables.** A variant only meets 5th-gen spec when *all three* hold: at least four independent control channels, an all-digital architecture (fly-by-wire or fly-by-light, never analog-hybrid), and the airframe it targets is generation 5 or newer. `JetGeneration` is itself a lookup into `JetModels`, so the rule reaches across the FK to read the airframe's `Generation` before it can decide. Worked example: **`FCS-F35-FBW4`** has `RedundancyChannels = 4`, `Architecture = \"fly-by-wire\"`, `JetModelId = F-35A`, and the F-35A is generation 5 — so the rule resolves TRUE. **`FCS-EF2K-FBW4`** also has four channels and fly-by-wire, but its EF-2000 airframe is generation 4, so the same rule resolves FALSE. Promote the EF-2000 to gen 5 in `JetModels` and the FCS row flips on the next read — without touching the FCS table at all."
+      },
+      {
+        "name": "TotalUnitsOrdered",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Sum of order-line quantities across all orders.",
+        "formula": "=SUMIFS(OrderLines!{{Quantity}}, OrderLines!{{FCSId}}, {{Name}})"
+      },
+      {
+        "name": "TotalRevenue",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Sum of order-line revenue (in $M).",
+        "formula": "=SUMIFS(OrderLines!{{LineTotal}}, OrderLines!{{FCSId}}, {{Name}})"
+      }
+    ],
+    "data": [
+      {
+        "FlightControlSystemsId": "FCS-F16-FBW3",
+        "FCSCode": "FCS-F16-FBW3",
+        "JetModelId": "F-16C",
+        "Architecture": "fly-by-wire",
+        "RedundancyChannels": 3,
+        "UnitPrice": 4.2,
+        "Name": "FCS-F16-FBW3",
+        "JetManufacturer": "Lockheed Martin",
+        "JetGeneration": 4,
+        "IsTripleRedundant": true,
+        "IsQuadRedundant": false,
+        "MeetsFifthGenSpec": false,
+        "TotalUnitsOrdered": 7,
+        "TotalRevenue": 29.4
+      },
+      {
+        "FlightControlSystemsId": "FCS-F16-HYB2",
+        "FCSCode": "FCS-F16-HYB2",
+        "JetModelId": "F-16C",
+        "Architecture": "analog-hybrid",
+        "RedundancyChannels": 2,
+        "UnitPrice": 2.1,
+        "Name": "FCS-F16-HYB2",
+        "JetManufacturer": "Lockheed Martin",
+        "JetGeneration": 4,
+        "IsTripleRedundant": false,
+        "IsQuadRedundant": false,
+        "MeetsFifthGenSpec": false,
+        "TotalUnitsOrdered": 2,
+        "TotalRevenue": 4.2
+      },
+      {
+        "FlightControlSystemsId": "FCS-F22-FBL4",
+        "FCSCode": "FCS-F22-FBL4",
+        "JetModelId": "F-22A",
+        "Architecture": "fly-by-light",
+        "RedundancyChannels": 4,
+        "UnitPrice": 18.5,
+        "Name": "FCS-F22-FBL4",
+        "JetManufacturer": "Lockheed Martin",
+        "JetGeneration": 5,
+        "IsTripleRedundant": true,
+        "IsQuadRedundant": true,
+        "MeetsFifthGenSpec": true,
+        "TotalUnitsOrdered": 2,
+        "TotalRevenue": 37.0
+      },
+      {
+        "FlightControlSystemsId": "FCS-F35-FBW4",
+        "FCSCode": "FCS-F35-FBW4",
+        "JetModelId": "F-35A",
+        "Architecture": "fly-by-wire",
+        "RedundancyChannels": 4,
+        "UnitPrice": 12.0,
+        "Name": "FCS-F35-FBW4",
+        "JetManufacturer": "Lockheed Martin",
+        "JetGeneration": 5,
+        "IsTripleRedundant": true,
+        "IsQuadRedundant": true,
+        "MeetsFifthGenSpec": true,
+        "TotalUnitsOrdered": 7,
+        "TotalRevenue": 84.0
+      },
+      {
+        "FlightControlSystemsId": "FCS-F18-FBW3",
+        "FCSCode": "FCS-F18-FBW3",
+        "JetModelId": "F-18E",
+        "Architecture": "fly-by-wire",
+        "RedundancyChannels": 3,
+        "UnitPrice": 5.8,
+        "Name": "FCS-F18-FBW3",
+        "JetManufacturer": "Boeing",
+        "JetGeneration": 4,
+        "IsTripleRedundant": true,
+        "IsQuadRedundant": false,
+        "MeetsFifthGenSpec": false,
+        "TotalUnitsOrdered": 8,
+        "TotalRevenue": 46.4
+      },
+      {
+        "FlightControlSystemsId": "FCS-EF2K-FBW4",
+        "FCSCode": "FCS-EF2K-FBW4",
+        "JetModelId": "EF-2000",
+        "Architecture": "fly-by-wire",
+        "RedundancyChannels": 4,
+        "UnitPrice": 9.3,
+        "Name": "FCS-EF2K-FBW4",
+        "JetManufacturer": "Eurofighter",
+        "JetGeneration": 4,
+        "IsTripleRedundant": true,
+        "IsQuadRedundant": true,
+        "MeetsFifthGenSpec": false,
+        "TotalUnitsOrdered": 5,
+        "TotalRevenue": 46.5
+      }
+    ]
+  },
+  "OrderLines": {
+    "Description": "FCS line items on an order — links Orders to FlightControlSystems with a quantity. LineNumber is the PK.",
+    "schema": [
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "PK = LineNumber",
+        "formula": "={{LineNumber}}"
+      },
+      {
+        "name": "OrderLinesId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Synthetic PK = LineNumber."
+      },
+      {
+        "name": "LineNumber",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Human-readable line code, e.g. OL-3001."
+      },
+      {
+        "name": "OrderId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "FK -> Orders.Name."
+      },
+      {
+        "name": "FCSId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "FK -> FlightControlSystems.Name."
+      },
+      {
+        "name": "Quantity",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Number of FCS units on this line."
+      },
+      {
+        "name": "FCSUnitPrice",
+        "datatype": "number",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Per-unit price from the FCS catalog (in $M).",
+        "formula": "=INDEX(FlightControlSystems!{{UnitPrice}}, MATCH({{FCSId}}, FlightControlSystems!{{FlightControlSystemsId}}, 0))"
+      },
+      {
+        "name": "FCSArchitecture",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "FCS control architecture.",
+        "formula": "=INDEX(FlightControlSystems!{{Architecture}}, MATCH({{FCSId}}, FlightControlSystems!{{FlightControlSystemsId}}, 0))"
+      },
+      {
+        "name": "FCSJetModel",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Airframe this FCS targets.",
+        "formula": "=INDEX(FlightControlSystems!{{JetModelId}}, MATCH({{FCSId}}, FlightControlSystems!{{FlightControlSystemsId}}, 0))"
+      },
+      {
+        "name": "FCSMeetsFifthGenSpec",
+        "datatype": "boolean",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Whether the FCS meets 5th-gen spec (two-hop calc).",
+        "formula": "=INDEX(FlightControlSystems!{{MeetsFifthGenSpec}}, MATCH({{FCSId}}, FlightControlSystems!{{FlightControlSystemsId}}, 0))"
+      },
+      {
+        "name": "OrderNumber",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Parent order number.",
+        "formula": "=INDEX(Orders!{{OrderNumber}}, MATCH({{OrderId}}, Orders!{{OrdersId}}, 0))"
+      },
+      {
+        "name": "OrderCustomer",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Parent order customer FK.",
+        "formula": "=INDEX(Orders!{{Customer}}, MATCH({{OrderId}}, Orders!{{OrdersId}}, 0))"
+      },
+      {
+        "name": "LineTotal",
+        "datatype": "number",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Quantity * FCSUnitPrice (in $M).",
+        "formula": "={{Quantity}} * {{FCSUnitPrice}}"
+      }
+    ],
+    "data": [
+      {
+        "OrderLinesId": "OL-3001",
+        "LineNumber": "OL-3001",
+        "OrderId": "ORD-1003",
+        "FCSId": "FCS-F16-FBW3",
+        "Quantity": 6,
+        "Name": "OL-3001",
+        "FCSUnitPrice": 4.2,
+        "FCSArchitecture": "fly-by-wire",
+        "FCSJetModel": "F-16C",
+        "FCSMeetsFifthGenSpec": false,
+        "OrderNumber": "ORD-1003",
+        "OrderCustomer": "grace.hopper@nautical.mil",
+        "LineTotal": 25.2
+      },
+      {
+        "OrderLinesId": "OL-3002",
+        "LineNumber": "OL-3002",
+        "OrderId": "ORD-1003",
+        "FCSId": "FCS-F16-HYB2",
+        "Quantity": 2,
+        "Name": "OL-3002",
+        "FCSUnitPrice": 2.1,
+        "FCSArchitecture": "analog-hybrid",
+        "FCSJetModel": "F-16C",
+        "FCSMeetsFifthGenSpec": false,
+        "OrderNumber": "ORD-1003",
+        "OrderCustomer": "grace.hopper@nautical.mil",
+        "LineTotal": 4.2
+      },
+      {
+        "OrderLinesId": "OL-3003",
+        "LineNumber": "OL-3003",
+        "OrderId": "ORD-1006",
+        "FCSId": "FCS-F35-FBW4",
+        "Quantity": 4,
+        "Name": "OL-3003",
+        "FCSUnitPrice": 12.0,
+        "FCSArchitecture": "fly-by-wire",
+        "FCSJetModel": "F-35A",
+        "FCSMeetsFifthGenSpec": true,
+        "OrderNumber": "ORD-1006",
+        "OrderCustomer": "katherine.johnson@nasa.gov",
+        "LineTotal": 48.0
+      },
+      {
+        "OrderLinesId": "OL-3004",
+        "LineNumber": "OL-3004",
+        "OrderId": "ORD-1007",
+        "FCSId": "FCS-F22-FBL4",
+        "Quantity": 2,
+        "Name": "OL-3004",
+        "FCSUnitPrice": 18.5,
+        "FCSArchitecture": "fly-by-light",
+        "FCSJetModel": "F-22A",
+        "FCSMeetsFifthGenSpec": true,
+        "OrderNumber": "ORD-1007",
+        "OrderCustomer": "katherine.johnson@nasa.gov",
+        "LineTotal": 37.0
+      },
+      {
+        "OrderLinesId": "OL-3005",
+        "LineNumber": "OL-3005",
+        "OrderId": "ORD-1007",
+        "FCSId": "FCS-F35-FBW4",
+        "Quantity": 3,
+        "Name": "OL-3005",
+        "FCSUnitPrice": 12.0,
+        "FCSArchitecture": "fly-by-wire",
+        "FCSJetModel": "F-35A",
+        "FCSMeetsFifthGenSpec": true,
+        "OrderNumber": "ORD-1007",
+        "OrderCustomer": "katherine.johnson@nasa.gov",
+        "LineTotal": 36.0
+      },
+      {
+        "OrderLinesId": "OL-3006",
+        "LineNumber": "OL-3006",
+        "OrderId": "ORD-1008",
+        "FCSId": "FCS-F18-FBW3",
+        "Quantity": 8,
+        "Name": "OL-3006",
+        "FCSUnitPrice": 5.8,
+        "FCSArchitecture": "fly-by-wire",
+        "FCSJetModel": "F-18E",
+        "FCSMeetsFifthGenSpec": false,
+        "OrderNumber": "ORD-1008",
+        "OrderCustomer": "linus.torvalds@kernel.org",
+        "LineTotal": 46.4
+      },
+      {
+        "OrderLinesId": "OL-3007",
+        "LineNumber": "OL-3007",
+        "OrderId": "ORD-1008",
+        "FCSId": "FCS-EF2K-FBW4",
+        "Quantity": 5,
+        "Name": "OL-3007",
+        "FCSUnitPrice": 9.3,
+        "FCSArchitecture": "fly-by-wire",
+        "FCSJetModel": "EF-2000",
+        "FCSMeetsFifthGenSpec": false,
+        "OrderNumber": "ORD-1008",
+        "OrderCustomer": "linus.torvalds@kernel.org",
+        "LineTotal": 46.5
+      },
+      {
+        "OrderLinesId": "OL-3008",
+        "LineNumber": "OL-3008",
+        "OrderId": "ORD-1004",
+        "FCSId": "FCS-F16-FBW3",
+        "Quantity": 1,
+        "Name": "OL-3008",
+        "FCSUnitPrice": 4.2,
+        "FCSArchitecture": "fly-by-wire",
+        "FCSJetModel": "F-16C",
+        "FCSMeetsFifthGenSpec": false,
+        "OrderNumber": "ORD-1004",
+        "OrderCustomer": "grace.hopper@nautical.mil",
+        "LineTotal": 4.2
+      }
+    ]
+  },
+  "__meta__": {
+    "Description": "Project-level metadata that travels with the rulebook: tagline, motif, narrative descriptions, substrate list, signature rows, etc. One row per metadata key. Use ValueType to interpret StringValue vs JsonValue.",
+    "important": false,
+    "schema": [
+      {
+        "name": "MetaKey",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "The metadata key (e.g. 'tagline', 'motif_palette', 'substrates'). Unique within the table."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "formula": "={{MetaKey}}",
+        "Description": "Identifier for this metadata entry. Mirrors MetaKey so the row is addressable by Name like every other table."
+      },
+      {
+        "name": "ValueType",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "How to interpret the value columns: 'string' (use StringValue), 'object' (parse JsonValue as JSON object), 'array' (parse JsonValue as JSON array)."
+      },
+      {
+        "name": "StringValue",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Plain string value. Populated when ValueType == 'string'; null otherwise."
+      },
+      {
+        "name": "JsonValue",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "JSON-encoded value. Populated when ValueType == 'object' or 'array'; null when ValueType == 'string'."
+      }
+    ],
+    "data": [
+      {
+        "MetaKey": "tagline",
+        "Name": "tagline",
+        "ValueType": "string",
+        "StringValue": "A CRM whose VIP flag, paid-in-full status, and fighter-jet FCS rollups all live in the rulebook — not the app.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "motif",
+        "Name": "motif",
+        "ValueType": "string",
+        "StringValue": "skyline",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "motif_palette",
+        "Name": "motif_palette",
+        "ValueType": "object",
+        "StringValue": null,
+        "JsonValue": "{\"primary\": \"#1f3a5f\", \"accent\": \"#f0b21f\", \"ink\": \"#0d1a2e\"}"
+      },
+      {
+        "MetaKey": "description_rich",
+        "Name": "description_rich",
+        "ValueType": "string",
+        "StringValue": "A CRM with two halves wired into one DAG. The **accounts half** — Customers, Orders, Payments — derives every \"customer health\" signal (rolling-window `LifetimeSales`, `UnpaidOrderCount`, `IsVIP`) from raw payment rows. The **catalog half** — JetModels, FlightControlSystems, OrderLines — rolls FCS line-item revenue up through the variant catalog to the airframe and also enforces an airworthiness rule (`MeetsFifthGenSpec`) that combines redundancy, architecture, and a two-hop lookup to the jet's generation. Both halves meet at `Orders.FCSSubtotal`. The DAG is the source of truth; the application code is allowed to be small because the rules aren't in it.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "use_cases",
+        "Name": "use_cases",
+        "ValueType": "array",
+        "StringValue": null,
+        "JsonValue": "[\"**Flip a VIP.** Add a payment row that zeroes Grace Hopper's balance on `ORD-1004`; `UnpaidOrderCount` drops from 2 to 1 and `IsVIP` resolves TRUE on the next read — same answer in Postgres and Python, no glue code.\", \"**Trace a four-layer rollup.** Pick `OL-3006` (F-18 FCS, qty 8 on `ORD-1008`), edit the quantity, and watch `Orders.FCSSubtotal`, `FlightControlSystems.TotalRevenue` for `FCS-F18-FBW3`, and `JetModels.TotalRevenue` for `F-18E` all change on the next read — one edit, three rollups, zero application code.\", \"**Promote an airframe and watch a spec rule re-fire.** Set `EF-2000.Generation = 5` in `JetModels`; `FCS-EF2K-FBW4` already has four channels and fly-by-wire, so its `MeetsFifthGenSpec` flips from FALSE to TRUE — the FCS row was not touched.\", \"**Count large orders without `COUNTIFS`.** `Customers.LargeOrderCount` uses the `SUMIFS(*0+1, ..., \\\">500\\\")` workaround because the transpiler does not yet wire operator criteria through `COUNTIFS`. The result still matches across substrates — Katherine Johnson's two orders (`ORD-1006` $540, `ORD-1007` $612) come back as 2 everywhere.\", \"**Ask the same question of two substrates.** *\\\"What is `FCS-F35-FBW4`'s total revenue?\\\"* Postgres view returns $84M (4+3 units × $12M). Python module returns the same. No reconciliation step — they share one rule.\"]"
+      },
+      {
+        "MetaKey": "signature_rows",
+        "Name": "signature_rows",
+        "ValueType": "array",
+        "StringValue": null,
+        "JsonValue": "[{\"entity\": \"Customers\", \"ids\": [\"grace.hopper@nautical.mil\", \"linus.torvalds@kernel.org\", \"katherine.johnson@nasa.gov\"]}, {\"entity\": \"FlightControlSystems\", \"ids\": [\"FCS-F35-FBW4\", \"FCS-F22-FBL4\", \"FCS-EF2K-FBW4\"]}]"
+      },
+      {
+        "MetaKey": "journal_seed",
+        "Name": "journal_seed",
+        "ValueType": "string",
+        "StringValue": "Ten orders, nine payments, eight FCS line items. Linus and Katherine are paid up; Grace is carrying two unpaid invoices; one F-35 line accounts for the largest single rollup in the catalog.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "substrates",
+        "Name": "substrates",
+        "ValueType": "array",
+        "StringValue": null,
+        "JsonValue": "[{\"key\": \"postgres\", \"important\": true, \"chip_label\": \"Postgres\"}, {\"key\": \"python\", \"important\": true, \"chip_label\": \"Python\"}, {\"key\": \"excel\", \"important\": false, \"chip_label\": \"Excel\"}, {\"key\": \"owl\", \"important\": false, \"chip_label\": \"OWL\"}]"
+      },
+      {
+        "MetaKey": "CMCC_Summary",
+        "Name": "CMCC_Summary",
+        "ValueType": "string",
+        "StringValue": "Hand-authored minimal CRM demo rulebook for the effortless-demo-app skill.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "conversion_metadata",
+        "Name": "conversion_metadata",
+        "ValueType": "object",
+        "StringValue": null,
+        "JsonValue": "{\"tool_version\": \"demo-1.0\", \"export_mode\": \"hand_authored\"}"
+      }
+    ]
+  }
+}

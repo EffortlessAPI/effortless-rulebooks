@@ -1,0 +1,52 @@
+[
+  {
+    "name": "l-0042-2021-05-20-grade-4",
+    "loan": "l-0042",
+    "changed_by_user": "thomas-bell",
+    "effective_date": "2021-05-20",
+    "prior_grade": null,
+    "new_grade": 4,
+    "reason": "Initial rating at funding.",
+    "is_downgrade": false
+  },
+  {
+    "name": "l-0042-2025-05-02-grade-6",
+    "loan": "l-0042",
+    "changed_by_user": "thomas-bell",
+    "effective_date": "2025-05-02",
+    "prior_grade": 4,
+    "new_grade": 6,
+    "reason": "DSCR covenant breach; downgrade to Special Mention.",
+    "is_downgrade": false
+  },
+  {
+    "name": "l-0042-2025-08-15-grade-7",
+    "loan": "l-0042",
+    "changed_by_user": "thomas-bell",
+    "effective_date": "2025-08-15",
+    "prior_grade": 6,
+    "new_grade": 7,
+    "reason": "Sustained underperformance; downgrade to Substandard. Added to Watchlist.",
+    "is_downgrade": false
+  },
+  {
+    "name": "l-0051-2025-03-01-grade-4",
+    "loan": "l-0051",
+    "changed_by_user": "priya-iyer",
+    "effective_date": "2025-03-01",
+    "prior_grade": null,
+    "new_grade": 4,
+    "reason": "Initial rating at funding.",
+    "is_downgrade": false
+  },
+  {
+    "name": "l-0078-2024-08-22-grade-3",
+    "loan": "l-0078",
+    "changed_by_user": "priya-iyer",
+    "effective_date": "2024-08-22",
+    "prior_grade": null,
+    "new_grade": 3,
+    "reason": "Initial rating at funding; strong cash flow coverage.",
+    "is_downgrade": false
+  }
+]

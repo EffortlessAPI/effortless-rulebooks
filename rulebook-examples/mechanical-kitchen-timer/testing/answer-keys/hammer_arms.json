@@ -1,0 +1,22 @@
+[
+  {
+    "hammer_arm_id": "Bessie's hammer arm",
+    "of_bell_hammer": "Bessie's bell hammer",
+    "length_mm": 22
+  },
+  {
+    "hammer_arm_id": "Olive's hammer arm",
+    "of_bell_hammer": "Olive's bell hammer",
+    "length_mm": 22
+  },
+  {
+    "hammer_arm_id": "Rufus's hammer arm",
+    "of_bell_hammer": "Rufus's bell hammer",
+    "length_mm": 22
+  },
+  {
+    "hammer_arm_id": "Twigs's hammer arm",
+    "of_bell_hammer": "Twigs's bell hammer",
+    "length_mm": 22
+  }
+]

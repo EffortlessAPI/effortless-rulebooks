@@ -1,0 +1,763 @@
+{
+  "$schema": "https://example.com/cmcc-schema/v1",
+  "Name": "Community Event Planner",
+  "Description": "Venues, events, speakers, attendees with capacity, scheduling, and attendance-forecast cascades.",
+  "Venues": {
+    "Description": "Table: Venues",
+    "schema": [
+      {
+        "name": "VenueId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Unique venue identifier (slug)"
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "Display name for the venue",
+        "formula": "={{VenueId}}"
+      },
+      {
+        "name": "Location",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Physical location/address"
+      },
+      {
+        "name": "Capacity",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Total seating capacity"
+      }
+    ],
+    "data": [
+      {
+        "VenueId": "main-hall",
+        "Location": "Downtown Community Center",
+        "Capacity": 150
+      },
+      {
+        "VenueId": "conference-room",
+        "Location": "Tech Hub Building",
+        "Capacity": 50
+      },
+      {
+        "VenueId": "outdoor-amphitheater",
+        "Location": "Central Park",
+        "Capacity": 300
+      }
+    ]
+  },
+  "Speakers": {
+    "Description": "Table: Speakers",
+    "important": true,
+    "summary_rich": "The **cast** — anyone who can be pinned to an event. Each speaker has an availability window and a running `AssignmentCount` rolled up from the `Assignments` table; once that count clears three, `IsOverbooked` flips and the corkboard surfaces the workload alert. The window is also what powers `Assignments.IsAvailable` — a speaker assigned outside their hours fails the check the moment the row is written.",
+    "important_fields": [
+      "Name",
+      "AssignmentCount",
+      "IsOverbooked",
+      "AvailabilityStart"
+    ],
+    "schema": [
+      {
+        "name": "SpeakerId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Unique speaker identifier (email)"
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "Display name for the speaker",
+        "formula": "={{SpeakerId}}"
+      },
+      {
+        "name": "AvailabilityStart",
+        "datatype": "datetime",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Start of speaker availability window"
+      },
+      {
+        "name": "AvailabilityEnd",
+        "datatype": "datetime",
+        "type": "raw",
+        "nullable": true,
+        "Description": "End of speaker availability window"
+      },
+      {
+        "name": "AssignmentCount",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": false,
+        "Description": "Total number of event assignments for this speaker",
+        "formula": "=COUNTIFS(Assignments!{{SpeakerRef}}, {{SpeakerId}})"
+      },
+      {
+        "name": "IsOverbooked",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "Is speaker assigned to more than 3 events (workload alert)?",
+        "formula": "={{AssignmentCount}} > 3",
+        "important": true,
+        "explanation_rich": "**The workload alarm.** `IsOverbooked` watches the rollup `AssignmentCount` and trips the moment a speaker passes three engagements. Worked example: `overbooked@speakers.local` is assigned to `tech-talk-1`, `workshop-1`, `panel-1`, and `meetup-1` — `AssignmentCount = 4`, so this evaluates to `TRUE` and the corkboard surfaces the alert. Drop one of those assignments and the same field flips back to `FALSE` on the next read, in every substrate, without any application code firing."
+      }
+    ],
+    "data": [
+      {
+        "SpeakerId": "alice@speakers.local",
+        "AvailabilityStart": "2026-05-24 14:00:00",
+        "AvailabilityEnd": "2026-05-24 21:00:00"
+      },
+      {
+        "SpeakerId": "bob@speakers.local",
+        "AvailabilityStart": "2026-05-25 09:00:00",
+        "AvailabilityEnd": "2026-05-25 18:00:00"
+      },
+      {
+        "SpeakerId": "carol@speakers.local",
+        "AvailabilityStart": "2026-05-23 15:00:00",
+        "AvailabilityEnd": "2026-05-23 20:00:00"
+      },
+      {
+        "SpeakerId": "dave@speakers.local",
+        "AvailabilityStart": "2026-05-25 14:00:00",
+        "AvailabilityEnd": "2026-05-25 18:00:00"
+      },
+      {
+        "SpeakerId": "overbooked@speakers.local",
+        "AvailabilityStart": "2026-05-23 09:00:00",
+        "AvailabilityEnd": "2026-05-25 21:00:00"
+      }
+    ]
+  },
+  "Events": {
+    "Description": "Table: Events",
+    "important": true,
+    "summary_rich": "The **board** — every pin is an event. Each row pulls capacity from its `Venue`, counts confirmed `RSVPs` against it, counts assigned `Speakers`, checks the same venue for time clashes, and rolls all of it into a single `EventStatus` of `ready` or `issues`. Move a pin (change `Venue`, change `EventDate`, add or remove an `Assignment`) and the status recomputes everywhere the rulebook runs.",
+    "important_fields": [
+      "Name",
+      "VenueName",
+      "EventStatus",
+      "BookedCapacity"
+    ],
+    "schema": [
+      {
+        "name": "EventId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Unique event identifier"
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "Display name for the event",
+        "formula": "={{EventId}}"
+      },
+      {
+        "name": "Venue",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Related venue",
+        "RelatedTo": "Venues"
+      },
+      {
+        "name": "VenueName",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": false,
+        "Description": "Looked up venue name",
+        "formula": "={{Venue}}"
+      },
+      {
+        "name": "VenueCapacity",
+        "datatype": "integer",
+        "type": "lookup",
+        "nullable": false,
+        "Description": "Looked up venue capacity",
+        "formula": "=INDEX(Venues!{{Capacity}}, MATCH({{Venue}}, Venues!{{VenueId}}, 0))"
+      },
+      {
+        "name": "EventDate",
+        "datatype": "datetime",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Event date and start time"
+      },
+      {
+        "name": "DurationMinutes",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Event duration in minutes"
+      },
+      {
+        "name": "Category",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Event category or track (e.g. Tech, Community, Learning)"
+      },
+      {
+        "name": "EventEnd",
+        "datatype": "datetime",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "Calculated end time",
+        "formula": "={{EventDate}}"
+      },
+      {
+        "name": "TotalSpeakersAssigned",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": false,
+        "Description": "Count of speakers assigned to this event",
+        "formula": "=COUNTIFS(Assignments!{{EventRef}}, {{EventId}})"
+      },
+      {
+        "name": "HasSpeakers",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "Is at least one speaker assigned?",
+        "formula": "={{TotalSpeakersAssigned}} > 0"
+      },
+      {
+        "name": "BookedCapacity",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": false,
+        "Description": "Total attendees booked for this event",
+        "formula": "=COUNTIFS(RSVPs!{{EventRef}}, {{EventId}}, RSVPs!{{Status}}, \"confirmed\")"
+      },
+      {
+        "name": "AvailableCapacity",
+        "datatype": "integer",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "Remaining capacity after bookings",
+        "formula": "={{VenueCapacity}} - {{BookedCapacity}}",
+        "important": true,
+        "explanation_rich": "**The capacity cascade in one cell.** `VenueCapacity` is looked up from the `Venues` row referenced by `Venue`; `BookedCapacity` is a COUNTIFS rollup over the `RSVPs` table filtered to `Status = \"confirmed\"`. Worked example: `tech-talk-1` is pinned to `main-hall` (capacity 150) and has two confirmed RSVPs (`rsvp-1`, `rsvp-2`), so this resolves to `150 - 2 = 148`. Add a confirmed RSVP and it drops to 147 on the next read in every substrate. Drive it to zero and `AtCapacity` flips, dragging `EventStatus` down to `issues`."
+      },
+      {
+        "name": "AtCapacity",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "Is event at or over capacity?",
+        "formula": "={{AvailableCapacity}} <= 0"
+      },
+      {
+        "name": "VenueConflictCount",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": false,
+        "Description": "Count of other events at same venue within 30 min window",
+        "formula": "=COUNTIFS(Events!{{Venue}}, {{Venue}})"
+      },
+      {
+        "name": "HasVenueConflict",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "Are there venue scheduling conflicts?",
+        "formula": "={{VenueConflictCount}} > 1"
+      },
+      {
+        "name": "EventStatus",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "Event readiness status",
+        "formula": "=IF(AND({{HasSpeakers}}, NOT({{AtCapacity}}), NOT({{HasVenueConflict}})), \"ready\", \"issues\")",
+        "important": true,
+        "explanation_rich": "**The single field every event is judged by.** An event is `ready` only if it has at least one assigned speaker, has not hit capacity, and shares its venue with no other event in the rulebook. Worked example: `tech-talk-1` has three speakers (`HasSpeakers = TRUE`), 148 seats left (`AtCapacity = FALSE`) — but `main-hall` is also booked for `meetup-1`, so `VenueConflictCount = 2` and `HasVenueConflict = TRUE`. The AND fails and `EventStatus` resolves to `\"issues\"`. Move `meetup-1` to a different venue and the same row recomputes to `\"ready\"` on the next read, in every substrate."
+      },
+      {
+        "name": "RegistrationCloseDaysBeforeEvent",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Number of days before the event that registration closes"
+      },
+      {
+        "name": "RegistrationDeadline",
+        "datatype": "datetime",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "Calculated registration deadline (EventDate minus RegistrationCloseDaysBeforeEvent)",
+        "formula": "={{EventDate}} - {{RegistrationCloseDaysBeforeEvent}}"
+      },
+      {
+        "name": "IsRegistrationOpen",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "Is registration still open (before deadline)?",
+        "formula": "={{RegistrationDeadline}} > NOW()"
+      },
+      {
+        "name": "CapacityHeadroom",
+        "datatype": "integer",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "Available capacity minus booked attendees",
+        "formula": "={{AvailableCapacity}} - {{BookedCapacity}}"
+      },
+      {
+        "name": "HasHeadroomForOverbooking",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "Is there enough headroom to safely overbook by 20%?",
+        "formula": "={{CapacityHeadroom}} >= ({{BookedCapacity}} * 0.2)"
+      },
+      {
+        "name": "RecommendedOverbookingFactor",
+        "datatype": "number",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "Safe overbooking multiplier (if headroom allows)",
+        "formula": "=IF({{HasHeadroomForOverbooking}}, 1.2, 1.0)"
+      }
+    ],
+    "data": [
+      {
+        "EventId": "tech-talk-1",
+        "Venue": "main-hall",
+        "EventDate": "2026-05-24 14:00:00",
+        "DurationMinutes": 60,
+        "RegistrationCloseDaysBeforeEvent": 0,
+        "Category": "Tech"
+      },
+      {
+        "EventId": "workshop-1",
+        "Venue": "conference-room",
+        "EventDate": "2026-05-25 10:00:00",
+        "DurationMinutes": 120,
+        "RegistrationCloseDaysBeforeEvent": 1,
+        "Category": "Learning"
+      },
+      {
+        "EventId": "panel-1",
+        "Venue": "outdoor-amphitheater",
+        "EventDate": "2026-05-25 15:00:00",
+        "DurationMinutes": 90,
+        "RegistrationCloseDaysBeforeEvent": 1,
+        "Category": "Community"
+      },
+      {
+        "EventId": "meetup-1",
+        "Venue": "main-hall",
+        "EventDate": "2026-05-23 18:00:00",
+        "DurationMinutes": 120,
+        "RegistrationCloseDaysBeforeEvent": 1,
+        "Category": "Community"
+      }
+    ]
+  },
+  "Assignments": {
+    "Description": "Table: Assignments (many-to-many: Events to Speakers)",
+    "schema": [
+      {
+        "name": "AssignmentId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Unique assignment identifier"
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "Display name",
+        "formula": "={{AssignmentId}}"
+      },
+      {
+        "name": "EventRef",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Related event",
+        "RelatedTo": "Events"
+      },
+      {
+        "name": "EventName",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": false,
+        "Description": "Looked up event name",
+        "formula": "={{EventRef}}"
+      },
+      {
+        "name": "SpeakerRef",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Related speaker",
+        "RelatedTo": "Speakers"
+      },
+      {
+        "name": "SpeakerName",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": false,
+        "Description": "Looked up speaker name",
+        "formula": "={{SpeakerRef}}"
+      },
+      {
+        "name": "EventDate",
+        "datatype": "datetime",
+        "type": "lookup",
+        "nullable": false,
+        "Description": "Looked up event date",
+        "formula": "=INDEX(Events!{{EventDate}}, MATCH({{EventRef}}, Events!{{EventId}}, 0))"
+      },
+      {
+        "name": "SpeakerAvailStart",
+        "datatype": "datetime",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Looked up speaker availability start",
+        "formula": "=INDEX(Speakers!{{AvailabilityStart}}, MATCH({{SpeakerRef}}, Speakers!{{SpeakerId}}, 0))"
+      },
+      {
+        "name": "SpeakerAvailEnd",
+        "datatype": "datetime",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Looked up speaker availability end",
+        "formula": "=INDEX(Speakers!{{AvailabilityEnd}}, MATCH({{SpeakerRef}}, Speakers!{{SpeakerId}}, 0))"
+      },
+      {
+        "name": "IsAvailable",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "Is speaker available for this event?",
+        "formula": "=AND({{EventDate}} >= {{SpeakerAvailStart}}, {{EventDate}} <= {{SpeakerAvailEnd}})"
+      }
+    ],
+    "data": [
+      {
+        "AssignmentId": "assign-1",
+        "EventRef": "tech-talk-1",
+        "SpeakerRef": "alice@speakers.local"
+      },
+      {
+        "AssignmentId": "assign-2",
+        "EventRef": "tech-talk-1",
+        "SpeakerRef": "bob@speakers.local"
+      },
+      {
+        "AssignmentId": "assign-3",
+        "EventRef": "workshop-1",
+        "SpeakerRef": "bob@speakers.local"
+      },
+      {
+        "AssignmentId": "assign-4",
+        "EventRef": "panel-1",
+        "SpeakerRef": "alice@speakers.local"
+      },
+      {
+        "AssignmentId": "assign-5",
+        "EventRef": "panel-1",
+        "SpeakerRef": "carol@speakers.local"
+      },
+      {
+        "AssignmentId": "assign-6",
+        "EventRef": "meetup-1",
+        "SpeakerRef": "carol@speakers.local"
+      },
+      {
+        "AssignmentId": "assign-7",
+        "EventRef": "tech-talk-1",
+        "SpeakerRef": "overbooked@speakers.local"
+      },
+      {
+        "AssignmentId": "assign-8",
+        "EventRef": "workshop-1",
+        "SpeakerRef": "overbooked@speakers.local"
+      },
+      {
+        "AssignmentId": "assign-9",
+        "EventRef": "panel-1",
+        "SpeakerRef": "overbooked@speakers.local"
+      },
+      {
+        "AssignmentId": "assign-10",
+        "EventRef": "meetup-1",
+        "SpeakerRef": "overbooked@speakers.local"
+      }
+    ]
+  },
+  "Attendees": {
+    "Description": "Table: Attendees",
+    "schema": [
+      {
+        "name": "AttendeeId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Unique attendee identifier (email)"
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "Display name for the attendee",
+        "formula": "={{AttendeeId}}"
+      }
+    ],
+    "data": [
+      {
+        "AttendeeId": "user1@attendees.local"
+      },
+      {
+        "AttendeeId": "user2@attendees.local"
+      },
+      {
+        "AttendeeId": "user3@attendees.local"
+      },
+      {
+        "AttendeeId": "user4@attendees.local"
+      },
+      {
+        "AttendeeId": "user5@attendees.local"
+      }
+    ]
+  },
+  "RSVPs": {
+    "Description": "Table: RSVPs (many-to-many: Events to Attendees)",
+    "schema": [
+      {
+        "name": "RSVPId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Unique RSVP identifier"
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "Display name",
+        "formula": "={{RSVPId}}"
+      },
+      {
+        "name": "EventRef",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Related event",
+        "RelatedTo": "Events"
+      },
+      {
+        "name": "EventName",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": false,
+        "Description": "Looked up event name",
+        "formula": "={{EventRef}}"
+      },
+      {
+        "name": "AttendeeRef",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Related attendee",
+        "RelatedTo": "Attendees"
+      },
+      {
+        "name": "AttendeeName",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": false,
+        "Description": "Looked up attendee name",
+        "formula": "={{AttendeeRef}}"
+      },
+      {
+        "name": "Status",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "RSVP status (confirmed, waitlist, declined)"
+      }
+    ],
+    "data": [
+      {
+        "RSVPId": "rsvp-1",
+        "EventRef": "tech-talk-1",
+        "AttendeeRef": "user1@attendees.local",
+        "Status": "confirmed"
+      },
+      {
+        "RSVPId": "rsvp-2",
+        "EventRef": "tech-talk-1",
+        "AttendeeRef": "user2@attendees.local",
+        "Status": "confirmed"
+      },
+      {
+        "RSVPId": "rsvp-3",
+        "EventRef": "workshop-1",
+        "AttendeeRef": "user1@attendees.local",
+        "Status": "confirmed"
+      },
+      {
+        "RSVPId": "rsvp-4",
+        "EventRef": "workshop-1",
+        "AttendeeRef": "user3@attendees.local",
+        "Status": "waitlist"
+      },
+      {
+        "RSVPId": "rsvp-5",
+        "EventRef": "panel-1",
+        "AttendeeRef": "user4@attendees.local",
+        "Status": "confirmed"
+      },
+      {
+        "RSVPId": "rsvp-6",
+        "EventRef": "panel-1",
+        "AttendeeRef": "user5@attendees.local",
+        "Status": "confirmed"
+      },
+      {
+        "RSVPId": "rsvp-7",
+        "EventRef": "meetup-1",
+        "AttendeeRef": "user2@attendees.local",
+        "Status": "declined"
+      }
+    ]
+  },
+  "__meta__": {
+    "Description": "Project-level metadata that travels with the rulebook: tagline, motif, narrative descriptions, substrate list, signature rows, etc. One row per metadata key. Use ValueType to interpret StringValue vs JsonValue.",
+    "important": false,
+    "schema": [
+      {
+        "name": "MetaKey",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "The metadata key (e.g. 'tagline', 'motif_palette', 'substrates'). Unique within the table."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "formula": "={{MetaKey}}",
+        "Description": "Identifier for this metadata entry. Mirrors MetaKey so the row is addressable by Name like every other table."
+      },
+      {
+        "name": "ValueType",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "How to interpret the value columns: 'string' (use StringValue), 'object' (parse JsonValue as JSON object), 'array' (parse JsonValue as JSON array)."
+      },
+      {
+        "name": "StringValue",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Plain string value. Populated when ValueType == 'string'; null otherwise."
+      },
+      {
+        "name": "JsonValue",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "JSON-encoded value. Populated when ValueType == 'object' or 'array'; null when ValueType == 'string'."
+      }
+    ],
+    "data": [
+      {
+        "MetaKey": "tagline",
+        "Name": "tagline",
+        "ValueType": "string",
+        "StringValue": "Community events pinned to a corkboard — venues, speakers, RSVPs, and the capacity math that ties them together.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "motif",
+        "Name": "motif",
+        "ValueType": "string",
+        "StringValue": "corkboard",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "motif_palette",
+        "Name": "motif_palette",
+        "ValueType": "object",
+        "StringValue": null,
+        "JsonValue": "{\"primary\": \"#6e4b2a\", \"accent\": \"#d4a574\", \"ink\": \"#2a1e10\"}"
+      },
+      {
+        "MetaKey": "description_rich",
+        "Name": "description_rich",
+        "ValueType": "string",
+        "StringValue": "A small civic events board — three venues, four events, five speakers, and a handful of RSVPs. The wiring is where it gets interesting: each event's `EventStatus` depends on whether speakers are assigned, whether confirmed RSVPs have eaten the venue's capacity, and whether another event is already booked at the same venue. Speakers that take on more than three events trip an `IsOverbooked` flag. The same DAG fires identically in Postgres, Python, Excel, and OWL — no application code needed to enforce the rules.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "use_cases",
+        "Name": "use_cases",
+        "ValueType": "array",
+        "StringValue": null,
+        "JsonValue": "[\"**Watch an event flip from `issues` to `ready`.** Open *workshop-1*, assign a speaker via `Assignments`, and `HasSpeakers` → `EventStatus` recomputes in every substrate.\", \"**Overbook a venue.** Add `RSVPs` rows with `Status = \\\"confirmed\\\"` until `BookedCapacity` exceeds `VenueCapacity`; `AtCapacity` flips and `EventStatus` lands on `issues`.\", \"**Trip the overbooked-speaker alert.** Assign *overbooked@speakers.local* to a fourth event; `AssignmentCount` clears 3 and `IsOverbooked` becomes `TRUE`.\", \"**Find venue conflicts.** Schedule two events at `main-hall` and `VenueConflictCount` rises past 1, lighting `HasVenueConflict` on both rows.\", \"**Close registration on a date.** Set `RegistrationCloseDaysBeforeEvent`; `RegistrationDeadline` is derived, and `IsRegistrationOpen` evaluates against `NOW()` everywhere the rulebook runs.\"]"
+      },
+      {
+        "MetaKey": "signature_rows",
+        "Name": "signature_rows",
+        "ValueType": "array",
+        "StringValue": null,
+        "JsonValue": "[{\"entity\": \"Events\", \"ids\": [\"tech-talk-1\", \"workshop-1\", \"panel-1\"]}, {\"entity\": \"Speakers\", \"ids\": [\"alice@speakers.local\", \"bob@speakers.local\", \"overbooked@speakers.local\"]}]"
+      },
+      {
+        "MetaKey": "journal_seed",
+        "Name": "journal_seed",
+        "ValueType": "string",
+        "StringValue": "Four events on the board, one speaker stretched across all of them, and `main-hall` double-booked — the corkboard already has pins to move.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "substrates",
+        "Name": "substrates",
+        "ValueType": "array",
+        "StringValue": null,
+        "JsonValue": "[{\"key\": \"postgres\", \"important\": true, \"chip_label\": \"Postgres\"}, {\"key\": \"python\", \"important\": true, \"chip_label\": \"Python\"}, {\"key\": \"excel\", \"important\": false, \"chip_label\": \"Excel\"}, {\"key\": \"owl\", \"important\": false, \"chip_label\": \"OWL\"}, {\"key\": \"csv\", \"important\": false, \"chip_label\": \"CSV\"}]"
+      },
+      {
+        "MetaKey": "CMCC_Summary",
+        "Name": "CMCC_Summary",
+        "ValueType": "string",
+        "StringValue": "Community Event Planner rulebook with venues, events, speakers, and attendees.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "conversion_metadata",
+        "Name": "conversion_metadata",
+        "ValueType": "object",
+        "StringValue": null,
+        "JsonValue": "{\"tool_version\": \"effortless-demo-app-1.0.0\", \"table_count\": 6, \"field_type_mapping\": \"raw, calculated, lookup, relationship, aggregation\", \"export_mode\": \"manual_design\", \"type_inference\": {\"priority\": \"declared_datatype\", \"error_value_handling\": \"NULL\"}}"
+      }
+    ]
+  }
+}

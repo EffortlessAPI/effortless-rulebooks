@@ -24,20 +24,14 @@ from psycopg2.extras import RealDictCursor
 SCRIPT_DIR = Path(__file__).parent.resolve()
 PROJECT_ROOT = SCRIPT_DIR.parent.parent
 
-# This substrate is repo-level but operates on the active domain's testing dir.
-# The active domain is the SINGLE source of truth: orchestration/active-domain.txt.
-# Everything derives from that — no env vars.
-_active_domain_file = PROJECT_ROOT / "orchestration" / "active-domain.txt"
-if not _active_domain_file.exists():
-    raise FileNotFoundError(
-        f"active-domain.txt missing at {_active_domain_file}. "
-        "Write the active domain name (e.g. 'acme-llc') to that file."
-    )
-ACTIVE_DOMAIN = _active_domain_file.read_text().strip()
+# This substrate is repo-level but operates on the active domain's testing
+# dir. The domain is named in the ERB_DOMAIN env var; every caller (the
+# orchestrator, build-all-domains.sh, ad-hoc invocations) sets it explicitly.
+ACTIVE_DOMAIN = os.environ.get("ERB_DOMAIN", "").strip()
 if not ACTIVE_DOMAIN:
-    raise ValueError(
-        f"active-domain.txt at {_active_domain_file} is empty. "
-        "Write the active domain name (e.g. 'acme-llc')."
+    raise RuntimeError(
+        "ERB_DOMAIN is not set. effortless-postgres/take-test.py must be "
+        "invoked with ERB_DOMAIN=<slug> in its environment."
     )
 DOMAIN_DIR = PROJECT_ROOT / "rulebook-examples" / ACTIVE_DOMAIN
 TESTING_DIR = DOMAIN_DIR / "testing"

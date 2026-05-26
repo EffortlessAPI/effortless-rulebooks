@@ -1,0 +1,72 @@
+[
+  {
+    "customer_id": "alice-johnson",
+    "last_name": "Johnson",
+    "status_display_name": "Pending",
+    "name": "alice-johnson",
+    "notes": "Initial mock entry for Alice.",
+    "status_is_blocking": true,
+    "owner_email": "eejai42@gmail.com",
+    "status": "pending",
+    "status_description": "This status shows the customer or request is pending further action or review.",
+    "first_name": "Alice",
+    "full_name": "Alice Johnson",
+    "is_stopped": false
+  },
+  {
+    "customer_id": "bob",
+    "is_stopped": true,
+    "status_display_name": "On-Hold",
+    "name": "bob-",
+    "notes": "A customer currently in launch.",
+    "status_is_blocking": true,
+    "owner_email": "eejai42@gmail.com",
+    "status": "on-hold",
+    "status_description": "This status indicates the customer or request is on hold and temporarily paused.",
+    "first_name": "Bob",
+    "full_name": "Bob ",
+    "last_name": ""
+  },
+  {
+    "customer_id": "brian-lee",
+    "last_name": "Lee",
+    "status_display_name": "New",
+    "name": "brian-lee",
+    "notes": "Initial mock entry for Brian.",
+    "status_is_blocking": false,
+    "owner_email": "eejai42@gmail.com",
+    "status": "new",
+    "status_description": "This status indicates a newly created customer or request that has not yet been processed.",
+    "first_name": "Brian",
+    "full_name": "Brian Lee",
+    "is_stopped": false
+  },
+  {
+    "customer_id": "carla-smith",
+    "last_name": "Smith",
+    "status_display_name": "Delayed",
+    "name": "carla-smith",
+    "notes": "Initial mock entry for Carla.",
+    "status_is_blocking": false,
+    "owner_email": "alice@example.com",
+    "status": "delayed",
+    "status_description": "This status is used when the customer or request has been delayed and is not progressing as scheduled.",
+    "first_name": "Carla",
+    "full_name": "Carla Smith",
+    "is_stopped": false
+  },
+  {
+    "customer_id": "caroline",
+    "status_display_name": "Processing",
+    "name": "caroline-",
+    "status_is_blocking": false,
+    "owner_email": "alice@example.com",
+    "status": "processing",
+    "status_description": "This status means the customer or request is currently being processed.",
+    "first_name": "Caroline",
+    "full_name": "Caroline ",
+    "last_name": "",
+    "notes": "",
+    "is_stopped": false
+  }
+]

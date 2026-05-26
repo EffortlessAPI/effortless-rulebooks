@@ -1,0 +1,28 @@
+{
+  "customers": {
+    "primary_key": "customer_id",
+    "computed_columns": [
+      "name",
+      "full_name",
+      "status_display_name",
+      "status_is_blocking",
+      "is_stopped",
+      "status_description"
+    ],
+    "record_count": 5
+  },
+  "statuses": {
+    "primary_key": "statuse_id",
+    "computed_columns": [
+      "name"
+    ],
+    "record_count": 7
+  },
+  "app_users": {
+    "primary_key": "app_user_id",
+    "computed_columns": [
+      "name"
+    ],
+    "record_count": 3
+  }
+}

@@ -130,6 +130,14 @@ TRANSPILERS = {
         "script": PROJECT_ROOT / "execution-substrates" / "airtable" / "inject-into-airtable.py",
         "description": "Sync rulebook schema back into Airtable base",
     },
+    # --- Reverse spoke: refresh CALCULATED field VALUES in the rulebook from
+    #     Postgres (the consistent-by-construction data objects — NOT the
+    #     formulas themselves). Default mode writes derived values only; the
+    #     opt-in ERB_ADOPT_RAWS mode also adopts raws/new rows. ---
+    "postgres-calculated-to-rulebook": {
+        "script": PROJECT_ROOT / "execution-substrates" / "postgres-calculated-to-rulebook" / "inject-into-postgres-calculated-to-rulebook.py",
+        "description": "Refresh calculated/lookup/aggregation field values in the rulebook from the vw_* views (raws verified, never written)",
+    },
 }
 
 
@@ -181,9 +189,8 @@ def resolve_request(route: str, client_port):
     Why this is the one path: the `effortless` CLI sends an empty POST body
     and the X-Working-Dir header is set to the repo root (not the project),
     so the only signal that tells us which project the user is building is
-    the CLI process's own argv + cwd. active-domain.txt is unreliable (set
-    by a different command); the working_dir header is unreliable (CLI
-    overwrites it); the body is empty.
+    the CLI process's own argv + cwd. The working_dir header is unreliable
+    (CLI overwrites it); the body is empty.
     """
     if client_port is None:
         raise RuntimeError("Request has no client_port — cannot identify CLI process.")
@@ -315,8 +322,8 @@ class ProxyHandler(BaseHTTPRequestHandler):
 
         # Consume request body (we don't use it — the effortless CLI sends an
         # empty body anyway). Resolution comes ONLY from inspecting the CLI
-        # process's argv + cwd. No body parsing, no working_dir header, no
-        # active-domain.txt — one path, fail loudly if it doesn't work.
+        # process's argv + cwd. No body parsing, no working_dir header —
+        # one path, fail loudly if it doesn't work.
         length = int(self.headers.get("Content-Length", 0))
         if length:
             self.rfile.read(length)

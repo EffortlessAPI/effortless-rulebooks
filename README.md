@@ -66,6 +66,7 @@ The harness that produced this table runs on every build. There is no "build wit
 - **[Live Excel export](docs/features/README.live-excel-export.md)** — not a CSV dump. A fully live workbook where calculated fields are Excel formulas, related tables are cross-sheet references, and the derivation chain travels with the data.
 - **[GDPR export and erasure](docs/features/README.gdpr-export-erasure.md)** — the DAG shape that enables explainability is the same shape GDPR's right to portability and right to erasure require. With RLS, account-scoped export and deletion are structural consequences, not bespoke engineering.
 - **[Rulebook is a complete spec](docs/features/README.complete-spec.md)** — sufficient for any frontier LLM to answer any question about the domain or produce a faithful implementation in any language.
+- **[Skills as LLM force multiplier](docs/features/README.claude-skills.md)** — the rulebook gives the LLM something to operate on; the skills give it the instructions for how to operate. The learning curve that used to cost weeks is now a file you can curl.
 - **[Fail loudly, never fall back](docs/features/README.fail-loud.md)** — if a file or value isn't where expected, the code fails with the exact path. Silent fallbacks hide bugs; defaults derived from the SSoT are not fallbacks.
 
 ### Platform mechanics
@@ -81,16 +82,21 @@ The harness that produced this table runs on every build. There is no "build wit
 
 ## Demo domains
 
-Five ready-to-run domains show the same pattern across wildly different problems. For a direct comparison, see **[A Tale of Two Claudes](rulebook-examples/naked-claude-vs-effortless-claude/TALE_OF_TWO_CLAUDES.md)** — a side-by-side transcript of the same questions answered with and without the rulebook, showing where a raw LLM drifts and where ERB-grounding holds.
+The catalog spans **26 ready-to-run domains** — from a one-table Hello World to a 26-table hardware ontology — all driven by the same hub-and-spoke pattern. The highlights table below is a curated subset; the [full domain catalog](docs/derived/domains.md) is generated from the platform rulebook on every build. For a direct comparison of LLM behavior with and without ERB grounding, see **[A Tale of Two Claudes](rulebook-examples/naked-claude-vs-effortless-claude/TALE_OF_TWO_CLAUDES.md)**.
 
 | Domain | Complexity | What it demonstrates |
 |---|---|---|
 | [acme-llc](rulebook-examples/acme-llc/) | **full demo** | **All 17 substrates proven conformant** — start here |
-| [effortless-banking-demo](rulebook-examples/effortless-banking-demo/) | advanced (in progress) | Loan origination, covenant monitoring, risk-grade migration, four-surface portal |
+| [effortless-banking](rulebook-examples/effortless-banking/) | advanced | Loan origination, covenant monitoring, risk-grade migration, four-surface portal |
+| [mechanical-kitchen-timer](rulebook-examples/mechanical-kitchen-timer/) | advanced | 26-table hardware ontology — proves the methodology isn't limited to information systems |
+| [fantasy-football](rulebook-examples/fantasy-football/) | advanced | Four-hop DAG: raw stats → roster aggregations → matchup scoring → standings |
+| [therapist-helper-portal](rulebook-examples/therapist-helper-portal/) | moderate | Three-hop cascading inference: GoalUpdate → Goal.ProgressPct → Client.IsAtRisk |
 | [jessica-basic](rulebook-examples/jessica-basic/) | moderate | Relationships, aggregations, role-agent separation |
 | [star-trek](rulebook-examples/star-trek/) | moderate | Hierarchical rollups, polymorphic foreign keys |
 | [is-everything-a-language](rulebook-examples/is-everything-a-language/) | philosophical | 8-predicate AND logic, formal argument modeling |
 | [customer-fullname](rulebook-examples/customer-fullname/) | minimal | Hello World — string concat formula |
+
+→ [Full domain catalog (26 domains, generated)](docs/derived/domains.md)
 
 ---
 
@@ -105,6 +111,35 @@ These pages are generated from the platform rulebook by `effortless build` — e
 - **[Substrate Contract](docs/derived/substrate-contract.md)** — the inject / execute / grade protocol every substrate must implement to participate in the conformance harness.
 
 → [Full derived docs index](docs/derived/README.md)
+
+---
+
+## Claude Skills — skipping the learning curve
+
+Before ERB, every developer had to teach their LLM the conventions from scratch: how PascalCase tables work, what the Leopold loop is, when to read from `vw_*` views vs base tables, how `effortless build` sequences transpilers. That learning used to cost hours to days per project.
+
+The skills pre-encode all of that. Load a skill and the LLM already knows the conventions. The rulebook is the subject matter; the skills are the curriculum. Without the rulebook there is nothing for the skills to operate on — but with both, you skip straight to building.
+
+Skills are also what makes the LLM-as-transpiler idea concrete: the rulebook defines the *what* (entities, fields, formulas, relationships), and the skills define the *how* (what to generate, in what order, with what conventions). A developer describing a new feature in plain English is enough — the LLM already has both the structure and the instructions.
+
+The skills in this repo are mirrored from [effortless-claude](https://github.com/effortlessapi/effortless-claude). To pull fresh copies:
+
+```bash
+./docs/skills/clone-skills.sh
+```
+
+**Key skills for working with this repo:**
+
+| Skill | When to use |
+|---|---|
+| [/effortless-cmcc](docs/skills/effortless-cmcc/SKILL.md) | Any "why does this work?" or evaluative question about ERB |
+| [/effortless-orchestrator](docs/skills/effortless-orchestrator/SKILL.md) | Running the full build pipeline |
+| [/effortless-workflow](docs/skills/effortless-workflow/SKILL.md) | Making changes to any ERB project |
+| [/effortless-leopold-loop](docs/skills/effortless-leopold-loop/SKILL.md) | The iterative CHANGE-RULE → REBUILD → CONSUME-VIEWS cycle |
+| [/effortless-conventions](docs/skills/effortless-conventions/SKILL.md) | Naming rules, DAG structure, FK patterns |
+| [/effortless-rulebooks](docs/skills/effortless-rulebooks/SKILL.md) | Empirical proof that CMCC works — conformance suite, ExplainDAG |
+
+→ [Full skills catalog](docs/skills/README.md)
 
 ---
 

@@ -1,0 +1,65 @@
+[
+  {
+    "statuse_id": "cancelled",
+    "is_blocking": true,
+    "owner_email": "ej@ssot.me",
+    "display_name": "Cancelled",
+    "name": null,
+    "description": "This status means the customer or request has been cancelled and will not proceed further.",
+    "customers": ""
+  },
+  {
+    "statuse_id": "delayed",
+    "owner_email": "ej@ssot.me",
+    "display_name": "Delayed",
+    "customers": "carla-smith",
+    "name": null,
+    "description": "This status is used when the customer or request has been delayed and is not progressing as scheduled.",
+    "is_blocking": false
+  },
+  {
+    "statuse_id": "in-review",
+    "owner_email": "ej@ssot.me",
+    "display_name": "In-Review",
+    "name": null,
+    "description": "This status is for customers or requests that are currently under review.",
+    "is_blocking": false,
+    "customers": ""
+  },
+  {
+    "statuse_id": "new",
+    "owner_email": "ej@ssot.me",
+    "display_name": "New",
+    "customers": "brian-lee",
+    "name": null,
+    "description": "This status indicates a newly created customer or request that has not yet been processed.",
+    "is_blocking": false
+  },
+  {
+    "statuse_id": "on-hold",
+    "is_blocking": true,
+    "owner_email": "ej@ssot.me",
+    "display_name": "On-Hold",
+    "customers": "bob",
+    "name": null,
+    "description": "This status indicates the customer or request is on hold and temporarily paused."
+  },
+  {
+    "statuse_id": "pending",
+    "is_blocking": true,
+    "owner_email": "ej@ssot.me",
+    "display_name": "Pending",
+    "customers": "alice-johnson",
+    "name": null,
+    "description": "This status shows the customer or request is pending further action or review."
+  },
+  {
+    "statuse_id": "processing",
+    "owner_email": "ej@ssot.me",
+    "display_name": "Processing",
+    "customers": "caroline",
+    "name": null,
+    "description": "This status means the customer or request is currently being processed.",
+    "is_blocking": false
+  }
+]

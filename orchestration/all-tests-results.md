@@ -2,7 +2,7 @@
 
 ## Configuration
 
-- **Rulebook:** `/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-invariant-rulesbooks/rulebook-examples/customer-fullname/effortless-rulebook/customer-fullname-rulebook.json`
+- **Rulebook:** `/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-rulebooks/rulebook-examples/customer-fullname/effortless-rulebook/customer-fullname-rulebook.json`
 - **Substrates Tested:** 2
 - **Computed Columns Tested:** 2
 
@@ -11,7 +11,7 @@
 | Substrate | Passed | Failed | Total | Score | Duration | Status |
 |-----------|--------|--------|-------|-------|----------|--------|
 | xlsx | 6 | 0 | 6 | 100.0% | < 1s | PASS |
-| effortless-postgres | 0 | 6 | 6 | 0.0% | < 1s | FAIL |
+| effortless-postgres | 0 | 6 | 6 | 0.0% | 4s | FAIL |
 
 ## Overall Statistics
 
@@ -22,7 +22,7 @@
 | Total Passed | 6 |
 | Total Failed | 6 |
 | Overall Score | 50.0% |
-| Total Duration | < 1s |
+| Total Duration | 5s |
 
 ---
 

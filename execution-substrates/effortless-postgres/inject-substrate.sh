@@ -17,15 +17,15 @@ PROJECT_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 # ERB_DOMAIN_DIR is required. The legacy global location at
 # licensed-effortless-tools/postgres is dead — different domains have different
 # SQL and silently picking the wrong one masks real schema bugs as 100%.
-if [ -z "$ERB_DOMAIN_DIR" ] || [ ! -d "$ERB_DOMAIN_DIR/postgres" ]; then
-    echo "FATAL: ERB_DOMAIN_DIR is not set or its postgres/ subdir is missing." >&2
+if [ -z "$ERB_DOMAIN_DIR" ] || [ ! -d "$ERB_DOMAIN_DIR/postgres-bootstrap" ]; then
+    echo "FATAL: ERB_DOMAIN_DIR is not set or its postgres-bootstrap/ subdir is missing." >&2
     echo "  ERB_DOMAIN_DIR=${ERB_DOMAIN_DIR:-<unset>}" >&2
-    echo "  Expected postgres dir at: \$ERB_DOMAIN_DIR/postgres" >&2
+    echo "  Expected postgres dir at: \$ERB_DOMAIN_DIR/postgres-bootstrap" >&2
     echo "  Invoke this script via the orchestrator, which sets ERB_DOMAIN_DIR" >&2
     echo "  to rulebook-examples/<active-domain>." >&2
     exit 1
 fi
-POSTGRES_SSOTME_DIR="$ERB_DOMAIN_DIR/postgres"
+POSTGRES_SSOTME_DIR="$ERB_DOMAIN_DIR/postgres-bootstrap"
 
 echo "=== Effortless-PostgreSQL Substrate: Regenerating from rulebook ==="
 echo "  Postgres dir: $POSTGRES_SSOTME_DIR"

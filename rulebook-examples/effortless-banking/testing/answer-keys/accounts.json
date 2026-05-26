@@ -1,0 +1,62 @@
+[
+  {
+    "name": "pine-hardware-inc-checking-0200",
+    "business": "pine-hardware-inc",
+    "account_type": "Checking",
+    "account_number_last4": "0200",
+    "current_balance_usd": 612430.55,
+    "has_ach": true,
+    "has_wire": true,
+    "has_card": true,
+    "opened_at": "2019-06-22",
+    "has_any_treasury_service": false
+  },
+  {
+    "name": "ridgeway-consulting-llc-checking-0300",
+    "business": "ridgeway-consulting-llc",
+    "account_type": "Checking",
+    "account_number_last4": "0300",
+    "current_balance_usd": 92800.0,
+    "has_ach": true,
+    "has_wire": false,
+    "has_card": false,
+    "opened_at": "2023-09-06",
+    "has_any_treasury_service": false
+  },
+  {
+    "name": "stillwater-roasters-llc-checking-0001",
+    "business": "stillwater-roasters-llc",
+    "account_type": "Checking",
+    "account_number_last4": "0001",
+    "current_balance_usd": 184250.13,
+    "has_ach": true,
+    "has_wire": true,
+    "has_card": false,
+    "opened_at": "2024-03-13",
+    "has_any_treasury_service": false
+  },
+  {
+    "name": "stillwater-roasters-llc-savings-0101",
+    "business": "stillwater-roasters-llc",
+    "account_type": "Savings",
+    "account_number_last4": "0101",
+    "current_balance_usd": 75000.0,
+    "has_ach": false,
+    "has_wire": false,
+    "has_card": false,
+    "opened_at": "2024-03-13",
+    "has_any_treasury_service": false
+  },
+  {
+    "name": "sunset-auto-body-llc-checking-0400",
+    "business": "sunset-auto-body-llc",
+    "account_type": "Checking",
+    "account_number_last4": "0400",
+    "current_balance_usd": 41250.0,
+    "has_ach": false,
+    "has_wire": false,
+    "has_card": false,
+    "opened_at": "2022-11-03",
+    "has_any_treasury_service": false
+  }
+]

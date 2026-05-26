@@ -11,22 +11,18 @@ from datetime import datetime
 
 
 def get_active_domain():
-    """Return the active domain name from orchestration/active-domain.txt.
+    """Return the active domain name from the ERB_DOMAIN env var.
 
-    Fails loudly if the file is missing or empty. There is no default — the
-    repo is hours old; fix the file rather than guess.
+    Fails loudly if unset or empty. Every caller that needs a domain must
+    receive one explicitly from its parent process — there is no project-wide
+    "current domain" state.
     """
-    active_domain_file = Path(__file__).parent / "active-domain.txt"
-    if not active_domain_file.exists():
-        raise FileNotFoundError(
-            f"active-domain.txt missing at {active_domain_file}. "
-            f"Write the active project name (e.g. 'acme-llc') to that file."
-        )
-    domain = active_domain_file.read_text(encoding="utf-8").strip()
+    domain = os.environ.get("ERB_DOMAIN", "").strip()
     if not domain:
-        raise ValueError(
-            f"active-domain.txt at {active_domain_file} is empty. "
-            f"Write the active project name (e.g. 'acme-llc')."
+        raise RuntimeError(
+            "ERB_DOMAIN is not set. Every script that needs a domain must be "
+            "invoked with ERB_DOMAIN=<slug> in its environment (e.g. "
+            "`ERB_DOMAIN=acme-llc python3 take-test.py`)."
         )
     return domain
 
@@ -47,7 +43,7 @@ def get_rulebook_path():
 
     Priority:
       1. ERB_RULEBOOK_PATH env var (set by ssotme-proxy for project-scoped runs)
-      2. orchestration/active-domain.txt → rulebook-examples/<domain>/effortless-rulebook/<domain>-rulebook.json
+      2. ERB_DOMAIN → rulebook-examples/<domain>/effortless-rulebook/<domain>-rulebook.json
 
     Fails loudly if ERB_RULEBOOK_PATH points at a directory or doesn't end in
     -rulebook.json — callers MUST pass an exact file path.
@@ -125,12 +121,14 @@ def get_active_project_substrates(domain=None):
             #  below).
             substrate = rp.rsplit("/", 1)[-1] if rp else ""
 
-        # The Effortless-licensed transpilers write to /postgres, /effortless-xlsx,
-        # /entity-framework, but the conformance test runners live under the
-        # effortless-prefixed folders. Apply the small alias table.
+        # The Effortless-licensed transpilers write to per-domain folders like
+        # /postgres-bootstrap, /effortless-xlsx, /entity-framework, but the
+        # conformance test runners live under the effortless-prefixed folders
+        # in execution-substrates/. Apply the small alias table.
         EFFORTLESS_ALIASES = {
-            "postgres": "effortless-postgres",
-            "entity-framework": "effortless-entity-framework",
+            "postgres":           "effortless-postgres",   # legacy folder name
+            "postgres-bootstrap": "effortless-postgres",   # current folder name post rulebook-as-HEAD refactor
+            "entity-framework":   "effortless-entity-framework",
         }
         substrate = EFFORTLESS_ALIASES.get(substrate, substrate)
 
@@ -289,11 +287,14 @@ def to_pascal_case(name: str) -> str:
 def discover_entities(rulebook: dict) -> list:
     """
     Discover all entities from the rulebook.
-    Entities are top-level keys that have a 'schema' array.
+    Entities are top-level keys that have a 'schema' array. Includes the
+    project-level `__meta__` table — it's now a first-class table with the
+    same `schema`/`data` shape as every other entity, so injectors materialize
+    it the same way (CSV sheet, Postgres table, etc.).
     Returns list of entity names in PascalCase (as they appear in rulebook).
     """
     entities = []
-    skip_keys = {'$schema', 'model_name', 'Description', '_meta'}
+    skip_keys = {'$schema', 'model_name', 'Description', 'Name'}
 
     for key, value in rulebook.items():
         if key in skip_keys:

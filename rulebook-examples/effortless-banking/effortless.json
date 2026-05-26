@@ -1,0 +1,51 @@
+{
+  "ShowHidden": false,
+  "ShowAllFiles": false,
+  "CurrentPath": null,
+  "SSoTmeProjectFiles": null,
+  "SSoTmeProjectId": "88f956dc-5967-4229-8dae-66746b75041e",
+  "Name": "first-valley-bank",
+  "ProjectSettings": [
+    {
+      "Name": "project-name",
+      "Value": "first-valley-bank"
+    }
+  ],
+  "ProjectTranspilers": [
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "rulebooktopostgres",
+      "RelativePath": "/postgres-bootstrap",
+      "CommandLine": "rulebook-to-postgres -i ../effortless-rulebook/effortless-banking-rulebook.json -p mode=drop-all -p stage=dev -p drop_all=true",
+      "IsDisabled": false,
+      "PinnedVersion": "v2026.05.09.1738",
+      "LastVersionUsed": "v2026.05.09.1738",
+      "LastUrl": "https://effortless-rulebook-to-postgres-v2026-05-09-1738-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "execute",
+      "RelativePath": "/postgres-bootstrap",
+      "CommandLine": "-exec ./init-db.sh",
+      "IsDisabled": false
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "rulebooktoreact",
+      "RelativePath": "",
+      "CommandLine": "rulebook-to-react -i ./effortless-rulebook/effortless-banking-rulebook.json",
+      "IsDisabled": false,
+      "PinnedVersion": "v2026.05.10.2256",
+      "LastVersionUsed": "v2026.05.10.2256",
+      "LastUrl": "https://effortless-rulebook-to-react-v2026-05-10-2256-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "httplocalhost4242postgrescalculatedtorulebook",
+      "RelativePath": "/postgres-bootstrap",
+      "CommandLine": "http://localhost:4242/postgres-calculated-to-rulebook -i ../effortless-rulebook/effortless-banking-rulebook.json",
+      "IsDisabled": false,
+      "Description": "Reverse spoke: refresh rulebook derived-field display copies from Postgres views after the destructive rebuild (raws verified, never written)."
+    }
+  ]
+}

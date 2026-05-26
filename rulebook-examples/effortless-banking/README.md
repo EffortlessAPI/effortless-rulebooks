@@ -1,0 +1,46 @@
+# Effortless Banking
+
+Community-bank Small Business Banking Client Manager demo, built as an
+**Effortless Rulebook (ERB)** project. The hand-authored
+[`effortless-rulebook/effortless-rulebook.json`](effortless-rulebook/effortless-rulebook.json)
+is the single source of truth; `effortless build` regenerates Postgres
+schema, functions, views, and seed data under [`postgres/`](postgres/)
+and rebuilds the local DB via `init-db.sh`.
+
+The platform models a commercial RM workflow that competes on relationship
+depth: loan origination from inquiry through underwriting, committee
+approval, closing, and funding; post-funding servicing, covenant
+monitoring, risk-grade migration, and the document vault — with the four
+surfaces (RM dashboard, branch portal, business-client portal, admin
+console) all reading from the same DAG.
+
+## Tables
+
+- **Users** — Bank employees: RMs, underwriters, branch bankers, admins.
+- **Businesses** — Small-business customers and prospects.
+- **BeneficialOwners** — 25%+ owners and control persons (FinCEN CDD).
+- **Contacts** — Non-owner officers, signers, AP clerks.
+- **Accounts** — Deposit accounts (checking, savings, MM).
+- **Loans** — Credit facilities from inquiry through payoff.
+- **Covenants** — Recurring loan conditions tested on a tickler schedule.
+- **RiskRatingHistory** — Time-series of risk-grade changes per loan.
+- **Documents** — DocumentVault files attached to a Business or Loan.
+- **Interactions** — Unified activity-log stream (notes, calls, tasks, system events).
+
+## Layout
+
+- [`effortless-rulebook/`](effortless-rulebook/) — the SSoT rulebook JSON
+- [`postgres/`](postgres/) — generated SQL (`0*.sql`), `init-db.sh`, `*b-customize-*` seams
+- [`bootstrap/`](bootstrap/) — narrative, glossary, vocabulary, diagrams, mock data
+- [`effortless.json`](effortless.json) — build pipeline configuration
+
+## Working on this project
+
+```bash
+effortless build   # regen SQL + drop + rebuild the local DB
+psql -d first_valley_bank -c "\dv vw_*"
+```
+
+Schema changes go through the rulebook → `effortless build`. **No
+migrations, no `ALTER TABLE`** — the DB is regenerated from scratch each
+build. See [`CLAUDE.md`](CLAUDE.md) for full conventions.

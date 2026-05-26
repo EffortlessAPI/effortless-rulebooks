@@ -13,7 +13,26 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
 SUBSTRATES_DIR="$PROJECT_ROOT/execution-substrates"
 RULEBOOK_EXAMPLES_DIR="$PROJECT_ROOT/rulebook-examples"
-ACTIVE_DOMAIN_FILE="$SCRIPT_DIR/active-domain.txt"
+
+# Active domain for this orchestrate.sh session. Per CLAUDE.md doctrine
+# (`active-domain.txt` is the CLI + conversation scratchpad), the SSoT for
+# the CLI is `orchestration/active-domain.txt`. Resolution order:
+#   1. ERB_DOMAIN env var (explicit per-invocation override)
+#   2. orchestration/active-domain.txt (the persistent CLI scratchpad)
+#   3. empty -> get_active_domain fatals at the first call site, prompting
+#      the user to pick from the menu.
+# Every child invocation is dispatched with ERB_DOMAIN=$ACTIVE_DOMAIN, and
+# set_active_domain persists back to the file so the choice survives the
+# next CLI session.
+ACTIVE_DOMAIN_FILE="$PROJECT_ROOT/orchestration/active-domain.txt"
+if [ -n "${ERB_DOMAIN:-}" ]; then
+    ACTIVE_DOMAIN="$ERB_DOMAIN"
+elif [ -f "$ACTIVE_DOMAIN_FILE" ]; then
+    ACTIVE_DOMAIN="$(tr -d '[:space:]' < "$ACTIVE_DOMAIN_FILE")"
+else
+    ACTIVE_DOMAIN=""
+fi
+export ERB_DOMAIN="$ACTIVE_DOMAIN"
 
 # =============================================================================
 # COLORS
@@ -94,15 +113,19 @@ fi
 # HELPER FUNCTIONS
 # =============================================================================
 get_active_domain() {
-    if [ -f "$ACTIVE_DOMAIN_FILE" ]; then
-        cat "$ACTIVE_DOMAIN_FILE" | tr -d '[:space:]'
-    else
-        echo "customer-fullname"
+    if [ -z "$ACTIVE_DOMAIN" ]; then
+        echo "FATAL: no active domain — set ERB_DOMAIN in the environment or pick one from the menu first." >&2
+        exit 1
     fi
+    echo "$ACTIVE_DOMAIN"
 }
 
 set_active_domain() {
-    echo "$1" > "$ACTIVE_DOMAIN_FILE"
+    ACTIVE_DOMAIN="$1"
+    export ERB_DOMAIN="$ACTIVE_DOMAIN"
+    # Persist to the CLI scratchpad so the next ./start.sh (or any other
+    # CLI tool that reads the file) picks up the same domain.
+    printf '%s\n' "$ACTIVE_DOMAIN" > "$ACTIVE_DOMAIN_FILE"
 }
 
 get_domain_rulebook_path() {
@@ -528,6 +551,7 @@ show_menu() {
     echo -e "  ${BLUE}[I]${NC} ${BOLD}IMPORT${NC} — pull a new rulebook from Airtable"
     echo -e "  ${RED}[C]${NC} ${BOLD}CLEAN${NC} — delete all generated files"
     echo -e "  ${YELLOW}[D]${NC} ${BOLD}DEV-OPS${NC} — database & tooling setup"
+    echo -e "  ${YELLOW}[A]${NC} ${BOLD}ALL-DOMAINS${NC} — cross-domain build matrix ${DIM}(separate screen)${NC}"
     echo -e "  [${RED}Q${NC}] Quit"
     echo ""
 }
@@ -1022,6 +1046,94 @@ action_devops_menu() {
     done
 }
 
+action_all_domains_menu() {
+    # Cross-domain build matrix. Lives in its own screen so the per-domain
+    # menu stays focused on the active demo (see CLAUDE.md: app ≠ document).
+    local driver="$SCRIPT_DIR/build-all-domains.sh"
+    local status_dir="$SCRIPT_DIR/build-status"
+    local report_md="$status_dir/REPORT.md"
+    local summary_json="$status_dir/summary.json"
+
+    while true; do
+        echo ""
+        echo -e "${BOLD}${CYAN}╔════════════════════════════════════════════════════════════╗${NC}"
+        echo -e "${BOLD}${CYAN}║${NC}                ${BOLD}${WHITE}ALL DOMAINS — BUILD MATRIX${NC}                  ${BOLD}${CYAN}║${NC}"
+        echo -e "${BOLD}${CYAN}╚════════════════════════════════════════════════════════════╝${NC}"
+        echo ""
+
+        # Show current totals from summary.json if present.
+        if [ -f "$summary_json" ]; then
+            python3 - "$summary_json" <<'PYEOF'
+import json, sys
+with open(sys.argv[1]) as f:
+    s = json.load(f)
+t = s.get("totals", {})
+gen = s.get("generated_at", "?")
+print(f"  Last run: {gen}")
+print(f"  Totals:   {t.get('PASS',0)} PASS · {t.get('PARSER',0)} PARSER · "
+      f"{t.get('CONFIG',0)} CONFIG · {t.get('OTHER',0)} OTHER · "
+      f"{t.get('NO_LOG',0)} NO_LOG")
+PYEOF
+        else
+            echo -e "  ${DIM}No summary.json yet — run [B] to populate.${NC}"
+        fi
+        echo ""
+
+        echo -e "  [${CYAN}B${NC}] ${BOLD}BUILD ALL${NC} — rebuild every demo ${DIM}(~25 min wall time)${NC}"
+        echo -e "  [${CYAN}M${NC}] ${BOLD}BUILD MISSING${NC} — only demos without a log"
+        echo -e "  [${CYAN}F${NC}] ${BOLD}BUILD FAILING${NC} — only demos last marked non-PASS"
+        echo -e "  [${CYAN}R${NC}] ${BOLD}RE-RENDER REPORT${NC} — refresh REPORT.md from existing logs"
+        echo -e "  [${MAGENTA}V${NC}] ${BOLD}VIEW REPORT${NC} — open ${WHITE}build-status/REPORT.md${NC}"
+        echo -e "  [${RED}Q${NC}] Back to main menu"
+        echo ""
+
+        read -p "Enter choice [B/M/F/R/V/Q]: " ad_choice
+        echo ""
+
+        case $ad_choice in
+            [Bb])
+                bash "$driver"
+                read -p "Press Enter to continue..."
+                ;;
+            [Mm])
+                bash "$driver" --missing
+                read -p "Press Enter to continue..."
+                ;;
+            [Ff])
+                bash "$driver" --failing
+                read -p "Press Enter to continue..."
+                ;;
+            [Rr])
+                bash "$driver" --report-only
+                read -p "Press Enter to continue..."
+                ;;
+            [Vv])
+                if [ -f "$report_md" ]; then
+                    if command -v open >/dev/null 2>&1; then
+                        open "$report_md"
+                    elif command -v xdg-open >/dev/null 2>&1; then
+                        xdg-open "$report_md"
+                    else
+                        echo -e "${YELLOW}No 'open' or 'xdg-open' found. Report path:${NC}"
+                        echo "  $report_md"
+                        read -p "Press Enter to continue..."
+                    fi
+                else
+                    echo -e "${YELLOW}No REPORT.md yet — run [B] / [M] / [R] first.${NC}"
+                    sleep 1
+                fi
+                ;;
+            [Qq]|"")
+                return
+                ;;
+            *)
+                echo -e "${RED}Invalid option: $ad_choice${NC}"
+                sleep 1
+                ;;
+        esac
+    done
+}
+
 action_setup_effortless() {
     echo ""
     echo -e "${BOLD}${CYAN}Effortless CLI Installation Instructions${NC}"
@@ -1058,7 +1170,7 @@ action_init_postgres() {
     _domain=$(get_active_domain)
     local _db_name="erb_${_domain//-/_}"
     local _db_url="postgresql://postgres@localhost:5432/${_db_name}"
-    local init_script="$RULEBOOK_EXAMPLES_DIR/$_domain/effortless-postgres/init-db.sh"
+    local init_script="$RULEBOOK_EXAMPLES_DIR/$_domain/postgres-bootstrap/init-db.sh"
 
     echo ""
     echo -e "${BOLD}${CYAN}Initialize PostgreSQL Database for ${WHITE}${_domain}${NC}"
@@ -1123,7 +1235,7 @@ run_substrates() {
     # Ensure the per-domain DB exists with current schema before tests query it.
     # Every domain has rulebooktopostgres registered now, so this script must
     # exist after a build — fail loudly if it doesn't.
-    local _init_script="$ERB_DOMAIN_DIR/effortless-postgres/init-db.sh"
+    local _init_script="$ERB_DOMAIN_DIR/postgres-bootstrap/init-db.sh"
     if [ ! -f "$_init_script" ]; then
         echo -e "${RED}FAIL: per-domain init-db.sh missing for '${_domain}'.${NC}"
         echo -e "${RED}Expected: ${_init_script}${NC}"
@@ -1808,9 +1920,9 @@ while true; do
     fi
 
     if [ -n "$PROJECT_TRANSPILERS" ]; then
-        read -p "Enter choice [1-$(echo "$PROJECT_TRANSPILERS" | wc -l | tr -d ' '), B, V, W, P, N, I, C, D, Q] (default: $DEFAULT_CHOICE): " USER_CHOICE
+        read -p "Enter choice [1-$(echo "$PROJECT_TRANSPILERS" | wc -l | tr -d ' '), B, V, W, P, N, I, C, D, A, Q] (default: $DEFAULT_CHOICE): " USER_CHOICE
     else
-        read -p "Enter choice [V, W, P, N, I, C, D, Q] (default: $DEFAULT_CHOICE): " USER_CHOICE
+        read -p "Enter choice [V, W, P, N, I, C, D, A, Q] (default: $DEFAULT_CHOICE): " USER_CHOICE
     fi
 
     if [ -z "$USER_CHOICE" ]; then
@@ -1948,6 +2060,9 @@ while true; do
         [Dd])
             action_devops_menu
             ;;
+        [Aa])
+            action_all_domains_menu
+            ;;
         [Qq])
             echo ""
             exit 0
@@ -1957,9 +2072,9 @@ while true; do
             echo -e "${RED}'${USER_CHOICE}' is not a valid menu choice.${NC}"
             if [ -n "$PROJECT_TRANSPILERS" ]; then
                 TRANSPILER_COUNT=$(echo "$PROJECT_TRANSPILERS" | wc -l | tr -d ' ')
-                echo -e "${DIM}Valid choices: 1-${TRANSPILER_COUNT} (transpilers), B (build all), V, W, P, N, I, C, D, Q.${NC}"
+                echo -e "${DIM}Valid choices: 1-${TRANSPILER_COUNT} (transpilers), B (build all), V, W, P, N, I, C, D, A, Q.${NC}"
             else
-                echo -e "${DIM}Valid choices: V, W, P, N, I, C, D, Q.${NC}"
+                echo -e "${DIM}Valid choices: V, W, P, N, I, C, D, A, Q.${NC}"
             fi
             sleep 2
             ;;
