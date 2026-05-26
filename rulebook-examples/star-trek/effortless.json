@@ -41,6 +41,8 @@
       "RelativePath": "/effortless-postgres",
       "CommandLine": "rulebook-to-postgres -i ../effortless-rulebook/star-trek-rulebook.json",
       "IsDisabled": false,
+      "LastVersionUsed": "v2026.05.09.1738",
+      "LastUrl": "https://effortless-rulebook-to-postgres-v2026-05-09-1738-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
       "Description": "Generate Postgres schema + seed data from the rulebook"
     },
     {
