@@ -76,7 +76,7 @@ Local JSON is the SSoT. Default behavior. Build downstream transpilers against t
 | 21 | `llm-enigma-test` | Y | ✅ | Clean build, exit 0. DB `erb_llm_enigma_test` (re)created, 52 tables. Fixed: added missing `execute` step, re-injected DROP+CREATE in init-db.sh (had been clobbered by rulebook-to-postgres regen). |
 | 22 | `product-inventory-demo` | Y | ✅ | Clean build, exit 0. DB `erb_product_inventory_demo` (re)created, 6 tables. |
 | 23 | `therapist-helper-portal` | Y | ✅ | Clean build, exit 0. DB `erb_therapist_helper_portal` (re)created, 10 tables. |
-| 24 | `wedding-seating-optimizer` | Y | ❓ | |
+| 24 | `wedding-seating-optimizer` | Y | ✅ | Clean build, exit 0. DB `erb_wedding_seating_optimizer` (re)created, 8 tables. |
 
 (Counts: 8 registered-but-disabled + 12 not-registered = 20 in Group 2. Inventory totals: 4 Airtable-first + 20 rulebook-first + 4 broken = 28.)
 
