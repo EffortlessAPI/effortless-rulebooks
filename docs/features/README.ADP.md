@@ -7,3 +7,9 @@ ADP draws a bright red line between Derivative Code (rebuildable on demand) and 
 ---
 
 This is a stub README. The formal source of truth for this feature is row `feature-001` in the `PlatformFeatures` table of [`effortless-platform/effortless-rulebook/effortless-rulebook.json`](../../effortless-platform/effortless-rulebook/effortless-rulebook.json). Edit through the admin portal (Home → Platform Features) or directly in the rulebook; this file MUST conform to that row.
+
+## See also
+
+- [effortless -clean](README.clean.md) — the mechanism that makes ADP measurable
+- [Convergent builds](README.convergent-build.md) — why ADP is stable (build erases derivative code, rebuild restores it)
+- [Platform Features (derived)](../derived/features.md) — full feature catalog with tier and status

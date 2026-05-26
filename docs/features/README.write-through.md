@@ -7,3 +7,9 @@ The rulebook JSON is the only file that travels with the repo. Postgres is conve
 ---
 
 This is a stub README. The formal source of truth for this feature is row `feature-009` in the `PlatformFeatures` table of [`effortless-platform/effortless-rulebook/effortless-rulebook.json`](../../effortless-platform/effortless-rulebook/effortless-rulebook.json). Edit through the admin portal (Home → Platform Features) or directly in the rulebook; this file MUST conform to that row.
+
+## See also
+
+- [Portal/CLI parity](README.portal-cli-parity.md) — the complementary guarantee that portal and CLI use the same pipeline
+- [Admin portal ≠ a domain](README.portal-vs-domain.md) — why the portal has its own DB separate from domain data
+- [Ontology Axioms (derived)](../derived/axioms.md) — the "write-through invariant" axiom (ax-010)

@@ -7,3 +7,9 @@ Conventional codegen is one-way: you remove a field from the spec, the generated
 ---
 
 This is a stub README. The formal source of truth for this feature is row `feature-004` in the `PlatformFeatures` table of [`effortless-platform/effortless-rulebook/effortless-rulebook.json`](../../effortless-platform/effortless-rulebook/effortless-rulebook.json). Edit through the admin portal (Home → Platform Features) or directly in the rulebook; this file MUST conform to that row.
+
+## See also
+
+- [effortless -clean](README.clean.md) — the mechanism that makes convergence possible
+- [Abstract Derivative Percentage (ADP)](README.ADP.md) — what you measure after a convergent build cycle
+- [Ontology Axioms (derived)](../derived/axioms.md) — the "build is convergent, not additive" axiom (ax-012)
