@@ -71,9 +71,74 @@ When this pattern shows up around a different folder rename (e.g. `effortless-ru
 
 ---
 
+## Second instance (May 2026, acme-corporation) — every `Actual` is `None`
+
+**Symptom chain:**
+
+1. `BUILD` runs to completion. `rulebooktopostgres` ✓ OK, `execute` ✓ OK, `All transpilers complete.`
+2. `effortless-postgres` substrate reports `5 / 40 (12.5%) PARTIAL` — looks like real conformance signal.
+3. But every entry in the failure table reads `Actual: None`. Not `Actual: <wrong-value>`. Just `None`. Across all 35 failures. For every entity. Including fields that obviously *do* compute in the DB (`role_name`, `count_of_employees`, `full_name`, etc.).
+4. Manually running `psql -U postgres -d erb_acme_corporation -c "SELECT * FROM vw_employees"` returns correct rows with all calculated columns populated.
+5. Manually running `python3 take-test.py` after the orchestrator finished produces correct `test-answers/*.json` files. So the substrate's code path WORKS — yet the orchestrator's run left `test-answers/` **empty**.
+
+**Diagnosis:**
+
+This is the same shape as the postgres-bootstrap bug but the failure mode is more insidious. The producer (`take-test.py`) and the consumer (`test-orchestrator.grade_substrate`) both compute their `test-answers/` path from `active-domain.txt`, but they read it at *different moments* inside the orchestration:
+
+- `orchestrate.sh:1265` precomputes `test_answers_dir="$ERB_TESTING_DIR/$substrate/test-answers"` and clears it.
+- The inject script runs `effortless -buildLocal`, `init-db.sh`, then `take-test.sh` → `take-test.py`.
+- `take-test.py:36` re-reads `active-domain.txt` from disk.
+- `test-orchestrator.py:59` reads `active-domain.txt` at module-load time, which is whenever the grader process started.
+
+If anything between the orchestrator's start and the grader's grade-time changes `active-domain.txt` (or if the producer/consumer were started in different processes against different file states), the producer writes to one path and the consumer reads from another. Both look right when grepped individually; the bug only exists in the temporal gap.
+
+**The false-positive tell:**
+
+`grade_substrate` does NOT fail loudly when `test-answers/` is empty — it falls through `get_substrate_answers` returning `{}` and then scores every expected pair as `Actual: None`. The grader's `_is_nullish` helper deliberately treats `None == "" == 0 == False == "no"` as one equivalence class (so substrates can serialize empty values however they want). That means any field whose canonical answer happens to be nullish (`role_is_manager: False`, an empty string, a 0, etc.) **passes by accident** when the actual is missing.
+
+That's how a 0% catastrophic plumbing failure shows up as `5 / 40 (12.5%) PARTIAL` — five answer-key values happened to be nullish, so the missing actual matched. **The score is a lie**; nothing was actually verified for that substrate.
+
+**Diagnostic heuristic for this variant:**
+
+You have THIS bug, not a real conformance bug, if:
+
+1. The substrate's `test-answers/` directory exists but is empty (or missing files for entities that DO have answer-keys).
+2. Every (or nearly every) failing row in the test-results table shows `Actual: None`, never a real-but-wrong value.
+3. Running the substrate's `take-test.py` manually with the current `active-domain.txt` writes the files correctly.
+4. The "passes" cluster on fields where the canonical value is null/false/0/empty.
+
+If 2 + 4 hit, the score is almost certainly a false positive. Treat 12.5% as 0% until you can re-run and see populated `test-answers/`.
+
+**The deeper fix (not just papering over):**
+
+Add a missing-answers loudness layer to the grader:
+
+- If `get_substrate_answers(substrate)` returns `{}` for a substrate whose `prepare_substrate_for_test` was called this run, fail with `FAIL: <substrate> wrote no test-answers — structural failure, NOT a logic mismatch.` Do not score.
+- If `get_substrate_answers` returns answers for some entities but not others, fail per-entity instead of silently scoring all that entity's fields as `None`.
+- Equivalently: refuse to grant `_is_nullish` equivalence credit when the *actual* came from a missing file, only when it came from a file that explicitly serialized null/empty. The grader needs to distinguish "substrate said NULL" from "substrate said nothing."
+
+This converts the silent 12.5% into a loud `0 / 40 — substrate produced no answers`, matching `STRUCTURE_FAILURE.md`'s rule: when plumbing fails, fail noisily; never hand out partial credit derived from missing data.
+
+---
+
+## Generalizing the pattern
+
+These two instances differ in their literal path but share their shape. Any time the repo has a **producer → consumer** pair that both compute the same path independently (from `active-domain.txt`, from a folder convention, from an `EFFORTLESS_ALIASES` table, from anything mutable), and the consumer silently degrades to a default when the producer didn't deliver, you can hit this. The "silently degrades" step is where the false-positive score comes from.
+
+When you suspect this:
+
+1. **Diff the producer's expected output path against the consumer's read path** — print both literally, side by side, from a fresh subprocess.
+2. **Make the consumer fail loudly on missing producer output**, not just when the path is missing but when individual expected files are missing.
+3. **Audit every place a downstream score could "accidentally pass"** — look for nullish-equivalence in graders, default-empty-dict returns, `try/except` blocks that swallow file-not-found, anything that could turn missing data into a benign-looking value.
+4. When you find them, treat the discovery the same as the postgres-bootstrap rename: add a loud assertion at the boundary, and DO NOT hide it behind a fallback.
+
+---
+
 ## Anti-pattern to avoid
 
 Don't paper over the discovery bug by **silently defaulting** to a substrate when none is found. That's the exact "silent fallback" `CLAUDE.md` calls out: it would hide the next rename mismatch too, and turn a loud `FAIL: init-db.sh missing` into a quiet `0% pass`. Always fail loudly with the canonical expected path; only add to the alias table when the new mapping is intentional.
+
+The same rule applies to graders: never let a missing `test-answers/<entity>.json` produce a row that *could* pass. Missing data is a structural failure; score it as such.
 
 ---
 

@@ -45,7 +45,9 @@
         "type": "calculated",
         "nullable": true,
         "Description": "Full name is computed from the first and last name of the customer",
-        "formula": "={{FirstName}} & \" \" & {{LastName}}"
+        "formula": "={{FirstName}} & \" \" & {{LastName}}",
+        "important": true,
+        "explanation_rich": "**The smallest possible calculated field.** `FullName` is just `FirstName & \" \" & LastName` — but the point is that it lives in the rulebook, not in application code. Every substrate (Postgres view, Python class, Excel cell, OWL ontology) computes the same value the same way. Edit a customer's first name and *every* substrate sees the new full name on the next read."
       }
     ],
     "data": [
@@ -77,6 +79,9 @@
   },
   "Projects": {
     "Description": "Table: Projects",
+    "important": true,
+    "summary_rich": "The **work in flight**. Each project has a *type* (Internal, ClientFacing, Research, Compliance) and may require manager sign-off depending on that type. Approval is wired through the DAG, not by hand — set `ApprovedBy` to an employee whose role is a manager, and the project clears.",
+    "important_fields": ["Name", "ProjectTypeName", "ApprovedByName", "DueDate"],
     "schema": [
       {
         "name": "ProjectId",
@@ -125,7 +130,9 @@
         "datatype": "boolean",
         "type": "lookup",
         "nullable": true,
-        "formula": "=INDEX(TypesOfProject!{{RequiresManagerApproval}}, MATCH(Projects!{{ProjectType}}, TypesOfProject!{{TypesOfProjectId}}, 0))"
+        "formula": "=INDEX(TypesOfProject!{{RequiresManagerApproval}}, MATCH(Projects!{{ProjectType}}, TypesOfProject!{{TypesOfProjectId}}, 0))",
+        "important": true,
+        "explanation_rich": "**Some project types demand a manager.** Compliance and ClientFacing projects can't go live until someone with manager authority signs off; Internal and Research can. This field is the gate: it looks the project's type up in `TypesOfProject` and reads the `RequiresManagerApproval` flag. Worked example: the *GDPR Compliance Audit* is type `Compliance`, so this evaluates to `TRUE` and the project shows the ⚠ until an approver lands."
       },
       {
         "name": "DueDate",
@@ -154,7 +161,9 @@
         "datatype": "boolean",
         "type": "lookup",
         "nullable": true,
-        "formula": "=INDEX(Employees!{{RoleIsManager}}, MATCH(Projects!{{ApprovedBy}}, Employees!{{EmployeeId}}, 0))"
+        "formula": "=INDEX(Employees!{{RoleIsManager}}, MATCH(Projects!{{ApprovedBy}}, Employees!{{EmployeeId}}, 0))",
+        "important": true,
+        "explanation_rich": "**Only a manager can sign off on a manager-gated project.** When a project is assigned an approver, this field looks the employee up in `Employees` and pulls their role's `IsManager` flag. Worked example: *Customer Portal Redesign* is approved-by **Priya Patel** (role: Analyst, `IsManager=false`) — so this resolves to `FALSE` and the project stays pending. Reassign approval to **Sarah Chen** (ProjectManager) and the same field flips to `TRUE` *the same instant* the rulebook recomputes."
       },
       {
         "name": "ApprovedByName",
@@ -231,6 +240,9 @@
   },
   "Employees": {
     "Description": "Table: Employees",
+    "important": true,
+    "summary_rich": "The **cast** of ACME. Each employee holds a single role; only roles flagged `IsManager` can approve manager-gated projects. Promote someone into a manager role and the approval rule fires on every pending project they touch.",
+    "important_fields": ["Name", "RoleName", "EmailAddress"],
     "schema": [
       {
         "name": "EmployeeId",
@@ -487,6 +499,31 @@
     ]
   },
   "_meta": {
+    "tagline": "A small services shop — clients, projects, approval rules.",
+    "motif": "skyline",
+    "motif_palette": {
+      "primary": "#1f3a5f",
+      "accent": "#f0b21f",
+      "ink": "#0d1a2e"
+    },
+    "description_rich": "ACME Corporation is a tiny professional-services firm — three clients, three employees, three projects, and a handful of project types. The interesting thing isn't the data, it's the **wiring**: some project types (Compliance, ClientFacing) require manager sign-off, and only employees in a manager role can sign. The rulebook encodes that workflow as a DAG of calculated fields, so the same business rule fires identically in Postgres, Python, Excel, and OWL — without a single line of application code.",
+    "use_cases": [
+      "**Approve a Compliance project.** Open *GDPR Compliance Audit*, set `ApprovedBy` to Mike Johnson (a ProjectManager), and watch `ApprovedByRoleIsManager` flip to TRUE and the project clear.",
+      "**Promote an Analyst into a ProjectManager role.** Edit Priya Patel's role and watch every project that names her re-evaluate the approval rule.",
+      "**Add a new project type that requires manager approval.** Insert a row in `TypesOfProject` with `RequiresManagerApproval = TRUE`; every project of that type instantly inherits the requirement through the lookup chain.",
+      "**Read the same answer in two substrates.** Ask *\"how many projects are awaiting approval?\"* in the Postgres view, then ask the same question of the Python module — same number, no glue code."
+    ],
+    "signature_rows": [
+      { "entity": "Projects", "ids": ["internal-tools-dashboard", "customer-portal-redesign", "gdpr-compliance-audit"] },
+      { "entity": "Employees", "ids": ["sarah-chen", "mike-johnson", "priya-patel"] }
+    ],
+    "journal_seed": "Three projects in motion, one awaiting a manager. Sarah and Mike can sign; Priya is one promotion away from being able to.",
+    "substrates": [
+      { "key": "postgres", "important": true, "chip_label": "Postgres" },
+      { "key": "python",   "important": true, "chip_label": "Python" },
+      { "key": "excel",    "important": false, "chip_label": "Excel" },
+      { "key": "owl",      "important": false, "chip_label": "OWL" }
+    ],
     "_CMCC_Summary": "Airtable export with schema-first type mapping: Schemas, Data, Relationships (FK links), Lookups (INDEX/MATCH), Aggregations (SUMIFS/COUNTIFS/Rollups), and Calculated fields (formulas) in Excel dialect. Field types are determined from Airtable's schema metadata FIRST (no coercion); the build FAILS if metadata is unavailable rather than silently inferring from formula/data analysis.",
     "_conversion_metadata": {
       "source_base_id": "appzkcmBFPWFGBtRo",

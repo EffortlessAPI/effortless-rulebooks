@@ -96,6 +96,40 @@ function logoUrlForSlug(slug) {
   return fs.existsSync(png) ? `/api/projects/${encodeURIComponent(slug)}/logo.png` : null;
 }
 
+// Resolve _meta.signature_rows ([{entity, ids[]}, …]) against the rulebook's
+// own data arrays, projecting only each entity's `important_fields` so the
+// payload stays cheap. Returns [{entity, fields: [...], rows: [...]}, …].
+// Silent fallback would be a sin here — if the entity or ID isn't found, we
+// skip that row (the rulebook author asked for something that doesn't exist;
+// the picker just won't display it). We do not invent rows.
+function resolveSignatureRows(rb) {
+  const sig = rb?._meta?.signature_rows;
+  if (!Array.isArray(sig)) return [];
+  const out = [];
+  for (const block of sig) {
+    if (!block || typeof block !== "object") continue;
+    const entity = block.entity;
+    const ids = Array.isArray(block.ids) ? block.ids : [];
+    const ent = entity && rb[entity];
+    if (!ent || !Array.isArray(ent.data)) continue;
+    const fields = Array.isArray(ent.important_fields) && ent.important_fields.length
+      ? ent.important_fields
+      : (ent.schema || []).slice(0, 3).map((f) => f.name);
+    const pkField = (ent.schema || []).find((f) => /Id$/i.test(f.name))?.name;
+    const rows = [];
+    for (const id of ids) {
+      const row = ent.data.find((r) => pkField && r[pkField] === id);
+      if (!row) continue;
+      const projected = {};
+      for (const f of fields) projected[f] = row[f] ?? null;
+      if (pkField) projected[pkField] = row[pkField];
+      rows.push(projected);
+    }
+    out.push({ entity, fields, rows });
+  }
+  return out;
+}
+
 function listProjects() {
   const flavors = flavorsBySlug();
   const out = [{
@@ -103,6 +137,11 @@ function listProjects() {
     name: "ERB Orchestration (top-level)",
     displayName: "ERB Orchestration (top-level)",
     tagline: "The repo's top-level rulebook — describes ERB itself.",
+    motif: "default",
+    motifPalette: null,
+    descriptionRich: null,
+    journalSeed: null,
+    signatureRows: [],
     logoUrl: null,
     rulebookPath: TOP_RULEBOOK,
     projectRoot: REPO_ROOT,
@@ -115,19 +154,32 @@ function listProjects() {
       const candidate = path.join(dirPath, "effortless-rulebook", `${d}-rulebook.json`);
       if (!fs.existsSync(candidate)) continue;
       const flav = flavors[d];
-      // Canonical display name comes from RulebookFlavors; fall back to slug
-      // (don't read the rulebook again — Name/Description already mirror flavor).
+      // Peek at the demo's own _meta for the experience fields (tagline,
+      // motif, signature_rows). Falls through to the RulebookFlavors row
+      // when _meta hasn't been authored yet — that's a default, not a
+      // fallback (see CLAUDE.md: the SSoT-derived default IS the right
+      // answer; we only override when the rulebook explicitly takes a
+      // position via _meta).
+      let demoRb = null;
+      try { demoRb = JSON.parse(fs.readFileSync(candidate, "utf8")); }
+      catch (e) { console.warn(`[listProjects] could not parse ${candidate}: ${e.message}`); }
+      const meta = demoRb?._meta || {};
       const displayName = flav?.DisplayName || d;
-      const tagline = flav?.Tagline || flav?.LearningFocus || "";
+      const tagline = meta.tagline || flav?.Tagline || flav?.LearningFocus || "";
       out.push({
         id: d,
-        name: displayName,            // back-compat with existing UI that reads `name`
+        name: displayName,
         displayName,
         tagline,
+        motif: meta.motif || "default",
+        motifPalette: meta.motif_palette || null,
+        descriptionRich: meta.description_rich || null,
+        journalSeed: meta.journal_seed || null,
+        signatureRows: resolveSignatureRows(demoRb),
         logoUrl: logoUrlForSlug(d),
         rulebookPath: candidate,
         projectRoot: dirPath,
-        description: tagline,         // back-compat
+        description: tagline,
       });
     }
   }
