@@ -44,13 +44,6 @@
         "nullable": true
       },
       {
-        "name": "IsStopped",
-        "datatype": "boolean",
-        "type": "calculated",
-        "nullable": true,
-        "formula": "=IF(AND({{StatusIsBlocking}}, {{FirstName}} = \u0022Bob\u0022), TRUE(), FALSE())"
-      },
-      {
         "name": "StatusDisplayName",
         "datatype": "string",
         "type": "lookup",
@@ -63,6 +56,13 @@
         "type": "lookup",
         "nullable": true,
         "formula": "=INDEX(Statuses!{{IsBlocking}}, MATCH(Customers!{{Status}}, Statuses!{{StatuseId}}, 0))"
+      },
+      {
+        "name": "IsStopped",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "formula": "=IF(AND({{StatusIsBlocking}}, {{FirstName}} = \u0022Bob\u0022), TRUE(), FALSE())"
       },
       {
         "name": "StatusDescription",
@@ -92,70 +92,70 @@
     "data": [
       {
         "CustomerId": "bob",
-        "Notes": "A customer currently in launch.",
-        "OwnerEmail": "eejai42@gmail.com",
-        "Status": "on-hold",
-        "FirstName": "Bob",
-        "StatusIsBlocking": "True",
         "IsStopped": true,
         "StatusDisplayName": "On-Hold",
-        "StatusDescription": "This status indicates the customer or request is on hold and temporarily paused.",
-        "FullName": "Bob ",
         "Name": "bob-",
+        "Notes": "A customer currently in launch.",
+        "StatusIsBlocking": "True",
+        "OwnerEmail": "eejai42@gmail.com",
+        "Status": "on-hold",
+        "StatusDescription": "This status indicates the customer or request is on hold and temporarily paused.",
+        "FirstName": "Bob",
+        "FullName": "Bob ",
         "LastName": ""
       },
       {
         "CustomerId": "alice-johnson",
         "LastName": "Johnson",
+        "StatusDisplayName": "Pending",
+        "Name": "alice-johnson",
         "Notes": "Initial mock entry for Alice.",
+        "StatusIsBlocking": "True",
         "OwnerEmail": "eejai42@gmail.com",
         "Status": "pending",
-        "FirstName": "Alice",
-        "StatusIsBlocking": "True",
-        "StatusDisplayName": "Pending",
         "StatusDescription": "This status shows the customer or request is pending further action or review.",
+        "FirstName": "Alice",
         "FullName": "Alice Johnson",
-        "Name": "alice-johnson",
         "IsStopped": false
       },
       {
         "CustomerId": "brian-lee",
         "LastName": "Lee",
+        "StatusDisplayName": "New",
+        "Name": "brian-lee",
         "Notes": "Initial mock entry for Brian.",
+        "StatusIsBlocking": "",
         "OwnerEmail": "eejai42@gmail.com",
         "Status": "new",
-        "FirstName": "Brian",
-        "StatusIsBlocking": "",
-        "StatusDisplayName": "New",
         "StatusDescription": "This status indicates a newly created customer or request that has not yet been processed.",
+        "FirstName": "Brian",
         "FullName": "Brian Lee",
-        "Name": "brian-lee",
         "IsStopped": false
       },
       {
         "CustomerId": "carla-smith",
         "LastName": "Smith",
+        "StatusDisplayName": "Delayed",
+        "Name": "carla-smith",
         "Notes": "Initial mock entry for Carla.",
+        "StatusIsBlocking": "",
         "OwnerEmail": "alice@example.com",
         "Status": "delayed",
-        "FirstName": "Carla",
-        "StatusIsBlocking": "",
-        "StatusDisplayName": "Delayed",
         "StatusDescription": "This status is used when the customer or request has been delayed and is not progressing as scheduled.",
+        "FirstName": "Carla",
         "FullName": "Carla Smith",
-        "Name": "carla-smith",
         "IsStopped": false
       },
       {
         "CustomerId": "caroline",
+        "StatusDisplayName": "Processing",
+        "Name": "caroline-",
+        "StatusIsBlocking": "",
         "OwnerEmail": "alice@example.com",
         "Status": "processing",
-        "FirstName": "Caroline",
-        "StatusIsBlocking": "",
-        "StatusDisplayName": "Processing",
         "StatusDescription": "This status means the customer or request is currently being processed.",
+        "FirstName": "Caroline",
         "FullName": "Caroline ",
-        "Name": "caroline-",
         "LastName": "",
         "Notes": "",
         "IsStopped": false
@@ -217,66 +217,66 @@
     "data": [
       {
         "StatuseId": "delayed",
+        "OwnerEmail": "ej@ssot.me",
         "DisplayName": "Delayed",
         "Customers": "carla-smith",
-        "Description": "This status is used when the customer or request has been delayed and is not progressing as scheduled.",
         "Name": "delayed",
-        "OwnerEmail": "ej@ssot.me",
+        "Description": "This status is used when the customer or request has been delayed and is not progressing as scheduled.",
         "IsBlocking": false
       },
       {
         "StatuseId": "cancelled",
         "IsBlocking": true,
-        "DisplayName": "Cancelled",
-        "Description": "This status means the customer or request has been cancelled and will not proceed further.",
-        "Name": "cancelled",
         "OwnerEmail": "ej@ssot.me",
+        "DisplayName": "Cancelled",
+        "Name": "cancelled",
+        "Description": "This status means the customer or request has been cancelled and will not proceed further.",
         "Customers": ""
       },
       {
         "StatuseId": "processing",
+        "OwnerEmail": "ej@ssot.me",
         "DisplayName": "Processing",
         "Customers": "caroline",
-        "Description": "This status means the customer or request is currently being processed.",
         "Name": "processing",
-        "OwnerEmail": "ej@ssot.me",
+        "Description": "This status means the customer or request is currently being processed.",
         "IsBlocking": false
       },
       {
         "StatuseId": "new",
+        "OwnerEmail": "ej@ssot.me",
         "DisplayName": "New",
         "Customers": "brian-lee",
-        "Description": "This status indicates a newly created customer or request that has not yet been processed.",
         "Name": "new",
-        "OwnerEmail": "ej@ssot.me",
+        "Description": "This status indicates a newly created customer or request that has not yet been processed.",
         "IsBlocking": false
       },
       {
         "StatuseId": "in-review",
-        "DisplayName": "In-Review",
-        "Description": "This status is for customers or requests that are currently under review.",
-        "Name": "in-review",
         "OwnerEmail": "ej@ssot.me",
+        "DisplayName": "In-Review",
+        "Name": "in-review",
+        "Description": "This status is for customers or requests that are currently under review.",
         "IsBlocking": false,
         "Customers": ""
       },
       {
         "StatuseId": "pending",
         "IsBlocking": true,
+        "OwnerEmail": "ej@ssot.me",
         "DisplayName": "Pending",
         "Customers": "alice-johnson",
-        "Description": "This status shows the customer or request is pending further action or review.",
         "Name": "pending",
-        "OwnerEmail": "ej@ssot.me"
+        "Description": "This status shows the customer or request is pending further action or review."
       },
       {
         "StatuseId": "on-hold",
         "IsBlocking": true,
+        "OwnerEmail": "ej@ssot.me",
         "DisplayName": "On-Hold",
         "Customers": "bob",
-        "Description": "This status indicates the customer or request is on hold and temporarily paused.",
         "Name": "on-hold",
-        "OwnerEmail": "ej@ssot.me"
+        "Description": "This status indicates the customer or request is on hold and temporarily paused."
       }
     ]
   },
@@ -320,15 +320,15 @@
       },
       {
         "AppUserId": "ej-ssot-me",
+        "Name": "ej-ssot.me",
         "EmailAddress": "ej@ssot.me",
-        "Role": "admin",
-        "Name": "ej-ssot.me"
+        "Role": "admin"
       },
       {
         "AppUserId": "alice-example-com",
         "Name": "alice-example.com",
-        "Role": "customer",
-        "EmailAddress": "alice@example.com"
+        "EmailAddress": "alice@example.com",
+        "Role": "customer"
       }
     ]
   },
