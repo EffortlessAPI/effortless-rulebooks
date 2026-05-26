@@ -2,13 +2,13 @@
 
 **Schema:** `public`
 **Database:** `demo`
-**Timestamp:** 2026-04-03 23:52:56 UTC
+**Timestamp:** 2026-05-26 01:47:24 UTC
 
 ## Parsing Rulebook
 
-Found **11** tables in rulebook
+Found **10** tables in rulebook
 
-  - **Name** (0 fields, 0 records)
+
   - **JobBoards** (8 fields, 4 records)
   - **SearchUrls** (6 fields, 8 records)
   - **RoleArchetypes** (5 fields, 4 records)
@@ -20,16 +20,16 @@ Found **11** tables in rulebook
   - **ScoreResults** (17 fields, 0 records)
   - **Decisions** (10 fields, 0 records)
 
-Generated **11** table definitions with **74** raw fields
-Generated **46** calculation functions
-Generated **11** views
-Enabled RLS on **11** tables
+Generated **10** table definitions with **74** raw fields (mode=check-add)
+Generated **56** calculation functions
+Generated **10** views
+Enabled RLS on **10** tables
 Generated insert statements for **31** records
 ## Script Generation Complete
 
 Generated files:
 - `00-bootstrap.sql` - Bootstrap (overwrite Never); includes commented-out drop-all script
-- `01-drop-and-create-tables.sql` - Drop and recreate tables with raw fields
+- `01-drop-and-create-tables.sql` - Drop and recreate tables with raw fields and FK indexes
 - `01b-customize-schema.sql` - User customizations for schema
 - `02-create-functions.sql` - Create calculation functions
 - `02b-customize-functions.sql` - User customizations for functions
@@ -39,5 +39,6 @@ Generated files:
 - `04b-customize-policies.sql` - User customizations for RLS policies
 - `05-insert-data.sql` - Insert data from rulebook
 - `05b-customize-data.sql` - User customizations for seed data
+- `99-fk-constraints.sql` - FK constraints (skipped unless EFFORTLESS_ENFORCE_FKS=true)
 - `init-db.sh` - Database initialization script
 

@@ -72,7 +72,7 @@ Local JSON is the SSoT. Default behavior. Build downstream transpilers against t
 | 17 | `fantasy-football-demo` | Y | ✅ | Clean build, exit 0. DB `erb_fantasy_football_demo` (re)created, 12 tables. React explainer-dag generated. |
 | 18 | `gym-trainer-invoicing` | Y | ✅ | Clean build, exit 0. DB `erb_gym_trainer_invoicing` (re)created, 10 tables. |
 | 19 | `intelligence-taxonomy-demo` | Y | ✅ | Clean build, exit 0. DB `erb_intelligence_taxonomy_demo` (re)created, 6 tables. Added missing `execute -exec ./init-db.sh` step to `effortless.json`. |
-| 20 | `jobsearch-rag` | Y | ❓ | |
+| 20 | `jobsearch-rag` | Y | ✅ | Clean build, exit 0. DB `erb_jobsearch_rag` (re)created, 20 tables. Fixed: transpiler `-i` paths (missing `effortless-rulebook/` prefix), added missing `execute` step, chmod +x on init-db.sh. |
 | 21 | `llm-enigma-test` | Y | ❓ | |
 | 22 | `product-inventory-demo` | Y | ❓ | |
 | 23 | `therapist-helper-portal` | Y | ❓ | |
