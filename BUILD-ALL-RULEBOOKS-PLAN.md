@@ -85,7 +85,8 @@ Local JSON is the SSoT. Default behavior. Build downstream transpilers against t
 | # | Project | Problem | Status | Decision needed |
 |---|---|---|---|---|
 | 25 | `expense-approval-demo` | (was: README-only, never initialized) | ✅ | Scaffolded this session: authored rulebook from README spec (3 entities, 3rd-order cascade), built clean. DB `erb_expense_approval_demo` with 4 employees, 3 reports, 7 items; cascade verified: NYC Client Visit ($695>$500) correctly flagged over-budget + escalated. |
-| 26 | `volunteer-shift-scheduler-demo` | No `effortless.json`, no rulebook. Has `.xlsx`, `schema/`, `server/`, `web/`. | ❌ | Generate rulebook from spec, or delete. |
+| 26 | `volunteer-shift-scheduler-demo` | Intentionally Naked-Claude per SHAPE-NOTE. | ➖ | Left intact (per SHAPE-NOTE: this is the counter-example). Sibling `volunteer-shift-scheduler/` (no `-demo` suffix) created this session as the ERB version. |
+| 26b | `volunteer-shift-scheduler` (NEW ERB sibling) | (created this session) | ✅ | Authored 4-entity rulebook (Events, Volunteers, Shifts, Assignments) from `../volunteer-shift-scheduler-demo/VOLUNTEER-SHIFT-SCHEDULER-SPEC.md`. Built clean: DB `erb_volunteer_shift_scheduler`, 8 tables, full cascade verified — per-shift coverage, per-volunteer load (under/ok/over), event A-F grade all computed correctly from raw inputs. |
 | 27 | `naked-claude-vs-effortless-claude` | Comparison harness, not an ontology. | ➖ | All 5 transpilers in `effortless.json` disabled this session — `effortless build` here is now a no-op (correct for a non-rulebook harness). |
 | 28 | `v3-nakedclaude-demo-naked` | Empty dir (only `.DS_Store`) — leftover from earlier cleanup. | ➖ | Deleted this session. |
 

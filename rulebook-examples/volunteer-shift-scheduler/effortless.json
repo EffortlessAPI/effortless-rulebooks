@@ -1,0 +1,33 @@
+{
+  "ShowHidden": false,
+  "ShowAllFiles": false,
+  "CurrentPath": null,
+  "SSoTmeProjectFiles": null,
+  "SSoTmeProjectId": "b3e9f471-2c8a-4d6e-91b5-8a3f2c7d4e09",
+  "Name": "volunteer-shift-scheduler",
+  "Description": "ERB version of the volunteer-shift-scheduler-demo. Coordinate volunteers across event shifts; cascade from raw inputs to per-shift coverage, per-volunteer load, and event-level staffing grade.",
+  "ProjectSettings": [
+    {
+      "Name": "project-name",
+      "Value": "volunteer-shift-scheduler"
+    }
+  ],
+  "ProjectTranspilers": [
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "rulebooktopostgres",
+      "RelativePath": "/postgres",
+      "CommandLine": "rulebook-to-postgres -i ../effortless-rulebook/volunteer-shift-scheduler-rulebook.json",
+      "IsDisabled": false,
+      "LastVersionUsed": "v2026.05.09.1738",
+      "LastUrl": "https://effortless-rulebook-to-postgres-v2026-05-09-1738-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "execute",
+      "RelativePath": "/postgres",
+      "CommandLine": "-exec ./init-db.sh",
+      "IsDisabled": false
+    }
+  ]
+}
