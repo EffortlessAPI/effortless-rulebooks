@@ -70,7 +70,7 @@ Local JSON is the SSoT. Default behavior. Build downstream transpilers against t
 | 15 | `customer-crm-demo` | Y | ✅ | Clean build, exit 0. DB `erb_customer_crm_demo` (re)created via injected DROP+CREATE in init-db.sh. |
 | 16 | `effortless-banking-demo` | Y | 🟡 | DB `erb_effortless_banking_demo` (re)created with 20 tables. `rulebook-to-react` transpiler in `effortless.json` is misconfigured (no `-i` arg), produces "No rulebook JSON provided" error.txt. Exit 0 but React output empty. |
 | 17 | `fantasy-football-demo` | Y | ✅ | Clean build, exit 0. DB `erb_fantasy_football_demo` (re)created, 12 tables. React explainer-dag generated. |
-| 18 | `gym-trainer-invoicing` | Y | ❓ | |
+| 18 | `gym-trainer-invoicing` | Y | ✅ | Clean build, exit 0. DB `erb_gym_trainer_invoicing` (re)created, 10 tables. |
 | 19 | `intelligence-taxonomy-demo` | Y | ❓ | |
 | 20 | `jobsearch-rag` | Y | ❓ | |
 | 21 | `llm-enigma-test` | Y | ❓ | |
