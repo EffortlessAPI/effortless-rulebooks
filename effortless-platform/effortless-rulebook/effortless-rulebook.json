@@ -2098,6 +2098,14 @@
         "RoleId": "role-developer",
         "IsDefault": false,
         "Notes": "Runs builds, pulls spokes, watches health. Lands on /builds."
+      },
+      {
+        "UserId": "user-admin",
+        "Email": "admin@example.com",
+        "DisplayName": "Local Admin",
+        "RoleId": "role-admin",
+        "IsDefault": false,
+        "Notes": "Demo admin user. Manages platform config \u2014 no domain edits."
       }
     ]
   },

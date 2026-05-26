@@ -33,11 +33,18 @@ export default function RoleTopBar({
       // Tell the server too — it still drives rulebook loading from active-domain.txt
       await api.post(`/api/projects/${encodeURIComponent(newId)}/activate`);
       await reload();
-      // Swap only the :domain segment of the URL, preserve the rest
-      const next = location.pathname.replace(
-        new RegExp(`^/${mode}/${activeDomain || "[^/]+"}(/|$)`),
-        `/${mode}/${newId}$1`,
-      );
+      // Swap only the :domain segment of the URL, preserving the remainder.
+      // If the current URL has no domain yet (e.g. /developer), drop into the
+      // new domain's landing instead.
+      let next;
+      if (params.domain) {
+        next = location.pathname.replace(
+          new RegExp(`^/${mode}/${params.domain}(/|$)`),
+          `/${mode}/${newId}$1`,
+        );
+      } else {
+        next = `/${mode}/${newId}`;
+      }
       navigate(next);
       toast(`Switched to ${newId}`, "ok");
     } catch (err) { toast("Switch failed: " + err.message, "error"); }

@@ -1,35 +1,76 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { api } from "../../lib/api.js";
 import { toast } from "../../lib/toast.js";
 import ScreenHeader from "../../components/ScreenHeader.jsx";
 
 export default function SubstratesScreen({ screen, me }) {
-  const navigate = useNavigate();
-  const [subs, setSubs]       = useState([]);
-  const [selected, setSelected] = useState(null);
+  const { domain } = useParams();
   const canBuild = me?.role?.CanRunBuilds;
 
-  useEffect(() => { api.get("/api/substrates").then(setSubs); }, []);
+  const [subs, setSubs]           = useState([]);
+  const [selected, setSelected]   = useState(null);
+  const [catalog, setCatalog]     = useState({ fromRulebook: [], liveProxy: null });
+  const [installed, setInstalled] = useState({ transpilers: [] });
+  const [installing, setInstalling] = useState(null);
+  const [removing, setRemoving]   = useState(null);
+
+  const load = async () => {
+    try {
+      const [s, c, i] = await Promise.all([
+        api.get("/api/substrates"),
+        api.get("/api/tools/catalog"),
+        api.get("/api/tools/installed"),
+      ]);
+      setSubs(s);
+      setCatalog(c);
+      setInstalled(i);
+    } catch (e) { toast(e.message, "error"); }
+  };
+
+  useEffect(() => { load(); }, [domain]);
 
   const sel = subs.find((s) => s.SubstrateId === selected) || subs[0];
 
   const buildAll = async () => {
     toast("Building…");
-    const r = await api.post("/api/build/all");
-    toast(r.ok ? "Build complete" : "Build failed", r.ok ? "ok" : "error");
+    try {
+      const r = await api.post("/api/build/all");
+      toast(r.ok ? "Build complete" : "Build failed", r.ok ? "ok" : "error");
+    } catch (e) { toast(e.message, "error"); }
   };
+
+  const install = async (tool) => {
+    setInstalling(tool.ToolId);
+    try {
+      const r = await api.post("/api/tools/install", {
+        installUrl: tool.InstallUrl,
+        outputPath: tool.OutputPath,
+      });
+      toast(r.ok ? `Installed ${tool.Name}` : "Install failed", r.ok ? "ok" : "error");
+      await load();
+    } catch (e) { toast(e.message, "error"); }
+    setInstalling(null);
+  };
+
+  const norm = (s) => (s || "").toLowerCase().replace(/-/g, "");
+  const installedKey = new Set((installed.transpilers || []).map((t) => norm(t.Name)));
+  const notYetInstalled = (catalog.fromRulebook || []).filter((t) => !installedKey.has(norm(t.Name)));
 
   return (
     <>
       <ScreenHeader screen={screen} />
       <div className="story-banner" style={{ borderLeftColor: "#888" }}>
-        All substrates are PEER projections of the rulebook — no substrate is the reference; conformance is the proof.
+        Substrates are PEER projections of the rulebook. No substrate is the reference; conformance is the proof.
       </div>
+
+      {/* Section A — installed transpilers / substrates */}
+      <h3 className="muted small" style={{ marginTop: 12 }}>
+        INSTALLED · {installed.transpilers?.length || 0} transpilers · {subs.length} substrates
+      </h3>
       <div style={{ display: "flex", gap: 10, marginBottom: 12, alignItems: "center" }}>
-        <span className="muted small">{subs.length} substrates registered</span>
-        <div className="spacer" />
-        <button className="btn secondary" onClick={() => navigate("/developer/tools/add")}>+ Add Tool</button>
+        <span className="muted small">effortless.json controls what's installed for this domain.</span>
+        <div className="spacer" style={{ flex: 1 }} />
         {canBuild && <button className="btn" onClick={buildAll}>Build all</button>}
       </div>
       <div className="split">
@@ -47,24 +88,57 @@ export default function SubstratesScreen({ screen, me }) {
               </div>
             </div>
           ))}
+          {subs.length === 0 && <div className="muted small" style={{ padding: 14 }}>No substrates yet — add one below.</div>}
         </div>
         <div className="detail-panel">
           {sel ? (
             <>
               <h3 style={{ marginTop: 0 }}>{sel.Name}</h3>
               <div className="kv">
-                <div className="k">Technology</div>            <div className="v">{sel.Technology}</div>
-                <div className="k">Path</div>                  <div className="v mono">{sel.RelativePath}</div>
-                <div className="k">Transpiler source</div>     <div className="v"><span className="pill">{sel.TranspilerSource || "—"}</span></div>
-                <div className="k">Maturity</div>              <div className="v"><span className="pill">{sel.Maturity || "—"}</span></div>
+                <div className="k">Technology</div>           <div className="v">{sel.Technology}</div>
+                <div className="k">Path</div>                 <div className="v mono">{sel.RelativePath}</div>
+                <div className="k">Transpiler source</div>    <div className="v"><span className="pill">{sel.TranspilerSource || "—"}</span></div>
+                <div className="k">Maturity</div>             <div className="v"><span className="pill">{sel.Maturity || "—"}</span></div>
                 <div className="k">Expressive completeness</div><div className="v"><span className="pill">{sel.ExpressiveCompleteness || "—"}</span></div>
-                <div className="k">Can be answer key?</div>    <div className="v">{sel.CanBeAnswerKey ? "yes" : "no"}</div>
-                <div className="k">Status</div>                <div className="v">{sel.Status || "—"}</div>
+                <div className="k">Can be answer key?</div>   <div className="v">{sel.CanBeAnswerKey ? "yes" : "no"}</div>
+                <div className="k">Status</div>               <div className="v">{sel.Status || "—"}</div>
               </div>
               <p>{sel.Description}</p>
             </>
           ) : <div className="muted">No substrate selected.</div>}
         </div>
+      </div>
+
+      {/* Section B — catalog of available tools to add */}
+      <h3 className="muted small" style={{ marginTop: 28 }}>
+        AVAILABLE TO ADD · {notYetInstalled.length} tools
+      </h3>
+      <div className="muted small" style={{ marginBottom: 8 }}>
+        Catalog: {(catalog.fromRulebook || []).length} total ·
+        live proxy: {catalog.liveProxy?.transpilers ? Object.keys(catalog.liveProxy.transpilers).length : "offline"} routes
+      </div>
+      <div className="cards">
+        {notYetInstalled.map((t) => (
+          <div key={t.ToolId} className="card">
+            <h3>{t.Category}</h3>
+            <div className="big" style={{ fontSize: 15 }}>{t.Name}</div>
+            <div className="sub">{t.Description}</div>
+            <div className="muted small mono" style={{ marginTop: 6, wordBreak: "break-all" }}>{t.InstallUrl}</div>
+            <div className="muted small">→ {t.OutputPath}</div>
+            <div style={{ marginTop: 10 }}>
+              <button
+                className="btn"
+                disabled={installing === t.ToolId || !canBuild}
+                onClick={() => install(t)}
+              >
+                {installing === t.ToolId ? "Installing…" : "Install"}
+              </button>
+            </div>
+          </div>
+        ))}
+        {notYetInstalled.length === 0 && (
+          <div className="muted small">Everything in the catalog is already installed.</div>
+        )}
       </div>
     </>
   );

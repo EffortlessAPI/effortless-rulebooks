@@ -10,7 +10,12 @@ function NavIcon({ name }) {
 
 function resolvePath(template, params) {
   if (!template) return null;
-  return template.replace(/:(\w+)/g, (_, k) => encodeURIComponent(params[k] ?? `:${k}`));
+  let unresolved = false;
+  const out = template.replace(/:(\w+)/g, (_, k) => {
+    if (params[k] == null) { unresolved = true; return ":" + k; }
+    return encodeURIComponent(params[k]);
+  });
+  return unresolved ? null : out;
 }
 
 // Shared sidebar primitive. `area` is the NavArea the layout owns
@@ -43,6 +48,14 @@ export default function RoleSidebar({ area, accent, projectRulebook, me, mobileO
       const kids = items
         .filter((c) => c.ParentNavId === n.NavId && roleMeetsMin(myRole, c.MinRoleId, roles));
       const isGroup = !n.ScreenId && kids.length > 0;
+      // Hide a whole group when none of its kids has its params resolved
+      // (e.g. "Current Domain" group when no :domain is active).
+      if (isGroup) {
+        const anyKidResolvable = kids.some(
+          (c) => resolvePath(screenPath(c.ScreenId), params) != null,
+        );
+        if (!anyKidResolvable) return null;
+      }
       const isCollapsed = collapsed[n.NavId];
       const isActive = template && location.pathname === target;
 
@@ -72,6 +85,7 @@ export default function RoleSidebar({ area, accent, projectRulebook, me, mobileO
           {!isCollapsed && kids.map((c) => {
             const cTpl = screenPath(c.ScreenId);
             const cPath = resolvePath(cTpl, params);
+            if (cPath == null) return null;
             const cActive = cPath && location.pathname === cPath;
             return (
               <div

@@ -1,19 +1,13 @@
-// Area metadata — colours, labels, icons. The rulebook carries NavArea per row;
-// this file provides the display properties for each area value.
+// Display metadata for NavArea values. Used by Admin's Navigation/Screens grids.
 export const AREAS = {
-  main:      { label: "Overview",  color: "#6ea8fe", icon: "Home" },
+  root:      { label: "Root",      color: "#9aa1ad", icon: "Home" },
+  viewer:    { label: "Viewer",    color: "#7280ad", icon: "Eye" },
   developer: { label: "Developer", color: "#b48cff", icon: "Wrench" },
   admin:     { label: "Admin",     color: "#f3b03e", icon: "Shield" },
   docs:      { label: "Docs",      color: "#4ade80", icon: "BookOpen" },
 };
 
-export function areaOf(path) {
-  if (path.startsWith("/developer")) return "developer";
-  if (path.startsWith("/admin"))     return "admin";
-  if (path.startsWith("/docs"))      return "docs";
-  return "main";
-}
-
+// Role tier comparison. Used by RoleSidebar to gate items via AppNavigation.MinRoleId.
 export function roleMeetsMin(myRole, minRoleId, roles) {
   const min = roles.find((r) => r.RoleId === minRoleId);
   if (!min) return true;
