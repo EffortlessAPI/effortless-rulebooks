@@ -1778,6 +1778,23 @@ if $CI_MODE; then
     exit $EXIT_CODE
 fi
 
+# Start ssotme-proxy before entering the interactive menu if it's not running
+PROJECT_TRANSPILERS=$(get_project_transpilers)
+if [ -n "$PROJECT_TRANSPILERS" ]; then
+    if ! proxy_is_running; then
+        echo -e "${CYAN}Starting ssotme-proxy on localhost:4242...${NC}"
+        bash "$PROJECT_ROOT/effortless-platform/ssotme-proxy/start.sh" > /dev/null 2>&1 &
+        sleep 2
+        if proxy_is_running; then
+            echo -e "${GREEN}✓ ssotme-proxy started${NC}"
+        else
+            echo -e "${YELLOW}⚠ ssotme-proxy failed to start. You can start it manually with:${NC}"
+            echo -e "  ${DIM}bash $PROJECT_ROOT/effortless-platform/ssotme-proxy/start.sh &${NC}"
+        fi
+        sleep 1
+    fi
+fi
+
 # Interactive menu loop
 while true; do
     show_menu
