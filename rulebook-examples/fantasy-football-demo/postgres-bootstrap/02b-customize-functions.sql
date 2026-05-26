@@ -42,9 +42,14 @@ RETURNS INTEGER AS $$
 $$ LANGUAGE sql STABLE;
 
 -- Override calc_standings_seed_rank to properly rank by win_pct (descending)
-CREATE OR REPLACE FUNCTION calc_standings_seed_rank(p_standing_id TEXT)
-RETURNS INTEGER AS $$
-  SELECT RANK() OVER (ORDER BY calc_standings_win_pct(standing_id) DESC)::integer
-  FROM standings
-  WHERE standing_id = p_standing_id;
-$$ LANGUAGE sql STABLE;
+--
+-- DISABLED: this references calc_standings_win_pct(text), which doesn't exist
+-- as a callable function in the regenerated schema (win_pct may be a view-only
+-- calculated field). Restore once the function exists or rewrite to read from
+-- the standings view instead.
+-- CREATE OR REPLACE FUNCTION calc_standings_seed_rank(p_standing_id TEXT)
+-- RETURNS INTEGER AS $$
+--   SELECT RANK() OVER (ORDER BY calc_standings_win_pct(standing_id) DESC)::integer
+--   FROM standings
+--   WHERE standing_id = p_standing_id;
+-- $$ LANGUAGE sql STABLE;

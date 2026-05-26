@@ -17,7 +17,7 @@
 -- Resumes & ResumeSections — the central entity the RAG pipeline scores against
 -- ============================================================================
 
-CREATE TABLE resumes (
+CREATE TABLE IF NOT EXISTS resumes (
   resume_id                           TEXT                 PRIMARY KEY,
   name                                TEXT                ,
   description                         TEXT                ,
@@ -31,7 +31,7 @@ COMMENT ON COLUMN resumes.description IS 'Notes about what this resume version e
 COMMENT ON COLUMN resumes.file_path IS 'Path to the resume markdown file relative to project root.';
 COMMENT ON COLUMN resumes.indexed_at IS 'When this resume was last chunked and embedded into ChromaDB. NULL means not yet indexed.';
 
-CREATE TABLE resume_sections (
+CREATE TABLE IF NOT EXISTS resume_sections (
   resume_section_id                   TEXT                 PRIMARY KEY,
   name                                TEXT                ,
   resume                              TEXT                ,
@@ -48,5 +48,5 @@ COMMENT ON COLUMN resume_sections.content IS 'Full text of this section includin
 COMMENT ON COLUMN resume_sections.chroma_doc_id IS 'Document ID in the ChromaDB resume collection. Used for idempotent upserts.';
 
 -- Add resume FK to search_runs
-ALTER TABLE search_runs ADD COLUMN resume TEXT;
+ALTER TABLE search_runs ADD COLUMN IF NOT EXISTS resume TEXT;
 

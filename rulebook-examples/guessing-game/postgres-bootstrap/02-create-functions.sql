@@ -18,36 +18,6 @@ SET check_function_bodies = off;
 -- These functions perform lookups via foreign key relationships
 -- ============================================================================
 
--- calc_形状_边标签
--- Field: 形状.边标签
--- Type: lookup | DataType: string | Returns: TEXT
--- Lookup: 标签 from related 边
-
-CREATE OR REPLACE FUNCTION calc_形状_边标签(p_形状id TEXT)
-RETURNS TEXT AS $$
-  SELECT (SELECT string_agg(DISTINCT 标签::text, ', ') FROM 边 WHERE 形状 = p_形状id);
-$$ LANGUAGE sql STABLE;
-
--- calc_形状_边长
--- Field: 形状.边长
--- Type: lookup | DataType: string | Returns: TEXT
--- Lookup: 长度 from related 边
-
-CREATE OR REPLACE FUNCTION calc_形状_边长(p_形状id TEXT)
-RETURNS TEXT AS $$
-  SELECT (SELECT string_agg(DISTINCT 长度::text, ', ') FROM 边 WHERE 形状 = p_形状id);
-$$ LANGUAGE sql STABLE;
-
--- calc_形状_边角
--- Field: 形状.边角
--- Type: lookup | DataType: string | Returns: TEXT
--- Lookup: 角度 from related 边
-
-CREATE OR REPLACE FUNCTION calc_形状_边角(p_形状id TEXT)
-RETURNS TEXT AS $$
-  SELECT (SELECT string_agg(DISTINCT 角度::text, ', ') FROM 边 WHERE 形状 = p_形状id);
-$$ LANGUAGE sql STABLE;
-
 -- get_边_标签
 -- Helper function: Get 标签 from 边 by 边Id
 -- Used for join-free cross-table references in aggregations
@@ -196,11 +166,11 @@ $$ LANGUAGE sql STABLE;
 -- These functions aggregate child records for many-side relationships
 -- ============================================================================
 
--- calc_形状_???
--- Field: 形状.???
+-- calc_形状_edges
+-- Field: 形状.Edges
 -- Type: Many-side relationship (backref) to 边
 -- Aggregates: 边.边Id where 形状 = parent
-CREATE OR REPLACE FUNCTION calc_形状_???(p_形状id TEXT)
+CREATE OR REPLACE FUNCTION calc_形状_edges(p_形状id TEXT)
 RETURNS TEXT AS $$
   SELECT (
     SELECT STRING_AGG(边id::TEXT, ', ' ORDER BY 边id)

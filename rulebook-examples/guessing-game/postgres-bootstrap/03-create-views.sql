@@ -14,7 +14,7 @@ CREATE OR REPLACE VIEW vw_形状 WITH (security_invoker = ON) AS
 SELECT
   t.形状id,
   t.名称,
-  calc_形状_???(t.形状id) AS ???,
+  calc_形状_edges(t.形状id) AS edges,
   calc_形状_边的类型(t.形状id) AS 边的类型,
   calc_形状_边标签(t.形状id) AS 边标签,
   calc_形状_边长(t.形状id) AS 边长,

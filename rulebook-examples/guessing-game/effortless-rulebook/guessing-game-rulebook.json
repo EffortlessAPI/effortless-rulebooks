@@ -2,209 +2,209 @@
   "$schema": "https://example.com/cmcc-schema/v1",
   "model_name": "appC6Tnt2ZKm3t16e",
   "Description": "CMCC rulebook generated directly from Airtable base.",
-  "\u5F62\u72B6": {
-    "Description": "Table: \u5F62\u72B6",
+  "形状": {
+    "Description": "Table: 形状",
     "schema": [
       {
-        "name": "\u5F62\u72B6Id",
+        "name": "形状Id",
         "datatype": "string",
         "type": "raw",
         "nullable": false
       },
       {
-        "name": "\u540D\u79F0",
+        "name": "名称",
         "datatype": "string",
         "type": "raw",
         "nullable": true
       },
       {
-        "name": "???",
+        "name": "Edges",
         "datatype": "string",
         "type": "relationship",
         "nullable": true,
-        "RelatedTo": "\u8FB9"
+        "RelatedTo": "边"
       },
       {
-        "name": "\u8FB9\u7684\u7C7B\u578B",
+        "name": "边的类型",
         "datatype": "string",
         "type": "calculated",
         "nullable": true,
-        "formula": "=SWITCH({{\u8FB9\u7684\u6570\u91CF}},\r\n  0, \u0022\u7A7A\u0022,\r\n  1, \u0022\u70B9\u0022,\r\n  2, \u0022\u7EBF\u0022,\r\n  3, \u0022\u4E09\u89D2\u5F62\u0022,\r\n  4, \u0022\u6B63\u65B9\u5F62\u0022,\r\n  \u0022--\u0022\r\n)"
+        "formula": "=SWITCH({{边的数量}},\r\n  0, \"空\",\r\n  1, \"点\",\r\n  2, \"线\",\r\n  3, \"三角形\",\r\n  4, \"正方形\",\r\n  \"--\"\r\n)"
       },
       {
-        "name": "\u8FB9\u6807\u7B7E",
+        "name": "边标签",
         "datatype": "string",
         "type": "lookup",
         "nullable": true,
-        "formula": "=INDEX(\u8FB9!{{\u6807\u7B7E}}, MATCH(\u5F62\u72B6!{{???}}, \u8FB9!{{\u8FB9Id}}, 0))"
+        "formula": "=INDEX(边!{{标签}}, MATCH(形状!{{???}}, 边!{{边Id}}, 0))"
       },
       {
-        "name": "\u8FB9\u957F",
+        "name": "边长",
         "datatype": "string",
         "type": "lookup",
         "nullable": true,
-        "formula": "=INDEX(\u8FB9!{{\u957F\u5EA6}}, MATCH(\u5F62\u72B6!{{???}}, \u8FB9!{{\u8FB9Id}}, 0))"
+        "formula": "=INDEX(边!{{长度}}, MATCH(形状!{{???}}, 边!{{边Id}}, 0))"
       },
       {
-        "name": "\u8FB9\u7684\u6570\u91CF",
+        "name": "边的数量",
         "datatype": "integer",
         "type": "aggregation",
         "nullable": true,
-        "formula": "=COUNTIFS(\u8FB9!{{\u5F62\u72B6}}, \u5F62\u72B6!{{\u5F62\u72B6Id}})"
+        "formula": "=COUNTIFS(边!{{形状}}, 形状!{{形状Id}})"
       },
       {
-        "name": "\u8FB9\u89D2",
+        "name": "边角",
         "datatype": "string",
         "type": "lookup",
         "nullable": true,
-        "formula": "=INDEX(\u8FB9!{{\u89D2\u5EA6}}, MATCH(\u5F62\u72B6!{{???}}, \u8FB9!{{\u8FB9Id}}, 0))"
+        "formula": "=INDEX(边!{{角度}}, MATCH(形状!{{???}}, 边!{{边Id}}, 0))"
       },
       {
-        "name": "\u89D2\u5EA6\u603B\u548C",
+        "name": "角度总和",
         "datatype": "number",
         "type": "aggregation",
         "nullable": true,
-        "formula": "=SUMIFS(\u8FB9!{{\u89D2\u5EA6}}, \u8FB9!{{\u5F62\u72B6}}, \u5F62\u72B6!{{\u5F62\u72B6Id}})"
+        "formula": "=SUMIFS(边!{{角度}}, 边!{{形状}}, 形状!{{形状Id}})"
       },
       {
-        "name": "\u6700\u5927\u8FB9\u957F",
+        "name": "最大边长",
         "datatype": "number",
         "type": "aggregation",
         "nullable": true,
-        "formula": "=SUMIFS(\u8FB9!{{\u957F\u5EA6}}, \u8FB9!{{\u5F62\u72B6}}, \u5F62\u72B6!{{\u5F62\u72B6Id}})"
+        "formula": "=SUMIFS(边!{{长度}}, 边!{{形状}}, 形状!{{形状Id}})"
       },
       {
-        "name": "\u975E\u659C\u8FB9\u89D2\u5EA6\u603B\u548C",
+        "name": "非斜边角度总和",
         "datatype": "number",
         "type": "aggregation",
         "nullable": true,
-        "formula": "=SUMIFS(\u8FB9!{{\u957F\u5EA6\u5E73\u65B9}}, \u8FB9!{{\u5F62\u72B6}}, \u5F62\u72B6!{{\u5F62\u72B6Id}})"
+        "formula": "=SUMIFS(边!{{长度平方}}, 边!{{形状}}, 形状!{{形状Id}})"
       },
       {
-        "name": "\u52FE\u80A1\u5B9A\u7406\u6210\u7ACB",
+        "name": "勾股定理成立",
         "datatype": "string",
         "type": "calculated",
         "nullable": true,
-        "formula": "=IF({{\u8FB9\u7684\u6570\u91CF}} = 3,\r\n    {{\u975E\u659C\u8FB9\u89D2\u5EA6\u603B\u548C}} = {{\u6700\u5927\u8FB9\u957F}} * {{\u6700\u5927\u8FB9\u957F}},\r\n  BLANK()\r\n)\r\n"
+        "formula": "=IF({{边的数量}} = 3,\r\n    {{非斜边角度总和}} = {{最大边长}} * {{最大边长}},\r\n  BLANK()\r\n)\r\n"
       }
     ],
     "data": [
       {
-        "\u5F62\u72B6Id": "2",
-        "\u540D\u79F0": "\u5F62\u72B62",
-        "???": "2, 2, 2, 2",
-        "\u8FB9\u7684\u6570\u91CF": 4,
-        "\u8FB9\u7684\u7C7B\u578B": "\u6B63\u65B9\u5F62",
-        "\u8FB9\u89D2": "90, 90, 90, 90",
-        "\u8FB9\u957F": "5, 5, 5, 5",
-        "\u8FB9\u6807\u7B7E": "\u963F, \u6BD4, \u897F, \u8FEA",
-        "\u89D2\u5EA6\u603B\u548C": 360,
-        "\u6700\u5927\u8FB9\u957F": 5,
-        "\u975E\u659C\u8FB9\u89D2\u5EA6\u603B\u548C": 0,
-        "\u52FE\u80A1\u5B9A\u7406\u6210\u7ACB": ""
+        "形状Id": "2",
+        "名称": "形状2",
+        "边的数量": 4,
+        "边的类型": "正方形",
+        "边角": "90, 90, 90, 90",
+        "边长": "5, 5, 5, 5",
+        "边标签": "阿, 比, 西, 迪",
+        "角度总和": 360,
+        "最大边长": 5,
+        "非斜边角度总和": 0,
+        "勾股定理成立": "",
+        "Edges": "2, 2, 2, 2"
       },
       {
-        "\u5F62\u72B6Id": "1",
-        "\u540D\u79F0": "\u5F62\u72B61",
-        "???": "1, 1, 1",
-        "\u8FB9\u7684\u6570\u91CF": 3,
-        "\u8FB9\u7684\u7C7B\u578B": "\u4E09\u89D2\u5F62",
-        "\u8FB9\u89D2": "37, 53, 90",
-        "\u8FB9\u957F": "3, 4, 5",
-        "\u8FB9\u6807\u7B7E": "\u963F, \u6BD4, \u897F",
-        "\u89D2\u5EA6\u603B\u548C": 180,
-        "\u6700\u5927\u8FB9\u957F": 5,
-        "\u975E\u659C\u8FB9\u89D2\u5EA6\u603B\u548C": 25,
-        "\u52FE\u80A1\u5B9A\u7406\u6210\u7ACB": true
+        "形状Id": "1",
+        "名称": "形状1",
+        "边的数量": 3,
+        "边的类型": "三角形",
+        "边角": "37, 53, 90",
+        "边长": "3, 4, 5",
+        "边标签": "阿, 比, 西",
+        "角度总和": 180,
+        "最大边长": 5,
+        "非斜边角度总和": 25,
+        "勾股定理成立": true,
+        "Edges": "1, 1, 1"
       },
       {
-        "\u5F62\u72B6Id": "3",
-        "\u540D\u79F0": "\u5F62\u72B63",
-        "???": "3, 3",
-        "\u8FB9\u7684\u6570\u91CF": 2,
-        "\u8FB9\u7684\u7C7B\u578B": "\u7EBF",
-        "\u8FB9\u89D2": "180, 180",
-        "\u8FB9\u957F": "14, 14",
-        "\u8FB9\u6807\u7B7E": "\u963F, \u6BD4",
-        "\u89D2\u5EA6\u603B\u548C": 360,
-        "\u6700\u5927\u8FB9\u957F": 14,
-        "\u975E\u659C\u8FB9\u89D2\u5EA6\u603B\u548C": 0,
-        "\u52FE\u80A1\u5B9A\u7406\u6210\u7ACB": ""
+        "形状Id": "3",
+        "名称": "形状3",
+        "边的数量": 2,
+        "边的类型": "线",
+        "边角": "180, 180",
+        "边长": "14, 14",
+        "边标签": "阿, 比",
+        "角度总和": 360,
+        "最大边长": 14,
+        "非斜边角度总和": 0,
+        "勾股定理成立": "",
+        "Edges": "3, 3"
       }
     ]
   },
-  "\u8FB9": {
-    "Description": "Table: \u8FB9",
+  "边": {
+    "Description": "Table: 边",
     "schema": [
       {
-        "name": "\u8FB9Id",
+        "name": "边Id",
         "datatype": "string",
         "type": "raw",
         "nullable": false
       },
       {
-        "name": "\u540D\u79F0",
+        "name": "名称",
         "datatype": "string",
         "type": "calculated",
         "nullable": true,
-        "formula": "={{\u5F62\u72B6}} \u0026 \u0022-\u0022 \u0026 {{\u6807\u7B7E}}"
+        "formula": "={{形状}} & \"-\" & {{标签}}"
       },
       {
-        "name": "\u5F62\u72B6",
+        "name": "形状",
         "datatype": "string",
         "type": "relationship",
         "nullable": true,
-        "RelatedTo": "\u5F62\u72B6"
+        "RelatedTo": "形状"
       },
       {
-        "name": "\u5F62\u72B6\u7684\u6700\u5927\u8FB9\u957F",
+        "name": "形状的最大边长",
         "datatype": "string",
         "type": "lookup",
         "nullable": true,
-        "formula": "=INDEX(\u5F62\u72B6!{{\u6700\u5927\u8FB9\u957F}}, MATCH(\u8FB9!{{\u5F62\u72B6}}, \u5F62\u72B6!{{\u5F62\u72B6Id}}, 0))"
+        "formula": "=INDEX(形状!{{最大边长}}, MATCH(边!{{形状}}, 形状!{{形状Id}}, 0))"
       },
       {
-        "name": "\u8FB9\u7684\u6570\u91CF",
+        "name": "边的数量",
         "datatype": "string",
         "type": "lookup",
         "nullable": true,
-        "formula": "=INDEX(\u5F62\u72B6!{{\u8FB9\u7684\u6570\u91CF}}, MATCH(\u8FB9!{{\u5F62\u72B6}}, \u5F62\u72B6!{{\u5F62\u72B6Id}}, 0))"
+        "formula": "=INDEX(形状!{{边的数量}}, MATCH(边!{{形状}}, 形状!{{形状Id}}, 0))"
       },
       {
-        "name": "\u662F\u5426\u4E3A\u659C\u8FB9",
+        "name": "是否为斜边",
         "datatype": "string",
         "type": "calculated",
         "nullable": true,
-        "formula": "={{\u957F\u5EA6}} = {{\u5F62\u72B6\u7684\u6700\u5927\u8FB9\u957F}}"
+        "formula": "={{长度}} = {{形状的最大边长}}"
       },
       {
-        "name": "\u5F62\u72B6\u7C7B\u578B",
+        "name": "形状类型",
         "datatype": "string",
         "type": "lookup",
         "nullable": true,
-        "formula": "=INDEX(\u5F62\u72B6!{{\u8FB9\u7684\u7C7B\u578B}}, MATCH(\u8FB9!{{\u5F62\u72B6}}, \u5F62\u72B6!{{\u5F62\u72B6Id}}, 0))"
+        "formula": "=INDEX(形状!{{边的类型}}, MATCH(边!{{形状}}, 形状!{{形状Id}}, 0))"
       },
       {
-        "name": "\u6807\u7B7E",
+        "name": "标签",
         "datatype": "string",
         "type": "raw",
         "nullable": true
       },
       {
-        "name": "\u957F\u5EA6",
+        "name": "长度",
         "datatype": "integer",
         "type": "raw",
         "nullable": true
       },
       {
-        "name": "\u957F\u5EA6\u5E73\u65B9",
+        "name": "长度平方",
         "datatype": "string",
         "type": "calculated",
         "nullable": true,
-        "formula": "={{\u957F\u5EA6}} * {{\u957F\u5EA6}}"
+        "formula": "={{长度}} * {{长度}}"
       },
       {
-        "name": "\u89D2\u5EA6",
+        "name": "角度",
         "datatype": "integer",
         "type": "raw",
         "nullable": true
@@ -212,136 +212,136 @@
     ],
     "data": [
       {
-        "\u8FB9Id": "3",
-        "\u540D\u79F0": "\u5F62\u72B63-\u6BD4",
-        "\u5F62\u72B6": "3",
-        "\u6807\u7B7E": "\u6BD4",
-        "\u5F62\u72B6\u7C7B\u578B": "\u7EBF",
-        "\u957F\u5EA6": 14,
-        "\u89D2\u5EA6": 180,
-        "\u8FB9\u7684\u6570\u91CF": "2",
-        "\u5F62\u72B6\u7684\u6700\u5927\u8FB9\u957F": "14",
-        "\u662F\u5426\u4E3A\u659C\u8FB9": true,
-        "\u957F\u5EA6\u5E73\u65B9": 196
+        "边Id": "3",
+        "名称": "形状3-比",
+        "形状": "3",
+        "标签": "比",
+        "形状类型": "线",
+        "长度": 14,
+        "角度": 180,
+        "边的数量": "2",
+        "形状的最大边长": "14",
+        "是否为斜边": true,
+        "长度平方": 196
       },
       {
-        "\u8FB9Id": "1",
-        "\u540D\u79F0": "\u5F62\u72B61-\u6BD4",
-        "\u5F62\u72B6": "1",
-        "\u6807\u7B7E": "\u6BD4",
-        "\u5F62\u72B6\u7C7B\u578B": "\u4E09\u89D2\u5F62",
-        "\u957F\u5EA6": 4,
-        "\u89D2\u5EA6": 53,
-        "\u8FB9\u7684\u6570\u91CF": "3",
-        "\u5F62\u72B6\u7684\u6700\u5927\u8FB9\u957F": "5",
-        "\u957F\u5EA6\u5E73\u65B9": 16,
-        "\u662F\u5426\u4E3A\u659C\u8FB9": ""
+        "边Id": "1",
+        "名称": "形状1-比",
+        "形状": "1",
+        "标签": "比",
+        "形状类型": "三角形",
+        "长度": 4,
+        "角度": 53,
+        "边的数量": "3",
+        "形状的最大边长": "5",
+        "长度平方": 16,
+        "是否为斜边": ""
       },
       {
-        "\u8FB9Id": "2",
-        "\u540D\u79F0": "\u5F62\u72B62-\u8FEA",
-        "\u5F62\u72B6": "2",
-        "\u6807\u7B7E": "\u8FEA",
-        "\u5F62\u72B6\u7C7B\u578B": "\u6B63\u65B9\u5F62",
-        "\u957F\u5EA6": 5,
-        "\u89D2\u5EA6": 90,
-        "\u8FB9\u7684\u6570\u91CF": "4",
-        "\u5F62\u72B6\u7684\u6700\u5927\u8FB9\u957F": "5",
-        "\u662F\u5426\u4E3A\u659C\u8FB9": true,
-        "\u957F\u5EA6\u5E73\u65B9": 25
+        "边Id": "2",
+        "名称": "形状2-迪",
+        "形状": "2",
+        "标签": "迪",
+        "形状类型": "正方形",
+        "长度": 5,
+        "角度": 90,
+        "边的数量": "4",
+        "形状的最大边长": "5",
+        "是否为斜边": true,
+        "长度平方": 25
       },
       {
-        "\u8FB9Id": "2",
-        "\u540D\u79F0": "\u5F62\u72B62-\u963F",
-        "\u5F62\u72B6": "2",
-        "\u6807\u7B7E": "\u963F",
-        "\u5F62\u72B6\u7C7B\u578B": "\u6B63\u65B9\u5F62",
-        "\u957F\u5EA6": 5,
-        "\u89D2\u5EA6": 90,
-        "\u8FB9\u7684\u6570\u91CF": "4",
-        "\u5F62\u72B6\u7684\u6700\u5927\u8FB9\u957F": "5",
-        "\u662F\u5426\u4E3A\u659C\u8FB9": true,
-        "\u957F\u5EA6\u5E73\u65B9": 25
+        "边Id": "2",
+        "名称": "形状2-阿",
+        "形状": "2",
+        "标签": "阿",
+        "形状类型": "正方形",
+        "长度": 5,
+        "角度": 90,
+        "边的数量": "4",
+        "形状的最大边长": "5",
+        "是否为斜边": true,
+        "长度平方": 25
       },
       {
-        "\u8FB9Id": "1",
-        "\u540D\u79F0": "\u5F62\u72B61-\u963F",
-        "\u5F62\u72B6": "1",
-        "\u6807\u7B7E": "\u963F",
-        "\u5F62\u72B6\u7C7B\u578B": "\u4E09\u89D2\u5F62",
-        "\u957F\u5EA6": 3,
-        "\u89D2\u5EA6": 37,
-        "\u8FB9\u7684\u6570\u91CF": "3",
-        "\u5F62\u72B6\u7684\u6700\u5927\u8FB9\u957F": "5",
-        "\u957F\u5EA6\u5E73\u65B9": 9,
-        "\u662F\u5426\u4E3A\u659C\u8FB9": ""
+        "边Id": "1",
+        "名称": "形状1-阿",
+        "形状": "1",
+        "标签": "阿",
+        "形状类型": "三角形",
+        "长度": 3,
+        "角度": 37,
+        "边的数量": "3",
+        "形状的最大边长": "5",
+        "长度平方": 9,
+        "是否为斜边": ""
       },
       {
-        "\u8FB9Id": "1",
-        "\u540D\u79F0": "\u5F62\u72B61-\u897F",
-        "\u5F62\u72B6": "1",
-        "\u6807\u7B7E": "\u897F",
-        "\u5F62\u72B6\u7C7B\u578B": "\u4E09\u89D2\u5F62",
-        "\u957F\u5EA6": 5,
-        "\u89D2\u5EA6": 90,
-        "\u8FB9\u7684\u6570\u91CF": "3",
-        "\u5F62\u72B6\u7684\u6700\u5927\u8FB9\u957F": "5",
-        "\u662F\u5426\u4E3A\u659C\u8FB9": true,
-        "\u957F\u5EA6\u5E73\u65B9": 25
+        "边Id": "1",
+        "名称": "形状1-西",
+        "形状": "1",
+        "标签": "西",
+        "形状类型": "三角形",
+        "长度": 5,
+        "角度": 90,
+        "边的数量": "3",
+        "形状的最大边长": "5",
+        "是否为斜边": true,
+        "长度平方": 25
       },
       {
-        "\u8FB9Id": "3",
-        "\u540D\u79F0": "\u5F62\u72B63-\u963F",
-        "\u5F62\u72B6": "3",
-        "\u6807\u7B7E": "\u963F",
-        "\u5F62\u72B6\u7C7B\u578B": "\u7EBF",
-        "\u957F\u5EA6": 14,
-        "\u89D2\u5EA6": 180,
-        "\u8FB9\u7684\u6570\u91CF": "2",
-        "\u5F62\u72B6\u7684\u6700\u5927\u8FB9\u957F": "14",
-        "\u662F\u5426\u4E3A\u659C\u8FB9": true,
-        "\u957F\u5EA6\u5E73\u65B9": 196
+        "边Id": "3",
+        "名称": "形状3-阿",
+        "形状": "3",
+        "标签": "阿",
+        "形状类型": "线",
+        "长度": 14,
+        "角度": 180,
+        "边的数量": "2",
+        "形状的最大边长": "14",
+        "是否为斜边": true,
+        "长度平方": 196
       },
       {
-        "\u8FB9Id": "2",
-        "\u540D\u79F0": "\u5F62\u72B62-\u897F",
-        "\u5F62\u72B6": "2",
-        "\u6807\u7B7E": "\u897F",
-        "\u5F62\u72B6\u7C7B\u578B": "\u6B63\u65B9\u5F62",
-        "\u957F\u5EA6": 5,
-        "\u89D2\u5EA6": 90,
-        "\u8FB9\u7684\u6570\u91CF": "4",
-        "\u5F62\u72B6\u7684\u6700\u5927\u8FB9\u957F": "5",
-        "\u662F\u5426\u4E3A\u659C\u8FB9": true,
-        "\u957F\u5EA6\u5E73\u65B9": 25
+        "边Id": "2",
+        "名称": "形状2-西",
+        "形状": "2",
+        "标签": "西",
+        "形状类型": "正方形",
+        "长度": 5,
+        "角度": 90,
+        "边的数量": "4",
+        "形状的最大边长": "5",
+        "是否为斜边": true,
+        "长度平方": 25
       },
       {
-        "\u8FB9Id": "2",
-        "\u540D\u79F0": "\u5F62\u72B62-\u6BD4",
-        "\u5F62\u72B6": "2",
-        "\u6807\u7B7E": "\u6BD4",
-        "\u5F62\u72B6\u7C7B\u578B": "\u6B63\u65B9\u5F62",
-        "\u957F\u5EA6": 5,
-        "\u89D2\u5EA6": 90,
-        "\u8FB9\u7684\u6570\u91CF": "4",
-        "\u5F62\u72B6\u7684\u6700\u5927\u8FB9\u957F": "5",
-        "\u662F\u5426\u4E3A\u659C\u8FB9": true,
-        "\u957F\u5EA6\u5E73\u65B9": 25
+        "边Id": "2",
+        "名称": "形状2-比",
+        "形状": "2",
+        "标签": "比",
+        "形状类型": "正方形",
+        "长度": 5,
+        "角度": 90,
+        "边的数量": "4",
+        "形状的最大边长": "5",
+        "是否为斜边": true,
+        "长度平方": 25
       }
     ]
   },
   "_meta": {
-    "_CMCC_Summary": "Airtable export with intelligent type inference: Schemas, Data, Relationships (FK links), Lookups (INDEX/MATCH), Aggregations (SUMIFS/COUNTIFS/Rollups), and Calculated fields (formulas) in Excel dialect. Field types are inferred from actual data values with priority: DateTime \u2192 Decimal \u2192 Integer \u2192 Boolean \u2192 Base64 \u2192 JSON \u2192 String.",
+    "_CMCC_Summary": "Airtable export with intelligent type inference: Schemas, Data, Relationships (FK links), Lookups (INDEX/MATCH), Aggregations (SUMIFS/COUNTIFS/Rollups), and Calculated fields (formulas) in Excel dialect. Field types are inferred from actual data values with priority: DateTime → Decimal → Integer → Boolean → Base64 → JSON → String.",
     "_conversion_metadata": {
       "source_base_id": "appC6Tnt2ZKm3t16e",
       "table_count": 2,
       "tool_version": "2.0.0",
-      "field_type_mapping": "multipleRecordLinks\u2192relationship, multipleLookupValues\u2192lookup, rollup\u2192aggregation, count\u2192aggregation, formula\u2192calculated",
+      "field_type_mapping": "multipleRecordLinks→relationship, multipleLookupValues→lookup, rollup→aggregation, count→aggregation, formula→calculated",
       "export_mode": "intelligent_type_inference",
       "type_inference": {
         "enabled": true,
-        "priority": "data_analysis \u2192 formula_analysis \u2192 reference_resolution \u2192 airtable_metadata",
-        "type_hierarchy": "datetime \u2192 number \u2192 integer \u2192 boolean \u2192 base64 \u2192 json \u2192 string",
+        "priority": "data_analysis → formula_analysis → reference_resolution → airtable_metadata",
+        "type_hierarchy": "datetime → number → integer → boolean → base64 → json → string",
         "nullable_support": true,
         "error_value_handling": "#NUM!, #ERROR!, #N/A, #REF!, #DIV/0!, #VALUE!, #NAME? are treated as NULL"
       }

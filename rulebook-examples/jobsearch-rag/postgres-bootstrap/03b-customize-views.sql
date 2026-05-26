@@ -39,8 +39,10 @@ SELECT
   calc_resume_sections_resume_name(t.resume_section_id) AS resume_name
 FROM resume_sections t;
 
--- Recreate vw_search_runs to include the resume FK and resume_name lookup
-CREATE OR REPLACE VIEW vw_search_runs WITH (security_invoker = ON) AS
+-- Recreate vw_search_runs to include the resume FK and resume_name lookup.
+-- CREATE OR REPLACE VIEW can't reorder columns or rename them; DROP first.
+DROP VIEW IF EXISTS vw_search_runs CASCADE;
+CREATE VIEW vw_search_runs WITH (security_invoker = ON) AS
 SELECT
   t.search_run_id,
   t.name,
