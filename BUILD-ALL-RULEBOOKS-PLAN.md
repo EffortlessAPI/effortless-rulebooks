@@ -39,7 +39,7 @@ For each project, read its `effortless.json`:
 
 | # | Project | Base ID | Status | Notes |
 |---|---|---|---|---|
-| 1 | `v1-nakedclaude-demo` | `appgjoEcFNxluhbvK` | 🟡 | Airtable pull works. Build fails at `03-create-views.sql:20: cannot drop columns from view`. Try `DROP DATABASE erb_v1_nakedclaude_demo` first; if it still fails, structural problem in rulebook. CLAUDE.md banner: needs flip to Airtable-first. |
+| 1 | `v1-nakedclaude-demo` | `appgjoEcFNxluhbvK` | 🟡 | Airtable pull works, schema regen succeeds, but `04b-customize-policies.sql:31` and `:36` fail with `ERROR: column "owner_email" does not exist`. RLS-policy customization references a column the current Airtable schema doesn't have. Fix requires understanding the intent of that RLS policy — either restore `owner_email` to the rulebook or update/remove the policy. CLAUDE.md banner: flipped to Airtable-first this session. |
 | 2 | `v2-nakedclaude-demo` | `app7G5emeY7miM4WN` | ❓ | Was working before. CLAUDE.md banner: needs flip to Airtable-first. |
 | 3 | `v3-nakedclaude-demo` | `appKLygCIXweUUKtM` | ❓ | New this session — never built. CLAUDE.md banner: needs flip to Airtable-first. |
 | 4 | `v4-nakedclaude-demo` | `appeUOAaOIdoqPSx3` | ❓ | Renamed from old mislabeled "v3" this session. CLAUDE.md banner: needs flip to Airtable-first. |
