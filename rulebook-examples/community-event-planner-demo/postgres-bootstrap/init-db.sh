@@ -32,11 +32,10 @@ if [ -z "$DB_NAME" ]; then
   exit 1
 fi
 
-echo "Initializing database: $DB_NAME"
+echo "Ensuring database exists: $DB_NAME"
 
-# Drop and recreate database
-psql "${DB_CONN%/*}" -U postgres -c "DROP DATABASE IF EXISTS \"$DB_NAME\";" 2>/dev/null || true
-psql "${DB_CONN%/*}" -U postgres -c "CREATE DATABASE \"$DB_NAME\";"
+# Create database if it doesn't exist
+psql "${DB_CONN%/*}" -U postgres -c "CREATE DATABASE IF NOT EXISTS \"$DB_NAME\";" 2>/dev/null || true
 
 echo "Database created. Running migrations..."
 

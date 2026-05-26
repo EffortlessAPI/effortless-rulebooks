@@ -39,9 +39,8 @@ if [ -z "$DATABASE_URL_DB_NAME" ]; then
     exit 1
 fi
 DATABASE_URL_ADMIN_CONN="${DATABASE_URL%/*}/postgres"
-echo "[init-db] (re)creating database: $DATABASE_URL_DB_NAME"
-psql "$DATABASE_URL_ADMIN_CONN" -v ON_ERROR_STOP=1 -c "DROP DATABASE IF EXISTS \"$DATABASE_URL_DB_NAME\";" >/dev/null 2>&1 || true
-psql "$DATABASE_URL_ADMIN_CONN" -v ON_ERROR_STOP=1 -c "CREATE DATABASE \"$DATABASE_URL_DB_NAME\";"
+echo "[init-db] ensuring database exists: $DATABASE_URL_DB_NAME"
+psql "$DATABASE_URL_ADMIN_CONN" -v ON_ERROR_STOP=1 -c "CREATE DATABASE IF NOT EXISTS \"$DATABASE_URL_DB_NAME\";" 2>/dev/null || true
 
 # ----------------------------------------------------------------------
 # Plan 04 §8: bases-URL refusal (defense in depth).

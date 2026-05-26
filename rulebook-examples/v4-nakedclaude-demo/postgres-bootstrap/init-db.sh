@@ -52,9 +52,8 @@ if [ -z "$CONNECTION_STRING_DB_NAME" ]; then
     exit 1
 fi
 CONNECTION_STRING_ADMIN_CONN="${CONNECTION_STRING%/*}/postgres"
-echo "[init-db] (re)creating database: $CONNECTION_STRING_DB_NAME"
-psql "$CONNECTION_STRING_ADMIN_CONN" -v ON_ERROR_STOP=1 -c "DROP DATABASE IF EXISTS \"$CONNECTION_STRING_DB_NAME\";" >/dev/null 2>&1 || true
-psql "$CONNECTION_STRING_ADMIN_CONN" -v ON_ERROR_STOP=1 -c "CREATE DATABASE \"$CONNECTION_STRING_DB_NAME\";"
+echo "[init-db] ensuring database exists: $CONNECTION_STRING_DB_NAME"
+psql "$CONNECTION_STRING_ADMIN_CONN" -v ON_ERROR_STOP=1 -c "CREATE DATABASE IF NOT EXISTS \"$CONNECTION_STRING_DB_NAME\";" 2>/dev/null || true
 
 echo "Initializing database: $CONNECTION_STRING"
 echo ""
