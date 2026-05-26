@@ -218,3 +218,178 @@ input[type="number"] { width: auto; }
 .muted { color: var(--muted); }
 .small { font-size: 12px; }
 ul li  { margin-bottom: 4px; }
+
+/* ── Role shell ──────────────────────────────────────────── */
+.role-shell { height: 100vh; display: flex; flex-direction: column; }
+.role-shell .layout { flex: 1; display: flex; min-height: 0; overflow: hidden; }
+.role-shell .main { flex: 1; overflow-y: auto; padding: 18px 24px; min-width: 0; }
+
+/* TopBar (per role) */
+.topbar .hamburger {
+  display: none;
+  background: none; border: none; color: var(--text); cursor: pointer;
+  padding: 6px; border-radius: 4px;
+}
+.topbar .hamburger:hover { background: var(--panel-2); }
+.role-brand {
+  display: flex; align-items: center; gap: 8px;
+  cursor: pointer; padding: 4px 6px; border-radius: 4px;
+}
+.role-brand:hover { background: var(--panel-2); }
+.role-mark {
+  width: 24px; height: 24px; border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  color: #0a0f1c;
+}
+.role-name { font-weight: 700; }
+
+.domain-block {
+  display: flex; align-items: center; gap: 10px;
+  min-width: 0; flex: 0 1 auto;
+}
+.domain-sep { color: var(--muted); }
+.domain-info { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.domain-name {
+  font-weight: 600; font-size: 16px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.domain-switcher { width: 180px; max-width: 40vw; }
+
+.topbar-spacer { flex: 1; }
+.topbar-user { display: flex; align-items: center; gap: 8px; }
+.topbar-user-name { color: var(--muted); font-size: 13px; }
+
+/* Sidebar (per role) */
+.sidebar { position: relative; }
+.sidebar-area-strip {
+  position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+}
+.sidebar-divider {
+  padding: 14px 14px 6px;
+  font-size: 10px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--muted);
+  border-top: 1px solid var(--border);
+  margin-top: 10px;
+}
+.nav-item.group-header { color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; }
+.sidebar-scrim { display: none; }
+
+/* ── Role picker ─────────────────────────────────────────── */
+.role-picker {
+  min-height: 100vh;
+  display: flex; flex-direction: column; align-items: center;
+  padding: 60px 24px 32px;
+  background: radial-gradient(ellipse at top, #161a22 0%, var(--bg) 60%);
+}
+.rp-hero { text-align: center; margin-bottom: 32px; max-width: 720px; }
+.rp-brand {
+  display: inline-block; padding: 6px 14px;
+  background: var(--panel); border: 1px solid var(--border);
+  border-radius: 4px; font-weight: 700; letter-spacing: 0.2em; font-size: 12px;
+}
+.rp-sub { color: var(--muted); margin-top: 8px; font-size: 13px; }
+.rp-title { font-size: 32px; margin: 16px 0 8px; }
+.rp-lede { color: var(--muted); font-size: 16px; margin: 0; }
+
+.rp-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 320px));
+  gap: 16px;
+  margin-top: 16px;
+}
+.rp-card {
+  background: var(--panel);
+  border: 2px solid;
+  border-radius: 12px;
+  padding: 22px;
+  text-align: left;
+  cursor: pointer;
+  color: var(--text);
+  display: flex; flex-direction: column;
+  transition: transform 0.1s, box-shadow 0.1s;
+  min-height: 280px;
+}
+.rp-card:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(0,0,0,0.5); }
+.rp-card-icon {
+  width: 48px; height: 48px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  color: #0a0f1c;
+  margin-bottom: 12px;
+}
+.rp-card-name { font-size: 22px; font-weight: 700; }
+.rp-card-tagline { color: var(--muted); margin-top: 4px; font-size: 13px; }
+.rp-card-desc { margin-top: 12px; font-size: 13px; line-height: 1.5; flex: 1; }
+.rp-card-cta { margin-top: 16px; font-weight: 700; font-size: 13px; }
+
+.rp-foot {
+  margin-top: 32px; color: var(--muted); font-size: 12px;
+}
+
+/* ── Explorer (combined SQL + data) ──────────────────────── */
+.explorer {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 14px;
+  margin-top: 12px;
+  align-items: start;
+}
+.explorer-left {
+  background: var(--panel); border: 1px solid var(--border); border-radius: 8px;
+  overflow: hidden;
+  max-height: calc(100vh - 220px);
+  display: flex; flex-direction: column;
+}
+.explorer-section-title {
+  padding: 10px 12px; font-weight: 600;
+  color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em;
+  border-bottom: 1px solid var(--border);
+}
+.explorer-table-list { overflow-y: auto; }
+.explorer-right { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.explorer-quick-row { display: flex; gap: 8px; flex-wrap: wrap; }
+.explorer-sql {
+  font-family: var(--mono); font-size: 12px;
+  background: #0a0d13; border-color: var(--border);
+}
+.explorer-result {
+  margin-top: 12px;
+  background: var(--panel); border: 1px solid var(--border); border-radius: 8px;
+  padding: 12px;
+  max-height: 60vh; overflow: auto;
+}
+
+/* ── Mobile (≤ 768px) ────────────────────────────────────── */
+@media (max-width: 768px) {
+  .role-shell .layout { position: relative; }
+  .topbar .hamburger { display: flex; align-items: center; justify-content: center; min-width: 44px; min-height: 44px; }
+  .sidebar {
+    position: fixed; top: 48px; bottom: 0; left: 0; width: 80vw; max-width: 320px;
+    z-index: 50; transform: translateX(-100%); transition: transform 0.2s;
+  }
+  .sidebar.mobile-open { transform: translateX(0); }
+  .sidebar-scrim {
+    display: block; position: fixed; inset: 48px 0 0 0; background: rgba(0,0,0,0.5); z-index: 40;
+  }
+  .role-shell .main { padding: 14px; }
+  .domain-name { max-width: 40vw; font-size: 14px; }
+  .domain-switcher { display: none; } /* switcher moves into sidebar drawer (TODO) */
+  .cards { grid-template-columns: 1fr !important; }
+  .explorer { grid-template-columns: 1fr; }
+  .explorer-left { max-height: 240px; }
+  table.grid th, table.grid td { padding: 4px 6px; }
+  .rp-title { font-size: 24px; }
+  .rp-cards { grid-template-columns: 1fr; }
+  /* 44px tap targets */
+  .btn, button.btn, button.btn-icon, .nav-item, select, input, textarea {
+    min-height: 44px;
+  }
+  .btn-icon { min-width: 44px; }
+  textarea { min-height: 88px; }
+}
+
+/* ── Sidebar drawer trigger area (default desktop) ───────── */
+@media (min-width: 769px) {
+  .topbar .hamburger { display: none; }
+  .sidebar.mobile-open { transform: none; }
+}

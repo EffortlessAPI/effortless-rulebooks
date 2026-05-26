@@ -1,0 +1,51 @@
+import { useNavigate } from "react-router-dom";
+import * as Icons from "lucide-react";
+import ScreenHeader from "../../components/ScreenHeader.jsx";
+
+export default function ViewerHomeScreen({ screen, projectRulebook, projects, me }) {
+  const navigate  = useNavigate();
+  const role      = (projectRulebook?.UserRoles?.data || []).find((r) => r.RoleId === "role-viewer");
+  const domains   = projects?.projects || [];
+
+  return (
+    <>
+      <ScreenHeader screen={screen} />
+      {role?.Tagline && (
+        <div className="story-banner" style={{ borderLeftColor: role.ColorTheme }}>
+          <b>{role.Name}:</b> {role.Tagline}
+        </div>
+      )}
+
+      <h3 className="muted small" style={{ marginTop: 24 }}>READ A DOMAIN</h3>
+      <div className="cards">
+        {domains.map((d) => (
+          <div
+            key={d.id}
+            className="card clickable"
+            onClick={() => navigate(`/viewer/${d.id}`)}
+          >
+            <h3 style={{ color: "#7280ad" }}>{d.id}</h3>
+            <div className="big" style={{ fontSize: 16 }}>{d.name}</div>
+            <div className="sub">{d.description || "—"}</div>
+          </div>
+        ))}
+      </div>
+
+      <h3 className="muted small" style={{ marginTop: 32 }}>EXPLORE THE PLATFORM</h3>
+      <div className="cards">
+        <div className="card clickable" onClick={() => navigate("/viewer/features")}>
+          <h3>Platform Features</h3>
+          <div className="sub">What ERB can do</div>
+        </div>
+        <div className="card clickable" onClick={() => navigate("/viewer/flavors")}>
+          <h3>Project Flavors</h3>
+          <div className="sub">Demos by tag</div>
+        </div>
+        <div className="card clickable" onClick={() => navigate("/docs")}>
+          <h3>Docs</h3>
+          <div className="sub">Framing, methodology, field types</div>
+        </div>
+      </div>
+    </>
+  );
+}
