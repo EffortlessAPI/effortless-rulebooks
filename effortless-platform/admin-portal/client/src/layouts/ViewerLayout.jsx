@@ -4,12 +4,14 @@ import RoleTopBar from "./RoleTopBar.jsx";
 import RoleSidebar from "./RoleSidebar.jsx";
 import Toast from "../components/Toast.jsx";
 import { usePortalCtx } from "../lib/portalContext.jsx";
+import { useDomainSync } from "../lib/useDomainSync.js";
 
 const ACCENT = "#7280ad";
 
 export default function ViewerLayout() {
   const { projectRulebook, projects, me, reload } = usePortalCtx();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  useDomainSync(reload, projects);
 
   return (
     <div className="role-shell viewer-shell">
