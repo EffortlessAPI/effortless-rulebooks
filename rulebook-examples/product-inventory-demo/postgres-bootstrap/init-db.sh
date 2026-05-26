@@ -15,6 +15,12 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# Source effortless.env if it exists (provides DATABASE_URL default)
+if [ -f "$SCRIPT_DIR/effortless.env" ]; then
+    # shellcheck disable=SC1090
+    source "$SCRIPT_DIR/effortless.env"
+fi
 # DATABASE_URL is the single source of truth — set it in effortless.env (or your
 # shell, or pass as $1). There is NO local default: a missing value should fail
 # loudly so it's obvious you need to copy effortless.env.example -> effortless.env.
