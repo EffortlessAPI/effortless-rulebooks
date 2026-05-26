@@ -18,7 +18,7 @@ case "$COMMAND" in
   db)
     echo "Initializing database..."
     export DATABASE_URL
-    bash postgres/init-db.sh
+    bash postgres-bootstrap/init-db.sh
     ;;
   server)
     cleanup

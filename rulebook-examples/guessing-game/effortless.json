@@ -5,7 +5,7 @@
   "SSoTmeProjectFiles": null,
   "SSoTmeProjectId": "1e4f2b01-df88-4e9c-8792-8e5834b2e083",
   "Name": "guessing-game",
-  "Description": "guessing-game — example ontology.",
+  "Description": "guessing-game \u2014 example ontology.",
   "ProjectSettings": [
     {
       "Name": "baseId",
@@ -38,12 +38,19 @@
     {
       "IsSSoTTranspiler": false,
       "Name": "rulebooktopostgres",
-      "RelativePath": "/effortless-postgres",
+      "RelativePath": "/postgres-bootstrap",
       "CommandLine": "rulebook-to-postgres -i ../effortless-rulebook/guessing-game-rulebook.json",
       "IsDisabled": false,
       "LastVersionUsed": "v2026.05.09.1738",
       "LastUrl": "https://effortless-rulebook-to-postgres-v2026-05-09-1738-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
       "Description": "Generate Postgres schema + seed data from the rulebook"
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "execute",
+      "RelativePath": "/postgres-bootstrap",
+      "CommandLine": "-exec ./init-db.sh",
+      "IsDisabled": false
     }
   ]
 }

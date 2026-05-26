@@ -31,7 +31,7 @@
     {
       "IsSSoTTranspiler": false,
       "Name": "rulebooktopostgres",
-      "RelativePath": "/postgres",
+      "RelativePath": "/postgres-bootstrap",
       "CommandLine": "rulebook-to-postgres -i ../effortless-rulebook/v2-nakedclaude-demo-rulebook.json",
       "IsDisabled": false,
       "PinnedVersion": "v2026.04.23.1316",
@@ -41,7 +41,7 @@
     {
       "IsSSoTTranspiler": false,
       "Name": "execute",
-      "RelativePath": "/postgres",
+      "RelativePath": "/postgres-bootstrap",
       "CommandLine": "-exec ./init-db.sh",
       "IsDisabled": false
     }

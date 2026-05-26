@@ -22,7 +22,7 @@ prompt_cmd() {
   echo "  3) web      — start the Vite dev server (port ${WEB_PORT})"
   echo "  4) db       — apply schema/data updates in place (idempotent; preserves edits)"
   echo "  5) db-reset — TRUNCATE all tables and re-seed from the rulebook (wipes edits)"
-  echo "  6) build    — regenerate postgres/ + explainer-dag/ from the rulebook"
+  echo "  6) build    — regenerate postgres-bootstrap/ + explainer-dag/ from the rulebook"
   echo "  7) stop     — stop anything listening on :${SERVER_PORT} and :${WEB_PORT}"
   read -rp "Choice [all]: " choice
   case "${choice:-all}" in
@@ -91,10 +91,10 @@ stop_services() {
 }
 
 ensure_db_exists() {
-  if ! psql -U "$DB_USER" -h "$DB_HOST" -p "$DB_PORT" -d postgres -tAc \
+  if ! psql -U "$DB_USER" -h "$DB_HOST" -p "$DB_PORT" -d postgres-bootstrap -tAc \
         "SELECT 1 FROM pg_database WHERE datname='${DB_NAME}'" | grep -q 1 ; then
     echo "[db] database ${DB_NAME} does not exist — creating"
-    psql -U "$DB_USER" -h "$DB_HOST" -p "$DB_PORT" -d postgres \
+    psql -U "$DB_USER" -h "$DB_HOST" -p "$DB_PORT" -d postgres-bootstrap \
       -c "CREATE DATABASE ${DB_NAME};"
   fi
 }
@@ -103,8 +103,8 @@ db() {
   cd "$ROOT"
   ensure_db_exists
   echo "[db] applying schema + data in place (idempotent)"
-  chmod +x postgres/init-db.sh
-  DATABASE_URL="$DATABASE_URL" ./postgres/init-db.sh
+  chmod +x postgres-bootstrap/init-db.sh
+  DATABASE_URL="$DATABASE_URL" ./postgres-bootstrap/init-db.sh
 }
 
 db_reset() {
@@ -112,9 +112,9 @@ db_reset() {
   ensure_db_exists
   echo "[db-reset] TRUNCATE assessments, intelligences, capabilities CASCADE"
   psql "$DATABASE_URL" -c "TRUNCATE assessments, intelligences, capabilities CASCADE;" || true
-  chmod +x postgres/init-db.sh
+  chmod +x postgres-bootstrap/init-db.sh
   echo "[db-reset] re-seeding from rulebook"
-  DATABASE_URL="$DATABASE_URL" ./postgres/init-db.sh
+  DATABASE_URL="$DATABASE_URL" ./postgres-bootstrap/init-db.sh
 }
 
 server() {

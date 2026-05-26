@@ -43,7 +43,7 @@ fi
 DATABASE_URL="${DATABASE_URL:-postgresql://postgres@localhost:5432/demo}"
 
 info "Initializing database..."
-bash "$SCRIPT_DIR/postgres/init-db.sh" "$DATABASE_URL" || {
+bash "$SCRIPT_DIR/postgres-bootstrap/init-db.sh" "$DATABASE_URL" || {
   warn "Database init failed — is PostgreSQL running?"
   exit 1
 }

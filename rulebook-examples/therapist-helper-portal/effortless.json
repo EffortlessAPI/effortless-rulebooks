@@ -15,7 +15,7 @@
     {
       "IsSSoTTranspiler": false,
       "Name": "rulebooktopostgres",
-      "RelativePath": "/postgres",
+      "RelativePath": "/postgres-bootstrap",
       "CommandLine": "rulebook-to-postgres -i ../effortless-rulebook/therapist-helper-portal-rulebook.json -w 300000",
       "IsDisabled": false,
       "LastVersionUsed": "v2026.05.09.1738",
@@ -23,8 +23,8 @@
     },
     {
       "IsSSoTTranspiler": false,
-      "Name": "init-db",
-      "RelativePath": "/postgres",
+      "Name": "execute",
+      "RelativePath": "/postgres-bootstrap",
       "CommandLine": "-exec ./init-db.sh",
       "IsDisabled": false
     },

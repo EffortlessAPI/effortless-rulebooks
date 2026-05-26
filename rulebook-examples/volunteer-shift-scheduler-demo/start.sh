@@ -76,7 +76,7 @@ case "${1:-}" in
       c_red "Postgres is not running. Start it and try again."
       exit 1
     fi
-    if ! psql -d postgres -tAc "SELECT 1 FROM pg_database WHERE datname='$DB_NAME'" | grep -q 1; then
+    if ! psql -d postgres-bootstrap -tAc "SELECT 1 FROM pg_database WHERE datname='$DB_NAME'" | grep -q 1; then
       c_blue "Creating database '$DB_NAME'..."
       createdb "$DB_NAME"
     fi
@@ -127,7 +127,7 @@ if ! pg_isready -q; then
   exit 1
 fi
 
-if ! psql -d postgres -tAc "SELECT 1 FROM pg_database WHERE datname='$DB_NAME'" | grep -q 1; then
+if ! psql -d postgres-bootstrap -tAc "SELECT 1 FROM pg_database WHERE datname='$DB_NAME'" | grep -q 1; then
   c_blue "Creating database '$DB_NAME'..."
   createdb "$DB_NAME"
 fi

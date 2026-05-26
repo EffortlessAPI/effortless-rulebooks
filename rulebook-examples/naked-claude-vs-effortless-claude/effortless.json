@@ -46,7 +46,7 @@
     {
       "IsSSoTTranspiler": false,
       "Name": "build-db",
-      "RelativePath": "/postgres",
+      "RelativePath": "/postgres-bootstrap",
       "CommandLine": "rulebook-to-postgres -i ../effortless-rulebook/effortless-rulebook.json",
       "IsDisabled": true,
       "PinnedVersion": "v2026.04.02.1900",
@@ -57,7 +57,7 @@
     {
       "IsSSoTTranspiler": false,
       "Name": "rulebooktopostgres",
-      "RelativePath": "/postgres",
+      "RelativePath": "/postgres-bootstrap",
       "CommandLine": "-exec ./init-db.sh",
       "IsDisabled": true,
       "PinnedVersion": "v2026.04.02.1900",

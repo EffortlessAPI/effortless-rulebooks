@@ -27,7 +27,7 @@ Commands:
   server  — Start Express server only (port $DEFAULT_SERVER_PORT)
   web     — Start Vite dev server only (port $DEFAULT_WEB_PORT)
   db      — Drop, create, and initialize database
-  build   — Run effortless build (regenerates postgres/)
+  build   — Run effortless build (regenerates postgres-bootstrap/)
   help    — Show this message
 
 Environment variables:
@@ -38,7 +38,7 @@ Environment variables:
 Examples:
   ./start.sh all          # First time setup (assumes db exists)
   ./start.sh db           # Reinitialize database
-  ./start.sh build        # Rebuild postgres/ from rulebook
+  ./start.sh build        # Rebuild postgres-bootstrap/ from rulebook
   ./start.sh server       # Server only
   ./start.sh web          # Web app only
 
@@ -46,7 +46,7 @@ EOF
 }
 
 run_build() {
-  echo -e "${BLUE}Building postgres schema from rulebook...${NC}"
+  echo -e "${BLUE}Building postgres-bootstrap schema from rulebook...${NC}"
   npx effortless build
 }
 
@@ -54,16 +54,16 @@ run_db() {
   echo -e "${BLUE}Setting up database: $DEFAULT_DB${NC}"
 
   # Drop if exists
-  psql -U postgres -h localhost -c "DROP DATABASE IF EXISTS $DEFAULT_DB;" || true
-  psql -U postgres -h localhost -c "CREATE DATABASE $DEFAULT_DB;"
+  psql -U postgres-bootstrap -h localhost -c "DROP DATABASE IF EXISTS $DEFAULT_DB;" || true
+  psql -U postgres-bootstrap -h localhost -c "CREATE DATABASE $DEFAULT_DB;"
 
   # Run init script
-  if [ -f postgres/init-db.sh ]; then
-    chmod +x postgres/init-db.sh
-    DATABASE_URL="$DATABASE_URL" ./postgres/init-db.sh
+  if [ -f postgres-bootstrap/init-db.sh ]; then
+    chmod +x postgres-bootstrap/init-db.sh
+    DATABASE_URL="$DATABASE_URL" ./postgres-bootstrap/init-db.sh
     echo -e "${GREEN}✓ Database initialized${NC}"
   else
-    echo "postgres/init-db.sh not found. Run './start.sh build' first."
+    echo "postgres-bootstrap/init-db.sh not found. Run './start.sh build' first."
     exit 1
   fi
 }
@@ -94,7 +94,7 @@ check_db() {
 }
 
 check_postgres() {
-  psql -U postgres -h localhost -c "SELECT 1" > /dev/null 2>&1
+  psql -U postgres-bootstrap -h localhost -c "SELECT 1" > /dev/null 2>&1
   return $?
 }
 
@@ -102,7 +102,7 @@ run_all() {
   echo -e "${GREEN}Starting Community Event Planner${NC}"
   echo ""
 
-  # Check if postgres is running
+  # Check if postgres-bootstrap is running
   if ! check_postgres; then
     echo -e "${RED}ERROR: Postgres is not running on localhost:5432${NC}"
     echo "Start Postgres with: brew services start postgresql (on macOS)"

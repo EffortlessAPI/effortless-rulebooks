@@ -12,19 +12,19 @@ build_rulebook() {
   echo "==> effortless build"
   effortless build
   # Patch generic transpiler default to project's DB name
-  if [ -f postgres/init-db.sh ]; then
-    sed -i.bak -E "s|DEFAULT_CONN=postgresql://postgres@localhost:5432/demo|DEFAULT_CONN=postgresql://postgres@localhost:5432/therapist_helper_portal|" postgres/init-db.sh || true
-    sed -i.bak -E "s|^# demo - Database Initialization Script|# therapist_helper_portal - Database Initialization Script|" postgres/init-db.sh || true
-    rm -f postgres/init-db.sh.bak
-    chmod +x postgres/init-db.sh
+  if [ -f postgres-bootstrap/init-db.sh ]; then
+    sed -i.bak -E "s|DEFAULT_CONN=postgresql://postgres@localhost:5432/demo|DEFAULT_CONN=postgresql://postgres@localhost:5432/therapist_helper_portal|" postgres-bootstrap/init-db.sh || true
+    sed -i.bak -E "s|^# demo - Database Initialization Script|# therapist_helper_portal - Database Initialization Script|" postgres-bootstrap/init-db.sh || true
+    rm -f postgres-bootstrap/init-db.sh.bak
+    chmod +x postgres-bootstrap/init-db.sh
   fi
 }
 
 reset_db() {
   echo "==> drop+create therapist_helper_portal"
-  psql -U postgres -h localhost -d postgres -c "DROP DATABASE IF EXISTS therapist_helper_portal" >/dev/null
-  psql -U postgres -h localhost -d postgres -c "CREATE DATABASE therapist_helper_portal" >/dev/null
-  (cd postgres && DATABASE_URL="$DATABASE_URL" ./init-db.sh)
+  psql -U postgres-bootstrap -h localhost -d postgres-bootstrap -c "DROP DATABASE IF EXISTS therapist_helper_portal" >/dev/null
+  psql -U postgres-bootstrap -h localhost -d postgres-bootstrap -c "CREATE DATABASE therapist_helper_portal" >/dev/null
+  (cd postgres-bootstrap && DATABASE_URL="$DATABASE_URL" ./init-db.sh)
 }
 
 start_server() {

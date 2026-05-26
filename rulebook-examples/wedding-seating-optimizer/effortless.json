@@ -15,7 +15,7 @@
     {
       "IsSSoTTranspiler": false,
       "Name": "rulebooktopostgres",
-      "RelativePath": "/postgres",
+      "RelativePath": "/postgres-bootstrap",
       "CommandLine": "rulebook-to-postgres -i ../effortless-rulebook/wedding-seating-optimizer-rulebook.json",
       "IsDisabled": false,
       "LastVersionUsed": "v2026.05.09.1738",
@@ -24,7 +24,7 @@
     {
       "IsSSoTTranspiler": false,
       "Name": "execute",
-      "RelativePath": "/postgres",
+      "RelativePath": "/postgres-bootstrap",
       "CommandLine": "-exec ./init-db.sh",
       "IsDisabled": false
     },

@@ -19,9 +19,9 @@ WEB_PORT=5188
 
 cmd_db() {
   echo "[start] drop+create $DB"
-  psql -U postgres -h localhost -c "DROP DATABASE IF EXISTS $DB" >/dev/null
-  psql -U postgres -h localhost -c "CREATE DATABASE $DB" >/dev/null
-  ( cd postgres && DATABASE_URL="$PG" ./init-db.sh "$PG" )
+  psql -U postgres-bootstrap -h localhost -c "DROP DATABASE IF EXISTS $DB" >/dev/null
+  psql -U postgres-bootstrap -h localhost -c "CREATE DATABASE $DB" >/dev/null
+  ( cd postgres-bootstrap && DATABASE_URL="$PG" ./init-db.sh "$PG" )
 }
 
 cmd_build() {

@@ -31,11 +31,11 @@ build() {
 
 db() {
   echo "[db] re-initializing $DATABASE_URL"
-  psql -U postgres -h localhost -c "SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE datname='customer_crm_demo'" >/dev/null || true
-  psql -U postgres -h localhost -c "DROP DATABASE IF EXISTS customer_crm_demo"
-  psql -U postgres -h localhost -c "CREATE DATABASE customer_crm_demo"
-  chmod +x postgres/init-db.sh
-  bash postgres/init-db.sh
+  psql -U postgres-bootstrap -h localhost -c "SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE datname='customer_crm_demo'" >/dev/null || true
+  psql -U postgres-bootstrap -h localhost -c "DROP DATABASE IF EXISTS customer_crm_demo"
+  psql -U postgres-bootstrap -h localhost -c "CREATE DATABASE customer_crm_demo"
+  chmod +x postgres-bootstrap/init-db.sh
+  bash postgres-bootstrap/init-db.sh
 }
 
 server() {
