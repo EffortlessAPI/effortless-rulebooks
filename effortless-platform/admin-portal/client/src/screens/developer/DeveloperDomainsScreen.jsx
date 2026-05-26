@@ -12,12 +12,22 @@ export default function DeveloperDomainsScreen({ screen, projects }) {
         {domains.map((d) => (
           <div
             key={d.id}
-            className="card clickable"
+            className="card clickable domain-card"
             onClick={() => navigate(`/developer/${d.id}`)}
           >
-            <h3 style={{ color: "#b48cff" }}>{d.id}</h3>
-            <div className="big" style={{ fontSize: 16 }}>{d.name}</div>
-            <div className="sub">{d.description || "—"}</div>
+            {d.logoUrl && (
+              <img
+                src={d.logoUrl}
+                alt=""
+                className="domain-card-logo"
+                onError={(e) => { e.currentTarget.style.display = "none"; }}
+              />
+            )}
+            <div className="domain-card-text">
+              <h3 style={{ color: "#b48cff" }}>{d.id}</h3>
+              <div className="big" style={{ fontSize: 16 }}>{d.name}</div>
+              <div className="sub">{d.description || "—"}</div>
+            </div>
           </div>
         ))}
       </div>

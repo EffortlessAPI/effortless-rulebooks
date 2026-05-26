@@ -127,7 +127,7 @@ Pre-built Express routes that read from `vw_*` views and write to base tables.
 
 ```bash
 npm install express pg cors
-export DATABASE_URL=postgresql://postgres@localhost:5432/small_business_banking_client_manager
+export DATABASE_URL=postgresql://postgres@localhost:5432/effortless_banking
 ```
 
 ### Usage

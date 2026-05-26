@@ -1,0 +1,52 @@
+[
+  {
+    "name": "devon-marshall",
+    "full_name": "Devon Marshall",
+    "role": "RM",
+    "email": "devon.marshall@firstvalley.bank",
+    "is_rm": true,
+    "is_underwriter": false,
+    "is_branch_banker": false,
+    "is_admin": false
+  },
+  {
+    "name": "maya-chen",
+    "full_name": "Maya Chen",
+    "role": "BranchBanker",
+    "email": "maya.chen@firstvalley.bank",
+    "is_rm": false,
+    "is_underwriter": false,
+    "is_branch_banker": true,
+    "is_admin": false
+  },
+  {
+    "name": "priya-iyer",
+    "full_name": "Priya Iyer",
+    "role": "Underwriter",
+    "email": "priya.iyer@firstvalley.bank",
+    "is_rm": false,
+    "is_underwriter": true,
+    "is_branch_banker": false,
+    "is_admin": false
+  },
+  {
+    "name": "renee-okafor",
+    "full_name": "Renee Okafor",
+    "role": "Admin",
+    "email": "renee.okafor@firstvalley.bank",
+    "is_rm": false,
+    "is_underwriter": false,
+    "is_branch_banker": false,
+    "is_admin": true
+  },
+  {
+    "name": "thomas-bell",
+    "full_name": "Thomas Bell",
+    "role": "Underwriter",
+    "email": "thomas.bell@firstvalley.bank",
+    "is_rm": false,
+    "is_underwriter": true,
+    "is_branch_banker": false,
+    "is_admin": false
+  }
+]

@@ -1,0 +1,58 @@
+[
+  {
+    "search_url_id": "indeed-principal-data-platform",
+    "name": "Principal Engineer Data Platform - Remote",
+    "job_board": "indeed",
+    "url": "https://www.indeed.com/jobs?q=principal+engineer+data+platform&l=Remote&sc=0kf%3Aattr%28DSQF7%29%3B",
+    "is_enabled": true
+  },
+  {
+    "search_url_id": "indeed-staff-platform-architect",
+    "name": "Staff Platform Architect - Remote",
+    "job_board": "indeed",
+    "url": "https://www.indeed.com/jobs?q=staff+platform+architect&l=Remote&sc=0kf%3Aattr%28DSQF7%29%3B",
+    "is_enabled": true
+  },
+  {
+    "search_url_id": "li-staff-platform-architect",
+    "name": "Staff Platform Architect - Remote",
+    "job_board": "linkedin",
+    "url": "https://www.linkedin.com/jobs/search/?keywords=staff+platform+architect&f_WT=2",
+    "is_enabled": true
+  },
+  {
+    "search_url_id": "wwr-principal-architect",
+    "name": "Principal Architect",
+    "job_board": "weworkremotely",
+    "url": "https://weworkremotely.com/remote-jobs/search?term=principal+architect",
+    "is_enabled": true
+  },
+  {
+    "search_url_id": "wwr-staff-engineer",
+    "name": "Staff Engineer",
+    "job_board": "weworkremotely",
+    "url": "https://weworkremotely.com/remote-jobs/search?term=staff+engineer",
+    "is_enabled": true
+  },
+  {
+    "search_url_id": "zr-devrel-engineer",
+    "name": "Developer Relations Engineer - Remote",
+    "job_board": "ziprecruiter",
+    "url": "https://www.ziprecruiter.com/jobs-search?search=developer+relations+engineer&location=Remote+(USA)",
+    "is_enabled": true
+  },
+  {
+    "search_url_id": "zr-principal-data-platform",
+    "name": "Principal Engineer Data Platform - Remote",
+    "job_board": "ziprecruiter",
+    "url": "https://www.ziprecruiter.com/jobs-search?search=principal+engineer+data+platform&location=Remote+(USA)",
+    "is_enabled": true
+  },
+  {
+    "search_url_id": "zr-staff-platform-architect",
+    "name": "Staff Platform Architect - Remote",
+    "job_board": "ziprecruiter",
+    "url": "https://www.ziprecruiter.com/jobs-search?search=staff+platform+architect&location=Remote+(USA)",
+    "is_enabled": true
+  }
+]

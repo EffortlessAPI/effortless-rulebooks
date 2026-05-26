@@ -1,0 +1,68 @@
+[
+  {
+    "shift_id": "foodbank-distrib-afternoon",
+    "name": "Distribution Afternoon",
+    "event": "food-bank-saturday",
+    "event_name": "Food Bank Saturday",
+    "required_skill": "food-handler",
+    "duration_hours": 3,
+    "needed_count": 3,
+    "filled_count": 3,
+    "coverage_status": "covered"
+  },
+  {
+    "shift_id": "foodbank-sort-morning",
+    "name": "Sort Morning",
+    "event": "food-bank-saturday",
+    "event_name": "Food Bank Saturday",
+    "required_skill": "intake",
+    "duration_hours": 3,
+    "needed_count": 3,
+    "filled_count": 3,
+    "coverage_status": "covered"
+  },
+  {
+    "shift_id": "harvest-food-afternoon",
+    "name": "Food Service Afternoon",
+    "event": "harvest-festival-2026",
+    "event_name": "Harvest Festival",
+    "required_skill": "food-handler",
+    "duration_hours": 4,
+    "needed_count": 4,
+    "filled_count": 3,
+    "coverage_status": "understaffed"
+  },
+  {
+    "shift_id": "harvest-intake-midday",
+    "name": "Intake Midday",
+    "event": "harvest-festival-2026",
+    "event_name": "Harvest Festival",
+    "required_skill": "intake",
+    "duration_hours": 4,
+    "needed_count": 3,
+    "filled_count": 3,
+    "coverage_status": "covered"
+  },
+  {
+    "shift_id": "harvest-setup-morning",
+    "name": "Setup Morning",
+    "event": "harvest-festival-2026",
+    "event_name": "Harvest Festival",
+    "required_skill": "setup",
+    "duration_hours": 3,
+    "needed_count": 4,
+    "filled_count": 3,
+    "coverage_status": "understaffed"
+  },
+  {
+    "shift_id": "harvest-teardown-evening",
+    "name": "Teardown Evening",
+    "event": "harvest-festival-2026",
+    "event_name": "Harvest Festival",
+    "required_skill": "setup",
+    "duration_hours": 3,
+    "needed_count": 3,
+    "filled_count": 3,
+    "coverage_status": "covered"
+  }
+]

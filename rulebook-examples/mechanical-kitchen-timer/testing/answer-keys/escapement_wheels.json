@@ -1,0 +1,22 @@
+[
+  {
+    "escapement_wheel_id": "Bessie's escapement wheel",
+    "in_escapement": "Bessie's escapement",
+    "tooth_count": 30
+  },
+  {
+    "escapement_wheel_id": "Olive's escapement wheel",
+    "in_escapement": "Olive's escapement",
+    "tooth_count": 30
+  },
+  {
+    "escapement_wheel_id": "Rufus's escapement wheel",
+    "in_escapement": "Rufus's escapement",
+    "tooth_count": 30
+  },
+  {
+    "escapement_wheel_id": "Twigs's escapement wheel",
+    "in_escapement": "Twigs's escapement",
+    "tooth_count": 30
+  }
+]

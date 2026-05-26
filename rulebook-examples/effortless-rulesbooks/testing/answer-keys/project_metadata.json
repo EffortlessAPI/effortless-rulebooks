@@ -1,0 +1,9 @@
+[
+  {
+    "project_id": "erb-001",
+    "name": "Effortlessly Invariant Rulesbooks",
+    "purpose": "Multi-substrate code generation from declarative rulebooks",
+    "architecture": "Airtable (UI) \u2192 effortless-rulebook.json (IR) \u2192 Substrates (Postgres, Python, Go, Excel, OWL, etc.)",
+    "repository_root": "effortlessly-invariant-rulesbooks/"
+  }
+]

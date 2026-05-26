@@ -1,0 +1,37 @@
+[
+  {
+    "speaker_id": "alice@speakers.local",
+    "availability_start": "2026-05-24 14:00:00",
+    "availability_end": "2026-05-24 21:00:00",
+    "name": "alice@speakers.local",
+    "is_overbooked": false
+  },
+  {
+    "speaker_id": "bob@speakers.local",
+    "availability_start": "2026-05-25 09:00:00",
+    "availability_end": "2026-05-25 18:00:00",
+    "name": "bob@speakers.local",
+    "is_overbooked": false
+  },
+  {
+    "speaker_id": "carol@speakers.local",
+    "availability_start": "2026-05-23 15:00:00",
+    "availability_end": "2026-05-23 20:00:00",
+    "name": "carol@speakers.local",
+    "is_overbooked": false
+  },
+  {
+    "speaker_id": "dave@speakers.local",
+    "availability_start": "2026-05-25 14:00:00",
+    "availability_end": "2026-05-25 18:00:00",
+    "name": "dave@speakers.local",
+    "is_overbooked": false
+  },
+  {
+    "speaker_id": "overbooked@speakers.local",
+    "availability_start": "2026-05-23 09:00:00",
+    "availability_end": "2026-05-25 21:00:00",
+    "name": "overbooked@speakers.local",
+    "is_overbooked": false
+  }
+]

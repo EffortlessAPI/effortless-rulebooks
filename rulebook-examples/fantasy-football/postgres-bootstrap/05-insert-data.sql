@@ -9,13 +9,13 @@
 -- DevUsers: Table: DevUsers
 -- ----------------------------------------------------------------------------
 INSERT INTO dev_users (dev_users_id, email, role)
-VALUES ('47d0807c-57ea-d572-9591-bc2523352a8b', 'commissioner@league.local', 'commissioner') ON CONFLICT (dev_users_id) DO NOTHING;
+VALUES ('5c1e1808-cc3f-aa51-9aa0-ca38cbe0f0b6', 'commissioner@league.local', 'commissioner') ON CONFLICT (dev_users_id) DO NOTHING;
 
 INSERT INTO dev_users (dev_users_id, email, role)
-VALUES ('ca58e5a2-7897-623a-d3c8-bfddef2b1480', 'owner@league.local', 'owner') ON CONFLICT (dev_users_id) DO NOTHING;
+VALUES ('bf1ffa31-6543-1851-8e56-b21ba904e2e4', 'owner@league.local', 'owner') ON CONFLICT (dev_users_id) DO NOTHING;
 
 INSERT INTO dev_users (dev_users_id, email, role)
-VALUES ('fac44308-dbe6-e8ec-174d-ae793fcf583c', 'spectator@league.local', 'spectator') ON CONFLICT (dev_users_id) DO NOTHING;
+VALUES ('1e9cf0c7-b0d9-f438-a985-e8c8cb8a1cc6', 'spectator@league.local', 'spectator') ON CONFLICT (dev_users_id) DO NOTHING;
 
 -- ----------------------------------------------------------------------------
 -- Players: Table: Players
@@ -213,20 +213,20 @@ VALUES ('week6-dynasty-limit', 6, 'davantes-dynasty', 'hurts-limit') ON CONFLICT
 -- Standings: Table: Standings
 -- ----------------------------------------------------------------------------
 INSERT INTO standings (standing_id, wins, losses, ties, win_pct, points_for, points_against, seed_rank, playoff_bound, champs_path)
-VALUES ('mahomes-mob', 6, 0, 0, 1.0000, 6456.00, 4727.00, 1, TRUE, NULL) ON CONFLICT (standing_id) DO NOTHING;
+VALUES ('mahomes-mob', 6, 0, 0, 1.0, 6456.0, 4727.0, 1, TRUE, NULL) ON CONFLICT (standing_id) DO NOTHING;
 
 INSERT INTO standings (standing_id, wins, losses, ties, win_pct, points_for, points_against, seed_rank, playoff_bound, champs_path)
-VALUES ('hurts-hustlers', 5, 1, 0, 0.8333, 6252.00, 4761.00, 2, TRUE, NULL) ON CONFLICT (standing_id) DO NOTHING;
+VALUES ('hurts-hustlers', 5, 1, 0, 0.8333, 6252.0, 4761.0, 2, TRUE, NULL) ON CONFLICT (standing_id) DO NOTHING;
 
 INSERT INTO standings (standing_id, wins, losses, ties, win_pct, points_for, points_against, seed_rank, playoff_bound, champs_path)
-VALUES ('davantes-dynasty', 3, 3, 0, 0.5000, 4650.00, 4476.00, 3, TRUE, NULL) ON CONFLICT (standing_id) DO NOTHING;
+VALUES ('davantes-dynasty', 3, 3, 0, 0.5, 4650.0, 4476.0, 3, TRUE, NULL) ON CONFLICT (standing_id) DO NOTHING;
 
 INSERT INTO standings (standing_id, wins, losses, ties, win_pct, points_for, points_against, seed_rank, playoff_bound, champs_path)
-VALUES ('allens-arsenal', 2, 4, 0, 0.3333, 5610.00, 5668.00, 4, TRUE, NULL) ON CONFLICT (standing_id) DO NOTHING;
+VALUES ('allens-arsenal', 2, 4, 0, 0.3333, 5610.0, 5668.0, 4, TRUE, NULL) ON CONFLICT (standing_id) DO NOTHING;
 
 INSERT INTO standings (standing_id, wins, losses, ties, win_pct, points_for, points_against, seed_rank, playoff_bound, champs_path)
-VALUES ('defense-wins', 2, 4, 0, 0.3333, 3942.00, 4594.00, 5, TRUE, NULL) ON CONFLICT (standing_id) DO NOTHING;
+VALUES ('defense-wins', 2, 4, 0, 0.3333, 3942.0, 4594.0, 5, TRUE, NULL) ON CONFLICT (standing_id) DO NOTHING;
 
 INSERT INTO standings (standing_id, wins, losses, ties, win_pct, points_for, points_against, seed_rank, playoff_bound, champs_path)
-VALUES ('hurts-limit', 0, 6, 0, 0.0000, 2298.00, 4982.00, 6, TRUE, NULL) ON CONFLICT (standing_id) DO NOTHING;
+VALUES ('hurts-limit', 0, 6, 0, 0.0, 2298.0, 4982.0, 6, TRUE, NULL) ON CONFLICT (standing_id) DO NOTHING;
 

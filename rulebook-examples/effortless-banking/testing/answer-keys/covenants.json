@@ -1,0 +1,46 @@
+[
+  {
+    "name": "l-0042-mindscr",
+    "loan": "l-0042",
+    "covenant_type": "MinDSCR",
+    "threshold_value": 1.2,
+    "test_frequency": "Quarterly",
+    "next_test_date": "2026-06-30",
+    "status": "Breached",
+    "current_waiver_through": "2026-06-30",
+    "is_breached": true
+  },
+  {
+    "name": "l-0051-maxleverage",
+    "loan": "l-0051",
+    "covenant_type": "MaxLeverage",
+    "threshold_value": 3.0,
+    "test_frequency": "Annual",
+    "next_test_date": "2026-03-01",
+    "status": "Active",
+    "current_waiver_through": null,
+    "is_breached": false
+  },
+  {
+    "name": "l-0051-mindscr",
+    "loan": "l-0051",
+    "covenant_type": "MinDSCR",
+    "threshold_value": 1.2,
+    "test_frequency": "Quarterly",
+    "next_test_date": "2025-06-30",
+    "status": "Active",
+    "current_waiver_through": null,
+    "is_breached": false
+  },
+  {
+    "name": "l-0051-reportingfinancials",
+    "loan": "l-0051",
+    "covenant_type": "ReportingFinancials",
+    "threshold_value": null,
+    "test_frequency": "Annual",
+    "next_test_date": "2026-03-31",
+    "status": "Active",
+    "current_waiver_through": null,
+    "is_breached": false
+  }
+]

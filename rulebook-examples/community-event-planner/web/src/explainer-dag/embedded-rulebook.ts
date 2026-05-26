@@ -4,7 +4,7 @@
 export const rulebook = {
   "$schema": "https://example.com/cmcc-schema/v1",
   "Name": "Community Event Planner",
-  "Description": "Community event management with venues, events, speakers, and attendees. Multi-hop calculated fields for capacity constraints, speaker availability, scheduling conflicts, and attendance forecasting.",
+  "Description": "Venues, events, speakers, attendees with capacity, scheduling, and attendance-forecast cascades.",
   "Venues": {
     "Description": "Table: Venues",
     "schema": [

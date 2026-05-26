@@ -1,0 +1,50 @@
+[
+  {
+    "erb_customization_id": "calc-customers-average-order-value",
+    "sql_code": "-- FunctionOverride: calc_customers_average_order_value\n-- Errors in this file are non-fatal (runs without ON_ERROR_STOP).\n\nCREATE OR REPLACE FUNCTION public.calc_customers_average_order_value(p_customer_id text)\n RETURNS TEXT\n LANGUAGE plpgsql\n STABLE SECURITY DEFINER\nAS $function$\nDECLARE\n  v_avg numeric;\nBEGIN\n  SELECT AVG(calc_orders_order_total(order_id))\n    INTO v_avg\n    FROM orders\n   WHERE customer = p_customer_id;\n  RETURN COALESCE(ROUND(v_avg, 2)::text, '0.00');\nEND;\n$function$;\n",
+    "name": "calc_customers_average_order_value",
+    "sql_target": "Postgres",
+    "customization_type": "FunctionOverride",
+    "title": ""
+  },
+  {
+    "erb_customization_id": "calc-customers-days-since-last-order",
+    "sql_code": "-- FunctionOverride: calc_customers_days_since_last_order\n-- Errors in this file are non-fatal (runs without ON_ERROR_STOP).\n\nCREATE OR REPLACE FUNCTION public.calc_customers_days_since_last_order(p_customer_id text)\n RETURNS TEXT\n LANGUAGE plpgsql\n STABLE SECURITY DEFINER\nAS $function$\nDECLARE\n  v_last timestamptz;\nBEGIN\n  SELECT MAX(order_date::timestamptz)\n    INTO v_last\n    FROM orders\n   WHERE customer = p_customer_id;\n  IF v_last IS NULL THEN\n    RETURN NULL;\n  END IF;\n  RETURN (CURRENT_DATE - v_last::date)::text;\nEND;\n$function$;\n",
+    "name": "calc_customers_days_since_last_order",
+    "sql_target": "Postgres",
+    "customization_type": "FunctionOverride",
+    "title": ""
+  },
+  {
+    "erb_customization_id": "calc-customers-has-multi-payment-orders",
+    "sql_code": "-- FunctionOverride: calc_customers_has_multi_payment_orders\n-- Errors in this file are non-fatal (runs without ON_ERROR_STOP).\n\nCREATE OR REPLACE FUNCTION public.calc_customers_has_multi_payment_orders(p_customer_id text)\n RETURNS BOOLEAN\n LANGUAGE plpgsql\n STABLE SECURITY DEFINER\nAS $function$\nBEGIN\n  RETURN EXISTS (\n    SELECT 1\n      FROM orders o\n     WHERE o.customer = p_customer_id\n       AND (SELECT COUNT(*) FROM payments p WHERE p.\"order\" = o.order_id) > 1\n  );\nEND;\n$function$;\n",
+    "title": "Fix: only true when customer has an order with >1 payment",
+    "name": "calc_customers_has_multi_payment_orders",
+    "sql_target": "Postgres",
+    "customization_type": "FunctionOverride"
+  },
+  {
+    "erb_customization_id": "calc-orders-item-count",
+    "sql_code": "-- FunctionOverride: calc_orders_item_count\n-- Errors in this file are non-fatal (runs without ON_ERROR_STOP).\n\nCREATE OR REPLACE FUNCTION public.calc_orders_item_count(p_order_id text)\n RETURNS integer\n LANGUAGE plpgsql\n STABLE SECURITY DEFINER\nAS $function$\nBEGIN\n  RETURN ((SELECT COUNT(*) FROM order_line_items WHERE \"order\" = p_order_id))::integer;\nEND;\n$function$;\n",
+    "name": "calc_orders_item_count",
+    "sql_target": "Postgres",
+    "customization_type": "FunctionOverride",
+    "title": ""
+  },
+  {
+    "erb_customization_id": "calc-orders-last-payment-date",
+    "sql_code": "-- FunctionOverride: calc_orders_last_payment_date\n-- Errors in this file are non-fatal (runs without ON_ERROR_STOP).\n\nCREATE OR REPLACE FUNCTION public.calc_orders_last_payment_date(p_order_id text)\n RETURNS timestamp with time zone\n LANGUAGE plpgsql\n STABLE SECURITY DEFINER\nAS $function$\nBEGIN\n  RETURN (SELECT MAX(payment_date) FROM payments WHERE \"order\" = p_order_id);\nEND;\n$function$;\n",
+    "name": "calc_orders_last_payment_date",
+    "sql_target": "Postgres",
+    "customization_type": "FunctionOverride",
+    "title": ""
+  },
+  {
+    "erb_customization_id": "calc-orders-payment-count",
+    "sql_code": "-- FunctionOverride: calc_orders_payment_count\n-- Errors in this file are non-fatal (runs without ON_ERROR_STOP).\n\nCREATE OR REPLACE FUNCTION public.calc_orders_payment_count(p_order_id text)\n RETURNS integer\n LANGUAGE plpgsql\n STABLE SECURITY DEFINER\nAS $function$\nBEGIN\n  RETURN ((SELECT COUNT(*) FROM payments WHERE \"order\" = p_order_id))::integer;\nEND;\n$function$;\n",
+    "name": "calc_orders_payment_count",
+    "sql_target": "Postgres",
+    "customization_type": "FunctionOverride",
+    "title": ""
+  }
+]

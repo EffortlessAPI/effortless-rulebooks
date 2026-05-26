@@ -1,0 +1,68 @@
+[
+  {
+    "standing_id": "allens-arsenal",
+    "wins": 2,
+    "losses": 4,
+    "ties": 0,
+    "win_pct": 0.3333,
+    "points_for": 5610.0,
+    "points_against": 5668.0,
+    "seed_rank": 4,
+    "playoff_bound": true
+  },
+  {
+    "standing_id": "davantes-dynasty",
+    "wins": 3,
+    "losses": 3,
+    "ties": 0,
+    "win_pct": 0.5,
+    "points_for": 4650.0,
+    "points_against": 4476.0,
+    "seed_rank": 3,
+    "playoff_bound": true
+  },
+  {
+    "standing_id": "defense-wins",
+    "wins": 2,
+    "losses": 4,
+    "ties": 0,
+    "win_pct": 0.3333,
+    "points_for": 3942.0,
+    "points_against": 4594.0,
+    "seed_rank": 5,
+    "playoff_bound": true
+  },
+  {
+    "standing_id": "hurts-hustlers",
+    "wins": 5,
+    "losses": 1,
+    "ties": 0,
+    "win_pct": 0.8333,
+    "points_for": 6252.0,
+    "points_against": 4761.0,
+    "seed_rank": 2,
+    "playoff_bound": true
+  },
+  {
+    "standing_id": "hurts-limit",
+    "wins": 0,
+    "losses": 6,
+    "ties": 0,
+    "win_pct": 0.0,
+    "points_for": 2298.0,
+    "points_against": 4982.0,
+    "seed_rank": 6,
+    "playoff_bound": true
+  },
+  {
+    "standing_id": "mahomes-mob",
+    "wins": 6,
+    "losses": 0,
+    "ties": 0,
+    "win_pct": 1.0,
+    "points_for": 6456.0,
+    "points_against": 4727.0,
+    "seed_rank": 1,
+    "playoff_bound": true
+  }
+]

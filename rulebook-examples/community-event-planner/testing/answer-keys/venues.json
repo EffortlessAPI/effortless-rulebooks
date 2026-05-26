@@ -1,0 +1,20 @@
+[
+  {
+    "venue_id": "conference-room",
+    "location": "Tech Hub Building",
+    "capacity": 50,
+    "name": "conference-room"
+  },
+  {
+    "venue_id": "main-hall",
+    "location": "Downtown Community Center",
+    "capacity": 150,
+    "name": "main-hall"
+  },
+  {
+    "venue_id": "outdoor-amphitheater",
+    "location": "Central Park",
+    "capacity": 300,
+    "name": "outdoor-amphitheater"
+  }
+]

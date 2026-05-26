@@ -9,179 +9,179 @@
 -- Users: Bank employees: relationship managers, underwriters, branch bankers, and admins. Used for portfolio assignment, audit trails, and segregation-of-duties enforcement.
 -- ----------------------------------------------------------------------------
 INSERT INTO users (users_id, full_name, role, email)
-VALUES ('25578e4d-0288-b116-252b-2ca128de8e9c', 'Devon Marshall', 'RM', 'devon.marshall@firstvalley.bank') ON CONFLICT (users_id) DO NOTHING;
+VALUES ('26152588-20b1-fa4a-9228-b725fa222881', 'Devon Marshall', 'RM', 'devon.marshall@firstvalley.bank') ON CONFLICT (users_id) DO NOTHING;
 
 INSERT INTO users (users_id, full_name, role, email)
-VALUES ('6364b34b-35e5-49b9-6f60-c2a207c0fcd7', 'Priya Iyer', 'Underwriter', 'priya.iyer@firstvalley.bank') ON CONFLICT (users_id) DO NOTHING;
+VALUES ('f5f6a875-4b79-9bb3-04a9-70abebb5ec38', 'Priya Iyer', 'Underwriter', 'priya.iyer@firstvalley.bank') ON CONFLICT (users_id) DO NOTHING;
 
 INSERT INTO users (users_id, full_name, role, email)
-VALUES ('58d89d9e-5b78-ab8b-9fcd-e1965661d2f5', 'Thomas Bell', 'Underwriter', 'thomas.bell@firstvalley.bank') ON CONFLICT (users_id) DO NOTHING;
+VALUES ('d5c81a6a-3f8f-2e2f-2f85-0e7f874529d1', 'Thomas Bell', 'Underwriter', 'thomas.bell@firstvalley.bank') ON CONFLICT (users_id) DO NOTHING;
 
 INSERT INTO users (users_id, full_name, role, email)
-VALUES ('20e18118-891b-e956-7cbe-25a2f141f56e', 'Maya Chen', 'BranchBanker', 'maya.chen@firstvalley.bank') ON CONFLICT (users_id) DO NOTHING;
+VALUES ('f4c5db27-8a1a-167b-9e75-0ce4d23e2ee3', 'Maya Chen', 'BranchBanker', 'maya.chen@firstvalley.bank') ON CONFLICT (users_id) DO NOTHING;
 
 INSERT INTO users (users_id, full_name, role, email)
-VALUES ('35d291c8-3d48-27e5-2aee-d6d63510ae1c', 'Renee Okafor', 'Admin', 'renee.okafor@firstvalley.bank') ON CONFLICT (users_id) DO NOTHING;
+VALUES ('35b0ed6e-39b9-1845-85fd-ad116c78725e', 'Renee Okafor', 'Admin', 'renee.okafor@firstvalley.bank') ON CONFLICT (users_id) DO NOTHING;
 
 -- ----------------------------------------------------------------------------
 -- Businesses: Small-business customers (and prospects) of the bank. Central entity: BeneficialOwners, Contacts, Accounts, Loans, Documents, and Interactions all hang off a Business. BusinessProfile information (legal name, structure, NAICS code) lives directly on this table.
 -- ----------------------------------------------------------------------------
 INSERT INTO businesses (businesses_id, legal_name, business_structure, naics_code, naics_description, annual_revenue_usd, status, onboarded_at, relationship_manager, referral_source)
-VALUES ('30c87a3d-5297-4664-19c6-17151d69c3a3', 'Stillwater Roasters LLC', 'LLC', '311920', 'Coffee and Tea Manufacturing', 4200000, 'Customer', '2024-03-12', 'devon-marshall', NULL) ON CONFLICT (businesses_id) DO NOTHING;
+VALUES ('c3843334-7c20-fb48-b139-c32dfccecdf7', 'Stillwater Roasters LLC', 'LLC', '311920', 'Coffee and Tea Manufacturing', 4200000, 'Customer', '2024-03-12', 'devon-marshall', NULL) ON CONFLICT (businesses_id) DO NOTHING;
 
 INSERT INTO businesses (businesses_id, legal_name, business_structure, naics_code, naics_description, annual_revenue_usd, status, onboarded_at, relationship_manager, referral_source)
-VALUES ('2d08b8d8-34c2-678c-6511-f31a0796e029', 'Ridgeway Consulting LLC', 'LLC', '541611', 'Administrative Management Consulting', 1800000, 'Customer', '2023-09-05', 'devon-marshall', NULL) ON CONFLICT (businesses_id) DO NOTHING;
+VALUES ('853dc5fc-0f5a-c300-7e44-dfb6bbf91b58', 'Ridgeway Consulting LLC', 'LLC', '541611', 'Administrative Management Consulting', 1800000, 'Customer', '2023-09-05', 'devon-marshall', NULL) ON CONFLICT (businesses_id) DO NOTHING;
 
 INSERT INTO businesses (businesses_id, legal_name, business_structure, naics_code, naics_description, annual_revenue_usd, status, onboarded_at, relationship_manager, referral_source)
-VALUES ('80788f4a-bbb6-2b7d-cef2-b2ff5b64627a', 'Pine Hardware Inc.', 'C-Corp', '444110', 'Home Centers', 12500000, 'Customer', '2019-06-21', 'devon-marshall', NULL) ON CONFLICT (businesses_id) DO NOTHING;
+VALUES ('d198b720-c0e9-2ed2-2070-b010ec7e7142', 'Pine Hardware Inc.', 'C-Corp', '444110', 'Home Centers', 12500000, 'Customer', '2019-06-21', 'devon-marshall', NULL) ON CONFLICT (businesses_id) DO NOTHING;
 
 INSERT INTO businesses (businesses_id, legal_name, business_structure, naics_code, naics_description, annual_revenue_usd, status, onboarded_at, relationship_manager, referral_source)
-VALUES ('4add06ee-5d83-c0fc-088f-a66b937ca749', 'Sunset Auto Body LLC', 'LLC', '811121', 'Automotive Body, Paint, and Interior Repair', 2300000, 'Customer', '2022-11-02', 'devon-marshall', NULL) ON CONFLICT (businesses_id) DO NOTHING;
+VALUES ('8d4bb109-2271-b4b9-9f92-45297e292ffc', 'Sunset Auto Body LLC', 'LLC', '811121', 'Automotive Body, Paint, and Interior Repair', 2300000, 'Customer', '2022-11-02', 'devon-marshall', NULL) ON CONFLICT (businesses_id) DO NOTHING;
 
 INSERT INTO businesses (businesses_id, legal_name, business_structure, naics_code, naics_description, annual_revenue_usd, status, onboarded_at, relationship_manager, referral_source)
-VALUES ('6bca7518-8768-9568-aad6-c37d3e87f3b7', 'Hilltop Bakery LLC', 'LLC', '311811', 'Retail Bakeries', 850000, 'Prospect', NULL, 'devon-marshall', 'pine-hardware-inc') ON CONFLICT (businesses_id) DO NOTHING;
+VALUES ('6a540187-0826-5225-0f56-2128bad9fcbb', 'Hilltop Bakery LLC', 'LLC', '311811', 'Retail Bakeries', 850000, 'Prospect', NULL, 'devon-marshall', 'pine-hardware-inc') ON CONFLICT (businesses_id) DO NOTHING;
 
 -- ----------------------------------------------------------------------------
 -- BeneficialOwners: Individuals owning 25%+ of a Business plus designated control persons, per FinCEN's CDD rule. PII (SSN, DOB, address) is stored encrypted at rest via field-level encryption.
 -- ----------------------------------------------------------------------------
 INSERT INTO beneficial_owners (beneficial_owners_id, business, full_name, date_of_birth_encrypted, ssn_encrypted, address_encrypted, ownership_percentage, is_control_person)
-VALUES ('290527a0-952b-ad1c-ca54-2514c330bb5e', 'stillwater-roasters-llc', 'Jordan Park', 'ENC(1981-04-17)', 'ENC(xxx-xx-1234)', 'ENC(742 Evergreen Way, Stillwater)', 60.0, TRUE) ON CONFLICT (beneficial_owners_id) DO NOTHING;
+VALUES ('b5ea91e4-e7c0-d966-933c-b30eb8fd5472', 'stillwater-roasters-llc', 'Jordan Park', 'ENC(1981-04-17)', 'ENC(xxx-xx-1234)', 'ENC(742 Evergreen Way, Stillwater)', 60.0, TRUE) ON CONFLICT (beneficial_owners_id) DO NOTHING;
 
 INSERT INTO beneficial_owners (beneficial_owners_id, business, full_name, date_of_birth_encrypted, ssn_encrypted, address_encrypted, ownership_percentage, is_control_person)
-VALUES ('d091e2b4-0b92-7002-0cec-83e9adc97326', 'stillwater-roasters-llc', 'Sam Rivera', 'ENC(1978-11-02)', 'ENC(xxx-xx-5678)', 'ENC(15 Hillcrest Rd, Stillwater)', 40.0, FALSE) ON CONFLICT (beneficial_owners_id) DO NOTHING;
+VALUES ('cf2c611e-cf32-480a-2034-bde5dd340507', 'stillwater-roasters-llc', 'Sam Rivera', 'ENC(1978-11-02)', 'ENC(xxx-xx-5678)', 'ENC(15 Hillcrest Rd, Stillwater)', 40.0, FALSE) ON CONFLICT (beneficial_owners_id) DO NOTHING;
 
 INSERT INTO beneficial_owners (beneficial_owners_id, business, full_name, date_of_birth_encrypted, ssn_encrypted, address_encrypted, ownership_percentage, is_control_person)
-VALUES ('6d4ebae2-b05d-74e3-c5eb-293201b0b2f8', 'ridgeway-consulting-llc', 'Alex Ridgeway', 'ENC(1972-02-14)', 'ENC(xxx-xx-9012)', 'ENC(204 Birch Ln, Ridgeway)', 0.0, TRUE) ON CONFLICT (beneficial_owners_id) DO NOTHING;
+VALUES ('6ce52c78-4a62-1a60-23f1-55a37e346a21', 'ridgeway-consulting-llc', 'Alex Ridgeway', 'ENC(1972-02-14)', 'ENC(xxx-xx-9012)', 'ENC(204 Birch Ln, Ridgeway)', 0.0, TRUE) ON CONFLICT (beneficial_owners_id) DO NOTHING;
 
 INSERT INTO beneficial_owners (beneficial_owners_id, business, full_name, date_of_birth_encrypted, ssn_encrypted, address_encrypted, ownership_percentage, is_control_person)
-VALUES ('3fb8fa97-abeb-d5ef-df9b-e070ec2da573', 'pine-hardware-inc', 'Elena Novak', 'ENC(1965-08-30)', 'ENC(xxx-xx-3456)', 'ENC(99 Oak St, Pinehurst)', 51.0, TRUE) ON CONFLICT (beneficial_owners_id) DO NOTHING;
+VALUES ('c419e8e8-4e17-362f-caac-3c21225a224f', 'pine-hardware-inc', 'Elena Novak', 'ENC(1965-08-30)', 'ENC(xxx-xx-3456)', 'ENC(99 Oak St, Pinehurst)', 51.0, TRUE) ON CONFLICT (beneficial_owners_id) DO NOTHING;
 
 INSERT INTO beneficial_owners (beneficial_owners_id, business, full_name, date_of_birth_encrypted, ssn_encrypted, address_encrypted, ownership_percentage, is_control_person)
-VALUES ('6f9a8588-329a-3d1b-880b-0301d44d636c', 'pine-hardware-inc', 'Robert Novak', 'ENC(1962-01-19)', 'ENC(xxx-xx-7890)', 'ENC(99 Oak St, Pinehurst)', 49.0, FALSE) ON CONFLICT (beneficial_owners_id) DO NOTHING;
+VALUES ('74411093-d89c-5e49-9403-57329d127b2b', 'pine-hardware-inc', 'Robert Novak', 'ENC(1962-01-19)', 'ENC(xxx-xx-7890)', 'ENC(99 Oak St, Pinehurst)', 49.0, FALSE) ON CONFLICT (beneficial_owners_id) DO NOTHING;
 
 -- ----------------------------------------------------------------------------
 -- Contacts: Non-owner individuals associated with a Business: officers, AP clerks, authorized signers, additional points of contact. Distinct from BeneficialOwners (which carries PII/CDD weight).
 -- ----------------------------------------------------------------------------
 INSERT INTO contacts (contacts_id, business, full_name, title, email, phone, contact_type, is_authorized_signer)
-VALUES ('28ac0ca6-3d63-8f92-7707-d7eb9ba2e135', 'stillwater-roasters-llc', 'Jordan Park', 'CEO', 'jordan@stillwaterroasters.com', '555-0142', 'Officer', TRUE) ON CONFLICT (contacts_id) DO NOTHING;
+VALUES ('23746565-c5ad-6197-2075-5ae57552fc4c', 'stillwater-roasters-llc', 'Jordan Park', 'CEO', 'jordan@stillwaterroasters.com', '555-0142', 'Officer', TRUE) ON CONFLICT (contacts_id) DO NOTHING;
 
 INSERT INTO contacts (contacts_id, business, full_name, title, email, phone, contact_type, is_authorized_signer)
-VALUES ('a7fa018f-01ed-1af7-0003-f739477c2ecf', 'stillwater-roasters-llc', 'Sam Rivera', 'CFO', 'sam@stillwaterroasters.com', '555-0143', 'Officer', TRUE) ON CONFLICT (contacts_id) DO NOTHING;
+VALUES ('0f3c3c40-ed05-4ea6-456e-a6f545881f08', 'stillwater-roasters-llc', 'Sam Rivera', 'CFO', 'sam@stillwaterroasters.com', '555-0143', 'Officer', TRUE) ON CONFLICT (contacts_id) DO NOTHING;
 
 INSERT INTO contacts (contacts_id, business, full_name, title, email, phone, contact_type, is_authorized_signer)
-VALUES ('295deb1d-10bc-d7c1-1c2b-b2aabfa135a9', 'pine-hardware-inc', 'Marta Keene', 'AP Clerk', 'ap@pinehardware.com', '555-0188', 'APClerk', FALSE) ON CONFLICT (contacts_id) DO NOTHING;
+VALUES ('0e08cc84-87db-8a61-529e-8b6082052d01', 'pine-hardware-inc', 'Marta Keene', 'AP Clerk', 'ap@pinehardware.com', '555-0188', 'APClerk', FALSE) ON CONFLICT (contacts_id) DO NOTHING;
 
 INSERT INTO contacts (contacts_id, business, full_name, title, email, phone, contact_type, is_authorized_signer)
-VALUES ('8c16075b-e9a8-e8b9-4964-2f34701ad35c', 'ridgeway-consulting-llc', 'Alex Ridgeway', 'CEO', 'alex@ridgeway.co', '555-0260', 'Officer', TRUE) ON CONFLICT (contacts_id) DO NOTHING;
+VALUES ('e99ccba9-0509-d994-85fb-a992e32bb785', 'ridgeway-consulting-llc', 'Alex Ridgeway', 'CEO', 'alex@ridgeway.co', '555-0260', 'Officer', TRUE) ON CONFLICT (contacts_id) DO NOTHING;
 
 -- ----------------------------------------------------------------------------
 -- Accounts: Deposit accounts the Business holds at the bank (checking, savings, money market). Balances feed GlobalCashFlow during credit analysis. TreasuryServices enrollment flags (ACH, Wire, Card) are stored per-account.
 -- ----------------------------------------------------------------------------
 INSERT INTO accounts (accounts_id, business, account_type, account_number_last4, current_balance_usd, has_ach, has_wire, has_card, opened_at)
-VALUES ('a56357d7-9f4c-099a-3842-346af5d5f350', 'stillwater-roasters-llc', 'Checking', '0001', 184250.13, TRUE, TRUE, FALSE, '2024-03-13') ON CONFLICT (accounts_id) DO NOTHING;
+VALUES ('7da39426-d65e-fea5-5752-0d5e03b742ca', 'stillwater-roasters-llc', 'Checking', '0001', 184250.13, TRUE, TRUE, FALSE, '2024-03-13') ON CONFLICT (accounts_id) DO NOTHING;
 
 INSERT INTO accounts (accounts_id, business, account_type, account_number_last4, current_balance_usd, has_ach, has_wire, has_card, opened_at)
-VALUES ('dc2ac7a4-7069-f5b8-fac2-6918a48076a2', 'stillwater-roasters-llc', 'Savings', '0101', 75000.00, FALSE, FALSE, FALSE, '2024-03-13') ON CONFLICT (accounts_id) DO NOTHING;
+VALUES ('286ace58-0a28-1ef6-3b7c-f2d4f481b9cd', 'stillwater-roasters-llc', 'Savings', '0101', 75000.0, FALSE, FALSE, FALSE, '2024-03-13') ON CONFLICT (accounts_id) DO NOTHING;
 
 INSERT INTO accounts (accounts_id, business, account_type, account_number_last4, current_balance_usd, has_ach, has_wire, has_card, opened_at)
-VALUES ('93709722-3f1f-8c3b-9603-7b0b2f7260bf', 'pine-hardware-inc', 'Checking', '0200', 612430.55, TRUE, TRUE, TRUE, '2019-06-22') ON CONFLICT (accounts_id) DO NOTHING;
+VALUES ('f101f993-802d-ab42-2761-a5b8ce4ea7f6', 'pine-hardware-inc', 'Checking', '0200', 612430.55, TRUE, TRUE, TRUE, '2019-06-22') ON CONFLICT (accounts_id) DO NOTHING;
 
 INSERT INTO accounts (accounts_id, business, account_type, account_number_last4, current_balance_usd, has_ach, has_wire, has_card, opened_at)
-VALUES ('ead0e6dc-4fe6-4069-3218-f6628a6da420', 'ridgeway-consulting-llc', 'Checking', '0300', 92800.00, TRUE, FALSE, FALSE, '2023-09-06') ON CONFLICT (accounts_id) DO NOTHING;
+VALUES ('83a39aa2-f59a-3589-8927-ce005f3092e9', 'ridgeway-consulting-llc', 'Checking', '0300', 92800.0, TRUE, FALSE, FALSE, '2023-09-06') ON CONFLICT (accounts_id) DO NOTHING;
 
 INSERT INTO accounts (accounts_id, business, account_type, account_number_last4, current_balance_usd, has_ach, has_wire, has_card, opened_at)
-VALUES ('c8c6af25-74db-03d3-b9bb-1107fa4f4410', 'sunset-auto-body-llc', 'Checking', '0400', 41250.00, FALSE, FALSE, FALSE, '2022-11-03') ON CONFLICT (accounts_id) DO NOTHING;
+VALUES ('e6c0af7e-38b6-204c-9b7e-0402fcaf511a', 'sunset-auto-body-llc', 'Checking', '0400', 41250.0, FALSE, FALSE, FALSE, '2022-11-03') ON CONFLICT (accounts_id) DO NOTHING;
 
 -- ----------------------------------------------------------------------------
 -- Loans: Credit facilities extended to a Business, tracked from inquiry through funding, servicing, and payoff. RiskRating is denormalized here for fast reads; every change is captured in RiskRatingHistory.
 -- ----------------------------------------------------------------------------
 INSERT INTO loans (loans_id, loan_number, business, originating_rm, underwriter, loan_purpose, principal_usd, rate_pct, term_months, underwriting_stage, risk_rating, risk_rating_label, dscr, ltv, global_cash_flow_usd, originated_at, funded_at)
-VALUES ('b7d83003-f942-1901-5b49-3c61580ece91', 'L-0051', 'stillwater-roasters-llc', 'devon-marshall', 'priya-iyer', 'Equipment', 250000, 7.25, 60, 'Funded', 4, 'Pass', 1.42, 0.78, 612000, '2025-02-10', '2025-03-01') ON CONFLICT (loans_id) DO NOTHING;
+VALUES ('46fca949-a81c-1590-e136-26f6996616bd', 'L-0051', 'stillwater-roasters-llc', 'devon-marshall', 'priya-iyer', 'Equipment', 250000, 7.25, 60, 'Funded', 4, 'Pass', 1.42, 0.78, 612000, '2025-02-10', '2025-03-01') ON CONFLICT (loans_id) DO NOTHING;
 
 INSERT INTO loans (loans_id, loan_number, business, originating_rm, underwriter, loan_purpose, principal_usd, rate_pct, term_months, underwriting_stage, risk_rating, risk_rating_label, dscr, ltv, global_cash_flow_usd, originated_at, funded_at)
-VALUES ('7ab57fab-7b66-a1b9-21a7-d1f0e3c4ffb2', 'L-0042', 'pine-hardware-inc', 'devon-marshall', 'thomas-bell', 'CRE', 1850000, 6.50, 240, 'Funded', 7, 'Substandard', 1.08, 0.71, 2100000, '2021-04-14', '2021-05-20') ON CONFLICT (loans_id) DO NOTHING;
+VALUES ('109471e6-b7f8-1cb6-eade-a9a61b3dd316', 'L-0042', 'pine-hardware-inc', 'devon-marshall', 'thomas-bell', 'CRE', 1850000, 6.5, 240, 'Funded', 7, 'Substandard', 1.08, 0.71, 2100000, '2021-04-14', '2021-05-20') ON CONFLICT (loans_id) DO NOTHING;
 
 INSERT INTO loans (loans_id, loan_number, business, originating_rm, underwriter, loan_purpose, principal_usd, rate_pct, term_months, underwriting_stage, risk_rating, risk_rating_label, dscr, ltv, global_cash_flow_usd, originated_at, funded_at)
-VALUES ('40394fb1-78e6-00a4-2972-85a17bca53c5', 'L-0078', 'ridgeway-consulting-llc', 'devon-marshall', 'priya-iyer', 'LOC', 100000, 8.00, 12, 'Funded', 3, 'Pass', 1.85, NULL, 320000, '2024-08-01', '2024-08-22') ON CONFLICT (loans_id) DO NOTHING;
+VALUES ('73633058-2d03-ca45-bfa1-cd3a677cf273', 'L-0078', 'ridgeway-consulting-llc', 'devon-marshall', 'priya-iyer', 'LOC', 100000, 8.0, 12, 'Funded', 3, 'Pass', 1.85, NULL, 320000, '2024-08-01', '2024-08-22') ON CONFLICT (loans_id) DO NOTHING;
 
 -- ----------------------------------------------------------------------------
 -- Covenants: Conditions attached to a Loan that must be tested on a recurring schedule (e.g. minimum DSCR each quarter). CovenantMonitoring runs the tickler calendar ahead of NextTestDate; breaches surface as SystemEvent Interactions.
 -- ----------------------------------------------------------------------------
 INSERT INTO covenants (covenants_id, loan, covenant_type, threshold_value, test_frequency, next_test_date, status, current_waiver_through)
-VALUES ('6f6d8438-f17d-e7b1-dbec-8903039daee0', 'l-0051', 'MinDSCR', 1.20, 'Quarterly', '2025-06-30', 'Active', NULL) ON CONFLICT (covenants_id) DO NOTHING;
+VALUES ('6df6aedd-b29b-71a1-2f58-482d42189032', 'l-0051', 'MinDSCR', 1.2, 'Quarterly', '2025-06-30', 'Active', NULL) ON CONFLICT (covenants_id) DO NOTHING;
 
 INSERT INTO covenants (covenants_id, loan, covenant_type, threshold_value, test_frequency, next_test_date, status, current_waiver_through)
-VALUES ('0fa6f8d8-25b6-309d-c293-c34d5b08ca90', 'l-0051', 'MaxLeverage', 3.00, 'Annual', '2026-03-01', 'Active', NULL) ON CONFLICT (covenants_id) DO NOTHING;
+VALUES ('43af7380-74c4-542f-9335-b287aaaba3b5', 'l-0051', 'MaxLeverage', 3.0, 'Annual', '2026-03-01', 'Active', NULL) ON CONFLICT (covenants_id) DO NOTHING;
 
 INSERT INTO covenants (covenants_id, loan, covenant_type, threshold_value, test_frequency, next_test_date, status, current_waiver_through)
-VALUES ('dab039ab-e44f-8f26-ec43-55b4c07f3b30', 'l-0051', 'ReportingFinancials', NULL, 'Annual', '2026-03-31', 'Active', NULL) ON CONFLICT (covenants_id) DO NOTHING;
+VALUES ('e0d23a01-54b0-493e-9c9f-3977abc432b5', 'l-0051', 'ReportingFinancials', NULL, 'Annual', '2026-03-31', 'Active', NULL) ON CONFLICT (covenants_id) DO NOTHING;
 
 INSERT INTO covenants (covenants_id, loan, covenant_type, threshold_value, test_frequency, next_test_date, status, current_waiver_through)
-VALUES ('ef108652-7b2e-1ab5-0a6e-e1afb384af69', 'l-0042', 'MinDSCR', 1.20, 'Quarterly', '2026-06-30', 'Breached', '2026-06-30') ON CONFLICT (covenants_id) DO NOTHING;
+VALUES ('b4669ce3-1970-3fde-4bda-acd37fd619b5', 'l-0042', 'MinDSCR', 1.2, 'Quarterly', '2026-06-30', 'Breached', '2026-06-30') ON CONFLICT (covenants_id) DO NOTHING;
 
 -- ----------------------------------------------------------------------------
 -- RiskRatingHistory: Time-series of risk-grade changes on a Loan. Regulators audit rating drift, so every migration is captured here. AnnualReview also writes a row even when the grade is reaffirmed unchanged.
 -- ----------------------------------------------------------------------------
 INSERT INTO risk_rating_history (risk_rating_history_id, loan, changed_by_user, effective_date, prior_grade, new_grade, reason)
-VALUES ('fb68ab79-03c0-8397-a627-c39ec8a88927', 'l-0042', 'thomas-bell', '2021-05-20', NULL, 4, 'Initial rating at funding.') ON CONFLICT (risk_rating_history_id) DO NOTHING;
+VALUES ('20199086-2a95-e55a-5c00-918d0909d478', 'l-0042', 'thomas-bell', '2021-05-20', NULL, 4, 'Initial rating at funding.') ON CONFLICT (risk_rating_history_id) DO NOTHING;
 
 INSERT INTO risk_rating_history (risk_rating_history_id, loan, changed_by_user, effective_date, prior_grade, new_grade, reason)
-VALUES ('783cc368-3211-7435-1c1e-4bd279f7af7a', 'l-0042', 'thomas-bell', '2025-05-02', 4, 6, 'DSCR covenant breach; downgrade to Special Mention.') ON CONFLICT (risk_rating_history_id) DO NOTHING;
+VALUES ('51804094-8b97-c951-c3aa-81e188cd7cc1', 'l-0042', 'thomas-bell', '2025-05-02', 4, 6, 'DSCR covenant breach; downgrade to Special Mention.') ON CONFLICT (risk_rating_history_id) DO NOTHING;
 
 INSERT INTO risk_rating_history (risk_rating_history_id, loan, changed_by_user, effective_date, prior_grade, new_grade, reason)
-VALUES ('629b0a2e-8a83-8d1f-1fc2-29a594c51fce', 'l-0042', 'thomas-bell', '2025-08-15', 6, 7, 'Sustained underperformance; downgrade to Substandard. Added to Watchlist.') ON CONFLICT (risk_rating_history_id) DO NOTHING;
+VALUES ('ba8005e1-30f8-e6ec-192f-f8ea525cbab9', 'l-0042', 'thomas-bell', '2025-08-15', 6, 7, 'Sustained underperformance; downgrade to Substandard. Added to Watchlist.') ON CONFLICT (risk_rating_history_id) DO NOTHING;
 
 INSERT INTO risk_rating_history (risk_rating_history_id, loan, changed_by_user, effective_date, prior_grade, new_grade, reason)
-VALUES ('84cf8221-eb20-0981-a74f-d18ef8017b26', 'l-0051', 'priya-iyer', '2025-03-01', NULL, 4, 'Initial rating at funding.') ON CONFLICT (risk_rating_history_id) DO NOTHING;
+VALUES ('34c91435-ddc1-150f-409d-8b3ebecd7108', 'l-0051', 'priya-iyer', '2025-03-01', NULL, 4, 'Initial rating at funding.') ON CONFLICT (risk_rating_history_id) DO NOTHING;
 
 INSERT INTO risk_rating_history (risk_rating_history_id, loan, changed_by_user, effective_date, prior_grade, new_grade, reason)
-VALUES ('128f361e-be63-cb16-030c-9d6aef1c4beb', 'l-0078', 'priya-iyer', '2024-08-22', NULL, 3, 'Initial rating at funding; strong cash flow coverage.') ON CONFLICT (risk_rating_history_id) DO NOTHING;
+VALUES ('472687e4-14c1-ecd7-91d8-9e68edbe883f', 'l-0078', 'priya-iyer', '2024-08-22', NULL, 3, 'Initial rating at funding; strong cash flow coverage.') ON CONFLICT (risk_rating_history_id) DO NOTHING;
 
 -- ----------------------------------------------------------------------------
 -- Documents: Files in the DocumentVault. A document attaches to either a Business (tax returns, formation docs) or a Loan (note, security agreement, appraisal). Both FKs are nullable so a document can hang off the appropriate parent.
 -- ----------------------------------------------------------------------------
 INSERT INTO documents (documents_id, business, loan, uploaded_by_user, filename, document_type, ocr_indexed, uploaded_via, uploaded_at)
-VALUES ('dadc9b43-531a-be67-952d-ca5d5a0f7a8b', 'stillwater-roasters-llc', NULL, 'devon-marshall', 'stillwater-2024-tax-return.pdf', 'TaxReturn', TRUE, 'RMDashboard', '2025-01-22') ON CONFLICT (documents_id) DO NOTHING;
+VALUES ('aa0b473d-66cd-07dc-20bb-9a647d3c4e51', 'stillwater-roasters-llc', NULL, 'devon-marshall', 'stillwater-2024-tax-return.pdf', 'TaxReturn', TRUE, 'RMDashboard', '2025-01-22') ON CONFLICT (documents_id) DO NOTHING;
 
 INSERT INTO documents (documents_id, business, loan, uploaded_by_user, filename, document_type, ocr_indexed, uploaded_via, uploaded_at)
-VALUES ('7f14c6ba-d533-0306-d855-c568987a1896', NULL, 'l-0051', 'priya-iyer', 'l-0051-promissory-note.pdf', 'Note', TRUE, 'RMDashboard', '2025-02-28') ON CONFLICT (documents_id) DO NOTHING;
+VALUES ('5ba9121b-1265-19ab-a385-0699d16006d4', NULL, 'l-0051', 'priya-iyer', 'l-0051-promissory-note.pdf', 'Note', TRUE, 'RMDashboard', '2025-02-28') ON CONFLICT (documents_id) DO NOTHING;
 
 INSERT INTO documents (documents_id, business, loan, uploaded_by_user, filename, document_type, ocr_indexed, uploaded_via, uploaded_at)
-VALUES ('ccdb51ed-24dd-219b-3705-ab8b30ee2d08', NULL, 'l-0051', 'priya-iyer', 'l-0051-security-agreement.pdf', 'SecurityAgreement', TRUE, 'RMDashboard', '2025-02-28') ON CONFLICT (documents_id) DO NOTHING;
+VALUES ('4903ebf3-212e-6783-415b-885e7779d32e', NULL, 'l-0051', 'priya-iyer', 'l-0051-security-agreement.pdf', 'SecurityAgreement', TRUE, 'RMDashboard', '2025-02-28') ON CONFLICT (documents_id) DO NOTHING;
 
 INSERT INTO documents (documents_id, business, loan, uploaded_by_user, filename, document_type, ocr_indexed, uploaded_via, uploaded_at)
-VALUES ('f3916535-0f38-8fb5-bb3d-910ce3bc27a2', 'stillwater-roasters-llc', NULL, NULL, 'stillwater-q4-2024-pl.pdf', 'FinancialStatement', TRUE, 'BusinessClientPortal', '2025-01-15') ON CONFLICT (documents_id) DO NOTHING;
+VALUES ('acef9966-dcfa-719a-2e0d-fe1f76583bdf', 'stillwater-roasters-llc', NULL, NULL, 'stillwater-q4-2024-pl.pdf', 'FinancialStatement', TRUE, 'BusinessClientPortal', '2025-01-15') ON CONFLICT (documents_id) DO NOTHING;
 
 INSERT INTO documents (documents_id, business, loan, uploaded_by_user, filename, document_type, ocr_indexed, uploaded_via, uploaded_at)
-VALUES ('7ba6f17f-a120-9778-f291-e68e886c0519', 'pine-hardware-inc', NULL, 'devon-marshall', 'pine-articles-of-incorporation.pdf', 'FormationDoc', TRUE, 'RMDashboard', '2019-06-21') ON CONFLICT (documents_id) DO NOTHING;
+VALUES ('1a69d337-2d5b-786f-dc53-b42571e88d0f', 'pine-hardware-inc', NULL, 'devon-marshall', 'pine-articles-of-incorporation.pdf', 'FormationDoc', TRUE, 'RMDashboard', '2019-06-21') ON CONFLICT (documents_id) DO NOTHING;
 
 -- ----------------------------------------------------------------------------
 -- Interactions: Unified activity-log feed for a Business. An Interaction is intentionally generic: InteractionType discriminates Note, Call, Visit, Task, Meeting, or SystemEvent. Covenant breaches, document requests, and other machine actions are written as SystemEvent interactions so they appear in the same stream as human-logged activity.
 -- ----------------------------------------------------------------------------
 INSERT INTO interactions (interactions_id, business, "user", interaction_type, subject, body, interaction_date, due_date, source)
-VALUES ('9fb6aac1-9075-b98c-1a6a-854a7d4035f7', 'stillwater-roasters-llc', 'devon-marshall', 'Note', 'Q2 PnL review', 'Reviewed Q2 P&L. Margins compressed slightly on green-coffee cost spike but volume up 12% YoY.', '2025-04-15', NULL, 'RMDashboard') ON CONFLICT (interactions_id) DO NOTHING;
+VALUES ('b86ff51d-e547-1751-f054-67973e5afcbe', 'stillwater-roasters-llc', 'devon-marshall', 'Note', 'Q2 PnL review', 'Reviewed Q2 P&L. Margins compressed slightly on green-coffee cost spike but volume up 12% YoY.', '2025-04-15', NULL, 'RMDashboard') ON CONFLICT (interactions_id) DO NOTHING;
 
 INSERT INTO interactions (interactions_id, business, "user", interaction_type, subject, body, interaction_date, due_date, source)
-VALUES ('f447bf00-766c-5967-eacd-3df8a4ddb3e3', 'stillwater-roasters-llc', 'devon-marshall', 'Call', 'Wire fee question', 'Sam called re: $30 outbound wire fee. Confirmed price; offered ACH-international as alternative.', '2025-04-15', NULL, 'RMDashboard') ON CONFLICT (interactions_id) DO NOTHING;
+VALUES ('f7f52847-da17-c9c1-c5e3-52399189922e', 'stillwater-roasters-llc', 'devon-marshall', 'Call', 'Wire fee question', 'Sam called re: $30 outbound wire fee. Confirmed price; offered ACH-international as alternative.', '2025-04-15', NULL, 'RMDashboard') ON CONFLICT (interactions_id) DO NOTHING;
 
 INSERT INTO interactions (interactions_id, business, "user", interaction_type, subject, body, interaction_date, due_date, source)
-VALUES ('566e6967-cabd-2f81-a870-cc31cba281ca', 'pine-hardware-inc', 'devon-marshall', 'Visit', 'Refi discussion', 'On-site visit. Discussed potential refinance of L-0042 once classified-asset status resolves.', '2025-04-15', NULL, 'RMDashboard') ON CONFLICT (interactions_id) DO NOTHING;
+VALUES ('e29a2ca4-5aeb-11fa-5bac-1c59c768c722', 'pine-hardware-inc', 'devon-marshall', 'Visit', 'Refi discussion', 'On-site visit. Discussed potential refinance of L-0042 once classified-asset status resolves.', '2025-04-15', NULL, 'RMDashboard') ON CONFLICT (interactions_id) DO NOTHING;
 
 INSERT INTO interactions (interactions_id, business, "user", interaction_type, subject, body, interaction_date, due_date, source)
-VALUES ('5d4b66ea-52f4-550d-6aa6-237de490bd30', 'ridgeway-consulting-llc', 'devon-marshall', 'Meeting', 'Annual review prep', 'Scheduled annual review meeting. Documentation requested in advance.', '2025-04-22', NULL, 'RMDashboard') ON CONFLICT (interactions_id) DO NOTHING;
+VALUES ('ee626824-12e3-cc86-7e43-441a2ab88d3c', 'ridgeway-consulting-llc', 'devon-marshall', 'Meeting', 'Annual review prep', 'Scheduled annual review meeting. Documentation requested in advance.', '2025-04-22', NULL, 'RMDashboard') ON CONFLICT (interactions_id) DO NOTHING;
 
 INSERT INTO interactions (interactions_id, business, "user", interaction_type, subject, body, interaction_date, due_date, source)
-VALUES ('83ff2311-0bcb-dd62-8fab-70abc9070b7c', 'pine-hardware-inc', 'devon-marshall', 'Task', 'Refi term sheet', 'Draft and send proposed refinance term sheet to Elena Novak.', '2025-04-15', '2025-04-18', 'RMDashboard') ON CONFLICT (interactions_id) DO NOTHING;
+VALUES ('06a4a7e6-69dd-74db-5445-d9c4d6c58428', 'pine-hardware-inc', 'devon-marshall', 'Task', 'Refi term sheet', 'Draft and send proposed refinance term sheet to Elena Novak.', '2025-04-15', '2025-04-18', 'RMDashboard') ON CONFLICT (interactions_id) DO NOTHING;
 
 INSERT INTO interactions (interactions_id, business, "user", interaction_type, subject, body, interaction_date, due_date, source)
-VALUES ('694d1ebe-0a16-5c22-c927-07584cf69a8f', 'pine-hardware-inc', NULL, 'SystemEvent', 'Covenant test approaching', 'Auto-generated by CovenantMonitoring: DSCR test for L-0042 due in 15 days.', '2025-04-15', NULL, 'SystemEvent') ON CONFLICT (interactions_id) DO NOTHING;
+VALUES ('d8a92509-9fb6-0f1a-285b-58e4969a8f3b', 'pine-hardware-inc', NULL, 'SystemEvent', 'Covenant test approaching', 'Auto-generated by CovenantMonitoring: DSCR test for L-0042 due in 15 days.', '2025-04-15', NULL, 'SystemEvent') ON CONFLICT (interactions_id) DO NOTHING;
 
 INSERT INTO interactions (interactions_id, business, "user", interaction_type, subject, body, interaction_date, due_date, source)
-VALUES ('4a2fc41f-1091-4cdd-06b4-1fb2eef08759', 'pine-hardware-inc', NULL, 'SystemEvent', 'Covenant breach L-0042 DSCR', 'DSCR test failed on L-0042. Computed 1.08; covenant threshold 1.20. Status: Breached.', '2025-05-02', NULL, 'SystemEvent') ON CONFLICT (interactions_id) DO NOTHING;
+VALUES ('4c3d04a0-1ec3-861b-d6a0-d9125d39ecd9', 'pine-hardware-inc', NULL, 'SystemEvent', 'Covenant breach L-0042 DSCR', 'DSCR test failed on L-0042. Computed 1.08; covenant threshold 1.20. Status: Breached.', '2025-05-02', NULL, 'SystemEvent') ON CONFLICT (interactions_id) DO NOTHING;
 
 INSERT INTO interactions (interactions_id, business, "user", interaction_type, subject, body, interaction_date, due_date, source)
-VALUES ('a3454262-638b-8f26-4983-7d186782a25e', 'sunset-auto-body-llc', 'renee-okafor', 'SystemEvent', 'SAR filed BSA AML', 'Verafin flagged structuring pattern. SAR drafted and filed via RegulatoryReporting to FinCEN.', '2025-05-04', NULL, 'SystemEvent') ON CONFLICT (interactions_id) DO NOTHING;
+VALUES ('c605ebc5-f3dd-0d08-b407-2a3531f5d231', 'sunset-auto-body-llc', 'renee-okafor', 'SystemEvent', 'SAR filed BSA AML', 'Verafin flagged structuring pattern. SAR drafted and filed via RegulatoryReporting to FinCEN.', '2025-05-04', NULL, 'SystemEvent') ON CONFLICT (interactions_id) DO NOTHING;
 
 INSERT INTO interactions (interactions_id, business, "user", interaction_type, subject, body, interaction_date, due_date, source)
-VALUES ('5f334ca2-3bb8-3364-f4dd-cd3beee9c398', 'stillwater-roasters-llc', NULL, 'Note', 'Customer portal message', 'Customer message: ''Uploaded Q4 P&L. Want to discuss a $25K LOC.''', '2025-01-15', NULL, 'BusinessClientPortal') ON CONFLICT (interactions_id) DO NOTHING;
+VALUES ('6cf49097-02b8-087f-9b3a-19076dd5f3c6', 'stillwater-roasters-llc', NULL, 'Note', 'Customer portal message', 'Customer message: ''Uploaded Q4 P&L. Want to discuss a $25K LOC.''', '2025-01-15', NULL, 'BusinessClientPortal') ON CONFLICT (interactions_id) DO NOTHING;
 

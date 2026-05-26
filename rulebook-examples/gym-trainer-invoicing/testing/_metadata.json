@@ -1,0 +1,59 @@
+{
+  "trainers": {
+    "primary_key": "trainer_id",
+    "computed_columns": [
+      "total_sessions",
+      "total_billed",
+      "total_outstanding"
+    ],
+    "record_count": 2
+  },
+  "clients": {
+    "primary_key": "client_id",
+    "computed_columns": [
+      "trainer_name",
+      "trainer_email",
+      "trainer_hourly_rate",
+      "session_count",
+      "total_invoiced",
+      "outstanding_balance",
+      "overdue_count",
+      "status"
+    ],
+    "record_count": 4
+  },
+  "invoices": {
+    "primary_key": "invoice_id",
+    "computed_columns": [
+      "client_name",
+      "client_email",
+      "trainer",
+      "trainer_name",
+      "subtotal",
+      "tax_amount",
+      "grace_days",
+      "days_since_due_date",
+      "days_past_due",
+      "late_fee",
+      "total",
+      "balance",
+      "is_paid",
+      "is_overdue",
+      "status"
+    ],
+    "record_count": 5
+  },
+  "sessions": {
+    "primary_key": "session_id",
+    "computed_columns": [
+      "client_name",
+      "trainer",
+      "client_hourly_rate",
+      "effective_rate",
+      "line_total",
+      "invoice_name",
+      "is_billed"
+    ],
+    "record_count": 13
+  }
+}

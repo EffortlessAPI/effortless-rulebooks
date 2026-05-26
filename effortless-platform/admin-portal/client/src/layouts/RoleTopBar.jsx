@@ -2,6 +2,7 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import * as Icons from "lucide-react";
 import { api } from "../lib/api.js";
 import { toast } from "../lib/toast.js";
+import DomainSwitcher from "../components/DomainSwitcher.jsx";
 
 // `mode` is "viewer" | "developer" | "admin"
 // `requiresDomain` is true when this layout's routes always have a :domain
@@ -26,8 +27,7 @@ export default function RoleTopBar({
   const activeDomain = params.domain || projects?.active || null;
   const activeProj   = (projects?.projects || []).find((p) => p.id === activeDomain);
 
-  const switchDomain = async (e) => {
-    const newId = e.target.value;
+  const switchDomain = async (newId) => {
     if (!newId) return;
     try {
       // Tell the server too — it still drives rulebook loading from active-domain.txt
@@ -70,26 +70,13 @@ export default function RoleTopBar({
       {showDomainBlock && (
         <div className="domain-block">
           <span className="domain-sep">›</span>
-          {activeProj?.logoUrl && (
-            <img
-              src={activeProj.logoUrl}
-              alt=""
-              className="domain-logo"
-              style={{ width: 28, height: 28, borderRadius: 6, objectFit: "cover" }}
-            />
-          )}
           <div className="domain-info">
             <span className="domain-name">{activeProj?.displayName || activeProj?.name || activeDomain || "—"}</span>
-            <select
-              value={activeDomain || ""}
-              onChange={switchDomain}
-              className="domain-switcher"
-              aria-label="Switch domain"
-            >
-              {(projects?.projects || []).map((p) => (
-                <option key={p.id} value={p.id}>{p.displayName || p.name}</option>
-              ))}
-            </select>
+            <DomainSwitcher
+              projects={projects?.projects || []}
+              activeId={activeDomain}
+              onPick={switchDomain}
+            />
           </div>
         </div>
       )}

@@ -1,7 +1,7 @@
 {
   "$schema": "https://example.com/cmcc-schema/v1",
-  "Name": "NakedClaude (v2)",
-  "Description": "3-entity domain (Customers, Statuses, AppUsers) \u2014 plain Claude adds state and auth.",
+  "Name": "v2: NakedClaude Demo",
+  "Description": "Rulebook generated from Airtable base \u0027v2: NakedClaude Demo\u0027.",
   "Customers": {
     "Description": "Table: Customers",
     "schema": [
@@ -16,7 +16,7 @@
         "datatype": "string",
         "type": "calculated",
         "nullable": true,
-        "formula": "=SUBSTITUTE(LOWER({{FullName}}), \" \", \"-\")"
+        "formula": "=SUBSTITUTE(LOWER({{FullName}}), \u0022 \u0022, \u0022-\u0022)"
       },
       {
         "name": "FirstName",
@@ -35,7 +35,7 @@
         "datatype": "string",
         "type": "calculated",
         "nullable": true,
-        "formula": "={{FirstName}} & \" \" & {{LastName}}"
+        "formula": "={{FirstName}} \u0026 \u0022 \u0022 \u0026 {{LastName}}"
       },
       {
         "name": "Notes",
@@ -62,7 +62,7 @@
         "datatype": "boolean",
         "type": "calculated",
         "nullable": true,
-        "formula": "=IF(AND({{StatusIsBlocking}}, {{FirstName}} = \"Bob\"), TRUE(), FALSE())"
+        "formula": "=IF(AND({{StatusIsBlocking}}, {{FirstName}} = \u0022Bob\u0022), TRUE(), FALSE())"
       },
       {
         "name": "StatusDescription",
@@ -294,7 +294,7 @@
         "datatype": "string",
         "type": "calculated",
         "nullable": true,
-        "formula": "=LOWER(SUBSTITUTE(SUBSTITUTE({{EmailAddress}}, \". \", \"-\"), \"@\", \"-\"))"
+        "formula": "=LOWER(SUBSTITUTE(SUBSTITUTE({{EmailAddress}}, \u0022. \u0022, \u0022-\u0022), \u0022@\u0022, \u0022-\u0022))"
       },
       {
         "name": "EmailAddress",
@@ -333,7 +333,7 @@
     ]
   },
   "_meta": {
-    "_CMCC_Summary": "Airtable export with schema-first type mapping: Schemas, Data, Relationships (FK links), Lookups (INDEX/MATCH), Aggregations (SUMIFS/COUNTIFS/Rollups), and Calculated fields (formulas) in Excel dialect. Field types are determined from Airtable's schema metadata FIRST (no coercion), with intelligent fallback to formula/data analysis only when schema is unavailable.",
+    "_CMCC_Summary": "Airtable export with schema-first type mapping: Schemas, Data, Relationships (FK links), Lookups (INDEX/MATCH), Aggregations (SUMIFS/COUNTIFS/Rollups), and Calculated fields (formulas) in Excel dialect. Field types are determined from Airtable\u0027s schema metadata FIRST (no coercion), with intelligent fallback to formula/data analysis only when schema is unavailable.",
     "_conversion_metadata": {
       "source_base_id": "app7G5emeY7miM4WN",
       "table_count": 3,

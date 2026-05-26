@@ -1,0 +1,114 @@
+[
+  {
+    "entity": "Goals",
+    "field": "ProgressPct",
+    "formula": "=IFERROR({{AvgScoreAchieved}} / {{TargetScore}} * 100, 0)",
+    "record_id": "alex-anxiety",
+    "error": "SyntaxError: Unexpected character '/' at position 29"
+  },
+  {
+    "entity": "Goals",
+    "field": "RemainingGap",
+    "formula": "=MAX(0, {{TargetScore}} - {{AvgScoreAchieved}})",
+    "record_id": "alex-anxiety",
+    "error": "SyntaxError: Unexpected character '-' at position 23"
+  },
+  {
+    "entity": "Goals",
+    "field": "ProgressPct",
+    "formula": "=IFERROR({{AvgScoreAchieved}} / {{TargetScore}} * 100, 0)",
+    "record_id": "alex-sleep",
+    "error": "SyntaxError: Unexpected character '/' at position 29"
+  },
+  {
+    "entity": "Goals",
+    "field": "RemainingGap",
+    "formula": "=MAX(0, {{TargetScore}} - {{AvgScoreAchieved}})",
+    "record_id": "alex-sleep",
+    "error": "SyntaxError: Unexpected character '-' at position 23"
+  },
+  {
+    "entity": "Goals",
+    "field": "ProgressPct",
+    "formula": "=IFERROR({{AvgScoreAchieved}} / {{TargetScore}} * 100, 0)",
+    "record_id": "blair-mood",
+    "error": "SyntaxError: Unexpected character '/' at position 29"
+  },
+  {
+    "entity": "Goals",
+    "field": "RemainingGap",
+    "formula": "=MAX(0, {{TargetScore}} - {{AvgScoreAchieved}})",
+    "record_id": "blair-mood",
+    "error": "SyntaxError: Unexpected character '-' at position 23"
+  },
+  {
+    "entity": "Goals",
+    "field": "ProgressPct",
+    "formula": "=IFERROR({{AvgScoreAchieved}} / {{TargetScore}} * 100, 0)",
+    "record_id": "blair-journal",
+    "error": "SyntaxError: Unexpected character '/' at position 29"
+  },
+  {
+    "entity": "Goals",
+    "field": "RemainingGap",
+    "formula": "=MAX(0, {{TargetScore}} - {{AvgScoreAchieved}})",
+    "record_id": "blair-journal",
+    "error": "SyntaxError: Unexpected character '-' at position 23"
+  },
+  {
+    "entity": "Goals",
+    "field": "ProgressPct",
+    "formula": "=IFERROR({{AvgScoreAchieved}} / {{TargetScore}} * 100, 0)",
+    "record_id": "casey-grief",
+    "error": "SyntaxError: Unexpected character '/' at position 29"
+  },
+  {
+    "entity": "Goals",
+    "field": "RemainingGap",
+    "formula": "=MAX(0, {{TargetScore}} - {{AvgScoreAchieved}})",
+    "record_id": "casey-grief",
+    "error": "SyntaxError: Unexpected character '-' at position 23"
+  },
+  {
+    "entity": "Goals",
+    "field": "ProgressPct",
+    "formula": "=IFERROR({{AvgScoreAchieved}} / {{TargetScore}} * 100, 0)",
+    "record_id": "casey-routine",
+    "error": "SyntaxError: Unexpected character '/' at position 29"
+  },
+  {
+    "entity": "Goals",
+    "field": "RemainingGap",
+    "formula": "=MAX(0, {{TargetScore}} - {{AvgScoreAchieved}})",
+    "record_id": "casey-routine",
+    "error": "SyntaxError: Unexpected character '-' at position 23"
+  },
+  {
+    "entity": "Goals",
+    "field": "ProgressPct",
+    "formula": "=IFERROR({{AvgScoreAchieved}} / {{TargetScore}} * 100, 0)",
+    "record_id": "drew-focus",
+    "error": "SyntaxError: Unexpected character '/' at position 29"
+  },
+  {
+    "entity": "Goals",
+    "field": "RemainingGap",
+    "formula": "=MAX(0, {{TargetScore}} - {{AvgScoreAchieved}})",
+    "record_id": "drew-focus",
+    "error": "SyntaxError: Unexpected character '-' at position 23"
+  },
+  {
+    "entity": "Goals",
+    "field": "ProgressPct",
+    "formula": "=IFERROR({{AvgScoreAchieved}} / {{TargetScore}} * 100, 0)",
+    "record_id": "drew-exercise",
+    "error": "SyntaxError: Unexpected character '/' at position 29"
+  },
+  {
+    "entity": "Goals",
+    "field": "RemainingGap",
+    "formula": "=MAX(0, {{TargetScore}} - {{AvgScoreAchieved}})",
+    "record_id": "drew-exercise",
+    "error": "SyntaxError: Unexpected character '-' at position 23"
+  }
+]

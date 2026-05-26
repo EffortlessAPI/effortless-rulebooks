@@ -1,0 +1,308 @@
+[
+  {
+    "rule_id": "gov-ai-01",
+    "target_table": "AIAgents",
+    "action": "keep",
+    "item_name": "RiskAnalysis-AI (agent-risk-ai, model risk-classifier-v2.4.1)",
+    "reason": "Explicitly named in the worked ABox with model version.",
+    "source_citation": "Article: explicit AI-agent name + model.",
+    "confidence": "explicit-in-article"
+  },
+  {
+    "rule_id": "gov-ai-02",
+    "target_table": "AIAgents",
+    "action": "remove",
+    "item_name": "ALL CURRENT (Ava, Leo, Maya, Eli, Zara, Owen, Nina, Kai, Sophie, Max, Liam, Jade, Mila, Noah, Ella)",
+    "reason": "Generic name catalog. Not in the worked ABox.",
+    "source_citation": "Article: one article-specific AI agent only.",
+    "confidence": "explicit-in-article"
+  },
+  {
+    "rule_id": "gov-ap-01",
+    "target_table": "AutomatedPipelines",
+    "action": "keep",
+    "item_name": "CI Pipeline (agent-ci-pipeline)",
+    "reason": "Explicitly named in the worked ABox.",
+    "source_citation": "Article: explicit pipeline name.",
+    "confidence": "explicit-in-article"
+  },
+  {
+    "rule_id": "gov-ap-02",
+    "target_table": "AutomatedPipelines",
+    "action": "remove",
+    "item_name": "ALL CURRENT (lead-notification-pipeline, e-commerce-order-sync, issue-tracking-bridge, newsletter-signup-sync, support-ticket-automation, devops-integration, finance-automation, project-intake-pipeline, crm-data-sync, calendar-integration, survey-data-pipeline, task-management-sync, cloud-storage-sync, email-notification-pipeline, survey-data-export)",
+    "reason": "Generic pipeline catalog. Not in the worked ABox.",
+    "source_citation": "Article: one article-specific pipeline only.",
+    "confidence": "explicit-in-article"
+  },
+  {
+    "rule_id": "gov-app-01",
+    "target_table": "Approvals",
+    "action": "keep",
+    "item_name": "Release Approval Gate",
+    "reason": "The single approval gate in the worked ABox.",
+    "source_citation": "Article: one approval gate in the worked example.",
+    "confidence": "explicit-in-article"
+  },
+  {
+    "rule_id": "gov-app-02",
+    "target_table": "Approvals",
+    "action": "remove",
+    "item_name": "ALL CURRENT (initial-review, manager-approval, compliance-check, final-authorization, executive-sign-off, quality-assurance, legal-review, finance-approval, it-security-gate, customer-confirmation)",
+    "reason": "Generic filler. Article's worked ABox has exactly one approval.",
+    "source_citation": "Article: one-approval count.",
+    "confidence": "explicit-in-article"
+  },
+  {
+    "rule_id": "gov-art-01",
+    "target_table": "Artifacts",
+    "action": "keep",
+    "item_name": "Risk Report",
+    "reason": "Article explicitly names this artifact in the provenance chain.",
+    "source_citation": "Article: artifact provenance chain.",
+    "confidence": "explicit-in-article"
+  },
+  {
+    "rule_id": "gov-art-02",
+    "target_table": "Artifacts",
+    "action": "keep",
+    "item_name": "Legal Clearance",
+    "reason": "Article explicitly names this artifact in the provenance chain.",
+    "source_citation": "Article: artifact provenance chain.",
+    "confidence": "explicit-in-article"
+  },
+  {
+    "rule_id": "gov-art-03",
+    "target_table": "Artifacts",
+    "action": "keep",
+    "item_name": "Release Authorization",
+    "reason": "Article explicitly names this artifact in the provenance chain.",
+    "source_citation": "Article: artifact provenance chain.",
+    "confidence": "explicit-in-article"
+  },
+  {
+    "rule_id": "gov-art-04",
+    "target_table": "Artifacts",
+    "action": "keep",
+    "item_name": "Deployment Log",
+    "reason": "Article explicitly names this artifact in the provenance chain.",
+    "source_citation": "Article: artifact provenance chain.",
+    "confidence": "explicit-in-article"
+  },
+  {
+    "rule_id": "gov-art-05",
+    "target_table": "Artifacts",
+    "action": "keep",
+    "item_name": "Post-Deployment Report",
+    "reason": "Article explicitly names this artifact in the provenance chain.",
+    "source_citation": "Article: artifact provenance chain.",
+    "confidence": "explicit-in-article"
+  },
+  {
+    "rule_id": "gov-dept-01",
+    "target_table": "Departments",
+    "action": "replace",
+    "item_name": "Engineering",
+    "reason": "Article explicitly says the worked workflow involves Engineering.",
+    "source_citation": "Article: Engineering involvement.",
+    "confidence": "explicit-in-article"
+  },
+  {
+    "rule_id": "gov-dept-02",
+    "target_table": "Departments",
+    "action": "replace",
+    "item_name": "Legal",
+    "reason": "Article explicitly says the worked workflow has exactly one Legal-owned step.",
+    "source_citation": "Article: Legal-owned step.",
+    "confidence": "explicit-in-article"
+  },
+  {
+    "rule_id": "gov-dept-03",
+    "target_table": "Departments",
+    "action": "remove",
+    "item_name": "ALL CURRENT (human-resources, finance, information-technology, marketing, sales, customer-service, research-and-development, legal, procurement, operations, administration, public-relations, quality-assurance, facilities-management, training-and-development)",
+    "reason": "Generic department catalog. Replace with article-backed Engineering and Legal departments specifically.",
+    "source_citation": "Article: two article-specific departments only.",
+    "confidence": "explicit-in-article"
+  },
+  {
+    "rule_id": "gov-ds-01",
+    "target_table": "Datasets",
+    "action": "keep",
+    "item_name": "Q1 2026 Risk Metrics (dataset-risk-metrics-q1-2026)",
+    "reason": "Article CQ8 explicitly returns this dataset processed by RiskAnalysis-AI.",
+    "source_citation": "Article: CQ8 explicit dataset reference.",
+    "confidence": "explicit-in-article"
+  },
+  {
+    "rule_id": "gov-ha-01",
+    "target_table": "HumanAgents",
+    "action": "keep",
+    "item_name": "Maria Gonzalez",
+    "reason": "Explicitly named in the worked ABox.",
+    "source_citation": "Article: explicit human-agent name.",
+    "confidence": "explicit-in-article"
+  },
+  {
+    "rule_id": "gov-ha-02",
+    "target_table": "HumanAgents",
+    "action": "keep",
+    "item_name": "James Okafor",
+    "reason": "Explicitly named in the worked ABox.",
+    "source_citation": "Article: explicit human-agent name.",
+    "confidence": "explicit-in-article"
+  },
+  {
+    "rule_id": "gov-ha-03",
+    "target_table": "HumanAgents",
+    "action": "keep",
+    "item_name": "Third human agent (TBD from full NTWF source)",
+    "reason": "Article states three human-agent individuals in the worked data; only two are visible in the uploaded text.",
+    "source_citation": "Article: three-human-agent count.",
+    "confidence": "implied-by-count"
+  },
+  {
+    "rule_id": "gov-ha-04",
+    "target_table": "HumanAgents",
+    "action": "remove",
+    "item_name": "ALL CURRENT (Alice Johnson, Brian Smith, Catherine Lee, David Kim, Emily Chen, Frank Miller, Grace Park, Henry Adams, Isabella Martinez, Jack Wilson, Karen Patel, Liam Nguyen, Monica Rivera, Nathan Brown, Olivia Clark)",
+    "reason": "Generic placeholder names. Not in the worked ABox.",
+    "source_citation": "Article: three article-specific human agents only.",
+    "confidence": "explicit-in-article"
+  },
+  {
+    "rule_id": "gov-precedes-01",
+    "target_table": "PrecedesSteps",
+    "action": "remove",
+    "item_name": "ALL CURRENT (step-1 through step-15, assign-task-to-team)",
+    "reason": "Generic helper rows. Replace with precedence data for the FIVE production-deployment steps only.",
+    "source_citation": "Article: five-step ordering chain.",
+    "confidence": "explicit-in-article"
+  },
+  {
+    "rule_id": "gov-role-01",
+    "target_table": "Roles",
+    "action": "keep",
+    "item_name": "Release Manager",
+    "reason": "Named in the article's delegation chain.",
+    "source_citation": "Article: explicit role name.",
+    "confidence": "explicit-in-article"
+  },
+  {
+    "rule_id": "gov-role-02",
+    "target_table": "Roles",
+    "action": "keep",
+    "item_name": "VP Engineering",
+    "reason": "Named in the article's delegation chain.",
+    "source_citation": "Article: explicit role name.",
+    "confidence": "explicit-in-article"
+  },
+  {
+    "rule_id": "gov-role-03",
+    "target_table": "Roles",
+    "action": "keep",
+    "item_name": "CTO",
+    "reason": "Named in the article's delegation chain.",
+    "source_citation": "Article: explicit role name.",
+    "confidence": "explicit-in-article"
+  },
+  {
+    "rule_id": "gov-role-04",
+    "target_table": "Roles",
+    "action": "keep",
+    "item_name": "Legal Compliance Reviewer",
+    "reason": "Explicitly used in the article's role discussion.",
+    "source_citation": "Article: explicit role name in role discussion.",
+    "confidence": "explicit-in-article"
+  },
+  {
+    "rule_id": "gov-role-05",
+    "target_table": "Roles",
+    "action": "keep",
+    "item_name": "Risk Analysis Agent (as a role concept)",
+    "reason": "Article uses 'Risk Analysis Agent' as the example of a role distinct from the AI system filling it.",
+    "source_citation": "Article: role-vs-agent distinction example.",
+    "confidence": "explicit-in-article"
+  },
+  {
+    "rule_id": "gov-role-06",
+    "target_table": "Roles",
+    "action": "keep",
+    "item_name": "6th role (TBD from full NTWF source)",
+    "reason": "Article states the worked ABox has 6 roles total; only 5 are exposed in the visible text.",
+    "source_citation": "Article: six-role count.",
+    "confidence": "requires-full-NTWF-source"
+  },
+  {
+    "rule_id": "gov-role-07",
+    "target_table": "Roles",
+    "action": "remove",
+    "item_name": "ALL CURRENT (administrator, editor, viewer, moderator, contributor, manager, support, analyst, developer, tester, hr, finance, guest, trainer, owner)",
+    "reason": "Generic role catalog. None matches the article's worked role set.",
+    "source_citation": "Article: six article-specific roles only.",
+    "confidence": "explicit-in-article"
+  },
+  {
+    "rule_id": "gov-wf-01",
+    "target_table": "Workflows",
+    "action": "keep",
+    "item_name": "Production Deployment Workflow",
+    "reason": "The article's worked ABox names ss:workflow-production-deployment / 'Production Deployment Workflow' as THE worked workflow instance.",
+    "source_citation": "Article: explicit naming of the worked workflow.",
+    "confidence": "explicit-in-article"
+  },
+  {
+    "rule_id": "gov-wf-02",
+    "target_table": "Workflows",
+    "action": "remove",
+    "item_name": "ALL OTHER (Employee Onboarding, Invoice Approval, Content Publishing, Leave Request, IT Support Ticketing, Expense Reimbursement, Annual Performance Review, Procurement, Customer Feedback, Project Kickoff, Contract Review, Asset Management, Recruitment, Incident Reporting, Change Management)",
+    "reason": "Generic filler from the Airtable export. None of them is the article's worked workflow.",
+    "source_citation": "Article worked ABox names exactly one workflow.",
+    "confidence": "explicit-in-article"
+  },
+  {
+    "rule_id": "gov-wfmeta-01",
+    "target_table": "Workflows",
+    "action": "keep",
+    "item_name": "Worked-workflow metadata: Title=Production Deployment Workflow, Modified=2026-01-15",
+    "reason": "Article exposes these specific values for the worked workflow.",
+    "source_citation": "Article: workflow metadata values.",
+    "confidence": "explicit-in-article"
+  },
+  {
+    "rule_id": "gov-ws-01",
+    "target_table": "WorkflowSteps",
+    "action": "keep",
+    "item_name": "5 steps of Production Deployment Workflow",
+    "reason": "Article explicitly says the workflow has five steps that produce five named artifacts.",
+    "source_citation": "Article: five-step count + five-artifact provenance chain.",
+    "confidence": "explicit-in-article"
+  },
+  {
+    "rule_id": "gov-ws-02",
+    "target_table": "WorkflowSteps",
+    "action": "keep",
+    "item_name": "Release Approval Gate (step 3, double-typed ApprovalGate + WorkflowStep)",
+    "reason": "Article explicitly names this step and its type-union.",
+    "source_citation": "Article: step 3 is double-typed.",
+    "confidence": "explicit-in-article"
+  },
+  {
+    "rule_id": "gov-ws-03",
+    "target_table": "WorkflowSteps",
+    "action": "remove",
+    "item_name": "ALL CURRENT (submit-request, manager-review, automated-eligibility-check, finance-approval, document-verification, quality-assurance-review, system-notification-sent, final-approval, archive-request, customer-feedback-collection, legal-compliance-check, assign-task-to-team, some-new-task, team-lead-review, generate-report, close-workflow)",
+    "reason": "Generic filler. Not the article's worked production-deployment steps.",
+    "source_citation": "Article worked ABox supports exactly 5 deployment-specific steps.",
+    "confidence": "explicit-in-article"
+  },
+  {
+    "rule_id": "gov-ws-note",
+    "target_table": "WorkflowSteps",
+    "action": "keep",
+    "item_name": "Other 4 step labels (TBD from full NTWF ontology)",
+    "reason": "Article confirms five-step count but does not spell every label in the visible text. Need to be reconstructed from full NTWF PDF/TTL or from the artifact-chain ordering.",
+    "source_citation": "Article: implies via artifact chain but does not enumerate the four non-gate names.",
+    "confidence": "requires-full-NTWF-source"
+  }
+]

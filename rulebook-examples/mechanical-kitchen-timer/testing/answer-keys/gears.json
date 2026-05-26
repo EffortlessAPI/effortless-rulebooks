@@ -1,0 +1,110 @@
+[
+  {
+    "gear_id": "Bessie's first gear",
+    "in_gear_train": "Bessie's gear train",
+    "position_in_chain": 1,
+    "tooth_count": 48,
+    "is_first_in_chain": true,
+    "is_last_in_chain": false,
+    "size_class": "large"
+  },
+  {
+    "gear_id": "Bessie's second gear",
+    "in_gear_train": "Bessie's gear train",
+    "position_in_chain": 2,
+    "tooth_count": 36,
+    "is_first_in_chain": false,
+    "is_last_in_chain": false,
+    "size_class": "medium"
+  },
+  {
+    "gear_id": "Bessie's third gear",
+    "in_gear_train": "Bessie's gear train",
+    "position_in_chain": 3,
+    "tooth_count": 24,
+    "is_first_in_chain": false,
+    "is_last_in_chain": true,
+    "size_class": "small"
+  },
+  {
+    "gear_id": "Olive's first gear",
+    "in_gear_train": "Olive's gear train",
+    "position_in_chain": 1,
+    "tooth_count": 48,
+    "is_first_in_chain": true,
+    "is_last_in_chain": false,
+    "size_class": "large"
+  },
+  {
+    "gear_id": "Olive's second gear",
+    "in_gear_train": "Olive's gear train",
+    "position_in_chain": 2,
+    "tooth_count": 36,
+    "is_first_in_chain": false,
+    "is_last_in_chain": false,
+    "size_class": "medium"
+  },
+  {
+    "gear_id": "Olive's third gear",
+    "in_gear_train": "Olive's gear train",
+    "position_in_chain": 3,
+    "tooth_count": 24,
+    "is_first_in_chain": false,
+    "is_last_in_chain": true,
+    "size_class": "small"
+  },
+  {
+    "gear_id": "Rufus's first gear",
+    "in_gear_train": "Rufus's gear train",
+    "position_in_chain": 1,
+    "tooth_count": 48,
+    "is_first_in_chain": true,
+    "is_last_in_chain": false,
+    "size_class": "large"
+  },
+  {
+    "gear_id": "Rufus's second gear",
+    "in_gear_train": "Rufus's gear train",
+    "position_in_chain": 2,
+    "tooth_count": 36,
+    "is_first_in_chain": false,
+    "is_last_in_chain": false,
+    "size_class": "medium"
+  },
+  {
+    "gear_id": "Rufus's third gear",
+    "in_gear_train": "Rufus's gear train",
+    "position_in_chain": 3,
+    "tooth_count": 24,
+    "is_first_in_chain": false,
+    "is_last_in_chain": true,
+    "size_class": "small"
+  },
+  {
+    "gear_id": "Twigs's first gear",
+    "in_gear_train": "Twigs's gear train",
+    "position_in_chain": 1,
+    "tooth_count": 48,
+    "is_first_in_chain": true,
+    "is_last_in_chain": false,
+    "size_class": "large"
+  },
+  {
+    "gear_id": "Twigs's second gear",
+    "in_gear_train": "Twigs's gear train",
+    "position_in_chain": 2,
+    "tooth_count": 36,
+    "is_first_in_chain": false,
+    "is_last_in_chain": false,
+    "size_class": "medium"
+  },
+  {
+    "gear_id": "Twigs's third gear",
+    "in_gear_train": "Twigs's gear train",
+    "position_in_chain": 3,
+    "tooth_count": 24,
+    "is_first_in_chain": false,
+    "is_last_in_chain": true,
+    "size_class": "small"
+  }
+]

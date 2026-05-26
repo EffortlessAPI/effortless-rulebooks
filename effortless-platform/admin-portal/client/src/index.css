@@ -255,6 +255,81 @@ ul li  { margin-bottom: 4px; }
 }
 .domain-switcher { width: 180px; max-width: 40vw; }
 
+/* ── Domain switcher (custom dropdown) ───────────────────── */
+.domain-switcher-wrap { position: relative; }
+.domain-switcher-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--panel-2); border: 1px solid var(--border); color: var(--text);
+  border-radius: 6px; padding: 3px 6px 3px 4px; cursor: pointer;
+  height: 32px;
+}
+.domain-switcher-btn:hover { border-color: var(--accent); }
+.domain-switcher-btn-logo {
+  width: 24px; height: 24px; border-radius: 4px; object-fit: cover;
+  background: var(--panel); flex-shrink: 0;
+}
+.domain-switcher-btn-logo.placeholder {
+  display: inline-flex; align-items: center; justify-content: center;
+  color: var(--muted);
+}
+.domain-switcher-caret { color: var(--muted); }
+
+.domain-switcher-menu {
+  position: absolute; top: calc(100% + 4px); left: 0;
+  width: 280px; max-width: 80vw;
+  background: var(--panel); border: 1px solid var(--border); border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.45);
+  z-index: 100;
+  display: flex; flex-direction: column;
+  max-height: 60vh;
+}
+.domain-switcher-search {
+  position: relative;
+  padding: 8px; border-bottom: 1px solid var(--border);
+}
+.domain-switcher-search-icon {
+  position: absolute; left: 16px; top: 50%; transform: translateY(-50%);
+  color: var(--muted); pointer-events: none;
+}
+.domain-switcher-search input {
+  width: 100%; padding-left: 28px; height: 30px; font-size: 13px;
+}
+.domain-switcher-list {
+  overflow-y: auto; padding: 4px;
+}
+.domain-switcher-empty {
+  padding: 12px; text-align: center; color: var(--muted); font-size: 12px;
+}
+.domain-switcher-item {
+  display: flex; align-items: center; gap: 8px;
+  width: 100%; padding: 6px 8px; border: none; background: none;
+  color: var(--text); text-align: left; cursor: pointer; border-radius: 4px;
+  font: inherit;
+}
+.domain-switcher-item:hover { background: var(--panel-2); }
+.domain-switcher-item.active { background: var(--panel-2); color: var(--accent); }
+.domain-switcher-item-logo {
+  width: 22px; height: 22px; border-radius: 4px; object-fit: cover;
+  background: var(--panel-2); flex-shrink: 0;
+}
+.domain-switcher-item-logo.placeholder {
+  display: inline-flex; align-items: center; justify-content: center;
+  color: var(--muted);
+}
+.domain-switcher-item-name {
+  flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  font-size: 13px;
+}
+.domain-switcher-item-check { color: var(--accent); flex-shrink: 0; }
+
+/* ── Domain card (pick-a-domain) ─────────────────────────── */
+.domain-card { display: flex; align-items: flex-start; gap: 12px; }
+.domain-card-logo {
+  width: 48px; height: 48px; border-radius: 8px; object-fit: cover;
+  background: var(--panel-2); flex-shrink: 0;
+}
+.domain-card-text { flex: 1; min-width: 0; }
+
 .topbar-spacer { flex: 1; }
 .topbar-user { display: flex; align-items: center; gap: 8px; }
 .topbar-user-name { color: var(--muted); font-size: 13px; }
@@ -387,6 +462,8 @@ ul li  { margin-bottom: 4px; }
     flex: 1 1 auto;
   }
   .domain-switcher { display: none; }
+  .domain-switcher-btn { padding: 2px 4px; height: 36px; }
+  .domain-switcher-menu { width: 90vw; }
   .topbar-spacer { flex: 0; }
   .topbar-user { flex: 0 0 auto; }
   .topbar-user-name { display: none; }

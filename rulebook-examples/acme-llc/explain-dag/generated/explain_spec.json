@@ -1,8 +1,8 @@
 {
   "schema_version": "erb.explain_spec.v1",
   "rulebook": {
-    "name": "ACME, LLC (template)",
-    "rulebook_hash": "sha256:79d49dfd9a07ddbe1d536c794dcd199e"
+    "name": "ACME, LLC",
+    "rulebook_hash": "sha256:056e08f2fe6eff6d737aa9531293b0cc"
   },
   "semantics": {
     "profile": "excel",

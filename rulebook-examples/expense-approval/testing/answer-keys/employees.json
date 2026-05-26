@@ -1,0 +1,38 @@
+[
+  {
+    "employee_id": "alice-employee",
+    "first_name": "Alice",
+    "last_name": "Anderson",
+    "email_address": "alice@example.com",
+    "role": "employee",
+    "budget_limit": 500,
+    "name": "Alice Anderson"
+  },
+  {
+    "employee_id": "bob-manager",
+    "first_name": "Bob",
+    "last_name": "Burton",
+    "email_address": "bob@example.com",
+    "role": "manager",
+    "budget_limit": null,
+    "name": "Bob Burton"
+  },
+  {
+    "employee_id": "carol-finance",
+    "first_name": "Carol",
+    "last_name": "Chen",
+    "email_address": "carol@example.com",
+    "role": "finance",
+    "budget_limit": null,
+    "name": "Carol Chen"
+  },
+  {
+    "employee_id": "dave-employee",
+    "first_name": "Dave",
+    "last_name": "Davies",
+    "email_address": "dave@example.com",
+    "role": "employee",
+    "budget_limit": 200,
+    "name": "Dave Davies"
+  }
+]

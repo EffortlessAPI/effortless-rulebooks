@@ -24,10 +24,10 @@ INSERT INTO products (product_id, unit_price, reorder_level)
 VALUES ('WIDGET-A', 12.99, 50) ON CONFLICT (product_id) DO NOTHING;
 
 INSERT INTO products (product_id, unit_price, reorder_level)
-VALUES ('GADGET-B', 24.50, 30) ON CONFLICT (product_id) DO NOTHING;
+VALUES ('GADGET-B', 24.5, 30) ON CONFLICT (product_id) DO NOTHING;
 
 INSERT INTO products (product_id, unit_price, reorder_level)
-VALUES ('PART-C', 5.00, 100) ON CONFLICT (product_id) DO NOTHING;
+VALUES ('PART-C', 5.0, 100) ON CONFLICT (product_id) DO NOTHING;
 
 INSERT INTO products (product_id, unit_price, reorder_level)
 VALUES ('TOOL-D', 99.99, 10) ON CONFLICT (product_id) DO NOTHING;

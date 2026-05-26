@@ -1,0 +1,72 @@
+[
+  {
+    "assignment_id": "assign-1",
+    "event_ref": "tech-talk-1",
+    "speaker_ref": "alice@speakers.local",
+    "name": "assign-1",
+    "is_available": false
+  },
+  {
+    "assignment_id": "assign-10",
+    "event_ref": "meetup-1",
+    "speaker_ref": "overbooked@speakers.local",
+    "name": "assign-10",
+    "is_available": false
+  },
+  {
+    "assignment_id": "assign-2",
+    "event_ref": "tech-talk-1",
+    "speaker_ref": "bob@speakers.local",
+    "name": "assign-2",
+    "is_available": false
+  },
+  {
+    "assignment_id": "assign-3",
+    "event_ref": "workshop-1",
+    "speaker_ref": "bob@speakers.local",
+    "name": "assign-3",
+    "is_available": false
+  },
+  {
+    "assignment_id": "assign-4",
+    "event_ref": "panel-1",
+    "speaker_ref": "alice@speakers.local",
+    "name": "assign-4",
+    "is_available": false
+  },
+  {
+    "assignment_id": "assign-5",
+    "event_ref": "panel-1",
+    "speaker_ref": "carol@speakers.local",
+    "name": "assign-5",
+    "is_available": false
+  },
+  {
+    "assignment_id": "assign-6",
+    "event_ref": "meetup-1",
+    "speaker_ref": "carol@speakers.local",
+    "name": "assign-6",
+    "is_available": false
+  },
+  {
+    "assignment_id": "assign-7",
+    "event_ref": "tech-talk-1",
+    "speaker_ref": "overbooked@speakers.local",
+    "name": "assign-7",
+    "is_available": false
+  },
+  {
+    "assignment_id": "assign-8",
+    "event_ref": "workshop-1",
+    "speaker_ref": "overbooked@speakers.local",
+    "name": "assign-8",
+    "is_available": false
+  },
+  {
+    "assignment_id": "assign-9",
+    "event_ref": "panel-1",
+    "speaker_ref": "overbooked@speakers.local",
+    "name": "assign-9",
+    "is_available": false
+  }
+]

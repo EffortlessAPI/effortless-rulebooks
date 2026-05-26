@@ -1,0 +1,66 @@
+[
+  {
+    "goals_id": "alex-anxiety",
+    "title": "Reduce anxiety in social settings",
+    "client": "alex-r",
+    "target_score": 8,
+    "name": "alex-anxiety",
+    "is_on_track": false
+  },
+  {
+    "goals_id": "alex-sleep",
+    "title": "Improve sleep quality",
+    "client": "alex-r",
+    "target_score": 7,
+    "name": "alex-sleep",
+    "is_on_track": false
+  },
+  {
+    "goals_id": "blair-journal",
+    "title": "Daily journaling",
+    "client": "blair-m",
+    "target_score": 6,
+    "name": "blair-journal",
+    "is_on_track": false
+  },
+  {
+    "goals_id": "blair-mood",
+    "title": "Stabilize daily mood",
+    "client": "blair-m",
+    "target_score": 8,
+    "name": "blair-mood",
+    "is_on_track": false
+  },
+  {
+    "goals_id": "casey-grief",
+    "title": "Work through grief",
+    "client": "casey-l",
+    "target_score": 9,
+    "name": "casey-grief",
+    "is_on_track": false
+  },
+  {
+    "goals_id": "casey-routine",
+    "title": "Establish morning routine",
+    "client": "casey-l",
+    "target_score": 7,
+    "name": "casey-routine",
+    "is_on_track": false
+  },
+  {
+    "goals_id": "drew-exercise",
+    "title": "Exercise 3x per week",
+    "client": "drew-p",
+    "target_score": 7,
+    "name": "drew-exercise",
+    "is_on_track": false
+  },
+  {
+    "goals_id": "drew-focus",
+    "title": "Improve work focus",
+    "client": "drew-p",
+    "target_score": 8,
+    "name": "drew-focus",
+    "is_on_track": false
+  }
+]

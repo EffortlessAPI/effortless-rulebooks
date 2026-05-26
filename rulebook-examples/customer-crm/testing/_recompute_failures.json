@@ -1,0 +1,198 @@
+[
+  {
+    "entity": "Orders",
+    "field": "Balance",
+    "formula": "={{Total}} - {{AmountPaid}}",
+    "record_id": null,
+    "error": "SyntaxError: Unexpected character '-' at position 10"
+  },
+  {
+    "entity": "Orders",
+    "field": "IsRecent",
+    "formula": "=DATEDIFF(TODAY(), {{OrderDate}}, \"days\") <= 90",
+    "record_id": null,
+    "error": "ValueError: Unknown function: DATEDIFF"
+  },
+  {
+    "entity": "Orders",
+    "field": "Balance",
+    "formula": "={{Total}} - {{AmountPaid}}",
+    "record_id": null,
+    "error": "SyntaxError: Unexpected character '-' at position 10"
+  },
+  {
+    "entity": "Orders",
+    "field": "IsRecent",
+    "formula": "=DATEDIFF(TODAY(), {{OrderDate}}, \"days\") <= 90",
+    "record_id": null,
+    "error": "ValueError: Unknown function: DATEDIFF"
+  },
+  {
+    "entity": "Orders",
+    "field": "Balance",
+    "formula": "={{Total}} - {{AmountPaid}}",
+    "record_id": null,
+    "error": "SyntaxError: Unexpected character '-' at position 10"
+  },
+  {
+    "entity": "Orders",
+    "field": "IsRecent",
+    "formula": "=DATEDIFF(TODAY(), {{OrderDate}}, \"days\") <= 90",
+    "record_id": null,
+    "error": "ValueError: Unknown function: DATEDIFF"
+  },
+  {
+    "entity": "Orders",
+    "field": "Balance",
+    "formula": "={{Total}} - {{AmountPaid}}",
+    "record_id": null,
+    "error": "SyntaxError: Unexpected character '-' at position 10"
+  },
+  {
+    "entity": "Orders",
+    "field": "IsRecent",
+    "formula": "=DATEDIFF(TODAY(), {{OrderDate}}, \"days\") <= 90",
+    "record_id": null,
+    "error": "ValueError: Unknown function: DATEDIFF"
+  },
+  {
+    "entity": "Orders",
+    "field": "Balance",
+    "formula": "={{Total}} - {{AmountPaid}}",
+    "record_id": null,
+    "error": "SyntaxError: Unexpected character '-' at position 10"
+  },
+  {
+    "entity": "Orders",
+    "field": "IsRecent",
+    "formula": "=DATEDIFF(TODAY(), {{OrderDate}}, \"days\") <= 90",
+    "record_id": null,
+    "error": "ValueError: Unknown function: DATEDIFF"
+  },
+  {
+    "entity": "Orders",
+    "field": "Balance",
+    "formula": "={{Total}} - {{AmountPaid}}",
+    "record_id": null,
+    "error": "SyntaxError: Unexpected character '-' at position 10"
+  },
+  {
+    "entity": "Orders",
+    "field": "IsRecent",
+    "formula": "=DATEDIFF(TODAY(), {{OrderDate}}, \"days\") <= 90",
+    "record_id": null,
+    "error": "ValueError: Unknown function: DATEDIFF"
+  },
+  {
+    "entity": "Orders",
+    "field": "Balance",
+    "formula": "={{Total}} - {{AmountPaid}}",
+    "record_id": null,
+    "error": "SyntaxError: Unexpected character '-' at position 10"
+  },
+  {
+    "entity": "Orders",
+    "field": "IsRecent",
+    "formula": "=DATEDIFF(TODAY(), {{OrderDate}}, \"days\") <= 90",
+    "record_id": null,
+    "error": "ValueError: Unknown function: DATEDIFF"
+  },
+  {
+    "entity": "Orders",
+    "field": "Balance",
+    "formula": "={{Total}} - {{AmountPaid}}",
+    "record_id": null,
+    "error": "SyntaxError: Unexpected character '-' at position 10"
+  },
+  {
+    "entity": "Orders",
+    "field": "IsRecent",
+    "formula": "=DATEDIFF(TODAY(), {{OrderDate}}, \"days\") <= 90",
+    "record_id": null,
+    "error": "ValueError: Unknown function: DATEDIFF"
+  },
+  {
+    "entity": "Orders",
+    "field": "Balance",
+    "formula": "={{Total}} - {{AmountPaid}}",
+    "record_id": null,
+    "error": "SyntaxError: Unexpected character '-' at position 10"
+  },
+  {
+    "entity": "Orders",
+    "field": "IsRecent",
+    "formula": "=DATEDIFF(TODAY(), {{OrderDate}}, \"days\") <= 90",
+    "record_id": null,
+    "error": "ValueError: Unknown function: DATEDIFF"
+  },
+  {
+    "entity": "Orders",
+    "field": "Balance",
+    "formula": "={{Total}} - {{AmountPaid}}",
+    "record_id": null,
+    "error": "SyntaxError: Unexpected character '-' at position 10"
+  },
+  {
+    "entity": "Orders",
+    "field": "IsRecent",
+    "formula": "=DATEDIFF(TODAY(), {{OrderDate}}, \"days\") <= 90",
+    "record_id": null,
+    "error": "ValueError: Unknown function: DATEDIFF"
+  },
+  {
+    "entity": "OrderLines",
+    "field": "LineTotal",
+    "formula": "={{Quantity}} * {{FCSUnitPrice}}",
+    "record_id": null,
+    "error": "SyntaxError: Unexpected character '*' at position 13"
+  },
+  {
+    "entity": "OrderLines",
+    "field": "LineTotal",
+    "formula": "={{Quantity}} * {{FCSUnitPrice}}",
+    "record_id": null,
+    "error": "SyntaxError: Unexpected character '*' at position 13"
+  },
+  {
+    "entity": "OrderLines",
+    "field": "LineTotal",
+    "formula": "={{Quantity}} * {{FCSUnitPrice}}",
+    "record_id": null,
+    "error": "SyntaxError: Unexpected character '*' at position 13"
+  },
+  {
+    "entity": "OrderLines",
+    "field": "LineTotal",
+    "formula": "={{Quantity}} * {{FCSUnitPrice}}",
+    "record_id": null,
+    "error": "SyntaxError: Unexpected character '*' at position 13"
+  },
+  {
+    "entity": "OrderLines",
+    "field": "LineTotal",
+    "formula": "={{Quantity}} * {{FCSUnitPrice}}",
+    "record_id": null,
+    "error": "SyntaxError: Unexpected character '*' at position 13"
+  },
+  {
+    "entity": "OrderLines",
+    "field": "LineTotal",
+    "formula": "={{Quantity}} * {{FCSUnitPrice}}",
+    "record_id": null,
+    "error": "SyntaxError: Unexpected character '*' at position 13"
+  },
+  {
+    "entity": "OrderLines",
+    "field": "LineTotal",
+    "formula": "={{Quantity}} * {{FCSUnitPrice}}",
+    "record_id": null,
+    "error": "SyntaxError: Unexpected character '*' at position 13"
+  },
+  {
+    "entity": "OrderLines",
+    "field": "LineTotal",
+    "formula": "={{Quantity}} * {{FCSUnitPrice}}",
+    "record_id": null,
+    "error": "SyntaxError: Unexpected character '*' at position 13"
+  }
+]

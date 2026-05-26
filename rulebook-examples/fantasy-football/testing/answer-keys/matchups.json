@@ -1,0 +1,182 @@
+[
+  {
+    "matchup_id": "week1-arsenal-dynasty",
+    "week": 1,
+    "team1": "allens-arsenal",
+    "team2": "davantes-dynasty",
+    "name": "week1-arsenal-dynasty",
+    "winner": "davantes-dynasty",
+    "loser": "allens-arsenal",
+    "is_tie_game": false
+  },
+  {
+    "matchup_id": "week1-limit-wins",
+    "week": 1,
+    "team1": "hurts-limit",
+    "team2": "defense-wins",
+    "name": "week1-limit-wins",
+    "winner": "defense-wins",
+    "loser": "hurts-limit",
+    "is_tie_game": false
+  },
+  {
+    "matchup_id": "week1-mob-hustlers",
+    "week": 1,
+    "team1": "mahomes-mob",
+    "team2": "hurts-hustlers",
+    "name": "week1-mob-hustlers",
+    "winner": "hurts-hustlers",
+    "loser": "mahomes-mob",
+    "is_tie_game": false
+  },
+  {
+    "matchup_id": "week2-dynasty-limit",
+    "week": 2,
+    "team1": "davantes-dynasty",
+    "team2": "hurts-limit",
+    "name": "week2-dynasty-limit",
+    "winner": "hurts-limit",
+    "loser": "davantes-dynasty",
+    "is_tie_game": false
+  },
+  {
+    "matchup_id": "week2-hustlers-wins",
+    "week": 2,
+    "team1": "hurts-hustlers",
+    "team2": "defense-wins",
+    "name": "week2-hustlers-wins",
+    "winner": "defense-wins",
+    "loser": "hurts-hustlers",
+    "is_tie_game": false
+  },
+  {
+    "matchup_id": "week2-mob-arsenal",
+    "week": 2,
+    "team1": "mahomes-mob",
+    "team2": "allens-arsenal",
+    "name": "week2-mob-arsenal",
+    "winner": "allens-arsenal",
+    "loser": "mahomes-mob",
+    "is_tie_game": false
+  },
+  {
+    "matchup_id": "week3-arsenal-mob",
+    "week": 3,
+    "team1": "allens-arsenal",
+    "team2": "mahomes-mob",
+    "name": "week3-arsenal-mob",
+    "winner": "mahomes-mob",
+    "loser": "allens-arsenal",
+    "is_tie_game": false
+  },
+  {
+    "matchup_id": "week3-hustlers-dynasty",
+    "week": 3,
+    "team1": "hurts-hustlers",
+    "team2": "davantes-dynasty",
+    "name": "week3-hustlers-dynasty",
+    "winner": "davantes-dynasty",
+    "loser": "hurts-hustlers",
+    "is_tie_game": false
+  },
+  {
+    "matchup_id": "week3-wins-limit",
+    "week": 3,
+    "team1": "defense-wins",
+    "team2": "hurts-limit",
+    "name": "week3-wins-limit",
+    "winner": "hurts-limit",
+    "loser": "defense-wins",
+    "is_tie_game": false
+  },
+  {
+    "matchup_id": "week4-arsenal-wins",
+    "week": 4,
+    "team1": "allens-arsenal",
+    "team2": "defense-wins",
+    "name": "week4-arsenal-wins",
+    "winner": "defense-wins",
+    "loser": "allens-arsenal",
+    "is_tie_game": false
+  },
+  {
+    "matchup_id": "week4-hustlers-limit",
+    "week": 4,
+    "team1": "hurts-hustlers",
+    "team2": "hurts-limit",
+    "name": "week4-hustlers-limit",
+    "winner": "hurts-limit",
+    "loser": "hurts-hustlers",
+    "is_tie_game": false
+  },
+  {
+    "matchup_id": "week4-mob-dynasty",
+    "week": 4,
+    "team1": "mahomes-mob",
+    "team2": "davantes-dynasty",
+    "name": "week4-mob-dynasty",
+    "winner": "davantes-dynasty",
+    "loser": "mahomes-mob",
+    "is_tie_game": false
+  },
+  {
+    "matchup_id": "week5-arsenal-hustlers",
+    "week": 5,
+    "team1": "allens-arsenal",
+    "team2": "hurts-hustlers",
+    "name": "week5-arsenal-hustlers",
+    "winner": "hurts-hustlers",
+    "loser": "allens-arsenal",
+    "is_tie_game": false
+  },
+  {
+    "matchup_id": "week5-dynasty-wins",
+    "week": 5,
+    "team1": "davantes-dynasty",
+    "team2": "defense-wins",
+    "name": "week5-dynasty-wins",
+    "winner": "defense-wins",
+    "loser": "davantes-dynasty",
+    "is_tie_game": false
+  },
+  {
+    "matchup_id": "week5-limit-mob",
+    "week": 5,
+    "team1": "hurts-limit",
+    "team2": "mahomes-mob",
+    "name": "week5-limit-mob",
+    "winner": "mahomes-mob",
+    "loser": "hurts-limit",
+    "is_tie_game": false
+  },
+  {
+    "matchup_id": "week6-dynasty-limit",
+    "week": 6,
+    "team1": "davantes-dynasty",
+    "team2": "hurts-limit",
+    "name": "week6-dynasty-limit",
+    "winner": "hurts-limit",
+    "loser": "davantes-dynasty",
+    "is_tie_game": false
+  },
+  {
+    "matchup_id": "week6-hustlers-arsenal",
+    "week": 6,
+    "team1": "hurts-hustlers",
+    "team2": "allens-arsenal",
+    "name": "week6-hustlers-arsenal",
+    "winner": "allens-arsenal",
+    "loser": "hurts-hustlers",
+    "is_tie_game": false
+  },
+  {
+    "matchup_id": "week6-mob-wins",
+    "week": 6,
+    "team1": "mahomes-mob",
+    "team2": "defense-wins",
+    "name": "week6-mob-wins",
+    "winner": "defense-wins",
+    "loser": "mahomes-mob",
+    "is_tie_game": false
+  }
+]

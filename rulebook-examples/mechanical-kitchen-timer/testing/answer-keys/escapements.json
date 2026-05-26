@@ -1,0 +1,22 @@
+[
+  {
+    "escapement_id": "Bessie's escapement",
+    "in_timer": "Bessie",
+    "has_ticked": false
+  },
+  {
+    "escapement_id": "Olive's escapement",
+    "in_timer": "Olive",
+    "has_ticked": false
+  },
+  {
+    "escapement_id": "Rufus's escapement",
+    "in_timer": "Rufus",
+    "has_ticked": false
+  },
+  {
+    "escapement_id": "Twigs's escapement",
+    "in_timer": "Twigs",
+    "has_ticked": false
+  }
+]

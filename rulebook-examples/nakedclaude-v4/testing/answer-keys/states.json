@@ -1,0 +1,402 @@
+[
+  {
+    "state_id": "ak-alaska",
+    "code": "AK",
+    "tax_rate": 0,
+    "text": "Alaska",
+    "name": "ak-alaska",
+    "addresses": ""
+  },
+  {
+    "state_id": "al-alabama",
+    "code": "AL",
+    "tax_rate": 0.04,
+    "text": "Alabama",
+    "name": "al-alabama",
+    "addresses": ""
+  },
+  {
+    "state_id": "ar-arkansas",
+    "code": "AR",
+    "tax_rate": 0.065,
+    "text": "Arkansas",
+    "name": "ar-arkansas",
+    "addresses": ""
+  },
+  {
+    "state_id": "az-arizona",
+    "code": "AZ",
+    "tax_rate": 0.056,
+    "text": "Arizona",
+    "name": "az-arizona",
+    "addresses": ""
+  },
+  {
+    "state_id": "ca-california",
+    "code": "CA",
+    "tax_rate": 0.0725,
+    "text": "California",
+    "name": "ca-california",
+    "addresses": ""
+  },
+  {
+    "state_id": "co-colorado",
+    "code": "CO",
+    "tax_rate": 0.029,
+    "text": "Colorado",
+    "name": "co-colorado",
+    "addresses": ""
+  },
+  {
+    "state_id": "ct-connecticut",
+    "code": "CT",
+    "tax_rate": 0.0635,
+    "text": "Connecticut",
+    "name": "ct-connecticut",
+    "addresses": ""
+  },
+  {
+    "state_id": "de-delaware",
+    "code": "DE",
+    "tax_rate": 0,
+    "text": "Delaware",
+    "name": "de-delaware",
+    "addresses": ""
+  },
+  {
+    "state_id": "fl-florida",
+    "code": "FL",
+    "tax_rate": 0.06,
+    "text": "Florida",
+    "addresses": "1200-ocean-dr-miami-fl-florida-33139",
+    "name": "fl-florida"
+  },
+  {
+    "state_id": "ga-georgia",
+    "code": "GA",
+    "tax_rate": 0.04,
+    "text": "Georgia",
+    "name": "ga-georgia",
+    "addresses": ""
+  },
+  {
+    "state_id": "hi-hawaii",
+    "code": "HI",
+    "tax_rate": 0.04,
+    "text": "Hawaii",
+    "name": "hi-hawaii",
+    "addresses": ""
+  },
+  {
+    "state_id": "ia-iowa",
+    "code": "IA",
+    "tax_rate": 0.06,
+    "text": "Iowa",
+    "name": "ia-iowa",
+    "addresses": ""
+  },
+  {
+    "state_id": "id-idaho",
+    "code": "ID",
+    "tax_rate": 0.06,
+    "text": "Idaho",
+    "name": "id-idaho",
+    "addresses": ""
+  },
+  {
+    "state_id": "il-illinois",
+    "code": "IL",
+    "tax_rate": 0.0625,
+    "text": "Illinois",
+    "addresses": "742-evergreen-terrace-springfield-il-illinois-97477",
+    "name": "il-illinois"
+  },
+  {
+    "state_id": "in-indiana",
+    "code": "IN",
+    "tax_rate": 0.07,
+    "text": "Indiana",
+    "name": "in-indiana",
+    "addresses": ""
+  },
+  {
+    "state_id": "ks-kansas",
+    "code": "KS",
+    "tax_rate": 0.065,
+    "text": "Kansas",
+    "name": "ks-kansas",
+    "addresses": ""
+  },
+  {
+    "state_id": "ky-kentucky",
+    "code": "KY",
+    "tax_rate": 0.06,
+    "text": "Kentucky",
+    "name": "ky-kentucky",
+    "addresses": ""
+  },
+  {
+    "state_id": "la-louisiana",
+    "code": "LA",
+    "tax_rate": 0.0445,
+    "text": "Louisiana",
+    "name": "la-louisiana",
+    "addresses": ""
+  },
+  {
+    "state_id": "ma-massachusetts",
+    "code": "MA",
+    "tax_rate": 0.0625,
+    "text": "Massachusetts",
+    "name": "ma-massachusetts",
+    "addresses": ""
+  },
+  {
+    "state_id": "md-maryland",
+    "code": "MD",
+    "tax_rate": 0.06,
+    "text": "Maryland",
+    "name": "md-maryland",
+    "addresses": ""
+  },
+  {
+    "state_id": "me-maine",
+    "code": "ME",
+    "tax_rate": 0.055,
+    "text": "Maine",
+    "name": "me-maine",
+    "addresses": ""
+  },
+  {
+    "state_id": "mi-michigan",
+    "code": "MI",
+    "tax_rate": 0.06,
+    "text": "Michigan",
+    "name": "mi-michigan",
+    "addresses": ""
+  },
+  {
+    "state_id": "mn-minnesota",
+    "code": "MN",
+    "tax_rate": 0.0687,
+    "text": "Minnesota",
+    "name": "mn-minnesota",
+    "addresses": ""
+  },
+  {
+    "state_id": "mo-missouri",
+    "code": "MO",
+    "tax_rate": 0.04225,
+    "text": "Missouri",
+    "name": "mo-missouri",
+    "addresses": ""
+  },
+  {
+    "state_id": "ms-mississippi",
+    "code": "MS",
+    "tax_rate": 0.07,
+    "text": "Mississippi",
+    "name": "ms-mississippi",
+    "addresses": ""
+  },
+  {
+    "state_id": "mt-montana",
+    "code": "MT",
+    "tax_rate": 0,
+    "text": "Montana",
+    "name": "mt-montana",
+    "addresses": ""
+  },
+  {
+    "state_id": "nc-north-carolina",
+    "code": "NC",
+    "tax_rate": 0.0475,
+    "text": "North Carolina",
+    "name": "nc-north-carolina",
+    "addresses": ""
+  },
+  {
+    "state_id": "nd-north-dakota",
+    "code": "ND",
+    "tax_rate": 0.05,
+    "text": "North Dakota",
+    "name": "nd-north-dakota",
+    "addresses": ""
+  },
+  {
+    "state_id": "ne-nebraska",
+    "code": "NE",
+    "tax_rate": 0.055,
+    "text": "Nebraska",
+    "name": "ne-nebraska",
+    "addresses": ""
+  },
+  {
+    "state_id": "nh-new-hampshire",
+    "code": "NH",
+    "tax_rate": 0,
+    "text": "New Hampshire",
+    "name": "nh-new-hampshire",
+    "addresses": ""
+  },
+  {
+    "state_id": "nj-new-jersey",
+    "code": "NJ",
+    "tax_rate": 0.066625,
+    "text": "New Jersey",
+    "name": "nj-new-jersey",
+    "addresses": ""
+  },
+  {
+    "state_id": "nm-new-mexico",
+    "code": "NM",
+    "tax_rate": 0.05125,
+    "text": "New Mexico",
+    "name": "nm-new-mexico",
+    "addresses": ""
+  },
+  {
+    "state_id": "nv-nevada",
+    "code": "NV",
+    "tax_rate": 0.0686,
+    "text": "Nevada",
+    "name": "nv-nevada",
+    "addresses": ""
+  },
+  {
+    "state_id": "ny-new-york",
+    "code": "NY",
+    "tax_rate": 0.04,
+    "text": "New York",
+    "addresses": "23-hudson-lane-brooklyn-ny-new-york-11201",
+    "name": "ny-new-york"
+  },
+  {
+    "state_id": "oh-ohio",
+    "code": "OH",
+    "tax_rate": 0.0575,
+    "text": "Ohio",
+    "name": "oh-ohio",
+    "addresses": ""
+  },
+  {
+    "state_id": "ok-oklahoma",
+    "code": "OK",
+    "tax_rate": 0.045,
+    "text": "Oklahoma",
+    "name": "ok-oklahoma",
+    "addresses": ""
+  },
+  {
+    "state_id": "or-oregon",
+    "code": "OR",
+    "tax_rate": 0,
+    "text": "Oregon",
+    "name": "or-oregon",
+    "addresses": ""
+  },
+  {
+    "state_id": "pa-pennsylvania",
+    "code": "PA",
+    "tax_rate": 0.06,
+    "text": "Pennsylvania",
+    "name": "pa-pennsylvania",
+    "addresses": ""
+  },
+  {
+    "state_id": "ri-rhode-island",
+    "code": "RI",
+    "tax_rate": 0.07,
+    "text": "Rhode Island",
+    "name": "ri-rhode-island",
+    "addresses": ""
+  },
+  {
+    "state_id": "sc-south-carolina",
+    "code": "SC",
+    "tax_rate": 0.06,
+    "text": "South Carolina",
+    "name": "sc-south-carolina",
+    "addresses": ""
+  },
+  {
+    "state_id": "sd-south-dakota",
+    "code": "SD",
+    "tax_rate": 0.045,
+    "text": "South Dakota",
+    "name": "sd-south-dakota",
+    "addresses": ""
+  },
+  {
+    "state_id": "tn-tennessee",
+    "code": "TN",
+    "tax_rate": 0.07,
+    "text": "Tennessee",
+    "name": "tn-tennessee",
+    "addresses": ""
+  },
+  {
+    "state_id": "tx-texas",
+    "code": "TX",
+    "tax_rate": 0.0625,
+    "text": "Texas",
+    "addresses": "88-industrial-way-austin-tx-texas-78701, 90-industrial-way-loading-dock-b-austin-tx-texas-78701",
+    "name": "tx-texas"
+  },
+  {
+    "state_id": "ut-utah",
+    "code": "UT",
+    "tax_rate": 0.0485,
+    "text": "Utah",
+    "name": "ut-utah",
+    "addresses": ""
+  },
+  {
+    "state_id": "va-virginia",
+    "code": "VA",
+    "tax_rate": 0.053,
+    "text": "Virginia",
+    "name": "va-virginia",
+    "addresses": ""
+  },
+  {
+    "state_id": "vt-vermont",
+    "code": "VT",
+    "tax_rate": 0.06,
+    "text": "Vermont",
+    "name": "vt-vermont",
+    "addresses": ""
+  },
+  {
+    "state_id": "wa-washington",
+    "code": "WA",
+    "tax_rate": 0.065,
+    "text": "Washington",
+    "addresses": "500-pine-st-suite-200-seattle-wa-washington-98101",
+    "name": "wa-washington"
+  },
+  {
+    "state_id": "wi-wisconsin",
+    "code": "WI",
+    "tax_rate": 0.05,
+    "text": "Wisconsin",
+    "name": "wi-wisconsin",
+    "addresses": ""
+  },
+  {
+    "state_id": "wv-west-virginia",
+    "code": "WV",
+    "tax_rate": 0.06,
+    "text": "West Virginia",
+    "name": "wv-west-virginia",
+    "addresses": ""
+  },
+  {
+    "state_id": "wy-wyoming",
+    "code": "WY",
+    "tax_rate": 0.04,
+    "text": "Wyoming",
+    "name": "wy-wyoming",
+    "addresses": ""
+  }
+]

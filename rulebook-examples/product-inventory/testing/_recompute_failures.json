@@ -1,0 +1,72 @@
+[
+  {
+    "entity": "Transactions",
+    "field": "Amount",
+    "formula": "={{Quantity}} * {{ProductUnitPrice}}",
+    "record_id": "TXN-001",
+    "error": "SyntaxError: Unexpected character '*' at position 13"
+  },
+  {
+    "entity": "Transactions",
+    "field": "Amount",
+    "formula": "={{Quantity}} * {{ProductUnitPrice}}",
+    "record_id": "TXN-002",
+    "error": "SyntaxError: Unexpected character '*' at position 13"
+  },
+  {
+    "entity": "Transactions",
+    "field": "Amount",
+    "formula": "={{Quantity}} * {{ProductUnitPrice}}",
+    "record_id": "TXN-003",
+    "error": "SyntaxError: Unexpected character '*' at position 13"
+  },
+  {
+    "entity": "Transactions",
+    "field": "Amount",
+    "formula": "={{Quantity}} * {{ProductUnitPrice}}",
+    "record_id": "TXN-004",
+    "error": "SyntaxError: Unexpected character '*' at position 13"
+  },
+  {
+    "entity": "Transactions",
+    "field": "Amount",
+    "formula": "={{Quantity}} * {{ProductUnitPrice}}",
+    "record_id": "TXN-005",
+    "error": "SyntaxError: Unexpected character '*' at position 13"
+  },
+  {
+    "entity": "Transactions",
+    "field": "Amount",
+    "formula": "={{Quantity}} * {{ProductUnitPrice}}",
+    "record_id": "TXN-006",
+    "error": "SyntaxError: Unexpected character '*' at position 13"
+  },
+  {
+    "entity": "Transactions",
+    "field": "Amount",
+    "formula": "={{Quantity}} * {{ProductUnitPrice}}",
+    "record_id": "TXN-007",
+    "error": "SyntaxError: Unexpected character '*' at position 13"
+  },
+  {
+    "entity": "Transactions",
+    "field": "Amount",
+    "formula": "={{Quantity}} * {{ProductUnitPrice}}",
+    "record_id": "TXN-008",
+    "error": "SyntaxError: Unexpected character '*' at position 13"
+  },
+  {
+    "entity": "Transactions",
+    "field": "Amount",
+    "formula": "={{Quantity}} * {{ProductUnitPrice}}",
+    "record_id": "TXN-009",
+    "error": "SyntaxError: Unexpected character '*' at position 13"
+  },
+  {
+    "entity": "Transactions",
+    "field": "Amount",
+    "formula": "={{Quantity}} * {{ProductUnitPrice}}",
+    "record_id": "TXN-010",
+    "error": "SyntaxError: Unexpected character '*' at position 13"
+  }
+]

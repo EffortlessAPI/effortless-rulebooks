@@ -1,0 +1,83 @@
+[
+  {
+    "payments_id": "PMT-2001",
+    "payment_number": "PMT-2001",
+    "order_id": "ORD-1001",
+    "payment_date": "2026-01-16",
+    "amount": 250.0,
+    "method": "card",
+    "name": "PMT-2001"
+  },
+  {
+    "payments_id": "PMT-2002",
+    "payment_number": "PMT-2002",
+    "order_id": "ORD-1002",
+    "payment_date": "2026-02-04",
+    "amount": 500.0,
+    "method": "card",
+    "name": "PMT-2002"
+  },
+  {
+    "payments_id": "PMT-2003",
+    "payment_number": "PMT-2003",
+    "order_id": "ORD-1002",
+    "payment_date": "2026-02-18",
+    "amount": 375.0,
+    "method": "ach",
+    "name": "PMT-2003"
+  },
+  {
+    "payments_id": "PMT-2004",
+    "payment_number": "PMT-2004",
+    "order_id": "ORD-1003",
+    "payment_date": "2026-02-21",
+    "amount": 1000.0,
+    "method": "wire",
+    "name": "PMT-2004"
+  },
+  {
+    "payments_id": "PMT-2005",
+    "payment_number": "PMT-2005",
+    "order_id": "ORD-1005",
+    "payment_date": "2026-03-23",
+    "amount": 99.0,
+    "method": "cash",
+    "name": "PMT-2005"
+  },
+  {
+    "payments_id": "PMT-2006",
+    "payment_number": "PMT-2006",
+    "order_id": "ORD-1006",
+    "payment_date": "2026-04-02",
+    "amount": 540.0,
+    "method": "check",
+    "name": "PMT-2006"
+  },
+  {
+    "payments_id": "PMT-2007",
+    "payment_number": "PMT-2007",
+    "order_id": "ORD-1008",
+    "payment_date": "2026-04-29",
+    "amount": 1200.0,
+    "method": "wire",
+    "name": "PMT-2007"
+  },
+  {
+    "payments_id": "PMT-2008",
+    "payment_number": "PMT-2008",
+    "order_id": "ORD-1008",
+    "payment_date": "2026-05-10",
+    "amount": 1200.0,
+    "method": "wire",
+    "name": "PMT-2008"
+  },
+  {
+    "payments_id": "PMT-2009",
+    "payment_number": "PMT-2009",
+    "order_id": "ORD-1010",
+    "payment_date": "2026-05-16",
+    "amount": 50.0,
+    "method": "card",
+    "name": "PMT-2009"
+  }
+]

@@ -1,0 +1,32 @@
+[
+  {
+    "app_user_id": "customer-ssot-me-customer",
+    "email_address": "customer@ssot.me",
+    "name": "customer-ssot.me-customer",
+    "contact_name": "Bob Customer",
+    "phone_number": "(555) 555-1234",
+    "role": "Customer",
+    "notes": "",
+    "client_approvals": ""
+  },
+  {
+    "app_user_id": "ej-ssot-me-admin",
+    "email_address": "ej@ssot.me",
+    "name": "ej-ssot.me-admin",
+    "contact_name": "EJ Alexandra",
+    "client_approvals": "brian-lee-apvd, alice-johnson-apvd",
+    "phone_number": "(555) 555-1111",
+    "role": "Admin",
+    "notes": ""
+  },
+  {
+    "app_user_id": "manager-ssot-me-manager",
+    "email_address": "manager@ssot.me",
+    "name": "manager-ssot.me-manager",
+    "contact_name": "Mark Manager",
+    "phone_number": "(555) 555-4321",
+    "role": "Manager",
+    "notes": "",
+    "client_approvals": ""
+  }
+]

@@ -1,0 +1,22 @@
+[
+  {
+    "arbor_id": "Bessie's arbor",
+    "in_timer": "Bessie",
+    "diameter_mm": 3
+  },
+  {
+    "arbor_id": "Olive's arbor",
+    "in_timer": "Olive",
+    "diameter_mm": 3
+  },
+  {
+    "arbor_id": "Rufus's arbor",
+    "in_timer": "Rufus",
+    "diameter_mm": 3
+  },
+  {
+    "arbor_id": "Twigs's arbor",
+    "in_timer": "Twigs",
+    "diameter_mm": 3
+  }
+]

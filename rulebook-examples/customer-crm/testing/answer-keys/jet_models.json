@@ -1,0 +1,42 @@
+[
+  {
+    "jet_models_id": "EF-2000",
+    "model_code": "EF-2000",
+    "manufacturer": "Eurofighter",
+    "generation": 4,
+    "name": "EF-2000",
+    "is_fifth_gen": false
+  },
+  {
+    "jet_models_id": "F-16C",
+    "model_code": "F-16C",
+    "manufacturer": "Lockheed Martin",
+    "generation": 4,
+    "name": "F-16C",
+    "is_fifth_gen": false
+  },
+  {
+    "jet_models_id": "F-18E",
+    "model_code": "F-18E",
+    "manufacturer": "Boeing",
+    "generation": 4,
+    "name": "F-18E",
+    "is_fifth_gen": false
+  },
+  {
+    "jet_models_id": "F-22A",
+    "model_code": "F-22A",
+    "manufacturer": "Lockheed Martin",
+    "generation": 5,
+    "name": "F-22A",
+    "is_fifth_gen": true
+  },
+  {
+    "jet_models_id": "F-35A",
+    "model_code": "F-35A",
+    "manufacturer": "Lockheed Martin",
+    "generation": 5,
+    "name": "F-35A",
+    "is_fifth_gen": true
+  }
+]

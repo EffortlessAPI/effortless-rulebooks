@@ -1,0 +1,597 @@
+[
+  {
+    "entity": "Timers",
+    "field": "WindFraction",
+    "formula": "={{WindAngleDegrees}} / {{MaxWindDegrees}}",
+    "record_id": "Bessie",
+    "error": "SyntaxError: Unexpected character '/' at position 21"
+  },
+  {
+    "entity": "Timers",
+    "field": "StoredTorqueNm",
+    "formula": "={{WindFraction}} * {{MaxSpringTorqueNm}}",
+    "record_id": "Bessie",
+    "error": "SyntaxError: Unexpected character '*' at position 17"
+  },
+  {
+    "entity": "Timers",
+    "field": "RemainingMinutes",
+    "formula": "={{WindAngleDegrees}} / 6",
+    "record_id": "Bessie",
+    "error": "SyntaxError: Unexpected character '/' at position 21"
+  },
+  {
+    "entity": "Timers",
+    "field": "WindDurationMinutes",
+    "formula": "={{MaxWindDegrees}} / 6",
+    "record_id": "Bessie",
+    "error": "SyntaxError: Unexpected character '/' at position 19"
+  },
+  {
+    "entity": "Timers",
+    "field": "ExpectedTicksPerMinute",
+    "formula": "={{EscapementBaseHz}} * 60",
+    "record_id": "Bessie",
+    "error": "SyntaxError: Unexpected character '*' at position 21"
+  },
+  {
+    "entity": "Timers",
+    "field": "ExpectedTotalTicks",
+    "formula": "={{ExpectedTicksPerMinute}} * {{WindDurationMinutes}}",
+    "record_id": "Bessie",
+    "error": "SyntaxError: Unexpected character '*' at position 27"
+  },
+  {
+    "entity": "Timers",
+    "field": "TicksElapsedExpected",
+    "formula": "={{ExpectedTicksPerMinute}} * ({{WindDurationMinutes}} - {{RemainingMinutes}})",
+    "record_id": "Bessie",
+    "error": "SyntaxError: Unexpected character '*' at position 27"
+  },
+  {
+    "entity": "Timers",
+    "field": "TickEfficiencyPercent",
+    "formula": "=IF({{TicksElapsedExpected}} > 0, ({{TickCount}} / {{TicksElapsedExpected}}) * 100, 100)",
+    "record_id": "Bessie",
+    "error": "SyntaxError: Unexpected character '/' at position 48"
+  },
+  {
+    "entity": "Timers",
+    "field": "MechanicalPhase",
+    "formula": "=IF({{HasRung}}, \"rung\", IF({{WindFraction}} > 0.8, \"freshly-wound\", IF({{WindFraction}} > 0.25, \"mid-run\", \"nearly-done\")))",
+    "record_id": "Bessie",
+    "error": "SyntaxError: Unexpected character '.' at position 47"
+  },
+  {
+    "entity": "Timers",
+    "field": "WindFraction",
+    "formula": "={{WindAngleDegrees}} / {{MaxWindDegrees}}",
+    "record_id": "Olive",
+    "error": "SyntaxError: Unexpected character '/' at position 21"
+  },
+  {
+    "entity": "Timers",
+    "field": "StoredTorqueNm",
+    "formula": "={{WindFraction}} * {{MaxSpringTorqueNm}}",
+    "record_id": "Olive",
+    "error": "SyntaxError: Unexpected character '*' at position 17"
+  },
+  {
+    "entity": "Timers",
+    "field": "RemainingMinutes",
+    "formula": "={{WindAngleDegrees}} / 6",
+    "record_id": "Olive",
+    "error": "SyntaxError: Unexpected character '/' at position 21"
+  },
+  {
+    "entity": "Timers",
+    "field": "WindDurationMinutes",
+    "formula": "={{MaxWindDegrees}} / 6",
+    "record_id": "Olive",
+    "error": "SyntaxError: Unexpected character '/' at position 19"
+  },
+  {
+    "entity": "Timers",
+    "field": "ExpectedTicksPerMinute",
+    "formula": "={{EscapementBaseHz}} * 60",
+    "record_id": "Olive",
+    "error": "SyntaxError: Unexpected character '*' at position 21"
+  },
+  {
+    "entity": "Timers",
+    "field": "ExpectedTotalTicks",
+    "formula": "={{ExpectedTicksPerMinute}} * {{WindDurationMinutes}}",
+    "record_id": "Olive",
+    "error": "SyntaxError: Unexpected character '*' at position 27"
+  },
+  {
+    "entity": "Timers",
+    "field": "TicksElapsedExpected",
+    "formula": "={{ExpectedTicksPerMinute}} * ({{WindDurationMinutes}} - {{RemainingMinutes}})",
+    "record_id": "Olive",
+    "error": "SyntaxError: Unexpected character '*' at position 27"
+  },
+  {
+    "entity": "Timers",
+    "field": "TickEfficiencyPercent",
+    "formula": "=IF({{TicksElapsedExpected}} > 0, ({{TickCount}} / {{TicksElapsedExpected}}) * 100, 100)",
+    "record_id": "Olive",
+    "error": "SyntaxError: Unexpected character '/' at position 48"
+  },
+  {
+    "entity": "Timers",
+    "field": "MechanicalPhase",
+    "formula": "=IF({{HasRung}}, \"rung\", IF({{WindFraction}} > 0.8, \"freshly-wound\", IF({{WindFraction}} > 0.25, \"mid-run\", \"nearly-done\")))",
+    "record_id": "Olive",
+    "error": "SyntaxError: Unexpected character '.' at position 47"
+  },
+  {
+    "entity": "Timers",
+    "field": "WindFraction",
+    "formula": "={{WindAngleDegrees}} / {{MaxWindDegrees}}",
+    "record_id": "Rufus",
+    "error": "SyntaxError: Unexpected character '/' at position 21"
+  },
+  {
+    "entity": "Timers",
+    "field": "StoredTorqueNm",
+    "formula": "={{WindFraction}} * {{MaxSpringTorqueNm}}",
+    "record_id": "Rufus",
+    "error": "SyntaxError: Unexpected character '*' at position 17"
+  },
+  {
+    "entity": "Timers",
+    "field": "RemainingMinutes",
+    "formula": "={{WindAngleDegrees}} / 6",
+    "record_id": "Rufus",
+    "error": "SyntaxError: Unexpected character '/' at position 21"
+  },
+  {
+    "entity": "Timers",
+    "field": "WindDurationMinutes",
+    "formula": "={{MaxWindDegrees}} / 6",
+    "record_id": "Rufus",
+    "error": "SyntaxError: Unexpected character '/' at position 19"
+  },
+  {
+    "entity": "Timers",
+    "field": "ExpectedTicksPerMinute",
+    "formula": "={{EscapementBaseHz}} * 60",
+    "record_id": "Rufus",
+    "error": "SyntaxError: Unexpected character '*' at position 21"
+  },
+  {
+    "entity": "Timers",
+    "field": "ExpectedTotalTicks",
+    "formula": "={{ExpectedTicksPerMinute}} * {{WindDurationMinutes}}",
+    "record_id": "Rufus",
+    "error": "SyntaxError: Unexpected character '*' at position 27"
+  },
+  {
+    "entity": "Timers",
+    "field": "TicksElapsedExpected",
+    "formula": "={{ExpectedTicksPerMinute}} * ({{WindDurationMinutes}} - {{RemainingMinutes}})",
+    "record_id": "Rufus",
+    "error": "SyntaxError: Unexpected character '*' at position 27"
+  },
+  {
+    "entity": "Timers",
+    "field": "TickEfficiencyPercent",
+    "formula": "=IF({{TicksElapsedExpected}} > 0, ({{TickCount}} / {{TicksElapsedExpected}}) * 100, 100)",
+    "record_id": "Rufus",
+    "error": "SyntaxError: Unexpected character '/' at position 48"
+  },
+  {
+    "entity": "Timers",
+    "field": "MechanicalPhase",
+    "formula": "=IF({{HasRung}}, \"rung\", IF({{WindFraction}} > 0.8, \"freshly-wound\", IF({{WindFraction}} > 0.25, \"mid-run\", \"nearly-done\")))",
+    "record_id": "Rufus",
+    "error": "SyntaxError: Unexpected character '.' at position 47"
+  },
+  {
+    "entity": "Timers",
+    "field": "WindFraction",
+    "formula": "={{WindAngleDegrees}} / {{MaxWindDegrees}}",
+    "record_id": "Twigs",
+    "error": "SyntaxError: Unexpected character '/' at position 21"
+  },
+  {
+    "entity": "Timers",
+    "field": "StoredTorqueNm",
+    "formula": "={{WindFraction}} * {{MaxSpringTorqueNm}}",
+    "record_id": "Twigs",
+    "error": "SyntaxError: Unexpected character '*' at position 17"
+  },
+  {
+    "entity": "Timers",
+    "field": "RemainingMinutes",
+    "formula": "={{WindAngleDegrees}} / 6",
+    "record_id": "Twigs",
+    "error": "SyntaxError: Unexpected character '/' at position 21"
+  },
+  {
+    "entity": "Timers",
+    "field": "WindDurationMinutes",
+    "formula": "={{MaxWindDegrees}} / 6",
+    "record_id": "Twigs",
+    "error": "SyntaxError: Unexpected character '/' at position 19"
+  },
+  {
+    "entity": "Timers",
+    "field": "ExpectedTicksPerMinute",
+    "formula": "={{EscapementBaseHz}} * 60",
+    "record_id": "Twigs",
+    "error": "SyntaxError: Unexpected character '*' at position 21"
+  },
+  {
+    "entity": "Timers",
+    "field": "ExpectedTotalTicks",
+    "formula": "={{ExpectedTicksPerMinute}} * {{WindDurationMinutes}}",
+    "record_id": "Twigs",
+    "error": "SyntaxError: Unexpected character '*' at position 27"
+  },
+  {
+    "entity": "Timers",
+    "field": "TicksElapsedExpected",
+    "formula": "={{ExpectedTicksPerMinute}} * ({{WindDurationMinutes}} - {{RemainingMinutes}})",
+    "record_id": "Twigs",
+    "error": "SyntaxError: Unexpected character '*' at position 27"
+  },
+  {
+    "entity": "Timers",
+    "field": "TickEfficiencyPercent",
+    "formula": "=IF({{TicksElapsedExpected}} > 0, ({{TickCount}} / {{TicksElapsedExpected}}) * 100, 100)",
+    "record_id": "Twigs",
+    "error": "SyntaxError: Unexpected character '/' at position 48"
+  },
+  {
+    "entity": "Timers",
+    "field": "MechanicalPhase",
+    "formula": "=IF({{HasRung}}, \"rung\", IF({{WindFraction}} > 0.8, \"freshly-wound\", IF({{WindFraction}} > 0.25, \"mid-run\", \"nearly-done\")))",
+    "record_id": "Twigs",
+    "error": "SyntaxError: Unexpected character '.' at position 47"
+  },
+  {
+    "entity": "WindingKnobs",
+    "field": "ScaleReading",
+    "formula": "={{ScaleMin}} + ({{TimerWindAngle}} / {{TimerMaxWind}}) * ({{ScaleMax}} - {{ScaleMin}})",
+    "record_id": "Bessie's knob",
+    "error": "SyntaxError: Unexpected character '+' at position 13"
+  },
+  {
+    "entity": "WindingKnobs",
+    "field": "ScaleReading",
+    "formula": "={{ScaleMin}} + ({{TimerWindAngle}} / {{TimerMaxWind}}) * ({{ScaleMax}} - {{ScaleMin}})",
+    "record_id": "Olive's knob",
+    "error": "SyntaxError: Unexpected character '+' at position 13"
+  },
+  {
+    "entity": "WindingKnobs",
+    "field": "ScaleReading",
+    "formula": "={{ScaleMin}} + ({{TimerWindAngle}} / {{TimerMaxWind}}) * ({{ScaleMax}} - {{ScaleMin}})",
+    "record_id": "Rufus's knob",
+    "error": "SyntaxError: Unexpected character '+' at position 13"
+  },
+  {
+    "entity": "WindingKnobs",
+    "field": "ScaleReading",
+    "formula": "={{ScaleMin}} + ({{TimerWindAngle}} / {{TimerMaxWind}}) * ({{ScaleMax}} - {{ScaleMin}})",
+    "record_id": "Twigs's knob",
+    "error": "SyntaxError: Unexpected character '+' at position 13"
+  },
+  {
+    "entity": "GearTrains",
+    "field": "OutputShaftRPM",
+    "formula": "=({{TimerEscapementHz}} * 60) / {{ReductionRatio}}",
+    "record_id": "Bessie's gear train",
+    "error": "SyntaxError: Unexpected character '*' at position 23"
+  },
+  {
+    "entity": "GearTrains",
+    "field": "OutputShaftRPM",
+    "formula": "=({{TimerEscapementHz}} * 60) / {{ReductionRatio}}",
+    "record_id": "Olive's gear train",
+    "error": "SyntaxError: Unexpected character '*' at position 23"
+  },
+  {
+    "entity": "GearTrains",
+    "field": "OutputShaftRPM",
+    "formula": "=({{TimerEscapementHz}} * 60) / {{ReductionRatio}}",
+    "record_id": "Rufus's gear train",
+    "error": "SyntaxError: Unexpected character '*' at position 23"
+  },
+  {
+    "entity": "GearTrains",
+    "field": "OutputShaftRPM",
+    "formula": "=({{TimerEscapementHz}} * 60) / {{ReductionRatio}}",
+    "record_id": "Twigs's gear train",
+    "error": "SyntaxError: Unexpected character '*' at position 23"
+  },
+  {
+    "entity": "Cooks",
+    "field": "SuitabilityVerdict",
+    "formula": "=IF({{TimerWindDuration}} < {{RecommendedMinutes}}, \"insufficient\", IF({{TimerWindDuration}} > ({{RecommendedMinutes}} * 3), \"overkill\", \"appropriate\"))",
+    "record_id": "soft-boiled egg",
+    "error": "SyntaxError: Unexpected character '*' at position 118"
+  },
+  {
+    "entity": "Cooks",
+    "field": "SuitabilityVerdict",
+    "formula": "=IF({{TimerWindDuration}} < {{RecommendedMinutes}}, \"insufficient\", IF({{TimerWindDuration}} > ({{RecommendedMinutes}} * 3), \"overkill\", \"appropriate\"))",
+    "record_id": "spaghetti al pomodoro",
+    "error": "SyntaxError: Unexpected character '*' at position 118"
+  },
+  {
+    "entity": "Cooks",
+    "field": "SuitabilityVerdict",
+    "formula": "=IF({{TimerWindDuration}} < {{RecommendedMinutes}}, \"insufficient\", IF({{TimerWindDuration}} > ({{RecommendedMinutes}} * 3), \"overkill\", \"appropriate\"))",
+    "record_id": "rib roast",
+    "error": "SyntaxError: Unexpected character '*' at position 118"
+  },
+  {
+    "entity": "Cooks",
+    "field": "SuitabilityVerdict",
+    "formula": "=IF({{TimerWindDuration}} < {{RecommendedMinutes}}, \"insufficient\", IF({{TimerWindDuration}} > ({{RecommendedMinutes}} * 3), \"overkill\", \"appropriate\"))",
+    "record_id": "steamed broccoli side",
+    "error": "SyntaxError: Unexpected character '*' at position 118"
+  },
+  {
+    "entity": "Cooks",
+    "field": "SuitabilityVerdict",
+    "formula": "=IF({{TimerWindDuration}} < {{RecommendedMinutes}}, \"insufficient\", IF({{TimerWindDuration}} > ({{RecommendedMinutes}} * 3), \"overkill\", \"appropriate\"))",
+    "record_id": "afternoon tea",
+    "error": "SyntaxError: Unexpected character '*' at position 118"
+  },
+  {
+    "entity": "Cooks",
+    "field": "SuitabilityVerdict",
+    "formula": "=IF({{TimerWindDuration}} < {{RecommendedMinutes}}, \"insufficient\", IF({{TimerWindDuration}} > ({{RecommendedMinutes}} * 3), \"overkill\", \"appropriate\"))",
+    "record_id": "morning coffee",
+    "error": "SyntaxError: Unexpected character '*' at position 118"
+  },
+  {
+    "entity": "Cooks",
+    "field": "SuitabilityVerdict",
+    "formula": "=IF({{TimerWindDuration}} < {{RecommendedMinutes}}, \"insufficient\", IF({{TimerWindDuration}} > ({{RecommendedMinutes}} * 3), \"overkill\", \"appropriate\"))",
+    "record_id": "baker's espresso",
+    "error": "SyntaxError: Unexpected character '*' at position 118"
+  },
+  {
+    "entity": "Cooks",
+    "field": "SuitabilityVerdict",
+    "formula": "=IF({{TimerWindDuration}} < {{RecommendedMinutes}}, \"insufficient\", IF({{TimerWindDuration}} > ({{RecommendedMinutes}} * 3), \"overkill\", \"appropriate\"))",
+    "record_id": "preheat for pizza",
+    "error": "SyntaxError: Unexpected character '*' at position 118"
+  },
+  {
+    "entity": "Cooks",
+    "field": "SuitabilityVerdict",
+    "formula": "=IF({{TimerWindDuration}} < {{RecommendedMinutes}}, \"insufficient\", IF({{TimerWindDuration}} > ({{RecommendedMinutes}} * 3), \"overkill\", \"appropriate\"))",
+    "record_id": "late cake bake",
+    "error": "SyntaxError: Unexpected character '*' at position 118"
+  },
+  {
+    "entity": "Cooks",
+    "field": "SuitabilityVerdict",
+    "formula": "=IF({{TimerWindDuration}} < {{RecommendedMinutes}}, \"insufficient\", IF({{TimerWindDuration}} > ({{RecommendedMinutes}} * 3), \"overkill\", \"appropriate\"))",
+    "record_id": "overnight yogurt",
+    "error": "SyntaxError: Unexpected character '*' at position 118"
+  },
+  {
+    "entity": "Cooks",
+    "field": "SuitabilityVerdict",
+    "formula": "=IF({{TimerWindDuration}} < {{RecommendedMinutes}}, \"insufficient\", IF({{TimerWindDuration}} > ({{RecommendedMinutes}} * 3), \"overkill\", \"appropriate\"))",
+    "record_id": "morning coffee",
+    "error": "SyntaxError: Unexpected character '*' at position 118"
+  },
+  {
+    "entity": "Cooks",
+    "field": "SuitabilityVerdict",
+    "formula": "=IF({{TimerWindDuration}} < {{RecommendedMinutes}}, \"insufficient\", IF({{TimerWindDuration}} > ({{RecommendedMinutes}} * 3), \"overkill\", \"appropriate\"))",
+    "record_id": "baker's espresso",
+    "error": "SyntaxError: Unexpected character '*' at position 118"
+  },
+  {
+    "entity": "Cooks",
+    "field": "SuitabilityVerdict",
+    "formula": "=IF({{TimerWindDuration}} < {{RecommendedMinutes}}, \"insufficient\", IF({{TimerWindDuration}} > ({{RecommendedMinutes}} * 3), \"overkill\", \"appropriate\"))",
+    "record_id": "late cake bake",
+    "error": "SyntaxError: Unexpected character '*' at position 118"
+  },
+  {
+    "entity": "Cooks",
+    "field": "SuitabilityVerdict",
+    "formula": "=IF({{TimerWindDuration}} < {{RecommendedMinutes}}, \"insufficient\", IF({{TimerWindDuration}} > ({{RecommendedMinutes}} * 3), \"overkill\", \"appropriate\"))",
+    "record_id": "overnight yogurt",
+    "error": "SyntaxError: Unexpected character '*' at position 118"
+  },
+  {
+    "entity": "Cooks",
+    "field": "SuitabilityVerdict",
+    "formula": "=IF({{TimerWindDuration}} < {{RecommendedMinutes}}, \"insufficient\", IF({{TimerWindDuration}} > ({{RecommendedMinutes}} * 3), \"overkill\", \"appropriate\"))",
+    "record_id": "croissant batch",
+    "error": "SyntaxError: Unexpected character '*' at position 118"
+  },
+  {
+    "entity": "Cooks",
+    "field": "SuitabilityVerdict",
+    "formula": "=IF({{TimerWindDuration}} < {{RecommendedMinutes}}, \"insufficient\", IF({{TimerWindDuration}} > ({{RecommendedMinutes}} * 3), \"overkill\", \"appropriate\"))",
+    "record_id": "risotto dinner",
+    "error": "SyntaxError: Unexpected character '*' at position 118"
+  },
+  {
+    "entity": "Cooks",
+    "field": "SuitabilityVerdict",
+    "formula": "=IF({{TimerWindDuration}} < {{RecommendedMinutes}}, \"insufficient\", IF({{TimerWindDuration}} > ({{RecommendedMinutes}} * 3), \"overkill\", \"appropriate\"))",
+    "record_id": "ramen lunch",
+    "error": "SyntaxError: Unexpected character '*' at position 118"
+  },
+  {
+    "entity": "Cooks",
+    "field": "SuitabilityVerdict",
+    "formula": "=IF({{TimerWindDuration}} < {{RecommendedMinutes}}, \"insufficient\", IF({{TimerWindDuration}} > ({{RecommendedMinutes}} * 3), \"overkill\", \"appropriate\"))",
+    "record_id": "paella special",
+    "error": "SyntaxError: Unexpected character '*' at position 118"
+  },
+  {
+    "entity": "Cooks",
+    "field": "SuitabilityVerdict",
+    "formula": "=IF({{TimerWindDuration}} < {{RecommendedMinutes}}, \"insufficient\", IF({{TimerWindDuration}} > ({{RecommendedMinutes}} * 3), \"overkill\", \"appropriate\"))",
+    "record_id": "soup of the day",
+    "error": "SyntaxError: Unexpected character '*' at position 118"
+  },
+  {
+    "entity": "Cooks",
+    "field": "SuitabilityVerdict",
+    "formula": "=IF({{TimerWindDuration}} < {{RecommendedMinutes}}, \"insufficient\", IF({{TimerWindDuration}} > ({{RecommendedMinutes}} * 3), \"overkill\", \"appropriate\"))",
+    "record_id": "steak dinner",
+    "error": "SyntaxError: Unexpected character '*' at position 118"
+  },
+  {
+    "entity": "Cooks",
+    "field": "SuitabilityVerdict",
+    "formula": "=IF({{TimerWindDuration}} < {{RecommendedMinutes}}, \"insufficient\", IF({{TimerWindDuration}} > ({{RecommendedMinutes}} * 3), \"overkill\", \"appropriate\"))",
+    "record_id": "flan dessert",
+    "error": "SyntaxError: Unexpected character '*' at position 118"
+  },
+  {
+    "entity": "Cooks",
+    "field": "SuitabilityVerdict",
+    "formula": "=IF({{TimerWindDuration}} < {{RecommendedMinutes}}, \"insufficient\", IF({{TimerWindDuration}} > ({{RecommendedMinutes}} * 3), \"overkill\", \"appropriate\"))",
+    "record_id": "salad starter",
+    "error": "SyntaxError: Unexpected character '*' at position 118"
+  },
+  {
+    "entity": "Recipes",
+    "field": "AssignmentVerdict",
+    "formula": "=IF({{TimesUsedToday}} = 0, \"unused\", IF({{AvgTimerCapacity}} < {{RecommendedMinutes}}, \"under-provisioned\", IF({{AvgTimerCapacity}} > ({{RecommendedMinutes}} * 3), \"over-provisioned\", \"well-matched\")))",
+    "record_id": "soft-boiled egg recipe",
+    "error": "SyntaxError: Unexpected character '*' at position 158"
+  },
+  {
+    "entity": "Recipes",
+    "field": "AssignmentVerdict",
+    "formula": "=IF({{TimesUsedToday}} = 0, \"unused\", IF({{AvgTimerCapacity}} < {{RecommendedMinutes}}, \"under-provisioned\", IF({{AvgTimerCapacity}} > ({{RecommendedMinutes}} * 3), \"over-provisioned\", \"well-matched\")))",
+    "record_id": "spaghetti recipe",
+    "error": "SyntaxError: Unexpected character '*' at position 158"
+  },
+  {
+    "entity": "Recipes",
+    "field": "AssignmentVerdict",
+    "formula": "=IF({{TimesUsedToday}} = 0, \"unused\", IF({{AvgTimerCapacity}} < {{RecommendedMinutes}}, \"under-provisioned\", IF({{AvgTimerCapacity}} > ({{RecommendedMinutes}} * 3), \"over-provisioned\", \"well-matched\")))",
+    "record_id": "rib roast recipe",
+    "error": "SyntaxError: Unexpected character '*' at position 158"
+  },
+  {
+    "entity": "Recipes",
+    "field": "AssignmentVerdict",
+    "formula": "=IF({{TimesUsedToday}} = 0, \"unused\", IF({{AvgTimerCapacity}} < {{RecommendedMinutes}}, \"under-provisioned\", IF({{AvgTimerCapacity}} > ({{RecommendedMinutes}} * 3), \"over-provisioned\", \"well-matched\")))",
+    "record_id": "broccoli recipe",
+    "error": "SyntaxError: Unexpected character '*' at position 158"
+  },
+  {
+    "entity": "Recipes",
+    "field": "AssignmentVerdict",
+    "formula": "=IF({{TimesUsedToday}} = 0, \"unused\", IF({{AvgTimerCapacity}} < {{RecommendedMinutes}}, \"under-provisioned\", IF({{AvgTimerCapacity}} > ({{RecommendedMinutes}} * 3), \"over-provisioned\", \"well-matched\")))",
+    "record_id": "tea recipe",
+    "error": "SyntaxError: Unexpected character '*' at position 158"
+  },
+  {
+    "entity": "Recipes",
+    "field": "AssignmentVerdict",
+    "formula": "=IF({{TimesUsedToday}} = 0, \"unused\", IF({{AvgTimerCapacity}} < {{RecommendedMinutes}}, \"under-provisioned\", IF({{AvgTimerCapacity}} > ({{RecommendedMinutes}} * 3), \"over-provisioned\", \"well-matched\")))",
+    "record_id": "cake recipe",
+    "error": "SyntaxError: Unexpected character '*' at position 158"
+  },
+  {
+    "entity": "Recipes",
+    "field": "AssignmentVerdict",
+    "formula": "=IF({{TimesUsedToday}} = 0, \"unused\", IF({{AvgTimerCapacity}} < {{RecommendedMinutes}}, \"under-provisioned\", IF({{AvgTimerCapacity}} > ({{RecommendedMinutes}} * 3), \"over-provisioned\", \"well-matched\")))",
+    "record_id": "pizza recipe",
+    "error": "SyntaxError: Unexpected character '*' at position 158"
+  },
+  {
+    "entity": "Recipes",
+    "field": "AssignmentVerdict",
+    "formula": "=IF({{TimesUsedToday}} = 0, \"unused\", IF({{AvgTimerCapacity}} < {{RecommendedMinutes}}, \"under-provisioned\", IF({{AvgTimerCapacity}} > ({{RecommendedMinutes}} * 3), \"over-provisioned\", \"well-matched\")))",
+    "record_id": "yogurt recipe",
+    "error": "SyntaxError: Unexpected character '*' at position 158"
+  },
+  {
+    "entity": "Recipes",
+    "field": "AssignmentVerdict",
+    "formula": "=IF({{TimesUsedToday}} = 0, \"unused\", IF({{AvgTimerCapacity}} < {{RecommendedMinutes}}, \"under-provisioned\", IF({{AvgTimerCapacity}} > ({{RecommendedMinutes}} * 3), \"over-provisioned\", \"well-matched\")))",
+    "record_id": "instant coffee recipe",
+    "error": "SyntaxError: Unexpected character '*' at position 158"
+  },
+  {
+    "entity": "Recipes",
+    "field": "AssignmentVerdict",
+    "formula": "=IF({{TimesUsedToday}} = 0, \"unused\", IF({{AvgTimerCapacity}} < {{RecommendedMinutes}}, \"under-provisioned\", IF({{AvgTimerCapacity}} > ({{RecommendedMinutes}} * 3), \"over-provisioned\", \"well-matched\")))",
+    "record_id": "croissant recipe",
+    "error": "SyntaxError: Unexpected character '*' at position 158"
+  },
+  {
+    "entity": "Recipes",
+    "field": "AssignmentVerdict",
+    "formula": "=IF({{TimesUsedToday}} = 0, \"unused\", IF({{AvgTimerCapacity}} < {{RecommendedMinutes}}, \"under-provisioned\", IF({{AvgTimerCapacity}} > ({{RecommendedMinutes}} * 3), \"over-provisioned\", \"well-matched\")))",
+    "record_id": "risotto recipe",
+    "error": "SyntaxError: Unexpected character '*' at position 158"
+  },
+  {
+    "entity": "Recipes",
+    "field": "AssignmentVerdict",
+    "formula": "=IF({{TimesUsedToday}} = 0, \"unused\", IF({{AvgTimerCapacity}} < {{RecommendedMinutes}}, \"under-provisioned\", IF({{AvgTimerCapacity}} > ({{RecommendedMinutes}} * 3), \"over-provisioned\", \"well-matched\")))",
+    "record_id": "sourdough recipe",
+    "error": "SyntaxError: Unexpected character '*' at position 158"
+  },
+  {
+    "entity": "Recipes",
+    "field": "AssignmentVerdict",
+    "formula": "=IF({{TimesUsedToday}} = 0, \"unused\", IF({{AvgTimerCapacity}} < {{RecommendedMinutes}}, \"under-provisioned\", IF({{AvgTimerCapacity}} > ({{RecommendedMinutes}} * 3), \"over-provisioned\", \"well-matched\")))",
+    "record_id": "creme brulee recipe",
+    "error": "SyntaxError: Unexpected character '*' at position 158"
+  },
+  {
+    "entity": "Recipes",
+    "field": "AssignmentVerdict",
+    "formula": "=IF({{TimesUsedToday}} = 0, \"unused\", IF({{AvgTimerCapacity}} < {{RecommendedMinutes}}, \"under-provisioned\", IF({{AvgTimerCapacity}} > ({{RecommendedMinutes}} * 3), \"over-provisioned\", \"well-matched\")))",
+    "record_id": "paella recipe",
+    "error": "SyntaxError: Unexpected character '*' at position 158"
+  },
+  {
+    "entity": "Recipes",
+    "field": "AssignmentVerdict",
+    "formula": "=IF({{TimesUsedToday}} = 0, \"unused\", IF({{AvgTimerCapacity}} < {{RecommendedMinutes}}, \"under-provisioned\", IF({{AvgTimerCapacity}} > ({{RecommendedMinutes}} * 3), \"over-provisioned\", \"well-matched\")))",
+    "record_id": "ramen recipe",
+    "error": "SyntaxError: Unexpected character '*' at position 158"
+  },
+  {
+    "entity": "Recipes",
+    "field": "AssignmentVerdict",
+    "formula": "=IF({{TimesUsedToday}} = 0, \"unused\", IF({{AvgTimerCapacity}} < {{RecommendedMinutes}}, \"under-provisioned\", IF({{AvgTimerCapacity}} > ({{RecommendedMinutes}} * 3), \"over-provisioned\", \"well-matched\")))",
+    "record_id": "salad recipe",
+    "error": "SyntaxError: Unexpected character '*' at position 158"
+  },
+  {
+    "entity": "Recipes",
+    "field": "AssignmentVerdict",
+    "formula": "=IF({{TimesUsedToday}} = 0, \"unused\", IF({{AvgTimerCapacity}} < {{RecommendedMinutes}}, \"under-provisioned\", IF({{AvgTimerCapacity}} > ({{RecommendedMinutes}} * 3), \"over-provisioned\", \"well-matched\")))",
+    "record_id": "steak recipe",
+    "error": "SyntaxError: Unexpected character '*' at position 158"
+  },
+  {
+    "entity": "Recipes",
+    "field": "AssignmentVerdict",
+    "formula": "=IF({{TimesUsedToday}} = 0, \"unused\", IF({{AvgTimerCapacity}} < {{RecommendedMinutes}}, \"under-provisioned\", IF({{AvgTimerCapacity}} > ({{RecommendedMinutes}} * 3), \"over-provisioned\", \"well-matched\")))",
+    "record_id": "soup recipe",
+    "error": "SyntaxError: Unexpected character '*' at position 158"
+  },
+  {
+    "entity": "Recipes",
+    "field": "AssignmentVerdict",
+    "formula": "=IF({{TimesUsedToday}} = 0, \"unused\", IF({{AvgTimerCapacity}} < {{RecommendedMinutes}}, \"under-provisioned\", IF({{AvgTimerCapacity}} > ({{RecommendedMinutes}} * 3), \"over-provisioned\", \"well-matched\")))",
+    "record_id": "flan recipe",
+    "error": "SyntaxError: Unexpected character '*' at position 158"
+  }
+]

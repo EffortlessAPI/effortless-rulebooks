@@ -21,12 +21,22 @@ export default function ViewerHomeScreen({ screen, projectRulebook, projects, me
         {domains.map((d) => (
           <div
             key={d.id}
-            className="card clickable"
+            className="card clickable domain-card"
             onClick={() => navigate(`/viewer/${d.id}`)}
           >
-            <h3 style={{ color: "#7280ad" }}>{d.id}</h3>
-            <div className="big" style={{ fontSize: 16 }}>{d.name}</div>
-            <div className="sub">{d.description || "—"}</div>
+            {d.logoUrl && (
+              <img
+                src={d.logoUrl}
+                alt=""
+                className="domain-card-logo"
+                onError={(e) => { e.currentTarget.style.display = "none"; }}
+              />
+            )}
+            <div className="domain-card-text">
+              <h3 style={{ color: "#7280ad" }}>{d.id}</h3>
+              <div className="big" style={{ fontSize: 16 }}>{d.name}</div>
+              <div className="sub">{d.description || "—"}</div>
+            </div>
           </div>
         ))}
       </div>

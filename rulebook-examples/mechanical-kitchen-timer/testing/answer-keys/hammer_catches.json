@@ -1,0 +1,26 @@
+[
+  {
+    "hammer_catch_id": "Bessie's hammer catch",
+    "of_bell_hammer": "Bessie's bell hammer",
+    "engaged_with_cam": "Bessie's cam",
+    "is_engaged": false
+  },
+  {
+    "hammer_catch_id": "Olive's hammer catch",
+    "of_bell_hammer": "Olive's bell hammer",
+    "engaged_with_cam": "Olive's cam",
+    "is_engaged": false
+  },
+  {
+    "hammer_catch_id": "Rufus's hammer catch",
+    "of_bell_hammer": "Rufus's bell hammer",
+    "engaged_with_cam": "Rufus's cam",
+    "is_engaged": false
+  },
+  {
+    "hammer_catch_id": "Twigs's hammer catch",
+    "of_bell_hammer": "Twigs's bell hammer",
+    "engaged_with_cam": "Twigs's cam",
+    "is_engaged": false
+  }
+]

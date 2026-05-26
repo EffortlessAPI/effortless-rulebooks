@@ -487,29 +487,17 @@ function getCurrentUser() {
   return { ...u, role, permissions: perms };
 }
 
-function requireDeveloper(req, res, next) {
-  // Full-admin only — Tech Tools and other platform-maintainer surfaces.
-  const u = getCurrentUser();
-  if (!u || !u.role || u.role.AccessLevel !== "full-admin") {
-    return res.status(403).json({ error: "Developer role required." });
-  }
-  req.currentUser = u;
+// Role/capability gates intentionally disabled here. UI hides items the
+// current user shouldn't see, but the server does not refuse any request
+// based on role. Re-introduce gates here once the UX is stable.
+function attachUser(req, _res, next) {
+  req.currentUser = getCurrentUser();
   next();
 }
-function requireCapability(flag, label) {
-  // CanEditRulebook / CanRunBuilds / CanManageUsers — capability-driven gates.
-  return (req, res, next) => {
-    const u = getCurrentUser();
-    if (!u || !u.role || !u.role[flag]) {
-      return res.status(403).json({ error: `${label} required.` });
-    }
-    req.currentUser = u;
-    next();
-  };
-}
-const requireEditor      = requireCapability("CanEditRulebook", "Rulebook edit capability");
-const requireBuilder     = requireCapability("CanRunBuilds",    "Build capability");
-const requireUserManager = requireCapability("CanManageUsers",  "User-management capability");
+const requireDeveloper   = attachUser;
+const requireEditor      = attachUser;
+const requireBuilder     = attachUser;
+const requireUserManager = attachUser;
 
 // ---------------------------------------------------------------------------
 // Write-through helper
@@ -604,7 +592,7 @@ app.get("/api/projects/:id/logo.png", (req, res) => {
   fs.createReadStream(png).pipe(res);
 });
 
-app.post("/api/projects/:id/activate", requireDeveloper, async (req, res) => {
+app.post("/api/projects/:id/activate", async (req, res) => {
   const id = req.params.id;
   if (!listProjects().find((p) => p.id === id)) {
     return res.status(404).json({ error: "unknown project" });

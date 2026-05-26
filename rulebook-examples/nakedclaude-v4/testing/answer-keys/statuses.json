@@ -1,0 +1,72 @@
+[
+  {
+    "statuse_id": "cancelled",
+    "display_name": "Cancelled",
+    "sort_order": 7,
+    "name": "cancelled",
+    "description": "This status means the customer or request has been cancelled and will not proceed further.",
+    "count_of_clients": 0,
+    "is_blocking": false,
+    "clients": ""
+  },
+  {
+    "statuse_id": "delayed",
+    "display_name": "Delayed",
+    "sort_order": 6,
+    "clients": "carla-smith, caroline",
+    "name": "delayed",
+    "description": "This status is used when the customer or request has been delayed and is not progressing as scheduled.",
+    "count_of_clients": 2,
+    "is_blocking": false
+  },
+  {
+    "statuse_id": "in-review",
+    "is_blocking": true,
+    "display_name": "In-Review",
+    "sort_order": 3,
+    "name": "in-review",
+    "description": "This status is for customers or requests that are currently under review.",
+    "count_of_clients": 0,
+    "clients": ""
+  },
+  {
+    "statuse_id": "new",
+    "display_name": "New",
+    "sort_order": 1,
+    "clients": "brian-lee",
+    "name": "new",
+    "description": "This status indicates a newly created customer or request that has not yet been processed.",
+    "count_of_clients": 1,
+    "is_blocking": false
+  },
+  {
+    "statuse_id": "on-hold",
+    "is_blocking": true,
+    "display_name": "On-Hold",
+    "sort_order": 5,
+    "clients": "bob",
+    "name": "on-hold",
+    "description": "This status indicates the customer or request is on hold and temporarily paused.",
+    "count_of_clients": 1
+  },
+  {
+    "statuse_id": "pending",
+    "is_blocking": true,
+    "display_name": "Pending",
+    "sort_order": 4,
+    "clients": "alice-johnson",
+    "name": "pending",
+    "description": "This status shows the customer or request is pending further action or review.",
+    "count_of_clients": 1
+  },
+  {
+    "statuse_id": "processing",
+    "display_name": "Processing",
+    "sort_order": 2,
+    "name": "processing",
+    "description": "This status means the customer or request is currently being processed.",
+    "count_of_clients": 0,
+    "is_blocking": false,
+    "clients": ""
+  }
+]

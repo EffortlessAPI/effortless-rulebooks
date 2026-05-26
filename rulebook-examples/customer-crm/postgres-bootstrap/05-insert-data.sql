@@ -36,64 +36,64 @@ VALUES ('linus.torvalds@kernel.org', 'linus.torvalds@kernel.org', 'Linus', 'Torv
 -- Orders: A customer order. OrderNumber is the PK.
 -- ----------------------------------------------------------------------------
 INSERT INTO orders (orders_id, order_number, order_date, customer, total)
-VALUES ('ORD-1001', 'ORD-1001', '2026-01-15', 'ada.lovelace@analytical.engine', 250.00) ON CONFLICT (orders_id) DO NOTHING;
+VALUES ('ORD-1001', 'ORD-1001', '2026-01-15', 'ada.lovelace@analytical.engine', 250.0) ON CONFLICT (orders_id) DO NOTHING;
 
 INSERT INTO orders (orders_id, order_number, order_date, customer, total)
-VALUES ('ORD-1002', 'ORD-1002', '2026-02-03', 'ada.lovelace@analytical.engine', 875.00) ON CONFLICT (orders_id) DO NOTHING;
+VALUES ('ORD-1002', 'ORD-1002', '2026-02-03', 'ada.lovelace@analytical.engine', 875.0) ON CONFLICT (orders_id) DO NOTHING;
 
 INSERT INTO orders (orders_id, order_number, order_date, customer, total)
 VALUES ('ORD-1003', 'ORD-1003', '2026-02-20', 'grace.hopper@nautical.mil', 1499.99) ON CONFLICT (orders_id) DO NOTHING;
 
 INSERT INTO orders (orders_id, order_number, order_date, customer, total)
-VALUES ('ORD-1004', 'ORD-1004', '2026-03-10', 'grace.hopper@nautical.mil', 320.50) ON CONFLICT (orders_id) DO NOTHING;
+VALUES ('ORD-1004', 'ORD-1004', '2026-03-10', 'grace.hopper@nautical.mil', 320.5) ON CONFLICT (orders_id) DO NOTHING;
 
 INSERT INTO orders (orders_id, order_number, order_date, customer, total)
-VALUES ('ORD-1005', 'ORD-1005', '2026-03-22', 'alan.turing@bletchley.uk', 99.00) ON CONFLICT (orders_id) DO NOTHING;
+VALUES ('ORD-1005', 'ORD-1005', '2026-03-22', 'alan.turing@bletchley.uk', 99.0) ON CONFLICT (orders_id) DO NOTHING;
 
 INSERT INTO orders (orders_id, order_number, order_date, customer, total)
-VALUES ('ORD-1006', 'ORD-1006', '2026-04-01', 'katherine.johnson@nasa.gov', 540.00) ON CONFLICT (orders_id) DO NOTHING;
+VALUES ('ORD-1006', 'ORD-1006', '2026-04-01', 'katherine.johnson@nasa.gov', 540.0) ON CONFLICT (orders_id) DO NOTHING;
 
 INSERT INTO orders (orders_id, order_number, order_date, customer, total)
-VALUES ('ORD-1007', 'ORD-1007', '2026-04-12', 'katherine.johnson@nasa.gov', 612.00) ON CONFLICT (orders_id) DO NOTHING;
+VALUES ('ORD-1007', 'ORD-1007', '2026-04-12', 'katherine.johnson@nasa.gov', 612.0) ON CONFLICT (orders_id) DO NOTHING;
 
 INSERT INTO orders (orders_id, order_number, order_date, customer, total)
-VALUES ('ORD-1008', 'ORD-1008', '2026-04-28', 'linus.torvalds@kernel.org', 2400.00) ON CONFLICT (orders_id) DO NOTHING;
+VALUES ('ORD-1008', 'ORD-1008', '2026-04-28', 'linus.torvalds@kernel.org', 2400.0) ON CONFLICT (orders_id) DO NOTHING;
 
 INSERT INTO orders (orders_id, order_number, order_date, customer, total)
-VALUES ('ORD-1009', 'ORD-1009', '2026-05-05', 'linus.torvalds@kernel.org', 180.00) ON CONFLICT (orders_id) DO NOTHING;
+VALUES ('ORD-1009', 'ORD-1009', '2026-05-05', 'linus.torvalds@kernel.org', 180.0) ON CONFLICT (orders_id) DO NOTHING;
 
 INSERT INTO orders (orders_id, order_number, order_date, customer, total)
-VALUES ('ORD-1010', 'ORD-1010', '2026-05-15', 'ada.lovelace@analytical.engine', 50.00) ON CONFLICT (orders_id) DO NOTHING;
+VALUES ('ORD-1010', 'ORD-1010', '2026-05-15', 'ada.lovelace@analytical.engine', 50.0) ON CONFLICT (orders_id) DO NOTHING;
 
 -- ----------------------------------------------------------------------------
 -- Payments: A payment recorded against an order. PaymentNumber is the PK.
 -- ----------------------------------------------------------------------------
 INSERT INTO payments (payments_id, payment_number, order_id, payment_date, amount, method)
-VALUES ('PMT-2001', 'PMT-2001', 'ORD-1001', '2026-01-16', 250.00, 'card') ON CONFLICT (payments_id) DO NOTHING;
+VALUES ('PMT-2001', 'PMT-2001', 'ORD-1001', '2026-01-16', 250.0, 'card') ON CONFLICT (payments_id) DO NOTHING;
 
 INSERT INTO payments (payments_id, payment_number, order_id, payment_date, amount, method)
-VALUES ('PMT-2002', 'PMT-2002', 'ORD-1002', '2026-02-04', 500.00, 'card') ON CONFLICT (payments_id) DO NOTHING;
+VALUES ('PMT-2002', 'PMT-2002', 'ORD-1002', '2026-02-04', 500.0, 'card') ON CONFLICT (payments_id) DO NOTHING;
 
 INSERT INTO payments (payments_id, payment_number, order_id, payment_date, amount, method)
-VALUES ('PMT-2003', 'PMT-2003', 'ORD-1002', '2026-02-18', 375.00, 'ach') ON CONFLICT (payments_id) DO NOTHING;
+VALUES ('PMT-2003', 'PMT-2003', 'ORD-1002', '2026-02-18', 375.0, 'ach') ON CONFLICT (payments_id) DO NOTHING;
 
 INSERT INTO payments (payments_id, payment_number, order_id, payment_date, amount, method)
-VALUES ('PMT-2004', 'PMT-2004', 'ORD-1003', '2026-02-21', 1000.00, 'wire') ON CONFLICT (payments_id) DO NOTHING;
+VALUES ('PMT-2004', 'PMT-2004', 'ORD-1003', '2026-02-21', 1000.0, 'wire') ON CONFLICT (payments_id) DO NOTHING;
 
 INSERT INTO payments (payments_id, payment_number, order_id, payment_date, amount, method)
-VALUES ('PMT-2005', 'PMT-2005', 'ORD-1005', '2026-03-23', 99.00, 'cash') ON CONFLICT (payments_id) DO NOTHING;
+VALUES ('PMT-2005', 'PMT-2005', 'ORD-1005', '2026-03-23', 99.0, 'cash') ON CONFLICT (payments_id) DO NOTHING;
 
 INSERT INTO payments (payments_id, payment_number, order_id, payment_date, amount, method)
-VALUES ('PMT-2006', 'PMT-2006', 'ORD-1006', '2026-04-02', 540.00, 'check') ON CONFLICT (payments_id) DO NOTHING;
+VALUES ('PMT-2006', 'PMT-2006', 'ORD-1006', '2026-04-02', 540.0, 'check') ON CONFLICT (payments_id) DO NOTHING;
 
 INSERT INTO payments (payments_id, payment_number, order_id, payment_date, amount, method)
-VALUES ('PMT-2007', 'PMT-2007', 'ORD-1008', '2026-04-29', 1200.00, 'wire') ON CONFLICT (payments_id) DO NOTHING;
+VALUES ('PMT-2007', 'PMT-2007', 'ORD-1008', '2026-04-29', 1200.0, 'wire') ON CONFLICT (payments_id) DO NOTHING;
 
 INSERT INTO payments (payments_id, payment_number, order_id, payment_date, amount, method)
-VALUES ('PMT-2008', 'PMT-2008', 'ORD-1008', '2026-05-10', 1200.00, 'wire') ON CONFLICT (payments_id) DO NOTHING;
+VALUES ('PMT-2008', 'PMT-2008', 'ORD-1008', '2026-05-10', 1200.0, 'wire') ON CONFLICT (payments_id) DO NOTHING;
 
 INSERT INTO payments (payments_id, payment_number, order_id, payment_date, amount, method)
-VALUES ('PMT-2009', 'PMT-2009', 'ORD-1010', '2026-05-16', 50.00, 'card') ON CONFLICT (payments_id) DO NOTHING;
+VALUES ('PMT-2009', 'PMT-2009', 'ORD-1010', '2026-05-16', 50.0, 'card') ON CONFLICT (payments_id) DO NOTHING;
 
 -- ----------------------------------------------------------------------------
 -- JetModels: Catalog of fighter-jet airframes that flight-control systems are built for. ModelCode is the PK.

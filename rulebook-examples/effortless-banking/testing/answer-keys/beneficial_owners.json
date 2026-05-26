@@ -1,0 +1,62 @@
+[
+  {
+    "name": "pine-hardware-inc-elena-novak",
+    "business": "pine-hardware-inc",
+    "full_name": "Elena Novak",
+    "date_of_birth_encrypted": "ENC(1965-08-30)",
+    "ssn_encrypted": "ENC(xxx-xx-3456)",
+    "address_encrypted": "ENC(99 Oak St, Pinehurst)",
+    "ownership_percentage": 51.0,
+    "is_control_person": true,
+    "meets25_percent_threshold": true,
+    "meets_cdd_threshold": true
+  },
+  {
+    "name": "pine-hardware-inc-robert-novak",
+    "business": "pine-hardware-inc",
+    "full_name": "Robert Novak",
+    "date_of_birth_encrypted": "ENC(1962-01-19)",
+    "ssn_encrypted": "ENC(xxx-xx-7890)",
+    "address_encrypted": "ENC(99 Oak St, Pinehurst)",
+    "ownership_percentage": 49.0,
+    "is_control_person": false,
+    "meets25_percent_threshold": true,
+    "meets_cdd_threshold": true
+  },
+  {
+    "name": "ridgeway-consulting-llc-alex-ridgeway",
+    "business": "ridgeway-consulting-llc",
+    "full_name": "Alex Ridgeway",
+    "date_of_birth_encrypted": "ENC(1972-02-14)",
+    "ssn_encrypted": "ENC(xxx-xx-9012)",
+    "address_encrypted": "ENC(204 Birch Ln, Ridgeway)",
+    "ownership_percentage": 0.0,
+    "is_control_person": true,
+    "meets25_percent_threshold": false,
+    "meets_cdd_threshold": true
+  },
+  {
+    "name": "stillwater-roasters-llc-jordan-park",
+    "business": "stillwater-roasters-llc",
+    "full_name": "Jordan Park",
+    "date_of_birth_encrypted": "ENC(1981-04-17)",
+    "ssn_encrypted": "ENC(xxx-xx-1234)",
+    "address_encrypted": "ENC(742 Evergreen Way, Stillwater)",
+    "ownership_percentage": 60.0,
+    "is_control_person": true,
+    "meets25_percent_threshold": true,
+    "meets_cdd_threshold": true
+  },
+  {
+    "name": "stillwater-roasters-llc-sam-rivera",
+    "business": "stillwater-roasters-llc",
+    "full_name": "Sam Rivera",
+    "date_of_birth_encrypted": "ENC(1978-11-02)",
+    "ssn_encrypted": "ENC(xxx-xx-5678)",
+    "address_encrypted": "ENC(15 Hillcrest Rd, Stillwater)",
+    "ownership_percentage": 40.0,
+    "is_control_person": false,
+    "meets25_percent_threshold": true,
+    "meets_cdd_threshold": true
+  }
+]

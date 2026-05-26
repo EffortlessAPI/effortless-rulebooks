@@ -2,26 +2,27 @@
 
 ## Configuration
 
-- **Rulebook:** `/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-rulebooks/rulebook-examples/acme-corporation/effortless-rulebook/acme-corporation-rulebook.json`
-- **Substrates Tested:** 1
-- **Computed Columns Tested:** 13
+- **Rulebook:** `/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-rulebooks/rulebook-examples/customer-fullname/effortless-rulebook/customer-fullname-rulebook.json`
+- **Substrates Tested:** 2
+- **Computed Columns Tested:** 2
 
 ## Summary by Substrate
 
 | Substrate | Passed | Failed | Total | Score | Duration | Status |
 |-----------|--------|--------|-------|-------|----------|--------|
-| effortless-postgres | 5 | 35 | 40 | 12.5% | 4s | FAIL |
+| xlsx | 6 | 0 | 6 | 100.0% | < 1s | PASS |
+| effortless-postgres | 0 | 6 | 6 | 0.0% | 4s | FAIL |
 
 ## Overall Statistics
 
 | Metric | Value |
 |--------|-------|
-| Total Substrates | 1 |
-| Total Fields Tested | 40 |
-| Total Passed | 5 |
-| Total Failed | 35 |
-| Overall Score | 12.5% |
-| Total Duration | 4s |
+| Total Substrates | 2 |
+| Total Fields Tested | 12 |
+| Total Passed | 6 |
+| Total Failed | 6 |
+| Overall Score | 50.0% |
+| Total Duration | 5s |
 
 ---
 

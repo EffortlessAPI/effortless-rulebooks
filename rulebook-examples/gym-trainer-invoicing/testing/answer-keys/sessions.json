@@ -7,7 +7,9 @@
     "duration_hours": 1.0,
     "rate_override": 0,
     "notes": "Strength A",
-    "invoice": "inv-001"
+    "invoice": "inv-001",
+    "line_total": 0.0,
+    "is_billed": true
   },
   {
     "session_id": "s-002",
@@ -17,7 +19,9 @@
     "duration_hours": 1.5,
     "rate_override": 0,
     "notes": "Mobility",
-    "invoice": "inv-001"
+    "invoice": "inv-001",
+    "line_total": 0.0,
+    "is_billed": true
   },
   {
     "session_id": "s-003",
@@ -27,7 +31,9 @@
     "duration_hours": 1.0,
     "rate_override": 0,
     "notes": "Strength B",
-    "invoice": "inv-001"
+    "invoice": "inv-001",
+    "line_total": 0.0,
+    "is_billed": true
   },
   {
     "session_id": "s-004",
@@ -37,7 +43,9 @@
     "duration_hours": 1.0,
     "rate_override": 0,
     "notes": "Strength A",
-    "invoice": "inv-002"
+    "invoice": "inv-002",
+    "line_total": 0.0,
+    "is_billed": true
   },
   {
     "session_id": "s-005",
@@ -48,7 +56,9 @@
     "rate_override": 100,
     "notes": "Assessment",
     "invoice": "inv-002",
-    "effective_rate": 100
+    "effective_rate": 100,
+    "line_total": 200.0,
+    "is_billed": true
   },
   {
     "session_id": "s-006",
@@ -58,7 +68,9 @@
     "duration_hours": 1.0,
     "rate_override": 0,
     "notes": "Intake",
-    "invoice": "inv-003"
+    "invoice": "inv-003",
+    "line_total": 0.0,
+    "is_billed": true
   },
   {
     "session_id": "s-007",
@@ -68,7 +80,9 @@
     "duration_hours": 1.5,
     "rate_override": 0,
     "notes": "Cardio",
-    "invoice": "inv-003"
+    "invoice": "inv-003",
+    "line_total": 0.0,
+    "is_billed": true
   },
   {
     "session_id": "s-008",
@@ -78,7 +92,9 @@
     "duration_hours": 2.5,
     "rate_override": 0,
     "notes": "Long block",
-    "invoice": "inv-003"
+    "invoice": "inv-003",
+    "line_total": 0.0,
+    "is_billed": true
   },
   {
     "session_id": "s-009",
@@ -88,7 +104,9 @@
     "duration_hours": 1.0,
     "rate_override": 0,
     "notes": "Strength",
-    "invoice": null
+    "invoice": null,
+    "line_total": 0.0,
+    "is_billed": false
   },
   {
     "session_id": "s-010",
@@ -98,7 +116,9 @@
     "duration_hours": 1.0,
     "rate_override": 0,
     "notes": "Intake",
-    "invoice": "inv-004"
+    "invoice": "inv-004",
+    "line_total": 0.0,
+    "is_billed": true
   },
   {
     "session_id": "s-011",
@@ -108,7 +128,9 @@
     "duration_hours": 1.0,
     "rate_override": 0,
     "notes": "Strength A",
-    "invoice": "inv-004"
+    "invoice": "inv-004",
+    "line_total": 0.0,
+    "is_billed": true
   },
   {
     "session_id": "s-012",
@@ -118,7 +140,9 @@
     "duration_hours": 1.5,
     "rate_override": 0,
     "notes": "Mobility",
-    "invoice": "inv-005"
+    "invoice": "inv-005",
+    "line_total": 0.0,
+    "is_billed": true
   },
   {
     "session_id": "s-013",
@@ -128,6 +152,8 @@
     "duration_hours": 1.0,
     "rate_override": 0,
     "notes": "Strength B",
-    "invoice": "inv-005"
+    "invoice": "inv-005",
+    "line_total": 0.0,
+    "is_billed": true
   }
 ]

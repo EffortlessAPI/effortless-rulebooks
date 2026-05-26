@@ -1,0 +1,22 @@
+[
+  {
+    "hairspring_id": "Bessie's hairspring",
+    "attached_to_pallet": "Bessie's pallet",
+    "stiffness_nm_per_rad": 0.0004
+  },
+  {
+    "hairspring_id": "Olive's hairspring",
+    "attached_to_pallet": "Olive's pallet",
+    "stiffness_nm_per_rad": 0.0004
+  },
+  {
+    "hairspring_id": "Rufus's hairspring",
+    "attached_to_pallet": "Rufus's pallet",
+    "stiffness_nm_per_rad": 0.0004
+  },
+  {
+    "hairspring_id": "Twigs's hairspring",
+    "attached_to_pallet": "Twigs's pallet",
+    "stiffness_nm_per_rad": 0.0004
+  }
+]

@@ -1,0 +1,22 @@
+[
+  {
+    "attendee_id": "user1@attendees.local",
+    "name": "user1@attendees.local"
+  },
+  {
+    "attendee_id": "user2@attendees.local",
+    "name": "user2@attendees.local"
+  },
+  {
+    "attendee_id": "user3@attendees.local",
+    "name": "user3@attendees.local"
+  },
+  {
+    "attendee_id": "user4@attendees.local",
+    "name": "user4@attendees.local"
+  },
+  {
+    "attendee_id": "user5@attendees.local",
+    "name": "user5@attendees.local"
+  }
+]

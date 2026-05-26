@@ -1,0 +1,21 @@
+{
+  "employees": {
+    "primary_key": "employee_id",
+    "computed_columns": [
+      "name"
+    ],
+    "record_count": 4
+  },
+  "expense_reports": {
+    "primary_key": "expense_report_id",
+    "computed_columns": [
+      "employee_name",
+      "employee_budget_limit",
+      "total_amount",
+      "is_over_budget",
+      "is_approved",
+      "requires_escalation"
+    ],
+    "record_count": 3
+  }
+}

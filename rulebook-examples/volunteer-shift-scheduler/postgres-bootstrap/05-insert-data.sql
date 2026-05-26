@@ -21,10 +21,10 @@ INSERT INTO volunteers (volunteer_id, first_name, last_name, email_address, reli
 VALUES ('morgan-lee', 'Morgan', 'Lee', 'morgan@example.com', 0.95, 10) ON CONFLICT (volunteer_id) DO NOTHING;
 
 INSERT INTO volunteers (volunteer_id, first_name, last_name, email_address, reliability_score, max_hours)
-VALUES ('sam-park', 'Sam', 'Park', 'sam@example.com', 0.80, 8) ON CONFLICT (volunteer_id) DO NOTHING;
+VALUES ('sam-park', 'Sam', 'Park', 'sam@example.com', 0.8, 8) ON CONFLICT (volunteer_id) DO NOTHING;
 
 INSERT INTO volunteers (volunteer_id, first_name, last_name, email_address, reliability_score, max_hours)
-VALUES ('jamie-rivera', 'Jamie', 'Rivera', 'jamie@example.com', 0.90, 12) ON CONFLICT (volunteer_id) DO NOTHING;
+VALUES ('jamie-rivera', 'Jamie', 'Rivera', 'jamie@example.com', 0.9, 12) ON CONFLICT (volunteer_id) DO NOTHING;
 
 INSERT INTO volunteers (volunteer_id, first_name, last_name, email_address, reliability_score, max_hours)
 VALUES ('alex-kim', 'Alex', 'Kim', 'alex@example.com', 0.85, 10) ON CONFLICT (volunteer_id) DO NOTHING;

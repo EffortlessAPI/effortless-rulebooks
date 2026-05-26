@@ -1,0 +1,26 @@
+[
+  {
+    "bell_hammer_id": "Bessie's bell hammer",
+    "in_timer": "Bessie",
+    "arm_torque_nm": 0.02,
+    "release_state": "Held"
+  },
+  {
+    "bell_hammer_id": "Olive's bell hammer",
+    "in_timer": "Olive",
+    "arm_torque_nm": 0.02,
+    "release_state": "Held"
+  },
+  {
+    "bell_hammer_id": "Rufus's bell hammer",
+    "in_timer": "Rufus",
+    "arm_torque_nm": 0.02,
+    "release_state": "Held"
+  },
+  {
+    "bell_hammer_id": "Twigs's bell hammer",
+    "in_timer": "Twigs",
+    "arm_torque_nm": 0.02,
+    "release_state": "Held"
+  }
+]

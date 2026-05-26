@@ -1,0 +1,62 @@
+[
+  {
+    "name": "l-0051-promissory-note-pdf",
+    "business": null,
+    "loan": "l-0051",
+    "uploaded_by_user": "priya-iyer",
+    "filename": "l-0051-promissory-note.pdf",
+    "document_type": "Note",
+    "ocr_indexed": true,
+    "uploaded_via": "RMDashboard",
+    "uploaded_at": "2025-02-28",
+    "from_customer_portal": false
+  },
+  {
+    "name": "l-0051-security-agreement-pdf",
+    "business": null,
+    "loan": "l-0051",
+    "uploaded_by_user": "priya-iyer",
+    "filename": "l-0051-security-agreement.pdf",
+    "document_type": "SecurityAgreement",
+    "ocr_indexed": true,
+    "uploaded_via": "RMDashboard",
+    "uploaded_at": "2025-02-28",
+    "from_customer_portal": false
+  },
+  {
+    "name": "pine-articles-of-incorporation-pdf",
+    "business": "pine-hardware-inc",
+    "loan": null,
+    "uploaded_by_user": "devon-marshall",
+    "filename": "pine-articles-of-incorporation.pdf",
+    "document_type": "FormationDoc",
+    "ocr_indexed": true,
+    "uploaded_via": "RMDashboard",
+    "uploaded_at": "2019-06-21",
+    "from_customer_portal": false
+  },
+  {
+    "name": "stillwater-2024-tax-return-pdf",
+    "business": "stillwater-roasters-llc",
+    "loan": null,
+    "uploaded_by_user": "devon-marshall",
+    "filename": "stillwater-2024-tax-return.pdf",
+    "document_type": "TaxReturn",
+    "ocr_indexed": true,
+    "uploaded_via": "RMDashboard",
+    "uploaded_at": "2025-01-22",
+    "from_customer_portal": false
+  },
+  {
+    "name": "stillwater-q4-2024-pl-pdf",
+    "business": "stillwater-roasters-llc",
+    "loan": null,
+    "uploaded_by_user": null,
+    "filename": "stillwater-q4-2024-pl.pdf",
+    "document_type": "FinancialStatement",
+    "ocr_indexed": true,
+    "uploaded_via": "BusinessClientPortal",
+    "uploaded_at": "2025-01-15",
+    "from_customer_portal": true
+  }
+]

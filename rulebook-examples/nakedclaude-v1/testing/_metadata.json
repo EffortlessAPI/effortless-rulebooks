@@ -1,0 +1,9 @@
+{
+  "customers": {
+    "primary_key": "customer_id",
+    "computed_columns": [
+      "is_approved"
+    ],
+    "record_count": 5
+  }
+}

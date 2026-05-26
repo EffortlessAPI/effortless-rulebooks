@@ -1,0 +1,50 @@
+[
+  {
+    "user_id": "Carmen",
+    "display_name": "Sous Chef",
+    "activity_level": "busy",
+    "cooking_style": "slow-cooking"
+  },
+  {
+    "user_id": "Diego",
+    "display_name": "Line Cook",
+    "activity_level": "busy",
+    "cooking_style": "slow-cooking"
+  },
+  {
+    "user_id": "Eli",
+    "display_name": "Apprentice",
+    "activity_level": "busy",
+    "cooking_style": "slow-cooking"
+  },
+  {
+    "user_id": "Iris",
+    "display_name": "Pastry Chef",
+    "activity_level": "busy",
+    "cooking_style": "slow-cooking"
+  },
+  {
+    "user_id": "Lena",
+    "display_name": "Baker",
+    "activity_level": "busy",
+    "cooking_style": "slow-cooking"
+  },
+  {
+    "user_id": "Marcus",
+    "display_name": "Chef",
+    "activity_level": "busy",
+    "cooking_style": "slow-cooking"
+  },
+  {
+    "user_id": "Tomas",
+    "display_name": "Dishwasher",
+    "activity_level": "busy",
+    "cooking_style": "slow-cooking"
+  },
+  {
+    "user_id": "Wendell",
+    "display_name": "Food Critic",
+    "activity_level": "busy",
+    "cooking_style": "slow-cooking"
+  }
+]

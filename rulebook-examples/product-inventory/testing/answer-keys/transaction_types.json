@@ -1,0 +1,17 @@
+[
+  {
+    "transaction_type_id": "ADJUSTMENT",
+    "description": "Inventory correction or damage write-off",
+    "name": "ADJUSTMENT"
+  },
+  {
+    "transaction_type_id": "PURCHASE",
+    "description": "Stock received from supplier",
+    "name": "PURCHASE"
+  },
+  {
+    "transaction_type_id": "SALE",
+    "description": "Stock sold to customer",
+    "name": "SALE"
+  }
+]

@@ -1,0 +1,32 @@
+[
+  {
+    "roster_id": "allens-arsenal",
+    "owner": "owner@league.local",
+    "name": "allens-arsenal"
+  },
+  {
+    "roster_id": "davantes-dynasty",
+    "owner": "owner@league.local",
+    "name": "davantes-dynasty"
+  },
+  {
+    "roster_id": "defense-wins",
+    "owner": "spectator@league.local",
+    "name": "defense-wins"
+  },
+  {
+    "roster_id": "hurts-hustlers",
+    "owner": "owner@league.local",
+    "name": "hurts-hustlers"
+  },
+  {
+    "roster_id": "hurts-limit",
+    "owner": "spectator@league.local",
+    "name": "hurts-limit"
+  },
+  {
+    "roster_id": "mahomes-mob",
+    "owner": "commissioner@league.local",
+    "name": "mahomes-mob"
+  }
+]

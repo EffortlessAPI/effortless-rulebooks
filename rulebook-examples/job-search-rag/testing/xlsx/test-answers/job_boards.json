@@ -1,0 +1,38 @@
+[
+  {
+    "job_board_id": "indeed",
+    "name": "Indeed",
+    "description": "High-volume general board. Adapter planned.",
+    "is_enabled": false,
+    "max_pages": 3,
+    "is_headless": true,
+    "browser_channel": null
+  },
+  {
+    "job_board_id": "linkedin",
+    "name": "LinkedIn",
+    "description": "Overnight mode recommended. Stealth browsing, throttled requests. Stricter bot detection.",
+    "is_enabled": false,
+    "max_pages": 2,
+    "is_headless": false,
+    "browser_channel": "msedge"
+  },
+  {
+    "job_board_id": "weworkremotely",
+    "name": "WeWorkRemotely",
+    "description": "Remote-focused board. Smaller volume, higher signal for remote roles.",
+    "is_enabled": false,
+    "max_pages": 3,
+    "is_headless": true,
+    "browser_channel": null
+  },
+  {
+    "job_board_id": "ziprecruiter",
+    "name": "ZipRecruiter",
+    "description": "Primary board. Uses Next.js SERP structure. Full adapter implemented.",
+    "is_enabled": true,
+    "max_pages": 3,
+    "is_headless": true,
+    "browser_channel": null
+  }
+]

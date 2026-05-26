@@ -1,7 +1,7 @@
 {
   "$schema": "https://example.com/cmcc-schema/v1",
-  "Name": "NakedClaude (v4)",
-  "Description": "15-entity invoicing + inventory domain \u2014 plain Claude's most-evolved output.",
+  "Name": "v4: NakedClaude Demo",
+  "Description": "Rulebook generated from Airtable base \u0027v4: NakedClaude Demo\u0027.",
   "AppUsers": {
     "Description": "Table: AppUsers",
     "schema": [
@@ -16,7 +16,7 @@
         "datatype": "string",
         "type": "calculated",
         "nullable": true,
-        "formula": "=SUBSTITUTE(LOWER({{EmailAddress}} & \"-\" & {{Role}}), \"@\", \"-\")"
+        "formula": "=SUBSTITUTE(LOWER({{EmailAddress}} \u0026 \u0022-\u0022 \u0026 {{Role}}), \u0022@\u0022, \u0022-\u0022)"
       },
       {
         "name": "ContactName",
@@ -144,7 +144,7 @@
         "datatype": "boolean",
         "type": "lookup",
         "nullable": true,
-        "Description": "True when the customer's current Status is a blocking status. Lookup of Statuses.IsBlocking.",
+        "Description": "True when the customer\u0027s current Status is a blocking status. Lookup of Statuses.IsBlocking.",
         "formula": "=INDEX(Statuses!{{IsBlocking}}, MATCH(Clients!{{Status}}, Statuses!{{StatuseId}}, 0))"
       },
       {
@@ -152,7 +152,7 @@
         "datatype": "string",
         "type": "relationship",
         "nullable": true,
-        "Description": "Link to the customer's current Status in the Statuses table.",
+        "Description": "Link to the customer\u0027s current Status in the Statuses table.",
         "RelatedTo": "Statuses",
         "isReversed": false,
         "prefersSingleRecordLink": true,
@@ -163,7 +163,7 @@
         "datatype": "string",
         "type": "lookup",
         "nullable": true,
-        "Description": "Human-readable display name of the customer's current Status. Lookup of Statuses.DisplayName.",
+        "Description": "Human-readable display name of the customer\u0027s current Status. Lookup of Statuses.DisplayName.",
         "formula": "=INDEX(Statuses!{{DisplayName}}, MATCH(Clients!{{Status}}, Statuses!{{StatuseId}}, 0))"
       },
       {
@@ -171,7 +171,7 @@
         "datatype": "string",
         "type": "lookup",
         "nullable": true,
-        "Description": "Description of the customer's current Status. Lookup of Statuses.Description.",
+        "Description": "Description of the customer\u0027s current Status. Lookup of Statuses.Description.",
         "formula": "=INDEX(Statuses!{{Description}}, MATCH(Clients!{{Status}}, Statuses!{{StatuseId}}, 0))"
       },
       {
@@ -265,14 +265,14 @@
         "datatype": "boolean",
         "type": "calculated",
         "nullable": true,
-        "formula": "=IF(AND({{AverageOrderValue}} > 500, {{HasRecentInvoices}}), TRUE(), FALSE())"
+        "formula": "=IF(AND({{AverageOrderValue}} \u003E 500, {{HasRecentInvoices}}), TRUE(), FALSE())"
       },
       {
         "name": "HasRecentInvoices",
         "datatype": "boolean",
         "type": "calculated",
         "nullable": true,
-        "formula": "=IF({{LastInvoice}} > DATEADD(TODAY(), -220, 'days'), TRUE(), FALSE())"
+        "formula": "=IF({{LastInvoice}} \u003E DATEADD(TODAY(), -220, \u0027days\u0027), TRUE(), FALSE())"
       },
       {
         "name": "LastInvoice",
@@ -286,7 +286,7 @@
         "datatype": "integer",
         "type": "calculated",
         "nullable": true,
-        "formula": "=IF({{CreatedAt}}, DATETIME_DIFF(NOW(), {{CreatedAt}}, 'days'), BLANK())"
+        "formula": "=IF({{CreatedAt}}, DATETIME_DIFF(NOW(), {{CreatedAt}}, \u0027days\u0027), BLANK())"
       },
       {
         "name": "ClientApprovals",
@@ -316,8 +316,8 @@
         "Notes": "A customer currently in launch.",
         "BillingAddressStateTaxRate": "0.0625",
         "CategoryDiscount": "0.05",
-        "Phone": "+1-415-555-0101",
-        "CustomerSinceDays": 284,
+        "Phone": "\u002B1-415-555-0101",
+        "CustomerSinceDays": 285,
         "BillingAddress": "742 Evergreen Terrace, Springfield, il-illinois 97477",
         "LastInvoice": "2025-09-15T10:30:00Z",
         "Invoices": "bob-1001",
@@ -344,8 +344,8 @@
         "Notes": "Initial mock entry for Alice.",
         "BillingAddressStateTaxRate": "0.065",
         "CategoryDiscount": "0.05",
-        "Phone": "+1-206-555-0142",
-        "CustomerSinceDays": 265,
+        "Phone": "\u002B1-206-555-0142",
+        "CustomerSinceDays": 266,
         "BillingAddress": "500 Pine St, Suite 200, Seattle, wa-washington 98101",
         "LastInvoice": "2025-10-05T09:00:00Z",
         "Invoices": "alice-johnson-1010",
@@ -374,8 +374,8 @@
         "Notes": "Initial mock entry for Brian.",
         "BillingAddressStateTaxRate": "0.0625",
         "CategoryDiscount": "0",
-        "Phone": "+1-512-555-0177",
-        "CustomerSinceDays": 226,
+        "Phone": "\u002B1-512-555-0177",
+        "CustomerSinceDays": 227,
         "BillingAddress": "88 Industrial Way, Austin, tx-texas 78701",
         "LastInvoice": "2026-02-20T13:15:00Z",
         "Invoices": "brian-lee-1018, brian-lee-1037, brian-lee-1042",
@@ -401,8 +401,8 @@
         "Notes": "Initial mock entry for Carla.",
         "BillingAddressStateTaxRate": "0.06",
         "CategoryDiscount": "0.05",
-        "Phone": "+1-305-555-0188",
-        "CustomerSinceDays": 184,
+        "Phone": "\u002B1-305-555-0188",
+        "CustomerSinceDays": 185,
         "BillingAddress": "1200 Ocean Dr, Miami, fl-florida 33139",
         "LastInvoice": "2025-12-01T11:20:00Z",
         "Invoices": "carla-smith-1024",
@@ -428,8 +428,8 @@
         "CreatedAt": "2026-01-08T08:20:00Z",
         "BillingAddressStateTaxRate": "0.04",
         "CategoryDiscount": "0.15",
-        "Phone": "+1-718-555-0199",
-        "CustomerSinceDays": 137,
+        "Phone": "\u002B1-718-555-0199",
+        "CustomerSinceDays": 138,
         "BillingAddress": "23 Hudson Lane, Brooklyn, ny-new-york 11201",
         "LastInvoice": "2026-03-12T10:00:00Z",
         "Invoices": "caroline-1045",
@@ -456,7 +456,7 @@
         "datatype": "string",
         "type": "calculated",
         "nullable": true,
-        "formula": "= {{Client}} & \"-\" & IF({{IsApproved}}, \"APVD\", \"PEND\")"
+        "formula": "= {{Client}} \u0026 \u0022-\u0022 \u0026 IF({{IsApproved}}, \u0022APVD\u0022, \u0022PEND\u0022)"
       },
       {
         "name": "Client",
@@ -556,7 +556,7 @@
         "ClientCategory": "active",
         "ClientEmail": "alice.johnson@northwind.example",
         "IsApproved": true,
-        "ClientPhone": "+1-206-555-0142",
+        "ClientPhone": "\u002B1-206-555-0142",
         "ApprovedByContactName": "EJ Alexandra",
         "ApprovedBy": "ej-ssot-me-admin",
         "Name": "Alice Johnson-APVD",
@@ -572,7 +572,7 @@
         "ClientCategory": "prospect",
         "ClientEmail": "brian.lee@contoso.example",
         "IsApproved": true,
-        "ClientPhone": "+1-512-555-0177",
+        "ClientPhone": "\u002B1-512-555-0177",
         "ApprovedByContactName": "EJ Alexandra",
         "ApprovedBy": "ej-ssot-me-admin",
         "Name": "Brian Lee-APVD",
@@ -585,7 +585,7 @@
         "ClientApprovalId": "brian-lee-pend",
         "ClientCategory": "prospect",
         "ClientEmail": "brian.lee@contoso.example",
-        "ClientPhone": "+1-512-555-0177",
+        "ClientPhone": "\u002B1-512-555-0177",
         "Name": "Brian Lee-PEND",
         "Client": "brian-lee",
         "ClientName": "Brian Lee",
@@ -693,7 +693,7 @@
         "datatype": "string",
         "type": "raw",
         "nullable": true,
-        "Description": "Human-readable display name of the status (e.g., \"On-Hold\", \"In-Review\")."
+        "Description": "Human-readable display name of the status (e.g., \u0022On-Hold\u0022, \u0022In-Review\u0022)."
       },
       {
         "name": "Description",
@@ -823,7 +823,7 @@
         "type": "calculated",
         "nullable": true,
         "Description": "Lowercase, dash-separated compound key derived from SKU. Used as the natural key for the product.",
-        "formula": "=LOWER(SUBSTITUTE({{SKU}}, \" \", \"-\"))"
+        "formula": "=LOWER(SUBSTITUTE({{SKU}}, \u0022 \u0022, \u0022-\u0022))"
       },
       {
         "name": "SKU",
@@ -897,7 +897,7 @@
         "datatype": "boolean",
         "type": "calculated",
         "nullable": true,
-        "formula": "={{Margin}} > 0.65"
+        "formula": "={{Margin}} \u003E 0.65"
       },
       {
         "name": "StockQuantity",
@@ -936,7 +936,7 @@
         "datatype": "boolean",
         "type": "calculated",
         "nullable": true,
-        "formula": "=IF(AND({{CountOfVIPOrders}} > 0, {{StockQuantity}} > 250), TRUE(), FALSE())"
+        "formula": "=IF(AND({{CountOfVIPOrders}} \u003E 0, {{StockQuantity}} \u003E 250), TRUE(), FALSE())"
       }
     ],
     "data": [
@@ -1108,15 +1108,15 @@
         "datatype": "string",
         "type": "calculated",
         "nullable": true,
-        "Description": "Lowercase compound key combining the linked Customer and OrderNumber (e.g. 'bob-1001'). Used as the natural key for the order.",
-        "formula": "=LOWER(SUBSTITUTE({{Client}} & \"-\" & {{invoiceNumber}}, \" \", \"-\"))"
+        "Description": "Lowercase compound key combining the linked Customer and OrderNumber (e.g. \u0027bob-1001\u0027). Used as the natural key for the order.",
+        "formula": "=LOWER(SUBSTITUTE({{Client}} \u0026 \u0022-\u0022 \u0026 {{invoiceNumber}}, \u0022 \u0022, \u0022-\u0022))"
       },
       {
         "name": "invoiceNumber",
         "datatype": "string",
         "type": "raw",
         "nullable": true,
-        "Description": "Sequential or human-assigned order identifier (e.g. '1001'). Combined with Customer to form the order's natural key."
+        "Description": "Sequential or human-assigned order identifier (e.g. \u00271001\u0027). Combined with Customer to form the order\u0027s natural key."
       },
       {
         "name": "Client",
@@ -1261,7 +1261,7 @@
         "datatype": "boolean",
         "type": "calculated",
         "nullable": true,
-        "formula": "={{SubTotal}} > 350"
+        "formula": "={{SubTotal}} \u003E 350"
       },
       {
         "name": "TaxRate",
@@ -1283,7 +1283,7 @@
         "datatype": "number",
         "type": "calculated",
         "nullable": true,
-        "formula": "={{SubTotal}} + {{TaxAmount}}"
+        "formula": "={{SubTotal}} \u002B {{TaxAmount}}"
       },
       {
         "name": "TotalPaid",
@@ -1304,7 +1304,7 @@
         "datatype": "boolean",
         "type": "calculated",
         "nullable": true,
-        "formula": "=IF({{AmountDue}} <= 0, TRUE(), FALSE())"
+        "formula": "=IF({{AmountDue}} \u003C= 0, TRUE(), FALSE())"
       },
       {
         "name": "PaymentCount",
@@ -1325,7 +1325,7 @@
         "datatype": "string",
         "type": "calculated",
         "nullable": true,
-        "formula": "=IF({{IsPaidInFull}}, \"Paid\", IF({{TotalPaid}} = 0, \"Unpaid\", \"Partial\"))"
+        "formula": "=IF({{IsPaidInFull}}, \u0022Paid\u0022, IF({{TotalPaid}} = 0, \u0022Unpaid\u0022, \u0022Partial\u0022))"
       }
     ],
     "data": [
@@ -1334,7 +1334,7 @@
         "InvoiceTotal": 131.739375,
         "TotalPaid": 0,
         "ShippingAddress": "742 Evergreen Terrace\nSpringfield, OR 97477",
-        "ClientPhone": "+1-512-555-0177",
+        "ClientPhone": "\u002B1-512-555-0177",
         "AmountDue": 131.74,
         "ClientEmail": "brian.lee@contoso.example",
         "ItemCount": 2,
@@ -1367,7 +1367,7 @@
         "InvoiceTotal": 102.96832,
         "TotalPaid": 126.82,
         "ShippingAddress": "23 Hudson Lane\nBrooklyn, NY 11201",
-        "ClientPhone": "+1-718-555-0199",
+        "ClientPhone": "\u002B1-718-555-0199",
         "AmountDue": -23.85,
         "ClientEmail": "caroline@solo.example",
         "ItemCount": 3,
@@ -1401,7 +1401,7 @@
         "TotalPaid": 4770.4400000000005,
         "IsBigOrder": true,
         "ShippingAddress": "500 Pine St, Suite 200\nSeattle, WA 98101",
-        "ClientPhone": "+1-206-555-0142",
+        "ClientPhone": "\u002B1-206-555-0142",
         "AmountDue": 641.66,
         "ClientEmail": "alice.johnson@northwind.example",
         "ItemCount": 4,
@@ -1433,7 +1433,7 @@
         "InvoiceTotal": 150.3565,
         "TotalPaid": 156.74,
         "ShippingAddress": "742 Evergreen Terrace\nSpringfield, OR 97477",
-        "ClientPhone": "+1-415-555-0101",
+        "ClientPhone": "\u002B1-415-555-0101",
         "AmountDue": -6.38,
         "ClientEmail": "bob@launchpad.example",
         "ItemCount": 3,
@@ -1466,7 +1466,7 @@
         "InvoiceTotal": 225.568,
         "TotalPaid": 0,
         "ShippingAddress": "1200 Ocean Dr\nMiami, FL 33139",
-        "ClientPhone": "+1-305-555-0188",
+        "ClientPhone": "\u002B1-305-555-0188",
         "AmountDue": 225.57,
         "ClientEmail": "carla.smith@bluewave.example",
         "ItemCount": 2,
@@ -1500,7 +1500,7 @@
         "TotalPaid": 203.73,
         "IsBigOrder": true,
         "ShippingAddress": "1200 Ocean Dr\nMiami, FL 33139",
-        "ClientPhone": "+1-512-555-0177",
+        "ClientPhone": "\u002B1-512-555-0177",
         "AmountDue": 885.33,
         "ClientEmail": "brian.lee@contoso.example",
         "ItemCount": 2,
@@ -1533,7 +1533,7 @@
         "TotalPaid": 649.51,
         "IsBigOrder": true,
         "ShippingAddress": "90 Industrial Way (Loading Dock B)\nAustin, TX 78701",
-        "ClientPhone": "+1-512-555-0177",
+        "ClientPhone": "\u002B1-512-555-0177",
         "AmountDue": 102.61,
         "ClientEmail": "brian.lee@contoso.example",
         "ItemCount": 2,
@@ -1576,15 +1576,15 @@
         "datatype": "string",
         "type": "calculated",
         "nullable": true,
-        "Description": "Lowercase compound key combining the linked Order and LineNumber (e.g. 'bob-1001-line-1'). Used as the natural key for the line item.",
-        "formula": "=LOWER(SUBSTITUTE({{Invoice}} & \"-line-\" & {{LineNumber}}, \" \", \"-\"))"
+        "Description": "Lowercase compound key combining the linked Order and LineNumber (e.g. \u0027bob-1001-line-1\u0027). Used as the natural key for the line item.",
+        "formula": "=LOWER(SUBSTITUTE({{Invoice}} \u0026 \u0022-line-\u0022 \u0026 {{LineNumber}}, \u0022 \u0022, \u0022-\u0022))"
       },
       {
         "name": "LineNumber",
         "datatype": "string",
         "type": "raw",
         "nullable": true,
-        "Description": "Position of this line within its parent Order (e.g. '1', '2'). Combined with Order to form the line item's natural key."
+        "Description": "Position of this line within its parent Order (e.g. \u00271\u0027, \u00272\u0027). Combined with Order to form the line item\u0027s natural key."
       },
       {
         "name": "Invoice",
@@ -2104,7 +2104,7 @@
         "datatype": "string",
         "type": "calculated",
         "nullable": true,
-        "formula": "={{Product}} & \"-\" & LEFT({{Date}}, 10) & \"-qty\" & {{Quantity}}"
+        "formula": "={{Product}} \u0026 \u0022-\u0022 \u0026 LEFT({{Date}}, 10) \u0026 \u0022-qty\u0022 \u0026 {{Quantity}}"
       },
       {
         "name": "Product",
@@ -2258,15 +2258,15 @@
         "datatype": "string",
         "type": "calculated",
         "nullable": true,
-        "Description": "Lowercase compound key combining the linked Order and PaymentNumber (e.g. 'bob-1001-pmt-1'). Used as the natural key for the payment.",
-        "formula": "=LOWER(SUBSTITUTE({{Invoice}} & \"-pmt-\" & {{PaymentNumber}}, \" \", \"-\"))"
+        "Description": "Lowercase compound key combining the linked Order and PaymentNumber (e.g. \u0027bob-1001-pmt-1\u0027). Used as the natural key for the payment.",
+        "formula": "=LOWER(SUBSTITUTE({{Invoice}} \u0026 \u0022-pmt-\u0022 \u0026 {{PaymentNumber}}, \u0022 \u0022, \u0022-\u0022))"
       },
       {
         "name": "PaymentNumber",
         "datatype": "string",
         "type": "raw",
         "nullable": true,
-        "Description": "Sequential payment identifier within the parent Order (e.g. '1', '2'). Combined with Order to form the payment's natural key."
+        "Description": "Sequential payment identifier within the parent Order (e.g. \u00271\u0027, \u00272\u0027). Combined with Order to form the payment\u0027s natural key."
       },
       {
         "name": "Invoice",
@@ -2354,14 +2354,14 @@
         "datatype": "boolean",
         "type": "calculated",
         "nullable": true,
-        "formula": "=IF({{PaymentStatus}} = \"Completed\", TRUE(), FALSE())"
+        "formula": "=IF({{PaymentStatus}} = \u0022Completed\u0022, TRUE(), FALSE())"
       },
       {
         "name": "CompletedAmount",
         "datatype": "number",
         "type": "calculated",
         "nullable": true,
-        "formula": "=IF({{PaymentStatus}} = \"Completed\", {{Amount}}, 0)"
+        "formula": "=IF({{PaymentStatus}} = \u0022Completed\u0022, {{Amount}}, 0)"
       },
       {
         "name": "OrderAmountDue",
@@ -2575,7 +2575,7 @@
         "datatype": "string",
         "type": "calculated",
         "nullable": true,
-        "formula": "={{Address1}} & \", \" & {{City}} & \", \" & {{State}} & \" \" & {{Zip}}"
+        "formula": "={{Address1}} \u0026 \u0022, \u0022 \u0026 {{City}} \u0026 \u0022, \u0022 \u0026 {{State}} \u0026 \u0022 \u0022 \u0026 {{Zip}}"
       },
       {
         "name": "Clients",
@@ -2779,7 +2779,7 @@
         "datatype": "string",
         "type": "calculated",
         "nullable": true,
-        "formula": "=LOWER({{Code}} & \"-\" & SUBSTITUTE({{Text}}, \" \", \"-\"))"
+        "formula": "=LOWER({{Code}} \u0026 \u0022-\u0022 \u0026 SUBSTITUTE({{Text}}, \u0022 \u0022, \u0022-\u0022))"
       },
       {
         "name": "Code",
@@ -3405,7 +3405,7 @@
     "data": [
       {
         "ERBCustomizationId": "calc-orders-item-count",
-        "SQLCode": "-- FunctionOverride: calc_orders_item_count\n-- Errors in this file are non-fatal (runs without ON_ERROR_STOP).\n\nCREATE OR REPLACE FUNCTION public.calc_orders_item_count(p_order_id text)\n RETURNS integer\n LANGUAGE plpgsql\n STABLE SECURITY DEFINER\nAS $function$\nBEGIN\n  RETURN ((SELECT COUNT(*) FROM order_line_items WHERE \"order\" = p_order_id))::integer;\nEND;\n$function$;\n",
+        "SQLCode": "-- FunctionOverride: calc_orders_item_count\n-- Errors in this file are non-fatal (runs without ON_ERROR_STOP).\n\nCREATE OR REPLACE FUNCTION public.calc_orders_item_count(p_order_id text)\n RETURNS integer\n LANGUAGE plpgsql\n STABLE SECURITY DEFINER\nAS $function$\nBEGIN\n  RETURN ((SELECT COUNT(*) FROM order_line_items WHERE \u0022order\u0022 = p_order_id))::integer;\nEND;\n$function$;\n",
         "Name": "calc_orders_item_count",
         "SQLTarget": "Postgres",
         "CustomizationType": "FunctionOverride",
@@ -3413,7 +3413,7 @@
       },
       {
         "ERBCustomizationId": "calc-orders-last-payment-date",
-        "SQLCode": "-- FunctionOverride: calc_orders_last_payment_date\n-- Errors in this file are non-fatal (runs without ON_ERROR_STOP).\n\nCREATE OR REPLACE FUNCTION public.calc_orders_last_payment_date(p_order_id text)\n RETURNS timestamp with time zone\n LANGUAGE plpgsql\n STABLE SECURITY DEFINER\nAS $function$\nBEGIN\n  RETURN (SELECT MAX(payment_date) FROM payments WHERE \"order\" = p_order_id);\nEND;\n$function$;\n",
+        "SQLCode": "-- FunctionOverride: calc_orders_last_payment_date\n-- Errors in this file are non-fatal (runs without ON_ERROR_STOP).\n\nCREATE OR REPLACE FUNCTION public.calc_orders_last_payment_date(p_order_id text)\n RETURNS timestamp with time zone\n LANGUAGE plpgsql\n STABLE SECURITY DEFINER\nAS $function$\nBEGIN\n  RETURN (SELECT MAX(payment_date) FROM payments WHERE \u0022order\u0022 = p_order_id);\nEND;\n$function$;\n",
         "Name": "calc_orders_last_payment_date",
         "SQLTarget": "Postgres",
         "CustomizationType": "FunctionOverride",
@@ -3421,7 +3421,7 @@
       },
       {
         "ERBCustomizationId": "calc-clients-hast-recent-invoices",
-        "SQLCode": "-- FunctionOverride: calc_clients_hast_recent_invoices\n-- Errors in this file are non-fatal (runs without ON_ERROR_STOP).\n-- Original Airtable formula: =IF({{LastInvoice}} > DATEADD(TODAY(), -180, 'days'), TRUE(), FALSE())\n-- Translation failed because DATEADD unit 'days' is unsupported. Reimplement directly.\n\nCREATE OR REPLACE FUNCTION public.calc_clients_hast_recent_invoices(p_client_id text)\n RETURNS boolean\n LANGUAGE plpgsql\n STABLE SECURITY DEFINER\nAS $function$\nBEGIN\n  RETURN COALESCE(\n    (SELECT MAX(order_date) FROM invoices WHERE client = p_client_id) > (NOW() - INTERVAL '180 days'),\n    FALSE\n  );\nEND;\n$function$;\n",
+        "SQLCode": "-- FunctionOverride: calc_clients_hast_recent_invoices\n-- Errors in this file are non-fatal (runs without ON_ERROR_STOP).\n-- Original Airtable formula: =IF({{LastInvoice}} \u003E DATEADD(TODAY(), -180, \u0027days\u0027), TRUE(), FALSE())\n-- Translation failed because DATEADD unit \u0027days\u0027 is unsupported. Reimplement directly.\n\nCREATE OR REPLACE FUNCTION public.calc_clients_hast_recent_invoices(p_client_id text)\n RETURNS boolean\n LANGUAGE plpgsql\n STABLE SECURITY DEFINER\nAS $function$\nBEGIN\n  RETURN COALESCE(\n    (SELECT MAX(order_date) FROM invoices WHERE client = p_client_id) \u003E (NOW() - INTERVAL \u0027180 days\u0027),\n    FALSE\n  );\nEND;\n$function$;\n",
         "Name": "calc_clients_hast_recent_invoices",
         "SQLTarget": "Postgres",
         "CustomizationType": "FunctionOverride",
@@ -3429,7 +3429,7 @@
       },
       {
         "ERBCustomizationId": "calc-orders-payment-count",
-        "SQLCode": "-- FunctionOverride: calc_orders_payment_count\n-- Errors in this file are non-fatal (runs without ON_ERROR_STOP).\n\nCREATE OR REPLACE FUNCTION public.calc_orders_payment_count(p_order_id text)\n RETURNS integer\n LANGUAGE plpgsql\n STABLE SECURITY DEFINER\nAS $function$\nBEGIN\n  RETURN ((SELECT COUNT(*) FROM payments WHERE \"order\" = p_order_id))::integer;\nEND;\n$function$;\n",
+        "SQLCode": "-- FunctionOverride: calc_orders_payment_count\n-- Errors in this file are non-fatal (runs without ON_ERROR_STOP).\n\nCREATE OR REPLACE FUNCTION public.calc_orders_payment_count(p_order_id text)\n RETURNS integer\n LANGUAGE plpgsql\n STABLE SECURITY DEFINER\nAS $function$\nBEGIN\n  RETURN ((SELECT COUNT(*) FROM payments WHERE \u0022order\u0022 = p_order_id))::integer;\nEND;\n$function$;\n",
         "Name": "calc_orders_payment_count",
         "SQLTarget": "Postgres",
         "CustomizationType": "FunctionOverride",
@@ -3438,7 +3438,7 @@
     ]
   },
   "_meta": {
-    "_CMCC_Summary": "Airtable export with schema-first type mapping: Schemas, Data, Relationships (FK links), Lookups (INDEX/MATCH), Aggregations (SUMIFS/COUNTIFS/Rollups), and Calculated fields (formulas) in Excel dialect. Field types are determined from Airtable's schema metadata FIRST (no coercion), with intelligent fallback to formula/data analysis only when schema is unavailable.",
+    "_CMCC_Summary": "Airtable export with schema-first type mapping: Schemas, Data, Relationships (FK links), Lookups (INDEX/MATCH), Aggregations (SUMIFS/COUNTIFS/Rollups), and Calculated fields (formulas) in Excel dialect. Field types are determined from Airtable\u0027s schema metadata FIRST (no coercion), with intelligent fallback to formula/data analysis only when schema is unavailable.",
     "_conversion_metadata": {
       "source_base_id": "appeUOAaOIdoqPSx3",
       "table_count": 15,

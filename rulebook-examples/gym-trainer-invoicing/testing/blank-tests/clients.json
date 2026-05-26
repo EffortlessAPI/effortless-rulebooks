@@ -1,0 +1,34 @@
+[
+  {
+    "client_id": "c-morgan",
+    "name": "morgan@example.com",
+    "email": "morgan@example.com",
+    "full_name": "Morgan Diaz",
+    "trainer": "t-jamie",
+    "status": null
+  },
+  {
+    "client_id": "c-robin",
+    "name": "robin@example.com",
+    "email": "robin@example.com",
+    "full_name": "Robin Cole",
+    "trainer": "t-alex",
+    "status": null
+  },
+  {
+    "client_id": "c-sam",
+    "name": "sam@example.com",
+    "email": "sam@example.com",
+    "full_name": "Sam Patel",
+    "trainer": "t-alex",
+    "status": null
+  },
+  {
+    "client_id": "c-taylor",
+    "name": "taylor@example.com",
+    "email": "taylor@example.com",
+    "full_name": "Taylor Brooks",
+    "trainer": "t-jamie",
+    "status": null
+  }
+]

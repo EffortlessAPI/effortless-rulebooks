@@ -1,0 +1,34 @@
+[
+  {
+    "mainspring_id": "Bessie's mainspring",
+    "wrapped_on_arbor": "Bessie's arbor",
+    "drum_diameter_mm": 18,
+    "material": "spring steel",
+    "inner_end_anchor": "Arbor",
+    "outer_end_anchor": "Case"
+  },
+  {
+    "mainspring_id": "Olive's mainspring",
+    "wrapped_on_arbor": "Olive's arbor",
+    "drum_diameter_mm": 18,
+    "material": "spring steel",
+    "inner_end_anchor": "Arbor",
+    "outer_end_anchor": "Case"
+  },
+  {
+    "mainspring_id": "Rufus's mainspring",
+    "wrapped_on_arbor": "Rufus's arbor",
+    "drum_diameter_mm": 18,
+    "material": "spring steel",
+    "inner_end_anchor": "Arbor",
+    "outer_end_anchor": "Case"
+  },
+  {
+    "mainspring_id": "Twigs's mainspring",
+    "wrapped_on_arbor": "Twigs's arbor",
+    "drum_diameter_mm": 18,
+    "material": "spring steel",
+    "inner_end_anchor": "Arbor",
+    "outer_end_anchor": "Case"
+  }
+]

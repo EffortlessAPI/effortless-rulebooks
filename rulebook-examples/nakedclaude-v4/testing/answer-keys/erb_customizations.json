@@ -1,0 +1,34 @@
+[
+  {
+    "erb_customization_id": "calc-clients-hast-recent-invoices",
+    "sql_code": "-- FunctionOverride: calc_clients_hast_recent_invoices\n-- Errors in this file are non-fatal (runs without ON_ERROR_STOP).\n-- Original Airtable formula: =IF({{LastInvoice}} > DATEADD(TODAY(), -180, 'days'), TRUE(), FALSE())\n-- Translation failed because DATEADD unit 'days' is unsupported. Reimplement directly.\n\nCREATE OR REPLACE FUNCTION public.calc_clients_hast_recent_invoices(p_client_id text)\n RETURNS boolean\n LANGUAGE plpgsql\n STABLE SECURITY DEFINER\nAS $function$\nBEGIN\n  RETURN COALESCE(\n    (SELECT MAX(order_date) FROM invoices WHERE client = p_client_id) > (NOW() - INTERVAL '180 days'),\n    FALSE\n  );\nEND;\n$function$;\n",
+    "name": "calc_clients_hast_recent_invoices",
+    "sql_target": "Postgres",
+    "customization_type": "FunctionOverride",
+    "title": ""
+  },
+  {
+    "erb_customization_id": "calc-orders-item-count",
+    "sql_code": "-- FunctionOverride: calc_orders_item_count\n-- Errors in this file are non-fatal (runs without ON_ERROR_STOP).\n\nCREATE OR REPLACE FUNCTION public.calc_orders_item_count(p_order_id text)\n RETURNS integer\n LANGUAGE plpgsql\n STABLE SECURITY DEFINER\nAS $function$\nBEGIN\n  RETURN ((SELECT COUNT(*) FROM order_line_items WHERE \"order\" = p_order_id))::integer;\nEND;\n$function$;\n",
+    "name": "calc_orders_item_count",
+    "sql_target": "Postgres",
+    "customization_type": "FunctionOverride",
+    "title": ""
+  },
+  {
+    "erb_customization_id": "calc-orders-last-payment-date",
+    "sql_code": "-- FunctionOverride: calc_orders_last_payment_date\n-- Errors in this file are non-fatal (runs without ON_ERROR_STOP).\n\nCREATE OR REPLACE FUNCTION public.calc_orders_last_payment_date(p_order_id text)\n RETURNS timestamp with time zone\n LANGUAGE plpgsql\n STABLE SECURITY DEFINER\nAS $function$\nBEGIN\n  RETURN (SELECT MAX(payment_date) FROM payments WHERE \"order\" = p_order_id);\nEND;\n$function$;\n",
+    "name": "calc_orders_last_payment_date",
+    "sql_target": "Postgres",
+    "customization_type": "FunctionOverride",
+    "title": ""
+  },
+  {
+    "erb_customization_id": "calc-orders-payment-count",
+    "sql_code": "-- FunctionOverride: calc_orders_payment_count\n-- Errors in this file are non-fatal (runs without ON_ERROR_STOP).\n\nCREATE OR REPLACE FUNCTION public.calc_orders_payment_count(p_order_id text)\n RETURNS integer\n LANGUAGE plpgsql\n STABLE SECURITY DEFINER\nAS $function$\nBEGIN\n  RETURN ((SELECT COUNT(*) FROM payments WHERE \"order\" = p_order_id))::integer;\nEND;\n$function$;\n",
+    "name": "calc_orders_payment_count",
+    "sql_target": "Postgres",
+    "customization_type": "FunctionOverride",
+    "title": ""
+  }
+]

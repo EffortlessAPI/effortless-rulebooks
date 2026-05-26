@@ -1,0 +1,114 @@
+[
+  {
+    "entity": "Assessments",
+    "field": "WeightedScore",
+    "formula": "={{RawScore}}*{{CapabilityWeight}}",
+    "record_id": "human-memory",
+    "error": "SyntaxError: Unexpected character '*' at position 12"
+  },
+  {
+    "entity": "Assessments",
+    "field": "WeightedScore",
+    "formula": "={{RawScore}}*{{CapabilityWeight}}",
+    "record_id": "human-perception",
+    "error": "SyntaxError: Unexpected character '*' at position 12"
+  },
+  {
+    "entity": "Assessments",
+    "field": "WeightedScore",
+    "formula": "={{RawScore}}*{{CapabilityWeight}}",
+    "record_id": "human-reasoning",
+    "error": "SyntaxError: Unexpected character '*' at position 12"
+  },
+  {
+    "entity": "Assessments",
+    "field": "WeightedScore",
+    "formula": "={{RawScore}}*{{CapabilityWeight}}",
+    "record_id": "human-creativity",
+    "error": "SyntaxError: Unexpected character '*' at position 12"
+  },
+  {
+    "entity": "Assessments",
+    "field": "WeightedScore",
+    "formula": "={{RawScore}}*{{CapabilityWeight}}",
+    "record_id": "octopus-memory",
+    "error": "SyntaxError: Unexpected character '*' at position 12"
+  },
+  {
+    "entity": "Assessments",
+    "field": "WeightedScore",
+    "formula": "={{RawScore}}*{{CapabilityWeight}}",
+    "record_id": "octopus-perception",
+    "error": "SyntaxError: Unexpected character '*' at position 12"
+  },
+  {
+    "entity": "Assessments",
+    "field": "WeightedScore",
+    "formula": "={{RawScore}}*{{CapabilityWeight}}",
+    "record_id": "octopus-reasoning",
+    "error": "SyntaxError: Unexpected character '*' at position 12"
+  },
+  {
+    "entity": "Assessments",
+    "field": "WeightedScore",
+    "formula": "={{RawScore}}*{{CapabilityWeight}}",
+    "record_id": "octopus-creativity",
+    "error": "SyntaxError: Unexpected character '*' at position 12"
+  },
+  {
+    "entity": "Assessments",
+    "field": "WeightedScore",
+    "formula": "={{RawScore}}*{{CapabilityWeight}}",
+    "record_id": "gpt-5-memory",
+    "error": "SyntaxError: Unexpected character '*' at position 12"
+  },
+  {
+    "entity": "Assessments",
+    "field": "WeightedScore",
+    "formula": "={{RawScore}}*{{CapabilityWeight}}",
+    "record_id": "gpt-5-perception",
+    "error": "SyntaxError: Unexpected character '*' at position 12"
+  },
+  {
+    "entity": "Assessments",
+    "field": "WeightedScore",
+    "formula": "={{RawScore}}*{{CapabilityWeight}}",
+    "record_id": "gpt-5-reasoning",
+    "error": "SyntaxError: Unexpected character '*' at position 12"
+  },
+  {
+    "entity": "Assessments",
+    "field": "WeightedScore",
+    "formula": "={{RawScore}}*{{CapabilityWeight}}",
+    "record_id": "gpt-5-creativity",
+    "error": "SyntaxError: Unexpected character '*' at position 12"
+  },
+  {
+    "entity": "Assessments",
+    "field": "WeightedScore",
+    "formula": "={{RawScore}}*{{CapabilityWeight}}",
+    "record_id": "calculator-memory",
+    "error": "SyntaxError: Unexpected character '*' at position 12"
+  },
+  {
+    "entity": "Assessments",
+    "field": "WeightedScore",
+    "formula": "={{RawScore}}*{{CapabilityWeight}}",
+    "record_id": "calculator-perception",
+    "error": "SyntaxError: Unexpected character '*' at position 12"
+  },
+  {
+    "entity": "Assessments",
+    "field": "WeightedScore",
+    "formula": "={{RawScore}}*{{CapabilityWeight}}",
+    "record_id": "calculator-reasoning",
+    "error": "SyntaxError: Unexpected character '*' at position 12"
+  },
+  {
+    "entity": "Assessments",
+    "field": "WeightedScore",
+    "formula": "={{RawScore}}*{{CapabilityWeight}}",
+    "record_id": "calculator-creativity",
+    "error": "SyntaxError: Unexpected character '*' at position 12"
+  }
+]

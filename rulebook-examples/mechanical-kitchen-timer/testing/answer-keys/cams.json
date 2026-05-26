@@ -1,0 +1,22 @@
+[
+  {
+    "cam_id": "Bessie's cam",
+    "on_arbor": "Bessie's arbor",
+    "notch_angle_deg": 0
+  },
+  {
+    "cam_id": "Olive's cam",
+    "on_arbor": "Olive's arbor",
+    "notch_angle_deg": 0
+  },
+  {
+    "cam_id": "Rufus's cam",
+    "on_arbor": "Rufus's arbor",
+    "notch_angle_deg": 0
+  },
+  {
+    "cam_id": "Twigs's cam",
+    "on_arbor": "Twigs's arbor",
+    "notch_angle_deg": 0
+  }
+]

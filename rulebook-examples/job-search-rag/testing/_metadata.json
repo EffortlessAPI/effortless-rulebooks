@@ -1,0 +1,31 @@
+{
+  "job_boards": {
+    "primary_key": "job_board_id",
+    "computed_columns": [
+      "job_listings"
+    ],
+    "record_count": 4
+  },
+  "search_urls": {
+    "primary_key": "search_url_id",
+    "computed_columns": [
+      "job_board_name"
+    ],
+    "record_count": 8
+  },
+  "resumes": {
+    "primary_key": "resume_id",
+    "computed_columns": [
+      "resume_sections",
+      "search_runs"
+    ],
+    "record_count": 1
+  },
+  "resume_sections": {
+    "primary_key": "resume_section_id",
+    "computed_columns": [
+      "resume_name"
+    ],
+    "record_count": 4
+  }
+}

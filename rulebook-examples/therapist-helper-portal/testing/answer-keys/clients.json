@@ -1,0 +1,38 @@
+[
+  {
+    "clients_id": "alex-r",
+    "client_name": "Alex Rivera",
+    "therapist": "tess@example.com",
+    "start_date": "2026-01-15",
+    "name": "alex-r",
+    "is_at_risk": false,
+    "status_label": "On track"
+  },
+  {
+    "clients_id": "blair-m",
+    "client_name": "Blair Morgan",
+    "therapist": "tess@example.com",
+    "start_date": "2026-02-03",
+    "name": "blair-m",
+    "is_at_risk": false,
+    "status_label": "On track"
+  },
+  {
+    "clients_id": "casey-l",
+    "client_name": "Casey Lin",
+    "therapist": "rob@example.com",
+    "start_date": "2025-11-22",
+    "name": "casey-l",
+    "is_at_risk": false,
+    "status_label": "On track"
+  },
+  {
+    "clients_id": "drew-p",
+    "client_name": "Drew Patel",
+    "therapist": "rob@example.com",
+    "start_date": "2026-03-01",
+    "name": "drew-p",
+    "is_at_risk": false,
+    "status_label": "On track"
+  }
+]

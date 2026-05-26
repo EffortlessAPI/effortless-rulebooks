@@ -4,7 +4,7 @@
 export const rulebook = {
   "$schema": "https://example.com/cmcc-schema/v1",
   "Name": "Taxonomy of Intelligence",
-  "Description": "A minimal Effortless demo that classifies intelligences (humans, animals, AI systems) by aggregating per-capability assessments through a multi-hop calculated-field DAG.",
+  "Description": "Classifies intelligences (humans, animals, AI) by per-capability assessments through a multi-hop DAG.",
   "Capabilities": {
     "Description": "Cognitive capabilities being assessed. Tiered foundational/composite/emergent and weighted by importance.",
     "schema": [
@@ -235,25 +235,102 @@ export const rulebook = {
       }
     ],
     "data": [
-      { "AssessmentsId": "human-memory",        "Intelligence": "human",      "Capability": "memory",     "RawScore": 80 },
-      { "AssessmentsId": "human-perception",    "Intelligence": "human",      "Capability": "perception", "RawScore": 85 },
-      { "AssessmentsId": "human-reasoning",     "Intelligence": "human",      "Capability": "reasoning",  "RawScore": 85 },
-      { "AssessmentsId": "human-creativity",    "Intelligence": "human",      "Capability": "creativity", "RawScore": 80 },
-
-      { "AssessmentsId": "octopus-memory",      "Intelligence": "octopus",    "Capability": "memory",     "RawScore": 60 },
-      { "AssessmentsId": "octopus-perception",  "Intelligence": "octopus",    "Capability": "perception", "RawScore": 90 },
-      { "AssessmentsId": "octopus-reasoning",   "Intelligence": "octopus",    "Capability": "reasoning",  "RawScore": 65 },
-      { "AssessmentsId": "octopus-creativity",  "Intelligence": "octopus",    "Capability": "creativity", "RawScore": 70 },
-
-      { "AssessmentsId": "gpt-5-memory",        "Intelligence": "gpt-5",      "Capability": "memory",     "RawScore": 95 },
-      { "AssessmentsId": "gpt-5-perception",    "Intelligence": "gpt-5",      "Capability": "perception", "RawScore": 30 },
-      { "AssessmentsId": "gpt-5-reasoning",     "Intelligence": "gpt-5",      "Capability": "reasoning",  "RawScore": 80 },
-      { "AssessmentsId": "gpt-5-creativity",    "Intelligence": "gpt-5",      "Capability": "creativity", "RawScore": 65 },
-
-      { "AssessmentsId": "calculator-memory",     "Intelligence": "calculator", "Capability": "memory",     "RawScore": 50 },
-      { "AssessmentsId": "calculator-perception", "Intelligence": "calculator", "Capability": "perception", "RawScore": 10 },
-      { "AssessmentsId": "calculator-reasoning",  "Intelligence": "calculator", "Capability": "reasoning",  "RawScore": 95 },
-      { "AssessmentsId": "calculator-creativity", "Intelligence": "calculator", "Capability": "creativity", "RawScore": 0 }
+      {
+        "AssessmentsId": "human-memory",
+        "Intelligence": "human",
+        "Capability": "memory",
+        "RawScore": 80
+      },
+      {
+        "AssessmentsId": "human-perception",
+        "Intelligence": "human",
+        "Capability": "perception",
+        "RawScore": 85
+      },
+      {
+        "AssessmentsId": "human-reasoning",
+        "Intelligence": "human",
+        "Capability": "reasoning",
+        "RawScore": 85
+      },
+      {
+        "AssessmentsId": "human-creativity",
+        "Intelligence": "human",
+        "Capability": "creativity",
+        "RawScore": 80
+      },
+      {
+        "AssessmentsId": "octopus-memory",
+        "Intelligence": "octopus",
+        "Capability": "memory",
+        "RawScore": 60
+      },
+      {
+        "AssessmentsId": "octopus-perception",
+        "Intelligence": "octopus",
+        "Capability": "perception",
+        "RawScore": 90
+      },
+      {
+        "AssessmentsId": "octopus-reasoning",
+        "Intelligence": "octopus",
+        "Capability": "reasoning",
+        "RawScore": 65
+      },
+      {
+        "AssessmentsId": "octopus-creativity",
+        "Intelligence": "octopus",
+        "Capability": "creativity",
+        "RawScore": 70
+      },
+      {
+        "AssessmentsId": "gpt-5-memory",
+        "Intelligence": "gpt-5",
+        "Capability": "memory",
+        "RawScore": 95
+      },
+      {
+        "AssessmentsId": "gpt-5-perception",
+        "Intelligence": "gpt-5",
+        "Capability": "perception",
+        "RawScore": 30
+      },
+      {
+        "AssessmentsId": "gpt-5-reasoning",
+        "Intelligence": "gpt-5",
+        "Capability": "reasoning",
+        "RawScore": 80
+      },
+      {
+        "AssessmentsId": "gpt-5-creativity",
+        "Intelligence": "gpt-5",
+        "Capability": "creativity",
+        "RawScore": 65
+      },
+      {
+        "AssessmentsId": "calculator-memory",
+        "Intelligence": "calculator",
+        "Capability": "memory",
+        "RawScore": 50
+      },
+      {
+        "AssessmentsId": "calculator-perception",
+        "Intelligence": "calculator",
+        "Capability": "perception",
+        "RawScore": 10
+      },
+      {
+        "AssessmentsId": "calculator-reasoning",
+        "Intelligence": "calculator",
+        "Capability": "reasoning",
+        "RawScore": 95
+      },
+      {
+        "AssessmentsId": "calculator-creativity",
+        "Intelligence": "calculator",
+        "Capability": "creativity",
+        "RawScore": 0
+      }
     ]
   },
   "_meta": {

@@ -1,0 +1,65 @@
+[
+  {
+    "statuse_id": "cancelled",
+    "display_name": "Cancelled",
+    "sort_order": 7,
+    "name": "cancelled",
+    "description": "This status means the customer or request has been cancelled and will not proceed further.",
+    "is_blocking": false,
+    "customers": ""
+  },
+  {
+    "statuse_id": "delayed",
+    "is_blocking": true,
+    "display_name": "Delayed",
+    "sort_order": 6,
+    "customers": "carla-smith",
+    "name": "delayed",
+    "description": "This status is used when the customer or request has been delayed and is not progressing as scheduled."
+  },
+  {
+    "statuse_id": "in-review",
+    "is_blocking": true,
+    "display_name": "In-Review",
+    "sort_order": 3,
+    "name": "in-review",
+    "description": "This status is for customers or requests that are currently under review.",
+    "customers": ""
+  },
+  {
+    "statuse_id": "new",
+    "display_name": "New",
+    "sort_order": 1,
+    "customers": "brian-lee, alice-johnson",
+    "name": "new",
+    "description": "This status indicates a newly created customer or request that has not yet been processed.",
+    "is_blocking": false
+  },
+  {
+    "statuse_id": "on-hold",
+    "is_blocking": true,
+    "display_name": "On-Hold",
+    "sort_order": 5,
+    "name": "on-hold",
+    "description": "This status indicates the customer or request is on hold and temporarily paused.",
+    "customers": ""
+  },
+  {
+    "statuse_id": "pending",
+    "is_blocking": true,
+    "display_name": "Pending",
+    "sort_order": 4,
+    "customers": "bobby",
+    "name": "pending",
+    "description": "This status shows the customer or request is pending further action or review."
+  },
+  {
+    "statuse_id": "processing",
+    "display_name": "Processing",
+    "sort_order": 2,
+    "customers": "caroline",
+    "name": "processing",
+    "description": "This status means the customer or request is currently being processed.",
+    "is_blocking": false
+  }
+]

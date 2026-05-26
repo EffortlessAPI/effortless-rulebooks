@@ -1,0 +1,16 @@
+{
+  "language_candidates": {
+    "primary_key": "language_candidate_id",
+    "computed_columns": [
+      "has_grammar",
+      "question",
+      "predicted_answer",
+      "prediction_predicates",
+      "prediction_fail",
+      "is_description_of",
+      "is_open_closed_world_conflicted",
+      "relationship_to_concept"
+    ],
+    "record_count": 33
+  }
+}

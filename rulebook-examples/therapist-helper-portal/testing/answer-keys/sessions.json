@@ -1,0 +1,112 @@
+[
+  {
+    "sessions_id": "ses-001",
+    "client": "alex-r",
+    "session_label": "2026-04-02 am",
+    "duration_minutes": 50,
+    "mood_rating": 7,
+    "notes": "Good engagement.",
+    "name": "ses-001",
+    "is_productive": false,
+    "status_label": "Light"
+  },
+  {
+    "sessions_id": "ses-002",
+    "client": "alex-r",
+    "session_label": "2026-04-09 am",
+    "duration_minutes": 50,
+    "mood_rating": 8,
+    "notes": "Reported better sleep.",
+    "name": "ses-002",
+    "is_productive": false,
+    "status_label": "Light"
+  },
+  {
+    "sessions_id": "ses-003",
+    "client": "alex-r",
+    "session_label": "2026-04-16 am",
+    "duration_minutes": 50,
+    "mood_rating": 7,
+    "notes": "",
+    "name": "ses-003",
+    "is_productive": false,
+    "status_label": "Light"
+  },
+  {
+    "sessions_id": "ses-004",
+    "client": "blair-m",
+    "session_label": "2026-04-03 pm",
+    "duration_minutes": 45,
+    "mood_rating": 4,
+    "notes": "Tough week.",
+    "name": "ses-004",
+    "is_productive": false,
+    "status_label": "Light"
+  },
+  {
+    "sessions_id": "ses-005",
+    "client": "blair-m",
+    "session_label": "2026-04-10 pm",
+    "duration_minutes": 45,
+    "mood_rating": 5,
+    "notes": "",
+    "name": "ses-005",
+    "is_productive": false,
+    "status_label": "Light"
+  },
+  {
+    "sessions_id": "ses-006",
+    "client": "blair-m",
+    "session_label": "2026-04-17 pm",
+    "duration_minutes": 45,
+    "mood_rating": 3,
+    "notes": "Sleep poor.",
+    "name": "ses-006",
+    "is_productive": false,
+    "status_label": "Light"
+  },
+  {
+    "sessions_id": "ses-007",
+    "client": "casey-l",
+    "session_label": "2026-04-04 am",
+    "duration_minutes": 60,
+    "mood_rating": 6,
+    "notes": "Grief work.",
+    "name": "ses-007",
+    "is_productive": false,
+    "status_label": "Light"
+  },
+  {
+    "sessions_id": "ses-008",
+    "client": "casey-l",
+    "session_label": "2026-04-11 am",
+    "duration_minutes": 60,
+    "mood_rating": 7,
+    "notes": "",
+    "name": "ses-008",
+    "is_productive": false,
+    "status_label": "Light"
+  },
+  {
+    "sessions_id": "ses-009",
+    "client": "drew-p",
+    "session_label": "2026-04-05 pm",
+    "duration_minutes": 50,
+    "mood_rating": 8,
+    "notes": "Strong.",
+    "name": "ses-009",
+    "is_productive": false,
+    "status_label": "Light"
+  },
+  {
+    "sessions_id": "ses-010",
+    "client": "drew-p",
+    "session_label": "2026-04-12 pm",
+    "duration_minutes": 50,
+    "mood_rating": 9,
+    "notes": "Excellent.",
+    "name": "ses-010",
+    "is_productive": false,
+    "status_label": "Light"
+  }
+]

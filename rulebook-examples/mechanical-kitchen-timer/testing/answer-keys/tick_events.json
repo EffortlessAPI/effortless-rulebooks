@@ -1,0 +1,140 @@
+[
+  {
+    "tick_event_id": "Bessie's tick 1",
+    "happened_on_timer": "Bessie",
+    "at_escapement": "Bessie's escapement",
+    "occurred_at": "2026-05-21T07:46:15Z"
+  },
+  {
+    "tick_event_id": "Bessie's tick 2",
+    "happened_on_timer": "Bessie",
+    "at_escapement": "Bessie's escapement",
+    "occurred_at": "2026-05-21T07:47:30Z"
+  },
+  {
+    "tick_event_id": "Bessie's tick 3",
+    "happened_on_timer": "Bessie",
+    "at_escapement": "Bessie's escapement",
+    "occurred_at": "2026-05-21T07:48:45Z"
+  },
+  {
+    "tick_event_id": "Bessie's tick 4",
+    "happened_on_timer": "Bessie",
+    "at_escapement": "Bessie's escapement",
+    "occurred_at": "2026-05-21T07:50:00Z"
+  },
+  {
+    "tick_event_id": "Bessie's tick 5",
+    "happened_on_timer": "Bessie",
+    "at_escapement": "Bessie's escapement",
+    "occurred_at": "2026-05-21T07:51:15Z"
+  },
+  {
+    "tick_event_id": "Bessie's tick 6",
+    "happened_on_timer": "Bessie",
+    "at_escapement": "Bessie's escapement",
+    "occurred_at": "2026-05-21T07:52:30Z"
+  },
+  {
+    "tick_event_id": "Bessie's tick 7",
+    "happened_on_timer": "Bessie",
+    "at_escapement": "Bessie's escapement",
+    "occurred_at": "2026-05-21T07:53:45Z"
+  },
+  {
+    "tick_event_id": "Bessie's tick 8",
+    "happened_on_timer": "Bessie",
+    "at_escapement": "Bessie's escapement",
+    "occurred_at": "2026-05-21T07:55:00Z"
+  },
+  {
+    "tick_event_id": "Olive's tick 1",
+    "happened_on_timer": "Olive",
+    "at_escapement": "Olive's escapement",
+    "occurred_at": "2026-05-21T09:35:00Z"
+  },
+  {
+    "tick_event_id": "Olive's tick 2",
+    "happened_on_timer": "Olive",
+    "at_escapement": "Olive's escapement",
+    "occurred_at": "2026-05-21T09:40:00Z"
+  },
+  {
+    "tick_event_id": "Olive's tick 3",
+    "happened_on_timer": "Olive",
+    "at_escapement": "Olive's escapement",
+    "occurred_at": "2026-05-21T09:45:00Z"
+  },
+  {
+    "tick_event_id": "Olive's tick 4",
+    "happened_on_timer": "Olive",
+    "at_escapement": "Olive's escapement",
+    "occurred_at": "2026-05-21T09:50:00Z"
+  },
+  {
+    "tick_event_id": "Olive's tick 5",
+    "happened_on_timer": "Olive",
+    "at_escapement": "Olive's escapement",
+    "occurred_at": "2026-05-21T09:55:00Z"
+  },
+  {
+    "tick_event_id": "Olive's tick 6",
+    "happened_on_timer": "Olive",
+    "at_escapement": "Olive's escapement",
+    "occurred_at": "2026-05-21T10:00:00Z"
+  },
+  {
+    "tick_event_id": "Olive's tick 7",
+    "happened_on_timer": "Olive",
+    "at_escapement": "Olive's escapement",
+    "occurred_at": "2026-05-21T10:05:00Z"
+  },
+  {
+    "tick_event_id": "Olive's tick 8",
+    "happened_on_timer": "Olive",
+    "at_escapement": "Olive's escapement",
+    "occurred_at": "2026-05-21T10:10:00Z"
+  },
+  {
+    "tick_event_id": "Rufus's tick 1",
+    "happened_on_timer": "Rufus",
+    "at_escapement": "Rufus's escapement",
+    "occurred_at": "2026-05-21T10:00:30Z"
+  },
+  {
+    "tick_event_id": "Rufus's tick 2",
+    "happened_on_timer": "Rufus",
+    "at_escapement": "Rufus's escapement",
+    "occurred_at": "2026-05-21T10:01:00Z"
+  },
+  {
+    "tick_event_id": "Rufus's tick 3",
+    "happened_on_timer": "Rufus",
+    "at_escapement": "Rufus's escapement",
+    "occurred_at": "2026-05-21T10:01:30Z"
+  },
+  {
+    "tick_event_id": "Rufus's tick 4",
+    "happened_on_timer": "Rufus",
+    "at_escapement": "Rufus's escapement",
+    "occurred_at": "2026-05-21T10:02:00Z"
+  },
+  {
+    "tick_event_id": "Twigs's tick 1",
+    "happened_on_timer": "Twigs",
+    "at_escapement": "Twigs's escapement",
+    "occurred_at": "2026-05-21T11:26:00Z"
+  },
+  {
+    "tick_event_id": "Twigs's tick 2",
+    "happened_on_timer": "Twigs",
+    "at_escapement": "Twigs's escapement",
+    "occurred_at": "2026-05-21T11:27:00Z"
+  },
+  {
+    "tick_event_id": "Twigs's tick 3",
+    "happened_on_timer": "Twigs",
+    "at_escapement": "Twigs's escapement",
+    "occurred_at": "2026-05-21T11:28:00Z"
+  }
+]

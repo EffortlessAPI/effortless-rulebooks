@@ -1,0 +1,22 @@
+[
+  {
+    "gear_train_id": "Bessie's gear train",
+    "in_timer": "Bessie",
+    "reduction_ratio": 240
+  },
+  {
+    "gear_train_id": "Olive's gear train",
+    "in_timer": "Olive",
+    "reduction_ratio": 240
+  },
+  {
+    "gear_train_id": "Rufus's gear train",
+    "in_timer": "Rufus",
+    "reduction_ratio": 240
+  },
+  {
+    "gear_train_id": "Twigs's gear train",
+    "in_timer": "Twigs",
+    "reduction_ratio": 240
+  }
+]

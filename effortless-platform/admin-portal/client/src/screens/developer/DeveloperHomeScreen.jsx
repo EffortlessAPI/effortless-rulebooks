@@ -30,12 +30,22 @@ export default function DeveloperHomeScreen({ screen, projects, projectRulebook 
         {domains.map((d) => (
           <div
             key={d.id}
-            className="card clickable"
+            className="card clickable domain-card"
             onClick={() => navigate(`/developer/${d.id}`)}
           >
-            <h3 style={{ color: "#b48cff" }}>{d.id}</h3>
-            <div className="big" style={{ fontSize: 16 }}>{d.name}</div>
-            <div className="sub">{d.description || "—"}</div>
+            {d.logoUrl && (
+              <img
+                src={d.logoUrl}
+                alt=""
+                className="domain-card-logo"
+                onError={(e) => { e.currentTarget.style.display = "none"; }}
+              />
+            )}
+            <div className="domain-card-text">
+              <h3 style={{ color: "#b48cff" }}>{d.id}</h3>
+              <div className="big" style={{ fontSize: 16 }}>{d.name}</div>
+              <div className="sub">{d.description || "—"}</div>
+            </div>
           </div>
         ))}
       </div>
@@ -45,13 +55,23 @@ export default function DeveloperHomeScreen({ screen, projects, projectRulebook 
           <h3 className="muted small" style={{ marginTop: 32 }}>OR EDIT THE PLATFORM</h3>
           <div className="cards">
             <div
-              className="card clickable"
+              className="card clickable domain-card"
               style={{ borderColor: "#b48cff" }}
               onClick={() => navigate(`/developer/${platform.id}`)}
             >
-              <h3 style={{ color: "#b48cff" }}>{platform.id}</h3>
-              <div className="big" style={{ fontSize: 16 }}>{platform.name}</div>
-              <div className="sub">The rulebook describing ERB itself.</div>
+              {platform.logoUrl && (
+                <img
+                  src={platform.logoUrl}
+                  alt=""
+                  className="domain-card-logo"
+                  onError={(e) => { e.currentTarget.style.display = "none"; }}
+                />
+              )}
+              <div className="domain-card-text">
+                <h3 style={{ color: "#b48cff" }}>{platform.id}</h3>
+                <div className="big" style={{ fontSize: 16 }}>{platform.name}</div>
+                <div className="sub">The rulebook describing ERB itself.</div>
+              </div>
             </div>
           </div>
         </>

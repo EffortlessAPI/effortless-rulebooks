@@ -1,0 +1,72 @@
+[
+  {
+    "customer_id": "alice-johnson",
+    "last_name": "Johnson",
+    "status_display_name": null,
+    "name": null,
+    "notes": "Initial mock entry for Alice.",
+    "status_is_blocking": null,
+    "owner_email": "eejai42@gmail.com",
+    "status": "pending",
+    "status_description": null,
+    "first_name": "Alice",
+    "full_name": null,
+    "is_stopped": null
+  },
+  {
+    "customer_id": "bob",
+    "is_stopped": null,
+    "status_display_name": null,
+    "name": null,
+    "notes": "A customer currently in launch.",
+    "status_is_blocking": null,
+    "owner_email": "eejai42@gmail.com",
+    "status": "on-hold",
+    "status_description": null,
+    "first_name": "Bob",
+    "full_name": null,
+    "last_name": ""
+  },
+  {
+    "customer_id": "brian-lee",
+    "last_name": "Lee",
+    "status_display_name": null,
+    "name": null,
+    "notes": "Initial mock entry for Brian.",
+    "status_is_blocking": null,
+    "owner_email": "eejai42@gmail.com",
+    "status": "new",
+    "status_description": null,
+    "first_name": "Brian",
+    "full_name": null,
+    "is_stopped": null
+  },
+  {
+    "customer_id": "carla-smith",
+    "last_name": "Smith",
+    "status_display_name": null,
+    "name": null,
+    "notes": "Initial mock entry for Carla.",
+    "status_is_blocking": null,
+    "owner_email": "alice@example.com",
+    "status": "delayed",
+    "status_description": null,
+    "first_name": "Carla",
+    "full_name": null,
+    "is_stopped": null
+  },
+  {
+    "customer_id": "caroline",
+    "status_display_name": null,
+    "name": null,
+    "status_is_blocking": null,
+    "owner_email": "alice@example.com",
+    "status": "processing",
+    "status_description": null,
+    "first_name": "Caroline",
+    "full_name": null,
+    "last_name": "",
+    "notes": "",
+    "is_stopped": null
+  }
+]

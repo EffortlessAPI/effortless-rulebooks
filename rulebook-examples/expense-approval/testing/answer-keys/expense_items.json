@@ -1,0 +1,44 @@
+[
+  {
+    "expense_item_id": "alice-nyc-dinner",
+    "name": "Client Dinner",
+    "expense_report": "alice-nyc-client-visit",
+    "amount": 85
+  },
+  {
+    "expense_item_id": "alice-nyc-flight",
+    "name": "Flight to NYC",
+    "expense_report": "alice-nyc-client-visit",
+    "amount": 425
+  },
+  {
+    "expense_item_id": "alice-nyc-hotel",
+    "name": "Hotel (1 night)",
+    "expense_report": "alice-nyc-client-visit",
+    "amount": 185
+  },
+  {
+    "expense_item_id": "alice-supplies-paper",
+    "name": "Printer Paper",
+    "expense_report": "alice-office-supplies",
+    "amount": 42
+  },
+  {
+    "expense_item_id": "alice-supplies-toner",
+    "name": "Toner Cartridge",
+    "expense_report": "alice-office-supplies",
+    "amount": 100
+  },
+  {
+    "expense_item_id": "dave-lunch-drinks",
+    "name": "Drinks",
+    "expense_report": "dave-team-lunch",
+    "amount": 20
+  },
+  {
+    "expense_item_id": "dave-lunch-pizza",
+    "name": "Pizza for team",
+    "expense_report": "dave-team-lunch",
+    "amount": 67
+  }
+]

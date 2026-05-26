@@ -1,0 +1,32 @@
+[
+  {
+    "crew_type_id": "crew-actor",
+    "name": "Actor",
+    "description": "Performer in front of the camera"
+  },
+  {
+    "crew_type_id": "crew-cinematographer",
+    "name": "Cinematographer",
+    "description": "Director of photography"
+  },
+  {
+    "crew_type_id": "crew-composer",
+    "name": "Composer",
+    "description": "Music composer"
+  },
+  {
+    "crew_type_id": "crew-director",
+    "name": "Director",
+    "description": "Director of the production"
+  },
+  {
+    "crew_type_id": "crew-producer",
+    "name": "Producer",
+    "description": "Producer of the production"
+  },
+  {
+    "crew_type_id": "crew-writer",
+    "name": "Writer",
+    "description": "Screenplay or story writer"
+  }
+]

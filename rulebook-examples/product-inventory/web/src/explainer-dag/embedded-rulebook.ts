@@ -3,8 +3,8 @@
 
 export const rulebook = {
   "$schema": "https://example.com/cmcc-schema/v1",
-  "Name": "Product Inventory Demo",
-  "Description": "Simple inventory system: products with transactions adjusting quantities, low-stock alerts.",
+  "Name": "Product Inventory",
+  "Description": "Products with transactions adjusting quantities and low-stock alerts.",
   "TransactionTypes": {
     "Description": "Table: TransactionTypes",
     "schema": [
@@ -111,12 +111,12 @@ export const rulebook = {
       },
       {
         "ProductId": "GADGET-B",
-        "UnitPrice": 24.50,
+        "UnitPrice": 24.5,
         "ReorderLevel": 30
       },
       {
         "ProductId": "PART-C",
-        "UnitPrice": 5.00,
+        "UnitPrice": 5.0,
         "ReorderLevel": 100
       },
       {
@@ -196,7 +196,7 @@ export const rulebook = {
         "datatype": "number",
         "type": "calculated",
         "nullable": false,
-        "Description": "Transaction value = Quantity × UnitPrice.",
+        "Description": "Transaction value = Quantity \u00d7 UnitPrice.",
         "formula": "={{Quantity}} * {{ProductUnitPrice}}"
       },
       {

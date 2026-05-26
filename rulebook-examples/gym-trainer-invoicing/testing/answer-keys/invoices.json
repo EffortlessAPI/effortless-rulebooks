@@ -8,11 +8,16 @@
     "tax_rate": 0.08,
     "discount_amount": 0,
     "paid_amount": 0,
+    "tax_amount": 0.0,
     "grace_days": 45,
+    "days_since_due_date": 41,
+    "days_past_due": 0,
     "late_fee": 0,
-    "is_paid": false,
+    "total": 0.0,
+    "balance": 0.0,
+    "is_paid": true,
     "is_overdue": false,
-    "status": "Open"
+    "status": "Paid"
   },
   {
     "invoice_id": "inv-002",
@@ -23,11 +28,16 @@
     "tax_rate": 0.08,
     "discount_amount": 20,
     "paid_amount": 0,
+    "tax_amount": 0.0,
     "grace_days": 45,
+    "days_since_due_date": 11,
+    "days_past_due": 0,
     "late_fee": 0,
-    "is_paid": false,
+    "total": -20.0,
+    "balance": -20.0,
+    "is_paid": true,
     "is_overdue": false,
-    "status": "Open"
+    "status": "Paid"
   },
   {
     "invoice_id": "inv-003",
@@ -38,11 +48,16 @@
     "tax_rate": 0.08,
     "discount_amount": 0,
     "paid_amount": 500,
+    "tax_amount": 0.0,
     "grace_days": 45,
+    "days_since_due_date": 1,
+    "days_past_due": 0,
     "late_fee": 0,
-    "is_paid": false,
+    "total": 0.0,
+    "balance": -500.0,
+    "is_paid": true,
     "is_overdue": false,
-    "status": "Open"
+    "status": "Paid"
   },
   {
     "invoice_id": "inv-004",
@@ -53,11 +68,16 @@
     "tax_rate": 0.0,
     "discount_amount": 0,
     "paid_amount": 0,
+    "tax_amount": 0.0,
     "grace_days": 45,
+    "days_since_due_date": 26,
+    "days_past_due": 0,
     "late_fee": 0,
-    "is_paid": false,
+    "total": 0.0,
+    "balance": 0.0,
+    "is_paid": true,
     "is_overdue": false,
-    "status": "Open"
+    "status": "Paid"
   },
   {
     "invoice_id": "inv-005",
@@ -68,10 +88,15 @@
     "tax_rate": 0.08,
     "discount_amount": 0,
     "paid_amount": 0,
+    "tax_amount": 0.0,
     "grace_days": 45,
+    "days_since_due_date": -6,
+    "days_past_due": 0,
     "late_fee": 0,
-    "is_paid": false,
+    "total": 0.0,
+    "balance": 0.0,
+    "is_paid": true,
     "is_overdue": false,
-    "status": "Open"
+    "status": "Paid"
   }
 ]
