@@ -23,6 +23,13 @@
     },
     {
       "IsSSoTTranspiler": false,
+      "Name": "execute",
+      "RelativePath": "/postgres",
+      "CommandLine": "-exec ./init-db.sh",
+      "IsDisabled": false
+    },
+    {
+      "IsSSoTTranspiler": false,
       "Name": "rulebooktoreactexplainerdag",
       "RelativePath": "/web/src",
       "CommandLine": "rulebook-to-react-explainer-dag -i ../../effortless-rulebook/intelligence-taxonomy-demo-rulebook.json",

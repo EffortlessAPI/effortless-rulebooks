@@ -71,7 +71,7 @@ Local JSON is the SSoT. Default behavior. Build downstream transpilers against t
 | 16 | `effortless-banking-demo` | Y | 🟡 | DB `erb_effortless_banking_demo` (re)created with 20 tables. `rulebook-to-react` transpiler in `effortless.json` is misconfigured (no `-i` arg), produces "No rulebook JSON provided" error.txt. Exit 0 but React output empty. |
 | 17 | `fantasy-football-demo` | Y | ✅ | Clean build, exit 0. DB `erb_fantasy_football_demo` (re)created, 12 tables. React explainer-dag generated. |
 | 18 | `gym-trainer-invoicing` | Y | ✅ | Clean build, exit 0. DB `erb_gym_trainer_invoicing` (re)created, 10 tables. |
-| 19 | `intelligence-taxonomy-demo` | Y | ❓ | |
+| 19 | `intelligence-taxonomy-demo` | Y | ✅ | Clean build, exit 0. DB `erb_intelligence_taxonomy_demo` (re)created, 6 tables. Added missing `execute -exec ./init-db.sh` step to `effortless.json`. |
 | 20 | `jobsearch-rag` | Y | ❓ | |
 | 21 | `llm-enigma-test` | Y | ❓ | |
 | 22 | `product-inventory-demo` | Y | ❓ | |
