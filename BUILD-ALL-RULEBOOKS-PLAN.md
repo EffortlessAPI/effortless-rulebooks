@@ -56,7 +56,7 @@ Local JSON is the SSoT. Default behavior. Build downstream transpilers against t
 | 6 | `acme-corporation` | `appzkcmBFPWFGBtRo` | ✅ | Clean build, exit 0. Only `rulebooktopostgres` runs (generates SQL files, no init-db execution). |
 | 7 | `is-everything-a-language` | `appC8XTj95lubn6hz` | ❓ | Meta-ontology. No postgres dir. |
 | 8 | `jessica-advanced` | `appwN9EAp8IeIxM23` | ❓ | No postgres dir. |
-| 9 | `jessica-basic` | `applThn0rikpCR9C3` | ❓ | Base ID not in `orchestration/bases.json` — add it. |
+| 9 | `jessica-basic` | `applThn0rikpCR9C3` | ✅ | Clean build, exit 0. Note: base ID still not in `orchestration/bases.json`. |
 | 10 | `star-trek` | `appqwWQxIWFtyDsiL` | ❓ | No postgres dir. |
 | 11 | `effortless-rulesbooks` | _(empty)_ | ❓ | Has `airtabletorulebook` entry but empty baseId. Acts as JSON-only. |
 | 12 | `guessing-game` | `appXXXXXXXXXXXXXX` | ❓ | Placeholder base ID — treat as JSON-only; do not enable Airtable pull. |
