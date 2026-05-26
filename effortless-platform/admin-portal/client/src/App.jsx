@@ -78,6 +78,16 @@ function DocsRoutes() {
   );
 }
 
+// Picks the layout that matches the current user's role. Used by /docs/*
+// so a developer clicking a Reference link doesn't get swapped into viewer
+// chrome (which is why the sidebar appeared to "flicker" mid-session).
+function CurrentRoleLayout({ projectRulebook, me }) {
+  const role = (projectRulebook?.UserRoles?.data || []).find((r) => r.RoleId === me?.RoleId);
+  if (role?.AccessLevel === "full-admin") return <AdminLayout />;
+  if (role?.CanEditRulebook)              return <DeveloperLayout />;
+  return <ViewerLayout />;
+}
+
 function Portal() {
   const portal = usePortal();
   const { me, projectRulebook, rulebook } = portal;
@@ -145,8 +155,9 @@ function Portal() {
           <Route path="proxy"           element={<S comp={TechProxyScreen} />} />
         </Route>
 
-        {/* Shared docs (no role chrome — rendered inside each role's sidebar links) */}
-        <Route path="/docs/*" element={<ViewerLayout />}>
+        {/* Shared docs — rendered inside whichever layout matches the user's
+            role so the sidebar doesn't flip to viewer chrome mid-session. */}
+        <Route path="/docs/*" element={<CurrentRoleLayout projectRulebook={projectRulebook} me={me} />}>
           <Route index                   element={<S comp={DocsHomeScreen} />} />
           <Route path="framing"          element={<S comp={FramingScreen} />} />
           <Route path="methodology"      element={<S comp={MethodologyScreen} />} />

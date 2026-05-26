@@ -76,7 +76,38 @@ body {
 .nav-item.child { padding-left: 30px; font-size: 12px; color: var(--muted); }
 .nav-item.child.active { color: var(--accent); }
 .nav-item.group-label { color: var(--muted); cursor: default; font-size: 11px; text-transform: uppercase; }
-.sidebar-footer { margin-top: auto; padding: 12px 14px; color: var(--muted); font-size: 10px; }
+.nav-item.disabled { opacity: 0.4; pointer-events: none; }
+.sidebar-owned { display: flex; flex-direction: column; }
+.sidebar-bottom { margin-top: auto; display: flex; flex-direction: column; }
+.sidebar-footer { padding: 12px 14px; color: var(--muted); font-size: 10px; }
+
+/* Full-width domain card directly under the role menu */
+.sidebar-domain-card {
+  margin: 14px 12px 6px;
+  padding: 12px;
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+}
+.sidebar-domain-card-logo {
+  display: block;
+  width: 100%; max-width: 160px; height: auto;
+  object-fit: contain;
+  border-radius: 4px;
+  background: var(--panel);
+}
+.sidebar-domain-card-logo.placeholder {
+  width: 64px; height: 64px;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--panel);
+  color: var(--muted);
+}
+.sidebar-domain-card-label {
+  font-size: 12px; font-weight: 600; color: var(--text);
+  text-align: center; line-height: 1.25;
+  word-break: break-word;
+}
 
 /* ── Screen header ───────────────────────────────────────── */
 .h1 { font-size: 22px; margin: 0 0 4px; }
