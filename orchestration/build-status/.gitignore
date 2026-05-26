@@ -1,0 +1,4 @@
+# Per-domain build logs are large, churn every run, and the structured
+# summary.json + REPORT.md capture everything an agent needs to triage.
+# Re-run `bash orchestration/build-all-domains.sh --missing` to repopulate.
+logs/

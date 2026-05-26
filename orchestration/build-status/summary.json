@@ -1,0 +1,264 @@
+{
+  "generated_at": "2026-05-26 21:34 UTC",
+  "totals": {
+    "PASS": 1,
+    "PARSER": 0,
+    "CONFIG": 0,
+    "OTHER": 0,
+    "NO_LOG": 27
+  },
+  "domains": [
+    {
+      "domain": "acme-corporation",
+      "status": "NO_LOG",
+      "root_cause": "No log on disk \u2014 run build-all-domains.sh --domain acme-corporation",
+      "first_error": "",
+      "missing_ops": [],
+      "missing_funcs": [],
+      "log_path": ""
+    },
+    {
+      "domain": "acme-llc",
+      "status": "NO_LOG",
+      "root_cause": "No log on disk \u2014 run build-all-domains.sh --domain acme-llc",
+      "first_error": "",
+      "missing_ops": [],
+      "missing_funcs": [],
+      "log_path": ""
+    },
+    {
+      "domain": "community-event-planner",
+      "status": "NO_LOG",
+      "root_cause": "No log on disk \u2014 run build-all-domains.sh --domain community-event-planner",
+      "first_error": "",
+      "missing_ops": [],
+      "missing_funcs": [],
+      "log_path": ""
+    },
+    {
+      "domain": "customer-crm",
+      "status": "NO_LOG",
+      "root_cause": "No log on disk \u2014 run build-all-domains.sh --domain customer-crm",
+      "first_error": "",
+      "missing_ops": [],
+      "missing_funcs": [],
+      "log_path": ""
+    },
+    {
+      "domain": "customer-fullname",
+      "status": "PASS",
+      "root_cause": "",
+      "first_error": "",
+      "missing_ops": [],
+      "missing_funcs": [],
+      "log_path": "orchestration/build-status/logs/customer-fullname.log"
+    },
+    {
+      "domain": "effortless-banking",
+      "status": "NO_LOG",
+      "root_cause": "No log on disk \u2014 run build-all-domains.sh --domain effortless-banking",
+      "first_error": "",
+      "missing_ops": [],
+      "missing_funcs": [],
+      "log_path": ""
+    },
+    {
+      "domain": "effortless-rulesbooks",
+      "status": "NO_LOG",
+      "root_cause": "No log on disk \u2014 run build-all-domains.sh --domain effortless-rulesbooks",
+      "first_error": "",
+      "missing_ops": [],
+      "missing_funcs": [],
+      "log_path": ""
+    },
+    {
+      "domain": "expense-approval",
+      "status": "NO_LOG",
+      "root_cause": "No log on disk \u2014 run build-all-domains.sh --domain expense-approval",
+      "first_error": "",
+      "missing_ops": [],
+      "missing_funcs": [],
+      "log_path": ""
+    },
+    {
+      "domain": "fantasy-football",
+      "status": "NO_LOG",
+      "root_cause": "No log on disk \u2014 run build-all-domains.sh --domain fantasy-football",
+      "first_error": "",
+      "missing_ops": [],
+      "missing_funcs": [],
+      "log_path": ""
+    },
+    {
+      "domain": "guessing-game",
+      "status": "NO_LOG",
+      "root_cause": "No log on disk \u2014 run build-all-domains.sh --domain guessing-game",
+      "first_error": "",
+      "missing_ops": [],
+      "missing_funcs": [],
+      "log_path": ""
+    },
+    {
+      "domain": "gym-trainer-invoicing",
+      "status": "NO_LOG",
+      "root_cause": "No log on disk \u2014 run build-all-domains.sh --domain gym-trainer-invoicing",
+      "first_error": "",
+      "missing_ops": [],
+      "missing_funcs": [],
+      "log_path": ""
+    },
+    {
+      "domain": "intelligence-taxonomy",
+      "status": "NO_LOG",
+      "root_cause": "No log on disk \u2014 run build-all-domains.sh --domain intelligence-taxonomy",
+      "first_error": "",
+      "missing_ops": [],
+      "missing_funcs": [],
+      "log_path": ""
+    },
+    {
+      "domain": "is-everything-a-language",
+      "status": "NO_LOG",
+      "root_cause": "No log on disk \u2014 run build-all-domains.sh --domain is-everything-a-language",
+      "first_error": "",
+      "missing_ops": [],
+      "missing_funcs": [],
+      "log_path": ""
+    },
+    {
+      "domain": "jessica-advanced",
+      "status": "NO_LOG",
+      "root_cause": "No log on disk \u2014 run build-all-domains.sh --domain jessica-advanced",
+      "first_error": "",
+      "missing_ops": [],
+      "missing_funcs": [],
+      "log_path": ""
+    },
+    {
+      "domain": "jessica-basic",
+      "status": "NO_LOG",
+      "root_cause": "No log on disk \u2014 run build-all-domains.sh --domain jessica-basic",
+      "first_error": "",
+      "missing_ops": [],
+      "missing_funcs": [],
+      "log_path": ""
+    },
+    {
+      "domain": "job-search-rag",
+      "status": "NO_LOG",
+      "root_cause": "No log on disk \u2014 run build-all-domains.sh --domain job-search-rag",
+      "first_error": "",
+      "missing_ops": [],
+      "missing_funcs": [],
+      "log_path": ""
+    },
+    {
+      "domain": "mechanical-kitchen-timer",
+      "status": "NO_LOG",
+      "root_cause": "No log on disk \u2014 run build-all-domains.sh --domain mechanical-kitchen-timer",
+      "first_error": "",
+      "missing_ops": [],
+      "missing_funcs": [],
+      "log_path": ""
+    },
+    {
+      "domain": "naked-claude-vs-effortless-claude",
+      "status": "NO_LOG",
+      "root_cause": "No log on disk \u2014 run build-all-domains.sh --domain naked-claude-vs-effortless-claude",
+      "first_error": "",
+      "missing_ops": [],
+      "missing_funcs": [],
+      "log_path": ""
+    },
+    {
+      "domain": "nakedclaude-v1",
+      "status": "NO_LOG",
+      "root_cause": "No log on disk \u2014 run build-all-domains.sh --domain nakedclaude-v1",
+      "first_error": "",
+      "missing_ops": [],
+      "missing_funcs": [],
+      "log_path": ""
+    },
+    {
+      "domain": "nakedclaude-v2",
+      "status": "NO_LOG",
+      "root_cause": "No log on disk \u2014 run build-all-domains.sh --domain nakedclaude-v2",
+      "first_error": "",
+      "missing_ops": [],
+      "missing_funcs": [],
+      "log_path": ""
+    },
+    {
+      "domain": "nakedclaude-v3",
+      "status": "NO_LOG",
+      "root_cause": "No log on disk \u2014 run build-all-domains.sh --domain nakedclaude-v3",
+      "first_error": "",
+      "missing_ops": [],
+      "missing_funcs": [],
+      "log_path": ""
+    },
+    {
+      "domain": "nakedclaude-v4",
+      "status": "NO_LOG",
+      "root_cause": "No log on disk \u2014 run build-all-domains.sh --domain nakedclaude-v4",
+      "first_error": "",
+      "missing_ops": [],
+      "missing_funcs": [],
+      "log_path": ""
+    },
+    {
+      "domain": "product-inventory",
+      "status": "NO_LOG",
+      "root_cause": "No log on disk \u2014 run build-all-domains.sh --domain product-inventory",
+      "first_error": "",
+      "missing_ops": [],
+      "missing_funcs": [],
+      "log_path": ""
+    },
+    {
+      "domain": "star-trek",
+      "status": "NO_LOG",
+      "root_cause": "No log on disk \u2014 run build-all-domains.sh --domain star-trek",
+      "first_error": "",
+      "missing_ops": [],
+      "missing_funcs": [],
+      "log_path": ""
+    },
+    {
+      "domain": "therapist-helper-portal",
+      "status": "NO_LOG",
+      "root_cause": "No log on disk \u2014 run build-all-domains.sh --domain therapist-helper-portal",
+      "first_error": "",
+      "missing_ops": [],
+      "missing_funcs": [],
+      "log_path": ""
+    },
+    {
+      "domain": "volunteer-shift-scheduler",
+      "status": "NO_LOG",
+      "root_cause": "No log on disk \u2014 run build-all-domains.sh --domain volunteer-shift-scheduler",
+      "first_error": "",
+      "missing_ops": [],
+      "missing_funcs": [],
+      "log_path": ""
+    },
+    {
+      "domain": "volunteer-shift-scheduler-demo",
+      "status": "NO_LOG",
+      "root_cause": "No log on disk \u2014 run build-all-domains.sh --domain volunteer-shift-scheduler-demo",
+      "first_error": "",
+      "missing_ops": [],
+      "missing_funcs": [],
+      "log_path": ""
+    },
+    {
+      "domain": "wedding-seating-optimizer",
+      "status": "NO_LOG",
+      "root_cause": "No log on disk \u2014 run build-all-domains.sh --domain wedding-seating-optimizer",
+      "first_error": "",
+      "missing_ops": [],
+      "missing_funcs": [],
+      "log_path": ""
+    }
+  ]
+}
