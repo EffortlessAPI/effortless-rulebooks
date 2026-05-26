@@ -23,7 +23,8 @@
       "RelativePath": "/effortless-rulebook/push-to-airtable",
       "CommandLine": "rulebook-to-airtable -i ../jessica-basic-rulebook.json -account airtable -w 300000",
       "Enabled": false,
-      "Description": "Reverse-sync: push rulebook changes back to Airtable (optional)"
+      "Description": "Reverse-sync: push rulebook changes back to Airtable (optional)",
+      "IsDisabled": true
     },
     {
       "IsSSoTTranspiler": false,

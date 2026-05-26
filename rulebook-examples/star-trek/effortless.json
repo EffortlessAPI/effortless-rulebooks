@@ -31,7 +31,7 @@
       "Name": "rulebooktoairtable",
       "RelativePath": "/effortless-rulebook/push-to-airtable",
       "CommandLine": "rulebook-to-airtable -i ../star-trek-rulebook.json -account airtable -w 300000",
-      "IsDisabled": false,
+      "IsDisabled": true,
       "Enabled": false,
       "Description": "Reverse-sync: push rulebook changes back to Airtable (optional)"
     },

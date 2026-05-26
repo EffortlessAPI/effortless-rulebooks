@@ -33,7 +33,7 @@
       "Name": "rulebooktoairtable",
       "RelativePath": "/effortless-rulebook/push-to-airtable",
       "CommandLine": "rulebook-to-airtable -i ../acme-llc-rulebook.json -account airtable -w 300000",
-      "IsDisabled": false,
+      "IsDisabled": true,
       "LastVersionUsed": "v2026.04.13.2259",
       "LastUrl": "https://effortless-rulebook-to-airtable-v2026-04-13-2259-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
       "Enabled": false,

@@ -23,7 +23,8 @@
       "RelativePath": "/effortless-rulebook/push-to-airtable",
       "CommandLine": "rulebook-to-airtable -i ../acme-corporation-rulebook.json -account airtable -w 300000",
       "Enabled": false,
-      "Description": "Reverse-sync: push rulebook changes back to Airtable"
+      "Description": "Reverse-sync: push rulebook changes back to Airtable",
+      "IsDisabled": true
     },
     {
       "IsSSoTTranspiler": false,
