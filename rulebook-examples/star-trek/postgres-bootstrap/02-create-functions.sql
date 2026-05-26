@@ -375,6 +375,183 @@ RETURNS TEXT AS $$
   SELECT (CONCAT((SELECT NULLIF(season, '') FROM episodes WHERE episode_id = p_episode_id), '-Episode-', CASE WHEN ((SELECT episode_number FROM episodes WHERE episode_id = p_episode_id))::NUMERIC < 10 THEN ('0')::text ELSE ('')::text END, (SELECT episode_number FROM episodes WHERE episode_id = p_episode_id)))::text;
 $$ LANGUAGE sql STABLE;
 
+-- get_crew_assignments_notes
+-- Helper function: Get Notes from CrewAssignments by CrewAssignmentId
+-- Used for join-free cross-table references in aggregations
+CREATE OR REPLACE FUNCTION get_crew_assignments_notes(p_crew_assignment_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT notes FROM crew_assignments WHERE crew_assignment_id = p_crew_assignment_id);
+$$ LANGUAGE sql STABLE;
+
+-- calc_movies_name
+-- Field: Movies.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+CREATE OR REPLACE FUNCTION calc_movies_name(p_movie_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CONCAT((SELECT movie_number FROM movies WHERE movie_id = p_movie_id), '-', (SELECT NULLIF(title, '') FROM movies WHERE movie_id = p_movie_id)))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_movies_crew_count
+-- Field: Movies.CrewCount
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+CREATE OR REPLACE FUNCTION calc_movies_crew_count(p_movie_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM crew_assignments WHERE movie = (SELECT NULLIF(movie_id, '') FROM movies WHERE movie_id = p_movie_id)))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_crew_assignments_person_name
+-- Field: CrewAssignments.PersonName
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: Name from related People
+
+CREATE OR REPLACE FUNCTION calc_crew_assignments_person_name(p_crew_assignment_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT name::text FROM people WHERE person_id = (SELECT person FROM crew_assignments WHERE crew_assignment_id = p_crew_assignment_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_crew_assignments_movie_title
+-- Field: CrewAssignments.MovieTitle
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: Title from related Movies
+
+CREATE OR REPLACE FUNCTION calc_crew_assignments_movie_title(p_crew_assignment_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT title::text FROM movies WHERE movie_id = (SELECT movie FROM crew_assignments WHERE crew_assignment_id = p_crew_assignment_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_crew_assignments_crew_type_name
+-- Field: CrewAssignments.CrewTypeName
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: Name from related CrewTypes
+
+CREATE OR REPLACE FUNCTION calc_crew_assignments_crew_type_name(p_crew_assignment_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT name::text FROM crew_types WHERE crew_type_id = (SELECT crew_type FROM crew_assignments WHERE crew_assignment_id = p_crew_assignment_id));
+$$ LANGUAGE sql STABLE;
+
+-- get_people_name
+-- Helper function: Get Name from People by PersonId
+-- Used for join-free cross-table references in aggregations
+CREATE OR REPLACE FUNCTION get_people_name(p_person_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT name FROM people WHERE person_id = p_person_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_people_birth_year
+-- Helper function: Get BirthYear from People by PersonId
+-- Used for join-free cross-table references in aggregations
+CREATE OR REPLACE FUNCTION get_people_birth_year(p_person_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (SELECT birth_year FROM people WHERE person_id = p_person_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_people_nationality
+-- Helper function: Get Nationality from People by PersonId
+-- Used for join-free cross-table references in aggregations
+CREATE OR REPLACE FUNCTION get_people_nationality(p_person_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT nationality FROM people WHERE person_id = p_person_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_people_bio
+-- Helper function: Get Bio from People by PersonId
+-- Used for join-free cross-table references in aggregations
+CREATE OR REPLACE FUNCTION get_people_bio(p_person_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT bio FROM people WHERE person_id = p_person_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_movies_movie_number
+-- Helper function: Get MovieNumber from Movies by MovieId
+-- Used for join-free cross-table references in aggregations
+CREATE OR REPLACE FUNCTION get_movies_movie_number(p_movie_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (SELECT movie_number FROM movies WHERE movie_id = p_movie_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_movies_title
+-- Helper function: Get Title from Movies by MovieId
+-- Used for join-free cross-table references in aggregations
+CREATE OR REPLACE FUNCTION get_movies_title(p_movie_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT title FROM movies WHERE movie_id = p_movie_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_movies_description
+-- Helper function: Get Description from Movies by MovieId
+-- Used for join-free cross-table references in aggregations
+CREATE OR REPLACE FUNCTION get_movies_description(p_movie_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT description FROM movies WHERE movie_id = p_movie_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_movies_release_date
+-- Helper function: Get ReleaseDate from Movies by MovieId
+-- Used for join-free cross-table references in aggregations
+CREATE OR REPLACE FUNCTION get_movies_release_date(p_movie_id TEXT)
+RETURNS TIMESTAMPTZ AS $$
+  SELECT (SELECT release_date FROM movies WHERE movie_id = p_movie_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_movies_runtime_minutes
+-- Helper function: Get RuntimeMinutes from Movies by MovieId
+-- Used for join-free cross-table references in aggregations
+CREATE OR REPLACE FUNCTION get_movies_runtime_minutes(p_movie_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (SELECT runtime_minutes FROM movies WHERE movie_id = p_movie_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_movies_budget
+-- Helper function: Get Budget from Movies by MovieId
+-- Used for join-free cross-table references in aggregations
+CREATE OR REPLACE FUNCTION get_movies_budget(p_movie_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (SELECT budget FROM movies WHERE movie_id = p_movie_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_movies_box_office
+-- Helper function: Get BoxOffice from Movies by MovieId
+-- Used for join-free cross-table references in aggregations
+CREATE OR REPLACE FUNCTION get_movies_box_office(p_movie_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (SELECT box_office FROM movies WHERE movie_id = p_movie_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_movies_director_name
+-- Helper function: Get DirectorName from Movies by MovieId
+-- Used for join-free cross-table references in aggregations
+CREATE OR REPLACE FUNCTION get_movies_director_name(p_movie_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT director_name FROM movies WHERE movie_id = p_movie_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_crew_types_name
+-- Helper function: Get Name from CrewTypes by CrewTypeId
+-- Used for join-free cross-table references in aggregations
+CREATE OR REPLACE FUNCTION get_crew_types_name(p_crew_type_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT name FROM crew_types WHERE crew_type_id = p_crew_type_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_crew_types_description
+-- Helper function: Get Description from CrewTypes by CrewTypeId
+-- Used for join-free cross-table references in aggregations
+CREATE OR REPLACE FUNCTION get_crew_types_description(p_crew_type_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT description FROM crew_types WHERE crew_type_id = p_crew_type_id);
+$$ LANGUAGE sql STABLE;
+
+-- calc_crew_assignments_name
+-- Field: CrewAssignments.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+CREATE OR REPLACE FUNCTION calc_crew_assignments_name(p_crew_assignment_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CONCAT(calc_crew_assignments_person_name(p_crew_assignment_id), '-', calc_crew_assignments_crew_type_name(p_crew_assignment_id), '-', calc_crew_assignments_movie_title(p_crew_assignment_id)))::text;
+$$ LANGUAGE sql STABLE;
+
 -- calc_ratings_series_name
 -- Field: Ratings.SeriesName
 -- Type: lookup | DataType: string | Returns: TEXT

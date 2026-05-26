@@ -5506,6 +5506,383 @@
       }
     ]
   },
+  "CrewTypes": {
+    "Description": "Table: CrewTypes",
+    "schema": [
+      {
+        "name": "CrewTypeId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "Description",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true
+      }
+    ],
+    "data": [
+      {
+        "CrewTypeId": "crew-actor",
+        "Name": "Actor",
+        "Description": "Performer in front of the camera"
+      },
+      {
+        "CrewTypeId": "crew-director",
+        "Name": "Director",
+        "Description": "Director of the production"
+      },
+      {
+        "CrewTypeId": "crew-writer",
+        "Name": "Writer",
+        "Description": "Screenplay or story writer"
+      },
+      {
+        "CrewTypeId": "crew-producer",
+        "Name": "Producer",
+        "Description": "Producer of the production"
+      },
+      {
+        "CrewTypeId": "crew-composer",
+        "Name": "Composer",
+        "Description": "Music composer"
+      },
+      {
+        "CrewTypeId": "crew-cinematographer",
+        "Name": "Cinematographer",
+        "Description": "Director of photography"
+      }
+    ]
+  },
+  "People": {
+    "Description": "Table: People",
+    "schema": [
+      {
+        "name": "PersonId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "BirthYear",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "Nationality",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "Bio",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "CrewAssignments",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "RelatedTo": "CrewAssignments"
+      }
+    ],
+    "data": [
+      {
+        "PersonId": "person-william-shatner",
+        "Name": "William Shatner",
+        "BirthYear": 1931,
+        "Nationality": "Canadian",
+        "Bio": "Actor famous for playing Captain James T. Kirk",
+        "CrewAssignments": ""
+      },
+      {
+        "PersonId": "person-leonard-nimoy",
+        "Name": "Leonard Nimoy",
+        "BirthYear": 1931,
+        "Nationality": "American",
+        "Bio": "Actor famous for playing Spock",
+        "CrewAssignments": ""
+      },
+      {
+        "PersonId": "person-patrick-stewart",
+        "Name": "Patrick Stewart",
+        "BirthYear": 1940,
+        "Nationality": "British",
+        "Bio": "Actor famous for playing Captain Jean-Luc Picard",
+        "CrewAssignments": ""
+      },
+      {
+        "PersonId": "person-gene-roddenberry",
+        "Name": "Gene Roddenberry",
+        "BirthYear": 1921,
+        "Nationality": "American",
+        "Bio": "Creator and producer of Star Trek",
+        "CrewAssignments": ""
+      }
+    ]
+  },
+  "Movies": {
+    "Description": "Table: Movies",
+    "schema": [
+      {
+        "name": "MovieId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "formula": "={{MovieNumber}} & \"-\" & {{Title}}"
+      },
+      {
+        "name": "MovieNumber",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "Title",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "Description",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "ReleaseDate",
+        "datatype": "datetime",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "RuntimeMinutes",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "Budget",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "BoxOffice",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "CrewAssignments",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "RelatedTo": "CrewAssignments"
+      },
+      {
+        "name": "CrewCount",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "formula": "=COUNTIFS(CrewAssignments!{{Movie}}, Movies!{{MovieId}})"
+      },
+      {
+        "name": "DirectorName",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true
+      }
+    ],
+    "data": [
+      {
+        "MovieId": "movie-1-generations",
+        "Name": "1-Star Trek: Generations",
+        "MovieNumber": 1,
+        "Title": "Star Trek: Generations",
+        "Description": "The seventh and final film of the original series cast, featuring the Next Generation crew",
+        "ReleaseDate": "1994-11-18",
+        "RuntimeMinutes": 118,
+        "Budget": 40000000,
+        "BoxOffice": 118159941,
+        "CrewAssignments": "",
+        "CrewCount": 0
+      },
+      {
+        "MovieId": "movie-2-first-contact",
+        "Name": "2-Star Trek: First Contact",
+        "MovieNumber": 2,
+        "Title": "Star Trek: First Contact",
+        "Description": "The Enterprise-E travels back in time to prevent a Borg invasion of Earth",
+        "ReleaseDate": "1996-11-22",
+        "RuntimeMinutes": 111,
+        "Budget": 46000000,
+        "BoxOffice": 92262550,
+        "CrewAssignments": "",
+        "CrewCount": 0
+      },
+      {
+        "MovieId": "movie-3-insurrection",
+        "Name": "3-Star Trek: Insurrection",
+        "MovieNumber": 3,
+        "Title": "Star Trek: Insurrection",
+        "Description": "The Enterprise-E crew fights to protect a peaceful planet from exploitation",
+        "ReleaseDate": "1998-11-25",
+        "RuntimeMinutes": 103,
+        "Budget": 70000000,
+        "BoxOffice": 70252769,
+        "CrewAssignments": "",
+        "CrewCount": 0
+      },
+      {
+        "MovieId": "movie-4-nemesis",
+        "Name": "4-Star Trek: Nemesis",
+        "MovieNumber": 4,
+        "Title": "Star Trek: Nemesis",
+        "Description": "Captain Picard confronts a clone from his past in his final adventure",
+        "ReleaseDate": "2002-12-13",
+        "RuntimeMinutes": 116,
+        "Budget": 60000000,
+        "BoxOffice": 43254409,
+        "CrewAssignments": "",
+        "CrewCount": 0
+      }
+    ]
+  },
+  "CrewAssignments": {
+    "Description": "Table: CrewAssignments",
+    "schema": [
+      {
+        "name": "CrewAssignmentId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "formula": "={{PersonName}} & \"-\" & {{CrewTypeName}} & \"-\" & {{MovieTitle}}"
+      },
+      {
+        "name": "Person",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "RelatedTo": "People"
+      },
+      {
+        "name": "PersonName",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "formula": "=INDEX(People!{{Name}}, MATCH(CrewAssignments!{{Person}}, People!{{PersonId}}, 0))"
+      },
+      {
+        "name": "Movie",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "RelatedTo": "Movies"
+      },
+      {
+        "name": "MovieTitle",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "formula": "=INDEX(Movies!{{Title}}, MATCH(CrewAssignments!{{Movie}}, Movies!{{MovieId}}, 0))"
+      },
+      {
+        "name": "CrewType",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "RelatedTo": "CrewTypes"
+      },
+      {
+        "name": "CrewTypeName",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "formula": "=INDEX(CrewTypes!{{Name}}, MATCH(CrewAssignments!{{CrewType}}, CrewTypes!{{CrewTypeId}}, 0))"
+      },
+      {
+        "name": "Notes",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true
+      }
+    ],
+    "data": [
+      {
+        "CrewAssignmentId": "crew-shatner-kirk-generations",
+        "Name": "William Shatner-Actor-Star Trek: Generations",
+        "Person": "person-william-shatner",
+        "PersonName": "William Shatner",
+        "Movie": "movie-1-generations",
+        "MovieTitle": "Star Trek: Generations",
+        "CrewType": "crew-actor",
+        "CrewTypeName": "Actor",
+        "Notes": "Reprised role as Captain Kirk"
+      },
+      {
+        "CrewAssignmentId": "crew-stewart-picard-generations",
+        "Name": "Patrick Stewart-Actor-Star Trek: Generations",
+        "Person": "person-patrick-stewart",
+        "PersonName": "Patrick Stewart",
+        "Movie": "movie-1-generations",
+        "MovieTitle": "Star Trek: Generations",
+        "CrewType": "crew-actor",
+        "CrewTypeName": "Actor",
+        "Notes": "Captain Picard"
+      },
+      {
+        "CrewAssignmentId": "crew-stewart-picard-first-contact",
+        "Name": "Patrick Stewart-Actor-Star Trek: First Contact",
+        "Person": "person-patrick-stewart",
+        "PersonName": "Patrick Stewart",
+        "Movie": "movie-2-first-contact",
+        "MovieTitle": "Star Trek: First Contact",
+        "CrewType": "crew-actor",
+        "CrewTypeName": "Actor",
+        "Notes": "Captain Picard"
+      },
+      {
+        "CrewAssignmentId": "crew-roddenberry-generations-producer",
+        "Name": "Gene Roddenberry-Producer-Star Trek: Generations",
+        "Person": "person-gene-roddenberry",
+        "PersonName": "Gene Roddenberry",
+        "Movie": "movie-1-generations",
+        "MovieTitle": "Star Trek: Generations",
+        "CrewType": "crew-producer",
+        "CrewTypeName": "Producer",
+        "Notes": "Creator and executive producer (posthumous)"
+      }
+    ]
+  },
   "Ratings": {
     "Description": "Table: Ratings",
     "schema": [

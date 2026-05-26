@@ -25,6 +25,27 @@ ALTER TABLE episodes DROP CONSTRAINT IF EXISTS fk_episodes_ratings;
 ALTER TABLE episodes ADD CONSTRAINT fk_episodes_ratings
   FOREIGN KEY (ratings) REFERENCES ratings (rating_id);
 
+-- People
+ALTER TABLE people DROP CONSTRAINT IF EXISTS fk_people_crew_assignments;
+ALTER TABLE people ADD CONSTRAINT fk_people_crew_assignments
+  FOREIGN KEY (crew_assignments) REFERENCES crew_assignments (crew_assignment_id);
+
+-- Movies
+ALTER TABLE movies DROP CONSTRAINT IF EXISTS fk_movies_crew_assignments;
+ALTER TABLE movies ADD CONSTRAINT fk_movies_crew_assignments
+  FOREIGN KEY (crew_assignments) REFERENCES crew_assignments (crew_assignment_id);
+
+-- CrewAssignments
+ALTER TABLE crew_assignments DROP CONSTRAINT IF EXISTS fk_crew_assignments_person;
+ALTER TABLE crew_assignments ADD CONSTRAINT fk_crew_assignments_person
+  FOREIGN KEY (person) REFERENCES people (person_id);
+ALTER TABLE crew_assignments DROP CONSTRAINT IF EXISTS fk_crew_assignments_movie;
+ALTER TABLE crew_assignments ADD CONSTRAINT fk_crew_assignments_movie
+  FOREIGN KEY (movie) REFERENCES movies (movie_id);
+ALTER TABLE crew_assignments DROP CONSTRAINT IF EXISTS fk_crew_assignments_crew_type;
+ALTER TABLE crew_assignments ADD CONSTRAINT fk_crew_assignments_crew_type
+  FOREIGN KEY (crew_type) REFERENCES crew_types (crew_type_id);
+
 -- Ratings
 ALTER TABLE ratings DROP CONSTRAINT IF EXISTS fk_ratings_series;
 ALTER TABLE ratings ADD CONSTRAINT fk_ratings_series
@@ -33,4 +54,4 @@ ALTER TABLE ratings DROP CONSTRAINT IF EXISTS fk_ratings_episode;
 ALTER TABLE ratings ADD CONSTRAINT fk_ratings_episode
   FOREIGN KEY (episode) REFERENCES episodes (episode_id);
 
--- 5 FK constraint(s) declared (off unless EFFORTLESS_ENFORCE_FKS=true).
+-- 10 FK constraint(s) declared (off unless EFFORTLESS_ENFORCE_FKS=true).

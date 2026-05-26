@@ -930,6 +930,72 @@ INSERT INTO episodes (episode_id, season, episode_number, description, airdate, 
 VALUES ('6-dis-season-2-episode-02', 'recUA4S6jTO8GWmiC', 2, 'Episode 2 of season 2 of Discovery.', '2019-01-24', 'Staff Writer', 'Series Director', 42, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
 
 -- ----------------------------------------------------------------------------
+-- CrewTypes: Table: CrewTypes
+-- ----------------------------------------------------------------------------
+INSERT INTO crew_types (crew_type_id, name, description)
+VALUES ('crew-actor', 'Actor', 'Performer in front of the camera') ON CONFLICT (crew_type_id) DO NOTHING;
+
+INSERT INTO crew_types (crew_type_id, name, description)
+VALUES ('crew-director', 'Director', 'Director of the production') ON CONFLICT (crew_type_id) DO NOTHING;
+
+INSERT INTO crew_types (crew_type_id, name, description)
+VALUES ('crew-writer', 'Writer', 'Screenplay or story writer') ON CONFLICT (crew_type_id) DO NOTHING;
+
+INSERT INTO crew_types (crew_type_id, name, description)
+VALUES ('crew-producer', 'Producer', 'Producer of the production') ON CONFLICT (crew_type_id) DO NOTHING;
+
+INSERT INTO crew_types (crew_type_id, name, description)
+VALUES ('crew-composer', 'Composer', 'Music composer') ON CONFLICT (crew_type_id) DO NOTHING;
+
+INSERT INTO crew_types (crew_type_id, name, description)
+VALUES ('crew-cinematographer', 'Cinematographer', 'Director of photography') ON CONFLICT (crew_type_id) DO NOTHING;
+
+-- ----------------------------------------------------------------------------
+-- People: Table: People
+-- ----------------------------------------------------------------------------
+INSERT INTO people (person_id, name, birth_year, nationality, bio, crew_assignments)
+VALUES ('person-william-shatner', 'William Shatner', 1931, 'Canadian', 'Actor famous for playing Captain James T. Kirk', '') ON CONFLICT (person_id) DO NOTHING;
+
+INSERT INTO people (person_id, name, birth_year, nationality, bio, crew_assignments)
+VALUES ('person-leonard-nimoy', 'Leonard Nimoy', 1931, 'American', 'Actor famous for playing Spock', '') ON CONFLICT (person_id) DO NOTHING;
+
+INSERT INTO people (person_id, name, birth_year, nationality, bio, crew_assignments)
+VALUES ('person-patrick-stewart', 'Patrick Stewart', 1940, 'British', 'Actor famous for playing Captain Jean-Luc Picard', '') ON CONFLICT (person_id) DO NOTHING;
+
+INSERT INTO people (person_id, name, birth_year, nationality, bio, crew_assignments)
+VALUES ('person-gene-roddenberry', 'Gene Roddenberry', 1921, 'American', 'Creator and producer of Star Trek', '') ON CONFLICT (person_id) DO NOTHING;
+
+-- ----------------------------------------------------------------------------
+-- Movies: Table: Movies
+-- ----------------------------------------------------------------------------
+INSERT INTO movies (movie_id, movie_number, title, description, release_date, runtime_minutes, budget, box_office, crew_assignments, director_name)
+VALUES ('movie-1-generations', 1, 'Star Trek: Generations', 'The seventh and final film of the original series cast, featuring the Next Generation crew', '1994-11-18', 118, 40000000, 118159941, '', NULL) ON CONFLICT (movie_id) DO NOTHING;
+
+INSERT INTO movies (movie_id, movie_number, title, description, release_date, runtime_minutes, budget, box_office, crew_assignments, director_name)
+VALUES ('movie-2-first-contact', 2, 'Star Trek: First Contact', 'The Enterprise-E travels back in time to prevent a Borg invasion of Earth', '1996-11-22', 111, 46000000, 92262550, '', NULL) ON CONFLICT (movie_id) DO NOTHING;
+
+INSERT INTO movies (movie_id, movie_number, title, description, release_date, runtime_minutes, budget, box_office, crew_assignments, director_name)
+VALUES ('movie-3-insurrection', 3, 'Star Trek: Insurrection', 'The Enterprise-E crew fights to protect a peaceful planet from exploitation', '1998-11-25', 103, 70000000, 70252769, '', NULL) ON CONFLICT (movie_id) DO NOTHING;
+
+INSERT INTO movies (movie_id, movie_number, title, description, release_date, runtime_minutes, budget, box_office, crew_assignments, director_name)
+VALUES ('movie-4-nemesis', 4, 'Star Trek: Nemesis', 'Captain Picard confronts a clone from his past in his final adventure', '2002-12-13', 116, 60000000, 43254409, '', NULL) ON CONFLICT (movie_id) DO NOTHING;
+
+-- ----------------------------------------------------------------------------
+-- CrewAssignments: Table: CrewAssignments
+-- ----------------------------------------------------------------------------
+INSERT INTO crew_assignments (crew_assignment_id, person, movie, crew_type, notes)
+VALUES ('crew-shatner-kirk-generations', 'person-william-shatner', 'movie-1-generations', 'crew-actor', 'Reprised role as Captain Kirk') ON CONFLICT (crew_assignment_id) DO NOTHING;
+
+INSERT INTO crew_assignments (crew_assignment_id, person, movie, crew_type, notes)
+VALUES ('crew-stewart-picard-generations', 'person-patrick-stewart', 'movie-1-generations', 'crew-actor', 'Captain Picard') ON CONFLICT (crew_assignment_id) DO NOTHING;
+
+INSERT INTO crew_assignments (crew_assignment_id, person, movie, crew_type, notes)
+VALUES ('crew-stewart-picard-first-contact', 'person-patrick-stewart', 'movie-2-first-contact', 'crew-actor', 'Captain Picard') ON CONFLICT (crew_assignment_id) DO NOTHING;
+
+INSERT INTO crew_assignments (crew_assignment_id, person, movie, crew_type, notes)
+VALUES ('crew-roddenberry-generations-producer', 'person-gene-roddenberry', 'movie-1-generations', 'crew-producer', 'Creator and executive producer (posthumous)') ON CONFLICT (crew_assignment_id) DO NOTHING;
+
+-- ----------------------------------------------------------------------------
 -- Ratings: Table: Ratings
 -- ----------------------------------------------------------------------------
 INSERT INTO ratings (rating_id, rating, series, episode, users_name, email_address, phone_nmber, notes, created_at)
