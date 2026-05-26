@@ -1,30 +1,39 @@
 {
+  "ShowHidden": false,
+  "ShowAllFiles": false,
+  "CurrentPath": null,
+  "SSoTmeProjectFiles": null,
+  "SSoTmeProjectId": "1e4f2b01-df88-4e9c-8792-8e5834b2e083",
   "Name": "guessing-game",
-  "Description": "guessing-game \u2014 example ontology.",
-  "Version": "1.0",
+  "Description": "guessing-game — example ontology.",
   "ProjectSettings": [
     {
       "Name": "baseId",
-      "Value": "appXXXXXXXXXXXXXX",
-      "Description": "Airtable base ID for this ontology (hardcoded per project)"
+      "Value": "appXXXXXXXXXXXXXX"
+    },
+    {
+      "Name": "project-name",
+      "Value": "guessing-game"
     }
   ],
   "ProjectTranspilers": [
     {
+      "IsSSoTTranspiler": false,
       "Name": "airtabletorulebook",
       "RelativePath": "/effortless-rulebook",
       "CommandLine": "airtable-to-rulebook -o guessing-game-rulebook.json -account airtable -p \"view=Grid view\"",
-      "Enabled": false,
       "IsDisabled": true,
+      "Enabled": false,
       "Description": "Pull rulebook from Airtable [DISABLED: rulebook JSON is authoritative; re-enable only with explicit user consent]"
     },
     {
+      "IsSSoTTranspiler": false,
       "Name": "rulebooktoairtable",
       "RelativePath": "/effortless-rulebook/push-to-airtable",
       "CommandLine": "rulebook-to-airtable -i ../guessing-game-rulebook.json -account airtable -w 300000",
+      "IsDisabled": true,
       "Enabled": false,
-      "Description": "Reverse-sync: push rulebook changes back to Airtable",
-      "IsDisabled": true
+      "Description": "Reverse-sync: push rulebook changes back to Airtable"
     },
     {
       "IsSSoTTranspiler": false,
@@ -32,6 +41,8 @@
       "RelativePath": "/effortless-postgres",
       "CommandLine": "rulebook-to-postgres -i ../effortless-rulebook/guessing-game-rulebook.json",
       "IsDisabled": false,
+      "LastVersionUsed": "v2026.05.09.1738",
+      "LastUrl": "https://effortless-rulebook-to-postgres-v2026-05-09-1738-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
       "Description": "Generate Postgres schema + seed data from the rulebook"
     }
   ]

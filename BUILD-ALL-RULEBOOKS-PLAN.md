@@ -59,7 +59,7 @@ Local JSON is the SSoT. Default behavior. Build downstream transpilers against t
 | 9 | `jessica-basic` | `applThn0rikpCR9C3` | ✅ | Clean build, exit 0. Note: base ID still not in `orchestration/bases.json`. |
 | 10 | `star-trek` | `appqwWQxIWFtyDsiL` | ✅ | Clean build, exit 0. Postgres SQL + xlsx generated. |
 | 11 | `effortless-rulesbooks` | _(empty)_ | ✅ | Clean build, exit 0. SQL generated. |
-| 12 | `guessing-game` | `appXXXXXXXXXXXXXX` | ❓ | Placeholder base ID — treat as JSON-only; do not enable Airtable pull. |
+| 12 | `guessing-game` | `appXXXXXXXXXXXXXX` | ✅ | Clean build, exit 0. Placeholder baseId; Airtable transpilers stay disabled. |
 
 **Not registered (12)** — no Airtable wiring at all. Pure JSON projects.
 
