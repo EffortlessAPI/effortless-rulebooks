@@ -28,7 +28,7 @@ SQL_FILES=(
 )
 
 # Default connection string
-DEFAULT_CONN="postgresql://postgres@localhost:5432/erb_v3_nakedclaude_demo"
+DEFAULT_CONN="postgresql://postgres@localhost:5432/v2_nakedclaude_demo"
 
 # Get connection string from argument or use default
 CONNECTION_STRING="${1:-$DEFAULT_CONN}"

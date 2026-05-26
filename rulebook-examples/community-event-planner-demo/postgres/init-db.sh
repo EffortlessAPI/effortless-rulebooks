@@ -6,7 +6,7 @@
 set -e
 
 # Configuration
-DEFAULT_CONN="postgresql://postgres@localhost:5432/erb_community_event_planner_demo"
+DEFAULT_CONN="postgresql://postgres@localhost:5432/community_events"
 DB_CONN="${DATABASE_URL:-$DEFAULT_CONN}"
 
 # Extract database name from connection string
