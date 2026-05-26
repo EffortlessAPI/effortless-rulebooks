@@ -42,7 +42,7 @@ For each project, read its `effortless.json`:
 | 1 | `v1-nakedclaude-demo` | `appgjoEcFNxluhbvK` | 🟡 | Airtable pull works, schema regen succeeds, but `04b-customize-policies.sql:31` and `:36` fail with `ERROR: column "owner_email" does not exist`. RLS-policy customization references a column the current Airtable schema doesn't have. Fix requires understanding the intent of that RLS policy — either restore `owner_email` to the rulebook or update/remove the policy. CLAUDE.md banner: flipped to Airtable-first this session. |
 | 2 | `v2-nakedclaude-demo` | `app7G5emeY7miM4WN` | ✅ | Clean build, exit 0. Airtable pull → SQL → DB `erb_v2_nakedclaude_demo` with 6 tables. CLAUDE.md banner flipped this session. |
 | 3 | `v3-nakedclaude-demo` | `appKLygCIXweUUKtM` | 🟡 | Airtable pull → SQL OK, but customization files reference missing entities: `01b-customize-schema.sql:38` ERROR `relation "app_users" does not exist`; `04b-customize-policies.sql:17,22,31,36` same `app_users`/`owner_email` issues as v1. DB built with 12 tables but RLS+auth customization unworkable until rulebook restores those, or customizations are updated. CLAUDE.md banner flipped this session. |
-| 4 | `v4-nakedclaude-demo` | `appeUOAaOIdoqPSx3` | ❓ | Renamed from old mislabeled "v3" this session. CLAUDE.md banner: needs flip to Airtable-first. |
+| 4 | `v4-nakedclaude-demo` | `appeUOAaOIdoqPSx3` | ✅ | Clean build, exit 0. Airtable pull → SQL → DB `erb_v4_nakedclaude_demo` with 26 tables. CLAUDE.md banner flipped this session. |
 
 ### Group 2 — Rulebook-first (19)
 
