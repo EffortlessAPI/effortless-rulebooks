@@ -48,24 +48,24 @@ For each project, read its `effortless.json`:
 
 Local JSON is the SSoT. Default behavior. Build downstream transpilers against the committed JSON. Some have `airtabletorulebook` registered-but-disabled — leave it disabled; do not flip without explicit per-turn user consent.
 
-**Registered-but-disabled (9)** — has a `baseId`, Airtable pull available but not active. JSON is HEAD.
+**Registered-but-disabled (8)** — has a `baseId`, Airtable pull available but not active. JSON is HEAD.
 
 | # | Project | Base ID | Status | Notes |
 |---|---|---|---|---|
 | 5 | `acme-llc` | `appWrXPvXbkgQGOxt` | ❓ | The reference simplest case. |
 | 6 | `acme-corporation` | `appzkcmBFPWFGBtRo` | ❓ | Extended ACME. No postgres dir. |
-| 7 | `customer-fullname` | `appWrXPvXbkgQGOxt` | ❓ | Shares ACME LLC's base (intentional dual-projection per user). |
-| 8 | `is-everything-a-language` | `appC8XTj95lubn6hz` | ❓ | Meta-ontology. No postgres dir. |
-| 9 | `jessica-advanced` | `appwN9EAp8IeIxM23` | ❓ | No postgres dir. |
-| 10 | `jessica-basic` | `applThn0rikpCR9C3` | ❓ | Base ID not in `orchestration/bases.json` — add it. |
-| 11 | `star-trek` | `appqwWQxIWFtyDsiL` | ❓ | No postgres dir. |
-| 12 | `effortless-rulesbooks` | _(empty)_ | ❓ | Has `airtabletorulebook` entry but empty baseId. Acts as JSON-only. |
-| 13 | `guessing-game` | `appXXXXXXXXXXXXXX` | ❓ | Placeholder base ID — treat as JSON-only; do not enable Airtable pull. |
+| 7 | `is-everything-a-language` | `appC8XTj95lubn6hz` | ❓ | Meta-ontology. No postgres dir. |
+| 8 | `jessica-advanced` | `appwN9EAp8IeIxM23` | ❓ | No postgres dir. |
+| 9 | `jessica-basic` | `applThn0rikpCR9C3` | ❓ | Base ID not in `orchestration/bases.json` — add it. |
+| 10 | `star-trek` | `appqwWQxIWFtyDsiL` | ❓ | No postgres dir. |
+| 11 | `effortless-rulesbooks` | _(empty)_ | ❓ | Has `airtabletorulebook` entry but empty baseId. Acts as JSON-only. |
+| 12 | `guessing-game` | `appXXXXXXXXXXXXXX` | ❓ | Placeholder base ID — treat as JSON-only; do not enable Airtable pull. |
 
-**Not registered (10)** — no Airtable wiring at all. Pure JSON projects.
+**Not registered (12)** — no Airtable wiring at all. Pure JSON projects.
 
 | # | Project | Has postgres? | Status | Notes |
 |---|---|---|---|---|
+| 13 | `customer-fullname` | Y | ❓ | Reclassified to ERB-only this turn — `baseId` and `airtabletorulebook` removed from `effortless.json`. Canonical "no Airtable" example. |
 | 14 | `community-event-planner-demo` | Y | ❓ | |
 | 15 | `customer-crm-demo` | Y | ❓ | |
 | 16 | `effortless-banking-demo` | Y | ❓ | |
@@ -78,7 +78,7 @@ Local JSON is the SSoT. Default behavior. Build downstream transpilers against t
 | 23 | `therapist-helper-portal` | Y | ❓ | |
 | 24 | `wedding-seating-optimizer` | Y | ❓ | |
 
-(Note: 11 entries above — `wedding-seating-optimizer` is the 11th; the count of "Not registered" is 11, plus 9 "Registered-but-disabled" = 20 in Group 2. Inventory totals: 4 + 20 + 4 broken = 28.)
+(Counts: 8 registered-but-disabled + 12 not-registered = 20 in Group 2. Inventory totals: 4 Airtable-first + 20 rulebook-first + 4 broken = 28.)
 
 ### Group 3 — Broken / not a rulebook project (4)
 
@@ -137,8 +137,8 @@ One commit per project, scoped to that project's directory + this doc's status u
 
 Rulebook-first projects first (no upstream-overwrite risk), Airtable-first last:
 
-1. **Group 2 — Registered-but-disabled (9):** `acme-llc`, `acme-corporation`, `customer-fullname`, `jessica-basic`, `jessica-advanced`, `star-trek`, `is-everything-a-language`, `effortless-rulesbooks`, `guessing-game`
-2. **Group 2 — Not registered (11):** `community-event-planner-demo`, `customer-crm-demo`, `effortless-banking-demo`, `fantasy-football-demo`, `gym-trainer-invoicing`, `intelligence-taxonomy-demo`, `jobsearch-rag`, `llm-enigma-test`, `product-inventory-demo`, `therapist-helper-portal`, `wedding-seating-optimizer`
+1. **Group 2 — Registered-but-disabled (8):** `acme-llc`, `acme-corporation`, `jessica-basic`, `jessica-advanced`, `star-trek`, `is-everything-a-language`, `effortless-rulesbooks`, `guessing-game`
+2. **Group 2 — Not registered (12):** `customer-fullname`, `community-event-planner-demo`, `customer-crm-demo`, `effortless-banking-demo`, `fantasy-football-demo`, `gym-trainer-invoicing`, `intelligence-taxonomy-demo`, `jobsearch-rag`, `llm-enigma-test`, `product-inventory-demo`, `therapist-helper-portal`, `wedding-seating-optimizer`
 3. **Group 1 — Airtable-first (4):** `v1-nakedclaude-demo`, `v2-nakedclaude-demo`, `v3-nakedclaude-demo`, `v4-nakedclaude-demo`
 4. **Group 3 — decisions:** `expense-approval-demo`, `volunteer-shift-scheduler-demo`, `naked-claude-vs-effortless-claude`, `v3-nakedclaude-demo-naked`
 
