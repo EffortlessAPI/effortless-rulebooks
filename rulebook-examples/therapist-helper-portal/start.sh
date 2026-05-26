@@ -2,7 +2,7 @@
 set -euo pipefail
 cd "$(dirname "$0")"
 
-export DATABASE_URL="${DATABASE_URL:-postgresql://postgres@localhost:5432/therapist_helper_portal}"
+export DATABASE_URL="${DATABASE_URL:-postgresql://postgres@localhost:5432/erb_therapist_helper_portal}"
 export SERVER_PORT="${SERVER_PORT:-3032}"
 export WEB_PORT="${WEB_PORT:-5175}"
 
@@ -13,17 +13,17 @@ build_rulebook() {
   effortless build
   # Patch generic transpiler default to project's DB name
   if [ -f postgres-bootstrap/init-db.sh ]; then
-    sed -i.bak -E "s|DEFAULT_CONN=postgresql://postgres@localhost:5432/demo|DEFAULT_CONN=postgresql://postgres@localhost:5432/therapist_helper_portal|" postgres-bootstrap/init-db.sh || true
-    sed -i.bak -E "s|^# demo - Database Initialization Script|# therapist_helper_portal - Database Initialization Script|" postgres-bootstrap/init-db.sh || true
+    sed -i.bak -E "s|DEFAULT_CONN=postgresql://postgres@localhost:5432/demo|DEFAULT_CONN=postgresql://postgres@localhost:5432/erb_therapist_helper_portal|" postgres-bootstrap/init-db.sh || true
+    sed -i.bak -E "s|^# demo - Database Initialization Script|# erb_therapist_helper_portal - Database Initialization Script|" postgres-bootstrap/init-db.sh || true
     rm -f postgres-bootstrap/init-db.sh.bak
     chmod +x postgres-bootstrap/init-db.sh
   fi
 }
 
 reset_db() {
-  echo "==> drop+create therapist_helper_portal"
-  psql -U postgres-bootstrap -h localhost -d postgres-bootstrap -c "DROP DATABASE IF EXISTS therapist_helper_portal" >/dev/null
-  psql -U postgres-bootstrap -h localhost -d postgres-bootstrap -c "CREATE DATABASE therapist_helper_portal" >/dev/null
+  echo "==> drop+create erb_therapist_helper_portal"
+  psql -U postgres-bootstrap -h localhost -d postgres-bootstrap -c "DROP DATABASE IF EXISTS erb_therapist_helper_portal" >/dev/null
+  psql -U postgres-bootstrap -h localhost -d postgres-bootstrap -c "CREATE DATABASE erb_therapist_helper_portal" >/dev/null
   (cd postgres-bootstrap && DATABASE_URL="$DATABASE_URL" ./init-db.sh)
 }
 

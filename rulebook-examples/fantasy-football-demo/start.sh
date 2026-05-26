@@ -2,7 +2,7 @@
 set -e
 
 COMMAND="${1:-all}"
-DATABASE_URL="${DATABASE_URL:-postgresql://postgres@localhost:5432/fantasy_football_league}"
+DATABASE_URL="${DATABASE_URL:-postgresql://postgres@localhost:5432/erb_fantasy_football_demo}"
 
 cleanup() {
   echo "Stopping any existing services..."

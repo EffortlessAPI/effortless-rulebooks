@@ -20,7 +20,7 @@ const LIVE_JSON = path.join(XLSX_DIR, "exported-rulebook.json");
 
 const DATABASE_URL =
   process.env.DATABASE_URL ||
-  "postgresql://postgres@localhost:5432/customer_crm_demo";
+  "postgresql://postgres@localhost:5432/erb_customer_crm_demo";
 
 // PascalCase → snake_case (matches rulebook-to-postgres). IsVIP → is_vip,
 // CustomerFirstName → customer_first_name, OrdersId → orders_id.

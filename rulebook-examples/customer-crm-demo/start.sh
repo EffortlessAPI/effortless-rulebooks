@@ -2,7 +2,7 @@
 set -euo pipefail
 cd "$(dirname "$0")"
 
-export DATABASE_URL="${DATABASE_URL:-postgresql://postgres@localhost:5432/customer_crm_demo}"
+export DATABASE_URL="${DATABASE_URL:-postgresql://postgres@localhost:5432/erb_customer_crm_demo}"
 
 cmd="${1:-all}"
 
@@ -31,9 +31,9 @@ build() {
 
 db() {
   echo "[db] re-initializing $DATABASE_URL"
-  psql -U postgres-bootstrap -h localhost -c "SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE datname='customer_crm_demo'" >/dev/null || true
-  psql -U postgres-bootstrap -h localhost -c "DROP DATABASE IF EXISTS customer_crm_demo"
-  psql -U postgres-bootstrap -h localhost -c "CREATE DATABASE customer_crm_demo"
+  psql -U postgres-bootstrap -h localhost -c "SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE datname='erb_customer_crm_demo'" >/dev/null || true
+  psql -U postgres-bootstrap -h localhost -c "DROP DATABASE IF EXISTS erb_customer_crm_demo"
+  psql -U postgres-bootstrap -h localhost -c "CREATE DATABASE erb_customer_crm_demo"
   chmod +x postgres-bootstrap/init-db.sh
   bash postgres-bootstrap/init-db.sh
 }

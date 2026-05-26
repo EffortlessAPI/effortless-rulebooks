@@ -6,7 +6,7 @@ const app = express();
 const port = process.env.SERVER_PORT || 3045;
 
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL || 'postgresql://postgres@localhost:5432/community_events'
+  connectionString: process.env.DATABASE_URL || 'postgresql://postgres@localhost:5432/erb_community_event_planner_demo'
 });
 
 app.use(cors());

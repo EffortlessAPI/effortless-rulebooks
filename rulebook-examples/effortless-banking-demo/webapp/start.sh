@@ -5,7 +5,7 @@
 set -euo pipefail
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
-export DATABASE_URL="${DATABASE_URL:-postgresql://postgres@localhost:5432/first_valley_bank}"
+export DATABASE_URL="${DATABASE_URL:-postgresql://postgres@localhost:5432/erb_effortless_banking_demo}"
 
 [ -d backend/node_modules ]  || ( echo "[start] installing backend deps…"  && cd backend  && npm install --no-audit --no-fund )
 [ -d frontend/node_modules ] || ( echo "[start] installing frontend deps…" && cd frontend && npm install --no-audit --no-fund )

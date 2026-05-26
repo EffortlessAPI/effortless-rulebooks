@@ -16,7 +16,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const DATABASE_URL =
   process.env.DATABASE_URL ||
-  'postgresql://postgres@localhost:5432/first_valley_bank';
+  'postgresql://postgres@localhost:5432/erb_effortless_banking_demo';
 
 const pool = new pg.Pool({ connectionString: DATABASE_URL });
 

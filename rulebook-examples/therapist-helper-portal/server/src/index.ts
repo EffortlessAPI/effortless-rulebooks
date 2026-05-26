@@ -5,7 +5,7 @@ const PORT = Number(process.env.PORT || 3032);
 const pool = new Pool({
   connectionString:
     process.env.DATABASE_URL ||
-    "postgresql://postgres@localhost:5432/therapist_helper_portal",
+    "postgresql://postgres@localhost:5432/erb_therapist_helper_portal",
 });
 
 const app = express();

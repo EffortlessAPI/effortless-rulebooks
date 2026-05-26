@@ -12,7 +12,7 @@ set -e
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$HERE"
 
-DB=wedding_seating_optimizer
+DB=erb_wedding_seating_optimizer
 PG="postgresql://postgres@localhost:5432/${DB}"
 SERVER_PORT=3045
 WEB_PORT=5188

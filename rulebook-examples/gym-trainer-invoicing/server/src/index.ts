@@ -5,7 +5,7 @@ import pg from "pg";
 const PORT = Number(process.env.PORT ?? 3032);
 const DATABASE_URL =
   process.env.DATABASE_URL ??
-  "postgresql://postgres@localhost:5432/gym_trainer_invoicing";
+  "postgresql://postgres@localhost:5432/erb_gym_trainer_invoicing";
 
 const pool = new pg.Pool({ connectionString: DATABASE_URL });
 

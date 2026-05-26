@@ -12,7 +12,7 @@ set -e
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$HERE"
 
-DB=gym_trainer_invoicing
+DB=erb_gym_trainer_invoicing
 PG="postgresql://postgres@localhost:5432/${DB}"
 SERVER_PORT=3032
 WEB_PORT=5175

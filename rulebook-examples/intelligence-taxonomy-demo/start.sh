@@ -5,7 +5,7 @@
 set -euo pipefail
 
 ROOT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-DB_NAME="${DB_NAME:-mark_acosta_demo}"
+DB_NAME="${DB_NAME:-erb_intelligence_taxonomy_demo}"
 DB_USER="${DB_USER:-postgres}"
 DB_HOST="${DB_HOST:-localhost}"
 DB_PORT="${DB_PORT:-5432}"

@@ -3,7 +3,7 @@ const crypto = require('crypto');
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL ||
-    'postgresql://postgres@localhost:5432/v3_nakedclaude_demo'
+    'postgresql://postgres@localhost:5432/erb_v4_nakedclaude_demo'
 });
 
 function newId(prefix) {
