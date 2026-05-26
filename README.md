@@ -1,39 +1,96 @@
 # Effortlessly Invariant Rulebooks (ERB)
 
-One declarative rulebook, many execution substrates, all conforming to the same answer key.
+<p align="center">
+  <img src="docs/erb-overview.svg" alt="ERB hub-and-spoke architecture: one rulebook fans out to many substrates, all proven conformant" width="100%"/>
+</p>
 
-Write your business rules once in `effortless-rulebook.json`. ERB mechanically projects them into 14+ substrates (Postgres, Python, Go, COBOL, Excel, OWL, English, UML, …) and runs a conformance harness that proves every substrate returns identical results for the same inputs.
+Most "single source of truth" systems mean: *we wrote it in one place and try to keep everything else in sync.* ERB means something stronger: the rulebook **is** the spec, and every substrate — Postgres, Python, Go, COBOL, Excel, OWL, English prose, UML, ARM64 assembly, and more — is mechanically derived from it and **proven** to return the same answer.
 
-This repo wraps a catalog of independent demo rulebooks under [`rulebook-examples/`](rulebook-examples/) ([acme-llc](rulebook-examples/acme-llc/), [star-trek](rulebook-examples/star-trek/), [jessica-advanced](rulebook-examples/jessica-advanced/), …). Each project owns its own rulebook and picks the subset of substrates it needs. The platform itself ([`effortless-platform/`](effortless-platform/)) is one such project — ERB describing its own admin portal, orchestration tool, and ssotme-proxy.
+You write business rules once as a typed grid of named cells — entities, fields, formulas, relationships. Any transpiler can consume that grid without understanding the grammar of any other substrate, because the business intent (there is a calculated field, it derives from these inputs, it returns this type) is encoded in the *structure*, not in the formula text. Add a new language target: feed it the same rulebook. Rename a field: rebuild, and the rename propagates everywhere. Remove a rule: it disappears from every substrate on the next build. No migrations. No drift. No "the Postgres version doesn't do what the Python version does."
 
-→ [What is non-linguistic?](docs/what-is-non-linguistic.md) · [GitHub](https://github.com/effortlessapi/effortless-rulebooks)
+The conformance harness runs on every build and produces a pass/fail matrix across all substrates. If they don't agree, the build fails.
+
+This repo contains the orchestration platform and a catalog of ready-to-run demo domains — from a [one-table Hello World](rulebook-examples/customer-fullname/) to [acme-llc](rulebook-examples/acme-llc/), which exercises all 17 substrates and is fully proven conformant.
+
+→ [What does "non-linguistic" actually mean?](docs/what-is-non-linguistic.md) · [GitHub](https://github.com/effortlessapi/effortless-rulebooks)
+
+---
+
+## Conformance results — acme-llc (last run)
+
+17 substrates. All 100%. Same business rules, same answer, different runtime.
+
+| Substrate | Score | Time |
+|---|---|---|
+| python | 100% | 0.00s |
+| yaml | 100% | 0.13s |
+| uml | 100% | 0.17s |
+| explain-dag | 100% | 0.17s |
+| airtable | 100% | 0.11s |
+| golang | 100% | 0.29s |
+| owl | 100% | 0.41s |
+| cobol | 100% | 0.44s |
+| csv | 100% | 0.42s |
+| xlsx | 100% | 0.48s |
+| binary | 100% | 0.65s |
+| effortless-xlsx | 100% | 1.17s |
+| effortless-csv | 100% | 2.05s |
+| effortless-entity-framework | 100% | 2.34s |
+| postgres | 100% | 4.45s |
+| effortless-postgres | 100% | 4.37s |
+| english (LLM-graded) | 100% | 18.84s |
+
+The harness that produced this table runs on every build. There is no "build without testing."
 
 ---
 
 ## Key features
 
-- **[ExplainDAG](docs/features/README.explain-dag.md)** — for every derived value, a complete witnessed derivation graph showing which inputs, which operations, and what value at each step. Auditable, LLM-readable, generated before any production code runs.
-- **[Conformance testing](docs/features/README.conformance.md)** — every build runs every substrate's test and shows the pass/fail matrix. There is no "build without testing."
-- **[Hub-and-spoke topology](docs/features/README.hub-and-spoke.md)** — the rulebook is the hub; every input and output is a spoke. Spokes never talk to each other, eliminating the n×n integration problem.
-- **[Convergent builds](docs/features/README.convergent-build.md)** — additions appear, removals disappear, renames propagate. Not additive codegen — the rulebook stays authoritative in both directions.
-- **[Abstract Derivative Percentage (ADP)](docs/features/README.ADP.md)** — a first-class, measurable percentage of any project that is derivative (rebuildable) vs. hand-written. Typical ERB projects land at 60–80%.
-- **[Rulebook is a complete spec](docs/features/README.complete-spec.md)** — sufficient for any frontier LLM to answer any question about the domain or produce a faithful implementation in any language.
+### Core architecture
 
-→ [Full feature list with tiers and status](docs/derived/features.md)
+- **[Hub-and-spoke topology](docs/features/README.hub-and-spoke.md)** — the rulebook is the hub; every input and output is a spoke. Spokes never talk to each other, eliminating the n×n integration problem. Adding substrate 18 means writing one injector — no changes to any other substrate, the orchestration, or the test harness. Those are already generic.
+- **[Convergent builds](docs/features/README.convergent-build.md)** — additions appear, removals disappear, renames propagate. Not additive codegen — the rulebook stays authoritative in both directions.
+- **[No privileged substrate](docs/features/README.substrate-equivalence.md)** — Postgres, Python, Go, OWL, COBOL, Excel, English, ARM64 are all peer projections. A language not yet invented can be added by writing one transpiler.
+- **[Write-through invariant](docs/features/README.write-through.md)** — edits made through the admin portal write to Postgres and update the rulebook JSON atomically. Drop Postgres at any time and rebuild from the JSON; never the reverse.
+- **[Self-hosting](docs/features/README.self-hosting.md)** — the orchestration tool, admin portal, and ssotme-proxy are themselves generated from the platform rulebook. ERB is its own first customer.
+
+### Verification and provenance
+
+- **[Conformance testing](docs/features/README.conformance.md)** — every build runs every substrate's test and shows the pass/fail matrix. There is no "build without testing."
+- **[ExplainDAG](docs/features/README.explain-dag.md)** — for every derived value, a complete witnessed derivation graph: which inputs, which operations, what value at each step. Generated before any production code runs.
+- **[React ExplainDAG](docs/features/README.react-explain-dag.md)** — any value displayed in the UI can answer "where did this come from?" all the way to ground truth, because the UI reads from the same DAG the rulebook already proved.
+- **[Abstract Derivative Percentage (ADP)](docs/features/README.ADP.md)** — a measurable percentage of the project that is derivative (rebuildable) vs. hand-written. Typical ERB projects land at 60–80%.
+
+### Practical consequences
+
+- **[Live Excel export](docs/features/README.live-excel-export.md)** — not a CSV dump. A fully live workbook where calculated fields are Excel formulas, related tables are cross-sheet references, and the derivation chain travels with the data.
+- **[GDPR export and erasure](docs/features/README.gdpr-export-erasure.md)** — the DAG shape that enables explainability is the same shape GDPR's right to portability and right to erasure require. With RLS, account-scoped export and deletion are structural consequences, not bespoke engineering.
+- **[Rulebook is a complete spec](docs/features/README.complete-spec.md)** — sufficient for any frontier LLM to answer any question about the domain or produce a faithful implementation in any language.
+- **[Fail loudly, never fall back](docs/features/README.fail-loud.md)** — if a file or value isn't where expected, the code fails with the exact path. Silent fallbacks hide bugs; defaults derived from the SSoT are not fallbacks.
+
+### Platform mechanics
+
+- **[Portal/CLI parity](docs/features/README.portal-cli-parity.md)** — the admin portal and `./start.sh --cli` are peer interfaces to the same pipeline. Every portal mutation shells out to the same CLI command.
+- **[Locally-designated SSoT](docs/features/README.local-ssot.md)** — the answer key for a conformance run is whichever spoke the user designates: Airtable export, Excel workbook, hand-edited JSON, Postgres dump.
+- **[Per-rulebook formula dialect](docs/features/README.dialect-binding.md)** — each rulebook declares its formula dialect (Excel, Airtable, …). Substrates honor it; conformance claims are scoped to that dialect.
+- **[ssotme-proxy transpiler bus](docs/features/README.ssotme-proxy.md)** — a local HTTP server on `localhost:4242` makes repo-local transpilers and officially-licensed ones look identical to the CLI.
+
+→ [Full feature catalog with tiers, priorities, and status](docs/derived/features.md)
 
 ---
 
 ## Demo domains
 
-Five ready-to-run domains show the same pattern across wildly different problems — from a one-table Hello World to a philosophical meta-ontology:
+Five ready-to-run domains show the same pattern across wildly different problems. For a direct comparison, see **[A Tale of Two Claudes](rulebook-examples/naked-claude-vs-effortless-claude/TALE_OF_TWO_CLAUDES.md)** — a side-by-side transcript of the same questions answered with and without the rulebook, showing where a raw LLM drifts and where ERB-grounding holds.
 
 | Domain | Complexity | What it demonstrates |
 |---|---|---|
-| [customer-fullname](rulebook-examples/customer-fullname/) | minimal | Hello World — string concat formula |
+| [acme-llc](rulebook-examples/acme-llc/) | **full demo** | **All 17 substrates proven conformant** — start here |
+| [effortless-banking-demo](rulebook-examples/effortless-banking-demo/) | advanced (in progress) | Loan origination, covenant monitoring, risk-grade migration, four-surface portal |
 | [jessica-basic](rulebook-examples/jessica-basic/) | moderate | Relationships, aggregations, role-agent separation |
-| [jessica-advanced](rulebook-examples/jessica-advanced/) | advanced | Cross-entity lookups, conditional IF logic |
 | [star-trek](rulebook-examples/star-trek/) | moderate | Hierarchical rollups, polymorphic foreign keys |
 | [is-everything-a-language](rulebook-examples/is-everything-a-language/) | philosophical | 8-predicate AND logic, formal argument modeling |
+| [customer-fullname](rulebook-examples/customer-fullname/) | minimal | Hello World — string concat formula |
 
 ---
 
@@ -42,7 +99,7 @@ Five ready-to-run domains show the same pattern across wildly different problems
 These pages are generated from the platform rulebook by `effortless build` — edit the rulebook, rebuild, and they update automatically. They are the authoritative reference, not hand-maintained summaries.
 
 - **[Platform Features](docs/derived/features.md)** — the full catalog of all 16 features with tier, priority, and status. The README above is a curated excerpt.
-- **[Execution Substrates](docs/derived/substrates.md)** — all 10 substrates with maturity rating, determinism, and whether they can serve as an answer key.
+- **[Execution Substrates](docs/derived/substrates.md)** — 10+ substrates with maturity rating, determinism, and whether they can serve as an answer key.
 - **[Ontology Axioms](docs/derived/axioms.md)** — the 13 load-bearing claims the methodology rests on. If any one drops, the approach no longer holds.
 - **[Rulebook Domains](docs/derived/domains.md)** — the full domain catalog including the ACME and self-referential demos not listed above.
 - **[Substrate Contract](docs/derived/substrate-contract.md)** — the inject / execute / grade protocol every substrate must implement to participate in the conformance harness.
