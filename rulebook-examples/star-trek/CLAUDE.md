@@ -5,24 +5,12 @@
 
 For this project, **`effortless-rulebook/star-trek-rulebook.json` is the single, authoritative source of truth.** Edit it directly. All other artifacts (Postgres SQL, Python, Go, Excel, OWL, etc.) are mechanically derived from it via `effortless build`.
 
-### Airtable pull is disabled by default
+### Rulebook-first: no Airtable integration
 
-The `airtabletorulebook` transpiler in `effortless.json` is set to `IsDisabled: true` / `Enabled: false` so that **a routine `effortless build` will never silently overwrite your JSON edits with whatever is in Airtable**.
-
-If you want to re-enable Airtable pull as the source of truth for a single build, you must do it explicitly and with intent:
-
-1. Confirm with the user that the rulebook JSON should be overwritten from Airtable.
-2. Either:
-   - Run the transpiler one-off:
-     ```bash
-     effortless airtabletorulebook -o effortless-rulebook/star-trek-rulebook.json -account airtable -p "view=Grid view"
-     ```
-   - Or flip `IsDisabled` back to `false` in `effortless.json`, run `effortless build`, then flip it back to `true`.
-
-**Default rule for Claude / any agent operating in this project:** treat the JSON as authoritative; do not enable or invoke `airtabletorulebook` without explicit user consent on that specific turn. Memory or "we usually pull from Airtable" is not consent — every pull must be a fresh, in-context decision.
+This is a **rulebook-first** project. The `airtabletorulebook` and `rulebooktoairtable` transpilers have been removed entirely from `effortless.json`. Edit `effortless-rulebook/star-trek-rulebook.json` directly, then run `effortless build` to regenerate all artifacts.
 ### Never silently revert `star-trek-rulebook.json`
 
-**Treat `effortless-rulebook/star-trek-rulebook.json` as sacred.** It contains human-authored business rules and CANNOT be casually overwritten. Before running any command that could touch this file — `effortless build`, `effortless airtabletorulebook`, any transpiler that writes to it, any sync script, any `git checkout`/`git restore` against it — first run `git status` / `git diff` on it.
+**Treat `effortless-rulebook/star-trek-rulebook.json` as sacred.** It contains human-authored business rules and CANNOT be casually overwritten. Before running any command that could touch this file — `effortless build`, any transpiler that writes to it, any sync script, any `git checkout`/`git restore` against it — first run `git status` / `git diff` on it.
 
 - If the file has uncommitted changes that you (the agent) did NOT just make this turn, **stop**. Ask the user before proceeding.
 - It is only acceptable to let a regeneration touch this file when you are certain the *only* uncommitted edits in it are ones you just made in the current turn.
@@ -53,34 +41,10 @@ This is the canonical specification for the domain. It defines:
 
 ## Editing
 
-### Option 1: Direct (no Airtable)
-
 Edit `effortless-rulebook/star-trek-rulebook.json` directly. Then rebuild:
 
 ```bash
 effortless build
-```
-
-### Option 2: Airtable-first (if connected)
-
-Edit schema/data in Airtable UI (base ID is hardcoded in `effortless.json`). Then pull the rulebook:
-
-```bash
-effortless airtabletorulebook
-```
-
-And rebuild:
-
-```bash
-effortless build
-```
-
-### Option 3: Reverse-sync (rulebook → Airtable)
-
-If you've edited the rulebook directly and want to push back to Airtable:
-
-```bash
-effortless rulebooktoairtable
 ```
 
 ## Building
@@ -127,10 +91,9 @@ All substrates should produce identical results.
 
 The rulebook is a **declarative specification** of business logic. It is:
 
-- **Implementation-agnostic**: express once, run everywhere (Postgres, Python, Go, etc.)
+- **Implementation-agnostic**: express once, run everywhere (Postgres, Python, Go, Excel, etc.)
 - **Temporally trackable**: the rulebook file is version-controlled; every schema change is a commit
 - **Conformance-testable**: all substrates compute identically (verified by test suite)
-- **Hub-and-spokes**: the rulebook is the hub; Airtable (optional), Postgres, Python, etc. are spokes
 
 **Do not hardcode logic in substrates.** If you're tempted to write imperative code in the generated files, the rule likely belongs in the rulebook as a Formula, Lookup, or Aggregation.
 

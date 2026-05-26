@@ -8,33 +8,11 @@
   "Description": "A hierarchical media catalog demonstrating multi-level aggregations and polymorphic relationships.",
   "ProjectSettings": [
     {
-      "Name": "baseId",
-      "Value": "appqwWQxIWFtyDsiL"
-    },
-    {
       "Name": "project-name",
       "Value": "DEMO: StarTrek TV Shows"
     }
   ],
   "ProjectTranspilers": [
-    {
-      "IsSSoTTranspiler": false,
-      "Name": "airtabletorulebook",
-      "RelativePath": "/effortless-rulebook",
-      "CommandLine": "airtable-to-rulebook -o star-trek-rulebook.json -account airtable -p \"view=Grid view\"",
-      "IsDisabled": true,
-      "Enabled": false,
-      "Description": "Pull rulebook from Airtable (optional; edit star-trek-rulebook.json directly if preferred) [DISABLED: rulebook JSON is authoritative; re-enable only with explicit user consent]"
-    },
-    {
-      "IsSSoTTranspiler": false,
-      "Name": "rulebooktoairtable",
-      "RelativePath": "/effortless-rulebook/push-to-airtable",
-      "CommandLine": "rulebook-to-airtable -i ../star-trek-rulebook.json -account airtable -w 300000",
-      "IsDisabled": true,
-      "Enabled": false,
-      "Description": "Reverse-sync: push rulebook changes back to Airtable (optional)"
-    },
     {
       "IsSSoTTranspiler": false,
       "Name": "rulebooktopostgres",
