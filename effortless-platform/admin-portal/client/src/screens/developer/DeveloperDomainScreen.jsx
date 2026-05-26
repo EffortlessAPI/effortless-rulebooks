@@ -101,7 +101,7 @@ export default function DeveloperDomainScreen({ screen, rulebook, projects }) {
         <span>·</span>
         <button className="link-like" onClick={() => navigate(`/developer/${domain}/rulebook-json`)}>view JSON</button>
         <span>·</span>
-        <button className="link-like" onClick={() => navigate(`/developer/${domain}/builds`)}>build receipts</button>
+        <button className="link-like" onClick={() => navigate(`/developer/${domain}/substrates`)}>effortless tools</button>
         <span>·</span>
         <button className="link-like" onClick={() => navigate(`/developer/${domain}/explorer`)}>open explorer</button>
       </footer>

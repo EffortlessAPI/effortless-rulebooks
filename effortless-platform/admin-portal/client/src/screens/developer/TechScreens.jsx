@@ -72,7 +72,7 @@ export function TechFilesScreen({ screen }) {
   return (
     <>
       <ScreenHeader screen={screen} />
-      <p className="muted">Filesystem browser is read-only. Consult Substrates for generated output trees.</p>
+      <p className="muted">Filesystem browser is read-only. Consult Effortless Tools for generated output trees.</p>
     </>
   );
 }

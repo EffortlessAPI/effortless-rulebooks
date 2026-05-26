@@ -2761,22 +2761,12 @@
       },
       {
         "NavId": "nav-021",
-        "Label": "Substrates",
+        "Label": "Effortless Tools",
         "NavArea": "developer",
         "ParentNavId": "nav-015",
         "ScreenId": "screen-dev-substrates",
-        "Icon": "Layers",
+        "Icon": "Wrench",
         "Order": 90,
-        "MinRoleId": "role-developer"
-      },
-      {
-        "NavId": "nav-022",
-        "Label": "Builds",
-        "NavArea": "developer",
-        "ParentNavId": "nav-015",
-        "ScreenId": "screen-dev-builds",
-        "Icon": "Hammer",
-        "Order": 100,
         "MinRoleId": "role-developer"
       },
       {
@@ -3218,17 +3208,9 @@
         "ScreenId": "screen-dev-substrates",
         "Path": "/developer/:domain/substrates",
         "NavArea": "developer",
-        "Title": "Substrates",
+        "Title": "Effortless Tools",
         "MinRoleId": "role-developer",
-        "Description": "effortless.json editor: installed + catalog."
-      },
-      {
-        "ScreenId": "screen-dev-builds",
-        "Path": "/developer/:domain/builds",
-        "NavArea": "developer",
-        "Title": "Builds",
-        "MinRoleId": "role-developer",
-        "Description": "Run / monitor effortless build for this domain."
+        "Description": "Every tool driven by effortless.json: installed transpilers (peer substrates), the build/test orchestrator, and the catalog of tools available to install."
       },
       {
         "ScreenId": "screen-dev-tests",

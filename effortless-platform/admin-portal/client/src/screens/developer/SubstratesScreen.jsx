@@ -61,17 +61,27 @@ export default function SubstratesScreen({ screen, me }) {
     <>
       <ScreenHeader screen={screen} />
       <div className="story-banner" style={{ borderLeftColor: "#888" }}>
-        Substrates are PEER projections of the rulebook. No substrate is the reference; conformance is the proof.
+        Every tool that turns the rulebook into something — transpilers, the build orchestrator, conformance tests — driven by this domain's <code>effortless.json</code>. Substrates are PEER projections of the rulebook; no substrate is the reference, conformance is the proof.
       </div>
 
-      {/* Section A — installed transpilers / substrates */}
+      {/* Section A — orchestration: the build pipeline that runs across every installed tool */}
+      <h3 className="muted small" style={{ marginTop: 12 }}>
+        ORCHESTRATION · build runs every installed transpiler, then verifies conformance
+      </h3>
+      <div style={{ display: "flex", gap: 10, marginBottom: 16, alignItems: "center", flexWrap: "wrap" }}>
+        <span className="muted small">
+          <code>effortless build</code> → {installed.transpilers?.length || 0} transpilers fire → {subs.length} substrates regenerate → conformance tests verify they all compute identically.
+        </span>
+        <div className="spacer" style={{ flex: 1 }} />
+        {canBuild && <button className="btn" onClick={buildAll}>Run build + tests</button>}
+      </div>
+
+      {/* Section B — installed transpilers / substrates */}
       <h3 className="muted small" style={{ marginTop: 12 }}>
         INSTALLED · {installed.transpilers?.length || 0} transpilers · {subs.length} substrates
       </h3>
-      <div style={{ display: "flex", gap: 10, marginBottom: 12, alignItems: "center" }}>
-        <span className="muted small">effortless.json controls what's installed for this domain.</span>
-        <div className="spacer" style={{ flex: 1 }} />
-        {canBuild && <button className="btn" onClick={buildAll}>Build all</button>}
+      <div style={{ marginBottom: 12 }}>
+        <span className="muted small"><code>effortless.json</code> controls what's installed for this domain.</span>
       </div>
       <div className="split">
         <div className="list-panel">
@@ -109,7 +119,7 @@ export default function SubstratesScreen({ screen, me }) {
         </div>
       </div>
 
-      {/* Section B — catalog of available tools to add */}
+      {/* Section C — catalog of available tools to add */}
       <h3 className="muted small" style={{ marginTop: 28 }}>
         AVAILABLE TO ADD · {notYetInstalled.length} tools
       </h3>

@@ -24,7 +24,6 @@ import FormulasScreen         from "./screens/developer/FormulasScreen.jsx";
 import RelationshipsScreen    from "./screens/developer/RelationshipsScreen.jsx";
 import SampleDataScreen       from "./screens/developer/SampleDataScreen.jsx";
 import SubstratesScreen       from "./screens/developer/SubstratesScreen.jsx";
-import BuildsScreen           from "./screens/developer/BuildsScreen.jsx";
 import TestsScreen            from "./screens/developer/TestsScreen.jsx";
 import SpokesScreen           from "./screens/developer/SpokesScreen.jsx";
 import { TechFilesScreen, TechJsonScreen, TechResetScreen, TechProxyScreen }
@@ -134,7 +133,6 @@ function Portal() {
           <Route path=":domain/relationships"    element={<S comp={RelationshipsScreen} />} />
           <Route path=":domain/data"             element={<S comp={SampleDataScreen} />} />
           <Route path=":domain/substrates"       element={<S comp={SubstratesScreen} />} />
-          <Route path=":domain/builds"           element={<S comp={BuildsScreen} />} />
           <Route path=":domain/tests"            element={<S comp={TestsScreen} />} />
           <Route path=":domain/spokes"           element={<S comp={SpokesScreen} />} />
           <Route path=":domain/files"            element={<S comp={TechFilesScreen} />} />
