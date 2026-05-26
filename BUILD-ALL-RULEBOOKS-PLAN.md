@@ -39,9 +39,9 @@ For each project, read its `effortless.json`:
 
 | # | Project | Base ID | Status | Notes |
 |---|---|---|---|---|
-| 1 | `v1-nakedclaude-demo` | `appgjoEcFNxluhbvK` | 🟡 | Airtable pull works, schema regen succeeds, but `04b-customize-policies.sql:31` and `:36` fail with `ERROR: column "owner_email" does not exist`. RLS-policy customization references a column the current Airtable schema doesn't have. Fix requires understanding the intent of that RLS policy — either restore `owner_email` to the rulebook or update/remove the policy. CLAUDE.md banner: flipped to Airtable-first this session. |
+| 1 | `v1-nakedclaude-demo` | `appgjoEcFNxluhbvK` | ✅ | Fixed this session: neutralized stale 01b/02b/04b customize-*.sql files that referenced `app_users` + `owner_email` (entities removed from the rulebook). Now builds clean: 2 tables (Customers + ERBVersions). |
 | 2 | `v2-nakedclaude-demo` | `app7G5emeY7miM4WN` | ✅ | Clean build, exit 0. Airtable pull → SQL → DB `erb_v2_nakedclaude_demo` with 6 tables. CLAUDE.md banner flipped this session. |
-| 3 | `v3-nakedclaude-demo` | `appKLygCIXweUUKtM` | 🟡 | Airtable pull → SQL OK, but customization files reference missing entities: `01b-customize-schema.sql:38` ERROR `relation "app_users" does not exist`; `04b-customize-policies.sql:17,22,31,36` same `app_users`/`owner_email` issues as v1. DB built with 12 tables but RLS+auth customization unworkable until rulebook restores those, or customizations are updated. CLAUDE.md banner flipped this session. |
+| 3 | `v3-nakedclaude-demo` | `appKLygCIXweUUKtM` | ✅ | Fixed this session: same as v1 — neutralized stale 01b/02b/04b customize-*.sql files. Now builds clean: 12 tables. |
 | 4 | `v4-nakedclaude-demo` | `appeUOAaOIdoqPSx3` | ✅ | Clean build, exit 0. Airtable pull → SQL → DB `erb_v4_nakedclaude_demo` with 26 tables. CLAUDE.md banner flipped this session. |
 
 ### Group 2 — Rulebook-first (19)
@@ -59,7 +59,7 @@ Local JSON is the SSoT. Default behavior. Build downstream transpilers against t
 | 9 | `jessica-basic` | `applThn0rikpCR9C3` | ✅ | Clean build, exit 0. Note: base ID still not in `orchestration/bases.json`. |
 | 10 | `star-trek` | `appqwWQxIWFtyDsiL` | ✅ | Clean build, exit 0. Postgres SQL + xlsx generated. |
 | 11 | `effortless-rulesbooks` | _(empty)_ | ✅ | Clean build, exit 0. SQL generated. |
-| 12 | `guessing-game` | `appXXXXXXXXXXXXXX` | ✅ | Clean build, exit 0. Placeholder baseId; Airtable transpilers stay disabled. |
+| 12 | `guessing-game` | `appXXXXXXXXXXXXXX` | 🟡 | DB built (2 tables) but `03-create-views.sql:27` ERROR: function `calc_形状_边标签(text)` does not exist. Rulebook had `???` mojibake field name (renamed to `Edges` this session). One lookup field's calc function isn't generated — upstream `rulebook-to-postgres` bug on certain CJK identifiers. |
 
 **Not registered (12)** — no Airtable wiring at all. Pure JSON projects.
 
@@ -68,7 +68,7 @@ Local JSON is the SSoT. Default behavior. Build downstream transpilers against t
 | 13 | `customer-fullname` | Y | ✅ | Clean build, exit 0. Reclassified to ERB-only this turn — no Airtable wiring at all. Postgres SQL + xlsx generated. |
 | 14 | `community-event-planner-demo` | Y | ✅ | Clean build, exit 0. DB `erb_community_event_planner_demo` (re)created, 12 tables. Full app project (server+web+walkthrough). |
 | 15 | `customer-crm-demo` | Y | ✅ | Clean build, exit 0. DB `erb_customer_crm_demo` (re)created via injected DROP+CREATE in init-db.sh. |
-| 16 | `effortless-banking-demo` | Y | 🟡 | DB `erb_effortless_banking_demo` (re)created with 20 tables. `rulebook-to-react` transpiler in `effortless.json` is misconfigured (no `-i` arg), produces "No rulebook JSON provided" error.txt. Exit 0 but React output empty. |
+| 16 | `effortless-banking-demo` | Y | ✅ | Fixed this session: added `-i ./effortless-rulebook/effortless-banking-demo-rulebook.json` to `rulebook-to-react` CommandLine. React now generates the full backend/derived-sdk/ tree. DB 20 tables. |
 | 17 | `fantasy-football-demo` | Y | ✅ | Clean build, exit 0. DB `erb_fantasy_football_demo` (re)created, 12 tables. React explainer-dag generated. |
 | 18 | `gym-trainer-invoicing` | Y | ✅ | Clean build, exit 0. DB `erb_gym_trainer_invoicing` (re)created, 10 tables. |
 | 19 | `intelligence-taxonomy-demo` | Y | ✅ | Clean build, exit 0. DB `erb_intelligence_taxonomy_demo` (re)created, 6 tables. Added missing `execute -exec ./init-db.sh` step to `effortless.json`. |
