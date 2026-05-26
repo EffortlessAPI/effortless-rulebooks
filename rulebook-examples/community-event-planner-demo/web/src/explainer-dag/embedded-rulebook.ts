@@ -269,11 +269,19 @@ export const rulebook = {
         "formula": "=IF(AND({{HasSpeakers}}, NOT({{AtCapacity}}), NOT({{HasVenueConflict}})), \"ready\", \"issues\")"
       },
       {
+        "name": "RegistrationCloseDaysBeforeEvent",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Number of days before the event that registration closes"
+      },
+      {
         "name": "RegistrationDeadline",
         "datatype": "datetime",
-        "type": "raw",
-        "nullable": true,
-        "Description": "Deadline for attendees to register/RSVP"
+        "type": "calculated",
+        "nullable": false,
+        "Description": "Calculated registration deadline (EventDate minus RegistrationCloseDaysBeforeEvent)",
+        "formula": "={{EventDate}} - {{RegistrationCloseDaysBeforeEvent}}"
       },
       {
         "name": "IsRegistrationOpen",
@@ -314,7 +322,7 @@ export const rulebook = {
         "Venue": "main-hall",
         "EventDate": "2026-05-24 14:00:00",
         "DurationMinutes": 60,
-        "RegistrationDeadline": "2026-05-24 10:00:00",
+        "RegistrationCloseDaysBeforeEvent": 0,
         "Category": "Tech"
       },
       {
@@ -322,7 +330,7 @@ export const rulebook = {
         "Venue": "conference-room",
         "EventDate": "2026-05-25 10:00:00",
         "DurationMinutes": 120,
-        "RegistrationDeadline": "2026-05-24 17:00:00",
+        "RegistrationCloseDaysBeforeEvent": 1,
         "Category": "Learning"
       },
       {
@@ -330,7 +338,7 @@ export const rulebook = {
         "Venue": "outdoor-amphitheater",
         "EventDate": "2026-05-25 15:00:00",
         "DurationMinutes": 90,
-        "RegistrationDeadline": "2026-06-01 12:00:00",
+        "RegistrationCloseDaysBeforeEvent": 1,
         "Category": "Community"
       },
       {
@@ -338,7 +346,7 @@ export const rulebook = {
         "Venue": "main-hall",
         "EventDate": "2026-05-23 18:00:00",
         "DurationMinutes": 120,
-        "RegistrationDeadline": "2026-05-22 17:00:00",
+        "RegistrationCloseDaysBeforeEvent": 1,
         "Category": "Community"
       }
     ]
