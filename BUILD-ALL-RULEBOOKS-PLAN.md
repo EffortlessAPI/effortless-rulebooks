@@ -86,8 +86,8 @@ Local JSON is the SSoT. Default behavior. Build downstream transpilers against t
 |---|---|---|---|---|
 | 25 | `expense-approval-demo` | No `effortless.json`, no rulebook. Only README. | ❌ | Scaffold from template, or delete. |
 | 26 | `volunteer-shift-scheduler-demo` | No `effortless.json`, no rulebook. Has `.xlsx`, `schema/`, `server/`, `web/`. | ❌ | Generate rulebook from spec, or delete. |
-| 27 | `naked-claude-vs-effortless-claude` | Comparison harness, not an ontology. Has `effortless.json` with `airtabletorulebook` active pointing at v1's base. | ➖ | Disable `airtabletorulebook` here (mechanical-classifier false positive) or remove the `effortless.json` entirely. |
-| 28 | `v3-nakedclaude-demo-naked` | Empty dir (only `.DS_Store`) — leftover from this session's cleanup. | ➖ | Delete. |
+| 27 | `naked-claude-vs-effortless-claude` | Comparison harness, not an ontology. | ➖ | All 5 transpilers in `effortless.json` disabled this session — `effortless build` here is now a no-op (correct for a non-rulebook harness). |
+| 28 | `v3-nakedclaude-demo-naked` | Empty dir (only `.DS_Store`) — leftover from earlier cleanup. | ➖ | Deleted this session. |
 
 ---
 
