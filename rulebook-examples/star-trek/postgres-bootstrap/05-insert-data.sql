@@ -42,892 +42,2818 @@ VALUES ('10-snw', 10, 'SNW', 'Star Trek: Strange New Worlds', 'Captain Pike lead
 -- Seasons: Table: Seasons
 -- ----------------------------------------------------------------------------
 INSERT INTO seasons (season_id, series, season_number, title, description, start_airdate, end_airdate, mock_data_notes)
-VALUES ('1-tos-season-1', '1-tos', 1, 'TOS Season 1', 'Season 1 of TOS', '1966-09-08', '1967-03-23', '') ON CONFLICT (season_id) DO NOTHING;
+VALUES ('1-tos-season-1', '1-tos', 1, 'The Original Series Season 1', 'Season 1 of Star Trek: The Original Series', '1966-09-01', '1967-09-01', '') ON CONFLICT (season_id) DO NOTHING;
 
 INSERT INTO seasons (season_id, series, season_number, title, description, start_airdate, end_airdate, mock_data_notes)
-VALUES ('1-tos-season-2', '1-tos', 2, 'TOS Season 2', 'Season 2 of TOS', '1967-09-15', '1968-03-08', '') ON CONFLICT (season_id) DO NOTHING;
+VALUES ('1-tos-season-2', '1-tos', 2, 'The Original Series Season 2', 'Season 2 of Star Trek: The Original Series', '1967-09-01', '1968-08-31', '') ON CONFLICT (season_id) DO NOTHING;
 
 INSERT INTO seasons (season_id, series, season_number, title, description, start_airdate, end_airdate, mock_data_notes)
-VALUES ('1-tos-season-3', '1-tos', 3, 'TOS Season 3', 'Season 3 of TOS', '1968-09-20', '1969-02-28', '') ON CONFLICT (season_id) DO NOTHING;
+VALUES ('1-tos-season-3', '1-tos', 3, 'The Original Series Season 3', 'Season 3 of Star Trek: The Original Series', '1968-09-01', '1969-09-01', '') ON CONFLICT (season_id) DO NOTHING;
+
+INSERT INTO seasons (season_id, series, season_number, title, description, start_airdate, end_airdate, mock_data_notes)
+VALUES ('2-tng-season-1', '2-tng', 1, 'The Next Generation Season 1', 'Season 1 of Star Trek: The Next Generation', '1987-09-01', '1988-08-31', '') ON CONFLICT (season_id) DO NOTHING;
+
+INSERT INTO seasons (season_id, series, season_number, title, description, start_airdate, end_airdate, mock_data_notes)
+VALUES ('2-tng-season-2', '2-tng', 2, 'The Next Generation Season 2', 'Season 2 of Star Trek: The Next Generation', '1988-09-01', '1989-09-01', '') ON CONFLICT (season_id) DO NOTHING;
+
+INSERT INTO seasons (season_id, series, season_number, title, description, start_airdate, end_airdate, mock_data_notes)
+VALUES ('2-tng-season-3', '2-tng', 3, 'The Next Generation Season 3', 'Season 3 of Star Trek: The Next Generation', '1989-09-01', '1990-09-01', '') ON CONFLICT (season_id) DO NOTHING;
+
+INSERT INTO seasons (season_id, series, season_number, title, description, start_airdate, end_airdate, mock_data_notes)
+VALUES ('2-tng-season-4', '2-tng', 4, 'The Next Generation Season 4', 'Season 4 of Star Trek: The Next Generation', '1990-09-01', '1991-09-01', '') ON CONFLICT (season_id) DO NOTHING;
+
+INSERT INTO seasons (season_id, series, season_number, title, description, start_airdate, end_airdate, mock_data_notes)
+VALUES ('2-tng-season-5', '2-tng', 5, 'The Next Generation Season 5', 'Season 5 of Star Trek: The Next Generation', '1991-09-01', '1992-08-31', '') ON CONFLICT (season_id) DO NOTHING;
+
+INSERT INTO seasons (season_id, series, season_number, title, description, start_airdate, end_airdate, mock_data_notes)
+VALUES ('2-tng-season-6', '2-tng', 6, 'The Next Generation Season 6', 'Season 6 of Star Trek: The Next Generation', '1992-09-01', '1993-09-01', '') ON CONFLICT (season_id) DO NOTHING;
+
+INSERT INTO seasons (season_id, series, season_number, title, description, start_airdate, end_airdate, mock_data_notes)
+VALUES ('2-tng-season-7', '2-tng', 7, 'The Next Generation Season 7', 'Season 7 of Star Trek: The Next Generation', '1993-09-01', '1994-09-01', '') ON CONFLICT (season_id) DO NOTHING;
+
+INSERT INTO seasons (season_id, series, season_number, title, description, start_airdate, end_airdate, mock_data_notes)
+VALUES ('3-ds9-season-1', '3-ds9', 1, 'Deep Space Nine Season 1', 'Season 1 of Star Trek: Deep Space Nine', '1993-09-01', '1994-09-01', '') ON CONFLICT (season_id) DO NOTHING;
+
+INSERT INTO seasons (season_id, series, season_number, title, description, start_airdate, end_airdate, mock_data_notes)
+VALUES ('3-ds9-season-2', '3-ds9', 2, 'Deep Space Nine Season 2', 'Season 2 of Star Trek: Deep Space Nine', '1994-09-01', '1995-09-01', '') ON CONFLICT (season_id) DO NOTHING;
+
+INSERT INTO seasons (season_id, series, season_number, title, description, start_airdate, end_airdate, mock_data_notes)
+VALUES ('3-ds9-season-3', '3-ds9', 3, 'Deep Space Nine Season 3', 'Season 3 of Star Trek: Deep Space Nine', '1995-09-01', '1996-08-31', '') ON CONFLICT (season_id) DO NOTHING;
+
+INSERT INTO seasons (season_id, series, season_number, title, description, start_airdate, end_airdate, mock_data_notes)
+VALUES ('3-ds9-season-4', '3-ds9', 4, 'Deep Space Nine Season 4', 'Season 4 of Star Trek: Deep Space Nine', '1996-09-01', '1997-09-01', '') ON CONFLICT (season_id) DO NOTHING;
+
+INSERT INTO seasons (season_id, series, season_number, title, description, start_airdate, end_airdate, mock_data_notes)
+VALUES ('3-ds9-season-5', '3-ds9', 5, 'Deep Space Nine Season 5', 'Season 5 of Star Trek: Deep Space Nine', '1997-09-01', '1998-09-01', '') ON CONFLICT (season_id) DO NOTHING;
+
+INSERT INTO seasons (season_id, series, season_number, title, description, start_airdate, end_airdate, mock_data_notes)
+VALUES ('3-ds9-season-6', '3-ds9', 6, 'Deep Space Nine Season 6', 'Season 6 of Star Trek: Deep Space Nine', '1998-09-01', '1999-09-01', '') ON CONFLICT (season_id) DO NOTHING;
+
+INSERT INTO seasons (season_id, series, season_number, title, description, start_airdate, end_airdate, mock_data_notes)
+VALUES ('3-ds9-season-7', '3-ds9', 7, 'Deep Space Nine Season 7', 'Season 7 of Star Trek: Deep Space Nine', '1999-09-01', '2000-08-31', '') ON CONFLICT (season_id) DO NOTHING;
+
+INSERT INTO seasons (season_id, series, season_number, title, description, start_airdate, end_airdate, mock_data_notes)
+VALUES ('4-voy-season-1', '4-voy', 1, 'Voyager Season 1', 'Season 1 of Star Trek: Voyager', '1995-09-01', '1996-08-31', '') ON CONFLICT (season_id) DO NOTHING;
+
+INSERT INTO seasons (season_id, series, season_number, title, description, start_airdate, end_airdate, mock_data_notes)
+VALUES ('4-voy-season-2', '4-voy', 2, 'Voyager Season 2', 'Season 2 of Star Trek: Voyager', '1996-09-01', '1997-09-01', '') ON CONFLICT (season_id) DO NOTHING;
+
+INSERT INTO seasons (season_id, series, season_number, title, description, start_airdate, end_airdate, mock_data_notes)
+VALUES ('4-voy-season-3', '4-voy', 3, 'Voyager Season 3', 'Season 3 of Star Trek: Voyager', '1997-09-01', '1998-09-01', '') ON CONFLICT (season_id) DO NOTHING;
+
+INSERT INTO seasons (season_id, series, season_number, title, description, start_airdate, end_airdate, mock_data_notes)
+VALUES ('4-voy-season-4', '4-voy', 4, 'Voyager Season 4', 'Season 4 of Star Trek: Voyager', '1998-09-01', '1999-09-01', '') ON CONFLICT (season_id) DO NOTHING;
+
+INSERT INTO seasons (season_id, series, season_number, title, description, start_airdate, end_airdate, mock_data_notes)
+VALUES ('4-voy-season-5', '4-voy', 5, 'Voyager Season 5', 'Season 5 of Star Trek: Voyager', '1999-09-01', '2000-08-31', '') ON CONFLICT (season_id) DO NOTHING;
+
+INSERT INTO seasons (season_id, series, season_number, title, description, start_airdate, end_airdate, mock_data_notes)
+VALUES ('4-voy-season-6', '4-voy', 6, 'Voyager Season 6', 'Season 6 of Star Trek: Voyager', '2000-09-01', '2001-09-01', '') ON CONFLICT (season_id) DO NOTHING;
+
+INSERT INTO seasons (season_id, series, season_number, title, description, start_airdate, end_airdate, mock_data_notes)
+VALUES ('4-voy-season-7', '4-voy', 7, 'Voyager Season 7', 'Season 7 of Star Trek: Voyager', '2001-09-01', '2002-09-01', '') ON CONFLICT (season_id) DO NOTHING;
+
+INSERT INTO seasons (season_id, series, season_number, title, description, start_airdate, end_airdate, mock_data_notes)
+VALUES ('5-ent-season-1', '5-ent', 1, 'Enterprise Season 1', 'Season 1 of Star Trek: Enterprise', '2001-09-01', '2002-09-01', '') ON CONFLICT (season_id) DO NOTHING;
+
+INSERT INTO seasons (season_id, series, season_number, title, description, start_airdate, end_airdate, mock_data_notes)
+VALUES ('5-ent-season-2', '5-ent', 2, 'Enterprise Season 2', 'Season 2 of Star Trek: Enterprise', '2002-09-01', '2003-09-01', '') ON CONFLICT (season_id) DO NOTHING;
+
+INSERT INTO seasons (season_id, series, season_number, title, description, start_airdate, end_airdate, mock_data_notes)
+VALUES ('5-ent-season-3', '5-ent', 3, 'Enterprise Season 3', 'Season 3 of Star Trek: Enterprise', '2003-09-01', '2004-08-31', '') ON CONFLICT (season_id) DO NOTHING;
+
+INSERT INTO seasons (season_id, series, season_number, title, description, start_airdate, end_airdate, mock_data_notes)
+VALUES ('5-ent-season-4', '5-ent', 4, 'Enterprise Season 4', 'Season 4 of Star Trek: Enterprise', '2004-09-01', '2005-09-01', '') ON CONFLICT (season_id) DO NOTHING;
+
+INSERT INTO seasons (season_id, series, season_number, title, description, start_airdate, end_airdate, mock_data_notes)
+VALUES ('6-dis-season-1', '6-dis', 1, 'Discovery Season 1', 'Season 1 of Star Trek: Discovery', '2017-09-01', '2018-09-01', '') ON CONFLICT (season_id) DO NOTHING;
+
+INSERT INTO seasons (season_id, series, season_number, title, description, start_airdate, end_airdate, mock_data_notes)
+VALUES ('6-dis-season-2', '6-dis', 2, 'Discovery Season 2', 'Season 2 of Star Trek: Discovery', '2018-09-01', '2019-09-01', '') ON CONFLICT (season_id) DO NOTHING;
+
+INSERT INTO seasons (season_id, series, season_number, title, description, start_airdate, end_airdate, mock_data_notes)
+VALUES ('6-dis-season-3', '6-dis', 3, 'Discovery Season 3', 'Season 3 of Star Trek: Discovery', '2019-09-01', '2020-08-31', '') ON CONFLICT (season_id) DO NOTHING;
+
+INSERT INTO seasons (season_id, series, season_number, title, description, start_airdate, end_airdate, mock_data_notes)
+VALUES ('6-dis-season-4', '6-dis', 4, 'Discovery Season 4', 'Season 4 of Star Trek: Discovery', '2020-09-01', '2021-09-01', '') ON CONFLICT (season_id) DO NOTHING;
+
+INSERT INTO seasons (season_id, series, season_number, title, description, start_airdate, end_airdate, mock_data_notes)
+VALUES ('6-dis-season-5', '6-dis', 5, 'Discovery Season 5', 'Season 5 of Star Trek: Discovery', '2021-09-01', '2022-09-01', '') ON CONFLICT (season_id) DO NOTHING;
+
+INSERT INTO seasons (season_id, series, season_number, title, description, start_airdate, end_airdate, mock_data_notes)
+VALUES ('7-pic-season-1', '7-pic', 1, 'Picard Season 1', 'Season 1 of Star Trek: Picard', '2020-09-01', '2021-09-01', '') ON CONFLICT (season_id) DO NOTHING;
+
+INSERT INTO seasons (season_id, series, season_number, title, description, start_airdate, end_airdate, mock_data_notes)
+VALUES ('7-pic-season-2', '7-pic', 2, 'Picard Season 2', 'Season 2 of Star Trek: Picard', '2021-09-01', '2022-09-01', '') ON CONFLICT (season_id) DO NOTHING;
+
+INSERT INTO seasons (season_id, series, season_number, title, description, start_airdate, end_airdate, mock_data_notes)
+VALUES ('7-pic-season-3', '7-pic', 3, 'Picard Season 3', 'Season 3 of Star Trek: Picard', '2022-09-01', '2023-09-01', '') ON CONFLICT (season_id) DO NOTHING;
+
+INSERT INTO seasons (season_id, series, season_number, title, description, start_airdate, end_airdate, mock_data_notes)
+VALUES ('8-lds-season-1', '8-lds', 1, 'Lower Decks Season 1', 'Season 1 of Star Trek: Lower Decks', '2020-09-01', '2021-09-01', '') ON CONFLICT (season_id) DO NOTHING;
+
+INSERT INTO seasons (season_id, series, season_number, title, description, start_airdate, end_airdate, mock_data_notes)
+VALUES ('8-lds-season-2', '8-lds', 2, 'Lower Decks Season 2', 'Season 2 of Star Trek: Lower Decks', '2021-09-01', '2022-09-01', '') ON CONFLICT (season_id) DO NOTHING;
+
+INSERT INTO seasons (season_id, series, season_number, title, description, start_airdate, end_airdate, mock_data_notes)
+VALUES ('8-lds-season-3', '8-lds', 3, 'Lower Decks Season 3', 'Season 3 of Star Trek: Lower Decks', '2022-09-01', '2023-09-01', '') ON CONFLICT (season_id) DO NOTHING;
+
+INSERT INTO seasons (season_id, series, season_number, title, description, start_airdate, end_airdate, mock_data_notes)
+VALUES ('8-lds-season-4', '8-lds', 4, 'Lower Decks Season 4', 'Season 4 of Star Trek: Lower Decks', '2023-09-01', '2024-08-31', '') ON CONFLICT (season_id) DO NOTHING;
+
+INSERT INTO seasons (season_id, series, season_number, title, description, start_airdate, end_airdate, mock_data_notes)
+VALUES ('9-pro-season-1', '9-pro', 1, 'Prodigy Season 1', 'Season 1 of Star Trek: Prodigy', '2021-09-01', '2022-09-01', '') ON CONFLICT (season_id) DO NOTHING;
+
+INSERT INTO seasons (season_id, series, season_number, title, description, start_airdate, end_airdate, mock_data_notes)
+VALUES ('9-pro-season-2', '9-pro', 2, 'Prodigy Season 2', 'Season 2 of Star Trek: Prodigy', '2022-09-01', '2023-09-01', '') ON CONFLICT (season_id) DO NOTHING;
+
+INSERT INTO seasons (season_id, series, season_number, title, description, start_airdate, end_airdate, mock_data_notes)
+VALUES ('10-snw-season-1', '10-snw', 1, 'Strange New Worlds Season 1', 'Season 1 of Star Trek: Strange New Worlds', '2022-09-01', '2023-09-01', '') ON CONFLICT (season_id) DO NOTHING;
+
+INSERT INTO seasons (season_id, series, season_number, title, description, start_airdate, end_airdate, mock_data_notes)
+VALUES ('10-snw-season-2', '10-snw', 2, 'Strange New Worlds Season 2', 'Season 2 of Star Trek: Strange New Worlds', '2023-09-01', '2024-08-31', '') ON CONFLICT (season_id) DO NOTHING;
 
 -- ----------------------------------------------------------------------------
 -- Episodes: Table: Episodes
 -- ----------------------------------------------------------------------------
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('1-tos-season-1-episode-01', '1-tos-season-1', 1, 'Episode 1 of season 1 of TOS.', '1966-09-08', 'Staff Writer', 'Series Director', 48, 'episode-1-tos-season-1-episode-01-alexis-cruz', 'what', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('1-tos-season-1-episode-01', '1-tos-season-1', 1, 'Episode 1 of season 1', '1966-09-01', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('1-tos-season-1-episode-02', '1-tos-season-1', 2, 'Episode 2 of season 1 of TOS.', '1966-09-15', 'Staff Writer', 'Series Director', 48, 'episode-1-tos-season-1-episode-02-morgan-lee', 'ever', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('1-tos-season-1-episode-02', '1-tos-season-1', 2, 'Episode 2 of season 1', '1966-09-08', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('1-tos-season-1-episode-03', '1-tos-season-1', 3, 'Episode 3 of season 1 of TOS.', '1966-09-22', 'Staff Writer', 'Series Director', 48, 'episode-1-tos-season-1-episode-03-jamie-fox', 'Something', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('1-tos-season-1-episode-03', '1-tos-season-1', 3, 'Episode 3 of season 1', '1966-09-15', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('1-tos-season-1-episode-07', '1-tos-season-1', 7, 'Episode 7 of season 1 of TOS.', '1966-10-20', 'Staff Writer', 'Series Director', 48, 'episode-1-tos-season-1-episode-07-taylor-brooks', 'else here', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('1-tos-season-1-episode-04', '1-tos-season-1', 4, 'Episode 4 of season 1', '1966-09-22', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('1-tos-season-1-episode-08', '1-tos-season-1', 8, 'Episode 8 of season 1 of TOS.', '1966-10-27', 'Staff Writer', 'Series Director', 48, 'episode-1-tos-season-1-episode-08-robin-singh', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('1-tos-season-1-episode-05', '1-tos-season-1', 5, 'Episode 5 of season 1', '1966-09-29', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('1-tos-season-1-episode-09', '1-tos-season-1', 9, 'Episode 9 of season 1 of TOS.', '1966-11-03', 'Staff Writer', 'Series Director', 48, 'episode-1-tos-season-1-episode-09-jordan-kim', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('1-tos-season-1-episode-06', '1-tos-season-1', 6, 'Episode 6 of season 1', '1966-10-06', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('1-tos-season-1-episode-10', '1-tos-season-1', 10, 'Episode 10 of season 1 of TOS.', '1966-11-10', 'Staff Writer', 'Series Director', 48, 'episode-1-tos-season-1-episode-10-dylan-reed', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('1-tos-season-1-episode-07', '1-tos-season-1', 7, 'Episode 7 of season 1', '1966-10-13', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('1-tos-season-1-episode-11', '1-tos-season-1', 11, 'Episode 11 of season 1 of TOS.', '1966-11-17', 'Staff Writer', 'Series Director', 48, 'episode-1-tos-season-1-episode-11-casey-morgan', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('1-tos-season-1-episode-08', '1-tos-season-1', 8, 'Episode 8 of season 1', '1966-10-20', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('1-tos-season-1-episode-12', '1-tos-season-1', 12, 'Episode 12 of season 1 of TOS.', '1966-11-24', 'Staff Writer', 'Series Director', 48, 'episode-1-tos-season-1-episode-12-sydney-park', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('1-tos-season-1-episode-09', '1-tos-season-1', 9, 'Episode 9 of season 1', '1966-10-27', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('1-tos-season-1-episode-13', '1-tos-season-1', 13, 'Episode 13 of season 1 of TOS.', '1966-12-01', 'Staff Writer', 'Series Director', 48, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('1-tos-season-1-episode-10', '1-tos-season-1', 10, 'Episode 10 of season 1', '1966-11-03', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('1-tos-season-1-episode-14', '1-tos-season-1', 14, 'Episode 14 of season 1 of TOS.', '1966-12-08', 'Staff Writer', 'Series Director', 48, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('1-tos-season-1-episode-11', '1-tos-season-1', 11, 'Episode 11 of season 1', '1966-11-10', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('1-tos-season-1-episode-15', '1-tos-season-1', 15, 'Episode 15 of season 1 of TOS.', '1966-12-15', 'Staff Writer', 'Series Director', 48, '', '', 'dsfdsf') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('1-tos-season-1-episode-12', '1-tos-season-1', 12, 'Episode 12 of season 1', '1966-11-17', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('1-tos-season-1-episode-16', '1-tos-season-1', 16, 'Episode 16 of season 1 of TOS.', '1966-12-22', 'Staff Writer', 'Series Director', 48, '', '', 'd') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('1-tos-season-1-episode-13', '1-tos-season-1', 13, 'Episode 13 of season 1', '1966-11-24', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('1-tos-season-1-episode-17', '1-tos-season-1', 17, 'Episode 17 of season 1 of TOS.', '1966-12-29', 'Staff Writer', 'Series Director', 48, '', '', 'fds') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('1-tos-season-1-episode-14', '1-tos-season-1', 14, 'Episode 14 of season 1', '1966-12-01', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('1-tos-season-1-episode-18', '1-tos-season-1', 18, 'Episode 18 of season 1 of TOS.', '1967-01-05', 'Staff Writer', 'Series Director', 48, '', '', 'fds') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('1-tos-season-1-episode-15', '1-tos-season-1', 15, 'Episode 15 of season 1', '1966-12-08', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('1-tos-season-1-episode-19', '1-tos-season-1', 19, 'Episode 19 of season 1 of TOS.', '1967-01-12', 'Staff Writer', 'Series Director', 48, '', '', 'fds') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('1-tos-season-1-episode-16', '1-tos-season-1', 16, 'Episode 16 of season 1', '1966-12-15', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('1-tos-season-1-episode-20', '1-tos-season-1', 20, 'Episode 20 of season 1 of TOS.', '1967-01-19', 'Staff Writer', 'Series Director', 48, '', '', 'f') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('1-tos-season-1-episode-17', '1-tos-season-1', 17, 'Episode 17 of season 1', '1966-12-22', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('1-tos-season-1-episode-21', '1-tos-season-1', 21, 'Episode 21 of season 1 of TOS.', '1967-01-26', 'Staff Writer', 'Series Director', 48, '', '', 'dsd') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('1-tos-season-1-episode-18', '1-tos-season-1', 18, 'Episode 18 of season 1', '1966-12-29', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('1-tos-season-1-episode-22', '1-tos-season-1', 22, 'Episode 22 of season 1 of TOS.', '1967-02-02', 'Staff Writer', 'Series Director', 48, '', '', 'fs') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('1-tos-season-1-episode-19', '1-tos-season-1', 19, 'Episode 19 of season 1', '1967-01-05', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('1-tos-season-1-episode-23', '1-tos-season-1', 23, 'Episode 23 of season 1 of TOS.', '1967-02-09', 'Staff Writer', 'Series Director', 48, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('1-tos-season-1-episode-20', '1-tos-season-1', 20, 'Episode 20 of season 1', '1967-01-12', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('1-tos-season-1-episode-24', '1-tos-season-1', 24, 'Episode 24 of season 1 of TOS.', '1967-02-16', 'Staff Writer', 'Series Director', 48, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('1-tos-season-1-episode-21', '1-tos-season-1', 21, 'Episode 21 of season 1', '1967-01-19', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('1-tos-season-1-episode-25', '1-tos-season-1', 25, 'Episode 25 of season 1 of TOS.', '1967-02-23', 'Staff Writer', 'Series Director', 48, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('1-tos-season-1-episode-22', '1-tos-season-1', 22, 'Episode 22 of season 1', '1967-01-26', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('1-tos-season-1-episode-26', '1-tos-season-1', 26, 'Episode 26 of season 1 of TOS.', '1967-03-02', 'Staff Writer', 'Series Director', 48, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('1-tos-season-1-episode-23', '1-tos-season-1', 23, 'Episode 23 of season 1', '1967-02-02', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('1-tos-season-1-episode-27', '1-tos-season-1', 27, 'Episode 27 of season 1 of TOS.', '1967-03-09', 'Staff Writer', 'Series Director', 48, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('1-tos-season-1-episode-24', '1-tos-season-1', 24, 'Episode 24 of season 1', '1967-02-09', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('1-tos-season-1-episode-28', '1-tos-season-1', 28, 'Episode 28 of season 1 of TOS.', '1967-03-16', 'Staff Writer', 'Series Director', 48, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('1-tos-season-1-episode-25', '1-tos-season-1', 25, 'Episode 25 of season 1', '1967-02-16', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('1-tos-season-1-episode-29', '1-tos-season-1', 29, 'Episode 29 of season 1 of TOS.', '1967-03-23', 'Staff Writer', 'Series Director', 48, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('1-tos-season-1-episode-26', '1-tos-season-1', 26, 'Episode 26 of season 1', '1967-02-23', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('1-tos-season-2-episode-01', '1-tos-season-2', 1, 'Episode 1 of season 2 of TOS.', '1967-09-15', 'Staff Writer', 'Series Director', 48, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('1-tos-season-2-episode-01', '1-tos-season-2', 1, 'Episode 1 of season 2', '1967-04-01', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('1-tos-season-2-episode-02', '1-tos-season-2', 2, 'Episode 2 of season 2 of TOS.', '1967-09-22', 'Staff Writer', 'Series Director', 48, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('1-tos-season-2-episode-02', '1-tos-season-2', 2, 'Episode 2 of season 2', '1967-04-08', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('1-tos-season-2-episode-03', '1-tos-season-2', 3, 'Episode 3 of season 2 of TOS.', '1967-09-29', 'Staff Writer', 'Series Director', 48, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('1-tos-season-2-episode-03', '1-tos-season-2', 3, 'Episode 3 of season 2', '1967-04-15', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('1-tos-season-2-episode-04', '1-tos-season-2', 4, 'Episode 4 of season 2 of TOS.', '1967-10-06', 'Staff Writer', 'Series Director', 48, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('1-tos-season-2-episode-04', '1-tos-season-2', 4, 'Episode 4 of season 2', '1967-04-22', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('1-tos-season-2-episode-05', '1-tos-season-2', 5, 'Episode 5 of season 2 of TOS.', '1967-10-13', 'Staff Writer', 'Series Director', 48, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('1-tos-season-2-episode-05', '1-tos-season-2', 5, 'Episode 5 of season 2', '1967-04-29', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('1-tos-season-2-episode-06', '1-tos-season-2', 6, 'Episode 6 of season 2 of TOS.', '1967-10-20', 'Staff Writer', 'Series Director', 48, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('1-tos-season-2-episode-06', '1-tos-season-2', 6, 'Episode 6 of season 2', '1967-05-06', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('1-tos-season-2-episode-07', '1-tos-season-2', 7, 'Episode 7 of season 2 of TOS.', '1967-10-27', 'Staff Writer', 'Series Director', 48, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('1-tos-season-2-episode-07', '1-tos-season-2', 7, 'Episode 7 of season 2', '1967-05-13', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('1-tos-season-2-episode-08', '1-tos-season-2', 8, 'Episode 8 of season 2 of TOS.', '1967-11-03', 'Staff Writer', 'Series Director', 48, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('1-tos-season-2-episode-08', '1-tos-season-2', 8, 'Episode 8 of season 2', '1967-05-20', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('1-tos-season-2-episode-09', '1-tos-season-2', 9, 'Episode 9 of season 2 of TOS.', '1967-11-10', 'Staff Writer', 'Series Director', 48, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('1-tos-season-2-episode-09', '1-tos-season-2', 9, 'Episode 9 of season 2', '1967-05-27', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('1-tos-season-2-episode-10', '1-tos-season-2', 10, 'Episode 10 of season 2 of TOS.', '1967-11-17', 'Staff Writer', 'Series Director', 48, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('1-tos-season-2-episode-10', '1-tos-season-2', 10, 'Episode 10 of season 2', '1967-06-03', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('1-tos-season-2-episode-11', '1-tos-season-2', 11, 'Episode 11 of season 2 of TOS.', '1967-11-24', 'Staff Writer', 'Series Director', 48, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('1-tos-season-2-episode-11', '1-tos-season-2', 11, 'Episode 11 of season 2', '1967-06-10', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('1-tos-season-2-episode-12', '1-tos-season-2', 12, 'Episode 12 of season 2 of TOS.', '1967-12-01', 'Staff Writer', 'Series Director', 48, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('1-tos-season-2-episode-12', '1-tos-season-2', 12, 'Episode 12 of season 2', '1967-06-17', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('1-tos-season-2-episode-13', '1-tos-season-2', 13, 'Episode 13 of season 2 of TOS.', '1967-12-08', 'Staff Writer', 'Series Director', 48, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('1-tos-season-2-episode-13', '1-tos-season-2', 13, 'Episode 13 of season 2', '1967-06-24', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('1-tos-season-2-episode-14', '1-tos-season-2', 14, 'Episode 14 of season 2 of TOS.', '1967-12-15', 'Staff Writer', 'Series Director', 48, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('1-tos-season-2-episode-14', '1-tos-season-2', 14, 'Episode 14 of season 2', '1967-07-01', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('1-tos-season-2-episode-15', '1-tos-season-2', 15, 'Episode 15 of season 2 of TOS.', '1967-12-22', 'Staff Writer', 'Series Director', 48, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('1-tos-season-2-episode-15', '1-tos-season-2', 15, 'Episode 15 of season 2', '1967-07-08', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('1-tos-season-2-episode-16', '1-tos-season-2', 16, 'Episode 16 of season 2 of TOS.', '1967-12-29', 'Staff Writer', 'Series Director', 48, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('1-tos-season-2-episode-16', '1-tos-season-2', 16, 'Episode 16 of season 2', '1967-07-15', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('1-tos-season-2-episode-17', '1-tos-season-2', 17, 'Episode 17 of season 2 of TOS.', '1968-01-05', 'Staff Writer', 'Series Director', 48, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('1-tos-season-2-episode-17', '1-tos-season-2', 17, 'Episode 17 of season 2', '1967-07-22', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('1-tos-season-2-episode-18', '1-tos-season-2', 18, 'Episode 18 of season 2 of TOS.', '1968-01-12', 'Staff Writer', 'Series Director', 48, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('1-tos-season-2-episode-18', '1-tos-season-2', 18, 'Episode 18 of season 2', '1967-07-29', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('1-tos-season-2-episode-19', '1-tos-season-2', 19, 'Episode 19 of season 2 of TOS.', '1968-01-19', 'Staff Writer', 'Series Director', 48, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('1-tos-season-2-episode-19', '1-tos-season-2', 19, 'Episode 19 of season 2', '1967-08-05', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('1-tos-season-2-episode-20', '1-tos-season-2', 20, 'Episode 20 of season 2 of TOS.', '1968-01-26', 'Staff Writer', 'Series Director', 48, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('1-tos-season-2-episode-20', '1-tos-season-2', 20, 'Episode 20 of season 2', '1967-08-12', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('1-tos-season-2-episode-21', '1-tos-season-2', 21, 'Episode 21 of season 2 of TOS.', '1968-02-02', 'Staff Writer', 'Series Director', 48, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('1-tos-season-2-episode-21', '1-tos-season-2', 21, 'Episode 21 of season 2', '1967-08-19', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('1-tos-season-2-episode-22', '1-tos-season-2', 22, 'Episode 22 of season 2 of TOS.', '1968-02-09', 'Staff Writer', 'Series Director', 48, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('1-tos-season-2-episode-22', '1-tos-season-2', 22, 'Episode 22 of season 2', '1967-08-26', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('1-tos-season-2-episode-23', '1-tos-season-2', 23, 'Episode 23 of season 2 of TOS.', '1968-02-16', 'Staff Writer', 'Series Director', 48, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('1-tos-season-2-episode-23', '1-tos-season-2', 23, 'Episode 23 of season 2', '1967-09-02', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('1-tos-season-2-episode-24', '1-tos-season-2', 24, 'Episode 24 of season 2 of TOS.', '1968-02-23', 'Staff Writer', 'Series Director', 48, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('1-tos-season-2-episode-24', '1-tos-season-2', 24, 'Episode 24 of season 2', '1967-09-09', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('1-tos-season-2-episode-25', '1-tos-season-2', 25, 'Episode 25 of season 2 of TOS.', '1968-03-01', 'Staff Writer', 'Series Director', 48, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('1-tos-season-2-episode-25', '1-tos-season-2', 25, 'Episode 25 of season 2', '1967-09-16', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('1-tos-season-2-episode-26', '1-tos-season-2', 26, 'Episode 26 of season 2 of TOS.', '1968-03-08', 'Staff Writer', 'Series Director', 48, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('1-tos-season-2-episode-26', '1-tos-season-2', 26, 'Episode 26 of season 2', '1967-09-23', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('1-tos-season-3-episode-01', '1-tos-season-3', 1, 'Episode 1 of season 3 of TOS.', '1968-09-20', 'Staff Writer', 'Series Director', 48, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('1-tos-season-3-episode-01', '1-tos-season-3', 1, 'Episode 1 of season 3', '1967-10-30', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('1-tos-season-3-episode-02', '1-tos-season-3', 2, 'Episode 2 of season 3 of TOS.', '1968-09-27', 'Staff Writer', 'Series Director', 48, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('1-tos-season-3-episode-02', '1-tos-season-3', 2, 'Episode 2 of season 3', '1967-11-06', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('1-tos-season-3-episode-03', '1-tos-season-3', 3, 'Episode 3 of season 3 of TOS.', '1968-10-04', 'Staff Writer', 'Series Director', 48, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('1-tos-season-3-episode-03', '1-tos-season-3', 3, 'Episode 3 of season 3', '1967-11-13', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('1-tos-season-3-episode-04', '1-tos-season-3', 4, 'Episode 4 of season 3 of TOS.', '1968-10-11', 'Staff Writer', 'Series Director', 48, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('1-tos-season-3-episode-04', '1-tos-season-3', 4, 'Episode 4 of season 3', '1967-11-20', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('1-tos-season-3-episode-05', '1-tos-season-3', 5, 'Episode 5 of season 3 of TOS.', '1968-10-18', 'Staff Writer', 'Series Director', 48, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('1-tos-season-3-episode-05', '1-tos-season-3', 5, 'Episode 5 of season 3', '1967-11-27', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('1-tos-season-3-episode-06', '1-tos-season-3', 6, 'Episode 6 of season 3 of TOS.', '1968-10-25', 'Staff Writer', 'Series Director', 48, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('1-tos-season-3-episode-06', '1-tos-season-3', 6, 'Episode 6 of season 3', '1967-12-04', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('1-tos-season-3-episode-07', '1-tos-season-3', 7, 'Episode 7 of season 3 of TOS.', '1968-11-01', 'Staff Writer', 'Series Director', 48, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('1-tos-season-3-episode-07', '1-tos-season-3', 7, 'Episode 7 of season 3', '1967-12-11', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('1-tos-season-3-episode-08', '1-tos-season-3', 8, 'Episode 8 of season 3 of TOS.', '1968-11-08', 'Staff Writer', 'Series Director', 48, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('1-tos-season-3-episode-08', '1-tos-season-3', 8, 'Episode 8 of season 3', '1967-12-18', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('1-tos-season-3-episode-09', '1-tos-season-3', 9, 'Episode 9 of season 3 of TOS.', '1968-11-15', 'Staff Writer', 'Series Director', 48, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('1-tos-season-3-episode-09', '1-tos-season-3', 9, 'Episode 9 of season 3', '1967-12-25', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('1-tos-season-3-episode-10', '1-tos-season-3', 10, 'Episode 10 of season 3 of TOS.', '1968-11-22', 'Staff Writer', 'Series Director', 48, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('1-tos-season-3-episode-10', '1-tos-season-3', 10, 'Episode 10 of season 3', '1968-01-01', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('1-tos-season-3-episode-11', '1-tos-season-3', 11, 'Episode 11 of season 3 of TOS.', '1968-11-29', 'Staff Writer', 'Series Director', 48, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('1-tos-season-3-episode-11', '1-tos-season-3', 11, 'Episode 11 of season 3', '1968-01-08', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('1-tos-season-3-episode-12', '1-tos-season-3', 12, 'Episode 12 of season 3 of TOS.', '1968-12-06', 'Staff Writer', 'Series Director', 48, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('1-tos-season-3-episode-12', '1-tos-season-3', 12, 'Episode 12 of season 3', '1968-01-15', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('1-tos-season-3-episode-13', '1-tos-season-3', 13, 'Episode 13 of season 3 of TOS.', '1968-12-13', 'Staff Writer', 'Series Director', 48, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('1-tos-season-3-episode-13', '1-tos-season-3', 13, 'Episode 13 of season 3', '1968-01-22', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('1-tos-season-3-episode-14', '1-tos-season-3', 14, 'Episode 14 of season 3 of TOS.', '1968-12-20', 'Staff Writer', 'Series Director', 48, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('1-tos-season-3-episode-14', '1-tos-season-3', 14, 'Episode 14 of season 3', '1968-01-29', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('1-tos-season-3-episode-15', '1-tos-season-3', 15, 'Episode 15 of season 3 of TOS.', '1968-12-27', 'Staff Writer', 'Series Director', 48, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('1-tos-season-3-episode-15', '1-tos-season-3', 15, 'Episode 15 of season 3', '1968-02-05', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('1-tos-season-3-episode-16', '1-tos-season-3', 16, 'Episode 16 of season 3 of TOS.', '1969-01-03', 'Staff Writer', 'Series Director', 48, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('1-tos-season-3-episode-16', '1-tos-season-3', 16, 'Episode 16 of season 3', '1968-02-12', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('1-tos-season-3-episode-17', '1-tos-season-3', 17, 'Episode 17 of season 3 of TOS.', '1969-01-10', 'Staff Writer', 'Series Director', 48, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('1-tos-season-3-episode-17', '1-tos-season-3', 17, 'Episode 17 of season 3', '1968-02-19', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('1-tos-season-3-episode-18', '1-tos-season-3', 18, 'Episode 18 of season 3 of TOS.', '1969-01-17', 'Staff Writer', 'Series Director', 48, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('1-tos-season-3-episode-18', '1-tos-season-3', 18, 'Episode 18 of season 3', '1968-02-26', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('1-tos-season-3-episode-19', '1-tos-season-3', 19, 'Episode 19 of season 3 of TOS.', '1969-01-24', 'Staff Writer', 'Series Director', 48, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('1-tos-season-3-episode-19', '1-tos-season-3', 19, 'Episode 19 of season 3', '1968-03-04', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('1-tos-season-3-episode-20', '1-tos-season-3', 20, 'Episode 20 of season 3 of TOS.', '1969-01-31', 'Staff Writer', 'Series Director', 48, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('1-tos-season-3-episode-20', '1-tos-season-3', 20, 'Episode 20 of season 3', '1968-03-11', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('1-tos-season-3-episode-21', '1-tos-season-3', 21, 'Episode 21 of season 3 of TOS.', '1969-02-07', 'Staff Writer', 'Series Director', 48, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('1-tos-season-3-episode-21', '1-tos-season-3', 21, 'Episode 21 of season 3', '1968-03-18', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('1-tos-season-3-episode-22', '1-tos-season-3', 22, 'Episode 22 of season 3 of TOS.', '1969-02-14', 'Staff Writer', 'Series Director', 48, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('1-tos-season-3-episode-22', '1-tos-season-3', 22, 'Episode 22 of season 3', '1968-03-25', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('1-tos-season-3-episode-23', '1-tos-season-3', 23, 'Episode 23 of season 3 of TOS.', '1969-02-21', 'Staff Writer', 'Series Director', 48, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('1-tos-season-3-episode-23', '1-tos-season-3', 23, 'Episode 23 of season 3', '1968-04-01', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('1-tos-season-3-episode-24', '1-tos-season-3', 24, 'Episode 24 of season 3 of TOS.', '1969-02-28', 'Staff Writer', 'Series Director', 48, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('1-tos-season-3-episode-24', '1-tos-season-3', 24, 'Episode 24 of season 3', '1968-04-08', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-1-episode-01', 'recIVMulshEXmFFNU', 1, 'Episode 1 of season 1 of TNG.', '1987-09-28', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-1-episode-01', '2-tng-season-1', 1, 'Episode 1 of season 1', '1987-09-01', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-1-episode-02', 'recIVMulshEXmFFNU', 2, 'Episode 2 of season 1 of TNG.', '1987-10-05', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-1-episode-02', '2-tng-season-1', 2, 'Episode 2 of season 1', '1987-09-08', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-1-episode-03', 'recIVMulshEXmFFNU', 3, 'Episode 3 of season 1 of TNG.', '1987-10-12', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-1-episode-03', '2-tng-season-1', 3, 'Episode 3 of season 1', '1987-09-15', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-1-episode-04', 'recIVMulshEXmFFNU', 4, 'Episode 4 of season 1 of TNG.', '1987-10-19', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-1-episode-04', '2-tng-season-1', 4, 'Episode 4 of season 1', '1987-09-22', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-1-episode-05', 'recIVMulshEXmFFNU', 5, 'Episode 5 of season 1 of TNG.', '1987-10-26', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-1-episode-05', '2-tng-season-1', 5, 'Episode 5 of season 1', '1987-09-29', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-1-episode-06', 'recIVMulshEXmFFNU', 6, 'Episode 6 of season 1 of TNG.', '1987-11-02', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-1-episode-06', '2-tng-season-1', 6, 'Episode 6 of season 1', '1987-10-06', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-1-episode-07', 'recIVMulshEXmFFNU', 7, 'Episode 7 of season 1 of TNG.', '1987-11-09', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-1-episode-07', '2-tng-season-1', 7, 'Episode 7 of season 1', '1987-10-13', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-1-episode-08', 'recIVMulshEXmFFNU', 8, 'Episode 8 of season 1 of TNG.', '1987-11-16', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-1-episode-08', '2-tng-season-1', 8, 'Episode 8 of season 1', '1987-10-20', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-1-episode-09', 'recIVMulshEXmFFNU', 9, 'Episode 9 of season 1 of TNG.', '1987-11-23', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-1-episode-09', '2-tng-season-1', 9, 'Episode 9 of season 1', '1987-10-27', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-1-episode-10', 'recIVMulshEXmFFNU', 10, 'Episode 10 of season 1 of TNG.', '1987-11-30', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-1-episode-10', '2-tng-season-1', 10, 'Episode 10 of season 1', '1987-11-03', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-1-episode-11', 'recIVMulshEXmFFNU', 11, 'Episode 11 of season 1 of TNG.', '1987-12-07', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-1-episode-11', '2-tng-season-1', 11, 'Episode 11 of season 1', '1987-11-10', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-1-episode-12', 'recIVMulshEXmFFNU', 12, 'Episode 12 of season 1 of TNG.', '1987-12-14', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-1-episode-12', '2-tng-season-1', 12, 'Episode 12 of season 1', '1987-11-17', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-1-episode-13', 'recIVMulshEXmFFNU', 13, 'Episode 13 of season 1 of TNG.', '1987-12-21', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-1-episode-13', '2-tng-season-1', 13, 'Episode 13 of season 1', '1987-11-24', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-1-episode-14', 'recIVMulshEXmFFNU', 14, 'Episode 14 of season 1 of TNG.', '1987-12-28', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-1-episode-14', '2-tng-season-1', 14, 'Episode 14 of season 1', '1987-12-01', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-1-episode-15', 'recIVMulshEXmFFNU', 15, 'Episode 15 of season 1 of TNG.', '1988-01-04', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-1-episode-15', '2-tng-season-1', 15, 'Episode 15 of season 1', '1987-12-08', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-1-episode-16', 'recIVMulshEXmFFNU', 16, 'Episode 16 of season 1 of TNG.', '1988-01-11', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-1-episode-16', '2-tng-season-1', 16, 'Episode 16 of season 1', '1987-12-15', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-1-episode-17', 'recIVMulshEXmFFNU', 17, 'Episode 17 of season 1 of TNG.', '1988-01-18', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-1-episode-17', '2-tng-season-1', 17, 'Episode 17 of season 1', '1987-12-22', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-1-episode-18', 'recIVMulshEXmFFNU', 18, 'Episode 18 of season 1 of TNG.', '1988-01-25', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-1-episode-18', '2-tng-season-1', 18, 'Episode 18 of season 1', '1987-12-29', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-1-episode-19', 'recIVMulshEXmFFNU', 19, 'Episode 19 of season 1 of TNG.', '1988-02-01', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-1-episode-19', '2-tng-season-1', 19, 'Episode 19 of season 1', '1988-01-05', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-1-episode-20', 'recIVMulshEXmFFNU', 20, 'Episode 20 of season 1 of TNG.', '1988-02-08', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-1-episode-20', '2-tng-season-1', 20, 'Episode 20 of season 1', '1988-01-12', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-1-episode-21', 'recIVMulshEXmFFNU', 21, 'Episode 21 of season 1 of TNG.', '1988-02-15', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-1-episode-21', '2-tng-season-1', 21, 'Episode 21 of season 1', '1988-01-19', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-1-episode-22', 'recIVMulshEXmFFNU', 22, 'Episode 22 of season 1 of TNG.', '1988-02-22', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-1-episode-22', '2-tng-season-1', 22, 'Episode 22 of season 1', '1988-01-26', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-1-episode-23', 'recIVMulshEXmFFNU', 23, 'Episode 23 of season 1 of TNG.', '1988-02-29', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-1-episode-23', '2-tng-season-1', 23, 'Episode 23 of season 1', '1988-02-02', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-1-episode-24', 'recIVMulshEXmFFNU', 24, 'Episode 24 of season 1 of TNG.', '1988-03-07', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-1-episode-24', '2-tng-season-1', 24, 'Episode 24 of season 1', '1988-02-09', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-1-episode-25', 'recIVMulshEXmFFNU', 25, 'Episode 25 of season 1 of TNG.', '1988-03-14', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-1-episode-25', '2-tng-season-1', 25, 'Episode 25 of season 1', '1988-02-16', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-2-episode-01', 'recFlEkT18guzFvGx', 1, 'Episode 1 of season 2 of TNG.', '1988-11-21', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-1-episode-26', '2-tng-season-1', 26, 'Episode 26 of season 1', '1988-02-23', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-2-episode-02', 'recFlEkT18guzFvGx', 2, 'Episode 2 of season 2 of TNG.', '1988-11-28', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-2-episode-01', '2-tng-season-2', 1, 'Episode 1 of season 2', '1988-03-31', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-2-episode-03', 'recFlEkT18guzFvGx', 3, 'Episode 3 of season 2 of TNG.', '1988-12-05', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-2-episode-02', '2-tng-season-2', 2, 'Episode 2 of season 2', '1988-04-07', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-2-episode-04', 'recFlEkT18guzFvGx', 4, 'Episode 4 of season 2 of TNG.', '1988-12-12', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-2-episode-03', '2-tng-season-2', 3, 'Episode 3 of season 2', '1988-04-14', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-2-episode-05', 'recFlEkT18guzFvGx', 5, 'Episode 5 of season 2 of TNG.', '1988-12-19', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-2-episode-04', '2-tng-season-2', 4, 'Episode 4 of season 2', '1988-04-21', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-2-episode-06', 'recFlEkT18guzFvGx', 6, 'Episode 6 of season 2 of TNG.', '1988-12-26', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-2-episode-05', '2-tng-season-2', 5, 'Episode 5 of season 2', '1988-04-28', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-2-episode-07', 'recFlEkT18guzFvGx', 7, 'Episode 7 of season 2 of TNG.', '1989-01-02', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-2-episode-06', '2-tng-season-2', 6, 'Episode 6 of season 2', '1988-05-05', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-2-episode-08', 'recFlEkT18guzFvGx', 8, 'Episode 8 of season 2 of TNG.', '1989-01-09', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-2-episode-07', '2-tng-season-2', 7, 'Episode 7 of season 2', '1988-05-12', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-2-episode-09', 'recFlEkT18guzFvGx', 9, 'Episode 9 of season 2 of TNG.', '1989-01-16', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-2-episode-08', '2-tng-season-2', 8, 'Episode 8 of season 2', '1988-05-19', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-2-episode-10', 'recFlEkT18guzFvGx', 10, 'Episode 10 of season 2 of TNG.', '1989-01-23', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-2-episode-09', '2-tng-season-2', 9, 'Episode 9 of season 2', '1988-05-26', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-2-episode-11', 'recFlEkT18guzFvGx', 11, 'Episode 11 of season 2 of TNG.', '1989-01-30', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-2-episode-10', '2-tng-season-2', 10, 'Episode 10 of season 2', '1988-06-02', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-2-episode-12', 'recFlEkT18guzFvGx', 12, 'Episode 12 of season 2 of TNG.', '1989-02-06', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-2-episode-11', '2-tng-season-2', 11, 'Episode 11 of season 2', '1988-06-09', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-2-episode-13', 'recFlEkT18guzFvGx', 13, 'Episode 13 of season 2 of TNG.', '1989-02-13', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-2-episode-12', '2-tng-season-2', 12, 'Episode 12 of season 2', '1988-06-16', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-2-episode-14', 'recFlEkT18guzFvGx', 14, 'Episode 14 of season 2 of TNG.', '1989-02-20', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-2-episode-13', '2-tng-season-2', 13, 'Episode 13 of season 2', '1988-06-23', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-2-episode-15', 'recFlEkT18guzFvGx', 15, 'Episode 15 of season 2 of TNG.', '1989-02-27', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-2-episode-14', '2-tng-season-2', 14, 'Episode 14 of season 2', '1988-06-30', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-2-episode-16', 'recFlEkT18guzFvGx', 16, 'Episode 16 of season 2 of TNG.', '1989-03-06', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-2-episode-15', '2-tng-season-2', 15, 'Episode 15 of season 2', '1988-07-07', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-2-episode-17', 'recFlEkT18guzFvGx', 17, 'Episode 17 of season 2 of TNG.', '1989-03-13', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-2-episode-16', '2-tng-season-2', 16, 'Episode 16 of season 2', '1988-07-14', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-2-episode-18', 'recFlEkT18guzFvGx', 18, 'Episode 18 of season 2 of TNG.', '1989-03-20', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-2-episode-17', '2-tng-season-2', 17, 'Episode 17 of season 2', '1988-07-21', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-2-episode-19', 'recFlEkT18guzFvGx', 19, 'Episode 19 of season 2 of TNG.', '1989-03-27', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-2-episode-18', '2-tng-season-2', 18, 'Episode 18 of season 2', '1988-07-28', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-2-episode-20', 'recFlEkT18guzFvGx', 20, 'Episode 20 of season 2 of TNG.', '1989-04-03', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-2-episode-19', '2-tng-season-2', 19, 'Episode 19 of season 2', '1988-08-04', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-2-episode-21', 'recFlEkT18guzFvGx', 21, 'Episode 21 of season 2 of TNG.', '1989-04-10', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-2-episode-20', '2-tng-season-2', 20, 'Episode 20 of season 2', '1988-08-11', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-2-episode-22', 'recFlEkT18guzFvGx', 22, 'Episode 22 of season 2 of TNG.', '1989-04-17', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-2-episode-21', '2-tng-season-2', 21, 'Episode 21 of season 2', '1988-08-18', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-3-episode-01', 'recyV8eykyQ7mHdaO', 1, 'Episode 1 of season 3 of TNG.', '1989-09-25', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-2-episode-22', '2-tng-season-2', 22, 'Episode 22 of season 2', '1988-08-25', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-3-episode-02', 'recyV8eykyQ7mHdaO', 2, 'Episode 2 of season 3 of TNG.', '1989-10-02', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-3-episode-01', '2-tng-season-3', 1, 'Episode 1 of season 3', '1988-10-01', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-3-episode-03', 'recyV8eykyQ7mHdaO', 3, 'Episode 3 of season 3 of TNG.', '1989-10-09', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-3-episode-02', '2-tng-season-3', 2, 'Episode 2 of season 3', '1988-10-08', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-3-episode-04', 'recyV8eykyQ7mHdaO', 4, 'Episode 4 of season 3 of TNG.', '1989-10-16', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-3-episode-03', '2-tng-season-3', 3, 'Episode 3 of season 3', '1988-10-15', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-3-episode-05', 'recyV8eykyQ7mHdaO', 5, 'Episode 5 of season 3 of TNG.', '1989-10-23', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-3-episode-04', '2-tng-season-3', 4, 'Episode 4 of season 3', '1988-10-22', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-3-episode-06', 'recyV8eykyQ7mHdaO', 6, 'Episode 6 of season 3 of TNG.', '1989-10-30', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-3-episode-05', '2-tng-season-3', 5, 'Episode 5 of season 3', '1988-10-29', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-3-episode-07', 'recyV8eykyQ7mHdaO', 7, 'Episode 7 of season 3 of TNG.', '1989-11-06', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-3-episode-06', '2-tng-season-3', 6, 'Episode 6 of season 3', '1988-11-05', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-3-episode-08', 'recyV8eykyQ7mHdaO', 8, 'Episode 8 of season 3 of TNG.', '1989-11-13', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-3-episode-07', '2-tng-season-3', 7, 'Episode 7 of season 3', '1988-11-12', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-3-episode-09', 'recyV8eykyQ7mHdaO', 9, 'Episode 9 of season 3 of TNG.', '1989-11-20', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-3-episode-08', '2-tng-season-3', 8, 'Episode 8 of season 3', '1988-11-19', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-3-episode-10', 'recyV8eykyQ7mHdaO', 10, 'Episode 10 of season 3 of TNG.', '1989-11-27', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-3-episode-09', '2-tng-season-3', 9, 'Episode 9 of season 3', '1988-11-26', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-3-episode-11', 'recyV8eykyQ7mHdaO', 11, 'Episode 11 of season 3 of TNG.', '1989-12-04', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-3-episode-10', '2-tng-season-3', 10, 'Episode 10 of season 3', '1988-12-03', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-3-episode-12', 'recyV8eykyQ7mHdaO', 12, 'Episode 12 of season 3 of TNG.', '1989-12-11', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-3-episode-11', '2-tng-season-3', 11, 'Episode 11 of season 3', '1988-12-10', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-3-episode-13', 'recyV8eykyQ7mHdaO', 13, 'Episode 13 of season 3 of TNG.', '1989-12-18', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-3-episode-12', '2-tng-season-3', 12, 'Episode 12 of season 3', '1988-12-17', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-3-episode-14', 'recyV8eykyQ7mHdaO', 14, 'Episode 14 of season 3 of TNG.', '1989-12-25', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-3-episode-13', '2-tng-season-3', 13, 'Episode 13 of season 3', '1988-12-24', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-3-episode-15', 'recyV8eykyQ7mHdaO', 15, 'Episode 15 of season 3 of TNG.', '1990-01-01', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-3-episode-14', '2-tng-season-3', 14, 'Episode 14 of season 3', '1988-12-31', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-3-episode-16', 'recyV8eykyQ7mHdaO', 16, 'Episode 16 of season 3 of TNG.', '1990-01-08', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-3-episode-15', '2-tng-season-3', 15, 'Episode 15 of season 3', '1989-01-07', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-3-episode-17', 'recyV8eykyQ7mHdaO', 17, 'Episode 17 of season 3 of TNG.', '1990-01-15', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-3-episode-16', '2-tng-season-3', 16, 'Episode 16 of season 3', '1989-01-14', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-3-episode-18', 'recyV8eykyQ7mHdaO', 18, 'Episode 18 of season 3 of TNG.', '1990-01-22', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-3-episode-17', '2-tng-season-3', 17, 'Episode 17 of season 3', '1989-01-21', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-3-episode-19', 'recyV8eykyQ7mHdaO', 19, 'Episode 19 of season 3 of TNG.', '1990-01-29', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-3-episode-18', '2-tng-season-3', 18, 'Episode 18 of season 3', '1989-01-28', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-3-episode-20', 'recyV8eykyQ7mHdaO', 20, 'Episode 20 of season 3 of TNG.', '1990-02-05', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-3-episode-19', '2-tng-season-3', 19, 'Episode 19 of season 3', '1989-02-04', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-3-episode-21', 'recyV8eykyQ7mHdaO', 21, 'Episode 21 of season 3 of TNG.', '1990-02-12', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-3-episode-20', '2-tng-season-3', 20, 'Episode 20 of season 3', '1989-02-11', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-3-episode-22', 'recyV8eykyQ7mHdaO', 22, 'Episode 22 of season 3 of TNG.', '1990-02-19', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-3-episode-21', '2-tng-season-3', 21, 'Episode 21 of season 3', '1989-02-18', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-3-episode-23', 'recyV8eykyQ7mHdaO', 23, 'Episode 23 of season 3 of TNG.', '1990-02-26', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-3-episode-22', '2-tng-season-3', 22, 'Episode 22 of season 3', '1989-02-25', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-3-episode-24', 'recyV8eykyQ7mHdaO', 24, 'Episode 24 of season 3 of TNG.', '1990-03-05', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-3-episode-23', '2-tng-season-3', 23, 'Episode 23 of season 3', '1989-03-04', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-3-episode-25', 'recyV8eykyQ7mHdaO', 25, 'Episode 25 of season 3 of TNG.', '1990-03-12', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-3-episode-24', '2-tng-season-3', 24, 'Episode 24 of season 3', '1989-03-11', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-3-episode-26', 'recyV8eykyQ7mHdaO', 26, 'Episode 26 of season 3 of TNG.', '1990-03-19', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-3-episode-25', '2-tng-season-3', 25, 'Episode 25 of season 3', '1989-03-18', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-4-episode-01', 'recb3A2blVCVJQn6A', 1, 'Episode 1 of season 4 of TNG.', '1990-09-24', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-3-episode-26', '2-tng-season-3', 26, 'Episode 26 of season 3', '1989-03-25', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-4-episode-02', 'recb3A2blVCVJQn6A', 2, 'Episode 2 of season 4 of TNG.', '1990-10-01', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-4-episode-01', '2-tng-season-4', 1, 'Episode 1 of season 4', '1989-05-01', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-4-episode-03', 'recb3A2blVCVJQn6A', 3, 'Episode 3 of season 4 of TNG.', '1990-10-08', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-4-episode-02', '2-tng-season-4', 2, 'Episode 2 of season 4', '1989-05-08', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-4-episode-04', 'recb3A2blVCVJQn6A', 4, 'Episode 4 of season 4 of TNG.', '1990-10-15', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-4-episode-03', '2-tng-season-4', 3, 'Episode 3 of season 4', '1989-05-15', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-4-episode-05', 'recb3A2blVCVJQn6A', 5, 'Episode 5 of season 4 of TNG.', '1990-10-22', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-4-episode-04', '2-tng-season-4', 4, 'Episode 4 of season 4', '1989-05-22', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-4-episode-06', 'recb3A2blVCVJQn6A', 6, 'Episode 6 of season 4 of TNG.', '1990-10-29', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-4-episode-05', '2-tng-season-4', 5, 'Episode 5 of season 4', '1989-05-29', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-4-episode-07', 'recb3A2blVCVJQn6A', 7, 'Episode 7 of season 4 of TNG.', '1990-11-05', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-4-episode-06', '2-tng-season-4', 6, 'Episode 6 of season 4', '1989-06-05', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-4-episode-08', 'recb3A2blVCVJQn6A', 8, 'Episode 8 of season 4 of TNG.', '1990-11-12', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-4-episode-07', '2-tng-season-4', 7, 'Episode 7 of season 4', '1989-06-12', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-4-episode-09', 'recb3A2blVCVJQn6A', 9, 'Episode 9 of season 4 of TNG.', '1990-11-19', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-4-episode-08', '2-tng-season-4', 8, 'Episode 8 of season 4', '1989-06-19', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-4-episode-10', 'recb3A2blVCVJQn6A', 10, 'Episode 10 of season 4 of TNG.', '1990-11-26', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-4-episode-09', '2-tng-season-4', 9, 'Episode 9 of season 4', '1989-06-26', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-4-episode-11', 'recb3A2blVCVJQn6A', 11, 'Episode 11 of season 4 of TNG.', '1990-12-03', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-4-episode-10', '2-tng-season-4', 10, 'Episode 10 of season 4', '1989-07-03', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-4-episode-12', 'recb3A2blVCVJQn6A', 12, 'Episode 12 of season 4 of TNG.', '1990-12-10', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-4-episode-11', '2-tng-season-4', 11, 'Episode 11 of season 4', '1989-07-10', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-4-episode-13', 'recb3A2blVCVJQn6A', 13, 'Episode 13 of season 4 of TNG.', '1990-12-17', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-4-episode-12', '2-tng-season-4', 12, 'Episode 12 of season 4', '1989-07-17', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-4-episode-14', 'recb3A2blVCVJQn6A', 14, 'Episode 14 of season 4 of TNG.', '1990-12-24', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-4-episode-13', '2-tng-season-4', 13, 'Episode 13 of season 4', '1989-07-24', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-4-episode-15', 'recb3A2blVCVJQn6A', 15, 'Episode 15 of season 4 of TNG.', '1990-12-31', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-4-episode-14', '2-tng-season-4', 14, 'Episode 14 of season 4', '1989-07-31', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-4-episode-16', 'recb3A2blVCVJQn6A', 16, 'Episode 16 of season 4 of TNG.', '1991-01-07', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-4-episode-15', '2-tng-season-4', 15, 'Episode 15 of season 4', '1989-08-07', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-4-episode-17', 'recb3A2blVCVJQn6A', 17, 'Episode 17 of season 4 of TNG.', '1991-01-14', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-4-episode-16', '2-tng-season-4', 16, 'Episode 16 of season 4', '1989-08-14', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-4-episode-18', 'recb3A2blVCVJQn6A', 18, 'Episode 18 of season 4 of TNG.', '1991-01-21', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-4-episode-17', '2-tng-season-4', 17, 'Episode 17 of season 4', '1989-08-21', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-4-episode-19', 'recb3A2blVCVJQn6A', 19, 'Episode 19 of season 4 of TNG.', '1991-01-28', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-4-episode-18', '2-tng-season-4', 18, 'Episode 18 of season 4', '1989-08-28', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-4-episode-20', 'recb3A2blVCVJQn6A', 20, 'Episode 20 of season 4 of TNG.', '1991-02-04', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-4-episode-19', '2-tng-season-4', 19, 'Episode 19 of season 4', '1989-09-04', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-4-episode-21', 'recb3A2blVCVJQn6A', 21, 'Episode 21 of season 4 of TNG.', '1991-02-11', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-4-episode-20', '2-tng-season-4', 20, 'Episode 20 of season 4', '1989-09-11', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-4-episode-22', 'recb3A2blVCVJQn6A', 22, 'Episode 22 of season 4 of TNG.', '1991-02-18', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-4-episode-21', '2-tng-season-4', 21, 'Episode 21 of season 4', '1989-09-18', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-4-episode-23', 'recb3A2blVCVJQn6A', 23, 'Episode 23 of season 4 of TNG.', '1991-02-25', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-4-episode-22', '2-tng-season-4', 22, 'Episode 22 of season 4', '1989-09-25', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-4-episode-24', 'recb3A2blVCVJQn6A', 24, 'Episode 24 of season 4 of TNG.', '1991-03-04', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-4-episode-23', '2-tng-season-4', 23, 'Episode 23 of season 4', '1989-10-02', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-4-episode-25', 'recb3A2blVCVJQn6A', 25, 'Episode 25 of season 4 of TNG.', '1991-03-11', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-4-episode-24', '2-tng-season-4', 24, 'Episode 24 of season 4', '1989-10-09', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-4-episode-26', 'recb3A2blVCVJQn6A', 26, 'Episode 26 of season 4 of TNG.', '1991-03-18', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-4-episode-25', '2-tng-season-4', 25, 'Episode 25 of season 4', '1989-10-16', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-5-episode-01', 'recmAUEtP7gfgqbAC', 1, 'Episode 1 of season 5 of TNG.', '1991-09-23', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-4-episode-26', '2-tng-season-4', 26, 'Episode 26 of season 4', '1989-10-23', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-5-episode-02', 'recmAUEtP7gfgqbAC', 2, 'Episode 2 of season 5 of TNG.', '1991-09-30', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-5-episode-01', '2-tng-season-5', 1, 'Episode 1 of season 5', '1989-11-29', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-5-episode-03', 'recmAUEtP7gfgqbAC', 3, 'Episode 3 of season 5 of TNG.', '1991-10-07', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-5-episode-02', '2-tng-season-5', 2, 'Episode 2 of season 5', '1989-12-06', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-5-episode-04', 'recmAUEtP7gfgqbAC', 4, 'Episode 4 of season 5 of TNG.', '1991-10-14', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-5-episode-03', '2-tng-season-5', 3, 'Episode 3 of season 5', '1989-12-13', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-5-episode-05', 'recmAUEtP7gfgqbAC', 5, 'Episode 5 of season 5 of TNG.', '1991-10-21', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-5-episode-04', '2-tng-season-5', 4, 'Episode 4 of season 5', '1989-12-20', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-5-episode-06', 'recmAUEtP7gfgqbAC', 6, 'Episode 6 of season 5 of TNG.', '1991-10-28', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-5-episode-05', '2-tng-season-5', 5, 'Episode 5 of season 5', '1989-12-27', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-5-episode-07', 'recmAUEtP7gfgqbAC', 7, 'Episode 7 of season 5 of TNG.', '1991-11-04', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-5-episode-06', '2-tng-season-5', 6, 'Episode 6 of season 5', '1990-01-03', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-5-episode-08', 'recmAUEtP7gfgqbAC', 8, 'Episode 8 of season 5 of TNG.', '1991-11-11', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-5-episode-07', '2-tng-season-5', 7, 'Episode 7 of season 5', '1990-01-10', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-5-episode-09', 'recmAUEtP7gfgqbAC', 9, 'Episode 9 of season 5 of TNG.', '1991-11-18', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-5-episode-08', '2-tng-season-5', 8, 'Episode 8 of season 5', '1990-01-17', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-5-episode-10', 'recmAUEtP7gfgqbAC', 10, 'Episode 10 of season 5 of TNG.', '1991-11-25', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-5-episode-09', '2-tng-season-5', 9, 'Episode 9 of season 5', '1990-01-24', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-5-episode-11', 'recmAUEtP7gfgqbAC', 11, 'Episode 11 of season 5 of TNG.', '1991-12-02', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-5-episode-10', '2-tng-season-5', 10, 'Episode 10 of season 5', '1990-01-31', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-5-episode-12', 'recmAUEtP7gfgqbAC', 12, 'Episode 12 of season 5 of TNG.', '1991-12-09', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-5-episode-11', '2-tng-season-5', 11, 'Episode 11 of season 5', '1990-02-07', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-5-episode-13', 'recmAUEtP7gfgqbAC', 13, 'Episode 13 of season 5 of TNG.', '1991-12-16', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-5-episode-12', '2-tng-season-5', 12, 'Episode 12 of season 5', '1990-02-14', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-5-episode-14', 'recmAUEtP7gfgqbAC', 14, 'Episode 14 of season 5 of TNG.', '1991-12-23', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-5-episode-13', '2-tng-season-5', 13, 'Episode 13 of season 5', '1990-02-21', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-5-episode-15', 'recmAUEtP7gfgqbAC', 15, 'Episode 15 of season 5 of TNG.', '1991-12-30', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-5-episode-14', '2-tng-season-5', 14, 'Episode 14 of season 5', '1990-02-28', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-5-episode-16', 'recmAUEtP7gfgqbAC', 16, 'Episode 16 of season 5 of TNG.', '1992-01-06', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-5-episode-15', '2-tng-season-5', 15, 'Episode 15 of season 5', '1990-03-07', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-5-episode-17', 'recmAUEtP7gfgqbAC', 17, 'Episode 17 of season 5 of TNG.', '1992-01-13', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-5-episode-16', '2-tng-season-5', 16, 'Episode 16 of season 5', '1990-03-14', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-5-episode-18', 'recmAUEtP7gfgqbAC', 18, 'Episode 18 of season 5 of TNG.', '1992-01-20', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-5-episode-17', '2-tng-season-5', 17, 'Episode 17 of season 5', '1990-03-21', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-5-episode-19', 'recmAUEtP7gfgqbAC', 19, 'Episode 19 of season 5 of TNG.', '1992-01-27', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-5-episode-18', '2-tng-season-5', 18, 'Episode 18 of season 5', '1990-03-28', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-5-episode-20', 'recmAUEtP7gfgqbAC', 20, 'Episode 20 of season 5 of TNG.', '1992-02-03', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-5-episode-19', '2-tng-season-5', 19, 'Episode 19 of season 5', '1990-04-04', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-5-episode-21', 'recmAUEtP7gfgqbAC', 21, 'Episode 21 of season 5 of TNG.', '1992-02-10', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-5-episode-20', '2-tng-season-5', 20, 'Episode 20 of season 5', '1990-04-11', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-5-episode-22', 'recmAUEtP7gfgqbAC', 22, 'Episode 22 of season 5 of TNG.', '1992-02-17', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-5-episode-21', '2-tng-season-5', 21, 'Episode 21 of season 5', '1990-04-18', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-5-episode-23', 'recmAUEtP7gfgqbAC', 23, 'Episode 23 of season 5 of TNG.', '1992-02-24', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-5-episode-22', '2-tng-season-5', 22, 'Episode 22 of season 5', '1990-04-25', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-5-episode-24', 'recmAUEtP7gfgqbAC', 24, 'Episode 24 of season 5 of TNG.', '1992-03-02', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-5-episode-23', '2-tng-season-5', 23, 'Episode 23 of season 5', '1990-05-02', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-5-episode-25', 'recmAUEtP7gfgqbAC', 25, 'Episode 25 of season 5 of TNG.', '1992-03-09', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-5-episode-24', '2-tng-season-5', 24, 'Episode 24 of season 5', '1990-05-09', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-5-episode-26', 'recmAUEtP7gfgqbAC', 26, 'Episode 26 of season 5 of TNG.', '1992-03-16', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-5-episode-25', '2-tng-season-5', 25, 'Episode 25 of season 5', '1990-05-16', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-6-episode-01', 'recHxSsqjreZIMSgr', 1, 'Episode 1 of season 6 of TNG.', '1992-09-21', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-5-episode-26', '2-tng-season-5', 26, 'Episode 26 of season 5', '1990-05-23', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-6-episode-02', 'recHxSsqjreZIMSgr', 2, 'Episode 2 of season 6 of TNG.', '1992-09-28', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-6-episode-01', '2-tng-season-6', 1, 'Episode 1 of season 6', '1990-06-29', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-6-episode-03', 'recHxSsqjreZIMSgr', 3, 'Episode 3 of season 6 of TNG.', '1992-10-05', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-6-episode-02', '2-tng-season-6', 2, 'Episode 2 of season 6', '1990-07-06', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-6-episode-04', 'recHxSsqjreZIMSgr', 4, 'Episode 4 of season 6 of TNG.', '1992-10-12', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-6-episode-03', '2-tng-season-6', 3, 'Episode 3 of season 6', '1990-07-13', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-6-episode-05', 'recHxSsqjreZIMSgr', 5, 'Episode 5 of season 6 of TNG.', '1992-10-19', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-6-episode-04', '2-tng-season-6', 4, 'Episode 4 of season 6', '1990-07-20', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-6-episode-06', 'recHxSsqjreZIMSgr', 6, 'Episode 6 of season 6 of TNG.', '1992-10-26', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-6-episode-05', '2-tng-season-6', 5, 'Episode 5 of season 6', '1990-07-27', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-6-episode-07', 'recHxSsqjreZIMSgr', 7, 'Episode 7 of season 6 of TNG.', '1992-11-02', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-6-episode-06', '2-tng-season-6', 6, 'Episode 6 of season 6', '1990-08-03', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-6-episode-08', 'recHxSsqjreZIMSgr', 8, 'Episode 8 of season 6 of TNG.', '1992-11-09', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-6-episode-07', '2-tng-season-6', 7, 'Episode 7 of season 6', '1990-08-10', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-6-episode-09', 'recHxSsqjreZIMSgr', 9, 'Episode 9 of season 6 of TNG.', '1992-11-16', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-6-episode-08', '2-tng-season-6', 8, 'Episode 8 of season 6', '1990-08-17', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-6-episode-10', 'recHxSsqjreZIMSgr', 10, 'Episode 10 of season 6 of TNG.', '1992-11-23', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-6-episode-09', '2-tng-season-6', 9, 'Episode 9 of season 6', '1990-08-24', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-6-episode-11', 'recHxSsqjreZIMSgr', 11, 'Episode 11 of season 6 of TNG.', '1992-11-30', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-6-episode-10', '2-tng-season-6', 10, 'Episode 10 of season 6', '1990-08-31', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-6-episode-12', 'recHxSsqjreZIMSgr', 12, 'Episode 12 of season 6 of TNG.', '1992-12-07', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-6-episode-11', '2-tng-season-6', 11, 'Episode 11 of season 6', '1990-09-07', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-6-episode-13', 'recHxSsqjreZIMSgr', 13, 'Episode 13 of season 6 of TNG.', '1992-12-14', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-6-episode-12', '2-tng-season-6', 12, 'Episode 12 of season 6', '1990-09-14', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-6-episode-14', 'recHxSsqjreZIMSgr', 14, 'Episode 14 of season 6 of TNG.', '1992-12-21', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-6-episode-13', '2-tng-season-6', 13, 'Episode 13 of season 6', '1990-09-21', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-6-episode-15', 'recHxSsqjreZIMSgr', 15, 'Episode 15 of season 6 of TNG.', '1992-12-28', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-6-episode-14', '2-tng-season-6', 14, 'Episode 14 of season 6', '1990-09-28', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-6-episode-16', 'recHxSsqjreZIMSgr', 16, 'Episode 16 of season 6 of TNG.', '1993-01-04', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-6-episode-15', '2-tng-season-6', 15, 'Episode 15 of season 6', '1990-10-05', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-6-episode-17', 'recHxSsqjreZIMSgr', 17, 'Episode 17 of season 6 of TNG.', '1993-01-11', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-6-episode-16', '2-tng-season-6', 16, 'Episode 16 of season 6', '1990-10-12', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-6-episode-18', 'recHxSsqjreZIMSgr', 18, 'Episode 18 of season 6 of TNG.', '1993-01-18', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-6-episode-17', '2-tng-season-6', 17, 'Episode 17 of season 6', '1990-10-19', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-6-episode-19', 'recHxSsqjreZIMSgr', 19, 'Episode 19 of season 6 of TNG.', '1993-01-25', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-6-episode-18', '2-tng-season-6', 18, 'Episode 18 of season 6', '1990-10-26', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-6-episode-20', 'recHxSsqjreZIMSgr', 20, 'Episode 20 of season 6 of TNG.', '1993-02-01', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-6-episode-19', '2-tng-season-6', 19, 'Episode 19 of season 6', '1990-11-02', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-6-episode-21', 'recHxSsqjreZIMSgr', 21, 'Episode 21 of season 6 of TNG.', '1993-02-08', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-6-episode-20', '2-tng-season-6', 20, 'Episode 20 of season 6', '1990-11-09', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-6-episode-22', 'recHxSsqjreZIMSgr', 22, 'Episode 22 of season 6 of TNG.', '1993-02-15', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-6-episode-21', '2-tng-season-6', 21, 'Episode 21 of season 6', '1990-11-16', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-6-episode-23', 'recHxSsqjreZIMSgr', 23, 'Episode 23 of season 6 of TNG.', '1993-02-22', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-6-episode-22', '2-tng-season-6', 22, 'Episode 22 of season 6', '1990-11-23', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-6-episode-24', 'recHxSsqjreZIMSgr', 24, 'Episode 24 of season 6 of TNG.', '1993-03-01', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-6-episode-23', '2-tng-season-6', 23, 'Episode 23 of season 6', '1990-11-30', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-6-episode-25', 'recHxSsqjreZIMSgr', 25, 'Episode 25 of season 6 of TNG.', '1993-03-08', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-6-episode-24', '2-tng-season-6', 24, 'Episode 24 of season 6', '1990-12-07', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-6-episode-26', 'recHxSsqjreZIMSgr', 26, 'Episode 26 of season 6 of TNG.', '1993-03-15', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-6-episode-25', '2-tng-season-6', 25, 'Episode 25 of season 6', '1990-12-14', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-7-episode-01', 'recwclqEyGKm81JFx', 1, 'Episode 1 of season 7 of TNG.', '1993-09-20', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-6-episode-26', '2-tng-season-6', 26, 'Episode 26 of season 6', '1990-12-21', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-7-episode-02', 'recwclqEyGKm81JFx', 2, 'Episode 2 of season 7 of TNG.', '1993-09-27', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-7-episode-01', '2-tng-season-7', 1, 'Episode 1 of season 7', '1991-01-27', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-7-episode-03', 'recwclqEyGKm81JFx', 3, 'Episode 3 of season 7 of TNG.', '1993-10-04', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-7-episode-02', '2-tng-season-7', 2, 'Episode 2 of season 7', '1991-02-03', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-7-episode-04', 'recwclqEyGKm81JFx', 4, 'Episode 4 of season 7 of TNG.', '1993-10-11', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-7-episode-03', '2-tng-season-7', 3, 'Episode 3 of season 7', '1991-02-10', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-7-episode-05', 'recwclqEyGKm81JFx', 5, 'Episode 5 of season 7 of TNG.', '1993-10-18', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-7-episode-04', '2-tng-season-7', 4, 'Episode 4 of season 7', '1991-02-17', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-7-episode-06', 'recwclqEyGKm81JFx', 6, 'Episode 6 of season 7 of TNG.', '1993-10-25', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-7-episode-05', '2-tng-season-7', 5, 'Episode 5 of season 7', '1991-02-24', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-7-episode-07', 'recwclqEyGKm81JFx', 7, 'Episode 7 of season 7 of TNG.', '1993-11-01', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-7-episode-06', '2-tng-season-7', 6, 'Episode 6 of season 7', '1991-03-03', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-7-episode-08', 'recwclqEyGKm81JFx', 8, 'Episode 8 of season 7 of TNG.', '1993-11-08', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-7-episode-07', '2-tng-season-7', 7, 'Episode 7 of season 7', '1991-03-10', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-7-episode-09', 'recwclqEyGKm81JFx', 9, 'Episode 9 of season 7 of TNG.', '1993-11-15', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-7-episode-08', '2-tng-season-7', 8, 'Episode 8 of season 7', '1991-03-17', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-7-episode-10', 'recwclqEyGKm81JFx', 10, 'Episode 10 of season 7 of TNG.', '1993-11-22', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-7-episode-09', '2-tng-season-7', 9, 'Episode 9 of season 7', '1991-03-24', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-7-episode-11', 'recwclqEyGKm81JFx', 11, 'Episode 11 of season 7 of TNG.', '1993-11-29', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-7-episode-10', '2-tng-season-7', 10, 'Episode 10 of season 7', '1991-03-31', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-7-episode-12', 'recwclqEyGKm81JFx', 12, 'Episode 12 of season 7 of TNG.', '1993-12-06', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-7-episode-11', '2-tng-season-7', 11, 'Episode 11 of season 7', '1991-04-07', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-7-episode-13', 'recwclqEyGKm81JFx', 13, 'Episode 13 of season 7 of TNG.', '1993-12-13', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-7-episode-12', '2-tng-season-7', 12, 'Episode 12 of season 7', '1991-04-14', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-7-episode-14', 'recwclqEyGKm81JFx', 14, 'Episode 14 of season 7 of TNG.', '1993-12-20', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-7-episode-13', '2-tng-season-7', 13, 'Episode 13 of season 7', '1991-04-21', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-7-episode-15', 'recwclqEyGKm81JFx', 15, 'Episode 15 of season 7 of TNG.', '1993-12-27', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-7-episode-14', '2-tng-season-7', 14, 'Episode 14 of season 7', '1991-04-28', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-7-episode-16', 'recwclqEyGKm81JFx', 16, 'Episode 16 of season 7 of TNG.', '1994-01-03', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-7-episode-15', '2-tng-season-7', 15, 'Episode 15 of season 7', '1991-05-05', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-7-episode-17', 'recwclqEyGKm81JFx', 17, 'Episode 17 of season 7 of TNG.', '1994-01-10', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-7-episode-16', '2-tng-season-7', 16, 'Episode 16 of season 7', '1991-05-12', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-7-episode-18', 'recwclqEyGKm81JFx', 18, 'Episode 18 of season 7 of TNG.', '1994-01-17', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-7-episode-17', '2-tng-season-7', 17, 'Episode 17 of season 7', '1991-05-19', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-7-episode-19', 'recwclqEyGKm81JFx', 19, 'Episode 19 of season 7 of TNG.', '1994-01-24', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-7-episode-18', '2-tng-season-7', 18, 'Episode 18 of season 7', '1991-05-26', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-7-episode-20', 'recwclqEyGKm81JFx', 20, 'Episode 20 of season 7 of TNG.', '1994-01-31', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-7-episode-19', '2-tng-season-7', 19, 'Episode 19 of season 7', '1991-06-02', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-7-episode-21', 'recwclqEyGKm81JFx', 21, 'Episode 21 of season 7 of TNG.', '1994-02-07', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-7-episode-20', '2-tng-season-7', 20, 'Episode 20 of season 7', '1991-06-09', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-7-episode-22', 'recwclqEyGKm81JFx', 22, 'Episode 22 of season 7 of TNG.', '1994-02-14', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-7-episode-21', '2-tng-season-7', 21, 'Episode 21 of season 7', '1991-06-16', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-7-episode-23', 'recwclqEyGKm81JFx', 23, 'Episode 23 of season 7 of TNG.', '1994-02-21', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-7-episode-22', '2-tng-season-7', 22, 'Episode 22 of season 7', '1991-06-23', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-7-episode-24', 'recwclqEyGKm81JFx', 24, 'Episode 24 of season 7 of TNG.', '1994-02-28', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-7-episode-23', '2-tng-season-7', 23, 'Episode 23 of season 7', '1991-06-30', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-7-episode-25', 'recwclqEyGKm81JFx', 25, 'Episode 25 of season 7 of TNG.', '1994-03-07', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-7-episode-24', '2-tng-season-7', 24, 'Episode 24 of season 7', '1991-07-07', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('2-tng-season-7-episode-26', 'recwclqEyGKm81JFx', 26, 'Episode 26 of season 7 of TNG.', '1994-03-14', 'Staff Writer', 'Series Director', 50, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-7-episode-25', '2-tng-season-7', 25, 'Episode 25 of season 7', '1991-07-14', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('3-ds9-season-1-episode-01', 'recVNTB8KX7Aw5F2b', 1, '', NULL, '', '', 0, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('2-tng-season-7-episode-26', '2-tng-season-7', 26, 'Episode 26 of season 7', '1991-07-21', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('3-ds9-season-1-episode-02', 'recVNTB8KX7Aw5F2b', 2, '', NULL, '', '', 0, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('3-ds9-season-1-episode-01', '3-ds9-season-1', 1, 'Episode 1 of season 1', '1993-09-01', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('3-ds9-season-1-episode-03', 'recVNTB8KX7Aw5F2b', 3, 'Episode 3 of season 1 of DS9.', '1993-01-17', 'Staff Writer', 'Series Director', 45, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('3-ds9-season-1-episode-02', '3-ds9-season-1', 2, 'Episode 2 of season 1', '1993-09-08', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('3-ds9-season-1-episode-04', 'recVNTB8KX7Aw5F2b', 4, 'Episode 4 of season 1 of DS9.', '1993-01-24', 'Staff Writer', 'Series Director', 45, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('3-ds9-season-1-episode-03', '3-ds9-season-1', 3, 'Episode 3 of season 1', '1993-09-15', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('3-ds9-season-1-episode-05', 'recVNTB8KX7Aw5F2b', 5, 'Episode 5 of season 1 of DS9.', '1993-01-31', 'Staff Writer', 'Series Director', 45, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('3-ds9-season-1-episode-04', '3-ds9-season-1', 4, 'Episode 4 of season 1', '1993-09-22', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('3-ds9-season-1-episode-06', 'recVNTB8KX7Aw5F2b', 6, '', NULL, '', '', 0, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('3-ds9-season-1-episode-05', '3-ds9-season-1', 5, 'Episode 5 of season 1', '1993-09-29', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('3-ds9-season-1-episode-07', 'recVNTB8KX7Aw5F2b', 7, '', NULL, '', '', 0, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('3-ds9-season-1-episode-06', '3-ds9-season-1', 6, 'Episode 6 of season 1', '1993-10-06', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('3-ds9-season-1-episode-08', 'recVNTB8KX7Aw5F2b', 8, '', NULL, '', '', 0, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('3-ds9-season-1-episode-07', '3-ds9-season-1', 7, 'Episode 7 of season 1', '1993-10-13', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('3-ds9-season-1-episode-09', 'recVNTB8KX7Aw5F2b', 9, '', NULL, '', '', 0, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('3-ds9-season-1-episode-08', '3-ds9-season-1', 8, 'Episode 8 of season 1', '1993-10-20', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('3-ds9-season-1-episode-10', 'recVNTB8KX7Aw5F2b', 10, '', NULL, '', '', 0, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('3-ds9-season-1-episode-09', '3-ds9-season-1', 9, 'Episode 9 of season 1', '1993-10-27', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('3-ds9-season-1-episode-11', 'recVNTB8KX7Aw5F2b', 11, '', NULL, '', '', 0, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('3-ds9-season-1-episode-10', '3-ds9-season-1', 10, 'Episode 10 of season 1', '1993-11-03', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('3-ds9-season-1-episode-12', 'recVNTB8KX7Aw5F2b', 12, '', NULL, '', '', 0, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('3-ds9-season-1-episode-11', '3-ds9-season-1', 11, 'Episode 11 of season 1', '1993-11-10', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('3-ds9-season-1-episode-13', 'recVNTB8KX7Aw5F2b', 13, '', NULL, '', '', 0, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('3-ds9-season-1-episode-12', '3-ds9-season-1', 12, 'Episode 12 of season 1', '1993-11-17', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('3-ds9-season-1-episode-14', 'recVNTB8KX7Aw5F2b', 14, '', NULL, '', '', 0, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('3-ds9-season-1-episode-13', '3-ds9-season-1', 13, 'Episode 13 of season 1', '1993-11-24', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('3-ds9-season-1-episode-15', 'recVNTB8KX7Aw5F2b', 15, '', NULL, '', '', 0, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('3-ds9-season-1-episode-14', '3-ds9-season-1', 14, 'Episode 14 of season 1', '1993-12-01', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('3-ds9-season-1-episode-16', 'recVNTB8KX7Aw5F2b', 16, '', NULL, '', '', 0, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('3-ds9-season-1-episode-15', '3-ds9-season-1', 15, 'Episode 15 of season 1', '1993-12-08', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('3-ds9-season-1-episode-17', 'recVNTB8KX7Aw5F2b', 17, '', NULL, '', '', 0, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('3-ds9-season-1-episode-16', '3-ds9-season-1', 16, 'Episode 16 of season 1', '1993-12-15', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('3-ds9-season-1-episode-18', 'recVNTB8KX7Aw5F2b', 18, '', NULL, '', '', 0, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('3-ds9-season-1-episode-17', '3-ds9-season-1', 17, 'Episode 17 of season 1', '1993-12-22', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('3-ds9-season-1-episode-19', 'recVNTB8KX7Aw5F2b', 19, '', NULL, '', '', 0, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('3-ds9-season-1-episode-18', '3-ds9-season-1', 18, 'Episode 18 of season 1', '1993-12-29', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('3-ds9-season-1-episode-20', 'recVNTB8KX7Aw5F2b', 20, '', NULL, '', '', 0, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('3-ds9-season-1-episode-19', '3-ds9-season-1', 19, 'Episode 19 of season 1', '1994-01-05', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('3-ds9-season-1-episode-21', 'recVNTB8KX7Aw5F2b', 21, '', NULL, '', '', 0, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('3-ds9-season-1-episode-20', '3-ds9-season-1', 20, 'Episode 20 of season 1', '1994-01-12', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('3-ds9-season-1-episode-22', 'recVNTB8KX7Aw5F2b', 22, '', NULL, '', '', 0, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('3-ds9-season-2-episode-01', '3-ds9-season-2', 1, 'Episode 1 of season 2', '1994-02-18', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('3-ds9-season-1-episode-23', 'recVNTB8KX7Aw5F2b', 23, '', NULL, '', '', 0, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('3-ds9-season-2-episode-02', '3-ds9-season-2', 2, 'Episode 2 of season 2', '1994-02-25', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('3-ds9-season-1-episode-24', 'recVNTB8KX7Aw5F2b', 24, '', NULL, '', '', 0, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('3-ds9-season-2-episode-03', '3-ds9-season-2', 3, 'Episode 3 of season 2', '1994-03-04', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('3-ds9-season-1-episode-25', 'recVNTB8KX7Aw5F2b', 25, '', NULL, '', '', 0, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('3-ds9-season-2-episode-04', '3-ds9-season-2', 4, 'Episode 4 of season 2', '1994-03-11', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('3-ds9-season-1-episode-26', 'recVNTB8KX7Aw5F2b', 26, '', NULL, '', '', 0, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('3-ds9-season-2-episode-05', '3-ds9-season-2', 5, 'Episode 5 of season 2', '1994-03-18', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('4-voy-season-1-episode-01', 'rec9Dh3DBgJ3MPQaN', 1, 'Episode 1 of season 1 of Voyager.', '1995-01-16', 'Staff Writer', 'Series Director', 44, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('3-ds9-season-2-episode-06', '3-ds9-season-2', 6, 'Episode 6 of season 2', '1994-03-25', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('4-voy-season-1-episode-02', 'rec9Dh3DBgJ3MPQaN', 2, 'Episode 2 of season 1 of Voyager.', '1995-01-23', 'Staff Writer', 'Series Director', 44, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('3-ds9-season-2-episode-07', '3-ds9-season-2', 7, 'Episode 7 of season 2', '1994-04-01', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('4-voy-season-1-episode-03', 'rec9Dh3DBgJ3MPQaN', 3, 'Episode 3 of season 1 of Voyager.', '1995-01-30', 'Staff Writer', 'Series Director', 44, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('3-ds9-season-2-episode-08', '3-ds9-season-2', 8, 'Episode 8 of season 2', '1994-04-08', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('5-ent-season-1-episode-01', 'recK3tmycKeKQ3U8Z', 1, 'Episode 1 of season 1 of Enterprise.', '2001-09-26', 'Staff Writer', 'Series Director', 43, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('3-ds9-season-2-episode-09', '3-ds9-season-2', 9, 'Episode 9 of season 2', '1994-04-15', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('5-ent-season-1-episode-02', 'recK3tmycKeKQ3U8Z', 2, 'Episode 2 of season 1 of Enterprise.', '2001-10-03', 'Staff Writer', 'Series Director', 43, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('3-ds9-season-2-episode-10', '3-ds9-season-2', 10, 'Episode 10 of season 2', '1994-04-22', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('5-ent-season-1-episode-03', 'recK3tmycKeKQ3U8Z', 3, 'Episode 3 of season 1 of Enterprise.', '2001-10-10', 'Staff Writer', 'Series Director', 43, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('3-ds9-season-2-episode-11', '3-ds9-season-2', 11, 'Episode 11 of season 2', '1994-04-29', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('5-ent-season-2-episode-01', 'rec1inaTn5vtFH8Qi', 1, 'Episode 1 of season 2 of Enterprise.', '2002-09-18', 'Staff Writer', 'Series Director', 43, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('3-ds9-season-2-episode-12', '3-ds9-season-2', 12, 'Episode 12 of season 2', '1994-05-06', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('5-ent-season-2-episode-02', 'rec1inaTn5vtFH8Qi', 2, 'Episode 2 of season 2 of Enterprise.', '2002-09-25', 'Staff Writer', 'Series Director', 43, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('3-ds9-season-2-episode-13', '3-ds9-season-2', 13, 'Episode 13 of season 2', '1994-05-13', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('5-ent-season-2-episode-03', 'rec1inaTn5vtFH8Qi', 3, 'Episode 3 of season 2 of Enterprise.', '2002-10-02', 'Staff Writer', 'Series Director', 43, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('3-ds9-season-2-episode-14', '3-ds9-season-2', 14, 'Episode 14 of season 2', '1994-05-20', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('6-dis-season-1-episode-01', 'recNJu4vu6dlOV2XT', 1, 'Episode 1 of season 1 of Discovery.', '2017-09-24', 'Staff Writer', 'Series Director', 42, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('3-ds9-season-2-episode-15', '3-ds9-season-2', 15, 'Episode 15 of season 2', '1994-05-27', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('6-dis-season-1-episode-02', 'recNJu4vu6dlOV2XT', 2, 'Episode 2 of season 1 of Discovery.', '2017-10-01', 'Staff Writer', 'Series Director', 42, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('3-ds9-season-2-episode-16', '3-ds9-season-2', 16, 'Episode 16 of season 2', '1994-06-03', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('6-dis-season-2-episode-01', 'recUA4S6jTO8GWmiC', 1, 'Episode 1 of season 2 of Discovery.', '2019-01-17', 'Staff Writer', 'Series Director', 42, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('3-ds9-season-2-episode-17', '3-ds9-season-2', 17, 'Episode 17 of season 2', '1994-06-10', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
-VALUES ('6-dis-season-2-episode-02', 'recUA4S6jTO8GWmiC', 2, 'Episode 2 of season 2 of Discovery.', '2019-01-24', 'Staff Writer', 'Series Director', 42, '', '', '') ON CONFLICT (episode_id) DO NOTHING;
+VALUES ('3-ds9-season-2-episode-18', '3-ds9-season-2', 18, 'Episode 18 of season 2', '1994-06-17', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-2-episode-19', '3-ds9-season-2', 19, 'Episode 19 of season 2', '1994-06-24', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-2-episode-20', '3-ds9-season-2', 20, 'Episode 20 of season 2', '1994-07-01', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-2-episode-21', '3-ds9-season-2', 21, 'Episode 21 of season 2', '1994-07-08', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-2-episode-22', '3-ds9-season-2', 22, 'Episode 22 of season 2', '1994-07-15', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-2-episode-23', '3-ds9-season-2', 23, 'Episode 23 of season 2', '1994-07-22', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-2-episode-24', '3-ds9-season-2', 24, 'Episode 24 of season 2', '1994-07-29', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-2-episode-25', '3-ds9-season-2', 25, 'Episode 25 of season 2', '1994-08-05', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-2-episode-26', '3-ds9-season-2', 26, 'Episode 26 of season 2', '1994-08-12', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-3-episode-01', '3-ds9-season-3', 1, 'Episode 1 of season 3', '1994-09-18', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-3-episode-02', '3-ds9-season-3', 2, 'Episode 2 of season 3', '1994-09-25', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-3-episode-03', '3-ds9-season-3', 3, 'Episode 3 of season 3', '1994-10-02', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-3-episode-04', '3-ds9-season-3', 4, 'Episode 4 of season 3', '1994-10-09', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-3-episode-05', '3-ds9-season-3', 5, 'Episode 5 of season 3', '1994-10-16', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-3-episode-06', '3-ds9-season-3', 6, 'Episode 6 of season 3', '1994-10-23', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-3-episode-07', '3-ds9-season-3', 7, 'Episode 7 of season 3', '1994-10-30', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-3-episode-08', '3-ds9-season-3', 8, 'Episode 8 of season 3', '1994-11-06', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-3-episode-09', '3-ds9-season-3', 9, 'Episode 9 of season 3', '1994-11-13', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-3-episode-10', '3-ds9-season-3', 10, 'Episode 10 of season 3', '1994-11-20', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-3-episode-11', '3-ds9-season-3', 11, 'Episode 11 of season 3', '1994-11-27', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-3-episode-12', '3-ds9-season-3', 12, 'Episode 12 of season 3', '1994-12-04', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-3-episode-13', '3-ds9-season-3', 13, 'Episode 13 of season 3', '1994-12-11', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-3-episode-14', '3-ds9-season-3', 14, 'Episode 14 of season 3', '1994-12-18', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-3-episode-15', '3-ds9-season-3', 15, 'Episode 15 of season 3', '1994-12-25', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-3-episode-16', '3-ds9-season-3', 16, 'Episode 16 of season 3', '1995-01-01', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-3-episode-17', '3-ds9-season-3', 17, 'Episode 17 of season 3', '1995-01-08', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-3-episode-18', '3-ds9-season-3', 18, 'Episode 18 of season 3', '1995-01-15', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-3-episode-19', '3-ds9-season-3', 19, 'Episode 19 of season 3', '1995-01-22', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-3-episode-20', '3-ds9-season-3', 20, 'Episode 20 of season 3', '1995-01-29', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-3-episode-21', '3-ds9-season-3', 21, 'Episode 21 of season 3', '1995-02-05', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-3-episode-22', '3-ds9-season-3', 22, 'Episode 22 of season 3', '1995-02-12', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-3-episode-23', '3-ds9-season-3', 23, 'Episode 23 of season 3', '1995-02-19', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-3-episode-24', '3-ds9-season-3', 24, 'Episode 24 of season 3', '1995-02-26', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-3-episode-25', '3-ds9-season-3', 25, 'Episode 25 of season 3', '1995-03-05', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-3-episode-26', '3-ds9-season-3', 26, 'Episode 26 of season 3', '1995-03-12', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-4-episode-01', '3-ds9-season-4', 1, 'Episode 1 of season 4', '1995-04-18', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-4-episode-02', '3-ds9-season-4', 2, 'Episode 2 of season 4', '1995-04-25', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-4-episode-03', '3-ds9-season-4', 3, 'Episode 3 of season 4', '1995-05-02', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-4-episode-04', '3-ds9-season-4', 4, 'Episode 4 of season 4', '1995-05-09', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-4-episode-05', '3-ds9-season-4', 5, 'Episode 5 of season 4', '1995-05-16', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-4-episode-06', '3-ds9-season-4', 6, 'Episode 6 of season 4', '1995-05-23', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-4-episode-07', '3-ds9-season-4', 7, 'Episode 7 of season 4', '1995-05-30', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-4-episode-08', '3-ds9-season-4', 8, 'Episode 8 of season 4', '1995-06-06', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-4-episode-09', '3-ds9-season-4', 9, 'Episode 9 of season 4', '1995-06-13', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-4-episode-10', '3-ds9-season-4', 10, 'Episode 10 of season 4', '1995-06-20', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-4-episode-11', '3-ds9-season-4', 11, 'Episode 11 of season 4', '1995-06-27', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-4-episode-12', '3-ds9-season-4', 12, 'Episode 12 of season 4', '1995-07-04', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-4-episode-13', '3-ds9-season-4', 13, 'Episode 13 of season 4', '1995-07-11', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-4-episode-14', '3-ds9-season-4', 14, 'Episode 14 of season 4', '1995-07-18', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-4-episode-15', '3-ds9-season-4', 15, 'Episode 15 of season 4', '1995-07-25', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-4-episode-16', '3-ds9-season-4', 16, 'Episode 16 of season 4', '1995-08-01', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-4-episode-17', '3-ds9-season-4', 17, 'Episode 17 of season 4', '1995-08-08', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-4-episode-18', '3-ds9-season-4', 18, 'Episode 18 of season 4', '1995-08-15', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-4-episode-19', '3-ds9-season-4', 19, 'Episode 19 of season 4', '1995-08-22', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-4-episode-20', '3-ds9-season-4', 20, 'Episode 20 of season 4', '1995-08-29', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-4-episode-21', '3-ds9-season-4', 21, 'Episode 21 of season 4', '1995-09-05', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-4-episode-22', '3-ds9-season-4', 22, 'Episode 22 of season 4', '1995-09-12', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-4-episode-23', '3-ds9-season-4', 23, 'Episode 23 of season 4', '1995-09-19', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-4-episode-24', '3-ds9-season-4', 24, 'Episode 24 of season 4', '1995-09-26', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-4-episode-25', '3-ds9-season-4', 25, 'Episode 25 of season 4', '1995-10-03', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-4-episode-26', '3-ds9-season-4', 26, 'Episode 26 of season 4', '1995-10-10', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-5-episode-01', '3-ds9-season-5', 1, 'Episode 1 of season 5', '1995-11-16', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-5-episode-02', '3-ds9-season-5', 2, 'Episode 2 of season 5', '1995-11-23', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-5-episode-03', '3-ds9-season-5', 3, 'Episode 3 of season 5', '1995-11-30', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-5-episode-04', '3-ds9-season-5', 4, 'Episode 4 of season 5', '1995-12-07', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-5-episode-05', '3-ds9-season-5', 5, 'Episode 5 of season 5', '1995-12-14', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-5-episode-06', '3-ds9-season-5', 6, 'Episode 6 of season 5', '1995-12-21', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-5-episode-07', '3-ds9-season-5', 7, 'Episode 7 of season 5', '1995-12-28', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-5-episode-08', '3-ds9-season-5', 8, 'Episode 8 of season 5', '1996-01-04', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-5-episode-09', '3-ds9-season-5', 9, 'Episode 9 of season 5', '1996-01-11', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-5-episode-10', '3-ds9-season-5', 10, 'Episode 10 of season 5', '1996-01-18', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-5-episode-11', '3-ds9-season-5', 11, 'Episode 11 of season 5', '1996-01-25', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-5-episode-12', '3-ds9-season-5', 12, 'Episode 12 of season 5', '1996-02-01', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-5-episode-13', '3-ds9-season-5', 13, 'Episode 13 of season 5', '1996-02-08', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-5-episode-14', '3-ds9-season-5', 14, 'Episode 14 of season 5', '1996-02-15', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-5-episode-15', '3-ds9-season-5', 15, 'Episode 15 of season 5', '1996-02-22', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-5-episode-16', '3-ds9-season-5', 16, 'Episode 16 of season 5', '1996-02-29', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-5-episode-17', '3-ds9-season-5', 17, 'Episode 17 of season 5', '1996-03-07', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-5-episode-18', '3-ds9-season-5', 18, 'Episode 18 of season 5', '1996-03-14', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-5-episode-19', '3-ds9-season-5', 19, 'Episode 19 of season 5', '1996-03-21', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-5-episode-20', '3-ds9-season-5', 20, 'Episode 20 of season 5', '1996-03-28', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-5-episode-21', '3-ds9-season-5', 21, 'Episode 21 of season 5', '1996-04-04', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-5-episode-22', '3-ds9-season-5', 22, 'Episode 22 of season 5', '1996-04-11', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-5-episode-23', '3-ds9-season-5', 23, 'Episode 23 of season 5', '1996-04-18', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-5-episode-24', '3-ds9-season-5', 24, 'Episode 24 of season 5', '1996-04-25', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-5-episode-25', '3-ds9-season-5', 25, 'Episode 25 of season 5', '1996-05-02', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-5-episode-26', '3-ds9-season-5', 26, 'Episode 26 of season 5', '1996-05-09', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-6-episode-01', '3-ds9-season-6', 1, 'Episode 1 of season 6', '1996-06-15', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-6-episode-02', '3-ds9-season-6', 2, 'Episode 2 of season 6', '1996-06-22', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-6-episode-03', '3-ds9-season-6', 3, 'Episode 3 of season 6', '1996-06-29', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-6-episode-04', '3-ds9-season-6', 4, 'Episode 4 of season 6', '1996-07-06', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-6-episode-05', '3-ds9-season-6', 5, 'Episode 5 of season 6', '1996-07-13', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-6-episode-06', '3-ds9-season-6', 6, 'Episode 6 of season 6', '1996-07-20', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-6-episode-07', '3-ds9-season-6', 7, 'Episode 7 of season 6', '1996-07-27', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-6-episode-08', '3-ds9-season-6', 8, 'Episode 8 of season 6', '1996-08-03', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-6-episode-09', '3-ds9-season-6', 9, 'Episode 9 of season 6', '1996-08-10', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-6-episode-10', '3-ds9-season-6', 10, 'Episode 10 of season 6', '1996-08-17', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-6-episode-11', '3-ds9-season-6', 11, 'Episode 11 of season 6', '1996-08-24', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-6-episode-12', '3-ds9-season-6', 12, 'Episode 12 of season 6', '1996-08-31', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-6-episode-13', '3-ds9-season-6', 13, 'Episode 13 of season 6', '1996-09-07', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-6-episode-14', '3-ds9-season-6', 14, 'Episode 14 of season 6', '1996-09-14', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-6-episode-15', '3-ds9-season-6', 15, 'Episode 15 of season 6', '1996-09-21', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-6-episode-16', '3-ds9-season-6', 16, 'Episode 16 of season 6', '1996-09-28', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-6-episode-17', '3-ds9-season-6', 17, 'Episode 17 of season 6', '1996-10-05', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-6-episode-18', '3-ds9-season-6', 18, 'Episode 18 of season 6', '1996-10-12', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-6-episode-19', '3-ds9-season-6', 19, 'Episode 19 of season 6', '1996-10-19', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-6-episode-20', '3-ds9-season-6', 20, 'Episode 20 of season 6', '1996-10-26', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-6-episode-21', '3-ds9-season-6', 21, 'Episode 21 of season 6', '1996-11-02', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-6-episode-22', '3-ds9-season-6', 22, 'Episode 22 of season 6', '1996-11-09', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-6-episode-23', '3-ds9-season-6', 23, 'Episode 23 of season 6', '1996-11-16', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-6-episode-24', '3-ds9-season-6', 24, 'Episode 24 of season 6', '1996-11-23', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-6-episode-25', '3-ds9-season-6', 25, 'Episode 25 of season 6', '1996-11-30', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-6-episode-26', '3-ds9-season-6', 26, 'Episode 26 of season 6', '1996-12-07', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-7-episode-01', '3-ds9-season-7', 1, 'Episode 1 of season 7', '1997-01-13', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-7-episode-02', '3-ds9-season-7', 2, 'Episode 2 of season 7', '1997-01-20', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-7-episode-03', '3-ds9-season-7', 3, 'Episode 3 of season 7', '1997-01-27', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-7-episode-04', '3-ds9-season-7', 4, 'Episode 4 of season 7', '1997-02-03', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-7-episode-05', '3-ds9-season-7', 5, 'Episode 5 of season 7', '1997-02-10', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-7-episode-06', '3-ds9-season-7', 6, 'Episode 6 of season 7', '1997-02-17', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-7-episode-07', '3-ds9-season-7', 7, 'Episode 7 of season 7', '1997-02-24', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-7-episode-08', '3-ds9-season-7', 8, 'Episode 8 of season 7', '1997-03-03', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-7-episode-09', '3-ds9-season-7', 9, 'Episode 9 of season 7', '1997-03-10', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-7-episode-10', '3-ds9-season-7', 10, 'Episode 10 of season 7', '1997-03-17', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-7-episode-11', '3-ds9-season-7', 11, 'Episode 11 of season 7', '1997-03-24', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-7-episode-12', '3-ds9-season-7', 12, 'Episode 12 of season 7', '1997-03-31', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-7-episode-13', '3-ds9-season-7', 13, 'Episode 13 of season 7', '1997-04-07', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-7-episode-14', '3-ds9-season-7', 14, 'Episode 14 of season 7', '1997-04-14', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-7-episode-15', '3-ds9-season-7', 15, 'Episode 15 of season 7', '1997-04-21', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-7-episode-16', '3-ds9-season-7', 16, 'Episode 16 of season 7', '1997-04-28', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-7-episode-17', '3-ds9-season-7', 17, 'Episode 17 of season 7', '1997-05-05', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-7-episode-18', '3-ds9-season-7', 18, 'Episode 18 of season 7', '1997-05-12', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-7-episode-19', '3-ds9-season-7', 19, 'Episode 19 of season 7', '1997-05-19', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-7-episode-20', '3-ds9-season-7', 20, 'Episode 20 of season 7', '1997-05-26', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-7-episode-21', '3-ds9-season-7', 21, 'Episode 21 of season 7', '1997-06-02', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-7-episode-22', '3-ds9-season-7', 22, 'Episode 22 of season 7', '1997-06-09', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-7-episode-23', '3-ds9-season-7', 23, 'Episode 23 of season 7', '1997-06-16', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-7-episode-24', '3-ds9-season-7', 24, 'Episode 24 of season 7', '1997-06-23', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-7-episode-25', '3-ds9-season-7', 25, 'Episode 25 of season 7', '1997-06-30', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('3-ds9-season-7-episode-26', '3-ds9-season-7', 26, 'Episode 26 of season 7', '1997-07-07', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-1-episode-01', '4-voy-season-1', 1, 'Episode 1 of season 1', '1995-09-01', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-1-episode-02', '4-voy-season-1', 2, 'Episode 2 of season 1', '1995-09-08', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-1-episode-03', '4-voy-season-1', 3, 'Episode 3 of season 1', '1995-09-15', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-1-episode-04', '4-voy-season-1', 4, 'Episode 4 of season 1', '1995-09-22', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-1-episode-05', '4-voy-season-1', 5, 'Episode 5 of season 1', '1995-09-29', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-1-episode-06', '4-voy-season-1', 6, 'Episode 6 of season 1', '1995-10-06', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-1-episode-07', '4-voy-season-1', 7, 'Episode 7 of season 1', '1995-10-13', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-1-episode-08', '4-voy-season-1', 8, 'Episode 8 of season 1', '1995-10-20', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-1-episode-09', '4-voy-season-1', 9, 'Episode 9 of season 1', '1995-10-27', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-1-episode-10', '4-voy-season-1', 10, 'Episode 10 of season 1', '1995-11-03', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-1-episode-11', '4-voy-season-1', 11, 'Episode 11 of season 1', '1995-11-10', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-1-episode-12', '4-voy-season-1', 12, 'Episode 12 of season 1', '1995-11-17', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-1-episode-13', '4-voy-season-1', 13, 'Episode 13 of season 1', '1995-11-24', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-1-episode-14', '4-voy-season-1', 14, 'Episode 14 of season 1', '1995-12-01', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-1-episode-15', '4-voy-season-1', 15, 'Episode 15 of season 1', '1995-12-08', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-1-episode-16', '4-voy-season-1', 16, 'Episode 16 of season 1', '1995-12-15', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-2-episode-01', '4-voy-season-2', 1, 'Episode 1 of season 2', '1996-01-21', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-2-episode-02', '4-voy-season-2', 2, 'Episode 2 of season 2', '1996-01-28', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-2-episode-03', '4-voy-season-2', 3, 'Episode 3 of season 2', '1996-02-04', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-2-episode-04', '4-voy-season-2', 4, 'Episode 4 of season 2', '1996-02-11', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-2-episode-05', '4-voy-season-2', 5, 'Episode 5 of season 2', '1996-02-18', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-2-episode-06', '4-voy-season-2', 6, 'Episode 6 of season 2', '1996-02-25', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-2-episode-07', '4-voy-season-2', 7, 'Episode 7 of season 2', '1996-03-03', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-2-episode-08', '4-voy-season-2', 8, 'Episode 8 of season 2', '1996-03-10', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-2-episode-09', '4-voy-season-2', 9, 'Episode 9 of season 2', '1996-03-17', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-2-episode-10', '4-voy-season-2', 10, 'Episode 10 of season 2', '1996-03-24', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-2-episode-11', '4-voy-season-2', 11, 'Episode 11 of season 2', '1996-03-31', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-2-episode-12', '4-voy-season-2', 12, 'Episode 12 of season 2', '1996-04-07', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-2-episode-13', '4-voy-season-2', 13, 'Episode 13 of season 2', '1996-04-14', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-2-episode-14', '4-voy-season-2', 14, 'Episode 14 of season 2', '1996-04-21', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-2-episode-15', '4-voy-season-2', 15, 'Episode 15 of season 2', '1996-04-28', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-2-episode-16', '4-voy-season-2', 16, 'Episode 16 of season 2', '1996-05-05', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-2-episode-17', '4-voy-season-2', 17, 'Episode 17 of season 2', '1996-05-12', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-2-episode-18', '4-voy-season-2', 18, 'Episode 18 of season 2', '1996-05-19', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-2-episode-19', '4-voy-season-2', 19, 'Episode 19 of season 2', '1996-05-26', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-2-episode-20', '4-voy-season-2', 20, 'Episode 20 of season 2', '1996-06-02', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-2-episode-21', '4-voy-season-2', 21, 'Episode 21 of season 2', '1996-06-09', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-2-episode-22', '4-voy-season-2', 22, 'Episode 22 of season 2', '1996-06-16', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-2-episode-23', '4-voy-season-2', 23, 'Episode 23 of season 2', '1996-06-23', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-2-episode-24', '4-voy-season-2', 24, 'Episode 24 of season 2', '1996-06-30', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-2-episode-25', '4-voy-season-2', 25, 'Episode 25 of season 2', '1996-07-07', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-2-episode-26', '4-voy-season-2', 26, 'Episode 26 of season 2', '1996-07-14', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-3-episode-01', '4-voy-season-3', 1, 'Episode 1 of season 3', '1996-08-20', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-3-episode-02', '4-voy-season-3', 2, 'Episode 2 of season 3', '1996-08-27', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-3-episode-03', '4-voy-season-3', 3, 'Episode 3 of season 3', '1996-09-03', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-3-episode-04', '4-voy-season-3', 4, 'Episode 4 of season 3', '1996-09-10', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-3-episode-05', '4-voy-season-3', 5, 'Episode 5 of season 3', '1996-09-17', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-3-episode-06', '4-voy-season-3', 6, 'Episode 6 of season 3', '1996-09-24', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-3-episode-07', '4-voy-season-3', 7, 'Episode 7 of season 3', '1996-10-01', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-3-episode-08', '4-voy-season-3', 8, 'Episode 8 of season 3', '1996-10-08', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-3-episode-09', '4-voy-season-3', 9, 'Episode 9 of season 3', '1996-10-15', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-3-episode-10', '4-voy-season-3', 10, 'Episode 10 of season 3', '1996-10-22', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-3-episode-11', '4-voy-season-3', 11, 'Episode 11 of season 3', '1996-10-29', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-3-episode-12', '4-voy-season-3', 12, 'Episode 12 of season 3', '1996-11-05', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-3-episode-13', '4-voy-season-3', 13, 'Episode 13 of season 3', '1996-11-12', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-3-episode-14', '4-voy-season-3', 14, 'Episode 14 of season 3', '1996-11-19', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-3-episode-15', '4-voy-season-3', 15, 'Episode 15 of season 3', '1996-11-26', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-3-episode-16', '4-voy-season-3', 16, 'Episode 16 of season 3', '1996-12-03', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-3-episode-17', '4-voy-season-3', 17, 'Episode 17 of season 3', '1996-12-10', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-3-episode-18', '4-voy-season-3', 18, 'Episode 18 of season 3', '1996-12-17', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-3-episode-19', '4-voy-season-3', 19, 'Episode 19 of season 3', '1996-12-24', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-3-episode-20', '4-voy-season-3', 20, 'Episode 20 of season 3', '1996-12-31', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-3-episode-21', '4-voy-season-3', 21, 'Episode 21 of season 3', '1997-01-07', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-3-episode-22', '4-voy-season-3', 22, 'Episode 22 of season 3', '1997-01-14', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-3-episode-23', '4-voy-season-3', 23, 'Episode 23 of season 3', '1997-01-21', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-3-episode-24', '4-voy-season-3', 24, 'Episode 24 of season 3', '1997-01-28', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-3-episode-25', '4-voy-season-3', 25, 'Episode 25 of season 3', '1997-02-04', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-3-episode-26', '4-voy-season-3', 26, 'Episode 26 of season 3', '1997-02-11', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-4-episode-01', '4-voy-season-4', 1, 'Episode 1 of season 4', '1997-03-20', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-4-episode-02', '4-voy-season-4', 2, 'Episode 2 of season 4', '1997-03-27', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-4-episode-03', '4-voy-season-4', 3, 'Episode 3 of season 4', '1997-04-03', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-4-episode-04', '4-voy-season-4', 4, 'Episode 4 of season 4', '1997-04-10', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-4-episode-05', '4-voy-season-4', 5, 'Episode 5 of season 4', '1997-04-17', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-4-episode-06', '4-voy-season-4', 6, 'Episode 6 of season 4', '1997-04-24', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-4-episode-07', '4-voy-season-4', 7, 'Episode 7 of season 4', '1997-05-01', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-4-episode-08', '4-voy-season-4', 8, 'Episode 8 of season 4', '1997-05-08', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-4-episode-09', '4-voy-season-4', 9, 'Episode 9 of season 4', '1997-05-15', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-4-episode-10', '4-voy-season-4', 10, 'Episode 10 of season 4', '1997-05-22', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-4-episode-11', '4-voy-season-4', 11, 'Episode 11 of season 4', '1997-05-29', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-4-episode-12', '4-voy-season-4', 12, 'Episode 12 of season 4', '1997-06-05', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-4-episode-13', '4-voy-season-4', 13, 'Episode 13 of season 4', '1997-06-12', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-4-episode-14', '4-voy-season-4', 14, 'Episode 14 of season 4', '1997-06-19', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-4-episode-15', '4-voy-season-4', 15, 'Episode 15 of season 4', '1997-06-26', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-4-episode-16', '4-voy-season-4', 16, 'Episode 16 of season 4', '1997-07-03', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-4-episode-17', '4-voy-season-4', 17, 'Episode 17 of season 4', '1997-07-10', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-4-episode-18', '4-voy-season-4', 18, 'Episode 18 of season 4', '1997-07-17', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-4-episode-19', '4-voy-season-4', 19, 'Episode 19 of season 4', '1997-07-24', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-4-episode-20', '4-voy-season-4', 20, 'Episode 20 of season 4', '1997-07-31', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-4-episode-21', '4-voy-season-4', 21, 'Episode 21 of season 4', '1997-08-07', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-4-episode-22', '4-voy-season-4', 22, 'Episode 22 of season 4', '1997-08-14', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-4-episode-23', '4-voy-season-4', 23, 'Episode 23 of season 4', '1997-08-21', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-4-episode-24', '4-voy-season-4', 24, 'Episode 24 of season 4', '1997-08-28', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-4-episode-25', '4-voy-season-4', 25, 'Episode 25 of season 4', '1997-09-04', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-4-episode-26', '4-voy-season-4', 26, 'Episode 26 of season 4', '1997-09-11', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-5-episode-01', '4-voy-season-5', 1, 'Episode 1 of season 5', '1997-10-18', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-5-episode-02', '4-voy-season-5', 2, 'Episode 2 of season 5', '1997-10-25', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-5-episode-03', '4-voy-season-5', 3, 'Episode 3 of season 5', '1997-11-01', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-5-episode-04', '4-voy-season-5', 4, 'Episode 4 of season 5', '1997-11-08', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-5-episode-05', '4-voy-season-5', 5, 'Episode 5 of season 5', '1997-11-15', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-5-episode-06', '4-voy-season-5', 6, 'Episode 6 of season 5', '1997-11-22', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-5-episode-07', '4-voy-season-5', 7, 'Episode 7 of season 5', '1997-11-29', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-5-episode-08', '4-voy-season-5', 8, 'Episode 8 of season 5', '1997-12-06', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-5-episode-09', '4-voy-season-5', 9, 'Episode 9 of season 5', '1997-12-13', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-5-episode-10', '4-voy-season-5', 10, 'Episode 10 of season 5', '1997-12-20', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-5-episode-11', '4-voy-season-5', 11, 'Episode 11 of season 5', '1997-12-27', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-5-episode-12', '4-voy-season-5', 12, 'Episode 12 of season 5', '1998-01-03', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-5-episode-13', '4-voy-season-5', 13, 'Episode 13 of season 5', '1998-01-10', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-5-episode-14', '4-voy-season-5', 14, 'Episode 14 of season 5', '1998-01-17', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-5-episode-15', '4-voy-season-5', 15, 'Episode 15 of season 5', '1998-01-24', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-5-episode-16', '4-voy-season-5', 16, 'Episode 16 of season 5', '1998-01-31', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-5-episode-17', '4-voy-season-5', 17, 'Episode 17 of season 5', '1998-02-07', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-5-episode-18', '4-voy-season-5', 18, 'Episode 18 of season 5', '1998-02-14', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-5-episode-19', '4-voy-season-5', 19, 'Episode 19 of season 5', '1998-02-21', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-5-episode-20', '4-voy-season-5', 20, 'Episode 20 of season 5', '1998-02-28', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-5-episode-21', '4-voy-season-5', 21, 'Episode 21 of season 5', '1998-03-07', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-5-episode-22', '4-voy-season-5', 22, 'Episode 22 of season 5', '1998-03-14', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-5-episode-23', '4-voy-season-5', 23, 'Episode 23 of season 5', '1998-03-21', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-5-episode-24', '4-voy-season-5', 24, 'Episode 24 of season 5', '1998-03-28', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-5-episode-25', '4-voy-season-5', 25, 'Episode 25 of season 5', '1998-04-04', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-5-episode-26', '4-voy-season-5', 26, 'Episode 26 of season 5', '1998-04-11', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-6-episode-01', '4-voy-season-6', 1, 'Episode 1 of season 6', '1998-05-18', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-6-episode-02', '4-voy-season-6', 2, 'Episode 2 of season 6', '1998-05-25', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-6-episode-03', '4-voy-season-6', 3, 'Episode 3 of season 6', '1998-06-01', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-6-episode-04', '4-voy-season-6', 4, 'Episode 4 of season 6', '1998-06-08', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-6-episode-05', '4-voy-season-6', 5, 'Episode 5 of season 6', '1998-06-15', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-6-episode-06', '4-voy-season-6', 6, 'Episode 6 of season 6', '1998-06-22', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-6-episode-07', '4-voy-season-6', 7, 'Episode 7 of season 6', '1998-06-29', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-6-episode-08', '4-voy-season-6', 8, 'Episode 8 of season 6', '1998-07-06', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-6-episode-09', '4-voy-season-6', 9, 'Episode 9 of season 6', '1998-07-13', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-6-episode-10', '4-voy-season-6', 10, 'Episode 10 of season 6', '1998-07-20', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-6-episode-11', '4-voy-season-6', 11, 'Episode 11 of season 6', '1998-07-27', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-6-episode-12', '4-voy-season-6', 12, 'Episode 12 of season 6', '1998-08-03', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-6-episode-13', '4-voy-season-6', 13, 'Episode 13 of season 6', '1998-08-10', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-6-episode-14', '4-voy-season-6', 14, 'Episode 14 of season 6', '1998-08-17', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-6-episode-15', '4-voy-season-6', 15, 'Episode 15 of season 6', '1998-08-24', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-6-episode-16', '4-voy-season-6', 16, 'Episode 16 of season 6', '1998-08-31', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-6-episode-17', '4-voy-season-6', 17, 'Episode 17 of season 6', '1998-09-07', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-6-episode-18', '4-voy-season-6', 18, 'Episode 18 of season 6', '1998-09-14', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-6-episode-19', '4-voy-season-6', 19, 'Episode 19 of season 6', '1998-09-21', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-6-episode-20', '4-voy-season-6', 20, 'Episode 20 of season 6', '1998-09-28', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-6-episode-21', '4-voy-season-6', 21, 'Episode 21 of season 6', '1998-10-05', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-6-episode-22', '4-voy-season-6', 22, 'Episode 22 of season 6', '1998-10-12', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-6-episode-23', '4-voy-season-6', 23, 'Episode 23 of season 6', '1998-10-19', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-6-episode-24', '4-voy-season-6', 24, 'Episode 24 of season 6', '1998-10-26', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-6-episode-25', '4-voy-season-6', 25, 'Episode 25 of season 6', '1998-11-02', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-6-episode-26', '4-voy-season-6', 26, 'Episode 26 of season 6', '1998-11-09', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-7-episode-01', '4-voy-season-7', 1, 'Episode 1 of season 7', '1998-12-16', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-7-episode-02', '4-voy-season-7', 2, 'Episode 2 of season 7', '1998-12-23', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-7-episode-03', '4-voy-season-7', 3, 'Episode 3 of season 7', '1998-12-30', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-7-episode-04', '4-voy-season-7', 4, 'Episode 4 of season 7', '1999-01-06', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-7-episode-05', '4-voy-season-7', 5, 'Episode 5 of season 7', '1999-01-13', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-7-episode-06', '4-voy-season-7', 6, 'Episode 6 of season 7', '1999-01-20', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-7-episode-07', '4-voy-season-7', 7, 'Episode 7 of season 7', '1999-01-27', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-7-episode-08', '4-voy-season-7', 8, 'Episode 8 of season 7', '1999-02-03', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-7-episode-09', '4-voy-season-7', 9, 'Episode 9 of season 7', '1999-02-10', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-7-episode-10', '4-voy-season-7', 10, 'Episode 10 of season 7', '1999-02-17', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-7-episode-11', '4-voy-season-7', 11, 'Episode 11 of season 7', '1999-02-24', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-7-episode-12', '4-voy-season-7', 12, 'Episode 12 of season 7', '1999-03-03', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-7-episode-13', '4-voy-season-7', 13, 'Episode 13 of season 7', '1999-03-10', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-7-episode-14', '4-voy-season-7', 14, 'Episode 14 of season 7', '1999-03-17', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-7-episode-15', '4-voy-season-7', 15, 'Episode 15 of season 7', '1999-03-24', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-7-episode-16', '4-voy-season-7', 16, 'Episode 16 of season 7', '1999-03-31', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-7-episode-17', '4-voy-season-7', 17, 'Episode 17 of season 7', '1999-04-07', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-7-episode-18', '4-voy-season-7', 18, 'Episode 18 of season 7', '1999-04-14', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-7-episode-19', '4-voy-season-7', 19, 'Episode 19 of season 7', '1999-04-21', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-7-episode-20', '4-voy-season-7', 20, 'Episode 20 of season 7', '1999-04-28', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-7-episode-21', '4-voy-season-7', 21, 'Episode 21 of season 7', '1999-05-05', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-7-episode-22', '4-voy-season-7', 22, 'Episode 22 of season 7', '1999-05-12', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-7-episode-23', '4-voy-season-7', 23, 'Episode 23 of season 7', '1999-05-19', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('4-voy-season-7-episode-24', '4-voy-season-7', 24, 'Episode 24 of season 7', '1999-05-26', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-1-episode-01', '5-ent-season-1', 1, 'Episode 1 of season 1', '2001-09-01', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-1-episode-02', '5-ent-season-1', 2, 'Episode 2 of season 1', '2001-09-08', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-1-episode-03', '5-ent-season-1', 3, 'Episode 3 of season 1', '2001-09-15', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-1-episode-04', '5-ent-season-1', 4, 'Episode 4 of season 1', '2001-09-22', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-1-episode-05', '5-ent-season-1', 5, 'Episode 5 of season 1', '2001-09-29', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-1-episode-06', '5-ent-season-1', 6, 'Episode 6 of season 1', '2001-10-06', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-1-episode-07', '5-ent-season-1', 7, 'Episode 7 of season 1', '2001-10-13', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-1-episode-08', '5-ent-season-1', 8, 'Episode 8 of season 1', '2001-10-20', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-1-episode-09', '5-ent-season-1', 9, 'Episode 9 of season 1', '2001-10-27', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-1-episode-10', '5-ent-season-1', 10, 'Episode 10 of season 1', '2001-11-03', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-1-episode-11', '5-ent-season-1', 11, 'Episode 11 of season 1', '2001-11-10', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-1-episode-12', '5-ent-season-1', 12, 'Episode 12 of season 1', '2001-11-17', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-1-episode-13', '5-ent-season-1', 13, 'Episode 13 of season 1', '2001-11-24', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-1-episode-14', '5-ent-season-1', 14, 'Episode 14 of season 1', '2001-12-01', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-1-episode-15', '5-ent-season-1', 15, 'Episode 15 of season 1', '2001-12-08', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-1-episode-16', '5-ent-season-1', 16, 'Episode 16 of season 1', '2001-12-15', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-1-episode-17', '5-ent-season-1', 17, 'Episode 17 of season 1', '2001-12-22', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-1-episode-18', '5-ent-season-1', 18, 'Episode 18 of season 1', '2001-12-29', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-1-episode-19', '5-ent-season-1', 19, 'Episode 19 of season 1', '2002-01-05', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-1-episode-20', '5-ent-season-1', 20, 'Episode 20 of season 1', '2002-01-12', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-1-episode-21', '5-ent-season-1', 21, 'Episode 21 of season 1', '2002-01-19', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-1-episode-22', '5-ent-season-1', 22, 'Episode 22 of season 1', '2002-01-26', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-1-episode-23', '5-ent-season-1', 23, 'Episode 23 of season 1', '2002-02-02', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-1-episode-24', '5-ent-season-1', 24, 'Episode 24 of season 1', '2002-02-09', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-1-episode-25', '5-ent-season-1', 25, 'Episode 25 of season 1', '2002-02-16', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-1-episode-26', '5-ent-season-1', 26, 'Episode 26 of season 1', '2002-02-23', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-2-episode-01', '5-ent-season-2', 1, 'Episode 1 of season 2', '2002-04-01', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-2-episode-02', '5-ent-season-2', 2, 'Episode 2 of season 2', '2002-04-08', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-2-episode-03', '5-ent-season-2', 3, 'Episode 3 of season 2', '2002-04-15', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-2-episode-04', '5-ent-season-2', 4, 'Episode 4 of season 2', '2002-04-22', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-2-episode-05', '5-ent-season-2', 5, 'Episode 5 of season 2', '2002-04-29', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-2-episode-06', '5-ent-season-2', 6, 'Episode 6 of season 2', '2002-05-06', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-2-episode-07', '5-ent-season-2', 7, 'Episode 7 of season 2', '2002-05-13', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-2-episode-08', '5-ent-season-2', 8, 'Episode 8 of season 2', '2002-05-20', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-2-episode-09', '5-ent-season-2', 9, 'Episode 9 of season 2', '2002-05-27', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-2-episode-10', '5-ent-season-2', 10, 'Episode 10 of season 2', '2002-06-03', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-2-episode-11', '5-ent-season-2', 11, 'Episode 11 of season 2', '2002-06-10', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-2-episode-12', '5-ent-season-2', 12, 'Episode 12 of season 2', '2002-06-17', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-2-episode-13', '5-ent-season-2', 13, 'Episode 13 of season 2', '2002-06-24', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-2-episode-14', '5-ent-season-2', 14, 'Episode 14 of season 2', '2002-07-01', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-2-episode-15', '5-ent-season-2', 15, 'Episode 15 of season 2', '2002-07-08', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-2-episode-16', '5-ent-season-2', 16, 'Episode 16 of season 2', '2002-07-15', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-2-episode-17', '5-ent-season-2', 17, 'Episode 17 of season 2', '2002-07-22', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-2-episode-18', '5-ent-season-2', 18, 'Episode 18 of season 2', '2002-07-29', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-2-episode-19', '5-ent-season-2', 19, 'Episode 19 of season 2', '2002-08-05', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-2-episode-20', '5-ent-season-2', 20, 'Episode 20 of season 2', '2002-08-12', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-2-episode-21', '5-ent-season-2', 21, 'Episode 21 of season 2', '2002-08-19', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-2-episode-22', '5-ent-season-2', 22, 'Episode 22 of season 2', '2002-08-26', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-2-episode-23', '5-ent-season-2', 23, 'Episode 23 of season 2', '2002-09-02', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-2-episode-24', '5-ent-season-2', 24, 'Episode 24 of season 2', '2002-09-09', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-2-episode-25', '5-ent-season-2', 25, 'Episode 25 of season 2', '2002-09-16', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-2-episode-26', '5-ent-season-2', 26, 'Episode 26 of season 2', '2002-09-23', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-3-episode-01', '5-ent-season-3', 1, 'Episode 1 of season 3', '2002-10-30', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-3-episode-02', '5-ent-season-3', 2, 'Episode 2 of season 3', '2002-11-06', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-3-episode-03', '5-ent-season-3', 3, 'Episode 3 of season 3', '2002-11-13', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-3-episode-04', '5-ent-season-3', 4, 'Episode 4 of season 3', '2002-11-20', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-3-episode-05', '5-ent-season-3', 5, 'Episode 5 of season 3', '2002-11-27', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-3-episode-06', '5-ent-season-3', 6, 'Episode 6 of season 3', '2002-12-04', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-3-episode-07', '5-ent-season-3', 7, 'Episode 7 of season 3', '2002-12-11', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-3-episode-08', '5-ent-season-3', 8, 'Episode 8 of season 3', '2002-12-18', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-3-episode-09', '5-ent-season-3', 9, 'Episode 9 of season 3', '2002-12-25', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-3-episode-10', '5-ent-season-3', 10, 'Episode 10 of season 3', '2003-01-01', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-3-episode-11', '5-ent-season-3', 11, 'Episode 11 of season 3', '2003-01-08', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-3-episode-12', '5-ent-season-3', 12, 'Episode 12 of season 3', '2003-01-15', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-3-episode-13', '5-ent-season-3', 13, 'Episode 13 of season 3', '2003-01-22', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-3-episode-14', '5-ent-season-3', 14, 'Episode 14 of season 3', '2003-01-29', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-3-episode-15', '5-ent-season-3', 15, 'Episode 15 of season 3', '2003-02-05', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-3-episode-16', '5-ent-season-3', 16, 'Episode 16 of season 3', '2003-02-12', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-3-episode-17', '5-ent-season-3', 17, 'Episode 17 of season 3', '2003-02-19', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-3-episode-18', '5-ent-season-3', 18, 'Episode 18 of season 3', '2003-02-26', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-3-episode-19', '5-ent-season-3', 19, 'Episode 19 of season 3', '2003-03-05', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-3-episode-20', '5-ent-season-3', 20, 'Episode 20 of season 3', '2003-03-12', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-3-episode-21', '5-ent-season-3', 21, 'Episode 21 of season 3', '2003-03-19', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-3-episode-22', '5-ent-season-3', 22, 'Episode 22 of season 3', '2003-03-26', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-3-episode-23', '5-ent-season-3', 23, 'Episode 23 of season 3', '2003-04-02', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-3-episode-24', '5-ent-season-3', 24, 'Episode 24 of season 3', '2003-04-09', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-4-episode-01', '5-ent-season-4', 1, 'Episode 1 of season 4', '2003-05-16', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-4-episode-02', '5-ent-season-4', 2, 'Episode 2 of season 4', '2003-05-23', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-4-episode-03', '5-ent-season-4', 3, 'Episode 3 of season 4', '2003-05-30', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-4-episode-04', '5-ent-season-4', 4, 'Episode 4 of season 4', '2003-06-06', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-4-episode-05', '5-ent-season-4', 5, 'Episode 5 of season 4', '2003-06-13', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-4-episode-06', '5-ent-season-4', 6, 'Episode 6 of season 4', '2003-06-20', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-4-episode-07', '5-ent-season-4', 7, 'Episode 7 of season 4', '2003-06-27', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-4-episode-08', '5-ent-season-4', 8, 'Episode 8 of season 4', '2003-07-04', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-4-episode-09', '5-ent-season-4', 9, 'Episode 9 of season 4', '2003-07-11', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-4-episode-10', '5-ent-season-4', 10, 'Episode 10 of season 4', '2003-07-18', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-4-episode-11', '5-ent-season-4', 11, 'Episode 11 of season 4', '2003-07-25', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-4-episode-12', '5-ent-season-4', 12, 'Episode 12 of season 4', '2003-08-01', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-4-episode-13', '5-ent-season-4', 13, 'Episode 13 of season 4', '2003-08-08', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-4-episode-14', '5-ent-season-4', 14, 'Episode 14 of season 4', '2003-08-15', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-4-episode-15', '5-ent-season-4', 15, 'Episode 15 of season 4', '2003-08-22', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-4-episode-16', '5-ent-season-4', 16, 'Episode 16 of season 4', '2003-08-29', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-4-episode-17', '5-ent-season-4', 17, 'Episode 17 of season 4', '2003-09-05', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-4-episode-18', '5-ent-season-4', 18, 'Episode 18 of season 4', '2003-09-12', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-4-episode-19', '5-ent-season-4', 19, 'Episode 19 of season 4', '2003-09-19', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-4-episode-20', '5-ent-season-4', 20, 'Episode 20 of season 4', '2003-09-26', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-4-episode-21', '5-ent-season-4', 21, 'Episode 21 of season 4', '2003-10-03', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('5-ent-season-4-episode-22', '5-ent-season-4', 22, 'Episode 22 of season 4', '2003-10-10', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('6-dis-season-1-episode-01', '6-dis-season-1', 1, 'Episode 1 of season 1', '2017-09-01', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('6-dis-season-1-episode-02', '6-dis-season-1', 2, 'Episode 2 of season 1', '2017-09-08', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('6-dis-season-1-episode-03', '6-dis-season-1', 3, 'Episode 3 of season 1', '2017-09-15', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('6-dis-season-1-episode-04', '6-dis-season-1', 4, 'Episode 4 of season 1', '2017-09-22', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('6-dis-season-1-episode-05', '6-dis-season-1', 5, 'Episode 5 of season 1', '2017-09-29', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('6-dis-season-1-episode-06', '6-dis-season-1', 6, 'Episode 6 of season 1', '2017-10-06', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('6-dis-season-1-episode-07', '6-dis-season-1', 7, 'Episode 7 of season 1', '2017-10-13', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('6-dis-season-1-episode-08', '6-dis-season-1', 8, 'Episode 8 of season 1', '2017-10-20', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('6-dis-season-1-episode-09', '6-dis-season-1', 9, 'Episode 9 of season 1', '2017-10-27', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('6-dis-season-1-episode-10', '6-dis-season-1', 10, 'Episode 10 of season 1', '2017-11-03', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('6-dis-season-1-episode-11', '6-dis-season-1', 11, 'Episode 11 of season 1', '2017-11-10', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('6-dis-season-1-episode-12', '6-dis-season-1', 12, 'Episode 12 of season 1', '2017-11-17', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('6-dis-season-1-episode-13', '6-dis-season-1', 13, 'Episode 13 of season 1', '2017-11-24', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('6-dis-season-2-episode-01', '6-dis-season-2', 1, 'Episode 1 of season 2', '2017-12-31', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('6-dis-season-2-episode-02', '6-dis-season-2', 2, 'Episode 2 of season 2', '2018-01-07', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('6-dis-season-2-episode-03', '6-dis-season-2', 3, 'Episode 3 of season 2', '2018-01-14', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('6-dis-season-2-episode-04', '6-dis-season-2', 4, 'Episode 4 of season 2', '2018-01-21', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('6-dis-season-2-episode-05', '6-dis-season-2', 5, 'Episode 5 of season 2', '2018-01-28', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('6-dis-season-2-episode-06', '6-dis-season-2', 6, 'Episode 6 of season 2', '2018-02-04', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('6-dis-season-2-episode-07', '6-dis-season-2', 7, 'Episode 7 of season 2', '2018-02-11', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('6-dis-season-2-episode-08', '6-dis-season-2', 8, 'Episode 8 of season 2', '2018-02-18', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('6-dis-season-2-episode-09', '6-dis-season-2', 9, 'Episode 9 of season 2', '2018-02-25', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('6-dis-season-2-episode-10', '6-dis-season-2', 10, 'Episode 10 of season 2', '2018-03-04', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('6-dis-season-2-episode-11', '6-dis-season-2', 11, 'Episode 11 of season 2', '2018-03-11', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('6-dis-season-2-episode-12', '6-dis-season-2', 12, 'Episode 12 of season 2', '2018-03-18', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('6-dis-season-2-episode-13', '6-dis-season-2', 13, 'Episode 13 of season 2', '2018-03-25', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('6-dis-season-2-episode-14', '6-dis-season-2', 14, 'Episode 14 of season 2', '2018-04-01', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('6-dis-season-3-episode-01', '6-dis-season-3', 1, 'Episode 1 of season 3', '2018-05-08', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('6-dis-season-3-episode-02', '6-dis-season-3', 2, 'Episode 2 of season 3', '2018-05-15', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('6-dis-season-3-episode-03', '6-dis-season-3', 3, 'Episode 3 of season 3', '2018-05-22', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('6-dis-season-3-episode-04', '6-dis-season-3', 4, 'Episode 4 of season 3', '2018-05-29', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('6-dis-season-3-episode-05', '6-dis-season-3', 5, 'Episode 5 of season 3', '2018-06-05', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('6-dis-season-3-episode-06', '6-dis-season-3', 6, 'Episode 6 of season 3', '2018-06-12', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('6-dis-season-3-episode-07', '6-dis-season-3', 7, 'Episode 7 of season 3', '2018-06-19', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('6-dis-season-3-episode-08', '6-dis-season-3', 8, 'Episode 8 of season 3', '2018-06-26', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('6-dis-season-3-episode-09', '6-dis-season-3', 9, 'Episode 9 of season 3', '2018-07-03', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('6-dis-season-3-episode-10', '6-dis-season-3', 10, 'Episode 10 of season 3', '2018-07-10', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('6-dis-season-3-episode-11', '6-dis-season-3', 11, 'Episode 11 of season 3', '2018-07-17', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('6-dis-season-3-episode-12', '6-dis-season-3', 12, 'Episode 12 of season 3', '2018-07-24', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('6-dis-season-3-episode-13', '6-dis-season-3', 13, 'Episode 13 of season 3', '2018-07-31', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('6-dis-season-4-episode-01', '6-dis-season-4', 1, 'Episode 1 of season 4', '2018-09-06', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('6-dis-season-4-episode-02', '6-dis-season-4', 2, 'Episode 2 of season 4', '2018-09-13', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('6-dis-season-4-episode-03', '6-dis-season-4', 3, 'Episode 3 of season 4', '2018-09-20', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('6-dis-season-4-episode-04', '6-dis-season-4', 4, 'Episode 4 of season 4', '2018-09-27', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('6-dis-season-4-episode-05', '6-dis-season-4', 5, 'Episode 5 of season 4', '2018-10-04', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('6-dis-season-4-episode-06', '6-dis-season-4', 6, 'Episode 6 of season 4', '2018-10-11', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('6-dis-season-4-episode-07', '6-dis-season-4', 7, 'Episode 7 of season 4', '2018-10-18', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('6-dis-season-4-episode-08', '6-dis-season-4', 8, 'Episode 8 of season 4', '2018-10-25', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('6-dis-season-4-episode-09', '6-dis-season-4', 9, 'Episode 9 of season 4', '2018-11-01', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('6-dis-season-4-episode-10', '6-dis-season-4', 10, 'Episode 10 of season 4', '2018-11-08', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('6-dis-season-4-episode-11', '6-dis-season-4', 11, 'Episode 11 of season 4', '2018-11-15', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('6-dis-season-4-episode-12', '6-dis-season-4', 12, 'Episode 12 of season 4', '2018-11-22', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('6-dis-season-4-episode-13', '6-dis-season-4', 13, 'Episode 13 of season 4', '2018-11-29', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('6-dis-season-5-episode-01', '6-dis-season-5', 1, 'Episode 1 of season 5', '2019-01-05', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('6-dis-season-5-episode-02', '6-dis-season-5', 2, 'Episode 2 of season 5', '2019-01-12', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('6-dis-season-5-episode-03', '6-dis-season-5', 3, 'Episode 3 of season 5', '2019-01-19', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('6-dis-season-5-episode-04', '6-dis-season-5', 4, 'Episode 4 of season 5', '2019-01-26', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('6-dis-season-5-episode-05', '6-dis-season-5', 5, 'Episode 5 of season 5', '2019-02-02', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('6-dis-season-5-episode-06', '6-dis-season-5', 6, 'Episode 6 of season 5', '2019-02-09', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('6-dis-season-5-episode-07', '6-dis-season-5', 7, 'Episode 7 of season 5', '2019-02-16', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('6-dis-season-5-episode-08', '6-dis-season-5', 8, 'Episode 8 of season 5', '2019-02-23', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('6-dis-season-5-episode-09', '6-dis-season-5', 9, 'Episode 9 of season 5', '2019-03-02', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('6-dis-season-5-episode-10', '6-dis-season-5', 10, 'Episode 10 of season 5', '2019-03-09', 'Story by Starfleet', 'Starfleet Director', 48, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('7-pic-season-1-episode-01', '7-pic-season-1', 1, 'Episode 1 of season 1', '2020-09-01', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('7-pic-season-1-episode-02', '7-pic-season-1', 2, 'Episode 2 of season 1', '2020-09-08', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('7-pic-season-1-episode-03', '7-pic-season-1', 3, 'Episode 3 of season 1', '2020-09-15', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('7-pic-season-1-episode-04', '7-pic-season-1', 4, 'Episode 4 of season 1', '2020-09-22', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('7-pic-season-1-episode-05', '7-pic-season-1', 5, 'Episode 5 of season 1', '2020-09-29', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('7-pic-season-1-episode-06', '7-pic-season-1', 6, 'Episode 6 of season 1', '2020-10-06', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('7-pic-season-1-episode-07', '7-pic-season-1', 7, 'Episode 7 of season 1', '2020-10-13', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('7-pic-season-1-episode-08', '7-pic-season-1', 8, 'Episode 8 of season 1', '2020-10-20', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('7-pic-season-1-episode-09', '7-pic-season-1', 9, 'Episode 9 of season 1', '2020-10-27', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('7-pic-season-1-episode-10', '7-pic-season-1', 10, 'Episode 10 of season 1', '2020-11-03', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('7-pic-season-2-episode-01', '7-pic-season-2', 1, 'Episode 1 of season 2', '2020-12-10', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('7-pic-season-2-episode-02', '7-pic-season-2', 2, 'Episode 2 of season 2', '2020-12-17', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('7-pic-season-2-episode-03', '7-pic-season-2', 3, 'Episode 3 of season 2', '2020-12-24', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('7-pic-season-2-episode-04', '7-pic-season-2', 4, 'Episode 4 of season 2', '2020-12-31', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('7-pic-season-2-episode-05', '7-pic-season-2', 5, 'Episode 5 of season 2', '2021-01-07', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('7-pic-season-2-episode-06', '7-pic-season-2', 6, 'Episode 6 of season 2', '2021-01-14', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('7-pic-season-2-episode-07', '7-pic-season-2', 7, 'Episode 7 of season 2', '2021-01-21', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('7-pic-season-2-episode-08', '7-pic-season-2', 8, 'Episode 8 of season 2', '2021-01-28', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('7-pic-season-2-episode-09', '7-pic-season-2', 9, 'Episode 9 of season 2', '2021-02-04', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('7-pic-season-2-episode-10', '7-pic-season-2', 10, 'Episode 10 of season 2', '2021-02-11', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('7-pic-season-3-episode-01', '7-pic-season-3', 1, 'Episode 1 of season 3', '2021-03-20', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('7-pic-season-3-episode-02', '7-pic-season-3', 2, 'Episode 2 of season 3', '2021-03-27', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('7-pic-season-3-episode-03', '7-pic-season-3', 3, 'Episode 3 of season 3', '2021-04-03', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('7-pic-season-3-episode-04', '7-pic-season-3', 4, 'Episode 4 of season 3', '2021-04-10', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('7-pic-season-3-episode-05', '7-pic-season-3', 5, 'Episode 5 of season 3', '2021-04-17', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('7-pic-season-3-episode-06', '7-pic-season-3', 6, 'Episode 6 of season 3', '2021-04-24', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('7-pic-season-3-episode-07', '7-pic-season-3', 7, 'Episode 7 of season 3', '2021-05-01', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('7-pic-season-3-episode-08', '7-pic-season-3', 8, 'Episode 8 of season 3', '2021-05-08', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('7-pic-season-3-episode-09', '7-pic-season-3', 9, 'Episode 9 of season 3', '2021-05-15', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('7-pic-season-3-episode-10', '7-pic-season-3', 10, 'Episode 10 of season 3', '2021-05-22', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('8-lds-season-1-episode-01', '8-lds-season-1', 1, 'Episode 1 of season 1', '2020-09-01', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('8-lds-season-1-episode-02', '8-lds-season-1', 2, 'Episode 2 of season 1', '2020-09-08', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('8-lds-season-1-episode-03', '8-lds-season-1', 3, 'Episode 3 of season 1', '2020-09-15', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('8-lds-season-1-episode-04', '8-lds-season-1', 4, 'Episode 4 of season 1', '2020-09-22', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('8-lds-season-1-episode-05', '8-lds-season-1', 5, 'Episode 5 of season 1', '2020-09-29', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('8-lds-season-1-episode-06', '8-lds-season-1', 6, 'Episode 6 of season 1', '2020-10-06', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('8-lds-season-1-episode-07', '8-lds-season-1', 7, 'Episode 7 of season 1', '2020-10-13', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('8-lds-season-1-episode-08', '8-lds-season-1', 8, 'Episode 8 of season 1', '2020-10-20', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('8-lds-season-1-episode-09', '8-lds-season-1', 9, 'Episode 9 of season 1', '2020-10-27', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('8-lds-season-1-episode-10', '8-lds-season-1', 10, 'Episode 10 of season 1', '2020-11-03', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('8-lds-season-2-episode-01', '8-lds-season-2', 1, 'Episode 1 of season 2', '2020-12-10', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('8-lds-season-2-episode-02', '8-lds-season-2', 2, 'Episode 2 of season 2', '2020-12-17', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('8-lds-season-2-episode-03', '8-lds-season-2', 3, 'Episode 3 of season 2', '2020-12-24', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('8-lds-season-2-episode-04', '8-lds-season-2', 4, 'Episode 4 of season 2', '2020-12-31', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('8-lds-season-2-episode-05', '8-lds-season-2', 5, 'Episode 5 of season 2', '2021-01-07', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('8-lds-season-2-episode-06', '8-lds-season-2', 6, 'Episode 6 of season 2', '2021-01-14', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('8-lds-season-2-episode-07', '8-lds-season-2', 7, 'Episode 7 of season 2', '2021-01-21', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('8-lds-season-2-episode-08', '8-lds-season-2', 8, 'Episode 8 of season 2', '2021-01-28', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('8-lds-season-2-episode-09', '8-lds-season-2', 9, 'Episode 9 of season 2', '2021-02-04', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('8-lds-season-2-episode-10', '8-lds-season-2', 10, 'Episode 10 of season 2', '2021-02-11', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('8-lds-season-3-episode-01', '8-lds-season-3', 1, 'Episode 1 of season 3', '2021-03-20', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('8-lds-season-3-episode-02', '8-lds-season-3', 2, 'Episode 2 of season 3', '2021-03-27', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('8-lds-season-3-episode-03', '8-lds-season-3', 3, 'Episode 3 of season 3', '2021-04-03', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('8-lds-season-3-episode-04', '8-lds-season-3', 4, 'Episode 4 of season 3', '2021-04-10', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('8-lds-season-3-episode-05', '8-lds-season-3', 5, 'Episode 5 of season 3', '2021-04-17', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('8-lds-season-3-episode-06', '8-lds-season-3', 6, 'Episode 6 of season 3', '2021-04-24', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('8-lds-season-3-episode-07', '8-lds-season-3', 7, 'Episode 7 of season 3', '2021-05-01', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('8-lds-season-3-episode-08', '8-lds-season-3', 8, 'Episode 8 of season 3', '2021-05-08', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('8-lds-season-3-episode-09', '8-lds-season-3', 9, 'Episode 9 of season 3', '2021-05-15', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('8-lds-season-3-episode-10', '8-lds-season-3', 10, 'Episode 10 of season 3', '2021-05-22', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('8-lds-season-4-episode-01', '8-lds-season-4', 1, 'Episode 1 of season 4', '2021-06-28', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('8-lds-season-4-episode-02', '8-lds-season-4', 2, 'Episode 2 of season 4', '2021-07-05', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('8-lds-season-4-episode-03', '8-lds-season-4', 3, 'Episode 3 of season 4', '2021-07-12', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('8-lds-season-4-episode-04', '8-lds-season-4', 4, 'Episode 4 of season 4', '2021-07-19', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('8-lds-season-4-episode-05', '8-lds-season-4', 5, 'Episode 5 of season 4', '2021-07-26', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('8-lds-season-4-episode-06', '8-lds-season-4', 6, 'Episode 6 of season 4', '2021-08-02', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('8-lds-season-4-episode-07', '8-lds-season-4', 7, 'Episode 7 of season 4', '2021-08-09', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('8-lds-season-4-episode-08', '8-lds-season-4', 8, 'Episode 8 of season 4', '2021-08-16', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('8-lds-season-4-episode-09', '8-lds-season-4', 9, 'Episode 9 of season 4', '2021-08-23', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('8-lds-season-4-episode-10', '8-lds-season-4', 10, 'Episode 10 of season 4', '2021-08-30', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('8-lds-season-4-episode-11', '8-lds-season-4', 11, 'Episode 11 of season 4', '2021-09-06', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('8-lds-season-4-episode-12', '8-lds-season-4', 12, 'Episode 12 of season 4', '2021-09-13', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('9-pro-season-1-episode-01', '9-pro-season-1', 1, 'Episode 1 of season 1', '2021-09-01', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('9-pro-season-1-episode-02', '9-pro-season-1', 2, 'Episode 2 of season 1', '2021-09-08', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('9-pro-season-1-episode-03', '9-pro-season-1', 3, 'Episode 3 of season 1', '2021-09-15', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('9-pro-season-1-episode-04', '9-pro-season-1', 4, 'Episode 4 of season 1', '2021-09-22', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('9-pro-season-1-episode-05', '9-pro-season-1', 5, 'Episode 5 of season 1', '2021-09-29', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('9-pro-season-1-episode-06', '9-pro-season-1', 6, 'Episode 6 of season 1', '2021-10-06', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('9-pro-season-1-episode-07', '9-pro-season-1', 7, 'Episode 7 of season 1', '2021-10-13', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('9-pro-season-1-episode-08', '9-pro-season-1', 8, 'Episode 8 of season 1', '2021-10-20', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('9-pro-season-1-episode-09', '9-pro-season-1', 9, 'Episode 9 of season 1', '2021-10-27', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('9-pro-season-1-episode-10', '9-pro-season-1', 10, 'Episode 10 of season 1', '2021-11-03', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('9-pro-season-1-episode-11', '9-pro-season-1', 11, 'Episode 11 of season 1', '2021-11-10', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('9-pro-season-1-episode-12', '9-pro-season-1', 12, 'Episode 12 of season 1', '2021-11-17', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('9-pro-season-1-episode-13', '9-pro-season-1', 13, 'Episode 13 of season 1', '2021-11-24', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('9-pro-season-1-episode-14', '9-pro-season-1', 14, 'Episode 14 of season 1', '2021-12-01', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('9-pro-season-1-episode-15', '9-pro-season-1', 15, 'Episode 15 of season 1', '2021-12-08', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('9-pro-season-1-episode-16', '9-pro-season-1', 16, 'Episode 16 of season 1', '2021-12-15', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('9-pro-season-1-episode-17', '9-pro-season-1', 17, 'Episode 17 of season 1', '2021-12-22', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('9-pro-season-1-episode-18', '9-pro-season-1', 18, 'Episode 18 of season 1', '2021-12-29', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('9-pro-season-1-episode-19', '9-pro-season-1', 19, 'Episode 19 of season 1', '2022-01-05', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('9-pro-season-1-episode-20', '9-pro-season-1', 20, 'Episode 20 of season 1', '2022-01-12', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('9-pro-season-2-episode-01', '9-pro-season-2', 1, 'Episode 1 of season 2', '2022-02-18', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('9-pro-season-2-episode-02', '9-pro-season-2', 2, 'Episode 2 of season 2', '2022-02-25', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('9-pro-season-2-episode-03', '9-pro-season-2', 3, 'Episode 3 of season 2', '2022-03-04', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('9-pro-season-2-episode-04', '9-pro-season-2', 4, 'Episode 4 of season 2', '2022-03-11', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('9-pro-season-2-episode-05', '9-pro-season-2', 5, 'Episode 5 of season 2', '2022-03-18', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('9-pro-season-2-episode-06', '9-pro-season-2', 6, 'Episode 6 of season 2', '2022-03-25', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('9-pro-season-2-episode-07', '9-pro-season-2', 7, 'Episode 7 of season 2', '2022-04-01', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('9-pro-season-2-episode-08', '9-pro-season-2', 8, 'Episode 8 of season 2', '2022-04-08', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('9-pro-season-2-episode-09', '9-pro-season-2', 9, 'Episode 9 of season 2', '2022-04-15', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('9-pro-season-2-episode-10', '9-pro-season-2', 10, 'Episode 10 of season 2', '2022-04-22', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('9-pro-season-2-episode-11', '9-pro-season-2', 11, 'Episode 11 of season 2', '2022-04-29', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('9-pro-season-2-episode-12', '9-pro-season-2', 12, 'Episode 12 of season 2', '2022-05-06', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('9-pro-season-2-episode-13', '9-pro-season-2', 13, 'Episode 13 of season 2', '2022-05-13', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('9-pro-season-2-episode-14', '9-pro-season-2', 14, 'Episode 14 of season 2', '2022-05-20', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('9-pro-season-2-episode-15', '9-pro-season-2', 15, 'Episode 15 of season 2', '2022-05-27', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('9-pro-season-2-episode-16', '9-pro-season-2', 16, 'Episode 16 of season 2', '2022-06-03', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('9-pro-season-2-episode-17', '9-pro-season-2', 17, 'Episode 17 of season 2', '2022-06-10', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('9-pro-season-2-episode-18', '9-pro-season-2', 18, 'Episode 18 of season 2', '2022-06-17', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('9-pro-season-2-episode-19', '9-pro-season-2', 19, 'Episode 19 of season 2', '2022-06-24', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('9-pro-season-2-episode-20', '9-pro-season-2', 20, 'Episode 20 of season 2', '2022-07-01', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('10-snw-season-1-episode-01', '10-snw-season-1', 1, 'Episode 1 of season 1', '2022-09-01', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('10-snw-season-1-episode-02', '10-snw-season-1', 2, 'Episode 2 of season 1', '2022-09-08', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('10-snw-season-1-episode-03', '10-snw-season-1', 3, 'Episode 3 of season 1', '2022-09-15', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('10-snw-season-1-episode-04', '10-snw-season-1', 4, 'Episode 4 of season 1', '2022-09-22', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('10-snw-season-1-episode-05', '10-snw-season-1', 5, 'Episode 5 of season 1', '2022-09-29', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('10-snw-season-1-episode-06', '10-snw-season-1', 6, 'Episode 6 of season 1', '2022-10-06', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('10-snw-season-1-episode-07', '10-snw-season-1', 7, 'Episode 7 of season 1', '2022-10-13', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('10-snw-season-1-episode-08', '10-snw-season-1', 8, 'Episode 8 of season 1', '2022-10-20', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('10-snw-season-1-episode-09', '10-snw-season-1', 9, 'Episode 9 of season 1', '2022-10-27', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('10-snw-season-1-episode-10', '10-snw-season-1', 10, 'Episode 10 of season 1', '2022-11-03', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('10-snw-season-2-episode-01', '10-snw-season-2', 1, 'Episode 1 of season 2', '2022-12-10', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('10-snw-season-2-episode-02', '10-snw-season-2', 2, 'Episode 2 of season 2', '2022-12-17', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('10-snw-season-2-episode-03', '10-snw-season-2', 3, 'Episode 3 of season 2', '2022-12-24', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('10-snw-season-2-episode-04', '10-snw-season-2', 4, 'Episode 4 of season 2', '2022-12-31', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('10-snw-season-2-episode-05', '10-snw-season-2', 5, 'Episode 5 of season 2', '2023-01-07', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('10-snw-season-2-episode-06', '10-snw-season-2', 6, 'Episode 6 of season 2', '2023-01-14', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('10-snw-season-2-episode-07', '10-snw-season-2', 7, 'Episode 7 of season 2', '2023-01-21', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('10-snw-season-2-episode-08', '10-snw-season-2', 8, 'Episode 8 of season 2', '2023-01-28', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('10-snw-season-2-episode-09', '10-snw-season-2', 9, 'Episode 9 of season 2', '2023-02-04', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
+
+INSERT INTO episodes (episode_id, season, episode_number, description, airdate, writers, director, runtime_minutes, ratings, one_sentence_summary, favorite_color)
+VALUES ('10-snw-season-2-episode-10', '10-snw-season-2', 10, 'Episode 10 of season 2', '2023-02-11', 'Story by Starfleet', 'Starfleet Director', 45, '', 'An adventure on the USS Enterprise.', '') ON CONFLICT (episode_id) DO NOTHING;
 
 -- ----------------------------------------------------------------------------
 -- CrewTypes: Table: CrewTypes

@@ -88,6 +88,30 @@ app.get('/api/episodes/:episodeId', async (req, res) => {
   }
 });
 
+app.get('/api/movies', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM movies ORDER BY movie_number');
+    res.json(result.rows);
+  } catch (err) {
+    console.error('Error fetching movies:', err);
+    res.status(500).json({ error: 'Failed to fetch movies' });
+  }
+});
+
+app.get('/api/movies/:movieId', async (req, res) => {
+  try {
+    const { movieId } = req.params;
+    const result = await pool.query('SELECT * FROM movies WHERE movie_id = $1', [movieId]);
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'Movie not found' });
+    }
+    res.json(result.rows[0]);
+  } catch (err) {
+    console.error('Error fetching movie:', err);
+    res.status(500).json({ error: 'Failed to fetch movie' });
+  }
+});
+
 app.get('/api/people', async (req, res) => {
   try {
     const result = await pool.query('SELECT * FROM people ORDER BY name LIMIT 50');
