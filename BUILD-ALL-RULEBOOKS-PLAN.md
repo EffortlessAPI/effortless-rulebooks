@@ -53,7 +53,7 @@ Local JSON is the SSoT. Default behavior. Build downstream transpilers against t
 | # | Project | Base ID | Status | Notes |
 |---|---|---|---|---|
 | 5 | `acme-llc` | `appWrXPvXbkgQGOxt` | ✅ | Clean build, exit 0. No init-db step → no DB side effect. |
-| 6 | `acme-corporation` | `appzkcmBFPWFGBtRo` | ❓ | Extended ACME. No postgres dir. |
+| 6 | `acme-corporation` | `appzkcmBFPWFGBtRo` | ✅ | Clean build, exit 0. Only `rulebooktopostgres` runs (generates SQL files, no init-db execution). |
 | 7 | `is-everything-a-language` | `appC8XTj95lubn6hz` | ❓ | Meta-ontology. No postgres dir. |
 | 8 | `jessica-advanced` | `appwN9EAp8IeIxM23` | ❓ | No postgres dir. |
 | 9 | `jessica-basic` | `applThn0rikpCR9C3` | ❓ | Base ID not in `orchestration/bases.json` — add it. |
