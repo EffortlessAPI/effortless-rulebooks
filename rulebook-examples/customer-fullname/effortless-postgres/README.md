@@ -2,7 +2,7 @@
 
 **Schema:** `public`
 **Database:** `demo`
-**Timestamp:** 2026-05-25 20:30:12 UTC
+**Timestamp:** 2026-05-26 01:02:58 UTC
 
 ## Parsing Rulebook
 

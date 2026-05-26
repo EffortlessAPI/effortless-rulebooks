@@ -65,7 +65,7 @@ Local JSON is the SSoT. Default behavior. Build downstream transpilers against t
 
 | # | Project | Has postgres? | Status | Notes |
 |---|---|---|---|---|
-| 13 | `customer-fullname` | Y | ❓ | Reclassified to ERB-only this turn — `baseId` and `airtabletorulebook` removed from `effortless.json`. Canonical "no Airtable" example. |
+| 13 | `customer-fullname` | Y | ✅ | Clean build, exit 0. Reclassified to ERB-only this turn — no Airtable wiring at all. Postgres SQL + xlsx generated. |
 | 14 | `community-event-planner-demo` | Y | ❓ | |
 | 15 | `customer-crm-demo` | Y | ❓ | |
 | 16 | `effortless-banking-demo` | Y | ❓ | |
