@@ -15,8 +15,16 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-DEFAULT_CONN="postgresql://postgres@localhost:5432/llm_enigma_test"
-DATABASE_URL="${DATABASE_URL:-${1:-$DEFAULT_CONN}}"
+# DATABASE_URL is the single source of truth — set it in effortless.env (or your
+# shell, or pass as $1). There is NO local default: a missing value should fail
+# loudly so it's obvious you need to copy effortless.env.example -> effortless.env.
+DATABASE_URL="${DATABASE_URL:-${1:-}}"
+if [ -z "$DATABASE_URL" ]; then
+    echo "init-db.sh: DATABASE_URL is not set." >&2
+    echo "  Set it in effortless.env (see effortless.env.example), in your shell," >&2
+    echo "  or pass it as the first argument to this script." >&2
+    exit 1
+fi
 
 # ----------------------------------------------------------------------
 # Plan 04 §8: bases-URL refusal (defense in depth).

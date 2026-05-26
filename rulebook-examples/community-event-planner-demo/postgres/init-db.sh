@@ -6,8 +6,15 @@
 set -e
 
 # Configuration
-DEFAULT_CONN="postgresql://postgres@localhost:5432/community_events"
-DB_CONN="${DATABASE_URL:-$DEFAULT_CONN}"
+# DATABASE_URL is the single source of truth — set it in effortless.env (or your
+# shell). There is NO local default: a missing value should fail loudly so it's
+# obvious you need to copy effortless.env.example -> effortless.env.
+if [ -z "${DATABASE_URL:-}" ]; then
+    echo "init-db.sh: DATABASE_URL is not set." >&2
+    echo "  Set it in effortless.env (see effortless.env.example) or in your shell." >&2
+    exit 1
+fi
+DB_CONN="$DATABASE_URL"
 
 # Extract database name from connection string
 DB_NAME=$(echo "$DB_CONN" | sed -n 's|.*//[^/]*/\([^?]*\).*|\1|p')

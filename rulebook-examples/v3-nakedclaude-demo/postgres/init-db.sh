@@ -28,10 +28,16 @@ SQL_FILES=(
 )
 
 # Default connection string
-DEFAULT_CONN="postgresql://postgres@localhost:5432/v2_nakedclaude_demo"
-
-# Get connection string from argument or use default
-CONNECTION_STRING="${1:-$DEFAULT_CONN}"
+# DATABASE_URL is the single source of truth — set it in effortless.env (or your
+# shell, or pass as $1). There is NO local default: a missing value should fail
+# loudly so it's obvious you need to copy effortless.env.example -> effortless.env.
+CONNECTION_STRING="${DATABASE_URL:-${1:-}}"
+if [ -z "$CONNECTION_STRING" ]; then
+    echo "init-db.sh: DATABASE_URL is not set." >&2
+    echo "  Set it in effortless.env (see effortless.env.example), in your shell," >&2
+    echo "  or pass it as the first argument to this script." >&2
+    exit 1
+fi
 
 echo "Initializing database: $CONNECTION_STRING"
 echo ""
