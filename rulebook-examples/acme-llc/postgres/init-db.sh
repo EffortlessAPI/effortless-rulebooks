@@ -15,7 +15,7 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-DEFAULT_CONN="postgresql://postgres@localhost:5432/demo"
+DEFAULT_CONN="postgresql://postgres@localhost:5432/erb_acme_llc"
 DATABASE_URL="${DATABASE_URL:-${1:-$DEFAULT_CONN}}"
 
 # ----------------------------------------------------------------------
