@@ -1,7 +1,6 @@
 <!-- GENERATED FILE — DO NOT EDIT. -->
 <!-- Source: effortless-platform/effortless-rulebook/effortless-rulebook.json (table: `AppScreens`) -->
 <!-- Regenerate with: cd effortless-platform && effortless build -->
-<!-- Generated: 2026-05-25T22:56:16Z -->
 
 # Admin Portal Screens
 
@@ -10,25 +9,34 @@ Every screen in the admin portal. Each screen names the entities it reads/writes
 | ID | Path | Title | Min Role | Layout | Reads | Writes | Primary Action |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | screen-home | / | Home | role-viewer | dashboard | ProjectMetadata,RulebookProjects,RulebookSourceSpokes,ExecutionSubstrates | — | Switch project |
-| screen-entities | /rulebook/entities | Entities | role-viewer | split-detail | <active-project-rulebook> | <active-project-rulebook> | Add entity |
-| screen-formulas | /rulebook/formulas | Formulas | role-viewer | split-detail | <active-project-rulebook> | <active-project-rulebook> | Edit formula |
-| screen-relationships | /rulebook/relationships | Relationships | role-viewer | grid | <active-project-rulebook> | — | — |
-| screen-sample-data | /rulebook/data | Sample Data | role-viewer | grid | <active-project-rulebook>.data | <active-project-rulebook>.data | Add row |
-| screen-substrates | /substrates | Substrates | role-viewer | split-detail | ExecutionSubstrates,SsotmeProxy | — | Rebuild substrate |
-| screen-add-tool | /tools/add | Add Tool | role-developer | grid | AddToolCatalog,SsotmeProxy | <active-project>/effortless.json (via effortless CLI) | Install |
-| screen-builds | /builds | Builds | role-viewer | list | BuildHistory | BuildHistory | Trigger build |
-| screen-tests | /tests | Tests | role-viewer | grid | TestingFramework,TestRuns | TestRuns | Run all tests |
-| screen-input-spokes | /spokes | Input Spokes | role-viewer | list | RulebookSourceSpokes | — | Pull from spoke |
-| screen-users | /users | Users | role-viewer | list | AppUsers,UserRoles | AppUsers | Add user |
-| screen-tech-postgres | /tech/postgres | Postgres Explorer | role-developer | editor | <editor-postgres-tables> | <editor-postgres-tables> | Run query |
-| screen-tech-proxy | /tech/proxy | ssotme-proxy | role-developer | list | SsotmeProxy | — | Ping proxy |
-| screen-tech-files | /tech/files | Project Files | role-developer | split-detail | <project-filesystem> | — | — |
-| screen-tech-json | /tech/rulebook-json | Raw Rulebook JSON | role-developer | editor | <active-project-rulebook> | <active-project-rulebook> | Save JSON |
-| screen-tech-reset | /tech/reset | Reset Editor | role-developer | dashboard | — | — | Reset now |
-| screen-framing | /rulebook/framing | Framing | role-viewer | split-detail | FramingInvariants,OntologyAxioms | — | — |
-| screen-roles | /users/roles | Roles & Personas | role-viewer | split-detail | UserRoles,AppUsers,RoleScreenHints | UserRoles | — |
+| screen-entities | /developer/rulebook/entities | Entities | role-viewer | split-detail | <active-project-rulebook> | <active-project-rulebook> | Add entity |
+| screen-formulas | /developer/rulebook/formulas | Formulas | role-viewer | split-detail | <active-project-rulebook> | <active-project-rulebook> | Edit formula |
+| screen-relationships | /developer/rulebook/relationships | Relationships | role-viewer | grid | <active-project-rulebook> | — | — |
+| screen-sample-data | /developer/rulebook/data | Sample Data | role-viewer | grid | <active-project-rulebook>.data | <active-project-rulebook>.data | Add row |
+| screen-substrates | /developer/substrates | Substrates | role-viewer | split-detail | ExecutionSubstrates,SsotmeProxy | — | Rebuild substrate |
+| screen-add-tool | /developer/tools/add | Add Tool | role-developer | grid | AddToolCatalog,SsotmeProxy | <active-project>/effortless.json (via effortless CLI) | Install |
+| screen-builds | /developer/builds | Builds | role-viewer | list | BuildHistory | BuildHistory | Trigger build |
+| screen-tests | /developer/tests | Tests | role-viewer | grid | TestingFramework,TestRuns | TestRuns | Run all tests |
+| screen-input-spokes | /developer/spokes | Input Spokes | role-viewer | list | RulebookSourceSpokes | — | Pull from spoke |
+| screen-users | /admin/users | Users | role-viewer | list | AppUsers,UserRoles | AppUsers | Add user |
+| screen-tech-postgres | /developer/tech/postgres | Postgres Explorer | role-developer | editor | <editor-postgres-tables> | <editor-postgres-tables> | Run query |
+| screen-tech-proxy | /developer/tech/proxy | ssotme-proxy | role-developer | list | SsotmeProxy | — | Ping proxy |
+| screen-tech-files | /developer/tech/files | Project Files | role-developer | split-detail | <project-filesystem> | — | — |
+| screen-tech-json | /developer/tech/rulebook-json | Raw Rulebook JSON | role-developer | editor | <active-project-rulebook> | <active-project-rulebook> | Save JSON |
+| screen-tech-reset | /developer/tech/reset | Reset Editor | role-developer | dashboard | — | — | Reset now |
+| screen-framing | /developer/rulebook/framing | Framing | role-viewer | split-detail | FramingInvariants,OntologyAxioms | — | — |
+| screen-roles | /admin/users/roles | Roles & Personas | role-viewer | split-detail | UserRoles,AppUsers,RoleScreenHints | UserRoles | — |
 | screen-flavors | /projects/flavors | Project Flavours | role-viewer | grid | RulebookFlavors,RulebookProjects | — | — |
 | screen-features | /features | Platform Features | role-viewer | split-detail | PlatformFeatures,OntologyAxioms | PlatformFeatures | Edit feature |
+| screen-docs-home | /docs | Docs Home | role-viewer | dashboard | FramingInvariants,OntologyAxioms,FieldTypeTaxonomy,Glossary | — | — |
+| screen-docs-framing | /docs/framing | Framing Invariants | role-viewer | split-detail | FramingInvariants | — | — |
+| screen-docs-method | /docs/methodology | Methodology | role-viewer | split-detail | OntologyAxioms,FramingInvariants | — | — |
+| screen-docs-ftypes | /docs/field-types | Field Types | role-viewer | split-detail | FieldTypeTaxonomy | — | — |
+| screen-docs-glossary | /docs/glossary | Glossary | role-viewer | list | Glossary | — | — |
+| screen-admin-landing | /admin | Admin | role-viewer | dashboard | AppUsers,UserRoles,AppPermissions | — | — |
+| screen-admin-perms | /admin/permissions | Permissions | role-viewer | list | AppPermissions,UserRoles | — | — |
+| screen-admin-nav | /admin/navigation | Navigation | role-developer | list | AppNavigation,AppScreens | — | — |
+| screen-admin-screens | /admin/screens | Screens | role-developer | list | AppScreens | — | — |
 
 ## Story
 
@@ -111,4 +119,40 @@ Each demo rulebook classified by Flavor (crud-template, computation-heavy, aggre
 ### Platform Features
 
 Two sections: Headline features (ADP, clean, hub-and-spoke, convergent build, substrate equivalence, conformance, local SSoT, portal/CLI parity, write-through) and Additional features (fail-loud, complete spec, dialect binding, etc.). Left list, right detail. Detail shows one-line summary, status, related axiom (clickable), README file path, IsReadmeStub badge, and the seed README content. Developer can edit summary/tier/priority/README path in place — saves write-through into rulebook JSON.
+
+### Docs Home
+
+Reference documentation index.
+
+### Framing Invariants
+
+Mistakes-to-avoid catalog.
+
+### Methodology
+
+Axioms and framing invariants.
+
+### Field Types
+
+ERB field-type taxonomy.
+
+### Glossary
+
+Term definitions.
+
+### Admin
+
+Admin landing.
+
+### Permissions
+
+Permission matrix.
+
+### Navigation
+
+Sidebar nav items.
+
+### Screens
+
+Screen registry.
 

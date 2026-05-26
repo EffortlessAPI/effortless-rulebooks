@@ -1,7 +1,6 @@
 <!-- GENERATED FILE — DO NOT EDIT. -->
 <!-- Source: effortless-platform/effortless-rulebook/effortless-rulebook.json (table: `AppNavigation`) -->
 <!-- Regenerate with: cd effortless-platform && effortless build -->
-<!-- Generated: 2026-05-25T22:56:16Z -->
 
 # Admin Portal Navigation
 
@@ -23,10 +22,21 @@ Primary navigation tree for the admin portal. Drives the left sidebar. Each node
 - **Input Spokes** → `screen-input-spokes` _(min role: role-viewer)_ — Where edits come from: admin portal, Airtable, LLM, manual JSON. Pull / push controls live here.
 - **Users** → `screen-users` _(min role: role-viewer)_ — Default dev/test users from the rulebook + their roles.
   - **Roles & Personas** → `screen-roles` _(min role: role-viewer)_ — Persona cards for each role — what they care about, where they land, who's assigned. Click anything to navigate.
+- **Admin** → `screen-admin-landing` _(min role: role-viewer)_ — Admin landing.
+  - **Users** → `screen-users` _(min role: role-viewer)_ — User accounts.
+  - **Roles** → `screen-roles` _(min role: role-viewer)_ — Role definitions.
+  - **Permissions** → `screen-admin-perms` _(min role: role-viewer)_ — Permission matrix.
+  - **Navigation** → `screen-admin-nav` _(min role: role-developer)_ — Sidebar nav items.
+  - **Screens** → `screen-admin-screens` _(min role: role-developer)_ — Screen registry.
 - **Tech Tools** _(min role: role-developer)_ — Developer-only escape hatches. Raw Postgres, proxy logs, file system, manual injection. Not part of the daily workflow.
   - **Postgres Explorer** → `screen-tech-postgres` _(min role: role-developer)_ — Raw editor-DB browser: run SQL, inspect rows, drop/reset DB.
   - **ssotme-proxy** → `screen-tech-proxy` _(min role: role-developer)_ — Live proxy status: registered routes, recent calls, response sizes, last error per route.
   - **Files** → `screen-tech-files` _(min role: role-developer)_ — Project filesystem browser. View any generated or hand-written file in the active project.
   - **Rulebook JSON** → `screen-tech-json` _(min role: role-developer)_ — Raw rulebook JSON viewer/editor. Save here goes through the same write-through invariant as the UI.
   - **Reset Editor** → `screen-tech-reset` _(min role: role-developer)_ — Drop the editor Postgres DB and re-bootstrap from rulebook JSON. Safe — JSON is SSoT.
+- **Docs** _(min role: role-viewer)_ — Reference docs for ERB methodology.
+  - **Framing** → `screen-docs-framing` _(min role: role-viewer)_ — Mistakes-to-avoid catalog.
+  - **Methodology** → `screen-docs-method` _(min role: role-viewer)_ — Axioms and invariants combined view.
+  - **Field Types** → `screen-docs-ftypes` _(min role: role-viewer)_ — ERB field-type taxonomy.
+  - **Glossary** → `screen-docs-glossary` _(min role: role-viewer)_ — Term definitions.
 

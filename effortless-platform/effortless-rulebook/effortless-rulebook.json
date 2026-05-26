@@ -2824,6 +2824,127 @@
         "Order": 5,
         "StoryBeat": "Drop the editor Postgres DB and re-bootstrap from rulebook JSON. Safe — JSON is SSoT.",
         "NavArea": "developer"
+      },
+      {
+        "NavId": "nav-009",
+        "ParentNavId": null,
+        "Label": "Docs",
+        "Icon": "BookOpen",
+        "ScreenId": null,
+        "MinRoleId": "role-viewer",
+        "Order": 90,
+        "NavArea": "docs",
+        "StoryBeat": "Reference docs for ERB methodology."
+      },
+      {
+        "NavId": "nav-009a",
+        "ParentNavId": "nav-009",
+        "Label": "Framing",
+        "Icon": "AlertCircle",
+        "ScreenId": "screen-docs-framing",
+        "MinRoleId": "role-viewer",
+        "Order": 1,
+        "NavArea": "docs",
+        "StoryBeat": "Mistakes-to-avoid catalog."
+      },
+      {
+        "NavId": "nav-009b",
+        "ParentNavId": "nav-009",
+        "Label": "Methodology",
+        "Icon": "FlaskConical",
+        "ScreenId": "screen-docs-method",
+        "MinRoleId": "role-viewer",
+        "Order": 2,
+        "NavArea": "docs",
+        "StoryBeat": "Axioms and invariants combined view."
+      },
+      {
+        "NavId": "nav-009c",
+        "ParentNavId": "nav-009",
+        "Label": "Field Types",
+        "Icon": "Layers",
+        "ScreenId": "screen-docs-ftypes",
+        "MinRoleId": "role-viewer",
+        "Order": 3,
+        "NavArea": "docs",
+        "StoryBeat": "ERB field-type taxonomy."
+      },
+      {
+        "NavId": "nav-009d",
+        "ParentNavId": "nav-009",
+        "Label": "Glossary",
+        "Icon": "BookMarked",
+        "ScreenId": "screen-docs-glossary",
+        "MinRoleId": "role-viewer",
+        "Order": 4,
+        "NavArea": "docs",
+        "StoryBeat": "Term definitions."
+      },
+      {
+        "NavId": "nav-010",
+        "ParentNavId": null,
+        "Label": "Admin",
+        "Icon": "Shield",
+        "ScreenId": "screen-admin-landing",
+        "MinRoleId": "role-viewer",
+        "Order": 70,
+        "NavArea": "admin",
+        "StoryBeat": "Admin landing."
+      },
+      {
+        "NavId": "nav-010a",
+        "ParentNavId": "nav-010",
+        "Label": "Users",
+        "Icon": "Users",
+        "ScreenId": "screen-users",
+        "MinRoleId": "role-viewer",
+        "Order": 1,
+        "NavArea": "admin",
+        "StoryBeat": "User accounts."
+      },
+      {
+        "NavId": "nav-010b",
+        "ParentNavId": "nav-010",
+        "Label": "Roles",
+        "Icon": "IdCard",
+        "ScreenId": "screen-roles",
+        "MinRoleId": "role-viewer",
+        "Order": 2,
+        "NavArea": "admin",
+        "StoryBeat": "Role definitions."
+      },
+      {
+        "NavId": "nav-010c",
+        "ParentNavId": "nav-010",
+        "Label": "Permissions",
+        "Icon": "Lock",
+        "ScreenId": "screen-admin-perms",
+        "MinRoleId": "role-viewer",
+        "Order": 3,
+        "NavArea": "admin",
+        "StoryBeat": "Permission matrix."
+      },
+      {
+        "NavId": "nav-010d",
+        "ParentNavId": "nav-010",
+        "Label": "Navigation",
+        "Icon": "Menu",
+        "ScreenId": "screen-admin-nav",
+        "MinRoleId": "role-developer",
+        "Order": 4,
+        "NavArea": "admin",
+        "StoryBeat": "Sidebar nav items."
+      },
+      {
+        "NavId": "nav-010e",
+        "ParentNavId": "nav-010",
+        "Label": "Screens",
+        "Icon": "Layout",
+        "ScreenId": "screen-admin-screens",
+        "MinRoleId": "role-developer",
+        "Order": 5,
+        "NavArea": "admin",
+        "StoryBeat": "Screen registry."
       }
     ]
   },
@@ -3137,6 +3258,114 @@
         "PrimaryAction": "Edit feature",
         "Story": "Two sections: Headline features (ADP, clean, hub-and-spoke, convergent build, substrate equivalence, conformance, local SSoT, portal/CLI parity, write-through) and Additional features (fail-loud, complete spec, dialect binding, etc.). Left list, right detail. Detail shows one-line summary, status, related axiom (clickable), README file path, IsReadmeStub badge, and the seed README content. Developer can edit summary/tier/priority/README path in place — saves write-through into rulebook JSON.",
         "NavArea": "main"
+      },
+      {
+        "ScreenId": "screen-docs-home",
+        "Path": "/docs",
+        "Title": "Docs Home",
+        "NavArea": "docs",
+        "MinRoleId": "role-viewer",
+        "Layout": "dashboard",
+        "Story": "Reference documentation index.",
+        "ReadsEntities": "FramingInvariants,OntologyAxioms,FieldTypeTaxonomy,Glossary",
+        "WritesEntities": null,
+        "PrimaryAction": null
+      },
+      {
+        "ScreenId": "screen-docs-framing",
+        "Path": "/docs/framing",
+        "Title": "Framing Invariants",
+        "NavArea": "docs",
+        "MinRoleId": "role-viewer",
+        "Layout": "split-detail",
+        "Story": "Mistakes-to-avoid catalog.",
+        "ReadsEntities": "FramingInvariants",
+        "WritesEntities": null,
+        "PrimaryAction": null
+      },
+      {
+        "ScreenId": "screen-docs-method",
+        "Path": "/docs/methodology",
+        "Title": "Methodology",
+        "NavArea": "docs",
+        "MinRoleId": "role-viewer",
+        "Layout": "split-detail",
+        "Story": "Axioms and framing invariants.",
+        "ReadsEntities": "OntologyAxioms,FramingInvariants",
+        "WritesEntities": null,
+        "PrimaryAction": null
+      },
+      {
+        "ScreenId": "screen-docs-ftypes",
+        "Path": "/docs/field-types",
+        "Title": "Field Types",
+        "NavArea": "docs",
+        "MinRoleId": "role-viewer",
+        "Layout": "split-detail",
+        "Story": "ERB field-type taxonomy.",
+        "ReadsEntities": "FieldTypeTaxonomy",
+        "WritesEntities": null,
+        "PrimaryAction": null
+      },
+      {
+        "ScreenId": "screen-docs-glossary",
+        "Path": "/docs/glossary",
+        "Title": "Glossary",
+        "NavArea": "docs",
+        "MinRoleId": "role-viewer",
+        "Layout": "list",
+        "Story": "Term definitions.",
+        "ReadsEntities": "Glossary",
+        "WritesEntities": null,
+        "PrimaryAction": null
+      },
+      {
+        "ScreenId": "screen-admin-landing",
+        "Path": "/admin",
+        "Title": "Admin",
+        "NavArea": "admin",
+        "MinRoleId": "role-viewer",
+        "Layout": "dashboard",
+        "Story": "Admin landing.",
+        "ReadsEntities": "AppUsers,UserRoles,AppPermissions",
+        "WritesEntities": null,
+        "PrimaryAction": null
+      },
+      {
+        "ScreenId": "screen-admin-perms",
+        "Path": "/admin/permissions",
+        "Title": "Permissions",
+        "NavArea": "admin",
+        "MinRoleId": "role-viewer",
+        "Layout": "list",
+        "Story": "Permission matrix.",
+        "ReadsEntities": "AppPermissions,UserRoles",
+        "WritesEntities": null,
+        "PrimaryAction": null
+      },
+      {
+        "ScreenId": "screen-admin-nav",
+        "Path": "/admin/navigation",
+        "Title": "Navigation",
+        "NavArea": "admin",
+        "MinRoleId": "role-developer",
+        "Layout": "list",
+        "Story": "Sidebar nav items.",
+        "ReadsEntities": "AppNavigation,AppScreens",
+        "WritesEntities": null,
+        "PrimaryAction": null
+      },
+      {
+        "ScreenId": "screen-admin-screens",
+        "Path": "/admin/screens",
+        "Title": "Screens",
+        "NavArea": "admin",
+        "MinRoleId": "role-developer",
+        "Layout": "list",
+        "Story": "Screen registry.",
+        "ReadsEntities": "AppScreens",
+        "WritesEntities": null,
+        "PrimaryAction": null
       }
     ]
   },
@@ -4707,7 +4936,7 @@
         "ClickId": "click-001",
         "FromKind": "count-number",
         "FromContext": "home-card:entities",
-        "ToPath": "/rulebook/entities",
+        "ToPath": "/developer/rulebook/entities",
         "Filter": null,
         "Story": "Click 'Entities: N' on Home → /rulebook/entities (the list of all N)."
       },
@@ -4715,7 +4944,7 @@
         "ClickId": "click-002",
         "FromKind": "count-number",
         "FromContext": "home-card:substrates",
-        "ToPath": "/substrates",
+        "ToPath": "/developer/substrates",
         "Filter": null,
         "Story": "Click 'Substrates: N' on Home → /substrates."
       },
@@ -4723,7 +4952,7 @@
         "ClickId": "click-003",
         "FromKind": "count-number",
         "FromContext": "home-card:spokes",
-        "ToPath": "/spokes",
+        "ToPath": "/developer/spokes",
         "Filter": null,
         "Story": "Click 'Input spokes: N' on Home → /spokes."
       },
@@ -4731,7 +4960,7 @@
         "ClickId": "click-004",
         "FromKind": "count-number",
         "FromContext": "home-card:tests-passing",
-        "ToPath": "/tests",
+        "ToPath": "/developer/tests",
         "Filter": "status=passing",
         "Story": "Click 'Tests passing: X/Y' on Home → /tests with passing filter."
       },
@@ -4739,7 +4968,7 @@
         "ClickId": "click-005",
         "FromKind": "count-number",
         "FromContext": "home-card:tests-failing",
-        "ToPath": "/tests",
+        "ToPath": "/developer/tests",
         "Filter": "status=failing",
         "Story": "Click the failing-count chip on Home → /tests filtered to failing rows."
       },
@@ -4771,7 +5000,7 @@
         "ClickId": "click-009",
         "FromKind": "formula-cell",
         "FromContext": "entity-detail:schema-table",
-        "ToPath": "/rulebook/formulas",
+        "ToPath": "/developer/rulebook/formulas",
         "Filter": "entity=:entity&field=:field",
         "Story": "Click a formula expression in the schema grid → /rulebook/formulas filtered to that formula."
       },
@@ -4811,7 +5040,7 @@
         "ClickId": "click-014",
         "FromKind": "role-pill",
         "FromContext": "users-list",
-        "ToPath": "/users/roles",
+        "ToPath": "/admin/users/roles",
         "Filter": "role=:roleId",
         "Story": "Click a role pill anywhere → /users/roles focused on that role."
       },
@@ -4819,7 +5048,7 @@
         "ClickId": "click-015",
         "FromKind": "role-pill",
         "FromContext": "topbar:current-user",
-        "ToPath": "/users/roles",
+        "ToPath": "/admin/users/roles",
         "Filter": "role=:roleId",
         "Story": "Click your own role pill in the top bar → see what that role gets / who else has it."
       },
@@ -4827,7 +5056,7 @@
         "ClickId": "click-016",
         "FromKind": "user-row",
         "FromContext": "roles-detail",
-        "ToPath": "/users",
+        "ToPath": "/admin/users",
         "Filter": "user=:userId",
         "Story": "Click a user listed under a role → /users with that user selected."
       },
@@ -4835,7 +5064,7 @@
         "ClickId": "click-017",
         "FromKind": "nav-card",
         "FromContext": "framing-list",
-        "ToPath": "/rulebook/framing",
+        "ToPath": "/docs/framing",
         "Filter": "invariant=:invariantId",
         "Story": "Click a FramingInvariant card → its detail (WrongFraming vs CorrectFraming side-by-side)."
       },
@@ -4843,7 +5072,7 @@
         "ClickId": "click-018",
         "FromKind": "axiom-link",
         "FromContext": "framing-detail",
-        "ToPath": "/rulebook/framing",
+        "ToPath": "/docs/framing",
         "Filter": "axiom=:axiomId&tab=axioms",
         "Story": "Click the violated-axiom pill on a FramingInvariant detail → the Axioms tab focused on that axiom."
       },
@@ -4867,7 +5096,7 @@
         "ClickId": "click-021",
         "FromKind": "framing-invariant",
         "FromContext": "test-detail:explain",
-        "ToPath": "/rulebook/framing",
+        "ToPath": "/docs/framing",
         "Filter": "invariant=:invariantId",
         "Story": "From a failing test's detail, click the 'most-likely framing-invariant' suggestion → that invariant's page."
       },
@@ -4899,7 +5128,7 @@
         "ClickId": "click-025",
         "FromKind": "field-type-tag",
         "FromContext": "schema-grid",
-        "ToPath": "/rulebook/framing",
+        "ToPath": "/docs/framing",
         "Filter": "tab=field-types&type=:typeName",
         "Story": "Click a field's type tag ('calculated', 'aggregation', etc.) → FieldTypeTaxonomy explanation for that type."
       }

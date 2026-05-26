@@ -18,6 +18,40 @@ SET check_function_bodies = off;
 -- These functions perform lookups via foreign key relationships
 -- ============================================================================
 
+-- calc_platform_features_is_readme_stub
+-- Field: PlatformFeatures.IsReadmeStub
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_platform_features_is_readme_stub(p_feature_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT /* WARNING: Formula translation failed: Function 'ISBLANK' is not supported yet
+   Original Airtable formula:
+   OR(ISBLANK({ReadmeLength}), {ReadmeLength} < 400)
+*/
+NULL::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_claude_skills_slash_command
+-- Field: ClaudeSkills.SlashCommand
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_claude_skills_slash_command(p_skill_id TEXT)
+RETURNS TEXT AS $$
+  SELECT ((COALESCE(CASE WHEN ('/')::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ('/')::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN ((SELECT NULLIF(name, '') FROM claude_skills WHERE skill_id = p_skill_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT NULLIF(name, '') FROM claude_skills WHERE skill_id = p_skill_id))::numeric ELSE NULL END, 0)))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_claude_skills_local_mirror_path
+-- Field: ClaudeSkills.LocalMirrorPath
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_claude_skills_local_mirror_path(p_skill_id TEXT)
+RETURNS TEXT AS $$
+  SELECT ('docs/skills/"+(SELECT NULLIF(name, '''') FROM claude_skills WHERE skill_id = p_skill_id)+"/SKILL.md')::text;
+$$ LANGUAGE sql STABLE;
+
 -- ============================================================================
 -- MANY-SIDE RELATIONSHIP FUNCTIONS
 -- These functions aggregate child records for many-side relationships

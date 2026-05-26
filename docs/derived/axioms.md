@@ -1,7 +1,6 @@
 <!-- GENERATED FILE — DO NOT EDIT. -->
 <!-- Source: effortless-platform/effortless-rulebook/effortless-rulebook.json (table: `OntologyAxioms`) -->
 <!-- Regenerate with: cd effortless-platform && effortless build -->
-<!-- Generated: 2026-05-25T22:56:16Z -->
 
 # Ontology Axioms
 

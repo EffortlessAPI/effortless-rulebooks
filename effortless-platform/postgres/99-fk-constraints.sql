@@ -12,4 +12,12 @@
 -- enforcement. Idempotent: every constraint is dropped if present, then added.
 -- ============================================================================
 
--- (no FK fields detected in rulebook)
+-- FlavorTags
+ALTER TABLE flavor_tags DROP CONSTRAINT IF EXISTS fk_flavor_tags_flavor;
+ALTER TABLE flavor_tags ADD CONSTRAINT fk_flavor_tags_flavor
+  FOREIGN KEY (flavor) REFERENCES rulebook_flavors (flavor_id);
+ALTER TABLE flavor_tags DROP CONSTRAINT IF EXISTS fk_flavor_tags_tag;
+ALTER TABLE flavor_tags ADD CONSTRAINT fk_flavor_tags_tag
+  FOREIGN KEY (tag) REFERENCES rulebook_tags (tag_id);
+
+-- 2 FK constraint(s) declared (off unless EFFORTLESS_ENFORCE_FKS=true).

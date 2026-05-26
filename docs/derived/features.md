@@ -1,7 +1,6 @@
 <!-- GENERATED FILE — DO NOT EDIT. -->
 <!-- Source: effortless-platform/effortless-rulebook/effortless-rulebook.json (table: `PlatformFeatures`) -->
 <!-- Regenerate with: cd effortless-platform && effortless build -->
-<!-- Generated: 2026-05-25T22:56:16Z -->
 
 # Platform Features
 
@@ -80,6 +79,14 @@ The portal's editor Postgres DB is live; the rulebook JSON is durable. Every sav
 _short: `Write-Through` · hand-doc: [docs/features/README.write-through.md](../../docs/features/README.write-through.md) · axiom: `ax-010` · status: partial_
 
 The rulebook JSON is the only file that travels with the repo. Postgres is convenience; JSON is truth. Lazy sync is forbidden.
+
+### Skills as LLM force multiplier
+
+The rulebook gives the LLM something to operate on; the skills give it the instructions for how to operate — together they replace a learning curve that previously cost weeks.
+
+_short: `Claude Skills` · hand-doc: [docs/features/README.claude-skills.md](../../docs/features/README.claude-skills.md) · status: shipped_
+
+Before ERB, every developer had to teach their LLM the ERB conventions from scratch. Skills pre-encode that learning — naming rules, pipeline mechanics, formula semantics, the Leopold loop — so the LLM arrives already trained. The rulebook is the subject matter; the skills are the curriculum. Without the rulebook there is nothing for the skills to operate on. Without the skills the LLM has to rediscover the conventions by trial and error.
 
 ## Tier: additional
 

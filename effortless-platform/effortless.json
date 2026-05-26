@@ -16,7 +16,7 @@
     {
       "IsSSoTTranspiler": false,
       "Name": "rulebooktopostgres",
-      "RelativePath": "/effortless-platform/postgres",
+      "RelativePath": "/postgres",
       "CommandLine": "rulebook-to-postgres -i ../effortless-rulebook/effortless-rulebook.json",
       "IsDisabled": false,
       "PinnedVersion": "v2026.04.19.1717",
@@ -33,8 +33,8 @@
     {
       "IsSSoTTranspiler": false,
       "Name": "JsonHbarsTransform",
-      "RelativePath": "/docs",
-      "CommandLine": "json-hbars-transform -i ../effortless-platform/effortless-rulebook/effortless-rulebook.json -i generate-rulebook-md.hbars -o ../README.SCHEMA.md",
+      "RelativePath": "/transpilers",
+      "CommandLine": "json-hbars-transform -i ../effortless-rulebook/effortless-rulebook.json -i ../docs/generate-rulebook-md.hbars -o ../README.SCHEMA.md",
       "IsDisabled": false,
       "PinnedVersion": "v2026.04.14.0155",
       "LastVersionUsed": "v2026.04.14.0155",
@@ -43,15 +43,15 @@
     {
       "IsSSoTTranspiler": false,
       "Name": "platform-rulebook-to-docs",
-      "RelativePath": "/effortless-platform/transpilers",
-      "CommandLine": "-exec python3 ./platform-rulebook-to-docs.py",
+      "RelativePath": "/transpilers",
+      "CommandLine": "-exec ./platform-rulebook-to-docs.py",
       "IsDisabled": false,
       "Description": "Projects the platform rulebook into docs/derived/*.md (one file per platform table). Generated files carry DO-NOT-EDIT headers and are removed by effortless -clean."
     },
     {
       "IsSSoTTranspiler": false,
       "Name": "clone-skills",
-      "RelativePath": "/docs/skills",
+      "RelativePath": "/transpilers",
       "CommandLine": "-exec ./clone-skills.sh",
       "IsDisabled": false,
       "Description": "Pulls a live copy of each skill listed in ClaudeSkills from the effortless-claude GitHub repo into docs/skills/<name>/SKILL.md. Output is derived — DO NOT EDIT by hand. Re-run to update."

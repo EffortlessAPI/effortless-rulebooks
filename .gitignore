@@ -45,3 +45,5 @@ admin-portal/.proxy.log
 **/.applied-manifest.json
 **/_substrate_results.json
 **/.build-manifest.json
+effortless-platform/postgres/.applied-manifest.json
+effortless-platform/postgres/.build-manifest.json

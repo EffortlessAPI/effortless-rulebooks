@@ -16,16 +16,19 @@ set -e
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PLATFORM_DIR="$SCRIPT_DIR/effortless-platform"
 PORTAL_DIR="$PLATFORM_DIR/admin-portal"
+CLIENT_DIR="$PORTAL_DIR/client"
 PROXY_DIR="$PLATFORM_DIR/ssotme-proxy"
 
 PORTAL_PORT=7777
 PROXY_PORT=4242
 OPEN_BROWSER=true
+DEV_MODE=false   # --dev: run Vite dev server on :3000 instead of building
 
 for arg in "$@"; do
   case $arg in
     --no-open) OPEN_BROWSER=false ;;
     --port=*)  PORTAL_PORT="${arg#--port=}" ;;
+    --dev)     DEV_MODE=true ;;
   esac
 done
 
@@ -45,11 +48,31 @@ if ! command -v psql >/dev/null 2>&1; then
 fi
 
 # ----------------------------------------------------------------------------
-# Install backend deps if missing
+# Install deps if missing
 # ----------------------------------------------------------------------------
 if [ ! -d "$PORTAL_DIR/node_modules" ]; then
   cyan "[portal] installing backend dependencies (one-time)…"
   (cd "$PORTAL_DIR" && npm install --no-audit --no-fund --loglevel=error)
+fi
+if [ ! -d "$CLIENT_DIR/node_modules" ]; then
+  cyan "[portal] installing frontend dependencies (one-time)…"
+  (cd "$CLIENT_DIR" && npm install --no-audit --no-fund --loglevel=error)
+fi
+
+# ----------------------------------------------------------------------------
+# Build or start Vite dev server
+# ----------------------------------------------------------------------------
+if $DEV_MODE; then
+  cyan "[portal] DEV mode — starting Vite on :3000 (HMR enabled)"
+  (cd "$CLIENT_DIR" && npm run dev) &
+  VITE_PID=$!
+  FRONTEND_URL="http://localhost:3000"
+else
+  cyan "[portal] building frontend…"
+  (cd "$CLIENT_DIR" && npm run build --silent)
+  cyan "[portal] frontend built → web/"
+  VITE_PID=""
+  FRONTEND_URL="http://localhost:$PORTAL_PORT"
 fi
 
 # ----------------------------------------------------------------------------
@@ -74,11 +97,11 @@ PROXY_PID=$!
 # ----------------------------------------------------------------------------
 # Start backend (foreground — main process)
 # ----------------------------------------------------------------------------
-trap 'echo; cyan "[portal] shutting down…"; kill $PROXY_PID 2>/dev/null || true; exit 0' INT TERM
+trap 'echo; cyan "[portal] shutting down…"; kill $PROXY_PID 2>/dev/null || true; [ -n "$VITE_PID" ] && kill $VITE_PID 2>/dev/null || true; exit 0' INT TERM
 
 if $OPEN_BROWSER; then
-  (sleep 1.5 && (command -v open >/dev/null && open "http://localhost:$PORTAL_PORT" \
-                  || command -v xdg-open >/dev/null && xdg-open "http://localhost:$PORTAL_PORT" \
+  (sleep 1.5 && (command -v open >/dev/null && open "$FRONTEND_URL" \
+                  || command -v xdg-open >/dev/null && xdg-open "$FRONTEND_URL" \
                   || true)) &
 fi
 

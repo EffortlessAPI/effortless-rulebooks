@@ -1,11 +1,10 @@
 <!-- GENERATED FILE — DO NOT EDIT. -->
 <!-- Source: effortless-platform/effortless-rulebook/effortless-rulebook.json (table: `RulebookDomains`) -->
 <!-- Regenerate with: cd effortless-platform && effortless build -->
-<!-- Generated: 2026-05-25T22:56:16Z -->
 
 # Rulebook Domains
 
-Customer ontologies: each domain has its own rulebook + substrate generation
+Customer ontologies: each domain has its own rulebook + substrate generation. Domains form a TREE — ParentDomainId links a more-elaborate domain back to the simpler one it grew out of (e.g. Jessica ADVANCED ← Jessica BASIC). The UI uses this to present related rulebooks as a set rather than a flat list, and to drive 'next step in the progression' navigation.
 
 ## Customer FullName
 

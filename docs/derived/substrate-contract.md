@@ -1,11 +1,10 @@
 <!-- GENERATED FILE — DO NOT EDIT. -->
 <!-- Source: effortless-platform/effortless-rulebook/effortless-rulebook.json (table: `SubstrateContractPhases`) -->
 <!-- Regenerate with: cd effortless-platform && effortless build -->
-<!-- Generated: 2026-05-25T22:56:16Z -->
 
 # Substrate Contract — Inject / Execute / Grade
 
-The three-phase contract every execution substrate implements. Inject is structural (schema → SDK), Execute is functional (compute), Grade is comparison. All three are 100% domain-agnostic — they translate whatever the rulebook defines without knowing what it means.
+The three-phase contract every execution substrate implements. Inject is structural (schema → SDK), Execute is functional (compute), Grade is comparison. All three are 100% domain-agnostic — they translate whatever the rulebook defines without knowing what it means. Together with EvaluationSteps (the substeps within each phase) and EvaluationArtifacts (the JSON files that flow between phases), this forms the full evaluation subgraph: Phase → Steps → Artifacts.
 
 ## Phase 1: Inject
 

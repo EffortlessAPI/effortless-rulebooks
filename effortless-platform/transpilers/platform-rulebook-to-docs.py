@@ -29,7 +29,6 @@ will remove it.
 from __future__ import annotations
 
 import argparse
-import datetime as _dt
 import json
 import sys
 from pathlib import Path
@@ -40,17 +39,12 @@ DEFAULT_INPUT = REPO_ROOT / "effortless-platform" / "effortless-rulebook" / "eff
 DEFAULT_OUTPUT = REPO_ROOT / "docs" / "derived"
 
 
-def _now_iso() -> str:
-    return _dt.datetime.now(_dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
-
-
 def _do_not_edit_header(source_table: str | None, rulebook_rel: str) -> str:
     src = f" (table: `{source_table}`)" if source_table else ""
     return (
         f"<!-- GENERATED FILE — DO NOT EDIT. -->\n"
         f"<!-- Source: {rulebook_rel}{src} -->\n"
-        f"<!-- Regenerate with: cd effortless-platform && effortless build -->\n"
-        f"<!-- Generated: {_now_iso()} -->\n\n"
+        f"<!-- Regenerate with: cd effortless-platform && effortless build -->\n\n"
     )
 
 

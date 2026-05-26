@@ -9,40 +9,178 @@
 -- ProjectMetadata: Project overview
 -- ----------------------------------------------------------------------------
 INSERT INTO project_metadata (project_id, name, purpose, architecture, entry_point, portal_url, proxy_url, repository_root)
-VALUES ('erb-001', 'Effortlessly Invariant Rulesbooks', 'Multi-substrate code generation from declarative rulebooks; rulebook JSON is the durable SSoT', 'effortless-rulebook.json (HUB / durable SSoT) ← input spokes: Airtable, LLM edits, admin portal Postgres editor → output spokes: 10+ substrates via ssotme-proxy', './start.sh', 'http://localhost:7777', 'http://localhost:4242', 'effortlessly-invariant-rulesbooks/') ON CONFLICT (project_id) DO NOTHING;
+VALUES ('erb-001', 'Effortlessly Invariant Rulesbooks', 'Host a catalog of independent Effortless projects under rulebook-examples/, each a self-contained rulebook that fully captures one domain and selects the subset of platform substrates it needs. A rulebook alone is sufficient for any frontier LLM to answer any question about the domain or produce a faithful implementation in any language / platform.', 'rulebook-examples/<project>/ — N independent Effortless projects (acme-llc, star-trek, jessica-advanced, jessica-basic, customer-fullname, acme-corporation, is-everything-a-language, effortless-rulesbooks, …). Each project''s rulebook JSON is its own hub / durable SSoT; each picks the subset of the platform''s 15 substrates it needs (acme-llc exercises all 15; most use 3+). Builds are convergent: downstream artifacts mirror the current rulebook (additions appear, removals disappear). The platform itself (effortless-platform/) is one such project, describing ERB.', './start.sh', 'http://localhost:7777', 'http://localhost:4242', 'effortlessly-invariant-rulesbooks/') ON CONFLICT (project_id) DO NOTHING;
+
+-- ----------------------------------------------------------------------------
+-- OntologyAxioms: Positive-form invariants the project is built on. These are the load-bearing claims; if any one is dropped, the methodology no longer holds. FramingInvariants are mistakes that violate these axioms.
+-- ----------------------------------------------------------------------------
+INSERT INTO ontology_axioms (axiom_id, short_name, statement, why, implication, status)
+VALUES ('ax-001', 'Rulebook is the IR', 'The rulebook JSON is the portable intermediate representation. Every other artifact is mechanically derivable from it.', 'If any artifact is hand-edited authoritatively, conformance no longer follows from a single source. The ''all substrates compute identically'' claim depends on one IR.', 'Generated files are disposable; the rulebook JSON is the only file that is sacred.', 'active') ON CONFLICT (axiom_id) DO NOTHING;
+
+INSERT INTO ontology_axioms (axiom_id, short_name, statement, why, implication, status)
+VALUES ('ax-002', 'No privileged substrate', 'Postgres, Airtable, Excel, Python, Go, OWL, COBOL — every substrate is a peer projection of the rulebook. None is the reference.', 'Privileging one substrate quietly redefines ''correct'' as ''matches that substrate'' instead of ''matches the rulebook'', which is the actual SSoT.', 'Substrate properties (maturity, transpiler source, expressive completeness) are facts about implementations, not authority rankings.', 'active') ON CONFLICT (axiom_id) DO NOTHING;
+
+INSERT INTO ontology_axioms (axiom_id, short_name, statement, why, implication, status)
+VALUES ('ax-003', 'SSoT is locally designated', 'The ''answer key'' for a conformance run is whichever substrate the user designates as SSoT for that run — Airtable export, Excel workbook, hand-edited JSON, or a Postgres dump.', 'If the answer key is fixed, the methodology only works in one deployment mode. Locality lets the same harness validate Airtable-driven, Excel-driven, or JSON-driven projects.', 'Conformance reports must name the chosen SSoT for the run; trustworthy substrates witness, they do not crown.', 'active') ON CONFLICT (axiom_id) DO NOTHING;
+
+INSERT INTO ontology_axioms (axiom_id, short_name, statement, why, implication, status)
+VALUES ('ax-004', 'Hub-and-spoke topology', 'The rulebook is the hub. Input spokes (Airtable, LLM, admin portal, hand edits) write to it. Output spokes (substrates) read from it. Spokes never talk to each other.', 'Direct spoke-to-spoke traffic re-introduces the n×n integration problem the rulebook was created to eliminate.', 'If you find yourself wiring a substrate to consume another substrate''s output, you are violating the topology — route through the rulebook.', 'active') ON CONFLICT (axiom_id) DO NOTHING;
+
+INSERT INTO ontology_axioms (axiom_id, short_name, statement, why, implication, status)
+VALUES ('ax-005', 'Fail loudly, never fall back', 'When a file or value is not where it is expected, the code fails with the exact expected path. It does not check a second location, default to a guess, or return an empty object with a warning.', 'Silent fallbacks mask the bug they are working around and cause 100% conformance against the wrong data.', 'Defaults derived from the SSoT are fine. Defaults that substitute a guess are not.', 'active') ON CONFLICT (axiom_id) DO NOTHING;
+
+INSERT INTO ontology_axioms (axiom_id, short_name, statement, why, implication, status)
+VALUES ('ax-006', 'Project rulebook ≠ demo rulebook', 'The platform rulebook (this file) is the parent describing ERB itself. Demo rulebooks under rulebook-examples/ are children describing one business domain each. They never mix.', 'Mixing platform-meta with business-data couples the wrapper to a domain, which destroys the wrapper''s portability.', 'Portal config tables (AppUsers, AppNavigation, etc.) live ONLY in this file. Business tables (Customers, Episodes, etc.) live ONLY in their demo rulebook.', 'active') ON CONFLICT (axiom_id) DO NOTHING;
+
+INSERT INTO ontology_axioms (axiom_id, short_name, statement, why, implication, status)
+VALUES ('ax-007', 'Admin portal ≠ a domain', 'The admin portal is the app; a domain is a document the app opens. Their databases are separate (erb_admin_portal vs erb_<domain>) and the names never merge.', 'Names like erb_admin_<domain> conflate the editor with the thing being edited, which leads to drift between portal state and document state.', 'Two Postgres connections at all times: one to the portal''s own DB, one to the active document''s DB.', 'active') ON CONFLICT (axiom_id) DO NOTHING;
+
+INSERT INTO ontology_axioms (axiom_id, short_name, statement, why, implication, status)
+VALUES ('ax-008', 'Build = generate + test + report', 'Every build runs all transpilers, then runs every substrate''s conformance test, then regenerates and opens the report.', 'A build that skips the test step produces output of unknown correctness; the methodology''s value is the conformance proof, not the codegen.', 'There is no ''build without testing'' menu option. If a substrate has no take-test.sh, that is a bug to fix, not a case to handle.', 'active') ON CONFLICT (axiom_id) DO NOTHING;
+
+INSERT INTO ontology_axioms (axiom_id, short_name, statement, why, implication, status)
+VALUES ('ax-009', 'Portal/CLI parity', 'The admin portal and ./start.sh --cli are peer interfaces to the same effortless.json pipeline. Every portal mutation shells out to the same `effortless` CLI command.', 'Two divergent implementations of ''install a tool'' or ''run a build'' will drift; conformance claims become qualified (''works in CLI, fails in portal'').', 'If the portal grows logic the CLI does not have, that logic moves into the CLI and the portal calls it.', 'active') ON CONFLICT (axiom_id) DO NOTHING;
+
+INSERT INTO ontology_axioms (axiom_id, short_name, statement, why, implication, status)
+VALUES ('ax-010', 'Write-through invariant', 'The portal''s editor Postgres DB is live; the rulebook JSON is durable. Every save writes to BOTH in the same logical transaction.', 'If Postgres ever wins alone, JSON drifts and the SSoT property is violated. If JSON ever wins alone, the live editor lies about state.', 'Drop Postgres at any time and rebuild from JSON; never the other direction.', 'active') ON CONFLICT (axiom_id) DO NOTHING;
+
+INSERT INTO ontology_axioms (axiom_id, short_name, statement, why, implication, status)
+VALUES ('ax-011', 'Rulebook is a complete spec', 'A rulebook alone — no accompanying source code, no documentation — is sufficient for any frontier LLM to answer any question about the domain or produce a faithful implementation of the rules in any language, platform, or context.', 'This is the load-bearing portability claim. If the rulebook is not self-sufficient, the methodology degrades into documentation-plus-code where the docs lie and the code is the real spec.', 'Anything required to understand or reproduce the domain MUST live in the rulebook. If a generated artifact contains business logic not derivable from the rulebook, that logic belongs IN the rulebook, not in the substrate.', 'active') ON CONFLICT (axiom_id) DO NOTHING;
+
+INSERT INTO ontology_axioms (axiom_id, short_name, statement, why, implication, status)
+VALUES ('ax-012', 'Build is convergent, not additive', '`effortless build` makes downstream artifacts conform to the current rulebook: additions appear, removals disappear, renames propagate. Generated artifacts are a projection of the rulebook''s current state, never an accumulation of past states.', 'This is the property that distinguishes ERB from a conventional code generator. Codegen accumulates (you run it, code appears, removing things from the spec doesn''t remove the corresponding code). ERB conforms — the projection is total, so the rulebook stays the single source of truth in both directions.', 'Hand-edits to generated artifacts are erased on the next build by design. The rulebook is the only place to add, modify, OR remove behavior.', 'active') ON CONFLICT (axiom_id) DO NOTHING;
+
+INSERT INTO ontology_axioms (axiom_id, short_name, statement, why, implication, status)
+VALUES ('ax-013', 'Formula dialect is a rulebook property', 'A rulebook declares which formula dialect it uses (Excel, Airtable, …). Substrates implement the dialect''s semantics; the conformance proof is ''all substrates compute identically under this rulebook''s declared dialect.'' The dialect is metadata on the rulebook, not a property of ERB.', 'Hardcoding one dialect as ''the ERB formula language'' would couple the methodology to that dialect''s quirks and exclude domains that already think in another (e.g. Airtable-native teams). The conformance machinery doesn''t care which dialect is in use; it only cares that every substrate''s transpiler implements the same one.', 'Excel is the current default because domain experts can read it, but it is not invariant. A rulebook may declare a different dialect, and substrate transpilers must honor the declared dialect.', 'active') ON CONFLICT (axiom_id) DO NOTHING;
+
+-- ----------------------------------------------------------------------------
+-- FramingInvariants: Mistakes-to-avoid catalog. Each row is one wrong framing that has been caught and corrected, paired with the right framing and the axiom it violates. The portal surfaces these so future agents (and humans) can be re-grounded without rediscovering them.
+-- ----------------------------------------------------------------------------
+INSERT INTO framing_invariants (invariant_id, name, category, wrong_framing, correct_framing, why, severity, example_context, status)
+VALUES ('framing-001', 'Postgres is the reference substrate', 'substrate-equality', 'Postgres is the reference substrate with no expressive gaps; other substrates are demonstrations with gaps relative to it.', 'Postgres is one of N peer substrates. It happens to have few expressive gaps in practice, which makes it a convenient witness — but witnessing is not the same as crowning.', 'Calling Postgres ''the reference'' redefines ''correct'' as ''matches Postgres''. The actual SSoT is the rulebook (or the user-designated answer-key substrate for that run). Postgres being trustworthy doesn''t make it privileged.', 'critical', 'Said by Claude when describing the repo on 2026-05-25. Caught by user in the same turn.', 'active') ON CONFLICT (invariant_id) DO NOTHING;
+
+INSERT INTO framing_invariants (invariant_id, name, category, wrong_framing, correct_framing, why, severity, example_context, status)
+VALUES ('framing-002', 'The rulebook JSON is always the SSoT', 'ssot-locality', 'The rulebook JSON file is the single source of truth in every deployment.', 'The rulebook is the portable IR. The SSoT for a given conformance run is whichever spoke the user designates — Airtable export, Excel workbook, hand-edited JSON, etc. If Airtable is the SSoT, the rulebook JSON is downstream from it.', 'Treating the JSON as universally authoritative ignores that input spokes can BE the SSoT. The framework supports several deployment modes; only one of them has the JSON as primary.', 'critical', 'Implicit in any phrasing like ''the JSON is the SSoT, period'' without naming the deployment mode.', 'active') ON CONFLICT (invariant_id) DO NOTHING;
+
+INSERT INTO framing_invariants (invariant_id, name, category, wrong_framing, correct_framing, why, severity, example_context, status)
+VALUES ('framing-003', 'IsProduction = trustworthy', 'substrate-equality', 'Substrates with IsProduction=true (Postgres, Excel, Entity Framework) are the trustworthy ones; the others are proof-of-concept.', '''Production'' here means ''backed by an officially-licensed transpiler'' — a fact about who built the generator, not about whether the substrate computes correctly. Trustworthiness is measured by passing the conformance tests.', 'Using one column to mean both ''authorized vendor built it'' AND ''we trust its output'' conflates provenance with correctness. They are independent properties; conformance is what proves correctness.', 'important', 'The original ExecutionSubstrates.IsProduction column collapses these two meanings.', 'active') ON CONFLICT (invariant_id) DO NOTHING;
+
+INSERT INTO framing_invariants (invariant_id, name, category, wrong_framing, correct_framing, why, severity, example_context, status)
+VALUES ('framing-004', 'Project rulebook is a demo rulebook', 'category-error', 'Portal-config tables (UserRoles, AppUsers, AppNavigation) belong in whichever rulebook is active.', 'Portal-config tables live ONLY in the project rulebook (this file). Demo rulebooks contain only their domain''s business tables. Two file reads, two concerns, never merged.', 'Mixing platform-meta with business-data couples the wrapper to one domain. The wrapper has to work for every demo; the demo has to travel without portal config.', 'critical', 'Anytime someone proposes ''just add UserRoles to acme-llc-rulebook.json so the portal works against it''.', 'active') ON CONFLICT (invariant_id) DO NOTHING;
+
+INSERT INTO framing_invariants (invariant_id, name, category, wrong_framing, correct_framing, why, severity, example_context, status)
+VALUES ('framing-005', 'Admin portal is named after a domain', 'naming', 'Database names like erb_admin_acme_llc, erb_admin_star_trek — admin portal plus the active domain.', 'erb_admin_portal (singular) for the portal''s own state; erb_<domain> for each document. The word ''admin'' appears only in the portal''s own DB name and never with a domain suffix.', 'The naming itself proves the category error: the app is not named after the document it opens. Word''s install directory is not ''Word_my_resume''.', 'critical', 'If you see erb_admin_<domain> in code, the code is wrong — flag it as a category-error bug, not as fact.', 'active') ON CONFLICT (invariant_id) DO NOTHING;
+
+INSERT INTO framing_invariants (invariant_id, name, category, wrong_framing, correct_framing, why, severity, example_context, status)
+VALUES ('framing-006', 'Silent fallback when a path is missing', 'fail-loud', 'If a rulebook file is not at the expected path, check a legacy location or return {} with a warning.', 'Fail loudly with the exact expected path. Every fallback hides a bug; there are no compatibility shims in a project this young.', 'Fallbacks make conformance run against the wrong data and report 100% pass, masking the real failure. A loud failure produces a fixable stack trace.', 'critical', 'Any `if not os.path.exists` followed by a default that isn''t derived from the SSoT.', 'active') ON CONFLICT (invariant_id) DO NOTHING;
+
+INSERT INTO framing_invariants (invariant_id, name, category, wrong_framing, correct_framing, why, severity, example_context, status)
+VALUES ('framing-007', 'Defaults are fallbacks', 'fail-loud', 'All `or`-defaults are fallbacks and should be removed.', 'A default computed from the SSoT (e.g. `or f"erb_{active_domain}"`) is NOT a fallback — it''s the deterministically-correct value the env var would override. A fallback is one that silently substitutes a guess.', 'Over-correcting on the ''no fallbacks'' rule removes correct SSoT-derived defaults and forces every caller to set env vars. The test: if the default would still be correct after the env var was unset by accident, it''s a default.', 'nuance', 'DATABASE_URL with a default of `erb_{active_domain}` is fine. DATABASE_URL with a default of `postgres` is a bug.', 'active') ON CONFLICT (invariant_id) DO NOTHING;
+
+INSERT INTO framing_invariants (invariant_id, name, category, wrong_framing, correct_framing, why, severity, example_context, status)
+VALUES ('framing-008', 'Build can run without testing', 'category-error', 'Add a ''build without testing'' option so users can iterate faster.', 'Build = generate + test + regenerate report + open. The conformance proof is the point of the build; codegen alone produces output of unknown correctness.', 'Splitting build from test makes ''did this work'' ambiguous and silently allows substrates to drift apart between formal runs.', 'important', 'Any menu addition like ''[B] Build only'' or ''[R] Regenerate report only''.', 'active') ON CONFLICT (invariant_id) DO NOTHING;
+
+INSERT INTO framing_invariants (invariant_id, name, category, wrong_framing, correct_framing, why, severity, example_context, status)
+VALUES ('framing-009', 'Portal grows logic the CLI lacks', 'role-confusion', 'It''s easier to implement ''install a tool'' directly in the portal backend than to call the effortless CLI.', 'The portal shells out to the same `effortless` CLI command the user would run by hand. Both surfaces are peer interfaces to the same pipeline.', 'Two implementations of the same operation will drift; conformance claims become qualified by interface.', 'important', 'Anywhere the portal backend reaches into effortless.json directly instead of invoking `effortless -install`.', 'active') ON CONFLICT (invariant_id) DO NOTHING;
+
+INSERT INTO framing_invariants (invariant_id, name, category, wrong_framing, correct_framing, why, severity, example_context, status)
+VALUES ('framing-010', 'Postgres editor wins over JSON', 'ssot-locality', 'Persist edits to Postgres now and write them to JSON on demand (lazy sync).', 'Every save is write-through: Postgres and JSON in the same logical transaction. Postgres is the live editor; JSON is the durable SSoT.', 'Lazy sync means a crash leaves the JSON behind the editor — and the JSON is the only file that travels with the repo.', 'critical', 'Anywhere a PATCH endpoint touches the DB but defers writing JSON.', 'active') ON CONFLICT (invariant_id) DO NOTHING;
+
+INSERT INTO framing_invariants (invariant_id, name, category, wrong_framing, correct_framing, why, severity, example_context, status)
+VALUES ('framing-011', 'Swappable active domain', 'project-catalog', 'The platform has one stack and a ''swappable active domain'' — switch the active domain (acme-llc, star-trek, jessica-advanced, …) and the entire stack regenerates against it.', 'rulebook-examples/ is a CATALOG of N independent Effortless projects. Each project owns its own rulebook and picks the subset of the platform''s 15 substrates it needs (acme-llc uses all 15; most use 3+). active-domain.txt is a convenience pointer for the orchestrator/portal — not the architecture.', 'The ''swappable'' framing implies one shared stack parameterized by domain. In reality each project is self-contained; the platform is a catalog, not a runtime that mounts one domain at a time. Calling them ''swappable'' hides the fact that projects choose different substrate subsets and evolve independently.', 'critical', 'README phrasing like ''Swappable demo domains — switch the active domain and the entire stack regenerates against it.'' Caught by user 2026-05-25.', 'active') ON CONFLICT (invariant_id) DO NOTHING;
+
+INSERT INTO framing_invariants (invariant_id, name, category, wrong_framing, correct_framing, why, severity, example_context, status)
+VALUES ('framing-012', 'ERB is a code generator', 'build-semantics', 'ERB generates code from a declarative spec — like any other code generator.', '`effortless build` is CONVERGENT, not additive. Downstream artifacts mirror the current rulebook: additions appear, removals disappear, renames propagate. A conventional code generator only adds; ERB conforms. The rulebook is the SSoT in BOTH directions.', 'Calling ERB a ''code generator'' anchors readers on a category (one-way emit-and-forget) that misses the load-bearing property. The convergence is what lets the rulebook stay authoritative — if removals didn''t propagate, generated code would silently outlive its spec and the SSoT claim would collapse.', 'critical', 'Any framing like ''multi-substrate code generation from declarative rulebooks'' without the convergence property called out.', 'active') ON CONFLICT (invariant_id) DO NOTHING;
+
+INSERT INTO framing_invariants (invariant_id, name, category, wrong_framing, correct_framing, why, severity, example_context, status)
+VALUES ('framing-013', 'Excel formulas are the formula language of ERB', 'dialect-binding', 'ERB formulas are Excel-compatible (IF, AND, OR, CONCAT, LEFT, RIGHT, …) — that''s how calculated fields work in ERB.', 'ERB rulebooks declare a formula DIALECT. Excel is the current default because domain experts can read it, but Airtable dialect (or any other) is equally valid. The dialect is a per-rulebook property; the conformance claim is ''all substrates compute identically UNDER THIS RULEBOOK''S DECLARED DIALECT.''', 'Hardcoding Excel as ''the ERB formula language'' couples the methodology to one dialect''s quirks (1-indexed strings, specific function set, etc.) and excludes teams who already think in another dialect. The dialect is metadata on the rulebook; the platform''s job is to make every substrate''s transpiler honor whichever dialect is declared.', 'important', 'CLAUDE.md ''Key Principles'' listing ''Formula semantics are Excel-compatible'' as a property of ERB, or any rulebook doc that names Excel functions as if they were the language rather than the dialect.', 'active') ON CONFLICT (invariant_id) DO NOTHING;
+
+-- ----------------------------------------------------------------------------
+-- PlatformFeatures: The catalog of distinctive features the ERB platform offers. The rulebook is the formal SSoT for this list; the repo's README and per-feature README files MUST conform to these rows. Each feature has a one-line summary (the elevator pitch), a Tier (headline vs additional), a Priority (sort order within tier), and a ReadmeFilePath (where the long-form explanation lives — even if it's still a stub). IsReadmeStub is calculated so 'which READMEs are still missing' is a queryable fact, not a tribal one. Many features reference an OntologyAxiom — that's the axiom the feature operationalizes.
+-- ----------------------------------------------------------------------------
+INSERT INTO platform_features (feature_id, name, short_name, tier, priority, one_line_summary, readme_file_path, readme_stub_content, readme_length, status)
+VALUES ('feature-001', 'Abstract Derivative Percentage (ADP)', 'ADP', 'headline', 10, 'A first-class, measurable percentage of any ERB project that is derivative (mechanically rebuildable) vs. hand-written — `effortless -clean` deletes everything derivative, build restores it, and the LOC delta is the ADP.', 'docs/features/README.ADP.md', 'ADP draws a bright red line between Derivative Code (rebuildable on demand) and Hand Code (would be permanently lost without backup). Measured as (LOC_before_cleanall - LOC_after_cleanall) / LOC_before_cleanall. A pure scaffold starts at ~100%; a typical ERB project lands at 60-80%.', NULL, 'shipped') ON CONFLICT (feature_id) DO NOTHING;
+
+INSERT INTO platform_features (feature_id, name, short_name, tier, priority, one_line_summary, readme_file_path, readme_stub_content, readme_length, status)
+VALUES ('feature-002', 'effortless -clean / implicit clean before build', 'Clean', 'headline', 20, '`effortless -clean` removes every file whose OverwriteMode is ALWAYS, plus every NEVER-mode file that still matches the original generator output — both are Derivative Code by definition. Every build runs this implicitly first, so ''following along'' is the default.', 'docs/features/README.clean.md', 'Clean is the mechanism that lets ADP be measured. OverwriteMode=ALWAYS files are always derivative; OverwriteMode=NEVER files are derivative as long as their content still matches the generator output. Once a NEVER file is customized, it crosses into Hand Code and clean leaves it alone.', NULL, 'shipped') ON CONFLICT (feature_id) DO NOTHING;
+
+INSERT INTO platform_features (feature_id, name, short_name, tier, priority, one_line_summary, readme_file_path, readme_stub_content, readme_length, status)
+VALUES ('feature-003', 'Rulebook as IR / Hub-and-Spoke Topology', 'Hub-and-Spoke', 'headline', 30, 'The rulebook JSON is the hub; every input (Airtable, LLM, admin portal, hand edits) and every output (Postgres, Python, Go, Excel, OWL, …) is a spoke. Spokes never talk to each other — they all route through the rulebook, eliminating the n×n integration problem.', 'docs/features/README.hub-and-spoke.md', 'The topology IS the architecture: one durable IR, N peer spokes. Generated artifacts are projections of the rulebook, never accumulations.', NULL, 'shipped') ON CONFLICT (feature_id) DO NOTHING;
+
+INSERT INTO platform_features (feature_id, name, short_name, tier, priority, one_line_summary, readme_file_path, readme_stub_content, readme_length, status)
+VALUES ('feature-004', 'Convergent Builds (not Additive Codegen)', 'Convergent Build', 'headline', 40, '`effortless build` makes downstream artifacts mirror the current rulebook — additions appear, removals disappear, renames propagate. A conventional code generator only adds; ERB conforms, in both directions.', 'docs/features/README.convergent-build.md', 'Conventional codegen is one-way: you remove a field from the spec, the generated column lingers until someone notices. ERB is two-way: removing a field from the rulebook removes it from every substrate on the next build. This is what makes the rulebook stay authoritative.', NULL, 'shipped') ON CONFLICT (feature_id) DO NOTHING;
+
+INSERT INTO platform_features (feature_id, name, short_name, tier, priority, one_line_summary, readme_file_path, readme_stub_content, readme_length, status)
+VALUES ('feature-005', 'No Privileged Substrate / Portability', 'Substrate Equivalence', 'headline', 50, 'Every substrate (Postgres, Python, Go, OWL, COBOL, Excel, English, ARM64) is a peer projection of the rulebook. Languages not yet invented can be plugged in down the road by writing one transpiler — the rest of the stack lights up unchanged.', 'docs/features/README.substrate-equivalence.md', 'No substrate is the reference. Trustworthiness is measured by passing the conformance tests, not by being Postgres. This is what justifies ''portable across not-yet-invented languages''.', NULL, 'shipped') ON CONFLICT (feature_id) DO NOTHING;
+
+INSERT INTO platform_features (feature_id, name, short_name, tier, priority, one_line_summary, readme_file_path, readme_stub_content, readme_length, status)
+VALUES ('feature-006', 'Conformance Testing Across Substrates', 'Conformance', 'headline', 60, 'Every build runs every substrate''s conformance test against a locally-designated answer key and shows the pass/fail matrix. Substrate agreement is the empirical receipt that the rulebook is the SSoT.', 'docs/features/README.conformance.md', 'There is no ''build without testing''. Build = generate + test + regenerate report + open. If a substrate has no take-test, that is a bug to fix, not a case to handle.', NULL, 'shipped') ON CONFLICT (feature_id) DO NOTHING;
+
+INSERT INTO platform_features (feature_id, name, short_name, tier, priority, one_line_summary, readme_file_path, readme_stub_content, readme_length, status)
+VALUES ('feature-007', 'Locally-Designated SSoT', 'Local SSoT', 'headline', 70, 'The ''answer key'' for a conformance run is whichever spoke the user designates — Airtable export, Excel workbook, hand-edited JSON, Postgres dump. The same harness validates Airtable-driven, Excel-driven, and JSON-driven projects.', 'docs/features/README.local-ssot.md', 'SSoT is a per-run designation, not a global property. The rulebook is the portable IR; the SSoT for a given run is whichever substrate the user nominates as the oracle.', NULL, 'shipped') ON CONFLICT (feature_id) DO NOTHING;
+
+INSERT INTO platform_features (feature_id, name, short_name, tier, priority, one_line_summary, readme_file_path, readme_stub_content, readme_length, status)
+VALUES ('feature-008', 'Portal/CLI Parity', 'Portal/CLI Parity', 'headline', 80, 'The admin portal and `./start.sh --cli` are peer interfaces to the same `effortless.json` pipeline. Every portal mutation shells out to the same `effortless` CLI command, so the two surfaces cannot drift.', 'docs/features/README.portal-cli-parity.md', 'Two surfaces, one pipeline. If the portal grows logic the CLI doesn''t have, that logic moves into the CLI and the portal calls it.', NULL, 'partial') ON CONFLICT (feature_id) DO NOTHING;
+
+INSERT INTO platform_features (feature_id, name, short_name, tier, priority, one_line_summary, readme_file_path, readme_stub_content, readme_length, status)
+VALUES ('feature-009', 'Write-Through Invariant', 'Write-Through', 'headline', 90, 'The portal''s editor Postgres DB is live; the rulebook JSON is durable. Every save writes to BOTH in the same logical transaction — drop Postgres at any time and rebuild from JSON, never the other direction.', 'docs/features/README.write-through.md', 'The rulebook JSON is the only file that travels with the repo. Postgres is convenience; JSON is truth. Lazy sync is forbidden.', NULL, 'partial') ON CONFLICT (feature_id) DO NOTHING;
+
+INSERT INTO platform_features (feature_id, name, short_name, tier, priority, one_line_summary, readme_file_path, readme_stub_content, readme_length, status)
+VALUES ('feature-010', 'Fail Loudly, Never Fall Back', 'Fail Loud', 'additional', 10, 'When a file or value isn''t where it''s expected, the code fails with the exact expected path. No silent fallbacks. Defaults derived from the SSoT are fine; defaults that substitute a guess are not.', 'docs/features/README.fail-loud.md', 'Silent fallbacks make conformance run against the wrong data and report 100% pass, masking the real failure. A loud failure produces a fixable stack trace.', NULL, 'shipped') ON CONFLICT (feature_id) DO NOTHING;
+
+INSERT INTO platform_features (feature_id, name, short_name, tier, priority, one_line_summary, readme_file_path, readme_stub_content, readme_length, status)
+VALUES ('feature-011', 'Rulebook Is a Complete Spec', 'Complete Spec', 'additional', 10, 'A rulebook alone — no accompanying source code, no documentation — is sufficient for any frontier LLM to answer any question about the domain or produce a faithful implementation in any language.', 'docs/features/README.complete-spec.md', 'The load-bearing portability claim. If the rulebook were not self-sufficient, the methodology would degrade into docs-plus-code where the docs lie and the code is the real spec.', NULL, 'shipped') ON CONFLICT (feature_id) DO NOTHING;
+
+INSERT INTO platform_features (feature_id, name, short_name, tier, priority, one_line_summary, readme_file_path, readme_stub_content, readme_length, status)
+VALUES ('feature-012', 'Per-Rulebook Formula Dialect', 'Dialect Binding', 'additional', 20, 'Each rulebook declares its formula dialect (Excel, Airtable, …). Substrates honor the declared dialect; the conformance claim is ''all substrates compute identically under THIS rulebook''s declared dialect.''', 'docs/features/README.dialect-binding.md', 'Excel is the current default because domain experts can read it, but it is not invariant. Dialect is metadata on the rulebook, not a property of ERB.', NULL, 'shipped') ON CONFLICT (feature_id) DO NOTHING;
+
+INSERT INTO platform_features (feature_id, name, short_name, tier, priority, one_line_summary, readme_file_path, readme_stub_content, readme_length, status)
+VALUES ('feature-013', 'Project Rulebook ≠ Demo Rulebook', 'Project/Demo Split', 'additional', 30, 'The platform rulebook describes ERB itself; the demo rulebooks under `rulebook-examples/` describe one business domain each. They never mix — portal config lives only in the platform rulebook; business tables live only in their demo rulebook.', 'docs/features/README.project-vs-demo.md', 'Mixing platform-meta with business-data couples the wrapper to a domain, which destroys portability. Two file reads, two concerns, never merged.', NULL, 'shipped') ON CONFLICT (feature_id) DO NOTHING;
+
+INSERT INTO platform_features (feature_id, name, short_name, tier, priority, one_line_summary, readme_file_path, readme_stub_content, readme_length, status)
+VALUES ('feature-014', 'Admin Portal ≠ a Domain', 'Portal/Domain Split', 'additional', 40, 'The portal is the app (`erb_admin_portal` DB); a domain is a document the app opens (`erb_<domain>` DB). The name ''admin'' never appears with a domain suffix — `erb_admin_<domain>` is a category-error red flag.', 'docs/features/README.portal-vs-domain.md', 'Word''s install directory isn''t named after any document; a .docx isn''t named after Word. Two connections, two purposes, two categories.', NULL, 'shipped') ON CONFLICT (feature_id) DO NOTHING;
+
+INSERT INTO platform_features (feature_id, name, short_name, tier, priority, one_line_summary, readme_file_path, readme_stub_content, readme_length, status)
+VALUES ('feature-015', 'ssotme-proxy Transpiler Bus', 'ssotme-proxy', 'additional', 50, 'A local HTTP server on `localhost:4242` exposes every injector as a first-class `ssotme://` transpiler route, so repo-local transpilers and officially-licensed ones look identical to the CLI.', 'docs/features/README.ssotme-proxy.md', 'POST /rulebook-to-python, POST /rulebook-to-postgres, … Each route runs the corresponding injector. The proxy IS the mechanism, not a wrapper.', NULL, 'shipped') ON CONFLICT (feature_id) DO NOTHING;
+
+INSERT INTO platform_features (feature_id, name, short_name, tier, priority, one_line_summary, readme_file_path, readme_stub_content, readme_length, status)
+VALUES ('feature-016', 'Self-Hosting Platform (dog-fooding)', 'Self-Hosting', 'additional', 60, 'The orchestration tool, admin portal, and ssotme-proxy are themselves generated from the platform rulebook in `effortless-platform/effortless-rulebook/effortless-rulebook.json` — ERB is its own first customer.', 'docs/features/README.self-hosting.md', 'The wrapper eats its own dog food. Every feature, screen, API, and table you see in the portal exists because the platform rulebook says it does.', NULL, 'partial') ON CONFLICT (feature_id) DO NOTHING;
+
+INSERT INTO platform_features (feature_id, name, short_name, tier, priority, one_line_summary, readme_file_path, readme_stub_content, readme_length, status)
+VALUES ('feature-017', 'Skills as LLM force multiplier', 'Claude Skills', 'headline', 95, 'The rulebook gives the LLM something to operate on; the skills give it the instructions for how to operate — together they replace a learning curve that previously cost weeks.', 'docs/features/README.claude-skills.md', 'Before ERB, every developer had to teach their LLM the ERB conventions from scratch. Skills pre-encode that learning — naming rules, pipeline mechanics, formula semantics, the Leopold loop — so the LLM arrives already trained. The rulebook is the subject matter; the skills are the curriculum. Without the rulebook there is nothing for the skills to operate on. Without the skills the LLM has to rediscover the conventions by trial and error.', NULL, 'shipped') ON CONFLICT (feature_id) DO NOTHING;
 
 -- ----------------------------------------------------------------------------
 -- ExecutionSubstrates: Runtime environments that execute business rules derived from the rulebook
 -- ----------------------------------------------------------------------------
-INSERT INTO execution_substrates (substrate_id, name, technology, relative_path, injector_script, test_script, is_production, status, description)
-VALUES ('substrate-001', 'Binary (ARM64)', 'ARM64 Assembly', 'execution-substrates/binary/', 'inject-into-binary.py', 'take-test.py', FALSE, 'proof-of-concept', 'ARM64 assembly proof-of-concept; demonstrates lowest-level code generation') ON CONFLICT (substrate_id) DO NOTHING;
+INSERT INTO execution_substrates (substrate_id, name, technology, relative_path, injector_script, test_script, transpiler_source, maturity, expressive_completeness, can_be_answer_key, determinism, runtime_kind, status, description)
+VALUES ('substrate-001', 'Binary (ARM64)', 'ARM64 Assembly', 'execution-substrates/binary/', 'inject-into-binary.py', 'take-test.py', 'local-injector', 'prototype', 'partial-formula', FALSE, 'deterministic', 'binary', 'proof-of-concept', 'ARM64 assembly proof-of-concept; demonstrates lowest-level code generation') ON CONFLICT (substrate_id) DO NOTHING;
 
-INSERT INTO execution_substrates (substrate_id, name, technology, relative_path, injector_script, test_script, is_production, status, description)
-VALUES ('substrate-002', 'Python', 'Python', 'execution-substrates/python/', 'inject-into-python.py', 'take-test.py', FALSE, 'active', 'Local Python implementation: dataclasses + calculated field functions') ON CONFLICT (substrate_id) DO NOTHING;
+INSERT INTO execution_substrates (substrate_id, name, technology, relative_path, injector_script, test_script, transpiler_source, maturity, expressive_completeness, can_be_answer_key, determinism, runtime_kind, status, description)
+VALUES ('substrate-002', 'Python', 'Python', 'execution-substrates/python/', 'inject-into-python.py', 'take-test.py', 'local-injector', 'demonstrating', 'full', TRUE, 'deterministic', 'text-emit', 'active', 'Local Python implementation: dataclasses + calculated field functions') ON CONFLICT (substrate_id) DO NOTHING;
 
-INSERT INTO execution_substrates (substrate_id, name, technology, relative_path, injector_script, test_script, is_production, status, description)
-VALUES ('substrate-003', 'Go', 'Go', 'execution-substrates/golang/', 'inject-into-golang.py', 'take-test.py', FALSE, 'active', 'Local Go implementation: structs + business logic') ON CONFLICT (substrate_id) DO NOTHING;
+INSERT INTO execution_substrates (substrate_id, name, technology, relative_path, injector_script, test_script, transpiler_source, maturity, expressive_completeness, can_be_answer_key, determinism, runtime_kind, status, description)
+VALUES ('substrate-003', 'Go', 'Go', 'execution-substrates/golang/', 'inject-into-golang.py', 'take-test.py', 'local-injector', 'demonstrating', 'full', TRUE, 'deterministic', 'text-emit', 'active', 'Local Go implementation: structs + business logic') ON CONFLICT (substrate_id) DO NOTHING;
 
-INSERT INTO execution_substrates (substrate_id, name, technology, relative_path, injector_script, test_script, is_production, status, description)
-VALUES ('substrate-004', 'PostgreSQL', 'PostgreSQL', 'licensed-effortless-tools/postgres/', 'N/A (rulebook-to-postgres CLI)', 'take-test.py', TRUE, 'active', 'Production tool: generates DDL, stored functions, views. Full formula support via SQL.') ON CONFLICT (substrate_id) DO NOTHING;
+INSERT INTO execution_substrates (substrate_id, name, technology, relative_path, injector_script, test_script, transpiler_source, maturity, expressive_completeness, can_be_answer_key, determinism, runtime_kind, status, description)
+VALUES ('substrate-004', 'PostgreSQL', 'PostgreSQL', 'licensed-effortless-tools/postgres/', 'N/A (rulebook-to-postgres CLI)', 'take-test.py', 'licensed-effortless-tool', 'reference-quality', 'full', TRUE, 'deterministic', 'database', 'active', 'Licensed transpiler: generates DDL, stored functions, views. Full formula coverage in SQL. Convenient witness when JSON is SSoT — peer, not reference.') ON CONFLICT (substrate_id) DO NOTHING;
 
-INSERT INTO execution_substrates (substrate_id, name, technology, relative_path, injector_script, test_script, is_production, status, description)
-VALUES ('substrate-005', 'CSV', 'CSV', 'execution-substrates/csv/', 'inject-into-csv.py', NULL, FALSE, 'active', 'Spreadsheet export: rows + headers') ON CONFLICT (substrate_id) DO NOTHING;
+INSERT INTO execution_substrates (substrate_id, name, technology, relative_path, injector_script, test_script, transpiler_source, maturity, expressive_completeness, can_be_answer_key, determinism, runtime_kind, status, description)
+VALUES ('substrate-005', 'CSV', 'CSV', 'execution-substrates/csv/', 'inject-into-csv.py', NULL, 'local-injector', 'demonstrating', 'shape-only', FALSE, 'deterministic', 'text-emit', 'active', 'Spreadsheet export: rows + headers. No formula evaluation — values are materialised at emit time.') ON CONFLICT (substrate_id) DO NOTHING;
 
-INSERT INTO execution_substrates (substrate_id, name, technology, relative_path, injector_script, test_script, is_production, status, description)
-VALUES ('substrate-006', 'Excel', 'Excel', 'licensed-effortless-tools/xlsx/', 'N/A (rulebook-to-xlsx CLI)', NULL, TRUE, 'active', 'Production tool: generates .xlsx with formulas') ON CONFLICT (substrate_id) DO NOTHING;
+INSERT INTO execution_substrates (substrate_id, name, technology, relative_path, injector_script, test_script, transpiler_source, maturity, expressive_completeness, can_be_answer_key, determinism, runtime_kind, status, description)
+VALUES ('substrate-006', 'Excel', 'Excel', 'licensed-effortless-tools/xlsx/', 'N/A (rulebook-to-xlsx CLI)', NULL, 'licensed-effortless-tool', 'reference-quality', 'full', TRUE, 'deterministic', 'spreadsheet', 'active', 'Licensed transpiler: generates .xlsx with live formulas. Natural SSoT when the source of truth is a workbook.') ON CONFLICT (substrate_id) DO NOTHING;
 
-INSERT INTO execution_substrates (substrate_id, name, technology, relative_path, injector_script, test_script, is_production, status, description)
-VALUES ('substrate-007', 'PlantUML', 'PlantUML', 'execution-substrates/uml/', 'inject-into-uml.py', NULL, FALSE, 'active', 'Generates UML class diagrams with OCL constraints') ON CONFLICT (substrate_id) DO NOTHING;
+INSERT INTO execution_substrates (substrate_id, name, technology, relative_path, injector_script, test_script, transpiler_source, maturity, expressive_completeness, can_be_answer_key, determinism, runtime_kind, status, description)
+VALUES ('substrate-007', 'PlantUML', 'PlantUML', 'execution-substrates/uml/', 'inject-into-uml.py', NULL, 'local-injector', 'demonstrating', 'shape-only', FALSE, 'deterministic', 'docs', 'active', 'Generates UML class diagrams with OCL constraints. Documents structure; does not evaluate.') ON CONFLICT (substrate_id) DO NOTHING;
 
-INSERT INTO execution_substrates (substrate_id, name, technology, relative_path, injector_script, test_script, is_production, status, description)
-VALUES ('substrate-008', 'OWL/RDF', 'OWL/RDF', 'execution-substrates/owl/', 'inject-into-owl.py', NULL, FALSE, 'active', 'RDF/OWL ontology for semantic web') ON CONFLICT (substrate_id) DO NOTHING;
+INSERT INTO execution_substrates (substrate_id, name, technology, relative_path, injector_script, test_script, transpiler_source, maturity, expressive_completeness, can_be_answer_key, determinism, runtime_kind, status, description)
+VALUES ('substrate-008', 'OWL/RDF', 'OWL/RDF', 'execution-substrates/owl/', 'inject-into-owl.py', NULL, 'local-injector', 'demonstrating', 'partial-formula', FALSE, 'deterministic', 'graph', 'active', 'RDF/OWL ontology for semantic web. Captures relationships and some constraints; not a full evaluator.') ON CONFLICT (substrate_id) DO NOTHING;
 
-INSERT INTO execution_substrates (substrate_id, name, technology, relative_path, injector_script, test_script, is_production, status, description)
-VALUES ('substrate-009', 'Explain DAG', 'JSON', 'execution-substrates/explain-dag/', 'inject-into-explain-dag.py', NULL, FALSE, 'active', 'JSON spec for calculated-field derivation tracing; embedded React visualizer') ON CONFLICT (substrate_id) DO NOTHING;
+INSERT INTO execution_substrates (substrate_id, name, technology, relative_path, injector_script, test_script, transpiler_source, maturity, expressive_completeness, can_be_answer_key, determinism, runtime_kind, status, description)
+VALUES ('substrate-009', 'Explain DAG', 'JSON', 'execution-substrates/explain-dag/', 'inject-into-explain-dag.py', NULL, 'local-injector', 'demonstrating', 'full', FALSE, 'deterministic', 'graph', 'active', 'JSON spec for calculated-field derivation tracing; embedded React visualizer. Witnesses derivation structure, not numeric output.') ON CONFLICT (substrate_id) DO NOTHING;
 
-INSERT INTO execution_substrates (substrate_id, name, technology, relative_path, injector_script, test_script, is_production, status, description)
-VALUES ('substrate-010', 'Entity Framework', 'C#/.NET', 'licensed-effortless-tools/entity-framework-dotnet/', 'N/A (rulebook-to-entity-framework CLI)', NULL, TRUE, 'active', 'Production tool: generates C# POCOs and Entity Framework DbContext') ON CONFLICT (substrate_id) DO NOTHING;
+INSERT INTO execution_substrates (substrate_id, name, technology, relative_path, injector_script, test_script, transpiler_source, maturity, expressive_completeness, can_be_answer_key, determinism, runtime_kind, status, description)
+VALUES ('substrate-010', 'Entity Framework', 'C#/.NET', 'licensed-effortless-tools/entity-framework-dotnet/', 'N/A (rulebook-to-entity-framework CLI)', NULL, 'licensed-effortless-tool', 'reference-quality', 'full', TRUE, 'deterministic', 'text-emit', 'active', 'Licensed transpiler: C# POCOs + EF DbContext. Targets .NET runtime; conformance via running app.') ON CONFLICT (substrate_id) DO NOTHING;
 
 -- ----------------------------------------------------------------------------
 -- OrchestrationComponents: Central orchestration logic that coordinates rulebook loading, injection, and testing
@@ -99,7 +237,7 @@ VALUES ('spoke-006', 'Manual JSON Edits', 'manual-json', 'input', FALSE, 'Develo
 -- SsotmeProxy: Local HTTP transpiler server on localhost:4242. Each transpiler is an HTTP route; injectors are the route bodies. Used by `effortless build` to call substrate generators uniformly.
 -- ----------------------------------------------------------------------------
 INSERT INTO ssotme_proxy (route_id, route, substrate_id, injector_script, description)
-VALUES ('proxy-001', 'POST /airtable-to-rulebook', 'e9d22a75-60c7-ecd7-a6d5-ade27865a3a3', NULL, 'Pull rulebook from Airtable base (delegates to official Effortless tool)') ON CONFLICT (route_id) DO NOTHING;
+VALUES ('proxy-001', 'POST /airtable-to-rulebook', 'f6a5fdc7-9db3-be12-94ad-602948ca4927', NULL, 'Pull rulebook from Airtable base (delegates to official Effortless tool)') ON CONFLICT (route_id) DO NOTHING;
 
 INSERT INTO ssotme_proxy (route_id, route, substrate_id, injector_script, description)
 VALUES ('proxy-002', 'POST /rulebook-to-python', 'substrate-002', 'execution-substrates/python/inject-into-python.py', 'Generate Python dataclass + calc library from rulebook') ON CONFLICT (route_id) DO NOTHING;
@@ -111,7 +249,7 @@ INSERT INTO ssotme_proxy (route_id, route, substrate_id, injector_script, descri
 VALUES ('proxy-004', 'POST /rulebook-to-binary', 'substrate-001', 'execution-substrates/binary/inject-into-binary.py', 'Generate ARM64 assembly calculation stub from rulebook') ON CONFLICT (route_id) DO NOTHING;
 
 INSERT INTO ssotme_proxy (route_id, route, substrate_id, injector_script, description)
-VALUES ('proxy-005', 'POST /rulebook-to-cobol', 'f28d4ce2-c19e-03cf-80c5-c5860f22a549', 'execution-substrates/cobol/inject-into-cobol.py', 'Generate COBOL computation program from rulebook') ON CONFLICT (route_id) DO NOTHING;
+VALUES ('proxy-005', 'POST /rulebook-to-cobol', '767d4200-11f9-2680-6a1c-99cddd1d21cb', 'execution-substrates/cobol/inject-into-cobol.py', 'Generate COBOL computation program from rulebook') ON CONFLICT (route_id) DO NOTHING;
 
 INSERT INTO ssotme_proxy (route_id, route, substrate_id, injector_script, description)
 VALUES ('proxy-006', 'POST /rulebook-to-csv', 'substrate-005', 'execution-substrates/csv/inject-into-csv.py', 'Generate CSV exports + rulebook.xlsx from rulebook') ON CONFLICT (route_id) DO NOTHING;
@@ -126,16 +264,16 @@ INSERT INTO ssotme_proxy (route_id, route, substrate_id, injector_script, descri
 VALUES ('proxy-009', 'POST /rulebook-to-owl', 'substrate-008', 'execution-substrates/owl/inject-into-owl.py', 'Generate RDF/OWL ontology from rulebook') ON CONFLICT (route_id) DO NOTHING;
 
 INSERT INTO ssotme_proxy (route_id, route, substrate_id, injector_script, description)
-VALUES ('proxy-010', 'POST /rulebook-to-english', 'a904278f-e47d-8272-ad3c-ff23a8e34ca0', 'execution-substrates/english/inject-into-english.py', 'Generate plain-English business-rule narrative from rulebook') ON CONFLICT (route_id) DO NOTHING;
+VALUES ('proxy-010', 'POST /rulebook-to-english', '2f848133-5e14-57f7-a439-5528a741741f', 'execution-substrates/english/inject-into-english.py', 'Generate plain-English business-rule narrative from rulebook') ON CONFLICT (route_id) DO NOTHING;
 
 INSERT INTO ssotme_proxy (route_id, route, substrate_id, injector_script, description)
 VALUES ('proxy-011', 'POST /rulebook-to-explain-dag', 'substrate-009', 'execution-substrates/explain-dag/inject-into-explain-dag.py', 'Generate JSON derivation-tracing DAG spec from rulebook') ON CONFLICT (route_id) DO NOTHING;
 
 INSERT INTO ssotme_proxy (route_id, route, substrate_id, injector_script, description)
-VALUES ('proxy-012', 'POST /rulebook-to-airtable', '3e0c60c6-d647-4bcd-b26d-97bd556097ae', 'execution-substrates/airtable/inject-into-airtable.py', 'Sync rulebook schema back into an Airtable base (output spoke)') ON CONFLICT (route_id) DO NOTHING;
+VALUES ('proxy-012', 'POST /rulebook-to-airtable', '68827179-0b6b-7c96-b8ae-2a1306eda37c', 'execution-substrates/airtable/inject-into-airtable.py', 'Sync rulebook schema back into an Airtable base (output spoke)') ON CONFLICT (route_id) DO NOTHING;
 
 INSERT INTO ssotme_proxy (route_id, route, substrate_id, injector_script, description)
-VALUES ('proxy-013', 'GET /ping', '0df40e7b-072a-1284-19f8-78ec15131914', NULL, 'Health check + transpiler catalog discovery') ON CONFLICT (route_id) DO NOTHING;
+VALUES ('proxy-013', 'GET /ping', '71e6d724-9e5d-77cd-bc0b-e3deadd90ef1', NULL, 'Health check + transpiler catalog discovery') ON CONFLICT (route_id) DO NOTHING;
 
 -- ----------------------------------------------------------------------------
 -- TestingFramework: Conformance testing: prove all substrates compute identically
@@ -153,31 +291,31 @@ INSERT INTO testing_framework (test_id, name, file_path, purpose, scope)
 VALUES ('test-004', 'Conformance Report', 'orchestration/conformance-report.html', 'Visual comparison of substrate outputs; highlight mismatches', 'global') ON CONFLICT (test_id) DO NOTHING;
 
 -- ----------------------------------------------------------------------------
--- RulebookDomains: Customer ontologies: each domain has its own rulebook + substrate generation
+-- RulebookDomains: Customer ontologies: each domain has its own rulebook + substrate generation. Domains form a TREE — ParentDomainId links a more-elaborate domain back to the simpler one it grew out of (e.g. Jessica ADVANCED ← Jessica BASIC). The UI uses this to present related rulebooks as a set rather than a flat list, and to drive 'next step in the progression' navigation.
 -- ----------------------------------------------------------------------------
-INSERT INTO rulebook_domains (domain_id, domain_name, relative_path, rulebook_path, complexity_level, table_count, key_features, purpose)
-VALUES ('domain-001', 'Customer FullName', 'rulebook-examples/customer-fullname/', 'rulebook-examples/customer-fullname/effortless-rulebook/customer-fullname-rulebook.json', 'minimal', 1, 'string concatenation', 'Hello World: demonstrates basic schema and calculated field (CONCAT formula)') ON CONFLICT (domain_id) DO NOTHING;
+INSERT INTO rulebook_domains (domain_id, domain_name, relative_path, rulebook_path, complexity_level, table_count, key_features, purpose, parent_domain_id, progression_note)
+VALUES ('domain-001', 'Customer FullName', 'rulebook-examples/customer-fullname/', 'rulebook-examples/customer-fullname/effortless-rulebook/customer-fullname-rulebook.json', 'minimal', 1, 'string concatenation', 'Hello World: demonstrates basic schema and calculated field (CONCAT formula)', 'd248744c-a89b-9104-6f0f-d44efd860926', 'Root of the formula-progression tree: one table, one calculated field, one CONCAT formula. The smallest possible rulebook that still demonstrates the contract.') ON CONFLICT (domain_id) DO NOTHING;
 
-INSERT INTO rulebook_domains (domain_id, domain_name, relative_path, rulebook_path, complexity_level, table_count, key_features, purpose)
-VALUES ('domain-002', 'Jessica BASIC', 'rulebook-examples/jessica-basic/', 'rulebook-examples/jessica-basic/effortless-rulebook/jessica-basic-rulebook.json', 'moderate', 9, 'relationships, aggregations, role-agent separation', 'Real workflow modeling: task management with assigned agents') ON CONFLICT (domain_id) DO NOTHING;
+INSERT INTO rulebook_domains (domain_id, domain_name, relative_path, rulebook_path, complexity_level, table_count, key_features, purpose, parent_domain_id, progression_note)
+VALUES ('domain-002', 'Jessica BASIC', 'rulebook-examples/jessica-basic/', 'rulebook-examples/jessica-basic/effortless-rulebook/jessica-basic-rulebook.json', 'moderate', 9, 'relationships, aggregations, role-agent separation', 'Real workflow modeling: task management with assigned agents', 'domain-001', 'Adds multi-table relationships, aggregations, and role/agent separation on top of single-table formulas — first ontology that''s recognizable as a real application.') ON CONFLICT (domain_id) DO NOTHING;
 
-INSERT INTO rulebook_domains (domain_id, domain_name, relative_path, rulebook_path, complexity_level, table_count, key_features, purpose)
-VALUES ('domain-003', 'Jessica ADVANCED', 'rulebook-examples/jessica-advanced/', 'rulebook-examples/jessica-advanced/effortless-rulebook/jessica-advanced-rulebook.json', 'advanced', 9, 'cross-entity lookups, conditional IF logic, complex aggregations', 'Business rule complexity: demonstrates advanced formula patterns') ON CONFLICT (domain_id) DO NOTHING;
+INSERT INTO rulebook_domains (domain_id, domain_name, relative_path, rulebook_path, complexity_level, table_count, key_features, purpose, parent_domain_id, progression_note)
+VALUES ('domain-003', 'Jessica ADVANCED', 'rulebook-examples/jessica-advanced/', 'rulebook-examples/jessica-advanced/effortless-rulebook/jessica-advanced-rulebook.json', 'advanced', 9, 'cross-entity lookups, conditional IF logic, complex aggregations', 'Business rule complexity: demonstrates advanced formula patterns', 'domain-002', 'Same shape as Jessica BASIC but adds cross-entity lookups, conditional IF logic, and richer aggregations. Demonstrates that elaboration can happen without substrate edits — pure rulebook change.') ON CONFLICT (domain_id) DO NOTHING;
 
-INSERT INTO rulebook_domains (domain_id, domain_name, relative_path, rulebook_path, complexity_level, table_count, key_features, purpose)
-VALUES ('domain-004', 'StarTrek', 'rulebook-examples/star-trek/', 'rulebook-examples/star-trek/effortless-rulebook/star-trek-rulebook.json', 'moderate', 7, 'hierarchical rollups, polymorphic foreign keys', 'Media catalog: TV shows, seasons, episodes; demonstrates polymorphism') ON CONFLICT (domain_id) DO NOTHING;
+INSERT INTO rulebook_domains (domain_id, domain_name, relative_path, rulebook_path, complexity_level, table_count, key_features, purpose, parent_domain_id, progression_note)
+VALUES ('domain-004', 'StarTrek', 'rulebook-examples/star-trek/', 'rulebook-examples/star-trek/effortless-rulebook/star-trek-rulebook.json', 'moderate', 7, 'hierarchical rollups, polymorphic foreign keys', 'Media catalog: TV shows, seasons, episodes; demonstrates polymorphism', '1e51d607-c3a0-7a11-1fe1-08efd6951a5f', 'Independent root — different domain from Jessica entirely. Demonstrates that swapping domains, not just elaborating one, is also a pure rulebook change. Hierarchical rollups + polymorphic FKs.') ON CONFLICT (domain_id) DO NOTHING;
 
-INSERT INTO rulebook_domains (domain_id, domain_name, relative_path, rulebook_path, complexity_level, table_count, key_features, purpose)
-VALUES ('domain-005', 'Is Everything a Language?', 'rulebook-examples/is-everything-a-language/', 'rulebook-examples/is-everything-a-language/effortless-rulebook/is-everything-a-language-rulebook.json', 'philosophical', 3, '8-predicate AND logic, meta-ontology', 'Formal argument modeling: demonstrates schema expressivity for abstract domains') ON CONFLICT (domain_id) DO NOTHING;
+INSERT INTO rulebook_domains (domain_id, domain_name, relative_path, rulebook_path, complexity_level, table_count, key_features, purpose, parent_domain_id, progression_note)
+VALUES ('domain-005', 'Is Everything a Language?', 'rulebook-examples/is-everything-a-language/', 'rulebook-examples/is-everything-a-language/effortless-rulebook/is-everything-a-language-rulebook.json', 'philosophical', 3, '8-predicate AND logic, meta-ontology', 'Formal argument modeling: demonstrates schema expressivity for abstract domains', '79552678-f91c-fdb2-12e4-78b0f28c724c', 'Independent root — abstract/philosophical rather than business. Demonstrates that the rulebook formalism can encode argument structure, not just CRUD entities.') ON CONFLICT (domain_id) DO NOTHING;
 
-INSERT INTO rulebook_domains (domain_id, domain_name, relative_path, rulebook_path, complexity_level, table_count, key_features, purpose)
-VALUES ('domain-006', 'ACME Corporation', 'rulebook-examples/acme-corporation/', 'rulebook-examples/acme-corporation/effortless-rulebook/acme-corporation-rulebook.json', 'advanced', NULL, 'Hub promotion candidate; demonstrates rulebook-first workflow', 'Enterprise demo: ACME Corp operations') ON CONFLICT (domain_id) DO NOTHING;
+INSERT INTO rulebook_domains (domain_id, domain_name, relative_path, rulebook_path, complexity_level, table_count, key_features, purpose, parent_domain_id, progression_note)
+VALUES ('domain-006', 'ACME Corporation', 'rulebook-examples/acme-corporation/', 'rulebook-examples/acme-corporation/effortless-rulebook/acme-corporation-rulebook.json', 'advanced', NULL, 'Hub promotion candidate; demonstrates rulebook-first workflow', 'Enterprise demo: ACME Corp operations', 'b8496ab9-b863-14c8-d833-c113d5f87b55', 'Independent root for the ACME enterprise progression. Targets all 15 substrates; serves as the wide-coverage demo for license-quality transpilers.') ON CONFLICT (domain_id) DO NOTHING;
 
-INSERT INTO rulebook_domains (domain_id, domain_name, relative_path, rulebook_path, complexity_level, table_count, key_features, purpose)
-VALUES ('domain-007', 'ACME LLC', 'rulebook-examples/acme-llc/', 'rulebook-examples/acme-llc/effortless-rulebook/acme-llc-rulebook.json', 'advanced', NULL, 'Hub promotion candidate; demonstrates rulebook-first workflow', 'Enterprise demo: ACME LLC operations') ON CONFLICT (domain_id) DO NOTHING;
+INSERT INTO rulebook_domains (domain_id, domain_name, relative_path, rulebook_path, complexity_level, table_count, key_features, purpose, parent_domain_id, progression_note)
+VALUES ('domain-007', 'ACME LLC', 'rulebook-examples/acme-llc/', 'rulebook-examples/acme-llc/effortless-rulebook/acme-llc-rulebook.json', 'advanced', NULL, 'Hub promotion candidate; demonstrates rulebook-first workflow', 'Enterprise demo: ACME LLC operations', 'domain-006', 'Smaller-scope variant of ACME Corporation — same enterprise universe, narrower operational slice. Demonstrates rulebook reuse across related but distinct legal entities.') ON CONFLICT (domain_id) DO NOTHING;
 
-INSERT INTO rulebook_domains (domain_id, domain_name, relative_path, rulebook_path, complexity_level, table_count, key_features, purpose)
-VALUES ('domain-008', 'Effortless Rulesbooks (self-referential demo)', 'rulebook-examples/effortless-rulesbooks/', 'rulebook-examples/effortless-rulesbooks/effortless-rulebook/effortless-rulesbooks-rulebook.json', 'philosophical', NULL, 'self-referential; rulebook describes the ERB project itself', 'Demonstrates ERB modeling its own architecture as a domain rulebook') ON CONFLICT (domain_id) DO NOTHING;
+INSERT INTO rulebook_domains (domain_id, domain_name, relative_path, rulebook_path, complexity_level, table_count, key_features, purpose, parent_domain_id, progression_note)
+VALUES ('domain-008', 'Effortless Rulesbooks (self-referential demo)', 'rulebook-examples/effortless-rulesbooks/', 'rulebook-examples/effortless-rulesbooks/effortless-rulebook/effortless-rulesbooks-rulebook.json', 'philosophical', NULL, 'self-referential; rulebook describes the ERB project itself', 'Demonstrates ERB modeling its own architecture as a domain rulebook', 'bd4de4a0-cf46-0235-f50a-8e62380d7592', 'Independent root, self-referential — a rulebook whose domain IS ERB. Demonstrates that the formalism is rich enough to describe itself (dogfooding).') ON CONFLICT (domain_id) DO NOTHING;
 
 -- ----------------------------------------------------------------------------
 -- CoreDataFlows: End-to-end flows from rulebook to execution and testing
@@ -296,14 +434,32 @@ VALUES ('user-002', 'viewer@example.com', 'Local Viewer', FALSE, 'Read-only logi
 INSERT INTO app_users (user_id, email, display_name, is_default, notes)
 VALUES ('user-003', 'test@example.com', 'Conformance Test User', FALSE, 'Used by automated conformance tests (CI mode).') ON CONFLICT (user_id) DO NOTHING;
 
--- ----------------------------------------------------------------------------
--- UserRoles: Admin portal access tiers. Drives both the navigation visible to the user and the RLS policies that Postgres applies to portal writes.
--- ----------------------------------------------------------------------------
-INSERT INTO user_roles (role_id, name, access_level, can_edit_rulebook, can_run_builds, can_access_tech_tools, can_switch_projects, can_manage_users, description)
-VALUES ('role-viewer', 'Viewer', 'read', FALSE, FALSE, FALSE, TRUE, FALSE, 'Read-only walkthrough of the project: see rulebook, browse generated substrates, view test results. Cannot mutate anything.') ON CONFLICT (role_id) DO NOTHING;
+INSERT INTO app_users (user_id, email, display_name, is_default, notes)
+VALUES ('user-004', 'author@example.com', 'Domain Author', FALSE, 'Edits rulebook semantics — entities, fields, formulas, sample data. Lands on /rulebook/entities.') ON CONFLICT (user_id) DO NOTHING;
 
-INSERT INTO user_roles (role_id, name, access_level, can_edit_rulebook, can_run_builds, can_access_tech_tools, can_switch_projects, can_manage_users, description)
-VALUES ('role-developer', 'Developer', 'full-admin', TRUE, TRUE, TRUE, TRUE, TRUE, 'Full admin: edit rulebook, trigger builds, run tests, manage users, access Tech Tools (raw Postgres, proxy logs, conformance internals).') ON CONFLICT (role_id) DO NOTHING;
+INSERT INTO app_users (user_id, email, display_name, is_default, notes)
+VALUES ('user-005', 'reviewer@example.com', 'Conformance Reviewer', FALSE, 'Read-only stakeholder. Lands on /tests to see the conformance matrix.') ON CONFLICT (user_id) DO NOTHING;
+
+INSERT INTO app_users (user_id, email, display_name, is_default, notes)
+VALUES ('user-006', 'ops@example.com', 'Build Ops', FALSE, 'Runs builds, pulls spokes, watches health. Lands on /builds.') ON CONFLICT (user_id) DO NOTHING;
+
+-- ----------------------------------------------------------------------------
+-- UserRoles: Admin portal access tiers. Each role is a PERSONA with its own landing screen, tagline, and bespoke screen overrides (see RoleScreenHints). NOT a CRUD form — every role gets a UX shaped for what that person actually cares about. Also drives RLS policies that Postgres applies to portal writes.
+-- ----------------------------------------------------------------------------
+INSERT INTO user_roles (role_id, name, persona, tagline, primary_concerns, color_theme, access_level, can_edit_rulebook, can_run_builds, can_access_tech_tools, can_switch_projects, can_manage_users, description)
+VALUES ('role-viewer', 'Viewer', 'Curious newcomer poking at the project for the first time — wants to understand what it is and what it does without touching anything.', 'See the whole project at a glance.', 'what the project is, what its parts are, what makes it conformant', '#7280ad', 'read', FALSE, FALSE, FALSE, TRUE, FALSE, 'Read-only walkthrough. Sees the rulebook, browses substrates, reads test results. Every page is reading; no mutation controls render.') ON CONFLICT (role_id) DO NOTHING;
+
+INSERT INTO user_roles (role_id, name, persona, tagline, primary_concerns, color_theme, access_level, can_edit_rulebook, can_run_builds, can_access_tech_tools, can_switch_projects, can_manage_users, description)
+VALUES ('role-author', 'Author', 'Domain expert who owns the business rules — thinks in entities, fields, formulas, and example rows, not in transpilers or Postgres.', 'The rulebook is your editor. Make it say what you mean.', 'entity meaning, formula correctness, sample data realism, plain-English narrative', '#4a8d70', 'write', TRUE, FALSE, FALSE, TRUE, FALSE, 'Authors and edits rulebook semantics: entities, fields, formulas, descriptions, sample rows. Cannot run builds or touch substrate internals — that''s Ops/Developer.') ON CONFLICT (role_id) DO NOTHING;
+
+INSERT INTO user_roles (role_id, name, persona, tagline, primary_concerns, color_theme, access_level, can_edit_rulebook, can_run_builds, can_access_tech_tools, can_switch_projects, can_manage_users, description)
+VALUES ('role-reviewer', 'Reviewer', 'Stakeholder or auditor reading the conformance story — wants to see that the substrates agree, and where they disagree wants the reasons.', 'Do all the substrates agree? Where don''t they, and why?', 'conformance matrix, test pass-rate, which substrate witnessed which run, framing invariants', '#9a6cb0', 'read', FALSE, FALSE, FALSE, TRUE, FALSE, 'Read-only with a Tests-first landing. Sees the conformance matrix, can drill into any failing cell to see input/expected/actual, and reads the Framing invariants — but cannot mutate or trigger anything.') ON CONFLICT (role_id) DO NOTHING;
+
+INSERT INTO user_roles (role_id, name, persona, tagline, primary_concerns, color_theme, access_level, can_edit_rulebook, can_run_builds, can_access_tech_tools, can_switch_projects, can_manage_users, description)
+VALUES ('role-ops', 'Ops', 'Build/release engineer keeping the pipeline green — cares about builds, spokes, freshness, and what''s installed where, not about the meaning of the rules.', 'Builds green. Spokes flowing. Tests passing.', 'last build status, installed transpilers, spoke pull freshness, conformance matrix health', '#c97a3d', 'write', FALSE, TRUE, FALSE, TRUE, FALSE, 'Triggers builds, pulls from spokes, watches the matrix. Cannot edit business rules. Tech Tools off — Ops uses the same surfaces as everyone else.') ON CONFLICT (role_id) DO NOTHING;
+
+INSERT INTO user_roles (role_id, name, persona, tagline, primary_concerns, color_theme, access_level, can_edit_rulebook, can_run_builds, can_access_tech_tools, can_switch_projects, can_manage_users, description)
+VALUES ('role-developer', 'Developer', 'Person extending the platform itself — adds substrates, writes injectors, debugs the proxy, edits the project rulebook. Has all the dials.', 'The whole stack is yours. Don''t break the SSoT.', 'transpiler catalog, raw SQL, proxy routes, rulebook JSON, write-through invariant', '#c0392b', 'full-admin', TRUE, TRUE, TRUE, TRUE, TRUE, 'Full admin. Edit rulebook, run builds, manage users, access Tech Tools (raw Postgres, proxy logs, rulebook JSON, reset editor). Reserved for platform maintainers.') ON CONFLICT (role_id) DO NOTHING;
 
 -- ----------------------------------------------------------------------------
 -- AppPermissions: RLS-style policy table: declarative per-role allow/deny on portal API endpoints and on Postgres tables. Generated into Postgres on portal bootstrap as RLS policies.
@@ -383,110 +539,194 @@ VALUES ('perm-114', 'users', 'delete', TRUE, 'true') ON CONFLICT (permission_id)
 -- ----------------------------------------------------------------------------
 -- AppNavigation: Primary navigation tree for the admin portal. Drives the left sidebar. Each node has a role gate and a target screen. This is the developer's narrative through a rulebook project.
 -- ----------------------------------------------------------------------------
-INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat)
-VALUES ('nav-001', 'Home', 'home', 10, 'What this project is, why it exists, who''s working on it. Cards: rulebook stats, last build, last test pass-rate, active spokes.') ON CONFLICT (nav_id) DO NOTHING;
+INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat, nav_area)
+VALUES ('nav-001', 'Home', 'home', 10, 'What this project is, why it exists, who''s working on it. Cards: rulebook stats, last build, last test pass-rate, active spokes.', 'main') ON CONFLICT (nav_id) DO NOTHING;
 
-INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat)
-VALUES ('nav-002', 'Rulebook', 'book-open', 20, 'The business semantics of the project — every table, field, formula, and sample row.') ON CONFLICT (nav_id) DO NOTHING;
+INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat, nav_area)
+VALUES ('nav-002', 'Rulebook', 'book-open', 20, 'The business semantics of the project — every table, field, formula, and sample row.', 'developer') ON CONFLICT (nav_id) DO NOTHING;
 
-INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat)
-VALUES ('nav-002a', 'Entities', 'table', 1, 'List all entities. Click one to drill in to its fields, sample data, and computed columns.') ON CONFLICT (nav_id) DO NOTHING;
+INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat, nav_area)
+VALUES ('nav-002a', 'Entities', 'table', 1, 'List all entities. Click one to drill in to its fields, sample data, and computed columns.', 'developer') ON CONFLICT (nav_id) DO NOTHING;
 
-INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat)
-VALUES ('nav-002b', 'Formulas', 'function-square', 2, 'All calculated fields in one place. Click one to see its DAG (inputs → output) live from the rulebook.') ON CONFLICT (nav_id) DO NOTHING;
+INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat, nav_area)
+VALUES ('nav-002b', 'Formulas', 'function-square', 2, 'All calculated fields in one place. Click one to see its DAG (inputs → output) live from the rulebook.', 'developer') ON CONFLICT (nav_id) DO NOTHING;
 
-INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat)
-VALUES ('nav-002c', 'Relationships', 'git-fork', 3, 'FK graph of the project. Hover a node to highlight its inbound and outbound relationships.') ON CONFLICT (nav_id) DO NOTHING;
+INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat, nav_area)
+VALUES ('nav-002c', 'Relationships', 'git-fork', 3, 'FK graph of the project. Hover a node to highlight its inbound and outbound relationships.', 'developer') ON CONFLICT (nav_id) DO NOTHING;
 
-INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat)
-VALUES ('nav-002d', 'Sample Data', 'database', 4, 'What the project looks like populated. Editable for developers; read-only for viewers.') ON CONFLICT (nav_id) DO NOTHING;
+INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat, nav_area)
+VALUES ('nav-002d', 'Sample Data', 'database', 4, 'What the project looks like populated. Editable for developers; read-only for viewers.', 'developer') ON CONFLICT (nav_id) DO NOTHING;
 
-INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat)
-VALUES ('nav-003', 'Substrates', 'boxes', 30, 'Every output substrate this project generates (Python, Go, Postgres, Excel, OWL, etc.). Click one to see the generated source and the conformance status.') ON CONFLICT (nav_id) DO NOTHING;
+INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat, nav_area)
+VALUES ('nav-002e', 'Framing', 'compass', 5, 'The mistakes-to-avoid catalog and the axioms it protects. Read this before claiming any substrate is ''the reference''.', 'developer') ON CONFLICT (nav_id) DO NOTHING;
 
-INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat)
-VALUES ('nav-003z', 'Add Tool', 'plus-square', 99, 'Pick from the catalog of 15+ transpilers and install one into the active project. Same code path as `effortless -install` on the CLI.') ON CONFLICT (nav_id) DO NOTHING;
+INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat, nav_area)
+VALUES ('nav-003', 'Substrates', 'boxes', 30, 'Every output substrate this project generates (Python, Go, Postgres, Excel, OWL, etc.). Click one to see the generated source and the conformance status.', 'developer') ON CONFLICT (nav_id) DO NOTHING;
 
-INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat)
-VALUES ('nav-004', 'Builds', 'wrench', 40, 'Build history: when, what changed, which substrates regenerated, how long. Developers can trigger a build here.') ON CONFLICT (nav_id) DO NOTHING;
+INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat, nav_area)
+VALUES ('nav-003z', 'Add Tool', 'plus-square', 99, 'Pick from the catalog of 15+ transpilers and install one into the active project. Same code path as `effortless -install` on the CLI.', 'developer') ON CONFLICT (nav_id) DO NOTHING;
 
-INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat)
-VALUES ('nav-005', 'Tests', 'check-circle', 50, 'Conformance matrix: which substrate computed which test case correctly. Drill in to see input → expected → actual per substrate.') ON CONFLICT (nav_id) DO NOTHING;
+INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat, nav_area)
+VALUES ('nav-004', 'Builds', 'wrench', 40, 'Build history: when, what changed, which substrates regenerated, how long. Developers can trigger a build here.', 'developer') ON CONFLICT (nav_id) DO NOTHING;
 
-INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat)
-VALUES ('nav-006', 'Input Spokes', 'git-pull-request', 60, 'Where edits come from: admin portal, Airtable, LLM, manual JSON. Pull / push controls live here.') ON CONFLICT (nav_id) DO NOTHING;
+INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat, nav_area)
+VALUES ('nav-005', 'Tests', 'check-circle', 50, 'Conformance matrix: which substrate computed which test case correctly. Drill in to see input → expected → actual per substrate.', 'developer') ON CONFLICT (nav_id) DO NOTHING;
 
-INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat)
-VALUES ('nav-007', 'Users', 'users', 70, 'Default dev/test users from the rulebook + their roles.') ON CONFLICT (nav_id) DO NOTHING;
+INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat, nav_area)
+VALUES ('nav-006', 'Input Spokes', 'git-pull-request', 60, 'Where edits come from: admin portal, Airtable, LLM, manual JSON. Pull / push controls live here.', 'developer') ON CONFLICT (nav_id) DO NOTHING;
 
-INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat)
-VALUES ('nav-008', 'Tech Tools', 'terminal', 80, 'Developer-only escape hatches. Raw Postgres, proxy logs, file system, manual injection. Not part of the daily workflow.') ON CONFLICT (nav_id) DO NOTHING;
+INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat, nav_area)
+VALUES ('nav-007', 'Users', 'users', 70, 'Default dev/test users from the rulebook + their roles.', 'admin') ON CONFLICT (nav_id) DO NOTHING;
 
-INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat)
-VALUES ('nav-008a', 'Postgres Explorer', 'database', 1, 'Raw editor-DB browser: run SQL, inspect rows, drop/reset DB.') ON CONFLICT (nav_id) DO NOTHING;
+INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat, nav_area)
+VALUES ('nav-007a', 'Roles & Personas', 'id-card', 1, 'Persona cards for each role — what they care about, where they land, who''s assigned. Click anything to navigate.', 'admin') ON CONFLICT (nav_id) DO NOTHING;
 
-INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat)
-VALUES ('nav-008b', 'ssotme-proxy', 'server', 2, 'Live proxy status: registered routes, recent calls, response sizes, last error per route.') ON CONFLICT (nav_id) DO NOTHING;
+INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat, nav_area)
+VALUES ('nav-001a', 'Project Flavours', 'tags', 1, 'Classification of every demo rulebook — crud-template, computation-heavy, aggregation-heavy, graph-ontology, etc.', 'main') ON CONFLICT (nav_id) DO NOTHING;
 
-INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat)
-VALUES ('nav-008c', 'Files', 'folder', 3, 'Project filesystem browser. View any generated or hand-written file in the active project.') ON CONFLICT (nav_id) DO NOTHING;
+INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat, nav_area)
+VALUES ('nav-001b', 'Platform Features', 'sparkles', 2, 'What ERB actually does — headline features (ADP, clean, hub-and-spoke, convergent build, substrate equivalence, …) and additional ones. Each row links to its per-feature README; developers can edit the catalog here.', 'main') ON CONFLICT (nav_id) DO NOTHING;
 
-INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat)
-VALUES ('nav-008d', 'Rulebook JSON', 'file-json', 4, 'Raw rulebook JSON viewer/editor. Save here goes through the same write-through invariant as the UI.') ON CONFLICT (nav_id) DO NOTHING;
+INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat, nav_area)
+VALUES ('nav-008', 'Tech Tools', 'terminal', 80, 'Developer-only escape hatches. Raw Postgres, proxy logs, file system, manual injection. Not part of the daily workflow.', 'developer') ON CONFLICT (nav_id) DO NOTHING;
 
-INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat)
-VALUES ('nav-008e', 'Reset Editor', 'rotate-ccw', 5, 'Drop the editor Postgres DB and re-bootstrap from rulebook JSON. Safe — JSON is SSoT.') ON CONFLICT (nav_id) DO NOTHING;
+INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat, nav_area)
+VALUES ('nav-008a', 'Postgres Explorer', 'database', 1, 'Raw editor-DB browser: run SQL, inspect rows, drop/reset DB.', 'developer') ON CONFLICT (nav_id) DO NOTHING;
+
+INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat, nav_area)
+VALUES ('nav-008b', 'ssotme-proxy', 'server', 2, 'Live proxy status: registered routes, recent calls, response sizes, last error per route.', 'developer') ON CONFLICT (nav_id) DO NOTHING;
+
+INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat, nav_area)
+VALUES ('nav-008c', 'Files', 'folder', 3, 'Project filesystem browser. View any generated or hand-written file in the active project.', 'developer') ON CONFLICT (nav_id) DO NOTHING;
+
+INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat, nav_area)
+VALUES ('nav-008d', 'Rulebook JSON', 'file-json', 4, 'Raw rulebook JSON viewer/editor. Save here goes through the same write-through invariant as the UI.', 'developer') ON CONFLICT (nav_id) DO NOTHING;
+
+INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat, nav_area)
+VALUES ('nav-008e', 'Reset Editor', 'rotate-ccw', 5, 'Drop the editor Postgres DB and re-bootstrap from rulebook JSON. Safe — JSON is SSoT.', 'developer') ON CONFLICT (nav_id) DO NOTHING;
+
+INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat, nav_area)
+VALUES ('nav-009', 'Docs', 'BookOpen', 90, 'Reference docs for ERB methodology.', 'docs') ON CONFLICT (nav_id) DO NOTHING;
+
+INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat, nav_area)
+VALUES ('nav-009a', 'Framing', 'AlertCircle', 1, 'Mistakes-to-avoid catalog.', 'docs') ON CONFLICT (nav_id) DO NOTHING;
+
+INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat, nav_area)
+VALUES ('nav-009b', 'Methodology', 'FlaskConical', 2, 'Axioms and invariants combined view.', 'docs') ON CONFLICT (nav_id) DO NOTHING;
+
+INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat, nav_area)
+VALUES ('nav-009c', 'Field Types', 'Layers', 3, 'ERB field-type taxonomy.', 'docs') ON CONFLICT (nav_id) DO NOTHING;
+
+INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat, nav_area)
+VALUES ('nav-009d', 'Glossary', 'BookMarked', 4, 'Term definitions.', 'docs') ON CONFLICT (nav_id) DO NOTHING;
+
+INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat, nav_area)
+VALUES ('nav-010', 'Admin', 'Shield', 70, 'Admin landing.', 'admin') ON CONFLICT (nav_id) DO NOTHING;
+
+INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat, nav_area)
+VALUES ('nav-010a', 'Users', 'Users', 1, 'User accounts.', 'admin') ON CONFLICT (nav_id) DO NOTHING;
+
+INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat, nav_area)
+VALUES ('nav-010b', 'Roles', 'IdCard', 2, 'Role definitions.', 'admin') ON CONFLICT (nav_id) DO NOTHING;
+
+INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat, nav_area)
+VALUES ('nav-010c', 'Permissions', 'Lock', 3, 'Permission matrix.', 'admin') ON CONFLICT (nav_id) DO NOTHING;
+
+INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat, nav_area)
+VALUES ('nav-010d', 'Navigation', 'Menu', 4, 'Sidebar nav items.', 'admin') ON CONFLICT (nav_id) DO NOTHING;
+
+INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat, nav_area)
+VALUES ('nav-010e', 'Screens', 'Layout', 5, 'Screen registry.', 'admin') ON CONFLICT (nav_id) DO NOTHING;
 
 -- ----------------------------------------------------------------------------
 -- AppScreens: Every screen in the admin portal. Each screen names the entities it reads/writes, the role it requires, and the story it tells.
 -- ----------------------------------------------------------------------------
-INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story)
-VALUES ('screen-home', '/', 'Home', 'ProjectMetadata,RulebookProjects,RulebookSourceSpokes,ExecutionSubstrates', NULL, 'dashboard', 'Switch project', 'Land here on ./start.sh. Cards: current project, rulebook size, # substrates, last build time, last test pass-rate, which spokes are active, who you''re signed in as.') ON CONFLICT (screen_id) DO NOTHING;
+INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story, nav_area)
+VALUES ('screen-home', '/', 'Home', 'ProjectMetadata,RulebookProjects,RulebookSourceSpokes,ExecutionSubstrates', NULL, 'dashboard', 'Switch project', 'Land here on ./start.sh. Cards: current project, rulebook size, # substrates, last build time, last test pass-rate, which spokes are active, who you''re signed in as.', 'main') ON CONFLICT (screen_id) DO NOTHING;
 
-INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story)
-VALUES ('screen-entities', '/rulebook/entities', 'Entities', '<active-project-rulebook>', '<active-project-rulebook>', 'split-detail', 'Add entity', 'Left: list of every entity in the active project''s rulebook. Right: selected entity''s fields, formulas, sample rows. Developer can add/rename/delete fields inline; viewer sees the same with controls disabled.') ON CONFLICT (screen_id) DO NOTHING;
+INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story, nav_area)
+VALUES ('screen-entities', '/developer/rulebook/entities', 'Entities', '<active-project-rulebook>', '<active-project-rulebook>', 'split-detail', 'Add entity', 'Left: list of every entity in the active project''s rulebook. Right: selected entity''s fields, formulas, sample rows. Developer can add/rename/delete fields inline; viewer sees the same with controls disabled.', 'developer') ON CONFLICT (screen_id) DO NOTHING;
 
-INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story)
-VALUES ('screen-formulas', '/rulebook/formulas', 'Formulas', '<active-project-rulebook>', '<active-project-rulebook>', 'split-detail', 'Edit formula', 'Every calculated field across all entities. Drill in to see live DAG visualization (inputs → intermediates → output) sourced from the rulebook''s explain-dag substrate. Developer can edit Excel-style formula in place; portal auto-validates against the parser.') ON CONFLICT (screen_id) DO NOTHING;
+INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story, nav_area)
+VALUES ('screen-formulas', '/developer/rulebook/formulas', 'Formulas', '<active-project-rulebook>', '<active-project-rulebook>', 'split-detail', 'Edit formula', 'Every calculated field across all entities. Drill in to see live DAG visualization (inputs → intermediates → output) sourced from the rulebook''s explain-dag substrate. Developer can edit Excel-style formula in place; portal auto-validates against the parser.', 'developer') ON CONFLICT (screen_id) DO NOTHING;
 
-INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story)
-VALUES ('screen-relationships', '/rulebook/relationships', 'Relationships', '<active-project-rulebook>', NULL, 'grid', NULL, 'FK graph (interactive). Hover a node to highlight its inbound/outbound edges. Click an edge to see which formula or column declares it.') ON CONFLICT (screen_id) DO NOTHING;
+INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story, nav_area)
+VALUES ('screen-relationships', '/developer/rulebook/relationships', 'Relationships', '<active-project-rulebook>', NULL, 'grid', NULL, 'FK graph (interactive). Hover a node to highlight its inbound/outbound edges. Click an edge to see which formula or column declares it.', 'developer') ON CONFLICT (screen_id) DO NOTHING;
 
-INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story)
-VALUES ('screen-sample-data', '/rulebook/data', 'Sample Data', '<active-project-rulebook>.data', '<active-project-rulebook>.data', 'grid', 'Add row', 'Spreadsheet-style view of the data block of each entity. Developer can edit cells; computed columns are read-only and show the resolved value with a hoverable derivation popover.') ON CONFLICT (screen_id) DO NOTHING;
+INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story, nav_area)
+VALUES ('screen-sample-data', '/developer/rulebook/data', 'Sample Data', '<active-project-rulebook>.data', '<active-project-rulebook>.data', 'grid', 'Add row', 'Spreadsheet-style view of the data block of each entity. Developer can edit cells; computed columns are read-only and show the resolved value with a hoverable derivation popover.', 'developer') ON CONFLICT (screen_id) DO NOTHING;
 
-INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story)
-VALUES ('screen-substrates', '/substrates', 'Substrates', 'ExecutionSubstrates,SsotmeProxy', NULL, 'split-detail', 'Rebuild substrate', 'Left: every substrate this project emits (with last-build timestamp + conformance status). Right: file tree of generated output + a preview pane for any file. Developer can trigger ''Rebuild just this substrate''.') ON CONFLICT (screen_id) DO NOTHING;
+INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story, nav_area)
+VALUES ('screen-substrates', '/developer/substrates', 'Substrates', 'ExecutionSubstrates,SsotmeProxy', NULL, 'split-detail', 'Rebuild substrate', 'Left: every substrate this project emits (with last-build timestamp + conformance status). Right: file tree of generated output + a preview pane for any file. Developer can trigger ''Rebuild just this substrate''.', 'developer') ON CONFLICT (screen_id) DO NOTHING;
 
-INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story)
-VALUES ('screen-add-tool', '/tools/add', 'Add Tool', 'AddToolCatalog,SsotmeProxy', '<active-project>/effortless.json (via effortless CLI)', 'grid', 'Install', 'Browse the 15+ transpilers in the catalog. Click one, choose output path, hit Install. Portal shells out to `effortless -install <proxy-url>` so the result is byte-identical to the CLI path. Tool then shows up in /substrates and is ready for the next build.') ON CONFLICT (screen_id) DO NOTHING;
+INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story, nav_area)
+VALUES ('screen-add-tool', '/developer/tools/add', 'Add Tool', 'AddToolCatalog,SsotmeProxy', '<active-project>/effortless.json (via effortless CLI)', 'grid', 'Install', 'Browse the 15+ transpilers in the catalog. Click one, choose output path, hit Install. Portal shells out to `effortless -install <proxy-url>` so the result is byte-identical to the CLI path. Tool then shows up in /substrates and is ready for the next build.', 'developer') ON CONFLICT (screen_id) DO NOTHING;
 
-INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story)
-VALUES ('screen-builds', '/builds', 'Builds', 'BuildHistory', 'BuildHistory', 'list', 'Trigger build', 'Chronological list of builds. Click one to see which transpilers ran, duration each, stdout/stderr per route, and which files changed. Trigger-build button is gated by CanRunBuilds.') ON CONFLICT (screen_id) DO NOTHING;
+INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story, nav_area)
+VALUES ('screen-builds', '/developer/builds', 'Builds', 'BuildHistory', 'BuildHistory', 'list', 'Trigger build', 'Chronological list of builds. Click one to see which transpilers ran, duration each, stdout/stderr per route, and which files changed. Trigger-build button is gated by CanRunBuilds.', 'developer') ON CONFLICT (screen_id) DO NOTHING;
 
-INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story)
-VALUES ('screen-tests', '/tests', 'Tests', 'TestingFramework,TestRuns', 'TestRuns', 'grid', 'Run all tests', 'Matrix: rows = test cases, columns = substrates, cells = pass/fail. Click a failing cell to see input, expected, actual, and a diff. Trigger-tests button is gated by CanRunBuilds.') ON CONFLICT (screen_id) DO NOTHING;
+INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story, nav_area)
+VALUES ('screen-tests', '/developer/tests', 'Tests', 'TestingFramework,TestRuns', 'TestRuns', 'grid', 'Run all tests', 'Matrix: rows = test cases, columns = substrates, cells = pass/fail. Click a failing cell to see input, expected, actual, and a diff. Trigger-tests button is gated by CanRunBuilds.', 'developer') ON CONFLICT (screen_id) DO NOTHING;
 
-INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story)
-VALUES ('screen-input-spokes', '/spokes', 'Input Spokes', 'RulebookSourceSpokes', NULL, 'list', 'Pull from spoke', 'List of every configured input spoke for this project. Status (last-pulled time, last-error). Developer can trigger a pull from any spoke.') ON CONFLICT (screen_id) DO NOTHING;
+INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story, nav_area)
+VALUES ('screen-input-spokes', '/developer/spokes', 'Input Spokes', 'RulebookSourceSpokes', NULL, 'list', 'Pull from spoke', 'List of every configured input spoke for this project. Status (last-pulled time, last-error). Developer can trigger a pull from any spoke.', 'developer') ON CONFLICT (screen_id) DO NOTHING;
 
-INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story)
-VALUES ('screen-users', '/users', 'Users', 'AppUsers,UserRoles', 'AppUsers', 'list', 'Add user', 'Default dev/test users from the rulebook + roles. Developer can add new users (saved through the write-through invariant, so they end up in rulebook JSON).') ON CONFLICT (screen_id) DO NOTHING;
+INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story, nav_area)
+VALUES ('screen-users', '/admin/users', 'Users', 'AppUsers,UserRoles', 'AppUsers', 'list', 'Add user', 'Default dev/test users from the rulebook + roles. Developer can add new users (saved through the write-through invariant, so they end up in rulebook JSON).', 'admin') ON CONFLICT (screen_id) DO NOTHING;
 
-INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story)
-VALUES ('screen-tech-postgres', '/tech/postgres', 'Postgres Explorer', '<editor-postgres-tables>', '<editor-postgres-tables>', 'editor', 'Run query', 'Raw SQL console + table browser for the editor Postgres DB. Developer-only escape hatch. Background banner reminds: rulebook JSON is the SSoT, this DB is rebuildable.') ON CONFLICT (screen_id) DO NOTHING;
+INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story, nav_area)
+VALUES ('screen-tech-postgres', '/developer/tech/postgres', 'Postgres Explorer', '<editor-postgres-tables>', '<editor-postgres-tables>', 'editor', 'Run query', 'Raw SQL console + table browser for the editor Postgres DB. Developer-only escape hatch. Background banner reminds: rulebook JSON is the SSoT, this DB is rebuildable.', 'developer') ON CONFLICT (screen_id) DO NOTHING;
 
-INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story)
-VALUES ('screen-tech-proxy', '/tech/proxy', 'ssotme-proxy', 'SsotmeProxy', NULL, 'list', 'Ping proxy', 'Live status of localhost:4242: registered routes, recent calls (route, duration, status, response size), last error per route. Restart button.') ON CONFLICT (screen_id) DO NOTHING;
+INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story, nav_area)
+VALUES ('screen-tech-proxy', '/developer/tech/proxy', 'ssotme-proxy', 'SsotmeProxy', NULL, 'list', 'Ping proxy', 'Live status of localhost:4242: registered routes, recent calls (route, duration, status, response size), last error per route. Restart button.', 'developer') ON CONFLICT (screen_id) DO NOTHING;
 
-INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story)
-VALUES ('screen-tech-files', '/tech/files', 'Project Files', '<project-filesystem>', NULL, 'split-detail', NULL, 'Browse the active project folder. View any file. Read-only — prevents drift from rulebook.') ON CONFLICT (screen_id) DO NOTHING;
+INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story, nav_area)
+VALUES ('screen-tech-files', '/developer/tech/files', 'Project Files', '<project-filesystem>', NULL, 'split-detail', NULL, 'Browse the active project folder. View any file. Read-only — prevents drift from rulebook.', 'developer') ON CONFLICT (screen_id) DO NOTHING;
 
-INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story)
-VALUES ('screen-tech-json', '/tech/rulebook-json', 'Raw Rulebook JSON', '<active-project-rulebook>', '<active-project-rulebook>', 'editor', 'Save JSON', 'Monaco editor on the raw effortless-rulebook.json. Save goes through the write-through invariant. Useful for bulk edits.') ON CONFLICT (screen_id) DO NOTHING;
+INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story, nav_area)
+VALUES ('screen-tech-json', '/developer/tech/rulebook-json', 'Raw Rulebook JSON', '<active-project-rulebook>', '<active-project-rulebook>', 'editor', 'Save JSON', 'Monaco editor on the raw effortless-rulebook.json. Save goes through the write-through invariant. Useful for bulk edits.', 'developer') ON CONFLICT (screen_id) DO NOTHING;
 
-INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story)
-VALUES ('screen-tech-reset', '/tech/reset', 'Reset Editor', NULL, NULL, 'dashboard', 'Reset now', 'One-button reset: drops the editor Postgres DB and re-bootstraps from rulebook JSON. The reassurance screen — makes the JSON-as-SSoT promise tangible.') ON CONFLICT (screen_id) DO NOTHING;
+INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story, nav_area)
+VALUES ('screen-tech-reset', '/developer/tech/reset', 'Reset Editor', NULL, NULL, 'dashboard', 'Reset now', 'One-button reset: drops the editor Postgres DB and re-bootstraps from rulebook JSON. The reassurance screen — makes the JSON-as-SSoT promise tangible.', 'developer') ON CONFLICT (screen_id) DO NOTHING;
+
+INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story, nav_area)
+VALUES ('screen-framing', '/developer/rulebook/framing', 'Framing', 'FramingInvariants,OntologyAxioms', NULL, 'split-detail', NULL, 'Left: FramingInvariants — the mistakes-to-avoid catalog. Right: the wrong framing, the correct framing, why, and the axiom it violates. Toggle to Axioms tab to see the positive-form invariants. Reviewer''s favourite page; required reading before defending the methodology.', 'developer') ON CONFLICT (screen_id) DO NOTHING;
+
+INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story, nav_area)
+VALUES ('screen-roles', '/admin/users/roles', 'Roles & Personas', 'UserRoles,AppUsers,RoleScreenHints', 'UserRoles', 'split-detail', NULL, 'Left: each role with its colour-themed pill, persona, tagline. Right: the role''s primary concerns, landing screen (clickable), bespoke screen overrides, and the users currently assigned to it (clickable to filter the Users page).', 'admin') ON CONFLICT (screen_id) DO NOTHING;
+
+INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story, nav_area)
+VALUES ('screen-flavors', '/projects/flavors', 'Project Flavours', 'RulebookFlavors,RulebookProjects', NULL, 'grid', NULL, 'Each demo rulebook classified by Flavor (crud-template, computation-heavy, aggregation-heavy, graph-ontology, meta-rulebook, tutorial-ladder), Complexity, and density metrics. Click a flavour to filter the project switcher to that flavour.', 'main') ON CONFLICT (screen_id) DO NOTHING;
+
+INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story, nav_area)
+VALUES ('screen-features', '/features', 'Platform Features', 'PlatformFeatures,OntologyAxioms', 'PlatformFeatures', 'split-detail', 'Edit feature', 'Two sections: Headline features (ADP, clean, hub-and-spoke, convergent build, substrate equivalence, conformance, local SSoT, portal/CLI parity, write-through) and Additional features (fail-loud, complete spec, dialect binding, etc.). Left list, right detail. Detail shows one-line summary, status, related axiom (clickable), README file path, IsReadmeStub badge, and the seed README content. Developer can edit summary/tier/priority/README path in place — saves write-through into rulebook JSON.', 'main') ON CONFLICT (screen_id) DO NOTHING;
+
+INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story, nav_area)
+VALUES ('screen-docs-home', '/docs', 'Docs Home', 'FramingInvariants,OntologyAxioms,FieldTypeTaxonomy,Glossary', NULL, 'dashboard', NULL, 'Reference documentation index.', 'docs') ON CONFLICT (screen_id) DO NOTHING;
+
+INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story, nav_area)
+VALUES ('screen-docs-framing', '/docs/framing', 'Framing Invariants', 'FramingInvariants', NULL, 'split-detail', NULL, 'Mistakes-to-avoid catalog.', 'docs') ON CONFLICT (screen_id) DO NOTHING;
+
+INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story, nav_area)
+VALUES ('screen-docs-method', '/docs/methodology', 'Methodology', 'OntologyAxioms,FramingInvariants', NULL, 'split-detail', NULL, 'Axioms and framing invariants.', 'docs') ON CONFLICT (screen_id) DO NOTHING;
+
+INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story, nav_area)
+VALUES ('screen-docs-ftypes', '/docs/field-types', 'Field Types', 'FieldTypeTaxonomy', NULL, 'split-detail', NULL, 'ERB field-type taxonomy.', 'docs') ON CONFLICT (screen_id) DO NOTHING;
+
+INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story, nav_area)
+VALUES ('screen-docs-glossary', '/docs/glossary', 'Glossary', 'Glossary', NULL, 'list', NULL, 'Term definitions.', 'docs') ON CONFLICT (screen_id) DO NOTHING;
+
+INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story, nav_area)
+VALUES ('screen-admin-landing', '/admin', 'Admin', 'AppUsers,UserRoles,AppPermissions', NULL, 'dashboard', NULL, 'Admin landing.', 'admin') ON CONFLICT (screen_id) DO NOTHING;
+
+INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story, nav_area)
+VALUES ('screen-admin-perms', '/admin/permissions', 'Permissions', 'AppPermissions,UserRoles', NULL, 'list', NULL, 'Permission matrix.', 'admin') ON CONFLICT (screen_id) DO NOTHING;
+
+INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story, nav_area)
+VALUES ('screen-admin-nav', '/admin/navigation', 'Navigation', 'AppNavigation,AppScreens', NULL, 'list', NULL, 'Sidebar nav items.', 'admin') ON CONFLICT (screen_id) DO NOTHING;
+
+INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story, nav_area)
+VALUES ('screen-admin-screens', '/admin/screens', 'Screens', 'AppScreens', NULL, 'list', NULL, 'Screen registry.', 'admin') ON CONFLICT (screen_id) DO NOTHING;
 
 -- ----------------------------------------------------------------------------
 -- AppAPIs: Admin portal HTTP API surface. Express routes mounted by the portal backend.
@@ -590,6 +830,15 @@ VALUES ('api-032', 'POST', '/api/tools/:name/disable', 'build', 'execute', FALSE
 INSERT INTO app_apis (api_id, method, path, resource, "action", writes_through, description)
 VALUES ('api-033', 'DELETE', '/api/tools/:name', 'build', 'execute', FALSE, 'Remove a tool from active project''s effortless.json.') ON CONFLICT (api_id) DO NOTHING;
 
+INSERT INTO app_apis (api_id, method, path, resource, "action", writes_through, description)
+VALUES ('api-034', 'GET', '/api/features', 'rulebook.entity', 'read', FALSE, 'List all PlatformFeatures from the platform rulebook, grouped by Tier (headline | additional) and sorted by Priority. Each row includes the computed IsReadmeStub flag.') ON CONFLICT (api_id) DO NOTHING;
+
+INSERT INTO app_apis (api_id, method, path, resource, "action", writes_through, description)
+VALUES ('api-035', 'GET', '/api/features/:id', 'rulebook.entity', 'read', FALSE, 'One feature with full detail: summary, README file path, README on-disk content (resolved at request time), related axiom row (joined), and IsReadmeStub.') ON CONFLICT (api_id) DO NOTHING;
+
+INSERT INTO app_apis (api_id, method, path, resource, "action", writes_through, description)
+VALUES ('api-036', 'PATCH', '/api/features/:id', 'rulebook.entity', 'update', TRUE, 'Update a PlatformFeatures row (Name, OneLineSummary, Tier, Priority, ReadmeFilePath, ReadmeStubContent, Status, RelatedAxiomId). Write-through into rulebook JSON. Does NOT write the on-disk README file — that''s hand-maintained but must conform to this row.') ON CONFLICT (api_id) DO NOTHING;
+
 -- ----------------------------------------------------------------------------
 -- AddToolCatalog: Tools the developer can install into the active project via the Add Tool screen. Same catalog the `effortless -install` CLI consumes; the portal is just a thin UI over the CLI so behaviour stays canonical.
 -- ----------------------------------------------------------------------------
@@ -679,4 +928,1366 @@ VALUES ('proc-003', 'admin-portal-frontend-dev', 'vite (admin-portal/web)', 7778
 
 INSERT INTO admin_portal_runtime (process_id, name, command, port, depends_on, auto_restart, purpose)
 VALUES ('proc-004', 'postgres', 'docker compose up -d postgres (or system pg)', 5432, NULL, FALSE, 'Editor database. Auto-init on first portal boot via flow-005.') ON CONFLICT (process_id) DO NOTHING;
+
+-- ----------------------------------------------------------------------------
+-- RulebookFlavors: Classification of each demo rulebook under rulebook-examples/. Lets the UI group projects by what they're TEACHING — a tutorial ladder is a different beast from a computation-heavy ontology. Density numbers come from a static analysis of each rulebook (calculated/aggregation/lookup counts).
+-- ----------------------------------------------------------------------------
+INSERT INTO rulebook_flavors (flavor_id, sort_order, project_slug, display_name, flavor, complexity, entity_count, calculated_count, aggregation_count, lookup_count, learning_focus, good_answer_key_for)
+VALUES ('flav-001', 50, 'acme-corporation', 'ACME Corporation (template)', 'crud-template', 'basic', 5, 1, 2, 10, 'Classic relational CRUD template — clients, projects, employees, roles. The ''starter sized'' demo for new authors.', 'postgres,entity-framework') ON CONFLICT (flavor_id) DO NOTHING;
+
+INSERT INTO rulebook_flavors (flavor_id, sort_order, project_slug, display_name, flavor, complexity, entity_count, calculated_count, aggregation_count, lookup_count, learning_focus, good_answer_key_for)
+VALUES ('flav-002', 20, 'acme-llc', 'ACME, LLC (template)', 'tutorial-ladder', 'minimal', 3, 2, 0, 0, 'Smallest viable rulebook with a calculated field — the ''Hello, formulas'' tutorial.', NULL) ON CONFLICT (flavor_id) DO NOTHING;
+
+INSERT INTO rulebook_flavors (flavor_id, sort_order, project_slug, display_name, flavor, complexity, entity_count, calculated_count, aggregation_count, lookup_count, learning_focus, good_answer_key_for)
+VALUES ('flav-003', 10, 'customer-fullname', 'Customer FullName (tutorial)', 'tutorial-ladder', 'minimal', 1, 2, 0, 0, 'One entity, one calculated field (CONCAT(First, '' '', Last)). The ''absolute minimum'' demo — proves the toolchain end-to-end with no relationships.', NULL) ON CONFLICT (flavor_id) DO NOTHING;
+
+INSERT INTO rulebook_flavors (flavor_id, sort_order, project_slug, display_name, flavor, complexity, entity_count, calculated_count, aggregation_count, lookup_count, learning_focus, good_answer_key_for)
+VALUES ('flav-004', 250, 'effortless-rulesbooks', 'ERB self-describing rulebook', 'meta-rulebook', 'advanced', 9, 0, 0, 0, 'The rulebook that describes the ERB project itself (sibling of this platform rulebook). Demonstrates eating-the-dog-food — meta over business data.', NULL) ON CONFLICT (flavor_id) DO NOTHING;
+
+INSERT INTO rulebook_flavors (flavor_id, sort_order, project_slug, display_name, flavor, complexity, entity_count, calculated_count, aggregation_count, lookup_count, learning_focus, good_answer_key_for)
+VALUES ('flav-005', 260, 'is-everything-a-language', 'Is Everything A Language? (semiotics)', 'graph-ontology', 'advanced', 3, 8, 0, 0, 'Heavy formulas evaluating linguistic / semiotic candidates. Shows that the substrate equality claim holds even for non-CRUD ontologies.', 'owl,python') ON CONFLICT (flavor_id) DO NOTHING;
+
+INSERT INTO rulebook_flavors (flavor_id, sort_order, project_slug, display_name, flavor, complexity, entity_count, calculated_count, aggregation_count, lookup_count, learning_focus, good_answer_key_for)
+VALUES ('flav-006', 160, 'jessica-advanced', 'Jessica Talisman — Advanced (workflows)', 'computation-heavy', 'advanced', 10, 8, 1, 2, 'Workflow/approval ontology with intermediate computed fields. Demonstrates multi-step derivation across entities.', 'postgres') ON CONFLICT (flavor_id) DO NOTHING;
+
+INSERT INTO rulebook_flavors (flavor_id, sort_order, project_slug, display_name, flavor, complexity, entity_count, calculated_count, aggregation_count, lookup_count, learning_focus, good_answer_key_for)
+VALUES ('flav-007', 30, 'jessica-basic', 'Jessica Talisman — Basic (workflows)', 'tutorial-ladder', 'basic', 9, 7, 1, 0, 'Same workflow concepts as advanced but without cross-entity lookups — useful for stepping authors up the formula ladder.', NULL) ON CONFLICT (flavor_id) DO NOTHING;
+
+INSERT INTO rulebook_flavors (flavor_id, sort_order, project_slug, display_name, flavor, complexity, entity_count, calculated_count, aggregation_count, lookup_count, learning_focus, good_answer_key_for)
+VALUES ('flav-008', 200, 'star-trek', 'Star Trek (series/seasons/episodes)', 'aggregation-heavy', 'advanced', 10, 9, 5, 12, 'Aggregations over nested relationships (avg rating per episode, per season, per series). The canonical aggregation demo.', 'postgres,xlsx') ON CONFLICT (flavor_id) DO NOTHING;
+
+INSERT INTO rulebook_flavors (flavor_id, sort_order, project_slug, display_name, flavor, complexity, entity_count, calculated_count, aggregation_count, lookup_count, learning_focus, good_answer_key_for)
+VALUES ('flav-009', 100, 'community-event-planner-demo', 'community-event-planner-demo', 'aggregation-heavy', 'basic', 6, 19, 4, 9, 'Auto-discovered demo. Replace this stub with a one-line description of what community-event-planner-demo is designed to teach.', NULL) ON CONFLICT (flavor_id) DO NOTHING;
+
+INSERT INTO rulebook_flavors (flavor_id, sort_order, project_slug, display_name, flavor, complexity, entity_count, calculated_count, aggregation_count, lookup_count, learning_focus, good_answer_key_for)
+VALUES ('flav-010', 110, 'customer-crm-demo', 'customer-crm-demo', 'aggregation-heavy', 'advanced', 7, 20, 11, 21, 'Auto-discovered demo. Replace this stub with a one-line description of what customer-crm-demo is designed to teach.', NULL) ON CONFLICT (flavor_id) DO NOTHING;
+
+INSERT INTO rulebook_flavors (flavor_id, sort_order, project_slug, display_name, flavor, complexity, entity_count, calculated_count, aggregation_count, lookup_count, learning_focus, good_answer_key_for)
+VALUES ('flav-011', 210, 'effortless-banking-demo', 'effortless-banking-demo', 'aggregation-heavy', 'advanced', 10, 46, 17, 17, 'Auto-discovered demo. Replace this stub with a one-line description of what effortless-banking-demo is designed to teach.', NULL) ON CONFLICT (flavor_id) DO NOTHING;
+
+INSERT INTO rulebook_flavors (flavor_id, sort_order, project_slug, display_name, flavor, complexity, entity_count, calculated_count, aggregation_count, lookup_count, learning_focus, good_answer_key_for)
+VALUES ('flav-012', 150, 'fantasy-football-demo', 'fantasy-football-demo', 'aggregation-heavy', 'basic', 6, 13, 5, 15, 'Auto-discovered demo. Replace this stub with a one-line description of what fantasy-football-demo is designed to teach.', NULL) ON CONFLICT (flavor_id) DO NOTHING;
+
+INSERT INTO rulebook_flavors (flavor_id, sort_order, project_slug, display_name, flavor, complexity, entity_count, calculated_count, aggregation_count, lookup_count, learning_focus, good_answer_key_for)
+VALUES ('flav-013', 190, 'guessing-game', 'guessing-game', 'aggregation-heavy', 'minimal', 2, 5, 4, 6, 'Auto-discovered demo. Replace this stub with a one-line description of what guessing-game is designed to teach.', NULL) ON CONFLICT (flavor_id) DO NOTHING;
+
+INSERT INTO rulebook_flavors (flavor_id, sort_order, project_slug, display_name, flavor, complexity, entity_count, calculated_count, aggregation_count, lookup_count, learning_focus, good_answer_key_for)
+VALUES ('flav-014', 120, 'gym-trainer-invoicing', 'gym-trainer-invoicing', 'aggregation-heavy', 'basic', 5, 14, 8, 11, 'Auto-discovered demo. Replace this stub with a one-line description of what gym-trainer-invoicing is designed to teach.', NULL) ON CONFLICT (flavor_id) DO NOTHING;
+
+INSERT INTO rulebook_flavors (flavor_id, sort_order, project_slug, display_name, flavor, complexity, entity_count, calculated_count, aggregation_count, lookup_count, learning_focus, good_answer_key_for)
+VALUES ('flav-015', 70, 'intelligence-taxonomy-demo', 'intelligence-taxonomy-demo', 'crud-template', 'minimal', 3, 5, 2, 4, 'Auto-discovered demo. Replace this stub with a one-line description of what intelligence-taxonomy-demo is designed to teach.', NULL) ON CONFLICT (flavor_id) DO NOTHING;
+
+INSERT INTO rulebook_flavors (flavor_id, sort_order, project_slug, display_name, flavor, complexity, entity_count, calculated_count, aggregation_count, lookup_count, learning_focus, good_answer_key_for)
+VALUES ('flav-016', 180, 'jobsearch-rag', 'jobsearch-rag', 'aggregation-heavy', 'advanced', 10, 4, 6, 10, 'Auto-discovered demo. Replace this stub with a one-line description of what jobsearch-rag is designed to teach.', NULL) ON CONFLICT (flavor_id) DO NOTHING;
+
+INSERT INTO rulebook_flavors (flavor_id, sort_order, project_slug, display_name, flavor, complexity, entity_count, calculated_count, aggregation_count, lookup_count, learning_focus, good_answer_key_for)
+VALUES ('flav-017', 220, 'llm-enigma-test', 'llm-enigma-test', 'aggregation-heavy', 'advanced', 26, 33, 42, 22, 'Auto-discovered demo. Replace this stub with a one-line description of what llm-enigma-test is designed to teach.', NULL) ON CONFLICT (flavor_id) DO NOTHING;
+
+INSERT INTO rulebook_flavors (flavor_id, sort_order, project_slug, display_name, flavor, complexity, entity_count, calculated_count, aggregation_count, lookup_count, learning_focus, good_answer_key_for)
+VALUES ('flav-018', 60, 'product-inventory-demo', 'product-inventory-demo', 'computation-heavy', 'minimal', 3, 6, 1, 3, 'Auto-discovered demo. Replace this stub with a one-line description of what product-inventory-demo is designed to teach.', NULL) ON CONFLICT (flavor_id) DO NOTHING;
+
+INSERT INTO rulebook_flavors (flavor_id, sort_order, project_slug, display_name, flavor, complexity, entity_count, calculated_count, aggregation_count, lookup_count, learning_focus, good_answer_key_for)
+VALUES ('flav-019', 170, 'therapist-helper-portal', 'therapist-helper-portal', 'aggregation-heavy', 'basic', 5, 12, 11, 10, 'Auto-discovered demo. Replace this stub with a one-line description of what therapist-helper-portal is designed to teach.', NULL) ON CONFLICT (flavor_id) DO NOTHING;
+
+INSERT INTO rulebook_flavors (flavor_id, sort_order, project_slug, display_name, flavor, complexity, entity_count, calculated_count, aggregation_count, lookup_count, learning_focus, good_answer_key_for)
+VALUES ('flav-020', 90, 'v2-nakedclaude-demo', 'v2-nakedclaude-demo', 'crud-template', 'minimal', 3, 5, 0, 3, 'Auto-discovered demo. Replace this stub with a one-line description of what v2-nakedclaude-demo is designed to teach.', NULL) ON CONFLICT (flavor_id) DO NOTHING;
+
+INSERT INTO rulebook_flavors (flavor_id, sort_order, project_slug, display_name, flavor, complexity, entity_count, calculated_count, aggregation_count, lookup_count, learning_focus, good_answer_key_for)
+VALUES ('flav-021', 230, 'v3-nakedclaude-demo', 'v3-nakedclaude-demo', 'aggregation-heavy', 'advanced', 8, 22, 7, 9, 'Auto-discovered demo. Replace this stub with a one-line description of what v3-nakedclaude-demo is designed to teach.', NULL) ON CONFLICT (flavor_id) DO NOTHING;
+
+INSERT INTO rulebook_flavors (flavor_id, sort_order, project_slug, display_name, flavor, complexity, entity_count, calculated_count, aggregation_count, lookup_count, learning_focus, good_answer_key_for)
+VALUES ('flav-022', 140, 'wedding-seating-optimizer', 'wedding-seating-optimizer', 'aggregation-heavy', 'basic', 4, 16, 9, 7, 'Auto-discovered demo. Replace this stub with a one-line description of what wedding-seating-optimizer is designed to teach.', NULL) ON CONFLICT (flavor_id) DO NOTHING;
+
+INSERT INTO rulebook_flavors (flavor_id, sort_order, project_slug, display_name, flavor, complexity, entity_count, calculated_count, aggregation_count, lookup_count, learning_focus, good_answer_key_for)
+VALUES ('flav-023', 80, 'expense-approval-demo', 'expense-approval-demo', 'crud-template', 'minimal', 3, 4, 1, 2, 'Auto-discovered demo. Replace this stub with a one-line description of what expense-approval-demo is designed to teach.', NULL) ON CONFLICT (flavor_id) DO NOTHING;
+
+INSERT INTO rulebook_flavors (flavor_id, sort_order, project_slug, display_name, flavor, complexity, entity_count, calculated_count, aggregation_count, lookup_count, learning_focus, good_answer_key_for)
+VALUES ('flav-024', 40, 'v1-nakedclaude-demo', 'v1-nakedclaude-demo', 'tutorial-ladder', 'minimal', 1, 1, 0, 0, 'Auto-discovered demo. Replace this stub with a one-line description of what v1-nakedclaude-demo is designed to teach.', NULL) ON CONFLICT (flavor_id) DO NOTHING;
+
+INSERT INTO rulebook_flavors (flavor_id, sort_order, project_slug, display_name, flavor, complexity, entity_count, calculated_count, aggregation_count, lookup_count, learning_focus, good_answer_key_for)
+VALUES ('flav-025', 240, 'v4-nakedclaude-demo', 'v4-nakedclaude-demo', 'aggregation-heavy', 'advanced', 15, 30, 13, 43, 'Auto-discovered demo. Replace this stub with a one-line description of what v4-nakedclaude-demo is designed to teach.', NULL) ON CONFLICT (flavor_id) DO NOTHING;
+
+INSERT INTO rulebook_flavors (flavor_id, sort_order, project_slug, display_name, flavor, complexity, entity_count, calculated_count, aggregation_count, lookup_count, learning_focus, good_answer_key_for)
+VALUES ('flav-026', 130, 'volunteer-shift-scheduler', 'volunteer-shift-scheduler', 'aggregation-heavy', 'basic', 4, 6, 6, 4, 'Auto-discovered demo. Replace this stub with a one-line description of what volunteer-shift-scheduler is designed to teach.', NULL) ON CONFLICT (flavor_id) DO NOTHING;
+
+-- ----------------------------------------------------------------------------
+-- FieldTypeTaxonomy: Names every field-type the rulebook supports, with intent and example formula shape. Lets the UI explain what makes a calculated field different from a lookup field from an aggregation, instead of just showing a type tag.
+-- ----------------------------------------------------------------------------
+INSERT INTO field_type_taxonomy (type_id, type_name, intent, example_formula, storage_mode, read_only_in_ui, expressive_tier)
+VALUES ('ft-001', 'raw', 'Stored scalar with no derivation. The bread-and-butter of every entity.', NULL, 'stored', FALSE, 'shape-only') ON CONFLICT (type_id) DO NOTHING;
+
+INSERT INTO field_type_taxonomy (type_id, type_name, intent, example_formula, storage_mode, read_only_in_ui, expressive_tier)
+VALUES ('ft-002', 'calculated', 'Excel-style formula evaluated from other fields on the SAME row.', 'CONCAT(First, '' '', Last)', 'derived-at-read', TRUE, 'partial-formula') ON CONFLICT (type_id) DO NOTHING;
+
+INSERT INTO field_type_taxonomy (type_id, type_name, intent, example_formula, storage_mode, read_only_in_ui, expressive_tier)
+VALUES ('ft-003', 'lookup', 'Foreign-key reference to another entity. Description should say ''FK to <Entity>''.', 'FK to Customers', 'stored', FALSE, 'shape-only') ON CONFLICT (type_id) DO NOTHING;
+
+INSERT INTO field_type_taxonomy (type_id, type_name, intent, example_formula, storage_mode, read_only_in_ui, expressive_tier)
+VALUES ('ft-004', 'aggregation', 'Reduce over a related entity''s rows (SUM, AVG, COUNT, MIN, MAX). Requires substrate that can join + reduce.', 'AVG(Episodes.Rating) WHERE Episodes.SeasonId = Self.Id', 'derived-at-read', TRUE, 'partial-aggregation') ON CONFLICT (type_id) DO NOTHING;
+
+INSERT INTO field_type_taxonomy (type_id, type_name, intent, example_formula, storage_mode, read_only_in_ui, expressive_tier)
+VALUES ('ft-005', 'formula', 'Alias used by some demos for ''calculated''. Treated identically.', 'IF(Rating > 8, ''great'', ''meh'')', 'derived-at-read', TRUE, 'partial-formula') ON CONFLICT (type_id) DO NOTHING;
+
+-- ----------------------------------------------------------------------------
+-- RoleScreenHints: Per-(role, screen) bespoke UX overrides. The base AppScreens row says WHAT the screen is; this table says HOW IT SHOULD FEEL FOR THIS ROLE. The hints are intentionally prescriptive enough that two different agents implementing the screen for the same role would land on the same flow.
+-- ----------------------------------------------------------------------------
+INSERT INTO role_screen_hints (hint_id, layout, emphasis, hide, primary_actions, implementation_hints)
+VALUES ('hint-001', 'dashboard', 'what this project IS', 'Trigger build,Add tool,Reset', 'Switch project', 'Hero card with project Name, Purpose, Architecture (from ProjectMetadata). Below: cards for #entities, #substrates, #spokes, last test pass-rate. Every number is a clickable link — 5 substrates → /substrates filtered to this project. No mutation buttons. The list ''What you can do here'' is the rest of the page; each bullet links to the screen it describes.') ON CONFLICT (hint_id) DO NOTHING;
+
+INSERT INTO role_screen_hints (hint_id, layout, emphasis, hide, primary_actions, implementation_hints)
+VALUES ('hint-002', 'split-detail', 'the Description of each entity', 'Save,Add entity,Delete entity', NULL, 'Same split-detail as developer, but every input becomes a label. Field rows show name + type + description in plain prose — no datatype-jargon column. Sample data is rendered but read-only. Each FK lookup field''s value is a link to that row in its parent entity.') ON CONFLICT (hint_id) DO NOTHING;
+
+INSERT INTO role_screen_hints (hint_id, layout, emphasis, hide, primary_actions, implementation_hints)
+VALUES ('hint-003', 'matrix', 'overall pass-rate', 'Run all tests', NULL, 'Big top-of-page pass-rate ring (e.g. 87% green). Conformance matrix below: test cases × substrates. Cells are coloured pass/fail. Click a failing cell to navigate to /tests/<test-id>?substrate=<sub-id> (the cell''s diff view). No ''run'' button.') ON CONFLICT (hint_id) DO NOTHING;
+
+INSERT INTO role_screen_hints (hint_id, layout, emphasis, hide, primary_actions, implementation_hints)
+VALUES ('hint-101', 'dashboard', 'Author''s open questions', 'Tech Tools nest', 'Open entities', 'Top card: ''Where you left off'' — most-recently-touched entity (link). Cards: ''Entities with no description'' (link, filtered), ''Formulas with no test sample'' (link), ''Lookups with broken FK targets'' (link). Author needs a TODO surface. Avoid showing build/test plumbing.') ON CONFLICT (hint_id) DO NOTHING;
+
+INSERT INTO role_screen_hints (hint_id, layout, emphasis, hide, primary_actions, implementation_hints)
+VALUES ('hint-102', 'split-detail', 'fields as sentences', 'datatype enum picker', 'Save (write-through)', 'Field rows render as one editable line each: ''<FieldName> is a <Type> describing <Description>''. Clicking expands a focused editor for that field. Author edits formula as plain text; portal autovalidates against the parser and surfaces parse errors inline. Save runs the write-through invariant. Sample data is an editable spreadsheet.') ON CONFLICT (hint_id) DO NOTHING;
+
+INSERT INTO role_screen_hints (hint_id, layout, emphasis, hide, primary_actions, implementation_hints)
+VALUES ('hint-103', 'split-detail', 'formula as text + plain-English', 'InjectorScript column', 'Edit formula', 'Left list: every calculated field, grouped by entity. Right: the formula in a Monaco editor with autocompletion for sibling field names. Below the editor, the plain-English explanation pulled from rulebook-to-english output. Save triggers write-through. NOT the Explain-DAG — that''s its own thing; this is text-editing.') ON CONFLICT (hint_id) DO NOTHING;
+
+INSERT INTO role_screen_hints (hint_id, layout, emphasis, hide, primary_actions, implementation_hints)
+VALUES ('hint-201', 'matrix', 'which substrates disagree and why', 'Run all tests,Add tool', NULL, 'Reviewer''s headline page. Top: ring chart ''N/M tests passed across K substrates''. Matrix below. Each row is a test case; each column is a substrate. Hover a substrate header to see its TranspilerSource + ExpressiveCompleteness pills. Click a failing cell → diff view: input row, expected, actual, the formula being evaluated, the FramingInvariant most likely to explain it (if any).') ON CONFLICT (hint_id) DO NOTHING;
+
+INSERT INTO role_screen_hints (hint_id, layout, emphasis, hide, primary_actions, implementation_hints)
+VALUES ('hint-202', 'split-detail', 'WrongFraming → CorrectFraming pairs', NULL, NULL, 'Left: all FramingInvariants grouped by Category (chips). Right: the selected invariant rendered as two side-by-side cards — ''WRONG'' (red border) and ''RIGHT'' (green border) — with the Why beneath, and a pill linking to the violated OntologyAxiom. Tab to ''Axioms'' view shows all 10 axioms one per row.') ON CONFLICT (hint_id) DO NOTHING;
+
+INSERT INTO role_screen_hints (hint_id, layout, emphasis, hide, primary_actions, implementation_hints)
+VALUES ('hint-203', 'list', 'TranspilerSource + ExpressiveCompleteness pills', 'Rebuild substrate,Build all', NULL, 'Strip the Substrate detail of any ''production'' badge. Each row shows pills: TranspilerSource, Maturity, ExpressiveCompleteness, CanBeAnswerKey (✓/✗), Determinism, RuntimeKind. Reviewer''s goal here is to assess WHY two substrates might disagree — surface the engineering facts, not authority.') ON CONFLICT (hint_id) DO NOTHING;
+
+INSERT INTO role_screen_hints (hint_id, layout, emphasis, hide, primary_actions, implementation_hints)
+VALUES ('hint-301', 'dashboard', 'build/health banner', 'Add tool', 'Trigger build,Pull spokes', 'Top banner: ''Last build: <timestamp> · <pass-rate>%''. Cards: ''Spokes (N)'', ''Substrates (M, K not built)'', ''Tests (X passing of Y)''. Each card click filters to that screen. Banner colour reflects last-build state (green/amber/red).') ON CONFLICT (hint_id) DO NOTHING;
+
+INSERT INTO role_screen_hints (hint_id, layout, emphasis, hide, primary_actions, implementation_hints)
+VALUES ('hint-302', 'list', 'last build at top, rolling history below', NULL, 'Trigger build,Build one substrate', 'Sticky ''Last build'' card at the top with stdout/stderr collapsed; chronological list below. Each list row clickable to see that build''s stdout/stderr/diff. ''Trigger build'' is the dominant CTA. Per-substrate rebuild also surfaced as a row action.') ON CONFLICT (hint_id) DO NOTHING;
+
+INSERT INTO role_screen_hints (hint_id, layout, emphasis, hide, primary_actions, implementation_hints)
+VALUES ('hint-303', 'list', 'last-pulled freshness per spoke', NULL, 'Pull from spoke', 'Each spoke shown with last-pulled timestamp coloured by age (green <1h, amber <1d, red >1d or ''never''). Click a spoke → its detail (recent pulls, last error). Pull button on each row + bulk-pull at the top.') ON CONFLICT (hint_id) DO NOTHING;
+
+INSERT INTO role_screen_hints (hint_id, layout, emphasis, hide, primary_actions, implementation_hints)
+VALUES ('hint-401', 'dashboard', 'everything — no hides', NULL, 'Switch project,Trigger build,Open Tech Tools', 'Full dashboard, all cards. Tech Tools nest visible in the sidebar. This role IS the platform maintainer — surfaces every dial.') ON CONFLICT (hint_id) DO NOTHING;
+
+INSERT INTO role_screen_hints (hint_id, layout, emphasis, hide, primary_actions, implementation_hints)
+VALUES ('hint-402', 'editor', 'SQL editor + result grid', NULL, 'Run query,Reset editor', 'As today. Plus: pre-populated query dropdown sourced from a ''common queries'' subset of the rulebook. Show a persistent banner: ''rulebook JSON is the SSoT, this DB is rebuildable'' to keep the developer honest.') ON CONFLICT (hint_id) DO NOTHING;
+
+-- ----------------------------------------------------------------------------
+-- ClickTargets: Canonical in-app navigation affordances. Every clickable element in the portal should be listed here with where the click goes. Two agents implementing different screens would both consult this table to wire up cross-screen jumps. NOT the Explain-DAG — this is page-to-page navigation: 'Orders: 5' is clickable and goes to a page filtered to those 5 orders. NOT documentation-style 'learn more' links.
+-- ----------------------------------------------------------------------------
+INSERT INTO click_targets (click_id, from_kind, from_context, to_path, filter, story)
+VALUES ('click-001', 'count-number', 'home-card:entities', '/developer/rulebook/entities', NULL, 'Click ''Entities: N'' on Home → /rulebook/entities (the list of all N).') ON CONFLICT (click_id) DO NOTHING;
+
+INSERT INTO click_targets (click_id, from_kind, from_context, to_path, filter, story)
+VALUES ('click-002', 'count-number', 'home-card:substrates', '/developer/substrates', NULL, 'Click ''Substrates: N'' on Home → /substrates.') ON CONFLICT (click_id) DO NOTHING;
+
+INSERT INTO click_targets (click_id, from_kind, from_context, to_path, filter, story)
+VALUES ('click-003', 'count-number', 'home-card:spokes', '/developer/spokes', NULL, 'Click ''Input spokes: N'' on Home → /spokes.') ON CONFLICT (click_id) DO NOTHING;
+
+INSERT INTO click_targets (click_id, from_kind, from_context, to_path, filter, story)
+VALUES ('click-004', 'count-number', 'home-card:tests-passing', '/developer/tests', 'status=passing', 'Click ''Tests passing: X/Y'' on Home → /tests with passing filter.') ON CONFLICT (click_id) DO NOTHING;
+
+INSERT INTO click_targets (click_id, from_kind, from_context, to_path, filter, story)
+VALUES ('click-005', 'count-number', 'home-card:tests-failing', '/developer/tests', 'status=failing', 'Click the failing-count chip on Home → /tests filtered to failing rows.') ON CONFLICT (click_id) DO NOTHING;
+
+INSERT INTO click_targets (click_id, from_kind, from_context, to_path, filter, story)
+VALUES ('click-006', 'entity-row', 'entities-list', '/rulebook/entities/:entity', NULL, 'Click an entity in the left list → the entity''s own page (it already happens via setSelected — should also become a URL).') ON CONFLICT (click_id) DO NOTHING;
+
+INSERT INTO click_targets (click_id, from_kind, from_context, to_path, filter, story)
+VALUES ('click-007', 'field-row', 'entity-detail:schema-table', '/rulebook/entities/:entity', 'field=:field', 'Click a field row in the schema grid → the same entity page but with that field expanded / scrolled to.') ON CONFLICT (click_id) DO NOTHING;
+
+INSERT INTO click_targets (click_id, from_kind, from_context, to_path, filter, story)
+VALUES ('click-008', 'fk-value', 'entity-detail:sample-data', '/rulebook/entities/:targetEntity', 'row=:fkValue', 'Click an FK lookup value in sample data (e.g. CustomerId=''cust-007'') → /rulebook/entities/Customers?row=cust-007. The OTHER side of the relationship.') ON CONFLICT (click_id) DO NOTHING;
+
+INSERT INTO click_targets (click_id, from_kind, from_context, to_path, filter, story)
+VALUES ('click-009', 'formula-cell', 'entity-detail:schema-table', '/developer/rulebook/formulas', 'entity=:entity&field=:field', 'Click a formula expression in the schema grid → /rulebook/formulas filtered to that formula.') ON CONFLICT (click_id) DO NOTHING;
+
+INSERT INTO click_targets (click_id, from_kind, from_context, to_path, filter, story)
+VALUES ('click-010', 'formula-cell', 'formulas-list', '/rulebook/entities/:entity', 'field=:field', 'Click a formula row in the formulas list → the entity page with that field highlighted.') ON CONFLICT (click_id) DO NOTHING;
+
+INSERT INTO click_targets (click_id, from_kind, from_context, to_path, filter, story)
+VALUES ('click-011', 'substrate-row', 'substrates-list', '/substrates/:substrateId', NULL, 'Click a substrate in the list → its detail page (we use ?selected today; should become a route).') ON CONFLICT (click_id) DO NOTHING;
+
+INSERT INTO click_targets (click_id, from_kind, from_context, to_path, filter, story)
+VALUES ('click-012', 'substrate-row', 'tests-matrix:column-header', '/substrates/:substrateId', NULL, 'Click a substrate column header on the Tests matrix → that substrate''s page.') ON CONFLICT (click_id) DO NOTHING;
+
+INSERT INTO click_targets (click_id, from_kind, from_context, to_path, filter, story)
+VALUES ('click-013', 'test-cell', 'tests-matrix', '/tests/:testId', 'substrate=:substrateId', 'Click a cell in the conformance matrix → the test detail showing input/expected/actual for that substrate.') ON CONFLICT (click_id) DO NOTHING;
+
+INSERT INTO click_targets (click_id, from_kind, from_context, to_path, filter, story)
+VALUES ('click-014', 'role-pill', 'users-list', '/admin/users/roles', 'role=:roleId', 'Click a role pill anywhere → /users/roles focused on that role.') ON CONFLICT (click_id) DO NOTHING;
+
+INSERT INTO click_targets (click_id, from_kind, from_context, to_path, filter, story)
+VALUES ('click-015', 'role-pill', 'topbar:current-user', '/admin/users/roles', 'role=:roleId', 'Click your own role pill in the top bar → see what that role gets / who else has it.') ON CONFLICT (click_id) DO NOTHING;
+
+INSERT INTO click_targets (click_id, from_kind, from_context, to_path, filter, story)
+VALUES ('click-016', 'user-row', 'roles-detail', '/admin/users', 'user=:userId', 'Click a user listed under a role → /users with that user selected.') ON CONFLICT (click_id) DO NOTHING;
+
+INSERT INTO click_targets (click_id, from_kind, from_context, to_path, filter, story)
+VALUES ('click-017', 'nav-card', 'framing-list', '/docs/framing', 'invariant=:invariantId', 'Click a FramingInvariant card → its detail (WrongFraming vs CorrectFraming side-by-side).') ON CONFLICT (click_id) DO NOTHING;
+
+INSERT INTO click_targets (click_id, from_kind, from_context, to_path, filter, story)
+VALUES ('click-018', 'axiom-link', 'framing-detail', '/docs/framing', 'axiom=:axiomId&tab=axioms', 'Click the violated-axiom pill on a FramingInvariant detail → the Axioms tab focused on that axiom.') ON CONFLICT (click_id) DO NOTHING;
+
+INSERT INTO click_targets (click_id, from_kind, from_context, to_path, filter, story)
+VALUES ('click-019', 'flavor-tag', 'topbar:project-switcher', '/projects/flavors', 'flavor=:flavor', 'Click the flavour tag next to a project name → /projects/flavors filtered to that flavour.') ON CONFLICT (click_id) DO NOTHING;
+
+INSERT INTO click_targets (click_id, from_kind, from_context, to_path, filter, story)
+VALUES ('click-020', 'flavor-tag', 'flavors-grid:card', '/projects/flavors', 'flavor=:flavor', 'Click a flavour card on the Flavours screen → drill in to that flavour''s projects.') ON CONFLICT (click_id) DO NOTHING;
+
+INSERT INTO click_targets (click_id, from_kind, from_context, to_path, filter, story)
+VALUES ('click-021', 'framing-invariant', 'test-detail:explain', '/docs/framing', 'invariant=:invariantId', 'From a failing test''s detail, click the ''most-likely framing-invariant'' suggestion → that invariant''s page.') ON CONFLICT (click_id) DO NOTHING;
+
+INSERT INTO click_targets (click_id, from_kind, from_context, to_path, filter, story)
+VALUES ('click-022', 'spoke-row', 'spokes-list', '/spokes/:spokeId', NULL, 'Click a spoke card → its detail (recent pulls / last error).') ON CONFLICT (click_id) DO NOTHING;
+
+INSERT INTO click_targets (click_id, from_kind, from_context, to_path, filter, story)
+VALUES ('click-023', 'tool-row', 'add-tool:catalog', '/substrates/:substrateId', NULL, 'Click an already-installed tool in the Add Tool catalog → that substrate''s detail page.') ON CONFLICT (click_id) DO NOTHING;
+
+INSERT INTO click_targets (click_id, from_kind, from_context, to_path, filter, story)
+VALUES ('click-024', 'process-row', 'tech-proxy:routes-list', '/substrates/:substrateId', 'viaProxy=:proxyRoute', 'Click a proxy route on Tech → ssotme-proxy → the substrate that route corresponds to.') ON CONFLICT (click_id) DO NOTHING;
+
+INSERT INTO click_targets (click_id, from_kind, from_context, to_path, filter, story)
+VALUES ('click-025', 'field-type-tag', 'schema-grid', '/docs/framing', 'tab=field-types&type=:typeName', 'Click a field''s type tag (''calculated'', ''aggregation'', etc.) → FieldTypeTaxonomy explanation for that type.') ON CONFLICT (click_id) DO NOTHING;
+
+-- ----------------------------------------------------------------------------
+-- SubstrateContractPhases: The three-phase contract every execution substrate implements. Inject is structural (schema → SDK), Execute is functional (compute), Grade is comparison. All three are 100% domain-agnostic — they translate whatever the rulebook defines without knowing what it means. Together with EvaluationSteps (the substeps within each phase) and EvaluationArtifacts (the JSON files that flow between phases), this forms the full evaluation subgraph: Phase → Steps → Artifacts.
+-- ----------------------------------------------------------------------------
+INSERT INTO substrate_contract_phases (phase_id, "order", name, domain_agnostic, input, output, script_pattern, description, why_domain_agnostic, input_artifact_id, output_artifact_id, failure_mode)
+VALUES ('phase-inject', 1, 'Inject', TRUE, 'effortless-rulebook.json (schema + formulas)', 'Runnable substrate artifact (SDK / schema / workbook / ontology / DDL)', 'execution-substrates/<technology>/inject-into-<technology>.py', 'Reads the rulebook schema and generates entity structures (1:1 with entities) plus computation functions (1:1 with computed columns). When the rulebook changes, re-running the injector regenerates the substrate artifact — the injector itself never changes.', 'The injector script must contain ZERO domain words (no ''language'', ''workflow'', ''syntax'', ''customer''). It only translates generic rulebook structures into target-language constructs.', 'artifact-rulebook', 'artifact-substrate', 'Injector mentions any domain word — that''s the signature of a leak. The fix is in the injector, never in a hand-edit to the substrate output.') ON CONFLICT (phase_id) DO NOTHING;
+
+INSERT INTO substrate_contract_phases (phase_id, "order", name, domain_agnostic, input, output, script_pattern, description, why_domain_agnostic, input_artifact_id, output_artifact_id, failure_mode)
+VALUES ('phase-execute', 2, 'Execute', TRUE, 'blank-test.json (raw fields + null computed fields)', 'test-answers.json (all fields, including computed)', 'execution-substrates/<technology>/take-test.{py,go,sh}', 'Reads blank-test.json, populates the generated entity structures, calls the generated Calc*() functions to fill in computed columns, emits test-answers.json.', 'The test runner does NOT know what fields mean. It just unmarshals JSON, calls the generated functions, and remarshal the result. Same main() pattern works for every rulebook.', 'artifact-blank-test', 'artifact-test-answers', 'take-test calls a hand-written helper instead of a generated Calc*() function — substrate now encodes business logic instead of just hosting it.') ON CONFLICT (phase_id) DO NOTHING;
+
+INSERT INTO substrate_contract_phases (phase_id, "order", name, domain_agnostic, input, output, script_pattern, description, why_domain_agnostic, input_artifact_id, output_artifact_id, failure_mode)
+VALUES ('phase-grade', 3, 'Grade', TRUE, 'test-answers.json (substrate output) + answer-key.json (from rulebook seed data)', 'test-results.md (per-substrate) + all-tests-results.md (aggregate)', 'orchestration/test-orchestrator.py', 'Field-by-field, row-by-row comparison of every substrate''s test-answers.json against the canonical answer-key.json derived from the rulebook seed data. No substrate holds a privileged position; answer keys come from the rulebook, not from any one substrate.', 'The grader compares JSON structures. It has no opinion about which fields exist or what they mean — disagreement is reported field-by-field.', 'artifact-test-answers', 'artifact-test-results', 'Grader pre-decides which substrate is authoritative — that''s a privileged-substrate bug (violates ax-002). Or it aggregates pass/fail without preserving the field-level diff.') ON CONFLICT (phase_id) DO NOTHING;
+
+-- ----------------------------------------------------------------------------
+-- EvaluationSteps: Substeps within each SubstrateContractPhase. Inject, Execute, and Grade each decompose into a small number of concrete substeps the orchestrator executes in order. This is the layer below SubstrateContractPhases — it answers 'what specifically happens inside phase-execute?' Used by the admin portal's Tests screen to render the actual stages a substrate run goes through.
+-- ----------------------------------------------------------------------------
+INSERT INTO evaluation_steps (step_id, phase_id, "order", name, description, mechanism, invariant)
+VALUES ('step-inject-01', 'phase-inject', 1, 'Load rulebook JSON', 'Read effortless-rulebook.json from disk (or POST body via ssotme-proxy). Validate that it parses and has a schema block per table.', 'orchestration/shared.py: get_rulebook_path() + json.load()', 'No domain knowledge encoded in the loader — it parses generic JSON.') ON CONFLICT (step_id) DO NOTHING;
+
+INSERT INTO evaluation_steps (step_id, phase_id, "order", name, description, mechanism, invariant)
+VALUES ('step-inject-02', 'phase-inject', 2, 'Walk entities', 'Iterate every top-level table in the rulebook; for each, emit one entity structure in the target language (class, struct, table, OWL class, etc.).', 'inject-into-<tech>.py main loop', 'Emission is purely structural — entity name and field names come from the rulebook, never hardcoded.') ON CONFLICT (step_id) DO NOTHING;
+
+INSERT INTO evaluation_steps (step_id, phase_id, "order", name, description, mechanism, invariant)
+VALUES ('step-inject-03', 'phase-inject', 3, 'Compile formulas', 'For every calculated/lookup/aggregation field, transpile its formula expression into a target-language function (Calc<Field>).', 'orchestration/formula_parser.py + per-substrate emit step', 'Compiler honors the rulebook''s declared FormulaDialect; substrate-specific extensions are an error, not a feature.') ON CONFLICT (step_id) DO NOTHING;
+
+INSERT INTO evaluation_steps (step_id, phase_id, "order", name, description, mechanism, invariant)
+VALUES ('step-inject-04', 'phase-inject', 4, 'Write substrate artifact', 'Persist the generated code/schema/workbook under execution-substrates/<technology>/ or licensed-effortless-tools/<technology>/.', 'Filesystem write; never an in-memory-only artifact.', 'Artifact is reproducible: same rulebook + same injector version = byte-equivalent output (modulo deterministic ordering).') ON CONFLICT (step_id) DO NOTHING;
+
+INSERT INTO evaluation_steps (step_id, phase_id, "order", name, description, mechanism, invariant)
+VALUES ('step-execute-01', 'phase-execute', 1, 'Load blank-test', 'Read blank-test.json — rows with raw fields populated and all calculated fields nulled out.', 'take-test.<lang> JSON unmarshal', 'Blank-test is the SAME file for every substrate in a given run — substrates do not pre-process it.') ON CONFLICT (step_id) DO NOTHING;
+
+INSERT INTO evaluation_steps (step_id, phase_id, "order", name, description, mechanism, invariant)
+VALUES ('step-execute-02', 'phase-execute', 2, 'Hydrate entities', 'Construct in-memory entity instances from the rows, using the substrate''s generated structures.', 'Generated constructor / DDL insert / workbook row', 'Hydration uses only generated code; no manual entity construction.') ON CONFLICT (step_id) DO NOTHING;
+
+INSERT INTO evaluation_steps (step_id, phase_id, "order", name, description, mechanism, invariant)
+VALUES ('step-execute-03', 'phase-execute', 3, 'Compute calculated fields', 'Invoke each generated Calc<Field>() function to fill in calculated, lookup, and aggregation fields.', 'Per-substrate Calc* dispatch', 'Substrate executes generated functions only — it does NOT recompute formulas itself or inline business logic.') ON CONFLICT (step_id) DO NOTHING;
+
+INSERT INTO evaluation_steps (step_id, phase_id, "order", name, description, mechanism, invariant)
+VALUES ('step-execute-04', 'phase-execute', 4, 'Emit test-answers', 'Serialize the fully-populated row set to test-answers.json.', 'JSON marshal', 'Output schema matches blank-test schema row-for-row, field-for-field.') ON CONFLICT (step_id) DO NOTHING;
+
+INSERT INTO evaluation_steps (step_id, phase_id, "order", name, description, mechanism, invariant)
+VALUES ('step-grade-01', 'phase-grade', 1, 'Load answer-key', 'Read answer-key.json — the canonical expected values derived directly from the rulebook seed data (NOT from any one substrate''s output).', 'orchestration/test-orchestrator.py: load_answer_key()', 'Answer key is rulebook-derived. If it comes from a substrate, you have a privileged-substrate bug.') ON CONFLICT (step_id) DO NOTHING;
+
+INSERT INTO evaluation_steps (step_id, phase_id, "order", name, description, mechanism, invariant)
+VALUES ('step-grade-02', 'phase-grade', 2, 'Collect substrate outputs', 'Gather every substrate''s test-answers.json from execution-substrates/<tech>/ output directories.', 'Filesystem glob + load', 'All substrates are gathered as peers; none is treated as the reference.') ON CONFLICT (step_id) DO NOTHING;
+
+INSERT INTO evaluation_steps (step_id, phase_id, "order", name, description, mechanism, invariant)
+VALUES ('step-grade-03', 'phase-grade', 3, 'Compare field-by-field', 'For each (row, field) pair, compare substrate value to answer-key value. For the English substrate, hand off to FuzzyGradingProviders for LLM-graded comparison.', 'Deep equality for deterministic substrates; orchestration/llm-fuzzy-grader.py for English.', 'Disagreement is reported at the field level, not as a binary pass/fail per substrate.') ON CONFLICT (step_id) DO NOTHING;
+
+INSERT INTO evaluation_steps (step_id, phase_id, "order", name, description, mechanism, invariant)
+VALUES ('step-grade-04', 'phase-grade', 4, 'Emit report', 'Write per-substrate test-results.md and aggregate all-tests-results.md; render orchestration-report.html for the portal Tests screen.', 'orchestration/generate-report.py', 'Report preserves field-level disagreement; aggregate pass-rates never erase the diff.') ON CONFLICT (step_id) DO NOTHING;
+
+-- ----------------------------------------------------------------------------
+-- EvaluationArtifacts: The JSON / Markdown files that flow between SubstrateContractPhases. Each artifact is a contract: a file with a known schema produced by one phase and consumed by the next. This table is the artifact registry — what each file IS, where it lives, who writes it, who reads it. Together with SubstrateContractPhases.InputArtifactId/OutputArtifactId, this gives the evaluation pipeline a fully-witnessed data-flow graph.
+-- ----------------------------------------------------------------------------
+INSERT INTO evaluation_artifacts (artifact_id, name, format, path_pattern, produced_by_phase_id, consumed_by_phase_id, derived_from, description)
+VALUES ('artifact-rulebook', 'Rulebook JSON', 'json', 'rulebook-examples/<domain>/effortless-rulebook/<domain>-rulebook.json (or effortless-platform/effortless-rulebook/effortless-rulebook.json for the platform itself)', '120a3be9-1ae6-26aa-da51-c0a7962d43aa', 'phase-inject', 'Hand-authored OR pulled from Airtable via airtable-to-rulebook (an input spoke, not a phase output).', 'The single durable SSoT for a project. All other artifacts in this table are mechanically derivable from this one.') ON CONFLICT (artifact_id) DO NOTHING;
+
+INSERT INTO evaluation_artifacts (artifact_id, name, format, path_pattern, produced_by_phase_id, consumed_by_phase_id, derived_from, description)
+VALUES ('artifact-substrate', 'Substrate artifact', 'source-tree', 'execution-substrates/<technology>/ OR licensed-effortless-tools/<technology>/', 'phase-inject', 'phase-execute', 'Rulebook JSON via inject-into-<technology>.py.', 'A runnable artifact in the target technology — Python module, Go package, Postgres DDL, OWL ontology, Excel workbook, ARM64 binary, etc.') ON CONFLICT (artifact_id) DO NOTHING;
+
+INSERT INTO evaluation_artifacts (artifact_id, name, format, path_pattern, produced_by_phase_id, consumed_by_phase_id, derived_from, description)
+VALUES ('artifact-blank-test', 'blank-test.json', 'json', 'rulebook-examples/<domain>/testing/blank-test.json', '265f5d63-dcb8-5821-c3e3-4d9338608c1b', 'phase-execute', 'Rulebook seed data with all calculated/lookup/aggregation fields nulled out. Produced by orchestration, not by any substrate.', 'The exam: rows with raw fields populated and computed fields blank. Every substrate gets the SAME blank-test for a given run.') ON CONFLICT (artifact_id) DO NOTHING;
+
+INSERT INTO evaluation_artifacts (artifact_id, name, format, path_pattern, produced_by_phase_id, consumed_by_phase_id, derived_from, description)
+VALUES ('artifact-test-answers', 'test-answers.json', 'json', 'execution-substrates/<technology>/test-answers.json (one per substrate per run)', 'phase-execute', 'phase-grade', 'blank-test.json + substrate''s generated Calc*() functions.', 'A substrate''s exam answers — the same rows as blank-test, with computed fields filled in by THAT substrate.') ON CONFLICT (artifact_id) DO NOTHING;
+
+INSERT INTO evaluation_artifacts (artifact_id, name, format, path_pattern, produced_by_phase_id, consumed_by_phase_id, derived_from, description)
+VALUES ('artifact-answer-key', 'answer-key.json', 'json', 'rulebook-examples/<domain>/testing/answer-key.json', 'ac13c50c-bb53-60a5-3448-225081147bf7', 'phase-grade', 'Rulebook seed data — every field including computed ones, evaluated FROM THE RULEBOOK (not from any substrate). The canonical oracle.', 'The grader''s reference. Rulebook-derived so no substrate is privileged. If you find yourself sourcing answer-key from one substrate''s output, that''s a bug (violates ax-002).') ON CONFLICT (artifact_id) DO NOTHING;
+
+INSERT INTO evaluation_artifacts (artifact_id, name, format, path_pattern, produced_by_phase_id, consumed_by_phase_id, derived_from, description)
+VALUES ('artifact-test-results', 'test-results.md / all-tests-results.md', 'markdown', 'rulebook-examples/<domain>/testing/test-results.md (per-substrate) + all-tests-results.md (aggregate)', 'phase-grade', 'ef1b538f-fa18-53a1-b89c-5cb63f4dcd16', 'Field-level diff of every substrate''s test-answers.json against answer-key.json.', 'Human-readable grade report. Aggregated by orchestration/generate-report.py into orchestration-report.html for the portal Tests screen.') ON CONFLICT (artifact_id) DO NOTHING;
+
+-- ----------------------------------------------------------------------------
+-- SubstrateTradeoffDimensions: The fixed taxonomy of dimensions used to characterize every substrate. Pro/con statements in SubstrateTradeoffs are scoped to one of these dimensions, so substrates can be compared apples-to-apples (e.g. 'who's fastest?' = filter SubstrateTradeoffs by DimensionId=dim-speed). Adding a dimension here means committing to fill it in for every substrate.
+-- ----------------------------------------------------------------------------
+INSERT INTO substrate_tradeoff_dimensions (dimension_id, name, description, "order")
+VALUES ('dim-speed', 'Speed', 'How fast a single conformance run completes for this substrate. Spans <1s to multi-minute.', 1) ON CONFLICT (dimension_id) DO NOTHING;
+
+INSERT INTO substrate_tradeoff_dimensions (dimension_id, name, description, "order")
+VALUES ('dim-accuracy', 'Accuracy', 'Observed conformance rate on the answer-key — deterministic substrates are 100% by construction; stochastic substrates are bounded by their grading model.', 2) ON CONFLICT (dimension_id) DO NOTHING;
+
+INSERT INTO substrate_tradeoff_dimensions (dimension_id, name, description, "order")
+VALUES ('dim-expressive-completeness', 'Expressive completeness', 'Which formula classes the substrate can faithfully evaluate: full | partial-aggregation | partial-formula | shape-only.', 3) ON CONFLICT (dimension_id) DO NOTHING;
+
+INSERT INTO substrate_tradeoff_dimensions (dimension_id, name, description, "order")
+VALUES ('dim-witnessability', 'Witnessability', 'Whether the substrate''s output is structured enough to serve as an answer-key oracle in a conformance run. See ExecutionSubstrates.CanBeAnswerKey.', 4) ON CONFLICT (dimension_id) DO NOTHING;
+
+INSERT INTO substrate_tradeoff_dimensions (dimension_id, name, description, "order")
+VALUES ('dim-provenance', 'Provenance', 'Who built the generator — licensed-effortless-tool | local-injector | external. Distinct from quality; see FramingInvariants.framing-003.', 5) ON CONFLICT (dimension_id) DO NOTHING;
+
+INSERT INTO substrate_tradeoff_dimensions (dimension_id, name, description, "order")
+VALUES ('dim-debuggability', 'Debuggability', 'How easy it is to investigate a failure: stepping through generated code, inspecting intermediate state, reading the artifact in a familiar tool.', 6) ON CONFLICT (dimension_id) DO NOTHING;
+
+INSERT INTO substrate_tradeoff_dimensions (dimension_id, name, description, "order")
+VALUES ('dim-portability', 'Portability', 'How easily the substrate artifact moves to a different host environment — copy a file, ship a binary, require a database server, require an LLM API key.', 7) ON CONFLICT (dimension_id) DO NOTHING;
+
+INSERT INTO substrate_tradeoff_dimensions (dimension_id, name, description, "order")
+VALUES ('dim-runtime-cost', 'Runtime cost', 'Money cost per run. Deterministic substrates are effectively zero; LLM-graded substrates cost API tokens.', 8) ON CONFLICT (dimension_id) DO NOTHING;
+
+-- ----------------------------------------------------------------------------
+-- SubstrateTradeoffs: Per-(Substrate × Dimension) Pro/Con/Note. The same fixed dimension set (see SubstrateTradeoffDimensions) is applied to every substrate, so 'why pick Postgres over Python?' or 'why does English cost so much?' is answerable by filtering this table. NOT a ranking — see ax-002 (no privileged substrate). Each row records a factual property along one comparable axis.
+-- ----------------------------------------------------------------------------
+INSERT INTO substrate_tradeoffs (tradeoff_id, substrate_id, dimension_id, pro, con, note)
+VALUES ('tr-binary-speed', 'substrate-001', 'dim-speed', 'Native execution — once compiled, runs at ARM64 speed.', 'Inject + assemble + link adds compile-time overhead; not interactive.', 'Proof-of-concept; speed has not been benchmarked head-to-head with Python/Go.') ON CONFLICT (tradeoff_id) DO NOTHING;
+
+INSERT INTO substrate_tradeoffs (tradeoff_id, substrate_id, dimension_id, pro, con, note)
+VALUES ('tr-binary-accuracy', 'substrate-001', 'dim-accuracy', 'Deterministic — same input always produces same output.', 'Partial-formula coverage means it fails conformance on formula classes it doesn''t yet handle.', NULL) ON CONFLICT (tradeoff_id) DO NOTHING;
+
+INSERT INTO substrate_tradeoffs (tradeoff_id, substrate_id, dimension_id, pro, con, note)
+VALUES ('tr-binary-expr', 'substrate-001', 'dim-expressive-completeness', NULL, 'partial-formula — many higher-level formula constructs are not yet emitted.', 'Demonstrates the floor: a binary substrate is possible at all, not that it''s complete.') ON CONFLICT (tradeoff_id) DO NOTHING;
+
+INSERT INTO substrate_tradeoffs (tradeoff_id, substrate_id, dimension_id, pro, con, note)
+VALUES ('tr-binary-witness', 'substrate-001', 'dim-witnessability', NULL, 'Cannot serve as answer-key — binary output is not structurally inspectable as JSON.', 'CanBeAnswerKey=false.') ON CONFLICT (tradeoff_id) DO NOTHING;
+
+INSERT INTO substrate_tradeoffs (tradeoff_id, substrate_id, dimension_id, pro, con, note)
+VALUES ('tr-binary-prov', 'substrate-001', 'dim-provenance', 'Local injector — fully open and inspectable.', NULL, NULL) ON CONFLICT (tradeoff_id) DO NOTHING;
+
+INSERT INTO substrate_tradeoffs (tradeoff_id, substrate_id, dimension_id, pro, con, note)
+VALUES ('tr-binary-debug', 'substrate-001', 'dim-debuggability', NULL, 'Stepping through ARM64 assembly is impractical for business-rule debugging.', NULL) ON CONFLICT (tradeoff_id) DO NOTHING;
+
+INSERT INTO substrate_tradeoffs (tradeoff_id, substrate_id, dimension_id, pro, con, note)
+VALUES ('tr-binary-port', 'substrate-001', 'dim-portability', 'Single binary file — copy and run on any ARM64 host.', 'Architecture-locked: an x86 box needs a re-compile or emulator.', NULL) ON CONFLICT (tradeoff_id) DO NOTHING;
+
+INSERT INTO substrate_tradeoffs (tradeoff_id, substrate_id, dimension_id, pro, con, note)
+VALUES ('tr-binary-cost', 'substrate-001', 'dim-runtime-cost', 'Effectively free per run.', NULL, NULL) ON CONFLICT (tradeoff_id) DO NOTHING;
+
+INSERT INTO substrate_tradeoffs (tradeoff_id, substrate_id, dimension_id, pro, con, note)
+VALUES ('tr-python-speed', 'substrate-002', 'dim-speed', 'Sub-second on the demo ontologies.', NULL, 'Python startup dominates small runs; per-row compute is negligible.') ON CONFLICT (tradeoff_id) DO NOTHING;
+
+INSERT INTO substrate_tradeoffs (tradeoff_id, substrate_id, dimension_id, pro, con, note)
+VALUES ('tr-python-accuracy', 'substrate-002', 'dim-accuracy', '100% on the answer-key by construction — formulas compile deterministically.', NULL, NULL) ON CONFLICT (tradeoff_id) DO NOTHING;
+
+INSERT INTO substrate_tradeoffs (tradeoff_id, substrate_id, dimension_id, pro, con, note)
+VALUES ('tr-python-expr', 'substrate-002', 'dim-expressive-completeness', 'Full — handles raw, calculated, lookup, and aggregation fields.', NULL, NULL) ON CONFLICT (tradeoff_id) DO NOTHING;
+
+INSERT INTO substrate_tradeoffs (tradeoff_id, substrate_id, dimension_id, pro, con, note)
+VALUES ('tr-python-witness', 'substrate-002', 'dim-witnessability', 'CanBeAnswerKey=true — JSON output is fully structured.', NULL, 'Convenient witness when JSON is SSoT — peer, not reference (ax-002).') ON CONFLICT (tradeoff_id) DO NOTHING;
+
+INSERT INTO substrate_tradeoffs (tradeoff_id, substrate_id, dimension_id, pro, con, note)
+VALUES ('tr-python-prov', 'substrate-002', 'dim-provenance', 'Local injector — readable and modifiable.', NULL, NULL) ON CONFLICT (tradeoff_id) DO NOTHING;
+
+INSERT INTO substrate_tradeoffs (tradeoff_id, substrate_id, dimension_id, pro, con, note)
+VALUES ('tr-python-debug', 'substrate-002', 'dim-debuggability', 'Generated Python is plain dataclasses + functions — easy to step through with pdb or print.', NULL, 'Best substrate for explaining what a formula ''does'' to a new developer.') ON CONFLICT (tradeoff_id) DO NOTHING;
+
+INSERT INTO substrate_tradeoffs (tradeoff_id, substrate_id, dimension_id, pro, con, note)
+VALUES ('tr-python-port', 'substrate-002', 'dim-portability', 'Runs anywhere Python runs.', 'Requires Python 3 + a tiny stdlib footprint.', NULL) ON CONFLICT (tradeoff_id) DO NOTHING;
+
+INSERT INTO substrate_tradeoffs (tradeoff_id, substrate_id, dimension_id, pro, con, note)
+VALUES ('tr-python-cost', 'substrate-002', 'dim-runtime-cost', 'Effectively free.', NULL, NULL) ON CONFLICT (tradeoff_id) DO NOTHING;
+
+INSERT INTO substrate_tradeoffs (tradeoff_id, substrate_id, dimension_id, pro, con, note)
+VALUES ('tr-go-speed', 'substrate-003', 'dim-speed', 'Sub-second; faster than Python on larger row counts due to native compilation.', NULL, NULL) ON CONFLICT (tradeoff_id) DO NOTHING;
+
+INSERT INTO substrate_tradeoffs (tradeoff_id, substrate_id, dimension_id, pro, con, note)
+VALUES ('tr-go-accuracy', 'substrate-003', 'dim-accuracy', '100% by construction.', NULL, NULL) ON CONFLICT (tradeoff_id) DO NOTHING;
+
+INSERT INTO substrate_tradeoffs (tradeoff_id, substrate_id, dimension_id, pro, con, note)
+VALUES ('tr-go-expr', 'substrate-003', 'dim-expressive-completeness', 'Full.', NULL, NULL) ON CONFLICT (tradeoff_id) DO NOTHING;
+
+INSERT INTO substrate_tradeoffs (tradeoff_id, substrate_id, dimension_id, pro, con, note)
+VALUES ('tr-go-witness', 'substrate-003', 'dim-witnessability', 'CanBeAnswerKey=true.', NULL, NULL) ON CONFLICT (tradeoff_id) DO NOTHING;
+
+INSERT INTO substrate_tradeoffs (tradeoff_id, substrate_id, dimension_id, pro, con, note)
+VALUES ('tr-go-prov', 'substrate-003', 'dim-provenance', 'Local injector.', NULL, NULL) ON CONFLICT (tradeoff_id) DO NOTHING;
+
+INSERT INTO substrate_tradeoffs (tradeoff_id, substrate_id, dimension_id, pro, con, note)
+VALUES ('tr-go-debug', 'substrate-003', 'dim-debuggability', 'Generated structs + funcs are idiomatic Go.', 'Compile-edit-run loop slightly slower than Python''s edit-run.', NULL) ON CONFLICT (tradeoff_id) DO NOTHING;
+
+INSERT INTO substrate_tradeoffs (tradeoff_id, substrate_id, dimension_id, pro, con, note)
+VALUES ('tr-go-port', 'substrate-003', 'dim-portability', 'Cross-compiles to a single static binary — ship anywhere.', NULL, NULL) ON CONFLICT (tradeoff_id) DO NOTHING;
+
+INSERT INTO substrate_tradeoffs (tradeoff_id, substrate_id, dimension_id, pro, con, note)
+VALUES ('tr-go-cost', 'substrate-003', 'dim-runtime-cost', 'Effectively free.', NULL, NULL) ON CONFLICT (tradeoff_id) DO NOTHING;
+
+INSERT INTO substrate_tradeoffs (tradeoff_id, substrate_id, dimension_id, pro, con, note)
+VALUES ('tr-pg-speed', 'substrate-004', 'dim-speed', 'Sub-second on small ontologies; scales to millions of rows with proper indexing.', 'Requires a running Postgres server — adds infra overhead vs. a file-based substrate.', NULL) ON CONFLICT (tradeoff_id) DO NOTHING;
+
+INSERT INTO substrate_tradeoffs (tradeoff_id, substrate_id, dimension_id, pro, con, note)
+VALUES ('tr-pg-accuracy', 'substrate-004', 'dim-accuracy', '100% by construction.', NULL, NULL) ON CONFLICT (tradeoff_id) DO NOTHING;
+
+INSERT INTO substrate_tradeoffs (tradeoff_id, substrate_id, dimension_id, pro, con, note)
+VALUES ('tr-pg-expr', 'substrate-004', 'dim-expressive-completeness', 'Full — including complex aggregations and JOINs that other substrates approximate.', NULL, 'Reference-quality implementation; PostgreSQL has no formula-class limitations.') ON CONFLICT (tradeoff_id) DO NOTHING;
+
+INSERT INTO substrate_tradeoffs (tradeoff_id, substrate_id, dimension_id, pro, con, note)
+VALUES ('tr-pg-witness', 'substrate-004', 'dim-witnessability', 'CanBeAnswerKey=true — every cell is queryable.', NULL, 'Natural witness when the source of truth is a database. Peer, not reference (ax-002).') ON CONFLICT (tradeoff_id) DO NOTHING;
+
+INSERT INTO substrate_tradeoffs (tradeoff_id, substrate_id, dimension_id, pro, con, note)
+VALUES ('tr-pg-prov', 'substrate-004', 'dim-provenance', 'Licensed Effortless tool — externally maintained and battle-tested.', NULL, 'Provenance ≠ trustworthiness; see framing-003.') ON CONFLICT (tradeoff_id) DO NOTHING;
+
+INSERT INTO substrate_tradeoffs (tradeoff_id, substrate_id, dimension_id, pro, con, note)
+VALUES ('tr-pg-debug', 'substrate-004', 'dim-debuggability', 'EXPLAIN, psql, generated functions are inspectable.', 'Debugging a generated function requires SQL fluency.', NULL) ON CONFLICT (tradeoff_id) DO NOTHING;
+
+INSERT INTO substrate_tradeoffs (tradeoff_id, substrate_id, dimension_id, pro, con, note)
+VALUES ('tr-pg-port', 'substrate-004', 'dim-portability', 'DDL + functions are portable across any Postgres host.', 'Postgres-specific — not directly portable to MySQL/SQLite without re-emit.', NULL) ON CONFLICT (tradeoff_id) DO NOTHING;
+
+INSERT INTO substrate_tradeoffs (tradeoff_id, substrate_id, dimension_id, pro, con, note)
+VALUES ('tr-pg-cost', 'substrate-004', 'dim-runtime-cost', 'Free at the substrate level; host cost depends on deployment.', NULL, NULL) ON CONFLICT (tradeoff_id) DO NOTHING;
+
+INSERT INTO substrate_tradeoffs (tradeoff_id, substrate_id, dimension_id, pro, con, note)
+VALUES ('tr-csv-speed', 'substrate-005', 'dim-speed', 'Emit is near-instant — just serialize rows.', NULL, NULL) ON CONFLICT (tradeoff_id) DO NOTHING;
+
+INSERT INTO substrate_tradeoffs (tradeoff_id, substrate_id, dimension_id, pro, con, note)
+VALUES ('tr-csv-accuracy', 'substrate-005', 'dim-accuracy', 'Materialized values are exactly what was computed upstream.', 'CSV has no evaluator — it can only mirror values it was given.', NULL) ON CONFLICT (tradeoff_id) DO NOTHING;
+
+INSERT INTO substrate_tradeoffs (tradeoff_id, substrate_id, dimension_id, pro, con, note)
+VALUES ('tr-csv-expr', 'substrate-005', 'dim-expressive-completeness', NULL, 'shape-only — no formula evaluation. Values are materialized at emit time.', NULL) ON CONFLICT (tradeoff_id) DO NOTHING;
+
+INSERT INTO substrate_tradeoffs (tradeoff_id, substrate_id, dimension_id, pro, con, note)
+VALUES ('tr-csv-witness', 'substrate-005', 'dim-witnessability', NULL, 'CanBeAnswerKey=false — CSV cannot recompute, only reflect.', NULL) ON CONFLICT (tradeoff_id) DO NOTHING;
+
+INSERT INTO substrate_tradeoffs (tradeoff_id, substrate_id, dimension_id, pro, con, note)
+VALUES ('tr-csv-prov', 'substrate-005', 'dim-provenance', 'Local injector.', NULL, NULL) ON CONFLICT (tradeoff_id) DO NOTHING;
+
+INSERT INTO substrate_tradeoffs (tradeoff_id, substrate_id, dimension_id, pro, con, note)
+VALUES ('tr-csv-debug', 'substrate-005', 'dim-debuggability', 'Open in any spreadsheet or text editor.', NULL, NULL) ON CONFLICT (tradeoff_id) DO NOTHING;
+
+INSERT INTO substrate_tradeoffs (tradeoff_id, substrate_id, dimension_id, pro, con, note)
+VALUES ('tr-csv-port', 'substrate-005', 'dim-portability', 'Universal format — every tool reads CSV.', NULL, NULL) ON CONFLICT (tradeoff_id) DO NOTHING;
+
+INSERT INTO substrate_tradeoffs (tradeoff_id, substrate_id, dimension_id, pro, con, note)
+VALUES ('tr-csv-cost', 'substrate-005', 'dim-runtime-cost', 'Effectively free.', NULL, NULL) ON CONFLICT (tradeoff_id) DO NOTHING;
+
+INSERT INTO substrate_tradeoffs (tradeoff_id, substrate_id, dimension_id, pro, con, note)
+VALUES ('tr-xlsx-speed', 'substrate-006', 'dim-speed', 'Workbook generation completes in seconds; recalc is Excel-native afterwards.', NULL, NULL) ON CONFLICT (tradeoff_id) DO NOTHING;
+
+INSERT INTO substrate_tradeoffs (tradeoff_id, substrate_id, dimension_id, pro, con, note)
+VALUES ('tr-xlsx-accuracy', 'substrate-006', 'dim-accuracy', '100% — live Excel formulas, same dialect as Excel.', NULL, NULL) ON CONFLICT (tradeoff_id) DO NOTHING;
+
+INSERT INTO substrate_tradeoffs (tradeoff_id, substrate_id, dimension_id, pro, con, note)
+VALUES ('tr-xlsx-expr', 'substrate-006', 'dim-expressive-completeness', 'Full — formulas are emitted as live Excel formulas.', NULL, NULL) ON CONFLICT (tradeoff_id) DO NOTHING;
+
+INSERT INTO substrate_tradeoffs (tradeoff_id, substrate_id, dimension_id, pro, con, note)
+VALUES ('tr-xlsx-witness', 'substrate-006', 'dim-witnessability', 'CanBeAnswerKey=true — every cell is addressable.', NULL, 'Natural SSoT when the source of truth is a workbook.') ON CONFLICT (tradeoff_id) DO NOTHING;
+
+INSERT INTO substrate_tradeoffs (tradeoff_id, substrate_id, dimension_id, pro, con, note)
+VALUES ('tr-xlsx-prov', 'substrate-006', 'dim-provenance', 'Licensed Effortless tool.', NULL, NULL) ON CONFLICT (tradeoff_id) DO NOTHING;
+
+INSERT INTO substrate_tradeoffs (tradeoff_id, substrate_id, dimension_id, pro, con, note)
+VALUES ('tr-xlsx-debug', 'substrate-006', 'dim-debuggability', 'Click a cell — see the formula bar. Most accessible debugger of all substrates.', NULL, 'Often the right substrate for finance / non-developer stakeholders.') ON CONFLICT (tradeoff_id) DO NOTHING;
+
+INSERT INTO substrate_tradeoffs (tradeoff_id, substrate_id, dimension_id, pro, con, note)
+VALUES ('tr-xlsx-port', 'substrate-006', 'dim-portability', 'Workbook opens in Excel, Numbers, LibreOffice, Google Sheets.', 'Some advanced formulas may not survive every reader.', NULL) ON CONFLICT (tradeoff_id) DO NOTHING;
+
+INSERT INTO substrate_tradeoffs (tradeoff_id, substrate_id, dimension_id, pro, con, note)
+VALUES ('tr-xlsx-cost', 'substrate-006', 'dim-runtime-cost', 'Effectively free.', NULL, NULL) ON CONFLICT (tradeoff_id) DO NOTHING;
+
+INSERT INTO substrate_tradeoffs (tradeoff_id, substrate_id, dimension_id, pro, con, note)
+VALUES ('tr-uml-speed', 'substrate-007', 'dim-speed', 'Diagram render is fast.', NULL, NULL) ON CONFLICT (tradeoff_id) DO NOTHING;
+
+INSERT INTO substrate_tradeoffs (tradeoff_id, substrate_id, dimension_id, pro, con, note)
+VALUES ('tr-uml-accuracy', 'substrate-007', 'dim-accuracy', 'Structure is mirrored exactly.', 'No formula evaluation — accuracy claim is about structure, not values.', NULL) ON CONFLICT (tradeoff_id) DO NOTHING;
+
+INSERT INTO substrate_tradeoffs (tradeoff_id, substrate_id, dimension_id, pro, con, note)
+VALUES ('tr-uml-expr', 'substrate-007', 'dim-expressive-completeness', NULL, 'shape-only — documents structure; does not evaluate.', NULL) ON CONFLICT (tradeoff_id) DO NOTHING;
+
+INSERT INTO substrate_tradeoffs (tradeoff_id, substrate_id, dimension_id, pro, con, note)
+VALUES ('tr-uml-witness', 'substrate-007', 'dim-witnessability', NULL, 'CanBeAnswerKey=false — a diagram is not a queryable oracle.', NULL) ON CONFLICT (tradeoff_id) DO NOTHING;
+
+INSERT INTO substrate_tradeoffs (tradeoff_id, substrate_id, dimension_id, pro, con, note)
+VALUES ('tr-uml-prov', 'substrate-007', 'dim-provenance', 'Local injector.', NULL, NULL) ON CONFLICT (tradeoff_id) DO NOTHING;
+
+INSERT INTO substrate_tradeoffs (tradeoff_id, substrate_id, dimension_id, pro, con, note)
+VALUES ('tr-uml-debug', 'substrate-007', 'dim-debuggability', 'Visual diagram makes structural mistakes obvious.', NULL, 'Often the fastest substrate for sanity-checking schema design.') ON CONFLICT (tradeoff_id) DO NOTHING;
+
+INSERT INTO substrate_tradeoffs (tradeoff_id, substrate_id, dimension_id, pro, con, note)
+VALUES ('tr-uml-port', 'substrate-007', 'dim-portability', 'PlantUML text renders in any PlantUML viewer.', NULL, NULL) ON CONFLICT (tradeoff_id) DO NOTHING;
+
+INSERT INTO substrate_tradeoffs (tradeoff_id, substrate_id, dimension_id, pro, con, note)
+VALUES ('tr-uml-cost', 'substrate-007', 'dim-runtime-cost', 'Free.', NULL, NULL) ON CONFLICT (tradeoff_id) DO NOTHING;
+
+INSERT INTO substrate_tradeoffs (tradeoff_id, substrate_id, dimension_id, pro, con, note)
+VALUES ('tr-owl-speed', 'substrate-008', 'dim-speed', 'Emit is fast.', 'Reasoning over the ontology with a full OWL reasoner is slower than the deterministic substrates — ~10s on demo runs.', NULL) ON CONFLICT (tradeoff_id) DO NOTHING;
+
+INSERT INTO substrate_tradeoffs (tradeoff_id, substrate_id, dimension_id, pro, con, note)
+VALUES ('tr-owl-accuracy', 'substrate-008', 'dim-accuracy', 'Structurally faithful — relationships and some constraints are captured.', 'Not a full evaluator; partial-formula coverage limits accuracy on computed-field conformance.', NULL) ON CONFLICT (tradeoff_id) DO NOTHING;
+
+INSERT INTO substrate_tradeoffs (tradeoff_id, substrate_id, dimension_id, pro, con, note)
+VALUES ('tr-owl-expr', 'substrate-008', 'dim-expressive-completeness', NULL, 'partial-formula — captures relationships and some constraints; not a full formula evaluator.', NULL) ON CONFLICT (tradeoff_id) DO NOTHING;
+
+INSERT INTO substrate_tradeoffs (tradeoff_id, substrate_id, dimension_id, pro, con, note)
+VALUES ('tr-owl-witness', 'substrate-008', 'dim-witnessability', NULL, 'CanBeAnswerKey=false — RDF triples don''t directly map to row-level computed fields.', NULL) ON CONFLICT (tradeoff_id) DO NOTHING;
+
+INSERT INTO substrate_tradeoffs (tradeoff_id, substrate_id, dimension_id, pro, con, note)
+VALUES ('tr-owl-prov', 'substrate-008', 'dim-provenance', 'Local injector.', NULL, NULL) ON CONFLICT (tradeoff_id) DO NOTHING;
+
+INSERT INTO substrate_tradeoffs (tradeoff_id, substrate_id, dimension_id, pro, con, note)
+VALUES ('tr-owl-debug', 'substrate-008', 'dim-debuggability', 'SPARQL queries against the ontology can answer structural questions.', 'Requires RDF / OWL fluency.', NULL) ON CONFLICT (tradeoff_id) DO NOTHING;
+
+INSERT INTO substrate_tradeoffs (tradeoff_id, substrate_id, dimension_id, pro, con, note)
+VALUES ('tr-owl-port', 'substrate-008', 'dim-portability', 'Standard W3C formats — readable by any OWL / RDF tool.', NULL, NULL) ON CONFLICT (tradeoff_id) DO NOTHING;
+
+INSERT INTO substrate_tradeoffs (tradeoff_id, substrate_id, dimension_id, pro, con, note)
+VALUES ('tr-owl-cost', 'substrate-008', 'dim-runtime-cost', 'Free.', NULL, NULL) ON CONFLICT (tradeoff_id) DO NOTHING;
+
+INSERT INTO substrate_tradeoffs (tradeoff_id, substrate_id, dimension_id, pro, con, note)
+VALUES ('tr-dag-speed', 'substrate-009', 'dim-speed', 'Emit is near-instant.', NULL, NULL) ON CONFLICT (tradeoff_id) DO NOTHING;
+
+INSERT INTO substrate_tradeoffs (tradeoff_id, substrate_id, dimension_id, pro, con, note)
+VALUES ('tr-dag-accuracy', 'substrate-009', 'dim-accuracy', 'Derivation structure is exact — every dependency is recorded.', 'Does not produce numeric output; conformance is about DAG shape, not values.', NULL) ON CONFLICT (tradeoff_id) DO NOTHING;
+
+INSERT INTO substrate_tradeoffs (tradeoff_id, substrate_id, dimension_id, pro, con, note)
+VALUES ('tr-dag-expr', 'substrate-009', 'dim-expressive-completeness', 'Full coverage of dependency tracing.', NULL, 'Witnesses derivation structure, not numeric output.') ON CONFLICT (tradeoff_id) DO NOTHING;
+
+INSERT INTO substrate_tradeoffs (tradeoff_id, substrate_id, dimension_id, pro, con, note)
+VALUES ('tr-dag-witness', 'substrate-009', 'dim-witnessability', NULL, 'CanBeAnswerKey=false — answers the ''how'' but not the ''what''.', 'Critical for ExplainDAG-style visualizations.') ON CONFLICT (tradeoff_id) DO NOTHING;
+
+INSERT INTO substrate_tradeoffs (tradeoff_id, substrate_id, dimension_id, pro, con, note)
+VALUES ('tr-dag-prov', 'substrate-009', 'dim-provenance', 'Local injector.', NULL, NULL) ON CONFLICT (tradeoff_id) DO NOTHING;
+
+INSERT INTO substrate_tradeoffs (tradeoff_id, substrate_id, dimension_id, pro, con, note)
+VALUES ('tr-dag-debug', 'substrate-009', 'dim-debuggability', 'Click a calculated field in the portal, see its full derivation tree.', NULL, 'The substrate users reach for to ANSWER ''why is this value what it is?''') ON CONFLICT (tradeoff_id) DO NOTHING;
+
+INSERT INTO substrate_tradeoffs (tradeoff_id, substrate_id, dimension_id, pro, con, note)
+VALUES ('tr-dag-port', 'substrate-009', 'dim-portability', 'Plain JSON — embeddable anywhere.', NULL, NULL) ON CONFLICT (tradeoff_id) DO NOTHING;
+
+INSERT INTO substrate_tradeoffs (tradeoff_id, substrate_id, dimension_id, pro, con, note)
+VALUES ('tr-dag-cost', 'substrate-009', 'dim-runtime-cost', 'Free.', NULL, NULL) ON CONFLICT (tradeoff_id) DO NOTHING;
+
+INSERT INTO substrate_tradeoffs (tradeoff_id, substrate_id, dimension_id, pro, con, note)
+VALUES ('tr-ef-speed', 'substrate-010', 'dim-speed', 'Compiled .NET runtime — fast at execution time.', 'Build step adds compile-time overhead.', NULL) ON CONFLICT (tradeoff_id) DO NOTHING;
+
+INSERT INTO substrate_tradeoffs (tradeoff_id, substrate_id, dimension_id, pro, con, note)
+VALUES ('tr-ef-accuracy', 'substrate-010', 'dim-accuracy', '100% by construction.', NULL, NULL) ON CONFLICT (tradeoff_id) DO NOTHING;
+
+INSERT INTO substrate_tradeoffs (tradeoff_id, substrate_id, dimension_id, pro, con, note)
+VALUES ('tr-ef-expr', 'substrate-010', 'dim-expressive-completeness', 'Full.', NULL, NULL) ON CONFLICT (tradeoff_id) DO NOTHING;
+
+INSERT INTO substrate_tradeoffs (tradeoff_id, substrate_id, dimension_id, pro, con, note)
+VALUES ('tr-ef-witness', 'substrate-010', 'dim-witnessability', 'CanBeAnswerKey=true.', NULL, NULL) ON CONFLICT (tradeoff_id) DO NOTHING;
+
+INSERT INTO substrate_tradeoffs (tradeoff_id, substrate_id, dimension_id, pro, con, note)
+VALUES ('tr-ef-prov', 'substrate-010', 'dim-provenance', 'Licensed Effortless tool.', NULL, NULL) ON CONFLICT (tradeoff_id) DO NOTHING;
+
+INSERT INTO substrate_tradeoffs (tradeoff_id, substrate_id, dimension_id, pro, con, note)
+VALUES ('tr-ef-debug', 'substrate-010', 'dim-debuggability', 'Visual Studio / Rider — full IDE debugging on generated POCOs.', NULL, NULL) ON CONFLICT (tradeoff_id) DO NOTHING;
+
+INSERT INTO substrate_tradeoffs (tradeoff_id, substrate_id, dimension_id, pro, con, note)
+VALUES ('tr-ef-port', 'substrate-010', 'dim-portability', 'Runs on any .NET-supported platform.', 'Requires .NET runtime.', NULL) ON CONFLICT (tradeoff_id) DO NOTHING;
+
+INSERT INTO substrate_tradeoffs (tradeoff_id, substrate_id, dimension_id, pro, con, note)
+VALUES ('tr-ef-cost', 'substrate-010', 'dim-runtime-cost', 'Effectively free.', NULL, NULL) ON CONFLICT (tradeoff_id) DO NOTHING;
+
+-- ----------------------------------------------------------------------------
+-- FuzzyGradingProviders: LLM providers usable for fuzzy grading of the English substrate — the ONLY non-deterministic substrate. All other substrates execute formulas deterministically; English requires an LLM to interpret prose into computed values. Use low temperature (0.1) for repeatability.
+-- ----------------------------------------------------------------------------
+INSERT INTO fuzzy_grading_providers (provider_id, name, model, env_var, determinism, typical_accuracy, speed_relative_to_deterministic, local_runtime, notes)
+VALUES ('provider-openai', 'OpenAI', 'GPT-4o', 'OPENAI_API_KEY', 'non-deterministic', '~85% on rulebook English specs', '2-3 orders of magnitude slower', FALSE, 'Default provider for llm-fuzzy-grader.py.') ON CONFLICT (provider_id) DO NOTHING;
+
+INSERT INTO fuzzy_grading_providers (provider_id, name, model, env_var, determinism, typical_accuracy, speed_relative_to_deterministic, local_runtime, notes)
+VALUES ('provider-anthropic', 'Anthropic', 'Claude Sonnet', 'ANTHROPIC_API_KEY', 'non-deterministic', '~85% on rulebook English specs', '2-3 orders of magnitude slower', FALSE, 'Alternative to OpenAI. Comparable accuracy on this task.') ON CONFLICT (provider_id) DO NOTHING;
+
+INSERT INTO fuzzy_grading_providers (provider_id, name, model, env_var, determinism, typical_accuracy, speed_relative_to_deterministic, local_runtime, notes)
+VALUES ('provider-ollama', 'Ollama (local)', 'Llama 3.2', NULL, 'non-deterministic', 'lower than hosted models', '3-4 orders of magnitude slower on CPU; less on GPU', TRUE, 'Runs against localhost:11434. Useful for offline / no-cost runs at the cost of accuracy.') ON CONFLICT (provider_id) DO NOTHING;
+
+-- ----------------------------------------------------------------------------
+-- FormulaDialects: Catalog of formula dialects that a rulebook can declare. Per-rulebook formula dialect is headline feature #6: each demo rulebook names which dialect it speaks (in _meta.formulaDialect), and substrates honor that declaration. The platform rulebook does not enumerate which functions a dialect supports — that lives in each demo rulebook's own formula definitions. This catalog only registers the dialects themselves.
+-- ----------------------------------------------------------------------------
+INSERT INTO formula_dialects (dialect_id, name, origin, field_ref_syntax, string_concat, case_sensitive, example_formula, primary_substrates, status, notes)
+VALUES ('dialect-excel', 'Excel', 'Microsoft Excel formula language', '{FieldName}', '& operator', FALSE, 'SUBSTITUTE(LOWER({DisplayName}), " ", "-")', 'xlsx, csv, postgres, python, golang', 'active', 'Default dialect for rulebooks without an explicit declaration. Covered by IF, AND, OR, CONCAT, LOWER, UPPER, SUBSTITUTE, LEFT, RIGHT, arithmetic, comparison.') ON CONFLICT (dialect_id) DO NOTHING;
+
+INSERT INTO formula_dialects (dialect_id, name, origin, field_ref_syntax, string_concat, case_sensitive, example_formula, primary_substrates, status, notes)
+VALUES ('dialect-airtable', 'Airtable', 'Airtable formula field language', '{FieldName}', '& operator OR CONCATENATE()', FALSE, 'IF({Status} = "Open", "yes", "no")', 'airtable, xlsx, postgres', 'active', 'Near-superset of Excel for the functions this project uses. Airtable-specific extensions (e.g. DATETIME_FORMAT) are honored when present.') ON CONFLICT (dialect_id) DO NOTHING;
+
+-- ----------------------------------------------------------------------------
+-- DemoNarratives: Curated narratives that demonstrate ERB capabilities in motion: substrates 'follow along' as the rulebook changes. Two narrative styles coexist: (1) commit-sequence narratives (legacy) where a single demo rulebook evolves over commits; (2) cross-rulebook narratives (current) where the same demo is observed across DIFFERENT rulebooks side-by-side. Cross-rulebook supersedes commit-sequence because RulebookDomains now form a tree (ParentDomainId) — the progression is data, not git history.
+-- ----------------------------------------------------------------------------
+INSERT INTO demo_narratives (narrative_id, "order", narrative_name, step_name, related_domain_id, what_happens, key_lesson, observed_cost, narrative_style, status, superseded_by)
+VALUES ('narrative-drift-01', 1, 'Substrate Drift (BASIC → ADVANCED → NEW ONTOLOGY)', 'BASIC', 'domain-002', 'All substrates pass at 100% on a 9-table workflow ontology with relationships, aggregations, and boolean derivations.', 'Substrates have wildly different regeneration costs even at full conformance.', 'Python/Go/Postgres < 1s, OWL ~10s, English ~5min (~85% LLM-graded)', 'commit-sequence', 'deprecated', 'Substrate Drift (cross-rulebook progression)') ON CONFLICT (narrative_id) DO NOTHING;
+
+INSERT INTO demo_narratives (narrative_id, "order", narrative_name, step_name, related_domain_id, what_happens, key_lesson, observed_cost, narrative_style, status, superseded_by)
+VALUES ('narrative-drift-02', 2, 'Substrate Drift (BASIC → ADVANCED → NEW ONTOLOGY)', 'ADVANCED', 'domain-003', 'Rename and modify elements within the same ontology — add cross-entity lookups and conditional logic. Every substrate follows along with no edits to substrate code.', 'Interface changes propagate automatically. This is the polymorphism payoff.', 'Cost profile unchanged from BASIC — work is in the rulebook, not in substrate code.', 'commit-sequence', 'deprecated', 'Substrate Drift (cross-rulebook progression)') ON CONFLICT (narrative_id) DO NOTHING;
+
+INSERT INTO demo_narratives (narrative_id, "order", narrative_name, step_name, related_domain_id, what_happens, key_lesson, observed_cost, narrative_style, status, superseded_by)
+VALUES ('narrative-drift-03', 3, 'Substrate Drift (BASIC → ADVANCED → NEW ONTOLOGY)', 'NEW ONTOLOGY', 'domain-004', 'Swap to an entirely different domain (e.g. star-trek media catalog). Deterministic substrates regenerate and conform. The English substrate is now 100% wrong against the new answer key until its prose is regenerated by the LLM.', 'The static English content is 100% stale across domain swaps. Regenerating it costs time and money — the dominant cost lives in the slowest substrate, not in the rulebook.', 'Deterministic substrates < 1s; English regeneration ~5min and ~$0.10-$1 in LLM tokens.', 'commit-sequence', 'deprecated', 'Substrate Drift (cross-rulebook progression)') ON CONFLICT (narrative_id) DO NOTHING;
+
+INSERT INTO demo_narratives (narrative_id, "order", narrative_name, step_name, related_domain_id, what_happens, key_lesson, observed_cost, narrative_style, status, superseded_by)
+VALUES ('narrative-cross-01', 1, 'Substrate Drift (cross-rulebook progression)', 'CustomerFullName (root)', 'domain-001', 'Start at the simplest rulebook in the tree — one table, one CONCAT formula. Every substrate emits its analog. Conformance is 100% across the board.', 'The contract is observable at minimum scale. A 1-table rulebook is enough to exercise inject + execute + grade end-to-end.', 'All substrates < 1s; English regeneration ~30s.', 'cross-rulebook', 'active', NULL) ON CONFLICT (narrative_id) DO NOTHING;
+
+INSERT INTO demo_narratives (narrative_id, "order", narrative_name, step_name, related_domain_id, what_happens, key_lesson, observed_cost, narrative_style, status, superseded_by)
+VALUES ('narrative-cross-02', 2, 'Substrate Drift (cross-rulebook progression)', 'Jessica BASIC (child of root)', 'domain-002', 'Walk down the progression tree to Jessica BASIC — adds relationships, aggregations, role/agent separation. Every substrate handles the elaboration with no substrate-side edits.', 'Walking the tree of rulebooks (ParentDomainId) IS the demo — no git rewind required. The viewer can see N rulebooks side-by-side rather than replaying commits.', 'Python/Go/Postgres < 1s, OWL ~10s, English ~5min.', 'cross-rulebook', 'active', NULL) ON CONFLICT (narrative_id) DO NOTHING;
+
+INSERT INTO demo_narratives (narrative_id, "order", narrative_name, step_name, related_domain_id, what_happens, key_lesson, observed_cost, narrative_style, status, superseded_by)
+VALUES ('narrative-cross-03', 3, 'Substrate Drift (cross-rulebook progression)', 'Jessica ADVANCED (child of BASIC)', 'domain-003', 'Walk further down: Jessica ADVANCED elaborates BASIC with cross-entity lookups and conditional IF logic. Conformance still 100% across deterministic substrates.', 'Elaboration within a tree of rulebooks costs the SAME as elaboration within a commit history — proving that ''commits'' was never the load-bearing thing; the progression structure was.', 'Cost profile unchanged from BASIC.', 'cross-rulebook', 'active', NULL) ON CONFLICT (narrative_id) DO NOTHING;
+
+INSERT INTO demo_narratives (narrative_id, "order", narrative_name, step_name, related_domain_id, what_happens, key_lesson, observed_cost, narrative_style, status, superseded_by)
+VALUES ('narrative-cross-04', 4, 'Substrate Drift (cross-rulebook progression)', 'Star Trek (sibling root)', 'domain-004', 'Jump to a sibling root in the tree — different domain entirely. Deterministic substrates regenerate and conform. The English substrate is 100% stale until regenerated.', 'Cross-rulebook navigation makes the ''domain swap'' observable as a tree traversal, not a git checkout. Same lesson as the legacy commit-sequence demo, but now data-driven.', 'Deterministic substrates < 1s; English regeneration ~5min and ~$0.10-$1.', 'cross-rulebook', 'active', NULL) ON CONFLICT (narrative_id) DO NOTHING;
+
+-- ----------------------------------------------------------------------------
+-- Glossary: Authoritative glossary for the ERB platform. Every term used in orchestration code, docs, the admin portal UI, or rulebook tables appears here EXACTLY ONCE, with a definition AND an ImplementedAs pointer back into this rulebook (or to source files when the implementation is code rather than data). If a term appears in repo prose but has no row here, that's a documentation bug. If a term has a row here but no ImplementedAs target, that's an architecture bug — every concept should be data, code, or a value.
+-- ----------------------------------------------------------------------------
+INSERT INTO glossary (term_id, term, category, definition, implemented_as, aliases, notes)
+VALUES ('glo-rulebook', 'Rulebook', 'concept', 'A single JSON file (effortless-rulebook.json or <domain>-rulebook.json) that declaratively encodes the schema, formulas, and seed data for one project; the durable SSoT from which every substrate is mechanically derived.', 'file:effortless-platform/effortless-rulebook/effortless-rulebook.json (platform); file:rulebook-examples/<domain>/effortless-rulebook/<domain>-rulebook.json (demos)', 'effortless-rulebook, rulebook JSON', NULL) ON CONFLICT (term_id) DO NOTHING;
+
+INSERT INTO glossary (term_id, term, category, definition, implemented_as, aliases, notes)
+VALUES ('glo-platform-rulebook', 'Platform Rulebook', 'concept', 'The single rulebook that describes the ERB orchestration tool ITSELF — admin portal, build pipeline, substrates, framing invariants. Distinct from demo rulebooks; the parent, not a sibling.', 'file:effortless-platform/effortless-rulebook/effortless-rulebook.json', 'project rulebook, meta-rulebook, top-level rulebook', 'See CLAUDE.md — THE PROJECT RULEBOOK ≠ A DEMO RULEBOOK.') ON CONFLICT (term_id) DO NOTHING;
+
+INSERT INTO glossary (term_id, term, category, definition, implemented_as, aliases, notes)
+VALUES ('glo-demo-rulebook', 'Demo Rulebook', 'concept', 'A per-domain rulebook under rulebook-examples/ that captures one business ontology. Categorically not the platform rulebook.', 'file:rulebook-examples/<domain>/effortless-rulebook/<domain>-rulebook.json', 'domain rulebook, project rulebook (demo)', NULL) ON CONFLICT (term_id) DO NOTHING;
+
+INSERT INTO glossary (term_id, term, category, definition, implemented_as, aliases, notes)
+VALUES ('glo-substrate', 'Substrate', 'concept', 'An execution environment — language, database, spreadsheet, ontology, binary — into which the rulebook is mechanically projected. All substrates are peers (ax-002).', 'table:ExecutionSubstrates', 'execution substrate, target', NULL) ON CONFLICT (term_id) DO NOTHING;
+
+INSERT INTO glossary (term_id, term, category, definition, implemented_as, aliases, notes)
+VALUES ('glo-injector', 'Injector', 'tool', 'A per-substrate Python script that reads the rulebook JSON and emits the substrate artifact. Must contain ZERO domain words to remain domain-agnostic.', 'column:ExecutionSubstrates.InjectorScript', 'inject-into-X, transpiler-injector', 'See SubstrateContractPhases.phase-inject.FailureMode.') ON CONFLICT (term_id) DO NOTHING;
+
+INSERT INTO glossary (term_id, term, category, definition, implemented_as, aliases, notes)
+VALUES ('glo-take-test', 'take-test', 'tool', 'A per-substrate script that runs blank-test.json through the substrate''s generated functions and emits test-answers.json.', 'column:ExecutionSubstrates.TestScript', 'test runner, conformance runner', NULL) ON CONFLICT (term_id) DO NOTHING;
+
+INSERT INTO glossary (term_id, term, category, definition, implemented_as, aliases, notes)
+VALUES ('glo-test-orchestrator', 'Test Orchestrator', 'tool', 'The orchestration-level script that loads answer-key.json, collects each substrate''s test-answers.json, compares them, and emits the grade report.', 'file:orchestration/test-orchestrator.py', 'grader', NULL) ON CONFLICT (term_id) DO NOTHING;
+
+INSERT INTO glossary (term_id, term, category, definition, implemented_as, aliases, notes)
+VALUES ('glo-ssotme-proxy', 'ssotme-proxy', 'tool', 'Local HTTP server on :4242 that exposes each injector as a transpiler route. The effortless CLI POSTs to these routes during a build.', 'table:SsotmeProxy', 'proxy, transpiler proxy', NULL) ON CONFLICT (term_id) DO NOTHING;
+
+INSERT INTO glossary (term_id, term, category, definition, implemented_as, aliases, notes)
+VALUES ('glo-effortless-cli', 'effortless CLI', 'tool', 'Command-line front end (`effortless build`, `-init`, `-install`) that drives the build pipeline. Also known as ssotme/aicapture/aic.', 'table:Dependencies (effortless row)', 'ssotme, aicapture, aic, the CLI', NULL) ON CONFLICT (term_id) DO NOTHING;
+
+INSERT INTO glossary (term_id, term, category, definition, implemented_as, aliases, notes)
+VALUES ('glo-effortless-json', 'effortless.json', 'artifact', 'Per-project configuration file naming the rulebook input and the list of project transpilers (with their proxy URLs).', 'table:BuildPipeline; table:ProjectConfiguration', NULL, NULL) ON CONFLICT (term_id) DO NOTHING;
+
+INSERT INTO glossary (term_id, term, category, definition, implemented_as, aliases, notes)
+VALUES ('glo-airtable-to-rulebook', 'airtable-to-rulebook', 'tool', 'Transpiler that pulls Airtable schema and data INTO the rulebook JSON. An input spoke. Disabled by default; explicit consent required.', 'row:RulebookSourceSpokes (Airtable kind)', NULL, 'See CLAUDE.md — Airtable pull is disabled by default.') ON CONFLICT (term_id) DO NOTHING;
+
+INSERT INTO glossary (term_id, term, category, definition, implemented_as, aliases, notes)
+VALUES ('glo-rulebook-to-postgres', 'rulebook-to-postgres', 'tool', 'Licensed Effortless transpiler that generates DDL, stored functions, and views from the rulebook. Reference-quality substrate output.', 'row:ExecutionSubstrates.substrate-004', NULL, NULL) ON CONFLICT (term_id) DO NOTHING;
+
+INSERT INTO glossary (term_id, term, category, definition, implemented_as, aliases, notes)
+VALUES ('glo-rulebook-to-airtable', 'rulebook-to-airtable', 'tool', 'Reverse-sync transpiler that pushes rulebook changes BACK to Airtable. An output spoke (Airtable becomes a downstream view).', 'row:ExecutionSubstrates (when registered as output spoke)', 'airtable reverse-sync', NULL) ON CONFLICT (term_id) DO NOTHING;
+
+INSERT INTO glossary (term_id, term, category, definition, implemented_as, aliases, notes)
+VALUES ('glo-hub', 'Hub', 'concept', 'The rulebook JSON acting as the SSoT center; all inputs (Airtable, LLM edits, admin portal saves) write INTO it and all outputs (substrates) read FROM it.', 'axiom:ax-004', 'rulebook-as-hub, hub-and-spoke', NULL) ON CONFLICT (term_id) DO NOTHING;
+
+INSERT INTO glossary (term_id, term, category, definition, implemented_as, aliases, notes)
+VALUES ('glo-spoke', 'Spoke', 'concept', 'Any peer system connected to the hub — either an input spoke writing into the rulebook, or an output spoke (substrate) reading from it.', 'table:RulebookSourceSpokes (input); table:ExecutionSubstrates (output)', NULL, NULL) ON CONFLICT (term_id) DO NOTHING;
+
+INSERT INTO glossary (term_id, term, category, definition, implemented_as, aliases, notes)
+VALUES ('glo-input-spoke', 'Input Spoke', 'concept', 'A peer that writes into the rulebook JSON: admin portal save, Airtable pull, LLM-direct edit, hand-edit.', 'table:RulebookSourceSpokes', NULL, NULL) ON CONFLICT (term_id) DO NOTHING;
+
+INSERT INTO glossary (term_id, term, category, definition, implemented_as, aliases, notes)
+VALUES ('glo-output-spoke', 'Output Spoke', 'concept', 'A substrate that reads from the rulebook JSON to produce a derived artifact. Plural; the rulebook drives N output spokes per project.', 'table:ExecutionSubstrates', NULL, NULL) ON CONFLICT (term_id) DO NOTHING;
+
+INSERT INTO glossary (term_id, term, category, definition, implemented_as, aliases, notes)
+VALUES ('glo-ssot', 'SSoT', 'concept', 'Single Source of Truth. The rulebook JSON is the durable SSoT; every other artifact is mechanically rederivable.', 'axiom:ax-001; axiom:ax-004', 'single source of truth, source of truth', NULL) ON CONFLICT (term_id) DO NOTHING;
+
+INSERT INTO glossary (term_id, term, category, definition, implemented_as, aliases, notes)
+VALUES ('glo-inject', 'Inject', 'phase', 'Phase 1 of the substrate contract: read the rulebook and emit a runnable substrate artifact (SDK / schema / workbook).', 'row:SubstrateContractPhases.phase-inject', NULL, NULL) ON CONFLICT (term_id) DO NOTHING;
+
+INSERT INTO glossary (term_id, term, category, definition, implemented_as, aliases, notes)
+VALUES ('glo-execute', 'Execute', 'phase', 'Phase 2 of the substrate contract: run blank-test.json through the substrate''s generated functions and emit test-answers.json.', 'row:SubstrateContractPhases.phase-execute', NULL, NULL) ON CONFLICT (term_id) DO NOTHING;
+
+INSERT INTO glossary (term_id, term, category, definition, implemented_as, aliases, notes)
+VALUES ('glo-grade', 'Grade', 'phase', 'Phase 3 of the substrate contract: compare every substrate''s test-answers.json against the canonical answer-key.json, field by field.', 'row:SubstrateContractPhases.phase-grade', NULL, NULL) ON CONFLICT (term_id) DO NOTHING;
+
+INSERT INTO glossary (term_id, term, category, definition, implemented_as, aliases, notes)
+VALUES ('glo-blank-test', 'blank-test.json', 'artifact', 'The exam: rows with raw fields populated and all computed fields nulled. Every substrate in a run receives the same blank-test.', 'row:EvaluationArtifacts.artifact-blank-test', NULL, NULL) ON CONFLICT (term_id) DO NOTHING;
+
+INSERT INTO glossary (term_id, term, category, definition, implemented_as, aliases, notes)
+VALUES ('glo-test-answers', 'test-answers.json', 'artifact', 'A substrate''s exam answers — blank-test with that substrate''s computed values filled in.', 'row:EvaluationArtifacts.artifact-test-answers', NULL, NULL) ON CONFLICT (term_id) DO NOTHING;
+
+INSERT INTO glossary (term_id, term, category, definition, implemented_as, aliases, notes)
+VALUES ('glo-answer-key', 'answer-key.json', 'artifact', 'The canonical expected values, derived directly from rulebook seed data — never from a substrate. The oracle for grading.', 'row:EvaluationArtifacts.artifact-answer-key', NULL, 'If answer-key comes from a substrate, that''s a privileged-substrate bug (ax-002).') ON CONFLICT (term_id) DO NOTHING;
+
+INSERT INTO glossary (term_id, term, category, definition, implemented_as, aliases, notes)
+VALUES ('glo-test-results', 'test-results', 'artifact', 'Field-level diff report (Markdown) comparing each substrate''s test-answers.json to answer-key.json.', 'row:EvaluationArtifacts.artifact-test-results', 'conformance report, grade report', NULL) ON CONFLICT (term_id) DO NOTHING;
+
+INSERT INTO glossary (term_id, term, category, definition, implemented_as, aliases, notes)
+VALUES ('glo-conformance', 'Conformance', 'concept', 'The property that all substrates compute IDENTICAL field-level values from the same rulebook + blank-test. Measured per-run.', 'table:TestingFramework', 'conformance testing', NULL) ON CONFLICT (term_id) DO NOTHING;
+
+INSERT INTO glossary (term_id, term, category, definition, implemented_as, aliases, notes)
+VALUES ('glo-domain-agnostic', 'Domain-agnostic', 'invariant', 'Property of orchestration code: contains ZERO words from any business domain (no ''customer'', ''workflow'', ''episode''). Translates generic rulebook structures only.', 'column:SubstrateContractPhases.DomainAgnostic; column:SubstrateContractPhases.WhyDomainAgnostic', NULL, 'Violation = domain leak.') ON CONFLICT (term_id) DO NOTHING;
+
+INSERT INTO glossary (term_id, term, category, definition, implemented_as, aliases, notes)
+VALUES ('glo-fuzzy-grader', 'Fuzzy Grader', 'tool', 'LLM-based grader for the English substrate — the only non-deterministic substrate. Uses one of the FuzzyGradingProviders.', 'table:FuzzyGradingProviders; file:orchestration/llm-fuzzy-grader.py', 'llm-fuzzy-grader', NULL) ON CONFLICT (term_id) DO NOTHING;
+
+INSERT INTO glossary (term_id, term, category, definition, implemented_as, aliases, notes)
+VALUES ('glo-formula-dialect', 'Formula Dialect', 'concept', 'The flavor of formula language a rulebook declares (Excel, Airtable, …). Substrates honor the declaration; substrate-specific extensions are an error.', 'table:FormulaDialects', NULL, NULL) ON CONFLICT (term_id) DO NOTHING;
+
+INSERT INTO glossary (term_id, term, category, definition, implemented_as, aliases, notes)
+VALUES ('glo-field-type', 'Field Type', 'concept', 'The kind of field on a rulebook table: raw, calculated, lookup, aggregation, relationship.', 'table:FieldTypeTaxonomy', NULL, NULL) ON CONFLICT (term_id) DO NOTHING;
+
+INSERT INTO glossary (term_id, term, category, definition, implemented_as, aliases, notes)
+VALUES ('glo-raw-field', 'Raw Field', 'concept', 'A field whose value is stored, not computed. Populated by input spokes; carried through unchanged by every substrate.', 'value:FieldTypeTaxonomy (type=raw)', NULL, NULL) ON CONFLICT (term_id) DO NOTHING;
+
+INSERT INTO glossary (term_id, term, category, definition, implemented_as, aliases, notes)
+VALUES ('glo-calculated-field', 'Calculated Field', 'concept', 'A field whose value is computed from a formula over other fields in the same row. Filled in by each substrate''s generated Calc*() function.', 'value:FieldTypeTaxonomy (type=calculated)', NULL, NULL) ON CONFLICT (term_id) DO NOTHING;
+
+INSERT INTO glossary (term_id, term, category, definition, implemented_as, aliases, notes)
+VALUES ('glo-lookup-field', 'Lookup Field', 'concept', 'A calculated field that resolves a value from a related row in another table.', 'value:FieldTypeTaxonomy (type=lookup)', NULL, NULL) ON CONFLICT (term_id) DO NOTHING;
+
+INSERT INTO glossary (term_id, term, category, definition, implemented_as, aliases, notes)
+VALUES ('glo-aggregation-field', 'Aggregation Field', 'concept', 'A calculated field that summarizes many related rows (SUM, COUNT, ARRAY).', 'value:FieldTypeTaxonomy (type=aggregation)', NULL, NULL) ON CONFLICT (term_id) DO NOTHING;
+
+INSERT INTO glossary (term_id, term, category, definition, implemented_as, aliases, notes)
+VALUES ('glo-admin-portal', 'Admin Portal', 'tool', 'Local web app on :7777 that edits the active project''s rulebook. Categorically NOT a domain — like Word vs. a .docx (see CLAUDE.md).', 'table:AdminPortalRuntime; table:AppScreens; table:AppNavigation', 'portal, admin tool', NULL) ON CONFLICT (term_id) DO NOTHING;
+
+INSERT INTO glossary (term_id, term, category, definition, implemented_as, aliases, notes)
+VALUES ('glo-ssotme-proxy-route', 'Proxy Route', 'concept', 'An HTTP route on ssotme-proxy (e.g. POST /rulebook-to-python) that invokes the matching injector with ERB_RULEBOOK_PATH and ERB_OUTPUT_DIR.', 'table:SsotmeProxy', NULL, NULL) ON CONFLICT (term_id) DO NOTHING;
+
+INSERT INTO glossary (term_id, term, category, definition, implemented_as, aliases, notes)
+VALUES ('glo-active-domain', 'Active Domain', 'concept', 'The currently-selected demo rulebook project. Recorded in orchestration/active-domain.txt; consulted by every orchestration script.', 'file:orchestration/active-domain.txt', 'active project, current rulebook', NULL) ON CONFLICT (term_id) DO NOTHING;
+
+INSERT INTO glossary (term_id, term, category, definition, implemented_as, aliases, notes)
+VALUES ('glo-write-through', 'Write-Through Invariant', 'invariant', 'Every admin-portal save writes to BOTH Postgres (live editor) AND the rulebook JSON (durable SSoT) in the same logical transaction.', 'row:CoreDataFlows.flow-004', NULL, NULL) ON CONFLICT (term_id) DO NOTHING;
+
+INSERT INTO glossary (term_id, term, category, definition, implemented_as, aliases, notes)
+VALUES ('glo-portal-cli-parity', 'Portal/CLI Parity', 'invariant', 'Admin portal and `./start.sh --cli` are peers over the same effortless.json pipeline. Anything one can do, the other can do; behavior cannot diverge.', 'value:_meta._PortalCliParity', NULL, NULL) ON CONFLICT (term_id) DO NOTHING;
+
+INSERT INTO glossary (term_id, term, category, definition, implemented_as, aliases, notes)
+VALUES ('glo-app-user', 'AppUser', 'role', 'A user account for the admin portal, declared in the rulebook (not in a separate auth DB).', 'table:AppUsers', NULL, NULL) ON CONFLICT (term_id) DO NOTHING;
+
+INSERT INTO glossary (term_id, term, category, definition, implemented_as, aliases, notes)
+VALUES ('glo-user-role', 'User Role', 'role', 'An admin-portal access tier (Viewer, Developer, …). Each role is a PERSONA with a landing screen and a permission set.', 'table:UserRoles', NULL, NULL) ON CONFLICT (term_id) DO NOTHING;
+
+INSERT INTO glossary (term_id, term, category, definition, implemented_as, aliases, notes)
+VALUES ('glo-app-permission', 'AppPermission', 'concept', 'Declarative per-(role, route) allow/deny rule for the admin portal API surface.', 'table:AppPermissions', NULL, NULL) ON CONFLICT (term_id) DO NOTHING;
+
+INSERT INTO glossary (term_id, term, category, definition, implemented_as, aliases, notes)
+VALUES ('glo-app-navigation', 'AppNavigation', 'concept', 'Tree of navigation entries driving the admin portal sidebar.', 'table:AppNavigation', NULL, NULL) ON CONFLICT (term_id) DO NOTHING;
+
+INSERT INTO glossary (term_id, term, category, definition, implemented_as, aliases, notes)
+VALUES ('glo-app-screen', 'AppScreen', 'concept', 'A named screen in the admin portal, with declared entity reads/writes.', 'table:AppScreens', NULL, NULL) ON CONFLICT (term_id) DO NOTHING;
+
+INSERT INTO glossary (term_id, term, category, definition, implemented_as, aliases, notes)
+VALUES ('glo-app-api', 'AppAPI', 'concept', 'An HTTP route on the admin portal backend, governed by AppPermissions.', 'table:AppAPIs', NULL, NULL) ON CONFLICT (term_id) DO NOTHING;
+
+INSERT INTO glossary (term_id, term, category, definition, implemented_as, aliases, notes)
+VALUES ('glo-add-tool', 'Add Tool', 'concept', 'Catalog of transpilers the developer can install into the active project from the admin portal.', 'table:AddToolCatalog', NULL, NULL) ON CONFLICT (term_id) DO NOTHING;
+
+INSERT INTO glossary (term_id, term, category, definition, implemented_as, aliases, notes)
+VALUES ('glo-build-pipeline', 'Build Pipeline', 'concept', 'The effortless.json contract describing input rulebook + list of project transpilers, consumed by both the portal and the CLI.', 'table:BuildPipeline', NULL, NULL) ON CONFLICT (term_id) DO NOTHING;
+
+INSERT INTO glossary (term_id, term, category, definition, implemented_as, aliases, notes)
+VALUES ('glo-axiom', 'Axiom', 'concept', 'A positive-form invariant the project is built on; load-bearing — if dropped, the methodology no longer holds.', 'table:OntologyAxioms', NULL, NULL) ON CONFLICT (term_id) DO NOTHING;
+
+INSERT INTO glossary (term_id, term, category, definition, implemented_as, aliases, notes)
+VALUES ('glo-framing-invariant', 'Framing Invariant', 'concept', 'A wrong framing of the project that has been caught and is now blocked. Mistake-to-avoid catalog; the contrapositive of an axiom.', 'table:FramingInvariants', NULL, NULL) ON CONFLICT (term_id) DO NOTHING;
+
+INSERT INTO glossary (term_id, term, category, definition, implemented_as, aliases, notes)
+VALUES ('glo-privileged-substrate', 'Privileged Substrate', 'concept', 'An anti-pattern: treating one substrate (e.g. Airtable, Postgres) as the authoritative oracle rather than a peer. Forbidden by ax-002.', 'axiom:ax-002', NULL, NULL) ON CONFLICT (term_id) DO NOTHING;
+
+INSERT INTO glossary (term_id, term, category, definition, implemented_as, aliases, notes)
+VALUES ('glo-canbeanswerkey', 'CanBeAnswerKey', 'concept', 'Property of a substrate: whether its output is structurally complete enough to serve as the oracle in a conformance run. NOT a trust ranking.', 'column:ExecutionSubstrates.CanBeAnswerKey', NULL, NULL) ON CONFLICT (term_id) DO NOTHING;
+
+INSERT INTO glossary (term_id, term, category, definition, implemented_as, aliases, notes)
+VALUES ('glo-maturity', 'Maturity', 'dimension', 'Per-substrate implementation completeness: prototype | demonstrating | reference-quality. Independent of TranspilerSource.', 'column:ExecutionSubstrates.Maturity', NULL, NULL) ON CONFLICT (term_id) DO NOTHING;
+
+INSERT INTO glossary (term_id, term, category, definition, implemented_as, aliases, notes)
+VALUES ('glo-expressive-completeness', 'Expressive Completeness', 'dimension', 'Which formula classes a substrate can faithfully evaluate: full | partial-aggregation | partial-formula | shape-only.', 'column:ExecutionSubstrates.ExpressiveCompleteness; row:SubstrateTradeoffDimensions.dim-expressive-completeness', NULL, NULL) ON CONFLICT (term_id) DO NOTHING;
+
+INSERT INTO glossary (term_id, term, category, definition, implemented_as, aliases, notes)
+VALUES ('glo-transpiler-source', 'Transpiler Source', 'dimension', 'Provenance of a substrate''s generator: licensed-effortless-tool | local-injector | external. WHO built it, not how trustworthy it is.', 'column:ExecutionSubstrates.TranspilerSource; row:SubstrateTradeoffDimensions.dim-provenance', NULL, 'See FramingInvariants.framing-003.') ON CONFLICT (term_id) DO NOTHING;
+
+INSERT INTO glossary (term_id, term, category, definition, implemented_as, aliases, notes)
+VALUES ('glo-determinism', 'Determinism', 'dimension', 'Reproducibility class of a substrate: deterministic | stochastic | externally-influenced.', 'column:ExecutionSubstrates.Determinism', NULL, NULL) ON CONFLICT (term_id) DO NOTHING;
+
+INSERT INTO glossary (term_id, term, category, definition, implemented_as, aliases, notes)
+VALUES ('glo-runtime-kind', 'Runtime Kind', 'dimension', 'What kind of artifact a substrate produces / runs as: database | spreadsheet | binary | text-emit | graph | docs.', 'column:ExecutionSubstrates.RuntimeKind', NULL, NULL) ON CONFLICT (term_id) DO NOTHING;
+
+INSERT INTO glossary (term_id, term, category, definition, implemented_as, aliases, notes)
+VALUES ('glo-rulebook-domain', 'Rulebook Domain', 'concept', 'One demo ontology under rulebook-examples/. Domains form a tree via ParentDomainId.', 'table:RulebookDomains', 'domain, demo', NULL) ON CONFLICT (term_id) DO NOTHING;
+
+INSERT INTO glossary (term_id, term, category, definition, implemented_as, aliases, notes)
+VALUES ('glo-parent-domain', 'Parent Domain', 'concept', 'The simpler rulebook a more-elaborate one was derived from. Forms the progression tree of demos.', 'column:RulebookDomains.ParentDomainId', NULL, NULL) ON CONFLICT (term_id) DO NOTHING;
+
+INSERT INTO glossary (term_id, term, category, definition, implemented_as, aliases, notes)
+VALUES ('glo-rulebook-flavor', 'Rulebook Flavor', 'concept', 'Classification of a demo rulebook (business, philosophical, self-referential, etc.) so the UI can group related demos.', 'table:RulebookFlavors', NULL, NULL) ON CONFLICT (term_id) DO NOTHING;
+
+INSERT INTO glossary (term_id, term, category, definition, implemented_as, aliases, notes)
+VALUES ('glo-demo-narrative', 'Demo Narrative', 'concept', 'A scripted sequence of demo steps illustrating substrate behavior under rulebook change. Two styles: commit-sequence (legacy) and cross-rulebook (current).', 'table:DemoNarratives', NULL, NULL) ON CONFLICT (term_id) DO NOTHING;
+
+INSERT INTO glossary (term_id, term, category, definition, implemented_as, aliases, notes)
+VALUES ('glo-tradeoff', 'Substrate Tradeoff', 'concept', 'A per-(substrate × dimension) Pro/Con/Note record. The matrix is complete: every substrate is rated on every dimension.', 'table:SubstrateTradeoffs', NULL, NULL) ON CONFLICT (term_id) DO NOTHING;
+
+INSERT INTO glossary (term_id, term, category, definition, implemented_as, aliases, notes)
+VALUES ('glo-tradeoff-dimension', 'Tradeoff Dimension', 'dimension', 'One axis of comparison applied to every substrate (speed, accuracy, debuggability, …).', 'table:SubstrateTradeoffDimensions', NULL, NULL) ON CONFLICT (term_id) DO NOTHING;
+
+INSERT INTO glossary (term_id, term, category, definition, implemented_as, aliases, notes)
+VALUES ('glo-evaluation-step', 'Evaluation Step', 'phase', 'A substep within a SubstrateContractPhase (e.g. load rulebook, walk entities, compile formulas).', 'table:EvaluationSteps', NULL, NULL) ON CONFLICT (term_id) DO NOTHING;
+
+INSERT INTO glossary (term_id, term, category, definition, implemented_as, aliases, notes)
+VALUES ('glo-evaluation-artifact', 'Evaluation Artifact', 'artifact', 'A file flowing between phases of the contract (rulebook, blank-test, test-answers, answer-key, test-results, substrate artifact).', 'table:EvaluationArtifacts', NULL, NULL) ON CONFLICT (term_id) DO NOTHING;
+
+INSERT INTO glossary (term_id, term, category, definition, implemented_as, aliases, notes)
+VALUES ('glo-click-target', 'Click Target', 'concept', 'A canonical clickable affordance in the portal — every interactive element MUST resolve to a row here.', 'table:ClickTargets', NULL, NULL) ON CONFLICT (term_id) DO NOTHING;
+
+INSERT INTO glossary (term_id, term, category, definition, implemented_as, aliases, notes)
+VALUES ('glo-role-screen-hint', 'Role-Screen Hint', 'concept', 'Per-(role, screen) UX override on top of the base AppScreens definition.', 'table:RoleScreenHints', NULL, NULL) ON CONFLICT (term_id) DO NOTHING;
+
+INSERT INTO glossary (term_id, term, category, definition, implemented_as, aliases, notes)
+VALUES ('glo-cmcc', 'CMCC', 'concept', 'Conjecture: a sufficiently expressive rulebook can be projected into ANY substrate while preserving identical observable behavior. The conjecture ERB tests.', 'value:_meta._CMCC_Summary', NULL, NULL) ON CONFLICT (term_id) DO NOTHING;
+
+INSERT INTO glossary (term_id, term, category, definition, implemented_as, aliases, notes)
+VALUES ('glo-orchestration-dir', 'orchestration/', 'location', 'Folder holding the build/test runners that drive every demo: orchestrate.sh, shared.py, formula_parser.py, test-orchestrator.py, generate-report.py, active-domain.txt.', 'file:orchestration/', NULL, NULL) ON CONFLICT (term_id) DO NOTHING;
+
+INSERT INTO glossary (term_id, term, category, definition, implemented_as, aliases, notes)
+VALUES ('glo-execution-substrates-dir', 'execution-substrates/', 'location', 'Folder containing each local substrate''s injector + take-test scripts.', 'file:execution-substrates/', NULL, NULL) ON CONFLICT (term_id) DO NOTHING;
+
+INSERT INTO glossary (term_id, term, category, definition, implemented_as, aliases, notes)
+VALUES ('glo-licensed-effortless-tools-dir', 'licensed-effortless-tools/', 'location', 'Folder where the licensed Effortless transpilers (Postgres, Excel, Entity Framework) land their outputs.', 'file:licensed-effortless-tools/', NULL, NULL) ON CONFLICT (term_id) DO NOTHING;
+
+INSERT INTO glossary (term_id, term, category, definition, implemented_as, aliases, notes)
+VALUES ('glo-rulebook-examples-dir', 'rulebook-examples/', 'location', 'Folder containing N independent demo Effortless projects, each its own rulebook + effortless.json + outputs.', 'file:rulebook-examples/', NULL, NULL) ON CONFLICT (term_id) DO NOTHING;
+
+INSERT INTO glossary (term_id, term, category, definition, implemented_as, aliases, notes)
+VALUES ('glo-effortless-platform-dir', 'effortless-platform/', 'location', 'Folder containing the platform itself as an Effortless project — the orchestration tool ''eating its own dog food''.', 'file:effortless-platform/', NULL, NULL) ON CONFLICT (term_id) DO NOTHING;
+
+INSERT INTO glossary (term_id, term, category, definition, implemented_as, aliases, notes)
+VALUES ('glo-no-fallback-rule', 'No Fallback Rule', 'invariant', 'Repo-wide policy: if a file is missing, fail loudly with the exact expected path. No silent path-guessing, no try/except that swallows missing files. Defaults derived deterministically from the SSoT are not fallbacks.', 'file:CLAUDE.md (NEVER ADD FALLBACKS section)', NULL, NULL) ON CONFLICT (term_id) DO NOTHING;
+
+INSERT INTO glossary (term_id, term, category, definition, implemented_as, aliases, notes)
+VALUES ('glo-rulebook-promotion', 'Rulebook Promotion', 'concept', 'The architectural decision to promote effortless-rulebook.json from disposable IR to durable hub/SSoT, demoting Airtable from authority to peer input spoke. Largely complete.', 'axiom:ax-004; file:LEGACY_PLANs/RULEBOOK_PROMOTION_PLAN.md', NULL, NULL) ON CONFLICT (term_id) DO NOTHING;
+
+-- ----------------------------------------------------------------------------
+-- RulebookTags: Tag catalog for RulebookFlavors. Each tag has a color and emoji so it renders as a visible chip in the portal. Tags are flexible attributes — a flavor can have many tags. Browse/filter the flavors grid by any combination of tags.
+-- ----------------------------------------------------------------------------
+INSERT INTO rulebook_tags (tag_id, label, category, color, emoji, description)
+VALUES ('tag-airtable-first', 'Airtable First', 'source', '#18BFFF', '🌐', 'Airtable is the SSoT; effortless build pulls from Airtable and overwrites the local JSON.') ON CONFLICT (tag_id) DO NOTHING;
+
+INSERT INTO rulebook_tags (tag_id, label, category, color, emoji, description)
+VALUES ('tag-rulebook-first', 'Rulebook First', 'source', '#F82B60', '📋', 'Local JSON is the SSoT; Airtable pull is disabled. Edit the JSON directly.') ON CONFLICT (tag_id) DO NOTHING;
+
+INSERT INTO rulebook_tags (tag_id, label, category, color, emoji, description)
+VALUES ('tag-postgres', 'Postgres', 'substrate', '#336791', '🐘', 'Has a rulebooktopostgres transpiler; effortless build generates and optionally runs SQL.') ON CONFLICT (tag_id) DO NOTHING;
+
+INSERT INTO rulebook_tags (tag_id, label, category, color, emoji, description)
+VALUES ('tag-excel', 'Excel / XLSX', 'substrate', '#217346', '📊', 'Has a rulebooktoxlsx transpiler; effortless build generates an Excel workbook.') ON CONFLICT (tag_id) DO NOTHING;
+
+INSERT INTO rulebook_tags (tag_id, label, category, color, emoji, description)
+VALUES ('tag-react', 'React', 'substrate', '#61DAFB', '⚛️', 'Has a rulebook-to-react transpiler; generates a full backend/derived-sdk tree.') ON CONFLICT (tag_id) DO NOTHING;
+
+INSERT INTO rulebook_tags (tag_id, label, category, color, emoji, description)
+VALUES ('tag-python', 'Python', 'substrate', '#3776AB', '🐍', 'Has a rulebook-to-python transpiler.') ON CONFLICT (tag_id) DO NOTHING;
+
+INSERT INTO rulebook_tags (tag_id, label, category, color, emoji, description)
+VALUES ('tag-tutorial', 'Tutorial', 'purpose', '#FCB900', '📚', 'Designed as a step-by-step learning resource; part of the tutorial ladder.') ON CONFLICT (tag_id) DO NOTHING;
+
+INSERT INTO rulebook_tags (tag_id, label, category, color, emoji, description)
+VALUES ('tag-demo', 'Demo', 'purpose', '#FF6900', '🎬', 'Illustrates a specific business domain; intended to demonstrate ERB capability.') ON CONFLICT (tag_id) DO NOTHING;
+
+INSERT INTO rulebook_tags (tag_id, label, category, color, emoji, description)
+VALUES ('tag-meta', 'Meta', 'purpose', '#9B51E0', '🔮', 'Describes the ERB tooling or methodology itself (rulebook about ruleBooks).') ON CONFLICT (tag_id) DO NOTHING;
+
+INSERT INTO rulebook_tags (tag_id, label, category, color, emoji, description)
+VALUES ('tag-comparison', 'Comparison', 'purpose', '#EB144C', '⚖️', 'Exists to contrast ERB with an alternative approach (e.g. naked-Claude).') ON CONFLICT (tag_id) DO NOTHING;
+
+INSERT INTO rulebook_tags (tag_id, label, category, color, emoji, description)
+VALUES ('tag-minimal', 'Minimal', 'complexity', '#ABB8C3', '🔹', 'Fewest possible entities — good as a smoke test or Hello World.') ON CONFLICT (tag_id) DO NOTHING;
+
+INSERT INTO rulebook_tags (tag_id, label, category, color, emoji, description)
+VALUES ('tag-basic', 'Basic', 'complexity', '#7BDCB5', '🔸', 'A handful of related entities; demonstrates relationships and simple lookups.') ON CONFLICT (tag_id) DO NOTHING;
+
+INSERT INTO rulebook_tags (tag_id, label, category, color, emoji, description)
+VALUES ('tag-advanced', 'Advanced', 'complexity', '#FF6900', '🔶', 'Many entities, deep aggregations, or complex formula logic.') ON CONFLICT (tag_id) DO NOTHING;
+
+INSERT INTO rulebook_tags (tag_id, label, category, color, emoji, description)
+VALUES ('tag-has-app', 'Has App', 'feature', '#00D084', '🖥️', 'Comes with a web application (server + frontend) in addition to the rulebook.') ON CONFLICT (tag_id) DO NOTHING;
+
+INSERT INTO rulebook_tags (tag_id, label, category, color, emoji, description)
+VALUES ('tag-has-walkthrough', 'Has Walkthrough', 'feature', '#0693E3', '🗺️', 'Includes a step-by-step narrative walkthrough document.') ON CONFLICT (tag_id) DO NOTHING;
+
+INSERT INTO rulebook_tags (tag_id, label, category, color, emoji, description)
+VALUES ('tag-naked-claude', 'Naked Claude', 'feature', '#CF2E2E', '🤖', 'Part of the naked-Claude vs ERB comparison series.') ON CONFLICT (tag_id) DO NOTHING;
+
+INSERT INTO rulebook_tags (tag_id, label, category, color, emoji, description)
+VALUES ('tag-graph-ontology', 'Graph / Ontology', 'flavor', '#8ED1FC', '🕸️', 'Explores graph structure, ontological classification, or philosophical categorisation.') ON CONFLICT (tag_id) DO NOTHING;
+
+INSERT INTO rulebook_tags (tag_id, label, category, color, emoji, description)
+VALUES ('tag-rag', 'RAG / AI', 'flavor', '#F78DA7', '🧠', 'Involves retrieval-augmented generation or AI-adjacent workflows.') ON CONFLICT (tag_id) DO NOTHING;
+
+-- ----------------------------------------------------------------------------
+-- FlavorTags: Junction table linking RulebookFlavors to RulebookTags (many-to-many via junction). A flavor can have any number of tags; a tag can apply to any number of flavors. The portal renders each flavor's tags as colored chip rows in the grid and uses them to drive the filter panel.
+-- ----------------------------------------------------------------------------
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-001', 'flav-001', 'tag-rulebook-first') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-002', 'flav-001', 'tag-postgres') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-003', 'flav-001', 'tag-excel') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-004', 'flav-001', 'tag-demo') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-005', 'flav-001', 'tag-basic') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-006', 'flav-002', 'tag-rulebook-first') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-007', 'flav-002', 'tag-postgres') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-008', 'flav-002', 'tag-excel') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-009', 'flav-002', 'tag-tutorial') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-010', 'flav-002', 'tag-minimal') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-011', 'flav-003', 'tag-rulebook-first') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-012', 'flav-003', 'tag-postgres') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-013', 'flav-003', 'tag-excel') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-014', 'flav-003', 'tag-tutorial') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-015', 'flav-003', 'tag-minimal') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-016', 'flav-004', 'tag-rulebook-first') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-017', 'flav-004', 'tag-postgres') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-018', 'flav-004', 'tag-meta') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-019', 'flav-004', 'tag-advanced') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-020', 'flav-005', 'tag-rulebook-first') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-021', 'flav-005', 'tag-postgres') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-022', 'flav-005', 'tag-meta') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-023', 'flav-005', 'tag-graph-ontology') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-024', 'flav-005', 'tag-advanced') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-025', 'flav-006', 'tag-rulebook-first') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-026', 'flav-006', 'tag-postgres') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-027', 'flav-006', 'tag-excel') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-028', 'flav-006', 'tag-demo') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-029', 'flav-006', 'tag-advanced') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-030', 'flav-007', 'tag-rulebook-first') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-031', 'flav-007', 'tag-postgres') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-032', 'flav-007', 'tag-excel') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-033', 'flav-007', 'tag-tutorial') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-034', 'flav-007', 'tag-basic') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-035', 'flav-008', 'tag-rulebook-first') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-036', 'flav-008', 'tag-postgres') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-037', 'flav-008', 'tag-excel') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-038', 'flav-008', 'tag-demo') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-039', 'flav-008', 'tag-advanced') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-040', 'flav-009', 'tag-rulebook-first') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-041', 'flav-009', 'tag-postgres') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-042', 'flav-009', 'tag-demo') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-043', 'flav-009', 'tag-basic') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-044', 'flav-009', 'tag-has-app') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-045', 'flav-010', 'tag-rulebook-first') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-046', 'flav-010', 'tag-postgres') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-047', 'flav-010', 'tag-demo') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-048', 'flav-010', 'tag-advanced') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-049', 'flav-010', 'tag-has-app') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-050', 'flav-011', 'tag-rulebook-first') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-051', 'flav-011', 'tag-postgres') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-052', 'flav-011', 'tag-react') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-053', 'flav-011', 'tag-demo') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-054', 'flav-011', 'tag-advanced') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-055', 'flav-011', 'tag-has-app') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-056', 'flav-012', 'tag-rulebook-first') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-057', 'flav-012', 'tag-postgres') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-058', 'flav-012', 'tag-react') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-059', 'flav-012', 'tag-demo') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-060', 'flav-012', 'tag-basic') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-061', 'flav-012', 'tag-has-app') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-062', 'flav-013', 'tag-rulebook-first') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-063', 'flav-013', 'tag-postgres') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-064', 'flav-013', 'tag-demo') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-065', 'flav-013', 'tag-minimal') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-066', 'flav-014', 'tag-rulebook-first') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-067', 'flav-014', 'tag-postgres') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-068', 'flav-014', 'tag-demo') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-069', 'flav-014', 'tag-basic') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-070', 'flav-015', 'tag-rulebook-first') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-071', 'flav-015', 'tag-postgres') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-072', 'flav-015', 'tag-demo') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-073', 'flav-015', 'tag-minimal') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-074', 'flav-015', 'tag-rag') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-075', 'flav-016', 'tag-rulebook-first') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-076', 'flav-016', 'tag-postgres') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-077', 'flav-016', 'tag-demo') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-078', 'flav-016', 'tag-advanced') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-079', 'flav-016', 'tag-rag') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-080', 'flav-017', 'tag-rulebook-first') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-081', 'flav-017', 'tag-postgres') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-082', 'flav-017', 'tag-demo') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-083', 'flav-017', 'tag-advanced') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-084', 'flav-017', 'tag-rag') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-085', 'flav-018', 'tag-rulebook-first') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-086', 'flav-018', 'tag-postgres') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-087', 'flav-018', 'tag-demo') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-088', 'flav-018', 'tag-minimal') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-089', 'flav-019', 'tag-rulebook-first') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-090', 'flav-019', 'tag-postgres') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-091', 'flav-019', 'tag-demo') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-092', 'flav-019', 'tag-basic') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-093', 'flav-019', 'tag-has-app') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-094', 'flav-020', 'tag-airtable-first') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-095', 'flav-020', 'tag-postgres') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-096', 'flav-020', 'tag-demo') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-097', 'flav-020', 'tag-minimal') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-098', 'flav-020', 'tag-naked-claude') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-099', 'flav-020', 'tag-comparison') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-100', 'flav-021', 'tag-airtable-first') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-101', 'flav-021', 'tag-postgres') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-102', 'flav-021', 'tag-demo') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-103', 'flav-021', 'tag-advanced') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-104', 'flav-021', 'tag-naked-claude') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-105', 'flav-021', 'tag-comparison') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-106', 'flav-022', 'tag-rulebook-first') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-107', 'flav-022', 'tag-postgres') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-108', 'flav-022', 'tag-demo') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-109', 'flav-022', 'tag-basic') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-110', 'flav-023', 'tag-rulebook-first') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-111', 'flav-023', 'tag-postgres') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-112', 'flav-023', 'tag-demo') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-113', 'flav-023', 'tag-minimal') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-114', 'flav-024', 'tag-airtable-first') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-115', 'flav-024', 'tag-postgres') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-116', 'flav-024', 'tag-tutorial') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-117', 'flav-024', 'tag-minimal') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-118', 'flav-024', 'tag-naked-claude') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-119', 'flav-024', 'tag-comparison') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-120', 'flav-025', 'tag-airtable-first') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-121', 'flav-025', 'tag-postgres') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-122', 'flav-025', 'tag-demo') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-123', 'flav-025', 'tag-advanced') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-124', 'flav-025', 'tag-naked-claude') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-125', 'flav-025', 'tag-comparison') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-126', 'flav-026', 'tag-rulebook-first') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-127', 'flav-026', 'tag-postgres') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-128', 'flav-026', 'tag-demo') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+INSERT INTO flavor_tags (flavor_tag_id, flavor, tag)
+VALUES ('ft-129', 'flav-026', 'tag-basic') ON CONFLICT (flavor_tag_id) DO NOTHING;
+
+-- ----------------------------------------------------------------------------
+-- ClaudeSkills: The catalog of Claude Code skills that make up the effortless-claude skill set. Each skill is a loadable instruction set that pre-teaches Claude everything it needs to work in an ERB project — naming conventions, pipeline mechanics, formula semantics, etc. Skills are the answer to the LLM learning-curve problem: instead of every user teaching Claude from scratch, the learning is encoded once and loaded on demand. LocalMirrorPath is a derived artifact: clone-skills.sh pulls a live copy of each skill from the source repo so the docs/skills/ mirror stays current.
+-- ----------------------------------------------------------------------------
+INSERT INTO claude_skills (skill_id, name, category, one_line_summary, audience, clone_url, highlight_in_readme)
+VALUES ('skill-002', 'effortless-airtable', 'data', 'Use when making schema or data changes via the Airtable API in an ERB project — adding fields, creating tables, modifying existing fields, or when you need to understand Airtable API limitations (e.', 'customer', 'https://raw.githubusercontent.com/effortlessapi/effortless-claude/main/skills/effortless-airtable/SKILL.md', FALSE) ON CONFLICT (skill_id) DO NOTHING;
+
+INSERT INTO claude_skills (skill_id, name, category, one_line_summary, audience, clone_url, highlight_in_readme)
+VALUES ('skill-003', 'effortless-airtable-omni', 'data', 'Use ONLY for Airtable schema changes that the API cannot handle — formula fields, lookup fields, rollup fields, and new table creation (which requires the Name formula).', 'customer', 'https://raw.githubusercontent.com/effortlessapi/effortless-claude/main/skills/effortless-airtable-omni/SKILL.md', FALSE) ON CONFLICT (skill_id) DO NOTHING;
+
+INSERT INTO claude_skills (skill_id, name, category, one_line_summary, audience, clone_url, highlight_in_readme)
+VALUES ('skill-004', 'effortless-bases', 'setup', 'Use when the user wants to spin up a Postgres base on bases.', 'customer', 'https://raw.githubusercontent.com/effortlessapi/effortless-claude/main/skills/effortless-bases/SKILL.md', FALSE) ON CONFLICT (skill_id) DO NOTHING;
+
+INSERT INTO claude_skills (skill_id, name, category, one_line_summary, audience, clone_url, highlight_in_readme)
+VALUES ('skill-005', 'effortless-bootstrap', 'setup', 'Use when the user wants to bootstrap a new effortless project from raw text, requirements, or a description of a platform.', 'customer', 'https://raw.githubusercontent.com/effortlessapi/effortless-claude/main/skills/effortless-bootstrap/SKILL.md', TRUE) ON CONFLICT (skill_id) DO NOTHING;
+
+INSERT INTO claude_skills (skill_id, name, category, one_line_summary, audience, clone_url, highlight_in_readme)
+VALUES ('skill-006', 'effortless-claude-updates', 'ecosystem', 'Use for anything about the effortless-claude **skill set** itself — both CHECKING for updates and APPLYING them.', 'customer', 'https://raw.githubusercontent.com/effortlessapi/effortless-claude/main/skills/effortless-claude-updates/SKILL.md', FALSE) ON CONFLICT (skill_id) DO NOTHING;
+
+INSERT INTO claude_skills (skill_id, name, category, one_line_summary, audience, clone_url, highlight_in_readme)
+VALUES ('skill-007', 'effortless-cli', 'tooling', 'Use for the `effortless` CLI — both **installing/updating the binary** AND **using its commands**.', 'customer', 'https://raw.githubusercontent.com/effortlessapi/effortless-claude/main/skills/effortless-cli/SKILL.md', FALSE) ON CONFLICT (skill_id) DO NOTHING;
+
+INSERT INTO claude_skills (skill_id, name, category, one_line_summary, audience, clone_url, highlight_in_readme)
+VALUES ('skill-008', 'effortless-cmcc', 'theory', 'Use whenever the user asks an evaluative or "why" question about effortless / ERB — including the friendly-but-exploratory framings, not just defensive ones.', 'customer', 'https://raw.githubusercontent.com/effortlessapi/effortless-claude/main/skills/effortless-cmcc/SKILL.md', TRUE) ON CONFLICT (skill_id) DO NOTHING;
+
+INSERT INTO claude_skills (skill_id, name, category, one_line_summary, audience, clone_url, highlight_in_readme)
+VALUES ('skill-009', 'effortless-conventions', 'modeling', 'Use when you need ERB naming conventions, DAG structure rules, PascalCase table names, primary key and foreign key patterns, the Name field requirement, or understanding why many-to-many relationships are not allowed.', 'customer', 'https://raw.githubusercontent.com/effortlessapi/effortless-claude/main/skills/effortless-conventions/SKILL.md', TRUE) ON CONFLICT (skill_id) DO NOTHING;
+
+INSERT INTO claude_skills (skill_id, name, category, one_line_summary, audience, clone_url, highlight_in_readme)
+VALUES ('skill-011', 'effortless-diagnostics', 'tooling', 'Use when diagnosing ERB project health — validating DAG integrity, checking for broken FK targets, finding JOIN anti-patterns in application code, migrating legacy code from base table reads to view reads, or running diagnostic queries.', 'customer', 'https://raw.githubusercontent.com/effortlessapi/effortless-claude/main/skills/effortless-diagnostics/SKILL.md', FALSE) ON CONFLICT (skill_id) DO NOTHING;
+
+INSERT INTO claude_skills (skill_id, name, category, one_line_summary, audience, clone_url, highlight_in_readme)
+VALUES ('skill-012', 'effortless-ecosystem', 'ecosystem', 'Use when the user asks what repos exist in the effortless / SSoTme ecosystem, where to find the source for a specific tool, "is there a repo for X", "what transpilers exist", "show me the open source projects", or any question about how the various GitHub repos fit together.', 'customer', 'https://raw.githubusercontent.com/effortlessapi/effortless-claude/main/skills/effortless-ecosystem/SKILL.md', FALSE) ON CONFLICT (skill_id) DO NOTHING;
+
+INSERT INTO claude_skills (skill_id, name, category, one_line_summary, audience, clone_url, highlight_in_readme)
+VALUES ('skill-013', 'effortless-excel-export', 'features', 'Use when adding Excel export to any Effortless project backed by a Postgres database.', 'customer', 'https://raw.githubusercontent.com/effortlessapi/effortless-claude/main/skills/effortless-excel-export/SKILL.md', FALSE) ON CONFLICT (skill_id) DO NOTHING;
+
+INSERT INTO claude_skills (skill_id, name, category, one_line_summary, audience, clone_url, highlight_in_readme)
+VALUES ('skill-014', 'effortless-init', 'setup', 'Use when initializing a new effortless project: "make this an effortless project", "init effortless", "init effortless project", "set up effortless here", "connect to Airtable", "hook up Airtable", or when an existing project is missing CLAUDE.', 'customer', 'https://raw.githubusercontent.com/effortlessapi/effortless-claude/main/skills/effortless-init/SKILL.md', FALSE) ON CONFLICT (skill_id) DO NOTHING;
+
+INSERT INTO claude_skills (skill_id, name, category, one_line_summary, audience, clone_url, highlight_in_readme)
+VALUES ('skill-015', 'effortless-leopold-loop', 'pipeline', 'Use whenever the user mentions the "Leopold loop", "the loop", "a turn of the loop", "do a turn", "rebuild the rulebook", "update the app to match the rules", or any reference to the iterative ERB development cycle.', 'customer', 'https://raw.githubusercontent.com/effortlessapi/effortless-claude/main/skills/effortless-leopold-loop/SKILL.md', TRUE) ON CONFLICT (skill_id) DO NOTHING;
+
+INSERT INTO claude_skills (skill_id, name, category, one_line_summary, audience, clone_url, highlight_in_readme)
+VALUES ('skill-016', 'effortless-magic-links', 'features', 'Use when the user wants to add passwordless email-code (magic-link) auth to any project backed by a Postgres database — not just bases.', 'general', 'https://raw.githubusercontent.com/effortlessapi/effortless-claude/main/skills/effortless-magic-links/SKILL.md', FALSE) ON CONFLICT (skill_id) DO NOTHING;
+
+INSERT INTO claude_skills (skill_id, name, category, one_line_summary, audience, clone_url, highlight_in_readme)
+VALUES ('skill-017', 'effortless-mcp', 'tooling', 'Use for the **Effortless MCP server** — the always-on Model Context Protocol endpoint that exposes the entire Effortless transpiler catalog (~54 tools) plus the effortless-claude skill set (resources) to any MCP-compatible agent (Claude Code, Cursor, Windsurf, ChatGPT, etc.', 'customer', 'https://raw.githubusercontent.com/effortlessapi/effortless-claude/main/skills/effortless-mcp/SKILL.md', FALSE) ON CONFLICT (skill_id) DO NOTHING;
+
+INSERT INTO claude_skills (skill_id, name, category, one_line_summary, audience, clone_url, highlight_in_readme)
+VALUES ('skill-018', 'effortless-orchestrator', 'pipeline', 'Top-level orchestrator for Effortless Rulebook (ERB) projects — Airtable-sourced schema-first business rules, `effortless.', 'customer', 'https://raw.githubusercontent.com/effortlessapi/effortless-claude/main/skills/effortless-orchestrator/SKILL.md', TRUE) ON CONFLICT (skill_id) DO NOTHING;
+
+INSERT INTO claude_skills (skill_id, name, category, one_line_summary, audience, clone_url, highlight_in_readme)
+VALUES ('skill-019', 'effortless-pipeline', 'pipeline', 'Use when working with the ERB build pipeline — effortless.', 'customer', 'https://raw.githubusercontent.com/effortlessapi/effortless-claude/main/skills/effortless-pipeline/SKILL.md', FALSE) ON CONFLICT (skill_id) DO NOTHING;
+
+INSERT INTO claude_skills (skill_id, name, category, one_line_summary, audience, clone_url, highlight_in_readme)
+VALUES ('skill-020', 'effortless-query', 'tooling', 'Use when querying an effortless-rulebook.', 'customer', 'https://raw.githubusercontent.com/effortlessapi/effortless-claude/main/skills/effortless-query/SKILL.md', FALSE) ON CONFLICT (skill_id) DO NOTHING;
+
+INSERT INTO claude_skills (skill_id, name, category, one_line_summary, audience, clone_url, highlight_in_readme)
+VALUES ('skill-021', 'effortless-rationale', 'theory', 'Use when explaining or defending the effortless / CMCC methodology to a skeptic — "why use this instead of just writing code", "isn''t this overkill", "convince me", "what''s wrong with ORM / microservices / hand-written SQL", "why Airtable", "isn''t this just MDE", "how is this different from low-code', 'customer', 'https://raw.githubusercontent.com/effortlessapi/effortless-claude/main/skills/effortless-rationale/SKILL.md', FALSE) ON CONFLICT (skill_id) DO NOTHING;
+
+INSERT INTO claude_skills (skill_id, name, category, one_line_summary, audience, clone_url, highlight_in_readme)
+VALUES ('skill-022', 'effortless-react-explainer-dag', 'features', 'Use when adding the React Explainer DAG to an Effortless project — a generated, embedded visualization of the rulebook''s calculated-field DAG that lets users click any cell/field and see exactly how it was derived (raw inputs → lookups → 1st/2nd/3rd-order calcs → aggregations).', 'customer', 'https://raw.githubusercontent.com/effortlessapi/effortless-claude/main/skills/effortless-react-explainer-dag/SKILL.md', TRUE) ON CONFLICT (skill_id) DO NOTHING;
+
+INSERT INTO claude_skills (skill_id, name, category, one_line_summary, audience, clone_url, highlight_in_readme)
+VALUES ('skill-023', 'effortless-rulebooks', 'modeling', 'Use when the user wants empirical proof that CMCC actually works — show me the receipts, does this run in code, ExplainDAG, witnessed inference graph, conformance testing, answer-key.', 'customer', 'https://raw.githubusercontent.com/effortlessapi/effortless-claude/main/skills/effortless-rulebooks/SKILL.md', TRUE) ON CONFLICT (skill_id) DO NOTHING;
+
+INSERT INTO claude_skills (skill_id, name, category, one_line_summary, audience, clone_url, highlight_in_readme)
+VALUES ('skill-024', 'effortless-schema', 'modeling', 'Use to understand the **structure** of effortless-rulebook.', 'customer', 'https://raw.githubusercontent.com/effortlessapi/effortless-claude/main/skills/effortless-schema/SKILL.md', FALSE) ON CONFLICT (skill_id) DO NOTHING;
+
+INSERT INTO claude_skills (skill_id, name, category, one_line_summary, audience, clone_url, highlight_in_readme)
+VALUES ('skill-025', 'effortless-setup-postgres', 'setup', 'Use when setting up an Effortless project with a postgres database from an existing Airtable base.', 'customer', 'https://raw.githubusercontent.com/effortlessapi/effortless-claude/main/skills/effortless-setup-postgres/SKILL.md', TRUE) ON CONFLICT (skill_id) DO NOTHING;
+
+INSERT INTO claude_skills (skill_id, name, category, one_line_summary, audience, clone_url, highlight_in_readme)
+VALUES ('skill-026', 'effortless-sql', 'data', 'Use when working with ERB-generated SQL — reading from vw_* views vs base tables, understanding generated files (00-05), using *b-customize-* files, SQL function patterns (calc_*, get_*), view structure, or ERBCustomizations table.', 'customer', 'https://raw.githubusercontent.com/effortlessapi/effortless-claude/main/skills/effortless-sql/SKILL.md', FALSE) ON CONFLICT (skill_id) DO NOTHING;
+
+INSERT INTO claude_skills (skill_id, name, category, one_line_summary, audience, clone_url, highlight_in_readme)
+VALUES ('skill-027', 'effortless-ssotme-protocol', 'pipeline', 'Use when writing or editing effortless.', 'customer', 'https://raw.githubusercontent.com/effortlessapi/effortless-claude/main/skills/effortless-ssotme-protocol/SKILL.md', FALSE) ON CONFLICT (skill_id) DO NOTHING;
+
+INSERT INTO claude_skills (skill_id, name, category, one_line_summary, audience, clone_url, highlight_in_readme)
+VALUES ('skill-028', 'effortless-workflow', 'pipeline', 'Use when making changes to an ERB project — modifying effortless-rulebook.', 'customer', 'https://raw.githubusercontent.com/effortlessapi/effortless-claude/main/skills/effortless-workflow/SKILL.md', TRUE) ON CONFLICT (skill_id) DO NOTHING;
 

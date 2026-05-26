@@ -1,7 +1,6 @@
 <!-- GENERATED FILE — DO NOT EDIT. -->
 <!-- Source: effortless-platform/effortless-rulebook/effortless-rulebook.json (table: `RulebookFlavors`) -->
 <!-- Regenerate with: cd effortless-platform && effortless build -->
-<!-- Generated: 2026-05-25T22:56:16Z -->
 
 # Rulebook Flavors
 
@@ -14,9 +13,9 @@ Classification of each demo rulebook under rulebook-examples/. Lets the UI group
 | customer-fullname | Customer FullName (tutorial) | tutorial-ladder | minimal | 1 | 2 | 0 | 0 | One entity, one calculated field (CONCAT(First, ' ', Last)). The 'absolute minimum' demo — proves the toolchain end-to-end with no relationships. | — |
 | effortless-rulesbooks | ERB self-describing rulebook | meta-rulebook | advanced | 9 | 0 | 0 | 0 | The rulebook that describes the ERB project itself (sibling of this platform rulebook). Demonstrates eating-the-dog-food — meta over business data. | — |
 | is-everything-a-language | Is Everything A Language? (semiotics) | graph-ontology | advanced | 3 | 8 | 0 | 0 | Heavy formulas evaluating linguistic / semiotic candidates. Shows that the substrate equality claim holds even for non-CRUD ontologies. | owl,python |
-| jessica-advanced | Jessica Talisman — Advanced (workflows) | computation-heavy | advanced | 9 | 8 | 1 | 2 | Workflow/approval ontology with intermediate computed fields. Demonstrates multi-step derivation across entities. | postgres |
+| jessica-advanced | Jessica Talisman — Advanced (workflows) | computation-heavy | advanced | 10 | 8 | 1 | 2 | Workflow/approval ontology with intermediate computed fields. Demonstrates multi-step derivation across entities. | postgres |
 | jessica-basic | Jessica Talisman — Basic (workflows) | tutorial-ladder | basic | 9 | 7 | 1 | 0 | Same workflow concepts as advanced but without cross-entity lookups — useful for stepping authors up the formula ladder. | — |
-| star-trek | Star Trek (series/seasons/episodes) | aggregation-heavy | advanced | 6 | 7 | 4 | 9 | Aggregations over nested relationships (avg rating per episode, per season, per series). The canonical aggregation demo. | postgres,xlsx |
+| star-trek | Star Trek (series/seasons/episodes) | aggregation-heavy | advanced | 10 | 9 | 5 | 12 | Aggregations over nested relationships (avg rating per episode, per season, per series). The canonical aggregation demo. | postgres,xlsx |
 | community-event-planner-demo | community-event-planner-demo | aggregation-heavy | basic | 6 | 19 | 4 | 9 | Auto-discovered demo. Replace this stub with a one-line description of what community-event-planner-demo is designed to teach. | — |
 | customer-crm-demo | customer-crm-demo | aggregation-heavy | advanced | 7 | 20 | 11 | 21 | Auto-discovered demo. Replace this stub with a one-line description of what customer-crm-demo is designed to teach. | — |
 | effortless-banking-demo | effortless-banking-demo | aggregation-heavy | advanced | 10 | 46 | 17 | 17 | Auto-discovered demo. Replace this stub with a one-line description of what effortless-banking-demo is designed to teach. | — |
@@ -29,5 +28,9 @@ Classification of each demo rulebook under rulebook-examples/. Lets the UI group
 | product-inventory-demo | product-inventory-demo | computation-heavy | minimal | 3 | 6 | 1 | 3 | Auto-discovered demo. Replace this stub with a one-line description of what product-inventory-demo is designed to teach. | — |
 | therapist-helper-portal | therapist-helper-portal | aggregation-heavy | basic | 5 | 12 | 11 | 10 | Auto-discovered demo. Replace this stub with a one-line description of what therapist-helper-portal is designed to teach. | — |
 | v2-nakedclaude-demo | v2-nakedclaude-demo | crud-template | minimal | 3 | 5 | 0 | 3 | Auto-discovered demo. Replace this stub with a one-line description of what v2-nakedclaude-demo is designed to teach. | — |
-| v3-nakedclaude-demo | v3-nakedclaude-demo | aggregation-heavy | advanced | 15 | 30 | 13 | 43 | Auto-discovered demo. Replace this stub with a one-line description of what v3-nakedclaude-demo is designed to teach. | — |
+| v3-nakedclaude-demo | v3-nakedclaude-demo | aggregation-heavy | advanced | 8 | 22 | 7 | 9 | Auto-discovered demo. Replace this stub with a one-line description of what v3-nakedclaude-demo is designed to teach. | — |
 | wedding-seating-optimizer | wedding-seating-optimizer | aggregation-heavy | basic | 4 | 16 | 9 | 7 | Auto-discovered demo. Replace this stub with a one-line description of what wedding-seating-optimizer is designed to teach. | — |
+| expense-approval-demo | expense-approval-demo | crud-template | minimal | 3 | 4 | 1 | 2 | Auto-discovered demo. Replace this stub with a one-line description of what expense-approval-demo is designed to teach. | — |
+| v1-nakedclaude-demo | v1-nakedclaude-demo | tutorial-ladder | minimal | 1 | 1 | 0 | 0 | Auto-discovered demo. Replace this stub with a one-line description of what v1-nakedclaude-demo is designed to teach. | — |
+| v4-nakedclaude-demo | v4-nakedclaude-demo | aggregation-heavy | advanced | 15 | 30 | 13 | 43 | Auto-discovered demo. Replace this stub with a one-line description of what v4-nakedclaude-demo is designed to teach. | — |
+| volunteer-shift-scheduler | volunteer-shift-scheduler | aggregation-heavy | basic | 4 | 6 | 6 | 4 | Auto-discovered demo. Replace this stub with a one-line description of what volunteer-shift-scheduler is designed to teach. | — |
