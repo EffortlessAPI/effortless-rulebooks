@@ -41,6 +41,11 @@ class LiteralInt(ExprNode):
 
 
 @dataclass
+class LiteralFloat(ExprNode):
+    value: float
+
+
+@dataclass
 class LiteralString(ExprNode):
     value: str
 
@@ -52,14 +57,15 @@ class FieldRef(ExprNode):
 
 @dataclass
 class BinaryOp(ExprNode):
-    op: str  # '=', '<>', '<', '<=', '>', '>='
+    # '=', '<>', '<', '<=', '>', '>=', '+', '-', '*', '/'
+    op: str
     left: ExprNode
     right: ExprNode
 
 
 @dataclass
 class UnaryOp(ExprNode):
-    op: str  # 'NOT'
+    op: str  # 'NOT' or '-'
     operand: ExprNode
 
 
@@ -93,6 +99,10 @@ class TokenType(Enum):
     LE = auto()
     GT = auto()
     GE = auto()
+    PLUS = auto()
+    MINUS = auto()
+    STAR = auto()
+    SLASH = auto()
     EOF = auto()
 
 
@@ -145,14 +155,19 @@ def tokenize(formula: str) -> List[Token]:
             i = j + 2
             continue
 
-        # Number
-        if c.isdigit() or (c == '-' and i + 1 < len(formula) and formula[i+1].isdigit()):
+        # Number (int or float). Unary minus is handled by the parser, so
+        # we never bake the sign into a NUMBER token.
+        if c.isdigit() or (c == '.' and i + 1 < len(formula) and formula[i+1].isdigit()):
             j = i
-            if c == '-':
-                j += 1
             while j < len(formula) and formula[j].isdigit():
                 j += 1
-            value = int(formula[i:j])
+            is_float = False
+            if j < len(formula) and formula[j] == '.':
+                is_float = True
+                j += 1
+                while j < len(formula) and formula[j].isdigit():
+                    j += 1
+            value = float(formula[i:j]) if is_float else int(formula[i:j])
             tokens.append(Token(TokenType.NUMBER, value, i))
             i = j
             continue
@@ -196,6 +211,22 @@ def tokenize(formula: str) -> List[Token]:
             continue
         if c == ',':
             tokens.append(Token(TokenType.COMMA, ',', i))
+            i += 1
+            continue
+        if c == '+':
+            tokens.append(Token(TokenType.PLUS, '+', i))
+            i += 1
+            continue
+        if c == '-':
+            tokens.append(Token(TokenType.MINUS, '-', i))
+            i += 1
+            continue
+        if c == '*':
+            tokens.append(Token(TokenType.STAR, '*', i))
+            i += 1
+            continue
+        if c == '/':
+            tokens.append(Token(TokenType.SLASH, '/', i))
             i += 1
             continue
 
@@ -254,7 +285,7 @@ class Parser:
         return Concat(parts=parts)
 
     def parse_comparison(self) -> ExprNode:
-        left = self.parse_primary()
+        left = self.parse_addition()
         op_map = {
             TokenType.EQUALS: '=',
             TokenType.NOT_EQUALS: '<>',
@@ -266,9 +297,37 @@ class Parser:
         if self.current().type in op_map:
             op = op_map[self.current().type]
             self.consume()
-            right = self.parse_primary()
+            right = self.parse_addition()
             return BinaryOp(op=op, left=left, right=right)
         return left
+
+    def parse_addition(self) -> ExprNode:
+        left = self.parse_multiplication()
+        while self.current().type in (TokenType.PLUS, TokenType.MINUS):
+            op = '+' if self.current().type == TokenType.PLUS else '-'
+            self.consume()
+            right = self.parse_multiplication()
+            left = BinaryOp(op=op, left=left, right=right)
+        return left
+
+    def parse_multiplication(self) -> ExprNode:
+        left = self.parse_unary()
+        while self.current().type in (TokenType.STAR, TokenType.SLASH):
+            op = '*' if self.current().type == TokenType.STAR else '/'
+            self.consume()
+            right = self.parse_unary()
+            left = BinaryOp(op=op, left=left, right=right)
+        return left
+
+    def parse_unary(self) -> ExprNode:
+        if self.current().type == TokenType.MINUS:
+            self.consume()
+            operand = self.parse_unary()
+            return UnaryOp(op='-', operand=operand)
+        if self.current().type == TokenType.PLUS:
+            self.consume()
+            return self.parse_unary()
+        return self.parse_primary()
 
     def parse_primary(self) -> ExprNode:
         tok = self.current()
@@ -279,6 +338,8 @@ class Parser:
 
         if tok.type == TokenType.NUMBER:
             self.consume()
+            if isinstance(tok.value, float):
+                return LiteralFloat(value=tok.value)
             return LiteralInt(value=tok.value)
 
         if tok.type == TokenType.FIELD_REF:
@@ -935,6 +996,9 @@ def _eval_expr(node: ExprNode, ctx: dict) -> any:
     if isinstance(node, LiteralInt):
         return node.value
 
+    if isinstance(node, LiteralFloat):
+        return node.value
+
     if isinstance(node, LiteralString):
         return node.value
 
@@ -949,6 +1013,11 @@ def _eval_expr(node: ExprNode, ctx: dict) -> any:
             if operand is None:
                 return True
             return not bool(operand)
+        if node.op == '-':
+            operand = _eval_expr(node.operand, ctx)
+            if operand is None:
+                return 0
+            return -operand
         raise ValueError(f"Unknown unary op: {node.op}")
 
     if isinstance(node, BinaryOp):
@@ -976,6 +1045,21 @@ def _eval_expr(node: ExprNode, ctx: dict) -> any:
             if left is None or right is None:
                 return False
             return left >= right
+        # Arithmetic — Excel treats None/blank as 0 in arithmetic context.
+        if node.op in ('+', '-', '*', '/'):
+            l = 0 if left is None else left
+            r = 0 if right is None else right
+            if node.op == '+':
+                return l + r
+            if node.op == '-':
+                return l - r
+            if node.op == '*':
+                return l * r
+            # '/' — return None on divide-by-zero rather than raising, to
+            # match Excel's #DIV/0! semantics (callers can treat as blank).
+            if r == 0:
+                return None
+            return l / r
         raise ValueError(f"Unknown binary op: {node.op}")
 
     if isinstance(node, FuncCall):
@@ -1157,6 +1241,64 @@ def _eval_func(node: FuncCall, ctx: dict) -> any:
     if name == 'BLANK':
         # BLANK() -> None (empty/null value)
         return None
+
+    if name == 'ISBLANK':
+        if len(args) != 1:
+            raise ValueError("ISBLANK requires 1 argument")
+        val = _eval_expr(args[0], ctx)
+        return val is None or val == ''
+
+    if name == 'NOW' or name == 'TODAY':
+        # Date/time anchored to a fixed point so answer-keys are reproducible.
+        # The orchestrator can override via FORMULA_NOW (ISO-8601). Any caller
+        # that needs realtime can pass FORMULA_NOW per-run.
+        import datetime, os
+        override = os.environ.get('FORMULA_NOW')
+        if override:
+            return datetime.datetime.fromisoformat(override)
+        return datetime.datetime.utcnow()
+
+    if name in ('DATETIME_DIFF', 'DATEDIFF'):
+        # DATETIME_DIFF(end, start, unit) → integer difference in unit
+        # Excel/Airtable convention: positive when end > start.
+        if len(args) < 2:
+            raise ValueError(f"{name} requires at least 2 arguments")
+        end = _eval_expr(args[0], ctx)
+        start = _eval_expr(args[1], ctx)
+        unit = (_eval_expr(args[2], ctx) if len(args) > 2 else 'day') or 'day'
+        unit = str(unit).lower().rstrip('s')
+        if end is None or start is None:
+            return None
+        import datetime
+        def _coerce(d):
+            if isinstance(d, (datetime.datetime, datetime.date)):
+                return d if isinstance(d, datetime.datetime) else datetime.datetime.combine(d, datetime.time())
+            if isinstance(d, str):
+                # Accept ISO date or datetime
+                try:
+                    return datetime.datetime.fromisoformat(d.replace('Z', '+00:00'))
+                except ValueError:
+                    return datetime.datetime.strptime(d, '%Y-%m-%d')
+            raise TypeError(f"{name}: cannot coerce {d!r} to datetime")
+        end_dt = _coerce(end)
+        start_dt = _coerce(start)
+        # Strip tzinfo to allow naive/aware mixing without raising.
+        if end_dt.tzinfo is not None:
+            end_dt = end_dt.replace(tzinfo=None)
+        if start_dt.tzinfo is not None:
+            start_dt = start_dt.replace(tzinfo=None)
+        delta = end_dt - start_dt
+        if unit == 'day':
+            return delta.days
+        if unit == 'hour':
+            return int(delta.total_seconds() // 3600)
+        if unit == 'minute':
+            return int(delta.total_seconds() // 60)
+        if unit == 'second':
+            return int(delta.total_seconds())
+        if unit == 'week':
+            return delta.days // 7
+        raise ValueError(f"{name}: unsupported unit {unit!r}")
 
     raise ValueError(f"Unknown function: {name}")
 
