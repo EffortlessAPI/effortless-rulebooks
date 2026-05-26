@@ -47,6 +47,14 @@
       "CommandLine": "-exec python3 ./platform-rulebook-to-docs.py",
       "IsDisabled": false,
       "Description": "Projects the platform rulebook into docs/derived/*.md (one file per platform table). Generated files carry DO-NOT-EDIT headers and are removed by effortless -clean."
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "clone-skills",
+      "RelativePath": "/docs/skills",
+      "CommandLine": "-exec ./clone-skills.sh",
+      "IsDisabled": false,
+      "Description": "Pulls a live copy of each skill listed in ClaudeSkills from the effortless-claude GitHub repo into docs/skills/<name>/SKILL.md. Output is derived — DO NOT EDIT by hand. Re-run to update."
     }
   ]
 }

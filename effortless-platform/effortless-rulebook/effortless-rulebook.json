@@ -754,6 +754,19 @@
         "ReadmeLength": null,
         "RelatedAxiomId": null,
         "Status": "partial"
+      },
+      {
+        "FeatureId": "feature-017",
+        "Name": "Skills as LLM force multiplier",
+        "ShortName": "Claude Skills",
+        "Tier": "headline",
+        "Priority": 95,
+        "OneLineSummary": "The rulebook gives the LLM something to operate on; the skills give it the instructions for how to operate — together they replace a learning curve that previously cost weeks.",
+        "ReadmeFilePath": "docs/features/README.claude-skills.md",
+        "ReadmeStubContent": "Before ERB, every developer had to teach their LLM the ERB conventions from scratch. Skills pre-encode that learning — naming rules, pipeline mechanics, formula semantics, the Leopold loop — so the LLM arrives already trained. The rulebook is the subject matter; the skills are the curriculum. Without the rulebook there is nothing for the skills to operate on. Without the skills the LLM has to rediscover the conventions by trial and error.",
+        "ReadmeLength": null,
+        "RelatedAxiomId": null,
+        "Status": "shipped"
       }
     ]
   },
@@ -2560,6 +2573,13 @@
         "type": "raw",
         "nullable": true,
         "Description": "What this node teaches the developer in the rulebook narrative"
+      },
+      {
+        "name": "NavArea",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Persona/area bucket: main (everyone), admin (CRUD ops), developer (build/test/tech), docs (educational/training). Drives sidebar section grouping and route prefix."
       }
     ],
     "data": [
@@ -2571,7 +2591,8 @@
         "ScreenId": "screen-home",
         "MinRoleId": "role-viewer",
         "Order": 10,
-        "StoryBeat": "What this project is, why it exists, who's working on it. Cards: rulebook stats, last build, last test pass-rate, active spokes."
+        "StoryBeat": "What this project is, why it exists, who's working on it. Cards: rulebook stats, last build, last test pass-rate, active spokes.",
+        "NavArea": "main"
       },
       {
         "NavId": "nav-002",
@@ -2581,7 +2602,8 @@
         "ScreenId": null,
         "MinRoleId": "role-viewer",
         "Order": 20,
-        "StoryBeat": "The business semantics of the project — every table, field, formula, and sample row."
+        "StoryBeat": "The business semantics of the project — every table, field, formula, and sample row.",
+        "NavArea": "developer"
       },
       {
         "NavId": "nav-002a",
@@ -2591,7 +2613,8 @@
         "ScreenId": "screen-entities",
         "MinRoleId": "role-viewer",
         "Order": 1,
-        "StoryBeat": "List all entities. Click one to drill in to its fields, sample data, and computed columns."
+        "StoryBeat": "List all entities. Click one to drill in to its fields, sample data, and computed columns.",
+        "NavArea": "developer"
       },
       {
         "NavId": "nav-002b",
@@ -2601,7 +2624,8 @@
         "ScreenId": "screen-formulas",
         "MinRoleId": "role-viewer",
         "Order": 2,
-        "StoryBeat": "All calculated fields in one place. Click one to see its DAG (inputs → output) live from the rulebook."
+        "StoryBeat": "All calculated fields in one place. Click one to see its DAG (inputs → output) live from the rulebook.",
+        "NavArea": "developer"
       },
       {
         "NavId": "nav-002c",
@@ -2611,7 +2635,8 @@
         "ScreenId": "screen-relationships",
         "MinRoleId": "role-viewer",
         "Order": 3,
-        "StoryBeat": "FK graph of the project. Hover a node to highlight its inbound and outbound relationships."
+        "StoryBeat": "FK graph of the project. Hover a node to highlight its inbound and outbound relationships.",
+        "NavArea": "developer"
       },
       {
         "NavId": "nav-002d",
@@ -2621,7 +2646,8 @@
         "ScreenId": "screen-sample-data",
         "MinRoleId": "role-viewer",
         "Order": 4,
-        "StoryBeat": "What the project looks like populated. Editable for developers; read-only for viewers."
+        "StoryBeat": "What the project looks like populated. Editable for developers; read-only for viewers.",
+        "NavArea": "developer"
       },
       {
         "NavId": "nav-002e",
@@ -2631,7 +2657,8 @@
         "ScreenId": "screen-framing",
         "MinRoleId": "role-viewer",
         "Order": 5,
-        "StoryBeat": "The mistakes-to-avoid catalog and the axioms it protects. Read this before claiming any substrate is 'the reference'."
+        "StoryBeat": "The mistakes-to-avoid catalog and the axioms it protects. Read this before claiming any substrate is 'the reference'.",
+        "NavArea": "developer"
       },
       {
         "NavId": "nav-003",
@@ -2641,7 +2668,8 @@
         "ScreenId": "screen-substrates",
         "MinRoleId": "role-viewer",
         "Order": 30,
-        "StoryBeat": "Every output substrate this project generates (Python, Go, Postgres, Excel, OWL, etc.). Click one to see the generated source and the conformance status."
+        "StoryBeat": "Every output substrate this project generates (Python, Go, Postgres, Excel, OWL, etc.). Click one to see the generated source and the conformance status.",
+        "NavArea": "developer"
       },
       {
         "NavId": "nav-003z",
@@ -2651,7 +2679,8 @@
         "ScreenId": "screen-add-tool",
         "MinRoleId": "role-developer",
         "Order": 99,
-        "StoryBeat": "Pick from the catalog of 15+ transpilers and install one into the active project. Same code path as `effortless -install` on the CLI."
+        "StoryBeat": "Pick from the catalog of 15+ transpilers and install one into the active project. Same code path as `effortless -install` on the CLI.",
+        "NavArea": "developer"
       },
       {
         "NavId": "nav-004",
@@ -2661,7 +2690,8 @@
         "ScreenId": "screen-builds",
         "MinRoleId": "role-viewer",
         "Order": 40,
-        "StoryBeat": "Build history: when, what changed, which substrates regenerated, how long. Developers can trigger a build here."
+        "StoryBeat": "Build history: when, what changed, which substrates regenerated, how long. Developers can trigger a build here.",
+        "NavArea": "developer"
       },
       {
         "NavId": "nav-005",
@@ -2671,7 +2701,8 @@
         "ScreenId": "screen-tests",
         "MinRoleId": "role-viewer",
         "Order": 50,
-        "StoryBeat": "Conformance matrix: which substrate computed which test case correctly. Drill in to see input → expected → actual per substrate."
+        "StoryBeat": "Conformance matrix: which substrate computed which test case correctly. Drill in to see input → expected → actual per substrate.",
+        "NavArea": "developer"
       },
       {
         "NavId": "nav-006",
@@ -2681,7 +2712,8 @@
         "ScreenId": "screen-input-spokes",
         "MinRoleId": "role-viewer",
         "Order": 60,
-        "StoryBeat": "Where edits come from: admin portal, Airtable, LLM, manual JSON. Pull / push controls live here."
+        "StoryBeat": "Where edits come from: admin portal, Airtable, LLM, manual JSON. Pull / push controls live here.",
+        "NavArea": "developer"
       },
       {
         "NavId": "nav-007",
@@ -2691,7 +2723,8 @@
         "ScreenId": "screen-users",
         "MinRoleId": "role-viewer",
         "Order": 70,
-        "StoryBeat": "Default dev/test users from the rulebook + their roles."
+        "StoryBeat": "Default dev/test users from the rulebook + their roles.",
+        "NavArea": "admin"
       },
       {
         "NavId": "nav-007a",
@@ -2701,7 +2734,8 @@
         "ScreenId": "screen-roles",
         "MinRoleId": "role-viewer",
         "Order": 1,
-        "StoryBeat": "Persona cards for each role — what they care about, where they land, who's assigned. Click anything to navigate."
+        "StoryBeat": "Persona cards for each role — what they care about, where they land, who's assigned. Click anything to navigate.",
+        "NavArea": "admin"
       },
       {
         "NavId": "nav-001a",
@@ -2711,7 +2745,8 @@
         "ScreenId": "screen-flavors",
         "MinRoleId": "role-viewer",
         "Order": 1,
-        "StoryBeat": "Classification of every demo rulebook — crud-template, computation-heavy, aggregation-heavy, graph-ontology, etc."
+        "StoryBeat": "Classification of every demo rulebook — crud-template, computation-heavy, aggregation-heavy, graph-ontology, etc.",
+        "NavArea": "main"
       },
       {
         "NavId": "nav-001b",
@@ -2721,7 +2756,8 @@
         "ScreenId": "screen-features",
         "MinRoleId": "role-viewer",
         "Order": 2,
-        "StoryBeat": "What ERB actually does — headline features (ADP, clean, hub-and-spoke, convergent build, substrate equivalence, …) and additional ones. Each row links to its per-feature README; developers can edit the catalog here."
+        "StoryBeat": "What ERB actually does — headline features (ADP, clean, hub-and-spoke, convergent build, substrate equivalence, …) and additional ones. Each row links to its per-feature README; developers can edit the catalog here.",
+        "NavArea": "main"
       },
       {
         "NavId": "nav-008",
@@ -2731,7 +2767,8 @@
         "ScreenId": null,
         "MinRoleId": "role-developer",
         "Order": 80,
-        "StoryBeat": "Developer-only escape hatches. Raw Postgres, proxy logs, file system, manual injection. Not part of the daily workflow."
+        "StoryBeat": "Developer-only escape hatches. Raw Postgres, proxy logs, file system, manual injection. Not part of the daily workflow.",
+        "NavArea": "developer"
       },
       {
         "NavId": "nav-008a",
@@ -2741,7 +2778,8 @@
         "ScreenId": "screen-tech-postgres",
         "MinRoleId": "role-developer",
         "Order": 1,
-        "StoryBeat": "Raw editor-DB browser: run SQL, inspect rows, drop/reset DB."
+        "StoryBeat": "Raw editor-DB browser: run SQL, inspect rows, drop/reset DB.",
+        "NavArea": "developer"
       },
       {
         "NavId": "nav-008b",
@@ -2751,7 +2789,8 @@
         "ScreenId": "screen-tech-proxy",
         "MinRoleId": "role-developer",
         "Order": 2,
-        "StoryBeat": "Live proxy status: registered routes, recent calls, response sizes, last error per route."
+        "StoryBeat": "Live proxy status: registered routes, recent calls, response sizes, last error per route.",
+        "NavArea": "developer"
       },
       {
         "NavId": "nav-008c",
@@ -2761,7 +2800,8 @@
         "ScreenId": "screen-tech-files",
         "MinRoleId": "role-developer",
         "Order": 3,
-        "StoryBeat": "Project filesystem browser. View any generated or hand-written file in the active project."
+        "StoryBeat": "Project filesystem browser. View any generated or hand-written file in the active project.",
+        "NavArea": "developer"
       },
       {
         "NavId": "nav-008d",
@@ -2771,7 +2811,8 @@
         "ScreenId": "screen-tech-json",
         "MinRoleId": "role-developer",
         "Order": 4,
-        "StoryBeat": "Raw rulebook JSON viewer/editor. Save here goes through the same write-through invariant as the UI."
+        "StoryBeat": "Raw rulebook JSON viewer/editor. Save here goes through the same write-through invariant as the UI.",
+        "NavArea": "developer"
       },
       {
         "NavId": "nav-008e",
@@ -2781,7 +2822,8 @@
         "ScreenId": "screen-tech-reset",
         "MinRoleId": "role-developer",
         "Order": 5,
-        "StoryBeat": "Drop the editor Postgres DB and re-bootstrap from rulebook JSON. Safe — JSON is SSoT."
+        "StoryBeat": "Drop the editor Postgres DB and re-bootstrap from rulebook JSON. Safe — JSON is SSoT.",
+        "NavArea": "developer"
       }
     ]
   },
@@ -2846,6 +2888,13 @@
         "type": "raw",
         "nullable": true,
         "Description": "What the developer learns / does on this screen"
+      },
+      {
+        "name": "NavArea",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Which persona area this screen belongs to. Drives route prefix and sidebar section."
       }
     ],
     "data": [
@@ -2858,194 +2907,212 @@
         "MinRoleId": "role-viewer",
         "Layout": "dashboard",
         "PrimaryAction": "Switch project",
-        "Story": "Land here on ./start.sh. Cards: current project, rulebook size, # substrates, last build time, last test pass-rate, which spokes are active, who you're signed in as."
+        "Story": "Land here on ./start.sh. Cards: current project, rulebook size, # substrates, last build time, last test pass-rate, which spokes are active, who you're signed in as.",
+        "NavArea": "main"
       },
       {
         "ScreenId": "screen-entities",
-        "Path": "/rulebook/entities",
+        "Path": "/developer/rulebook/entities",
         "Title": "Entities",
         "ReadsEntities": "<active-project-rulebook>",
         "WritesEntities": "<active-project-rulebook>",
         "MinRoleId": "role-viewer",
         "Layout": "split-detail",
         "PrimaryAction": "Add entity",
-        "Story": "Left: list of every entity in the active project's rulebook. Right: selected entity's fields, formulas, sample rows. Developer can add/rename/delete fields inline; viewer sees the same with controls disabled."
+        "Story": "Left: list of every entity in the active project's rulebook. Right: selected entity's fields, formulas, sample rows. Developer can add/rename/delete fields inline; viewer sees the same with controls disabled.",
+        "NavArea": "developer"
       },
       {
         "ScreenId": "screen-formulas",
-        "Path": "/rulebook/formulas",
+        "Path": "/developer/rulebook/formulas",
         "Title": "Formulas",
         "ReadsEntities": "<active-project-rulebook>",
         "WritesEntities": "<active-project-rulebook>",
         "MinRoleId": "role-viewer",
         "Layout": "split-detail",
         "PrimaryAction": "Edit formula",
-        "Story": "Every calculated field across all entities. Drill in to see live DAG visualization (inputs → intermediates → output) sourced from the rulebook's explain-dag substrate. Developer can edit Excel-style formula in place; portal auto-validates against the parser."
+        "Story": "Every calculated field across all entities. Drill in to see live DAG visualization (inputs → intermediates → output) sourced from the rulebook's explain-dag substrate. Developer can edit Excel-style formula in place; portal auto-validates against the parser.",
+        "NavArea": "developer"
       },
       {
         "ScreenId": "screen-relationships",
-        "Path": "/rulebook/relationships",
+        "Path": "/developer/rulebook/relationships",
         "Title": "Relationships",
         "ReadsEntities": "<active-project-rulebook>",
         "WritesEntities": null,
         "MinRoleId": "role-viewer",
         "Layout": "grid",
         "PrimaryAction": null,
-        "Story": "FK graph (interactive). Hover a node to highlight its inbound/outbound edges. Click an edge to see which formula or column declares it."
+        "Story": "FK graph (interactive). Hover a node to highlight its inbound/outbound edges. Click an edge to see which formula or column declares it.",
+        "NavArea": "developer"
       },
       {
         "ScreenId": "screen-sample-data",
-        "Path": "/rulebook/data",
+        "Path": "/developer/rulebook/data",
         "Title": "Sample Data",
         "ReadsEntities": "<active-project-rulebook>.data",
         "WritesEntities": "<active-project-rulebook>.data",
         "MinRoleId": "role-viewer",
         "Layout": "grid",
         "PrimaryAction": "Add row",
-        "Story": "Spreadsheet-style view of the data block of each entity. Developer can edit cells; computed columns are read-only and show the resolved value with a hoverable derivation popover."
+        "Story": "Spreadsheet-style view of the data block of each entity. Developer can edit cells; computed columns are read-only and show the resolved value with a hoverable derivation popover.",
+        "NavArea": "developer"
       },
       {
         "ScreenId": "screen-substrates",
-        "Path": "/substrates",
+        "Path": "/developer/substrates",
         "Title": "Substrates",
         "ReadsEntities": "ExecutionSubstrates,SsotmeProxy",
         "WritesEntities": null,
         "MinRoleId": "role-viewer",
         "Layout": "split-detail",
         "PrimaryAction": "Rebuild substrate",
-        "Story": "Left: every substrate this project emits (with last-build timestamp + conformance status). Right: file tree of generated output + a preview pane for any file. Developer can trigger 'Rebuild just this substrate'."
+        "Story": "Left: every substrate this project emits (with last-build timestamp + conformance status). Right: file tree of generated output + a preview pane for any file. Developer can trigger 'Rebuild just this substrate'.",
+        "NavArea": "developer"
       },
       {
         "ScreenId": "screen-add-tool",
-        "Path": "/tools/add",
+        "Path": "/developer/tools/add",
         "Title": "Add Tool",
         "ReadsEntities": "AddToolCatalog,SsotmeProxy",
         "WritesEntities": "<active-project>/effortless.json (via effortless CLI)",
         "MinRoleId": "role-developer",
         "Layout": "grid",
         "PrimaryAction": "Install",
-        "Story": "Browse the 15+ transpilers in the catalog. Click one, choose output path, hit Install. Portal shells out to `effortless -install <proxy-url>` so the result is byte-identical to the CLI path. Tool then shows up in /substrates and is ready for the next build."
+        "Story": "Browse the 15+ transpilers in the catalog. Click one, choose output path, hit Install. Portal shells out to `effortless -install <proxy-url>` so the result is byte-identical to the CLI path. Tool then shows up in /substrates and is ready for the next build.",
+        "NavArea": "developer"
       },
       {
         "ScreenId": "screen-builds",
-        "Path": "/builds",
+        "Path": "/developer/builds",
         "Title": "Builds",
         "ReadsEntities": "BuildHistory",
         "WritesEntities": "BuildHistory",
         "MinRoleId": "role-viewer",
         "Layout": "list",
         "PrimaryAction": "Trigger build",
-        "Story": "Chronological list of builds. Click one to see which transpilers ran, duration each, stdout/stderr per route, and which files changed. Trigger-build button is gated by CanRunBuilds."
+        "Story": "Chronological list of builds. Click one to see which transpilers ran, duration each, stdout/stderr per route, and which files changed. Trigger-build button is gated by CanRunBuilds.",
+        "NavArea": "developer"
       },
       {
         "ScreenId": "screen-tests",
-        "Path": "/tests",
+        "Path": "/developer/tests",
         "Title": "Tests",
         "ReadsEntities": "TestingFramework,TestRuns",
         "WritesEntities": "TestRuns",
         "MinRoleId": "role-viewer",
         "Layout": "grid",
         "PrimaryAction": "Run all tests",
-        "Story": "Matrix: rows = test cases, columns = substrates, cells = pass/fail. Click a failing cell to see input, expected, actual, and a diff. Trigger-tests button is gated by CanRunBuilds."
+        "Story": "Matrix: rows = test cases, columns = substrates, cells = pass/fail. Click a failing cell to see input, expected, actual, and a diff. Trigger-tests button is gated by CanRunBuilds.",
+        "NavArea": "developer"
       },
       {
         "ScreenId": "screen-input-spokes",
-        "Path": "/spokes",
+        "Path": "/developer/spokes",
         "Title": "Input Spokes",
         "ReadsEntities": "RulebookSourceSpokes",
         "WritesEntities": null,
         "MinRoleId": "role-viewer",
         "Layout": "list",
         "PrimaryAction": "Pull from spoke",
-        "Story": "List of every configured input spoke for this project. Status (last-pulled time, last-error). Developer can trigger a pull from any spoke."
+        "Story": "List of every configured input spoke for this project. Status (last-pulled time, last-error). Developer can trigger a pull from any spoke.",
+        "NavArea": "developer"
       },
       {
         "ScreenId": "screen-users",
-        "Path": "/users",
+        "Path": "/admin/users",
         "Title": "Users",
         "ReadsEntities": "AppUsers,UserRoles",
         "WritesEntities": "AppUsers",
         "MinRoleId": "role-viewer",
         "Layout": "list",
         "PrimaryAction": "Add user",
-        "Story": "Default dev/test users from the rulebook + roles. Developer can add new users (saved through the write-through invariant, so they end up in rulebook JSON)."
+        "Story": "Default dev/test users from the rulebook + roles. Developer can add new users (saved through the write-through invariant, so they end up in rulebook JSON).",
+        "NavArea": "admin"
       },
       {
         "ScreenId": "screen-tech-postgres",
-        "Path": "/tech/postgres",
+        "Path": "/developer/tech/postgres",
         "Title": "Postgres Explorer",
         "ReadsEntities": "<editor-postgres-tables>",
         "WritesEntities": "<editor-postgres-tables>",
         "MinRoleId": "role-developer",
         "Layout": "editor",
         "PrimaryAction": "Run query",
-        "Story": "Raw SQL console + table browser for the editor Postgres DB. Developer-only escape hatch. Background banner reminds: rulebook JSON is the SSoT, this DB is rebuildable."
+        "Story": "Raw SQL console + table browser for the editor Postgres DB. Developer-only escape hatch. Background banner reminds: rulebook JSON is the SSoT, this DB is rebuildable.",
+        "NavArea": "developer"
       },
       {
         "ScreenId": "screen-tech-proxy",
-        "Path": "/tech/proxy",
+        "Path": "/developer/tech/proxy",
         "Title": "ssotme-proxy",
         "ReadsEntities": "SsotmeProxy",
         "WritesEntities": null,
         "MinRoleId": "role-developer",
         "Layout": "list",
         "PrimaryAction": "Ping proxy",
-        "Story": "Live status of localhost:4242: registered routes, recent calls (route, duration, status, response size), last error per route. Restart button."
+        "Story": "Live status of localhost:4242: registered routes, recent calls (route, duration, status, response size), last error per route. Restart button.",
+        "NavArea": "developer"
       },
       {
         "ScreenId": "screen-tech-files",
-        "Path": "/tech/files",
+        "Path": "/developer/tech/files",
         "Title": "Project Files",
         "ReadsEntities": "<project-filesystem>",
         "WritesEntities": null,
         "MinRoleId": "role-developer",
         "Layout": "split-detail",
         "PrimaryAction": null,
-        "Story": "Browse the active project folder. View any file. Read-only — prevents drift from rulebook."
+        "Story": "Browse the active project folder. View any file. Read-only — prevents drift from rulebook.",
+        "NavArea": "developer"
       },
       {
         "ScreenId": "screen-tech-json",
-        "Path": "/tech/rulebook-json",
+        "Path": "/developer/tech/rulebook-json",
         "Title": "Raw Rulebook JSON",
         "ReadsEntities": "<active-project-rulebook>",
         "WritesEntities": "<active-project-rulebook>",
         "MinRoleId": "role-developer",
         "Layout": "editor",
         "PrimaryAction": "Save JSON",
-        "Story": "Monaco editor on the raw effortless-rulebook.json. Save goes through the write-through invariant. Useful for bulk edits."
+        "Story": "Monaco editor on the raw effortless-rulebook.json. Save goes through the write-through invariant. Useful for bulk edits.",
+        "NavArea": "developer"
       },
       {
         "ScreenId": "screen-tech-reset",
-        "Path": "/tech/reset",
+        "Path": "/developer/tech/reset",
         "Title": "Reset Editor",
         "ReadsEntities": null,
         "WritesEntities": null,
         "MinRoleId": "role-developer",
         "Layout": "dashboard",
         "PrimaryAction": "Reset now",
-        "Story": "One-button reset: drops the editor Postgres DB and re-bootstraps from rulebook JSON. The reassurance screen — makes the JSON-as-SSoT promise tangible."
+        "Story": "One-button reset: drops the editor Postgres DB and re-bootstraps from rulebook JSON. The reassurance screen — makes the JSON-as-SSoT promise tangible.",
+        "NavArea": "developer"
       },
       {
         "ScreenId": "screen-framing",
-        "Path": "/rulebook/framing",
+        "Path": "/developer/rulebook/framing",
         "Title": "Framing",
         "ReadsEntities": "FramingInvariants,OntologyAxioms",
         "WritesEntities": null,
         "MinRoleId": "role-viewer",
         "Layout": "split-detail",
         "PrimaryAction": null,
-        "Story": "Left: FramingInvariants — the mistakes-to-avoid catalog. Right: the wrong framing, the correct framing, why, and the axiom it violates. Toggle to Axioms tab to see the positive-form invariants. Reviewer's favourite page; required reading before defending the methodology."
+        "Story": "Left: FramingInvariants — the mistakes-to-avoid catalog. Right: the wrong framing, the correct framing, why, and the axiom it violates. Toggle to Axioms tab to see the positive-form invariants. Reviewer's favourite page; required reading before defending the methodology.",
+        "NavArea": "developer"
       },
       {
         "ScreenId": "screen-roles",
-        "Path": "/users/roles",
+        "Path": "/admin/users/roles",
         "Title": "Roles & Personas",
         "ReadsEntities": "UserRoles,AppUsers,RoleScreenHints",
         "WritesEntities": "UserRoles",
         "MinRoleId": "role-viewer",
         "Layout": "split-detail",
         "PrimaryAction": null,
-        "Story": "Left: each role with its colour-themed pill, persona, tagline. Right: the role's primary concerns, landing screen (clickable), bespoke screen overrides, and the users currently assigned to it (clickable to filter the Users page)."
+        "Story": "Left: each role with its colour-themed pill, persona, tagline. Right: the role's primary concerns, landing screen (clickable), bespoke screen overrides, and the users currently assigned to it (clickable to filter the Users page).",
+        "NavArea": "admin"
       },
       {
         "ScreenId": "screen-flavors",
@@ -3056,7 +3123,8 @@
         "MinRoleId": "role-viewer",
         "Layout": "grid",
         "PrimaryAction": null,
-        "Story": "Each demo rulebook classified by Flavor (crud-template, computation-heavy, aggregation-heavy, graph-ontology, meta-rulebook, tutorial-ladder), Complexity, and density metrics. Click a flavour to filter the project switcher to that flavour."
+        "Story": "Each demo rulebook classified by Flavor (crud-template, computation-heavy, aggregation-heavy, graph-ontology, meta-rulebook, tutorial-ladder), Complexity, and density metrics. Click a flavour to filter the project switcher to that flavour.",
+        "NavArea": "main"
       },
       {
         "ScreenId": "screen-features",
@@ -3067,7 +3135,8 @@
         "MinRoleId": "role-viewer",
         "Layout": "split-detail",
         "PrimaryAction": "Edit feature",
-        "Story": "Two sections: Headline features (ADP, clean, hub-and-spoke, convergent build, substrate equivalence, conformance, local SSoT, portal/CLI parity, write-through) and Additional features (fail-loud, complete spec, dialect binding, etc.). Left list, right detail. Detail shows one-line summary, status, related axiom (clickable), README file path, IsReadmeStub badge, and the seed README content. Developer can edit summary/tier/priority/README path in place — saves write-through into rulebook JSON."
+        "Story": "Two sections: Headline features (ADP, clean, hub-and-spoke, convergent build, substrate equivalence, conformance, local SSoT, portal/CLI parity, write-through) and Additional features (fail-loud, complete spec, dialect binding, etc.). Left list, right detail. Detail shows one-line summary, status, related axiom (clickable), README file path, IsReadmeStub badge, and the seed README content. Developer can edit summary/tier/priority/README path in place — saves write-through into rulebook JSON.",
+        "NavArea": "main"
       }
     ]
   },
@@ -7971,6 +8040,364 @@
         "FlavorTagId": "ft-129",
         "Flavor": "flav-026",
         "Tag": "tag-basic"
+      }
+    ]
+  },
+  "ClaudeSkills": {
+    "Description": "The catalog of Claude Code skills that make up the effortless-claude skill set. Each skill is a loadable instruction set that pre-teaches Claude everything it needs to work in an ERB project — naming conventions, pipeline mechanics, formula semantics, etc. Skills are the answer to the LLM learning-curve problem: instead of every user teaching Claude from scratch, the learning is encoded once and loaded on demand. LocalMirrorPath is a derived artifact: clone-skills.sh pulls a live copy of each skill from the source repo so the docs/skills/ mirror stays current.",
+    "schema": [
+      {
+        "name": "SkillId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stable PK, e.g. skill-001"
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Skill directory name, matches the slash command without the leading /"
+      },
+      {
+        "name": "SlashCommand",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "Formula": "=\"/\"+{{Name}}",
+        "Description": "The slash command users invoke, e.g. /effortless-cmcc"
+      },
+      {
+        "name": "Category",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "theory | modeling | pipeline | setup | tooling | data | ecosystem | features"
+      },
+      {
+        "name": "OneLineSummary",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "One sentence describing when to use this skill"
+      },
+      {
+        "name": "Audience",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "customer | general — who this skill is written for"
+      },
+      {
+        "name": "LocalMirrorPath",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "Formula": "\"docs/skills/\"+{{Name}}+\"/SKILL.md\"",
+        "Description": "Path to the derived local mirror of this skill. Generated by clone-skills.sh; DO NOT EDIT by hand."
+      },
+      {
+        "name": "CloneUrl",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Raw GitHub URL from which clone-skills.sh pulls a fresh copy of this skill"
+      },
+      {
+        "name": "HighlightInReadme",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": false,
+        "Description": "True if this skill should appear in the README skills highlights table — the ones most directly relevant to building with this repo"
+      }
+    ],
+    "data": [
+      {
+        "SkillId": "skill-002",
+        "Name": "effortless-airtable",
+        "SlashCommand": "/effortless-airtable",
+        "Category": "data",
+        "OneLineSummary": "Use when making schema or data changes via the Airtable API in an ERB project — adding fields, creating tables, modifying existing fields, or when you need to understand Airtable API limitations (e.",
+        "Audience": "customer",
+        "LocalMirrorPath": "docs/skills/effortless-airtable/SKILL.md",
+        "CloneUrl": "https://raw.githubusercontent.com/effortlessapi/effortless-claude/main/skills/effortless-airtable/SKILL.md",
+        "HighlightInReadme": false
+      },
+      {
+        "SkillId": "skill-003",
+        "Name": "effortless-airtable-omni",
+        "SlashCommand": "/effortless-airtable-omni",
+        "Category": "data",
+        "OneLineSummary": "Use ONLY for Airtable schema changes that the API cannot handle — formula fields, lookup fields, rollup fields, and new table creation (which requires the Name formula).",
+        "Audience": "customer",
+        "LocalMirrorPath": "docs/skills/effortless-airtable-omni/SKILL.md",
+        "CloneUrl": "https://raw.githubusercontent.com/effortlessapi/effortless-claude/main/skills/effortless-airtable-omni/SKILL.md",
+        "HighlightInReadme": false
+      },
+      {
+        "SkillId": "skill-004",
+        "Name": "effortless-bases",
+        "SlashCommand": "/effortless-bases",
+        "Category": "setup",
+        "OneLineSummary": "Use when the user wants to spin up a Postgres base on bases.",
+        "Audience": "customer",
+        "LocalMirrorPath": "docs/skills/effortless-bases/SKILL.md",
+        "CloneUrl": "https://raw.githubusercontent.com/effortlessapi/effortless-claude/main/skills/effortless-bases/SKILL.md",
+        "HighlightInReadme": false
+      },
+      {
+        "SkillId": "skill-005",
+        "Name": "effortless-bootstrap",
+        "SlashCommand": "/effortless-bootstrap",
+        "Category": "setup",
+        "OneLineSummary": "Use when the user wants to bootstrap a new effortless project from raw text, requirements, or a description of a platform.",
+        "Audience": "customer",
+        "LocalMirrorPath": "docs/skills/effortless-bootstrap/SKILL.md",
+        "CloneUrl": "https://raw.githubusercontent.com/effortlessapi/effortless-claude/main/skills/effortless-bootstrap/SKILL.md",
+        "HighlightInReadme": true
+      },
+      {
+        "SkillId": "skill-006",
+        "Name": "effortless-claude-updates",
+        "SlashCommand": "/effortless-claude-updates",
+        "Category": "ecosystem",
+        "OneLineSummary": "Use for anything about the effortless-claude **skill set** itself — both CHECKING for updates and APPLYING them.",
+        "Audience": "customer",
+        "LocalMirrorPath": "docs/skills/effortless-claude-updates/SKILL.md",
+        "CloneUrl": "https://raw.githubusercontent.com/effortlessapi/effortless-claude/main/skills/effortless-claude-updates/SKILL.md",
+        "HighlightInReadme": false
+      },
+      {
+        "SkillId": "skill-007",
+        "Name": "effortless-cli",
+        "SlashCommand": "/effortless-cli",
+        "Category": "tooling",
+        "OneLineSummary": "Use for the `effortless` CLI — both **installing/updating the binary** AND **using its commands**.",
+        "Audience": "customer",
+        "LocalMirrorPath": "docs/skills/effortless-cli/SKILL.md",
+        "CloneUrl": "https://raw.githubusercontent.com/effortlessapi/effortless-claude/main/skills/effortless-cli/SKILL.md",
+        "HighlightInReadme": false
+      },
+      {
+        "SkillId": "skill-008",
+        "Name": "effortless-cmcc",
+        "SlashCommand": "/effortless-cmcc",
+        "Category": "theory",
+        "OneLineSummary": "Use whenever the user asks an evaluative or \"why\" question about effortless / ERB — including the friendly-but-exploratory framings, not just defensive ones.",
+        "Audience": "customer",
+        "LocalMirrorPath": "docs/skills/effortless-cmcc/SKILL.md",
+        "CloneUrl": "https://raw.githubusercontent.com/effortlessapi/effortless-claude/main/skills/effortless-cmcc/SKILL.md",
+        "HighlightInReadme": true
+      },
+      {
+        "SkillId": "skill-009",
+        "Name": "effortless-conventions",
+        "SlashCommand": "/effortless-conventions",
+        "Category": "modeling",
+        "OneLineSummary": "Use when you need ERB naming conventions, DAG structure rules, PascalCase table names, primary key and foreign key patterns, the Name field requirement, or understanding why many-to-many relationships are not allowed.",
+        "Audience": "customer",
+        "LocalMirrorPath": "docs/skills/effortless-conventions/SKILL.md",
+        "CloneUrl": "https://raw.githubusercontent.com/effortlessapi/effortless-claude/main/skills/effortless-conventions/SKILL.md",
+        "HighlightInReadme": true
+      },
+      {
+        "SkillId": "skill-011",
+        "Name": "effortless-diagnostics",
+        "SlashCommand": "/effortless-diagnostics",
+        "Category": "tooling",
+        "OneLineSummary": "Use when diagnosing ERB project health — validating DAG integrity, checking for broken FK targets, finding JOIN anti-patterns in application code, migrating legacy code from base table reads to view reads, or running diagnostic queries.",
+        "Audience": "customer",
+        "LocalMirrorPath": "docs/skills/effortless-diagnostics/SKILL.md",
+        "CloneUrl": "https://raw.githubusercontent.com/effortlessapi/effortless-claude/main/skills/effortless-diagnostics/SKILL.md",
+        "HighlightInReadme": false
+      },
+      {
+        "SkillId": "skill-012",
+        "Name": "effortless-ecosystem",
+        "SlashCommand": "/effortless-ecosystem",
+        "Category": "ecosystem",
+        "OneLineSummary": "Use when the user asks what repos exist in the effortless / SSoTme ecosystem, where to find the source for a specific tool, \"is there a repo for X\", \"what transpilers exist\", \"show me the open source projects\", or any question about how the various GitHub repos fit together.",
+        "Audience": "customer",
+        "LocalMirrorPath": "docs/skills/effortless-ecosystem/SKILL.md",
+        "CloneUrl": "https://raw.githubusercontent.com/effortlessapi/effortless-claude/main/skills/effortless-ecosystem/SKILL.md",
+        "HighlightInReadme": false
+      },
+      {
+        "SkillId": "skill-013",
+        "Name": "effortless-excel-export",
+        "SlashCommand": "/effortless-excel-export",
+        "Category": "features",
+        "OneLineSummary": "Use when adding Excel export to any Effortless project backed by a Postgres database.",
+        "Audience": "customer",
+        "LocalMirrorPath": "docs/skills/effortless-excel-export/SKILL.md",
+        "CloneUrl": "https://raw.githubusercontent.com/effortlessapi/effortless-claude/main/skills/effortless-excel-export/SKILL.md",
+        "HighlightInReadme": false
+      },
+      {
+        "SkillId": "skill-014",
+        "Name": "effortless-init",
+        "SlashCommand": "/effortless-init",
+        "Category": "setup",
+        "OneLineSummary": "Use when initializing a new effortless project: \"make this an effortless project\", \"init effortless\", \"init effortless project\", \"set up effortless here\", \"connect to Airtable\", \"hook up Airtable\", or when an existing project is missing CLAUDE.",
+        "Audience": "customer",
+        "LocalMirrorPath": "docs/skills/effortless-init/SKILL.md",
+        "CloneUrl": "https://raw.githubusercontent.com/effortlessapi/effortless-claude/main/skills/effortless-init/SKILL.md",
+        "HighlightInReadme": false
+      },
+      {
+        "SkillId": "skill-015",
+        "Name": "effortless-leopold-loop",
+        "SlashCommand": "/effortless-leopold-loop",
+        "Category": "pipeline",
+        "OneLineSummary": "Use whenever the user mentions the \"Leopold loop\", \"the loop\", \"a turn of the loop\", \"do a turn\", \"rebuild the rulebook\", \"update the app to match the rules\", or any reference to the iterative ERB development cycle.",
+        "Audience": "customer",
+        "LocalMirrorPath": "docs/skills/effortless-leopold-loop/SKILL.md",
+        "CloneUrl": "https://raw.githubusercontent.com/effortlessapi/effortless-claude/main/skills/effortless-leopold-loop/SKILL.md",
+        "HighlightInReadme": true
+      },
+      {
+        "SkillId": "skill-016",
+        "Name": "effortless-magic-links",
+        "SlashCommand": "/effortless-magic-links",
+        "Category": "features",
+        "OneLineSummary": "Use when the user wants to add passwordless email-code (magic-link) auth to any project backed by a Postgres database — not just bases.",
+        "Audience": "general",
+        "LocalMirrorPath": "docs/skills/effortless-magic-links/SKILL.md",
+        "CloneUrl": "https://raw.githubusercontent.com/effortlessapi/effortless-claude/main/skills/effortless-magic-links/SKILL.md",
+        "HighlightInReadme": false
+      },
+      {
+        "SkillId": "skill-017",
+        "Name": "effortless-mcp",
+        "SlashCommand": "/effortless-mcp",
+        "Category": "tooling",
+        "OneLineSummary": "Use for the **Effortless MCP server** — the always-on Model Context Protocol endpoint that exposes the entire Effortless transpiler catalog (~54 tools) plus the effortless-claude skill set (resources) to any MCP-compatible agent (Claude Code, Cursor, Windsurf, ChatGPT, etc.",
+        "Audience": "customer",
+        "LocalMirrorPath": "docs/skills/effortless-mcp/SKILL.md",
+        "CloneUrl": "https://raw.githubusercontent.com/effortlessapi/effortless-claude/main/skills/effortless-mcp/SKILL.md",
+        "HighlightInReadme": false
+      },
+      {
+        "SkillId": "skill-018",
+        "Name": "effortless-orchestrator",
+        "SlashCommand": "/effortless-orchestrator",
+        "Category": "pipeline",
+        "OneLineSummary": "Top-level orchestrator for Effortless Rulebook (ERB) projects — Airtable-sourced schema-first business rules, `effortless.",
+        "Audience": "customer",
+        "LocalMirrorPath": "docs/skills/effortless-orchestrator/SKILL.md",
+        "CloneUrl": "https://raw.githubusercontent.com/effortlessapi/effortless-claude/main/skills/effortless-orchestrator/SKILL.md",
+        "HighlightInReadme": true
+      },
+      {
+        "SkillId": "skill-019",
+        "Name": "effortless-pipeline",
+        "SlashCommand": "/effortless-pipeline",
+        "Category": "pipeline",
+        "OneLineSummary": "Use when working with the ERB build pipeline — effortless.",
+        "Audience": "customer",
+        "LocalMirrorPath": "docs/skills/effortless-pipeline/SKILL.md",
+        "CloneUrl": "https://raw.githubusercontent.com/effortlessapi/effortless-claude/main/skills/effortless-pipeline/SKILL.md",
+        "HighlightInReadme": false
+      },
+      {
+        "SkillId": "skill-020",
+        "Name": "effortless-query",
+        "SlashCommand": "/effortless-query",
+        "Category": "tooling",
+        "OneLineSummary": "Use when querying an effortless-rulebook.",
+        "Audience": "customer",
+        "LocalMirrorPath": "docs/skills/effortless-query/SKILL.md",
+        "CloneUrl": "https://raw.githubusercontent.com/effortlessapi/effortless-claude/main/skills/effortless-query/SKILL.md",
+        "HighlightInReadme": false
+      },
+      {
+        "SkillId": "skill-021",
+        "Name": "effortless-rationale",
+        "SlashCommand": "/effortless-rationale",
+        "Category": "theory",
+        "OneLineSummary": "Use when explaining or defending the effortless / CMCC methodology to a skeptic — \"why use this instead of just writing code\", \"isn't this overkill\", \"convince me\", \"what's wrong with ORM / microservices / hand-written SQL\", \"why Airtable\", \"isn't this just MDE\", \"how is this different from low-code",
+        "Audience": "customer",
+        "LocalMirrorPath": "docs/skills/effortless-rationale/SKILL.md",
+        "CloneUrl": "https://raw.githubusercontent.com/effortlessapi/effortless-claude/main/skills/effortless-rationale/SKILL.md",
+        "HighlightInReadme": false
+      },
+      {
+        "SkillId": "skill-022",
+        "Name": "effortless-react-explainer-dag",
+        "SlashCommand": "/effortless-react-explainer-dag",
+        "Category": "features",
+        "OneLineSummary": "Use when adding the React Explainer DAG to an Effortless project — a generated, embedded visualization of the rulebook's calculated-field DAG that lets users click any cell/field and see exactly how it was derived (raw inputs → lookups → 1st/2nd/3rd-order calcs → aggregations).",
+        "Audience": "customer",
+        "LocalMirrorPath": "docs/skills/effortless-react-explainer-dag/SKILL.md",
+        "CloneUrl": "https://raw.githubusercontent.com/effortlessapi/effortless-claude/main/skills/effortless-react-explainer-dag/SKILL.md",
+        "HighlightInReadme": true
+      },
+      {
+        "SkillId": "skill-023",
+        "Name": "effortless-rulebooks",
+        "SlashCommand": "/effortless-rulebooks",
+        "Category": "modeling",
+        "OneLineSummary": "Use when the user wants empirical proof that CMCC actually works — show me the receipts, does this run in code, ExplainDAG, witnessed inference graph, conformance testing, answer-key.",
+        "Audience": "customer",
+        "LocalMirrorPath": "docs/skills/effortless-rulebooks/SKILL.md",
+        "CloneUrl": "https://raw.githubusercontent.com/effortlessapi/effortless-claude/main/skills/effortless-rulebooks/SKILL.md",
+        "HighlightInReadme": true
+      },
+      {
+        "SkillId": "skill-024",
+        "Name": "effortless-schema",
+        "SlashCommand": "/effortless-schema",
+        "Category": "modeling",
+        "OneLineSummary": "Use to understand the **structure** of effortless-rulebook.",
+        "Audience": "customer",
+        "LocalMirrorPath": "docs/skills/effortless-schema/SKILL.md",
+        "CloneUrl": "https://raw.githubusercontent.com/effortlessapi/effortless-claude/main/skills/effortless-schema/SKILL.md",
+        "HighlightInReadme": false
+      },
+      {
+        "SkillId": "skill-025",
+        "Name": "effortless-setup-postgres",
+        "SlashCommand": "/effortless-setup-postgres",
+        "Category": "setup",
+        "OneLineSummary": "Use when setting up an Effortless project with a postgres database from an existing Airtable base.",
+        "Audience": "customer",
+        "LocalMirrorPath": "docs/skills/effortless-setup-postgres/SKILL.md",
+        "CloneUrl": "https://raw.githubusercontent.com/effortlessapi/effortless-claude/main/skills/effortless-setup-postgres/SKILL.md",
+        "HighlightInReadme": true
+      },
+      {
+        "SkillId": "skill-026",
+        "Name": "effortless-sql",
+        "SlashCommand": "/effortless-sql",
+        "Category": "data",
+        "OneLineSummary": "Use when working with ERB-generated SQL — reading from vw_* views vs base tables, understanding generated files (00-05), using *b-customize-* files, SQL function patterns (calc_*, get_*), view structure, or ERBCustomizations table.",
+        "Audience": "customer",
+        "LocalMirrorPath": "docs/skills/effortless-sql/SKILL.md",
+        "CloneUrl": "https://raw.githubusercontent.com/effortlessapi/effortless-claude/main/skills/effortless-sql/SKILL.md",
+        "HighlightInReadme": false
+      },
+      {
+        "SkillId": "skill-027",
+        "Name": "effortless-ssotme-protocol",
+        "SlashCommand": "/effortless-ssotme-protocol",
+        "Category": "pipeline",
+        "OneLineSummary": "Use when writing or editing effortless.",
+        "Audience": "customer",
+        "LocalMirrorPath": "docs/skills/effortless-ssotme-protocol/SKILL.md",
+        "CloneUrl": "https://raw.githubusercontent.com/effortlessapi/effortless-claude/main/skills/effortless-ssotme-protocol/SKILL.md",
+        "HighlightInReadme": false
+      },
+      {
+        "SkillId": "skill-028",
+        "Name": "effortless-workflow",
+        "SlashCommand": "/effortless-workflow",
+        "Category": "pipeline",
+        "OneLineSummary": "Use when making changes to an ERB project — modifying effortless-rulebook.",
+        "Audience": "customer",
+        "LocalMirrorPath": "docs/skills/effortless-workflow/SKILL.md",
+        "CloneUrl": "https://raw.githubusercontent.com/effortlessapi/effortless-claude/main/skills/effortless-workflow/SKILL.md",
+        "HighlightInReadme": true
       }
     ]
   }
