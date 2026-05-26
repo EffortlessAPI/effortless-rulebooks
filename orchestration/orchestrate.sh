@@ -1058,7 +1058,7 @@ action_init_postgres() {
     _domain=$(get_active_domain)
     local _db_name="erb_${_domain//-/_}"
     local _db_url="postgresql://postgres@localhost:5432/${_db_name}"
-    local init_script="$RULEBOOK_EXAMPLES_DIR/$_domain/effortless-postgres/init-db.sh"
+    local init_script="$RULEBOOK_EXAMPLES_DIR/$_domain/postgres-bootstrap/init-db.sh"
 
     echo ""
     echo -e "${BOLD}${CYAN}Initialize PostgreSQL Database for ${WHITE}${_domain}${NC}"
@@ -1123,7 +1123,7 @@ run_substrates() {
     # Ensure the per-domain DB exists with current schema before tests query it.
     # Every domain has rulebooktopostgres registered now, so this script must
     # exist after a build — fail loudly if it doesn't.
-    local _init_script="$ERB_DOMAIN_DIR/effortless-postgres/init-db.sh"
+    local _init_script="$ERB_DOMAIN_DIR/postgres-bootstrap/init-db.sh"
     if [ ! -f "$_init_script" ]; then
         echo -e "${RED}FAIL: per-domain init-db.sh missing for '${_domain}'.${NC}"
         echo -e "${RED}Expected: ${_init_script}${NC}"
