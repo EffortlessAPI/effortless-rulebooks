@@ -125,12 +125,14 @@ def get_active_project_substrates(domain=None):
             #  below).
             substrate = rp.rsplit("/", 1)[-1] if rp else ""
 
-        # The Effortless-licensed transpilers write to /postgres, /effortless-xlsx,
-        # /entity-framework, but the conformance test runners live under the
-        # effortless-prefixed folders. Apply the small alias table.
+        # The Effortless-licensed transpilers write to per-domain folders like
+        # /postgres-bootstrap, /effortless-xlsx, /entity-framework, but the
+        # conformance test runners live under the effortless-prefixed folders
+        # in execution-substrates/. Apply the small alias table.
         EFFORTLESS_ALIASES = {
-            "postgres": "effortless-postgres",
-            "entity-framework": "effortless-entity-framework",
+            "postgres":           "effortless-postgres",   # legacy folder name
+            "postgres-bootstrap": "effortless-postgres",   # current folder name post rulebook-as-HEAD refactor
+            "entity-framework":   "effortless-entity-framework",
         }
         substrate = EFFORTLESS_ALIASES.get(substrate, substrate)
 
