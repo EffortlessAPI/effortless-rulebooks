@@ -68,7 +68,7 @@ Local JSON is the SSoT. Default behavior. Build downstream transpilers against t
 | 13 | `customer-fullname` | Y | ✅ | Clean build, exit 0. Reclassified to ERB-only this turn — no Airtable wiring at all. Postgres SQL + xlsx generated. |
 | 14 | `community-event-planner-demo` | Y | ✅ | Clean build, exit 0. DB `erb_community_event_planner_demo` (re)created, 12 tables. Full app project (server+web+walkthrough). |
 | 15 | `customer-crm-demo` | Y | ✅ | Clean build, exit 0. DB `erb_customer_crm_demo` (re)created via injected DROP+CREATE in init-db.sh. |
-| 16 | `effortless-banking-demo` | Y | ❓ | |
+| 16 | `effortless-banking-demo` | Y | 🟡 | DB `erb_effortless_banking_demo` (re)created with 20 tables. `rulebook-to-react` transpiler in `effortless.json` is misconfigured (no `-i` arg), produces "No rulebook JSON provided" error.txt. Exit 0 but React output empty. |
 | 17 | `fantasy-football-demo` | Y | ❓ | |
 | 18 | `gym-trainer-invoicing` | Y | ❓ | |
 | 19 | `intelligence-taxonomy-demo` | Y | ❓ | |

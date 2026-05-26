@@ -18,7 +18,9 @@
       "RelativePath": "/postgres",
       "CommandLine": "rulebook-to-postgres -i ../effortless-rulebook/effortless-banking-demo-rulebook.json",
       "IsDisabled": false,
-      "PinnedVersion": "v2026.05.09.1738"
+      "PinnedVersion": "v2026.05.09.1738",
+      "LastVersionUsed": "v2026.05.09.1738",
+      "LastUrl": "https://effortless-rulebook-to-postgres-v2026-05-09-1738-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     },
     {
       "IsSSoTTranspiler": false,
@@ -33,7 +35,9 @@
       "RelativePath": "",
       "CommandLine": "rulebook-to-react",
       "IsDisabled": false,
-      "PinnedVersion": "v2026.05.10.2256"
+      "PinnedVersion": "v2026.05.10.2256",
+      "LastVersionUsed": "v2026.05.10.2256",
+      "LastUrl": "https://effortless-rulebook-to-react-v2026-05-10-2256-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     }
   ]
 }
