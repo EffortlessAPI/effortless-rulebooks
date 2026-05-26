@@ -1,0 +1,293 @@
+{
+  "$schema": "https://example.com/cmcc-schema/v1",
+  "Name": "Expense Approval Demo",
+  "Description": "Expense approval tool for small teams. Employees submit reports of line items; totals/over-budget/escalation flags cascade automatically as data changes; managers see a real-time queue of reports needing action.",
+  "Employees": {
+    "Description": "Table: Employees — people who submit expense reports or review them.",
+    "schema": [
+      {
+        "name": "EmployeeId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Display name (FirstName + LastName).",
+        "formula": "={{FirstName}} & \" \" & {{LastName}}"
+      },
+      {
+        "name": "FirstName",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "LastName",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "EmailAddress",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Used as the click-to-login identity."
+      },
+      {
+        "name": "Role",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "employee | manager | finance"
+      },
+      {
+        "name": "BudgetLimit",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Per-report ceiling above which reports are flagged over-budget. Applies to submitters; reviewers (manager/finance) can be left null."
+      }
+    ],
+    "data": [
+      {
+        "EmployeeId": "alice-employee",
+        "FirstName": "Alice",
+        "LastName": "Anderson",
+        "EmailAddress": "alice@example.com",
+        "Role": "employee",
+        "BudgetLimit": 500,
+        "Name": "Alice Anderson"
+      },
+      {
+        "EmployeeId": "dave-employee",
+        "FirstName": "Dave",
+        "LastName": "Davies",
+        "EmailAddress": "dave@example.com",
+        "Role": "employee",
+        "BudgetLimit": 200,
+        "Name": "Dave Davies"
+      },
+      {
+        "EmployeeId": "bob-manager",
+        "FirstName": "Bob",
+        "LastName": "Burton",
+        "EmailAddress": "bob@example.com",
+        "Role": "manager",
+        "BudgetLimit": null,
+        "Name": "Bob Burton"
+      },
+      {
+        "EmployeeId": "carol-finance",
+        "FirstName": "Carol",
+        "LastName": "Chen",
+        "EmailAddress": "carol@example.com",
+        "Role": "finance",
+        "BudgetLimit": null,
+        "Name": "Carol Chen"
+      }
+    ]
+  },
+  "ExpenseReports": {
+    "Description": "Table: ExpenseReports — one submission, containing many line items.",
+    "schema": [
+      {
+        "name": "ExpenseReportId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Short title of the report."
+      },
+      {
+        "name": "Employee",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "RelatedTo": "Employees",
+        "isReversed": false,
+        "prefersSingleRecordLink": true,
+        "Description": "Submitter."
+      },
+      {
+        "name": "EmployeeName",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "formula": "=INDEX(Employees!{{Name}}, MATCH(ExpenseReports!{{Employee}}, Employees!{{EmployeeId}}, 0))"
+      },
+      {
+        "name": "EmployeeBudgetLimit",
+        "datatype": "number",
+        "type": "lookup",
+        "nullable": true,
+        "formula": "=INDEX(Employees!{{BudgetLimit}}, MATCH(ExpenseReports!{{Employee}}, Employees!{{EmployeeId}}, 0))"
+      },
+      {
+        "name": "ApprovalStatus",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "pending | approved | rejected"
+      },
+      {
+        "name": "TotalAmount",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Sum of all line-item amounts on this report.",
+        "formula": "=SUMIFS(ExpenseItems!{{Amount}}, ExpenseItems!{{ExpenseReport}}, ExpenseReports!{{ExpenseReportId}})"
+      },
+      {
+        "name": "IsOverBudget",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "True when TotalAmount exceeds the employee's BudgetLimit.",
+        "formula": "=IF(AND({{EmployeeBudgetLimit}}>0, {{TotalAmount}}>{{EmployeeBudgetLimit}}), TRUE, FALSE)"
+      },
+      {
+        "name": "IsApproved",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "True iff ApprovalStatus is 'approved'.",
+        "formula": "=IF({{ApprovalStatus}}=\"approved\", TRUE, FALSE)"
+      },
+      {
+        "name": "RequiresEscalation",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Over-budget AND not yet approved — manager's escalation queue.",
+        "formula": "=IF(AND({{IsOverBudget}}=TRUE, {{IsApproved}}=FALSE), TRUE, FALSE)"
+      }
+    ],
+    "data": [
+      {
+        "ExpenseReportId": "alice-nyc-client-visit",
+        "Name": "NYC Client Visit",
+        "Employee": "alice-employee",
+        "ApprovalStatus": "pending",
+        "EmployeeName": "Alice Anderson",
+        "EmployeeBudgetLimit": 500,
+        "TotalAmount": 695,
+        "IsOverBudget": true,
+        "IsApproved": false,
+        "RequiresEscalation": true
+      },
+      {
+        "ExpenseReportId": "alice-office-supplies",
+        "Name": "Office Supplies Q1",
+        "Employee": "alice-employee",
+        "ApprovalStatus": "approved",
+        "EmployeeName": "Alice Anderson",
+        "EmployeeBudgetLimit": 500,
+        "TotalAmount": 142,
+        "IsOverBudget": false,
+        "IsApproved": true,
+        "RequiresEscalation": false
+      },
+      {
+        "ExpenseReportId": "dave-team-lunch",
+        "Name": "Team Lunch",
+        "Employee": "dave-employee",
+        "ApprovalStatus": "pending",
+        "EmployeeName": "Dave Davies",
+        "EmployeeBudgetLimit": 200,
+        "TotalAmount": 87,
+        "IsOverBudget": false,
+        "IsApproved": false,
+        "RequiresEscalation": false
+      }
+    ]
+  },
+  "ExpenseItems": {
+    "Description": "Table: ExpenseItems — individual line items on a report.",
+    "schema": [
+      {
+        "name": "ExpenseItemId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Short description of the expense."
+      },
+      {
+        "name": "ExpenseReport",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "RelatedTo": "ExpenseReports",
+        "isReversed": false,
+        "prefersSingleRecordLink": true,
+        "Description": "Parent report."
+      },
+      {
+        "name": "Amount",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Dollar amount of this line item."
+      }
+    ],
+    "data": [
+      {
+        "ExpenseItemId": "alice-nyc-flight",
+        "Name": "Flight to NYC",
+        "ExpenseReport": "alice-nyc-client-visit",
+        "Amount": 425
+      },
+      {
+        "ExpenseItemId": "alice-nyc-hotel",
+        "Name": "Hotel (1 night)",
+        "ExpenseReport": "alice-nyc-client-visit",
+        "Amount": 185
+      },
+      {
+        "ExpenseItemId": "alice-nyc-dinner",
+        "Name": "Client Dinner",
+        "ExpenseReport": "alice-nyc-client-visit",
+        "Amount": 85
+      },
+      {
+        "ExpenseItemId": "alice-supplies-paper",
+        "Name": "Printer Paper",
+        "ExpenseReport": "alice-office-supplies",
+        "Amount": 42
+      },
+      {
+        "ExpenseItemId": "alice-supplies-toner",
+        "Name": "Toner Cartridge",
+        "ExpenseReport": "alice-office-supplies",
+        "Amount": 100
+      },
+      {
+        "ExpenseItemId": "dave-lunch-pizza",
+        "Name": "Pizza for team",
+        "ExpenseReport": "dave-team-lunch",
+        "Amount": 67
+      },
+      {
+        "ExpenseItemId": "dave-lunch-drinks",
+        "Name": "Drinks",
+        "ExpenseReport": "dave-team-lunch",
+        "Amount": 20
+      }
+    ]
+  }
+}

@@ -84,7 +84,7 @@ Local JSON is the SSoT. Default behavior. Build downstream transpilers against t
 
 | # | Project | Problem | Status | Decision needed |
 |---|---|---|---|---|
-| 25 | `expense-approval-demo` | No `effortless.json`, no rulebook. Only README. | ❌ | Scaffold from template, or delete. |
+| 25 | `expense-approval-demo` | (was: README-only, never initialized) | ✅ | Scaffolded this session: authored rulebook from README spec (3 entities, 3rd-order cascade), built clean. DB `erb_expense_approval_demo` with 4 employees, 3 reports, 7 items; cascade verified: NYC Client Visit ($695>$500) correctly flagged over-budget + escalated. |
 | 26 | `volunteer-shift-scheduler-demo` | No `effortless.json`, no rulebook. Has `.xlsx`, `schema/`, `server/`, `web/`. | ❌ | Generate rulebook from spec, or delete. |
 | 27 | `naked-claude-vs-effortless-claude` | Comparison harness, not an ontology. | ➖ | All 5 transpilers in `effortless.json` disabled this session — `effortless build` here is now a no-op (correct for a non-rulebook harness). |
 | 28 | `v3-nakedclaude-demo-naked` | Empty dir (only `.DS_Store`) — leftover from earlier cleanup. | ➖ | Deleted this session. |
