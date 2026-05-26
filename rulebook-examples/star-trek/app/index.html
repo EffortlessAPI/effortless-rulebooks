@@ -15,17 +15,29 @@
     }
     .container { max-width: 1400px; margin: 0 auto; }
     header {
-      text-align: center;
-      padding: 30px 0;
+      padding: 20px 0;
       border-bottom: 2px solid #00d4ff;
       margin-bottom: 30px;
     }
-    h1 { font-size: 2.5em; color: #00d4ff; text-shadow: 0 0 10px rgba(0, 212, 255, 0.5); }
-    .subtitle { color: #888; margin-top: 10px; }
+    h1 { font-size: 2.5em; color: #00d4ff; text-shadow: 0 0 10px rgba(0, 212, 255, 0.5); cursor: pointer; }
+    h1:hover { opacity: 0.8; }
+    .breadcrumb {
+      color: #888;
+      margin: 10px 0;
+      font-size: 0.9em;
+    }
+    .breadcrumb a {
+      color: #00d4ff;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .breadcrumb a:hover { text-decoration: underline; }
+    .breadcrumb span { margin: 0 5px; }
+
     .tabs {
       display: flex;
       gap: 10px;
-      margin-bottom: 20px;
+      margin: 20px 0;
       border-bottom: 1px solid #333;
     }
     .tab-btn {
@@ -43,9 +55,16 @@
       border-bottom-color: #00d4ff;
     }
     .tab-btn:hover { color: #00d4ff; }
-    .tab-content { display: none; }
-    .tab-content.active { display: block; }
+
+    .page { display: none; }
+    .page.active { display: block; }
+
     .content { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+    @media (max-width: 768px) {
+      .content { grid-template-columns: 1fr; }
+      h1 { font-size: 1.8em; }
+    }
+
     .panel {
       background: rgba(255, 255, 255, 0.05);
       border: 1px solid #00d4ff;
@@ -54,7 +73,12 @@
       backdrop-filter: blur(10px);
     }
     .panel h2 { color: #00d4ff; margin-bottom: 15px; font-size: 1.3em; }
-    .item-list { list-style: none; max-height: 500px; overflow-y: auto; }
+
+    .item-list {
+      list-style: none;
+      max-height: 600px;
+      overflow-y: auto;
+    }
     .item {
       padding: 12px;
       margin-bottom: 8px;
@@ -68,98 +92,217 @@
       background: rgba(0, 212, 255, 0.2);
       transform: translateX(5px);
     }
+    .item a {
+      color: inherit;
+      text-decoration: none;
+    }
     .item-name { font-weight: bold; color: #00d4ff; }
     .item-subtitle { font-size: 0.9em; color: #aaa; margin-top: 4px; }
     .item-stats { font-size: 0.85em; color: #666; margin-top: 4px; }
-    .details { margin-top: 20px; }
-    .detail-field { margin-bottom: 12px; }
-    .label { color: #00d4ff; font-weight: bold; }
-    .value { color: #ccc; margin-top: 4px; }
-    .sub-list { list-style: none; margin-top: 15px; }
-    .sub-item {
-      padding: 10px;
-      background: rgba(255, 255, 255, 0.03);
-      margin-bottom: 6px;
-      border-radius: 4px;
+
+    .details { line-height: 1.6; }
+    .detail-field { margin-bottom: 20px; }
+    .label { color: #00d4ff; font-weight: bold; font-size: 0.95em; }
+    .value { color: #ccc; margin-top: 6px; line-height: 1.5; }
+
+    .loading { text-align: center; color: #888; padding: 40px 20px; }
+    .error { color: #ff6b6b; padding: 15px; background: rgba(255, 107, 107, 0.1); border-radius: 4px; border-left: 3px solid #ff6b6b; }
+
+    .episode-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 15px;
+      margin-top: 15px;
+    }
+    .episode-card {
+      background: rgba(0, 212, 255, 0.05);
+      border: 1px solid #333;
+      border-radius: 6px;
+      padding: 12px;
       cursor: pointer;
-      border-left: 2px solid #666;
       transition: all 0.2s;
     }
-    .sub-item:hover {
-      background: rgba(0, 212, 255, 0.1);
-      border-left-color: #00d4ff;
+    .episode-card:hover {
+      border-color: #00d4ff;
+      background: rgba(0, 212, 255, 0.15);
     }
-    .sub-name { color: #00d4ff; font-weight: bold; }
-    .sub-desc { font-size: 0.85em; color: #888; margin-top: 2px; }
-    .loading { text-align: center; color: #888; padding: 20px; }
-    .error { color: #ff6b6b; padding: 10px; background: rgba(255, 107, 107, 0.1); border-radius: 4px; }
-    @media (max-width: 768px) {
-      .content { grid-template-columns: 1fr; }
-      h1 { font-size: 1.8em; }
-      .tabs { flex-wrap: wrap; }
-    }
+    .episode-num { color: #00d4ff; font-weight: bold; font-size: 0.9em; }
+    .episode-title { margin-top: 6px; font-size: 0.85em; }
+    .episode-date { color: #666; font-size: 0.8em; margin-top: 4px; }
   </style>
 </head>
 <body>
   <div class="container">
     <header>
-      <h1>🚀 Star Trek Explorer</h1>
-      <p class="subtitle">Browse TV series, movies, seasons, and episodes</p>
+      <h1 onclick="navigate('')">🚀 Star Trek Explorer</h1>
+      <div class="breadcrumb" id="breadcrumb"></div>
     </header>
 
-    <div class="tabs">
-      <button class="tab-btn active" onclick="switchTab('series')">Series</button>
-      <button class="tab-btn" onclick="switchTab('movies')">Movies</button>
-    </div>
-
-    <div id="series" class="tab-content active">
+    <!-- Home Page -->
+    <div id="home" class="page active">
       <div class="content">
         <div class="panel">
           <h2>Series</h2>
-          <div id="seriesList" class="loading">Loading series...</div>
+          <div id="seriesList" class="item-list loading">Loading...</div>
         </div>
         <div class="panel">
-          <h2>Details</h2>
-          <div id="seriesDetails" style="color: #888; text-align: center; padding: 40px 0;">Select a series to view details</div>
+          <h2>Movies</h2>
+          <div id="moviesList" class="item-list loading">Loading...</div>
         </div>
       </div>
     </div>
 
-    <div id="movies" class="tab-content">
-      <div class="content">
-        <div class="panel">
-          <h2>Movies</h2>
-          <div id="moviesList" class="loading">Loading movies...</div>
-        </div>
-        <div class="panel">
-          <h2>Movie Details</h2>
-          <div id="movieDetails" style="color: #888; text-align: center; padding: 40px 0;">Select a movie to view details</div>
-        </div>
+    <!-- Show Page -->
+    <div id="show-page" class="page">
+      <div class="tabs" id="showTabs">
+        <button class="tab-btn active" onclick="switchTab('show-overview')">Overview</button>
+        <button class="tab-btn" onclick="switchTab('show-seasons')">Seasons</button>
+      </div>
+
+      <div id="show-overview" class="tab-content active">
+        <div class="panel" id="showDetails"></div>
+      </div>
+
+      <div id="show-seasons" class="tab-content" style="display: none;">
+        <div class="panel" id="seasonsList"></div>
+      </div>
+    </div>
+
+    <!-- Season Page -->
+    <div id="season-page" class="page">
+      <div class="tabs" id="seasonTabs">
+        <button class="tab-btn active" onclick="switchTab('season-overview')">Overview</button>
+        <button class="tab-btn" onclick="switchTab('season-episodes')">Episodes</button>
+      </div>
+
+      <div id="season-overview" class="tab-content active">
+        <div class="panel" id="seasonDetails"></div>
+      </div>
+
+      <div id="season-episodes" class="tab-content" style="display: none;">
+        <div class="panel" id="episodesList"></div>
+      </div>
+    </div>
+
+    <!-- Episode Page -->
+    <div id="episode-page" class="page">
+      <div class="tabs" id="episodeTabs">
+        <button class="tab-btn active" onclick="switchTab('episode-plot')">Plot</button>
+        <button class="tab-btn" onclick="switchTab('episode-crew')">Cast & Crew</button>
+      </div>
+
+      <div id="episode-plot" class="tab-content active">
+        <div class="panel" id="episodeDetails"></div>
+      </div>
+
+      <div id="episode-crew" class="tab-content" style="display: none;">
+        <div class="panel" id="episodeCrew"></div>
+      </div>
+    </div>
+
+    <!-- Movie Page -->
+    <div id="movie-page" class="page">
+      <div class="tabs" id="movieTabs">
+        <button class="tab-btn active" onclick="switchTab('movie-overview')">Overview</button>
+        <button class="tab-btn" onclick="switchTab('movie-crew')">Cast & Crew</button>
+      </div>
+
+      <div id="movie-overview" class="tab-content active">
+        <div class="panel" id="movieDetails"></div>
+      </div>
+
+      <div id="movie-crew" class="tab-content" style="display: none;">
+        <div class="panel" id="movieCrew"></div>
       </div>
     </div>
   </div>
 
   <script>
-    const API_BASE = 'http://localhost:3000/api';
+    const API_BASE = `${window.location.protocol}//${window.location.host}/api`;
+    let currentRoute = '';
 
-    function switchTab(tabName) {
-      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-      document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-      document.getElementById(tabName).classList.add('active');
-      event.target.classList.add('active');
+    // Router
+    window.addEventListener('popstate', () => {
+      const path = window.location.pathname;
+      renderRoute(path);
+    });
 
-      if (tabName === 'movies' && document.getElementById('moviesList').textContent === 'Loading movies...') {
-        loadMovies();
-      } else if (tabName === 'series' && document.getElementById('seriesList').textContent === 'Loading series...') {
-        loadSeries();
+    function navigate(path) {
+      window.history.pushState({}, '', path || '/');
+      renderRoute(path || '');
+    }
+
+    function renderRoute(path) {
+      currentRoute = path;
+      hideBreadcrumb();
+      hideAllPages();
+      hideAllTabs();
+
+      if (!path || path === '/') {
+        document.getElementById('home').classList.add('active');
+        loadHome();
+      } else if (path.startsWith('/show/')) {
+        const match = path.match(/^\/show\/([^\/]+)/);
+        if (match) {
+          const showCode = match[1];
+          document.getElementById('show-page').classList.add('active');
+          loadShowPage(showCode);
+        }
+      } else if (path.startsWith('/show/') && path.includes('/season-')) {
+        const match = path.match(/^\/show\/([^\/]+)\/season-(\d+)/);
+        if (match) {
+          const [_, showCode, seasonNum] = match;
+          document.getElementById('season-page').classList.add('active');
+          loadSeasonPage(showCode, seasonNum);
+        }
+      } else if (path.startsWith('/show/') && path.includes('/episode-')) {
+        const match = path.match(/^\/show\/([^\/]+)\/season-(\d+)\/episode-(\d+)/);
+        if (match) {
+          const [_, showCode, seasonNum, episodeNum] = match;
+          document.getElementById('episode-page').classList.add('active');
+          loadEpisodePage(showCode, seasonNum, episodeNum);
+        }
+      } else if (path.startsWith('/movie/')) {
+        const match = path.match(/^\/movie\/([^\/]+)/);
+        if (match) {
+          const movieId = match[1];
+          document.getElementById('movie-page').classList.add('active');
+          loadMoviePage(movieId);
+        }
       }
     }
 
-    async function loadSeries() {
+    function hideAllPages() {
+      document.querySelectorAll('.page').forEach(el => el.classList.remove('active'));
+    }
+
+    function hideAllTabs() {
+      document.querySelectorAll('.tab-content').forEach(el => el.style.display = 'none');
+    }
+
+    function hideBreadcrumb() {
+      document.getElementById('breadcrumb').innerHTML = '';
+    }
+
+    function switchTab(tabId) {
+      const tabContent = document.querySelectorAll(`#${tabId.split('-')[0]}-page .tab-content`);
+      tabContent.forEach(el => el.style.display = 'none');
+      document.getElementById(tabId).style.display = 'block';
+
+      document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+      event.target.classList.add('active');
+    }
+
+    // Home page
+    async function loadHome() {
+      loadSeriesList();
+      loadMoviesList();
+    }
+
+    async function loadSeriesList() {
       try {
         const response = await fetch(`${API_BASE}/series`);
         const series = await response.json();
-
         const list = document.getElementById('seriesList');
         list.innerHTML = '';
 
@@ -167,31 +310,79 @@
           const item = document.createElement('div');
           item.className = 'item';
           item.innerHTML = `
-            <div class="item-name">${s.show_code}</div>
-            <div class="item-subtitle">${s.title}</div>
-            <div class="item-stats">${s.series_number ? 'Series ' + s.series_number : ''}</div>
+            <a href="#" onclick="navigate('/show/${s.show_code.toLowerCase()}'); return false;">
+              <div class="item-name">${s.show_code}</div>
+              <div class="item-subtitle">${s.title}</div>
+            </a>
           `;
-          item.onclick = () => showSeriesDetails(s);
           list.appendChild(item);
         });
       } catch (err) {
-        console.error('Error loading series:', err);
         document.getElementById('seriesList').innerHTML = '<div class="error">Failed to load series</div>';
       }
     }
 
-    async function showSeriesDetails(series) {
-      const details = document.getElementById('seriesDetails');
+    async function loadMoviesList() {
+      try {
+        const response = await fetch(`${API_BASE}/movies`);
+        const movies = await response.json();
+        const list = document.getElementById('moviesList');
+        list.innerHTML = '';
+
+        movies.forEach(m => {
+          const item = document.createElement('div');
+          item.className = 'item';
+          item.innerHTML = `
+            <a href="#" onclick="navigate('/movie/${m.movie_id}'); return false;">
+              <div class="item-name">${m.title}</div>
+              <div class="item-subtitle">${new Date(m.release_date).getFullYear()}</div>
+            </a>
+          `;
+          list.appendChild(item);
+        });
+      } catch (err) {
+        document.getElementById('moviesList').innerHTML = '<div class="error">Failed to load movies</div>';
+      }
+    }
+
+    // Show page
+    async function loadShowPage(showCode) {
+      const seriesId = await getSeriesIdByCode(showCode);
+      if (!seriesId) return;
+
+      const series = await fetchSeries(seriesId);
+      if (!series) return;
+
+      updateBreadcrumb(`<a href="" onclick="navigate(''); return false;">Home</a> <span>/</span> ${series.title}`);
+      loadShowDetails(series);
+      loadShowSeasons(seriesId);
+    }
+
+    async function getSeriesIdByCode(code) {
+      try {
+        const response = await fetch(`${API_BASE}/series`);
+        const series = await response.json();
+        const found = series.find(s => s.show_code.toLowerCase() === code.toLowerCase());
+        return found ? found.serie_id : null;
+      } catch (err) {
+        return null;
+      }
+    }
+
+    async function fetchSeries(seriesId) {
+      try {
+        const response = await fetch(`${API_BASE}/series/${seriesId}`);
+        return await response.json();
+      } catch (err) {
+        return null;
+      }
+    }
+
+    function loadShowDetails(series) {
+      const details = document.getElementById('showDetails');
       details.innerHTML = `
+        <h2>${series.title}</h2>
         <div class="details">
-          <div class="detail-field">
-            <div class="label">Code</div>
-            <div class="value">${series.show_code}</div>
-          </div>
-          <div class="detail-field">
-            <div class="label">Title</div>
-            <div class="value">${series.title}</div>
-          </div>
           <div class="detail-field">
             <div class="label">Network</div>
             <div class="value">${series.network || 'Unknown'}</div>
@@ -205,95 +396,221 @@
             <div class="value">${series.description || 'No description'}</div>
           </div>
         </div>
-        <div id="seasonsList" class="loading" style="margin-top: 20px;">Loading seasons...</div>
       `;
-      loadSeasons(series.serie_id);
     }
 
-    async function loadSeasons(seriesId) {
+    async function loadShowSeasons(seriesId) {
       try {
         const response = await fetch(`${API_BASE}/series/${seriesId}/seasons`);
         const seasons = await response.json();
-
         const list = document.getElementById('seasonsList');
-        list.innerHTML = '';
+        list.innerHTML = '<h2>Seasons</h2>';
 
         if (seasons.length === 0) {
-          list.innerHTML = '<div style="color: #666;">No seasons found</div>';
+          list.innerHTML += '<p style="color: #666;">No seasons found</p>';
           return;
         }
 
+        const grid = document.createElement('div');
+        grid.className = 'episode-grid';
         seasons.forEach(s => {
-          const item = document.createElement('div');
-          item.className = 'sub-item';
-          item.innerHTML = `
-            <div class="sub-name">Season ${s.season_number}</div>
-            <div class="sub-desc">${s.title || ''} • ${s.episode_count} episodes</div>
+          const card = document.createElement('div');
+          card.className = 'episode-card';
+          card.innerHTML = `
+            <a href="#" onclick="navigate('/show/${currentRoute.split('/')[2]}/season-${s.season_number}'); return false;" style="text-decoration: none; color: inherit;">
+              <div class="episode-num">Season ${s.season_number}</div>
+              <div class="episode-title">${s.title || ''}</div>
+              <div class="episode-date">${s.episode_count} episodes</div>
+            </a>
           `;
-          item.onclick = () => loadEpisodes(s.season_id);
-          list.appendChild(item);
+          grid.appendChild(card);
         });
+        list.appendChild(grid);
       } catch (err) {
-        console.error('Error loading seasons:', err);
         document.getElementById('seasonsList').innerHTML = '<div class="error">Failed to load seasons</div>';
       }
     }
 
-    async function loadEpisodes(seasonId) {
+    // Season page
+    async function loadSeasonPage(showCode, seasonNum) {
+      const seriesId = await getSeriesIdByCode(showCode);
+      if (!seriesId) return;
+
+      const seasons = await fetchSeasons(seriesId);
+      const season = seasons.find(s => s.season_number === parseInt(seasonNum));
+      if (!season) return;
+
+      const series = await fetchSeries(seriesId);
+      updateBreadcrumb(`
+        <a href="" onclick="navigate(''); return false;">Home</a> <span>/</span>
+        <a href="#" onclick="navigate('/show/${showCode}'); return false;">${series.title}</a> <span>/</span>
+        Season ${seasonNum}
+      `);
+
+      loadSeasonDetails(season, series);
+      loadSeasonEpisodes(season);
+    }
+
+    async function fetchSeasons(seriesId) {
       try {
-        const response = await fetch(`${API_BASE}/seasons/${seasonId}/episodes`);
-        const episodes = await response.json();
-
-        const list = document.getElementById('seasonsList');
-        list.innerHTML = '<div class="label" style="margin-bottom: 10px;">Episodes:</div>';
-
-        episodes.forEach(ep => {
-          const item = document.createElement('div');
-          item.className = 'sub-item';
-          item.innerHTML = `
-            <div class="sub-name">Ep ${ep.episode_number}: ${ep.title || 'Untitled'}</div>
-            <div class="sub-desc">${ep.airdate ? new Date(ep.airdate).toLocaleDateString() : 'N/A'}</div>
-          `;
-          list.appendChild(item);
-        });
+        const response = await fetch(`${API_BASE}/series/${seriesId}/seasons`);
+        return await response.json();
       } catch (err) {
-        console.error('Error loading episodes:', err);
+        return [];
       }
     }
 
-    async function loadMovies() {
-      try {
-        const response = await fetch(`${API_BASE}/movies`);
-        const movies = await response.json();
-
-        const list = document.getElementById('moviesList');
-        list.innerHTML = '';
-
-        movies.forEach(m => {
-          const item = document.createElement('div');
-          item.className = 'item';
-          item.innerHTML = `
-            <div class="item-name">${m.title}</div>
-            <div class="item-subtitle">Released ${new Date(m.release_date).getFullYear()}</div>
-            <div class="item-stats">${m.runtime_minutes} min • Box Office: $${(m.box_office / 1000000).toFixed(1)}M</div>
-          `;
-          item.onclick = () => showMovieDetails(m);
-          list.appendChild(item);
-        });
-      } catch (err) {
-        console.error('Error loading movies:', err);
-        document.getElementById('moviesList').innerHTML = '<div class="error">Failed to load movies</div>';
-      }
-    }
-
-    async function showMovieDetails(movie) {
-      const details = document.getElementById('movieDetails');
+    function loadSeasonDetails(season, series) {
+      const details = document.getElementById('seasonDetails');
       details.innerHTML = `
+        <h2>${series.title} - Season ${season.season_number}</h2>
         <div class="details">
           <div class="detail-field">
             <div class="label">Title</div>
-            <div class="value">${movie.title}</div>
+            <div class="value">${season.title || 'Season ' + season.season_number}</div>
           </div>
+          <div class="detail-field">
+            <div class="label">Episodes</div>
+            <div class="value">${season.episode_count} episodes</div>
+          </div>
+          <div class="detail-field">
+            <div class="label">Air Dates</div>
+            <div class="value">
+              ${season.start_airdate ? new Date(season.start_airdate).toLocaleDateString() : 'Unknown'} -
+              ${season.end_airdate ? new Date(season.end_airdate).toLocaleDateString() : 'Unknown'}
+            </div>
+          </div>
+          <div class="detail-field">
+            <div class="label">Description</div>
+            <div class="value">${season.description || 'No description'}</div>
+          </div>
+        </div>
+      `;
+    }
+
+    async function loadSeasonEpisodes(season) {
+      try {
+        const response = await fetch(`${API_BASE}/seasons/${season.season_id}/episodes`);
+        const episodes = await response.json();
+        const list = document.getElementById('episodesList');
+        list.innerHTML = '<h2>Episodes</h2>';
+
+        const grid = document.createElement('div');
+        grid.className = 'episode-grid';
+        episodes.forEach(ep => {
+          const card = document.createElement('div');
+          card.className = 'episode-card';
+          const showCode = currentRoute.split('/')[2];
+          card.innerHTML = `
+            <a href="#" onclick="navigate('/show/${showCode}/season-${season.season_number}/episode-${ep.episode_number}'); return false;" style="text-decoration: none; color: inherit;">
+              <div class="episode-num">Ep ${ep.episode_number}</div>
+              <div class="episode-title">${ep.title || 'Untitled'}</div>
+              <div class="episode-date">${ep.airdate ? new Date(ep.airdate).toLocaleDateString() : 'N/A'}</div>
+            </a>
+          `;
+          grid.appendChild(card);
+        });
+        list.appendChild(grid);
+      } catch (err) {
+        document.getElementById('episodesList').innerHTML = '<div class="error">Failed to load episodes</div>';
+      }
+    }
+
+    // Episode page
+    async function loadEpisodePage(showCode, seasonNum, episodeNum) {
+      const seriesId = await getSeriesIdByCode(showCode);
+      if (!seriesId) return;
+
+      const series = await fetchSeries(seriesId);
+      const seasons = await fetchSeasons(seriesId);
+      const season = seasons.find(s => s.season_number === parseInt(seasonNum));
+      if (!season) return;
+
+      const response = await fetch(`${API_BASE}/seasons/${season.season_id}/episodes`);
+      const episodes = await response.json();
+      const episode = episodes.find(e => e.episode_number === parseInt(episodeNum));
+      if (!episode) return;
+
+      updateBreadcrumb(`
+        <a href="" onclick="navigate(''); return false;">Home</a> <span>/</span>
+        <a href="#" onclick="navigate('/show/${showCode}'); return false;">${series.title}</a> <span>/</span>
+        <a href="#" onclick="navigate('/show/${showCode}/season-${seasonNum}'); return false;">Season ${seasonNum}</a> <span>/</span>
+        Episode ${episodeNum}
+      `);
+
+      loadEpisodeDetails(episode, series, season);
+      loadEpisodeCrew(episode);
+    }
+
+    function loadEpisodeDetails(episode, series, season) {
+      const details = document.getElementById('episodeDetails');
+      details.innerHTML = `
+        <h2>${series.title} - S${String(season.season_number).padStart(2, '0')}E${String(episode.episode_number).padStart(2, '0')}</h2>
+        <div class="details">
+          <div class="detail-field">
+            <div class="label">Episode Number</div>
+            <div class="value">${episode.episode_number}</div>
+          </div>
+          <div class="detail-field">
+            <div class="label">Air Date</div>
+            <div class="value">${episode.airdate ? new Date(episode.airdate).toLocaleDateString() : 'N/A'}</div>
+          </div>
+          <div class="detail-field">
+            <div class="label">Runtime</div>
+            <div class="value">${episode.runtime_minutes} minutes</div>
+          </div>
+          <div class="detail-field">
+            <div class="label">Plot</div>
+            <div class="value">${episode.description || 'No description available'}</div>
+          </div>
+          <div class="detail-field">
+            <div class="label">Writer</div>
+            <div class="value">${episode.writers || 'Unknown'}</div>
+          </div>
+          <div class="detail-field">
+            <div class="label">Director</div>
+            <div class="value">${episode.director || 'Unknown'}</div>
+          </div>
+        </div>
+      `;
+    }
+
+    function loadEpisodeCrew(episode) {
+      const crew = document.getElementById('episodeCrew');
+      crew.innerHTML = `
+        <h2>Cast & Crew</h2>
+        <div class="details">
+          <div class="detail-field">
+            <div class="label">Director</div>
+            <div class="value">${episode.director || 'Unknown'}</div>
+          </div>
+          <div class="detail-field">
+            <div class="label">Writer</div>
+            <div class="value">${episode.writers || 'Unknown'}</div>
+          </div>
+        </div>
+      `;
+    }
+
+    // Movie page
+    async function loadMoviePage(movieId) {
+      try {
+        const response = await fetch(`${API_BASE}/movies/${movieId}`);
+        const movie = await response.json();
+
+        updateBreadcrumb(`<a href="" onclick="navigate(''); return false;">Home</a> <span>/</span> ${movie.title}`);
+        loadMovieDetails(movie);
+        loadMovieCrew(movie);
+      } catch (err) {
+        document.getElementById('movieDetails').innerHTML = '<div class="error">Failed to load movie</div>';
+      }
+    }
+
+    function loadMovieDetails(movie) {
+      const details = document.getElementById('movieDetails');
+      details.innerHTML = `
+        <h2>${movie.title}</h2>
+        <div class="details">
           <div class="detail-field">
             <div class="label">Release Date</div>
             <div class="value">${new Date(movie.release_date).toLocaleDateString()}</div>
@@ -311,19 +628,32 @@
             <div class="value">$${(movie.box_office / 1000000).toFixed(1)}M</div>
           </div>
           <div class="detail-field">
-            <div class="label">Director</div>
-            <div class="value">${movie.director_name || 'Unknown'}</div>
-          </div>
-          <div class="detail-field">
-            <div class="label">Description</div>
-            <div class="value">${movie.description || 'No description'}</div>
+            <div class="label">Plot</div>
+            <div class="value">${movie.description || 'No description available'}</div>
           </div>
         </div>
       `;
     }
 
-    // Load series on page load
-    loadSeries();
+    function loadMovieCrew(movie) {
+      const crew = document.getElementById('movieCrew');
+      crew.innerHTML = `
+        <h2>Cast & Crew</h2>
+        <div class="details">
+          <div class="detail-field">
+            <div class="label">Director</div>
+            <div class="value">${movie.director_name || 'Unknown'}</div>
+          </div>
+        </div>
+      `;
+    }
+
+    function updateBreadcrumb(html) {
+      document.getElementById('breadcrumb').innerHTML = html;
+    }
+
+    // Initial load
+    renderRoute(window.location.pathname);
   </script>
 </body>
 </html>

@@ -5,12 +5,16 @@ set -e
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 APP_DIR="$PROJECT_ROOT/app"
 
+PORT=$((3140 + RANDOM % 1000))
+
 echo "Starting Star Trek Explorer..."
 echo
 
-# Kill any existing process on port 3000
-echo "Stopping any existing process on port 3000..."
-lsof -ti :3000 | xargs kill -9 2>/dev/null || true
+# Kill any existing Node processes
+echo "Stopping any existing processes..."
+pkill -f "npm start" 2>/dev/null || true
+pkill -f "node server.js" 2>/dev/null || true
+sleep 1
 echo
 
 # Ensure dependencies are installed
@@ -31,5 +35,6 @@ fi
 
 # Start the server
 cd "$APP_DIR"
-echo "Starting server on http://localhost:3000"
-npm start
+echo "Starting Star Trek Explorer on http://localhost:$PORT"
+echo
+APP_PORT=$PORT npm start
