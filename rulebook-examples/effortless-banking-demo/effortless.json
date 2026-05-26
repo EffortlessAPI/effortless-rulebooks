@@ -33,7 +33,7 @@
       "IsSSoTTranspiler": false,
       "Name": "rulebooktoreact",
       "RelativePath": "",
-      "CommandLine": "rulebook-to-react",
+      "CommandLine": "rulebook-to-react -i ./effortless-rulebook/effortless-banking-demo-rulebook.json",
       "IsDisabled": false,
       "PinnedVersion": "v2026.05.10.2256",
       "LastVersionUsed": "v2026.05.10.2256",
