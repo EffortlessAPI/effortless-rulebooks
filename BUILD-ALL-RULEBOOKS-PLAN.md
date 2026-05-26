@@ -52,7 +52,7 @@ Local JSON is the SSoT. Default behavior. Build downstream transpilers against t
 
 | # | Project | Base ID | Status | Notes |
 |---|---|---|---|---|
-| 5 | `acme-llc` | `appWrXPvXbkgQGOxt` | ❓ | The reference simplest case. |
+| 5 | `acme-llc` | `appWrXPvXbkgQGOxt` | ✅ | Clean build, exit 0. No init-db step → no DB side effect. |
 | 6 | `acme-corporation` | `appzkcmBFPWFGBtRo` | ❓ | Extended ACME. No postgres dir. |
 | 7 | `is-everything-a-language` | `appC8XTj95lubn6hz` | ❓ | Meta-ontology. No postgres dir. |
 | 8 | `jessica-advanced` | `appwN9EAp8IeIxM23` | ❓ | No postgres dir. |

@@ -107,8 +107,7 @@ def compute_all_calculated_fields(record: dict, entity_name: str = None) -> dict
     if entity_lower == 'customers':
         return compute_customers_fields(record)
     else:
-        # Unknown entity - return record unchanged (no error)
-        return dict(record)
+        raise KeyError(f"compute_all_calculated_fields called with unknown entity {entity_name!r}. "f"Known entities in this generated erb_calc.py: ['customers']. "f"Check that the rulebook used to generate this file matches the data being computed.")
 
 # =============================================================================
 # INDEX/MATCH LOOKUP INTERPRETER (PYTHON SIMULATOR — DO NOT CALL FROM OTHER SUBSTRATES)
@@ -150,16 +149,16 @@ def parse_sumifs_formula(formula: str) -> tuple:
 def _get_testing_dir(project_root: Path) -> Path:
     """Return the active domain's testing/ dir. ERB_TESTING_DIR is required.
 
-    The simulator must operate on the same domain the orchestrator chose;
-    there is no implicit per-substrate testing dir.
+    The injector runs at build time and must operate on the same domain the
+    orchestrator chose. There is no implicit per-substrate testing dir.
     """
     import os
     erb = os.environ.get("ERB_TESTING_DIR")
     if not erb:
         raise RuntimeError(
-            "ERB_TESTING_DIR is not set. python_only_erb_simulator must be "
-            "invoked by the orchestrator with ERB_TESTING_DIR pointing at the "
-            "active domain's testing/ directory."
+            "ERB_TESTING_DIR is not set. inject-into-python.py must be invoked "
+            "by the orchestrator with ERB_TESTING_DIR pointing at the active "
+            "domain's testing/ directory."
         )
     return Path(erb)
 
