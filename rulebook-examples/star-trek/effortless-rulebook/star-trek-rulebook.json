@@ -1,7 +1,7 @@
 {
   "$schema": "https://example.com/cmcc-schema/v1",
-  "Name": "DEMO: StarTrek",
-  "Description": "Rulebook generated from Airtable base 'DEMO: StarTrek'.",
+  "Name": "Star Trek",
+  "Description": "Aggregations over nested series \u2192 seasons \u2192 episodes (avg rating roll-ups). The canonical aggregation demo.",
   "Series": {
     "Description": "Table: Series",
     "schema": [

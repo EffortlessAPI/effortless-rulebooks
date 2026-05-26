@@ -87,7 +87,7 @@ Five ready-to-run domains show the same pattern across wildly different problems
 | Domain | Complexity | What it demonstrates |
 |---|---|---|
 | [acme-llc](rulebook-examples/acme-llc/) | **full demo** | **All 17 substrates proven conformant** — start here |
-| [effortless-banking-demo](rulebook-examples/effortless-banking-demo/) | advanced (in progress) | Loan origination, covenant monitoring, risk-grade migration, four-surface portal |
+| [effortless-banking](rulebook-examples/effortless-banking/) | advanced (in progress) | Loan origination, covenant monitoring, risk-grade migration, four-surface portal |
 | [jessica-basic](rulebook-examples/jessica-basic/) | moderate | Relationships, aggregations, role-agent separation |
 | [star-trek](rulebook-examples/star-trek/) | moderate | Hierarchical rollups, polymorphic foreign keys |
 | [is-everything-a-language](rulebook-examples/is-everything-a-language/) | philosophical | 8-predicate AND logic, formal argument modeling |

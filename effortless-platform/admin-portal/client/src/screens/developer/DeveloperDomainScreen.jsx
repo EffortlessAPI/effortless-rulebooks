@@ -34,9 +34,18 @@ export default function DeveloperDomainScreen({ screen, rulebook, projects }) {
   return (
     <>
       <ScreenHeader screen={screen} />
-      <div className="story-banner" style={{ borderLeftColor: "#b48cff" }}>
-        <b>{dom?.name || domain}</b> — <span className="muted">{tables.length} tables</span>
-        {dom?.description ? ` · ${dom.description}` : ""}
+      <div className="story-banner" style={{ borderLeftColor: "#b48cff", display: "flex", alignItems: "center", gap: 12 }}>
+        {dom?.logoUrl && (
+          <img
+            src={dom.logoUrl}
+            alt=""
+            style={{ width: 48, height: 48, borderRadius: 8, objectFit: "cover", flexShrink: 0 }}
+          />
+        )}
+        <div>
+          <b>{dom?.displayName || dom?.name || domain}</b> — <span className="muted">{tables.length} tables</span>
+          {dom?.tagline ? ` · ${dom.tagline}` : (dom?.description ? ` · ${dom.description}` : "")}
+        </div>
       </div>
 
       {groups.map((g) => (

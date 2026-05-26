@@ -91,14 +91,14 @@ To add a new domain/ontology to this hub:
 | `acme-llc` | Lean order-to-fulfillment, essential business rules |
 | `acme-corporation` | Full ACME variant — fuller schema |
 | `effortless-rulesbooks` | Meta-ontology: rulebooks about rulebooks |
-| `community-event-planner-demo` | Event scheduling, attendees, venues |
-| `customer-crm-demo` | Generic CRM: contacts, opportunities, pipeline |
-| `effortless-banking-demo` | Generic banking: accounts, transactions, ledger |
-| `fantasy-football-demo` | Leagues, teams, players, scoring rules |
+| `community-event-planner` | Event scheduling, attendees, venues |
+| `customer-crm` | Generic CRM: contacts, opportunities, pipeline |
+| `effortless-banking` | Generic banking: accounts, transactions, ledger |
+| `fantasy-football` | Leagues, teams, players, scoring rules |
 | `gym-trainer-invoicing` | Sessions, trainers, invoicing |
-| `intelligence-taxonomy-demo` | Taxonomy / classification modeling |
-| `jobsearch-rag` | Job-search domain (rulebook was at root pre-migration) |
-| `product-inventory-demo` | Products, SKUs, stock levels |
+| `intelligence-taxonomy` | Taxonomy / classification modeling |
+| `job-search-rag` | Job-search domain (rulebook was at root pre-migration) |
+| `product-inventory` | Products, SKUs, stock levels |
 | `therapist-helper-portal` | Therapy practice: clients, sessions, notes |
 | `wedding-seating-optimizer` | Guests, tables, constraint modeling |
 
@@ -107,9 +107,9 @@ To add a new domain/ontology to this hub:
 | Project | What It Demonstrates |
 |---------|----------------------|
 | `guessing-game` | Tiny game domain — minimal rulebook test |
-| `llm-enigma-test` | LLM-against-rulebook test (Mechanical Kitchen Timer) |
-| `v2-nakedclaude-demo` | Naked-Claude vs. Effortless-Claude — v2 |
-| `v3-nakedclaude-demo` | Naked-Claude vs. Effortless-Claude — v3 |
+| `mechanical-kitchen-timer` | LLM-against-rulebook test (Mechanical Kitchen Timer) |
+| `nakedclaude-v2` | Naked-Claude vs. Effortless-Claude — v2 |
+| `nakedclaude-v3` | Naked-Claude vs. Effortless-Claude — v3 |
 
 ### Different-shape projects (no rulebook — intentional)
 
@@ -117,10 +117,10 @@ These do **not** follow the canonical shape. Each has a `README.SHAPE-NOTE.md` e
 
 | Project | Why different |
 |---------|----------------|
-| `expense-approval-demo` | README-only spec; never initialized as ERB project |
+| `expense-approval` | README-only spec; never initialized as ERB project |
 | `volunteer-shift-scheduler-demo` | Naked-Claude project — xlsx + schema.mjs, no rulebook JSON |
 | `naked-claude-vs-effortless-claude` | Orchestration harness for the comparison experiment |
-| `v3-nakedclaude-demo-naked` | Naked-Claude baseline (control sample) for the v3 experiment |
+| `nakedclaude-v3-naked` | Naked-Claude baseline (control sample) for the v3 experiment |
 
 ## Philosophy
 

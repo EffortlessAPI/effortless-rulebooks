@@ -119,7 +119,7 @@ app.get('/api/export/xlsx', requireAuth, async (req, res) => {
 Set `PROJECT_NAME` in `start.sh`:
 
 ```bash
-export PROJECT_NAME="expense-approval-demo"
+export PROJECT_NAME="expense-approval"
 ```
 
 ## React download link

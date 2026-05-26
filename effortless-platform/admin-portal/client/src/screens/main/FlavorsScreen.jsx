@@ -78,17 +78,31 @@ export default function FlavorsScreen({ screen, projectRulebook, reload }) {
       <div className="cards" style={{ marginTop: 16 }}>
         {filtered.map((f) => {
           const tags = tagsForFlavor(f.FlavorId, flavorTags, rulebookTags);
+          const logoUrl = `/api/projects/${encodeURIComponent(f.ProjectSlug)}/logo.png`;
           return (
             <div key={f.FlavorId} className="card flavor-card">
-              <div style={{ display: "flex", flexWrap: "wrap", gap: 4, marginBottom: 8 }}>
-                {tags.map((t) => <TagChip key={t.TagId} tag={t} />)}
+              <div style={{ display: "flex", alignItems: "flex-start", gap: 12 }}>
+                <img
+                  src={logoUrl}
+                  alt=""
+                  onError={(e) => { e.currentTarget.style.visibility = "hidden"; }}
+                  style={{
+                    width: 56, height: 56, borderRadius: 10, objectFit: "cover",
+                    flexShrink: 0, background: "#f6f4ef",
+                  }}
+                />
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div style={{ display: "flex", flexWrap: "wrap", gap: 4, marginBottom: 6 }}>
+                    {tags.map((t) => <TagChip key={t.TagId} tag={t} />)}
+                  </div>
+                  <div className="big clickable" style={{ fontSize: 15 }}
+                       onClick={() => switchProject(f.ProjectSlug)}>
+                    {f.DisplayName}
+                  </div>
+                  <div className="sub">{f.Tagline || f.LearningFocus}</div>
+                </div>
               </div>
-              <div className="big clickable" style={{ fontSize: 15 }}
-                   onClick={() => switchProject(f.ProjectSlug)}>
-                {f.DisplayName}
-              </div>
-              <div className="sub">{f.LearningFocus}</div>
-              <div className="muted small" style={{ marginTop: 8 }}>
+              <div className="muted small" style={{ marginTop: 10 }}>
                 {f.EntityCount}e · {f.CalculatedCount}c · {f.AggregationCount}a · {f.LookupCount}l
                 &ensp;<span className="pill">{f.Complexity}</span>
               </div>

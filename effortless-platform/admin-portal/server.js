@@ -74,10 +74,36 @@ function activeProjectRoot() {
   return path.join(RULEBOOK_EXAMPLES, domain);
 }
 
+// Returns { <slug>: { DisplayName, Tagline, LogoPath } } from the meta-rulebook's
+// RulebookFlavors table. Read fresh on every call so portal restarts after
+// reconcileFlavors() see the new rows.
+function flavorsBySlug() {
+  try {
+    const proj = loadProjectRulebook();
+    const rows = proj?.RulebookFlavors?.data || [];
+    const out = {};
+    for (const r of rows) {
+      if (r.ProjectSlug) out[r.ProjectSlug] = r;
+    }
+    return out;
+  } catch {
+    return {};
+  }
+}
+
+function logoUrlForSlug(slug) {
+  const png = path.join(RULEBOOK_EXAMPLES, slug, "effortless-logo.png");
+  return fs.existsSync(png) ? `/api/projects/${encodeURIComponent(slug)}/logo.png` : null;
+}
+
 function listProjects() {
+  const flavors = flavorsBySlug();
   const out = [{
     id: "__top__",
     name: "ERB Orchestration (top-level)",
+    displayName: "ERB Orchestration (top-level)",
+    tagline: "The repo's top-level rulebook — describes ERB itself.",
+    logoUrl: null,
     rulebookPath: TOP_RULEBOOK,
     projectRoot: REPO_ROOT,
     description: "The repo's top-level rulebook — describes ERB itself.",
@@ -88,17 +114,20 @@ function listProjects() {
       if (!fs.statSync(dirPath).isDirectory()) continue;
       const candidate = path.join(dirPath, "effortless-rulebook", `${d}-rulebook.json`);
       if (!fs.existsSync(candidate)) continue;
-      let desc = "";
-      try {
-        const rb = JSON.parse(fs.readFileSync(candidate, "utf8"));
-        desc = rb.Description || rb.Name || "";
-      } catch {}
+      const flav = flavors[d];
+      // Canonical display name comes from RulebookFlavors; fall back to slug
+      // (don't read the rulebook again — Name/Description already mirror flavor).
+      const displayName = flav?.DisplayName || d;
+      const tagline = flav?.Tagline || flav?.LearningFocus || "";
       out.push({
         id: d,
-        name: d,
+        name: displayName,            // back-compat with existing UI that reads `name`
+        displayName,
+        tagline,
+        logoUrl: logoUrlForSlug(d),
         rulebookPath: candidate,
         projectRoot: dirPath,
-        description: desc,
+        description: tagline,         // back-compat
       });
     }
   }
@@ -558,6 +587,21 @@ app.get("/api/projects", (req, res) => {
     active: getActiveDomain(),
     projects: listProjects(),
   });
+});
+
+// Serve a demo's effortless-logo.png. 404 if the demo has no logo file.
+// Path is under /api/ so it doesn't collide with the SPA's static asset prefix.
+app.get("/api/projects/:id/logo.png", (req, res) => {
+  const id = req.params.id;
+  // Validate against the live project list — never serve arbitrary file paths.
+  if (!listProjects().find((p) => p.id === id)) {
+    return res.status(404).end();
+  }
+  const png = path.join(RULEBOOK_EXAMPLES, id, "effortless-logo.png");
+  if (!fs.existsSync(png)) return res.status(404).end();
+  res.setHeader("Cache-Control", "public, max-age=300");
+  res.setHeader("Content-Type", "image/png");
+  fs.createReadStream(png).pipe(res);
 });
 
 app.post("/api/projects/:id/activate", requireDeveloper, async (req, res) => {

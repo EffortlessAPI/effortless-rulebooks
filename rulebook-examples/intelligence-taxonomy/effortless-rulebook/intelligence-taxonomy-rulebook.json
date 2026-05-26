@@ -1,0 +1,340 @@
+{
+  "$schema": "https://example.com/cmcc-schema/v1",
+  "Name": "Taxonomy of Intelligence",
+  "Description": "Classifies intelligences (humans, animals, AI) by per-capability assessments through a multi-hop DAG.",
+  "Capabilities": {
+    "Description": "Cognitive capabilities being assessed. Tiered foundational/composite/emergent and weighted by importance.",
+    "schema": [
+      {
+        "name": "CapabilitiesId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Slug for the capability (e.g. 'reasoning'). First raw field is the PK."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "formula": "={{CapabilitiesId}}",
+        "Description": "Display name (derived from PK)."
+      },
+      {
+        "name": "Description",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Short prose describing the capability."
+      },
+      {
+        "name": "Tier",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Capability tier: foundational, composite, or emergent."
+      },
+      {
+        "name": "Weight",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Importance multiplier used when computing WeightedScore on each Assessment."
+      }
+    ],
+    "data": [
+      {
+        "CapabilitiesId": "memory",
+        "Description": "Storing, retaining, and recalling information across time.",
+        "Tier": "foundational",
+        "Weight": 1.0
+      },
+      {
+        "CapabilitiesId": "perception",
+        "Description": "Sensing the environment and interpreting raw input into structure.",
+        "Tier": "foundational",
+        "Weight": 1.0
+      },
+      {
+        "CapabilitiesId": "reasoning",
+        "Description": "Inference, deduction, and structured problem-solving.",
+        "Tier": "composite",
+        "Weight": 1.3
+      },
+      {
+        "CapabilitiesId": "creativity",
+        "Description": "Novel synthesis, divergent thinking, and open-ended generation.",
+        "Tier": "emergent",
+        "Weight": 1.5
+      }
+    ]
+  },
+  "Intelligences": {
+    "Description": "Agents being classified by the taxonomy. Each Intelligence's TaxonomyClass is derived from the rollup of its Assessments.",
+    "schema": [
+      {
+        "name": "IntelligencesId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Slug for the intelligence (e.g. 'human'). First raw field is the PK."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "formula": "={{IntelligencesId}}",
+        "Description": "Display name (derived from PK)."
+      },
+      {
+        "name": "Description",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Short prose describing what this intelligence is."
+      },
+      {
+        "name": "Substrate",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Substrate kind: biological, digital, or collective."
+      },
+      {
+        "name": "AssessmentCount",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": false,
+        "formula": "=COUNTIFS(Assessments!{{Intelligence}}, {{IntelligencesId}})",
+        "Description": "How many capabilities this intelligence has been assessed on."
+      },
+      {
+        "name": "TotalWeightedScore",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": false,
+        "formula": "=SUMIFS(Assessments!{{WeightedScore}}, Assessments!{{Intelligence}}, {{IntelligencesId}})",
+        "Description": "Sum of WeightedScore across all this intelligence's assessments. Second hop in the DAG."
+      },
+      {
+        "name": "TaxonomyClass",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "formula": "=IF({{TotalWeightedScore}}>=350, \"Generalist\", IF({{TotalWeightedScore}}>=220, \"Broad\", \"Narrow\"))",
+        "Description": "Taxonomic bucket derived from TotalWeightedScore. Third hop in the DAG."
+      }
+    ],
+    "data": [
+      {
+        "IntelligencesId": "human",
+        "Description": "A neurotypical human adult.",
+        "Substrate": "biological"
+      },
+      {
+        "IntelligencesId": "octopus",
+        "Description": "A cephalopod problem-solver with distributed cognition.",
+        "Substrate": "biological"
+      },
+      {
+        "IntelligencesId": "gpt-5",
+        "Description": "A large language model trained on broad text.",
+        "Substrate": "digital"
+      },
+      {
+        "IntelligencesId": "calculator",
+        "Description": "A pocket arithmetic device.",
+        "Substrate": "digital"
+      }
+    ]
+  },
+  "Assessments": {
+    "Description": "Per-capability scores for each intelligence. The junction table whose calculated WeightedScore feeds the rollup on Intelligences.",
+    "schema": [
+      {
+        "name": "AssessmentsId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Slug encoding the intelligence-capability pair (e.g. 'human-reasoning'). First raw field is the PK."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "formula": "={{AssessmentsId}}",
+        "Description": "Display name (derived from PK)."
+      },
+      {
+        "name": "Intelligence",
+        "datatype": "string",
+        "type": "relationship",
+        "RelatedTo": "Intelligences",
+        "nullable": false,
+        "Description": "FK to Intelligences. Holds the value of Intelligences.IntelligencesId."
+      },
+      {
+        "name": "Capability",
+        "datatype": "string",
+        "type": "relationship",
+        "RelatedTo": "Capabilities",
+        "nullable": false,
+        "Description": "FK to Capabilities. Holds the value of Capabilities.CapabilitiesId."
+      },
+      {
+        "name": "RawScore",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "User-editable assessment score from 0 to 100. Edit this in the UI to watch the cascade."
+      },
+      {
+        "name": "IntelligenceName",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "formula": "=INDEX(Intelligences!{{Name}}, MATCH({{Intelligence}}, Intelligences!{{IntelligencesId}}, 0))",
+        "Description": "Display name pulled from the related Intelligences row."
+      },
+      {
+        "name": "CapabilityName",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "formula": "=INDEX(Capabilities!{{Name}}, MATCH({{Capability}}, Capabilities!{{CapabilitiesId}}, 0))",
+        "Description": "Display name pulled from the related Capabilities row."
+      },
+      {
+        "name": "CapabilityTier",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "formula": "=INDEX(Capabilities!{{Tier}}, MATCH({{Capability}}, Capabilities!{{CapabilitiesId}}, 0))",
+        "Description": "Tier (foundational/composite/emergent) pulled from the related Capabilities row."
+      },
+      {
+        "name": "CapabilityWeight",
+        "datatype": "number",
+        "type": "lookup",
+        "nullable": true,
+        "formula": "=INDEX(Capabilities!{{Weight}}, MATCH({{Capability}}, Capabilities!{{CapabilitiesId}}, 0))",
+        "Description": "Importance multiplier pulled from the related Capabilities row."
+      },
+      {
+        "name": "WeightedScore",
+        "datatype": "number",
+        "type": "calculated",
+        "nullable": false,
+        "formula": "={{RawScore}}*{{CapabilityWeight}}",
+        "Description": "RawScore scaled by the capability's Weight. First hop in the DAG."
+      }
+    ],
+    "data": [
+      {
+        "AssessmentsId": "human-memory",
+        "Intelligence": "human",
+        "Capability": "memory",
+        "RawScore": 80
+      },
+      {
+        "AssessmentsId": "human-perception",
+        "Intelligence": "human",
+        "Capability": "perception",
+        "RawScore": 85
+      },
+      {
+        "AssessmentsId": "human-reasoning",
+        "Intelligence": "human",
+        "Capability": "reasoning",
+        "RawScore": 85
+      },
+      {
+        "AssessmentsId": "human-creativity",
+        "Intelligence": "human",
+        "Capability": "creativity",
+        "RawScore": 80
+      },
+      {
+        "AssessmentsId": "octopus-memory",
+        "Intelligence": "octopus",
+        "Capability": "memory",
+        "RawScore": 60
+      },
+      {
+        "AssessmentsId": "octopus-perception",
+        "Intelligence": "octopus",
+        "Capability": "perception",
+        "RawScore": 90
+      },
+      {
+        "AssessmentsId": "octopus-reasoning",
+        "Intelligence": "octopus",
+        "Capability": "reasoning",
+        "RawScore": 65
+      },
+      {
+        "AssessmentsId": "octopus-creativity",
+        "Intelligence": "octopus",
+        "Capability": "creativity",
+        "RawScore": 70
+      },
+      {
+        "AssessmentsId": "gpt-5-memory",
+        "Intelligence": "gpt-5",
+        "Capability": "memory",
+        "RawScore": 95
+      },
+      {
+        "AssessmentsId": "gpt-5-perception",
+        "Intelligence": "gpt-5",
+        "Capability": "perception",
+        "RawScore": 30
+      },
+      {
+        "AssessmentsId": "gpt-5-reasoning",
+        "Intelligence": "gpt-5",
+        "Capability": "reasoning",
+        "RawScore": 80
+      },
+      {
+        "AssessmentsId": "gpt-5-creativity",
+        "Intelligence": "gpt-5",
+        "Capability": "creativity",
+        "RawScore": 65
+      },
+      {
+        "AssessmentsId": "calculator-memory",
+        "Intelligence": "calculator",
+        "Capability": "memory",
+        "RawScore": 50
+      },
+      {
+        "AssessmentsId": "calculator-perception",
+        "Intelligence": "calculator",
+        "Capability": "perception",
+        "RawScore": 10
+      },
+      {
+        "AssessmentsId": "calculator-reasoning",
+        "Intelligence": "calculator",
+        "Capability": "reasoning",
+        "RawScore": 95
+      },
+      {
+        "AssessmentsId": "calculator-creativity",
+        "Intelligence": "calculator",
+        "Capability": "creativity",
+        "RawScore": 0
+      }
+    ]
+  },
+  "_meta": {
+    "_CMCC_Summary": "Hand-authored rulebook for a minimal taxonomy-of-intelligence demo.",
+    "_conversion_metadata": {
+      "tool_version": "demo-app-skill",
+      "export_mode": "hand_authored"
+    }
+  }
+}

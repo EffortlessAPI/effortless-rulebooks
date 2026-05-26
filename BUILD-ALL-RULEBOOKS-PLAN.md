@@ -39,10 +39,10 @@ For each project, read its `effortless.json`:
 
 | # | Project | Base ID | Status | Notes |
 |---|---|---|---|---|
-| 1 | `v1-nakedclaude-demo` | `appgjoEcFNxluhbvK` | ✅ | Fixed this session: neutralized stale 01b/02b/04b customize-*.sql files that referenced `app_users` + `owner_email` (entities removed from the rulebook). Now builds clean: 2 tables (Customers + ERBVersions). |
-| 2 | `v2-nakedclaude-demo` | `app7G5emeY7miM4WN` | ✅ | Clean build, exit 0. Airtable pull → SQL → DB `erb_v2_nakedclaude_demo` with 6 tables. CLAUDE.md banner flipped this session. |
-| 3 | `v3-nakedclaude-demo` | `appKLygCIXweUUKtM` | ✅ | Fixed this session: same as v1 — neutralized stale 01b/02b/04b customize-*.sql files. Now builds clean: 12 tables. |
-| 4 | `v4-nakedclaude-demo` | `appeUOAaOIdoqPSx3` | ✅ | Clean build, exit 0. Airtable pull → SQL → DB `erb_v4_nakedclaude_demo` with 26 tables. CLAUDE.md banner flipped this session. |
+| 1 | `nakedclaude-v1` | `appgjoEcFNxluhbvK` | ✅ | Fixed this session: neutralized stale 01b/02b/04b customize-*.sql files that referenced `app_users` + `owner_email` (entities removed from the rulebook). Now builds clean: 2 tables (Customers + ERBVersions). |
+| 2 | `nakedclaude-v2` | `app7G5emeY7miM4WN` | ✅ | Clean build, exit 0. Airtable pull → SQL → DB `erb_v2_nakedclaude_demo` with 6 tables. CLAUDE.md banner flipped this session. |
+| 3 | `nakedclaude-v3` | `appKLygCIXweUUKtM` | ✅ | Fixed this session: same as v1 — neutralized stale 01b/02b/04b customize-*.sql files. Now builds clean: 12 tables. |
+| 4 | `nakedclaude-v4` | `appeUOAaOIdoqPSx3` | ✅ | Clean build, exit 0. Airtable pull → SQL → DB `erb_v4_nakedclaude_demo` with 26 tables. CLAUDE.md banner flipped this session. |
 
 ### Group 2 — Rulebook-first (19)
 
@@ -66,15 +66,15 @@ Local JSON is the SSoT. Default behavior. Build downstream transpilers against t
 | # | Project | Has postgres? | Status | Notes |
 |---|---|---|---|---|
 | 13 | `customer-fullname` | Y | ✅ | Clean build, exit 0. Reclassified to ERB-only this turn — no Airtable wiring at all. Postgres SQL + xlsx generated. |
-| 14 | `community-event-planner-demo` | Y | ✅ | Clean build, exit 0. DB `erb_community_event_planner_demo` (re)created, 12 tables. Full app project (server+web+walkthrough). |
-| 15 | `customer-crm-demo` | Y | ✅ | Clean build, exit 0. DB `erb_customer_crm_demo` (re)created via injected DROP+CREATE in init-db.sh. |
-| 16 | `effortless-banking-demo` | Y | ✅ | Fixed this session: added `-i ./effortless-rulebook/effortless-banking-demo-rulebook.json` to `rulebook-to-react` CommandLine. React now generates the full backend/derived-sdk/ tree. DB 20 tables. |
-| 17 | `fantasy-football-demo` | Y | ✅ | Clean build, exit 0. DB `erb_fantasy_football_demo` (re)created, 12 tables. React explainer-dag generated. |
+| 14 | `community-event-planner` | Y | ✅ | Clean build, exit 0. DB `erb_community_event_planner_demo` (re)created, 12 tables. Full app project (server+web+walkthrough). |
+| 15 | `customer-crm` | Y | ✅ | Clean build, exit 0. DB `erb_customer_crm_demo` (re)created via injected DROP+CREATE in init-db.sh. |
+| 16 | `effortless-banking` | Y | ✅ | Fixed this session: added `-i ./effortless-rulebook/effortless-banking-rulebook.json` to `rulebook-to-react` CommandLine. React now generates the full backend/derived-sdk/ tree. DB 20 tables. |
+| 17 | `fantasy-football` | Y | ✅ | Clean build, exit 0. DB `erb_fantasy_football_demo` (re)created, 12 tables. React explainer-dag generated. |
 | 18 | `gym-trainer-invoicing` | Y | ✅ | Clean build, exit 0. DB `erb_gym_trainer_invoicing` (re)created, 10 tables. |
-| 19 | `intelligence-taxonomy-demo` | Y | ✅ | Clean build, exit 0. DB `erb_intelligence_taxonomy_demo` (re)created, 6 tables. Added missing `execute -exec ./init-db.sh` step to `effortless.json`. |
-| 20 | `jobsearch-rag` | Y | ✅ | Clean build, exit 0. DB `erb_jobsearch_rag` (re)created, 20 tables. Fixed: transpiler `-i` paths (missing `effortless-rulebook/` prefix), added missing `execute` step, chmod +x on init-db.sh. |
-| 21 | `llm-enigma-test` | Y | ✅ | Clean build, exit 0. DB `erb_llm_enigma_test` (re)created, 52 tables. Fixed: added missing `execute` step, re-injected DROP+CREATE in init-db.sh (had been clobbered by rulebook-to-postgres regen). |
-| 22 | `product-inventory-demo` | Y | ✅ | Clean build, exit 0. DB `erb_product_inventory_demo` (re)created, 6 tables. |
+| 19 | `intelligence-taxonomy` | Y | ✅ | Clean build, exit 0. DB `erb_intelligence_taxonomy_demo` (re)created, 6 tables. Added missing `execute -exec ./init-db.sh` step to `effortless.json`. |
+| 20 | `job-search-rag` | Y | ✅ | Clean build, exit 0. DB `erb_jobsearch_rag` (re)created, 20 tables. Fixed: transpiler `-i` paths (missing `effortless-rulebook/` prefix), added missing `execute` step, chmod +x on init-db.sh. |
+| 21 | `mechanical-kitchen-timer` | Y | ✅ | Clean build, exit 0. DB `erb_llm_enigma_test` (re)created, 52 tables. Fixed: added missing `execute` step, re-injected DROP+CREATE in init-db.sh (had been clobbered by rulebook-to-postgres regen). |
+| 22 | `product-inventory` | Y | ✅ | Clean build, exit 0. DB `erb_product_inventory_demo` (re)created, 6 tables. |
 | 23 | `therapist-helper-portal` | Y | ✅ | Clean build, exit 0. DB `erb_therapist_helper_portal` (re)created, 10 tables. |
 | 24 | `wedding-seating-optimizer` | Y | ✅ | Clean build, exit 0. DB `erb_wedding_seating_optimizer` (re)created, 8 tables. |
 
@@ -84,11 +84,11 @@ Local JSON is the SSoT. Default behavior. Build downstream transpilers against t
 
 | # | Project | Problem | Status | Decision needed |
 |---|---|---|---|---|
-| 25 | `expense-approval-demo` | (was: README-only, never initialized) | ✅ | Scaffolded this session: authored rulebook from README spec (3 entities, 3rd-order cascade), built clean. DB `erb_expense_approval_demo` with 4 employees, 3 reports, 7 items; cascade verified: NYC Client Visit ($695>$500) correctly flagged over-budget + escalated. |
+| 25 | `expense-approval` | (was: README-only, never initialized) | ✅ | Scaffolded this session: authored rulebook from README spec (3 entities, 3rd-order cascade), built clean. DB `erb_expense_approval_demo` with 4 employees, 3 reports, 7 items; cascade verified: NYC Client Visit ($695>$500) correctly flagged over-budget + escalated. |
 | 26 | `volunteer-shift-scheduler-demo` | Intentionally Naked-Claude per SHAPE-NOTE. | ➖ | Left intact (per SHAPE-NOTE: this is the counter-example). Sibling `volunteer-shift-scheduler/` (no `-demo` suffix) created this session as the ERB version. |
 | 26b | `volunteer-shift-scheduler` (NEW ERB sibling) | (created this session) | ✅ | Authored 4-entity rulebook (Events, Volunteers, Shifts, Assignments) from `../volunteer-shift-scheduler-demo/VOLUNTEER-SHIFT-SCHEDULER-SPEC.md`. Built clean: DB `erb_volunteer_shift_scheduler`, 8 tables, full cascade verified — per-shift coverage, per-volunteer load (under/ok/over), event A-F grade all computed correctly from raw inputs. |
 | 27 | `naked-claude-vs-effortless-claude` | Comparison harness, not an ontology. | ➖ | All 5 transpilers in `effortless.json` disabled this session — `effortless build` here is now a no-op (correct for a non-rulebook harness). |
-| 28 | `v3-nakedclaude-demo-naked` | Empty dir (only `.DS_Store`) — leftover from earlier cleanup. | ➖ | Deleted this session. |
+| 28 | `nakedclaude-v3-naked` | Empty dir (only `.DS_Store`) — leftover from earlier cleanup. | ➖ | Deleted this session. |
 
 ---
 
@@ -139,9 +139,9 @@ One commit per project, scoped to that project's directory + this doc's status u
 Rulebook-first projects first (no upstream-overwrite risk), Airtable-first last:
 
 1. **Group 2 — Registered-but-disabled (8):** `acme-llc`, `acme-corporation`, `jessica-basic`, `jessica-advanced`, `star-trek`, `is-everything-a-language`, `effortless-rulesbooks`, `guessing-game`
-2. **Group 2 — Not registered (12):** `customer-fullname`, `community-event-planner-demo`, `customer-crm-demo`, `effortless-banking-demo`, `fantasy-football-demo`, `gym-trainer-invoicing`, `intelligence-taxonomy-demo`, `jobsearch-rag`, `llm-enigma-test`, `product-inventory-demo`, `therapist-helper-portal`, `wedding-seating-optimizer`
-3. **Group 1 — Airtable-first (4):** `v1-nakedclaude-demo`, `v2-nakedclaude-demo`, `v3-nakedclaude-demo`, `v4-nakedclaude-demo`
-4. **Group 3 — decisions:** `expense-approval-demo`, `volunteer-shift-scheduler-demo`, `naked-claude-vs-effortless-claude`, `v3-nakedclaude-demo-naked`
+2. **Group 2 — Not registered (12):** `customer-fullname`, `community-event-planner`, `customer-crm`, `effortless-banking`, `fantasy-football`, `gym-trainer-invoicing`, `intelligence-taxonomy`, `job-search-rag`, `mechanical-kitchen-timer`, `product-inventory`, `therapist-helper-portal`, `wedding-seating-optimizer`
+3. **Group 1 — Airtable-first (4):** `nakedclaude-v1`, `nakedclaude-v2`, `nakedclaude-v3`, `nakedclaude-v4`
+4. **Group 3 — decisions:** `expense-approval`, `volunteer-shift-scheduler-demo`, `naked-claude-vs-effortless-claude`, `nakedclaude-v3-naked`
 
 ---
 

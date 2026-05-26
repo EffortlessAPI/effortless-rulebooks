@@ -70,8 +70,16 @@ export default function RoleTopBar({
       {showDomainBlock && (
         <div className="domain-block">
           <span className="domain-sep">›</span>
+          {activeProj?.logoUrl && (
+            <img
+              src={activeProj.logoUrl}
+              alt=""
+              className="domain-logo"
+              style={{ width: 28, height: 28, borderRadius: 6, objectFit: "cover" }}
+            />
+          )}
           <div className="domain-info">
-            <span className="domain-name">{activeProj?.name || activeDomain || "—"}</span>
+            <span className="domain-name">{activeProj?.displayName || activeProj?.name || activeDomain || "—"}</span>
             <select
               value={activeDomain || ""}
               onChange={switchDomain}
@@ -79,7 +87,7 @@ export default function RoleTopBar({
               aria-label="Switch domain"
             >
               {(projects?.projects || []).map((p) => (
-                <option key={p.id} value={p.id}>{p.name}</option>
+                <option key={p.id} value={p.id}>{p.displayName || p.name}</option>
               ))}
             </select>
           </div>

@@ -1,7 +1,7 @@
 {
   "$schema": "https://example.com/cmcc-schema/v1",
-  "Name": "ACME, LLC (template)",
-  "Description": "Rulebook generated from Airtable base \u0027ACME, LLC (template)\u0027.",
+  "Name": "ACME, LLC",
+  "Description": "Smallest viable rulebook with a calculated field \u2014 the \"Hello, formulas\" tutorial.",
   "Customers": {
     "Description": "Table: Customers",
     "schema": [
@@ -17,7 +17,7 @@
         "type": "calculated",
         "nullable": true,
         "Description": "Identifier for the customers.",
-        "formula": "=SUBSTITUTE({{EmailAddress}}, \u0022@\u0022, \u0022-\u0022)"
+        "formula": "=SUBSTITUTE({{EmailAddress}}, \"@\", \"-\")"
       },
       {
         "name": "EmailAddress",
@@ -46,7 +46,7 @@
         "type": "calculated",
         "nullable": true,
         "Description": "Full name is computed from the first and last name of the customer",
-        "formula": "={{LastName}} \u0026 \u0022, \u0022 \u0026 {{FirstName}}"
+        "formula": "={{LastName}} & \", \" & {{FirstName}}"
       }
     ],
     "data": [
@@ -208,7 +208,7 @@
     ]
   },
   "_meta": {
-    "_CMCC_Summary": "Airtable export with schema-first type mapping: Schemas, Data, Relationships (FK links), Lookups (INDEX/MATCH), Aggregations (SUMIFS/COUNTIFS/Rollups), and Calculated fields (formulas) in Excel dialect. Field types are determined from Airtable\u0027s schema metadata FIRST (no coercion); the build FAILS if metadata is unavailable rather than silently inferring from formula/data analysis.",
+    "_CMCC_Summary": "Airtable export with schema-first type mapping: Schemas, Data, Relationships (FK links), Lookups (INDEX/MATCH), Aggregations (SUMIFS/COUNTIFS/Rollups), and Calculated fields (formulas) in Excel dialect. Field types are determined from Airtable's schema metadata FIRST (no coercion); the build FAILS if metadata is unavailable rather than silently inferring from formula/data analysis.",
     "_conversion_metadata": {
       "source_base_id": "appWrXPvXbkgQGOxt",
       "table_count": 3,

@@ -1,9 +1,9 @@
 {
   "$schema": "https://example.com/cmcc-schema/v1",
   "Name": "Volunteer Shift Scheduler",
-  "Description": "Coordinate volunteers across event shifts. The live cascade: coordinator edits raw inputs (needed count, shift hours, required skill, volunteer reliability, assignments) → per-shift coverage status, per-volunteer load (under/ok/over), and an event-level A-F staffing grade all fall out automatically.",
+  "Description": "Coverage status, volunteer load (under/ok/over), and event-level A\u2013F staffing grade all fall out automatically.",
   "Events": {
-    "Description": "Table: Events — top-level container (a festival, food bank shift, conference, etc.).",
+    "Description": "Table: Events \u2014 top-level container (a festival, food bank shift, conference, etc.).",
     "schema": [
       {
         "name": "EventId",
@@ -89,7 +89,7 @@
     ]
   },
   "Volunteers": {
-    "Description": "Table: Volunteers — people available to be slotted into shifts.",
+    "Description": "Table: Volunteers \u2014 people available to be slotted into shifts.",
     "schema": [
       {
         "name": "VolunteerId",
@@ -129,7 +129,7 @@
         "datatype": "number",
         "type": "raw",
         "nullable": true,
-        "Description": "0..1 — coordinator's confidence the volunteer will show up. Drives per-shift coverage weighting."
+        "Description": "0..1 \u2014 coordinator's confidence the volunteer will show up. Drives per-shift coverage weighting."
       },
       {
         "name": "MaxHours",
@@ -181,7 +181,7 @@
         "FirstName": "Sam",
         "LastName": "Park",
         "EmailAddress": "sam@example.com",
-        "ReliabilityScore": 0.80,
+        "ReliabilityScore": 0.8,
         "MaxHours": 8,
         "Name": "Sam Park",
         "AssignmentCount": 3,
@@ -193,7 +193,7 @@
         "FirstName": "Jamie",
         "LastName": "Rivera",
         "EmailAddress": "jamie@example.com",
-        "ReliabilityScore": 0.90,
+        "ReliabilityScore": 0.9,
         "MaxHours": 12,
         "Name": "Jamie Rivera",
         "AssignmentCount": 1,
@@ -227,7 +227,7 @@
     ]
   },
   "Shifts": {
-    "Description": "Table: Shifts — a time block within an event needing N people with a required skill.",
+    "Description": "Table: Shifts \u2014 a time block within an event needing N people with a required skill.",
     "schema": [
       {
         "name": "ShiftId",
@@ -367,7 +367,7 @@
     ]
   },
   "Assignments": {
-    "Description": "Table: Assignments — a volunteer slotted into a shift. Join table between Volunteers and Shifts (ERB does not allow direct many-to-many).",
+    "Description": "Table: Assignments \u2014 a volunteer slotted into a shift. Join table between Volunteers and Shifts (ERB does not allow direct many-to-many).",
     "schema": [
       {
         "name": "AssignmentId",

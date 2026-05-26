@@ -1,7 +1,7 @@
 {
   "$schema": "https://example.com/cmcc-schema/v1",
-  "Name": "Effortlessly Invariant Rulesbooks (ERB) - Project Architecture",
-  "Description": "Top-level rulebook describing the ERB project itself: all moving parts, orchestration flows, substrates, and their interdependencies.",
+  "Name": "ERB Self-Describing Rulebook",
+  "Description": "The rulebook that describes the ERB project itself \u2014 the platform eating its own dog food.",
   "ProjectMetadata": {
     "Description": "Project overview",
     "schema": [
@@ -45,7 +45,7 @@
         "ProjectId": "erb-001",
         "Name": "Effortlessly Invariant Rulesbooks",
         "Purpose": "Multi-substrate code generation from declarative rulebooks",
-        "Architecture": "Airtable (UI) → effortless-rulebook.json (IR) → Substrates (Postgres, Python, Go, Excel, OWL, etc.)",
+        "Architecture": "Airtable (UI) \u2192 effortless-rulebook.json (IR) \u2192 Substrates (Postgres, Python, Go, Excel, OWL, etc.)",
         "RepositoryRoot": "effortlessly-invariant-rulesbooks/"
       }
     ]
@@ -475,7 +475,7 @@
         "datatype": "string",
         "type": "raw",
         "nullable": false,
-        "Description": "rulebook-examples/{domain}/ — each domain is a self-contained Effortless project"
+        "Description": "rulebook-examples/{domain}/ \u2014 each domain is a self-contained Effortless project"
       },
       {
         "name": "RulebookPath",
@@ -624,7 +624,7 @@
     "data": [
       {
         "FlowId": "flow-001",
-        "Name": "Standard Rulebook → Substrates",
+        "Name": "Standard Rulebook \u2192 Substrates",
         "Steps": "Load rulebook.json | Dispatch to all injectors | Generate substrate code | Package artifacts",
         "Triggers": "User selects option A in orchestrator menu",
         "Outputs": "Generated code in each execution-substrates/{tech}/ folder"

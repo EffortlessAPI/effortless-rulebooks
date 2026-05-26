@@ -59,5 +59,7 @@
         "LastName": "Jones"
       }
     ]
-  }
+  },
+  "Name": "Customer FullName",
+  "Description": "One entity, one calculated field (CONCAT(First,' ',Last)) \u2014 proves the toolchain end-to-end with no relations."
 }

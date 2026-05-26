@@ -27,8 +27,17 @@ export default function ViewerDomainOverviewScreen({ screen, rulebook, projects 
   return (
     <>
       <ScreenHeader screen={screen} />
-      <div className="story-banner" style={{ borderLeftColor: "#7280ad" }}>
-        <b>{dom?.name || domain}</b> — {dom?.description || "read-only view"}
+      <div className="story-banner" style={{ borderLeftColor: "#7280ad", display: "flex", alignItems: "center", gap: 12 }}>
+        {dom?.logoUrl && (
+          <img
+            src={dom.logoUrl}
+            alt=""
+            style={{ width: 48, height: 48, borderRadius: 8, objectFit: "cover", flexShrink: 0 }}
+          />
+        )}
+        <div>
+          <b>{dom?.displayName || dom?.name || domain}</b> — {dom?.tagline || dom?.description || "read-only view"}
+        </div>
       </div>
 
       <div className="cards">

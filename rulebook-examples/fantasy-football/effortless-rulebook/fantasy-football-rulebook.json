@@ -1,0 +1,1058 @@
+{
+  "$schema": "https://example.com/cmcc-schema/v1",
+  "Name": "Fantasy Football",
+  "Description": "Multi-hop DAG: raw player stats \u2192 roster aggregations \u2192 matchup scoring \u2192 standings & seeding.",
+  "DevUsers": {
+    "Description": "Table: DevUsers",
+    "schema": [
+      {
+        "name": "Email",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "User email (also PK)"
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "Display name",
+        "formula": "={{Email}}"
+      },
+      {
+        "name": "Role",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "commissioner, owner, or spectator"
+      }
+    ],
+    "data": [
+      {
+        "Email": "commissioner@league.local",
+        "Role": "commissioner"
+      },
+      {
+        "Email": "owner@league.local",
+        "Role": "owner"
+      },
+      {
+        "Email": "spectator@league.local",
+        "Role": "spectator"
+      }
+    ]
+  },
+  "Players": {
+    "Description": "Table: Players",
+    "schema": [
+      {
+        "name": "PlayerId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Player slug (PK)"
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "Display name",
+        "formula": "={{PlayerId}}"
+      },
+      {
+        "name": "Position",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "QB, RB, WR, TE"
+      },
+      {
+        "name": "PassingYards",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Season passing yards"
+      },
+      {
+        "name": "PassingTouchdowns",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Season passing TDs"
+      },
+      {
+        "name": "Interceptions",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Season INTs"
+      },
+      {
+        "name": "RushingYards",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Season rushing yards"
+      },
+      {
+        "name": "RushingTouchdowns",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Season rushing TDs"
+      },
+      {
+        "name": "Receptions",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Season receptions"
+      },
+      {
+        "name": "ReceivedYards",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Season receiving yards"
+      },
+      {
+        "name": "ReceivedTouchdowns",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Season receiving TDs"
+      },
+      {
+        "name": "TotalTouchdowns",
+        "datatype": "integer",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "Sum of all TDs",
+        "formula": "={{PassingTouchdowns}} + {{RushingTouchdowns}} + {{ReceivedTouchdowns}}"
+      },
+      {
+        "name": "ProjectedScore",
+        "datatype": "number",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "Calculated fantasy points",
+        "formula": "=ROUND(({{PassingYards}} / 25) + ({{TotalTouchdowns}} * 6) - ({{Interceptions}} * 2), 2)"
+      }
+    ],
+    "data": [
+      {
+        "PlayerId": "patrick-mahomes",
+        "Position": "QB",
+        "PassingYards": 5500,
+        "PassingTouchdowns": 48,
+        "Interceptions": 8,
+        "RushingYards": 510,
+        "RushingTouchdowns": 3,
+        "Receptions": 0,
+        "ReceivedYards": 0,
+        "ReceivedTouchdowns": 0
+      },
+      {
+        "PlayerId": "travis-kelce",
+        "Position": "TE",
+        "PassingYards": 0,
+        "PassingTouchdowns": 0,
+        "Interceptions": 0,
+        "RushingYards": 0,
+        "RushingTouchdowns": 0,
+        "Receptions": 110,
+        "ReceivedYards": 1200,
+        "ReceivedTouchdowns": 12
+      },
+      {
+        "PlayerId": "christian-mccaffrey",
+        "Position": "RB",
+        "PassingYards": 0,
+        "PassingTouchdowns": 0,
+        "Interceptions": 0,
+        "RushingYards": 1500,
+        "RushingTouchdowns": 15,
+        "Receptions": 90,
+        "ReceivedYards": 650,
+        "ReceivedTouchdowns": 3
+      },
+      {
+        "PlayerId": "jalen-hurts",
+        "Position": "QB",
+        "PassingYards": 3800,
+        "PassingTouchdowns": 33,
+        "Interceptions": 5,
+        "RushingYards": 920,
+        "RushingTouchdowns": 14,
+        "Receptions": 0,
+        "ReceivedYards": 0,
+        "ReceivedTouchdowns": 0
+      },
+      {
+        "PlayerId": "saquon-barkley",
+        "Position": "RB",
+        "PassingYards": 0,
+        "PassingTouchdowns": 0,
+        "Interceptions": 0,
+        "RushingYards": 2100,
+        "RushingTouchdowns": 14,
+        "Receptions": 60,
+        "ReceivedYards": 420,
+        "ReceivedTouchdowns": 2
+      },
+      {
+        "PlayerId": "ja-marr-chase",
+        "Position": "WR",
+        "PassingYards": 0,
+        "PassingTouchdowns": 0,
+        "Interceptions": 0,
+        "RushingYards": 0,
+        "RushingTouchdowns": 0,
+        "Receptions": 110,
+        "ReceivedYards": 1300,
+        "ReceivedTouchdowns": 8
+      },
+      {
+        "PlayerId": "josh-allen",
+        "Position": "QB",
+        "PassingYards": 4500,
+        "PassingTouchdowns": 26,
+        "Interceptions": 8,
+        "RushingYards": 500,
+        "RushingTouchdowns": 12,
+        "Receptions": 0,
+        "ReceivedYards": 0,
+        "ReceivedTouchdowns": 0
+      },
+      {
+        "PlayerId": "derrick-henry",
+        "Position": "RB",
+        "PassingYards": 0,
+        "PassingTouchdowns": 0,
+        "Interceptions": 0,
+        "RushingYards": 1450,
+        "RushingTouchdowns": 14,
+        "Receptions": 30,
+        "ReceivedYards": 200,
+        "ReceivedTouchdowns": 0
+      },
+      {
+        "PlayerId": "tyreek-hill",
+        "Position": "WR",
+        "PassingYards": 0,
+        "PassingTouchdowns": 0,
+        "Interceptions": 0,
+        "RushingYards": 150,
+        "RushingTouchdowns": 0,
+        "Receptions": 115,
+        "ReceivedYards": 1750,
+        "ReceivedTouchdowns": 9
+      },
+      {
+        "PlayerId": "lamar-jackson",
+        "Position": "QB",
+        "PassingYards": 3650,
+        "PassingTouchdowns": 28,
+        "Interceptions": 10,
+        "RushingYards": 700,
+        "RushingTouchdowns": 5,
+        "Receptions": 0,
+        "ReceivedYards": 0,
+        "ReceivedTouchdowns": 0
+      },
+      {
+        "PlayerId": "davante-adams",
+        "Position": "WR",
+        "PassingYards": 0,
+        "PassingTouchdowns": 0,
+        "Interceptions": 0,
+        "RushingYards": 0,
+        "RushingTouchdowns": 0,
+        "Receptions": 125,
+        "ReceivedYards": 1300,
+        "ReceivedTouchdowns": 10
+      },
+      {
+        "PlayerId": "aj-brown",
+        "Position": "WR",
+        "PassingYards": 0,
+        "PassingTouchdowns": 0,
+        "Interceptions": 0,
+        "RushingYards": 0,
+        "RushingTouchdowns": 0,
+        "Receptions": 105,
+        "ReceivedYards": 1250,
+        "ReceivedTouchdowns": 11
+      },
+      {
+        "PlayerId": "bryce-young",
+        "Position": "QB",
+        "PassingYards": 2200,
+        "PassingTouchdowns": 14,
+        "Interceptions": 15,
+        "RushingYards": 180,
+        "RushingTouchdowns": 1,
+        "Receptions": 0,
+        "ReceivedYards": 0,
+        "ReceivedTouchdowns": 0
+      },
+      {
+        "PlayerId": "de-aaron-henry",
+        "Position": "RB",
+        "PassingYards": 0,
+        "PassingTouchdowns": 0,
+        "Interceptions": 0,
+        "RushingYards": 650,
+        "RushingTouchdowns": 4,
+        "Receptions": 25,
+        "ReceivedYards": 130,
+        "ReceivedTouchdowns": 0
+      },
+      {
+        "PlayerId": "ceedee-lamb",
+        "Position": "WR",
+        "PassingYards": 0,
+        "PassingTouchdowns": 0,
+        "Interceptions": 0,
+        "RushingYards": 100,
+        "RushingTouchdowns": 0,
+        "Receptions": 65,
+        "ReceivedYards": 750,
+        "ReceivedTouchdowns": 5
+      },
+      {
+        "PlayerId": "russell-wilson",
+        "Position": "QB",
+        "PassingYards": 3900,
+        "PassingTouchdowns": 24,
+        "Interceptions": 9,
+        "RushingYards": 250,
+        "RushingTouchdowns": 1,
+        "Receptions": 0,
+        "ReceivedYards": 0,
+        "ReceivedTouchdowns": 0
+      },
+      {
+        "PlayerId": "miles-sanders",
+        "Position": "RB",
+        "PassingYards": 0,
+        "PassingTouchdowns": 0,
+        "Interceptions": 0,
+        "RushingYards": 1100,
+        "RushingTouchdowns": 7,
+        "Receptions": 40,
+        "ReceivedYards": 280,
+        "ReceivedTouchdowns": 1
+      },
+      {
+        "PlayerId": "stefon-diggs",
+        "Position": "WR",
+        "PassingYards": 0,
+        "PassingTouchdowns": 0,
+        "Interceptions": 0,
+        "RushingYards": 0,
+        "RushingTouchdowns": 0,
+        "Receptions": 120,
+        "ReceivedYards": 1100,
+        "ReceivedTouchdowns": 8
+      }
+    ]
+  },
+  "Rosters": {
+    "Description": "Table: Rosters",
+    "schema": [
+      {
+        "name": "RosterId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Team slug (PK)"
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "Display name",
+        "formula": "={{RosterId}}"
+      },
+      {
+        "name": "Owner",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Owner email"
+      },
+      {
+        "name": "TotalPassingYards",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": false,
+        "Description": "Sum of QB passing yards on roster",
+        "formula": "=SUMIFS(RosterAssignments!{{PassingYards}}, RosterAssignments!{{Roster}}, {{RosterId}})"
+      },
+      {
+        "name": "TotalRushingYards",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": false,
+        "Description": "Sum of rushing yards on roster",
+        "formula": "=SUMIFS(RosterAssignments!{{RushingYards}}, RosterAssignments!{{Roster}}, {{RosterId}})"
+      },
+      {
+        "name": "TotalReceivingYards",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": false,
+        "Description": "Sum of receiving yards on roster",
+        "formula": "=SUMIFS(RosterAssignments!{{ReceivedYards}}, RosterAssignments!{{Roster}}, {{RosterId}})"
+      },
+      {
+        "name": "TotalTouchdowns",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": false,
+        "Description": "Sum of all TDs on roster",
+        "formula": "=SUMIFS(RosterAssignments!{{TotalTouchdowns}}, RosterAssignments!{{Roster}}, {{RosterId}})"
+      },
+      {
+        "name": "TotalInterceptions",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": false,
+        "Description": "Sum of INTs on roster",
+        "formula": "=SUMIFS(RosterAssignments!{{Interceptions}}, RosterAssignments!{{Roster}}, {{RosterId}})"
+      },
+      {
+        "name": "ProjectedScore",
+        "datatype": "number",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "Total roster fantasy points (2nd-order calc)",
+        "formula": "=ROUND(({{TotalPassingYards}} / 25) + ({{TotalRushingYards}} / 10) + ({{TotalReceivingYards}} / 10) + ({{TotalTouchdowns}} * 6) - ({{TotalInterceptions}} * 2), 2)"
+      }
+    ],
+    "data": [
+      {
+        "RosterId": "mahomes-mob",
+        "Owner": "commissioner@league.local"
+      },
+      {
+        "RosterId": "hurts-hustlers",
+        "Owner": "owner@league.local"
+      },
+      {
+        "RosterId": "allens-arsenal",
+        "Owner": "owner@league.local"
+      },
+      {
+        "RosterId": "davantes-dynasty",
+        "Owner": "owner@league.local"
+      },
+      {
+        "RosterId": "hurts-limit",
+        "Owner": "spectator@league.local"
+      },
+      {
+        "RosterId": "defense-wins",
+        "Owner": "spectator@league.local"
+      }
+    ]
+  },
+  "RosterAssignments": {
+    "Description": "Table: RosterAssignments (join table linking Players to Rosters)",
+    "schema": [
+      {
+        "name": "AssignmentId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Unique assignment ID (PK)"
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "Display name",
+        "formula": "={{AssignmentId}}"
+      },
+      {
+        "name": "Roster",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Roster FK",
+        "RelatedTo": "Rosters"
+      },
+      {
+        "name": "Player",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Player FK",
+        "RelatedTo": "Players"
+      },
+      {
+        "name": "PlayerName",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": false,
+        "Description": "Player display name",
+        "formula": "=INDEX(Players!{{Name}}, MATCH({{Player}}, Players!{{PlayerId}}, 0))"
+      },
+      {
+        "name": "Position",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": false,
+        "Description": "Player position",
+        "formula": "=INDEX(Players!{{Position}}, MATCH({{Player}}, Players!{{PlayerId}}, 0))"
+      },
+      {
+        "name": "PassingYards",
+        "datatype": "integer",
+        "type": "lookup",
+        "nullable": false,
+        "Description": "Player passing yards",
+        "formula": "=INDEX(Players!{{PassingYards}}, MATCH({{Player}}, Players!{{PlayerId}}, 0))"
+      },
+      {
+        "name": "PassingTouchdowns",
+        "datatype": "integer",
+        "type": "lookup",
+        "nullable": false,
+        "Description": "Player passing TDs",
+        "formula": "=INDEX(Players!{{PassingTouchdowns}}, MATCH({{Player}}, Players!{{PlayerId}}, 0))"
+      },
+      {
+        "name": "Interceptions",
+        "datatype": "integer",
+        "type": "lookup",
+        "nullable": false,
+        "Description": "Player INTs",
+        "formula": "=INDEX(Players!{{Interceptions}}, MATCH({{Player}}, Players!{{PlayerId}}, 0))"
+      },
+      {
+        "name": "RushingYards",
+        "datatype": "integer",
+        "type": "lookup",
+        "nullable": false,
+        "Description": "Player rushing yards",
+        "formula": "=INDEX(Players!{{RushingYards}}, MATCH({{Player}}, Players!{{PlayerId}}, 0))"
+      },
+      {
+        "name": "RushingTouchdowns",
+        "datatype": "integer",
+        "type": "lookup",
+        "nullable": false,
+        "Description": "Player rushing TDs",
+        "formula": "=INDEX(Players!{{RushingTouchdowns}}, MATCH({{Player}}, Players!{{PlayerId}}, 0))"
+      },
+      {
+        "name": "Receptions",
+        "datatype": "integer",
+        "type": "lookup",
+        "nullable": false,
+        "Description": "Player receptions",
+        "formula": "=INDEX(Players!{{Receptions}}, MATCH({{Player}}, Players!{{PlayerId}}, 0))"
+      },
+      {
+        "name": "ReceivedYards",
+        "datatype": "integer",
+        "type": "lookup",
+        "nullable": false,
+        "Description": "Player receiving yards",
+        "formula": "=INDEX(Players!{{ReceivedYards}}, MATCH({{Player}}, Players!{{PlayerId}}, 0))"
+      },
+      {
+        "name": "ReceivedTouchdowns",
+        "datatype": "integer",
+        "type": "lookup",
+        "nullable": false,
+        "Description": "Player receiving TDs",
+        "formula": "=INDEX(Players!{{ReceivedTouchdowns}}, MATCH({{Player}}, Players!{{PlayerId}}, 0))"
+      },
+      {
+        "name": "TotalTouchdowns",
+        "datatype": "integer",
+        "type": "lookup",
+        "nullable": false,
+        "Description": "Player total TDs",
+        "formula": "=INDEX(Players!{{TotalTouchdowns}}, MATCH({{Player}}, Players!{{PlayerId}}, 0))"
+      },
+      {
+        "name": "ProjectedScore",
+        "datatype": "number",
+        "type": "lookup",
+        "nullable": false,
+        "Description": "Player projected score",
+        "formula": "=INDEX(Players!{{ProjectedScore}}, MATCH({{Player}}, Players!{{PlayerId}}, 0))"
+      }
+    ],
+    "data": [
+      {
+        "AssignmentId": "mahomes-mob-qb",
+        "Roster": "mahomes-mob",
+        "Player": "patrick-mahomes"
+      },
+      {
+        "AssignmentId": "mahomes-mob-rb",
+        "Roster": "mahomes-mob",
+        "Player": "christian-mccaffrey"
+      },
+      {
+        "AssignmentId": "mahomes-mob-te",
+        "Roster": "mahomes-mob",
+        "Player": "travis-kelce"
+      },
+      {
+        "AssignmentId": "hurts-hustlers-qb",
+        "Roster": "hurts-hustlers",
+        "Player": "jalen-hurts"
+      },
+      {
+        "AssignmentId": "hurts-hustlers-rb",
+        "Roster": "hurts-hustlers",
+        "Player": "saquon-barkley"
+      },
+      {
+        "AssignmentId": "hurts-hustlers-wr",
+        "Roster": "hurts-hustlers",
+        "Player": "ja-marr-chase"
+      },
+      {
+        "AssignmentId": "allens-arsenal-qb",
+        "Roster": "allens-arsenal",
+        "Player": "josh-allen"
+      },
+      {
+        "AssignmentId": "allens-arsenal-rb",
+        "Roster": "allens-arsenal",
+        "Player": "derrick-henry"
+      },
+      {
+        "AssignmentId": "allens-arsenal-wr",
+        "Roster": "allens-arsenal",
+        "Player": "tyreek-hill"
+      },
+      {
+        "AssignmentId": "davantes-dynasty-qb",
+        "Roster": "davantes-dynasty",
+        "Player": "lamar-jackson"
+      },
+      {
+        "AssignmentId": "davantes-dynasty-wr1",
+        "Roster": "davantes-dynasty",
+        "Player": "davante-adams"
+      },
+      {
+        "AssignmentId": "davantes-dynasty-wr2",
+        "Roster": "davantes-dynasty",
+        "Player": "aj-brown"
+      },
+      {
+        "AssignmentId": "hurts-limit-qb",
+        "Roster": "hurts-limit",
+        "Player": "bryce-young"
+      },
+      {
+        "AssignmentId": "hurts-limit-rb",
+        "Roster": "hurts-limit",
+        "Player": "de-aaron-henry"
+      },
+      {
+        "AssignmentId": "hurts-limit-wr",
+        "Roster": "hurts-limit",
+        "Player": "ceedee-lamb"
+      },
+      {
+        "AssignmentId": "defense-wins-qb",
+        "Roster": "defense-wins",
+        "Player": "russell-wilson"
+      },
+      {
+        "AssignmentId": "defense-wins-rb",
+        "Roster": "defense-wins",
+        "Player": "miles-sanders"
+      },
+      {
+        "AssignmentId": "defense-wins-wr",
+        "Roster": "defense-wins",
+        "Player": "stefon-diggs"
+      }
+    ]
+  },
+  "Matchups": {
+    "Description": "Table: Matchups",
+    "schema": [
+      {
+        "name": "MatchupId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Unique matchup ID (PK)"
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "Display name",
+        "formula": "={{MatchupId}}"
+      },
+      {
+        "name": "Week",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Week number"
+      },
+      {
+        "name": "Team1",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "First roster",
+        "RelatedTo": "Rosters"
+      },
+      {
+        "name": "Team2",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "Second roster",
+        "RelatedTo": "Rosters"
+      },
+      {
+        "name": "Team1Score",
+        "datatype": "number",
+        "type": "lookup",
+        "nullable": false,
+        "Description": "Team1's projected score",
+        "formula": "=INDEX(Rosters!{{ProjectedScore}}, MATCH({{Team1}}, Rosters!{{RosterId}}, 0))"
+      },
+      {
+        "name": "Team2Score",
+        "datatype": "number",
+        "type": "lookup",
+        "nullable": false,
+        "Description": "Team2's projected score",
+        "formula": "=INDEX(Rosters!{{ProjectedScore}}, MATCH({{Team2}}, Rosters!{{RosterId}}, 0))"
+      },
+      {
+        "name": "Margin",
+        "datatype": "number",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "Team1 score minus Team2 score",
+        "formula": "={{Team1Score}} - {{Team2Score}}"
+      },
+      {
+        "name": "Winner",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "Winning roster ID",
+        "formula": "=IF({{Margin}} > 0, {{Team1}}, {{Team2}})"
+      },
+      {
+        "name": "Loser",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "Losing roster ID",
+        "formula": "=IF({{Margin}} > 0, {{Team2}}, {{Team1}})"
+      },
+      {
+        "name": "IsTieGame",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "True if scores are equal",
+        "formula": "={{Margin}} = 0"
+      }
+    ],
+    "data": [
+      {
+        "MatchupId": "week1-mob-hustlers",
+        "Week": 1,
+        "Team1": "mahomes-mob",
+        "Team2": "hurts-hustlers"
+      },
+      {
+        "MatchupId": "week1-arsenal-dynasty",
+        "Week": 1,
+        "Team1": "allens-arsenal",
+        "Team2": "davantes-dynasty"
+      },
+      {
+        "MatchupId": "week1-limit-wins",
+        "Week": 1,
+        "Team1": "hurts-limit",
+        "Team2": "defense-wins"
+      },
+      {
+        "MatchupId": "week2-hustlers-wins",
+        "Week": 2,
+        "Team1": "hurts-hustlers",
+        "Team2": "defense-wins"
+      },
+      {
+        "MatchupId": "week2-mob-arsenal",
+        "Week": 2,
+        "Team1": "mahomes-mob",
+        "Team2": "allens-arsenal"
+      },
+      {
+        "MatchupId": "week2-dynasty-limit",
+        "Week": 2,
+        "Team1": "davantes-dynasty",
+        "Team2": "hurts-limit"
+      },
+      {
+        "MatchupId": "week3-arsenal-mob",
+        "Week": 3,
+        "Team1": "allens-arsenal",
+        "Team2": "mahomes-mob"
+      },
+      {
+        "MatchupId": "week3-hustlers-dynasty",
+        "Week": 3,
+        "Team1": "hurts-hustlers",
+        "Team2": "davantes-dynasty"
+      },
+      {
+        "MatchupId": "week3-wins-limit",
+        "Week": 3,
+        "Team1": "defense-wins",
+        "Team2": "hurts-limit"
+      },
+      {
+        "MatchupId": "week4-mob-dynasty",
+        "Week": 4,
+        "Team1": "mahomes-mob",
+        "Team2": "davantes-dynasty"
+      },
+      {
+        "MatchupId": "week4-arsenal-wins",
+        "Week": 4,
+        "Team1": "allens-arsenal",
+        "Team2": "defense-wins"
+      },
+      {
+        "MatchupId": "week4-hustlers-limit",
+        "Week": 4,
+        "Team1": "hurts-hustlers",
+        "Team2": "hurts-limit"
+      },
+      {
+        "MatchupId": "week5-dynasty-wins",
+        "Week": 5,
+        "Team1": "davantes-dynasty",
+        "Team2": "defense-wins"
+      },
+      {
+        "MatchupId": "week5-limit-mob",
+        "Week": 5,
+        "Team1": "hurts-limit",
+        "Team2": "mahomes-mob"
+      },
+      {
+        "MatchupId": "week5-arsenal-hustlers",
+        "Week": 5,
+        "Team1": "allens-arsenal",
+        "Team2": "hurts-hustlers"
+      },
+      {
+        "MatchupId": "week6-mob-wins",
+        "Week": 6,
+        "Team1": "mahomes-mob",
+        "Team2": "defense-wins"
+      },
+      {
+        "MatchupId": "week6-hustlers-arsenal",
+        "Week": 6,
+        "Team1": "hurts-hustlers",
+        "Team2": "allens-arsenal"
+      },
+      {
+        "MatchupId": "week6-dynasty-limit",
+        "Week": 6,
+        "Team1": "davantes-dynasty",
+        "Team2": "hurts-limit"
+      }
+    ]
+  },
+  "Standings": {
+    "Description": "Table: Standings",
+    "schema": [
+      {
+        "name": "StandingId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Roster ID used as standing ID (PK)"
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "Roster name",
+        "formula": "=INDEX(Rosters!{{Name}}, MATCH({{StandingId}}, Rosters!{{RosterId}}, 0))"
+      },
+      {
+        "name": "Owner",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": false,
+        "Description": "Owner email",
+        "formula": "=INDEX(Rosters!{{Owner}}, MATCH({{StandingId}}, Rosters!{{RosterId}}, 0))"
+      },
+      {
+        "name": "Wins",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Count of matchups won"
+      },
+      {
+        "name": "Losses",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Count of matchups lost"
+      },
+      {
+        "name": "Ties",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Count of tied matchups"
+      },
+      {
+        "name": "WinPct",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Win percentage"
+      },
+      {
+        "name": "PointsFor",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Total points scored by this roster"
+      },
+      {
+        "name": "PointsAgainst",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Total points allowed"
+      },
+      {
+        "name": "SeedRank",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Playoff seed (manually set)"
+      },
+      {
+        "name": "PlayoffBound",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": false,
+        "Description": "True if seeded 1-6"
+      },
+      {
+        "name": "ChampsPath",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "If playoff-bound, path to championship"
+      }
+    ],
+    "data": [
+      {
+        "StandingId": "mahomes-mob",
+        "Wins": 6,
+        "Losses": 0,
+        "Ties": 0,
+        "WinPct": 1.0,
+        "PointsFor": 6456.0,
+        "PointsAgainst": 4727.0,
+        "SeedRank": 1,
+        "PlayoffBound": true
+      },
+      {
+        "StandingId": "hurts-hustlers",
+        "Wins": 5,
+        "Losses": 1,
+        "Ties": 0,
+        "WinPct": 0.8333,
+        "PointsFor": 6252.0,
+        "PointsAgainst": 4761.0,
+        "SeedRank": 2,
+        "PlayoffBound": true
+      },
+      {
+        "StandingId": "davantes-dynasty",
+        "Wins": 3,
+        "Losses": 3,
+        "Ties": 0,
+        "WinPct": 0.5,
+        "PointsFor": 4650.0,
+        "PointsAgainst": 4476.0,
+        "SeedRank": 3,
+        "PlayoffBound": true
+      },
+      {
+        "StandingId": "allens-arsenal",
+        "Wins": 2,
+        "Losses": 4,
+        "Ties": 0,
+        "WinPct": 0.3333,
+        "PointsFor": 5610.0,
+        "PointsAgainst": 5668.0,
+        "SeedRank": 4,
+        "PlayoffBound": true
+      },
+      {
+        "StandingId": "defense-wins",
+        "Wins": 2,
+        "Losses": 4,
+        "Ties": 0,
+        "WinPct": 0.3333,
+        "PointsFor": 3942.0,
+        "PointsAgainst": 4594.0,
+        "SeedRank": 5,
+        "PlayoffBound": true
+      },
+      {
+        "StandingId": "hurts-limit",
+        "Wins": 0,
+        "Losses": 6,
+        "Ties": 0,
+        "WinPct": 0.0,
+        "PointsFor": 2298.0,
+        "PointsAgainst": 4982.0,
+        "SeedRank": 6,
+        "PlayoffBound": true
+      }
+    ]
+  },
+  "_meta": {
+    "_CMCC_Summary": "Fantasy Football demo \u2014 rulebook-first, no Airtable. 6 entities, 4-hop DAG: raw player stats \u2192 roster aggregations \u2192 matchup scoring \u2192 standings/seeding.",
+    "_conversion_metadata": {
+      "source_type": "rulebook-first",
+      "table_count": 6,
+      "tool_version": "effortless-demo-app-1.0",
+      "primary_dag_chain": "Players (raw) \u2192 RosterAssignments (join) \u2192 Rosters (agg) \u2192 Matchups (lookup) \u2192 Standings (rank calc)",
+      "export_mode": "direct_authoring"
+    }
+  }
+}
