@@ -6,10 +6,10 @@
 -- ============================================================================
 
 -- ----------------------------------------------------------------------------
--- Customers: Table: Customers
+-- Customers: Seed data for Customers
 -- ----------------------------------------------------------------------------
 INSERT INTO customers (customer_id, email_address, first_name, last_name)
-VALUES ('jane-smith-email-com', 'jane.smith@email.com', 'Bobby', 'Smith') ON CONFLICT (customer_id) DO NOTHING;
+VALUES ('jane-smith-email-com', 'jane.smith@email.com', 'Bob', 'Smith') ON CONFLICT (customer_id) DO NOTHING;
 
 INSERT INTO customers (customer_id, email_address, first_name, last_name)
 VALUES ('john-doe-email-com', 'john.doe@email.com', 'Jimmy', 'Doe') ON CONFLICT (customer_id) DO NOTHING;

@@ -22,7 +22,6 @@ CREATE TABLE IF NOT EXISTS customers (
 ALTER TABLE customers ADD COLUMN IF NOT EXISTS email_address TEXT;                                  -- Thec ustomers email address
 ALTER TABLE customers ADD COLUMN IF NOT EXISTS first_name TEXT;                                     -- First Name of the customer - used to make the full name
 ALTER TABLE customers ADD COLUMN IF NOT EXISTS last_name TEXT;                                      -- Last Name of the customer - used to make the full name
-COMMENT ON TABLE customers IS 'Table: Customers';
 COMMENT ON COLUMN customers.email_address IS 'Thec ustomers email address';
 COMMENT ON COLUMN customers.first_name IS 'First Name of the customer - used to make the full name';
 COMMENT ON COLUMN customers.last_name IS 'Last Name of the customer - used to make the full name';

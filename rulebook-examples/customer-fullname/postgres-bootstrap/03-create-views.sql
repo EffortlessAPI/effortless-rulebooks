@@ -7,7 +7,7 @@
 -- ============================================================================
 
 -- ----------------------------------------------------------------------------
--- vw_customers: Table: Customers
+-- vw_customers: View for Customers
 -- Combines base table columns with calculated/lookup/aggregation fields.
 -- ----------------------------------------------------------------------------
 CREATE OR REPLACE VIEW vw_customers WITH (security_invoker = ON) AS
