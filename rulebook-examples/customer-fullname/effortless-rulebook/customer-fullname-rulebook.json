@@ -1,17 +1,63 @@
 {
   "Customers": {
     "schema": [
-      { "name": "CustomerId", "datatype": "string", "type": "raw" },
-      { "name": "Name", "datatype": "string", "type": "calculated", "Description": "Identifier for the customers.", "formula": "=SUBSTITUTE({{EmailAddress}}, \"@\", \"-\")" },
-      { "name": "EmailAddress", "datatype": "string", "type": "raw", "Description": "Thec ustomers email address" },
-      { "name": "FirstName", "datatype": "string", "type": "raw", "Description": "First Name of the customer - used to make the full name" },
-      { "name": "LastName", "datatype": "string", "type": "raw", "Description": "Last Name of the customer - used to make the full name" },
-      { "name": "FullName", "datatype": "string", "type": "calculated", "Description": "Full name is computed from the first and last name of the customer", "formula": "={{FirstName}} & \" \" & {{LastName}}" }
+      {
+        "name": "CustomerId",
+        "datatype": "string",
+        "type": "raw"
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "Description": "Identifier for the customers.",
+        "formula": "=SUBSTITUTE({{EmailAddress}}, \"@\", \"-\")"
+      },
+      {
+        "name": "EmailAddress",
+        "datatype": "string",
+        "type": "raw",
+        "Description": "Thec ustomers email address"
+      },
+      {
+        "name": "FirstName",
+        "datatype": "string",
+        "type": "raw",
+        "Description": "First Name of the customer - used to make the full name"
+      },
+      {
+        "name": "LastName",
+        "datatype": "string",
+        "type": "raw",
+        "Description": "Last Name of the customer - used to make the full name"
+      },
+      {
+        "name": "FullName",
+        "datatype": "string",
+        "type": "calculated",
+        "Description": "Full name is computed from the first and last name of the customer",
+        "formula": "={{FirstName}} & \" \" & {{LastName}}"
+      }
     ],
     "data": [
-      { "CustomerId": "jane-smith-email-com", "EmailAddress": "jane.smith@email.com", "FirstName": "Bob", "LastName": "Smith" },
-      { "CustomerId": "john-doe-email-com", "EmailAddress": "john.doe@email.com", "FirstName": "Jimmy", "LastName": "Doe" },
-      { "CustomerId": "emily-jones-email-com", "EmailAddress": "emily.jones@email.com", "FirstName": "Mary", "LastName": "Jones" }
+      {
+        "CustomerId": "jane-smith-email-com",
+        "EmailAddress": "jane.smith@email.com",
+        "FirstName": "Jane",
+        "LastName": "Smith"
+      },
+      {
+        "CustomerId": "john-doe-email-com",
+        "EmailAddress": "john.doe@email.com",
+        "FirstName": "Jimmy",
+        "LastName": "Doe"
+      },
+      {
+        "CustomerId": "emily-jones-email-com",
+        "EmailAddress": "emily.jones@email.com",
+        "FirstName": "Mary",
+        "LastName": "Jones"
+      }
     ]
   }
 }
