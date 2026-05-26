@@ -4,4 +4,3 @@ dist/
 .vite/
 *.log
 .DS_Store
-effortless.env

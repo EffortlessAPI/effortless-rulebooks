@@ -27,8 +27,11 @@ testing/_substrate_results.json
 effortless-rulebook/.cache/
 
 # Environment files (secrets)
+# .env is ignored, but .env.example and effortless.env are whitelisted
 .env
 !.env.example
+!effortless.env
+!**/effortless.env
 
 # Note: bases/*/ is NOT gitignored - it contains the repo cache
 # that ships with the repo for cold-start Docker support

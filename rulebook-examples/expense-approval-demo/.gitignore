@@ -1,6 +1,5 @@
 .DS_Store
 .ssotme/
-effortless.env
 
 node_modules/
 dist/

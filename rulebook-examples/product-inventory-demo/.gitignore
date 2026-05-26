@@ -8,6 +8,5 @@ postgres/
 *.log
 .DS_Store
 
-effortless.env
 excel-export/effortless-export.json
 excel-export/rulebook.xlsx

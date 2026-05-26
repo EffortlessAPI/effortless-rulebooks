@@ -7,7 +7,6 @@
 /**/node_modules/**/*
 /**/.vscode/**/*
 ssotme.env
-effortless.env
 node_modules/
 dist/
 .vite/

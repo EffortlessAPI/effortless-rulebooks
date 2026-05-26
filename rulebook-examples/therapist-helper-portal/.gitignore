@@ -1,6 +1,5 @@
 node_modules/
 .DS_Store
 *.log
-effortless.env
 postgres/.applied-manifest.json
 **/.ssotme/**/*

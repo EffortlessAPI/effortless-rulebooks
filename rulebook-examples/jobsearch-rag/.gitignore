@@ -50,5 +50,4 @@ htmlcov/
 .copilot/*
 !.copilot/README.md
 
-effortless.env
 **/node_modules/**/*
