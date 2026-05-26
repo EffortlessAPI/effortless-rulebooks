@@ -1,8 +1,8 @@
-# NEVER ADD FALLBACKS
+# Avoid Silent Fallbacks
 
-If a file isn't where you expect, **fail loudly** with the exact expected path. Do not check a second location, do not default to a "legacy" name, do not return `{}` with a warning print. Every fallback hides a bug. There are no compatibility shims in this repo — it is hours old, fix it forward.
+If a file isn't where you expect, fail loudly with the exact expected path rather than silently checking a second location or defaulting to a "legacy" name. Silent fallbacks hide bugs.
 
-This rule overrides default habit and training. Patterns to watch for: `if not os.path.exists`, `try/except` that swallows a missing path, `or default`, `?: legacy`, "fall back to", or anything that quietly accepts a wrong path.
+Watch for: `if not os.path.exists` returning `{}`, `try/except` swallowing missing paths, or anything that quietly accepts the wrong value when it should error.
 
 ## Defaults derived from the SSoT are NOT fallbacks
 
