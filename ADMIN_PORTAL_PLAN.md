@@ -1,5 +1,21 @@
 # Admin Portal — Restructure Plan
 
+> **Status:** shipped on branch `refactor-rulebook-as-hub` in four commits:
+> 1. Rulebook trim — UserRoles 5→3, AppNavigation/Screens/Permissions/ClickTargets rewritten.
+> 2. Three layouts + role picker + new App.jsx route tree.
+> 3. Substrates absorbs AddTool; dead screens removed; demo admin user added.
+> 4. Mobile pass (375px topbar + sidebar drawer + 44px tap targets).
+>
+> Verified live in headless Chrome:
+> - `/` renders three role cards (Viewer / Developer / Admin)
+> - `/viewer/:domain` shows read-only chrome with domain switcher in topbar
+> - `/developer/:domain` shows the full domain workspace (Author / Build / Inspect groups)
+> - `/admin` shows platform config + devops (no domain anywhere)
+> - Switching to `user-admin` populates the admin sidebar fully
+> - Combined Explorer reads `erb_acme_corporation` and lists 13 tables
+>
+> Known follow-ups: route guards (a developer hitting `/admin/...` directly still renders the admin layout, just with an empty role-gated sidebar), and a dedicated raw `effortless.json` editor section on Substrates.
+
 ## Mental model
 
 - **Three roles**, each with its own route tree. Roles are a formal table in the project rulebook (`UserRoles`, trimmed to three rows).
