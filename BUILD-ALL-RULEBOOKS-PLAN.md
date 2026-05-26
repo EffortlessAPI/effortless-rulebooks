@@ -74,7 +74,7 @@ Local JSON is the SSoT. Default behavior. Build downstream transpilers against t
 | 19 | `intelligence-taxonomy-demo` | Y | ✅ | Clean build, exit 0. DB `erb_intelligence_taxonomy_demo` (re)created, 6 tables. Added missing `execute -exec ./init-db.sh` step to `effortless.json`. |
 | 20 | `jobsearch-rag` | Y | ✅ | Clean build, exit 0. DB `erb_jobsearch_rag` (re)created, 20 tables. Fixed: transpiler `-i` paths (missing `effortless-rulebook/` prefix), added missing `execute` step, chmod +x on init-db.sh. |
 | 21 | `llm-enigma-test` | Y | ✅ | Clean build, exit 0. DB `erb_llm_enigma_test` (re)created, 52 tables. Fixed: added missing `execute` step, re-injected DROP+CREATE in init-db.sh (had been clobbered by rulebook-to-postgres regen). |
-| 22 | `product-inventory-demo` | Y | ❓ | |
+| 22 | `product-inventory-demo` | Y | ✅ | Clean build, exit 0. DB `erb_product_inventory_demo` (re)created, 6 tables. |
 | 23 | `therapist-helper-portal` | Y | ❓ | |
 | 24 | `wedding-seating-optimizer` | Y | ❓ | |
 
