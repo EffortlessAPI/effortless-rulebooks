@@ -1,142 +1,193 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+// Effortless Explorer  (DOMAIN_UX_VISION.md §2)
+// =============================================================================
+// Step 2 surface: left-nav DAG driven by /api/explorer/tree, with each
+// top-level entity expandable to reveal its child entities (the entities that
+// have an FK pointing AT this one). Right pane is a stub — step 3 fills it
+// with /api/explorer/node grids. URL path parsing also lives here so deep
+// links (/explorer/<Entity>/<id>/...) round-trip cleanly.
+
+import { useEffect, useMemo, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { api } from "../../lib/api.js";
 import { toast } from "../../lib/toast.js";
 import ScreenHeader from "../../components/ScreenHeader.jsx";
 
-const QUICK_QUERIES = [
-  { label: "List schemas",
-    sql: "SELECT schema_name FROM information_schema.schemata ORDER BY schema_name;" },
-  { label: "Row counts (public)",
-    sql: "SELECT relname AS table, n_live_tup AS rows FROM pg_stat_user_tables ORDER BY n_live_tup DESC;" },
-];
+// Split the URL wildcard ("*" from /explorer/*) into decoded segments.
+// Even-length paths (after the domain) are instance nodes per §2.6; odd-length
+// are list nodes. Returned segments are exactly as authored in the rulebook
+// (PascalCase entity names, Name-field values for ids).
+function parsePathSegments(wildcard) {
+  if (!wildcard) return [];
+  return wildcard.split("/").filter(Boolean).map(decodeURIComponent);
+}
+
+function encodePathSegments(segments) {
+  return segments.map(encodeURIComponent).join("/");
+}
 
 export default function ExplorerScreen({ screen }) {
-  const { domain } = useParams();
-  const [tables, setTables] = useState([]);
-  const [database, setDatabase] = useState("");
-  const [selected, setSelected] = useState(null);
-  const [sql, setSql] = useState("SELECT 1;");
-  const [result, setResult] = useState(null);
-  const [busy, setBusy] = useState(false);
+  const navigate = useNavigate();
+  const params   = useParams();
+  const { domain } = params;
+  const wildcard = params["*"] || "";
+  const pathSegments = useMemo(() => parsePathSegments(wildcard), [wildcard]);
+
+  const [tree, setTree]       = useState(null);
+  const [expanded, setExpanded] = useState(() => new Set());
+  const [error, setError]     = useState(null);
 
   useEffect(() => {
-    api.get("/api/tech/postgres/tables").then((r) => {
-      setTables(r.tables || []);
-      setDatabase(r.database || "");
-    }).catch((e) => toast(e.message, "error"));
+    setTree(null);
+    setError(null);
+    api.get(`/api/explorer/tree?domain=${encodeURIComponent(domain)}&maxDepth=1`)
+      .then(setTree)
+      .catch((e) => { setError(e.message); toast(e.message, "error"); });
   }, [domain]);
 
-  const runQuery = async (q) => {
-    const text = q ?? sql;
-    setBusy(true);
-    try {
-      const r = await api.post("/api/tech/postgres/query", { sql: text });
-      setResult(r);
-    } catch (e) {
-      setResult({ error: e.message });
-    } finally {
-      setBusy(false);
-    }
+  // The current top-level entity (first segment) drives "selected" highlight
+  // in the left rail.
+  const selectedEntity = pathSegments[0] || null;
+
+  const goTo = (segments) => {
+    const tail = encodePathSegments(segments);
+    navigate(tail ? `/developer/${domain}/explorer/${tail}` : `/developer/${domain}/explorer`);
   };
 
-  const preview = (t) => {
-    const q = `SELECT * FROM "${t.table_schema}"."${t.table_name}" LIMIT 100;`;
-    setSql(q);
-    setSelected(`${t.table_schema}.${t.table_name}`);
-    runQuery(q);
+  const toggleExpand = (entityName) => {
+    setExpanded((prev) => {
+      const next = new Set(prev);
+      if (next.has(entityName)) next.delete(entityName);
+      else next.add(entityName);
+      return next;
+    });
   };
 
   return (
     <>
       <ScreenHeader screen={screen} />
-      <div className="story-banner" style={{ borderLeftColor: "#b48cff" }}>
-        <b>{database || "erb_*"}</b> · explore the generated database for <b>{domain}</b>
+      <div className="story-banner" style={{ borderLeftColor: "#6ea8fe" }}>
+        Walk the DAG for <b>{domain}</b>. Click an entity to list its rows; expand to
+        see which other entities hang off it.
       </div>
 
-      <div className="explorer">
-        <div className="explorer-left">
-          <div className="explorer-section-title">Tables ({tables.length})</div>
-          <div className="explorer-table-list">
-            {tables.map((t) => {
-              const key = `${t.table_schema}.${t.table_name}`;
-              return (
-                <div
-                  key={key}
-                  className={`list-item ${selected === key ? "active" : ""}`}
-                  onClick={() => preview(t)}
-                >
-                  <div className="name mono">{t.table_name}</div>
-                  <div className="meta">{t.table_schema}</div>
-                </div>
-              );
-            })}
-          </div>
+      {error && (
+        <div className="story-banner" style={{ borderLeftColor: "var(--bad)" }}>
+          {error}
+        </div>
+      )}
+
+      <div className="split">
+        <div className="list-panel">
+          {!tree && !error && <div className="muted small">Loading tree…</div>}
+          {tree && tree.topLevel.length === 0 && (
+            <div className="muted small">No entities in this rulebook.</div>
+          )}
+          {tree && tree.topLevel.map((node) => (
+            <TreeRow
+              key={node.entity}
+              node={node}
+              selected={selectedEntity === node.entity}
+              expanded={expanded.has(node.entity)}
+              onToggle={() => toggleExpand(node.entity)}
+              onSelect={() => goTo([node.entity])}
+              onSelectChild={(childEntity) => goTo([childEntity])}
+            />
+          ))}
         </div>
 
-        <div className="explorer-right">
-          <div className="explorer-quick-row">
-            {QUICK_QUERIES.map((q) => (
-              <button key={q.label} className="btn secondary" onClick={() => { setSql(q.sql); runQuery(q.sql); }}>
-                {q.label}
-              </button>
-            ))}
-          </div>
-
-          <textarea
-            className="explorer-sql"
-            rows={6}
-            value={sql}
-            onChange={(e) => setSql(e.target.value)}
-            spellCheck={false}
+        <div className="detail-panel">
+          <RightPane
+            domain={domain}
+            pathSegments={pathSegments}
+            rulebookRevision={tree?.rulebookRevision || null}
           />
-          <div style={{ marginTop: 8 }}>
-            <button className="btn" disabled={busy} onClick={() => runQuery()}>
-              {busy ? "Running…" : "Run query"}
-            </button>
-            <span className="muted small" style={{ marginLeft: 12 }}>
-              Server returns the first 500 rows.
-            </span>
-          </div>
-
-          <div className="explorer-result">
-            {!result && <div className="muted small">No query run yet.</div>}
-            {result?.error && <pre className="editor" style={{ color: "var(--bad)" }}>{result.error}</pre>}
-            {result?.rows && (
-              <>
-                <div className="muted small">
-                  {result.command} · {result.rowCount} rows · returning {result.rows.length}
-                </div>
-                {result.rows.length > 0 && (
-                  <div className="inline-grid-wrap">
-                    <table className="grid">
-                      <thead>
-                        <tr>{result.fields.map((f) => <th key={f}>{f}</th>)}</tr>
-                      </thead>
-                      <tbody>
-                        {result.rows.map((row, i) => (
-                          <tr key={i}>
-                            {result.fields.map((f) => (
-                              <td key={f}>{formatVal(row[f])}</td>
-                            ))}
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                )}
-              </>
-            )}
-          </div>
         </div>
       </div>
     </>
   );
 }
 
-function formatVal(v) {
-  if (v === null || v === undefined) return <span className="muted">∅</span>;
-  if (typeof v === "boolean") return v ? "✓" : "✗";
-  if (typeof v === "object") return JSON.stringify(v);
-  return String(v);
+function TreeRow({ node, selected, expanded, onToggle, onSelect, onSelectChild }) {
+  const hasChildren = node.children && node.children.length > 0;
+  return (
+    <div>
+      <div
+        className={`list-item ${selected ? "active" : ""}`}
+        onClick={onSelect}
+        style={{ display: "flex", alignItems: "center", gap: 6 }}
+      >
+        <span
+          onClick={(e) => { e.stopPropagation(); onToggle(); }}
+          style={{
+            width: 14, textAlign: "center", cursor: hasChildren ? "pointer" : "default",
+            opacity: hasChildren ? 1 : 0.25, userSelect: "none",
+          }}
+          title={hasChildren ? (expanded ? "Collapse" : "Expand") : "No child entities"}
+        >
+          {hasChildren ? (expanded ? "▾" : "▸") : "·"}
+        </span>
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <div className="name">
+            {node.important && <span style={{ color: "var(--warn)", marginRight: 4 }}>★</span>}
+            {node.entity}
+          </div>
+          <div className="meta">{node.rowCount} {node.rowCount === 1 ? "row" : "rows"}</div>
+        </div>
+      </div>
+      {expanded && hasChildren && (
+        <div style={{ paddingLeft: 26 }}>
+          {node.children.map((child, i) => (
+            <div
+              key={`${child.entity}/${child.viaFk}/${i}`}
+              className="list-item"
+              onClick={() => onSelectChild(child.entity)}
+              title={`${child.entity}.${child.viaFk} → ${node.entity}`}
+            >
+              <div className="name mono" style={{ fontSize: 12 }}>
+                {child.entity}
+              </div>
+              <div className="meta">
+                via <span className="mono">{child.viaFk}</span> · {child.rowCount} {child.rowCount === 1 ? "row" : "rows"}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function RightPane({ domain, pathSegments, rulebookRevision }) {
+  if (pathSegments.length === 0) {
+    return (
+      <div className="muted">
+        <p>Select an entity from the left to start walking the DAG.</p>
+        {rulebookRevision && (
+          <p className="small">
+            Rulebook revision: <span className="mono">{rulebookRevision}</span>
+          </p>
+        )}
+      </div>
+    );
+  }
+  // Step 3 will render the actual list/instance grid here using
+  // /api/explorer/node. For now: echo the path so the URL/path-parsing flow
+  // is visible and testable end-to-end.
+  return (
+    <div>
+      <h3 className="mono" style={{ marginTop: 0 }}>
+        /{pathSegments.join("/")}
+      </h3>
+      <p className="muted small">
+        Node detail (schema + data grid) lands in step 3.
+      </p>
+      <ol className="muted small" style={{ paddingLeft: 18 }}>
+        {pathSegments.map((seg, i) => (
+          <li key={i} className={i % 2 === 0 ? "" : "mono"}>
+            {i % 2 === 0 ? `entity: ${seg}` : `instance: ${seg}`}
+          </li>
+        ))}
+      </ol>
+    </div>
+  );
 }

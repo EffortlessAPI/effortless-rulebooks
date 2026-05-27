@@ -1115,6 +1115,137 @@ app.delete("/api/rulebook/entities/:name", requireEditor, async (req, res) => {
   }
 });
 
+// =============================================================================
+// Effortless Explorer  (DOMAIN_UX_VISION.md §2)
+// =============================================================================
+// Walks the rulebook's DAG. The tree endpoint returns entity-level shape for
+// the left-nav; subsequent /api/explorer/node calls (step 3) drive instance
+// drill-down + scoped child lists. "FK" here means the canonical ERB signal:
+// a field with type "relationship" carrying a "RelatedTo" target. lookup /
+// aggregation fields are derived values, not FKs, and don't count.
+// -----------------------------------------------------------------------------
+
+// Iterate the entity tables in a rulebook in source order, skipping JSON
+// metadata keys ($schema, _meta) and the rulebook-level Name/Description.
+function* iterEntities(rb) {
+  for (const [name, value] of Object.entries(rb)) {
+    if (name.startsWith("$") || name.startsWith("_")) continue;
+    if (name === "Name" || name === "Description") continue;
+    if (!value || typeof value !== "object" || !Array.isArray(value.schema)) continue;
+    yield [name, value];
+  }
+}
+
+// ERB relationship fields are bidirectional: every real FK pair shows up as
+// TWO type=relationship fields, one on each entity. To get a sensible DAG we
+// have to pick exactly one side as the "real" outbound FK. Two signals,
+// tried in order:
+//
+//   1. prefersSingleRecordLink — when explicitly true/false (ACME-style
+//      rulebooks). true = the FK / "many" side; false = the inverse /
+//      "one-to-collection" side.
+//
+//   2. Data shape — when the flag is missing (star-trek-style rulebooks).
+//      The "many" side stores a single related id ("1-tos"); the inverse
+//      side stores a comma-separated list of related ids
+//      ("1-tos-season-1, 1-tos-season-2, ..."). First non-empty sample
+//      decides.
+//
+// If neither signal is available (no flag, no data), we keep the field —
+// better to show a relationship that turns out to be inverse than to drop a
+// real FK silently.
+function isInverseRelationshipField(f, entityData) {
+  if (f.prefersSingleRecordLink === true)  return false;
+  if (f.prefersSingleRecordLink === false) return true;
+  if (!Array.isArray(entityData)) return false;
+  for (const row of entityData) {
+    const v = row[f.name];
+    if (v === null || v === undefined || v === "") continue;
+    if (typeof v !== "string") return false;
+    const parts = v.split(",").map((s) => s.trim()).filter(Boolean);
+    return parts.length > 1;
+  }
+  return false;
+}
+
+// For each entity, returns { outbound: [{ field, to }], rowCount, important }.
+// Outbound FKs are the forward (non-inverse) relationship fields IN this
+// entity pointing AT another. The inverse map (who points AT me — children)
+// is derived in the tree handler.
+function describeEntities(rb) {
+  const out = {};
+  for (const [name, value] of iterEntities(rb)) {
+    out[name] = {
+      rowCount: Array.isArray(value.data) ? value.data.length : 0,
+      important: !!value.important,
+      outbound: (value.schema || [])
+        .filter((f) => f.type === "relationship"
+                    && f.RelatedTo
+                    && !isInverseRelationshipField(f, value.data))
+        .map((f) => ({ field: f.name, to: f.RelatedTo })),
+    };
+  }
+  return out;
+}
+
+function loadRulebookForDomain(domain) {
+  const rbPath = (domain === "__top__")
+    ? TOP_RULEBOOK
+    : path.join(RULEBOOK_EXAMPLES, domain, "effortless-rulebook", `${domain}-rulebook.json`);
+  if (!fs.existsSync(rbPath)) {
+    const err = new Error(`rulebook for domain '${domain}' not found at ${rbPath}`);
+    err.statusCode = 404;
+    throw err;
+  }
+  return JSON.parse(fs.readFileSync(rbPath, "utf8"));
+}
+
+// GET /api/explorer/tree?domain=<slug>&maxDepth=<n>
+// Returns the entity-level DAG shape. Top-level = every entity in the rulebook
+// (unfiltered cross-cut). children[] = entities that have a relationship FK
+// pointing AT this one (i.e., "what would hang off an instance of this
+// entity"). With maxDepth=0 the children arrays are empty (useful when the
+// client only wants entity row counts).
+app.get("/api/explorer/tree", (req, res) => {
+  const domain = req.query.domain || getActiveDomain();
+  const maxDepth = Math.max(0, parseInt(req.query.maxDepth ?? "1", 10));
+  try {
+    const rb = loadRulebookForDomain(domain);
+    const desc = describeEntities(rb);
+
+    // Inverse FK index: for entity E, who has an outbound FK pointing AT E?
+    const inbound = {};
+    for (const name of Object.keys(desc)) inbound[name] = [];
+    for (const [name, info] of Object.entries(desc)) {
+      for (const fk of info.outbound) {
+        if (!inbound[fk.to]) continue;     // FK target isn't a known entity
+        inbound[fk.to].push({ entity: name, viaFk: fk.field });
+      }
+    }
+
+    const topLevel = Object.entries(desc).map(([name, info]) => ({
+      entity: name,
+      rowCount: info.rowCount,
+      important: info.important,
+      children: maxDepth >= 1
+        ? inbound[name].map((c) => ({
+            entity: c.entity,
+            rowCount: desc[c.entity]?.rowCount ?? 0,
+            viaFk: c.viaFk,
+          }))
+        : [],
+    }));
+
+    res.json({
+      domain,
+      rulebookRevision: rulebookRevisionForDomain(domain),
+      topLevel,
+    });
+  } catch (e) {
+    res.status(e.statusCode || 500).json({ error: String(e.message || e) });
+  }
+});
+
 // --- users (PROJECT-rulebook resource; writes to project rulebook) ---
 app.get("/api/users", (req, res) => {
   const project = loadProjectRulebook();
