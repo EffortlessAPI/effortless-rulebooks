@@ -1,8 +1,18 @@
 # Avoid Silent Fallbacks
 
-If a file isn't where you expect, fail loudly with the exact expected path rather than silently checking a second location or defaulting to a "legacy" name. Silent fallbacks hide bugs.
+The defining property of a bad fallback is that it **substitutes a plausible-looking value for a real failure, so the failure stays invisible.** The canonical anti-pattern: the spec says `add(2, 2)` should return `4`, but when the real computation errors out, the code catches the exception and returns a hardcoded `19` (or `0`, or `{}`, or the last value it happened to see) so the caller "always succeeds." The caller never learns anything broke. This is the worst kind of bug — the system stays green while producing nonsense.
 
-Watch for: `if not os.path.exists` returning `{}`, `try/except` swallowing missing paths, or anything that quietly accepts the wrong value when it should error.
+It is not about simple vs. complex operations. It is about whether a failure is allowed to **surface** or whether it gets papered over.
+
+Concrete shapes to refuse:
+
+- `try/except` that swallows a missing file, DB error, or parse failure and returns a default.
+- `if not os.path.exists(p): return {}` instead of raising.
+- "Check the new path; if it isn't there, check the legacy path" — silently accepting either.
+- Any "safe default" returned in place of an error from the real path.
+- Hand-rolled retry loops that eventually return a stale or placeholder value when the real call keeps failing.
+
+If the real path fails, **raise**, with the exact thing that was expected. Failing loudly is the only way the bug surfaces.
 
 ## Defaults derived from the SSoT are NOT fallbacks
 
@@ -17,15 +27,32 @@ The test: if your default would still be correct after the env var was unset by 
 
 ---
 
-# No locks, no caches, no fallbacks for simple operations
+# No defensive locks around `effortless build`
 
-The `effortless` CLI (ssotme:// client) handles its own locking. **Do not add coordination machinery on top of it.** That means: no advisory locks, no mutexes, no per-domain "rebuild in progress" gates, no cache layers between requests and the SSoT, no fallback paths that paper over races or missing state.
+The `effortless` CLI (ssotme:// client) handles its own locking. Do not add coordination machinery on top of it: no advisory locks, no mutexes, no per-domain "rebuild in progress" gates, no scripts trying to orchestrate which files get changed when "just in case." When a build / CRUD / rebuild / schema PATCH needs to happen, just run it. If two things conflict, the underlying tool fails loudly and the user sees the real error.
 
-When a simple operation needs to happen — a CRUD, a build, a rebuild, a schema PATCH — just do it. If two things conflict, the underlying tool fails loudly and the user sees the real error. Defensive locking/caching/fallback machinery added "just in case" has repeatedly hidden real bugs in this project and produced confusion that costs more than the conflict it was meant to prevent.
+---
 
-**Rule for agents:** if you find yourself reaching for a lock, a cache, or a fallback to make a simple operation "safer," stop. The default answer is *don't build that*. Let the operation run. Let it fail loudly. Add coordination only when the user explicitly asks for it on that specific turn.
+# No bespoke caches without an invalidation contract
 
-This is a sibling doctrine to "Avoid Silent Fallbacks" above — same shape, different surface. Silent fallbacks hide bugs by substituting guesses; defensive locks/caches hide bugs by serializing or masking the conflict that would have revealed them.
+A **bespoke cache** is one written by hand in application code: read a value from the SSoT, stash it in a sidecar dict / file / Redis / module-level variable, return the sidecar on subsequent reads, and never seriously design when it gets refreshed. This is the cache version of the hallucinated-fallback anti-pattern — it returns a value that *was* right at some point but might now be wrong, and the caller has no way to tell. "2+2=4" quietly becomes "2+3=4" because nobody designed the refresh.
+
+Refuse this. If a value can be computed live from the SSoT, **compute it live.** That is what the views, formulas, and generated code exist for.
+
+## Principled materialization IS allowed (and encouraged when it earns its keep)
+
+There is a real exception, and it is categorically different from a bespoke cache: when a derived computation is genuinely expensive AND its upstream is stable (an N² join over a sealed input, an immutable mathematical object, etc.), it is fine to materialize the result — **as long as the materialization is driven from the SSoT, not invented by hand.** The shape that qualifies:
+
+- The rulebook explicitly annotates the field as materialized (e.g. `"cache": "matview"`).
+- A transpiler emits the cache and its refresh function from that annotation, alongside the live view.
+- The refresh contract (eager-on-write / on-demand / scheduled) is declared in the rulebook, not improvised in app code.
+- The formula remains the single source of truth; the cache is purely derived infrastructure, regeneratable from the rulebook.
+
+The distinguishing test: **if you deleted the cache, could the SSoT + the transpiler regenerate it identically?** If yes, it's principled materialization. If no, it's a bespoke cache — refuse it.
+
+A Postgres materialized view emitted by a transpiler from a rulebook annotation is fine. A hand-written `_cache = {}` in a Python module that nobody can audit is not.
+
+**Rule for agents:** if you find yourself reaching for a lock or an ad-hoc cache to make an operation "safer," stop. Default answer is *don't build that*. Principled materialization is a separate, sanctioned mechanism — and even then, only build it when the user has confirmed there is real, measured perf pain that justifies the extra class of derived field.
 
 ---
 
