@@ -1200,6 +1200,28 @@ function loadRulebookForDomain(domain) {
   return JSON.parse(fs.readFileSync(rbPath, "utf8"));
 }
 
+// Spec §2.6 says URL ids are the entity's Name. But ERB FK *values* in data
+// (e.g. Projects.ApprovedBy = "sarah-chen") reference a PK-style field, not
+// Name (Name would be "Sarah Chen"). So scoping a child list under a parent
+// instance is a two-step lookup: URL.Name → row → row.PK → filter children
+// whose FK field matches that PK. This helper finds the PK field name.
+function findPkField(entity) {
+  const explicit = (entity.schema || []).find((f) => f.isPk === true);
+  if (explicit) return explicit.name;
+  const idField = (entity.schema || []).find(
+    (f) => f.type === "raw" && f.nullable === false && /Id$/.test(f.name)
+  );
+  if (idField) return idField.name;
+  const firstNonNull = (entity.schema || []).find(
+    (f) => f.type === "raw" && f.nullable === false
+  );
+  return firstNonNull ? firstNonNull.name : "Name";
+}
+
+function findRowByName(entity, name) {
+  return (entity.data || []).find((r) => String(r.Name) === String(name)) || null;
+}
+
 // GET /api/explorer/tree?domain=<slug>&maxDepth=<n>
 // Returns the entity-level DAG shape. Top-level = every entity in the rulebook
 // (unfiltered cross-cut). children[] = entities that have a relationship FK
@@ -1240,6 +1262,133 @@ app.get("/api/explorer/tree", (req, res) => {
       domain,
       rulebookRevision: rulebookRevisionForDomain(domain),
       topLevel,
+    });
+  } catch (e) {
+    res.status(e.statusCode || 500).json({ error: String(e.message || e) });
+  }
+});
+
+// GET /api/explorer/node?path=<encoded>&page=<n>&pageSize=<n>
+// The §2.7 workhorse. `path` segments alternate entity / id / entity / id…
+// per §2.6. Odd length = list node; even length = instance node. Schema and
+// rows ride in the same payload (§2.3: schema and data are combined metadata,
+// not two separate fetches).
+app.get("/api/explorer/node", (req, res) => {
+  const domain = req.query.domain || getActiveDomain();
+  const pathStr = req.query.path || "";
+  const page = Math.max(0, parseInt(req.query.page ?? "0", 10));
+  const pageSize = Math.max(1, Math.min(500, parseInt(req.query.pageSize ?? "50", 10)));
+
+  try {
+    const rb = loadRulebookForDomain(domain);
+    const segments = pathStr.split("/").filter(Boolean).map(decodeURIComponent);
+
+    if (segments.length === 0) {
+      return res.json({ kind: "root", domain });
+    }
+
+    // Walk path pairs to validate every parent entity/id exists and to build
+    // the scopedBy ancestry. Even-positioned segments (0, 2, 4, …) are entity
+    // names; odd-positioned are instance Names.
+    const scope = []; // [{ entity, id, pk, pkValue }]
+    for (let i = 0; i + 1 < segments.length; i += 2) {
+      const ent = segments[i], id = segments[i + 1];
+      const e = rb[ent];
+      if (!e || !Array.isArray(e.schema)) {
+        return res.status(404).json({ error: `entity '${ent}' not found` });
+      }
+      const row = findRowByName(e, id);
+      if (!row) {
+        return res.status(404).json({ error: `${ent} with Name='${id}' not found` });
+      }
+      const pk = findPkField(e);
+      scope.push({ entity: ent, id, pk, pkValue: row[pk] });
+    }
+
+    const isInstance = segments.length % 2 === 0;
+
+    if (isInstance) {
+      // Final pair IS the instance. Look it up.
+      const { entity: entityName, id } = scope[scope.length - 1];
+      const entity = rb[entityName];
+      const row = findRowByName(entity, id);
+
+      // Tabs: every entity X with a forward FK pointing at this entity. For
+      // each, count rows in X.data whose FK field matches this instance's PK.
+      const pk = findPkField(entity);
+      const pkValue = row[pk];
+      const tabs = [];
+      for (const [otherName, otherValue] of iterEntities(rb)) {
+        if (otherName === entityName) continue;
+        for (const f of otherValue.schema) {
+          if (f.type !== "relationship" || f.RelatedTo !== entityName) continue;
+          if (isInverseRelationshipField(f, otherValue.data)) continue;
+          const count = (otherValue.data || []).filter(
+            (r) => String(r[f.name] ?? "").trim() === String(pkValue ?? "").trim()
+          ).length;
+          tabs.push({ entity: otherName, viaFk: f.name, rowCount: count });
+        }
+      }
+
+      return res.json({
+        kind: "instance",
+        entity: entityName,
+        id,
+        pk,
+        pkValue,
+        scope: scope.slice(0, -1),  // ancestors, not including this instance
+        schema: entity.schema,
+        row,
+        tabs,
+      });
+    }
+
+    // List node — final unpaired segment is the entity name.
+    const entityName = segments[segments.length - 1];
+    const entity = rb[entityName];
+    if (!entity || !Array.isArray(entity.schema)) {
+      return res.status(404).json({ error: `entity '${entityName}' not found` });
+    }
+
+    let rows = entity.data || [];
+    let scopedBy = null;
+
+    if (scope.length > 0) {
+      // Filter rows of `entityName` whose forward FK points at the immediate
+      // parent instance. There can be multiple FKs from this entity to the
+      // parent (e.g. Projects has both ApprovedBy and RequestedBy pointing
+      // at Employees) — for v1 we pick the first matching FK and document
+      // the limitation. A future query-param `viaFk=<field>` can disambiguate.
+      const parent = scope[scope.length - 1];
+      const fk = entity.schema.find(
+        (f) => f.type === "relationship"
+            && f.RelatedTo === parent.entity
+            && !isInverseRelationshipField(f, entity.data)
+      );
+      if (!fk) {
+        return res.status(400).json({
+          error: `no forward FK from ${entityName} to ${parent.entity}`,
+        });
+      }
+      rows = rows.filter(
+        (r) => String(r[fk.name] ?? "").trim() === String(parent.pkValue ?? "").trim()
+      );
+      scopedBy = { entity: parent.entity, id: parent.id, viaFk: fk.name };
+    }
+
+    const totalCount = rows.length;
+    const pageRows = rows.slice(page * pageSize, (page + 1) * pageSize);
+
+    return res.json({
+      kind: "list",
+      entity: entityName,
+      scope,                       // ancestors
+      scopedBy,                    // explicit "filtered by parent X via FK Y"
+      schema: entity.schema,
+      rows: pageRows,
+      totalCount,
+      page,
+      pageSize,
     });
   } catch (e) {
     res.status(e.statusCode || 500).json({ error: String(e.message || e) });
