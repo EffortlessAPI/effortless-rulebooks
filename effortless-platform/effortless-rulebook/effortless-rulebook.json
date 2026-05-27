@@ -4858,6 +4858,19 @@
         "SortOrder": 130,
         "Tagline": "Coverage status, volunteer load (under/ok/over), and event-level A–F staffing grade all fall out automatically.",
         "LogoPath": "rulebook-examples/volunteer-shift-scheduler/effortless-logo.png"
+      },
+      {
+        "FlavorId": "flav-027",
+        "ProjectSlug": "planar-unit-discovery",
+        "DisplayName": "planar-unit-discovery",
+        "Flavor": "aggregation-heavy",
+        "Complexity": "advanced",
+        "EntityCount": 17,
+        "CalculatedCount": 45,
+        "AggregationCount": 11,
+        "LookupCount": 15,
+        "LearningFocus": "Auto-discovered demo. Replace this stub with a one-line description of what planar-unit-discovery is designed to teach.",
+        "GoodAnswerKeyFor": null
       }
     ]
   },

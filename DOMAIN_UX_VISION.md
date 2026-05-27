@@ -11,8 +11,9 @@
 
 ## What already shipped (do not re-plan)
 
-**Picker** — gallery of motif-banded trailers reading `_meta.tagline`,
-`motif`, `motif_palette`, `signature_rows`; three picker chips above the
+**Picker** — gallery of motif-banded trailers reading the rulebook's
+`__meta__` table (rows for `tagline`, `motif`, `motif_palette`,
+`signature_rows`); three picker chips above the
 gallery (*Last visited* / *New since you were here* / *Bootstrap a new
 one*).
 
@@ -33,7 +34,7 @@ three responsive breakpoints (≤640 phone / 641–1024 tablet / ≥1025
 desktop). Per-user / per-domain state persists in
 `portal_user_domain_state`.
 
-`_meta` is authored for **8 of 28 demo rulebooks** today:
+The `__meta__` table is authored for **8 of 28 demo rulebooks** today:
 `acme-corporation`, `acme-llc`, `star-trek`, `jessica-basic`,
 `jessica-advanced`, `is-everything-a-language`,
 `effortless-rulesbooks`. The other 20 fall back to `motif: "default"` —
@@ -53,12 +54,103 @@ Source: [rulebook-examples/acme-corporation/effortless-rulebook/acme-corporation
 - Business story: a small professional-services shop. Some project types
   (Compliance, ClientFacing) require manager sign-off; only employees in
   manager roles can approve. The DAG wires that workflow.
-- `_meta` fully authored — this is the **reference rulebook**. Match
-  this shape when authoring `_meta` for other demos.
+- `__meta__` table fully authored — this is the **reference rulebook**. Match
+  this shape when authoring `__meta__` rows for other demos.
 
 ---
 
-## 2. Top priority — rewrite Effortless Tools as a folder/tool tree
+## 2. Top priority — Effortless Explorer (DAG tree on the left, schema+data as combined metadata on the right)
+
+**This is by far the biggest failure right now, and it's what we're doing next.** The behavior described
+below is partially, scantily implemented across ~5 different parts of
+the app — `/developer/:domain/data` (Sample Data grid),
+`/developer/:domain/entities` (schema + data view),
+`/developer/:domain/explorer` (SQL + data), and bits of the reception
+desk. They are confusingly similar, they each show a different slice of
+the same thing, and the reception-desk row clicks all route to `/data`
+instead of to the row the user clicked. Consolidate.
+
+**The "Entities" tab is the Effortless Explorer.** Not a table of entities
+with their attributes, with sample-data tables stacked underneath.
+Instead:
+
+### 2.1 Left nav: the actual DAG, walkable
+
+A tree representing real instances and their relationships — for an
+order-processing domain:
+
+```
+Businesses                          ← top-level node, all businesses
+├ Acme Corp
+│  ├ Customers                      ← Acme's customers
+│  │  ├ Jane Smith
+│  │  │  ├ Orders
+│  │  │  │  ├ Order #1042
+│  │  │  │  │  └ Invoices
+│  │  │  │  │     └ INV-2026-0117
+│  │  │  │  └ Order #1051
+│  │  │  └ Addresses
+│  │  └ Bob Lee
+│  │     └ …
+│  └ Projects
+│     └ …
+└ Globex
+   └ …
+Customers                           ← top-level node, no filter: all customers across all businesses
+Invoices                            ← top-level node, no filter: every invoice in the DAG
+Orders                              ← same
+```
+
+Top-level nodes appear for **every entity** (an unfiltered view of that
+entity across the whole DAG), AND as **nested children** wherever the
+DAG places them (a business's customers, a customer's orders, an order's
+invoices, …). Clicking any node — at any depth — lets the user
+interactively explore that slice of the DAG.
+
+> **FUTURE SELF HINT — list-node UX.** When the selected node is a list
+> (e.g. *Customers under Acme Corp*, or the top-level unfiltered
+> *Customers*), the right pane should eventually grow full
+> sort / filter / group / facet behavior — the planned long-term UX for
+> any list view in the explorer. Not now. Capturing it here so we don't
+> re-discover it later; the minimum to ship the Explorer is a usable
+> grid with the schema visible.
+
+### 2.2 Right pane: entity header + DAG tabs
+
+Clicking a **specific entity instance** (e.g. *Jane Smith*, or *Order
+#1042*) shows a header for that entity, with **tabs underneath** that
+navigate to the different sub-elements in the DAG for this row — Orders,
+Invoices, Addresses, etc. The tabs are derived from the rulebook (the
+relationships hanging off this entity), not hand-authored.
+
+### 2.3 Schema and data shown as combined metadata
+
+The right pane is not "data grid with a separate schema sidebar." It's a
+single surface where the column header **is** the schema entry: hover to
+reveal the field's type / formula / description; double-click to expand
+the column into a schema-detail strip; click a cell to see provenance
+(raw input vs. lookup vs. calculated, and the formula that produced it).
+Many UX models can hang off this — the principle is *schema and data
+are the same metadata, surfaced together*, not two separate views the
+user has to switch between.
+
+### 2.4 Routes & consolidation
+
+- `/developer/:domain/explorer` is the single home. `/data` and
+  `/entities` redirect here.
+- `/explorer` — root node selected; nothing on the right yet (or the
+  domain overview).
+- `/explorer/:path` — `path` encodes the DAG walk
+  (`businesses/acme-corp/customers/jane-smith/orders/1042`). Both list
+  nodes and instance nodes round-trip through the URL so reception-desk
+  scrollers and Cmd-K row matches deep-link to the exact node.
+- AppNavigation in the project rulebook surfaces a single **Explorer**
+  entry; the old "Entities" / "Data" / "Explorer" entries collapse into
+  it.
+
+---
+
+## 3. Next-up — rewrite Effortless Tools as a folder/tool tree
 
 The current Effortless Tools page does **three things badly**:
 
@@ -75,7 +167,7 @@ The current Effortless Tools page does **three things badly**:
 **This page should be a projection of the on-disk project, not a
 floating dashboard.**
 
-### 2.1 Left rail — folder/tool tree
+### 3.1 Left rail — folder/tool tree
 
 The left rail mirrors the project's actual folder structure under the
 active domain root (`rulebook-examples/<domain>/`, or
@@ -111,7 +203,7 @@ based on which folder it lives in. ACME LLC has 10 substrates because
 ACME LLC's `effortless.json` (and its subfolders') list 10 tools. A
 project with two tools shows two. Never default to a hard-coded ~10.
 
-### 2.2 `+` to add a tool
+### 3.2 `+` to add a tool
 
 Every folder ends with a `+` row. Clicking opens the catalog currently
 floating at the bottom of the page (repurposed) — the filtered list of
@@ -119,7 +211,7 @@ floating at the bottom of the page (repurposed) — the filtered list of
 it gets written into the folder's `effortless.json`, and the tool appears
 under that folder in the tree.
 
-### 2.3 Tool detail (main panel)
+### 3.3 Tool detail (main panel)
 
 Clicking a tool node shows:
 
@@ -139,7 +231,7 @@ This replaces the current "shitty summary" with the only summary that
 matters: *what does this tool read, what does it write, what flags
 control it, and what happens when I run it right now.*
 
-### 2.4 Folder-level Run, root-level Run
+### 3.4 Folder-level Run, root-level Run
 
 Clicking a **folder** (not a tool) shows a folder detail panel with a
 single **▶ Run all** button. It runs every tool under that folder in
@@ -149,7 +241,7 @@ Clicking the **project root** shows a project detail panel with **▶ Run
 all** that runs everything under the project. This replaces the current
 global "Build all" button.
 
-### 2.5 Backend work
+### 3.5 Backend work
 
 - `GET /api/effortless-tools/tree` — walks the active project's folder
   structure, parses each `effortless.json` it encounters, returns
@@ -166,7 +258,7 @@ global "Build all" button.
 - `GET /api/effortless-tools/run/:runId` — Server-Sent-Events stdout
   stream so the UI can tail the build live without polling.
 
-### 2.6 No more separate "Orchestration" tab
+### 3.6 No more separate "Orchestration" tab
 
 This design subsumes the previously planned dedicated Orchestration
 tab. Tools have per-tool Run buttons, folders have Run-all buttons, the
@@ -175,34 +267,11 @@ live. There's no orchestration concept left orphaned without a home.
 
 ---
 
-## 3. Other open priorities
+## 4. Other open priorities
 
-Listed core-behavior-first. UI polish is at the bottom (§3.6 onward).
+Listed core-behavior-first. UI polish is at the bottom (§4.5 onward).
 
-### 3.1 Unified data explorer
-
-The portal has **three different surfaces for editing rulebook data**:
-`/developer/:domain/data` (Sample Data grid), `/developer/:domain/entities`
-(schema *and* data view), and `/developer/:domain/explorer` (SQL +
-data). They are confusingly similar and the reception-desk row clicks
-all route to `/data` instead of to the row the user clicked.
-
-Target: a single URL-routed data explorer at `/developer/:domain/explorer`
-that subsumes all three:
-
-- `/explorer` — entity picker (left panel), SQL prompt, ad-hoc results.
-- `/explorer/:entity` — table grid for that entity, inline-editable,
-  schema sidebar visible.
-- `/explorer/:entity/:rowId` — single-row detail with editable fields
-  and a "related rows" sidebar (rows that FK-reference this one or that
-  this one references via lookups).
-
-Reception-desk scrollers and Cmd-K row matches route to the specific
-row, not a table picker. `/data` and `/entities` redirect to the
-equivalent explorer URL. AppNavigation in the project rulebook
-surfaces a single **Data Explorer** entry.
-
-### 3.2 Fix the `last_seen_rulebook_revision` auto-clear bug
+### 4.1 Fix the `last_seen_rulebook_revision` auto-clear bug
 
 Today every domain visit stamps `last_seen_rulebook_revision` to the
 current revision immediately. So the moment a user opens a domain whose
@@ -217,7 +286,7 @@ Fix: split the visit-stamp from the seen-stamp. Visiting writes only
 
 This is a correctness bug, not a feature.
 
-### 3.3 Substrate witness panel — inline, not navigate-away
+### 4.2 Substrate witness panel — inline, not navigate-away
 
 The hero substrate chips currently navigate to Effortless Tools. The
 vision wants them to **expand inline** into a panel showing the *same
@@ -226,10 +295,11 @@ are awaiting approval?"* as a SQL query, a Python expression, an OWL
 axiom, all returning the same number. This is where the
 "substrate-independent" claim becomes *felt*.
 
-v1: hand-authored `witness_sample` per substrate in
-`_meta.substrates[i]`. v2: live-execute against each substrate.
+v1: hand-authored `witness_sample` per substrate in the `substrates`
+row of the rulebook's `__meta__` table. v2: live-execute against each
+substrate.
 
-### 3.4 Welcome-back journal diff
+### 4.3 Welcome-back journal diff
 
 Today `last_seen_rulebook_revision` is recorded but never displayed.
 The journal area only shows `journal_seed`.
@@ -242,7 +312,7 @@ fields fired."* Server endpoint `GET /api/rulebook/diff?from=<sha>`
 returns a structured diff (entities changed, rows added/removed, rules
 touched). Fall back to `journal_seed` only when there's no diff.
 
-### 3.5 customer-fullname — restore or retire
+### 4.4 customer-fullname — restore or retire
 
 [customer-fullname-rulebook.json](rulebook-examples/customer-fullname/effortless-rulebook/customer-fullname-rulebook.json)
 is `{}` (3 bytes) at HEAD. The previous incarnation at commit `2ab5b78`
@@ -250,7 +320,7 @@ had a real `Customers` table with the `FirstName / LastName / FullName`
 calculated field. Two options:
 
 1. **Restore** from `2ab5b78` (or re-author using ACME's `Client.FullName`
-   as reference), then author `_meta`.
+   as reference), then author the `__meta__` table.
 2. **Retire** — remove the directory, delist from the picker; the
    minimal-calculated-field demo lives in `acme-corporation`'s
    `Client.FullName` already.
@@ -261,7 +331,7 @@ Decision blocks one demo and shouldn't block anything else.
 
 ### UI polish (below the core-behavior line)
 
-### 3.6 Viewer surface parity
+### 4.5 Viewer surface parity
 
 Viewer routes (`/viewer`, `/viewer/domains`, `/viewer/:domain`) still
 use the old `.cards` grid and the pre-reception-desk overview screen.
@@ -270,7 +340,7 @@ swap the overview screen for a read-only reception desk
 (`canEdit={false}`, no scrubber, no Effortless Tools link in the footer,
 comments panel in its place). Components already accept `canEdit`.
 
-### 3.7 Bootstrap inline form (replace the instructions panel)
+### 4.6 Bootstrap inline form (replace the instructions panel)
 
 The picker's "Bootstrap a new one" chip expands today to an instructions
 panel. Replace with an **inline form**: name, slug, motif, starter
@@ -281,7 +351,7 @@ desk. `POST /api/projects/bootstrap` does the filesystem work; no
 `effortless build` runs until the user fires one from the new Effortless
 Tools tree.
 
-### 3.8 Tour mode rewind step
+### 4.7 Tour mode rewind step
 
 Tour mode currently walks use cases → entities → rules → substrates →
 closer. Add a step that rewinds the TimeScrubber to the oldest commit,
@@ -292,7 +362,7 @@ their own.
 
 ---
 
-## 4. The test (unchanged)
+## 5. The test (unchanged)
 
 When the user closes the tab, they should be able to describe ACME
 Corporation to a colleague in one sentence. If they can't, the page
@@ -301,12 +371,12 @@ failed.
 The harder test: if the user opens *any two domains* and they feel the
 same, the page failed.
 
-This currently passes for 8 of 28 demo domains. The in-flight `_meta`
-wave extends it to the rest.
+This currently passes for 8 of 28 demo domains. The in-flight
+`__meta__`-authoring wave extends it to the rest.
 
 ---
 
-## 5. Honest shortcuts already in production
+## 6. Honest shortcuts already in production
 
 Called out so they aren't filed as bugs:
 
