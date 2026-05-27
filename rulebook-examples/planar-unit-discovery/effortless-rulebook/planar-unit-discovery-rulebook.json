@@ -332,7 +332,15 @@
         "X": 0,
         "Y": 1,
         "Context": "euclidean-plane-r2"
-      }
+      },
+      {"PointId": "hept-0-center", "DisplayName": "Heptagon Center", "X": 0, "Y": 0, "Context": "euclidean-plane-r2"},
+      {"PointId": "hept-1", "DisplayName": "Heptagon Vertex 1", "X": 1, "Y": 0, "Context": "euclidean-plane-r2"},
+      {"PointId": "hept-2", "DisplayName": "Heptagon Vertex 2", "X": 0.6234898, "Y": 0.7818315, "Context": "euclidean-plane-r2"},
+      {"PointId": "hept-3", "DisplayName": "Heptagon Vertex 3", "X": -0.2225209, "Y": 0.9749279, "Context": "euclidean-plane-r2"},
+      {"PointId": "hept-4", "DisplayName": "Heptagon Vertex 4", "X": -0.9009689, "Y": 0.4338837, "Context": "euclidean-plane-r2"},
+      {"PointId": "hept-5", "DisplayName": "Heptagon Vertex 5", "X": -0.9009689, "Y": -0.4338837, "Context": "euclidean-plane-r2"},
+      {"PointId": "hept-6", "DisplayName": "Heptagon Vertex 6", "X": -0.2225209, "Y": -0.9749279, "Context": "euclidean-plane-r2"},
+      {"PointId": "hept-7", "DisplayName": "Heptagon Vertex 7", "X": 0.6234898, "Y": -0.7818315, "Context": "euclidean-plane-r2"}
     ]
   },
   "PointSets": {
@@ -427,6 +435,11 @@
         "PointSetId": "unit-square",
         "DisplayName": "Unit Square",
         "Description": "Four vertices of an axis-aligned unit square. Note: only 4 of 6 pairs are unit; the diagonals are sqrt(2)."
+      },
+      {
+        "PointSetId": "heptagon-with-center",
+        "DisplayName": "Heptagon With Center",
+        "Description": "The σ_1 projection of {0, 1, ζ_7, ζ_7^2, …, ζ_7^6} from Z[ζ_7]'s Minkowski lattice: 7 unit-circle vertices plus the origin. Produces 7 spoke unit-distance pairs (center↔vertex); no vertex-vertex pairs are unit (closest chord is 2sin(π/7) ≈ 0.868). Demonstrates the Q(ζ_7) chain end-to-end but does NOT itself achieve density exponent > 1."
       }
     ]
   },
@@ -496,7 +509,15 @@
         "PointSetMemberId": "sq-mem-d",
         "PointSet": "unit-square",
         "Point": "sq-d"
-      }
+      },
+      {"PointSetMemberId": "hept-mem-0", "PointSet": "heptagon-with-center", "Point": "hept-0-center"},
+      {"PointSetMemberId": "hept-mem-1", "PointSet": "heptagon-with-center", "Point": "hept-1"},
+      {"PointSetMemberId": "hept-mem-2", "PointSet": "heptagon-with-center", "Point": "hept-2"},
+      {"PointSetMemberId": "hept-mem-3", "PointSet": "heptagon-with-center", "Point": "hept-3"},
+      {"PointSetMemberId": "hept-mem-4", "PointSet": "heptagon-with-center", "Point": "hept-4"},
+      {"PointSetMemberId": "hept-mem-5", "PointSet": "heptagon-with-center", "Point": "hept-5"},
+      {"PointSetMemberId": "hept-mem-6", "PointSet": "heptagon-with-center", "Point": "hept-6"},
+      {"PointSetMemberId": "hept-mem-7", "PointSet": "heptagon-with-center", "Point": "hept-7"}
     ]
   },
   "PointPairs": {
@@ -687,7 +708,16 @@
         "PointA": "sq-b",
         "PointB": "sq-d",
         "Tolerance": 0.0001
-      }
+      },
+      {"PointPairId": "hept-spoke-1", "PointSet": "heptagon-with-center", "PointA": "hept-0-center", "PointB": "hept-1", "Tolerance": 0.0001},
+      {"PointPairId": "hept-spoke-2", "PointSet": "heptagon-with-center", "PointA": "hept-0-center", "PointB": "hept-2", "Tolerance": 0.0001},
+      {"PointPairId": "hept-spoke-3", "PointSet": "heptagon-with-center", "PointA": "hept-0-center", "PointB": "hept-3", "Tolerance": 0.0001},
+      {"PointPairId": "hept-spoke-4", "PointSet": "heptagon-with-center", "PointA": "hept-0-center", "PointB": "hept-4", "Tolerance": 0.0001},
+      {"PointPairId": "hept-spoke-5", "PointSet": "heptagon-with-center", "PointA": "hept-0-center", "PointB": "hept-5", "Tolerance": 0.0001},
+      {"PointPairId": "hept-spoke-6", "PointSet": "heptagon-with-center", "PointA": "hept-0-center", "PointB": "hept-6", "Tolerance": 0.0001},
+      {"PointPairId": "hept-spoke-7", "PointSet": "heptagon-with-center", "PointA": "hept-0-center", "PointB": "hept-7", "Tolerance": 0.0001},
+      {"PointPairId": "hept-chord-12", "PointSet": "heptagon-with-center", "PointA": "hept-1", "PointB": "hept-2", "Tolerance": 0.0001, "Description": "Adjacent-vertex chord: length 2sin(π/7) ≈ 0.868 — NOT unit."},
+      {"PointPairId": "hept-chord-13", "PointSet": "heptagon-with-center", "PointA": "hept-1", "PointB": "hept-3", "Tolerance": 0.0001, "Description": "Two-apart chord: length 2sin(2π/7) ≈ 1.564 — NOT unit."}
     ]
   },
   "UnitDistanceGraphs": {
@@ -760,6 +790,10 @@
       {
         "UnitDistanceGraphId": "g-sq",
         "PointSet": "unit-square"
+      },
+      {
+        "UnitDistanceGraphId": "g-heptagon-center",
+        "PointSet": "heptagon-with-center"
       }
     ]
   },
@@ -1010,6 +1044,38 @@
         "Norm": 25,
         "NormThreshold": 10,
         "SplitsCompletely": null
+      },
+      {
+        "PrimeIdealId": "q-zeta-7-p7-ramified",
+        "NumberField": "q-zeta-7",
+        "GeneratorDescription": "(1 - ζ_7) — the unique prime above 7, fully ramified (e=6, f=1)",
+        "Norm": 7,
+        "NormThreshold": 30,
+        "SplitsCompletely": false
+      },
+      {
+        "PrimeIdealId": "q-zeta-7-p2-a",
+        "NumberField": "q-zeta-7",
+        "GeneratorDescription": "one of two primes above 2; ord_7(2)=3 so f=3, e=1, two distinct primes of norm 8",
+        "Norm": 8,
+        "NormThreshold": 30,
+        "SplitsCompletely": false
+      },
+      {
+        "PrimeIdealId": "q-zeta-7-p2-b",
+        "NumberField": "q-zeta-7",
+        "GeneratorDescription": "the second prime above 2",
+        "Norm": 8,
+        "NormThreshold": 30,
+        "SplitsCompletely": false
+      },
+      {
+        "PrimeIdealId": "q-zeta-7-p29-witness",
+        "NumberField": "q-zeta-7",
+        "GeneratorDescription": "one of six primes above 29; 29 ≡ 1 (mod 7) so 29 splits completely (e=1, f=1, g=6)",
+        "Norm": 29,
+        "NormThreshold": 30,
+        "SplitsCompletely": true
       }
     ]
   },
@@ -1159,6 +1225,14 @@
         "Determinant": 1.7320508075688772,
         "GramMatrixJSON": "[[1,0],[0,3]]",
         "ShortVectorThresholdSquared": 4
+      },
+      {
+        "MinkowskiLatticeId": "lat-q-zeta-7",
+        "NumberField": "q-zeta-7",
+        "Determinant": 129.64181424216494,
+        "GramMatrixJSON": "[[2,-1,0,0,0,-1],[-1,2,-1,0,0,0],[0,-1,2,-1,0,0],[0,0,-1,2,-1,0],[0,0,0,-1,2,-1],[-1,0,0,0,-1,2]]",
+        "ShortVectorThresholdSquared": 4,
+        "Description": "Minkowski lattice of Z[ζ_7] under the canonical embedding into R^6. Determinant sqrt(16807) ≈ 129.642 (= sqrt of |disc(K)|). The Gram matrix is stylized as the cyclotomic-like circulant pattern; the real Z[ζ_7] Gram on the power basis is integral but the entries are not as clean."
       }
     ]
   },
@@ -1233,6 +1307,43 @@
         "MinkowskiLattice": "lat-q-sqrt-neg3",
         "CoordsJSON": "[3,0]",
         "NormSquared": 9
+      },
+      {
+        "ShortVectorId": "lat-q-zeta-7-v-zeta0",
+        "MinkowskiLattice": "lat-q-zeta-7",
+        "CoordsJSON": "[1,0,1,0,1,0]",
+        "NormSquared": 3
+      },
+      {
+        "ShortVectorId": "lat-q-zeta-7-v-zeta1",
+        "MinkowskiLattice": "lat-q-zeta-7",
+        "CoordsJSON": "[0.6234898,0.7818315,-0.2225209,0.9749279,-0.9009689,0.4338837]",
+        "NormSquared": 3
+      },
+      {
+        "ShortVectorId": "lat-q-zeta-7-v-zeta2",
+        "MinkowskiLattice": "lat-q-zeta-7",
+        "CoordsJSON": "[-0.2225209,0.9749279,-0.9009689,-0.4338837,0.6234898,-0.7818315]",
+        "NormSquared": 3
+      },
+      {
+        "ShortVectorId": "lat-q-zeta-7-v-zeta3",
+        "MinkowskiLattice": "lat-q-zeta-7",
+        "CoordsJSON": "[-0.9009689,0.4338837,0.6234898,-0.7818315,-0.2225209,-0.9749279]",
+        "NormSquared": 3
+      },
+      {
+        "ShortVectorId": "lat-q-zeta-7-v-difference-small",
+        "MinkowskiLattice": "lat-q-zeta-7",
+        "CoordsJSON": "[0.3765102,-0.7818315,1.2225209,-0.9749279,1.9009689,-0.4338837]",
+        "NormSquared": 6,
+        "Description": "Image of (1 - ζ_7) under Minkowski; just above the short-vector threshold (squared norm 6 > 4)."
+      },
+      {
+        "ShortVectorId": "lat-q-zeta-7-v-large",
+        "MinkowskiLattice": "lat-q-zeta-7",
+        "CoordsJSON": "[2,0,2,0,2,0]",
+        "NormSquared": 12
       }
     ]
   },
@@ -1323,6 +1434,21 @@
         "DescriptionOfNthMember": "Project the first n short vectors of the Minkowski lattice of Q(sqrt(-3)) into R^2 via the embedding's first two real coordinates.",
         "SourceNumberField": "q-sqrt-neg3",
         "SourceMinkowskiLattice": "lat-q-sqrt-neg3"
+      },
+      {
+        "ConstructionFamilyId": "zeta7-sigma1-projection",
+        "DisplayName": "Q(ζ_7) σ_1 Projection",
+        "DescriptionOfNthMember": "Project the n smallest elements of Z[ζ_7] under σ_1 into R^2. The n=8 instance is the heptagon-with-center; larger n loads additional non-unit lattice elements (sums and differences). Sawin-style higher n configurations involve restricting to elements with controlled multi-σ norms — not loaded here.",
+        "SourceNumberField": "q-zeta-7",
+        "SourceMinkowskiLattice": "lat-q-zeta-7"
+      },
+      {
+        "ConstructionFamilyId": "non-algebraic-baseline",
+        "DisplayName": "Non-Algebraic Baseline",
+        "DescriptionOfNthMember": "A purely geometric family (unit triangle, unit square, etc.) with no algebraic source. Used as a contrast — IsAlgebraicConstruction is FALSE for this family.",
+        "SourceNumberField": null,
+        "SourceMinkowskiLattice": null,
+        "Description": "Coverage row: a non-algebraic family. Its instances point at PointSets that aren't projections of any lattice."
       }
     ]
   },
@@ -1426,6 +1552,24 @@
         "ConstructionFamily": "sqrt-lattice-projection",
         "ParamN": 4,
         "PointSet": "unit-square"
+      },
+      {
+        "ConstructionInstanceId": "zeta7-n8-heptagon",
+        "ConstructionFamily": "zeta7-sigma1-projection",
+        "ParamN": 8,
+        "PointSet": "heptagon-with-center"
+      },
+      {
+        "ConstructionInstanceId": "non-algebraic-tri",
+        "ConstructionFamily": "non-algebraic-baseline",
+        "ParamN": 3,
+        "PointSet": "unit-triangle"
+      },
+      {
+        "ConstructionInstanceId": "non-algebraic-sq",
+        "ConstructionFamily": "non-algebraic-baseline",
+        "ParamN": 4,
+        "PointSet": "unit-square"
       }
     ]
   },
@@ -1486,6 +1630,14 @@
       {
         "GrowthSequenceId": "sqrt-lat-growth",
         "ConstructionFamily": "sqrt-lattice-projection"
+      },
+      {
+        "GrowthSequenceId": "zeta7-sigma1-growth",
+        "ConstructionFamily": "zeta7-sigma1-projection"
+      },
+      {
+        "GrowthSequenceId": "non-algebraic-growth",
+        "ConstructionFamily": "non-algebraic-baseline"
       }
     ]
   },
@@ -1664,6 +1816,32 @@
         "formula": "=AND({{WitnessConsistent}}, {{WitnessFamilyIsAlgebraic}}, {{IsSuperlinear}})",
         "important": true,
         "Description": "TRUE when (a) the finite witness is consistent with the claimed exponent, (b) the witness family is algebraic-source, and (c) the claim itself is superlinear. This is the cleanest single-cell answer to 'does this bound carry the algebraic ladder all the way through?'"
+      },
+      {
+        "name": "ObligationCount",
+        "datatype": "integer",
+        "type": "aggregation",
+        "formula": "=COUNTIFS(ProofObligations!{{ParentBound}}, AsymptoticLowerBounds!{{AsymptoticLowerBoundId}})"
+      },
+      {
+        "name": "SatisfiedObligationCount",
+        "datatype": "integer",
+        "type": "aggregation",
+        "formula": "=COUNTIFS(ProofObligations!{{ParentBound}}, AsymptoticLowerBounds!{{AsymptoticLowerBoundId}}, ProofObligations!{{IsSatisfied}}, TRUE)"
+      },
+      {
+        "name": "OpenObligationCount",
+        "datatype": "integer",
+        "type": "aggregation",
+        "formula": "=COUNTIFS(ProofObligations!{{ParentBound}}, AsymptoticLowerBounds!{{AsymptoticLowerBoundId}}, ProofObligations!{{IsSatisfied}}, FALSE)"
+      },
+      {
+        "name": "AllObligationsSatisfied",
+        "datatype": "boolean",
+        "type": "calculated",
+        "formula": "={{SatisfiedObligationCount}}={{ObligationCount}}",
+        "important": true,
+        "Description": "TRUE iff every proof obligation referencing this bound is satisfied. FALSE means at least one obligation is unsatisfied or unevaluated."
       }
     ],
     "data": [
@@ -1687,6 +1865,17 @@
         "Coefficient": 1,
         "StatementText": "U(n) > n^{1.014} for arbitrarily large n",
         "SourceCitation": "Sawin, arXiv:2605.20579",
+        "IsExplicit": true
+      },
+      {
+        "AsymptoticLowerBoundId": "zeta7-witness-bound",
+        "DisplayName": "Q(ζ_7) σ_1 finite witness (under-claim)",
+        "AsymptoticFunction": "u-n",
+        "GrowthSequence": "zeta7-sigma1-growth",
+        "Exponent": 0.9,
+        "Coefficient": 1,
+        "StatementText": "U(n) ≥ n^{0.9} witnessed by the heptagon-with-center configuration (n=8, e=7 ⇒ exponent ≈ 0.937). A deliberately under-claimed exponent so WitnessConsistent resolves TRUE on the loaded instance.",
+        "SourceCitation": "computed from loaded data, no external citation",
         "IsExplicit": true
       }
     ]
@@ -1812,6 +2001,29 @@
         "type": "calculated",
         "formula": "={{AsymptoticFunction}}=\"u-n\"",
         "Description": "TRUE if this theorem is about U(n). Other anchors in this neighborhood (Szemerédi–Trotter, etc.) are about different functions."
+      },
+      {
+        "name": "AnchoredBoundAllObligationsSatisfied",
+        "datatype": "boolean",
+        "type": "lookup",
+        "formula": "=LOOKUP(AsymptoticLowerBounds!{{AllObligationsSatisfied}}, Theorems!{{AnchoredLowerBound}}, AsymptoticLowerBounds!{{AsymptoticLowerBoundId}})",
+        "nullable": true,
+        "Description": "Surfaces the anchored bound's full-obligation status onto the theorem row."
+      },
+      {
+        "name": "AnchoredBoundOpenObligationCount",
+        "datatype": "integer",
+        "type": "lookup",
+        "formula": "=LOOKUP(AsymptoticLowerBounds!{{OpenObligationCount}}, Theorems!{{AnchoredLowerBound}}, AsymptoticLowerBounds!{{AsymptoticLowerBoundId}})",
+        "nullable": true
+      },
+      {
+        "name": "FullyAuditedAndClosed",
+        "datatype": "boolean",
+        "type": "calculated",
+        "formula": "=AND({{AlgebraicChainClosed}}, {{AnchoredBoundAllObligationsSatisfied}})",
+        "important": true,
+        "Description": "The final, fully-paranoid theorem-level gate: the algebraic chain is closed AND every proof obligation against the anchored bound is satisfied. TRUE means the theorem row is end-to-end witnessed in the rulebook with no open obligations."
       }
     ],
     "data": [
@@ -1939,7 +2151,7 @@
     ],
     "data": [
       {"MinkowskiEmbeddingId": "minkowski-q-sqrt-neg3", "NumberField": "q-sqrt-neg3", "TargetLattice": "lat-q-sqrt-neg3", "IsCanonical": true, "PreservesAdditiveStructure": true, "Description": "Canonical Minkowski embedding of Q(sqrt(-3)) into R^2."},
-      {"MinkowskiEmbeddingId": "minkowski-q-zeta-7", "NumberField": "q-zeta-7", "TargetLattice": null, "IsCanonical": true, "PreservesAdditiveStructure": true, "Description": "Canonical embedding for Q(ζ_7); target lattice row not yet materialised."},
+      {"MinkowskiEmbeddingId": "minkowski-q-zeta-7", "NumberField": "q-zeta-7", "TargetLattice": "lat-q-zeta-7", "IsCanonical": true, "PreservesAdditiveStructure": true, "Description": "Canonical embedding of Q(ζ_7) into R^6 (signature (0,3) means 3 complex pairs ⇒ ambient R^6)."},
       {"MinkowskiEmbeddingId": "minkowski-degenerate-test", "NumberField": "q-sqrt-neg3", "TargetLattice": null, "IsCanonical": false, "PreservesAdditiveStructure": false, "Description": "Coverage row: hypothetical non-additive map."},
       {"MinkowskiEmbeddingId": "minkowski-unknown-test", "NumberField": "q-sqrt-neg3", "TargetLattice": null, "IsCanonical": false, "PreservesAdditiveStructure": null, "Description": "Coverage row: unevaluated additivity."}
     ]
@@ -1965,7 +2177,8 @@
       {"GramMatrixId": "gram-lat-q-sqrt-neg3", "MinkowskiLattice": "lat-q-sqrt-neg3", "MatrixJSON": "[[1,0],[0,3]]", "IsSymmetric": true, "IsPositiveDefinite": true, "IsDiagonal": true, "RankDeficient": false},
       {"GramMatrixId": "gram-test-singular", "MinkowskiLattice": "lat-q-sqrt-neg3", "MatrixJSON": "[[1,1],[1,1]]", "IsSymmetric": true, "IsPositiveDefinite": false, "IsDiagonal": null, "RankDeficient": true, "Description": "Coverage row: singular Gram-like matrix."},
       {"GramMatrixId": "gram-test-unverified", "MinkowskiLattice": "lat-q-sqrt-neg3", "MatrixJSON": "[[2,1],[1,2]]", "IsSymmetric": true, "IsPositiveDefinite": null, "IsDiagonal": null, "RankDeficient": null, "Description": "Coverage row: unverified."},
-      {"GramMatrixId": "gram-test-nondiagonal-pd", "MinkowskiLattice": "lat-q-sqrt-neg3", "MatrixJSON": "[[2,1],[1,3]]", "IsSymmetric": true, "IsPositiveDefinite": true, "IsDiagonal": false, "RankDeficient": false, "Description": "Coverage row: non-diagonal but still positive-definite."}
+      {"GramMatrixId": "gram-test-nondiagonal-pd", "MinkowskiLattice": "lat-q-sqrt-neg3", "MatrixJSON": "[[2,1],[1,3]]", "IsSymmetric": true, "IsPositiveDefinite": true, "IsDiagonal": false, "RankDeficient": false, "Description": "Coverage row: non-diagonal but still positive-definite."},
+      {"GramMatrixId": "gram-lat-q-zeta-7", "MinkowskiLattice": "lat-q-zeta-7", "MatrixJSON": "[[2,-1,0,0,0,-1],[-1,2,-1,0,0,0],[0,-1,2,-1,0,0],[0,0,-1,2,-1,0],[0,0,0,-1,2,-1],[-1,0,0,0,-1,2]]", "IsSymmetric": true, "IsPositiveDefinite": true, "IsDiagonal": false, "RankDeficient": false, "Description": "Stylized circulant-pattern Gram for Z[ζ_7]; det = 16807 = |disc(K)|. Real entries on the power basis of Z[ζ_7] are integer but messier — this entry is a clean stand-in."}
     ]
   },
   "PlanarProjections": {
@@ -1994,7 +2207,9 @@
     "data": [
       {"PlanarProjectionId": "proj-q-sqrt-neg3-first-two", "DisplayName": "First-Two-Coords of Lat Q-sqrt-neg3", "SourceLattice": "lat-q-sqrt-neg3", "TargetContext": "euclidean-plane-r2", "ProjectionKind": "first-two-coords", "ScalingFactor": 1, "RotationDegrees": 0, "IsIsometric": true, "PreservesUnitDistance": true},
       {"PlanarProjectionId": "proj-q-sqrt-neg3-rotated-scaled", "DisplayName": "Rotated-Scaled of Lat Q-sqrt-neg3", "SourceLattice": "lat-q-sqrt-neg3", "TargetContext": "euclidean-plane-r2", "ProjectionKind": "rotation-scale", "ScalingFactor": 2, "RotationDegrees": 45, "IsIsometric": false, "PreservesUnitDistance": false, "Description": "Coverage row: scaling by 2 destroys unit-distance preservation."},
-      {"PlanarProjectionId": "proj-q-sqrt-neg3-unverified", "DisplayName": "Unverified Affine of Lat Q-sqrt-neg3", "SourceLattice": "lat-q-sqrt-neg3", "TargetContext": "euclidean-plane-r2", "ProjectionKind": "rational-affine", "ScalingFactor": 1, "RotationDegrees": 0, "IsIsometric": null, "PreservesUnitDistance": null, "Description": "Coverage row: properties not yet evaluated."}
+      {"PlanarProjectionId": "proj-q-sqrt-neg3-unverified", "DisplayName": "Unverified Affine of Lat Q-sqrt-neg3", "SourceLattice": "lat-q-sqrt-neg3", "TargetContext": "euclidean-plane-r2", "ProjectionKind": "rational-affine", "ScalingFactor": 1, "RotationDegrees": 0, "IsIsometric": null, "PreservesUnitDistance": null, "Description": "Coverage row: properties not yet evaluated."},
+      {"PlanarProjectionId": "proj-q-zeta-7-sigma1", "DisplayName": "σ1 Projection of Lat Q-zeta-7", "SourceLattice": "lat-q-zeta-7", "TargetContext": "euclidean-plane-r2", "ProjectionKind": "first-two-coords", "ScalingFactor": 1, "RotationDegrees": 0, "IsIsometric": false, "PreservesUnitDistance": null, "Description": "Pick out the first complex embedding σ_1: ζ_7 ↦ e^(2πi/7) and read off (Re, Im) ∈ R^2. NOT isometric (the R^2 image is a 2D shadow of a 6D lattice); whether it preserves unit distance depends on which lattice points get sampled — captured row-by-row in ProjectedShortVectors."},
+      {"PlanarProjectionId": "proj-q-zeta-7-sigma1-scaled", "DisplayName": "Scaled σ1 Projection of Lat Q-zeta-7", "SourceLattice": "lat-q-zeta-7", "TargetContext": "euclidean-plane-r2", "ProjectionKind": "rotation-scale", "ScalingFactor": 0.5773502691896258, "RotationDegrees": 0, "IsIsometric": false, "PreservesUnitDistance": null, "Description": "σ1 followed by scaling by 1/sqrt(3) so that the powers of ζ_7 (which have squared L2-norm 3 in R^6) land near the unit circle in R^2."}
     ]
   },
   "ProjectedShortVectors": {
@@ -2025,7 +2240,13 @@
       {"ProjectedShortVectorId": "psv-v2-first-two", "ShortVector": "lat-q-sqrt-neg3-v2", "PlanarProjection": "proj-q-sqrt-neg3-first-two", "ProjectedX": 0, "ProjectedY": 1.7320508075688772, "UnitTolerance": 0.0001},
       {"ProjectedShortVectorId": "psv-v3-first-two", "ShortVector": "lat-q-sqrt-neg3-v3", "PlanarProjection": "proj-q-sqrt-neg3-first-two", "ProjectedX": 2, "ProjectedY": 0, "UnitTolerance": 0.0001},
       {"ProjectedShortVectorId": "psv-v4-first-two", "ShortVector": "lat-q-sqrt-neg3-v4", "PlanarProjection": "proj-q-sqrt-neg3-first-two", "ProjectedX": 3, "ProjectedY": 0, "UnitTolerance": 0.0001},
-      {"ProjectedShortVectorId": "psv-v1-rotated", "ShortVector": "lat-q-sqrt-neg3-v1", "PlanarProjection": "proj-q-sqrt-neg3-rotated-scaled", "ProjectedX": 1.4142135, "ProjectedY": 1.4142135, "UnitTolerance": 0.0001, "Description": "v1 under rotation-and-scale: squared norm becomes ≈4, no longer a unit-distance witness."}
+      {"ProjectedShortVectorId": "psv-v1-rotated", "ShortVector": "lat-q-sqrt-neg3-v1", "PlanarProjection": "proj-q-sqrt-neg3-rotated-scaled", "ProjectedX": 1.4142135, "ProjectedY": 1.4142135, "UnitTolerance": 0.0001, "Description": "v1 under rotation-and-scale: squared norm becomes ≈4, no longer a unit-distance witness."},
+      {"ProjectedShortVectorId": "psv-zeta7-zeta0-sigma1", "ShortVector": "lat-q-zeta-7-v-zeta0", "PlanarProjection": "proj-q-zeta-7-sigma1", "ProjectedX": 1, "ProjectedY": 0, "UnitTolerance": 0.0001, "Description": "1 under σ_1: (1,0). Squared norm 1 — solves the target equation."},
+      {"ProjectedShortVectorId": "psv-zeta7-zeta1-sigma1", "ShortVector": "lat-q-zeta-7-v-zeta1", "PlanarProjection": "proj-q-zeta-7-sigma1", "ProjectedX": 0.6234898, "ProjectedY": 0.7818315, "UnitTolerance": 0.0001, "Description": "ζ_7 under σ_1: (cos(2π/7), sin(2π/7)). On the unit circle — solves the target equation."},
+      {"ProjectedShortVectorId": "psv-zeta7-zeta2-sigma1", "ShortVector": "lat-q-zeta-7-v-zeta2", "PlanarProjection": "proj-q-zeta-7-sigma1", "ProjectedX": -0.2225209, "ProjectedY": 0.9749279, "UnitTolerance": 0.0001, "Description": "ζ_7^2 under σ_1: (cos(4π/7), sin(4π/7))."},
+      {"ProjectedShortVectorId": "psv-zeta7-zeta3-sigma1", "ShortVector": "lat-q-zeta-7-v-zeta3", "PlanarProjection": "proj-q-zeta-7-sigma1", "ProjectedX": -0.9009689, "ProjectedY": 0.4338837, "UnitTolerance": 0.0001, "Description": "ζ_7^3 under σ_1: (cos(6π/7), sin(6π/7))."},
+      {"ProjectedShortVectorId": "psv-zeta7-diff-sigma1", "ShortVector": "lat-q-zeta-7-v-difference-small", "PlanarProjection": "proj-q-zeta-7-sigma1", "ProjectedX": 0.3765102, "ProjectedY": -0.7818315, "UnitTolerance": 0.0001, "Description": "(1 - ζ_7) under σ_1: squared norm = 2 - 2cos(2π/7) ≈ 0.7530, near but not at the unit circle. Does NOT solve the target equation."},
+      {"ProjectedShortVectorId": "psv-zeta7-large-sigma1", "ShortVector": "lat-q-zeta-7-v-large", "PlanarProjection": "proj-q-zeta-7-sigma1", "ProjectedX": 2, "ProjectedY": 0, "UnitTolerance": 0.0001, "Description": "2·1 under σ_1: distance 2 from origin. Source vector is long; projection is also long. Both predicates FALSE."}
     ]
   },
   "GolodShafarevichCriteria": {
@@ -2071,7 +2292,7 @@
     ],
     "data": [
       {"SemanticBridgeId": "bridge-metric-to-graph", "DisplayName": "Metric to Graph", "FromDomain": "euclidean-geometry", "ToDomain": "graph-theory", "BridgeKind": "induction", "FromConceptTable": "PointPairs", "ToConceptTable": "UnitDistanceGraphs", "IsLoadBearing": true, "IsClosed": true, "Description": "The unit-distance predicate over PointPairs induces the edge set of the UnitDistanceGraph."},
-      {"SemanticBridgeId": "bridge-field-to-lattice", "DisplayName": "Field to Lattice", "FromDomain": "algebraic-number-theory", "ToDomain": "lattice-embeddings", "BridgeKind": "embedding", "FromConceptTable": "NumberFields", "ToConceptTable": "MinkowskiLattices", "IsLoadBearing": true, "IsClosed": null, "Description": "Canonical Minkowski embedding O_K ↪ R^d. IsClosed=null because q-zeta-7 has no lattice row yet."},
+      {"SemanticBridgeId": "bridge-field-to-lattice", "DisplayName": "Field to Lattice", "FromDomain": "algebraic-number-theory", "ToDomain": "lattice-embeddings", "BridgeKind": "embedding", "FromConceptTable": "NumberFields", "ToConceptTable": "MinkowskiLattices", "IsLoadBearing": true, "IsClosed": true, "Description": "Canonical Minkowski embedding O_K ↪ R^d. Both loaded fields (Q(sqrt(-3)) → lat-q-sqrt-neg3, Q(ζ_7) → lat-q-zeta-7) have witnesses."},
       {"SemanticBridgeId": "bridge-lattice-to-plane", "DisplayName": "Lattice to Plane", "FromDomain": "lattice-embeddings", "ToDomain": "euclidean-geometry", "BridgeKind": "projection", "FromConceptTable": "MinkowskiLattices", "ToConceptTable": "PlanarProjections", "IsLoadBearing": true, "IsClosed": true, "Description": "Projection π: lattice → R^2. The critical algebraic-to-geometric bridge."},
       {"SemanticBridgeId": "bridge-local-to-asymptotic", "DisplayName": "Local to Asymptotic", "FromDomain": "euclidean-geometry", "ToDomain": "asymptotic-combinatorics", "BridgeKind": "aggregation", "FromConceptTable": "ConstructionInstances", "ToConceptTable": "GrowthSequences", "IsLoadBearing": true, "IsClosed": true, "Description": "Finite-n edge counts aggregate into a growth sequence."},
       {"SemanticBridgeId": "bridge-asymptotic-to-theorem", "DisplayName": "Asymptotic to Theorem", "FromDomain": "asymptotic-combinatorics", "ToDomain": "theorem-layer", "BridgeKind": "anchor", "FromConceptTable": "AsymptoticLowerBounds", "ToConceptTable": "Theorems", "IsLoadBearing": true, "IsClosed": true, "Description": "A theorem anchors a specific lower bound."},
@@ -2150,6 +2371,9 @@
       {"name": "Year", "datatype": "integer", "type": "raw", "nullable": true},
       {"name": "IsArxiv", "datatype": "boolean", "type": "raw", "nullable": true},
       {"name": "IsPublished", "datatype": "boolean", "type": "raw", "nullable": true},
+      {"name": "LemmaCount", "datatype": "integer", "type": "aggregation", "formula": "=COUNTIFS(Lemmas!{{SourceReference}}, SourceReferences!{{SourceReferenceId}})"},
+      {"name": "OutboundCitationCount", "datatype": "integer", "type": "aggregation", "formula": "=COUNTIFS(CitationLinks!{{CitingSource}}, SourceReferences!{{SourceReferenceId}})", "Description": "How many other sources this one cites."},
+      {"name": "InboundCitationCount", "datatype": "integer", "type": "aggregation", "formula": "=COUNTIFS(CitationLinks!{{CitedSource}}, SourceReferences!{{SourceReferenceId}})", "Description": "How many other sources cite this one — a crude influence metric."},
       {"name": "Description", "datatype": "string", "type": "raw", "nullable": true}
     ],
     "data": [
@@ -2175,6 +2399,7 @@
       {"name": "FeedsObjectId", "datatype": "string", "type": "raw", "nullable": true},
       {"name": "IsLoaded", "datatype": "boolean", "type": "raw", "nullable": true, "Description": "TRUE if the lemma's content has been turned into data; FALSE if known but not loaded; null if unevaluated."},
       {"name": "IsLoadBearing", "datatype": "boolean", "type": "raw", "nullable": true},
+      {"name": "ObligationCount", "datatype": "integer", "type": "aggregation", "formula": "=COUNTIFS(ProofObligations!{{RequiredLemma}}, Lemmas!{{LemmaId}})", "Description": "How many bounds depend on this lemma."},
       {"name": "Description", "datatype": "string", "type": "raw", "nullable": true}
     ],
     "data": [
@@ -2208,6 +2433,126 @@
       {"MirrorContractId": "mirror-gate-substrate", "RuleLabel": "Gate on multi-substrate parity", "RuleStatement": "A rulebook is only valid when it compiles to at least two structurally-different substrates and produces field-for-field identical outputs against the same input data, gated by an answer-key.", "RuleKind": "gate", "AppliesToScope": "release", "IsBindingOnAgents": true},
       {"MirrorContractId": "mirror-experimental-augment", "RuleLabel": "Experimental augment policy (under discussion)", "RuleStatement": "Hypothetical: allow non-source rows when prefixed `hypothetical-`. Under discussion.", "RuleKind": "describe", "AppliesToScope": "coverage-rows", "IsBindingOnAgents": null, "Description": "Coverage row: rule not yet binding."},
       {"MirrorContractId": "mirror-deprecated-aggregation", "RuleLabel": "Deprecated: ad-hoc aggregations", "RuleStatement": "Earlier draft superseded by the formal aggregation field type.", "RuleKind": "describe", "AppliesToScope": "historic", "IsBindingOnAgents": false, "Description": "Coverage row: deprecated rule retained for audit."}
+    ]
+  },
+  "Conjectures": {
+    "Description": "Table: Conjectures. Open and resolved conjectures about an AsymptoticFunction — distinct from Theorems (which are proved) because a conjecture is named, has a target exponent, and carries a resolution status that may change over time. Erdős's polynomial-improvement conjecture sits here; Sawin's resolved-as-proved conjecture-then-theorem is cross-referenced.",
+    "important": true,
+    "important_fields": ["IsResolved", "ConjecturedExponent"],
+    "schema": [
+      {"name": "ConjectureId", "datatype": "string", "type": "raw", "nullable": false, "is_primary_key": true},
+      {"name": "Name", "datatype": "string", "type": "calculated", "nullable": true, "formula": "=SUBSTITUTE(LOWER({{DisplayName}}), \" \", \"-\")"},
+      {"name": "DisplayName", "datatype": "string", "type": "raw"},
+      {"name": "StatementText", "datatype": "string", "type": "raw"},
+      {"name": "TargetFunction", "datatype": "string", "type": "relationship", "RelatedTo": "AsymptoticFunctions"},
+      {"name": "ConjecturedExponent", "datatype": "decimal", "type": "raw", "nullable": true, "Description": "The exponent the conjecture asserts. Null when the conjecture is non-exponent (e.g., a structural claim)."},
+      {"name": "IsConjecturalUpperBound", "datatype": "boolean", "type": "raw"},
+      {"name": "IsConjecturalLowerBound", "datatype": "boolean", "type": "raw"},
+      {"name": "ProposedBy", "datatype": "string", "type": "relationship", "RelatedTo": "SourceReferences", "nullable": true},
+      {"name": "IsResolved", "datatype": "boolean", "type": "raw", "nullable": true, "Description": "TRUE if proved/disproved; FALSE if explicitly still open; null when status hasn't been classified."},
+      {"name": "ResolvedAs", "datatype": "string", "type": "raw", "nullable": true, "Description": "One of: 'proved', 'disproved', 'withdrawn'. Null when not resolved."},
+      {"name": "ResolutionCitation", "datatype": "string", "type": "relationship", "RelatedTo": "SourceReferences", "nullable": true},
+      {"name": "RelatedTheorem", "datatype": "string", "type": "relationship", "RelatedTo": "Theorems", "nullable": true, "Description": "If this conjecture resolved into a theorem, the theorem row is here."},
+      {"name": "IsStillOpen", "datatype": "boolean", "type": "calculated", "formula": "={{IsResolved}}=FALSE", "Description": "TRUE only when IsResolved is explicitly FALSE. Null IsResolved propagates to non-TRUE."},
+      {"name": "Description", "datatype": "string", "type": "raw", "nullable": true}
+    ],
+    "data": [
+      {"ConjectureId": "conj-erdos-polynomial-improvement", "DisplayName": "Erdős Polynomial Improvement Conjecture", "StatementText": "U(n) = O(n^{1+ε}) for every ε > 0 — i.e., the unit-distance count is no more than slightly-superlinear.", "TargetFunction": "u-n", "ConjecturedExponent": 1, "IsConjecturalUpperBound": true, "IsConjecturalLowerBound": false, "ProposedBy": "src-erdos-1946", "IsResolved": false, "ResolvedAs": null, "ResolutionCitation": null, "RelatedTheorem": null, "Description": "The most famous open question about U(n). Still open as of every loaded source."},
+      {"ConjectureId": "conj-erdos-43-tightness", "DisplayName": "Erdős 4/3 Tightness Conjecture", "StatementText": "U(n) ≤ c · n^{4/3} — that the Spencer–Szemerédi–Trotter upper bound is tight up to constants.", "TargetFunction": "u-n", "ConjecturedExponent": 1.3333333333, "IsConjecturalUpperBound": true, "IsConjecturalLowerBound": false, "ProposedBy": "src-erdos-1946", "IsResolved": false, "ResolvedAs": null, "ResolutionCitation": null, "RelatedTheorem": null, "Description": "Folklore-strength: would mean ST is the right shape."},
+      {"ConjectureId": "conj-sawin-resolved", "DisplayName": "Sawin n^1.014 Conjecture-then-Theorem", "StatementText": "There exists an explicit algebraic-number-theoretic construction giving U(n) > n^{1.014} for arbitrarily large n.", "TargetFunction": "u-n", "ConjecturedExponent": 1.014, "IsConjecturalUpperBound": false, "IsConjecturalLowerBound": true, "ProposedBy": "src-sawin-2024", "IsResolved": true, "ResolvedAs": "proved", "ResolutionCitation": "src-sawin-2024", "RelatedTheorem": "thm-superlinear-unit-distance", "Description": "Resolved-as-proved by its own proposer in the same paper."},
+      {"ConjectureId": "conj-future-improvement-slot", "DisplayName": "Future Improvement Slot", "StatementText": "Any future improvement beyond n^1.014 — a structural placeholder.", "TargetFunction": "u-n", "ConjecturedExponent": null, "IsConjecturalUpperBound": false, "IsConjecturalLowerBound": true, "ProposedBy": null, "IsResolved": null, "ResolvedAs": null, "ResolutionCitation": null, "RelatedTheorem": "thm-future-conjectural-improvement", "Description": "Coverage row: IsResolved=null."},
+      {"ConjectureId": "conj-withdrawn-example", "DisplayName": "Hypothetical Withdrawn Bound", "StatementText": "A hypothetical conjecture proposed and later withdrawn by its author — for ResolvedAs='withdrawn' coverage.", "TargetFunction": "u-n", "ConjecturedExponent": 1.5, "IsConjecturalUpperBound": false, "IsConjecturalLowerBound": true, "ProposedBy": "src-experimental-preprint", "IsResolved": true, "ResolvedAs": "withdrawn", "ResolutionCitation": null, "RelatedTheorem": null, "Description": "Coverage row."}
+    ]
+  },
+  "ProofObligations": {
+    "Description": "Table: ProofObligations. Bidirectional links between AsymptoticLowerBounds and the Lemmas that must be loaded for the bound to be derivable. Each row says 'bound X depends on lemma Y'. Aggregations on the bound side surface how many obligations are open vs satisfied.",
+    "important": true,
+    "important_fields": ["IsSatisfied", "IsLemmaLoaded"],
+    "schema": [
+      {"name": "ProofObligationId", "datatype": "string", "type": "raw", "nullable": false, "is_primary_key": true},
+      {"name": "Name", "datatype": "string", "type": "calculated", "nullable": true, "formula": "={{ParentBound}}/{{RequiredLemma}}"},
+      {"name": "ParentBound", "datatype": "string", "type": "relationship", "RelatedTo": "AsymptoticLowerBounds"},
+      {"name": "RequiredLemma", "datatype": "string", "type": "relationship", "RelatedTo": "Lemmas"},
+      {"name": "ObligationKind", "datatype": "string", "type": "raw", "Description": "One of: 'necessary', 'sufficient', 'auxiliary'."},
+      {"name": "IsNecessary", "datatype": "boolean", "type": "calculated", "formula": "={{ObligationKind}}=\"necessary\""},
+      {"name": "IsSatisfied", "datatype": "boolean", "type": "raw", "nullable": true, "Description": "TRUE if the curator has confirmed the lemma justifies its part of the bound; FALSE if known gap; null if unevaluated."},
+      {"name": "IsLemmaLoaded", "datatype": "boolean", "type": "lookup", "formula": "=LOOKUP(Lemmas!{{IsLoaded}}, ProofObligations!{{RequiredLemma}}, Lemmas!{{LemmaId}})", "nullable": true},
+      {"name": "IsLemmaLoadBearing", "datatype": "boolean", "type": "lookup", "formula": "=LOOKUP(Lemmas!{{IsLoadBearing}}, ProofObligations!{{RequiredLemma}}, Lemmas!{{LemmaId}})", "nullable": true},
+      {"name": "BoundClaimedExponent", "datatype": "decimal", "type": "lookup", "formula": "=LOOKUP(AsymptoticLowerBounds!{{Exponent}}, ProofObligations!{{ParentBound}}, AsymptoticLowerBounds!{{AsymptoticLowerBoundId}})"},
+      {"name": "IsCurrentlyOpen", "datatype": "boolean", "type": "calculated", "formula": "={{IsSatisfied}}=FALSE", "Description": "TRUE only if explicitly FALSE — i.e. a known gap."},
+      {"name": "Description", "datatype": "string", "type": "raw", "nullable": true}
+    ],
+    "data": [
+      {"ProofObligationId": "po-sawin-shortvec", "ParentBound": "sawin-n1014", "RequiredLemma": "lemma-short-vector-counting", "ObligationKind": "necessary", "IsSatisfied": true},
+      {"ProofObligationId": "po-sawin-density", "ParentBound": "sawin-n1014", "RequiredLemma": "lemma-density-margin", "ObligationKind": "necessary", "IsSatisfied": true},
+      {"ProofObligationId": "po-sawin-anchor", "ParentBound": "sawin-n1014", "RequiredLemma": "lemma-anchor-explicit-bound", "ObligationKind": "sufficient", "IsSatisfied": true},
+      {"ProofObligationId": "po-erdos-context", "ParentBound": "erdos-sqrt-bound", "RequiredLemma": "lemma-erdos-context", "ObligationKind": "sufficient", "IsSatisfied": true},
+      {"ProofObligationId": "po-sawin-spencer-aux", "ParentBound": "sawin-n1014", "RequiredLemma": "lemma-spencer-auxiliary", "ObligationKind": "auxiliary", "IsSatisfied": false, "Description": "Open obligation: Spencer auxiliary lemma is named but not yet loaded."},
+      {"ProofObligationId": "po-future-gap", "ParentBound": "sawin-n1014", "RequiredLemma": "lemma-future-improvement", "ObligationKind": "auxiliary", "IsSatisfied": null, "Description": "Coverage row: IsSatisfied=null."},
+      {"ProofObligationId": "po-zeta7-witness", "ParentBound": "zeta7-witness-bound", "RequiredLemma": "lemma-density-margin", "ObligationKind": "sufficient", "IsSatisfied": true, "Description": "The under-claimed Q(ζ_7) finite-witness bound is supported by the loaded heptagon data."}
+    ]
+  },
+  "CitationLinks": {
+    "Description": "Table: CitationLinks. Directed graph of citations and dependencies between SourceReferences. CitationKind classifies whether the citing source extends, improves, depends on, or merely cites the cited source.",
+    "important": false,
+    "schema": [
+      {"name": "CitationLinkId", "datatype": "string", "type": "raw", "nullable": false, "is_primary_key": true},
+      {"name": "Name", "datatype": "string", "type": "calculated", "nullable": true, "formula": "={{CitingSource}}-cites-{{CitedSource}}"},
+      {"name": "CitingSource", "datatype": "string", "type": "relationship", "RelatedTo": "SourceReferences"},
+      {"name": "CitedSource", "datatype": "string", "type": "relationship", "RelatedTo": "SourceReferences"},
+      {"name": "CitationKind", "datatype": "string", "type": "raw", "Description": "One of: 'extends', 'improves', 'cites-for-context', 'depends-on', 'disagrees-with'."},
+      {"name": "IsLoadBearing", "datatype": "boolean", "type": "raw", "nullable": true, "Description": "TRUE if removing the cited source breaks the citing source's proof; FALSE for context-only; null when unclassified."},
+      {"name": "IsDependency", "datatype": "boolean", "type": "calculated", "formula": "={{CitationKind}}=\"depends-on\""},
+      {"name": "IsImprovement", "datatype": "boolean", "type": "calculated", "formula": "={{CitationKind}}=\"improves\""},
+      {"name": "CitingYear", "datatype": "integer", "type": "lookup", "formula": "=LOOKUP(SourceReferences!{{Year}}, CitationLinks!{{CitingSource}}, SourceReferences!{{SourceReferenceId}})", "nullable": true},
+      {"name": "CitedYear", "datatype": "integer", "type": "lookup", "formula": "=LOOKUP(SourceReferences!{{Year}}, CitationLinks!{{CitedSource}}, SourceReferences!{{SourceReferenceId}})", "nullable": true},
+      {"name": "Description", "datatype": "string", "type": "raw", "nullable": true}
+    ],
+    "data": [
+      {"CitationLinkId": "cite-sawin-improves-erdos", "CitingSource": "src-sawin-2024", "CitedSource": "src-erdos-1946", "CitationKind": "improves", "IsLoadBearing": true, "Description": "Sawin's n^1.014 explicit-exponent bound improves on Erdős's existential n^{1+c/loglogn}."},
+      {"CitationLinkId": "cite-sawin-depends-gs", "CitingSource": "src-sawin-2024", "CitedSource": "src-golod-shafarevich-1964", "CitationKind": "depends-on", "IsLoadBearing": true, "Description": "Sawin's construction depends on number fields satisfying the Golod–Shafarevich criterion."},
+      {"CitationLinkId": "cite-sawin-context-st", "CitingSource": "src-sawin-2024", "CitedSource": "src-szemeredi-trotter-1983", "CitationKind": "cites-for-context", "IsLoadBearing": false, "Description": "Szemerédi–Trotter is the upper-bound side; Sawin cites it for context, not as a dependency."},
+      {"CitationLinkId": "cite-sawin-context-spencer-st", "CitingSource": "src-sawin-2024", "CitedSource": "src-spencer-st-1984", "CitationKind": "cites-for-context", "IsLoadBearing": false, "Description": "Spencer–Szemerédi–Trotter's n^{4/3} upper bound — Sawin's lower bound is far below this ceiling."},
+      {"CitationLinkId": "cite-spencer-extends-st", "CitingSource": "src-spencer-st-1984", "CitedSource": "src-szemeredi-trotter-1983", "CitationKind": "extends", "IsLoadBearing": true, "Description": "Spencer-S-T extends the original ST incidence bound to specifically unit distances."},
+      {"CitationLinkId": "cite-unclassified-folklore", "CitingSource": "src-sawin-2024", "CitedSource": "src-folklore-construction", "CitationKind": "cites-for-context", "IsLoadBearing": null, "Description": "Coverage row: IsLoadBearing=null."},
+      {"CitationLinkId": "cite-experimental-disagrees", "CitingSource": "src-experimental-preprint", "CitedSource": "src-sawin-2024", "CitationKind": "disagrees-with", "IsLoadBearing": false, "Description": "Coverage row: a hypothetical preprint disagreeing with Sawin's exponent (not real — coverage for CitationKind='disagrees-with')."}
+    ]
+  },
+  "AnswerKey": {
+    "Description": "Table: AnswerKey. The §14 substrate-equivalence gate from THE_PLAN.md. Each row pins ONE cell (TargetTable + TargetRowId + TargetField) to its expected value. Every conformance-tested substrate (Postgres, Python, OWL, …) must reproduce these values; any mismatch with GateLevel='blocking' fails the build.",
+    "important": true,
+    "important_fields": ["GateLevel", "IsCurrentlyMatched"],
+    "schema": [
+      {"name": "AnswerKeyId", "datatype": "string", "type": "raw", "nullable": false, "is_primary_key": true},
+      {"name": "Name", "datatype": "string", "type": "calculated", "nullable": true, "formula": "={{TargetTable}}/{{TargetRowId}}/{{TargetField}}"},
+      {"name": "TargetTable", "datatype": "string", "type": "raw"},
+      {"name": "TargetRowId", "datatype": "string", "type": "raw"},
+      {"name": "TargetField", "datatype": "string", "type": "raw"},
+      {"name": "DataType", "datatype": "string", "type": "raw", "Description": "One of: 'string', 'number', 'boolean'."},
+      {"name": "ExpectedString", "datatype": "string", "type": "raw", "nullable": true},
+      {"name": "ExpectedNumber", "datatype": "decimal", "type": "raw", "nullable": true},
+      {"name": "ExpectedBoolean", "datatype": "boolean", "type": "raw", "nullable": true},
+      {"name": "Tolerance", "datatype": "decimal", "type": "raw", "nullable": true, "Description": "Numeric tolerance for floating-point comparisons. Null for exact-match."},
+      {"name": "GateLevel", "datatype": "string", "type": "raw", "Description": "One of: 'blocking', 'warning', 'info'."},
+      {"name": "IsBlocking", "datatype": "boolean", "type": "calculated", "formula": "={{GateLevel}}=\"blocking\""},
+      {"name": "IsCurrentlyMatched", "datatype": "boolean", "type": "raw", "nullable": true, "Description": "TRUE if the most recent substrate run matched the expected value; FALSE if it didn't; null if not yet run."},
+      {"name": "Description", "datatype": "string", "type": "raw", "nullable": true}
+    ],
+    "data": [
+      {"AnswerKeyId": "ak-tri-ab-distance-squared", "TargetTable": "PointPairs", "TargetRowId": "tri-ab", "TargetField": "DistanceSquared", "DataType": "number", "ExpectedString": null, "ExpectedNumber": 1, "ExpectedBoolean": null, "Tolerance": 0.0001, "GateLevel": "blocking", "IsCurrentlyMatched": true, "Description": "Triangle A↔B is a unit-distance pair: ΔX²+ΔY² = 1."},
+      {"AnswerKeyId": "ak-tri-ab-is-unit", "TargetTable": "PointPairs", "TargetRowId": "tri-ab", "TargetField": "IsUnitDistance", "DataType": "boolean", "ExpectedString": null, "ExpectedNumber": null, "ExpectedBoolean": true, "Tolerance": null, "GateLevel": "blocking", "IsCurrentlyMatched": true},
+      {"AnswerKeyId": "ak-sq-ac-distance-squared", "TargetTable": "PointPairs", "TargetRowId": "sq-ac", "TargetField": "DistanceSquared", "DataType": "number", "ExpectedString": null, "ExpectedNumber": 2, "ExpectedBoolean": null, "Tolerance": 0.0001, "GateLevel": "blocking", "IsCurrentlyMatched": true, "Description": "Diagonal of the unit square: sqrt(2), so squared = 2."},
+      {"AnswerKeyId": "ak-heptagon-point-count", "TargetTable": "PointSets", "TargetRowId": "heptagon-with-center", "TargetField": "PointCount", "DataType": "number", "ExpectedString": null, "ExpectedNumber": 8, "ExpectedBoolean": null, "Tolerance": null, "GateLevel": "blocking", "IsCurrentlyMatched": true},
+      {"AnswerKeyId": "ak-heptagon-edge-count", "TargetTable": "PointSets", "TargetRowId": "heptagon-with-center", "TargetField": "UnitDistancePairCount", "DataType": "number", "ExpectedString": null, "ExpectedNumber": 7, "ExpectedBoolean": null, "Tolerance": null, "GateLevel": "blocking", "IsCurrentlyMatched": true, "Description": "7 spoke pairs (center→each vertex); chord pairs are not unit."},
+      {"AnswerKeyId": "ak-q-sqrt-neg3-gs-pass", "TargetTable": "NumberFields", "TargetRowId": "q-sqrt-neg3", "TargetField": "SatisfiesGolodShafarevich", "DataType": "boolean", "ExpectedString": null, "ExpectedNumber": null, "ExpectedBoolean": false, "Tolerance": null, "GateLevel": "blocking", "IsCurrentlyMatched": true, "Description": "Q(sqrt(-3)) does NOT satisfy GS (d=2, r=1, threshold=1, 1 is not > 1)."},
+      {"AnswerKeyId": "ak-q-zeta-7-gs-pass", "TargetTable": "NumberFields", "TargetRowId": "q-zeta-7", "TargetField": "SatisfiesGolodShafarevich", "DataType": "boolean", "ExpectedString": null, "ExpectedNumber": null, "ExpectedBoolean": true, "Tolerance": null, "GateLevel": "blocking", "IsCurrentlyMatched": true, "Description": "Q(ζ_7) demonstration values satisfy GS."},
+      {"AnswerKeyId": "ak-q-zeta-7-small-prime-count", "TargetTable": "NumberFields", "TargetRowId": "q-zeta-7", "TargetField": "SmallNormPrimeIdealCount", "DataType": "number", "ExpectedString": null, "ExpectedNumber": 4, "ExpectedBoolean": null, "Tolerance": null, "GateLevel": "blocking", "IsCurrentlyMatched": true, "Description": "Norms ≤ 30 in the loaded Q(ζ_7) primes: 7, 8, 8, 29 → 4 primes."},
+      {"AnswerKeyId": "ak-lat-q-zeta-7-disc-identity", "TargetTable": "MinkowskiLattices", "TargetRowId": "lat-q-zeta-7", "TargetField": "DeterminantSquaredEqualsDiscriminant", "DataType": "boolean", "ExpectedString": null, "ExpectedNumber": null, "ExpectedBoolean": true, "Tolerance": null, "GateLevel": "blocking", "IsCurrentlyMatched": true, "Description": "Classical identity det² = |disc(K)|: 129.642² ≈ 16807 = |disc(Q(ζ_7))|."},
+      {"AnswerKeyId": "ak-sawin-witness-consistent", "TargetTable": "AsymptoticLowerBounds", "TargetRowId": "sawin-n1014", "TargetField": "WitnessConsistent", "DataType": "boolean", "ExpectedString": null, "ExpectedNumber": null, "ExpectedBoolean": false, "Tolerance": null, "GateLevel": "info", "IsCurrentlyMatched": true, "Description": "Honest finding: the n^1.014 bound is NOT finite-sample witnessed by the loaded sqrt-lattice instances (which max out at exponent 1). Marked 'info' rather than 'blocking' because this reflects what's loaded, not a substrate bug."},
+      {"AnswerKeyId": "ak-zeta7-witness-consistent", "TargetTable": "AsymptoticLowerBounds", "TargetRowId": "zeta7-witness-bound", "TargetField": "WitnessConsistent", "DataType": "boolean", "ExpectedString": null, "ExpectedNumber": null, "ExpectedBoolean": true, "Tolerance": null, "GateLevel": "blocking", "IsCurrentlyMatched": true, "Description": "The deliberately-under-claimed Q(ζ_7) bound (exponent 0.9) IS witnessed by the heptagon-with-center instance (log7/log8 ≈ 0.937)."},
+      {"AnswerKeyId": "ak-thm-sawin-chain-not-closed", "TargetTable": "Theorems", "TargetRowId": "thm-superlinear-unit-distance", "TargetField": "AlgebraicChainClosed", "DataType": "boolean", "ExpectedString": null, "ExpectedNumber": null, "ExpectedBoolean": false, "Tolerance": null, "GateLevel": "info", "IsCurrentlyMatched": true, "Description": "Honest: the Sawin theorem row's chain is NOT closed because the Sawin bound's WitnessConsistent is FALSE under the loaded data."},
+      {"AnswerKeyId": "ak-coverage-warning", "TargetTable": "Theorems", "TargetRowId": "thm-future-conjectural-improvement", "TargetField": "IsProven", "DataType": "boolean", "ExpectedString": null, "ExpectedNumber": null, "ExpectedBoolean": false, "Tolerance": null, "GateLevel": "warning", "IsCurrentlyMatched": null, "Description": "Coverage row: IsCurrentlyMatched=null."},
+      {"AnswerKeyId": "ak-coverage-unmatched", "TargetTable": "Conjectures", "TargetRowId": "conj-future-improvement-slot", "TargetField": "IsResolved", "DataType": "boolean", "ExpectedString": null, "ExpectedNumber": null, "ExpectedBoolean": false, "Tolerance": null, "GateLevel": "info", "IsCurrentlyMatched": false, "Description": "Coverage row: IsCurrentlyMatched=FALSE (current value is null, expected is false)."}
     ]
   }
 }
