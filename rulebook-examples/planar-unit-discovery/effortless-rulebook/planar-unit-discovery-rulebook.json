@@ -862,6 +862,43 @@
         "type": "aggregation",
         "formula": "=COUNTIFS(PrimeIdeals!{{NumberField}}, NumberFields!{{NumberFieldId}}, PrimeIdeals!{{IsSmallNorm}}, TRUE)",
         "Description": "How many prime ideals fall below the small-norm threshold. Drives multiplicity in construction families."
+      },
+      {
+        "name": "GolodShafarevichPassingCount",
+        "datatype": "integer",
+        "type": "aggregation",
+        "formula": "=COUNTIFS(GolodShafarevichCriteria!{{NumberField}}, NumberFields!{{NumberFieldId}}, GolodShafarevichCriteria!{{SatisfiesGolodShafarevichTower}}, TRUE)",
+        "Description": "Aggregation count of GolodShafarevichCriteria rows for this field that satisfy the GS tower inequality. Used as the bridge from raw GS parameters to a per-field boolean."
+      },
+      {
+        "name": "SatisfiesGolodShafarevich",
+        "datatype": "boolean",
+        "type": "calculated",
+        "formula": "={{GolodShafarevichPassingCount}}>0",
+        "important": true,
+        "Description": "TRUE if some GolodShafarevichCriteria row for this field passes the tower inequality. This is the gate that determines whether the field is a candidate algebraic source for many short vectors."
+      },
+      {
+        "name": "IsAlgebraicSourceCandidate",
+        "datatype": "boolean",
+        "type": "calculated",
+        "formula": "=AND({{SatisfiesGolodShafarevich}}, {{SmallNormPrimeIdealCount}}>0)",
+        "important": true,
+        "Description": "TRUE when the field both satisfies GS and has at least one small-norm prime ideal — the two-condition algebraic precondition for producing a Minkowski lattice with many short vectors."
+      },
+      {
+        "name": "FieldEmbeddingCount",
+        "datatype": "integer",
+        "type": "aggregation",
+        "formula": "=COUNTIFS(FieldEmbeddings!{{NumberField}}, NumberFields!{{NumberFieldId}})",
+        "Description": "How many field embeddings (real or complex) are explicitly loaded for this field. Sanity check: should equal SignatureRealEmbeddings + SignatureComplexEmbeddings."
+      },
+      {
+        "name": "FieldEmbeddingCountMatchesSignature",
+        "datatype": "boolean",
+        "type": "calculated",
+        "formula": "={{FieldEmbeddingCount}}={{SignatureRealEmbeddings}}+{{SignatureComplexEmbeddings}}",
+        "Description": "Read-time integrity check: did we load every embedding the signature claims to exist?"
       }
     ],
     "data": [
@@ -936,7 +973,9 @@
       {
         "name": "SplitsCompletely",
         "datatype": "boolean",
-        "type": "raw"
+        "type": "raw",
+        "nullable": true,
+        "Description": "Whether the prime in Q splits completely in O_K. Nullable: null when splitting behavior has been named but not yet computed."
       }
     ],
     "data": [
@@ -963,6 +1002,14 @@
         "Norm": 49,
         "NormThreshold": 10,
         "SplitsCompletely": true
+      },
+      {
+        "PrimeIdealId": "q-sqrt-neg3-p5-pending",
+        "NumberField": "q-sqrt-neg3",
+        "GeneratorDescription": "(5) — splitting behavior named but not yet computed",
+        "Norm": 25,
+        "NormThreshold": 10,
+        "SplitsCompletely": null
       }
     ]
   },
@@ -1054,6 +1101,55 @@
         "datatype": "integer",
         "type": "aggregation",
         "formula": "=COUNTIFS(ShortVectors!{{MinkowskiLattice}}, MinkowskiLattices!{{MinkowskiLatticeId}}, ShortVectors!{{IsShort}}, TRUE)"
+      },
+      {
+        "name": "SourceFieldDegree",
+        "datatype": "integer",
+        "type": "lookup",
+        "formula": "=LOOKUP(NumberFields!{{Degree}}, MinkowskiLattices!{{NumberField}}, NumberFields!{{NumberFieldId}})",
+        "Description": "The degree [K:Q] of the source field, surfaced on the lattice for downstream chain checks."
+      },
+      {
+        "name": "SourceFieldSatisfiesGolodShafarevich",
+        "datatype": "boolean",
+        "type": "lookup",
+        "formula": "=LOOKUP(NumberFields!{{SatisfiesGolodShafarevich}}, MinkowskiLattices!{{NumberField}}, NumberFields!{{NumberFieldId}})",
+        "important": true,
+        "Description": "The single most important upstream gate. TRUE means the field-side ingredient (GS tower) is satisfied — a necessary condition for the lattice to carry enough short vectors for a superlinear unit-distance construction."
+      },
+      {
+        "name": "SourceFieldIsAlgebraicSourceCandidate",
+        "datatype": "boolean",
+        "type": "lookup",
+        "formula": "=LOOKUP(NumberFields!{{IsAlgebraicSourceCandidate}}, MinkowskiLattices!{{NumberField}}, NumberFields!{{NumberFieldId}})"
+      },
+      {
+        "name": "Projections",
+        "datatype": "string",
+        "type": "relationship",
+        "RelatedTo": "PlanarProjections"
+      },
+      {
+        "name": "ProjectionCount",
+        "datatype": "integer",
+        "type": "aggregation",
+        "formula": "=COUNTIFS(PlanarProjections!{{SourceLattice}}, MinkowskiLattices!{{MinkowskiLatticeId}})",
+        "Description": "How many distinct planar projections have been registered from this lattice."
+      },
+      {
+        "name": "HasAnyPlanarProjection",
+        "datatype": "boolean",
+        "type": "calculated",
+        "formula": "={{ProjectionCount}}>0",
+        "Description": "TRUE if any planar projection has been registered — the geometry-side leg of the bridge from lattice to plane."
+      },
+      {
+        "name": "IsLoadBearingForUnitDistanceConstruction",
+        "datatype": "boolean",
+        "type": "calculated",
+        "formula": "=AND({{SourceFieldIsAlgebraicSourceCandidate}}, {{ShortVectorCount}}>0, {{HasAnyPlanarProjection}})",
+        "important": true,
+        "Description": "TRUE when the lattice has a GS-satisfying source field, at least one short vector, and at least one planar projection — i.e. it is positioned to feed a ConstructionFamily that produces unit-distance witnesses."
       }
     ],
     "data": [
@@ -1197,6 +1293,27 @@
         "datatype": "integer",
         "type": "aggregation",
         "formula": "=COUNTIFS(ConstructionInstances!{{ConstructionFamily}}, ConstructionFamilies!{{ConstructionFamilyId}})"
+      },
+      {
+        "name": "SourceFieldSatisfiesGolodShafarevich",
+        "datatype": "boolean",
+        "type": "lookup",
+        "formula": "=LOOKUP(NumberFields!{{SatisfiesGolodShafarevich}}, ConstructionFamilies!{{SourceNumberField}}, NumberFields!{{NumberFieldId}})",
+        "Description": "The GS-satisfaction of the source field, inherited via SourceNumberField. Null if the family is non-algebraic (no source field set)."
+      },
+      {
+        "name": "SourceLatticeIsLoadBearing",
+        "datatype": "boolean",
+        "type": "lookup",
+        "formula": "=LOOKUP(MinkowskiLattices!{{IsLoadBearingForUnitDistanceConstruction}}, ConstructionFamilies!{{SourceMinkowskiLattice}}, MinkowskiLattices!{{MinkowskiLatticeId}})"
+      },
+      {
+        "name": "IsAlgebraicConstruction",
+        "datatype": "boolean",
+        "type": "calculated",
+        "formula": "=AND({{SourceFieldSatisfiesGolodShafarevich}}, {{SourceLatticeIsLoadBearing}})",
+        "important": true,
+        "Description": "TRUE iff the family's algebraic upstream is GS-passing AND its lattice has a projection + short vectors. Non-algebraic families (random points, ad-hoc geometric tricks) will be FALSE."
       }
     ],
     "data": [
@@ -1273,6 +1390,28 @@
         "type": "calculated",
         "formula": "={{ParamN}}={{PointCount}}",
         "Description": "Sanity check: did the n-th instance actually produce n points?"
+      },
+      {
+        "name": "FamilyIsAlgebraic",
+        "datatype": "boolean",
+        "type": "lookup",
+        "formula": "=LOOKUP(ConstructionFamilies!{{IsAlgebraicConstruction}}, ConstructionInstances!{{ConstructionFamily}}, ConstructionFamilies!{{ConstructionFamilyId}})",
+        "Description": "Surfaces the family-level algebraic-construction flag onto each instance so per-row checks can see it."
+      },
+      {
+        "name": "IsExplicitSuperlinear",
+        "datatype": "boolean",
+        "type": "calculated",
+        "formula": "={{DensityExponentEstimate}}>1",
+        "Description": "TRUE if this single finite instance already exhibits log(edges)/log(points) > 1 — a per-instance witness that the family is achieving superlinear edge growth at this n."
+      },
+      {
+        "name": "IsAlgebraicSuperlinearWitness",
+        "datatype": "boolean",
+        "type": "calculated",
+        "formula": "=AND({{FamilyIsAlgebraic}}, {{IsExplicitSuperlinear}})",
+        "important": true,
+        "Description": "A single instance that is both (a) coming from an algebraically valid family AND (b) finitely superlinear. This is the most direct per-row evidence we have that the algebra is producing the geometry."
       }
     ],
     "data": [
@@ -1502,6 +1641,29 @@
         "formula": "={{WitnessedByMaxDensityExponent}}>={{Exponent}}",
         "important": true,
         "Description": "Finite-sample sanity check: do the family's observed instances achieve at least the claimed exponent? FALSE means either more instances are needed or the claim is wrong for this family."
+      },
+      {
+        "name": "WitnessSourceFamily",
+        "datatype": "string",
+        "type": "lookup",
+        "formula": "=LOOKUP(GrowthSequences!{{ConstructionFamily}}, AsymptoticLowerBounds!{{GrowthSequence}}, GrowthSequences!{{GrowthSequenceId}})",
+        "Description": "Surfaces the ConstructionFamily backing this bound's witness, two FK hops upstream."
+      },
+      {
+        "name": "WitnessFamilyIsAlgebraic",
+        "datatype": "boolean",
+        "type": "lookup",
+        "formula": "=LOOKUP(ConstructionFamilies!{{IsAlgebraicConstruction}}, AsymptoticLowerBounds!{{WitnessSourceFamily}}, ConstructionFamilies!{{ConstructionFamilyId}})",
+        "important": true,
+        "Description": "TRUE iff the family providing this bound's finite witness is an algebraic construction with GS-passing source field. Distinguishes 'algebraically-anchored bound' from 'bound with a generic geometric witness'."
+      },
+      {
+        "name": "IsAlgebraicallyAnchored",
+        "datatype": "boolean",
+        "type": "calculated",
+        "formula": "=AND({{WitnessConsistent}}, {{WitnessFamilyIsAlgebraic}}, {{IsSuperlinear}})",
+        "important": true,
+        "Description": "TRUE when (a) the finite witness is consistent with the claimed exponent, (b) the witness family is algebraic-source, and (c) the claim itself is superlinear. This is the cleanest single-cell answer to 'does this bound carry the algebraic ladder all the way through?'"
       }
     ],
     "data": [
@@ -1613,6 +1775,43 @@
         "formula": "=ABS({{ClaimedExponent}}-{{AnchoredBoundExponent}})<0.0001",
         "important": true,
         "Description": "Read-time integrity check that the theorem and its anchored bound agree on the exponent."
+      },
+      {
+        "name": "AnchoredBoundWitnessConsistent",
+        "datatype": "boolean",
+        "type": "lookup",
+        "formula": "=LOOKUP(AsymptoticLowerBounds!{{WitnessConsistent}}, Theorems!{{AnchoredLowerBound}}, AsymptoticLowerBounds!{{AsymptoticLowerBoundId}})",
+        "Description": "Surfaces the bound-level finite-witness consistency onto the theorem row."
+      },
+      {
+        "name": "AnchoredBoundIsAlgebraicallyAnchored",
+        "datatype": "boolean",
+        "type": "lookup",
+        "formula": "=LOOKUP(AsymptoticLowerBounds!{{IsAlgebraicallyAnchored}}, Theorems!{{AnchoredLowerBound}}, AsymptoticLowerBounds!{{AsymptoticLowerBoundId}})",
+        "important": true,
+        "Description": "Surfaces the bound-level algebraic-anchoring onto the theorem row."
+      },
+      {
+        "name": "AlgebraicChainClosed",
+        "datatype": "boolean",
+        "type": "calculated",
+        "formula": "=AND({{AnchorMatchesBoundExponent}}, {{AnchoredBoundIsSuperlinear}}, {{AnchoredBoundWitnessConsistent}}, {{AnchoredBoundIsAlgebraicallyAnchored}})",
+        "important": true,
+        "Description": "THE ladder check. TRUE iff (a) the theorem's claimed exponent matches the anchored bound, (b) the bound is superlinear, (c) the finite witness is consistent with the claim, (d) the witness family is algebraic with GS-passing source. When this is TRUE for a row, the entire chain from number field to theorem is closed in the rulebook."
+      },
+      {
+        "name": "AppliesToFunction",
+        "datatype": "string",
+        "type": "lookup",
+        "formula": "=LOOKUP(AsymptoticFunctions!{{DisplayName}}, Theorems!{{AsymptoticFunction}}, AsymptoticFunctions!{{AsymptoticFunctionId}})",
+        "Description": "Human-readable name of the function the theorem talks about. Multi-anchor support — different theorems anchor different functions in the same neighborhood."
+      },
+      {
+        "name": "IsUnitDistanceTheorem",
+        "datatype": "boolean",
+        "type": "calculated",
+        "formula": "={{AsymptoticFunction}}=\"u-n\"",
+        "Description": "TRUE if this theorem is about U(n). Other anchors in this neighborhood (Szemerédi–Trotter, etc.) are about different functions."
       }
     ],
     "data": [
@@ -1626,7 +1825,389 @@
         "AsymptoticFunction": "u-n",
         "AnchoredLowerBound": "sawin-n1014",
         "ClaimedExponent": 1.014
+      },
+      {
+        "TheoremId": "thm-erdos-unit-distance-baseline",
+        "DisplayName": "Erdős Unit-Distance Lower Bound",
+        "StatementText": "U(n) ≥ n^{1+c/log log n} (Erdős 1946).",
+        "IsAnchor": true,
+        "IsProven": true,
+        "ProofCitation": "Erdős, 1946",
+        "AsymptoticFunction": "u-n",
+        "AnchoredLowerBound": "erdos-sqrt-bound",
+        "ClaimedExponent": 1
+      },
+      {
+        "TheoremId": "thm-szemeredi-trotter",
+        "DisplayName": "Szemerédi–Trotter Theorem",
+        "StatementText": "The number of point-line incidences among n points and m lines in R^2 is O((nm)^{2/3} + n + m).",
+        "IsAnchor": true,
+        "IsProven": true,
+        "ProofCitation": "Szemerédi–Trotter, 1983",
+        "AsymptoticFunction": "u-n",
+        "AnchoredLowerBound": null,
+        "ClaimedExponent": null
+      },
+      {
+        "TheoremId": "thm-spencer-szemeredi-trotter",
+        "DisplayName": "Spencer–Szemerédi–Trotter U(n) Bound",
+        "StatementText": "U(n) = O(n^{4/3}) — the classical upper bound that the lower-bound program is closing in on.",
+        "IsAnchor": true,
+        "IsProven": true,
+        "ProofCitation": "Spencer–Szemerédi–Trotter, 1984",
+        "AsymptoticFunction": "u-n",
+        "AnchoredLowerBound": null,
+        "ClaimedExponent": null
+      },
+      {
+        "TheoremId": "thm-future-conjectural-improvement",
+        "DisplayName": "Conjectural Improvement Slot",
+        "StatementText": "Reserved row for a future tighter lower bound — schema-only, not yet proven.",
+        "IsAnchor": true,
+        "IsProven": false,
+        "ProofCitation": null,
+        "AsymptoticFunction": "u-n",
+        "AnchoredLowerBound": null,
+        "ClaimedExponent": null
       }
+    ]
+  },
+  "Metrics": {
+    "Description": "Table: Metrics. First-class distance functions on a space. The Euclidean metric on R^2, the Gram-matrix-induced metric on a lattice, and non-metric similarity functions all live here as named rows. Downstream tables that 'use a distance' should point at a Metrics row rather than hard-coding the formula.",
+    "important": true,
+    "important_fields": ["MetricKind", "IsEuclidean", "SatisfiesTriangleInequality"],
+    "schema": [
+      {"name": "MetricId", "datatype": "string", "type": "raw", "nullable": false, "is_primary_key": true},
+      {"name": "Name", "datatype": "string", "type": "calculated", "nullable": true, "formula": "=SUBSTITUTE(LOWER({{DisplayName}}), \" \", \"-\")"},
+      {"name": "DisplayName", "datatype": "string", "type": "raw"},
+      {"name": "AmbientContext", "datatype": "string", "type": "relationship", "RelatedTo": "Contexts", "nullable": true},
+      {"name": "MetricKind", "datatype": "string", "type": "raw", "Description": "One of: euclidean, lattice-gram, taxicab, cosine-similarity, experimental."},
+      {"name": "DefinitionText", "datatype": "string", "type": "raw"},
+      {"name": "IsEuclidean", "datatype": "boolean", "type": "calculated", "formula": "={{MetricKind}}=\"euclidean\""},
+      {"name": "IsLatticeGram", "datatype": "boolean", "type": "calculated", "formula": "={{MetricKind}}=\"lattice-gram\""},
+      {"name": "SatisfiesTriangleInequality", "datatype": "boolean", "type": "raw", "nullable": true, "Description": "Nullable: TRUE for genuine metrics, FALSE for similarity-only functions, null for unevaluated experimental rows."},
+      {"name": "Description", "datatype": "string", "type": "raw", "nullable": true}
+    ],
+    "data": [
+      {"MetricId": "m-euclidean-r2", "DisplayName": "Euclidean Metric on R2", "AmbientContext": "euclidean-plane-r2", "MetricKind": "euclidean", "DefinitionText": "d(x,y) = sqrt((x1-y1)^2 + (x2-y2)^2)", "SatisfiesTriangleInequality": true, "Description": "Standard 2D Euclidean distance — the metric used by every PointPair row."},
+      {"MetricId": "m-gram-lat-q-sqrt-neg3", "DisplayName": "Gram Metric on Q-sqrt-neg3 Lattice", "AmbientContext": "euclidean-plane-r2", "MetricKind": "lattice-gram", "DefinitionText": "d(v,w)^2 = (v-w)^T G (v-w) for Gram matrix G of the lattice", "SatisfiesTriangleInequality": true, "Description": "The intrinsic lattice metric — equals the Euclidean metric only when the embedding is isometric."},
+      {"MetricId": "m-taxicab-r2", "DisplayName": "Taxicab Metric on R2", "AmbientContext": "euclidean-plane-r2", "MetricKind": "taxicab", "DefinitionText": "d(x,y) = |x1-y1| + |x2-y2|", "SatisfiesTriangleInequality": true, "Description": "L1 metric — included to show the Metrics table is general."},
+      {"MetricId": "m-cosine-similarity-test", "DisplayName": "Cosine Similarity", "AmbientContext": null, "MetricKind": "cosine-similarity", "DefinitionText": "1 - <x,y>/(|x||y|)", "SatisfiesTriangleInequality": false, "Description": "Not a true metric — coverage row for SatisfiesTriangleInequality=false."},
+      {"MetricId": "m-experimental-affine", "DisplayName": "Experimental Affine Quasi-Metric", "AmbientContext": null, "MetricKind": "experimental", "DefinitionText": "Under evaluation", "SatisfiesTriangleInequality": null, "Description": "Unevaluated — coverage row for SatisfiesTriangleInequality=null."}
+    ]
+  },
+  "FieldEmbeddings": {
+    "Description": "Table: FieldEmbeddings. The individual embeddings σ_i: K → R or σ_j: K → C that constitute the Minkowski embedding. One row per σ. Aggregation by EmbeddingType reproduces the signature (r_1, r_2) at read time.",
+    "important": true,
+    "important_fields": ["EmbeddingType", "IsRealEmbedding"],
+    "schema": [
+      {"name": "FieldEmbeddingId", "datatype": "string", "type": "raw", "nullable": false, "is_primary_key": true},
+      {"name": "Name", "datatype": "string", "type": "calculated", "nullable": true, "formula": "={{NumberField}}/{{EmbeddingType}}-{{IndexInSignature}}"},
+      {"name": "NumberField", "datatype": "string", "type": "relationship", "RelatedTo": "NumberFields"},
+      {"name": "EmbeddingType", "datatype": "string", "type": "raw", "Description": "One of: 'real' or 'complex'."},
+      {"name": "IndexInSignature", "datatype": "integer", "type": "raw", "Description": "1-based index within the signature."},
+      {"name": "TargetSpaceDim", "datatype": "integer", "type": "raw", "Description": "1 for real, 2 for complex."},
+      {"name": "IsRealEmbedding", "datatype": "boolean", "type": "calculated", "formula": "={{TargetSpaceDim}}=1"},
+      {"name": "IsComplexEmbedding", "datatype": "boolean", "type": "calculated", "formula": "={{TargetSpaceDim}}=2"},
+      {"name": "HasConjugatePairInField", "datatype": "boolean", "type": "raw", "nullable": true, "Description": "Null for real embeddings (concept doesn't apply); TRUE for complex embeddings whose conjugate is in K; FALSE for hypothetical degenerate complex embeddings without their partner."},
+      {"name": "Description", "datatype": "string", "type": "raw", "nullable": true}
+    ],
+    "data": [
+      {"FieldEmbeddingId": "emb-q-sqrt-neg3-c1", "NumberField": "q-sqrt-neg3", "EmbeddingType": "complex", "IndexInSignature": 1, "TargetSpaceDim": 2, "HasConjugatePairInField": true, "Description": "The single complex embedding pair of Q(sqrt(-3))."},
+      {"FieldEmbeddingId": "emb-q-zeta-7-c1", "NumberField": "q-zeta-7", "EmbeddingType": "complex", "IndexInSignature": 1, "TargetSpaceDim": 2, "HasConjugatePairInField": true},
+      {"FieldEmbeddingId": "emb-q-zeta-7-c2", "NumberField": "q-zeta-7", "EmbeddingType": "complex", "IndexInSignature": 2, "TargetSpaceDim": 2, "HasConjugatePairInField": true},
+      {"FieldEmbeddingId": "emb-q-zeta-7-c3", "NumberField": "q-zeta-7", "EmbeddingType": "complex", "IndexInSignature": 3, "TargetSpaceDim": 2, "HasConjugatePairInField": true},
+      {"FieldEmbeddingId": "emb-coverage-real-null", "NumberField": "q-sqrt-neg3", "EmbeddingType": "real", "IndexInSignature": 0, "TargetSpaceDim": 1, "HasConjugatePairInField": null, "Description": "Coverage row: real embedding — conjugate-pair concept doesn't apply, so HasConjugatePairInField is null."},
+      {"FieldEmbeddingId": "emb-coverage-broken-pair", "NumberField": "q-zeta-7", "EmbeddingType": "complex", "IndexInSignature": 99, "TargetSpaceDim": 2, "HasConjugatePairInField": false, "Description": "Coverage row: hypothetical complex embedding whose conjugate is NOT in K — for nullable-bool data coverage."}
+    ]
+  },
+  "MinkowskiEmbeddings": {
+    "Description": "Table: MinkowskiEmbeddings. The canonical embedding σ = (σ_1, …, σ_d): K → R^d as a first-class named map. Each row binds one NumberField to (at most) one TargetLattice it produces.",
+    "important": true,
+    "important_fields": ["IsCanonical", "PreservesAdditiveStructure"],
+    "schema": [
+      {"name": "MinkowskiEmbeddingId", "datatype": "string", "type": "raw", "nullable": false, "is_primary_key": true},
+      {"name": "Name", "datatype": "string", "type": "calculated", "nullable": true, "formula": "={{NumberField}}-minkowski-embedding"},
+      {"name": "NumberField", "datatype": "string", "type": "relationship", "RelatedTo": "NumberFields"},
+      {"name": "TargetLattice", "datatype": "string", "type": "relationship", "RelatedTo": "MinkowskiLattices", "nullable": true, "Description": "Nullable: the field may have a defined embedding map even if the materialised lattice row isn't loaded yet."},
+      {"name": "AmbientDimension", "datatype": "integer", "type": "lookup", "formula": "=LOOKUP(NumberFields!{{AmbientLatticeDimension}}, MinkowskiEmbeddings!{{NumberField}}, NumberFields!{{NumberFieldId}})"},
+      {"name": "TargetLatticeDimension", "datatype": "integer", "type": "lookup", "formula": "=LOOKUP(MinkowskiLattices!{{Dimension}}, MinkowskiEmbeddings!{{TargetLattice}}, MinkowskiLattices!{{MinkowskiLatticeId}})", "nullable": true},
+      {"name": "DimensionMatch", "datatype": "boolean", "type": "calculated", "formula": "={{AmbientDimension}}={{TargetLatticeDimension}}"},
+      {"name": "IsCanonical", "datatype": "boolean", "type": "raw", "Description": "TRUE if this is the canonical Minkowski embedding."},
+      {"name": "PreservesAdditiveStructure", "datatype": "boolean", "type": "raw", "nullable": true, "Description": "Nullable: TRUE for canonical embeddings, FALSE for non-additive maps, null for unevaluated experimental rows."},
+      {"name": "Description", "datatype": "string", "type": "raw", "nullable": true}
+    ],
+    "data": [
+      {"MinkowskiEmbeddingId": "minkowski-q-sqrt-neg3", "NumberField": "q-sqrt-neg3", "TargetLattice": "lat-q-sqrt-neg3", "IsCanonical": true, "PreservesAdditiveStructure": true, "Description": "Canonical Minkowski embedding of Q(sqrt(-3)) into R^2."},
+      {"MinkowskiEmbeddingId": "minkowski-q-zeta-7", "NumberField": "q-zeta-7", "TargetLattice": null, "IsCanonical": true, "PreservesAdditiveStructure": true, "Description": "Canonical embedding for Q(ζ_7); target lattice row not yet materialised."},
+      {"MinkowskiEmbeddingId": "minkowski-degenerate-test", "NumberField": "q-sqrt-neg3", "TargetLattice": null, "IsCanonical": false, "PreservesAdditiveStructure": false, "Description": "Coverage row: hypothetical non-additive map."},
+      {"MinkowskiEmbeddingId": "minkowski-unknown-test", "NumberField": "q-sqrt-neg3", "TargetLattice": null, "IsCanonical": false, "PreservesAdditiveStructure": null, "Description": "Coverage row: unevaluated additivity."}
+    ]
+  },
+  "GramMatrices": {
+    "Description": "Table: GramMatrices. The Gram matrix G_ij = <e_i, e_j> for a chosen basis of a MinkowskiLattice. Matrix entries stay in MatrixJSON (ERB scalar formulas can't operate on matrices), but every scalar property derivable from G — symmetric, positive-definite, diagonal, rank-deficient — is a first-class field.",
+    "important": false,
+    "schema": [
+      {"name": "GramMatrixId", "datatype": "string", "type": "raw", "nullable": false, "is_primary_key": true},
+      {"name": "Name", "datatype": "string", "type": "calculated", "nullable": true, "formula": "={{MinkowskiLattice}}-gram"},
+      {"name": "MinkowskiLattice", "datatype": "string", "type": "relationship", "RelatedTo": "MinkowskiLattices"},
+      {"name": "Dimension", "datatype": "integer", "type": "lookup", "formula": "=LOOKUP(MinkowskiLattices!{{Dimension}}, GramMatrices!{{MinkowskiLattice}}, MinkowskiLattices!{{MinkowskiLatticeId}})"},
+      {"name": "LatticeDeterminant", "datatype": "decimal", "type": "lookup", "formula": "=LOOKUP(MinkowskiLattices!{{Determinant}}, GramMatrices!{{MinkowskiLattice}}, MinkowskiLattices!{{MinkowskiLatticeId}})"},
+      {"name": "MatrixJSON", "datatype": "string", "type": "raw"},
+      {"name": "IsSymmetric", "datatype": "boolean", "type": "raw"},
+      {"name": "IsPositiveDefinite", "datatype": "boolean", "type": "raw", "nullable": true},
+      {"name": "IsDiagonal", "datatype": "boolean", "type": "raw", "nullable": true},
+      {"name": "RankDeficient", "datatype": "boolean", "type": "raw", "nullable": true},
+      {"name": "EncodesValidLatticeMetric", "datatype": "boolean", "type": "calculated", "formula": "=AND({{IsSymmetric}}, {{IsPositiveDefinite}})", "important": true, "Description": "TRUE iff G is symmetric and positive-definite — the algebraic conditions for G to induce a genuine metric."},
+      {"name": "Description", "datatype": "string", "type": "raw", "nullable": true}
+    ],
+    "data": [
+      {"GramMatrixId": "gram-lat-q-sqrt-neg3", "MinkowskiLattice": "lat-q-sqrt-neg3", "MatrixJSON": "[[1,0],[0,3]]", "IsSymmetric": true, "IsPositiveDefinite": true, "IsDiagonal": true, "RankDeficient": false},
+      {"GramMatrixId": "gram-test-singular", "MinkowskiLattice": "lat-q-sqrt-neg3", "MatrixJSON": "[[1,1],[1,1]]", "IsSymmetric": true, "IsPositiveDefinite": false, "IsDiagonal": null, "RankDeficient": true, "Description": "Coverage row: singular Gram-like matrix."},
+      {"GramMatrixId": "gram-test-unverified", "MinkowskiLattice": "lat-q-sqrt-neg3", "MatrixJSON": "[[2,1],[1,2]]", "IsSymmetric": true, "IsPositiveDefinite": null, "IsDiagonal": null, "RankDeficient": null, "Description": "Coverage row: unverified."},
+      {"GramMatrixId": "gram-test-nondiagonal-pd", "MinkowskiLattice": "lat-q-sqrt-neg3", "MatrixJSON": "[[2,1],[1,3]]", "IsSymmetric": true, "IsPositiveDefinite": true, "IsDiagonal": false, "RankDeficient": false, "Description": "Coverage row: non-diagonal but still positive-definite."}
+    ]
+  },
+  "PlanarProjections": {
+    "Description": "Table: PlanarProjections. The map π: lattice → R^2 that turns short lattice vectors into points in the plane. THE critical bridge from algebra to geometry. ProjectionKind tags the kind of map; downstream ProjectedShortVectors.ProjectsToUnitDistanceVector depends on this map's behaviour.",
+    "important": true,
+    "important_fields": ["ProjectionKind", "IsIsometric", "UnitDistanceVectorCount"],
+    "schema": [
+      {"name": "PlanarProjectionId", "datatype": "string", "type": "raw", "nullable": false, "is_primary_key": true},
+      {"name": "Name", "datatype": "string", "type": "calculated", "nullable": true, "formula": "=SUBSTITUTE(LOWER({{DisplayName}}), \" \", \"-\")"},
+      {"name": "DisplayName", "datatype": "string", "type": "raw"},
+      {"name": "SourceLattice", "datatype": "string", "type": "relationship", "RelatedTo": "MinkowskiLattices"},
+      {"name": "TargetContext", "datatype": "string", "type": "relationship", "RelatedTo": "Contexts"},
+      {"name": "ProjectionKind", "datatype": "string", "type": "raw", "Description": "One of: 'first-two-coords', 'rotation-scale', 'rational-affine', 'isometric-embedding'."},
+      {"name": "ScalingFactor", "datatype": "decimal", "type": "raw"},
+      {"name": "RotationDegrees", "datatype": "decimal", "type": "raw"},
+      {"name": "IsScalingPreserving", "datatype": "boolean", "type": "calculated", "formula": "={{ScalingFactor}}=1"},
+      {"name": "IsIsometric", "datatype": "boolean", "type": "raw", "nullable": true},
+      {"name": "PreservesUnitDistance", "datatype": "boolean", "type": "raw", "nullable": true, "Description": "TRUE if vectors of squared-norm 1 in the lattice map to unit-distance vectors in R^2."},
+      {"name": "ProjectedShortVectors", "datatype": "string", "type": "relationship", "RelatedTo": "ProjectedShortVectors"},
+      {"name": "ProjectedShortVectorCount", "datatype": "integer", "type": "aggregation", "formula": "=COUNTIFS(ProjectedShortVectors!{{PlanarProjection}}, PlanarProjections!{{PlanarProjectionId}})"},
+      {"name": "UnitDistanceVectorCount", "datatype": "integer", "type": "aggregation", "formula": "=COUNTIFS(ProjectedShortVectors!{{PlanarProjection}}, PlanarProjections!{{PlanarProjectionId}}, ProjectedShortVectors!{{ProjectsToUnitDistanceVector}}, TRUE)", "important": true, "Description": "How many projected short vectors land at squared-norm 1 — i.e. survive as unit-distance witnesses. The geometric yield of the algebra-to-plane bridge."},
+      {"name": "UnitDistanceVectorYield", "datatype": "decimal", "type": "calculated", "formula": "={{UnitDistanceVectorCount}}/{{ProjectedShortVectorCount}}", "Description": "Fraction of projected short vectors that are unit-distance witnesses."},
+      {"name": "SourceLatticeIsLoadBearing", "datatype": "boolean", "type": "lookup", "formula": "=LOOKUP(MinkowskiLattices!{{IsLoadBearingForUnitDistanceConstruction}}, PlanarProjections!{{SourceLattice}}, MinkowskiLattices!{{MinkowskiLatticeId}})"},
+      {"name": "Description", "datatype": "string", "type": "raw", "nullable": true}
+    ],
+    "data": [
+      {"PlanarProjectionId": "proj-q-sqrt-neg3-first-two", "DisplayName": "First-Two-Coords of Lat Q-sqrt-neg3", "SourceLattice": "lat-q-sqrt-neg3", "TargetContext": "euclidean-plane-r2", "ProjectionKind": "first-two-coords", "ScalingFactor": 1, "RotationDegrees": 0, "IsIsometric": true, "PreservesUnitDistance": true},
+      {"PlanarProjectionId": "proj-q-sqrt-neg3-rotated-scaled", "DisplayName": "Rotated-Scaled of Lat Q-sqrt-neg3", "SourceLattice": "lat-q-sqrt-neg3", "TargetContext": "euclidean-plane-r2", "ProjectionKind": "rotation-scale", "ScalingFactor": 2, "RotationDegrees": 45, "IsIsometric": false, "PreservesUnitDistance": false, "Description": "Coverage row: scaling by 2 destroys unit-distance preservation."},
+      {"PlanarProjectionId": "proj-q-sqrt-neg3-unverified", "DisplayName": "Unverified Affine of Lat Q-sqrt-neg3", "SourceLattice": "lat-q-sqrt-neg3", "TargetContext": "euclidean-plane-r2", "ProjectionKind": "rational-affine", "ScalingFactor": 1, "RotationDegrees": 0, "IsIsometric": null, "PreservesUnitDistance": null, "Description": "Coverage row: properties not yet evaluated."}
+    ]
+  },
+  "ProjectedShortVectors": {
+    "Description": "Table: ProjectedShortVectors. Each row is one ShortVector under one PlanarProjection — the point in R^2 the algebraic vector becomes. ProjectsToUnitDistanceVector is THE planar-unit target equation <π(v), π(v)> = 1 — the equation Sawin's construction is solving. Every TRUE row is one solution, contributing one unit-distance edge.",
+    "important": true,
+    "important_fields": ["ProjectedNormSquared", "ProjectsToUnitDistanceVector", "IsValidWitness"],
+    "schema": [
+      {"name": "ProjectedShortVectorId", "datatype": "string", "type": "raw", "nullable": false, "is_primary_key": true},
+      {"name": "Name", "datatype": "string", "type": "calculated", "nullable": true, "formula": "={{ShortVector}}/{{PlanarProjection}}"},
+      {"name": "ShortVector", "datatype": "string", "type": "relationship", "RelatedTo": "ShortVectors"},
+      {"name": "PlanarProjection", "datatype": "string", "type": "relationship", "RelatedTo": "PlanarProjections"},
+      {"name": "ProjectedX", "datatype": "decimal", "type": "raw"},
+      {"name": "ProjectedY", "datatype": "decimal", "type": "raw"},
+      {"name": "ProjectedXSquared", "datatype": "decimal", "type": "calculated", "formula": "=POWER({{ProjectedX}},2)"},
+      {"name": "ProjectedYSquared", "datatype": "decimal", "type": "calculated", "formula": "=POWER({{ProjectedY}},2)"},
+      {"name": "ProjectedNormSquared", "datatype": "decimal", "type": "calculated", "formula": "={{ProjectedXSquared}}+{{ProjectedYSquared}}", "important": true, "Description": "<π(v), π(v)> — the LHS of the planar-unit target equation."},
+      {"name": "SourceNormSquared", "datatype": "decimal", "type": "lookup", "formula": "=LOOKUP(ShortVectors!{{NormSquared}}, ProjectedShortVectors!{{ShortVector}}, ShortVectors!{{ShortVectorId}})"},
+      {"name": "SourceIsShort", "datatype": "boolean", "type": "lookup", "formula": "=LOOKUP(ShortVectors!{{IsShort}}, ProjectedShortVectors!{{ShortVector}}, ShortVectors!{{ShortVectorId}})"},
+      {"name": "UnitTolerance", "datatype": "decimal", "type": "raw"},
+      {"name": "DistanceSquaredFromUnit", "datatype": "decimal", "type": "calculated", "formula": "=ABS({{ProjectedNormSquared}}-1)"},
+      {"name": "ProjectsToUnitDistanceVector", "datatype": "boolean", "type": "calculated", "formula": "={{DistanceSquaredFromUnit}}<={{UnitTolerance}}", "important": true, "Description": "THE planar-unit target equation: <π(v), π(v)> = 1. This is the equation Sawin's construction is solving — every TRUE row is one solution."},
+      {"name": "IsValidWitness", "datatype": "boolean", "type": "calculated", "formula": "=AND({{SourceIsShort}}, {{ProjectsToUnitDistanceVector}})", "important": true, "Description": "The two-sided certificate: source vector is short (algebraic side) AND projection has squared norm 1 (geometric side)."},
+      {"name": "NormPreservedUnderProjection", "datatype": "boolean", "type": "calculated", "formula": "=ABS({{SourceNormSquared}}-{{ProjectedNormSquared}})<{{UnitTolerance}}", "Description": "TRUE if the projection preserved the squared norm on this vector — locally isometric."},
+      {"name": "Description", "datatype": "string", "type": "raw", "nullable": true}
+    ],
+    "data": [
+      {"ProjectedShortVectorId": "psv-v1-first-two", "ShortVector": "lat-q-sqrt-neg3-v1", "PlanarProjection": "proj-q-sqrt-neg3-first-two", "ProjectedX": 1, "ProjectedY": 0, "UnitTolerance": 0.0001},
+      {"ProjectedShortVectorId": "psv-v2-first-two", "ShortVector": "lat-q-sqrt-neg3-v2", "PlanarProjection": "proj-q-sqrt-neg3-first-two", "ProjectedX": 0, "ProjectedY": 1.7320508075688772, "UnitTolerance": 0.0001},
+      {"ProjectedShortVectorId": "psv-v3-first-two", "ShortVector": "lat-q-sqrt-neg3-v3", "PlanarProjection": "proj-q-sqrt-neg3-first-two", "ProjectedX": 2, "ProjectedY": 0, "UnitTolerance": 0.0001},
+      {"ProjectedShortVectorId": "psv-v4-first-two", "ShortVector": "lat-q-sqrt-neg3-v4", "PlanarProjection": "proj-q-sqrt-neg3-first-two", "ProjectedX": 3, "ProjectedY": 0, "UnitTolerance": 0.0001},
+      {"ProjectedShortVectorId": "psv-v1-rotated", "ShortVector": "lat-q-sqrt-neg3-v1", "PlanarProjection": "proj-q-sqrt-neg3-rotated-scaled", "ProjectedX": 1.4142135, "ProjectedY": 1.4142135, "UnitTolerance": 0.0001, "Description": "v1 under rotation-and-scale: squared norm becomes ≈4, no longer a unit-distance witness."}
+    ]
+  },
+  "GolodShafarevichCriteria": {
+    "Description": "Table: GolodShafarevichCriteria. The Golod–Shafarevich tower inequality, evaluated per number field. r > d^2/4 (d = minimal-generator count, r = relation count) implies an infinite class field tower — the algebraic hook used by unit-distance constructions to get many small-norm primes.",
+    "important": true,
+    "important_fields": ["SatisfiesGolodShafarevichTower"],
+    "schema": [
+      {"name": "GolodShafarevichCriterionId", "datatype": "string", "type": "raw", "nullable": false, "is_primary_key": true},
+      {"name": "Name", "datatype": "string", "type": "calculated", "nullable": true, "formula": "={{NumberField}}-gs"},
+      {"name": "NumberField", "datatype": "string", "type": "relationship", "RelatedTo": "NumberFields"},
+      {"name": "MinimalGeneratorCount_d", "datatype": "integer", "type": "raw", "Description": "The 'd' in the GS inequality."},
+      {"name": "RelationCount_r", "datatype": "integer", "type": "raw", "Description": "The 'r' in the GS inequality."},
+      {"name": "FieldDegree", "datatype": "integer", "type": "lookup", "formula": "=LOOKUP(NumberFields!{{Degree}}, GolodShafarevichCriteria!{{NumberField}}, NumberFields!{{NumberFieldId}})"},
+      {"name": "CriterionThreshold", "datatype": "decimal", "type": "calculated", "formula": "=POWER({{MinimalGeneratorCount_d}},2)/4", "Description": "d^2/4. The bound that r must exceed."},
+      {"name": "RelationCountExceedsThreshold", "datatype": "boolean", "type": "calculated", "formula": "={{RelationCount_r}}>{{CriterionThreshold}}"},
+      {"name": "SatisfiesGolodShafarevichTower", "datatype": "boolean", "type": "calculated", "formula": "={{RelationCountExceedsThreshold}}", "important": true, "Description": "TRUE iff r > d^2/4 — the GS inequality is satisfied and K has an infinite class field tower."},
+      {"name": "PassesCriterion", "datatype": "boolean", "type": "raw", "nullable": true, "Description": "Curator override (nullable). Null means 'use calculated SatisfiesGolodShafarevichTower'."},
+      {"name": "SourceReference", "datatype": "string", "type": "relationship", "RelatedTo": "SourceReferences", "nullable": true},
+      {"name": "Description", "datatype": "string", "type": "raw", "nullable": true}
+    ],
+    "data": [
+      {"GolodShafarevichCriterionId": "gs-q-sqrt-neg3", "NumberField": "q-sqrt-neg3", "MinimalGeneratorCount_d": 2, "RelationCount_r": 1, "PassesCriterion": false, "SourceReference": "src-golod-shafarevich-1964", "Description": "Q(sqrt(-3)): d=2, r=1, threshold=1; 1 is not > 1 — fails GS."},
+      {"GolodShafarevichCriterionId": "gs-q-zeta-7", "NumberField": "q-zeta-7", "MinimalGeneratorCount_d": 3, "RelationCount_r": 5, "PassesCriterion": true, "SourceReference": "src-golod-shafarevich-1964", "Description": "Q(ζ_7) demonstration values: d=3, r=5, threshold=2.25; 5>2.25 — satisfies GS. Demonstration only; not a rigorous certificate."},
+      {"GolodShafarevichCriterionId": "gs-unknown-test", "NumberField": "q-sqrt-neg3", "MinimalGeneratorCount_d": 3, "RelationCount_r": 3, "PassesCriterion": null, "SourceReference": null, "Description": "Coverage row: PassesCriterion unevaluated."}
+    ]
+  },
+  "SemanticBridges": {
+    "Description": "Table: SemanticBridges. Each row is one named bridge between two domain neighborhoods — the meta-glue between regions of the model. Routing across the model goes through these bridges.",
+    "important": true,
+    "schema": [
+      {"name": "SemanticBridgeId", "datatype": "string", "type": "raw", "nullable": false, "is_primary_key": true},
+      {"name": "Name", "datatype": "string", "type": "calculated", "nullable": true, "formula": "=SUBSTITUTE(LOWER({{DisplayName}}), \" \", \"-\")"},
+      {"name": "DisplayName", "datatype": "string", "type": "raw"},
+      {"name": "FromDomain", "datatype": "string", "type": "relationship", "RelatedTo": "Domains"},
+      {"name": "ToDomain", "datatype": "string", "type": "relationship", "RelatedTo": "Domains"},
+      {"name": "BridgeKind", "datatype": "string", "type": "raw", "Description": "One of: embedding, projection, induction, aggregation, anchor, analogy."},
+      {"name": "FromConceptTable", "datatype": "string", "type": "raw"},
+      {"name": "ToConceptTable", "datatype": "string", "type": "raw"},
+      {"name": "IsLoadBearing", "datatype": "boolean", "type": "raw", "nullable": true, "Description": "TRUE if removing the bridge breaks the chain to the theorem; FALSE for analogy-only; null when unclassified."},
+      {"name": "IsClosed", "datatype": "boolean", "type": "raw", "nullable": true, "Description": "TRUE if every row in FromConceptTable has a witness in ToConceptTable; null when not checked."},
+      {"name": "IsAnalogy", "datatype": "boolean", "type": "calculated", "formula": "={{BridgeKind}}=\"analogy\""},
+      {"name": "Description", "datatype": "string", "type": "raw", "nullable": true}
+    ],
+    "data": [
+      {"SemanticBridgeId": "bridge-metric-to-graph", "DisplayName": "Metric to Graph", "FromDomain": "euclidean-geometry", "ToDomain": "graph-theory", "BridgeKind": "induction", "FromConceptTable": "PointPairs", "ToConceptTable": "UnitDistanceGraphs", "IsLoadBearing": true, "IsClosed": true, "Description": "The unit-distance predicate over PointPairs induces the edge set of the UnitDistanceGraph."},
+      {"SemanticBridgeId": "bridge-field-to-lattice", "DisplayName": "Field to Lattice", "FromDomain": "algebraic-number-theory", "ToDomain": "lattice-embeddings", "BridgeKind": "embedding", "FromConceptTable": "NumberFields", "ToConceptTable": "MinkowskiLattices", "IsLoadBearing": true, "IsClosed": null, "Description": "Canonical Minkowski embedding O_K ↪ R^d. IsClosed=null because q-zeta-7 has no lattice row yet."},
+      {"SemanticBridgeId": "bridge-lattice-to-plane", "DisplayName": "Lattice to Plane", "FromDomain": "lattice-embeddings", "ToDomain": "euclidean-geometry", "BridgeKind": "projection", "FromConceptTable": "MinkowskiLattices", "ToConceptTable": "PlanarProjections", "IsLoadBearing": true, "IsClosed": true, "Description": "Projection π: lattice → R^2. The critical algebraic-to-geometric bridge."},
+      {"SemanticBridgeId": "bridge-local-to-asymptotic", "DisplayName": "Local to Asymptotic", "FromDomain": "euclidean-geometry", "ToDomain": "asymptotic-combinatorics", "BridgeKind": "aggregation", "FromConceptTable": "ConstructionInstances", "ToConceptTable": "GrowthSequences", "IsLoadBearing": true, "IsClosed": true, "Description": "Finite-n edge counts aggregate into a growth sequence."},
+      {"SemanticBridgeId": "bridge-asymptotic-to-theorem", "DisplayName": "Asymptotic to Theorem", "FromDomain": "asymptotic-combinatorics", "ToDomain": "theorem-layer", "BridgeKind": "anchor", "FromConceptTable": "AsymptoticLowerBounds", "ToConceptTable": "Theorems", "IsLoadBearing": true, "IsClosed": true, "Description": "A theorem anchors a specific lower bound."},
+      {"SemanticBridgeId": "bridge-graph-count-analogy", "DisplayName": "Graph-Counting Analogy to Asymptotic", "FromDomain": "graph-theory", "ToDomain": "asymptotic-combinatorics", "BridgeKind": "analogy", "FromConceptTable": "UnitDistanceGraphs", "ToConceptTable": "AsymptoticFunctions", "IsLoadBearing": false, "IsClosed": true, "Description": "Conceptual analogy. Not load-bearing."},
+      {"SemanticBridgeId": "bridge-experimental-future", "DisplayName": "Future Bridge Slot", "FromDomain": "theorem-layer", "ToDomain": "algebraic-number-theory", "BridgeKind": "embedding", "FromConceptTable": "Theorems", "ToConceptTable": "NumberFields", "IsLoadBearing": null, "IsClosed": null, "Description": "Coverage row: hypothetical reverse bridge."},
+      {"SemanticBridgeId": "bridge-partial-incomplete", "DisplayName": "Partial Lattice-to-Plane (incomplete loading)", "FromDomain": "lattice-embeddings", "ToDomain": "euclidean-geometry", "BridgeKind": "projection", "FromConceptTable": "MinkowskiEmbeddings", "ToConceptTable": "PlanarProjections", "IsLoadBearing": false, "IsClosed": false, "Description": "Coverage row: bridge whose source has rows without corresponding target witnesses (q-zeta-7's MinkowskiEmbedding has no PlanarProjection)."}
+    ]
+  },
+  "SemanticRoutes": {
+    "Description": "Table: SemanticRoutes. Named end-to-end paths through the model. The 'full semantic spine' is the route NumberFields → Theorems through every bridge.",
+    "important": true,
+    "schema": [
+      {"name": "SemanticRouteId", "datatype": "string", "type": "raw", "nullable": false, "is_primary_key": true},
+      {"name": "Name", "datatype": "string", "type": "calculated", "nullable": true, "formula": "=SUBSTITUTE(LOWER({{DisplayName}}), \" \", \"-\")"},
+      {"name": "DisplayName", "datatype": "string", "type": "raw"},
+      {"name": "StartConcept", "datatype": "string", "type": "raw"},
+      {"name": "EndConcept", "datatype": "string", "type": "raw"},
+      {"name": "Steps", "datatype": "string", "type": "relationship", "RelatedTo": "SemanticRouteSteps"},
+      {"name": "StepCount", "datatype": "integer", "type": "aggregation", "formula": "=COUNTIFS(SemanticRouteSteps!{{SemanticRoute}}, SemanticRoutes!{{SemanticRouteId}})"},
+      {"name": "IsFullSpine", "datatype": "boolean", "type": "raw", "nullable": true},
+      {"name": "EndsAtTheoremAnchor", "datatype": "boolean", "type": "raw", "nullable": true},
+      {"name": "ValidatedStepCount", "datatype": "integer", "type": "aggregation", "formula": "=COUNTIFS(SemanticRouteSteps!{{SemanticRoute}}, SemanticRoutes!{{SemanticRouteId}}, SemanticRouteSteps!{{IsValidated}}, TRUE)"},
+      {"name": "AllStepsValidated", "datatype": "boolean", "type": "calculated", "formula": "={{ValidatedStepCount}}={{StepCount}}", "Description": "TRUE iff every step on the route has IsValidated=TRUE."},
+      {"name": "Description", "datatype": "string", "type": "raw", "nullable": true}
+    ],
+    "data": [
+      {"SemanticRouteId": "rte-geometry-to-graph", "DisplayName": "Geometry to Graph", "StartConcept": "Points", "EndConcept": "UnitDistanceGraphs", "IsFullSpine": false, "EndsAtTheoremAnchor": false, "Description": "Points → PointSets → PointPairs → UnitDistanceGraphs."},
+      {"SemanticRouteId": "rte-field-to-lattice-to-plane", "DisplayName": "Field to Lattice to Plane", "StartConcept": "NumberFields", "EndConcept": "PlanarProjections", "IsFullSpine": false, "EndsAtTheoremAnchor": false, "Description": "NumberFields → FieldEmbeddings → MinkowskiEmbeddings → MinkowskiLattices → PlanarProjections."},
+      {"SemanticRouteId": "rte-local-to-asymptotic", "DisplayName": "Local to Asymptotic", "StartConcept": "ConstructionInstances", "EndConcept": "AsymptoticLowerBounds", "IsFullSpine": false, "EndsAtTheoremAnchor": true, "Description": "ConstructionInstances → GrowthSequences → AsymptoticLowerBounds."},
+      {"SemanticRouteId": "rte-full-semantic-spine", "DisplayName": "Full Semantic Spine", "StartConcept": "NumberFields", "EndConcept": "Theorems", "IsFullSpine": true, "EndsAtTheoremAnchor": true, "Description": "End-to-end inference chain: algebra → lattice → projection → planar geometry → growth → bound → theorem."},
+      {"SemanticRouteId": "rte-experimental-shortcut", "DisplayName": "Experimental Shortcut", "StartConcept": "NumberFields", "EndConcept": "AsymptoticLowerBounds", "IsFullSpine": null, "EndsAtTheoremAnchor": null, "Description": "Coverage row: hypothetical bypass route, not yet classified."}
+    ]
+  },
+  "SemanticRouteSteps": {
+    "Description": "Table: SemanticRouteSteps. The ordered inference steps that make up a SemanticRoute. Each step optionally invokes a SemanticBridge.",
+    "important": false,
+    "schema": [
+      {"name": "SemanticRouteStepId", "datatype": "string", "type": "raw", "nullable": false, "is_primary_key": true},
+      {"name": "Name", "datatype": "string", "type": "calculated", "nullable": true, "formula": "={{SemanticRoute}}-{{StepOrder}}"},
+      {"name": "SemanticRoute", "datatype": "string", "type": "relationship", "RelatedTo": "SemanticRoutes"},
+      {"name": "StepOrder", "datatype": "integer", "type": "raw"},
+      {"name": "FromConcept", "datatype": "string", "type": "raw"},
+      {"name": "ToConcept", "datatype": "string", "type": "raw"},
+      {"name": "BridgeUsed", "datatype": "string", "type": "relationship", "RelatedTo": "SemanticBridges", "nullable": true, "Description": "Null when this step is an intra-domain FK hop; set when crossing domains."},
+      {"name": "BridgeIsLoadBearing", "datatype": "boolean", "type": "lookup", "formula": "=LOOKUP(SemanticBridges!{{IsLoadBearing}}, SemanticRouteSteps!{{BridgeUsed}}, SemanticBridges!{{SemanticBridgeId}})", "nullable": true},
+      {"name": "IsValidated", "datatype": "boolean", "type": "raw", "nullable": true, "Description": "Curator-set: TRUE if verified, FALSE if known broken, null if not yet evaluated."},
+      {"name": "Description", "datatype": "string", "type": "raw", "nullable": true}
+    ],
+    "data": [
+      {"SemanticRouteStepId": "spine-1", "SemanticRoute": "rte-full-semantic-spine", "StepOrder": 1, "FromConcept": "NumberFields", "ToConcept": "FieldEmbeddings", "BridgeUsed": null, "IsValidated": true},
+      {"SemanticRouteStepId": "spine-2", "SemanticRoute": "rte-full-semantic-spine", "StepOrder": 2, "FromConcept": "FieldEmbeddings", "ToConcept": "MinkowskiEmbeddings", "BridgeUsed": null, "IsValidated": true},
+      {"SemanticRouteStepId": "spine-3", "SemanticRoute": "rte-full-semantic-spine", "StepOrder": 3, "FromConcept": "MinkowskiEmbeddings", "ToConcept": "MinkowskiLattices", "BridgeUsed": "bridge-field-to-lattice", "IsValidated": true},
+      {"SemanticRouteStepId": "spine-4", "SemanticRoute": "rte-full-semantic-spine", "StepOrder": 4, "FromConcept": "MinkowskiLattices", "ToConcept": "GramMatrices", "BridgeUsed": null, "IsValidated": true},
+      {"SemanticRouteStepId": "spine-5", "SemanticRoute": "rte-full-semantic-spine", "StepOrder": 5, "FromConcept": "MinkowskiLattices", "ToConcept": "ShortVectors", "BridgeUsed": null, "IsValidated": true},
+      {"SemanticRouteStepId": "spine-6", "SemanticRoute": "rte-full-semantic-spine", "StepOrder": 6, "FromConcept": "ShortVectors", "ToConcept": "PlanarProjections", "BridgeUsed": "bridge-lattice-to-plane", "IsValidated": true},
+      {"SemanticRouteStepId": "spine-7", "SemanticRoute": "rte-full-semantic-spine", "StepOrder": 7, "FromConcept": "PlanarProjections", "ToConcept": "ProjectedShortVectors", "BridgeUsed": null, "IsValidated": true},
+      {"SemanticRouteStepId": "spine-8", "SemanticRoute": "rte-full-semantic-spine", "StepOrder": 8, "FromConcept": "ProjectedShortVectors", "ToConcept": "ConstructionInstances", "BridgeUsed": null, "IsValidated": true},
+      {"SemanticRouteStepId": "spine-9", "SemanticRoute": "rte-full-semantic-spine", "StepOrder": 9, "FromConcept": "ConstructionInstances", "ToConcept": "GrowthSequences", "BridgeUsed": "bridge-local-to-asymptotic", "IsValidated": true},
+      {"SemanticRouteStepId": "spine-10", "SemanticRoute": "rte-full-semantic-spine", "StepOrder": 10, "FromConcept": "GrowthSequences", "ToConcept": "AsymptoticLowerBounds", "BridgeUsed": null, "IsValidated": true},
+      {"SemanticRouteStepId": "spine-11", "SemanticRoute": "rte-full-semantic-spine", "StepOrder": 11, "FromConcept": "AsymptoticLowerBounds", "ToConcept": "Theorems", "BridgeUsed": "bridge-asymptotic-to-theorem", "IsValidated": true},
+      {"SemanticRouteStepId": "geo-1", "SemanticRoute": "rte-geometry-to-graph", "StepOrder": 1, "FromConcept": "Points", "ToConcept": "PointSets", "BridgeUsed": null, "IsValidated": true},
+      {"SemanticRouteStepId": "geo-2", "SemanticRoute": "rte-geometry-to-graph", "StepOrder": 2, "FromConcept": "PointSets", "ToConcept": "PointPairs", "BridgeUsed": null, "IsValidated": true},
+      {"SemanticRouteStepId": "geo-3", "SemanticRoute": "rte-geometry-to-graph", "StepOrder": 3, "FromConcept": "PointPairs", "ToConcept": "UnitDistanceGraphs", "BridgeUsed": "bridge-metric-to-graph", "IsValidated": null, "Description": "Coverage row: not yet validated."},
+      {"SemanticRouteStepId": "experimental-1", "SemanticRoute": "rte-experimental-shortcut", "StepOrder": 1, "FromConcept": "NumberFields", "ToConcept": "AsymptoticLowerBounds", "BridgeUsed": null, "IsValidated": false, "Description": "Coverage row: marked invalid — shortcut bypasses load-bearing bridges."}
+    ]
+  },
+  "SourceReferences": {
+    "Description": "Table: SourceReferences. The bibliography. Every lemma, theorem, and bound points at exactly one SourceReference row.",
+    "important": false,
+    "schema": [
+      {"name": "SourceReferenceId", "datatype": "string", "type": "raw", "nullable": false, "is_primary_key": true},
+      {"name": "Name", "datatype": "string", "type": "calculated", "nullable": true, "formula": "=SUBSTITUTE(LOWER({{ShortLabel}}), \" \", \"-\")"},
+      {"name": "ShortLabel", "datatype": "string", "type": "raw"},
+      {"name": "FullCitation", "datatype": "string", "type": "raw"},
+      {"name": "URL", "datatype": "string", "type": "raw", "nullable": true},
+      {"name": "Year", "datatype": "integer", "type": "raw", "nullable": true},
+      {"name": "IsArxiv", "datatype": "boolean", "type": "raw", "nullable": true},
+      {"name": "IsPublished", "datatype": "boolean", "type": "raw", "nullable": true},
+      {"name": "Description", "datatype": "string", "type": "raw", "nullable": true}
+    ],
+    "data": [
+      {"SourceReferenceId": "src-sawin-2024", "ShortLabel": "Sawin 2024", "FullCitation": "Sawin, arXiv:2605.20579 — Superlinear lower bounds for the unit distance problem.", "URL": "https://arxiv.org/abs/2605.20579", "Year": 2024, "IsArxiv": true, "IsPublished": false},
+      {"SourceReferenceId": "src-erdos-1946", "ShortLabel": "Erdős 1946", "FullCitation": "Erdős, P. 'On sets of distances of n points.' American Mathematical Monthly 53 (1946) 248-250.", "URL": null, "Year": 1946, "IsArxiv": false, "IsPublished": true},
+      {"SourceReferenceId": "src-szemeredi-trotter-1983", "ShortLabel": "Szemerédi-Trotter 1983", "FullCitation": "Szemerédi, E. and Trotter, W. T. 'Extremal problems in discrete geometry.' Combinatorica 3 (1983) 381-392.", "URL": null, "Year": 1983, "IsArxiv": false, "IsPublished": true},
+      {"SourceReferenceId": "src-spencer-st-1984", "ShortLabel": "Spencer-Szemerédi-Trotter 1984", "FullCitation": "Spencer, J., Szemerédi, E., and Trotter, W. T. 'Unit distances in the Euclidean plane.' Graph Theory and Combinatorics (1984) 293-303.", "URL": null, "Year": 1984, "IsArxiv": false, "IsPublished": true},
+      {"SourceReferenceId": "src-golod-shafarevich-1964", "ShortLabel": "Golod-Shafarevich 1964", "FullCitation": "Golod, E. S. and Shafarevich, I. R. 'On the class field tower.' Izv. Akad. Nauk SSSR Ser. Mat. 28 (1964) 261-272.", "URL": null, "Year": 1964, "IsArxiv": false, "IsPublished": true},
+      {"SourceReferenceId": "src-folklore-construction", "ShortLabel": "Folklore Construction", "FullCitation": "Folklore — exact origin unknown.", "URL": null, "Year": null, "IsArxiv": null, "IsPublished": null, "Description": "Coverage row: nullable booleans null."},
+      {"SourceReferenceId": "src-experimental-preprint", "ShortLabel": "Experimental Preprint", "FullCitation": "Hypothetical preprint, not yet posted.", "URL": null, "Year": 2026, "IsArxiv": true, "IsPublished": null}
+    ]
+  },
+  "Lemmas": {
+    "Description": "Table: Lemmas. Extracted named statements from source references. FeedsObjectTable + FeedsObjectId point at the row this lemma underwrites.",
+    "important": false,
+    "schema": [
+      {"name": "LemmaId", "datatype": "string", "type": "raw", "nullable": false, "is_primary_key": true},
+      {"name": "Name", "datatype": "string", "type": "calculated", "nullable": true, "formula": "=SUBSTITUTE(LOWER({{Label}}), \" \", \"-\")"},
+      {"name": "Label", "datatype": "string", "type": "raw"},
+      {"name": "SourceReference", "datatype": "string", "type": "relationship", "RelatedTo": "SourceReferences"},
+      {"name": "StatementText", "datatype": "string", "type": "raw"},
+      {"name": "FeedsObjectTable", "datatype": "string", "type": "raw"},
+      {"name": "FeedsObjectId", "datatype": "string", "type": "raw", "nullable": true},
+      {"name": "IsLoaded", "datatype": "boolean", "type": "raw", "nullable": true, "Description": "TRUE if the lemma's content has been turned into data; FALSE if known but not loaded; null if unevaluated."},
+      {"name": "IsLoadBearing", "datatype": "boolean", "type": "raw", "nullable": true},
+      {"name": "Description", "datatype": "string", "type": "raw", "nullable": true}
+    ],
+    "data": [
+      {"LemmaId": "lemma-short-vector-counting", "Label": "Short-vector counting for GS fields", "SourceReference": "src-sawin-2024", "StatementText": "For number fields satisfying Golod–Shafarevich with controlled discriminant growth, the count of short vectors of squared norm at most R in the Minkowski lattice is at least c·R^{1+δ} for some explicit δ>0.", "FeedsObjectTable": "ShortVectors", "FeedsObjectId": null, "IsLoaded": true, "IsLoadBearing": true},
+      {"LemmaId": "lemma-density-margin", "Label": "Edge density margin over linear", "SourceReference": "src-sawin-2024", "StatementText": "When the lattice is projected via the canonical map, the resulting point set has edge count exceeding n^{1.014} for arbitrarily large n.", "FeedsObjectTable": "GrowthSequences", "FeedsObjectId": "sqrt-lat-growth", "IsLoaded": true, "IsLoadBearing": true},
+      {"LemmaId": "lemma-anchor-explicit-bound", "Label": "Explicit n^1.014 anchor", "SourceReference": "src-sawin-2024", "StatementText": "There exists an explicit construction family (anchored on Q(ζ_p) with appropriate p) realizing the n^{1.014} lower bound.", "FeedsObjectTable": "AsymptoticLowerBounds", "FeedsObjectId": "sawin-n1014", "IsLoaded": true, "IsLoadBearing": true},
+      {"LemmaId": "lemma-spencer-auxiliary", "Label": "Spencer 1984 auxiliary count", "SourceReference": "src-spencer-st-1984", "StatementText": "Auxiliary edge-count bound used in classical incidence proofs.", "FeedsObjectTable": "UnitDistanceGraphs", "FeedsObjectId": null, "IsLoaded": false, "IsLoadBearing": null, "Description": "Named but not extracted as data yet."},
+      {"LemmaId": "lemma-future-improvement", "Label": "Future improvement lemma slot", "SourceReference": "src-experimental-preprint", "StatementText": "Reserved row for a forthcoming improvement.", "FeedsObjectTable": "AsymptoticLowerBounds", "FeedsObjectId": null, "IsLoaded": null, "IsLoadBearing": null},
+      {"LemmaId": "lemma-erdos-context", "Label": "Erdős 1946 historical context", "SourceReference": "src-erdos-1946", "StatementText": "The original superlinear lower bound by Erdős.", "FeedsObjectTable": "AsymptoticLowerBounds", "FeedsObjectId": "erdos-sqrt-bound", "IsLoaded": true, "IsLoadBearing": false, "Description": "Background; not load-bearing for the n^1.014 proof."}
+    ]
+  },
+  "MirrorContract": {
+    "Description": "Table: MirrorContract. The five-rule contract from THE_PLAN.md §3.1 governing how the rulebook mirrors the math. Each rule is a row so agents and substrates can quote it back rather than reading the markdown.",
+    "important": true,
+    "schema": [
+      {"name": "MirrorContractId", "datatype": "string", "type": "raw", "nullable": false, "is_primary_key": true},
+      {"name": "Name", "datatype": "string", "type": "calculated", "nullable": true, "formula": "=SUBSTITUTE(LOWER({{RuleLabel}}), \" \", \"-\")"},
+      {"name": "RuleLabel", "datatype": "string", "type": "raw"},
+      {"name": "RuleStatement", "datatype": "string", "type": "raw"},
+      {"name": "RuleKind", "datatype": "string", "type": "raw", "Description": "One of: load, describe, derive, gate, reject."},
+      {"name": "AppliesToScope", "datatype": "string", "type": "raw"},
+      {"name": "IsBindingOnAgents", "datatype": "boolean", "type": "raw", "nullable": true, "Description": "TRUE if agents must follow this rule; FALSE if deprecated; null if under discussion."},
+      {"name": "IsRejectionRule", "datatype": "boolean", "type": "calculated", "formula": "={{RuleKind}}=\"reject\""},
+      {"name": "Description", "datatype": "string", "type": "raw", "nullable": true}
+    ],
+    "data": [
+      {"MirrorContractId": "mirror-load", "RuleLabel": "Load what is named", "RuleStatement": "Every named mathematical object in the source papers must appear as a row in the rulebook before the rulebook can claim to mirror the result.", "RuleKind": "load", "AppliesToScope": "all-tables", "IsBindingOnAgents": true},
+      {"MirrorContractId": "mirror-describe", "RuleLabel": "Describe, do not derive", "RuleStatement": "The rulebook describes what the paper proves; it does not attempt to derive new mathematical content. Calculated fields surface relationships already present in the data.", "RuleKind": "describe", "AppliesToScope": "all-tables", "IsBindingOnAgents": true},
+      {"MirrorContractId": "mirror-no-invent", "RuleLabel": "No invented intermediates", "RuleStatement": "Modeler-added objects are allowed only with OriginatedHere=true. Speculative intermediates that are not in the source are rejected.", "RuleKind": "reject", "AppliesToScope": "math-content-tables", "IsBindingOnAgents": true},
+      {"MirrorContractId": "mirror-no-epistemic", "RuleLabel": "No epistemic-state columns", "RuleStatement": "Columns that track the modeler's certainty (GapStatus, candidate, partial_candidate, …) are rejected at the storage layer. Curation notes live in commit messages, not in row data.", "RuleKind": "reject", "AppliesToScope": "all-tables", "IsBindingOnAgents": true},
+      {"MirrorContractId": "mirror-gate-substrate", "RuleLabel": "Gate on multi-substrate parity", "RuleStatement": "A rulebook is only valid when it compiles to at least two structurally-different substrates and produces field-for-field identical outputs against the same input data, gated by an answer-key.", "RuleKind": "gate", "AppliesToScope": "release", "IsBindingOnAgents": true},
+      {"MirrorContractId": "mirror-experimental-augment", "RuleLabel": "Experimental augment policy (under discussion)", "RuleStatement": "Hypothetical: allow non-source rows when prefixed `hypothetical-`. Under discussion.", "RuleKind": "describe", "AppliesToScope": "coverage-rows", "IsBindingOnAgents": null, "Description": "Coverage row: rule not yet binding."},
+      {"MirrorContractId": "mirror-deprecated-aggregation", "RuleLabel": "Deprecated: ad-hoc aggregations", "RuleStatement": "Earlier draft superseded by the formal aggregation field type.", "RuleKind": "describe", "AppliesToScope": "historic", "IsBindingOnAgents": false, "Description": "Coverage row: deprecated rule retained for audit."}
     ]
   }
 }
