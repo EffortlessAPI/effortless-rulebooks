@@ -17,6 +17,18 @@ The test: if your default would still be correct after the env var was unset by 
 
 ---
 
+# No locks, no caches, no fallbacks for simple operations
+
+The `effortless` CLI (ssotme:// client) handles its own locking. **Do not add coordination machinery on top of it.** That means: no advisory locks, no mutexes, no per-domain "rebuild in progress" gates, no cache layers between requests and the SSoT, no fallback paths that paper over races or missing state.
+
+When a simple operation needs to happen — a CRUD, a build, a rebuild, a schema PATCH — just do it. If two things conflict, the underlying tool fails loudly and the user sees the real error. Defensive locking/caching/fallback machinery added "just in case" has repeatedly hidden real bugs in this project and produced confusion that costs more than the conflict it was meant to prevent.
+
+**Rule for agents:** if you find yourself reaching for a lock, a cache, or a fallback to make a simple operation "safer," stop. The default answer is *don't build that*. Let the operation run. Let it fail loudly. Add coordination only when the user explicitly asks for it on that specific turn.
+
+This is a sibling doctrine to "Avoid Silent Fallbacks" above — same shape, different surface. Silent fallbacks hide bugs by substituting guesses; defensive locks/caches hide bugs by serializing or masking the conflict that would have revealed them.
+
+---
+
 # THE PROJECT RULEBOOK ≠ A DEMO RULEBOOK
 
 **This repo is a project that WRAPS a bunch of demo rulebooks. The project rulebook is the PARENT. The demo rulebooks are CHILDREN. They are NEVER mixed.**

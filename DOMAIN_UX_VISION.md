@@ -200,8 +200,10 @@ Encoding rules:
 - Segments after `<Domain>` alternate **entity name** → **instance id** → **entity name** → **instance id** → …
 - Entity names are PascalCase, exactly as they appear in the rulebook.
 - Instance ids are the value of the entity's `Name` field (ERB
-  convention — every entity has one). Where `Name` is non-unique, the
-  client appends `?byPk=<true-pk-value>`.
+  convention — every entity has a unique-within-entity Name). Name
+  collisions fail loudly per the no-fallbacks doctrine in
+  [CLAUDE.md](CLAUDE.md); there is no `?byPk` escape hatch. This is a
+  closed-platform demo — Name uniqueness is by construction.
 - **Odd number** of post-domain segments → **list node**.
 - **Even number** → **instance node**.
 
@@ -383,7 +385,6 @@ edit. Same response shape as the schema PATCH.
 Events in order:
 
 ```
-event: phase   data: {"phase":"snapshot","msg":"writing pre-rebuild snapshot"}
 event: phase   data: {"phase":"effortless_build","msg":"regenerating SQL"}
 event: phase   data: {"phase":"drop","msg":"dropping erb_acme_corporation"}
 event: phase   data: {"phase":"create","msg":"creating tables"}
@@ -401,59 +402,66 @@ event: error   data: {"phase":"populate","code":"TYPE_COERCION",
 ```
 
 A failed rebuild **does not auto-revert** — it leaves the rulebook
-JSON in its edited state and leaves the editor DB dropped. The user is
-shown the error and a "revert to snapshot" button (see §2.8.3).
+JSON in its edited state and leaves the editor DB dropped. The user
+is shown the error, a git-diff of the failing edit, and a button that
+runs `git checkout -- <rulebook.json>` (explicit user click, never
+silent — see [CLAUDE.md](CLAUDE.md) "Never silently revert a rulebook
+JSON"). No snapshot files; git history is the rollback. See §2.8.3.
 
-### 2.8 Decisions to lock before building
+### 2.8 Decisions (locked 2026-05-27)
 
-Each has a recommended default. Override or accept; then we cut.
+All seven were walked one-by-one and locked. Notes preserve intent so a
+fresh agent doesn't re-litigate. Where the answer overrode the original
+recommendation, the override is called out.
 
-1. **Snapshot before every schema PATCH? — Recommend: yes.**
-   Write `<domain>-rulebook.snapshot.json` just before applying the
-   PATCH. Keep the last 5. On rebuild failure, the UI offers "Revert
-   to snapshot." Cheap insurance — the rulebook JSON is the only
-   thing that matters for SSoT, and copying it costs nothing.
+1. **Snapshot before every schema PATCH? — NO** *(override).*
+   No `<domain>-rulebook.snapshot.json` sidecar files. Git history is
+   the rollback path. The "revert" button in the failed-rebuild UI
+   runs `git checkout -- <rulebook.json>` on explicit user click —
+   never silent (see [CLAUDE.md](CLAUDE.md) "Never silently revert
+   a rulebook JSON").
 
-2. **Sync or async rebuild response? — Recommend: async + SSE.**
-   PATCH returns immediately with a `rebuildId`. Client opens SSE
-   stream. Matches the live-build pattern in §3.5. Blocking the
-   PATCH ties up a worker and complicates the UI progress story.
+2. **Sync or async rebuild response? — Async + SSE.**
+   PATCH returns immediately with `{ rebuildId, status: "pending",
+   streamUrl }`. Client opens SSE stream and tails phase events.
+   Matches the live-build pattern in §3.5.
 
-3. **What does a failed rebuild leave behind? — Recommend: leave it
-   broken, surface the diff loudly.**
-   Don't auto-rollback the rulebook JSON. Show: the rulebook diff
-   that triggered the rebuild, the row(s) that failed, two buttons —
-   "Revert rulebook to snapshot" or "Edit the failing rows in the
-   rulebook JSON." Silent rollback hides the bug. Matches the
-   [CLAUDE.md](CLAUDE.md) "no silent fallbacks" rule.
+3. **What does a failed rebuild leave behind? — Leave it broken,
+   surface the diff loudly.**
+   Don't auto-rollback. Show the rulebook git-diff that triggered the
+   rebuild, the failing row(s), and two buttons: "Revert via
+   `git checkout`" (explicit user click) or "Edit the failing rows."
+   Matches the "no silent fallbacks" doctrine in [CLAUDE.md](CLAUDE.md).
 
-4. **Locking model during rebuild? — Recommend: per-domain advisory
-   lock.**
-   While a rebuild is running for one domain: all
-   `/api/explorer/instance/...` mutations against that domain return
-   503 with `Retry-After`. All reads keep working — they hit the
-   rulebook JSON (still readable) and fall back gracefully when
-   Postgres is mid-drop. Other domains unaffected.
+4. **Locking model during rebuild? — NO LOCK** *(override).*
+   The `effortless` CLI (ssotme:// client) handles its own locking.
+   Do **not** add advisory locks, mutexes, "rebuild in progress"
+   gates, cache layers, or fallback paths on top of it. If a write
+   races a rebuild, the underlying tool fails loudly and the user
+   sees the real error. This is the *no locks / no caches / no
+   fallbacks* doctrine in [CLAUDE.md](CLAUDE.md) (sibling of "Avoid
+   Silent Fallbacks") — load-bearing for this project.
 
-5. **Cell-provenance: runtime vs cached? — Recommend: runtime.**
-   `GET /api/explorer/cell` walks the formula tree on demand. Depth
-   is single-digit for most rulebooks; the cost is dominated by the
-   round-trip, not the computation. Caching invites staleness.
+5. **Cell-provenance: runtime vs cached? — Runtime.**
+   `GET /api/explorer/cell` walks the formula tree on demand. No
+   pre-computed index, no cache layer between requests and the
+   rulebook JSON. Depth is single-digit; round-trip dominates.
 
-6. **Path-encoding stability when `Name` gets renamed? — Recommend:
-   `Name` with PK fallback.**
-   When a PATCH edits a row's `Name`, the handler returns the new
-   URL in `Location:` so the client can rewrite history. For cases
-   where `Name` is non-unique or churning, `?byPk=true` interprets
-   the last segment as the underlying PK.
+6. **Path-encoding stability when `Name` gets renamed? — Friendly
+   Name-only URLs, no PK fallback** *(override — removed the
+   fallback).*
+   This is a closed-platform demo; every entity has a
+   unique-within-entity Name by construction. URLs use Name. On
+   rename PATCH, the handler returns the new URL in `Location:` so
+   the client rewrites history (normal post-mutation routing, not a
+   fallback). On a Name collision: fail loudly. No `?byPk` escape
+   hatch.
 
-7. **Where the code lives? — Recommend:
-   `effortless-platform/admin-portal/server.js` (new fenced
-   section).**
-   Reuse the existing rulebook load/write helpers, the
-   write-through transaction helper, and the SSE plumbing planned
-   for the Effortless Tools tree (§3.5 — same pattern, different
-   domain).
+7. **Where the code lives? — `effortless-platform/admin-portal/server.js`**
+   (new fenced section). Reuse the existing rulebook load/write
+   helpers, the write-through transaction helper, and the SSE
+   plumbing planned for the Effortless Tools tree (§3.5 — same
+   pattern, different domain).
 
 ### 2.9 Out of scope for v1
 
@@ -469,6 +477,33 @@ Each has a recommended default. Override or accept; then we cut.
 - **Time-travel inside the Explorer** — the existing scrubber works
   against the rulebook git history. The Explorer reads through the
   scrubber's current state but doesn't get its own time controls.
+
+### 2.10 Execution shape
+
+This is a single connected pass, not a multi-PR plan. The spec above
+is detailed enough to flow through end-to-end. Commit at natural
+breakpoints — each endpoint, each route migration, each client
+component — so commits stay reviewable, and re-read this doc at each
+commit to catch plan-drift. **If the plan changes mid-stream, stop and
+update the doc before continuing.**
+
+This is a localhost-only demo. The editor DB (`erb_<domain>`) is
+mechanically derived from the rulebook JSON and can be dropped and
+rebuilt at will. The only non-ephemeral artifact is **git history** —
+so the discipline is *tidy commits*. Nothing else can be broken in a
+way that matters.
+
+Suggested natural ordering (not rigid — adjust as the work reveals):
+
+1. Route consolidation + AppNavigation collapse (`/data` and
+   `/entities` redirect to `/explorer`).
+2. `GET /api/explorer/tree` + left-nav component.
+3. `GET /api/explorer/node` + right-pane grid with column-header-as-schema.
+4. Reception-desk scroller row clicks → `/explorer/<exact node>` deep links.
+5. `PATCH/POST/DELETE /api/explorer/instance/*` (write-through; no lock).
+6. `GET /api/explorer/cell` + click-cell-for-provenance UI.
+7. `PATCH /api/explorer/schema` + `POST /api/explorer/rebuild` + SSE stream.
+8. "Rebuilding…" overlay + failed-rebuild diff surface + git-checkout button.
 
 ---
 
