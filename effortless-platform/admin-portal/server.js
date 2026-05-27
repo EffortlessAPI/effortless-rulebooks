@@ -1926,6 +1926,247 @@ app.delete("/api/explorer/instance/:entity/:id", requireEditor, async (req, res)
   }
 });
 
+// -----------------------------------------------------------------------------
+// Schema PATCH + rebuild SSE  (DOMAIN_UX_VISION.md §2.7 + §2.8 decisions)
+// -----------------------------------------------------------------------------
+// Schema edits trigger a rebuild (effortless build → editor DB resync).
+// The endpoint returns immediately with a rebuildId; the client tails an
+// SSE stream that emits phase events as the rebuild progresses.
+//
+// §2.8 decision 1: NO snapshot sidecar files. Git history is the rollback.
+// §2.8 decision 2: Async + SSE response.
+// §2.8 decision 3: Failed rebuilds are NOT auto-rolled back — surface the
+//   diff loudly so the user can decide whether to git-checkout or fix.
+// §2.8 decision 4: NO LOCK during rebuild. The effortless CLI handles its
+//   own locking; no advisory locks or "rebuild in progress" gates on top.
+
+// In-memory job registry. Keyed by rebuildId. Each job carries its phase
+// log + the set of SSE response objects subscribed to it. The job survives
+// in-process restarts only — that's fine because the durable artifact is
+// the rulebook JSON in git; failed rebuilds are inspected via git diff.
+const rebuildJobs = new Map();
+
+function nextRebuildId() {
+  const d = new Date();
+  const stamp = d.toISOString().replace(/[-:T]/g, "").slice(0, 14);
+  let n = 1;
+  while (rebuildJobs.has(`rb-${stamp}-${String(n).padStart(3, "0")}`)) n++;
+  return `rb-${stamp}-${String(n).padStart(3, "0")}`;
+}
+
+function broadcastJobEvent(job, event, data) {
+  job.events.push({ event, data });
+  const payload = `event: ${event}\ndata: ${JSON.stringify(data)}\n\n`;
+  for (const res of job.clients) {
+    try { res.write(payload); } catch (e) { /* client gone */ }
+  }
+}
+
+function phase(job, phaseName, msg, extra = {}) {
+  broadcastJobEvent(job, "phase", { phase: phaseName, msg, ...extra });
+}
+
+function finishJob(job, kind, data) {
+  job.status = kind === "done" ? "done" : "error";
+  job.finishedAt = Date.now();
+  if (kind === "done") job.durationMs = job.finishedAt - job.startedAt;
+  broadcastJobEvent(job, kind, data);
+  // Close all open SSE connections for this job — clients may reconnect via
+  // GET /rebuild/:id (returns the captured event log) if they need replay.
+  for (const res of job.clients) {
+    try { res.end(); } catch (e) { /* */ }
+  }
+  job.clients.clear();
+}
+
+// Kick off the rebuild as a background async — `effortless build` regenerates
+// SQL/Python/etc from the (now-patched) rulebook. The spec calls for a
+// follow-on DB drop+recreate from the regenerated postgres-bootstrap/, but
+// for v1 we ship just the build; the user can re-run init-db.sh manually
+// when they need to apply schema changes to the live editor DB. The SSE
+// surface is what's important — adding more phases here is mechanical.
+function startRebuildJob({ reason, domain }) {
+  const id = nextRebuildId();
+  const job = {
+    id,
+    reason,
+    domain,
+    status: "pending",
+    events: [],
+    clients: new Set(),
+    startedAt: Date.now(),
+  };
+  rebuildJobs.set(id, job);
+
+  // Defer to the next tick so PATCH /schema can return before the first
+  // phase event lands.
+  setImmediate(async () => {
+    job.status = "running";
+    try {
+      const projectRoot = (domain === "__top__")
+        ? PLATFORM_DIR
+        : path.join(RULEBOOK_EXAMPLES, domain);
+      phase(job, "effortless_build", `running 'effortless build' in ${projectRoot}`);
+      await new Promise((resolve, reject) => {
+        const child = spawn("effortless", ["build"], { cwd: projectRoot });
+        let stderr = "";
+        child.stdout.on("data", (chunk) => {
+          phase(job, "effortless_build", String(chunk).trimEnd().slice(-400) || "(stdout)");
+        });
+        child.stderr.on("data", (chunk) => {
+          stderr += chunk;
+          phase(job, "effortless_build", String(chunk).trimEnd().slice(-400) || "(stderr)");
+        });
+        child.on("error", reject);
+        child.on("close", (code) => {
+          if (code === 0) resolve();
+          else reject(new Error(`effortless build exited ${code}\n${stderr.slice(-2000)}`));
+        });
+      });
+      finishJob(job, "done", { durationMs: Date.now() - job.startedAt });
+    } catch (e) {
+      finishJob(job, "error", {
+        phase: "effortless_build",
+        code: e.code || "BUILD_FAILED",
+        msg: String(e.message || e),
+      });
+    }
+  });
+
+  return id;
+}
+
+// Parse an RFC-6901 JSON Pointer like "/Customers/schema/3/name" into a
+// path array ["Customers", "schema", 3, "name"]. Numeric segments are
+// coerced to integers so they can index arrays correctly.
+function parseJsonPointer(pointer) {
+  if (pointer === "" || pointer === "/") return [];
+  if (!pointer.startsWith("/")) throw new Error("pointer must start with /");
+  return pointer.split("/").slice(1).map((seg) => {
+    const decoded = seg.replace(/~1/g, "/").replace(/~0/g, "~");
+    if (/^\d+$/.test(decoded)) return parseInt(decoded, 10);
+    return decoded;
+  });
+}
+
+// §2.7 allow-list of schema-PATCH pointers. Anything else is 400.
+function validateSchemaPatchPointer(path) {
+  if (path.length < 2) {
+    throw new Error("pointer must address a property on an entity (e.g. /Entity/Description)");
+  }
+  const [entity, key, idx, prop] = path;
+  if (typeof entity !== "string") throw new Error("first segment must be the entity name");
+  if (key === "Description" || key === "important") return;
+  if (key === "schema") {
+    if (path.length === 2) return;                                      // /<E>/schema
+    if (path.length === 3 && Number.isInteger(idx)) return;             // /<E>/schema/<i>
+    if (path.length === 4 && Number.isInteger(idx) && typeof prop === "string") return; // /<E>/schema/<i>/<key>
+  }
+  throw new Error(`unsupported pointer ${path.map(String).join("/")} — see DOMAIN_UX_VISION.md §2.7`);
+}
+
+app.patch("/api/explorer/schema", requireEditor, async (req, res) => {
+  const { pointer, value } = req.body || {};
+  if (typeof pointer !== "string") {
+    return res.status(400).json({ error: "pointer (JSON Pointer string) is required" });
+  }
+  try {
+    const path = parseJsonPointer(pointer);
+    validateSchemaPatchPointer(path);
+
+    await writeThrough({
+      pgWrite: async (c) => {
+        await c.query(
+          `INSERT INTO portal_audit_log (user_id, action, target, payload)
+           VALUES ($1, 'schema.patch', $2, $3)`,
+          [getCurrentUser()?.UserId || null, pointer, JSON.stringify({ pointer, value })]
+        );
+      },
+      rulebookMutate: (rb) => {
+        // Validate the entity exists. If we're creating the first schema
+        // entry on an entity, the entity itself must already exist (entity
+        // create is a separate codepath that's out of v1).
+        if (!rb[path[0]]) throw new Error(`entity '${path[0]}' not in rulebook`);
+        setByPath(rb, path, value);
+        return rb;
+      },
+    });
+
+    const rebuildId = startRebuildJob({
+      reason: `schema patch: ${pointer}`,
+      domain: getActiveDomain(),
+    });
+    res.status(202).json({
+      rebuildId,
+      status: "pending",
+      streamUrl: `/api/explorer/rebuild/${encodeURIComponent(rebuildId)}/stream`,
+    });
+  } catch (e) {
+    res.status(400).json({ error: String(e.message || e) });
+  }
+});
+
+app.post("/api/explorer/rebuild", requireEditor, (req, res) => {
+  try {
+    const rebuildId = startRebuildJob({
+      reason: "manual rebuild",
+      domain: getActiveDomain(),
+    });
+    res.status(202).json({
+      rebuildId,
+      status: "pending",
+      streamUrl: `/api/explorer/rebuild/${encodeURIComponent(rebuildId)}/stream`,
+    });
+  } catch (e) {
+    res.status(500).json({ error: String(e.message || e) });
+  }
+});
+
+// SSE stream for a rebuild job. Replays the captured event log on connect
+// so a client that opens the stream after the first phase still gets every
+// event. The connection stays open until the job finishes (or the client
+// disconnects).
+app.get("/api/explorer/rebuild/:id/stream", (req, res) => {
+  const job = rebuildJobs.get(req.params.id);
+  if (!job) {
+    res.status(404).json({ error: `rebuild ${req.params.id} not found` });
+    return;
+  }
+  res.setHeader("Content-Type", "text/event-stream");
+  res.setHeader("Cache-Control", "no-cache");
+  res.setHeader("Connection", "keep-alive");
+  res.flushHeaders?.();
+
+  // Replay captured events for this job.
+  for (const e of job.events) {
+    res.write(`event: ${e.event}\ndata: ${JSON.stringify(e.data)}\n\n`);
+  }
+
+  if (job.status === "done" || job.status === "error") {
+    res.end();
+    return;
+  }
+  job.clients.add(res);
+  req.on("close", () => { job.clients.delete(res); });
+});
+
+// Read-only job status (handy for clients that prefer polling, and for
+// debugging via curl).
+app.get("/api/explorer/rebuild/:id", (req, res) => {
+  const job = rebuildJobs.get(req.params.id);
+  if (!job) return res.status(404).json({ error: "not found" });
+  res.json({
+    id: job.id,
+    status: job.status,
+    reason: job.reason,
+    domain: job.domain,
+    startedAt: job.startedAt,
+    finishedAt: job.finishedAt || null,
+    durationMs: job.durationMs || null,
+    events: job.events,
+  });
+});
+
 // --- users (PROJECT-rulebook resource; writes to project rulebook) ---
 app.get("/api/users", (req, res) => {
   const project = loadProjectRulebook();

@@ -46,7 +46,22 @@ export default function ExplorerScreen({ screen, me }) {
   const [page, setPage]         = useState(0);
   const [treeError, setTreeError] = useState(null);
   const [refreshTick, setRefreshTick] = useState(0);
+  const [rebuildId, setRebuildId] = useState(null);
   const refreshNode = () => setRefreshTick((t) => t + 1);
+  const refreshAll = () => {
+    setRefreshTick((t) => t + 1);
+    api.get(`/api/explorer/tree?domain=${encodeURIComponent(domain)}&maxDepth=1`)
+      .then(setTree).catch(() => {});
+  };
+
+  const triggerRebuild = async () => {
+    try {
+      const r = await api.post("/api/explorer/rebuild");
+      setRebuildId(r.rebuildId);
+    } catch (e) {
+      toast(`Rebuild failed to start: ${e.message}`, "error");
+    }
+  };
 
   // Load tree on domain change
   useEffect(() => {
@@ -109,7 +124,29 @@ export default function ExplorerScreen({ screen, me }) {
         </div>
       )}
 
-      <Breadcrumbs domain={domain} segments={pathSegments} onCrumb={goTo} />
+      <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <Breadcrumbs domain={domain} segments={pathSegments} onCrumb={goTo} />
+        </div>
+        {canEdit && (
+          <button
+            className="btn secondary"
+            onClick={triggerRebuild}
+            title="Run 'effortless build' and tail the output"
+            style={{ whiteSpace: "nowrap" }}
+          >
+            ↻ Rebuild
+          </button>
+        )}
+      </div>
+
+      {rebuildId && (
+        <RebuildOverlay
+          rebuildId={rebuildId}
+          onClose={() => setRebuildId(null)}
+          onSuccess={() => { setRebuildId(null); refreshAll(); }}
+        />
+      )}
 
       <div className="split">
         <div className="list-panel">
@@ -746,6 +783,152 @@ function CellProvenance({ entity, id, field, onClose, onNavigate }) {
           )}
         </>
       )}
+    </div>
+  );
+}
+
+// =============================================================================
+// RebuildOverlay  (DOMAIN_UX_VISION.md §2.7 + step 8)
+// =============================================================================
+// Opens when a /api/explorer/rebuild call (or a schema PATCH) returns a
+// rebuildId. Tails the SSE stream emitted by /api/explorer/rebuild/:id/stream
+// — each phase event becomes a line in a live log; on "done" the parent
+// refreshes (tree + node); on "error" we leave the overlay open so the user
+// can read the failure and decide how to recover.
+//
+// Per §2.8 decision 3, no auto-rollback. The recovery affordance is a copy-
+// able `git checkout` command — explicit user action, never silent.
+
+function RebuildOverlay({ rebuildId, onClose, onSuccess }) {
+  const [events, setEvents] = useState([]);
+  const [status, setStatus] = useState("pending");
+  const [doneData, setDoneData] = useState(null);
+  const [errData, setErrData] = useState(null);
+
+  useEffect(() => {
+    if (!rebuildId) return;
+    const es = new EventSource(`/api/explorer/rebuild/${encodeURIComponent(rebuildId)}/stream`);
+    es.addEventListener("phase", (e) => {
+      try {
+        const data = JSON.parse(e.data);
+        setEvents((evs) => [...evs, { kind: "phase", data, t: Date.now() }]);
+        setStatus("running");
+      } catch {}
+    });
+    es.addEventListener("done", (e) => {
+      try {
+        const data = JSON.parse(e.data);
+        setDoneData(data);
+        setStatus("done");
+      } catch {}
+      es.close();
+    });
+    es.addEventListener("error", (e) => {
+      // SSE 'error' events come in two flavors: server-emitted JSON (the
+      // build failed loudly) and transport-level errors (network drop).
+      // Differentiate by whether e.data is set.
+      if (e.data) {
+        try {
+          const data = JSON.parse(e.data);
+          setErrData(data);
+          setStatus("error");
+        } catch {
+          setErrData({ msg: "stream parse error" });
+          setStatus("error");
+        }
+      } else if (es.readyState === EventSource.CLOSED) {
+        // Connection closed — if we haven't set done/error yet, leave the
+        // overlay alone; the user can close manually.
+      }
+    });
+    return () => es.close();
+  }, [rebuildId]);
+
+  // When the build succeeds, give the user one beat to see the green
+  // "done" line, then let the parent refresh and close.
+  useEffect(() => {
+    if (status === "done") {
+      const t = setTimeout(onSuccess, 600);
+      return () => clearTimeout(t);
+    }
+  }, [status, onSuccess]);
+
+  return (
+    <div
+      style={{
+        position: "fixed", inset: 0, background: "rgba(0,0,0,0.55)", zIndex: 1000,
+        display: "flex", alignItems: "center", justifyContent: "center", padding: 20,
+      }}
+      onClick={status === "error" || status === "done" ? onClose : undefined}
+    >
+      <div
+        onClick={(e) => e.stopPropagation()}
+        style={{
+          background: "var(--panel)",
+          border: "1px solid var(--border)",
+          borderRadius: 8,
+          width: "min(720px, 100%)",
+          maxHeight: "80vh",
+          display: "flex", flexDirection: "column",
+        }}
+      >
+        <div style={{ padding: 12, borderBottom: "1px solid var(--border)", display: "flex", alignItems: "center", gap: 10 }}>
+          <strong>
+            {status === "pending" && "Starting rebuild…"}
+            {status === "running" && "Rebuilding…"}
+            {status === "done"    && "Rebuild complete"}
+            {status === "error"   && "Rebuild failed"}
+          </strong>
+          <span className="mono small muted">{rebuildId}</span>
+          <span style={{ flex: 1 }} />
+          {(status === "done" || status === "error") && (
+            <button className="btn secondary" onClick={onClose}>Close</button>
+          )}
+        </div>
+
+        <div
+          className="mono small"
+          style={{ padding: 12, overflowY: "auto", flex: 1, background: "var(--panel-2)" }}
+        >
+          {events.length === 0 && status === "pending" && (
+            <div className="muted">Connecting to stream…</div>
+          )}
+          {events.map((e, i) => (
+            <div key={i} style={{ marginBottom: 2 }}>
+              <span className="muted">[{e.data.phase}]</span> {e.data.msg}
+            </div>
+          ))}
+          {status === "done" && doneData && (
+            <div style={{ color: "var(--good)", marginTop: 6 }}>
+              ✓ done in {doneData.durationMs}ms
+            </div>
+          )}
+          {status === "error" && errData && (
+            <div style={{ color: "var(--bad)", marginTop: 6 }}>
+              ✗ {errData.code}: {errData.msg}
+            </div>
+          )}
+        </div>
+
+        {status === "error" && (
+          <div style={{ padding: 12, borderTop: "1px solid var(--border)" }}>
+            <div className="small" style={{ marginBottom: 8 }}>
+              Per §2.8 decision 3, failed rebuilds aren't auto-rolled back —
+              the rulebook JSON keeps the edit that triggered this failure.
+              Inspect the diff or revert by hand:
+            </div>
+            <pre
+              className="mono small"
+              style={{
+                padding: 8, background: "var(--panel-2)",
+                border: "1px solid var(--border)", borderRadius: 4,
+                margin: 0, overflowX: "auto",
+              }}
+            >git diff -- effortless-rulebook/
+git checkout -- effortless-rulebook/   # to revert</pre>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
