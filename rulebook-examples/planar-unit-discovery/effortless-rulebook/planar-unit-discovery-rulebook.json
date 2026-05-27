@@ -1,0 +1,383 @@
+{
+  "$schema": "https://example.com/cmcc-schema/v1",
+  "Name": "Planar Unit-Distance Discovery",
+  "Description": "A CMCC semantic mirror of the planar unit-distance theorem neighborhood. Every mathematical object that participates in the chain from Q to U(n) is promoted to its OWN first-class table, and every intermediate quantity (distance squared, edge count, density exponent, witness-consistency check, bound exponent, anchor match) is a first-class calculated/lookup/aggregation field on the entity to which it belongs. Nothing is hidden in a property bag, an expression tree, or a generic relation row. The Pythagorean test: if a mathematician would name it, it has its own column.",
+
+  "Domains": {
+    "Description": "Table: Domains. Top-level mathematical neighborhoods used to group entities for navigation. Not load-bearing for computation — purely a tag.",
+    "important": false,
+    "schema": [
+      { "name": "DomainId", "datatype": "string", "type": "raw", "nullable": false, "is_primary_key": true },
+      { "name": "Name", "datatype": "string", "type": "calculated", "nullable": true, "formula": "=SUBSTITUTE(LOWER({{DisplayName}}), \" \", \"-\")" },
+      { "name": "DisplayName", "datatype": "string", "type": "raw" },
+      { "name": "RoleInModel", "datatype": "string", "type": "raw" },
+      { "name": "Description", "datatype": "string", "type": "raw" }
+    ],
+    "data": [
+      { "DomainId": "euclidean-geometry", "DisplayName": "Euclidean Geometry", "RoleInModel": "ambient_space_and_metric", "Description": "Points, configurations, distance, unit-distance predicate." },
+      { "DomainId": "graph-theory", "DisplayName": "Graph Theory", "RoleInModel": "combinatorial_shadow", "Description": "Unit-distance graphs and edge counts." },
+      { "DomainId": "algebraic-number-theory", "DisplayName": "Algebraic Number Theory", "RoleInModel": "source_of_structured_constructions", "Description": "Number fields, rings of integers, prime ideals." },
+      { "DomainId": "lattice-embeddings", "DisplayName": "Lattice Embeddings", "RoleInModel": "bridge_algebra_to_geometry", "Description": "Minkowski lattices, short vectors, planar projection." },
+      { "DomainId": "asymptotic-combinatorics", "DisplayName": "Asymptotic Combinatorics", "RoleInModel": "growth_accounting", "Description": "Construction families, growth sequences, lower bounds." },
+      { "DomainId": "theorem-layer", "DisplayName": "Theorem Layer", "RoleInModel": "fixed_point_anchor", "Description": "Theorem anchors and their bounds." }
+    ]
+  },
+
+  "Contexts": {
+    "Description": "Table: Contexts. Mathematical worlds in which assertions are interpreted. Used as the valid-time context for facts (e.g. 'this lattice fact is valid in the Euclidean plane with standard metric').",
+    "important": false,
+    "schema": [
+      { "name": "ContextId", "datatype": "string", "type": "raw", "nullable": false, "is_primary_key": true },
+      { "name": "Name", "datatype": "string", "type": "calculated", "nullable": true, "formula": "=SUBSTITUTE(LOWER({{DisplayName}}), \" \", \"-\")" },
+      { "name": "DisplayName", "datatype": "string", "type": "raw" },
+      { "name": "Kind", "datatype": "string", "type": "raw" },
+      { "name": "AssumptionsJSON", "datatype": "string", "type": "raw" },
+      { "name": "Description", "datatype": "string", "type": "raw" }
+    ],
+    "data": [
+      { "ContextId": "euclidean-plane-r2", "DisplayName": "Euclidean Plane R2", "Kind": "mathematical_context", "AssumptionsJSON": "{\"ambient_space\":\"R^2\",\"metric\":\"standard_euclidean\"}", "Description": "Standard two-dimensional Euclidean geometry." },
+      { "ContextId": "planar-unit-distance-problem", "DisplayName": "Planar Unit Distance Problem", "Kind": "problem_context", "AssumptionsJSON": "{\"object\":\"finite point sets in R^2\",\"edge_rule\":\"distance equals one\"}", "Description": "Maximize the number of unit-distance pairs among n points in the plane." },
+      { "ContextId": "superlinear-lower-bound", "DisplayName": "Superlinear Lower Bound", "Kind": "theorem_context", "AssumptionsJSON": "{\"target\":\"U(n) > n^(1+epsilon)\"}", "Description": "The neighborhood anchored by the superlinear lower bound." }
+    ]
+  },
+
+  "Points": {
+    "Description": "Table: Points. A single point in R^2. Coordinates are raw; everything else lives on PointPairs / PointSets.",
+    "important": true,
+    "important_fields": ["X", "Y"],
+    "schema": [
+      { "name": "PointId", "datatype": "string", "type": "raw", "nullable": false, "is_primary_key": true },
+      { "name": "Name", "datatype": "string", "type": "calculated", "nullable": true, "formula": "=SUBSTITUTE(LOWER({{DisplayName}}), \" \", \"-\")" },
+      { "name": "DisplayName", "datatype": "string", "type": "raw" },
+      { "name": "X", "datatype": "decimal", "type": "raw" },
+      { "name": "Y", "datatype": "decimal", "type": "raw" },
+      { "name": "Context", "datatype": "string", "type": "relationship", "RelatedTo": "Contexts", "Description": "Which mathematical context the coordinates are interpreted in." }
+    ],
+    "data": [
+      { "PointId": "tri-a", "DisplayName": "Triangle A", "X": 0, "Y": 0, "Context": "euclidean-plane-r2" },
+      { "PointId": "tri-b", "DisplayName": "Triangle B", "X": 1, "Y": 0, "Context": "euclidean-plane-r2" },
+      { "PointId": "tri-c", "DisplayName": "Triangle C", "X": 0.5, "Y": 0.8660254037844386, "Context": "euclidean-plane-r2" },
+      { "PointId": "sq-a", "DisplayName": "Square A", "X": 0, "Y": 0, "Context": "euclidean-plane-r2" },
+      { "PointId": "sq-b", "DisplayName": "Square B", "X": 1, "Y": 0, "Context": "euclidean-plane-r2" },
+      { "PointId": "sq-c", "DisplayName": "Square C", "X": 1, "Y": 1, "Context": "euclidean-plane-r2" },
+      { "PointId": "sq-d", "DisplayName": "Square D", "X": 0, "Y": 1, "Context": "euclidean-plane-r2" }
+    ]
+  },
+
+  "PointSets": {
+    "Description": "Table: PointSets. A finite configuration P ⊂ R^2. Aggregations count membership and unit-distance pairs; calculated fields derive density and exponent estimates. The Erdős unit-distance question lives on this table — 'how many unit pairs can n points have?' is literally `UnitDistancePairCount` for varying `PointCount`.",
+    "important": true,
+    "important_fields": ["PointCount", "UnitDistancePairCount", "DensityExponentEstimate"],
+    "schema": [
+      { "name": "PointSetId", "datatype": "string", "type": "raw", "nullable": false, "is_primary_key": true },
+      { "name": "Name", "datatype": "string", "type": "calculated", "nullable": true, "formula": "=SUBSTITUTE(LOWER({{DisplayName}}), \" \", \"-\")" },
+      { "name": "DisplayName", "datatype": "string", "type": "raw" },
+      { "name": "Description", "datatype": "string", "type": "raw" },
+      { "name": "Members", "datatype": "string", "type": "relationship", "RelatedTo": "PointSetMembers" },
+      { "name": "Pairs", "datatype": "string", "type": "relationship", "RelatedTo": "PointPairs" },
+      { "name": "PointCount", "datatype": "integer", "type": "aggregation", "formula": "=COUNTIFS(PointSetMembers!{{PointSet}}, PointSets!{{PointSetId}})", "Description": "n in U(n)." },
+      { "name": "UnitDistancePairCount", "datatype": "integer", "type": "aggregation", "formula": "=COUNTIFS(PointPairs!{{PointSet}}, PointSets!{{PointSetId}}, PointPairs!{{IsUnitDistance}}, TRUE)", "Description": "e(G(P)) — the number of edges in the induced unit-distance graph." },
+      { "name": "MaxPossibleEdges", "datatype": "integer", "type": "calculated", "formula": "={{PointCount}}*({{PointCount}}-1)/2", "Description": "n choose 2 — the trivial upper bound on UnitDistancePairCount." },
+      { "name": "EdgeDensity", "datatype": "decimal", "type": "calculated", "formula": "={{UnitDistancePairCount}}/{{MaxPossibleEdges}}", "Description": "Fraction of point pairs that are unit pairs." },
+      { "name": "DensityExponentEstimate", "datatype": "decimal", "type": "calculated", "formula": "=LOG({{UnitDistancePairCount}})/LOG({{PointCount}})", "important": true, "Description": "The exponent c such that UnitDistancePairCount ≈ PointCount^c. Lower bounds for U(n) are claims that this exponent is ≥ some target for arbitrarily large PointCount." }
+    ],
+    "data": [
+      { "PointSetId": "unit-triangle", "DisplayName": "Unit Triangle", "Description": "Three vertices of an equilateral triangle with side 1." },
+      { "PointSetId": "unit-square", "DisplayName": "Unit Square", "Description": "Four vertices of an axis-aligned unit square. Note: only 4 of 6 pairs are unit; the diagonals are sqrt(2)." }
+    ]
+  },
+
+  "PointSetMembers": {
+    "Description": "Table: PointSetMembers. Junction: which Points belong to which PointSet. Promoted to a first-class entity because membership is itself a fact that may carry context.",
+    "important": false,
+    "schema": [
+      { "name": "PointSetMemberId", "datatype": "string", "type": "raw", "nullable": false, "is_primary_key": true },
+      { "name": "Name", "datatype": "string", "type": "calculated", "nullable": true, "formula": "={{PointSet}}/{{Point}}" },
+      { "name": "PointSet", "datatype": "string", "type": "relationship", "RelatedTo": "PointSets" },
+      { "name": "Point", "datatype": "string", "type": "relationship", "RelatedTo": "Points" }
+    ],
+    "data": [
+      { "PointSetMemberId": "tri-mem-a", "PointSet": "unit-triangle", "Point": "tri-a" },
+      { "PointSetMemberId": "tri-mem-b", "PointSet": "unit-triangle", "Point": "tri-b" },
+      { "PointSetMemberId": "tri-mem-c", "PointSet": "unit-triangle", "Point": "tri-c" },
+      { "PointSetMemberId": "sq-mem-a", "PointSet": "unit-square", "Point": "sq-a" },
+      { "PointSetMemberId": "sq-mem-b", "PointSet": "unit-square", "Point": "sq-b" },
+      { "PointSetMemberId": "sq-mem-c", "PointSet": "unit-square", "Point": "sq-c" },
+      { "PointSetMemberId": "sq-mem-d", "PointSet": "unit-square", "Point": "sq-d" }
+    ]
+  },
+
+  "PointPairs": {
+    "Description": "Table: PointPairs. An ordered pair (PointA, PointB) drawn from the same PointSet. Every step the mathematician would name is here as its own column — DeltaX, DeltaXSquared, DistanceSquared, Distance, DistanceFromUnit, IsUnitDistance. The reader can audit each step.",
+    "important": true,
+    "important_fields": ["DistanceSquared", "Distance", "IsUnitDistance"],
+    "schema": [
+      { "name": "PointPairId", "datatype": "string", "type": "raw", "nullable": false, "is_primary_key": true },
+      { "name": "Name", "datatype": "string", "type": "calculated", "nullable": true, "formula": "={{PointSet}}/{{PointA}}-{{PointB}}" },
+      { "name": "PointSet", "datatype": "string", "type": "relationship", "RelatedTo": "PointSets" },
+      { "name": "PointA", "datatype": "string", "type": "relationship", "RelatedTo": "Points" },
+      { "name": "PointB", "datatype": "string", "type": "relationship", "RelatedTo": "Points" },
+      { "name": "PointAX", "datatype": "decimal", "type": "lookup", "Description": "Lookup of PointA.X.", "formula": "=LOOKUP(Points!{{X}}, PointPairs!{{PointA}}, Points!{{PointId}})" },
+      { "name": "PointAY", "datatype": "decimal", "type": "lookup", "formula": "=LOOKUP(Points!{{Y}}, PointPairs!{{PointA}}, Points!{{PointId}})" },
+      { "name": "PointBX", "datatype": "decimal", "type": "lookup", "formula": "=LOOKUP(Points!{{X}}, PointPairs!{{PointB}}, Points!{{PointId}})" },
+      { "name": "PointBY", "datatype": "decimal", "type": "lookup", "formula": "=LOOKUP(Points!{{Y}}, PointPairs!{{PointB}}, Points!{{PointId}})" },
+      { "name": "DeltaX", "datatype": "decimal", "type": "calculated", "formula": "={{PointBX}}-{{PointAX}}" },
+      { "name": "DeltaY", "datatype": "decimal", "type": "calculated", "formula": "={{PointBY}}-{{PointAY}}" },
+      { "name": "DeltaXSquared", "datatype": "decimal", "type": "calculated", "formula": "=POWER({{DeltaX}},2)" },
+      { "name": "DeltaYSquared", "datatype": "decimal", "type": "calculated", "formula": "=POWER({{DeltaY}},2)" },
+      { "name": "DistanceSquared", "datatype": "decimal", "type": "calculated", "formula": "={{DeltaXSquared}}+{{DeltaYSquared}}", "important": true, "Description": "Pythagoras, made explicit. Promoted because every downstream check uses it directly." },
+      { "name": "Distance", "datatype": "decimal", "type": "calculated", "formula": "=SQRT({{DistanceSquared}})" },
+      { "name": "Tolerance", "datatype": "decimal", "type": "raw", "Description": "Numerical tolerance for the unit-distance check." },
+      { "name": "DistanceFromUnit", "datatype": "decimal", "type": "calculated", "formula": "=ABS({{DistanceSquared}}-1)" },
+      { "name": "IsUnitDistance", "datatype": "boolean", "type": "calculated", "formula": "={{DistanceFromUnit}}<={{Tolerance}}", "important": true, "Description": "The unit-distance predicate — the entire problem turns on this boolean." }
+    ],
+    "data": [
+      { "PointPairId": "tri-ab", "PointSet": "unit-triangle", "PointA": "tri-a", "PointB": "tri-b", "Tolerance": 0.0001 },
+      { "PointPairId": "tri-ac", "PointSet": "unit-triangle", "PointA": "tri-a", "PointB": "tri-c", "Tolerance": 0.0001 },
+      { "PointPairId": "tri-bc", "PointSet": "unit-triangle", "PointA": "tri-b", "PointB": "tri-c", "Tolerance": 0.0001 },
+      { "PointPairId": "sq-ab", "PointSet": "unit-square", "PointA": "sq-a", "PointB": "sq-b", "Tolerance": 0.0001 },
+      { "PointPairId": "sq-bc", "PointSet": "unit-square", "PointA": "sq-b", "PointB": "sq-c", "Tolerance": 0.0001 },
+      { "PointPairId": "sq-cd", "PointSet": "unit-square", "PointA": "sq-c", "PointB": "sq-d", "Tolerance": 0.0001 },
+      { "PointPairId": "sq-da", "PointSet": "unit-square", "PointA": "sq-d", "PointB": "sq-a", "Tolerance": 0.0001 },
+      { "PointPairId": "sq-ac", "PointSet": "unit-square", "PointA": "sq-a", "PointB": "sq-c", "Tolerance": 0.0001 },
+      { "PointPairId": "sq-bd", "PointSet": "unit-square", "PointA": "sq-b", "PointB": "sq-d", "Tolerance": 0.0001 }
+    ]
+  },
+
+  "UnitDistanceGraphs": {
+    "Description": "Table: UnitDistanceGraphs. The induced graph G(P) for a PointSet P. Has one row per PointSet that we choose to project into graph-form. Vertex count is the point count, edge count is the unit-distance pair count — these are not duplicated facts, they are lookups.",
+    "important": true,
+    "important_fields": ["VertexCount", "EdgeCount", "DensityExponentEstimate"],
+    "schema": [
+      { "name": "UnitDistanceGraphId", "datatype": "string", "type": "raw", "nullable": false, "is_primary_key": true },
+      { "name": "Name", "datatype": "string", "type": "calculated", "nullable": true, "formula": "={{PointSet}}-graph" },
+      { "name": "PointSet", "datatype": "string", "type": "relationship", "RelatedTo": "PointSets" },
+      { "name": "VertexCount", "datatype": "integer", "type": "lookup", "formula": "=LOOKUP(PointSets!{{PointCount}}, UnitDistanceGraphs!{{PointSet}}, PointSets!{{PointSetId}})" },
+      { "name": "EdgeCount", "datatype": "integer", "type": "lookup", "formula": "=LOOKUP(PointSets!{{UnitDistancePairCount}}, UnitDistanceGraphs!{{PointSet}}, PointSets!{{PointSetId}})" },
+      { "name": "MaxPossibleEdges", "datatype": "integer", "type": "calculated", "formula": "={{VertexCount}}*({{VertexCount}}-1)/2" },
+      { "name": "EdgeDensity", "datatype": "decimal", "type": "calculated", "formula": "={{EdgeCount}}/{{MaxPossibleEdges}}" },
+      { "name": "DensityExponentEstimate", "datatype": "decimal", "type": "calculated", "formula": "=LOG({{EdgeCount}})/LOG({{VertexCount}})", "important": true, "Description": "Witness for the exponent in U(n) ≥ n^c, finite-sample." }
+    ],
+    "data": [
+      { "UnitDistanceGraphId": "g-tri", "PointSet": "unit-triangle" },
+      { "UnitDistanceGraphId": "g-sq", "PointSet": "unit-square" }
+    ]
+  },
+
+  "NumberFields": {
+    "Description": "Table: NumberFields. A finite extension K of Q. Discriminant, degree, class number, and signature are raw inputs — but IsTotallyReal, IsTotallyComplex, and SatisfiesGolodShafarevich are first-class calculated booleans on the same row, not separate property rows.",
+    "important": true,
+    "important_fields": ["Degree", "Discriminant", "ClassNumber", "IsTotallyComplex"],
+    "schema": [
+      { "name": "NumberFieldId", "datatype": "string", "type": "raw", "nullable": false, "is_primary_key": true },
+      { "name": "Name", "datatype": "string", "type": "calculated", "nullable": true, "formula": "=SUBSTITUTE(LOWER({{DisplayName}}), \" \", \"-\")" },
+      { "name": "DisplayName", "datatype": "string", "type": "raw" },
+      { "name": "DefiningPolynomial", "datatype": "string", "type": "raw" },
+      { "name": "Degree", "datatype": "integer", "type": "raw" },
+      { "name": "Discriminant", "datatype": "integer", "type": "raw" },
+      { "name": "ClassNumber", "datatype": "integer", "type": "raw" },
+      { "name": "SignatureRealEmbeddings", "datatype": "integer", "type": "raw", "Description": "r_1: number of real embeddings." },
+      { "name": "SignatureComplexEmbeddings", "datatype": "integer", "type": "raw", "Description": "r_2: number of complex-conjugate pairs." },
+      { "name": "AmbientLatticeDimension", "datatype": "integer", "type": "calculated", "formula": "={{SignatureRealEmbeddings}}+2*{{SignatureComplexEmbeddings}}", "Description": "The R-dimension of the Minkowski embedding image." },
+      { "name": "IsTotallyReal", "datatype": "boolean", "type": "calculated", "formula": "={{SignatureComplexEmbeddings}}=0" },
+      { "name": "IsTotallyComplex", "datatype": "boolean", "type": "calculated", "formula": "={{SignatureRealEmbeddings}}=0" },
+      { "name": "IsPID", "datatype": "boolean", "type": "calculated", "formula": "={{ClassNumber}}=1", "Description": "Ring of integers is a principal ideal domain iff class number is 1." },
+      { "name": "PrimeIdeals", "datatype": "string", "type": "relationship", "RelatedTo": "PrimeIdeals" },
+      { "name": "SmallNormPrimeIdealCount", "datatype": "integer", "type": "aggregation", "formula": "=COUNTIFS(PrimeIdeals!{{NumberField}}, NumberFields!{{NumberFieldId}}, PrimeIdeals!{{IsSmallNorm}}, TRUE)", "Description": "How many prime ideals fall below the small-norm threshold. Drives multiplicity in construction families." }
+    ],
+    "data": [
+      { "NumberFieldId": "q-sqrt-neg3", "DisplayName": "Q(sqrt(-3))", "DefiningPolynomial": "x^2+3", "Degree": 2, "Discriminant": -3, "ClassNumber": 1, "SignatureRealEmbeddings": 0, "SignatureComplexEmbeddings": 1 },
+      { "NumberFieldId": "q-zeta-7", "DisplayName": "Q(zeta_7)", "DefiningPolynomial": "x^6+x^5+x^4+x^3+x^2+x+1", "Degree": 6, "Discriminant": -16807, "ClassNumber": 1, "SignatureRealEmbeddings": 0, "SignatureComplexEmbeddings": 3 }
+    ]
+  },
+
+  "PrimeIdeals": {
+    "Description": "Table: PrimeIdeals. A prime ideal in the ring of integers of a NumberField. Norm is raw; IsSmallNorm is a first-class calculated predicate that downstream aggregations consume.",
+    "important": false,
+    "schema": [
+      { "name": "PrimeIdealId", "datatype": "string", "type": "raw", "nullable": false, "is_primary_key": true },
+      { "name": "Name", "datatype": "string", "type": "calculated", "nullable": true, "formula": "={{NumberField}}/{{GeneratorDescription}}" },
+      { "name": "NumberField", "datatype": "string", "type": "relationship", "RelatedTo": "NumberFields" },
+      { "name": "GeneratorDescription", "datatype": "string", "type": "raw" },
+      { "name": "Norm", "datatype": "integer", "type": "raw" },
+      { "name": "NormThreshold", "datatype": "integer", "type": "raw", "Description": "Per-prime threshold for the 'small norm' classification." },
+      { "name": "IsSmallNorm", "datatype": "boolean", "type": "calculated", "formula": "={{Norm}}<={{NormThreshold}}" },
+      { "name": "SplitsCompletely", "datatype": "boolean", "type": "raw" }
+    ],
+    "data": [
+      { "PrimeIdealId": "q-sqrt-neg3-p2", "NumberField": "q-sqrt-neg3", "GeneratorDescription": "(2)", "Norm": 4, "NormThreshold": 10, "SplitsCompletely": false },
+      { "PrimeIdealId": "q-sqrt-neg3-p3", "NumberField": "q-sqrt-neg3", "GeneratorDescription": "(sqrt(-3))", "Norm": 3, "NormThreshold": 10, "SplitsCompletely": false },
+      { "PrimeIdealId": "q-sqrt-neg3-p7", "NumberField": "q-sqrt-neg3", "GeneratorDescription": "(7)", "Norm": 49, "NormThreshold": 10, "SplitsCompletely": true }
+    ]
+  },
+
+  "MinkowskiLattices": {
+    "Description": "Table: MinkowskiLattices. The image of O_K under the Minkowski embedding into R^(r_1 + 2*r_2). Carries Gram matrix as raw JSON (matrix algebra is not in scope for ERB formulas), but everything derivable from already-promoted quantities — Dimension, the determinant-equals-discriminant identity check — is a first-class field.",
+    "important": true,
+    "important_fields": ["Dimension", "ShortVectorCount", "DeterminantSquaredEqualsDiscriminant"],
+    "schema": [
+      { "name": "MinkowskiLatticeId", "datatype": "string", "type": "raw", "nullable": false, "is_primary_key": true },
+      { "name": "Name", "datatype": "string", "type": "calculated", "nullable": true, "formula": "={{NumberField}}-lattice" },
+      { "name": "NumberField", "datatype": "string", "type": "relationship", "RelatedTo": "NumberFields" },
+      { "name": "Dimension", "datatype": "integer", "type": "lookup", "formula": "=LOOKUP(NumberFields!{{AmbientLatticeDimension}}, MinkowskiLattices!{{NumberField}}, NumberFields!{{NumberFieldId}})" },
+      { "name": "FieldDiscriminant", "datatype": "integer", "type": "lookup", "formula": "=LOOKUP(NumberFields!{{Discriminant}}, MinkowskiLattices!{{NumberField}}, NumberFields!{{NumberFieldId}})" },
+      { "name": "Determinant", "datatype": "decimal", "type": "raw" },
+      { "name": "DeterminantSquared", "datatype": "decimal", "type": "calculated", "formula": "=POWER({{Determinant}},2)" },
+      { "name": "AbsoluteFieldDiscriminant", "datatype": "decimal", "type": "calculated", "formula": "=ABS({{FieldDiscriminant}})" },
+      { "name": "DeterminantSquaredEqualsDiscriminant", "datatype": "boolean", "type": "calculated", "formula": "=ABS({{DeterminantSquared}}-{{AbsoluteFieldDiscriminant}})<0.0001", "important": true, "Description": "Classical identity: covolume(O_K)^2 = |disc(K)|. Promoted as a first-class sanity check the model verifies on read." },
+      { "name": "GramMatrixJSON", "datatype": "string", "type": "raw", "Description": "JSON-encoded Gram matrix. Matrix algebra is held opaque because ERB formulas are scalar; downstream substrates that support matrices may extend this." },
+      { "name": "ShortVectorThresholdSquared", "datatype": "decimal", "type": "raw" },
+      { "name": "ShortVectors", "datatype": "string", "type": "relationship", "RelatedTo": "ShortVectors" },
+      { "name": "ShortVectorCount", "datatype": "integer", "type": "aggregation", "formula": "=COUNTIFS(ShortVectors!{{MinkowskiLattice}}, MinkowskiLattices!{{MinkowskiLatticeId}}, ShortVectors!{{IsShort}}, TRUE)" }
+    ],
+    "data": [
+      { "MinkowskiLatticeId": "lat-q-sqrt-neg3", "NumberField": "q-sqrt-neg3", "Determinant": 1.7320508075688772, "GramMatrixJSON": "[[1,0],[0,3]]", "ShortVectorThresholdSquared": 4 }
+    ]
+  },
+
+  "ShortVectors": {
+    "Description": "Table: ShortVectors. A vector in a MinkowskiLattice with bounded norm. NormSquared is raw (we are storing the lattice point's known squared length); IsShort is a calculated predicate against the lattice's threshold. The promotion: every individual short vector is a row — not a count, not a list — because each one carries a specific algebraic origin worth inspecting.",
+    "important": false,
+    "schema": [
+      { "name": "ShortVectorId", "datatype": "string", "type": "raw", "nullable": false, "is_primary_key": true },
+      { "name": "Name", "datatype": "string", "type": "calculated", "nullable": true, "formula": "={{MinkowskiLattice}}/{{CoordsJSON}}" },
+      { "name": "MinkowskiLattice", "datatype": "string", "type": "relationship", "RelatedTo": "MinkowskiLattices" },
+      { "name": "CoordsJSON", "datatype": "string", "type": "raw" },
+      { "name": "NormSquared", "datatype": "decimal", "type": "raw" },
+      { "name": "ThresholdSquared", "datatype": "decimal", "type": "lookup", "formula": "=LOOKUP(MinkowskiLattices!{{ShortVectorThresholdSquared}}, ShortVectors!{{MinkowskiLattice}}, MinkowskiLattices!{{MinkowskiLatticeId}})" },
+      { "name": "IsShort", "datatype": "boolean", "type": "calculated", "formula": "={{NormSquared}}<={{ThresholdSquared}}" }
+    ],
+    "data": [
+      { "ShortVectorId": "lat-q-sqrt-neg3-v1", "MinkowskiLattice": "lat-q-sqrt-neg3", "CoordsJSON": "[1,0]", "NormSquared": 1 },
+      { "ShortVectorId": "lat-q-sqrt-neg3-v2", "MinkowskiLattice": "lat-q-sqrt-neg3", "CoordsJSON": "[0,1]", "NormSquared": 3 },
+      { "ShortVectorId": "lat-q-sqrt-neg3-v3", "MinkowskiLattice": "lat-q-sqrt-neg3", "CoordsJSON": "[2,0]", "NormSquared": 4 },
+      { "ShortVectorId": "lat-q-sqrt-neg3-v4", "MinkowskiLattice": "lat-q-sqrt-neg3", "CoordsJSON": "[3,0]", "NormSquared": 9 }
+    ]
+  },
+
+  "ConstructionFamilies": {
+    "Description": "Table: ConstructionFamilies. A parametrized family {P_n} of point sets. SourceNumberField and SourceLattice are optional — non-null only for algebraic constructions. Each row produces a sequence of ConstructionInstances which feed a GrowthSequence.",
+    "important": true,
+    "important_fields": ["InstanceCount", "MaxObservedDensityExponentEstimate"],
+    "schema": [
+      { "name": "ConstructionFamilyId", "datatype": "string", "type": "raw", "nullable": false, "is_primary_key": true },
+      { "name": "Name", "datatype": "string", "type": "calculated", "nullable": true, "formula": "=SUBSTITUTE(LOWER({{DisplayName}}), \" \", \"-\")" },
+      { "name": "DisplayName", "datatype": "string", "type": "raw" },
+      { "name": "DescriptionOfNthMember", "datatype": "string", "type": "raw" },
+      { "name": "SourceNumberField", "datatype": "string", "type": "relationship", "RelatedTo": "NumberFields", "nullable": true },
+      { "name": "SourceMinkowskiLattice", "datatype": "string", "type": "relationship", "RelatedTo": "MinkowskiLattices", "nullable": true },
+      { "name": "Instances", "datatype": "string", "type": "relationship", "RelatedTo": "ConstructionInstances" },
+      { "name": "InstanceCount", "datatype": "integer", "type": "aggregation", "formula": "=COUNTIFS(ConstructionInstances!{{ConstructionFamily}}, ConstructionFamilies!{{ConstructionFamilyId}})" }
+    ],
+    "data": [
+      { "ConstructionFamilyId": "sqrt-lattice-projection", "DisplayName": "Sqrt Lattice Projection", "DescriptionOfNthMember": "Project the first n short vectors of the Minkowski lattice of Q(sqrt(-3)) into R^2 via the embedding's first two real coordinates.", "SourceNumberField": "q-sqrt-neg3", "SourceMinkowskiLattice": "lat-q-sqrt-neg3" }
+    ]
+  },
+
+  "ConstructionInstances": {
+    "Description": "Table: ConstructionInstances. The materialized P_n for a specific n. The PointSet it produces is a real row in PointSets — so all the geometry-layer aggregations apply to it without re-implementation. EdgeCount and DensityExponentEstimate are LOOKUPS, not duplicates.",
+    "important": true,
+    "important_fields": ["ParamN", "EdgeCount", "DensityExponentEstimate"],
+    "schema": [
+      { "name": "ConstructionInstanceId", "datatype": "string", "type": "raw", "nullable": false, "is_primary_key": true },
+      { "name": "Name", "datatype": "string", "type": "calculated", "nullable": true, "formula": "={{ConstructionFamily}}-n{{ParamN}}" },
+      { "name": "ConstructionFamily", "datatype": "string", "type": "relationship", "RelatedTo": "ConstructionFamilies" },
+      { "name": "ParamN", "datatype": "integer", "type": "raw" },
+      { "name": "PointSet", "datatype": "string", "type": "relationship", "RelatedTo": "PointSets" },
+      { "name": "PointCount", "datatype": "integer", "type": "lookup", "formula": "=LOOKUP(PointSets!{{PointCount}}, ConstructionInstances!{{PointSet}}, PointSets!{{PointSetId}})" },
+      { "name": "EdgeCount", "datatype": "integer", "type": "lookup", "formula": "=LOOKUP(PointSets!{{UnitDistancePairCount}}, ConstructionInstances!{{PointSet}}, PointSets!{{PointSetId}})" },
+      { "name": "DensityExponentEstimate", "datatype": "decimal", "type": "lookup", "formula": "=LOOKUP(PointSets!{{DensityExponentEstimate}}, ConstructionInstances!{{PointSet}}, PointSets!{{PointSetId}})" },
+      { "name": "ParamNMatchesPointCount", "datatype": "boolean", "type": "calculated", "formula": "={{ParamN}}={{PointCount}}", "Description": "Sanity check: did the n-th instance actually produce n points?" }
+    ],
+    "data": [
+      { "ConstructionInstanceId": "sqrt-lat-n3", "ConstructionFamily": "sqrt-lattice-projection", "ParamN": 3, "PointSet": "unit-triangle" },
+      { "ConstructionInstanceId": "sqrt-lat-n4", "ConstructionFamily": "sqrt-lattice-projection", "ParamN": 4, "PointSet": "unit-square" }
+    ]
+  },
+
+  "GrowthSequences": {
+    "Description": "Table: GrowthSequences. The sequence (n, e(P_n)) realized by a ConstructionFamily, summarized as aggregations over its instances. MaxObservedDensityExponentEstimate is the strongest finite-sample witness the family currently provides — and is the value AsymptoticLowerBounds compares against to decide whether a claimed bound is finitely consistent.",
+    "important": true,
+    "important_fields": ["MaxParamN", "MaxObservedDensityExponentEstimate"],
+    "schema": [
+      { "name": "GrowthSequenceId", "datatype": "string", "type": "raw", "nullable": false, "is_primary_key": true },
+      { "name": "Name", "datatype": "string", "type": "calculated", "nullable": true, "formula": "={{ConstructionFamily}}-growth" },
+      { "name": "ConstructionFamily", "datatype": "string", "type": "relationship", "RelatedTo": "ConstructionFamilies" },
+      { "name": "ObservedInstanceCount", "datatype": "integer", "type": "aggregation", "formula": "=COUNTIFS(ConstructionInstances!{{ConstructionFamily}}, GrowthSequences!{{ConstructionFamily}})" },
+      { "name": "MaxParamN", "datatype": "integer", "type": "aggregation", "formula": "=MAXIFS(ConstructionInstances!{{ParamN}}, ConstructionInstances!{{ConstructionFamily}}, GrowthSequences!{{ConstructionFamily}})" },
+      { "name": "MaxEdgeCount", "datatype": "integer", "type": "aggregation", "formula": "=MAXIFS(ConstructionInstances!{{EdgeCount}}, ConstructionInstances!{{ConstructionFamily}}, GrowthSequences!{{ConstructionFamily}})" },
+      { "name": "MaxObservedDensityExponentEstimate", "datatype": "decimal", "type": "aggregation", "formula": "=MAXIFS(ConstructionInstances!{{DensityExponentEstimate}}, ConstructionInstances!{{ConstructionFamily}}, GrowthSequences!{{ConstructionFamily}})" }
+    ],
+    "data": [
+      { "GrowthSequenceId": "sqrt-lat-growth", "ConstructionFamily": "sqrt-lattice-projection" }
+    ]
+  },
+
+  "AsymptoticFunctions": {
+    "Description": "Table: AsymptoticFunctions. Named asymptotic functions like U(n). DefinitionText is the human-readable definition; the function's content is fully specified by the AsymptoticLowerBounds and (eventually) AsymptoticUpperBounds that reference it.",
+    "important": true,
+    "important_fields": ["BestKnownLowerBoundExponent"],
+    "schema": [
+      { "name": "AsymptoticFunctionId", "datatype": "string", "type": "raw", "nullable": false, "is_primary_key": true },
+      { "name": "Name", "datatype": "string", "type": "calculated", "nullable": true, "formula": "=SUBSTITUTE(LOWER({{DisplayName}}), \" \", \"-\")" },
+      { "name": "DisplayName", "datatype": "string", "type": "raw" },
+      { "name": "DefinitionText", "datatype": "string", "type": "raw" },
+      { "name": "LowerBounds", "datatype": "string", "type": "relationship", "RelatedTo": "AsymptoticLowerBounds" },
+      { "name": "LowerBoundCount", "datatype": "integer", "type": "aggregation", "formula": "=COUNTIFS(AsymptoticLowerBounds!{{AsymptoticFunction}}, AsymptoticFunctions!{{AsymptoticFunctionId}})" },
+      { "name": "BestKnownLowerBoundExponent", "datatype": "decimal", "type": "aggregation", "formula": "=MAXIFS(AsymptoticLowerBounds!{{Exponent}}, AsymptoticLowerBounds!{{AsymptoticFunction}}, AsymptoticFunctions!{{AsymptoticFunctionId}})", "important": true, "Description": "The best (largest) lower-bound exponent currently asserted for this function." }
+    ],
+    "data": [
+      { "AsymptoticFunctionId": "u-n", "DisplayName": "U(n)", "DefinitionText": "U(n) = max over P ⊂ R^2 with |P|=n of e(G(P)) — the maximum number of unit-distance pairs among n planar points." }
+    ]
+  },
+
+  "AsymptoticLowerBounds": {
+    "Description": "Table: AsymptoticLowerBounds. A claim of the form 'AsymptoticFunction(n) ≥ Coefficient · n^Exponent for sufficiently large n'. Exponent is raw. IsSuperlinear, WitnessConsistent, and ExceedsTrivialLinearBound are all first-class calculated checks. WitnessConsistent compares the claimed exponent against MaxObservedDensityExponentEstimate from the supporting GrowthSequence — a finite-sample sanity check that doesn't replace the proof but does flag inconsistency.",
+    "important": true,
+    "important_fields": ["Exponent", "IsSuperlinear", "WitnessConsistent"],
+    "schema": [
+      { "name": "AsymptoticLowerBoundId", "datatype": "string", "type": "raw", "nullable": false, "is_primary_key": true },
+      { "name": "Name", "datatype": "string", "type": "calculated", "nullable": true, "formula": "=SUBSTITUTE(LOWER({{DisplayName}}), \" \", \"-\")" },
+      { "name": "DisplayName", "datatype": "string", "type": "raw" },
+      { "name": "AsymptoticFunction", "datatype": "string", "type": "relationship", "RelatedTo": "AsymptoticFunctions" },
+      { "name": "GrowthSequence", "datatype": "string", "type": "relationship", "RelatedTo": "GrowthSequences", "nullable": true },
+      { "name": "Exponent", "datatype": "decimal", "type": "raw" },
+      { "name": "Coefficient", "datatype": "decimal", "type": "raw" },
+      { "name": "StatementText", "datatype": "string", "type": "raw" },
+      { "name": "SourceCitation", "datatype": "string", "type": "raw" },
+      { "name": "IsExplicit", "datatype": "boolean", "type": "raw", "Description": "True if the exponent is named numerically (e.g. 1.014), false if only existential ('some ε > 0')." },
+      { "name": "IsSuperlinear", "datatype": "boolean", "type": "calculated", "formula": "={{Exponent}}>1" },
+      { "name": "ExceedsTrivialLinearBound", "datatype": "boolean", "type": "calculated", "formula": "={{Exponent}}>=1" },
+      { "name": "WitnessedByMaxDensityExponent", "datatype": "decimal", "type": "lookup", "formula": "=LOOKUP(GrowthSequences!{{MaxObservedDensityExponentEstimate}}, AsymptoticLowerBounds!{{GrowthSequence}}, GrowthSequences!{{GrowthSequenceId}})" },
+      { "name": "WitnessConsistent", "datatype": "boolean", "type": "calculated", "formula": "={{WitnessedByMaxDensityExponent}}>={{Exponent}}", "important": true, "Description": "Finite-sample sanity check: do the family's observed instances achieve at least the claimed exponent? FALSE means either more instances are needed or the claim is wrong for this family." }
+    ],
+    "data": [
+      { "AsymptoticLowerBoundId": "erdos-sqrt-bound", "DisplayName": "Erdős sqrt(log n) bound", "AsymptoticFunction": "u-n", "GrowthSequence": "sqrt-lat-growth", "Exponent": 1, "Coefficient": 1, "StatementText": "U(n) ≥ n^{1+c/log log n} (Erdős 1946)", "SourceCitation": "Erdős, 1946", "IsExplicit": false },
+      { "AsymptoticLowerBoundId": "sawin-n1014", "DisplayName": "Sawin n^1.014 bound", "AsymptoticFunction": "u-n", "GrowthSequence": "sqrt-lat-growth", "Exponent": 1.014, "Coefficient": 1, "StatementText": "U(n) > n^{1.014} for arbitrarily large n", "SourceCitation": "Sawin, arXiv:2605.20579", "IsExplicit": true }
+    ]
+  },
+
+  "Theorems": {
+    "Description": "Table: Theorems. Fixed-point anchors. A theorem refers to an AsymptoticFunction and (when anchoring a bound) a specific AsymptoticLowerBound. AnchorMatchesBoundExponent is a calculated check that the anchor's named exponent equals the referenced bound's exponent — the kind of paperwork mistake that should be caught at read-time, not in review.",
+    "important": true,
+    "important_fields": ["IsAnchor", "AnchorMatchesBoundExponent"],
+    "schema": [
+      { "name": "TheoremId", "datatype": "string", "type": "raw", "nullable": false, "is_primary_key": true },
+      { "name": "Name", "datatype": "string", "type": "calculated", "nullable": true, "formula": "=SUBSTITUTE(LOWER({{DisplayName}}), \" \", \"-\")" },
+      { "name": "DisplayName", "datatype": "string", "type": "raw" },
+      { "name": "StatementText", "datatype": "string", "type": "raw" },
+      { "name": "IsAnchor", "datatype": "boolean", "type": "raw" },
+      { "name": "IsProven", "datatype": "boolean", "type": "raw" },
+      { "name": "ProofCitation", "datatype": "string", "type": "raw" },
+      { "name": "AsymptoticFunction", "datatype": "string", "type": "relationship", "RelatedTo": "AsymptoticFunctions" },
+      { "name": "AnchoredLowerBound", "datatype": "string", "type": "relationship", "RelatedTo": "AsymptoticLowerBounds" },
+      { "name": "AnchoredBoundExponent", "datatype": "decimal", "type": "lookup", "formula": "=LOOKUP(AsymptoticLowerBounds!{{Exponent}}, Theorems!{{AnchoredLowerBound}}, AsymptoticLowerBounds!{{AsymptoticLowerBoundId}})" },
+      { "name": "AnchoredBoundIsSuperlinear", "datatype": "boolean", "type": "lookup", "formula": "=LOOKUP(AsymptoticLowerBounds!{{IsSuperlinear}}, Theorems!{{AnchoredLowerBound}}, AsymptoticLowerBounds!{{AsymptoticLowerBoundId}})" },
+      { "name": "ClaimedExponent", "datatype": "decimal", "type": "raw", "Description": "The exponent the theorem statement claims, recorded redundantly so the read-time check below can compare it against the bound's recorded exponent." },
+      { "name": "AnchorMatchesBoundExponent", "datatype": "boolean", "type": "calculated", "formula": "=ABS({{ClaimedExponent}}-{{AnchoredBoundExponent}})<0.0001", "important": true, "Description": "Read-time integrity check that the theorem and its anchored bound agree on the exponent." }
+    ],
+    "data": [
+      { "TheoremId": "thm-superlinear-unit-distance", "DisplayName": "Superlinear Unit Distance Theorem", "StatementText": "U(n) > n^{1.014} for arbitrarily large n.", "IsAnchor": true, "IsProven": true, "ProofCitation": "Sawin, arXiv:2605.20579", "AsymptoticFunction": "u-n", "AnchoredLowerBound": "sawin-n1014", "ClaimedExponent": 1.014 }
+    ]
+  }
+}
