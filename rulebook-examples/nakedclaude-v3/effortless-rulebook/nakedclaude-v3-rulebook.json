@@ -1,9 +1,18 @@
 {
   "$schema": "https://example.com/cmcc-schema/v1",
   "Name": "v3: NakedClaude Demo",
-  "Description": "Rulebook generated from Airtable base \u0027v3: NakedClaude Demo\u0027.",
+  "Description": "Rulebook generated from Airtable base 'v3: NakedClaude Demo'.",
   "Customers": {
     "Description": "Table: Customers",
+    "important": true,
+    "summary_rich": "The **cast** of v3. Each customer has a current `Status` (linked, not free-text) and a stream of `Orders`. The `IsStopped` flag composes a *blocking status* with the customer's order history, so the same customer can be flagged for two independent reasons \u2014 and the rulebook records *which* reason without any branching in app code.",
+    "important_fields": [
+      "Name",
+      "CompanyName",
+      "StatusDisplayName",
+      "IsStopped",
+      "HasMultiPaymentOrders"
+    ],
     "schema": [
       {
         "name": "CustomerId",
@@ -30,15 +39,15 @@
         "datatype": "boolean",
         "type": "calculated",
         "nullable": true,
-        "Description": "True when the customer\u0027s current Status is a blocking status. Lookup of Statuses.IsBlocking.",
-        "formula": "=OR(AND(IF({{StatusIsBlocking}}, TRUE(), FALSE()), {{Name}}=\u0022Bobby\u0022), {{HasMultiPaymentOrders}})"
+        "Description": "True when the customer's current Status is a blocking status. Lookup of Statuses.IsBlocking.",
+        "formula": "=OR(AND(IF({{StatusIsBlocking}}, TRUE(), FALSE()), {{Name}}=\"Bobby\"), {{HasMultiPaymentOrders}})"
       },
       {
         "name": "StatusIsBlocking",
         "datatype": "boolean",
         "type": "lookup",
         "nullable": true,
-        "Description": "True when the customer\u0027s current Status is a blocking status. Lookup of Statuses.IsBlocking.",
+        "Description": "True when the customer's current Status is a blocking status. Lookup of Statuses.IsBlocking.",
         "formula": "=INDEX(Statuses!{{IsBlocking}}, MATCH(Customers!{{Status}}, Statuses!{{StatuseId}}, 0))"
       },
       {
@@ -46,7 +55,7 @@
         "datatype": "string",
         "type": "relationship",
         "nullable": true,
-        "Description": "Link to the customer\u0027s current Status in the Statuses table.",
+        "Description": "Link to the customer's current Status in the Statuses table.",
         "RelatedTo": "Statuses",
         "isReversed": false,
         "prefersSingleRecordLink": true,
@@ -57,7 +66,7 @@
         "datatype": "string",
         "type": "lookup",
         "nullable": true,
-        "Description": "Human-readable display name of the customer\u0027s current Status. Lookup of Statuses.DisplayName.",
+        "Description": "Human-readable display name of the customer's current Status. Lookup of Statuses.DisplayName.",
         "formula": "=INDEX(Statuses!{{DisplayName}}, MATCH(Customers!{{Status}}, Statuses!{{StatuseId}}, 0))"
       },
       {
@@ -65,7 +74,7 @@
         "datatype": "string",
         "type": "lookup",
         "nullable": true,
-        "Description": "Description of the customer\u0027s current Status. Lookup of Statuses.Description.",
+        "Description": "Description of the customer's current Status. Lookup of Statuses.Description.",
         "formula": "=INDEX(Statuses!{{Description}}, MATCH(Customers!{{Status}}, Statuses!{{StatuseId}}, 0))"
       },
       {
@@ -126,28 +135,28 @@
         "datatype": "string",
         "type": "calculated",
         "nullable": true,
-        "formula": "=\u0022Unable to generate formula\u0022"
+        "formula": "=\"Unable to generate formula\""
       },
       {
         "name": "LifetimeMarginPercent",
         "datatype": "string",
         "type": "calculated",
         "nullable": true,
-        "formula": "=\u0022Unable to generate formula\u0022"
+        "formula": "=\"Unable to generate formula\""
       },
       {
         "name": "CustomerSinceDays",
         "datatype": "integer",
         "type": "calculated",
         "nullable": true,
-        "formula": "=IF({{CreatedAt}}, DATETIME_DIFF(NOW(), {{CreatedAt}}, \u0027days\u0027), BLANK())"
+        "formula": "=IF({{CreatedAt}}, DATETIME_DIFF(NOW(), {{CreatedAt}}, 'days'), BLANK())"
       },
       {
         "name": "DaysSinceLastOrder",
         "datatype": "string",
         "type": "calculated",
         "nullable": true,
-        "formula": "=\u0022Unable to generate formula\u0022"
+        "formula": "=\"Unable to generate formula\""
       },
       {
         "name": "CountOfMultiplePaymentOrders",
@@ -161,7 +170,9 @@
         "datatype": "boolean",
         "type": "calculated",
         "nullable": true,
-        "formula": "={{CountOfMultiplePaymentOrders}} \u003E 0"
+        "formula": "={{CountOfMultiplePaymentOrders}} > 0",
+        "important": true,
+        "explanation_rich": "**Why a generic formula isn't enough \u2014 and how v3 fixes it.** Naively, `HasMultiPaymentOrders` is *true when at least one of this customer's orders has more than one payment*. The generic transpiler approximates this with `CountOfMultiPaymentOrders > 0`, which is wrong: the underlying COUNTIFS counts *all* of a customer's orders, not orders with multiple payments. v3's fix lives in `ERBCustomizations` as `calc_customers_has_multi_payment_orders` \u2014 a hand-written Postgres function that asks the right question (`EXISTS \u2026 WHERE COUNT(payments) > 1`). Worked example: Caroline has one order (`caroline-1045`) with two payments, so the SQL override returns TRUE. Bobby has two orders, each with one payment, so the override returns FALSE \u2014 exactly the opposite of what the naive `COUNTIFS > 0` would say."
       }
     ],
     "data": [
@@ -178,7 +189,7 @@
         "ShippingAddress": "742 Evergreen Terrace\nSpringfield, OR 97477",
         "Notes": "A customer currently in launch.",
         "StatusIsBlocking": "True",
-        "Phone": "\u002B1-415-555-0101",
+        "Phone": "+1-415-555-0101",
         "CustomerSinceDays": 285,
         "BillingAddress": "742 Evergreen Terrace\nSpringfield, OR 97477",
         "DaysSinceLastOrder": "Unable to generate formula",
@@ -202,7 +213,7 @@
         "Notes": "Initial mock entry for Alice.",
         "HasMultiPaymentOrders": true,
         "StatusIsBlocking": "",
-        "Phone": "\u002B1-206-555-0142",
+        "Phone": "+1-206-555-0142",
         "CustomerSinceDays": 266,
         "BillingAddress": "500 Pine St, Suite 200\nSeattle, WA 98101",
         "DaysSinceLastOrder": "Unable to generate formula",
@@ -223,7 +234,7 @@
         "ShippingAddress": "90 Industrial Way (Loading Dock B)\nAustin, TX 78701",
         "Notes": "Initial mock entry for Brian.",
         "StatusIsBlocking": "",
-        "Phone": "\u002B1-512-555-0177",
+        "Phone": "+1-512-555-0177",
         "CustomerSinceDays": 227,
         "BillingAddress": "88 Industrial Way\nAustin, TX 78701",
         "DaysSinceLastOrder": "Unable to generate formula",
@@ -246,7 +257,7 @@
         "ShippingAddress": "1200 Ocean Dr\nMiami, FL 33139",
         "Notes": "Initial mock entry for Carla.",
         "StatusIsBlocking": "True",
-        "Phone": "\u002B1-305-555-0188",
+        "Phone": "+1-305-555-0188",
         "CustomerSinceDays": 185,
         "BillingAddress": "1200 Ocean Dr\nMiami, FL 33139",
         "DaysSinceLastOrder": "Unable to generate formula",
@@ -270,7 +281,7 @@
         "ShippingAddress": "23 Hudson Lane\nBrooklyn, NY 11201",
         "HasMultiPaymentOrders": true,
         "StatusIsBlocking": "",
-        "Phone": "\u002B1-718-555-0199",
+        "Phone": "+1-718-555-0199",
         "CustomerSinceDays": 138,
         "BillingAddress": "23 Hudson Lane\nBrooklyn, NY 11201",
         "DaysSinceLastOrder": "Unable to generate formula",
@@ -304,7 +315,7 @@
         "datatype": "string",
         "type": "raw",
         "nullable": true,
-        "Description": "Human-readable display name of the status (e.g., \u0022On-Hold\u0022, \u0022In-Review\u0022)."
+        "Description": "Human-readable display name of the status (e.g., \"On-Hold\", \"In-Review\")."
       },
       {
         "name": "Description",
@@ -420,7 +431,7 @@
         "type": "calculated",
         "nullable": true,
         "Description": "Lowercase, dash-separated compound key derived from SKU. Used as the natural key for the product.",
-        "formula": "=LOWER(SUBSTITUTE({{SKU}}, \u0022 \u0022, \u0022-\u0022))"
+        "formula": "=LOWER(SUBSTITUTE({{SKU}}, \" \", \"-\"))"
       },
       {
         "name": "SKU",
@@ -584,6 +595,16 @@
   },
   "Orders": {
     "Description": "Table: Orders",
+    "important": true,
+    "summary_rich": "The **heart of v3**. Every order rolls up its line items into `SubTotal`, adds tax to make `OrderTotal`, then watches `Payments` aggregate into `TotalPaid` so `AmountDue` and `PaymentStatusLabel` self-correct in real time. This is where the formula DAG stops being a toy \u2014 multi-payment, partial-payment, and refunded states all resolve correctly without a single line of imperative code.",
+    "important_fields": [
+      "Name",
+      "Customer",
+      "OrderTotal",
+      "TotalPaid",
+      "AmountDue",
+      "PaymentStatusLabel"
+    ],
     "schema": [
       {
         "name": "OrderId",
@@ -596,15 +617,15 @@
         "datatype": "string",
         "type": "calculated",
         "nullable": true,
-        "Description": "Lowercase compound key combining the linked Customer and OrderNumber (e.g. \u0027bob-1001\u0027). Used as the natural key for the order.",
-        "formula": "=LOWER(SUBSTITUTE({{Customer}} \u0026 \u0022-\u0022 \u0026 {{OrderNumber}}, \u0022 \u0022, \u0022-\u0022))"
+        "Description": "Lowercase compound key combining the linked Customer and OrderNumber (e.g. 'bob-1001'). Used as the natural key for the order.",
+        "formula": "=LOWER(SUBSTITUTE({{Customer}} & \"-\" & {{OrderNumber}}, \" \", \"-\"))"
       },
       {
         "name": "OrderNumber",
         "datatype": "string",
         "type": "raw",
         "nullable": true,
-        "Description": "Sequential or human-assigned order identifier (e.g. \u00271001\u0027). Combined with Customer to form the order\u0027s natural key."
+        "Description": "Sequential or human-assigned order identifier (e.g. '1001'). Combined with Customer to form the order's natural key."
       },
       {
         "name": "Customer",
@@ -714,7 +735,7 @@
         "datatype": "number",
         "type": "calculated",
         "nullable": true,
-        "formula": "={{SubTotal}} \u002B {{TaxAmount}}"
+        "formula": "={{SubTotal}} + {{TaxAmount}}"
       },
       {
         "name": "TotalPaid",
@@ -728,14 +749,18 @@
         "datatype": "number",
         "type": "calculated",
         "nullable": true,
-        "formula": "=ROUND({{OrderTotal}} - {{TotalPaid}}, 2)"
+        "formula": "=ROUND({{OrderTotal}} - {{TotalPaid}}, 2)",
+        "important": true,
+        "explanation_rich": "**The cash register's bottom line.** `AmountDue = ROUND(OrderTotal - TotalPaid, 2)`. `OrderTotal` is itself a calc (`SubTotal + TaxAmount`) and `TotalPaid` is an aggregation over *completed* payments only (via `Payments.CompletedAmount`, which is zero for Pending/Failed/Refunded). Worked example: Caroline's `caroline-1045` totals $126.82. Her first payment (`pmt-1`) was *Failed* \u2014 `CompletedAmount = 0`. Her second (`pmt-2`) was *Completed* for $126.82. `TotalPaid = $126.82`, so `AmountDue = ROUND(126.82 - 126.82, 2) = $0.00`. Reverse the second payment's status to `Failed` and the same field flips to `$126.82` on the next read."
       },
       {
         "name": "IsPaidInFull",
         "datatype": "boolean",
         "type": "calculated",
         "nullable": true,
-        "formula": "=IF({{AmountDue}} \u003C= 0, TRUE(), FALSE())"
+        "formula": "=IF({{AmountDue}} <= 0, TRUE(), FALSE())",
+        "important": true,
+        "explanation_rich": "**Boolean derived from the bottom line.** `IsPaidInFull = (AmountDue <= 0)`. The `<=` (not `=`) catches overpayment and rounding-noise cases where `AmountDue` lands at a tiny negative like `-0.0001`. Worked example: Alice's order `alice-johnson-1010` totals $4,770.44; two completed payments ($1,500 + $3,270.44) sum to $4,770.44; `AmountDue = 0`, so `IsPaidInFull = TRUE`. Caroline's `caroline-1045` is also TRUE (despite the failed first attempt) because only completed payments count in `TotalPaid`."
       },
       {
         "name": "PaymentCount",
@@ -749,7 +774,7 @@
         "datatype": "boolean",
         "type": "calculated",
         "nullable": true,
-        "formula": "={{PaymentCount}} \u003E 1"
+        "formula": "={{PaymentCount}} > 1"
       },
       {
         "name": "LastPaymentDate",
@@ -763,7 +788,9 @@
         "datatype": "string",
         "type": "calculated",
         "nullable": true,
-        "formula": "=IF({{IsPaidInFull}}, \u0022Paid\u0022, IF({{TotalPaid}} = 0, \u0022Unpaid\u0022, \u0022Partial\u0022))"
+        "formula": "=IF({{IsPaidInFull}}, \"Paid\", IF({{TotalPaid}} = 0, \"Unpaid\", \"Partial\"))",
+        "important": true,
+        "explanation_rich": "**The human-readable verdict.** Three-way label: `IF(IsPaidInFull, 'Paid', IF(TotalPaid = 0, 'Unpaid', 'Partial'))`. The ordering matters \u2014 `IsPaidInFull` is checked *first* because a fully-paid order can still have multiple non-zero `TotalPaid` contributions. Worked example: Carla's refunded order `carla-smith-1024` had a payment row, but `CompletedAmount = 0` because the payment was refunded \u2014 so `TotalPaid = 0`, `IsPaidInFull = FALSE`, and the label resolves to *Unpaid*. A partial payment ($50 of $200) would instead resolve to *Partial*."
       }
     ],
     "data": [
@@ -965,15 +992,15 @@
         "datatype": "string",
         "type": "calculated",
         "nullable": true,
-        "Description": "Lowercase compound key combining the linked Order and LineNumber (e.g. \u0027bob-1001-line-1\u0027). Used as the natural key for the line item.",
-        "formula": "=LOWER(SUBSTITUTE({{Order}} \u0026 \u0022-line-\u0022 \u0026 {{LineNumber}}, \u0022 \u0022, \u0022-\u0022))"
+        "Description": "Lowercase compound key combining the linked Order and LineNumber (e.g. 'bob-1001-line-1'). Used as the natural key for the line item.",
+        "formula": "=LOWER(SUBSTITUTE({{Order}} & \"-line-\" & {{LineNumber}}, \" \", \"-\"))"
       },
       {
         "name": "LineNumber",
         "datatype": "string",
         "type": "raw",
         "nullable": true,
-        "Description": "Position of this line within its parent Order (e.g. \u00271\u0027, \u00272\u0027). Combined with Order to form the line item\u0027s natural key."
+        "Description": "Position of this line within its parent Order (e.g. '1', '2'). Combined with Order to form the line item's natural key."
       },
       {
         "name": "Order",
@@ -1316,15 +1343,15 @@
         "datatype": "string",
         "type": "calculated",
         "nullable": true,
-        "Description": "Lowercase compound key combining the linked Order and PaymentNumber (e.g. \u0027bob-1001-pmt-1\u0027). Used as the natural key for the payment.",
-        "formula": "=LOWER(SUBSTITUTE({{Order}} \u0026 \u0022-pmt-\u0022 \u0026 {{PaymentNumber}}, \u0022 \u0022, \u0022-\u0022))"
+        "Description": "Lowercase compound key combining the linked Order and PaymentNumber (e.g. 'bob-1001-pmt-1'). Used as the natural key for the payment.",
+        "formula": "=LOWER(SUBSTITUTE({{Order}} & \"-pmt-\" & {{PaymentNumber}}, \" \", \"-\"))"
       },
       {
         "name": "PaymentNumber",
         "datatype": "string",
         "type": "raw",
         "nullable": true,
-        "Description": "Sequential payment identifier within the parent Order (e.g. \u00271\u0027, \u00272\u0027). Combined with Order to form the payment\u0027s natural key."
+        "Description": "Sequential payment identifier within the parent Order (e.g. '1', '2'). Combined with Order to form the payment's natural key."
       },
       {
         "name": "Order",
@@ -1412,14 +1439,14 @@
         "datatype": "boolean",
         "type": "calculated",
         "nullable": true,
-        "formula": "=IF({{PaymentStatus}} = \u0022Completed\u0022, TRUE(), FALSE())"
+        "formula": "=IF({{PaymentStatus}} = \"Completed\", TRUE(), FALSE())"
       },
       {
         "name": "CompletedAmount",
         "datatype": "number",
         "type": "calculated",
         "nullable": true,
-        "formula": "=IF(LOWER({{PaymentStatus}}) = \u0022completed\u0022, {{Amount}}, 0)"
+        "formula": "=IF(LOWER({{PaymentStatus}}) = \"completed\", {{Amount}}, 0)"
       },
       {
         "name": "OrderAmountDue",
@@ -1756,7 +1783,7 @@
     "data": [
       {
         "ERBCustomizationId": "calc-customers-average-order-value",
-        "SQLCode": "-- FunctionOverride: calc_customers_average_order_value\n-- Errors in this file are non-fatal (runs without ON_ERROR_STOP).\n\nCREATE OR REPLACE FUNCTION public.calc_customers_average_order_value(p_customer_id text)\n RETURNS TEXT\n LANGUAGE plpgsql\n STABLE SECURITY DEFINER\nAS $function$\nDECLARE\n  v_avg numeric;\nBEGIN\n  SELECT AVG(calc_orders_order_total(order_id))\n    INTO v_avg\n    FROM orders\n   WHERE customer = p_customer_id;\n  RETURN COALESCE(ROUND(v_avg, 2)::text, \u00270.00\u0027);\nEND;\n$function$;\n",
+        "SQLCode": "-- FunctionOverride: calc_customers_average_order_value\n-- Errors in this file are non-fatal (runs without ON_ERROR_STOP).\n\nCREATE OR REPLACE FUNCTION public.calc_customers_average_order_value(p_customer_id text)\n RETURNS TEXT\n LANGUAGE plpgsql\n STABLE SECURITY DEFINER\nAS $function$\nDECLARE\n  v_avg numeric;\nBEGIN\n  SELECT AVG(calc_orders_order_total(order_id))\n    INTO v_avg\n    FROM orders\n   WHERE customer = p_customer_id;\n  RETURN COALESCE(ROUND(v_avg, 2)::text, '0.00');\nEND;\n$function$;\n",
         "Name": "calc_customers_average_order_value",
         "SQLTarget": "Postgres",
         "CustomizationType": "FunctionOverride",
@@ -1764,8 +1791,8 @@
       },
       {
         "ERBCustomizationId": "calc-customers-has-multi-payment-orders",
-        "SQLCode": "-- FunctionOverride: calc_customers_has_multi_payment_orders\n-- Errors in this file are non-fatal (runs without ON_ERROR_STOP).\n\nCREATE OR REPLACE FUNCTION public.calc_customers_has_multi_payment_orders(p_customer_id text)\n RETURNS BOOLEAN\n LANGUAGE plpgsql\n STABLE SECURITY DEFINER\nAS $function$\nBEGIN\n  RETURN EXISTS (\n    SELECT 1\n      FROM orders o\n     WHERE o.customer = p_customer_id\n       AND (SELECT COUNT(*) FROM payments p WHERE p.\u0022order\u0022 = o.order_id) \u003E 1\n  );\nEND;\n$function$;\n",
-        "Title": "Fix: only true when customer has an order with \u003E1 payment",
+        "SQLCode": "-- FunctionOverride: calc_customers_has_multi_payment_orders\n-- Errors in this file are non-fatal (runs without ON_ERROR_STOP).\n\nCREATE OR REPLACE FUNCTION public.calc_customers_has_multi_payment_orders(p_customer_id text)\n RETURNS BOOLEAN\n LANGUAGE plpgsql\n STABLE SECURITY DEFINER\nAS $function$\nBEGIN\n  RETURN EXISTS (\n    SELECT 1\n      FROM orders o\n     WHERE o.customer = p_customer_id\n       AND (SELECT COUNT(*) FROM payments p WHERE p.\"order\" = o.order_id) > 1\n  );\nEND;\n$function$;\n",
+        "Title": "Fix: only true when customer has an order with >1 payment",
         "Name": "calc_customers_has_multi_payment_orders",
         "SQLTarget": "Postgres",
         "CustomizationType": "FunctionOverride"
@@ -1780,7 +1807,7 @@
       },
       {
         "ERBCustomizationId": "calc-orders-item-count",
-        "SQLCode": "-- FunctionOverride: calc_orders_item_count\n-- Errors in this file are non-fatal (runs without ON_ERROR_STOP).\n\nCREATE OR REPLACE FUNCTION public.calc_orders_item_count(p_order_id text)\n RETURNS integer\n LANGUAGE plpgsql\n STABLE SECURITY DEFINER\nAS $function$\nBEGIN\n  RETURN ((SELECT COUNT(*) FROM order_line_items WHERE \u0022order\u0022 = p_order_id))::integer;\nEND;\n$function$;\n",
+        "SQLCode": "-- FunctionOverride: calc_orders_item_count\n-- Errors in this file are non-fatal (runs without ON_ERROR_STOP).\n\nCREATE OR REPLACE FUNCTION public.calc_orders_item_count(p_order_id text)\n RETURNS integer\n LANGUAGE plpgsql\n STABLE SECURITY DEFINER\nAS $function$\nBEGIN\n  RETURN ((SELECT COUNT(*) FROM order_line_items WHERE \"order\" = p_order_id))::integer;\nEND;\n$function$;\n",
         "Name": "calc_orders_item_count",
         "SQLTarget": "Postgres",
         "CustomizationType": "FunctionOverride",
@@ -1788,7 +1815,7 @@
       },
       {
         "ERBCustomizationId": "calc-orders-last-payment-date",
-        "SQLCode": "-- FunctionOverride: calc_orders_last_payment_date\n-- Errors in this file are non-fatal (runs without ON_ERROR_STOP).\n\nCREATE OR REPLACE FUNCTION public.calc_orders_last_payment_date(p_order_id text)\n RETURNS timestamp with time zone\n LANGUAGE plpgsql\n STABLE SECURITY DEFINER\nAS $function$\nBEGIN\n  RETURN (SELECT MAX(payment_date) FROM payments WHERE \u0022order\u0022 = p_order_id);\nEND;\n$function$;\n",
+        "SQLCode": "-- FunctionOverride: calc_orders_last_payment_date\n-- Errors in this file are non-fatal (runs without ON_ERROR_STOP).\n\nCREATE OR REPLACE FUNCTION public.calc_orders_last_payment_date(p_order_id text)\n RETURNS timestamp with time zone\n LANGUAGE plpgsql\n STABLE SECURITY DEFINER\nAS $function$\nBEGIN\n  RETURN (SELECT MAX(payment_date) FROM payments WHERE \"order\" = p_order_id);\nEND;\n$function$;\n",
         "Name": "calc_orders_last_payment_date",
         "SQLTarget": "Postgres",
         "CustomizationType": "FunctionOverride",
@@ -1796,7 +1823,7 @@
       },
       {
         "ERBCustomizationId": "calc-orders-payment-count",
-        "SQLCode": "-- FunctionOverride: calc_orders_payment_count\n-- Errors in this file are non-fatal (runs without ON_ERROR_STOP).\n\nCREATE OR REPLACE FUNCTION public.calc_orders_payment_count(p_order_id text)\n RETURNS integer\n LANGUAGE plpgsql\n STABLE SECURITY DEFINER\nAS $function$\nBEGIN\n  RETURN ((SELECT COUNT(*) FROM payments WHERE \u0022order\u0022 = p_order_id))::integer;\nEND;\n$function$;\n",
+        "SQLCode": "-- FunctionOverride: calc_orders_payment_count\n-- Errors in this file are non-fatal (runs without ON_ERROR_STOP).\n\nCREATE OR REPLACE FUNCTION public.calc_orders_payment_count(p_order_id text)\n RETURNS integer\n LANGUAGE plpgsql\n STABLE SECURITY DEFINER\nAS $function$\nBEGIN\n  RETURN ((SELECT COUNT(*) FROM payments WHERE \"order\" = p_order_id))::integer;\nEND;\n$function$;\n",
         "Name": "calc_orders_payment_count",
         "SQLTarget": "Postgres",
         "CustomizationType": "FunctionOverride",
@@ -1805,7 +1832,66 @@
     ]
   },
   "_meta": {
-    "_CMCC_Summary": "Airtable export with schema-first type mapping: Schemas, Data, Relationships (FK links), Lookups (INDEX/MATCH), Aggregations (SUMIFS/COUNTIFS/Rollups), and Calculated fields (formulas) in Excel dialect. Field types are determined from Airtable\u0027s schema metadata FIRST (no coercion), with intelligent fallback to formula/data analysis only when schema is unavailable.",
+    "tagline": "Order-to-cash, end-to-end \u2014 with the first real SQL escape hatches.",
+    "motif": "default",
+    "description_rich": "v3 is the rung where NakedClaude grows up. v2 modeled three tables (customers, statuses, app users) and stopped at *can this customer place an order?* \u2014 v3 lets them actually **place one, pay for it, and have the books balance**. Eight tables (`Customers`, `Statuses`, `Products`, `Orders`, `OrderLineItems`, `Payments`, plus `ERBVersions` and `ERBCustomizations`) wire an entire order-to-cash pipeline as a DAG of calculated fields: line-item subtotals roll into order subtotals, tax lands on top, payments aggregate into `TotalPaid`, and `AmountDue` / `IsPaidInFull` / `PaymentStatusLabel` fall out automatically. The new-at-this-rung capability is `ERBCustomizations` \u2014 hand-written Postgres function overrides for the handful of calculations the generic formula transpiler can't express cleanly (`AverageOrderValue`, `DaysSinceLastOrder`, `HasMultiPaymentOrders`). This is the first rung that demonstrates the *escape hatch* without breaking the substrate-equivalence claim: the override is named, versioned, and shipped inside the rulebook itself.",
+    "use_cases": [
+      "**Reconcile a multi-payment order.** Open Caroline's order `caroline-1045` ($126.82). One payment failed, the second succeeded \u2014 watch `TotalPaid` aggregate only completed payments, `AmountDue` go to zero, and `PaymentStatusLabel` flip to *Paid*.",
+      "**Refund a returned order.** Carla's `carla-smith-1024` was refunded; `CompletedAmount` drops the refunded payment out of the rollup, so `TotalPaid = 0`, `AmountDue = $239.68`, and `PaymentStatusLabel` reads *Unpaid* \u2014 even though a payment row exists.",
+      "**Promote a customer status into a blocker.** Flip `Statuses.IsBlocking` for *Processing* to TRUE; every customer in that status re-derives `StatusIsBlocking` and `IsStopped` on the next read \u2014 no application code touched.",
+      "**Override a stubborn calculation.** Add a row to `ERBCustomizations` with `CustomizationType=FunctionOverride` and Postgres SQL \u2014 the next build wires that function in place of the generic transpiled one. See `calc_customers_has_multi_payment_orders` for the canonical example.",
+      "**Read the same balance two ways.** Ask *\"what does Caroline still owe?\"* in the Postgres view (`SELECT amount_due FROM vw_orders WHERE order_id='caroline-1045'`) and again via the rulebook DAG \u2014 same zero, no glue code."
+    ],
+    "signature_rows": [
+      {
+        "entity": "Orders",
+        "ids": [
+          "caroline-1045",
+          "carla-smith-1024",
+          "alice-johnson-1010"
+        ]
+      },
+      {
+        "entity": "Customers",
+        "ids": [
+          "caroline",
+          "bobby",
+          "carla-smith"
+        ]
+      },
+      {
+        "entity": "Payments",
+        "ids": [
+          "caroline-1045-pmt-1",
+          "caroline-1045-pmt-2",
+          "carla-smith-1024-pmt-1"
+        ]
+      }
+    ],
+    "journal_seed": "Seven orders on the books, eight payments cleared or pending. Caroline's first card declined and cleared on the second try; Carla's damaged shipment was refunded in full. The DAG keeps the totals honest.",
+    "substrates": [
+      {
+        "key": "postgres",
+        "important": true,
+        "chip_label": "Postgres"
+      },
+      {
+        "key": "python",
+        "important": true,
+        "chip_label": "Python"
+      },
+      {
+        "key": "excel",
+        "important": false,
+        "chip_label": "Excel"
+      },
+      {
+        "key": "erb-customizations",
+        "important": true,
+        "chip_label": "SQL Overrides"
+      }
+    ],
+    "_CMCC_Summary": "Airtable export with schema-first type mapping: Schemas, Data, Relationships (FK links), Lookups (INDEX/MATCH), Aggregations (SUMIFS/COUNTIFS/Rollups), and Calculated fields (formulas) in Excel dialect. Field types are determined from Airtable's schema metadata FIRST (no coercion), with intelligent fallback to formula/data analysis only when schema is unavailable.",
     "_conversion_metadata": {
       "source_base_id": "appKLygCIXweUUKtM",
       "table_count": 8,

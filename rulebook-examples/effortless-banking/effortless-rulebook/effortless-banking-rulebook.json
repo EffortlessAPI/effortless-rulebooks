@@ -126,6 +126,9 @@
   },
   "Businesses": {
     "Description": "Small-business customers (and prospects) of the bank. Central entity: BeneficialOwners, Contacts, Accounts, Loans, Documents, and Interactions all hang off a Business. BusinessProfile information (legal name, structure, NAICS code) lives directly on this table.",
+    "important": true,
+    "summary_rich": "The **borrower file**. Each row is one small-business customer or prospect; everything regulated about that relationship — the BeneficialOwners on the CDD file, the Accounts and their balances, the Loans and their grades, the Interactions audit log — hangs off a Business via FK. `MeetsCddRule` enforces FinCEN's 25%-or-control-person rule; `PortfolioPriority` rolls up loan classification and CDD state into the single bucket the RM sorts the book by every morning.",
+    "important_fields": ["LegalName", "Status", "RelationshipManagerLabel", "PortfolioPriority", "MeetsCddRule", "TotalLoanPrincipalUsd"],
     "schema": [
       {
         "name": "Name",
@@ -326,7 +329,9 @@
         "type": "calculated",
         "nullable": false,
         "Description": "True when CDD beneficial-ownership collection is satisfied: at least one owner crosses the 25% threshold, or a control person is designated.",
-        "formula": "={{BeneficialOwnersAtCddThreshold}} > 0"
+        "formula": "={{BeneficialOwnersAtCddThreshold}} > 0",
+        "important": true,
+        "explanation_rich": "**FinCEN's CDD rule, encoded once.** Every legal entity opening an account has to have either an owner crossing the 25% threshold or a designated control person on file. This field is a rollup from `BeneficialOwners` filtered by `MeetsCddThreshold` (the owner-level OR of `Meets25PercentThreshold` and `IsControlPerson`). Worked example: *Stillwater Roasters LLC* has Jordan Park (60%, also control person) and Sam Rivera (40%) — so `BeneficialOwnersAtCddThreshold` = 2 and the rule clears. *Hilltop Bakery LLC* is a Prospect with no owners attached yet — the rollup is 0 and `MeetsCddRule` is FALSE until the file is built. Postgres, Python, and Excel all agree, because there is only one definition."
       },
       {
         "name": "PortfolioPriority",
@@ -334,7 +339,9 @@
         "type": "calculated",
         "nullable": false,
         "Description": "Higher-order: portfolio-management priority bucket for this business. 'High' when classified loan present, 'Medium' when CDD or onboarding incomplete or no loans yet, otherwise 'Low'.",
-        "formula": "=IF({{HasClassifiedLoan}}, \"High\", IF(OR(NOT({{MeetsCddRule}}), {{IsProspect}}, {{CountOfLoans}} = 0), \"Medium\", \"Low\"))"
+        "formula": "=IF({{HasClassifiedLoan}}, \"High\", IF(OR(NOT({{MeetsCddRule}}), {{IsProspect}}, {{CountOfLoans}} = 0), \"Medium\", \"Low\"))",
+        "important": true,
+        "explanation_rich": "**The single bucket the RM sorts the morning call list by.** PortfolioPriority is a higher-order calc that consumes other calcs: it depends on `HasClassifiedLoan` (which depends on `CountOfClassifiedLoans`, an aggregation over `Loans.IsClassifiedAsset`), on `MeetsCddRule`, on `IsProspect`, and on `CountOfLoans`. Worked example: *Pine Hardware Inc.* owns L-0042 (RiskRating=7 Substandard, an `IsClassifiedAsset`), so `HasClassifiedLoan` = TRUE and PortfolioPriority resolves to **'High'**. *Hilltop Bakery LLC* is a Prospect with no loans yet and no CDD file — it resolves to **'Medium'**. *Stillwater Roasters LLC* is a Customer with a clean grade-4 loan and a clean CDD file — it resolves to **'Low'**. Downgrade L-0042 back to grade 4, and Pine drops from 'High' to 'Low' the same instant every substrate recomputes."
       }
     ],
     "data": [
@@ -821,6 +828,9 @@
   },
   "Loans": {
     "Description": "Credit facilities extended to a Business, tracked from inquiry through funding, servicing, and payoff. RiskRating is denormalized here for fast reads; every change is captured in RiskRatingHistory.",
+    "important": true,
+    "summary_rich": "The **credit book** — every facility the bank has on the borrower. A Loan carries the live denormalized RiskRating (with the full migration history kept in `RiskRatingHistory` so regulators can audit drift), the DSCR and LTV bands, and the segregation-of-duties check that the originating RM cannot also be the underwriter. `OnWatchlist` is the union the credit committee actually sorts by: any loan that's classified (grade ≥ 7) *or* has a covenant in breach.",
+    "important_fields": ["LoanNumber", "BusinessLabel", "PrincipalUsd", "RiskRatingLabel", "UnderwritingStage", "OnWatchlist", "HealthScore", "SegregationOfDutiesOk"],
     "schema": [
       {
         "name": "Name",
@@ -1015,7 +1025,9 @@
         "type": "calculated",
         "nullable": false,
         "Description": "True when the originating RM and the underwriter are different Users (segregation-of-duties check).",
-        "formula": "=NOT({{OriginatingRm}} = {{Underwriter}})"
+        "formula": "=NOT({{OriginatingRm}} = {{Underwriter}})",
+        "important": true,
+        "explanation_rich": "**An auditable control, encoded as a calc.** Bank policy (and bank examiners) require that the person who originates a loan cannot also be the person who underwrites it — one person on each side of the credit decision. This field is the live check. Worked example: *L-0051 (Stillwater Roasters)* lists Devon Marshall (RM) as originator and Priya Iyer (Underwriter) as underwriter — two distinct Users, so the flag is TRUE. Reassign the underwriter to Devon and the same field flips to FALSE the same instant. Because every substrate reads `SegregationOfDutiesOk` from the same definition, there is no app-side guard to forget — the control travels with the data."
       },
       {
         "name": "CountOfCovenants",
@@ -1063,7 +1075,9 @@
         "type": "calculated",
         "nullable": false,
         "Description": "Higher-order: on the watchlist when the loan is a classified asset OR has any breached covenant.",
-        "formula": "=OR({{IsClassifiedAsset}}, {{HasBreachedCovenant}})"
+        "formula": "=OR({{IsClassifiedAsset}}, {{HasBreachedCovenant}})",
+        "important": true,
+        "explanation_rich": "**The watchlist is a union of two independent signals.** A loan lands on the credit committee's watchlist if *either* its risk grade has slipped into classified territory (RiskRating ≥ 7) *or* one of its covenants is currently in breach. Worked example: *L-0042 (Pine Hardware CRE refi)* satisfies **both** — RiskRating=7 (Substandard) makes `IsClassifiedAsset` TRUE, and its MinDSCR covenant is in Breached status making `HasBreachedCovenant` TRUE — so `OnWatchlist` = TRUE. *L-0051 (Stillwater equipment loan)* is grade 4 with all covenants Active — `OnWatchlist` = FALSE. Cure the DSCR covenant on L-0042 *and* upgrade the grade back below 7, and the same field falls off the watchlist in every substrate at once."
       },
       {
         "name": "HealthScore",
@@ -1372,7 +1386,9 @@
         "type": "calculated",
         "nullable": false,
         "Description": "Higher-order: true when this migration is the moment a loan crossed from non-classified to classified (PriorGrade < 7 and NewGrade >= 7).",
-        "formula": "=AND(COALESCE({{PriorGrade}}, 0) < 7, {{NewGrade}} >= 7)"
+        "formula": "=AND(COALESCE({{PriorGrade}}, 0) < 7, {{NewGrade}} >= 7)",
+        "important": true,
+        "explanation_rich": "**The bitemporal moment of becoming a classified asset.** Regulators don't just care that a loan *is* classified today — they care *when* it crossed, because that's the clock for ALLL reserves, watchlist reporting, and committee escalation. This calc fires TRUE on exactly the one history row where the loan stepped over the line. Worked example: *L-0042 (Pine Hardware)* has three rating rows — 2021-05-20 initial (Prior=null, New=4), 2025-05-02 downgrade (Prior=4, New=6), and **2025-08-15 downgrade (Prior=6, New=7)** — that last row, and only that row, evaluates `CrossedClassifiedThreshold = TRUE`. The 2025-05-02 row is also a downgrade (`IsDowngrade = TRUE`) but stayed inside Pass/Special-Mention so this flag is FALSE there. Because every grade change is captured in `RiskRatingHistory`, the rulebook can be replayed at any historical point and the answer is the same."
       }
     ],
     "data": [
@@ -1813,6 +1829,33 @@
     ]
   },
   "_meta": {
+    "tagline": "A community bank's commercial book — loans, covenants, CDD, and the watchlist.",
+    "motif": "skyline",
+    "motif_palette": {
+      "primary": "#1f3a5f",
+      "accent": "#f0b21f",
+      "ink": "#0d1a2e"
+    },
+    "description_rich": "Effortless Banking models a community bank's commercial relationship-management desk — five small-business borrowers, five bank employees, three funded loans, the covenants attached to them, the CDD beneficial-ownership file, and the activity stream the regulators eventually audit. The interesting thing isn't the data, it's that **every regulated rule lives in the rulebook**: the FinCEN 25%-or-control-person CDD test, the substandard-asset threshold (RiskRating ≥ 7), the watchlist union of *classified OR breached covenant*, the segregation-of-duties check that the originating RM cannot also be the underwriter — all of it is calculated fields wired into a DAG. The same answer Postgres returns to the credit committee is the same answer the Python conformance tests assert. There is no second copy of the rules hiding in application code.",
+    "use_cases": [
+      "**Watch a loan cross the classified-asset line.** Open *L-0042 (Pine Hardware)*'s `RiskRatingHistory`: the 2025-08-15 row carries PriorGrade=6, NewGrade=7, and `CrossedClassifiedThreshold` flips to TRUE — the moment the loan becomes a regulator-reportable classified asset.",
+      "**Confirm CDD on a new prospect.** Hilltop Bakery is a Prospect with no BeneficialOwners attached yet — `MeetsCddRule` is FALSE and `PortfolioPriority` reads 'Medium'. Add owners totalling ≥25% (or a designated control person) and the rule clears the same instant the rulebook recomputes.",
+      "**Enforce segregation of duties.** Try to set L-0051's Underwriter to the same user as its OriginatingRM (Devon Marshall) and `SegregationOfDutiesOk` falls to FALSE. The same flag is exposed identically in Postgres and Python — no app-side guard to forget.",
+      "**Trace a covenant breach into the activity feed.** L-0042's MinDSCR covenant is in Breached status; the matching SystemEvent Interaction on 2025-05-02 lives in the same stream as human-logged calls and visits, so the audit trail and the RM's daily feed are one table, not two.",
+      "**Read the watchlist in two substrates.** Ask *'which loans are on the watchlist?'* of the Postgres view, then of the Python module — both return L-0042 because `OnWatchlist` is the same calculated field on both sides."
+    ],
+    "signature_rows": [
+      { "entity": "Loans", "ids": ["l-0042", "l-0051", "l-0078"] },
+      { "entity": "Businesses", "ids": ["pine-hardware-inc", "stillwater-roasters-llc", "hilltop-bakery-llc"] },
+      { "entity": "RiskRatingHistory", "ids": ["l-0042-2025-08-15-grade-7"] }
+    ],
+    "journal_seed": "Three funded loans, one classified — L-0042 (Pine Hardware) crossed into Substandard in August and its DSCR covenant is in breach. The rest of the book is clean; Hilltop Bakery is one CDD file away from becoming a customer.",
+    "substrates": [
+      { "key": "postgres", "important": true,  "chip_label": "Postgres" },
+      { "key": "python",   "important": true,  "chip_label": "Python" },
+      { "key": "excel",    "important": false, "chip_label": "Excel" },
+      { "key": "owl",      "important": false, "chip_label": "OWL" }
+    ],
     "_CMCC_Summary": "Authored-direct ERB rulebook for a community-bank commercial relationship management platform. No Airtable round-trip; this rulebook is the SSoT at the top of the Leopold loop. Targets Postgres via effortless build.",
     "_conversion_metadata": {
       "source": "authored-from-narrative",

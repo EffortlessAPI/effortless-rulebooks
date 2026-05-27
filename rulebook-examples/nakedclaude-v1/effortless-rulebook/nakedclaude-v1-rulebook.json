@@ -1,7 +1,7 @@
 {
   "$schema": "https://example.com/cmcc-schema/v1",
   "Name": "v1: NakedClaude Demo",
-  "Description": "Rulebook generated from Airtable base \u0027v1: NakedClaude Demo\u0027.",
+  "Description": "Rulebook generated from Airtable base 'v1: NakedClaude Demo'.",
   "Customers": {
     "Description": "Table: Customers",
     "schema": [
@@ -22,14 +22,18 @@
         "datatype": "string",
         "type": "raw",
         "nullable": true,
-        "Description": "The current color assigned to this customer (e.g. red, green, yellow, blue)"
+        "Description": "The current color assigned to this customer (e.g. red, green, yellow, blue)",
+        "important": true,
+        "explanation_rich": "**The one raw input that drives everything else in this rulebook.** `CurrentColor` is just a string — `Red`, `Green`, `Yellow`, `Blue`. The whole v1 demo exists to show that one downstream calculated field reads this one raw field. Edit a customer's color and the approval flag follows in every substrate on the next read."
       },
       {
         "name": "IsApproved",
         "datatype": "boolean",
         "type": "calculated",
         "nullable": true,
-        "formula": "=IF({{CurrentColor}}=\u0022Green\u0022, TRUE(), FALSE())"
+        "formula": "=IF({{CurrentColor}}=\"Green\", TRUE(), FALSE())",
+        "important": true,
+        "explanation_rich": "**The smallest demonstrable claim of the whole methodology.** `IsApproved` is `TRUE` when `CurrentColor` is exactly `Green`, otherwise `FALSE` — a single `IF` over a single raw field. The point is not the rule; the point is *where the rule lives*. It lives in the rulebook, not in application code. Worked example: **Bob** has `CurrentColor = Green`, so `IsApproved = TRUE`. **Alice Johnson** has `CurrentColor = Red`, so `IsApproved = FALSE`. Change Alice's color to `Green` and the Postgres view, the Python module, and the Excel cell all flip her to approved on the next read — no glue code, no migration."
       },
       {
         "name": "Notes",
@@ -74,21 +78,70 @@
         "IsApproved": false,
         "Notes": ""
       }
+    ],
+    "important": true,
+    "summary_rich": "**One table, one rule.** Each customer carries a `CurrentColor` and an `IsApproved` flag that the rulebook derives from it. Flip a customer's color to `Green` and they are approved — in every substrate, the same instant, with no application code.",
+    "important_fields": [
+      "Name",
+      "CurrentColor",
+      "IsApproved"
     ]
   },
   "_meta": {
-    "_CMCC_Summary": "Airtable export with schema-first type mapping: Schemas, Data, Relationships (FK links), Lookups (INDEX/MATCH), Aggregations (SUMIFS/COUNTIFS/Rollups), and Calculated fields (formulas) in Excel dialect. Field types are determined from Airtable\u0027s schema metadata FIRST (no coercion), with intelligent fallback to formula/data analysis only when schema is unavailable.",
+    "tagline": "One table, one rule: turn a customer green and they're approved — in every substrate.",
+    "motif": "default",
+    "motif_palette": {
+      "primary": "#2a2f3a",
+      "accent": "#4ea36b",
+      "ink": "#11141a"
+    },
+    "description_rich": "NakedClaude v1 is the **first rung of a four-rung ladder** and the smallest claim the methodology can make. A single `Customers` table with one raw field (`CurrentColor`) and one calculated field (`IsApproved = IF(CurrentColor=\"Green\", TRUE, FALSE)`). That's it — no relationships, no lookups, no aggregations. The point is that even *this* trivial rule lives in the rulebook, and Postgres, Python, and Excel all compute it identically without anyone writing application code. v2 adds a related `Statuses` table and lookups; v3 and v4 climb further. Start here to see what the floor looks like before the ladder rises.",
+    "use_cases": [
+      "**Approve Alice.** Change `alice-johnson.CurrentColor` from `Red` to `Green` and watch `IsApproved` flip to `TRUE` on the next read of every substrate.",
+      "**Try to break the rule.** Set `caroline.CurrentColor` to `green` (lowercase) — `IsApproved` stays `FALSE`, because the rule is case-sensitive. The rulebook is the only place to change that.",
+      "**Edit the rule, not the code.** Swap `=\"Green\"` for `IN(\"Green\",\"Blue\")` in the formula; rebuild; every substrate now approves blue customers too, with zero application changes.",
+      "**Compare against v2.** Open `nakedclaude-v2` next door — same `Customers` shape, plus a `Statuses` lookup. v1 → v2 is one step up the ladder."
+    ],
+    "signature_rows": [
+      {
+        "entity": "Customers",
+        "ids": [
+          "bob",
+          "alice-johnson",
+          "carla-smith"
+        ]
+      }
+    ],
+    "journal_seed": "Five customers, one of them green. The rule is one line; the demo is the fact that one line is enough.",
+    "substrates": [
+      {
+        "key": "postgres",
+        "important": true,
+        "chip_label": "Postgres"
+      },
+      {
+        "key": "python",
+        "important": true,
+        "chip_label": "Python"
+      },
+      {
+        "key": "excel",
+        "important": false,
+        "chip_label": "Excel"
+      }
+    ],
+    "_CMCC_Summary": "Airtable export with schema-first type mapping: Schemas, Data, Relationships (FK links), Lookups (INDEX/MATCH), Aggregations (SUMIFS/COUNTIFS/Rollups), and Calculated fields (formulas) in Excel dialect. Field types are determined from Airtable's schema metadata FIRST (no coercion), with intelligent fallback to formula/data analysis only when schema is unavailable.",
     "_conversion_metadata": {
       "source_base_id": "appgjoEcFNxluhbvK",
       "table_count": 1,
       "tool_version": "2.0.0",
-      "field_type_mapping": "checkbox\u2192boolean, number\u2192number/integer, multipleRecordLinks\u2192relationship, multipleLookupValues\u2192lookup, rollup\u2192aggregation, count\u2192aggregation, formula\u2192calculated",
+      "field_type_mapping": "checkbox→boolean, number→number/integer, multipleRecordLinks→relationship, multipleLookupValues→lookup, rollup→aggregation, count→aggregation, formula→calculated",
       "export_mode": "schema_first_type_mapping",
       "type_inference": {
         "enabled": true,
-        "priority": "airtable_metadata (NO COERCION) \u2192 formula_analysis \u2192 reference_resolution \u2192 data_analysis (fallback only)",
-        "airtable_type_mapping": "checkbox\u2192boolean, singleLineText\u2192string, multilineText\u2192string, number\u2192number/integer, datetime\u2192datetime, singleSelect\u2192string, email\u2192string, url\u2192string, phoneNumber\u2192string",
-        "data_coercion_hierarchy": "Only used as fallback when Airtable schema unavailable: datetime \u2192 number \u2192 integer \u2192 boolean \u2192 base64 \u2192 json \u2192 string",
+        "priority": "airtable_metadata (NO COERCION) → formula_analysis → reference_resolution → data_analysis (fallback only)",
+        "airtable_type_mapping": "checkbox→boolean, singleLineText→string, multilineText→string, number→number/integer, datetime→datetime, singleSelect→string, email→string, url→string, phoneNumber→string",
+        "data_coercion_hierarchy": "Only used as fallback when Airtable schema unavailable: datetime → number → integer → boolean → base64 → json → string",
         "nullable_support": true,
         "error_value_handling": "#NUM!, #ERROR!, #N/A, #REF!, #DIV/0!, #VALUE!, #NAME? are treated as NULL"
       }

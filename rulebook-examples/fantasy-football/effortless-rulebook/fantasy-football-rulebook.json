@@ -45,6 +45,9 @@
   },
   "Players": {
     "Description": "Table: Players",
+    "important": true,
+    "summary_rich": "The **raw stat sheet**. Every player has a position (QB, RB, WR, TE) and a season line — passing yards, rushing yards, receptions, touchdowns, picks. `ProjectedScore` turns those numbers into fantasy points using the league's scoring formula: 1 point per 25 passing yards, 6 per TD, minus 2 per interception. Edit any stat and the whole DAG — roster totals, matchup margins, standings — re-evaluates downstream.",
+    "important_fields": ["Name", "Position", "TotalTouchdowns", "Interceptions", "ProjectedScore"],
     "schema": [
       {
         "name": "PlayerId",
@@ -130,7 +133,9 @@
         "type": "calculated",
         "nullable": false,
         "Description": "Sum of all TDs",
-        "formula": "={{PassingTouchdowns}} + {{RushingTouchdowns}} + {{ReceivedTouchdowns}}"
+        "formula": "={{PassingTouchdowns}} + {{RushingTouchdowns}} + {{ReceivedTouchdowns}}",
+        "important": true,
+        "explanation_rich": "**Six points per touchdown, no matter how you got there.** A passing TD, a rushing TD, and a receiving TD all count the same in standard scoring — so the rulebook collapses them into one number before the scoring formula runs. Worked example: *Christian McCaffrey* has 15 rushing TDs + 3 receiving TDs + 0 passing TDs, so `TotalTouchdowns = 18`. That single number then drives his `ProjectedScore` and rolls up into his roster's total."
       },
       {
         "name": "ProjectedScore",
@@ -138,7 +143,9 @@
         "type": "calculated",
         "nullable": false,
         "Description": "Calculated fantasy points",
-        "formula": "=ROUND(({{PassingYards}} / 25) + ({{TotalTouchdowns}} * 6) - ({{Interceptions}} * 2), 2)"
+        "formula": "=ROUND(({{PassingYards}} / 25) + ({{TotalTouchdowns}} * 6) - ({{Interceptions}} * 2), 2)",
+        "important": true,
+        "explanation_rich": "**The league's scoring rule, encoded once.** Fantasy points = passing-yards/25 + total-TDs*6 - interceptions*2, rounded. Change the constants and every player, every roster, every matchup, and every standing recomputes — no application code touched. Worked example: *Patrick Mahomes* has 5500 passing yards, 51 total TDs (48 pass + 3 rush), 8 INTs → `(5500/25) + (51*6) - (8*2) = 220 + 306 - 16 = 510.00`. *Bryce Young* with 2200 yards, 15 TDs, 15 INTs → `88 + 90 - 30 = 148.00`. Same formula, opposite tier."
       }
     ],
     "data": [
@@ -362,6 +369,9 @@
   },
   "Rosters": {
     "Description": "Table: Rosters",
+    "important": true,
+    "summary_rich": "The **teams**. Each roster belongs to an owner and accumulates its players' stats through `RosterAssignments`. A roster's `ProjectedScore` is a **second-order calc** — it sums the assigned players' raw yardage and TDs, then applies the scoring formula again at the team level. Add or drop a player and the roster total moves in real time.",
+    "important_fields": ["Name", "Owner", "TotalTouchdowns", "ProjectedScore"],
     "schema": [
       {
         "name": "RosterId",
@@ -431,7 +441,9 @@
         "type": "calculated",
         "nullable": false,
         "Description": "Total roster fantasy points (2nd-order calc)",
-        "formula": "=ROUND(({{TotalPassingYards}} / 25) + ({{TotalRushingYards}} / 10) + ({{TotalReceivingYards}} / 10) + ({{TotalTouchdowns}} * 6) - ({{TotalInterceptions}} * 2), 2)"
+        "formula": "=ROUND(({{TotalPassingYards}} / 25) + ({{TotalRushingYards}} / 10) + ({{TotalReceivingYards}} / 10) + ({{TotalTouchdowns}} * 6) - ({{TotalInterceptions}} * 2), 2)",
+        "important": true,
+        "explanation_rich": "**The team-level scoring formula — note the rushing and receiving lines.** Rosters use a slightly different weighting than individual players: 1 point per 25 passing yards, 1 per 10 rushing yards, 1 per 10 receiving yards (PPR-style), 6 per TD, -2 per pick. The same formula runs over the *summed* per-roster totals — that's why it's called a second-order calc: every input is itself an aggregation. Worked example: *Mahomes Mob* (Mahomes + McCaffrey + Kelce) rolls up to 5500 pass yds + 2010 rush yds + 1850 recv yds + 81 TDs + 8 INTs → `(5500/25) + (2010/10) + (1850/10) + (81*6) - (8*2) = 220 + 201 + 185 + 486 - 16 = 1076.00`. Trade Kelce for a backup TE and the number drops the same instant."
       }
     ],
     "data": [
@@ -687,6 +699,9 @@
   },
   "Matchups": {
     "Description": "Table: Matchups",
+    "important": true,
+    "summary_rich": "The **weekly head-to-heads**. Each matchup pairs two rosters in a given week; the rulebook looks up each side's `ProjectedScore`, subtracts to get the margin, and declares a winner — all through calculated fields, no \"update score\" button anywhere. Reshuffle a roster mid-week and the matchup result flips automatically.",
+    "important_fields": ["Name", "Week", "Team1Score", "Team2Score", "Margin", "Winner"],
     "schema": [
       {
         "name": "MatchupId",
@@ -756,7 +771,9 @@
         "type": "calculated",
         "nullable": false,
         "Description": "Winning roster ID",
-        "formula": "=IF({{Margin}} > 0, {{Team1}}, {{Team2}})"
+        "formula": "=IF({{Margin}} > 0, {{Team1}}, {{Team2}})",
+        "important": true,
+        "explanation_rich": "**The winner is whoever has the higher roster score — that's it, the whole rule.** `Margin = Team1Score - Team2Score`; if it's positive, `Team1` wins, otherwise `Team2`. Both scores are themselves lookups into `Rosters.ProjectedScore`, which is itself an aggregation over each team's players' stats. Worked example: *week1-mob-hustlers* — Mahomes Mob (1076.00) vs Hurts Hustlers; margin > 0, so `Winner = mahomes-mob`. Swap a single player on either roster and the winner can flip without anyone editing a matchup row by hand. (Ties — margin = 0 — are flagged separately by `IsTieGame`; the Winner field still defaults to Team2 in that case, which the league treats as a no-decision.)"
       },
       {
         "name": "Loser",
@@ -1046,6 +1063,34 @@
     ]
   },
   "_meta": {
+    "tagline": "Stat lines in, standings out \u2014 the league's scoring rules are the DAG.",
+    "motif": "default",
+    "motif_palette": {
+      "primary": "#1a472a",
+      "accent": "#f0b21f",
+      "ink": "#0a1a10"
+    },
+    "description_rich": "Fantasy Football is a four-hop DAG: raw weekly stat lines for 18 NFL players feed into rosters through a `RosterAssignments` join table, the rosters aggregate yardage and touchdowns and re-apply the league's scoring formula at the team level, matchups look up each side's roster score to declare a winner, and the standings rank everyone for playoff seeding. The interesting thing isn't the data \u2014 it's that *every scoring rule lives in the rulebook*. Change `1 point per 25 passing yards` to `1 per 20`, rebuild, and every player, every roster, every matchup result, and every playoff seed re-derives identically in Postgres, Python, Excel, and OWL.",
+    "use_cases": [
+      "**Re-tune the scoring formula.** Edit `Players.ProjectedScore` from `PassingYards/25` to `PassingYards/20` (a more generous QB rule) \u2014 every player, every roster total, every matchup margin, and every standing recomputes from a single change.",
+      "**Run a what-if trade.** Move *Travis Kelce* from `mahomes-mob` to `hurts-limit` by editing a `RosterAssignments` row \u2014 Mahomes Mob's `ProjectedScore` drops by Kelce's contribution, Hurts Limit's jumps, and any matchup either roster plays this week flips its `Winner` if the margin crosses zero.",
+      "**Switch to PPR (point-per-reception) scoring.** Add `+ {{Receptions}}` to the per-player scoring formula and watch high-volume WRs (Hill, Adams, Diggs) leapfrog their roster's QB in fantasy value without touching any other field.",
+      "**Ask the same question in four substrates.** *\"Which roster is on track to win Week 1 by the largest margin?\"* \u2014 run it as a SQL `ORDER BY ABS(margin) DESC LIMIT 1` against the Postgres view, as a Python list-comprehension over the Matchups module, or as an Excel sort \u2014 same answer, no glue code.",
+      "**Add a 7th roster mid-season.** Insert one row in `Rosters` and three in `RosterAssignments`; the new team's `ProjectedScore` is computed from the rulebook the instant the rows land \u2014 no \"recompute standings\" job to run."
+    ],
+    "signature_rows": [
+      { "entity": "Rosters", "ids": ["mahomes-mob", "hurts-hustlers", "davantes-dynasty", "allens-arsenal", "defense-wins", "hurts-limit"] },
+      { "entity": "Players", "ids": ["patrick-mahomes", "christian-mccaffrey", "travis-kelce", "saquon-barkley", "bryce-young"] },
+      { "entity": "Matchups", "ids": ["week1-mob-hustlers", "week1-arsenal-dynasty", "week1-limit-wins"] }
+    ],
+    "journal_seed": "Six rosters, six weeks of matchups, one scoring formula. Mahomes Mob is 6-0 and projected for 1076 a week; Hurts Limit is 0-6 because Bryce Young throws as many picks as touchdowns. Trade a single TE and the standings move.",
+    "substrates": [
+      { "key": "postgres", "important": true,  "chip_label": "Postgres" },
+      { "key": "python",   "important": true,  "chip_label": "Python" },
+      { "key": "excel",    "important": false, "chip_label": "Excel" },
+      { "key": "owl",      "important": false, "chip_label": "OWL" },
+      { "key": "golang",   "important": false, "chip_label": "Go" }
+    ],
     "_CMCC_Summary": "Fantasy Football demo \u2014 rulebook-first, no Airtable. 6 entities, 4-hop DAG: raw player stats \u2192 roster aggregations \u2192 matchup scoring \u2192 standings/seeding.",
     "_conversion_metadata": {
       "source_type": "rulebook-first",

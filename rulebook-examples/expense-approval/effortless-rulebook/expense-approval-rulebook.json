@@ -4,6 +4,9 @@
   "Description": "Employees submit line-item reports; totals, over-budget, and escalation flags cascade automatically.",
   "Employees": {
     "Description": "Table: Employees \u2014 people who submit expense reports or review them.",
+    "important": true,
+    "summary_rich": "The **cast** of the approval workflow. Each employee plays one of three roles \u2014 *employee* (submitter, has a `BudgetLimit`), *manager* (reviews escalated reports), or *finance* (final sign-off). The per-submitter `BudgetLimit` is the threshold every report's total is measured against; raise Dave from $200 to $400 and his pending Team Lunch stops tripping the over-budget gate immediately.",
+    "important_fields": ["Name", "Role", "BudgetLimit", "EmailAddress"],
     "schema": [
       {
         "name": "EmployeeId",
@@ -50,7 +53,9 @@
         "datatype": "number",
         "type": "raw",
         "nullable": true,
-        "Description": "Per-report ceiling above which reports are flagged over-budget. Applies to submitters; reviewers (manager/finance) can be left null."
+        "Description": "Per-report ceiling above which reports are flagged over-budget. Applies to submitters; reviewers (manager/finance) can be left null.",
+        "important": true,
+        "explanation_rich": "**The dollar threshold that turns a routine report into an escalation.** Each submitter carries a per-report ceiling on their employee row — Alice can spend up to $500 per report, Dave up to $200. Managers and Finance carry `null` because they review, they don't submit. Worked example: Alice's *NYC Client Visit* totals $695 against her $500 limit, so `IsOverBudget` flips `TRUE` and the report lands in the manager's escalation queue. Raise her limit to $700 and the same report clears on the next read — no code change, no migration, just the DAG recomputing."
       }
     ],
     "data": [
@@ -94,6 +99,9 @@
   },
   "ExpenseReports": {
     "Description": "Table: ExpenseReports \u2014 one submission, containing many line items.",
+    "important": true,
+    "summary_rich": "The **forms filed in triplicate**. Each report belongs to one submitter and rolls up many line items. Three calculated fields wire the approval gates in a single cascade: `TotalAmount` sums the line items, `IsOverBudget` compares that total to the submitter's `BudgetLimit`, and `RequiresEscalation` flags any over-budget report that's still `pending`. Add one $50 line item to Dave's pending Team Lunch and watch the cascade re-fire \u2014 total goes from $87 to $137, still under his $200 cap, no escalation. Add a $200 line item instead and the same report jumps into the manager's escalation queue on the next read.",
+    "important_fields": ["Name", "EmployeeName", "TotalAmount", "EmployeeBudgetLimit", "ApprovalStatus", "RequiresEscalation"],
     "schema": [
       {
         "name": "ExpenseReportId",
@@ -153,7 +161,9 @@
         "type": "calculated",
         "nullable": true,
         "Description": "True when TotalAmount exceeds the employee's BudgetLimit.",
-        "formula": "=IF(AND({{EmployeeBudgetLimit}}>0, {{TotalAmount}}>{{EmployeeBudgetLimit}}), TRUE, FALSE)"
+        "formula": "=IF(AND({{EmployeeBudgetLimit}}>0, {{TotalAmount}}>{{EmployeeBudgetLimit}}), TRUE, FALSE)",
+        "important": true,
+        "explanation_rich": "**The first gate.** Compares the report's rolled-up `TotalAmount` against the submitter's looked-up `BudgetLimit` — both fields are themselves derived (one aggregated via `SUMIFS`, one looked up via `INDEX/MATCH`), so this is a *third-order* calculation built on top of two prior tiers. The `AND(EmployeeBudgetLimit>0, …)` guard is deliberate: reviewers with `null` limits don't trip the gate when they file a personal expense. Worked example: Alice's *NYC Client Visit* — line items $425 + $185 + $85 = $695 against her $500 ceiling → `TRUE`. Edit the hotel from $185 down to $40 and the total drops to $550, still over → still `TRUE`. Drop it to $30 and the total drops to $540, still over. Only when the total dips below $500 does this field flip — and every substrate flips with it on the next read."
       },
       {
         "name": "IsApproved",
@@ -169,7 +179,9 @@
         "type": "calculated",
         "nullable": true,
         "Description": "Over-budget AND not yet approved \u2014 manager's escalation queue.",
-        "formula": "=IF(AND({{IsOverBudget}}=TRUE, {{IsApproved}}=FALSE), TRUE, FALSE)"
+        "formula": "=IF(AND({{IsOverBudget}}=TRUE, {{IsApproved}}=FALSE), TRUE, FALSE)",
+        "important": true,
+        "explanation_rich": "**The second gate, and the one a manager actually sees on their morning queue.** A report enters the escalation queue only when *both* are true: it's over its submitter's budget (`IsOverBudget=TRUE`) **and** it isn't yet approved (`IsApproved=FALSE`). The conjunction matters \u2014 an over-budget report that finance has already approved doesn't keep nagging; a pending report under-budget doesn't, either. Worked example: Alice's *NYC Client Visit* is $695 over a $500 limit and `pending`, so this is `TRUE` and it shows up in Bob's escalation queue. Set its `ApprovalStatus` to `approved` and the gate flips `FALSE` on the next read \u2014 same rulebook, same DAG, no application code touched."
       }
     ],
     "data": [
@@ -288,6 +300,34 @@
         "ExpenseReport": "dave-team-lunch",
         "Amount": 20
       }
+    ]
+  },
+  "_meta": {
+    "tagline": "Reports filed in triplicate — totals roll up, budgets gate, managers escalate.",
+    "motif": "legal-pad",
+    "motif_palette": {
+      "primary": "#a8941f",
+      "accent": "#4a6741",
+      "ink": "#1f1c0a"
+    },
+    "description_rich": "Expense Approval is the classic **threshold-and-escalation** demo: a stack of submitted reports, each with a stack of line items, each measured against the submitter's personal per-report ceiling. The interesting thing isn't the data, it's the **third-order cascade**: raw line-item amounts → `TotalAmount` (aggregation) → `IsOverBudget` (calculated, gated on the looked-up `EmployeeBudgetLimit`) → `RequiresEscalation` (calculated, gated on approval status). Edit one $42 line item and the cascade re-fires top to bottom in every substrate — Postgres view, Python module, OWL ontology — without a single line of application code mediating between them.",
+    "use_cases": [
+      "**Escalate an over-budget report.** Open *NYC Client Visit*, see Alice's $695 total tripping her $500 limit, watch `IsOverBudget` and `RequiresEscalation` both fire while `ApprovalStatus` is still `pending`.",
+      "**Approve out of the escalation queue.** Set *NYC Client Visit*'s `ApprovalStatus` to `approved`. `IsApproved` flips, the `AND` in `RequiresEscalation` collapses, and the report leaves the manager's queue on the next read.",
+      "**Raise a submitter's budget.** Change Dave's `BudgetLimit` from $200 to $500. Every report Dave has filed re-evaluates the over-budget gate — no migration, no app deploy, the rulebook recomputes the lookups.",
+      "**Add a line item to a pending report.** Append a $200 expense to *Team Lunch* ($87 → $287); the aggregation re-fires, Dave's $200 ceiling is now exceeded, and a previously-quiet report enters the escalation queue.",
+      "**Ask the same threshold question in two substrates.** *\"How many reports need escalation right now?\"* runs as a Postgres view, a Python comprehension, an OWL axiom — same number, every time."
+    ],
+    "signature_rows": [
+      { "entity": "ExpenseReports", "ids": ["alice-nyc-client-visit", "alice-office-supplies", "dave-team-lunch"] },
+      { "entity": "Employees", "ids": ["alice-employee", "bob-manager", "carol-finance"] }
+    ],
+    "journal_seed": "Three reports on the desk: one approved, one quiet, one escalating. Alice has overspent on NYC by $195; Bob's queue has exactly one form in it.",
+    "substrates": [
+      { "key": "postgres", "important": true, "chip_label": "Postgres" },
+      { "key": "python",   "important": true, "chip_label": "Python" },
+      { "key": "excel",    "important": false, "chip_label": "Excel" },
+      { "key": "owl",      "important": false, "chip_label": "OWL" }
     ]
   }
 }

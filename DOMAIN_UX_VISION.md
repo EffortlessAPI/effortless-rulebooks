@@ -1,38 +1,50 @@
 # Domain UX Vision — what's left
 
-> Living plan for the Effortless admin portal's domain picker and per-domain
-> landing experience. The original v1 spec has been partially shipped; this
-> document is now the **remainder**. Everything below is open work.
+> Living plan for the Effortless admin portal. The reception desk, picker,
+> rich-text editor, command palette, time-travel scrubber, tour mode, three
+> responsive breakpoints, per-user state, and rules-glow shipped in earlier
+> sessions. This document is the **remainder** — open work only.
+>
+> **Core behavior first. UI polish last.**
 
 ---
 
 ## What already shipped (do not re-plan)
 
-The pruning principle, the rulebook `_meta` extensions, the picker trailer,
-the reception desk (description, telemetry, use cases, journal seed), the
-cast + projects-in-flight scrollers filtered by `important: true`, the
-rules-that-matter panel with click-to-expand `explanation_rich` + worked
-example, six motif palettes (`skyline`, `lcars`, `corkboard`, `legal-pad`,
-`atlas`, `default`), and one mobile breakpoint at 768px. The reception desk
-replaced the 12-tile critique page.
+**Picker** — gallery of motif-banded trailers reading `_meta.tagline`,
+`motif`, `motif_palette`, `signature_rows`; three picker chips above the
+gallery (*Last visited* / *New since you were here* / *Bootstrap a new
+one*).
 
-Reference implementations live at
-[DomainTile.jsx](effortless-platform/admin-portal/client/src/components/DomainTile.jsx),
-[DeveloperHomeScreen.jsx](effortless-platform/admin-portal/client/src/screens/developer/DeveloperHomeScreen.jsx),
-[DeveloperDomainScreen.jsx](effortless-platform/admin-portal/client/src/screens/developer/DeveloperDomainScreen.jsx),
-[RichText.jsx](effortless-platform/admin-portal/client/src/components/RichText.jsx),
-and the styles section in
-[index.css](effortless-platform/admin-portal/client/src/index.css) labeled
-*Domain UX*.
+**Reception desk** — motif hero band with logo, slug, name, tagline,
+substrate witness chips, and the "Take the tour" button. Below: the
+`description_rich` paragraph, telemetry strip, `journal_seed` blockquote,
+use-cases panel on the right. Horizontal scrollers per `important: true`
+entity (only `important_fields` shown). Rules-that-matter panel with
+click-to-expand `explanation_rich` + formula + worked example.
 
-Only one rulebook —
-[acme-corporation-rulebook.json](rulebook-examples/acme-corporation/effortless-rulebook/acme-corporation-rulebook.json) —
-has `_meta` authored. Every other domain falls back to `motif: "default"`
-and its `RulebookFlavors` tagline.
+**Cross-cutting** — Cmd-K command palette; inline rich-text editor
+(pencil-toggle, `PATCH /api/rulebook/text` with strict path allow-list);
+time-travel scrubber driven by `git log` of the rulebook JSON, sticky
+amber `Viewing state as of …` banner, pencils disabled in past mode;
+rules-panel rows pulse green for 60s after the rulebook's most recent
+commit; 90-second tour mode walking important items in page order;
+three responsive breakpoints (≤640 phone / 641–1024 tablet / ≥1025
+desktop). Per-user / per-domain state persists in
+`portal_user_domain_state`.
+
+`_meta` is authored for **8 of 28 demo rulebooks** today:
+`acme-corporation`, `acme-llc`, `star-trek`, `jessica-basic`,
+`jessica-advanced`, `is-everything-a-language`,
+`effortless-rulesbooks`. The other 20 fall back to `motif: "default"` —
+that's the active in-flight work right now (a parallel-subagent wave is
+running this session). `customer-fullname` is blocked separately — it's
+`{}` at HEAD and needs a restore-or-retire decision before it can be
+authored.
 
 ---
 
-## 1. What ACME Corporation actually is (reference, do not edit)
+## 1. Reference: ACME Corporation data
 
 Source: [rulebook-examples/acme-corporation/effortless-rulebook/acme-corporation-rulebook.json](rulebook-examples/acme-corporation/effortless-rulebook/acme-corporation-rulebook.json)
 
@@ -41,164 +53,269 @@ Source: [rulebook-examples/acme-corporation/effortless-rulebook/acme-corporation
 - Business story: a small professional-services shop. Some project types
   (Compliance, ClientFacing) require manager sign-off; only employees in
   manager roles can approve. The DAG wires that workflow.
-- `_meta` is fully authored — this is the **reference rulebook** for what
-  the experience should look like when curation is complete. Use it as a
-  template when authoring `_meta` for the others.
+- `_meta` fully authored — this is the **reference rulebook**. Match
+  this shape when authoring `_meta` for other demos.
 
 ---
 
-## 2. Open work — in priority order
+## 2. Top priority — rewrite Effortless Tools as a folder/tool tree
 
-Each item below is its own deliverable. Ship in order; each unlocks the
-next without backtracking.
+The current Effortless Tools page does **three things badly**:
 
-### 2.1 Propagate `_meta` to the other demo rulebooks
+1. **The "Build all" button is one opaque switch.** No live progress, no
+   per-tool status, no way to see what's running or what's stuck.
+2. **The "installed substrates" list is the same ~10 entries regardless
+   of the project.** It does not reflect what's actually in `effortless.json` —
+   ACME LLC has all 10 installed and looks the same as a project with
+   two installed. The page is lying about installation state.
+3. **The tool detail panel summary is generic and unhelpful**, and the
+   floating "Available to add" cards at the bottom have no clear
+   relationship to anything above them.
 
-The §8 test (no two domains feel the same) is currently satisfied only for
-ACME vs. everything else. The other demos still render `motif-default` and
-generic flavor taglines. Author `_meta.tagline`, `motif`, `motif_palette`,
-`description_rich`, `use_cases`, `signature_rows`, `journal_seed`,
-per-entity `important` / `summary_rich` / `important_fields`, and per-rule
-`important` / `explanation_rich` for:
+**This page should be a projection of the on-disk project, not a
+floating dashboard.**
 
-- `acme-llc` (motif: `legal-pad`)
-- `star-trek` (motif: `lcars`)
-- `jessica-basic` and `jessica-advanced` (motif: `corkboard`)
-- `is-everything-a-language` (motif: `atlas`)
-- `customer-fullname`, `effortless-rulesbooks`, `acme-corporation` already
-  has `_meta`
+### 2.1 Left rail — folder/tool tree
 
-This is **content work**, not code work. The renderer is finished.
+The left rail mirrors the project's actual folder structure under the
+active domain root (`rulebook-examples/<domain>/`, or
+`effortless-platform/` for the project rulebook). Folders that contain
+Effortless tools list those tools as inline children. Folders that
+don't still appear in the tree but have no children.
 
-### 2.2 Substrate witness chips in the hero
+```
+acme-llc/
+├ effortless-rulebook/
+│  └ • airtable-to-rulebook         (input spoke)
+├ execution-substrates/
+│  ├ • rulebook-to-postgres
+│  ├ • rulebook-to-python
+│  ├ • rulebook-to-excel
+│  ├ • rulebook-to-owl
+│  ├ • rulebook-to-golang
+│  ├ • rulebook-to-csv
+│  ├ • rulebook-to-uml
+│  ├ • rulebook-to-cobol
+│  ├ • rulebook-to-binary
+│  └ +                              (add another tool here)
+├ english/
+│  └ • rulebook-to-english
+├ testing/
+│  └ • rulebook-to-test-suite
+└ +                                 (add a tool at the project root)
+```
 
-Today `_meta.substrates[]` is read by no one. Add a chip row to the
-reception hero showing only substrates flagged `important: true` from
-`_meta.substrates[]`. Each chip:
+The tools listed inline come from **the `effortless.json` files**
+discovered at each level of the tree — `effortless.json` is a hierarchy,
+based on which folder it lives in. ACME LLC has 10 substrates because
+ACME LLC's `effortless.json` (and its subfolders') list 10 tools. A
+project with two tools shows two. Never default to a hard-coded ~10.
 
-- Renders green when the substrate's most recent build succeeded.
-- Opens a panel asking the same question (e.g. *"how many projects are
-  awaiting approval?"*) and showing the same answer rendered in that
-  substrate's dialect (SQL, Python expression, OWL axiom, Excel formula).
-- During a rebuild, briefly turns amber, then relights green.
+### 2.2 `+` to add a tool
 
-Hide the chip row entirely if no substrate is flagged `important`.
-Overflow `…` chip opens the full substrates panel for domains with many.
+Every folder ends with a `+` row. Clicking opens the catalog currently
+floating at the bottom of the page (repurposed) — the filtered list of
+*tools available to this folder* that aren't yet installed. Choose one,
+it gets written into the folder's `effortless.json`, and the tool appears
+under that folder in the tree.
 
-### 2.3 Rich-text editor in the portal for `*_rich` fields
+### 2.3 Tool detail (main panel)
 
-Today `*_rich` fields are read-only — anyone wanting to edit them has to
-modify the rulebook JSON by hand. Add a lightweight inline editor (bold,
-italic, lists, inline code, links — no images, no tables, no nesting) that
-writes back to the rulebook JSON in place. No drafts. Git is the undo
-history.
+Clicking a tool node shows:
 
-Apply uniformly to: `_meta.description_rich`, each item in
-`_meta.use_cases`, each entity's `summary_rich`, each rule's
-`explanation_rich`.
+- **Tool metadata** — name, description, source URL (`ssotme://…` or
+  `http://localhost:4242/…`), version, what dialect it emits.
+- **Inputs** — the input files it reads, with paths resolved relative
+  to the project (typically the rulebook JSON; sometimes testing
+  fixtures or templates).
+- **Outputs** — the output files it writes, with the actual generated
+  paths.
+- **Parameters** — exactly the flag set declared in `effortless.json`
+  for this entry (`-i`, `-o`, additional `-p` args).
+- **▶ Run** — runs this one tool. Live stdout streams below the panel
+  while it runs; exit code + duration shown when it finishes.
 
-### 2.4 Picker overhead chips
+This replaces the current "shitty summary" with the only summary that
+matters: *what does this tool read, what does it write, what flags
+control it, and what happens when I run it right now.*
 
-Above the gallery on the picker:
+### 2.4 Folder-level Run, root-level Run
 
-- **Last visited** — the domain the current user was in most recently.
-- **New since you were here** — any rulebook whose JSON changed since the
-  user's `last_seen_rulebook_revision`, or whose tests went red.
-- **Bootstrap a new one** — expands inline into the existing Shadle-steps
-  flow (not a separate page).
+Clicking a **folder** (not a tool) shows a folder detail panel with a
+single **▶ Run all** button. It runs every tool under that folder in
+order, with the same live tail.
 
-Requires server-side `user_domain_state` table (see §2.6) for the first
-two; the third just toggles an inline panel.
+Clicking the **project root** shows a project detail panel with **▶ Run
+all** that runs everything under the project. This replaces the current
+global "Build all" button.
 
-### 2.5 Cmd-K command palette
+### 2.5 Backend work
 
-Persistent input at the top of the portal. Type *"sarah"* and Sarah Chen
-surfaces with every row that names her. Type *"due this week"* and
-matches return as a grouped list. Type *"requires approval"* and the rule
-itself is the top result. Featured (`important: true`) entities and rules
-sort to the top.
+- `GET /api/effortless-tools/tree` — walks the active project's folder
+  structure, parses each `effortless.json` it encounters, returns
+  `{ folders: [{ path, tools: [...] }, ...] }`. Each tool entry has
+  `name`, `installUrl`, `inputs`, `outputs`, `params`, plus a stable
+  `id` for routing.
+- `GET /api/effortless-tools/catalog?folder=<path>` — the "available to
+  add" list filtered to tools sensible for that folder.
+- `POST /api/effortless-tools/install` — writes a new entry into the
+  appropriate `effortless.json`; refreshes the tree.
+- `POST /api/effortless-tools/run` — body
+  `{ scope: "tool"|"folder"|"root", id: ... }` → spawns the process
+  scoped to that subset, returns a `runId`.
+- `GET /api/effortless-tools/run/:runId` — Server-Sent-Events stdout
+  stream so the UI can tail the build live without polling.
 
-Implementation: client-side index of the active rulebook's data and
-schema, refreshed on rulebook reload. No new server endpoints needed for
-v1.
+### 2.6 No more separate "Orchestration" tab
 
-### 2.6 State preservation (per-user, per-domain route memory)
-
-Storage:
-- `erb_admin_portal` gets a `user_domain_state` table:
-  `(user_id, domain, last_route, last_visited_at, last_seen_rulebook_revision)`.
-- Diff for the "Welcome back" journal entry is computed server-side by
-  comparing `last_seen_rulebook_revision` to the current rulebook JSON.
-- Browser local storage may be used only as a first-paint optimization.
-
-UX:
-- Switching domains restores the user to the exact route they last had
-  open inside that domain.
-- The reception desk's journal area shows a real diff entry when one
-  exists; falls back to `journal_seed` only on first visit.
-
-### 2.7 Time-travel scrubber (read-only)
-
-A timeline ribbon at the bottom of the domain interior. Drag left and
-the page rewinds to that historical state; cast strip reshuffles, project
-approval states revert, substrate witness chips re-light against the
-historical query.
-
-Demarcation:
-- Sticky banner across the top: `⏰ Viewing state as of <date> — Return to now →`
-- Page background tints faintly amber.
-- Every editable affordance is disabled.
-- "Return to now" button is large and persistent.
-
-Editing in the past is explicitly out of scope for v1.
-
-### 2.8 Tour mode
-
-A "Take the tour" button on the reception hero. 90-second auto-narration:
-use cases → important cast → important projects → most-important rule
-firing → substrate chips agreeing → timeline showing the same answer six
-months ago. No interestingness heuristic — walk the `important: true`
-items in page order, reading each one's `*_rich` field.
-
-Same affordance, two audiences: demo button + new-developer onboarding.
-
-### 2.9 Three-breakpoint responsive layout
-
-Only one breakpoint exists today (`@media (max-width: 768px)`). Full v1
-wants three:
-
-- **Phone** (≤ 640px): single vertical stack of horizontal scrollers.
-  Cmd-K hides behind a 🔍 button.
-- **Tablet portrait** (641–1024px): hybrid two-column under the hero —
-  left column Cast + Projects, right column Use cases + Rules. Substrate
-  chips and timeline span full width.
-- **Desktop** (≥ 1025px): the magazine grid we already have.
-
-### 2.10 Rules glow + last-fired metadata
-
-The rules-that-matter panel renders today, but each row is static. The
-vision asks for a "receipt printer" — a faint glow trails on rules that
-fired in the last 60 seconds; each row shows when it last fired and what
-it touched. *"When Mike was promoted, the approval rule fired across 3
-projects. 1 changed state."*
-
-Requires either rulebook-level bitemporal change history (the
-`last_seen_rulebook_revision` infrastructure from §2.6 can power this) or
-an event stream the portal subscribes to.
+This design subsumes the previously planned dedicated Orchestration
+tab. Tools have per-tool Run buttons, folders have Run-all buttons, the
+project root has Run-everything, and every run streams its output
+live. There's no orchestration concept left orphaned without a home.
 
 ---
 
-## 3. The test (unchanged from the original)
+## 3. Other open priorities
+
+Listed core-behavior-first. UI polish is at the bottom (§3.6 onward).
+
+### 3.1 Unified data explorer
+
+The portal has **three different surfaces for editing rulebook data**:
+`/developer/:domain/data` (Sample Data grid), `/developer/:domain/entities`
+(schema *and* data view), and `/developer/:domain/explorer` (SQL +
+data). They are confusingly similar and the reception-desk row clicks
+all route to `/data` instead of to the row the user clicked.
+
+Target: a single URL-routed data explorer at `/developer/:domain/explorer`
+that subsumes all three:
+
+- `/explorer` — entity picker (left panel), SQL prompt, ad-hoc results.
+- `/explorer/:entity` — table grid for that entity, inline-editable,
+  schema sidebar visible.
+- `/explorer/:entity/:rowId` — single-row detail with editable fields
+  and a "related rows" sidebar (rows that FK-reference this one or that
+  this one references via lookups).
+
+Reception-desk scrollers and Cmd-K row matches route to the specific
+row, not a table picker. `/data` and `/entities` redirect to the
+equivalent explorer URL. AppNavigation in the project rulebook
+surfaces a single **Data Explorer** entry.
+
+### 3.2 Fix the `last_seen_rulebook_revision` auto-clear bug
+
+Today every domain visit stamps `last_seen_rulebook_revision` to the
+current revision immediately. So the moment a user opens a domain whose
+rulebook changed, the "New since you were here" picker chip clears
+before they've read why they were notified.
+
+Fix: split the visit-stamp from the seen-stamp. Visiting writes only
+`last_route` + `last_visited_at`. The revision is stamped when:
+- The user clicks "Mark as seen" on the welcome-back diff, OR
+- They dismiss the welcome-back banner, OR
+- ~30 seconds elapse on the page suggesting they've had time to read.
+
+This is a correctness bug, not a feature.
+
+### 3.3 Substrate witness panel — inline, not navigate-away
+
+The hero substrate chips currently navigate to Effortless Tools. The
+vision wants them to **expand inline** into a panel showing the *same
+question* answered in each substrate's dialect — *"how many projects
+are awaiting approval?"* as a SQL query, a Python expression, an OWL
+axiom, all returning the same number. This is where the
+"substrate-independent" claim becomes *felt*.
+
+v1: hand-authored `witness_sample` per substrate in
+`_meta.substrates[i]`. v2: live-execute against each substrate.
+
+### 3.4 Welcome-back journal diff
+
+Today `last_seen_rulebook_revision` is recorded but never displayed.
+The journal area only shows `journal_seed`.
+
+Target: when the user lands on a domain whose current revision differs
+from their last-seen revision, the journal shows the **real diff** —
+*"Since your last visit on Tuesday, two new projects were added, the
+approval rule's `explanation_rich` was rewritten, and three calculated
+fields fired."* Server endpoint `GET /api/rulebook/diff?from=<sha>`
+returns a structured diff (entities changed, rows added/removed, rules
+touched). Fall back to `journal_seed` only when there's no diff.
+
+### 3.5 customer-fullname — restore or retire
+
+[customer-fullname-rulebook.json](rulebook-examples/customer-fullname/effortless-rulebook/customer-fullname-rulebook.json)
+is `{}` (3 bytes) at HEAD. The previous incarnation at commit `2ab5b78`
+had a real `Customers` table with the `FirstName / LastName / FullName`
+calculated field. Two options:
+
+1. **Restore** from `2ab5b78` (or re-author using ACME's `Client.FullName`
+   as reference), then author `_meta`.
+2. **Retire** — remove the directory, delist from the picker; the
+   minimal-calculated-field demo lives in `acme-corporation`'s
+   `Client.FullName` already.
+
+Decision blocks one demo and shouldn't block anything else.
+
+---
+
+### UI polish (below the core-behavior line)
+
+### 3.6 Viewer surface parity
+
+Viewer routes (`/viewer`, `/viewer/domains`, `/viewer/:domain`) still
+use the old `.cards` grid and the pre-reception-desk overview screen.
+Wire them to use `DomainTile` + `PickerChips` (viewer accent color), and
+swap the overview screen for a read-only reception desk
+(`canEdit={false}`, no scrubber, no Effortless Tools link in the footer,
+comments panel in its place). Components already accept `canEdit`.
+
+### 3.7 Bootstrap inline form (replace the instructions panel)
+
+The picker's "Bootstrap a new one" chip expands today to an instructions
+panel. Replace with an **inline form**: name, slug, motif, starter
+template, one-line tagline. Submit creates
+`rulebook-examples/<slug>/effortless-rulebook/<slug>-rulebook.json`,
+registers in `RulebookFlavors`, navigates to the new domain's reception
+desk. `POST /api/projects/bootstrap` does the filesystem work; no
+`effortless build` runs until the user fires one from the new Effortless
+Tools tree.
+
+### 3.8 Tour mode rewind step
+
+Tour mode currently walks use cases → entities → rules → substrates →
+closer. Add a step that rewinds the TimeScrubber to the oldest commit,
+holds one beat to show the rule resolving against historical state,
+then snaps back to "now" before the closer. The time-travel claim
+becomes *felt* without the user having to discover the scrubber on
+their own.
+
+---
+
+## 4. The test (unchanged)
 
 When the user closes the tab, they should be able to describe ACME
 Corporation to a colleague in one sentence. If they can't, the page
 failed.
 
 The harder test: if the user opens *any two domains* and they feel the
-same, the page failed. Each domain's rulebook should put enough of itself
-forward — through tagline, motif, use cases, important entities,
-important rules, signature rows — that the two pages read as different
-small worlds, not as two instances of the same template.
+same, the page failed.
 
-This test is satisfied for ACME today. §2.1 is what extends it to the
-rest of the gallery.
+This currently passes for 8 of 28 demo domains. The in-flight `_meta`
+wave extends it to the rest.
+
+---
+
+## 5. Honest shortcuts already in production
+
+Called out so they aren't filed as bugs:
+
+- **Time-travel scrubber** rewinds by git commit, not arbitrary
+  timestamp. No per-cell history exists.
+- **Rules glow** marks all important rules with the rulebook's
+  most-recent commit timestamp because there's no per-rule fire
+  telemetry yet. The pulse is real, the per-rule attribution is
+  approximate.
+
+Both are documented at the source. Replacing either with proper
+bitemporal / event-stream infrastructure is a future project.

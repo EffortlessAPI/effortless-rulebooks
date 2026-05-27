@@ -697,6 +697,9 @@
   },
   "JobListings": {
     "Description": "Table: JobListings - Individual job postings scraped from job boards, normalized to a common data contract.",
+    "important": true,
+    "summary_rich": "The **postings pinned to the corkboard**. Every listing is normalized from its source board into the same shape — title, company, location, full description text, comp band — so downstream RAG scoring doesn't care whether it came from ZipRecruiter or WeWorkRemotely. `FullText` is the document that gets chunked and embedded into ChromaDB; everything else is metadata for filtering and display.",
+    "important_fields": ["Name", "Company", "JobBoardName", "Location", "CompMin", "CompMax"],
     "schema": [
       {
         "name": "JobListingId",
@@ -796,7 +799,9 @@
         "type": "lookup",
         "nullable": true,
         "Description": "Display name of the source job board.",
-        "formula": "=INDEX(JobBoards!{{Name}}, MATCH({{JobBoard}}, JobBoards!{{JobBoardId}}, 0))"
+        "formula": "=INDEX(JobBoards!{{Name}}, MATCH({{JobBoard}}, JobBoards!{{JobBoardId}}, 0))",
+        "important": true,
+        "explanation_rich": "**One listing, one board, one normalized name.** ZipRecruiter calls its identifier `ziprecruiter`, WeWorkRemotely calls its identifier `weworkremotely` — but the corkboard wants a human-readable label. This lookup chases the `JobBoard` FK back into `JobBoards` and pulls the display `Name`. Worked example: a scraped row with `JobBoard='weworkremotely'` resolves to `JobBoardName='WeWorkRemotely'`; rename the board to *'We Work Remotely'* in `JobBoards` and *every* listing card on the corkboard updates the next time the rulebook recomputes — no migration, no UI patch."
       },
       {
         "name": "ScoreResults",
@@ -819,6 +824,9 @@
   },
   "ScoreResults": {
     "Description": "Table: ScoreResults - Component and final scores for a job listing within a specific search run.",
+    "important": true,
+    "summary_rich": "The **scoring grid** — every (listing, run) pair gets a row recording its six component scores (fit, archetype, history, comp, culture, negative) and the fused `FinalScore`. This is where the RAG signal becomes a number: cosine distance from resume embeddings becomes `FitScore`, role-archetype proximity becomes `ArchetypeScore`, comp-band alignment becomes `CompScore`, and the LLM disqualifier can zero the whole row.",
+    "important_fields": ["JobListingName", "Company", "FitScore", "ArchetypeScore", "FinalScore", "IsDisqualified"],
     "schema": [
       {
         "name": "ScoreResultId",
@@ -913,7 +921,9 @@
         "type": "calculated",
         "nullable": false,
         "Description": "Weighted fusion of all component scores. Zeroed if disqualified. Formula: max(0, positive_sum - negative_weight * negative_score).",
-        "formula": "=IF({{IsDisqualified}}, 0, MAX(0, {{FitScore}} + {{ArchetypeScore}} + {{HistoryScore}} + {{CompScore}} + {{CultureScore}} - {{NegativeScore}}))"
+        "formula": "=IF({{IsDisqualified}}, 0, MAX(0, {{FitScore}} + {{ArchetypeScore}} + {{HistoryScore}} + {{CompScore}} + {{CultureScore}} - {{NegativeScore}}))",
+        "important": true,
+        "explanation_rich": "**The one number that decides whether a posting reaches the corkboard.** Five positive signals (fit, archetype, history, comp, culture) are summed, the negative-signal penalty is subtracted, the floor is clamped to zero — and if the LLM disqualifier flagged the row, the whole thing collapses to `0` regardless. Worked example: a *Staff Platform Engineer* listing scores `FitScore=0.78` (resume cosine match), `ArchetypeScore=0.71` (staff-architect archetype), `HistoryScore=0.40` (similar to a past 'yes'), `CompScore=0.65`, `CultureScore=0.55`, `NegativeScore=0.12` (mild 'on-call rotation' penalty), `IsDisqualified=FALSE`. Final = `0.78 + 0.71 + 0.40 + 0.65 + 0.55 − 0.12 = 2.97` — well above the `0.45` threshold. Flip `IsDisqualified` to `TRUE` (LLM detected 'staffing agency') and the same row collapses to `0.0` the next read."
       },
       {
         "name": "DuplicateBoards",
@@ -1002,7 +1012,9 @@
         "type": "calculated",
         "nullable": false,
         "Description": "Whether this verdict contributes to history_score. Only 'yes' verdicts are scoring signals.",
-        "formula": "=IF({{Verdict}} = \"yes\", TRUE(), FALSE())"
+        "formula": "=IF({{Verdict}} = \"yes\", TRUE(), FALSE())",
+        "important": true,
+        "explanation_rich": "**The RAG loop only learns from things you said yes to.** Every operator verdict gets a row — `yes`, `no`, `maybe`, `removed` — but only the `yes` rows get embedded back into ChromaDB's `accepted_decisions` collection where future runs compute `HistoryScore` from cosine proximity. Worked example: you mark *CloudScale's Staff Platform Engineer* as `yes` → `IsScoringSignal=TRUE` → its `FullText` joins the positive history. Next run's *DataForge Principal Architect* listing has high textual overlap → its `HistoryScore` jumps. Mark something `maybe` and `IsScoringSignal=FALSE` — it's audited but never feeds the retrieval index. Flip the same verdict to `yes` later and the very next search run picks it up."
       },
       {
         "name": "JobListingName",
@@ -1032,6 +1044,34 @@
     "data": []
   },
   "_meta": {
+    "tagline": "Crawls job boards, scores every listing against your resume with RAG, pins the ones worth reading.",
+    "motif": "corkboard",
+    "motif_palette": {
+      "primary": "#6e4b2a",
+      "accent": "#d4a574",
+      "ink": "#2a1e10"
+    },
+    "description_rich": "Job Search RAG is a local LLM + retrieval pipeline modeled as a rulebook. Job boards get crawled, listings get normalized, the resume is chunked and embedded into ChromaDB, and every (listing, run) pair is scored on six dimensions — fit, archetype, history, comp, culture, negative — then fused into a single `FinalScore`. The interesting thing isn't the scraping; it's that every weight, every threshold, every rubric dimension lives in the rulebook as data. Change a `RubricDimension.SignalsNegative` row, and the next search run penalizes those phrases everywhere — across Postgres, Python, and the cosine-distance scorer — without touching a line of pipeline code.",
+    "use_cases": [
+      "**Pin a new role archetype.** Add a row to `RoleArchetypes` (e.g., *'Site Reliability Architect'*) with positive/negative signals and a natural-language description. The next search run embeds it into ChromaDB and starts scoring listings against the new target — no code change.",
+      "**Penalize a phrase you keep seeing.** Edit `RubricDimensions.culture-work-model.SignalsNegative` to add *'4+ days on-site'*. Every previously scored listing's `NegativeScore` updates the next time `FinalScore` recomputes, and below-threshold rows fall off the corkboard.",
+      "**Teach the loop with a 'yes'.** Mark a `Decisions` row as `yes` for *CloudScale's Staff Platform Engineer*. `IsScoringSignal` flips to TRUE; the listing's `FullText` joins the accepted-decisions ChromaDB collection; next run's `HistoryScore` favors textually similar postings.",
+      "**Disqualify a listing without deleting it.** Set `ScoreResults.IsDisqualified=TRUE` with a reason. `FinalScore` collapses to `0.0` the next read; the audit row stays for review; nothing else in the pipeline needs to know.",
+      "**Retune the weighted fusion.** Change `SearchRuns.NegativeWeight` from `1.0` to `1.5` for the next run; the `FinalScore` formula re-fires across every `ScoreResults` row in that run with the harsher penalty — no scorer redeploy."
+    ],
+    "signature_rows": [
+      { "entity": "JobBoards", "ids": ["ziprecruiter", "weworkremotely", "linkedin"] },
+      { "entity": "RoleArchetypes", "ids": ["staff-platform-architect", "ai-systems-engineer", "principal-data-platform"] },
+      { "entity": "RubricDimensions", "ids": ["role-scope", "technical-depth", "culture-work-model", "neurodivergence-compatibility"] },
+      { "entity": "Resumes", "ids": ["resume-platform-2026q1"] }
+    ],
+    "journal_seed": "One resume indexed, four boards configured (one live), four role archetypes pinned, ten rubric dimensions wired. The corkboard is ready — once a search run lands, every listing will be scored against this resume's embeddings and the operator's accepted decisions.",
+    "substrates": [
+      { "key": "postgres", "important": true, "chip_label": "Postgres" },
+      { "key": "python",   "important": true, "chip_label": "Python" },
+      { "key": "excel",    "important": false, "chip_label": "Excel" },
+      { "key": "owl",      "important": false, "chip_label": "OWL" }
+    ],
     "_CMCC_Summary": "Rulebook for Job Search RAG - a local LLM + RAG pipeline for intelligent job filtering using semantic search across multiple job boards.",
     "_conversion_metadata": {
       "source_base_id": "manual",
