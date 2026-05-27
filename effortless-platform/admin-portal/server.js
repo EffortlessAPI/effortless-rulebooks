@@ -1395,6 +1395,362 @@ app.get("/api/explorer/node", (req, res) => {
   }
 });
 
+// -----------------------------------------------------------------------------
+// Explorer mutations — PATCH / POST / DELETE on instance rows.
+// -----------------------------------------------------------------------------
+// All three reuse the existing writeThrough helper (Postgres + rulebook JSON
+// in one transaction). Per §2.8 decision 4 there is NO locking layer on top
+// of writeThrough — the effortless CLI handles its own locking; adding more
+// here masks the real conflicts CLAUDE.md "No locks, no caches, no fallbacks"
+// warns about.
+//
+// Two Postgres targets per write:
+//   1. portal_rulebook_entities (always exists — coarse JSONB mirror of the
+//      whole entity's data array). This is the existing portal pattern and
+//      is what guarantees the editor DB reflects the edit immediately.
+//   2. The actual entity table (employees, projects, …) — only if it exists
+//      in the editor DB. The table might not exist if the user hasn't run
+//      `effortless build` yet for this domain; in that case we log a hint
+//      and continue (the rulebook JSON is still updated, and the next
+//      rebuild will populate the table from the JSON data array).
+
+// PascalCase → snake_case. ACME's transpiler produces this from entity and
+// field names, and we follow the same mapping to address its tables.
+function toSnakeCase(s) {
+  if (!s) return s;
+  return String(s)
+    .replace(/([a-z0-9])([A-Z])/g, "$1_$2")
+    .replace(/([A-Z])([A-Z][a-z])/g, "$1_$2")
+    .toLowerCase();
+}
+
+async function entityTableExists(client, tableName) {
+  const r = await client.query(
+    `SELECT 1 FROM information_schema.tables
+      WHERE table_schema = 'public' AND table_name = $1`,
+    [tableName]
+  );
+  return r.rowCount > 0;
+}
+
+// Returns the schema field-defs that PATCH/POST may write. Calculated,
+// lookup, aggregation, and inverse-relationship fields are read-only by
+// construction — silently filtering them is wrong (the caller probably has
+// a bug), so we instead reject the request loudly.
+function classifyFieldsForWrite(entity, patch) {
+  const schemaByName = Object.fromEntries((entity.schema || []).map((f) => [f.name, f]));
+  const accepted = {};
+  const rejected = [];
+  const unknown = [];
+  for (const [field, value] of Object.entries(patch || {})) {
+    const f = schemaByName[field];
+    if (!f) { unknown.push(field); continue; }
+    if (f.type === "calculated" || f.type === "lookup" || f.type === "aggregation") {
+      rejected.push({ field, reason: `${f.type} fields are derived, not writable` });
+      continue;
+    }
+    if (f.type === "relationship" && isInverseRelationshipField(f, entity.data)) {
+      rejected.push({ field, reason: "inverse-side relationship; edit the FK side instead" });
+      continue;
+    }
+    accepted[field] = value;
+  }
+  return { accepted, rejected, unknown };
+}
+
+// PATCH /api/explorer/instance/:entity/:id
+// Body: { fieldName: newValue, … } — raw + forward-FK fields only.
+app.patch("/api/explorer/instance/:entity/:id", requireEditor, async (req, res) => {
+  const entityName = req.params.entity;
+  const id = req.params.id;
+  const patch = req.body || {};
+  try {
+    const rb = loadRulebook();
+    const entity = rb[entityName];
+    if (!entity || !Array.isArray(entity.schema)) {
+      return res.status(404).json({ error: `entity '${entityName}' not found` });
+    }
+    const rowIdx = (entity.data || []).findIndex((r) => String(r.Name) === String(id));
+    if (rowIdx < 0) {
+      return res.status(404).json({ error: `${entityName} with Name='${id}' not found` });
+    }
+    const { accepted, rejected, unknown } = classifyFieldsForWrite(entity, patch);
+    if (unknown.length || rejected.length) {
+      return res.status(400).json({
+        error: "patch contains non-writable fields",
+        unknown,
+        rejected,
+      });
+    }
+    if (Object.keys(accepted).length === 0) {
+      return res.status(400).json({ error: "patch is empty" });
+    }
+
+    const pk = findPkField(entity);
+    const pkValue = entity.data[rowIdx][pk];
+    const tableName = toSnakeCase(entityName);
+
+    const newRb = await writeThrough({
+      pgWrite: async (c) => {
+        // (1) actual entity table — best-effort; skip if not bootstrapped.
+        if (await entityTableExists(c, tableName)) {
+          const cols = Object.keys(accepted);
+          const setClauses = cols.map((col, i) => `${toSnakeCase(col)} = $${i + 1}`);
+          const values = cols.map((col) => accepted[col]);
+          values.push(pkValue);
+          await c.query(
+            `UPDATE ${tableName} SET ${setClauses.join(", ")}
+              WHERE ${toSnakeCase(pk)} = $${cols.length + 1}`,
+            values
+          );
+        } else {
+          console.warn(`[explorer] table '${tableName}' not in editor DB; rulebook JSON updated only`);
+        }
+        // (2) portal mirror — always update so subsequent reads see the edit.
+        const newData = entity.data.slice();
+        newData[rowIdx] = { ...newData[rowIdx], ...accepted };
+        await c.query(
+          `UPDATE portal_rulebook_entities SET data_json = $1, updated_at = now()
+            WHERE entity_name = $2`,
+          [JSON.stringify(newData), entityName]
+        );
+        await c.query(
+          `INSERT INTO portal_audit_log (user_id, action, target, payload)
+           VALUES ($1, 'instance.patch', $2, $3)`,
+          [getCurrentUser()?.UserId || null, `${entityName}/${id}`, JSON.stringify(accepted)]
+        );
+      },
+      rulebookMutate: (rb2) => {
+        // Re-find the row inside rb2 (the freshly-loaded rulebook) rather
+        // than trusting the rowIdx captured at handler entry — protects
+        // against the rulebook changing under us between request and commit.
+        const ent = rb2[entityName];
+        if (!ent || !Array.isArray(ent.data)) {
+          throw new Error(`entity '${entityName}' missing from current rulebook`);
+        }
+        const idx = ent.data.findIndex((r) => String(r.Name) === String(id));
+        if (idx < 0) {
+          throw new Error(`${entityName} with Name='${id}' no longer present`);
+        }
+        ent.data[idx] = { ...ent.data[idx], ...accepted };
+        return rb2;
+      },
+    });
+    const idxFresh = newRb[entityName].data.findIndex((r) => String(r.Name) === String(id));
+    res.json({ ok: true, row: newRb[entityName].data[idxFresh] });
+  } catch (e) {
+    res.status(e.statusCode || 500).json({ error: String(e.message || e) });
+  }
+});
+
+// POST /api/explorer/instance/:entity
+// Body: full row payload (raw + forward-FK fields only).
+app.post("/api/explorer/instance/:entity", requireEditor, async (req, res) => {
+  const entityName = req.params.entity;
+  const body = req.body || {};
+  try {
+    const rb = loadRulebook();
+    const entity = rb[entityName];
+    if (!entity || !Array.isArray(entity.schema)) {
+      return res.status(404).json({ error: `entity '${entityName}' not found` });
+    }
+    const { accepted, rejected, unknown } = classifyFieldsForWrite(entity, body);
+    if (unknown.length || rejected.length) {
+      return res.status(400).json({ error: "row contains non-writable fields", unknown, rejected });
+    }
+    if (!accepted.Name) {
+      return res.status(400).json({ error: "Name field is required (used as the URL id per §2.6)" });
+    }
+    if ((entity.data || []).some((r) => String(r.Name) === String(accepted.Name))) {
+      return res.status(409).json({ error: `${entityName} with Name='${accepted.Name}' already exists` });
+    }
+    const pk = findPkField(entity);
+    if (!accepted[pk]) {
+      return res.status(400).json({ error: `${pk} (PK) is required` });
+    }
+    const tableName = toSnakeCase(entityName);
+
+    const newRb = await writeThrough({
+      pgWrite: async (c) => {
+        if (await entityTableExists(c, tableName)) {
+          const cols = Object.keys(accepted);
+          const colList = cols.map(toSnakeCase).join(", ");
+          const placeholders = cols.map((_, i) => `$${i + 1}`).join(", ");
+          const values = cols.map((col) => accepted[col]);
+          await c.query(
+            `INSERT INTO ${tableName} (${colList}) VALUES (${placeholders})`,
+            values
+          );
+        } else {
+          console.warn(`[explorer] table '${tableName}' not in editor DB; rulebook JSON updated only`);
+        }
+        const newData = [...(entity.data || []), accepted];
+        await c.query(
+          `UPDATE portal_rulebook_entities SET data_json = $1, updated_at = now()
+            WHERE entity_name = $2`,
+          [JSON.stringify(newData), entityName]
+        );
+        await c.query(
+          `INSERT INTO portal_audit_log (user_id, action, target, payload)
+           VALUES ($1, 'instance.create', $2, $3)`,
+          [getCurrentUser()?.UserId || null, `${entityName}/${accepted.Name}`, JSON.stringify(accepted)]
+        );
+      },
+      rulebookMutate: (rb2) => {
+        const ent = rb2[entityName];
+        if (!ent || !Array.isArray(ent.data)) {
+          throw new Error(`entity '${entityName}' missing from current rulebook`);
+        }
+        // Re-check uniqueness against the fresh rulebook in case another
+        // request inserted the same Name between handler entry and commit.
+        if (ent.data.some((r) => String(r.Name) === String(accepted.Name))) {
+          throw new Error(`${entityName} with Name='${accepted.Name}' already exists`);
+        }
+        ent.data = [...ent.data, accepted];
+        return rb2;
+      },
+    });
+    res.status(201).json({ ok: true, row: accepted });
+  } catch (e) {
+    res.status(e.statusCode || 500).json({ error: String(e.message || e) });
+  }
+});
+
+// DELETE /api/explorer/instance/:entity/:id?cascade=<bool>
+// With cascade=false (default): if any FK referrers exist, return 409 with
+// the referrer list. With cascade=true: walk forward FKs from other entities
+// and delete referring rows first. Recursion depth is bounded to prevent
+// infinite loops on cyclic schemas.
+function findReferrers(rb, entityName, pkValue) {
+  const refs = [];
+  for (const [otherName, otherValue] of iterEntities(rb)) {
+    if (otherName === entityName) continue;
+    for (const f of otherValue.schema || []) {
+      if (f.type !== "relationship" || f.RelatedTo !== entityName) continue;
+      if (isInverseRelationshipField(f, otherValue.data)) continue;
+      for (const r of otherValue.data || []) {
+        if (String(r[f.name] ?? "").trim() === String(pkValue ?? "").trim()) {
+          refs.push({ entity: otherName, fkField: f.name, name: r.Name, pk: r[findPkField(otherValue)] });
+        }
+      }
+    }
+  }
+  return refs;
+}
+
+app.delete("/api/explorer/instance/:entity/:id", requireEditor, async (req, res) => {
+  const entityName = req.params.entity;
+  const id = req.params.id;
+  const cascade = String(req.query.cascade || "").toLowerCase() === "true";
+  const MAX_CASCADE_DEPTH = 8;
+  try {
+    const rb = loadRulebook();
+    const entity = rb[entityName];
+    if (!entity || !Array.isArray(entity.schema)) {
+      return res.status(404).json({ error: `entity '${entityName}' not found` });
+    }
+    const rowIdx = (entity.data || []).findIndex((r) => String(r.Name) === String(id));
+    if (rowIdx < 0) {
+      return res.status(404).json({ error: `${entityName} with Name='${id}' not found` });
+    }
+    const row = entity.data[rowIdx];
+    const pk = findPkField(entity);
+    const pkValue = row[pk];
+
+    const refs = findReferrers(rb, entityName, pkValue);
+    if (refs.length > 0 && !cascade) {
+      return res.status(409).json({
+        error: `${entityName}/${id} has ${refs.length} FK referrer(s); pass ?cascade=true to cascade`,
+        referrers: refs,
+      });
+    }
+
+    // Build the deletion plan in dependency order (referrers first), bounded.
+    // Same logic as findReferrers but accumulating across depth.
+    const deletions = []; // { entity, pk, pkValue, rowIdx }
+    function plan(targetEntity, targetPkValue, depth) {
+      if (depth > MAX_CASCADE_DEPTH) {
+        throw new Error(`cascade depth exceeded ${MAX_CASCADE_DEPTH} — cycle in FK graph?`);
+      }
+      const subRefs = findReferrers(rb, targetEntity, targetPkValue);
+      for (const r of subRefs) plan(r.entity, r.pk, depth + 1);
+      const ent = rb[targetEntity];
+      const idx = (ent.data || []).findIndex(
+        (x) => String(x[findPkField(ent)] ?? "").trim() === String(targetPkValue ?? "").trim()
+      );
+      if (idx < 0) return;
+      if (deletions.some((d) => d.entity === targetEntity && d.rowIdx === idx)) return;
+      deletions.push({
+        entity: targetEntity,
+        table: toSnakeCase(targetEntity),
+        pk: findPkField(ent),
+        pkValue: targetPkValue,
+        rowIdx: idx,
+      });
+    }
+    plan(entityName, pkValue, 0);
+
+    const newRb = await writeThrough({
+      pgWrite: async (c) => {
+        for (const d of deletions) {
+          if (await entityTableExists(c, d.table)) {
+            await c.query(
+              `DELETE FROM ${d.table} WHERE ${toSnakeCase(d.pk)} = $1`,
+              [d.pkValue]
+            );
+          }
+          // refresh portal mirror by reading the post-delete data array from
+          // the rulebook mutation — done after rulebookMutate runs. We
+          // re-load below.
+        }
+        await c.query(
+          `INSERT INTO portal_audit_log (user_id, action, target, payload)
+           VALUES ($1, $2, $3, $4)`,
+          [
+            getCurrentUser()?.UserId || null,
+            cascade ? "instance.delete.cascade" : "instance.delete",
+            `${entityName}/${id}`,
+            JSON.stringify({ deletions: deletions.map(({ entity, pkValue }) => ({ entity, pkValue })) }),
+          ]
+        );
+      },
+      rulebookMutate: (rb2) => {
+        // Look up each row fresh in rb2 (by PK) rather than reusing the
+        // rowIdx captured at handler entry — keeps the splice safe if the
+        // rulebook changed under us.
+        for (const d of deletions) {
+          const ent = rb2[d.entity];
+          if (!ent || !Array.isArray(ent.data)) continue;
+          const idx = ent.data.findIndex(
+            (x) => String(x[d.pk] ?? "").trim() === String(d.pkValue ?? "").trim()
+          );
+          if (idx >= 0) ent.data.splice(idx, 1);
+        }
+        return rb2;
+      },
+    });
+
+    // Sync the portal_rulebook_entities mirrors for every touched entity.
+    // Doing it post-write to keep the transaction simple.
+    try {
+      const p = await getPool();
+      for (const ent of new Set(deletions.map((d) => d.entity))) {
+        await p.query(
+          `UPDATE portal_rulebook_entities SET data_json = $1, updated_at = now()
+            WHERE entity_name = $2`,
+          [JSON.stringify(newRb[ent].data || []), ent]
+        );
+      }
+    } catch (e) {
+      console.warn(`[explorer] portal mirror sync after delete failed: ${e.message}`);
+    }
+
+    res.json({ ok: true, deleted: deletions.map(({ entity, pkValue }) => ({ entity, pkValue })) });
+  } catch (e) {
+    res.status(e.statusCode || 500).json({ error: String(e.message || e) });
+  }
+});
+
 // --- users (PROJECT-rulebook resource; writes to project rulebook) ---
 app.get("/api/users", (req, res) => {
   const project = loadProjectRulebook();

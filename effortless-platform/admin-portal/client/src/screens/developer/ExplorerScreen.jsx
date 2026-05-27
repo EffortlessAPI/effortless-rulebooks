@@ -30,12 +30,13 @@ function formatCell(v) {
   return String(v);
 }
 
-export default function ExplorerScreen({ screen }) {
+export default function ExplorerScreen({ screen, me }) {
   const navigate = useNavigate();
   const params   = useParams();
   const { domain } = params;
   const wildcard = params["*"] || "";
   const pathSegments = useMemo(() => parsePathSegments(wildcard), [wildcard]);
+  const canEdit = !!me?.role?.CanEditRulebook;
 
   const [tree, setTree]         = useState(null);
   const [expanded, setExpanded] = useState(() => new Set());
@@ -44,6 +45,8 @@ export default function ExplorerScreen({ screen }) {
   const [nodeLoading, setNodeLoading] = useState(false);
   const [page, setPage]         = useState(0);
   const [treeError, setTreeError] = useState(null);
+  const [refreshTick, setRefreshTick] = useState(0);
+  const refreshNode = () => setRefreshTick((t) => t + 1);
 
   // Load tree on domain change
   useEffect(() => {
@@ -74,7 +77,7 @@ export default function ExplorerScreen({ screen }) {
       .then((r) => { setNode(r); })
       .catch((e) => { setNodeError(e.message); })
       .finally(() => setNodeLoading(false));
-  }, [wildcard, page, domain]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [wildcard, page, domain, refreshTick]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const selectedEntity = pathSegments[0] || null;
 
@@ -136,6 +139,8 @@ export default function ExplorerScreen({ screen }) {
             page={page}
             setPage={setPage}
             goTo={goTo}
+            canEdit={canEdit}
+            refreshNode={refreshNode}
             rulebookRevision={tree?.rulebookRevision || null}
           />
         </div>
@@ -214,7 +219,7 @@ function TreeRow({ node, selected, expanded, onToggle, onSelect, onSelectChild }
   );
 }
 
-function RightPane({ pathSegments, node, nodeError, nodeLoading, page, setPage, goTo, rulebookRevision }) {
+function RightPane({ pathSegments, node, nodeError, nodeLoading, page, setPage, goTo, canEdit, refreshNode, rulebookRevision }) {
   if (pathSegments.length === 0) {
     return (
       <div className="muted">
@@ -238,12 +243,82 @@ function RightPane({ pathSegments, node, nodeError, nodeLoading, page, setPage, 
     return <div className="muted small">Loading…</div>;
   }
   if (node.kind === "list") {
-    return <ListView node={node} page={page} setPage={setPage} pathSegments={pathSegments} goTo={goTo} />;
+    return <ListView node={node} page={page} setPage={setPage} pathSegments={pathSegments} goTo={goTo} canEdit={canEdit} refreshNode={refreshNode} />;
   }
   if (node.kind === "instance") {
-    return <InstanceView node={node} pathSegments={pathSegments} goTo={goTo} />;
+    return <InstanceView node={node} pathSegments={pathSegments} goTo={goTo} canEdit={canEdit} refreshNode={refreshNode} />;
   }
   return <div className="muted small">Unknown node kind: {node.kind}</div>;
+}
+
+// Fields the server's classifyFieldsForWrite() will accept. Mirror that
+// logic here so the client doesn't try to PATCH read-only fields.
+function isWritableField(f) {
+  if (!f) return false;
+  if (f.type === "raw") return true;
+  if (f.type === "relationship") {
+    // Forward side only (heuristic mirrors server: no prefersSingleRecordLink=false).
+    return f.prefersSingleRecordLink !== false;
+  }
+  return false;
+}
+
+function coerceValueForType(raw, datatype) {
+  if (raw === "" || raw === null || raw === undefined) return null;
+  if (datatype === "integer") {
+    const n = parseInt(raw, 10);
+    return Number.isNaN(n) ? raw : n;
+  }
+  if (datatype === "number" || datatype === "decimal" || datatype === "float") {
+    const n = parseFloat(raw);
+    return Number.isNaN(n) ? raw : n;
+  }
+  if (datatype === "boolean") {
+    if (typeof raw === "boolean") return raw;
+    return /^(true|yes|1)$/i.test(String(raw).trim());
+  }
+  return String(raw);
+}
+
+function FieldInput({ field, value, onChange }) {
+  if (field.datatype === "boolean") {
+    return (
+      <input
+        type="checkbox"
+        checked={!!value}
+        onChange={(e) => onChange(e.target.checked)}
+      />
+    );
+  }
+  if (field.datatype === "integer" || field.datatype === "number" || field.datatype === "decimal" || field.datatype === "float") {
+    return (
+      <input
+        type="number"
+        value={value ?? ""}
+        onChange={(e) => onChange(e.target.value)}
+        style={{ width: "100%" }}
+      />
+    );
+  }
+  if (field.datatype === "datetime" || field.datatype === "date") {
+    return (
+      <input
+        type="text"
+        value={value ?? ""}
+        onChange={(e) => onChange(e.target.value)}
+        placeholder={field.datatype === "date" ? "YYYY-MM-DD" : "YYYY-MM-DDTHH:MM:SSZ"}
+        style={{ width: "100%" }}
+      />
+    );
+  }
+  return (
+    <input
+      type="text"
+      value={value ?? ""}
+      onChange={(e) => onChange(e.target.value)}
+      style={{ width: "100%" }}
+    />
+  );
 }
 
 function SchemaHeaderCell({ field }) {
@@ -265,10 +340,11 @@ function SchemaHeaderCell({ field }) {
   );
 }
 
-function ListView({ node, page, setPage, pathSegments, goTo }) {
+function ListView({ node, page, setPage, pathSegments, goTo, canEdit, refreshNode }) {
   const cols = node.schema || [];
   const rows = node.rows || [];
   const totalPages = Math.max(1, Math.ceil((node.totalCount || 0) / (node.pageSize || 50)));
+  const [showNewRow, setShowNewRow] = useState(false);
 
   return (
     <>
@@ -283,7 +359,26 @@ function ListView({ node, page, setPage, pathSegments, goTo }) {
             </>
           )}
         </span>
+        {canEdit && (
+          <button
+            className="btn secondary"
+            style={{ marginLeft: 12 }}
+            onClick={() => setShowNewRow((v) => !v)}
+          >
+            {showNewRow ? "× Cancel" : "+ New row"}
+          </button>
+        )}
       </h3>
+
+      {showNewRow && canEdit && (
+        <NewRowForm
+          entity={node.entity}
+          schema={cols}
+          scopedBy={node.scopedBy}
+          onCreated={() => { setShowNewRow(false); refreshNode(); }}
+          onCancel={() => setShowNewRow(false)}
+        />
+      )}
 
       {rows.length === 0 ? (
         <div className="muted small">No rows.</div>
@@ -324,9 +419,134 @@ function ListView({ node, page, setPage, pathSegments, goTo }) {
   );
 }
 
-function InstanceView({ node, pathSegments, goTo }) {
+function NewRowForm({ entity, schema, scopedBy, onCreated, onCancel }) {
+  const writable = schema.filter(isWritableField);
+  // Pre-seed the FK field if the URL ancestry implies one (e.g. creating a
+  // Project under /Employees/Sarah Chen pre-fills ApprovedBy = sarah-chen).
+  const [values, setValues] = useState(() => {
+    const init = {};
+    if (scopedBy?.viaFk) {
+      // We have the parent's URL Name but not its PK value. Leave empty for
+      // now — user supplies it (or a future server response can supply it).
+      init[scopedBy.viaFk] = "";
+    }
+    return init;
+  });
+  const [busy, setBusy] = useState(false);
+  const [err, setErr]   = useState(null);
+
+  const submit = async () => {
+    setBusy(true); setErr(null);
+    try {
+      const payload = {};
+      for (const f of writable) {
+        const v = values[f.name];
+        if (v === undefined) continue;
+        payload[f.name] = coerceValueForType(v, f.datatype);
+      }
+      await api.post(`/api/explorer/instance/${encodeURIComponent(entity)}`, payload);
+      toast(`Created ${entity}/${payload.Name}`);
+      onCreated();
+    } catch (e) {
+      setErr(e.message);
+    } finally { setBusy(false); }
+  };
+
+  return (
+    <div className="card" style={{ padding: 12, marginBottom: 12 }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 10 }}>
+        {writable.map((f) => (
+          <div key={f.name}>
+            <label className="muted small" style={{ display: "block", marginBottom: 2 }}>
+              {f.name}
+              {f.nullable === false && <span style={{ color: "var(--bad)" }}> *</span>}
+              {f.datatype && <span style={{ marginLeft: 4 }}>({f.datatype})</span>}
+            </label>
+            <FieldInput
+              field={f}
+              value={values[f.name]}
+              onChange={(v) => setValues((s) => ({ ...s, [f.name]: v }))}
+            />
+          </div>
+        ))}
+      </div>
+      {err && (
+        <div className="story-banner" style={{ borderLeftColor: "var(--bad)", marginTop: 8 }}>{err}</div>
+      )}
+      <div style={{ marginTop: 10, display: "flex", gap: 8 }}>
+        <button className="btn" disabled={busy} onClick={submit}>
+          {busy ? "Creating…" : "Create"}
+        </button>
+        <button className="btn secondary" disabled={busy} onClick={onCancel}>Cancel</button>
+      </div>
+    </div>
+  );
+}
+
+function InstanceView({ node, pathSegments, goTo, canEdit, refreshNode }) {
   const cols = node.schema || [];
   const row  = node.row || {};
+  // Dirty map: only fields the user actually changed. Sending the unchanged
+  // ones too would pass the server's classifier but is wasted writes.
+  const [dirty, setDirty] = useState({});
+  const [busy, setBusy]   = useState(false);
+  const [err, setErr]     = useState(null);
+
+  // Reset dirty state when the underlying row changes (navigated to a new
+  // instance, or the row was refreshed post-save).
+  useEffect(() => { setDirty({}); setErr(null); }, [node]);
+
+  const isDirty = Object.keys(dirty).length > 0;
+
+  const setField = (field, raw, datatype) => {
+    setDirty((d) => ({ ...d, [field]: coerceValueForType(raw, datatype) }));
+  };
+
+  const save = async () => {
+    setBusy(true); setErr(null);
+    try {
+      await api.patch(
+        `/api/explorer/instance/${encodeURIComponent(node.entity)}/${encodeURIComponent(node.id)}`,
+        dirty
+      );
+      toast("Saved (Postgres + rulebook JSON).");
+      refreshNode();
+    } catch (e) {
+      setErr(e.message);
+    } finally { setBusy(false); }
+  };
+
+  const del = async () => {
+    if (!window.confirm(`Delete ${node.entity} / ${node.id}?`)) return;
+    setBusy(true); setErr(null);
+    try {
+      await api.del(
+        `/api/explorer/instance/${encodeURIComponent(node.entity)}/${encodeURIComponent(node.id)}`
+      );
+      toast(`Deleted ${node.entity}/${node.id}.`);
+      goTo(pathSegments.slice(0, -1)); // back to the parent list
+    } catch (e) {
+      // Server returns 409 with referrer list when cascade is needed.
+      if (e.referrers) {
+        const yes = window.confirm(
+          `${node.entity}/${node.id} has ${e.referrers.length} FK referrer(s). Cascade?`
+        );
+        if (yes) {
+          try {
+            await api.del(
+              `/api/explorer/instance/${encodeURIComponent(node.entity)}/${encodeURIComponent(node.id)}?cascade=true`
+            );
+            toast(`Deleted ${node.entity}/${node.id} and ${e.referrers.length} referrer(s).`);
+            goTo(pathSegments.slice(0, -1));
+            return;
+          } catch (e2) { setErr(e2.message); }
+        }
+      } else {
+        setErr(e.message);
+      }
+    } finally { setBusy(false); }
+  };
+
   return (
     <>
       <h3 className="mono" style={{ marginTop: 0 }}>
@@ -335,6 +555,26 @@ function InstanceView({ node, pathSegments, goTo }) {
           {node.pk} = <span className="mono">{String(node.pkValue ?? "")}</span>
         </span>
       </h3>
+
+      {canEdit && (
+        <div style={{ display: "flex", gap: 8, marginBottom: 12 }}>
+          <button className="btn" disabled={!isDirty || busy} onClick={save}>
+            {busy ? "Saving…" : isDirty ? `Save ${Object.keys(dirty).length} change(s)` : "Save"}
+          </button>
+          {isDirty && (
+            <button className="btn secondary" disabled={busy} onClick={() => setDirty({})}>
+              Reset
+            </button>
+          )}
+          <button className="btn secondary" style={{ marginLeft: "auto", color: "var(--bad)" }} disabled={busy} onClick={del}>
+            Delete row…
+          </button>
+        </div>
+      )}
+
+      {err && (
+        <div className="story-banner" style={{ borderLeftColor: "var(--bad)" }}>{err}</div>
+      )}
 
       {node.tabs && node.tabs.length > 0 && (
         <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginBottom: 14 }}>
@@ -357,26 +597,39 @@ function InstanceView({ node, pathSegments, goTo }) {
       <table className="grid">
         <thead><tr><th>field</th><th>type</th><th>value</th></tr></thead>
         <tbody>
-          {cols.map((c) => (
-            <tr key={c.name}>
-              <td>
-                <div>{c.name}</div>
-                {c.Description && (
-                  <div className="muted small">{c.Description}</div>
-                )}
-              </td>
-              <td>
-                <span className="tag">{c.type || ""}</span>
-                {c.datatype && c.type === "raw" && (
-                  <span className="muted small" style={{ marginLeft: 6 }}>{c.datatype}</span>
-                )}
-                {c.formula && (
-                  <div className="mono small muted" style={{ marginTop: 4 }}>{c.formula}</div>
-                )}
-              </td>
-              <td>{formatCell(row[c.name])}</td>
-            </tr>
-          ))}
+          {cols.map((c) => {
+            const writable = canEdit && isWritableField(c);
+            const liveValue = c.name in dirty ? dirty[c.name] : row[c.name];
+            return (
+              <tr key={c.name}>
+                <td>
+                  <div>
+                    {c.name}
+                    {c.name in dirty && (
+                      <span className="muted small" style={{ marginLeft: 6, color: "var(--warn)" }}>•</span>
+                    )}
+                  </div>
+                  {c.Description && (
+                    <div className="muted small">{c.Description}</div>
+                  )}
+                </td>
+                <td>
+                  <span className="tag">{c.type || ""}</span>
+                  {c.datatype && c.type === "raw" && (
+                    <span className="muted small" style={{ marginLeft: 6 }}>{c.datatype}</span>
+                  )}
+                  {c.formula && (
+                    <div className="mono small muted" style={{ marginTop: 4 }}>{c.formula}</div>
+                  )}
+                </td>
+                <td>
+                  {writable
+                    ? <FieldInput field={c} value={liveValue} onChange={(v) => setField(c.name, v, c.datatype)} />
+                    : formatCell(row[c.name])}
+                </td>
+              </tr>
+            );
+          })}
         </tbody>
       </table>
     </>
