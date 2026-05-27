@@ -491,10 +491,11 @@ function InstanceView({ node, pathSegments, goTo, canEdit, refreshNode }) {
   const [dirty, setDirty] = useState({});
   const [busy, setBusy]   = useState(false);
   const [err, setErr]     = useState(null);
+  const [openCell, setOpenCell] = useState(null); // field name currently showing provenance
 
-  // Reset dirty state when the underlying row changes (navigated to a new
-  // instance, or the row was refreshed post-save).
-  useEffect(() => { setDirty({}); setErr(null); }, [node]);
+  // Reset dirty state + close any open provenance when the underlying row
+  // changes (navigated to a new instance, or refreshed post-save).
+  useEffect(() => { setDirty({}); setErr(null); setOpenCell(null); }, [node]);
 
   const isDirty = Object.keys(dirty).length > 0;
 
@@ -600,6 +601,11 @@ function InstanceView({ node, pathSegments, goTo, canEdit, refreshNode }) {
           {cols.map((c) => {
             const writable = canEdit && isWritableField(c);
             const liveValue = c.name in dirty ? dirty[c.name] : row[c.name];
+            // A cell has provenance to show whenever its field isn't plain
+            // raw — calculated/lookup/aggregation/relationship all have a
+            // story (formula text, target row, dependencies). Raw cells
+            // skip the click target to keep the surface clean.
+            const hasProvenance = c.type && c.type !== "raw";
             return (
               <tr key={c.name}>
                 <td>
@@ -622,10 +628,23 @@ function InstanceView({ node, pathSegments, goTo, canEdit, refreshNode }) {
                     <div className="mono small muted" style={{ marginTop: 4 }}>{c.formula}</div>
                   )}
                 </td>
-                <td>
+                <td
+                  className={hasProvenance ? "clickable" : ""}
+                  onClick={hasProvenance ? () => setOpenCell((cur) => cur === c.name ? null : c.name) : undefined}
+                  title={hasProvenance ? "Click to see how this was computed" : undefined}
+                >
                   {writable
                     ? <FieldInput field={c} value={liveValue} onChange={(v) => setField(c.name, v, c.datatype)} />
                     : formatCell(row[c.name])}
+                  {hasProvenance && openCell === c.name && (
+                    <CellProvenance
+                      entity={node.entity}
+                      id={node.id}
+                      field={c.name}
+                      onClose={() => setOpenCell(null)}
+                      onNavigate={(segments) => { setOpenCell(null); goTo(segments); }}
+                    />
+                  )}
                 </td>
               </tr>
             );
@@ -633,5 +652,100 @@ function InstanceView({ node, pathSegments, goTo, canEdit, refreshNode }) {
         </tbody>
       </table>
     </>
+  );
+}
+
+function CellProvenance({ entity, id, field, onClose, onNavigate }) {
+  const [data, setData] = useState(null);
+  const [err, setErr]   = useState(null);
+  useEffect(() => {
+    setData(null); setErr(null);
+    const qs = new URLSearchParams({
+      entity, id, field,
+    });
+    api.get(`/api/explorer/cell?${qs.toString()}`)
+      .then(setData)
+      .catch((e) => setErr(e.message));
+  }, [entity, id, field]);
+
+  return (
+    <div
+      onClick={(e) => e.stopPropagation()}
+      style={{
+        marginTop: 8,
+        padding: 10,
+        background: "var(--panel-2)",
+        border: "1px solid var(--border)",
+        borderRadius: 6,
+      }}
+    >
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <strong className="mono small">{entity}.{field}</strong>
+        <button className="btn secondary" onClick={onClose} style={{ padding: "2px 8px" }}>×</button>
+      </div>
+      {err && <div className="story-banner" style={{ borderLeftColor: "var(--bad)", marginTop: 6 }}>{err}</div>}
+      {!data && !err && <div className="muted small" style={{ marginTop: 6 }}>Loading…</div>}
+      {data && (
+        <>
+          <div className="muted small" style={{ marginTop: 6 }}>
+            kind: <span className="tag">{data.kind}</span>
+            {" · value: "}<span className="mono">{formatCell(data.value)}</span>
+          </div>
+          {data.formula && (
+            <div className="mono small" style={{ marginTop: 6, padding: 6, background: "var(--panel)", borderRadius: 4 }}>
+              {data.formula}
+            </div>
+          )}
+          {data.explanation_rich && (
+            <div
+              className="small"
+              style={{ marginTop: 6 }}
+              dangerouslySetInnerHTML={{ __html: data.explanation_rich }}
+            />
+          )}
+          {data.inputs && data.inputs.length > 0 && (
+            <>
+              <div className="muted small" style={{ marginTop: 8, fontWeight: 600 }}>Inputs</div>
+              <ul style={{ margin: "4px 0 0 0", padding: "0 0 0 18px" }}>
+                {data.inputs.map((inp, i) => (
+                  <li key={i} className="small" style={{ marginTop: 2 }}>
+                    {inp.entity ? (
+                      <>
+                        <span
+                          className="mono clickable"
+                          onClick={() => onNavigate([inp.entity, inp.id ?? ""])}
+                          title={`Open ${inp.entity}/${inp.id || "…"}`}
+                        >
+                          {inp.entity}
+                        </span>
+                        {inp.id && (
+                          <>
+                            {" / "}
+                            <span
+                              className="mono clickable"
+                              onClick={() => onNavigate([inp.entity, inp.id])}
+                            >
+                              {inp.id}
+                            </span>
+                          </>
+                        )}
+                        {inp.field && <>{"."}<span className="mono">{inp.field}</span></>}
+                      </>
+                    ) : (
+                      <span className="mono">{inp.field}</span>
+                    )}
+                    {" · "}
+                    <span className="tag" style={{ fontSize: 10 }}>{inp.kind}</span>
+                    {inp.value !== undefined && (
+                      <> {" = "}<span className="mono">{formatCell(inp.value)}</span></>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
+        </>
+      )}
+    </div>
   );
 }

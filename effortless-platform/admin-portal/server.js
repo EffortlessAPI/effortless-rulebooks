@@ -1396,6 +1396,181 @@ app.get("/api/explorer/node", (req, res) => {
 });
 
 // -----------------------------------------------------------------------------
+// GET /api/explorer/cell?domain=&entity=&id=&field=
+// Provenance: how did this cell get its value? Walks the formula text on
+// demand per §2.8 decision 5 (no cache, no pre-computed index).
+//
+// For calculated fields: extracts same-entity {{FieldName}} references and
+// returns each with its raw value in this row.
+// For lookup fields shaped like Excel's INDEX/MATCH (the only shape the
+// transpiler emits), resolves the target row and returns the source value
+// + the link the UI can navigate to.
+// For aggregation fields: lists the EntityName!{{Field}} references with
+// the target rows' values left for the client to drill into.
+//
+// Aggregations are reported but not summed here — that's substrate-level
+// work and the spec calls out runtime walk over the rulebook JSON only.
+
+const SAME_ENT_REF_RE = /\{\{?\s*([A-Za-z_][A-Za-z0-9_]*)\s*\}?\}/g;
+const CROSS_ENT_REF_RE = /([A-Za-z_][A-Za-z0-9_]*)!\{\{?\s*([A-Za-z_][A-Za-z0-9_]*)\s*\}?\}/g;
+const INDEX_MATCH_RE = /INDEX\(\s*([A-Za-z_][A-Za-z0-9_]*)\s*!\s*\{\{?\s*([A-Za-z_][A-Za-z0-9_]*)\s*\}?\}\s*,\s*MATCH\(\s*([A-Za-z_][A-Za-z0-9_]*)\s*!\s*\{\{?\s*([A-Za-z_][A-Za-z0-9_]*)\s*\}?\}\s*,\s*([A-Za-z_][A-Za-z0-9_]*)\s*!\s*\{\{?\s*([A-Za-z_][A-Za-z0-9_]*)\s*\}?\}/i;
+
+function extractFieldRefs(formula) {
+  if (!formula) return { sameEntity: [], crossEntity: [] };
+  // Match cross-entity refs first, then mask them so SAME_ENT_REF_RE
+  // doesn't re-pick up the field portion of an Entity!{{Field}}.
+  const crossEntity = [];
+  let masked = formula;
+  for (const m of formula.matchAll(CROSS_ENT_REF_RE)) {
+    crossEntity.push({ entity: m[1], field: m[2] });
+    masked = masked.replace(m[0], " ".repeat(m[0].length));
+  }
+  const sameEntity = [];
+  for (const m of masked.matchAll(SAME_ENT_REF_RE)) {
+    sameEntity.push(m[1]);
+  }
+  return {
+    sameEntity: [...new Set(sameEntity)],
+    crossEntity: Array.from(
+      new Map(crossEntity.map((e) => [`${e.entity}!${e.field}`, e])).values()
+    ),
+  };
+}
+
+function resolveLookup(rb, thisRow, formula) {
+  if (!formula) return null;
+  const m = formula.match(INDEX_MATCH_RE);
+  if (!m) return null;
+  const [, targetEntity, targetField, , fkField, targetEnt2, targetPkField] = m;
+  if (targetEntity !== targetEnt2) return null;
+  const target = rb[targetEntity];
+  if (!target || !Array.isArray(target.data)) return null;
+  const fkValue = thisRow[fkField];
+  if (fkValue === null || fkValue === undefined || fkValue === "") return { targetEntity, targetField, fkField, fkValue, matchedRow: null };
+  const matchedRow = target.data.find(
+    (r) => String(r[targetPkField] ?? "").trim() === String(fkValue).trim()
+  );
+  return { targetEntity, targetField, targetPkField, fkField, fkValue, matchedRow: matchedRow || null };
+}
+
+app.get("/api/explorer/cell", (req, res) => {
+  const domain = req.query.domain || getActiveDomain();
+  const entityName = req.query.entity;
+  const id = req.query.id;
+  const fieldName = req.query.field;
+  if (!entityName || !id || !fieldName) {
+    return res.status(400).json({ error: "domain, entity, id, field are required" });
+  }
+  try {
+    const rb = loadRulebookForDomain(domain);
+    const entity = rb[entityName];
+    if (!entity || !Array.isArray(entity.schema)) {
+      return res.status(404).json({ error: `entity '${entityName}' not found` });
+    }
+    const row = findRowByName(entity, id);
+    if (!row) return res.status(404).json({ error: `${entityName} with Name='${id}' not found` });
+    const field = entity.schema.find((f) => f.name === fieldName);
+    if (!field) return res.status(404).json({ error: `field '${fieldName}' not on ${entityName}` });
+
+    const value = row[fieldName];
+    const base = {
+      value,
+      kind: field.type || "raw",
+      formula: field.formula || null,
+      explanation_rich: field.explanation_rich || null,
+      description: field.Description || null,
+    };
+
+    if (field.type === "raw") {
+      return res.json({ ...base, inputs: [] });
+    }
+
+    if (field.type === "relationship") {
+      // Forward FK or inverse view. Surface the target entity name; the
+      // UI can deep-link from there.
+      if (field.RelatedTo) {
+        return res.json({
+          ...base,
+          inputs: [{ entity: field.RelatedTo, kind: "relationship", value }],
+        });
+      }
+      return res.json({ ...base, inputs: [] });
+    }
+
+    if (field.type === "lookup") {
+      const resolved = resolveLookup(rb, row, field.formula);
+      const refs = extractFieldRefs(field.formula);
+      const inputs = [];
+      if (resolved) {
+        inputs.push({
+          field: resolved.fkField,
+          kind: "raw",
+          value: resolved.fkValue,
+        });
+        if (resolved.matchedRow) {
+          const targetEnt = rb[resolved.targetEntity];
+          const targetPk = findPkField(targetEnt);
+          inputs.push({
+            entity: resolved.targetEntity,
+            id: resolved.matchedRow.Name,
+            field: resolved.targetField,
+            kind: "raw",
+            value: resolved.matchedRow[resolved.targetField],
+            pk: targetPk,
+            pkValue: resolved.matchedRow[targetPk],
+          });
+        }
+      } else {
+        // Not an INDEX/MATCH lookup — just list the referenced fields.
+        for (const r of refs.crossEntity) {
+          inputs.push({ entity: r.entity, field: r.field, kind: "ref" });
+        }
+        for (const f of refs.sameEntity) {
+          inputs.push({ field: f, kind: "ref", value: row[f] });
+        }
+      }
+      return res.json({ ...base, inputs, resolved });
+    }
+
+    if (field.type === "calculated") {
+      const refs = extractFieldRefs(field.formula);
+      const inputs = [];
+      for (const f of refs.sameEntity) {
+        const refField = entity.schema.find((s) => s.name === f);
+        inputs.push({
+          field: f,
+          kind: refField?.type || "raw",
+          value: row[f],
+        });
+      }
+      // Cross-entity refs in a calculated field are unusual but possible
+      // (e.g. via a lookup chain). Surface them as ref-only.
+      for (const r of refs.crossEntity) {
+        inputs.push({ entity: r.entity, field: r.field, kind: "ref" });
+      }
+      return res.json({ ...base, inputs });
+    }
+
+    if (field.type === "aggregation") {
+      const refs = extractFieldRefs(field.formula);
+      const inputs = refs.crossEntity.map((r) => ({
+        entity: r.entity,
+        field: r.field,
+        kind: "ref",
+      }));
+      // For COUNTIFS/SUMIFS the contributing-rows set could be computed
+      // here, but the spec puts that on the client / the substrates. v1
+      // surfaces the referenced entity so the user can drill in.
+      return res.json({ ...base, inputs });
+    }
+
+    return res.json({ ...base, inputs: [] });
+  } catch (e) {
+    res.status(e.statusCode || 500).json({ error: String(e.message || e) });
+  }
+});
+
+// -----------------------------------------------------------------------------
 // Explorer mutations — PATCH / POST / DELETE on instance rows.
 // -----------------------------------------------------------------------------
 // All three reuse the existing writeThrough helper (Postgres + rulebook JSON
