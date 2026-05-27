@@ -137,7 +137,7 @@
       }
     ],
     "important": true,
-    "summary_rich": "The **shape** is the unit of geometry here. Each row aggregates its edges (`边的数量`, `角度总和`, `最大边长`), classifies itself by edge count (`边的类型`), and runs the headline rule — `勾股定理成立` — which only fires when the shape has exactly three edges.",
+    "summary_rich": "The outer table. Three rows. Each row aggregates over the inner table (`边的数量`, `角度总和`, `最大边长`) and runs the headline calculated field `勾股定理成立` — TRUE on some rows, blank on others. The pattern is the puzzle.",
     "important_fields": [
       "名称",
       "边的数量",
@@ -345,7 +345,7 @@
       }
     ],
     "important": true,
-    "summary_rich": "An **edge** belongs to one shape. It carries a raw length and angle, and looks up its shape's longest edge to decide whether it itself is the hypotenuse (`是否为斜边`). Edges are the leaves of the DAG that the shape-level Pythagorean check depends on.",
+    "summary_rich": "The inner table. Each row belongs to one outer row and carries two raw numbers (`长度`, `角度`). One field (`是否为斜边`) is calculated by comparing this row's `长度` to a lookup of the parent's longest. The leaves of the DAG.",
     "important_fields": [
       "名称",
       "形状",
@@ -355,18 +355,18 @@
     ]
   },
   "_meta": {
-    "tagline": "Shapes, edges, and the Pythagorean theorem — wired as a DAG.",
+    "tagline": "Two tables in 中文. Three rows. One headline rule. Figure out what it's computing.",
     "motif": "default",
     "motif_palette": {
       "primary": "#3b5b6e",
       "accent": "#e0a83a",
       "ink": "#1c2a33"
     },
-    "description_rich": "A tiny geometry sandbox in Chinese: three **shapes** (`形状`) — a triangle, a square, and a degenerate two-edge \"line\" — and the **edges** (`边`) that belong to them. The rulebook counts edges per shape, classifies the shape by edge count (`点`/`线`/`三角形`/`正方形`), finds each shape's longest edge, marks every edge as hypotenuse or not, and then asks the big question: **does the Pythagorean theorem hold?** For a 3-edge shape it compares the sum of the *non-hypotenuse* squared lengths to the squared longest edge. Same DAG runs identically in Postgres, Python, Excel, and OWL — no application code decides what a triangle is.",
+    "description_rich": "A rulebook deliberately written in **Chinese**. Two tables — `形状` and `边` — with three rows in one and nine in the other. The field names don't tell you what they mean unless you read 中文; the data is just numbers. Somewhere in the schema is a calculated boolean named `勾股定理成立` that fires on some rows and stays blank on others. **What is this rulebook actually computing?** The game is to read enough of the data — without reading the formulas — to guess the answer. Open the rules drawer for the spoilers.",
     "use_cases": [
-      "**Watch the 3-4-5 triangle check itself.** Shape `1` has edges of length 3, 4, 5. `边的数量` is 3, so the shape is classified as `三角形`, edge `5` is flagged `是否为斜边 = TRUE`, `非斜边角度总和` becomes 9 + 16 = 25, `最大边长² = 25`, and `勾股定理成立` resolves to TRUE.",
-      "**Edit one edge length and watch the whole DAG re-fire.** Change the triangle's longest edge from 5 to 6: `最大边长` updates, `是否为斜边` re-evaluates per edge, and `勾股定理成立` flips to FALSE — without touching application code.",
-      "**Add a fourth edge to shape `1`.** `边的数量` becomes 4, `边的类型` reclassifies it from `三角形` to `正方形`, and the Pythagorean check returns BLANK because the rule only fires for 3-edge shapes."
+      "**Browse `形状` and `边` blind.** Look at the values. Three rows in one table; nine rows in the other. Two integer columns called `长度` and `角度`. Guess what the rulebook is modeling before reading any formula.",
+      "**Find the column named `勾股定理成立`.** Some rows are `TRUE`, some `FALSE`, some blank. The blank pattern correlates with another field. What's the rule?",
+      "**Edit one row's `长度` and watch every dependent field recompute.** The DAG fires whether you understand 中文 or not — proving the rulebook is the spec and every substrate just witnesses it."
     ],
     "signature_rows": [
       {
@@ -386,7 +386,7 @@
         ]
       }
     ],
-    "journal_seed": "Three shapes on the table. The triangle (3-4-5) satisfies Pythagoras; the square satisfies it trivially (no non-hypotenuse edges to sum); the two-edge line is neither one thing nor the other.",
+    "journal_seed": "Three rows in 形状, nine in 边. The fields don't name themselves in English. The rulebook is computing *something* — but what?",
     "substrates": [
       {
         "key": "postgres",

@@ -21,7 +21,7 @@
       "Name": "airtabletorulebook",
       "RelativePath": "/effortless-rulebook",
       "CommandLine": "airtable-to-rulebook -account airtable -o nakedclaude-v4-rulebook.json",
-      "IsDisabled": false,
+      "IsDisabled": true,
       "PinnedVersion": "v2026.04.23.1357",
       "LastVersionUsed": "v2026.04.23.1357",
       "LastUrl": "https://effortless-airtable-to-rulebook-v2026-04-23-1357-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
