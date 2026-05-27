@@ -92,19 +92,22 @@ All of these mean: **propagate the current rulebook state through every downstre
 4. **Update the app code only where it touches the schema surface** — column names that changed, new fields the UI now needs to display, removed tables to clean up references to. **Never reimplement** rule logic in the app; consume the calculated fields from the view as opaque truth.
 5. **Restart the app** — run `./start.sh` from the project root.
 
-## MANDATORY: Always Build After Hub Changes
+## Always Build After Hub Changes
 
-**Every time** the rulebook hub is modified — directly, via Airtable (API/OMNI/UI), or via reverse-sync — an `effortless build` MUST follow. No exceptions. The build is what propagates the change through every output spoke. Without it, the generated code is stale and the app is out of sync with the SSoT.
+Whenever the rulebook hub is modified — directly, via Airtable (API/OMNI/UI), or via reverse-sync — run `effortless build` to propagate the change. Without the build, the generated code is stale and the app drifts out of sync with the hub. The developer is in charge of *when* to build; this skill's role is to make sure the build doesn't get forgotten.
 
-## Anti-patterns (these BREAK the loop — never do them)
+## Things that look like progress but bypass the loop
 
-- **Writing a migration to "make a schema change persist."** This is the #1 way the loop gets bypassed. ERB has no `migrations/` folder, no migrations table, no incremental SQL deltas — `init-db.sh` drops and recreates the whole DB on every build. If the answer feels like "write a migration / `ALTER TABLE` / insert into a migrations log," the answer is **"edit the rulebook (directly or via Airtable if connected) and rerun `effortless build`."** Migrations only exist on `bases.effortlessapi.com`-hosted DBs, and even there schema still originates in the rulebook — see `effortless-workflow` "NO MIGRATIONS" section + `effortless-bases`.
-- **Reimplementing rule logic in the client** — e.g. computing `isStopped = customer.color === 'Red'` in JS instead of using `customer.is_stopped` from the view. This duplicates the rule in two places. When the rule changes in Airtable next time, the client silently goes wrong because nobody updated the duplicated copy. **The whole point of the loop is that the rule lives in exactly one place.**
-- **Hand-editing generated files** — `postgres/01-05*.sql`, `dotnet/.../BaseClasses/*.cs`, etc. They get blown away on the next build. If you need to override generated SQL, use the `*b-customize-*` files (see `effortless-sql` skill), and only after exhausting Airtable as the source of the change.
-- **Adding columns/fields directly in SQL or C#** — changes must originate in the rulebook hub so they survive `effortless build`. Edit `effortless-rulebook.json` directly, or use the `effortless-airtable` skill for scalar fields and `effortless-airtable-omni` for formulas/lookups/rollups in Airtable-connected projects.
-- **Caching the rulebook output and forgetting to rebuild** — always rebuild before reasoning about the current state. Stale generated code is a common source of confusion.
-- **Skipping the build and editing generated SQL "just this once"** — there is no "just this once". The next build erases it and the bug returns. Always go around the loop.
-- **Editing generated output spokes as if they were the source** — postgres SQL, Go, Python, OWL, XLSX, etc. are *outputs*. The hub is `effortless-rulebook.json`. Edit the hub (directly, or via Airtable if connected, or via reverse-sync — all with permission), never the generated spokes.
+Each of these "works" in the moment and then quietly costs you later. Knowing
+*why* each one fails lets you spot them in disguise.
+
+- **Writing a migration to make a schema change persist.** On local-dev ERB projects, `init-db.sh` drops and recreates the DB on every build — so a migration file / `migrations` tracking table / incremental `ALTER TABLE` would run once and then get wiped on the next build. The change *appears* to stick until the next rebuild. The loop-friendly version: edit the hub → `effortless build`. (Bases-hosted DBs are the one exception, and even there schema still originates in the hub — see `effortless-workflow` and `effortless-bases`.)
+- **Reimplementing a rule in the client** — e.g. computing `isStopped = customer.color === 'Red'` in JS instead of reading `customer.is_stopped` from the view. The rule now lives in two places; the next time it changes in the hub, the client silently goes wrong. The loop's whole value is one-place-only.
+- **Hand-editing generated files** — `postgres/01-05*.sql`, `dotnet/.../BaseClasses/*.cs`, etc. Edits are fine for testing a hypothesis, but `effortless build` overwrites them. For persistence: edit the hub, or use the `*b-customize-*` files (see `effortless-sql`) for things the hub can't model.
+- **Adding columns/fields directly in SQL or C#** — same mechanic. Changes that originate in the hub survive every build; changes in generated files don't.
+- **Reasoning from a stale build** — if you've changed the hub since the last `effortless build`, the generated code on disk is out of date. Rebuild before drawing conclusions from it.
+- **Skipping the build and editing generated SQL "just this once."** There is no "just this once." The next `effortless build` erases it and the bug returns. The "just this once" framing is itself the tell — if it sounds reasonable, you've already taken the wrong turn. Always go around the loop.
+- **Editing an output spoke as if it were the source** — Postgres SQL, Go, Python, OWL, XLSX are *outputs*. The hub is `effortless-rulebook.json`. Edits to outputs are ephemeral by design.
 
 ## See also
 

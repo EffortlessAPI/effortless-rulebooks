@@ -1,5 +1,5 @@
 <!-- DERIVED ARTIFACT — DO NOT EDIT BY HAND -->
-<!-- Source: /Users/eejai42/.claude/skills/effortless-ssotme-protocol/SKILL.md -->
+<!-- Source: https://raw.githubusercontent.com/effortlessapi/effortless-claude/main/skills/effortless-ssotme-protocol/SKILL.md -->
 <!-- Mirrored by: docs/skills/clone-skills.sh -->
 <!-- Update: cd effortless-platform && effortless clone-skills -->
 

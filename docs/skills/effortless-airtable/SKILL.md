@@ -6,23 +6,63 @@
 ---
 name: effortless-airtable
 description: >
-  Use when making schema or data changes via the Airtable API in an ERB project —
-  adding fields, creating tables, modifying existing fields, or when you need to
-  understand Airtable API limitations (e.g., formula fields cannot be created via API).
+  Use when making schema or data changes via the Airtable API in an
+  Airtable-connected ERB project — adding fields, creating tables, modifying
+  existing fields, or when you need to understand Airtable API limitations
+  (e.g., formula fields cannot be created via API). Only relevant if the
+  project is *explicitly* Airtable-connected (see "Is this an Airtable project?"
+  below); otherwise this is a Rulebook-First project and edits go to the hub
+  directly.
 
   **Scope (load gate):** Effortless projects only — project root must contain `effortless.json` AND a CLAUDE.md identifying the project as ERB methodology. Do NOT load otherwise.
 audience: customer
 ---
 
-# Airtable as One Input Spoke
+# Airtable as One (Optional) Input Spoke
 
-In ERB, **`effortless-rulebook.json` is the hub / single source of truth.** Airtable is one
-optional input spoke — a human-friendly editing surface for projects that opt into it.
-The rulebook can equally well be edited directly (LLM-direct or hand-edits) or fed from
-other input spokes. Airtable is great, but no longer privileged.
+In ERB, **`effortless-rulebook.json` is the hub / single source of truth.** The
+**default** is Rulebook-First: edits go to the hub (LLM-direct or hand-edits)
+and Airtable is — at most — a *downstream consumer* mirrored via
+`rulebook-to-airtable`. Airtable only becomes an input spoke when the project
+has *explicitly opted in*.
 
-This skill covers the **Airtable spoke** specifically: how to read/write Airtable via its
-API so that `effortless build` picks up your changes into the hub.
+## Is this an Airtable project?
+
+A project is Airtable-connected as an **input spoke** only if **both** of these
+are true in `effortless.json`:
+
+1. `ProjectSettings` has a `baseId` entry with a real Airtable base ID
+   (`appXXXXXXXX...`), AND
+2. `ProjectTranspilers` has an `airtable-to-rulebook` entry with
+   `IsDisabled: false` (or no `IsDisabled` field at all — defaults to enabled).
+
+Quick check:
+
+```bash
+python3 - <<'PY'
+import json
+with open("effortless.json") as f: cfg = json.load(f)
+base_id = next((s["Value"] for s in cfg.get("ProjectSettings", []) if s.get("Name") == "baseId"), None)
+a2r = next((t for t in cfg.get("ProjectTranspilers", []) if t.get("Name") == "airtable-to-rulebook"), None)
+a2r_enabled = a2r is not None and not a2r.get("IsDisabled", False)
+print(f"baseId: {base_id!r}")
+print(f"airtable-to-rulebook enabled: {a2r_enabled}")
+print(f"=> Airtable-connected: {bool(base_id) and a2r_enabled}")
+PY
+```
+
+**If both are true → Airtable is a live input spoke. This skill applies.**
+
+**If either is false → Rulebook-First project.** Don't reach for the Airtable
+API for schema/data edits — edit `effortless-rulebook.json` directly (see
+`effortless-workflow`). Airtable may still be wired as a *downstream* spoke
+(`rulebook-to-airtable` only), but in that direction it's an output, not an
+input — never edit Airtable first, because `effortless build` will overwrite
+your edits with whatever the hub says.
+
+This skill covers the **Airtable input spoke** specifically: how to read/write
+Airtable via its API so that `effortless build` picks up your changes into the
+hub.
 
 **Airtable-spoke flow:** Edit Airtable → `effortless build` → `airtable-to-rulebook` updates the hub → downstream transpilers regenerate every output spoke (Postgres, etc.).
 
@@ -182,15 +222,22 @@ This pattern ensures linked records are established first, making lookups trivia
 4. **NEVER include `{Entity}Id` fields** — surrogate keys are managed by the substrate off-screen
 5. **Links use singular PascalCase**: `Schema | link:SDCSchemas`, `TargetClass | link:SDCTypes`
 
-## When Airtable API Has Limitations
+## When the Airtable API can't do something
 
-Some operations (like modifying formula fields) cannot be done via API. When you hit these limitations:
+Some operations (like creating or modifying formula fields) aren't exposed by
+the Airtable API. When you hit one in an Airtable-connected project, surface
+the blocker and let the user pick a path — don't silently switch to editing
+generated files (those edits get overwritten on the next build, so the
+apparent fix would evaporate).
 
-1. **Tell the user** what you cannot do programmatically
-2. **Explain the options**:
-   - User can make the change manually in Airtable's UI
-   - User can add logic to a customization file (e.g., `02b-customize-functions.sql`)
-3. **Wait for user direction** - do not proceed with manual edits to generated files
+Options to present, in order of preference:
+
+1. **Rulebook-direct** — edit `effortless-rulebook.json` to add the formula/lookup field, then `effortless build`. The default for any non-Airtable project, and usually the most ergonomic path even for Airtable projects: the rulebook is JSON, LLMs edit it well, no Playwright/OMNI involved. (If the project is Airtable-connected, follow with a reverse-sync via `push-to-airtable/` so Airtable stays mirrored.)
+2. **OMNI via Playwright** — for changes that genuinely need to flow through Airtable first, see `effortless-airtable-omni`.
+3. **Airtable UI** — user makes the change manually in Airtable, then runs `effortless build`.
+4. **Customization file** — appropriate for SQL that the hub can't model (auth, RLS helpers); not the right fit for a calculated business field.
+
+Wait for direction before proceeding.
 
 ---
 

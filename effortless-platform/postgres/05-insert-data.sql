@@ -317,6 +317,60 @@ VALUES ('domain-007', 'ACME LLC', 'rulebook-examples/acme-llc/', 'rulebook-examp
 INSERT INTO rulebook_domains (domain_id, domain_name, relative_path, rulebook_path, complexity_level, table_count, key_features, purpose, parent_domain_id, progression_note)
 VALUES ('domain-008', 'Effortless Rulesbooks (self-referential demo)', 'rulebook-examples/effortless-rulesbooks/', 'rulebook-examples/effortless-rulesbooks/effortless-rulebook/effortless-rulesbooks-rulebook.json', 'philosophical', NULL, 'self-referential; rulebook describes the ERB project itself', 'Demonstrates ERB modeling its own architecture as a domain rulebook', 'bd4de4a0-cf46-0235-f50a-8e62380d7592', 'Independent root, self-referential — a rulebook whose domain IS ERB. Demonstrates that the formalism is rich enough to describe itself (dogfooding).') ON CONFLICT (domain_id) DO NOTHING;
 
+INSERT INTO rulebook_domains (domain_id, domain_name, relative_path, rulebook_path, complexity_level, table_count, key_features, purpose, parent_domain_id, progression_note)
+VALUES ('domain-009', 'Guessing Game', 'rulebook-examples/guessing-game/', 'rulebook-examples/guessing-game/effortless-rulebook/guessing-game-rulebook.json', 'minimal', 2, 'relationships, calculated fields, lookups, aggregations, IF/AND/OR logic', 'Number-guessing game tracking guesses, hints, and best-score records per player.', 'domain-001', 'First two-table domain on top of single-table CONCAT — adds a FK and a ''best score'' aggregation, the smallest example with cross-row state.') ON CONFLICT (domain_id) DO NOTHING;
+
+INSERT INTO rulebook_domains (domain_id, domain_name, relative_path, rulebook_path, complexity_level, table_count, key_features, purpose, parent_domain_id, progression_note)
+VALUES ('domain-010', 'NakedClaude v1', 'rulebook-examples/nakedclaude-v1/', 'rulebook-examples/nakedclaude-v1/effortless-rulebook/nakedclaude-v1-rulebook.json', 'minimal', 1, 'calculated fields, IF/AND/OR logic', 'Rulebook generated from Airtable base ''v1: NakedClaude Demo''.', '3d372fb3-7bc6-718d-da8e-9f76d225fa0c', 'Root of the NakedClaude progression: one table, calculated fields with IF logic. The starting point for showing what a naked LLM produces without methodology.') ON CONFLICT (domain_id) DO NOTHING;
+
+INSERT INTO rulebook_domains (domain_id, domain_name, relative_path, rulebook_path, complexity_level, table_count, key_features, purpose, parent_domain_id, progression_note)
+VALUES ('domain-011', 'NakedClaude v2', 'rulebook-examples/nakedclaude-v2/', 'rulebook-examples/nakedclaude-v2/effortless-rulebook/nakedclaude-v2-rulebook.json', 'moderate', 3, 'relationships, calculated fields, lookups, IF/AND/OR logic', 'Rulebook generated from Airtable base ''v2: NakedClaude Demo''.', 'domain-010', 'Adds relationships and lookups across three tables — first NakedClaude iteration with cross-table inference.') ON CONFLICT (domain_id) DO NOTHING;
+
+INSERT INTO rulebook_domains (domain_id, domain_name, relative_path, rulebook_path, complexity_level, table_count, key_features, purpose, parent_domain_id, progression_note)
+VALUES ('domain-012', 'NakedClaude v3', 'rulebook-examples/nakedclaude-v3/', 'rulebook-examples/nakedclaude-v3/effortless-rulebook/nakedclaude-v3-rulebook.json', 'moderate', 8, 'relationships, calculated fields, lookups, aggregations, IF/AND/OR logic', 'Rulebook generated from Airtable base ''v3: NakedClaude Demo''.', 'domain-011', 'Adds aggregations across eight tables — first NakedClaude iteration that exercises rollups.') ON CONFLICT (domain_id) DO NOTHING;
+
+INSERT INTO rulebook_domains (domain_id, domain_name, relative_path, rulebook_path, complexity_level, table_count, key_features, purpose, parent_domain_id, progression_note)
+VALUES ('domain-013', 'NakedClaude v4', 'rulebook-examples/nakedclaude-v4/', 'rulebook-examples/nakedclaude-v4/effortless-rulebook/nakedclaude-v4-rulebook.json', 'advanced', 15, 'relationships, calculated fields, lookups, aggregations, IF/AND/OR logic', 'Rulebook generated from Airtable base ''v4: NakedClaude Demo''.', 'domain-012', 'Adds 15-table breadth on top of the v3 pattern — largest of the NakedClaude progression series.') ON CONFLICT (domain_id) DO NOTHING;
+
+INSERT INTO rulebook_domains (domain_id, domain_name, relative_path, rulebook_path, complexity_level, table_count, key_features, purpose, parent_domain_id, progression_note)
+VALUES ('domain-014', 'Product Inventory', 'rulebook-examples/product-inventory/', 'rulebook-examples/product-inventory/effortless-rulebook/product-inventory-rulebook.json', 'moderate', 3, 'relationships, calculated fields, lookups, aggregations, IF/AND/OR logic', 'Products with transactions adjusting quantities and low-stock alerts.', 'domain-002', 'Adds running-balance aggregation (transactions roll up into product quantities) and threshold-based IF flags for low-stock alerts.') ON CONFLICT (domain_id) DO NOTHING;
+
+INSERT INTO rulebook_domains (domain_id, domain_name, relative_path, rulebook_path, complexity_level, table_count, key_features, purpose, parent_domain_id, progression_note)
+VALUES ('domain-015', 'Expense Approval', 'rulebook-examples/expense-approval/', 'rulebook-examples/expense-approval/effortless-rulebook/expense-approval-rulebook.json', 'moderate', 3, 'relationships, calculated fields, lookups, aggregations, IF/AND/OR logic', 'Employees submit line-item reports; totals, over-budget, and escalation flags cascade automatically.', 'domain-002', 'Adds approval-state propagation: line-item totals roll into reports, reports cascade over-budget and escalation flags via IF.') ON CONFLICT (domain_id) DO NOTHING;
+
+INSERT INTO rulebook_domains (domain_id, domain_name, relative_path, rulebook_path, complexity_level, table_count, key_features, purpose, parent_domain_id, progression_note)
+VALUES ('domain-016', 'Volunteer Shift Scheduler', 'rulebook-examples/volunteer-shift-scheduler/', 'rulebook-examples/volunteer-shift-scheduler/effortless-rulebook/volunteer-shift-scheduler-rulebook.json', 'moderate', 4, 'relationships, calculated fields, lookups, aggregations, IF/AND/OR logic', 'Coverage status, volunteer load (under/ok/over), and event-level A–F staffing grade all fall out automatically.', 'domain-002', 'Adds multi-axis grading: coverage status per shift, per-volunteer load (under/ok/over), and an event-level A–F grade — all derived.') ON CONFLICT (domain_id) DO NOTHING;
+
+INSERT INTO rulebook_domains (domain_id, domain_name, relative_path, rulebook_path, complexity_level, table_count, key_features, purpose, parent_domain_id, progression_note)
+VALUES ('domain-017', 'Wedding Seating Optimizer', 'rulebook-examples/wedding-seating-optimizer/', 'rulebook-examples/wedding-seating-optimizer/effortless-rulebook/wedding-seating-optimizer-rulebook.json', 'moderate', 4, 'relationships, calculated fields, lookups, aggregations, IF/AND/OR logic', 'Seating plan as a DAG — per-table happiness, capacity flags, per-guest satisfaction recompute on every move.', 'domain-002', 'Adds a moves-recompute-everything DAG: per-table happiness, capacity flags, and per-guest satisfaction all recompute on every seat change.') ON CONFLICT (domain_id) DO NOTHING;
+
+INSERT INTO rulebook_domains (domain_id, domain_name, relative_path, rulebook_path, complexity_level, table_count, key_features, purpose, parent_domain_id, progression_note)
+VALUES ('domain-018', 'Gym Trainer Invoicing', 'rulebook-examples/gym-trainer-invoicing/', 'rulebook-examples/gym-trainer-invoicing/effortless-rulebook/gym-trainer-invoicing-rulebook.json', 'moderate', 5, 'relationships, calculated fields, lookups, aggregations, IF/AND/OR logic', 'Sessions roll up into invoices; invoices roll up into client outstanding balances.', 'domain-002', 'Adds two-level rollup: sessions roll into invoice totals; invoice balances roll into client outstanding balances.') ON CONFLICT (domain_id) DO NOTHING;
+
+INSERT INTO rulebook_domains (domain_id, domain_name, relative_path, rulebook_path, complexity_level, table_count, key_features, purpose, parent_domain_id, progression_note)
+VALUES ('domain-019', 'Therapist Helper Portal', 'rulebook-examples/therapist-helper-portal/', 'rulebook-examples/therapist-helper-portal/effortless-rulebook/therapist-helper-portal-rulebook.json', 'moderate', 5, 'relationships, calculated fields, lookups, aggregations, IF/AND/OR logic', 'Sessions and treatment progress: GoalUpdate → Goal.ProgressPct → Client.IsAtRisk three-hop DAG.', 'domain-002', 'Adds an explicit three-hop DAG: GoalUpdate → Goal.ProgressPct → Client.IsAtRisk — the smallest domain that exercises real cascading inference.') ON CONFLICT (domain_id) DO NOTHING;
+
+INSERT INTO rulebook_domains (domain_id, domain_name, relative_path, rulebook_path, complexity_level, table_count, key_features, purpose, parent_domain_id, progression_note)
+VALUES ('domain-020', 'Community Event Planner', 'rulebook-examples/community-event-planner/', 'rulebook-examples/community-event-planner/effortless-rulebook/community-event-planner-rulebook.json', 'moderate', 6, 'relationships, calculated fields, lookups, aggregations, IF/AND/OR logic', 'Venues, events, speakers, attendees with capacity, scheduling, and attendance-forecast cascades.', 'domain-002', 'Adds attendance-forecast cascades and capacity-vs-RSVP logic across venues, events, speakers, and attendees.') ON CONFLICT (domain_id) DO NOTHING;
+
+INSERT INTO rulebook_domains (domain_id, domain_name, relative_path, rulebook_path, complexity_level, table_count, key_features, purpose, parent_domain_id, progression_note)
+VALUES ('domain-021', 'Customer CRM', 'rulebook-examples/customer-crm/', 'rulebook-examples/customer-crm/effortless-rulebook/customer-crm-rulebook.json', 'advanced', 7, 'relationships, calculated fields, lookups, aggregations, IF/AND/OR logic', 'Fighter-jet FCS sales pipeline rolling revenue up by order, FCS variant, and jet model.', 'domain-002', 'Adds multi-axis pipeline rollup: revenue aggregates by order, by FCS variant, and by jet model — three rollup dimensions over the same fact table.') ON CONFLICT (domain_id) DO NOTHING;
+
+INSERT INTO rulebook_domains (domain_id, domain_name, relative_path, rulebook_path, complexity_level, table_count, key_features, purpose, parent_domain_id, progression_note)
+VALUES ('domain-022', 'Fantasy Football', 'rulebook-examples/fantasy-football/', 'rulebook-examples/fantasy-football/effortless-rulebook/fantasy-football-rulebook.json', 'advanced', 6, 'relationships, calculated fields, lookups, aggregations, IF/AND/OR logic', 'Multi-hop DAG: raw player stats → roster aggregations → matchup scoring → standings & seeding.', 'domain-002', 'Adds a four-hop DAG: raw player stats → roster aggregations → matchup scoring → standings & seeding — every standings cell traces back to raw stats.') ON CONFLICT (domain_id) DO NOTHING;
+
+INSERT INTO rulebook_domains (domain_id, domain_name, relative_path, rulebook_path, complexity_level, table_count, key_features, purpose, parent_domain_id, progression_note)
+VALUES ('domain-023', 'Taxonomy of Intelligence', 'rulebook-examples/intelligence-taxonomy/', 'rulebook-examples/intelligence-taxonomy/effortless-rulebook/intelligence-taxonomy-rulebook.json', 'philosophical', 3, 'relationships, calculated fields, lookups, aggregations, IF/AND/OR logic', 'Classifies intelligences (humans, animals, AI) by per-capability assessments through a multi-hop DAG.', 'domain-005', 'Adds an empirical classification DAG: humans, animals, and AI all get scored per-capability and rolled up into intelligence-type tiers.') ON CONFLICT (domain_id) DO NOTHING;
+
+INSERT INTO rulebook_domains (domain_id, domain_name, relative_path, rulebook_path, complexity_level, table_count, key_features, purpose, parent_domain_id, progression_note)
+VALUES ('domain-024', 'Job Search RAG', 'rulebook-examples/job-search-rag/', 'rulebook-examples/job-search-rag/effortless-rulebook/job-search-rag-rulebook.json', 'advanced', 10, 'relationships, calculated fields, lookups, aggregations, IF/AND/OR logic', 'Local LLM + RAG pipeline filtering jobs across boards using semantic search.', 'domain-002', 'Adds an AI-pipeline ontology: job postings flow through embedding, RAG retrieval, and semantic-filter stages — demonstrates that AI pipelines themselves are expressible as rulebooks.') ON CONFLICT (domain_id) DO NOTHING;
+
+INSERT INTO rulebook_domains (domain_id, domain_name, relative_path, rulebook_path, complexity_level, table_count, key_features, purpose, parent_domain_id, progression_note)
+VALUES ('domain-025', 'Effortless Banking', 'rulebook-examples/effortless-banking/', 'rulebook-examples/effortless-banking/effortless-rulebook/effortless-banking-rulebook.json', 'advanced', 10, 'relationships, calculated fields, lookups, aggregations, IF/AND/OR logic', 'Community-bank commercial RM platform — loans, deposits, covenants, BSA/AML.', 'domain-002', 'Adds a regulated-financial-domain stress test: loans, deposits, covenants, BSA/AML monitoring, four-surface portal — shows the methodology holds at enterprise complexity.') ON CONFLICT (domain_id) DO NOTHING;
+
+INSERT INTO rulebook_domains (domain_id, domain_name, relative_path, rulebook_path, complexity_level, table_count, key_features, purpose, parent_domain_id, progression_note)
+VALUES ('domain-026', 'Mechanical Kitchen Timer', 'rulebook-examples/mechanical-kitchen-timer/', 'rulebook-examples/mechanical-kitchen-timer/effortless-rulebook/mechanical-kitchen-timer-rulebook.json', 'advanced', 26, 'relationships, calculated fields, lookups, aggregations, IF/AND/OR logic', 'Five-part mechanical timer modeled with every README noun as a table — a hardware-ontology stress test.', '3941e820-45ea-608c-20b8-64a5e2599bc4', 'Hardware-ontology stress test: every noun in the kitchen-timer README becomes a table (26 of them). Proves the methodology isn''t limited to information systems.') ON CONFLICT (domain_id) DO NOTHING;
+
 -- ----------------------------------------------------------------------------
 -- CoreDataFlows: End-to-end flows from rulebook to execution and testing
 -- ----------------------------------------------------------------------------
@@ -443,23 +497,20 @@ VALUES ('user-005', 'reviewer@example.com', 'Conformance Reviewer', FALSE, 'Read
 INSERT INTO app_users (user_id, email, display_name, is_default, notes)
 VALUES ('user-006', 'ops@example.com', 'Build Ops', FALSE, 'Runs builds, pulls spokes, watches health. Lands on /builds.') ON CONFLICT (user_id) DO NOTHING;
 
+INSERT INTO app_users (user_id, email, display_name, is_default, notes)
+VALUES ('user-admin', 'admin@example.com', 'Local Admin', FALSE, 'Demo admin user. Manages platform config — no domain edits.') ON CONFLICT (user_id) DO NOTHING;
+
 -- ----------------------------------------------------------------------------
 -- UserRoles: Admin portal access tiers. Each role is a PERSONA with its own landing screen, tagline, and bespoke screen overrides (see RoleScreenHints). NOT a CRUD form — every role gets a UX shaped for what that person actually cares about. Also drives RLS policies that Postgres applies to portal writes.
 -- ----------------------------------------------------------------------------
 INSERT INTO user_roles (role_id, name, persona, tagline, primary_concerns, color_theme, access_level, can_edit_rulebook, can_run_builds, can_access_tech_tools, can_switch_projects, can_manage_users, description)
-VALUES ('role-viewer', 'Viewer', 'Curious newcomer poking at the project for the first time — wants to understand what it is and what it does without touching anything.', 'See the whole project at a glance.', 'what the project is, what its parts are, what makes it conformant', '#7280ad', 'read', FALSE, FALSE, FALSE, TRUE, FALSE, 'Read-only walkthrough. Sees the rulebook, browses substrates, reads test results. Every page is reading; no mutation controls render.') ON CONFLICT (role_id) DO NOTHING;
+VALUES ('role-viewer', 'Viewer', 'Read-only browser of the project — reviewers, stakeholders, and curious onlookers all live here.', 'See the whole project. Comment when you must.', 'rulebook meaning, conformance matrix, framing, comments on review items', '#7280ad', 'read', FALSE, FALSE, FALSE, TRUE, FALSE, 'Read-only across all domains plus reviewer-style comments on test results and entities. Cannot mutate the rulebook or run builds.') ON CONFLICT (role_id) DO NOTHING;
 
 INSERT INTO user_roles (role_id, name, persona, tagline, primary_concerns, color_theme, access_level, can_edit_rulebook, can_run_builds, can_access_tech_tools, can_switch_projects, can_manage_users, description)
-VALUES ('role-author', 'Author', 'Domain expert who owns the business rules — thinks in entities, fields, formulas, and example rows, not in transpilers or Postgres.', 'The rulebook is your editor. Make it say what you mean.', 'entity meaning, formula correctness, sample data realism, plain-English narrative', '#4a8d70', 'write', TRUE, FALSE, FALSE, TRUE, FALSE, 'Authors and edits rulebook semantics: entities, fields, formulas, descriptions, sample rows. Cannot run builds or touch substrate internals — that''s Ops/Developer.') ON CONFLICT (role_id) DO NOTHING;
+VALUES ('role-developer', 'Developer', 'Per-domain rulebook author and builder — edits the rulebook, runs builds, watches the conformance matrix, explores the generated database.', 'Edit the rulebook. Build. Confirm.', 'entities, formulas, sample data, substrates installed, builds green, tests green, the generated DB', '#b48cff', 'write', TRUE, TRUE, TRUE, TRUE, FALSE, 'Domain-scoped work. Authors rulebooks, runs builds, runs tests, inspects the generated Postgres DB. Always works within one domain at a time.') ON CONFLICT (role_id) DO NOTHING;
 
 INSERT INTO user_roles (role_id, name, persona, tagline, primary_concerns, color_theme, access_level, can_edit_rulebook, can_run_builds, can_access_tech_tools, can_switch_projects, can_manage_users, description)
-VALUES ('role-reviewer', 'Reviewer', 'Stakeholder or auditor reading the conformance story — wants to see that the substrates agree, and where they disagree wants the reasons.', 'Do all the substrates agree? Where don''t they, and why?', 'conformance matrix, test pass-rate, which substrate witnessed which run, framing invariants', '#9a6cb0', 'read', FALSE, FALSE, FALSE, TRUE, FALSE, 'Read-only with a Tests-first landing. Sees the conformance matrix, can drill into any failing cell to see input/expected/actual, and reads the Framing invariants — but cannot mutate or trigger anything.') ON CONFLICT (role_id) DO NOTHING;
-
-INSERT INTO user_roles (role_id, name, persona, tagline, primary_concerns, color_theme, access_level, can_edit_rulebook, can_run_builds, can_access_tech_tools, can_switch_projects, can_manage_users, description)
-VALUES ('role-ops', 'Ops', 'Build/release engineer keeping the pipeline green — cares about builds, spokes, freshness, and what''s installed where, not about the meaning of the rules.', 'Builds green. Spokes flowing. Tests passing.', 'last build status, installed transpilers, spoke pull freshness, conformance matrix health', '#c97a3d', 'write', FALSE, TRUE, FALSE, TRUE, FALSE, 'Triggers builds, pulls from spokes, watches the matrix. Cannot edit business rules. Tech Tools off — Ops uses the same surfaces as everyone else.') ON CONFLICT (role_id) DO NOTHING;
-
-INSERT INTO user_roles (role_id, name, persona, tagline, primary_concerns, color_theme, access_level, can_edit_rulebook, can_run_builds, can_access_tech_tools, can_switch_projects, can_manage_users, description)
-VALUES ('role-developer', 'Developer', 'Person extending the platform itself — adds substrates, writes injectors, debugs the proxy, edits the project rulebook. Has all the dials.', 'The whole stack is yours. Don''t break the SSoT.', 'transpiler catalog, raw SQL, proxy routes, rulebook JSON, write-through invariant', '#c0392b', 'full-admin', TRUE, TRUE, TRUE, TRUE, TRUE, 'Full admin. Edit rulebook, run builds, manage users, access Tech Tools (raw Postgres, proxy logs, rulebook JSON, reset editor). Reserved for platform maintainers.') ON CONFLICT (role_id) DO NOTHING;
+VALUES ('role-admin', 'Admin', 'Platform operator — manages users, roles, navigation, and watches devops health across every domain. Never opens a single document.', 'The platform runs. The team has access.', 'users, roles, permissions, platform-wide build health, proxy and infrastructure', '#f3b03e', 'full-admin', FALSE, TRUE, TRUE, FALSE, TRUE, 'Full admin of the platform itself — users, roles, navigation, permissions, plus cross-domain build monitoring and proxy health. Does not edit any domain''s rulebook.') ON CONFLICT (role_id) DO NOTHING;
 
 -- ----------------------------------------------------------------------------
 -- AppPermissions: RLS-style policy table: declarative per-role allow/deny on portal API endpoints and on Postgres tables. Generated into Postgres on portal bootstrap as RLS policies.
@@ -495,238 +546,295 @@ INSERT INTO app_permissions (permission_id, resource, "action", allow, rls_predi
 VALUES ('perm-010', 'users', 'update', FALSE, 'false') ON CONFLICT (permission_id) DO NOTHING;
 
 INSERT INTO app_permissions (permission_id, resource, "action", allow, rls_predicate)
-VALUES ('perm-101', 'rulebook.entity', 'read', TRUE, 'true') ON CONFLICT (permission_id) DO NOTHING;
+VALUES ('perm-011', 'rulebook.entity', 'read', TRUE, 'true') ON CONFLICT (permission_id) DO NOTHING;
 
 INSERT INTO app_permissions (permission_id, resource, "action", allow, rls_predicate)
-VALUES ('perm-102', 'rulebook.entity', 'create', TRUE, 'true') ON CONFLICT (permission_id) DO NOTHING;
+VALUES ('perm-012', 'rulebook.entity', 'create', TRUE, 'true') ON CONFLICT (permission_id) DO NOTHING;
 
 INSERT INTO app_permissions (permission_id, resource, "action", allow, rls_predicate)
-VALUES ('perm-103', 'rulebook.entity', 'update', TRUE, 'true') ON CONFLICT (permission_id) DO NOTHING;
+VALUES ('perm-013', 'rulebook.entity', 'update', TRUE, 'true') ON CONFLICT (permission_id) DO NOTHING;
 
 INSERT INTO app_permissions (permission_id, resource, "action", allow, rls_predicate)
-VALUES ('perm-104', 'rulebook.entity', 'delete', TRUE, 'true') ON CONFLICT (permission_id) DO NOTHING;
+VALUES ('perm-014', 'rulebook.entity', 'delete', TRUE, 'true') ON CONFLICT (permission_id) DO NOTHING;
 
 INSERT INTO app_permissions (permission_id, resource, "action", allow, rls_predicate)
-VALUES ('perm-105', 'rulebook.field', 'update', TRUE, 'true') ON CONFLICT (permission_id) DO NOTHING;
+VALUES ('perm-015', 'rulebook.field', 'update', TRUE, 'true') ON CONFLICT (permission_id) DO NOTHING;
 
 INSERT INTO app_permissions (permission_id, resource, "action", allow, rls_predicate)
-VALUES ('perm-106', 'rulebook.formula', 'update', TRUE, 'true') ON CONFLICT (permission_id) DO NOTHING;
+VALUES ('perm-016', 'rulebook.formula', 'update', TRUE, 'true') ON CONFLICT (permission_id) DO NOTHING;
 
 INSERT INTO app_permissions (permission_id, resource, "action", allow, rls_predicate)
-VALUES ('perm-107', 'build', 'execute', TRUE, NULL) ON CONFLICT (permission_id) DO NOTHING;
+VALUES ('perm-017', 'build', 'execute', TRUE, NULL) ON CONFLICT (permission_id) DO NOTHING;
 
 INSERT INTO app_permissions (permission_id, resource, "action", allow, rls_predicate)
-VALUES ('perm-108', 'test', 'execute', TRUE, NULL) ON CONFLICT (permission_id) DO NOTHING;
+VALUES ('perm-018', 'test', 'execute', TRUE, NULL) ON CONFLICT (permission_id) DO NOTHING;
 
 INSERT INTO app_permissions (permission_id, resource, "action", allow, rls_predicate)
-VALUES ('perm-109', 'tech-tools.postgres', 'read', TRUE, 'true') ON CONFLICT (permission_id) DO NOTHING;
+VALUES ('perm-019', 'tech-tools.postgres', 'read', TRUE, 'true') ON CONFLICT (permission_id) DO NOTHING;
 
 INSERT INTO app_permissions (permission_id, resource, "action", allow, rls_predicate)
-VALUES ('perm-110', 'tech-tools.postgres', 'execute', TRUE, 'true') ON CONFLICT (permission_id) DO NOTHING;
+VALUES ('perm-020', 'tech-tools.postgres', 'execute', TRUE, 'true') ON CONFLICT (permission_id) DO NOTHING;
 
 INSERT INTO app_permissions (permission_id, resource, "action", allow, rls_predicate)
-VALUES ('perm-111', 'tech-tools.proxy', 'read', TRUE, 'true') ON CONFLICT (permission_id) DO NOTHING;
+VALUES ('perm-021', 'tech-tools.proxy', 'read', TRUE, 'true') ON CONFLICT (permission_id) DO NOTHING;
 
 INSERT INTO app_permissions (permission_id, resource, "action", allow, rls_predicate)
-VALUES ('perm-112', 'users', 'create', TRUE, 'true') ON CONFLICT (permission_id) DO NOTHING;
+VALUES ('perm-022', 'users', 'create', TRUE, 'true') ON CONFLICT (permission_id) DO NOTHING;
 
 INSERT INTO app_permissions (permission_id, resource, "action", allow, rls_predicate)
-VALUES ('perm-113', 'users', 'update', TRUE, 'true') ON CONFLICT (permission_id) DO NOTHING;
+VALUES ('perm-023', 'users', 'update', TRUE, 'true') ON CONFLICT (permission_id) DO NOTHING;
 
 INSERT INTO app_permissions (permission_id, resource, "action", allow, rls_predicate)
-VALUES ('perm-114', 'users', 'delete', TRUE, 'true') ON CONFLICT (permission_id) DO NOTHING;
+VALUES ('perm-024', 'users', 'delete', TRUE, 'true') ON CONFLICT (permission_id) DO NOTHING;
 
 -- ----------------------------------------------------------------------------
 -- AppNavigation: Primary navigation tree for the admin portal. Drives the left sidebar. Each node has a role gate and a target screen. This is the developer's narrative through a rulebook project.
 -- ----------------------------------------------------------------------------
 INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat, nav_area)
-VALUES ('nav-001', 'Home', 'home', 10, 'What this project is, why it exists, who''s working on it. Cards: rulebook stats, last build, last test pass-rate, active spokes.', 'main') ON CONFLICT (nav_id) DO NOTHING;
+VALUES ('nav-001', 'Home', 'Home', 10, NULL, 'viewer') ON CONFLICT (nav_id) DO NOTHING;
 
 INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat, nav_area)
-VALUES ('nav-002', 'Rulebook', 'book-open', 20, 'The business semantics of the project — every table, field, formula, and sample row.', 'developer') ON CONFLICT (nav_id) DO NOTHING;
+VALUES ('nav-002', 'Browse Domains', 'LayoutGrid', 20, NULL, 'viewer') ON CONFLICT (nav_id) DO NOTHING;
 
 INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat, nav_area)
-VALUES ('nav-002a', 'Entities', 'table', 1, 'List all entities. Click one to drill in to its fields, sample data, and computed columns.', 'developer') ON CONFLICT (nav_id) DO NOTHING;
+VALUES ('nav-003', 'Flavours', 'Tag', 30, NULL, 'viewer') ON CONFLICT (nav_id) DO NOTHING;
 
 INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat, nav_area)
-VALUES ('nav-002b', 'Formulas', 'function-square', 2, 'All calculated fields in one place. Click one to see its DAG (inputs → output) live from the rulebook.', 'developer') ON CONFLICT (nav_id) DO NOTHING;
+VALUES ('nav-004', 'Platform Features', 'Sparkles', 40, NULL, 'viewer') ON CONFLICT (nav_id) DO NOTHING;
 
 INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat, nav_area)
-VALUES ('nav-002c', 'Relationships', 'git-fork', 3, 'FK graph of the project. Hover a node to highlight its inbound and outbound relationships.', 'developer') ON CONFLICT (nav_id) DO NOTHING;
+VALUES ('nav-005', 'Current Domain', 'Folder', 50, NULL, 'viewer') ON CONFLICT (nav_id) DO NOTHING;
 
 INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat, nav_area)
-VALUES ('nav-002d', 'Sample Data', 'database', 4, 'What the project looks like populated. Editable for developers; read-only for viewers.', 'developer') ON CONFLICT (nav_id) DO NOTHING;
+VALUES ('nav-006', 'Overview', 'Eye', 60, NULL, 'viewer') ON CONFLICT (nav_id) DO NOTHING;
 
 INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat, nav_area)
-VALUES ('nav-002e', 'Framing', 'compass', 5, 'The mistakes-to-avoid catalog and the axioms it protects. Read this before claiming any substrate is ''the reference''.', 'developer') ON CONFLICT (nav_id) DO NOTHING;
+VALUES ('nav-007', 'Entities', 'Table', 70, NULL, 'viewer') ON CONFLICT (nav_id) DO NOTHING;
 
 INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat, nav_area)
-VALUES ('nav-003', 'Substrates', 'boxes', 30, 'Every output substrate this project generates (Python, Go, Postgres, Excel, OWL, etc.). Click one to see the generated source and the conformance status.', 'developer') ON CONFLICT (nav_id) DO NOTHING;
+VALUES ('nav-008', 'Formulas', 'FunctionSquare', 80, NULL, 'viewer') ON CONFLICT (nav_id) DO NOTHING;
 
 INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat, nav_area)
-VALUES ('nav-003z', 'Add Tool', 'plus-square', 99, 'Pick from the catalog of 15+ transpilers and install one into the active project. Same code path as `effortless -install` on the CLI.', 'developer') ON CONFLICT (nav_id) DO NOTHING;
+VALUES ('nav-009', 'Relationships', 'GitBranch', 90, NULL, 'viewer') ON CONFLICT (nav_id) DO NOTHING;
 
 INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat, nav_area)
-VALUES ('nav-004', 'Builds', 'wrench', 40, 'Build history: when, what changed, which substrates regenerated, how long. Developers can trigger a build here.', 'developer') ON CONFLICT (nav_id) DO NOTHING;
+VALUES ('nav-010', 'Sample Data', 'Database', 100, NULL, 'viewer') ON CONFLICT (nav_id) DO NOTHING;
 
 INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat, nav_area)
-VALUES ('nav-005', 'Tests', 'check-circle', 50, 'Conformance matrix: which substrate computed which test case correctly. Drill in to see input → expected → actual per substrate.', 'developer') ON CONFLICT (nav_id) DO NOTHING;
+VALUES ('nav-011', 'Tests', 'CheckCheck', 110, NULL, 'viewer') ON CONFLICT (nav_id) DO NOTHING;
 
 INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat, nav_area)
-VALUES ('nav-006', 'Input Spokes', 'git-pull-request', 60, 'Where edits come from: admin portal, Airtable, LLM, manual JSON. Pull / push controls live here.', 'developer') ON CONFLICT (nav_id) DO NOTHING;
+VALUES ('nav-012', 'Comments', 'MessageSquare', 120, NULL, 'viewer') ON CONFLICT (nav_id) DO NOTHING;
 
 INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat, nav_area)
-VALUES ('nav-007', 'Users', 'users', 70, 'Default dev/test users from the rulebook + their roles.', 'admin') ON CONFLICT (nav_id) DO NOTHING;
+VALUES ('nav-013', 'Home', 'Home', 10, NULL, 'developer') ON CONFLICT (nav_id) DO NOTHING;
 
 INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat, nav_area)
-VALUES ('nav-007a', 'Roles & Personas', 'id-card', 1, 'Persona cards for each role — what they care about, where they land, who''s assigned. Click anything to navigate.', 'admin') ON CONFLICT (nav_id) DO NOTHING;
+VALUES ('nav-014', 'Pick Domain', 'LayoutGrid', 20, NULL, 'developer') ON CONFLICT (nav_id) DO NOTHING;
 
 INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat, nav_area)
-VALUES ('nav-001a', 'Project Flavours', 'tags', 1, 'Classification of every demo rulebook — crud-template, computation-heavy, aggregation-heavy, graph-ontology, etc.', 'main') ON CONFLICT (nav_id) DO NOTHING;
+VALUES ('nav-015', 'Current Domain', 'Folder', 30, NULL, 'developer') ON CONFLICT (nav_id) DO NOTHING;
 
 INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat, nav_area)
-VALUES ('nav-001b', 'Platform Features', 'sparkles', 2, 'What ERB actually does — headline features (ADP, clean, hub-and-spoke, convergent build, substrate equivalence, …) and additional ones. Each row links to its per-feature README; developers can edit the catalog here.', 'main') ON CONFLICT (nav_id) DO NOTHING;
+VALUES ('nav-016', 'Overview', 'Eye', 40, NULL, 'developer') ON CONFLICT (nav_id) DO NOTHING;
 
 INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat, nav_area)
-VALUES ('nav-008', 'Tech Tools', 'terminal', 80, 'Developer-only escape hatches. Raw Postgres, proxy logs, file system, manual injection. Not part of the daily workflow.', 'developer') ON CONFLICT (nav_id) DO NOTHING;
+VALUES ('nav-017', 'Entities', 'Table', 50, NULL, 'developer') ON CONFLICT (nav_id) DO NOTHING;
 
 INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat, nav_area)
-VALUES ('nav-008a', 'Postgres Explorer', 'database', 1, 'Raw editor-DB browser: run SQL, inspect rows, drop/reset DB.', 'developer') ON CONFLICT (nav_id) DO NOTHING;
+VALUES ('nav-018', 'Formulas', 'FunctionSquare', 60, NULL, 'developer') ON CONFLICT (nav_id) DO NOTHING;
 
 INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat, nav_area)
-VALUES ('nav-008b', 'ssotme-proxy', 'server', 2, 'Live proxy status: registered routes, recent calls, response sizes, last error per route.', 'developer') ON CONFLICT (nav_id) DO NOTHING;
+VALUES ('nav-019', 'Relationships', 'GitBranch', 70, NULL, 'developer') ON CONFLICT (nav_id) DO NOTHING;
 
 INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat, nav_area)
-VALUES ('nav-008c', 'Files', 'folder', 3, 'Project filesystem browser. View any generated or hand-written file in the active project.', 'developer') ON CONFLICT (nav_id) DO NOTHING;
+VALUES ('nav-020', 'Sample Data', 'Database', 80, NULL, 'developer') ON CONFLICT (nav_id) DO NOTHING;
 
 INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat, nav_area)
-VALUES ('nav-008d', 'Rulebook JSON', 'file-json', 4, 'Raw rulebook JSON viewer/editor. Save here goes through the same write-through invariant as the UI.', 'developer') ON CONFLICT (nav_id) DO NOTHING;
+VALUES ('nav-021', 'Effortless Tools', 'Wrench', 90, NULL, 'developer') ON CONFLICT (nav_id) DO NOTHING;
 
 INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat, nav_area)
-VALUES ('nav-008e', 'Reset Editor', 'rotate-ccw', 5, 'Drop the editor Postgres DB and re-bootstrap from rulebook JSON. Safe — JSON is SSoT.', 'developer') ON CONFLICT (nav_id) DO NOTHING;
+VALUES ('nav-023', 'Tests', 'CheckCheck', 110, NULL, 'developer') ON CONFLICT (nav_id) DO NOTHING;
 
 INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat, nav_area)
-VALUES ('nav-009', 'Docs', 'BookOpen', 90, 'Reference docs for ERB methodology.', 'docs') ON CONFLICT (nav_id) DO NOTHING;
+VALUES ('nav-024', 'Input Spokes', 'Plug', 120, NULL, 'developer') ON CONFLICT (nav_id) DO NOTHING;
 
 INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat, nav_area)
-VALUES ('nav-009a', 'Framing', 'AlertCircle', 1, 'Mistakes-to-avoid catalog.', 'docs') ON CONFLICT (nav_id) DO NOTHING;
+VALUES ('nav-025', 'Files', 'Files', 130, NULL, 'developer') ON CONFLICT (nav_id) DO NOTHING;
 
 INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat, nav_area)
-VALUES ('nav-009b', 'Methodology', 'FlaskConical', 2, 'Axioms and invariants combined view.', 'docs') ON CONFLICT (nav_id) DO NOTHING;
+VALUES ('nav-026', 'Explorer', 'Terminal', 140, NULL, 'developer') ON CONFLICT (nav_id) DO NOTHING;
 
 INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat, nav_area)
-VALUES ('nav-009c', 'Field Types', 'Layers', 3, 'ERB field-type taxonomy.', 'docs') ON CONFLICT (nav_id) DO NOTHING;
+VALUES ('nav-027', 'Rulebook JSON', 'Braces', 150, NULL, 'developer') ON CONFLICT (nav_id) DO NOTHING;
 
 INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat, nav_area)
-VALUES ('nav-009d', 'Glossary', 'BookMarked', 4, 'Term definitions.', 'docs') ON CONFLICT (nav_id) DO NOTHING;
+VALUES ('nav-028', 'Reset Editor', 'RotateCcw', 160, NULL, 'developer') ON CONFLICT (nav_id) DO NOTHING;
 
 INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat, nav_area)
-VALUES ('nav-010', 'Admin', 'Shield', 70, 'Admin landing.', 'admin') ON CONFLICT (nav_id) DO NOTHING;
+VALUES ('nav-029', 'Home', 'Home', 10, NULL, 'admin') ON CONFLICT (nav_id) DO NOTHING;
 
 INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat, nav_area)
-VALUES ('nav-010a', 'Users', 'Users', 1, 'User accounts.', 'admin') ON CONFLICT (nav_id) DO NOTHING;
+VALUES ('nav-030', 'Platform', 'Shield', 20, NULL, 'admin') ON CONFLICT (nav_id) DO NOTHING;
 
 INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat, nav_area)
-VALUES ('nav-010b', 'Roles', 'IdCard', 2, 'Role definitions.', 'admin') ON CONFLICT (nav_id) DO NOTHING;
+VALUES ('nav-031', 'Users', 'Users', 30, NULL, 'admin') ON CONFLICT (nav_id) DO NOTHING;
 
 INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat, nav_area)
-VALUES ('nav-010c', 'Permissions', 'Lock', 3, 'Permission matrix.', 'admin') ON CONFLICT (nav_id) DO NOTHING;
+VALUES ('nav-032', 'Roles', 'ShieldCheck', 40, NULL, 'admin') ON CONFLICT (nav_id) DO NOTHING;
 
 INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat, nav_area)
-VALUES ('nav-010d', 'Navigation', 'Menu', 4, 'Sidebar nav items.', 'admin') ON CONFLICT (nav_id) DO NOTHING;
+VALUES ('nav-033', 'Permissions', 'Key', 50, NULL, 'admin') ON CONFLICT (nav_id) DO NOTHING;
 
 INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat, nav_area)
-VALUES ('nav-010e', 'Screens', 'Layout', 5, 'Screen registry.', 'admin') ON CONFLICT (nav_id) DO NOTHING;
+VALUES ('nav-034', 'Navigation', 'Compass', 60, NULL, 'admin') ON CONFLICT (nav_id) DO NOTHING;
+
+INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat, nav_area)
+VALUES ('nav-035', 'Screens', 'Monitor', 70, NULL, 'admin') ON CONFLICT (nav_id) DO NOTHING;
+
+INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat, nav_area)
+VALUES ('nav-036', 'DevOps', 'Activity', 80, NULL, 'admin') ON CONFLICT (nav_id) DO NOTHING;
+
+INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat, nav_area)
+VALUES ('nav-037', 'Builds', 'Hammer', 90, NULL, 'admin') ON CONFLICT (nav_id) DO NOTHING;
+
+INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat, nav_area)
+VALUES ('nav-038', 'Proxy', 'Network', 100, NULL, 'admin') ON CONFLICT (nav_id) DO NOTHING;
+
+INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat, nav_area)
+VALUES ('nav-039', 'Docs', 'BookOpen', 10, NULL, 'docs') ON CONFLICT (nav_id) DO NOTHING;
+
+INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat, nav_area)
+VALUES ('nav-040', 'Framing', 'Compass', 20, NULL, 'docs') ON CONFLICT (nav_id) DO NOTHING;
+
+INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat, nav_area)
+VALUES ('nav-041', 'Methodology', 'GraduationCap', 30, NULL, 'docs') ON CONFLICT (nav_id) DO NOTHING;
+
+INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat, nav_area)
+VALUES ('nav-042', 'Field Types', 'Type', 40, NULL, 'docs') ON CONFLICT (nav_id) DO NOTHING;
+
+INSERT INTO app_navigation (nav_id, label, icon, "order", story_beat, nav_area)
+VALUES ('nav-043', 'Glossary', 'BookA', 50, NULL, 'docs') ON CONFLICT (nav_id) DO NOTHING;
 
 -- ----------------------------------------------------------------------------
 -- AppScreens: Every screen in the admin portal. Each screen names the entities it reads/writes, the role it requires, and the story it tells.
 -- ----------------------------------------------------------------------------
 INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story, nav_area)
-VALUES ('screen-home', '/', 'Home', 'ProjectMetadata,RulebookProjects,RulebookSourceSpokes,ExecutionSubstrates', NULL, 'dashboard', 'Switch project', 'Land here on ./start.sh. Cards: current project, rulebook size, # substrates, last build time, last test pass-rate, which spokes are active, who you''re signed in as.', 'main') ON CONFLICT (screen_id) DO NOTHING;
+VALUES ('screen-role-picker', '/', 'Choose Role', NULL, NULL, NULL, NULL, NULL, 'root') ON CONFLICT (screen_id) DO NOTHING;
 
 INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story, nav_area)
-VALUES ('screen-entities', '/developer/rulebook/entities', 'Entities', '<active-project-rulebook>', '<active-project-rulebook>', 'split-detail', 'Add entity', 'Left: list of every entity in the active project''s rulebook. Right: selected entity''s fields, formulas, sample rows. Developer can add/rename/delete fields inline; viewer sees the same with controls disabled.', 'developer') ON CONFLICT (screen_id) DO NOTHING;
+VALUES ('screen-viewer-home', '/viewer', 'Viewer Home', NULL, NULL, NULL, NULL, NULL, 'viewer') ON CONFLICT (screen_id) DO NOTHING;
 
 INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story, nav_area)
-VALUES ('screen-formulas', '/developer/rulebook/formulas', 'Formulas', '<active-project-rulebook>', '<active-project-rulebook>', 'split-detail', 'Edit formula', 'Every calculated field across all entities. Drill in to see live DAG visualization (inputs → intermediates → output) sourced from the rulebook''s explain-dag substrate. Developer can edit Excel-style formula in place; portal auto-validates against the parser.', 'developer') ON CONFLICT (screen_id) DO NOTHING;
+VALUES ('screen-viewer-domains', '/viewer/domains', 'Browse Domains', NULL, NULL, NULL, NULL, NULL, 'viewer') ON CONFLICT (screen_id) DO NOTHING;
 
 INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story, nav_area)
-VALUES ('screen-relationships', '/developer/rulebook/relationships', 'Relationships', '<active-project-rulebook>', NULL, 'grid', NULL, 'FK graph (interactive). Hover a node to highlight its inbound/outbound edges. Click an edge to see which formula or column declares it.', 'developer') ON CONFLICT (screen_id) DO NOTHING;
+VALUES ('screen-viewer-flavors', '/viewer/flavors', 'Project Flavours', NULL, NULL, NULL, NULL, NULL, 'viewer') ON CONFLICT (screen_id) DO NOTHING;
 
 INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story, nav_area)
-VALUES ('screen-sample-data', '/developer/rulebook/data', 'Sample Data', '<active-project-rulebook>.data', '<active-project-rulebook>.data', 'grid', 'Add row', 'Spreadsheet-style view of the data block of each entity. Developer can edit cells; computed columns are read-only and show the resolved value with a hoverable derivation popover.', 'developer') ON CONFLICT (screen_id) DO NOTHING;
+VALUES ('screen-viewer-features', '/viewer/features', 'Platform Features', NULL, NULL, NULL, NULL, NULL, 'viewer') ON CONFLICT (screen_id) DO NOTHING;
 
 INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story, nav_area)
-VALUES ('screen-substrates', '/developer/substrates', 'Substrates', 'ExecutionSubstrates,SsotmeProxy', NULL, 'split-detail', 'Rebuild substrate', 'Left: every substrate this project emits (with last-build timestamp + conformance status). Right: file tree of generated output + a preview pane for any file. Developer can trigger ''Rebuild just this substrate''.', 'developer') ON CONFLICT (screen_id) DO NOTHING;
+VALUES ('screen-viewer-domain', '/viewer/:domain', 'Domain Overview', NULL, NULL, NULL, NULL, NULL, 'viewer') ON CONFLICT (screen_id) DO NOTHING;
 
 INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story, nav_area)
-VALUES ('screen-add-tool', '/developer/tools/add', 'Add Tool', 'AddToolCatalog,SsotmeProxy', '<active-project>/effortless.json (via effortless CLI)', 'grid', 'Install', 'Browse the 15+ transpilers in the catalog. Click one, choose output path, hit Install. Portal shells out to `effortless -install <proxy-url>` so the result is byte-identical to the CLI path. Tool then shows up in /substrates and is ready for the next build.', 'developer') ON CONFLICT (screen_id) DO NOTHING;
+VALUES ('screen-viewer-entities', '/viewer/:domain/entities', 'Entities', NULL, NULL, NULL, NULL, NULL, 'viewer') ON CONFLICT (screen_id) DO NOTHING;
 
 INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story, nav_area)
-VALUES ('screen-builds', '/developer/builds', 'Builds', 'BuildHistory', 'BuildHistory', 'list', 'Trigger build', 'Chronological list of builds. Click one to see which transpilers ran, duration each, stdout/stderr per route, and which files changed. Trigger-build button is gated by CanRunBuilds.', 'developer') ON CONFLICT (screen_id) DO NOTHING;
+VALUES ('screen-viewer-formulas', '/viewer/:domain/formulas', 'Formulas', NULL, NULL, NULL, NULL, NULL, 'viewer') ON CONFLICT (screen_id) DO NOTHING;
 
 INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story, nav_area)
-VALUES ('screen-tests', '/developer/tests', 'Tests', 'TestingFramework,TestRuns', 'TestRuns', 'grid', 'Run all tests', 'Matrix: rows = test cases, columns = substrates, cells = pass/fail. Click a failing cell to see input, expected, actual, and a diff. Trigger-tests button is gated by CanRunBuilds.', 'developer') ON CONFLICT (screen_id) DO NOTHING;
+VALUES ('screen-viewer-relations', '/viewer/:domain/relationships', 'Relationships', NULL, NULL, NULL, NULL, NULL, 'viewer') ON CONFLICT (screen_id) DO NOTHING;
 
 INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story, nav_area)
-VALUES ('screen-input-spokes', '/developer/spokes', 'Input Spokes', 'RulebookSourceSpokes', NULL, 'list', 'Pull from spoke', 'List of every configured input spoke for this project. Status (last-pulled time, last-error). Developer can trigger a pull from any spoke.', 'developer') ON CONFLICT (screen_id) DO NOTHING;
+VALUES ('screen-viewer-data', '/viewer/:domain/data', 'Sample Data', NULL, NULL, NULL, NULL, NULL, 'viewer') ON CONFLICT (screen_id) DO NOTHING;
 
 INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story, nav_area)
-VALUES ('screen-users', '/admin/users', 'Users', 'AppUsers,UserRoles', 'AppUsers', 'list', 'Add user', 'Default dev/test users from the rulebook + roles. Developer can add new users (saved through the write-through invariant, so they end up in rulebook JSON).', 'admin') ON CONFLICT (screen_id) DO NOTHING;
+VALUES ('screen-viewer-tests', '/viewer/:domain/tests', 'Tests', NULL, NULL, NULL, NULL, NULL, 'viewer') ON CONFLICT (screen_id) DO NOTHING;
 
 INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story, nav_area)
-VALUES ('screen-tech-postgres', '/developer/tech/postgres', 'Postgres Explorer', '<editor-postgres-tables>', '<editor-postgres-tables>', 'editor', 'Run query', 'Raw SQL console + table browser for the editor Postgres DB. Developer-only escape hatch. Background banner reminds: rulebook JSON is the SSoT, this DB is rebuildable.', 'developer') ON CONFLICT (screen_id) DO NOTHING;
+VALUES ('screen-viewer-comments', '/viewer/:domain/comments', 'Comments', NULL, NULL, NULL, NULL, NULL, 'viewer') ON CONFLICT (screen_id) DO NOTHING;
 
 INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story, nav_area)
-VALUES ('screen-tech-proxy', '/developer/tech/proxy', 'ssotme-proxy', 'SsotmeProxy', NULL, 'list', 'Ping proxy', 'Live status of localhost:4242: registered routes, recent calls (route, duration, status, response size), last error per route. Restart button.', 'developer') ON CONFLICT (screen_id) DO NOTHING;
+VALUES ('screen-dev-home', '/developer', 'Developer Home', NULL, NULL, NULL, NULL, NULL, 'developer') ON CONFLICT (screen_id) DO NOTHING;
 
 INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story, nav_area)
-VALUES ('screen-tech-files', '/developer/tech/files', 'Project Files', '<project-filesystem>', NULL, 'split-detail', NULL, 'Browse the active project folder. View any file. Read-only — prevents drift from rulebook.', 'developer') ON CONFLICT (screen_id) DO NOTHING;
+VALUES ('screen-dev-domains', '/developer/domains', 'Pick Domain', NULL, NULL, NULL, NULL, NULL, 'developer') ON CONFLICT (screen_id) DO NOTHING;
 
 INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story, nav_area)
-VALUES ('screen-tech-json', '/developer/tech/rulebook-json', 'Raw Rulebook JSON', '<active-project-rulebook>', '<active-project-rulebook>', 'editor', 'Save JSON', 'Monaco editor on the raw effortless-rulebook.json. Save goes through the write-through invariant. Useful for bulk edits.', 'developer') ON CONFLICT (screen_id) DO NOTHING;
+VALUES ('screen-dev-domain', '/developer/:domain', 'Domain Landing', NULL, NULL, NULL, NULL, NULL, 'developer') ON CONFLICT (screen_id) DO NOTHING;
 
 INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story, nav_area)
-VALUES ('screen-tech-reset', '/developer/tech/reset', 'Reset Editor', NULL, NULL, 'dashboard', 'Reset now', 'One-button reset: drops the editor Postgres DB and re-bootstraps from rulebook JSON. The reassurance screen — makes the JSON-as-SSoT promise tangible.', 'developer') ON CONFLICT (screen_id) DO NOTHING;
+VALUES ('screen-dev-entities', '/developer/:domain/entities', 'Entities', NULL, NULL, NULL, NULL, NULL, 'developer') ON CONFLICT (screen_id) DO NOTHING;
 
 INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story, nav_area)
-VALUES ('screen-framing', '/developer/rulebook/framing', 'Framing', 'FramingInvariants,OntologyAxioms', NULL, 'split-detail', NULL, 'Left: FramingInvariants — the mistakes-to-avoid catalog. Right: the wrong framing, the correct framing, why, and the axiom it violates. Toggle to Axioms tab to see the positive-form invariants. Reviewer''s favourite page; required reading before defending the methodology.', 'developer') ON CONFLICT (screen_id) DO NOTHING;
+VALUES ('screen-dev-formulas', '/developer/:domain/formulas', 'Formulas', NULL, NULL, NULL, NULL, NULL, 'developer') ON CONFLICT (screen_id) DO NOTHING;
 
 INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story, nav_area)
-VALUES ('screen-roles', '/admin/users/roles', 'Roles & Personas', 'UserRoles,AppUsers,RoleScreenHints', 'UserRoles', 'split-detail', NULL, 'Left: each role with its colour-themed pill, persona, tagline. Right: the role''s primary concerns, landing screen (clickable), bespoke screen overrides, and the users currently assigned to it (clickable to filter the Users page).', 'admin') ON CONFLICT (screen_id) DO NOTHING;
+VALUES ('screen-dev-relations', '/developer/:domain/relationships', 'Relationships', NULL, NULL, NULL, NULL, NULL, 'developer') ON CONFLICT (screen_id) DO NOTHING;
 
 INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story, nav_area)
-VALUES ('screen-flavors', '/projects/flavors', 'Project Flavours', 'RulebookFlavors,RulebookProjects', NULL, 'grid', NULL, 'Each demo rulebook classified by Flavor (crud-template, computation-heavy, aggregation-heavy, graph-ontology, meta-rulebook, tutorial-ladder), Complexity, and density metrics. Click a flavour to filter the project switcher to that flavour.', 'main') ON CONFLICT (screen_id) DO NOTHING;
+VALUES ('screen-dev-data', '/developer/:domain/data', 'Sample Data', NULL, NULL, NULL, NULL, NULL, 'developer') ON CONFLICT (screen_id) DO NOTHING;
 
 INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story, nav_area)
-VALUES ('screen-features', '/features', 'Platform Features', 'PlatformFeatures,OntologyAxioms', 'PlatformFeatures', 'split-detail', 'Edit feature', 'Two sections: Headline features (ADP, clean, hub-and-spoke, convergent build, substrate equivalence, conformance, local SSoT, portal/CLI parity, write-through) and Additional features (fail-loud, complete spec, dialect binding, etc.). Left list, right detail. Detail shows one-line summary, status, related axiom (clickable), README file path, IsReadmeStub badge, and the seed README content. Developer can edit summary/tier/priority/README path in place — saves write-through into rulebook JSON.', 'main') ON CONFLICT (screen_id) DO NOTHING;
+VALUES ('screen-dev-substrates', '/developer/:domain/substrates', 'Effortless Tools', NULL, NULL, NULL, NULL, NULL, 'developer') ON CONFLICT (screen_id) DO NOTHING;
 
 INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story, nav_area)
-VALUES ('screen-docs-home', '/docs', 'Docs Home', 'FramingInvariants,OntologyAxioms,FieldTypeTaxonomy,Glossary', NULL, 'dashboard', NULL, 'Reference documentation index.', 'docs') ON CONFLICT (screen_id) DO NOTHING;
+VALUES ('screen-dev-tests', '/developer/:domain/tests', 'Tests', NULL, NULL, NULL, NULL, NULL, 'developer') ON CONFLICT (screen_id) DO NOTHING;
 
 INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story, nav_area)
-VALUES ('screen-docs-framing', '/docs/framing', 'Framing Invariants', 'FramingInvariants', NULL, 'split-detail', NULL, 'Mistakes-to-avoid catalog.', 'docs') ON CONFLICT (screen_id) DO NOTHING;
+VALUES ('screen-dev-spokes', '/developer/:domain/spokes', 'Input Spokes', NULL, NULL, NULL, NULL, NULL, 'developer') ON CONFLICT (screen_id) DO NOTHING;
 
 INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story, nav_area)
-VALUES ('screen-docs-method', '/docs/methodology', 'Methodology', 'OntologyAxioms,FramingInvariants', NULL, 'split-detail', NULL, 'Axioms and framing invariants.', 'docs') ON CONFLICT (screen_id) DO NOTHING;
+VALUES ('screen-dev-files', '/developer/:domain/files', 'Files', NULL, NULL, NULL, NULL, NULL, 'developer') ON CONFLICT (screen_id) DO NOTHING;
 
 INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story, nav_area)
-VALUES ('screen-docs-ftypes', '/docs/field-types', 'Field Types', 'FieldTypeTaxonomy', NULL, 'split-detail', NULL, 'ERB field-type taxonomy.', 'docs') ON CONFLICT (screen_id) DO NOTHING;
+VALUES ('screen-dev-explorer', '/developer/:domain/explorer', 'Data + SQL Explorer', NULL, NULL, NULL, NULL, NULL, 'developer') ON CONFLICT (screen_id) DO NOTHING;
 
 INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story, nav_area)
-VALUES ('screen-docs-glossary', '/docs/glossary', 'Glossary', 'Glossary', NULL, 'list', NULL, 'Term definitions.', 'docs') ON CONFLICT (screen_id) DO NOTHING;
+VALUES ('screen-dev-rulebook-json', '/developer/:domain/rulebook-json', 'Rulebook JSON', NULL, NULL, NULL, NULL, NULL, 'developer') ON CONFLICT (screen_id) DO NOTHING;
 
 INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story, nav_area)
-VALUES ('screen-admin-landing', '/admin', 'Admin', 'AppUsers,UserRoles,AppPermissions', NULL, 'dashboard', NULL, 'Admin landing.', 'admin') ON CONFLICT (screen_id) DO NOTHING;
+VALUES ('screen-dev-reset', '/developer/:domain/reset', 'Reset Editor', NULL, NULL, NULL, NULL, NULL, 'developer') ON CONFLICT (screen_id) DO NOTHING;
 
 INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story, nav_area)
-VALUES ('screen-admin-perms', '/admin/permissions', 'Permissions', 'AppPermissions,UserRoles', NULL, 'list', NULL, 'Permission matrix.', 'admin') ON CONFLICT (screen_id) DO NOTHING;
+VALUES ('screen-admin-home', '/admin', 'Admin Home', NULL, NULL, NULL, NULL, NULL, 'admin') ON CONFLICT (screen_id) DO NOTHING;
 
 INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story, nav_area)
-VALUES ('screen-admin-nav', '/admin/navigation', 'Navigation', 'AppNavigation,AppScreens', NULL, 'list', NULL, 'Sidebar nav items.', 'admin') ON CONFLICT (screen_id) DO NOTHING;
+VALUES ('screen-admin-users', '/admin/users', 'Users', NULL, NULL, NULL, NULL, NULL, 'admin') ON CONFLICT (screen_id) DO NOTHING;
 
 INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story, nav_area)
-VALUES ('screen-admin-screens', '/admin/screens', 'Screens', 'AppScreens', NULL, 'list', NULL, 'Screen registry.', 'admin') ON CONFLICT (screen_id) DO NOTHING;
+VALUES ('screen-admin-roles', '/admin/roles', 'Roles', NULL, NULL, NULL, NULL, NULL, 'admin') ON CONFLICT (screen_id) DO NOTHING;
+
+INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story, nav_area)
+VALUES ('screen-admin-perms', '/admin/permissions', 'Permissions', NULL, NULL, NULL, NULL, NULL, 'admin') ON CONFLICT (screen_id) DO NOTHING;
+
+INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story, nav_area)
+VALUES ('screen-admin-nav', '/admin/nav', 'Navigation', NULL, NULL, NULL, NULL, NULL, 'admin') ON CONFLICT (screen_id) DO NOTHING;
+
+INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story, nav_area)
+VALUES ('screen-admin-screens', '/admin/screens', 'Screens', NULL, NULL, NULL, NULL, NULL, 'admin') ON CONFLICT (screen_id) DO NOTHING;
+
+INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story, nav_area)
+VALUES ('screen-admin-builds', '/admin/builds', 'Builds', NULL, NULL, NULL, NULL, NULL, 'admin') ON CONFLICT (screen_id) DO NOTHING;
+
+INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story, nav_area)
+VALUES ('screen-admin-proxy', '/admin/proxy', 'Proxy', NULL, NULL, NULL, NULL, NULL, 'admin') ON CONFLICT (screen_id) DO NOTHING;
+
+INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story, nav_area)
+VALUES ('screen-docs-home', '/docs', 'Docs Home', NULL, NULL, NULL, NULL, NULL, 'docs') ON CONFLICT (screen_id) DO NOTHING;
+
+INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story, nav_area)
+VALUES ('screen-docs-framing', '/docs/framing', 'Framing', NULL, NULL, NULL, NULL, NULL, 'docs') ON CONFLICT (screen_id) DO NOTHING;
+
+INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story, nav_area)
+VALUES ('screen-docs-methodology', '/docs/methodology', 'Methodology', NULL, NULL, NULL, NULL, NULL, 'docs') ON CONFLICT (screen_id) DO NOTHING;
+
+INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story, nav_area)
+VALUES ('screen-docs-field-types', '/docs/field-types', 'Field Types', NULL, NULL, NULL, NULL, NULL, 'docs') ON CONFLICT (screen_id) DO NOTHING;
+
+INSERT INTO app_screens (screen_id, path, title, reads_entities, writes_entities, layout, primary_action, story, nav_area)
+VALUES ('screen-docs-glossary', '/docs/glossary', 'Glossary', NULL, NULL, NULL, NULL, NULL, 'docs') ON CONFLICT (screen_id) DO NOTHING;
 
 -- ----------------------------------------------------------------------------
 -- AppAPIs: Admin portal HTTP API surface. Express routes mounted by the portal backend.
@@ -932,83 +1040,83 @@ VALUES ('proc-004', 'postgres', 'docker compose up -d postgres (or system pg)', 
 -- ----------------------------------------------------------------------------
 -- RulebookFlavors: Classification of each demo rulebook under rulebook-examples/. Lets the UI group projects by what they're TEACHING — a tutorial ladder is a different beast from a computation-heavy ontology. Density numbers come from a static analysis of each rulebook (calculated/aggregation/lookup counts).
 -- ----------------------------------------------------------------------------
-INSERT INTO rulebook_flavors (flavor_id, sort_order, project_slug, display_name, flavor, complexity, entity_count, calculated_count, aggregation_count, lookup_count, learning_focus, good_answer_key_for)
-VALUES ('flav-001', 50, 'acme-corporation', 'ACME Corporation (template)', 'crud-template', 'basic', 5, 1, 2, 10, 'Classic relational CRUD template — clients, projects, employees, roles. The ''starter sized'' demo for new authors.', 'postgres,entity-framework') ON CONFLICT (flavor_id) DO NOTHING;
+INSERT INTO rulebook_flavors (flavor_id, sort_order, project_slug, display_name, tagline, logo_path, flavor, complexity, entity_count, calculated_count, aggregation_count, lookup_count, learning_focus, good_answer_key_for)
+VALUES ('flav-001', 50, 'acme-corporation', 'ACME Corporation', 'CRUD starter template — clients, projects, employees, roles. The "starter-sized" demo for new authors.', 'rulebook-examples/acme-corporation/effortless-logo.png', 'crud-template', 'basic', 5, 1, 2, 10, 'Classic relational CRUD template — clients, projects, employees, roles. The ''starter sized'' demo for new authors.', 'postgres,entity-framework') ON CONFLICT (flavor_id) DO NOTHING;
 
-INSERT INTO rulebook_flavors (flavor_id, sort_order, project_slug, display_name, flavor, complexity, entity_count, calculated_count, aggregation_count, lookup_count, learning_focus, good_answer_key_for)
-VALUES ('flav-002', 20, 'acme-llc', 'ACME, LLC (template)', 'tutorial-ladder', 'minimal', 3, 2, 0, 0, 'Smallest viable rulebook with a calculated field — the ''Hello, formulas'' tutorial.', NULL) ON CONFLICT (flavor_id) DO NOTHING;
+INSERT INTO rulebook_flavors (flavor_id, sort_order, project_slug, display_name, tagline, logo_path, flavor, complexity, entity_count, calculated_count, aggregation_count, lookup_count, learning_focus, good_answer_key_for)
+VALUES ('flav-002', 20, 'acme-llc', 'ACME, LLC', 'Smallest viable rulebook with a calculated field — the "Hello, formulas" tutorial.', 'rulebook-examples/acme-llc/effortless-logo.png', 'tutorial-ladder', 'minimal', 3, 2, 0, 0, 'Smallest viable rulebook with a calculated field — the ''Hello, formulas'' tutorial.', NULL) ON CONFLICT (flavor_id) DO NOTHING;
 
-INSERT INTO rulebook_flavors (flavor_id, sort_order, project_slug, display_name, flavor, complexity, entity_count, calculated_count, aggregation_count, lookup_count, learning_focus, good_answer_key_for)
-VALUES ('flav-003', 10, 'customer-fullname', 'Customer FullName (tutorial)', 'tutorial-ladder', 'minimal', 1, 2, 0, 0, 'One entity, one calculated field (CONCAT(First, '' '', Last)). The ''absolute minimum'' demo — proves the toolchain end-to-end with no relationships.', NULL) ON CONFLICT (flavor_id) DO NOTHING;
+INSERT INTO rulebook_flavors (flavor_id, sort_order, project_slug, display_name, tagline, logo_path, flavor, complexity, entity_count, calculated_count, aggregation_count, lookup_count, learning_focus, good_answer_key_for)
+VALUES ('flav-003', 10, 'customer-fullname', 'Customer FullName', 'One entity, one calculated field (CONCAT(First,'' '',Last)) — proves the toolchain end-to-end with no relations.', 'rulebook-examples/customer-fullname/effortless-logo.png', 'tutorial-ladder', 'minimal', 1, 2, 0, 0, 'One entity, one calculated field (CONCAT(First, '' '', Last)). The ''absolute minimum'' demo — proves the toolchain end-to-end with no relationships.', NULL) ON CONFLICT (flavor_id) DO NOTHING;
 
-INSERT INTO rulebook_flavors (flavor_id, sort_order, project_slug, display_name, flavor, complexity, entity_count, calculated_count, aggregation_count, lookup_count, learning_focus, good_answer_key_for)
-VALUES ('flav-004', 250, 'effortless-rulesbooks', 'ERB self-describing rulebook', 'meta-rulebook', 'advanced', 9, 0, 0, 0, 'The rulebook that describes the ERB project itself (sibling of this platform rulebook). Demonstrates eating-the-dog-food — meta over business data.', NULL) ON CONFLICT (flavor_id) DO NOTHING;
+INSERT INTO rulebook_flavors (flavor_id, sort_order, project_slug, display_name, tagline, logo_path, flavor, complexity, entity_count, calculated_count, aggregation_count, lookup_count, learning_focus, good_answer_key_for)
+VALUES ('flav-004', 250, 'effortless-rulesbooks', 'ERB Self-Describing Rulebook', 'The rulebook that describes the ERB project itself — the platform eating its own dog food.', 'rulebook-examples/effortless-rulesbooks/effortless-logo.png', 'meta-rulebook', 'advanced', 9, 0, 0, 0, 'The rulebook that describes the ERB project itself (sibling of this platform rulebook). Demonstrates eating-the-dog-food — meta over business data.', NULL) ON CONFLICT (flavor_id) DO NOTHING;
 
-INSERT INTO rulebook_flavors (flavor_id, sort_order, project_slug, display_name, flavor, complexity, entity_count, calculated_count, aggregation_count, lookup_count, learning_focus, good_answer_key_for)
-VALUES ('flav-005', 260, 'is-everything-a-language', 'Is Everything A Language? (semiotics)', 'graph-ontology', 'advanced', 3, 8, 0, 0, 'Heavy formulas evaluating linguistic / semiotic candidates. Shows that the substrate equality claim holds even for non-CRUD ontologies.', 'owl,python') ON CONFLICT (flavor_id) DO NOTHING;
+INSERT INTO rulebook_flavors (flavor_id, sort_order, project_slug, display_name, tagline, logo_path, flavor, complexity, entity_count, calculated_count, aggregation_count, lookup_count, learning_focus, good_answer_key_for)
+VALUES ('flav-005', 260, 'is-everything-a-language', 'Is Everything a Language?', 'Semiotic candidates evaluated by formula — shows substrate-equality holds for non-CRUD ontologies too.', 'rulebook-examples/is-everything-a-language/effortless-logo.png', 'graph-ontology', 'advanced', 3, 8, 0, 0, 'Heavy formulas evaluating linguistic / semiotic candidates. Shows that the substrate equality claim holds even for non-CRUD ontologies.', 'owl,python') ON CONFLICT (flavor_id) DO NOTHING;
 
-INSERT INTO rulebook_flavors (flavor_id, sort_order, project_slug, display_name, flavor, complexity, entity_count, calculated_count, aggregation_count, lookup_count, learning_focus, good_answer_key_for)
-VALUES ('flav-006', 160, 'jessica-advanced', 'Jessica Talisman — Advanced (workflows)', 'computation-heavy', 'advanced', 10, 8, 1, 2, 'Workflow/approval ontology with intermediate computed fields. Demonstrates multi-step derivation across entities.', 'postgres') ON CONFLICT (flavor_id) DO NOTHING;
+INSERT INTO rulebook_flavors (flavor_id, sort_order, project_slug, display_name, tagline, logo_path, flavor, complexity, entity_count, calculated_count, aggregation_count, lookup_count, learning_focus, good_answer_key_for)
+VALUES ('flav-006', 160, 'jessica-advanced', 'Jessica Talisman: Advanced', 'Workflow / approval ontology with cross-entity lookups and multi-step derivation.', 'rulebook-examples/jessica-advanced/effortless-logo.png', 'computation-heavy', 'advanced', 10, 8, 1, 2, 'Workflow/approval ontology with intermediate computed fields. Demonstrates multi-step derivation across entities.', 'postgres') ON CONFLICT (flavor_id) DO NOTHING;
 
-INSERT INTO rulebook_flavors (flavor_id, sort_order, project_slug, display_name, flavor, complexity, entity_count, calculated_count, aggregation_count, lookup_count, learning_focus, good_answer_key_for)
-VALUES ('flav-007', 30, 'jessica-basic', 'Jessica Talisman — Basic (workflows)', 'tutorial-ladder', 'basic', 9, 7, 1, 0, 'Same workflow concepts as advanced but without cross-entity lookups — useful for stepping authors up the formula ladder.', NULL) ON CONFLICT (flavor_id) DO NOTHING;
+INSERT INTO rulebook_flavors (flavor_id, sort_order, project_slug, display_name, tagline, logo_path, flavor, complexity, entity_count, calculated_count, aggregation_count, lookup_count, learning_focus, good_answer_key_for)
+VALUES ('flav-007', 30, 'jessica-basic', 'Jessica Talisman: Basic', 'Workflow ontology without cross-entity lookups — for stepping authors up the formula ladder.', 'rulebook-examples/jessica-basic/effortless-logo.png', 'tutorial-ladder', 'basic', 9, 7, 1, 0, 'Same workflow concepts as advanced but without cross-entity lookups — useful for stepping authors up the formula ladder.', NULL) ON CONFLICT (flavor_id) DO NOTHING;
 
-INSERT INTO rulebook_flavors (flavor_id, sort_order, project_slug, display_name, flavor, complexity, entity_count, calculated_count, aggregation_count, lookup_count, learning_focus, good_answer_key_for)
-VALUES ('flav-008', 200, 'star-trek', 'Star Trek (series/seasons/episodes)', 'aggregation-heavy', 'advanced', 10, 9, 5, 12, 'Aggregations over nested relationships (avg rating per episode, per season, per series). The canonical aggregation demo.', 'postgres,xlsx') ON CONFLICT (flavor_id) DO NOTHING;
+INSERT INTO rulebook_flavors (flavor_id, sort_order, project_slug, display_name, tagline, logo_path, flavor, complexity, entity_count, calculated_count, aggregation_count, lookup_count, learning_focus, good_answer_key_for)
+VALUES ('flav-008', 200, 'star-trek', 'Star Trek', 'Aggregations over nested series → seasons → episodes (avg rating roll-ups). The canonical aggregation demo.', 'rulebook-examples/star-trek/effortless-logo.png', 'aggregation-heavy', 'advanced', 10, 9, 5, 12, 'Aggregations over nested relationships (avg rating per episode, per season, per series). The canonical aggregation demo.', 'postgres,xlsx') ON CONFLICT (flavor_id) DO NOTHING;
 
-INSERT INTO rulebook_flavors (flavor_id, sort_order, project_slug, display_name, flavor, complexity, entity_count, calculated_count, aggregation_count, lookup_count, learning_focus, good_answer_key_for)
-VALUES ('flav-009', 100, 'community-event-planner-demo', 'community-event-planner-demo', 'aggregation-heavy', 'basic', 6, 19, 4, 9, 'Auto-discovered demo. Replace this stub with a one-line description of what community-event-planner-demo is designed to teach.', NULL) ON CONFLICT (flavor_id) DO NOTHING;
+INSERT INTO rulebook_flavors (flavor_id, sort_order, project_slug, display_name, tagline, logo_path, flavor, complexity, entity_count, calculated_count, aggregation_count, lookup_count, learning_focus, good_answer_key_for)
+VALUES ('flav-009', 100, 'community-event-planner', 'Community Event Planner', 'Venues, events, speakers, attendees with capacity, scheduling, and attendance-forecast cascades.', 'rulebook-examples/community-event-planner/effortless-logo.png', 'aggregation-heavy', 'basic', 6, 19, 4, 9, 'Auto-discovered demo. Replace this stub with a one-line description of what community-event-planner is designed to teach.', NULL) ON CONFLICT (flavor_id) DO NOTHING;
 
-INSERT INTO rulebook_flavors (flavor_id, sort_order, project_slug, display_name, flavor, complexity, entity_count, calculated_count, aggregation_count, lookup_count, learning_focus, good_answer_key_for)
-VALUES ('flav-010', 110, 'customer-crm-demo', 'customer-crm-demo', 'aggregation-heavy', 'advanced', 7, 20, 11, 21, 'Auto-discovered demo. Replace this stub with a one-line description of what customer-crm-demo is designed to teach.', NULL) ON CONFLICT (flavor_id) DO NOTHING;
+INSERT INTO rulebook_flavors (flavor_id, sort_order, project_slug, display_name, tagline, logo_path, flavor, complexity, entity_count, calculated_count, aggregation_count, lookup_count, learning_focus, good_answer_key_for)
+VALUES ('flav-010', 110, 'customer-crm', 'Customer CRM', 'Fighter-jet FCS sales pipeline rolling revenue up by order, FCS variant, and jet model.', 'rulebook-examples/customer-crm/effortless-logo.png', 'aggregation-heavy', 'advanced', 7, 20, 11, 21, 'Auto-discovered demo. Replace this stub with a one-line description of what customer-crm is designed to teach.', NULL) ON CONFLICT (flavor_id) DO NOTHING;
 
-INSERT INTO rulebook_flavors (flavor_id, sort_order, project_slug, display_name, flavor, complexity, entity_count, calculated_count, aggregation_count, lookup_count, learning_focus, good_answer_key_for)
-VALUES ('flav-011', 210, 'effortless-banking-demo', 'effortless-banking-demo', 'aggregation-heavy', 'advanced', 10, 46, 17, 17, 'Auto-discovered demo. Replace this stub with a one-line description of what effortless-banking-demo is designed to teach.', NULL) ON CONFLICT (flavor_id) DO NOTHING;
+INSERT INTO rulebook_flavors (flavor_id, sort_order, project_slug, display_name, tagline, logo_path, flavor, complexity, entity_count, calculated_count, aggregation_count, lookup_count, learning_focus, good_answer_key_for)
+VALUES ('flav-011', 210, 'effortless-banking', 'Effortless Banking', 'Community-bank commercial RM platform — loans, deposits, covenants, BSA/AML.', 'rulebook-examples/effortless-banking/effortless-logo.png', 'aggregation-heavy', 'advanced', 10, 46, 17, 17, 'Auto-discovered demo. Replace this stub with a one-line description of what effortless-banking is designed to teach.', NULL) ON CONFLICT (flavor_id) DO NOTHING;
 
-INSERT INTO rulebook_flavors (flavor_id, sort_order, project_slug, display_name, flavor, complexity, entity_count, calculated_count, aggregation_count, lookup_count, learning_focus, good_answer_key_for)
-VALUES ('flav-012', 150, 'fantasy-football-demo', 'fantasy-football-demo', 'aggregation-heavy', 'basic', 6, 13, 5, 15, 'Auto-discovered demo. Replace this stub with a one-line description of what fantasy-football-demo is designed to teach.', NULL) ON CONFLICT (flavor_id) DO NOTHING;
+INSERT INTO rulebook_flavors (flavor_id, sort_order, project_slug, display_name, tagline, logo_path, flavor, complexity, entity_count, calculated_count, aggregation_count, lookup_count, learning_focus, good_answer_key_for)
+VALUES ('flav-012', 150, 'fantasy-football', 'Fantasy Football', 'Multi-hop DAG: raw player stats → roster aggregations → matchup scoring → standings & seeding.', 'rulebook-examples/fantasy-football/effortless-logo.png', 'aggregation-heavy', 'basic', 6, 13, 5, 15, 'Auto-discovered demo. Replace this stub with a one-line description of what fantasy-football is designed to teach.', NULL) ON CONFLICT (flavor_id) DO NOTHING;
 
-INSERT INTO rulebook_flavors (flavor_id, sort_order, project_slug, display_name, flavor, complexity, entity_count, calculated_count, aggregation_count, lookup_count, learning_focus, good_answer_key_for)
-VALUES ('flav-013', 190, 'guessing-game', 'guessing-game', 'aggregation-heavy', 'minimal', 2, 5, 4, 6, 'Auto-discovered demo. Replace this stub with a one-line description of what guessing-game is designed to teach.', NULL) ON CONFLICT (flavor_id) DO NOTHING;
+INSERT INTO rulebook_flavors (flavor_id, sort_order, project_slug, display_name, tagline, logo_path, flavor, complexity, entity_count, calculated_count, aggregation_count, lookup_count, learning_focus, good_answer_key_for)
+VALUES ('flav-013', 190, 'guessing-game', 'Guessing Game', 'Number-guessing game tracking guesses, hints, and best-score records per player.', 'rulebook-examples/guessing-game/effortless-logo.png', 'aggregation-heavy', 'minimal', 2, 5, 4, 6, 'Auto-discovered demo. Replace this stub with a one-line description of what guessing-game is designed to teach.', NULL) ON CONFLICT (flavor_id) DO NOTHING;
 
-INSERT INTO rulebook_flavors (flavor_id, sort_order, project_slug, display_name, flavor, complexity, entity_count, calculated_count, aggregation_count, lookup_count, learning_focus, good_answer_key_for)
-VALUES ('flav-014', 120, 'gym-trainer-invoicing', 'gym-trainer-invoicing', 'aggregation-heavy', 'basic', 5, 14, 8, 11, 'Auto-discovered demo. Replace this stub with a one-line description of what gym-trainer-invoicing is designed to teach.', NULL) ON CONFLICT (flavor_id) DO NOTHING;
+INSERT INTO rulebook_flavors (flavor_id, sort_order, project_slug, display_name, tagline, logo_path, flavor, complexity, entity_count, calculated_count, aggregation_count, lookup_count, learning_focus, good_answer_key_for)
+VALUES ('flav-014', 120, 'gym-trainer-invoicing', 'Gym Trainer Invoicing', 'Sessions roll up into invoices; invoices roll up into client outstanding balances.', 'rulebook-examples/gym-trainer-invoicing/effortless-logo.png', 'aggregation-heavy', 'basic', 5, 14, 8, 11, 'Auto-discovered demo. Replace this stub with a one-line description of what gym-trainer-invoicing is designed to teach.', NULL) ON CONFLICT (flavor_id) DO NOTHING;
 
-INSERT INTO rulebook_flavors (flavor_id, sort_order, project_slug, display_name, flavor, complexity, entity_count, calculated_count, aggregation_count, lookup_count, learning_focus, good_answer_key_for)
-VALUES ('flav-015', 70, 'intelligence-taxonomy-demo', 'intelligence-taxonomy-demo', 'crud-template', 'minimal', 3, 5, 2, 4, 'Auto-discovered demo. Replace this stub with a one-line description of what intelligence-taxonomy-demo is designed to teach.', NULL) ON CONFLICT (flavor_id) DO NOTHING;
+INSERT INTO rulebook_flavors (flavor_id, sort_order, project_slug, display_name, tagline, logo_path, flavor, complexity, entity_count, calculated_count, aggregation_count, lookup_count, learning_focus, good_answer_key_for)
+VALUES ('flav-015', 70, 'intelligence-taxonomy', 'Taxonomy of Intelligence', 'Classifies intelligences (humans, animals, AI) by per-capability assessments through a multi-hop DAG.', 'rulebook-examples/intelligence-taxonomy/effortless-logo.png', 'crud-template', 'minimal', 3, 5, 2, 4, 'Auto-discovered demo. Replace this stub with a one-line description of what intelligence-taxonomy is designed to teach.', NULL) ON CONFLICT (flavor_id) DO NOTHING;
 
-INSERT INTO rulebook_flavors (flavor_id, sort_order, project_slug, display_name, flavor, complexity, entity_count, calculated_count, aggregation_count, lookup_count, learning_focus, good_answer_key_for)
-VALUES ('flav-016', 180, 'jobsearch-rag', 'jobsearch-rag', 'aggregation-heavy', 'advanced', 10, 4, 6, 10, 'Auto-discovered demo. Replace this stub with a one-line description of what jobsearch-rag is designed to teach.', NULL) ON CONFLICT (flavor_id) DO NOTHING;
+INSERT INTO rulebook_flavors (flavor_id, sort_order, project_slug, display_name, tagline, logo_path, flavor, complexity, entity_count, calculated_count, aggregation_count, lookup_count, learning_focus, good_answer_key_for)
+VALUES ('flav-016', 180, 'job-search-rag', 'Job Search RAG', 'Local LLM + RAG pipeline filtering jobs across boards using semantic search.', 'rulebook-examples/job-search-rag/effortless-logo.png', 'aggregation-heavy', 'advanced', 10, 4, 6, 10, 'Auto-discovered demo. Replace this stub with a one-line description of what job-search-rag is designed to teach.', NULL) ON CONFLICT (flavor_id) DO NOTHING;
 
-INSERT INTO rulebook_flavors (flavor_id, sort_order, project_slug, display_name, flavor, complexity, entity_count, calculated_count, aggregation_count, lookup_count, learning_focus, good_answer_key_for)
-VALUES ('flav-017', 220, 'llm-enigma-test', 'llm-enigma-test', 'aggregation-heavy', 'advanced', 26, 33, 42, 22, 'Auto-discovered demo. Replace this stub with a one-line description of what llm-enigma-test is designed to teach.', NULL) ON CONFLICT (flavor_id) DO NOTHING;
+INSERT INTO rulebook_flavors (flavor_id, sort_order, project_slug, display_name, tagline, logo_path, flavor, complexity, entity_count, calculated_count, aggregation_count, lookup_count, learning_focus, good_answer_key_for)
+VALUES ('flav-017', 220, 'mechanical-kitchen-timer', 'Mechanical Kitchen Timer', 'Five-part mechanical timer modeled with every README noun as a table — a hardware-ontology stress test.', 'rulebook-examples/mechanical-kitchen-timer/effortless-logo.png', 'aggregation-heavy', 'advanced', 26, 33, 42, 22, 'Auto-discovered demo. Replace this stub with a one-line description of what mechanical-kitchen-timer is designed to teach.', NULL) ON CONFLICT (flavor_id) DO NOTHING;
 
-INSERT INTO rulebook_flavors (flavor_id, sort_order, project_slug, display_name, flavor, complexity, entity_count, calculated_count, aggregation_count, lookup_count, learning_focus, good_answer_key_for)
-VALUES ('flav-018', 60, 'product-inventory-demo', 'product-inventory-demo', 'computation-heavy', 'minimal', 3, 6, 1, 3, 'Auto-discovered demo. Replace this stub with a one-line description of what product-inventory-demo is designed to teach.', NULL) ON CONFLICT (flavor_id) DO NOTHING;
+INSERT INTO rulebook_flavors (flavor_id, sort_order, project_slug, display_name, tagline, logo_path, flavor, complexity, entity_count, calculated_count, aggregation_count, lookup_count, learning_focus, good_answer_key_for)
+VALUES ('flav-018', 60, 'product-inventory', 'Product Inventory', 'Products with transactions adjusting quantities and low-stock alerts.', 'rulebook-examples/product-inventory/effortless-logo.png', 'computation-heavy', 'minimal', 3, 6, 1, 3, 'Auto-discovered demo. Replace this stub with a one-line description of what product-inventory is designed to teach.', NULL) ON CONFLICT (flavor_id) DO NOTHING;
 
-INSERT INTO rulebook_flavors (flavor_id, sort_order, project_slug, display_name, flavor, complexity, entity_count, calculated_count, aggregation_count, lookup_count, learning_focus, good_answer_key_for)
-VALUES ('flav-019', 170, 'therapist-helper-portal', 'therapist-helper-portal', 'aggregation-heavy', 'basic', 5, 12, 11, 10, 'Auto-discovered demo. Replace this stub with a one-line description of what therapist-helper-portal is designed to teach.', NULL) ON CONFLICT (flavor_id) DO NOTHING;
+INSERT INTO rulebook_flavors (flavor_id, sort_order, project_slug, display_name, tagline, logo_path, flavor, complexity, entity_count, calculated_count, aggregation_count, lookup_count, learning_focus, good_answer_key_for)
+VALUES ('flav-019', 170, 'therapist-helper-portal', 'Therapist Helper Portal', 'Sessions and treatment progress: GoalUpdate → Goal.ProgressPct → Client.IsAtRisk three-hop DAG.', 'rulebook-examples/therapist-helper-portal/effortless-logo.png', 'aggregation-heavy', 'basic', 5, 12, 11, 10, 'Auto-discovered demo. Replace this stub with a one-line description of what therapist-helper-portal is designed to teach.', NULL) ON CONFLICT (flavor_id) DO NOTHING;
 
-INSERT INTO rulebook_flavors (flavor_id, sort_order, project_slug, display_name, flavor, complexity, entity_count, calculated_count, aggregation_count, lookup_count, learning_focus, good_answer_key_for)
-VALUES ('flav-020', 90, 'v2-nakedclaude-demo', 'v2-nakedclaude-demo', 'crud-template', 'minimal', 3, 5, 0, 3, 'Auto-discovered demo. Replace this stub with a one-line description of what v2-nakedclaude-demo is designed to teach.', NULL) ON CONFLICT (flavor_id) DO NOTHING;
+INSERT INTO rulebook_flavors (flavor_id, sort_order, project_slug, display_name, tagline, logo_path, flavor, complexity, entity_count, calculated_count, aggregation_count, lookup_count, learning_focus, good_answer_key_for)
+VALUES ('flav-020', 90, 'nakedclaude-v2', 'NakedClaude (v2)', '3-entity domain (Customers, Statuses, AppUsers) — plain Claude adds state and auth.', 'rulebook-examples/nakedclaude-v2/effortless-logo.png', 'crud-template', 'minimal', 3, 5, 0, 3, 'Auto-discovered demo. Replace this stub with a one-line description of what nakedclaude-v2 is designed to teach.', NULL) ON CONFLICT (flavor_id) DO NOTHING;
 
-INSERT INTO rulebook_flavors (flavor_id, sort_order, project_slug, display_name, flavor, complexity, entity_count, calculated_count, aggregation_count, lookup_count, learning_focus, good_answer_key_for)
-VALUES ('flav-021', 230, 'v3-nakedclaude-demo', 'v3-nakedclaude-demo', 'aggregation-heavy', 'advanced', 8, 22, 7, 9, 'Auto-discovered demo. Replace this stub with a one-line description of what v3-nakedclaude-demo is designed to teach.', NULL) ON CONFLICT (flavor_id) DO NOTHING;
+INSERT INTO rulebook_flavors (flavor_id, sort_order, project_slug, display_name, tagline, logo_path, flavor, complexity, entity_count, calculated_count, aggregation_count, lookup_count, learning_focus, good_answer_key_for)
+VALUES ('flav-021', 230, 'nakedclaude-v3', 'NakedClaude (v3)', '8-entity orders/payments domain — plain Claude scales to e-commerce basics.', 'rulebook-examples/nakedclaude-v3/effortless-logo.png', 'aggregation-heavy', 'advanced', 8, 22, 7, 9, 'Auto-discovered demo. Replace this stub with a one-line description of what nakedclaude-v3 is designed to teach.', NULL) ON CONFLICT (flavor_id) DO NOTHING;
 
-INSERT INTO rulebook_flavors (flavor_id, sort_order, project_slug, display_name, flavor, complexity, entity_count, calculated_count, aggregation_count, lookup_count, learning_focus, good_answer_key_for)
-VALUES ('flav-022', 140, 'wedding-seating-optimizer', 'wedding-seating-optimizer', 'aggregation-heavy', 'basic', 4, 16, 9, 7, 'Auto-discovered demo. Replace this stub with a one-line description of what wedding-seating-optimizer is designed to teach.', NULL) ON CONFLICT (flavor_id) DO NOTHING;
+INSERT INTO rulebook_flavors (flavor_id, sort_order, project_slug, display_name, tagline, logo_path, flavor, complexity, entity_count, calculated_count, aggregation_count, lookup_count, learning_focus, good_answer_key_for)
+VALUES ('flav-022', 140, 'wedding-seating-optimizer', 'Wedding Seating Optimizer', 'Seating plan as a DAG — per-table happiness, capacity flags, per-guest satisfaction recompute on every move.', 'rulebook-examples/wedding-seating-optimizer/effortless-logo.png', 'aggregation-heavy', 'basic', 4, 16, 9, 7, 'Auto-discovered demo. Replace this stub with a one-line description of what wedding-seating-optimizer is designed to teach.', NULL) ON CONFLICT (flavor_id) DO NOTHING;
 
-INSERT INTO rulebook_flavors (flavor_id, sort_order, project_slug, display_name, flavor, complexity, entity_count, calculated_count, aggregation_count, lookup_count, learning_focus, good_answer_key_for)
-VALUES ('flav-023', 80, 'expense-approval-demo', 'expense-approval-demo', 'crud-template', 'minimal', 3, 4, 1, 2, 'Auto-discovered demo. Replace this stub with a one-line description of what expense-approval-demo is designed to teach.', NULL) ON CONFLICT (flavor_id) DO NOTHING;
+INSERT INTO rulebook_flavors (flavor_id, sort_order, project_slug, display_name, tagline, logo_path, flavor, complexity, entity_count, calculated_count, aggregation_count, lookup_count, learning_focus, good_answer_key_for)
+VALUES ('flav-023', 80, 'expense-approval', 'Expense Approval', 'Employees submit line-item reports; totals, over-budget, and escalation flags cascade automatically.', 'rulebook-examples/expense-approval/effortless-logo.png', 'crud-template', 'minimal', 3, 4, 1, 2, 'Auto-discovered demo. Replace this stub with a one-line description of what expense-approval is designed to teach.', NULL) ON CONFLICT (flavor_id) DO NOTHING;
 
-INSERT INTO rulebook_flavors (flavor_id, sort_order, project_slug, display_name, flavor, complexity, entity_count, calculated_count, aggregation_count, lookup_count, learning_focus, good_answer_key_for)
-VALUES ('flav-024', 40, 'v1-nakedclaude-demo', 'v1-nakedclaude-demo', 'tutorial-ladder', 'minimal', 1, 1, 0, 0, 'Auto-discovered demo. Replace this stub with a one-line description of what v1-nakedclaude-demo is designed to teach.', NULL) ON CONFLICT (flavor_id) DO NOTHING;
+INSERT INTO rulebook_flavors (flavor_id, sort_order, project_slug, display_name, tagline, logo_path, flavor, complexity, entity_count, calculated_count, aggregation_count, lookup_count, learning_focus, good_answer_key_for)
+VALUES ('flav-024', 40, 'nakedclaude-v1', 'NakedClaude (v1)', '1-entity Customers schema — baseline of what plain Claude produces with minimal prompting.', 'rulebook-examples/nakedclaude-v1/effortless-logo.png', 'tutorial-ladder', 'minimal', 1, 1, 0, 0, 'Auto-discovered demo. Replace this stub with a one-line description of what nakedclaude-v1 is designed to teach.', NULL) ON CONFLICT (flavor_id) DO NOTHING;
 
-INSERT INTO rulebook_flavors (flavor_id, sort_order, project_slug, display_name, flavor, complexity, entity_count, calculated_count, aggregation_count, lookup_count, learning_focus, good_answer_key_for)
-VALUES ('flav-025', 240, 'v4-nakedclaude-demo', 'v4-nakedclaude-demo', 'aggregation-heavy', 'advanced', 15, 30, 13, 43, 'Auto-discovered demo. Replace this stub with a one-line description of what v4-nakedclaude-demo is designed to teach.', NULL) ON CONFLICT (flavor_id) DO NOTHING;
+INSERT INTO rulebook_flavors (flavor_id, sort_order, project_slug, display_name, tagline, logo_path, flavor, complexity, entity_count, calculated_count, aggregation_count, lookup_count, learning_focus, good_answer_key_for)
+VALUES ('flav-025', 240, 'nakedclaude-v4', 'NakedClaude (v4)', '15-entity invoicing + inventory domain — plain Claude''s most-evolved output.', 'rulebook-examples/nakedclaude-v4/effortless-logo.png', 'aggregation-heavy', 'advanced', 15, 30, 13, 43, 'Auto-discovered demo. Replace this stub with a one-line description of what nakedclaude-v4 is designed to teach.', NULL) ON CONFLICT (flavor_id) DO NOTHING;
 
-INSERT INTO rulebook_flavors (flavor_id, sort_order, project_slug, display_name, flavor, complexity, entity_count, calculated_count, aggregation_count, lookup_count, learning_focus, good_answer_key_for)
-VALUES ('flav-026', 130, 'volunteer-shift-scheduler', 'volunteer-shift-scheduler', 'aggregation-heavy', 'basic', 4, 6, 6, 4, 'Auto-discovered demo. Replace this stub with a one-line description of what volunteer-shift-scheduler is designed to teach.', NULL) ON CONFLICT (flavor_id) DO NOTHING;
+INSERT INTO rulebook_flavors (flavor_id, sort_order, project_slug, display_name, tagline, logo_path, flavor, complexity, entity_count, calculated_count, aggregation_count, lookup_count, learning_focus, good_answer_key_for)
+VALUES ('flav-026', 130, 'volunteer-shift-scheduler', 'Volunteer Shift Scheduler', 'Coverage status, volunteer load (under/ok/over), and event-level A–F staffing grade all fall out automatically.', 'rulebook-examples/volunteer-shift-scheduler/effortless-logo.png', 'aggregation-heavy', 'basic', 4, 6, 6, 4, 'Auto-discovered demo. Replace this stub with a one-line description of what volunteer-shift-scheduler is designed to teach.', NULL) ON CONFLICT (flavor_id) DO NOTHING;
 
 -- ----------------------------------------------------------------------------
 -- FieldTypeTaxonomy: Names every field-type the rulebook supports, with intent and example formula shape. Lets the UI explain what makes a calculated field different from a lookup field from an aggregation, instead of just showing a type tag.
@@ -1077,34 +1185,34 @@ VALUES ('hint-402', 'editor', 'SQL editor + result grid', NULL, 'Run query,Reset
 -- ClickTargets: Canonical in-app navigation affordances. Every clickable element in the portal should be listed here with where the click goes. Two agents implementing different screens would both consult this table to wire up cross-screen jumps. NOT the Explain-DAG — this is page-to-page navigation: 'Orders: 5' is clickable and goes to a page filtered to those 5 orders. NOT documentation-style 'learn more' links.
 -- ----------------------------------------------------------------------------
 INSERT INTO click_targets (click_id, from_kind, from_context, to_path, filter, story)
-VALUES ('click-001', 'count-number', 'home-card:entities', '/developer/rulebook/entities', NULL, 'Click ''Entities: N'' on Home → /rulebook/entities (the list of all N).') ON CONFLICT (click_id) DO NOTHING;
+VALUES ('click-001', 'count-number', 'home-card:entities', '/developer/:domain/entities', NULL, 'Click ''Entities: N'' on Home → /rulebook/entities (the list of all N).') ON CONFLICT (click_id) DO NOTHING;
 
 INSERT INTO click_targets (click_id, from_kind, from_context, to_path, filter, story)
-VALUES ('click-002', 'count-number', 'home-card:substrates', '/developer/substrates', NULL, 'Click ''Substrates: N'' on Home → /substrates.') ON CONFLICT (click_id) DO NOTHING;
+VALUES ('click-002', 'count-number', 'home-card:substrates', '/developer/:domain/substrates', NULL, 'Click ''Substrates: N'' on Home → /substrates.') ON CONFLICT (click_id) DO NOTHING;
 
 INSERT INTO click_targets (click_id, from_kind, from_context, to_path, filter, story)
-VALUES ('click-003', 'count-number', 'home-card:spokes', '/developer/spokes', NULL, 'Click ''Input spokes: N'' on Home → /spokes.') ON CONFLICT (click_id) DO NOTHING;
+VALUES ('click-003', 'count-number', 'home-card:spokes', '/developer/:domain/spokes', NULL, 'Click ''Input spokes: N'' on Home → /spokes.') ON CONFLICT (click_id) DO NOTHING;
 
 INSERT INTO click_targets (click_id, from_kind, from_context, to_path, filter, story)
-VALUES ('click-004', 'count-number', 'home-card:tests-passing', '/developer/tests', 'status=passing', 'Click ''Tests passing: X/Y'' on Home → /tests with passing filter.') ON CONFLICT (click_id) DO NOTHING;
+VALUES ('click-004', 'count-number', 'home-card:tests-passing', '/developer/:domain/tests', 'status=passing', 'Click ''Tests passing: X/Y'' on Home → /tests with passing filter.') ON CONFLICT (click_id) DO NOTHING;
 
 INSERT INTO click_targets (click_id, from_kind, from_context, to_path, filter, story)
-VALUES ('click-005', 'count-number', 'home-card:tests-failing', '/developer/tests', 'status=failing', 'Click the failing-count chip on Home → /tests filtered to failing rows.') ON CONFLICT (click_id) DO NOTHING;
+VALUES ('click-005', 'count-number', 'home-card:tests-failing', '/developer/:domain/tests', 'status=failing', 'Click the failing-count chip on Home → /tests filtered to failing rows.') ON CONFLICT (click_id) DO NOTHING;
 
 INSERT INTO click_targets (click_id, from_kind, from_context, to_path, filter, story)
-VALUES ('click-006', 'entity-row', 'entities-list', '/rulebook/entities/:entity', NULL, 'Click an entity in the left list → the entity''s own page (it already happens via setSelected — should also become a URL).') ON CONFLICT (click_id) DO NOTHING;
+VALUES ('click-006', 'entity-row', 'entities-list', '/developer/:domain/entities/:entity', NULL, 'Click an entity in the left list → the entity''s own page (it already happens via setSelected — should also become a URL).') ON CONFLICT (click_id) DO NOTHING;
 
 INSERT INTO click_targets (click_id, from_kind, from_context, to_path, filter, story)
-VALUES ('click-007', 'field-row', 'entity-detail:schema-table', '/rulebook/entities/:entity', 'field=:field', 'Click a field row in the schema grid → the same entity page but with that field expanded / scrolled to.') ON CONFLICT (click_id) DO NOTHING;
+VALUES ('click-007', 'field-row', 'entity-detail:schema-table', '/developer/:domain/entities/:entity', 'field=:field', 'Click a field row in the schema grid → the same entity page but with that field expanded / scrolled to.') ON CONFLICT (click_id) DO NOTHING;
 
 INSERT INTO click_targets (click_id, from_kind, from_context, to_path, filter, story)
 VALUES ('click-008', 'fk-value', 'entity-detail:sample-data', '/rulebook/entities/:targetEntity', 'row=:fkValue', 'Click an FK lookup value in sample data (e.g. CustomerId=''cust-007'') → /rulebook/entities/Customers?row=cust-007. The OTHER side of the relationship.') ON CONFLICT (click_id) DO NOTHING;
 
 INSERT INTO click_targets (click_id, from_kind, from_context, to_path, filter, story)
-VALUES ('click-009', 'formula-cell', 'entity-detail:schema-table', '/developer/rulebook/formulas', 'entity=:entity&field=:field', 'Click a formula expression in the schema grid → /rulebook/formulas filtered to that formula.') ON CONFLICT (click_id) DO NOTHING;
+VALUES ('click-009', 'formula-cell', 'entity-detail:schema-table', '/developer/:domain/formulas', 'entity=:entity&field=:field', 'Click a formula expression in the schema grid → /rulebook/formulas filtered to that formula.') ON CONFLICT (click_id) DO NOTHING;
 
 INSERT INTO click_targets (click_id, from_kind, from_context, to_path, filter, story)
-VALUES ('click-010', 'formula-cell', 'formulas-list', '/rulebook/entities/:entity', 'field=:field', 'Click a formula row in the formulas list → the entity page with that field highlighted.') ON CONFLICT (click_id) DO NOTHING;
+VALUES ('click-010', 'formula-cell', 'formulas-list', '/developer/:domain/entities/:entity', 'field=:field', 'Click a formula row in the formulas list → the entity page with that field highlighted.') ON CONFLICT (click_id) DO NOTHING;
 
 INSERT INTO click_targets (click_id, from_kind, from_context, to_path, filter, story)
 VALUES ('click-011', 'substrate-row', 'substrates-list', '/substrates/:substrateId', NULL, 'Click a substrate in the list → its detail page (we use ?selected today; should become a route).') ON CONFLICT (click_id) DO NOTHING;
@@ -1116,10 +1224,10 @@ INSERT INTO click_targets (click_id, from_kind, from_context, to_path, filter, s
 VALUES ('click-013', 'test-cell', 'tests-matrix', '/tests/:testId', 'substrate=:substrateId', 'Click a cell in the conformance matrix → the test detail showing input/expected/actual for that substrate.') ON CONFLICT (click_id) DO NOTHING;
 
 INSERT INTO click_targets (click_id, from_kind, from_context, to_path, filter, story)
-VALUES ('click-014', 'role-pill', 'users-list', '/admin/users/roles', 'role=:roleId', 'Click a role pill anywhere → /users/roles focused on that role.') ON CONFLICT (click_id) DO NOTHING;
+VALUES ('click-014', 'role-pill', 'users-list', '/admin/roles', 'role=:roleId', 'Click a role pill anywhere → /users/roles focused on that role.') ON CONFLICT (click_id) DO NOTHING;
 
 INSERT INTO click_targets (click_id, from_kind, from_context, to_path, filter, story)
-VALUES ('click-015', 'role-pill', 'topbar:current-user', '/admin/users/roles', 'role=:roleId', 'Click your own role pill in the top bar → see what that role gets / who else has it.') ON CONFLICT (click_id) DO NOTHING;
+VALUES ('click-015', 'role-pill', 'topbar:current-user', '/admin/roles', 'role=:roleId', 'Click your own role pill in the top bar → see what that role gets / who else has it.') ON CONFLICT (click_id) DO NOTHING;
 
 INSERT INTO click_targets (click_id, from_kind, from_context, to_path, filter, story)
 VALUES ('click-016', 'user-row', 'roles-detail', '/admin/users', 'user=:userId', 'Click a user listed under a role → /users with that user selected.') ON CONFLICT (click_id) DO NOTHING;
@@ -1131,10 +1239,10 @@ INSERT INTO click_targets (click_id, from_kind, from_context, to_path, filter, s
 VALUES ('click-018', 'axiom-link', 'framing-detail', '/docs/framing', 'axiom=:axiomId&tab=axioms', 'Click the violated-axiom pill on a FramingInvariant detail → the Axioms tab focused on that axiom.') ON CONFLICT (click_id) DO NOTHING;
 
 INSERT INTO click_targets (click_id, from_kind, from_context, to_path, filter, story)
-VALUES ('click-019', 'flavor-tag', 'topbar:project-switcher', '/projects/flavors', 'flavor=:flavor', 'Click the flavour tag next to a project name → /projects/flavors filtered to that flavour.') ON CONFLICT (click_id) DO NOTHING;
+VALUES ('click-019', 'flavor-tag', 'topbar:project-switcher', '/viewer/flavors', 'flavor=:flavor', 'Click the flavour tag next to a project name → /projects/flavors filtered to that flavour.') ON CONFLICT (click_id) DO NOTHING;
 
 INSERT INTO click_targets (click_id, from_kind, from_context, to_path, filter, story)
-VALUES ('click-020', 'flavor-tag', 'flavors-grid:card', '/projects/flavors', 'flavor=:flavor', 'Click a flavour card on the Flavours screen → drill in to that flavour''s projects.') ON CONFLICT (click_id) DO NOTHING;
+VALUES ('click-020', 'flavor-tag', 'flavors-grid:card', '/viewer/flavors', 'flavor=:flavor', 'Click a flavour card on the Flavours screen → drill in to that flavour''s projects.') ON CONFLICT (click_id) DO NOTHING;
 
 INSERT INTO click_targets (click_id, from_kind, from_context, to_path, filter, story)
 VALUES ('click-021', 'framing-invariant', 'test-detail:explain', '/docs/framing', 'invariant=:invariantId', 'From a failing test''s detail, click the ''most-likely framing-invariant'' suggestion → that invariant''s page.') ON CONFLICT (click_id) DO NOTHING;
@@ -1206,22 +1314,22 @@ VALUES ('step-grade-04', 'phase-grade', 4, 'Emit report', 'Write per-substrate t
 -- EvaluationArtifacts: The JSON / Markdown files that flow between SubstrateContractPhases. Each artifact is a contract: a file with a known schema produced by one phase and consumed by the next. This table is the artifact registry — what each file IS, where it lives, who writes it, who reads it. Together with SubstrateContractPhases.InputArtifactId/OutputArtifactId, this gives the evaluation pipeline a fully-witnessed data-flow graph.
 -- ----------------------------------------------------------------------------
 INSERT INTO evaluation_artifacts (artifact_id, name, format, path_pattern, produced_by_phase_id, consumed_by_phase_id, derived_from, description)
-VALUES ('artifact-rulebook', 'Rulebook JSON', 'json', 'rulebook-examples/<domain>/effortless-rulebook/<domain>-rulebook.json (or effortless-platform/effortless-rulebook/effortless-rulebook.json for the platform itself)', '120a3be9-1ae6-26aa-da51-c0a7962d43aa', 'phase-inject', 'Hand-authored OR pulled from Airtable via airtable-to-rulebook (an input spoke, not a phase output).', 'The single durable SSoT for a project. All other artifacts in this table are mechanically derivable from this one.') ON CONFLICT (artifact_id) DO NOTHING;
+VALUES ('artifact-rulebook', 'Rulebook JSON', 'json', 'rulebook-examples/<domain>/effortless-rulebook/<domain>-rulebook.json (or effortless-platform/effortless-rulebook/effortless-rulebook.json for the platform itself)', '778c372c-6037-9a7c-974a-b3903cb5b6e1', 'phase-inject', 'Hand-authored OR pulled from Airtable via airtable-to-rulebook (an input spoke, not a phase output).', 'The single durable SSoT for a project. All other artifacts in this table are mechanically derivable from this one.') ON CONFLICT (artifact_id) DO NOTHING;
 
 INSERT INTO evaluation_artifacts (artifact_id, name, format, path_pattern, produced_by_phase_id, consumed_by_phase_id, derived_from, description)
 VALUES ('artifact-substrate', 'Substrate artifact', 'source-tree', 'execution-substrates/<technology>/ OR licensed-effortless-tools/<technology>/', 'phase-inject', 'phase-execute', 'Rulebook JSON via inject-into-<technology>.py.', 'A runnable artifact in the target technology — Python module, Go package, Postgres DDL, OWL ontology, Excel workbook, ARM64 binary, etc.') ON CONFLICT (artifact_id) DO NOTHING;
 
 INSERT INTO evaluation_artifacts (artifact_id, name, format, path_pattern, produced_by_phase_id, consumed_by_phase_id, derived_from, description)
-VALUES ('artifact-blank-test', 'blank-test.json', 'json', 'rulebook-examples/<domain>/testing/blank-test.json', '265f5d63-dcb8-5821-c3e3-4d9338608c1b', 'phase-execute', 'Rulebook seed data with all calculated/lookup/aggregation fields nulled out. Produced by orchestration, not by any substrate.', 'The exam: rows with raw fields populated and computed fields blank. Every substrate gets the SAME blank-test for a given run.') ON CONFLICT (artifact_id) DO NOTHING;
+VALUES ('artifact-blank-test', 'blank-test.json', 'json', 'rulebook-examples/<domain>/testing/blank-test.json', '7c3fb8bd-e4e5-3d1a-fbfb-a16d7e13bd78', 'phase-execute', 'Rulebook seed data with all calculated/lookup/aggregation fields nulled out. Produced by orchestration, not by any substrate.', 'The exam: rows with raw fields populated and computed fields blank. Every substrate gets the SAME blank-test for a given run.') ON CONFLICT (artifact_id) DO NOTHING;
 
 INSERT INTO evaluation_artifacts (artifact_id, name, format, path_pattern, produced_by_phase_id, consumed_by_phase_id, derived_from, description)
 VALUES ('artifact-test-answers', 'test-answers.json', 'json', 'execution-substrates/<technology>/test-answers.json (one per substrate per run)', 'phase-execute', 'phase-grade', 'blank-test.json + substrate''s generated Calc*() functions.', 'A substrate''s exam answers — the same rows as blank-test, with computed fields filled in by THAT substrate.') ON CONFLICT (artifact_id) DO NOTHING;
 
 INSERT INTO evaluation_artifacts (artifact_id, name, format, path_pattern, produced_by_phase_id, consumed_by_phase_id, derived_from, description)
-VALUES ('artifact-answer-key', 'answer-key.json', 'json', 'rulebook-examples/<domain>/testing/answer-key.json', 'ac13c50c-bb53-60a5-3448-225081147bf7', 'phase-grade', 'Rulebook seed data — every field including computed ones, evaluated FROM THE RULEBOOK (not from any substrate). The canonical oracle.', 'The grader''s reference. Rulebook-derived so no substrate is privileged. If you find yourself sourcing answer-key from one substrate''s output, that''s a bug (violates ax-002).') ON CONFLICT (artifact_id) DO NOTHING;
+VALUES ('artifact-answer-key', 'answer-key.json', 'json', 'rulebook-examples/<domain>/testing/answer-key.json', 'c32284b5-e3ff-4fbf-56f5-c61c97150301', 'phase-grade', 'Rulebook seed data — every field including computed ones, evaluated FROM THE RULEBOOK (not from any substrate). The canonical oracle.', 'The grader''s reference. Rulebook-derived so no substrate is privileged. If you find yourself sourcing answer-key from one substrate''s output, that''s a bug (violates ax-002).') ON CONFLICT (artifact_id) DO NOTHING;
 
 INSERT INTO evaluation_artifacts (artifact_id, name, format, path_pattern, produced_by_phase_id, consumed_by_phase_id, derived_from, description)
-VALUES ('artifact-test-results', 'test-results.md / all-tests-results.md', 'markdown', 'rulebook-examples/<domain>/testing/test-results.md (per-substrate) + all-tests-results.md (aggregate)', 'phase-grade', 'ef1b538f-fa18-53a1-b89c-5cb63f4dcd16', 'Field-level diff of every substrate''s test-answers.json against answer-key.json.', 'Human-readable grade report. Aggregated by orchestration/generate-report.py into orchestration-report.html for the portal Tests screen.') ON CONFLICT (artifact_id) DO NOTHING;
+VALUES ('artifact-test-results', 'test-results.md / all-tests-results.md', 'markdown', 'rulebook-examples/<domain>/testing/test-results.md (per-substrate) + all-tests-results.md (aggregate)', 'phase-grade', '4ac3fd1a-0384-5098-20c0-3e5f7b329cbd', 'Field-level diff of every substrate''s test-answers.json against answer-key.json.', 'Human-readable grade report. Aggregated by orchestration/generate-report.py into orchestration-report.html for the portal Tests screen.') ON CONFLICT (artifact_id) DO NOTHING;
 
 -- ----------------------------------------------------------------------------
 -- SubstrateTradeoffDimensions: The fixed taxonomy of dimensions used to characterize every substrate. Pro/con statements in SubstrateTradeoffs are scoped to one of these dimensions, so substrates can be compared apples-to-apples (e.g. 'who's fastest?' = filter SubstrateTradeoffs by DimensionId=dim-speed). Adding a dimension here means committing to fill it in for every substrate.

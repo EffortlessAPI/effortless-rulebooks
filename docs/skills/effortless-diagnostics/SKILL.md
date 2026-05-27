@@ -16,7 +16,12 @@ audience: customer
 
 # ERB Diagnostics & Migration
 
-## Diagnostic Queries Against the Rulebook (PREFERRED — do these first)
+Most "bugs" in an ERB project are **hub/spoke drift** — a rule exists in the
+hub but a generated spoke hasn't been rebuilt to match, or a piece of app code
+has gone out of sync with the view it consumes. The queries below help you
+spot that state, not assign blame.
+
+## Diagnostic Queries Against the Rulebook (start here — cheapest)
 
 ### Validate DAG (check for missing FK targets)
 
@@ -55,9 +60,9 @@ grep -r "FROM vw_" cmd/api/*.go | wc -l
 When fixing JOIN anti-patterns:
 
 1. Identify what fields the JOIN is fetching
-2. Verify those fields exist in the source view (check the rulebook first!)
-3. Remove the JOIN, select from view directly
-4. If field is missing, extend the view via Airtable (not the app code)
+2. Verify those fields exist in the source view (check the rulebook first)
+3. Remove the JOIN, select from the view directly
+4. If a field is missing, extend the hub (rulebook-direct or via Airtable) so it shows up in the next build's view — patching the app to recompute it duplicates the rule
 
 ### Before
 ```go
@@ -84,4 +89,4 @@ rows, _ := db.Query(`
 - `effortless-query` — for the rulebook one-liners these diagnostics rely on.
 - `effortless-sql` — for the "always read from `vw_*`" rule and `*b-customize-*.sql` placement.
 - `effortless-conventions` — for the DAG / FK rules that define what "broken" means.
-- `effortless-workflow` — for the right way to fix a missing field once a diagnostic finds one (Airtable → build, never hand-edit generated SQL).
+- `effortless-workflow` — for the input-spoke options when a diagnostic finds a missing field (hub-direct, Airtable, reverse-sync) and why those persist while generated-file edits don't.

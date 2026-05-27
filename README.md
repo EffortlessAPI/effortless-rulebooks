@@ -82,16 +82,21 @@ The harness that produced this table runs on every build. There is no "build wit
 
 ## Demo domains
 
-Five ready-to-run domains show the same pattern across wildly different problems. For a direct comparison, see **[A Tale of Two Claudes](rulebook-examples/naked-claude-vs-effortless-claude/TALE_OF_TWO_CLAUDES.md)** — a side-by-side transcript of the same questions answered with and without the rulebook, showing where a raw LLM drifts and where ERB-grounding holds.
+The catalog spans **26 ready-to-run domains** — from a one-table Hello World to a 26-table hardware ontology — all driven by the same hub-and-spoke pattern. The highlights table below is a curated subset; the [full domain catalog](docs/derived/domains.md) is generated from the platform rulebook on every build. For a direct comparison of LLM behavior with and without ERB grounding, see **[A Tale of Two Claudes](rulebook-examples/naked-claude-vs-effortless-claude/TALE_OF_TWO_CLAUDES.md)**.
 
 | Domain | Complexity | What it demonstrates |
 |---|---|---|
 | [acme-llc](rulebook-examples/acme-llc/) | **full demo** | **All 17 substrates proven conformant** — start here |
-| [effortless-banking](rulebook-examples/effortless-banking/) | advanced (in progress) | Loan origination, covenant monitoring, risk-grade migration, four-surface portal |
+| [effortless-banking](rulebook-examples/effortless-banking/) | advanced | Loan origination, covenant monitoring, risk-grade migration, four-surface portal |
+| [mechanical-kitchen-timer](rulebook-examples/mechanical-kitchen-timer/) | advanced | 26-table hardware ontology — proves the methodology isn't limited to information systems |
+| [fantasy-football](rulebook-examples/fantasy-football/) | advanced | Four-hop DAG: raw stats → roster aggregations → matchup scoring → standings |
+| [therapist-helper-portal](rulebook-examples/therapist-helper-portal/) | moderate | Three-hop cascading inference: GoalUpdate → Goal.ProgressPct → Client.IsAtRisk |
 | [jessica-basic](rulebook-examples/jessica-basic/) | moderate | Relationships, aggregations, role-agent separation |
 | [star-trek](rulebook-examples/star-trek/) | moderate | Hierarchical rollups, polymorphic foreign keys |
 | [is-everything-a-language](rulebook-examples/is-everything-a-language/) | philosophical | 8-predicate AND logic, formal argument modeling |
 | [customer-fullname](rulebook-examples/customer-fullname/) | minimal | Hello World — string concat formula |
+
+→ [Full domain catalog (26 domains, generated)](docs/derived/domains.md)
 
 ---
 

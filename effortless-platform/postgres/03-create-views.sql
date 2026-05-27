@@ -355,6 +355,8 @@ SELECT
   t.sort_order,                                                                 -- Ascending integer; drives default display order in the portal. Lower = shown first. Tutorial-ladder projects sort before demos; demos before meta/graph.
   t.project_slug,                                                               -- Folder under rulebook-examples/ — also the active-domain.txt value
   t.display_name,
+  t.tagline,
+  t.logo_path,
   t.flavor,                                                                     -- crud-template | computation-heavy | aggregation-heavy | graph-ontology | meta-rulebook | tutorial-ladder
   t.complexity,                                                                 -- minimal | basic | advanced
   t.entity_count,

@@ -19,10 +19,10 @@ This directory is 100% generated from the platform rulebook by `effortless-platf
 - [Fuzzy Grading Providers](fuzzy-grading.md)
 - [Formula Dialects](formula-dialects.md)
 - [Demo Narratives](demo-narratives.md)
-- [Rulebook Domains](domains.md) — 8 rows
+- [Rulebook Domains](domains.md) — 26 rows
 - [Rulebook Flavors](flavors.md) — 26 rows
-- [Admin Portal Navigation](navigation.md) — 33 rows
-- [Admin Portal Screens](screens.md) — 29 rows
+- [Admin Portal Navigation](navigation.md) — 42 rows
+- [Admin Portal Screens](screens.md) — 39 rows
 - [Admin Portal API Surface](api-surface.md) — 36 rows
 - [Permissions](permissions.md)
 - [Click Targets](click-map.md)

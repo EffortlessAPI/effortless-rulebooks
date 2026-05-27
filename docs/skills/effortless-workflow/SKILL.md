@@ -18,35 +18,37 @@ audience: customer
 
 # ERB Change Workflow
 
-## CRITICAL: Always Ask Before Modifying
+## Ask before modifying the hub or rebuilding
 
-**Before modifying `effortless-rulebook.json` (directly or via Airtable, reverse-sync, or any other input spoke), or running `effortless build`, ALWAYS ask the user for permission.** These are consequential operations that affect the hub (single source of truth) and trigger code regeneration across every output spoke.
+Before modifying `effortless-rulebook.json` (directly, via Airtable, reverse-sync, or any other input spoke), or running `effortless build`, ask the user. These operations change the hub and cascade through every output spoke — the developer should be choosing when that cascade fires, not discovering it after the fact.
 
-## NO MIGRATIONS — read this before writing any SQL
+The developer is always in charge. This skill's role is to make sure Claude defers on consequential actions, not to invent prohibitions.
 
-This is an ERB project. The local Postgres DB is **regenerated from scratch on every `effortless build`** via `init-db.sh` (drop + recreate). **There is no `migrations/` folder, no migrations tracking table, no incremental SQL deltas in this paradigm.** That entire pattern belongs to a different deployment shape (`bases.effortlessapi.com` — the only exception, covered below).
+## Local-dev Postgres is regenerated, not migrated
 
-**To change schema, RLS, calculated fields, or seed data, the answer is always one of these — never a migration. All of them write to the same hub (`effortless-rulebook.json`); they differ only in which input spoke you use:**
+The local Postgres DB is recreated from scratch on every `effortless build` via `init-db.sh` (drop + recreate). That means a `migrations/` folder, a migrations tracking table, or an incremental `ALTER TABLE` would run once and then be wiped on the next build — they don't fail, they just don't *persist*. (Bases-hosted DBs are a different deployment shape with different mechanics; covered below.)
 
-1. **Edit `effortless-rulebook.json` directly** (with permission) → `effortless build`. The simplest path for LLMs — the rulebook is just JSON, and edits are surgical.
+So for local-dev schema, RLS, calculated fields, or seed data, the path that survives builds is to edit the hub. There are several input spokes, all writing to the same hub — pick by ergonomics:
+
+1. **Edit `effortless-rulebook.json` directly** (with permission) → `effortless build`. Often the simplest path — the rulebook is JSON and edits are surgical.
 2. **Edit via Airtable** (when the project is Airtable-connected) → `effortless build` pulls Airtable into the rulebook, then regenerates downstream.
 3. **Edit the rulebook directly, then reverse-sync to Airtable** so the human-friendly editing surface stays in step → `effortless build -id` from `push-to-airtable/`, then normal `effortless build` from root.
-4. **Edit a `*b-customize-*.sql` file** ONLY for infrastructure the rulebook genuinely cannot model (auth tenants, JWT helpers, role GRANTs) — never for business entities. See `effortless-sql`.
+4. **Edit a `*b-customize-*.sql` file** — appropriate for infrastructure the rulebook doesn't model (auth tenants, JWT helpers, role GRANTs). For business entities the hub is usually a better fit; see `effortless-sql`.
 
-**If you find yourself about to do any of these, stop and reread the rule:**
+Patterns that *look* like persistence but don't survive a rebuild:
 
-- Running `CREATE TABLE` / `ALTER TABLE` / `DROP TABLE` / `INSERT INTO ...` against the local DB by hand or via psql to "make a schema change persist."
-- Creating a file under `postgres/migrations/` (folder shouldn't exist for local-dev projects).
-- Inserting into a `migrations` (or `schema_migrations`, `_migrations`, `applied_migrations`, etc.) tracking table to "register" a change.
-- Editing a generated `0*.sql` file (they get overwritten on the next build).
+- `CREATE TABLE` / `ALTER TABLE` / `DROP TABLE` / `INSERT INTO ...` against the local DB by hand — wiped on next build.
+- A file under `postgres/migrations/` on a local-dev project — wiped on next build.
+- Inserting into a `migrations` / `schema_migrations` tracking table — wiped on next build.
+- Editing a generated `0*.sql` file — overwritten on next build.
 
 **The internalized redirect:** if the answer feels like "write a migration," the answer is **"edit the rulebook (directly, or via Airtable if connected) and rerun `effortless build`."** Say that sentence to yourself before reaching for SQL.
 
-### Bases is the only exception
+### Bases is the exception
 
-`bases.effortlessapi.com`-hosted databases (tell: `BASES_DATABASE_URL` in `.env.example`, or the project's CLAUDE.md has the "Bases is migration-only" block) cannot be dropped + recreated, so they DO use migrations — applied via `postgres/apply-migration.sh`, never `psql` directly. **Even there, schema still originates in the rulebook**; the migration file is a delivery mechanism for a rulebook delta, not a place to author schema from scratch. See `effortless-bases` for the full bases pattern.
+`bases.effortlessapi.com`-hosted databases (tell: `BASES_DATABASE_URL` in `.env.example`, or the project's CLAUDE.md has the "Bases is migration-only" block) can't be dropped + recreated, so they *do* use migrations — applied via `postgres/apply-migration.sh`, not `psql` directly. Even there, schema still originates in the hub; the migration file is a delivery mechanism for a hub delta, not a place to author schema from scratch. See `effortless-bases`.
 
-**Tell which path you're on before touching Postgres:** no `BASES_DATABASE_URL` and no "Bases is migration-only" block in CLAUDE.md → you are on the local-dev path and the rule is **no migrations, ever**.
+**Quick check before touching Postgres:** no `BASES_DATABASE_URL` and no "Bases is migration-only" block in CLAUDE.md → local-dev path → migrations don't persist.
 
 ## Input Spokes for Editing the Hub
 
@@ -118,17 +120,20 @@ All output spokes (regenerated)
 
 ## Permission Checkpoints
 
-**STOP and ask the user before ANY of these actions:**
+Ask the user before any of these — they affect the hub or trigger cascading regeneration, and the developer should be choosing when that happens:
 - Editing `effortless-rulebook.json`
 - Modifying Airtable schema or data (via API or any other method)
 - Running `effortless build` (from root or any subfolder)
 - Running any individual transpiler
 
-These are not routine file edits — they affect the source of truth and trigger cascading regeneration.
+## "Just add a small table" — where it actually belongs
 
-## "Just add a small table" is the #1 trap
+When the user says "make a Foo table" / "add a Bar entity" / "I need an X table", the home that survives builds is the hub. Edit `effortless-rulebook.json` directly (or via Airtable, if connected), then `effortless build` regenerates `public.foo` + `vw_foo`.
 
-When the user says "make a Foo table" / "add a Bar entity" / "I need an X table" — that goes in the **rulebook hub**. Edit `effortless-rulebook.json` directly (or via Airtable, if connected), then `effortless build` regenerates `public.foo` + `vw_foo`. Do NOT hand-write the table in `01b-customize-schema.sql`, do NOT write a migration file, and do NOT `CREATE TABLE` against the local DB. The `01b-05b` files are for infrastructure the rulebook cannot model (auth tenants, JWT helpers, role GRANTs) — never for business entities. If you're typing `CREATE TABLE app.users (...)` or anything that looks like a migration, you've taken a wrong turn — see the "NO MIGRATIONS" section above.
+A few near-cousins that won't persist for a *business* entity on local-dev:
+
+- Hand-writing the table in `01b-customize-schema.sql` — survives the build, but `01b` is sized for infrastructure (auth tenants, JWT helpers, role GRANTs); business entities work better in the hub where they get views and calculated fields for free.
+- Writing a migration file or `CREATE TABLE app.users (...)` against the local DB — wiped on next `init-db.sh` (see the local-dev-Postgres section above).
 
 ## Don't drive git on the user's behalf
 
@@ -141,16 +146,18 @@ user to commit when they choose.
 (Exception: `effortless-setup-postgres` performs one-time bootstrap commits during initial project
 creation — that flow is explicitly authorized to drive git. Nothing else is.)
 
-## NO SILENT FALLBACK ALLOWED
+## When an input spoke is blocked, ask — don't reroute silently
 
-If you cannot complete a change through the input spoke you started with (e.g., Airtable API limitations for formula fields, no API key, no Airtable connection at all):
-1. **STOP** - Do not silently fall back to manual edits of generated files
-2. **ASK THE USER** - Explain the blocker and present the options:
-   - **Rulebook-direct**: You edit `effortless-rulebook.json` directly, then `effortless build`
-   - **Airtable UI**: User makes the change manually in Airtable's UI, then runs `effortless build`
-   - **Reverse-sync**: Edit the JSON directly, push to Airtable via `effortless build -id` from `push-to-airtable/`, then `effortless build`
-   - **Customization files**: Use `*b-customize-*` files only for logic the rulebook genuinely cannot model
-3. **Wait for user direction** - do not proceed without explicit permission
+If the input spoke you started with can't complete the change (e.g., Airtable API
+can't create formula fields, no API key, project isn't Airtable-connected at all):
+
+1. Pause and surface the blocker — don't silently switch to editing generated files (those edits are ephemeral anyway, so the apparent fix would evaporate on the next build).
+2. Lay out the alternatives so the user can choose:
+   - **Rulebook-direct**: edit `effortless-rulebook.json` directly, then `effortless build`
+   - **Airtable UI**: user makes the change in Airtable's UI, then runs `effortless build`
+   - **Reverse-sync**: edit the JSON directly, push to Airtable via `effortless build -id` from `push-to-airtable/`, then `effortless build`
+   - **Customization files**: `*b-customize-*` for logic the hub doesn't model
+3. Wait for direction before proceeding.
 
 ---
 

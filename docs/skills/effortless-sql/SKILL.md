@@ -16,45 +16,50 @@ audience: customer
 
 # ERB Generated SQL Patterns
 
-> **Load-bearing axiom: Generated SQL is a projection, not a source.**
-> Files `00`–`05` under `postgres/` are mechanical output of the rulebook.
-> Read views with `psql -c "\d vw_<table>"`, never `cat` the generated SQL
-> into your context — and never edit it by hand. The `*b-customize-*.sql`
-> files are the only legitimate place for project-specific SQL.
+> **The mechanics in one paragraph.** Files `00`–`05` under `postgres/` are
+> mechanical output of the rulebook hub — every `effortless build` rewrites
+> them. Edits there are not "forbidden"; they just don't survive the next
+> build. To make a change stick, edit the hub (`effortless-rulebook.json`,
+> via whichever input spoke you prefer). If the hub genuinely can't express
+> what you need, the `*b-customize-*.sql` files run after the generated ones
+> on every build and *are* preserved. You also rarely need to read the
+> generated SQL into context — `psql -c "\d vw_<table>"` gives you the same
+> view structure for ~zero tokens.
 
-> **NO MIGRATIONS on local-dev projects.** `init-db.sh` drops and
-> recreates the local DB on every build, so there is no `migrations/`
-> folder, no migrations tracking table, no incremental deltas. Schema
-> changes go through Airtable → `effortless build`, never through
-> `ALTER TABLE` against the live DB or a migration file. The lone
+> **Local-dev DBs are regenerated, not migrated.** `init-db.sh` drops and
+> recreates the local DB on every build, so a `migrations/` folder /
+> migrations tracking table / incremental delta would just be wiped next
+> build. Schema changes belong in the hub → `effortless build`. The lone
 > exception is `bases.effortlessapi.com`-hosted DBs (`postgres/apply-migration.sh`,
-> see `effortless-bases`). See the canonical "NO MIGRATIONS" section in
-> `effortless-workflow` for the full rule.
+> see `effortless-bases`) where the DB *can't* be dropped, so deltas are
+> the delivery mechanism — but the schema still originates in the hub.
+> Canonical statement lives in `effortless-workflow`.
 
-## CRITICAL: Never Read Generated SQL Files Into Context
+## Reading the generated SQL: usually unnecessary
 
-**The generated SQL files (00-05) are a PROJECTION of the rulebook. You do not need
-to read them.** They exist for PostgreSQL to consume, not for you. (See the
-canonical Token Discipline section in `effortless-orchestrator` — this skill
-restates the same rule from the SQL angle.)
+Generated SQL files (00–05) are a *projection* of the rulebook for Postgres to
+consume. You can read them, but it's expensive in context tokens and the
+pipeline is deterministic enough that you usually don't need to.
 
 If you need to know what a view contains:
-- **Best:** `psql -d <dbname> -c "\d vw_tablename"` (zero context tokens)
-- **OK:** Query the rulebook schema with a one-liner (see `effortless-query`)
-- **NEVER:** `cat postgres/03-create-views.sql` or reading any 00-05 file
+- **Cheapest:** `psql -d <dbname> -c "\d vw_tablename"` (≈ zero context tokens)
+- **Also cheap:** Query the rulebook schema with a one-liner (see `effortless-query`)
+- **Expensive:** `cat postgres/03-create-views.sql` — works, but burns context
 
-The pipeline is deterministic. The view `vw_<tablename>` will always contain:
+The view `vw_<tablename>` will always contain:
 - All raw fields from the table (snake_case)
 - All calculated/lookup/aggregation fields as additional columns
 - FK lookup fields as `<fk_name>_<field>` (e.g., `customer_name`)
 
-Trust this. Don't verify by reading files.
+(Canonical Token Discipline section lives in `effortless-orchestrator`.)
 
 ---
 
 ## CRITICAL: Always Read From Views, Never Base Tables
 
 **NEVER SELECT from base tables. ALWAYS use `vw_*` views for ALL read operations.**
+
+This isn't a stylistic rule — it's how the substrate is shaped: views (`vw_*`) include raw fields *plus* every calculated/lookup/aggregation field, computed by the SQL functions generated from the rulebook. Base tables only have the raw columns, and the views aren't updatable in Postgres (they contain function-call columns), so writes have to go to the base table anyway.
 
 ```sql
 -- WRONG: Reading from base table
@@ -72,7 +77,7 @@ SELECT * FROM vw_customers WHERE is_red_headed = true;
 
 ### Why This Matters:
 
-- Business logic belongs in Airtable formulas, not in ad-hoc queries
+- Business logic belongs in the rulebook (Airtable formulas or rulebook-direct edits), not in ad-hoc queries
 - Views contain pre-calculated fields that encapsulate business rules
 - Computing things yourself (e.g., `LOWER(field) = 'value'`) duplicates logic and risks inconsistency
 - The whole point of ERB is that the view already did the work for you
@@ -100,16 +105,22 @@ SELECT * FROM vw_customers WHERE is_red_headed = true;
 - `04-create-policies.sql` - Row-level security (RLS) policies
 - `05-insert-data.sql` - INSERT statements from rulebook data
 
-These files are regenerated by `effortless build` and ANY manual changes will be lost.
+These files are regenerated by `effortless build` and ANY manual changes will be lost. You can edit them to test a hypothesis, but the next build rewrites them — for a change that persists, edit the hub.
 
-### Customization Files (Edit WITH PERMISSION):
+### Customization Files (Edit WITH PERMISSION — preserved across builds):
 - `01b-customize-schema.sql` - runs after 01 (extra tables, ALTER TABLE, indexes)
 - `02b-customize-functions.sql` - runs after 02 (custom functions)
 - `03b-customize-views.sql` - runs after 03 (custom views)
 - `04b-customize-policies.sql` - runs after 04 (custom RLS rules)
-- `05b-customize-data.sql` - runs after 05 (custom seed data only — NOT for "migrations" in the incremental-delta sense; this file runs every build, idempotent inserts only)
+- `05b-customize-data.sql` - runs after 05 (custom seed data; runs every build, so make inserts idempotent)
 
-These `*b-customize-*` files are preserved across builds. Use them for project-specific customizations that can't be expressed in Airtable. They are **not** a migrations folder — they re-run on every `init-db.sh` against a freshly created DB. If you find yourself wanting to write a one-time `ALTER TABLE` or `INSERT INTO migrations(...)` here, you've taken a wrong turn — go back to Airtable or, for bases-only, use `postgres/apply-migration.sh`.
+These `*b-customize-*` files are preserved across builds. They re-run on every
+`init-db.sh` against a freshly created DB, so they're for *idempotent*
+customization — not for one-shot deltas. They're the right home for
+infrastructure the hub doesn't model (auth tenants, JWT helpers, role GRANTs).
+For business entities, the hub is usually a better fit; if you reach for a
+customization file to add a `Foo` table, ask whether `Foo` belongs in the
+rulebook instead.
 
 ### ERBCustomizations Table Pattern
 
