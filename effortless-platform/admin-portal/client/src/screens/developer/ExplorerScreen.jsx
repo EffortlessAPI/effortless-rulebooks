@@ -131,8 +131,11 @@ export default function ExplorerScreen({ screen, me }) {
       {rebuildId && (
         <RebuildOverlay
           rebuildId={rebuildId}
+          domain={domain}
+          canEdit={canEdit}
           onClose={() => setRebuildId(null)}
           onSuccess={() => { setRebuildId(null); refreshAll(); }}
+          onReverted={() => { setRebuildId(null); refreshAll(); }}
         />
       )}
 
@@ -155,6 +158,11 @@ export default function ExplorerScreen({ screen, me }) {
               depth={0}
             />
           ))}
+          {canEdit && tree && (
+            <NewEntityButton
+              onCreated={(rebuildId) => setRebuildId(rebuildId)}
+            />
+          )}
         </div>
 
         <div className="detail-panel">
@@ -602,6 +610,264 @@ function SchemaEditor({ entity, fieldIndex, field, canEdit, onClose, startRebuil
   );
 }
 
+// =============================================================================
+// EntityHeaderEditor  (DOMAIN_UX_VISION.md §2.7)
+// =============================================================================
+// Renders above the list-view rows for unscoped entity nodes. Edits the
+// entity's Description and `important` flag, and offers a Delete button.
+// Each save uses the same PATCH /api/explorer/schema pointer surface; delete
+// uses DELETE /api/explorer/schema?entity=...
+
+function EntityHeaderEditor({ entity, canEdit, startRebuild, refreshNode, afterDelete }) {
+  const [desc, setDesc] = useState(null);
+  const [important, setImportant] = useState(null);
+  const [origDesc, setOrigDesc] = useState("");
+  const [origImportant, setOrigImportant] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [err, setErr]   = useState(null);
+  const [open, setOpen] = useState(false);
+
+  // Lazy-fetch the entity's current Description + important when expanded
+  // (the /node payload doesn't carry these — they're entity-level, not
+  // schema-array entries).
+  useEffect(() => {
+    if (!open || desc !== null) return;
+    api.get(`/api/rulebook/entities/${encodeURIComponent(entity)}`)
+      .then((e) => {
+        setOrigDesc(e.Description || "");
+        setOrigImportant(!!e.important);
+        setDesc(e.Description || "");
+        setImportant(!!e.important);
+      })
+      .catch((e) => setErr(e.message));
+  }, [open, entity]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Reset on entity change.
+  useEffect(() => {
+    setDesc(null); setImportant(null); setOpen(false); setErr(null);
+  }, [entity]);
+
+  const isDirty = desc !== null && (desc !== origDesc || important !== origImportant);
+
+  const save = async () => {
+    setBusy(true); setErr(null);
+    try {
+      let lastRebuildId = null;
+      if (desc !== origDesc) {
+        const r = await api.patch("/api/explorer/schema", {
+          pointer: `/${entity}/Description`, value: desc,
+        });
+        lastRebuildId = r.rebuildId;
+      }
+      if (important !== origImportant) {
+        const r = await api.patch("/api/explorer/schema", {
+          pointer: `/${entity}/important`, value: important,
+        });
+        lastRebuildId = r.rebuildId;
+      }
+      if (lastRebuildId && startRebuild) startRebuild(lastRebuildId);
+      else if (refreshNode) refreshNode();
+      setOrigDesc(desc); setOrigImportant(important);
+    } catch (e) { setErr(e.message); }
+    finally { setBusy(false); }
+  };
+
+  const del = async () => {
+    if (!window.confirm(`Delete entity ${entity} (drops the entire table + all rows)?`)) return;
+    setBusy(true); setErr(null);
+    try {
+      const r = await api.del(`/api/explorer/schema?entity=${encodeURIComponent(entity)}`);
+      if (r.rebuildId && startRebuild) startRebuild(r.rebuildId);
+      afterDelete();
+    } catch (e) {
+      if (e.referrers) {
+        setErr(`${e.message}\n` + e.referrers.map((r) => `  • ${r.entity}.${r.viaFk}`).join("\n"));
+      } else {
+        setErr(e.message);
+      }
+    } finally { setBusy(false); }
+  };
+
+  return (
+    <div style={{ marginBottom: 12 }}>
+      <button
+        className="btn secondary"
+        style={{ padding: "2px 8px", fontSize: 12 }}
+        onClick={() => setOpen((v) => !v)}
+      >
+        {open ? "× Close entity edit" : "✎ Edit entity (Description / important / delete)"}
+      </button>
+      {open && (
+        <div
+          style={{
+            marginTop: 8, padding: 10,
+            background: "var(--panel-2)",
+            border: "1px solid var(--border)", borderRadius: 6,
+          }}
+        >
+          {err && (
+            <div className="story-banner" style={{ borderLeftColor: "var(--bad)", whiteSpace: "pre-wrap" }}>
+              {err}
+            </div>
+          )}
+          {desc === null && <div className="muted small">Loading…</div>}
+          {desc !== null && (
+            <>
+              <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                <label className="muted small">
+                  Description{desc !== origDesc && <span style={{ color: "var(--warn)", marginLeft: 4 }}>•</span>}
+                </label>
+                <textarea
+                  rows={2}
+                  disabled={!canEdit}
+                  value={desc}
+                  onChange={(e) => setDesc(e.target.value)}
+                  style={{ width: "100%" }}
+                />
+                <label className="small">
+                  <input
+                    type="checkbox"
+                    disabled={!canEdit}
+                    checked={important}
+                    onChange={(e) => setImportant(e.target.checked)}
+                    style={{ marginRight: 6 }}
+                  />
+                  important
+                  {important !== origImportant && <span style={{ color: "var(--warn)", marginLeft: 4 }}>•</span>}
+                </label>
+              </div>
+              {canEdit && (
+                <div style={{ marginTop: 10, display: "flex", gap: 8 }}>
+                  <button className="btn" disabled={!isDirty || busy} onClick={save}>
+                    {busy ? "Saving…" : isDirty ? "Save (triggers rebuild)" : "Save"}
+                  </button>
+                  <button
+                    className="btn secondary"
+                    style={{ marginLeft: "auto", color: "var(--bad)" }}
+                    disabled={busy}
+                    onClick={del}
+                  >
+                    Delete entity…
+                  </button>
+                </div>
+              )}
+            </>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// =============================================================================
+// NewEntityButton  (DOMAIN_UX_VISION.md §2.7 entity create)
+// =============================================================================
+// "+ New entity" at the bottom of the left rail. Opens an inline form;
+// submit issues PATCH /api/explorer/schema with the root pointer "/" and a
+// minimal { name, definition: { Description, important, schema: [...] } }
+// body. Server creates the entity, kicks off a rebuild, returns rebuildId.
+
+function NewEntityButton({ onCreated }) {
+  const [open, setOpen] = useState(false);
+  const [name, setName] = useState("");
+  const [desc, setDesc] = useState("");
+  const [pkName, setPkName] = useState("Id");
+  const [busy, setBusy] = useState(false);
+  const [err, setErr]   = useState(null);
+
+  const submit = async () => {
+    setBusy(true); setErr(null);
+    try {
+      if (!name) throw new Error("entity name is required");
+      // Minimal valid entity per ERB conventions: a PK + a Name field. The
+      // user can grow the schema from the column-header strip after the
+      // rebuild lands. Naming the PK <Name>Id matches the transpiler's
+      // toSnakeCase target (Name → name_id) and the spec §2.6 default.
+      const pk = pkName || `${name}Id`;
+      const definition = {
+        Description: desc || "",
+        important: false,
+        schema: [
+          { name: pk,     datatype: "string", type: "raw", nullable: false, isPk: true },
+          { name: "Name", datatype: "string", type: "raw", nullable: false },
+        ],
+        data: [],
+      };
+      const r = await api.patch("/api/explorer/schema", {
+        pointer: "/",
+        value: { name, definition },
+      });
+      toast(`Created entity ${name}`);
+      onCreated(r.rebuildId);
+      setOpen(false); setName(""); setDesc(""); setPkName("Id");
+    } catch (e) {
+      setErr(e.message);
+    } finally { setBusy(false); }
+  };
+
+  if (!open) {
+    return (
+      <div style={{ paddingTop: 8 }}>
+        <button
+          className="btn secondary"
+          style={{ width: "100%", padding: "6px 8px", fontSize: 12 }}
+          onClick={() => setOpen(true)}
+        >
+          + New entity
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <div
+      style={{
+        marginTop: 8, padding: 10,
+        background: "var(--panel-2)",
+        border: "1px solid var(--border)", borderRadius: 6,
+      }}
+    >
+      <div className="small" style={{ fontWeight: 600, marginBottom: 6 }}>New entity</div>
+      <label className="muted small">Entity name (PascalCase)</label>
+      <input
+        type="text"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+        placeholder="Customers"
+        style={{ width: "100%", marginBottom: 6 }}
+      />
+      <label className="muted small">PK field name</label>
+      <input
+        type="text"
+        value={pkName}
+        onChange={(e) => setPkName(e.target.value)}
+        placeholder={`${name || "Entity"}Id`}
+        style={{ width: "100%", marginBottom: 6 }}
+      />
+      <label className="muted small">Description</label>
+      <textarea
+        rows={2}
+        value={desc}
+        onChange={(e) => setDesc(e.target.value)}
+        style={{ width: "100%", marginBottom: 6 }}
+      />
+      {err && (
+        <div className="story-banner" style={{ borderLeftColor: "var(--bad)", marginBottom: 6 }}>
+          {err}
+        </div>
+      )}
+      <div style={{ display: "flex", gap: 6 }}>
+        <button className="btn" disabled={busy || !name} onClick={submit}>
+          {busy ? "Creating…" : "Create (triggers rebuild)"}
+        </button>
+        <button className="btn secondary" disabled={busy} onClick={() => setOpen(false)}>
+          Cancel
+        </button>
+      </div>
+    </div>
+  );
+}
+
 function FieldInput({ field, value, onChange }) {
   if (field.datatype === "boolean") {
     return (
@@ -702,6 +968,19 @@ function ListView({ node, page, setPage, pathSegments, goTo, canEdit, refreshNod
           </button>
         )}
       </h3>
+
+      {/* Entity-level edit panel: Description + important toggle + delete.
+          Hidden for scoped lists since they're a slice of the entity, not
+          the entity itself. */}
+      {!node.scopedBy && (
+        <EntityHeaderEditor
+          entity={node.entity}
+          canEdit={canEdit}
+          startRebuild={startRebuild}
+          refreshNode={refreshNode}
+          afterDelete={() => goTo([])}
+        />
+      )}
 
       {showNewRow && canEdit && (
         <NewRowForm
@@ -1145,11 +1424,14 @@ function CellProvenance({ entity, id, field, onClose, onNavigate }) {
 // Per §2.8 decision 3, no auto-rollback. The recovery affordance is a copy-
 // able `git checkout` command — explicit user action, never silent.
 
-function RebuildOverlay({ rebuildId, onClose, onSuccess }) {
+function RebuildOverlay({ rebuildId, domain, canEdit, onClose, onSuccess, onReverted }) {
   const [events, setEvents] = useState([]);
   const [status, setStatus] = useState("pending");
   const [doneData, setDoneData] = useState(null);
   const [errData, setErrData] = useState(null);
+  const [diff, setDiff] = useState(null);          // { diff, dirty } once fetched
+  const [diffErr, setDiffErr] = useState(null);
+  const [reverting, setReverting] = useState(false);
 
   useEffect(() => {
     if (!rebuildId) return;
@@ -1198,6 +1480,35 @@ function RebuildOverlay({ rebuildId, onClose, onSuccess }) {
       return () => clearTimeout(t);
     }
   }, [status, onSuccess]);
+
+  // When the build fails, fetch the rulebook's live git diff so the user
+  // can see exactly what edit triggered the failure (per §2.8 decision 3).
+  useEffect(() => {
+    if (status !== "error") return;
+    setDiff(null);
+    setDiffErr(null);
+    api.get(`/api/explorer/rulebook-diff?domain=${encodeURIComponent(domain || "")}`)
+      .then((r) => setDiff(r))
+      .catch((e) => setDiffErr(e.message));
+  }, [status, domain]);
+
+  const revertRulebook = async () => {
+    if (reverting) return;
+    if (!window.confirm(
+      "Revert the rulebook to the last committed git state? " +
+      "This discards the schema edit that triggered the failed rebuild."
+    )) return;
+    setReverting(true);
+    try {
+      await api.post("/api/explorer/rulebook-revert", { domain });
+      toast("Rulebook reverted via git checkout.", "info");
+      onReverted ? onReverted() : onClose();
+    } catch (e) {
+      toast(`Revert failed: ${e.message}`, "error");
+    } finally {
+      setReverting(false);
+    }
+  };
 
   return (
     <div
@@ -1283,17 +1594,53 @@ function RebuildOverlay({ rebuildId, onClose, onSuccess }) {
             <div className="small" style={{ marginBottom: 8 }}>
               Per §2.8 decision 3, failed rebuilds aren't auto-rolled back —
               the rulebook JSON keeps the edit that triggered this failure.
-              Inspect the diff or revert by hand:
             </div>
-            <pre
-              className="mono small"
-              style={{
-                padding: 8, background: "var(--panel-2)",
-                border: "1px solid var(--border)", borderRadius: 4,
-                margin: 0, overflowX: "auto",
-              }}
-            >git diff -- effortless-rulebook/
-git checkout -- effortless-rulebook/   # to revert</pre>
+
+            {diff === null && !diffErr && (
+              <div className="muted small">Loading rulebook diff…</div>
+            )}
+            {diffErr && (
+              <div className="small" style={{ color: "var(--bad)" }}>diff load failed: {diffErr}</div>
+            )}
+            {diff && diff.dirty === false && (
+              <div className="muted small">
+                No uncommitted changes in <span className="mono">{diff.path}</span> —
+                the failure was already on the committed rulebook.
+              </div>
+            )}
+            {diff && diff.dirty && (
+              <>
+                <div className="small muted" style={{ marginBottom: 4 }}>
+                  Uncommitted changes in <span className="mono">{diff.path}</span>:
+                </div>
+                <pre
+                  className="mono small"
+                  style={{
+                    padding: 8, background: "var(--panel-2)",
+                    border: "1px solid var(--border)", borderRadius: 4,
+                    margin: 0, marginBottom: 8, maxHeight: 200, overflow: "auto",
+                  }}
+                >{diff.diff}</pre>
+              </>
+            )}
+
+            <div style={{ display: "flex", gap: 8, marginTop: 8 }}>
+              <button
+                className="btn"
+                disabled={!canEdit || reverting || !diff || !diff.dirty}
+                onClick={revertRulebook}
+                title={!canEdit
+                  ? "You don't have edit permission"
+                  : !diff || !diff.dirty
+                    ? "No uncommitted rulebook changes to revert"
+                    : "Runs `git checkout` against the rulebook — explicit, never silent"}
+              >
+                {reverting ? "Reverting…" : "Revert via git checkout"}
+              </button>
+              <button className="btn secondary" onClick={onClose}>
+                Leave it (I'll fix the rows myself)
+              </button>
+            </div>
           </div>
         )}
       </div>

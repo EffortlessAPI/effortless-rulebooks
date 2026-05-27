@@ -485,10 +485,13 @@ async function reconcileFlavorsOnBoot() {
 // ---------------------------------------------------------------------------
 // Editor Postgres database (per-project)
 // ---------------------------------------------------------------------------
-function domainDbName() {
-  const domain = getActiveDomain();
-  const safe = domain.replace(/[^a-z0-9_]/gi, "_").toLowerCase();
+function domainDbNameFor(domain) {
+  const safe = String(domain).replace(/[^a-z0-9_]/gi, "_").toLowerCase();
   return `erb_${safe}`;
+}
+
+function domainDbName() {
+  return domainDbNameFor(getActiveDomain());
 }
 
 async function ensureEditorDatabase() {
@@ -1979,12 +1982,126 @@ function finishJob(job, kind, data) {
   job.clients.clear();
 }
 
-// Kick off the rebuild as a background async — `effortless build` regenerates
-// SQL/Python/etc from the (now-patched) rulebook. The spec calls for a
-// follow-on DB drop+recreate from the regenerated postgres-bootstrap/, but
-// for v1 we ship just the build; the user can re-run init-db.sh manually
-// when they need to apply schema changes to the live editor DB. The SSE
-// surface is what's important — adding more phases here is mechanical.
+// Kick off the rebuild as a background async. Four sequential phases:
+//   1. effortless_build — regenerates SQL/Python/etc from the (now-patched)
+//      rulebook by running `effortless build` in the project directory.
+//   2. create / populate / constraints — runs the regenerated postgres-bootstrap
+//      SQL files in lex order via psql against erb_<domain>. The numbered
+//      files handle their own DROP IF EXISTS + CREATE on the entity tables;
+//      portal_* tables are untouched (different naming convention) so the
+//      portal's own state survives the rebuild.
+//   3. verify — counts rows in each entity's table and compares against the
+//      rulebook's data arrays. Mismatches fail loudly with a structured
+//      payload (per §2.8 decision 3: don't auto-rollback, surface the diff).
+//
+// Per §2.8 decision 4 there is NO lock around any of this — concurrent
+// writes against the same domain mid-rebuild will fail loudly from psql,
+// which is the correct surface.
+function sqlBootstrapDir(domain) {
+  if (domain === "__top__") return path.join(PLATFORM_DIR, "postgres");
+  return path.join(RULEBOOK_EXAMPLES, domain, "postgres-bootstrap");
+}
+
+function sqlPhaseCategory(fname) {
+  if (/^05[ab]?-/.test(fname)) return "populate";
+  if (/^99/.test(fname))       return "constraints";
+  return "create";
+}
+
+function execOnePsqlFile(fullPath, dbName) {
+  return new Promise((resolve, reject) => {
+    const child = spawn("psql", [
+      "-v", "ON_ERROR_STOP=1",
+      "-d", dbName,
+      "-f", fullPath,
+    ], {
+      env: {
+        ...process.env,
+        PGHOST:     PG_CONFIG.host,
+        PGPORT:     String(PG_CONFIG.port),
+        PGUSER:     PG_CONFIG.user,
+        PGPASSWORD: PG_CONFIG.password || "",
+      },
+    });
+    let stderr = "";
+    child.stderr.on("data", (chunk) => { stderr += chunk; });
+    child.on("error", reject);
+    child.on("close", (code) => {
+      if (code === 0) return resolve();
+      const err = new Error(`psql -f ${path.basename(fullPath)} exited ${code}\n${stderr.slice(-1600)}`);
+      err.phase = "psql";
+      err.code = "SQL_FAILED";
+      reject(err);
+    });
+  });
+}
+
+async function applyPostgresBootstrap(job, domain) {
+  const dir = sqlBootstrapDir(domain);
+  if (!fs.existsSync(dir)) {
+    phase(job, "skipped", `no SQL dir at ${path.relative(REPO_ROOT, dir)} — skipping schema/data refresh`);
+    return;
+  }
+  const files = fs.readdirSync(dir)
+    .filter((f) => /\.sql$/.test(f) && !/\.disabled$/i.test(f))
+    .sort();
+  if (files.length === 0) {
+    phase(job, "skipped", `${path.relative(REPO_ROOT, dir)} contains no SQL files`);
+    return;
+  }
+  const dbName = domainDbNameFor(domain);
+  for (const fname of files) {
+    const cat = sqlPhaseCategory(fname);
+    phase(job, cat, fname);
+    try {
+      await execOnePsqlFile(path.join(dir, fname), dbName);
+    } catch (e) {
+      // Tag the phase before bubbling so the error surface shows where it
+      // happened, not just "BUILD_FAILED".
+      e.phase = e.phase || cat;
+      throw e;
+    }
+  }
+}
+
+async function verifyRowCounts(job, domain) {
+  const rb = (domain === "__top__") ? loadProjectRulebook() : loadRulebook();
+  const dbName = domainDbNameFor(domain);
+  const pool = new pg.Pool({ ...PG_CONFIG, database: dbName });
+  let totalRows = 0;
+  const mismatches = [];
+  try {
+    for (const [entityName, value] of iterEntities(rb)) {
+      if (entityName === "__meta__") continue;
+      if (!value || !Array.isArray(value.data)) continue;
+      const tableName = toSnakeCase(entityName);
+      try {
+        const r = await pool.query(`SELECT COUNT(*)::int AS n FROM ${tableName}`);
+        const dbCount = r.rows[0].n;
+        totalRows += dbCount;
+        if (dbCount !== value.data.length) {
+          mismatches.push({ entity: entityName, db: dbCount, rulebook: value.data.length });
+        }
+      } catch (e) {
+        // Table missing entirely → real failure. Bubble it up via the
+        // mismatches collection so the UI sees all of them, not just the first.
+        mismatches.push({ entity: entityName, error: String(e.message || e).slice(0, 200) });
+      }
+    }
+  } finally {
+    await pool.end();
+  }
+  if (mismatches.length > 0) {
+    const err = new Error(`row-count verify failed (${mismatches.length} mismatch${mismatches.length === 1 ? "" : "es"})`);
+    err.phase = "verify";
+    err.code = "VERIFY_FAILED";
+    err.mismatches = mismatches;
+    throw err;
+  }
+  phase(job, "verify", `row counts match (${totalRows} rows across entity tables)`);
+  return totalRows;
+}
+
 function startRebuildJob({ reason, domain }) {
   const id = nextRebuildId();
   const job = {
@@ -2002,11 +2119,12 @@ function startRebuildJob({ reason, domain }) {
   // phase event lands.
   setImmediate(async () => {
     job.status = "running";
+    let currentPhase = "effortless_build";
     try {
       const projectRoot = (domain === "__top__")
         ? PLATFORM_DIR
         : path.join(RULEBOOK_EXAMPLES, domain);
-      phase(job, "effortless_build", `running 'effortless build' in ${projectRoot}`);
+      phase(job, "effortless_build", `running 'effortless build' in ${path.relative(REPO_ROOT, projectRoot) || "."}`);
       await new Promise((resolve, reject) => {
         const child = spawn("effortless", ["build"], { cwd: projectRoot });
         let stderr = "";
@@ -2023,12 +2141,20 @@ function startRebuildJob({ reason, domain }) {
           else reject(new Error(`effortless build exited ${code}\n${stderr.slice(-2000)}`));
         });
       });
-      finishJob(job, "done", { durationMs: Date.now() - job.startedAt });
+
+      currentPhase = "bootstrap";
+      await applyPostgresBootstrap(job, domain);
+
+      currentPhase = "verify";
+      const rowsLoaded = await verifyRowCounts(job, domain);
+
+      finishJob(job, "done", { durationMs: Date.now() - job.startedAt, rowsLoaded });
     } catch (e) {
       finishJob(job, "error", {
-        phase: "effortless_build",
+        phase: e.phase || currentPhase,
         code: e.code || "BUILD_FAILED",
         msg: String(e.message || e),
+        ...(e.mismatches ? { mismatches: e.mismatches } : {}),
       });
     }
   });
@@ -2050,7 +2176,15 @@ function parseJsonPointer(pointer) {
 }
 
 // §2.7 allow-list of schema-PATCH pointers. Anything else is 400.
-function validateSchemaPatchPointer(path) {
+// The root pointer "" (from "/") is the entity-create shape: value must be
+// { name, definition } and a new top-level entity is added to the rulebook.
+function validateSchemaPatchPointer(path, value) {
+  if (path.length === 0) {
+    if (!value || typeof value !== "object" || !value.name || !value.definition) {
+      throw new Error("root-pointer PATCH requires body { name, definition } — see §2.7 entity create");
+    }
+    return;
+  }
   if (path.length < 2) {
     throw new Error("pointer must address a property on an entity (e.g. /Entity/Description)");
   }
@@ -2072,20 +2206,25 @@ app.patch("/api/explorer/schema", requireEditor, async (req, res) => {
   }
   try {
     const path = parseJsonPointer(pointer);
-    validateSchemaPatchPointer(path);
+    validateSchemaPatchPointer(path, value);
 
     await writeThrough({
       pgWrite: async (c) => {
         await c.query(
           `INSERT INTO portal_audit_log (user_id, action, target, payload)
            VALUES ($1, 'schema.patch', $2, $3)`,
-          [getCurrentUser()?.UserId || null, pointer, JSON.stringify({ pointer, value })]
+          [getCurrentUser()?.UserId || null, pointer || "/", JSON.stringify({ pointer, value })]
         );
       },
       rulebookMutate: (rb) => {
-        // Validate the entity exists. If we're creating the first schema
-        // entry on an entity, the entity itself must already exist (entity
-        // create is a separate codepath that's out of v1).
+        if (path.length === 0) {
+          // Entity create. value = { name, definition }
+          if (rb[value.name]) {
+            throw new Error(`entity '${value.name}' already exists`);
+          }
+          rb[value.name] = value.definition;
+          return rb;
+        }
         if (!rb[path[0]]) throw new Error(`entity '${path[0]}' not in rulebook`);
         setByPath(rb, path, value);
         return rb;
@@ -2093,7 +2232,7 @@ app.patch("/api/explorer/schema", requireEditor, async (req, res) => {
     });
 
     const rebuildId = startRebuildJob({
-      reason: `schema patch: ${pointer}`,
+      reason: path.length === 0 ? `entity create: ${value.name}` : `schema patch: ${pointer}`,
       domain: getActiveDomain(),
     });
     res.status(202).json({
@@ -2103,6 +2242,70 @@ app.patch("/api/explorer/schema", requireEditor, async (req, res) => {
     });
   } catch (e) {
     res.status(400).json({ error: String(e.message || e) });
+  }
+});
+
+// §2.7 entity delete. ?entity=<name>. Removes the entity top-level entry from
+// the rulebook (data + schema both); the rebuild's drop-table-if-exists
+// machinery cleans up the SQL side.
+app.delete("/api/explorer/schema", requireEditor, async (req, res) => {
+  const entityName = req.query.entity;
+  if (!entityName || typeof entityName !== "string") {
+    return res.status(400).json({ error: "entity query param required" });
+  }
+  try {
+    const rb = loadRulebook();
+    if (!rb[entityName] || !Array.isArray(rb[entityName].schema)) {
+      return res.status(404).json({ error: `entity '${entityName}' not found` });
+    }
+    // Refuse if any other entity has a forward FK pointing at this one —
+    // surfacing the references gives the user something actionable.
+    const referrers = [];
+    for (const [otherName, otherValue] of iterEntities(rb)) {
+      if (otherName === entityName) continue;
+      for (const f of otherValue.schema || []) {
+        if (f.type === "relationship" && f.RelatedTo === entityName
+            && !isInverseRelationshipField(f, otherValue.data)) {
+          referrers.push({ entity: otherName, viaFk: f.name });
+        }
+      }
+    }
+    if (referrers.length > 0) {
+      return res.status(409).json({
+        error: `${entityName} is referenced by ${referrers.length} FK(s); detach them first`,
+        referrers,
+      });
+    }
+
+    await writeThrough({
+      pgWrite: async (c) => {
+        await c.query(
+          `INSERT INTO portal_audit_log (user_id, action, target, payload)
+           VALUES ($1, 'schema.entityDelete', $2, $3)`,
+          [getCurrentUser()?.UserId || null, entityName, JSON.stringify({ entity: entityName })]
+        );
+        // The actual entity table gets cleaned up by the rebuild's
+        // bootstrap phase (its DROP TABLE IF EXISTS now finds nothing in
+        // the regenerated SQL, so the table goes away).
+      },
+      rulebookMutate: (rb2) => {
+        if (!rb2[entityName]) throw new Error(`entity '${entityName}' no longer present`);
+        delete rb2[entityName];
+        return rb2;
+      },
+    });
+
+    const rebuildId = startRebuildJob({
+      reason: `entity delete: ${entityName}`,
+      domain: getActiveDomain(),
+    });
+    res.status(202).json({
+      rebuildId,
+      status: "pending",
+      streamUrl: `/api/explorer/rebuild/${encodeURIComponent(rebuildId)}/stream`,
+    });
+  } catch (e) {
+    res.status(500).json({ error: String(e.message || e) });
   }
 });
 
@@ -2165,6 +2368,83 @@ app.get("/api/explorer/rebuild/:id", (req, res) => {
     durationMs: job.durationMs || null,
     events: job.events,
   });
+});
+
+// -----------------------------------------------------------------------------
+// Rulebook git surface — diff + revert
+// -----------------------------------------------------------------------------
+// §2.8 decision 3: failed rebuilds aren't auto-rolled back; the rulebook JSON
+// stays in its edited state. The UI offers a "Revert via git checkout" button
+// that hits POST /rulebook-revert below. The revert is ALWAYS user-initiated;
+// CLAUDE.md "Never silently revert a rulebook JSON" forbids the server from
+// doing it without an explicit request.
+
+function rulebookPathForDomain(domain) {
+  if (domain === "__top__" || !domain) return TOP_RULEBOOK;
+  return path.join(RULEBOOK_EXAMPLES, domain, "effortless-rulebook", `${domain}-rulebook.json`);
+}
+
+function runGit(args, cwd) {
+  return new Promise((resolve, reject) => {
+    const child = spawn("git", args, { cwd });
+    let stdout = "", stderr = "";
+    child.stdout.on("data", (c) => { stdout += c; });
+    child.stderr.on("data", (c) => { stderr += c; });
+    child.on("error", reject);
+    child.on("close", (code) => {
+      resolve({ code, stdout, stderr });
+    });
+  });
+}
+
+app.get("/api/explorer/rulebook-diff", async (req, res) => {
+  const domain = req.query.domain || getActiveDomain();
+  const rbPath = rulebookPathForDomain(domain);
+  if (!fs.existsSync(rbPath)) {
+    return res.status(404).json({ error: `rulebook not found at ${rbPath}` });
+  }
+  const relPath = path.relative(REPO_ROOT, rbPath);
+  try {
+    const r = await runGit(["diff", "--no-color", "--", relPath], REPO_ROOT);
+    if (r.code !== 0 && !r.stdout) {
+      return res.status(500).json({ error: `git diff exited ${r.code}: ${r.stderr.slice(-400)}` });
+    }
+    res.json({ domain, path: relPath, diff: r.stdout, dirty: r.stdout.length > 0 });
+  } catch (e) {
+    res.status(500).json({ error: String(e.message || e) });
+  }
+});
+
+app.post("/api/explorer/rulebook-revert", requireEditor, async (req, res) => {
+  const domain = (req.body && req.body.domain) || getActiveDomain();
+  const rbPath = rulebookPathForDomain(domain);
+  if (!fs.existsSync(rbPath)) {
+    return res.status(404).json({ error: `rulebook not found at ${rbPath}` });
+  }
+  const relPath = path.relative(REPO_ROOT, rbPath);
+  try {
+    // Log BEFORE the destructive op so audit captures intent even if checkout
+    // fails. Per "Never silently revert a rulebook JSON": this codepath is
+    // reachable only via explicit user click on the failed-rebuild surface.
+    try {
+      const p = await getPool();
+      await p.query(
+        `INSERT INTO portal_audit_log (user_id, action, target, payload)
+         VALUES ($1, 'rulebook.revert', $2, $3)`,
+        [getCurrentUser()?.UserId || null, relPath, JSON.stringify({ domain })]
+      );
+    } catch (logErr) {
+      console.warn(`[revert] audit log write failed: ${logErr.message}`);
+    }
+
+    const r = await runGit(["checkout", "--", relPath], REPO_ROOT);
+    if (r.code !== 0) {
+      return res.status(500).json({ error: `git checkout exited ${r.code}: ${r.stderr.slice(-400)}` });
+    }
+    res.json({ ok: true, domain, path: relPath, msg: "rulebook reverted to git HEAD" });
+  } catch (e) {
+    res.status(500).json({ error: String(e.message || e) });
+  }
 });
 
 // --- users (PROJECT-rulebook resource; writes to project rulebook) ---
