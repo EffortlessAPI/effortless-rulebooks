@@ -8,7 +8,7 @@
 // URL encoding is §2.6: /<Entity>/<Name>/<ChildEntity>/<Name>... where the
 // "id" segments are the entity's Name field (ERB closed-platform convention).
 
-import { useEffect, useMemo, useState } from "react";
+import { Fragment, useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { api } from "../../lib/api.js";
 import { toast } from "../../lib/toast.js";
@@ -168,6 +168,7 @@ export default function ExplorerScreen({ screen, me }) {
             goTo={goTo}
             canEdit={canEdit}
             refreshNode={refreshNode}
+            startRebuild={(id) => setRebuildId(id)}
             rulebookRevision={tree?.rulebookRevision || null}
           />
         </div>
@@ -377,7 +378,7 @@ function InstanceTreeNode({ path, kind, label, meta, important, currentUrlPath, 
   );
 }
 
-function RightPane({ pathSegments, node, nodeError, nodeLoading, page, setPage, goTo, canEdit, refreshNode, rulebookRevision }) {
+function RightPane({ pathSegments, node, nodeError, nodeLoading, page, setPage, goTo, canEdit, refreshNode, startRebuild, rulebookRevision }) {
   if (pathSegments.length === 0) {
     return (
       <div className="muted">
@@ -401,10 +402,10 @@ function RightPane({ pathSegments, node, nodeError, nodeLoading, page, setPage, 
     return <div className="muted small">Loading…</div>;
   }
   if (node.kind === "list") {
-    return <ListView node={node} page={page} setPage={setPage} pathSegments={pathSegments} goTo={goTo} canEdit={canEdit} refreshNode={refreshNode} />;
+    return <ListView node={node} page={page} setPage={setPage} pathSegments={pathSegments} goTo={goTo} canEdit={canEdit} refreshNode={refreshNode} startRebuild={startRebuild} />;
   }
   if (node.kind === "instance") {
-    return <InstanceView node={node} pathSegments={pathSegments} goTo={goTo} canEdit={canEdit} refreshNode={refreshNode} />;
+    return <InstanceView node={node} pathSegments={pathSegments} goTo={goTo} canEdit={canEdit} refreshNode={refreshNode} startRebuild={startRebuild} />;
   }
   return <div className="muted small">Unknown node kind: {node.kind}</div>;
 }
@@ -436,6 +437,169 @@ function coerceValueForType(raw, datatype) {
     return /^(true|yes|1)$/i.test(String(raw).trim());
   }
   return String(raw);
+}
+
+// =============================================================================
+// SchemaEditor  (DOMAIN_UX_VISION.md §2.3 schema-detail strip)
+// =============================================================================
+// One panel that drops down from a column header (ListView) or from clicking
+// the type column of a field row (InstanceView). Shows the field's full
+// schema and lets the user edit it. Saves issue PATCH /api/explorer/schema
+// with a /<Entity>/schema/<idx>/<key> pointer per property, which kicks off
+// a rebuild (the parent opens RebuildOverlay via startRebuild).
+
+const SCHEMA_TYPE_OPTIONS  = ["raw", "calculated", "lookup", "aggregation", "relationship"];
+const SCHEMA_DTYPE_OPTIONS = ["string", "integer", "number", "decimal", "boolean", "date", "datetime"];
+
+function SchemaEditor({ entity, fieldIndex, field, canEdit, onClose, startRebuild, onSavedNoRebuild }) {
+  const [draft, setDraft] = useState(() => ({
+    name:             field.name || "",
+    type:             field.type || "raw",
+    datatype:         field.datatype || "string",
+    nullable:         field.nullable !== false,
+    important:        !!field.important,
+    Description:      field.Description || "",
+    formula:          field.formula || "",
+    explanation_rich: field.explanation_rich || "",
+    RelatedTo:        field.RelatedTo || "",
+  }));
+  const [busy, setBusy] = useState(false);
+  const [err, setErr]   = useState(null);
+
+  const isDirty = (key) => {
+    const cur = key in field ? field[key] : (typeof draft[key] === "boolean" ? false : "");
+    return String(draft[key]) !== String(cur);
+  };
+  const anyDirty = Object.keys(draft).some(isDirty);
+
+  const save = async () => {
+    setBusy(true); setErr(null);
+    try {
+      // One PATCH per dirty property. Each emits a rebuildId; we open
+      // the overlay for the LAST one (they all queue rebuilds; the latest
+      // is the most useful to tail).
+      let lastRebuildId = null;
+      for (const key of Object.keys(draft)) {
+        if (!isDirty(key)) continue;
+        // For boolean false on `important`, we still want to send false
+        // (not skip) so the rulebook reflects the toggle off.
+        const value = draft[key];
+        const r = await api.patch("/api/explorer/schema", {
+          pointer: `/${entity}/schema/${fieldIndex}/${key}`,
+          value,
+        });
+        lastRebuildId = r.rebuildId;
+      }
+      if (lastRebuildId && startRebuild) startRebuild(lastRebuildId);
+      else if (onSavedNoRebuild) onSavedNoRebuild();
+      onClose();
+    } catch (e) {
+      setErr(e.message);
+    } finally { setBusy(false); }
+  };
+
+  const field_ = (label, key, control) => (
+    <div style={{ display: "flex", flexDirection: "column", gap: 4, minWidth: 0 }}>
+      <label className="muted small" style={{ display: "flex", alignItems: "center", gap: 4 }}>
+        {label}
+        {isDirty(key) && <span style={{ color: "var(--warn)" }}>•</span>}
+      </label>
+      {control}
+    </div>
+  );
+
+  return (
+    <div
+      onClick={(e) => e.stopPropagation()}
+      style={{
+        padding: 12,
+        background: "var(--panel-2)",
+        border: "1px solid var(--border)",
+        borderRadius: 6,
+        marginTop: 6,
+      }}
+    >
+      <div style={{ display: "flex", alignItems: "center", marginBottom: 8 }}>
+        <strong className="mono small">{entity}.{field.name}</strong>
+        <span className="muted small" style={{ marginLeft: 8 }}>schema editor · /{entity}/schema/{fieldIndex}</span>
+        <span style={{ flex: 1 }} />
+        <button className="btn secondary" onClick={onClose} style={{ padding: "2px 8px" }}>×</button>
+      </div>
+
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 10 }}>
+        {field_("name", "name",
+          <input type="text" disabled={!canEdit || true /* renames are risky; v1 read-only */}
+                 value={draft.name}
+                 onChange={(e) => setDraft((d) => ({ ...d, name: e.target.value }))}
+                 style={{ width: "100%" }} />)}
+        {field_("type", "type",
+          <select disabled={!canEdit} value={draft.type}
+                  onChange={(e) => setDraft((d) => ({ ...d, type: e.target.value }))}
+                  style={{ width: "100%" }}>
+            {SCHEMA_TYPE_OPTIONS.map((t) => <option key={t} value={t}>{t}</option>)}
+          </select>)}
+        {field_("datatype", "datatype",
+          <select disabled={!canEdit} value={draft.datatype}
+                  onChange={(e) => setDraft((d) => ({ ...d, datatype: e.target.value }))}
+                  style={{ width: "100%" }}>
+            {SCHEMA_DTYPE_OPTIONS.map((t) => <option key={t} value={t}>{t}</option>)}
+          </select>)}
+        {field_("nullable", "nullable",
+          <input type="checkbox" disabled={!canEdit} checked={draft.nullable}
+                 onChange={(e) => setDraft((d) => ({ ...d, nullable: e.target.checked }))} />)}
+        {field_("important", "important",
+          <input type="checkbox" disabled={!canEdit} checked={draft.important}
+                 onChange={(e) => setDraft((d) => ({ ...d, important: e.target.checked }))} />)}
+        {(draft.type === "relationship" || draft.type === "lookup" || draft.RelatedTo) &&
+          field_("RelatedTo", "RelatedTo",
+            <input type="text" disabled={!canEdit} value={draft.RelatedTo}
+                   onChange={(e) => setDraft((d) => ({ ...d, RelatedTo: e.target.value }))}
+                   style={{ width: "100%" }} />)}
+      </div>
+
+      {(draft.type === "calculated" || draft.type === "lookup" || draft.type === "aggregation" || draft.formula) && (
+        <div style={{ marginTop: 10 }}>
+          {field_("formula", "formula",
+            <textarea disabled={!canEdit} rows={2}
+                      value={draft.formula}
+                      onChange={(e) => setDraft((d) => ({ ...d, formula: e.target.value }))}
+                      className="mono small"
+                      style={{ width: "100%", fontFamily: "var(--mono)" }} />)}
+        </div>
+      )}
+
+      <div style={{ marginTop: 10 }}>
+        {field_("Description", "Description",
+          <textarea disabled={!canEdit} rows={2}
+                    value={draft.Description}
+                    onChange={(e) => setDraft((d) => ({ ...d, Description: e.target.value }))}
+                    style={{ width: "100%" }} />)}
+      </div>
+
+      <div style={{ marginTop: 10 }}>
+        {field_("explanation_rich", "explanation_rich",
+          <textarea disabled={!canEdit} rows={3}
+                    value={draft.explanation_rich}
+                    onChange={(e) => setDraft((d) => ({ ...d, explanation_rich: e.target.value }))}
+                    style={{ width: "100%" }} />)}
+      </div>
+
+      {err && (
+        <div className="story-banner" style={{ borderLeftColor: "var(--bad)", marginTop: 8 }}>{err}</div>
+      )}
+
+      {canEdit && (
+        <div style={{ marginTop: 10, display: "flex", gap: 8 }}>
+          <button className="btn" disabled={!anyDirty || busy} onClick={save}>
+            {busy ? "Saving + rebuilding…" : anyDirty ? "Save (triggers rebuild)" : "Save"}
+          </button>
+          <span className="muted small" style={{ alignSelf: "center" }}>
+            Saves PATCH /api/explorer/schema per dirty property and tails the rebuild.
+          </span>
+        </div>
+      )}
+    </div>
+  );
 }
 
 function FieldInput({ field, value, onChange }) {
@@ -479,9 +643,10 @@ function FieldInput({ field, value, onChange }) {
   );
 }
 
-function SchemaHeaderCell({ field }) {
-  // The column header IS the schema entry per §2.3. Hover shows the full
-  // type / formula / description. Step 6 will add click-for-provenance.
+function SchemaHeaderCell({ field, onDoubleClick, isOpen }) {
+  // The column header IS the schema entry per §2.3. Hover reveals the full
+  // type / formula / description; double-click expands into the schema-
+  // detail strip below (handled by the parent table).
   const parts = [];
   if (field.type) parts.push(`type: ${field.type}`);
   if (field.datatype) parts.push(`datatype: ${field.datatype}`);
@@ -489,8 +654,12 @@ function SchemaHeaderCell({ field }) {
   if (field.Description) parts.push(`\n${field.Description}`);
   if (field.RelatedTo) parts.push(`→ ${field.RelatedTo}`);
   return (
-    <th title={parts.join("  ·  ")}>
-      <div>{field.name}</div>
+    <th
+      title={parts.join("  ·  ") + "\n\n(double-click to edit schema)"}
+      onDoubleClick={onDoubleClick}
+      style={{ cursor: "pointer", background: isOpen ? "var(--panel-2)" : undefined }}
+    >
+      <div>{field.name} {isOpen && <span className="muted small">▾</span>}</div>
       <div className="muted small" style={{ fontWeight: 400 }}>
         {field.type === "raw" ? field.datatype : field.type}
       </div>
@@ -498,11 +667,17 @@ function SchemaHeaderCell({ field }) {
   );
 }
 
-function ListView({ node, page, setPage, pathSegments, goTo, canEdit, refreshNode }) {
+function ListView({ node, page, setPage, pathSegments, goTo, canEdit, refreshNode, startRebuild }) {
   const cols = node.schema || [];
   const rows = node.rows || [];
   const totalPages = Math.max(1, Math.ceil((node.totalCount || 0) / (node.pageSize || 50)));
   const [showNewRow, setShowNewRow] = useState(false);
+  const [openSchemaField, setOpenSchemaField] = useState(null); // field name or null
+  // Close the schema strip when the user navigates to a different node.
+  useEffect(() => { setOpenSchemaField(null); setShowNewRow(false); }, [node.entity, node.scopedBy?.id]);
+  const openSchemaIdx = openSchemaField
+    ? cols.findIndex((c) => c.name === openSchemaField)
+    : -1;
 
   return (
     <>
@@ -538,29 +713,52 @@ function ListView({ node, page, setPage, pathSegments, goTo, canEdit, refreshNod
         />
       )}
 
-      {rows.length === 0 ? (
-        <div className="muted small">No rows.</div>
-      ) : (
-        <div style={{ overflowX: "auto" }}>
-          <table className="grid">
-            <thead>
-              <tr>{cols.map((c) => <SchemaHeaderCell key={c.name} field={c} />)}</tr>
-            </thead>
-            <tbody>
-              {rows.map((row, i) => (
-                <tr
-                  key={i}
-                  className="clickable"
-                  onClick={() => goTo([...pathSegments, String(row.Name ?? "")])}
-                  title={`Open ${node.entity} / ${row.Name}`}
-                >
-                  {cols.map((c) => <td key={c.name}>{formatCell(row[c.name])}</td>)}
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
+      <div style={{ overflowX: "auto" }}>
+        <table className="grid">
+          <thead>
+            <tr>{cols.map((c) => (
+              <SchemaHeaderCell
+                key={c.name}
+                field={c}
+                isOpen={openSchemaField === c.name}
+                onDoubleClick={() =>
+                  setOpenSchemaField((cur) => cur === c.name ? null : c.name)
+                }
+              />
+            ))}</tr>
+            {openSchemaIdx >= 0 && (
+              <tr>
+                <td colSpan={cols.length} style={{ padding: 0, background: "var(--panel-2)" }}>
+                  <SchemaEditor
+                    entity={node.entity}
+                    fieldIndex={openSchemaIdx}
+                    field={cols[openSchemaIdx]}
+                    canEdit={canEdit}
+                    onClose={() => setOpenSchemaField(null)}
+                    startRebuild={startRebuild}
+                    onSavedNoRebuild={refreshNode}
+                  />
+                </td>
+              </tr>
+            )}
+          </thead>
+          <tbody>
+            {rows.length === 0 && (
+              <tr><td colSpan={cols.length} className="muted small">No rows.</td></tr>
+            )}
+            {rows.map((row, i) => (
+              <tr
+                key={i}
+                className="clickable"
+                onClick={() => goTo([...pathSegments, String(row.Name ?? "")])}
+                title={`Open ${node.entity} / ${row.Name}`}
+              >
+                {cols.map((c) => <td key={c.name}>{formatCell(row[c.name])}</td>)}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
 
       {totalPages > 1 && (
         <div className="muted small" style={{ marginTop: 8, display: "flex", gap: 8, alignItems: "center" }}>
@@ -641,7 +839,7 @@ function NewRowForm({ entity, schema, scopedBy, onCreated, onCancel }) {
   );
 }
 
-function InstanceView({ node, pathSegments, goTo, canEdit, refreshNode }) {
+function InstanceView({ node, pathSegments, goTo, canEdit, refreshNode, startRebuild }) {
   const cols = node.schema || [];
   const row  = node.row || {};
   // Dirty map: only fields the user actually changed. Sending the unchanged
@@ -649,11 +847,14 @@ function InstanceView({ node, pathSegments, goTo, canEdit, refreshNode }) {
   const [dirty, setDirty] = useState({});
   const [busy, setBusy]   = useState(false);
   const [err, setErr]     = useState(null);
-  const [openCell, setOpenCell] = useState(null); // field name currently showing provenance
+  const [openCell, setOpenCell] = useState(null);   // field name showing provenance
+  const [openSchema, setOpenSchema] = useState(null); // field name showing schema editor
 
-  // Reset dirty state + close any open provenance when the underlying row
-  // changes (navigated to a new instance, or refreshed post-save).
-  useEffect(() => { setDirty({}); setErr(null); setOpenCell(null); }, [node]);
+  // Reset dirty state + close any open provenance/schema when the underlying
+  // row changes (navigated to a new instance, or refreshed post-save).
+  useEffect(() => {
+    setDirty({}); setErr(null); setOpenCell(null); setOpenSchema(null);
+  }, [node]);
 
   const isDirty = Object.keys(dirty).length > 0;
 
@@ -756,7 +957,7 @@ function InstanceView({ node, pathSegments, goTo, canEdit, refreshNode }) {
       <table className="grid">
         <thead><tr><th>field</th><th>type</th><th>value</th></tr></thead>
         <tbody>
-          {cols.map((c) => {
+          {cols.map((c, idx) => {
             const writable = canEdit && isWritableField(c);
             const liveValue = c.name in dirty ? dirty[c.name] : row[c.name];
             // A cell has provenance to show whenever its field isn't plain
@@ -764,47 +965,71 @@ function InstanceView({ node, pathSegments, goTo, canEdit, refreshNode }) {
             // story (formula text, target row, dependencies). Raw cells
             // skip the click target to keep the surface clean.
             const hasProvenance = c.type && c.type !== "raw";
+            const schemaOpen = openSchema === c.name;
             return (
-              <tr key={c.name}>
-                <td>
-                  <div>
-                    {c.name}
-                    {c.name in dirty && (
-                      <span className="muted small" style={{ marginLeft: 6, color: "var(--warn)" }}>•</span>
+              <Fragment key={c.name}>
+                <tr>
+                  <td>
+                    <div>
+                      {c.name}
+                      {c.name in dirty && (
+                        <span className="muted small" style={{ marginLeft: 6, color: "var(--warn)" }}>•</span>
+                      )}
+                    </div>
+                    {c.Description && (
+                      <div className="muted small">{c.Description}</div>
                     )}
-                  </div>
-                  {c.Description && (
-                    <div className="muted small">{c.Description}</div>
-                  )}
-                </td>
-                <td>
-                  <span className="tag">{c.type || ""}</span>
-                  {c.datatype && c.type === "raw" && (
-                    <span className="muted small" style={{ marginLeft: 6 }}>{c.datatype}</span>
-                  )}
-                  {c.formula && (
-                    <div className="mono small muted" style={{ marginTop: 4 }}>{c.formula}</div>
-                  )}
-                </td>
-                <td
-                  className={hasProvenance ? "clickable" : ""}
-                  onClick={hasProvenance ? () => setOpenCell((cur) => cur === c.name ? null : c.name) : undefined}
-                  title={hasProvenance ? "Click to see how this was computed" : undefined}
-                >
-                  {writable
-                    ? <FieldInput field={c} value={liveValue} onChange={(v) => setField(c.name, v, c.datatype)} />
-                    : formatCell(row[c.name])}
-                  {hasProvenance && openCell === c.name && (
-                    <CellProvenance
-                      entity={node.entity}
-                      id={node.id}
-                      field={c.name}
-                      onClose={() => setOpenCell(null)}
-                      onNavigate={(segments) => { setOpenCell(null); goTo(segments); }}
-                    />
-                  )}
-                </td>
-              </tr>
+                  </td>
+                  <td
+                    className="clickable"
+                    onClick={() => setOpenSchema((cur) => cur === c.name ? null : c.name)}
+                    title="Click to edit this field's schema (PATCH /api/explorer/schema)"
+                    style={{ background: schemaOpen ? "var(--panel-2)" : undefined }}
+                  >
+                    <span className="tag">{c.type || ""}</span>
+                    {c.datatype && c.type === "raw" && (
+                      <span className="muted small" style={{ marginLeft: 6 }}>{c.datatype}</span>
+                    )}
+                    {schemaOpen && <span className="muted small" style={{ marginLeft: 6 }}>▾</span>}
+                    {c.formula && (
+                      <div className="mono small muted" style={{ marginTop: 4 }}>{c.formula}</div>
+                    )}
+                  </td>
+                  <td
+                    className={hasProvenance ? "clickable" : ""}
+                    onClick={hasProvenance ? () => setOpenCell((cur) => cur === c.name ? null : c.name) : undefined}
+                    title={hasProvenance ? "Click to see how this was computed" : undefined}
+                  >
+                    {writable
+                      ? <FieldInput field={c} value={liveValue} onChange={(v) => setField(c.name, v, c.datatype)} />
+                      : formatCell(row[c.name])}
+                    {hasProvenance && openCell === c.name && (
+                      <CellProvenance
+                        entity={node.entity}
+                        id={node.id}
+                        field={c.name}
+                        onClose={() => setOpenCell(null)}
+                        onNavigate={(segments) => { setOpenCell(null); goTo(segments); }}
+                      />
+                    )}
+                  </td>
+                </tr>
+                {schemaOpen && (
+                  <tr>
+                    <td colSpan={3} style={{ padding: 0, background: "var(--panel-2)" }}>
+                      <SchemaEditor
+                        entity={node.entity}
+                        fieldIndex={idx}
+                        field={c}
+                        canEdit={canEdit}
+                        onClose={() => setOpenSchema(null)}
+                        startRebuild={startRebuild}
+                        onSavedNoRebuild={refreshNode}
+                      />
+                    </td>
+                  </tr>
+                )}
+              </Fragment>
             );
           })}
         </tbody>
@@ -1026,7 +1251,29 @@ function RebuildOverlay({ rebuildId, onClose, onSuccess }) {
           )}
           {status === "error" && errData && (
             <div style={{ color: "var(--bad)", marginTop: 6 }}>
-              ✗ {errData.code}: {errData.msg}
+              <div>✗ [{errData.phase || "?"}] {errData.code}: {errData.msg}</div>
+              {Array.isArray(errData.mismatches) && errData.mismatches.length > 0 && (
+                <table style={{ marginTop: 8, fontSize: "0.85em", borderCollapse: "collapse" }}>
+                  <thead>
+                    <tr>
+                      <th style={{ textAlign: "left",  padding: "2px 8px" }}>Entity</th>
+                      <th style={{ textAlign: "right", padding: "2px 8px" }}>DB rows</th>
+                      <th style={{ textAlign: "right", padding: "2px 8px" }}>Rulebook rows</th>
+                      <th style={{ textAlign: "left",  padding: "2px 8px" }}>Notes</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {errData.mismatches.map((m, i) => (
+                      <tr key={i}>
+                        <td style={{ padding: "2px 8px" }}>{m.entity}</td>
+                        <td style={{ padding: "2px 8px", textAlign: "right" }}>{m.db ?? "—"}</td>
+                        <td style={{ padding: "2px 8px", textAlign: "right" }}>{m.rulebook ?? "—"}</td>
+                        <td style={{ padding: "2px 8px" }}>{m.error || ""}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
             </div>
           )}
         </div>
