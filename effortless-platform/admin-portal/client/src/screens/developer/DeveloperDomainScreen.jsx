@@ -324,8 +324,15 @@ function EntityScroller({ name, entity, domain, navigate, canEdit, onSaved }) {
         <div className="muted small" style={{ padding: "12px 0" }}>— no rows in <code>data[]</code> —</div>
       ) : (
         <div className="entity-scroller-strip">
-          {rows.map((row, i) => (
-            <article key={i} className="entity-card" onClick={() => navigate(`/developer/${domain}/data`)}>
+          {rows.map((row, i) => {
+            // §2.6: instance URL ids are the entity's Name field. If a row is
+            // missing Name (rulebook bug), fall back to the unscoped entity
+            // list rather than minting a 404.
+            const target = row.Name
+              ? `/developer/${domain}/explorer/${encodeURIComponent(name)}/${encodeURIComponent(row.Name)}`
+              : `/developer/${domain}/explorer/${encodeURIComponent(name)}`;
+            return (
+            <article key={i} className="entity-card" onClick={() => navigate(target)}>
               <header className="entity-card-name">
                 {labelField ? (row[labelField] ?? "—") : (pkField ? row[pkField] : "—")}
               </header>
@@ -338,7 +345,8 @@ function EntityScroller({ name, entity, domain, navigate, canEdit, onSaved }) {
                 ))}
               </dl>
             </article>
-          ))}
+            );
+          })}
         </div>
       )}
     </section>

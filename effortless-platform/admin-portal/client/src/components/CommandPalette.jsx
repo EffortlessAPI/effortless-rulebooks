@@ -144,7 +144,7 @@ function buildIndex(rb, projects, activeDomain) {
       subtitle: value.summary_rich ? trimRich(value.summary_rich, 80) : `${value.schema.length} fields · ${(value.data || []).length} rows`,
       haystack: `${name} ${value.summary_rich || ""}`.toLowerCase(),
       priority: important ? 90 : 50,
-      action: (nav) => nav(`/developer/${activeDomain}/explorer`),
+      action: (nav) => nav(`/developer/${activeDomain}/explorer/${encodeURIComponent(name)}`),
     });
 
     for (const f of value.schema) {
@@ -174,6 +174,11 @@ function buildIndex(rb, projects, activeDomain) {
         const pk = pkField ? row[pkField] : null;
         const title = labelField ? (row[labelField] ?? pk ?? "(row)") : (pk ?? "(row)");
         const haystack = Object.values(row).filter((v) => typeof v === "string" || typeof v === "number").join(" ").toLowerCase();
+        // §2.6: deep-link to the exact node using the row's Name. Falls
+        // back to the entity's unscoped list when Name is absent.
+        const deepLink = row.Name
+          ? `/developer/${activeDomain}/explorer/${encodeURIComponent(name)}/${encodeURIComponent(row.Name)}`
+          : `/developer/${activeDomain}/explorer/${encodeURIComponent(name)}`;
         items.push({
           id: mkId(),
           kind: "row",
@@ -182,7 +187,7 @@ function buildIndex(rb, projects, activeDomain) {
           subtitle: pk && pk !== title ? String(pk) : null,
           haystack,
           priority: 70,
-          action: (nav) => nav(`/developer/${activeDomain}/explorer`),
+          action: (nav) => nav(deepLink),
         });
       }
     }
