@@ -4829,10 +4829,10 @@
         "DisplayName": "planar-unit-discovery",
         "Flavor": "aggregation-heavy",
         "Complexity": "advanced",
-        "EntityCount": 17,
-        "CalculatedCount": 45,
-        "AggregationCount": 11,
-        "LookupCount": 15,
+        "EntityCount": 34,
+        "CalculatedCount": 102,
+        "AggregationCount": 25,
+        "LookupCount": 42,
         "LearningFocus": "Auto-discovered demo. Replace this stub with a one-line description of what planar-unit-discovery is designed to teach.",
         "GoodAnswerKeyFor": null
       }

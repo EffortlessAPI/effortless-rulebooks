@@ -39,7 +39,6 @@ export default function ExplorerScreen({ screen, me }) {
   const canEdit = !!me?.role?.CanEditRulebook;
 
   const [tree, setTree]         = useState(null);
-  const [expanded, setExpanded] = useState(() => new Set());
   const [node, setNode]         = useState(null);
   const [nodeError, setNodeError] = useState(null);
   const [nodeLoading, setNodeLoading] = useState(false);
@@ -94,20 +93,9 @@ export default function ExplorerScreen({ screen, me }) {
       .finally(() => setNodeLoading(false));
   }, [wildcard, page, domain, refreshTick]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const selectedEntity = pathSegments[0] || null;
-
   const goTo = (segments) => {
     const tail = encodePathSegments(segments);
     navigate(tail ? `/developer/${domain}/explorer/${tail}` : `/developer/${domain}/explorer`);
-  };
-
-  const toggleExpand = (entityName) => {
-    setExpanded((prev) => {
-      const next = new Set(prev);
-      if (next.has(entityName)) next.delete(entityName);
-      else next.add(entityName);
-      return next;
-    });
   };
 
   return (
@@ -155,14 +143,16 @@ export default function ExplorerScreen({ screen, me }) {
             <div className="muted small">No entities in this rulebook.</div>
           )}
           {tree && tree.topLevel.map((n) => (
-            <TreeRow
-              key={n.entity}
-              node={n}
-              selected={selectedEntity === n.entity}
-              expanded={expanded.has(n.entity)}
-              onToggle={() => toggleExpand(n.entity)}
-              onSelect={() => goTo([n.entity])}
-              onSelectChild={(childEntity) => goTo([childEntity])}
+            <InstanceTreeNode
+              key={n.entity + "@" + refreshTick}
+              path={[n.entity]}
+              kind="entity"
+              label={n.entity}
+              meta={`${n.rowCount} ${n.rowCount === 1 ? "row" : "rows"}`}
+              important={n.important}
+              currentUrlPath={pathSegments}
+              onNavigate={goTo}
+              depth={0}
             />
           ))}
         </div>
@@ -206,49 +196,180 @@ function Breadcrumbs({ domain, segments, onCrumb }) {
   );
 }
 
-function TreeRow({ node, selected, expanded, onToggle, onSelect, onSelectChild }) {
-  const hasChildren = node.children && node.children.length > 0;
+// =============================================================================
+// InstanceTreeNode  (DOMAIN_UX_VISION.md §2.1)
+// =============================================================================
+// Recursive lazy-loading tree node. Each node knows its own URL path. Three
+// kinds drive a single alternation:
+//
+//   entity      (e.g. /Customers)            expand → fetch /node → rows
+//                                                                   become instance children
+//   instance    (e.g. /Customers/jane-smith) expand → fetch /node → tabs
+//                                                                   become collection children
+//   collection  (e.g. .../jane/Orders)        expand → fetch /node → rows
+//                                                                   become instance children
+//
+// Auto-expands itself when the current URL path extends this node's path,
+// so deep-links round-trip: paste /explorer/Customers/jane/Orders/1042 and
+// the tree walks itself open along the way.
+
+function InstanceTreeNode({ path, kind, label, meta, important, currentUrlPath, onNavigate, depth }) {
+  const pathKey = path.join("/");
+  const isOnUrlPath =
+    path.length <= currentUrlPath.length &&
+    path.every((seg, i) => String(seg) === String(currentUrlPath[i]));
+  const isSelected = isOnUrlPath && path.length === currentUrlPath.length;
+  const shouldAutoExpand = isOnUrlPath && path.length < currentUrlPath.length;
+
+  const [expanded, setExpanded] = useState(shouldAutoExpand);
+  const [children, setChildren] = useState(null);   // null = not yet fetched
+  const [loading, setLoading]   = useState(false);
+  const [err, setErr]           = useState(null);
+
+  // Re-auto-expand when the URL changes to extend this node's path.
+  useEffect(() => {
+    if (shouldAutoExpand && !expanded) setExpanded(true);
+  }, [currentUrlPath.join("/")]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Lazy-load children when expanded and we don't have them yet.
+  useEffect(() => {
+    if (!expanded || children !== null || loading) return;
+    setLoading(true);
+    const qs = new URLSearchParams({
+      path: path.map(encodeURIComponent).join("/"),
+      pageSize: "500",
+    });
+    api.get(`/api/explorer/node?${qs.toString()}`)
+      .then((r) => {
+        if (r.kind === "list") {
+          // Rows → instance children. Use Name as the URL id per §2.6;
+          // skip rows missing Name (they can't round-trip through the URL)
+          // and render a placeholder so the user sees the gap loudly.
+          const kids = (r.rows || []).map((row, i) => {
+            const name = row.Name;
+            if (!name) {
+              return {
+                path: path,                   // can't extend; renders disabled
+                kind: "instance",
+                label: `(row ${i} — missing Name)`,
+                disabled: true,
+              };
+            }
+            return {
+              path: [...path, String(name)],
+              kind: "instance",
+              label: String(name),
+            };
+          });
+          setChildren(kids);
+        } else if (r.kind === "instance") {
+          // Tabs → collection children, each pointing at a child entity
+          // scoped under this instance.
+          const kids = (r.tabs || []).map((t, i) => ({
+            path: [...path, t.entity],
+            kind: "collection",
+            label: t.entity,
+            meta: `via ${t.viaFk} · ${t.rowCount} ${t.rowCount === 1 ? "row" : "rows"}`,
+            viaFk: t.viaFk,
+          }));
+          setChildren(kids);
+        } else {
+          setChildren([]);
+        }
+      })
+      .catch((e) => setErr(e.message))
+      .finally(() => setLoading(false));
+  }, [expanded]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const canExpand = !path[0]?.disabled; // top-level always expandable; child .disabled marker blocks
+  const expandSymbol = loading ? "…" : (expanded ? "▾" : "▸");
+
+  // Visual differentiation by kind. Entity rows (top-level) are bold; instance
+  // rows use a colored ID-style label; collection rows are muted mono.
+  const labelEl = (() => {
+    if (kind === "entity") {
+      return (
+        <span className="name">
+          {important && <span style={{ color: "var(--warn)", marginRight: 4 }}>★</span>}
+          {label}
+        </span>
+      );
+    }
+    if (kind === "instance") {
+      return (
+        <span className="name mono" style={{ color: isSelected ? "var(--accent)" : undefined }}>
+          {label}
+        </span>
+      );
+    }
+    // collection
+    return (
+      <span className="name mono" style={{ fontSize: 12, color: "var(--muted)" }}>
+        {label}
+      </span>
+    );
+  })();
+
   return (
     <div>
       <div
-        className={`list-item ${selected ? "active" : ""}`}
-        onClick={onSelect}
-        style={{ display: "flex", alignItems: "center", gap: 6 }}
+        className={`list-item ${isSelected ? "active" : ""}`}
+        onClick={() => onNavigate(path)}
+        style={{
+          display: "flex", alignItems: "center", gap: 6,
+          paddingLeft: depth > 0 ? 4 + depth * 12 : undefined,
+        }}
       >
         <span
-          onClick={(e) => { e.stopPropagation(); onToggle(); }}
+          onClick={(e) => { e.stopPropagation(); if (canExpand) setExpanded((v) => !v); }}
           style={{
-            width: 14, textAlign: "center", cursor: hasChildren ? "pointer" : "default",
-            opacity: hasChildren ? 1 : 0.25, userSelect: "none",
+            width: 14, textAlign: "center",
+            cursor: canExpand ? "pointer" : "default",
+            opacity: canExpand ? 1 : 0.25, userSelect: "none",
           }}
-          title={hasChildren ? (expanded ? "Collapse" : "Expand") : "No child entities"}
+          title={expanded ? "Collapse" : "Expand"}
         >
-          {hasChildren ? (expanded ? "▾" : "▸") : "·"}
+          {expandSymbol}
         </span>
         <div style={{ flex: 1, minWidth: 0 }}>
-          <div className="name">
-            {node.important && <span style={{ color: "var(--warn)", marginRight: 4 }}>★</span>}
-            {node.entity}
-          </div>
-          <div className="meta">{node.rowCount} {node.rowCount === 1 ? "row" : "rows"}</div>
+          {labelEl}
+          {meta && <div className="meta">{meta}</div>}
         </div>
       </div>
-      {expanded && hasChildren && (
-        <div style={{ paddingLeft: 26 }}>
-          {node.children.map((child, i) => (
-            <div
-              key={`${child.entity}/${child.viaFk}/${i}`}
-              className="list-item"
-              onClick={() => onSelectChild(child.entity)}
-              title={`${child.entity}.${child.viaFk} → ${node.entity}`}
-            >
-              <div className="name mono" style={{ fontSize: 12 }}>
-                {child.entity}
-              </div>
-              <div className="meta">
-                via <span className="mono">{child.viaFk}</span> · {child.rowCount} {child.rowCount === 1 ? "row" : "rows"}
-              </div>
+
+      {expanded && (
+        <div>
+          {err && (
+            <div className="muted small" style={{ paddingLeft: 16 + depth * 12, color: "var(--bad)" }}>
+              {err}
             </div>
+          )}
+          {!err && children && children.length === 0 && (
+            <div className="muted small" style={{ paddingLeft: 16 + depth * 12 }}>
+              (empty)
+            </div>
+          )}
+          {!err && children && children.map((c, i) => (
+            c.disabled ? (
+              <div
+                key={i}
+                className="list-item muted small"
+                style={{ paddingLeft: 4 + (depth + 1) * 12, opacity: 0.6 }}
+              >
+                · {c.label}
+              </div>
+            ) : (
+              <InstanceTreeNode
+                key={c.path.join("/")}
+                path={c.path}
+                kind={c.kind}
+                label={c.label}
+                meta={c.meta}
+                currentUrlPath={currentUrlPath}
+                onNavigate={onNavigate}
+                depth={depth + 1}
+              />
+            )
           ))}
         </div>
       )}
