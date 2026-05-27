@@ -1,16 +1,32 @@
 #!/usr/bin/env python3
 """
-Migrate the platform rulebook's `_meta` essay keys into first-class tables.
+Migrate the platform rulebook's `_meta` keys into the right home.
 
 The platform rulebook
 (`effortless-platform/effortless-rulebook/effortless-rulebook.json`)
-has a structurally different `_meta` from the demo rulebooks. Its keys are
-narrative essays (`_ProjectGoal`, `_ArchitecturalHighlight`, ...). The user
-wants each of these promoted to its own first-class table — no leading
-underscores, no `__meta__` key-value bucket — so they show up as ordinary
-tables in queries and the admin portal.
+carries project-level metadata in two complementary places:
 
-Mapping (each becomes a single-row table with `{Name, Description}` schema):
+  1. **First-class narrative tables** — for the narrative essays that
+     deserve their own table because they describe load-bearing
+     concepts of the platform itself (`ProjectGoal`,
+     `ArchitecturalHighlight`, `BootstrapStory`, etc.). Mapping below.
+
+  2. **The `__meta__` table** — the same typed-row hybrid table every
+     demo rulebook uses (see `migrate-meta-to-table.py`). This is the
+     overflow bucket for project-level metadata that does NOT deserve
+     its own table: presentation hints (`tagline`, `motif`,
+     `motif_palette`), reception-desk content (`description_rich`,
+     `use_cases`, `signature_rows`, `journal_seed`),
+     substrate-witness chips, etc.
+
+Doctrine (see CLAUDE.md `__meta__` table doctrine section): any stray
+meta-data found outside the table protocol is promoted INTO the
+protocol. Known narrative keys go to their first-class table; every
+other key lands as a `__meta__` row. Nothing is left orphaned outside
+the table protocol.
+
+Mapping (known narrative keys become single-row tables with
+`{Name, Description}` schema):
 
     _CMCC_Summary           -> CMCCSummary
     _ProjectGoal            -> ProjectGoal
@@ -21,7 +37,8 @@ Mapping (each becomes a single-row table with `{Name, Description}` schema):
     _DeveloperJourney       -> DeveloperJourney
     _ResilienceClaim        -> ResilienceClaim
 
-Idempotent: a table that already exists is left untouched.
+Idempotent: a narrative table that already exists is left untouched;
+an existing `__meta__` table is merged into (existing rows win).
 The `_meta` object is removed when migration succeeds.
 """
 
@@ -97,6 +114,13 @@ def main() -> int:
         print(f"Platform rulebook not found at {PLATFORM_RULEBOOK}", file=sys.stderr)
         return 1
 
+    # Import the demo-rulebook __meta__ table machinery so the overflow
+    # bucket on the platform uses exactly the same schema and helpers as
+    # every demo rulebook.
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    from importlib import import_module
+    meta_module = import_module("migrate-meta-to-table")
+
     with open(PLATFORM_RULEBOOK, "r", encoding="utf-8") as fp:
         data = json.load(fp)
 
@@ -107,12 +131,15 @@ def main() -> int:
 
     created: list[str] = []
     skipped_existing: list[str] = []
-    unmapped: list[str] = []
+    overflow: dict = {}
 
     for meta_key, value in meta.items():
         mapping = TABLE_FOR_META_KEY.get(meta_key)
         if mapping is None:
-            unmapped.append(meta_key)
+            # Unmapped keys are NOT errors — they go to the __meta__
+            # overflow bucket, which is the same first-class table demo
+            # rulebooks use. Nothing is left outside the table protocol.
+            overflow[meta_key] = value
             continue
         table_name = mapping["table"]
         if table_name in data:
@@ -132,21 +159,22 @@ def main() -> int:
         }
         created.append(table_name)
 
-    if unmapped:
-        print(
-            f"  ERROR  Unmapped meta keys (refusing to drop _meta): {unmapped}",
-            file=sys.stderr,
-        )
-        return 2
+    overflow_count = 0
+    if overflow:
+        existing = data.get(meta_module.META_TABLE_NAME)
+        data[meta_module.META_TABLE_NAME] = meta_module.build_meta_table(overflow, existing)
+        overflow_count = len(overflow)
 
     with open(PLATFORM_RULEBOOK, "w", encoding="utf-8") as fp:
         json.dump(data, fp, indent=2, ensure_ascii=False)
         fp.write("\n")
 
     print(f"Migrated platform rulebook _meta.")
-    print(f"  Created tables ({len(created)}): {created}")
+    print(f"  Created narrative tables ({len(created)}): {created}")
     if skipped_existing:
-        print(f"  Skipped (already existed): {skipped_existing}")
+        print(f"  Skipped narrative tables (already existed): {skipped_existing}")
+    if overflow_count:
+        print(f"  Promoted to __meta__ overflow ({overflow_count} keys): {list(overflow.keys())}")
     return 0
 
 

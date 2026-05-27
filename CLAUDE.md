@@ -67,15 +67,37 @@ There are **two** kinds of rulebook here and they are NOT the same thing. Confus
 ### 2. The per-project demo rulebooks — what the orchestration manages
 
 - **Path:** `./rulebook-examples/<project>/effortless-rulebook/<project>-rulebook.json`
-- **What they are:** Example ontologies (`acme-corporation`, `acme-llc`, `customer-fullname`, `effortless-rulesbooks`, `is-everything-a-language`, `jessica-advanced`, `jessica-basic`, `star-trek`). The entire orchestration website/process/repo exists to manage *these*.
+- **What they are:** Example ontologies. Every subdirectory of `rulebook-examples/` that contains a `<project>-rulebook.json` IS a demo. There is no curated "canonical subset" — do not enumerate a partial list and treat it as authoritative; the filesystem is authoritative. The entire orchestration website/process/repo exists to manage *all* of these.
 - **Code that operates on them:** `orchestration/orchestrate.sh` (via `get_domain_rulebook_path`), `orchestration/shared.py` (`get_rulebook_path`), all `execution-substrates/*/inject-into-*.py`, all `execution-substrates/*/take-test.py`, `orchestration/generate-report.py`, `orchestration/test-orchestrator.py`, `devops/rebuild-on-trigger.sh`. These resolve the active demo via `orchestration/active-domain.txt` or `ERB_RULEBOOK_PATH`.
 - **Filename is `<project>-rulebook.json`**, NOT `effortless-rulebook.json`. Each project's `effortless.json` carries `-o <project>-rulebook.json` accordingly.
+
+#### Intentional structural exceptions
+
+Two subdirs under `rulebook-examples/` deliberately carry no `<project>-rulebook.json`:
+
+- `naked-claude-vs-effortless-claude/` — an experiment tree (not an ontology).
+- `volunteer-shift-scheduler-demo/` — a demo-app scaffold that consumes `volunteer-shift-scheduler/`'s rulebook.
+
+These are **not** demos and are not in any "demos with a rulebook" denominator. Do not flag them as missing.
 
 ### Rules for agents
 
 - Before changing any code that references a rulebook path, decide which of the two categories above the code belongs to. There is no "smart fallback" that handles both.
 - The top-level path is a fixed literal. Never rewrite it to read the active domain.
 - Per-project rulebook paths must be resolved dynamically — never hardcode `effortless-rulebook.json` for them. Use `get_domain_rulebook_path` (bash) or `get_rulebook_path()` (python).
+
+## `__meta__` table doctrine (applies to every rulebook — demos AND the platform)
+
+Every rulebook in this repo carries its project-level metadata in a first-class `__meta__` table — same `{schema, data}` shape as every business table. Standard schema is the typed-row hybrid: `MetaKey` (string PK), `Name` (calculated, mirrors `MetaKey`), `ValueType` (`'string'|'object'|'array'`), `StringValue` (nullable), `JsonValue` (nullable JSON-encoded string). Defined in `orchestration/migrate-meta-to-table.py`.
+
+Rules for agents:
+
+- **Demos:** the `__meta__` table is the single home for project-level metadata. There is no other location — no root-level `_meta` object, no parallel sidecar.
+- **Platform rulebook:** the `__meta__` table coexists with the promoted first-class narrative tables (`CMCCSummary`, `ProjectGoal`, `ArchitecturalHighlight`, `WriteThroughInvariant`, `PortalCliParity`, `BootstrapStory`, `DeveloperJourney`, `ResilienceClaim`). Those exist because each one earns its own table. **`__meta__` is the overflow bucket** for project-level metadata that does NOT deserve a table of its own — presentation hints (`tagline`, `motif`, `motif_palette`), reception-desk content (`description_rich`, `use_cases`, `signature_rows`, `journal_seed`), substrate-witness chips, etc.
+- **Upgrade path:** any stray meta-data found in a rulebook JSON outside the table protocol (e.g. a legacy `_meta` object at the root) is to be promoted into the `__meta__` table — never left orphaned outside the protocol. Known structured keys may additionally be promoted to their own first-class table on the platform; everything else lands in `__meta__`. This is enforced by `orchestration/migrate-meta-to-table.py` (demos) and `orchestration/migrate-platform-meta.py` (platform, which routes mapped keys to first-class tables and unmapped keys to `__meta__`).
+- **Reading:** Python consumers walk `rb["__meta__"]["data"]` like any other table. JS consumers import `metaAsObject(rb)` from `effortless-platform/admin-portal/client/src/rulebookMeta.js`, which folds the typed rows back to `{tagline, motif, use_cases, ...}`. Both work the same on the platform rulebook and on every demo rulebook.
+
+**Coverage:** every `<project>-rulebook.json` in `rulebook-examples/` has a `__meta__` table. The platform rulebook has one too. There is no "partial coverage" status to track — if you find a rulebook without `__meta__`, that is a bug, not a typical state. Do not author docs that quote a partial fraction of demos with `__meta__`; quote either "all" or name the specific bug.
 
 ## Authoritative Source: rulebook JSON is HEAD
 

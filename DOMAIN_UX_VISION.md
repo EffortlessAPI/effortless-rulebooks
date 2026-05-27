@@ -34,14 +34,12 @@ three responsive breakpoints (≤640 phone / 641–1024 tablet / ≥1025
 desktop). Per-user / per-domain state persists in
 `portal_user_domain_state`.
 
-The `__meta__` table is authored for **8 of 28 demo rulebooks** today:
-`acme-corporation`, `acme-llc`, `star-trek`, `jessica-basic`,
-`jessica-advanced`, `is-everything-a-language`,
-`effortless-rulesbooks`. The other 20 fall back to `motif: "default"` —
-that's the active in-flight work right now (a parallel-subagent wave is
-running this session). `customer-fullname` is blocked separately — it's
-`{}` at HEAD and needs a restore-or-retire decision before it can be
-authored.
+Every `<project>-rulebook.json` in `rulebook-examples/` carries a
+`__meta__` table. The platform rulebook carries one too. Authoring
+coverage is **complete** — see the `__meta__` doctrine in
+[CLAUDE.md](CLAUDE.md). If you find a rulebook without `__meta__`, that
+is a bug to file against that specific rulebook, not a typical state
+to plan around.
 
 ---
 
@@ -148,6 +146,330 @@ user has to switch between.
   entry; the old "Entities" / "Data" / "Explorer" entries collapse into
   it.
 
+### 2.5 The two-layer model the API hangs off
+
+The Explorer reads and writes against **two stores with two roles**:
+
+| Layer  | Lives in                       | Owns                                            | Edit lifecycle           |
+| ------ | ------------------------------ | ----------------------------------------------- | ------------------------ |
+| Schema | `<domain>-rulebook.json`       | Entities, fields, formulas, FK relationships    | Edit → trigger rebuild   |
+| Data   | Editor Postgres (`erb_<domain>`) | Live business rows                            | Edit → write-through     |
+
+Rule of thumb: if the URL path encodes a row, it's data work and hits
+Postgres. If the URL encodes a column header or formula, it's schema
+work and hits the rulebook JSON.
+
+**Rebuild contract.** Editing the rulebook schema means the generated
+SQL changes. The editor Postgres DB is therefore **derived** — it can
+be dropped at any moment and rebuilt from the rulebook because the
+rulebook's `data` arrays are the durable SSoT for the rows too. The
+rebuild is mechanical:
+
+1. Server PATCHes the rulebook JSON.
+2. Server runs `effortless build` from inside the project — regenerates the `00-create-tables.sql` / `02-populate-data.sql` (etc.) files.
+3. Server drops `erb_<domain>`, recreates it, executes the generated SQL in order. The rulebook's `data` arrays are the seed — so the rebuilt DB IS "what it was moments before, but with the new model."
+4. Server verifies row counts, unfreezes the UI.
+
+This entire mechanic already works today for `effortless build` — the
+new piece is exposing it on a per-edit basis with a streaming status
+surface.
+
+**Write-through invariant (already in production).** For data edits:
+write to Postgres **and** to the corresponding `data` array inside
+the rulebook JSON, in one transaction. This is the existing portal
+pattern (see the platform rulebook's `WriteThroughInvariant` table).
+The Explorer's data-mutation endpoints reuse it — they don't invent a
+new write path.
+
+### 2.6 URL path encoding (precise)
+
+The Explorer's URL is a literal DAG walk. The React router parses it;
+the server's `/api/explorer/node` endpoint accepts the same string.
+
+```
+/explorer                                                                ← root
+/explorer/<Domain>                                                       ← domain overview
+/explorer/<Domain>/<Entity>                                              ← unfiltered list of every Entity row
+/explorer/<Domain>/<Entity>/<id>                                         ← one instance
+/explorer/<Domain>/<Entity>/<id>/<ChildEntity>                           ← list of children scoped under the parent
+/explorer/<Domain>/<Entity>/<id>/<ChildEntity>/<childId>/<Grandchild>... ← deeper
+```
+
+Encoding rules:
+
+- Segments after `<Domain>` alternate **entity name** → **instance id** → **entity name** → **instance id** → …
+- Entity names are PascalCase, exactly as they appear in the rulebook.
+- Instance ids are the value of the entity's `Name` field (ERB
+  convention — every entity has one). Where `Name` is non-unique, the
+  client appends `?byPk=<true-pk-value>`.
+- **Odd number** of post-domain segments → **list node**.
+- **Even number** → **instance node**.
+
+Round-trips: any node can be bookmarked, linked from Cmd-K, deep-linked
+from a reception-desk scroller, opened in a new tab.
+
+### 2.7 Backend API endpoints
+
+#### `GET /api/explorer/tree?domain=<slug>&maxDepth=<n>`
+
+Drives the left-nav.
+
+Response:
+
+```json
+{
+  "domain": "acme-corporation",
+  "rulebookRevision": "39c2a5b...",
+  "topLevel": [
+    {
+      "entity": "Client",
+      "rowCount": 3,
+      "important": true,
+      "children": [
+        { "entity": "Projects", "rowCount": 6, "viaFk": "ClientId" }
+      ]
+    },
+    { "entity": "Projects",  "rowCount": 3, "important": true,  "children": [...] },
+    { "entity": "Employees", "rowCount": 3, "important": false, "children": [...] }
+  ]
+}
+```
+
+- `topLevel` is **every entity in the rulebook**. Top-level appearance
+  is an unfiltered cross-cut of that entity.
+- `children[].viaFk` names the FK column that scopes the child under
+  this parent (so the URL knows what filter to apply).
+- `maxDepth` (default `1`) caps lazy expansion — client fetches
+  shallow, expands subtrees on click.
+- Computed entirely from the rulebook schema. No hand-authored config.
+
+#### `GET /api/explorer/node?path=<encoded>&page=<n>&pageSize=<n>&sort=<f>:asc&filter=<json>`
+
+The workhorse. Returns whatever the URL points at. Returns one of two
+shapes based on path parity:
+
+**List node** (odd-length path):
+
+```json
+{
+  "kind": "list",
+  "entity": "Customers",
+  "scopedBy": { "Business": "acme-corp" },
+  "schema": [
+    { "name": "Name",     "datatype": "string", "type": "raw",        "isPk": true, "...": "..." },
+    { "name": "Email",    "datatype": "string", "type": "raw",        "...": "..." },
+    { "name": "FullName", "datatype": "string", "type": "calculated", "formula": "=CONCAT(...)", "...": "..." }
+  ],
+  "rows": [
+    { "Name": "jane-smith", "Email": "...", "FullName": "Jane Smith" }
+  ],
+  "totalCount": 47,
+  "page": 0,
+  "pageSize": 50
+}
+```
+
+**Instance node** (even-length path):
+
+```json
+{
+  "kind": "instance",
+  "entity": "Customers",
+  "id": "jane-smith",
+  "schema": [ "...same shape..." ],
+  "row": { "Name": "jane-smith", "Email": "...", "...": "..." },
+  "tabs": [
+    { "entity": "Orders",    "viaFk": "CustomerId", "rowCount": 4 },
+    { "entity": "Addresses", "viaFk": "CustomerId", "rowCount": 2 }
+  ]
+}
+```
+
+`tabs` is derived: every entity with an FK pointing AT this entity
+becomes a tab (drives §2.2).
+
+**Critical:** `schema` is part of the same payload as `rows` / `row` —
+they are not two separate fetches. This is what makes the "schema and
+data are combined metadata" UX (§2.3) cheap to render.
+
+#### `GET /api/explorer/cell?domain=&entity=&id=&field=`
+
+Cell-click provenance. Drives "how did this value get computed?"
+
+```json
+{
+  "value": "Jane Smith",
+  "kind": "calculated",
+  "formula": "=CONCAT({FirstName}, ' ', {LastName})",
+  "inputs": [
+    { "field": "FirstName", "kind": "raw", "value": "Jane" },
+    { "field": "LastName",  "kind": "raw", "value": "Smith" }
+  ],
+  "explanation_rich": "<p>The customer's full name, derived...</p>"
+}
+```
+
+- `kind` ∈ `raw | lookup | calculated | aggregation`.
+- For lookups: `inputs[].entity`, `inputs[].id` identify the target row.
+- For aggregations: `inputs[]` is the set of contributing rows with key fields.
+- Same wire format the existing React Explainer DAG consumes — no new spec.
+
+#### `PATCH /api/explorer/instance/:entity/:id`
+
+Data-row edit. **No rebuild.** Body: `{ "field1": "newValue", "...": "..." }`.
+
+1. Validate values against the rulebook schema.
+2. `BEGIN TRANSACTION` on `erb_<domain>`.
+3. `UPDATE <entity> SET ... WHERE Name = :id`.
+4. Mutate the matching row in the rulebook's `data` array.
+5. Re-derive downstream calculated fields (DB does this via views).
+6. `COMMIT`. Write rulebook JSON.
+7. Return updated row.
+
+If step 4 fails, step 3 rolls back. Strong atomicity.
+
+#### `POST /api/explorer/instance/:entity`
+
+Insert a row. Body: full row payload (raw fields only; calculated
+fields ignored). Same transactional shape as PATCH.
+
+#### `DELETE /api/explorer/instance/:entity/:id?cascade=<bool>`
+
+Delete a row. With `cascade=false` (default), a FK-referenced row
+returns 409 listing the referrers. With `cascade=true`, cascades
+through the rulebook's FK declarations.
+
+#### `PATCH /api/explorer/schema` — **triggers a rebuild**
+
+Body:
+
+```json
+{
+  "pointer": "/Customers/schema/3",
+  "value": { "name": "Phone", "datatype": "string", "type": "raw", "...": "..." }
+}
+```
+
+- `pointer` is a JSON Pointer (RFC 6901) into the rulebook JSON.
+  Allow-list of acceptable pointers:
+  - `/<Entity>/schema` (replace whole schema array)
+  - `/<Entity>/schema/<index>` (replace one field)
+  - `/<Entity>/schema/<index>/<key>` (replace one field property)
+  - `/<Entity>/Description`
+  - `/<Entity>/important`
+  - Entity create: pointer `/`, body `{ name, definition }`
+  - Entity delete: separate `DELETE /api/explorer/schema?entity=<name>`
+
+Response **returns immediately**:
+
+```json
+{
+  "rebuildId": "rb-20260527-001",
+  "status": "pending",
+  "streamUrl": "/api/explorer/rebuild/rb-20260527-001/stream"
+}
+```
+
+The client opens the SSE stream and shows a "rebuilding" overlay
+until `done`.
+
+#### `POST /api/explorer/rebuild`
+
+Manual rebuild. No schema change. For recovery / after a direct JSON
+edit. Same response shape as the schema PATCH.
+
+#### `GET /api/explorer/rebuild/:id/stream` (SSE)
+
+Events in order:
+
+```
+event: phase   data: {"phase":"snapshot","msg":"writing pre-rebuild snapshot"}
+event: phase   data: {"phase":"effortless_build","msg":"regenerating SQL"}
+event: phase   data: {"phase":"drop","msg":"dropping erb_acme_corporation"}
+event: phase   data: {"phase":"create","msg":"creating tables"}
+event: phase   data: {"phase":"populate","msg":"loading data from rulebook (1842 rows)"}
+event: phase   data: {"phase":"verify","msg":"row counts match"}
+event: done    data: {"durationMs": 4732, "rowsLoaded": 1842}
+```
+
+On error:
+
+```
+event: error   data: {"phase":"populate","code":"TYPE_COERCION",
+                      "msg":"Customers.Age: cannot coerce 'unknown' to integer",
+                      "rowsAffected":[12,47]}
+```
+
+A failed rebuild **does not auto-revert** — it leaves the rulebook
+JSON in its edited state and leaves the editor DB dropped. The user is
+shown the error and a "revert to snapshot" button (see §2.8.3).
+
+### 2.8 Decisions to lock before building
+
+Each has a recommended default. Override or accept; then we cut.
+
+1. **Snapshot before every schema PATCH? — Recommend: yes.**
+   Write `<domain>-rulebook.snapshot.json` just before applying the
+   PATCH. Keep the last 5. On rebuild failure, the UI offers "Revert
+   to snapshot." Cheap insurance — the rulebook JSON is the only
+   thing that matters for SSoT, and copying it costs nothing.
+
+2. **Sync or async rebuild response? — Recommend: async + SSE.**
+   PATCH returns immediately with a `rebuildId`. Client opens SSE
+   stream. Matches the live-build pattern in §3.5. Blocking the
+   PATCH ties up a worker and complicates the UI progress story.
+
+3. **What does a failed rebuild leave behind? — Recommend: leave it
+   broken, surface the diff loudly.**
+   Don't auto-rollback the rulebook JSON. Show: the rulebook diff
+   that triggered the rebuild, the row(s) that failed, two buttons —
+   "Revert rulebook to snapshot" or "Edit the failing rows in the
+   rulebook JSON." Silent rollback hides the bug. Matches the
+   [CLAUDE.md](CLAUDE.md) "no silent fallbacks" rule.
+
+4. **Locking model during rebuild? — Recommend: per-domain advisory
+   lock.**
+   While a rebuild is running for one domain: all
+   `/api/explorer/instance/...` mutations against that domain return
+   503 with `Retry-After`. All reads keep working — they hit the
+   rulebook JSON (still readable) and fall back gracefully when
+   Postgres is mid-drop. Other domains unaffected.
+
+5. **Cell-provenance: runtime vs cached? — Recommend: runtime.**
+   `GET /api/explorer/cell` walks the formula tree on demand. Depth
+   is single-digit for most rulebooks; the cost is dominated by the
+   round-trip, not the computation. Caching invites staleness.
+
+6. **Path-encoding stability when `Name` gets renamed? — Recommend:
+   `Name` with PK fallback.**
+   When a PATCH edits a row's `Name`, the handler returns the new
+   URL in `Location:` so the client can rewrite history. For cases
+   where `Name` is non-unique or churning, `?byPk=true` interprets
+   the last segment as the underlying PK.
+
+7. **Where the code lives? — Recommend:
+   `effortless-platform/admin-portal/server.js` (new fenced
+   section).**
+   Reuse the existing rulebook load/write helpers, the
+   write-through transaction helper, and the SSE plumbing planned
+   for the Effortless Tools tree (§3.5 — same pattern, different
+   domain).
+
+### 2.9 Out of scope for v1
+
+- **Full sort/filter/group/facet on list nodes** — the §2.1
+  "FUTURE SELF HINT" callout. v1 ships paging + simple
+  field-equality filter.
+- **Bulk edits** — single-row mutations only. Bulk-import /
+  CSV-paste is a later API.
+- **Schema diff visualization** — the rebuild SSE reports phases,
+  not a structured before/after schema diff. v2.
+- **Cross-domain Explorer** — one domain at a time per URL. Domain
+  switch is the existing picker, not a tree-walk operation.
+- **Time-travel inside the Explorer** — the existing scrubber works
+  against the rulebook git history. The Explorer reads through the
+  scrubber's current state but doesn't get its own time controls.
+
 ---
 
 ## 3. Next-up — rewrite Effortless Tools as a folder/tool tree
@@ -177,8 +499,14 @@ don't still appear in the tree but have no children.
 
 ```
 acme-llc/
-├ effortless-rulebook/
-│  └ • airtable-to-rulebook         (input spoke)
+├ effortless-rulebook/                 (the hub — the SSoT JSON)
+├ docs/
+│  ├ effortless-rulebook/
+│  │  └ • airtable-to-rulebook        (input spoke)
+│  ├ english/
+│  │  └ • rulebook-to-english
+│  └ testing/
+│     └ • rulebook-to-test-suite
 ├ execution-substrates/
 │  ├ • rulebook-to-postgres
 │  ├ • rulebook-to-python
@@ -189,13 +517,18 @@ acme-llc/
 │  ├ • rulebook-to-uml
 │  ├ • rulebook-to-cobol
 │  ├ • rulebook-to-binary
-│  └ +                              (add another tool here)
-├ english/
-│  └ • rulebook-to-english
-├ testing/
-│  └ • rulebook-to-test-suite
-└ +                                 (add a tool at the project root)
+│  └ +                                (add another tool here)
+└ +                                   (add a tool at the project root)
 ```
+
+**Why the split.** `execution-substrates/` are runtime targets —
+substitutable backends that must compute identical answers from the
+same rulebook. `docs/` is the *spec apparatus*: input spokes write
+*into* the hub, English narratives explain it, and the test suite is
+the conformance contract every substrate is graded against. None of
+those are substrates and they don't belong next to COBOL and CSV.
+Tests still produce domain-specific *artifacts* (acme's answer keys
+differ from star-trek's), but the category is "spec," not "runtime."
 
 The tools listed inline come from **the `effortless.json` files**
 discovered at each level of the tree — `effortless.json` is a hierarchy,
@@ -231,7 +564,51 @@ This replaces the current "shitty summary" with the only summary that
 matters: *what does this tool read, what does it write, what flags
 control it, and what happens when I run it right now.*
 
-### 3.4 Folder-level Run, root-level Run
+### 3.4 Docs-folder tools get bespoke routes and pages
+
+The generic tool-detail panel in §3.3 is the right home for
+**execution-substrate** tools — they're commodity targets that differ
+only in dialect, and an auto-summarized "reads X, writes Y, run flags
+Z" panel says everything worth saying. **Docs-folder tools are
+different.** `airtable-to-rulebook` (input spoke), `rulebook-to-english`,
+and `rulebook-to-test-suite` are *platform-level*: there's exactly one
+of each across the whole repo, each one encodes a load-bearing
+decision about how the methodology works, and each one deserves
+hand-authored explanation — not metadata.
+
+Each docs-folder tool gets:
+
+- **Its own route**:
+  - `/developer/:domain/docs/input-spokes/airtable-to-rulebook`
+  - `/developer/:domain/docs/english`
+  - `/developer/:domain/docs/testing`
+  Top-level (project-rulebook) equivalents under `/platform/docs/…`.
+- **A bespoke page** — hand-authored TSX (or Markdown rendered through
+  a TSX shell) living in the repo, e.g. under
+  `effortless-platform/admin-portal/client/src/pages/docs/<tool>/`.
+  Non-generated content, versioned with the codebase. Each page
+  explains what *this specific tool* does, why it exists, the
+  protocol it implements, what it reads/writes, and how to use it.
+  These are the canonical "what is the test suite, conceptually?"
+  / "what is an input spoke, conceptually?" pages.
+- **A DALL-E-generated hero image** per tool — cartoon style,
+  consistent palette across the set (matching the previous cartoon
+  set used in this project). The image lives next to the page
+  (`docs/<tool>/hero.png`). The same image renders as the tool's
+  icon in the left rail so the three are instantly distinguishable.
+- **The standard run controls** at the bottom of the page (`▶ Run` +
+  live stdout tail, exit code, duration) — so the bespoke page is also
+  the operational home for the tool, not just a documentation surface.
+  Clicking the tool in the left rail lands on this page; there is no
+  separate "tool panel" for the docs-folder tools.
+
+The principle: tests, input spokes, and English aren't fungible with
+COBOL and CSV. They're the *frame* the substrates are evaluated
+inside. The UI should reflect that with dedicated, non-generated
+content per tool — not a generic detail panel parameterized by the
+tool's name.
+
+### 3.5 Folder-level Run, root-level Run
 
 Clicking a **folder** (not a tool) shows a folder detail panel with a
 single **▶ Run all** button. It runs every tool under that folder in
@@ -241,7 +618,7 @@ Clicking the **project root** shows a project detail panel with **▶ Run
 all** that runs everything under the project. This replaces the current
 global "Build all" button.
 
-### 3.5 Backend work
+### 3.6 Backend work
 
 - `GET /api/effortless-tools/tree` — walks the active project's folder
   structure, parses each `effortless.json` it encounters, returns
@@ -258,7 +635,7 @@ global "Build all" button.
 - `GET /api/effortless-tools/run/:runId` — Server-Sent-Events stdout
   stream so the UI can tail the build live without polling.
 
-### 3.6 No more separate "Orchestration" tab
+### 3.7 No more separate "Orchestration" tab
 
 This design subsumes the previously planned dedicated Orchestration
 tab. Tools have per-tool Run buttons, folders have Run-all buttons, the
@@ -371,8 +748,9 @@ failed.
 The harder test: if the user opens *any two domains* and they feel the
 same, the page failed.
 
-This currently passes for 8 of 28 demo domains. The in-flight
-`__meta__`-authoring wave extends it to the rest.
+This passes for every demo rulebook in the repo. The `__meta__`
+table — the load-bearing input for this test — is authored in every
+`<project>-rulebook.json` under `rulebook-examples/`.
 
 ---
 

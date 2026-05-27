@@ -66,7 +66,7 @@
         "ProjectId": "erb-001",
         "Name": "Effortlessly Invariant Rulesbooks",
         "Purpose": "Host a catalog of independent Effortless projects under rulebook-examples/, each a self-contained rulebook that fully captures one domain and selects the subset of platform substrates it needs. A rulebook alone is sufficient for any frontier LLM to answer any question about the domain or produce a faithful implementation in any language / platform.",
-        "Architecture": "rulebook-examples/<project>/ — N independent Effortless projects (acme-llc, star-trek, jessica-advanced, jessica-basic, customer-fullname, acme-corporation, is-everything-a-language, effortless-rulesbooks, …). Each project's rulebook JSON is its own hub / durable SSoT; each picks the subset of the platform's 15 substrates it needs (acme-llc exercises all 15; most use 3+). Builds are convergent: downstream artifacts mirror the current rulebook (additions appear, removals disappear). The platform itself (effortless-platform/) is one such project, describing ERB.",
+        "Architecture": "rulebook-examples/<project>/ — every subdirectory that contains a <project>-rulebook.json is an independent Effortless project. The filesystem is authoritative; there is no curated partial \"canonical\" subset. Each project's rulebook JSON is its own hub / durable SSoT; each picks the subset of the platform's substrates it needs (some exercise all of them; most use a handful). Builds are convergent: downstream artifacts mirror the current rulebook (additions appear, removals disappear). Two subdirs deliberately carry no rulebook file — naked-claude-vs-effortless-claude/ (experiment tree) and volunteer-shift-scheduler-demo/ (demo-app scaffold that consumes its sibling's rulebook); these are not demos and are not in any \"demos\" denominator. The platform itself (effortless-platform/) is one such project, describing ERB.",
         "EntryPoint": "./start.sh",
         "PortalUrl": "http://localhost:7777",
         "ProxyUrl": "http://localhost:4242",
@@ -9115,6 +9115,106 @@
       {
         "Name": "primary",
         "Description": "Drop the entire Postgres editor any time. ./start.sh rebuilds it from JSON. The rulebook JSON travels with the repo; the editor DB does not."
+      }
+    ]
+  },
+  "__meta__": {
+    "Description": "Project-level metadata that travels with the rulebook: tagline, motif, narrative descriptions, substrate list, signature rows, etc. One row per metadata key. Use ValueType to interpret StringValue vs JsonValue.",
+    "important": false,
+    "schema": [
+      {
+        "name": "MetaKey",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "The metadata key (e.g. 'tagline', 'motif_palette', 'substrates'). Unique within the table."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "formula": "={{MetaKey}}",
+        "Description": "Identifier for this metadata entry. Mirrors MetaKey so the row is addressable by Name like every other table."
+      },
+      {
+        "name": "ValueType",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "How to interpret the value columns: 'string' (use StringValue), 'object' (parse JsonValue as JSON object), 'array' (parse JsonValue as JSON array)."
+      },
+      {
+        "name": "StringValue",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Plain string value. Populated when ValueType == 'string'; null otherwise."
+      },
+      {
+        "name": "JsonValue",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "JSON-encoded value. Populated when ValueType == 'object' or 'array'; null when ValueType == 'string'."
+      }
+    ],
+    "data": [
+      {
+        "MetaKey": "tagline",
+        "Name": "tagline",
+        "ValueType": "string",
+        "StringValue": "The admin portal that builds itself from its own rulebook.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "motif",
+        "Name": "motif",
+        "ValueType": "string",
+        "StringValue": "platform",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "motif_palette",
+        "Name": "motif_palette",
+        "ValueType": "object",
+        "StringValue": null,
+        "JsonValue": "{\"primary\": \"#1b2a44\", \"accent\": \"#4cc2c4\", \"ink\": \"#0b1220\"}"
+      },
+      {
+        "MetaKey": "description_rich",
+        "Name": "description_rich",
+        "ValueType": "string",
+        "StringValue": "Top-level rulebook describing the ERB project itself: rulebook-as-hub SSoT, ssotme-proxy (10+ substrate routes), admin portal (Viewer/Developer roles, navigation, screens, APIs, write-through invariant), AppUsers + permissions, build pipeline, conformance testing.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "use_cases",
+        "Name": "use_cases",
+        "ValueType": "array",
+        "StringValue": null,
+        "JsonValue": "[]"
+      },
+      {
+        "MetaKey": "signature_rows",
+        "Name": "signature_rows",
+        "ValueType": "array",
+        "StringValue": null,
+        "JsonValue": "[]"
+      },
+      {
+        "MetaKey": "journal_seed",
+        "Name": "journal_seed",
+        "ValueType": "string",
+        "StringValue": "Cold start: `git clone && ./start.sh` → start.sh boots ssotme-proxy on :4242, starts portal backend on :7777, backend auto-creates editor Postgres DB if missing and runs migrations derived from the rulebook, opens browser. Developer signs in as the default user from the rulebook's AppUsers entity. Land on Home. The whole story unfolds from one command.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "substrates",
+        "Name": "substrates",
+        "ValueType": "array",
+        "StringValue": null,
+        "JsonValue": "[{\"key\": \"binary-(arm64)\", \"important\": false, \"chip_label\": \"Binary (ARM64)\"}, {\"key\": \"python\", \"important\": false, \"chip_label\": \"Python\"}, {\"key\": \"go\", \"important\": false, \"chip_label\": \"Go\"}, {\"key\": \"postgresql\", \"important\": false, \"chip_label\": \"PostgreSQL\"}, {\"key\": \"csv\", \"important\": false, \"chip_label\": \"CSV\"}, {\"key\": \"excel\", \"important\": false, \"chip_label\": \"Excel\"}, {\"key\": \"plantuml\", \"important\": false, \"chip_label\": \"PlantUML\"}, {\"key\": \"owl-rdf\", \"important\": false, \"chip_label\": \"OWL/RDF\"}, {\"key\": \"explain-dag\", \"important\": false, \"chip_label\": \"Explain DAG\"}, {\"key\": \"entity-framework\", \"important\": false, \"chip_label\": \"Entity Framework\"}]"
       }
     ]
   }
