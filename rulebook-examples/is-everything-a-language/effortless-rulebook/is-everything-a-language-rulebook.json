@@ -4,6 +4,9 @@
   "Description": "Semiotic candidates evaluated by formula \u2014 shows substrate-equality holds for non-CRUD ontologies too.",
   "LanguageCandidates": {
     "Description": "Table: LanguageCandidates",
+    "important": true,
+    "summary_rich": "The **taxonomy under examination**. Each row is a *candidate* — English, Python, A Coffee Mug, A Thunderstorm, Honeybee Waggle Dance, OWL/RDF — annotated with the predicates the operational definition of *language* turns on: `HasSyntax`, `IsParsed`, `HasLinearDecodingPressure`, `IsStableOntologyReference`, `CanBeHeld`, `HasIdentity`, `DistanceFromConcept`. The rulebook then *computes* which ones qualify and surfaces any disagreement between its prediction and the row's declared status as `PredictionFail`. Edit a predicate and the verdict flips the same instant.",
+    "important_fields": ["Name", "Category", "PredictedAnswer", "IsLanguage", "PredictionFail"],
     "schema": [
       {
         "name": "LanguageCandidateId",
@@ -61,7 +64,9 @@
         "type": "calculated",
         "nullable": true,
         "Description": "The predicted answer as the top most popular answer among those in the family feud polling pool.",
-        "formula": "=AND(\n  {{HasSyntax}},\n  {{IsParsed}},\n  {{IsDescriptionOf}},\n  {{HasLinearDecodingPressure}},\n  {{ResolvesToAnAST}},\n  {{IsStableOntologyReference}},\n  NOT({{CanBeHeld}}),\n  NOT({{HasIdentity}})\n)"
+        "formula": "=AND(\n  {{HasSyntax}},\n  {{IsParsed}},\n  {{IsDescriptionOf}},\n  {{HasLinearDecodingPressure}},\n  {{ResolvesToAnAST}},\n  {{IsStableOntologyReference}},\n  NOT({{CanBeHeld}}),\n  NOT({{HasIdentity}})\n)",
+        "important": true,
+        "explanation_rich": "**The operational definition of *language*, executed as a formula.** An eight-clause `AND` gate: a candidate counts as a language only if it has syntax, requires parsing, describes something (rather than *is* the thing), exerts linear decoding pressure, resolves to an AST, references a stable ontology, can't be physically held, and has no individual identity. Worked example: **English** passes all eight — `HasSyntax=TRUE`, `IsParsed=TRUE`, `DistanceFromConcept=2` (so `IsDescriptionOf=TRUE`), `CanBeHeld=FALSE`, `HasIdentity=FALSE` — so `PredictedAnswer` resolves to `TRUE`. **A Coffee Mug** fails six of eight and resolves to `FALSE`. Flip `HasSyntax` to FALSE on English and the same formula instantly demotes it. The definition is the code; the code is the definition."
       },
       {
         "name": "PredictionPredicates",
@@ -76,7 +81,9 @@
         "type": "calculated",
         "nullable": true,
         "Description": "If the family feud answer does not match the chosen language candidates status then this explains what did not match. t also flags (in english) mismatch where a candidate is marked as BOTH open AND closed world which does not make sense.",
-        "formula": "=IF(NOT({{PredictedAnswer}} = {{IsLanguage}}),\n  {{Name}} & \" \" & IF({{PredictedAnswer}}, \"Is\", \"Isn't\") & \" a Family Feud Language, but \" & \n  IF({{IsLanguage}}, \"Is\", \"Is Not\") & \" marked as a 'Language Candidate.'\", \"\") & IF({{IsOpenClosedWorldConflicted}}, \" - Open World vs. Closed World Conflict.\", \"\")"
+        "formula": "=IF(NOT({{PredictedAnswer}} = {{IsLanguage}}),\n  {{Name}} & \" \" & IF({{PredictedAnswer}}, \"Is\", \"Isn't\") & \" a Family Feud Language, but \" & \n  IF({{IsLanguage}}, \"Is\", \"Is Not\") & \" marked as a 'Language Candidate.'\", \"\") & IF({{IsOpenClosedWorldConflicted}}, \" - Open World vs. Closed World Conflict.\", \"\")",
+        "important": true,
+        "explanation_rich": "**The falsifier audit — where the rulebook accuses itself.** This field stays empty whenever the formal prediction agrees with the declared `IsLanguage` status. The moment they disagree, it prints the disagreement in English. Worked example: **Honeybee Waggle Dance** is declared `IsLanguage=TRUE` by the curator (linguists argue it qualifies), but the eight-clause predicate fails — no `IsParsed`, no `IsStableOntologyReference`, `DistanceFromConcept=0` — so `PredictedAnswer=FALSE` and this field reads *\"Honeybee Waggle Dance Isn't a Family Feud Language, but Is marked as a 'Language Candidate.'\"* That's the row where the definition and the world disagree — and the rulebook *shows* the disagreement instead of hiding it. Add a NEIAL step to refine the definition, edit a predicate to flip the verdict, or accept the boundary case: every move is auditable."
       },
       {
         "name": "Category",
@@ -154,7 +161,9 @@
         "datatype": "boolean",
         "type": "calculated",
         "nullable": true,
-        "formula": "=AND({{IsOpenWorld}}, {{IsClosedWorld}})"
+        "formula": "=AND({{IsOpenWorld}}, {{IsClosedWorld}})",
+        "important": true,
+        "explanation_rich": "**A row cannot be both open-world and closed-world at once.** This one-line `AND` is a *self-check* — if it ever fires, the curator has marked a candidate as simultaneously OWA (anything not asserted may still be true) and CWA (anything not asserted is false), which is incoherent. Worked example: **OWA & CWA Falsifier** is deliberately authored that way as a trap; this field resolves to `TRUE`, and the `PredictionFail` audit appends *\"- Open World vs. Closed World Conflict.\"* to the row. The ontology refuses to lie quietly."
       },
       {
         "name": "DimensionalityWhileEditing",
@@ -1111,6 +1120,9 @@
   },
   "IsEverythingALanguage": {
     "Description": "Table: IsEverythingALanguage",
+    "important": true,
+    "summary_rich": "The **argument itself, modelled as data.** Sixteen numbered steps (NEIAL-001 through NEIAL-016) — Motivation, PredicateSet, Definition, Witness, Counterexample, FuzzyBoundary, Refinement, Conclusion — proving two halves of a single thesis: *language can be formalized* (so a rulebook IS a language with a grammar) AND *not everything is a language* (so the formalization actually excludes things). Each step carries both a plain-English `Statement` and a logical `Formalization`, with witnesses pointing back at concrete rows in `LanguageCandidates` as evidence.",
+    "important_fields": ["Name", "ArgumentName", "StepType", "Statement", "RelatedCandidateName"],
     "schema": [
       {
         "name": "IsEverythingALanguageId",
@@ -1474,6 +1486,33 @@
     ]
   },
   "_meta": {
+    "tagline": "Anything you can model as a rulebook is — by construction — a language with a grammar.",
+    "motif": "atlas",
+    "motif_palette": {
+      "primary": "#2d4a3e",
+      "accent": "#c19a5b",
+      "ink": "#0f1a16"
+    },
+    "description_rich": "This isn't a business app — it's a **self-referential proof**. The rulebook contains a taxonomy of candidate languages (English, Python, OWL, a coffee mug, a thunderstorm, honeybee waggle dance, Nicaraguan Sign Language) and an *operational definition* of *language* expressed as an eight-clause formula. The same rulebook contains the sixteen-step argument that the operational definition is itself coherent — Definition, Witnesses, Counterexamples, Fuzzy Boundaries, Conclusion. So the artefact you're reading **is** the thing it's arguing about: a structured ontology with a grammar, computing its own classifications, auditing its own disagreements. The CMCC conjecture, demonstrated by self-application.",
+    "use_cases": [
+      "**Watch the operational definition fire.** Open *English* and see `PredictedAnswer` resolve to TRUE through its eight-clause AND. Flip `HasSyntax` to FALSE and watch the same row instantly demote — definition and code are the same object.",
+      "**Find every row where the rulebook accuses itself.** Sort `LanguageCandidates` by `PredictionFail` to see candidates where the formal prediction disagrees with the curator — *Honeybee Waggle Dance*, *Bonobo/Lexigram*, *Falsifier A*. Each is a real philosophical decision waiting to be made.",
+      "**Walk the argument.** Read `IsEverythingALanguage` in order NEIAL-001 → NEIAL-016. The thesis (*language is formalizable, but not everything is a language*) is constructed step by step, with every Witness pointing back at a real row in `LanguageCandidates` as evidence.",
+      "**Trap an incoherent ontology.** *OWA & CWA Falsifier* is marked both open-world and closed-world; `IsOpenClosedWorldConflicted` evaluates TRUE and `PredictionFail` appends the contradiction in English. The rulebook refuses to lie quietly.",
+      "**Ask the same question of OWL.** Generate the OWL substrate and ask it which candidates satisfy `Language(x)`. The axioms agree with the Postgres view, which agrees with the Python module — different dialects, same grammar, same answer."
+    ],
+    "signature_rows": [
+      { "entity": "LanguageCandidates", "ids": ["english", "python", "a-coffee-mug", "owl-rdf-graphql-generally", "honeybee-waggle-dance", "owa-cwa-falsifier"] },
+      { "entity": "IsEverythingALanguage", "ids": ["neial-003", "neial-004", "neial-016"] }
+    ],
+    "journal_seed": "Language is formalizable as eight predicates over an ontology — and *not everything is a language*. This rulebook is the proof; the proof is this rulebook.",
+    "substrates": [
+      { "key": "postgres", "important": true,  "chip_label": "Postgres" },
+      { "key": "owl",      "important": true,  "chip_label": "OWL" },
+      { "key": "python",   "important": true,  "chip_label": "Python" },
+      { "key": "excel",    "important": false, "chip_label": "Excel" },
+      { "key": "golang",   "important": false, "chip_label": "Go" }
+    ],
     "_CMCC_Summary": "Airtable export with schema-first type mapping: Schemas, Data, Relationships (FK links), Lookups (INDEX/MATCH), Aggregations (SUMIFS/COUNTIFS/Rollups), and Calculated fields (formulas) in Excel dialect. Field types are determined from Airtable's schema metadata FIRST (no coercion); the build FAILS if metadata is unavailable rather than silently inferring from formula/data analysis.",
     "_conversion_metadata": {
       "source_base_id": "appC8XTj95lubn6hz",

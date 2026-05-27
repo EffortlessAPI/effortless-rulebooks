@@ -16,6 +16,7 @@ import pg from "pg";
 import fs from "node:fs";
 import fsp from "node:fs/promises";
 import path from "node:path";
+import crypto from "node:crypto";
 import { spawn, exec } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import http from "node:http";
@@ -463,6 +464,17 @@ async function bootstrapEditorSchema(client, rulebook) {
       target  TEXT,
       payload JSONB
     );
+    -- Per-user, per-domain "where was I" memory. Powers the picker's
+    -- "Last visited" / "New since you were here" chips and the
+    -- reception desk's "Welcome back" journal diff.
+    CREATE TABLE IF NOT EXISTS portal_user_domain_state (
+      user_id TEXT NOT NULL,
+      domain  TEXT NOT NULL,
+      last_route TEXT,
+      last_visited_at TIMESTAMPTZ DEFAULT now(),
+      last_seen_rulebook_revision TEXT,
+      PRIMARY KEY (user_id, domain)
+    );
   `);
 
   // Seed/refresh from rulebook
@@ -655,9 +667,154 @@ app.post("/api/projects/:id/activate", async (req, res) => {
   res.json({ active: getActiveDomain() });
 });
 
+// --- per-user, per-domain state (Item 6: state preservation) ---
+//
+// Computes a stable revision marker for a rulebook by hashing its on-disk
+// content. SHA-256 of the bytes — same content = same revision, byte-for-byte.
+// Used to drive the "new since you were here" picker chip and the
+// reception desk's "Welcome back" diff.
+function rulebookRevisionForDomain(domainId) {
+  let rbPath;
+  if (domainId === "__top__") rbPath = TOP_RULEBOOK;
+  else rbPath = path.join(RULEBOOK_EXAMPLES, domainId, "effortless-rulebook", `${domainId}-rulebook.json`);
+  if (!fs.existsSync(rbPath)) return null;
+  const buf = fs.readFileSync(rbPath);
+  return crypto.createHash("sha256").update(buf).digest("hex").slice(0, 16);
+}
+
+// GET /api/portal/me/domain-state
+// Returns the current user's per-domain memory PLUS each domain's current
+// rulebook revision, so the client can compute `changed-since-last-visit`
+// locally without an extra fetch per domain.
+app.get("/api/portal/me/domain-state", async (req, res) => {
+  const u = getCurrentUser();
+  if (!u || !u.UserId) return res.json({ states: [], currentRevisions: {} });
+  try {
+    const p = await getPool();
+    const r = await p.query(
+      `SELECT domain, last_route, last_visited_at, last_seen_rulebook_revision
+         FROM portal_user_domain_state WHERE user_id = $1
+        ORDER BY last_visited_at DESC`,
+      [u.UserId]
+    );
+    const currentRevisions = {};
+    for (const proj of listProjects()) {
+      currentRevisions[proj.id] = rulebookRevisionForDomain(proj.id);
+    }
+    res.json({ states: r.rows, currentRevisions });
+  } catch (e) {
+    res.status(500).json({ error: String(e.message || e) });
+  }
+});
+
+// PUT /api/portal/me/domain-state
+// Body: { domain, last_route }
+// Upserts the user's "I was here" memory. Also stamps
+// last_seen_rulebook_revision to the rulebook's current content hash,
+// so the next visit can compute the diff.
+app.put("/api/portal/me/domain-state", async (req, res) => {
+  const u = getCurrentUser();
+  if (!u || !u.UserId) return res.status(401).json({ error: "no user" });
+  const { domain, last_route } = req.body || {};
+  if (!domain || typeof domain !== "string") return res.status(400).json({ error: "domain required" });
+  const rev = rulebookRevisionForDomain(domain);
+  try {
+    const p = await getPool();
+    await p.query(
+      `INSERT INTO portal_user_domain_state (user_id, domain, last_route, last_visited_at, last_seen_rulebook_revision)
+       VALUES ($1, $2, $3, now(), $4)
+       ON CONFLICT (user_id, domain) DO UPDATE
+         SET last_route = EXCLUDED.last_route,
+             last_visited_at = now(),
+             last_seen_rulebook_revision = EXCLUDED.last_seen_rulebook_revision`,
+      [u.UserId, domain, last_route || null, rev]
+    );
+    res.json({ ok: true, revision: rev });
+  } catch (e) {
+    res.status(500).json({ error: String(e.message || e) });
+  }
+});
+
 // --- rulebook (read) ---
 // Active demo rulebook (domain tables: Customers, Episodes, etc.).
 app.get("/api/rulebook", (req, res) => res.json(loadRulebook()));
+
+// --- rulebook history (Item 7: time-travel scrubber) ---
+//
+// Git is the substitute for bitemporal history in v1. Each commit that
+// touched the rulebook JSON becomes a "tick" on the scrubber. The full
+// bitemporal vision (drag arbitrary timestamps, see live-fired rules in
+// the past) requires a per-cell history that doesn't exist yet — this is
+// the honest shortcut: real history granular to commit boundaries.
+//
+// Endpoints only ever read the active rulebook path — never an arbitrary
+// path supplied by the client. (`req.params.sha` IS supplied by the
+// client; we validate it as hex before interpolating into the shell.)
+
+function gitLogForFile(absPath) {
+  return new Promise((resolve, reject) => {
+    const repoRoot = REPO_ROOT;
+    const rel = path.relative(repoRoot, absPath);
+    exec(
+      `git log --pretty=format:"%H|%ct|%an|%s" -- ${JSON.stringify(rel)}`,
+      { cwd: repoRoot, maxBuffer: 4 * 1024 * 1024 },
+      (err, stdout) => {
+        if (err) return reject(err);
+        const lines = (stdout || "").split("\n").filter(Boolean);
+        const out = lines.map((line) => {
+          const [sha, ct, author, ...rest] = line.split("|");
+          return {
+            sha,
+            timestamp: Number(ct) * 1000,
+            author,
+            subject: rest.join("|"),
+          };
+        });
+        resolve(out);
+      }
+    );
+  });
+}
+
+function gitShowFileAtSha(absPath, sha) {
+  return new Promise((resolve, reject) => {
+    const repoRoot = REPO_ROOT;
+    const rel = path.relative(repoRoot, absPath);
+    // Validate sha is a hex string before interpolating.
+    if (!/^[0-9a-f]{4,40}$/i.test(sha)) return reject(new Error("invalid sha"));
+    exec(
+      `git show ${sha}:${JSON.stringify(rel)}`,
+      { cwd: repoRoot, maxBuffer: 16 * 1024 * 1024 },
+      (err, stdout) => {
+        if (err) return reject(err);
+        resolve(stdout);
+      }
+    );
+  });
+}
+
+app.get("/api/rulebook/history", async (req, res) => {
+  try {
+    const rbPath = activeRulebookPath();
+    const log = await gitLogForFile(rbPath);
+    res.json({ path: path.relative(REPO_ROOT, rbPath), commits: log });
+  } catch (e) {
+    res.status(500).json({ error: String(e.message || e) });
+  }
+});
+
+app.get("/api/rulebook/at/:sha", async (req, res) => {
+  try {
+    const rbPath = activeRulebookPath();
+    const content = await gitShowFileAtSha(rbPath, req.params.sha);
+    // Parse to ensure it's valid JSON at that point in history — if it
+    // isn't, surface the error instead of returning a corrupt blob.
+    const parsed = JSON.parse(content);
+    res.json(parsed);
+  } catch (e) {
+    res.status(404).json({ error: String(e.message || e) });
+  }
+});
 
 // Project rulebook (portal config: UserRoles, AppUsers, AppPermissions,
 // AppNavigation, AppScreens, AppAPIs, AddToolCatalog, BuildPipeline,
@@ -745,6 +902,107 @@ app.post("/api/rulebook/entities", requireEditor, async (req, res) => {
     res.json({ ok: true, entity: newRb[name] });
   } catch (e) {
     res.status(500).json({ error: String(e.message || e) });
+  }
+});
+
+// --- rulebook text-field patch (rich-text editor for *_rich fields) ---
+// Edits a single allow-listed text field within the active demo rulebook by
+// path. Used by the inline rich-text editor in the reception desk.
+//
+// Allowed paths (any other shape is rejected, never silently coerced):
+//   ["_meta", "tagline"]
+//   ["_meta", "description_rich"]
+//   ["_meta", "journal_seed"]
+//   ["_meta", "use_cases", <int>]
+//   [<EntityName>, "summary_rich"]
+//   [<EntityName>, "schema", <int>, "explanation_rich"]
+//
+// All other writes go through the typed entity endpoints above. Body shape:
+//   { path: [...], value: "string" }
+//
+// NOTE: this writes through the existing transactional helper but does NOT
+// mirror into portal_rulebook_entities for _meta-only fields, since that
+// table only knows about entities. Per-entity rich fields DO update the
+// schema/data JSON via the existing entity PATCH path indirectly — but for
+// simplicity we treat the rulebook JSON as authoritative and skip the pg
+// mirror for non-entity targets. (The mirror is a cache; the JSON wins.)
+function validateRichPath(path, rb) {
+  if (!Array.isArray(path) || path.length < 2) {
+    throw new Error("path must be a non-empty array with at least 2 segments");
+  }
+  if (path[0] === "_meta") {
+    const second = path[1];
+    if (second === "tagline" || second === "description_rich" || second === "journal_seed") {
+      if (path.length !== 2) throw new Error(`_meta.${second} takes no further path segments`);
+      return;
+    }
+    if (second === "use_cases") {
+      if (path.length !== 3 || !Number.isInteger(path[2]) || path[2] < 0) {
+        throw new Error("_meta.use_cases requires a non-negative integer index");
+      }
+      return;
+    }
+    throw new Error(`_meta.${second} is not an editable text field`);
+  }
+  // Otherwise path[0] is an entity name.
+  const ent = rb[path[0]];
+  if (!ent || typeof ent !== "object" || !Array.isArray(ent.schema)) {
+    throw new Error(`Entity ${path[0]} not found or has no schema`);
+  }
+  if (path[1] === "summary_rich") {
+    if (path.length !== 2) throw new Error(`${path[0]}.summary_rich takes no further path segments`);
+    return;
+  }
+  if (path[1] === "schema") {
+    if (path.length !== 4 || !Number.isInteger(path[2]) || path[3] !== "explanation_rich") {
+      throw new Error(`schema rich-text edits require [entity, "schema", index, "explanation_rich"]`);
+    }
+    if (path[2] < 0 || path[2] >= ent.schema.length) throw new Error("schema index out of bounds");
+    return;
+  }
+  throw new Error(`${path[0]}.${path[1]} is not an editable text field`);
+}
+
+function setByPath(obj, path, value) {
+  let cur = obj;
+  for (let i = 0; i < path.length - 1; i++) {
+    const seg = path[i];
+    if (cur[seg] == null) {
+      // Create the nested container with the right shape so subsequent edits
+      // don't fail. _meta + use_cases get an object + array respectively.
+      if (path[i] === "_meta") cur[seg] = {};
+      else if (path[i + 1] === 0 || Number.isInteger(path[i + 1])) cur[seg] = [];
+      else cur[seg] = {};
+    }
+    cur = cur[seg];
+  }
+  cur[path[path.length - 1]] = value;
+}
+
+app.patch("/api/rulebook/text", requireEditor, async (req, res) => {
+  const { path, value } = req.body || {};
+  if (typeof value !== "string") {
+    return res.status(400).json({ error: "value must be a string" });
+  }
+  try {
+    const rb = loadRulebook();
+    validateRichPath(path, rb);
+    const newRb = await writeThrough({
+      pgWrite: async (c) => {
+        await c.query(
+          `INSERT INTO portal_audit_log (user_id, action, target, payload)
+           VALUES ($1, 'rulebook.text.update', $2, $3)`,
+          [getCurrentUser()?.UserId || null, path.join("."), JSON.stringify({ path, value })]
+        );
+      },
+      rulebookMutate: (rb2) => {
+        setByPath(rb2, path, value);
+        return rb2;
+      },
+    });
+    res.json({ ok: true, rulebook: newRb });
+  } catch (e) {
+    res.status(400).json({ error: String(e.message || e) });
   }
 });
 

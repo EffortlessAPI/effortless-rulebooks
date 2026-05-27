@@ -4,6 +4,9 @@
   "Description": "Aggregations over nested series \u2192 seasons \u2192 episodes (avg rating roll-ups). The canonical aggregation demo.",
   "Series": {
     "Description": "Table: Series",
+    "important": true,
+    "summary_rich": "Each row is a **Star Trek show** — TOS, TNG, DS9, all the way through *Strange New Worlds*. A series is the **top of the hierarchy**: it has many `Seasons`, each Season has many `Episodes`, and `Ratings` can hang off either a series directly or off a specific episode. The interesting columns are the rolled-up ones — `TotalEpisodes` sums the episode counts of every season; `Rating` averages every fan rating attached to the show; `IsLongRunning` and `IsGood` are *derived booleans* that update the instant the underlying data changes.",
+    "important_fields": ["Title", "Network", "TotalEpisodes", "Rating"],
     "schema": [
       {
         "name": "SerieId",
@@ -72,14 +75,18 @@
         "datatype": "number",
         "type": "aggregation",
         "nullable": true,
-        "formula": "=SUMIFS(Seasons!{{EpisodeCount}}, Seasons!{{Series}}, Series!{{SerieId}})"
+        "formula": "=SUMIFS(Seasons!{{EpisodeCount}}, Seasons!{{Series}}, Series!{{SerieId}})",
+        "important": true,
+        "explanation_rich": "**A two-level roll-up.** Each `Season` already knows its own `EpisodeCount` (a `COUNTIFS` over `Episodes`); `TotalEpisodes` then sums *those* counts across every season of the show. Worked example: *Star Trek: The Next Generation* (`2-tng`) has seven seasons; their episode counts sum to **178**, which is exactly what the field reports for the series. Add an episode to TNG Season 4 and both the season's `EpisodeCount` and the series' `TotalEpisodes` re-derive on the next read — no application code, no manual roll-up."
       },
       {
         "name": "IsLongRunning",
         "datatype": "boolean",
         "type": "calculated",
         "nullable": true,
-        "formula": "={{TotalEpisodes}} > 50"
+        "formula": "={{TotalEpisodes}} > 50",
+        "important": true,
+        "explanation_rich": "**The threshold rule that separates the long-haul shows from the recent ones.** Compares the rolled-up `TotalEpisodes` to `50`. Worked example: *TOS* has **76 episodes** → `TRUE`; *Picard* has **30 episodes** → `FALSE`. Lower the threshold to `25` and *Lower Decks* (42 episodes) flips to `TRUE` the same instant the rulebook recomputes — across Postgres, Python, Excel and OWL identically."
       },
       {
         "name": "Seasons",
@@ -107,7 +114,9 @@
         "datatype": "boolean",
         "type": "calculated",
         "nullable": true,
-        "formula": "={{Rating}} >= 4.5"
+        "formula": "={{Rating}} >= 4.5",
+        "important": true,
+        "explanation_rich": "**The verdict line.** `Rating` is the average of every fan rating attached to the show; `IsGood` is the editorial threshold — `4.5` or higher. Worked example: *TNG* has one rating (Avery Chen, **5**) → average `5.0` → `IsGood = TRUE`. *TOS* has three ratings (5, 5, 3) → average `4.33` → `IsGood = FALSE`. Add one more 5-star *TOS* review and the average climbs to `4.5` exactly — `IsGood` flips to `TRUE` the next time anything reads the row. This is the smallest possible *editorial* rule: change the threshold in one place, every substrate agrees instantly."
       }
     ],
     "data": [
@@ -965,6 +974,9 @@
   },
   "Episodes": {
     "Description": "Table: Episodes",
+    "important": true,
+    "summary_rich": "The **atomic unit of the franchise** — one airing, one runtime, one airdate, one director. Each episode belongs to exactly one `Season` and inherits the show's identity through lookup fields (`SeasonTitle`, `SeasonDescription`). Fan `Ratings` attach directly to an episode, which then roll up into the season's episode count and ultimately into the series-level `Rating` average. Edit an episode's `RuntimeMinutes` and only that row changes; edit its `Season` link and the whole hierarchy re-derives.",
+    "important_fields": ["Name", "SeasonTitle", "Airdate", "Director"],
     "schema": [
       {
         "name": "EpisodeId",
@@ -14442,6 +14454,32 @@
     ]
   },
   "_meta": {
+    "tagline": "Ten Star Trek shows, hundreds of episodes, fan ratings — and roll-ups that survive a re-canon.",
+    "motif": "lcars",
+    "motif_palette": {
+      "primary": "#663d6b",
+      "accent": "#ff9966",
+      "ink": "#1a0d20"
+    },
+    "description_rich": "A media catalog of the entire **Star Trek** television franchise — ten series from *TOS* through *Strange New Worlds*, every season, every episode, every fan rating. The interesting thing isn't the catalog, it's the **roll-ups**: `Episodes` count up into `Seasons.EpisodeCount`, those counts sum up into `Series.TotalEpisodes`, and individual `Ratings` average up into `Series.Rating`. Derived booleans like `IsLongRunning` (more than 50 episodes) and `IsGood` (average rating ≥ 4.5) sit on top — change a single rating, and every level of the hierarchy re-derives identically in Postgres, Python, Excel, and OWL.",
+    "use_cases": [
+      "**Add a 5-star *TOS* rating** and watch `Series.Rating` climb from `4.33` to exactly `4.5` — `IsGood` flips from `FALSE` to `TRUE` on the next read, with no application code in between.",
+      "**Lower the *long-running* threshold** from `50` episodes to `25` and *Lower Decks* (42 episodes) instantly joins the long-running club; *Strange New Worlds* (20) stays a newcomer.",
+      "**Reassign an episode to a different season** — `Seasons.EpisodeCount` shifts on both old and new season, and `Series.TotalEpisodes` re-derives across the whole show without a single manual update.",
+      "**Ask *\"which series are good and long-running?\"*** in the Postgres view, then ask the same question of the generated Python module — same answer, same row order, no glue code."
+    ],
+    "signature_rows": [
+      { "entity": "Series", "ids": ["1-tos", "2-tng", "3-ds9"] },
+      { "entity": "Episodes", "ids": ["1-tos-season-1-episode-01", "1-tos-season-1-episode-07", "1-tos-season-1-episode-10"] }
+    ],
+    "journal_seed": "Ten shows on the bridge — TOS still the highest-rated when the votes are in; Picard and Strange New Worlds still awaiting their first ratings.",
+    "substrates": [
+      { "key": "postgres", "important": true,  "chip_label": "Postgres" },
+      { "key": "python",   "important": true,  "chip_label": "Python" },
+      { "key": "excel",    "important": false, "chip_label": "Excel" },
+      { "key": "owl",      "important": false, "chip_label": "OWL" },
+      { "key": "csv",      "important": false, "chip_label": "CSV" }
+    ],
     "_CMCC_Summary": "Airtable export with schema-first type mapping: Schemas, Data, Relationships (FK links), Lookups (INDEX/MATCH), Aggregations (SUMIFS/COUNTIFS/Rollups), and Calculated fields (formulas) in Excel dialect. Field types are determined from Airtable's schema metadata FIRST (no coercion); the build FAILS if metadata is unavailable rather than silently inferring from formula/data analysis.",
     "_conversion_metadata": {
       "source_base_id": "appqwWQxIWFtyDsiL",

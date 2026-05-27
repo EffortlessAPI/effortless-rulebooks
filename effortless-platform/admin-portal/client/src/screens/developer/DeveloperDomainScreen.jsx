@@ -1,7 +1,11 @@
-import { useNavigate, useParams } from "react-router-dom";
-import { useState } from "react";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
+import { useState, useEffect } from "react";
 import ScreenHeader from "../../components/ScreenHeader.jsx";
 import RichText, { RichInline } from "../../components/RichText.jsx";
+import EditableRich from "../../components/EditableRich.jsx";
+import TimeScrubber, { PastStateBanner } from "../../components/TimeScrubber.jsx";
+import TourMode from "../../components/TourMode.jsx";
+import { api } from "../../lib/api.js";
 
 // The reception desk for one domain.
 //
@@ -11,11 +15,62 @@ import RichText, { RichInline } from "../../components/RichText.jsx";
 //     per-entity / per-rule importance flags
 // Nothing fetched here — the heavy reads already happened in usePortal().
 
-export default function DeveloperDomainScreen({ screen, rulebook, projects }) {
+export default function DeveloperDomainScreen({ screen, rulebook: liveRulebook, projects, me, reload, reloadDomainState }) {
   const navigate = useNavigate();
+  const location = useLocation();
   const { domain } = useParams();
+  // Time-travel state. When `rewindCommit` is set, the page renders
+  // against `rewindRulebook` instead of the live rulebook prop, and every
+  // editable affordance is disabled.
+  const [rewindRulebook, setRewindRulebook] = useState(null);
+  const [rewindCommit, setRewindCommit] = useState(null);
+  const inPast = !!rewindCommit;
+  const rulebook = rewindRulebook || liveRulebook;
   const dom = (projects?.projects || []).find((p) => p.id === domain) || {};
   const meta = rulebook?._meta || {};
+  const canEdit = !!me?.role?.CanEditRulebook && !inPast;
+  const onSaved = () => { if (reload) reload(); };
+
+  // Drop the rewind when the user switches domains.
+  useEffect(() => {
+    setRewindRulebook(null);
+    setRewindCommit(null);
+  }, [domain]);
+
+  const onRewind = (rb, commit) => {
+    setRewindRulebook(rb);
+    setRewindCommit(commit);
+  };
+  const returnToNow = () => onRewind(null, null);
+
+  const [tourOpen, setTourOpen] = useState(false);
+
+  // Rule glow (Item 10) — shortcut: "last fired" is the rulebook JSON's
+  // most-recent commit time. We can't observe per-rule fires without a
+  // runtime telemetry stream, so this is the honest approximation: the
+  // entire DAG just refreshed if and only if the rulebook just changed.
+  const [lastRuleFireTs, setLastRuleFireTs] = useState(null);
+  useEffect(() => {
+    if (!domain) return;
+    let cancelled = false;
+    api.get("/api/rulebook/history")
+      .then((h) => {
+        if (cancelled) return;
+        const newest = (h?.commits || [])[0]?.timestamp || null;
+        setLastRuleFireTs(newest);
+      })
+      .catch(() => { /* non-fatal */ });
+    return () => { cancelled = true; };
+  }, [domain]);
+
+  // Record "I was here" — fires once per (domain, route) mount so the picker
+  // chips and Welcome-back diff reflect the current visit on the next load.
+  useEffect(() => {
+    if (!domain) return;
+    api.put("/api/portal/me/domain-state", { domain, last_route: location.pathname })
+      .then(() => { if (reloadDomainState) reloadDomainState(); })
+      .catch(() => { /* non-fatal */ });
+  }, [domain, location.pathname]);
 
   const entities = entityList(rulebook);
   const important = entities.filter((e) => e.entity.important);
@@ -31,32 +86,50 @@ export default function DeveloperDomainScreen({ screen, rulebook, projects }) {
   if (palette.ink)     heroStyle["--motif-ink"]     = palette.ink;
 
   return (
-    <>
+    <div className={inPast ? "viewing-past" : ""}>
       <ScreenHeader screen={screen} />
+      <PastStateBanner commit={rewindCommit} onReturn={returnToNow} />
 
       <section className={`reception-hero motif-${motif}`} style={heroStyle}>
         <div className="reception-hero-band">
           {dom.logoUrl && (
             <img src={dom.logoUrl} alt="" className="reception-hero-logo" />
           )}
-          <div>
+          <div className="reception-hero-band-text">
             <div className="reception-hero-slug">{domain}</div>
             <h1 className="reception-hero-name">{dom.displayName || dom.name || rulebook?.Name || domain}</h1>
             {dom.tagline && <div className="reception-hero-tagline">{dom.tagline}</div>}
+          </div>
+          <div className="reception-hero-actions">
+            <button className="tour-button" onClick={() => setTourOpen(true)} title="Take a 90-second tour">
+              ▶ Take the tour
+            </button>
+            <SubstrateWitnessChips substrates={meta.substrates} domain={domain} navigate={navigate} />
           </div>
         </div>
 
         <div className="reception-hero-body">
           <div className="reception-hero-left">
-            {meta.description_rich
-              ? <RichText text={meta.description_rich} className="reception-description" />
-              : <p className="reception-description muted">— no <code>description_rich</code> authored in <code>_meta</code> yet —</p>
-            }
+            <EditableRich
+              text={meta.description_rich}
+              path={["_meta", "description_rich"]}
+              canEdit={canEdit}
+              onSaved={onSaved}
+              placeholder={`— no description_rich authored in _meta yet —`}
+              className="reception-description"
+            />
             <TelemetryStrip entities={entities} />
-            {meta.journal_seed && (
+            {(meta.journal_seed || canEdit) && (
               <div className="reception-journal">
                 <span className="reception-journal-marker">📖</span>
-                <span>{meta.journal_seed}</span>
+                <EditableRich
+                  text={meta.journal_seed}
+                  path={["_meta", "journal_seed"]}
+                  canEdit={canEdit}
+                  onSaved={onSaved}
+                  inline
+                  placeholder="— no journal_seed authored —"
+                />
               </div>
             )}
           </div>
@@ -66,7 +139,16 @@ export default function DeveloperDomainScreen({ screen, rulebook, projects }) {
             {Array.isArray(meta.use_cases) && meta.use_cases.length > 0 ? (
               <ol className="use-case-list">
                 {meta.use_cases.map((uc, i) => (
-                  <li key={i}><RichInline text={uc} /></li>
+                  <li key={i}>
+                    <EditableRich
+                      text={uc}
+                      path={["_meta", "use_cases", i]}
+                      canEdit={canEdit}
+                      onSaved={onSaved}
+                      inline
+                      placeholder="— empty use case —"
+                    />
+                  </li>
                 ))}
               </ol>
             ) : (
@@ -80,7 +162,7 @@ export default function DeveloperDomainScreen({ screen, rulebook, projects }) {
         <NoImportanceFlags entities={entities} domain={domain} navigate={navigate} />
       ) : (
         important.map(({ name, entity }) => (
-          <EntityScroller key={name} name={name} entity={entity} domain={domain} navigate={navigate} />
+          <EntityScroller key={name} name={name} entity={entity} domain={domain} navigate={navigate} canEdit={canEdit} onSaved={onSaved} />
         ))
       )}
 
@@ -92,7 +174,7 @@ export default function DeveloperDomainScreen({ screen, rulebook, projects }) {
         </div>
       )}
 
-      <RulesPanel rules={rules} otherCount={otherRuleCount} domain={domain} navigate={navigate} />
+      <RulesPanel rules={rules} otherCount={otherRuleCount} domain={domain} navigate={navigate} canEdit={canEdit} onSaved={onSaved} lastFireTs={lastRuleFireTs} />
 
       <footer className="reception-footer muted small">
         <span>{entities.length} {entities.length === 1 ? "entity" : "entities"}</span>
@@ -105,7 +187,53 @@ export default function DeveloperDomainScreen({ screen, rulebook, projects }) {
         <span>·</span>
         <button className="link-like" onClick={() => navigate(`/developer/${domain}/explorer`)}>open explorer</button>
       </footer>
-    </>
+
+      <TimeScrubber onRewind={onRewind} activeSha={rewindCommit?.sha || null} domain={domain} />
+
+      {tourOpen && <TourMode rulebook={rulebook} dom={dom} onClose={() => setTourOpen(false)} />}
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Substrate witness chips — reads _meta.substrates[] filtered by important.
+// Hidden entirely when no substrate is flagged important (per §2.2).
+// Click navigates to the Effortless Tools page with the substrate preselected.
+
+function SubstrateWitnessChips({ substrates, domain, navigate }) {
+  if (!Array.isArray(substrates)) return null;
+  const featured = substrates.filter((s) => s && s.important);
+  if (featured.length === 0) return null;
+  const others = substrates.filter((s) => s && !s.important).length;
+  return (
+    <div className="substrate-witness-chips">
+      {featured.map((s) => (
+        <button
+          key={s.key}
+          className="substrate-chip"
+          title={`${s.chip_label || s.key} — open in Effortless Tools`}
+          onClick={(e) => {
+            e.stopPropagation();
+            navigate(`/developer/${domain}/substrates?substrate=${encodeURIComponent(s.key || "")}`);
+          }}
+        >
+          <span className="substrate-chip-dot" />
+          <span className="substrate-chip-label">{s.chip_label || s.key}</span>
+        </button>
+      ))}
+      {others > 0 && (
+        <button
+          className="substrate-chip substrate-chip-overflow"
+          title="Open all substrates"
+          onClick={(e) => {
+            e.stopPropagation();
+            navigate(`/developer/${domain}/substrates`);
+          }}
+        >
+          <span>…</span>
+        </button>
+      )}
+    </div>
   );
 }
 
@@ -163,7 +291,7 @@ function truthy(v) {
 // ─────────────────────────────────────────────────────────────────────────────
 // Entity scroller — one horizontal strip per important entity.
 
-function EntityScroller({ name, entity, domain, navigate }) {
+function EntityScroller({ name, entity, domain, navigate, canEdit, onSaved }) {
   const fields = entity.important_fields && entity.important_fields.length
     ? entity.important_fields
     : (entity.schema || []).slice(0, 3).map((f) => f.name);
@@ -175,9 +303,16 @@ function EntityScroller({ name, entity, domain, navigate }) {
     <section className="entity-scroller">
       <header className="entity-scroller-header">
         <h2>{name}</h2>
-        {entity.summary_rich && (
+        {(entity.summary_rich || canEdit) && (
           <div className="entity-scroller-summary">
-            <RichInline text={entity.summary_rich} />
+            <EditableRich
+              text={entity.summary_rich}
+              path={[name, "summary_rich"]}
+              canEdit={canEdit}
+              onSaved={onSaved}
+              inline
+              placeholder="— no summary_rich authored —"
+            />
           </div>
         )}
       </header>
@@ -216,6 +351,24 @@ function pickLabelField(fields) {
   );
 }
 
+// Relative time formatter — "4m ago", "2h ago", "Mar 4". Used for the
+// rules-panel last-fired timestamp.
+function relativeTime(ts) {
+  if (!ts) return "";
+  const dMs = Date.now() - ts;
+  if (dMs < 0) return "in the future";
+  const sec = Math.floor(dMs / 1000);
+  if (sec < 60) return `${sec}s ago`;
+  const min = Math.floor(sec / 60);
+  if (min < 60) return `${min}m ago`;
+  const hr = Math.floor(min / 60);
+  if (hr < 24) return `${hr}h ago`;
+  const day = Math.floor(hr / 24);
+  if (day < 7) return `${day}d ago`;
+  const d = new Date(ts);
+  return d.toLocaleDateString(undefined, { month: "short", day: "numeric" });
+}
+
 function formatValue(v) {
   if (v == null || v === "") return <span className="muted">—</span>;
   if (v === true || v === "True" || v === "true") return "✓";
@@ -227,14 +380,16 @@ function formatValue(v) {
 // ─────────────────────────────────────────────────────────────────────────────
 // Rules panel — one row per important calculated/lookup/aggregation field.
 
-function RulesPanel({ rules, otherCount, domain, navigate }) {
+function RulesPanel({ rules, otherCount, domain, navigate, canEdit, onSaved, lastFireTs }) {
   if (rules.length === 0 && otherCount === 0) return null;
+  const fresh = lastFireTs && (Date.now() - lastFireTs) < 60_000;
   return (
     <section className="rules-panel">
       <header className="rules-panel-header">
         <h2>Rules that matter</h2>
         <span className="muted small">
           {rules.length} featured · {otherCount} more in the DAG
+          {lastFireTs && <> · last update {relativeTime(lastFireTs)}</>}
         </span>
       </header>
       {rules.length === 0 ? (
@@ -243,7 +398,7 @@ function RulesPanel({ rules, otherCount, domain, navigate }) {
         </div>
       ) : (
         <ul className="rules-list">
-          {rules.map((r, i) => <RuleRow key={i} rule={r} />)}
+          {rules.map((r, i) => <RuleRow key={i} rule={r} canEdit={canEdit} onSaved={onSaved} fresh={fresh} lastFireTs={lastFireTs} />)}
         </ul>
       )}
       {otherCount > 0 && (
@@ -257,20 +412,25 @@ function RulesPanel({ rules, otherCount, domain, navigate }) {
   );
 }
 
-function RuleRow({ rule }) {
+function RuleRow({ rule, canEdit, onSaved, fresh, lastFireTs }) {
   const [open, setOpen] = useState(false);
   return (
-    <li className={`rule-row ${open ? "open" : ""}`}>
+    <li className={`rule-row ${open ? "open" : ""} ${fresh ? "rule-row-fresh" : ""}`}>
       <button className="rule-row-summary" onClick={() => setOpen((o) => !o)}>
         <span className="rule-row-type">{rule.field.type}</span>
         <span className="rule-row-path"><code>{rule.entity}.{rule.field.name}</code></span>
+        {lastFireTs && <span className="muted small rule-row-fired">last fired {relativeTime(lastFireTs)}</span>}
         <span className="muted small rule-row-chev">{open ? "▾" : "▸"}</span>
       </button>
       {open && (
         <div className="rule-row-body">
-          {rule.field.explanation_rich && (
-            <RichText text={rule.field.explanation_rich} />
-          )}
+          <EditableRich
+            text={rule.field.explanation_rich}
+            path={[rule.entity, "schema", rule.schemaIndex, "explanation_rich"]}
+            canEdit={canEdit}
+            onSaved={onSaved}
+            placeholder="— no explanation_rich authored —"
+          />
           <pre className="rule-row-formula">{rule.field.formula}</pre>
           {rule.example && (
             <div className="rule-row-example">
@@ -336,7 +496,8 @@ function countCalculatedFields(rb) {
 function importantRules(rb) {
   const out = [];
   for (const { name, entity } of entityList(rb)) {
-    for (const f of entity.schema) {
+    for (let i = 0; i < entity.schema.length; i++) {
+      const f = entity.schema[i];
       if (!f.important) continue;
       if (!["calculated", "lookup", "aggregation"].includes(f.type)) continue;
       let example = null;
@@ -350,7 +511,7 @@ function importantRules(rb) {
           };
         }
       }
-      out.push({ entity: name, field: f, example });
+      out.push({ entity: name, field: f, schemaIndex: i, example });
     }
   }
   return out;

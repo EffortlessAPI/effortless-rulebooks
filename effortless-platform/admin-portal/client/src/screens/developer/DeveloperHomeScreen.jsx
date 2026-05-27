@@ -2,8 +2,9 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import ScreenHeader from "../../components/ScreenHeader.jsx";
 import DomainTile from "../../components/DomainTile.jsx";
+import PickerChips from "../../components/PickerChips.jsx";
 
-export default function DeveloperHomeScreen({ screen, projects, projectRulebook }) {
+export default function DeveloperHomeScreen({ screen, projects, projectRulebook, domainState }) {
   const navigate = useNavigate();
   const role     = (projectRulebook?.UserRoles?.data || []).find((r) => r.RoleId === "role-developer");
   const domains  = (projects?.projects || []).filter((d) => d.id !== "__top__");
@@ -25,6 +26,8 @@ export default function DeveloperHomeScreen({ screen, projects, projectRulebook 
           <b>{role.Name}:</b> {role.Tagline}
         </div>
       )}
+
+      <PickerChips domainState={domainState} domains={domains} areaPath="/developer" />
 
       <h3 className="muted small" style={{ marginTop: 24 }}>PICK A DOMAIN TO WORK ON</h3>
       <div className="domain-gallery">

@@ -4,6 +4,9 @@
   "Description": "Smallest viable rulebook with a calculated field \u2014 the \"Hello, formulas\" tutorial.",
   "Customers": {
     "Description": "Table: Customers",
+    "important": true,
+    "summary_rich": "The **client ledger** of ACME, LLC. Every customer is identified two different ways at the same time — a slugified handle derived from their email (`Name`), and a last-name-first legal-style label (`FullName`). Edit either the email or the name parts and both identifiers re-derive themselves the next time any substrate is read.",
+    "important_fields": ["Name", "FullName", "EmailAddress", "LastName"],
     "schema": [
       {
         "name": "CustomerId",
@@ -17,7 +20,9 @@
         "type": "calculated",
         "nullable": true,
         "Description": "Identifier for the customers.",
-        "formula": "=SUBSTITUTE({{EmailAddress}}, \"@\", \"-\")"
+        "formula": "=SUBSTITUTE({{EmailAddress}}, \"@\", \"-\")",
+        "important": true,
+        "explanation_rich": "**A handle derived from the email, not the name.** `Name = SUBSTITUTE(EmailAddress, \"@\", \"-\")` — a single character swap turns an address into a slug. Worked example: `jane.smith@email.com` becomes `jane.smith-email.com`, which is what shows up as `Name` in every substrate. Change the customer's email and the handle re-derives itself in Postgres, Python, Excel, and OWL the next read — no application code, no migration."
       },
       {
         "name": "EmailAddress",
@@ -46,7 +51,9 @@
         "type": "calculated",
         "nullable": true,
         "Description": "Full name is computed from the first and last name of the customer",
-        "formula": "={{LastName}} & \", \" & {{FirstName}}"
+        "formula": "={{LastName}} & \", \" & {{FirstName}}",
+        "important": true,
+        "explanation_rich": "**Last name first, courtroom-style.** `FullName = LastName & \", \" & FirstName` — the formula is trivial, but the *order* is the point. ACME, LLC files its customers the way a paralegal would: surname, comma, given name. Worked example: `LastName=\"Smith\"` and `FirstName=\"Bobby\"` resolves to `\"Smith, Bobby\"`. Flip the order in the rulebook and every substrate sorts and prints alphabetically by surname on the next read."
       }
     ],
     "data": [
@@ -208,6 +215,32 @@
     ]
   },
   "_meta": {
+    "tagline": "A one-table customer ledger, filed last-name-first.",
+    "motif": "legal-pad",
+    "motif_palette": {
+      "primary": "#a8941f",
+      "accent": "#4a6741",
+      "ink": "#1f1c0a"
+    },
+    "description_rich": "ACME, LLC is the **leanest possible rulebook with real wiring** — a single business table (`Customers`) and two calculated fields that re-derive themselves from raw inputs. Unlike its larger cousin ACME Corporation, there are no projects, no roles, no approval workflows: just a client ledger where every customer carries *two* identifiers at once. `Name` is a slug minted from the email address; `FullName` is the same person reformatted last-name-first, courtroom-style. Edit one raw field and both derived labels rewrite themselves in every substrate — Postgres view, Python class, Excel cell, OWL ontology — with zero application code.",
+    "use_cases": [
+      "**Rename a customer.** Change `jane-smith-email-com`'s `FirstName` from `Bobby` to `Robert` and watch `FullName` recompute to `Smith, Robert` on the next read — same row, same id, new label.",
+      "**Update an email address.** Edit `john.doe@email.com` to `j.doe@example.com`; the `Name` slug re-derives to `j.doe-example.com` automatically in every substrate.",
+      "**Add a new customer with just the three raw fields** (`EmailAddress`, `FirstName`, `LastName`) and let the rulebook fill in `Name` and `FullName` — no insert triggers, no application logic.",
+      "**Ask the same question of two substrates.** *\"Sort customers alphabetically by surname.\"* The Postgres view and the Python module both return Doe, Jones, Smith — without anyone writing a sort key.",
+      "**Flip the formula in the rulebook** from `LastName & \", \" & FirstName` to `FirstName & \" \" & LastName` and re-run `effortless build`; every substrate now prints western-style names instead of legal-style, with no migration."
+    ],
+    "signature_rows": [
+      { "entity": "Customers", "ids": ["jane-smith-email-com", "john-doe-email-com", "emily-jones-email-com"] }
+    ],
+    "journal_seed": "Three customers on file. Each one filed twice — once by email-slug, once by surname-first — and both labels stay in lockstep with the raw fields.",
+    "substrates": [
+      { "key": "postgres", "important": true,  "chip_label": "Postgres" },
+      { "key": "excel",    "important": true,  "chip_label": "Excel" },
+      { "key": "python",   "important": false, "chip_label": "Python" },
+      { "key": "owl",      "important": false, "chip_label": "OWL" },
+      { "key": "csv",      "important": false, "chip_label": "CSV" }
+    ],
     "_CMCC_Summary": "Airtable export with schema-first type mapping: Schemas, Data, Relationships (FK links), Lookups (INDEX/MATCH), Aggregations (SUMIFS/COUNTIFS/Rollups), and Calculated fields (formulas) in Excel dialect. Field types are determined from Airtable's schema metadata FIRST (no coercion); the build FAILS if metadata is unavailable rather than silently inferring from formula/data analysis.",
     "_conversion_metadata": {
       "source_base_id": "appWrXPvXbkgQGOxt",

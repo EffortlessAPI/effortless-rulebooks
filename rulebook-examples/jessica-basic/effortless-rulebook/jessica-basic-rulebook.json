@@ -4,6 +4,9 @@
   "Description": "Workflow ontology without cross-entity lookups \u2014 for stepping authors up the formula ladder.",
   "Workflows": {
     "Description": "Table: Workflows",
+    "important": true,
+    "summary_rich": "The **root entity** of the demo. Each workflow has a title, a `DisplayName`, and a collection of `WorkflowSteps`. This is the table beginners read first \u2014 it shows how a slug (`Name`) is derived from a display name, and how a rollup (`CountOfNonProposedSteps`) counts related rows without any application code.",
+    "important_fields": ["DisplayName", "Title", "CountOfNonProposedSteps", "HasMoreThan1Step"],
     "schema": [
       {
         "name": "WorkflowId",
@@ -17,7 +20,9 @@
         "type": "calculated",
         "nullable": true,
         "Description": "Short machine-friendly name for the workflow. Used for programmatic reference and URL slug generation.",
-        "formula": "=SUBSTITUTE(LOWER({{DisplayName}}), \" \", \"-\")"
+        "formula": "=SUBSTITUTE(LOWER({{DisplayName}}), \" \", \"-\")",
+        "important": true,
+        "explanation_rich": "**Your first calculated field.** `Name` is just `LOWER(DisplayName)` with spaces swapped for dashes \u2014 the kind of slug you'd usually write by hand in a controller. Here it lives in the rulebook. Worked example: the *Performance Review* workflow has `DisplayName = \"Performance Review\"`, so `Name` becomes `performance-review`. Rename it to *Quarterly Performance Review* and the slug becomes `quarterly-performance-review` everywhere \u2014 Postgres view, Python class, Excel cell \u2014 without touching a single line of code."
       },
       {
         "name": "DisplayName",
@@ -67,14 +72,18 @@
         "type": "aggregation",
         "nullable": true,
         "Description": "Calculated count of workflow steps in this workflow. Useful for workflow complexity analysis and reporting.",
-        "formula": "=COUNTIFS(WorkflowSteps!{{Workflow}}, Workflows!{{WorkflowId}})"
+        "formula": "=COUNTIFS(WorkflowSteps!{{Workflow}}, Workflows!{{WorkflowId}})",
+        "important": true,
+        "explanation_rich": "**Your first rollup.** This counts every `WorkflowSteps` row whose `Workflow` foreign key points back at this workflow's `WorkflowId`. No JOIN to write. Worked example: the *Performance Review* workflow has three steps (`system-notification-sent`, `step-2`, `recwwXHLqxKPhj6Mt`), so `CountOfNonProposedSteps` is `3`. Add or delete a step and the count updates on the next read."
       },
       {
         "name": "HasMoreThan1Step",
         "datatype": "boolean",
         "type": "calculated",
         "nullable": true,
-        "formula": "={{CountOfNonProposedSteps}} > 1"
+        "formula": "={{CountOfNonProposedSteps}} > 1",
+        "important": true,
+        "explanation_rich": "**A second-order calculation.** This field reads another calculated field — `CountOfNonProposedSteps` — and turns it into a boolean. It's the smallest possible example of a DAG: a rollup feeds into a rule. Worked example: *Performance Review* has 3 steps, so `HasMoreThan1Step` is `TRUE`. *Onboarding* has 1 step, so the same rule returns `FALSE`."
       }
     ],
     "data": [
@@ -262,6 +271,9 @@
   },
   "WorkflowSteps": {
     "Description": "Table: WorkflowSteps",
+    "important": true,
+    "summary_rich": "The **building blocks**. Each step belongs to one `Workflow` and is assigned to one `Role`. Some steps require a human to approve (`RequiresHumanApproval`); others run automatically. This is the table that makes the rollup on `Workflows` interesting — change which workflow a step belongs to and the parent's count updates.",
+    "important_fields": ["DisplayName", "Workflow", "AssignedRole", "RequiresHumanApproval"],
     "schema": [
       {
         "name": "WorkflowStepId",
@@ -1732,6 +1744,32 @@
     ]
   },
   "_meta": {
+    "tagline": "Workflows, steps, and a first taste of rollups.",
+    "motif": "corkboard",
+    "motif_palette": {
+      "primary": "#6e4b2a",
+      "accent": "#d4a574",
+      "ink": "#2a1e10"
+    },
+    "description_rich": "Jessica BASIC is the **first rung of the ladder**. The domain is workflows and their steps — fifteen workflows, a couple dozen steps, a handful of roles. There are no cross-entity lookups yet; just the smallest possible calculated field (a slug), the smallest possible rollup (count related rows), and one second-order rule that reads a rollup. It's the demo to open when you want to *learn* ERB without yet trying to *show off* with it.",
+    "use_cases": [
+      "**Read your first calculated field.** Open the *Performance Review* workflow and look at `Name`. It's just `DisplayName` lowercased with dashes — but it lives in the rulebook, not in code.",
+      "**Add a step to a workflow.** Insert a new row into `WorkflowSteps` with `Workflow = \"asset-management\"`; watch the parent workflow's `CountOfNonProposedSteps` go from 2 to 3 on the next read.",
+      "**Rename a workflow.** Change `DisplayName` from *Onboarding* to *Employee Onboarding* and watch `Name` (the slug) update everywhere — Postgres view, Python class, Excel cell — without one line of glue.",
+      "**Trace a second-order rule.** Find a workflow where `HasMoreThan1Step` is `TRUE`, then trace it back: `HasMoreThan1Step` reads `CountOfNonProposedSteps`, which reads `WorkflowSteps`. Two hops. That's the whole DAG.",
+      "**Compare to ACME.** Once these three rule shapes feel obvious, open ACME Corporation to see what the *next* rung looks like — lookups across entities, approval gates, role-based authorization."
+    ],
+    "signature_rows": [
+      { "entity": "Workflows", "ids": ["performance-review", "change-management", "asset-management"] },
+      { "entity": "WorkflowSteps", "ids": ["submit-request", "manager-review", "final-approval"] }
+    ],
+    "journal_seed": "Fifteen workflows pinned to the board; three of them have more than one step, the rest are single-step stubs waiting for you to grow them.",
+    "substrates": [
+      { "key": "postgres", "important": true, "chip_label": "Postgres" },
+      { "key": "python",   "important": true, "chip_label": "Python" },
+      { "key": "excel",    "important": false, "chip_label": "Excel" },
+      { "key": "owl",      "important": false, "chip_label": "OWL" }
+    ],
     "_CMCC_Summary": "Airtable export with schema-first type mapping: Schemas, Data, Relationships (FK links), Lookups (INDEX/MATCH), Aggregations (SUMIFS/COUNTIFS/Rollups), and Calculated fields (formulas) in Excel dialect. Field types are determined from Airtable's schema metadata FIRST (no coercion); the build FAILS if metadata is unavailable rather than silently inferring from formula/data analysis.",
     "_conversion_metadata": {
       "source_base_id": "applThn0rikpCR9C3",

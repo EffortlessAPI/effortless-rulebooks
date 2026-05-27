@@ -2,6 +2,7 @@ import { HashRouter, Routes, Route, Navigate } from "react-router-dom";
 import { usePortal } from "./hooks/usePortal.js";
 import { PortalContext } from "./lib/portalContext.jsx";
 import S from "./lib/screenHost.jsx";
+import CommandPalette from "./components/CommandPalette.jsx";
 
 import RolePickerScreen from "./screens/RolePickerScreen.jsx";
 import ViewerLayout    from "./layouts/ViewerLayout.jsx";
@@ -104,6 +105,7 @@ function Portal() {
 
   return (
     <PortalContext.Provider value={portal}>
+      <CommandPalette rulebook={rulebook} projects={portal.projects} activeDomain={portal.projects?.active} />
       <Routes>
         {/* Root: role picker */}
         <Route path="/" element={<RolePickerScreen {...portal} />} />

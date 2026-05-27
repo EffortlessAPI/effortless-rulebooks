@@ -4,6 +4,9 @@
   "Description": "Workflow / approval ontology with cross-entity lookups and multi-step derivation.",
   "Workflows": {
     "Description": "Table: Workflows",
+    "important": true,
+    "summary_rich": "The **projects pinned to the corkboard**. Each workflow is a labelled container for an ordered chain of `WorkflowSteps`; the chain length rolls up into `CountOfSteps` and trips `HasMoreThan1Step` once a second step lands. Most rows here are single-step today — *Asset Management* is the one with two, and is the live example of the aggregation firing.",
+    "important_fields": ["Title", "CountOfSteps", "HasMoreThan1Step", "Modified"],
     "schema": [
       {
         "name": "WorkflowId",
@@ -74,7 +77,9 @@
         "datatype": "boolean",
         "type": "calculated",
         "nullable": true,
-        "formula": "={{CountOfSteps}} > 1"
+        "formula": "={{CountOfSteps}} > 1",
+        "important": true,
+        "explanation_rich": "**A calculated field reading an aggregation.** `CountOfSteps` rolls up the step count via `COUNTIFS`; this field then derives a boolean from that count. Two layers of DAG, one definition each. Worked example: *Asset Management* currently has two `WorkflowSteps` (`assign-task-to-team`, `some-new-task`), so `CountOfSteps = 2` and this field is `TRUE`. Every other workflow has exactly one step, so it's `FALSE`. Insert a third step row for any workflow and that workflow's flag flips on the next read — the rulebook recomputes the chain end-to-end."
       }
     ],
     "data": [
@@ -262,6 +267,9 @@
   },
   "WorkflowSteps": {
     "Description": "Table: WorkflowSteps",
+    "important": true,
+    "summary_rich": "Where the **cross-entity wiring** is most visible. Each step names an `AssignedRole`, and the rulebook then *reaches through* that role to its owning department (`AssignedRoleDepartment`) and branches on the result (`ExecutionActorType`) to decide whether the step is run by a human, an AI agent, or an automated pipeline. Change a step's assigned role and both derived fields recompute on the next read.",
+    "important_fields": ["DisplayName", "AssignedRole", "AssignedRoleDepartment", "ExecutionActorType", "RequiresHumanApproval"],
     "schema": [
       {
         "name": "WorkflowStepId",
@@ -333,14 +341,18 @@
         "datatype": "string",
         "type": "calculated",
         "nullable": true,
-        "formula": "=IF({{AssignedRoleDepartment}} = \"HumanAgent\", \"HumanAgent\", IF({{AssignedRoleDepartment}} = \"AIAgent\", \"AIAgent\", IF({{AssignedRoleDepartment}} = \"AutomatedPipeline\", \"AutomatedPipeline\", BLANK())))"
+        "formula": "=IF({{AssignedRoleDepartment}} = \"HumanAgent\", \"HumanAgent\", IF({{AssignedRoleDepartment}} = \"AIAgent\", \"AIAgent\", IF({{AssignedRoleDepartment}} = \"AutomatedPipeline\", \"AutomatedPipeline\", BLANK())))",
+        "important": true,
+        "explanation_rich": "**The nested-IF on a cross-entity lookup.** This is the field jessica-basic doesn't have. It reads `AssignedRoleDepartment` (itself a lookup through `Roles`) and runs it through a three-branch `IF` chain to classify the step's executor. Worked example: *manager-review* is assigned to the *editor* role, whose owning department is `finance` — none of the three IF branches match, so the field falls through to `BLANK()`. Reassign that step to a role owned by a `HumanAgent`-typed department and the same formula resolves to `\"HumanAgent\"` on the next read, in every substrate, with no application code in the loop."
       },
       {
         "name": "AssignedRoleDepartment",
         "datatype": "string",
         "type": "lookup",
         "nullable": true,
-        "formula": "=INDEX(Roles!{{OwnedBy}}, MATCH(WorkflowSteps!{{AssignedRole}}, Roles!{{RoleId}}, 0))"
+        "formula": "=INDEX(Roles!{{OwnedBy}}, MATCH(WorkflowSteps!{{AssignedRole}}, Roles!{{RoleId}}, 0))",
+        "important": true,
+        "explanation_rich": "**Reach through one entity to read a field on the next.** The step doesn't know its department directly — it only knows its role. This lookup walks `WorkflowSteps.AssignedRole` → `Roles.OwnedBy` and surfaces the department on the step row. Worked example: *legal-compliance-check* is assigned to the *hr* role; the *hr* role's `OwnedBy` is `administration`, so this field reads `administration`. Reassign the step to *finance* and the same read returns `public-relations` — the department travels with the role assignment, without anybody writing a JOIN."
       },
       {
         "name": "ApprovalGateEscalationThresholdHours",
@@ -2111,6 +2123,33 @@
     ]
   },
   "_meta": {
+    "tagline": "Workflows, steps, roles — with IF logic, lookup chains, and a delegation ladder.",
+    "motif": "corkboard",
+    "motif_palette": {
+      "primary": "#6e4b2a",
+      "accent": "#d4a574",
+      "ink": "#2a1e10"
+    },
+    "description_rich": "Same workflow ontology as **jessica-basic**, pushed one rung up. Every workflow is still a chain of `WorkflowSteps`, each step still points at a `Role`, and the catalog of approvals still gates progress — but here the rulebook **reaches across entities** to compute new fields. `WorkflowSteps.AssignedRoleDepartment` hops Step → Role → Department in a single lookup; `WorkflowSteps.ExecutionActorType` then **branches on that result** with a nested `IF` to label each step as `HumanAgent`, `AIAgent`, or `AutomatedPipeline`. And the `Roles.DelegatesTo` chain encodes the escalation ladder declaratively — no procedural code, just a self-referential FK that every substrate walks the same way.",
+    "use_cases": [
+      "**Trace the delegation ladder.** Open a role (say *Manager*) and follow `DelegatesTo` backward through Contributor → Moderator → Viewer — the same chain that fires when an approval gate times out past its `EscalationThresholdHours`.",
+      "**Reassign a step to a role in a different department.** Edit `WorkflowSteps.AssignedRole` and watch `AssignedRoleDepartment` re-derive through the lookup, then `ExecutionActorType` re-branch through the nested IF — two derived fields, one edit.",
+      "**Ask which workflows span two departments.** Use the `AssignedRoleDepartment` lookup to group steps by owning department; *Contract Review* and *Asset Management* both touch more than one.",
+      "**Promote a step into a multi-step workflow.** Add a row to `WorkflowSteps` pointing at an existing `Workflow`; `CountOfSteps` rolls up and `HasMoreThan1Step` flips to TRUE the same instant.",
+      "**Compare to jessica-basic.** Open the basic rulebook side-by-side: same five table shapes, no cross-entity lookups, no IF, no delegation chain. The advanced demo is the **same skeleton with the muscle on**."
+    ],
+    "signature_rows": [
+      { "entity": "Workflows", "ids": ["asset-management", "invoice-approval", "contract-review"] },
+      { "entity": "WorkflowSteps", "ids": ["manager-review", "legal-compliance-check", "assign-task-to-team"] }
+    ],
+    "journal_seed": "Fifteen workflows pinned to the board, sixteen steps in flight. Asset Management is the only one with more than one step — watch the aggregation flip when you add the next.",
+    "substrates": [
+      { "key": "postgres", "important": true,  "chip_label": "Postgres" },
+      { "key": "python",   "important": true,  "chip_label": "Python" },
+      { "key": "excel",    "important": false, "chip_label": "Excel" },
+      { "key": "owl",      "important": false, "chip_label": "OWL" },
+      { "key": "golang",   "important": false, "chip_label": "Go" }
+    ],
     "_CMCC_Summary": "Airtable export with schema-first type mapping: Schemas, Data, Relationships (FK links), Lookups (INDEX/MATCH), Aggregations (SUMIFS/COUNTIFS/Rollups), and Calculated fields (formulas) in Excel dialect. Field types are determined from Airtable's schema metadata FIRST (no coercion); the build FAILS if metadata is unavailable rather than silently inferring from formula/data analysis.",
     "_conversion_metadata": {
       "source_base_id": "appwN9EAp8IeIxM23",
