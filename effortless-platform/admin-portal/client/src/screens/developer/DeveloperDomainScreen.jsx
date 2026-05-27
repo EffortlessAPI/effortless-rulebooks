@@ -172,7 +172,7 @@ export default function DeveloperDomainScreen({ screen, rulebook: liveRulebook, 
 
       {otherCount > 0 && (
         <div className="reception-more">
-          <button className="link-like" onClick={() => navigate(`/developer/${domain}/entities`)}>
+          <button className="link-like" onClick={() => navigate(`/developer/${domain}/explorer`)}>
             +{otherCount} more {otherCount === 1 ? "table" : "tables"} →
           </button>
         </div>
@@ -462,7 +462,7 @@ function NoImportanceFlags({ entities, domain, navigate }) {
       </p>
       <div className="domain-gallery" style={{ marginTop: 12 }}>
         {entities.map(({ name, entity }) => (
-          <div key={name} className="card clickable" onClick={() => navigate(`/developer/${domain}/data`)}>
+          <div key={name} className="card clickable" onClick={() => navigate(`/developer/${domain}/explorer`)}>
             <h3>{name}</h3>
             <div className="sub">{Array.isArray(entity.data) ? entity.data.length : 0} rows</div>
           </div>

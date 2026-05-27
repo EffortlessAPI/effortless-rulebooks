@@ -144,7 +144,7 @@ function buildIndex(rb, projects, activeDomain) {
       subtitle: value.summary_rich ? trimRich(value.summary_rich, 80) : `${value.schema.length} fields · ${(value.data || []).length} rows`,
       haystack: `${name} ${value.summary_rich || ""}`.toLowerCase(),
       priority: important ? 90 : 50,
-      action: (nav) => nav(`/developer/${activeDomain}/data`),
+      action: (nav) => nav(`/developer/${activeDomain}/explorer`),
     });
 
     for (const f of value.schema) {
@@ -182,7 +182,7 @@ function buildIndex(rb, projects, activeDomain) {
           subtitle: pk && pk !== title ? String(pk) : null,
           haystack,
           priority: 70,
-          action: (nav) => nav(`/developer/${activeDomain}/data`),
+          action: (nav) => nav(`/developer/${activeDomain}/explorer`),
         });
       }
     }

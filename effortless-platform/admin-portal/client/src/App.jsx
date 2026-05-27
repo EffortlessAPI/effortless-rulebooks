@@ -1,4 +1,4 @@
-import { HashRouter, Routes, Route, Navigate } from "react-router-dom";
+import { HashRouter, Routes, Route, Navigate, useParams } from "react-router-dom";
 import { usePortal } from "./hooks/usePortal.js";
 import { PortalContext } from "./lib/portalContext.jsx";
 import S from "./lib/screenHost.jsx";
@@ -66,6 +66,14 @@ function PortalSetupNeeded({ projectRulebook, reload }) {
   );
 }
 
+// Per DOMAIN_UX_VISION.md §2.4 — /entities and /data collapse into /explorer.
+// Keep them as redirects so existing deep links (Cmd-K matches, bookmarks,
+// reception-desk row clicks from before the §2.6 fix) still resolve.
+function RedirectToExplorer() {
+  const { domain } = useParams();
+  return <Navigate to={`/developer/${domain}/explorer`} replace />;
+}
+
 function DocsRoutes() {
   return (
     <Routes>
@@ -130,15 +138,15 @@ function Portal() {
           <Route index                           element={<S comp={DeveloperHomeScreen} />} />
           <Route path="domains"                  element={<S comp={DeveloperDomainsScreen} />} />
           <Route path=":domain"                  element={<S comp={DeveloperDomainScreen} />} />
-          <Route path=":domain/entities"         element={<S comp={EntitiesScreen} />} />
+          <Route path=":domain/entities"         element={<RedirectToExplorer />} />
           <Route path=":domain/formulas"         element={<S comp={FormulasScreen} />} />
           <Route path=":domain/relationships"    element={<S comp={RelationshipsScreen} />} />
-          <Route path=":domain/data"             element={<S comp={SampleDataScreen} />} />
+          <Route path=":domain/data"             element={<RedirectToExplorer />} />
           <Route path=":domain/substrates"       element={<S comp={SubstratesScreen} />} />
           <Route path=":domain/tests"            element={<S comp={TestsScreen} />} />
           <Route path=":domain/spokes"           element={<S comp={SpokesScreen} />} />
           <Route path=":domain/files"            element={<S comp={TechFilesScreen} />} />
-          <Route path=":domain/explorer"         element={<S comp={ExplorerScreen} />} />
+          <Route path=":domain/explorer/*"       element={<S comp={ExplorerScreen} />} />
           <Route path=":domain/rulebook-json"    element={<S comp={TechJsonScreen} />} />
           <Route path=":domain/reset"            element={<S comp={TechResetScreen} />} />
         </Route>

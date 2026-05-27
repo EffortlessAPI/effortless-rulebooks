@@ -2936,16 +2936,6 @@
         "MinRoleId": "role-developer"
       },
       {
-        "NavId": "nav-017",
-        "Label": "Entities",
-        "NavArea": "developer",
-        "ParentNavId": "nav-015",
-        "ScreenId": "screen-dev-entities",
-        "Icon": "Table",
-        "Order": 50,
-        "MinRoleId": "role-developer"
-      },
-      {
         "NavId": "nav-018",
         "Label": "Formulas",
         "NavArea": "developer",
@@ -2963,16 +2953,6 @@
         "ScreenId": "screen-dev-relations",
         "Icon": "GitBranch",
         "Order": 70,
-        "MinRoleId": "role-developer"
-      },
-      {
-        "NavId": "nav-020",
-        "Label": "Sample Data",
-        "NavArea": "developer",
-        "ParentNavId": "nav-015",
-        "ScreenId": "screen-dev-data",
-        "Icon": "Database",
-        "Order": 80,
         "MinRoleId": "role-developer"
       },
       {
@@ -3021,8 +3001,8 @@
         "NavArea": "developer",
         "ParentNavId": "nav-015",
         "ScreenId": "screen-dev-explorer",
-        "Icon": "Terminal",
-        "Order": 140,
+        "Icon": "Compass",
+        "Order": 50,
         "MinRoleId": "role-developer"
       },
       {
@@ -3389,14 +3369,6 @@
         "Description": "Landing for a specific domain in dev mode."
       },
       {
-        "ScreenId": "screen-dev-entities",
-        "Path": "/developer/:domain/entities",
-        "NavArea": "developer",
-        "Title": "Entities",
-        "MinRoleId": "role-developer",
-        "Description": "Entity editor."
-      },
-      {
         "ScreenId": "screen-dev-formulas",
         "Path": "/developer/:domain/formulas",
         "NavArea": "developer",
@@ -3411,14 +3383,6 @@
         "Title": "Relationships",
         "MinRoleId": "role-developer",
         "Description": "FK graph for this domain."
-      },
-      {
-        "ScreenId": "screen-dev-data",
-        "Path": "/developer/:domain/data",
-        "NavArea": "developer",
-        "Title": "Sample Data",
-        "MinRoleId": "role-developer",
-        "Description": "Per-table data grid (writable)."
       },
       {
         "ScreenId": "screen-dev-substrates",
@@ -3456,9 +3420,9 @@
         "ScreenId": "screen-dev-explorer",
         "Path": "/developer/:domain/explorer",
         "NavArea": "developer",
-        "Title": "Data + SQL Explorer",
+        "Title": "Explorer",
         "MinRoleId": "role-developer",
-        "Description": "Tables, row counts, free-form SQL against erb_<domain>."
+        "Description": "Walk the DAG: left-nav tree of entity instances and their relationships; right pane shows schema and data as combined metadata. Replaces the old Entities, Sample Data, and SQL Explorer pages."
       },
       {
         "ScreenId": "screen-dev-rulebook-json",
