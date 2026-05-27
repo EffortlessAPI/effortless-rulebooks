@@ -3,10 +3,15 @@
   "Name": "Expense Approval",
   "Description": "Employees submit line-item reports; totals, over-budget, and escalation flags cascade automatically.",
   "Employees": {
-    "Description": "Table: Employees \u2014 people who submit expense reports or review them.",
+    "Description": "Table: Employees — people who submit expense reports or review them.",
     "important": true,
-    "summary_rich": "The **cast** of the approval workflow. Each employee plays one of three roles \u2014 *employee* (submitter, has a `BudgetLimit`), *manager* (reviews escalated reports), or *finance* (final sign-off). The per-submitter `BudgetLimit` is the threshold every report's total is measured against; raise Dave from $200 to $400 and his pending Team Lunch stops tripping the over-budget gate immediately.",
-    "important_fields": ["Name", "Role", "BudgetLimit", "EmailAddress"],
+    "summary_rich": "The **cast** of the approval workflow. Each employee plays one of three roles — *employee* (submitter, has a `BudgetLimit`), *manager* (reviews escalated reports), or *finance* (final sign-off). The per-submitter `BudgetLimit` is the threshold every report's total is measured against; raise Dave from $200 to $400 and his pending Team Lunch stops tripping the over-budget gate immediately.",
+    "important_fields": [
+      "Name",
+      "Role",
+      "BudgetLimit",
+      "EmailAddress"
+    ],
     "schema": [
       {
         "name": "EmployeeId",
@@ -98,10 +103,17 @@
     ]
   },
   "ExpenseReports": {
-    "Description": "Table: ExpenseReports \u2014 one submission, containing many line items.",
+    "Description": "Table: ExpenseReports — one submission, containing many line items.",
     "important": true,
-    "summary_rich": "The **forms filed in triplicate**. Each report belongs to one submitter and rolls up many line items. Three calculated fields wire the approval gates in a single cascade: `TotalAmount` sums the line items, `IsOverBudget` compares that total to the submitter's `BudgetLimit`, and `RequiresEscalation` flags any over-budget report that's still `pending`. Add one $50 line item to Dave's pending Team Lunch and watch the cascade re-fire \u2014 total goes from $87 to $137, still under his $200 cap, no escalation. Add a $200 line item instead and the same report jumps into the manager's escalation queue on the next read.",
-    "important_fields": ["Name", "EmployeeName", "TotalAmount", "EmployeeBudgetLimit", "ApprovalStatus", "RequiresEscalation"],
+    "summary_rich": "The **forms filed in triplicate**. Each report belongs to one submitter and rolls up many line items. Three calculated fields wire the approval gates in a single cascade: `TotalAmount` sums the line items, `IsOverBudget` compares that total to the submitter's `BudgetLimit`, and `RequiresEscalation` flags any over-budget report that's still `pending`. Add one $50 line item to Dave's pending Team Lunch and watch the cascade re-fire — total goes from $87 to $137, still under his $200 cap, no escalation. Add a $200 line item instead and the same report jumps into the manager's escalation queue on the next read.",
+    "important_fields": [
+      "Name",
+      "EmployeeName",
+      "TotalAmount",
+      "EmployeeBudgetLimit",
+      "ApprovalStatus",
+      "RequiresEscalation"
+    ],
     "schema": [
       {
         "name": "ExpenseReportId",
@@ -178,10 +190,10 @@
         "datatype": "boolean",
         "type": "calculated",
         "nullable": true,
-        "Description": "Over-budget AND not yet approved \u2014 manager's escalation queue.",
+        "Description": "Over-budget AND not yet approved — manager's escalation queue.",
         "formula": "=IF(AND({{IsOverBudget}}=TRUE, {{IsApproved}}=FALSE), TRUE, FALSE)",
         "important": true,
-        "explanation_rich": "**The second gate, and the one a manager actually sees on their morning queue.** A report enters the escalation queue only when *both* are true: it's over its submitter's budget (`IsOverBudget=TRUE`) **and** it isn't yet approved (`IsApproved=FALSE`). The conjunction matters \u2014 an over-budget report that finance has already approved doesn't keep nagging; a pending report under-budget doesn't, either. Worked example: Alice's *NYC Client Visit* is $695 over a $500 limit and `pending`, so this is `TRUE` and it shows up in Bob's escalation queue. Set its `ApprovalStatus` to `approved` and the gate flips `FALSE` on the next read \u2014 same rulebook, same DAG, no application code touched."
+        "explanation_rich": "**The second gate, and the one a manager actually sees on their morning queue.** A report enters the escalation queue only when *both* are true: it's over its submitter's budget (`IsOverBudget=TRUE`) **and** it isn't yet approved (`IsApproved=FALSE`). The conjunction matters — an over-budget report that finance has already approved doesn't keep nagging; a pending report under-budget doesn't, either. Worked example: Alice's *NYC Client Visit* is $695 over a $500 limit and `pending`, so this is `TRUE` and it shows up in Bob's escalation queue. Set its `ApprovalStatus` to `approved` and the gate flips `FALSE` on the next read — same rulebook, same DAG, no application code touched."
       }
     ],
     "data": [
@@ -224,7 +236,7 @@
     ]
   },
   "ExpenseItems": {
-    "Description": "Table: ExpenseItems \u2014 individual line items on a report.",
+    "Description": "Table: ExpenseItems — individual line items on a report.",
     "schema": [
       {
         "name": "ExpenseItemId",
@@ -302,32 +314,104 @@
       }
     ]
   },
-  "_meta": {
-    "tagline": "Reports filed in triplicate — totals roll up, budgets gate, managers escalate.",
-    "motif": "legal-pad",
-    "motif_palette": {
-      "primary": "#a8941f",
-      "accent": "#4a6741",
-      "ink": "#1f1c0a"
-    },
-    "description_rich": "Expense Approval is the classic **threshold-and-escalation** demo: a stack of submitted reports, each with a stack of line items, each measured against the submitter's personal per-report ceiling. The interesting thing isn't the data, it's the **third-order cascade**: raw line-item amounts → `TotalAmount` (aggregation) → `IsOverBudget` (calculated, gated on the looked-up `EmployeeBudgetLimit`) → `RequiresEscalation` (calculated, gated on approval status). Edit one $42 line item and the cascade re-fires top to bottom in every substrate — Postgres view, Python module, OWL ontology — without a single line of application code mediating between them.",
-    "use_cases": [
-      "**Escalate an over-budget report.** Open *NYC Client Visit*, see Alice's $695 total tripping her $500 limit, watch `IsOverBudget` and `RequiresEscalation` both fire while `ApprovalStatus` is still `pending`.",
-      "**Approve out of the escalation queue.** Set *NYC Client Visit*'s `ApprovalStatus` to `approved`. `IsApproved` flips, the `AND` in `RequiresEscalation` collapses, and the report leaves the manager's queue on the next read.",
-      "**Raise a submitter's budget.** Change Dave's `BudgetLimit` from $200 to $500. Every report Dave has filed re-evaluates the over-budget gate — no migration, no app deploy, the rulebook recomputes the lookups.",
-      "**Add a line item to a pending report.** Append a $200 expense to *Team Lunch* ($87 → $287); the aggregation re-fires, Dave's $200 ceiling is now exceeded, and a previously-quiet report enters the escalation queue.",
-      "**Ask the same threshold question in two substrates.** *\"How many reports need escalation right now?\"* runs as a Postgres view, a Python comprehension, an OWL axiom — same number, every time."
+  "__meta__": {
+    "Description": "Project-level metadata that travels with the rulebook: tagline, motif, narrative descriptions, substrate list, signature rows, etc. One row per metadata key. Use ValueType to interpret StringValue vs JsonValue.",
+    "important": false,
+    "schema": [
+      {
+        "name": "MetaKey",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "The metadata key (e.g. 'tagline', 'motif_palette', 'substrates'). Unique within the table."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "formula": "={{MetaKey}}",
+        "Description": "Identifier for this metadata entry. Mirrors MetaKey so the row is addressable by Name like every other table."
+      },
+      {
+        "name": "ValueType",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "How to interpret the value columns: 'string' (use StringValue), 'object' (parse JsonValue as JSON object), 'array' (parse JsonValue as JSON array)."
+      },
+      {
+        "name": "StringValue",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Plain string value. Populated when ValueType == 'string'; null otherwise."
+      },
+      {
+        "name": "JsonValue",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "JSON-encoded value. Populated when ValueType == 'object' or 'array'; null when ValueType == 'string'."
+      }
     ],
-    "signature_rows": [
-      { "entity": "ExpenseReports", "ids": ["alice-nyc-client-visit", "alice-office-supplies", "dave-team-lunch"] },
-      { "entity": "Employees", "ids": ["alice-employee", "bob-manager", "carol-finance"] }
-    ],
-    "journal_seed": "Three reports on the desk: one approved, one quiet, one escalating. Alice has overspent on NYC by $195; Bob's queue has exactly one form in it.",
-    "substrates": [
-      { "key": "postgres", "important": true, "chip_label": "Postgres" },
-      { "key": "python",   "important": true, "chip_label": "Python" },
-      { "key": "excel",    "important": false, "chip_label": "Excel" },
-      { "key": "owl",      "important": false, "chip_label": "OWL" }
+    "data": [
+      {
+        "MetaKey": "tagline",
+        "Name": "tagline",
+        "ValueType": "string",
+        "StringValue": "Reports filed in triplicate — totals roll up, budgets gate, managers escalate.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "motif",
+        "Name": "motif",
+        "ValueType": "string",
+        "StringValue": "legal-pad",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "motif_palette",
+        "Name": "motif_palette",
+        "ValueType": "object",
+        "StringValue": null,
+        "JsonValue": "{\"primary\": \"#a8941f\", \"accent\": \"#4a6741\", \"ink\": \"#1f1c0a\"}"
+      },
+      {
+        "MetaKey": "description_rich",
+        "Name": "description_rich",
+        "ValueType": "string",
+        "StringValue": "Expense Approval is the classic **threshold-and-escalation** demo: a stack of submitted reports, each with a stack of line items, each measured against the submitter's personal per-report ceiling. The interesting thing isn't the data, it's the **third-order cascade**: raw line-item amounts → `TotalAmount` (aggregation) → `IsOverBudget` (calculated, gated on the looked-up `EmployeeBudgetLimit`) → `RequiresEscalation` (calculated, gated on approval status). Edit one $42 line item and the cascade re-fires top to bottom in every substrate — Postgres view, Python module, OWL ontology — without a single line of application code mediating between them.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "use_cases",
+        "Name": "use_cases",
+        "ValueType": "array",
+        "StringValue": null,
+        "JsonValue": "[\"**Escalate an over-budget report.** Open *NYC Client Visit*, see Alice's $695 total tripping her $500 limit, watch `IsOverBudget` and `RequiresEscalation` both fire while `ApprovalStatus` is still `pending`.\", \"**Approve out of the escalation queue.** Set *NYC Client Visit*'s `ApprovalStatus` to `approved`. `IsApproved` flips, the `AND` in `RequiresEscalation` collapses, and the report leaves the manager's queue on the next read.\", \"**Raise a submitter's budget.** Change Dave's `BudgetLimit` from $200 to $500. Every report Dave has filed re-evaluates the over-budget gate — no migration, no app deploy, the rulebook recomputes the lookups.\", \"**Add a line item to a pending report.** Append a $200 expense to *Team Lunch* ($87 → $287); the aggregation re-fires, Dave's $200 ceiling is now exceeded, and a previously-quiet report enters the escalation queue.\", \"**Ask the same threshold question in two substrates.** *\\\"How many reports need escalation right now?\\\"* runs as a Postgres view, a Python comprehension, an OWL axiom — same number, every time.\"]"
+      },
+      {
+        "MetaKey": "signature_rows",
+        "Name": "signature_rows",
+        "ValueType": "array",
+        "StringValue": null,
+        "JsonValue": "[{\"entity\": \"ExpenseReports\", \"ids\": [\"alice-nyc-client-visit\", \"alice-office-supplies\", \"dave-team-lunch\"]}, {\"entity\": \"Employees\", \"ids\": [\"alice-employee\", \"bob-manager\", \"carol-finance\"]}]"
+      },
+      {
+        "MetaKey": "journal_seed",
+        "Name": "journal_seed",
+        "ValueType": "string",
+        "StringValue": "Three reports on the desk: one approved, one quiet, one escalating. Alice has overspent on NYC by $195; Bob's queue has exactly one form in it.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "substrates",
+        "Name": "substrates",
+        "ValueType": "array",
+        "StringValue": null,
+        "JsonValue": "[{\"key\": \"postgres\", \"important\": true, \"chip_label\": \"Postgres\"}, {\"key\": \"python\", \"important\": true, \"chip_label\": \"Python\"}, {\"key\": \"excel\", \"important\": false, \"chip_label\": \"Excel\"}, {\"key\": \"owl\", \"important\": false, \"chip_label\": \"OWL\"}]"
+      }
     ]
   }
 }

@@ -1,12 +1,17 @@
 {
   "$schema": "https://example.com/cmcc-schema/v1",
   "Name": "Jessica Talisman: Basic",
-  "Description": "Workflow ontology without cross-entity lookups \u2014 for stepping authors up the formula ladder.",
+  "Description": "Workflow ontology without cross-entity lookups — for stepping authors up the formula ladder.",
   "Workflows": {
     "Description": "Table: Workflows",
     "important": true,
-    "summary_rich": "The **root entity** of the demo. Each workflow has a title, a `DisplayName`, and a collection of `WorkflowSteps`. This is the table beginners read first \u2014 it shows how a slug (`Name`) is derived from a display name, and how a rollup (`CountOfNonProposedSteps`) counts related rows without any application code.",
-    "important_fields": ["DisplayName", "Title", "CountOfNonProposedSteps", "HasMoreThan1Step"],
+    "summary_rich": "The **root entity** of the demo. Each workflow has a title, a `DisplayName`, and a collection of `WorkflowSteps`. This is the table beginners read first — it shows how a slug (`Name`) is derived from a display name, and how a rollup (`CountOfNonProposedSteps`) counts related rows without any application code.",
+    "important_fields": [
+      "DisplayName",
+      "Title",
+      "CountOfNonProposedSteps",
+      "HasMoreThan1Step"
+    ],
     "schema": [
       {
         "name": "WorkflowId",
@@ -22,7 +27,7 @@
         "Description": "Short machine-friendly name for the workflow. Used for programmatic reference and URL slug generation.",
         "formula": "=SUBSTITUTE(LOWER({{DisplayName}}), \" \", \"-\")",
         "important": true,
-        "explanation_rich": "**Your first calculated field.** `Name` is just `LOWER(DisplayName)` with spaces swapped for dashes \u2014 the kind of slug you'd usually write by hand in a controller. Here it lives in the rulebook. Worked example: the *Performance Review* workflow has `DisplayName = \"Performance Review\"`, so `Name` becomes `performance-review`. Rename it to *Quarterly Performance Review* and the slug becomes `quarterly-performance-review` everywhere \u2014 Postgres view, Python class, Excel cell \u2014 without touching a single line of code."
+        "explanation_rich": "**Your first calculated field.** `Name` is just `LOWER(DisplayName)` with spaces swapped for dashes — the kind of slug you'd usually write by hand in a controller. Here it lives in the rulebook. Worked example: the *Performance Review* workflow has `DisplayName = \"Performance Review\"`, so `Name` becomes `performance-review`. Rename it to *Quarterly Performance Review* and the slug becomes `quarterly-performance-review` everywhere — Postgres view, Python class, Excel cell — without touching a single line of code."
       },
       {
         "name": "DisplayName",
@@ -273,7 +278,12 @@
     "Description": "Table: WorkflowSteps",
     "important": true,
     "summary_rich": "The **building blocks**. Each step belongs to one `Workflow` and is assigned to one `Role`. Some steps require a human to approve (`RequiresHumanApproval`); others run automatically. This is the table that makes the rollup on `Workflows` interesting — change which workflow a step belongs to and the parent's count updates.",
-    "important_fields": ["DisplayName", "Workflow", "AssignedRole", "RequiresHumanApproval"],
+    "important_fields": [
+      "DisplayName",
+      "Workflow",
+      "AssignedRole",
+      "RequiresHumanApproval"
+    ],
     "schema": [
       {
         "name": "WorkflowStepId",
@@ -1743,48 +1753,118 @@
       }
     ]
   },
-  "_meta": {
-    "tagline": "Workflows, steps, and a first taste of rollups.",
-    "motif": "corkboard",
-    "motif_palette": {
-      "primary": "#6e4b2a",
-      "accent": "#d4a574",
-      "ink": "#2a1e10"
-    },
-    "description_rich": "Jessica BASIC is the **first rung of the ladder**. The domain is workflows and their steps — fifteen workflows, a couple dozen steps, a handful of roles. There are no cross-entity lookups yet; just the smallest possible calculated field (a slug), the smallest possible rollup (count related rows), and one second-order rule that reads a rollup. It's the demo to open when you want to *learn* ERB without yet trying to *show off* with it.",
-    "use_cases": [
-      "**Read your first calculated field.** Open the *Performance Review* workflow and look at `Name`. It's just `DisplayName` lowercased with dashes — but it lives in the rulebook, not in code.",
-      "**Add a step to a workflow.** Insert a new row into `WorkflowSteps` with `Workflow = \"asset-management\"`; watch the parent workflow's `CountOfNonProposedSteps` go from 2 to 3 on the next read.",
-      "**Rename a workflow.** Change `DisplayName` from *Onboarding* to *Employee Onboarding* and watch `Name` (the slug) update everywhere — Postgres view, Python class, Excel cell — without one line of glue.",
-      "**Trace a second-order rule.** Find a workflow where `HasMoreThan1Step` is `TRUE`, then trace it back: `HasMoreThan1Step` reads `CountOfNonProposedSteps`, which reads `WorkflowSteps`. Two hops. That's the whole DAG.",
-      "**Compare to ACME.** Once these three rule shapes feel obvious, open ACME Corporation to see what the *next* rung looks like — lookups across entities, approval gates, role-based authorization."
-    ],
-    "signature_rows": [
-      { "entity": "Workflows", "ids": ["performance-review", "change-management", "asset-management"] },
-      { "entity": "WorkflowSteps", "ids": ["submit-request", "manager-review", "final-approval"] }
-    ],
-    "journal_seed": "Fifteen workflows pinned to the board; three of them have more than one step, the rest are single-step stubs waiting for you to grow them.",
-    "substrates": [
-      { "key": "postgres", "important": true, "chip_label": "Postgres" },
-      { "key": "python",   "important": true, "chip_label": "Python" },
-      { "key": "excel",    "important": false, "chip_label": "Excel" },
-      { "key": "owl",      "important": false, "chip_label": "OWL" }
-    ],
-    "_CMCC_Summary": "Airtable export with schema-first type mapping: Schemas, Data, Relationships (FK links), Lookups (INDEX/MATCH), Aggregations (SUMIFS/COUNTIFS/Rollups), and Calculated fields (formulas) in Excel dialect. Field types are determined from Airtable's schema metadata FIRST (no coercion); the build FAILS if metadata is unavailable rather than silently inferring from formula/data analysis.",
-    "_conversion_metadata": {
-      "source_base_id": "applThn0rikpCR9C3",
-      "table_count": 9,
-      "tool_version": "2.0.0",
-      "field_type_mapping": "checkbox\u2192boolean, number\u2192number/integer, multipleRecordLinks\u2192relationship, multipleLookupValues\u2192lookup, rollup\u2192aggregation, count\u2192aggregation, formula\u2192calculated",
-      "export_mode": "schema_first_type_mapping",
-      "type_inference": {
-        "enabled": true,
-        "priority": "airtable_metadata (NO COERCION) \u2192 formula_analysis \u2192 reference_resolution \u2192 data_analysis (last-resort inference; build SHOULD FAIL rather than silently use this)",
-        "airtable_type_mapping": "checkbox\u2192boolean, singleLineText\u2192string, multilineText\u2192string, number\u2192number/integer, datetime\u2192datetime, singleSelect\u2192string, email\u2192string, url\u2192string, phoneNumber\u2192string",
-        "data_coercion_hierarchy": "Only invoked when Airtable schema is unavailable (which SHOULD make the build fail). Coercion order: datetime \u2192 number \u2192 integer \u2192 boolean \u2192 base64 \u2192 json \u2192 string",
-        "nullable_support": true,
-        "error_value_handling": "#NUM!, #ERROR!, #N/A, #REF!, #DIV/0!, #VALUE!, #NAME? are treated as NULL"
+  "__meta__": {
+    "Description": "Project-level metadata that travels with the rulebook: tagline, motif, narrative descriptions, substrate list, signature rows, etc. One row per metadata key. Use ValueType to interpret StringValue vs JsonValue.",
+    "important": false,
+    "schema": [
+      {
+        "name": "MetaKey",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "The metadata key (e.g. 'tagline', 'motif_palette', 'substrates'). Unique within the table."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "formula": "={{MetaKey}}",
+        "Description": "Identifier for this metadata entry. Mirrors MetaKey so the row is addressable by Name like every other table."
+      },
+      {
+        "name": "ValueType",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "How to interpret the value columns: 'string' (use StringValue), 'object' (parse JsonValue as JSON object), 'array' (parse JsonValue as JSON array)."
+      },
+      {
+        "name": "StringValue",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Plain string value. Populated when ValueType == 'string'; null otherwise."
+      },
+      {
+        "name": "JsonValue",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "JSON-encoded value. Populated when ValueType == 'object' or 'array'; null when ValueType == 'string'."
       }
-    }
+    ],
+    "data": [
+      {
+        "MetaKey": "tagline",
+        "Name": "tagline",
+        "ValueType": "string",
+        "StringValue": "Workflows, steps, and a first taste of rollups.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "motif",
+        "Name": "motif",
+        "ValueType": "string",
+        "StringValue": "corkboard",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "motif_palette",
+        "Name": "motif_palette",
+        "ValueType": "object",
+        "StringValue": null,
+        "JsonValue": "{\"primary\": \"#6e4b2a\", \"accent\": \"#d4a574\", \"ink\": \"#2a1e10\"}"
+      },
+      {
+        "MetaKey": "description_rich",
+        "Name": "description_rich",
+        "ValueType": "string",
+        "StringValue": "Jessica BASIC is the **first rung of the ladder**. The domain is workflows and their steps — fifteen workflows, a couple dozen steps, a handful of roles. There are no cross-entity lookups yet; just the smallest possible calculated field (a slug), the smallest possible rollup (count related rows), and one second-order rule that reads a rollup. It's the demo to open when you want to *learn* ERB without yet trying to *show off* with it.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "use_cases",
+        "Name": "use_cases",
+        "ValueType": "array",
+        "StringValue": null,
+        "JsonValue": "[\"**Read your first calculated field.** Open the *Performance Review* workflow and look at `Name`. It's just `DisplayName` lowercased with dashes — but it lives in the rulebook, not in code.\", \"**Add a step to a workflow.** Insert a new row into `WorkflowSteps` with `Workflow = \\\"asset-management\\\"`; watch the parent workflow's `CountOfNonProposedSteps` go from 2 to 3 on the next read.\", \"**Rename a workflow.** Change `DisplayName` from *Onboarding* to *Employee Onboarding* and watch `Name` (the slug) update everywhere — Postgres view, Python class, Excel cell — without one line of glue.\", \"**Trace a second-order rule.** Find a workflow where `HasMoreThan1Step` is `TRUE`, then trace it back: `HasMoreThan1Step` reads `CountOfNonProposedSteps`, which reads `WorkflowSteps`. Two hops. That's the whole DAG.\", \"**Compare to ACME.** Once these three rule shapes feel obvious, open ACME Corporation to see what the *next* rung looks like — lookups across entities, approval gates, role-based authorization.\"]"
+      },
+      {
+        "MetaKey": "signature_rows",
+        "Name": "signature_rows",
+        "ValueType": "array",
+        "StringValue": null,
+        "JsonValue": "[{\"entity\": \"Workflows\", \"ids\": [\"performance-review\", \"change-management\", \"asset-management\"]}, {\"entity\": \"WorkflowSteps\", \"ids\": [\"submit-request\", \"manager-review\", \"final-approval\"]}]"
+      },
+      {
+        "MetaKey": "journal_seed",
+        "Name": "journal_seed",
+        "ValueType": "string",
+        "StringValue": "Fifteen workflows pinned to the board; three of them have more than one step, the rest are single-step stubs waiting for you to grow them.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "substrates",
+        "Name": "substrates",
+        "ValueType": "array",
+        "StringValue": null,
+        "JsonValue": "[{\"key\": \"postgres\", \"important\": true, \"chip_label\": \"Postgres\"}, {\"key\": \"python\", \"important\": true, \"chip_label\": \"Python\"}, {\"key\": \"excel\", \"important\": false, \"chip_label\": \"Excel\"}, {\"key\": \"owl\", \"important\": false, \"chip_label\": \"OWL\"}]"
+      },
+      {
+        "MetaKey": "CMCC_Summary",
+        "Name": "CMCC_Summary",
+        "ValueType": "string",
+        "StringValue": "Airtable export with schema-first type mapping: Schemas, Data, Relationships (FK links), Lookups (INDEX/MATCH), Aggregations (SUMIFS/COUNTIFS/Rollups), and Calculated fields (formulas) in Excel dialect. Field types are determined from Airtable's schema metadata FIRST (no coercion); the build FAILS if metadata is unavailable rather than silently inferring from formula/data analysis.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "conversion_metadata",
+        "Name": "conversion_metadata",
+        "ValueType": "object",
+        "StringValue": null,
+        "JsonValue": "{\"source_base_id\": \"applThn0rikpCR9C3\", \"table_count\": 9, \"tool_version\": \"2.0.0\", \"field_type_mapping\": \"checkbox→boolean, number→number/integer, multipleRecordLinks→relationship, multipleLookupValues→lookup, rollup→aggregation, count→aggregation, formula→calculated\", \"export_mode\": \"schema_first_type_mapping\", \"type_inference\": {\"enabled\": true, \"priority\": \"airtable_metadata (NO COERCION) → formula_analysis → reference_resolution → data_analysis (last-resort inference; build SHOULD FAIL rather than silently use this)\", \"airtable_type_mapping\": \"checkbox→boolean, singleLineText→string, multilineText→string, number→number/integer, datetime→datetime, singleSelect→string, email→string, url→string, phoneNumber→string\", \"data_coercion_hierarchy\": \"Only invoked when Airtable schema is unavailable (which SHOULD make the build fail). Coercion order: datetime → number → integer → boolean → base64 → json → string\", \"nullable_support\": true, \"error_value_handling\": \"#NUM!, #ERROR!, #N/A, #REF!, #DIV/0!, #VALUE!, #NAME? are treated as NULL\"}}"
+      }
+    ]
   }
 }

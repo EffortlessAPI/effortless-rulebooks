@@ -3462,103 +3462,118 @@
       }
     ]
   },
-  "_meta": {
-    "tagline": "The top of the ladder — auth, approval, address normalization, and a full inventory ledger feeding every calculated field.",
-    "motif": "default",
-    "motif_palette": {
-      "primary": "#2d3748",
-      "accent": "#7c3aed",
-      "ink": "#1a202c"
-    },
-    "description_rich": "**NakedClaude v4 is the fullest rung of the demo ladder.** Where v1 was one table (Customers), v2 added lifecycle statuses and app users, and v3 layered on invoicing, **v4 closes the loop**: `AppUsers` become real approvers via `ClientApprovals`, `Addresses` normalize through a 50-state taxonomy that feeds order-level `TaxRate`, and `InventoryAdjustments` form a ledger that rolls up into every `Product.StockQuantity`. The whole graph — **ledger → aggregation → lookup chain → calculated boolean → VIP/approval gate** — fires identically in every substrate, with zero application code. This is what 'rulebook as the only source of truth' looks like at full scale.",
-    "use_cases": [
-      "**Approve a pending client.** Open *Brian Lee-PEND*, set `ApprovedBy` to an admin AppUser, and watch `IsApproved` flip TRUE while `ApprovedByContactName`, `ApprovedByEmailAddress`, `ApprovedByPhoneNumber`, and `ApprovedByRole` all materialize from the AppUsers lookup chain.",
-      "**Change a state's tax rate.** Edit `States.TaxRate` for Texas; every Texas address, every client billed there, and every invoice that client placed re-derives its `TaxRate` → `TaxAmount` → `InvoiceTotal` without touching application code.",
-      "**Restock a product.** Insert an `InventoryAdjustments` row for `gadget-200` with `Quantity: 200`; `Products.StockQuantity` rolls up, `COGS` rebases, and `HasBeenOrderedByVIPCustomers` re-evaluates on the next read.",
-      "**Promote a client to VIP.** Add a recent big invoice for *Caroline*; `LastInvoice`, `AverageOrderValue`, `HasRecentInvoices`, and finally `IsVIP` all light up through the DAG — `Invoices.ClientIsVIP` lookups follow on the next read in every substrate.",
-      "**Ask the same question of every substrate.** *\"Which clients are VIP and have an unpaid invoice?\"* — same answer in Postgres, Python, Excel, and OWL, computed from the rulebook, not from glue code."
-    ],
-    "signature_rows": [
+  "__meta__": {
+    "Description": "Project-level metadata that travels with the rulebook: tagline, motif, narrative descriptions, substrate list, signature rows, etc. One row per metadata key. Use ValueType to interpret StringValue vs JsonValue.",
+    "important": false,
+    "schema": [
       {
-        "entity": "Clients",
-        "ids": [
-          "brian-lee",
-          "alice-johnson",
-          "caroline"
-        ]
+        "name": "MetaKey",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "The metadata key (e.g. 'tagline', 'motif_palette', 'substrates'). Unique within the table."
       },
       {
-        "entity": "ClientApprovals",
-        "ids": [
-          "brian-lee-apvd",
-          "brian-lee-pend",
-          "alice-johnson-apvd"
-        ]
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "formula": "={{MetaKey}}",
+        "Description": "Identifier for this metadata entry. Mirrors MetaKey so the row is addressable by Name like every other table."
       },
       {
-        "entity": "Products",
-        "ids": [
-          "gadget-200",
-          "cable-usb-c",
-          "hub-7port"
-        ]
+        "name": "ValueType",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "How to interpret the value columns: 'string' (use StringValue), 'object' (parse JsonValue as JSON object), 'array' (parse JsonValue as JSON array)."
       },
       {
-        "entity": "Invoices",
-        "ids": [
-          "alice-johnson-1010",
-          "brian-lee-1037",
-          "caroline-1045"
-        ]
+        "name": "StringValue",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Plain string value. Populated when ValueType == 'string'; null otherwise."
+      },
+      {
+        "name": "JsonValue",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "JSON-encoded value. Populated when ValueType == 'object' or 'array'; null when ValueType == 'string'."
       }
     ],
-    "journal_seed": "Five clients, three approvals on file (two signed, one still pending), eight products tracked against a live inventory ledger, and six invoices threading through a 50-state tax table. The DAG holds — change any leaf and watch the right cells light up everywhere.",
-    "substrates": [
+    "data": [
       {
-        "key": "postgres",
-        "important": true,
-        "chip_label": "Postgres",
-        "witness_sample": "SELECT COUNT(*) FROM vw_clients WHERE \"IsVIP\" = TRUE;"
+        "MetaKey": "tagline",
+        "Name": "tagline",
+        "ValueType": "string",
+        "StringValue": "The top of the ladder — auth, approval, address normalization, and a full inventory ledger feeding every calculated field.",
+        "JsonValue": null
       },
       {
-        "key": "python",
-        "important": true,
-        "chip_label": "Python",
-        "witness_sample": "sum(1 for c in Clients.all() if c.IsVIP)"
+        "MetaKey": "motif",
+        "Name": "motif",
+        "ValueType": "string",
+        "StringValue": "default",
+        "JsonValue": null
       },
       {
-        "key": "excel",
-        "important": false,
-        "chip_label": "Excel",
-        "witness_sample": "=COUNTIFS(Clients[IsVIP], TRUE)"
+        "MetaKey": "motif_palette",
+        "Name": "motif_palette",
+        "ValueType": "object",
+        "StringValue": null,
+        "JsonValue": "{\"primary\": \"#2d3748\", \"accent\": \"#7c3aed\", \"ink\": \"#1a202c\"}"
       },
       {
-        "key": "owl",
-        "important": false,
-        "chip_label": "OWL",
-        "witness_sample": "Client and (IsVIP value true)"
+        "MetaKey": "description_rich",
+        "Name": "description_rich",
+        "ValueType": "string",
+        "StringValue": "**NakedClaude v4 is the fullest rung of the demo ladder.** Where v1 was one table (Customers), v2 added lifecycle statuses and app users, and v3 layered on invoicing, **v4 closes the loop**: `AppUsers` become real approvers via `ClientApprovals`, `Addresses` normalize through a 50-state taxonomy that feeds order-level `TaxRate`, and `InventoryAdjustments` form a ledger that rolls up into every `Product.StockQuantity`. The whole graph — **ledger → aggregation → lookup chain → calculated boolean → VIP/approval gate** — fires identically in every substrate, with zero application code. This is what 'rulebook as the only source of truth' looks like at full scale.",
+        "JsonValue": null
       },
       {
-        "key": "golang",
-        "important": false,
-        "chip_label": "Go"
+        "MetaKey": "use_cases",
+        "Name": "use_cases",
+        "ValueType": "array",
+        "StringValue": null,
+        "JsonValue": "[\"**Approve a pending client.** Open *Brian Lee-PEND*, set `ApprovedBy` to an admin AppUser, and watch `IsApproved` flip TRUE while `ApprovedByContactName`, `ApprovedByEmailAddress`, `ApprovedByPhoneNumber`, and `ApprovedByRole` all materialize from the AppUsers lookup chain.\", \"**Change a state's tax rate.** Edit `States.TaxRate` for Texas; every Texas address, every client billed there, and every invoice that client placed re-derives its `TaxRate` → `TaxAmount` → `InvoiceTotal` without touching application code.\", \"**Restock a product.** Insert an `InventoryAdjustments` row for `gadget-200` with `Quantity: 200`; `Products.StockQuantity` rolls up, `COGS` rebases, and `HasBeenOrderedByVIPCustomers` re-evaluates on the next read.\", \"**Promote a client to VIP.** Add a recent big invoice for *Caroline*; `LastInvoice`, `AverageOrderValue`, `HasRecentInvoices`, and finally `IsVIP` all light up through the DAG — `Invoices.ClientIsVIP` lookups follow on the next read in every substrate.\", \"**Ask the same question of every substrate.** *\\\"Which clients are VIP and have an unpaid invoice?\\\"* — same answer in Postgres, Python, Excel, and OWL, computed from the rulebook, not from glue code.\"]"
+      },
+      {
+        "MetaKey": "signature_rows",
+        "Name": "signature_rows",
+        "ValueType": "array",
+        "StringValue": null,
+        "JsonValue": "[{\"entity\": \"Clients\", \"ids\": [\"brian-lee\", \"alice-johnson\", \"caroline\"]}, {\"entity\": \"ClientApprovals\", \"ids\": [\"brian-lee-apvd\", \"brian-lee-pend\", \"alice-johnson-apvd\"]}, {\"entity\": \"Products\", \"ids\": [\"gadget-200\", \"cable-usb-c\", \"hub-7port\"]}, {\"entity\": \"Invoices\", \"ids\": [\"alice-johnson-1010\", \"brian-lee-1037\", \"caroline-1045\"]}]"
+      },
+      {
+        "MetaKey": "journal_seed",
+        "Name": "journal_seed",
+        "ValueType": "string",
+        "StringValue": "Five clients, three approvals on file (two signed, one still pending), eight products tracked against a live inventory ledger, and six invoices threading through a 50-state tax table. The DAG holds — change any leaf and watch the right cells light up everywhere.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "substrates",
+        "Name": "substrates",
+        "ValueType": "array",
+        "StringValue": null,
+        "JsonValue": "[{\"key\": \"postgres\", \"important\": true, \"chip_label\": \"Postgres\", \"witness_sample\": \"SELECT COUNT(*) FROM vw_clients WHERE \\\"IsVIP\\\" = TRUE;\"}, {\"key\": \"python\", \"important\": true, \"chip_label\": \"Python\", \"witness_sample\": \"sum(1 for c in Clients.all() if c.IsVIP)\"}, {\"key\": \"excel\", \"important\": false, \"chip_label\": \"Excel\", \"witness_sample\": \"=COUNTIFS(Clients[IsVIP], TRUE)\"}, {\"key\": \"owl\", \"important\": false, \"chip_label\": \"OWL\", \"witness_sample\": \"Client and (IsVIP value true)\"}, {\"key\": \"golang\", \"important\": false, \"chip_label\": \"Go\"}]"
+      },
+      {
+        "MetaKey": "CMCC_Summary",
+        "Name": "CMCC_Summary",
+        "ValueType": "string",
+        "StringValue": "Airtable export with schema-first type mapping: Schemas, Data, Relationships (FK links), Lookups (INDEX/MATCH), Aggregations (SUMIFS/COUNTIFS/Rollups), and Calculated fields (formulas) in Excel dialect. Field types are determined from Airtable's schema metadata FIRST (no coercion), with intelligent fallback to formula/data analysis only when schema is unavailable.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "conversion_metadata",
+        "Name": "conversion_metadata",
+        "ValueType": "object",
+        "StringValue": null,
+        "JsonValue": "{\"source_base_id\": \"appeUOAaOIdoqPSx3\", \"table_count\": 15, \"tool_version\": \"2.0.0\", \"field_type_mapping\": \"checkbox→boolean, number→number/integer, multipleRecordLinks→relationship, multipleLookupValues→lookup, rollup→aggregation, count→aggregation, formula→calculated\", \"export_mode\": \"schema_first_type_mapping\", \"type_inference\": {\"enabled\": true, \"priority\": \"airtable_metadata (NO COERCION) → formula_analysis → reference_resolution → data_analysis (fallback only)\", \"airtable_type_mapping\": \"checkbox→boolean, singleLineText→string, multilineText→string, number→number/integer, datetime→datetime, singleSelect→string, email→string, url→string, phoneNumber→string\", \"data_coercion_hierarchy\": \"Only used as fallback when Airtable schema unavailable: datetime → number → integer → boolean → base64 → json → string\", \"nullable_support\": true, \"error_value_handling\": \"#NUM!, #ERROR!, #N/A, #REF!, #DIV/0!, #VALUE!, #NAME? are treated as NULL\"}}"
       }
-    ],
-    "_CMCC_Summary": "Airtable export with schema-first type mapping: Schemas, Data, Relationships (FK links), Lookups (INDEX/MATCH), Aggregations (SUMIFS/COUNTIFS/Rollups), and Calculated fields (formulas) in Excel dialect. Field types are determined from Airtable's schema metadata FIRST (no coercion), with intelligent fallback to formula/data analysis only when schema is unavailable.",
-    "_conversion_metadata": {
-      "source_base_id": "appeUOAaOIdoqPSx3",
-      "table_count": 15,
-      "tool_version": "2.0.0",
-      "field_type_mapping": "checkbox→boolean, number→number/integer, multipleRecordLinks→relationship, multipleLookupValues→lookup, rollup→aggregation, count→aggregation, formula→calculated",
-      "export_mode": "schema_first_type_mapping",
-      "type_inference": {
-        "enabled": true,
-        "priority": "airtable_metadata (NO COERCION) → formula_analysis → reference_resolution → data_analysis (fallback only)",
-        "airtable_type_mapping": "checkbox→boolean, singleLineText→string, multilineText→string, number→number/integer, datetime→datetime, singleSelect→string, email→string, url→string, phoneNumber→string",
-        "data_coercion_hierarchy": "Only used as fallback when Airtable schema unavailable: datetime → number → integer → boolean → base64 → json → string",
-        "nullable_support": true,
-        "error_value_handling": "#NUM!, #ERROR!, #N/A, #REF!, #DIV/0!, #VALUE!, #NAME? are treated as NULL"
-      }
-    }
+    ]
   }
 }

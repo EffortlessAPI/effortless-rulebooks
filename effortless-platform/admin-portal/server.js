@@ -97,14 +97,86 @@ function logoUrlForSlug(slug) {
   return fs.existsSync(png) ? `/api/projects/${encodeURIComponent(slug)}/logo.png` : null;
 }
 
-// Resolve _meta.signature_rows ([{entity, ids[]}, …]) against the rulebook's
+// ---------------------------------------------------------------------------
+// __meta__ table helpers — the rulebook's project-level metadata (tagline,
+// motif, description_rich, use_cases, signature_rows, substrates, etc.) is
+// stored as a typed-row table:
+//   { MetaKey, Name, ValueType: 'string'|'object'|'array', StringValue, JsonValue }
+// These helpers project it back to / from a flat {key: value} dictionary so
+// the rest of the portal code can keep treating it as an object.
+// ---------------------------------------------------------------------------
+const META_TABLE_NAME = "__meta__";
+const META_SCHEMA = [
+  { name: "MetaKey",     datatype: "string", type: "raw",        nullable: false,
+    Description: "The metadata key (e.g. 'tagline', 'motif_palette', 'substrates'). Unique within the table." },
+  { name: "Name",        datatype: "string", type: "calculated", nullable: false, formula: "={{MetaKey}}",
+    Description: "Identifier for this metadata entry. Mirrors MetaKey." },
+  { name: "ValueType",   datatype: "string", type: "raw",        nullable: false,
+    Description: "How to interpret the value columns: 'string' (use StringValue), 'object' or 'array' (parse JsonValue)." },
+  { name: "StringValue", datatype: "string", type: "raw",        nullable: true,
+    Description: "Plain string value. Populated when ValueType == 'string'; null otherwise." },
+  { name: "JsonValue",   datatype: "string", type: "raw",        nullable: true,
+    Description: "JSON-encoded value. Populated when ValueType == 'object' or 'array'; null when 'string'." },
+];
+
+function metaAsObject(rb) {
+  const tbl = rb?.[META_TABLE_NAME];
+  if (!tbl || !Array.isArray(tbl.data)) return {};
+  const out = {};
+  for (const row of tbl.data) {
+    if (!row || typeof row !== "object") continue;
+    const key = row.MetaKey;
+    if (typeof key !== "string" || !key) continue;
+    if (row.ValueType === "string") {
+      out[key] = row.StringValue ?? "";
+    } else if (row.ValueType === "object" || row.ValueType === "array") {
+      if (typeof row.JsonValue === "string" && row.JsonValue.length) {
+        try { out[key] = JSON.parse(row.JsonValue); }
+        catch (e) { console.warn(`[metaAsObject] bad JsonValue for ${key}: ${e.message}`); }
+      }
+    }
+  }
+  return out;
+}
+
+function valueToMetaRow(key, value) {
+  const row = { MetaKey: key, Name: key, ValueType: "string", StringValue: null, JsonValue: null };
+  if (typeof value === "string") {
+    row.ValueType = "string"; row.StringValue = value; row.JsonValue = null;
+  } else if (Array.isArray(value)) {
+    row.ValueType = "array"; row.StringValue = null; row.JsonValue = JSON.stringify(value);
+  } else if (value && typeof value === "object") {
+    row.ValueType = "object"; row.StringValue = null; row.JsonValue = JSON.stringify(value);
+  } else {
+    row.ValueType = "string"; row.StringValue = value == null ? "" : String(value); row.JsonValue = null;
+  }
+  return row;
+}
+
+function setMetaValue(rb, key, value) {
+  let tbl = rb[META_TABLE_NAME];
+  if (!tbl || !Array.isArray(tbl.data)) {
+    tbl = {
+      Description: "Project-level metadata that travels with the rulebook. One row per metadata key.",
+      important: false,
+      schema: META_SCHEMA,
+      data: [],
+    };
+    rb[META_TABLE_NAME] = tbl;
+  }
+  const newRow = valueToMetaRow(key, value);
+  const i = tbl.data.findIndex((r) => r && r.MetaKey === key);
+  if (i >= 0) tbl.data[i] = newRow; else tbl.data.push(newRow);
+}
+
+// Resolve __meta__.signature_rows ([{entity, ids[]}, …]) against the rulebook's
 // own data arrays, projecting only each entity's `important_fields` so the
 // payload stays cheap. Returns [{entity, fields: [...], rows: [...]}, …].
 // Silent fallback would be a sin here — if the entity or ID isn't found, we
 // skip that row (the rulebook author asked for something that doesn't exist;
 // the picker just won't display it). We do not invent rows.
 function resolveSignatureRows(rb) {
-  const sig = rb?._meta?.signature_rows;
+  const sig = metaAsObject(rb).signature_rows;
   if (!Array.isArray(sig)) return [];
   const out = [];
   for (const block of sig) {
@@ -155,16 +227,16 @@ function listProjects() {
       const candidate = path.join(dirPath, "effortless-rulebook", `${d}-rulebook.json`);
       if (!fs.existsSync(candidate)) continue;
       const flav = flavors[d];
-      // Peek at the demo's own _meta for the experience fields (tagline,
-      // motif, signature_rows). Falls through to the RulebookFlavors row
-      // when _meta hasn't been authored yet — that's a default, not a
-      // fallback (see CLAUDE.md: the SSoT-derived default IS the right
-      // answer; we only override when the rulebook explicitly takes a
-      // position via _meta).
+      // Peek at the demo's own __meta__ table for the experience fields
+      // (tagline, motif, signature_rows). Falls through to the
+      // RulebookFlavors row when the metadata hasn't been authored yet —
+      // that's a default, not a fallback (see CLAUDE.md: the SSoT-derived
+      // default IS the right answer; we only override when the rulebook
+      // explicitly takes a position via its __meta__ table).
       let demoRb = null;
       try { demoRb = JSON.parse(fs.readFileSync(candidate, "utf8")); }
       catch (e) { console.warn(`[listProjects] could not parse ${candidate}: ${e.message}`); }
-      const meta = demoRb?._meta || {};
+      const meta = metaAsObject(demoRb);
       const displayName = flav?.DisplayName || d;
       const tagline = meta.tagline || flav?.Tagline || flav?.LearningFocus || "";
       out.push({
@@ -910,39 +982,45 @@ app.post("/api/rulebook/entities", requireEditor, async (req, res) => {
 // path. Used by the inline rich-text editor in the reception desk.
 //
 // Allowed paths (any other shape is rejected, never silently coerced):
-//   ["_meta", "tagline"]
-//   ["_meta", "description_rich"]
-//   ["_meta", "journal_seed"]
-//   ["_meta", "use_cases", <int>]
+//   ["__meta__", "tagline"]
+//   ["__meta__", "description_rich"]
+//   ["__meta__", "journal_seed"]
+//   ["__meta__", "use_cases", <int>]
 //   [<EntityName>, "summary_rich"]
 //   [<EntityName>, "schema", <int>, "explanation_rich"]
+//
+// Legacy clients may still send "_meta" as path[0]; we treat it as a synonym
+// for "__meta__" to keep the old REST contract working until the frontend is
+// updated. The storage is always the __meta__ table.
 //
 // All other writes go through the typed entity endpoints above. Body shape:
 //   { path: [...], value: "string" }
 //
 // NOTE: this writes through the existing transactional helper but does NOT
-// mirror into portal_rulebook_entities for _meta-only fields, since that
-// table only knows about entities. Per-entity rich fields DO update the
-// schema/data JSON via the existing entity PATCH path indirectly — but for
-// simplicity we treat the rulebook JSON as authoritative and skip the pg
-// mirror for non-entity targets. (The mirror is a cache; the JSON wins.)
+// mirror into portal_rulebook_entities for __meta__ rows — that table only
+// knows about business entities and we treat the rulebook JSON as the
+// authoritative source for project-level metadata.
+function isMetaPathRoot(seg) {
+  return seg === META_TABLE_NAME || seg === "_meta";
+}
+
 function validateRichPath(path, rb) {
   if (!Array.isArray(path) || path.length < 2) {
     throw new Error("path must be a non-empty array with at least 2 segments");
   }
-  if (path[0] === "_meta") {
+  if (isMetaPathRoot(path[0])) {
     const second = path[1];
     if (second === "tagline" || second === "description_rich" || second === "journal_seed") {
-      if (path.length !== 2) throw new Error(`_meta.${second} takes no further path segments`);
+      if (path.length !== 2) throw new Error(`${path[0]}.${second} takes no further path segments`);
       return;
     }
     if (second === "use_cases") {
       if (path.length !== 3 || !Number.isInteger(path[2]) || path[2] < 0) {
-        throw new Error("_meta.use_cases requires a non-negative integer index");
+        throw new Error(`${path[0]}.use_cases requires a non-negative integer index`);
       }
       return;
     }
-    throw new Error(`_meta.${second} is not an editable text field`);
+    throw new Error(`${path[0]}.${second} is not an editable text field`);
   }
   // Otherwise path[0] is an entity name.
   const ent = rb[path[0]];
@@ -964,14 +1042,28 @@ function validateRichPath(path, rb) {
 }
 
 function setByPath(obj, path, value) {
+  // __meta__ paths land in the typed table, not in a nested object tree.
+  if (isMetaPathRoot(path[0])) {
+    const metaKey = path[1];
+    if (path.length === 2) {
+      setMetaValue(obj, metaKey, value);
+      return;
+    }
+    if (metaKey === "use_cases" && path.length === 3 && Number.isInteger(path[2])) {
+      const current = metaAsObject(obj).use_cases;
+      const arr = Array.isArray(current) ? current.slice() : [];
+      while (arr.length <= path[2]) arr.push("");
+      arr[path[2]] = value;
+      setMetaValue(obj, "use_cases", arr);
+      return;
+    }
+    throw new Error(`unsupported meta path: ${path.join(".")}`);
+  }
   let cur = obj;
   for (let i = 0; i < path.length - 1; i++) {
     const seg = path[i];
     if (cur[seg] == null) {
-      // Create the nested container with the right shape so subsequent edits
-      // don't fail. _meta + use_cases get an object + array respectively.
-      if (path[i] === "_meta") cur[seg] = {};
-      else if (path[i + 1] === 0 || Number.isInteger(path[i + 1])) cur[seg] = [];
+      if (path[i + 1] === 0 || Number.isInteger(path[i + 1])) cur[seg] = [];
       else cur[seg] = {};
     }
     cur = cur[seg];

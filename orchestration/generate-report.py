@@ -175,9 +175,9 @@ def to_snake_case(name: str) -> str:
 
 
 def discover_entities(rulebook: dict) -> list:
-    """Discover all entities from the rulebook"""
+    """Discover all entities from the rulebook (includes __meta__, which is now a regular table)."""
     entities = []
-    skip_keys = {'$schema', 'model_name', 'Description', '_meta'}
+    skip_keys = {'$schema', 'model_name', 'Description', 'Name'}
     for key, value in rulebook.items():
         if key in skip_keys:
             continue

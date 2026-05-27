@@ -354,76 +354,119 @@
       "是否为斜边"
     ]
   },
-  "_meta": {
-    "tagline": "Two tables in 中文. Three rows. One headline rule. Figure out what it's computing.",
-    "motif": "default",
-    "motif_palette": {
-      "primary": "#3b5b6e",
-      "accent": "#e0a83a",
-      "ink": "#1c2a33"
-    },
-    "description_rich": "A rulebook deliberately written in **Chinese**. Two tables — `形状` and `边` — with three rows in one and nine in the other. The field names don't tell you what they mean unless you read 中文; the data is just numbers. Somewhere in the schema is a calculated boolean named `勾股定理成立` that fires on some rows and stays blank on others. **What is this rulebook actually computing?** The game is to read enough of the data — without reading the formulas — to guess the answer. Open the rules drawer for the spoilers.",
-    "use_cases": [
-      "**Browse `形状` and `边` blind.** Look at the values. Three rows in one table; nine rows in the other. Two integer columns called `长度` and `角度`. Guess what the rulebook is modeling before reading any formula.",
-      "**Find the column named `勾股定理成立`.** Some rows are `TRUE`, some `FALSE`, some blank. The blank pattern correlates with another field. What's the rule?",
-      "**Edit one row's `长度` and watch every dependent field recompute.** The DAG fires whether you understand 中文 or not — proving the rulebook is the spec and every substrate just witnesses it."
-    ],
-    "signature_rows": [
+  "Name": "Guessing Game",
+  "__meta__": {
+    "Description": "Project-level metadata that travels with the rulebook: tagline, motif, narrative descriptions, substrate list, signature rows, etc. One row per metadata key. Use ValueType to interpret StringValue vs JsonValue.",
+    "important": false,
+    "schema": [
       {
-        "entity": "形状",
-        "ids": [
-          "1",
-          "2",
-          "3"
-        ]
+        "name": "MetaKey",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "The metadata key (e.g. 'tagline', 'motif_palette', 'substrates'). Unique within the table."
       },
       {
-        "entity": "边",
-        "ids": [
-          "1",
-          "2",
-          "3"
-        ]
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "formula": "={{MetaKey}}",
+        "Description": "Identifier for this metadata entry. Mirrors MetaKey so the row is addressable by Name like every other table."
+      },
+      {
+        "name": "ValueType",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "How to interpret the value columns: 'string' (use StringValue), 'object' (parse JsonValue as JSON object), 'array' (parse JsonValue as JSON array)."
+      },
+      {
+        "name": "StringValue",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Plain string value. Populated when ValueType == 'string'; null otherwise."
+      },
+      {
+        "name": "JsonValue",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "JSON-encoded value. Populated when ValueType == 'object' or 'array'; null when ValueType == 'string'."
       }
     ],
-    "journal_seed": "Three rows in 形状, nine in 边. The fields don't name themselves in English. The rulebook is computing *something* — but what?",
-    "substrates": [
+    "data": [
       {
-        "key": "postgres",
-        "important": true,
-        "chip_label": "Postgres"
+        "MetaKey": "tagline",
+        "Name": "tagline",
+        "ValueType": "string",
+        "StringValue": "Two tables in 中文. Three rows. One headline rule. Figure out what it's computing.",
+        "JsonValue": null
       },
       {
-        "key": "python",
-        "important": true,
-        "chip_label": "Python"
+        "MetaKey": "motif",
+        "Name": "motif",
+        "ValueType": "string",
+        "StringValue": "default",
+        "JsonValue": null
       },
       {
-        "key": "excel",
-        "important": false,
-        "chip_label": "Excel"
+        "MetaKey": "motif_palette",
+        "Name": "motif_palette",
+        "ValueType": "object",
+        "StringValue": null,
+        "JsonValue": "{\"primary\": \"#3b5b6e\", \"accent\": \"#e0a83a\", \"ink\": \"#1c2a33\"}"
       },
       {
-        "key": "owl",
-        "important": false,
-        "chip_label": "OWL"
+        "MetaKey": "description_rich",
+        "Name": "description_rich",
+        "ValueType": "string",
+        "StringValue": "A rulebook deliberately written in **Chinese**. Two tables — `形状` and `边` — with three rows in one and nine in the other. The field names don't tell you what they mean unless you read 中文; the data is just numbers. Somewhere in the schema is a calculated boolean named `勾股定理成立` that fires on some rows and stays blank on others. **What is this rulebook actually computing?** The game is to read enough of the data — without reading the formulas — to guess the answer. Open the rules drawer for the spoilers.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "use_cases",
+        "Name": "use_cases",
+        "ValueType": "array",
+        "StringValue": null,
+        "JsonValue": "[\"**Browse `形状` and `边` blind.** Look at the values. Three rows in one table; nine rows in the other. Two integer columns called `长度` and `角度`. Guess what the rulebook is modeling before reading any formula.\", \"**Find the column named `勾股定理成立`.** Some rows are `TRUE`, some `FALSE`, some blank. The blank pattern correlates with another field. What's the rule?\", \"**Edit one row's `长度` and watch every dependent field recompute.** The DAG fires whether you understand 中文 or not — proving the rulebook is the spec and every substrate just witnesses it.\"]"
+      },
+      {
+        "MetaKey": "signature_rows",
+        "Name": "signature_rows",
+        "ValueType": "array",
+        "StringValue": null,
+        "JsonValue": "[{\"entity\": \"形状\", \"ids\": [\"1\", \"2\", \"3\"]}, {\"entity\": \"边\", \"ids\": [\"1\", \"2\", \"3\"]}]"
+      },
+      {
+        "MetaKey": "journal_seed",
+        "Name": "journal_seed",
+        "ValueType": "string",
+        "StringValue": "Three rows in 形状, nine in 边. The fields don't name themselves in English. The rulebook is computing *something* — but what?",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "substrates",
+        "Name": "substrates",
+        "ValueType": "array",
+        "StringValue": null,
+        "JsonValue": "[{\"key\": \"postgres\", \"important\": true, \"chip_label\": \"Postgres\"}, {\"key\": \"python\", \"important\": true, \"chip_label\": \"Python\"}, {\"key\": \"excel\", \"important\": false, \"chip_label\": \"Excel\"}, {\"key\": \"owl\", \"important\": false, \"chip_label\": \"OWL\"}]"
+      },
+      {
+        "MetaKey": "CMCC_Summary",
+        "Name": "CMCC_Summary",
+        "ValueType": "string",
+        "StringValue": "Airtable export with intelligent type inference: Schemas, Data, Relationships (FK links), Lookups (INDEX/MATCH), Aggregations (SUMIFS/COUNTIFS/Rollups), and Calculated fields (formulas) in Excel dialect. Field types are inferred from actual data values with priority: DateTime → Decimal → Integer → Boolean → Base64 → JSON → String.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "conversion_metadata",
+        "Name": "conversion_metadata",
+        "ValueType": "object",
+        "StringValue": null,
+        "JsonValue": "{\"source_base_id\": \"appC6Tnt2ZKm3t16e\", \"table_count\": 2, \"tool_version\": \"2.0.0\", \"field_type_mapping\": \"multipleRecordLinks→relationship, multipleLookupValues→lookup, rollup→aggregation, count→aggregation, formula→calculated\", \"export_mode\": \"intelligent_type_inference\", \"type_inference\": {\"enabled\": true, \"priority\": \"data_analysis → formula_analysis → reference_resolution → airtable_metadata\", \"type_hierarchy\": \"datetime → number → integer → boolean → base64 → json → string\", \"nullable_support\": true, \"error_value_handling\": \"#NUM!, #ERROR!, #N/A, #REF!, #DIV/0!, #VALUE!, #NAME? are treated as NULL\"}}"
       }
-    ],
-    "_CMCC_Summary": "Airtable export with intelligent type inference: Schemas, Data, Relationships (FK links), Lookups (INDEX/MATCH), Aggregations (SUMIFS/COUNTIFS/Rollups), and Calculated fields (formulas) in Excel dialect. Field types are inferred from actual data values with priority: DateTime → Decimal → Integer → Boolean → Base64 → JSON → String.",
-    "_conversion_metadata": {
-      "source_base_id": "appC6Tnt2ZKm3t16e",
-      "table_count": 2,
-      "tool_version": "2.0.0",
-      "field_type_mapping": "multipleRecordLinks→relationship, multipleLookupValues→lookup, rollup→aggregation, count→aggregation, formula→calculated",
-      "export_mode": "intelligent_type_inference",
-      "type_inference": {
-        "enabled": true,
-        "priority": "data_analysis → formula_analysis → reference_resolution → airtable_metadata",
-        "type_hierarchy": "datetime → number → integer → boolean → base64 → json → string",
-        "nullable_support": true,
-        "error_value_handling": "#NUM!, #ERROR!, #N/A, #REF!, #DIV/0!, #VALUE!, #NAME? are treated as NULL"
-      }
-    }
-  },
-  "Name": "Guessing Game"
+    ]
+  }
 }

@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import RichText, { RichInline } from "./RichText.jsx";
+import { metaAsObject } from "../rulebookMeta.js";
 
 // 90-second auto-narration of the reception desk.
 //
@@ -15,7 +16,7 @@ import RichText, { RichInline } from "./RichText.jsx";
 const STEP_DURATION_MS = 7000; // ~13 steps to fill 90s
 
 export default function TourMode({ rulebook, dom, onClose }) {
-  const meta = rulebook?._meta || {};
+  const meta = metaAsObject(rulebook);
   const steps = buildSteps(rulebook, meta, dom);
   const [idx, setIdx] = useState(0);
   const [playing, setPlaying] = useState(true);

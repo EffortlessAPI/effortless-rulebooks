@@ -1,7 +1,7 @@
 {
   "$schema": "https://example.com/cmcc-schema/v1",
   "Name": "Mechanical Kitchen Timer",
-  "Description": "Five-part mechanical timer modeled with every README noun as a table \u2014 a hardware-ontology stress test.",
+  "Description": "Five-part mechanical timer modeled with every README noun as a table — a hardware-ontology stress test.",
   "Users": {
     "Description": "People who wind timers.",
     "schema": [
@@ -115,7 +115,14 @@
     "Description": "Top-level timer assembly. Holds the raw mechanical parameters and the headline runtime DAG: stored torque, remaining minutes, wind state, and whether the bell has rung.",
     "important": true,
     "summary_rich": "The **whole machine on a napkin**. Each timer is a tiny finite state machine driven by one raw field — `WindAngleDegrees`. From that one number the DAG derives `WindFraction`, `RemainingMinutes`, the discrete `WindState` (Unwound → Partial → Full), and finally the terminal `HasRung` flag. Wind the knob and the row walks itself through every state with no application code.",
-    "important_fields": ["TimerId", "Label", "WindAngleDegrees", "WindState", "RemainingMinutes", "HasRung"],
+    "important_fields": [
+      "TimerId",
+      "Label",
+      "WindAngleDegrees",
+      "WindState",
+      "RemainingMinutes",
+      "HasRung"
+    ],
     "schema": [
       {
         "name": "TimerId",
@@ -157,7 +164,7 @@
         "datatype": "number",
         "type": "raw",
         "nullable": false,
-        "Description": "Pallet oscillation frequency in \u00a74."
+        "Description": "Pallet oscillation frequency in §4."
       },
       {
         "name": "WindFraction",
@@ -172,7 +179,7 @@
         "datatype": "number",
         "type": "calculated",
         "nullable": false,
-        "Description": "Torque currently stored in the mainspring (\u00a72).",
+        "Description": "Torque currently stored in the mainspring (§2).",
         "formula": "={{WindFraction}} * {{MaxSpringTorqueNm}}"
       },
       {
@@ -180,7 +187,7 @@
         "datatype": "number",
         "type": "calculated",
         "nullable": false,
-        "Description": "Minutes left until the cam trips \u00a75.",
+        "Description": "Minutes left until the cam trips §5.",
         "formula": "={{WindAngleDegrees}} / 6"
       },
       {
@@ -206,10 +213,10 @@
         "datatype": "boolean",
         "type": "calculated",
         "nullable": false,
-        "Description": "True once \u00a75 has fired.",
+        "Description": "True once §5 has fired.",
         "formula": "=NOT({{IsArmed}})",
         "important": true,
-        "explanation_rich": "**The terminal state of the FSM.** A timer is in the `Counting` phase exactly while the mainspring still has energy (`IsArmed = TRUE`). The instant `RemainingMinutes` hits zero, `IsArmed` flips false and `HasRung` flips true \u2014 the discrete `Counting \u2192 Rung` transition. Worked example: **Bessie** sat at 0\u00b0 this morning, so `RemainingMinutes = 0`, `IsArmed = FALSE`, `HasRung = TRUE` \u2014 and `RingEvents` already has her ding logged at 07:55. **Olive** at 120\u00b0 has 20 minutes left and `HasRung = FALSE`. Same rule, opposite branches, two rows."
+        "explanation_rich": "**The terminal state of the FSM.** A timer is in the `Counting` phase exactly while the mainspring still has energy (`IsArmed = TRUE`). The instant `RemainingMinutes` hits zero, `IsArmed` flips false and `HasRung` flips true — the discrete `Counting → Rung` transition. Worked example: **Bessie** sat at 0° this morning, so `RemainingMinutes = 0`, `IsArmed = FALSE`, `HasRung = TRUE` — and `RingEvents` already has her ding logged at 07:55. **Olive** at 120° has 20 minutes left and `HasRung = FALSE`. Same rule, opposite branches, two rows."
       },
       {
         "name": "TickCount",
@@ -393,7 +400,7 @@
     ]
   },
   "Bells": {
-    "Description": "The bell mounted on top of the case. Struck by the hammer striker when \u00a75 fires.",
+    "Description": "The bell mounted on top of the case. Struck by the hammer striker when §5 fires.",
     "schema": [
       {
         "name": "BellId",
@@ -469,7 +476,7 @@
     ]
   },
   "WindingKnobs": {
-    "Description": "\u00a71 \u2014 the dial on the front. Shaft is fixed to the mainspring arbor. Rim carries a printed scale 0..60 read against a fixed pointer on the case.",
+    "Description": "§1 — the dial on the front. Shaft is fixed to the mainspring arbor. Rim carries a printed scale 0..60 read against a fixed pointer on the case.",
     "schema": [
       {
         "name": "WindingKnobId",
@@ -586,7 +593,7 @@
     ]
   },
   "Arbors": {
-    "Description": "The shaft driven by the mainspring. Connects \u00a71 (knob shaft) to \u00a72 (mainspring), and carries the \u00a75 cam.",
+    "Description": "The shaft driven by the mainspring. Connects §1 (knob shaft) to §2 (mainspring), and carries the §5 cam.",
     "schema": [
       {
         "name": "ArborId",
@@ -635,7 +642,7 @@
     ]
   },
   "Mainsprings": {
-    "Description": "\u00a72 \u2014 flat coiled steel spring in a drum. Inner end anchors to the arbor; outer end anchors to the case.",
+    "Description": "§2 — flat coiled steel spring in a drum. Inner end anchors to the arbor; outer end anchors to the case.",
     "schema": [
       {
         "name": "MainspringId",
@@ -717,7 +724,7 @@
     ]
   },
   "GearTrains": {
-    "Description": "\u00a73 \u2014 the three-gear stack between mainspring arbor and escapement. Carries the output shaft that drives the dial pointer.",
+    "Description": "§3 — the three-gear stack between mainspring arbor and escapement. Carries the output shaft that drives the dial pointer.",
     "schema": [
       {
         "name": "GearTrainId",
@@ -828,7 +835,7 @@
         "datatype": "integer",
         "type": "raw",
         "nullable": false,
-        "Description": "1, 2, or 3 \u2014 arbor side to escapement side."
+        "Description": "1, 2, or 3 — arbor side to escapement side."
       },
       {
         "name": "ToothCount",
@@ -1041,7 +1048,7 @@
     ]
   },
   "Escapements": {
-    "Description": "\u00a74 \u2014 escapement assembly: toothed wheel plus two-pronged pallet plus hairspring. Defines the time base.",
+    "Description": "§4 — escapement assembly: toothed wheel plus two-pronged pallet plus hairspring. Defines the time base.",
     "schema": [
       {
         "name": "EscapementId",
@@ -1253,7 +1260,7 @@
     ]
   },
   "Cams": {
-    "Description": "Profile on the arbor of \u00a72. Its notch aligns with the hammer catch at the zero position; that alignment is what trips \u00a75.",
+    "Description": "Profile on the arbor of §2. Its notch aligns with the hammer catch at the zero position; that alignment is what trips §5.",
     "schema": [
       {
         "name": "CamId",
@@ -1302,10 +1309,15 @@
     ]
   },
   "BellHammers": {
-    "Description": "\u00a75 \u2014 spring-loaded arm with a steel striker, held back by the hammer catch. When the cam notch reaches the catch, the catch releases and the arm's own spring snaps the striker against the bell.",
+    "Description": "§5 — spring-loaded arm with a steel striker, held back by the hammer catch. When the cam notch reaches the catch, the catch releases and the arm's own spring snaps the striker against the bell.",
     "important": true,
-    "summary_rich": "The **state-transition trigger**. While the timer is armed, the catch holds the hammer back (`Held`). The instant `Timer.HasRung` flips to true, this row's `ReleaseState` flips to `Released` \u2014 and the same flip cascades through `HammerCatches.IsEngaged` and lights up the bell's ding. One boolean change in `Timers`, four downstream cells re-derived.",
-    "important_fields": ["BellHammerId", "InTimer", "TimerHasRung", "ReleaseState"],
+    "summary_rich": "The **state-transition trigger**. While the timer is armed, the catch holds the hammer back (`Held`). The instant `Timer.HasRung` flips to true, this row's `ReleaseState` flips to `Released` — and the same flip cascades through `HammerCatches.IsEngaged` and lights up the bell's ding. One boolean change in `Timers`, four downstream cells re-derived.",
+    "important_fields": [
+      "BellHammerId",
+      "InTimer",
+      "TimerHasRung",
+      "ReleaseState"
+    ],
     "schema": [
       {
         "name": "BellHammerId",
@@ -1536,7 +1548,7 @@
     ]
   },
   "WindActions": {
-    "Description": "Event: a user rotates the winding knob to a target angle at a point in time. The README's \u00a71 input event.",
+    "Description": "Event: a user rotates the winding knob to a target angle at a point in time. The README's §1 input event.",
     "schema": [
       {
         "name": "WindActionId",
@@ -1631,7 +1643,7 @@
     ]
   },
   "TickEvents": {
-    "Description": "Event: the escapement releases one tooth \u2014 one 'tick' from the README.",
+    "Description": "Event: the escapement releases one tooth — one 'tick' from the README.",
     "schema": [
       {
         "name": "TickEventId",
@@ -1830,7 +1842,7 @@
     ]
   },
   "RingEvents": {
-    "Description": "Event: the bell hammer strikes the bell \u2014 the README's 'ding'. Recorded once per fired \u00a75.",
+    "Description": "Event: the bell hammer strikes the bell — the README's 'ding'. Recorded once per fired §5.",
     "schema": [
       {
         "name": "RingEventId",
@@ -1910,7 +1922,7 @@
         "datatype": "datetime",
         "type": "raw",
         "nullable": false,
-        "Description": "When the dish was started \u2014 i.e. when the timer was wound."
+        "Description": "When the dish was started — i.e. when the timer was wound."
       },
       {
         "name": "TimerHasRung",
@@ -2642,39 +2654,118 @@
       }
     ]
   },
-  "_meta": {
-    "tagline": "A mechanical kitchen timer as a finite state machine \u2014 Unwound, Partial, Full, Counting, Rung. The whole machine on a napkin.",
-    "motif": "default",
-    "motif_palette": {
-      "primary": "#7a4a1f",
-      "accent": "#d99744",
-      "ink": "#2a1a0a"
-    },
-    "description_rich": "A mechanical kitchen timer modeled as a small finite state machine. One raw field \u2014 `WindAngleDegrees` \u2014 drives the whole rulebook: `WindFraction`, `RemainingMinutes`, the discrete `WindState` (Unwound \u2192 Partial \u2192 Full), `IsArmed`, and finally the terminal `HasRung`. When `HasRung` flips, the cascade lights up `BellHammer.ReleaseState` (Held \u2192 Released) and `HammerCatch.IsEngaged`, and a `RingEvent` lands. Three timers (Bessie, Olive, Rufus, plus a tea-timer Twigs) sit in different states so every IF branch fires on the first read. No application code \u2014 just rulebook cells deriving each other.",
-    "use_cases": [
-      "**Watch the FSM advance.** Edit `Bessie.WindAngleDegrees` from 0 to 240 and watch `WindState` flip Unwound \u2192 Partial, `IsArmed` flip true, `HasRung` flip false, and `BellHammer.ReleaseState` flip Released \u2192 Held \u2014 all in one save.",
-      "**Trip the bell from the data.** Drop `Olive.WindAngleDegrees` to 0 and the same row's `HasRung` lands TRUE, the bell hammer releases, and the cook on Olive (*spaghetti al pomodoro*) flips from Cooking \u2192 Done \u2014 without touching any code.",
-      "**Walk the three branches in one read.** `WindState` has three branches (Unwound / Partial / Full); the sample data hits all three at once (Bessie / Olive / Rufus) so a single SELECT covers the whole IF tree.",
-      "**Ask the same FSM question in two substrates.** Query `SELECT COUNT(*) FROM vw_timers WHERE wind_state = 'Partial'` in Postgres and the equivalent Python expression \u2014 same number, same rulebook source.",
-      "**Pick a recipe that overflows the timer.** Assign a cook a long recipe (yogurt, 360 min) on a short timer (Bessie, 60 min) and `SuitabilityVerdict` lands `insufficient` instantly via the lookup chain."
+  "__meta__": {
+    "Description": "Project-level metadata that travels with the rulebook: tagline, motif, narrative descriptions, substrate list, signature rows, etc. One row per metadata key. Use ValueType to interpret StringValue vs JsonValue.",
+    "important": false,
+    "schema": [
+      {
+        "name": "MetaKey",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "The metadata key (e.g. 'tagline', 'motif_palette', 'substrates'). Unique within the table."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "formula": "={{MetaKey}}",
+        "Description": "Identifier for this metadata entry. Mirrors MetaKey so the row is addressable by Name like every other table."
+      },
+      {
+        "name": "ValueType",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "How to interpret the value columns: 'string' (use StringValue), 'object' (parse JsonValue as JSON object), 'array' (parse JsonValue as JSON array)."
+      },
+      {
+        "name": "StringValue",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Plain string value. Populated when ValueType == 'string'; null otherwise."
+      },
+      {
+        "name": "JsonValue",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "JSON-encoded value. Populated when ValueType == 'object' or 'array'; null when ValueType == 'string'."
+      }
     ],
-    "signature_rows": [
-      { "entity": "Timers", "ids": ["Bessie", "Olive", "Rufus"] },
-      { "entity": "BellHammers", "ids": ["Bessie's bell hammer", "Olive's bell hammer", "Rufus's bell hammer"] }
-    ],
-    "journal_seed": "Bessie has already rung this morning at 07:55. Olive is mid-pasta with twenty minutes left. Rufus is freshly-wound for a roast \u2014 sixty minutes on the clock. Three rows, three FSM states, one rulebook.",
-    "substrates": [
-      { "key": "postgres", "important": true, "chip_label": "Postgres" },
-      { "key": "python",   "important": true, "chip_label": "Python" },
-      { "key": "excel",    "important": false, "chip_label": "Excel" },
-      { "key": "owl",      "important": false, "chip_label": "OWL" }
-    ],
-    "_CMCC_Summary": "Hand-authored ERB rulebook for the kitchen-timer README. 18 tables span every noun. Headline DAG: WindAngleDegrees -> WindFraction -> StoredTorqueNm; WindAngleDegrees -> RemainingMinutes -> WindState -> IsArmed -> HasRung; EscapementBaseHz -> GearTrain.OutputShaftRPM -> OutputShaft.CurrentRPM; Timer.HasRung -> BellHammer.ReleaseState -> HammerCatch.IsEngaged; RingEvents -> Bells.TimesRung -> Bells.HasEverRung. Sample data is a single morning's narrative: Chef winds Egg Timer at 07:45, it rings at 07:55; Baker winds Pasta Timer at 09:30 (still ticking); Chef winds Roast Timer at 10:00 (just started). The three timers exercise every IF branch \u2014 Unwound/Partial/Full, Armed/Rung, HasEverRung true/false.",
-    "_conversion_metadata": {
-      "source": "README.md (hand-authored, no Airtable base)",
-      "table_count": 18,
-      "tool_version": "hand-authored",
-      "export_mode": "schema_first_type_mapping"
-    }
+    "data": [
+      {
+        "MetaKey": "tagline",
+        "Name": "tagline",
+        "ValueType": "string",
+        "StringValue": "A mechanical kitchen timer as a finite state machine — Unwound, Partial, Full, Counting, Rung. The whole machine on a napkin.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "motif",
+        "Name": "motif",
+        "ValueType": "string",
+        "StringValue": "default",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "motif_palette",
+        "Name": "motif_palette",
+        "ValueType": "object",
+        "StringValue": null,
+        "JsonValue": "{\"primary\": \"#7a4a1f\", \"accent\": \"#d99744\", \"ink\": \"#2a1a0a\"}"
+      },
+      {
+        "MetaKey": "description_rich",
+        "Name": "description_rich",
+        "ValueType": "string",
+        "StringValue": "A mechanical kitchen timer modeled as a small finite state machine. One raw field — `WindAngleDegrees` — drives the whole rulebook: `WindFraction`, `RemainingMinutes`, the discrete `WindState` (Unwound → Partial → Full), `IsArmed`, and finally the terminal `HasRung`. When `HasRung` flips, the cascade lights up `BellHammer.ReleaseState` (Held → Released) and `HammerCatch.IsEngaged`, and a `RingEvent` lands. Three timers (Bessie, Olive, Rufus, plus a tea-timer Twigs) sit in different states so every IF branch fires on the first read. No application code — just rulebook cells deriving each other.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "use_cases",
+        "Name": "use_cases",
+        "ValueType": "array",
+        "StringValue": null,
+        "JsonValue": "[\"**Watch the FSM advance.** Edit `Bessie.WindAngleDegrees` from 0 to 240 and watch `WindState` flip Unwound → Partial, `IsArmed` flip true, `HasRung` flip false, and `BellHammer.ReleaseState` flip Released → Held — all in one save.\", \"**Trip the bell from the data.** Drop `Olive.WindAngleDegrees` to 0 and the same row's `HasRung` lands TRUE, the bell hammer releases, and the cook on Olive (*spaghetti al pomodoro*) flips from Cooking → Done — without touching any code.\", \"**Walk the three branches in one read.** `WindState` has three branches (Unwound / Partial / Full); the sample data hits all three at once (Bessie / Olive / Rufus) so a single SELECT covers the whole IF tree.\", \"**Ask the same FSM question in two substrates.** Query `SELECT COUNT(*) FROM vw_timers WHERE wind_state = 'Partial'` in Postgres and the equivalent Python expression — same number, same rulebook source.\", \"**Pick a recipe that overflows the timer.** Assign a cook a long recipe (yogurt, 360 min) on a short timer (Bessie, 60 min) and `SuitabilityVerdict` lands `insufficient` instantly via the lookup chain.\"]"
+      },
+      {
+        "MetaKey": "signature_rows",
+        "Name": "signature_rows",
+        "ValueType": "array",
+        "StringValue": null,
+        "JsonValue": "[{\"entity\": \"Timers\", \"ids\": [\"Bessie\", \"Olive\", \"Rufus\"]}, {\"entity\": \"BellHammers\", \"ids\": [\"Bessie's bell hammer\", \"Olive's bell hammer\", \"Rufus's bell hammer\"]}]"
+      },
+      {
+        "MetaKey": "journal_seed",
+        "Name": "journal_seed",
+        "ValueType": "string",
+        "StringValue": "Bessie has already rung this morning at 07:55. Olive is mid-pasta with twenty minutes left. Rufus is freshly-wound for a roast — sixty minutes on the clock. Three rows, three FSM states, one rulebook.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "substrates",
+        "Name": "substrates",
+        "ValueType": "array",
+        "StringValue": null,
+        "JsonValue": "[{\"key\": \"postgres\", \"important\": true, \"chip_label\": \"Postgres\"}, {\"key\": \"python\", \"important\": true, \"chip_label\": \"Python\"}, {\"key\": \"excel\", \"important\": false, \"chip_label\": \"Excel\"}, {\"key\": \"owl\", \"important\": false, \"chip_label\": \"OWL\"}]"
+      },
+      {
+        "MetaKey": "CMCC_Summary",
+        "Name": "CMCC_Summary",
+        "ValueType": "string",
+        "StringValue": "Hand-authored ERB rulebook for the kitchen-timer README. 18 tables span every noun. Headline DAG: WindAngleDegrees -> WindFraction -> StoredTorqueNm; WindAngleDegrees -> RemainingMinutes -> WindState -> IsArmed -> HasRung; EscapementBaseHz -> GearTrain.OutputShaftRPM -> OutputShaft.CurrentRPM; Timer.HasRung -> BellHammer.ReleaseState -> HammerCatch.IsEngaged; RingEvents -> Bells.TimesRung -> Bells.HasEverRung. Sample data is a single morning's narrative: Chef winds Egg Timer at 07:45, it rings at 07:55; Baker winds Pasta Timer at 09:30 (still ticking); Chef winds Roast Timer at 10:00 (just started). The three timers exercise every IF branch — Unwound/Partial/Full, Armed/Rung, HasEverRung true/false.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "conversion_metadata",
+        "Name": "conversion_metadata",
+        "ValueType": "object",
+        "StringValue": null,
+        "JsonValue": "{\"source\": \"README.md (hand-authored, no Airtable base)\", \"table_count\": 18, \"tool_version\": \"hand-authored\", \"export_mode\": \"schema_first_type_mapping\"}"
+      }
+    ]
   }
 }

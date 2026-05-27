@@ -38,7 +38,7 @@ def get_table_names(rulebook: Dict) -> List[str]:
 
     This matches the xlsx generator's approach to discovering tables.
     """
-    metadata_keys = {'$schema', 'model_name', 'Description', '_meta'}
+    metadata_keys = {'$schema', 'model_name', 'Description', 'Name'}
     return [key for key in rulebook.keys() if key not in metadata_keys]
 
 

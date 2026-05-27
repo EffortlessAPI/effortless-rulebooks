@@ -6,13 +6,17 @@ import EditableRich from "../../components/EditableRich.jsx";
 import TimeScrubber, { PastStateBanner } from "../../components/TimeScrubber.jsx";
 import TourMode from "../../components/TourMode.jsx";
 import { api } from "../../lib/api.js";
+import { metaAsObject } from "../../rulebookMeta.js";
 
 // The reception desk for one domain.
 //
 // Reads only from props that already flow through usePortal():
-//   - `projects` for tile-level _meta (tagline, motif, signature rows)
+//   - `projects` for tile-level metadata (tagline, motif, signature rows)
 //   - `rulebook` for the live entity data, calculated-field schema, and
 //     per-entity / per-rule importance flags
+// The rulebook's project-level metadata lives in the `__meta__` table; we
+// project it to a flat dictionary via `metaAsObject` so existing call sites
+// can keep reading `meta.tagline`, `meta.use_cases`, etc.
 // Nothing fetched here — the heavy reads already happened in usePortal().
 
 export default function DeveloperDomainScreen({ screen, rulebook: liveRulebook, projects, me, reload, reloadDomainState }) {
@@ -27,7 +31,7 @@ export default function DeveloperDomainScreen({ screen, rulebook: liveRulebook, 
   const inPast = !!rewindCommit;
   const rulebook = rewindRulebook || liveRulebook;
   const dom = (projects?.projects || []).find((p) => p.id === domain) || {};
-  const meta = rulebook?._meta || {};
+  const meta = metaAsObject(rulebook);
   const canEdit = !!me?.role?.CanEditRulebook && !inPast;
   const onSaved = () => { if (reload) reload(); };
 
@@ -112,10 +116,10 @@ export default function DeveloperDomainScreen({ screen, rulebook: liveRulebook, 
           <div className="reception-hero-left">
             <EditableRich
               text={meta.description_rich}
-              path={["_meta", "description_rich"]}
+              path={["__meta__", "description_rich"]}
               canEdit={canEdit}
               onSaved={onSaved}
-              placeholder={`— no description_rich authored in _meta yet —`}
+              placeholder={`— no description_rich authored in __meta__ yet —`}
               className="reception-description"
             />
             <TelemetryStrip entities={entities} />
@@ -124,7 +128,7 @@ export default function DeveloperDomainScreen({ screen, rulebook: liveRulebook, 
                 <span className="reception-journal-marker">📖</span>
                 <EditableRich
                   text={meta.journal_seed}
-                  path={["_meta", "journal_seed"]}
+                  path={["__meta__", "journal_seed"]}
                   canEdit={canEdit}
                   onSaved={onSaved}
                   inline
@@ -142,7 +146,7 @@ export default function DeveloperDomainScreen({ screen, rulebook: liveRulebook, 
                   <li key={i}>
                     <EditableRich
                       text={uc}
-                      path={["_meta", "use_cases", i]}
+                      path={["__meta__", "use_cases", i]}
                       canEdit={canEdit}
                       onSaved={onSaved}
                       inline
@@ -152,7 +156,7 @@ export default function DeveloperDomainScreen({ screen, rulebook: liveRulebook, 
                 ))}
               </ol>
             ) : (
-              <p className="muted small">— no use cases authored in <code>_meta.use_cases</code> yet —</p>
+              <p className="muted small">— no use cases authored in <code>__meta__.use_cases</code> yet —</p>
             )}
           </div>
         </div>
@@ -196,7 +200,7 @@ export default function DeveloperDomainScreen({ screen, rulebook: liveRulebook, 
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Substrate witness chips — reads _meta.substrates[] filtered by important.
+// Substrate witness chips — reads __meta__.substrates filtered by important.
 // Hidden entirely when no substrate is flagged important (per §2.2).
 // Click navigates to the Effortless Tools page with the substrate preselected.
 
@@ -453,8 +457,8 @@ function NoImportanceFlags({ entities, domain, navigate }) {
   return (
     <section className="reception-empty">
       <p className="muted">
-        No entity in this rulebook has <code>important: true</code> yet. Author one in
-        <code> _meta</code> to feature it here.
+        No entity in this rulebook has <code>important: true</code> yet. Flag one on the
+        entity itself to feature it here.
       </p>
       <div className="domain-gallery" style={{ marginTop: 12 }}>
         {entities.map(({ name, entity }) => (

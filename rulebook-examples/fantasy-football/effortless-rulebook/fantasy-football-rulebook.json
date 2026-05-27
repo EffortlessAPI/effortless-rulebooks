@@ -1,7 +1,7 @@
 {
   "$schema": "https://example.com/cmcc-schema/v1",
   "Name": "Fantasy Football",
-  "Description": "Multi-hop DAG: raw player stats \u2192 roster aggregations \u2192 matchup scoring \u2192 standings & seeding.",
+  "Description": "Multi-hop DAG: raw player stats → roster aggregations → matchup scoring → standings & seeding.",
   "DevUsers": {
     "Description": "Table: DevUsers",
     "schema": [
@@ -47,7 +47,13 @@
     "Description": "Table: Players",
     "important": true,
     "summary_rich": "The **raw stat sheet**. Every player has a position (QB, RB, WR, TE) and a season line — passing yards, rushing yards, receptions, touchdowns, picks. `ProjectedScore` turns those numbers into fantasy points using the league's scoring formula: 1 point per 25 passing yards, 6 per TD, minus 2 per interception. Edit any stat and the whole DAG — roster totals, matchup margins, standings — re-evaluates downstream.",
-    "important_fields": ["Name", "Position", "TotalTouchdowns", "Interceptions", "ProjectedScore"],
+    "important_fields": [
+      "Name",
+      "Position",
+      "TotalTouchdowns",
+      "Interceptions",
+      "ProjectedScore"
+    ],
     "schema": [
       {
         "name": "PlayerId",
@@ -371,7 +377,12 @@
     "Description": "Table: Rosters",
     "important": true,
     "summary_rich": "The **teams**. Each roster belongs to an owner and accumulates its players' stats through `RosterAssignments`. A roster's `ProjectedScore` is a **second-order calc** — it sums the assigned players' raw yardage and TDs, then applies the scoring formula again at the team level. Add or drop a player and the roster total moves in real time.",
-    "important_fields": ["Name", "Owner", "TotalTouchdowns", "ProjectedScore"],
+    "important_fields": [
+      "Name",
+      "Owner",
+      "TotalTouchdowns",
+      "ProjectedScore"
+    ],
     "schema": [
       {
         "name": "RosterId",
@@ -701,7 +712,14 @@
     "Description": "Table: Matchups",
     "important": true,
     "summary_rich": "The **weekly head-to-heads**. Each matchup pairs two rosters in a given week; the rulebook looks up each side's `ProjectedScore`, subtracts to get the margin, and declares a winner — all through calculated fields, no \"update score\" button anywhere. Reshuffle a roster mid-week and the matchup result flips automatically.",
-    "important_fields": ["Name", "Week", "Team1Score", "Team2Score", "Margin", "Winner"],
+    "important_fields": [
+      "Name",
+      "Week",
+      "Team1Score",
+      "Team2Score",
+      "Margin",
+      "Winner"
+    ],
     "schema": [
       {
         "name": "MatchupId",
@@ -1062,42 +1080,118 @@
       }
     ]
   },
-  "_meta": {
-    "tagline": "Stat lines in, standings out \u2014 the league's scoring rules are the DAG.",
-    "motif": "default",
-    "motif_palette": {
-      "primary": "#1a472a",
-      "accent": "#f0b21f",
-      "ink": "#0a1a10"
-    },
-    "description_rich": "Fantasy Football is a four-hop DAG: raw weekly stat lines for 18 NFL players feed into rosters through a `RosterAssignments` join table, the rosters aggregate yardage and touchdowns and re-apply the league's scoring formula at the team level, matchups look up each side's roster score to declare a winner, and the standings rank everyone for playoff seeding. The interesting thing isn't the data \u2014 it's that *every scoring rule lives in the rulebook*. Change `1 point per 25 passing yards` to `1 per 20`, rebuild, and every player, every roster, every matchup result, and every playoff seed re-derives identically in Postgres, Python, Excel, and OWL.",
-    "use_cases": [
-      "**Re-tune the scoring formula.** Edit `Players.ProjectedScore` from `PassingYards/25` to `PassingYards/20` (a more generous QB rule) \u2014 every player, every roster total, every matchup margin, and every standing recomputes from a single change.",
-      "**Run a what-if trade.** Move *Travis Kelce* from `mahomes-mob` to `hurts-limit` by editing a `RosterAssignments` row \u2014 Mahomes Mob's `ProjectedScore` drops by Kelce's contribution, Hurts Limit's jumps, and any matchup either roster plays this week flips its `Winner` if the margin crosses zero.",
-      "**Switch to PPR (point-per-reception) scoring.** Add `+ {{Receptions}}` to the per-player scoring formula and watch high-volume WRs (Hill, Adams, Diggs) leapfrog their roster's QB in fantasy value without touching any other field.",
-      "**Ask the same question in four substrates.** *\"Which roster is on track to win Week 1 by the largest margin?\"* \u2014 run it as a SQL `ORDER BY ABS(margin) DESC LIMIT 1` against the Postgres view, as a Python list-comprehension over the Matchups module, or as an Excel sort \u2014 same answer, no glue code.",
-      "**Add a 7th roster mid-season.** Insert one row in `Rosters` and three in `RosterAssignments`; the new team's `ProjectedScore` is computed from the rulebook the instant the rows land \u2014 no \"recompute standings\" job to run."
+  "__meta__": {
+    "Description": "Project-level metadata that travels with the rulebook: tagline, motif, narrative descriptions, substrate list, signature rows, etc. One row per metadata key. Use ValueType to interpret StringValue vs JsonValue.",
+    "important": false,
+    "schema": [
+      {
+        "name": "MetaKey",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "The metadata key (e.g. 'tagline', 'motif_palette', 'substrates'). Unique within the table."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "formula": "={{MetaKey}}",
+        "Description": "Identifier for this metadata entry. Mirrors MetaKey so the row is addressable by Name like every other table."
+      },
+      {
+        "name": "ValueType",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "How to interpret the value columns: 'string' (use StringValue), 'object' (parse JsonValue as JSON object), 'array' (parse JsonValue as JSON array)."
+      },
+      {
+        "name": "StringValue",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Plain string value. Populated when ValueType == 'string'; null otherwise."
+      },
+      {
+        "name": "JsonValue",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "JSON-encoded value. Populated when ValueType == 'object' or 'array'; null when ValueType == 'string'."
+      }
     ],
-    "signature_rows": [
-      { "entity": "Rosters", "ids": ["mahomes-mob", "hurts-hustlers", "davantes-dynasty", "allens-arsenal", "defense-wins", "hurts-limit"] },
-      { "entity": "Players", "ids": ["patrick-mahomes", "christian-mccaffrey", "travis-kelce", "saquon-barkley", "bryce-young"] },
-      { "entity": "Matchups", "ids": ["week1-mob-hustlers", "week1-arsenal-dynasty", "week1-limit-wins"] }
-    ],
-    "journal_seed": "Six rosters, six weeks of matchups, one scoring formula. Mahomes Mob is 6-0 and projected for 1076 a week; Hurts Limit is 0-6 because Bryce Young throws as many picks as touchdowns. Trade a single TE and the standings move.",
-    "substrates": [
-      { "key": "postgres", "important": true,  "chip_label": "Postgres" },
-      { "key": "python",   "important": true,  "chip_label": "Python" },
-      { "key": "excel",    "important": false, "chip_label": "Excel" },
-      { "key": "owl",      "important": false, "chip_label": "OWL" },
-      { "key": "golang",   "important": false, "chip_label": "Go" }
-    ],
-    "_CMCC_Summary": "Fantasy Football demo \u2014 rulebook-first, no Airtable. 6 entities, 4-hop DAG: raw player stats \u2192 roster aggregations \u2192 matchup scoring \u2192 standings/seeding.",
-    "_conversion_metadata": {
-      "source_type": "rulebook-first",
-      "table_count": 6,
-      "tool_version": "effortless-demo-app-1.0",
-      "primary_dag_chain": "Players (raw) \u2192 RosterAssignments (join) \u2192 Rosters (agg) \u2192 Matchups (lookup) \u2192 Standings (rank calc)",
-      "export_mode": "direct_authoring"
-    }
+    "data": [
+      {
+        "MetaKey": "tagline",
+        "Name": "tagline",
+        "ValueType": "string",
+        "StringValue": "Stat lines in, standings out — the league's scoring rules are the DAG.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "motif",
+        "Name": "motif",
+        "ValueType": "string",
+        "StringValue": "default",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "motif_palette",
+        "Name": "motif_palette",
+        "ValueType": "object",
+        "StringValue": null,
+        "JsonValue": "{\"primary\": \"#1a472a\", \"accent\": \"#f0b21f\", \"ink\": \"#0a1a10\"}"
+      },
+      {
+        "MetaKey": "description_rich",
+        "Name": "description_rich",
+        "ValueType": "string",
+        "StringValue": "Fantasy Football is a four-hop DAG: raw weekly stat lines for 18 NFL players feed into rosters through a `RosterAssignments` join table, the rosters aggregate yardage and touchdowns and re-apply the league's scoring formula at the team level, matchups look up each side's roster score to declare a winner, and the standings rank everyone for playoff seeding. The interesting thing isn't the data — it's that *every scoring rule lives in the rulebook*. Change `1 point per 25 passing yards` to `1 per 20`, rebuild, and every player, every roster, every matchup result, and every playoff seed re-derives identically in Postgres, Python, Excel, and OWL.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "use_cases",
+        "Name": "use_cases",
+        "ValueType": "array",
+        "StringValue": null,
+        "JsonValue": "[\"**Re-tune the scoring formula.** Edit `Players.ProjectedScore` from `PassingYards/25` to `PassingYards/20` (a more generous QB rule) — every player, every roster total, every matchup margin, and every standing recomputes from a single change.\", \"**Run a what-if trade.** Move *Travis Kelce* from `mahomes-mob` to `hurts-limit` by editing a `RosterAssignments` row — Mahomes Mob's `ProjectedScore` drops by Kelce's contribution, Hurts Limit's jumps, and any matchup either roster plays this week flips its `Winner` if the margin crosses zero.\", \"**Switch to PPR (point-per-reception) scoring.** Add `+ {{Receptions}}` to the per-player scoring formula and watch high-volume WRs (Hill, Adams, Diggs) leapfrog their roster's QB in fantasy value without touching any other field.\", \"**Ask the same question in four substrates.** *\\\"Which roster is on track to win Week 1 by the largest margin?\\\"* — run it as a SQL `ORDER BY ABS(margin) DESC LIMIT 1` against the Postgres view, as a Python list-comprehension over the Matchups module, or as an Excel sort — same answer, no glue code.\", \"**Add a 7th roster mid-season.** Insert one row in `Rosters` and three in `RosterAssignments`; the new team's `ProjectedScore` is computed from the rulebook the instant the rows land — no \\\"recompute standings\\\" job to run.\"]"
+      },
+      {
+        "MetaKey": "signature_rows",
+        "Name": "signature_rows",
+        "ValueType": "array",
+        "StringValue": null,
+        "JsonValue": "[{\"entity\": \"Rosters\", \"ids\": [\"mahomes-mob\", \"hurts-hustlers\", \"davantes-dynasty\", \"allens-arsenal\", \"defense-wins\", \"hurts-limit\"]}, {\"entity\": \"Players\", \"ids\": [\"patrick-mahomes\", \"christian-mccaffrey\", \"travis-kelce\", \"saquon-barkley\", \"bryce-young\"]}, {\"entity\": \"Matchups\", \"ids\": [\"week1-mob-hustlers\", \"week1-arsenal-dynasty\", \"week1-limit-wins\"]}]"
+      },
+      {
+        "MetaKey": "journal_seed",
+        "Name": "journal_seed",
+        "ValueType": "string",
+        "StringValue": "Six rosters, six weeks of matchups, one scoring formula. Mahomes Mob is 6-0 and projected for 1076 a week; Hurts Limit is 0-6 because Bryce Young throws as many picks as touchdowns. Trade a single TE and the standings move.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "substrates",
+        "Name": "substrates",
+        "ValueType": "array",
+        "StringValue": null,
+        "JsonValue": "[{\"key\": \"postgres\", \"important\": true, \"chip_label\": \"Postgres\"}, {\"key\": \"python\", \"important\": true, \"chip_label\": \"Python\"}, {\"key\": \"excel\", \"important\": false, \"chip_label\": \"Excel\"}, {\"key\": \"owl\", \"important\": false, \"chip_label\": \"OWL\"}, {\"key\": \"golang\", \"important\": false, \"chip_label\": \"Go\"}]"
+      },
+      {
+        "MetaKey": "CMCC_Summary",
+        "Name": "CMCC_Summary",
+        "ValueType": "string",
+        "StringValue": "Fantasy Football demo — rulebook-first, no Airtable. 6 entities, 4-hop DAG: raw player stats → roster aggregations → matchup scoring → standings/seeding.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "conversion_metadata",
+        "Name": "conversion_metadata",
+        "ValueType": "object",
+        "StringValue": null,
+        "JsonValue": "{\"source_type\": \"rulebook-first\", \"table_count\": 6, \"tool_version\": \"effortless-demo-app-1.0\", \"primary_dag_chain\": \"Players (raw) → RosterAssignments (join) → Rosters (agg) → Matchups (lookup) → Standings (rank calc)\", \"export_mode\": \"direct_authoring\"}"
+      }
+    ]
   }
 }

@@ -5,7 +5,7 @@
   "Customers": {
     "Description": "Table: Customers",
     "important": true,
-    "summary_rich": "The **cast** of v3. Each customer has a current `Status` (linked, not free-text) and a stream of `Orders`. The `IsStopped` flag composes a *blocking status* with the customer's order history, so the same customer can be flagged for two independent reasons \u2014 and the rulebook records *which* reason without any branching in app code.",
+    "summary_rich": "The **cast** of v3. Each customer has a current `Status` (linked, not free-text) and a stream of `Orders`. The `IsStopped` flag composes a *blocking status* with the customer's order history, so the same customer can be flagged for two independent reasons — and the rulebook records *which* reason without any branching in app code.",
     "important_fields": [
       "Name",
       "CompanyName",
@@ -172,7 +172,7 @@
         "nullable": true,
         "formula": "={{CountOfMultiplePaymentOrders}} > 0",
         "important": true,
-        "explanation_rich": "**Why a generic formula isn't enough \u2014 and how v3 fixes it.** Naively, `HasMultiPaymentOrders` is *true when at least one of this customer's orders has more than one payment*. The generic transpiler approximates this with `CountOfMultiPaymentOrders > 0`, which is wrong: the underlying COUNTIFS counts *all* of a customer's orders, not orders with multiple payments. v3's fix lives in `ERBCustomizations` as `calc_customers_has_multi_payment_orders` \u2014 a hand-written Postgres function that asks the right question (`EXISTS \u2026 WHERE COUNT(payments) > 1`). Worked example: Caroline has one order (`caroline-1045`) with two payments, so the SQL override returns TRUE. Bobby has two orders, each with one payment, so the override returns FALSE \u2014 exactly the opposite of what the naive `COUNTIFS > 0` would say."
+        "explanation_rich": "**Why a generic formula isn't enough — and how v3 fixes it.** Naively, `HasMultiPaymentOrders` is *true when at least one of this customer's orders has more than one payment*. The generic transpiler approximates this with `CountOfMultiPaymentOrders > 0`, which is wrong: the underlying COUNTIFS counts *all* of a customer's orders, not orders with multiple payments. v3's fix lives in `ERBCustomizations` as `calc_customers_has_multi_payment_orders` — a hand-written Postgres function that asks the right question (`EXISTS … WHERE COUNT(payments) > 1`). Worked example: Caroline has one order (`caroline-1045`) with two payments, so the SQL override returns TRUE. Bobby has two orders, each with one payment, so the override returns FALSE — exactly the opposite of what the naive `COUNTIFS > 0` would say."
       }
     ],
     "data": [
@@ -596,7 +596,7 @@
   "Orders": {
     "Description": "Table: Orders",
     "important": true,
-    "summary_rich": "The **heart of v3**. Every order rolls up its line items into `SubTotal`, adds tax to make `OrderTotal`, then watches `Payments` aggregate into `TotalPaid` so `AmountDue` and `PaymentStatusLabel` self-correct in real time. This is where the formula DAG stops being a toy \u2014 multi-payment, partial-payment, and refunded states all resolve correctly without a single line of imperative code.",
+    "summary_rich": "The **heart of v3**. Every order rolls up its line items into `SubTotal`, adds tax to make `OrderTotal`, then watches `Payments` aggregate into `TotalPaid` so `AmountDue` and `PaymentStatusLabel` self-correct in real time. This is where the formula DAG stops being a toy — multi-payment, partial-payment, and refunded states all resolve correctly without a single line of imperative code.",
     "important_fields": [
       "Name",
       "Customer",
@@ -751,7 +751,7 @@
         "nullable": true,
         "formula": "=ROUND({{OrderTotal}} - {{TotalPaid}}, 2)",
         "important": true,
-        "explanation_rich": "**The cash register's bottom line.** `AmountDue = ROUND(OrderTotal - TotalPaid, 2)`. `OrderTotal` is itself a calc (`SubTotal + TaxAmount`) and `TotalPaid` is an aggregation over *completed* payments only (via `Payments.CompletedAmount`, which is zero for Pending/Failed/Refunded). Worked example: Caroline's `caroline-1045` totals $126.82. Her first payment (`pmt-1`) was *Failed* \u2014 `CompletedAmount = 0`. Her second (`pmt-2`) was *Completed* for $126.82. `TotalPaid = $126.82`, so `AmountDue = ROUND(126.82 - 126.82, 2) = $0.00`. Reverse the second payment's status to `Failed` and the same field flips to `$126.82` on the next read."
+        "explanation_rich": "**The cash register's bottom line.** `AmountDue = ROUND(OrderTotal - TotalPaid, 2)`. `OrderTotal` is itself a calc (`SubTotal + TaxAmount`) and `TotalPaid` is an aggregation over *completed* payments only (via `Payments.CompletedAmount`, which is zero for Pending/Failed/Refunded). Worked example: Caroline's `caroline-1045` totals $126.82. Her first payment (`pmt-1`) was *Failed* — `CompletedAmount = 0`. Her second (`pmt-2`) was *Completed* for $126.82. `TotalPaid = $126.82`, so `AmountDue = ROUND(126.82 - 126.82, 2) = $0.00`. Reverse the second payment's status to `Failed` and the same field flips to `$126.82` on the next read."
       },
       {
         "name": "IsPaidInFull",
@@ -790,7 +790,7 @@
         "nullable": true,
         "formula": "=IF({{IsPaidInFull}}, \"Paid\", IF({{TotalPaid}} = 0, \"Unpaid\", \"Partial\"))",
         "important": true,
-        "explanation_rich": "**The human-readable verdict.** Three-way label: `IF(IsPaidInFull, 'Paid', IF(TotalPaid = 0, 'Unpaid', 'Partial'))`. The ordering matters \u2014 `IsPaidInFull` is checked *first* because a fully-paid order can still have multiple non-zero `TotalPaid` contributions. Worked example: Carla's refunded order `carla-smith-1024` had a payment row, but `CompletedAmount = 0` because the payment was refunded \u2014 so `TotalPaid = 0`, `IsPaidInFull = FALSE`, and the label resolves to *Unpaid*. A partial payment ($50 of $200) would instead resolve to *Partial*."
+        "explanation_rich": "**The human-readable verdict.** Three-way label: `IF(IsPaidInFull, 'Paid', IF(TotalPaid = 0, 'Unpaid', 'Partial'))`. The ordering matters — `IsPaidInFull` is checked *first* because a fully-paid order can still have multiple non-zero `TotalPaid` contributions. Worked example: Carla's refunded order `carla-smith-1024` had a payment row, but `CompletedAmount = 0` because the payment was refunded — so `TotalPaid = 0`, `IsPaidInFull = FALSE`, and the label resolves to *Unpaid*. A partial payment ($50 of $200) would instead resolve to *Partial*."
       }
     ],
     "data": [
@@ -1831,81 +1831,111 @@
       }
     ]
   },
-  "_meta": {
-    "tagline": "Order-to-cash, end-to-end \u2014 with the first real SQL escape hatches.",
-    "motif": "default",
-    "description_rich": "v3 is the rung where NakedClaude grows up. v2 modeled three tables (customers, statuses, app users) and stopped at *can this customer place an order?* \u2014 v3 lets them actually **place one, pay for it, and have the books balance**. Eight tables (`Customers`, `Statuses`, `Products`, `Orders`, `OrderLineItems`, `Payments`, plus `ERBVersions` and `ERBCustomizations`) wire an entire order-to-cash pipeline as a DAG of calculated fields: line-item subtotals roll into order subtotals, tax lands on top, payments aggregate into `TotalPaid`, and `AmountDue` / `IsPaidInFull` / `PaymentStatusLabel` fall out automatically. The new-at-this-rung capability is `ERBCustomizations` \u2014 hand-written Postgres function overrides for the handful of calculations the generic formula transpiler can't express cleanly (`AverageOrderValue`, `DaysSinceLastOrder`, `HasMultiPaymentOrders`). This is the first rung that demonstrates the *escape hatch* without breaking the substrate-equivalence claim: the override is named, versioned, and shipped inside the rulebook itself.",
-    "use_cases": [
-      "**Reconcile a multi-payment order.** Open Caroline's order `caroline-1045` ($126.82). One payment failed, the second succeeded \u2014 watch `TotalPaid` aggregate only completed payments, `AmountDue` go to zero, and `PaymentStatusLabel` flip to *Paid*.",
-      "**Refund a returned order.** Carla's `carla-smith-1024` was refunded; `CompletedAmount` drops the refunded payment out of the rollup, so `TotalPaid = 0`, `AmountDue = $239.68`, and `PaymentStatusLabel` reads *Unpaid* \u2014 even though a payment row exists.",
-      "**Promote a customer status into a blocker.** Flip `Statuses.IsBlocking` for *Processing* to TRUE; every customer in that status re-derives `StatusIsBlocking` and `IsStopped` on the next read \u2014 no application code touched.",
-      "**Override a stubborn calculation.** Add a row to `ERBCustomizations` with `CustomizationType=FunctionOverride` and Postgres SQL \u2014 the next build wires that function in place of the generic transpiled one. See `calc_customers_has_multi_payment_orders` for the canonical example.",
-      "**Read the same balance two ways.** Ask *\"what does Caroline still owe?\"* in the Postgres view (`SELECT amount_due FROM vw_orders WHERE order_id='caroline-1045'`) and again via the rulebook DAG \u2014 same zero, no glue code."
-    ],
-    "signature_rows": [
+  "__meta__": {
+    "Description": "Project-level metadata that travels with the rulebook: tagline, motif, narrative descriptions, substrate list, signature rows, etc. One row per metadata key. Use ValueType to interpret StringValue vs JsonValue.",
+    "important": false,
+    "schema": [
       {
-        "entity": "Orders",
-        "ids": [
-          "caroline-1045",
-          "carla-smith-1024",
-          "alice-johnson-1010"
-        ]
+        "name": "MetaKey",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "The metadata key (e.g. 'tagline', 'motif_palette', 'substrates'). Unique within the table."
       },
       {
-        "entity": "Customers",
-        "ids": [
-          "caroline",
-          "bobby",
-          "carla-smith"
-        ]
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "formula": "={{MetaKey}}",
+        "Description": "Identifier for this metadata entry. Mirrors MetaKey so the row is addressable by Name like every other table."
       },
       {
-        "entity": "Payments",
-        "ids": [
-          "caroline-1045-pmt-1",
-          "caroline-1045-pmt-2",
-          "carla-smith-1024-pmt-1"
-        ]
+        "name": "ValueType",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "How to interpret the value columns: 'string' (use StringValue), 'object' (parse JsonValue as JSON object), 'array' (parse JsonValue as JSON array)."
+      },
+      {
+        "name": "StringValue",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Plain string value. Populated when ValueType == 'string'; null otherwise."
+      },
+      {
+        "name": "JsonValue",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "JSON-encoded value. Populated when ValueType == 'object' or 'array'; null when ValueType == 'string'."
       }
     ],
-    "journal_seed": "Seven orders on the books, eight payments cleared or pending. Caroline's first card declined and cleared on the second try; Carla's damaged shipment was refunded in full. The DAG keeps the totals honest.",
-    "substrates": [
+    "data": [
       {
-        "key": "postgres",
-        "important": true,
-        "chip_label": "Postgres"
+        "MetaKey": "tagline",
+        "Name": "tagline",
+        "ValueType": "string",
+        "StringValue": "Order-to-cash, end-to-end — with the first real SQL escape hatches.",
+        "JsonValue": null
       },
       {
-        "key": "python",
-        "important": true,
-        "chip_label": "Python"
+        "MetaKey": "motif",
+        "Name": "motif",
+        "ValueType": "string",
+        "StringValue": "default",
+        "JsonValue": null
       },
       {
-        "key": "excel",
-        "important": false,
-        "chip_label": "Excel"
+        "MetaKey": "description_rich",
+        "Name": "description_rich",
+        "ValueType": "string",
+        "StringValue": "v3 is the rung where NakedClaude grows up. v2 modeled three tables (customers, statuses, app users) and stopped at *can this customer place an order?* — v3 lets them actually **place one, pay for it, and have the books balance**. Eight tables (`Customers`, `Statuses`, `Products`, `Orders`, `OrderLineItems`, `Payments`, plus `ERBVersions` and `ERBCustomizations`) wire an entire order-to-cash pipeline as a DAG of calculated fields: line-item subtotals roll into order subtotals, tax lands on top, payments aggregate into `TotalPaid`, and `AmountDue` / `IsPaidInFull` / `PaymentStatusLabel` fall out automatically. The new-at-this-rung capability is `ERBCustomizations` — hand-written Postgres function overrides for the handful of calculations the generic formula transpiler can't express cleanly (`AverageOrderValue`, `DaysSinceLastOrder`, `HasMultiPaymentOrders`). This is the first rung that demonstrates the *escape hatch* without breaking the substrate-equivalence claim: the override is named, versioned, and shipped inside the rulebook itself.",
+        "JsonValue": null
       },
       {
-        "key": "erb-customizations",
-        "important": true,
-        "chip_label": "SQL Overrides"
+        "MetaKey": "use_cases",
+        "Name": "use_cases",
+        "ValueType": "array",
+        "StringValue": null,
+        "JsonValue": "[\"**Reconcile a multi-payment order.** Open Caroline's order `caroline-1045` ($126.82). One payment failed, the second succeeded — watch `TotalPaid` aggregate only completed payments, `AmountDue` go to zero, and `PaymentStatusLabel` flip to *Paid*.\", \"**Refund a returned order.** Carla's `carla-smith-1024` was refunded; `CompletedAmount` drops the refunded payment out of the rollup, so `TotalPaid = 0`, `AmountDue = $239.68`, and `PaymentStatusLabel` reads *Unpaid* — even though a payment row exists.\", \"**Promote a customer status into a blocker.** Flip `Statuses.IsBlocking` for *Processing* to TRUE; every customer in that status re-derives `StatusIsBlocking` and `IsStopped` on the next read — no application code touched.\", \"**Override a stubborn calculation.** Add a row to `ERBCustomizations` with `CustomizationType=FunctionOverride` and Postgres SQL — the next build wires that function in place of the generic transpiled one. See `calc_customers_has_multi_payment_orders` for the canonical example.\", \"**Read the same balance two ways.** Ask *\\\"what does Caroline still owe?\\\"* in the Postgres view (`SELECT amount_due FROM vw_orders WHERE order_id='caroline-1045'`) and again via the rulebook DAG — same zero, no glue code.\"]"
+      },
+      {
+        "MetaKey": "signature_rows",
+        "Name": "signature_rows",
+        "ValueType": "array",
+        "StringValue": null,
+        "JsonValue": "[{\"entity\": \"Orders\", \"ids\": [\"caroline-1045\", \"carla-smith-1024\", \"alice-johnson-1010\"]}, {\"entity\": \"Customers\", \"ids\": [\"caroline\", \"bobby\", \"carla-smith\"]}, {\"entity\": \"Payments\", \"ids\": [\"caroline-1045-pmt-1\", \"caroline-1045-pmt-2\", \"carla-smith-1024-pmt-1\"]}]"
+      },
+      {
+        "MetaKey": "journal_seed",
+        "Name": "journal_seed",
+        "ValueType": "string",
+        "StringValue": "Seven orders on the books, eight payments cleared or pending. Caroline's first card declined and cleared on the second try; Carla's damaged shipment was refunded in full. The DAG keeps the totals honest.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "substrates",
+        "Name": "substrates",
+        "ValueType": "array",
+        "StringValue": null,
+        "JsonValue": "[{\"key\": \"postgres\", \"important\": true, \"chip_label\": \"Postgres\"}, {\"key\": \"python\", \"important\": true, \"chip_label\": \"Python\"}, {\"key\": \"excel\", \"important\": false, \"chip_label\": \"Excel\"}, {\"key\": \"erb-customizations\", \"important\": true, \"chip_label\": \"SQL Overrides\"}]"
+      },
+      {
+        "MetaKey": "CMCC_Summary",
+        "Name": "CMCC_Summary",
+        "ValueType": "string",
+        "StringValue": "Airtable export with schema-first type mapping: Schemas, Data, Relationships (FK links), Lookups (INDEX/MATCH), Aggregations (SUMIFS/COUNTIFS/Rollups), and Calculated fields (formulas) in Excel dialect. Field types are determined from Airtable's schema metadata FIRST (no coercion), with intelligent fallback to formula/data analysis only when schema is unavailable.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "conversion_metadata",
+        "Name": "conversion_metadata",
+        "ValueType": "object",
+        "StringValue": null,
+        "JsonValue": "{\"source_base_id\": \"appKLygCIXweUUKtM\", \"table_count\": 8, \"tool_version\": \"2.0.0\", \"field_type_mapping\": \"checkbox→boolean, number→number/integer, multipleRecordLinks→relationship, multipleLookupValues→lookup, rollup→aggregation, count→aggregation, formula→calculated\", \"export_mode\": \"schema_first_type_mapping\", \"type_inference\": {\"enabled\": true, \"priority\": \"airtable_metadata (NO COERCION) → formula_analysis → reference_resolution → data_analysis (fallback only)\", \"airtable_type_mapping\": \"checkbox→boolean, singleLineText→string, multilineText→string, number→number/integer, datetime→datetime, singleSelect→string, email→string, url→string, phoneNumber→string\", \"data_coercion_hierarchy\": \"Only used as fallback when Airtable schema unavailable: datetime → number → integer → boolean → base64 → json → string\", \"nullable_support\": true, \"error_value_handling\": \"#NUM!, #ERROR!, #N/A, #REF!, #DIV/0!, #VALUE!, #NAME? are treated as NULL\"}}"
       }
-    ],
-    "_CMCC_Summary": "Airtable export with schema-first type mapping: Schemas, Data, Relationships (FK links), Lookups (INDEX/MATCH), Aggregations (SUMIFS/COUNTIFS/Rollups), and Calculated fields (formulas) in Excel dialect. Field types are determined from Airtable's schema metadata FIRST (no coercion), with intelligent fallback to formula/data analysis only when schema is unavailable.",
-    "_conversion_metadata": {
-      "source_base_id": "appKLygCIXweUUKtM",
-      "table_count": 8,
-      "tool_version": "2.0.0",
-      "field_type_mapping": "checkbox\u2192boolean, number\u2192number/integer, multipleRecordLinks\u2192relationship, multipleLookupValues\u2192lookup, rollup\u2192aggregation, count\u2192aggregation, formula\u2192calculated",
-      "export_mode": "schema_first_type_mapping",
-      "type_inference": {
-        "enabled": true,
-        "priority": "airtable_metadata (NO COERCION) \u2192 formula_analysis \u2192 reference_resolution \u2192 data_analysis (fallback only)",
-        "airtable_type_mapping": "checkbox\u2192boolean, singleLineText\u2192string, multilineText\u2192string, number\u2192number/integer, datetime\u2192datetime, singleSelect\u2192string, email\u2192string, url\u2192string, phoneNumber\u2192string",
-        "data_coercion_hierarchy": "Only used as fallback when Airtable schema unavailable: datetime \u2192 number \u2192 integer \u2192 boolean \u2192 base64 \u2192 json \u2192 string",
-        "nullable_support": true,
-        "error_value_handling": "#NUM!, #ERROR!, #N/A, #REF!, #DIV/0!, #VALUE!, #NAME? are treated as NULL"
-      }
-    }
+    ]
   }
 }

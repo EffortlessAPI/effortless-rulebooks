@@ -1,7 +1,7 @@
 {
   "$schema": "https://example.com/cmcc-schema/v1",
   "Name": "ERB Self-Describing Rulebook",
-  "Description": "The rulebook that describes the ERB project itself \u2014 the platform eating its own dog food.",
+  "Description": "The rulebook that describes the ERB project itself — the platform eating its own dog food.",
   "ProjectMetadata": {
     "Description": "Project overview",
     "schema": [
@@ -45,7 +45,7 @@
         "ProjectId": "erb-001",
         "Name": "Effortlessly Invariant Rulesbooks",
         "Purpose": "Multi-substrate code generation from declarative rulebooks",
-        "Architecture": "Airtable (UI) \u2192 effortless-rulebook.json (IR) \u2192 Substrates (Postgres, Python, Go, Excel, OWL, etc.)",
+        "Architecture": "Airtable (UI) → effortless-rulebook.json (IR) → Substrates (Postgres, Python, Go, Excel, OWL, etc.)",
         "RepositoryRoot": "effortlessly-invariant-rulesbooks/"
       }
     ]
@@ -54,7 +54,12 @@
     "Description": "Runtime environments that execute business rules derived from the rulebook",
     "important": true,
     "summary_rich": "The **target territories on the map**. Each substrate is a different language ERB has to speak — Postgres, Python, Go, Excel, OWL, PlantUML, ARM64, .NET, and an Explain-DAG visualizer — and every one of them has to compute the same answer for the same rulebook. Production substrates ship as official Effortless tools; the others are local proofs that the same coordinates land somewhere recognizable.",
-    "important_fields": ["Name", "Technology", "IsProduction", "Status"],
+    "important_fields": [
+      "Name",
+      "Technology",
+      "IsProduction",
+      "Status"
+    ],
     "schema": [
       {
         "name": "SubstrateId",
@@ -462,7 +467,12 @@
     "Description": "Customer ontologies: each domain has its own rulebook + substrate generation",
     "important": true,
     "summary_rich": "The **continents being charted**. Each domain is a self-contained Effortless project living under `rulebook-examples/<domain>/` — from a one-table *Customer FullName* hello-world to the philosophical *Is Everything a Language?* — and every one of them is described, in catalog form, by the very rulebook you are reading. This entity is the row where the map meets the territory: the demos that prove ERB works are themselves rows in an ERB rulebook.",
-    "important_fields": ["DomainName", "ComplexityLevel", "TableCount", "KeyFeatures"],
+    "important_fields": [
+      "DomainName",
+      "ComplexityLevel",
+      "TableCount",
+      "KeyFeatures"
+    ],
     "schema": [
       {
         "name": "DomainId",
@@ -481,7 +491,7 @@
         "datatype": "string",
         "type": "raw",
         "nullable": false,
-        "Description": "rulebook-examples/{domain}/ \u2014 each domain is a self-contained Effortless project"
+        "Description": "rulebook-examples/{domain}/ — each domain is a self-contained Effortless project"
       },
       {
         "name": "RulebookPath",
@@ -630,7 +640,7 @@
     "data": [
       {
         "FlowId": "flow-001",
-        "Name": "Standard Rulebook \u2192 Substrates",
+        "Name": "Standard Rulebook → Substrates",
         "Steps": "Load rulebook.json | Dispatch to all injectors | Generate substrate code | Package artifacts",
         "Triggers": "User selects option A in orchestrator menu",
         "Outputs": "Generated code in each execution-substrates/{tech}/ folder"
@@ -897,38 +907,132 @@
       }
     ]
   },
-  "_meta": {
-    "tagline": "A rulebook about rulebooks — the methodology eating its own dog food.",
-    "motif": "atlas",
-    "motif_palette": {
-      "primary": "#2d4a3e",
-      "accent": "#c19a5b",
-      "ink": "#0f1a16"
-    },
-    "description_rich": "This is the **meta demo**: a rulebook whose subject matter is *other rulebooks*. The entities here are not customers or orders or episodes — they are the substrates, orchestration scripts, testing framework, and customer domains that make up ERB itself. The catalog of demos in `RulebookDomains` includes a row for this very rulebook's neighbors; the `ExecutionSubstrates` table describes the same Postgres, Python, and Excel pipelines that generated *this* file's downstream artifacts. Treat it as a cartographer's atlas of the methodology — useful precisely because the map is drawn in the same notation as the territory.",
-    "use_cases": [
-      "**Browse the substrate catalog.** Open `ExecutionSubstrates` and read the row for *PostgreSQL* — that is the production tool that generated this rulebook's SQL views; *Explain DAG* is the one rendering the rule-derivation visualizer in the portal.",
-      "**Walk the demo gallery from the inside.** Each row in `RulebookDomains` is one of the sibling folders under `rulebook-examples/` — including a self-row for this rulebook in spirit, since it catalogs the same project it lives in.",
-      "**Trace a flow end-to-end.** `CoreDataFlows` lists the five pipelines that move bits from Airtable through the rulebook into the substrates and back out as conformance reports; pick one and follow its Steps column.",
-      "**Audit the dependency surface.** `Dependencies` is the honest list of what has to be installed for which substrates to run — Python is required, Go and .NET are optional, Airtable is one input spoke among several.",
-      "**Reconcile the architecture against the code.** Compare a row in `OrchestrationComponents` to the actual file at that `FilePath`; if the rulebook drifts from the repo, this is the row that should be edited."
+  "__meta__": {
+    "Description": "Project-level metadata that travels with the rulebook: tagline, motif, narrative descriptions, substrate list, signature rows, etc. One row per metadata key. Use ValueType to interpret StringValue vs JsonValue.",
+    "important": false,
+    "schema": [
+      {
+        "name": "MetaKey",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "The metadata key (e.g. 'tagline', 'motif_palette', 'substrates'). Unique within the table."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "formula": "={{MetaKey}}",
+        "Description": "Identifier for this metadata entry. Mirrors MetaKey so the row is addressable by Name like every other table."
+      },
+      {
+        "name": "ValueType",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "How to interpret the value columns: 'string' (use StringValue), 'object' (parse JsonValue as JSON object), 'array' (parse JsonValue as JSON array)."
+      },
+      {
+        "name": "StringValue",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Plain string value. Populated when ValueType == 'string'; null otherwise."
+      },
+      {
+        "name": "JsonValue",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "JSON-encoded value. Populated when ValueType == 'object' or 'array'; null when ValueType == 'string'."
+      }
     ],
-    "signature_rows": [
-      { "entity": "ExecutionSubstrates", "ids": ["substrate-004", "substrate-002", "substrate-009"] },
-      { "entity": "RulebookDomains", "ids": ["domain-001", "domain-005", "domain-006"] }
-    ],
-    "journal_seed": "Ten substrates on the map, seven demo domains charted, one rulebook describing them all — including, at one remove, itself.",
-    "substrates": [
-      { "key": "postgres", "important": true,  "chip_label": "Postgres" },
-      { "key": "python",   "important": true,  "chip_label": "Python" },
-      { "key": "excel",    "important": false, "chip_label": "Excel" },
-      { "key": "owl",      "important": false, "chip_label": "OWL" },
-      { "key": "uml",      "important": false, "chip_label": "PlantUML" },
-      { "key": "explain-dag", "important": true, "chip_label": "Explain DAG" }
-    ],
-    "_CMCC_Summary": "Top-level rulebook describing the Effortlessly Invariant Rulesbooks (ERB) project itself: all execution substrates, orchestration components, Airtable integration, testing framework, customer domains, core data flows, configuration files, and external dependencies.",
-    "_ProjectGoal": "Demonstrate that a single declarative rulebook (effortless-rulebook.json) can generate working, conformant code in 10+ execution substrates (Python, Go, SQL, Excel, OWL, PlantUML, etc.) that all produce identical results for the same inputs.",
-    "_ArchitecturalHighlight": "Rulebook is the disposable IR; substrates are the execution targets. Hub-and-spokes around Airtable (or other sources like direct JSON edits). All 10+ substrates must pass the same conformance tests.",
-    "_HubPromotionPhase": "Transition from Airtable-as-SSoT to rulebook-as-SSoT. Customer domains (ACME Corp, ACME LLC) can be selected at runtime. Once complete, orchestration drives from effortless-rulebooks/<domain>/ instead of a single Airtable base."
+    "data": [
+      {
+        "MetaKey": "tagline",
+        "Name": "tagline",
+        "ValueType": "string",
+        "StringValue": "A rulebook about rulebooks — the methodology eating its own dog food.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "motif",
+        "Name": "motif",
+        "ValueType": "string",
+        "StringValue": "atlas",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "motif_palette",
+        "Name": "motif_palette",
+        "ValueType": "object",
+        "StringValue": null,
+        "JsonValue": "{\"primary\": \"#2d4a3e\", \"accent\": \"#c19a5b\", \"ink\": \"#0f1a16\"}"
+      },
+      {
+        "MetaKey": "description_rich",
+        "Name": "description_rich",
+        "ValueType": "string",
+        "StringValue": "This is the **meta demo**: a rulebook whose subject matter is *other rulebooks*. The entities here are not customers or orders or episodes — they are the substrates, orchestration scripts, testing framework, and customer domains that make up ERB itself. The catalog of demos in `RulebookDomains` includes a row for this very rulebook's neighbors; the `ExecutionSubstrates` table describes the same Postgres, Python, and Excel pipelines that generated *this* file's downstream artifacts. Treat it as a cartographer's atlas of the methodology — useful precisely because the map is drawn in the same notation as the territory.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "use_cases",
+        "Name": "use_cases",
+        "ValueType": "array",
+        "StringValue": null,
+        "JsonValue": "[\"**Browse the substrate catalog.** Open `ExecutionSubstrates` and read the row for *PostgreSQL* — that is the production tool that generated this rulebook's SQL views; *Explain DAG* is the one rendering the rule-derivation visualizer in the portal.\", \"**Walk the demo gallery from the inside.** Each row in `RulebookDomains` is one of the sibling folders under `rulebook-examples/` — including a self-row for this rulebook in spirit, since it catalogs the same project it lives in.\", \"**Trace a flow end-to-end.** `CoreDataFlows` lists the five pipelines that move bits from Airtable through the rulebook into the substrates and back out as conformance reports; pick one and follow its Steps column.\", \"**Audit the dependency surface.** `Dependencies` is the honest list of what has to be installed for which substrates to run — Python is required, Go and .NET are optional, Airtable is one input spoke among several.\", \"**Reconcile the architecture against the code.** Compare a row in `OrchestrationComponents` to the actual file at that `FilePath`; if the rulebook drifts from the repo, this is the row that should be edited.\"]"
+      },
+      {
+        "MetaKey": "signature_rows",
+        "Name": "signature_rows",
+        "ValueType": "array",
+        "StringValue": null,
+        "JsonValue": "[{\"entity\": \"ExecutionSubstrates\", \"ids\": [\"substrate-004\", \"substrate-002\", \"substrate-009\"]}, {\"entity\": \"RulebookDomains\", \"ids\": [\"domain-001\", \"domain-005\", \"domain-006\"]}]"
+      },
+      {
+        "MetaKey": "journal_seed",
+        "Name": "journal_seed",
+        "ValueType": "string",
+        "StringValue": "Ten substrates on the map, seven demo domains charted, one rulebook describing them all — including, at one remove, itself.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "substrates",
+        "Name": "substrates",
+        "ValueType": "array",
+        "StringValue": null,
+        "JsonValue": "[{\"key\": \"postgres\", \"important\": true, \"chip_label\": \"Postgres\"}, {\"key\": \"python\", \"important\": true, \"chip_label\": \"Python\"}, {\"key\": \"excel\", \"important\": false, \"chip_label\": \"Excel\"}, {\"key\": \"owl\", \"important\": false, \"chip_label\": \"OWL\"}, {\"key\": \"uml\", \"important\": false, \"chip_label\": \"PlantUML\"}, {\"key\": \"explain-dag\", \"important\": true, \"chip_label\": \"Explain DAG\"}]"
+      },
+      {
+        "MetaKey": "CMCC_Summary",
+        "Name": "CMCC_Summary",
+        "ValueType": "string",
+        "StringValue": "Top-level rulebook describing the Effortlessly Invariant Rulesbooks (ERB) project itself: all execution substrates, orchestration components, Airtable integration, testing framework, customer domains, core data flows, configuration files, and external dependencies.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "ProjectGoal",
+        "Name": "ProjectGoal",
+        "ValueType": "string",
+        "StringValue": "Demonstrate that a single declarative rulebook (effortless-rulebook.json) can generate working, conformant code in 10+ execution substrates (Python, Go, SQL, Excel, OWL, PlantUML, etc.) that all produce identical results for the same inputs.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "ArchitecturalHighlight",
+        "Name": "ArchitecturalHighlight",
+        "ValueType": "string",
+        "StringValue": "Rulebook is the disposable IR; substrates are the execution targets. Hub-and-spokes around Airtable (or other sources like direct JSON edits). All 10+ substrates must pass the same conformance tests.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "HubPromotionPhase",
+        "Name": "HubPromotionPhase",
+        "ValueType": "string",
+        "StringValue": "Transition from Airtable-as-SSoT to rulebook-as-SSoT. Customer domains (ACME Corp, ACME LLC) can be selected at runtime. Once complete, orchestration drives from effortless-rulebooks/<domain>/ instead of a single Airtable base.",
+        "JsonValue": null
+      }
+    ]
   }
 }

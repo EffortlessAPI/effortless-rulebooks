@@ -291,11 +291,14 @@ def to_pascal_case(name: str) -> str:
 def discover_entities(rulebook: dict) -> list:
     """
     Discover all entities from the rulebook.
-    Entities are top-level keys that have a 'schema' array.
+    Entities are top-level keys that have a 'schema' array. Includes the
+    project-level `__meta__` table — it's now a first-class table with the
+    same `schema`/`data` shape as every other entity, so injectors materialize
+    it the same way (CSV sheet, Postgres table, etc.).
     Returns list of entity names in PascalCase (as they appear in rulebook).
     """
     entities = []
-    skip_keys = {'$schema', 'model_name', 'Description', '_meta'}
+    skip_keys = {'$schema', 'model_name', 'Description', 'Name'}
 
     for key, value in rulebook.items():
         if key in skip_keys:

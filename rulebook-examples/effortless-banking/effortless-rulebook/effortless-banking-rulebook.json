@@ -1,7 +1,7 @@
 {
   "$schema": "https://example.com/cmcc-schema/v1",
   "Name": "Effortless Banking",
-  "Description": "Community-bank commercial RM platform \u2014 loans, deposits, covenants, BSA/AML.",
+  "Description": "Community-bank commercial RM platform — loans, deposits, covenants, BSA/AML.",
   "Users": {
     "Description": "Bank employees: relationship managers, underwriters, branch bankers, and admins. Used for portfolio assignment, audit trails, and segregation-of-duties enforcement.",
     "schema": [
@@ -128,7 +128,14 @@
     "Description": "Small-business customers (and prospects) of the bank. Central entity: BeneficialOwners, Contacts, Accounts, Loans, Documents, and Interactions all hang off a Business. BusinessProfile information (legal name, structure, NAICS code) lives directly on this table.",
     "important": true,
     "summary_rich": "The **borrower file**. Each row is one small-business customer or prospect; everything regulated about that relationship — the BeneficialOwners on the CDD file, the Accounts and their balances, the Loans and their grades, the Interactions audit log — hangs off a Business via FK. `MeetsCddRule` enforces FinCEN's 25%-or-control-person rule; `PortfolioPriority` rolls up loan classification and CDD state into the single bucket the RM sorts the book by every morning.",
-    "important_fields": ["LegalName", "Status", "RelationshipManagerLabel", "PortfolioPriority", "MeetsCddRule", "TotalLoanPrincipalUsd"],
+    "important_fields": [
+      "LegalName",
+      "Status",
+      "RelationshipManagerLabel",
+      "PortfolioPriority",
+      "MeetsCddRule",
+      "TotalLoanPrincipalUsd"
+    ],
     "schema": [
       {
         "name": "Name",
@@ -830,7 +837,16 @@
     "Description": "Credit facilities extended to a Business, tracked from inquiry through funding, servicing, and payoff. RiskRating is denormalized here for fast reads; every change is captured in RiskRatingHistory.",
     "important": true,
     "summary_rich": "The **credit book** — every facility the bank has on the borrower. A Loan carries the live denormalized RiskRating (with the full migration history kept in `RiskRatingHistory` so regulators can audit drift), the DSCR and LTV bands, and the segregation-of-duties check that the originating RM cannot also be the underwriter. `OnWatchlist` is the union the credit committee actually sorts by: any loan that's classified (grade ≥ 7) *or* has a covenant in breach.",
-    "important_fields": ["LoanNumber", "BusinessLabel", "PrincipalUsd", "RiskRatingLabel", "UnderwritingStage", "OnWatchlist", "HealthScore", "SegregationOfDutiesOk"],
+    "important_fields": [
+      "LoanNumber",
+      "BusinessLabel",
+      "PrincipalUsd",
+      "RiskRatingLabel",
+      "UnderwritingStage",
+      "OnWatchlist",
+      "HealthScore",
+      "SegregationOfDutiesOk"
+    ],
     "schema": [
       {
         "name": "Name",
@@ -1828,41 +1844,118 @@
       }
     ]
   },
-  "_meta": {
-    "tagline": "A community bank's commercial book — loans, covenants, CDD, and the watchlist.",
-    "motif": "skyline",
-    "motif_palette": {
-      "primary": "#1f3a5f",
-      "accent": "#f0b21f",
-      "ink": "#0d1a2e"
-    },
-    "description_rich": "Effortless Banking models a community bank's commercial relationship-management desk — five small-business borrowers, five bank employees, three funded loans, the covenants attached to them, the CDD beneficial-ownership file, and the activity stream the regulators eventually audit. The interesting thing isn't the data, it's that **every regulated rule lives in the rulebook**: the FinCEN 25%-or-control-person CDD test, the substandard-asset threshold (RiskRating ≥ 7), the watchlist union of *classified OR breached covenant*, the segregation-of-duties check that the originating RM cannot also be the underwriter — all of it is calculated fields wired into a DAG. The same answer Postgres returns to the credit committee is the same answer the Python conformance tests assert. There is no second copy of the rules hiding in application code.",
-    "use_cases": [
-      "**Watch a loan cross the classified-asset line.** Open *L-0042 (Pine Hardware)*'s `RiskRatingHistory`: the 2025-08-15 row carries PriorGrade=6, NewGrade=7, and `CrossedClassifiedThreshold` flips to TRUE — the moment the loan becomes a regulator-reportable classified asset.",
-      "**Confirm CDD on a new prospect.** Hilltop Bakery is a Prospect with no BeneficialOwners attached yet — `MeetsCddRule` is FALSE and `PortfolioPriority` reads 'Medium'. Add owners totalling ≥25% (or a designated control person) and the rule clears the same instant the rulebook recomputes.",
-      "**Enforce segregation of duties.** Try to set L-0051's Underwriter to the same user as its OriginatingRM (Devon Marshall) and `SegregationOfDutiesOk` falls to FALSE. The same flag is exposed identically in Postgres and Python — no app-side guard to forget.",
-      "**Trace a covenant breach into the activity feed.** L-0042's MinDSCR covenant is in Breached status; the matching SystemEvent Interaction on 2025-05-02 lives in the same stream as human-logged calls and visits, so the audit trail and the RM's daily feed are one table, not two.",
-      "**Read the watchlist in two substrates.** Ask *'which loans are on the watchlist?'* of the Postgres view, then of the Python module — both return L-0042 because `OnWatchlist` is the same calculated field on both sides."
+  "__meta__": {
+    "Description": "Project-level metadata that travels with the rulebook: tagline, motif, narrative descriptions, substrate list, signature rows, etc. One row per metadata key. Use ValueType to interpret StringValue vs JsonValue.",
+    "important": false,
+    "schema": [
+      {
+        "name": "MetaKey",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "The metadata key (e.g. 'tagline', 'motif_palette', 'substrates'). Unique within the table."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "formula": "={{MetaKey}}",
+        "Description": "Identifier for this metadata entry. Mirrors MetaKey so the row is addressable by Name like every other table."
+      },
+      {
+        "name": "ValueType",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "How to interpret the value columns: 'string' (use StringValue), 'object' (parse JsonValue as JSON object), 'array' (parse JsonValue as JSON array)."
+      },
+      {
+        "name": "StringValue",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Plain string value. Populated when ValueType == 'string'; null otherwise."
+      },
+      {
+        "name": "JsonValue",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "JSON-encoded value. Populated when ValueType == 'object' or 'array'; null when ValueType == 'string'."
+      }
     ],
-    "signature_rows": [
-      { "entity": "Loans", "ids": ["l-0042", "l-0051", "l-0078"] },
-      { "entity": "Businesses", "ids": ["pine-hardware-inc", "stillwater-roasters-llc", "hilltop-bakery-llc"] },
-      { "entity": "RiskRatingHistory", "ids": ["l-0042-2025-08-15-grade-7"] }
-    ],
-    "journal_seed": "Three funded loans, one classified — L-0042 (Pine Hardware) crossed into Substandard in August and its DSCR covenant is in breach. The rest of the book is clean; Hilltop Bakery is one CDD file away from becoming a customer.",
-    "substrates": [
-      { "key": "postgres", "important": true,  "chip_label": "Postgres" },
-      { "key": "python",   "important": true,  "chip_label": "Python" },
-      { "key": "excel",    "important": false, "chip_label": "Excel" },
-      { "key": "owl",      "important": false, "chip_label": "OWL" }
-    ],
-    "_CMCC_Summary": "Authored-direct ERB rulebook for a community-bank commercial relationship management platform. No Airtable round-trip; this rulebook is the SSoT at the top of the Leopold loop. Targets Postgres via effortless build.",
-    "_conversion_metadata": {
-      "source": "authored-from-narrative",
-      "table_count": 10,
-      "tool_version": "shadle-bootstrap-1.0",
-      "ssot": "effortless-rulebook.json",
-      "next_step": "effortless build -> generated Postgres schema and vw_* views"
-    }
+    "data": [
+      {
+        "MetaKey": "tagline",
+        "Name": "tagline",
+        "ValueType": "string",
+        "StringValue": "A community bank's commercial book — loans, covenants, CDD, and the watchlist.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "motif",
+        "Name": "motif",
+        "ValueType": "string",
+        "StringValue": "skyline",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "motif_palette",
+        "Name": "motif_palette",
+        "ValueType": "object",
+        "StringValue": null,
+        "JsonValue": "{\"primary\": \"#1f3a5f\", \"accent\": \"#f0b21f\", \"ink\": \"#0d1a2e\"}"
+      },
+      {
+        "MetaKey": "description_rich",
+        "Name": "description_rich",
+        "ValueType": "string",
+        "StringValue": "Effortless Banking models a community bank's commercial relationship-management desk — five small-business borrowers, five bank employees, three funded loans, the covenants attached to them, the CDD beneficial-ownership file, and the activity stream the regulators eventually audit. The interesting thing isn't the data, it's that **every regulated rule lives in the rulebook**: the FinCEN 25%-or-control-person CDD test, the substandard-asset threshold (RiskRating ≥ 7), the watchlist union of *classified OR breached covenant*, the segregation-of-duties check that the originating RM cannot also be the underwriter — all of it is calculated fields wired into a DAG. The same answer Postgres returns to the credit committee is the same answer the Python conformance tests assert. There is no second copy of the rules hiding in application code.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "use_cases",
+        "Name": "use_cases",
+        "ValueType": "array",
+        "StringValue": null,
+        "JsonValue": "[\"**Watch a loan cross the classified-asset line.** Open *L-0042 (Pine Hardware)*'s `RiskRatingHistory`: the 2025-08-15 row carries PriorGrade=6, NewGrade=7, and `CrossedClassifiedThreshold` flips to TRUE — the moment the loan becomes a regulator-reportable classified asset.\", \"**Confirm CDD on a new prospect.** Hilltop Bakery is a Prospect with no BeneficialOwners attached yet — `MeetsCddRule` is FALSE and `PortfolioPriority` reads 'Medium'. Add owners totalling ≥25% (or a designated control person) and the rule clears the same instant the rulebook recomputes.\", \"**Enforce segregation of duties.** Try to set L-0051's Underwriter to the same user as its OriginatingRM (Devon Marshall) and `SegregationOfDutiesOk` falls to FALSE. The same flag is exposed identically in Postgres and Python — no app-side guard to forget.\", \"**Trace a covenant breach into the activity feed.** L-0042's MinDSCR covenant is in Breached status; the matching SystemEvent Interaction on 2025-05-02 lives in the same stream as human-logged calls and visits, so the audit trail and the RM's daily feed are one table, not two.\", \"**Read the watchlist in two substrates.** Ask *'which loans are on the watchlist?'* of the Postgres view, then of the Python module — both return L-0042 because `OnWatchlist` is the same calculated field on both sides.\"]"
+      },
+      {
+        "MetaKey": "signature_rows",
+        "Name": "signature_rows",
+        "ValueType": "array",
+        "StringValue": null,
+        "JsonValue": "[{\"entity\": \"Loans\", \"ids\": [\"l-0042\", \"l-0051\", \"l-0078\"]}, {\"entity\": \"Businesses\", \"ids\": [\"pine-hardware-inc\", \"stillwater-roasters-llc\", \"hilltop-bakery-llc\"]}, {\"entity\": \"RiskRatingHistory\", \"ids\": [\"l-0042-2025-08-15-grade-7\"]}]"
+      },
+      {
+        "MetaKey": "journal_seed",
+        "Name": "journal_seed",
+        "ValueType": "string",
+        "StringValue": "Three funded loans, one classified — L-0042 (Pine Hardware) crossed into Substandard in August and its DSCR covenant is in breach. The rest of the book is clean; Hilltop Bakery is one CDD file away from becoming a customer.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "substrates",
+        "Name": "substrates",
+        "ValueType": "array",
+        "StringValue": null,
+        "JsonValue": "[{\"key\": \"postgres\", \"important\": true, \"chip_label\": \"Postgres\"}, {\"key\": \"python\", \"important\": true, \"chip_label\": \"Python\"}, {\"key\": \"excel\", \"important\": false, \"chip_label\": \"Excel\"}, {\"key\": \"owl\", \"important\": false, \"chip_label\": \"OWL\"}]"
+      },
+      {
+        "MetaKey": "CMCC_Summary",
+        "Name": "CMCC_Summary",
+        "ValueType": "string",
+        "StringValue": "Authored-direct ERB rulebook for a community-bank commercial relationship management platform. No Airtable round-trip; this rulebook is the SSoT at the top of the Leopold loop. Targets Postgres via effortless build.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "conversion_metadata",
+        "Name": "conversion_metadata",
+        "ValueType": "object",
+        "StringValue": null,
+        "JsonValue": "{\"source\": \"authored-from-narrative\", \"table_count\": 10, \"tool_version\": \"shadle-bootstrap-1.0\", \"ssot\": \"effortless-rulebook.json\", \"next_step\": \"effortless build -> generated Postgres schema and vw_* views\"}"
+      }
+    ]
   }
 }

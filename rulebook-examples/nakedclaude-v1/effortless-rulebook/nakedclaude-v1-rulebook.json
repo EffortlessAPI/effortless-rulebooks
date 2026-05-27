@@ -87,64 +87,118 @@
       "IsApproved"
     ]
   },
-  "_meta": {
-    "tagline": "One table, one rule: turn a customer green and they're approved — in every substrate.",
-    "motif": "default",
-    "motif_palette": {
-      "primary": "#2a2f3a",
-      "accent": "#4ea36b",
-      "ink": "#11141a"
-    },
-    "description_rich": "NakedClaude v1 is the **first rung of a four-rung ladder** and the smallest claim the methodology can make. A single `Customers` table with one raw field (`CurrentColor`) and one calculated field (`IsApproved = IF(CurrentColor=\"Green\", TRUE, FALSE)`). That's it — no relationships, no lookups, no aggregations. The point is that even *this* trivial rule lives in the rulebook, and Postgres, Python, and Excel all compute it identically without anyone writing application code. v2 adds a related `Statuses` table and lookups; v3 and v4 climb further. Start here to see what the floor looks like before the ladder rises.",
-    "use_cases": [
-      "**Approve Alice.** Change `alice-johnson.CurrentColor` from `Red` to `Green` and watch `IsApproved` flip to `TRUE` on the next read of every substrate.",
-      "**Try to break the rule.** Set `caroline.CurrentColor` to `green` (lowercase) — `IsApproved` stays `FALSE`, because the rule is case-sensitive. The rulebook is the only place to change that.",
-      "**Edit the rule, not the code.** Swap `=\"Green\"` for `IN(\"Green\",\"Blue\")` in the formula; rebuild; every substrate now approves blue customers too, with zero application changes.",
-      "**Compare against v2.** Open `nakedclaude-v2` next door — same `Customers` shape, plus a `Statuses` lookup. v1 → v2 is one step up the ladder."
-    ],
-    "signature_rows": [
+  "__meta__": {
+    "Description": "Project-level metadata that travels with the rulebook: tagline, motif, narrative descriptions, substrate list, signature rows, etc. One row per metadata key. Use ValueType to interpret StringValue vs JsonValue.",
+    "important": false,
+    "schema": [
       {
-        "entity": "Customers",
-        "ids": [
-          "bob",
-          "alice-johnson",
-          "carla-smith"
-        ]
-      }
-    ],
-    "journal_seed": "Five customers, one of them green. The rule is one line; the demo is the fact that one line is enough.",
-    "substrates": [
-      {
-        "key": "postgres",
-        "important": true,
-        "chip_label": "Postgres"
+        "name": "MetaKey",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "The metadata key (e.g. 'tagline', 'motif_palette', 'substrates'). Unique within the table."
       },
       {
-        "key": "python",
-        "important": true,
-        "chip_label": "Python"
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "formula": "={{MetaKey}}",
+        "Description": "Identifier for this metadata entry. Mirrors MetaKey so the row is addressable by Name like every other table."
       },
       {
-        "key": "excel",
-        "important": false,
-        "chip_label": "Excel"
+        "name": "ValueType",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "How to interpret the value columns: 'string' (use StringValue), 'object' (parse JsonValue as JSON object), 'array' (parse JsonValue as JSON array)."
+      },
+      {
+        "name": "StringValue",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Plain string value. Populated when ValueType == 'string'; null otherwise."
+      },
+      {
+        "name": "JsonValue",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "JSON-encoded value. Populated when ValueType == 'object' or 'array'; null when ValueType == 'string'."
       }
     ],
-    "_CMCC_Summary": "Airtable export with schema-first type mapping: Schemas, Data, Relationships (FK links), Lookups (INDEX/MATCH), Aggregations (SUMIFS/COUNTIFS/Rollups), and Calculated fields (formulas) in Excel dialect. Field types are determined from Airtable's schema metadata FIRST (no coercion), with intelligent fallback to formula/data analysis only when schema is unavailable.",
-    "_conversion_metadata": {
-      "source_base_id": "appgjoEcFNxluhbvK",
-      "table_count": 1,
-      "tool_version": "2.0.0",
-      "field_type_mapping": "checkbox→boolean, number→number/integer, multipleRecordLinks→relationship, multipleLookupValues→lookup, rollup→aggregation, count→aggregation, formula→calculated",
-      "export_mode": "schema_first_type_mapping",
-      "type_inference": {
-        "enabled": true,
-        "priority": "airtable_metadata (NO COERCION) → formula_analysis → reference_resolution → data_analysis (fallback only)",
-        "airtable_type_mapping": "checkbox→boolean, singleLineText→string, multilineText→string, number→number/integer, datetime→datetime, singleSelect→string, email→string, url→string, phoneNumber→string",
-        "data_coercion_hierarchy": "Only used as fallback when Airtable schema unavailable: datetime → number → integer → boolean → base64 → json → string",
-        "nullable_support": true,
-        "error_value_handling": "#NUM!, #ERROR!, #N/A, #REF!, #DIV/0!, #VALUE!, #NAME? are treated as NULL"
+    "data": [
+      {
+        "MetaKey": "tagline",
+        "Name": "tagline",
+        "ValueType": "string",
+        "StringValue": "One table, one rule: turn a customer green and they're approved — in every substrate.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "motif",
+        "Name": "motif",
+        "ValueType": "string",
+        "StringValue": "default",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "motif_palette",
+        "Name": "motif_palette",
+        "ValueType": "object",
+        "StringValue": null,
+        "JsonValue": "{\"primary\": \"#2a2f3a\", \"accent\": \"#4ea36b\", \"ink\": \"#11141a\"}"
+      },
+      {
+        "MetaKey": "description_rich",
+        "Name": "description_rich",
+        "ValueType": "string",
+        "StringValue": "NakedClaude v1 is the **first rung of a four-rung ladder** and the smallest claim the methodology can make. A single `Customers` table with one raw field (`CurrentColor`) and one calculated field (`IsApproved = IF(CurrentColor=\"Green\", TRUE, FALSE)`). That's it — no relationships, no lookups, no aggregations. The point is that even *this* trivial rule lives in the rulebook, and Postgres, Python, and Excel all compute it identically without anyone writing application code. v2 adds a related `Statuses` table and lookups; v3 and v4 climb further. Start here to see what the floor looks like before the ladder rises.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "use_cases",
+        "Name": "use_cases",
+        "ValueType": "array",
+        "StringValue": null,
+        "JsonValue": "[\"**Approve Alice.** Change `alice-johnson.CurrentColor` from `Red` to `Green` and watch `IsApproved` flip to `TRUE` on the next read of every substrate.\", \"**Try to break the rule.** Set `caroline.CurrentColor` to `green` (lowercase) — `IsApproved` stays `FALSE`, because the rule is case-sensitive. The rulebook is the only place to change that.\", \"**Edit the rule, not the code.** Swap `=\\\"Green\\\"` for `IN(\\\"Green\\\",\\\"Blue\\\")` in the formula; rebuild; every substrate now approves blue customers too, with zero application changes.\", \"**Compare against v2.** Open `nakedclaude-v2` next door — same `Customers` shape, plus a `Statuses` lookup. v1 → v2 is one step up the ladder.\"]"
+      },
+      {
+        "MetaKey": "signature_rows",
+        "Name": "signature_rows",
+        "ValueType": "array",
+        "StringValue": null,
+        "JsonValue": "[{\"entity\": \"Customers\", \"ids\": [\"bob\", \"alice-johnson\", \"carla-smith\"]}]"
+      },
+      {
+        "MetaKey": "journal_seed",
+        "Name": "journal_seed",
+        "ValueType": "string",
+        "StringValue": "Five customers, one of them green. The rule is one line; the demo is the fact that one line is enough.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "substrates",
+        "Name": "substrates",
+        "ValueType": "array",
+        "StringValue": null,
+        "JsonValue": "[{\"key\": \"postgres\", \"important\": true, \"chip_label\": \"Postgres\"}, {\"key\": \"python\", \"important\": true, \"chip_label\": \"Python\"}, {\"key\": \"excel\", \"important\": false, \"chip_label\": \"Excel\"}]"
+      },
+      {
+        "MetaKey": "CMCC_Summary",
+        "Name": "CMCC_Summary",
+        "ValueType": "string",
+        "StringValue": "Airtable export with schema-first type mapping: Schemas, Data, Relationships (FK links), Lookups (INDEX/MATCH), Aggregations (SUMIFS/COUNTIFS/Rollups), and Calculated fields (formulas) in Excel dialect. Field types are determined from Airtable's schema metadata FIRST (no coercion), with intelligent fallback to formula/data analysis only when schema is unavailable.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "conversion_metadata",
+        "Name": "conversion_metadata",
+        "ValueType": "object",
+        "StringValue": null,
+        "JsonValue": "{\"source_base_id\": \"appgjoEcFNxluhbvK\", \"table_count\": 1, \"tool_version\": \"2.0.0\", \"field_type_mapping\": \"checkbox→boolean, number→number/integer, multipleRecordLinks→relationship, multipleLookupValues→lookup, rollup→aggregation, count→aggregation, formula→calculated\", \"export_mode\": \"schema_first_type_mapping\", \"type_inference\": {\"enabled\": true, \"priority\": \"airtable_metadata (NO COERCION) → formula_analysis → reference_resolution → data_analysis (fallback only)\", \"airtable_type_mapping\": \"checkbox→boolean, singleLineText→string, multilineText→string, number→number/integer, datetime→datetime, singleSelect→string, email→string, url→string, phoneNumber→string\", \"data_coercion_hierarchy\": \"Only used as fallback when Airtable schema unavailable: datetime → number → integer → boolean → base64 → json → string\", \"nullable_support\": true, \"error_value_handling\": \"#NUM!, #ERROR!, #N/A, #REF!, #DIV/0!, #VALUE!, #NAME? are treated as NULL\"}}"
       }
-    }
+    ]
   }
 }

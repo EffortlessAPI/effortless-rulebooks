@@ -1,12 +1,18 @@
 {
   "$schema": "https://example.com/cmcc-schema/v1",
   "Name": "Is Everything a Language?",
-  "Description": "Semiotic candidates evaluated by formula \u2014 shows substrate-equality holds for non-CRUD ontologies too.",
+  "Description": "Semiotic candidates evaluated by formula — shows substrate-equality holds for non-CRUD ontologies too.",
   "LanguageCandidates": {
     "Description": "Table: LanguageCandidates",
     "important": true,
     "summary_rich": "The **taxonomy under examination**. Each row is a *candidate* — English, Python, A Coffee Mug, A Thunderstorm, Honeybee Waggle Dance, OWL/RDF — annotated with the predicates the operational definition of *language* turns on: `HasSyntax`, `IsParsed`, `HasLinearDecodingPressure`, `IsStableOntologyReference`, `CanBeHeld`, `HasIdentity`, `DistanceFromConcept`. The rulebook then *computes* which ones qualify and surfaces any disagreement between its prediction and the row's declared status as `PredictionFail`. Edit a predicate and the verdict flips the same instant.",
-    "important_fields": ["Name", "Category", "PredictedAnswer", "IsLanguage", "PredictionFail"],
+    "important_fields": [
+      "Name",
+      "Category",
+      "PredictedAnswer",
+      "IsLanguage",
+      "PredictionFail"
+    ],
     "schema": [
       {
         "name": "LanguageCandidateId",
@@ -1122,7 +1128,13 @@
     "Description": "Table: IsEverythingALanguage",
     "important": true,
     "summary_rich": "The **argument itself, modelled as data.** Sixteen numbered steps (NEIAL-001 through NEIAL-016) — Motivation, PredicateSet, Definition, Witness, Counterexample, FuzzyBoundary, Refinement, Conclusion — proving two halves of a single thesis: *language can be formalized* (so a rulebook IS a language with a grammar) AND *not everything is a language* (so the formalization actually excludes things). Each step carries both a plain-English `Statement` and a logical `Formalization`, with witnesses pointing back at concrete rows in `LanguageCandidates` as evidence.",
-    "important_fields": ["Name", "ArgumentName", "StepType", "Statement", "RelatedCandidateName"],
+    "important_fields": [
+      "Name",
+      "ArgumentName",
+      "StepType",
+      "Statement",
+      "RelatedCandidateName"
+    ],
     "schema": [
       {
         "name": "IsEverythingALanguageId",
@@ -1225,7 +1237,7 @@
         "ArgumentCategory": "Definition",
         "StepType": "Definition",
         "Statement": "Operational definition: an item x counts as a Language if it has syntax, requires parsing, serializes meaning, and functions as an ontology/descriptor system.",
-        "Formalization": "Language(x) := HasSyntax(x) \u2227 RequiresParsing(x) \u2227 HasLinearDecodingPressure(x) \u2227 StableOntologyReference(x)",
+        "Formalization": "Language(x) := HasSyntax(x) ∧ RequiresParsing(x) ∧ HasLinearDecodingPressure(x) ∧ StableOntologyReference(x)",
         "Notes": "This is a deliberately 'strong' definition: it matches formal languages and many natural language representations.",
         "RelatedCandidateName": "",
         "RelatedCandidateId": "",
@@ -1238,7 +1250,7 @@
         "ArgumentCategory": "Premise",
         "StepType": "Witness",
         "Statement": "There exists at least one clear witness that satisfies the operational definition: English.",
-        "Formalization": "\u2203x (x=English \u2227 Language(x))",
+        "Formalization": "∃x (x=English ∧ Language(x))",
         "RelatedCandidateName": "English",
         "RelatedCandidateId": "english",
         "EvidenceFromRulebook": "HasSyntax=True; RequiresParsing=True; HasLinearDecodingPressure=True; IsOngologyDescriptor=True; CanBeHeld=False; HasIdentity=False; DistanceFromConcept=2; Category=Natural Language",
@@ -1251,7 +1263,7 @@
         "ArgumentCategory": "Premise",
         "StepType": "Witness",
         "Statement": "There exists at least one clear witness that satisfies the operational definition: Python.",
-        "Formalization": "\u2203x (x=Python \u2227 Language(x))",
+        "Formalization": "∃x (x=Python ∧ Language(x))",
         "RelatedCandidateName": "Python",
         "RelatedCandidateId": "python",
         "EvidenceFromRulebook": "HasSyntax=True; RequiresParsing=True; HasLinearDecodingPressure=True; IsOngologyDescriptor=True; CanBeHeld=False; HasIdentity=False; DistanceFromConcept=2; Category=Formal Language",
@@ -1264,7 +1276,7 @@
         "ArgumentCategory": "Conclusion",
         "StepType": "Conclusion",
         "Statement": "Therefore, 'language' can be formalized as a computable classification boundary over explicit predicates.",
-        "Formalization": "(Definition \u2227 Witnesses) \u21d2 Formalizable(Language)",
+        "Formalization": "(Definition ∧ Witnesses) ⇒ Formalizable(Language)",
         "Notes": "This is the concession: language is formalizable (at least operationally).",
         "RelatedCandidateName": "",
         "RelatedCandidateId": "",
@@ -1277,7 +1289,7 @@
         "ArgumentCategory": "Premise",
         "StepType": "Entailment",
         "Statement": "If Language(x) is defined by necessary conditions, then any x that fails at least one condition is not a language.",
-        "Formalization": "\u2200x (\u00ac(HasSyntax(x) \u2227 RequiresParsing(x) \u2227 HasLinearDecodingPressure(x) \u2227 StableOntologyReference(x)) \u2192 \u00acLanguage(x))",
+        "Formalization": "∀x (¬(HasSyntax(x) ∧ RequiresParsing(x) ∧ HasLinearDecodingPressure(x) ∧ StableOntologyReference(x)) → ¬Language(x))",
         "Notes": "This is the standard move: a definition implies exclusions.",
         "RelatedCandidateName": "",
         "RelatedCandidateId": "",
@@ -1290,7 +1302,7 @@
         "ArgumentCategory": "Example",
         "StepType": "Counterexample",
         "Statement": "Counterexample: a chair can be interpreted as a sign (status, design, function), but it does not constitute a language system under the operational definition.",
-        "Formalization": "\u00acLanguage(Chair)",
+        "Formalization": "¬Language(Chair)",
         "RelatedCandidateName": "A Chair",
         "Notes": "This separates semiotic availability (can signify) from linguistic structure (has syntax/parsing/serialized meaning).",
         "RelatedCandidateId": "",
@@ -1303,7 +1315,7 @@
         "ArgumentCategory": "Example",
         "StepType": "NonLanguageExample",
         "Statement": "Non-language example: A Thunderstorm can be meaningful, but meaning here is not generated by an explicit syntax+parsing+serialization descriptor system.",
-        "Formalization": "\u00acLanguage(A Thunderstorm)",
+        "Formalization": "¬Language(A Thunderstorm)",
         "RelatedCandidateName": "A Thunderstorm",
         "RelatedCandidateId": "a-thunderstorm",
         "EvidenceFromRulebook": "HasSyntax=False; RequiresParsing=True; HasLinearDecodingPressure=False; IsOngologyDescriptor=False; CanBeHeld=False; HasIdentity=True; DistanceFromConcept=1; Category=Physical event",
@@ -1316,7 +1328,7 @@
         "ArgumentCategory": "Example",
         "StepType": "NonLanguageExample",
         "Statement": "Non-language example: A Coffee Mug can be meaningful, but meaning here is not generated by an explicit syntax+parsing+serialization descriptor system.",
-        "Formalization": "\u00acLanguage(A Coffee Mug)",
+        "Formalization": "¬Language(A Coffee Mug)",
         "RelatedCandidateName": "A Coffee Mug",
         "RelatedCandidateId": "a-coffee-mug",
         "EvidenceFromRulebook": "HasSyntax=False; RequiresParsing=False; HasLinearDecodingPressure=False; IsOngologyDescriptor=False; CanBeHeld=True; HasIdentity=True; DistanceFromConcept=1; Category=Physical Object",
@@ -1329,7 +1341,7 @@
         "ArgumentCategory": "Example",
         "StepType": "NonLanguageExample",
         "Statement": "Non-language example: The Mona Lisa can be meaningful, but meaning here is not generated by an explicit syntax+parsing+serialization descriptor system.",
-        "Formalization": "\u00acLanguage(The Mona Lisa)",
+        "Formalization": "¬Language(The Mona Lisa)",
         "RelatedCandidateName": "The Mona Lisa",
         "RelatedCandidateId": "the-mona-lisa",
         "EvidenceFromRulebook": "HasSyntax=False; RequiresParsing=False; HasLinearDecodingPressure=False; IsOngologyDescriptor=True; CanBeHeld=True; HasIdentity=True; DistanceFromConcept=1; Category=Physical Object",
@@ -1342,9 +1354,9 @@
         "ArgumentCategory": "Observation",
         "StepType": "FuzzyBoundary",
         "Statement": "Fuzzy case: A Running App often contains embedded languages (code, UI grammars), but as an executing/interactive process it behaves like a dynamic system rather than a static serialized language artifact.",
-        "Formalization": "Borderline(A Running App): may contain \u2203y Language(y) but \u00acLanguage(A Running App) under static-serialization criteria",
+        "Formalization": "Borderline(A Running App): may contain ∃y Language(y) but ¬Language(A Running App) under static-serialization criteria",
         "RelatedCandidateName": "A Running App",
-        "Notes": "This is where traditional semiotics' 'anything is a sign' doesn\u2019t neatly distinguish: (1) language-as-system vs (2) meaning-making interactive processes.",
+        "Notes": "This is where traditional semiotics' 'anything is a sign' doesn’t neatly distinguish: (1) language-as-system vs (2) meaning-making interactive processes.",
         "RelatedCandidateId": "",
         "EvidenceFromRulebook": ""
       },
@@ -1355,11 +1367,11 @@
         "ArgumentCategory": "Observation",
         "StepType": "FuzzyBoundary",
         "Statement": "Fuzzy case: Running Calculator App often contains embedded languages (code, UI grammars), but as an executing/interactive process it behaves like a dynamic system rather than a static serialized language artifact.",
-        "Formalization": "Borderline(Running Calculator App): may contain \u2203y Language(y) but \u00acLanguage(Running Calculator App) under static-serialization criteria",
+        "Formalization": "Borderline(Running Calculator App): may contain ∃y Language(y) but ¬Language(Running Calculator App) under static-serialization criteria",
         "RelatedCandidateName": "Running Calculator App",
         "RelatedCandidateId": "running-calculator-app",
         "EvidenceFromRulebook": "HasSyntax=False; RequiresParsing=True; HasLinearDecodingPressure=False; IsOngologyDescriptor=False; CanBeHeld=False; HasIdentity=True; DistanceFromConcept=1; Category=Running Software",
-        "Notes": "This is where traditional semiotics' 'anything is a sign' doesn\u2019t neatly distinguish: (1) language-as-system vs (2) meaning-making interactive processes."
+        "Notes": "This is where traditional semiotics' 'anything is a sign' doesn’t neatly distinguish: (1) language-as-system vs (2) meaning-making interactive processes."
       },
       {
         "IsEverythingALanguageId": "neial-014",
@@ -1368,11 +1380,11 @@
         "ArgumentCategory": "Observation",
         "StepType": "FuzzyBoundary",
         "Statement": "Fuzzy case: A Game of Fortnite often contains embedded languages (code, UI grammars), but as an executing/interactive process it behaves like a dynamic system rather than a static serialized language artifact.",
-        "Formalization": "Borderline(A Game of Fortnite): may contain \u2203y Language(y) but \u00acLanguage(A Game of Fortnite) under static-serialization criteria",
+        "Formalization": "Borderline(A Game of Fortnite): may contain ∃y Language(y) but ¬Language(A Game of Fortnite) under static-serialization criteria",
         "RelatedCandidateName": "A Game of Fortnite",
         "RelatedCandidateId": "a-game-of-fortnite",
         "EvidenceFromRulebook": "HasSyntax=False; RequiresParsing=True; HasLinearDecodingPressure=False; IsOngologyDescriptor=False; CanBeHeld=False; HasIdentity=True; DistanceFromConcept=1; Category=Running Software",
-        "Notes": "This is where traditional semiotics' 'anything is a sign' doesn\u2019t neatly distinguish: (1) language-as-system vs (2) meaning-making interactive processes."
+        "Notes": "This is where traditional semiotics' 'anything is a sign' doesn’t neatly distinguish: (1) language-as-system vs (2) meaning-making interactive processes."
       },
       {
         "IsEverythingALanguageId": "neial-015",
@@ -1394,7 +1406,7 @@
         "ArgumentCategory": "Conclusion",
         "StepType": "Conclusion",
         "Statement": "Given a formalizable definition of language, not everything is a language; some things are better treated as sign vehicles or semiotic processes, with running applications as a key fuzzy region that benefits from explicit modeling.",
-        "Formalization": "Formalizable(Language) \u2227 \u2203x \u00acLanguage(x) \u21d2 \u00ac(EverythingIsALanguage)",
+        "Formalization": "Formalizable(Language) ∧ ∃x ¬Language(x) ⇒ ¬(EverythingIsALanguage)",
         "Notes": "This is the repo's thesis in one line.",
         "RelatedCandidateName": "",
         "RelatedCandidateId": "",
@@ -1485,49 +1497,118 @@
       }
     ]
   },
-  "_meta": {
-    "tagline": "Anything you can model as a rulebook is — by construction — a language with a grammar.",
-    "motif": "atlas",
-    "motif_palette": {
-      "primary": "#2d4a3e",
-      "accent": "#c19a5b",
-      "ink": "#0f1a16"
-    },
-    "description_rich": "This isn't a business app — it's a **self-referential proof**. The rulebook contains a taxonomy of candidate languages (English, Python, OWL, a coffee mug, a thunderstorm, honeybee waggle dance, Nicaraguan Sign Language) and an *operational definition* of *language* expressed as an eight-clause formula. The same rulebook contains the sixteen-step argument that the operational definition is itself coherent — Definition, Witnesses, Counterexamples, Fuzzy Boundaries, Conclusion. So the artefact you're reading **is** the thing it's arguing about: a structured ontology with a grammar, computing its own classifications, auditing its own disagreements. The CMCC conjecture, demonstrated by self-application.",
-    "use_cases": [
-      "**Watch the operational definition fire.** Open *English* and see `PredictedAnswer` resolve to TRUE through its eight-clause AND. Flip `HasSyntax` to FALSE and watch the same row instantly demote — definition and code are the same object.",
-      "**Find every row where the rulebook accuses itself.** Sort `LanguageCandidates` by `PredictionFail` to see candidates where the formal prediction disagrees with the curator — *Honeybee Waggle Dance*, *Bonobo/Lexigram*, *Falsifier A*. Each is a real philosophical decision waiting to be made.",
-      "**Walk the argument.** Read `IsEverythingALanguage` in order NEIAL-001 → NEIAL-016. The thesis (*language is formalizable, but not everything is a language*) is constructed step by step, with every Witness pointing back at a real row in `LanguageCandidates` as evidence.",
-      "**Trap an incoherent ontology.** *OWA & CWA Falsifier* is marked both open-world and closed-world; `IsOpenClosedWorldConflicted` evaluates TRUE and `PredictionFail` appends the contradiction in English. The rulebook refuses to lie quietly.",
-      "**Ask the same question of OWL.** Generate the OWL substrate and ask it which candidates satisfy `Language(x)`. The axioms agree with the Postgres view, which agrees with the Python module — different dialects, same grammar, same answer."
-    ],
-    "signature_rows": [
-      { "entity": "LanguageCandidates", "ids": ["english", "python", "a-coffee-mug", "owl-rdf-graphql-generally", "honeybee-waggle-dance", "owa-cwa-falsifier"] },
-      { "entity": "IsEverythingALanguage", "ids": ["neial-003", "neial-004", "neial-016"] }
-    ],
-    "journal_seed": "Language is formalizable as eight predicates over an ontology — and *not everything is a language*. This rulebook is the proof; the proof is this rulebook.",
-    "substrates": [
-      { "key": "postgres", "important": true,  "chip_label": "Postgres" },
-      { "key": "owl",      "important": true,  "chip_label": "OWL" },
-      { "key": "python",   "important": true,  "chip_label": "Python" },
-      { "key": "excel",    "important": false, "chip_label": "Excel" },
-      { "key": "golang",   "important": false, "chip_label": "Go" }
-    ],
-    "_CMCC_Summary": "Airtable export with schema-first type mapping: Schemas, Data, Relationships (FK links), Lookups (INDEX/MATCH), Aggregations (SUMIFS/COUNTIFS/Rollups), and Calculated fields (formulas) in Excel dialect. Field types are determined from Airtable's schema metadata FIRST (no coercion); the build FAILS if metadata is unavailable rather than silently inferring from formula/data analysis.",
-    "_conversion_metadata": {
-      "source_base_id": "appC8XTj95lubn6hz",
-      "table_count": 3,
-      "tool_version": "2.0.0",
-      "field_type_mapping": "checkbox\u2192boolean, number\u2192number/integer, multipleRecordLinks\u2192relationship, multipleLookupValues\u2192lookup, rollup\u2192aggregation, count\u2192aggregation, formula\u2192calculated",
-      "export_mode": "schema_first_type_mapping",
-      "type_inference": {
-        "enabled": true,
-        "priority": "airtable_metadata (NO COERCION) \u2192 formula_analysis \u2192 reference_resolution \u2192 data_analysis (last-resort inference; build SHOULD FAIL rather than silently use this)",
-        "airtable_type_mapping": "checkbox\u2192boolean, singleLineText\u2192string, multilineText\u2192string, number\u2192number/integer, datetime\u2192datetime, singleSelect\u2192string, email\u2192string, url\u2192string, phoneNumber\u2192string",
-        "data_coercion_hierarchy": "Only invoked when Airtable schema is unavailable (which SHOULD make the build fail). Coercion order: datetime \u2192 number \u2192 integer \u2192 boolean \u2192 base64 \u2192 json \u2192 string",
-        "nullable_support": true,
-        "error_value_handling": "#NUM!, #ERROR!, #N/A, #REF!, #DIV/0!, #VALUE!, #NAME? are treated as NULL"
+  "__meta__": {
+    "Description": "Project-level metadata that travels with the rulebook: tagline, motif, narrative descriptions, substrate list, signature rows, etc. One row per metadata key. Use ValueType to interpret StringValue vs JsonValue.",
+    "important": false,
+    "schema": [
+      {
+        "name": "MetaKey",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "The metadata key (e.g. 'tagline', 'motif_palette', 'substrates'). Unique within the table."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "formula": "={{MetaKey}}",
+        "Description": "Identifier for this metadata entry. Mirrors MetaKey so the row is addressable by Name like every other table."
+      },
+      {
+        "name": "ValueType",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "How to interpret the value columns: 'string' (use StringValue), 'object' (parse JsonValue as JSON object), 'array' (parse JsonValue as JSON array)."
+      },
+      {
+        "name": "StringValue",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Plain string value. Populated when ValueType == 'string'; null otherwise."
+      },
+      {
+        "name": "JsonValue",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "JSON-encoded value. Populated when ValueType == 'object' or 'array'; null when ValueType == 'string'."
       }
-    }
+    ],
+    "data": [
+      {
+        "MetaKey": "tagline",
+        "Name": "tagline",
+        "ValueType": "string",
+        "StringValue": "Anything you can model as a rulebook is — by construction — a language with a grammar.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "motif",
+        "Name": "motif",
+        "ValueType": "string",
+        "StringValue": "atlas",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "motif_palette",
+        "Name": "motif_palette",
+        "ValueType": "object",
+        "StringValue": null,
+        "JsonValue": "{\"primary\": \"#2d4a3e\", \"accent\": \"#c19a5b\", \"ink\": \"#0f1a16\"}"
+      },
+      {
+        "MetaKey": "description_rich",
+        "Name": "description_rich",
+        "ValueType": "string",
+        "StringValue": "This isn't a business app — it's a **self-referential proof**. The rulebook contains a taxonomy of candidate languages (English, Python, OWL, a coffee mug, a thunderstorm, honeybee waggle dance, Nicaraguan Sign Language) and an *operational definition* of *language* expressed as an eight-clause formula. The same rulebook contains the sixteen-step argument that the operational definition is itself coherent — Definition, Witnesses, Counterexamples, Fuzzy Boundaries, Conclusion. So the artefact you're reading **is** the thing it's arguing about: a structured ontology with a grammar, computing its own classifications, auditing its own disagreements. The CMCC conjecture, demonstrated by self-application.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "use_cases",
+        "Name": "use_cases",
+        "ValueType": "array",
+        "StringValue": null,
+        "JsonValue": "[\"**Watch the operational definition fire.** Open *English* and see `PredictedAnswer` resolve to TRUE through its eight-clause AND. Flip `HasSyntax` to FALSE and watch the same row instantly demote — definition and code are the same object.\", \"**Find every row where the rulebook accuses itself.** Sort `LanguageCandidates` by `PredictionFail` to see candidates where the formal prediction disagrees with the curator — *Honeybee Waggle Dance*, *Bonobo/Lexigram*, *Falsifier A*. Each is a real philosophical decision waiting to be made.\", \"**Walk the argument.** Read `IsEverythingALanguage` in order NEIAL-001 → NEIAL-016. The thesis (*language is formalizable, but not everything is a language*) is constructed step by step, with every Witness pointing back at a real row in `LanguageCandidates` as evidence.\", \"**Trap an incoherent ontology.** *OWA & CWA Falsifier* is marked both open-world and closed-world; `IsOpenClosedWorldConflicted` evaluates TRUE and `PredictionFail` appends the contradiction in English. The rulebook refuses to lie quietly.\", \"**Ask the same question of OWL.** Generate the OWL substrate and ask it which candidates satisfy `Language(x)`. The axioms agree with the Postgres view, which agrees with the Python module — different dialects, same grammar, same answer.\"]"
+      },
+      {
+        "MetaKey": "signature_rows",
+        "Name": "signature_rows",
+        "ValueType": "array",
+        "StringValue": null,
+        "JsonValue": "[{\"entity\": \"LanguageCandidates\", \"ids\": [\"english\", \"python\", \"a-coffee-mug\", \"owl-rdf-graphql-generally\", \"honeybee-waggle-dance\", \"owa-cwa-falsifier\"]}, {\"entity\": \"IsEverythingALanguage\", \"ids\": [\"neial-003\", \"neial-004\", \"neial-016\"]}]"
+      },
+      {
+        "MetaKey": "journal_seed",
+        "Name": "journal_seed",
+        "ValueType": "string",
+        "StringValue": "Language is formalizable as eight predicates over an ontology — and *not everything is a language*. This rulebook is the proof; the proof is this rulebook.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "substrates",
+        "Name": "substrates",
+        "ValueType": "array",
+        "StringValue": null,
+        "JsonValue": "[{\"key\": \"postgres\", \"important\": true, \"chip_label\": \"Postgres\"}, {\"key\": \"owl\", \"important\": true, \"chip_label\": \"OWL\"}, {\"key\": \"python\", \"important\": true, \"chip_label\": \"Python\"}, {\"key\": \"excel\", \"important\": false, \"chip_label\": \"Excel\"}, {\"key\": \"golang\", \"important\": false, \"chip_label\": \"Go\"}]"
+      },
+      {
+        "MetaKey": "CMCC_Summary",
+        "Name": "CMCC_Summary",
+        "ValueType": "string",
+        "StringValue": "Airtable export with schema-first type mapping: Schemas, Data, Relationships (FK links), Lookups (INDEX/MATCH), Aggregations (SUMIFS/COUNTIFS/Rollups), and Calculated fields (formulas) in Excel dialect. Field types are determined from Airtable's schema metadata FIRST (no coercion); the build FAILS if metadata is unavailable rather than silently inferring from formula/data analysis.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "conversion_metadata",
+        "Name": "conversion_metadata",
+        "ValueType": "object",
+        "StringValue": null,
+        "JsonValue": "{\"source_base_id\": \"appC8XTj95lubn6hz\", \"table_count\": 3, \"tool_version\": \"2.0.0\", \"field_type_mapping\": \"checkbox→boolean, number→number/integer, multipleRecordLinks→relationship, multipleLookupValues→lookup, rollup→aggregation, count→aggregation, formula→calculated\", \"export_mode\": \"schema_first_type_mapping\", \"type_inference\": {\"enabled\": true, \"priority\": \"airtable_metadata (NO COERCION) → formula_analysis → reference_resolution → data_analysis (last-resort inference; build SHOULD FAIL rather than silently use this)\", \"airtable_type_mapping\": \"checkbox→boolean, singleLineText→string, multilineText→string, number→number/integer, datetime→datetime, singleSelect→string, email→string, url→string, phoneNumber→string\", \"data_coercion_hierarchy\": \"Only invoked when Airtable schema is unavailable (which SHOULD make the build fail). Coercion order: datetime → number → integer → boolean → base64 → json → string\", \"nullable_support\": true, \"error_value_handling\": \"#NUM!, #ERROR!, #N/A, #REF!, #DIV/0!, #VALUE!, #NAME? are treated as NULL\"}}"
+      }
+    ]
   }
 }

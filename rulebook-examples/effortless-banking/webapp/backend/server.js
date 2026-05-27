@@ -145,7 +145,7 @@ app.get('/api/auth/me', (req, res) => {
 // Rulebook metadata (for FieldDrawer / future explainer-DAG).
 app.get('/api/rulebook/tables', (req, res) => {
   const tables = Object.keys(rulebook)
-    .filter((k) => !['$schema', 'Name', 'Description', '_meta'].includes(k))
+    .filter((k) => !['$schema', 'Name', 'Description'].includes(k))
     .map((name) => ({ name, description: rulebook[name].Description || '' }));
   res.json(tables);
 });

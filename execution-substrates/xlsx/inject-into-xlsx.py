@@ -40,7 +40,7 @@ except ImportError:
 
 def get_table_names(rulebook):
     """Extract table names from the rulebook (excluding metadata keys)."""
-    metadata_keys = {'$schema', 'model_name', 'Description', '_meta'}
+    metadata_keys = {'$schema', 'model_name', 'Description', 'Name'}
     return [key for key in rulebook.keys() if key not in metadata_keys]
 
 
