@@ -1233,8 +1233,47 @@ function findPkField(entity) {
   return firstNonNull ? firstNonNull.name : "Name";
 }
 
+// The §A.2.6 spec uses the entity's `Name` field as the URL id, and the UI
+// uses it as the row label. But some rulebooks define `Name` as a calculated
+// field whose value isn't materialized in the `data` array — customer-fullname
+// is the canonical example: `Name = =SUBSTITUTE({{EmailAddress}}, "@", "-")`,
+// but every row in `data` carries `Name: null`. Without a formula evaluator at
+// read time, the interface would show "null" everywhere and URLs would point
+// at `/Customers/null`.
+//
+// Resolution: fall back to the value of the entity's first schema column,
+// which by ERB convention is the entity's stable raw key (CustomerId,
+// ProjectId, EmployeeId, …) and is always populated. This is NOT a silent
+// fallback in the sense CLAUDE.md warns against — the rule is deterministic
+// and derived from the rulebook (the SSoT). It IS the right answer for the
+// case "Name is empty"; nothing is being guessed at.
+function firstColumnField(entity) {
+  return (entity.schema || [])[0]?.name || null;
+}
+function effectiveRowName(entity, row) {
+  if (row == null) return null;
+  const raw = row.Name;
+  if (raw !== null && raw !== undefined && String(raw) !== "") return raw;
+  const col0 = firstColumnField(entity);
+  return col0 ? (row[col0] ?? null) : null;
+}
+function findRowIndexByEffectiveName(entity, name) {
+  const target = String(name);
+  return (entity.data || []).findIndex(
+    (r) => String(effectiveRowName(entity, r)) === target
+  );
+}
 function findRowByName(entity, name) {
-  return (entity.data || []).find((r) => String(r.Name) === String(name)) || null;
+  const idx = findRowIndexByEffectiveName(entity, name);
+  return idx >= 0 ? entity.data[idx] : null;
+}
+// Used at response boundaries — clones the row with `Name` set to the
+// effective value so the client never has to special-case null.
+function normalizeRowName(entity, row) {
+  if (!row) return row;
+  const eff = effectiveRowName(entity, row);
+  if (row.Name === eff) return row;
+  return { ...row, Name: eff };
 }
 
 // GET /api/explorer/tree?domain=<slug>&maxDepth=<n>
@@ -1353,7 +1392,7 @@ app.get("/api/explorer/node", (req, res) => {
         pkValue,
         scope: scope.slice(0, -1),  // ancestors, not including this instance
         schema: entity.schema,
-        row,
+        row: normalizeRowName(entity, row),
         tabs,
       });
     }
@@ -1400,7 +1439,7 @@ app.get("/api/explorer/node", (req, res) => {
       scope,                       // ancestors
       scopedBy,                    // explicit "filtered by parent X via FK Y"
       schema: entity.schema,
-      rows: pageRows,
+      rows: pageRows.map((r) => normalizeRowName(entity, r)),
       totalCount,
       page,
       pageSize,
@@ -1660,7 +1699,7 @@ app.patch("/api/explorer/instance/:entity/:id", requireEditor, async (req, res) 
     if (!entity || !Array.isArray(entity.schema)) {
       return res.status(404).json({ error: `entity '${entityName}' not found` });
     }
-    const rowIdx = (entity.data || []).findIndex((r) => String(r.Name) === String(id));
+    const rowIdx = findRowIndexByEffectiveName(entity, id);
     if (rowIdx < 0) {
       return res.status(404).json({ error: `${entityName} with Name='${id}' not found` });
     }
@@ -1718,7 +1757,7 @@ app.patch("/api/explorer/instance/:entity/:id", requireEditor, async (req, res) 
         if (!ent || !Array.isArray(ent.data)) {
           throw new Error(`entity '${entityName}' missing from current rulebook`);
         }
-        const idx = ent.data.findIndex((r) => String(r.Name) === String(id));
+        const idx = findRowIndexByEffectiveName(ent, id);
         if (idx < 0) {
           throw new Error(`${entityName} with Name='${id}' no longer present`);
         }
@@ -1726,8 +1765,9 @@ app.patch("/api/explorer/instance/:entity/:id", requireEditor, async (req, res) 
         return rb2;
       },
     });
-    const idxFresh = newRb[entityName].data.findIndex((r) => String(r.Name) === String(id));
-    res.json({ ok: true, row: newRb[entityName].data[idxFresh] });
+    const freshEnt = newRb[entityName];
+    const idxFresh = findRowIndexByEffectiveName(freshEnt, id);
+    res.json({ ok: true, row: normalizeRowName(freshEnt, freshEnt.data[idxFresh]) });
   } catch (e) {
     res.status(e.statusCode || 500).json({ error: String(e.message || e) });
   }
@@ -1748,11 +1788,21 @@ app.post("/api/explorer/instance/:entity", requireEditor, async (req, res) => {
     if (unknown.length || rejected.length) {
       return res.status(400).json({ error: "row contains non-writable fields", unknown, rejected });
     }
-    if (!accepted.Name) {
-      return res.status(400).json({ error: "Name field is required (used as the URL id per §2.6)" });
+    // Identity for the new row: prefer Name, fall back to column 0 (same rule
+    // the read path uses — see effectiveRowName). For entities whose Name is
+    // calculated and therefore not writable, column 0 is what the row will be
+    // addressed by in URLs, so requiring it (not Name) is the right check.
+    const newRowId = effectiveRowName(entity, accepted);
+    if (!newRowId) {
+      const col0 = firstColumnField(entity);
+      return res.status(400).json({
+        error: col0 && col0 !== "Name"
+          ? `Either Name or ${col0} (column 0) is required as the row identifier (§2.6)`
+          : "Name field is required (used as the URL id per §2.6)"
+      });
     }
-    if ((entity.data || []).some((r) => String(r.Name) === String(accepted.Name))) {
-      return res.status(409).json({ error: `${entityName} with Name='${accepted.Name}' already exists` });
+    if (findRowIndexByEffectiveName(entity, newRowId) >= 0) {
+      return res.status(409).json({ error: `${entityName} with Name='${newRowId}' already exists` });
     }
     const pk = findPkField(entity);
     if (!accepted[pk]) {
@@ -1783,7 +1833,7 @@ app.post("/api/explorer/instance/:entity", requireEditor, async (req, res) => {
         await c.query(
           `INSERT INTO portal_audit_log (user_id, action, target, payload)
            VALUES ($1, 'instance.create', $2, $3)`,
-          [getCurrentUser()?.UserId || null, `${entityName}/${accepted.Name}`, JSON.stringify(accepted)]
+          [getCurrentUser()?.UserId || null, `${entityName}/${newRowId}`, JSON.stringify(accepted)]
         );
       },
       rulebookMutate: (rb2) => {
@@ -1792,15 +1842,15 @@ app.post("/api/explorer/instance/:entity", requireEditor, async (req, res) => {
           throw new Error(`entity '${entityName}' missing from current rulebook`);
         }
         // Re-check uniqueness against the fresh rulebook in case another
-        // request inserted the same Name between handler entry and commit.
-        if (ent.data.some((r) => String(r.Name) === String(accepted.Name))) {
-          throw new Error(`${entityName} with Name='${accepted.Name}' already exists`);
+        // request inserted the same row between handler entry and commit.
+        if (findRowIndexByEffectiveName(ent, newRowId) >= 0) {
+          throw new Error(`${entityName} with Name='${newRowId}' already exists`);
         }
         ent.data = [...ent.data, accepted];
         return rb2;
       },
     });
-    res.status(201).json({ ok: true, row: accepted });
+    res.status(201).json({ ok: true, row: normalizeRowName(entity, accepted) });
   } catch (e) {
     res.status(e.statusCode || 500).json({ error: String(e.message || e) });
   }
@@ -1820,7 +1870,12 @@ function findReferrers(rb, entityName, pkValue) {
       if (isInverseRelationshipField(f, otherValue.data)) continue;
       for (const r of otherValue.data || []) {
         if (String(r[f.name] ?? "").trim() === String(pkValue ?? "").trim()) {
-          refs.push({ entity: otherName, fkField: f.name, name: r.Name, pk: r[findPkField(otherValue)] });
+          refs.push({
+            entity: otherName,
+            fkField: f.name,
+            name: effectiveRowName(otherValue, r),
+            pk: r[findPkField(otherValue)],
+          });
         }
       }
     }
@@ -1839,7 +1894,7 @@ app.delete("/api/explorer/instance/:entity/:id", requireEditor, async (req, res)
     if (!entity || !Array.isArray(entity.schema)) {
       return res.status(404).json({ error: `entity '${entityName}' not found` });
     }
-    const rowIdx = (entity.data || []).findIndex((r) => String(r.Name) === String(id));
+    const rowIdx = findRowIndexByEffectiveName(entity, id);
     if (rowIdx < 0) {
       return res.status(404).json({ error: `${entityName} with Name='${id}' not found` });
     }
