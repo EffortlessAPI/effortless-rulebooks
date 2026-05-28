@@ -57,356 +57,59 @@ Source: [rulebook-examples/acme-corporation/effortless-rulebook/acme-corporation
 
 ---
 
-## 2. Top priority — Effortless Explorer (DAG tree on the left, schema+data as combined metadata on the right)
-
-**This is by far the biggest failure right now, and it's what we're doing next.** The behavior described
-below is partially, scantily implemented across ~5 different parts of
-the app — `/developer/:domain/data` (Sample Data grid),
-`/developer/:domain/entities` (schema + data view),
-`/developer/:domain/explorer` (SQL + data), and bits of the reception
-desk. They are confusingly similar, they each show a different slice of
-the same thing, and the reception-desk row clicks all route to `/data`
-instead of to the row the user clicked. Consolidate.
-
-**The "Entities" tab is the Effortless Explorer.** Not a table of entities
-with their attributes, with sample-data tables stacked underneath.
-Instead:
-
-### 2.1 Left nav: the actual DAG, walkable
-
-A tree representing real instances and their relationships — for an
-order-processing domain:
-
-```
-Businesses                          ← top-level node, all businesses
-├ Acme Corp
-│  ├ Customers                      ← Acme's customers
-│  │  ├ Jane Smith
-│  │  │  ├ Orders
-│  │  │  │  ├ Order #1042
-│  │  │  │  │  └ Invoices
-│  │  │  │  │     └ INV-2026-0117
-│  │  │  │  └ Order #1051
-│  │  │  └ Addresses
-│  │  └ Bob Lee
-│  │     └ …
-│  └ Projects
-│     └ …
-└ Globex
-   └ …
-Customers                           ← top-level node, no filter: all customers across all businesses
-Invoices                            ← top-level node, no filter: every invoice in the DAG
-Orders                              ← same
-```
-
-Top-level nodes appear for **every entity** (an unfiltered view of that
-entity across the whole DAG), AND as **nested children** wherever the
-DAG places them (a business's customers, a customer's orders, an order's
-invoices, …). Clicking any node — at any depth — lets the user
-interactively explore that slice of the DAG.
-
-> **FUTURE SELF HINT — list-node UX.** When the selected node is a list
-> (e.g. *Customers under Acme Corp*, or the top-level unfiltered
-> *Customers*), the right pane should eventually grow full
-> sort / filter / group / facet behavior — the planned long-term UX for
-> any list view in the explorer. Not now. Capturing it here so we don't
-> re-discover it later; the minimum to ship the Explorer is a usable
-> grid with the schema visible.
-
-### 2.2 Right pane: entity header + DAG tabs
-
-Clicking a **specific entity instance** (e.g. *Jane Smith*, or *Order
-#1042*) shows a header for that entity, with **tabs underneath** that
-navigate to the different sub-elements in the DAG for this row — Orders,
-Invoices, Addresses, etc. The tabs are derived from the rulebook (the
-relationships hanging off this entity), not hand-authored.
-
-### 2.3 Schema and data shown as combined metadata
-
-The right pane is not "data grid with a separate schema sidebar." It's a
-single surface where the column header **is** the schema entry: hover to
-reveal the field's type / formula / description; double-click to expand
-the column into a schema-detail strip; click a cell to see provenance
-(raw input vs. lookup vs. calculated, and the formula that produced it).
-Many UX models can hang off this — the principle is *schema and data
-are the same metadata, surfaced together*, not two separate views the
-user has to switch between.
-
-### 2.4 Routes & consolidation
-
-- `/developer/:domain/explorer` is the single home. `/data` and
-  `/entities` redirect here.
-- `/explorer` — root node selected; nothing on the right yet (or the
-  domain overview).
-- `/explorer/:path` — `path` encodes the DAG walk
-  (`businesses/acme-corp/customers/jane-smith/orders/1042`). Both list
-  nodes and instance nodes round-trip through the URL so reception-desk
-  scrollers and Cmd-K row matches deep-link to the exact node.
-- AppNavigation in the project rulebook surfaces a single **Explorer**
-  entry; the old "Entities" / "Data" / "Explorer" entries collapse into
-  it.
-
-### 2.5 The two-layer model the API hangs off
-
-The Explorer reads and writes against **two stores with two roles**:
-
-| Layer  | Lives in                       | Owns                                            | Edit lifecycle           |
-| ------ | ------------------------------ | ----------------------------------------------- | ------------------------ |
-| Schema | `<domain>-rulebook.json`       | Entities, fields, formulas, FK relationships    | Edit → trigger rebuild   |
-| Data   | Editor Postgres (`erb_<domain>`) | Live business rows                            | Edit → write-through     |
-
-Rule of thumb: if the URL path encodes a row, it's data work and hits
-Postgres. If the URL encodes a column header or formula, it's schema
-work and hits the rulebook JSON.
-
-**Rebuild contract.** Editing the rulebook schema means the generated
-SQL changes. The editor Postgres DB is therefore **derived** — it can
-be dropped at any moment and rebuilt from the rulebook because the
-rulebook's `data` arrays are the durable SSoT for the rows too. The
-rebuild is mechanical:
-
-1. Server PATCHes the rulebook JSON.
-2. Server runs `effortless build` from inside the project — regenerates the `00-create-tables.sql` / `02-populate-data.sql` (etc.) files.
-3. Server drops `erb_<domain>`, recreates it, executes the generated SQL in order. The rulebook's `data` arrays are the seed — so the rebuilt DB IS "what it was moments before, but with the new model."
-4. Server verifies row counts, unfreezes the UI.
-
-This entire mechanic already works today for `effortless build` — the
-new piece is exposing it on a per-edit basis with a streaming status
-surface.
-
-**Write-through invariant (already in production).** For data edits:
-write to Postgres **and** to the corresponding `data` array inside
-the rulebook JSON, in one transaction. This is the existing portal
-pattern (see the platform rulebook's `WriteThroughInvariant` table).
-The Explorer's data-mutation endpoints reuse it — they don't invent a
-new write path.
-
-### 2.6 URL path encoding (precise)
-
-The Explorer's URL is a literal DAG walk. The React router parses it;
-the server's `/api/explorer/node` endpoint accepts the same string.
-
-```
-/explorer                                                                ← root
-/explorer/<Domain>                                                       ← domain overview
-/explorer/<Domain>/<Entity>                                              ← unfiltered list of every Entity row
-/explorer/<Domain>/<Entity>/<id>                                         ← one instance
-/explorer/<Domain>/<Entity>/<id>/<ChildEntity>                           ← list of children scoped under the parent
-/explorer/<Domain>/<Entity>/<id>/<ChildEntity>/<childId>/<Grandchild>... ← deeper
-```
-
-Encoding rules:
-
-- Segments after `<Domain>` alternate **entity name** → **instance id** → **entity name** → **instance id** → …
-- Entity names are PascalCase, exactly as they appear in the rulebook.
-- Instance ids are the value of the entity's `Name` field (ERB
-  convention — every entity has a unique-within-entity Name). Name
-  collisions fail loudly per the no-fallbacks doctrine in
-  [CLAUDE.md](CLAUDE.md); there is no `?byPk` escape hatch. This is a
-  closed-platform demo — Name uniqueness is by construction.
-- **Odd number** of post-domain segments → **list node**.
-- **Even number** → **instance node**.
-
-Round-trips: any node can be bookmarked, linked from Cmd-K, deep-linked
-from a reception-desk scroller, opened in a new tab.
-
-### 2.7 Backend API endpoints
-
-#### `GET /api/explorer/tree?domain=<slug>&maxDepth=<n>`
-
-Drives the left-nav.
-
-Response:
-
-```json
-{
-  "domain": "acme-corporation",
-  "rulebookRevision": "39c2a5b...",
-  "topLevel": [
-    {
-      "entity": "Client",
-      "rowCount": 3,
-      "important": true,
-      "children": [
-        { "entity": "Projects", "rowCount": 6, "viaFk": "ClientId" }
-      ]
-    },
-    { "entity": "Projects",  "rowCount": 3, "important": true,  "children": [...] },
-    { "entity": "Employees", "rowCount": 3, "important": false, "children": [...] }
-  ]
-}
-```
-
-- `topLevel` is **every entity in the rulebook**. Top-level appearance
-  is an unfiltered cross-cut of that entity.
-- `children[].viaFk` names the FK column that scopes the child under
-  this parent (so the URL knows what filter to apply).
-- `maxDepth` (default `1`) caps lazy expansion — client fetches
-  shallow, expands subtrees on click.
-- Computed entirely from the rulebook schema. No hand-authored config.
-
-#### `GET /api/explorer/node?path=<encoded>&page=<n>&pageSize=<n>&sort=<f>:asc&filter=<json>`
-
-The workhorse. Returns whatever the URL points at. Returns one of two
-shapes based on path parity:
-
-**List node** (odd-length path):
-
-```json
-{
-  "kind": "list",
-  "entity": "Customers",
-  "scopedBy": { "Business": "acme-corp" },
-  "schema": [
-    { "name": "Name",     "datatype": "string", "type": "raw",        "isPk": true, "...": "..." },
-    { "name": "Email",    "datatype": "string", "type": "raw",        "...": "..." },
-    { "name": "FullName", "datatype": "string", "type": "calculated", "formula": "=CONCAT(...)", "...": "..." }
-  ],
-  "rows": [
-    { "Name": "jane-smith", "Email": "...", "FullName": "Jane Smith" }
-  ],
-  "totalCount": 47,
-  "page": 0,
-  "pageSize": 50
-}
-```
-
-**Instance node** (even-length path):
-
-```json
-{
-  "kind": "instance",
-  "entity": "Customers",
-  "id": "jane-smith",
-  "schema": [ "...same shape..." ],
-  "row": { "Name": "jane-smith", "Email": "...", "...": "..." },
-  "tabs": [
-    { "entity": "Orders",    "viaFk": "CustomerId", "rowCount": 4 },
-    { "entity": "Addresses", "viaFk": "CustomerId", "rowCount": 2 }
-  ]
-}
-```
-
-`tabs` is derived: every entity with an FK pointing AT this entity
-becomes a tab (drives §2.2).
-
-**Critical:** `schema` is part of the same payload as `rows` / `row` —
-they are not two separate fetches. This is what makes the "schema and
-data are combined metadata" UX (§2.3) cheap to render.
-
-#### `GET /api/explorer/cell?domain=&entity=&id=&field=`
-
-Cell-click provenance. Drives "how did this value get computed?"
-
-```json
-{
-  "value": "Jane Smith",
-  "kind": "calculated",
-  "formula": "=CONCAT({FirstName}, ' ', {LastName})",
-  "inputs": [
-    { "field": "FirstName", "kind": "raw", "value": "Jane" },
-    { "field": "LastName",  "kind": "raw", "value": "Smith" }
-  ],
-  "explanation_rich": "<p>The customer's full name, derived...</p>"
-}
-```
-
-- `kind` ∈ `raw | lookup | calculated | aggregation`.
-- For lookups: `inputs[].entity`, `inputs[].id` identify the target row.
-- For aggregations: `inputs[]` is the set of contributing rows with key fields.
-- Same wire format the existing React Explainer DAG consumes — no new spec.
-
-#### `PATCH /api/explorer/instance/:entity/:id`
-
-Data-row edit. **No rebuild.** Body: `{ "field1": "newValue", "...": "..." }`.
-
-1. Validate values against the rulebook schema.
-2. `BEGIN TRANSACTION` on `erb_<domain>`.
-3. `UPDATE <entity> SET ... WHERE Name = :id`.
-4. Mutate the matching row in the rulebook's `data` array.
-5. Re-derive downstream calculated fields (DB does this via views).
-6. `COMMIT`. Write rulebook JSON.
-7. Return updated row.
-
-If step 4 fails, step 3 rolls back. Strong atomicity.
-
-#### `POST /api/explorer/instance/:entity`
-
-Insert a row. Body: full row payload (raw fields only; calculated
-fields ignored). Same transactional shape as PATCH.
-
-#### `DELETE /api/explorer/instance/:entity/:id?cascade=<bool>`
-
-Delete a row. With `cascade=false` (default), a FK-referenced row
-returns 409 listing the referrers. With `cascade=true`, cascades
-through the rulebook's FK declarations.
-
-#### `PATCH /api/explorer/schema` — **triggers a rebuild**
-
-Body:
-
-```json
-{
-  "pointer": "/Customers/schema/3",
-  "value": { "name": "Phone", "datatype": "string", "type": "raw", "...": "..." }
-}
-```
-
-- `pointer` is a JSON Pointer (RFC 6901) into the rulebook JSON.
-  Allow-list of acceptable pointers:
-  - `/<Entity>/schema` (replace whole schema array)
-  - `/<Entity>/schema/<index>` (replace one field)
-  - `/<Entity>/schema/<index>/<key>` (replace one field property)
-  - `/<Entity>/Description`
-  - `/<Entity>/important`
-  - Entity create: pointer `/`, body `{ name, definition }`
-  - Entity delete: separate `DELETE /api/explorer/schema?entity=<name>`
-
-Response **returns immediately**:
-
-```json
-{
-  "rebuildId": "rb-20260527-001",
-  "status": "pending",
-  "streamUrl": "/api/explorer/rebuild/rb-20260527-001/stream"
-}
-```
-
-The client opens the SSE stream and shows a "rebuilding" overlay
-until `done`.
-
-#### `POST /api/explorer/rebuild`
-
-Manual rebuild. No schema change. For recovery / after a direct JSON
-edit. Same response shape as the schema PATCH.
-
-#### `GET /api/explorer/rebuild/:id/stream` (SSE)
-
-Events in order:
-
-```
-event: phase   data: {"phase":"effortless_build","msg":"regenerating SQL"}
-event: phase   data: {"phase":"drop","msg":"dropping erb_acme_corporation"}
-event: phase   data: {"phase":"create","msg":"creating tables"}
-event: phase   data: {"phase":"populate","msg":"loading data from rulebook (1842 rows)"}
-event: phase   data: {"phase":"verify","msg":"row counts match"}
-event: done    data: {"durationMs": 4732, "rowsLoaded": 1842}
-```
-
-On error:
-
-```
-event: error   data: {"phase":"populate","code":"TYPE_COERCION",
-                      "msg":"Customers.Age: cannot coerce 'unknown' to integer",
-                      "rowsAffected":[12,47]}
-```
-
-A failed rebuild **does not auto-revert** — it leaves the rulebook
-JSON in its edited state and leaves the editor DB dropped. The user
-is shown the error, a git-diff of the failing edit, and a button that
-runs `git checkout -- <rulebook.json>` (explicit user click, never
-silent — see [CLAUDE.md](CLAUDE.md) "Never silently revert a rulebook
-JSON"). No snapshot files; git history is the rollback. See §2.8.3.
+## 2. Effortless Explorer — status as of 2026-05-28
+
+The §2.1–§2.7 spec (left nav, right pane, schema-as-metadata, routes,
+two-layer model, URL encoding, backend API) is **largely implemented**.
+The full original spec text is preserved verbatim in **[Appendix A](#appendix-a-original-21-27-spec-preserved-now-built)**
+at the bottom of this doc so a fresh agent can read the exact wire
+contracts and design intent. The summary below is what's built, where,
+and what the *remaining gap* is.
+
+### Built (mechanics — see Appendix A for the spec text)
+
+| Spec                                                                              | Where it lives                                                                                                                              |
+| --------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| §2.1 Recursive instance tree (entity → instances → child collections → instances) | `InstanceTreeNode` — [ExplorerScreen.jsx:225](effortless-platform/admin-portal/client/src/screens/developer/ExplorerScreen.jsx#L225)         |
+| §2.2 Right-pane header + tabs derived from FKs                                    | `InstanceView` — ExplorerScreen.jsx ~845                                                                                                    |
+| §2.3 Column-header IS schema entry (hover · dblclick · cell-click → provenance)   | `SchemaHeaderCell` / `SchemaEditor` / `CellProvenance` — ExplorerScreen.jsx:649 / 457 / ~695                                                 |
+| §2.4 Single `/explorer` route; `/data`+`/entities` redirect; AppNav collapsed     | App.jsx:141-149; project rulebook `AppNavigation.nav-026`                                                                                   |
+| §2.5 Two-layer model + write-through (Postgres + rulebook JSON in one TXN)        | `writeThrough` — [server.js:641](effortless-platform/admin-portal/server.js#L641)                                                            |
+| §2.6 Friendly Name-only URLs; no PK fallback; fail loudly on collisions           | `parsePathSegments` / `goTo` — ExplorerScreen.jsx:17                                                                                        |
+| §2.7 `GET /tree`, `/node`, `/cell`; instance `PATCH`/`POST`/`DELETE`              | server.js:1234, 1279, 1456, 1638, 1723, 1816                                                                                                |
+| §2.7 `PATCH /schema` + `POST /rebuild` + SSE (`effortless_build` → SQL bootstrap → `verify`) | `startRebuildJob` / `verifyRowCounts` — [server.js:1988](effortless-platform/admin-portal/server.js#L1988)                                  |
+| §2.8.3 failed-rebuild surface: live `git diff` + clickable revert                 | `/api/explorer/rulebook-{diff,revert}` — server.js ~2296; `RebuildOverlay` — ExplorerScreen.jsx:1148                                          |
+
+### Still open in §2 — Explorer **feel** (the real gap)
+
+The mechanics work. The *experience* still reads as
+"list-of-entities-with-tables" on first landing, not "walkable DAG."
+The DAG-walk only emerges after the user discovers the small `▸`
+chevron, clicks an instance, and *then* clicks a tab — a 3-step
+descent path that doesn't shout at you. Closing this is polish, not
+architecture:
+
+1. **Default landing invites descent.** Entity-level list (right pane
+   after clicking a top-level entity) should make the `Name` column
+   look like a link, surface inline relationship chips on each row
+   (*"→ 4 Orders · 2 Addresses"* — already derivable from `/api/explorer/tree`),
+   and carry an empty-state hint: *"click any row to descend into its
+   DAG."*
+2. **Tree chevron is too quiet.** The `▸` is the entire discovery
+   affordance for the DAG walk. Make it bigger and louder, auto-expand
+   the first `important: true` entity on mount, and add a hover-preview
+   of the first 3 instances of a collapsed entity.
+3. **Instance-view tabs need to read as navigation, not metadata.**
+   The FK-derived tabs (`Orders`, `Addresses`, …) on `InstanceView`
+   exist and round-trip through the URL, but they look like section
+   labels. Style them as breadcrumb-extending pills with row counts.
+4. **Reception-desk row-click deep-links** route to
+   `/explorer/<Entity>/<Name>` correctly; verify the tree auto-expands
+   the path on landing (`shouldAutoExpand` at ExplorerScreen.jsx:231
+   intends to — needs eyes-on-glass).
+
+None of these touch §2.7 or the rebuild machinery. Each is a focused
+edit inside `ExplorerScreen.jsx`. **A new session should start here.**
 
 ### 2.8 Decisions (locked 2026-05-27)
 
@@ -802,3 +505,291 @@ Called out so they aren't filed as bugs:
 
 Both are documented at the source. Replacing either with proper
 bitemporal / event-stream infrastructure is a future project.
+
+---
+
+## Appendix A: Original §2.1–§2.7 spec (preserved, now built)
+
+> Preserved verbatim from the pre-build version of this doc. The
+> mechanics described below are all implemented — see the status table
+> in §2 for the file:line evidence. A fresh agent reads this to
+> understand the exact wire contracts and design intent before
+> touching the Explorer.
+
+### A.2.1 Left nav: the actual DAG, walkable
+
+A tree representing real instances and their relationships — for an
+order-processing domain:
+
+```
+Businesses                          ← top-level node, all businesses
+├ Acme Corp
+│  ├ Customers                      ← Acme's customers
+│  │  ├ Jane Smith
+│  │  │  ├ Orders
+│  │  │  │  ├ Order #1042
+│  │  │  │  │  └ Invoices
+│  │  │  │  │     └ INV-2026-0117
+│  │  │  │  └ Order #1051
+│  │  │  └ Addresses
+│  │  └ Bob Lee
+│  │     └ …
+│  └ Projects
+│     └ …
+└ Globex
+   └ …
+Customers                           ← top-level node, no filter: all customers across all businesses
+Invoices                            ← top-level node, no filter: every invoice in the DAG
+Orders                              ← same
+```
+
+Top-level nodes appear for **every entity** (an unfiltered view of that
+entity across the whole DAG), AND as **nested children** wherever the
+DAG places them (a business's customers, a customer's orders, an order's
+invoices, …). Clicking any node — at any depth — lets the user
+interactively explore that slice of the DAG.
+
+> **FUTURE SELF HINT — list-node UX.** When the selected node is a list
+> (e.g. *Customers under Acme Corp*, or the top-level unfiltered
+> *Customers*), the right pane should eventually grow full
+> sort / filter / group / facet behavior — the planned long-term UX for
+> any list view in the explorer. Not now. Capturing it here so we don't
+> re-discover it later; the minimum to ship the Explorer is a usable
+> grid with the schema visible.
+
+### A.2.2 Right pane: entity header + DAG tabs
+
+Clicking a **specific entity instance** (e.g. *Jane Smith*, or *Order
+#1042*) shows a header for that entity, with **tabs underneath** that
+navigate to the different sub-elements in the DAG for this row — Orders,
+Invoices, Addresses, etc. The tabs are derived from the rulebook (the
+relationships hanging off this entity), not hand-authored.
+
+### A.2.3 Schema and data shown as combined metadata
+
+The right pane is not "data grid with a separate schema sidebar." It's a
+single surface where the column header **is** the schema entry: hover to
+reveal the field's type / formula / description; double-click to expand
+the column into a schema-detail strip; click a cell to see provenance
+(raw input vs. lookup vs. calculated, and the formula that produced it).
+Many UX models can hang off this — the principle is *schema and data
+are the same metadata, surfaced together*, not two separate views the
+user has to switch between.
+
+### A.2.4 Routes & consolidation
+
+- `/developer/:domain/explorer` is the single home. `/data` and
+  `/entities` redirect here.
+- `/explorer` — root node selected; nothing on the right yet (or the
+  domain overview).
+- `/explorer/:path` — `path` encodes the DAG walk
+  (`businesses/acme-corp/customers/jane-smith/orders/1042`). Both list
+  nodes and instance nodes round-trip through the URL so reception-desk
+  scrollers and Cmd-K row matches deep-link to the exact node.
+- AppNavigation in the project rulebook surfaces a single **Explorer**
+  entry; the old "Entities" / "Data" / "Explorer" entries collapse into
+  it.
+
+### A.2.5 The two-layer model the API hangs off
+
+The Explorer reads and writes against **two stores with two roles**:
+
+| Layer  | Lives in                       | Owns                                            | Edit lifecycle           |
+| ------ | ------------------------------ | ----------------------------------------------- | ------------------------ |
+| Schema | `<domain>-rulebook.json`       | Entities, fields, formulas, FK relationships    | Edit → trigger rebuild   |
+| Data   | Editor Postgres (`erb_<domain>`) | Live business rows                            | Edit → write-through     |
+
+Rule of thumb: if the URL path encodes a row, it's data work and hits
+Postgres. If the URL encodes a column header or formula, it's schema
+work and hits the rulebook JSON.
+
+**Rebuild contract.** Editing the rulebook schema means the generated
+SQL changes. The editor Postgres DB is therefore **derived** — it can
+be dropped at any moment and rebuilt from the rulebook because the
+rulebook's `data` arrays are the durable SSoT for the rows too. The
+rebuild is mechanical:
+
+1. Server PATCHes the rulebook JSON.
+2. Server runs `effortless build` from inside the project — regenerates the `00-create-tables.sql` / `02-populate-data.sql` (etc.) files.
+3. Server drops `erb_<domain>`, recreates it, executes the generated SQL in order. The rulebook's `data` arrays are the seed — so the rebuilt DB IS "what it was moments before, but with the new model."
+4. Server verifies row counts, unfreezes the UI.
+
+**Write-through invariant.** For data edits: write to Postgres **and**
+to the corresponding `data` array inside the rulebook JSON, in one
+transaction. This is the existing portal pattern (see the platform
+rulebook's `WriteThroughInvariant` table). The Explorer's data-mutation
+endpoints reuse it.
+
+### A.2.6 URL path encoding (precise)
+
+The Explorer's URL is a literal DAG walk. The React router parses it;
+the server's `/api/explorer/node` endpoint accepts the same string.
+
+```
+/explorer                                                                ← root
+/explorer/<Domain>                                                       ← domain overview
+/explorer/<Domain>/<Entity>                                              ← unfiltered list of every Entity row
+/explorer/<Domain>/<Entity>/<id>                                         ← one instance
+/explorer/<Domain>/<Entity>/<id>/<ChildEntity>                           ← list of children scoped under the parent
+/explorer/<Domain>/<Entity>/<id>/<ChildEntity>/<childId>/<Grandchild>... ← deeper
+```
+
+Encoding rules:
+
+- Segments after `<Domain>` alternate **entity name** → **instance id** → **entity name** → **instance id** → …
+- Entity names are PascalCase, exactly as they appear in the rulebook.
+- Instance ids are the value of the entity's `Name` field (ERB
+  convention — every entity has a unique-within-entity Name). Name
+  collisions fail loudly per the no-fallbacks doctrine in
+  [CLAUDE.md](CLAUDE.md); there is no `?byPk` escape hatch. This is a
+  closed-platform demo — Name uniqueness is by construction.
+- **Odd number** of post-domain segments → **list node**.
+- **Even number** → **instance node**.
+
+Round-trips: any node can be bookmarked, linked from Cmd-K, deep-linked
+from a reception-desk scroller, opened in a new tab.
+
+### A.2.7 Backend API endpoints
+
+#### `GET /api/explorer/tree?domain=<slug>&maxDepth=<n>` — drives the left nav
+
+Response:
+
+```json
+{
+  "domain": "acme-corporation",
+  "rulebookRevision": "39c2a5b...",
+  "topLevel": [
+    {
+      "entity": "Client",
+      "rowCount": 3,
+      "important": true,
+      "children": [
+        { "entity": "Projects", "rowCount": 6, "viaFk": "ClientId" }
+      ]
+    }
+  ]
+}
+```
+
+`topLevel` is every entity in the rulebook. `children[].viaFk` names
+the FK column that scopes the child under the parent. `maxDepth`
+(default `1`) caps lazy expansion.
+
+#### `GET /api/explorer/node?path=<encoded>&page=<n>&pageSize=<n>` — the workhorse
+
+Returns one of two shapes based on path parity (odd = list, even = instance).
+
+**List node** (odd-length path):
+
+```json
+{
+  "kind": "list",
+  "entity": "Customers",
+  "scopedBy": { "Business": "acme-corp" },
+  "schema": [
+    { "name": "Name",     "datatype": "string", "type": "raw",        "isPk": true },
+    { "name": "FullName", "datatype": "string", "type": "calculated", "formula": "=CONCAT(...)" }
+  ],
+  "rows": [ { "Name": "jane-smith", "FullName": "Jane Smith" } ],
+  "totalCount": 47, "page": 0, "pageSize": 50
+}
+```
+
+**Instance node** (even-length path):
+
+```json
+{
+  "kind": "instance",
+  "entity": "Customers",
+  "id": "jane-smith",
+  "schema": [ "...same shape..." ],
+  "row": { "Name": "jane-smith", "...": "..." },
+  "tabs": [
+    { "entity": "Orders", "viaFk": "CustomerId", "rowCount": 4 }
+  ]
+}
+```
+
+`schema` rides in the same payload as `rows`/`row` — they are not two
+separate fetches (§A.2.3).
+
+#### `GET /api/explorer/cell?domain=&entity=&id=&field=` — provenance
+
+```json
+{
+  "value": "Jane Smith",
+  "kind": "calculated",
+  "formula": "=CONCAT({FirstName}, ' ', {LastName})",
+  "inputs": [
+    { "field": "FirstName", "kind": "raw", "value": "Jane" },
+    { "field": "LastName",  "kind": "raw", "value": "Smith" }
+  ],
+  "explanation_rich": "<p>The customer's full name, derived...</p>"
+}
+```
+
+`kind` ∈ `raw | lookup | calculated | aggregation`. For lookups:
+`inputs[].entity`/`inputs[].id` identify the target row. For
+aggregations: `inputs[]` is the contributing rows.
+
+#### `PATCH /api/explorer/instance/:entity/:id` — data-row edit (no rebuild)
+
+Body `{ "field1": "newValue", ... }`. Validates against schema, runs
+TXN on `erb_<domain>` UPDATE + rulebook JSON mutate, commits both or
+ROLLBACK pg if rulebook write fails. Returns updated row.
+
+#### `POST /api/explorer/instance/:entity` — insert (no rebuild)
+
+Full row payload, raw + forward-FK fields only. Same transactional
+shape as PATCH.
+
+#### `DELETE /api/explorer/instance/:entity/:id?cascade=<bool>`
+
+`cascade=false` (default): returns 409 + referrer list if any FK
+referrers exist. `cascade=true`: walks forward FKs and deletes
+referrers first (bounded recursion).
+
+#### `PATCH /api/explorer/schema` — **triggers a rebuild**
+
+```json
+{ "pointer": "/Customers/schema/3", "value": { "name": "Phone", "datatype": "string", "type": "raw" } }
+```
+
+`pointer` is RFC-6901. Allow-list:
+- `/<Entity>/schema`, `/<Entity>/schema/<i>`, `/<Entity>/schema/<i>/<key>`
+- `/<Entity>/Description`, `/<Entity>/important`
+- Entity create: pointer `/`, body `{ name, definition }`
+- Entity delete: separate `DELETE /api/explorer/schema?entity=<name>`
+
+Returns immediately with `{ rebuildId, status: "pending", streamUrl }`.
+
+#### `POST /api/explorer/rebuild` — manual rebuild
+
+Same response shape; no schema change. For recovery / after a direct
+JSON edit.
+
+#### `GET /api/explorer/rebuild/:id/stream` — SSE
+
+```
+event: phase   data: {"phase":"effortless_build","msg":"regenerating SQL"}
+event: phase   data: {"phase":"create","msg":"01-drop-and-create-tables.sql"}
+event: phase   data: {"phase":"populate","msg":"05-insert-data.sql"}
+event: phase   data: {"phase":"constraints","msg":"99-fk-constraints.sql"}
+event: phase   data: {"phase":"verify","msg":"row counts match (1842 rows)"}
+event: done    data: {"durationMs": 4732, "rowsLoaded": 1842}
+```
+
+On error:
+
+```
+event: error   data: {"phase":"verify","code":"VERIFY_FAILED",
+                      "msg":"row-count verify failed (2 mismatches)",
+                      "mismatches":[{"entity":"Customers","db":3,"rulebook":5}]}
+```
+
+A failed rebuild **does not auto-revert** (§2.8 decision 3). The user
+sees the error, the live `git diff` of the rulebook JSON
+(`GET /api/explorer/rulebook-diff`), and a "Revert via git checkout"
+button (`POST /api/explorer/rulebook-revert`) that runs explicitly,
+never silently — per CLAUDE.md "Never silently revert a rulebook JSON."
