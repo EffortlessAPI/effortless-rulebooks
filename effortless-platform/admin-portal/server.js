@@ -63,6 +63,18 @@ function setActiveDomain(name) {
   fs.writeFileSync(ACTIVE_DOMAIN_FILE, name + "\n");
 }
 
+// Single chokepoint for "which domain does this codepath act on?"
+// Per-request handlers pass the client's intent (URL/body domain); when that
+// is present it wins, unconditionally. Only background tasks and CLI-shape
+// code paths call this with no argument, in which case we fall back to
+// active-domain.txt — the CLI/conversation scratchpad. The UI must NEVER
+// be the source of this fallback: the URL is its source of truth, and every
+// request it makes carries `?domain=` (or `{ domain }` in the body).
+function resolveActiveDomain(explicit) {
+  if (explicit) return String(explicit);
+  return getActiveDomain();
+}
+
 function activeRulebookPath() {
   const domain = getActiveDomain();
   if (domain === "__top__") return TOP_RULEBOOK;
@@ -1232,7 +1244,7 @@ function findRowByName(entity, name) {
 // entity"). With maxDepth=0 the children arrays are empty (useful when the
 // client only wants entity row counts).
 app.get("/api/explorer/tree", (req, res) => {
-  const domain = req.query.domain || getActiveDomain();
+  const domain = resolveActiveDomain(req.query.domain);
   const maxDepth = Math.max(0, parseInt(req.query.maxDepth ?? "1", 10));
   try {
     const rb = loadRulebookForDomain(domain);
@@ -1277,7 +1289,7 @@ app.get("/api/explorer/tree", (req, res) => {
 // rows ride in the same payload (§2.3: schema and data are combined metadata,
 // not two separate fetches).
 app.get("/api/explorer/node", (req, res) => {
-  const domain = req.query.domain || getActiveDomain();
+  const domain = resolveActiveDomain(req.query.domain);
   const pathStr = req.query.path || "";
   const page = Math.max(0, parseInt(req.query.page ?? "0", 10));
   const pageSize = Math.max(1, Math.min(500, parseInt(req.query.pageSize ?? "50", 10)));
@@ -1457,7 +1469,7 @@ function resolveLookup(rb, thisRow, formula) {
 }
 
 app.get("/api/explorer/cell", (req, res) => {
-  const domain = req.query.domain || getActiveDomain();
+  const domain = resolveActiveDomain(req.query.domain);
   const entityName = req.query.entity;
   const id = req.query.id;
   const fieldName = req.query.field;
@@ -2398,7 +2410,7 @@ function runGit(args, cwd) {
 }
 
 app.get("/api/explorer/rulebook-diff", async (req, res) => {
-  const domain = req.query.domain || getActiveDomain();
+  const domain = resolveActiveDomain(req.query.domain);
   const rbPath = rulebookPathForDomain(domain);
   if (!fs.existsSync(rbPath)) {
     return res.status(404).json({ error: `rulebook not found at ${rbPath}` });
@@ -2416,7 +2428,7 @@ app.get("/api/explorer/rulebook-diff", async (req, res) => {
 });
 
 app.post("/api/explorer/rulebook-revert", requireEditor, async (req, res) => {
-  const domain = (req.body && req.body.domain) || getActiveDomain();
+  const domain = resolveActiveDomain(req.body && req.body.domain);
   const rbPath = rulebookPathForDomain(domain);
   if (!fs.existsSync(rbPath)) {
     return res.status(404).json({ error: `rulebook not found at ${rbPath}` });
@@ -2668,6 +2680,178 @@ app.post("/api/tools/install", requireBuilder, (req, res) => {
       error: err ? String(err.message || err) : null,
     });
   });
+});
+
+// =============================================================================
+// Effortless Tools — folder/tool tree (§3 of DOMAIN_UX_VISION.md)
+// =============================================================================
+// `GET /api/effortless-tools/tree` is the source of truth for the new Tools
+// page's left rail. It mirrors the active project's actual on-disk folder
+// structure under the project root, parses the project's effortless.json,
+// and attributes each ProjectTranspilers entry to the folder its RelativePath
+// points at. Folders that exist on disk but have no tool attribution still
+// appear in the tree (with empty tool lists) so the +-to-add row in §3.2 has
+// somewhere to live.
+//
+// This endpoint replaces the lying combination of `/api/substrates` (reads
+// the platform rulebook — same ~10 entries regardless of domain) and
+// `/api/tools/installed` (reads only the root effortless.json, ignores
+// classification). Everything here comes from THIS project's on-disk state.
+// =============================================================================
+
+// Locate the active project's effortless.json. For a demo domain this is at
+// `rulebook-examples/<domain>/effortless.json`. For the platform (__top__)
+// the project root is `effortless-platform/`, NOT the repo root — `effortless
+// build` for the platform is run from inside `effortless-platform/`, so that
+// is the project root the tools tree should mirror.
+//
+// Why this isn't a fallback: each branch is the deterministically-correct
+// path for its category (see CLAUDE.md, the "defaults derived from the SSoT
+// are NOT fallbacks" carve-out). The platform IS at effortless-platform/;
+// a demo IS at rulebook-examples/<domain>/. Neither is a guess substituted
+// for a failure.
+function effortlessProjectRoot() {
+  const domain = getActiveDomain();
+  if (domain === "__top__") return PLATFORM_DIR;
+  return path.join(RULEBOOK_EXAMPLES, domain);
+}
+
+// Skip dotfile dirs and node_modules; everything else is a real project
+// subfolder worth showing in the tree (per §3.1: empty folders still appear).
+function isProjectSubfolder(name) {
+  if (!name) return false;
+  if (name.startsWith(".")) return false;
+  if (name === "node_modules") return false;
+  return true;
+}
+
+// Extract the transpiler "executable" name from an effortless.json
+// CommandLine. Examples:
+//   "rulebook-to-postgres -i ..."                       → "rulebook-to-postgres"
+//   "http://localhost:4242/rulebook-to-python -i ..."   → "rulebook-to-python"
+//   "airtable-to-rulebook -o ... -account airtable"     → "airtable-to-rulebook"
+//   "-exec ./init-db.sh"                                → "./init-db.sh" (isExec)
+function parseToolFromCommandLine(cmd) {
+  const trimmed = (cmd || "").trim();
+  if (!trimmed) return { displayName: "", installUrl: null, isExec: false };
+  const tokens = trimmed.split(/\s+/);
+  const first = tokens[0];
+  if (first === "-exec") {
+    return { displayName: tokens[1] || "-exec", installUrl: null, isExec: true };
+  }
+  if (first.startsWith("http://") || first.startsWith("https://")) {
+    const tail = first.replace(/^https?:\/\/[^/]+\//, "");
+    return { displayName: tail || first, installUrl: first, isExec: false };
+  }
+  return { displayName: first, installUrl: null, isExec: false };
+}
+
+// Classify a tool. Three platform-level "docs" tools get bespoke pages per
+// §3.4 (airtable-to-rulebook, rulebook-to-english, rulebook-to-test-suite).
+// Everything else `rulebook-to-X` is a substitutable execution-substrate.
+const PLATFORM_DOCS_TOOLS = new Set([
+  "airtable-to-rulebook",
+  "rulebook-to-english",
+  "rulebook-to-test-suite",
+]);
+
+function classifyTool(displayName, isExec) {
+  if (isExec) return "exec-hook";
+  if (PLATFORM_DOCS_TOOLS.has(displayName)) return "platform-docs";
+  if (displayName.startsWith("airtable-to-")) return "input-spoke";
+  if (displayName === "rulebook-to-airtable") return "input-spoke";
+  return "execution-substrate";
+}
+
+// Normalize an effortless.json RelativePath ("/python", "python", "")
+// into a tree-folder path relative to the project root. Empty string ("")
+// means the project root itself.
+function normalizeFolderPath(rel) {
+  if (!rel) return "";
+  const trimmed = String(rel).replace(/^\/+|\/+$/g, "");
+  return trimmed;
+}
+
+app.get("/api/effortless-tools/tree", (req, res) => {
+  try {
+    const domain = getActiveDomain();
+    const projectRoot = effortlessProjectRoot();
+    const effortlessJsonAbs = path.join(projectRoot, "effortless.json");
+    if (!fs.existsSync(effortlessJsonAbs)) {
+      return res.status(404).json({
+        error: `effortless.json not found at ${effortlessJsonAbs}`,
+        domain, projectRoot,
+      });
+    }
+    const cfg = JSON.parse(fs.readFileSync(effortlessJsonAbs, "utf8"));
+    const transpilers = Array.isArray(cfg.ProjectTranspilers)
+      ? cfg.ProjectTranspilers
+      : [];
+
+    // Group tools by their attributed folder path.
+    const toolsByFolder = new Map();
+    transpilers.forEach((t, idx) => {
+      const folderPath = normalizeFolderPath(t.RelativePath);
+      const { displayName, installUrl, isExec } = parseToolFromCommandLine(t.CommandLine);
+      const kind = classifyTool(displayName, isExec);
+      const tool = {
+        id: `${cfg.Name || domain}__${idx}__${t.Name || displayName}`,
+        name: t.Name || "",
+        displayName,
+        kind,
+        installUrl,
+        relativePath: t.RelativePath || "",
+        commandLine: t.CommandLine || "",
+        isDisabled: !!t.IsDisabled,
+        lastVersionUsed: t.LastVersionUsed || null,
+        lastUrl: t.LastUrl || null,
+        description: t.Description || "",
+      };
+      if (!toolsByFolder.has(folderPath)) toolsByFolder.set(folderPath, []);
+      toolsByFolder.get(folderPath).push(tool);
+    });
+
+    // Discover folders that exist on disk (one level deep — the tree's
+    // visible structure in §3.1 is one level under the project root).
+    const onDiskFolders = new Set();
+    for (const entry of fs.readdirSync(projectRoot, { withFileTypes: true })) {
+      if (entry.isDirectory() && isProjectSubfolder(entry.name)) {
+        onDiskFolders.add(entry.name);
+      }
+    }
+
+    // Union: every folder we know about — either real on disk, or
+    // attributed by a tool's RelativePath (which may point at a folder
+    // that hasn't been created yet because the tool hasn't been run).
+    const allFolderPaths = new Set(["", ...onDiskFolders, ...toolsByFolder.keys()]);
+
+    const folders = [...allFolderPaths]
+      .sort((a, b) => {
+        if (a === "") return -1;
+        if (b === "") return 1;
+        return a.localeCompare(b);
+      })
+      .map((p) => {
+        const abs = p === "" ? projectRoot : path.join(projectRoot, p);
+        return {
+          path: p,
+          name: p === "" ? (cfg.Name || path.basename(projectRoot)) : p,
+          existsOnDisk: fs.existsSync(abs),
+          tools: toolsByFolder.get(p) || [],
+        };
+      });
+
+    res.json({
+      domain,
+      projectName: cfg.Name || null,
+      projectRoot,
+      effortlessJsonPath: path.relative(projectRoot, effortlessJsonAbs),
+      rulebookPath: path.relative(projectRoot, activeRulebookPath()),
+      folders,
+    });
+  } catch (e) {
+    res.status(500).json({ error: String(e.message || e) });
+  }
 });
 
 // --- tech tools ---
