@@ -4430,7 +4430,7 @@
         "Flavor": "tutorial-ladder",
         "Complexity": "minimal",
         "EntityCount": 3,
-        "CalculatedCount": 2,
+        "CalculatedCount": 3,
         "AggregationCount": 0,
         "LookupCount": 0,
         "LearningFocus": "Smallest viable rulebook with a calculated field — the 'Hello, formulas' tutorial.",
@@ -4829,10 +4829,10 @@
         "DisplayName": "planar-unit-discovery",
         "Flavor": "aggregation-heavy",
         "Complexity": "advanced",
-        "EntityCount": 35,
-        "CalculatedCount": 104,
-        "AggregationCount": 28,
-        "LookupCount": 43,
+        "EntityCount": 36,
+        "CalculatedCount": 110,
+        "AggregationCount": 33,
+        "LookupCount": 49,
         "LearningFocus": "Auto-discovered demo. Replace this stub with a one-line description of what planar-unit-discovery is designed to teach.",
         "GoodAnswerKeyFor": null
       }

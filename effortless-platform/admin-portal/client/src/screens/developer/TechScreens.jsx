@@ -84,8 +84,18 @@ export function TechJsonScreen({ screen }) {
 
   const save = async () => {
     try {
-      JSON.parse(text);
-      await fetch("/api/tech/rulebook-json", { method: "PUT", headers: { "Content-Type": "text/plain" }, body: text });
+      JSON.parse(text); // local syntax check
+      if (!text || !text.trim()) throw new Error("nothing to save — textarea is empty");
+      const res = await fetch("/api/tech/rulebook-json", {
+        method: "PUT",
+        headers: { "Content-Type": "text/plain" },
+        body: text,
+      });
+      if (!res.ok) {
+        let serverMsg = "";
+        try { serverMsg = (await res.json()).error || ""; } catch { serverMsg = await res.text(); }
+        throw new Error(`HTTP ${res.status}: ${serverMsg || "save rejected by server"}`);
+      }
       toast("Saved rulebook JSON (and rebooted editor DB).");
     } catch (e) { toast("Invalid JSON or save failed: " + e.message, "error"); }
   };

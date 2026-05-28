@@ -24,7 +24,7 @@
         "datatype": "string",
         "type": "calculated",
         "nullable": true,
-        "Description": "Identifier for the customers.",
+        "Description": "Identifier for the cusfdsfdstomers.",
         "formula": "=SUBSTITUTE({{EmailAddress}}, \"@\", \"-\")",
         "important": true,
         "explanation_rich": "**A handle derived from the email, not the name.** `Name = SUBSTITUTE(EmailAddress, \"@\", \"-\")` — a single character swap turns an address into a slug. Worked example: `jane.smith@email.com` becomes `jane.smith-email.com`, which is what shows up as `Name` in every substrate. Change the customer's email and the handle re-derives itself in Postgres, Python, Excel, and OWL the next read — no application code, no migration."
@@ -42,6 +42,12 @@
         "type": "raw",
         "nullable": true,
         "Description": "First Name of the customer - used to make the full name"
+      },
+      {
+        "name": "Initials",
+        "datatype": "string",
+        "type": "calculated",
+        "formula": "=LEFT({{FirstName}}, 1) & LEFT({{LastName}}, 1)"
       },
       {
         "name": "LastName",

@@ -94,20 +94,22 @@ Two connections. Two purposes. Two categories. Same logic as the rulebook split 
 
 ---
 
-# `active-domain.txt` ≠ "what this conversation is about"
+# `active-domain.txt` is the CLI + conversation scratchpad. The UI doesn't touch it.
 
-`orchestration/active-domain.txt` is the **orchestrator's** SSoT. It tells `orchestrate.sh`, `take-test.sh`, the build scripts, and the running admin portal's substrate connections which demo to act on. It is the user's UI-side scratch dial — they flip it between turns to test how a change you just made plays out against a different demo. **It changes constantly, on a different schedule than this chat.**
+`orchestration/active-domain.txt` belongs to two things only: **CLI tools** (`orchestrate.sh`, `take-test.sh`, build scripts, the `take-test.py` runners — all the things invoked from a terminal) and **this Claude conversation** (when a turn legitimately needs to act on a specific domain). That's it. It is *not* shared with the admin portal UI.
 
-It is NOT a signal about which demo the user is asking you about in this conversation. Reading it to "figure out" what they mean is the same shape of mistake as a silent fallback — it substitutes a plausible-looking value (whatever they happened to be testing 30 seconds ago) for the real signal (what they actually wrote).
+The admin portal UI has its own source of truth: the URL path (`/developer/:domain/...`). The dropdown in `RoleTopBar` mutates the URL and nothing else. Every Explorer fetch carries `?domain=` derived from that URL. The server has a single chokepoint, `resolveActiveDomain(explicit)` in [server.js](effortless-platform/admin-portal/server.js), that returns the explicit per-request domain when present and only falls back to `active-domain.txt` for genuinely-non-request code paths (background tasks, startup). The UI never causes that fallback to fire.
+
+This means: when the user flips demos in the UI to test something, **the file does not change.** Three concurrent tabs on three different demos are fine. The conversation finds the file in whatever state it (or a CLI script, or a prior turn) last left it.
 
 **Rule for agents:**
 
-- The authoritative signal for "which demo does this turn concern" is **the user's message** — a name they typed, a URL they pasted, a row/table list they pasted, a screenshot, a file path. Trust that.
-- If the conversation has no such signal yet, **ask.** One sentence: "Which demo — `customer-fullname`, `nakedclaude-v1`, or something else?" That is cheaper than guessing wrong and getting derailed.
-- If a turn legitimately needs `active-domain.txt` flipped (e.g. you're about to run `orchestrate.sh` and the orchestrator reads from it), **ask first, then change it, then move on.** Do not treat its current contents as a hint about user intent — it is just the dial position from the last UI test.
-- Never let evidence in the user's message (e.g. "the customer-fullname demo shows table X") be overridden by what `active-domain.txt` says. The message wins. Always.
+- The authoritative signal for "which demo does this turn concern" is **the user's message** — a name they typed, a URL they pasted, a row/table list they pasted. Trust that. If absent, ask.
+- Never use `active-domain.txt`'s current contents to infer user intent. It is your own scratchpad from a previous turn, not a hint from the user. Reading it to "guess what they mean" is the same shape of mistake as a silent fallback.
+- When a turn requires acting on a domain via the CLI (running `orchestrate.sh`, a substrate test, anything that reads the file), you may write the file directly and proceed — it's yours. No need to ask permission to set your own scratchpad. (You still ask permission for the action itself if it's destructive.)
+- Conversely, if you write the file, expect it to stay where you left it — the UI won't quietly overwrite it.
 
-The UI Explorer is already decoupled — its domain comes from the URL (`/developer/:domain/explorer/...`), not this file. This conversation should be decoupled the same way: from the user's words, not from a file they're rapidly flipping for unrelated testing.
+**Known followup (not yet done):** the admin portal's Postgres pool is still a single global bound to whatever `active-domain.txt` says. Pure-read Explorer endpoints (tree, node, cell, rulebook-diff) are URL-driven and don't care. UI CRUD writes (instance / schema PATCH / DELETE / POST) still implicitly target the file's domain via that pool. Until the pool is refactored per-domain, **changing `active-domain.txt` from this conversation will shift which DB the UI's CRUD targets** — usually fine since the user isn't doing UI CRUD mid-conversation, but worth a heads-up if you're about to flip the file while the user is also actively editing rows in the UI.
 
 ---
 

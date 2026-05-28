@@ -148,6 +148,7 @@ export default function ExplorerScreen({ screen, me }) {
           {tree && tree.topLevel.map((n) => (
             <InstanceTreeNode
               key={n.entity + "@" + refreshTick}
+              domain={domain}
               path={[n.entity]}
               kind="entity"
               label={n.entity}
@@ -167,6 +168,7 @@ export default function ExplorerScreen({ screen, me }) {
 
         <div className="detail-panel">
           <RightPane
+            domain={domain}
             pathSegments={pathSegments}
             node={node}
             nodeError={nodeError}
@@ -222,7 +224,7 @@ function Breadcrumbs({ domain, segments, onCrumb }) {
 // so deep-links round-trip: paste /explorer/Customers/jane/Orders/1042 and
 // the tree walks itself open along the way.
 
-function InstanceTreeNode({ path, kind, label, meta, important, currentUrlPath, onNavigate, depth }) {
+function InstanceTreeNode({ domain, path, kind, label, meta, important, currentUrlPath, onNavigate, depth }) {
   const pathKey = path.join("/");
   const isOnUrlPath =
     path.length <= currentUrlPath.length &&
@@ -245,6 +247,7 @@ function InstanceTreeNode({ path, kind, label, meta, important, currentUrlPath, 
     if (!expanded || children !== null || loading) return;
     setLoading(true);
     const qs = new URLSearchParams({
+      domain,
       path: path.map(encodeURIComponent).join("/"),
       pageSize: "500",
     });
@@ -370,6 +373,7 @@ function InstanceTreeNode({ path, kind, label, meta, important, currentUrlPath, 
             ) : (
               <InstanceTreeNode
                 key={c.path.join("/")}
+                domain={domain}
                 path={c.path}
                 kind={c.kind}
                 label={c.label}
@@ -386,7 +390,7 @@ function InstanceTreeNode({ path, kind, label, meta, important, currentUrlPath, 
   );
 }
 
-function RightPane({ pathSegments, node, nodeError, nodeLoading, page, setPage, goTo, canEdit, refreshNode, startRebuild, rulebookRevision }) {
+function RightPane({ domain, pathSegments, node, nodeError, nodeLoading, page, setPage, goTo, canEdit, refreshNode, startRebuild, rulebookRevision }) {
   if (pathSegments.length === 0) {
     return (
       <div className="muted">
@@ -413,7 +417,7 @@ function RightPane({ pathSegments, node, nodeError, nodeLoading, page, setPage, 
     return <ListView node={node} page={page} setPage={setPage} pathSegments={pathSegments} goTo={goTo} canEdit={canEdit} refreshNode={refreshNode} startRebuild={startRebuild} />;
   }
   if (node.kind === "instance") {
-    return <InstanceView node={node} pathSegments={pathSegments} goTo={goTo} canEdit={canEdit} refreshNode={refreshNode} startRebuild={startRebuild} />;
+    return <InstanceView domain={domain} node={node} pathSegments={pathSegments} goTo={goTo} canEdit={canEdit} refreshNode={refreshNode} startRebuild={startRebuild} />;
   }
   return <div className="muted small">Unknown node kind: {node.kind}</div>;
 }
@@ -1118,7 +1122,7 @@ function NewRowForm({ entity, schema, scopedBy, onCreated, onCancel }) {
   );
 }
 
-function InstanceView({ node, pathSegments, goTo, canEdit, refreshNode, startRebuild }) {
+function InstanceView({ domain, node, pathSegments, goTo, canEdit, refreshNode, startRebuild }) {
   const cols = node.schema || [];
   const row  = node.row || {};
   // Dirty map: only fields the user actually changed. Sending the unchanged
@@ -1284,6 +1288,7 @@ function InstanceView({ node, pathSegments, goTo, canEdit, refreshNode, startReb
                       : formatCell(row[c.name])}
                     {hasProvenance && openCell === c.name && (
                       <CellProvenance
+                        domain={domain}
                         entity={node.entity}
                         id={node.id}
                         field={c.name}
@@ -1317,18 +1322,18 @@ function InstanceView({ node, pathSegments, goTo, canEdit, refreshNode, startReb
   );
 }
 
-function CellProvenance({ entity, id, field, onClose, onNavigate }) {
+function CellProvenance({ domain, entity, id, field, onClose, onNavigate }) {
   const [data, setData] = useState(null);
   const [err, setErr]   = useState(null);
   useEffect(() => {
     setData(null); setErr(null);
     const qs = new URLSearchParams({
-      entity, id, field,
+      domain, entity, id, field,
     });
     api.get(`/api/explorer/cell?${qs.toString()}`)
       .then(setData)
       .catch((e) => setErr(e.message));
-  }, [entity, id, field]);
+  }, [domain, entity, id, field]);
 
   return (
     <div

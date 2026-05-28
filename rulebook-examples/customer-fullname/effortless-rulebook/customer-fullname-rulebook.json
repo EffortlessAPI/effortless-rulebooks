@@ -28,6 +28,11 @@
         "Description": "Thec ustomers email address"
       },
       {
+        "name": "Initials",
+        "formula": "LEFT(FirstName, 1) & LEFT(LastName, 1)",
+        "type": "calculated"
+      },
+      {
         "name": "FirstName",
         "datatype": "string",
         "type": "raw",

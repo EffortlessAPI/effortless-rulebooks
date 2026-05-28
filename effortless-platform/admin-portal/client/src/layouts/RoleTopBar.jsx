@@ -1,6 +1,5 @@
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import * as Icons from "lucide-react";
-import { api } from "../lib/api.js";
 import { toast } from "../lib/toast.js";
 import DomainSwitcher from "../components/DomainSwitcher.jsx";
 
@@ -16,7 +15,6 @@ export default function RoleTopBar({
   domainOptional = false,
   me,
   projects,
-  reload,
   onToggleSidebar,
 }) {
   const location = useLocation();
@@ -27,27 +25,31 @@ export default function RoleTopBar({
   const activeDomain = params.domain || projects?.active || null;
   const activeProj   = (projects?.projects || []).find((p) => p.id === activeDomain);
 
-  const switchDomain = async (newId) => {
+  const switchDomain = (newId) => {
     if (!newId) return;
-    try {
-      // Tell the server too — it still drives rulebook loading from active-domain.txt
-      await api.post(`/api/projects/${encodeURIComponent(newId)}/activate`);
-      await reload();
-      // Swap only the :domain segment of the URL, preserving the remainder.
-      // If the current URL has no domain yet (e.g. /developer), drop into the
-      // new domain's landing instead.
-      let next;
-      if (params.domain) {
-        next = location.pathname.replace(
-          new RegExp(`^/${mode}/${params.domain}(/|$)`),
-          `/${mode}/${newId}$1`,
-        );
-      } else {
-        next = `/${mode}/${newId}`;
-      }
-      navigate(next);
-      toast(`Switched to ${newId}`, "ok");
-    } catch (err) { toast("Switch failed: " + err.message, "error"); }
+    // Domain is a URL concern, not server-side state. Switching the dropdown
+    // ONLY navigates — it does NOT POST /api/projects/:id/activate (which
+    // would mutate orchestration/active-domain.txt, a shared scratchpad
+    // used by CLI tools and this Claude conversation). Per CLAUDE.md
+    // "`active-domain.txt` ≠ what this conversation is about", the UI uses
+    // the URL as its source of truth and never touches that file.
+    //
+    // Known followup: per-domain Postgres pool. Until that lands, UI CRUD
+    // writes (instance/schema PATCH/DELETE) still resolve against whatever
+    // domain is in active-domain.txt — switching the dropdown does NOT
+    // re-bind the pool. Pure read flows (Explorer tree/node/cell) are
+    // already URL-driven and unaffected.
+    let next;
+    if (params.domain) {
+      next = location.pathname.replace(
+        new RegExp(`^/${mode}/${params.domain}(/|$)`),
+        `/${mode}/${newId}$1`,
+      );
+    } else {
+      next = `/${mode}/${newId}`;
+    }
+    navigate(next);
+    toast(`Switched to ${newId}`, "ok");
   };
 
   const goRolePicker = () => navigate("/");

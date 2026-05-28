@@ -292,11 +292,27 @@ function loadRulebook(p = activeRulebookPath()) {
   return JSON.parse(fs.readFileSync(p, "utf8"));
 }
 
+function assertNonEmptyRulebook(rb, p) {
+  // The rulebook is sacred (see CLAUDE.md). Refuse to write a value that
+  // could only be the result of a bug — null/undefined, a non-object, or an
+  // object with zero keys. Loud failure here is the whole point: it stops the
+  // silent-fallback pattern where a lost request body gets persisted as `{}`
+  // and the user sees a green "Saved" toast.
+  if (rb === null || rb === undefined || typeof rb !== "object" || Array.isArray(rb)) {
+    throw new Error(`refusing to save non-object rulebook to ${p} (got ${typeof rb})`);
+  }
+  if (Object.keys(rb).length === 0) {
+    throw new Error(`refusing to save empty rulebook to ${p} — almost certainly a lost request body or upstream bug`);
+  }
+}
+
 function saveRulebook(rb, p = activeRulebookPath()) {
+  assertNonEmptyRulebook(rb, p);
   fs.writeFileSync(p, JSON.stringify(rb, null, 2) + "\n");
 }
 
 function saveProjectRulebook(rb) {
+  assertNonEmptyRulebook(rb, TOP_RULEBOOK);
   fs.writeFileSync(TOP_RULEBOOK, JSON.stringify(rb, null, 2) + "\n");
 }
 
@@ -704,6 +720,7 @@ function fetchJson(url) {
 const app = express();
 app.use(cors());
 app.use(express.json({ limit: "10mb" }));
+app.use(express.text({ type: "text/plain", limit: "10mb" }));
 
 app.get("/api/health", (req, res) => res.json({ ok: true }));
 
@@ -2956,7 +2973,25 @@ app.get("/api/tech/rulebook-json", requireDeveloper, (req, res) => {
 });
 
 app.put("/api/tech/rulebook-json", requireDeveloper, async (req, res) => {
-  const text = typeof req.body === "string" ? req.body : JSON.stringify(req.body, null, 2);
+  // The body MUST arrive as a string (text/plain) or a non-empty object
+  // (application/json). If a client sends a JSON body with the wrong
+  // Content-Type, express never parses it and req.body is `{}` — we used to
+  // silently persist that `{}` and wipe the rulebook. Refuse instead.
+  let text;
+  if (typeof req.body === "string") {
+    if (req.body.trim() === "") {
+      return res.status(400).json({
+        error: "empty request body — rulebook PUT requires the full JSON text",
+      });
+    }
+    text = req.body;
+  } else if (req.body && typeof req.body === "object" && Object.keys(req.body).length > 0) {
+    text = JSON.stringify(req.body, null, 2);
+  } else {
+    return res.status(400).json({
+      error: "rulebook PUT received an empty/unparsed body — check Content-Type (use application/json or text/plain) and that the body is not empty",
+    });
+  }
   try {
     const parsed = JSON.parse(text);
     saveRulebook(parsed);
