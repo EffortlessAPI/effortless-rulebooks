@@ -40,6 +40,20 @@ Each loop = one named **CHANGE-RULE → `effortless build` → CONSUME-VIEWS** t
 
 ---
 
+### [x] Loop 4.1 — Bitemporal Versioning (sub-iteration)
+
+**Why this is a 4.1 not a 5:** the previous passes built the structural DAG; this one retrofits the missing "bitemporal" half of CMCC's *bitemporal ACID DAG* claim onto every research-progress table. It's a sub-iteration of the methodology-completion track, not a new feature direction.
+
+**What changed:** added 5 columns (`ValidFrom`, `ValidTo`, `TxFrom`, `TxTo`, `IsCurrentlyValid`) to the 8 research-progress tables — `AsymptoticLowerBounds`, `Theorems`, `Conjectures`, `SourceReferences`, `Lemmas`, `ProofObligations`, `CitationLinks`, `AnswerKey`. Backfilled real publication dates: Erdős 1946-01-01, Szemerédi–Trotter 1983-01-01, Spencer-S-T 1984-01-01, Golod–Shafarevich 1964-01-01, Sawin 2024-01-01. Added coverage rows demonstrating retraction (`hypothetical-retracted-overclaim`, `thm-hypothetical-retracted`, `src-experimental-preprint` with `ValidTo` set to retraction date) and unevaluated/pending states (`pending-bound-unevaluated`, `lemma-erdos-context.IsCurrentlyValid=null`). On `Theorems` added `AnchoredBoundIsCurrentlyValid` (lookup) and `IsHistoricallyAnchored` (calculated) — catches the case where a theorem's anchored bound got retracted. On `AsymptoticFunctions` added the cascade: `BestKnownCurrentLowerBoundExponent` (filtered by `IsCurrentlyValid=TRUE`) alongside the original `BestKnownLowerBoundExponent` (all-time), plus `RetractedLowerBoundCount` and `MaxOverclaimedExponent` for forensic queries. Added new `TemporalSnapshots` table with 6 named moments (Erdős 1946, ST 1983, Spencer-S-T 1984, Sawin 2024, current, future-projected) so chronology is a first-class entity.
+
+**Cascade observed:** the `BestKnownLowerBoundExponent` vs `BestKnownCurrentLowerBoundExponent` split is now visible — for U(n), the all-time max (1.5, from the hypothetical-retracted overclaim) differs from the bitemporally-filtered max (1.014, Sawin). The gap between them is exactly the "scar of an overclaim" — a thing prose can't express but a column can. Theorem-level: `thm-hypothetical-retracted.IsHistoricallyAnchored = FALSE` because its anchored bound got retracted. Citation-level: `cite-experimental-disagrees.IsCurrentlyValid = FALSE` because its citing source was retracted, automatically retiring the citation. `Conjectures.conj-sawin-resolved` correctly carries `IsCurrentlyValid = FALSE` (no longer an open conjecture) AND its `RelatedTheorem` pointer to `thm-superlinear-unit-distance` (the proposition is still TRUE, just as a theorem now) — capturing the bitemporal subtlety that "the conjecture is closed but the claim survives."
+
+**Outcome:** 36 tables, 455 fields, 242 rows. All FK references resolve. All nullable booleans (including the 8 new `IsCurrentlyValid` columns) carry null/true/false coverage. The rulebook is now SDLAF over a *bitemporal* ACID DAG.
+
+**What didn't cascade yet (deliberately):** pure-math tables (`Points`, `PointPairs`, `NumberFields`, `MinkowskiLattices`, `ShortVectors`, etc.) intentionally don't carry bitemporal columns — mathematical truth doesn't have valid-time. By the same token, none of their aggregations needed updating. The bitemporal layer covers the *epistemic* half of the rulebook (what we claim is true and when) while leaving the *structural* half (the algebraic / geometric facts themselves) timeless. This matches the CMCC distinction between rows-that-describe-state and rows-that-are-state.
+
+---
+
 ## Next
 
 ### [ ] Loop 5 — Load Actual Paper Content

@@ -1690,7 +1690,29 @@
         "type": "aggregation",
         "formula": "=MAXIFS(AsymptoticLowerBounds!{{Exponent}}, AsymptoticLowerBounds!{{AsymptoticFunction}}, AsymptoticFunctions!{{AsymptoticFunctionId}})",
         "important": true,
-        "Description": "The best (largest) lower-bound exponent currently asserted for this function."
+        "Description": "ALL-TIME best lower-bound exponent across every loaded row, including retracted ones. Useful for forensic queries; usually NOT what you want for 'what does the rulebook currently believe'."
+      },
+      {
+        "name": "BestKnownCurrentLowerBoundExponent",
+        "datatype": "decimal",
+        "type": "aggregation",
+        "formula": "=MAXIFS(AsymptoticLowerBounds!{{Exponent}}, AsymptoticLowerBounds!{{AsymptoticFunction}}, AsymptoticFunctions!{{AsymptoticFunctionId}}, AsymptoticLowerBounds!{{IsCurrentlyValid}}, TRUE)",
+        "important": true,
+        "Description": "Bitemporally-filtered best lower-bound exponent: only counts bounds where IsCurrentlyValid=TRUE. This is what 'best known' actually means under the bitemporal discipline. Retracted overclaims, withdrawn preprints, and pending-evaluation rows are excluded."
+      },
+      {
+        "name": "RetractedLowerBoundCount",
+        "datatype": "integer",
+        "type": "aggregation",
+        "formula": "=COUNTIFS(AsymptoticLowerBounds!{{AsymptoticFunction}}, AsymptoticFunctions!{{AsymptoticFunctionId}}, AsymptoticLowerBounds!{{IsCurrentlyValid}}, FALSE)",
+        "Description": "How many lower-bound rows for this function have been retracted/superseded. Cumulative scar count."
+      },
+      {
+        "name": "MaxOverclaimedExponent",
+        "datatype": "decimal",
+        "type": "aggregation",
+        "formula": "=MAXIFS(AsymptoticLowerBounds!{{Exponent}}, AsymptoticLowerBounds!{{AsymptoticFunction}}, AsymptoticFunctions!{{AsymptoticFunctionId}}, AsymptoticLowerBounds!{{IsCurrentlyValid}}, FALSE)",
+        "Description": "Highest exponent that was once claimed but is no longer current. Forensic indicator of overclaim history."
       }
     ],
     "data": [
@@ -1842,6 +1864,39 @@
         "formula": "={{SatisfiedObligationCount}}={{ObligationCount}}",
         "important": true,
         "Description": "TRUE iff every proof obligation referencing this bound is satisfied. FALSE means at least one obligation is unsatisfied or unevaluated."
+      },
+      {
+        "name": "ValidFrom",
+        "datatype": "string",
+        "type": "raw",
+        "Description": "ISO date when this claim first entered valid-time (typically the publication date of the paper that asserts it)."
+      },
+      {
+        "name": "ValidTo",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "ISO date when this claim left valid-time (retraction, withdrawal). Null = still valid in the real world."
+      },
+      {
+        "name": "TxFrom",
+        "datatype": "string",
+        "type": "raw",
+        "Description": "ISO date when this row was first recorded in the rulebook (transaction-time audit start)."
+      },
+      {
+        "name": "TxTo",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "ISO date when this row was logically removed from the rulebook. Null = still present in current transaction."
+      },
+      {
+        "name": "IsCurrentlyValid",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Bitemporal current-validity flag. TRUE = claim is still considered valid; FALSE = superseded/withdrawn; null = not yet evaluated. Drives every 'current best known' aggregation in the asymptotic layer."
       }
     ],
     "data": [
@@ -1854,7 +1909,12 @@
         "Coefficient": 1,
         "StatementText": "U(n) ≥ n^{1+c/log log n} (Erdős 1946)",
         "SourceCitation": "Erdős, 1946",
-        "IsExplicit": false
+        "IsExplicit": false,
+        "ValidFrom": "1946-01-01",
+        "ValidTo": null,
+        "TxFrom": "2026-05-27",
+        "TxTo": null,
+        "IsCurrentlyValid": true
       },
       {
         "AsymptoticLowerBoundId": "sawin-n1014",
@@ -1865,7 +1925,12 @@
         "Coefficient": 1,
         "StatementText": "U(n) > n^{1.014} for arbitrarily large n",
         "SourceCitation": "Sawin, arXiv:2605.20579",
-        "IsExplicit": true
+        "IsExplicit": true,
+        "ValidFrom": "2024-01-01",
+        "ValidTo": null,
+        "TxFrom": "2026-05-27",
+        "TxTo": null,
+        "IsCurrentlyValid": true
       },
       {
         "AsymptoticLowerBoundId": "zeta7-witness-bound",
@@ -1876,7 +1941,44 @@
         "Coefficient": 1,
         "StatementText": "U(n) ≥ n^{0.9} witnessed by the heptagon-with-center configuration (n=8, e=7 ⇒ exponent ≈ 0.937). A deliberately under-claimed exponent so WitnessConsistent resolves TRUE on the loaded instance.",
         "SourceCitation": "computed from loaded data, no external citation",
-        "IsExplicit": true
+        "IsExplicit": true,
+        "ValidFrom": "2026-05-27",
+        "ValidTo": null,
+        "TxFrom": "2026-05-27",
+        "TxTo": null,
+        "IsCurrentlyValid": true
+      },
+      {
+        "AsymptoticLowerBoundId": "hypothetical-retracted-overclaim",
+        "DisplayName": "Hypothetical Retracted Overclaim",
+        "AsymptoticFunction": "u-n",
+        "GrowthSequence": null,
+        "Exponent": 1.5,
+        "Coefficient": 1,
+        "StatementText": "Hypothetical: U(n) > n^{1.5} — a stylized overclaim that was once asserted and later retracted. Coverage row demonstrating valid-time retraction.",
+        "SourceCitation": "fictitious-preprint, retracted",
+        "IsExplicit": true,
+        "ValidFrom": "2025-06-15",
+        "ValidTo": "2025-08-01",
+        "TxFrom": "2026-05-27",
+        "TxTo": null,
+        "IsCurrentlyValid": false
+      },
+      {
+        "AsymptoticLowerBoundId": "pending-bound-unevaluated",
+        "DisplayName": "Pending Bound (Awaiting Curation)",
+        "AsymptoticFunction": "u-n",
+        "GrowthSequence": null,
+        "Exponent": 1.05,
+        "Coefficient": 1,
+        "StatementText": "Coverage row: a bound entered into the rulebook but not yet evaluated for current validity. IsCurrentlyValid=null.",
+        "SourceCitation": "pending review",
+        "IsExplicit": true,
+        "ValidFrom": "2026-05-20",
+        "ValidTo": null,
+        "TxFrom": "2026-05-27",
+        "TxTo": null,
+        "IsCurrentlyValid": null
       }
     ]
   },
@@ -2024,7 +2126,14 @@
         "formula": "=AND({{AlgebraicChainClosed}}, {{AnchoredBoundAllObligationsSatisfied}})",
         "important": true,
         "Description": "The final, fully-paranoid theorem-level gate: the algebraic chain is closed AND every proof obligation against the anchored bound is satisfied. TRUE means the theorem row is end-to-end witnessed in the rulebook with no open obligations."
-      }
+      },
+      {"name": "ValidFrom", "datatype": "string", "type": "raw", "Description": "ISO date this theorem was first established (proof publication date for proven; statement date for unproven anchors)."},
+      {"name": "ValidTo", "datatype": "string", "type": "raw", "nullable": true},
+      {"name": "TxFrom", "datatype": "string", "type": "raw"},
+      {"name": "TxTo", "datatype": "string", "type": "raw", "nullable": true},
+      {"name": "IsCurrentlyValid", "datatype": "boolean", "type": "raw", "nullable": true, "Description": "TRUE for current valid theorems; FALSE for retracted/disproven; null for unevaluated."},
+      {"name": "AnchoredBoundIsCurrentlyValid", "datatype": "boolean", "type": "lookup", "formula": "=LOOKUP(AsymptoticLowerBounds!{{IsCurrentlyValid}}, Theorems!{{AnchoredLowerBound}}, AsymptoticLowerBounds!{{AsymptoticLowerBoundId}})", "nullable": true, "Description": "Surfaces the anchored bound's current-validity onto the theorem. If the anchored bound got retracted, this goes FALSE — and the theorem either needs re-anchoring or also needs retraction."},
+      {"name": "IsHistoricallyAnchored", "datatype": "boolean", "type": "calculated", "formula": "=AND({{IsCurrentlyValid}}=TRUE, {{AnchoredBoundIsCurrentlyValid}}=TRUE)", "important": true, "Description": "TRUE iff both the theorem and its anchored bound are currently valid. Bitemporally-aware version of the older AlgebraicChainClosed gate — catches the case where a theorem's anchored bound has been retracted."}
     ],
     "data": [
       {
@@ -2036,7 +2145,12 @@
         "ProofCitation": "Sawin, arXiv:2605.20579",
         "AsymptoticFunction": "u-n",
         "AnchoredLowerBound": "sawin-n1014",
-        "ClaimedExponent": 1.014
+        "ClaimedExponent": 1.014,
+        "ValidFrom": "2024-01-01",
+        "ValidTo": null,
+        "TxFrom": "2026-05-27",
+        "TxTo": null,
+        "IsCurrentlyValid": true
       },
       {
         "TheoremId": "thm-erdos-unit-distance-baseline",
@@ -2047,7 +2161,12 @@
         "ProofCitation": "Erdős, 1946",
         "AsymptoticFunction": "u-n",
         "AnchoredLowerBound": "erdos-sqrt-bound",
-        "ClaimedExponent": 1
+        "ClaimedExponent": 1,
+        "ValidFrom": "1946-01-01",
+        "ValidTo": null,
+        "TxFrom": "2026-05-27",
+        "TxTo": null,
+        "IsCurrentlyValid": true
       },
       {
         "TheoremId": "thm-szemeredi-trotter",
@@ -2058,7 +2177,12 @@
         "ProofCitation": "Szemerédi–Trotter, 1983",
         "AsymptoticFunction": "u-n",
         "AnchoredLowerBound": null,
-        "ClaimedExponent": null
+        "ClaimedExponent": null,
+        "ValidFrom": "1983-01-01",
+        "ValidTo": null,
+        "TxFrom": "2026-05-27",
+        "TxTo": null,
+        "IsCurrentlyValid": true
       },
       {
         "TheoremId": "thm-spencer-szemeredi-trotter",
@@ -2069,7 +2193,12 @@
         "ProofCitation": "Spencer–Szemerédi–Trotter, 1984",
         "AsymptoticFunction": "u-n",
         "AnchoredLowerBound": null,
-        "ClaimedExponent": null
+        "ClaimedExponent": null,
+        "ValidFrom": "1984-01-01",
+        "ValidTo": null,
+        "TxFrom": "2026-05-27",
+        "TxTo": null,
+        "IsCurrentlyValid": true
       },
       {
         "TheoremId": "thm-future-conjectural-improvement",
@@ -2080,7 +2209,28 @@
         "ProofCitation": null,
         "AsymptoticFunction": "u-n",
         "AnchoredLowerBound": null,
-        "ClaimedExponent": null
+        "ClaimedExponent": null,
+        "ValidFrom": "2026-05-27",
+        "ValidTo": null,
+        "TxFrom": "2026-05-27",
+        "TxTo": null,
+        "IsCurrentlyValid": null
+      },
+      {
+        "TheoremId": "thm-hypothetical-retracted",
+        "DisplayName": "Hypothetical Retracted Theorem",
+        "StatementText": "Hypothetical: a theorem that was claimed, briefly anchored, then retracted when its proof was found flawed.",
+        "IsAnchor": false,
+        "IsProven": false,
+        "ProofCitation": "fictitious-preprint, retracted",
+        "AsymptoticFunction": "u-n",
+        "AnchoredLowerBound": "hypothetical-retracted-overclaim",
+        "ClaimedExponent": 1.5,
+        "ValidFrom": "2025-06-15",
+        "ValidTo": "2025-08-01",
+        "TxFrom": "2026-05-27",
+        "TxTo": null,
+        "IsCurrentlyValid": false
       }
     ]
   },
@@ -2374,16 +2524,21 @@
       {"name": "LemmaCount", "datatype": "integer", "type": "aggregation", "formula": "=COUNTIFS(Lemmas!{{SourceReference}}, SourceReferences!{{SourceReferenceId}})"},
       {"name": "OutboundCitationCount", "datatype": "integer", "type": "aggregation", "formula": "=COUNTIFS(CitationLinks!{{CitingSource}}, SourceReferences!{{SourceReferenceId}})", "Description": "How many other sources this one cites."},
       {"name": "InboundCitationCount", "datatype": "integer", "type": "aggregation", "formula": "=COUNTIFS(CitationLinks!{{CitedSource}}, SourceReferences!{{SourceReferenceId}})", "Description": "How many other sources cite this one — a crude influence metric."},
+      {"name": "ValidFrom", "datatype": "string", "type": "raw", "Description": "ISO publication date — the moment this source becomes citable."},
+      {"name": "ValidTo", "datatype": "string", "type": "raw", "nullable": true, "Description": "ISO retraction date (if any). Null = still in good standing."},
+      {"name": "TxFrom", "datatype": "string", "type": "raw"},
+      {"name": "TxTo", "datatype": "string", "type": "raw", "nullable": true},
+      {"name": "IsCurrentlyValid", "datatype": "boolean", "type": "raw", "nullable": true, "Description": "TRUE if the source is still in good standing; FALSE if retracted; null if standing not yet evaluated."},
       {"name": "Description", "datatype": "string", "type": "raw", "nullable": true}
     ],
     "data": [
-      {"SourceReferenceId": "src-sawin-2024", "ShortLabel": "Sawin 2024", "FullCitation": "Sawin, arXiv:2605.20579 — Superlinear lower bounds for the unit distance problem.", "URL": "https://arxiv.org/abs/2605.20579", "Year": 2024, "IsArxiv": true, "IsPublished": false},
-      {"SourceReferenceId": "src-erdos-1946", "ShortLabel": "Erdős 1946", "FullCitation": "Erdős, P. 'On sets of distances of n points.' American Mathematical Monthly 53 (1946) 248-250.", "URL": null, "Year": 1946, "IsArxiv": false, "IsPublished": true},
-      {"SourceReferenceId": "src-szemeredi-trotter-1983", "ShortLabel": "Szemerédi-Trotter 1983", "FullCitation": "Szemerédi, E. and Trotter, W. T. 'Extremal problems in discrete geometry.' Combinatorica 3 (1983) 381-392.", "URL": null, "Year": 1983, "IsArxiv": false, "IsPublished": true},
-      {"SourceReferenceId": "src-spencer-st-1984", "ShortLabel": "Spencer-Szemerédi-Trotter 1984", "FullCitation": "Spencer, J., Szemerédi, E., and Trotter, W. T. 'Unit distances in the Euclidean plane.' Graph Theory and Combinatorics (1984) 293-303.", "URL": null, "Year": 1984, "IsArxiv": false, "IsPublished": true},
-      {"SourceReferenceId": "src-golod-shafarevich-1964", "ShortLabel": "Golod-Shafarevich 1964", "FullCitation": "Golod, E. S. and Shafarevich, I. R. 'On the class field tower.' Izv. Akad. Nauk SSSR Ser. Mat. 28 (1964) 261-272.", "URL": null, "Year": 1964, "IsArxiv": false, "IsPublished": true},
-      {"SourceReferenceId": "src-folklore-construction", "ShortLabel": "Folklore Construction", "FullCitation": "Folklore — exact origin unknown.", "URL": null, "Year": null, "IsArxiv": null, "IsPublished": null, "Description": "Coverage row: nullable booleans null."},
-      {"SourceReferenceId": "src-experimental-preprint", "ShortLabel": "Experimental Preprint", "FullCitation": "Hypothetical preprint, not yet posted.", "URL": null, "Year": 2026, "IsArxiv": true, "IsPublished": null}
+      {"SourceReferenceId": "src-sawin-2024", "ShortLabel": "Sawin 2024", "FullCitation": "Sawin, arXiv:2605.20579 — Superlinear lower bounds for the unit distance problem.", "URL": "https://arxiv.org/abs/2605.20579", "Year": 2024, "IsArxiv": true, "IsPublished": false, "ValidFrom": "2024-01-01", "ValidTo": null, "TxFrom": "2026-05-27", "TxTo": null, "IsCurrentlyValid": true},
+      {"SourceReferenceId": "src-erdos-1946", "ShortLabel": "Erdős 1946", "FullCitation": "Erdős, P. 'On sets of distances of n points.' American Mathematical Monthly 53 (1946) 248-250.", "URL": null, "Year": 1946, "IsArxiv": false, "IsPublished": true, "ValidFrom": "1946-01-01", "ValidTo": null, "TxFrom": "2026-05-27", "TxTo": null, "IsCurrentlyValid": true},
+      {"SourceReferenceId": "src-szemeredi-trotter-1983", "ShortLabel": "Szemerédi-Trotter 1983", "FullCitation": "Szemerédi, E. and Trotter, W. T. 'Extremal problems in discrete geometry.' Combinatorica 3 (1983) 381-392.", "URL": null, "Year": 1983, "IsArxiv": false, "IsPublished": true, "ValidFrom": "1983-01-01", "ValidTo": null, "TxFrom": "2026-05-27", "TxTo": null, "IsCurrentlyValid": true},
+      {"SourceReferenceId": "src-spencer-st-1984", "ShortLabel": "Spencer-Szemerédi-Trotter 1984", "FullCitation": "Spencer, J., Szemerédi, E., and Trotter, W. T. 'Unit distances in the Euclidean plane.' Graph Theory and Combinatorics (1984) 293-303.", "URL": null, "Year": 1984, "IsArxiv": false, "IsPublished": true, "ValidFrom": "1984-01-01", "ValidTo": null, "TxFrom": "2026-05-27", "TxTo": null, "IsCurrentlyValid": true},
+      {"SourceReferenceId": "src-golod-shafarevich-1964", "ShortLabel": "Golod-Shafarevich 1964", "FullCitation": "Golod, E. S. and Shafarevich, I. R. 'On the class field tower.' Izv. Akad. Nauk SSSR Ser. Mat. 28 (1964) 261-272.", "URL": null, "Year": 1964, "IsArxiv": false, "IsPublished": true, "ValidFrom": "1964-01-01", "ValidTo": null, "TxFrom": "2026-05-27", "TxTo": null, "IsCurrentlyValid": true},
+      {"SourceReferenceId": "src-folklore-construction", "ShortLabel": "Folklore Construction", "FullCitation": "Folklore — exact origin unknown.", "URL": null, "Year": null, "IsArxiv": null, "IsPublished": null, "ValidFrom": "1900-01-01", "ValidTo": null, "TxFrom": "2026-05-27", "TxTo": null, "IsCurrentlyValid": null, "Description": "Coverage row: nullable booleans null; ValidFrom is a placeholder since folklore predates exact dating."},
+      {"SourceReferenceId": "src-experimental-preprint", "ShortLabel": "Experimental Preprint", "FullCitation": "Hypothetical preprint, not yet posted.", "URL": null, "Year": 2026, "IsArxiv": true, "IsPublished": null, "ValidFrom": "2025-06-15", "ValidTo": "2025-08-01", "TxFrom": "2026-05-27", "TxTo": null, "IsCurrentlyValid": false, "Description": "Coverage row: retracted/withdrawn source. IsCurrentlyValid=false."}
     ]
   },
   "Lemmas": {
@@ -2400,15 +2555,20 @@
       {"name": "IsLoaded", "datatype": "boolean", "type": "raw", "nullable": true, "Description": "TRUE if the lemma's content has been turned into data; FALSE if known but not loaded; null if unevaluated."},
       {"name": "IsLoadBearing", "datatype": "boolean", "type": "raw", "nullable": true},
       {"name": "ObligationCount", "datatype": "integer", "type": "aggregation", "formula": "=COUNTIFS(ProofObligations!{{RequiredLemma}}, Lemmas!{{LemmaId}})", "Description": "How many bounds depend on this lemma."},
+      {"name": "ValidFrom", "datatype": "string", "type": "raw", "Description": "ISO date this lemma was first asserted (inherits from SourceReference)."},
+      {"name": "ValidTo", "datatype": "string", "type": "raw", "nullable": true},
+      {"name": "TxFrom", "datatype": "string", "type": "raw"},
+      {"name": "TxTo", "datatype": "string", "type": "raw", "nullable": true},
+      {"name": "IsCurrentlyValid", "datatype": "boolean", "type": "raw", "nullable": true, "Description": "TRUE if the lemma is still considered valid; FALSE if refuted/retracted; null if unevaluated."},
       {"name": "Description", "datatype": "string", "type": "raw", "nullable": true}
     ],
     "data": [
-      {"LemmaId": "lemma-short-vector-counting", "Label": "Short-vector counting for GS fields", "SourceReference": "src-sawin-2024", "StatementText": "For number fields satisfying Golod–Shafarevich with controlled discriminant growth, the count of short vectors of squared norm at most R in the Minkowski lattice is at least c·R^{1+δ} for some explicit δ>0.", "FeedsObjectTable": "ShortVectors", "FeedsObjectId": null, "IsLoaded": true, "IsLoadBearing": true},
-      {"LemmaId": "lemma-density-margin", "Label": "Edge density margin over linear", "SourceReference": "src-sawin-2024", "StatementText": "When the lattice is projected via the canonical map, the resulting point set has edge count exceeding n^{1.014} for arbitrarily large n.", "FeedsObjectTable": "GrowthSequences", "FeedsObjectId": "sqrt-lat-growth", "IsLoaded": true, "IsLoadBearing": true},
-      {"LemmaId": "lemma-anchor-explicit-bound", "Label": "Explicit n^1.014 anchor", "SourceReference": "src-sawin-2024", "StatementText": "There exists an explicit construction family (anchored on Q(ζ_p) with appropriate p) realizing the n^{1.014} lower bound.", "FeedsObjectTable": "AsymptoticLowerBounds", "FeedsObjectId": "sawin-n1014", "IsLoaded": true, "IsLoadBearing": true},
-      {"LemmaId": "lemma-spencer-auxiliary", "Label": "Spencer 1984 auxiliary count", "SourceReference": "src-spencer-st-1984", "StatementText": "Auxiliary edge-count bound used in classical incidence proofs.", "FeedsObjectTable": "UnitDistanceGraphs", "FeedsObjectId": null, "IsLoaded": false, "IsLoadBearing": null, "Description": "Named but not extracted as data yet."},
-      {"LemmaId": "lemma-future-improvement", "Label": "Future improvement lemma slot", "SourceReference": "src-experimental-preprint", "StatementText": "Reserved row for a forthcoming improvement.", "FeedsObjectTable": "AsymptoticLowerBounds", "FeedsObjectId": null, "IsLoaded": null, "IsLoadBearing": null},
-      {"LemmaId": "lemma-erdos-context", "Label": "Erdős 1946 historical context", "SourceReference": "src-erdos-1946", "StatementText": "The original superlinear lower bound by Erdős.", "FeedsObjectTable": "AsymptoticLowerBounds", "FeedsObjectId": "erdos-sqrt-bound", "IsLoaded": true, "IsLoadBearing": false, "Description": "Background; not load-bearing for the n^1.014 proof."}
+      {"LemmaId": "lemma-short-vector-counting", "Label": "Short-vector counting for GS fields", "SourceReference": "src-sawin-2024", "StatementText": "For number fields satisfying Golod–Shafarevich with controlled discriminant growth, the count of short vectors of squared norm at most R in the Minkowski lattice is at least c·R^{1+δ} for some explicit δ>0.", "FeedsObjectTable": "ShortVectors", "FeedsObjectId": null, "IsLoaded": true, "IsLoadBearing": true, "ValidFrom": "2024-01-01", "ValidTo": null, "TxFrom": "2026-05-27", "TxTo": null, "IsCurrentlyValid": true},
+      {"LemmaId": "lemma-density-margin", "Label": "Edge density margin over linear", "SourceReference": "src-sawin-2024", "StatementText": "When the lattice is projected via the canonical map, the resulting point set has edge count exceeding n^{1.014} for arbitrarily large n.", "FeedsObjectTable": "GrowthSequences", "FeedsObjectId": "sqrt-lat-growth", "IsLoaded": true, "IsLoadBearing": true, "ValidFrom": "2024-01-01", "ValidTo": null, "TxFrom": "2026-05-27", "TxTo": null, "IsCurrentlyValid": true},
+      {"LemmaId": "lemma-anchor-explicit-bound", "Label": "Explicit n^1.014 anchor", "SourceReference": "src-sawin-2024", "StatementText": "There exists an explicit construction family (anchored on Q(ζ_p) with appropriate p) realizing the n^{1.014} lower bound.", "FeedsObjectTable": "AsymptoticLowerBounds", "FeedsObjectId": "sawin-n1014", "IsLoaded": true, "IsLoadBearing": true, "ValidFrom": "2024-01-01", "ValidTo": null, "TxFrom": "2026-05-27", "TxTo": null, "IsCurrentlyValid": true},
+      {"LemmaId": "lemma-spencer-auxiliary", "Label": "Spencer 1984 auxiliary count", "SourceReference": "src-spencer-st-1984", "StatementText": "Auxiliary edge-count bound used in classical incidence proofs.", "FeedsObjectTable": "UnitDistanceGraphs", "FeedsObjectId": null, "IsLoaded": false, "IsLoadBearing": null, "ValidFrom": "1984-01-01", "ValidTo": null, "TxFrom": "2026-05-27", "TxTo": null, "IsCurrentlyValid": true, "Description": "Named but not extracted as data yet."},
+      {"LemmaId": "lemma-future-improvement", "Label": "Future improvement lemma slot", "SourceReference": "src-experimental-preprint", "StatementText": "Reserved row for a forthcoming improvement.", "FeedsObjectTable": "AsymptoticLowerBounds", "FeedsObjectId": null, "IsLoaded": null, "IsLoadBearing": null, "ValidFrom": "2025-06-15", "ValidTo": "2025-08-01", "TxFrom": "2026-05-27", "TxTo": null, "IsCurrentlyValid": false, "Description": "Inherits retraction from src-experimental-preprint."},
+      {"LemmaId": "lemma-erdos-context", "Label": "Erdős 1946 historical context", "SourceReference": "src-erdos-1946", "StatementText": "The original superlinear lower bound by Erdős.", "FeedsObjectTable": "AsymptoticLowerBounds", "FeedsObjectId": "erdos-sqrt-bound", "IsLoaded": true, "IsLoadBearing": false, "ValidFrom": "1946-01-01", "ValidTo": null, "TxFrom": "2026-05-27", "TxTo": null, "IsCurrentlyValid": null, "Description": "Background; coverage row for IsCurrentlyValid=null."}
     ]
   },
   "MirrorContract": {
@@ -2454,14 +2614,19 @@
       {"name": "ResolutionCitation", "datatype": "string", "type": "relationship", "RelatedTo": "SourceReferences", "nullable": true},
       {"name": "RelatedTheorem", "datatype": "string", "type": "relationship", "RelatedTo": "Theorems", "nullable": true, "Description": "If this conjecture resolved into a theorem, the theorem row is here."},
       {"name": "IsStillOpen", "datatype": "boolean", "type": "calculated", "formula": "={{IsResolved}}=FALSE", "Description": "TRUE only when IsResolved is explicitly FALSE. Null IsResolved propagates to non-TRUE."},
+      {"name": "ValidFrom", "datatype": "string", "type": "raw", "Description": "ISO date this conjecture was first proposed."},
+      {"name": "ValidTo", "datatype": "string", "type": "raw", "nullable": true, "Description": "ISO date this conjecture left open status (resolved or withdrawn). Null = still open."},
+      {"name": "TxFrom", "datatype": "string", "type": "raw"},
+      {"name": "TxTo", "datatype": "string", "type": "raw", "nullable": true},
+      {"name": "IsCurrentlyValid", "datatype": "boolean", "type": "raw", "nullable": true, "Description": "TRUE iff the conjecture is still an OPEN question. Resolved or withdrawn ⇒ FALSE. Null = unevaluated. NOTE: this is bitemporal-status, NOT the truth of the underlying proposition — a conjecture-that-became-a-theorem has IsCurrentlyValid=FALSE here but the proposition itself is now TRUE in Theorems."},
       {"name": "Description", "datatype": "string", "type": "raw", "nullable": true}
     ],
     "data": [
-      {"ConjectureId": "conj-erdos-polynomial-improvement", "DisplayName": "Erdős Polynomial Improvement Conjecture", "StatementText": "U(n) = O(n^{1+ε}) for every ε > 0 — i.e., the unit-distance count is no more than slightly-superlinear.", "TargetFunction": "u-n", "ConjecturedExponent": 1, "IsConjecturalUpperBound": true, "IsConjecturalLowerBound": false, "ProposedBy": "src-erdos-1946", "IsResolved": false, "ResolvedAs": null, "ResolutionCitation": null, "RelatedTheorem": null, "Description": "The most famous open question about U(n). Still open as of every loaded source."},
-      {"ConjectureId": "conj-erdos-43-tightness", "DisplayName": "Erdős 4/3 Tightness Conjecture", "StatementText": "U(n) ≤ c · n^{4/3} — that the Spencer–Szemerédi–Trotter upper bound is tight up to constants.", "TargetFunction": "u-n", "ConjecturedExponent": 1.3333333333, "IsConjecturalUpperBound": true, "IsConjecturalLowerBound": false, "ProposedBy": "src-erdos-1946", "IsResolved": false, "ResolvedAs": null, "ResolutionCitation": null, "RelatedTheorem": null, "Description": "Folklore-strength: would mean ST is the right shape."},
-      {"ConjectureId": "conj-sawin-resolved", "DisplayName": "Sawin n^1.014 Conjecture-then-Theorem", "StatementText": "There exists an explicit algebraic-number-theoretic construction giving U(n) > n^{1.014} for arbitrarily large n.", "TargetFunction": "u-n", "ConjecturedExponent": 1.014, "IsConjecturalUpperBound": false, "IsConjecturalLowerBound": true, "ProposedBy": "src-sawin-2024", "IsResolved": true, "ResolvedAs": "proved", "ResolutionCitation": "src-sawin-2024", "RelatedTheorem": "thm-superlinear-unit-distance", "Description": "Resolved-as-proved by its own proposer in the same paper."},
-      {"ConjectureId": "conj-future-improvement-slot", "DisplayName": "Future Improvement Slot", "StatementText": "Any future improvement beyond n^1.014 — a structural placeholder.", "TargetFunction": "u-n", "ConjecturedExponent": null, "IsConjecturalUpperBound": false, "IsConjecturalLowerBound": true, "ProposedBy": null, "IsResolved": null, "ResolvedAs": null, "ResolutionCitation": null, "RelatedTheorem": "thm-future-conjectural-improvement", "Description": "Coverage row: IsResolved=null."},
-      {"ConjectureId": "conj-withdrawn-example", "DisplayName": "Hypothetical Withdrawn Bound", "StatementText": "A hypothetical conjecture proposed and later withdrawn by its author — for ResolvedAs='withdrawn' coverage.", "TargetFunction": "u-n", "ConjecturedExponent": 1.5, "IsConjecturalUpperBound": false, "IsConjecturalLowerBound": true, "ProposedBy": "src-experimental-preprint", "IsResolved": true, "ResolvedAs": "withdrawn", "ResolutionCitation": null, "RelatedTheorem": null, "Description": "Coverage row."}
+      {"ConjectureId": "conj-erdos-polynomial-improvement", "DisplayName": "Erdős Polynomial Improvement Conjecture", "StatementText": "U(n) = O(n^{1+ε}) for every ε > 0 — i.e., the unit-distance count is no more than slightly-superlinear.", "TargetFunction": "u-n", "ConjecturedExponent": 1, "IsConjecturalUpperBound": true, "IsConjecturalLowerBound": false, "ProposedBy": "src-erdos-1946", "IsResolved": false, "ResolvedAs": null, "ResolutionCitation": null, "RelatedTheorem": null, "ValidFrom": "1946-01-01", "ValidTo": null, "TxFrom": "2026-05-27", "TxTo": null, "IsCurrentlyValid": true, "Description": "The most famous open question about U(n). Still open as of every loaded source."},
+      {"ConjectureId": "conj-erdos-43-tightness", "DisplayName": "Erdős 4/3 Tightness Conjecture", "StatementText": "U(n) ≤ c · n^{4/3} — that the Spencer–Szemerédi–Trotter upper bound is tight up to constants.", "TargetFunction": "u-n", "ConjecturedExponent": 1.3333333333, "IsConjecturalUpperBound": true, "IsConjecturalLowerBound": false, "ProposedBy": "src-erdos-1946", "IsResolved": false, "ResolvedAs": null, "ResolutionCitation": null, "RelatedTheorem": null, "ValidFrom": "1946-01-01", "ValidTo": null, "TxFrom": "2026-05-27", "TxTo": null, "IsCurrentlyValid": true, "Description": "Folklore-strength: would mean ST is the right shape."},
+      {"ConjectureId": "conj-sawin-resolved", "DisplayName": "Sawin n^1.014 Conjecture-then-Theorem", "StatementText": "There exists an explicit algebraic-number-theoretic construction giving U(n) > n^{1.014} for arbitrarily large n.", "TargetFunction": "u-n", "ConjecturedExponent": 1.014, "IsConjecturalUpperBound": false, "IsConjecturalLowerBound": true, "ProposedBy": "src-sawin-2024", "IsResolved": true, "ResolvedAs": "proved", "ResolutionCitation": "src-sawin-2024", "RelatedTheorem": "thm-superlinear-unit-distance", "ValidFrom": "2024-01-01", "ValidTo": "2024-12-31", "TxFrom": "2026-05-27", "TxTo": null, "IsCurrentlyValid": false, "Description": "Resolved-as-proved by its own proposer. ValidTo=2024-12-31 marks the moment it left 'open conjecture' status and became a theorem; the proposition itself is still TRUE (see thm-superlinear-unit-distance)."},
+      {"ConjectureId": "conj-future-improvement-slot", "DisplayName": "Future Improvement Slot", "StatementText": "Any future improvement beyond n^1.014 — a structural placeholder.", "TargetFunction": "u-n", "ConjecturedExponent": null, "IsConjecturalUpperBound": false, "IsConjecturalLowerBound": true, "ProposedBy": null, "IsResolved": null, "ResolvedAs": null, "ResolutionCitation": null, "RelatedTheorem": "thm-future-conjectural-improvement", "ValidFrom": "2026-05-27", "ValidTo": null, "TxFrom": "2026-05-27", "TxTo": null, "IsCurrentlyValid": null, "Description": "Coverage row: IsResolved=null, IsCurrentlyValid=null."},
+      {"ConjectureId": "conj-withdrawn-example", "DisplayName": "Hypothetical Withdrawn Bound", "StatementText": "A hypothetical conjecture proposed and later withdrawn by its author — for ResolvedAs='withdrawn' coverage.", "TargetFunction": "u-n", "ConjecturedExponent": 1.5, "IsConjecturalUpperBound": false, "IsConjecturalLowerBound": true, "ProposedBy": "src-experimental-preprint", "IsResolved": true, "ResolvedAs": "withdrawn", "ResolutionCitation": null, "RelatedTheorem": null, "ValidFrom": "2025-06-15", "ValidTo": "2025-08-01", "TxFrom": "2026-05-27", "TxTo": null, "IsCurrentlyValid": false, "Description": "Coverage row. ValidTo marks the withdrawal date."}
     ]
   },
   "ProofObligations": {
@@ -2480,16 +2645,21 @@
       {"name": "IsLemmaLoadBearing", "datatype": "boolean", "type": "lookup", "formula": "=LOOKUP(Lemmas!{{IsLoadBearing}}, ProofObligations!{{RequiredLemma}}, Lemmas!{{LemmaId}})", "nullable": true},
       {"name": "BoundClaimedExponent", "datatype": "decimal", "type": "lookup", "formula": "=LOOKUP(AsymptoticLowerBounds!{{Exponent}}, ProofObligations!{{ParentBound}}, AsymptoticLowerBounds!{{AsymptoticLowerBoundId}})"},
       {"name": "IsCurrentlyOpen", "datatype": "boolean", "type": "calculated", "formula": "={{IsSatisfied}}=FALSE", "Description": "TRUE only if explicitly FALSE — i.e. a known gap."},
+      {"name": "ValidFrom", "datatype": "string", "type": "raw"},
+      {"name": "ValidTo", "datatype": "string", "type": "raw", "nullable": true},
+      {"name": "TxFrom", "datatype": "string", "type": "raw"},
+      {"name": "TxTo", "datatype": "string", "type": "raw", "nullable": true},
+      {"name": "IsCurrentlyValid", "datatype": "boolean", "type": "raw", "nullable": true},
       {"name": "Description", "datatype": "string", "type": "raw", "nullable": true}
     ],
     "data": [
-      {"ProofObligationId": "po-sawin-shortvec", "ParentBound": "sawin-n1014", "RequiredLemma": "lemma-short-vector-counting", "ObligationKind": "necessary", "IsSatisfied": true},
-      {"ProofObligationId": "po-sawin-density", "ParentBound": "sawin-n1014", "RequiredLemma": "lemma-density-margin", "ObligationKind": "necessary", "IsSatisfied": true},
-      {"ProofObligationId": "po-sawin-anchor", "ParentBound": "sawin-n1014", "RequiredLemma": "lemma-anchor-explicit-bound", "ObligationKind": "sufficient", "IsSatisfied": true},
-      {"ProofObligationId": "po-erdos-context", "ParentBound": "erdos-sqrt-bound", "RequiredLemma": "lemma-erdos-context", "ObligationKind": "sufficient", "IsSatisfied": true},
-      {"ProofObligationId": "po-sawin-spencer-aux", "ParentBound": "sawin-n1014", "RequiredLemma": "lemma-spencer-auxiliary", "ObligationKind": "auxiliary", "IsSatisfied": false, "Description": "Open obligation: Spencer auxiliary lemma is named but not yet loaded."},
-      {"ProofObligationId": "po-future-gap", "ParentBound": "sawin-n1014", "RequiredLemma": "lemma-future-improvement", "ObligationKind": "auxiliary", "IsSatisfied": null, "Description": "Coverage row: IsSatisfied=null."},
-      {"ProofObligationId": "po-zeta7-witness", "ParentBound": "zeta7-witness-bound", "RequiredLemma": "lemma-density-margin", "ObligationKind": "sufficient", "IsSatisfied": true, "Description": "The under-claimed Q(ζ_7) finite-witness bound is supported by the loaded heptagon data."}
+      {"ProofObligationId": "po-sawin-shortvec", "ParentBound": "sawin-n1014", "RequiredLemma": "lemma-short-vector-counting", "ObligationKind": "necessary", "IsSatisfied": true, "ValidFrom": "2024-01-01", "ValidTo": null, "TxFrom": "2026-05-27", "TxTo": null, "IsCurrentlyValid": true},
+      {"ProofObligationId": "po-sawin-density", "ParentBound": "sawin-n1014", "RequiredLemma": "lemma-density-margin", "ObligationKind": "necessary", "IsSatisfied": true, "ValidFrom": "2024-01-01", "ValidTo": null, "TxFrom": "2026-05-27", "TxTo": null, "IsCurrentlyValid": true},
+      {"ProofObligationId": "po-sawin-anchor", "ParentBound": "sawin-n1014", "RequiredLemma": "lemma-anchor-explicit-bound", "ObligationKind": "sufficient", "IsSatisfied": true, "ValidFrom": "2024-01-01", "ValidTo": null, "TxFrom": "2026-05-27", "TxTo": null, "IsCurrentlyValid": true},
+      {"ProofObligationId": "po-erdos-context", "ParentBound": "erdos-sqrt-bound", "RequiredLemma": "lemma-erdos-context", "ObligationKind": "sufficient", "IsSatisfied": true, "ValidFrom": "1946-01-01", "ValidTo": null, "TxFrom": "2026-05-27", "TxTo": null, "IsCurrentlyValid": true},
+      {"ProofObligationId": "po-sawin-spencer-aux", "ParentBound": "sawin-n1014", "RequiredLemma": "lemma-spencer-auxiliary", "ObligationKind": "auxiliary", "IsSatisfied": false, "ValidFrom": "2024-01-01", "ValidTo": null, "TxFrom": "2026-05-27", "TxTo": null, "IsCurrentlyValid": true, "Description": "Open obligation: Spencer auxiliary lemma is named but not yet loaded."},
+      {"ProofObligationId": "po-future-gap", "ParentBound": "sawin-n1014", "RequiredLemma": "lemma-future-improvement", "ObligationKind": "auxiliary", "IsSatisfied": null, "ValidFrom": "2025-06-15", "ValidTo": "2025-08-01", "TxFrom": "2026-05-27", "TxTo": null, "IsCurrentlyValid": false, "Description": "Coverage row: IsSatisfied=null, IsCurrentlyValid=false (the required lemma was retracted)."},
+      {"ProofObligationId": "po-zeta7-witness", "ParentBound": "zeta7-witness-bound", "RequiredLemma": "lemma-density-margin", "ObligationKind": "sufficient", "IsSatisfied": true, "ValidFrom": "2026-05-27", "ValidTo": null, "TxFrom": "2026-05-27", "TxTo": null, "IsCurrentlyValid": null, "Description": "Coverage row: IsCurrentlyValid=null (newly added, not yet curator-validated)."}
     ]
   },
   "CitationLinks": {
@@ -2506,16 +2676,21 @@
       {"name": "IsImprovement", "datatype": "boolean", "type": "calculated", "formula": "={{CitationKind}}=\"improves\""},
       {"name": "CitingYear", "datatype": "integer", "type": "lookup", "formula": "=LOOKUP(SourceReferences!{{Year}}, CitationLinks!{{CitingSource}}, SourceReferences!{{SourceReferenceId}})", "nullable": true},
       {"name": "CitedYear", "datatype": "integer", "type": "lookup", "formula": "=LOOKUP(SourceReferences!{{Year}}, CitationLinks!{{CitedSource}}, SourceReferences!{{SourceReferenceId}})", "nullable": true},
+      {"name": "ValidFrom", "datatype": "string", "type": "raw", "Description": "ISO date this citation became real (matches the citing source's publication date)."},
+      {"name": "ValidTo", "datatype": "string", "type": "raw", "nullable": true},
+      {"name": "TxFrom", "datatype": "string", "type": "raw"},
+      {"name": "TxTo", "datatype": "string", "type": "raw", "nullable": true},
+      {"name": "IsCurrentlyValid", "datatype": "boolean", "type": "raw", "nullable": true, "Description": "TRUE iff both the citing and cited sources are themselves still currently valid; FALSE if either has been retracted; null if unevaluated."},
       {"name": "Description", "datatype": "string", "type": "raw", "nullable": true}
     ],
     "data": [
-      {"CitationLinkId": "cite-sawin-improves-erdos", "CitingSource": "src-sawin-2024", "CitedSource": "src-erdos-1946", "CitationKind": "improves", "IsLoadBearing": true, "Description": "Sawin's n^1.014 explicit-exponent bound improves on Erdős's existential n^{1+c/loglogn}."},
-      {"CitationLinkId": "cite-sawin-depends-gs", "CitingSource": "src-sawin-2024", "CitedSource": "src-golod-shafarevich-1964", "CitationKind": "depends-on", "IsLoadBearing": true, "Description": "Sawin's construction depends on number fields satisfying the Golod–Shafarevich criterion."},
-      {"CitationLinkId": "cite-sawin-context-st", "CitingSource": "src-sawin-2024", "CitedSource": "src-szemeredi-trotter-1983", "CitationKind": "cites-for-context", "IsLoadBearing": false, "Description": "Szemerédi–Trotter is the upper-bound side; Sawin cites it for context, not as a dependency."},
-      {"CitationLinkId": "cite-sawin-context-spencer-st", "CitingSource": "src-sawin-2024", "CitedSource": "src-spencer-st-1984", "CitationKind": "cites-for-context", "IsLoadBearing": false, "Description": "Spencer–Szemerédi–Trotter's n^{4/3} upper bound — Sawin's lower bound is far below this ceiling."},
-      {"CitationLinkId": "cite-spencer-extends-st", "CitingSource": "src-spencer-st-1984", "CitedSource": "src-szemeredi-trotter-1983", "CitationKind": "extends", "IsLoadBearing": true, "Description": "Spencer-S-T extends the original ST incidence bound to specifically unit distances."},
-      {"CitationLinkId": "cite-unclassified-folklore", "CitingSource": "src-sawin-2024", "CitedSource": "src-folklore-construction", "CitationKind": "cites-for-context", "IsLoadBearing": null, "Description": "Coverage row: IsLoadBearing=null."},
-      {"CitationLinkId": "cite-experimental-disagrees", "CitingSource": "src-experimental-preprint", "CitedSource": "src-sawin-2024", "CitationKind": "disagrees-with", "IsLoadBearing": false, "Description": "Coverage row: a hypothetical preprint disagreeing with Sawin's exponent (not real — coverage for CitationKind='disagrees-with')."}
+      {"CitationLinkId": "cite-sawin-improves-erdos", "CitingSource": "src-sawin-2024", "CitedSource": "src-erdos-1946", "CitationKind": "improves", "IsLoadBearing": true, "ValidFrom": "2024-01-01", "ValidTo": null, "TxFrom": "2026-05-27", "TxTo": null, "IsCurrentlyValid": true, "Description": "Sawin's n^1.014 explicit-exponent bound improves on Erdős's existential n^{1+c/loglogn}."},
+      {"CitationLinkId": "cite-sawin-depends-gs", "CitingSource": "src-sawin-2024", "CitedSource": "src-golod-shafarevich-1964", "CitationKind": "depends-on", "IsLoadBearing": true, "ValidFrom": "2024-01-01", "ValidTo": null, "TxFrom": "2026-05-27", "TxTo": null, "IsCurrentlyValid": true, "Description": "Sawin's construction depends on number fields satisfying the Golod–Shafarevich criterion."},
+      {"CitationLinkId": "cite-sawin-context-st", "CitingSource": "src-sawin-2024", "CitedSource": "src-szemeredi-trotter-1983", "CitationKind": "cites-for-context", "IsLoadBearing": false, "ValidFrom": "2024-01-01", "ValidTo": null, "TxFrom": "2026-05-27", "TxTo": null, "IsCurrentlyValid": true, "Description": "Szemerédi–Trotter is the upper-bound side; Sawin cites it for context, not as a dependency."},
+      {"CitationLinkId": "cite-sawin-context-spencer-st", "CitingSource": "src-sawin-2024", "CitedSource": "src-spencer-st-1984", "CitationKind": "cites-for-context", "IsLoadBearing": false, "ValidFrom": "2024-01-01", "ValidTo": null, "TxFrom": "2026-05-27", "TxTo": null, "IsCurrentlyValid": true, "Description": "Spencer–Szemerédi–Trotter's n^{4/3} upper bound — Sawin's lower bound is far below this ceiling."},
+      {"CitationLinkId": "cite-spencer-extends-st", "CitingSource": "src-spencer-st-1984", "CitedSource": "src-szemeredi-trotter-1983", "CitationKind": "extends", "IsLoadBearing": true, "ValidFrom": "1984-01-01", "ValidTo": null, "TxFrom": "2026-05-27", "TxTo": null, "IsCurrentlyValid": true, "Description": "Spencer-S-T extends the original ST incidence bound to specifically unit distances."},
+      {"CitationLinkId": "cite-unclassified-folklore", "CitingSource": "src-sawin-2024", "CitedSource": "src-folklore-construction", "CitationKind": "cites-for-context", "IsLoadBearing": null, "ValidFrom": "2024-01-01", "ValidTo": null, "TxFrom": "2026-05-27", "TxTo": null, "IsCurrentlyValid": null, "Description": "Coverage row: IsLoadBearing=null, IsCurrentlyValid=null."},
+      {"CitationLinkId": "cite-experimental-disagrees", "CitingSource": "src-experimental-preprint", "CitedSource": "src-sawin-2024", "CitationKind": "disagrees-with", "IsLoadBearing": false, "ValidFrom": "2025-06-15", "ValidTo": "2025-08-01", "TxFrom": "2026-05-27", "TxTo": null, "IsCurrentlyValid": false, "Description": "Coverage row: citing source was retracted, so the citation is no longer current."}
     ]
   },
   "AnswerKey": {
@@ -2536,23 +2711,50 @@
       {"name": "GateLevel", "datatype": "string", "type": "raw", "Description": "One of: 'blocking', 'warning', 'info'."},
       {"name": "IsBlocking", "datatype": "boolean", "type": "calculated", "formula": "={{GateLevel}}=\"blocking\""},
       {"name": "IsCurrentlyMatched", "datatype": "boolean", "type": "raw", "nullable": true, "Description": "TRUE if the most recent substrate run matched the expected value; FALSE if it didn't; null if not yet run."},
+      {"name": "ValidFrom", "datatype": "string", "type": "raw", "Description": "ISO date when this expected-value pin was first asserted."},
+      {"name": "ValidTo", "datatype": "string", "type": "raw", "nullable": true, "Description": "ISO date when this pin was retired/changed."},
+      {"name": "TxFrom", "datatype": "string", "type": "raw"},
+      {"name": "TxTo", "datatype": "string", "type": "raw", "nullable": true},
+      {"name": "IsCurrentlyValid", "datatype": "boolean", "type": "raw", "nullable": true, "Description": "TRUE if the pin is still the active expected value; FALSE if superseded by a newer pin; null if unevaluated."},
       {"name": "Description", "datatype": "string", "type": "raw", "nullable": true}
     ],
     "data": [
-      {"AnswerKeyId": "ak-tri-ab-distance-squared", "TargetTable": "PointPairs", "TargetRowId": "tri-ab", "TargetField": "DistanceSquared", "DataType": "number", "ExpectedString": null, "ExpectedNumber": 1, "ExpectedBoolean": null, "Tolerance": 0.0001, "GateLevel": "blocking", "IsCurrentlyMatched": true, "Description": "Triangle A↔B is a unit-distance pair: ΔX²+ΔY² = 1."},
-      {"AnswerKeyId": "ak-tri-ab-is-unit", "TargetTable": "PointPairs", "TargetRowId": "tri-ab", "TargetField": "IsUnitDistance", "DataType": "boolean", "ExpectedString": null, "ExpectedNumber": null, "ExpectedBoolean": true, "Tolerance": null, "GateLevel": "blocking", "IsCurrentlyMatched": true},
-      {"AnswerKeyId": "ak-sq-ac-distance-squared", "TargetTable": "PointPairs", "TargetRowId": "sq-ac", "TargetField": "DistanceSquared", "DataType": "number", "ExpectedString": null, "ExpectedNumber": 2, "ExpectedBoolean": null, "Tolerance": 0.0001, "GateLevel": "blocking", "IsCurrentlyMatched": true, "Description": "Diagonal of the unit square: sqrt(2), so squared = 2."},
-      {"AnswerKeyId": "ak-heptagon-point-count", "TargetTable": "PointSets", "TargetRowId": "heptagon-with-center", "TargetField": "PointCount", "DataType": "number", "ExpectedString": null, "ExpectedNumber": 8, "ExpectedBoolean": null, "Tolerance": null, "GateLevel": "blocking", "IsCurrentlyMatched": true},
-      {"AnswerKeyId": "ak-heptagon-edge-count", "TargetTable": "PointSets", "TargetRowId": "heptagon-with-center", "TargetField": "UnitDistancePairCount", "DataType": "number", "ExpectedString": null, "ExpectedNumber": 7, "ExpectedBoolean": null, "Tolerance": null, "GateLevel": "blocking", "IsCurrentlyMatched": true, "Description": "7 spoke pairs (center→each vertex); chord pairs are not unit."},
-      {"AnswerKeyId": "ak-q-sqrt-neg3-gs-pass", "TargetTable": "NumberFields", "TargetRowId": "q-sqrt-neg3", "TargetField": "SatisfiesGolodShafarevich", "DataType": "boolean", "ExpectedString": null, "ExpectedNumber": null, "ExpectedBoolean": false, "Tolerance": null, "GateLevel": "blocking", "IsCurrentlyMatched": true, "Description": "Q(sqrt(-3)) does NOT satisfy GS (d=2, r=1, threshold=1, 1 is not > 1)."},
-      {"AnswerKeyId": "ak-q-zeta-7-gs-pass", "TargetTable": "NumberFields", "TargetRowId": "q-zeta-7", "TargetField": "SatisfiesGolodShafarevich", "DataType": "boolean", "ExpectedString": null, "ExpectedNumber": null, "ExpectedBoolean": true, "Tolerance": null, "GateLevel": "blocking", "IsCurrentlyMatched": true, "Description": "Q(ζ_7) demonstration values satisfy GS."},
-      {"AnswerKeyId": "ak-q-zeta-7-small-prime-count", "TargetTable": "NumberFields", "TargetRowId": "q-zeta-7", "TargetField": "SmallNormPrimeIdealCount", "DataType": "number", "ExpectedString": null, "ExpectedNumber": 4, "ExpectedBoolean": null, "Tolerance": null, "GateLevel": "blocking", "IsCurrentlyMatched": true, "Description": "Norms ≤ 30 in the loaded Q(ζ_7) primes: 7, 8, 8, 29 → 4 primes."},
-      {"AnswerKeyId": "ak-lat-q-zeta-7-disc-identity", "TargetTable": "MinkowskiLattices", "TargetRowId": "lat-q-zeta-7", "TargetField": "DeterminantSquaredEqualsDiscriminant", "DataType": "boolean", "ExpectedString": null, "ExpectedNumber": null, "ExpectedBoolean": true, "Tolerance": null, "GateLevel": "blocking", "IsCurrentlyMatched": true, "Description": "Classical identity det² = |disc(K)|: 129.642² ≈ 16807 = |disc(Q(ζ_7))|."},
-      {"AnswerKeyId": "ak-sawin-witness-consistent", "TargetTable": "AsymptoticLowerBounds", "TargetRowId": "sawin-n1014", "TargetField": "WitnessConsistent", "DataType": "boolean", "ExpectedString": null, "ExpectedNumber": null, "ExpectedBoolean": false, "Tolerance": null, "GateLevel": "info", "IsCurrentlyMatched": true, "Description": "Honest finding: the n^1.014 bound is NOT finite-sample witnessed by the loaded sqrt-lattice instances (which max out at exponent 1). Marked 'info' rather than 'blocking' because this reflects what's loaded, not a substrate bug."},
-      {"AnswerKeyId": "ak-zeta7-witness-consistent", "TargetTable": "AsymptoticLowerBounds", "TargetRowId": "zeta7-witness-bound", "TargetField": "WitnessConsistent", "DataType": "boolean", "ExpectedString": null, "ExpectedNumber": null, "ExpectedBoolean": true, "Tolerance": null, "GateLevel": "blocking", "IsCurrentlyMatched": true, "Description": "The deliberately-under-claimed Q(ζ_7) bound (exponent 0.9) IS witnessed by the heptagon-with-center instance (log7/log8 ≈ 0.937)."},
-      {"AnswerKeyId": "ak-thm-sawin-chain-not-closed", "TargetTable": "Theorems", "TargetRowId": "thm-superlinear-unit-distance", "TargetField": "AlgebraicChainClosed", "DataType": "boolean", "ExpectedString": null, "ExpectedNumber": null, "ExpectedBoolean": false, "Tolerance": null, "GateLevel": "info", "IsCurrentlyMatched": true, "Description": "Honest: the Sawin theorem row's chain is NOT closed because the Sawin bound's WitnessConsistent is FALSE under the loaded data."},
-      {"AnswerKeyId": "ak-coverage-warning", "TargetTable": "Theorems", "TargetRowId": "thm-future-conjectural-improvement", "TargetField": "IsProven", "DataType": "boolean", "ExpectedString": null, "ExpectedNumber": null, "ExpectedBoolean": false, "Tolerance": null, "GateLevel": "warning", "IsCurrentlyMatched": null, "Description": "Coverage row: IsCurrentlyMatched=null."},
-      {"AnswerKeyId": "ak-coverage-unmatched", "TargetTable": "Conjectures", "TargetRowId": "conj-future-improvement-slot", "TargetField": "IsResolved", "DataType": "boolean", "ExpectedString": null, "ExpectedNumber": null, "ExpectedBoolean": false, "Tolerance": null, "GateLevel": "info", "IsCurrentlyMatched": false, "Description": "Coverage row: IsCurrentlyMatched=FALSE (current value is null, expected is false)."}
+      {"AnswerKeyId": "ak-tri-ab-distance-squared", "TargetTable": "PointPairs", "TargetRowId": "tri-ab", "TargetField": "DistanceSquared", "DataType": "number", "ExpectedString": null, "ExpectedNumber": 1, "ExpectedBoolean": null, "Tolerance": 0.0001, "GateLevel": "blocking", "IsCurrentlyMatched": true, "ValidFrom": "2026-05-27", "ValidTo": null, "TxFrom": "2026-05-27", "TxTo": null, "IsCurrentlyValid": true, "Description": "Triangle A↔B is a unit-distance pair: ΔX²+ΔY² = 1."},
+      {"AnswerKeyId": "ak-tri-ab-is-unit", "TargetTable": "PointPairs", "TargetRowId": "tri-ab", "TargetField": "IsUnitDistance", "DataType": "boolean", "ExpectedString": null, "ExpectedNumber": null, "ExpectedBoolean": true, "Tolerance": null, "GateLevel": "blocking", "IsCurrentlyMatched": true, "ValidFrom": "2026-05-27", "ValidTo": null, "TxFrom": "2026-05-27", "TxTo": null, "IsCurrentlyValid": true},
+      {"AnswerKeyId": "ak-sq-ac-distance-squared", "TargetTable": "PointPairs", "TargetRowId": "sq-ac", "TargetField": "DistanceSquared", "DataType": "number", "ExpectedString": null, "ExpectedNumber": 2, "ExpectedBoolean": null, "Tolerance": 0.0001, "GateLevel": "blocking", "IsCurrentlyMatched": true, "ValidFrom": "2026-05-27", "ValidTo": null, "TxFrom": "2026-05-27", "TxTo": null, "IsCurrentlyValid": true, "Description": "Diagonal of the unit square: sqrt(2), so squared = 2."},
+      {"AnswerKeyId": "ak-heptagon-point-count", "TargetTable": "PointSets", "TargetRowId": "heptagon-with-center", "TargetField": "PointCount", "DataType": "number", "ExpectedString": null, "ExpectedNumber": 8, "ExpectedBoolean": null, "Tolerance": null, "GateLevel": "blocking", "IsCurrentlyMatched": true, "ValidFrom": "2026-05-27", "ValidTo": null, "TxFrom": "2026-05-27", "TxTo": null, "IsCurrentlyValid": true},
+      {"AnswerKeyId": "ak-heptagon-edge-count", "TargetTable": "PointSets", "TargetRowId": "heptagon-with-center", "TargetField": "UnitDistancePairCount", "DataType": "number", "ExpectedString": null, "ExpectedNumber": 7, "ExpectedBoolean": null, "Tolerance": null, "GateLevel": "blocking", "IsCurrentlyMatched": true, "ValidFrom": "2026-05-27", "ValidTo": null, "TxFrom": "2026-05-27", "TxTo": null, "IsCurrentlyValid": true, "Description": "7 spoke pairs (center→each vertex); chord pairs are not unit."},
+      {"AnswerKeyId": "ak-q-sqrt-neg3-gs-pass", "TargetTable": "NumberFields", "TargetRowId": "q-sqrt-neg3", "TargetField": "SatisfiesGolodShafarevich", "DataType": "boolean", "ExpectedString": null, "ExpectedNumber": null, "ExpectedBoolean": false, "Tolerance": null, "GateLevel": "blocking", "IsCurrentlyMatched": true, "ValidFrom": "2026-05-27", "ValidTo": null, "TxFrom": "2026-05-27", "TxTo": null, "IsCurrentlyValid": true, "Description": "Q(sqrt(-3)) does NOT satisfy GS (d=2, r=1, threshold=1, 1 is not > 1)."},
+      {"AnswerKeyId": "ak-q-zeta-7-gs-pass", "TargetTable": "NumberFields", "TargetRowId": "q-zeta-7", "TargetField": "SatisfiesGolodShafarevich", "DataType": "boolean", "ExpectedString": null, "ExpectedNumber": null, "ExpectedBoolean": true, "Tolerance": null, "GateLevel": "blocking", "IsCurrentlyMatched": true, "ValidFrom": "2026-05-27", "ValidTo": null, "TxFrom": "2026-05-27", "TxTo": null, "IsCurrentlyValid": true, "Description": "Q(ζ_7) demonstration values satisfy GS."},
+      {"AnswerKeyId": "ak-q-zeta-7-small-prime-count", "TargetTable": "NumberFields", "TargetRowId": "q-zeta-7", "TargetField": "SmallNormPrimeIdealCount", "DataType": "number", "ExpectedString": null, "ExpectedNumber": 4, "ExpectedBoolean": null, "Tolerance": null, "GateLevel": "blocking", "IsCurrentlyMatched": true, "ValidFrom": "2026-05-27", "ValidTo": null, "TxFrom": "2026-05-27", "TxTo": null, "IsCurrentlyValid": true, "Description": "Norms ≤ 30 in the loaded Q(ζ_7) primes: 7, 8, 8, 29 → 4 primes."},
+      {"AnswerKeyId": "ak-lat-q-zeta-7-disc-identity", "TargetTable": "MinkowskiLattices", "TargetRowId": "lat-q-zeta-7", "TargetField": "DeterminantSquaredEqualsDiscriminant", "DataType": "boolean", "ExpectedString": null, "ExpectedNumber": null, "ExpectedBoolean": true, "Tolerance": null, "GateLevel": "blocking", "IsCurrentlyMatched": true, "ValidFrom": "2026-05-27", "ValidTo": null, "TxFrom": "2026-05-27", "TxTo": null, "IsCurrentlyValid": true, "Description": "Classical identity det² = |disc(K)|: 129.642² ≈ 16807 = |disc(Q(ζ_7))|."},
+      {"AnswerKeyId": "ak-sawin-witness-consistent", "TargetTable": "AsymptoticLowerBounds", "TargetRowId": "sawin-n1014", "TargetField": "WitnessConsistent", "DataType": "boolean", "ExpectedString": null, "ExpectedNumber": null, "ExpectedBoolean": false, "Tolerance": null, "GateLevel": "info", "IsCurrentlyMatched": true, "ValidFrom": "2026-05-27", "ValidTo": null, "TxFrom": "2026-05-27", "TxTo": null, "IsCurrentlyValid": true, "Description": "Honest finding: the n^1.014 bound is NOT finite-sample witnessed by the loaded sqrt-lattice instances (which max out at exponent 1). Marked 'info' rather than 'blocking' because this reflects what's loaded, not a substrate bug."},
+      {"AnswerKeyId": "ak-zeta7-witness-consistent", "TargetTable": "AsymptoticLowerBounds", "TargetRowId": "zeta7-witness-bound", "TargetField": "WitnessConsistent", "DataType": "boolean", "ExpectedString": null, "ExpectedNumber": null, "ExpectedBoolean": true, "Tolerance": null, "GateLevel": "blocking", "IsCurrentlyMatched": true, "ValidFrom": "2026-05-27", "ValidTo": null, "TxFrom": "2026-05-27", "TxTo": null, "IsCurrentlyValid": true, "Description": "The deliberately-under-claimed Q(ζ_7) bound (exponent 0.9) IS witnessed by the heptagon-with-center instance (log7/log8 ≈ 0.937)."},
+      {"AnswerKeyId": "ak-thm-sawin-chain-not-closed", "TargetTable": "Theorems", "TargetRowId": "thm-superlinear-unit-distance", "TargetField": "AlgebraicChainClosed", "DataType": "boolean", "ExpectedString": null, "ExpectedNumber": null, "ExpectedBoolean": false, "Tolerance": null, "GateLevel": "info", "IsCurrentlyMatched": true, "ValidFrom": "2026-05-27", "ValidTo": null, "TxFrom": "2026-05-27", "TxTo": null, "IsCurrentlyValid": true, "Description": "Honest: the Sawin theorem row's chain is NOT closed because the Sawin bound's WitnessConsistent is FALSE under the loaded data."},
+      {"AnswerKeyId": "ak-coverage-warning", "TargetTable": "Theorems", "TargetRowId": "thm-future-conjectural-improvement", "TargetField": "IsProven", "DataType": "boolean", "ExpectedString": null, "ExpectedNumber": null, "ExpectedBoolean": false, "Tolerance": null, "GateLevel": "warning", "IsCurrentlyMatched": null, "ValidFrom": "2026-05-27", "ValidTo": null, "TxFrom": "2026-05-27", "TxTo": null, "IsCurrentlyValid": null, "Description": "Coverage row: IsCurrentlyMatched=null and IsCurrentlyValid=null."},
+      {"AnswerKeyId": "ak-coverage-unmatched", "TargetTable": "Conjectures", "TargetRowId": "conj-future-improvement-slot", "TargetField": "IsResolved", "DataType": "boolean", "ExpectedString": null, "ExpectedNumber": null, "ExpectedBoolean": false, "Tolerance": null, "GateLevel": "info", "IsCurrentlyMatched": false, "ValidFrom": "2026-05-20", "ValidTo": "2026-05-25", "TxFrom": "2026-05-27", "TxTo": null, "IsCurrentlyValid": false, "Description": "Coverage row: this expected-value pin was retired (superseded by a later one); IsCurrentlyValid=false."}
+    ]
+  },
+  "TemporalSnapshots": {
+    "Description": "Table: TemporalSnapshots. Named moments in the historical progression of the unit-distance problem. Each row pins a calendar date with a label so chronology becomes a first-class entity. Aggregations against bitemporal columns elsewhere in the rulebook can reference these moments by name instead of by raw ISO string.",
+    "important": true,
+    "important_fields": ["SnapshotDate", "Label"],
+    "schema": [
+      {"name": "TemporalSnapshotId", "datatype": "string", "type": "raw", "nullable": false, "is_primary_key": true},
+      {"name": "Name", "datatype": "string", "type": "calculated", "nullable": true, "formula": "=SUBSTITUTE(LOWER({{Label}}), \" \", \"-\")"},
+      {"name": "Label", "datatype": "string", "type": "raw"},
+      {"name": "SnapshotDate", "datatype": "string", "type": "raw", "Description": "ISO date for the moment this snapshot captures."},
+      {"name": "Description", "datatype": "string", "type": "raw"},
+      {"name": "IsHistorical", "datatype": "boolean", "type": "raw", "nullable": true, "Description": "TRUE for past moments; FALSE for the current moment; null for future-projected moments."},
+      {"name": "AnchoringSourceReference", "datatype": "string", "type": "relationship", "RelatedTo": "SourceReferences", "nullable": true, "Description": "The source whose publication date pins this moment, when applicable."}
+    ],
+    "data": [
+      {"TemporalSnapshotId": "snap-erdos-1946", "Label": "Erdős 1946 publication", "SnapshotDate": "1946-01-01", "Description": "Erdős's original 'On sets of distances of n points' establishes U(n) ≥ n^{1+c/loglogn}. The starting line of the lower-bound program.", "IsHistorical": true, "AnchoringSourceReference": "src-erdos-1946"},
+      {"TemporalSnapshotId": "snap-st-1983", "Label": "Szemerédi–Trotter 1983", "SnapshotDate": "1983-01-01", "Description": "Szemerédi–Trotter incidence bound published. Sets up the upper-bound side.", "IsHistorical": true, "AnchoringSourceReference": "src-szemeredi-trotter-1983"},
+      {"TemporalSnapshotId": "snap-spencer-st-1984", "Label": "Spencer–Szemerédi–Trotter 1984", "SnapshotDate": "1984-01-01", "Description": "Specialization of ST to unit distances: U(n) = O(n^{4/3}). The ceiling.", "IsHistorical": true, "AnchoringSourceReference": "src-spencer-st-1984"},
+      {"TemporalSnapshotId": "snap-sawin-2024", "Label": "Sawin 2024 improvement", "SnapshotDate": "2024-01-01", "Description": "Sawin's n^{1.014} explicit-exponent lower bound. First strictly-polynomial improvement over Erdős's existential bound.", "IsHistorical": true, "AnchoringSourceReference": "src-sawin-2024"},
+      {"TemporalSnapshotId": "snap-now", "Label": "Current moment", "SnapshotDate": "2026-05-27", "Description": "The 'now' anchor — present-day state of the rulebook.", "IsHistorical": false, "AnchoringSourceReference": null},
+      {"TemporalSnapshotId": "snap-future-projected", "Label": "Future improvement (projected)", "SnapshotDate": "2030-01-01", "Description": "Placeholder for the next plausible improvement — for forward-looking 'will the chain still close in 2030' queries.", "IsHistorical": null, "AnchoringSourceReference": null}
     ]
   }
 }

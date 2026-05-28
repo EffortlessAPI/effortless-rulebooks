@@ -41,18 +41,23 @@ Refuse this. If a value can be computed live from the SSoT, **compute it live.**
 
 ## Principled materialization IS allowed (and encouraged when it earns its keep)
 
-There is a real exception, and it is categorically different from a bespoke cache: when a derived computation is genuinely expensive AND its upstream is stable (an N² join over a sealed input, an immutable mathematical object, etc.), it is fine to materialize the result — **as long as the materialization is driven from the SSoT, not invented by hand.** The shape that qualifies:
+There is a real exception, and it is categorically different from a bespoke cache: when a derived computation is genuinely expensive AND its upstream is stable (an N² join over a sealed input, an immutable mathematical object, etc.), it is fine to materialize the result — **as long as the materialization is driven from the SSoT, not invented by hand.**
 
-- The rulebook explicitly annotates the field as materialized (e.g. `"cache": "matview"`).
-- A transpiler emits the cache and its refresh function from that annotation, alongside the live view.
-- The refresh contract (eager-on-write / on-demand / scheduled) is declared in the rulebook, not improvised in app code.
+The CMCC-native way to express this is **as data in the rulebook itself, in a first-class table** — not as an ad-hoc JSON property smuggled onto a field-schema object. The exact table shape is a per-use-case decision (a `MaterializedFields` table when granularity is per-field; a `MaterializedEntities` table when granularity is per-table; some other table when neither fits). The transpiler then reads that table like any other rulebook table and emits the matview + refresh function from those rows.
+
+Do NOT invent a sibling key on field objects (`"cache": "matview"`, `"materialized": true`, etc.). The rulebook describes its own internal-state details *as rows*, the same way `__meta__` does and the same way every other concept in CMCC does. If materialization deserves to exist, it deserves a table.
+
+The shape that qualifies as principled materialization:
+
+- A first-class rulebook table enumerates the materialized field/entity, plus the refresh contract (eager-on-write / on-demand / scheduled) as data in that row.
+- A transpiler emits the cache and its refresh function from that table, alongside the live view.
 - The formula remains the single source of truth; the cache is purely derived infrastructure, regeneratable from the rulebook.
 
 The distinguishing test: **if you deleted the cache, could the SSoT + the transpiler regenerate it identically?** If yes, it's principled materialization. If no, it's a bespoke cache — refuse it.
 
-A Postgres materialized view emitted by a transpiler from a rulebook annotation is fine. A hand-written `_cache = {}` in a Python module that nobody can audit is not.
+A Postgres materialized view emitted by a transpiler reading a rulebook table is fine. A hand-written `_cache = {}` in a Python module that nobody can audit is not.
 
-**Rule for agents:** if you find yourself reaching for a lock or an ad-hoc cache to make an operation "safer," stop. Default answer is *don't build that*. Principled materialization is a separate, sanctioned mechanism — and even then, only build it when the user has confirmed there is real, measured perf pain that justifies the extra class of derived field.
+**Rule for agents:** if you find yourself reaching for a lock or an ad-hoc cache to make an operation "safer," stop. Default answer is *don't build that*. Principled materialization is a separate, sanctioned mechanism, expressed as data in a rulebook table — and even then, only build it when the user has confirmed there is real, measured perf pain that justifies the extra class of derived field.
 
 ---
 
