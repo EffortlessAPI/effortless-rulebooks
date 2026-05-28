@@ -94,6 +94,23 @@ Two connections. Two purposes. Two categories. Same logic as the rulebook split 
 
 ---
 
+# `active-domain.txt` ≠ "what this conversation is about"
+
+`orchestration/active-domain.txt` is the **orchestrator's** SSoT. It tells `orchestrate.sh`, `take-test.sh`, the build scripts, and the running admin portal's substrate connections which demo to act on. It is the user's UI-side scratch dial — they flip it between turns to test how a change you just made plays out against a different demo. **It changes constantly, on a different schedule than this chat.**
+
+It is NOT a signal about which demo the user is asking you about in this conversation. Reading it to "figure out" what they mean is the same shape of mistake as a silent fallback — it substitutes a plausible-looking value (whatever they happened to be testing 30 seconds ago) for the real signal (what they actually wrote).
+
+**Rule for agents:**
+
+- The authoritative signal for "which demo does this turn concern" is **the user's message** — a name they typed, a URL they pasted, a row/table list they pasted, a screenshot, a file path. Trust that.
+- If the conversation has no such signal yet, **ask.** One sentence: "Which demo — `customer-fullname`, `nakedclaude-v1`, or something else?" That is cheaper than guessing wrong and getting derailed.
+- If a turn legitimately needs `active-domain.txt` flipped (e.g. you're about to run `orchestrate.sh` and the orchestrator reads from it), **ask first, then change it, then move on.** Do not treat its current contents as a hint about user intent — it is just the dial position from the last UI test.
+- Never let evidence in the user's message (e.g. "the customer-fullname demo shows table X") be overridden by what `active-domain.txt` says. The message wins. Always.
+
+The UI Explorer is already decoupled — its domain comes from the URL (`/developer/:domain/explorer/...`), not this file. This conversation should be decoupled the same way: from the user's words, not from a file they're rapidly flipping for unrelated testing.
+
+---
+
 # Effortlessly Invariant Rulesbooks (ERB)
 
 ## Two categorically different kinds of rulebooks live in this repo
