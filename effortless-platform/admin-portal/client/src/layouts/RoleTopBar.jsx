@@ -3,6 +3,39 @@ import * as Icons from "lucide-react";
 import { toast } from "../lib/toast.js";
 import DomainSwitcher from "../components/DomainSwitcher.jsx";
 
+// Brand logos from simpleicons.org CDN — stable, CC0-licensed icon set
+// (trademarks belong to their respective owners). Used here for instantly
+// recognizable Excel + VS Code chips. Folder uses lucide so we don't need a
+// third CDN round-trip for a generic glyph.
+const EXCEL_ICON_URL  = "https://cdn.simpleicons.org/microsoftexcel/217346";
+const VSCODE_ICON_URL = "https://cdn.simpleicons.org/visualstudiocode/0078d4";
+
+function openProjectXlsx(domainId) {
+  // Stream the generated workbook via a hidden anchor so the browser handles
+  // it as a normal file download (preserves filename from Content-Disposition).
+  const a = document.createElement("a");
+  a.href = `/api/projects/${encodeURIComponent(domainId)}/export.xlsx`;
+  a.rel = "noopener";
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+}
+
+async function postQuickAction(domainId, action, label) {
+  try {
+    const r = await fetch(`/api/projects/${encodeURIComponent(domainId)}/${action}`, {
+      method: "POST",
+    });
+    if (!r.ok) {
+      const body = await r.json().catch(() => ({}));
+      throw new Error(body.error || `HTTP ${r.status}`);
+    }
+    toast(`${label} — opened on server host`, "ok");
+  } catch (e) {
+    toast(`${label} failed: ${e.message || e}`, "err");
+  }
+}
+
 // `mode` is "viewer" | "developer" | "admin"
 // `requiresDomain` is true when this layout's routes always have a :domain
 // `domainOptional` means the layout has BOTH domain and no-domain routes
@@ -80,6 +113,35 @@ export default function RoleTopBar({
               onPick={switchDomain}
             />
           </div>
+        </div>
+      )}
+
+      {showDomainBlock && activeDomain && (
+        <div className="domain-quick-actions">
+          <button
+            className="btn-icon"
+            onClick={() => openProjectXlsx(activeDomain)}
+            title="Download this domain as an Excel workbook (generated from the rulebook)"
+            aria-label="Download Excel export"
+          >
+            <img src={EXCEL_ICON_URL} alt="" width={16} height={16} />
+          </button>
+          <button
+            className="btn-icon"
+            onClick={() => postQuickAction(activeDomain, "open-folder", "Open folder")}
+            title={`Open ${activeDomain}/ in Finder/Explorer (on the server host)`}
+            aria-label="Open project folder"
+          >
+            <Icons.FolderOpen size={16} />
+          </button>
+          <button
+            className="btn-icon"
+            onClick={() => postQuickAction(activeDomain, "open-vscode", "Open in VS Code")}
+            title={`Run 'code .' on ${activeDomain}/ (on the server host)`}
+            aria-label="Open in VS Code"
+          >
+            <img src={VSCODE_ICON_URL} alt="" width={16} height={16} />
+          </button>
         </div>
       )}
 

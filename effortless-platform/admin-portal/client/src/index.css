@@ -365,6 +365,17 @@ ul li  { margin-bottom: 4px; }
 .topbar-user { display: flex; align-items: center; gap: 8px; }
 .topbar-user-name { color: var(--muted); font-size: 13px; }
 
+.domain-quick-actions {
+  display: flex; align-items: center; gap: 2px;
+  padding-left: 6px; margin-left: 2px;
+  border-left: 1px solid var(--border);
+}
+.domain-quick-actions .btn-icon {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 28px; height: 28px; padding: 0;
+}
+.domain-quick-actions .btn-icon img { display: block; }
+
 /* Sidebar (per role) */
 .sidebar { position: relative; }
 .sidebar-area-strip {

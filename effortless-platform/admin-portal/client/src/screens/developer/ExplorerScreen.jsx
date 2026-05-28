@@ -506,7 +506,7 @@ function SchemaEditor({ entity, fieldIndex, field, canEdit, onClose, startRebuil
       else if (onSavedNoRebuild) onSavedNoRebuild();
       onClose();
     } catch (e) {
-      setErr(e.message);
+      setErr({ message: e.message, transpilerOutput: e.transpilerOutput || null });
     } finally { setBusy(false); }
   };
 
@@ -597,13 +597,26 @@ function SchemaEditor({ entity, fieldIndex, field, canEdit, onClose, startRebuil
       </div>
 
       {err && (
-        <div className="story-banner" style={{ borderLeftColor: "var(--bad)", marginTop: 8 }}>{err}</div>
+        <div className="story-banner" style={{ borderLeftColor: "var(--bad)", marginTop: 8 }}>
+          <div>{typeof err === "string" ? err : err.message}</div>
+          {err && typeof err === "object" && err.transpilerOutput && (
+            <details style={{ marginTop: 6 }}>
+              <summary className="muted small" style={{ cursor: "pointer" }}>transpiler output</summary>
+              <pre className="mono small" style={{ whiteSpace: "pre-wrap", marginTop: 4, maxHeight: 240, overflow: "auto" }}>
+                {err.transpilerOutput}
+              </pre>
+            </details>
+          )}
+          <div className="muted small" style={{ marginTop: 6 }}>
+            Nothing was saved — the rulebook on disk is unchanged.
+          </div>
+        </div>
       )}
 
       {canEdit && (
         <div style={{ marginTop: 10, display: "flex", gap: 8 }}>
           <button className="btn" disabled={!anyDirty || busy} onClick={save}>
-            {busy ? "Saving + rebuilding…" : anyDirty ? "Save (triggers rebuild)" : "Save"}
+            {busy ? "Validating + saving…" : anyDirty ? "Save (validate, then rebuild)" : "Save"}
           </button>
           <span className="muted small" style={{ alignSelf: "center" }}>
             Saves PATCH /api/explorer/schema per dirty property and tails the rebuild.
@@ -1274,14 +1287,15 @@ function InstanceView({ domain, node, pathSegments, goTo, canEdit, refreshNode, 
                       <span className="muted small" style={{ marginLeft: 6 }}>{c.datatype}</span>
                     )}
                     {schemaOpen && <span className="muted small" style={{ marginLeft: 6 }}>▾</span>}
-                    {c.formula && (
-                      <div className="mono small muted" style={{ marginTop: 4 }}>{c.formula}</div>
-                    )}
                   </td>
                   <td
                     className={hasProvenance ? "clickable" : ""}
                     onClick={hasProvenance ? () => setOpenCell((cur) => cur === c.name ? null : c.name) : undefined}
-                    title={hasProvenance ? "Click to see how this was computed" : undefined}
+                    title={
+                      c.formula
+                        ? (hasProvenance ? `${c.formula}\n\n(click for provenance)` : c.formula)
+                        : (hasProvenance ? "Click to see how this was computed" : undefined)
+                    }
                   >
                     {writable
                       ? <FieldInput field={c} value={liveValue} onChange={(v) => setField(c.name, v, c.datatype)} />

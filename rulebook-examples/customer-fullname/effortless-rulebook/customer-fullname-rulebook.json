@@ -30,7 +30,10 @@
       {
         "name": "Initials",
         "formula": "LEFT(FirstName, 1) & LEFT(LastName, 1)",
-        "type": "calculated"
+        "type": "calculated",
+        "datatype": "string",
+        "nullable": true,
+        "Description": "dsfdfds"
       },
       {
         "name": "FirstName",

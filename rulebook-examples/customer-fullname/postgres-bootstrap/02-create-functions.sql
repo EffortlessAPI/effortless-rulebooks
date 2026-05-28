@@ -28,6 +28,16 @@ RETURNS TEXT AS $$
   SELECT (REPLACE((SELECT NULLIF(email_address, '') FROM customers WHERE customer_id = p_customer_id), '@', '-'))::text;
 $$ LANGUAGE sql STABLE;
 
+-- calc_customers_initials
+-- Field: Customers.Initials
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_customers_initials(p_customer_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CONCAT(LEFT((FirstName)::text, (1)::integer), LEFT((LastName)::text, (1)::integer)))::text;
+$$ LANGUAGE sql STABLE;
+
 -- calc_customers_full_name
 -- Field: Customers.FullName
 -- Type: calculated | DataType: string | Returns: TEXT

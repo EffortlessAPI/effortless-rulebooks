@@ -15,6 +15,7 @@ import cors from "cors";
 import pg from "pg";
 import fs from "node:fs";
 import fsp from "node:fs/promises";
+import os from "node:os";
 import path from "node:path";
 import crypto from "node:crypto";
 import { spawn, exec } from "node:child_process";
@@ -28,6 +29,7 @@ const TOP_RULEBOOK = path.join(PLATFORM_DIR, "effortless-rulebook", "effortless-
 const ACTIVE_DOMAIN_FILE = path.join(REPO_ROOT, "orchestration", "active-domain.txt");
 const PORTAL_STATE_FILE = path.join(__dirname, ".portal-state.json");
 const RULEBOOK_EXAMPLES = path.join(REPO_ROOT, "rulebook-examples");
+const PYTHON_INJECTOR = path.join(REPO_ROOT, "execution-substrates", "python", "inject-into-python.py");
 
 const PORT = parseInt(process.env.PORTAL_PORT || "7777", 10);
 const PROXY_URL = process.env.PROXY_URL || "http://localhost:4242";
@@ -309,6 +311,61 @@ function assertNonEmptyRulebook(rb, p) {
 function saveRulebook(rb, p = activeRulebookPath()) {
   assertNonEmptyRulebook(rb, p);
   fs.writeFileSync(p, JSON.stringify(rb, null, 2) + "\n");
+}
+
+// Pre-flight validator for a *proposed* rulebook. Writes the proposed JSON to
+// a temp file and shells out to the Python transpiler (inject-into-python.py)
+// — the strictest of the local substrates and the one that catches formula
+// syntax errors, missing fields, broken FK targets, etc. If it exits nonzero,
+// throws an Error whose message is the captured transpiler output, trimmed
+// to the actionable part.
+//
+// Why Python and not Postgres: the Postgres substrate emits raw formula text
+// as SQL without parsing it, so a syntactically-broken formula sails through.
+// Python is the gate that actually validates calculated-field syntax.
+//
+// Called from writeThrough() BEFORE the disk write, so a failed validation
+// means the rulebook on disk is unchanged — there's nothing to revert.
+async function validateProposedRulebook(rb) {
+  const tmpRoot = await fsp.mkdtemp(path.join(os.tmpdir(), "erb-validate-"));
+  const inputFile = path.join(tmpRoot, "proposed-rulebook.json");
+  const outputDir = path.join(tmpRoot, "out");
+  await fsp.mkdir(outputDir, { recursive: true });
+  await fsp.writeFile(inputFile, JSON.stringify(rb, null, 2) + "\n", "utf8");
+
+  const result = await new Promise((resolve) => {
+    const proc = spawn("python3", [PYTHON_INJECTOR], {
+      env: {
+        ...process.env,
+        ERB_RULEBOOK_PATH: inputFile,
+        ERB_OUTPUT_DIR: outputDir,
+      },
+      stdio: ["ignore", "pipe", "pipe"],
+    });
+    let stdout = "";
+    let stderr = "";
+    proc.stdout.on("data", (b) => { stdout += b.toString(); });
+    proc.stderr.on("data", (b) => { stderr += b.toString(); });
+    proc.on("error", (e) => resolve({ exit: -1, stdout, stderr: stderr + `\nspawn error: ${e.message}` }));
+    proc.on("close", (code) => resolve({ exit: code, stdout, stderr }));
+  });
+
+  // Cleanup temp dir regardless. Best-effort — don't mask the validation
+  // verdict with cleanup errors.
+  fsp.rm(tmpRoot, { recursive: true, force: true }).catch(() => {});
+
+  if (result.exit === 0) return { ok: true };
+
+  // Surface the actionable part of the output. The Python transpiler prints
+  // the parse error followed by a traceback. We keep the whole thing but
+  // hoist the ValueError line to the top so the toast shows it first.
+  const all = (result.stdout || "") + (result.stderr || "");
+  const lines = all.split("\n");
+  const headline = lines.find((l) => /ValueError:|SyntaxError:|Error:/.test(l)) || `Python transpiler exited ${result.exit}`;
+  const err = new Error(`rulebook validation failed: ${headline.trim()}`);
+  err.transpilerOutput = all;
+  err.exitCode = result.exit;
+  throw err;
 }
 
 function saveProjectRulebook(rb) {
@@ -680,7 +737,12 @@ async function writeThrough({ pgWrite, rulebookMutate }) {
 
     const rb = loadRulebook();
     const newRb = rulebookMutate(rb);
-    // Filesystem first (committed = on disk). If this throws, we ROLLBACK pg.
+    // Pre-flight: validate the *proposed* rulebook against the Python
+    // transpiler BEFORE writing to disk. If validation fails, throw — the
+    // pg TXN rolls back below and the on-disk rulebook is unchanged. There
+    // is nothing to revert; the bad edit simply never persisted.
+    await validateProposedRulebook(newRb);
+    // Filesystem next (committed = on disk). If this throws, we ROLLBACK pg.
     saveRulebook(newRb);
 
     await client.query("COMMIT");
@@ -769,6 +831,100 @@ app.post("/api/projects/:id/activate", async (req, res) => {
   pool = null; // force re-init against new editor DB
   await getPool();
   res.json({ active: getActiveDomain() });
+});
+
+// --- per-project quick actions (Excel export, open folder, open in VS Code) ---
+//
+// All three resolve the project via listProjects() — never via a client-
+// supplied path. The Excel export shells out to the same `effortless
+// rulebook-to-xlsx` transpiler used by `effortless build`, so the workbook
+// reflects the live rulebook JSON without depending on the per-domain
+// Postgres pool. open-folder and open-vscode are developer convenience
+// actions that run on the server host (the dev machine the portal is
+// running on).
+
+const XLSX_INJECTOR = path.join(REPO_ROOT, "execution-substrates", "xlsx", "inject-into-xlsx.py");
+
+app.get("/api/projects/:id/export.xlsx", async (req, res) => {
+  const id = req.params.id;
+  const proj = listProjects().find((p) => p.id === id);
+  if (!proj) return res.status(404).json({ error: "unknown project" });
+
+  // Run the same injector script the ssotme-proxy uses (matches the
+  // effortless-excel-export skill). It writes `rulebook.xlsx` into its cwd
+  // and reads the rulebook from $ERB_RULEBOOK_PATH. Using a per-request
+  // tmpdir means concurrent exports for different domains don't collide.
+  const tmpDir = await fsp.mkdtemp(path.join(os.tmpdir(), "erb-xlsx-"));
+  const producedPath = path.join(tmpDir, "rulebook.xlsx");
+  const downloadName = `${id}-rulebook.xlsx`;
+  try {
+    await new Promise((resolve, reject) => {
+      const child = spawn("python3", [XLSX_INJECTOR], {
+        cwd: tmpDir,
+        env: { ...process.env, ERB_RULEBOOK_PATH: proj.rulebookPath, ERB_OUTPUT_DIR: tmpDir },
+      });
+      let stderr = "";
+      child.stderr.on("data", (c) => { stderr += c; });
+      child.on("error", reject);
+      child.on("close", (code) => {
+        if (code === 0) resolve();
+        else reject(new Error(`inject-into-xlsx exited ${code}\n${stderr.slice(-2000)}`));
+      });
+    });
+    if (!fs.existsSync(producedPath)) {
+      throw new Error("inject-into-xlsx finished but produced no rulebook.xlsx");
+    }
+    res.download(producedPath, downloadName, () => {
+      fsp.rm(tmpDir, { recursive: true, force: true }).catch(() => {});
+    });
+  } catch (e) {
+    await fsp.rm(tmpDir, { recursive: true, force: true }).catch(() => {});
+    res.status(500).json({ error: String(e.message || e) });
+  }
+});
+
+function openerForPlatform() {
+  if (process.platform === "darwin") return { cmd: "open", args: [] };
+  if (process.platform === "win32") return { cmd: "explorer", args: [] };
+  return { cmd: "xdg-open", args: [] };
+}
+
+app.post("/api/projects/:id/open-folder", (req, res) => {
+  const id = req.params.id;
+  const proj = listProjects().find((p) => p.id === id);
+  if (!proj) return res.status(404).json({ error: "unknown project" });
+  const { cmd, args } = openerForPlatform();
+  // spawn (not exec) so we can hand the path as a real arg rather than
+  // shell-quoting it. detached + unref so the launcher can outlive the
+  // request — the user expects the window to stay open after the response.
+  try {
+    const child = spawn(cmd, [...args, proj.projectRoot], {
+      detached: true,
+      stdio: "ignore",
+    });
+    child.on("error", (e) => console.warn(`[open-folder] ${cmd} error: ${e.message}`));
+    child.unref();
+    res.json({ ok: true, opened: proj.projectRoot });
+  } catch (e) {
+    res.status(500).json({ error: String(e.message || e) });
+  }
+});
+
+app.post("/api/projects/:id/open-vscode", (req, res) => {
+  const id = req.params.id;
+  const proj = listProjects().find((p) => p.id === id);
+  if (!proj) return res.status(404).json({ error: "unknown project" });
+  try {
+    const child = spawn("code", [proj.projectRoot], {
+      detached: true,
+      stdio: "ignore",
+    });
+    child.on("error", (e) => console.warn(`[open-vscode] code error: ${e.message}`));
+    child.unref();
+    res.json({ ok: true, opened: proj.projectRoot });
+  } catch (e) {
+    res.status(500).json({ error: String(e.message || e) });
+  }
 });
 
 // --- per-user, per-domain state (Item 6: state preservation) ---
@@ -1126,7 +1282,10 @@ app.patch("/api/rulebook/text", requireEditor, async (req, res) => {
     });
     res.json({ ok: true, rulebook: newRb });
   } catch (e) {
-    res.status(400).json({ error: String(e.message || e) });
+    res.status(400).json({
+      error: String(e.message || e),
+      transpilerOutput: e.transpilerOutput || null,
+    });
   }
 });
 
@@ -2325,7 +2484,10 @@ app.patch("/api/explorer/schema", requireEditor, async (req, res) => {
       streamUrl: `/api/explorer/rebuild/${encodeURIComponent(rebuildId)}/stream`,
     });
   } catch (e) {
-    res.status(400).json({ error: String(e.message || e) });
+    res.status(400).json({
+      error: String(e.message || e),
+      transpilerOutput: e.transpilerOutput || null,
+    });
   }
 });
 
@@ -2994,13 +3156,18 @@ app.put("/api/tech/rulebook-json", requireDeveloper, async (req, res) => {
   }
   try {
     const parsed = JSON.parse(text);
+    // Same pre-flight as writeThrough — never persist a known-bad rulebook.
+    await validateProposedRulebook(parsed);
     saveRulebook(parsed);
     // Force editor pool reseed
     pool = null;
     await getPool();
     res.json({ ok: true });
   } catch (e) {
-    res.status(400).json({ error: String(e.message || e) });
+    res.status(400).json({
+      error: String(e.message || e),
+      transpilerOutput: e.transpilerOutput || null,
+    });
   }
 });
 
