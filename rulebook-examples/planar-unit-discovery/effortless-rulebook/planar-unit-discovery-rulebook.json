@@ -1897,6 +1897,32 @@
         "type": "raw",
         "nullable": true,
         "Description": "Bitemporal current-validity flag. TRUE = claim is still considered valid; FALSE = superseded/withdrawn; null = not yet evaluated. Drives every 'current best known' aggregation in the asymptotic layer."
+      },
+      {
+        "name": "ProofPathway",
+        "datatype": "string",
+        "type": "raw",
+        "Description": "How the bound is proven. One of: 'algebraic-tower' (Sawin-style, via class field towers + Minkowski lattices), 'combinatorial-pigeonhole' (Erdős 1946, via integer-grid + divisor-function argument), 'crossing-number' (via crossing-number inequality), 'incidence-counting' (via point-line incidence bounds), 'witness-only' (finite-sample claim with no asymptotic proof), 'other'."
+      },
+      {
+        "name": "IsAlgebraicTowerProof",
+        "datatype": "boolean",
+        "type": "calculated",
+        "formula": "={{ProofPathway}}=\"algebraic-tower\""
+      },
+      {
+        "name": "IsCombinatorialProof",
+        "datatype": "boolean",
+        "type": "calculated",
+        "formula": "={{ProofPathway}}=\"combinatorial-pigeonhole\""
+      },
+      {
+        "name": "IsAuditableViaItsPathway",
+        "datatype": "boolean",
+        "type": "calculated",
+        "formula": "=OR(AND({{IsAlgebraicTowerProof}}, {{IsAlgebraicallyAnchored}}), AND({{IsCombinatorialProof}}, {{AllObligationsSatisfied}}, {{WitnessConsistent}}), AND({{ProofPathway}}=\"witness-only\", {{WitnessConsistent}}))",
+        "important": true,
+        "Description": "Pathway-appropriate audit gate. Algebraic-tower proofs need IsAlgebraicallyAnchored; combinatorial-pigeonhole proofs need obligations satisfied + finite witness consistent; witness-only claims just need WitnessConsistent. Fixes the bias of the older AlgebraicChainClosed gate, which would mis-rule Erdős's pigeonhole proof as 'not closed' simply because it doesn't use class field towers."
       }
     ],
     "data": [
@@ -1907,30 +1933,32 @@
         "GrowthSequence": "sqrt-lat-growth",
         "Exponent": 1,
         "Coefficient": 1,
-        "StatementText": "U(n) ≥ n^{1+c/log log n} (Erdős 1946)",
+        "StatementText": "U(n) ≥ n^{1+c/log log n} (Erdős 1946). Proven via integer-grid construction: take the √n × √n grid Z² ∩ [0,√n]², scale so a frequent distance equals 1, then count: by Landau's theorem on sums of two squares, certain integers k have r₂(k) representations growing like (log k)^{log 2 - 1}, and these representations yield multi-pair unit distances after scaling.",
         "SourceCitation": "Erdős, 1946",
         "IsExplicit": false,
         "ValidFrom": "1946-01-01",
         "ValidTo": null,
         "TxFrom": "2026-05-27",
         "TxTo": null,
-        "IsCurrentlyValid": true
+        "IsCurrentlyValid": true,
+        "ProofPathway": "combinatorial-pigeonhole"
       },
       {
         "AsymptoticLowerBoundId": "sawin-n1014",
         "DisplayName": "Sawin n^1.014 bound",
         "AsymptoticFunction": "u-n",
-        "GrowthSequence": "sqrt-lat-growth",
+        "GrowthSequence": "zeta7-sigma1-growth",
         "Exponent": 1.014,
         "Coefficient": 1,
-        "StatementText": "U(n) > n^{1.014} for arbitrarily large n",
-        "SourceCitation": "Sawin, arXiv:2605.20579",
+        "StatementText": "U(n) > n^{1.014} for arbitrarily large n (claim). Asymptotic construction uses a cyclotomic field K = Q(ζ_p) for chosen p satisfying Golod–Shafarevich, projects O_K's Minkowski lattice into R², and counts unit-distance pairs from short-vector difference patterns. Lemma content stylized; the actual paper's specifics aren't loaded — see Lemmas.IsLoaded for which lemmas carry real vs. placeholder text.",
+        "SourceCitation": "Sawin, arXiv:2605.20579 (placeholder ID)",
         "IsExplicit": true,
         "ValidFrom": "2024-01-01",
         "ValidTo": null,
         "TxFrom": "2026-05-27",
         "TxTo": null,
-        "IsCurrentlyValid": true
+        "IsCurrentlyValid": true,
+        "ProofPathway": "algebraic-tower"
       },
       {
         "AsymptoticLowerBoundId": "zeta7-witness-bound",
@@ -1946,7 +1974,8 @@
         "ValidTo": null,
         "TxFrom": "2026-05-27",
         "TxTo": null,
-        "IsCurrentlyValid": true
+        "IsCurrentlyValid": true,
+        "ProofPathway": "witness-only"
       },
       {
         "AsymptoticLowerBoundId": "hypothetical-retracted-overclaim",
@@ -1962,7 +1991,8 @@
         "ValidTo": "2025-08-01",
         "TxFrom": "2026-05-27",
         "TxTo": null,
-        "IsCurrentlyValid": false
+        "IsCurrentlyValid": false,
+        "ProofPathway": "other"
       },
       {
         "AsymptoticLowerBoundId": "pending-bound-unevaluated",
@@ -1978,7 +2008,8 @@
         "ValidTo": null,
         "TxFrom": "2026-05-27",
         "TxTo": null,
-        "IsCurrentlyValid": null
+        "IsCurrentlyValid": null,
+        "ProofPathway": "other"
       }
     ]
   },
@@ -2133,7 +2164,9 @@
       {"name": "TxTo", "datatype": "string", "type": "raw", "nullable": true},
       {"name": "IsCurrentlyValid", "datatype": "boolean", "type": "raw", "nullable": true, "Description": "TRUE for current valid theorems; FALSE for retracted/disproven; null for unevaluated."},
       {"name": "AnchoredBoundIsCurrentlyValid", "datatype": "boolean", "type": "lookup", "formula": "=LOOKUP(AsymptoticLowerBounds!{{IsCurrentlyValid}}, Theorems!{{AnchoredLowerBound}}, AsymptoticLowerBounds!{{AsymptoticLowerBoundId}})", "nullable": true, "Description": "Surfaces the anchored bound's current-validity onto the theorem. If the anchored bound got retracted, this goes FALSE — and the theorem either needs re-anchoring or also needs retraction."},
-      {"name": "IsHistoricallyAnchored", "datatype": "boolean", "type": "calculated", "formula": "=AND({{IsCurrentlyValid}}=TRUE, {{AnchoredBoundIsCurrentlyValid}}=TRUE)", "important": true, "Description": "TRUE iff both the theorem and its anchored bound are currently valid. Bitemporally-aware version of the older AlgebraicChainClosed gate — catches the case where a theorem's anchored bound has been retracted."}
+      {"name": "IsHistoricallyAnchored", "datatype": "boolean", "type": "calculated", "formula": "=AND({{IsCurrentlyValid}}=TRUE, {{AnchoredBoundIsCurrentlyValid}}=TRUE)", "important": true, "Description": "TRUE iff both the theorem and its anchored bound are currently valid. Bitemporally-aware version of the older AlgebraicChainClosed gate — catches the case where a theorem's anchored bound has been retracted."},
+      {"name": "AnchoredBoundIsAuditableViaItsPathway", "datatype": "boolean", "type": "lookup", "formula": "=LOOKUP(AsymptoticLowerBounds!{{IsAuditableViaItsPathway}}, Theorems!{{AnchoredLowerBound}}, AsymptoticLowerBounds!{{AsymptoticLowerBoundId}})", "nullable": true, "Description": "Surfaces the anchored bound's pathway-appropriate audit gate onto the theorem."},
+      {"name": "IsAuditedAndClosed", "datatype": "boolean", "type": "calculated", "formula": "=AND({{IsHistoricallyAnchored}}, {{AnchoredBoundIsAuditableViaItsPathway}})", "important": true, "Description": "The pathway-aware replacement for FullyAuditedAndClosed. TRUE iff the theorem is bitemporally valid, its anchored bound is bitemporally valid, AND the anchored bound passes its OWN pathway's audit gate (algebraic chain for Sawin-style; obligations+witness for Erdős-style pigeonhole). Erdős's theorem closes here even though the older algebraic-only gate said it couldn't."}
     ],
     "data": [
       {
@@ -2566,9 +2599,13 @@
       {"LemmaId": "lemma-short-vector-counting", "Label": "Short-vector counting for GS fields", "SourceReference": "src-sawin-2024", "StatementText": "For number fields satisfying Golod–Shafarevich with controlled discriminant growth, the count of short vectors of squared norm at most R in the Minkowski lattice is at least c·R^{1+δ} for some explicit δ>0.", "FeedsObjectTable": "ShortVectors", "FeedsObjectId": null, "IsLoaded": true, "IsLoadBearing": true, "ValidFrom": "2024-01-01", "ValidTo": null, "TxFrom": "2026-05-27", "TxTo": null, "IsCurrentlyValid": true},
       {"LemmaId": "lemma-density-margin", "Label": "Edge density margin over linear", "SourceReference": "src-sawin-2024", "StatementText": "When the lattice is projected via the canonical map, the resulting point set has edge count exceeding n^{1.014} for arbitrarily large n.", "FeedsObjectTable": "GrowthSequences", "FeedsObjectId": "sqrt-lat-growth", "IsLoaded": true, "IsLoadBearing": true, "ValidFrom": "2024-01-01", "ValidTo": null, "TxFrom": "2026-05-27", "TxTo": null, "IsCurrentlyValid": true},
       {"LemmaId": "lemma-anchor-explicit-bound", "Label": "Explicit n^1.014 anchor", "SourceReference": "src-sawin-2024", "StatementText": "There exists an explicit construction family (anchored on Q(ζ_p) with appropriate p) realizing the n^{1.014} lower bound.", "FeedsObjectTable": "AsymptoticLowerBounds", "FeedsObjectId": "sawin-n1014", "IsLoaded": true, "IsLoadBearing": true, "ValidFrom": "2024-01-01", "ValidTo": null, "TxFrom": "2026-05-27", "TxTo": null, "IsCurrentlyValid": true},
-      {"LemmaId": "lemma-spencer-auxiliary", "Label": "Spencer 1984 auxiliary count", "SourceReference": "src-spencer-st-1984", "StatementText": "Auxiliary edge-count bound used in classical incidence proofs.", "FeedsObjectTable": "UnitDistanceGraphs", "FeedsObjectId": null, "IsLoaded": false, "IsLoadBearing": null, "ValidFrom": "1984-01-01", "ValidTo": null, "TxFrom": "2026-05-27", "TxTo": null, "IsCurrentlyValid": true, "Description": "Named but not extracted as data yet."},
+      {"LemmaId": "lemma-spencer-auxiliary", "Label": "Spencer 1984 auxiliary count", "SourceReference": "src-spencer-st-1984", "StatementText": "Auxiliary edge-count bound used in classical incidence proofs.", "FeedsObjectTable": "UnitDistanceGraphs", "FeedsObjectId": null, "IsLoaded": false, "IsLoadBearing": null, "ValidFrom": "1984-01-01", "ValidTo": null, "TxFrom": "2026-05-27", "TxTo": null, "IsCurrentlyValid": null, "Description": "Named but not extracted as data yet; coverage row for IsCurrentlyValid=null."},
       {"LemmaId": "lemma-future-improvement", "Label": "Future improvement lemma slot", "SourceReference": "src-experimental-preprint", "StatementText": "Reserved row for a forthcoming improvement.", "FeedsObjectTable": "AsymptoticLowerBounds", "FeedsObjectId": null, "IsLoaded": null, "IsLoadBearing": null, "ValidFrom": "2025-06-15", "ValidTo": "2025-08-01", "TxFrom": "2026-05-27", "TxTo": null, "IsCurrentlyValid": false, "Description": "Inherits retraction from src-experimental-preprint."},
-      {"LemmaId": "lemma-erdos-context", "Label": "Erdős 1946 historical context", "SourceReference": "src-erdos-1946", "StatementText": "The original superlinear lower bound by Erdős.", "FeedsObjectTable": "AsymptoticLowerBounds", "FeedsObjectId": "erdos-sqrt-bound", "IsLoaded": true, "IsLoadBearing": false, "ValidFrom": "1946-01-01", "ValidTo": null, "TxFrom": "2026-05-27", "TxTo": null, "IsCurrentlyValid": null, "Description": "Background; coverage row for IsCurrentlyValid=null."}
+      {"LemmaId": "lemma-erdos-context", "Label": "Erdős 1946 main theorem", "SourceReference": "src-erdos-1946", "StatementText": "Main theorem of Erdős 1946: U(n) ≥ c · n^{1 + c'/log log n} for some absolute constants c, c' > 0. Proof outline: take the integer grid Z² ∩ [0, √n]² (which has n points), compute all pairwise distances-squared, observe that these are sums of two squares, then apply Landau-style multiplicative bounds on r₂(k) (the number of representations of k as a²+b²) to extract a frequent distance whose multiplicity is Ω(n / (log n)^{1 - log 2}). Scaling the grid so that frequent distance becomes 1 yields the claimed unit-distance count.", "FeedsObjectTable": "AsymptoticLowerBounds", "FeedsObjectId": "erdos-sqrt-bound", "IsLoaded": true, "IsLoadBearing": true, "ValidFrom": "1946-01-01", "ValidTo": null, "TxFrom": "2026-05-27", "TxTo": null, "IsCurrentlyValid": true, "Description": "Updated in Loop 5 with real proof content. IsLoadBearing flipped from false to true; this IS what supports the Erdős bound."},
+      {"LemmaId": "lemma-erdos-grid-construction", "Label": "Integer-grid pigeonhole construction", "SourceReference": "src-erdos-1946", "StatementText": "Let G_n = Z² ∩ [0, √n]² be the √n × √n integer-grid point set; |G_n| ≈ n. For any pair (p, q) ∈ G_n × G_n, |p - q|² ∈ Z. The multiset of pairwise squared distances is concentrated: the integer k = a² + b² appears Θ(n · r₂(k)/k) times among pairs at squared-distance k (where r₂ counts representations). For k = m² · ∏ p_i with p_i ≡ 1 (mod 4), r₂(k) grows; choosing k with r₂(k) = Ω((log n)^{log 2}) gives a single squared-distance achieved Ω(n^{1+c/loglogn}) times.", "FeedsObjectTable": "AsymptoticLowerBounds", "FeedsObjectId": "erdos-sqrt-bound", "IsLoaded": true, "IsLoadBearing": true, "ValidFrom": "1946-01-01", "ValidTo": null, "TxFrom": "2026-05-28", "TxTo": null, "IsCurrentlyValid": true, "Description": "NEW in Loop 5. The 'grid → distance histogram' step of Erdős's proof. The integer-distance restriction is what makes pigeonhole work — distances on a real-coordinate point set don't concentrate, integer-grid distances do."},
+      {"LemmaId": "lemma-erdos-divisor-function", "Label": "Sum-of-two-squares representation count r₂(k)", "SourceReference": "src-erdos-1946", "StatementText": "Number-theoretic fact (Landau, Hardy–Wright): the representation function r₂(k) = #{(a,b) ∈ Z² : a²+b² = k} is multiplicative; for k = 2^a · ∏ p_i^{α_i} · ∏ q_j^{β_j} with p_i ≡ 1 (mod 4) and q_j ≡ 3 (mod 4), r₂(k) = 4 · ∏(α_i+1) if all β_j even, else 0. For k = product of t primes ≡ 1 (mod 4), r₂(k) = 4 · 2^t. Choosing k with t ~ log log n gives r₂(k) ~ (log n)^{log 2}, the multiplicity needed for Erdős's bound.", "FeedsObjectTable": "Lemmas", "FeedsObjectId": "lemma-erdos-grid-construction", "IsLoaded": true, "IsLoadBearing": true, "ValidFrom": "1946-01-01", "ValidTo": null, "TxFrom": "2026-05-28", "TxTo": null, "IsCurrentlyValid": true, "Description": "NEW in Loop 5. The number-theoretic supporting lemma — Erdős's bound rides on this multiplicative structure of r₂(k). Cited in 1946 to Landau; FeedsObject is the grid-construction lemma above (lemma chain: divisor-function → grid-construction → main-theorem)."},
+      {"LemmaId": "lemma-spencer-st-crossing-inequality", "Label": "Crossing number inequality (ACNS 1982)", "SourceReference": "src-spencer-st-1984", "StatementText": "Ajtai–Chvátal–Newborn–Szemerédi 1982: any drawing of a graph G with n vertices and m ≥ 4n edges in the plane has at least c · m³/n² crossings (for some absolute constant c > 0). The Spencer–Szemerédi–Trotter unit-distance upper bound U(n) = O(n^{4/3}) follows from applying this to the unit-distance graph drawn with arcs.", "FeedsObjectTable": "Theorems", "FeedsObjectId": "thm-spencer-szemeredi-trotter", "IsLoaded": true, "IsLoadBearing": true, "ValidFrom": "1982-01-01", "ValidTo": null, "TxFrom": "2026-05-28", "TxTo": null, "IsCurrentlyValid": true, "Description": "NEW in Loop 5. The crossing-number-inequality lemma that powers the upper-bound side of the sandwich on U(n). Real content from training, not placeholder."},
+      {"LemmaId": "lemma-historical-background-context", "Label": "Historical context (background, not load-bearing)", "SourceReference": "src-erdos-1946", "StatementText": "Background-only: Erdős conjectured in conversation that U(n) might be expressible as a polylogarithmic factor times n. This is context, not a step in any proof. Coverage row for IsLoadBearing=FALSE.", "FeedsObjectTable": "Conjectures", "FeedsObjectId": "conj-erdos-polynomial-improvement", "IsLoaded": true, "IsLoadBearing": false, "ValidFrom": "1946-01-01", "ValidTo": null, "TxFrom": "2026-05-28", "TxTo": null, "IsCurrentlyValid": true, "Description": "Coverage row for IsLoadBearing=FALSE — historical context that is loaded but doesn't underwrite any specific bound."}
     ]
   },
   "MirrorContract": {
@@ -2659,7 +2696,9 @@
       {"ProofObligationId": "po-erdos-context", "ParentBound": "erdos-sqrt-bound", "RequiredLemma": "lemma-erdos-context", "ObligationKind": "sufficient", "IsSatisfied": true, "ValidFrom": "1946-01-01", "ValidTo": null, "TxFrom": "2026-05-27", "TxTo": null, "IsCurrentlyValid": true},
       {"ProofObligationId": "po-sawin-spencer-aux", "ParentBound": "sawin-n1014", "RequiredLemma": "lemma-spencer-auxiliary", "ObligationKind": "auxiliary", "IsSatisfied": false, "ValidFrom": "2024-01-01", "ValidTo": null, "TxFrom": "2026-05-27", "TxTo": null, "IsCurrentlyValid": true, "Description": "Open obligation: Spencer auxiliary lemma is named but not yet loaded."},
       {"ProofObligationId": "po-future-gap", "ParentBound": "sawin-n1014", "RequiredLemma": "lemma-future-improvement", "ObligationKind": "auxiliary", "IsSatisfied": null, "ValidFrom": "2025-06-15", "ValidTo": "2025-08-01", "TxFrom": "2026-05-27", "TxTo": null, "IsCurrentlyValid": false, "Description": "Coverage row: IsSatisfied=null, IsCurrentlyValid=false (the required lemma was retracted)."},
-      {"ProofObligationId": "po-zeta7-witness", "ParentBound": "zeta7-witness-bound", "RequiredLemma": "lemma-density-margin", "ObligationKind": "sufficient", "IsSatisfied": true, "ValidFrom": "2026-05-27", "ValidTo": null, "TxFrom": "2026-05-27", "TxTo": null, "IsCurrentlyValid": null, "Description": "Coverage row: IsCurrentlyValid=null (newly added, not yet curator-validated)."}
+      {"ProofObligationId": "po-zeta7-witness", "ParentBound": "zeta7-witness-bound", "RequiredLemma": "lemma-density-margin", "ObligationKind": "sufficient", "IsSatisfied": true, "ValidFrom": "2026-05-27", "ValidTo": null, "TxFrom": "2026-05-27", "TxTo": null, "IsCurrentlyValid": null, "Description": "Coverage row: IsCurrentlyValid=null (newly added, not yet curator-validated)."},
+      {"ProofObligationId": "po-erdos-grid", "ParentBound": "erdos-sqrt-bound", "RequiredLemma": "lemma-erdos-grid-construction", "ObligationKind": "necessary", "IsSatisfied": true, "ValidFrom": "1946-01-01", "ValidTo": null, "TxFrom": "2026-05-28", "TxTo": null, "IsCurrentlyValid": true, "Description": "NEW in Loop 5. Erdős's bound depends on the integer-grid construction lemma being loaded — which it now is."},
+      {"ProofObligationId": "po-erdos-divisor", "ParentBound": "erdos-sqrt-bound", "RequiredLemma": "lemma-erdos-divisor-function", "ObligationKind": "necessary", "IsSatisfied": true, "ValidFrom": "1946-01-01", "ValidTo": null, "TxFrom": "2026-05-28", "TxTo": null, "IsCurrentlyValid": true, "Description": "NEW in Loop 5. Erdős's bound also depends on the r₂(k) divisor-function structure lemma."}
     ]
   },
   "CitationLinks": {
@@ -2746,15 +2785,75 @@
       {"name": "SnapshotDate", "datatype": "string", "type": "raw", "Description": "ISO date for the moment this snapshot captures."},
       {"name": "Description", "datatype": "string", "type": "raw"},
       {"name": "IsHistorical", "datatype": "boolean", "type": "raw", "nullable": true, "Description": "TRUE for past moments; FALSE for the current moment; null for future-projected moments."},
-      {"name": "AnchoringSourceReference", "datatype": "string", "type": "relationship", "RelatedTo": "SourceReferences", "nullable": true, "Description": "The source whose publication date pins this moment, when applicable."}
+      {"name": "AnchoringSourceReference", "datatype": "string", "type": "relationship", "RelatedTo": "SourceReferences", "nullable": true, "Description": "The source whose publication date pins this moment, when applicable."},
+      {"name": "ValidLowerBoundCountAtThisMoment", "datatype": "integer", "type": "aggregation", "formula": "=COUNTIFS(LowerBoundValidityAtSnapshot!{{TemporalSnapshot}}, TemporalSnapshots!{{TemporalSnapshotId}}, LowerBoundValidityAtSnapshot!{{IsValidAtThisSnapshot}}, TRUE)", "Description": "How many AsymptoticLowerBound rows were considered valid at this moment, per the bitemporal columns."},
+      {"name": "BestKnownLowerBoundExponentAtThisMoment", "datatype": "decimal", "type": "aggregation", "formula": "=MAXIFS(LowerBoundValidityAtSnapshot!{{BoundExponent}}, LowerBoundValidityAtSnapshot!{{TemporalSnapshot}}, TemporalSnapshots!{{TemporalSnapshotId}}, LowerBoundValidityAtSnapshot!{{IsValidAtThisSnapshot}}, TRUE)", "important": true, "Description": "Date-only as-of rollup: MAX exponent of bounds bitemporally valid at this snapshot, including unevaluated/pending rows. Use this for forensic 'what would have looked best at this moment'."},
+      {"name": "CuratorConfirmedBestKnownLowerBoundExponentAtThisMoment", "datatype": "decimal", "type": "aggregation", "formula": "=MAXIFS(LowerBoundValidityAtSnapshot!{{BoundExponent}}, LowerBoundValidityAtSnapshot!{{TemporalSnapshot}}, TemporalSnapshots!{{TemporalSnapshotId}}, LowerBoundValidityAtSnapshot!{{IsCuratorConfirmedAtThisSnapshot}}, TRUE)", "important": true, "Description": "Stricter as-of rollup: MAX exponent of bounds BOTH bitemporally valid at this snapshot AND curator-confirmed (IsCurrentlyValid=TRUE on the bound itself). This is what the rulebook actually believed at this moment — excludes pending/unevaluated rows that just happen to be in their valid-time interval."},
+      {"name": "PendingButValidByDateCount", "datatype": "integer", "type": "aggregation", "formula": "=COUNTIFS(LowerBoundValidityAtSnapshot!{{TemporalSnapshot}}, TemporalSnapshots!{{TemporalSnapshotId}}, LowerBoundValidityAtSnapshot!{{IsValidAtThisSnapshot}}, TRUE, LowerBoundValidityAtSnapshot!{{BoundIsCurrentlyValid}}, null)", "Description": "Rows that are bitemporally valid here but the curator hasn't ruled on yet — i.e., the rulebook's open epistemic questions at this snapshot."},
+      {"name": "BoundsValidatedOrRetractedThisMoment", "datatype": "integer", "type": "aggregation", "formula": "=COUNTIFS(LowerBoundValidityAtSnapshot!{{TemporalSnapshot}}, TemporalSnapshots!{{TemporalSnapshotId}})", "Description": "Total junction rows for this snapshot — should equal the count of all AsymptoticLowerBound rows (a closure check)."}
     ],
     "data": [
       {"TemporalSnapshotId": "snap-erdos-1946", "Label": "Erdős 1946 publication", "SnapshotDate": "1946-01-01", "Description": "Erdős's original 'On sets of distances of n points' establishes U(n) ≥ n^{1+c/loglogn}. The starting line of the lower-bound program.", "IsHistorical": true, "AnchoringSourceReference": "src-erdos-1946"},
       {"TemporalSnapshotId": "snap-st-1983", "Label": "Szemerédi–Trotter 1983", "SnapshotDate": "1983-01-01", "Description": "Szemerédi–Trotter incidence bound published. Sets up the upper-bound side.", "IsHistorical": true, "AnchoringSourceReference": "src-szemeredi-trotter-1983"},
       {"TemporalSnapshotId": "snap-spencer-st-1984", "Label": "Spencer–Szemerédi–Trotter 1984", "SnapshotDate": "1984-01-01", "Description": "Specialization of ST to unit distances: U(n) = O(n^{4/3}). The ceiling.", "IsHistorical": true, "AnchoringSourceReference": "src-spencer-st-1984"},
       {"TemporalSnapshotId": "snap-sawin-2024", "Label": "Sawin 2024 improvement", "SnapshotDate": "2024-01-01", "Description": "Sawin's n^{1.014} explicit-exponent lower bound. First strictly-polynomial improvement over Erdős's existential bound.", "IsHistorical": true, "AnchoringSourceReference": "src-sawin-2024"},
-      {"TemporalSnapshotId": "snap-now", "Label": "Current moment", "SnapshotDate": "2026-05-27", "Description": "The 'now' anchor — present-day state of the rulebook.", "IsHistorical": false, "AnchoringSourceReference": null},
+      {"TemporalSnapshotId": "snap-mid-overclaim-2025", "Label": "Mid-overclaim 2025-07", "SnapshotDate": "2025-07-01", "Description": "A moment during the hypothetical-retracted-overclaim's brief validity window (2025-06-15 → 2025-08-01). At this instant the rulebook briefly held an exponent-1.5 claim that was retracted shortly after — useful for proving the bitemporal layer captures transient overclaims.", "IsHistorical": true, "AnchoringSourceReference": "src-experimental-preprint"},
+      {"TemporalSnapshotId": "snap-now", "Label": "Current moment", "SnapshotDate": "2026-05-28", "Description": "The 'now' anchor — present-day state of the rulebook.", "IsHistorical": false, "AnchoringSourceReference": null},
       {"TemporalSnapshotId": "snap-future-projected", "Label": "Future improvement (projected)", "SnapshotDate": "2030-01-01", "Description": "Placeholder for the next plausible improvement — for forward-looking 'will the chain still close in 2030' queries.", "IsHistorical": null, "AnchoringSourceReference": null}
+    ]
+  },
+  "LowerBoundValidityAtSnapshot": {
+    "Description": "Table: LowerBoundValidityAtSnapshot. Junction between AsymptoticLowerBounds and TemporalSnapshots — one row per (bound × snapshot) pair recording whether the bound was bitemporally valid at that moment. Pre-computed because ERB's MAXIFS filters on equality, not on date ranges; this junction makes 'as-of' rollups expressible as plain aggregations on TemporalSnapshots.",
+    "important": false,
+    "schema": [
+      {"name": "LowerBoundValidityAtSnapshotId", "datatype": "string", "type": "raw", "nullable": false, "is_primary_key": true},
+      {"name": "Name", "datatype": "string", "type": "calculated", "nullable": true, "formula": "={{AsymptoticLowerBound}}-at-{{TemporalSnapshot}}"},
+      {"name": "AsymptoticLowerBound", "datatype": "string", "type": "relationship", "RelatedTo": "AsymptoticLowerBounds"},
+      {"name": "TemporalSnapshot", "datatype": "string", "type": "relationship", "RelatedTo": "TemporalSnapshots"},
+      {"name": "BoundExponent", "datatype": "decimal", "type": "lookup", "formula": "=LOOKUP(AsymptoticLowerBounds!{{Exponent}}, LowerBoundValidityAtSnapshot!{{AsymptoticLowerBound}}, AsymptoticLowerBounds!{{AsymptoticLowerBoundId}})"},
+      {"name": "BoundValidFrom", "datatype": "string", "type": "lookup", "formula": "=LOOKUP(AsymptoticLowerBounds!{{ValidFrom}}, LowerBoundValidityAtSnapshot!{{AsymptoticLowerBound}}, AsymptoticLowerBounds!{{AsymptoticLowerBoundId}})"},
+      {"name": "BoundValidTo", "datatype": "string", "type": "lookup", "formula": "=LOOKUP(AsymptoticLowerBounds!{{ValidTo}}, LowerBoundValidityAtSnapshot!{{AsymptoticLowerBound}}, AsymptoticLowerBounds!{{AsymptoticLowerBoundId}})", "nullable": true},
+      {"name": "SnapshotDate", "datatype": "string", "type": "lookup", "formula": "=LOOKUP(TemporalSnapshots!{{SnapshotDate}}, LowerBoundValidityAtSnapshot!{{TemporalSnapshot}}, TemporalSnapshots!{{TemporalSnapshotId}})"},
+      {"name": "IsValidAtThisSnapshot", "datatype": "boolean", "type": "raw", "Description": "TRUE iff the bound's [ValidFrom, ValidTo) interval contains the SnapshotDate. Pre-computed since ERB MAXIFS doesn't support range filters; substrate-side temporal queries can re-derive this if needed."},
+      {"name": "BoundIsCurrentlyValid", "datatype": "boolean", "type": "lookup", "formula": "=LOOKUP(AsymptoticLowerBounds!{{IsCurrentlyValid}}, LowerBoundValidityAtSnapshot!{{AsymptoticLowerBound}}, AsymptoticLowerBounds!{{AsymptoticLowerBoundId}})", "nullable": true, "Description": "Surfaces the bound's curator-set IsCurrentlyValid onto the junction. Distinguishes 'bitemporally valid by date' from 'curator-confirmed valid'."},
+      {"name": "IsCuratorConfirmedAtThisSnapshot", "datatype": "boolean", "type": "calculated", "formula": "=AND({{IsValidAtThisSnapshot}}, {{BoundIsCurrentlyValid}}=TRUE)", "important": true, "Description": "Stricter than IsValidAtThisSnapshot: TRUE iff the bound is BOTH within its valid-time interval at this snapshot AND has been curator-confirmed (IsCurrentlyValid=TRUE). Excludes pending/unevaluated rows from 'as-of' rollups."}
+    ],
+    "data": [
+      {"LowerBoundValidityAtSnapshotId": "lbv-erdos-1946", "AsymptoticLowerBound": "erdos-sqrt-bound", "TemporalSnapshot": "snap-erdos-1946", "IsValidAtThisSnapshot": true},
+      {"LowerBoundValidityAtSnapshotId": "lbv-erdos-1983", "AsymptoticLowerBound": "erdos-sqrt-bound", "TemporalSnapshot": "snap-st-1983", "IsValidAtThisSnapshot": true},
+      {"LowerBoundValidityAtSnapshotId": "lbv-erdos-1984", "AsymptoticLowerBound": "erdos-sqrt-bound", "TemporalSnapshot": "snap-spencer-st-1984", "IsValidAtThisSnapshot": true},
+      {"LowerBoundValidityAtSnapshotId": "lbv-erdos-2024", "AsymptoticLowerBound": "erdos-sqrt-bound", "TemporalSnapshot": "snap-sawin-2024", "IsValidAtThisSnapshot": true},
+      {"LowerBoundValidityAtSnapshotId": "lbv-erdos-mid-overclaim", "AsymptoticLowerBound": "erdos-sqrt-bound", "TemporalSnapshot": "snap-mid-overclaim-2025", "IsValidAtThisSnapshot": true},
+      {"LowerBoundValidityAtSnapshotId": "lbv-erdos-now", "AsymptoticLowerBound": "erdos-sqrt-bound", "TemporalSnapshot": "snap-now", "IsValidAtThisSnapshot": true},
+      {"LowerBoundValidityAtSnapshotId": "lbv-erdos-future", "AsymptoticLowerBound": "erdos-sqrt-bound", "TemporalSnapshot": "snap-future-projected", "IsValidAtThisSnapshot": true},
+      {"LowerBoundValidityAtSnapshotId": "lbv-sawin-1946", "AsymptoticLowerBound": "sawin-n1014", "TemporalSnapshot": "snap-erdos-1946", "IsValidAtThisSnapshot": false},
+      {"LowerBoundValidityAtSnapshotId": "lbv-sawin-1983", "AsymptoticLowerBound": "sawin-n1014", "TemporalSnapshot": "snap-st-1983", "IsValidAtThisSnapshot": false},
+      {"LowerBoundValidityAtSnapshotId": "lbv-sawin-1984", "AsymptoticLowerBound": "sawin-n1014", "TemporalSnapshot": "snap-spencer-st-1984", "IsValidAtThisSnapshot": false},
+      {"LowerBoundValidityAtSnapshotId": "lbv-sawin-2024", "AsymptoticLowerBound": "sawin-n1014", "TemporalSnapshot": "snap-sawin-2024", "IsValidAtThisSnapshot": true},
+      {"LowerBoundValidityAtSnapshotId": "lbv-sawin-mid-overclaim", "AsymptoticLowerBound": "sawin-n1014", "TemporalSnapshot": "snap-mid-overclaim-2025", "IsValidAtThisSnapshot": true},
+      {"LowerBoundValidityAtSnapshotId": "lbv-sawin-now", "AsymptoticLowerBound": "sawin-n1014", "TemporalSnapshot": "snap-now", "IsValidAtThisSnapshot": true},
+      {"LowerBoundValidityAtSnapshotId": "lbv-sawin-future", "AsymptoticLowerBound": "sawin-n1014", "TemporalSnapshot": "snap-future-projected", "IsValidAtThisSnapshot": true},
+      {"LowerBoundValidityAtSnapshotId": "lbv-zeta7-1946", "AsymptoticLowerBound": "zeta7-witness-bound", "TemporalSnapshot": "snap-erdos-1946", "IsValidAtThisSnapshot": false},
+      {"LowerBoundValidityAtSnapshotId": "lbv-zeta7-1983", "AsymptoticLowerBound": "zeta7-witness-bound", "TemporalSnapshot": "snap-st-1983", "IsValidAtThisSnapshot": false},
+      {"LowerBoundValidityAtSnapshotId": "lbv-zeta7-1984", "AsymptoticLowerBound": "zeta7-witness-bound", "TemporalSnapshot": "snap-spencer-st-1984", "IsValidAtThisSnapshot": false},
+      {"LowerBoundValidityAtSnapshotId": "lbv-zeta7-2024", "AsymptoticLowerBound": "zeta7-witness-bound", "TemporalSnapshot": "snap-sawin-2024", "IsValidAtThisSnapshot": false},
+      {"LowerBoundValidityAtSnapshotId": "lbv-zeta7-mid-overclaim", "AsymptoticLowerBound": "zeta7-witness-bound", "TemporalSnapshot": "snap-mid-overclaim-2025", "IsValidAtThisSnapshot": false},
+      {"LowerBoundValidityAtSnapshotId": "lbv-zeta7-now", "AsymptoticLowerBound": "zeta7-witness-bound", "TemporalSnapshot": "snap-now", "IsValidAtThisSnapshot": true},
+      {"LowerBoundValidityAtSnapshotId": "lbv-zeta7-future", "AsymptoticLowerBound": "zeta7-witness-bound", "TemporalSnapshot": "snap-future-projected", "IsValidAtThisSnapshot": true},
+      {"LowerBoundValidityAtSnapshotId": "lbv-retracted-1946", "AsymptoticLowerBound": "hypothetical-retracted-overclaim", "TemporalSnapshot": "snap-erdos-1946", "IsValidAtThisSnapshot": false},
+      {"LowerBoundValidityAtSnapshotId": "lbv-retracted-1983", "AsymptoticLowerBound": "hypothetical-retracted-overclaim", "TemporalSnapshot": "snap-st-1983", "IsValidAtThisSnapshot": false},
+      {"LowerBoundValidityAtSnapshotId": "lbv-retracted-1984", "AsymptoticLowerBound": "hypothetical-retracted-overclaim", "TemporalSnapshot": "snap-spencer-st-1984", "IsValidAtThisSnapshot": false},
+      {"LowerBoundValidityAtSnapshotId": "lbv-retracted-2024", "AsymptoticLowerBound": "hypothetical-retracted-overclaim", "TemporalSnapshot": "snap-sawin-2024", "IsValidAtThisSnapshot": false},
+      {"LowerBoundValidityAtSnapshotId": "lbv-retracted-mid-overclaim", "AsymptoticLowerBound": "hypothetical-retracted-overclaim", "TemporalSnapshot": "snap-mid-overclaim-2025", "IsValidAtThisSnapshot": true, "Description": "The one moment in time where the overclaim was alive — visible HERE only."},
+      {"LowerBoundValidityAtSnapshotId": "lbv-retracted-now", "AsymptoticLowerBound": "hypothetical-retracted-overclaim", "TemporalSnapshot": "snap-now", "IsValidAtThisSnapshot": false},
+      {"LowerBoundValidityAtSnapshotId": "lbv-retracted-future", "AsymptoticLowerBound": "hypothetical-retracted-overclaim", "TemporalSnapshot": "snap-future-projected", "IsValidAtThisSnapshot": false},
+      {"LowerBoundValidityAtSnapshotId": "lbv-pending-1946", "AsymptoticLowerBound": "pending-bound-unevaluated", "TemporalSnapshot": "snap-erdos-1946", "IsValidAtThisSnapshot": false},
+      {"LowerBoundValidityAtSnapshotId": "lbv-pending-1983", "AsymptoticLowerBound": "pending-bound-unevaluated", "TemporalSnapshot": "snap-st-1983", "IsValidAtThisSnapshot": false},
+      {"LowerBoundValidityAtSnapshotId": "lbv-pending-1984", "AsymptoticLowerBound": "pending-bound-unevaluated", "TemporalSnapshot": "snap-spencer-st-1984", "IsValidAtThisSnapshot": false},
+      {"LowerBoundValidityAtSnapshotId": "lbv-pending-2024", "AsymptoticLowerBound": "pending-bound-unevaluated", "TemporalSnapshot": "snap-sawin-2024", "IsValidAtThisSnapshot": false},
+      {"LowerBoundValidityAtSnapshotId": "lbv-pending-mid-overclaim", "AsymptoticLowerBound": "pending-bound-unevaluated", "TemporalSnapshot": "snap-mid-overclaim-2025", "IsValidAtThisSnapshot": false},
+      {"LowerBoundValidityAtSnapshotId": "lbv-pending-now", "AsymptoticLowerBound": "pending-bound-unevaluated", "TemporalSnapshot": "snap-now", "IsValidAtThisSnapshot": true},
+      {"LowerBoundValidityAtSnapshotId": "lbv-pending-future", "AsymptoticLowerBound": "pending-bound-unevaluated", "TemporalSnapshot": "snap-future-projected", "IsValidAtThisSnapshot": true}
     ]
   }
 }

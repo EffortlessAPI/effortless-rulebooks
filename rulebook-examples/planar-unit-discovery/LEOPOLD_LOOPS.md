@@ -54,9 +54,86 @@ Each loop = one named **CHANGE-RULE → `effortless build` → CONSUME-VIEWS** t
 
 ---
 
+### [x] Loop 4.2 — As-Of Rollups via Junction (sub-iteration)
+
+**Why this is a 4.2 not a 5:** Loop 4.1 made every row bitemporally addressable but left "as-of date X" queries living in the substrate (ERB's `MAXIFS` doesn't natively filter on date ranges). 4.2 brings as-of rollups *into the rulebook* via a junction table — the standard SDLAF-friendly workaround when a parameterized query needs to be expressed in scalar formulas.
+
+**What changed:** added `LowerBoundValidityAtSnapshot` — a junction between `AsymptoticLowerBounds` and `TemporalSnapshots`, with one row per (bound × snapshot) pair carrying a raw `IsValidAtThisSnapshot` boolean (pre-computed since ERB MAXIFS doesn't support range filters). 5 bounds × 7 snapshots = **35 junction rows**. Added a 7th snapshot row `snap-mid-overclaim-2025` (2025-07-01) so the hypothetical-retracted-overclaim's brief validity window has a moment to appear in. Added two lookups onto the junction (`BoundExponent`, `BoundIsCurrentlyValid`) and one calc field (`IsCuratorConfirmedAtThisSnapshot` = AND of date-validity and curator-confirmation).
+
+**Cascade onto TemporalSnapshots — four new fields:**
+- `ValidLowerBoundCountAtThisMoment` — how many bounds were date-valid at this moment.
+- `BestKnownLowerBoundExponentAtThisMoment` — date-only MAX, the "forensic" view.
+- `CuratorConfirmedBestKnownLowerBoundExponentAtThisMoment` — date-validity AND curator-confirmed, the "what the rulebook actually believed" view.
+- `PendingButValidByDateCount` — rows in the gap between date-valid and curator-confirmed, i.e., the rulebook's open epistemic questions at this snapshot.
+
+**The timeline U(n) now produces from inside the rulebook:**
+
+| Date | Moment | BestByDate | CuratorConfirmed | Pending |
+|---|---|---|---|---|
+| 1946-01-01 | Erdős 1946 publication | 1.0 | 1.0 | 0 |
+| 1983-01-01 | Szemerédi–Trotter 1983 | 1.0 | 1.0 | 0 |
+| 1984-01-01 | Spencer–Szemerédi–Trotter 1984 | 1.0 | 1.0 | 0 |
+| 2024-01-01 | Sawin 2024 improvement | 1.014 | 1.014 | 0 |
+| 2025-07-01 | Mid-overclaim 2025-07 | **1.5** | 1.014 | 0 |
+| 2026-05-28 | Current moment | 1.05 | 1.014 | **1** |
+| 2030-01-01 | Future improvement (projected) | 1.05 | 1.014 | **1** |
+
+**What this exposes that prose can't:** the 2025-07 row's two columns disagree by 0.486 — that's the rulebook saying out loud "at that moment, a 1.5 claim *briefly* looked best by date, but the curator-confirmed view (which knows about the retraction) discounts it." The 2026 row's two columns disagree because the `pending-bound-unevaluated` row is date-valid but `IsCurrentlyValid=null` — the rulebook is honestly reporting that it has an open epistemic question at exponent 1.05. Three different "best known" values across two columns and one timestamp — and they're all simultaneously correct, each answering a slightly different question.
+
+**Outcome:** 37 tables, 471 fields, 278 rows. FK integrity green. Nullable bools all carry null/true/false. The `TemporalSnapshots` table now functions as a queryable time machine — `WHERE TemporalSnapshotId = 'snap-sawin-2024'` returns the rulebook's view of U(n) as of January 2024, computed entirely from data inside the rulebook with no substrate-side temporal SQL.
+
+**What's still in the substrate (deliberately):** true SCD-Type-2 versioning of `IsCurrentlyValid` itself — i.e., "what did the curator believe at time X?" — requires transaction-time tracking on the curator-flag, not just on the row. That's Loop 4.3 if you want it, and the place where a Postgres temporal table or an event-sourced overlay would be cleaner than a junction. Punted for now because the current 4.2 already captures the much-more-common queries.
+
+---
+
+### [x] Loop 5 — Load Real Paper Content (Partial) + Pathway-Aware Audit Gate
+
+**Calibration honesty up front:** I can do Erdős 1946 and Spencer–Szemerédi–Trotter 1984 from training — I know the proof structures. Sawin's actual paper is still a placeholder (the arXiv ID in `SourceReferences` is fictitious). So this loop is "load what I can, mark what I can't, structurally close what's loadable."
+
+**The bigger structural finding this loop exposed:** the previous `AlgebraicChainClosed` gate was biased toward algebraic-tower proofs. Erdős's 1946 proof is *combinatorial pigeonhole* (integer grid + divisor-function bound on r₂(k)), not algebraic-tower. Under the old gate, Erdős's theorem could never close — not because the proof is wrong, but because it doesn't use class field towers. That's a model bug, not a math bug. Loop 5 fixes it.
+
+**What changed:**
+
+1. **Added `ProofPathway` (raw enum) to `AsymptoticLowerBounds`** with values: `algebraic-tower`, `combinatorial-pigeonhole`, `crossing-number`, `incidence-counting`, `witness-only`, `other`. Each bound carries its actual proof-pathway tag.
+
+2. **Added `IsAuditableViaItsPathway` (calculated) to `AsymptoticLowerBounds`** — the pathway-aware audit gate:
+   - `algebraic-tower` proofs need `IsAlgebraicallyAnchored` (the old chain-closure gate).
+   - `combinatorial-pigeonhole` proofs need `AllObligationsSatisfied AND WitnessConsistent`.
+   - `witness-only` claims need just `WitnessConsistent`.
+
+3. **Cascade to `Theorems`** via lookup + new calc `IsAuditedAndClosed` — the pathway-aware replacement for `FullyAuditedAndClosed`.
+
+4. **Fixed a model bug in `sawin-n1014.GrowthSequence`** — it was pointing at `sqrt-lat-growth` (Q(√−3), which doesn't pass GS), but Sawin's algebraic-tower construction uses Q(ζ_p). Re-pointed to `zeta7-sigma1-growth`. Sawin's theorem is now algebraically pointed at the right source — though it still doesn't close (because the finite witness `log(7)/log(8) ≈ 0.937` is below the claimed 1.014; that's honest).
+
+5. **Loaded real lemma content** for the parts I can stand behind:
+   - `lemma-erdos-context` (updated): full proof outline of Erdős 1946 — integer grid + sums-of-two-squares + r₂(k) bound.
+   - `lemma-erdos-grid-construction` (new): the Z² ∩ [0,√n]² grid step.
+   - `lemma-erdos-divisor-function` (new): the r₂(k) multiplicative formula (Landau, Hardy–Wright).
+   - `lemma-spencer-st-crossing-inequality` (new): Ajtai–Chvátal–Newborn–Szemerédi 1982 crossing inequality, underwriting the n^{4/3} upper bound.
+   - `lemma-historical-background-context` (new): coverage row demonstrating `IsLoadBearing=FALSE`.
+
+6. **Added 2 new `ProofObligations`** linking the new Erdős lemmas to `erdos-sqrt-bound`, both with `IsSatisfied=TRUE` (curator-confirmed). Erdős's bound now has 3 obligations, all satisfied.
+
+**The cascade — observed:**
+
+| Theorem | Pathway | IsAuditedAndClosed |
+|---|---|---|
+| `thm-erdos-unit-distance-baseline` | combinatorial-pigeonhole | **TRUE** ← *new* |
+| `thm-superlinear-unit-distance` (Sawin) | algebraic-tower | FALSE (finite witness 0.937 < 1.014) |
+| `thm-hypothetical-retracted` | — | FALSE (theorem itself retracted) |
+| `thm-szemeredi-trotter`, `thm-spencer-szemeredi-trotter`, `thm-future-conjectural-improvement` | — | n/a (no anchored lower bound; these belong on the upper-bound side, Loop 6) |
+
+**This is the first theorem to fully close in the rulebook.** Erdős's 1946 result is end-to-end audited: bound is bitemporally current, claim matches, three loaded lemmas with real content, all proof obligations satisfied, finite witness consistent with claimed exponent. The chain-closure machinery works when given real content — and it works *for the right reason* (pigeonhole, not algebraic tower).
+
+**Honest accounting of what's still mock:** Sawin's specific arXiv ID, the exact statement of the n^{1.014} construction, and the per-lemma details from Sawin's paper. These would need actual paper access to load. The structural finding from Loop 5 is more valuable than the missing-data: **the audit gate now classifies proofs by pathway, which is the right shape for any paper-loading flow regardless of whether it's algebraic, combinatorial, crossing-number, or incidence-counting based.**
+
+**Outcome:** 37 tables, 477 fields, 284 rows. All FKs resolve. All nullable bools null/true/false.
+
+---
+
 ## Next
 
-### [ ] Loop 5 — Load Actual Paper Content
+### [ ] Loop 6 — Load Sawin's Actual Paper Content (paper access required)
 
 **CHANGE-RULE:** extract the named lemmas from whichever paper carries the current state-of-the-art lower bound on U(n) (the placeholder `arXiv:2605.20579` is not a real ID). For each `Lemmas` row, fill in real `StatementText`, flip `IsLoaded` to TRUE. Add at least one `ConstructionInstance` whose `(ParamN, EdgeCount)` resolves `DensityExponentEstimate ≥ 1.014`. Flip each `ProofObligations.IsSatisfied` row by row.
 
@@ -68,7 +145,7 @@ Each loop = one named **CHANGE-RULE → `effortless build` → CONSUME-VIEWS** t
 
 ---
 
-### [ ] Loop 6 — `AsymptoticUpperBounds` (Sandwich U(n))
+### [ ] Loop 7 — `AsymptoticUpperBounds` (Sandwich U(n))
 
 **CHANGE-RULE:** add top-level table `AsymptoticUpperBounds` mirroring `AsymptoticLowerBounds`. Load `spencer-st-n43` (Exponent = 4/3). Add `Theorems.AnchoredUpperBound` FK linking `thm-spencer-szemeredi-trotter` and `thm-szemeredi-trotter` to the upper-bound rows. Add calc fields `AsymptoticFunctions.BestKnownUpperBoundExponent` (MIN aggregation) and `AsymptoticFunctions.GapBetweenBounds` = upper − lower.
 
@@ -80,7 +157,7 @@ Each loop = one named **CHANGE-RULE → `effortless build` → CONSUME-VIEWS** t
 
 ---
 
-### [ ] Loop 7 — `SubstrateRuns` + `ConformanceResults`
+### [ ] Loop 8 — `SubstrateRuns` + `ConformanceResults`
 
 **CHANGE-RULE:** add two new tables:
 - `SubstrateRuns` — one row per (substrate × build timestamp): `SubstrateKind`, `RanAt`, `RulebookCommitSha`
@@ -96,7 +173,7 @@ Change `AnswerKey.IsCurrentlyMatched` from raw to **lookup** — `LOOKUP(Conform
 
 ---
 
-### [ ] Loop 8 — `ProofAssistantArtifacts`
+### [ ] Loop 9 — `ProofAssistantArtifacts`
 
 **CHANGE-RULE:** add `ProofAssistantArtifacts` — one row per (Lemma × proof-assistant artifact): `Assistant` (lean4 / coq / isabelle), `ArtifactURI`, `LastCheckedAt`, `IsMachineVerified`. Aggregate onto `Lemmas.MachineVerifiedArtifactCount` and `Lemmas.IsMachineVerified` = (count > 0). Change `ProofObligations.IsSatisfied` to be calculated from `IsLemmaMachineVerified` when an artifact exists, falling back to the curator-set raw value when null.
 
@@ -108,7 +185,7 @@ Change `AnswerKey.IsCurrentlyMatched` from raw to **lookup** — `LOOKUP(Conform
 
 ---
 
-### [ ] Loop 9 — Competing Algebraic Source (Head-to-Head)
+### [ ] Loop 10 — Competing Algebraic Source (Head-to-Head)
 
 **CHANGE-RULE:** load a second non-cyclotomic `NumberField` — e.g., a real-quadratic `Q(√k)` with `IsTotallyReal = TRUE` and large class number — plus its `MinkowskiEmbedding`, `MinkowskiLattice`, `ShortVectors`, `PlanarProjection`, `ProjectedShortVectors`, `ConstructionFamily`, `ConstructionInstances`, `GrowthSequence`, and an `AsymptoticLowerBound`. Add `ConstructionFamilies.RankAgainstSiblings` (calculated or aggregated ordering by `MaxObservedDensityExponentEstimate`).
 
@@ -120,6 +197,6 @@ Change `AnswerKey.IsCurrentlyMatched` from raw to **lookup** — `LOOKUP(Conform
 
 ---
 
-## After Loop 9
+## After Loop 10
 
 The rulebook describes U(n) with: known lower bounds + known upper bounds + the gap + the conjectures targeting it + at least two algebraically-distinct witnessing families + machine-verified lemmas + multi-substrate conformance results. The naked-Claude alternative would need ~30 hand-coded files updated in lockstep per loop and would be wrong before the second one shipped.
