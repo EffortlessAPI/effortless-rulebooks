@@ -210,7 +210,22 @@ Suggested natural ordering (not rigid — adjust as the work reveals):
 
 ---
 
-## 3. Next-up — rewrite Effortless Tools as a folder/tool tree
+## 3. TOP PRIORITY — rewrite Effortless Tools as a folder/tool tree
+
+> **This is the next session's job.** Everything depends on §3: it's
+> the only surface where the project's actual build/orchestration
+> lifecycle is visible to the user, and it subsumes the orphaned
+> "Orchestration" tab (§3.7). §2 mechanics are built (see §2 status
+> + Appendix A); §4 items are smaller individual wins that can land
+> opportunistically while §3 is in flight.
+>
+> **Reusable from §2 backend work** (don't reinvent these):
+> SSE job plumbing (`startRebuildJob` / `broadcastJobEvent` / `phase`
+> / `finishJob` at server.js:1957–1980), the spawn-and-stream-stdout
+> pattern (server.js:2003–2034 for `effortless build` — same shape
+> works for any per-tool run), `writeThrough` for `effortless.json`
+> edits, the `requireEditor` middleware, and `portal_audit_log` for
+> tool-run audit. §3.6's endpoint list maps onto these almost 1:1.
 
 The current Effortless Tools page does **three things badly**:
 
