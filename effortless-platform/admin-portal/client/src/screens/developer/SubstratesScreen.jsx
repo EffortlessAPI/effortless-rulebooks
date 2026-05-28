@@ -1,11 +1,12 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useParams } from "react-router-dom";
-import { api } from "../../lib/api.js";
+import { api, makeDomainApi } from "../../lib/api.js";
 import { toast } from "../../lib/toast.js";
 import ScreenHeader from "../../components/ScreenHeader.jsx";
 
 export default function SubstratesScreen({ screen, me }) {
   const { domain } = useParams();
+  const dApi = useMemo(() => makeDomainApi(domain), [domain]);
   const canBuild = me?.role?.CanRunBuilds;
 
   const [subs, setSubs]           = useState([]);
@@ -16,11 +17,12 @@ export default function SubstratesScreen({ screen, me }) {
   const [removing, setRemoving]   = useState(null);
 
   const load = async () => {
+    if (!domain) return;
     try {
       const [s, c, i] = await Promise.all([
-        api.get("/api/substrates"),
+        dApi.get("/api/substrates"),
         api.get("/api/tools/catalog"),
-        api.get("/api/tools/installed"),
+        dApi.get("/api/tools/installed"),
       ]);
       setSubs(s);
       setCatalog(c);
@@ -35,7 +37,7 @@ export default function SubstratesScreen({ screen, me }) {
   const buildAll = async () => {
     toast("Building…");
     try {
-      const r = await api.post("/api/build/all");
+      const r = await dApi.post("/api/build/all");
       toast(r.ok ? "Build complete" : "Build failed", r.ok ? "ok" : "error");
     } catch (e) { toast(e.message, "error"); }
   };
@@ -43,7 +45,7 @@ export default function SubstratesScreen({ screen, me }) {
   const install = async (tool) => {
     setInstalling(tool.ToolId);
     try {
-      const r = await api.post("/api/tools/install", {
+      const r = await dApi.post("/api/tools/install", {
         installUrl: tool.InstallUrl,
         outputPath: tool.OutputPath,
       });

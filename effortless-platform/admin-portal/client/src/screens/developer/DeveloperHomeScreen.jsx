@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import ScreenHeader from "../../components/ScreenHeader.jsx";
 import DomainTile from "../../components/DomainTile.jsx";
@@ -9,14 +8,6 @@ export default function DeveloperHomeScreen({ screen, projects, projectRulebook,
   const role     = (projectRulebook?.UserRoles?.data || []).find((r) => r.RoleId === "role-developer");
   const domains  = (projects?.projects || []).filter((d) => d.id !== "__top__");
   const platform = (projects?.projects || []).find((d) => d.id === "__top__");
-  const active   = projects?.active;
-
-  // If there's already an active non-top domain, jump to its landing.
-  useEffect(() => {
-    if (active && active !== "__top__") {
-      navigate(`/developer/${active}`);
-    }
-  }, [active]);
 
   return (
     <>

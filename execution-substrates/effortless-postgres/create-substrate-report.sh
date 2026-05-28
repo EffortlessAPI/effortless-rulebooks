@@ -29,13 +29,14 @@ def read_file(path, default=""):
         return default
 
 def _default_testing_dir():
-    """Default ERB_TESTING_DIR: rulebook-examples/<active-domain>/testing/."""
+    """Default ERB_TESTING_DIR: rulebook-examples/<ERB_DOMAIN>/testing/."""
     repo_root = os.path.abspath(os.path.join(SCRIPT_DIR, '..', '..'))
-    active_domain_file = os.path.join(repo_root, 'orchestration', 'active-domain.txt')
-    with open(active_domain_file) as f:
-        domain = f.read().strip()
+    domain = os.environ.get('ERB_DOMAIN', '').strip()
     if not domain:
-        raise ValueError(f"active-domain.txt at {active_domain_file} is empty.")
+        raise RuntimeError(
+            "ERB_DOMAIN is not set and ERB_TESTING_DIR was not supplied; "
+            "cannot resolve the testing directory."
+        )
     return os.path.join(repo_root, 'rulebook-examples', domain, 'testing')
 
 

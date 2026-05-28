@@ -98,9 +98,9 @@ function CurrentRoleLayout({ projectRulebook, me }) {
 
 function Portal() {
   const portal = usePortal();
-  const { me, projectRulebook, rulebook } = portal;
+  const { me, projectRulebook } = portal;
 
-  if (!projectRulebook || !rulebook || !me) {
+  if (!projectRulebook || !me) {
     return <div style={{ padding: 30 }}>Loading ERB Admin Portal…</div>;
   }
 
@@ -113,7 +113,7 @@ function Portal() {
 
   return (
     <PortalContext.Provider value={portal}>
-      <CommandPalette rulebook={rulebook} projects={portal.projects} activeDomain={portal.projects?.active} />
+      <CommandPalette rulebook={null} projects={portal.projects} activeDomain={null} />
       <Routes>
         {/* Root: role picker */}
         <Route path="/" element={<RolePickerScreen {...portal} />} />

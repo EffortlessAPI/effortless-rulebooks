@@ -3,8 +3,16 @@
     "primary_key": "customer_id",
     "computed_columns": [
       "name",
+      "initials",
       "full_name"
     ],
     "record_count": 3
+  },
+  "__meta__": {
+    "primary_key": "meta_key",
+    "computed_columns": [
+      "name"
+    ],
+    "record_count": 8
   }
 }

@@ -29,7 +29,7 @@
       },
       {
         "name": "Initials",
-        "formula": "LEFT(FirstName, 1) & LEFT(LastName, 1)",
+        "formula": "=LEFT({{LastName}}, 1) & LEFT({{FirstName}}, 1)",
         "type": "calculated",
         "datatype": "string",
         "nullable": true,
@@ -52,9 +52,10 @@
         "datatype": "string",
         "type": "calculated",
         "Description": "Full name is computed from the first and last name of the customer",
-        "formula": "={{FirstName}} & \" \" & {{LastName}}",
+        "formula": "={{LastName}} & \" -*- \" & {{FirstName}}",
         "important": true,
-        "explanation_rich": "**The smallest possible calculated field.** `FullName = FirstName & \" \" & LastName` — but the point is that it lives in the rulebook, not in application code. Every substrate (Postgres view, Python class, Excel cell, OWL ontology) computes the same value the same way. Worked example: row `jane-smith-email-com` has `FirstName=Jane`, `LastName=Smith` → `FullName=\"Jane Smith\"`. Edit `FirstName` to `Janet` and **every** substrate sees `\"Janet Smith\"` on the next read. No glue code wrote that — the rulebook did."
+        "explanation_rich": "**The smallest possible calculated field.** `FullName = FirstName & \" \" & LastName` — but the point is that it lives in the rulebook, not in application code. Every substrate (Postgres view, Python class, Excel cell, OWL ontology) computes the same value the same way. Worked example: row `jane-smith-email-com` has `FirstName=Jane`, `LastName=Smith` → `FullName=\"Jane Smith\"`. Edit `FirstName` to `Janet` and **every** substrate sees `\"Janet Smith\"` on the next read. No glue code wrote that — the rulebook did.",
+        "nullable": true
       }
     ],
     "data": [
@@ -62,19 +63,28 @@
         "CustomerId": "jane-smith-email-com",
         "EmailAddress": "jane.smith@email.com",
         "FirstName": "Jane",
-        "LastName": "Smith"
+        "LastName": "Smith",
+        "Name": "jane.smith-email.com",
+        "Initials": "SB",
+        "FullName": "Smith -*- Bob"
       },
       {
         "CustomerId": "john-doe-email-com",
         "EmailAddress": "john.doe@email.com",
         "FirstName": "Jimmy",
-        "LastName": "Doe"
+        "LastName": "Doe",
+        "Name": "john.doe-email.com",
+        "Initials": "DJ",
+        "FullName": "Doe -*- Jimmy"
       },
       {
         "CustomerId": "emily-jones-email-com",
         "EmailAddress": "emily.jones@email.com",
         "FirstName": "Mary",
-        "LastName": "Jones"
+        "LastName": "Jones",
+        "Name": "emily.jones-email.com",
+        "Initials": "JL",
+        "FullName": "Jones -*- Linda"
       }
     ]
   },

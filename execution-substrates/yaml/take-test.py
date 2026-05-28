@@ -172,20 +172,24 @@ def _call_func(name: str, args: list):
 
 
 def _load_rulebook_for_active_domain() -> dict:
-    """Locate the rulebook for the active domain. Uses ERB_RULEBOOK_PATH if set
-    (orchestrate.sh exports it), otherwise reads active-domain.txt."""
+    """Locate the rulebook for the active domain. ERB_RULEBOOK_PATH wins; else
+    derive the path from ERB_DOMAIN. Fails loudly if neither is set."""
     env_path = os.environ.get("ERB_RULEBOOK_PATH")
     if env_path and Path(env_path).exists():
         with open(env_path) as f:
             return json.load(f)
+    domain = os.environ.get("ERB_DOMAIN", "").strip()
+    if not domain:
+        raise RuntimeError(
+            "Neither ERB_RULEBOOK_PATH nor ERB_DOMAIN is set; cannot locate "
+            "the active rulebook."
+        )
     project_root = Path(script_dir).parent.parent
-    active_file = project_root / "orchestration" / "active-domain.txt"
-    domain = active_file.read_text().strip() if active_file.exists() else "customer-fullname"
     candidate = project_root / "rulebook-examples" / domain / "effortless-rulebook" / f"{domain}-rulebook.json"
-    if candidate.exists():
-        with open(candidate) as f:
-            return json.load(f)
-    return {}
+    if not candidate.exists():
+        raise FileNotFoundError(f"Rulebook not found at {candidate}")
+    with open(candidate) as f:
+        return json.load(f)
 
 
 def _calculated_fields_for_entity(rulebook: dict, entity_name: str) -> list:

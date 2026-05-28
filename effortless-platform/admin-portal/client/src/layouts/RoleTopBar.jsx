@@ -3,12 +3,13 @@ import * as Icons from "lucide-react";
 import { toast } from "../lib/toast.js";
 import DomainSwitcher from "../components/DomainSwitcher.jsx";
 
-// Brand logos from simpleicons.org CDN — stable, CC0-licensed icon set
-// (trademarks belong to their respective owners). Used here for instantly
-// recognizable Excel + VS Code chips. Folder uses lucide so we don't need a
-// third CDN round-trip for a generic glyph.
-const EXCEL_ICON_URL  = "https://cdn.simpleicons.org/microsoftexcel/217346";
-const VSCODE_ICON_URL = "https://cdn.simpleicons.org/visualstudiocode/0078d4";
+// Brand logos via the iconify.design CDN — stable, broadly used, and (unlike
+// simpleicons.org) still serves the actual Microsoft / VS Code brand marks.
+// `vscode-icons:file-type-excel2` is the green-tile Excel icon; `logos:
+// visual-studio-code` is the gradient VS Code mark. Folder stays on lucide
+// so we don't need a third CDN round-trip for a generic glyph.
+const EXCEL_ICON_URL  = "https://api.iconify.design/vscode-icons:file-type-excel2.svg";
+const VSCODE_ICON_URL = "https://api.iconify.design/logos:visual-studio-code.svg";
 
 function openProjectXlsx(domainId) {
   // Stream the generated workbook via a hidden anchor so the browser handles
@@ -55,23 +56,11 @@ export default function RoleTopBar({
   const params   = useParams();
   const Icon = Icons[icon] || Icons.Circle;
 
-  const activeDomain = params.domain || projects?.active || null;
+  const activeDomain = params.domain || null;
   const activeProj   = (projects?.projects || []).find((p) => p.id === activeDomain);
 
   const switchDomain = (newId) => {
     if (!newId) return;
-    // Domain is a URL concern, not server-side state. Switching the dropdown
-    // ONLY navigates — it does NOT POST /api/projects/:id/activate (which
-    // would mutate orchestration/active-domain.txt, a shared scratchpad
-    // used by CLI tools and this Claude conversation). Per CLAUDE.md
-    // "`active-domain.txt` ≠ what this conversation is about", the UI uses
-    // the URL as its source of truth and never touches that file.
-    //
-    // Known followup: per-domain Postgres pool. Until that lands, UI CRUD
-    // writes (instance/schema PATCH/DELETE) still resolve against whatever
-    // domain is in active-domain.txt — switching the dropdown does NOT
-    // re-bind the pool. Pure read flows (Explorer tree/node/cell) are
-    // already URL-driven and unaffected.
     let next;
     if (params.domain) {
       next = location.pathname.replace(

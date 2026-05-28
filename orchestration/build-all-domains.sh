@@ -11,8 +11,9 @@
 #   summary.json          # {domain, status, root_cause, first_error, log_path}
 #   REPORT.md             # rendered triage table
 #
-# This script does NOT alter the active-domain state for the menu — it saves
-# whatever was active at start and restores it at the end.
+# Each demo build is invoked with ERB_DOMAIN=<slug> in its environment, so
+# nothing in the parent process or filesystem needs to track which one is
+# "active."
 #
 # Usage:
 #   build-all-domains.sh                  # rebuild every demo
@@ -32,7 +33,6 @@ set -u
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 RULEBOOK_EXAMPLES_DIR="$PROJECT_ROOT/rulebook-examples"
-ACTIVE_DOMAIN_FILE="$SCRIPT_DIR/active-domain.txt"
 STATUS_DIR="$SCRIPT_DIR/build-status"
 LOGS_DIR="$STATUS_DIR/logs"
 SUMMARY_JSON="$STATUS_DIR/summary.json"
@@ -114,21 +114,14 @@ if [ "$MODE" != "report-only" ] && [ ${#TARGETS[@]} -eq 0 ]; then
     exit 0
 fi
 
-PREV_ACTIVE=""
-if [ -f "$ACTIVE_DOMAIN_FILE" ]; then
-    PREV_ACTIVE="$(cat "$ACTIVE_DOMAIN_FILE")"
-fi
-trap '[ -n "$PREV_ACTIVE" ] && echo "$PREV_ACTIVE" > "$ACTIVE_DOMAIN_FILE"' EXIT
-
 N=${#TARGETS[@]}
 i=0
 # set -u + empty array would crash here, so iterate only when non-empty.
 for d in ${TARGETS[@]+"${TARGETS[@]}"}; do
     i=$((i + 1))
     printf "[%2d/%d] %-42s " "$i" "$N" "$d"
-    echo "$d" > "$ACTIVE_DOMAIN_FILE"
     log="$LOGS_DIR/$d.log"
-    printf "B\nQ\n" | bash "$SCRIPT_DIR/orchestrate.sh" > "$log" 2>&1
+    printf "B\nQ\n" | ERB_DOMAIN="$d" bash "$SCRIPT_DIR/orchestrate.sh" > "$log" 2>&1
     # orchestrate.sh keeps its menu loop alive even after a python child crash,
     # so $? is unreliable — fall back to grepping the captured log.
     if grep -qE "Traceback|FATAL|RuntimeError|✗.*FAILED|raise " "$log" 2>/dev/null; then

@@ -25,7 +25,7 @@ SET check_function_bodies = off;
 
 CREATE OR REPLACE FUNCTION calc_client_full_name(p_client_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (CONCAT((SELECT NULLIF(first_name, '') FROM client WHERE client_id = p_client_id), ' ', (SELECT NULLIF(last_name, '') FROM client WHERE client_id = p_client_id)))::text;
+  SELECT (CONCAT((SELECT NULLIF(first_name, '') FROM client WHERE client_id = p_client_id), ' --- ', (SELECT NULLIF(last_name, '') FROM client WHERE client_id = p_client_id)))::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_projects_project_type_name

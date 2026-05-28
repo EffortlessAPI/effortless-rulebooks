@@ -13,7 +13,26 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
 SUBSTRATES_DIR="$PROJECT_ROOT/execution-substrates"
 RULEBOOK_EXAMPLES_DIR="$PROJECT_ROOT/rulebook-examples"
-ACTIVE_DOMAIN_FILE="$SCRIPT_DIR/active-domain.txt"
+
+# Active domain for this orchestrate.sh session. Per CLAUDE.md doctrine
+# (`active-domain.txt` is the CLI + conversation scratchpad), the SSoT for
+# the CLI is `orchestration/active-domain.txt`. Resolution order:
+#   1. ERB_DOMAIN env var (explicit per-invocation override)
+#   2. orchestration/active-domain.txt (the persistent CLI scratchpad)
+#   3. empty -> get_active_domain fatals at the first call site, prompting
+#      the user to pick from the menu.
+# Every child invocation is dispatched with ERB_DOMAIN=$ACTIVE_DOMAIN, and
+# set_active_domain persists back to the file so the choice survives the
+# next CLI session.
+ACTIVE_DOMAIN_FILE="$PROJECT_ROOT/orchestration/active-domain.txt"
+if [ -n "${ERB_DOMAIN:-}" ]; then
+    ACTIVE_DOMAIN="$ERB_DOMAIN"
+elif [ -f "$ACTIVE_DOMAIN_FILE" ]; then
+    ACTIVE_DOMAIN="$(tr -d '[:space:]' < "$ACTIVE_DOMAIN_FILE")"
+else
+    ACTIVE_DOMAIN=""
+fi
+export ERB_DOMAIN="$ACTIVE_DOMAIN"
 
 # =============================================================================
 # COLORS
@@ -94,15 +113,19 @@ fi
 # HELPER FUNCTIONS
 # =============================================================================
 get_active_domain() {
-    if [ -f "$ACTIVE_DOMAIN_FILE" ]; then
-        cat "$ACTIVE_DOMAIN_FILE" | tr -d '[:space:]'
-    else
-        echo "customer-fullname"
+    if [ -z "$ACTIVE_DOMAIN" ]; then
+        echo "FATAL: no active domain — set ERB_DOMAIN in the environment or pick one from the menu first." >&2
+        exit 1
     fi
+    echo "$ACTIVE_DOMAIN"
 }
 
 set_active_domain() {
-    echo "$1" > "$ACTIVE_DOMAIN_FILE"
+    ACTIVE_DOMAIN="$1"
+    export ERB_DOMAIN="$ACTIVE_DOMAIN"
+    # Persist to the CLI scratchpad so the next ./start.sh (or any other
+    # CLI tool that reads the file) picks up the same domain.
+    printf '%s\n' "$ACTIVE_DOMAIN" > "$ACTIVE_DOMAIN_FILE"
 }
 
 get_domain_rulebook_path() {

@@ -1,11 +1,11 @@
 import { useNavigate, useParams, useLocation } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import ScreenHeader from "../../components/ScreenHeader.jsx";
 import RichText, { RichInline } from "../../components/RichText.jsx";
 import EditableRich from "../../components/EditableRich.jsx";
 import TimeScrubber, { PastStateBanner } from "../../components/TimeScrubber.jsx";
 import TourMode from "../../components/TourMode.jsx";
-import { api } from "../../lib/api.js";
+import { api, makeDomainApi } from "../../lib/api.js";
 import { metaAsObject } from "../../rulebookMeta.js";
 
 // The reception desk for one domain.
@@ -23,6 +23,7 @@ export default function DeveloperDomainScreen({ screen, rulebook: liveRulebook, 
   const navigate = useNavigate();
   const location = useLocation();
   const { domain } = useParams();
+  const dApi = useMemo(() => makeDomainApi(domain), [domain]);
   // Time-travel state. When `rewindCommit` is set, the page renders
   // against `rewindRulebook` instead of the live rulebook prop, and every
   // editable affordance is disabled.
@@ -57,7 +58,7 @@ export default function DeveloperDomainScreen({ screen, rulebook: liveRulebook, 
   useEffect(() => {
     if (!domain) return;
     let cancelled = false;
-    api.get("/api/rulebook/history")
+    dApi.get("/api/rulebook/history")
       .then((h) => {
         if (cancelled) return;
         const newest = (h?.commits || [])[0]?.timestamp || null;

@@ -35,3 +35,35 @@ export const api = {
   put:   (path, body, txt)  => base("PUT",    path, body, txt),
   del:   (path)             => base("DELETE", path),
 };
+
+// Append `?domain=<slug>` to a path, preserving any existing query string and
+// fragment. Does nothing when `domain` is falsy. Use this for any call to an
+// endpoint that requires a domain (the server returns 400 if it's missing).
+export function withDomain(path, domain) {
+  if (!domain) return path;
+  const [base, hash = ""] = String(path).split("#");
+  const sep = base.includes("?") ? "&" : "?";
+  // Don't double-append if the path already carries a domain param.
+  if (/[?&]domain=/.test(base)) return path;
+  const out = `${base}${sep}domain=${encodeURIComponent(domain)}`;
+  return hash ? `${out}#${hash}` : out;
+}
+
+// `domainApi` is `api` with `?domain=` auto-appended to every path. For methods
+// that take a body, the body is also extended with `{ domain }` so endpoints
+// that read from req.body work the same as ones that read from req.query.
+export function makeDomainApi(domain) {
+  const wrap = (path) => withDomain(path, domain);
+  const withDomainBody = (body) => {
+    if (body == null) return { domain };
+    if (typeof body !== "object" || Array.isArray(body)) return body;
+    return { domain, ...body };
+  };
+  return {
+    get:   (path)             => api.get(wrap(path)),
+    post:  (path, body)       => api.post(wrap(path), withDomainBody(body)),
+    patch: (path, body)       => api.patch(wrap(path), withDomainBody(body)),
+    put:   (path, body, txt)  => api.put(wrap(path), txt ? body : withDomainBody(body), txt),
+    del:   (path)             => api.del(wrap(path)),
+  };
+}

@@ -11,22 +11,18 @@ from datetime import datetime
 
 
 def get_active_domain():
-    """Return the active domain name from orchestration/active-domain.txt.
+    """Return the active domain name from the ERB_DOMAIN env var.
 
-    Fails loudly if the file is missing or empty. There is no default — the
-    repo is hours old; fix the file rather than guess.
+    Fails loudly if unset or empty. Every caller that needs a domain must
+    receive one explicitly from its parent process — there is no project-wide
+    "current domain" state.
     """
-    active_domain_file = Path(__file__).parent / "active-domain.txt"
-    if not active_domain_file.exists():
-        raise FileNotFoundError(
-            f"active-domain.txt missing at {active_domain_file}. "
-            f"Write the active project name (e.g. 'acme-llc') to that file."
-        )
-    domain = active_domain_file.read_text(encoding="utf-8").strip()
+    domain = os.environ.get("ERB_DOMAIN", "").strip()
     if not domain:
-        raise ValueError(
-            f"active-domain.txt at {active_domain_file} is empty. "
-            f"Write the active project name (e.g. 'acme-llc')."
+        raise RuntimeError(
+            "ERB_DOMAIN is not set. Every script that needs a domain must be "
+            "invoked with ERB_DOMAIN=<slug> in its environment (e.g. "
+            "`ERB_DOMAIN=acme-llc python3 take-test.py`)."
         )
     return domain
 
@@ -47,7 +43,7 @@ def get_rulebook_path():
 
     Priority:
       1. ERB_RULEBOOK_PATH env var (set by ssotme-proxy for project-scoped runs)
-      2. orchestration/active-domain.txt → rulebook-examples/<domain>/effortless-rulebook/<domain>-rulebook.json
+      2. ERB_DOMAIN → rulebook-examples/<domain>/effortless-rulebook/<domain>-rulebook.json
 
     Fails loudly if ERB_RULEBOOK_PATH points at a directory or doesn't end in
     -rulebook.json — callers MUST pass an exact file path.

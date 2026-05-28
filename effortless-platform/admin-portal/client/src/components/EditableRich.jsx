@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
+import { useParams } from "react-router-dom";
 import RichText, { RichInline } from "./RichText.jsx";
-import { api } from "../lib/api.js";
+import { makeDomainApi } from "../lib/api.js";
 import { toast } from "../lib/toast.js";
 
 // Inline editor for a *_rich text field inside the active rulebook.
@@ -23,6 +24,8 @@ export default function EditableRich({
   placeholder = "— not authored yet —",
   className = "",
 }) {
+  const { domain } = useParams();
+  const api = useMemo(() => makeDomainApi(domain), [domain]);
   const [editing, setEditing] = useState(false);
   const [draft, setDraft] = useState(text || "");
   const [busy, setBusy] = useState(false);

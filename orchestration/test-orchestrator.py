@@ -42,17 +42,12 @@ SUBSTRATES_DIR = os.path.join(REPO_ROOT, "execution-substrates")
 SUMMARY_PATH = os.path.join(SCRIPT_DIR, "all-tests-results.md")
 
 def _get_active_domain():
-    active_domain_file = os.path.join(SCRIPT_DIR, "active-domain.txt")
-    if not os.path.exists(active_domain_file):
-        raise FileNotFoundError(
-            f"active-domain.txt missing at {active_domain_file}. "
-            "Write the active domain name (e.g. 'acme-llc') to that file."
-        )
-    domain = open(active_domain_file).read().strip()
+    domain = os.environ.get("ERB_DOMAIN", "").strip()
     if not domain:
-        raise ValueError(
-            f"active-domain.txt at {active_domain_file} is empty. "
-            "Write the active domain name (e.g. 'acme-llc')."
+        raise RuntimeError(
+            "ERB_DOMAIN is not set. test-orchestrator must be invoked with "
+            "ERB_DOMAIN=<slug> in its environment (orchestrate.sh does this "
+            "automatically for menu-driven runs)."
         )
     return domain
 
@@ -95,7 +90,7 @@ SUBSTRATE_ORDER = [
 ]
 
 # Database connection — DATABASE_URL overrides; otherwise default to the
-# active domain's per-domain DB (erb_<domain>), derived from active-domain.txt.
+# active domain's per-domain DB (erb_<domain>), derived from ERB_DOMAIN.
 DB_CONNECTION = os.environ.get("DATABASE_URL") or (
     "postgresql://postgres@localhost:5432/erb_" + ACTIVE_DOMAIN.replace("-", "_")
 )

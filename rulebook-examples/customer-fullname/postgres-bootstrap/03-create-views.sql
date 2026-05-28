@@ -7,10 +7,17 @@
 -- ============================================================================
 
 -- ----------------------------------------------------------------------------
+-- Drop pass: every rulebook-owned view, reverse iteration order, CASCADE.
+-- The rulebook is HEAD — the surviving view set must mirror it exactly.
+-- ----------------------------------------------------------------------------
+DROP VIEW IF EXISTS vw_customers CASCADE;
+
+-- ----------------------------------------------------------------------------
 -- vw_customers: View for Customers
 -- Combines base table columns with calculated/lookup/aggregation fields.
 -- ----------------------------------------------------------------------------
-CREATE OR REPLACE VIEW vw_customers WITH (security_invoker = ON) AS
+DROP VIEW IF EXISTS vw_customers CASCADE;
+CREATE VIEW vw_customers WITH (security_invoker = ON) AS
 SELECT
   t.customer_id,
   calc_customers_name(t.customer_id) AS name,                                   -- Identifier for the customers.

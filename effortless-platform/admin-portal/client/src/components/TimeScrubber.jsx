@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { api } from "../lib/api.js";
+import { useState, useEffect, useMemo } from "react";
+import { makeDomainApi } from "../lib/api.js";
 import { toast } from "../lib/toast.js";
 
 // Time-travel scrubber for the active rulebook (Item 7).
@@ -18,8 +18,10 @@ import { toast } from "../lib/toast.js";
 export default function TimeScrubber({ onRewind, activeSha, domain }) {
   const [history, setHistory] = useState(null);
   const [busy, setBusy] = useState(false);
+  const api = useMemo(() => makeDomainApi(domain), [domain]);
 
   useEffect(() => {
+    if (!domain) return;
     let cancelled = false;
     api.get("/api/rulebook/history")
       .then((h) => { if (!cancelled) setHistory(h); })

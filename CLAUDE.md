@@ -16,10 +16,10 @@ If the real path fails, **raise**, with the exact thing that was expected. Faili
 
 ## Defaults derived from the SSoT are NOT fallbacks
 
-A **default** computed from the single source of truth is fine — even encouraged. The thing that makes a fallback bad is that it silently substitutes a *guess* for the right value. A default derived from `orchestration/active-domain.txt` is not a guess; it's the deterministically-correct value computed from the SSoT. The environment variable just exists for override.
+A **default** computed from the single source of truth is fine — even encouraged. The thing that makes a fallback bad is that it silently substitutes a *guess* for the right value. A default derived from the active domain (passed in via `ERB_DOMAIN`) is not a guess; it's the deterministically-correct value computed from the SSoT. Other environment variables just exist for override.
 
-- ✅ `os.environ.get("DATABASE_URL") or f"postgresql://postgres@localhost:5432/erb_{active_domain.replace('-','_')}"` — the default IS the right answer (matches the formula in `orchestrate.sh`); DATABASE_URL only overrides.
-- ✅ `os.environ.get("ERB_TESTING_DIR") or f"{repo_root}/rulebook-examples/{active_domain}/testing"` — same shape.
+- ✅ `os.environ.get("DATABASE_URL") or f"postgresql://postgres@localhost:5432/erb_{ERB_DOMAIN.replace('-','_')}"` — the default IS the right answer (matches the formula in `orchestrate.sh`); DATABASE_URL only overrides.
+- ✅ `os.environ.get("ERB_TESTING_DIR") or f"{repo_root}/rulebook-examples/{ERB_DOMAIN}/testing"` — same shape.
 - ❌ `os.environ.get("DATABASE_URL") or "postgresql://postgres@localhost:5432/postgres"` — defaults to a generic DB that has nothing to do with the active domain. This is the kind of fallback that masks bugs as 100% conformance.
 - ❌ `path or "/some/legacy/location"` when the active path is missing — guessing.
 
@@ -30,6 +30,20 @@ The test: if your default would still be correct after the env var was unset by 
 # No defensive locks around `effortless build`
 
 The `effortless` CLI (ssotme:// client) handles its own locking. Do not add coordination machinery on top of it: no advisory locks, no mutexes, no per-domain "rebuild in progress" gates, no scripts trying to orchestrate which files get changed when "just in case." When a build / CRUD / rebuild / schema PATCH needs to happen, just run it. If two things conflict, the underlying tool fails loudly and the user sees the real error.
+
+---
+
+# `start.sh` is the restart story. Don't invent a kill-then-start ritual.
+
+`./start.sh` (and the `run-web-portal.sh` it dispatches to) **always** kills whatever is on its ports before booting. That is its primary purpose — see `run-web-portal.sh`'s "Kill anything already on the ports (clean restart)" block. Restart is one command.
+
+When code changes need to be picked up by a running server, the answer is `./start.sh` (or the relevant variant). Never:
+
+- Call the running instance "old code" or imply the user has stale bits in memory.
+- Ask the user to `kill <pid>` first, or to run `lsof` to find the PID.
+- Tell the user the changes "will be picked up on next restart" as if restarts were a thing they need to choreograph.
+
+If a port collision matters, trust start.sh to handle it. If start.sh is missing or broken for a particular project, fix start.sh — don't route around it.
 
 ---
 
@@ -61,6 +75,28 @@ A Postgres materialized view emitted by a transpiler reading a rulebook table is
 
 ---
 
+# The view IS the contract. Read from `vw_<entity>`. Do not re-derive anything.
+
+Every rulebook compiles to a Postgres view (`vw_customers`, `vw_projects`, …) whose columns are exactly the entity's fields — raw columns sit next to calc/lookup/aggregation columns, all populated by SQL functions the transpiler emitted from the rulebook formulas. **The view's row IS the row.** Reading from it is opening a door and walking in. The whole point of the substrate is that the formula has already run.
+
+When an app, the admin portal, a script, a notebook — anything — wants to display a row, the read is one line: `SELECT * FROM vw_<entity> WHERE <pk> = $1`, then render the row. There is nothing else to do. The `name` column already contains what `=SUBSTITUTE({{EmailAddress}}, "@", "-")` computed. The `full_name` column already contains what the formula concatenated. No formula evaluator. No regex over `{{Field}}` references. No "if calc value is null, fall back to col 0." If the view returns a value, that's the answer. If the view doesn't exist or the query fails, **raise** — same doctrine as Avoid Silent Fallbacks above.
+
+Concrete shapes to refuse:
+
+- A JS / Python formula parser that walks `=SUBSTITUTE(...)` / `=CONCAT(...)` / `=INDEX/MATCH(...)` at read time. The transpiler already emitted SQL that does this. Hand-rolling it again is building a parallel substrate.
+- A JS / Python "lookup resolver" that finds FK targets by scanning JSON `data` arrays. The view already has the lookup column. Select it.
+- An "effective name" / "first non-null column" / "fall back to PK" helper that paints *something* into a slot when a calc value is missing. If the calc value is missing, the read path is wrong — it's reading the rulebook JSON instead of the view. Fix the read path; do not invent the value.
+- "Rebake calc values into the JSON `data` array on every write" as a way to make JSON reads return calc values. The JSON is for schema + raw seed data + replay. Reads of computed values come from the view, full stop.
+- Counting children with `rows.filter(r => r[fk] === parent.pk).length` in app code. Use `SELECT COUNT(*) FROM <child_table> WHERE <fk> = $1`.
+
+The simple test before writing any code that touches a calc/lookup/aggregation field at runtime: **am I about to re-compute something the view already has a column for?** If yes, stop and `SELECT` it instead. The view is the contract.
+
+This applies recursively: if the admin portal needs a row's display name, it queries `vw_<entity>.name`. If a notebook script needs an Initials value, it queries `vw_<entity>.initials`. If a Python integration needs FullName, it queries `vw_<entity>.full_name`. There is no scenario in which app code has a legitimate reason to interpret a formula string from the rulebook — that's the transpiler's job, the transpiler already did it, and the output is sitting in a column in the view.
+
+`firstStringValue(row)` over a *view row* is fine — that's looking at already-computed values and picking the first one. A hand-rolled DAG walker that descends through formula text and lookup chains to figure out what a cell *would have been* is not — that's reimplementing the substrate badly.
+
+---
+
 # THE PROJECT RULEBOOK ≠ A DEMO RULEBOOK
 
 **This repo is a project that WRAPS a bunch of demo rulebooks. The project rulebook is the PARENT. The demo rulebooks are CHILDREN. They are NEVER mixed.**
@@ -68,7 +104,7 @@ A Postgres materialized view emitted by a transpiler reading a rulebook table is
 - The **project rulebook** is `./effortless-platform/effortless-rulebook/effortless-rulebook.json`. It describes ERB itself — the orchestration tool, the admin portal, the build pipeline, the conformance testing framework. Things like `UserRoles`, `AppUsers`, `AppPermissions`, `AppNavigation`, `AppScreens`, `AppAPIs`, `AddToolCatalog`, `BuildPipeline`, `AdminPortalRuntime` belong **here and only here**. They are about *the wrapper*. (See `./effortless-platform/README.md` — the platform folder is the wrapper "eating its own dog food.")
 - The **demo rulebooks** are `./rulebook-examples/<domain>/effortless-rulebook/<domain>-rulebook.json`. Each one describes ONE business domain (acme-llc's customers, star-trek's episodes, jessica-basic's tasks, etc.). They contain **only that domain's tables**. They never contain portal config.
 
-The admin portal reads portal config from the **project rulebook** (always). It reads the active demo's domain data from the **demo rulebook** for whichever domain is in `active-domain.txt`. These are two separate file reads, two separate concerns. Never merge them. Never put portal entities in a demo rulebook. Never put a domain's business tables in the project rulebook.
+The admin portal reads portal config from the **project rulebook** (always). It reads the active demo's domain data from the **demo rulebook** for whichever domain the request names. These are two separate file reads, two separate concerns. Never merge them. Never put portal entities in a demo rulebook. Never put a domain's business tables in the project rulebook.
 
 **If you find portal-config tables (`UserRoles` / `AppUsers` / etc.) in a demo rulebook, that is a bug — remove them and put them where they belong (the project rulebook). If you find a domain's business tables (`Customers`, `Episodes`, etc.) in the project rulebook, same bug — remove them.**
 
@@ -86,7 +122,7 @@ The admin portal reads portal config from the **project rulebook** (always). It 
 
 The admin portal opens two connections for two different reasons:
 1. To `erb_admin_portal` — to read/write its own state (which user is logged in, navigation, etc.).
-2. To `erb_<domain>` — to edit the document currently open (whichever domain is in `active-domain.txt`).
+2. To `erb_<domain>` — to edit the document currently open (the domain named in the request).
 
 Two connections. Two purposes. Two categories. Same logic as the rulebook split above.
 
@@ -94,22 +130,15 @@ Two connections. Two purposes. Two categories. Same logic as the rulebook split 
 
 ---
 
-# `active-domain.txt` is the CLI + conversation scratchpad. The UI doesn't touch it.
+# Every process names its own domain explicitly
 
-`orchestration/active-domain.txt` belongs to two things only: **CLI tools** (`orchestrate.sh`, `take-test.sh`, build scripts, the `take-test.py` runners — all the things invoked from a terminal) and **this Claude conversation** (when a turn legitimately needs to act on a specific domain). That's it. It is *not* shared with the admin portal UI.
-
-The admin portal UI has its own source of truth: the URL path (`/developer/:domain/...`). The dropdown in `RoleTopBar` mutates the URL and nothing else. Every Explorer fetch carries `?domain=` derived from that URL. The server has a single chokepoint, `resolveActiveDomain(explicit)` in [server.js](effortless-platform/admin-portal/server.js), that returns the explicit per-request domain when present and only falls back to `active-domain.txt` for genuinely-non-request code paths (background tasks, startup). The UI never causes that fallback to fire.
-
-This means: when the user flips demos in the UI to test something, **the file does not change.** Three concurrent tabs on three different demos are fine. The conversation finds the file in whatever state it (or a CLI script, or a prior turn) last left it.
+There is no project-wide "active domain" scratchpad. The admin portal UI carries the domain in the URL (`/developer/:domain/...`) and every API call passes it via `?domain=`. CLI tools (`orchestrate.sh`, `build-all-domains.sh`, every substrate's `take-test.py`, `test-orchestrator.py`, `rebuild-on-trigger.sh`) read the domain from the `ERB_DOMAIN` environment variable, which the caller must set explicitly. `orchestrate.sh` keeps the picked domain in a shell variable for the lifetime of its menu loop and exports it as `ERB_DOMAIN` to any child it spawns.
 
 **Rule for agents:**
 
 - The authoritative signal for "which demo does this turn concern" is **the user's message** — a name they typed, a URL they pasted, a row/table list they pasted. Trust that. If absent, ask.
-- Never use `active-domain.txt`'s current contents to infer user intent. It is your own scratchpad from a previous turn, not a hint from the user. Reading it to "guess what they mean" is the same shape of mistake as a silent fallback.
-- When a turn requires acting on a domain via the CLI (running `orchestrate.sh`, a substrate test, anything that reads the file), you may write the file directly and proceed — it's yours. No need to ask permission to set your own scratchpad. (You still ask permission for the action itself if it's destructive.)
-- Conversely, if you write the file, expect it to stay where you left it — the UI won't quietly overwrite it.
-
-**Known followup (not yet done):** the admin portal's Postgres pool is still a single global bound to whatever `active-domain.txt` says. Pure-read Explorer endpoints (tree, node, cell, rulebook-diff) are URL-driven and don't care. UI CRUD writes (instance / schema PATCH / DELETE / POST) still implicitly target the file's domain via that pool. Until the pool is refactored per-domain, **changing `active-domain.txt` from this conversation will shift which DB the UI's CRUD targets** — usually fine since the user isn't doing UI CRUD mid-conversation, but worth a heads-up if you're about to flip the file while the user is also actively editing rows in the UI.
+- When a turn requires acting on a domain via the CLI (running `orchestrate.sh`, a substrate test, anything driven from a terminal), prefix the command with `ERB_DOMAIN=<slug>` rather than poking at any shared state.
+- Concurrent UI tabs on different demos are fine; each call carries its own `?domain=`.
 
 ---
 
@@ -131,7 +160,7 @@ There are **two** kinds of rulebook here and they are NOT the same thing. Confus
 
 - **Path:** `./rulebook-examples/<project>/effortless-rulebook/<project>-rulebook.json`
 - **What they are:** Example ontologies. Every subdirectory of `rulebook-examples/` that contains a `<project>-rulebook.json` IS a demo. There is no curated "canonical subset" — do not enumerate a partial list and treat it as authoritative; the filesystem is authoritative. The entire orchestration website/process/repo exists to manage *all* of these.
-- **Code that operates on them:** `orchestration/orchestrate.sh` (via `get_domain_rulebook_path`), `orchestration/shared.py` (`get_rulebook_path`), all `execution-substrates/*/inject-into-*.py`, all `execution-substrates/*/take-test.py`, `orchestration/generate-report.py`, `orchestration/test-orchestrator.py`, `devops/rebuild-on-trigger.sh`. These resolve the active demo via `orchestration/active-domain.txt` or `ERB_RULEBOOK_PATH`.
+- **Code that operates on them:** `orchestration/orchestrate.sh` (via `get_domain_rulebook_path`), `orchestration/shared.py` (`get_rulebook_path`), all `execution-substrates/*/inject-into-*.py`, all `execution-substrates/*/take-test.py`, `orchestration/generate-report.py`, `orchestration/test-orchestrator.py`, `devops/rebuild-on-trigger.sh`. These resolve the active demo via the `ERB_DOMAIN` environment variable (or `ERB_RULEBOOK_PATH` when the exact rulebook file is named directly).
 - **Filename is `<project>-rulebook.json`**, NOT `effortless-rulebook.json`. Each project's `effortless.json` carries `-o <project>-rulebook.json` accordingly.
 
 #### Intentional structural exceptions

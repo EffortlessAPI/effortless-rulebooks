@@ -1,5 +1,6 @@
 import { useLocation, useParams } from "react-router-dom";
 import { usePortalCtx } from "./portalContext.jsx";
+import { useDomainRulebook } from "../hooks/usePortal.js";
 
 // Match a screen template like "/developer/:domain/entities" to a concrete pathname.
 function matchScreenTemplate(template, pathname) {
@@ -20,7 +21,9 @@ export default function S({ comp: Comp, ...extra }) {
   const ctx       = usePortalCtx();
   const location  = useLocation();
   const params    = useParams();
+  const domain    = params.domain || null;
+  const rulebook  = useDomainRulebook(domain);
   const screens   = ctx.projectRulebook?.AppScreens?.data || [];
   const screen    = screens.find((s) => matchScreenTemplate(s.Path, location.pathname));
-  return <Comp {...ctx} screen={screen} domain={params.domain || null} {...extra} />;
+  return <Comp {...ctx} rulebook={rulebook} screen={screen} domain={domain} {...extra} />;
 }

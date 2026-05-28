@@ -1,26 +1,26 @@
 import { useState, useEffect, useCallback } from "react";
-import { api } from "../lib/api.js";
+import { api, makeDomainApi } from "../lib/api.js";
 import { toast } from "../lib/toast.js";
 
+// Top-level portal state: identity, portal config (project rulebook),
+// per-user domain-state. Per-domain *demo* rulebooks are fetched on demand
+// by `useDomainRulebook(domain)` since the app has no global "active domain".
 export function usePortal() {
   const [me, setMe]                           = useState(null);
   const [projectRulebook, setProjectRulebook] = useState(null);
-  const [rulebook, setRulebook]               = useState(null);
-  const [projects, setProjects]               = useState({ active: null, projects: [] });
+  const [projects, setProjects]               = useState({ projects: [] });
   const [domainState, setDomainState]         = useState({ states: [], currentRevisions: {} });
 
   const reload = useCallback(async () => {
     try {
-      const [m, prb, rb, pj, ds] = await Promise.all([
+      const [m, prb, pj, ds] = await Promise.all([
         api.get("/api/me"),
         api.get("/api/project-rulebook"),
-        api.get("/api/rulebook"),
         api.get("/api/projects"),
         api.get("/api/portal/me/domain-state").catch(() => ({ states: [], currentRevisions: {} })),
       ]);
       setMe(m);
       setProjectRulebook(prb);
-      setRulebook(rb);
       setProjects(pj);
       setDomainState(ds);
     } catch (e) {
@@ -28,9 +28,6 @@ export function usePortal() {
     }
   }, []);
 
-  // Lightweight refresh of just the domain-state slice. Used after a navigate
-  // call records "I was here" so the picker chips update without re-fetching
-  // the rulebook.
   const reloadDomainState = useCallback(async () => {
     try {
       const ds = await api.get("/api/portal/me/domain-state");
@@ -40,5 +37,21 @@ export function usePortal() {
 
   useEffect(() => { reload(); }, [reload]);
 
-  return { me, projectRulebook, rulebook, projects, domainState, reload, reloadDomainState };
+  return { me, projectRulebook, projects, domainState, reload, reloadDomainState };
+}
+
+// Fetch the rulebook for a specific demo domain. Returns `null` until loaded
+// (or while `domain` is null). Re-fetches when `domain` changes.
+export function useDomainRulebook(domain) {
+  const [rulebook, setRulebook] = useState(null);
+  useEffect(() => {
+    if (!domain) { setRulebook(null); return; }
+    let cancelled = false;
+    const dApi = makeDomainApi(domain);
+    dApi.get("/api/rulebook")
+      .then((rb) => { if (!cancelled) setRulebook(rb); })
+      .catch((e) => { if (!cancelled) { setRulebook(null); toast(`Could not load rulebook for ${domain}: ${e.message}`, "error"); } });
+    return () => { cancelled = true; };
+  }, [domain]);
+  return rulebook;
 }

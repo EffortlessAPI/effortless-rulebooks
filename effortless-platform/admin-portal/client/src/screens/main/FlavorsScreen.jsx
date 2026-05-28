@@ -1,11 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { api } from "../../lib/api.js";
-import { toast } from "../../lib/toast.js";
 import ScreenHeader from "../../components/ScreenHeader.jsx";
 import TagChip, { tagsForFlavor } from "../../components/TagChip.jsx";
 
-export default function FlavorsScreen({ screen, projectRulebook, reload }) {
+export default function FlavorsScreen({ screen, projectRulebook }) {
   const navigate   = useNavigate();
   const flavors      = projectRulebook?.RulebookFlavors?.data || [];
   const flavorTags   = projectRulebook?.FlavorTags?.data || [];
@@ -32,13 +30,8 @@ export default function FlavorsScreen({ screen, projectRulebook, reload }) {
     return [...activeFilters].every((id) => myTagIds.has(id));
   });
 
-  const switchProject = async (slug) => {
-    try {
-      await api.post(`/api/projects/${encodeURIComponent(slug)}/activate`);
-      toast("Switched to " + slug);
-      await reload();
-      navigate("/");
-    } catch (e) { toast(e.message, "error"); }
+  const switchProject = (slug) => {
+    navigate(`/developer/${encodeURIComponent(slug)}`);
   };
 
   return (

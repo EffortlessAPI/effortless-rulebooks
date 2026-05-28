@@ -5,6 +5,7 @@
     "first_name": "Mary",
     "last_name": "Jones",
     "name": null,
+    "initials": null,
     "full_name": null
   },
   {
@@ -13,6 +14,7 @@
     "first_name": "Jane",
     "last_name": "Smith",
     "name": null,
+    "initials": null,
     "full_name": null
   },
   {
@@ -21,6 +23,7 @@
     "first_name": "Jimmy",
     "last_name": "Doe",
     "name": null,
+    "initials": null,
     "full_name": null
   }
 ]

@@ -26,10 +26,16 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PLATFORM_DIR = path.resolve(__dirname, "..");
 const REPO_ROOT = path.resolve(PLATFORM_DIR, "..");
 const TOP_RULEBOOK = path.join(PLATFORM_DIR, "effortless-rulebook", "effortless-rulebook.json");
-const ACTIVE_DOMAIN_FILE = path.join(REPO_ROOT, "orchestration", "active-domain.txt");
 const PORTAL_STATE_FILE = path.join(__dirname, ".portal-state.json");
 const RULEBOOK_EXAMPLES = path.join(REPO_ROOT, "rulebook-examples");
 const PYTHON_INJECTOR = path.join(REPO_ROOT, "execution-substrates", "python", "inject-into-python.py");
+
+// Sentinel for "the platform rulebook itself" (effortless-platform/...). When
+// the UI is editing the wrapper rulebook rather than a demo, requests carry
+// `domain=__top__`. The matching DB is `erb_admin_portal` — the same place
+// the portal's own bookkeeping tables live.
+const TOP_DOMAIN = "__top__";
+const ADMIN_DB_NAME = "erb_admin_portal";
 
 const PORT = parseInt(process.env.PORTAL_PORT || "7777", 10);
 const PROXY_URL = process.env.PROXY_URL || "http://localhost:4242";
@@ -42,51 +48,47 @@ const PG_CONFIG = {
 };
 
 // ---------------------------------------------------------------------------
-// Active project helpers
+// Domain helpers
 // ---------------------------------------------------------------------------
-function getActiveDomain() {
-  if (!fs.existsSync(ACTIVE_DOMAIN_FILE)) {
-    throw new Error(
-      `active-domain.txt missing at ${ACTIVE_DOMAIN_FILE}. ` +
-      `Write the active project name (e.g. 'acme-llc') or '__top__' to that file.`
-    );
+//
+// Every endpoint that touches per-domain state extracts the domain from the
+// request and threads it through. There is no server-side "current domain"
+// scratchpad: the URL (or request body) is the only source of truth.
+//
+// `requireDomain(req)` reads `req.query.domain` then `req.body.domain` then
+// `req.params.domain`. It throws an HTTP-400-shaped Error if none is present;
+// the express error path turns that into a 400 response. Callers that *can*
+// service a request without a domain (e.g. the project list) do not call this.
+
+class DomainRequiredError extends Error {
+  constructor() {
+    super("missing required `domain` (pass ?domain=<slug> or include it in the JSON body)");
+    this.status = 400;
   }
-  const v = fs.readFileSync(ACTIVE_DOMAIN_FILE, "utf8").trim();
-  if (!v) {
-    throw new Error(
-      `active-domain.txt at ${ACTIVE_DOMAIN_FILE} is empty. ` +
-      `Write the active project name or '__top__'.`
-    );
-  }
-  return v;
 }
 
-function setActiveDomain(name) {
-  fs.writeFileSync(ACTIVE_DOMAIN_FILE, name + "\n");
+function requireDomain(req) {
+  const fromQuery = req && req.query && req.query.domain;
+  const fromBody  = req && req.body  && req.body.domain;
+  const fromParam = req && req.params && req.params.domain;
+  const raw = fromQuery || fromBody || fromParam;
+  if (!raw) throw new DomainRequiredError();
+  return String(raw);
 }
 
-// Single chokepoint for "which domain does this codepath act on?"
-// Per-request handlers pass the client's intent (URL/body domain); when that
-// is present it wins, unconditionally. Only background tasks and CLI-shape
-// code paths call this with no argument, in which case we fall back to
-// active-domain.txt — the CLI/conversation scratchpad. The UI must NEVER
-// be the source of this fallback: the URL is its source of truth, and every
-// request it makes carries `?domain=` (or `{ domain }` in the body).
-function resolveActiveDomain(explicit) {
-  if (explicit) return String(explicit);
-  return getActiveDomain();
-}
-
-function activeRulebookPath() {
-  const domain = getActiveDomain();
-  if (domain === "__top__") return TOP_RULEBOOK;
+function rulebookPathFor(domain) {
+  if (domain === TOP_DOMAIN) return TOP_RULEBOOK;
   return path.join(RULEBOOK_EXAMPLES, domain, "effortless-rulebook", `${domain}-rulebook.json`);
 }
 
-function activeProjectRoot() {
-  const domain = getActiveDomain();
-  if (domain === "__top__") return REPO_ROOT;
+function projectRootFor(domain) {
+  if (domain === TOP_DOMAIN) return PLATFORM_DIR;
   return path.join(RULEBOOK_EXAMPLES, domain);
+}
+
+function domainDbName(domain) {
+  if (domain === TOP_DOMAIN) return ADMIN_DB_NAME;
+  return "erb_" + String(domain).replace(/[^a-z0-9_]/gi, "_").toLowerCase();
 }
 
 // Returns { <slug>: { DisplayName, Tagline, LogoPath } } from the meta-rulebook's
@@ -275,23 +277,20 @@ function listProjects() {
 
 // ---------------------------------------------------------------------------
 // Rulebook IO — TWO categorically different reads:
-//   - loadProjectRulebook() : the wrapper/orchestration tool itself.
+//   - loadProjectRulebook()          : the wrapper/orchestration tool itself.
 //     Contains portal config: UserRoles, AppUsers, AppPermissions,
 //     AppNavigation, AppScreens, AppAPIs, AddToolCatalog, BuildPipeline,
 //     AdminPortalRuntime. PATH IS FIXED: ./effortless-rulebook/effortless-rulebook.json
-//   - loadRulebook()        : the active DEMO domain's rulebook.
+//   - loadRulebookForDomain(domain)  : that specific demo domain's rulebook.
 //     Contains the domain's business tables (Customers, Episodes, etc.).
-//     PATH IS DYNAMIC: ./rulebook-examples/<domain>/effortless-rulebook/<domain>-rulebook.json
+//     PATH IS DERIVED: ./rulebook-examples/<domain>/effortless-rulebook/<domain>-rulebook.json
+//     When `domain === TOP_DOMAIN`, it delegates to loadProjectRulebook().
 //
 // THESE ARE NEVER MIXED. The project is the PARENT, the demo is a CHILD.
 // See CLAUDE.md "THE PROJECT RULEBOOK ≠ A DEMO RULEBOOK".
 // ---------------------------------------------------------------------------
 function loadProjectRulebook() {
   return JSON.parse(fs.readFileSync(TOP_RULEBOOK, "utf8"));
-}
-
-function loadRulebook(p = activeRulebookPath()) {
-  return JSON.parse(fs.readFileSync(p, "utf8"));
 }
 
 function assertNonEmptyRulebook(rb, p) {
@@ -308,9 +307,14 @@ function assertNonEmptyRulebook(rb, p) {
   }
 }
 
-function saveRulebook(rb, p = activeRulebookPath()) {
+function saveRulebook(rb, p) {
+  if (!p) throw new Error("saveRulebook requires an explicit path");
   assertNonEmptyRulebook(rb, p);
   fs.writeFileSync(p, JSON.stringify(rb, null, 2) + "\n");
+}
+
+function saveRulebookForDomain(rb, domain) {
+  saveRulebook(rb, rulebookPathFor(domain));
 }
 
 // Pre-flight validator for a *proposed* rulebook. Writes the proposed JSON to
@@ -548,46 +552,34 @@ async function reconcileFlavorsOnBoot() {
     console.log(`[flavors] ~ refreshed counts: ${r.ProjectSlug} (${r.EntityCount}e/${r.CalculatedCount}c/${r.AggregationCount}a/${r.LookupCount}l)`);
   }
 
-  // Mirror into Postgres so the editor view stays consistent. Only attempt if
-  // the active project IS the platform rulebook — otherwise the pool is
-  // pointing at a demo DB and PlatformFeatures-style mirroring doesn't apply.
-  if (getActiveDomain() === "__top__") {
-    try {
-      const p = await getPool();
-      const project = loadProjectRulebook();
-      await p.query(
-        `UPDATE portal_rulebook_entities
-            SET data_json = $2, updated_at = now()
-          WHERE entity_name = 'RulebookFlavors'`,
-        ["RulebookFlavors", JSON.stringify(project.RulebookFlavors.data)]
-      );
-    } catch (e) {
-      console.warn(`[flavors] postgres mirror skipped: ${e.message}`);
-    }
+  // Mirror RulebookFlavors into the admin DB's editor-mirror table so the
+  // platform-rulebook editor view stays consistent. RulebookFlavors lives on
+  // the platform rulebook (`__top__`), whose pool is the admin pool.
+  try {
+    const p = await getDomainPool(TOP_DOMAIN);
+    const project = loadProjectRulebook();
+    await p.query(
+      `UPDATE portal_rulebook_entities
+          SET data_json = $2, updated_at = now()
+        WHERE entity_name = 'RulebookFlavors'`,
+      ["RulebookFlavors", JSON.stringify(project.RulebookFlavors.data)]
+    );
+  } catch (e) {
+    console.warn(`[flavors] postgres mirror skipped: ${e.message}`);
   }
 }
 
 // ---------------------------------------------------------------------------
 // Editor Postgres database (per-project)
 // ---------------------------------------------------------------------------
-function domainDbNameFor(domain) {
-  const safe = String(domain).replace(/[^a-z0-9_]/gi, "_").toLowerCase();
-  return `erb_${safe}`;
-}
-
-function domainDbName() {
-  return domainDbNameFor(getActiveDomain());
-}
-
-async function ensureEditorDatabase() {
-  const dbName = domainDbName();
+async function ensureDatabase(dbName) {
   // Connect to default db to issue CREATE DATABASE if needed.
   const root = new pg.Client({ ...PG_CONFIG, database: "postgres" });
   await root.connect();
   try {
     const exists = await root.query("SELECT 1 FROM pg_database WHERE datname = $1", [dbName]);
     if (exists.rowCount === 0) {
-      console.log(`[portal] creating editor DB: ${dbName}`);
+      console.log(`[portal] creating DB: ${dbName}`);
       await root.query(`CREATE DATABASE "${dbName}"`);
     }
   } finally {
@@ -596,18 +588,11 @@ async function ensureEditorDatabase() {
   return dbName;
 }
 
-async function bootstrapEditorSchema(client, rulebook) {
-  // Minimal portal-side mirror: one "rulebook entity" generic table that lets
-  // the portal back the editor with live rows. Real domain schema lives in the
-  // generated postgres substrate; the portal only mirrors what it edits.
+// Tables that belong to the admin portal itself (NOT to any single domain).
+// These live in `erb_admin_portal` and ONLY there. Putting any of them in a
+// per-domain DB is the category-error documented in CLAUDE.md.
+async function bootstrapAdminSchema(client) {
   await client.query(`
-    CREATE TABLE IF NOT EXISTS portal_rulebook_entities (
-      entity_name TEXT PRIMARY KEY,
-      schema_json JSONB NOT NULL,
-      data_json   JSONB NOT NULL,
-      description TEXT,
-      updated_at  TIMESTAMPTZ DEFAULT now()
-    );
     CREATE TABLE IF NOT EXISTS portal_app_users (
       user_id      TEXT PRIMARY KEY,
       email        TEXT UNIQUE NOT NULL,
@@ -624,9 +609,6 @@ async function bootstrapEditorSchema(client, rulebook) {
       target  TEXT,
       payload JSONB
     );
-    -- Per-user, per-domain "where was I" memory. Powers the picker's
-    -- "Last visited" / "New since you were here" chips and the
-    -- reception desk's "Welcome back" journal diff.
     CREATE TABLE IF NOT EXISTS portal_user_domain_state (
       user_id TEXT NOT NULL,
       domain  TEXT NOT NULL,
@@ -637,7 +619,47 @@ async function bootstrapEditorSchema(client, rulebook) {
     );
   `);
 
-  // Seed/refresh from rulebook
+  // Seed portal_app_users from the platform rulebook's AppUsers table.
+  // The rulebook is the SSoT; this is a runtime mirror for fast lookups.
+  const project = loadProjectRulebook();
+  if (project.AppUsers && Array.isArray(project.AppUsers.data)) {
+    await client.query("BEGIN");
+    try {
+      for (const u of project.AppUsers.data) {
+        await client.query(
+          `INSERT INTO portal_app_users (user_id, email, display_name, role_id, is_default, notes)
+           VALUES ($1, $2, $3, $4, $5, $6)
+           ON CONFLICT (user_id) DO UPDATE
+             SET email = EXCLUDED.email,
+                 display_name = EXCLUDED.display_name,
+                 role_id = EXCLUDED.role_id,
+                 is_default = EXCLUDED.is_default,
+                 notes = EXCLUDED.notes`,
+          [u.UserId, u.Email, u.DisplayName, u.RoleId, u.IsDefault || false, u.Notes || null]
+        );
+      }
+      await client.query("COMMIT");
+    } catch (e) {
+      await client.query("ROLLBACK");
+      throw e;
+    }
+  }
+}
+
+// Per-domain editor mirror: one generic "rulebook entity" table per domain
+// DB. Real domain schema (vw_*, customers, etc.) lives in the generated
+// postgres substrate; the portal only mirrors what it edits.
+async function bootstrapDomainSchema(client, rulebook) {
+  await client.query(`
+    CREATE TABLE IF NOT EXISTS portal_rulebook_entities (
+      entity_name TEXT PRIMARY KEY,
+      schema_json JSONB NOT NULL,
+      data_json   JSONB NOT NULL,
+      description TEXT,
+      updated_at  TIMESTAMPTZ DEFAULT now()
+    );
+  `);
+
   await client.query("BEGIN");
   try {
     for (const [name, value] of Object.entries(rulebook)) {
@@ -655,21 +677,6 @@ async function bootstrapEditorSchema(client, rulebook) {
         [name, JSON.stringify(value.schema), JSON.stringify(value.data || []), value.Description || null]
       );
     }
-    if (rulebook.AppUsers && Array.isArray(rulebook.AppUsers.data)) {
-      for (const u of rulebook.AppUsers.data) {
-        await client.query(
-          `INSERT INTO portal_app_users (user_id, email, display_name, role_id, is_default, notes)
-           VALUES ($1, $2, $3, $4, $5, $6)
-           ON CONFLICT (user_id) DO UPDATE
-             SET email = EXCLUDED.email,
-                 display_name = EXCLUDED.display_name,
-                 role_id = EXCLUDED.role_id,
-                 is_default = EXCLUDED.is_default,
-                 notes = EXCLUDED.notes`,
-          [u.UserId, u.Email, u.DisplayName, u.RoleId, u.IsDefault || false, u.Notes || null]
-        );
-      }
-    }
     await client.query("COMMIT");
   } catch (e) {
     await client.query("ROLLBACK");
@@ -677,18 +684,43 @@ async function bootstrapEditorSchema(client, rulebook) {
   }
 }
 
-let pool = null;
-async function getPool() {
-  if (pool) return pool;
-  const dbName = await ensureEditorDatabase();
-  pool = new pg.Pool({ ...PG_CONFIG, database: dbName });
-  const client = await pool.connect();
+// Pool registry: one pool per DB. The admin pool is created eagerly on first
+// access (it holds portal_app_users / portal_audit_log / portal_user_domain_state).
+// Each domain pool is created lazily the first time a request for that domain
+// arrives, and the domain's editor-mirror table is bootstrapped at that point.
+let adminPool = null;
+async function getAdminPool() {
+  if (adminPool) return adminPool;
+  await ensureDatabase(ADMIN_DB_NAME);
+  adminPool = new pg.Pool({ ...PG_CONFIG, database: ADMIN_DB_NAME });
+  const c = await adminPool.connect();
   try {
-    await bootstrapEditorSchema(client, loadRulebook());
+    await bootstrapAdminSchema(c);
   } finally {
-    client.release();
+    c.release();
   }
-  return pool;
+  return adminPool;
+}
+
+const domainPools = new Map();
+async function getDomainPool(domain) {
+  if (!domain) throw new Error("getDomainPool requires a domain");
+  // The platform rulebook (`__top__`) is editable through the same machinery
+  // as a demo, but its DB is `erb_admin_portal` — the place its generated
+  // tables already live. Route both code paths through the admin pool.
+  if (domain === TOP_DOMAIN) return getAdminPool();
+  if (domainPools.has(domain)) return domainPools.get(domain);
+  const dbName = domainDbName(domain);
+  await ensureDatabase(dbName);
+  const p = new pg.Pool({ ...PG_CONFIG, database: dbName });
+  domainPools.set(domain, p);
+  const c = await p.connect();
+  try {
+    await bootstrapDomainSchema(c, loadRulebookForDomain(domain));
+  } finally {
+    c.release();
+  }
+  return p;
 }
 
 // ---------------------------------------------------------------------------
@@ -726,16 +758,31 @@ const requireUserManager = attachUser;
 // ---------------------------------------------------------------------------
 // Write-through helper
 // ---------------------------------------------------------------------------
-async function writeThrough({ pgWrite, rulebookMutate }) {
+// Best-effort audit log insert against the admin DB. Audit rows are
+// bookkeeping; never block a user action on them.
+async function recordAudit({ userId, action, target, payload }) {
+  try {
+    const p = await getAdminPool();
+    await p.query(
+      `INSERT INTO portal_audit_log (user_id, action, target, payload) VALUES ($1, $2, $3, $4)`,
+      [userId || null, action, target || null, payload ? JSON.stringify(payload) : null]
+    );
+  } catch (e) {
+    console.warn(`[audit] insert failed (${action}): ${e.message}`);
+  }
+}
+
+async function writeThrough({ domain, pgWrite, rulebookMutate }) {
+  if (!domain) throw new Error("writeThrough requires an explicit domain");
   // pgWrite: async (client) => void  — runs inside a TXN
   // rulebookMutate: (rulebookJson) => rulebookJson — returns new rulebook
-  const p = await getPool();
+  const p = await getDomainPool(domain);
   const client = await p.connect();
   try {
     await client.query("BEGIN");
     await pgWrite(client);
 
-    const rb = loadRulebook();
+    const rb = loadRulebookForDomain(domain);
     const newRb = rulebookMutate(rb);
     // Pre-flight: validate the *proposed* rulebook against the Python
     // transpiler BEFORE writing to disk. If validation fails, throw — the
@@ -743,7 +790,7 @@ async function writeThrough({ pgWrite, rulebookMutate }) {
     // is nothing to revert; the bad edit simply never persisted.
     await validateProposedRulebook(newRb);
     // Filesystem next (committed = on disk). If this throws, we ROLLBACK pg.
-    saveRulebook(newRb);
+    saveRulebookForDomain(newRb, domain);
 
     await client.query("COMMIT");
     return newRb;
@@ -802,7 +849,6 @@ app.post("/api/me/switch", (req, res) => {
 // --- projects ---
 app.get("/api/projects", (req, res) => {
   res.json({
-    active: getActiveDomain(),
     projects: listProjects(),
   });
 });
@@ -820,17 +866,6 @@ app.get("/api/projects/:id/logo.png", (req, res) => {
   res.setHeader("Cache-Control", "public, max-age=300");
   res.setHeader("Content-Type", "image/png");
   fs.createReadStream(png).pipe(res);
-});
-
-app.post("/api/projects/:id/activate", async (req, res) => {
-  const id = req.params.id;
-  if (!listProjects().find((p) => p.id === id)) {
-    return res.status(404).json({ error: "unknown project" });
-  }
-  setActiveDomain(id);
-  pool = null; // force re-init against new editor DB
-  await getPool();
-  res.json({ active: getActiveDomain() });
 });
 
 // --- per-project quick actions (Excel export, open folder, open in VS Code) ---
@@ -889,7 +924,30 @@ function openerForPlatform() {
   return { cmd: "xdg-open", args: [] };
 }
 
-app.post("/api/projects/:id/open-folder", (req, res) => {
+// "Open in Finder/Explorer" and "code ." only make sense when the user is
+// physically at the machine running the server — otherwise the windows pop
+// on the server-side desktop where nobody can see them. Gate those two
+// endpoints to localhost requests so a future remote deployment doesn't
+// silently launch GUI apps for strangers.
+function isLocalhostRequest(req) {
+  const ip = req.ip || req.connection?.remoteAddress || "";
+  return (
+    ip === "127.0.0.1" ||
+    ip === "::1" ||
+    ip === "::ffff:127.0.0.1" ||
+    ip === "localhost"
+  );
+}
+function requireLocalhost(req, res, next) {
+  if (!isLocalhostRequest(req)) {
+    return res.status(403).json({
+      error: "This action only runs when the portal is reached from localhost.",
+    });
+  }
+  next();
+}
+
+app.post("/api/projects/:id/open-folder", requireLocalhost, (req, res) => {
   const id = req.params.id;
   const proj = listProjects().find((p) => p.id === id);
   if (!proj) return res.status(404).json({ error: "unknown project" });
@@ -910,7 +968,7 @@ app.post("/api/projects/:id/open-folder", (req, res) => {
   }
 });
 
-app.post("/api/projects/:id/open-vscode", (req, res) => {
+app.post("/api/projects/:id/open-vscode", requireLocalhost, (req, res) => {
   const id = req.params.id;
   const proj = listProjects().find((p) => p.id === id);
   if (!proj) return res.status(404).json({ error: "unknown project" });
@@ -950,7 +1008,7 @@ app.get("/api/portal/me/domain-state", async (req, res) => {
   const u = getCurrentUser();
   if (!u || !u.UserId) return res.json({ states: [], currentRevisions: {} });
   try {
-    const p = await getPool();
+    const p = await getAdminPool();
     const r = await p.query(
       `SELECT domain, last_route, last_visited_at, last_seen_rulebook_revision
          FROM portal_user_domain_state WHERE user_id = $1
@@ -979,7 +1037,7 @@ app.put("/api/portal/me/domain-state", async (req, res) => {
   if (!domain || typeof domain !== "string") return res.status(400).json({ error: "domain required" });
   const rev = rulebookRevisionForDomain(domain);
   try {
-    const p = await getPool();
+    const p = await getAdminPool();
     await p.query(
       `INSERT INTO portal_user_domain_state (user_id, domain, last_route, last_visited_at, last_seen_rulebook_revision)
        VALUES ($1, $2, $3, now(), $4)
@@ -996,8 +1054,15 @@ app.put("/api/portal/me/domain-state", async (req, res) => {
 });
 
 // --- rulebook (read) ---
-// Active demo rulebook (domain tables: Customers, Episodes, etc.).
-app.get("/api/rulebook", (req, res) => res.json(loadRulebook()));
+// Demo rulebook (domain tables: Customers, Episodes, etc.). Domain is required.
+app.get("/api/rulebook", (req, res) => {
+  try {
+    const domain = requireDomain(req);
+    res.json(loadRulebookForDomain(domain));
+  } catch (e) {
+    res.status(e.status || 500).json({ error: String(e.message || e) });
+  }
+});
 
 // --- rulebook history (Item 7: time-travel scrubber) ---
 //
@@ -1055,17 +1120,19 @@ function gitShowFileAtSha(absPath, sha) {
 
 app.get("/api/rulebook/history", async (req, res) => {
   try {
-    const rbPath = activeRulebookPath();
+    const domain = requireDomain(req);
+    const rbPath = rulebookPathFor(domain);
     const log = await gitLogForFile(rbPath);
     res.json({ path: path.relative(REPO_ROOT, rbPath), commits: log });
   } catch (e) {
-    res.status(500).json({ error: String(e.message || e) });
+    res.status(e.status || 500).json({ error: String(e.message || e) });
   }
 });
 
 app.get("/api/rulebook/at/:sha", async (req, res) => {
   try {
-    const rbPath = activeRulebookPath();
+    const domain = requireDomain(req);
+    const rbPath = rulebookPathFor(domain);
     const content = await gitShowFileAtSha(rbPath, req.params.sha);
     // Parse to ensure it's valid JSON at that point in history — if it
     // isn't, surface the error instead of returning a corrupt blob.
@@ -1082,27 +1149,37 @@ app.get("/api/rulebook/at/:sha", async (req, res) => {
 app.get("/api/project-rulebook", (req, res) => res.json(loadProjectRulebook()));
 
 app.get("/api/rulebook/entities", (req, res) => {
-  const rb = loadRulebook();
-  const out = [];
-  for (const [name, value] of Object.entries(rb)) {
-    if (name.startsWith("$") || name.startsWith("_")) continue;
-    if (name === "Name" || name === "Description") continue;
-    if (!value || typeof value !== "object" || !Array.isArray(value.schema)) continue;
-    out.push({
-      name,
-      description: value.Description || null,
-      fieldCount: value.schema.length,
-      rowCount: (value.data || []).length,
-    });
+  try {
+    const domain = requireDomain(req);
+    const rb = loadRulebookForDomain(domain);
+    const out = [];
+    for (const [name, value] of Object.entries(rb)) {
+      if (name.startsWith("$") || name.startsWith("_")) continue;
+      if (name === "Name" || name === "Description") continue;
+      if (!value || typeof value !== "object" || !Array.isArray(value.schema)) continue;
+      out.push({
+        name,
+        description: value.Description || null,
+        fieldCount: value.schema.length,
+        rowCount: (value.data || []).length,
+      });
+    }
+    res.json(out);
+  } catch (e) {
+    res.status(e.status || 500).json({ error: String(e.message || e) });
   }
-  res.json(out);
 });
 
 app.get("/api/rulebook/entities/:name", (req, res) => {
-  const rb = loadRulebook();
-  const e = rb[req.params.name];
-  if (!e) return res.status(404).json({ error: "not found" });
-  res.json({ name: req.params.name, ...e });
+  try {
+    const domain = requireDomain(req);
+    const rb = loadRulebookForDomain(domain);
+    const e = rb[req.params.name];
+    if (!e) return res.status(404).json({ error: "not found" });
+    res.json({ name: req.params.name, ...e });
+  } catch (e) {
+    res.status(e.status || 500).json({ error: String(e.message || e) });
+  }
 });
 
 // --- rulebook (write-through) ---
@@ -1110,7 +1187,9 @@ app.patch("/api/rulebook/entities/:name", requireEditor, async (req, res) => {
   const { description, schema, data } = req.body || {};
   const name = req.params.name;
   try {
+    const domain = requireDomain(req);
     const newRb = await writeThrough({
+      domain,
       pgWrite: async (c) => {
         await c.query(
           `UPDATE portal_rulebook_entities
@@ -1121,11 +1200,6 @@ app.patch("/api/rulebook/entities/:name", requireEditor, async (req, res) => {
            WHERE entity_name = $1`,
           [name, description ?? null, schema ? JSON.stringify(schema) : null, data ? JSON.stringify(data) : null]
         );
-        await c.query(
-          `INSERT INTO portal_audit_log (user_id, action, target, payload)
-           VALUES ($1, 'entity.update', $2, $3)`,
-          [getCurrentUser()?.UserId || null, name, JSON.stringify(req.body)]
-        );
       },
       rulebookMutate: (rb) => {
         if (!rb[name]) throw new Error(`Entity ${name} not in rulebook`);
@@ -1135,9 +1209,10 @@ app.patch("/api/rulebook/entities/:name", requireEditor, async (req, res) => {
         return rb;
       },
     });
+    await recordAudit({ userId: getCurrentUser()?.UserId, action: "entity.update", target: `${domain}/${name}`, payload: req.body });
     res.json({ ok: true, entity: newRb[name] });
   } catch (e) {
-    res.status(500).json({ error: String(e.message || e) });
+    res.status(e.status || 500).json({ error: String(e.message || e) });
   }
 });
 
@@ -1145,7 +1220,9 @@ app.post("/api/rulebook/entities", requireEditor, async (req, res) => {
   const { name, description = "", schema = [], data = [] } = req.body || {};
   if (!name) return res.status(400).json({ error: "name required" });
   try {
+    const domain = requireDomain(req);
     const newRb = await writeThrough({
+      domain,
       pgWrite: async (c) => {
         await c.query(
           `INSERT INTO portal_rulebook_entities (entity_name, schema_json, data_json, description)
@@ -1159,9 +1236,10 @@ app.post("/api/rulebook/entities", requireEditor, async (req, res) => {
         return rb;
       },
     });
+    await recordAudit({ userId: getCurrentUser()?.UserId, action: "entity.create", target: `${domain}/${name}`, payload: req.body });
     res.json({ ok: true, entity: newRb[name] });
   } catch (e) {
-    res.status(500).json({ error: String(e.message || e) });
+    res.status(e.status || 500).json({ error: String(e.message || e) });
   }
 });
 
@@ -1265,24 +1343,21 @@ app.patch("/api/rulebook/text", requireEditor, async (req, res) => {
     return res.status(400).json({ error: "value must be a string" });
   }
   try {
-    const rb = loadRulebook();
+    const domain = requireDomain(req);
+    const rb = loadRulebookForDomain(domain);
     validateRichPath(path, rb);
     const newRb = await writeThrough({
-      pgWrite: async (c) => {
-        await c.query(
-          `INSERT INTO portal_audit_log (user_id, action, target, payload)
-           VALUES ($1, 'rulebook.text.update', $2, $3)`,
-          [getCurrentUser()?.UserId || null, path.join("."), JSON.stringify({ path, value })]
-        );
-      },
+      domain,
+      pgWrite: async () => {},
       rulebookMutate: (rb2) => {
         setByPath(rb2, path, value);
         return rb2;
       },
     });
+    await recordAudit({ userId: getCurrentUser()?.UserId, action: "rulebook.text.update", target: `${domain}/${path.join(".")}`, payload: { path, value } });
     res.json({ ok: true, rulebook: newRb });
   } catch (e) {
-    res.status(400).json({
+    res.status(e.status || 400).json({
       error: String(e.message || e),
       transpilerOutput: e.transpilerOutput || null,
     });
@@ -1292,7 +1367,9 @@ app.patch("/api/rulebook/text", requireEditor, async (req, res) => {
 app.delete("/api/rulebook/entities/:name", requireEditor, async (req, res) => {
   const name = req.params.name;
   try {
+    const domain = requireDomain(req);
     await writeThrough({
+      domain,
       pgWrite: async (c) =>
         c.query("DELETE FROM portal_rulebook_entities WHERE entity_name = $1", [name]),
       rulebookMutate: (rb) => {
@@ -1300,9 +1377,10 @@ app.delete("/api/rulebook/entities/:name", requireEditor, async (req, res) => {
         return rb;
       },
     });
+    await recordAudit({ userId: getCurrentUser()?.UserId, action: "entity.delete", target: `${domain}/${name}` });
     res.json({ ok: true });
   } catch (e) {
-    res.status(500).json({ error: String(e.message || e) });
+    res.status(e.status || 500).json({ error: String(e.message || e) });
   }
 });
 
@@ -1459,7 +1537,7 @@ function normalizeRowName(entity, row) {
 // entity"). With maxDepth=0 the children arrays are empty (useful when the
 // client only wants entity row counts).
 app.get("/api/explorer/tree", (req, res) => {
-  const domain = resolveActiveDomain(req.query.domain);
+  const domain = requireDomain(req);
   const maxDepth = Math.max(0, parseInt(req.query.maxDepth ?? "1", 10));
   try {
     const rb = loadRulebookForDomain(domain);
@@ -1504,7 +1582,7 @@ app.get("/api/explorer/tree", (req, res) => {
 // rows ride in the same payload (§2.3: schema and data are combined metadata,
 // not two separate fetches).
 app.get("/api/explorer/node", (req, res) => {
-  const domain = resolveActiveDomain(req.query.domain);
+  const domain = requireDomain(req);
   const pathStr = req.query.path || "";
   const page = Math.max(0, parseInt(req.query.page ?? "0", 10));
   const pageSize = Math.max(1, Math.min(500, parseInt(req.query.pageSize ?? "50", 10)));
@@ -1684,7 +1762,7 @@ function resolveLookup(rb, thisRow, formula) {
 }
 
 app.get("/api/explorer/cell", (req, res) => {
-  const domain = resolveActiveDomain(req.query.domain);
+  const domain = requireDomain(req);
   const entityName = req.query.entity;
   const id = req.query.id;
   const fieldName = req.query.field;
@@ -1870,7 +1948,8 @@ app.patch("/api/explorer/instance/:entity/:id", requireEditor, async (req, res) 
   const id = req.params.id;
   const patch = req.body || {};
   try {
-    const rb = loadRulebook();
+    const domain = requireDomain(req);
+    const rb = loadRulebookForDomain(domain);
     const entity = rb[entityName];
     if (!entity || !Array.isArray(entity.schema)) {
       return res.status(404).json({ error: `entity '${entityName}' not found` });
@@ -1896,6 +1975,7 @@ app.patch("/api/explorer/instance/:entity/:id", requireEditor, async (req, res) 
     const tableName = toSnakeCase(entityName);
 
     const newRb = await writeThrough({
+      domain,
       pgWrite: async (c) => {
         // (1) actual entity table — best-effort; skip if not bootstrapped.
         if (await entityTableExists(c, tableName)) {
@@ -1919,11 +1999,6 @@ app.patch("/api/explorer/instance/:entity/:id", requireEditor, async (req, res) 
             WHERE entity_name = $2`,
           [JSON.stringify(newData), entityName]
         );
-        await c.query(
-          `INSERT INTO portal_audit_log (user_id, action, target, payload)
-           VALUES ($1, 'instance.patch', $2, $3)`,
-          [getCurrentUser()?.UserId || null, `${entityName}/${id}`, JSON.stringify(accepted)]
-        );
       },
       rulebookMutate: (rb2) => {
         // Re-find the row inside rb2 (the freshly-loaded rulebook) rather
@@ -1941,11 +2016,17 @@ app.patch("/api/explorer/instance/:entity/:id", requireEditor, async (req, res) 
         return rb2;
       },
     });
-    const freshEnt = newRb[entityName];
+    await recordAudit({ userId: getCurrentUser()?.UserId, action: "instance.patch", target: `${domain}/${entityName}/${id}`, payload: accepted });
+    // §rebake: query vw_* for PK + calc values and merge into the JSON's data
+    // rows. The base-table UPDATE just committed inside writeThrough is
+    // visible via the same erb_<domain> pool, so views compute against the
+    // new row immediately. Failure here surfaces loudly (no auto-revert).
+    const rebakedRb = await rebakeAfterDataChange({ domain, pool: await getDomainPool(domain) });
+    const freshEnt = rebakedRb[entityName];
     const idxFresh = findRowIndexByEffectiveName(freshEnt, id);
     res.json({ ok: true, row: normalizeRowName(freshEnt, freshEnt.data[idxFresh]) });
   } catch (e) {
-    res.status(e.statusCode || 500).json({ error: String(e.message || e) });
+    res.status(e.status || e.statusCode || 500).json({ error: String(e.message || e) });
   }
 });
 
@@ -1955,7 +2036,8 @@ app.post("/api/explorer/instance/:entity", requireEditor, async (req, res) => {
   const entityName = req.params.entity;
   const body = req.body || {};
   try {
-    const rb = loadRulebook();
+    const domain = requireDomain(req);
+    const rb = loadRulebookForDomain(domain);
     const entity = rb[entityName];
     if (!entity || !Array.isArray(entity.schema)) {
       return res.status(404).json({ error: `entity '${entityName}' not found` });
@@ -1987,6 +2069,7 @@ app.post("/api/explorer/instance/:entity", requireEditor, async (req, res) => {
     const tableName = toSnakeCase(entityName);
 
     const newRb = await writeThrough({
+      domain,
       pgWrite: async (c) => {
         if (await entityTableExists(c, tableName)) {
           const cols = Object.keys(accepted);
@@ -2006,11 +2089,6 @@ app.post("/api/explorer/instance/:entity", requireEditor, async (req, res) => {
             WHERE entity_name = $2`,
           [JSON.stringify(newData), entityName]
         );
-        await c.query(
-          `INSERT INTO portal_audit_log (user_id, action, target, payload)
-           VALUES ($1, 'instance.create', $2, $3)`,
-          [getCurrentUser()?.UserId || null, `${entityName}/${newRowId}`, JSON.stringify(accepted)]
-        );
       },
       rulebookMutate: (rb2) => {
         const ent = rb2[entityName];
@@ -2026,9 +2104,16 @@ app.post("/api/explorer/instance/:entity", requireEditor, async (req, res) => {
         return rb2;
       },
     });
-    res.status(201).json({ ok: true, row: normalizeRowName(entity, accepted) });
+    await recordAudit({ userId: getCurrentUser()?.UserId, action: "instance.create", target: `${domain}/${entityName}/${newRowId}`, payload: accepted });
+    // §rebake: refresh JSON with the new row's calc values (the INSERT just
+    // committed; vw_<entity> now includes it).
+    const rebakedRb = await rebakeAfterDataChange({ domain, pool: await getDomainPool(domain) });
+    const freshEnt = rebakedRb[entityName];
+    const idxFresh = findRowIndexByEffectiveName(freshEnt, newRowId);
+    const row = idxFresh >= 0 ? freshEnt.data[idxFresh] : accepted;
+    res.status(201).json({ ok: true, row: normalizeRowName(freshEnt, row) });
   } catch (e) {
-    res.status(e.statusCode || 500).json({ error: String(e.message || e) });
+    res.status(e.status || e.statusCode || 500).json({ error: String(e.message || e) });
   }
 });
 
@@ -2065,7 +2150,8 @@ app.delete("/api/explorer/instance/:entity/:id", requireEditor, async (req, res)
   const cascade = String(req.query.cascade || "").toLowerCase() === "true";
   const MAX_CASCADE_DEPTH = 8;
   try {
-    const rb = loadRulebook();
+    const domain = requireDomain(req);
+    const rb = loadRulebookForDomain(domain);
     const entity = rb[entityName];
     if (!entity || !Array.isArray(entity.schema)) {
       return res.status(404).json({ error: `entity '${entityName}' not found` });
@@ -2112,6 +2198,7 @@ app.delete("/api/explorer/instance/:entity/:id", requireEditor, async (req, res)
     plan(entityName, pkValue, 0);
 
     const newRb = await writeThrough({
+      domain,
       pgWrite: async (c) => {
         for (const d of deletions) {
           if (await entityTableExists(c, d.table)) {
@@ -2124,16 +2211,6 @@ app.delete("/api/explorer/instance/:entity/:id", requireEditor, async (req, res)
           // the rulebook mutation — done after rulebookMutate runs. We
           // re-load below.
         }
-        await c.query(
-          `INSERT INTO portal_audit_log (user_id, action, target, payload)
-           VALUES ($1, $2, $3, $4)`,
-          [
-            getCurrentUser()?.UserId || null,
-            cascade ? "instance.delete.cascade" : "instance.delete",
-            `${entityName}/${id}`,
-            JSON.stringify({ deletions: deletions.map(({ entity, pkValue }) => ({ entity, pkValue })) }),
-          ]
-        );
       },
       rulebookMutate: (rb2) => {
         // Look up each row fresh in rb2 (by PK) rather than reusing the
@@ -2151,10 +2228,17 @@ app.delete("/api/explorer/instance/:entity/:id", requireEditor, async (req, res)
       },
     });
 
+    await recordAudit({
+      userId: getCurrentUser()?.UserId,
+      action: cascade ? "instance.delete.cascade" : "instance.delete",
+      target: `${domain}/${entityName}/${id}`,
+      payload: { deletions: deletions.map(({ entity, pkValue }) => ({ entity, pkValue })) },
+    });
+
     // Sync the portal_rulebook_entities mirrors for every touched entity.
     // Doing it post-write to keep the transaction simple.
     try {
-      const p = await getPool();
+      const p = await getDomainPool(domain);
       for (const ent of new Set(deletions.map((d) => d.entity))) {
         await p.query(
           `UPDATE portal_rulebook_entities SET data_json = $1, updated_at = now()
@@ -2166,9 +2250,14 @@ app.delete("/api/explorer/instance/:entity/:id", requireEditor, async (req, res)
       console.warn(`[explorer] portal mirror sync after delete failed: ${e.message}`);
     }
 
+    // §rebake: deletes can change OTHER rows' calc values via cross-entity
+    // aggregations and lookups (e.g. Customer.OrderCount drops when an
+    // Order row is deleted). Re-query views across the whole rulebook.
+    await rebakeAfterDataChange({ domain, pool: await getDomainPool(domain) });
+
     res.json({ ok: true, deleted: deletions.map(({ entity, pkValue }) => ({ entity, pkValue })) });
   } catch (e) {
-    res.status(e.statusCode || 500).json({ error: String(e.message || e) });
+    res.status(e.status || e.statusCode || 500).json({ error: String(e.message || e) });
   }
 });
 
@@ -2279,6 +2368,19 @@ function execOnePsqlFile(fullPath, dbName) {
   });
 }
 
+// init-db.sh skips 99-fk-constraints.sql unless EFFORTLESS_ENFORCE_FKS=true
+// — FK enforcement is opt-in for demos so that intentionally-gappy
+// demo data doesn't break the bootstrap loop. We match that contract
+// here (and in applyPostgresBootstrapBare below) so portal-driven
+// rebuilds behave identically to a fresh init-db.sh run.
+function shouldSkipBootstrapFile(fname) {
+  if (fname === "99-fk-constraints.sql"
+      && (process.env.EFFORTLESS_ENFORCE_FKS || "false") !== "true") {
+    return true;
+  }
+  return false;
+}
+
 async function applyPostgresBootstrap(job, domain) {
   const dir = sqlBootstrapDir(domain);
   if (!fs.existsSync(dir)) {
@@ -2292,8 +2394,12 @@ async function applyPostgresBootstrap(job, domain) {
     phase(job, "skipped", `${path.relative(REPO_ROOT, dir)} contains no SQL files`);
     return;
   }
-  const dbName = domainDbNameFor(domain);
+  const dbName = domainDbName(domain);
   for (const fname of files) {
+    if (shouldSkipBootstrapFile(fname)) {
+      phase(job, "skipped", `${fname} (FK enforcement opt-in via EFFORTLESS_ENFORCE_FKS=true)`);
+      continue;
+    }
     const cat = sqlPhaseCategory(fname);
     phase(job, cat, fname);
     try {
@@ -2308,8 +2414,8 @@ async function applyPostgresBootstrap(job, domain) {
 }
 
 async function verifyRowCounts(job, domain) {
-  const rb = (domain === "__top__") ? loadProjectRulebook() : loadRulebook();
-  const dbName = domainDbNameFor(domain);
+  const rb = loadRulebookForDomain(domain);
+  const dbName = domainDbName(domain);
   const pool = new pg.Pool({ ...PG_CONFIG, database: dbName });
   let totalRows = 0;
   const mismatches = [];
@@ -2343,6 +2449,190 @@ async function verifyRowCounts(job, domain) {
   }
   phase(job, "verify", `row counts match (${totalRows} rows across entity tables)`);
   return totalRows;
+}
+
+// ---------------------------------------------------------------------------
+// Calc-value rebake — write-through enrichment of rulebook JSON `data` rows.
+//
+// After any successful write (JSON-tab save, schema PATCH, instance edit), we
+// query the generated vw_<entity> views for PK + calculated/lookup/aggregation
+// columns and merge those values into the corresponding rulebook data rows.
+// The on-disk JSON becomes self-contained: every row carries the live computed
+// values that Postgres just produced from the formula in the same JSON.
+//
+// Not a bespoke cache (per CLAUDE.md): the rule is "every write path triggers
+// re-bake," the values are deterministically derived from the rulebook itself,
+// and deleting the baked values would not lose information — they regenerate
+// from the same formula on the next save.
+// ---------------------------------------------------------------------------
+
+const CALC_FIELD_TYPES = new Set(["calculated", "lookup", "aggregation"]);
+
+// findPkField (used by FK / relationship lookups) falls back to "Name" when
+// no nullable:false ID field is present — fine for FK targets, but wrong for
+// the rebake: Name is often calculated and absent from data rows, which
+// would defeat the view→row merge. Here we need a RAW field whose values
+// live in the data rows AND in the view's PK column. By ERB convention this
+// is the first raw column ending in "Id" (CustomerId, EpisodeId, …), or the
+// first raw column overall when no *Id field exists.
+function findRebakePkField(entity) {
+  const explicit = (entity.schema || []).find((f) => f.isPk === true);
+  if (explicit) return explicit.name;
+  const idField = (entity.schema || []).find(
+    (f) => f.type === "raw" && /Id$/.test(f.name)
+  );
+  if (idField) return idField.name;
+  const firstRaw = (entity.schema || []).find((f) => f.type === "raw");
+  return firstRaw ? firstRaw.name : null;
+}
+
+// SELECT vw_<entity>(pk, calc1, calc2, ...) for every entity in `rulebook`
+// that has at least one calc/lookup/aggregation field. Returns:
+//   { entityName: { pkValueStr: { CalcFieldName: value, ... } } }
+// Skips entities whose view is missing (logged, not fatal — the view may not
+// exist yet if the schema hasn't been rebuilt for this domain).
+async function extractCalcValuesFromDb({ rulebook, pool }) {
+  const result = {};
+  for (const [entityName, value] of iterEntities(rulebook)) {
+    if (entityName === META_TABLE_NAME) continue;
+    if (!Array.isArray(value.data) || value.data.length === 0) continue;
+    const calcFields = (value.schema || []).filter((f) => CALC_FIELD_TYPES.has(f.type));
+    if (calcFields.length === 0) continue;
+    const pk = findRebakePkField(value);
+    if (!pk) {
+      console.warn(`[enrich] ${entityName}: no raw PK field — skipping`);
+      continue;
+    }
+    const pkSnake = toSnakeCase(pk);
+    const calcPairs = calcFields.map((f) => ({ pascal: f.name, snake: toSnakeCase(f.name) }));
+    const viewName = `vw_${toSnakeCase(entityName)}`;
+    const cols = [pkSnake, ...calcPairs.map((c) => c.snake)].join(", ");
+    let rows;
+    try {
+      const r = await pool.query(`SELECT ${cols} FROM ${viewName}`);
+      rows = r.rows;
+    } catch (e) {
+      console.warn(`[enrich] could not query ${viewName}: ${String(e.message || e).slice(0, 200)}`);
+      continue;
+    }
+    const byPk = {};
+    for (const row of rows) {
+      const pkVal = row[pkSnake];
+      if (pkVal === null || pkVal === undefined) continue;
+      const calcVals = {};
+      for (const c of calcPairs) calcVals[c.pascal] = row[c.snake];
+      byPk[String(pkVal)] = calcVals;
+    }
+    result[entityName] = byPk;
+  }
+  return result;
+}
+
+// Merge calc values into rulebook data rows, matched by PK. Returns a new
+// rulebook (data arrays replaced; schema and entity-level keys preserved).
+function enrichRulebookWithCalcValues(rb, calcMap) {
+  const out = { ...rb };
+  for (const [entityName, value] of iterEntities(rb)) {
+    if (!Array.isArray(value.data) || value.data.length === 0) continue;
+    const calcByPk = calcMap[entityName];
+    if (!calcByPk) continue;
+    const pk = findRebakePkField(value);
+    if (!pk) continue;
+    const calcFieldNames = (value.schema || [])
+      .filter((f) => CALC_FIELD_TYPES.has(f.type))
+      .map((f) => f.name);
+    if (calcFieldNames.length === 0) continue;
+    const newData = value.data.map((row) => {
+      const pkVal = row[pk];
+      if (pkVal === null || pkVal === undefined) return row;
+      const calcVals = calcByPk[String(pkVal)];
+      if (!calcVals) return row;
+      const merged = { ...row };
+      for (const fn of calcFieldNames) {
+        if (fn in calcVals) merged[fn] = calcVals[fn];
+      }
+      return merged;
+    });
+    out[entityName] = { ...value, data: newData };
+  }
+  return out;
+}
+
+// Shell `effortless build` in the project root for `domain`. Resolves on
+// exit 0; rejects with the trimmed stderr tail otherwise.
+function runEffortlessBuild(domain) {
+  const projectRoot = (domain === "__top__") ? PLATFORM_DIR : path.join(RULEBOOK_EXAMPLES, domain);
+  return new Promise((resolve, reject) => {
+    const child = spawn("effortless", ["build"], { cwd: projectRoot });
+    let stderr = "";
+    child.stderr.on("data", (chunk) => { stderr += chunk; });
+    child.on("error", reject);
+    child.on("close", (code) => {
+      if (code === 0) return resolve();
+      const err = new Error(`effortless build exited ${code}\n${stderr.slice(-2000)}`);
+      err.phase = "effortless_build";
+      err.code = "BUILD_FAILED";
+      reject(err);
+    });
+  });
+}
+
+// Run all numbered SQL files in postgres-bootstrap/ for `domain` against
+// `dbName`. Out-of-job-context variant of applyPostgresBootstrap (no SSE).
+async function applyPostgresBootstrapBare(domain, dbName) {
+  const dir = (domain === "__top__")
+    ? path.join(PLATFORM_DIR, "postgres")
+    : path.join(RULEBOOK_EXAMPLES, domain, "postgres-bootstrap");
+  if (!fs.existsSync(dir)) return;
+  const files = fs.readdirSync(dir)
+    .filter((f) => /\.sql$/.test(f) && !/\.disabled$/i.test(f))
+    .sort();
+  for (const fname of files) {
+    if (shouldSkipBootstrapFile(fname)) continue;
+    await execOnePsqlFile(path.join(dir, fname), dbName);
+  }
+}
+
+// Post-schema-or-JSON-save flow:
+//   effortless build → apply SQL to erb_<domain> → query views →
+//   enrich rulebook JSON data rows → save JSON.
+// Assumes the proposed JSON has already been written to disk and that
+// validateProposedRulebook has already passed. Returns the enriched rulebook.
+async function rebakeAfterSchemaChange(domain) {
+  await runEffortlessBuild(domain);
+  const dbName = domainDbName(domain);
+  await applyPostgresBootstrapBare(domain, dbName);
+  const rb = loadRulebookForDomain(domain);
+  const tmpPool = new pg.Pool({ ...PG_CONFIG, database: dbName });
+  let calcMap;
+  try {
+    calcMap = await extractCalcValuesFromDb({ rulebook: rb, pool: tmpPool });
+  } finally {
+    await tmpPool.end().catch(() => {});
+  }
+  const enriched = enrichRulebookWithCalcValues(rb, calcMap);
+  if (domain === "__top__") {
+    saveProjectRulebook(enriched);
+  } else {
+    saveRulebook(enriched, path.join(RULEBOOK_EXAMPLES, domain, "effortless-rulebook", `${domain}-rulebook.json`));
+  }
+  return enriched;
+}
+
+// Post-data-change flow: no build/bootstrap needed (schema unchanged).
+// Reuses the passed-in pool (which already has the committed change visible)
+// and re-saves the JSON with refreshed calc values. Safe to call after any
+// instance PATCH/POST/DELETE that commits to erb_<domain>.
+async function rebakeAfterDataChange({ domain, pool }) {
+  const rb = loadRulebookForDomain(domain);
+  const calcMap = await extractCalcValuesFromDb({ rulebook: rb, pool });
+  const enriched = enrichRulebookWithCalcValues(rb, calcMap);
+  if (domain === "__top__") {
+    saveProjectRulebook(enriched);
+  } else {
+    saveRulebook(enriched, path.join(RULEBOOK_EXAMPLES, domain, "effortless-rulebook", `${domain}-rulebook.json`));
+  }
+  return enriched;
 }
 
 function startRebuildJob({ reason, domain }) {
@@ -2390,6 +2680,25 @@ function startRebuildJob({ reason, domain }) {
 
       currentPhase = "verify";
       const rowsLoaded = await verifyRowCounts(job, domain);
+
+      currentPhase = "rebake";
+      phase(job, "rebake", `extracting PK + calc values from vw_* and merging into rulebook data rows`);
+      const dbName = domainDbName(domain);
+      const rb = loadRulebookForDomain(domain);
+      const rebakePool = new pg.Pool({ ...PG_CONFIG, database: dbName });
+      let calcMap;
+      try {
+        calcMap = await extractCalcValuesFromDb({ rulebook: rb, pool: rebakePool });
+      } finally {
+        await rebakePool.end().catch(() => {});
+      }
+      const enriched = enrichRulebookWithCalcValues(rb, calcMap);
+      if (domain === "__top__") {
+        saveProjectRulebook(enriched);
+      } else {
+        saveRulebook(enriched, path.join(RULEBOOK_EXAMPLES, domain, "effortless-rulebook", `${domain}-rulebook.json`));
+      }
+      phase(job, "rebake", `rulebook re-saved with calc values for ${Object.keys(calcMap).length} entity(s)`);
 
       finishJob(job, "done", { durationMs: Date.now() - job.startedAt, rowsLoaded });
     } catch (e) {
@@ -2448,17 +2757,13 @@ app.patch("/api/explorer/schema", requireEditor, async (req, res) => {
     return res.status(400).json({ error: "pointer (JSON Pointer string) is required" });
   }
   try {
+    const domain = requireDomain(req);
     const path = parseJsonPointer(pointer);
     validateSchemaPatchPointer(path, value);
 
     await writeThrough({
-      pgWrite: async (c) => {
-        await c.query(
-          `INSERT INTO portal_audit_log (user_id, action, target, payload)
-           VALUES ($1, 'schema.patch', $2, $3)`,
-          [getCurrentUser()?.UserId || null, pointer || "/", JSON.stringify({ pointer, value })]
-        );
-      },
+      domain,
+      pgWrite: async () => {},
       rulebookMutate: (rb) => {
         if (path.length === 0) {
           // Entity create. value = { name, definition }
@@ -2473,10 +2778,11 @@ app.patch("/api/explorer/schema", requireEditor, async (req, res) => {
         return rb;
       },
     });
+    await recordAudit({ userId: getCurrentUser()?.UserId, action: "schema.patch", target: `${domain}${pointer || "/"}`, payload: { pointer, value } });
 
     const rebuildId = startRebuildJob({
       reason: path.length === 0 ? `entity create: ${value.name}` : `schema patch: ${pointer}`,
-      domain: getActiveDomain(),
+      domain,
     });
     res.status(202).json({
       rebuildId,
@@ -2484,7 +2790,7 @@ app.patch("/api/explorer/schema", requireEditor, async (req, res) => {
       streamUrl: `/api/explorer/rebuild/${encodeURIComponent(rebuildId)}/stream`,
     });
   } catch (e) {
-    res.status(400).json({
+    res.status(e.status || 400).json({
       error: String(e.message || e),
       transpilerOutput: e.transpilerOutput || null,
     });
@@ -2500,7 +2806,8 @@ app.delete("/api/explorer/schema", requireEditor, async (req, res) => {
     return res.status(400).json({ error: "entity query param required" });
   }
   try {
-    const rb = loadRulebook();
+    const domain = requireDomain(req);
+    const rb = loadRulebookForDomain(domain);
     if (!rb[entityName] || !Array.isArray(rb[entityName].schema)) {
       return res.status(404).json({ error: `entity '${entityName}' not found` });
     }
@@ -2524,12 +2831,8 @@ app.delete("/api/explorer/schema", requireEditor, async (req, res) => {
     }
 
     await writeThrough({
-      pgWrite: async (c) => {
-        await c.query(
-          `INSERT INTO portal_audit_log (user_id, action, target, payload)
-           VALUES ($1, 'schema.entityDelete', $2, $3)`,
-          [getCurrentUser()?.UserId || null, entityName, JSON.stringify({ entity: entityName })]
-        );
+      domain,
+      pgWrite: async () => {
         // The actual entity table gets cleaned up by the rebuild's
         // bootstrap phase (its DROP TABLE IF EXISTS now finds nothing in
         // the regenerated SQL, so the table goes away).
@@ -2540,10 +2843,11 @@ app.delete("/api/explorer/schema", requireEditor, async (req, res) => {
         return rb2;
       },
     });
+    await recordAudit({ userId: getCurrentUser()?.UserId, action: "schema.entityDelete", target: `${domain}/${entityName}`, payload: { entity: entityName } });
 
     const rebuildId = startRebuildJob({
       reason: `entity delete: ${entityName}`,
-      domain: getActiveDomain(),
+      domain,
     });
     res.status(202).json({
       rebuildId,
@@ -2551,15 +2855,16 @@ app.delete("/api/explorer/schema", requireEditor, async (req, res) => {
       streamUrl: `/api/explorer/rebuild/${encodeURIComponent(rebuildId)}/stream`,
     });
   } catch (e) {
-    res.status(500).json({ error: String(e.message || e) });
+    res.status(e.status || 500).json({ error: String(e.message || e) });
   }
 });
 
 app.post("/api/explorer/rebuild", requireEditor, (req, res) => {
   try {
+    const domain = requireDomain(req);
     const rebuildId = startRebuildJob({
       reason: "manual rebuild",
-      domain: getActiveDomain(),
+      domain,
     });
     res.status(202).json({
       rebuildId,
@@ -2625,11 +2930,6 @@ app.get("/api/explorer/rebuild/:id", (req, res) => {
 // CLAUDE.md "Never silently revert a rulebook JSON" forbids the server from
 // doing it without an explicit request.
 
-function rulebookPathForDomain(domain) {
-  if (domain === "__top__" || !domain) return TOP_RULEBOOK;
-  return path.join(RULEBOOK_EXAMPLES, domain, "effortless-rulebook", `${domain}-rulebook.json`);
-}
-
 function runGit(args, cwd) {
   return new Promise((resolve, reject) => {
     const child = spawn("git", args, { cwd });
@@ -2644,8 +2944,8 @@ function runGit(args, cwd) {
 }
 
 app.get("/api/explorer/rulebook-diff", async (req, res) => {
-  const domain = resolveActiveDomain(req.query.domain);
-  const rbPath = rulebookPathForDomain(domain);
+  const domain = requireDomain(req);
+  const rbPath = rulebookPathFor(domain);
   if (!fs.existsSync(rbPath)) {
     return res.status(404).json({ error: `rulebook not found at ${rbPath}` });
   }
@@ -2662,8 +2962,8 @@ app.get("/api/explorer/rulebook-diff", async (req, res) => {
 });
 
 app.post("/api/explorer/rulebook-revert", requireEditor, async (req, res) => {
-  const domain = resolveActiveDomain(req.body && req.body.domain);
-  const rbPath = rulebookPathForDomain(domain);
+  const domain = requireDomain(req);
+  const rbPath = rulebookPathFor(domain);
   if (!fs.existsSync(rbPath)) {
     return res.status(404).json({ error: `rulebook not found at ${rbPath}` });
   }
@@ -2672,16 +2972,7 @@ app.post("/api/explorer/rulebook-revert", requireEditor, async (req, res) => {
     // Log BEFORE the destructive op so audit captures intent even if checkout
     // fails. Per "Never silently revert a rulebook JSON": this codepath is
     // reachable only via explicit user click on the failed-rebuild surface.
-    try {
-      const p = await getPool();
-      await p.query(
-        `INSERT INTO portal_audit_log (user_id, action, target, payload)
-         VALUES ($1, 'rulebook.revert', $2, $3)`,
-        [getCurrentUser()?.UserId || null, relPath, JSON.stringify({ domain })]
-      );
-    } catch (logErr) {
-      console.warn(`[revert] audit log write failed: ${logErr.message}`);
-    }
+    await recordAudit({ userId: getCurrentUser()?.UserId, action: "rulebook.revert", target: relPath, payload: { domain } });
 
     const r = await runGit(["checkout", "--", relPath], REPO_ROOT);
     if (r.code !== 0) {
@@ -2706,9 +2997,9 @@ app.post("/api/users", requireUserManager, async (req, res) => {
   const { userId, email, displayName, roleId } = req.body || {};
   if (!userId || !email || !roleId) return res.status(400).json({ error: "missing fields" });
   try {
-    // AppUsers lives in the PROJECT rulebook, not the active demo. Write to
-    // Postgres + project rulebook in the same logical transaction.
-    const p = await getPool();
+    // AppUsers lives in the PROJECT rulebook, mirrored into portal_app_users
+    // in `erb_admin_portal`. Both writes go through the admin pool in one TXN.
+    const p = await getAdminPool();
     const client = await p.connect();
     try {
       await client.query("BEGIN");
@@ -2803,7 +3094,8 @@ app.patch("/api/features/:id", requireEditor, async (req, res) => {
     return res.status(400).json({ error: "no patchable fields in body" });
   }
   try {
-    const p = await getPool();
+    // PlatformFeatures lives in the platform rulebook → admin DB.
+    const p = await getAdminPool();
     const client = await p.connect();
     try {
       await client.query("BEGIN");
@@ -2814,7 +3106,6 @@ app.patch("/api/features/:id", requireEditor, async (req, res) => {
       const idx = project.PlatformFeatures.data.findIndex((r) => r.FeatureId === id);
       if (idx === -1) throw new Error(`Feature ${id} not found`);
       Object.assign(project.PlatformFeatures.data[idx], updates);
-      // Mirror into the portal_rulebook_entities row so the editor view stays consistent.
       await client.query(
         `UPDATE portal_rulebook_entities
             SET data_json = $2, updated_at = now()
@@ -2842,22 +3133,30 @@ app.patch("/api/features/:id", requireEditor, async (req, res) => {
 
 // --- substrates (PROJECT-rulebook resource) ---
 app.get("/api/substrates", async (req, res) => {
-  const project = loadProjectRulebook();
-  const subs = (project.ExecutionSubstrates && project.ExecutionSubstrates.data) || [];
-  const root = activeProjectRoot();
-  const enriched = subs.map((s) => {
-    const rel = s.RelativePath || "";
-    const full = path.join(root, rel.replace(/^execution-substrates\//, ""));
-    const exists = fs.existsSync(full);
-    return { ...s, fullPath: full, exists };
-  });
-  res.json(enriched);
+  try {
+    const domain = requireDomain(req);
+    const project = loadProjectRulebook();
+    const subs = (project.ExecutionSubstrates && project.ExecutionSubstrates.data) || [];
+    const root = projectRootFor(domain);
+    const enriched = subs.map((s) => {
+      const rel = s.RelativePath || "";
+      const full = path.join(root, rel.replace(/^execution-substrates\//, ""));
+      const exists = fs.existsSync(full);
+      return { ...s, fullPath: full, exists };
+    });
+    res.json(enriched);
+  } catch (e) {
+    res.status(e.status || 500).json({ error: String(e.message || e) });
+  }
 });
 
 // --- build ---
 app.post("/api/build/all", requireBuilder, (req, res) => {
-  const cwd = activeProjectRoot();
-  exec("effortless build", { cwd }, (err, stdout, stderr) => {
+  let domain;
+  try { domain = requireDomain(req); }
+  catch (e) { return res.status(e.status || 400).json({ error: String(e.message || e) }); }
+  const cwd = projectRootFor(domain);
+  exec("effortless build", { cwd, env: { ...process.env, ERB_DOMAIN: domain } }, (err, stdout, stderr) => {
     res.json({
       ok: !err,
       cwd,
@@ -2883,26 +3182,30 @@ app.get("/api/tools/catalog", async (req, res) => {
 });
 
 app.get("/api/tools/installed", (req, res) => {
-  const cwd = activeProjectRoot();
-  const f = path.join(cwd, "effortless.json");
-  if (!fs.existsSync(f)) return res.json({ projectRoot: cwd, transpilers: [] });
   try {
+    const domain = requireDomain(req);
+    const cwd = projectRootFor(domain);
+    const f = path.join(cwd, "effortless.json");
+    if (!fs.existsSync(f)) return res.json({ projectRoot: cwd, transpilers: [] });
     const j = JSON.parse(fs.readFileSync(f, "utf8"));
     res.json({ projectRoot: cwd, transpilers: j.ProjectTranspilers || [] });
   } catch (e) {
-    res.status(500).json({ error: String(e.message || e) });
+    res.status(e.status || 500).json({ error: String(e.message || e) });
   }
 });
 
 app.post("/api/tools/install", requireBuilder, (req, res) => {
   const { installUrl, outputPath } = req.body || {};
   if (!installUrl) return res.status(400).json({ error: "installUrl required" });
-  const cwd = activeProjectRoot();
+  let domain;
+  try { domain = requireDomain(req); }
+  catch (e) { return res.status(e.status || 400).json({ error: String(e.message || e) }); }
+  const cwd = projectRootFor(domain);
   // Resolve rulebook path RELATIVE to the chosen outputPath inside the project,
   // matching how `effortless -install` expects: run from the output dir.
   const outDir = outputPath ? path.join(cwd, outputPath) : cwd;
   fs.mkdirSync(outDir, { recursive: true });
-  const rulebookRel = path.relative(outDir, activeRulebookPath());
+  const rulebookRel = path.relative(outDir, rulebookPathFor(domain));
   const cmd = `effortless -install ${JSON.stringify(installUrl)} -i ${JSON.stringify(rulebookRel)}`;
   exec(cmd, { cwd: outDir }, (err, stdout, stderr) => {
     res.json({
@@ -2932,23 +3235,6 @@ app.post("/api/tools/install", requireBuilder, (req, res) => {
 // `/api/tools/installed` (reads only the root effortless.json, ignores
 // classification). Everything here comes from THIS project's on-disk state.
 // =============================================================================
-
-// Locate the active project's effortless.json. For a demo domain this is at
-// `rulebook-examples/<domain>/effortless.json`. For the platform (__top__)
-// the project root is `effortless-platform/`, NOT the repo root — `effortless
-// build` for the platform is run from inside `effortless-platform/`, so that
-// is the project root the tools tree should mirror.
-//
-// Why this isn't a fallback: each branch is the deterministically-correct
-// path for its category (see CLAUDE.md, the "defaults derived from the SSoT
-// are NOT fallbacks" carve-out). The platform IS at effortless-platform/;
-// a demo IS at rulebook-examples/<domain>/. Neither is a guess substituted
-// for a failure.
-function effortlessProjectRoot() {
-  const domain = getActiveDomain();
-  if (domain === "__top__") return PLATFORM_DIR;
-  return path.join(RULEBOOK_EXAMPLES, domain);
-}
 
 // Skip dotfile dirs and node_modules; everything else is a real project
 // subfolder worth showing in the tree (per §3.1: empty folders still appear).
@@ -3008,8 +3294,8 @@ function normalizeFolderPath(rel) {
 
 app.get("/api/effortless-tools/tree", (req, res) => {
   try {
-    const domain = getActiveDomain();
-    const projectRoot = effortlessProjectRoot();
+    const domain = requireDomain(req);
+    const projectRoot = projectRootFor(domain);
     const effortlessJsonAbs = path.join(projectRoot, "effortless.json");
     if (!fs.existsSync(effortlessJsonAbs)) {
       return res.status(404).json({
@@ -3080,27 +3366,28 @@ app.get("/api/effortless-tools/tree", (req, res) => {
       projectName: cfg.Name || null,
       projectRoot,
       effortlessJsonPath: path.relative(projectRoot, effortlessJsonAbs),
-      rulebookPath: path.relative(projectRoot, activeRulebookPath()),
+      rulebookPath: path.relative(projectRoot, rulebookPathFor(domain)),
       folders,
     });
   } catch (e) {
-    res.status(500).json({ error: String(e.message || e) });
+    res.status(e.status || 500).json({ error: String(e.message || e) });
   }
 });
 
 // --- tech tools ---
 app.get("/api/tech/postgres/tables", requireDeveloper, async (req, res) => {
   try {
-    const p = await getPool();
+    const domain = requireDomain(req);
+    const p = await getDomainPool(domain);
     const r = await p.query(
       `SELECT table_schema, table_name
          FROM information_schema.tables
         WHERE table_schema NOT IN ('pg_catalog', 'information_schema')
         ORDER BY 1, 2`
     );
-    res.json({ database: domainDbName(), tables: r.rows });
+    res.json({ database: domainDbName(domain), tables: r.rows });
   } catch (e) {
-    res.status(500).json({ error: String(e.message || e) });
+    res.status(e.status || 500).json({ error: String(e.message || e) });
   }
 });
 
@@ -3108,7 +3395,8 @@ app.post("/api/tech/postgres/query", requireDeveloper, async (req, res) => {
   const { sql } = req.body || {};
   if (!sql) return res.status(400).json({ error: "sql required" });
   try {
-    const p = await getPool();
+    const domain = requireDomain(req);
+    const p = await getDomainPool(domain);
     const r = await p.query(sql);
     res.json({
       command: r.command,
@@ -3117,7 +3405,7 @@ app.post("/api/tech/postgres/query", requireDeveloper, async (req, res) => {
       rows: Array.isArray(r.rows) ? r.rows.slice(0, 500) : [],
     });
   } catch (e) {
-    res.status(400).json({ error: String(e.message || e) });
+    res.status(e.status || 400).json({ error: String(e.message || e) });
   }
 });
 
@@ -3131,7 +3419,12 @@ app.get("/api/tech/proxy/status", requireDeveloper, async (req, res) => {
 });
 
 app.get("/api/tech/rulebook-json", requireDeveloper, (req, res) => {
-  res.type("application/json").send(fs.readFileSync(activeRulebookPath(), "utf8"));
+  try {
+    const domain = requireDomain(req);
+    res.type("application/json").send(fs.readFileSync(rulebookPathFor(domain), "utf8"));
+  } catch (e) {
+    res.status(e.status || 500).json({ error: String(e.message || e) });
+  }
 });
 
 app.put("/api/tech/rulebook-json", requireDeveloper, async (req, res) => {
@@ -3139,6 +3432,9 @@ app.put("/api/tech/rulebook-json", requireDeveloper, async (req, res) => {
   // (application/json). If a client sends a JSON body with the wrong
   // Content-Type, express never parses it and req.body is `{}` — we used to
   // silently persist that `{}` and wipe the rulebook. Refuse instead.
+  let domain;
+  try { domain = requireDomain(req); }
+  catch (e) { return res.status(e.status || 400).json({ error: String(e.message || e) }); }
   let text;
   if (typeof req.body === "string") {
     if (req.body.trim() === "") {
@@ -3156,28 +3452,44 @@ app.put("/api/tech/rulebook-json", requireDeveloper, async (req, res) => {
   }
   try {
     const parsed = JSON.parse(text);
-    // Same pre-flight as writeThrough — never persist a known-bad rulebook.
     await validateProposedRulebook(parsed);
-    saveRulebook(parsed);
-    // Force editor pool reseed
-    pool = null;
-    await getPool();
-    res.json({ ok: true });
+    saveRulebookForDomain(parsed, domain);
+    // Force the per-domain pool to drop so it bootstraps fresh against the
+    // possibly-changed schema before re-baking.
+    if (domain !== TOP_DOMAIN) {
+      const existing = domainPools.get(domain);
+      if (existing) { try { await existing.end(); } catch {} }
+      domainPools.delete(domain);
+    }
+    const enriched = await rebakeAfterSchemaChange(domain);
+    await getDomainPool(domain);
+    res.json({
+      ok: true,
+      rebaked: true,
+      bakedEntities: Object.keys(enriched).filter((n) => n !== META_TABLE_NAME && enriched[n]?.data?.length),
+    });
   } catch (e) {
-    res.status(400).json({
+    res.status(e.status || 400).json({
       error: String(e.message || e),
       transpilerOutput: e.transpilerOutput || null,
+      phase: e.phase || null,
+      code: e.code || null,
     });
   }
 });
 
 app.post("/api/tech/reset", requireDeveloper, async (req, res) => {
-  // Drop editor DB and rebuild from rulebook JSON
-  if (pool) {
-    try { await pool.end(); } catch {}
-    pool = null;
+  // Drop the per-domain editor DB and rebuild from rulebook JSON.
+  let domain;
+  try { domain = requireDomain(req); }
+  catch (e) { return res.status(e.status || 400).json({ error: String(e.message || e) }); }
+  if (domain === TOP_DOMAIN) {
+    return res.status(400).json({ error: "refusing to drop the admin DB via /api/tech/reset" });
   }
-  const dbName = domainDbName();
+  const existing = domainPools.get(domain);
+  if (existing) { try { await existing.end(); } catch {} }
+  domainPools.delete(domain);
+  const dbName = domainDbName(domain);
   const root = new pg.Client({ ...PG_CONFIG, database: "postgres" });
   await root.connect();
   try {
@@ -3186,7 +3498,7 @@ app.post("/api/tech/reset", requireDeveloper, async (req, res) => {
   } finally {
     await root.end();
   }
-  await getPool();
+  await getDomainPool(domain);
   res.json({ ok: true, dbName });
 });
 
@@ -3198,17 +3510,16 @@ app.use("/", express.static(path.join(__dirname, "web")));
 // ---------------------------------------------------------------------------
 (async () => {
   try {
-    await getPool();
-    console.log(`[portal] domain DB ready: ${domainDbName()}`);
+    await getAdminPool();
+    console.log(`[portal] admin DB ready: ${ADMIN_DB_NAME}`);
   } catch (e) {
-    console.error(`[portal] WARNING — could not init editor Postgres: ${e.message}`);
+    console.error(`[portal] WARNING — could not init admin Postgres: ${e.message}`);
     console.error(`[portal] portal will still serve, but DB-backed features will fail.`);
   }
   await reconcileFlavorsOnBoot();
   app.listen(PORT, () => {
-    const rb = activeRulebookPath();
     console.log(`[portal] http://localhost:${PORT}`);
-    console.log(`[portal] active rulebook: ${rb}`);
+    console.log(`[portal] platform rulebook: ${TOP_RULEBOOK}`);
     console.log(`[portal] proxy: ${PROXY_URL}`);
   });
 })();

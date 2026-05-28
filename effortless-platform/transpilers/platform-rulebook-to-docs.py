@@ -7,8 +7,7 @@ Mechanically projects the PLATFORM rulebook
 human-readable markdown files under docs/derived/.
 
 This transpiler is intentionally narrow: it only knows the PLATFORM rulebook.
-The platform rulebook's path is a fixed literal in this repo (see CLAUDE.md);
-it is never resolved through active-domain.txt.
+The platform rulebook's path is a fixed literal in this repo (see CLAUDE.md).
 
 Run modes:
 

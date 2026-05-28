@@ -45,7 +45,7 @@
         "type": "calculated",
         "nullable": true,
         "Description": "Full name is computed from the first and last name of the customer",
-        "formula": "={{FirstName}} & \" \" & {{LastName}}",
+        "formula": "={{FirstName}} & \" --- \" & {{LastName}}",
         "important": true,
         "explanation_rich": "**The smallest possible calculated field.** `FullName` is just `FirstName & \" \" & LastName` — but the point is that it lives in the rulebook, not in application code. Every substrate (Postgres view, Python class, Excel cell, OWL ontology) computes the same value the same way. Edit a customer's first name and *every* substrate sees the new full name on the next read."
       }
@@ -57,7 +57,7 @@
         "LastName": "Smith",
         "Customer": "CUST0001",
         "FirstName": "Bob",
-        "FullName": "Bob Smith"
+        "FullName": "Bob --- Smith"
       },
       {
         "ClientId": "cust0002",
@@ -65,7 +65,7 @@
         "LastName": "Doe",
         "Customer": "CUST0002",
         "FirstName": "John",
-        "FullName": "John Doe"
+        "FullName": "John --- Doe"
       },
       {
         "ClientId": "cust0003",
@@ -73,7 +73,7 @@
         "LastName": "Jones",
         "Customer": "CUST0003",
         "FirstName": "Emily",
-        "FullName": "Emily Jones"
+        "FullName": "Emily --- Jones"
       }
     ]
   },
@@ -204,8 +204,8 @@
         "ApprovedByPhoneNumber": "555-0101",
         "DueDate": "2026-06-15",
         "ApprovedByName": "Sarah Chen",
-        "ApprovedByRoleIsManager": "True",
-        "ProjectTypeRequiresManagerApproval": "",
+        "ApprovedByRoleIsManager": true,
+        "ProjectTypeRequiresManagerApproval": false,
         "ProjectType": "internal",
         "ProjectTypeDescription": "An internal project that is not publicly accessible"
       },
@@ -219,8 +219,8 @@
         "ApprovedByPhoneNumber": "555-0103",
         "DueDate": "2026-08-01",
         "ApprovedByName": "Priya Patel",
-        "ApprovedByRoleIsManager": "",
-        "ProjectTypeRequiresManagerApproval": "True",
+        "ApprovedByRoleIsManager": false,
+        "ProjectTypeRequiresManagerApproval": true,
         "ProjectType": "clientfacing",
         "ProjectTypeDescription": "Open, public facing communication",
         "IsApproved": false
@@ -236,8 +236,8 @@
         "ApprovedByPhoneNumber": "555-0102",
         "DueDate": "2026-04-30",
         "ApprovedByName": "Mike Johnson",
-        "ApprovedByRoleIsManager": "True",
-        "ProjectTypeRequiresManagerApproval": "True",
+        "ApprovedByRoleIsManager": true,
+        "ProjectTypeRequiresManagerApproval": true,
         "ProjectType": "compliance",
         "ProjectTypeDescription": ""
       }
@@ -323,7 +323,7 @@
       {
         "EmployeeId": "sarah-chen",
         "Projects": "internal-tools-dashboard",
-        "RoleIsManager": "True",
+        "RoleIsManager": true,
         "PhoneNumber": "555-0101",
         "RoleDescription": "The project Manager makes sure that the developers do what the analysts ask for",
         "RoleName": "ProjectManager",
@@ -334,7 +334,7 @@
       {
         "EmployeeId": "mike-johnson",
         "Projects": "gdpr-compliance-audit",
-        "RoleIsManager": "True",
+        "RoleIsManager": true,
         "PhoneNumber": "555-0102",
         "RoleDescription": "Developers handle the implementation and are responsible for making the final product do what is expected",
         "RoleName": "Developer",
@@ -345,7 +345,7 @@
       {
         "EmployeeId": "priya-patel",
         "Projects": "customer-portal-redesign",
-        "RoleIsManager": "",
+        "RoleIsManager": false,
         "PhoneNumber": "555-0103",
         "RoleDescription": "The business analysis know what the customer's want.",
         "RoleName": "Analyst",

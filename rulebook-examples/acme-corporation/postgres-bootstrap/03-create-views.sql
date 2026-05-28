@@ -7,10 +7,21 @@
 -- ============================================================================
 
 -- ----------------------------------------------------------------------------
+-- Drop pass: every rulebook-owned view, reverse iteration order, CASCADE.
+-- The rulebook is HEAD — the surviving view set must mirror it exactly.
+-- ----------------------------------------------------------------------------
+DROP VIEW IF EXISTS vw_types_of_project CASCADE;
+DROP VIEW IF EXISTS vw_roles CASCADE;
+DROP VIEW IF EXISTS vw_employees CASCADE;
+DROP VIEW IF EXISTS vw_projects CASCADE;
+DROP VIEW IF EXISTS vw_client CASCADE;
+
+-- ----------------------------------------------------------------------------
 -- vw_client: Table: Client
 -- Combines base table columns with calculated/lookup/aggregation fields.
 -- ----------------------------------------------------------------------------
-CREATE OR REPLACE VIEW vw_client WITH (security_invoker = ON) AS
+DROP VIEW IF EXISTS vw_client CASCADE;
+CREATE VIEW vw_client WITH (security_invoker = ON) AS
 SELECT
   t.client_id,
   t.customer,                                                                   -- Identifier for the customers.
@@ -24,7 +35,8 @@ FROM client t;
 -- vw_projects: Table: Projects
 -- Combines base table columns with calculated/lookup/aggregation fields.
 -- ----------------------------------------------------------------------------
-CREATE OR REPLACE VIEW vw_projects WITH (security_invoker = ON) AS
+DROP VIEW IF EXISTS vw_projects CASCADE;
+CREATE VIEW vw_projects WITH (security_invoker = ON) AS
 SELECT
   t.project_id,
   t.name,
@@ -46,7 +58,8 @@ FROM projects t;
 -- vw_employees: Table: Employees
 -- Combines base table columns with calculated/lookup/aggregation fields.
 -- ----------------------------------------------------------------------------
-CREATE OR REPLACE VIEW vw_employees WITH (security_invoker = ON) AS
+DROP VIEW IF EXISTS vw_employees CASCADE;
+CREATE VIEW vw_employees WITH (security_invoker = ON) AS
 SELECT
   t.employee_id,
   t.name,
@@ -63,7 +76,8 @@ FROM employees t;
 -- vw_roles: Table: Roles
 -- Combines base table columns with calculated/lookup/aggregation fields.
 -- ----------------------------------------------------------------------------
-CREATE OR REPLACE VIEW vw_roles WITH (security_invoker = ON) AS
+DROP VIEW IF EXISTS vw_roles CASCADE;
+CREATE VIEW vw_roles WITH (security_invoker = ON) AS
 SELECT
   t.role_id,
   t.name,
@@ -77,7 +91,8 @@ FROM roles t;
 -- vw_types_of_project: Table: TypesOfProject
 -- Combines base table columns with calculated/lookup/aggregation fields.
 -- ----------------------------------------------------------------------------
-CREATE OR REPLACE VIEW vw_types_of_project WITH (security_invoker = ON) AS
+DROP VIEW IF EXISTS vw_types_of_project CASCADE;
+CREATE VIEW vw_types_of_project WITH (security_invoker = ON) AS
 SELECT
   t.types_of_project_id,
   t.name,

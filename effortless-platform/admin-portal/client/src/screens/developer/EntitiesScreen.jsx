@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { api } from "../../lib/api.js";
+import { useState, useEffect, useMemo } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { makeDomainApi } from "../../lib/api.js";
 import { toast } from "../../lib/toast.js";
 import ScreenHeader from "../../components/ScreenHeader.jsx";
 
@@ -13,6 +13,8 @@ function formatCell(v) {
 
 export default function EntitiesScreen({ screen, rulebook, me }) {
   const navigate = useNavigate();
+  const { domain } = useParams();
+  const api = useMemo(() => makeDomainApi(domain), [domain]);
   const canEdit  = me?.role?.CanEditRulebook;
   const [entities, setEntities] = useState([]);
   const [selected, setSelected] = useState(null);
@@ -20,18 +22,19 @@ export default function EntitiesScreen({ screen, rulebook, me }) {
   const [editingDesc, setEditingDesc] = useState("");
 
   useEffect(() => {
+    if (!domain) return;
     api.get("/api/rulebook/entities").then((es) => {
       setEntities(es);
       if (es.length && !selected) setSelected(es[0].name);
     });
-  }, [rulebook]);
+  }, [rulebook, domain]);
 
   useEffect(() => {
-    if (!selected) return;
+    if (!selected || !domain) return;
     api.get(`/api/rulebook/entities/${encodeURIComponent(selected)}`).then((e) => {
       setEntity(e); setEditingDesc(e.Description || "");
     });
-  }, [selected]);
+  }, [selected, domain]);
 
   const saveDesc = async () => {
     try {

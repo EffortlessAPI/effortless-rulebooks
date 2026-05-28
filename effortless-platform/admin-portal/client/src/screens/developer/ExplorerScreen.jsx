@@ -10,7 +10,7 @@
 
 import { Fragment, useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { api } from "../../lib/api.js";
+import { makeDomainApi } from "../../lib/api.js";
 import { toast } from "../../lib/toast.js";
 import ScreenHeader from "../../components/ScreenHeader.jsx";
 
@@ -30,6 +30,15 @@ function formatCell(v) {
   return String(v);
 }
 
+// Every sub-component in this screen needs a domain-scoped api. They're all
+// rendered inside the developer/:domain route, so useParams() resolves the
+// active slug. Keeps the api wiring colocated with the component instead of
+// threading an `api` prop through every render site.
+function useExplorerApi() {
+  const { domain } = useParams();
+  return useMemo(() => makeDomainApi(domain), [domain]);
+}
+
 export default function ExplorerScreen({ screen, me }) {
   const navigate = useNavigate();
   const params   = useParams();
@@ -37,6 +46,7 @@ export default function ExplorerScreen({ screen, me }) {
   const wildcard = params["*"] || "";
   const pathSegments = useMemo(() => parsePathSegments(wildcard), [wildcard]);
   const canEdit = !!me?.role?.CanEditRulebook;
+  const api = useMemo(() => makeDomainApi(domain), [domain]);
 
   const [tree, setTree]         = useState(null);
   const [node, setNode]         = useState(null);
@@ -225,6 +235,7 @@ function Breadcrumbs({ domain, segments, onCrumb }) {
 // the tree walks itself open along the way.
 
 function InstanceTreeNode({ domain, path, kind, label, meta, important, currentUrlPath, onNavigate, depth }) {
+  const api = useExplorerApi();
   const pathKey = path.join("/");
   const isOnUrlPath =
     path.length <= currentUrlPath.length &&
@@ -464,6 +475,7 @@ const SCHEMA_TYPE_OPTIONS  = ["raw", "calculated", "lookup", "aggregation", "rel
 const SCHEMA_DTYPE_OPTIONS = ["string", "integer", "number", "decimal", "boolean", "date", "datetime"];
 
 function SchemaEditor({ entity, fieldIndex, field, canEdit, onClose, startRebuild, onSavedNoRebuild }) {
+  const api = useExplorerApi();
   const [draft, setDraft] = useState(() => ({
     name:             field.name || "",
     type:             field.type || "raw",
@@ -636,6 +648,7 @@ function SchemaEditor({ entity, fieldIndex, field, canEdit, onClose, startRebuil
 // uses DELETE /api/explorer/schema?entity=...
 
 function EntityHeaderEditor({ entity, canEdit, startRebuild, refreshNode, afterDelete }) {
+  const api = useExplorerApi();
   const [desc, setDesc] = useState(null);
   const [important, setImportant] = useState(null);
   const [origDesc, setOrigDesc] = useState("");
@@ -785,6 +798,7 @@ function EntityHeaderEditor({ entity, canEdit, startRebuild, refreshNode, afterD
 // body. Server creates the entity, kicks off a rebuild, returns rebuildId.
 
 function NewEntityButton({ onCreated }) {
+  const api = useExplorerApi();
   const [open, setOpen] = useState(false);
   const [name, setName] = useState("");
   const [desc, setDesc] = useState("");
@@ -1072,6 +1086,7 @@ function ListView({ node, page, setPage, pathSegments, goTo, canEdit, refreshNod
 }
 
 function NewRowForm({ entity, schema, scopedBy, onCreated, onCancel }) {
+  const api = useExplorerApi();
   const writable = schema.filter(isWritableField);
   // Pre-seed the FK field if the URL ancestry implies one (e.g. creating a
   // Project under /Employees/Sarah Chen pre-fills ApprovedBy = sarah-chen).
@@ -1136,6 +1151,7 @@ function NewRowForm({ entity, schema, scopedBy, onCreated, onCancel }) {
 }
 
 function InstanceView({ domain, node, pathSegments, goTo, canEdit, refreshNode, startRebuild }) {
+  const api = useExplorerApi();
   const cols = node.schema || [];
   const row  = node.row || {};
   // Dirty map: only fields the user actually changed. Sending the unchanged
@@ -1337,6 +1353,7 @@ function InstanceView({ domain, node, pathSegments, goTo, canEdit, refreshNode, 
 }
 
 function CellProvenance({ domain, entity, id, field, onClose, onNavigate }) {
+  const api = useExplorerApi();
   const [data, setData] = useState(null);
   const [err, setErr]   = useState(null);
   useEffect(() => {
@@ -1444,6 +1461,7 @@ function CellProvenance({ domain, entity, id, field, onClose, onNavigate }) {
 // able `git checkout` command — explicit user action, never silent.
 
 function RebuildOverlay({ rebuildId, domain, canEdit, onClose, onSuccess, onReverted }) {
+  const api = useExplorerApi();
   const [events, setEvents] = useState([]);
   const [status, setStatus] = useState("pending");
   const [doneData, setDoneData] = useState(null);

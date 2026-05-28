@@ -31,7 +31,7 @@ export default function RoleSidebar({ area, accent, projectRulebook, me, mobileO
   const [collapsed, setCollapsed] = useState({});
 
   const { projects } = usePortalCtx();
-  const activeDomain  = params.domain || projects?.active || null;
+  const activeDomain  = params.domain || null;
   const activeProject = (projects?.projects || []).find((p) => p.id === activeDomain) || null;
 
   // Resolve :domain even when the URL doesn't have it yet, so the "current

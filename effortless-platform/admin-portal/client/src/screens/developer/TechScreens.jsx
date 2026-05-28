@@ -1,5 +1,6 @@
-import { useState, useEffect } from "react";
-import { api } from "../../lib/api.js";
+import { useState, useEffect, useMemo } from "react";
+import { useParams } from "react-router-dom";
+import { api, makeDomainApi, withDomain } from "../../lib/api.js";
 import { toast } from "../../lib/toast.js";
 import ScreenHeader from "../../components/ScreenHeader.jsx";
 
@@ -10,16 +11,19 @@ function formatCell(v) {
 }
 
 export function TechPostgresScreen({ screen }) {
+  const { domain } = useParams();
+  const dApi = useMemo(() => makeDomainApi(domain), [domain]);
   const [tables, setTables] = useState([]);
   const [sql, setSql] = useState("SELECT entity_name, jsonb_array_length(data_json) AS rows FROM portal_rulebook_entities ORDER BY 1;");
   const [result, setResult] = useState(null);
 
   useEffect(() => {
-    api.get("/api/tech/postgres/tables").then((r) => setTables(r.tables || [])).catch(() => {});
-  }, []);
+    if (!domain) return;
+    dApi.get("/api/tech/postgres/tables").then((r) => setTables(r.tables || [])).catch(() => {});
+  }, [domain]);
 
   const run = async () => {
-    try { setResult(await api.post("/api/tech/postgres/query", { sql })); }
+    try { setResult(await dApi.post("/api/tech/postgres/query", { sql })); }
     catch (e) { toast(e.message, "error"); }
   };
 
@@ -78,15 +82,19 @@ export function TechFilesScreen({ screen }) {
 }
 
 export function TechJsonScreen({ screen }) {
+  const { domain } = useParams();
   const [text, setText] = useState("");
-  const load = () => fetch("/api/tech/rulebook-json").then((r) => r.text()).then(setText);
-  useEffect(() => { load(); }, []);
+  const load = () => {
+    if (!domain) return;
+    fetch(withDomain("/api/tech/rulebook-json", domain)).then((r) => r.text()).then(setText);
+  };
+  useEffect(() => { load(); }, [domain]);
 
   const save = async () => {
     try {
       JSON.parse(text); // local syntax check
       if (!text || !text.trim()) throw new Error("nothing to save — textarea is empty");
-      const res = await fetch("/api/tech/rulebook-json", {
+      const res = await fetch(withDomain("/api/tech/rulebook-json", domain), {
         method: "PUT",
         headers: { "Content-Type": "text/plain" },
         body: text,
@@ -113,12 +121,14 @@ export function TechJsonScreen({ screen }) {
 }
 
 export function TechResetScreen({ screen }) {
+  const { domain } = useParams();
+  const dApi = useMemo(() => makeDomainApi(domain), [domain]);
   const [busy, setBusy] = useState(false);
   const reset = async () => {
     if (!confirm("Drop the editor Postgres DB and rebuild from rulebook JSON?")) return;
     setBusy(true);
     try {
-      await api.post("/api/tech/reset");
+      await dApi.post("/api/tech/reset");
       toast("Editor DB rebuilt from rulebook JSON.");
     } catch (e) { toast(e.message, "error"); }
     setBusy(false);
