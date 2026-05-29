@@ -9,6 +9,7 @@ import covenantsRouter from './covenants.js';
 import riskRatingHistoryRouter from './risk_rating_history.js';
 import documentsRouter from './documents.js';
 import interactionsRouter from './interactions.js';
+import __meta__Router from './__meta__.js';
 
 const router = Router();
 router.use('/users', usersRouter);
@@ -21,5 +22,6 @@ router.use('/covenants', covenantsRouter);
 router.use('/risk_rating_history', riskRatingHistoryRouter);
 router.use('/documents', documentsRouter);
 router.use('/interactions', interactionsRouter);
+router.use('/__meta__', __meta__Router);
 
 export default router;

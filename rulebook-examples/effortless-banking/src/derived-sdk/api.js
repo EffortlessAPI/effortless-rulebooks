@@ -81,4 +81,11 @@ export const api = {
     update: (id, body) => jsonFetch(`/interactions/${id}`, { method: 'PUT', body }),
     remove: (id) => jsonFetch(`/interactions/${id}`, { method: 'DELETE' }),
   },
+  __meta__: {
+    list: () => jsonFetch('/__meta__'),
+    get: (id) => jsonFetch(`/__meta__/${id}`),
+    create: (body) => jsonFetch('/__meta__', { method: 'POST', body }),
+    update: (id, body) => jsonFetch(`/__meta__/${id}`, { method: 'PUT', body }),
+    remove: (id) => jsonFetch(`/__meta__/${id}`, { method: 'DELETE' }),
+  },
 };

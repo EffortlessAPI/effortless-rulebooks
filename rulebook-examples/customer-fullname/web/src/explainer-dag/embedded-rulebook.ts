@@ -14,7 +14,7 @@ export const rulebook = {
         "datatype": "string",
         "type": "calculated",
         "Description": "Full name is computed from the first and last name of the customer",
-        "formula": "={{LastName}} & \": \" & {{FirstName}} & \" - v5\""
+        "formula": "={{LastName}} & \", \" & {{FirstName}} & \" - v6\""
       },
       {
         "name": "EmailAddress",
@@ -48,7 +48,7 @@ export const rulebook = {
         "EmailAddress": "jane.smith@email.com",
         "FirstName": "Jane",
         "LastName": "Smithy",
-        "Name": "Smithy: Jane - v5",
+        "Name": "Smithy, Jane - v6",
         "Initials": "JS"
       },
       {
@@ -56,7 +56,7 @@ export const rulebook = {
         "EmailAddress": "john.doe@email.com",
         "FirstName": "John",
         "LastName": "Doe",
-        "Name": "Doe: John - v5",
+        "Name": "Doe, John - v6",
         "Initials": "JD"
       },
       {
@@ -64,16 +64,16 @@ export const rulebook = {
         "EmailAddress": "emily.jones@email.com",
         "FirstName": "Emily",
         "LastName": "Jones",
-        "Name": "Jones: Emily - v5",
+        "Name": "Jones, Emily - v6",
         "Initials": "EJ"
       },
       {
         "CustomerId": "alice-cooper",
         "EmailAddress": "alice@cooper.com",
         "FirstName": "Alice",
-        "LastName": "Gutknecht",
-        "Name": "Gutknecht: Alice - v5",
-        "Initials": "AG"
+        "LastName": "Mary",
+        "Name": "Mary, Alice - v6",
+        "Initials": "AM"
       }
     ]
   },

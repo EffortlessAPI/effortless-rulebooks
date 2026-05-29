@@ -258,4 +258,19 @@ export const schema = {
     rawFields: ['interaction_type', 'subject', 'body', 'interaction_date', 'due_date', 'source'],
     readOnlyFields: ['name', 'business_label', 'user_label', 'is_system_event', 'is_task', 'from_customer', 'is_covenant_event'],
   },
+  __meta__: {
+    tableName: '__meta__',
+    snakeName: '__meta__',
+    primaryKey: '__meta___id',
+    nameField: 'name',
+    fields: [
+      { name: 'meta_key', label: 'Meta Key', type: 'raw', datatype: 'string', nullable: false, relatedTo: null },
+      { name: 'name', label: 'Name', type: 'calculated', datatype: 'string', nullable: false, relatedTo: null },
+      { name: 'value_type', label: 'Value Type', type: 'raw', datatype: 'string', nullable: false, relatedTo: null },
+      { name: 'string_value', label: 'String Value', type: 'raw', datatype: 'string', nullable: true, relatedTo: null },
+      { name: 'json_value', label: 'Json Value', type: 'raw', datatype: 'string', nullable: true, relatedTo: null },
+    ],
+    rawFields: ['meta_key', 'value_type', 'string_value', 'json_value'],
+    readOnlyFields: ['name'],
+  },
 };
