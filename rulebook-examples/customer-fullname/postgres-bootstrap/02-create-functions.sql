@@ -25,7 +25,7 @@ SET check_function_bodies = off;
 
 CREATE OR REPLACE FUNCTION calc_customers_name(p_customer_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (CONCAT((SELECT NULLIF(last_name, '') FROM customers WHERE customer_id = p_customer_id), ', ', (SELECT NULLIF(first_name, '') FROM customers WHERE customer_id = p_customer_id)))::text;
+  SELECT (CONCAT((SELECT NULLIF(first_name, '') FROM customers WHERE customer_id = p_customer_id), ' ', (SELECT NULLIF(last_name, '') FROM customers WHERE customer_id = p_customer_id)))::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_customers_initials
@@ -35,7 +35,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_customers_initials(p_customer_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (CONCAT(LEFT(((SELECT NULLIF(first_name, '') FROM customers WHERE customer_id = p_customer_id))::text, (1)::integer), LEFT(((SELECT NULLIF(last_name, '') FROM customers WHERE customer_id = p_customer_id))::text, (1)::integer), '.'))::text;
+  SELECT (CONCAT(LEFT(((SELECT NULLIF(first_name, '') FROM customers WHERE customer_id = p_customer_id))::text, (1)::integer), '.', LEFT(((SELECT NULLIF(last_name, '') FROM customers WHERE customer_id = p_customer_id))::text, (1)::integer), '.'))::text;
 $$ LANGUAGE sql STABLE;
 
 -- ============================================================================
