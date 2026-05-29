@@ -44,7 +44,7 @@
         "datatype": "string",
         "type": "calculated",
         "nullable": true,
-        "Description": "Full name is computed from the first and last name of the customer",
+        "Description": "The client's full name, written first name then last name (FirstName & \" \" & LastName).",
         "formula": "={{FirstName}} & \" \" & {{LastName}}",
         "important": true,
         "explanation_rich": "**The smallest possible calculated field.** `FullName` is just `FirstName & \" \" & LastName` — but the point is that it lives in the rulebook, not in application code. Every substrate (Postgres view, Python class, Excel cell, OWL ontology) computes the same value the same way. Edit a customer's first name and *every* substrate sees the new full name on the next read."

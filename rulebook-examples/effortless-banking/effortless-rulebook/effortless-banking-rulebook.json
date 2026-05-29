@@ -96,31 +96,66 @@
         "Name": "devon-marshall",
         "FullName": "Devon Marshall",
         "Role": "RM",
-        "Email": "devon.marshall@firstvalley.bank"
+        "Email": "devon.marshall@firstvalley.bank",
+        "IsRM": true,
+        "IsUnderwriter": false,
+        "IsBranchBanker": false,
+        "IsAdmin": false,
+        "CountOfPortfolioBusinesses": 5,
+        "CountOfOriginatedLoans": 3,
+        "CountOfUnderwrittenLoans": 0
       },
       {
         "Name": "priya-iyer",
         "FullName": "Priya Iyer",
-        "Role": "Underwriter",
-        "Email": "priya.iyer@firstvalley.bank"
+        "Role": "Admin",
+        "Email": "priya.iyer@firstvalley.bank",
+        "IsRM": false,
+        "IsUnderwriter": false,
+        "IsBranchBanker": false,
+        "IsAdmin": true,
+        "CountOfPortfolioBusinesses": 0,
+        "CountOfOriginatedLoans": 0,
+        "CountOfUnderwrittenLoans": 2
       },
       {
         "Name": "thomas-bell",
         "FullName": "Thomas Bell",
         "Role": "Underwriter",
-        "Email": "thomas.bell@firstvalley.bank"
+        "Email": "thomas.bell@firstvalley.bank",
+        "IsRM": false,
+        "IsUnderwriter": true,
+        "IsBranchBanker": false,
+        "IsAdmin": false,
+        "CountOfPortfolioBusinesses": 0,
+        "CountOfOriginatedLoans": 0,
+        "CountOfUnderwrittenLoans": 1
       },
       {
         "Name": "maya-chen",
         "FullName": "Maya Chen",
         "Role": "BranchBanker",
-        "Email": "maya.chen@firstvalley.bank"
+        "Email": "maya.chen@firstvalley.bank",
+        "IsRM": false,
+        "IsUnderwriter": false,
+        "IsBranchBanker": true,
+        "IsAdmin": false,
+        "CountOfPortfolioBusinesses": 0,
+        "CountOfOriginatedLoans": 0,
+        "CountOfUnderwrittenLoans": 0
       },
       {
         "Name": "renee-okafor",
         "FullName": "Renee Okafor",
         "Role": "Admin",
-        "Email": "renee.okafor@firstvalley.bank"
+        "Email": "renee.okafor@firstvalley.bank",
+        "IsRM": false,
+        "IsUnderwriter": false,
+        "IsBranchBanker": false,
+        "IsAdmin": true,
+        "CountOfPortfolioBusinesses": 0,
+        "CountOfOriginatedLoans": 0,
+        "CountOfUnderwrittenLoans": 0
       }
     ]
   },
@@ -362,7 +397,24 @@
         "Status": "Customer",
         "OnboardedAt": "2024-03-12",
         "RelationshipManager": "devon-marshall",
-        "ReferralSource": null
+        "ReferralSource": null,
+        "RelationshipManagerLabel": "Devon Marshall",
+        "IsCustomer": true,
+        "IsProspect": false,
+        "WasReferred": true,
+        "CountOfBeneficialOwners": 2,
+        "CountOfContacts": 2,
+        "CountOfAccounts": 2,
+        "CountOfLoans": 1,
+        "CountOfInteractions": 3,
+        "CountOfDocuments": 2,
+        "TotalDepositBalanceUsd": "259250.13",
+        "TotalLoanPrincipalUsd": "250000",
+        "CountOfClassifiedLoans": 1,
+        "HasClassifiedLoan": true,
+        "BeneficialOwnersAtCddThreshold": 2,
+        "MeetsCddRule": true,
+        "PortfolioPriority": "High"
       },
       {
         "Name": "ridgeway-consulting-llc",
@@ -374,7 +426,24 @@
         "Status": "Customer",
         "OnboardedAt": "2023-09-05",
         "RelationshipManager": "devon-marshall",
-        "ReferralSource": null
+        "ReferralSource": null,
+        "RelationshipManagerLabel": "Devon Marshall",
+        "IsCustomer": true,
+        "IsProspect": false,
+        "WasReferred": true,
+        "CountOfBeneficialOwners": 1,
+        "CountOfContacts": 1,
+        "CountOfAccounts": 1,
+        "CountOfLoans": 1,
+        "CountOfInteractions": 1,
+        "CountOfDocuments": 0,
+        "TotalDepositBalanceUsd": "92800",
+        "TotalLoanPrincipalUsd": "100000",
+        "CountOfClassifiedLoans": 1,
+        "HasClassifiedLoan": true,
+        "BeneficialOwnersAtCddThreshold": 1,
+        "MeetsCddRule": true,
+        "PortfolioPriority": "High"
       },
       {
         "Name": "pine-hardware-inc",
@@ -386,7 +455,24 @@
         "Status": "Customer",
         "OnboardedAt": "2019-06-21",
         "RelationshipManager": "devon-marshall",
-        "ReferralSource": null
+        "ReferralSource": null,
+        "RelationshipManagerLabel": "Devon Marshall",
+        "IsCustomer": true,
+        "IsProspect": false,
+        "WasReferred": true,
+        "CountOfBeneficialOwners": 2,
+        "CountOfContacts": 1,
+        "CountOfAccounts": 1,
+        "CountOfLoans": 1,
+        "CountOfInteractions": 4,
+        "CountOfDocuments": 1,
+        "TotalDepositBalanceUsd": "612430.55",
+        "TotalLoanPrincipalUsd": "1850000",
+        "CountOfClassifiedLoans": 1,
+        "HasClassifiedLoan": true,
+        "BeneficialOwnersAtCddThreshold": 2,
+        "MeetsCddRule": true,
+        "PortfolioPriority": "High"
       },
       {
         "Name": "sunset-auto-body-llc",
@@ -398,7 +484,24 @@
         "Status": "Customer",
         "OnboardedAt": "2022-11-02",
         "RelationshipManager": "devon-marshall",
-        "ReferralSource": null
+        "ReferralSource": null,
+        "RelationshipManagerLabel": "Devon Marshall",
+        "IsCustomer": true,
+        "IsProspect": false,
+        "WasReferred": true,
+        "CountOfBeneficialOwners": 0,
+        "CountOfContacts": 0,
+        "CountOfAccounts": 1,
+        "CountOfLoans": 0,
+        "CountOfInteractions": 1,
+        "CountOfDocuments": 0,
+        "TotalDepositBalanceUsd": "41250",
+        "TotalLoanPrincipalUsd": "0",
+        "CountOfClassifiedLoans": 0,
+        "HasClassifiedLoan": false,
+        "BeneficialOwnersAtCddThreshold": 0,
+        "MeetsCddRule": false,
+        "PortfolioPriority": "Medium"
       },
       {
         "Name": "hilltop-bakery-llc",
@@ -410,7 +513,24 @@
         "Status": "Prospect",
         "OnboardedAt": null,
         "RelationshipManager": "devon-marshall",
-        "ReferralSource": "pine-hardware-inc"
+        "ReferralSource": "pine-hardware-inc",
+        "RelationshipManagerLabel": "Devon Marshall",
+        "IsCustomer": false,
+        "IsProspect": true,
+        "WasReferred": true,
+        "CountOfBeneficialOwners": 0,
+        "CountOfContacts": 0,
+        "CountOfAccounts": 0,
+        "CountOfLoans": 0,
+        "CountOfInteractions": 0,
+        "CountOfDocuments": 0,
+        "TotalDepositBalanceUsd": "0",
+        "TotalLoanPrincipalUsd": "0",
+        "CountOfClassifiedLoans": 0,
+        "HasClassifiedLoan": false,
+        "BeneficialOwnersAtCddThreshold": 0,
+        "MeetsCddRule": false,
+        "PortfolioPriority": "Medium"
       }
     ]
   },
@@ -508,8 +628,11 @@
         "DateOfBirthEncrypted": "ENC(1981-04-17)",
         "SsnEncrypted": "ENC(xxx-xx-1234)",
         "AddressEncrypted": "ENC(742 Evergreen Way, Stillwater)",
-        "OwnershipPercentage": 60.0,
-        "IsControlPerson": true
+        "OwnershipPercentage": 60,
+        "IsControlPerson": true,
+        "BusinessLabel": "Stillwater Roasters LLC",
+        "Meets25PercentThreshold": true,
+        "MeetsCddThreshold": true
       },
       {
         "Name": "stillwater-roasters-llc-sam-rivera",
@@ -518,8 +641,11 @@
         "DateOfBirthEncrypted": "ENC(1978-11-02)",
         "SsnEncrypted": "ENC(xxx-xx-5678)",
         "AddressEncrypted": "ENC(15 Hillcrest Rd, Stillwater)",
-        "OwnershipPercentage": 40.0,
-        "IsControlPerson": false
+        "OwnershipPercentage": 40,
+        "IsControlPerson": false,
+        "BusinessLabel": "Stillwater Roasters LLC",
+        "Meets25PercentThreshold": true,
+        "MeetsCddThreshold": true
       },
       {
         "Name": "ridgeway-consulting-llc-alex-ridgeway",
@@ -528,8 +654,11 @@
         "DateOfBirthEncrypted": "ENC(1972-02-14)",
         "SsnEncrypted": "ENC(xxx-xx-9012)",
         "AddressEncrypted": "ENC(204 Birch Ln, Ridgeway)",
-        "OwnershipPercentage": 0.0,
-        "IsControlPerson": true
+        "OwnershipPercentage": 0,
+        "IsControlPerson": true,
+        "BusinessLabel": "Ridgeway Consulting LLC",
+        "Meets25PercentThreshold": false,
+        "MeetsCddThreshold": true
       },
       {
         "Name": "pine-hardware-inc-elena-novak",
@@ -538,8 +667,11 @@
         "DateOfBirthEncrypted": "ENC(1965-08-30)",
         "SsnEncrypted": "ENC(xxx-xx-3456)",
         "AddressEncrypted": "ENC(99 Oak St, Pinehurst)",
-        "OwnershipPercentage": 51.0,
-        "IsControlPerson": true
+        "OwnershipPercentage": 51,
+        "IsControlPerson": true,
+        "BusinessLabel": "Pine Hardware Inc.",
+        "Meets25PercentThreshold": true,
+        "MeetsCddThreshold": true
       },
       {
         "Name": "pine-hardware-inc-robert-novak",
@@ -548,8 +680,11 @@
         "DateOfBirthEncrypted": "ENC(1962-01-19)",
         "SsnEncrypted": "ENC(xxx-xx-7890)",
         "AddressEncrypted": "ENC(99 Oak St, Pinehurst)",
-        "OwnershipPercentage": 49.0,
-        "IsControlPerson": false
+        "OwnershipPercentage": 49,
+        "IsControlPerson": false,
+        "BusinessLabel": "Pine Hardware Inc.",
+        "Meets25PercentThreshold": true,
+        "MeetsCddThreshold": true
       }
     ]
   },
@@ -648,7 +783,10 @@
         "Email": "jordan@stillwaterroasters.com",
         "Phone": "555-0142",
         "ContactType": "Officer",
-        "IsAuthorizedSigner": true
+        "IsAuthorizedSigner": true,
+        "BusinessLabel": "Stillwater Roasters LLC",
+        "IsOfficer": true,
+        "IsApClerk": false
       },
       {
         "Name": "stillwater-roasters-llc-sam-rivera-cfo",
@@ -658,7 +796,10 @@
         "Email": "sam@stillwaterroasters.com",
         "Phone": "555-0143",
         "ContactType": "Officer",
-        "IsAuthorizedSigner": true
+        "IsAuthorizedSigner": true,
+        "BusinessLabel": "Stillwater Roasters LLC",
+        "IsOfficer": true,
+        "IsApClerk": false
       },
       {
         "Name": "pine-hardware-inc-marta-keene-ap-clerk",
@@ -668,7 +809,10 @@
         "Email": "ap@pinehardware.com",
         "Phone": "555-0188",
         "ContactType": "APClerk",
-        "IsAuthorizedSigner": false
+        "IsAuthorizedSigner": false,
+        "BusinessLabel": "Pine Hardware Inc.",
+        "IsOfficer": false,
+        "IsApClerk": true
       },
       {
         "Name": "ridgeway-consulting-llc-alex-ridgeway-ceo",
@@ -678,7 +822,10 @@
         "Email": "alex@ridgeway.co",
         "Phone": "555-0260",
         "ContactType": "Officer",
-        "IsAuthorizedSigner": true
+        "IsAuthorizedSigner": true,
+        "BusinessLabel": "Ridgeway Consulting LLC",
+        "IsOfficer": true,
+        "IsApClerk": false
       }
     ]
   },
@@ -785,18 +932,24 @@
         "HasAch": true,
         "HasWire": true,
         "HasCard": false,
-        "OpenedAt": "2024-03-13"
+        "OpenedAt": "2024-03-13",
+        "BusinessLabel": "Sunset Auto Body LLC",
+        "TreasuryServiceCount": 0,
+        "HasAnyTreasuryService": false
       },
       {
         "Name": "stillwater-roasters-llc-savings-0101",
         "Business": "stillwater-roasters-llc",
         "AccountType": "Savings",
         "AccountNumberLast4": "0101",
-        "CurrentBalanceUsd": 75000.0,
+        "CurrentBalanceUsd": 75000,
         "HasAch": false,
         "HasWire": false,
         "HasCard": false,
-        "OpenedAt": "2024-03-13"
+        "OpenedAt": "2024-03-13",
+        "BusinessLabel": "Stillwater Roasters LLC",
+        "TreasuryServiceCount": 0,
+        "HasAnyTreasuryService": false
       },
       {
         "Name": "pine-hardware-inc-checking-0200",
@@ -807,29 +960,38 @@
         "HasAch": true,
         "HasWire": true,
         "HasCard": true,
-        "OpenedAt": "2019-06-22"
+        "OpenedAt": "2019-06-22",
+        "BusinessLabel": "Sunset Auto Body LLC",
+        "TreasuryServiceCount": 0,
+        "HasAnyTreasuryService": false
       },
       {
         "Name": "ridgeway-consulting-llc-checking-0300",
         "Business": "ridgeway-consulting-llc",
         "AccountType": "Checking",
         "AccountNumberLast4": "0300",
-        "CurrentBalanceUsd": 92800.0,
+        "CurrentBalanceUsd": 92800,
         "HasAch": true,
         "HasWire": false,
         "HasCard": false,
-        "OpenedAt": "2023-09-06"
+        "OpenedAt": "2023-09-06",
+        "BusinessLabel": "Sunset Auto Body LLC",
+        "TreasuryServiceCount": 0,
+        "HasAnyTreasuryService": false
       },
       {
         "Name": "sunset-auto-body-llc-checking-0400",
         "Business": "sunset-auto-body-llc",
         "AccountType": "Checking",
         "AccountNumberLast4": "0400",
-        "CurrentBalanceUsd": 41250.0,
+        "CurrentBalanceUsd": 41250,
         "HasAch": false,
         "HasWire": false,
         "HasCard": false,
-        "OpenedAt": "2022-11-03"
+        "OpenedAt": "2022-11-03",
+        "BusinessLabel": "Sunset Auto Body LLC",
+        "TreasuryServiceCount": 0,
+        "HasAnyTreasuryService": false
       }
     ]
   },
@@ -996,12 +1158,12 @@
         "formula": "=INDEX(Users!{{FullName}}, MATCH({{OriginatingRm}}, Users!{{Name}}, 0))"
       },
       {
-        "name": "UnderwriterLabel",
-        "datatype": "string",
+        "name": "UnderwriterIsAdmin",
+        "datatype": "boolean",
         "type": "lookup",
         "nullable": false,
-        "Description": "Display label of the underwriter.",
-        "formula": "=INDEX(Users!{{FullName}}, MATCH({{Underwriter}}, Users!{{Name}}, 0))"
+        "Description": "True when the loan's underwriter holds the Admin role (looked up from Users.IsAdmin).",
+        "formula": "=INDEX(Users!{{IsAdmin}}, MATCH({{Underwriter}}, Users!{{Name}}, 0))"
       },
       {
         "name": "IsFunded",
@@ -1122,7 +1284,23 @@
         "Ltv": 0.78,
         "GlobalCashFlowUsd": 612000,
         "OriginatedAt": "2025-02-10",
-        "FundedAt": "2025-03-01"
+        "FundedAt": "2025-03-01",
+        "BusinessLabel": "Stillwater Roasters LLC",
+        "BusinessNaicsCode": "311920",
+        "OriginatingRmLabel": "Devon Marshall",
+        "IsFunded": true,
+        "IsClassifiedAsset": false,
+        "DscrInBand": true,
+        "LtvInBand": true,
+        "SegregationOfDutiesOk": true,
+        "CountOfCovenants": 3,
+        "CountOfBreachedCovenants": 3,
+        "CountOfRiskRatingHistory": 1,
+        "CountOfDocuments": 2,
+        "HasBreachedCovenant": true,
+        "OnWatchlist": true,
+        "HealthScore": 3,
+        "UnderwriterIsAdmin": null
       },
       {
         "Name": "l-0042",
@@ -1141,7 +1319,23 @@
         "Ltv": 0.71,
         "GlobalCashFlowUsd": 2100000,
         "OriginatedAt": "2021-04-14",
-        "FundedAt": "2021-05-20"
+        "FundedAt": "2021-05-20",
+        "BusinessLabel": "Pine Hardware Inc.",
+        "BusinessNaicsCode": "444110",
+        "OriginatingRmLabel": "Devon Marshall",
+        "IsFunded": true,
+        "IsClassifiedAsset": true,
+        "DscrInBand": false,
+        "LtvInBand": true,
+        "SegregationOfDutiesOk": true,
+        "CountOfCovenants": 1,
+        "CountOfBreachedCovenants": 1,
+        "CountOfRiskRatingHistory": 3,
+        "CountOfDocuments": 0,
+        "HasBreachedCovenant": true,
+        "OnWatchlist": true,
+        "HealthScore": 1,
+        "UnderwriterIsAdmin": null
       },
       {
         "Name": "l-0078",
@@ -1151,7 +1345,7 @@
         "Underwriter": "priya-iyer",
         "LoanPurpose": "LOC",
         "PrincipalUsd": 100000,
-        "RatePct": 8.0,
+        "RatePct": 8,
         "TermMonths": 12,
         "UnderwritingStage": "Funded",
         "RiskRating": 3,
@@ -1160,7 +1354,23 @@
         "Ltv": null,
         "GlobalCashFlowUsd": 320000,
         "OriginatedAt": "2024-08-01",
-        "FundedAt": "2024-08-22"
+        "FundedAt": "2024-08-22",
+        "BusinessLabel": "Ridgeway Consulting LLC",
+        "BusinessNaicsCode": "541611",
+        "OriginatingRmLabel": "Devon Marshall",
+        "IsFunded": true,
+        "IsClassifiedAsset": false,
+        "DscrInBand": true,
+        "LtvInBand": true,
+        "SegregationOfDutiesOk": true,
+        "CountOfCovenants": 0,
+        "CountOfBreachedCovenants": 0,
+        "CountOfRiskRatingHistory": 1,
+        "CountOfDocuments": 0,
+        "HasBreachedCovenant": false,
+        "OnWatchlist": false,
+        "HealthScore": 4,
+        "UnderwriterIsAdmin": null
       }
     ]
   },
@@ -1267,17 +1477,25 @@
         "TestFrequency": "Quarterly",
         "NextTestDate": "2025-06-30",
         "Status": "Active",
-        "CurrentWaiverThrough": null
+        "CurrentWaiverThrough": null,
+        "LoanLabel": "L-0042",
+        "LoanBusiness": "pine-hardware-inc",
+        "IsBreached": true,
+        "HasActiveWaiver": true
       },
       {
         "Name": "l-0051-maxleverage",
         "Loan": "l-0051",
         "CovenantType": "MaxLeverage",
-        "ThresholdValue": 3.0,
+        "ThresholdValue": 3,
         "TestFrequency": "Annual",
         "NextTestDate": "2026-03-01",
         "Status": "Active",
-        "CurrentWaiverThrough": null
+        "CurrentWaiverThrough": null,
+        "LoanLabel": "L-0051",
+        "LoanBusiness": "stillwater-roasters-llc",
+        "IsBreached": false,
+        "HasActiveWaiver": false
       },
       {
         "Name": "l-0051-reportingfinancials",
@@ -1287,7 +1505,11 @@
         "TestFrequency": "Annual",
         "NextTestDate": "2026-03-31",
         "Status": "Active",
-        "CurrentWaiverThrough": null
+        "CurrentWaiverThrough": null,
+        "LoanLabel": "L-0051",
+        "LoanBusiness": "stillwater-roasters-llc",
+        "IsBreached": false,
+        "HasActiveWaiver": false
       },
       {
         "Name": "l-0042-mindscr",
@@ -1297,7 +1519,11 @@
         "TestFrequency": "Quarterly",
         "NextTestDate": "2026-06-30",
         "Status": "Breached",
-        "CurrentWaiverThrough": "2026-06-30"
+        "CurrentWaiverThrough": "2026-06-30",
+        "LoanLabel": "L-0042",
+        "LoanBusiness": "pine-hardware-inc",
+        "IsBreached": true,
+        "HasActiveWaiver": true
       }
     ]
   },
@@ -1576,7 +1802,12 @@
         "DocumentType": "TaxReturn",
         "OcrIndexed": true,
         "UploadedVia": "RMDashboard",
-        "UploadedAt": "2025-01-22"
+        "UploadedAt": "2025-01-22",
+        "BusinessLabel": "Stillwater Roasters LLC",
+        "LoanLabel": null,
+        "UploadedByUserLabel": "Devon Marshall",
+        "AttachedTo": "Loan",
+        "FromCustomerPortal": false
       },
       {
         "Name": "l-0051-promissory-note-pdf",
@@ -1587,7 +1818,12 @@
         "DocumentType": "Note",
         "OcrIndexed": true,
         "UploadedVia": "RMDashboard",
-        "UploadedAt": "2025-02-28"
+        "UploadedAt": "2025-02-28",
+        "BusinessLabel": null,
+        "LoanLabel": "L-0051",
+        "UploadedByUserLabel": "Priya Iyer",
+        "AttachedTo": "Loan",
+        "FromCustomerPortal": false
       },
       {
         "Name": "l-0051-security-agreement-pdf",
@@ -1598,7 +1834,12 @@
         "DocumentType": "SecurityAgreement",
         "OcrIndexed": true,
         "UploadedVia": "RMDashboard",
-        "UploadedAt": "2025-02-28"
+        "UploadedAt": "2025-02-28",
+        "BusinessLabel": null,
+        "LoanLabel": "L-0051",
+        "UploadedByUserLabel": "Priya Iyer",
+        "AttachedTo": "Loan",
+        "FromCustomerPortal": false
       },
       {
         "Name": "stillwater-q4-2024-pl-pdf",
@@ -1609,7 +1850,12 @@
         "DocumentType": "FinancialStatement",
         "OcrIndexed": true,
         "UploadedVia": "BusinessClientPortal",
-        "UploadedAt": "2025-01-15"
+        "UploadedAt": "2025-01-15",
+        "BusinessLabel": "Stillwater Roasters LLC",
+        "LoanLabel": null,
+        "UploadedByUserLabel": null,
+        "AttachedTo": "Loan",
+        "FromCustomerPortal": true
       },
       {
         "Name": "pine-articles-of-incorporation-pdf",
@@ -1620,7 +1866,12 @@
         "DocumentType": "FormationDoc",
         "OcrIndexed": true,
         "UploadedVia": "RMDashboard",
-        "UploadedAt": "2019-06-21"
+        "UploadedAt": "2019-06-21",
+        "BusinessLabel": "Pine Hardware Inc.",
+        "LoanLabel": null,
+        "UploadedByUserLabel": "Devon Marshall",
+        "AttachedTo": "Loan",
+        "FromCustomerPortal": false
       }
     ]
   },
@@ -1752,7 +2003,13 @@
         "Body": "Reviewed Q2 P&L. Margins compressed slightly on green-coffee cost spike but volume up 12% YoY.",
         "InteractionDate": "2025-04-15",
         "DueDate": null,
-        "Source": "RMDashboard"
+        "Source": "RMDashboard",
+        "BusinessLabel": "Stillwater Roasters LLC",
+        "UserLabel": null,
+        "IsSystemEvent": false,
+        "IsTask": false,
+        "FromCustomer": true,
+        "IsCovenantEvent": false
       },
       {
         "Name": "stillwater-roasters-llc-2025-04-15-call-wire-fee-question",
@@ -1763,7 +2020,13 @@
         "Body": "Sam called re: $30 outbound wire fee. Confirmed price; offered ACH-international as alternative.",
         "InteractionDate": "2025-04-15",
         "DueDate": null,
-        "Source": "RMDashboard"
+        "Source": "RMDashboard",
+        "BusinessLabel": "Stillwater Roasters LLC",
+        "UserLabel": "Devon Marshall",
+        "IsSystemEvent": false,
+        "IsTask": false,
+        "FromCustomer": false,
+        "IsCovenantEvent": false
       },
       {
         "Name": "pine-hardware-inc-2025-04-15-visit-refi-discussion",
@@ -1774,7 +2037,13 @@
         "Body": "On-site visit. Discussed potential refinance of L-0042 once classified-asset status resolves.",
         "InteractionDate": "2025-04-15",
         "DueDate": null,
-        "Source": "RMDashboard"
+        "Source": "RMDashboard",
+        "BusinessLabel": "Pine Hardware Inc.",
+        "UserLabel": "Devon Marshall",
+        "IsSystemEvent": false,
+        "IsTask": false,
+        "FromCustomer": false,
+        "IsCovenantEvent": false
       },
       {
         "Name": "ridgeway-consulting-llc-2025-04-22-meeting-annual-review-prep",
@@ -1785,7 +2054,13 @@
         "Body": "Scheduled annual review meeting. Documentation requested in advance.",
         "InteractionDate": "2025-04-22",
         "DueDate": null,
-        "Source": "RMDashboard"
+        "Source": "RMDashboard",
+        "BusinessLabel": "Ridgeway Consulting LLC",
+        "UserLabel": "Devon Marshall",
+        "IsSystemEvent": false,
+        "IsTask": false,
+        "FromCustomer": false,
+        "IsCovenantEvent": false
       },
       {
         "Name": "pine-hardware-inc-2025-04-15-task-refi-term-sheet",
@@ -1796,7 +2071,13 @@
         "Body": "Draft and send proposed refinance term sheet to Elena Novak.",
         "InteractionDate": "2025-04-15",
         "DueDate": "2025-04-18",
-        "Source": "RMDashboard"
+        "Source": "RMDashboard",
+        "BusinessLabel": "Pine Hardware Inc.",
+        "UserLabel": "Devon Marshall",
+        "IsSystemEvent": false,
+        "IsTask": true,
+        "FromCustomer": false,
+        "IsCovenantEvent": false
       },
       {
         "Name": "pine-hardware-inc-2025-04-15-systemevent-covenant-test-approaching",
@@ -1807,10 +2088,16 @@
         "Body": "Auto-generated by CovenantMonitoring: DSCR test for L-0042 due in 15 days.",
         "InteractionDate": "2025-04-15",
         "DueDate": null,
-        "Source": "SystemEvent"
+        "Source": "SystemEvent",
+        "BusinessLabel": "Sunset Auto Body LLC",
+        "UserLabel": "Renee Okafor",
+        "IsSystemEvent": true,
+        "IsTask": false,
+        "FromCustomer": false,
+        "IsCovenantEvent": false
       },
       {
-        "Name": "pine-hardware-inc-2025-05-02-systemevent-covenant-breach",
+        "Name": "pine-hardware-inc-2025-05-02-systemevent-covenant-breach-l-0042-dscr",
         "Business": "pine-hardware-inc",
         "User": null,
         "InteractionType": "SystemEvent",
@@ -1818,10 +2105,16 @@
         "Body": "DSCR test failed on L-0042. Computed 1.08; covenant threshold 1.20. Status: Breached.",
         "InteractionDate": "2025-05-02",
         "DueDate": null,
-        "Source": "SystemEvent"
+        "Source": "SystemEvent",
+        "BusinessLabel": "Sunset Auto Body LLC",
+        "UserLabel": "Renee Okafor",
+        "IsSystemEvent": true,
+        "IsTask": false,
+        "FromCustomer": false,
+        "IsCovenantEvent": false
       },
       {
-        "Name": "sunset-auto-body-llc-2025-05-04-systemevent-sar-filed",
+        "Name": "sunset-auto-body-llc-2025-05-04-systemevent-sar-filed-bsa-aml",
         "Business": "sunset-auto-body-llc",
         "User": "renee-okafor",
         "InteractionType": "SystemEvent",
@@ -1829,7 +2122,13 @@
         "Body": "Verafin flagged structuring pattern. SAR drafted and filed via RegulatoryReporting to FinCEN.",
         "InteractionDate": "2025-05-04",
         "DueDate": null,
-        "Source": "SystemEvent"
+        "Source": "SystemEvent",
+        "BusinessLabel": "Sunset Auto Body LLC",
+        "UserLabel": "Renee Okafor",
+        "IsSystemEvent": true,
+        "IsTask": false,
+        "FromCustomer": false,
+        "IsCovenantEvent": false
       },
       {
         "Name": "stillwater-roasters-llc-2025-01-15-note-customer-portal-message",
@@ -1840,7 +2139,13 @@
         "Body": "Customer message: 'Uploaded Q4 P&L. Want to discuss a $25K LOC.'",
         "InteractionDate": "2025-01-15",
         "DueDate": null,
-        "Source": "BusinessClientPortal"
+        "Source": "BusinessClientPortal",
+        "BusinessLabel": "Stillwater Roasters LLC",
+        "UserLabel": null,
+        "IsSystemEvent": false,
+        "IsTask": false,
+        "FromCustomer": true,
+        "IsCovenantEvent": false
       }
     ]
   },

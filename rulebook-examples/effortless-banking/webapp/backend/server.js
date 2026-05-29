@@ -16,7 +16,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const DATABASE_URL =
   process.env.DATABASE_URL ||
-  'postgresql://postgres@localhost:5432/erb_effortless_banking_demo';
+  'postgresql://postgres@localhost:5432/erb_effortless_banking';
 
 const pool = new pg.Pool({ connectionString: DATABASE_URL });
 
@@ -24,7 +24,7 @@ const pool = new pg.Pool({ connectionString: DATABASE_URL });
 // (used by the double-click field drawer).
 const RULEBOOK_PATH = path.resolve(
   __dirname,
-  '../../effortless-rulebook/effortless-rulebook.json',
+  '../../effortless-rulebook/effortless-banking-rulebook.json',
 );
 const rulebook = JSON.parse(fs.readFileSync(RULEBOOK_PATH, 'utf8'));
 
@@ -40,6 +40,16 @@ app.use(
     maxAge: 1000 * 60 * 60 * 8,
   }),
 );
+
+// Log every request + its final status & duration to the terminal, so the
+// dev server actually shows what it's doing (nothing fails silently).
+app.use((req, res, next) => {
+  const start = Date.now();
+  res.on('finish', () =>
+    console.log(`[fvb] ${req.method} ${req.originalUrl} -> ${res.statusCode} (${Date.now() - start}ms)`),
+  );
+  next();
+});
 
 // ---- helpers --------------------------------------------------------------
 
@@ -110,6 +120,7 @@ app.get('/api/auth/demo-users', async (req, res) => {
     );
     res.json(r.rows);
   } catch (e) {
+    console.error(`[fvb] ERROR on ${req.method} ${req.originalUrl}:`, e);
     res.status(500).json({ error: String(e.message || e) });
   }
 });
@@ -128,6 +139,7 @@ app.post('/api/auth/login', async (req, res) => {
     req.session.user = r.rows[0];
     res.json(req.session.user);
   } catch (e) {
+    console.error(`[fvb] ERROR on ${req.method} ${req.originalUrl}:`, e);
     res.status(500).json({ error: String(e.message || e) });
   }
 });
@@ -185,6 +197,7 @@ function listEndpoint(view, defaultOrder = 'name') {
       const r = await withUserSession(req, (c) => c.query(sql, params));
       res.json(r.rows);
     } catch (e) {
+      console.error(`[fvb] ERROR on ${req.method} ${req.originalUrl}:`, e);
       res.status(500).json({ error: String(e.message || e) });
     }
   };
@@ -231,6 +244,7 @@ app.get('/api/businesses/:name/detail', requireAuth, async (req, res) => {
     if (!r) return res.status(404).json({ error: 'not found' });
     res.json(r);
   } catch (e) {
+    console.error(`[fvb] ERROR on ${req.method} ${req.originalUrl}:`, e);
     res.status(500).json({ error: String(e.message || e) });
   }
 });
@@ -251,6 +265,7 @@ app.get('/api/loans/:name/detail', requireAuth, async (req, res) => {
     if (!r) return res.status(404).json({ error: 'not found' });
     res.json(r);
   } catch (e) {
+    console.error(`[fvb] ERROR on ${req.method} ${req.originalUrl}:`, e);
     res.status(500).json({ error: String(e.message || e) });
   }
 });
@@ -300,9 +315,10 @@ app.get('/api/kpis', requireAuth, async (req, res) => {
     });
     res.json(r);
   } catch (e) {
+    console.error(`[fvb] ERROR on ${req.method} ${req.originalUrl}:`, e);
     res.status(500).json({ error: String(e.message || e) });
   }
 });
 
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 8375;
 app.listen(PORT, () => console.log(`[fvb] backend listening on :${PORT}`));

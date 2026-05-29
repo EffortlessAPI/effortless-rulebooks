@@ -2119,38 +2119,6 @@
         "FollowsRecipe": "yogurt recipe"
       },
       {
-        "CookId": "morning coffee",
-        "OnTimer": "Bessie",
-        "PreparedBy": "Marcus",
-        "DishName": "instant coffee",
-        "StartedAt": "2026-05-21T07:40:00Z",
-        "FollowsRecipe": "instant coffee recipe"
-      },
-      {
-        "CookId": "baker's espresso",
-        "OnTimer": "Olive",
-        "PreparedBy": "Lena",
-        "DishName": "instant coffee",
-        "StartedAt": "2026-05-21T09:25:00Z",
-        "FollowsRecipe": "instant coffee recipe"
-      },
-      {
-        "CookId": "late cake bake",
-        "OnTimer": "Rufus",
-        "PreparedBy": "Marcus",
-        "DishName": "vanilla cake",
-        "StartedAt": "2026-05-21T10:25:00Z",
-        "FollowsRecipe": "cake recipe"
-      },
-      {
-        "CookId": "overnight yogurt",
-        "OnTimer": "Olive",
-        "PreparedBy": "Lena",
-        "DishName": "homemade yogurt",
-        "StartedAt": "2026-05-21T09:35:00Z",
-        "FollowsRecipe": "yogurt recipe"
-      },
-      {
         "CookId": "croissant batch",
         "OnTimer": "Rufus",
         "PreparedBy": "Iris",

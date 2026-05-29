@@ -22,7 +22,7 @@ erb:name a owl:DatatypeProperty ;
     rdfs:domain erb:Customers ;
     rdfs:range xsd:string ;
     rdfs:label "Name" ;
-    rdfs:comment "Identifier for the customers." .
+    rdfs:comment "Identifier for the cusfdsfdstomers." .
     # calculated: calculated
 
 erb:emailAddress a owl:DatatypeProperty ;
@@ -36,6 +36,12 @@ erb:firstName a owl:DatatypeProperty ;
     rdfs:range xsd:string ;
     rdfs:label "FirstName" ;
     rdfs:comment "First Name of the customer - used to make the full name" .
+
+erb:initials a owl:DatatypeProperty ;
+    rdfs:domain erb:Customers ;
+    rdfs:range xsd:string ;
+    rdfs:label "Initials" .
+    # calculated: calculated
 
 erb:lastName a owl:DatatypeProperty ;
     rdfs:domain erb:Customers ;

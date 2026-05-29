@@ -2,7 +2,7 @@
   "schema_version": "erb.explain_spec.v1",
   "rulebook": {
     "name": "ACME, LLC",
-    "rulebook_hash": "sha256:056e08f2fe6eff6d737aa9531293b0cc"
+    "rulebook_hash": "sha256:cccc0f193e50091a11cf397aacbfb7db"
   },
   "semantics": {
     "profile": "excel",
@@ -24,7 +24,7 @@
           "datatype": "string",
           "nullable": true,
           "type": "calculated",
-          "description": "Identifier for the customers."
+          "description": "Identifier for the cusfdsfdstomers."
         },
         "EmailAddress": {
           "datatype": "string",
@@ -37,6 +37,11 @@
           "nullable": true,
           "type": "raw",
           "description": "First Name of the customer - used to make the full name"
+        },
+        "Initials": {
+          "datatype": "string",
+          "nullable": true,
+          "type": "calculated"
         },
         "LastName": {
           "datatype": "string",
@@ -53,6 +58,7 @@
       },
       "calc_order": [
         "FullName",
+        "Initials",
         "Name"
       ],
       "dep_edges": [
@@ -63,6 +69,14 @@
         [
           "LastName",
           "FullName"
+        ],
+        [
+          "FirstName",
+          "Initials"
+        ],
+        [
+          "LastName",
+          "Initials"
         ],
         [
           "EmailAddress",
@@ -126,27 +140,116 @@
               "n_result_Name"
             ]
           ],
-          "description": "Identifier for the customers."
+          "description": "Identifier for the cusfdsfdstomers."
         },
-        "FullName": {
-          "formula_source": "={{LastName}} & \", \" & {{FirstName}}",
-          "template_hash": "sha256:87fca7e8a65752b8",
-          "root_node": "n_result_FullName",
+        "Initials": {
+          "formula_source": "=LEFT({{FirstName}}, 1) & LEFT({{LastName}}, 1)",
+          "template_hash": "sha256:86b8d6fbdc681809",
+          "root_node": "n_result_Initials",
           "nodes": {
             "n_ref_1": {
+              "kind": "field_ref",
+              "field": "FirstName",
+              "field_snake": "first_name"
+            },
+            "n_const_2": {
+              "kind": "const",
+              "value": 1,
+              "type": "integer"
+            },
+            "n_fn_3": {
+              "kind": "fn",
+              "name": "LEFT",
+              "args": [
+                "n_ref_1",
+                "n_const_2"
+              ]
+            },
+            "n_ref_4": {
               "kind": "field_ref",
               "field": "LastName",
               "field_snake": "last_name"
             },
+            "n_const_5": {
+              "kind": "const",
+              "value": 1,
+              "type": "integer"
+            },
+            "n_fn_6": {
+              "kind": "fn",
+              "name": "LEFT",
+              "args": [
+                "n_ref_4",
+                "n_const_5"
+              ]
+            },
+            "n_op_7": {
+              "kind": "op",
+              "name": "CONCAT",
+              "args": [
+                "n_fn_3",
+                "n_fn_6"
+              ]
+            },
+            "n_result_Initials": {
+              "kind": "result",
+              "field": "Initials",
+              "field_snake": "initials",
+              "in": [
+                "n_op_7"
+              ]
+            }
+          },
+          "edges": [
+            [
+              "n_ref_1",
+              "n_fn_3"
+            ],
+            [
+              "n_const_2",
+              "n_fn_3"
+            ],
+            [
+              "n_ref_4",
+              "n_fn_6"
+            ],
+            [
+              "n_const_5",
+              "n_fn_6"
+            ],
+            [
+              "n_fn_3",
+              "n_op_7"
+            ],
+            [
+              "n_fn_6",
+              "n_op_7"
+            ],
+            [
+              "n_op_7",
+              "n_result_Initials"
+            ]
+          ]
+        },
+        "FullName": {
+          "formula_source": "={{FirstName}} & \" \" & {{LastName}}",
+          "template_hash": "sha256:ae6e94fd35af410b",
+          "root_node": "n_result_FullName",
+          "nodes": {
+            "n_ref_1": {
+              "kind": "field_ref",
+              "field": "FirstName",
+              "field_snake": "first_name"
+            },
             "n_const_2": {
               "kind": "const",
-              "value": ", ",
+              "value": " ",
               "type": "string"
             },
             "n_ref_3": {
               "kind": "field_ref",
-              "field": "FirstName",
-              "field_snake": "first_name"
+              "field": "LastName",
+              "field_snake": "last_name"
             },
             "n_op_4": {
               "kind": "op",
@@ -188,6 +291,81 @@
         }
       },
       "description": "Table: Customers"
+    },
+    "__meta__": {
+      "id_field": "MetaKey",
+      "id_field_snake": "meta_key",
+      "fields": {
+        "MetaKey": {
+          "datatype": "string",
+          "nullable": false,
+          "type": "raw",
+          "description": "The metadata key (e.g. 'tagline', 'motif_palette', 'substrates'). Unique within the table."
+        },
+        "Name": {
+          "datatype": "string",
+          "nullable": false,
+          "type": "calculated",
+          "description": "Identifier for this metadata entry. Mirrors MetaKey so the row is addressable by Name like every other table."
+        },
+        "ValueType": {
+          "datatype": "string",
+          "nullable": false,
+          "type": "raw",
+          "description": "How to interpret the value columns: 'string' (use StringValue), 'object' (parse JsonValue as JSON object), 'array' (parse JsonValue as JSON array)."
+        },
+        "StringValue": {
+          "datatype": "string",
+          "nullable": true,
+          "type": "raw",
+          "description": "Plain string value. Populated when ValueType == 'string'; null otherwise."
+        },
+        "JsonValue": {
+          "datatype": "string",
+          "nullable": true,
+          "type": "raw",
+          "description": "JSON-encoded value. Populated when ValueType == 'object' or 'array'; null when ValueType == 'string'."
+        }
+      },
+      "calc_order": [
+        "Name"
+      ],
+      "dep_edges": [
+        [
+          "MetaKey",
+          "Name"
+        ]
+      ],
+      "expr_templates": {
+        "Name": {
+          "formula_source": "={{MetaKey}}",
+          "template_hash": "sha256:28a4542ca0b8a155",
+          "root_node": "n_result_Name",
+          "nodes": {
+            "n_ref_1": {
+              "kind": "field_ref",
+              "field": "MetaKey",
+              "field_snake": "meta_key"
+            },
+            "n_result_Name": {
+              "kind": "result",
+              "field": "Name",
+              "field_snake": "name",
+              "in": [
+                "n_ref_1"
+              ]
+            }
+          },
+          "edges": [
+            [
+              "n_ref_1",
+              "n_result_Name"
+            ]
+          ],
+          "description": "Identifier for this metadata entry. Mirrors MetaKey so the row is addressable by Name like every other table."
+        }
+      },
+      "description": "Project-level metadata that travels with the rulebook: tagline, motif, narrative descriptions, substrate list, signature rows, etc. One row per metadata key. Use ValueType to interpret StringValue vs JsonValue."
     }
   }
 }

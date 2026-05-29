@@ -3245,6 +3245,13 @@
         "type": "raw",
         "nullable": true,
         "Description": "Which persona area this screen belongs to. Drives route prefix and sidebar section."
+      },
+      {
+        "name": "Description",
+        "datatype": "string",
+        "type": "raw",
+        "Description": "Free-text annotation for this row.",
+        "nullable": true
       }
     ],
     "data": [
@@ -4446,7 +4453,7 @@
         "Flavor": "tutorial-ladder",
         "Complexity": "minimal",
         "EntityCount": 1,
-        "CalculatedCount": 3,
+        "CalculatedCount": 2,
         "AggregationCount": 0,
         "LookupCount": 0,
         "LearningFocus": "One entity, one calculated field (CONCAT(First, ' ', Last)). The 'absolute minimum' demo — proves the toolchain end-to-end with no relationships.",

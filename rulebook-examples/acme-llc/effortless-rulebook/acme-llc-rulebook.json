@@ -62,7 +62,7 @@
         "type": "calculated",
         "nullable": true,
         "Description": "Full name is computed from the first and last name of the customer",
-        "formula": "={{LastName}} & \", \" & {{FirstName}}",
+        "formula": "={{FirstName}} & \" \" & {{LastName}}",
         "important": true,
         "explanation_rich": "**Last name first, courtroom-style.** `FullName = LastName & \", \" & FirstName` — the formula is trivial, but the *order* is the point. ACME, LLC files its customers the way a paralegal would: surname, comma, given name. Worked example: `LastName=\"Smith\"` and `FirstName=\"Bobby\"` resolves to `\"Smith, Bobby\"`. Flip the order in the rulebook and every substrate sorts and prints alphabetically by surname on the next read."
       }

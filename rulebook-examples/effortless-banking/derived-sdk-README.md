@@ -21,6 +21,7 @@ project and import what you need.
 | RiskRatingHistory | `useRiskRatingHistory()` | `/api/risk_rating_history` | `vw_risk_rating_history` |
 | Documents | `useDocuments()` | `/api/documents` | `vw_documents` |
 | Interactions | `useInteractions()` | `/api/interactions` | `vw_interactions` |
+| __meta__ | `use__meta__()` | `/api/__meta__` | `vw___meta__` |
 
 ## Frontend SDK (`src/derived-sdk/`)
 

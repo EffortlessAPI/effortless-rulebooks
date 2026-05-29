@@ -3,7 +3,7 @@
 // Reads only fields surfaced by /api/projects — never reaches into the rulebook
 // directly. The picker stays cheap; the interior pages do the heavy reads.
 
-export default function DomainTile({ d, onClick, accentColor = "#b48cff" }) {
+export default function DomainTile({ d, onClick, accentColor = "#b48cff", sinceLabel = null }) {
   const motif = d.motif || "default";
   const palette = d.motifPalette || {};
   const style = {};
@@ -46,6 +46,12 @@ export default function DomainTile({ d, onClick, accentColor = "#b48cff" }) {
         <div className="domain-tile-ribbon">
           <span className="domain-tile-status-dot" />
           <span>ready</span>
+          {sinceLabel && (
+            <>
+              <span className="domain-tile-ribbon-sep">·</span>
+              <span className="muted">{sinceLabel}</span>
+            </>
+          )}
           <span className="domain-tile-ribbon-sep">·</span>
           <span className="muted">open →</span>
         </div>

@@ -4,10 +4,13 @@
 -- Table: Customers
 context Customers
 
--- Identifier for the customers.
+-- Identifier for the cusfdsfdstomers.
 -- Formula: =SUBSTITUTE({{EmailAddress}}, "@", "-")
 derive Name: self.emailAddress.replace('@', '-')
 
+-- Formula for Initials - parse error: Unknown function: LEFT
+-- Original: =LEFT({{FirstName}}, 1) & LEFT({{LastName}}, 1)
+
 -- Full name is computed from the first and last name of the customer
--- Formula: ={{LastName}} & ", " & {{FirstName}}
-derive FullName: self.lastName + ', ' + self.firstName
+-- Formula: ={{FirstName}} & " " & {{LastName}}
+derive FullName: self.firstName + ' ' + self.lastName

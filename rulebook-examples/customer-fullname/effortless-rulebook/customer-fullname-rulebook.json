@@ -7,25 +7,27 @@
         "type": "raw"
       },
       {
+        "name": "EmailAddress",
+        "datatype": "string",
+        "type": "raw",
+        "Description": "Email address of the customer.",
+        "nullable": true
+      },
+      {
         "name": "Name",
         "datatype": "string",
         "type": "calculated",
         "Description": "Full name is computed from the first and last name of the customer",
-        "formula": "={{LastName}} & \", \" & {{FirstName}}",
+        "formula": "={{FirstName}} & \" \" & {{LastName}} ",
         "nullable": true
       },
       {
-        "name": "EmailAddress",
-        "datatype": "string",
-        "type": "raw",
-        "Description": "Thec ustomers email address"
-      },
-      {
-        "name": "Initials",
+        "name": "FullName",
         "datatype": "string",
         "type": "calculated",
-        "Description": "dsfdfds",
-        "formula": "=LEFT({{FirstName}}, 1) & LEFT({{LastName}}, 1) & \".\""
+        "Description": "Last-name-first display form, computed from last and first name.",
+        "formula": "={{LastName}} & \", \" & {{FirstName}}",
+        "nullable": true
       },
       {
         "name": "FirstName",
@@ -38,44 +40,51 @@
         "datatype": "string",
         "type": "raw",
         "Description": "Last Name of the customer - used to make the full name"
+      },
+      {
+        "name": "Initials",
+        "datatype": "string",
+        "type": "calculated",
+        "Description": "Initials computed from the first letter of the first and last name.",
+        "formula": "=LEFT({{FirstName}}, 1) & LEFT({{LastName}}, 1) & \".\""
       }
     ],
     "data": [
       {
-        "CustomerId": "jane-smith-email-com",
+        "CustomerId": "cust-1000",
         "EmailAddress": "jane.smith@email.com",
+        "Name": "Jane Smith",
+        "FullName": "Smith, Jane",
         "FirstName": "Jane",
-        "LastName": "Smithy",
-        "Name": "Smithy, Jane",
-        "Initials": "JS.",
-        "FullName": "Smithy, Jane"
+        "LastName": "Smith",
+        "Initials": "JS."
       },
       {
-        "CustomerId": "john-doe-email-com",
+        "CustomerId": "cust-1001",
         "EmailAddress": "john.doe@email.com",
+        "Name": "John Doe",
+        "FullName": "Doe, John",
         "FirstName": "John",
         "LastName": "Doe",
-        "Name": "Doe, John",
-        "Initials": "JD.",
-        "FullName": "Doe, John"
+        "Initials": "JD."
       },
       {
-        "CustomerId": "emily-jones-email-com",
+        "CustomerId": "cust-1002",
         "EmailAddress": "emily.jones@email.com",
+        "Name": "Emily Jones",
+        "FullName": "Jones, Emily",
         "FirstName": "Emily",
         "LastName": "Jones",
-        "Name": "Jones, Emily",
-        "Initials": "EJ.",
-        "FullName": "Jones, Emily"
+        "Initials": "EJ."
       },
       {
-        "CustomerId": "alice-cooper",
+        "CustomerId": "cust-1003",
         "EmailAddress": "alice@cooper.com",
+        "Name": "Alice Cooper",
+        "FullName": "Cooper, Alice",
         "FirstName": "Alice",
-        "LastName": "Gutknecht",
-        "Name": "Gutknecht, Alice",
-        "Initials": "AG.",
-        "FullName": "Gutknecht, Alice"
+        "LastName": "Cooper",
+        "Initials": "AC."
       }
     ]
   },

@@ -5,7 +5,7 @@ import pg from 'pg';
 
 const PORT = Number(process.env.PORT ?? 3032);
 const DATABASE_URL =
-  process.env.DATABASE_URL ?? 'postgresql://postgres@localhost:5432/erb_intelligence_taxonomy_demo';
+  process.env.DATABASE_URL ?? 'postgresql://postgres@localhost:5432/erb_intelligence_taxonomy';
 const SERVE_STATIC = process.env.SERVE_STATIC === 'true';
 const STATIC_DIR = process.env.STATIC_DIR ?? path.resolve(process.cwd(), '../web/dist');
 

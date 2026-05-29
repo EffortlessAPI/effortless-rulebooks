@@ -16,7 +16,7 @@ function spawnRefresh() {
 const PORT = Number(process.env.PORT || 3032);
 const DATABASE_URL =
   process.env.DATABASE_URL ||
-  "postgresql://postgres@localhost:5432/erb_customer_crm_demo";
+  "postgresql://postgres@localhost:5432/erb_customer_crm";
 
 const pool = new pg.Pool({ connectionString: DATABASE_URL });
 

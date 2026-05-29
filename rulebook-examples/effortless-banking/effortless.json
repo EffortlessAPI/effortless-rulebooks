@@ -16,11 +16,10 @@
       "IsSSoTTranspiler": false,
       "Name": "rulebooktopostgres",
       "RelativePath": "/postgres-bootstrap",
-      "CommandLine": "rulebook-to-postgres -i ../effortless-rulebook/effortless-banking-rulebook.json -p mode=drop-all -p stage=dev -p drop_all=true",
+      "CommandLine": "rulebook-to-postgres -i ../effortless-rulebook/effortless-banking-rulebook.json -p mode=drop-all -p stage=dev -p drop_all=true -p pk_type=string",
       "IsDisabled": false,
-      "PinnedVersion": "v2026.05.09.1738",
-      "LastVersionUsed": "v2026.05.09.1738",
-      "LastUrl": "https://effortless-rulebook-to-postgres-v2026-05-09-1738-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
+      "LastVersionUsed": "v2026.05.29.1925",
+      "LastUrl": "https://effortless-rulebook-to-postgres-v2026-05-29-1925-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     },
     {
       "IsSSoTTranspiler": false,
@@ -41,11 +40,26 @@
     },
     {
       "IsSSoTTranspiler": false,
+      "Name": "pull-dump",
+      "RelativePath": "/postgres-bootstrap",
+      "CommandLine": "-exec ./pull-from-postgres.sh",
+      "IsDisabled": false,
+      "Description": "Export current Postgres database to .pg-dump.sql"
+    },
+    {
+      "IsSSoTTranspiler": false,
       "Name": "httplocalhost4242postgrescalculatedtorulebook",
       "RelativePath": "/postgres-bootstrap",
-      "CommandLine": "http://localhost:4242/postgres-calculated-to-rulebook -i ../effortless-rulebook/effortless-banking-rulebook.json",
+      "CommandLine": "http://localhost:4242/postgres-calculated-to-rulebook -i ../effortless-rulebook/effortless-banking-rulebook.json -i .pg-dump.sql",
       "IsDisabled": false,
-      "Description": "Reverse spoke: refresh rulebook derived-field display copies from Postgres views after the destructive rebuild (raws verified, never written)."
+      "Description": "Pure function: sync rulebook data[] from pg_dump. Both files passed as zipped payload to ssotme-proxy."
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "rulebooktorulespeak",
+      "RelativePath": "/rulespeak",
+      "CommandLine": "rulebook-to-rulespeak -i ../effortless-rulebook/effortless-banking-rulebook.json",
+      "IsDisabled": false
     }
   ]
 }

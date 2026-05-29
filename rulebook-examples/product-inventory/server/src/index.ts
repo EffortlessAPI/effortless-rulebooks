@@ -23,7 +23,7 @@ const port = process.env.PORT || 3032;
 app.use(express.json());
 
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL || 'postgresql://postgres@localhost:5432/erb_product_inventory_demo',
+  connectionString: process.env.DATABASE_URL || 'postgresql://postgres@localhost:5432/erb_product_inventory',
 });
 
 interface User {

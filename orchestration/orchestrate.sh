@@ -126,6 +126,31 @@ set_active_domain() {
     # Persist to the CLI scratchpad so the next ./start.sh (or any other
     # CLI tool that reads the file) picks up the same domain.
     printf '%s\n' "$ACTIVE_DOMAIN" > "$ACTIVE_DOMAIN_FILE"
+    # Bump the domain folder's mtime so "recently opened" sort reflects this.
+    local _dir="$RULEBOOK_EXAMPLES_DIR/$ACTIVE_DOMAIN"
+    [ -d "$_dir" ] && touch -- "$_dir"
+}
+
+get_mtime() {
+    # Portable mtime-in-epoch-seconds (macOS first, Linux fallback).
+    stat -f "%m" "$1" 2>/dev/null || stat -c "%Y" "$1" 2>/dev/null
+}
+
+format_time_since() {
+    local epoch="$1"
+    [ -z "$epoch" ] && { echo "never"; return; }
+    local now diff
+    now=$(date +%s)
+    diff=$((now - epoch))
+    [ "$diff" -lt 0 ] && diff=0
+    if   [ "$diff" -lt 60 ];       then echo "${diff}s ago"
+    elif [ "$diff" -lt 3600 ];     then echo "$((diff/60))m ago"
+    elif [ "$diff" -lt 86400 ];    then echo "$((diff/3600))h ago"
+    elif [ "$diff" -lt 604800 ];   then echo "$((diff/86400))d ago"
+    elif [ "$diff" -lt 2592000 ];  then echo "$((diff/604800))w ago"
+    elif [ "$diff" -lt 31536000 ]; then echo "$((diff/2592000))mo ago"
+    else                                echo "$((diff/31536000))y ago"
+    fi
 }
 
 get_domain_rulebook_path() {
@@ -559,77 +584,130 @@ show_menu() {
 # =============================================================================
 # ACTION FUNCTIONS
 # =============================================================================
+: "${DOMAIN_SORT_MODE:=mtime-desc}"
+
+_sort_mode_label() {
+    case "$1" in
+        mtime-desc) echo "recently opened" ;;
+        mtime-asc)  echo "least recently opened" ;;
+        name-asc)   echo "alphabetical" ;;
+        name-desc)  echo "alphabetical reversed" ;;
+        *)          echo "$1" ;;
+    esac
+}
+
+_next_sort_mode() {
+    case "$1" in
+        mtime-desc) echo "name-asc" ;;
+        name-asc)   echo "mtime-asc" ;;
+        mtime-asc)  echo "name-desc" ;;
+        name-desc)  echo "mtime-desc" ;;
+        *)          echo "mtime-desc" ;;
+    esac
+}
+
 action_select_domain() {
     CURRENT_DOMAIN=$(get_active_domain)
 
-    echo ""
-    echo -e "${BOLD}${CYAN}╔════════════════════════════════════════════════════════════╗${NC}"
-    echo -e "${BOLD}${CYAN}║${NC}              ${BOLD}${WHITE}SELECT ONTOLOGY${NC}                               ${BOLD}${CYAN}║${NC}"
-    echo -e "${BOLD}${CYAN}╚════════════════════════════════════════════════════════════╝${NC}"
-    echo ""
-    echo -e "  Active: ${GREEN}${CURRENT_DOMAIN}${NC}"
-    echo ""
+    while true; do
+        echo ""
+        echo -e "${BOLD}${CYAN}╔════════════════════════════════════════════════════════════╗${NC}"
+        echo -e "${BOLD}${CYAN}║${NC}              ${BOLD}${WHITE}SELECT ONTOLOGY${NC}                               ${BOLD}${CYAN}║${NC}"
+        echo -e "${BOLD}${CYAN}╚════════════════════════════════════════════════════════════╝${NC}"
+        echo ""
+        echo -e "  Active: ${GREEN}${CURRENT_DOMAIN}${NC}"
+        echo -e "  Sort:   ${DIM}$(_sort_mode_label "$DOMAIN_SORT_MODE")${NC}"
+        echo ""
 
-    DOMAINS_ARRAY=()
-    INDEX=1
-    while IFS= read -r domain; do
-        DOMAINS_ARRAY+=("$domain")
-        if [ "$domain" = "$CURRENT_DOMAIN" ]; then
-            echo -e "  ${GREEN}[$INDEX]${NC} ${GREEN}${domain}${NC} ${DIM}(active)${NC}"
-        else
-            echo -e "  ${CYAN}[$INDEX]${NC} ${domain}"
-        fi
-        INDEX=$((INDEX + 1))
-    done < <(list_domains)
+        # Build (domain<TAB>mtime) rows, then sort per mode.
+        local _rows=()
+        local _d _mt
+        while IFS= read -r _d; do
+            _mt=$(get_mtime "$RULEBOOK_EXAMPLES_DIR/$_d")
+            _rows+=("${_d}	${_mt:-0}")
+        done < <(list_domains)
 
-    DOMAINS_COUNT=${#DOMAINS_ARRAY[@]}
+        local _sorted
+        case "$DOMAIN_SORT_MODE" in
+            mtime-desc) _sorted=$(printf '%s\n' "${_rows[@]}" | sort -t '	' -k2,2nr -k1,1) ;;
+            mtime-asc)  _sorted=$(printf '%s\n' "${_rows[@]}" | sort -t '	' -k2,2n  -k1,1) ;;
+            name-asc)   _sorted=$(printf '%s\n' "${_rows[@]}" | sort -t '	' -k1,1) ;;
+            name-desc)  _sorted=$(printf '%s\n' "${_rows[@]}" | sort -t '	' -k1,1r) ;;
+            *)          _sorted=$(printf '%s\n' "${_rows[@]}" | sort -t '	' -k2,2nr -k1,1) ;;
+        esac
 
-    echo ""
-    echo -e "  ${RED}[Q]${NC} Cancel"
-    echo ""
-
-    read -p "  Select domain [1-$DOMAINS_COUNT, Q]: " DOMAIN_CHOICE
-
-    case $DOMAIN_CHOICE in
-        [Qq]|"")
-            echo -e "  ${DIM}Cancelled - no changes made${NC}"
-            echo ""
-            return
-            ;;
-        [0-9]|[0-9][0-9])
-            if [ "$DOMAIN_CHOICE" -ge 1 ] && [ "$DOMAIN_CHOICE" -le "$DOMAINS_COUNT" ]; then
-                NEW_DOMAIN="${DOMAINS_ARRAY[$((DOMAIN_CHOICE - 1))]}"
-                if [ "$NEW_DOMAIN" = "$CURRENT_DOMAIN" ]; then
-                    echo -e "  ${DIM}Already using this domain${NC}"
-                    echo ""
-                    read -p "Press Enter to continue..."
-                    return
-                fi
-                RULEBOOK="$(get_domain_rulebook_path "$NEW_DOMAIN")"
-                if [ ! -f "$RULEBOOK" ]; then
-                    echo -e "${RED}No rulebook found at $RULEBOOK${NC}"
-                    read -p "Press Enter to continue..."
-                    return
-                fi
-                set_active_domain "$NEW_DOMAIN"
-                echo ""
-                echo -e "${BOLD}${GREEN}Switched to: ${WHITE}${NEW_DOMAIN}${NC}"
-                echo ""
-                read -p "  Run conformance tests now for ${NEW_DOMAIN}? [Y/n] " RUN_NOW
-                if [[ ! "$RUN_NOW" =~ ^[Nn]$ ]]; then
-                    run_substrates ""
-                    return
-                fi
+        DOMAINS_ARRAY=()
+        local INDEX=1
+        local domain mtime since
+        while IFS=$'\t' read -r domain mtime; do
+            [ -z "$domain" ] && continue
+            DOMAINS_ARRAY+=("$domain")
+            since=$(format_time_since "$mtime")
+            if [ "$domain" = "$CURRENT_DOMAIN" ]; then
+                echo -e "  ${GREEN}[$INDEX]${NC} ${GREEN}${domain}${NC} ${DIM}(active, ${since})${NC}"
             else
-                echo -e "${RED}Invalid selection: $DOMAIN_CHOICE${NC}"
+                echo -e "  ${CYAN}[$INDEX]${NC} ${domain} ${DIM}(${since})${NC}"
             fi
-            ;;
-        *)
-            echo -e "${RED}Invalid option: $DOMAIN_CHOICE${NC}"
-            ;;
-    esac
-    echo ""
-    read -p "Press Enter to continue..."
+            INDEX=$((INDEX + 1))
+        done <<< "$_sorted"
+
+        DOMAINS_COUNT=${#DOMAINS_ARRAY[@]}
+
+        echo ""
+        echo -e "  ${YELLOW}[S]${NC} Change sort"
+        echo -e "  ${RED}[Q]${NC} Cancel"
+        echo ""
+
+        read -p "  Select domain [1-$DOMAINS_COUNT, S, Q]: " DOMAIN_CHOICE
+
+        case $DOMAIN_CHOICE in
+            [Ss])
+                DOMAIN_SORT_MODE=$(_next_sort_mode "$DOMAIN_SORT_MODE")
+                continue
+                ;;
+            [Qq]|"")
+                echo -e "  ${DIM}Cancelled - no changes made${NC}"
+                echo ""
+                return
+                ;;
+            [0-9]|[0-9][0-9])
+                if [ "$DOMAIN_CHOICE" -ge 1 ] && [ "$DOMAIN_CHOICE" -le "$DOMAINS_COUNT" ]; then
+                    NEW_DOMAIN="${DOMAINS_ARRAY[$((DOMAIN_CHOICE - 1))]}"
+                    if [ "$NEW_DOMAIN" = "$CURRENT_DOMAIN" ]; then
+                        # Re-opening the active domain still counts as opening it.
+                        set_active_domain "$NEW_DOMAIN"
+                        echo -e "  ${DIM}Already using this domain (bumped recently-opened time)${NC}"
+                        echo ""
+                        read -p "Press Enter to continue..."
+                        return
+                    fi
+                    RULEBOOK="$(get_domain_rulebook_path "$NEW_DOMAIN")"
+                    if [ ! -f "$RULEBOOK" ]; then
+                        echo -e "${RED}No rulebook found at $RULEBOOK${NC}"
+                        read -p "Press Enter to continue..."
+                        return
+                    fi
+                    set_active_domain "$NEW_DOMAIN"
+                    echo ""
+                    echo -e "${BOLD}${GREEN}Switched to: ${WHITE}${NEW_DOMAIN}${NC}"
+                    echo ""
+                    read -p "  Run conformance tests now for ${NEW_DOMAIN}? [Y/n] " RUN_NOW
+                    if [[ ! "$RUN_NOW" =~ ^[Nn]$ ]]; then
+                        run_substrates ""
+                        return
+                    fi
+                else
+                    echo -e "${RED}Invalid selection: $DOMAIN_CHOICE${NC}"
+                fi
+                ;;
+            *)
+                echo -e "${RED}Invalid option: $DOMAIN_CHOICE${NC}"
+                ;;
+        esac
+        echo ""
+        read -p "Press Enter to continue..."
+        return
+    done
 }
 
 action_import_from_airtable() {

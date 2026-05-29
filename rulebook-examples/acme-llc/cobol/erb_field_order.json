@@ -6,6 +6,7 @@
       "FirstName",
       "LastName",
       "Name",
+      "Initials",
       "FullName"
     ],
     "raw_count": 4
@@ -17,7 +18,18 @@
       "FirstName",
       "LastName",
       "Name",
+      "Initials",
       "FullName"
+    ],
+    "raw_count": 4
+  },
+  "__meta__": {
+    "fields": [
+      "MetaKey",
+      "ValueType",
+      "StringValue",
+      "JsonValue",
+      "Name"
     ],
     "raw_count": 4
   },
