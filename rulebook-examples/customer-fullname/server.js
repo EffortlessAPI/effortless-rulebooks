@@ -18,9 +18,9 @@ const pool = new Pool({ connectionString: DATABASE_URL });
 
 // The app READS from the vw_* view (raw + every calculated field, denormalized)
 // and WRITES to the base table (raw facts only). It never recomputes business
-// logic itself — FullName/Initials/Name come from the rulebook-derived view.
+// logic itself — Name/Initials come from the rulebook-derived view.
 const VIEW_COLUMNS =
-  'customer_id, name, email_address, initials, first_name, last_name, full_name';
+  'customer_id, name, email_address, initials, first_name, last_name';
 
 // Map a vw_customers row (snake_case) to the API shape the frontend expects.
 function toApi(row) {
@@ -31,7 +31,6 @@ function toApi(row) {
     Initials: row.initials,
     FirstName: row.first_name,
     LastName: row.last_name,
-    FullName: row.full_name,
   };
 }
 
