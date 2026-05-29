@@ -63,14 +63,18 @@
         "Email": "alice@example.com",
         "FirstName": "Alice",
         "LastName": "Anderson",
-        "Role": "admin"
+        "Role": "admin",
+        "Name": "alice@example.com",
+        "FullName": "Anderson, Alice"
       },
       {
         "UsersId": "bob@example.com",
         "Email": "bob@example.com",
         "FirstName": "Bob",
         "LastName": "Baker",
-        "Role": "viewer"
+        "Role": "viewer",
+        "Name": "bob@example.com",
+        "FullName": "Baker, Bob"
       }
     ]
   },
@@ -172,31 +176,61 @@
         "CustomersId": "ada.lovelace@analytical.engine",
         "Email": "ada.lovelace@analytical.engine",
         "FirstName": "Ada",
-        "LastName": "Lovelace"
+        "LastName": "Lovelace",
+        "Name": "ada.lovelace@analytical.engine",
+        "FullName": "Lovelace, Ada",
+        "LifetimeSales": 50.0,
+        "UnpaidOrderCount": 0,
+        "LargeOrderCount": 1.0,
+        "IsVIP": false
       },
       {
         "CustomersId": "grace.hopper@nautical.mil",
         "Email": "grace.hopper@nautical.mil",
         "FirstName": "Grace",
-        "LastName": "Hopper"
+        "LastName": "Hopper",
+        "Name": "grace.hopper@nautical.mil",
+        "FullName": "Hopper, Grace",
+        "LifetimeSales": 320.5,
+        "UnpaidOrderCount": 2,
+        "LargeOrderCount": 1.0,
+        "IsVIP": false
       },
       {
         "CustomersId": "alan.turing@bletchley.uk",
         "Email": "alan.turing@bletchley.uk",
         "FirstName": "Alan",
-        "LastName": "Turing"
+        "LastName": "Turing",
+        "Name": "alan.turing@bletchley.uk",
+        "FullName": "Turing, Alan",
+        "LifetimeSales": 99.0,
+        "UnpaidOrderCount": 0,
+        "LargeOrderCount": 0,
+        "IsVIP": false
       },
       {
         "CustomersId": "katherine.johnson@nasa.gov",
         "Email": "katherine.johnson@nasa.gov",
         "FirstName": "Katherine",
-        "LastName": "Johnson"
+        "LastName": "Johnson",
+        "Name": "katherine.johnson@nasa.gov",
+        "FullName": "Johnson, Katherine",
+        "LifetimeSales": 1152.0,
+        "UnpaidOrderCount": 1,
+        "LargeOrderCount": 2.0,
+        "IsVIP": true
       },
       {
         "CustomersId": "linus.torvalds@kernel.org",
         "Email": "linus.torvalds@kernel.org",
         "FirstName": "Linus",
-        "LastName": "Torvalds"
+        "LastName": "Torvalds",
+        "Name": "linus.torvalds@kernel.org",
+        "FullName": "Torvalds, Linus",
+        "LifetimeSales": 2580.0,
+        "UnpaidOrderCount": 1,
+        "LargeOrderCount": 1.0,
+        "IsVIP": true
       }
     ]
   },
@@ -349,70 +383,200 @@
         "OrderNumber": "ORD-1001",
         "OrderDate": "2026-01-15",
         "Customer": "ada.lovelace@analytical.engine",
-        "Total": 250.0
+        "Total": 250.0,
+        "Name": "ORD-1001",
+        "CustomerFirstName": "Ada",
+        "CustomerLastName": "Lovelace",
+        "CustomerFullName": "Lovelace, Ada",
+        "CustomerEmail": "ada.lovelace@analytical.engine",
+        "AmountPaid": 250.0,
+        "Balance": 0.0,
+        "IsPaid": true,
+        "UnpaidFlag": 0,
+        "IsRecent": false,
+        "RecentTotal": 0,
+        "FCSSubtotal": 0,
+        "FCSUnitCount": 0
       },
       {
         "OrdersId": "ORD-1002",
         "OrderNumber": "ORD-1002",
         "OrderDate": "2026-02-03",
         "Customer": "ada.lovelace@analytical.engine",
-        "Total": 875.0
+        "Total": 875.0,
+        "Name": "ORD-1002",
+        "CustomerFirstName": "Ada",
+        "CustomerLastName": "Lovelace",
+        "CustomerFullName": "Lovelace, Ada",
+        "CustomerEmail": "ada.lovelace@analytical.engine",
+        "AmountPaid": 875.0,
+        "Balance": 0.0,
+        "IsPaid": true,
+        "UnpaidFlag": 0,
+        "IsRecent": false,
+        "RecentTotal": 0,
+        "FCSSubtotal": 0,
+        "FCSUnitCount": 0
       },
       {
         "OrdersId": "ORD-1003",
         "OrderNumber": "ORD-1003",
         "OrderDate": "2026-02-20",
         "Customer": "grace.hopper@nautical.mil",
-        "Total": 1499.99
+        "Total": 1499.99,
+        "Name": "ORD-1003",
+        "CustomerFirstName": "Grace",
+        "CustomerLastName": "Hopper",
+        "CustomerFullName": "Hopper, Grace",
+        "CustomerEmail": "grace.hopper@nautical.mil",
+        "AmountPaid": 1000.0,
+        "Balance": 499.99,
+        "IsPaid": false,
+        "UnpaidFlag": 1,
+        "IsRecent": false,
+        "RecentTotal": 0,
+        "FCSSubtotal": 29.4,
+        "FCSUnitCount": 8
       },
       {
         "OrdersId": "ORD-1004",
         "OrderNumber": "ORD-1004",
         "OrderDate": "2026-03-10",
         "Customer": "grace.hopper@nautical.mil",
-        "Total": 320.5
+        "Total": 320.5,
+        "Name": "ORD-1004",
+        "CustomerFirstName": "Grace",
+        "CustomerLastName": "Hopper",
+        "CustomerFullName": "Hopper, Grace",
+        "CustomerEmail": "grace.hopper@nautical.mil",
+        "AmountPaid": 0,
+        "Balance": 320.5,
+        "IsPaid": false,
+        "UnpaidFlag": 1,
+        "IsRecent": true,
+        "RecentTotal": 320.5,
+        "FCSSubtotal": 4.2,
+        "FCSUnitCount": 1
       },
       {
         "OrdersId": "ORD-1005",
         "OrderNumber": "ORD-1005",
         "OrderDate": "2026-03-22",
         "Customer": "alan.turing@bletchley.uk",
-        "Total": 99.0
+        "Total": 99.0,
+        "Name": "ORD-1005",
+        "CustomerFirstName": "Alan",
+        "CustomerLastName": "Turing",
+        "CustomerFullName": "Turing, Alan",
+        "CustomerEmail": "alan.turing@bletchley.uk",
+        "AmountPaid": 99.0,
+        "Balance": 0.0,
+        "IsPaid": true,
+        "UnpaidFlag": 0,
+        "IsRecent": true,
+        "RecentTotal": 99.0,
+        "FCSSubtotal": 0,
+        "FCSUnitCount": 0
       },
       {
         "OrdersId": "ORD-1006",
         "OrderNumber": "ORD-1006",
         "OrderDate": "2026-04-01",
         "Customer": "katherine.johnson@nasa.gov",
-        "Total": 540.0
+        "Total": 540.0,
+        "Name": "ORD-1006",
+        "CustomerFirstName": "Katherine",
+        "CustomerLastName": "Johnson",
+        "CustomerFullName": "Johnson, Katherine",
+        "CustomerEmail": "katherine.johnson@nasa.gov",
+        "AmountPaid": 540.0,
+        "Balance": 0.0,
+        "IsPaid": true,
+        "UnpaidFlag": 0,
+        "IsRecent": true,
+        "RecentTotal": 540.0,
+        "FCSSubtotal": 48.0,
+        "FCSUnitCount": 4
       },
       {
         "OrdersId": "ORD-1007",
         "OrderNumber": "ORD-1007",
         "OrderDate": "2026-04-12",
         "Customer": "katherine.johnson@nasa.gov",
-        "Total": 612.0
+        "Total": 612.0,
+        "Name": "ORD-1007",
+        "CustomerFirstName": "Katherine",
+        "CustomerLastName": "Johnson",
+        "CustomerFullName": "Johnson, Katherine",
+        "CustomerEmail": "katherine.johnson@nasa.gov",
+        "AmountPaid": 0,
+        "Balance": 612.0,
+        "IsPaid": false,
+        "UnpaidFlag": 1,
+        "IsRecent": true,
+        "RecentTotal": 612.0,
+        "FCSSubtotal": 73.0,
+        "FCSUnitCount": 5
       },
       {
         "OrdersId": "ORD-1008",
         "OrderNumber": "ORD-1008",
         "OrderDate": "2026-04-28",
         "Customer": "linus.torvalds@kernel.org",
-        "Total": 2400.0
+        "Total": 2400.0,
+        "Name": "ORD-1008",
+        "CustomerFirstName": "Linus",
+        "CustomerLastName": "Torvalds",
+        "CustomerFullName": "Torvalds, Linus",
+        "CustomerEmail": "linus.torvalds@kernel.org",
+        "AmountPaid": 2400.0,
+        "Balance": 0.0,
+        "IsPaid": true,
+        "UnpaidFlag": 0,
+        "IsRecent": true,
+        "RecentTotal": 2400.0,
+        "FCSSubtotal": 92.9,
+        "FCSUnitCount": 13
       },
       {
         "OrdersId": "ORD-1009",
         "OrderNumber": "ORD-1009",
         "OrderDate": "2026-05-05",
         "Customer": "linus.torvalds@kernel.org",
-        "Total": 180.0
+        "Total": 180.0,
+        "Name": "ORD-1009",
+        "CustomerFirstName": "Linus",
+        "CustomerLastName": "Torvalds",
+        "CustomerFullName": "Torvalds, Linus",
+        "CustomerEmail": "linus.torvalds@kernel.org",
+        "AmountPaid": 0,
+        "Balance": 180.0,
+        "IsPaid": false,
+        "UnpaidFlag": 1,
+        "IsRecent": true,
+        "RecentTotal": 180.0,
+        "FCSSubtotal": 0,
+        "FCSUnitCount": 0
       },
       {
         "OrdersId": "ORD-1010",
         "OrderNumber": "ORD-1010",
         "OrderDate": "2026-05-15",
         "Customer": "ada.lovelace@analytical.engine",
-        "Total": 50.0
+        "Total": 50.0,
+        "Name": "ORD-1010",
+        "CustomerFirstName": "Ada",
+        "CustomerLastName": "Lovelace",
+        "CustomerFullName": "Lovelace, Ada",
+        "CustomerEmail": "ada.lovelace@analytical.engine",
+        "AmountPaid": 50.0,
+        "Balance": 0.0,
+        "IsPaid": true,
+        "UnpaidFlag": 0,
+        "IsRecent": true,
+        "RecentTotal": 50.0,
+        "FCSSubtotal": 0,
+        "FCSUnitCount": 0
       }
     ]
   },
@@ -549,7 +713,17 @@
         "OrderId": "ORD-1001",
         "PaymentDate": "2026-01-16",
         "Amount": 250.0,
-        "Method": "card"
+        "Method": "card",
+        "Name": "PMT-2001",
+        "OrderNumber": "ORD-1001",
+        "OrderDate": "2026-01-15",
+        "OrderTotal": 250.0,
+        "OrderAmountPaid": 250.0,
+        "OrderBalance": 0.0,
+        "OrderIsPaid": true,
+        "OrderCustomer": "ada.lovelace@analytical.engine",
+        "CustomerFullName": "Lovelace, Ada",
+        "CustomerEmail": "ada.lovelace@analytical.engine"
       },
       {
         "PaymentsId": "PMT-2002",
@@ -557,7 +731,17 @@
         "OrderId": "ORD-1002",
         "PaymentDate": "2026-02-04",
         "Amount": 500.0,
-        "Method": "card"
+        "Method": "card",
+        "Name": "PMT-2002",
+        "OrderNumber": "ORD-1002",
+        "OrderDate": "2026-02-03",
+        "OrderTotal": 875.0,
+        "OrderAmountPaid": 875.0,
+        "OrderBalance": 0.0,
+        "OrderIsPaid": true,
+        "OrderCustomer": "ada.lovelace@analytical.engine",
+        "CustomerFullName": "Lovelace, Ada",
+        "CustomerEmail": "ada.lovelace@analytical.engine"
       },
       {
         "PaymentsId": "PMT-2003",
@@ -565,7 +749,17 @@
         "OrderId": "ORD-1002",
         "PaymentDate": "2026-02-18",
         "Amount": 375.0,
-        "Method": "ach"
+        "Method": "ach",
+        "Name": "PMT-2003",
+        "OrderNumber": "ORD-1002",
+        "OrderDate": "2026-02-03",
+        "OrderTotal": 875.0,
+        "OrderAmountPaid": 875.0,
+        "OrderBalance": 0.0,
+        "OrderIsPaid": true,
+        "OrderCustomer": "ada.lovelace@analytical.engine",
+        "CustomerFullName": "Lovelace, Ada",
+        "CustomerEmail": "ada.lovelace@analytical.engine"
       },
       {
         "PaymentsId": "PMT-2004",
@@ -573,7 +767,17 @@
         "OrderId": "ORD-1003",
         "PaymentDate": "2026-02-21",
         "Amount": 1000.0,
-        "Method": "wire"
+        "Method": "wire",
+        "Name": "PMT-2004",
+        "OrderNumber": "ORD-1003",
+        "OrderDate": "2026-02-20",
+        "OrderTotal": 1499.99,
+        "OrderAmountPaid": 1000.0,
+        "OrderBalance": 499.99,
+        "OrderIsPaid": false,
+        "OrderCustomer": "grace.hopper@nautical.mil",
+        "CustomerFullName": "Hopper, Grace",
+        "CustomerEmail": "grace.hopper@nautical.mil"
       },
       {
         "PaymentsId": "PMT-2005",
@@ -581,7 +785,17 @@
         "OrderId": "ORD-1005",
         "PaymentDate": "2026-03-23",
         "Amount": 99.0,
-        "Method": "cash"
+        "Method": "cash",
+        "Name": "PMT-2005",
+        "OrderNumber": "ORD-1005",
+        "OrderDate": "2026-03-22",
+        "OrderTotal": 99.0,
+        "OrderAmountPaid": 99.0,
+        "OrderBalance": 0.0,
+        "OrderIsPaid": true,
+        "OrderCustomer": "alan.turing@bletchley.uk",
+        "CustomerFullName": "Turing, Alan",
+        "CustomerEmail": "alan.turing@bletchley.uk"
       },
       {
         "PaymentsId": "PMT-2006",
@@ -589,7 +803,17 @@
         "OrderId": "ORD-1006",
         "PaymentDate": "2026-04-02",
         "Amount": 540.0,
-        "Method": "check"
+        "Method": "check",
+        "Name": "PMT-2006",
+        "OrderNumber": "ORD-1006",
+        "OrderDate": "2026-04-01",
+        "OrderTotal": 540.0,
+        "OrderAmountPaid": 540.0,
+        "OrderBalance": 0.0,
+        "OrderIsPaid": true,
+        "OrderCustomer": "katherine.johnson@nasa.gov",
+        "CustomerFullName": "Johnson, Katherine",
+        "CustomerEmail": "katherine.johnson@nasa.gov"
       },
       {
         "PaymentsId": "PMT-2007",
@@ -597,7 +821,17 @@
         "OrderId": "ORD-1008",
         "PaymentDate": "2026-04-29",
         "Amount": 1200.0,
-        "Method": "wire"
+        "Method": "wire",
+        "Name": "PMT-2007",
+        "OrderNumber": "ORD-1008",
+        "OrderDate": "2026-04-28",
+        "OrderTotal": 2400.0,
+        "OrderAmountPaid": 2400.0,
+        "OrderBalance": 0.0,
+        "OrderIsPaid": true,
+        "OrderCustomer": "linus.torvalds@kernel.org",
+        "CustomerFullName": "Torvalds, Linus",
+        "CustomerEmail": "linus.torvalds@kernel.org"
       },
       {
         "PaymentsId": "PMT-2008",
@@ -605,7 +839,17 @@
         "OrderId": "ORD-1008",
         "PaymentDate": "2026-05-10",
         "Amount": 1200.0,
-        "Method": "wire"
+        "Method": "wire",
+        "Name": "PMT-2008",
+        "OrderNumber": "ORD-1008",
+        "OrderDate": "2026-04-28",
+        "OrderTotal": 2400.0,
+        "OrderAmountPaid": 2400.0,
+        "OrderBalance": 0.0,
+        "OrderIsPaid": true,
+        "OrderCustomer": "linus.torvalds@kernel.org",
+        "CustomerFullName": "Torvalds, Linus",
+        "CustomerEmail": "linus.torvalds@kernel.org"
       },
       {
         "PaymentsId": "PMT-2009",
@@ -613,7 +857,17 @@
         "OrderId": "ORD-1010",
         "PaymentDate": "2026-05-16",
         "Amount": 50.0,
-        "Method": "card"
+        "Method": "card",
+        "Name": "PMT-2009",
+        "OrderNumber": "ORD-1010",
+        "OrderDate": "2026-05-15",
+        "OrderTotal": 50.0,
+        "OrderAmountPaid": 50.0,
+        "OrderBalance": 0.0,
+        "OrderIsPaid": true,
+        "OrderCustomer": "ada.lovelace@analytical.engine",
+        "CustomerFullName": "Lovelace, Ada",
+        "CustomerEmail": "ada.lovelace@analytical.engine"
       }
     ]
   },
@@ -694,31 +948,56 @@
         "JetModelsId": "F-16C",
         "ModelCode": "F-16C",
         "Manufacturer": "Lockheed Martin",
-        "Generation": 4
+        "Generation": 4,
+        "Name": "F-16C",
+        "IsFifthGen": false,
+        "FCSVariantCount": 2.0,
+        "TotalUnitsOrdered": 9,
+        "TotalRevenue": 33.6
       },
       {
         "JetModelsId": "F-22A",
         "ModelCode": "F-22A",
         "Manufacturer": "Lockheed Martin",
-        "Generation": 5
+        "Generation": 5,
+        "Name": "F-22A",
+        "IsFifthGen": true,
+        "FCSVariantCount": 1.0,
+        "TotalUnitsOrdered": 2,
+        "TotalRevenue": 37.0
       },
       {
         "JetModelsId": "F-35A",
         "ModelCode": "F-35A",
         "Manufacturer": "Lockheed Martin",
-        "Generation": 5
+        "Generation": 5,
+        "Name": "F-35A",
+        "IsFifthGen": true,
+        "FCSVariantCount": 1.0,
+        "TotalUnitsOrdered": 7,
+        "TotalRevenue": 84.0
       },
       {
         "JetModelsId": "F-18E",
         "ModelCode": "F-18E",
         "Manufacturer": "Boeing",
-        "Generation": 4
+        "Generation": 4,
+        "Name": "F-18E",
+        "IsFifthGen": false,
+        "FCSVariantCount": 1.0,
+        "TotalUnitsOrdered": 8,
+        "TotalRevenue": 46.4
       },
       {
         "JetModelsId": "EF-2000",
         "ModelCode": "EF-2000",
         "Manufacturer": "Eurofighter",
-        "Generation": 4
+        "Generation": 4,
+        "Name": "EF-2000",
+        "IsFifthGen": false,
+        "FCSVariantCount": 1.0,
+        "TotalUnitsOrdered": 5,
+        "TotalRevenue": 46.5
       }
     ]
   },
@@ -851,7 +1130,15 @@
         "JetModelId": "F-16C",
         "Architecture": "fly-by-wire",
         "RedundancyChannels": 3,
-        "UnitPrice": 4.2
+        "UnitPrice": 4.2,
+        "Name": "FCS-F16-FBW3",
+        "JetManufacturer": "Lockheed Martin",
+        "JetGeneration": 4,
+        "IsTripleRedundant": true,
+        "IsQuadRedundant": false,
+        "MeetsFifthGenSpec": false,
+        "TotalUnitsOrdered": 7,
+        "TotalRevenue": 29.4
       },
       {
         "FlightControlSystemsId": "FCS-F16-HYB2",
@@ -859,7 +1146,15 @@
         "JetModelId": "F-16C",
         "Architecture": "analog-hybrid",
         "RedundancyChannels": 2,
-        "UnitPrice": 2.1
+        "UnitPrice": 2.1,
+        "Name": "FCS-F16-HYB2",
+        "JetManufacturer": "Lockheed Martin",
+        "JetGeneration": 4,
+        "IsTripleRedundant": false,
+        "IsQuadRedundant": false,
+        "MeetsFifthGenSpec": false,
+        "TotalUnitsOrdered": 2,
+        "TotalRevenue": 4.2
       },
       {
         "FlightControlSystemsId": "FCS-F22-FBL4",
@@ -867,7 +1162,15 @@
         "JetModelId": "F-22A",
         "Architecture": "fly-by-light",
         "RedundancyChannels": 4,
-        "UnitPrice": 18.5
+        "UnitPrice": 18.5,
+        "Name": "FCS-F22-FBL4",
+        "JetManufacturer": "Lockheed Martin",
+        "JetGeneration": 5,
+        "IsTripleRedundant": true,
+        "IsQuadRedundant": true,
+        "MeetsFifthGenSpec": true,
+        "TotalUnitsOrdered": 2,
+        "TotalRevenue": 37.0
       },
       {
         "FlightControlSystemsId": "FCS-F35-FBW4",
@@ -875,7 +1178,15 @@
         "JetModelId": "F-35A",
         "Architecture": "fly-by-wire",
         "RedundancyChannels": 4,
-        "UnitPrice": 12.0
+        "UnitPrice": 12.0,
+        "Name": "FCS-F35-FBW4",
+        "JetManufacturer": "Lockheed Martin",
+        "JetGeneration": 5,
+        "IsTripleRedundant": true,
+        "IsQuadRedundant": true,
+        "MeetsFifthGenSpec": true,
+        "TotalUnitsOrdered": 7,
+        "TotalRevenue": 84.0
       },
       {
         "FlightControlSystemsId": "FCS-F18-FBW3",
@@ -883,7 +1194,15 @@
         "JetModelId": "F-18E",
         "Architecture": "fly-by-wire",
         "RedundancyChannels": 3,
-        "UnitPrice": 5.8
+        "UnitPrice": 5.8,
+        "Name": "FCS-F18-FBW3",
+        "JetManufacturer": "Boeing",
+        "JetGeneration": 4,
+        "IsTripleRedundant": true,
+        "IsQuadRedundant": false,
+        "MeetsFifthGenSpec": false,
+        "TotalUnitsOrdered": 8,
+        "TotalRevenue": 46.4
       },
       {
         "FlightControlSystemsId": "FCS-EF2K-FBW4",
@@ -891,7 +1210,15 @@
         "JetModelId": "EF-2000",
         "Architecture": "fly-by-wire",
         "RedundancyChannels": 4,
-        "UnitPrice": 9.3
+        "UnitPrice": 9.3,
+        "Name": "FCS-EF2K-FBW4",
+        "JetManufacturer": "Eurofighter",
+        "JetGeneration": 4,
+        "IsTripleRedundant": true,
+        "IsQuadRedundant": true,
+        "MeetsFifthGenSpec": false,
+        "TotalUnitsOrdered": 5,
+        "TotalRevenue": 46.5
       }
     ]
   },
@@ -1004,56 +1331,120 @@
         "LineNumber": "OL-3001",
         "OrderId": "ORD-1003",
         "FCSId": "FCS-F16-FBW3",
-        "Quantity": 6
+        "Quantity": 6,
+        "Name": "OL-3001",
+        "FCSUnitPrice": 4.2,
+        "FCSArchitecture": "fly-by-wire",
+        "FCSJetModel": "F-16C",
+        "FCSMeetsFifthGenSpec": false,
+        "OrderNumber": "ORD-1003",
+        "OrderCustomer": "grace.hopper@nautical.mil",
+        "LineTotal": 25.2
       },
       {
         "OrderLinesId": "OL-3002",
         "LineNumber": "OL-3002",
         "OrderId": "ORD-1003",
         "FCSId": "FCS-F16-HYB2",
-        "Quantity": 2
+        "Quantity": 2,
+        "Name": "OL-3002",
+        "FCSUnitPrice": 2.1,
+        "FCSArchitecture": "analog-hybrid",
+        "FCSJetModel": "F-16C",
+        "FCSMeetsFifthGenSpec": false,
+        "OrderNumber": "ORD-1003",
+        "OrderCustomer": "grace.hopper@nautical.mil",
+        "LineTotal": 4.2
       },
       {
         "OrderLinesId": "OL-3003",
         "LineNumber": "OL-3003",
         "OrderId": "ORD-1006",
         "FCSId": "FCS-F35-FBW4",
-        "Quantity": 4
+        "Quantity": 4,
+        "Name": "OL-3003",
+        "FCSUnitPrice": 12.0,
+        "FCSArchitecture": "fly-by-wire",
+        "FCSJetModel": "F-35A",
+        "FCSMeetsFifthGenSpec": true,
+        "OrderNumber": "ORD-1006",
+        "OrderCustomer": "katherine.johnson@nasa.gov",
+        "LineTotal": 48.0
       },
       {
         "OrderLinesId": "OL-3004",
         "LineNumber": "OL-3004",
         "OrderId": "ORD-1007",
         "FCSId": "FCS-F22-FBL4",
-        "Quantity": 2
+        "Quantity": 2,
+        "Name": "OL-3004",
+        "FCSUnitPrice": 18.5,
+        "FCSArchitecture": "fly-by-light",
+        "FCSJetModel": "F-22A",
+        "FCSMeetsFifthGenSpec": true,
+        "OrderNumber": "ORD-1007",
+        "OrderCustomer": "katherine.johnson@nasa.gov",
+        "LineTotal": 37.0
       },
       {
         "OrderLinesId": "OL-3005",
         "LineNumber": "OL-3005",
         "OrderId": "ORD-1007",
         "FCSId": "FCS-F35-FBW4",
-        "Quantity": 3
+        "Quantity": 3,
+        "Name": "OL-3005",
+        "FCSUnitPrice": 12.0,
+        "FCSArchitecture": "fly-by-wire",
+        "FCSJetModel": "F-35A",
+        "FCSMeetsFifthGenSpec": true,
+        "OrderNumber": "ORD-1007",
+        "OrderCustomer": "katherine.johnson@nasa.gov",
+        "LineTotal": 36.0
       },
       {
         "OrderLinesId": "OL-3006",
         "LineNumber": "OL-3006",
         "OrderId": "ORD-1008",
         "FCSId": "FCS-F18-FBW3",
-        "Quantity": 8
+        "Quantity": 8,
+        "Name": "OL-3006",
+        "FCSUnitPrice": 5.8,
+        "FCSArchitecture": "fly-by-wire",
+        "FCSJetModel": "F-18E",
+        "FCSMeetsFifthGenSpec": false,
+        "OrderNumber": "ORD-1008",
+        "OrderCustomer": "linus.torvalds@kernel.org",
+        "LineTotal": 46.4
       },
       {
         "OrderLinesId": "OL-3007",
         "LineNumber": "OL-3007",
         "OrderId": "ORD-1008",
         "FCSId": "FCS-EF2K-FBW4",
-        "Quantity": 5
+        "Quantity": 5,
+        "Name": "OL-3007",
+        "FCSUnitPrice": 9.3,
+        "FCSArchitecture": "fly-by-wire",
+        "FCSJetModel": "EF-2000",
+        "FCSMeetsFifthGenSpec": false,
+        "OrderNumber": "ORD-1008",
+        "OrderCustomer": "linus.torvalds@kernel.org",
+        "LineTotal": 46.5
       },
       {
         "OrderLinesId": "OL-3008",
         "LineNumber": "OL-3008",
         "OrderId": "ORD-1004",
         "FCSId": "FCS-F16-FBW3",
-        "Quantity": 1
+        "Quantity": 1,
+        "Name": "OL-3008",
+        "FCSUnitPrice": 4.2,
+        "FCSArchitecture": "fly-by-wire",
+        "FCSJetModel": "F-16C",
+        "FCSMeetsFifthGenSpec": false,
+        "OrderNumber": "ORD-1004",
+        "OrderCustomer": "grace.hopper@nautical.mil",
+        "LineTotal": 4.2
       }
     ]
   },

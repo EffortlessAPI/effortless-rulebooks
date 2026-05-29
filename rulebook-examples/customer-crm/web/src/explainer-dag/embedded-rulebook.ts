@@ -79,6 +79,15 @@ export const rulebook = {
   },
   "Customers": {
     "Description": "A CRM contact. Email is the PK.",
+    "important": true,
+    "summary_rich": "The **accounts** side of the pipeline. Each customer's row computes a 60-day rolling `LifetimeSales`, an `UnpaidOrderCount`, and an `IsVIP` flag — all derived from `Orders` and `Payments`, never typed in by hand. Record a payment and the same customer's VIP status can flip on the next read, in every substrate, with no application code in the middle.",
+    "important_fields": [
+      "Email",
+      "FullName",
+      "LifetimeSales",
+      "UnpaidOrderCount",
+      "IsVIP"
+    ],
     "schema": [
       {
         "name": "Name",
@@ -146,7 +155,9 @@ export const rulebook = {
         "type": "aggregation",
         "nullable": true,
         "Description": "Number of this customer's orders with a Total over $500. SUMIFS expression-mode workaround: agg_range yields 1 per row, then a real WHERE clause filters via the operator criterion \">500\" (Program.cs ExtractCriteriaOp, supported on SUMIFS but not yet on COUNTIFS).",
-        "formula": "=SUMIFS(Orders!{{Total}}*0+1, Orders!{{Customer}}, {{Name}}, Orders!{{Total}}, \">500\")"
+        "formula": "=SUMIFS(Orders!{{Total}}*0+1, Orders!{{Customer}}, {{Name}}, Orders!{{Total}}, \">500\")",
+        "important": true,
+        "explanation_rich": "**This rule is also a transpiler stress-test.** The intuitive way to count orders over $500 is `COUNTIFS(..., \">500\")`, but the operator-criterion form (`\">500\"`) is not yet wired through `COUNTIFS` in the current transpiler. The workaround is `SUMIFS(Orders!Total*0+1, ...)`: the `*0+1` makes every matched row contribute exactly 1, so the SUM degenerates into a COUNT — and `SUMIFS` *does* accept the operator criterion. Worked example: **Katherine Johnson** has `ORD-1006` ($540) and `ORD-1007` ($612). Both exceed $500, so `LargeOrderCount = 2`. The same answer falls out of the Postgres view, the Python module, and the Excel sheet because the rule lives in the rulebook, not in each substrate."
       },
       {
         "name": "IsVIP",
@@ -154,7 +165,9 @@ export const rulebook = {
         "type": "calculated",
         "nullable": true,
         "Description": "True when LifetimeSales > 1000 AND the customer has at most 1 unpaid order.",
-        "formula": "=AND({{LifetimeSales}} > 1000, {{UnpaidOrderCount}} <= 1)"
+        "formula": "=AND({{LifetimeSales}} > 1000, {{UnpaidOrderCount}} <= 1)",
+        "important": true,
+        "explanation_rich": "**A VIP earns the tag two ways at once.** The flag fires only when the rolling-window `LifetimeSales` exceeds $1,000 AND the customer has at most one unpaid order — so a big spender with a stack of overdue invoices does not qualify. Worked example: **Linus Torvalds** has `ORD-1008` ($2,400, fully paid by two $1,200 wires) and `ORD-1009` ($180, unpaid). `UnpaidOrderCount = 1` and the recent-window total clears $1,000, so `IsVIP = TRUE`. **Grace Hopper** has `ORD-1003` ($1,499.99, only $1,000 paid → unpaid) and `ORD-1004` ($320.50, unpaid). `UnpaidOrderCount = 2`, so `IsVIP = FALSE` regardless of how much she has bought. Record one more payment that zeros either of Grace's balances and the same row flips to TRUE on the next read."
       }
     ],
     "data": [
@@ -297,7 +310,7 @@ export const rulebook = {
         "datatype": "number",
         "type": "calculated",
         "nullable": true,
-        "Description": "1 when the order is unpaid, 0 otherwise \u2014 summed by Customers.UnpaidOrderCount.",
+        "Description": "1 when the order is unpaid, 0 otherwise — summed by Customers.UnpaidOrderCount.",
         "formula": "=IF({{IsPaid}}, 0, 1)"
       },
       {
@@ -313,7 +326,7 @@ export const rulebook = {
         "datatype": "number",
         "type": "calculated",
         "nullable": true,
-        "Description": "Total if the order is recent, 0 otherwise \u2014 summed by Customers.LifetimeSales.",
+        "Description": "Total if the order is recent, 0 otherwise — summed by Customers.LifetimeSales.",
         "formula": "=IF({{IsRecent}}, {{Total}}, 0)"
       },
       {
@@ -714,6 +727,16 @@ export const rulebook = {
   },
   "FlightControlSystems": {
     "Description": "Flight-control-system product variants. Each variant targets one jet model with a specific control architecture and redundancy level. FCSCode is the PK.",
+    "important": true,
+    "summary_rich": "The **catalog** side of the pipeline — a flight-control-system variant per (jet model, architecture, redundancy) combination. Each variant rolls its own `TotalUnitsOrdered` and `TotalRevenue` up from `OrderLines`, and a `MeetsFifthGenSpec` flag combines its own redundancy + architecture with a two-hop lookup to the airframe's generation. This is where the rulebook ties product engineering rules (quad-redundant fly-by-wire on 5th-gen) to sales rollups in one DAG.",
+    "important_fields": [
+      "FCSCode",
+      "JetModelId",
+      "Architecture",
+      "RedundancyChannels",
+      "MeetsFifthGenSpec",
+      "TotalRevenue"
+    ],
     "schema": [
       {
         "name": "Name",
@@ -803,7 +826,9 @@ export const rulebook = {
         "type": "calculated",
         "nullable": true,
         "Description": "Quad-redundant fly-by-wire or fly-by-light on a 5th-gen airframe.",
-        "formula": "=AND({{IsQuadRedundant}}, OR({{Architecture}}=\"fly-by-wire\", {{Architecture}}=\"fly-by-light\"), {{JetGeneration}} >= 5)"
+        "formula": "=AND({{IsQuadRedundant}}, OR({{Architecture}}=\"fly-by-wire\", {{Architecture}}=\"fly-by-light\"), {{JetGeneration}} >= 5)",
+        "important": true,
+        "explanation_rich": "**An airworthiness rule wired across two tables.** A variant only meets 5th-gen spec when *all three* hold: at least four independent control channels, an all-digital architecture (fly-by-wire or fly-by-light, never analog-hybrid), and the airframe it targets is generation 5 or newer. `JetGeneration` is itself a lookup into `JetModels`, so the rule reaches across the FK to read the airframe's `Generation` before it can decide. Worked example: **`FCS-F35-FBW4`** has `RedundancyChannels = 4`, `Architecture = \"fly-by-wire\"`, `JetModelId = F-35A`, and the F-35A is generation 5 — so the rule resolves TRUE. **`FCS-EF2K-FBW4`** also has four channels and fly-by-wire, but its EF-2000 airframe is generation 4, so the same rule resolves FALSE. Promote the EF-2000 to gen 5 in `JetModels` and the FCS row flips on the next read — without touching the FCS table at all."
       },
       {
         "name": "TotalUnitsOrdered",
@@ -874,7 +899,7 @@ export const rulebook = {
     ]
   },
   "OrderLines": {
-    "Description": "FCS line items on an order \u2014 links Orders to FlightControlSystems with a quantity. LineNumber is the PK.",
+    "Description": "FCS line items on an order — links Orders to FlightControlSystems with a quantity. LineNumber is the PK.",
     "schema": [
       {
         "name": "Name",
@@ -1035,12 +1060,119 @@ export const rulebook = {
       }
     ]
   },
-  "_meta": {
-    "_CMCC_Summary": "Hand-authored minimal CRM demo rulebook for the effortless-demo-app skill.",
-    "_conversion_metadata": {
-      "tool_version": "demo-1.0",
-      "export_mode": "hand_authored"
-    }
+  "__meta__": {
+    "Description": "Project-level metadata that travels with the rulebook: tagline, motif, narrative descriptions, substrate list, signature rows, etc. One row per metadata key. Use ValueType to interpret StringValue vs JsonValue.",
+    "important": false,
+    "schema": [
+      {
+        "name": "MetaKey",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "The metadata key (e.g. 'tagline', 'motif_palette', 'substrates'). Unique within the table."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "formula": "={{MetaKey}}",
+        "Description": "Identifier for this metadata entry. Mirrors MetaKey so the row is addressable by Name like every other table."
+      },
+      {
+        "name": "ValueType",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "How to interpret the value columns: 'string' (use StringValue), 'object' (parse JsonValue as JSON object), 'array' (parse JsonValue as JSON array)."
+      },
+      {
+        "name": "StringValue",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Plain string value. Populated when ValueType == 'string'; null otherwise."
+      },
+      {
+        "name": "JsonValue",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "JSON-encoded value. Populated when ValueType == 'object' or 'array'; null when ValueType == 'string'."
+      }
+    ],
+    "data": [
+      {
+        "MetaKey": "tagline",
+        "Name": "tagline",
+        "ValueType": "string",
+        "StringValue": "A CRM whose VIP flag, paid-in-full status, and fighter-jet FCS rollups all live in the rulebook — not the app.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "motif",
+        "Name": "motif",
+        "ValueType": "string",
+        "StringValue": "skyline",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "motif_palette",
+        "Name": "motif_palette",
+        "ValueType": "object",
+        "StringValue": null,
+        "JsonValue": "{\"primary\": \"#1f3a5f\", \"accent\": \"#f0b21f\", \"ink\": \"#0d1a2e\"}"
+      },
+      {
+        "MetaKey": "description_rich",
+        "Name": "description_rich",
+        "ValueType": "string",
+        "StringValue": "A CRM with two halves wired into one DAG. The **accounts half** — Customers, Orders, Payments — derives every \"customer health\" signal (rolling-window `LifetimeSales`, `UnpaidOrderCount`, `IsVIP`) from raw payment rows. The **catalog half** — JetModels, FlightControlSystems, OrderLines — rolls FCS line-item revenue up through the variant catalog to the airframe and also enforces an airworthiness rule (`MeetsFifthGenSpec`) that combines redundancy, architecture, and a two-hop lookup to the jet's generation. Both halves meet at `Orders.FCSSubtotal`. The DAG is the source of truth; the application code is allowed to be small because the rules aren't in it.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "use_cases",
+        "Name": "use_cases",
+        "ValueType": "array",
+        "StringValue": null,
+        "JsonValue": "[\"**Flip a VIP.** Add a payment row that zeroes Grace Hopper's balance on `ORD-1004`; `UnpaidOrderCount` drops from 2 to 1 and `IsVIP` resolves TRUE on the next read — same answer in Postgres and Python, no glue code.\", \"**Trace a four-layer rollup.** Pick `OL-3006` (F-18 FCS, qty 8 on `ORD-1008`), edit the quantity, and watch `Orders.FCSSubtotal`, `FlightControlSystems.TotalRevenue` for `FCS-F18-FBW3`, and `JetModels.TotalRevenue` for `F-18E` all change on the next read — one edit, three rollups, zero application code.\", \"**Promote an airframe and watch a spec rule re-fire.** Set `EF-2000.Generation = 5` in `JetModels`; `FCS-EF2K-FBW4` already has four channels and fly-by-wire, so its `MeetsFifthGenSpec` flips from FALSE to TRUE — the FCS row was not touched.\", \"**Count large orders without `COUNTIFS`.** `Customers.LargeOrderCount` uses the `SUMIFS(*0+1, ..., \\\">500\\\")` workaround because the transpiler does not yet wire operator criteria through `COUNTIFS`. The result still matches across substrates — Katherine Johnson's two orders (`ORD-1006` $540, `ORD-1007` $612) come back as 2 everywhere.\", \"**Ask the same question of two substrates.** *\\\"What is `FCS-F35-FBW4`'s total revenue?\\\"* Postgres view returns $84M (4+3 units × $12M). Python module returns the same. No reconciliation step — they share one rule.\"]"
+      },
+      {
+        "MetaKey": "signature_rows",
+        "Name": "signature_rows",
+        "ValueType": "array",
+        "StringValue": null,
+        "JsonValue": "[{\"entity\": \"Customers\", \"ids\": [\"grace.hopper@nautical.mil\", \"linus.torvalds@kernel.org\", \"katherine.johnson@nasa.gov\"]}, {\"entity\": \"FlightControlSystems\", \"ids\": [\"FCS-F35-FBW4\", \"FCS-F22-FBL4\", \"FCS-EF2K-FBW4\"]}]"
+      },
+      {
+        "MetaKey": "journal_seed",
+        "Name": "journal_seed",
+        "ValueType": "string",
+        "StringValue": "Ten orders, nine payments, eight FCS line items. Linus and Katherine are paid up; Grace is carrying two unpaid invoices; one F-35 line accounts for the largest single rollup in the catalog.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "substrates",
+        "Name": "substrates",
+        "ValueType": "array",
+        "StringValue": null,
+        "JsonValue": "[{\"key\": \"postgres\", \"important\": true, \"chip_label\": \"Postgres\"}, {\"key\": \"python\", \"important\": true, \"chip_label\": \"Python\"}, {\"key\": \"excel\", \"important\": false, \"chip_label\": \"Excel\"}, {\"key\": \"owl\", \"important\": false, \"chip_label\": \"OWL\"}]"
+      },
+      {
+        "MetaKey": "CMCC_Summary",
+        "Name": "CMCC_Summary",
+        "ValueType": "string",
+        "StringValue": "Hand-authored minimal CRM demo rulebook for the effortless-demo-app skill.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "conversion_metadata",
+        "Name": "conversion_metadata",
+        "ValueType": "object",
+        "StringValue": null,
+        "JsonValue": "{\"tool_version\": \"demo-1.0\", \"export_mode\": \"hand_authored\"}"
+      }
+    ]
   }
 } as const;
 export type Rulebook = typeof rulebook;

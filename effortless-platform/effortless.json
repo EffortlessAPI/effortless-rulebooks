@@ -17,7 +17,7 @@
       "IsSSoTTranspiler": false,
       "Name": "rulebooktopostgres",
       "RelativePath": "/postgres",
-      "CommandLine": "rulebook-to-postgres -i ../effortless-rulebook/effortless-rulebook.json",
+      "CommandLine": "rulebook-to-postgres -i ../effortless-rulebook/effortless-rulebook.json -p drop_all=true",
       "IsDisabled": false,
       "PinnedVersion": "v2026.04.19.1717",
       "LastVersionUsed": "v2026.04.19.1717",

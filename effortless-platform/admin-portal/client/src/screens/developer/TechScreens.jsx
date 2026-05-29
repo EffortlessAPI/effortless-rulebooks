@@ -124,6 +124,8 @@ export function TechResetScreen({ screen }) {
   const { domain } = useParams();
   const dApi = useMemo(() => makeDomainApi(domain), [domain]);
   const [busy, setBusy] = useState(false);
+  const [launching, setLaunching] = useState(false);
+  const [importing, setImporting] = useState(false);
   const reset = async () => {
     if (!confirm("Drop the editor Postgres DB and rebuild from rulebook JSON?")) return;
     setBusy(true);
@@ -133,15 +135,57 @@ export function TechResetScreen({ screen }) {
     } catch (e) { toast(e.message, "error"); }
     setBusy(false);
   };
+  const launch = async () => {
+    setLaunching(true);
+    try {
+      const r = await dApi.post("/api/tech/launch");
+      if (r.url) { toast(`App launched → ${r.url}`); window.open(r.url, "_blank", "noopener"); }
+      else toast(`App launched (pid ${r.pid}) — URL not auto-detected; check ${r.logPath || "start.sh log"}`, "info");
+    } catch (e) { toast(e.message, "error"); }
+    setLaunching(false);
+  };
+  const importFromPg = async () => {
+    if (!confirm(
+      "Import from Postgres ADOPTS the current database (including any edits/new rows made in the app or portal) as the rulebook's new RAW seed data. " +
+      "This overwrites human-authored raw values. Continue?"
+    )) return;
+    setImporting(true);
+    try {
+      const r = await dApi.post("/api/tech/import-from-postgres", { confirm: true });
+      toast("Imported Postgres → rulebook. " + (String(r.output || "").split("\n").find((l) => l.includes("updated")) || "Done."));
+    } catch (e) { toast(e.message, "error"); }
+    setImporting(false);
+  };
   return (
     <>
       <ScreenHeader screen={screen} />
-      <div className="card" style={{ maxWidth: 480 }}>
+      <div className="card" style={{ maxWidth: 480, marginBottom: 16 }}>
         <h3>Safe operation</h3>
         <p>Drops the per-project editor Postgres database and re-bootstraps from the rulebook JSON on disk. The rulebook JSON is the durable SSoT — no business data is lost.</p>
         <button className="btn danger" disabled={busy} onClick={reset}>
           {busy ? "Resetting…" : "Reset editor DB now"}
         </button>
+      </div>
+
+      <div className="card" style={{ maxWidth: 480, marginBottom: 16 }}>
+        <h3>Launch this domain's app</h3>
+        <p>Runs the domain's <code>start.sh</code> on the server and opens its test URL. Domains without an app return a clear error.</p>
+        <button className="btn" disabled={launching} onClick={launch}>
+          {launching ? "Launching…" : "Launch app & open"}
+        </button>
+      </div>
+
+      <div className="card" style={{ maxWidth: 480 }}>
+        <h3>Postgres ↔ rulebook</h3>
+        <p>Download the current rulebook, or <strong>adopt the current Postgres data as the new seed</strong> — use after editing data in the app/portal. Import overwrites raw values, so it asks for confirmation and never runs automatically on build.</p>
+        <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+          <a className="btn secondary" href={withDomain("/api/tech/export-rulebook", domain)} download>
+            Download rulebook
+          </a>
+          <button className="btn danger" disabled={importing} onClick={importFromPg}>
+            {importing ? "Importing…" : "Import from Postgres"}
+          </button>
+        </div>
       </div>
     </>
   );

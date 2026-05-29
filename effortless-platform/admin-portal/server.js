@@ -3502,6 +3502,141 @@ app.post("/api/tech/reset", requireDeveloper, async (req, res) => {
   res.json({ ok: true, dbName });
 });
 
+// ---------------------------------------------------------------------------
+// Per-domain app launch + Postgres<->rulebook import/export
+// ---------------------------------------------------------------------------
+
+// Parse a domain's start.sh for the URL the app serves on. start.sh files are
+// heterogeneous: some set PORT=<n>, some CLIENT_PORT/API_PORT, some only print
+// http://localhost:$VAR. We collect every *PORT*=<n> assignment and every
+// literal/variable localhost URL, then prefer the user-facing client port. 5432
+// (Postgres) is always ignored. Returns null if undetectable — we never guess a
+// wrong URL (an honest "couldn't tell" beats a plausible-looking lie).
+function detectAppUrl(startShPath) {
+  let txt;
+  try { txt = fs.readFileSync(startShPath, "utf8"); } catch { return null; }
+
+  // 1) Map every <NAME>PORT[<NAME>] = <number> assignment. Line-based so it
+  //    handles literal (PORT=4801), default-expansion (WEB_PORT="${WEB_PORT:-5175}")
+  //    and quoted forms alike: grab the first 2-5 digit number on the line.
+  const ports = {}; // varName -> port string
+  for (const line of txt.split("\n")) {
+    const nameM = line.match(/\b([A-Z0-9_]*PORT[A-Z0-9_]*)\s*=/i);
+    if (!nameM) continue;
+    const numM = line.slice(nameM.index).match(/(\d{2,5})/);
+    if (numM && numM[1] !== "5432") ports[nameM[1].toUpperCase()] = numM[1];
+  }
+  // 2) Literal localhost URLs (e.g. http://localhost:3000).
+  const literalUrlPorts = [...txt.matchAll(/https?:\/\/localhost:(\d{2,5})/gi)]
+    .map((m) => m[1]).filter((p) => p !== "5432");
+  // 3) localhost:$VAR / localhost:${VAR} references resolved via the port map.
+  const varUrlPorts = [...txt.matchAll(/https?:\/\/localhost:\$\{?([A-Z0-9_]+)\}?/gi)]
+    .map((m) => ports[m[1]]).filter(Boolean);
+
+  const pick = (re) => Object.keys(ports).find((k) => re.test(k));
+  // Prefer the client/web/front/app-facing port; that's the test URL.
+  const clientVar = pick(/CLIENT|WEB|FRONT|UI|APP/i);
+  if (clientVar) return `http://localhost:${ports[clientVar]}`;
+  if (varUrlPorts.length) return `http://localhost:${varUrlPorts[0]}`;
+  if (literalUrlPorts.length) return `http://localhost:${literalUrlPorts[0]}`;
+  const plainPort = ports.PORT || Object.values(ports)[0];
+  if (plainPort) return `http://localhost:${plainPort}`;
+  return null;
+}
+
+// POST /api/tech/launch?domain= — run the domain's start.sh detached so the
+// app boots independently of the portal request, and hand back the test URL.
+app.post("/api/tech/launch", requireDeveloper, async (req, res) => {
+  let domain;
+  try { domain = requireDomain(req); }
+  catch (e) { return res.status(e.status || 400).json({ error: String(e.message || e) }); }
+  if (domain === TOP_DOMAIN) {
+    return res.status(400).json({ error: "the platform is the running portal — there is no separate per-domain app to launch" });
+  }
+  const root = projectRootFor(domain);
+  const startSh = path.join(root, "start.sh");
+  if (!fs.existsSync(startSh)) {
+    return res.status(404).json({ error: `no start.sh for '${domain}' — this domain has no runnable app`, hasApp: false });
+  }
+  const url = detectAppUrl(startSh);
+  const logPath = path.join(root, ".app-launch.log");
+  let child;
+  try {
+    const out = fs.openSync(logPath, "a");
+    child = spawn("bash", ["start.sh"], {
+      cwd: root,
+      detached: true,
+      stdio: ["ignore", out, out],
+      env: { ...process.env, ERB_DOMAIN: domain },
+    });
+    child.unref();
+  } catch (e) {
+    return res.status(500).json({ error: `failed to launch start.sh: ${String(e.message || e)}` });
+  }
+  res.json({ ok: true, domain, pid: child.pid, url, logPath,
+    note: url ? null : "launched, but could not detect the app URL from start.sh — check the log" });
+});
+
+// GET /api/tech/export-rulebook?domain= — download the current rulebook JSON.
+app.get("/api/tech/export-rulebook", requireDeveloper, (req, res) => {
+  let domain;
+  try { domain = requireDomain(req); }
+  catch (e) { return res.status(e.status || 400).json({ error: String(e.message || e) }); }
+  const p = rulebookPathFor(domain);
+  if (!fs.existsSync(p)) return res.status(404).json({ error: `no rulebook found for '${domain}'` });
+  res.download(p, path.basename(p));
+});
+
+// POST /api/tech/import-from-postgres?domain=  body: { confirm: true }
+// EXPLICIT, raws-overwriting import: adopts the current Postgres state (incl.
+// edits/new rows made in the app or portal) AS the rulebook's new seed data.
+// This is the ONLY portal path that writes raw values back to the rulebook, it
+// requires {confirm:true}, and it is never invoked automatically on build.
+app.post("/api/tech/import-from-postgres", requireDeveloper, async (req, res) => {
+  let domain;
+  try { domain = requireDomain(req); }
+  catch (e) { return res.status(e.status || 400).json({ error: String(e.message || e) }); }
+  if (domain === TOP_DOMAIN) {
+    return res.status(400).json({ error: "import-from-postgres is for demo domains, not the platform rulebook" });
+  }
+  if (!req.body || req.body.confirm !== true) {
+    return res.status(400).json({
+      error: "this OVERWRITES the rulebook's raw seed data with the current Postgres data (adopting any app/portal edits as the new seed). Resend with { confirm: true } to proceed.",
+      requiresConfirm: true,
+    });
+  }
+  const bootstrapDir = path.join(RULEBOOK_EXAMPLES, domain, "postgres-bootstrap");
+  const script = path.join(REPO_ROOT, "execution-substrates", "postgres-to-rulebook", "inject-into-postgres-to-rulebook.py");
+  const rbPath = rulebookPathFor(domain);
+  if (!fs.existsSync(script)) return res.status(500).json({ error: `adopt engine missing: ${script}` });
+  try {
+    const result = await new Promise((resolve, reject) => {
+      const child = spawn("python3", [script], {
+        cwd: bootstrapDir,
+        env: { ...process.env, ERB_ADOPT_RAWS: "true", ERB_RULEBOOK_PATH: rbPath },
+      });
+      let stdout = "", stderr = "";
+      child.stdout.on("data", (c) => { stdout += c; });
+      child.stderr.on("data", (c) => { stderr += c; });
+      child.on("error", reject);
+      child.on("close", (code) => {
+        if (code === 0) resolve(stdout);
+        else { const err = new Error(stderr.slice(-4000) || `adopt exited ${code}`); err.stdout = stdout; reject(err); }
+      });
+    });
+    // The rulebook now mirrors Postgres; drop the cached pool so subsequent
+    // reads bootstrap fresh against the (now-aligned) state.
+    if (domain !== TOP_DOMAIN) {
+      const existing = domainPools.get(domain);
+      if (existing) { try { await existing.end(); } catch {} }
+      domainPools.delete(domain);
+    }
+    res.json({ ok: true, domain, output: result });
+  } catch (e) {
+    res.status(500).json({ error: String(e.message || e), output: e.stdout || null });
+  }
+});
+
 // --- static frontend ---
 app.use("/", express.static(path.join(__dirname, "web")));
 

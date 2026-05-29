@@ -32,7 +32,7 @@
       "IsSSoTTranspiler": false,
       "Name": "rulebooktopostgres",
       "RelativePath": "/postgres-bootstrap",
-      "CommandLine": "rulebook-to-postgres -i ../effortless-rulebook/nakedclaude-v3-rulebook.json -p drop_all=true",
+      "CommandLine": "rulebook-to-postgres -i ../effortless-rulebook/nakedclaude-v3-rulebook.json -p mode=drop-all -p stage=dev -p drop_all=true",
       "IsDisabled": false,
       "PinnedVersion": "v2026.04.23.1316",
       "LastVersionUsed": "v2026.04.23.1316",
@@ -44,6 +44,14 @@
       "RelativePath": "/postgres-bootstrap",
       "CommandLine": "-exec ./init-db.sh",
       "IsDisabled": false
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "httplocalhost4242postgrestorulebook",
+      "RelativePath": "/postgres-bootstrap",
+      "CommandLine": "http://localhost:4242/postgres-to-rulebook -i ../effortless-rulebook/nakedclaude-v3-rulebook.json",
+      "IsDisabled": false,
+      "Description": "Reverse spoke: refresh rulebook derived-field display copies from Postgres views after the destructive rebuild (raws verified, never written)."
     }
   ]
 }
