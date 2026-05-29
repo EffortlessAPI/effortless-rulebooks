@@ -16,7 +16,7 @@ class CustomersController < ApplicationController
   def create
     @customer = CustomerRaw.new(customer_params)
     if @customer.save
-      redirect_to Customer.find(params[:customer_raw][:customer_id]), notice: 'Customer was successfully created.'
+      redirect_to Customer.find(params[:customer][:customer_id]), notice: 'Customer was successfully created.'
     else
       render :new
     end
@@ -49,7 +49,6 @@ class CustomersController < ApplicationController
   end
 
   def customer_params
-    model_key = @customer.class.name.underscore.to_sym
-    params.require(model_key).permit(:customer_id, :first_name, :last_name, :email_address)
+    params.require(:customer).permit(:customer_id, :first_name, :last_name, :email_address)
   end
 end

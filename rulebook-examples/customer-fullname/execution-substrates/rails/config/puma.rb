@@ -1,5 +1,5 @@
 # Puma configuration for Rails app
-# Node.js React app uses 4801 (API) and 4802 (client)
-# Rails uses 4803 to avoid conflicts
+# React/Node.js app uses 7001/7002 (completely separate)
+# Rails uses 4801
 
-port ENV.fetch("PORT") { 4803 }
+port ENV.fetch("PORT") { 4801 }

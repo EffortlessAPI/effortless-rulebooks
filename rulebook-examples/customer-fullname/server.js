@@ -102,8 +102,13 @@ registerApi(apiApp);
 // --- Client server (even port): static UI + same-origin API ---
 const clientApp = express();
 clientApp.use(express.json());
-clientApp.use(express.static(__dirname, { extensions: ['html'] }));
+clientApp.use(express.static(require('path').join(__dirname, 'web/dist'), { extensions: ['html'] }));
 registerApi(clientApp);
+
+// Fallback to index.html for React Router
+clientApp.use((req, res) => {
+  res.sendFile(require('path').join(__dirname, 'web/dist/index.html'));
+});
 
 apiApp.listen(API_PORT, () => {
   console.log(`[api]    http://localhost:${API_PORT}  (JSON API)`);
