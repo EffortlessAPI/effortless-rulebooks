@@ -45,7 +45,7 @@
         "type": "calculated",
         "nullable": true,
         "Description": "Full name is computed from the first and last name of the customer",
-        "formula": "={{FirstName}} & \" --- \" & {{LastName}}",
+        "formula": "={{FirstName}} & \" \" & {{LastName}}",
         "important": true,
         "explanation_rich": "**The smallest possible calculated field.** `FullName` is just `FirstName & \" \" & LastName` — but the point is that it lives in the rulebook, not in application code. Every substrate (Postgres view, Python class, Excel cell, OWL ontology) computes the same value the same way. Edit a customer's first name and *every* substrate sees the new full name on the next read."
       }
@@ -57,7 +57,7 @@
         "LastName": "Smith",
         "Customer": "CUST0001",
         "FirstName": "Bob",
-        "FullName": "Bob --- Smith"
+        "FullName": "Bob Smith"
       },
       {
         "ClientId": "cust0002",
@@ -65,7 +65,7 @@
         "LastName": "Doe",
         "Customer": "CUST0002",
         "FirstName": "John",
-        "FullName": "John --- Doe"
+        "FullName": "John Doe"
       },
       {
         "ClientId": "cust0003",
@@ -73,7 +73,7 @@
         "LastName": "Jones",
         "Customer": "CUST0003",
         "FirstName": "Emily",
-        "FullName": "Emily --- Jones"
+        "FullName": "Emily Jones"
       }
     ]
   },

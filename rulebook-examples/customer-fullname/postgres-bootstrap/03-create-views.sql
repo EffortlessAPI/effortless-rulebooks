@@ -20,11 +20,10 @@ DROP VIEW IF EXISTS vw_customers CASCADE;
 CREATE VIEW vw_customers WITH (security_invoker = ON) AS
 SELECT
   t.customer_id,
-  calc_customers_name(t.customer_id) AS name,                                   -- Identifier for the customers.
+  calc_customers_name(t.customer_id) AS name,                                   -- Full name is computed from the first and last name of the customer
   t.email_address,                                                              -- Thec ustomers email address
   calc_customers_initials(t.customer_id) AS initials,                           -- dsfdfds
   t.first_name,                                                                 -- First Name of the customer - used to make the full name
-  t.last_name,                                                                  -- Last Name of the customer - used to make the full name
-  calc_customers_full_name(t.customer_id) AS full_name                          -- Full name is computed from the first and last name of the customer
+  t.last_name                                                                   -- Last Name of the customer - used to make the full name
 FROM customers t;
 

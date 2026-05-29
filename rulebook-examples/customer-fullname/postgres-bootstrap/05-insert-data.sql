@@ -18,5 +18,5 @@ INSERT INTO customers (customer_id, email_address, first_name, last_name)
 VALUES ('emily-jones-email-com', 'emily.jones@email.com', 'Emily', 'Jones') ON CONFLICT (customer_id) DO NOTHING;
 
 INSERT INTO customers (customer_id, email_address, first_name, last_name)
-VALUES ('alice-cooper', 'alice@cooper.com', 'Alice', 'Cooper') ON CONFLICT (customer_id) DO NOTHING;
+VALUES ('alice-cooper', 'alice@cooper.com', 'Alice', 'Gutknecht') ON CONFLICT (customer_id) DO NOTHING;
 

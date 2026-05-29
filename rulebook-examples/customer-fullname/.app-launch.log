@@ -51,3 +51,17 @@ Starting demo app:
 Connected to postgresql://postgres@localhost:5432/erb_customer_fullname
 Press Ctrl+C to stop
 Opened http://localhost:4802 in Chrome
+Stopping existing server on port 4801...
+start.sh: line 45: 91750 Killed: 9               npm start
+Starting demo app:
+  API    -> http://localhost:4801
+  client -> http://localhost:4802
+
+> customer-fullname-demo@1.0.0 start
+> node server.js
+
+[api]    http://localhost:4801  (JSON API)
+[client] http://localhost:4802  (open this in a browser)
+Connected to postgresql://postgres@localhost:5432/erb_customer_fullname
+Press Ctrl+C to stop
+Opened http://localhost:4802 in Chrome

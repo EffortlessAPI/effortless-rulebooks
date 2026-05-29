@@ -10,8 +10,9 @@
         "name": "Name",
         "datatype": "string",
         "type": "calculated",
-        "Description": "Identifier for the customers.",
-        "formula": "=SUBSTITUTE({{EmailAddress}}, \"@\", \"-\")"
+        "Description": "Full name is computed from the first and last name of the customer",
+        "formula": "={{LastName}} & \", \" & {{FirstName}}",
+        "nullable": true
       },
       {
         "name": "EmailAddress",
@@ -24,8 +25,7 @@
         "datatype": "string",
         "type": "calculated",
         "Description": "dsfdfds",
-        "formula": "=LEFT({{FirstName}}, 1) & \". \" & LEFT({{LastName}}, 1) & \".\"",
-        "nullable": true
+        "formula": "=LEFT({{FirstName}}, 1) & LEFT({{LastName}}, 1) & \".\""
       },
       {
         "name": "FirstName",
@@ -38,13 +38,6 @@
         "datatype": "string",
         "type": "raw",
         "Description": "Last Name of the customer - used to make the full name"
-      },
-      {
-        "name": "FullName",
-        "datatype": "string",
-        "type": "calculated",
-        "Description": "Full name is computed from the first and last name of the customer",
-        "formula": "={{LastName}} & \" \" & {{FirstName}}"
       }
     ],
     "data": [
@@ -53,36 +46,36 @@
         "EmailAddress": "jane.smith@email.com",
         "FirstName": "Jane",
         "LastName": "Smithy",
-        "Name": "jane.smith-email.com",
-        "Initials": "J. S.",
-        "FullName": "Smithy Jane"
+        "Name": "Smithy, Jane",
+        "Initials": "JS.",
+        "FullName": "Smithy, Jane"
       },
       {
         "CustomerId": "john-doe-email-com",
         "EmailAddress": "john.doe@email.com",
         "FirstName": "John",
         "LastName": "Doe",
-        "Name": "john.doe-email.com",
-        "Initials": "J. D.",
-        "FullName": "Doe John"
+        "Name": "Doe, John",
+        "Initials": "JD.",
+        "FullName": "Doe, John"
       },
       {
         "CustomerId": "emily-jones-email-com",
         "EmailAddress": "emily.jones@email.com",
         "FirstName": "Emily",
         "LastName": "Jones",
-        "Name": "emily.jones-email.com",
-        "Initials": "E. J.",
-        "FullName": "Jones Emily"
+        "Name": "Jones, Emily",
+        "Initials": "EJ.",
+        "FullName": "Jones, Emily"
       },
       {
         "CustomerId": "alice-cooper",
         "EmailAddress": "alice@cooper.com",
         "FirstName": "Alice",
-        "LastName": "Cooper",
-        "Name": "alice-cooper.com",
-        "Initials": "A. C.",
-        "FullName": "Cooper Alice"
+        "LastName": "Gutknecht",
+        "Name": "Gutknecht, Alice",
+        "Initials": "AG.",
+        "FullName": "Gutknecht, Alice"
       }
     ]
   },
