@@ -9,7 +9,7 @@
 -- Customers: Seed data for Customers
 -- ----------------------------------------------------------------------------
 INSERT INTO customers (customer_id, email_address, first_name, last_name)
-VALUES ('jane-smith-email-com', 'jane.smith@email.com', 'Mary', 'Smithy') ON CONFLICT (customer_id) DO NOTHING;
+VALUES ('jane-smith-email-com', 'jane.smith@email.com', 'Jane', 'Smithy') ON CONFLICT (customer_id) DO NOTHING;
 
 INSERT INTO customers (customer_id, email_address, first_name, last_name)
 VALUES ('john-doe-email-com', 'john.doe@email.com', 'John', 'Doe') ON CONFLICT (customer_id) DO NOTHING;
@@ -18,5 +18,5 @@ INSERT INTO customers (customer_id, email_address, first_name, last_name)
 VALUES ('emily-jones-email-com', 'emily.jones@email.com', 'Emily', 'Jones') ON CONFLICT (customer_id) DO NOTHING;
 
 INSERT INTO customers (customer_id, email_address, first_name, last_name)
-VALUES ('alice-cooper', 'alice@cooper.com', 'Alice', 'Dangerfields') ON CONFLICT (customer_id) DO NOTHING;
+VALUES ('alice-cooper', 'alice@cooper.com', 'Alice', 'Cooper') ON CONFLICT (customer_id) DO NOTHING;
 
