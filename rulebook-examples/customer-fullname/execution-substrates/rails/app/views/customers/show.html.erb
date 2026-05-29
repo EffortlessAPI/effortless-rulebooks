@@ -1,0 +1,20 @@
+<div class="card">
+  <div class="card-header">
+    <h2><%= @customer.name %></h2>
+  </div>
+  <div class="card-body">
+    <p><strong>ID:</strong> <%= @customer.customer_id %></p>
+    <p><strong>First Name:</strong> <%= @customer.first_name %></p>
+    <p><strong>Last Name:</strong> <%= @customer.last_name %></p>
+    <p><strong>Full Name (Calculated):</strong> <code><%= @customer.name %></code></p>
+    <p><strong>Initials (Calculated):</strong> <code><%= @customer.initials %></code></p>
+    <p><strong>Email:</strong> <%= @customer.email_address %></p>
+  </div>
+  <div class="card-footer">
+    <%= link_to "Back to Customers", customers_path, class: "btn btn-primary" %>
+  </div>
+</div>
+
+<div class="alert alert-info mt-4">
+  <strong>View-as-Contract Philosophy:</strong> The <code>name</code> and <code>initials</code> fields are computed by PostgreSQL in the <code>vw_customers</code> view, not by application code. Rails simply reads and displays the pre-computed values.
+</div>

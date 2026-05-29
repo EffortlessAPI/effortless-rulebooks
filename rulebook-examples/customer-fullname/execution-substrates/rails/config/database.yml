@@ -1,0 +1,20 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: 5
+  host: localhost
+  port: 5432
+  user: postgres
+  password: ""
+
+development:
+  <<: *default
+  database: erb_customer_fullname_development
+
+test:
+  <<: *default
+  database: erb_customer_fullname_test
+
+production:
+  <<: *default
+  database: erb_customer_fullname_production

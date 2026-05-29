@@ -1,0 +1,725 @@
+Started GET "/" for 127.0.0.1 at 2026-05-29 13:57:46 -0500
+  [1m[35m (4.2ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" character varying NOT NULL PRIMARY KEY)[0m
+  [1m[35m (1.1ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" character varying NOT NULL PRIMARY KEY, "value" character varying, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL)[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  
+ActiveRecord::PendingMigrationError (
+
+Migrations are pending. To resolve this issue, run:
+
+        bin/rails db:migrate RAILS_ENV=development
+
+You have 1 pending migration:
+
+1780079121864_customers.rb
+
+
+):
+  
+activerecord (7.0.10) lib/active_record/migration.rb:663:in `check_pending!'
+activerecord (7.0.10) lib/active_record/migration.rb:628:in `block (2 levels) in call'
+activesupport (7.0.10) lib/active_support/file_update_checker.rb:83:in `execute'
+activerecord (7.0.10) lib/active_record/migration.rb:633:in `block in call'
+activerecord (7.0.10) lib/active_record/migration.rb:625:in `synchronize'
+activerecord (7.0.10) lib/active_record/migration.rb:625:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/callbacks.rb:27:in `block in call'
+activesupport (7.0.10) lib/active_support/callbacks.rb:99:in `run_callbacks'
+actionpack (7.0.10) lib/action_dispatch/middleware/callbacks.rb:26:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/executor.rb:14:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/actionable_exceptions.rb:17:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/debug_exceptions.rb:28:in `call'
+web-console (4.2.1) lib/web_console/middleware.rb:132:in `call_app'
+web-console (4.2.1) lib/web_console/middleware.rb:28:in `block in call'
+web-console (4.2.1) lib/web_console/middleware.rb:17:in `catch'
+web-console (4.2.1) lib/web_console/middleware.rb:17:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/show_exceptions.rb:29:in `call'
+railties (7.0.10) lib/rails/rack/logger.rb:40:in `call_app'
+railties (7.0.10) lib/rails/rack/logger.rb:25:in `block in call'
+activesupport (7.0.10) lib/active_support/tagged_logging.rb:99:in `block in tagged'
+activesupport (7.0.10) lib/active_support/tagged_logging.rb:37:in `tagged'
+activesupport (7.0.10) lib/active_support/tagged_logging.rb:99:in `tagged'
+railties (7.0.10) lib/rails/rack/logger.rb:25:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/remote_ip.rb:93:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/request_id.rb:26:in `call'
+rack (2.2.23) lib/rack/method_override.rb:24:in `call'
+rack (2.2.23) lib/rack/runtime.rb:22:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/executor.rb:14:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/static.rb:23:in `call'
+rack (2.2.23) lib/rack/sendfile.rb:127:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/host_authorization.rb:138:in `call'
+railties (7.0.10) lib/rails/engine.rb:531:in `call'
+puma (5.6.9) lib/puma/configuration.rb:252:in `call'
+puma (5.6.9) lib/puma/request.rb:77:in `block in handle_request'
+puma (5.6.9) lib/puma/thread_pool.rb:340:in `with_force_shutdown'
+puma (5.6.9) lib/puma/request.rb:76:in `handle_request'
+puma (5.6.9) lib/puma/server.rb:443:in `process_client'
+puma (5.6.9) lib/puma/thread_pool.rb:147:in `block in spawn_thread'
+Started GET "/favicon.ico" for 127.0.0.1 at 2026-05-29 13:57:46 -0500
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mCACHE ActiveRecord::SchemaMigration Pluck (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  
+ActiveRecord::PendingMigrationError (
+
+Migrations are pending. To resolve this issue, run:
+
+        bin/rails db:migrate RAILS_ENV=development
+
+You have 1 pending migration:
+
+1780079121864_customers.rb
+
+
+):
+  
+activerecord (7.0.10) lib/active_record/migration.rb:663:in `check_pending!'
+activerecord (7.0.10) lib/active_record/migration.rb:628:in `block (2 levels) in call'
+activesupport (7.0.10) lib/active_support/file_update_checker.rb:83:in `execute'
+activerecord (7.0.10) lib/active_record/migration.rb:633:in `block in call'
+activerecord (7.0.10) lib/active_record/migration.rb:625:in `synchronize'
+activerecord (7.0.10) lib/active_record/migration.rb:625:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/callbacks.rb:27:in `block in call'
+activesupport (7.0.10) lib/active_support/callbacks.rb:99:in `run_callbacks'
+actionpack (7.0.10) lib/action_dispatch/middleware/callbacks.rb:26:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/executor.rb:14:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/actionable_exceptions.rb:17:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/debug_exceptions.rb:28:in `call'
+web-console (4.2.1) lib/web_console/middleware.rb:132:in `call_app'
+web-console (4.2.1) lib/web_console/middleware.rb:28:in `block in call'
+web-console (4.2.1) lib/web_console/middleware.rb:17:in `catch'
+web-console (4.2.1) lib/web_console/middleware.rb:17:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/show_exceptions.rb:29:in `call'
+railties (7.0.10) lib/rails/rack/logger.rb:40:in `call_app'
+railties (7.0.10) lib/rails/rack/logger.rb:25:in `block in call'
+activesupport (7.0.10) lib/active_support/tagged_logging.rb:99:in `block in tagged'
+activesupport (7.0.10) lib/active_support/tagged_logging.rb:37:in `tagged'
+activesupport (7.0.10) lib/active_support/tagged_logging.rb:99:in `tagged'
+railties (7.0.10) lib/rails/rack/logger.rb:25:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/remote_ip.rb:93:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/request_id.rb:26:in `call'
+rack (2.2.23) lib/rack/method_override.rb:24:in `call'
+rack (2.2.23) lib/rack/runtime.rb:22:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/executor.rb:14:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/static.rb:23:in `call'
+rack (2.2.23) lib/rack/sendfile.rb:127:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/host_authorization.rb:138:in `call'
+railties (7.0.10) lib/rails/engine.rb:531:in `call'
+puma (5.6.9) lib/puma/configuration.rb:252:in `call'
+puma (5.6.9) lib/puma/request.rb:77:in `block in handle_request'
+puma (5.6.9) lib/puma/thread_pool.rb:340:in `with_force_shutdown'
+puma (5.6.9) lib/puma/request.rb:76:in `handle_request'
+puma (5.6.9) lib/puma/server.rb:443:in `process_client'
+puma (5.6.9) lib/puma/thread_pool.rb:147:in `block in spawn_thread'
+Started GET "/" for 127.0.0.1 at 2026-05-29 13:57:47 -0500
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mCACHE ActiveRecord::SchemaMigration Pluck (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  
+ActiveRecord::PendingMigrationError (
+
+Migrations are pending. To resolve this issue, run:
+
+        bin/rails db:migrate RAILS_ENV=development
+
+You have 1 pending migration:
+
+1780079121864_customers.rb
+
+
+):
+  
+activerecord (7.0.10) lib/active_record/migration.rb:663:in `check_pending!'
+activerecord (7.0.10) lib/active_record/migration.rb:628:in `block (2 levels) in call'
+activesupport (7.0.10) lib/active_support/file_update_checker.rb:83:in `execute'
+activerecord (7.0.10) lib/active_record/migration.rb:633:in `block in call'
+activerecord (7.0.10) lib/active_record/migration.rb:625:in `synchronize'
+activerecord (7.0.10) lib/active_record/migration.rb:625:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/callbacks.rb:27:in `block in call'
+activesupport (7.0.10) lib/active_support/callbacks.rb:99:in `run_callbacks'
+actionpack (7.0.10) lib/action_dispatch/middleware/callbacks.rb:26:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/executor.rb:14:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/actionable_exceptions.rb:17:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/debug_exceptions.rb:28:in `call'
+web-console (4.2.1) lib/web_console/middleware.rb:132:in `call_app'
+web-console (4.2.1) lib/web_console/middleware.rb:28:in `block in call'
+web-console (4.2.1) lib/web_console/middleware.rb:17:in `catch'
+web-console (4.2.1) lib/web_console/middleware.rb:17:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/show_exceptions.rb:29:in `call'
+railties (7.0.10) lib/rails/rack/logger.rb:40:in `call_app'
+railties (7.0.10) lib/rails/rack/logger.rb:25:in `block in call'
+activesupport (7.0.10) lib/active_support/tagged_logging.rb:99:in `block in tagged'
+activesupport (7.0.10) lib/active_support/tagged_logging.rb:37:in `tagged'
+activesupport (7.0.10) lib/active_support/tagged_logging.rb:99:in `tagged'
+railties (7.0.10) lib/rails/rack/logger.rb:25:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/remote_ip.rb:93:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/request_id.rb:26:in `call'
+rack (2.2.23) lib/rack/method_override.rb:24:in `call'
+rack (2.2.23) lib/rack/runtime.rb:22:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/executor.rb:14:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/static.rb:23:in `call'
+rack (2.2.23) lib/rack/sendfile.rb:127:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/host_authorization.rb:138:in `call'
+railties (7.0.10) lib/rails/engine.rb:531:in `call'
+puma (5.6.9) lib/puma/configuration.rb:252:in `call'
+puma (5.6.9) lib/puma/request.rb:77:in `block in handle_request'
+puma (5.6.9) lib/puma/thread_pool.rb:340:in `with_force_shutdown'
+puma (5.6.9) lib/puma/request.rb:76:in `handle_request'
+puma (5.6.9) lib/puma/server.rb:443:in `process_client'
+puma (5.6.9) lib/puma/thread_pool.rb:147:in `block in spawn_thread'
+Started GET "/favicon.ico" for 127.0.0.1 at 2026-05-29 13:57:47 -0500
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mCACHE ActiveRecord::SchemaMigration Pluck (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  
+ActiveRecord::PendingMigrationError (
+
+Migrations are pending. To resolve this issue, run:
+
+        bin/rails db:migrate RAILS_ENV=development
+
+You have 1 pending migration:
+
+1780079121864_customers.rb
+
+
+):
+  
+activerecord (7.0.10) lib/active_record/migration.rb:663:in `check_pending!'
+activerecord (7.0.10) lib/active_record/migration.rb:628:in `block (2 levels) in call'
+activesupport (7.0.10) lib/active_support/file_update_checker.rb:83:in `execute'
+activerecord (7.0.10) lib/active_record/migration.rb:633:in `block in call'
+activerecord (7.0.10) lib/active_record/migration.rb:625:in `synchronize'
+activerecord (7.0.10) lib/active_record/migration.rb:625:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/callbacks.rb:27:in `block in call'
+activesupport (7.0.10) lib/active_support/callbacks.rb:99:in `run_callbacks'
+actionpack (7.0.10) lib/action_dispatch/middleware/callbacks.rb:26:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/executor.rb:14:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/actionable_exceptions.rb:17:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/debug_exceptions.rb:28:in `call'
+web-console (4.2.1) lib/web_console/middleware.rb:132:in `call_app'
+web-console (4.2.1) lib/web_console/middleware.rb:28:in `block in call'
+web-console (4.2.1) lib/web_console/middleware.rb:17:in `catch'
+web-console (4.2.1) lib/web_console/middleware.rb:17:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/show_exceptions.rb:29:in `call'
+railties (7.0.10) lib/rails/rack/logger.rb:40:in `call_app'
+railties (7.0.10) lib/rails/rack/logger.rb:25:in `block in call'
+activesupport (7.0.10) lib/active_support/tagged_logging.rb:99:in `block in tagged'
+activesupport (7.0.10) lib/active_support/tagged_logging.rb:37:in `tagged'
+activesupport (7.0.10) lib/active_support/tagged_logging.rb:99:in `tagged'
+railties (7.0.10) lib/rails/rack/logger.rb:25:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/remote_ip.rb:93:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/request_id.rb:26:in `call'
+rack (2.2.23) lib/rack/method_override.rb:24:in `call'
+rack (2.2.23) lib/rack/runtime.rb:22:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/executor.rb:14:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/static.rb:23:in `call'
+rack (2.2.23) lib/rack/sendfile.rb:127:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/host_authorization.rb:138:in `call'
+railties (7.0.10) lib/rails/engine.rb:531:in `call'
+puma (5.6.9) lib/puma/configuration.rb:252:in `call'
+puma (5.6.9) lib/puma/request.rb:77:in `block in handle_request'
+puma (5.6.9) lib/puma/thread_pool.rb:340:in `with_force_shutdown'
+puma (5.6.9) lib/puma/request.rb:76:in `handle_request'
+puma (5.6.9) lib/puma/server.rb:443:in `process_client'
+puma (5.6.9) lib/puma/thread_pool.rb:147:in `block in spawn_thread'
+Started GET "/" for 127.0.0.1 at 2026-05-29 13:57:48 -0500
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mCACHE ActiveRecord::SchemaMigration Pluck (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  
+ActiveRecord::PendingMigrationError (
+
+Migrations are pending. To resolve this issue, run:
+
+        bin/rails db:migrate RAILS_ENV=development
+
+You have 1 pending migration:
+
+1780079121864_customers.rb
+
+
+):
+  
+activerecord (7.0.10) lib/active_record/migration.rb:663:in `check_pending!'
+activerecord (7.0.10) lib/active_record/migration.rb:628:in `block (2 levels) in call'
+activesupport (7.0.10) lib/active_support/file_update_checker.rb:83:in `execute'
+activerecord (7.0.10) lib/active_record/migration.rb:633:in `block in call'
+activerecord (7.0.10) lib/active_record/migration.rb:625:in `synchronize'
+activerecord (7.0.10) lib/active_record/migration.rb:625:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/callbacks.rb:27:in `block in call'
+activesupport (7.0.10) lib/active_support/callbacks.rb:99:in `run_callbacks'
+actionpack (7.0.10) lib/action_dispatch/middleware/callbacks.rb:26:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/executor.rb:14:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/actionable_exceptions.rb:17:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/debug_exceptions.rb:28:in `call'
+web-console (4.2.1) lib/web_console/middleware.rb:132:in `call_app'
+web-console (4.2.1) lib/web_console/middleware.rb:28:in `block in call'
+web-console (4.2.1) lib/web_console/middleware.rb:17:in `catch'
+web-console (4.2.1) lib/web_console/middleware.rb:17:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/show_exceptions.rb:29:in `call'
+railties (7.0.10) lib/rails/rack/logger.rb:40:in `call_app'
+railties (7.0.10) lib/rails/rack/logger.rb:25:in `block in call'
+activesupport (7.0.10) lib/active_support/tagged_logging.rb:99:in `block in tagged'
+activesupport (7.0.10) lib/active_support/tagged_logging.rb:37:in `tagged'
+activesupport (7.0.10) lib/active_support/tagged_logging.rb:99:in `tagged'
+railties (7.0.10) lib/rails/rack/logger.rb:25:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/remote_ip.rb:93:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/request_id.rb:26:in `call'
+rack (2.2.23) lib/rack/method_override.rb:24:in `call'
+rack (2.2.23) lib/rack/runtime.rb:22:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/executor.rb:14:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/static.rb:23:in `call'
+rack (2.2.23) lib/rack/sendfile.rb:127:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/host_authorization.rb:138:in `call'
+railties (7.0.10) lib/rails/engine.rb:531:in `call'
+puma (5.6.9) lib/puma/configuration.rb:252:in `call'
+puma (5.6.9) lib/puma/request.rb:77:in `block in handle_request'
+puma (5.6.9) lib/puma/thread_pool.rb:340:in `with_force_shutdown'
+puma (5.6.9) lib/puma/request.rb:76:in `handle_request'
+puma (5.6.9) lib/puma/server.rb:443:in `process_client'
+puma (5.6.9) lib/puma/thread_pool.rb:147:in `block in spawn_thread'
+Started GET "/favicon.ico" for 127.0.0.1 at 2026-05-29 13:57:48 -0500
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mCACHE ActiveRecord::SchemaMigration Pluck (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  
+ActiveRecord::PendingMigrationError (
+
+Migrations are pending. To resolve this issue, run:
+
+        bin/rails db:migrate RAILS_ENV=development
+
+You have 1 pending migration:
+
+1780079121864_customers.rb
+
+
+):
+  
+activerecord (7.0.10) lib/active_record/migration.rb:663:in `check_pending!'
+activerecord (7.0.10) lib/active_record/migration.rb:628:in `block (2 levels) in call'
+activesupport (7.0.10) lib/active_support/file_update_checker.rb:83:in `execute'
+activerecord (7.0.10) lib/active_record/migration.rb:633:in `block in call'
+activerecord (7.0.10) lib/active_record/migration.rb:625:in `synchronize'
+activerecord (7.0.10) lib/active_record/migration.rb:625:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/callbacks.rb:27:in `block in call'
+activesupport (7.0.10) lib/active_support/callbacks.rb:99:in `run_callbacks'
+actionpack (7.0.10) lib/action_dispatch/middleware/callbacks.rb:26:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/executor.rb:14:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/actionable_exceptions.rb:17:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/debug_exceptions.rb:28:in `call'
+web-console (4.2.1) lib/web_console/middleware.rb:132:in `call_app'
+web-console (4.2.1) lib/web_console/middleware.rb:28:in `block in call'
+web-console (4.2.1) lib/web_console/middleware.rb:17:in `catch'
+web-console (4.2.1) lib/web_console/middleware.rb:17:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/show_exceptions.rb:29:in `call'
+railties (7.0.10) lib/rails/rack/logger.rb:40:in `call_app'
+railties (7.0.10) lib/rails/rack/logger.rb:25:in `block in call'
+activesupport (7.0.10) lib/active_support/tagged_logging.rb:99:in `block in tagged'
+activesupport (7.0.10) lib/active_support/tagged_logging.rb:37:in `tagged'
+activesupport (7.0.10) lib/active_support/tagged_logging.rb:99:in `tagged'
+railties (7.0.10) lib/rails/rack/logger.rb:25:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/remote_ip.rb:93:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/request_id.rb:26:in `call'
+rack (2.2.23) lib/rack/method_override.rb:24:in `call'
+rack (2.2.23) lib/rack/runtime.rb:22:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/executor.rb:14:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/static.rb:23:in `call'
+rack (2.2.23) lib/rack/sendfile.rb:127:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/host_authorization.rb:138:in `call'
+railties (7.0.10) lib/rails/engine.rb:531:in `call'
+puma (5.6.9) lib/puma/configuration.rb:252:in `call'
+puma (5.6.9) lib/puma/request.rb:77:in `block in handle_request'
+puma (5.6.9) lib/puma/thread_pool.rb:340:in `with_force_shutdown'
+puma (5.6.9) lib/puma/request.rb:76:in `handle_request'
+puma (5.6.9) lib/puma/server.rb:443:in `process_client'
+puma (5.6.9) lib/puma/thread_pool.rb:147:in `block in spawn_thread'
+Started GET "/" for 127.0.0.1 at 2026-05-29 13:57:50 -0500
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mCACHE ActiveRecord::SchemaMigration Pluck (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  
+ActiveRecord::PendingMigrationError (
+
+Migrations are pending. To resolve this issue, run:
+
+        bin/rails db:migrate RAILS_ENV=development
+
+You have 1 pending migration:
+
+1780079121864_customers.rb
+
+
+):
+  
+activerecord (7.0.10) lib/active_record/migration.rb:663:in `check_pending!'
+activerecord (7.0.10) lib/active_record/migration.rb:628:in `block (2 levels) in call'
+activesupport (7.0.10) lib/active_support/file_update_checker.rb:83:in `execute'
+activerecord (7.0.10) lib/active_record/migration.rb:633:in `block in call'
+activerecord (7.0.10) lib/active_record/migration.rb:625:in `synchronize'
+activerecord (7.0.10) lib/active_record/migration.rb:625:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/callbacks.rb:27:in `block in call'
+activesupport (7.0.10) lib/active_support/callbacks.rb:99:in `run_callbacks'
+actionpack (7.0.10) lib/action_dispatch/middleware/callbacks.rb:26:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/executor.rb:14:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/actionable_exceptions.rb:17:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/debug_exceptions.rb:28:in `call'
+web-console (4.2.1) lib/web_console/middleware.rb:132:in `call_app'
+web-console (4.2.1) lib/web_console/middleware.rb:28:in `block in call'
+web-console (4.2.1) lib/web_console/middleware.rb:17:in `catch'
+web-console (4.2.1) lib/web_console/middleware.rb:17:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/show_exceptions.rb:29:in `call'
+railties (7.0.10) lib/rails/rack/logger.rb:40:in `call_app'
+railties (7.0.10) lib/rails/rack/logger.rb:25:in `block in call'
+activesupport (7.0.10) lib/active_support/tagged_logging.rb:99:in `block in tagged'
+activesupport (7.0.10) lib/active_support/tagged_logging.rb:37:in `tagged'
+activesupport (7.0.10) lib/active_support/tagged_logging.rb:99:in `tagged'
+railties (7.0.10) lib/rails/rack/logger.rb:25:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/remote_ip.rb:93:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/request_id.rb:26:in `call'
+rack (2.2.23) lib/rack/method_override.rb:24:in `call'
+rack (2.2.23) lib/rack/runtime.rb:22:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/executor.rb:14:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/static.rb:23:in `call'
+rack (2.2.23) lib/rack/sendfile.rb:127:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/host_authorization.rb:138:in `call'
+railties (7.0.10) lib/rails/engine.rb:531:in `call'
+puma (5.6.9) lib/puma/configuration.rb:252:in `call'
+puma (5.6.9) lib/puma/request.rb:77:in `block in handle_request'
+puma (5.6.9) lib/puma/thread_pool.rb:340:in `with_force_shutdown'
+puma (5.6.9) lib/puma/request.rb:76:in `handle_request'
+puma (5.6.9) lib/puma/server.rb:443:in `process_client'
+puma (5.6.9) lib/puma/thread_pool.rb:147:in `block in spawn_thread'
+Started GET "/" for 127.0.0.1 at 2026-05-29 13:59:25 -0500
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.5ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mCACHE ActiveRecord::SchemaMigration Pluck (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  
+ActiveRecord::PendingMigrationError (
+
+Migrations are pending. To resolve this issue, run:
+
+        bin/rails db:migrate RAILS_ENV=development
+
+You have 1 pending migration:
+
+1780079121864_customers.rb
+
+
+):
+  
+activerecord (7.0.10) lib/active_record/migration.rb:663:in `check_pending!'
+activerecord (7.0.10) lib/active_record/migration.rb:628:in `block (2 levels) in call'
+activesupport (7.0.10) lib/active_support/file_update_checker.rb:83:in `execute'
+activerecord (7.0.10) lib/active_record/migration.rb:633:in `block in call'
+activerecord (7.0.10) lib/active_record/migration.rb:625:in `synchronize'
+activerecord (7.0.10) lib/active_record/migration.rb:625:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/callbacks.rb:27:in `block in call'
+activesupport (7.0.10) lib/active_support/callbacks.rb:99:in `run_callbacks'
+actionpack (7.0.10) lib/action_dispatch/middleware/callbacks.rb:26:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/executor.rb:14:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/actionable_exceptions.rb:17:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/debug_exceptions.rb:28:in `call'
+web-console (4.2.1) lib/web_console/middleware.rb:132:in `call_app'
+web-console (4.2.1) lib/web_console/middleware.rb:28:in `block in call'
+web-console (4.2.1) lib/web_console/middleware.rb:17:in `catch'
+web-console (4.2.1) lib/web_console/middleware.rb:17:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/show_exceptions.rb:29:in `call'
+railties (7.0.10) lib/rails/rack/logger.rb:40:in `call_app'
+railties (7.0.10) lib/rails/rack/logger.rb:25:in `block in call'
+activesupport (7.0.10) lib/active_support/tagged_logging.rb:99:in `block in tagged'
+activesupport (7.0.10) lib/active_support/tagged_logging.rb:37:in `tagged'
+activesupport (7.0.10) lib/active_support/tagged_logging.rb:99:in `tagged'
+railties (7.0.10) lib/rails/rack/logger.rb:25:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/remote_ip.rb:93:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/request_id.rb:26:in `call'
+rack (2.2.23) lib/rack/method_override.rb:24:in `call'
+rack (2.2.23) lib/rack/runtime.rb:22:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/executor.rb:14:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/static.rb:23:in `call'
+rack (2.2.23) lib/rack/sendfile.rb:127:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/host_authorization.rb:138:in `call'
+railties (7.0.10) lib/rails/engine.rb:531:in `call'
+puma (5.6.9) lib/puma/configuration.rb:252:in `call'
+puma (5.6.9) lib/puma/request.rb:77:in `block in handle_request'
+puma (5.6.9) lib/puma/thread_pool.rb:340:in `with_force_shutdown'
+puma (5.6.9) lib/puma/request.rb:76:in `handle_request'
+puma (5.6.9) lib/puma/server.rb:443:in `process_client'
+puma (5.6.9) lib/puma/thread_pool.rb:147:in `block in spawn_thread'
+Started GET "/favicon.ico" for 127.0.0.1 at 2026-05-29 13:59:25 -0500
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mCACHE ActiveRecord::SchemaMigration Pluck (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  
+ActiveRecord::PendingMigrationError (
+
+Migrations are pending. To resolve this issue, run:
+
+        bin/rails db:migrate RAILS_ENV=development
+
+You have 1 pending migration:
+
+1780079121864_customers.rb
+
+
+):
+  
+activerecord (7.0.10) lib/active_record/migration.rb:663:in `check_pending!'
+activerecord (7.0.10) lib/active_record/migration.rb:628:in `block (2 levels) in call'
+activesupport (7.0.10) lib/active_support/file_update_checker.rb:83:in `execute'
+activerecord (7.0.10) lib/active_record/migration.rb:633:in `block in call'
+activerecord (7.0.10) lib/active_record/migration.rb:625:in `synchronize'
+activerecord (7.0.10) lib/active_record/migration.rb:625:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/callbacks.rb:27:in `block in call'
+activesupport (7.0.10) lib/active_support/callbacks.rb:99:in `run_callbacks'
+actionpack (7.0.10) lib/action_dispatch/middleware/callbacks.rb:26:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/executor.rb:14:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/actionable_exceptions.rb:17:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/debug_exceptions.rb:28:in `call'
+web-console (4.2.1) lib/web_console/middleware.rb:132:in `call_app'
+web-console (4.2.1) lib/web_console/middleware.rb:28:in `block in call'
+web-console (4.2.1) lib/web_console/middleware.rb:17:in `catch'
+web-console (4.2.1) lib/web_console/middleware.rb:17:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/show_exceptions.rb:29:in `call'
+railties (7.0.10) lib/rails/rack/logger.rb:40:in `call_app'
+railties (7.0.10) lib/rails/rack/logger.rb:25:in `block in call'
+activesupport (7.0.10) lib/active_support/tagged_logging.rb:99:in `block in tagged'
+activesupport (7.0.10) lib/active_support/tagged_logging.rb:37:in `tagged'
+activesupport (7.0.10) lib/active_support/tagged_logging.rb:99:in `tagged'
+railties (7.0.10) lib/rails/rack/logger.rb:25:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/remote_ip.rb:93:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/request_id.rb:26:in `call'
+rack (2.2.23) lib/rack/method_override.rb:24:in `call'
+rack (2.2.23) lib/rack/runtime.rb:22:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/executor.rb:14:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/static.rb:23:in `call'
+rack (2.2.23) lib/rack/sendfile.rb:127:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/host_authorization.rb:138:in `call'
+railties (7.0.10) lib/rails/engine.rb:531:in `call'
+puma (5.6.9) lib/puma/configuration.rb:252:in `call'
+puma (5.6.9) lib/puma/request.rb:77:in `block in handle_request'
+puma (5.6.9) lib/puma/thread_pool.rb:340:in `with_force_shutdown'
+puma (5.6.9) lib/puma/request.rb:76:in `handle_request'
+puma (5.6.9) lib/puma/server.rb:443:in `process_client'
+puma (5.6.9) lib/puma/thread_pool.rb:147:in `block in spawn_thread'
+Started GET "/" for 127.0.0.1 at 2026-05-29 13:59:47 -0500
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.4ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by Rails::WelcomeController#index as HTML
+  Rendering /Users/eejai42/.rbenv/versions/3.2.0/lib/ruby/gems/3.2.0/gems/railties-7.0.10/lib/rails/templates/rails/welcome/index.html.erb
+  Rendered /Users/eejai42/.rbenv/versions/3.2.0/lib/ruby/gems/3.2.0/gems/railties-7.0.10/lib/rails/templates/rails/welcome/index.html.erb (Duration: 0.5ms | Allocations: 552)
+Completed 200 OK in 5ms (Views: 1.5ms | ActiveRecord: 0.0ms | Allocations: 6018)
+
+
+Started GET "/" for 127.0.0.1 at 2026-05-29 13:59:49 -0500
+Processing by Rails::WelcomeController#index as */*
+  Rendering /Users/eejai42/.rbenv/versions/3.2.0/lib/ruby/gems/3.2.0/gems/railties-7.0.10/lib/rails/templates/rails/welcome/index.html.erb
+  Rendered /Users/eejai42/.rbenv/versions/3.2.0/lib/ruby/gems/3.2.0/gems/railties-7.0.10/lib/rails/templates/rails/welcome/index.html.erb (Duration: 0.5ms | Allocations: 251)
+Completed 200 OK in 2ms (Views: 1.0ms | ActiveRecord: 0.0ms | Allocations: 847)
+
+
+Started GET "/customers" for 127.0.0.1 at 2026-05-29 14:00:08 -0500
+  
+ActionController::RoutingError (No route matches [GET] "/customers"):
+  
+Started GET "/favicon.ico" for 127.0.0.1 at 2026-05-29 14:00:09 -0500
+  
+ActionController::RoutingError (No route matches [GET] "/favicon.ico"):
+  
+Started GET "/" for 127.0.0.1 at 2026-05-29 14:00:55 -0500
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.5ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  
+ActionController::RoutingError (uninitialized constant CustomersController):
+  
+Started GET "/" for 127.0.0.1 at 2026-05-29 14:00:55 -0500
+  
+ActionController::RoutingError (uninitialized constant CustomersController):
+  
+Started GET "/" for 127.0.0.1 at 2026-05-29 14:01:01 -0500
+  
+ActionController::RoutingError (uninitialized constant CustomersController):
+  
+Started GET "/" for 127.0.0.1 at 2026-05-29 14:01:17 -0500
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.4ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  
+NameError (uninitialized constant ApplicationController):
+  
+app/controllers/customers_controller.rb:1:in `<top (required)>'
+Started GET "/" for 127.0.0.1 at 2026-05-29 14:01:17 -0500
+  
+NameError (uninitialized constant ApplicationController):
+  
+app/controllers/customers_controller.rb:1:in `<top (required)>'
+Started GET "/" for 127.0.0.1 at 2026-05-29 14:01:25 -0500
+  
+NameError (uninitialized constant ApplicationController):
+  
+app/controllers/customers_controller.rb:1:in `<top (required)>'
+Started GET "/" for 127.0.0.1 at 2026-05-29 14:01:40 -0500
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.5ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by CustomersController#index as HTML
+Completed 500 Internal Server Error in 2ms (ActiveRecord: 0.0ms | Allocations: 1672)
+
+
+  
+NameError (uninitialized constant CustomersController::Customers):
+  
+app/controllers/customers_controller.rb:3:in `index'
+Started GET "/" for 127.0.0.1 at 2026-05-29 14:01:41 -0500
+Processing by CustomersController#index as */*
+Completed 500 Internal Server Error in 0ms (ActiveRecord: 0.0ms | Allocations: 404)
+
+
+  
+NameError (uninitialized constant CustomersController::Customers):
+  
+app/controllers/customers_controller.rb:3:in `index'
+Started GET "/" for 127.0.0.1 at 2026-05-29 14:03:20 -0500
+Processing by CustomersController#index as HTML
+Completed 500 Internal Server Error in 0ms (ActiveRecord: 0.0ms | Allocations: 400)
+
+
+  
+NameError (uninitialized constant CustomersController::Customers):
+  
+app/controllers/customers_controller.rb:3:in `index'
+Started GET "/" for 127.0.0.1 at 2026-05-29 14:03:26 -0500
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.6ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by CustomersController#index as HTML
+Completed 500 Internal Server Error in 1ms (ActiveRecord: 0.0ms | Allocations: 1672)
+
+
+  
+NameError (uninitialized constant CustomersController::Customers):
+  
+app/controllers/customers_controller.rb:3:in `index'
+Started GET "/" for 127.0.0.1 at 2026-05-29 14:03:26 -0500
+Processing by CustomersController#index as HTML
+Completed 500 Internal Server Error in 0ms (ActiveRecord: 0.0ms | Allocations: 397)
+
+
+  
+NameError (uninitialized constant CustomersController::Customers):
+  
+app/controllers/customers_controller.rb:3:in `index'
+Started GET "/" for 127.0.0.1 at 2026-05-29 14:03:26 -0500
+Processing by CustomersController#index as HTML
+Completed 500 Internal Server Error in 0ms (ActiveRecord: 0.0ms | Allocations: 400)
+
+
+  
+NameError (uninitialized constant CustomersController::Customers):
+  
+app/controllers/customers_controller.rb:3:in `index'
+Started GET "/" for 127.0.0.1 at 2026-05-29 14:03:28 -0500
+Processing by CustomersController#index as HTML
+Completed 500 Internal Server Error in 0ms (ActiveRecord: 0.0ms | Allocations: 399)
+
+
+  
+NameError (uninitialized constant CustomersController::Customers):
+  
+app/controllers/customers_controller.rb:3:in `index'
+Started GET "/" for 127.0.0.1 at 2026-05-29 14:03:51 -0500
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.6ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by CustomersController#index as HTML
+Completed 500 Internal Server Error in 4ms (ActiveRecord: 0.0ms | Allocations: 1672)
+
+
+  
+NameError (uninitialized constant CustomersController::Customer):
+  
+app/controllers/customers_controller.rb:3:in `index'
+Started GET "/" for 127.0.0.1 at 2026-05-29 14:03:54 -0500
+Processing by CustomersController#index as */*
+Completed 500 Internal Server Error in 0ms (ActiveRecord: 0.0ms | Allocations: 404)
+
+
+  
+NameError (uninitialized constant CustomersController::Customer):
+  
+app/controllers/customers_controller.rb:3:in `index'
+Started GET "/customers" for 127.0.0.1 at 2026-05-29 14:03:57 -0500
+Processing by CustomersController#index as HTML
+Completed 500 Internal Server Error in 0ms (ActiveRecord: 0.0ms | Allocations: 399)
+
+
+  
+NameError (uninitialized constant CustomersController::Customer):
+  
+app/controllers/customers_controller.rb:3:in `index'
+Started GET "/" for 127.0.0.1 at 2026-05-29 14:04:01 -0500
+Processing by CustomersController#index as */*
+Completed 500 Internal Server Error in 0ms (ActiveRecord: 0.0ms | Allocations: 401)
+
+
+  
+NameError (uninitialized constant CustomersController::Customer):
+  
+app/controllers/customers_controller.rb:3:in `index'
+Started GET "/" for 127.0.0.1 at 2026-05-29 14:05:33 -0500
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.5ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by CustomersController#index as HTML
+Completed 500 Internal Server Error in 4ms (ActiveRecord: 0.0ms | Allocations: 1726)
+
+
+  
+NameError (uninitialized constant ApplicationRecord):
+  
+app/models/customer.rb:1:in `<top (required)>'
+app/controllers/customers_controller.rb:3:in `index'
+Started GET "/" for 127.0.0.1 at 2026-05-29 14:05:35 -0500
+Processing by CustomersController#index as HTML
+Completed 500 Internal Server Error in 0ms (ActiveRecord: 0.0ms | Allocations: 452)
+
+
+  
+NameError (uninitialized constant ApplicationRecord):
+  
+app/models/customer.rb:1:in `<top (required)>'
+app/controllers/customers_controller.rb:3:in `index'
+Started GET "/" for 127.0.0.1 at 2026-05-29 14:05:35 -0500
+Processing by CustomersController#index as */*
+Completed 500 Internal Server Error in 0ms (ActiveRecord: 0.0ms | Allocations: 697)
+
+
+  
+NameError (uninitialized constant ApplicationRecord):
+  
+app/models/customer.rb:1:in `<top (required)>'
+app/controllers/customers_controller.rb:3:in `index'
+Started GET "/" for 127.0.0.1 at 2026-05-29 14:05:40 -0500
+Processing by CustomersController#index as */*
+Completed 500 Internal Server Error in 0ms (ActiveRecord: 0.0ms | Allocations: 453)
+
+
+  
+NameError (uninitialized constant ApplicationRecord):
+  
+app/models/customer.rb:1:in `<top (required)>'
+app/controllers/customers_controller.rb:3:in `index'
+Started GET "/" for 127.0.0.1 at 2026-05-29 14:05:48 -0500
+Processing by CustomersController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering customers/index.html.erb within layouts/application
+  [1m[36mCustomer Load (0.7ms)[0m  [1m[34mSELECT "vw_customers".* FROM "vw_customers"[0m
+  ↳ app/views/customers/index.html.erb:15
+  Rendered customers/index.html.erb within layouts/application (Duration: 5.5ms | Allocations: 5406)
+  Rendered layout layouts/application.html.erb (Duration: 5.8ms | Allocations: 5581)
+Completed 200 OK in 7ms (Views: 4.3ms | ActiveRecord: 2.2ms | Allocations: 6981)
+
+
+Started GET "/" for 127.0.0.1 at 2026-05-29 14:05:56 -0500
+  [1m[36mActiveRecord::SchemaMigration Pluck (1.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by CustomersController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering customers/index.html.erb within layouts/application
+  [1m[36mCustomer Load (0.9ms)[0m  [1m[34mSELECT "vw_customers".* FROM "vw_customers"[0m
+  ↳ app/views/customers/index.html.erb:15
+  Rendered customers/index.html.erb within layouts/application (Duration: 5.8ms | Allocations: 5690)
+  Rendered layout layouts/application.html.erb (Duration: 6.2ms | Allocations: 5889)
+Completed 200 OK in 12ms (Views: 4.9ms | ActiveRecord: 2.6ms | Allocations: 11995)
+
+
+Started GET "/" for 127.0.0.1 at 2026-05-29 14:05:59 -0500
+Processing by CustomersController#index as */*
+  Rendering layout layouts/application.html.erb
+  Rendering customers/index.html.erb within layouts/application
+  [1m[36mCustomer Load (0.4ms)[0m  [1m[34mSELECT "vw_customers".* FROM "vw_customers"[0m
+  ↳ app/views/customers/index.html.erb:15
+  Rendered customers/index.html.erb within layouts/application (Duration: 1.3ms | Allocations: 676)
+  Rendered layout layouts/application.html.erb (Duration: 1.4ms | Allocations: 728)
+Completed 200 OK in 2ms (Views: 1.2ms | ActiveRecord: 0.4ms | Allocations: 1025)
+
+
