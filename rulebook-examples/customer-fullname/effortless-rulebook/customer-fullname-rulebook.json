@@ -24,7 +24,7 @@
         "datatype": "string",
         "type": "calculated",
         "Description": "dsfdfds",
-        "formula": "=LEFT({{FirstName}}, 1) & \"\" & LEFT({{LastName}}, 1)",
+        "formula": "=LEFT({{FirstName}}, 1) & \"\" & LEFT({{LastName}}, 1) & \"\"",
         "nullable": true
       },
       {
@@ -44,7 +44,7 @@
         "datatype": "string",
         "type": "calculated",
         "Description": "Full name is computed from the first and last name of the customer",
-        "formula": "={{FirstName}} & \" \" & {{LastName}}",
+        "formula": "={{FirstName}} & \" ... \" & {{LastName}}",
         "nullable": true
       }
     ],
@@ -56,7 +56,7 @@
         "LastName": "Smithy",
         "Name": "jane.smith-email.com",
         "Initials": "MS",
-        "FullName": "Mary Smithy"
+        "FullName": "Mary ... Smithy"
       },
       {
         "CustomerId": "john-doe-email-com",
@@ -65,7 +65,7 @@
         "LastName": "Doe",
         "Name": "john.doe-email.com",
         "Initials": "JD",
-        "FullName": "John Doe"
+        "FullName": "John ... Doe"
       },
       {
         "CustomerId": "emily-jones-email-com",
@@ -74,7 +74,16 @@
         "LastName": "Jones",
         "Name": "emily.jones-email.com",
         "Initials": "EJ",
-        "FullName": "Emily Jones"
+        "FullName": "Emily ... Jones"
+      },
+      {
+        "CustomerId": "alice-cooper",
+        "EmailAddress": "alice@cooper.com",
+        "FirstName": "Alice",
+        "LastName": "Dangerfields",
+        "Name": "alice-cooper.com",
+        "Initials": "AD",
+        "FullName": "Alice ... Dangerfields"
       }
     ]
   },

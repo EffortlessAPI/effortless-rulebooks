@@ -3017,11 +3017,11 @@
       },
       {
         "NavId": "nav-028",
-        "Label": "Reset Editor",
+        "Label": "App & Data Tools",
         "NavArea": "developer",
         "ParentNavId": "nav-015",
         "ScreenId": "screen-dev-reset",
-        "Icon": "RotateCcw",
+        "Icon": "AppWindow",
         "Order": 160,
         "MinRoleId": "role-developer"
       },
@@ -3436,9 +3436,9 @@
         "ScreenId": "screen-dev-reset",
         "Path": "/developer/:domain/reset",
         "NavArea": "developer",
-        "Title": "Reset Editor",
+        "Title": "App & Data Tools",
         "MinRoleId": "role-developer",
-        "Description": "Clear local edit state for this domain."
+        "Description": "Launch this domain's app, import Postgres data back into the rulebook, or reset the editor DB."
       },
       {
         "ScreenId": "screen-admin-home",
