@@ -1,12 +1,12 @@
 <div class="card">
   <div class="card-header">
-    <h2><%= @customer.full_name %></h2>
+    <h2><%= @customer.name %></h2>
   </div>
   <div class="card-body">
     <p><strong>ID:</strong> <%= @customer.customer_id %></p>
     <p><strong>First Name:</strong> <%= @customer.first_name %></p>
     <p><strong>Last Name:</strong> <%= @customer.last_name %></p>
-    <p><strong>Full Name (Calculated):</strong> <code><%= @customer.full_name %></code></p>
+    <p><strong>Full Name (Calculated):</strong> <code><%= @customer.name %></code></p>
     <p><strong>Initials (Calculated):</strong> <code><%= @customer.initials %></code></p>
     <p><strong>Email:</strong> <%= @customer.email_address %></p>
   </div>

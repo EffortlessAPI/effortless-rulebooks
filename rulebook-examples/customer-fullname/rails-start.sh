@@ -29,41 +29,16 @@ sleep 1
 # Ensure Ruby 3.2 is active
 eval "$(rbenv init -)" || true
 
-# Set up database if needed
-echo "Setting up database..."
-createdb -h localhost -U postgres erb_customer_fullname_development 2>/dev/null || true
+# Database is managed by effortless build - it should already exist
+echo "Checking database..."
+if ! psql -h localhost -U postgres -d erb_customer_fullname -c "SELECT 1" 2>/dev/null; then
+  echo "ERROR: Database erb_customer_fullname not found."
+  echo "Run 'effortless build' from the project root to initialize the database."
+  exit 1
+fi
 
-# Create tables and views
-psql -h localhost -U postgres -d erb_customer_fullname_development << 'EOSQL'
--- Create Customers table
-CREATE TABLE IF NOT EXISTS customers (
-  customer_id VARCHAR PRIMARY KEY,
-  email_address VARCHAR,
-  first_name VARCHAR,
-  last_name VARCHAR
-);
-
--- Create view with calculated fields
-CREATE OR REPLACE VIEW vw_customers AS
-SELECT
-  "customer_id",
-  "last_name" || ', ' || "first_name" AS "name",
-  "email_address",
-  SUBSTRING("first_name" FROM 1 FOR 1) || SUBSTRING("last_name" FROM 1 FOR 1) || '.' AS "initials",
-  "first_name",
-  "last_name"
-FROM customers;
-
--- Insert seed data
-INSERT INTO customers (customer_id, email_address, first_name, last_name)
-VALUES
-  ('jane-smith-email-com', 'jane.smith@email.com', 'Jane', 'Smithy'),
-  ('john-doe-email-com', 'john.doe@email.com', 'John', 'Doe'),
-  ('emily-jones-email-com', 'emily.jones@email.com', 'Emily', 'Jones'),
-  ('alice-cooper', 'alice@cooper.com', 'Alice', 'Gutknecht')
-ON CONFLICT DO NOTHING;
-
--- Mark migration as applied
+# Mark Rails migration as applied (schema is already created by effortless build)
+psql -h localhost -U postgres -d erb_customer_fullname << 'EOSQL'
 CREATE TABLE IF NOT EXISTS schema_migrations (version varchar PRIMARY KEY);
 INSERT INTO schema_migrations (version) VALUES ('1780079121864') ON CONFLICT DO NOTHING;
 EOSQL

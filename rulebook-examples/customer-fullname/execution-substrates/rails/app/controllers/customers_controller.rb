@@ -1,5 +1,6 @@
 class CustomersController < ApplicationController
-  before_action :set_customer, only: [:show, :edit, :update, :destroy]
+  before_action :set_customer_for_view, only: [:show]
+  before_action :set_customer_for_edit, only: [:edit, :update, :destroy]
 
   def index
     @customers = Customer.all
@@ -9,13 +10,13 @@ class CustomersController < ApplicationController
   end
 
   def new
-    @customer = Customer.new
+    @customer = CustomerRaw.new
   end
 
   def create
-    @customer = Customer.new(customer_params)
+    @customer = CustomerRaw.new(customer_params)
     if @customer.save
-      redirect_to @customer, notice: 'Customer was successfully created.'
+      redirect_to Customer.find(params[:customer_raw][:customer_id]), notice: 'Customer was successfully created.'
     else
       render :new
     end
@@ -26,7 +27,7 @@ class CustomersController < ApplicationController
 
   def update
     if @customer.update(customer_params)
-      redirect_to @customer, notice: 'Customer was successfully updated.'
+      redirect_to Customer.find(@customer.customer_id), notice: 'Customer was successfully updated.'
     else
       render :edit
     end
@@ -39,11 +40,16 @@ class CustomersController < ApplicationController
 
   private
 
-  def set_customer
+  def set_customer_for_view
     @customer = Customer.find(params[:id])
   end
 
+  def set_customer_for_edit
+    @customer = CustomerRaw.find(params[:id])
+  end
+
   def customer_params
-    params.require(:customer).permit(:customer_id, :first_name, :last_name, :email_address)
+    model_key = @customer.class.name.underscore.to_sym
+    params.require(model_key).permit(:customer_id, :first_name, :last_name, :email_address)
   end
 end

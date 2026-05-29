@@ -1,4 +1,11 @@
-<%= form_with(model: customer, local: true) do |form| %>
+<% url = customer.persisted? ? customer_path(customer.customer_id) : customers_path %>
+<% method = customer.persisted? ? :patch : :post %>
+<form action="<%= url %>" method="post" accept-charset="UTF-8">
+  <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>" autocomplete="off" />
+  <% if method == :patch %>
+    <input type="hidden" name="_method" value="patch" />
+  <% end %>
+
   <% if customer.errors.any? %>
     <div id="error_explanation" class="alert alert-danger">
       <h4><%= pluralize(customer.errors.count, "error") %> prohibited this customer from being saved:</h4>
@@ -11,27 +18,27 @@
   <% end %>
 
   <div class="mb-3">
-    <%= form.label :customer_id, "Customer ID" %>
-    <%= form.text_field :customer_id, class: "form-control" %>
+    <label for="customer_customer_id">Customer ID</label>
+    <input class="form-control" type="text" value="<%= customer.customer_id %>" name="customer[customer_id]" id="customer_customer_id" />
   </div>
 
   <div class="mb-3">
-    <%= form.label :first_name, "First Name" %>
-    <%= form.text_field :first_name, class: "form-control" %>
+    <label for="customer_first_name">First Name</label>
+    <input class="form-control" type="text" value="<%= customer.first_name %>" name="customer[first_name]" id="customer_first_name" />
   </div>
 
   <div class="mb-3">
-    <%= form.label :last_name, "Last Name" %>
-    <%= form.text_field :last_name, class: "form-control" %>
+    <label for="customer_last_name">Last Name</label>
+    <input class="form-control" type="text" value="<%= customer.last_name %>" name="customer[last_name]" id="customer_last_name" />
   </div>
 
   <div class="mb-3">
-    <%= form.label :email_address, "Email Address" %>
-    <%= form.email_field :email_address, class: "form-control" %>
+    <label for="customer_email_address">Email Address</label>
+    <input class="form-control" type="email" value="<%= customer.email_address %>" name="customer[email_address]" id="customer_email_address" />
   </div>
 
   <div class="mb-3">
-    <%= form.submit class: "btn btn-primary" %>
-    <%= link_to "Cancel", customers_path, class: "btn btn-secondary" %>
+    <input type="submit" value="<%= customer.persisted? ? 'Update Customer' : 'Create Customer' %>" class="btn btn-primary" />
+    <a class="btn btn-secondary" href="<%= customers_path %>">Cancel</a>
   </div>
-<% end %>
+</form>

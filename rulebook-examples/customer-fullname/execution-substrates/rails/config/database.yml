@@ -9,7 +9,7 @@ default: &default
 
 development:
   <<: *default
-  database: erb_customer_fullname_development
+  database: erb_customer_fullname
 
 test:
   <<: *default
@@ -17,4 +17,4 @@ test:
 
 production:
   <<: *default
-  database: erb_customer_fullname_production
+  database: erb_customer_fullname

@@ -1,14 +1,14 @@
 class Customer < ApplicationRecord
-  self.table_name = 'customers'
+  self.table_name = 'vw_customers'
   self.primary_key = 'customer_id'
 
-  attr_accessor :full_name, :initials
-
-  def full_name
-    "#{last_name}, #{first_name}"
+  # Writes go to the base customers table, reads come from the view
+  def self.find_for_edit(id)
+    CustomerRaw.find(id)
   end
+end
 
-  def initials
-    "#{first_name[0]}#{last_name[0]}".upcase
-  end
+class CustomerRaw < ApplicationRecord
+  self.table_name = 'customers'
+  self.primary_key = 'customer_id'
 end

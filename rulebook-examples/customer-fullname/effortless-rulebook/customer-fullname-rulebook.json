@@ -11,7 +11,8 @@
         "datatype": "string",
         "type": "calculated",
         "Description": "Full name is computed from the first and last name of the customer",
-        "formula": "={{FirstName}} & \" \" & {{LastName}}"
+        "formula": "={{LastName}} & \", \" & {{FirstName}} & \" - v4\"",
+        "nullable": true
       },
       {
         "name": "EmailAddress",
@@ -45,7 +46,7 @@
         "EmailAddress": "jane.smith@email.com",
         "FirstName": "Jane",
         "LastName": "Smithy",
-        "Name": "Smithy, Jane",
+        "Name": "Smithy, Jane - v4",
         "Initials": "JS"
       },
       {
@@ -53,7 +54,7 @@
         "EmailAddress": "john.doe@email.com",
         "FirstName": "John",
         "LastName": "Doe",
-        "Name": "Doe, John",
+        "Name": "Doe, John - v4",
         "Initials": "JD"
       },
       {
@@ -61,7 +62,7 @@
         "EmailAddress": "emily.jones@email.com",
         "FirstName": "Emily",
         "LastName": "Jones",
-        "Name": "Jones, Emily",
+        "Name": "Jones, Emily - v4",
         "Initials": "EJ"
       },
       {
@@ -69,7 +70,7 @@
         "EmailAddress": "alice@cooper.com",
         "FirstName": "Alice",
         "LastName": "Gutknechts",
-        "Name": "Gutknechts, Alice",
+        "Name": "Gutknechts, Alice - v4",
         "Initials": "AG"
       }
     ]
