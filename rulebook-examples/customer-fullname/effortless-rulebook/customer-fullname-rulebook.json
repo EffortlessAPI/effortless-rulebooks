@@ -51,29 +51,29 @@
       {
         "CustomerId": "jane-smith-email-com",
         "EmailAddress": "jane.smith@email.com",
-        "FirstName": "Linda",
-        "LastName": "Smith",
+        "FirstName": "Jane",
+        "LastName": "Smithy",
         "Name": "jane.smith-email.com",
-        "Initials": "Bob S.",
-        "FullName": "Bob Smith"
+        "Initials": "Jane S.",
+        "FullName": "Jane Smithy"
       },
       {
         "CustomerId": "john-doe-email-com",
         "EmailAddress": "john.doe@email.com",
-        "FirstName": "Jimmy",
+        "FirstName": "John",
         "LastName": "Doe",
         "Name": "john.doe-email.com",
-        "Initials": "Jimmy D.",
-        "FullName": "Jimmy Doe"
+        "Initials": "John D.",
+        "FullName": "John Doe"
       },
       {
         "CustomerId": "emily-jones-email-com",
         "EmailAddress": "emily.jones@email.com",
-        "FirstName": "Mary",
+        "FirstName": "Emily",
         "LastName": "Jones",
         "Name": "emily.jones-email.com",
-        "Initials": "Linda J.",
-        "FullName": "Linda Jones"
+        "Initials": "Emily J.",
+        "FullName": "Emily Jones"
       }
     ]
   },

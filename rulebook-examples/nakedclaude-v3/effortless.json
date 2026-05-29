@@ -32,7 +32,7 @@
       "IsSSoTTranspiler": false,
       "Name": "rulebooktopostgres",
       "RelativePath": "/postgres-bootstrap",
-      "CommandLine": "rulebook-to-postgres -i ../effortless-rulebook/nakedclaude-v3-rulebook.json",
+      "CommandLine": "rulebook-to-postgres -i ../effortless-rulebook/nakedclaude-v3-rulebook.json -p drop_all=true",
       "IsDisabled": false,
       "PinnedVersion": "v2026.04.23.1316",
       "LastVersionUsed": "v2026.04.23.1316",

@@ -130,6 +130,11 @@ TRANSPILERS = {
         "script": PROJECT_ROOT / "execution-substrates" / "airtable" / "inject-into-airtable.py",
         "description": "Sync rulebook schema back into Airtable base",
     },
+    # --- Reverse spoke: refresh derived fields in the rulebook from Postgres ---
+    "postgres-to-rulebook": {
+        "script": PROJECT_ROOT / "execution-substrates" / "postgres-to-rulebook" / "inject-into-postgres-to-rulebook.py",
+        "description": "Refresh calculated/lookup/aggregation field values in the rulebook from the vw_* views (raws verified, never written)",
+    },
 }
 
 

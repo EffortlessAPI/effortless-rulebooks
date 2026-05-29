@@ -16,7 +16,7 @@
       "IsSSoTTranspiler": false,
       "Name": "rulebooktopostgres",
       "RelativePath": "/postgres-bootstrap",
-      "CommandLine": "rulebook-to-postgres -i ../effortless-rulebook/community-event-planner-rulebook.json",
+      "CommandLine": "rulebook-to-postgres -i ../effortless-rulebook/community-event-planner-rulebook.json -p drop_all=true",
       "IsDisabled": false,
       "PinnedVersion": "v2026.05.09.1738",
       "LastVersionUsed": "v2026.05.09.1738",

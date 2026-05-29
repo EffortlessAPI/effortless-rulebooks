@@ -16,7 +16,7 @@
       "IsSSoTTranspiler": false,
       "Name": "rulebooktopostgres",
       "RelativePath": "/postgres-bootstrap",
-      "CommandLine": "rulebook-to-postgres -i ../effortless-rulebook/therapist-helper-portal-rulebook.json -w 300000",
+      "CommandLine": "rulebook-to-postgres -i ../effortless-rulebook/therapist-helper-portal-rulebook.json -p drop_all=true -w 300000",
       "IsDisabled": false,
       "LastVersionUsed": "v2026.05.09.1738",
       "LastUrl": "https://effortless-rulebook-to-postgres-v2026-05-09-1738-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
