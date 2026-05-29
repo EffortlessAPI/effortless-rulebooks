@@ -10,3 +10,4 @@ export * from './hooks/useCovenants.js';
 export * from './hooks/useRiskRatingHistory.js';
 export * from './hooks/useDocuments.js';
 export * from './hooks/useInteractions.js';
+export * from './hooks/use__meta__.js';

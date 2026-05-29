@@ -16,7 +16,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const DATABASE_URL =
   process.env.DATABASE_URL ||
-  'postgresql://postgres@localhost:5432/erb_effortless_banking_demo';
+  'postgresql://postgres@localhost:5432/erb_effortless_banking';
 
 const pool = new pg.Pool({ connectionString: DATABASE_URL });
 
@@ -24,7 +24,7 @@ const pool = new pg.Pool({ connectionString: DATABASE_URL });
 // (used by the double-click field drawer).
 const RULEBOOK_PATH = path.resolve(
   __dirname,
-  '../../effortless-rulebook/effortless-rulebook.json',
+  '../../effortless-rulebook/effortless-banking-rulebook.json',
 );
 const rulebook = JSON.parse(fs.readFileSync(RULEBOOK_PATH, 'utf8'));
 
@@ -304,5 +304,5 @@ app.get('/api/kpis', requireAuth, async (req, res) => {
   }
 });
 
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 8375;
 app.listen(PORT, () => console.log(`[fvb] backend listening on :${PORT}`));

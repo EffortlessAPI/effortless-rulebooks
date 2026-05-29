@@ -1,59 +1,52 @@
 #!/usr/bin/env python3
 """
-postgres-calculated-to-rulebook  (reverse spoke — refreshes DERIVED fields only)
+postgres-calculated-to-rulebook
 
-Shared ssotme-proxy transpiler. After the DB has been rebuilt from the rulebook
-(rulebook-to-postgres + init-db.sh), this pulls every CALCULATED / LOOKUP /
-AGGREGATION field value out of the `vw_*` views and writes it back into the
-rulebook's data[] rows, so the rulebook's stored display copies of derived fields
-mirror exactly what Postgres recomputed.
+Merges current Postgres raw-table data back into the rulebook's seed data arrays.
+Only raw and relationship fields are updated — computed/lookup/aggregation fields
+are left alone (they are derived by the transpiler, not authored).
 
-Doctrine (CLAUDE.md + user rules):
-  - The rulebook is HEAD. RAW values are human-authored and are NEVER written here.
-  - Derived field values stored in data[] are display copies; this refreshes them.
-  - FAIL, do not fall back. Any inconsistency (rulebook row with no PG counterpart,
-    a raw value diverging from PG, a missing expected column) prints the exact
-    discrepancy and exits non-zero WITHOUT writing the rulebook.
+Input:  .pg-raw-data.json  — written by pull-from-postgres.sh
+        rulebook JSON       — the SSoT being updated
 
-Invocation contexts (both deterministic — no guessing):
-  - Via ssotme-proxy: the proxy sets ERB_RULEBOOK_PATH (and runs us from the
-    substrate folder). That env var is the rulebook.
-  - Standalone (./inject-into-postgres-calculated-to-rulebook.py from a <domain>/<sub>/ dir):
-    we discover ../effortless-rulebook/*-rulebook.json relative to cwd.
+Usage (direct):
+  python3 inject-into-postgres-calculated-to-rulebook.py <rulebook_path> [<json_path>]
 
-DATABASE_URL resolution (matches init-db.sh / orchestrate.sh):
-  - postgres-bootstrap/effortless.env's DATABASE_URL (the domain's configured DB,
-    the SAME file init-db.sh sources) wins, else an explicit DATABASE_URL env
-    override, else the SSoT-derived default
-    postgresql://postgres@localhost:5432/erb_<domain-with-underscores>.
-  This must agree with init-db.sh or we'd read a different DB than the one the
-  build just rebuilt.
+Usage (via server.js / ssotme-proxy — set ERB_RULEBOOK_PATH, cwd = postgres-bootstrap/):
+  python3 inject-into-postgres-calculated-to-rulebook.py
 """
 
 import json
 import os
 import re
-import subprocess
 import sys
 from pathlib import Path
+from typing import Any, Dict, List, Tuple
 
 COMPUTED_TYPES = {"calculated", "lookup", "aggregation"}
 RAW_TYPES = {"raw", "relationship"}
 
 
-def die(msg: str) -> "NoReturn":
+def die(msg: str) -> None:
     sys.stderr.write(f"[postgres-calculated-to-rulebook] FAIL: {msg}\n")
     sys.exit(1)
 
 
+def warn(msg: str) -> None:
+    sys.stderr.write(f"[postgres-calculated-to-rulebook] WARN: {msg}\n")
+
+
+def log(msg: str) -> None:
+    sys.stdout.write(f"[postgres-calculated-to-rulebook] {msg}\n")
+
+
 def snake(name: str) -> str:
-    """PascalCase/camelCase -> snake_case, matching rulebook-to-postgres view aliases."""
     s1 = re.sub(r"(.)([A-Z][a-z]+)", r"\1_\2", name)
     s2 = re.sub(r"([a-z0-9])([A-Z])", r"\1_\2", s1)
     return s2.lower()
 
 
-def norm(v):
+def norm(v: Any) -> Any:
     if v is None:
         return None
     if isinstance(v, bool):
@@ -63,254 +56,126 @@ def norm(v):
     return str(v)
 
 
-def resolve_rulebook() -> Path:
-    env_path = os.environ.get("ERB_RULEBOOK_PATH")
-    if env_path:
-        p = Path(env_path)
-        if not p.is_file():
-            die(f"ERB_RULEBOOK_PATH points at a non-file: {p}")
-        return p.resolve()
-    # Standalone: discover ../effortless-rulebook/*-rulebook.json relative to cwd.
-    candidates = sorted((Path.cwd().parent / "effortless-rulebook").glob("*-rulebook.json"))
-    if len(candidates) == 0:
-        die("no ERB_RULEBOOK_PATH set and no ../effortless-rulebook/*-rulebook.json found")
-    if len(candidates) > 1:
-        die("multiple *-rulebook.json found; set ERB_RULEBOOK_PATH to disambiguate: "
-            + ", ".join(c.name for c in candidates))
-    return candidates[0].resolve()
+def load_raw_data(json_path: Path) -> Dict[str, List[Dict[str, Any]]]:
+    """Load .pg-raw-data.json written by pull-from-postgres.sh."""
+    if not json_path.is_file():
+        die(f"raw-data JSON not found: {json_path}\n"
+            f"  Run pull-from-postgres.sh first to generate it.")
+    return json.loads(json_path.read_text())
 
 
-def domain_from_rulebook(rulebook_path: Path) -> str:
-    stem = rulebook_path.stem
-    if not stem.endswith("-rulebook"):
-        die(f"rulebook filename '{rulebook_path.name}' does not match '<domain>-rulebook.json'")
-    return stem[: -len("-rulebook")]
-
-
-def read_env_database_url(rulebook_path: Path) -> "str | None":
-    """Read DATABASE_URL from the domain's postgres-bootstrap/effortless.env —
-    the SAME file init-db.sh sources. This is the single source of truth for the
-    domain's DB connection; without it we'd hit a different DB than the one the
-    build just rebuilt (e.g. erb_customer_crm vs the configured erb_customer_crm_demo).
-    Looks in cwd first (where the proxy runs us = postgres-bootstrap/), then the
-    deterministic <domain>/postgres-bootstrap/effortless.env next to the rulebook.
-    """
-    candidates = [
-        Path.cwd() / "effortless.env",
-        rulebook_path.parent.parent / "postgres-bootstrap" / "effortless.env",
-    ]
-    for env_file in candidates:
-        if not env_file.is_file():
-            continue
-        for line in env_file.read_text().splitlines():
-            line = line.strip()
-            if line.startswith("#") or "=" not in line:
-                continue
-            key, _, val = line.partition("=")
-            if key.strip().replace("export ", "").strip() == "DATABASE_URL":
-                val = val.strip().strip('"').strip("'")
-                if val:
-                    return val
-    return None
-
-
-def resolve_database_url(domain: str, rulebook_path: Path) -> str:
-    # Same precedence as init-db.sh: effortless.env (the domain's configured DB)
-    # wins, then an explicit env override, then the SSoT-derived default.
-    from_env_file = read_env_database_url(rulebook_path)
-    if from_env_file:
-        return from_env_file
-    override = os.environ.get("DATABASE_URL")
-    if override:
-        return override
-    return f"postgresql://postgres@localhost:5432/erb_{domain.replace('-', '_')}"
-
-
-def run_psql(database_url: str, sql: str) -> str:
-    proc = subprocess.run(
-        ["psql", database_url, "-At", "-v", "ON_ERROR_STOP=1", "-c", sql],
-        capture_output=True, text=True,
-    )
-    if proc.returncode != 0:
-        die(f"psql failed for SQL:\n  {sql}\n{proc.stderr.strip()}")
-    return proc.stdout
-
-
-def is_table(key: str, value) -> bool:
-    if key.startswith("_"):  # metadata keys (e.g. __meta__) are not materialized in PG
+def is_table(key: str, value: Any) -> bool:
+    if key.startswith("_"):
         return False
     return isinstance(value, dict) and "schema" in value and "data" in value
 
 
-def primary_key_column(database_url: str, table_snake: str) -> str:
-    sql = (
-        "SELECT a.attname FROM pg_index i "
-        "JOIN pg_attribute a ON a.attrelid = i.indrelid AND a.attnum = ANY(i.indkey) "
-        f"WHERE i.indrelid = 'public.{table_snake}'::regclass AND i.indisprimary"
-    )
-    cols = [c for c in run_psql(database_url, sql).splitlines() if c.strip()]
-    if len(cols) == 0:
-        die(f"table '{table_snake}' has no primary key in Postgres")
-    if len(cols) > 1:
-        die(f"table '{table_snake}' has a compound primary key {cols}; "
-            "this tool only supports single-column PKs")
-    return cols[0]
-
-
-def dump_view(database_url: str, view: str) -> list:
-    raw = run_psql(database_url, f"SELECT COALESCE(json_agg(t), '[]') FROM {view} t").strip()
-    if not raw:
-        die(f"empty response dumping {view}")
-    return json.loads(raw)
-
-
-def env_truthy(name: str) -> bool:
-    return os.environ.get(name, "").strip().lower() in ("1", "true", "yes", "on")
-
-
 def main() -> None:
-    rulebook_path = resolve_rulebook()
-    domain = domain_from_rulebook(rulebook_path)
-    database_url = resolve_database_url(domain, rulebook_path)
-    # ADOPT mode (opt-in, explicit): write RAW values AND add new PG rows back
-    # into the rulebook — i.e. "adopt the current Postgres state as the new seed".
-    # This is the ONLY path that writes raws, and it is never on by default. It is
-    # meant for the portal's explicit, user-confirmed "Import from Postgres" action
-    # after data was edited in the app/portal. To honor "never silently remove
-    # data", it does NOT delete rulebook rows that are absent from Postgres; it
-    # warns about them instead.
-    adopt = env_truthy("ERB_ADOPT_RAWS")
-    mode = "ADOPT (raws + new rows)" if adopt else "refresh (derived only)"
-    print(f"[postgres-calculated-to-rulebook] mode={mode} domain={domain} db={database_url} rulebook={rulebook_path}")
+    rulebook_path = None
+    json_path = None
+
+    if len(sys.argv) >= 2:
+        rulebook_path = Path(sys.argv[1]).resolve()
+        json_path = Path(sys.argv[2]).resolve() if len(sys.argv) >= 3 else None
+    elif "ERB_RULEBOOK_PATH" in os.environ:
+        rulebook_path = Path(os.environ["ERB_RULEBOOK_PATH"]).resolve()
+
+    if not rulebook_path:
+        die("rulebook not found (provide as arg or set ERB_RULEBOOK_PATH)")
+
+    if not rulebook_path.is_file():
+        die(f"rulebook not found: {rulebook_path}")
+
+    # Locate the JSON data file: explicit arg > cwd > postgres-bootstrap/ sibling
+    if json_path is None:
+        candidates = [
+            Path.cwd() / ".pg-raw-data.json",
+            rulebook_path.parent.parent / "postgres-bootstrap" / ".pg-raw-data.json",
+        ]
+        for c in candidates:
+            if c.is_file():
+                json_path = c
+                break
+        if json_path is None:
+            die(f".pg-raw-data.json not found (tried: {', '.join(str(c) for c in candidates)})\n"
+                f"  Run pull-from-postgres.sh to generate it.")
+
+    log(f"rulebook={rulebook_path}")
+    log(f"raw-data={json_path}")
 
     rulebook = json.loads(rulebook_path.read_text())
+    raw_data = load_raw_data(json_path)
 
-    raw_mismatches = []
-    pending_updates = []          # derived-field display-copy refreshes (both modes)
-    raw_adopts = []               # raw-field overwrites (adopt mode only)
-    added_rows = []               # (table_name, pk_val) new rows pulled from PG (adopt mode)
-    orphan_rulebook_rows = []     # (table_name, pk_val) in rulebook but not PG (adopt mode: warn, keep)
+    pending_updates: List[Tuple[Dict, str, Any, Any, str, Any]] = []
     tables_touched = 0
 
     for table_name, table in rulebook.items():
         if not is_table(table_name, table):
             continue
+
         schema = table["schema"]
-        computed = [f for f in schema if f.get("type") in COMPUTED_TYPES]
         raws = [f for f in schema if f.get("type") in RAW_TYPES]
-        # Default mode only cares about tables with derived fields. Adopt mode
-        # processes every table (raw-only tables can have edited/added data too).
-        if not computed and not adopt:
+
+        if not raws:
             continue
 
         table_snake = snake(table_name)
-        view = f"vw_{table_snake}"
-        if run_psql(database_url, f"SELECT to_regclass('public.{view}')").strip() in ("", "NULL"):
-            die(f"view '{view}' does not exist — was the DB rebuilt (rulebook-to-postgres + init-db)?")
+        if table_snake not in raw_data:
+            warn(f"table '{table_name}' ({table_snake}) not found in raw-data JSON")
+            continue
 
-        pk_col = primary_key_column(database_url, table_snake)
-        pk_field = next((f["name"] for f in schema if snake(f["name"]) == pk_col), None)
-        if pk_field is None:
-            die(f"could not map PK column '{pk_col}' back to a rulebook field in '{table_name}'")
+        pg_rows = raw_data[table_snake]
+        if not pg_rows:
+            warn(f"table '{table_name}' has no rows in raw-data JSON")
+            continue
 
+        pk_field = schema[0]["name"] if schema else None
+        if not pk_field:
+            die(f"table '{table_name}' has no fields")
+
+        pk_col = snake(pk_field)
         pg_by_pk = {}
-        for r in dump_view(database_url, view):
-            if pk_col not in r:
-                die(f"{view} row missing PK column '{pk_col}': {r}")
-            pg_by_pk[r[pk_col]] = r
+        for pg_row in pg_rows:
+            if pk_col not in pg_row:
+                warn(f"{table_snake}: row missing expected PK column '{pk_col}'")
+                continue
+            pg_by_pk[pg_row[pk_col]] = pg_row
 
-        rulebook_pks = set()
-        for row in table["data"]:
+        for row in table.get("data", []):
             if pk_field not in row:
-                die(f"rulebook '{table_name}' data row missing PK field '{pk_field}': {row}")
+                warn(f"{table_name} rulebook row missing PK field '{pk_field}'")
+                continue
             pk_val = row[pk_field]
-            rulebook_pks.add(pk_val)
             pg_row = pg_by_pk.get(pk_val)
             if pg_row is None:
-                if adopt:
-                    # Row exists in the rulebook but not in PG (deleted in the app).
-                    # Keep it and warn — removal requires an explicit, separate decision.
-                    orphan_rulebook_rows.append((table_name, pk_val))
-                    continue
-                die(f"rulebook '{table_name}' row '{pk_val}' has NO counterpart in {view} "
-                    "— DB is out of sync with the rulebook")
+                warn(f"{table_name}[{pk_val}] not in Postgres (deleted?)")
+                continue
 
             for f in raws:
                 col = snake(f["name"])
                 if col not in pg_row:
-                    die(f"{view} missing expected raw column '{col}' for field '{f['name']}'")
-                if norm(row.get(f["name"])) != norm(pg_row[col]):
-                    if adopt:
-                        raw_adopts.append((row, f["name"], pg_row[col], row.get(f["name"]), table_name, pk_val))
-                    else:
-                        raw_mismatches.append(
-                            (table_name, pk_val, f["name"], row.get(f["name"]), pg_row[col])
-                        )
-
-            for f in computed:
-                col = snake(f["name"])
-                if col not in pg_row:
-                    die(f"{view} missing expected computed column '{col}' for field '{f['name']}'")
-                if norm(row.get(f["name"])) != norm(pg_row[col]):
-                    pending_updates.append((row, f["name"], pg_row[col], row.get(f["name"]), table_name, pk_val))
-
-        if adopt:
-            # New rows present in PG but not the rulebook (added in the app).
-            for pk_val, pg_row in pg_by_pk.items():
-                if pk_val in rulebook_pks:
                     continue
-                new_row = {}
-                for f in schema:
-                    col = snake(f["name"])
-                    if col in pg_row:
-                        new_row[f["name"]] = pg_row[col]
-                table["data"].append(new_row)
-                added_rows.append((table_name, pk_val))
+                new_val = pg_row[col]
+                old_val = row.get(f["name"])
+                if norm(old_val) != norm(new_val):
+                    pending_updates.append((row, f["name"], new_val, old_val, table_name, pk_val))
 
         tables_touched += 1
 
-    if raw_mismatches:
-        sys.stderr.write(
-            "[postgres-calculated-to-rulebook] FAIL: RAW values diverge between the rulebook and Postgres.\n"
-            "[postgres-calculated-to-rulebook]       The DB was not rebuilt from the rulebook (raws must match\n"
-            "[postgres-calculated-to-rulebook]       before derived fields can be trusted). Refusing to write.\n"
-            "[postgres-calculated-to-rulebook]       (To adopt the current Postgres data AS the new seed, re-run\n"
-            "[postgres-calculated-to-rulebook]        with ERB_ADOPT_RAWS=true — explicit, raws-overwriting import.)\n"
-        )
-        for (t, pk, field, rb_v, pg_v) in raw_mismatches:
-            sys.stderr.write(f"[postgres-calculated-to-rulebook]   {t}[{pk}].{field}: rulebook={rb_v!r} postgres={pg_v!r}\n")
-        sys.exit(1)
-
-    for (table_name, pk_val) in orphan_rulebook_rows:
-        sys.stderr.write(f"[postgres-calculated-to-rulebook]   WARN: {table_name}[{pk_val}] is in the rulebook but not in Postgres "
-                         "(kept — adopt mode never deletes rows).\n")
-
-    total_changes = len(pending_updates) + len(raw_adopts) + len(added_rows)
-    if total_changes == 0:
-        print(f"[postgres-calculated-to-rulebook] up to date — {tables_touched} table(s) checked, nothing changed.")
+    if not pending_updates:
+        log(f"up to date — {tables_touched} table(s) checked, nothing changed")
         return
 
     for (row, field_name, new_val, _old, _t, _pk) in pending_updates:
-        row[field_name] = new_val
-    for (row, field_name, new_val, _old, _t, _pk) in raw_adopts:
         row[field_name] = new_val
 
     tmp = rulebook_path.with_suffix(".json.tmp")
     tmp.write_text(json.dumps(rulebook, indent=2, ensure_ascii=False) + "\n")
     os.replace(tmp, rulebook_path)
 
-    summary = f"{len(pending_updates)} derived field(s)"
-    if raw_adopts:
-        summary += f", {len(raw_adopts)} raw field(s) adopted"
-    if added_rows:
-        summary += f", {len(added_rows)} new row(s) added"
-    print(f"[postgres-calculated-to-rulebook] updated {summary} across {tables_touched} table(s) from Postgres:")
+    log(f"updated {len(pending_updates)} field value(s) across {tables_touched} table(s)")
     for (_row, field_name, new_val, old_val, t, pk) in pending_updates:
-        print(f"[postgres-calculated-to-rulebook]   {t}[{pk}].{field_name}: {old_val!r} -> {new_val!r}  (derived)")
-    for (_row, field_name, new_val, old_val, t, pk) in raw_adopts:
-        print(f"[postgres-calculated-to-rulebook]   {t}[{pk}].{field_name}: {old_val!r} -> {new_val!r}  (RAW adopted)")
-    for (t, pk) in added_rows:
-        print(f"[postgres-calculated-to-rulebook]   {t}[{pk}]: + new row from Postgres")
+        log(f"  {t}[{pk}].{field_name}: {old_val!r} -> {new_val!r}")
 
 
 if __name__ == "__main__":

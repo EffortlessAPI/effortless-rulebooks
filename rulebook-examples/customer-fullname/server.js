@@ -4,8 +4,8 @@ const { Pool } = require('pg');
 // Fixed, uncommon port pair (picked once) so this demo doesn't fight every
 // other app for :3000. ODD = API, the SUBSEQUENT EVEN = client (static UI).
 // Override via env if you ever need to.
-const API_PORT = Number(process.env.API_PORT) || 4801; // odd
-const CLIENT_PORT = Number(process.env.CLIENT_PORT) || 4802; // even (API_PORT + 1)
+const API_PORT = Number(process.env.API_PORT) || 7001; // odd
+const CLIENT_PORT = Number(process.env.CLIENT_PORT) || 7002; // even (API_PORT + 1)
 
 // DATABASE_URL is the single source of truth. The default is the SSoT-derived
 // value for this domain (matches postgres-bootstrap/effortless.env and the
@@ -18,9 +18,9 @@ const pool = new Pool({ connectionString: DATABASE_URL });
 
 // The app READS from the vw_* view (raw + every calculated field, denormalized)
 // and WRITES to the base table (raw facts only). It never recomputes business
-// logic itself — FullName/Initials/Name come from the rulebook-derived view.
+// logic itself — Name/Initials come from the rulebook-derived view.
 const VIEW_COLUMNS =
-  'customer_id, name, email_address, initials, first_name, last_name, full_name';
+  'customer_id, name, email_address, initials, first_name, last_name';
 
 // Map a vw_customers row (snake_case) to the API shape the frontend expects.
 function toApi(row) {
@@ -31,7 +31,6 @@ function toApi(row) {
     Initials: row.initials,
     FirstName: row.first_name,
     LastName: row.last_name,
-    FullName: row.full_name,
   };
 }
 
@@ -103,8 +102,13 @@ registerApi(apiApp);
 // --- Client server (even port): static UI + same-origin API ---
 const clientApp = express();
 clientApp.use(express.json());
-clientApp.use(express.static(__dirname, { extensions: ['html'] }));
+clientApp.use(express.static(require('path').join(__dirname, 'web/dist'), { extensions: ['html'] }));
 registerApi(clientApp);
+
+// Fallback to index.html for React Router
+clientApp.use((req, res) => {
+  res.sendFile(require('path').join(__dirname, 'web/dist/index.html'));
+});
 
 apiApp.listen(API_PORT, () => {
   console.log(`[api]    http://localhost:${API_PORT}  (JSON API)`);

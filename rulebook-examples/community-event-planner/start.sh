@@ -7,7 +7,7 @@ GREEN='\033[0;32m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
-DEFAULT_DB="erb_community_event_planner_demo"
+DEFAULT_DB="erb_community_event_planner"
 DEFAULT_SERVER_PORT="3045"
 DEFAULT_WEB_PORT="5188"
 

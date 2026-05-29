@@ -1,0 +1,71 @@
+<div class="container mt-5">
+  <h1><%= @customer.name %></h1>
+
+  <%= link_to "← Back to Customers", customers_path, class: "btn btn-secondary mb-4" %>
+
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-6">
+          <h5 class="card-title">Basic Information</h5>
+
+          <p>
+            <strong>Customer ID:</strong><br>
+            <code><%= @customer.customer_id %></code>
+          </p>
+
+          <p>
+            <strong>First Name:</strong><br>
+            <%= @customer.first_name %>
+          </p>
+
+          <p>
+            <strong>Last Name:</strong><br>
+            <%= @customer.last_name %>
+          </p>
+
+          <p>
+            <strong>Email:</strong><br>
+            <a href="mailto:<%= @customer.email_address %>"><%= @customer.email_address %></a>
+          </p>
+        </div>
+
+        <div class="col-md-6">
+          <h5 class="card-title">Calculated Fields</h5>
+
+          <p>
+            <strong>Full Name:</strong><br>
+            <span class="badge bg-info"><%= @customer.name %></span><br>
+            <small class="text-muted">Formula: <code>=CONCAT({{LastName}}, ", ", {{FirstName}})</code></small>
+          </p>
+
+          <p>
+            <strong>Initials:</strong><br>
+            <span class="badge bg-success"><%= @customer.initials %></span><br>
+            <small class="text-muted">Formula: <code>=LEFT({{FirstName}}, 1) & LEFT({{LastName}}, 1) & "."</code></small>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-4 p-3 bg-light rounded">
+    <h6>About This View</h6>
+    <p class="text-muted small">
+      This customer record reads from the <code>vw_customers</code> PostgreSQL view.
+      The calculated fields (<em>Full Name</em> and <em>Initials</em>) are computed by SQL formulas defined in the Effortless rulebook.
+      The view is the single source of truth — no application code re-derives these values.
+    </p>
+  </div>
+</div>
+
+<style>
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  }
+  code {
+    background: #f5f5f5;
+    padding: 2px 6px;
+    border-radius: 3px;
+  }
+</style>
