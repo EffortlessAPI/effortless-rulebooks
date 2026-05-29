@@ -6,9 +6,9 @@ set -e
 API_PORT=7001
 CLIENT_PORT=7002
 
-# Kill any existing instance on either port (restart cleanly).
-# Also kill any leftover processes on old ports (4801/4802) to prevent ghost processes.
-for PORT in "$API_PORT" "$CLIENT_PORT" 4801 4802; do
+# Kill any existing instance on React/Node.js ports only (restart cleanly).
+# DO NOT touch port 4801 - that's the separate Rails app.
+for PORT in "$API_PORT" "$CLIENT_PORT"; do
   if lsof -Pi :"$PORT" -sTCP:LISTEN -t >/dev/null 2>&1; then
     echo "Stopping existing server on port $PORT..."
     lsof -ti:"$PORT" | xargs kill -9 2>/dev/null || true
@@ -21,6 +21,14 @@ if [ ! -d "node_modules" ]; then
   echo "Installing dependencies..."
   npm install
 fi
+
+# Install web dependencies and build
+if [ ! -d "web/node_modules" ]; then
+  echo "Installing web dependencies..."
+  cd web && npm install && cd ..
+fi
+echo "Building React app..."
+cd web && npm run build && cd ..
 
 echo "Starting demo app:"
 echo "  API    -> http://localhost:$API_PORT"

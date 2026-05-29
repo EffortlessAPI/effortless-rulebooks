@@ -1,9 +1,8 @@
 #!/bin/bash
 set -e
 
-# Ports: ODD = API/Rails, EVEN = Client (if needed in future)
-API_PORT=4801
-CLIENT_PORT=4802
+# Rails app uses port 4801 (completely separate from React/Node.js on 7001/7002)
+RAILS_PORT=4801
 
 RAILS_DIR="$(dirname "$0")/execution-substrates/rails"
 
@@ -14,15 +13,13 @@ fi
 
 cd "$RAILS_DIR"
 
-# Kill any existing instances on either port
-echo "Cleaning up ports $API_PORT and $CLIENT_PORT..."
-for PORT in "$API_PORT" "$CLIENT_PORT"; do
-  if lsof -Pi :"$PORT" -sTCP:LISTEN -t >/dev/null 2>&1; then
-    PID=$(lsof -Pi :"$PORT" -sTCP:LISTEN -t)
-    kill -9 "$PID" 2>/dev/null || true
-    echo "Killed process on port $PORT (PID: $PID)"
-  fi
-done
+# Kill any existing instance on this port (restart cleanly)
+echo "Cleaning up port $RAILS_PORT..."
+if lsof -Pi :"$RAILS_PORT" -sTCP:LISTEN -t >/dev/null 2>&1; then
+  PID=$(lsof -Pi :"$RAILS_PORT" -sTCP:LISTEN -t)
+  kill -9 "$PID" 2>/dev/null || true
+  echo "Killed process on port $RAILS_PORT (PID: $PID)"
+fi
 
 sleep 1
 
@@ -46,36 +43,36 @@ EOSQL
 echo "Database ready."
 echo ""
 echo "================================"
-echo "🚀 Starting Rails on port $API_PORT"
+echo "🚀 Starting Rails on port $RAILS_PORT"
 echo "================================"
 echo ""
-echo "Visit: http://localhost:$API_PORT"
+echo "Visit: http://localhost:$RAILS_PORT"
 echo ""
 
 # Start Rails using Puma directly
-bundle exec puma -b tcp://0.0.0.0:$API_PORT -e development &
+bundle exec puma -b tcp://0.0.0.0:$RAILS_PORT -e development &
 RAILS_PID=$!
 
 # Give Rails a moment to start
 sleep 4
 
 # Check if server is running
-if ! lsof -Pi :$API_PORT -sTCP:LISTEN -t >/dev/null 2>&1; then
-  echo "❌ Rails failed to start on port $API_PORT"
+if ! lsof -Pi :$RAILS_PORT -sTCP:LISTEN -t >/dev/null 2>&1; then
+  echo "❌ Rails failed to start on port $RAILS_PORT"
   exit 1
 fi
 
-echo "✅ Rails is running on http://localhost:$API_PORT"
+echo "✅ Rails is running on http://localhost:$RAILS_PORT"
 echo ""
 
 # Open Chrome
 echo "Opening Chrome..."
 if command -v open &> /dev/null; then
-  open -a "Google Chrome" "http://localhost:$API_PORT" 2>/dev/null || open "http://localhost:$API_PORT"
+  open -a "Google Chrome" "http://localhost:$RAILS_PORT" 2>/dev/null || open "http://localhost:$RAILS_PORT"
 elif command -v chrome &> /dev/null; then
-  chrome "http://localhost:$API_PORT" &
+  chrome "http://localhost:$RAILS_PORT" &
 elif command -v google-chrome &> /dev/null; then
-  google-chrome "http://localhost:$API_PORT" &
+  google-chrome "http://localhost:$RAILS_PORT" &
 fi
 
 # Keep the script running
