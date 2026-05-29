@@ -1,13 +1,5 @@
 {
   "Customers": {
-    "important": true,
-    "summary_rich": "One table. Two calculated fields. That's the whole rulebook. The interesting move is that `FullName` (and the slug `Name`) live **in the rulebook**, not in application code — every substrate computes them the same way without anyone wiring them up.",
-    "important_fields": [
-      "FirstName",
-      "LastName",
-      "FullName",
-      "EmailAddress"
-    ],
     "schema": [
       {
         "name": "CustomerId",
@@ -29,11 +21,10 @@
       },
       {
         "name": "Initials",
-        "formula": "=LEFT({{LastName}}, 1) & LEFT({{FirstName}}, 1)",
-        "type": "calculated",
         "datatype": "string",
-        "nullable": true,
-        "Description": "dsfdfds"
+        "type": "calculated",
+        "Description": "dsfdfds",
+        "formula": "={{FirstName}} & \" \" & LEFT({{LastName}}, 1) & \".\""
       },
       {
         "name": "FirstName",
@@ -52,9 +43,7 @@
         "datatype": "string",
         "type": "calculated",
         "Description": "Full name is computed from the first and last name of the customer",
-        "formula": "={{LastName}} & \" -*- \" & {{FirstName}}",
-        "important": true,
-        "explanation_rich": "**The smallest possible calculated field.** `FullName = FirstName & \" \" & LastName` — but the point is that it lives in the rulebook, not in application code. Every substrate (Postgres view, Python class, Excel cell, OWL ontology) computes the same value the same way. Worked example: row `jane-smith-email-com` has `FirstName=Jane`, `LastName=Smith` → `FullName=\"Jane Smith\"`. Edit `FirstName` to `Janet` and **every** substrate sees `\"Janet Smith\"` on the next read. No glue code wrote that — the rulebook did.",
+        "formula": "={{FirstName}} & \" \" & {{LastName}}",
         "nullable": true
       }
     ],
@@ -62,11 +51,11 @@
       {
         "CustomerId": "jane-smith-email-com",
         "EmailAddress": "jane.smith@email.com",
-        "FirstName": "Jane",
+        "FirstName": "Linda",
         "LastName": "Smith",
         "Name": "jane.smith-email.com",
-        "Initials": "SB",
-        "FullName": "Smith -*- Bob"
+        "Initials": "Bob S.",
+        "FullName": "Bob Smith"
       },
       {
         "CustomerId": "john-doe-email-com",
@@ -74,8 +63,8 @@
         "FirstName": "Jimmy",
         "LastName": "Doe",
         "Name": "john.doe-email.com",
-        "Initials": "DJ",
-        "FullName": "Doe -*- Jimmy"
+        "Initials": "Jimmy D.",
+        "FullName": "Jimmy Doe"
       },
       {
         "CustomerId": "emily-jones-email-com",
@@ -83,107 +72,84 @@
         "FirstName": "Mary",
         "LastName": "Jones",
         "Name": "emily.jones-email.com",
-        "Initials": "JL",
-        "FullName": "Jones -*- Linda"
+        "Initials": "Linda J.",
+        "FullName": "Linda Jones"
       }
     ]
   },
   "__meta__": {
-    "Description": "Project-level metadata that travels with the rulebook: tagline, motif, narrative descriptions, substrate list, signature rows, etc. One row per metadata key. Use ValueType to interpret StringValue vs JsonValue.",
-    "important": false,
     "schema": [
       {
         "name": "MetaKey",
         "datatype": "string",
         "type": "raw",
-        "nullable": false,
         "Description": "The metadata key (e.g. 'tagline', 'motif_palette', 'substrates'). Unique within the table."
       },
       {
         "name": "Name",
         "datatype": "string",
         "type": "calculated",
-        "nullable": false,
-        "formula": "={{MetaKey}}",
-        "Description": "Identifier for this metadata entry. Mirrors MetaKey so the row is addressable by Name like every other table."
+        "Description": "Identifier for this metadata entry. Mirrors MetaKey so the row is addressable by Name like every other table.",
+        "formula": "={{MetaKey}}"
       },
       {
         "name": "ValueType",
         "datatype": "string",
         "type": "raw",
-        "nullable": false,
         "Description": "How to interpret the value columns: 'string' (use StringValue), 'object' (parse JsonValue as JSON object), 'array' (parse JsonValue as JSON array)."
       },
       {
         "name": "StringValue",
         "datatype": "string",
         "type": "raw",
-        "nullable": true,
         "Description": "Plain string value. Populated when ValueType == 'string'; null otherwise."
       },
       {
         "name": "JsonValue",
         "datatype": "string",
         "type": "raw",
-        "nullable": true,
         "Description": "JSON-encoded value. Populated when ValueType == 'object' or 'array'; null when ValueType == 'string'."
       }
     ],
     "data": [
       {
         "MetaKey": "tagline",
-        "Name": "tagline",
         "ValueType": "string",
-        "StringValue": "One table. One calculated field. That's the whole demo.",
-        "JsonValue": null
+        "StringValue": "One table. One calculated field. That's the whole demo."
       },
       {
         "MetaKey": "motif",
-        "Name": "motif",
         "ValueType": "string",
-        "StringValue": "default",
-        "JsonValue": null
+        "StringValue": "default"
       },
       {
         "MetaKey": "description_rich",
-        "Name": "description_rich",
         "ValueType": "string",
-        "StringValue": "The smallest non-trivial Effortless rulebook. **One** entity (`Customers`), three rows, and a single calculated field — `FullName = FirstName & \" \" & LastName`. The argument is the simplicity itself: this much logic, lifted out of application code and into the rulebook, propagates to every substrate. Postgres view, Python class, Excel cell, OWL ontology — all four compute the same answer the same way, from the same rulebook JSON, with zero glue code.\n\nThis is the rulebook to point a skeptic at when *every other demo feels like too much*.",
-        "JsonValue": null
+        "StringValue": "The smallest non-trivial Effortless rulebook. **One** entity (`Customers`), three rows, and a single calculated field — `FullName = FirstName & \" \" & LastName`. The argument is the simplicity itself: this much logic, lifted out of application code and into the rulebook, propagates to every substrate. Postgres view, Python class, Excel cell, OWL ontology — all four compute the same answer the same way, from the same rulebook JSON, with zero glue code.\n\nThis is the rulebook to point a skeptic at when *every other demo feels like too much*."
       },
       {
         "MetaKey": "use_cases",
-        "Name": "use_cases",
         "ValueType": "array",
-        "StringValue": null,
         "JsonValue": "[\"**Edit `FirstName` on any row and watch `FullName` recompute in every substrate.** No application code reads this field — the rulebook IS the field.\", \"**Compare the Postgres view, the Python class, and the Excel cell** for the same row. They all compute `FullName` from the same formula declared once in the rulebook.\", \"**Try adding a calculated field of your own** — say `Initials = LEFT(FirstName, 1) & LEFT(LastName, 1)`. Run `effortless build`. Every substrate now has it.\"]"
       },
       {
         "MetaKey": "signature_rows",
-        "Name": "signature_rows",
         "ValueType": "array",
-        "StringValue": null,
         "JsonValue": "[{\"entity\": \"Customers\", \"ids\": [\"jane-smith-email-com\", \"john-doe-email-com\", \"emily-jones-email-com\"]}]"
       },
       {
         "MetaKey": "journal_seed",
-        "Name": "journal_seed",
         "ValueType": "string",
-        "StringValue": "Three customers. One calculated field. The whole point of ERB, on a napkin.",
-        "JsonValue": null
+        "StringValue": "Three customers. One calculated field. The whole point of ERB, on a napkin."
       },
       {
         "MetaKey": "substrates",
-        "Name": "substrates",
         "ValueType": "array",
-        "StringValue": null,
         "JsonValue": "[{\"key\": \"postgres\", \"important\": true, \"chip_label\": \"Postgres\"}, {\"key\": \"python\", \"important\": true, \"chip_label\": \"Python\"}, {\"key\": \"excel\", \"important\": false, \"chip_label\": \"Excel\"}, {\"key\": \"owl\", \"important\": false, \"chip_label\": \"OWL\"}]"
       },
       {
         "MetaKey": "motif_palette",
-        "Name": "motif_palette",
         "ValueType": "object",
-        "StringValue": null,
         "JsonValue": "{\"primary\": \"#2b4a6a\", \"accent\": \"#e6a544\", \"ink\": \"#0d1b2a\"}"
       }
     ]
