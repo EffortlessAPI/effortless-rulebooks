@@ -24,7 +24,8 @@
         "datatype": "string",
         "type": "calculated",
         "Description": "dsfdfds",
-        "formula": "=LEFT({{FirstName}}, 1) & LEFT({{LastName}}, 1)"
+        "formula": "=LEFT({{FirstName}}, 1) & \". \" & LEFT({{LastName}}, 1) & \".\"",
+        "nullable": true
       },
       {
         "name": "FirstName",
@@ -53,7 +54,7 @@
         "FirstName": "Jane",
         "LastName": "Smithy",
         "Name": "jane.smith-email.com",
-        "Initials": "JS",
+        "Initials": "J. S.",
         "FullName": "Smithy Jane"
       },
       {
@@ -62,7 +63,7 @@
         "FirstName": "John",
         "LastName": "Doe",
         "Name": "john.doe-email.com",
-        "Initials": "JD",
+        "Initials": "J. D.",
         "FullName": "Doe John"
       },
       {
@@ -71,7 +72,7 @@
         "FirstName": "Emily",
         "LastName": "Jones",
         "Name": "emily.jones-email.com",
-        "Initials": "EJ",
+        "Initials": "E. J.",
         "FullName": "Jones Emily"
       },
       {
@@ -80,7 +81,7 @@
         "FirstName": "Alice",
         "LastName": "Cooper",
         "Name": "alice-cooper.com",
-        "Initials": "AC",
+        "Initials": "A. C.",
         "FullName": "Cooper Alice"
       }
     ]
