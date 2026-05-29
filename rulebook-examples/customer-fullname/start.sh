@@ -2,17 +2,19 @@
 set -e
 
 # Fixed, uncommon port pair (must match server.js): ODD = API, EVEN = client.
-API_PORT=4801
-CLIENT_PORT=4802
+# React app uses 7001/7002 (never conflicts with other substrates)
+API_PORT=7001
+CLIENT_PORT=7002
 
 # Kill any existing instance on either port (restart cleanly).
-for PORT in "$API_PORT" "$CLIENT_PORT"; do
+# Also kill any leftover processes on old ports (4801/4802) to prevent ghost processes.
+for PORT in "$API_PORT" "$CLIENT_PORT" 4801 4802; do
   if lsof -Pi :"$PORT" -sTCP:LISTEN -t >/dev/null 2>&1; then
     echo "Stopping existing server on port $PORT..."
     lsof -ti:"$PORT" | xargs kill -9 2>/dev/null || true
   fi
 done
-sleep 1
+sleep 2
 
 # Install dependencies if needed
 if [ ! -d "node_modules" ]; then

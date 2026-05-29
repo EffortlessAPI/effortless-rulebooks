@@ -4,8 +4,8 @@ const { Pool } = require('pg');
 // Fixed, uncommon port pair (picked once) so this demo doesn't fight every
 // other app for :3000. ODD = API, the SUBSEQUENT EVEN = client (static UI).
 // Override via env if you ever need to.
-const API_PORT = Number(process.env.API_PORT) || 4801; // odd
-const CLIENT_PORT = Number(process.env.CLIENT_PORT) || 4802; // even (API_PORT + 1)
+const API_PORT = Number(process.env.API_PORT) || 7001; // odd
+const CLIENT_PORT = Number(process.env.CLIENT_PORT) || 7002; // even (API_PORT + 1)
 
 // DATABASE_URL is the single source of truth. The default is the SSoT-derived
 // value for this domain (matches postgres-bootstrap/effortless.env and the

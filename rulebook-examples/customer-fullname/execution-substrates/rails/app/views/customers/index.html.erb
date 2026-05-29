@@ -1,5 +1,7 @@
 <h1>Customers</h1>
 
+<%= link_to "New Customer", new_customer_path, class: "btn btn-primary mb-3" %>
+
 <table class="table table-striped">
   <thead>
     <tr>
@@ -9,6 +11,7 @@
       <th>Full Name (Calculated)</th>
       <th>Initials (Calculated)</th>
       <th>Email</th>
+      <th>Actions</th>
     </tr>
   </thead>
   <tbody>
@@ -17,9 +20,14 @@
         <td><%= customer.customer_id %></td>
         <td><%= customer.first_name %></td>
         <td><%= customer.last_name %></td>
-        <td><strong><%= customer.name %></strong></td>
+        <td><strong><%= customer.full_name %></strong></td>
         <td><strong><%= customer.initials %></strong></td>
         <td><%= customer.email_address %></td>
+        <td>
+          <%= link_to "View", customer_path(customer), class: "btn btn-sm btn-info" %>
+          <%= link_to "Edit", edit_customer_path(customer), class: "btn btn-sm btn-warning" %>
+          <%= link_to "Delete", customer_path(customer), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-sm btn-danger" %>
+        </td>
       </tr>
     <% end %>
   </tbody>

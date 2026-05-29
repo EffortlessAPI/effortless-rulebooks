@@ -11,7 +11,7 @@
         "datatype": "string",
         "type": "calculated",
         "Description": "Full name is computed from the first and last name of the customer",
-        "formula": "={{LastName}} & \", \" & {{FirstName}}"
+        "formula": "={{FirstName}} & \" \" & {{LastName}}"
       },
       {
         "name": "EmailAddress",
@@ -68,8 +68,8 @@
         "CustomerId": "alice-cooper",
         "EmailAddress": "alice@cooper.com",
         "FirstName": "Alice",
-        "LastName": "Gutknecht",
-        "Name": "Gutknecht, Alice",
+        "LastName": "Gutknechts",
+        "Name": "Gutknechts, Alice",
         "Initials": "AG"
       }
     ]
