@@ -24,7 +24,7 @@
         "datatype": "string",
         "type": "calculated",
         "Description": "dsfdfds",
-        "formula": "=LEFT({{FirstName}}, 1) & LEFT({{LastName}}, 1)"
+        "formula": "=LEFT({{FirstName}}, 1) & LEFT({{LastName}}, 1) & \"-v3\""
       },
       {
         "name": "FirstName",
@@ -46,7 +46,7 @@
         "FirstName": "Jane",
         "LastName": "Smithy",
         "Name": "Smithy, Jane",
-        "Initials": "JS"
+        "Initials": "JS-v3"
       },
       {
         "CustomerId": "john-doe-email-com",
@@ -54,7 +54,7 @@
         "FirstName": "John",
         "LastName": "Doe",
         "Name": "Doe, John",
-        "Initials": "JD"
+        "Initials": "JD-v3"
       },
       {
         "CustomerId": "emily-jones-email-com",
@@ -62,7 +62,7 @@
         "FirstName": "Emily",
         "LastName": "Jones",
         "Name": "Jones, Emily",
-        "Initials": "EJ"
+        "Initials": "EJ-v3"
       },
       {
         "CustomerId": "alice-cooper",
@@ -70,7 +70,7 @@
         "FirstName": "Alice",
         "LastName": "Gutknecht",
         "Name": "Gutknecht, Alice",
-        "Initials": "AG"
+        "Initials": "AG-v3"
       }
     ]
   },
