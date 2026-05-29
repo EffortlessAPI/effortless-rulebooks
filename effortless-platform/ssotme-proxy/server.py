@@ -130,9 +130,12 @@ TRANSPILERS = {
         "script": PROJECT_ROOT / "execution-substrates" / "airtable" / "inject-into-airtable.py",
         "description": "Sync rulebook schema back into Airtable base",
     },
-    # --- Reverse spoke: refresh derived fields in the rulebook from Postgres ---
-    "postgres-to-rulebook": {
-        "script": PROJECT_ROOT / "execution-substrates" / "postgres-to-rulebook" / "inject-into-postgres-to-rulebook.py",
+    # --- Reverse spoke: refresh CALCULATED field VALUES in the rulebook from
+    #     Postgres (the consistent-by-construction data objects — NOT the
+    #     formulas themselves). Default mode writes derived values only; the
+    #     opt-in ERB_ADOPT_RAWS mode also adopts raws/new rows. ---
+    "postgres-calculated-to-rulebook": {
+        "script": PROJECT_ROOT / "execution-substrates" / "postgres-calculated-to-rulebook" / "inject-into-postgres-calculated-to-rulebook.py",
         "description": "Refresh calculated/lookup/aggregation field values in the rulebook from the vw_* views (raws verified, never written)",
     },
 }

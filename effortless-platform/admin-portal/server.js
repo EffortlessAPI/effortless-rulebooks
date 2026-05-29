@@ -1477,14 +1477,19 @@ function loadRulebookForDomain(domain) {
 function findPkField(entity) {
   const explicit = (entity.schema || []).find((f) => f.isPk === true);
   if (explicit) return explicit.name;
+  // A field is required (PK-eligible) unless it OPTS IN to nullability with
+  // `nullable: true`. Rulebooks routinely omit `nullable` on raw PK fields
+  // (e.g. customer-fullname's CustomerId has no `nullable` key at all), so a
+  // strict `nullable === false` check wrongly skipped them and fell through to
+  // the calculated `Name` field — which can never be supplied on write.
   const idField = (entity.schema || []).find(
-    (f) => f.type === "raw" && f.nullable === false && /Id$/.test(f.name)
+    (f) => f.type === "raw" && f.nullable !== true && /Id$/.test(f.name)
   );
   if (idField) return idField.name;
-  const firstNonNull = (entity.schema || []).find(
-    (f) => f.type === "raw" && f.nullable === false
+  const firstRequiredRaw = (entity.schema || []).find(
+    (f) => f.type === "raw" && f.nullable !== true
   );
-  return firstNonNull ? firstNonNull.name : "Name";
+  return firstRequiredRaw ? firstRequiredRaw.name : "Name";
 }
 
 // The §A.2.6 spec uses the entity's `Name` field as the URL id, and the UI
@@ -3606,7 +3611,7 @@ app.post("/api/tech/import-from-postgres", requireDeveloper, async (req, res) =>
     });
   }
   const bootstrapDir = path.join(RULEBOOK_EXAMPLES, domain, "postgres-bootstrap");
-  const script = path.join(REPO_ROOT, "execution-substrates", "postgres-to-rulebook", "inject-into-postgres-to-rulebook.py");
+  const script = path.join(REPO_ROOT, "execution-substrates", "postgres-calculated-to-rulebook", "inject-into-postgres-calculated-to-rulebook.py");
   const rbPath = rulebookPathFor(domain);
   if (!fs.existsSync(script)) return res.status(500).json({ error: `adopt engine missing: ${script}` });
   try {

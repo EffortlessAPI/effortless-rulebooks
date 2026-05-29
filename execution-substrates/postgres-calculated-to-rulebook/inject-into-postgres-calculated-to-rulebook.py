@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-postgres-to-rulebook  (reverse spoke — refreshes DERIVED fields only)
+postgres-calculated-to-rulebook  (reverse spoke — refreshes DERIVED fields only)
 
 Shared ssotme-proxy transpiler. After the DB has been rebuilt from the rulebook
 (rulebook-to-postgres + init-db.sh), this pulls every CALCULATED / LOOKUP /
@@ -18,7 +18,7 @@ Doctrine (CLAUDE.md + user rules):
 Invocation contexts (both deterministic — no guessing):
   - Via ssotme-proxy: the proxy sets ERB_RULEBOOK_PATH (and runs us from the
     substrate folder). That env var is the rulebook.
-  - Standalone (./inject-into-postgres-to-rulebook.py from a <domain>/<sub>/ dir):
+  - Standalone (./inject-into-postgres-calculated-to-rulebook.py from a <domain>/<sub>/ dir):
     we discover ../effortless-rulebook/*-rulebook.json relative to cwd.
 
 DATABASE_URL resolution (matches init-db.sh / orchestrate.sh):
@@ -42,7 +42,7 @@ RAW_TYPES = {"raw", "relationship"}
 
 
 def die(msg: str) -> "NoReturn":
-    sys.stderr.write(f"[postgres-to-rulebook] FAIL: {msg}\n")
+    sys.stderr.write(f"[postgres-calculated-to-rulebook] FAIL: {msg}\n")
     sys.exit(1)
 
 
@@ -181,7 +181,7 @@ def main() -> None:
     # warns about them instead.
     adopt = env_truthy("ERB_ADOPT_RAWS")
     mode = "ADOPT (raws + new rows)" if adopt else "refresh (derived only)"
-    print(f"[postgres-to-rulebook] mode={mode} domain={domain} db={database_url} rulebook={rulebook_path}")
+    print(f"[postgres-calculated-to-rulebook] mode={mode} domain={domain} db={database_url} rulebook={rulebook_path}")
 
     rulebook = json.loads(rulebook_path.read_text())
 
@@ -271,23 +271,23 @@ def main() -> None:
 
     if raw_mismatches:
         sys.stderr.write(
-            "[postgres-to-rulebook] FAIL: RAW values diverge between the rulebook and Postgres.\n"
-            "[postgres-to-rulebook]       The DB was not rebuilt from the rulebook (raws must match\n"
-            "[postgres-to-rulebook]       before derived fields can be trusted). Refusing to write.\n"
-            "[postgres-to-rulebook]       (To adopt the current Postgres data AS the new seed, re-run\n"
-            "[postgres-to-rulebook]        with ERB_ADOPT_RAWS=true — explicit, raws-overwriting import.)\n"
+            "[postgres-calculated-to-rulebook] FAIL: RAW values diverge between the rulebook and Postgres.\n"
+            "[postgres-calculated-to-rulebook]       The DB was not rebuilt from the rulebook (raws must match\n"
+            "[postgres-calculated-to-rulebook]       before derived fields can be trusted). Refusing to write.\n"
+            "[postgres-calculated-to-rulebook]       (To adopt the current Postgres data AS the new seed, re-run\n"
+            "[postgres-calculated-to-rulebook]        with ERB_ADOPT_RAWS=true — explicit, raws-overwriting import.)\n"
         )
         for (t, pk, field, rb_v, pg_v) in raw_mismatches:
-            sys.stderr.write(f"[postgres-to-rulebook]   {t}[{pk}].{field}: rulebook={rb_v!r} postgres={pg_v!r}\n")
+            sys.stderr.write(f"[postgres-calculated-to-rulebook]   {t}[{pk}].{field}: rulebook={rb_v!r} postgres={pg_v!r}\n")
         sys.exit(1)
 
     for (table_name, pk_val) in orphan_rulebook_rows:
-        sys.stderr.write(f"[postgres-to-rulebook]   WARN: {table_name}[{pk_val}] is in the rulebook but not in Postgres "
+        sys.stderr.write(f"[postgres-calculated-to-rulebook]   WARN: {table_name}[{pk_val}] is in the rulebook but not in Postgres "
                          "(kept — adopt mode never deletes rows).\n")
 
     total_changes = len(pending_updates) + len(raw_adopts) + len(added_rows)
     if total_changes == 0:
-        print(f"[postgres-to-rulebook] up to date — {tables_touched} table(s) checked, nothing changed.")
+        print(f"[postgres-calculated-to-rulebook] up to date — {tables_touched} table(s) checked, nothing changed.")
         return
 
     for (row, field_name, new_val, _old, _t, _pk) in pending_updates:
@@ -304,13 +304,13 @@ def main() -> None:
         summary += f", {len(raw_adopts)} raw field(s) adopted"
     if added_rows:
         summary += f", {len(added_rows)} new row(s) added"
-    print(f"[postgres-to-rulebook] updated {summary} across {tables_touched} table(s) from Postgres:")
+    print(f"[postgres-calculated-to-rulebook] updated {summary} across {tables_touched} table(s) from Postgres:")
     for (_row, field_name, new_val, old_val, t, pk) in pending_updates:
-        print(f"[postgres-to-rulebook]   {t}[{pk}].{field_name}: {old_val!r} -> {new_val!r}  (derived)")
+        print(f"[postgres-calculated-to-rulebook]   {t}[{pk}].{field_name}: {old_val!r} -> {new_val!r}  (derived)")
     for (_row, field_name, new_val, old_val, t, pk) in raw_adopts:
-        print(f"[postgres-to-rulebook]   {t}[{pk}].{field_name}: {old_val!r} -> {new_val!r}  (RAW adopted)")
+        print(f"[postgres-calculated-to-rulebook]   {t}[{pk}].{field_name}: {old_val!r} -> {new_val!r}  (RAW adopted)")
     for (t, pk) in added_rows:
-        print(f"[postgres-to-rulebook]   {t}[{pk}]: + new row from Postgres")
+        print(f"[postgres-calculated-to-rulebook]   {t}[{pk}]: + new row from Postgres")
 
 
 if __name__ == "__main__":

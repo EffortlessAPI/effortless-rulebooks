@@ -45,7 +45,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_customers_full_name(p_customer_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (CONCAT((SELECT NULLIF(first_name, '') FROM customers WHERE customer_id = p_customer_id), ' - ', (SELECT NULLIF(last_name, '') FROM customers WHERE customer_id = p_customer_id)))::text;
+  SELECT (CONCAT((SELECT NULLIF(first_name, '') FROM customers WHERE customer_id = p_customer_id), ' ', (SELECT NULLIF(last_name, '') FROM customers WHERE customer_id = p_customer_id)))::text;
 $$ LANGUAGE sql STABLE;
 
 -- ============================================================================

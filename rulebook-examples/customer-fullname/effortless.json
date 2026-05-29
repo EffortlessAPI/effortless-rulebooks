@@ -39,9 +39,9 @@
     },
     {
       "IsSSoTTranspiler": false,
-      "Name": "httplocalhost4242postgrestorulebook",
+      "Name": "httplocalhost4242postgrescalculatedtorulebook",
       "RelativePath": "/postgres-bootstrap",
-      "CommandLine": "http://localhost:4242/postgres-to-rulebook -i ../effortless-rulebook/customer-fullname-rulebook.json",
+      "CommandLine": "http://localhost:4242/postgres-calculated-to-rulebook -i ../effortless-rulebook/customer-fullname-rulebook.json",
       "IsDisabled": false
     }
   ]

@@ -31,9 +31,9 @@
     },
     {
       "IsSSoTTranspiler": false,
-      "Name": "httplocalhost4242postgrestorulebook",
+      "Name": "httplocalhost4242postgrescalculatedtorulebook",
       "RelativePath": "/postgres-bootstrap",
-      "CommandLine": "http://localhost:4242/postgres-to-rulebook -i ../effortless-rulebook/volunteer-shift-scheduler-rulebook.json",
+      "CommandLine": "http://localhost:4242/postgres-calculated-to-rulebook -i ../effortless-rulebook/volunteer-shift-scheduler-rulebook.json",
       "IsDisabled": false,
       "Description": "Reverse spoke: refresh rulebook derived-field display copies from Postgres views after the destructive rebuild (raws verified, never written)."
     }
