@@ -723,3 +723,48 @@ Processing by CustomersController#index as */*
 Completed 200 OK in 2ms (Views: 1.2ms | ActiveRecord: 0.4ms | Allocations: 1025)
 
 
+Started GET "/" for 127.0.0.1 at 2026-05-29 14:06:35 -0500
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.6ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by CustomersController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering customers/index.html.erb within layouts/application
+  [1m[36mCustomer Load (0.7ms)[0m  [1m[34mSELECT "vw_customers".* FROM "vw_customers"[0m
+  ↳ app/views/customers/index.html.erb:15
+  Rendered customers/index.html.erb within layouts/application (Duration: 6.4ms | Allocations: 5690)
+  Rendered layout layouts/application.html.erb (Duration: 6.8ms | Allocations: 5889)
+Completed 200 OK in 25ms (Views: 5.7ms | ActiveRecord: 2.8ms | Allocations: 11995)
+
+
+Started GET "/" for 127.0.0.1 at 2026-05-29 14:06:52 -0500
+Processing by CustomersController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering customers/index.html.erb within layouts/application
+  [1m[36mCustomer Load (0.4ms)[0m  [1m[34mSELECT "vw_customers".* FROM "vw_customers"[0m
+  ↳ app/views/customers/index.html.erb:15
+  Rendered customers/index.html.erb within layouts/application (Duration: 1.0ms | Allocations: 676)
+  Rendered layout layouts/application.html.erb (Duration: 1.1ms | Allocations: 728)
+Completed 200 OK in 2ms (Views: 1.1ms | ActiveRecord: 0.4ms | Allocations: 942)
+
+
+Started GET "/" for 127.0.0.1 at 2026-05-29 14:06:56 -0500
+Processing by CustomersController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering customers/index.html.erb within layouts/application
+  [1m[36mCustomer Load (0.3ms)[0m  [1m[34mSELECT "vw_customers".* FROM "vw_customers"[0m
+  ↳ app/views/customers/index.html.erb:15
+  Rendered customers/index.html.erb within layouts/application (Duration: 1.1ms | Allocations: 668)
+  Rendered layout layouts/application.html.erb (Duration: 1.1ms | Allocations: 719)
+Completed 200 OK in 1ms (Views: 1.0ms | ActiveRecord: 0.3ms | Allocations: 926)
+
+
+Started GET "/" for 127.0.0.1 at 2026-05-29 14:12:05 -0500
+Processing by CustomersController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering customers/index.html.erb within layouts/application
+  [1m[36mCustomer Load (0.6ms)[0m  [1m[34mSELECT "vw_customers".* FROM "vw_customers"[0m
+  ↳ app/views/customers/index.html.erb:15
+  Rendered customers/index.html.erb within layouts/application (Duration: 1.5ms | Allocations: 674)
+  Rendered layout layouts/application.html.erb (Duration: 1.6ms | Allocations: 726)
+Completed 200 OK in 2ms (Views: 1.5ms | ActiveRecord: 0.6ms | Allocations: 939)
+
+
