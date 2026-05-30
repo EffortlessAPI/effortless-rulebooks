@@ -3,7 +3,7 @@ set -e
 
 PORT_SERVER="${PORT_SERVER:-3032}"
 PORT_WEB="${PORT_WEB:-5175}"
-DATABASE_URL="${DATABASE_URL:-postgresql://postgres@localhost:5432/erb_product_inventory_demo}"
+DATABASE_URL="${DATABASE_URL:-postgresql://postgres@localhost:5432/erb_product_inventory}"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 stop_port() {

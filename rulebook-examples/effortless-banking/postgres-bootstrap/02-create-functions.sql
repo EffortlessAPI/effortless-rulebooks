@@ -527,7 +527,7 @@ $$ LANGUAGE sql STABLE;
 
 -- calc_loans_underwriter_label
 -- Field: Loans.UnderwriterLabel
--- Type: lookup | DataType: string | Returns: BOOLEAN
+-- Type: lookup | DataType: boolean | Returns: BOOLEAN
 -- Lookup: IsAdmin from related Users
 
 

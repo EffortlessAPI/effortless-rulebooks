@@ -171,7 +171,7 @@ SELECT
   calc_loans_business_label(t.loans_id) AS business_label,                      -- Display label of the borrower Business.
   calc_loans_business_naics_code(t.loans_id) AS business_naics_code,            -- NAICS code of the borrower Business (concentration analytics).
   calc_loans_originating_rm_label(t.loans_id) AS originating_rm_label,          -- Display label of the originating RM.
-  calc_loans_underwriter_label(t.loans_id) AS underwriter_label,                -- Display label of the underwriter.
+  calc_loans_underwriter_label(t.loans_id) AS underwriter_label,                -- True if the underwriter is an admin.
   calc_loans_is_funded(t.loans_id) AS is_funded,                                -- True when UnderwritingStage = 'Funded'.
   calc_loans_is_classified_asset(t.loans_id) AS is_classified_asset,            -- True when RiskRating is substandard (7) or worse.
   calc_loans_dscr_in_band(t.loans_id) AS dscr_in_band,                          -- True when DSCR meets or exceeds the 1.20 minimum band.

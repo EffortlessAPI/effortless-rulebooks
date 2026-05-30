@@ -3540,6 +3540,9 @@ app.get("/api/tech/export-rulebook", requireDeveloper, (req, res) => {
 // edits/new rows made in the app or portal) AS the rulebook's new seed data.
 // This is the ONLY portal path that writes raw values back to the rulebook, it
 // requires {confirm:true}, and it is never invoked automatically on build.
+//
+// Two-step: (1) pull-from-postgres.sh exports raw table data to .pg-raw-data.json,
+//           (2) Python transpiler reads that JSON and merges raw values into rulebook.
 app.post("/api/tech/import-from-postgres", requireDeveloper, async (req, res) => {
   let domain;
   try { domain = requireDomain(req); }
@@ -3554,32 +3557,55 @@ app.post("/api/tech/import-from-postgres", requireDeveloper, async (req, res) =>
     });
   }
   const bootstrapDir = path.join(RULEBOOK_EXAMPLES, domain, "postgres-bootstrap");
-  const script = path.join(REPO_ROOT, "execution-substrates", "postgres-calculated-to-rulebook", "inject-into-postgres-calculated-to-rulebook.py");
+  const pullScript = path.join(bootstrapDir, "pull-from-postgres.sh");
+  const transpiler = path.join(REPO_ROOT, "execution-substrates", "postgres-calculated-to-rulebook", "inject-into-postgres-calculated-to-rulebook.py");
   const rbPath = rulebookPathFor(domain);
-  if (!fs.existsSync(script)) return res.status(500).json({ error: `adopt engine missing: ${script}` });
-  try {
-    const result = await new Promise((resolve, reject) => {
-      const child = spawn("python3", [script], {
-        cwd: bootstrapDir,
-        env: { ...process.env, ERB_ADOPT_RAWS: "true", ERB_RULEBOOK_PATH: rbPath },
-      });
+
+  if (!fs.existsSync(bootstrapDir)) {
+    return res.status(400).json({ error: `no postgres-bootstrap folder for domain '${domain}' — import not supported` });
+  }
+  if (!fs.existsSync(pullScript)) {
+    return res.status(500).json({ error: `pull-from-postgres.sh missing: ${pullScript}` });
+  }
+  if (!fs.existsSync(transpiler)) {
+    return res.status(500).json({ error: `transpiler missing: ${transpiler}` });
+  }
+
+  function runChild(cmd, args, opts) {
+    return new Promise((resolve, reject) => {
+      const child = spawn(cmd, args, opts);
       let stdout = "", stderr = "";
       child.stdout.on("data", (c) => { stdout += c; });
       child.stderr.on("data", (c) => { stderr += c; });
       child.on("error", reject);
       child.on("close", (code) => {
-        if (code === 0) resolve(stdout);
-        else { const err = new Error(stderr.slice(-4000) || `adopt exited ${code}`); err.stdout = stdout; reject(err); }
+        if (code === 0) resolve({ stdout, stderr });
+        else {
+          const err = new Error(stderr.slice(-4000) || `exited ${code}`);
+          err.stdout = stdout;
+          reject(err);
+        }
       });
     });
-    // The rulebook now mirrors Postgres; drop the cached pool so subsequent
-    // reads bootstrap fresh against the (now-aligned) state.
+  }
+
+  try {
+    // Step 1: export raw base-table data as JSON
+    await runChild("bash", [pullScript], { cwd: bootstrapDir, env: process.env });
+
+    // Step 2: merge JSON into rulebook
+    const { stdout } = await runChild("python3", [transpiler], {
+      cwd: bootstrapDir,
+      env: { ...process.env, ERB_RULEBOOK_PATH: rbPath },
+    });
+
+    // Rulebook now mirrors Postgres; drop cached pool so next read re-bootstraps.
     if (domain !== TOP_DOMAIN) {
       const existing = domainPools.get(domain);
       if (existing) { try { await existing.end(); } catch {} }
       domainPools.delete(domain);
     }
-    res.json({ ok: true, domain, output: result });
+    res.json({ ok: true, domain, output: stdout });
   } catch (e) {
     res.status(500).json({ error: String(e.message || e), output: e.stdout || null });
   }

@@ -7,7 +7,7 @@ const port = 3045
 const pool = new Pool({
   user: 'postgres',
   host: 'localhost',
-  database: 'erb_fantasy_football_demo',
+  database: 'erb_fantasy_football',
   port: 5432,
 })
 

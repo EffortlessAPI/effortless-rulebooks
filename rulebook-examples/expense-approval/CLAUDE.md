@@ -54,11 +54,11 @@ effortless build
 
 This runs:
 1. `rulebook-to-postgres` — generates `postgres/00-05` SQL files and `init-db.sh`.
-2. `execute -exec ./init-db.sh` — drops + recreates `erb_expense_approval_demo`, applies all SQL, loads seed data.
+2. `execute -exec ./init-db.sh` — drops + recreates `erb_expense_approval`, applies all SQL, loads seed data.
 
 ## Database
 
-Per the ERB naming convention: `erb_<project_dir_with_underscores>` = `erb_expense_approval_demo`.
+Per the ERB naming convention: `erb_<project_dir_with_underscores>` = `erb_expense_approval`.
 
 Configured via `effortless.env` (gitignored). On a fresh clone:
 

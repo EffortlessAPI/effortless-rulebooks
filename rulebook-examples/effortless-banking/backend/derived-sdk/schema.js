@@ -147,7 +147,7 @@ export const schema = {
       { name: 'business_label', label: 'Business Label', type: 'lookup', datatype: 'string', nullable: false, relatedTo: null },
       { name: 'business_naics_code', label: 'Business Naics Code', type: 'lookup', datatype: 'string', nullable: false, relatedTo: null },
       { name: 'originating_rm_label', label: 'Originating Rm Label', type: 'lookup', datatype: 'string', nullable: false, relatedTo: null },
-      { name: 'underwriter_label', label: 'Underwriter Label', type: 'lookup', datatype: 'string', nullable: false, relatedTo: null },
+      { name: 'underwriter_label', label: 'Underwriter Label', type: 'lookup', datatype: 'boolean', nullable: false, relatedTo: null },
       { name: 'is_funded', label: 'Is Funded', type: 'calculated', datatype: 'boolean', nullable: false, relatedTo: null },
       { name: 'is_classified_asset', label: 'Is Classified Asset', type: 'calculated', datatype: 'boolean', nullable: false, relatedTo: null },
       { name: 'dscr_in_band', label: 'Dscr In Band', type: 'calculated', datatype: 'boolean', nullable: false, relatedTo: null },
