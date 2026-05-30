@@ -1,11 +1,25 @@
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import * as Icons from "lucide-react";
 import ScreenHeader from "../../components/ScreenHeader.jsx";
+import DomainSortBar from "../../components/DomainSortBar.jsx";
+import { sortDomains, formatTimeSince } from "../../lib/timeSince.js";
 
-export default function ViewerHomeScreen({ screen, projectRulebook, projects, me }) {
+const SORT_KEY = "erb.domainPickerSort";
+
+export default function ViewerHomeScreen({ screen, projectRulebook, projects, me, reloadProjects }) {
   const navigate  = useNavigate();
   const role      = (projectRulebook?.UserRoles?.data || []).find((r) => r.RoleId === "role-viewer");
-  const domains   = projects?.projects || [];
+  useEffect(() => { reloadProjects?.(); }, [reloadProjects]);
+
+  const [sortMode, setSortMode] = useState(
+    () => localStorage.getItem(SORT_KEY) || "mtime-desc"
+  );
+  const onChangeSort = (m) => {
+    setSortMode(m);
+    try { localStorage.setItem(SORT_KEY, m); } catch { /* no-op */ }
+  };
+  const domains = sortDomains(projects?.projects || [], sortMode);
 
   return (
     <>
@@ -17,6 +31,7 @@ export default function ViewerHomeScreen({ screen, projectRulebook, projects, me
       )}
 
       <h3 className="muted small" style={{ marginTop: 24 }}>READ A DOMAIN</h3>
+      <DomainSortBar mode={sortMode} onChange={onChangeSort} />
       <div className="cards">
         {domains.map((d) => (
           <div
@@ -36,6 +51,9 @@ export default function ViewerHomeScreen({ screen, projectRulebook, projects, me
               <h3 style={{ color: "#7280ad" }}>{d.id}</h3>
               <div className="big" style={{ fontSize: 16 }}>{d.name}</div>
               <div className="sub">{d.description || "—"}</div>
+              <div className="sub" style={{ opacity: 0.6, fontSize: 12, marginTop: 4 }}>
+                {formatTimeSince(d.lastModified)}
+              </div>
             </div>
           </div>
         ))}

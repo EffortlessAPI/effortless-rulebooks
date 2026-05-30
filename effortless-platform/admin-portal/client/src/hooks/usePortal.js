@@ -35,9 +35,19 @@ export function usePortal() {
     } catch { /* non-fatal */ }
   }, []);
 
+  // Cheap refetch of /api/projects only — used by the domain pickers to pick
+  // up freshly-bumped folder mtimes after opening a domain. Doesn't touch
+  // the (much heavier) project rulebook or identity.
+  const reloadProjects = useCallback(async () => {
+    try {
+      const pj = await api.get("/api/projects");
+      setProjects(pj);
+    } catch { /* non-fatal */ }
+  }, []);
+
   useEffect(() => { reload(); }, [reload]);
 
-  return { me, projectRulebook, projects, domainState, reload, reloadDomainState };
+  return { me, projectRulebook, projects, domainState, reload, reloadDomainState, reloadProjects };
 }
 
 // Fetch the rulebook for a specific demo domain. Returns `null` until loaded

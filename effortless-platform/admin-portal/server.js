@@ -235,6 +235,7 @@ function listProjects() {
     rulebookPath: TOP_RULEBOOK,
     projectRoot: REPO_ROOT,
     description: "The repo's top-level rulebook — describes ERB itself.",
+    lastModified: fs.existsSync(REPO_ROOT) ? fs.statSync(REPO_ROOT).mtimeMs : 0,
   }];
   if (fs.existsSync(RULEBOOK_EXAMPLES)) {
     for (const d of fs.readdirSync(RULEBOOK_EXAMPLES)) {
@@ -269,6 +270,10 @@ function listProjects() {
         rulebookPath: candidate,
         projectRoot: dirPath,
         description: tagline,
+        // Folder mtime (ms-since-epoch) — bumped whenever a domain is opened,
+        // built, or otherwise touched. The picker uses this for "recently
+        // opened" sort + "Xh ago" annotations.
+        lastModified: fs.statSync(dirPath).mtimeMs,
       });
     }
   }
@@ -994,6 +999,20 @@ app.put("/api/portal/me/domain-state", async (req, res) => {
   const { domain, last_route } = req.body || {};
   if (!domain || typeof domain !== "string") return res.status(400).json({ error: "domain required" });
   const rev = rulebookRevisionForDomain(domain);
+  // Bump the domain folder's mtime so "recently opened" sort in the picker
+  // floats this domain to the top. Skipped for "__top__" (no folder of its
+  // own) and silently no-op'd if the folder doesn't exist.
+  if (domain !== "__top__") {
+    const dirPath = path.join(RULEBOOK_EXAMPLES, domain);
+    try {
+      if (fs.existsSync(dirPath)) {
+        const now = new Date();
+        fs.utimesSync(dirPath, now, now);
+      }
+    } catch (e) {
+      console.warn(`[domain-state] could not touch ${dirPath}: ${e.message}`);
+    }
+  }
   try {
     const p = await getAdminPool();
     await p.query(
