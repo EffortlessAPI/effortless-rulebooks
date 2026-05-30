@@ -31,8 +31,8 @@ pids=()
 cleanup() { echo; echo "[start] shutting down…"; for p in "${pids[@]}"; do kill "$p" 2>/dev/null || true; done; wait 2>/dev/null || true; }
 trap cleanup INT TERM EXIT
 
-echo "[start] backend  → http://localhost:8375"
-( cd backend  && npm start ) & pids+=($!)
+echo "[start] backend  → http://localhost:8375  (dev / --watch, request logging on)"
+( cd backend  && npm run dev ) & pids+=($!)
 
 echo "[start] frontend → http://localhost:8376"
 ( cd frontend && npm run dev ) & pids+=($!)

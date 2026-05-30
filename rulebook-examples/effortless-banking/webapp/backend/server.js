@@ -41,6 +41,16 @@ app.use(
   }),
 );
 
+// Log every request + its final status & duration to the terminal, so the
+// dev server actually shows what it's doing (nothing fails silently).
+app.use((req, res, next) => {
+  const start = Date.now();
+  res.on('finish', () =>
+    console.log(`[fvb] ${req.method} ${req.originalUrl} -> ${res.statusCode} (${Date.now() - start}ms)`),
+  );
+  next();
+});
+
 // ---- helpers --------------------------------------------------------------
 
 async function withUserSession(req, fn) {
@@ -110,6 +120,7 @@ app.get('/api/auth/demo-users', async (req, res) => {
     );
     res.json(r.rows);
   } catch (e) {
+    console.error(`[fvb] ERROR on ${req.method} ${req.originalUrl}:`, e);
     res.status(500).json({ error: String(e.message || e) });
   }
 });
@@ -128,6 +139,7 @@ app.post('/api/auth/login', async (req, res) => {
     req.session.user = r.rows[0];
     res.json(req.session.user);
   } catch (e) {
+    console.error(`[fvb] ERROR on ${req.method} ${req.originalUrl}:`, e);
     res.status(500).json({ error: String(e.message || e) });
   }
 });
@@ -185,6 +197,7 @@ function listEndpoint(view, defaultOrder = 'name') {
       const r = await withUserSession(req, (c) => c.query(sql, params));
       res.json(r.rows);
     } catch (e) {
+      console.error(`[fvb] ERROR on ${req.method} ${req.originalUrl}:`, e);
       res.status(500).json({ error: String(e.message || e) });
     }
   };
@@ -231,6 +244,7 @@ app.get('/api/businesses/:name/detail', requireAuth, async (req, res) => {
     if (!r) return res.status(404).json({ error: 'not found' });
     res.json(r);
   } catch (e) {
+    console.error(`[fvb] ERROR on ${req.method} ${req.originalUrl}:`, e);
     res.status(500).json({ error: String(e.message || e) });
   }
 });
@@ -251,6 +265,7 @@ app.get('/api/loans/:name/detail', requireAuth, async (req, res) => {
     if (!r) return res.status(404).json({ error: 'not found' });
     res.json(r);
   } catch (e) {
+    console.error(`[fvb] ERROR on ${req.method} ${req.originalUrl}:`, e);
     res.status(500).json({ error: String(e.message || e) });
   }
 });
@@ -300,6 +315,7 @@ app.get('/api/kpis', requireAuth, async (req, res) => {
     });
     res.json(r);
   } catch (e) {
+    console.error(`[fvb] ERROR on ${req.method} ${req.originalUrl}:`, e);
     res.status(500).json({ error: String(e.message || e) });
   }
 });
