@@ -1,16 +1,16 @@
 # Effortlessly Invariant Rulebooks (ERB)
 
 <p align="center">
-  <img src="docs/erb-overview.svg" alt="ERB hub-and-spoke architecture: one rulebook fans out to many substrates, all proven conformant" width="100%"/>
+  <img src="docs/erb-overview.svg" alt="ERB hub-and-spoke architecture: one rulebook fans out to many substrates, all shown to be conformant" width="100%"/>
 </p>
 
-Most "single source of truth" systems mean: *we wrote it in one place and try to keep everything else in sync.* ERB means something stronger: the rulebook **is** the spec, and every substrate — Postgres, Python, Go, COBOL, Excel, OWL, English prose, UML, ARM64 assembly, and more — is mechanically derived from it and **proven** to return the same answer.
+Most "single source of truth" systems mean: *we wrote it in one place and try to keep everything else in sync.* ERB means something stronger: the rulebook **is** the spec, and every substrate — Postgres, Python, Go, COBOL, Excel, OWL, English prose, UML, ARM64 assembly, and more — is mechanically derived from it and **demonstrated** to return the same answer.
 
 You write business rules once as a typed grid of named cells — entities, fields, formulas, relationships. Any transpiler can consume that grid without understanding the grammar of any other substrate, because the business intent (there is a calculated field, it derives from these inputs, it returns this type) is encoded in the *structure*, not in the formula text. Add a new language target: feed it the same rulebook. Rename a field: rebuild, and the rename propagates everywhere. Remove a rule: it disappears from every substrate on the next build. No migrations. No drift. No "the Postgres version doesn't do what the Python version does."
 
 The conformance harness runs on every build and produces a pass/fail matrix across all substrates. If they don't agree, the build fails.
 
-This repo contains the orchestration platform and a catalog of ready-to-run demo domains — from a [one-table Hello World](rulebook-examples/customer-fullname/) to [acme-llc](rulebook-examples/acme-llc/), which exercises all 17 substrates and is fully proven conformant.
+This repo contains the orchestration platform and a catalog of ready-to-run demo domains. The catalog demonstrates two distinct things. **[acme-llc](rulebook-examples/acme-llc/)** shows *breadth of platforms*: a deliberately simple domain (six calculated fields) run through **all 17 substrates** — Postgres, Python, Go, COBOL, Excel, OWL, English, and more — every one demonstrates to return the same answer. **[effortless-banking](rulebook-examples/effortless-banking/)** illustrates *depth of domain*: a full loan-origination lifecycle with an underwriting state machine, time-based covenant monitoring, risk-grade migration, segregation-of-duties checks, and branching approval logic. The remaining 25+ domains show the *depth of expressivity* the rulebook reaches across wildly different subject matter — they are not attempts to rebuild the bank in every language.
 
 → [What does "non-linguistic" actually mean?](docs/what-is-non-linguistic.md) · [GitHub](https://github.com/effortlessapi/effortless-rulebooks)
 
@@ -58,7 +58,7 @@ The harness that produced this table runs on every build. There is no "build wit
 
 - **[Conformance testing](docs/features/README.conformance.md)** — every build runs every substrate's test and shows the pass/fail matrix. There is no "build without testing."
 - **[ExplainDAG](docs/features/README.explain-dag.md)** — for every derived value, a complete witnessed derivation graph: which inputs, which operations, what value at each step. Generated before any production code runs.
-- **[React ExplainDAG](docs/features/README.react-explain-dag.md)** — any value displayed in the UI can answer "where did this come from?" all the way to ground truth, because the UI reads from the same DAG the rulebook already proved.
+- **[React ExplainDAG](docs/features/README.react-explain-dag.md)** — any value displayed in the UI can answer "where did this come from?" all the way to ground truth, because the UI reads from the same DAG the rulebook already provded.
 - **[Abstract Derivative Percentage (ADP)](docs/features/README.ADP.md)** — a measurable percentage of the project that is derivative (rebuildable) vs. hand-written. Typical ERB projects land at 60–80%.
 
 ### Practical consequences
@@ -82,21 +82,27 @@ The harness that produced this table runs on every build. There is no "build wit
 
 ## Demo domains
 
-The catalog spans **26 ready-to-run domains** — from a one-table Hello World to a 26-table hardware ontology — all driven by the same hub-and-spoke pattern. The highlights table below is a curated subset; the [full domain catalog](docs/derived/domains.md) is generated from the platform rulebook on every build. For a direct comparison of LLM behavior with and without ERB grounding, see **[A Tale of Two Claudes](rulebook-examples/naked-claude-vs-effortless-claude/TALE_OF_TWO_CLAUDES.md)**.
+The catalog spans **27 ready-to-run domains** — from a one-table Hello World to a full loan-origination lifecycle — all driven by the same hub-and-spoke pattern. Read it along two axes:
 
-| Domain | Complexity | What it demonstrates |
+- **Breadth of platforms** — one domain, every substrate. **acme-llc** is intentionally a *simple* business (a handful of calculated fields) so that what it brings is the substrate matrix: the same six answers come out of Postgres, Python, Go, COBOL, Excel, OWL, and English alike. It is not meant to be a complex domain; it is the breadth witness.
+- **Depth of domain** — one domain, real complexity. **effortless-banking** is the complex-domain witness: an underwriting state machine, time-based covenant and DSCR/LTV monitoring, risk-rating migration, segregation-of-duties enforcement, and branching approval logic — a complete origination lifecycle expressed in the same rulebook primitives.
+- **Depth of expressivity** — many domains, wildly different subject matter. The remaining 25+ demos show how far the same primitives stretch across unrelated problems. The point is not "you could rebuild the bank in COBOL" — it's that one modeling discipline covers all of these.
+
+The highlights table below is a curated subset; the [full domain catalog](docs/derived/domains.md) is generated from the platform rulebook on every build. For a direct comparison of LLM behavior with and without ERB grounding, see **[A Tale of Two Claudes](rulebook-examples/naked-claude-vs-effortless-claude/TALE_OF_TWO_CLAUDES.md)**.
+
+| Domain | Demonstrates | What it shows |
 |---|---|---|
-| [acme-llc](rulebook-examples/acme-llc/) | **full demo** | **All 17 substrates proven conformant** — start here |
-| [effortless-banking](rulebook-examples/effortless-banking/) | advanced | Loan origination, covenant monitoring, risk-grade migration, four-surface portal |
-| [mechanical-kitchen-timer](rulebook-examples/mechanical-kitchen-timer/) | advanced | 26-table hardware ontology — proves the methodology isn't limited to information systems |
-| [fantasy-football](rulebook-examples/fantasy-football/) | advanced | Four-hop DAG: raw stats → roster aggregations → matchup scoring → standings |
-| [therapist-helper-portal](rulebook-examples/therapist-helper-portal/) | moderate | Three-hop cascading inference: GoalUpdate → Goal.ProgressPct → Client.IsAtRisk |
-| [jessica-basic](rulebook-examples/jessica-basic/) | moderate | Relationships, aggregations, role-agent separation |
-| [star-trek](rulebook-examples/star-trek/) | moderate | Hierarchical rollups, polymorphic foreign keys |
-| [is-everything-a-language](rulebook-examples/is-everything-a-language/) | philosophical | 8-predicate AND logic, formal argument modeling |
+| [acme-llc](rulebook-examples/acme-llc/) | **breadth of platforms** | A deliberately simple domain run through **all 17 substrates**, all shown conformant — start here |
+| [effortless-banking](rulebook-examples/effortless-banking/) | **depth of domain** | Loan-origination lifecycle: underwriting state machine, time-based covenant monitoring, risk-grade migration, segregation-of-duties, branching approvals |
+| [mechanical-kitchen-timer](rulebook-examples/mechanical-kitchen-timer/) | depth of expressivity | A 26-table hardware ontology — demonstrates that the methodology isn't limited to information systems |
+| [fantasy-football](rulebook-examples/fantasy-football/) | depth of expressivity | Four-hop DAG: raw stats → roster aggregations → matchup scoring → standings |
+| [therapist-helper-portal](rulebook-examples/therapist-helper-portal/) | depth of expressivity | Three-hop cascading inference: GoalUpdate → Goal.ProgressPct → Client.IsAtRisk |
+| [jessica-basic](rulebook-examples/jessica-basic/) | depth of expressivity | Relationships, aggregations, role-agent separation |
+| [star-trek](rulebook-examples/star-trek/) | depth of expressivity | Hierarchical rollups, polymorphic foreign keys |
+| [is-everything-a-language](rulebook-examples/is-everything-a-language/) | depth of expressivity | 8-predicate AND logic, formal argument modeling |
 | [customer-fullname](rulebook-examples/customer-fullname/) | minimal | Hello World — string concat formula |
 
-→ [Full domain catalog (26 domains, generated)](docs/derived/domains.md)
+→ [Full domain catalog (27 domains, generated)](docs/derived/domains.md)
 
 ---
 
