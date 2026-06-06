@@ -26,7 +26,7 @@ one-directional necessity is not mistaken for an equivalence._
 | ID | Declarative rule |
 |----|------------------|
 | **DR-1 Initials** | A customer's initials is computed as the first 1 character(s) of the first name, followed by the first 1 character(s) of the last name. |
-| **DR-2 Full Name** | A customer's full name is computed as the last name, followed by a comma followed by a space, followed by the first name. |
+| **DR-2 Full Name** | A customer's full name is computed as the first name, followed by a space, followed by the last name. |
 
 ## 4 Traceability to Schema
 
@@ -36,4 +36,4 @@ the same logic the rulebook stores, written for a business reader._
 | Schema element | Kind | Expression |
 |----------------|------|------------|
 | **Customers.Initials** | formula | `Left(FirstName, 1) & Left(LastName, 1)` |
-| **Customers.FullName** | formula | `LastName & ", " & FirstName` |
+| **Customers.FullName** | formula | `FirstName & " " & LastName` |

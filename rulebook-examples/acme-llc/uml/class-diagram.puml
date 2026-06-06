@@ -11,7 +11,8 @@ class Customers {
   +FirstName: String -- First Name of the customer - used to make the full name
   +LastName: String -- Last Name of the customer - used to make the full name
   --
-  /Name: String  {derived} -- Identifier for the customers.
+  /Name: String  {derived} -- Identifier for the cusfdsfdstomers.
+  /Initials: String  {derived}
   /FullName: String  {derived} -- Full name is computed from the first and last name of the customer
 }
 

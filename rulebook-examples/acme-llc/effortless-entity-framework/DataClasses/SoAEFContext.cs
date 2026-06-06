@@ -32,6 +32,7 @@ namespace SqlOnAir.DotNet.Lib.DataClasses
         public DbSet<Customer> Customers { get; set; }
         public DbSet<ERBVersion> ERBVersions { get; set; }
         public DbSet<ERBCustomization> ERBCustomizations { get; set; }
+        public DbSet<__meta__> __meta__ { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -1,112 +1,59 @@
 # ACME, LLC Rulebook Specification
 
 ## Overview
-This rulebook defines the structure and calculations for customer data management at ACME, LLC. It includes a schema for customers, ERB versions, and ERB customizations, with specific calculated fields for customer identifiers and full names. This document outlines how to compute each derived field based on the raw input fields.
+
+This rulebook defines the structure and calculations for managing customer data within ACME, LLC. It includes a single entity, `Customers`, which captures essential customer information and derives two calculated fields: `Name` and `FullName`. The rulebook ensures that these derived fields automatically update based on changes to the raw input fields, providing a seamless experience for data management.
 
 ---
 
-## Customers Table
+## Entity: Customers
 
 ### Input Fields
+
 1. **CustomerId**
    - **Type:** string
-   - **Description:** Unique identifier for the customer. This field is mandatory and cannot be null.
+   - **Description:** Unique identifier for the customer.
 
 2. **EmailAddress**
    - **Type:** string
-   - **Description:** The customer's email address. This field is optional and can be null.
+   - **Description:** The customer's email address.
 
 3. **FirstName**
    - **Type:** string
-   - **Description:** The first name of the customer, used to create the full name. This field is optional and can be null.
+   - **Description:** First name of the customer, used to create the full name.
 
 4. **LastName**
    - **Type:** string
-   - **Description:** The last name of the customer, used to create the full name. This field is optional and can be null.
+   - **Description:** Last name of the customer, used to create the full name.
 
 ### Calculated Fields
+
 1. **Name**
    - **Type:** calculated
-   - **Description:** Identifier for the customers, derived from their email address.
-   - **Computation:** The Name is computed by replacing the "@" symbol in the EmailAddress with a hyphen ("-"). 
    - **Formula:** `=SUBSTITUTE({{EmailAddress}}, "@", "-")`
-   - **Example:** For a customer with the EmailAddress `jane.smith@email.com`, the Name would be computed as `jane.smith-email.com`.
+   - **Computation:** The `Name` field is derived from the `EmailAddress` by replacing the "@" symbol with a hyphen ("-"). This transformation creates a slugified version of the email address.
+   - **Example:** If the `EmailAddress` is `jane.smith@email.com`, the `Name` will be `jane.smith-email.com`.
 
 2. **FullName**
    - **Type:** calculated
-   - **Description:** The full name of the customer, constructed from their first and last names.
-   - **Computation:** The FullName is created by concatenating the LastName, a comma and space, and the FirstName.
-   - **Formula:** `={{LastName}} & ", " & {{FirstName}}`
-   - **Example:** For a customer with FirstName `Bobby` and LastName `Smith`, the FullName would be computed as `Smith, Bobby`.
+   - **Formula:** `={{FirstName}} & " " & {{LastName}}`
+   - **Computation:** The `FullName` field is constructed by concatenating the `FirstName` and `LastName` fields with a space in between. This field formats the customer's name in a standard way.
+   - **Example:** If `FirstName` is `Bobby` and `LastName` is `Smith`, the `FullName` will be `Bobby Smith`.
+
+### Additional Calculated Field
+
+3. **Initials**
+   - **Type:** calculated
+   - **Formula:** `=LEFT({{FirstName}}, 1) & LEFT({{LastName}}, 1)`
+   - **Computation:** The `Initials` field is created by taking the first character of the `FirstName` and the first character of the `LastName` and concatenating them together.
+   - **Example:** If `FirstName` is `Bobby` and `LastName` is `Smith`, the `Initials` will be `BS`.
 
 ---
 
-## ERBVersions Table
+## Summary of Calculated Fields
 
-### Input Fields
-1. **ERBVersionId**
-   - **Type:** string
-   - **Description:** Unique identifier for the ERB version. This field is mandatory and cannot be null.
+- **Name**: Derived from `EmailAddress` by replacing "@" with "-".
+- **FullName**: Constructed from `FirstName` and `LastName` with a space in between.
+- **Initials**: Formed by concatenating the first letters of `FirstName` and `LastName`.
 
-2. **BaseId**
-   - **Type:** string
-   - **Description:** Identifier for the base version. This field is optional and can be null.
-
-3. **Name**
-   - **Type:** string
-   - **Description:** Name of the ERB version. This field is optional and can be null.
-
-4. **Message**
-   - **Type:** string
-   - **Description:** Message associated with the ERB version. This field is optional and can be null.
-
-5. **Notes**
-   - **Type:** string
-   - **Description:** Additional notes regarding the ERB version. This field is optional and can be null.
-
-6. **CommitDate**
-   - **Type:** datetime
-   - **Description:** Date and time of the commit for this ERB version. This field is optional and can be null.
-
-7. **IsPublished**
-   - **Type:** boolean
-   - **Description:** Indicates whether the ERB version is published. This field is optional and can be null.
-
-### Calculated Fields
-- **No calculated fields are defined in the ERBVersions table.**
-
----
-
-## ERBCustomizations Table
-
-### Input Fields
-1. **ERBCustomizationId**
-   - **Type:** string
-   - **Description:** Unique identifier for the ERB customization. This field is mandatory and cannot be null.
-
-2. **Name**
-   - **Type:** string
-   - **Description:** Name of the ERB customization. This field is optional and can be null.
-
-3. **Title**
-   - **Type:** string
-   - **Description:** Title of the ERB customization. This field is optional and can be null.
-
-4. **SQLCode**
-   - **Type:** string
-   - **Description:** SQL code associated with the customization. This field is optional and can be null.
-
-5. **SQLTarget**
-   - **Type:** string
-   - **Description:** Target database for the SQL code. This field is optional and can be null.
-
-6. **CustomizationType**
-   - **Type:** string
-   - **Description:** Type of customization (e.g., Schema, Functions, Views, RLS, Data). This field is optional and can be null.
-
-### Calculated Fields
-- **No calculated fields are defined in the ERBCustomizations table.**
-
----
-
-This specification document provides a clear understanding of how to compute derived fields in the ACME, LLC rulebook, ensuring accurate data representation and management.
+This specification provides a clear understanding of how to compute the derived fields based on the raw input fields within the `Customers` entity of ACME, LLC's rulebook.
