@@ -1,0 +1,1636 @@
+{
+  "$schema": "https://example.com/cmcc-schema/v1",
+  "Name": "Tiling the Plane",
+  "Description": "A library for tiling the Euclidean plane. The catalog half models which tilings exist and why each vertex figure is valid (interior angles summing to 360deg); the generative half places prototiles into a bounded region and measures coverage, gaps, and overlaps. One DAG of Schema/Data/Lookups/Aggregations/Formulas.",
+  "__meta__": {
+    "Description": "Project-level metadata that travels with the rulebook.",
+    "important": false,
+    "schema": [
+      {
+        "name": "MetaKey",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "The metadata key. Unique within the table.",
+        "is_primary_key": true
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "formula": "={{MetaKey}}",
+        "Description": "Mirrors MetaKey so the row is addressable by Name."
+      },
+      {
+        "name": "ValueType",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "How to interpret the value: 'string' | 'object' | 'array'."
+      },
+      {
+        "name": "StringValue",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Plain string value (when ValueType=='string')."
+      },
+      {
+        "name": "JsonValue",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "JSON-encoded value (when ValueType is 'object' or 'array')."
+      }
+    ],
+    "data": [
+      {
+        "MetaKey": "tagline",
+        "ValueType": "string",
+        "StringValue": "Tile the plane, then prove the tiling holds.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "motif",
+        "ValueType": "string",
+        "StringValue": "isometric-lattice",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "motif_palette",
+        "ValueType": "array",
+        "StringValue": null,
+        "JsonValue": "[\"#1f6feb\", \"#2ea043\", \"#d29922\", \"#a371f7\"]"
+      },
+      {
+        "MetaKey": "description_rich",
+        "ValueType": "string",
+        "StringValue": "A two-sided rulebook: a catalog of plane tilings (regular, semiregular/Archimedean) whose validity is *derived* from vertex angle sums, plus a generative engine that places tiles in a region and computes coverage/gaps/overlaps live.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "use_cases",
+        "ValueType": "array",
+        "StringValue": null,
+        "JsonValue": "[\"Browse the regular and Archimedean tilings and see WHY each vertex configuration closes to 360deg.\", \"Lay tiles into a region and watch coverage, gaps, and overlaps recompute from the views.\", \"Use as a teaching surface for symmetry groups and edge-to-edge tilings.\"]"
+      },
+      {
+        "MetaKey": "substrates",
+        "ValueType": "array",
+        "StringValue": null,
+        "JsonValue": "[\"postgres\"]"
+      }
+    ]
+  },
+  "SymmetryGroups": {
+    "Description": "The wallpaper symmetry groups a tiling can belong to.",
+    "important": true,
+    "schema": [
+      {
+        "name": "SymmetryGroupId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stable id (IUC short notation, slugified).",
+        "is_primary_key": true
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "formula": "={{SymmetryGroupId}}",
+        "Description": "Mirrors the id."
+      },
+      {
+        "name": "Notation",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "IUC / crystallographic short notation (e.g. 'p6m')."
+      },
+      {
+        "name": "Orbifold",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Conway orbifold notation (e.g. '*632')."
+      },
+      {
+        "name": "DisplayName",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Human-friendly name."
+      },
+      {
+        "name": "Description",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "What this wallpaper group is."
+      },
+      {
+        "name": "TilingCount",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "formula": "=COUNTIFS(Tilings!{{SymmetryGroup}}, SymmetryGroups!{{SymmetryGroupId}})",
+        "Description": "How many catalogued tilings have this symmetry group."
+      },
+      {
+        "name": "LatticeType",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Bravais lattice class: oblique | rectangular | rhombic | square | hexagonal."
+      },
+      {
+        "name": "LatticeAngleDeg",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Angle (deg) between the two lattice basis vectors B1,B2."
+      },
+      {
+        "name": "LatticeRatio",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Length ratio |B2|/|B1| of the lattice basis."
+      },
+      {
+        "name": "Generators",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "JSON array of non-identity coset-rep affine ops in fractional coords: {k,m:[a,b,c,d],t:[tx,ty]} mapping (u,v)->(a u+b v+tx, c u+d v+ty)."
+      },
+      {
+        "name": "RotationOrder",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Highest order of rotational symmetry (1,2,3,4,6)."
+      },
+      {
+        "name": "OperationCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Number of point-group coset reps including the identity (= motif copies per lattice cell)."
+      },
+      {
+        "name": "HasMirrors",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Whether the group contains reflection (mirror) symmetry."
+      },
+      {
+        "name": "HasGlides",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Whether the group contains glide-reflection symmetry."
+      },
+      {
+        "name": "WallpaperDesignCount",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "How many saved designs use this group.",
+        "formula": "=COUNTIFS(WallpaperDesigns!{{SymmetryGroup}}, SymmetryGroups!{{SymmetryGroupId}})"
+      }
+    ],
+    "data": [
+      {
+        "SymmetryGroupId": "p1",
+        "Notation": "p1",
+        "Orbifold": "o",
+        "DisplayName": "Translations only",
+        "Description": "Only translations; no rotations, reflections, or glides. The most general wallpaper group.",
+        "LatticeType": "oblique",
+        "LatticeAngleDeg": 73,
+        "LatticeRatio": 1.3,
+        "Generators": "[]",
+        "RotationOrder": 1,
+        "OperationCount": 1,
+        "HasMirrors": false,
+        "HasGlides": false
+      },
+      {
+        "SymmetryGroupId": "p2",
+        "Notation": "p2",
+        "Orbifold": "2222",
+        "DisplayName": "2-fold rotation",
+        "Description": "Translations plus 2-fold (180deg) rotation centers; no reflections.",
+        "LatticeType": "oblique",
+        "LatticeAngleDeg": 73,
+        "LatticeRatio": 1.3,
+        "Generators": "[{\"k\":\"rot2\",\"m\":[-1,0,0,-1],\"t\":[0,0]}]",
+        "RotationOrder": 2,
+        "OperationCount": 2,
+        "HasMirrors": false,
+        "HasGlides": false
+      },
+      {
+        "SymmetryGroupId": "pm",
+        "Notation": "pm",
+        "Orbifold": "**",
+        "DisplayName": "Parallel mirrors",
+        "Description": "Reflections across parallel mirror lines; no rotations.",
+        "LatticeType": "rectangular",
+        "LatticeAngleDeg": 90,
+        "LatticeRatio": 1.4,
+        "Generators": "[{\"k\":\"mirror\",\"m\":[-1,0,0,1],\"t\":[0,0]}]",
+        "RotationOrder": 1,
+        "OperationCount": 2,
+        "HasMirrors": true,
+        "HasGlides": false
+      },
+      {
+        "SymmetryGroupId": "pg",
+        "Notation": "pg",
+        "Orbifold": "xx",
+        "DisplayName": "Parallel glides",
+        "Description": "Glide reflections along parallel axes; no pure reflections or rotations.",
+        "LatticeType": "rectangular",
+        "LatticeAngleDeg": 90,
+        "LatticeRatio": 1.4,
+        "Generators": "[{\"k\":\"glide\",\"m\":[-1,0,0,1],\"t\":[0,0.5]}]",
+        "RotationOrder": 1,
+        "OperationCount": 2,
+        "HasMirrors": false,
+        "HasGlides": true
+      },
+      {
+        "SymmetryGroupId": "cm",
+        "Notation": "cm",
+        "Orbifold": "*x",
+        "DisplayName": "Centered mirror",
+        "Description": "Parallel reflections alternating with parallel glide reflections (centered cell).",
+        "LatticeType": "rhombic",
+        "LatticeAngleDeg": 70,
+        "LatticeRatio": 1.0,
+        "Generators": "[{\"k\":\"mirror\",\"m\":[0,1,1,0],\"t\":[0,0]}]",
+        "RotationOrder": 1,
+        "OperationCount": 2,
+        "HasMirrors": true,
+        "HasGlides": false
+      },
+      {
+        "SymmetryGroupId": "pmm",
+        "Notation": "pmm",
+        "Orbifold": "*2222",
+        "DisplayName": "Rectangular mirrors",
+        "Description": "Two perpendicular families of mirror lines plus 2-fold rotations at their intersections.",
+        "LatticeType": "rectangular",
+        "LatticeAngleDeg": 90,
+        "LatticeRatio": 1.4,
+        "Generators": "[{\"k\":\"rot2\",\"m\":[-1,0,0,-1],\"t\":[0,0]},{\"k\":\"mirror\",\"m\":[1,0,0,-1],\"t\":[0,0]},{\"k\":\"mirror\",\"m\":[-1,0,0,1],\"t\":[0,0]}]",
+        "RotationOrder": 2,
+        "OperationCount": 4,
+        "HasMirrors": true,
+        "HasGlides": false
+      },
+      {
+        "SymmetryGroupId": "pmg",
+        "Notation": "pmg",
+        "Orbifold": "22*",
+        "DisplayName": "Mirror + glide",
+        "Description": "One family of mirrors, perpendicular glides, and 2-fold rotations on the glide axes.",
+        "LatticeType": "rectangular",
+        "LatticeAngleDeg": 90,
+        "LatticeRatio": 1.4,
+        "Generators": "[{\"k\":\"rot2\",\"m\":[-1,0,0,-1],\"t\":[0,0]},{\"k\":\"mirror\",\"m\":[-1,0,0,1],\"t\":[0,0]},{\"k\":\"glide\",\"m\":[1,0,0,-1],\"t\":[0,0.5]}]",
+        "RotationOrder": 2,
+        "OperationCount": 4,
+        "HasMirrors": true,
+        "HasGlides": true
+      },
+      {
+        "SymmetryGroupId": "pgg",
+        "Notation": "pgg",
+        "Orbifold": "22x",
+        "DisplayName": "Perpendicular glides",
+        "Description": "Two perpendicular families of glide reflections plus 2-fold rotations; no pure mirrors.",
+        "LatticeType": "rectangular",
+        "LatticeAngleDeg": 90,
+        "LatticeRatio": 1.4,
+        "Generators": "[{\"k\":\"rot2\",\"m\":[-1,0,0,-1],\"t\":[0,0]},{\"k\":\"glide\",\"m\":[1,0,0,-1],\"t\":[0.5,0.5]},{\"k\":\"glide\",\"m\":[-1,0,0,1],\"t\":[0.5,0.5]}]",
+        "RotationOrder": 2,
+        "OperationCount": 4,
+        "HasMirrors": false,
+        "HasGlides": true
+      },
+      {
+        "SymmetryGroupId": "cmm",
+        "Notation": "cmm",
+        "Orbifold": "2*22",
+        "DisplayName": "Centered rhombic",
+        "Description": "Two perpendicular reflection axes plus 2-fold rotations (centered rhombic cell).",
+        "LatticeType": "rhombic",
+        "LatticeAngleDeg": 70,
+        "LatticeRatio": 1.0,
+        "Generators": "[{\"k\":\"rot2\",\"m\":[-1,0,0,-1],\"t\":[0,0]},{\"k\":\"mirror\",\"m\":[0,1,1,0],\"t\":[0,0]},{\"k\":\"mirror\",\"m\":[0,-1,-1,0],\"t\":[0,0]}]",
+        "RotationOrder": 2,
+        "OperationCount": 4,
+        "HasMirrors": true,
+        "HasGlides": false
+      },
+      {
+        "SymmetryGroupId": "p4",
+        "Notation": "p4",
+        "Orbifold": "442",
+        "DisplayName": "4-fold rotation",
+        "Description": "4-fold and 2-fold rotation centers; no reflections.",
+        "LatticeType": "square",
+        "LatticeAngleDeg": 90,
+        "LatticeRatio": 1.0,
+        "Generators": "[{\"k\":\"rot4\",\"m\":[0,-1,1,0],\"t\":[0,0]},{\"k\":\"rot2\",\"m\":[-1,0,0,-1],\"t\":[0,0]},{\"k\":\"rot4\",\"m\":[0,1,-1,0],\"t\":[0,0]}]",
+        "RotationOrder": 4,
+        "OperationCount": 4,
+        "HasMirrors": false,
+        "HasGlides": false
+      },
+      {
+        "SymmetryGroupId": "p4m",
+        "Notation": "p4m",
+        "Orbifold": "*442",
+        "DisplayName": "Square symmetry",
+        "Description": "Full symmetry of the square lattice; mirrors through the 4-fold centers + 4-fold rotations.",
+        "LatticeType": "square",
+        "LatticeAngleDeg": 90,
+        "LatticeRatio": 1.0,
+        "Generators": "[{\"k\":\"rot4\",\"m\":[0,-1,1,0],\"t\":[0,0]},{\"k\":\"rot2\",\"m\":[-1,0,0,-1],\"t\":[0,0]},{\"k\":\"rot4\",\"m\":[0,1,-1,0],\"t\":[0,0]},{\"k\":\"mirror\",\"m\":[1,0,0,-1],\"t\":[0,0]},{\"k\":\"mirror\",\"m\":[-1,0,0,1],\"t\":[0,0]},{\"k\":\"mirror\",\"m\":[0,1,1,0],\"t\":[0,0]},{\"k\":\"mirror\",\"m\":[0,-1,-1,0],\"t\":[0,0]}]",
+        "RotationOrder": 4,
+        "OperationCount": 8,
+        "HasMirrors": true,
+        "HasGlides": false
+      },
+      {
+        "SymmetryGroupId": "p4g",
+        "Notation": "p4g",
+        "Orbifold": "4*2",
+        "DisplayName": "Square + glide",
+        "Description": "4-fold rotations with mirrors not passing through the 4-fold centers (glides do).",
+        "LatticeType": "square",
+        "LatticeAngleDeg": 90,
+        "LatticeRatio": 1.0,
+        "Generators": "[{\"k\":\"rot4\",\"m\":[0,-1,1,0],\"t\":[0,0]},{\"k\":\"rot2\",\"m\":[-1,0,0,-1],\"t\":[0,0]},{\"k\":\"rot4\",\"m\":[0,1,-1,0],\"t\":[0,0]},{\"k\":\"glide\",\"m\":[1,0,0,-1],\"t\":[0.5,0.5]},{\"k\":\"glide\",\"m\":[-1,0,0,1],\"t\":[0.5,0.5]},{\"k\":\"mirror\",\"m\":[0,1,1,0],\"t\":[0,0]},{\"k\":\"mirror\",\"m\":[0,-1,-1,0],\"t\":[0,0]}]",
+        "RotationOrder": 4,
+        "OperationCount": 8,
+        "HasMirrors": true,
+        "HasGlides": true
+      },
+      {
+        "SymmetryGroupId": "p3",
+        "Notation": "p3",
+        "Orbifold": "333",
+        "DisplayName": "3-fold rotation",
+        "Description": "Rotations of order 3, no reflections.",
+        "LatticeType": "hexagonal",
+        "LatticeAngleDeg": 120,
+        "LatticeRatio": 1.0,
+        "Generators": "[{\"k\":\"rot3\",\"m\":[0,-1,1,-1],\"t\":[0,0]},{\"k\":\"rot3\",\"m\":[-1,1,-1,0],\"t\":[0,0]}]",
+        "RotationOrder": 3,
+        "OperationCount": 3,
+        "HasMirrors": false,
+        "HasGlides": false
+      },
+      {
+        "SymmetryGroupId": "p3m1",
+        "Notation": "p3m1",
+        "Orbifold": "*333",
+        "DisplayName": "3-fold, mirrors on centers",
+        "Description": "3-fold rotations with all rotation centers lying on mirror lines.",
+        "LatticeType": "hexagonal",
+        "LatticeAngleDeg": 120,
+        "LatticeRatio": 1.0,
+        "Generators": "[{\"k\":\"rot3\",\"m\":[0,-1,1,-1],\"t\":[0,0]},{\"k\":\"rot3\",\"m\":[-1,1,-1,0],\"t\":[0,0]},{\"k\":\"mirror\",\"m\":[0,-1,-1,0],\"t\":[0,0]},{\"k\":\"mirror\",\"m\":[-1,1,0,1],\"t\":[0,0]},{\"k\":\"mirror\",\"m\":[1,0,1,-1],\"t\":[0,0]}]",
+        "RotationOrder": 3,
+        "OperationCount": 6,
+        "HasMirrors": true,
+        "HasGlides": false
+      },
+      {
+        "SymmetryGroupId": "p31m",
+        "Notation": "p31m",
+        "Orbifold": "3*3",
+        "DisplayName": "3-fold, some centers off mirrors",
+        "Description": "3-fold rotations with mirrors, but some rotation centers do not lie on a mirror.",
+        "LatticeType": "hexagonal",
+        "LatticeAngleDeg": 120,
+        "LatticeRatio": 1.0,
+        "Generators": "[{\"k\":\"rot3\",\"m\":[0,-1,1,-1],\"t\":[0,0]},{\"k\":\"rot3\",\"m\":[-1,1,-1,0],\"t\":[0,0]},{\"k\":\"mirror\",\"m\":[1,0,1,-1],\"t\":[0,0]},{\"k\":\"mirror\",\"m\":[-1,1,0,1],\"t\":[0,0]},{\"k\":\"mirror\",\"m\":[0,-1,-1,0],\"t\":[0,0]}]",
+        "RotationOrder": 3,
+        "OperationCount": 6,
+        "HasMirrors": true,
+        "HasGlides": false
+      },
+      {
+        "SymmetryGroupId": "p6",
+        "Notation": "p6",
+        "Orbifold": "632",
+        "DisplayName": "6-fold rotation",
+        "Description": "6-, 3-, and 2-fold rotation centers; no reflections.",
+        "LatticeType": "hexagonal",
+        "LatticeAngleDeg": 120,
+        "LatticeRatio": 1.0,
+        "Generators": "[{\"k\":\"rot6\",\"m\":[1,-1,1,0],\"t\":[0,0]},{\"k\":\"rot3\",\"m\":[0,-1,1,-1],\"t\":[0,0]},{\"k\":\"rot2\",\"m\":[-1,0,0,-1],\"t\":[0,0]},{\"k\":\"rot3\",\"m\":[-1,1,-1,0],\"t\":[0,0]},{\"k\":\"rot6\",\"m\":[0,1,-1,1],\"t\":[0,0]}]",
+        "RotationOrder": 6,
+        "OperationCount": 6,
+        "HasMirrors": false,
+        "HasGlides": false
+      },
+      {
+        "SymmetryGroupId": "p6m",
+        "Notation": "p6m",
+        "Orbifold": "*632",
+        "DisplayName": "Hexagonal symmetry",
+        "Description": "Full symmetry of the hexagonal lattice; reflections + 6-fold rotations.",
+        "LatticeType": "hexagonal",
+        "LatticeAngleDeg": 120,
+        "LatticeRatio": 1.0,
+        "Generators": "[{\"k\":\"rot6\",\"m\":[1,-1,1,0],\"t\":[0,0]},{\"k\":\"rot3\",\"m\":[0,-1,1,-1],\"t\":[0,0]},{\"k\":\"rot2\",\"m\":[-1,0,0,-1],\"t\":[0,0]},{\"k\":\"rot3\",\"m\":[-1,1,-1,0],\"t\":[0,0]},{\"k\":\"rot6\",\"m\":[0,1,-1,1],\"t\":[0,0]},{\"k\":\"mirror\",\"m\":[0,-1,-1,0],\"t\":[0,0]},{\"k\":\"mirror\",\"m\":[1,-1,0,-1],\"t\":[0,0]},{\"k\":\"mirror\",\"m\":[1,0,1,-1],\"t\":[0,0]},{\"k\":\"mirror\",\"m\":[0,1,1,0],\"t\":[0,0]},{\"k\":\"mirror\",\"m\":[-1,1,0,1],\"t\":[0,0]},{\"k\":\"mirror\",\"m\":[-1,0,-1,1],\"t\":[0,0]}]",
+        "RotationOrder": 6,
+        "OperationCount": 12,
+        "HasMirrors": true,
+        "HasGlides": false
+      }
+    ]
+  },
+  "Prototiles": {
+    "Description": "The prototiles (regular polygons) available for tilings.",
+    "important": true,
+    "schema": [
+      {
+        "name": "PrototileId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stable id.",
+        "is_primary_key": true
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "formula": "=SUBSTITUTE(LOWER({{DisplayName}}), \" \", \"-\")",
+        "Description": "Slug from display name."
+      },
+      {
+        "name": "DisplayName",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Human name (e.g. 'Equilateral Triangle')."
+      },
+      {
+        "name": "Sides",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Number of edges of this regular polygon."
+      },
+      {
+        "name": "EdgeLength",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Edge length in unit cells (1.0 = unit edge)."
+      },
+      {
+        "name": "Area",
+        "datatype": "number",
+        "type": "calculated",
+        "nullable": true,
+        "formula": "=0.25*{{Sides}}*POWER({{EdgeLength}},2)/TAN(PI()/{{Sides}})",
+        "Description": "Area of one tile (regular n-gon). Trig override lives in 02b-customize-functions.sql."
+      },
+      {
+        "name": "InteriorAngleDeg",
+        "datatype": "number",
+        "type": "calculated",
+        "nullable": true,
+        "formula": "=({{Sides}}-2)*180/{{Sides}}",
+        "Description": "Interior angle in degrees of this regular polygon."
+      },
+      {
+        "name": "VertexAngleTurns",
+        "datatype": "number",
+        "type": "calculated",
+        "nullable": true,
+        "formula": "={{InteriorAngleDeg}}/360",
+        "Description": "Fraction of a full turn occupied at one vertex by this tile."
+      },
+      {
+        "name": "IsRegular",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "formula": "={{Sides}}>=3",
+        "Description": "A regular polygon needs at least 3 sides."
+      },
+      {
+        "name": "IsTriangle",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "formula": "={{Sides}}=3",
+        "Description": "True when this prototile is a triangle (3 sides)."
+      },
+      {
+        "name": "IsSquare",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "formula": "={{Sides}}=4",
+        "Description": "True when this prototile is a square (4 sides)."
+      },
+      {
+        "name": "UsedInTilingsCount",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "formula": "=COUNTIFS(TilingPrototiles!{{Prototile}}, Prototiles!{{PrototileId}})",
+        "Description": "How many catalogued tilings use this prototile."
+      }
+    ],
+    "data": [
+      {
+        "PrototileId": "triangle",
+        "DisplayName": "Equilateral Triangle",
+        "Sides": 3,
+        "EdgeLength": 1.0
+      },
+      {
+        "PrototileId": "pentagon",
+        "DisplayName": "Regular Pentagon",
+        "Sides": 5,
+        "EdgeLength": 1.0
+      },
+      {
+        "PrototileId": "square",
+        "DisplayName": "Square",
+        "Sides": 4,
+        "EdgeLength": 1.0
+      },
+      {
+        "PrototileId": "hexagon",
+        "DisplayName": "Regular Hexagon",
+        "Sides": 6,
+        "EdgeLength": 1.0
+      },
+      {
+        "PrototileId": "octagon",
+        "DisplayName": "Regular Octagon",
+        "Sides": 8,
+        "EdgeLength": 1.0
+      },
+      {
+        "PrototileId": "dodecagon",
+        "DisplayName": "Regular Dodecagon",
+        "Sides": 12,
+        "EdgeLength": 1.0
+      }
+    ]
+  },
+  "Tilings": {
+    "Description": "Catalogued tilings of the plane.",
+    "important": true,
+    "schema": [
+      {
+        "name": "TilingId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stable id.",
+        "is_primary_key": true
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "formula": "=SUBSTITUTE(LOWER({{DisplayName}}), \" \", \"-\")",
+        "Description": "Slug."
+      },
+      {
+        "name": "DisplayName",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Human name (e.g. 'Hexagonal tiling')."
+      },
+      {
+        "name": "VertexConfig",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Vertex configuration / Schlafli symbol string (e.g. '3.4.6.4')."
+      },
+      {
+        "name": "Kind",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "'regular' | 'semiregular' (Archimedean)."
+      },
+      {
+        "name": "IsEdgeToEdge",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Whether tiles meet edge-to-edge."
+      },
+      {
+        "name": "SymmetryGroup",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "RelatedTo": "SymmetryGroups",
+        "Description": "The wallpaper symmetry group of this tiling."
+      },
+      {
+        "name": "SymmetryNotation",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "formula": "=INDEX(SymmetryGroups!{{Notation}}, MATCH(Tilings!{{SymmetryGroup}}, SymmetryGroups!{{SymmetryGroupId}}, 0))",
+        "Description": "Pulled symmetry notation for display."
+      },
+      {
+        "name": "DistinctPrototileCount",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "formula": "=COUNTIFS(TilingPrototiles!{{Tiling}}, Tilings!{{TilingId}})",
+        "Description": "How many distinct prototiles this tiling uses."
+      },
+      {
+        "name": "VertexFigureCount",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "formula": "=COUNTIFS(VertexFigures!{{Tiling}}, Tilings!{{TilingId}})",
+        "Description": "How many distinct vertex figures this tiling has."
+      },
+      {
+        "name": "ValidVertexFigureCount",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "formula": "=COUNTIFS(VertexFigures!{{Tiling}}, Tilings!{{TilingId}}, VertexFigures!{{IsValid}}, TRUE)",
+        "Description": "How many of its vertex figures close to 360deg."
+      },
+      {
+        "name": "IsRegularTiling",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "formula": "={{DistinctPrototileCount}}=1",
+        "Description": "Regular tiling = built from a single prototile."
+      },
+      {
+        "name": "AllVerticesValid",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "formula": "={{ValidVertexFigureCount}}={{VertexFigureCount}}",
+        "Description": "True when every vertex figure of this tiling closes to a full turn."
+      },
+      {
+        "name": "T1x",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": true,
+        "Description": "X component of the first lattice translation vector (unit cells). Repeating the fundamental domain along T1 and T2 fills the plane."
+      },
+      {
+        "name": "T1y",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Y component of the first lattice translation vector (unit cells)."
+      },
+      {
+        "name": "T2x",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": true,
+        "Description": "X component of the second lattice translation vector (unit cells)."
+      },
+      {
+        "name": "T2y",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Y component of the second lattice translation vector (unit cells)."
+      },
+      {
+        "name": "LatticeDeterminant",
+        "datatype": "number",
+        "type": "calculated",
+        "nullable": true,
+        "formula": "={{T1x}}*{{T2y}}-{{T1y}}*{{T2x}}",
+        "Description": "Cross product T1 x T2. Equals the signed area of the fundamental domain (unit cell)."
+      },
+      {
+        "name": "FundamentalDomainArea",
+        "datatype": "number",
+        "type": "calculated",
+        "nullable": true,
+        "formula": "=ABS({{LatticeDeterminant}})",
+        "Description": "Area of the fundamental domain spanned by the two translation vectors."
+      },
+      {
+        "name": "HasLattice",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "formula": "=ABS({{LatticeDeterminant}})>0.0001",
+        "Description": "True when the two translation vectors are present and linearly independent (span the plane)."
+      },
+      {
+        "name": "DoesTilePlane",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "formula": "=AND({{AllVerticesValid}}, {{HasLattice}})",
+        "Description": "THE ULTIMATE QUESTION. Yes/no: does this tiling fill the plane? True iff every vertex figure closes to 360deg AND a non-degenerate lattice of translation vectors repeats the fundamental domain across the plane."
+      }
+    ],
+    "data": [
+      {
+        "TilingId": "triangular",
+        "DisplayName": "Triangular tiling",
+        "VertexConfig": "3.3.3.3.3.3",
+        "Kind": "regular",
+        "IsEdgeToEdge": true,
+        "SymmetryGroup": "p6m",
+        "T1x": 1.0,
+        "T1y": 0.0,
+        "T2x": 0.5,
+        "T2y": 0.8660254
+      },
+      {
+        "TilingId": "square",
+        "DisplayName": "Square tiling",
+        "VertexConfig": "4.4.4.4",
+        "Kind": "regular",
+        "IsEdgeToEdge": true,
+        "SymmetryGroup": "p4m",
+        "T1x": 1.0,
+        "T1y": 0.0,
+        "T2x": 0.0,
+        "T2y": 1.0
+      },
+      {
+        "TilingId": "hexagonal",
+        "DisplayName": "Hexagonal tiling",
+        "VertexConfig": "6.6.6",
+        "Kind": "regular",
+        "IsEdgeToEdge": true,
+        "SymmetryGroup": "p6m",
+        "T1x": 1.7320508,
+        "T1y": 0.0,
+        "T2x": 0.8660254,
+        "T2y": 1.5
+      },
+      {
+        "TilingId": "truncated-square",
+        "DisplayName": "Truncated square tiling",
+        "VertexConfig": "4.8.8",
+        "Kind": "semiregular",
+        "IsEdgeToEdge": true,
+        "SymmetryGroup": "p4m",
+        "T1x": 2.4142136,
+        "T1y": 0.0,
+        "T2x": 0.0,
+        "T2y": 2.4142136
+      },
+      {
+        "TilingId": "trihexagonal",
+        "DisplayName": "Trihexagonal tiling",
+        "VertexConfig": "3.6.3.6",
+        "Kind": "semiregular",
+        "IsEdgeToEdge": true,
+        "SymmetryGroup": "p6m",
+        "T1x": 2.0,
+        "T1y": 0.0,
+        "T2x": 1.0,
+        "T2y": 1.7320508
+      },
+      {
+        "TilingId": "rhombitrihexagonal",
+        "DisplayName": "Rhombitrihexagonal tiling",
+        "VertexConfig": "3.4.6.4",
+        "Kind": "semiregular",
+        "IsEdgeToEdge": true,
+        "SymmetryGroup": "p6m",
+        "T1x": 2.7320508,
+        "T1y": 0.0,
+        "T2x": 1.3660254,
+        "T2y": 2.3660254
+      },
+      {
+        "TilingId": "pentagonal-regular",
+        "DisplayName": "Regular Pentagon attempt",
+        "VertexConfig": "5.5.5",
+        "Kind": "regular",
+        "IsEdgeToEdge": true,
+        "SymmetryGroup": null,
+        "T1x": null,
+        "T1y": null,
+        "T2x": null,
+        "T2y": null
+      }
+    ]
+  },
+  "TilingPrototiles": {
+    "Description": "First-class junction: prototiles used by each tiling.",
+    "important": true,
+    "schema": [
+      {
+        "name": "TilingPrototileId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stable id.",
+        "is_primary_key": true
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "formula": "=CONCAT({{Tiling}}, \"/\", {{Prototile}})",
+        "Description": "Composite name."
+      },
+      {
+        "name": "Tiling",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "RelatedTo": "Tilings",
+        "Description": "The tiling."
+      },
+      {
+        "name": "Prototile",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "RelatedTo": "Prototiles",
+        "Description": "A prototile used by that tiling."
+      },
+      {
+        "name": "CountAtVertex",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "How many of this prototile meet at a typical vertex."
+      },
+      {
+        "name": "PrototileSides",
+        "datatype": "integer",
+        "type": "lookup",
+        "nullable": true,
+        "formula": "=INDEX(Prototiles!{{Sides}}, MATCH(TilingPrototiles!{{Prototile}}, Prototiles!{{PrototileId}}, 0))",
+        "Description": "Sides of the referenced prototile."
+      },
+      {
+        "name": "PrototileInteriorAngle",
+        "datatype": "number",
+        "type": "lookup",
+        "nullable": true,
+        "formula": "=INDEX(Prototiles!{{InteriorAngleDeg}}, MATCH(TilingPrototiles!{{Prototile}}, Prototiles!{{PrototileId}}, 0))",
+        "Description": "Interior angle of the referenced prototile."
+      }
+    ],
+    "data": [
+      {
+        "TilingPrototileId": "tri-1",
+        "Tiling": "triangular",
+        "Prototile": "triangle",
+        "CountAtVertex": 6
+      },
+      {
+        "TilingPrototileId": "sq-1",
+        "Tiling": "square",
+        "Prototile": "square",
+        "CountAtVertex": 4
+      },
+      {
+        "TilingPrototileId": "hex-1",
+        "Tiling": "hexagonal",
+        "Prototile": "hexagon",
+        "CountAtVertex": 3
+      },
+      {
+        "TilingPrototileId": "tsq-1",
+        "Tiling": "truncated-square",
+        "Prototile": "square",
+        "CountAtVertex": 1
+      },
+      {
+        "TilingPrototileId": "tsq-2",
+        "Tiling": "truncated-square",
+        "Prototile": "octagon",
+        "CountAtVertex": 2
+      },
+      {
+        "TilingPrototileId": "trihex-1",
+        "Tiling": "trihexagonal",
+        "Prototile": "triangle",
+        "CountAtVertex": 2
+      },
+      {
+        "TilingPrototileId": "trihex-2",
+        "Tiling": "trihexagonal",
+        "Prototile": "hexagon",
+        "CountAtVertex": 2
+      },
+      {
+        "TilingPrototileId": "rtri-1",
+        "Tiling": "rhombitrihexagonal",
+        "Prototile": "triangle",
+        "CountAtVertex": 1
+      },
+      {
+        "TilingPrototileId": "rtri-2",
+        "Tiling": "rhombitrihexagonal",
+        "Prototile": "square",
+        "CountAtVertex": 2
+      },
+      {
+        "TilingPrototileId": "rtri-3",
+        "Tiling": "rhombitrihexagonal",
+        "Prototile": "hexagon",
+        "CountAtVertex": 1
+      },
+      {
+        "TilingPrototileId": "pent-1",
+        "Tiling": "pentagonal-regular",
+        "Prototile": "pentagon",
+        "CountAtVertex": 3
+      }
+    ]
+  },
+  "VertexFigures": {
+    "Description": "First-class vertex figures; validity derived from angle sum = 360.",
+    "important": true,
+    "schema": [
+      {
+        "name": "VertexFigureId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stable id.",
+        "is_primary_key": true
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "formula": "=CONCAT({{Tiling}}, \"@\", {{Config}})",
+        "Description": "Composite name."
+      },
+      {
+        "name": "Tiling",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "RelatedTo": "Tilings",
+        "Description": "The tiling this vertex figure belongs to."
+      },
+      {
+        "name": "Config",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Vertex configuration at this vertex (e.g. '3.4.6.4')."
+      },
+      {
+        "name": "AngleSumDeg",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Sum of interior angles meeting at this vertex (degrees)."
+      },
+      {
+        "name": "TurnsAtVertex",
+        "datatype": "number",
+        "type": "calculated",
+        "nullable": true,
+        "formula": "={{AngleSumDeg}}/360",
+        "Description": "Angle sum as a fraction of a full turn."
+      },
+      {
+        "name": "AngleGapDeg",
+        "datatype": "number",
+        "type": "calculated",
+        "nullable": true,
+        "formula": "=ABS({{AngleSumDeg}}-360)",
+        "Description": "Distance from a full 360deg turn."
+      },
+      {
+        "name": "IsValid",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "formula": "={{AngleGapDeg}}<=0.0001",
+        "Description": "Valid vertex figure: interior angles close to a full turn."
+      }
+    ],
+    "data": [
+      {
+        "VertexFigureId": "vf-tri",
+        "Tiling": "triangular",
+        "Config": "3.3.3.3.3.3",
+        "AngleSumDeg": 360
+      },
+      {
+        "VertexFigureId": "vf-sq",
+        "Tiling": "square",
+        "Config": "4.4.4.4",
+        "AngleSumDeg": 360
+      },
+      {
+        "VertexFigureId": "vf-hex",
+        "Tiling": "hexagonal",
+        "Config": "6.6.6",
+        "AngleSumDeg": 360
+      },
+      {
+        "VertexFigureId": "vf-tsq",
+        "Tiling": "truncated-square",
+        "Config": "4.8.8",
+        "AngleSumDeg": 360
+      },
+      {
+        "VertexFigureId": "vf-trihex",
+        "Tiling": "trihexagonal",
+        "Config": "3.6.3.6",
+        "AngleSumDeg": 360
+      },
+      {
+        "VertexFigureId": "vf-rtri",
+        "Tiling": "rhombitrihexagonal",
+        "Config": "3.4.6.4",
+        "AngleSumDeg": 360
+      },
+      {
+        "VertexFigureId": "vf-pent",
+        "Tiling": "pentagonal-regular",
+        "Config": "5.5.5",
+        "AngleSumDeg": 324
+      }
+    ]
+  },
+  "Regions": {
+    "Description": "Bounded patches of the plane to be tiled.",
+    "important": true,
+    "schema": [
+      {
+        "name": "RegionId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stable id.",
+        "is_primary_key": true
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "formula": "=SUBSTITUTE(LOWER({{DisplayName}}), \" \", \"-\")",
+        "Description": "Slug."
+      },
+      {
+        "name": "DisplayName",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Human name."
+      },
+      {
+        "name": "Width",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Region width in unit cells."
+      },
+      {
+        "name": "Height",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Region height in unit cells."
+      },
+      {
+        "name": "TargetTiling",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "RelatedTo": "Tilings",
+        "Description": "Which catalogued tiling this region is trying to realize."
+      },
+      {
+        "name": "Area",
+        "datatype": "number",
+        "type": "calculated",
+        "nullable": true,
+        "formula": "={{Width}}*{{Height}}",
+        "Description": "Total area of the region."
+      },
+      {
+        "name": "PlacementCount",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "formula": "=COUNTIFS(Placements!{{Region}}, Regions!{{RegionId}})",
+        "Description": "How many tiles have been placed in this region."
+      },
+      {
+        "name": "CoveredArea",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "formula": "=SUMIFS(Placements!{{TileArea}}, Placements!{{Region}}, Regions!{{RegionId}})",
+        "Description": "Sum of placed-tile areas (counts overlaps twice \u2014 see CoveragePct)."
+      },
+      {
+        "name": "OverlapCount",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "formula": "=COUNTIFS(Placements!{{Region}}, Regions!{{RegionId}}, Placements!{{IsOverlapping}}, TRUE)",
+        "Description": "How many placed tiles are flagged as overlapping a neighbour."
+      },
+      {
+        "name": "CoveragePct",
+        "datatype": "number",
+        "type": "calculated",
+        "nullable": true,
+        "formula": "=100*{{CoveredArea}}/{{Area}}",
+        "Description": "Covered area as a percentage of region area."
+      },
+      {
+        "name": "IsFullyCovered",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "formula": "={{CoveragePct}}>=100",
+        "Description": "Whether placed tiles cover at least the whole region area."
+      },
+      {
+        "name": "IsCleanTiling",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "formula": "=AND({{IsFullyCovered}}, {{OverlapCount}}=0)",
+        "Description": "Fully covered with no overlaps = a clean tiling of the region."
+      }
+    ],
+    "data": [
+      {
+        "RegionId": "demo-square-4x4",
+        "DisplayName": "Demo Square 4x4",
+        "Width": 4,
+        "Height": 4,
+        "TargetTiling": "square"
+      },
+      {
+        "RegionId": "demo-hex-strip",
+        "DisplayName": "Demo Hex Strip",
+        "Width": 6,
+        "Height": 2,
+        "TargetTiling": "hexagonal"
+      },
+      {
+        "RegionId": "demo-empty",
+        "DisplayName": "Demo Empty Plot",
+        "Width": 3,
+        "Height": 3,
+        "TargetTiling": "triangular"
+      }
+    ]
+  },
+  "Placements": {
+    "Description": "Individual tile placements within a region.",
+    "important": true,
+    "schema": [
+      {
+        "name": "PlacementId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stable id.",
+        "is_primary_key": true
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "formula": "=CONCAT({{Region}}, \"#\", {{PlacementId}})",
+        "Description": "Composite name."
+      },
+      {
+        "name": "Region",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "RelatedTo": "Regions",
+        "Description": "The region this tile is placed in."
+      },
+      {
+        "name": "Prototile",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "RelatedTo": "Prototiles",
+        "Description": "The prototile being placed."
+      },
+      {
+        "name": "X",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": false,
+        "Description": "X coordinate of the tile's anchor (unit cells)."
+      },
+      {
+        "name": "Y",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Y coordinate of the tile's anchor (unit cells)."
+      },
+      {
+        "name": "RotationDeg",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Rotation of the tile in degrees."
+      },
+      {
+        "name": "IsOverlapping",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Flag: this placement overlaps a neighbour (authored/validated)."
+      },
+      {
+        "name": "TileArea",
+        "datatype": "number",
+        "type": "lookup",
+        "nullable": true,
+        "formula": "=INDEX(Prototiles!{{Area}}, MATCH(Placements!{{Prototile}}, Prototiles!{{PrototileId}}, 0))",
+        "Description": "Area of the placed prototile (for coverage rollups)."
+      },
+      {
+        "name": "TileSides",
+        "datatype": "integer",
+        "type": "lookup",
+        "nullable": true,
+        "formula": "=INDEX(Prototiles!{{Sides}}, MATCH(Placements!{{Prototile}}, Prototiles!{{PrototileId}}, 0))",
+        "Description": "Sides of the placed prototile."
+      },
+      {
+        "name": "RegionWidth",
+        "datatype": "number",
+        "type": "lookup",
+        "nullable": true,
+        "formula": "=INDEX(Regions!{{Width}}, MATCH(Placements!{{Region}}, Regions!{{RegionId}}, 0))",
+        "Description": "Width of the containing region."
+      },
+      {
+        "name": "RegionHeight",
+        "datatype": "number",
+        "type": "lookup",
+        "nullable": true,
+        "formula": "=INDEX(Regions!{{Height}}, MATCH(Placements!{{Region}}, Regions!{{RegionId}}, 0))",
+        "Description": "Height of the containing region."
+      },
+      {
+        "name": "IsInsideRegion",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "formula": "=AND({{X}}>=0, {{Y}}>=0, {{X}}<{{RegionWidth}}, {{Y}}<{{RegionHeight}})",
+        "Description": "Whether the anchor sits within the region bounds."
+      }
+    ],
+    "data": [
+      {
+        "PlacementId": "sq-01",
+        "Region": "demo-square-4x4",
+        "Prototile": "square",
+        "X": 0,
+        "Y": 0,
+        "RotationDeg": 0,
+        "IsOverlapping": false
+      },
+      {
+        "PlacementId": "sq-02",
+        "Region": "demo-square-4x4",
+        "Prototile": "square",
+        "X": 1,
+        "Y": 0,
+        "RotationDeg": 0,
+        "IsOverlapping": false
+      },
+      {
+        "PlacementId": "sq-03",
+        "Region": "demo-square-4x4",
+        "Prototile": "square",
+        "X": 2,
+        "Y": 0,
+        "RotationDeg": 0,
+        "IsOverlapping": false
+      },
+      {
+        "PlacementId": "sq-04",
+        "Region": "demo-square-4x4",
+        "Prototile": "square",
+        "X": 3,
+        "Y": 0,
+        "RotationDeg": 0,
+        "IsOverlapping": false
+      },
+      {
+        "PlacementId": "sq-05",
+        "Region": "demo-square-4x4",
+        "Prototile": "square",
+        "X": 0,
+        "Y": 1,
+        "RotationDeg": 0,
+        "IsOverlapping": false
+      },
+      {
+        "PlacementId": "sq-06",
+        "Region": "demo-square-4x4",
+        "Prototile": "square",
+        "X": 1,
+        "Y": 1,
+        "RotationDeg": 0,
+        "IsOverlapping": false
+      },
+      {
+        "PlacementId": "sq-07",
+        "Region": "demo-square-4x4",
+        "Prototile": "square",
+        "X": 2,
+        "Y": 1,
+        "RotationDeg": 0,
+        "IsOverlapping": false
+      },
+      {
+        "PlacementId": "sq-08",
+        "Region": "demo-square-4x4",
+        "Prototile": "square",
+        "X": 3,
+        "Y": 1,
+        "RotationDeg": 0,
+        "IsOverlapping": false
+      },
+      {
+        "PlacementId": "sq-09",
+        "Region": "demo-square-4x4",
+        "Prototile": "square",
+        "X": 0,
+        "Y": 2,
+        "RotationDeg": 0,
+        "IsOverlapping": false
+      },
+      {
+        "PlacementId": "sq-10",
+        "Region": "demo-square-4x4",
+        "Prototile": "square",
+        "X": 1,
+        "Y": 2,
+        "RotationDeg": 0,
+        "IsOverlapping": false
+      },
+      {
+        "PlacementId": "sq-11",
+        "Region": "demo-square-4x4",
+        "Prototile": "square",
+        "X": 2,
+        "Y": 2,
+        "RotationDeg": 0,
+        "IsOverlapping": false
+      },
+      {
+        "PlacementId": "sq-12",
+        "Region": "demo-square-4x4",
+        "Prototile": "square",
+        "X": 3,
+        "Y": 2,
+        "RotationDeg": 0,
+        "IsOverlapping": false
+      },
+      {
+        "PlacementId": "sq-13",
+        "Region": "demo-square-4x4",
+        "Prototile": "square",
+        "X": 0,
+        "Y": 3,
+        "RotationDeg": 0,
+        "IsOverlapping": false
+      },
+      {
+        "PlacementId": "sq-14",
+        "Region": "demo-square-4x4",
+        "Prototile": "square",
+        "X": 1,
+        "Y": 3,
+        "RotationDeg": 0,
+        "IsOverlapping": false
+      },
+      {
+        "PlacementId": "sq-15",
+        "Region": "demo-square-4x4",
+        "Prototile": "square",
+        "X": 2,
+        "Y": 3,
+        "RotationDeg": 0,
+        "IsOverlapping": false
+      },
+      {
+        "PlacementId": "sq-16",
+        "Region": "demo-square-4x4",
+        "Prototile": "square",
+        "X": 3,
+        "Y": 3,
+        "RotationDeg": 0,
+        "IsOverlapping": false
+      },
+      {
+        "PlacementId": "hex-01",
+        "Region": "demo-hex-strip",
+        "Prototile": "hexagon",
+        "X": 0,
+        "Y": 0,
+        "RotationDeg": 0,
+        "IsOverlapping": false
+      },
+      {
+        "PlacementId": "hex-02",
+        "Region": "demo-hex-strip",
+        "Prototile": "hexagon",
+        "X": 1,
+        "Y": 0,
+        "RotationDeg": 0,
+        "IsOverlapping": false
+      },
+      {
+        "PlacementId": "hex-03",
+        "Region": "demo-hex-strip",
+        "Prototile": "hexagon",
+        "X": 2,
+        "Y": 0,
+        "RotationDeg": 0,
+        "IsOverlapping": false
+      },
+      {
+        "PlacementId": "hex-04",
+        "Region": "demo-hex-strip",
+        "Prototile": "hexagon",
+        "X": 3,
+        "Y": 0,
+        "RotationDeg": 0,
+        "IsOverlapping": false
+      }
+    ]
+  },
+  "WallpaperDesigns": {
+    "Description": "User-authored wallpaper designs: a fundamental-domain motif (drawn strokes) replicated under a chosen symmetry group.",
+    "important": true,
+    "schema": [
+      {
+        "name": "WallpaperDesignId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stable id."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "Slug.",
+        "formula": "=SUBSTITUTE(LOWER({{DisplayName}}), \" \", \"-\")"
+      },
+      {
+        "name": "DisplayName",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Human name for this design."
+      },
+      {
+        "name": "SymmetryGroup",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "RelatedTo": "SymmetryGroups",
+        "Description": "The wallpaper group whose symmetry replicates the motif."
+      },
+      {
+        "name": "Strokes",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "JSON array of polylines drawn in the fundamental domain, in fractional cell coords: [{color,width,points:[[u,v],...]},...]."
+      },
+      {
+        "name": "StrokeColor",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Default stroke color (hex) for new strokes."
+      },
+      {
+        "name": "BackgroundColor",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Fill color (hex) behind the tiling."
+      },
+      {
+        "name": "GroupNotation",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "IUC notation of the chosen group.",
+        "formula": "=INDEX(SymmetryGroups!{{Notation}}, MATCH(WallpaperDesigns!{{SymmetryGroup}}, SymmetryGroups!{{SymmetryGroupId}}, 0))"
+      },
+      {
+        "name": "GroupOrbifold",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Orbifold notation of the chosen group.",
+        "formula": "=INDEX(SymmetryGroups!{{Orbifold}}, MATCH(WallpaperDesigns!{{SymmetryGroup}}, SymmetryGroups!{{SymmetryGroupId}}, 0))"
+      },
+      {
+        "name": "GroupLatticeType",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Lattice class of the chosen group.",
+        "formula": "=INDEX(SymmetryGroups!{{LatticeType}}, MATCH(WallpaperDesigns!{{SymmetryGroup}}, SymmetryGroups!{{SymmetryGroupId}}, 0))"
+      },
+      {
+        "name": "GroupRotationOrder",
+        "datatype": "integer",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Highest rotation order of the chosen group.",
+        "formula": "=INDEX(SymmetryGroups!{{RotationOrder}}, MATCH(WallpaperDesigns!{{SymmetryGroup}}, SymmetryGroups!{{SymmetryGroupId}}, 0))"
+      },
+      {
+        "name": "GroupOperationCount",
+        "datatype": "integer",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Motif copies per cell for the chosen group.",
+        "formula": "=INDEX(SymmetryGroups!{{OperationCount}}, MATCH(WallpaperDesigns!{{SymmetryGroup}}, SymmetryGroups!{{SymmetryGroupId}}, 0))"
+      }
+    ],
+    "data": [
+      {
+        "WallpaperDesignId": "starter-p4m",
+        "DisplayName": "Starter p4m",
+        "SymmetryGroup": "p4m",
+        "Strokes": "[{\"color\":\"#2ea043\",\"width\":3,\"points\":[[0.2,0.8],[0.2,0.2],[0.8,0.2]]},{\"color\":\"#d29922\",\"width\":3,\"points\":[[0.5,0.5],[0.8,0.65]]}]",
+        "StrokeColor": "#1f6feb",
+        "BackgroundColor": "#0a0d12"
+      },
+      {
+        "WallpaperDesignId": "starter-p6m",
+        "DisplayName": "Starter p6m",
+        "SymmetryGroup": "p6m",
+        "Strokes": "[{\"color\":\"#1f6feb\",\"width\":3,\"points\":[[0.15,0.15],[0.85,0.85]]}]",
+        "StrokeColor": "#a371f7",
+        "BackgroundColor": "#0a0d12"
+      },
+      {
+        "WallpaperDesignId": "starter-pgg",
+        "DisplayName": "Starter pgg",
+        "SymmetryGroup": "pgg",
+        "Strokes": "[{\"color\":\"#2ea043\",\"width\":3,\"points\":[[0.2,0.8],[0.2,0.2],[0.8,0.2]]},{\"color\":\"#d29922\",\"width\":3,\"points\":[[0.5,0.5],[0.8,0.65]]}]",
+        "StrokeColor": "#2ea043",
+        "BackgroundColor": "#0a0d12"
+      }
+    ]
+  }
+}
