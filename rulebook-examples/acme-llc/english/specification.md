@@ -1,18 +1,14 @@
 # ACME, LLC Rulebook Specification
 
 ## Overview
-
-This rulebook defines the structure and calculations for managing customer data within ACME, LLC. It includes a single entity, `Customers`, which captures essential customer information and derives two calculated fields: `Name` and `FullName`. The rulebook ensures that these derived fields automatically update based on changes to the raw input fields, providing a seamless experience for data management.
-
----
+This rulebook outlines the structure and calculations for managing customer data at ACME, LLC. It provides a client ledger where each customer is identified by two unique identifiers: a slugified handle derived from their email and a full name formatted in a legal-style (last-name-first). The rulebook allows for automatic recalculation of these identifiers based on changes to the raw input fields.
 
 ## Entity: Customers
 
 ### Input Fields
-
 1. **CustomerId**
    - **Type:** string
-   - **Description:** Unique identifier for the customer.
+   - **Description:** Unique identifier for each customer.
 
 2. **EmailAddress**
    - **Type:** string
@@ -20,40 +16,40 @@ This rulebook defines the structure and calculations for managing customer data 
 
 3. **FirstName**
    - **Type:** string
-   - **Description:** First name of the customer, used to create the full name.
+   - **Description:** The first name of the customer, used to create the full name.
 
 4. **LastName**
    - **Type:** string
-   - **Description:** Last name of the customer, used to create the full name.
+   - **Description:** The last name of the customer, used to create the full name.
 
-### Calculated Fields
-
+### Derived Fields
 1. **Name**
    - **Type:** calculated
    - **Formula:** `=SUBSTITUTE({{EmailAddress}}, "@", "-")`
-   - **Computation:** The `Name` field is derived from the `EmailAddress` by replacing the "@" symbol with a hyphen ("-"). This transformation creates a slugified version of the email address.
-   - **Example:** If the `EmailAddress` is `jane.smith@email.com`, the `Name` will be `jane.smith-email.com`.
+   - **Computation:** The `Name` field is derived by replacing the "@" character in the `EmailAddress` with a hyphen ("-"). This creates a slugified version of the email address.
+   - **Example:** If `EmailAddress` is `jane.smith@email.com`, then `Name` becomes `jane.smith-email.com`.
 
-2. **FullName**
-   - **Type:** calculated
-   - **Formula:** `={{FirstName}} & " " & {{LastName}}`
-   - **Computation:** The `FullName` field is constructed by concatenating the `FirstName` and `LastName` fields with a space in between. This field formats the customer's name in a standard way.
-   - **Example:** If `FirstName` is `Bobby` and `LastName` is `Smith`, the `FullName` will be `Bobby Smith`.
-
-### Additional Calculated Field
-
-3. **Initials**
+2. **Initials**
    - **Type:** calculated
    - **Formula:** `=LEFT({{FirstName}}, 1) & LEFT({{LastName}}, 1)`
-   - **Computation:** The `Initials` field is created by taking the first character of the `FirstName` and the first character of the `LastName` and concatenating them together.
-   - **Example:** If `FirstName` is `Bobby` and `LastName` is `Smith`, the `Initials` will be `BS`.
+   - **Computation:** The `Initials` field is computed by taking the first letter of the `FirstName` and concatenating it with the first letter of the `LastName`.
+   - **Example:** If `FirstName` is `Bobby` and `LastName` is `Smith`, then `Initials` becomes `BS`.
 
----
+3. **FullName**
+   - **Type:** calculated
+   - **Formula:** `={{FirstName}} & " " & {{LastName}}`
+   - **Computation:** The `FullName` field is constructed by concatenating the `FirstName` and `LastName` with a space in between. The order is last-name-first, formatted as "LastName, FirstName".
+   - **Example:** If `FirstName` is `Bobby` and `LastName` is `Smith`, then `FullName` becomes `Smith, Bobby`.
 
-## Summary of Calculated Fields
+### Summary of Examples
+- For a customer with:
+  - `EmailAddress`: `jane.smith@email.com`
+  - `FirstName`: `Bobby`
+  - `LastName`: `Smith`
+  
+  The computed fields would be:
+  - `Name`: `jane.smith-email.com`
+  - `Initials`: `BS`
+  - `FullName`: `Smith, Bobby`
 
-- **Name**: Derived from `EmailAddress` by replacing "@" with "-".
-- **FullName**: Constructed from `FirstName` and `LastName` with a space in between.
-- **Initials**: Formed by concatenating the first letters of `FirstName` and `LastName`.
-
-This specification provides a clear understanding of how to compute the derived fields based on the raw input fields within the `Customers` entity of ACME, LLC's rulebook.
+This specification provides a clear guide for deriving the necessary fields from the raw inputs for the Customers entity in the ACME, LLC rulebook. Each calculation is straightforward and can be replicated using the provided examples.
