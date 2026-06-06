@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.vite/
+.env
+*.log
+.DS_Store
+# ssotme:// intermediate build artifacts
+/.ssotme/**/*.zfs
+# transpiler reverse-spoke scratch
+postgres-bootstrap/.pg-raw-data.json
+postgres-bootstrap/.applied-manifest.json

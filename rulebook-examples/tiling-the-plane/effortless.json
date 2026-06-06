@@ -1,0 +1,62 @@
+{
+  "ShowHidden": false,
+  "ShowAllFiles": false,
+  "CurrentPath": null,
+  "SSoTmeProjectFiles": null,
+  "SSoTmeProjectId": "1fc1af9c-76bb-43c0-846b-ee0790271915",
+  "Name": "Tiling the Plane",
+  "Description": "A library for tiling the Euclidean plane: a catalog of regular/semiregular tilings whose vertex-figure validity is derived from angle sums, plus a generative engine that places prototiles into a region and measures coverage, gaps, and overlaps.",
+  "ProjectSettings": [
+    {
+      "Name": "project-name",
+      "Value": "Tiling the Plane"
+    }
+  ],
+  "ProjectTranspilers": [
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "airtabletorulebook",
+      "RelativePath": "/effortless-rulebook",
+      "CommandLine": "airtable-to-rulebook -o tiling-the-plane-rulebook.json -account airtable -p \"view=Grid view\"",
+      "IsDisabled": true,
+      "Enabled": false,
+      "Description": "Pull rulebook from Airtable (optional; edit tiling-the-plane-rulebook.json directly). [DISABLED: rulebook JSON is authoritative; re-enable only with explicit user consent]"
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "rulebooktopostgres",
+      "RelativePath": "/postgres-bootstrap",
+      "CommandLine": "rulebook-to-postgres -i ../effortless-rulebook/tiling-the-plane-rulebook.json -p mode=drop-all -p stage=dev -p drop_all=true",
+      "IsDisabled": false,
+      "LastVersionUsed": "v2026.05.31.1547",
+      "LastUrl": "https://effortless-rulebook-to-postgres-v2026-05-31-1547-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
+      "Description": "Generate Postgres schema + functions + views + seed data from the rulebook."
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "initdb",
+      "RelativePath": "/postgres-bootstrap",
+      "CommandLine": "-exec ./init-db.sh",
+      "IsDisabled": false,
+      "Description": "Drop + recreate the local Postgres DB and run all NN[b]?-*.sql in lex order."
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "rulebooktoreactexplainerdag",
+      "RelativePath": "/web/src",
+      "CommandLine": "rulebook-to-react-explainer-dag -i ../../effortless-rulebook/tiling-the-plane-rulebook.json",
+      "IsDisabled": false,
+      "LastVersionUsed": "v2026.05.20.0229",
+      "LastUrl": "https://effortless-rulebook-to-react-exp-v2026-05-20-0229-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
+      "Description": "Generate the embedded React Explainer DAG module (clickable derivation graph for every calculated/lookup/aggregation field)."
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "httplocalhost4242postgrescalculatedtorulebook",
+      "RelativePath": "/postgres-bootstrap",
+      "CommandLine": "http://localhost:4242/postgres-calculated-to-rulebook -i ../effortless-rulebook/tiling-the-plane-rulebook.json",
+      "IsDisabled": true,
+      "Description": "Reverse spoke: refresh rulebook derived-field display copies from Postgres views after the destructive rebuild (raws verified, never written). [DISABLED: requires postgres-bootstrap/pull-from-postgres.sh to produce .pg-raw-data.json; not wired in this project. The rulebook JSON is authoritative, so the display-copy refresh is optional.]"
+    }
+  ]
+}
