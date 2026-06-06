@@ -59,8 +59,7 @@
       "Name": "rulebooktorulespeak",
       "RelativePath": "/rulespeak",
       "CommandLine": "rulebook-to-rulespeak -i ../effortless-rulebook/effortless-banking-rulebook.json",
-      "IsDisabled": false,
-      "PinnedVersion": "v2026.06.06.0219"
+      "IsDisabled": false
     }
   ]
 }
