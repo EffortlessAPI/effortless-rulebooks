@@ -3245,6 +3245,13 @@
         "type": "raw",
         "nullable": true,
         "Description": "Which persona area this screen belongs to. Drives route prefix and sidebar section."
+      },
+      {
+        "name": "Description",
+        "datatype": "string",
+        "type": "raw",
+        "Description": "Free-text annotation for this row.",
+        "nullable": true
       }
     ],
     "data": [

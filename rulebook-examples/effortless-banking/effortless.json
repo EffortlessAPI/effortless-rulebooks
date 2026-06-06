@@ -56,10 +56,11 @@
     },
     {
       "IsSSoTTranspiler": false,
-      "Name": "httplocalhost30048",
+      "Name": "rulebooktorulespeak",
       "RelativePath": "/rulespeak",
-      "CommandLine": "http://localhost:30048 -i ../effortless-rulebook/effortless-banking-rulebook.json",
-      "IsDisabled": false
+      "CommandLine": "rulebook-to-rulespeak -i ../effortless-rulebook/effortless-banking-rulebook.json",
+      "IsDisabled": false,
+      "PinnedVersion": "v2026.06.06.0219"
     }
   ]
 }

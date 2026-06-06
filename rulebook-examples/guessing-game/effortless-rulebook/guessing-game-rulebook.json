@@ -38,14 +38,14 @@
         "datatype": "string",
         "type": "lookup",
         "nullable": true,
-        "formula": "=TEXTJOIN(\", \", TRUE, FILTER(边!{{标签}}, 边!{{形状}} = 形状!{{形状Id}}))"
+        "Description": "Multi-value display string of the child edges' values (seeded; one entry per edge, ordered by label)."
       },
       {
         "name": "边长",
         "datatype": "string",
         "type": "lookup",
         "nullable": true,
-        "formula": "=TEXTJOIN(\", \", TRUE, FILTER(边!{{长度}}, 边!{{形状}} = 形状!{{形状Id}}))"
+        "Description": "Multi-value display string of the child edges' values (seeded; one entry per edge, ordered by label)."
       },
       {
         "name": "边的数量",
@@ -59,7 +59,7 @@
         "datatype": "string",
         "type": "lookup",
         "nullable": true,
-        "formula": "=TEXTJOIN(\", \", TRUE, FILTER(边!{{角度}}, 边!{{形状}} = 形状!{{形状Id}}))"
+        "Description": "Multi-value display string of the child edges' values (seeded; one entry per edge, ordered by label)."
       },
       {
         "name": "角度总和",

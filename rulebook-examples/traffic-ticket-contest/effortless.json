@@ -3,7 +3,7 @@
   "ShowAllFiles": false,
   "CurrentPath": "",
   "SSoTmeProjectFiles": null,
-  "SSoTmeProjectId": null,
+  "SSoTmeProjectId": "704eead0-63aa-497d-98ff-c5c698e735f9",
   "Name": "traffic-ticket-contest",
   "Description": "Traffic-ticket contest: a universally-recognizable case-management domain with four computed state machines (Citation, Contest, Payment, License) over a multi-jurisdiction rules engine.",
   "ProjectSettings": [
@@ -134,10 +134,11 @@
     },
     {
       "IsSSoTTranspiler": false,
-      "Name": "httplocalhost30048",
+      "Name": "rulebooktorulespeak",
       "RelativePath": "/rulespeak",
-      "CommandLine": "http://localhost:30048 -i ../effortless-rulebook/traffic-ticket-contest-rulebook.json",
-      "IsDisabled": false
+      "CommandLine": "rulebook-to-rulespeak -i ../effortless-rulebook/traffic-ticket-contest-rulebook.json",
+      "IsDisabled": false,
+      "PinnedVersion": "v2026.06.06.0219"
     }
   ]
 }

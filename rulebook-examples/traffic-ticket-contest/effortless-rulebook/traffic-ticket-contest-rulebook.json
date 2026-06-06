@@ -8,13 +8,13 @@
       "source_base_id": "appEBe2X4jsw5thxT",
       "table_count": 30,
       "tool_version": "2.0.0",
-      "field_type_mapping": "checkbox\u2192boolean, number\u2192number/integer, multipleRecordLinks\u2192relationship, multipleLookupValues\u2192lookup, rollup\u2192aggregation, count\u2192aggregation, formula\u2192calculated",
+      "field_type_mapping": "checkbox→boolean, number→number/integer, multipleRecordLinks→relationship, multipleLookupValues→lookup, rollup→aggregation, count→aggregation, formula→calculated",
       "export_mode": "schema_first_type_mapping",
       "type_inference": {
         "enabled": true,
-        "priority": "airtable_metadata (NO COERCION) \u2192 formula_analysis \u2192 reference_resolution \u2192 data_analysis (fallback only)",
-        "airtable_type_mapping": "checkbox\u2192boolean, singleLineText\u2192string, multilineText\u2192string, number\u2192number/integer, datetime\u2192datetime, singleSelect\u2192string, email\u2192string, url\u2192string, phoneNumber\u2192string",
-        "data_coercion_hierarchy": "Only used as fallback when Airtable schema unavailable: datetime \u2192 number \u2192 integer \u2192 boolean \u2192 base64 \u2192 json \u2192 string",
+        "priority": "airtable_metadata (NO COERCION) → formula_analysis → reference_resolution → data_analysis (fallback only)",
+        "airtable_type_mapping": "checkbox→boolean, singleLineText→string, multilineText→string, number→number/integer, datetime→datetime, singleSelect→string, email→string, url→string, phoneNumber→string",
+        "data_coercion_hierarchy": "Only used as fallback when Airtable schema unavailable: datetime → number → integer → boolean → base64 → json → string",
         "nullable_support": true,
         "error_value_handling": "#NUM!, #ERROR!, #N/A, #REF!, #DIV/0!, #VALUE!, #NAME? are treated as NULL"
       }
@@ -63,7 +63,7 @@
         "datatype": "string",
         "type": "calculated",
         "nullable": true,
-        "Description": "Logical key \u2014 lowercased rule code.",
+        "Description": "Logical key — lowercased rule code.",
         "formula": "=LOWER(SUBSTITUTE({{RuleCode}}, \" \", \"-\"))"
       },
       {
@@ -85,7 +85,7 @@
         "datatype": "string",
         "type": "relationship",
         "nullable": true,
-        "Description": "FK to BusinessRuleCategories \u2014 the category bucket this rule belongs to (ROUTING | hard-stop | soft-flag | high-risk | SCORING | DECISION | REVIEW | SUBMISSION | data-integrity).",
+        "Description": "FK to BusinessRuleCategories — the category bucket this rule belongs to (ROUTING | hard-stop | soft-flag | high-risk | SCORING | DECISION | REVIEW | SUBMISSION | data-integrity).",
         "RelatedTo": "BusinessRuleCategories",
         "isReversed": false,
         "prefersSingleRecordLink": true,
@@ -124,7 +124,7 @@
         "datatype": "string",
         "type": "raw",
         "nullable": true,
-        "Description": "Audit: the OWNER \u2014 the JWT user (auth.email()) who created this row. Auto-stamped on INSERT; immutable thereafter. NULL for build-time seed rows (no signed-in user)."
+        "Description": "Audit: the OWNER — the JWT user (auth.email()) who created this row. Auto-stamped on INSERT; immutable thereafter. NULL for build-time seed rows (no signed-in user)."
       },
       {
         "name": "ModifiedAt",
@@ -157,7 +157,7 @@
         "datatype": "string",
         "type": "raw",
         "nullable": false,
-        "Description": "PK = slugified category key (routing / hard-stop / soft-flag / high-risk / scoring / decision / review / submission / data-integrity) \u2014 matches the slug form BusinessRules.Category links resolve to."
+        "Description": "PK = slugified category key (routing / hard-stop / soft-flag / high-risk / scoring / decision / review / submission / data-integrity) — matches the slug form BusinessRules.Category links resolve to."
       },
       {
         "name": "Name",
@@ -217,7 +217,7 @@
         "datatype": "string",
         "type": "raw",
         "nullable": true,
-        "Description": "Audit: the OWNER \u2014 the JWT user (auth.email()) who created this row. Auto-stamped on INSERT; immutable thereafter. NULL for build-time seed rows (no signed-in user)."
+        "Description": "Audit: the OWNER — the JWT user (auth.email()) who created this row. Auto-stamped on INSERT; immutable thereafter. NULL for build-time seed rows (no signed-in user)."
       },
       {
         "name": "ModifiedAt",
@@ -310,7 +310,7 @@
         "datatype": "string",
         "type": "raw",
         "nullable": true,
-        "Description": "Audit: the OWNER \u2014 the JWT user (auth.email()) who created this row. Auto-stamped on INSERT; immutable thereafter. NULL for build-time seed rows (no signed-in user)."
+        "Description": "Audit: the OWNER — the JWT user (auth.email()) who created this row. Auto-stamped on INSERT; immutable thereafter. NULL for build-time seed rows (no signed-in user)."
       },
       {
         "name": "ModifiedAt",
@@ -349,7 +349,7 @@
         "datatype": "string",
         "type": "calculated",
         "nullable": true,
-        "Description": "Logical key \u2014 lowercased dash-form of the term.",
+        "Description": "Logical key — lowercased dash-form of the term.",
         "formula": "=LOWER(SUBSTITUTE({{Term}}, \" \", \"-\"))"
       },
       {
@@ -364,7 +364,7 @@
         "datatype": "string",
         "type": "relationship",
         "nullable": true,
-        "Description": "FK to GlossaryCategories \u2014 the category bucket this term belongs to (PEOPLE | LEGAL | LIFECYCLE | ALLEGATION | EVIDENCE | SCORING | DECISION | SYSTEM | ANALYTICS).",
+        "Description": "FK to GlossaryCategories — the category bucket this term belongs to (PEOPLE | LEGAL | LIFECYCLE | ALLEGATION | EVIDENCE | SCORING | DECISION | SYSTEM | ANALYTICS).",
         "RelatedTo": "GlossaryCategories",
         "isReversed": false,
         "prefersSingleRecordLink": true,
@@ -396,7 +396,7 @@
         "datatype": "string",
         "type": "raw",
         "nullable": true,
-        "Description": "Audit: the OWNER \u2014 the JWT user (auth.email()) who created this row. Auto-stamped on INSERT; immutable thereafter. NULL for build-time seed rows (no signed-in user)."
+        "Description": "Audit: the OWNER — the JWT user (auth.email()) who created this row. Auto-stamped on INSERT; immutable thereafter. NULL for build-time seed rows (no signed-in user)."
       },
       {
         "name": "ModifiedAt",
@@ -499,13 +499,6 @@
         "Description": "Count of AppUsers with this role."
       },
       {
-        "name": "AppUserCount",
-        "datatype": "number",
-        "type": "aggregation",
-        "nullable": true,
-        "Description": "Count of AppUsers with this role."
-      },
-      {
         "name": "CreatedAt",
         "datatype": "datetime",
         "type": "raw",
@@ -517,7 +510,7 @@
         "datatype": "string",
         "type": "raw",
         "nullable": true,
-        "Description": "Audit: the OWNER \u2014 the JWT user (auth.email()) who created this row. Auto-stamped on INSERT; immutable thereafter. NULL for build-time seed rows (no signed-in user)."
+        "Description": "Audit: the OWNER — the JWT user (auth.email()) who created this row. Auto-stamped on INSERT; immutable thereafter. NULL for build-time seed rows (no signed-in user)."
       },
       {
         "name": "ModifiedAt",
@@ -545,7 +538,7 @@
       {
         "RoleId": "admin",
         "Title": "System Administrator",
-        "Description": "System administrator \u2014 full access.",
+        "Description": "System administrator — full access.",
         "DefaultCRUD": "CRUD",
         "OrderIndex": 4,
         "IsAdminEquivalent": true,
@@ -563,7 +556,7 @@
       {
         "RoleId": "manager",
         "Title": "Manager / Team Lead",
-        "Description": "Manager / team lead \u2014 reviews and approves submissions; supervisor level.",
+        "Description": "Manager / team lead — reviews and approves submissions; supervisor level.",
         "DefaultCRUD": "CRUD",
         "OrderIndex": 2,
         "IsAdminEquivalent": false,
@@ -572,7 +565,7 @@
       {
         "RoleId": "representative",
         "Title": "Representative",
-        "Description": "Line agent \u2014 owns cases/records and completes domain workflows.",
+        "Description": "Line agent — owns cases/records and completes domain workflows.",
         "DefaultCRUD": "CRUD",
         "OrderIndex": 1,
         "IsAdminEquivalent": false,
@@ -651,14 +644,14 @@
         "datatype": "string",
         "type": "raw",
         "nullable": true,
-        "Description": "Reason text \u2014 required for OVERRIDE."
+        "Description": "Reason text — required for OVERRIDE."
       },
       {
         "name": "IsOverrideAction",
         "datatype": "boolean",
         "type": "calculated",
         "nullable": true,
-        "Description": "Calculated flag \u2014 TRUE when this audit log entry represents a manager override action (vs a routine action).",
+        "Description": "Calculated flag — TRUE when this audit log entry represents a manager override action (vs a routine action).",
         "formula": "=IF(LOWER({{ActionType}} & \"\") = \"override\", TRUE(), FALSE())"
       },
       {
@@ -666,7 +659,7 @@
         "datatype": "integer",
         "type": "calculated",
         "nullable": true,
-        "Description": "Calculated \u2014 hours elapsed since EntryTimestamp. Used to age audit log entries.",
+        "Description": "Calculated — hours elapsed since EntryTimestamp. Used to age audit log entries.",
         "formula": "=DATETIME_DIFF(NOW(), {{Timestamp}}, 'hours')"
       },
       {
@@ -688,7 +681,7 @@
         "datatype": "string",
         "type": "raw",
         "nullable": true,
-        "Description": "Audit: the OWNER \u2014 the JWT user (auth.email()) who created this row. Auto-stamped on INSERT; immutable thereafter. NULL for build-time seed rows (no signed-in user)."
+        "Description": "Audit: the OWNER — the JWT user (auth.email()) who created this row. Auto-stamped on INSERT; immutable thereafter. NULL for build-time seed rows (no signed-in user)."
       },
       {
         "name": "ModifiedAt",
@@ -804,7 +797,7 @@
         "datatype": "boolean",
         "type": "lookup",
         "nullable": true,
-        "Description": "Lookup: ERBPackage.IsActive \u2014 is this route's owning package enabled? UI hides the route when false.",
+        "Description": "Lookup: ERBPackage.IsActive — is this route's owning package enabled? UI hides the route when false.",
         "RelatedTo": "ERBPackages",
         "LookupField": "IsActive",
         "ViaField": "ERBPackage",
@@ -815,7 +808,7 @@
         "datatype": "boolean",
         "type": "lookup",
         "nullable": true,
-        "Description": "Lookup: ERBPackage.IsLicensed \u2014 is this route's owning package licensed? UI hides the route from non-Effortless users when false.",
+        "Description": "Lookup: ERBPackage.IsLicensed — is this route's owning package licensed? UI hides the route from non-Effortless users when false.",
         "RelatedTo": "ERBPackages",
         "LookupField": "IsLicensed",
         "ViaField": "ERBPackage",
@@ -1045,7 +1038,7 @@
         "datatype": "integer",
         "type": "calculated",
         "nullable": true,
-        "Description": "Calculated \u2014 nesting depth in the menu tree. 0 = top-level (no parent); otherwise the number of dot-segments in the dotted RouteKey above the root (e.g. 'library.rules.detail' = 2). Drives N-deep indentation.",
+        "Description": "Calculated — nesting depth in the menu tree. 0 = top-level (no parent); otherwise the number of dot-segments in the dotted RouteKey above the root (e.g. 'library.rules.detail' = 2). Drives N-deep indentation.",
         "formula": "=IF({{ParentRouteKey}}=BLANK(), 0, LEN({{RouteKey}}) - LEN(SUBSTITUTE({{RouteKey}}, \".\", \"\")))"
       },
       {
@@ -1053,7 +1046,7 @@
         "datatype": "string",
         "type": "calculated",
         "nullable": true,
-        "Description": "Calculated \u2014 canonical role-agnostic URL path (equals Route). The SPA renders this under each permitted role as /:role + FullPath and resolves it only when that role's *CanRead is true; the role is an implicit prefix, never stored on the row.",
+        "Description": "Calculated — canonical role-agnostic URL path (equals Route). The SPA renders this under each permitted role as /:role + FullPath and resolves it only when that role's *CanRead is true; the role is an implicit prefix, never stored on the row.",
         "formula": "={{Route}}"
       },
       {
@@ -1061,7 +1054,7 @@
         "datatype": "string",
         "type": "calculated",
         "nullable": true,
-        "Description": "Calculated \u2014 space-delimited form of the dotted RouteKey (dots and hyphens become spaces), e.g. 'library rules detail'. The client PascalCases this and prefixes the viewer role to derive the handler component deterministically: {Role} + PascalCase(HandlerBaseName) -> e.g. AdminLibraryRulesDetail, RepresentativeLibraryRulesDetail. No per-role handler is stored; edge cases get their own single-role route row instead.",
+        "Description": "Calculated — space-delimited form of the dotted RouteKey (dots and hyphens become spaces), e.g. 'library rules detail'. The client PascalCases this and prefixes the viewer role to derive the handler component deterministically: {Role} + PascalCase(HandlerBaseName) -> e.g. AdminLibraryRulesDetail, RepresentativeLibraryRulesDetail. No per-role handler is stored; edge cases get their own single-role route row instead.",
         "formula": "=SUBSTITUTE(SUBSTITUTE({{RouteKey}}, \".\", \" \"), \"-\", \" \")"
       },
       {
@@ -1076,7 +1069,7 @@
         "datatype": "string",
         "type": "raw",
         "nullable": true,
-        "Description": "Audit: the OWNER \u2014 the JWT user (auth.email()) who created this row. Auto-stamped on INSERT; immutable thereafter. NULL for build-time seed rows (no signed-in user)."
+        "Description": "Audit: the OWNER — the JWT user (auth.email()) who created this row. Auto-stamped on INSERT; immutable thereafter. NULL for build-time seed rows (no signed-in user)."
       },
       {
         "name": "ModifiedAt",
@@ -1297,7 +1290,7 @@
         "datatype": "string",
         "type": "raw",
         "nullable": true,
-        "Description": "Audit: the OWNER \u2014 the JWT user (auth.email()) who created this row. Auto-stamped on INSERT; immutable thereafter. NULL for build-time seed rows (no signed-in user)."
+        "Description": "Audit: the OWNER — the JWT user (auth.email()) who created this row. Auto-stamped on INSERT; immutable thereafter. NULL for build-time seed rows (no signed-in user)."
       },
       {
         "name": "ModifiedAt",
@@ -1447,7 +1440,7 @@
         "datatype": "string",
         "type": "raw",
         "nullable": true,
-        "Description": "Audit: the OWNER \u2014 the JWT user (auth.email()) who created this row. Auto-stamped on INSERT; immutable thereafter. NULL for build-time seed rows (no signed-in user)."
+        "Description": "Audit: the OWNER — the JWT user (auth.email()) who created this row. Auto-stamped on INSERT; immutable thereafter. NULL for build-time seed rows (no signed-in user)."
       },
       {
         "name": "ModifiedAt",
@@ -1514,7 +1507,7 @@
         "datatype": "string",
         "type": "raw",
         "nullable": true,
-        "Description": "Type of customization (e.g. function, view, trigger, policy) \u2014 drives where it lands in the generated stage."
+        "Description": "Type of customization (e.g. function, view, trigger, policy) — drives where it lands in the generated stage."
       },
       {
         "name": "CreatedAt",
@@ -1528,7 +1521,7 @@
         "datatype": "string",
         "type": "raw",
         "nullable": true,
-        "Description": "Audit: the OWNER \u2014 the JWT user (auth.email()) who created this row. Auto-stamped on INSERT; immutable thereafter. NULL for build-time seed rows (no signed-in user)."
+        "Description": "Audit: the OWNER — the JWT user (auth.email()) who created this row. Auto-stamped on INSERT; immutable thereafter. NULL for build-time seed rows (no signed-in user)."
       },
       {
         "name": "ModifiedAt",
@@ -1596,7 +1589,7 @@
       {
         "ERBCustomizationId": "calc-hearing-outcomes-employer-won-flag",
         "Name": "calc_hearing_outcomes_employer_won_flag",
-        "SQLCode": "CREATE OR REPLACE FUNCTION public.calc_attendance_details_latest_occurrence_date(p_attendance_detail_id text)\nRETURNS timestamp with time zone\nLANGUAGE plpgsql STABLE SECURITY DEFINER\nAS $function$\nBEGIN\n  RETURN (SELECT MAX(occurrence_date) FROM attendance_occurrences\n          WHERE attendance_detail = p_attendance_detail_id);\nEND;\n$function$;\n\n-- 2. is_override_action: generated code uses double-quoted \"override\" (an identifier).\nCREATE OR REPLACE FUNCTION public.calc_audit_log_entries_is_override_action(p_audit_log_entrie_id text)\nRETURNS boolean\nLANGUAGE plpgsql STABLE SECURITY DEFINER\nAS $function$\nBEGIN\n  RETURN LOWER(COALESCE((SELECT action_type FROM audit_log_entries\n                         WHERE audit_log_entrie_id = p_audit_log_entrie_id), '')) = 'override';\nEND;\n$function$;\n\n-- 3. tenure_years_approx: cast 0.3 to integer fails when text is fractional.\nCREATE OR REPLACE FUNCTION public.calc_claimants_tenure_years_approx(p_claimant_id text)\nRETURNS integer\nLANGUAGE plpgsql STABLE SECURITY DEFINER\nAS $function$\nDECLARE\n  v_hire date;\nBEGIN\n  SELECT hire_date INTO v_hire FROM claimants WHERE claimant_id = p_claimant_id;\n  IF v_hire IS NULL THEN RETURN NULL; END IF;\n  RETURN ROUND((CURRENT_DATE - v_hire)::numeric / 365.0)::integer;\nEND;\n$function$;\n\n-- 4. avg_client_hygiene_served: AVGs a text value (STRONG/MIXED/WEAK).\n--    Map to numeric scale: STRONG=3, MIXED=2, WEAK=1, then average.\nCREATE OR REPLACE FUNCTION public.calc_claims_reps_avg_client_hygiene_served(p_claims_rep_id text)\nRETURNS integer\nLANGUAGE plpgsql STABLE SECURITY DEFINER\nAS $function$\nBEGIN\n  RETURN COALESCE(ROUND((SELECT AVG(\n      CASE UPPER(calc_unemployment_claims_client_hygiene_rating(unemployment_claim_id))\n        WHEN 'STRONG' THEN 3\n        WHEN 'MIXED'  THEN 2\n        WHEN 'WEAK'   THEN 1\n        ELSE NULL\n      END\n    ) FROM unemployment_claims WHERE claims_rep = p_claims_rep_id)), 0)::integer;\nEND;\n$function$;\n\n-- 5. has_reference: generated CASE WHEN '\" = \"' is gibberish.\nCREATE OR REPLACE FUNCTION public.calc_evidence_items_has_reference(p_evidence_item_id text)\nRETURNS boolean\nLANGUAGE plpgsql STABLE SECURITY DEFINER\nAS $function$\nBEGIN\n  RETURN COALESCE(NULLIF((SELECT document_reference FROM evidence_items\n                          WHERE evidence_item_id = p_evidence_item_id), ''), NULL) IS NOT NULL;\nEND;\n$function$;\n\n-- 6. is_uploaded_and_referenced: compared a boolean to integer 1.\nCREATE OR REPLACE FUNCTION public.calc_evidence_items_is_uploaded_and_referenced(p_evidence_item_id text)\nRETURNS boolean\nLANGUAGE plpgsql STABLE SECURITY DEFINER\nAS $function$\nBEGIN\n  RETURN COALESCE((SELECT document_uploaded FROM evidence_items\n                   WHERE evidence_item_id = p_evidence_item_id), FALSE)\n         AND calc_evidence_items_has_reference(p_evidence_item_id);\nEND;\n$function$;\n\n-- 7. employer_won_flag: double-quoted \"employer-won\" parsed as identifier.\nCREATE OR REPLACE FUNCTION public.calc_hearing_outcomes_employer_won_flag(p_hearing_outcome_id text)\nRETURNS boolean\nLANGUAGE plpgsql STABLE SECURITY DEFINER\nAS $function$\nBEGIN\n  RETURN LOWER(COALESCE((SELECT result FROM hearing_outcomes\n                         WHERE hearing_outcome_id = p_hearing_outcome_id), '')) = 'employer-win';\nEND;\n$function$;\n\n-- 8. employee_responded_flag: same broken concat pattern.\nCREATE OR REPLACE FUNCTION public.calc_insubordination_details_employee_responded_flag(p_insubordination_detail_id text)\nRETURNS boolean\nLANGUAGE plpgsql STABLE SECURITY DEFINER\nAS $function$\nBEGIN\n  RETURN COALESCE(NULLIF((SELECT employee_response_text FROM insubordination_details\n                          WHERE insubordination_detail_id = p_insubordination_detail_id), ''), NULL) IS NOT NULL;\nEND;\n$function$;\n\n-- 9. jurisdiction_strictness_flag: double-quoted state codes parsed as identifiers.\nCREATE OR REPLACE FUNCTION public.calc_misconduct_checklists_jurisdiction_strictness_flag(p_misconduct_checklist_id text)\nRETURNS boolean\nLANGUAGE plpgsql STABLE SECURITY DEFINER\nAS $function$\nBEGIN\n  RETURN LOWER(COALESCE(calc_misconduct_checklists_jurisdiction_state(p_misconduct_checklist_id), ''))\n         IN ('ca','ny','nj','wa');\nEND;\n$function$;\n\n-- 10. latest_hearing_date: SUM of timestamp; want MAX.\nCREATE OR REPLACE FUNCTION public.calc_misconduct_checklists_latest_hearing_date(p_misconduct_checklist_id text)\nRETURNS timestamp with time zone\nLANGUAGE plpgsql STABLE SECURITY DEFINER\nAS $function$\nBEGIN\n  RETURN (SELECT MAX(hearing_date) FROM hearing_outcomes\n          WHERE misconduct_checklist = p_misconduct_checklist_id);\nEND;\n$function$;\n\n-- 11. overall_readiness_rating: compares boolean flags using = 0/= 1.\nCREATE OR REPLACE FUNCTION public.calc_misconduct_checklists_overall_readiness_rating(p_misconduct_checklist_id text)\nRETURNS text\nLANGUAGE plpgsql STABLE SECURITY DEFINER\nAS $function$\nBEGIN\n  IF calc_misconduct_checklists_raw_readiness_score(p_misconduct_checklist_id) >= 20\n     AND NOT calc_misconduct_checklists_weak_documentation_flag(p_misconduct_checklist_id)\n     AND calc_misconduct_checklists_witness_corroboration_flag(p_misconduct_checklist_id)\n     AND NOT calc_misconduct_checklists_manager_override_heavy_flag(p_misconduct_checklist_id)\n  THEN\n    RETURN 'ready';\n  ELSIF calc_misconduct_checklists_raw_readiness_score(p_misconduct_checklist_id) >= 12 THEN\n    RETURN 'needs-review';\n  ELSE\n    RETURN 'not-ready';\n  END IF;\nEND;\n$function$;\n\n-- 12. readiness_gap_narrative: same boolean = integer issue.\nCREATE OR REPLACE FUNCTION public.calc_misconduct_checklists_readiness_gap_narrative(p_misconduct_checklist_id text)\nRETURNS text\nLANGUAGE plpgsql STABLE SECURITY DEFINER\nAS $function$\nBEGIN\n  IF calc_misconduct_checklists_weak_documentation_flag(p_misconduct_checklist_id) THEN\n    RETURN 'weak-documentation';\n  ELSIF NOT calc_misconduct_checklists_witness_corroboration_flag(p_misconduct_checklist_id) THEN\n    RETURN 'missing-witness';\n  ELSIF calc_misconduct_checklists_manager_override_heavy_flag(p_misconduct_checklist_id) THEN\n    RETURN 'override-heavy';\n  ELSIF calc_misconduct_checklists_jurisdiction_strictness_flag(p_misconduct_checklist_id) THEN\n    RETURN 'strict-jurisdiction-double-check';\n  ELSE\n    RETURN 'ok';\n  END IF;\nEND;\n$function$;\n\n-- 13. severe_behavior_max_rollup: MAX of boolean cast to numeric. Use bool_or.\nCREATE OR REPLACE FUNCTION public.calc_misconduct_checklists_severe_behavior_max_rollup(p_misconduct_checklist_id text)\nRETURNS integer\nLANGUAGE plpgsql STABLE SECURITY DEFINER\nAS $function$\nBEGIN\n  RETURN CASE WHEN COALESCE((SELECT bool_or(calc_behavioral_details_is_severe_behavior(behavioral_detail_id))\n                             FROM behavioral_details\n                             WHERE misconduct_checklist = p_misconduct_checklist_id), FALSE)\n              THEN 1 ELSE 0 END;\nEND;\n$function$;\n\n-- 14. severe_incident_flag: depends on severe_behavior_max_rollup; rollup now returns int.\nCREATE OR REPLACE FUNCTION public.calc_misconduct_checklists_severe_incident_flag(p_misconduct_checklist_id text)\nRETURNS boolean\nLANGUAGE plpgsql STABLE SECURITY DEFINER\nAS $function$\nBEGIN\n  RETURN calc_misconduct_checklists_severe_behavior_max_rollup(p_misconduct_checklist_id) = 1;\nEND;\n$function$;\n\n-- 15. long_standing_issue_flag: cast \"4 months\" to numeric fails. Parse leading number + unit.\nCREATE OR REPLACE FUNCTION public.calc_performance_details_long_standing_issue_flag(p_performance_detail_id text)\nRETURNS boolean\nLANGUAGE plpgsql STABLE SECURITY DEFINER\nAS $function$\nDECLARE\n  v_text text;\n  v_num  numeric;\n  v_days numeric;\nBEGIN\n  SELECT issue_duration INTO v_text FROM performance_details\n   WHERE performance_detail_id = p_performance_detail_id;\n  IF v_text IS NULL OR v_text = '' THEN RETURN FALSE; END IF;\n  v_num := NULLIF((regexp_match(v_text, '([0-9]+(\\.[0-9]+)?)'))[1], '')::numeric;\n  IF v_num IS NULL THEN RETURN FALSE; END IF;\n  v_days := CASE\n              WHEN v_text ILIKE '%year%'  THEN v_num * 365\n              WHEN v_text ILIKE '%month%' THEN v_num * 30\n              WHEN v_text ILIKE '%week%'  THEN v_num * 7\n              ELSE v_num\n            END;\n  RETURN v_days >= 60;\nEND;\n$function$;\n\n-- 16. any_progressive_discipline_flag: SUMs a boolean. Use bool_or \u2192 int.\nCREATE OR REPLACE FUNCTION public.calc_unemployment_claims_any_progressive_discipline_flag(p_unemployment_claim_id text)\nRETURNS integer\nLANGUAGE plpgsql STABLE SECURITY DEFINER\nAS $function$\nBEGIN\n  RETURN CASE WHEN COALESCE((SELECT bool_or(calc_misconduct_checklists_progressive_discipline_flag(misconduct_checklist_id))\n                             FROM misconduct_checklists\n                             WHERE unemployment_claim = p_unemployment_claim_id), FALSE)\n              THEN 1 ELSE 0 END;\nEND;\n$function$;\n\n-- 17. any_weak_documentation_flag: same.\nCREATE OR REPLACE FUNCTION public.calc_unemployment_claims_any_weak_documentation_flag(p_unemployment_claim_id text)\nRETURNS integer\nLANGUAGE plpgsql STABLE SECURITY DEFINER\nAS $function$\nBEGIN\n  RETURN CASE WHEN COALESCE((SELECT bool_or(calc_misconduct_checklists_weak_documentation_flag(misconduct_checklist_id))\n                             FROM misconduct_checklists\n                             WHERE unemployment_claim = p_unemployment_claim_id), FALSE)\n              THEN 1 ELSE 0 END;\nEND;\n$function$;\n\n-- 18. claim_risk_baseline: compares hygiene rating (text) to integers.\n--     Map STRONG/MIXED/WEAK to numeric scale, then bucket.\nCREATE OR REPLACE FUNCTION public.calc_unemployment_claims_claim_risk_baseline(p_unemployment_claim_id text)\nRETURNS text\nLANGUAGE plpgsql STABLE SECURITY DEFINER\nAS $function$\nDECLARE\n  v_score int;\nBEGIN\n  v_score := CASE UPPER(COALESCE(calc_unemployment_claims_client_hygiene_rating(p_unemployment_claim_id), ''))\n               WHEN 'STRONG' THEN 4\n               WHEN 'MIXED'  THEN 3\n               WHEN 'WEAK'   THEN 1\n               ELSE 0\n             END;\n  IF v_score < 3 THEN RETURN 'high';\n  ELSIF v_score < 4 THEN RETURN 'medium';\n  ELSE RETURN 'low';\n  END IF;\nEND;\n$function$;\n\n-- 19. composite_claim_readiness: has_checklist_flag is boolean, compared to 0.\nCREATE OR REPLACE FUNCTION public.calc_unemployment_claims_composite_claim_readiness(p_unemployment_claim_id text)\nRETURNS text\nLANGUAGE plpgsql STABLE SECURITY DEFINER\nAS $function$\nDECLARE\n  v_readiness int;\nBEGIN\n  IF NOT calc_unemployment_claims_has_checklist_flag(p_unemployment_claim_id) THEN\n    RETURN 'no-checklist';\n  END IF;\n  v_readiness := calc_unemployment_claims_latest_checklist_raw_readiness(p_unemployment_claim_id);\n  IF calc_unemployment_claims_claim_risk_baseline(p_unemployment_claim_id) = 'high'\n     AND v_readiness < 20 THEN\n    RETURN 'high-risk';\n  ELSIF v_readiness >= 20 THEN\n    RETURN 'ready';\n  ELSIF v_readiness >= 12 THEN\n    RETURN 'needs-review';\n  ELSE\n    RETURN 'not-ready';\n  END IF;\nEND;\n$function$;\n\n-- 20. escalate_to_manager_flag: any_weak_documentation_flag now returns int again, OK,\n--     but we also need to handle the any_progressive_discipline_flag side.\nCREATE OR REPLACE FUNCTION public.calc_unemployment_claims_escalate_to_manager_flag(p_unemployment_claim_id text)\nRETURNS integer\nLANGUAGE plpgsql STABLE SECURITY DEFINER\nAS $function$\nBEGIN\n  RETURN CASE\n    WHEN calc_unemployment_claims_any_weak_documentation_flag(p_unemployment_claim_id) = 1\n      OR (calc_unemployment_claims_claim_risk_baseline(p_unemployment_claim_id) = 'high'\n          AND calc_unemployment_claims_any_progressive_discipline_flag(p_unemployment_claim_id) = 0)\n    THEN 1 ELSE 0 END;\nEND;\n$function$;\n\n-- 21. has_contact_info: same broken concat pattern.\nCREATE OR REPLACE FUNCTION public.calc_witnesses_has_contact_info(p_witnesse_id text)\nRETURNS boolean\nLANGUAGE plpgsql STABLE SECURITY DEFINER\nAS $function$\nBEGIN\n  RETURN COALESCE(NULLIF((SELECT contact_info FROM witnesses\n                          WHERE witnesse_id = p_witnesse_id), ''), NULL) IS NOT NULL;\nEND;\n$function$;\n\n-- 22. has_usable_statement: depended on has_contact_info = 1.\nCREATE OR REPLACE FUNCTION public.calc_witnesses_has_usable_statement(p_witnesse_id text)\nRETURNS boolean\nLANGUAGE plpgsql STABLE SECURITY DEFINER\nAS $function$\nBEGIN\n  RETURN COALESCE((SELECT statement_provided_flag FROM witnesses\n                   WHERE witnesse_id = p_witnesse_id), FALSE)\n         AND calc_witnesses_has_contact_info(p_witnesse_id);\nEND;\n$function$;\n",
+        "SQLCode": "CREATE OR REPLACE FUNCTION public.calc_attendance_details_latest_occurrence_date(p_attendance_detail_id text)\nRETURNS timestamp with time zone\nLANGUAGE plpgsql STABLE SECURITY DEFINER\nAS $function$\nBEGIN\n  RETURN (SELECT MAX(occurrence_date) FROM attendance_occurrences\n          WHERE attendance_detail = p_attendance_detail_id);\nEND;\n$function$;\n\n-- 2. is_override_action: generated code uses double-quoted \"override\" (an identifier).\nCREATE OR REPLACE FUNCTION public.calc_audit_log_entries_is_override_action(p_audit_log_entrie_id text)\nRETURNS boolean\nLANGUAGE plpgsql STABLE SECURITY DEFINER\nAS $function$\nBEGIN\n  RETURN LOWER(COALESCE((SELECT action_type FROM audit_log_entries\n                         WHERE audit_log_entrie_id = p_audit_log_entrie_id), '')) = 'override';\nEND;\n$function$;\n\n-- 3. tenure_years_approx: cast 0.3 to integer fails when text is fractional.\nCREATE OR REPLACE FUNCTION public.calc_claimants_tenure_years_approx(p_claimant_id text)\nRETURNS integer\nLANGUAGE plpgsql STABLE SECURITY DEFINER\nAS $function$\nDECLARE\n  v_hire date;\nBEGIN\n  SELECT hire_date INTO v_hire FROM claimants WHERE claimant_id = p_claimant_id;\n  IF v_hire IS NULL THEN RETURN NULL; END IF;\n  RETURN ROUND((CURRENT_DATE - v_hire)::numeric / 365.0)::integer;\nEND;\n$function$;\n\n-- 4. avg_client_hygiene_served: AVGs a text value (STRONG/MIXED/WEAK).\n--    Map to numeric scale: STRONG=3, MIXED=2, WEAK=1, then average.\nCREATE OR REPLACE FUNCTION public.calc_claims_reps_avg_client_hygiene_served(p_claims_rep_id text)\nRETURNS integer\nLANGUAGE plpgsql STABLE SECURITY DEFINER\nAS $function$\nBEGIN\n  RETURN COALESCE(ROUND((SELECT AVG(\n      CASE UPPER(calc_unemployment_claims_client_hygiene_rating(unemployment_claim_id))\n        WHEN 'STRONG' THEN 3\n        WHEN 'MIXED'  THEN 2\n        WHEN 'WEAK'   THEN 1\n        ELSE NULL\n      END\n    ) FROM unemployment_claims WHERE claims_rep = p_claims_rep_id)), 0)::integer;\nEND;\n$function$;\n\n-- 5. has_reference: generated CASE WHEN '\" = \"' is gibberish.\nCREATE OR REPLACE FUNCTION public.calc_evidence_items_has_reference(p_evidence_item_id text)\nRETURNS boolean\nLANGUAGE plpgsql STABLE SECURITY DEFINER\nAS $function$\nBEGIN\n  RETURN COALESCE(NULLIF((SELECT document_reference FROM evidence_items\n                          WHERE evidence_item_id = p_evidence_item_id), ''), NULL) IS NOT NULL;\nEND;\n$function$;\n\n-- 6. is_uploaded_and_referenced: compared a boolean to integer 1.\nCREATE OR REPLACE FUNCTION public.calc_evidence_items_is_uploaded_and_referenced(p_evidence_item_id text)\nRETURNS boolean\nLANGUAGE plpgsql STABLE SECURITY DEFINER\nAS $function$\nBEGIN\n  RETURN COALESCE((SELECT document_uploaded FROM evidence_items\n                   WHERE evidence_item_id = p_evidence_item_id), FALSE)\n         AND calc_evidence_items_has_reference(p_evidence_item_id);\nEND;\n$function$;\n\n-- 7. employer_won_flag: double-quoted \"employer-won\" parsed as identifier.\nCREATE OR REPLACE FUNCTION public.calc_hearing_outcomes_employer_won_flag(p_hearing_outcome_id text)\nRETURNS boolean\nLANGUAGE plpgsql STABLE SECURITY DEFINER\nAS $function$\nBEGIN\n  RETURN LOWER(COALESCE((SELECT result FROM hearing_outcomes\n                         WHERE hearing_outcome_id = p_hearing_outcome_id), '')) = 'employer-win';\nEND;\n$function$;\n\n-- 8. employee_responded_flag: same broken concat pattern.\nCREATE OR REPLACE FUNCTION public.calc_insubordination_details_employee_responded_flag(p_insubordination_detail_id text)\nRETURNS boolean\nLANGUAGE plpgsql STABLE SECURITY DEFINER\nAS $function$\nBEGIN\n  RETURN COALESCE(NULLIF((SELECT employee_response_text FROM insubordination_details\n                          WHERE insubordination_detail_id = p_insubordination_detail_id), ''), NULL) IS NOT NULL;\nEND;\n$function$;\n\n-- 9. jurisdiction_strictness_flag: double-quoted state codes parsed as identifiers.\nCREATE OR REPLACE FUNCTION public.calc_misconduct_checklists_jurisdiction_strictness_flag(p_misconduct_checklist_id text)\nRETURNS boolean\nLANGUAGE plpgsql STABLE SECURITY DEFINER\nAS $function$\nBEGIN\n  RETURN LOWER(COALESCE(calc_misconduct_checklists_jurisdiction_state(p_misconduct_checklist_id), ''))\n         IN ('ca','ny','nj','wa');\nEND;\n$function$;\n\n-- 10. latest_hearing_date: SUM of timestamp; want MAX.\nCREATE OR REPLACE FUNCTION public.calc_misconduct_checklists_latest_hearing_date(p_misconduct_checklist_id text)\nRETURNS timestamp with time zone\nLANGUAGE plpgsql STABLE SECURITY DEFINER\nAS $function$\nBEGIN\n  RETURN (SELECT MAX(hearing_date) FROM hearing_outcomes\n          WHERE misconduct_checklist = p_misconduct_checklist_id);\nEND;\n$function$;\n\n-- 11. overall_readiness_rating: compares boolean flags using = 0/= 1.\nCREATE OR REPLACE FUNCTION public.calc_misconduct_checklists_overall_readiness_rating(p_misconduct_checklist_id text)\nRETURNS text\nLANGUAGE plpgsql STABLE SECURITY DEFINER\nAS $function$\nBEGIN\n  IF calc_misconduct_checklists_raw_readiness_score(p_misconduct_checklist_id) >= 20\n     AND NOT calc_misconduct_checklists_weak_documentation_flag(p_misconduct_checklist_id)\n     AND calc_misconduct_checklists_witness_corroboration_flag(p_misconduct_checklist_id)\n     AND NOT calc_misconduct_checklists_manager_override_heavy_flag(p_misconduct_checklist_id)\n  THEN\n    RETURN 'ready';\n  ELSIF calc_misconduct_checklists_raw_readiness_score(p_misconduct_checklist_id) >= 12 THEN\n    RETURN 'needs-review';\n  ELSE\n    RETURN 'not-ready';\n  END IF;\nEND;\n$function$;\n\n-- 12. readiness_gap_narrative: same boolean = integer issue.\nCREATE OR REPLACE FUNCTION public.calc_misconduct_checklists_readiness_gap_narrative(p_misconduct_checklist_id text)\nRETURNS text\nLANGUAGE plpgsql STABLE SECURITY DEFINER\nAS $function$\nBEGIN\n  IF calc_misconduct_checklists_weak_documentation_flag(p_misconduct_checklist_id) THEN\n    RETURN 'weak-documentation';\n  ELSIF NOT calc_misconduct_checklists_witness_corroboration_flag(p_misconduct_checklist_id) THEN\n    RETURN 'missing-witness';\n  ELSIF calc_misconduct_checklists_manager_override_heavy_flag(p_misconduct_checklist_id) THEN\n    RETURN 'override-heavy';\n  ELSIF calc_misconduct_checklists_jurisdiction_strictness_flag(p_misconduct_checklist_id) THEN\n    RETURN 'strict-jurisdiction-double-check';\n  ELSE\n    RETURN 'ok';\n  END IF;\nEND;\n$function$;\n\n-- 13. severe_behavior_max_rollup: MAX of boolean cast to numeric. Use bool_or.\nCREATE OR REPLACE FUNCTION public.calc_misconduct_checklists_severe_behavior_max_rollup(p_misconduct_checklist_id text)\nRETURNS integer\nLANGUAGE plpgsql STABLE SECURITY DEFINER\nAS $function$\nBEGIN\n  RETURN CASE WHEN COALESCE((SELECT bool_or(calc_behavioral_details_is_severe_behavior(behavioral_detail_id))\n                             FROM behavioral_details\n                             WHERE misconduct_checklist = p_misconduct_checklist_id), FALSE)\n              THEN 1 ELSE 0 END;\nEND;\n$function$;\n\n-- 14. severe_incident_flag: depends on severe_behavior_max_rollup; rollup now returns int.\nCREATE OR REPLACE FUNCTION public.calc_misconduct_checklists_severe_incident_flag(p_misconduct_checklist_id text)\nRETURNS boolean\nLANGUAGE plpgsql STABLE SECURITY DEFINER\nAS $function$\nBEGIN\n  RETURN calc_misconduct_checklists_severe_behavior_max_rollup(p_misconduct_checklist_id) = 1;\nEND;\n$function$;\n\n-- 15. long_standing_issue_flag: cast \"4 months\" to numeric fails. Parse leading number + unit.\nCREATE OR REPLACE FUNCTION public.calc_performance_details_long_standing_issue_flag(p_performance_detail_id text)\nRETURNS boolean\nLANGUAGE plpgsql STABLE SECURITY DEFINER\nAS $function$\nDECLARE\n  v_text text;\n  v_num  numeric;\n  v_days numeric;\nBEGIN\n  SELECT issue_duration INTO v_text FROM performance_details\n   WHERE performance_detail_id = p_performance_detail_id;\n  IF v_text IS NULL OR v_text = '' THEN RETURN FALSE; END IF;\n  v_num := NULLIF((regexp_match(v_text, '([0-9]+(\\.[0-9]+)?)'))[1], '')::numeric;\n  IF v_num IS NULL THEN RETURN FALSE; END IF;\n  v_days := CASE\n              WHEN v_text ILIKE '%year%'  THEN v_num * 365\n              WHEN v_text ILIKE '%month%' THEN v_num * 30\n              WHEN v_text ILIKE '%week%'  THEN v_num * 7\n              ELSE v_num\n            END;\n  RETURN v_days >= 60;\nEND;\n$function$;\n\n-- 16. any_progressive_discipline_flag: SUMs a boolean. Use bool_or → int.\nCREATE OR REPLACE FUNCTION public.calc_unemployment_claims_any_progressive_discipline_flag(p_unemployment_claim_id text)\nRETURNS integer\nLANGUAGE plpgsql STABLE SECURITY DEFINER\nAS $function$\nBEGIN\n  RETURN CASE WHEN COALESCE((SELECT bool_or(calc_misconduct_checklists_progressive_discipline_flag(misconduct_checklist_id))\n                             FROM misconduct_checklists\n                             WHERE unemployment_claim = p_unemployment_claim_id), FALSE)\n              THEN 1 ELSE 0 END;\nEND;\n$function$;\n\n-- 17. any_weak_documentation_flag: same.\nCREATE OR REPLACE FUNCTION public.calc_unemployment_claims_any_weak_documentation_flag(p_unemployment_claim_id text)\nRETURNS integer\nLANGUAGE plpgsql STABLE SECURITY DEFINER\nAS $function$\nBEGIN\n  RETURN CASE WHEN COALESCE((SELECT bool_or(calc_misconduct_checklists_weak_documentation_flag(misconduct_checklist_id))\n                             FROM misconduct_checklists\n                             WHERE unemployment_claim = p_unemployment_claim_id), FALSE)\n              THEN 1 ELSE 0 END;\nEND;\n$function$;\n\n-- 18. claim_risk_baseline: compares hygiene rating (text) to integers.\n--     Map STRONG/MIXED/WEAK to numeric scale, then bucket.\nCREATE OR REPLACE FUNCTION public.calc_unemployment_claims_claim_risk_baseline(p_unemployment_claim_id text)\nRETURNS text\nLANGUAGE plpgsql STABLE SECURITY DEFINER\nAS $function$\nDECLARE\n  v_score int;\nBEGIN\n  v_score := CASE UPPER(COALESCE(calc_unemployment_claims_client_hygiene_rating(p_unemployment_claim_id), ''))\n               WHEN 'STRONG' THEN 4\n               WHEN 'MIXED'  THEN 3\n               WHEN 'WEAK'   THEN 1\n               ELSE 0\n             END;\n  IF v_score < 3 THEN RETURN 'high';\n  ELSIF v_score < 4 THEN RETURN 'medium';\n  ELSE RETURN 'low';\n  END IF;\nEND;\n$function$;\n\n-- 19. composite_claim_readiness: has_checklist_flag is boolean, compared to 0.\nCREATE OR REPLACE FUNCTION public.calc_unemployment_claims_composite_claim_readiness(p_unemployment_claim_id text)\nRETURNS text\nLANGUAGE plpgsql STABLE SECURITY DEFINER\nAS $function$\nDECLARE\n  v_readiness int;\nBEGIN\n  IF NOT calc_unemployment_claims_has_checklist_flag(p_unemployment_claim_id) THEN\n    RETURN 'no-checklist';\n  END IF;\n  v_readiness := calc_unemployment_claims_latest_checklist_raw_readiness(p_unemployment_claim_id);\n  IF calc_unemployment_claims_claim_risk_baseline(p_unemployment_claim_id) = 'high'\n     AND v_readiness < 20 THEN\n    RETURN 'high-risk';\n  ELSIF v_readiness >= 20 THEN\n    RETURN 'ready';\n  ELSIF v_readiness >= 12 THEN\n    RETURN 'needs-review';\n  ELSE\n    RETURN 'not-ready';\n  END IF;\nEND;\n$function$;\n\n-- 20. escalate_to_manager_flag: any_weak_documentation_flag now returns int again, OK,\n--     but we also need to handle the any_progressive_discipline_flag side.\nCREATE OR REPLACE FUNCTION public.calc_unemployment_claims_escalate_to_manager_flag(p_unemployment_claim_id text)\nRETURNS integer\nLANGUAGE plpgsql STABLE SECURITY DEFINER\nAS $function$\nBEGIN\n  RETURN CASE\n    WHEN calc_unemployment_claims_any_weak_documentation_flag(p_unemployment_claim_id) = 1\n      OR (calc_unemployment_claims_claim_risk_baseline(p_unemployment_claim_id) = 'high'\n          AND calc_unemployment_claims_any_progressive_discipline_flag(p_unemployment_claim_id) = 0)\n    THEN 1 ELSE 0 END;\nEND;\n$function$;\n\n-- 21. has_contact_info: same broken concat pattern.\nCREATE OR REPLACE FUNCTION public.calc_witnesses_has_contact_info(p_witnesse_id text)\nRETURNS boolean\nLANGUAGE plpgsql STABLE SECURITY DEFINER\nAS $function$\nBEGIN\n  RETURN COALESCE(NULLIF((SELECT contact_info FROM witnesses\n                          WHERE witnesse_id = p_witnesse_id), ''), NULL) IS NOT NULL;\nEND;\n$function$;\n\n-- 22. has_usable_statement: depended on has_contact_info = 1.\nCREATE OR REPLACE FUNCTION public.calc_witnesses_has_usable_statement(p_witnesse_id text)\nRETURNS boolean\nLANGUAGE plpgsql STABLE SECURITY DEFINER\nAS $function$\nBEGIN\n  RETURN COALESCE((SELECT statement_provided_flag FROM witnesses\n                   WHERE witnesse_id = p_witnesse_id), FALSE)\n         AND calc_witnesses_has_contact_info(p_witnesse_id);\nEND;\n$function$;\n",
         "SQLTarget": "Postgres",
         "CustomizationType": "FunctionOverride",
         "Title": ""
@@ -1647,7 +1640,7 @@
         "datatype": "string",
         "type": "raw",
         "nullable": true,
-        "Description": "Local (git-ignored) path to the downloaded file under git-ignored-examples/jurisdiction-rules/. NOT a web route \u2014 the on-disk source artifact."
+        "Description": "Local (git-ignored) path to the downloaded file under git-ignored-examples/jurisdiction-rules/. NOT a web route — the on-disk source artifact."
       },
       {
         "name": "SourceUrl",
@@ -1714,7 +1707,7 @@
         "datatype": "string",
         "type": "raw",
         "nullable": true,
-        "Description": "Audit: the OWNER \u2014 the JWT user (auth.email()) who created this row. Auto-stamped on INSERT; immutable thereafter. NULL for build-time seed rows (no signed-in user)."
+        "Description": "Audit: the OWNER — the JWT user (auth.email()) who created this row. Auto-stamped on INSERT; immutable thereafter. NULL for build-time seed rows (no signed-in user)."
       },
       {
         "name": "ModifiedAt",
@@ -1893,7 +1886,7 @@
         "datatype": "string",
         "type": "raw",
         "nullable": true,
-        "Description": "Audit: the OWNER \u2014 the JWT user (auth.email()) who created this row. Auto-stamped on INSERT; immutable thereafter. NULL for build-time seed rows (no signed-in user)."
+        "Description": "Audit: the OWNER — the JWT user (auth.email()) who created this row. Auto-stamped on INSERT; immutable thereafter. NULL for build-time seed rows (no signed-in user)."
       },
       {
         "name": "ModifiedAt",
@@ -2007,7 +2000,7 @@
         "datatype": "string",
         "type": "raw",
         "nullable": true,
-        "Description": "Audit: the OWNER \u2014 the JWT user (auth.email()) who created this row. Auto-stamped on INSERT; immutable thereafter. NULL for build-time seed rows (no signed-in user)."
+        "Description": "Audit: the OWNER — the JWT user (auth.email()) who created this row. Auto-stamped on INSERT; immutable thereafter. NULL for build-time seed rows (no signed-in user)."
       },
       {
         "name": "ModifiedAt",
@@ -2165,7 +2158,7 @@
         "datatype": "string",
         "type": "raw",
         "nullable": true,
-        "Description": "Audit: the OWNER \u2014 the JWT user (auth.email()) who created this row. Auto-stamped on INSERT; immutable thereafter. NULL for build-time seed rows (no signed-in user)."
+        "Description": "Audit: the OWNER — the JWT user (auth.email()) who created this row. Auto-stamped on INSERT; immutable thereafter. NULL for build-time seed rows (no signed-in user)."
       },
       {
         "name": "ModifiedAt",
@@ -2210,7 +2203,7 @@
         "datatype": "string",
         "type": "raw",
         "nullable": false,
-        "Description": "PK \u2014 slug for the single branding row ('site-branding')."
+        "Description": "PK — slug for the single branding row ('site-branding')."
       },
       {
         "name": "Name",
@@ -2442,7 +2435,7 @@
         "datatype": "string",
         "type": "raw",
         "nullable": true,
-        "Description": "Audit: the OWNER \u2014 the JWT user (auth.email()) who created this row. Auto-stamped on INSERT; immutable thereafter. NULL for build-time seed rows (no signed-in user)."
+        "Description": "Audit: the OWNER — the JWT user (auth.email()) who created this row. Auto-stamped on INSERT; immutable thereafter. NULL for build-time seed rows (no signed-in user)."
       },
       {
         "name": "ModifiedAt",
@@ -2518,7 +2511,7 @@
         "datatype": "string",
         "type": "relationship",
         "nullable": true,
-        "Description": "Optional FK \u2192 Jurisdictions.JurisdictionId.",
+        "Description": "Optional FK → Jurisdictions.JurisdictionId.",
         "RelatedTo": "Jurisdictions"
       },
       {
@@ -2555,7 +2548,7 @@
         "datatype": "string",
         "type": "raw",
         "nullable": true,
-        "Description": "Audit: the OWNER \u2014 the JWT user (auth.email()) who created this row. Auto-stamped on INSERT; immutable thereafter. NULL for build-time seed rows (no signed-in user)."
+        "Description": "Audit: the OWNER — the JWT user (auth.email()) who created this row. Auto-stamped on INSERT; immutable thereafter. NULL for build-time seed rows (no signed-in user)."
       },
       {
         "name": "ModifiedAt",
@@ -2642,7 +2635,7 @@
         "datatype": "boolean",
         "type": "lookup",
         "nullable": true,
-        "Description": "Lookup: ERBPackage.IsActive \u2014 is this machine's owning package enabled? UI hides the machine when false.",
+        "Description": "Lookup: ERBPackage.IsActive — is this machine's owning package enabled? UI hides the machine when false.",
         "RelatedTo": "ERBPackages",
         "LookupField": "IsActive",
         "ViaField": "ERBPackage",
@@ -2698,7 +2691,7 @@
         "datatype": "string",
         "type": "raw",
         "nullable": true,
-        "Description": "Audit: the OWNER \u2014 the JWT user (auth.email()) who created this row. Auto-stamped on INSERT; immutable thereafter. NULL for build-time seed rows (no signed-in user)."
+        "Description": "Audit: the OWNER — the JWT user (auth.email()) who created this row. Auto-stamped on INSERT; immutable thereafter. NULL for build-time seed rows (no signed-in user)."
       },
       {
         "name": "ModifiedAt",
@@ -2845,7 +2838,7 @@
         "datatype": "string",
         "type": "raw",
         "nullable": true,
-        "Description": "Audit: the OWNER \u2014 the JWT user (auth.email()) who created this row. Auto-stamped on INSERT; immutable thereafter. NULL for build-time seed rows (no signed-in user)."
+        "Description": "Audit: the OWNER — the JWT user (auth.email()) who created this row. Auto-stamped on INSERT; immutable thereafter. NULL for build-time seed rows (no signed-in user)."
       },
       {
         "name": "ModifiedAt",
@@ -3125,7 +3118,7 @@
         "datatype": "string",
         "type": "raw",
         "nullable": true,
-        "Description": "Audit: the OWNER \u2014 the JWT user (auth.email()) who created this row. Auto-stamped on INSERT; immutable thereafter. NULL for build-time seed rows (no signed-in user)."
+        "Description": "Audit: the OWNER — the JWT user (auth.email()) who created this row. Auto-stamped on INSERT; immutable thereafter. NULL for build-time seed rows (no signed-in user)."
       },
       {
         "name": "ModifiedAt",
@@ -3337,7 +3330,7 @@
         "datatype": "string",
         "type": "relationship",
         "nullable": true,
-        "Description": "FK -> AppUsers.AppUserId \u2014 the actor when a human. Null for system/automated transitions.",
+        "Description": "FK -> AppUsers.AppUserId — the actor when a human. Null for system/automated transitions.",
         "RelatedTo": "AppUsers"
       },
       {
@@ -3374,7 +3367,7 @@
         "datatype": "string",
         "type": "raw",
         "nullable": true,
-        "Description": "Audit: the OWNER \u2014 the JWT user (auth.email()) who created this row. Auto-stamped on INSERT; immutable thereafter. NULL for build-time seed rows (no signed-in user)."
+        "Description": "Audit: the OWNER — the JWT user (auth.email()) who created this row. Auto-stamped on INSERT; immutable thereafter. NULL for build-time seed rows (no signed-in user)."
       },
       {
         "name": "ModifiedAt",
@@ -3457,7 +3450,7 @@
         "datatype": "integer",
         "type": "calculated",
         "nullable": true,
-        "Description": "Calculated \u2014 days until DueDate (negative when overdue).",
+        "Description": "Calculated — days until DueDate (negative when overdue).",
         "formula": "=DATETIME_DIFF({{DueDate}}, TODAY(), 'days')"
       },
       {
@@ -3465,7 +3458,7 @@
         "datatype": "string",
         "type": "relationship",
         "nullable": true,
-        "Description": "FK -> AppUsers.AppUserId \u2014 the AppUser who owns this work item.",
+        "Description": "FK -> AppUsers.AppUserId — the AppUser who owns this work item.",
         "RelatedTo": "AppUsers"
       },
       {
@@ -3504,7 +3497,7 @@
         "datatype": "string",
         "type": "raw",
         "nullable": true,
-        "Description": "Audit: the OWNER \u2014 the JWT user (auth.email()) who created this row. Auto-stamped on INSERT; immutable thereafter. NULL for build-time seed rows (no signed-in user)."
+        "Description": "Audit: the OWNER — the JWT user (auth.email()) who created this row. Auto-stamped on INSERT; immutable thereafter. NULL for build-time seed rows (no signed-in user)."
       },
       {
         "name": "ModifiedAt",
@@ -3630,7 +3623,7 @@
         "datatype": "number",
         "type": "aggregation",
         "nullable": true,
-        "Description": "Rollup \u2014 total USD spend across all turns served by this model.",
+        "Description": "Rollup — total USD spend across all turns served by this model.",
         "formula": "=SUMIFS(AssistantTurns!{{TotalCost}}, AssistantTurns!{{AiModel}}, AiModels!{{AiModelId}})"
       },
       {
@@ -3645,7 +3638,7 @@
         "datatype": "string",
         "type": "raw",
         "nullable": true,
-        "Description": "Audit: the OWNER \u2014 the JWT user (auth.email()) who created this row. Auto-stamped on INSERT; immutable thereafter. NULL for build-time seed rows (no signed-in user)."
+        "Description": "Audit: the OWNER — the JWT user (auth.email()) who created this row. Auto-stamped on INSERT; immutable thereafter. NULL for build-time seed rows (no signed-in user)."
       },
       {
         "name": "ModifiedAt",
@@ -3781,7 +3774,7 @@
         "datatype": "string",
         "type": "raw",
         "nullable": true,
-        "Description": "Free text \u2014 source/announcement of this pricing."
+        "Description": "Free text — source/announcement of this pricing."
       },
       {
         "name": "AiModelTitle",
@@ -3824,7 +3817,7 @@
         "datatype": "string",
         "type": "raw",
         "nullable": true,
-        "Description": "Audit: the OWNER \u2014 the JWT user (auth.email()) who created this row. Auto-stamped on INSERT; immutable thereafter. NULL for build-time seed rows (no signed-in user)."
+        "Description": "Audit: the OWNER — the JWT user (auth.email()) who created this row. Auto-stamped on INSERT; immutable thereafter. NULL for build-time seed rows (no signed-in user)."
       },
       {
         "name": "ModifiedAt",
@@ -3949,7 +3942,7 @@
         "datatype": "string",
         "type": "raw",
         "nullable": true,
-        "Description": "PlatformNaviation route_key in scope when known (raw string, not an FK \u2014 concrete instance paths need not match a nav row)."
+        "Description": "PlatformNaviation route_key in scope when known (raw string, not an FK — concrete instance paths need not match a nav row)."
       },
       {
         "name": "Citation",
@@ -3974,7 +3967,7 @@
         "datatype": "string",
         "type": "relationship",
         "nullable": false,
-        "Description": "FK -> AiModels.AiModelId \u2014 model that answered.",
+        "Description": "FK -> AiModels.AiModelId — model that answered.",
         "RelatedTo": "AiModels",
         "isReversed": false,
         "prefersSingleRecordLink": true,
@@ -3985,7 +3978,7 @@
         "datatype": "string",
         "type": "relationship",
         "nullable": false,
-        "Description": "FK -> ModelPricingVersions.ModelPricingVersionId \u2014 the exact pricing version used to bill this turn (snapshotted so historical cost is stable even after prices change).",
+        "Description": "FK -> ModelPricingVersions.ModelPricingVersionId — the exact pricing version used to bill this turn (snapshotted so historical cost is stable even after prices change).",
         "RelatedTo": "ModelPricingVersions",
         "isReversed": false,
         "prefersSingleRecordLink": true,
@@ -4098,7 +4091,7 @@
         "datatype": "number",
         "type": "calculated",
         "nullable": true,
-        "Description": "USD cost of input: (BillableInputTokens \u00d7 InputPrice + CachedInputTokens \u00d7 CachedInputPrice) / 1,000,000.",
+        "Description": "USD cost of input: (BillableInputTokens × InputPrice + CachedInputTokens × CachedInputPrice) / 1,000,000.",
         "formula": "=(({{BillableInputTokens}}*{{InputPricePerMTok}})+({{CachedInputTokens}}*{{CachedInputPricePerMTok}}))/1000000"
       },
       {
@@ -4106,7 +4099,7 @@
         "datatype": "number",
         "type": "calculated",
         "nullable": true,
-        "Description": "USD cost of output: OutputTokens \u00d7 OutputPrice / 1,000,000.",
+        "Description": "USD cost of output: OutputTokens × OutputPrice / 1,000,000.",
         "formula": "=({{OutputTokens}}*{{OutputPricePerMTok}})/1000000"
       },
       {
@@ -4122,7 +4115,7 @@
         "datatype": "string",
         "type": "raw",
         "nullable": true,
-        "Description": "Audit: the OWNER \u2014 the JWT user (auth.email()) who created this row. Auto-stamped on INSERT; immutable thereafter. NULL for build-time seed rows (no signed-in user)."
+        "Description": "Audit: the OWNER — the JWT user (auth.email()) who created this row. Auto-stamped on INSERT; immutable thereafter. NULL for build-time seed rows (no signed-in user)."
       },
       {
         "name": "ModifiedAt",
@@ -4155,7 +4148,7 @@
         "datatype": "string",
         "type": "raw",
         "nullable": false,
-        "Description": "PK \u2014 kebab logical key for the platform."
+        "Description": "PK — kebab logical key for the platform."
       },
       {
         "name": "Name",
@@ -4198,7 +4191,7 @@
         "datatype": "string",
         "type": "relationship",
         "nullable": true,
-        "Description": "Reverse link to ERBTables \u2014 tables belonging to this platform (1->many).",
+        "Description": "Reverse link to ERBTables — tables belonging to this platform (1->many).",
         "RelatedTo": "ERBTables",
         "isReversed": true,
         "InverseField": "Platform"
@@ -4215,7 +4208,7 @@
         "datatype": "string",
         "type": "raw",
         "nullable": true,
-        "Description": "Audit: the OWNER \u2014 the JWT user (auth.email()) who created this row. Auto-stamped on INSERT; immutable thereafter. NULL for build-time seed rows (no signed-in user)."
+        "Description": "Audit: the OWNER — the JWT user (auth.email()) who created this row. Auto-stamped on INSERT; immutable thereafter. NULL for build-time seed rows (no signed-in user)."
       },
       {
         "name": "ModifiedAt",
@@ -4256,7 +4249,7 @@
         "datatype": "string",
         "type": "raw",
         "nullable": false,
-        "Description": "PK \u2014 kebab logical key for the package."
+        "Description": "PK — kebab logical key for the package."
       },
       {
         "name": "Name",
@@ -4327,7 +4320,7 @@
         "datatype": "string",
         "type": "relationship",
         "nullable": true,
-        "Description": "Reverse link to ERBFeatures \u2014 child feature rows belonging to this package (1->many).",
+        "Description": "Reverse link to ERBFeatures — child feature rows belonging to this package (1->many).",
         "RelatedTo": "ERBFeatures"
       },
       {
@@ -4335,7 +4328,7 @@
         "datatype": "string",
         "type": "relationship",
         "nullable": true,
-        "Description": "Reverse link to ERBTables \u2014 tables belonging to this package (1->many).",
+        "Description": "Reverse link to ERBTables — tables belonging to this package (1->many).",
         "RelatedTo": "ERBTables",
         "isReversed": true,
         "InverseField": "ERBPackage"
@@ -4345,7 +4338,7 @@
         "datatype": "string",
         "type": "relationship",
         "nullable": true,
-        "Description": "Reverse link to PlatformNaviation \u2014 routes belonging to this package (1->many).",
+        "Description": "Reverse link to PlatformNaviation — routes belonging to this package (1->many).",
         "RelatedTo": "PlatformNaviation",
         "isReversed": true,
         "InverseField": "ERBPackage"
@@ -4355,7 +4348,7 @@
         "datatype": "string",
         "type": "relationship",
         "nullable": true,
-        "Description": "Reverse link to StateMachines \u2014 state machines belonging to this package (1->many).",
+        "Description": "Reverse link to StateMachines — state machines belonging to this package (1->many).",
         "RelatedTo": "StateMachines",
         "isReversed": true,
         "InverseField": "ERBPackage"
@@ -4388,7 +4381,7 @@
         "datatype": "string",
         "type": "raw",
         "nullable": true,
-        "Description": "Audit: the OWNER \u2014 the JWT user (auth.email()) who created this row. Auto-stamped on INSERT; immutable thereafter. NULL for build-time seed rows (no signed-in user)."
+        "Description": "Audit: the OWNER — the JWT user (auth.email()) who created this row. Auto-stamped on INSERT; immutable thereafter. NULL for build-time seed rows (no signed-in user)."
       },
       {
         "name": "ModifiedAt",
@@ -4505,7 +4498,7 @@
         "datatype": "string",
         "type": "raw",
         "nullable": true,
-        "Description": "Audit: the OWNER \u2014 the JWT user (auth.email()) who created this row. Auto-stamped on INSERT; immutable thereafter. NULL for build-time seed rows (no signed-in user)."
+        "Description": "Audit: the OWNER — the JWT user (auth.email()) who created this row. Auto-stamped on INSERT; immutable thereafter. NULL for build-time seed rows (no signed-in user)."
       },
       {
         "name": "ModifiedAt",
@@ -4579,7 +4572,7 @@
         "datatype": "string",
         "type": "raw",
         "nullable": false,
-        "Description": "PK = slugified category key (intake / scoring / module / validation / review / output / extraction / prep / dashboard / integration / data-model / platform / devops) \u2014 matches the value stored in ERBFeatures.Category."
+        "Description": "PK = slugified category key (intake / scoring / module / validation / review / output / extraction / prep / dashboard / integration / data-model / platform / devops) — matches the value stored in ERBFeatures.Category."
       },
       {
         "name": "Name",
@@ -4646,7 +4639,7 @@
         "datatype": "string",
         "type": "raw",
         "nullable": true,
-        "Description": "Audit: the OWNER \u2014 the JWT user (auth.email()) who created this row. Auto-stamped on INSERT; immutable thereafter. NULL for build-time seed rows (no signed-in user)."
+        "Description": "Audit: the OWNER — the JWT user (auth.email()) who created this row. Auto-stamped on INSERT; immutable thereafter. NULL for build-time seed rows (no signed-in user)."
       },
       {
         "name": "ModifiedAt",
@@ -4679,7 +4672,7 @@
         "datatype": "string",
         "type": "raw",
         "nullable": false,
-        "Description": "PK \u2014 kebab logical key for the feature."
+        "Description": "PK — kebab logical key for the feature."
       },
       {
         "name": "Name",
@@ -4713,7 +4706,7 @@
         "datatype": "string",
         "type": "calculated",
         "nullable": true,
-        "Description": "Concrete relative URL for this row \u2014 the route template with its :param(s) substituted by this row's own id(s).",
+        "Description": "Concrete relative URL for this row — the route template with its :param(s) substituted by this row's own id(s).",
         "formula": "=SUBSTITUTE({{RoutePath}}, \":featureId\", {{ERBFeatureId}})"
       },
       {
@@ -4736,7 +4729,7 @@
         "datatype": "boolean",
         "type": "lookup",
         "nullable": true,
-        "Description": "Lookup: ERBPackage.IsLicensed \u2014 is this feature's owning package licensed? UI hides the feature from non-Effortless users when false.",
+        "Description": "Lookup: ERBPackage.IsLicensed — is this feature's owning package licensed? UI hides the feature from non-Effortless users when false.",
         "RelatedTo": "ERBPackages",
         "LookupField": "IsLicensed",
         "ViaField": "ERBPackage",
@@ -4761,7 +4754,7 @@
         "datatype": "string",
         "type": "relationship",
         "nullable": true,
-        "Description": "FK to ERBFeatureCategories \u2014 the cross-package functional category this feature belongs to (intake / scoring / module / validation / review / output / extraction / prep / dashboard / integration / data-model / platform / devops).",
+        "Description": "FK to ERBFeatureCategories — the cross-package functional category this feature belongs to (intake / scoring / module / validation / review / output / extraction / prep / dashboard / integration / data-model / platform / devops).",
         "RelatedTo": "ERBFeatureCategories",
         "isReversed": false,
         "prefersSingleRecordLink": true,
@@ -4772,7 +4765,7 @@
         "datatype": "string",
         "type": "lookup",
         "nullable": true,
-        "Description": "Lookup: Category.Title \u2014 human-readable category name.",
+        "Description": "Lookup: Category.Title — human-readable category name.",
         "RelatedTo": "ERBFeatureCategories",
         "LookupField": "Title",
         "ViaField": "Category",
@@ -4783,7 +4776,7 @@
         "datatype": "string",
         "type": "relationship",
         "nullable": true,
-        "Description": "FK to ERBFeatureStatuses \u2014 feature lifecycle status.",
+        "Description": "FK to ERBFeatureStatuses — feature lifecycle status.",
         "RelatedTo": "ERBFeatureStatuses",
         "isReversed": false,
         "prefersSingleRecordLink": true,
@@ -4816,7 +4809,7 @@
         "datatype": "string",
         "type": "lookup",
         "nullable": true,
-        "Description": "Lookup: Status.IsActive \u2014 whether this feature is part of the official shared view.",
+        "Description": "Lookup: Status.IsActive — whether this feature is part of the official shared view.",
         "RelatedTo": "ERBFeatureStatuses",
         "LookupField": "IsActive",
         "ViaField": "Status",
@@ -4862,7 +4855,7 @@
         "datatype": "string",
         "type": "raw",
         "nullable": true,
-        "Description": "Audit: the OWNER \u2014 the JWT user (auth.email()) who created this row. Auto-stamped on INSERT; immutable thereafter. NULL for build-time seed rows (no signed-in user)."
+        "Description": "Audit: the OWNER — the JWT user (auth.email()) who created this row. Auto-stamped on INSERT; immutable thereafter. NULL for build-time seed rows (no signed-in user)."
       },
       {
         "name": "ModifiedAt",
@@ -4946,7 +4939,7 @@
         "datatype": "boolean",
         "type": "lookup",
         "nullable": true,
-        "Description": "Lookup: ERBPackage.IsActive \u2014 is this table's owning package enabled?",
+        "Description": "Lookup: ERBPackage.IsActive — is this table's owning package enabled?",
         "RelatedTo": "ERBPackages",
         "LookupField": "IsActive",
         "ViaField": "ERBPackage",
@@ -4964,7 +4957,7 @@
         "datatype": "boolean",
         "type": "lookup",
         "nullable": true,
-        "Description": "Lookup: ERBPackage.IsLicensed \u2014 is this table's owning package licensed? UI hides the table from non-Effortless users when false.",
+        "Description": "Lookup: ERBPackage.IsLicensed — is this table's owning package licensed? UI hides the table from non-Effortless users when false.",
         "RelatedTo": "ERBPackages",
         "LookupField": "IsLicensed",
         "ViaField": "ERBPackage",
@@ -5218,7 +5211,7 @@
         "datatype": "string",
         "type": "raw",
         "nullable": true,
-        "Description": "Audit: the OWNER \u2014 the JWT user (auth.email()) who created this row. Auto-stamped on INSERT; immutable thereafter. NULL for build-time seed rows (no signed-in user)."
+        "Description": "Audit: the OWNER — the JWT user (auth.email()) who created this row. Auto-stamped on INSERT; immutable thereafter. NULL for build-time seed rows (no signed-in user)."
       },
       {
         "name": "ModifiedAt",
@@ -5266,7 +5259,7 @@
         "datatype": "string",
         "type": "relationship",
         "nullable": false,
-        "Description": "FK to ERBTables \u2014 the field's table.",
+        "Description": "FK to ERBTables — the field's table.",
         "RelatedTo": "ERBTables",
         "isReversed": false,
         "prefersSingleRecordLink": true,
@@ -5277,7 +5270,7 @@
         "datatype": "boolean",
         "type": "lookup",
         "nullable": true,
-        "Description": "Lookup: ERBTable.PackageIsActive \u2014 is the package owning this field's table enabled? (field inherits its table's package).",
+        "Description": "Lookup: ERBTable.PackageIsActive — is the package owning this field's table enabled? (field inherits its table's package).",
         "RelatedTo": "ERBTables",
         "LookupField": "PackageIsActive",
         "ViaField": "ERBTable",
@@ -5487,7 +5480,7 @@
         "datatype": "string",
         "type": "raw",
         "nullable": true,
-        "Description": "Audit: the OWNER \u2014 the JWT user (auth.email()) who created this row. Auto-stamped on INSERT; immutable thereafter. NULL for build-time seed rows (no signed-in user)."
+        "Description": "Audit: the OWNER — the JWT user (auth.email()) who created this row. Auto-stamped on INSERT; immutable thereafter. NULL for build-time seed rows (no signed-in user)."
       },
       {
         "name": "ModifiedAt",
@@ -5563,7 +5556,7 @@
         "datatype": "string",
         "type": "raw",
         "nullable": true,
-        "Description": "ACTION / RPC / REPORT / WEBHOOK / BATCH \u2014 distinguishes from standard CRUD."
+        "Description": "ACTION / RPC / REPORT / WEBHOOK / BATCH — distinguishes from standard CRUD."
       },
       {
         "name": "SubjectTableName",
@@ -5612,7 +5605,7 @@
         "datatype": "string",
         "type": "raw",
         "nullable": true,
-        "Description": "Audit: the OWNER \u2014 the JWT user (auth.email()) who created this row. Auto-stamped on INSERT; immutable thereafter. NULL for build-time seed rows (no signed-in user)."
+        "Description": "Audit: the OWNER — the JWT user (auth.email()) who created this row. Auto-stamped on INSERT; immutable thereafter. NULL for build-time seed rows (no signed-in user)."
       },
       {
         "name": "ModifiedAt",
@@ -5713,7 +5706,7 @@
         "datatype": "string",
         "type": "relationship",
         "nullable": true,
-        "Description": "Self-FK -> SubjectStateInstances.SubjectStateInstanceId \u2014 the previous occupancy in this subject's chain. NULL for the initial state.",
+        "Description": "Self-FK -> SubjectStateInstances.SubjectStateInstanceId — the previous occupancy in this subject's chain. NULL for the initial state.",
         "RelatedTo": "SubjectStateInstances",
         "isReversed": false,
         "prefersSingleRecordLink": true,
@@ -5724,7 +5717,7 @@
         "datatype": "string",
         "type": "relationship",
         "nullable": true,
-        "Description": "FK -> StateTransitions.StateTransitionId \u2014 the edge event that created this occupancy.",
+        "Description": "FK -> StateTransitions.StateTransitionId — the edge event that created this occupancy.",
         "RelatedTo": "StateTransitions",
         "isReversed": false,
         "prefersSingleRecordLink": true,
@@ -5735,7 +5728,7 @@
         "datatype": "boolean",
         "type": "calculated",
         "nullable": true,
-        "Description": "TRUE when ExitedAt IS NULL \u2014 this is the subject's active state.",
+        "Description": "TRUE when ExitedAt IS NULL — this is the subject's active state.",
         "formula": "=ISBLANK({{ExitedAt}})"
       },
       {
@@ -5758,7 +5751,7 @@
         "datatype": "string",
         "type": "raw",
         "nullable": true,
-        "Description": "Audit: the OWNER \u2014 the JWT user (auth.email()) who created this row. Auto-stamped on INSERT; immutable thereafter. NULL for build-time seed rows (no signed-in user)."
+        "Description": "Audit: the OWNER — the JWT user (auth.email()) who created this row. Auto-stamped on INSERT; immutable thereafter. NULL for build-time seed rows (no signed-in user)."
       },
       {
         "name": "ModifiedAt",
@@ -5888,7 +5881,7 @@
         "datatype": "string",
         "type": "raw",
         "nullable": true,
-        "Description": "Audit: the OWNER \u2014 the JWT user (auth.email()) who created this row. Auto-stamped on INSERT; immutable thereafter. NULL for build-time seed rows (no signed-in user)."
+        "Description": "Audit: the OWNER — the JWT user (auth.email()) who created this row. Auto-stamped on INSERT; immutable thereafter. NULL for build-time seed rows (no signed-in user)."
       },
       {
         "name": "ModifiedAt",
@@ -6107,7 +6100,7 @@
         "datatype": "string",
         "type": "raw",
         "nullable": true,
-        "Description": "Audit: the OWNER \u2014 the JWT user (auth.email()) who created this row. Auto-stamped on INSERT; immutable thereafter. NULL for build-time seed rows (no signed-in user)."
+        "Description": "Audit: the OWNER — the JWT user (auth.email()) who created this row. Auto-stamped on INSERT; immutable thereafter. NULL for build-time seed rows (no signed-in user)."
       },
       {
         "name": "ModifiedAt",
@@ -6483,7 +6476,7 @@
         "datatype": "string",
         "type": "raw",
         "nullable": true,
-        "Description": "Audit: the OWNER \u2014 the JWT user (auth.email()) who created this row. Auto-stamped on INSERT; immutable thereafter. NULL for build-time seed rows (no signed-in user)."
+        "Description": "Audit: the OWNER — the JWT user (auth.email()) who created this row. Auto-stamped on INSERT; immutable thereafter. NULL for build-time seed rows (no signed-in user)."
       },
       {
         "name": "ModifiedAt",
@@ -6681,7 +6674,7 @@
         "datatype": "string",
         "type": "raw",
         "nullable": true,
-        "Description": "Audit: the OWNER \u2014 the JWT user (auth.email()) who created this row. Auto-stamped on INSERT; immutable thereafter. NULL for build-time seed rows (no signed-in user)."
+        "Description": "Audit: the OWNER — the JWT user (auth.email()) who created this row. Auto-stamped on INSERT; immutable thereafter. NULL for build-time seed rows (no signed-in user)."
       },
       {
         "name": "ModifiedAt",
@@ -6808,7 +6801,7 @@
         "datatype": "string",
         "type": "raw",
         "nullable": true,
-        "Description": "Audit: the OWNER \u2014 the JWT user (auth.email()) who created this row. Auto-stamped on INSERT; immutable thereafter. NULL for build-time seed rows (no signed-in user)."
+        "Description": "Audit: the OWNER — the JWT user (auth.email()) who created this row. Auto-stamped on INSERT; immutable thereafter. NULL for build-time seed rows (no signed-in user)."
       },
       {
         "name": "ModifiedAt",
@@ -6938,7 +6931,7 @@
         "datatype": "string",
         "type": "raw",
         "nullable": true,
-        "Description": "Audit: the OWNER \u2014 the JWT user (auth.email()) who created this row. Auto-stamped on INSERT; immutable thereafter. NULL for build-time seed rows (no signed-in user)."
+        "Description": "Audit: the OWNER — the JWT user (auth.email()) who created this row. Auto-stamped on INSERT; immutable thereafter. NULL for build-time seed rows (no signed-in user)."
       },
       {
         "name": "ModifiedAt",
@@ -7091,7 +7084,7 @@
       {
         "MetaKey": "description_rich",
         "ValueType": "string",
-        "StringValue": "A driver gets a citation. They can pay it or contest it at a hearing. Miss the deadline and you default; lose the hearing and you owe; pay late and a jurisdiction-specific penalty applies; rack up points and your license is warned then suspended. Every deadline, fine, penalty, point cap, and threshold is a row in the Jurisdictions table \u2014 change a jurisdiction's rule and every citation under it re-derives. The four state machines (Citation, Contest, Payment, License) are calculated fields, never stored-and-mutated.",
+        "StringValue": "A driver gets a citation. They can pay it or contest it at a hearing. Miss the deadline and you default; lose the hearing and you owe; pay late and a jurisdiction-specific penalty applies; rack up points and your license is warned then suspended. Every deadline, fine, penalty, point cap, and threshold is a row in the Jurisdictions table — change a jurisdiction's rule and every citation under it re-derives. The four state machines (Citation, Contest, Payment, License) are calculated fields, never stored-and-mutated.",
         "JsonValue": null
       },
       {
