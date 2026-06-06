@@ -53,6 +53,13 @@
       "CommandLine": "http://localhost:4242/postgres-calculated-to-rulebook -i ../effortless-rulebook/effortless-banking-rulebook.json -i .pg-dump.sql",
       "IsDisabled": false,
       "Description": "Pure function: sync rulebook data[] from pg_dump. Both files passed as zipped payload to ssotme-proxy."
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "httplocalhost30048",
+      "RelativePath": "/rulespeak",
+      "CommandLine": "http://localhost:30048 -i ../effortless-rulebook/effortless-banking-rulebook.json",
+      "IsDisabled": false
     }
   ]
 }

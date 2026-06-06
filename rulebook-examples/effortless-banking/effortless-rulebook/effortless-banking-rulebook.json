@@ -1158,11 +1158,11 @@
         "formula": "=INDEX(Users!{{FullName}}, MATCH({{OriginatingRm}}, Users!{{Name}}, 0))"
       },
       {
-        "name": "UnderwriterLabel",
+        "name": "UnderwriterIsAdmin",
         "datatype": "boolean",
         "type": "lookup",
         "nullable": false,
-        "Description": "True if the underwriter is an admin.",
+        "Description": "True when the loan's underwriter holds the Admin role (looked up from Users.IsAdmin).",
         "formula": "=INDEX(Users!{{IsAdmin}}, MATCH({{Underwriter}}, Users!{{Name}}, 0))"
       },
       {
@@ -1288,7 +1288,6 @@
         "BusinessLabel": "Stillwater Roasters LLC",
         "BusinessNaicsCode": "311920",
         "OriginatingRmLabel": "Devon Marshall",
-        "UnderwriterLabel": null,
         "IsFunded": true,
         "IsClassifiedAsset": false,
         "DscrInBand": true,
@@ -1300,7 +1299,8 @@
         "CountOfDocuments": 2,
         "HasBreachedCovenant": true,
         "OnWatchlist": true,
-        "HealthScore": 3
+        "HealthScore": 3,
+        "UnderwriterIsAdmin": null
       },
       {
         "Name": "l-0042",
@@ -1323,7 +1323,6 @@
         "BusinessLabel": "Pine Hardware Inc.",
         "BusinessNaicsCode": "444110",
         "OriginatingRmLabel": "Devon Marshall",
-        "UnderwriterLabel": null,
         "IsFunded": true,
         "IsClassifiedAsset": true,
         "DscrInBand": false,
@@ -1335,7 +1334,8 @@
         "CountOfDocuments": 0,
         "HasBreachedCovenant": true,
         "OnWatchlist": true,
-        "HealthScore": 1
+        "HealthScore": 1,
+        "UnderwriterIsAdmin": null
       },
       {
         "Name": "l-0078",
@@ -1358,7 +1358,6 @@
         "BusinessLabel": "Ridgeway Consulting LLC",
         "BusinessNaicsCode": "541611",
         "OriginatingRmLabel": "Devon Marshall",
-        "UnderwriterLabel": null,
         "IsFunded": true,
         "IsClassifiedAsset": false,
         "DscrInBand": true,
@@ -1370,7 +1369,8 @@
         "CountOfDocuments": 0,
         "HasBreachedCovenant": false,
         "OnWatchlist": false,
-        "HealthScore": 4
+        "HealthScore": 4,
+        "UnderwriterIsAdmin": null
       }
     ]
   },
