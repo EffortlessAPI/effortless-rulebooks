@@ -1,0 +1,206 @@
+{
+  "$schema": "https://example.com/cmcc-schema/v1",
+  "Name": "traffic-ticket-contest",
+  "Description": "A universally-recognizable case-management domain: a driver receives a traffic citation, may pay it or contest it at a hearing, and faces payment penalties and license-point consequences. Multi-jurisdiction: deadlines, fines, point caps, and suspension thresholds are first-class data, not hardcoded. Four state machines (Citation lifecycle, Contest/Hearing, Payment/Penalty, License-points) are modeled as CALCULATED status fields on the Citation, derived from raw facts + child events + jurisdiction rules, with an append-only CaseEvents log mirroring each transition.",
+  "Jurisdictions": {
+    "schema": [
+      { "name": "JurisdictionId", "datatype": "string", "type": "raw", "nullable": false, "Description": "Surrogate key for the jurisdiction (off-screen)." },
+      { "name": "Name", "datatype": "string", "type": "calculated", "nullable": false, "Description": "Kebab-cased PK derived from the jurisdiction code (e.g. 'CA-LA' -> 'ca-la').", "formula": "=SUBSTITUTE(LOWER({{Code}}), \" \", \"-\")" },
+      { "name": "Code", "datatype": "string", "type": "raw", "nullable": false, "Description": "Short human code for the jurisdiction, e.g. 'CA-LA', 'NY-NYC', 'TX-AUS'." },
+      { "name": "DisplayName", "datatype": "string", "type": "raw", "nullable": false, "Description": "Full readable jurisdiction name, e.g. 'Los Angeles County, California'." },
+      { "name": "DaysToRespond", "datatype": "integer", "type": "raw", "nullable": false, "Description": "Number of days after issuance the driver has to respond (pay or request a hearing) before default judgment." },
+      { "name": "DaysToPayAfterRuling", "datatype": "integer", "type": "raw", "nullable": false, "Description": "Number of days after a guilty ruling (or after issuance if not contested) the fine is due before it is late." },
+      { "name": "LatePenaltyPct", "datatype": "decimal", "type": "raw", "nullable": false, "Description": "Percentage surcharge added to the assessed amount once a payment is late (e.g. 0.25 = 25%)." },
+      { "name": "DaysLateToCollections", "datatype": "integer", "type": "raw", "nullable": false, "Description": "Number of days a payment may remain late before it is referred to collections." },
+      { "name": "PointSuspensionThreshold", "datatype": "integer", "type": "raw", "nullable": false, "Description": "Total active license points at or above which a driver's license is suspended in this jurisdiction." },
+      { "name": "PointWarningThreshold", "datatype": "integer", "type": "raw", "nullable": false, "Description": "Total active license points at or above which a driver receives an advisory warning (below suspension)." },
+      { "name": "TrafficSchoolPointCap", "datatype": "integer", "type": "raw", "nullable": false, "Description": "Maximum violation points for which traffic school is offered as a points-reducing option in this jurisdiction." },
+      { "name": "ViolationTypes", "datatype": "string", "type": "relationship", "nullable": true, "RelatedTo": "ViolationTypes", "Description": "Reverse FK: violation types governed by this jurisdiction." },
+      { "name": "Citations", "datatype": "string", "type": "relationship", "nullable": true, "RelatedTo": "Citations", "Description": "Reverse FK: citations issued under this jurisdiction." },
+      { "name": "CountOfCitations", "datatype": "integer", "type": "aggregation", "nullable": false, "Description": "Number of citations issued under this jurisdiction.", "formula": "=COUNTIFS(Citations!{{Jurisdiction}}, {{Name}})" }
+    ],
+    "data": [
+      { "JurisdictionId": "j-ca-la", "Code": "CA-LA", "DisplayName": "Los Angeles County, California", "DaysToRespond": 21, "DaysToPayAfterRuling": 30, "LatePenaltyPct": 0.25, "DaysLateToCollections": 60, "PointSuspensionThreshold": 4, "PointWarningThreshold": 3, "TrafficSchoolPointCap": 1 },
+      { "JurisdictionId": "j-ny-nyc", "Code": "NY-NYC", "DisplayName": "New York City, New York", "DaysToRespond": 30, "DaysToPayAfterRuling": 30, "LatePenaltyPct": 0.10, "DaysLateToCollections": 90, "PointSuspensionThreshold": 11, "PointWarningThreshold": 6, "TrafficSchoolPointCap": 0 },
+      { "JurisdictionId": "j-tx-aus", "Code": "TX-AUS", "DisplayName": "Travis County, Texas", "DaysToRespond": 14, "DaysToPayAfterRuling": 21, "LatePenaltyPct": 0.30, "DaysLateToCollections": 45, "PointSuspensionThreshold": 6, "PointWarningThreshold": 4, "TrafficSchoolPointCap": 2 }
+    ]
+  },
+  "ViolationTypes": {
+    "schema": [
+      { "name": "ViolationTypeId", "datatype": "string", "type": "raw", "nullable": false, "Description": "Surrogate key for the violation type (off-screen)." },
+      { "name": "Name", "datatype": "string", "type": "calculated", "nullable": false, "Description": "Kebab-cased PK derived from the violation code (e.g. 'CVC-22350' -> 'cvc-22350').", "formula": "=SUBSTITUTE(LOWER({{Code}}), \" \", \"-\")" },
+      { "name": "Code", "datatype": "string", "type": "raw", "nullable": false, "Description": "Statute/vehicle-code reference for the violation, e.g. 'CVC-22350'." },
+      { "name": "Jurisdiction", "datatype": "string", "type": "relationship", "nullable": false, "RelatedTo": "Jurisdictions", "Description": "FK to the Jurisdiction whose rules govern this violation type." },
+      { "name": "JurisdictionLabel", "datatype": "string", "type": "lookup", "nullable": false, "Description": "Display name of the governing jurisdiction.", "formula": "=INDEX(Jurisdictions!{{DisplayName}}, MATCH({{Jurisdiction}}, Jurisdictions!{{Name}}, 0))" },
+      { "name": "Description", "datatype": "string", "type": "raw", "nullable": false, "Description": "Plain-English description of the violation, e.g. 'Unsafe speed for conditions'." },
+      { "name": "BaseFineUsd", "datatype": "decimal", "type": "raw", "nullable": false, "Description": "Base fine amount in USD for this violation before any penalties or reductions." },
+      { "name": "Points", "datatype": "integer", "type": "raw", "nullable": false, "Description": "License points assessed for a conviction of this violation." },
+      { "name": "IsSchoolEligibleByCap", "datatype": "boolean", "type": "calculated", "nullable": false, "Description": "Whether this violation's points fall at or below the jurisdiction's traffic-school point cap (jurisdiction rule applied to the violation).", "formula": "=IF({{Points}} <= INDEX(Jurisdictions!{{TrafficSchoolPointCap}}, MATCH({{Jurisdiction}}, Jurisdictions!{{Name}}, 0)), TRUE, FALSE)" },
+      { "name": "Citations", "datatype": "string", "type": "relationship", "nullable": true, "RelatedTo": "Citations", "Description": "Reverse FK: citations issued for this violation type." },
+      { "name": "CountOfCitations", "datatype": "integer", "type": "aggregation", "nullable": false, "Description": "Number of citations issued for this violation type.", "formula": "=COUNTIFS(Citations!{{ViolationType}}, {{Name}})" }
+    ],
+    "data": [
+      { "ViolationTypeId": "vt-cvc-22350", "Code": "CVC-22350", "Jurisdiction": "ca-la", "Description": "Unsafe speed for conditions (basic speed law)", "BaseFineUsd": 238.00, "Points": 1 },
+      { "ViolationTypeId": "vt-cvc-21453a", "Code": "CVC-21453A", "Jurisdiction": "ca-la", "Description": "Failure to stop at a red signal", "BaseFineUsd": 490.00, "Points": 1 },
+      { "ViolationTypeId": "vt-cvc-23123", "Code": "CVC-23123", "Jurisdiction": "ca-la", "Description": "Handheld cell phone use while driving", "BaseFineUsd": 162.00, "Points": 0 },
+      { "ViolationTypeId": "vt-vtl-1180b", "Code": "VTL-1180B", "Jurisdiction": "ny-nyc", "Description": "Speeding 11-20 mph over the limit", "BaseFineUsd": 300.00, "Points": 4 },
+      { "ViolationTypeId": "vt-vtl-1111d", "Code": "VTL-1111D", "Jurisdiction": "ny-nyc", "Description": "Failure to obey a steady red signal", "BaseFineUsd": 280.00, "Points": 3 },
+      { "ViolationTypeId": "vt-ttc-545351", "Code": "TTC-545351", "Jurisdiction": "tx-aus", "Description": "Exceeding the posted speed limit", "BaseFineUsd": 205.00, "Points": 2 },
+      { "ViolationTypeId": "vt-ttc-544007", "Code": "TTC-544007", "Jurisdiction": "tx-aus", "Description": "Disregarding a red light", "BaseFineUsd": 275.00, "Points": 2 }
+    ]
+  },
+  "Drivers": {
+    "schema": [
+      { "name": "DriverId", "datatype": "string", "type": "raw", "nullable": false, "Description": "Surrogate key for the driver (off-screen)." },
+      { "name": "Name", "datatype": "string", "type": "calculated", "nullable": false, "Description": "Kebab-cased PK derived from the license number (e.g. 'D1234567' -> 'd1234567').", "formula": "=SUBSTITUTE(LOWER({{LicenseNumber}}), \" \", \"-\")" },
+      { "name": "LicenseNumber", "datatype": "string", "type": "raw", "nullable": false, "Description": "Driver's license number; the natural identifier for the driver." },
+      { "name": "FirstName", "datatype": "string", "type": "raw", "nullable": false, "Description": "Driver's first name." },
+      { "name": "LastName", "datatype": "string", "type": "raw", "nullable": false, "Description": "Driver's last name." },
+      { "name": "FullName", "datatype": "string", "type": "calculated", "nullable": false, "Description": "Display name, last-comma-first.", "formula": "={{LastName}} & \", \" & {{FirstName}}" },
+      { "name": "HomeJurisdiction", "datatype": "string", "type": "relationship", "nullable": false, "RelatedTo": "Jurisdictions", "Description": "FK to the Jurisdiction that issued the driver's license (governs point/suspension rules for the driver)." },
+      { "name": "HomeJurisdictionLabel", "datatype": "string", "type": "lookup", "nullable": false, "Description": "Display name of the driver's home jurisdiction.", "formula": "=INDEX(Jurisdictions!{{DisplayName}}, MATCH({{HomeJurisdiction}}, Jurisdictions!{{Name}}, 0))" },
+      { "name": "SuspensionThreshold", "datatype": "integer", "type": "lookup", "nullable": false, "Description": "Point-suspension threshold pulled from the driver's home jurisdiction.", "formula": "=INDEX(Jurisdictions!{{PointSuspensionThreshold}}, MATCH({{HomeJurisdiction}}, Jurisdictions!{{Name}}, 0))" },
+      { "name": "WarningThreshold", "datatype": "integer", "type": "lookup", "nullable": false, "Description": "Point-warning threshold pulled from the driver's home jurisdiction.", "formula": "=INDEX(Jurisdictions!{{PointWarningThreshold}}, MATCH({{HomeJurisdiction}}, Jurisdictions!{{Name}}, 0))" },
+      { "name": "Citations", "datatype": "string", "type": "relationship", "nullable": true, "RelatedTo": "Citations", "Description": "Reverse FK: citations issued to this driver." },
+      { "name": "CountOfCitations", "datatype": "integer", "type": "aggregation", "nullable": false, "Description": "Number of citations issued to this driver.", "formula": "=COUNTIFS(Citations!{{Driver}}, {{Name}})" },
+      { "name": "ActivePoints", "datatype": "integer", "type": "aggregation", "nullable": false, "Description": "Sum of license points across this driver's citations that resulted in a conviction (guilty/unpaid-default) and are still point-active.", "formula": "=SUMIFS(Citations!{{EffectivePoints}}, Citations!{{Driver}}, {{Name}})" },
+      { "name": "LicenseStatus", "datatype": "string", "type": "calculated", "nullable": false, "Description": "License-points state machine for the driver: Suspended at/above the suspension threshold, Warning at/above the warning threshold, otherwise Valid.", "formula": "=IF({{ActivePoints}} >= {{SuspensionThreshold}}, \"Suspended\", IF({{ActivePoints}} >= {{WarningThreshold}}, \"Warning\", \"Valid\"))" }
+    ],
+    "data": [
+      { "DriverId": "d-d1234567", "LicenseNumber": "D1234567", "FirstName": "Jane", "LastName": "Doe", "HomeJurisdiction": "ca-la" },
+      { "DriverId": "d-d7654321", "LicenseNumber": "D7654321", "FirstName": "Carlos", "LastName": "Mendez", "HomeJurisdiction": "tx-aus" },
+      { "DriverId": "d-n0099887", "LicenseNumber": "N0099887", "FirstName": "Aisha", "LastName": "Khan", "HomeJurisdiction": "ny-nyc" }
+    ]
+  },
+  "Citations": {
+    "schema": [
+      { "name": "CitationId", "datatype": "string", "type": "raw", "nullable": false, "Description": "Surrogate key for the citation (off-screen)." },
+      { "name": "Name", "datatype": "string", "type": "calculated", "nullable": false, "Description": "Kebab-cased PK derived from the citation number (e.g. 'TC-2026-0001' -> 'tc-2026-0001').", "formula": "=SUBSTITUTE(LOWER({{CitationNumber}}), \" \", \"-\")" },
+      { "name": "CitationNumber", "datatype": "string", "type": "raw", "nullable": false, "Description": "Human citation/ticket number printed on the ticket." },
+      { "name": "Driver", "datatype": "string", "type": "relationship", "nullable": false, "RelatedTo": "Drivers", "Description": "FK to the cited Driver." },
+      { "name": "DriverLabel", "datatype": "string", "type": "lookup", "nullable": false, "Description": "Display name of the cited driver.", "formula": "=INDEX(Drivers!{{FullName}}, MATCH({{Driver}}, Drivers!{{Name}}, 0))" },
+      { "name": "ViolationType", "datatype": "string", "type": "relationship", "nullable": false, "RelatedTo": "ViolationTypes", "Description": "FK to the cited ViolationType." },
+      { "name": "ViolationLabel", "datatype": "string", "type": "lookup", "nullable": false, "Description": "Description of the cited violation.", "formula": "=INDEX(ViolationTypes!{{Description}}, MATCH({{ViolationType}}, ViolationTypes!{{Name}}, 0))" },
+      { "name": "Jurisdiction", "datatype": "string", "type": "relationship", "nullable": false, "RelatedTo": "Jurisdictions", "Description": "FK to the Jurisdiction in which the citation was issued (governs deadlines, penalties, points)." },
+      { "name": "JurisdictionLabel", "datatype": "string", "type": "lookup", "nullable": false, "Description": "Display name of the issuing jurisdiction.", "formula": "=INDEX(Jurisdictions!{{DisplayName}}, MATCH({{Jurisdiction}}, Jurisdictions!{{Name}}, 0))" },
+      { "name": "BaseFineUsd", "datatype": "decimal", "type": "lookup", "nullable": false, "Description": "Base fine for the cited violation, pulled from the ViolationType.", "formula": "=INDEX(ViolationTypes!{{BaseFineUsd}}, MATCH({{ViolationType}}, ViolationTypes!{{Name}}, 0))" },
+      { "name": "ViolationPoints", "datatype": "integer", "type": "lookup", "nullable": false, "Description": "License points for the cited violation, pulled from the ViolationType.", "formula": "=INDEX(ViolationTypes!{{Points}}, MATCH({{ViolationType}}, ViolationTypes!{{Name}}, 0))" },
+      { "name": "IssuedOn", "datatype": "date", "type": "raw", "nullable": false, "Description": "Date the citation was issued to the driver." },
+      { "name": "AsOfDate", "datatype": "date", "type": "raw", "nullable": false, "Description": "The 'today' reference date used to evaluate deadlines for this citation (lets seed data exercise overdue/late states deterministically)." },
+      { "name": "RespondedOn", "datatype": "date", "type": "raw", "nullable": true, "Description": "Date the driver responded (paid or requested a hearing). Null if no response yet." },
+      { "name": "ContestRequested", "datatype": "boolean", "type": "raw", "nullable": false, "Description": "Whether the driver elected to contest the citation (request a hearing) rather than pay." },
+      { "name": "PaidOn", "datatype": "date", "type": "raw", "nullable": true, "Description": "Date the fine was paid in full. Null if not yet paid." },
+      { "name": "AmountPaidUsd", "datatype": "decimal", "type": "raw", "nullable": true, "Description": "Total amount the driver has paid against this citation. Null/0 if nothing paid." },
+
+      { "name": "DaysToRespond", "datatype": "integer", "type": "lookup", "nullable": false, "Description": "Response window in days, pulled from the issuing jurisdiction.", "formula": "=INDEX(Jurisdictions!{{DaysToRespond}}, MATCH({{Jurisdiction}}, Jurisdictions!{{Name}}, 0))" },
+      { "name": "DaysToPayAfterRuling", "datatype": "integer", "type": "lookup", "nullable": false, "Description": "Days-to-pay window, pulled from the issuing jurisdiction.", "formula": "=INDEX(Jurisdictions!{{DaysToPayAfterRuling}}, MATCH({{Jurisdiction}}, Jurisdictions!{{Name}}, 0))" },
+      { "name": "LatePenaltyPct", "datatype": "decimal", "type": "lookup", "nullable": false, "Description": "Late-penalty percentage, pulled from the issuing jurisdiction.", "formula": "=INDEX(Jurisdictions!{{LatePenaltyPct}}, MATCH({{Jurisdiction}}, Jurisdictions!{{Name}}, 0))" },
+      { "name": "DaysLateToCollections", "datatype": "integer", "type": "lookup", "nullable": false, "Description": "Days-late-to-collections window, pulled from the issuing jurisdiction.", "formula": "=INDEX(Jurisdictions!{{DaysLateToCollections}}, MATCH({{Jurisdiction}}, Jurisdictions!{{Name}}, 0))" },
+
+      { "name": "ResponseDueDate", "datatype": "date", "type": "calculated", "nullable": false, "Description": "Deadline to respond: IssuedOn + the jurisdiction's response window.", "formula": "={{IssuedOn}} + {{DaysToRespond}}" },
+      { "name": "DaysUntilResponseDue", "datatype": "integer", "type": "calculated", "nullable": false, "Description": "Days remaining (negative if overdue) until the response deadline, measured from AsOfDate.", "formula": "={{ResponseDueDate}} - {{AsOfDate}}" },
+      { "name": "IsResponseOverdue", "datatype": "boolean", "type": "calculated", "nullable": false, "Description": "True when no response was filed and the response deadline has passed as of AsOfDate.", "formula": "=IF(AND(ISBLANK({{RespondedOn}}), {{AsOfDate}} > {{ResponseDueDate}}), TRUE, FALSE)" },
+
+      { "name": "CountOfHearings", "datatype": "integer", "type": "aggregation", "nullable": false, "Description": "Number of hearing records attached to this citation.", "formula": "=COUNTIFS(Hearings!{{Citation}}, {{Name}})" },
+      { "name": "LatestHearingOutcome", "datatype": "string", "type": "aggregation", "nullable": true, "Description": "Outcome of the most recent hearing for this citation (Pending if a hearing exists but has no outcome; blank if no hearing).", "formula": "=MAXIFS(Hearings!{{Outcome}}, Hearings!{{Citation}}, {{Name}}, Hearings!{{ScheduledFor}}, MAXIFS(Hearings!{{ScheduledFor}}, Hearings!{{Citation}}, {{Name}}))" },
+
+      { "name": "ContestStatus", "datatype": "string", "type": "calculated", "nullable": false, "Description": "Contest/Hearing state machine: NotContested when the driver did not elect to contest; otherwise HearingRequested -> Scheduled -> Heard, reflected from the latest hearing's outcome.", "formula": "=IF(NOT({{ContestRequested}}), \"NotContested\", IF({{CountOfHearings}} = 0, \"HearingRequested\", IF(OR({{LatestHearingOutcome}} = \"Pending\", ISBLANK({{LatestHearingOutcome}})), \"Scheduled\", \"Heard\")))" },
+
+      { "name": "IsDismissed", "datatype": "boolean", "type": "calculated", "nullable": false, "Description": "True when the latest hearing outcome dismissed the citation.", "formula": "=IF({{LatestHearingOutcome}} = \"Dismissed\", TRUE, FALSE)" },
+      { "name": "IsGuilty", "datatype": "boolean", "type": "calculated", "nullable": false, "Description": "True when the driver is liable: either found guilty/upheld at hearing, or defaulted by missing the response deadline without contesting.", "formula": "=IF(OR({{LatestHearingOutcome}} = \"Guilty\", {{LatestHearingOutcome}} = \"Upheld\", AND({{IsResponseOverdue}}, NOT({{ContestRequested}}))), TRUE, FALSE)" },
+
+      { "name": "AmountDueUsd", "datatype": "decimal", "type": "calculated", "nullable": false, "Description": "Amount currently owed: 0 if dismissed; otherwise the base fine plus the jurisdiction's late penalty if the payment is late.", "formula": "=IF({{IsDismissed}}, 0, IF({{IsPaymentLate}}, {{BaseFineUsd}} * (1 + {{LatePenaltyPct}}), {{BaseFineUsd}}))" },
+      { "name": "PaymentDueDate", "datatype": "date", "type": "calculated", "nullable": false, "Description": "Date the fine is due: the later anchor (response deadline) plus the jurisdiction's days-to-pay window.", "formula": "={{ResponseDueDate}} + {{DaysToPayAfterRuling}}" },
+      { "name": "IsPaymentLate", "datatype": "boolean", "type": "calculated", "nullable": false, "Description": "True when the driver is liable, has not paid in full, and the payment due date has passed as of AsOfDate.", "formula": "=IF(AND({{IsGuilty}}, ISBLANK({{PaidOn}}), {{AsOfDate}} > {{PaymentDueDate}}), TRUE, FALSE)" },
+      { "name": "IsInCollections", "datatype": "boolean", "type": "calculated", "nullable": false, "Description": "True when a late payment has remained unpaid past the jurisdiction's collections window.", "formula": "=IF(AND({{IsPaymentLate}}, {{AsOfDate}} > ({{PaymentDueDate}} + {{DaysLateToCollections}})), TRUE, FALSE)" },
+
+      { "name": "PaymentStatus", "datatype": "string", "type": "calculated", "nullable": false, "Description": "Payment/Penalty state machine: NotOwed (dismissed) -> Paid -> Collections -> Late -> Due. Evaluated in priority order.", "formula": "=IF({{IsDismissed}}, \"NotOwed\", IF(NOT(ISBLANK({{PaidOn}})), \"Paid\", IF({{IsInCollections}}, \"Collections\", IF({{IsPaymentLate}}, \"Late\", IF({{IsGuilty}}, \"Due\", \"Pending\")))))" },
+
+      { "name": "EffectivePoints", "datatype": "integer", "type": "calculated", "nullable": false, "Description": "License points this citation actually contributes to the driver: the violation's points if the driver is liable and not dismissed, otherwise 0. Drives the driver's ActivePoints rollup.", "formula": "=IF(AND({{IsGuilty}}, NOT({{IsDismissed}})), {{ViolationPoints}}, 0)" },
+
+      { "name": "CitationStatus", "datatype": "string", "type": "calculated", "nullable": false, "Description": "Citation lifecycle state machine: Issued -> Responded -> InContest -> Adjudicated -> Closed. The top-level status synthesizing the other tracks.", "formula": "=IF(OR(NOT(ISBLANK({{PaidOn}})), {{IsDismissed}}), \"Closed\", IF(OR({{LatestHearingOutcome}} = \"Guilty\", {{LatestHearingOutcome}} = \"Upheld\", AND({{IsResponseOverdue}}, NOT({{ContestRequested}}))), \"Adjudicated\", IF(AND({{ContestRequested}}, {{CountOfHearings}} > 0), \"InContest\", IF(NOT(ISBLANK({{RespondedOn}})), \"Responded\", \"Issued\"))))" },
+
+      { "name": "Hearings", "datatype": "string", "type": "relationship", "nullable": true, "RelatedTo": "Hearings", "Description": "Reverse FK: hearing records for this citation." },
+      { "name": "Payments", "datatype": "string", "type": "relationship", "nullable": true, "RelatedTo": "Payments", "Description": "Reverse FK: payment records for this citation." },
+      { "name": "CaseEvents", "datatype": "string", "type": "relationship", "nullable": true, "RelatedTo": "CaseEvents", "Description": "Reverse FK: append-only case-event log entries for this citation." }
+    ],
+    "data": [
+      { "CitationId": "c-0001", "CitationNumber": "TC-2026-0001", "Driver": "d1234567", "ViolationType": "cvc-22350", "Jurisdiction": "ca-la", "IssuedOn": "2026-05-01", "AsOfDate": "2026-06-06", "RespondedOn": null, "ContestRequested": false, "PaidOn": null, "AmountPaidUsd": null },
+      { "CitationId": "c-0002", "CitationNumber": "TC-2026-0002", "Driver": "d1234567", "ViolationType": "cvc-21453a", "Jurisdiction": "ca-la", "IssuedOn": "2026-05-20", "AsOfDate": "2026-06-06", "RespondedOn": "2026-05-25", "ContestRequested": true, "PaidOn": null, "AmountPaidUsd": null },
+      { "CitationId": "c-0003", "CitationNumber": "TC-2026-0003", "Driver": "d7654321", "ViolationType": "ttc-545351", "Jurisdiction": "tx-aus", "IssuedOn": "2026-03-01", "AsOfDate": "2026-06-06", "RespondedOn": "2026-03-10", "ContestRequested": true, "PaidOn": null, "AmountPaidUsd": null },
+      { "CitationId": "c-0004", "CitationNumber": "TC-2026-0004", "Driver": "d7654321", "ViolationType": "ttc-544007", "Jurisdiction": "tx-aus", "IssuedOn": "2026-02-01", "AsOfDate": "2026-06-06", "RespondedOn": "2026-02-05", "ContestRequested": false, "PaidOn": null, "AmountPaidUsd": null },
+      { "CitationId": "c-0005", "CitationNumber": "TC-2026-0005", "Driver": "n0099887", "ViolationType": "vtl-1180b", "Jurisdiction": "ny-nyc", "IssuedOn": "2026-05-15", "AsOfDate": "2026-06-06", "RespondedOn": "2026-05-18", "ContestRequested": false, "PaidOn": "2026-05-18", "AmountPaidUsd": 300.00 },
+      { "CitationId": "c-0006", "CitationNumber": "TC-2026-0006", "Driver": "n0099887", "ViolationType": "vtl-1111d", "Jurisdiction": "ny-nyc", "IssuedOn": "2026-05-25", "AsOfDate": "2026-06-06", "RespondedOn": null, "ContestRequested": false, "PaidOn": null, "AmountPaidUsd": null }
+    ]
+  },
+  "Hearings": {
+    "schema": [
+      { "name": "HearingId", "datatype": "string", "type": "raw", "nullable": false, "Description": "Surrogate key for the hearing (off-screen)." },
+      { "name": "Name", "datatype": "string", "type": "calculated", "nullable": false, "Description": "Kebab-cased PK derived from the hearing reference number.", "formula": "=SUBSTITUTE(LOWER({{HearingNumber}}), \" \", \"-\")" },
+      { "name": "HearingNumber", "datatype": "string", "type": "raw", "nullable": false, "Description": "Human hearing reference number." },
+      { "name": "Citation", "datatype": "string", "type": "relationship", "nullable": false, "RelatedTo": "Citations", "Description": "FK to the Citation being contested at this hearing." },
+      { "name": "CitationLabel", "datatype": "string", "type": "lookup", "nullable": false, "Description": "Citation number this hearing concerns.", "formula": "=INDEX(Citations!{{CitationNumber}}, MATCH({{Citation}}, Citations!{{Name}}, 0))" },
+      { "name": "RequestedOn", "datatype": "date", "type": "raw", "nullable": false, "Description": "Date the hearing was requested by the driver." },
+      { "name": "ScheduledFor", "datatype": "date", "type": "raw", "nullable": true, "Description": "Date the hearing is scheduled for. Null if requested but not yet scheduled." },
+      { "name": "Outcome", "datatype": "string", "type": "raw", "nullable": true, "Description": "Outcome of the hearing: 'Pending' (scheduled, not yet heard), 'Dismissed', 'Guilty', 'Upheld', or 'Reduced'. Null if not yet scheduled." },
+      { "name": "Notes", "datatype": "string", "type": "raw", "nullable": true, "Description": "Free-text notes from the hearing." }
+    ],
+    "data": [
+      { "HearingId": "h-0001", "HearingNumber": "H-2026-0002", "Citation": "tc-2026-0002", "RequestedOn": "2026-05-25", "ScheduledFor": "2026-06-20", "Outcome": "Pending", "Notes": "Driver contests red-light timing; awaiting hearing." },
+      { "HearingId": "h-0002", "HearingNumber": "H-2026-0003", "Citation": "tc-2026-0003", "RequestedOn": "2026-03-10", "ScheduledFor": "2026-04-15", "Outcome": "Dismissed", "Notes": "Radar calibration records not produced; dismissed." }
+    ]
+  },
+  "Payments": {
+    "schema": [
+      { "name": "PaymentId", "datatype": "string", "type": "raw", "nullable": false, "Description": "Surrogate key for the payment (off-screen)." },
+      { "name": "Name", "datatype": "string", "type": "calculated", "nullable": false, "Description": "Kebab-cased PK derived from the payment reference number.", "formula": "=SUBSTITUTE(LOWER({{PaymentNumber}}), \" \", \"-\")" },
+      { "name": "PaymentNumber", "datatype": "string", "type": "raw", "nullable": false, "Description": "Human payment reference number." },
+      { "name": "Citation", "datatype": "string", "type": "relationship", "nullable": false, "RelatedTo": "Citations", "Description": "FK to the Citation this payment is applied to." },
+      { "name": "CitationLabel", "datatype": "string", "type": "lookup", "nullable": false, "Description": "Citation number this payment concerns.", "formula": "=INDEX(Citations!{{CitationNumber}}, MATCH({{Citation}}, Citations!{{Name}}, 0))" },
+      { "name": "PaidOn", "datatype": "date", "type": "raw", "nullable": false, "Description": "Date the payment was made." },
+      { "name": "AmountUsd", "datatype": "decimal", "type": "raw", "nullable": false, "Description": "Amount of the payment in USD." },
+      { "name": "Method", "datatype": "string", "type": "raw", "nullable": false, "Description": "Payment method, e.g. 'card', 'check', 'cash', 'online'." }
+    ],
+    "data": [
+      { "PaymentId": "p-0001", "PaymentNumber": "PMT-2026-0005", "Citation": "tc-2026-0005", "PaidOn": "2026-05-18", "AmountUsd": 300.00, "Method": "online" }
+    ]
+  },
+  "CaseEvents": {
+    "schema": [
+      { "name": "CaseEventId", "datatype": "string", "type": "raw", "nullable": false, "Description": "Surrogate key for the case event (off-screen)." },
+      { "name": "Name", "datatype": "string", "type": "calculated", "nullable": false, "Description": "Kebab-cased PK derived from the event reference number.", "formula": "=SUBSTITUTE(LOWER({{EventNumber}}), \" \", \"-\")" },
+      { "name": "EventNumber", "datatype": "string", "type": "raw", "nullable": false, "Description": "Human event reference number (sortable, e.g. 'EV-2026-0001')." },
+      { "name": "Citation", "datatype": "string", "type": "relationship", "nullable": false, "RelatedTo": "Citations", "Description": "FK to the Citation this event belongs to." },
+      { "name": "CitationLabel", "datatype": "string", "type": "lookup", "nullable": false, "Description": "Citation number this event concerns.", "formula": "=INDEX(Citations!{{CitationNumber}}, MATCH({{Citation}}, Citations!{{Name}}, 0))" },
+      { "name": "OccurredOn", "datatype": "date", "type": "raw", "nullable": false, "Description": "Date the event occurred." },
+      { "name": "Track", "datatype": "string", "type": "raw", "nullable": false, "Description": "Which state machine this transition belongs to: 'Citation', 'Contest', 'Payment', or 'License'." },
+      { "name": "FromState", "datatype": "string", "type": "raw", "nullable": true, "Description": "Prior state on the track (null for the initial event)." },
+      { "name": "ToState", "datatype": "string", "type": "raw", "nullable": false, "Description": "New state on the track after this transition." },
+      { "name": "Note", "datatype": "string", "type": "raw", "nullable": true, "Description": "Free-text note describing the transition." }
+    ],
+    "data": [
+      { "CaseEventId": "ev-0001", "EventNumber": "EV-2026-0001", "Citation": "tc-2026-0001", "OccurredOn": "2026-05-01", "Track": "Citation", "FromState": null, "ToState": "Issued", "Note": "Citation issued for unsafe speed." },
+      { "CaseEventId": "ev-0002", "EventNumber": "EV-2026-0002", "Citation": "tc-2026-0002", "OccurredOn": "2026-05-01", "Track": "Citation", "FromState": null, "ToState": "Issued", "Note": "Citation issued for red-light." },
+      { "CaseEventId": "ev-0003", "EventNumber": "EV-2026-0003", "Citation": "tc-2026-0002", "OccurredOn": "2026-05-25", "Track": "Contest", "FromState": "NotContested", "ToState": "HearingRequested", "Note": "Driver requested a hearing." },
+      { "CaseEventId": "ev-0004", "EventNumber": "EV-2026-0004", "Citation": "tc-2026-0002", "OccurredOn": "2026-05-26", "Track": "Contest", "FromState": "HearingRequested", "ToState": "Scheduled", "Note": "Hearing scheduled for 2026-06-20." },
+      { "CaseEventId": "ev-0005", "EventNumber": "EV-2026-0005", "Citation": "tc-2026-0003", "OccurredOn": "2026-03-10", "Track": "Contest", "FromState": "NotContested", "ToState": "HearingRequested", "Note": "Driver requested a hearing." },
+      { "CaseEventId": "ev-0006", "EventNumber": "EV-2026-0006", "Citation": "tc-2026-0003", "OccurredOn": "2026-04-15", "Track": "Contest", "FromState": "Scheduled", "ToState": "Heard", "Note": "Hearing held; citation dismissed." },
+      { "CaseEventId": "ev-0007", "EventNumber": "EV-2026-0007", "Citation": "tc-2026-0005", "OccurredOn": "2026-05-18", "Track": "Payment", "FromState": "Due", "ToState": "Paid", "Note": "Paid online in full." }
+    ]
+  },
+  "__meta__": {
+    "schema": [
+      { "name": "MetaKey", "datatype": "string", "type": "raw", "nullable": false, "Description": "Metadata key (logical PK)." },
+      { "name": "Name", "datatype": "string", "type": "calculated", "nullable": false, "Description": "Mirrors MetaKey as the row's Name.", "formula": "={{MetaKey}}" },
+      { "name": "ValueType", "datatype": "string", "type": "raw", "nullable": false, "Description": "One of 'string', 'object', or 'array'." },
+      { "name": "StringValue", "datatype": "string", "type": "raw", "nullable": true, "Description": "Scalar string value when ValueType is 'string'." },
+      { "name": "JsonValue", "datatype": "string", "type": "raw", "nullable": true, "Description": "JSON-encoded value when ValueType is 'object' or 'array'." }
+    ],
+    "data": [
+      { "MetaKey": "tagline", "ValueType": "string", "StringValue": "A traffic ticket everyone understands, modeled as four state machines and a multi-jurisdiction rules engine.", "JsonValue": null },
+      { "MetaKey": "description_rich", "ValueType": "string", "StringValue": "A driver gets a citation. They can pay it or contest it at a hearing. Miss the deadline and you default; lose the hearing and you owe; pay late and a jurisdiction-specific penalty applies; rack up points and your license is warned then suspended. Every deadline, fine, penalty, point cap, and threshold is a row in the Jurisdictions table — change a jurisdiction's rule and every citation under it re-derives. The four state machines (Citation, Contest, Payment, License) are calculated fields, never stored-and-mutated.", "JsonValue": null },
+      { "MetaKey": "use_cases", "ValueType": "array", "StringValue": null, "JsonValue": "[\"Show how a familiar, deadline-driven case flow decomposes into calculated state machines\",\"Demonstrate a multi-jurisdiction rules engine where regulations are data, not code\",\"Illustrate an append-only event log coexisting with computed current state\"]" },
+      { "MetaKey": "state_machines", "ValueType": "array", "StringValue": null, "JsonValue": "[\"Citation: Issued -> Responded -> InContest -> Adjudicated -> Closed\",\"Contest: NotContested | HearingRequested -> Scheduled -> Heard\",\"Payment: Pending -> Due -> Late -> Collections | Paid | NotOwed\",\"License: Valid -> Warning -> Suspended\"]" }
+    ]
+  }
+}
