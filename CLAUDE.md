@@ -102,7 +102,7 @@ This applies recursively: if the admin portal needs a row's display name, it que
 **This repo is a project that WRAPS a bunch of demo rulebooks. The project rulebook is the PARENT. The demo rulebooks are CHILDREN. They are NEVER mixed.**
 
 - The **project rulebook** is `./effortless-platform/effortless-rulebook/effortless-rulebook.json`. It describes ERB itself — the orchestration tool, the admin portal, the build pipeline, the conformance testing framework. Things like `UserRoles`, `AppUsers`, `AppPermissions`, `AppNavigation`, `AppScreens`, `AppAPIs`, `AddToolCatalog`, `BuildPipeline`, `AdminPortalRuntime` belong **here and only here**. They are about *the wrapper*. (See `./effortless-platform/README.md` — the platform folder is the wrapper "eating its own dog food.")
-- The **demo rulebooks** are `./rulebook-examples/<domain>/effortless-rulebook/<domain>-rulebook.json`. Each one describes ONE business domain (acme-llc's customers, star-trek's episodes, jessica-basic's tasks, etc.). They contain **only that domain's tables**. They never contain portal config.
+- The **demo rulebooks** are `./rulebook-examples/<domain>/effortless-rulebook/<domain>-rulebook.json`. Each one describes ONE business domain (acme-llc's customers, star-trek's episodes, talisman-basic's tasks, etc.). They contain **only that domain's tables**. They never contain portal config.
 
 The admin portal reads portal config from the **project rulebook** (always). It reads the active demo's domain data from the **demo rulebook** for whichever domain the request names. These are two separate file reads, two separate concerns. Never merge them. Never put portal entities in a demo rulebook. Never put a domain's business tables in the project rulebook.
 
@@ -112,11 +112,11 @@ The admin portal reads portal config from the **project rulebook** (always). It 
 
 # THE ADMIN PORTAL ≠ A DOMAIN (same category error, different surface)
 
-**The admin portal is like Microsoft Word. A domain (acme-llc, star-trek, jessica-basic, etc.) is like a .docx document.** Word's install directory is not named after any document. A document is not named after the app. They are categorically different things and must never be mixed in any identifier — DB name, file path, function name, env var, table prefix, anything.
+**The admin portal is like Microsoft Word. A domain (acme-llc, star-trek, talisman-basic, etc.) is like a .docx document.** Word's install directory is not named after any document. A document is not named after the app. They are categorically different things and must never be mixed in any identifier — DB name, file path, function name, env var, table prefix, anything.
 
 **Database naming (enforced):**
 - `erb_admin_portal` — the admin portal's own database. **Singular.** Holds portal config (`AppUsers`, `AppRoles`, `AppNav`, etc.). The word `admin` appears here and **only** here. Never with a domain suffix.
-- `erb_<domain>` — per-domain document database (`erb_acme_llc`, `erb_star_trek`, `erb_jessica_basic`, …). Holds that domain's business data. The word `admin` **never** appears in these names.
+- `erb_<domain>` — per-domain document database (`erb_acme_llc`, `erb_star_trek`, `erb_talisman_basic`, …). Holds that domain's business data. The word `admin` **never** appears in these names.
 
 **Forbidden pattern: `erb_admin_<domain>`.** This is the category-error red flag. If you see it in code, the code is wrong. If you are about to write it, stop — the naming itself proves you have conflated the app with a document.
 
@@ -172,11 +172,46 @@ Two subdirs under `rulebook-examples/` deliberately carry no `<project>-rulebook
 
 These are **not** demos and are not in any "demos with a rulebook" denominator. Do not flag them as missing.
 
+#### Required transpilers for every new example project
+
+Every new demo added under `rulebook-examples/` must include a `rulebooktorulespeak` entry in its `effortless.json` `ProjectTranspilers` array. This is not optional — rulespeak is the human-readable narrative output for every domain and must be available on all demos. The entry shape is:
+
+```json
+{
+  "IsSSoTTranspiler": false,
+  "Name": "rulebooktorulespeak",
+  "RelativePath": "/rulespeak",
+  "CommandLine": "rulebook-to-rulespeak -i ../effortless-rulebook/<project>-rulebook.json",
+  "IsDisabled": false
+}
+```
+
+Replace `<project>` with the directory/slug name. If you create a new example project and do not add this entry, that is a bug.
+
+#### Required "Local transpiler bus" pointer in every example README
+
+Every demo's `README.md` must end with a `## Local transpiler bus (` `localhost:4242` `)` section that points readers at the ssotme-proxy — the local HTTP server on `localhost:4242` that `./start.sh` boots from the repo root and that serves all 13 repo-local transpilers (`rulebook-to-postgres`, `rulebook-to-python`, `rulebook-to-golang`, `rulebook-to-cobol`, `rulebook-to-owl`, etc.) as first-class `ssotme://` routes any `effortless build` can call. Use this exact block (append it as the last section of the README):
+
+```markdown
+---
+
+## Local transpiler bus (`localhost:4242`)
+
+> **All 13 local transpilers live on `localhost:4242`.** Once you run
+> `./start.sh` from the repo root, the ssotme-proxy exposes every repo-local
+> transpiler — `rulebook-to-postgres`, `rulebook-to-python`, `rulebook-to-golang`,
+> `rulebook-to-cobol`, `rulebook-to-owl`, and more — as first-class `ssotme://`
+> routes any `effortless build` can call.
+```
+
+The transpiler count and route list are authoritative in `effortless-platform/ssotme-proxy/server.py` (the `TRANSPILERS` registry). If you add or remove a route there, update the count ("13") in this block across all demo READMEs to match. If you create a new example project without this section, that is a bug.
+
 ### Rules for agents
 
 - Before changing any code that references a rulebook path, decide which of the two categories above the code belongs to. There is no "smart fallback" that handles both.
 - The top-level path is a fixed literal. Never rewrite it to read the active domain.
 - Per-project rulebook paths must be resolved dynamically — never hardcode `effortless-rulebook.json` for them. Use `get_domain_rulebook_path` (bash) or `get_rulebook_path()` (python).
+- When creating a new example project, always include the `rulebooktorulespeak` transpiler entry (see above).
 
 ## `__meta__` table doctrine (applies to every rulebook — demos AND the platform)
 

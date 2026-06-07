@@ -121,7 +121,7 @@ diff against the answer key, observe equivalence.
 
 - **CustomerDemo** — minimal. String concatenation across substrates. Useful as
   a smoke test.
-- **Jessica Talisman's Workflow (BASIC + ADVANCED)** — 9-table enterprise
+- **Talisman Workflow (BASIC + ADVANCED)** — 9-table enterprise
   workflow with delegation. Demonstrates that a real organizational ontology
   decomposes cleanly into SDLAF.
 - **StarTrek** — moderate complexity, hierarchical media catalog. Useful for

@@ -108,23 +108,24 @@ function renderCall(node: Extract<Node, { kind: "call" }>, ctx: Required<RenderC
   }
 
   // ── INDEX(T!{{X}}, MATCH({{K}}, T!{{Name}}, 0))  ── classic lookup ──
+  // A lookup reads as "the <targetField> of the linked <thing>", naming the related
+  // entity by the FK field that points at it (the relationship), never as a "row".
   if (fn === "INDEX" && args.length === 2 && args[0].kind === "ref"
       && args[1].kind === "call" && args[1].fn === "MATCH"
       && args[1].args.length >= 2) {
     const target = args[0]; // T!{{X}}
     const match = args[1];
     const key = match.args[0];
-    // Plain "the <X> of the linked <T>" if the key is a simple ref.
-    if (key.kind === "ref") {
-      const sourceTable = target.table ?? "the linked row";
-      const fieldName = ctx.refLabel(target.table, target.field);
-      const keyLabel = ctx.refLabel(key.table, key.field);
-      return `the ${fieldName} of the ${sourceTable} row matched by ${keyLabel}`;
-    }
-    // Generic fallback for non-ref keys.
-    const sourceTable = target.table ?? "the related row";
     const fieldName = ctx.refLabel(target.table, target.field);
-    return `the ${fieldName} of the ${sourceTable} row matched by ${render(key, ctx, false)}`;
+    // Prefer naming the related thing by the FK field (the relationship name), e.g.
+    // INDEX(Jurisdictions!State, MATCH(Clients!Jurisdiction, …)) → "the state of the
+    // linked jurisdiction". Fall back to the singular target table, then "linked record".
+    if (key.kind === "ref") {
+      const linked = humanizeField(key.field);
+      return `the ${fieldName} of the linked ${linked}`;
+    }
+    const linked = target.table ? singularize(humanizeField(target.table)) : "linked record";
+    return `the ${fieldName} of the linked ${linked}`;
   }
 
   // ── AND / OR / NOT ──────────────────────────────────────────────────
@@ -219,7 +220,7 @@ function renderRollup(
 
 // COUNTIFS — the first key's table is what we're counting.
 function renderCountIfs(args: Node[], ctx: Required<RenderCtx>): string {
-  if (args.length === 0) return "count of rows";
+  if (args.length === 0) return "count of matching records";
   const firstKey = args[0];
   const table = firstKey.kind === "ref" ? firstKey.table : null;
   const condBody = renderConditionPairs(args, ctx, table);
@@ -228,12 +229,13 @@ function renderCountIfs(args: Node[], ctx: Required<RenderCtx>): string {
       ? `count of ${table} whose ${condBody}`
       : `count of ${table}`;
   }
-  return condBody ? `count of rows where ${condBody}` : "count of rows";
+  return condBody ? `count of matching records where ${condBody}` : "count of matching records";
 }
 
 // Render alternating (key, val) pairs. If `dropTable` matches the key's
 // table, strip it (the outer phrase already says "across all <T>").
-// {{Name}} as a value is the primary-key self-reference → "this row".
+// {{Name}} as a value is the primary-key self-reference → "this one"
+// (the subject itself — never described as a "row").
 function renderConditionPairs(
   args: Node[],
   ctx: Required<RenderCtx>,
@@ -248,7 +250,7 @@ function renderConditionPairs(
       ? ctx.refLabel(null, key.field)
       : render(key, ctx, false);
     const valLabel = val.kind === "ref" && val.table === null && val.field === "Name"
-      ? "this row"
+      ? "this one"
       : render(val, ctx, false);
     pairs.push(`${keyLabel} is ${valLabel}`);
   }
@@ -294,4 +296,15 @@ export function humanizeField(field: string): string {
     .replace(/([a-z0-9])([A-Z])/g, "$1 $2")
     .replace(/([A-Z]+)([A-Z][a-z])/g, "$1 $2")
     .toLowerCase();
+}
+
+// Naive depluralization for naming a related thing from its table name, so a
+// lookup reads "the state of the linked jurisdiction" rather than "...jurisdictions".
+// Mirrors the RuleSpeak engine's Singular() just enough for table names.
+function singularize(term: string): string {
+  if (!term) return term;
+  if (/ies$/i.test(term)) return term.replace(/ies$/i, "y");
+  if (/(ses|xes|zes)$/i.test(term)) return term.slice(0, -2);
+  if (/s$/i.test(term) && !/ss$/i.test(term)) return term.slice(0, -1);
+  return term;
 }

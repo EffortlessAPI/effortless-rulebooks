@@ -29,11 +29,11 @@ effortless-rulebooks/
 │   ├── README.md                # Narrative: what this ontology demonstrates
 │   └── execution-substrates/    # Generated: Postgres, Python, Go, etc.
 │
-├── jessica-advanced/
+├── talisman-advanced/
 │   ├── effortless.json
 │   ├── CLAUDE.md
 │   ├── effortless-rulebook/
-│   │   └── jessica-advanced-rulebook.json
+│   │   └── talisman-advanced-rulebook.json
 │   ├── README.md
 │   └── execution-substrates/
 │
@@ -73,7 +73,7 @@ To add a new domain/ontology to this hub:
 
 ## Naming Conventions
 
-- **Folder names**: kebab-case (e.g., `star-trek`, `customer-fullname`, `jessica-advanced`)
+- **Folder names**: kebab-case (e.g., `star-trek`, `customer-fullname`, `talisman-advanced`)
 - **Rulebook tables**: PascalCase, plural (e.g., `Series`, `Episodes`, `Ratings`)
 - **The `Name` field**: Always first, always a formula (the logical primary key per ERB convention)
 
@@ -84,8 +84,8 @@ To add a new domain/ontology to this hub:
 | Ontology | What It Demonstrates |
 |----------|----------------------|
 | `star-trek` | Hierarchical relationships, polymorphic FKs, multi-level aggregations |
-| `jessica-advanced` | Complex workflow modeling, computed statuses, temporal reasoning |
-| `jessica-basic` | Simple task tracking, basic formulas, aggregations |
+| `talisman-advanced` | Complex workflow modeling, computed statuses, temporal reasoning |
+| `talisman-basic` | Simple task tracking, basic formulas, aggregations |
 | `customer-fullname` | Name derivation, string concatenation |
 | `is-everything-a-language` | Linguistic ontology, self-referential models |
 | `acme-llc` | Lean order-to-fulfillment, essential business rules |

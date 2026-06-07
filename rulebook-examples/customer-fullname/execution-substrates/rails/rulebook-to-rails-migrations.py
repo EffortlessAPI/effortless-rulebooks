@@ -154,18 +154,34 @@ def main():
         snake_table = to_snake_case(table_name)
         current_table_schema = current_schema.get(snake_table, {})
 
-        migration_code = generate_migration(table_name, raw_fields, current_table_schema)
+        class_name, migration_code = generate_migration(table_name, raw_fields, current_table_schema)
 
         if migration_code:
-            migration_file = f"{output_dir}/db/migrate/{migration_timestamp}_{snake_table}.rb"
+            # Rails derives the expected migration class from the filename:
+            # `<timestamp>_<underscored_class_name>.rb` MUST underscore to `class_name`.
+            # Anything else raises "uninitialized constant" / "Multiple migrations
+            # have the name ..." at db:migrate time.
+            file_slug = to_snake_case(class_name)
+
+            # Remove any stale migration for this same class (older timestamps from
+            # prior runs). Without this, every regenerate leaves a duplicate behind
+            # and Rails aborts with DuplicateMigrationNameError.
+            for stale in Path(f"{output_dir}/db/migrate").glob(f"*_{file_slug}.rb"):
+                stale.unlink()
+                print(f"Removed stale {stale}")
+
+            migration_file = f"{output_dir}/db/migrate/{migration_timestamp}_{file_slug}.rb"
 
             with open(migration_file, 'w') as f:
                 f.write(migration_code)
             print(f"Generated {migration_file}")
 
 
-def generate_migration(table_name: str, raw_fields: list, current_columns: dict) -> str:
-    """Generate migration (full create_table or smart alter_table)."""
+def generate_migration(table_name: str, raw_fields: list, current_columns: dict):
+    """Generate migration (full create_table or smart alter_table).
+
+    Returns (class_name, code). `code` is "" when no migration is needed.
+    """
     snake_name = to_snake_case(table_name)
 
     if not current_columns:
@@ -176,13 +192,13 @@ def generate_migration(table_name: str, raw_fields: list, current_columns: dict)
         return generate_alter_table_migration(table_name, raw_fields, current_columns, snake_name)
 
 
-def generate_create_table_migration(table_name: str, raw_fields: list, snake_name: str) -> str:
-    """Generate a create_table migration."""
+def generate_create_table_migration(table_name: str, raw_fields: list, snake_name: str):
+    """Generate a create_table migration. Returns (class_name, code)."""
     pk_field = raw_fields[0] if raw_fields else None
     pk_attr = to_snake_case(pk_field['name']) if pk_field else 'id'
     class_name = f"Create{table_name}"
 
-    code = f"""class {class_name} < ActiveRecord::Migration[6.0]
+    code = f"""class {class_name} < ActiveRecord::Migration[7.0]
   def change
     create_table :{snake_name}, primary_key: :{pk_attr}, id: false do |t|
 """
@@ -212,11 +228,14 @@ def generate_create_table_migration(table_name: str, raw_fields: list, snake_nam
   end
 end
 """
-    return code
+    return class_name, code
 
 
-def generate_alter_table_migration(table_name: str, raw_fields: list, current_columns: dict, snake_name: str) -> str:
-    """Generate an alter_table migration (add/drop columns as needed)."""
+def generate_alter_table_migration(table_name: str, raw_fields: list, current_columns: dict, snake_name: str):
+    """Generate an alter_table migration (add/drop columns as needed).
+
+    Returns (class_name, code). `code` is "" when no changes are needed.
+    """
     changes = []
     rulebook_attrs = {}
 
@@ -245,18 +264,19 @@ def generate_alter_table_migration(table_name: str, raw_fields: list, current_co
         if col_name not in rulebook_attrs:
             changes.append(f'    remove_column :{snake_name}, :{col_name}')
 
-    if not changes:
-        return ""  # No changes needed
-
     class_name = f"Update{table_name}"
-    code = f"""class {class_name} < ActiveRecord::Migration[6.0]
+
+    if not changes:
+        return class_name, ""  # No changes needed
+
+    code = f"""class {class_name} < ActiveRecord::Migration[7.0]
   def change
 """
     code += '\n'.join(changes) + '\n'
     code += """  end
 end
 """
-    return code
+    return class_name, code
 
 
 if __name__ == '__main__':

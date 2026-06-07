@@ -126,18 +126,18 @@
       "log_path": ""
     },
     {
-      "domain": "jessica-advanced",
+      "domain": "talisman-advanced",
       "status": "NO_LOG",
-      "root_cause": "No log on disk \u2014 run build-all-domains.sh --domain jessica-advanced",
+      "root_cause": "No log on disk \u2014 run build-all-domains.sh --domain talisman-advanced",
       "first_error": "",
       "missing_ops": [],
       "missing_funcs": [],
       "log_path": ""
     },
     {
-      "domain": "jessica-basic",
+      "domain": "talisman-basic",
       "status": "NO_LOG",
-      "root_cause": "No log on disk \u2014 run build-all-domains.sh --domain jessica-basic",
+      "root_cause": "No log on disk \u2014 run build-all-domains.sh --domain talisman-basic",
       "first_error": "",
       "missing_ops": [],
       "missing_funcs": [],

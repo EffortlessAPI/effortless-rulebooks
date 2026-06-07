@@ -50,21 +50,21 @@ _Domain:_ `domain-001`
 
 **Observed cost.** All substrates < 1s; English regeneration ~30s.
 
-### Step 2: Jessica BASIC (child of root)
+### Step 2: Talisman BASIC (child of root)
 
 _Domain:_ `domain-002`
 
-**What happens.** Walk down the progression tree to Jessica BASIC — adds relationships, aggregations, role/agent separation. Every substrate handles the elaboration with no substrate-side edits.
+**What happens.** Walk down the progression tree to Talisman BASIC — adds relationships, aggregations, role/agent separation. Every substrate handles the elaboration with no substrate-side edits.
 
 **Key lesson.** Walking the tree of rulebooks (ParentDomainId) IS the demo — no git rewind required. The viewer can see N rulebooks side-by-side rather than replaying commits.
 
 **Observed cost.** Python/Go/Postgres < 1s, OWL ~10s, English ~5min.
 
-### Step 3: Jessica ADVANCED (child of BASIC)
+### Step 3: Talisman ADVANCED (child of BASIC)
 
 _Domain:_ `domain-003`
 
-**What happens.** Walk further down: Jessica ADVANCED elaborates BASIC with cross-entity lookups and conditional IF logic. Conformance still 100% across deterministic substrates.
+**What happens.** Walk further down: Talisman ADVANCED elaborates BASIC with cross-entity lookups and conditional IF logic. Conformance still 100% across deterministic substrates.
 
 **Key lesson.** Elaboration within a tree of rulebooks costs the SAME as elaboration within a commit history — proving that 'commits' was never the load-bearing thing; the progression structure was.
 

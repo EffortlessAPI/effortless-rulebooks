@@ -11,7 +11,6 @@
           <th>Last Name</th>
           <th>Full Name <small>(calculated)</small></th>
           <th>Initials <small>(calculated)</small></th>
-          <th>Email</th>
         </tr>
       </thead>
       <tbody>
@@ -22,7 +21,6 @@
             <td><%= customer.last_name %></td>
             <td><strong><%= customer.name %></strong></td>
             <td><code><%= customer.initials %></code></td>
-            <td><a href="mailto:<%= customer.email_address %>"><%= customer.email_address %></a></td>
           </tr>
         <% end %>
       </tbody>

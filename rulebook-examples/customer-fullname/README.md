@@ -122,7 +122,7 @@ All substrates produce identical outputs for all 3 test rows:
 
 ## Next Steps
 
-After exploring this base, switch to **Jessica BASIC** to see:
+After exploring this base, switch to **Talisman BASIC** to see:
 - 9 tables with foreign key relationships
 - Aggregations (COUNT, etc.)
 - Role-based workflow modeling
@@ -138,3 +138,13 @@ After exploring this base, switch to **Jessica BASIC** to see:
 ---
 
 *Base ID: `appWrXPvXbkgQGOxt`*
+
+---
+
+## Local transpiler bus (`localhost:4242`)
+
+> **All 13 local transpilers live on `localhost:4242`.** Once you run
+> `./start.sh` from the repo root, the ssotme-proxy exposes every repo-local
+> transpiler — `rulebook-to-postgres`, `rulebook-to-python`, `rulebook-to-golang`,
+> `rulebook-to-cobol`, `rulebook-to-owl`, and more — as first-class `ssotme://`
+> routes any `effortless build` can call.

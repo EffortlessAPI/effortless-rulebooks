@@ -20,14 +20,13 @@ const pool = new Pool({ connectionString: DATABASE_URL });
 // and WRITES to the base table (raw facts only). It never recomputes business
 // logic itself — Name/Initials come from the rulebook-derived view.
 const VIEW_COLUMNS =
-  'customer_id, name, email_address, initials, first_name, last_name';
+  'customer_id, name, initials, first_name, last_name';
 
 // Map a vw_customers row (snake_case) to the API shape the frontend expects.
 function toApi(row) {
   return {
     CustomerId: row.customer_id,
     Name: row.name,
-    EmailAddress: row.email_address,
     Initials: row.initials,
     FirstName: row.first_name,
     LastName: row.last_name,
@@ -38,7 +37,6 @@ function toApi(row) {
 const WRITABLE = {
   FirstName: 'first_name',
   LastName: 'last_name',
-  EmailAddress: 'email_address',
 };
 
 // Register the JSON API on any express app (mounted on both the API port and

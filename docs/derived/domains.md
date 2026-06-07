@@ -4,7 +4,7 @@
 
 # Rulebook Domains
 
-Customer ontologies: each domain has its own rulebook + substrate generation. Domains form a TREE — ParentDomainId links a more-elaborate domain back to the simpler one it grew out of (e.g. Jessica ADVANCED ← Jessica BASIC). The UI uses this to present related rulebooks as a set rather than a flat list, and to drive 'next step in the progression' navigation.
+Customer ontologies: each domain has its own rulebook + substrate generation. Domains form a TREE — ParentDomainId links a more-elaborate domain back to the simpler one it grew out of (e.g. Talisman ADVANCED ← Talisman BASIC). The UI uses this to present related rulebooks as a set rather than a flat list, and to drive 'next step in the progression' navigation.
 
 ## Customer FullName
 
@@ -16,7 +16,7 @@ Hello World: demonstrates basic schema and calculated field (CONCAT formula)
 
 _Rulebook path:_ `rulebook-examples/customer-fullname/effortless-rulebook/customer-fullname-rulebook.json`
 
-## Jessica BASIC
+## Talisman BASIC
 
 _complexity: moderate · tables: 9_
 
@@ -24,9 +24,9 @@ Real workflow modeling: task management with assigned agents
 
 **Key features.** relationships, aggregations, role-agent separation
 
-_Rulebook path:_ `rulebook-examples/jessica-basic/effortless-rulebook/jessica-basic-rulebook.json`
+_Rulebook path:_ `rulebook-examples/talisman-basic/effortless-rulebook/talisman-basic-rulebook.json`
 
-## Jessica ADVANCED
+## Talisman ADVANCED
 
 _complexity: advanced · tables: 9_
 
@@ -34,7 +34,7 @@ Business rule complexity: demonstrates advanced formula patterns
 
 **Key features.** cross-entity lookups, conditional IF logic, complex aggregations
 
-_Rulebook path:_ `rulebook-examples/jessica-advanced/effortless-rulebook/jessica-advanced-rulebook.json`
+_Rulebook path:_ `rulebook-examples/talisman-advanced/effortless-rulebook/talisman-advanced-rulebook.json`
 
 ## StarTrek
 

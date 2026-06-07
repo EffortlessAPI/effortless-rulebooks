@@ -4,5 +4,5 @@
 
 CREATE OR REPLACE VIEW vw_customers AS
 SELECT
-  "customer_id",  "last_name" || ", " || "first_name" AS "name",  "email_address",  SUBSTRING("first_name" FROM 1 FOR 1) || SUBSTRING("last_name" FROM 1 FOR 1) || "." AS "initials",  "first_name",  "last_name"
+  "customer_id",  "first_name",  "last_name",  "first_name" || ' ' || "last_name" AS "name",  SUBSTRING("first_name" FROM LENGTH("first_name") - 1 + 1) || '.' || SUBSTRING("last_name" FROM LENGTH("last_name") - 1 + 1) || '.' AS "initials"
 FROM customers;

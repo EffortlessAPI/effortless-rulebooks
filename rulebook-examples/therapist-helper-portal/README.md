@@ -91,3 +91,13 @@ A menu of obvious next turns. Some are pure rulebook changes (the UI keeps worki
 - No tests — manual smoke test only.
 - `SessionLabel` is declared `string` in the rulebook but the generator coerces it to `DATE` (the `*Label`/`*Date` token heuristic fires). The UI just shows the date portion.
 - FK convention: each entity's first raw field is `<Table>Id`, which the transpiler uses as the literal PK column. FK columns hold those Id values, so all rulebook lookups (single-hop and chained, like `GoalUpdates.GoalClientTherapist`) resolve in the generated `vw_*` views with no hand-rolled SQL.
+
+---
+
+## Local transpiler bus (`localhost:4242`)
+
+> **All 13 local transpilers live on `localhost:4242`.** Once you run
+> `./start.sh` from the repo root, the ssotme-proxy exposes every repo-local
+> transpiler — `rulebook-to-postgres`, `rulebook-to-python`, `rulebook-to-golang`,
+> `rulebook-to-cobol`, `rulebook-to-owl`, and more — as first-class `ssotme://`
+> routes any `effortless build` can call.

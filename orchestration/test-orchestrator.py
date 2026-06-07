@@ -63,6 +63,17 @@ TESTING_DIR = os.path.join(DOMAIN_DIR, "testing")
 ANSWER_KEYS_DIR = os.path.join(TESTING_DIR, "answer-keys")
 BLANK_TESTS_DIR = os.path.join(TESTING_DIR, "blank-tests")
 
+# Rulebook tables that are NOT graded by conformance. `discover_entities()`
+# (shared.py) deliberately INCLUDES `__meta__` because injectors materialize it
+# like any other table (CSV sheet, Airtable table, etc.). The Postgres
+# transpiler, however, intentionally emits NO `vw___meta__` view — `__meta__` is
+# project-level metadata, not domain data (see CLAUDE.md's `__meta__` doctrine).
+# Grading it would therefore score every row as a failure against a view that
+# does not (and should not) exist. We exclude it here, at the one place the
+# entity list feeds answer-key generation, so it propagates to blank-tests,
+# _metadata.json, and grading in a single spot.
+NON_GRADED_ENTITIES = {"__meta__"}
+
 def get_substrate_test_answers_dir(substrate_name: str) -> str:
     """Return the domain-scoped test-answers dir for a substrate."""
     return os.path.join(TESTING_DIR, substrate_name, "test-answers")
@@ -441,8 +452,10 @@ def generate_all_answer_keys(rulebook: dict) -> dict:
         shutil.rmtree(ANSWER_KEYS_DIR)
     os.makedirs(ANSWER_KEYS_DIR, exist_ok=True)
 
-    entities = discover_entities(rulebook)
-    print(f"  Found {len(entities)} entities in rulebook", flush=True)
+    entities = [e for e in discover_entities(rulebook) if e not in NON_GRADED_ENTITIES]
+    skipped = sorted(NON_GRADED_ENTITIES)
+    print(f"  Found {len(entities)} entities in rulebook"
+          f" (excluding non-graded: {', '.join(skipped)})", flush=True)
 
     all_answer_keys = {}
     recompute_failures: list = []

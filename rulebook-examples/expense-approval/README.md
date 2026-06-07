@@ -108,3 +108,13 @@ The build pipeline:
 3. `rulebook-to-react-explainer-dag` transpiler — generates `web/src/explainer-dag/` (the clickable inference graph module)
 
 Stack: Express + pg (server), Vite + React + React Router (web), ExcelJS (Excel export), Effortless CLI (build pipeline).
+
+---
+
+## Local transpiler bus (`localhost:4242`)
+
+> **All 13 local transpilers live on `localhost:4242`.** Once you run
+> `./start.sh` from the repo root, the ssotme-proxy exposes every repo-local
+> transpiler — `rulebook-to-postgres`, `rulebook-to-python`, `rulebook-to-golang`,
+> `rulebook-to-cobol`, `rulebook-to-owl`, and more — as first-class `ssotme://`
+> routes any `effortless build` can call.

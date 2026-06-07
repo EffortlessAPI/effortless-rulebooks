@@ -2,27 +2,26 @@
 
 ## Configuration
 
-- **Rulebook:** `/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortlessly-rulebooks/rulebook-examples/customer-fullname/effortless-rulebook/customer-fullname-rulebook.json`
-- **Substrates Tested:** 2
-- **Computed Columns Tested:** 2
+- **Rulebook:** `/Users/eejai42/effortlessapi-app-root/users/user_ee42ai73-18a9-47d5-8f99-954b00f6c041/my-projects/effortless-rulebooks/rulebook-examples/talisman-basic/effortless-rulebook/talisman-basic-rulebook.json`
+- **Substrates Tested:** 1
+- **Computed Columns Tested:** 3
 
 ## Summary by Substrate
 
 | Substrate | Passed | Failed | Total | Score | Duration | Status |
 |-----------|--------|--------|-------|-------|----------|--------|
-| xlsx | 6 | 0 | 6 | 100.0% | < 1s | PASS |
-| effortless-postgres | 0 | 6 | 6 | 0.0% | 4s | FAIL |
+| effortless-postgres | 21 | 0 | 21 | 100.0% | < 1s | PASS |
 
 ## Overall Statistics
 
 | Metric | Value |
 |--------|-------|
-| Total Substrates | 2 |
-| Total Fields Tested | 12 |
-| Total Passed | 6 |
-| Total Failed | 6 |
-| Overall Score | 50.0% |
-| Total Duration | 5s |
+| Total Substrates | 1 |
+| Total Fields Tested | 21 |
+| Total Passed | 21 |
+| Total Failed | 0 |
+| Overall Score | 100.0% |
+| Total Duration | < 1s |
 
 ---
 

@@ -1,0 +1,1163 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix erb: <http://example.org/erb#> .
+
+erb: a owl:Ontology ;
+    rdfs:label "ERB Ontology" ;
+    rdfs:comment "Generated from talisman-basic-rulebook.json" .
+
+# === Class: AIAgents ===
+erb:AIAgents a owl:Class ;
+    rdfs:label "AIAgents" ;
+    rdfs:comment "Table: AIAgents. The NTWF AIAgent class — prov:SoftwareAgent + ntwf:modelVersion. Distinguished from AutomatedPipeline by probabilistic (vs. deterministic) output semantics. Disjoint with HumanAgent and AutomatedPipeline. May never fill a role whose step has requiresHumanApproval." .
+
+erb:aIAgentId a owl:DatatypeProperty ;
+    rdfs:domain erb:AIAgents ;
+    rdfs:range xsd:string ;
+    rdfs:label "AIAgentId" .
+
+erb:relativePath a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "RelativePath" ;
+    rdfs:comment "Stable, DAG-derived location for this AIAgent row. Root segment 'ai-agents' + the row's primary key. No leading slash so the Iri swap is a clean 1:1 substitution. The relational analogue of a REST resource path; unique by construction across the whole model." .
+    # calculated: calculated
+
+erb:iri a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "Iri" ;
+    rdfs:comment "Opaque stable identifier (the dash-form of RelativePath). Because RelativePath has no leading slash, this is a clean SUBSTITUTE of '/' for '-'. The OWL transpiler mints each individual's IRI from this value (erb:<Iri>), so identity is path-derived and globally unique — no cross-table primary-key collisions." .
+    # calculated: calculated
+
+erb:name a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "Name" ;
+    rdfs:comment "Display name of the AI agent. Maps to schema:name (not foaf:name, which is for persons)." .
+
+erb:title a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "Title" ;
+    rdfs:comment "Descriptive title of the AI agent's function." .
+
+erb:displayName a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "DisplayName" .
+
+erb:modelVersion a owl:DatatypeProperty ;
+    rdfs:domain erb:AIAgents ;
+    rdfs:range xsd:string ;
+    rdfs:label "ModelVersion" ;
+    rdfs:comment "Version string of the AI model. Maps to ntwf:modelVersion. Makes AI-produced artifacts auditable at the version level. The domain declaration means this property applies only to AIAgent individuals." .
+
+# === Class: AgentCapabilityConcepts ===
+erb:AgentCapabilityConcepts a owl:Class ;
+    rdfs:label "AgentCapabilityConcepts" ;
+    rdfs:comment "SKOS controlled vocabulary for agent capability types (ntwf:AgentCapabilityScheme). Roles declare which capability their filler must have (ntwf:hasCapability). Part of the CBox." .
+
+erb:conceptId a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "ConceptId" .
+
+erb:relativePath a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "RelativePath" ;
+    rdfs:comment "Stable, DAG-derived location for this AgentCapabilityConcept row. Root segment 'concepts/agent-capability' + the row's primary key. No leading slash so the Iri swap is a clean 1:1 substitution. The relational analogue of a REST resource path; unique by construction across the whole model." .
+    # calculated: calculated
+
+erb:iri a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "Iri" ;
+    rdfs:comment "Opaque stable identifier (the dash-form of RelativePath). Because RelativePath has no leading slash, this is a clean SUBSTITUTE of '/' for '-'. The OWL transpiler mints each individual's IRI from this value (erb:<Iri>), so identity is path-derived and globally unique — no cross-table primary-key collisions." .
+    # calculated: calculated
+
+erb:prefLabel a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "PrefLabel" ;
+    rdfs:comment "Preferred label. Maps to skos:prefLabel." .
+
+erb:altLabel a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "AltLabel" ;
+    rdfs:comment "Alternative label. Maps to skos:altLabel." .
+
+erb:definition a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "Definition" ;
+    rdfs:comment "Formal definition. Maps to skos:definition." .
+
+erb:scopeNote a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "ScopeNote" ;
+    rdfs:comment "Usage guidance. Maps to skos:scopeNote." .
+
+# === Class: ApprovalGates ===
+erb:ApprovalGates a owl:Class ;
+    rdfs:label "ApprovalGates" ;
+    rdfs:comment "Table: ApprovalGates. The NTWF ApprovalGate class — rdfs:subClassOf WorkflowStep. Modeled as a class-table-inheritance subtype: each gate row shares identity with exactly one WorkflowStep (via the WorkflowStep 1:1 FK) and carries only the gate-specific attribute, escalationThresholdHours. The step it specializes keeps the common attributes (requiresHumanApproval, assigned role, etc.). This preserves the article's double-typing — a gate IS a step — without collapsing two DAG nodes into one." .
+
+erb:approvalGateId a owl:DatatypeProperty ;
+    rdfs:domain erb:ApprovalGates ;
+    rdfs:range xsd:string ;
+    rdfs:label "ApprovalGateId" .
+
+erb:parentPath a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "ParentPath" ;
+    rdfs:comment "Helper: the WorkflowSteps parent's RelativePath, pulled across the WorkflowStep FK. Exists so RelativePath can concatenate the '/approval-gates/' segment using only local-field '&' concat (the transpiler compiles a lookup as a pure passthrough, not a lookup+concat)." .
+    # calculated: lookup
+
+erb:relativePath a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "RelativePath" ;
+    rdfs:comment "Stable, DAG-derived location: this row nests under its WorkflowSteps parent. Concatenates the parent's path (ParentPath) with '/approval-gates/' + this row's primary key. The DAG performs the recursion — one hop per table via ParentPath — so the full ancestry is encoded without a recursive formula. Unique by construction." .
+    # calculated: calculated
+
+erb:iri a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "Iri" ;
+    rdfs:comment "Opaque stable identifier (the dash-form of RelativePath). Because RelativePath has no leading slash, this is a clean SUBSTITUTE of '/' for '-'. The OWL transpiler mints each individual's IRI from this value (erb:<Iri>), so identity is path-derived and globally unique — no cross-table primary-key collisions." .
+    # calculated: calculated
+
+erb:name a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "Name" .
+    # calculated: calculated
+
+erb:displayName a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "DisplayName" .
+
+erb:workflowStep a owl:ObjectProperty ;
+    rdfs:domain erb:ApprovalGates ;
+    rdfs:range erb:WorkflowSteps ;
+    rdfs:label "WorkflowStep" ;
+    rdfs:comment "1:1 FK to the WorkflowStep this gate specializes (subtype shared key). This is the relational expression of ntwf:ApprovalGate rdfs:subClassOf WorkflowStep: the gate row adds escalationThresholdHours to its step. Inverse is WorkflowSteps.ApprovalGate." .
+
+erb:escalationThresholdHours a owl:DatatypeProperty ;
+    rdfs:domain erb:ApprovalGates ;
+    rdfs:range xsd:integer ;
+    rdfs:label "EscalationThresholdHours" ;
+    rdfs:comment "Integer number of hours that may elapse on a pending gate before the ntwf:delegatesTo chain activates. Maps to ntwf:escalationThresholdHours. Domain applies only to ApprovalGate individuals — which is exactly why the gate is its own subtype table and this attribute does not live on every WorkflowStep." .
+
+erb:gateRole a owl:DatatypeProperty ;
+    rdfs:domain erb:ApprovalGates ;
+    rdfs:range xsd:string ;
+    rdfs:label "GateRole" ;
+    rdfs:comment "The role responsible for this gate's underlying step, resolved through WorkflowStep → WorkflowSteps.AssignedRole. First hop of the CQ2 chain (gate → role → approver)." .
+    # calculated: lookup
+
+erb:gateApproverHuman a owl:DatatypeProperty ;
+    rdfs:domain erb:ApprovalGates ;
+    rdfs:range xsd:string ;
+    rdfs:label "GateApproverHuman" ;
+    rdfs:comment "The human agent who approves at this gate, resolved through the two-hop chain gate → GateRole → Roles.FilledByHumanAgent. Answers CQ2 ('who is responsible for approving a production deployment') directly: the release-approval gate resolves to the Release Manager role, filled by Maria Gonzalez." .
+    # calculated: lookup
+
+# === Class: AutomatedPipelines ===
+erb:AutomatedPipelines a owl:Class ;
+    rdfs:label "AutomatedPipelines" ;
+    rdfs:comment "Table: AutomatedPipelines. The NTWF AutomatedPipeline class — prov:SoftwareAgent + schema:SoftwareApplication. Distinguished from AIAgent by deterministic (vs. probabilistic) output semantics. Disjoint with HumanAgent and AIAgent. Carries schema:name, not foaf:name." .
+
+erb:automatedPipelineId a owl:DatatypeProperty ;
+    rdfs:domain erb:AutomatedPipelines ;
+    rdfs:range xsd:string ;
+    rdfs:label "AutomatedPipelineId" .
+
+erb:relativePath a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "RelativePath" ;
+    rdfs:comment "Stable, DAG-derived location for this AutomatedPipeline row. Root segment 'automated-pipelines' + the row's primary key. No leading slash so the Iri swap is a clean 1:1 substitution. The relational analogue of a REST resource path; unique by construction across the whole model." .
+    # calculated: calculated
+
+erb:iri a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "Iri" ;
+    rdfs:comment "Opaque stable identifier (the dash-form of RelativePath). Because RelativePath has no leading slash, this is a clean SUBSTITUTE of '/' for '-'. The OWL transpiler mints each individual's IRI from this value (erb:<Iri>), so identity is path-derived and globally unique — no cross-table primary-key collisions." .
+    # calculated: calculated
+
+erb:name a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "Name" ;
+    rdfs:comment "Display name of the pipeline. Maps to schema:name (appropriate for software systems, unlike foaf:name which is for persons)." .
+
+erb:description a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "Description" ;
+    rdfs:comment "Description of what the pipeline does and its execution semantics (deterministic, no probabilistic output)." .
+
+erb:displayName a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "DisplayName" .
+
+# === Class: ComplianceVerdictConcepts ===
+erb:ComplianceVerdictConcepts a owl:Class ;
+    rdfs:label "ComplianceVerdictConcepts" ;
+    rdfs:comment "SKOS controlled vocabulary for the two possible compliance-verdict outcomes (ntwf:ComplianceVerdictScheme). Part of the CBox. ComplianceVerdicts.VerdictConcept is a derived FK that resolves to exactly one of these concepts based on IsAtComplianceRisk; the human-readable Verdict string is then a lookup of the chosen concept's PrefLabel. Promoting the verdict outcomes from inline string literals to a first-class option set makes the choice auditable and lets the RuleSpeak narrative cite the defined options instead of magic strings." .
+
+erb:conceptId a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "ConceptId" .
+
+erb:relativePath a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "RelativePath" ;
+    rdfs:comment "Stable, DAG-derived location for this ComplianceVerdictConcept row. Root segment 'concepts/compliance-verdict' + the row's primary key. No leading slash so the Iri swap is a clean 1:1 substitution." .
+    # calculated: calculated
+
+erb:iri a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "Iri" ;
+    rdfs:comment "Opaque stable identifier (the dash-form of RelativePath). The OWL transpiler mints each individual's IRI from this value (erb:<Iri>), so identity is path-derived and globally unique." .
+    # calculated: calculated
+
+erb:prefLabel a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "PrefLabel" ;
+    rdfs:comment "Preferred human-readable label — the stakeholder-facing verdict text. Maps to skos:prefLabel." .
+
+erb:altLabel a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "AltLabel" ;
+    rdfs:comment "Alternative short label or synonym. Maps to skos:altLabel." .
+
+erb:definition a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "Definition" ;
+    rdfs:comment "Formal definition of the outcome. Maps to skos:definition." .
+
+erb:scopeNote a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "ScopeNote" ;
+    rdfs:comment "Usage guidance for the concept. Maps to skos:scopeNote." .
+
+# === Class: ComplianceVerdicts ===
+erb:ComplianceVerdicts a owl:Class ;
+    rdfs:label "ComplianceVerdicts" ;
+    rdfs:comment "Table: ComplianceVerdicts. The article's closing demonstration, made first-class. One row per workflow carrying a single business verdict that joins the three layers Jessica Talisman ends on — the metadata layer (dct:modified staleness), the structural layer (step->role->agent), and the accountability layer (filledBy -> AIAgent). IsAtComplianceRisk is true exactly when a workflow is BOTH stale (not reviewed in twelve months) AND has an AI agent executing a step: 'a business question answered by a machine, automatically, across a live graph.' Because every input is derived, changing a raw fact far downstream (the Modified date, or which agent fills a role) flips the verdict on the next read." .
+
+erb:complianceVerdictId a owl:DatatypeProperty ;
+    rdfs:domain erb:ComplianceVerdicts ;
+    rdfs:range xsd:string ;
+    rdfs:label "ComplianceVerdictId" ;
+    rdfs:comment "Primary key. One verdict per workflow (1:1)." .
+
+erb:parentPath a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "ParentPath" ;
+    rdfs:comment "Helper: the Workflows parent's RelativePath, pulled across the Workflow FK. Exists so RelativePath can concatenate the '/verdicts/' segment using only local-field '&' concat (the transpiler compiles a lookup as a pure passthrough, not a lookup+concat)." .
+    # calculated: lookup
+
+erb:relativePath a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "RelativePath" ;
+    rdfs:comment "Stable, DAG-derived location: this row nests under its Workflows parent. Concatenates the parent's path (ParentPath) with '/verdicts/' + this row's primary key. The DAG performs the recursion — one hop per table via ParentPath — so the full ancestry is encoded without a recursive formula. Unique by construction." .
+    # calculated: calculated
+
+erb:iri a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "Iri" ;
+    rdfs:comment "Opaque stable identifier (the dash-form of RelativePath). Because RelativePath has no leading slash, this is a clean SUBSTITUTE of '/' for '-'. The OWL transpiler mints each individual's IRI from this value (erb:<Iri>), so identity is path-derived and globally unique — no cross-table primary-key collisions." .
+    # calculated: calculated
+
+erb:name a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "Name" ;
+    rdfs:comment "Machine-friendly slug, mirrors the workflow." .
+    # calculated: calculated
+
+erb:workflow a owl:ObjectProperty ;
+    rdfs:range erb:Workflows ;
+    rdfs:label "Workflow" ;
+    rdfs:comment "1:1 FK to the Workflow this verdict summarizes." .
+
+erb:workflowTitle a owl:DatatypeProperty ;
+    rdfs:domain erb:ComplianceVerdicts ;
+    rdfs:range xsd:string ;
+    rdfs:label "WorkflowTitle" ;
+    rdfs:comment "The workflow's dct:title, for human-readable display." .
+    # calculated: lookup
+
+erb:monthsSinceReview a owl:DatatypeProperty ;
+    rdfs:domain erb:ComplianceVerdicts ;
+    rdfs:range xsd:integer ;
+    rdfs:label "MonthsSinceReview" ;
+    rdfs:comment "Whole months since the workflow's dct:modified, pulled from Workflows.MonthsSinceModified. The metadata layer of the verdict." .
+    # calculated: lookup
+
+erb:isStale a owl:DatatypeProperty ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "IsStale" ;
+    rdfs:comment "Whether the workflow has not been reviewed in twelve months (dct:modified > 12mo). Pulled from Workflows.IsStale. The article's CQ5 condition." .
+    # calculated: lookup
+
+erb:aIStepCount a owl:DatatypeProperty ;
+    rdfs:domain erb:ComplianceVerdicts ;
+    rdfs:range xsd:integer ;
+    rdfs:label "AIStepCount" ;
+    rdfs:comment "How many steps an AI agent executes in this workflow, pulled from Workflows.CountAISteps. The accountability layer." .
+    # calculated: lookup
+
+erb:hasAIExecutedStep a owl:DatatypeProperty ;
+    rdfs:domain erb:ComplianceVerdicts ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "HasAIExecutedStep" ;
+    rdfs:comment "Whether at least one step is executed by an AIAgent (filledBy -> AIAgent). Pulled from Workflows.HasAIAgentStep." .
+    # calculated: lookup
+
+erb:totalPlanMinutes a owl:DatatypeProperty ;
+    rdfs:domain erb:ComplianceVerdicts ;
+    rdfs:range xsd:integer ;
+    rdfs:label "TotalPlanMinutes" ;
+    rdfs:comment "The workflow's total planned runtime (sum of step durations), pulled from Workflows.CountTotalPlanMinutes. EXTENSION beyond the source article. The time layer of the verdict." .
+    # calculated: lookup
+
+erb:timeBudgetMinutes a owl:DatatypeProperty ;
+    rdfs:domain erb:ComplianceVerdicts ;
+    rdfs:range xsd:integer ;
+    rdfs:label "TimeBudgetMinutes" ;
+    rdfs:comment "The workflow's configured runtime budget, pulled from Workflows.MaxPlanMinutes. EXTENSION beyond the source article." .
+    # calculated: lookup
+
+erb:isOverTimeBudget a owl:DatatypeProperty ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "IsOverTimeBudget" ;
+    rdfs:comment "Whether total planned runtime exceeds the workflow's budget. Pulled from Workflows.IsOverTimeBudget. EXTENSION beyond the source article — the third compliance input alongside staleness and AI-execution." .
+    # calculated: lookup
+
+erb:isAtComplianceRisk a owl:DatatypeProperty ;
+    rdfs:domain erb:ComplianceVerdicts ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "IsAtComplianceRisk" ;
+    rdfs:comment "THE VERDICT. True when the workflow is EITHER (stale AND has an AI agent executing a step) — the article's closing business question — OR over its planned-runtime budget. The first disjunct is the article's headline finale verbatim; the second is an EXTENSION giving the step-duration literal a live compliance consequence. Fully derived: flip the Modified date, the role's filledBy agent, or any step's duration, and this recomputes on the next read." .
+    # calculated: calculated
+
+erb:verdictConcept a owl:ObjectProperty ;
+    rdfs:domain erb:ComplianceVerdicts ;
+    rdfs:range erb:ComplianceVerdictConcepts ;
+    rdfs:label "VerdictConcept" ;
+    rdfs:comment "Derived FK to the chosen ComplianceVerdictConcepts option. Selects 'verdict-at-risk' when IsAtComplianceRisk is true, else 'verdict-ok'. This is a CALCULATED relationship — the verdict outcome is one of two defined options, picked by the boolean flag, rather than a hardcoded string. The human-readable Verdict is a lookup of this concept's PrefLabel." .
+
+erb:verdict a owl:DatatypeProperty ;
+    rdfs:domain erb:ComplianceVerdicts ;
+    rdfs:range xsd:string ;
+    rdfs:label "Verdict" ;
+    rdfs:comment "Human-readable rendering of the verdict for stakeholders — the PrefLabel of the resolved ComplianceVerdictConcepts option (VerdictConcept). No longer an inline string literal: the two possible values are defined rows in the ComplianceVerdictConcepts vocabulary, and this field looks up whichever one VerdictConcept selected." .
+    # calculated: lookup
+
+# === Class: Datasets ===
+erb:Datasets a owl:Class ;
+    rdfs:label "Datasets" ;
+    rdfs:comment "DCAT datasets consumed by workflow steps. The NTWF mapping of dcat:Dataset. Kept separate from WorkflowArtifacts to preserve DCAT metadata semantics (dcat:Dataset vs. prov:Entity). Answers CQ8: 'What datasets does the review consume, and which AI processed them?'" .
+
+erb:datasetId a owl:DatatypeProperty ;
+    rdfs:domain erb:Datasets ;
+    rdfs:range xsd:string ;
+    rdfs:label "DatasetId" .
+
+erb:relativePath a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "RelativePath" ;
+    rdfs:comment "Stable, DAG-derived location for this Dataset row. Root segment 'datasets' + the row's primary key. No leading slash so the Iri swap is a clean 1:1 substitution. The relational analogue of a REST resource path; unique by construction across the whole model." .
+    # calculated: calculated
+
+erb:iri a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "Iri" ;
+    rdfs:comment "Opaque stable identifier (the dash-form of RelativePath). Because RelativePath has no leading slash, this is a clean SUBSTITUTE of '/' for '-'. The OWL transpiler mints each individual's IRI from this value (erb:<Iri>), so identity is path-derived and globally unique — no cross-table primary-key collisions." .
+    # calculated: calculated
+
+erb:title a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "Title" ;
+    rdfs:comment "Human-readable dataset name. Maps to dct:title." .
+
+erb:identifier a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "Identifier" ;
+    rdfs:comment "External system identifier. Maps to dct:identifier. Used for cross-referencing with data catalogs." .
+
+erb:modified a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "Modified" ;
+    rdfs:comment "Last modification timestamp. Maps to dct:modified." .
+
+erb:distributionUrl a owl:DatatypeProperty ;
+    rdfs:domain erb:Datasets ;
+    rdfs:range xsd:string ;
+    rdfs:label "DistributionUrl" ;
+    rdfs:comment "URL of the data distribution. Maps to dcat:Distribution. The access endpoint for the dataset." .
+
+erb:consumedBySteps a owl:ObjectProperty ;
+    rdfs:domain erb:Datasets ;
+    rdfs:range erb:WorkflowSteps ;
+    rdfs:label "ConsumedBySteps" ;
+    rdfs:comment "Back-reference to WorkflowSteps that consume this dataset. Inverse of WorkflowSteps.ConsumesDataset." .
+
+# === Class: Departments ===
+erb:Departments a owl:Class ;
+    rdfs:label "Departments" ;
+    rdfs:comment "Table: Departments. The NTWF Department class — schema:Organization. First-class entity that enables cross-department intersection queries (CQ7: which workflows involve both Engineering and Legal?). Roles are ownedBy a department." .
+
+erb:departmentId a owl:DatatypeProperty ;
+    rdfs:domain erb:Departments ;
+    rdfs:range xsd:string ;
+    rdfs:label "DepartmentId" .
+
+erb:relativePath a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "RelativePath" ;
+    rdfs:comment "Stable, DAG-derived location for this Department row. Root segment 'departments' + the row's primary key. No leading slash so the Iri swap is a clean 1:1 substitution. The relational analogue of a REST resource path; unique by construction across the whole model." .
+    # calculated: calculated
+
+erb:iri a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "Iri" ;
+    rdfs:comment "Opaque stable identifier (the dash-form of RelativePath). Because RelativePath has no leading slash, this is a clean SUBSTITUTE of '/' for '-'. The OWL transpiler mints each individual's IRI from this value (erb:<Iri>), so identity is path-derived and globally unique — no cross-table primary-key collisions." .
+    # calculated: calculated
+
+erb:name a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "Name" ;
+    rdfs:comment "Human-readable display name of the department. Should match organizational terminology for stakeholder communication." .
+    # calculated: calculated
+
+erb:title a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "Title" ;
+    rdfs:comment "Formal organizational title of the department. Maps to schema:name / dct:title." .
+
+erb:displayName a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "DisplayName" ;
+    rdfs:comment "Machine-friendly name for programmatic reference." .
+
+# === Class: HumanAgents ===
+erb:HumanAgents a owl:Class ;
+    rdfs:label "HumanAgents" ;
+    rdfs:comment "Table: HumanAgents. The NTWF HumanAgent class — foaf:Person + prov:Agent. The only agent type permitted to fill roles whose step has requiresHumanApproval. Disjoint with AIAgent and AutomatedPipeline." .
+
+erb:humanAgentId a owl:DatatypeProperty ;
+    rdfs:domain erb:HumanAgents ;
+    rdfs:range xsd:string ;
+    rdfs:label "HumanAgentId" .
+
+erb:relativePath a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "RelativePath" ;
+    rdfs:comment "Stable, DAG-derived location for this HumanAgent row. Root segment 'human-agents' + the row's primary key. No leading slash so the Iri swap is a clean 1:1 substitution. The relational analogue of a REST resource path; unique by construction across the whole model." .
+    # calculated: calculated
+
+erb:iri a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "Iri" ;
+    rdfs:comment "Opaque stable identifier (the dash-form of RelativePath). Because RelativePath has no leading slash, this is a clean SUBSTITUTE of '/' for '-'. The OWL transpiler mints each individual's IRI from this value (erb:<Iri>), so identity is path-derived and globally unique — no cross-table primary-key collisions." .
+    # calculated: calculated
+
+erb:name a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "Name" ;
+    rdfs:comment "Full name of the person. Maps to foaf:name. Note: FOAF's name property is appropriate for persons, not for software systems (which use schema:name)." .
+
+erb:displayName a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "DisplayName" .
+
+erb:mbox a owl:DatatypeProperty ;
+    rdfs:domain erb:HumanAgents ;
+    rdfs:range xsd:string ;
+    rdfs:label "Mbox" ;
+    rdfs:comment "Email address of the person. Maps to foaf:mbox. Used for notifications and organizational directory integration." .
+
+# === Class: Roles ===
+erb:Roles a owl:Class ;
+    rdfs:label "Roles" ;
+    rdfs:comment "Table: Roles. The NTWF Role class — a custom root with no adequate standard match, declared disjoint with WorkflowStep and WorkflowArtifact. Roles are the heart of Heuristic 2 (role-agent separation): WorkflowSteps point to Roles; Roles point to exactly one agent (human, AI, or pipeline) via the polymorphic filledBy relationship. When personnel or models change, one filledBy triple changes and the workflow structure is untouched." .
+
+erb:roleId a owl:DatatypeProperty ;
+    rdfs:domain erb:Roles ;
+    rdfs:range xsd:string ;
+    rdfs:label "RoleId" .
+
+erb:relativePath a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "RelativePath" ;
+    rdfs:comment "Stable, DAG-derived location for this Role row. Root segment 'roles' + the row's primary key. No leading slash so the Iri swap is a clean 1:1 substitution. The relational analogue of a REST resource path; unique by construction across the whole model." .
+    # calculated: calculated
+
+erb:iri a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "Iri" ;
+    rdfs:comment "Opaque stable identifier (the dash-form of RelativePath). Because RelativePath has no leading slash, this is a clean SUBSTITUTE of '/' for '-'. The OWL transpiler mints each individual's IRI from this value (erb:<Iri>), so identity is path-derived and globally unique — no cross-table primary-key collisions." .
+    # calculated: calculated
+
+erb:name a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "Name" .
+    # calculated: calculated
+
+erb:displayName a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "DisplayName" .
+
+erb:label a owl:DatatypeProperty ;
+    rdfs:domain erb:Roles ;
+    rdfs:range xsd:string ;
+    rdfs:label "Label" ;
+    rdfs:comment "Human-readable display name. Maps to rdfs:label. Per Heuristic 6: if you cannot write a clear label, you do not yet understand the concept well enough to model it." .
+
+erb:comment a owl:DatatypeProperty ;
+    rdfs:domain erb:Roles ;
+    rdfs:range xsd:string ;
+    rdfs:label "Comment" ;
+    rdfs:comment "Detailed description of the role's responsibilities and scope. Maps to rdfs:comment. Should define what the role covers, what it excludes, and how it differs from adjacent roles." .
+
+erb:hasCapability a owl:ObjectProperty ;
+    rdfs:domain erb:Roles ;
+    rdfs:range erb:AgentCapabilityConcepts ;
+    rdfs:label "HasCapability" ;
+    rdfs:comment "FK to AgentCapabilityConcepts. Declares the capability this role requires of its filler. Maps to ntwf:hasCapability. Enables CQ: 'Which roles require AI-specific capabilities?'" .
+
+erb:filledByHumanAgent a owl:ObjectProperty ;
+    rdfs:domain erb:Roles ;
+    rdfs:range erb:HumanAgents ;
+    rdfs:label "FilledByHumanAgent" ;
+    rdfs:comment "One arm of the polymorphic ntwf:filledBy relationship: FK to the HumanAgent that fills this role today. Exactly one of FilledByHumanAgent / FilledByAIAgent / FilledByAutomatedPipeline is set per role (filledBy is functional; the three agent types are owl:disjointWith each other). Roles whose capability requires human judgment or legal review must use this arm." .
+
+erb:filledByAIAgent a owl:ObjectProperty ;
+    rdfs:domain erb:Roles ;
+    rdfs:range erb:AIAgents ;
+    rdfs:label "FilledByAIAgent" ;
+    rdfs:comment "One arm of the polymorphic ntwf:filledBy relationship: FK to the AIAgent that fills this role today. Exactly one filledBy arm is set per role. An AIAgent may fill probabilistic-capability roles (e.g. risk analysis) but never a role whose step has requiresHumanApproval." .
+
+erb:filledByAutomatedPipeline a owl:ObjectProperty ;
+    rdfs:domain erb:Roles ;
+    rdfs:range erb:AutomatedPipelines ;
+    rdfs:label "FilledByAutomatedPipeline" ;
+    rdfs:comment "One arm of the polymorphic ntwf:filledBy relationship: FK to the AutomatedPipeline that fills this role today. Exactly one filledBy arm is set per role. Pipelines fill deterministic execution roles (e.g. CI/CD)." .
+
+erb:ownedBy a owl:ObjectProperty ;
+    rdfs:domain erb:Roles ;
+    rdfs:range erb:Departments ;
+    rdfs:label "OwnedBy" ;
+    rdfs:comment "Foreign key to the Department that owns this role. Maps to ntwf:ownedBy (owl:FunctionalProperty). Enables answering CQ7: 'Which workflows involve both Engineering and Legal?'" .
+
+erb:delegatesTo a owl:ObjectProperty ;
+    rdfs:domain erb:Roles ;
+    rdfs:range erb:Roles ;
+    rdfs:label "DelegatesTo" ;
+    rdfs:comment "Foreign key to the next Role in the escalation chain. Maps to ntwf:delegatesTo (traversable via the SPARQL property path delegatesTo+). Enables answering CQ6: 'What happens when the Release Manager / VP of Engineering is unavailable?'" .
+
+erb:fromDelegatesTo a owl:ObjectProperty ;
+    rdfs:domain erb:Roles ;
+    rdfs:range erb:Roles ;
+    rdfs:label "FromDelegatesTo" ;
+    rdfs:comment "Back-reference: the Role that delegates TO this role (one step up the escalation chain). Inverse of Roles.DelegatesTo." .
+
+# erb:delegationClosure is the transitive closure of erb:delegatesTo
+erb:delegatesTo a owl:ObjectProperty , owl:TransitiveProperty ;
+    rdfs:label "Delegation" .
+
+erb:filledByArmCount a owl:DatatypeProperty ;
+    rdfs:domain erb:Roles ;
+    rdfs:range xsd:integer ;
+    rdfs:label "FilledByArmCount" ;
+    rdfs:comment "Number of polymorphic ntwf:filledBy arms set on this role (of FilledByHumanAgent / FilledByAIAgent / FilledByAutomatedPipeline). Should always be exactly 1 — mirroring filledBy being functional and the three agent types being mutually disjoint." .
+    # calculated: calculated
+
+erb:hasExactlyOneFiller a owl:DatatypeProperty ;
+    rdfs:domain erb:Roles ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "HasExactlyOneFiller" ;
+    rdfs:comment "Disjointness/functional witness: TRUE iff exactly one filledBy arm is set. The three agent classes are owl:disjointWith one another and ntwf:filledBy is functional, so a clean ABox has this TRUE for every role. Setting two arms (a role filled by both a human and an AI) is the Suite-4 disjointness violation — here it flips this to FALSE." .
+    # calculated: calculated
+
+erb:fillerType a owl:DatatypeProperty ;
+    rdfs:domain erb:Roles ;
+    rdfs:range xsd:string ;
+    rdfs:label "FillerType" ;
+    rdfs:comment "Which disjoint agent class fills this role (HumanAgent / AIAgent / AutomatedPipeline), from whichever filledBy arm is set. Lets the delegation-chain query confirm CQ6's 'zero AI agents in the escalation chain'." .
+    # calculated: calculated
+
+# === Class: StepPrecedence ===
+erb:StepPrecedence a owl:Class ;
+    rdfs:label "StepPrecedence" ;
+    rdfs:comment "Table: StepPrecedence. The NTWF ntwf:precedesStep ordering relationship, modeled as a first-class step-to-step junction. Each row is one directed edge: FromStep precedes ToStep. ntwf:precedesStep is an owl:TransitiveProperty — the four asserted edges (1->2, 2->3, 3->4, 4->5) imply the full closure of ten ordering pairs (including 1->5, which is never asserted). Each edge is a first-class node in the DAG, never a 'helper' integer." .
+
+erb:stepPrecedenceId a owl:DatatypeProperty ;
+    rdfs:domain erb:StepPrecedence ;
+    rdfs:range xsd:string ;
+    rdfs:label "StepPrecedenceId" .
+
+erb:parentPath a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "ParentPath" ;
+    rdfs:comment "Helper: the WorkflowSteps parent's RelativePath, pulled across the FromStep FK. Exists so RelativePath can concatenate the '/precedence/' segment using only local-field '&' concat (the transpiler compiles a lookup as a pure passthrough, not a lookup+concat)." .
+    # calculated: lookup
+
+erb:relativePath a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "RelativePath" ;
+    rdfs:comment "Stable, DAG-derived location: this row nests under its WorkflowSteps parent. Concatenates the parent's path (ParentPath) with '/precedence/' + this row's primary key. The DAG performs the recursion — one hop per table via ParentPath — so the full ancestry is encoded without a recursive formula. Unique by construction." .
+    # calculated: calculated
+
+erb:iri a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "Iri" ;
+    rdfs:comment "Opaque stable identifier (the dash-form of RelativePath). Because RelativePath has no leading slash, this is a clean SUBSTITUTE of '/' for '-'. The OWL transpiler mints each individual's IRI from this value (erb:<Iri>), so identity is path-derived and globally unique — no cross-table primary-key collisions." .
+    # calculated: calculated
+
+erb:name a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "Name" ;
+    rdfs:comment "Human-readable edge label derived from its endpoints. Mirrors the FromStep -> ToStep direction." .
+    # calculated: calculated
+
+erb:fromStep a owl:ObjectProperty ;
+    rdfs:domain erb:StepPrecedence ;
+    rdfs:range erb:WorkflowSteps ;
+    rdfs:label "FromStep" ;
+    rdfs:comment "FK to the predecessor WorkflowStep — the step that comes BEFORE. The source of the ntwf:precedesStep edge. Inverse is WorkflowSteps.Precedes." .
+
+erb:toStep a owl:ObjectProperty ;
+    rdfs:domain erb:StepPrecedence ;
+    rdfs:range erb:WorkflowSteps ;
+    rdfs:label "ToStep" ;
+    rdfs:comment "FK to the successor WorkflowStep — the step that comes AFTER. The target of the ntwf:precedesStep edge. Inverse is WorkflowSteps.PrecededBy." .
+
+# erb:precedesStepClosure is the transitive closure of erb:precedesStep
+erb:precedesStep a owl:ObjectProperty , owl:TransitiveProperty ;
+    rdfs:label "PrecedesStep" .
+
+# === Class: WorkflowArtifacts ===
+erb:WorkflowArtifacts a owl:Class ;
+    rdfs:label "WorkflowArtifacts" ;
+    rdfs:comment "Artifacts produced and consumed by workflow steps. The NTWF WorkflowArtifact class — prov:Entity + schema:CreativeWork. The DerivedFromArtifact self-FK encodes the prov:wasDerivedFrom provenance chain; ProducedByStep maps prov:wasGeneratedBy; the AttributedTo* arms map prov:wasAttributedTo to the responsible agent." .
+
+erb:artifactId a owl:DatatypeProperty ;
+    rdfs:domain erb:WorkflowArtifacts ;
+    rdfs:range xsd:string ;
+    rdfs:label "ArtifactId" .
+
+erb:parentPath a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "ParentPath" ;
+    rdfs:comment "Helper: the WorkflowSteps parent's RelativePath, pulled across the ProducedByStep FK. Exists so RelativePath can concatenate the '/artifacts/' segment using only local-field '&' concat (the transpiler compiles a lookup as a pure passthrough, not a lookup+concat)." .
+    # calculated: lookup
+
+erb:relativePath a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "RelativePath" ;
+    rdfs:comment "Stable, DAG-derived location: this row nests under its WorkflowSteps parent. Concatenates the parent's path (ParentPath) with '/artifacts/' + this row's primary key. The DAG performs the recursion — one hop per table via ParentPath — so the full ancestry is encoded without a recursive formula. Unique by construction." .
+    # calculated: calculated
+
+erb:iri a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "Iri" ;
+    rdfs:comment "Opaque stable identifier (the dash-form of RelativePath). Because RelativePath has no leading slash, this is a clean SUBSTITUTE of '/' for '-'. The OWL transpiler mints each individual's IRI from this value (erb:<Iri>), so identity is path-derived and globally unique — no cross-table primary-key collisions." .
+    # calculated: calculated
+
+erb:title a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "Title" ;
+    rdfs:comment "Human-readable artifact name. Maps to dct:title." .
+
+erb:identifier a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "Identifier" ;
+    rdfs:comment "External system identifier. Maps to dct:identifier." .
+
+erb:created a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "Created" ;
+    rdfs:comment "Creation timestamp. Maps to dct:created." .
+
+erb:producedByStep a owl:ObjectProperty ;
+    rdfs:domain erb:WorkflowArtifacts ;
+    rdfs:range erb:WorkflowSteps ;
+    rdfs:label "ProducedByStep" ;
+    rdfs:comment "FK to the WorkflowStep that produced this artifact. Maps to prov:wasGeneratedBy. Inverse of WorkflowSteps.ProducesArtifacts." .
+
+erb:derivedFromArtifact a owl:ObjectProperty ;
+    rdfs:domain erb:WorkflowArtifacts ;
+    rdfs:range erb:WorkflowArtifacts ;
+    rdfs:label "DerivedFromArtifact" ;
+    rdfs:comment "Self-FK to the artifact this one was derived from. Maps to prov:wasDerivedFrom. Enables the full provenance chain query (CQ4)." .
+
+erb:attributedToHumanAgent a owl:ObjectProperty ;
+    rdfs:domain erb:WorkflowArtifacts ;
+    rdfs:range erb:HumanAgents ;
+    rdfs:label "AttributedToHumanAgent" ;
+    rdfs:comment "FK to HumanAgent responsible for this artifact. One arm of prov:wasAttributedTo (exactly one AttributedTo arm is set per artifact, mirroring the disjoint agent types)." .
+
+erb:attributedToAIAgent a owl:ObjectProperty ;
+    rdfs:domain erb:WorkflowArtifacts ;
+    rdfs:range erb:AIAgents ;
+    rdfs:label "AttributedToAIAgent" ;
+    rdfs:comment "FK to AIAgent responsible for this artifact. One arm of prov:wasAttributedTo." .
+
+erb:attributedToAutomatedPipeline a owl:ObjectProperty ;
+    rdfs:domain erb:WorkflowArtifacts ;
+    rdfs:range erb:AutomatedPipelines ;
+    rdfs:label "AttributedToAutomatedPipeline" ;
+    rdfs:comment "FK to AutomatedPipeline responsible for this artifact. One arm of prov:wasAttributedTo." .
+
+erb:producingAgentType a owl:DatatypeProperty ;
+    rdfs:domain erb:WorkflowArtifacts ;
+    rdfs:range xsd:string ;
+    rdfs:label "ProducingAgentType" ;
+    rdfs:comment "Which disjoint agent class produced this artifact (HumanAgent / AIAgent / AutomatedPipeline), from whichever prov:wasAttributedTo arm is set. Lets CQ4 report which kind of agent each artifact in the lineage came from." .
+    # calculated: calculated
+
+erb:hasDerivationParent a owl:DatatypeProperty ;
+    rdfs:domain erb:WorkflowArtifacts ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "HasDerivationParent" ;
+    rdfs:comment "TRUE iff this artifact was derived from another (prov:wasDerivedFrom is set). Counting these across the chain gives CQ4's '4 derivation links among 5 artifacts' — every artifact except the first has a parent." .
+    # calculated: calculated
+
+erb:producedByWorkflow a owl:DatatypeProperty ;
+    rdfs:domain erb:WorkflowArtifacts ;
+    rdfs:range xsd:string ;
+    rdfs:label "ProducedByWorkflow" ;
+    rdfs:comment "The workflow this artifact belongs to, resolved through ProducedByStep → WorkflowSteps.Workflow (artifact → producing step → workflow). Lets workflow-level rollups (e.g. CountDerivationLinks) aggregate artifacts without a redundant direct FK." .
+    # calculated: lookup
+
+# === Class: WorkflowStatusConcepts ===
+erb:WorkflowStatusConcepts a owl:Class ;
+    rdfs:label "WorkflowStatusConcepts" ;
+    rdfs:comment "SKOS controlled vocabulary for workflow lifecycle states (ntwf:WorkflowStatusScheme). Part of the CBox. Concepts are shared across all workflows." .
+
+erb:conceptId a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "ConceptId" .
+
+erb:relativePath a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "RelativePath" ;
+    rdfs:comment "Stable, DAG-derived location for this WorkflowStatusConcept row. Root segment 'concepts/workflow-status' + the row's primary key. No leading slash so the Iri swap is a clean 1:1 substitution. The relational analogue of a REST resource path; unique by construction across the whole model." .
+    # calculated: calculated
+
+erb:iri a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "Iri" ;
+    rdfs:comment "Opaque stable identifier (the dash-form of RelativePath). Because RelativePath has no leading slash, this is a clean SUBSTITUTE of '/' for '-'. The OWL transpiler mints each individual's IRI from this value (erb:<Iri>), so identity is path-derived and globally unique — no cross-table primary-key collisions." .
+    # calculated: calculated
+
+erb:prefLabel a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "PrefLabel" ;
+    rdfs:comment "Preferred human-readable label. Maps to skos:prefLabel." .
+
+erb:altLabel a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "AltLabel" ;
+    rdfs:comment "Alternative label or synonym. Maps to skos:altLabel." .
+
+erb:definition a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "Definition" ;
+    rdfs:comment "Formal definition of the concept. Maps to skos:definition." .
+
+erb:scopeNote a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "ScopeNote" ;
+    rdfs:comment "Usage guidance for the concept. Maps to skos:scopeNote." .
+
+# === Class: WorkflowSteps ===
+erb:WorkflowSteps a owl:Class ;
+    rdfs:label "WorkflowSteps" ;
+    rdfs:comment "Table: WorkflowSteps. The NTWF WorkflowStep class — prov:Activity. Each step is first-class and individually addressable, belongs to one Workflow (ntwf:isStepOf), and is assigned to exactly one Role (ntwf:assignedRole). Step-to-step ordering is modeled in the StepPrecedence junction; the ApprovalGate subtype specializes a step via a 1:1 FK." .
+
+erb:workflowStepId a owl:DatatypeProperty ;
+    rdfs:domain erb:WorkflowSteps ;
+    rdfs:range xsd:string ;
+    rdfs:label "WorkflowStepId" .
+
+erb:parentPath a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "ParentPath" ;
+    rdfs:comment "Helper: the Workflows parent's RelativePath, pulled across the Workflow FK. Exists so RelativePath can concatenate the '/steps/' segment using only local-field '&' concat (the transpiler compiles a lookup as a pure passthrough, not a lookup+concat)." .
+    # calculated: lookup
+
+erb:relativePath a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "RelativePath" ;
+    rdfs:comment "Stable, DAG-derived location: this row nests under its Workflows parent. Concatenates the parent's path (ParentPath) with '/steps/' + this row's primary key. The DAG performs the recursion — one hop per table via ParentPath — so the full ancestry is encoded without a recursive formula. Unique by construction." .
+    # calculated: calculated
+
+erb:iri a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "Iri" ;
+    rdfs:comment "Opaque stable identifier (the dash-form of RelativePath). Because RelativePath has no leading slash, this is a clean SUBSTITUTE of '/' for '-'. The OWL transpiler mints each individual's IRI from this value (erb:<Iri>), so identity is path-derived and globally unique — no cross-table primary-key collisions." .
+    # calculated: calculated
+
+erb:name a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "Name" .
+    # calculated: calculated
+
+erb:displayName a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "DisplayName" .
+
+erb:workflow a owl:ObjectProperty ;
+    rdfs:range erb:Workflows ;
+    rdfs:label "Workflow" ;
+    rdfs:comment "Foreign key to the parent workflow. Represents the inverse of ntwf:hasStep, enabling navigation from step to its containing workflow (ntwf:isStepOf)." .
+
+erb:sequencePosition a owl:DatatypeProperty ;
+    rdfs:domain erb:WorkflowSteps ;
+    rdfs:range xsd:integer ;
+    rdfs:label "SequencePosition" ;
+    rdfs:comment "Integer ordinal position of the step within its workflow. Maps to ntwf:sequencePosition, declared as owl:FunctionalProperty (each step has exactly one position). Enables positional queries. Note: this is a display/positional convenience — the authoritative ordering lives in the StepPrecedence edges." .
+
+erb:assignedRole a owl:ObjectProperty ;
+    rdfs:domain erb:WorkflowSteps ;
+    rdfs:range erb:Roles ;
+    rdfs:label "AssignedRole" ;
+    rdfs:comment "Foreign key to the Role responsible for executing this step. Maps to ntwf:assignedRole (owl:FunctionalProperty — exactly one role per step). Critical for implementing Heuristic 2 (role-agent separation): steps point to roles, not directly to agents." .
+
+erb:requiresHumanApproval a owl:DatatypeProperty ;
+    rdfs:domain erb:WorkflowSteps ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "RequiresHumanApproval" ;
+    rdfs:comment "Boolean flag indicating whether a human agent must fill the assigned role. Maps to ntwf:requiresHumanApproval. Enables answering CQ3: 'Which steps require human decisions vs. AI execution?'" .
+
+erb:stepDurationMinutes a owl:DatatypeProperty ;
+    rdfs:domain erb:WorkflowSteps ;
+    rdfs:range xsd:integer ;
+    rdfs:label "StepDurationMinutes" ;
+    rdfs:comment "Expected duration of this step in minutes. Maps to ntwf:stepDurationMinutes (datatype property, not functional). Enables SLA and throughput analysis." .
+
+erb:consumesDataset a owl:ObjectProperty ;
+    rdfs:domain erb:WorkflowSteps ;
+    rdfs:range erb:Datasets ;
+    rdfs:label "ConsumesDataset" ;
+    rdfs:comment "FK to Datasets. Records which DCAT dataset this step consumes as input. Kept separate from artifact consumption to preserve DCAT metadata semantics (consumesDataset vs. requiresArtifact)." .
+
+erb:producesArtifacts a owl:ObjectProperty ;
+    rdfs:domain erb:WorkflowSteps ;
+    rdfs:range erb:WorkflowArtifacts ;
+    rdfs:label "ProducesArtifacts" ;
+    rdfs:comment "Back-reference to WorkflowArtifacts produced by this step. Inverse of WorkflowArtifacts.ProducedByStep (ntwf:producesArtifact / prov:wasGeneratedBy)." .
+
+erb:approvalGate a owl:ObjectProperty ;
+    rdfs:domain erb:WorkflowSteps ;
+    rdfs:range erb:ApprovalGates ;
+    rdfs:label "ApprovalGate" ;
+    rdfs:comment "Back-reference to the ApprovalGate subtype row that specializes this step, if any. Inverse of ApprovalGates.WorkflowStep. A step has zero or one approval gate; when present, the gate adds escalationThresholdHours and marks the step as a blocking decision checkpoint. This models ntwf:ApprovalGate rdfs:subClassOf WorkflowStep as a shared-key 1:1 specialization rather than collapsing two DAG nodes into one." .
+
+erb:precedes a owl:ObjectProperty ;
+    rdfs:domain erb:WorkflowSteps ;
+    rdfs:range erb:StepPrecedence ;
+    rdfs:label "Precedes" ;
+    rdfs:comment "Back-reference to StepPrecedence edges where this step is the FromStep (the predecessor). Inverse of StepPrecedence.FromStep. Together with PrecededBy, lets you walk the ntwf:precedesStep ordering in both directions." .
+
+erb:precededBy a owl:ObjectProperty ;
+    rdfs:domain erb:WorkflowSteps ;
+    rdfs:range erb:StepPrecedence ;
+    rdfs:label "PrecededBy" ;
+    rdfs:comment "Back-reference to StepPrecedence edges where this step is the ToStep (the successor). Inverse of StepPrecedence.ToStep. Part of the ntwf:precedesStep transitive ordering relationship." .
+
+erb:executingHumanAgent a owl:DatatypeProperty ;
+    rdfs:domain erb:WorkflowSteps ;
+    rdfs:range xsd:string ;
+    rdfs:label "ExecutingHumanAgent" ;
+    rdfs:comment "The HumanAgent (if any) that executes this step, resolved through ntwf:assignedRole → ntwf:filledBy (the HumanAgent arm). Load-bearing lookup: it follows the role→agent indirection the article relies on, so a step knows its executing agent without per-step agent bindings." .
+    # calculated: lookup
+
+erb:executingAIAgent a owl:DatatypeProperty ;
+    rdfs:domain erb:WorkflowSteps ;
+    rdfs:range xsd:string ;
+    rdfs:label "ExecutingAIAgent" ;
+    rdfs:comment "The AIAgent (if any) that executes this step, resolved through ntwf:assignedRole → ntwf:filledBy (the AIAgent arm). One of the three polymorphic filledBy arms." .
+    # calculated: lookup
+
+erb:executingAutomatedPipeline a owl:DatatypeProperty ;
+    rdfs:domain erb:WorkflowSteps ;
+    rdfs:range xsd:string ;
+    rdfs:label "ExecutingAutomatedPipeline" ;
+    rdfs:comment "The AutomatedPipeline (if any) that executes this step, resolved through ntwf:assignedRole → ntwf:filledBy (the AutomatedPipeline arm)." .
+    # calculated: lookup
+
+erb:executingAgentType a owl:DatatypeProperty ;
+    rdfs:domain erb:WorkflowSteps ;
+    rdfs:range xsd:string ;
+    rdfs:label "ExecutingAgentType" ;
+    rdfs:comment "Which of the three disjoint agent classes executes this step (HumanAgent / AIAgent / AutomatedPipeline), derived from whichever filledBy arm the assigned role has set. Answers the typing half of CQ3 ('which steps are executed by AI agents, and which require a human decision')." .
+    # calculated: calculated
+
+erb:isExecutedByAI a owl:DatatypeProperty ;
+    rdfs:domain erb:WorkflowSteps ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "IsExecutedByAI" ;
+    rdfs:comment "TRUE when this step's assigned role is filled by an AIAgent. Feeds CQ3 and the business payoff query (stale workflows with AI-executed steps)." .
+    # calculated: calculated
+
+erb:isExecutedByHuman a owl:DatatypeProperty ;
+    rdfs:domain erb:WorkflowSteps ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "IsExecutedByHuman" ;
+    rdfs:comment "TRUE when this step's assigned role is filled by a HumanAgent. Feeds CQ3's human-vs-AI step split." .
+    # calculated: calculated
+
+erb:approvalConsistencyViolation a owl:DatatypeProperty ;
+    rdfs:domain erb:WorkflowSteps ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "ApprovalConsistencyViolation" ;
+    rdfs:comment "Detectable-error witness: TRUE iff this step requires human approval (RequiresHumanApproval) yet its assigned role is NOT filled by a HumanAgent. In the OWL ABox this is the rule that only a HumanAgent may fill a role on a requiresHumanApproval step; a clean ABox yields FALSE for every step. This is the relational equivalent of the Suite-4 disjointness/consistency check." .
+    # calculated: calculated
+
+erb:approvalIsHumanFilled a owl:DatatypeProperty ;
+    rdfs:domain erb:WorkflowSteps ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "ApprovalIsHumanFilled" ;
+    rdfs:comment "Positive form of the human-only-gate rule: TRUE iff this step's human-approval obligation is satisfied — either the step does not require human approval (vacuously satisfied), or it does and its assigned role is filled by a HumanAgent. The clean Production Deployment ABox yields TRUE for every step. This is the affirmative complement of ApprovalConsistencyViolation: the two are always opposite when approval is required, and this one is additionally TRUE on steps that need no approval." .
+    # calculated: calculated
+
+erb:owningDepartment a owl:DatatypeProperty ;
+    rdfs:domain erb:WorkflowSteps ;
+    rdfs:range xsd:string ;
+    rdfs:label "OwningDepartment" ;
+    rdfs:comment "The department that owns this step's assigned role, resolved through AssignedRole → Roles.OwnedBy. Lets a workflow report which departments its steps touch (CQ7: 'which workflows involve both Engineering and Legal, and at what steps do they intersect')." .
+    # calculated: lookup
+
+erb:isLegalOwned a owl:DatatypeProperty ;
+    rdfs:domain erb:WorkflowSteps ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "IsLegalOwned" ;
+    rdfs:comment "TRUE iff this step's owning department is Legal. Rolls up to CQ7's count of Legal-owned steps (exactly one in the Production Deployment workflow)." .
+    # calculated: calculated
+
+erb:isEngineeringOwned a owl:DatatypeProperty ;
+    rdfs:domain erb:WorkflowSteps ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "IsEngineeringOwned" ;
+    rdfs:comment "TRUE iff this step's owning department is Engineering. Rolls up to CQ7's Engineering-involvement check." .
+    # calculated: calculated
+
+# === Class: Workflows ===
+erb:Workflows a owl:Class ;
+    rdfs:label "Workflows" ;
+    rdfs:comment "Table: Workflows. The NTWF Workflow class — prov:Plan + schema:CreativeWork. Each workflow has Dublin Core metadata (title, description, identifier, created, modified), a lifecycle status from the SKOS scheme, and a collection of WorkflowSteps (ntwf:hasStep)." .
+
+erb:workflowId a owl:DatatypeProperty ;
+    rdfs:domain erb:Workflows ;
+    rdfs:range xsd:string ;
+    rdfs:label "WorkflowId" .
+
+erb:relativePath a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "RelativePath" ;
+    rdfs:comment "Stable, DAG-derived location for this Workflow row. Root segment 'workflows' + the row's primary key. No leading slash so the Iri swap is a clean 1:1 substitution. The relational analogue of a REST resource path; unique by construction across the whole model." .
+    # calculated: calculated
+
+erb:iri a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "Iri" ;
+    rdfs:comment "Opaque stable identifier (the dash-form of RelativePath). Because RelativePath has no leading slash, this is a clean SUBSTITUTE of '/' for '-'. The OWL transpiler mints each individual's IRI from this value (erb:<Iri>), so identity is path-derived and globally unique — no cross-table primary-key collisions." .
+    # calculated: calculated
+
+erb:name a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "Name" ;
+    rdfs:comment "Short machine-friendly name for the workflow. Used for programmatic reference and URL slug generation." .
+    # calculated: calculated
+
+erb:displayName a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "DisplayName" .
+
+erb:title a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "Title" ;
+    rdfs:comment "Human-readable title of the workflow. Maps to dct:title from Dublin Core. Example: 'Production Deployment Workflow'." .
+
+erb:description a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "Description" ;
+    rdfs:comment "Detailed description of the workflow's purpose and scope. Maps to dct:description from Dublin Core. Should explain what business goal the workflow achieves." .
+
+erb:identifier a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "Identifier" ;
+    rdfs:comment "External system identifier for cross-referencing. Maps to dct:identifier from Dublin Core. This is the join key back to document management systems, ticket systems, or other operational systems." .
+
+erb:modified a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "Modified" ;
+    rdfs:comment "Last modification timestamp. Maps to dct:modified from Dublin Core. Critical for answering CQ5: 'Which workflows haven't been reviewed or updated in twelve months?'" .
+
+erb:created a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "Created" ;
+    rdfs:comment "Creation timestamp. Maps to dct:created from Dublin Core. Records when the workflow was first defined." .
+
+erb:maxPlanMinutes a owl:DatatypeProperty ;
+    rdfs:domain erb:Workflows ;
+    rdfs:range xsd:integer ;
+    rdfs:label "MaxPlanMinutes" ;
+    rdfs:comment "Configurable upper bound (in minutes) on the workflow's total planned runtime: the sum of all its steps' StepDurationMinutes must not exceed this budget. EXTENSION beyond the source article — the article carries stepDurationMinutes / escalationThresholdHours as recorded literals that drive no rule; this field gives stepDurationMinutes a live consumer so editing a step's duration has a visible, derived consequence. Raw and editable so the budget itself is a fact you can change." .
+
+erb:stalenessThresholdMonths a owl:DatatypeProperty ;
+    rdfs:domain erb:Workflows ;
+    rdfs:range xsd:integer ;
+    rdfs:label "StalenessThresholdMonths" ;
+    rdfs:comment "The governance POLICY (in months) that defines when this workflow's compliance documentation goes stale: if more than this many months have passed since Modified (dct:modified) without a review, IsStale fires. The article hardcodes the answer to CQ5 at twelve months ('which workflows haven't been reviewed in twelve months'); promoting that threshold to a raw, editable field makes the policy itself a fact in the SSoT rather than a constant buried in the IsStale formula — so an org can set a 6-month or 18-month review cadence and the staleness verdict recomputes. Defaults to 12 to match the article." .
+
+erb:workflowStatus a owl:ObjectProperty ;
+    rdfs:domain erb:Workflows ;
+    rdfs:range erb:WorkflowStatusConcepts ;
+    rdfs:label "WorkflowStatus" ;
+    rdfs:comment "FK to WorkflowStatusConcepts. Captures the current lifecycle state of the workflow (draft, active, deprecated, archived). Maps to the SKOS CBox status vocabulary." .
+
+erb:countOfNonProposedSteps a owl:DatatypeProperty ;
+    rdfs:domain erb:Workflows ;
+    rdfs:range xsd:integer ;
+    rdfs:label "CountOfNonProposedSteps" ;
+    rdfs:comment "Calculated count of workflow steps in this workflow. Useful for workflow complexity analysis and reporting." .
+    # calculated: aggregation
+
+erb:hasMoreThan1Step a owl:DatatypeProperty ;
+    rdfs:domain erb:Workflows ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "HasMoreThan1Step" .
+    # calculated: calculated
+
+erb:countAISteps a owl:DatatypeProperty ;
+    rdfs:domain erb:Workflows ;
+    rdfs:range xsd:integer ;
+    rdfs:label "CountAISteps" ;
+    rdfs:comment "Number of steps in this workflow executed by an AIAgent (rollup over WorkflowSteps.IsExecutedByAI). This is the 'AI-executed' half of the article's CQ3 ('which steps are executed by AI agents') — counted against AIAgent individuals specifically, not the deterministic AutomatedPipeline, which is a disjoint agent type. Also drives the business-payoff query (a workflow is a compliance risk when an AI agent runs a step). Worked example: 2 (the AI risk-assessment step and the AI post-deployment health report)." .
+    # calculated: aggregation
+
+erb:countHumanSteps a owl:DatatypeProperty ;
+    rdfs:domain erb:Workflows ;
+    rdfs:range xsd:integer ;
+    rdfs:label "CountHumanSteps" ;
+    rdfs:comment "Number of steps executed by a HumanAgent (rollup over WorkflowSteps.IsExecutedByHuman). The 'who actually runs this step' count — distinct from CountHumanRequiredSteps, which counts steps that demand a human decision (requiresHumanApproval). Worked example: 2 (the legal-review step and the release approval gate)." .
+    # calculated: aggregation
+
+erb:countHumanRequiredSteps a owl:DatatypeProperty ;
+    rdfs:domain erb:Workflows ;
+    rdfs:range xsd:integer ;
+    rdfs:label "CountHumanRequiredSteps" ;
+    rdfs:comment "Number of steps that require a human decision (rollup over WorkflowSteps.RequiresHumanApproval). This is the 'human-required' half of the article's CQ3 ('which require a human decision'), answered — as the article notes — by a single FILTER on requiresHumanApproval. Worked example: 2 (the legal-review step and the release approval gate)." .
+    # calculated: aggregation
+
+erb:countApprovalConsistencyViolations a owl:DatatypeProperty ;
+    rdfs:domain erb:Workflows ;
+    rdfs:range xsd:integer ;
+    rdfs:label "CountApprovalConsistencyViolations" ;
+    rdfs:comment "Number of steps that require human approval but are not human-filled (rollup over WorkflowSteps.ApprovalConsistencyViolation). The clean ABox witness: this is 0 for the Production Deployment workflow. A non-zero value is the relational signal of a Suite-4 consistency violation." .
+    # calculated: aggregation
+
+erb:hasAIAgentStep a owl:DatatypeProperty ;
+    rdfs:domain erb:Workflows ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "HasAIAgentStep" ;
+    rdfs:comment "TRUE iff at least one step in this workflow is executed by an AIAgent. The structural half of the article's business payoff query." .
+    # calculated: calculated
+
+erb:monthsSinceModified a owl:DatatypeProperty ;
+    rdfs:domain erb:Workflows ;
+    rdfs:range xsd:integer ;
+    rdfs:label "MonthsSinceModified" ;
+    rdfs:comment "Whole months since this workflow was last modified (dct:modified), measured live against NOW(). Drives CQ5 staleness. NOW() is seeded deterministically during conformance so test answers stay stable." .
+    # calculated: calculated
+
+erb:isStale a owl:DatatypeProperty ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "IsStale" ;
+    rdfs:comment "TRUE iff the workflow's compliance documentation has not been reviewed (Modified) within its policy window — i.e. MonthsSinceModified exceeds the configurable StalenessThresholdMonths. The metadata half of CQ5 ('which workflows haven't been reviewed in twelve months'): with the default threshold of 12 this is exactly the article's question, but the threshold is now a fact you can change, so the staleness verdict tracks the org's actual review cadence rather than a hardcoded constant." .
+    # calculated: calculated
+
+erb:isStaleAndHasAIAgent a owl:DatatypeProperty ;
+    rdfs:domain erb:Workflows ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "IsStaleAndHasAIAgent" ;
+    rdfs:comment "The article's headline business question, as one boolean: a workflow that is BOTH stale (not reviewed in 12 months) AND has an AI-executed step — the highest compliance risk. Joins the metadata layer (dct:modified) with the accountability layer (filledBy → AIAgent) the way the closing SPARQL demo does, but as a single derived column." .
+    # calculated: calculated
+
+erb:countTotalPlanMinutes a owl:DatatypeProperty ;
+    rdfs:domain erb:Workflows ;
+    rdfs:range xsd:integer ;
+    rdfs:label "CountTotalPlanMinutes" ;
+    rdfs:comment "Total planned runtime of the workflow: the sum of StepDurationMinutes over all of its steps. The live consumer of the per-step duration literal. EXTENSION beyond the source article (which records stepDurationMinutes but never sums it). Compared against MaxPlanMinutes to derive IsOverTimeBudget." .
+    # calculated: aggregation
+
+erb:isOverTimeBudget a owl:DatatypeProperty ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "IsOverTimeBudget" ;
+    rdfs:comment "TRUE iff the workflow's total planned runtime (CountTotalPlanMinutes) exceeds its configured budget (MaxPlanMinutes). EXTENSION beyond the source article — a third compliance input alongside staleness and AI-execution, giving the step-duration literal a visible derived consequence. Editing any step's StepDurationMinutes recomputes the sum and can flip this boolean, which folds into IsAtComplianceRisk." .
+    # calculated: calculated
+
+erb:countDerivationLinks a owl:DatatypeProperty ;
+    rdfs:domain erb:Workflows ;
+    rdfs:range xsd:integer ;
+    rdfs:label "CountDerivationLinks" ;
+    rdfs:comment "Number of prov:wasDerivedFrom links among this workflow's artifacts (rollup over WorkflowArtifacts.HasDerivationParent). Answers the lineage half of CQ4: 5 artifacts form a chain with 4 derivation links." .
+    # calculated: aggregation
+
+erb:countLegalOwnedSteps a owl:DatatypeProperty ;
+    rdfs:domain erb:Workflows ;
+    rdfs:range xsd:integer ;
+    rdfs:label "CountLegalOwnedSteps" ;
+    rdfs:comment "Number of steps in this workflow whose owning department is Legal (rollup over WorkflowSteps.IsLegalOwned). CQ7: exactly one Legal-owned step in the Production Deployment workflow." .
+    # calculated: aggregation
+
+erb:countEngineeringOwnedSteps a owl:DatatypeProperty ;
+    rdfs:domain erb:Workflows ;
+    rdfs:range xsd:integer ;
+    rdfs:label "CountEngineeringOwnedSteps" ;
+    rdfs:comment "Number of steps whose owning department is Engineering (rollup over WorkflowSteps.IsEngineeringOwned). Feeds CQ7's Engineering-involvement check." .
+    # calculated: aggregation
+
+erb:involvesEngineeringAndLegal a owl:DatatypeProperty ;
+    rdfs:domain erb:Workflows ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "InvolvesEngineeringAndLegal" ;
+    rdfs:comment "TRUE iff this workflow has at least one Engineering-owned step AND at least one Legal-owned step. Answers CQ7 ('which workflows involve both engineering and legal') as a single boolean — the Production Deployment workflow qualifies (4 Engineering steps + 1 Legal step)." .
+    # calculated: calculated
+
+erb:countInferredPrecedencePairs a owl:DatatypeProperty ;
+    rdfs:domain erb:Workflows ;
+    rdfs:range xsd:integer ;
+    rdfs:label "CountInferredPrecedencePairs" ;
+    rdfs:comment "Number of step-ordering pairs that the transitive closure of ntwf:precedesStep INFERRED (rollup over the closure view vw_step_precedence_closure where is_inferred = TRUE). The article's signature count: 6 of the 10 closure pairs were never asserted — including step-1 -> step-5. NOTE: this single-workflow model has exactly one Workflow, so the global closure view is wholly this workflow's; the COUNTIFS is unfiltered because every precedence edge belongs to the Production Deployment DAG." .
+    # calculated: aggregation
+
+erb:countAssertedPrecedencePairs a owl:DatatypeProperty ;
+    rdfs:domain erb:Workflows ;
+    rdfs:range xsd:integer ;
+    rdfs:label "CountAssertedPrecedencePairs" ;
+    rdfs:comment "Number of step-ordering pairs that were directly ASSERTED as ntwf:precedesStep edges (rollup over vw_step_precedence_closure where is_inferred = FALSE) — the hop-1 rows. The article's 4 asserted edges. Together with CountInferredPrecedencePairs (6) this sums to the 10-pair closure, making CountOfPrecedenceClosurePairs an honest asserted+inferred total rather than an unconditional count. Single-workflow note as on CountInferredPrecedencePairs: the global closure view is this workflow's." .
+    # calculated: aggregation
+
+erb:countOfPrecedenceClosurePairs a owl:DatatypeProperty ;
+    rdfs:domain erb:Workflows ;
+    rdfs:range xsd:integer ;
+    rdfs:label "CountOfPrecedenceClosurePairs" ;
+    rdfs:comment "Total number of step-ordering pairs in the transitive closure of ntwf:precedesStep = asserted (4) + inferred (6) = 10. The article's headline closure cardinality, witnessing that the 4 asserted edges over a 5-step chain close to all 10 (i<j) pairs. Computed as CountAssertedPrecedencePairs + CountInferredPrecedencePairs so the total is provably the sum of the two halves, not a separate unconditional view count that could silently drift from them." .
+    # calculated: calculated
+
+erb:countRolesWithBadFillerCardinality a owl:DatatypeProperty ;
+    rdfs:domain erb:Workflows ;
+    rdfs:range xsd:integer ;
+    rdfs:label "CountRolesWithBadFillerCardinality" ;
+    rdfs:comment "Number of roles that do NOT have exactly one filledBy arm set (rollup over Roles.HasExactlyOneFiller = FALSE). The three agent classes are owl:disjointWith one another and ntwf:filledBy is functional, so a clean ABox has 0 such roles — this is the Suite-1 functional/disjointness witness as a single integer. A non-zero value is the relational signal of the Suite-4 disjointness violation (a role filled by two agent classes, or by none). NOTE: this single-workflow model has exactly one Workflow and every Role participates in it, so the count is over all roles; a multi-workflow model would scope it through a role→workflow path." .
+    # calculated: aggregation
+
+# === Inverse object-property pairs (reverse direction inferred) ===
+erb:workflowStep owl:inverseOf erb:approvalGate .
+erb:consumedBySteps owl:inverseOf erb:consumesDataset .
+erb:delegatesTo owl:inverseOf erb:fromDelegatesTo .
+erb:fromStep owl:inverseOf erb:precededBy .
+erb:toStep owl:inverseOf erb:precededBy .
+erb:producedByStep owl:inverseOf erb:producesArtifacts .
+
+# === Disjoint class groups (mutually-exclusive FK targets) ===
+erb:AIAgents owl:disjointWith erb:AutomatedPipelines .
+erb:AIAgents owl:disjointWith erb:HumanAgents .
+erb:AutomatedPipelines owl:disjointWith erb:HumanAgents .

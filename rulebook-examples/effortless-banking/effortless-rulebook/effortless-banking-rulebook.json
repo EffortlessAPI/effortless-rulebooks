@@ -2149,6 +2149,156 @@
       }
     ]
   },
+  "Constraints": {
+    "Description": "Operative constraints (RuleSpeak): must / must not / should obligations, each keyed on a boolean calculated field the rulebook already computes. The deontic operator lives in the Deontic column (data), never in a field name.",
+    "schema": [
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "Kebab PK derived from ConstraintKey.",
+        "formula": "=LOWER({{ConstraintKey}})"
+      },
+      {
+        "name": "ConstraintKey",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stable constraint identifier, e.g. loan-sod."
+      },
+      {
+        "name": "Entity",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Anchor entity (singular table name, e.g. Loan). Must resolve to a table."
+      },
+      {
+        "name": "Predicate",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Name of a boolean calculated field on Entity that the DAG computes (e.g. SegregationOfDutiesOk). The deontic operator is asserted over this truth."
+      },
+      {
+        "name": "Deontic",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "The obligation: MustBeTrue | MustNotBeTrue | ShouldBeTrue."
+      },
+      {
+        "name": "Severity",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "hard (always enforced) | soft (advisory) | override (waivable by an authorized approver)."
+      },
+      {
+        "name": "Message",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Guidance text shown when the constraint is violated."
+      },
+      {
+        "name": "RuleGroup",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Section grouping for the rule, e.g. 'Credit Policy', 'BSA/AML (CDD)'."
+      },
+      {
+        "name": "SourceCitation",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Regulatory or policy citation backing the constraint."
+      },
+      {
+        "name": "RuleSpeakOverride",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Hand-authored canonical RuleSpeak sentence, used verbatim when auto-render isn't smooth enough. Still part of the SSoT."
+      },
+      {
+        "name": "IsActive",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": false,
+        "Description": "When false, the constraint is retired and not rendered."
+      }
+    ],
+    "data": [
+      {
+        "Name": "loan-sod",
+        "ConstraintKey": "loan-sod",
+        "Entity": "Loan",
+        "Predicate": "SegregationOfDutiesOk",
+        "Deontic": "MustBeTrue",
+        "Severity": "hard",
+        "Message": "The same user originated and underwrote this loan — segregation of duties is violated.",
+        "RuleGroup": "Segregation of Duties",
+        "SourceCitation": "Internal Credit Policy §4.2",
+        "RuleSpeakOverride": "A loan must not be funded by the same user who originated it: the originating relationship manager and the underwriter must be different users.",
+        "IsActive": true
+      },
+      {
+        "Name": "biz-cdd",
+        "ConstraintKey": "biz-cdd",
+        "Entity": "Business",
+        "Predicate": "MeetsCddRule",
+        "Deontic": "MustBeTrue",
+        "Severity": "hard",
+        "Message": "Beneficial-ownership (CDD) collection is incomplete: no owner crosses the 25% threshold and no control person is designated.",
+        "RuleGroup": "BSA/AML (CDD)",
+        "SourceCitation": "FinCEN CDD Rule, 31 CFR 1010.230",
+        "RuleSpeakOverride": null,
+        "IsActive": true
+      },
+      {
+        "Name": "loan-dscr",
+        "ConstraintKey": "loan-dscr",
+        "Entity": "Loan",
+        "Predicate": "DscrInBand",
+        "Deontic": "MustBeTrue",
+        "Severity": "override",
+        "Message": "DSCR is below the 1.20 minimum; a credit-committee waiver is required to fund.",
+        "RuleGroup": "Credit Policy",
+        "SourceCitation": "Internal Credit Policy §2.1 (DSCR floor)",
+        "RuleSpeakOverride": null,
+        "IsActive": true
+      },
+      {
+        "Name": "loan-ltv",
+        "ConstraintKey": "loan-ltv",
+        "Entity": "Loan",
+        "Predicate": "LtvInBand",
+        "Deontic": "MustBeTrue",
+        "Severity": "override",
+        "Message": "LTV exceeds the 0.80 ceiling; a credit-committee waiver is required to fund.",
+        "RuleGroup": "Credit Policy",
+        "SourceCitation": "Internal Credit Policy §2.2 (LTV ceiling)",
+        "RuleSpeakOverride": null,
+        "IsActive": true
+      },
+      {
+        "Name": "loan-watchlist",
+        "ConstraintKey": "loan-watchlist",
+        "Entity": "Loan",
+        "Predicate": "OnWatchlist",
+        "Deontic": "ShouldBeTrue",
+        "Severity": "soft",
+        "Message": "This loan is a classified asset or has a breached covenant but is not flagged on the watchlist.",
+        "RuleGroup": "Portfolio Monitoring",
+        "SourceCitation": "Internal Portfolio Risk Procedure §6 (watchlist)",
+        "RuleSpeakOverride": null,
+        "IsActive": true
+      }
+    ]
+  },
   "__meta__": {
     "Description": "Project-level metadata that travels with the rulebook: tagline, motif, narrative descriptions, substrate list, signature rows, etc. One row per metadata key. Use ValueType to interpret StringValue vs JsonValue.",
     "important": false,

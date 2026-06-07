@@ -257,7 +257,7 @@ def push_rows(base_id: str, rows: list[dict], existing: dict[str, dict], dry_run
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--execute", action="store_true", help="Actually push to Airtable (default is dry run).")
-    ap.add_argument("--only", help="Comma-separated slugs to limit to (e.g. 'acme-llc,jessica-basic').")
+    ap.add_argument("--only", help="Comma-separated slugs to limit to (e.g. 'acme-llc,talisman-basic').")
     args = ap.parse_args()
     dry_run = not args.execute
 

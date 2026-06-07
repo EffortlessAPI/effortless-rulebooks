@@ -37,3 +37,13 @@ Generates Postgres DDL, Python dataclasses, Go structs, and more from the rulebo
 ## Why This Is Interesting
 
 Most ontologies model external domains (customers, orders, media). This one models the tool itself — the substrates, the orchestration, the tests. It proves the ERB pattern is domain-agnostic: if you can describe it in tables and formulas, ERB can generate it.
+
+---
+
+## Local transpiler bus (`localhost:4242`)
+
+> **All 13 local transpilers live on `localhost:4242`.** Once you run
+> `./start.sh` from the repo root, the ssotme-proxy exposes every repo-local
+> transpiler — `rulebook-to-postgres`, `rulebook-to-python`, `rulebook-to-golang`,
+> `rulebook-to-cobol`, `rulebook-to-owl`, and more — as first-class `ssotme://`
+> routes any `effortless build` can call.

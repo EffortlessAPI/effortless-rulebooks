@@ -6,17 +6,18 @@ default: &default
   port: <%= ENV.fetch("DB_PORT") { 5432 } %>
   user: <%= ENV.fetch("DB_USER") { "postgres" } %>
   password: <%= ENV.fetch("DB_PASSWORD") { "" } %>
+  # The ONE canonical domain database — the exact same erb_customer_fullname that
+  # postgres-bootstrap/init-db.sh builds and that server.js (the Node app) reads.
+  # The point of this demo is that EVERY substrate enforces the rules at the DB
+  # layer via the shared vw_<entity> views — so all environments use the same DB,
+  # never an env-suffixed copy. Rails reads these views; it does not own the schema.
+  database: erb_customer_fullname
 
 development:
   <<: *default
-  database: erb_customer_fullname_dev
 
 test:
   <<: *default
-  database: erb_customer_fullname_test
 
 production:
   <<: *default
-  database: erb_customer_fullname_prod
-  username: <%= ENV.fetch("DB_USER") %>
-  password: <%= ENV.fetch("DB_PASSWORD") %>

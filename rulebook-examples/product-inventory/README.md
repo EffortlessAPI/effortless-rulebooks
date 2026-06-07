@@ -125,3 +125,13 @@ Pick one (or several in order) to extend the demo. Each is one coherent feature�
 Built with the **Effortless Rulebook methodology** — schema-first, spreadsheet-inspired, SQL-generated.
 
 For more: `https://github.com/effortlessapi/effortless-rulebook`
+
+---
+
+## Local transpiler bus (`localhost:4242`)
+
+> **All 13 local transpilers live on `localhost:4242`.** Once you run
+> `./start.sh` from the repo root, the ssotme-proxy exposes every repo-local
+> transpiler — `rulebook-to-postgres`, `rulebook-to-python`, `rulebook-to-golang`,
+> `rulebook-to-cobol`, `rulebook-to-owl`, and more — as first-class `ssotme://`
+> routes any `effortless build` can call.

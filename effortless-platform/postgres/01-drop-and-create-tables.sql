@@ -199,7 +199,7 @@ COMMENT ON TABLE testing_framework IS 'Conformance testing: prove all substrates
 COMMENT ON COLUMN testing_framework.scope IS 'global (all substrates) or per-substrate';
 
 -- ----------------------------------------------------------------------------
--- RulebookDomains: Customer ontologies: each domain has its own rulebook + substrate generation. Domains form a TREE — ParentDomainId links a more-elaborate domain back to the simpler one it grew out of (e.g. Jessica ADVANCED ← Jessica BASIC). The UI uses this to present related rulebooks as a set rather than a flat list, and to drive 'next step in the progression' navigation.
+-- RulebookDomains: Customer ontologies: each domain has its own rulebook + substrate generation. Domains form a TREE — ParentDomainId links a more-elaborate domain back to the simpler one it grew out of (e.g. Talisman ADVANCED ← Talisman BASIC). The UI uses this to present related rulebooks as a set rather than a flat list, and to drive 'next step in the progression' navigation.
 -- ----------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS rulebook_domains (
   domain_id                           TEXT                 PRIMARY KEY
@@ -213,7 +213,7 @@ ALTER TABLE rulebook_domains ADD COLUMN IF NOT EXISTS key_features TEXT;        
 ALTER TABLE rulebook_domains ADD COLUMN IF NOT EXISTS purpose TEXT;
 ALTER TABLE rulebook_domains ADD COLUMN IF NOT EXISTS parent_domain_id TEXT;                        -- FK to RulebookDomains.DomainId — the simpler domain this one was derived from / builds on. Null for root-level demos (independent starting points). Lets the UI present rulebooks as a tree of related domains.
 ALTER TABLE rulebook_domains ADD COLUMN IF NOT EXISTS progression_note TEXT;                        -- One sentence describing what this domain ADDS over its parent — the specific concept the progression is meant to demonstrate at this step.
-COMMENT ON TABLE rulebook_domains IS 'Customer ontologies: each domain has its own rulebook + substrate generation. Domains form a TREE — ParentDomainId links a more-elaborate domain back to the simpler one it grew out of (e.g. Jessica ADVANCED ← Jessica BASIC). The UI uses this to present related rulebooks as a set rather than a flat list, and to drive ''next step in the progression'' navigation.';
+COMMENT ON TABLE rulebook_domains IS 'Customer ontologies: each domain has its own rulebook + substrate generation. Domains form a TREE — ParentDomainId links a more-elaborate domain back to the simpler one it grew out of (e.g. Talisman ADVANCED ← Talisman BASIC). The UI uses this to present related rulebooks as a set rather than a flat list, and to drive ''next step in the progression'' navigation.';
 COMMENT ON COLUMN rulebook_domains.relative_path IS 'rulebook-examples/{domain}/ — each domain is a self-contained Effortless project';
 COMMENT ON COLUMN rulebook_domains.rulebook_path IS 'Path to effortless-rulebook.json within domain';
 COMMENT ON COLUMN rulebook_domains.complexity_level IS 'minimal, moderate, advanced, or philosophical';

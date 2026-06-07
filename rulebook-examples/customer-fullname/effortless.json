@@ -58,8 +58,8 @@
       "RelativePath": "/postgres-bootstrap",
       "CommandLine": "rulebook-to-postgres -i ../effortless-rulebook/customer-fullname-rulebook.json -p mode=drop-all -p stage=dev -p drop_all=true",
       "IsDisabled": false,
-      "LastVersionUsed": "v2026.05.09.1738",
-      "LastUrl": "https://effortless-rulebook-to-postgres-v2026-05-09-1738-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
+      "LastVersionUsed": "v2026.06.07.1721",
+      "LastUrl": "https://effortless-rulebook-to-postgres-v2026-06-07-1721-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
       "Description": "Generate Postgres schema + seed data from the rulebook (dev: full drop-all rebuild so raws always match the rulebook)"
     },
     {
@@ -74,7 +74,8 @@
       "Name": "httplocalhost4242postgrescalculatedtorulebook",
       "RelativePath": "/postgres-bootstrap",
       "CommandLine": "http://localhost:4242/postgres-calculated-to-rulebook -i ../effortless-rulebook/customer-fullname-rulebook.json",
-      "IsDisabled": false
+      "IsDisabled": true,
+      "Description": "Pull calculated field values from Postgres (only needed if using Airtable)"
     },
     {
       "IsSSoTTranspiler": false,
@@ -82,9 +83,17 @@
       "RelativePath": "/web/src",
       "CommandLine": "rulebook-to-react-explainer-dag -i ../../effortless-rulebook/customer-fullname-rulebook.json",
       "IsDisabled": false,
-      "PinnedVersion": "v2026.05.20.0229",
-      "LastVersionUsed": "v2026.05.20.0229",
-      "LastUrl": "https://effortless-rulebook-to-react-exp-v2026-05-20-0229-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
+      "LastVersionUsed": "v2026.06.10.1301",
+      "LastUrl": "https://effortless-rulebook-to-react-exp-v2026-06-10-1301-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "rulebooktorulespeak",
+      "RelativePath": "/rulespeak",
+      "CommandLine": "rulebook-to-rulespeak -i ../effortless-rulebook/customer-fullname-rulebook.json",
+      "IsDisabled": false,
+      "LastVersionUsed": "v2026.06.10.1304",
+      "LastUrl": "https://effortless-rulebook-to-rulespeak-v2026-06-10-1304-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     }
   ]
 }

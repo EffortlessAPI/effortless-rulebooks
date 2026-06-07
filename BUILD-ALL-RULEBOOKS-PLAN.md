@@ -55,8 +55,8 @@ Local JSON is the SSoT. Default behavior. Build downstream transpilers against t
 | 5 | `acme-llc` | `appWrXPvXbkgQGOxt` | ✅ | Clean build, exit 0. No init-db step → no DB side effect. |
 | 6 | `acme-corporation` | `appzkcmBFPWFGBtRo` | ✅ | Clean build, exit 0. Only `rulebooktopostgres` runs (generates SQL files, no init-db execution). |
 | 7 | `is-everything-a-language` | `appC8XTj95lubn6hz` | ✅ | Clean build, exit 0. Generates postgres dir on build. |
-| 8 | `jessica-advanced` | `appwN9EAp8IeIxM23` | ✅ | Clean build, exit 0. Generates postgres dir on build. |
-| 9 | `jessica-basic` | `applThn0rikpCR9C3` | ✅ | Clean build, exit 0. Note: base ID still not in `orchestration/bases.json`. |
+| 8 | `talisman-advanced` | `appwN9EAp8IeIxM23` | ✅ | Clean build, exit 0. Generates postgres dir on build. |
+| 9 | `talisman-basic` | `applThn0rikpCR9C3` | ✅ | Clean build, exit 0. Note: base ID still not in `orchestration/bases.json`. |
 | 10 | `star-trek` | `appqwWQxIWFtyDsiL` | ✅ | Clean build, exit 0. Postgres SQL + xlsx generated. |
 | 11 | `effortless-rulesbooks` | _(empty)_ | ✅ | Clean build, exit 0. SQL generated. |
 | 12 | `guessing-game` | `appXXXXXXXXXXXXXX` | 🟡 | DB built (2 tables) but `03-create-views.sql:27` ERROR: function `calc_形状_边标签(text)` does not exist. Rulebook had `???` mojibake field name (renamed to `Edges` this session). One lookup field's calc function isn't generated — upstream `rulebook-to-postgres` bug on certain CJK identifiers. |
@@ -138,7 +138,7 @@ One commit per project, scoped to that project's directory + this doc's status u
 
 Rulebook-first projects first (no upstream-overwrite risk), Airtable-first last:
 
-1. **Group 2 — Registered-but-disabled (8):** `acme-llc`, `acme-corporation`, `jessica-basic`, `jessica-advanced`, `star-trek`, `is-everything-a-language`, `effortless-rulesbooks`, `guessing-game`
+1. **Group 2 — Registered-but-disabled (8):** `acme-llc`, `acme-corporation`, `talisman-basic`, `talisman-advanced`, `star-trek`, `is-everything-a-language`, `effortless-rulesbooks`, `guessing-game`
 2. **Group 2 — Not registered (12):** `customer-fullname`, `community-event-planner`, `customer-crm`, `effortless-banking`, `fantasy-football`, `gym-trainer-invoicing`, `intelligence-taxonomy`, `job-search-rag`, `mechanical-kitchen-timer`, `product-inventory`, `therapist-helper-portal`, `wedding-seating-optimizer`
 3. **Group 1 — Airtable-first (4):** `nakedclaude-v1`, `nakedclaude-v2`, `nakedclaude-v3`, `nakedclaude-v4`
 4. **Group 3 — decisions:** `expense-approval`, `volunteer-shift-scheduler-demo`, `naked-claude-vs-effortless-claude`, `nakedclaude-v3-naked`
@@ -160,5 +160,5 @@ Each session should pick a contiguous slice and:
 
 ## Open questions to resolve
 
-1. `jessica-basic`'s base ID (`applThn0rikpCR9C3`) isn't in `bases.json` — add it.
+1. `talisman-basic`'s base ID (`applThn0rikpCR9C3`) isn't in `bases.json` — add it.
 2. `naked-claude-vs-effortless-claude/effortless.json` has `airtabletorulebook` enabled but is the harness, not a rulebook. Disable the entry or remove the whole `effortless.json`.

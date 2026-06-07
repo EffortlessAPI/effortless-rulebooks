@@ -145,3 +145,13 @@ transpiler compiles.
 disabled. To change schema, formulas, or seed data: edit the rulebook (or
 regenerate it with `_build_rulebook.py`), then `effortless build`. Never edit the
 generated `0*.sql` files — only the `*b-customize-*` seams.
+
+---
+
+## Local transpiler bus (`localhost:4242`)
+
+> **All 13 local transpilers live on `localhost:4242`.** Once you run
+> `./start.sh` from the repo root, the ssotme-proxy exposes every repo-local
+> transpiler — `rulebook-to-postgres`, `rulebook-to-python`, `rulebook-to-golang`,
+> `rulebook-to-cobol`, `rulebook-to-owl`, and more — as first-class `ssotme://`
+> routes any `effortless build` can call.

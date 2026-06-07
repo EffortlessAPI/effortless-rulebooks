@@ -23,11 +23,6 @@
             <strong>Last Name:</strong><br>
             <%= @customer.last_name %>
           </p>
-
-          <p>
-            <strong>Email:</strong><br>
-            <a href="mailto:<%= @customer.email_address %>"><%= @customer.email_address %></a>
-          </p>
         </div>
 
         <div class="col-md-6">
@@ -36,13 +31,13 @@
           <p>
             <strong>Full Name:</strong><br>
             <span class="badge bg-info"><%= @customer.name %></span><br>
-            <small class="text-muted">Formula: <code>=CONCAT({{LastName}}, ", ", {{FirstName}})</code></small>
+            <small class="text-muted">Formula: <code>={{FirstName}} & " " & {{LastName}}</code></small>
           </p>
 
           <p>
             <strong>Initials:</strong><br>
             <span class="badge bg-success"><%= @customer.initials %></span><br>
-            <small class="text-muted">Formula: <code>=LEFT({{FirstName}}, 1) & LEFT({{LastName}}, 1) & "."</code></small>
+            <small class="text-muted">Formula: <code>=RIGHT({{FirstName}}, 1) & "." & RIGHT({{LastName}}, 1) & "."</code></small>
           </p>
         </div>
       </div>

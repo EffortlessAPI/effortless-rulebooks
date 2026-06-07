@@ -2489,3 +2489,1809 @@ Processing by CustomersController#index as HTML
 Completed 200 OK in 4ms (Views: 2.6ms | ActiveRecord: 1.0ms | Allocations: 1596)
 
 
+  [1m[35m (137.5ms)[0m  [1m[35mCREATE DATABASE "erb_customer_fullname_development" ENCODING = 'unicode'[0m
+  [1m[35m (3.1ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" character varying NOT NULL PRIMARY KEY)[0m
+  [1m[35m (0.8ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" character varying NOT NULL PRIMARY KEY, "value" character varying, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL)[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT pg_try_advisory_lock(6070761797878611960)[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Migrating to Customers (1780079121864)
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT pg_advisory_unlock(6070761797878611960)[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.6ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT pg_try_advisory_lock(6070761797878611960)[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Migrating to Customers (1780079121864)
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT pg_advisory_unlock(6070761797878611960)[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.7ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (43.3ms)[0m  [1m[35mDROP DATABASE IF EXISTS "erb_customer_fullname_development"[0m
+  [1m[35m (66.4ms)[0m  [1m[35mCREATE DATABASE "erb_customer_fullname_development" ENCODING = 'unicode'[0m
+  [1m[35m (2.5ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" character varying NOT NULL PRIMARY KEY)[0m
+  [1m[35m (1.7ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" character varying NOT NULL PRIMARY KEY, "value" character varying, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL)[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT pg_try_advisory_lock(6070761797878611960)[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Migrating to CreateCustomers (1781107344702)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.8ms)[0m  [1m[35mCREATE TABLE "customers" ("customer_id" character varying NOT NULL PRIMARY KEY, "first_name" character varying, "last_name" character varying, "email_address" character varying)[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "1781107344702"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.2ms)[0m  [1m[34mSELECT "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mActiveRecord::InternalMetadata Create (0.2ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "key"[0m  [["key", "environment"], ["value", "development"], ["created_at", "2026-06-10 16:02:38.291936"], ["updated_at", "2026-06-10 16:02:38.291936"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT pg_advisory_unlock(6070761797878611960)[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.4ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.4ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.4ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.5ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.5ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.3ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.2ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.1ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[35m (32.4ms)[0m  [1m[35mDROP DATABASE IF EXISTS "erb_customer_fullname_development"[0m
+  [1m[35m (51.7ms)[0m  [1m[35mCREATE DATABASE "erb_customer_fullname_development" ENCODING = 'unicode'[0m
+  [1m[35m (1.4ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" character varying NOT NULL PRIMARY KEY)[0m
+  [1m[35m (0.8ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" character varying NOT NULL PRIMARY KEY, "value" character varying, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL)[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT pg_try_advisory_lock(6070761797878611960)[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Migrating to CreateCustomers (1781107344702)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.7ms)[0m  [1m[35mCREATE TABLE "customers" ("customer_id" character varying NOT NULL PRIMARY KEY, "first_name" character varying, "last_name" character varying, "email_address" character varying)[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.1ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "1781107344702"]]
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.1ms)[0m  [1m[34mSELECT "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mActiveRecord::InternalMetadata Create (0.1ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "key"[0m  [["key", "environment"], ["value", "development"], ["created_at", "2026-06-10 16:06:23.767558"], ["updated_at", "2026-06-10 16:06:23.767558"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT pg_advisory_unlock(6070761797878611960)[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.4ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.6ms)[0m  [1m[32mINSERT INTO customers (customer_id, first_name, last_name) VALUES ('jane-smith-email-com', 'Jane', 'Smithy') ON CONFLICT DO NOTHING[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO customers (customer_id, first_name, last_name) VALUES ('john-doe-email-com', 'John', 'Doe') ON CONFLICT DO NOTHING[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO customers (customer_id, first_name, last_name) VALUES ('emily-jones-email-com', 'Emily', 'Jones') ON CONFLICT DO NOTHING[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO customers (customer_id, first_name, last_name) VALUES ('alice-cooper', 'Alice', 'Gutknechts') ON CONFLICT DO NOTHING[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.5ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.2ms)[0m  [1m[32mINSERT INTO customers (customer_id, first_name, last_name) VALUES ('jane-smith-email-com', 'Jane', 'Smithy') ON CONFLICT DO NOTHING[0m
+  [1m[35m (0.2ms)[0m  [1m[32mINSERT INTO customers (customer_id, first_name, last_name) VALUES ('john-doe-email-com', 'John', 'Doe') ON CONFLICT DO NOTHING[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO customers (customer_id, first_name, last_name) VALUES ('emily-jones-email-com', 'Emily', 'Jones') ON CONFLICT DO NOTHING[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO customers (customer_id, first_name, last_name) VALUES ('alice-cooper', 'Alice', 'Gutknechts') ON CONFLICT DO NOTHING[0m
+  [1m[36mCustomers Load (0.5ms)[0m  [1m[34mSELECT "vw_customers".* FROM "vw_customers" ORDER BY "vw_customers"."customer_id" ASC[0m
+  [1m[36mCustomer Load (0.6ms)[0m  [1m[34mSELECT "vw_customers".* FROM "vw_customers"[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.5ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.3ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.1ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.1ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[35m (23.8ms)[0m  [1m[35mDROP DATABASE IF EXISTS "erb_customer_fullname_development"[0m
+  [1m[35m (44.6ms)[0m  [1m[35mCREATE DATABASE "erb_customer_fullname_development" ENCODING = 'unicode'[0m
+  [1m[35m (3.3ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" character varying NOT NULL PRIMARY KEY)[0m
+  [1m[35m (2.1ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" character varying NOT NULL PRIMARY KEY, "value" character varying, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL)[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT pg_try_advisory_lock(6070761797878611960)[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Migrating to CreateCustomers (1781107344702)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.8ms)[0m  [1m[35mCREATE TABLE "customers" ("customer_id" character varying NOT NULL PRIMARY KEY, "first_name" character varying, "last_name" character varying, "email_address" character varying)[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "1781107344702"]]
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.2ms)[0m  [1m[34mSELECT "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mActiveRecord::InternalMetadata Create (0.2ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "key"[0m  [["key", "environment"], ["value", "development"], ["created_at", "2026-06-10 16:07:55.412062"], ["updated_at", "2026-06-10 16:07:55.412062"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT pg_advisory_unlock(6070761797878611960)[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.5ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.4ms)[0m  [1m[32mINSERT INTO customers (customer_id, first_name, last_name) VALUES ('jane-smith-email-com', 'Jane', 'Smithy') ON CONFLICT DO NOTHING[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO customers (customer_id, first_name, last_name) VALUES ('john-doe-email-com', 'John', 'Doe') ON CONFLICT DO NOTHING[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO customers (customer_id, first_name, last_name) VALUES ('emily-jones-email-com', 'Emily', 'Jones') ON CONFLICT DO NOTHING[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO customers (customer_id, first_name, last_name) VALUES ('alice-cooper', 'Alice', 'Gutknechts') ON CONFLICT DO NOTHING[0m
+Started GET "/customers" for 127.0.0.1 at 2026-06-10 11:10:22 -0500
+  [1m[35m (5.3ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" character varying NOT NULL PRIMARY KEY)[0m
+  [1m[35m (1.5ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" character varying NOT NULL PRIMARY KEY, "value" character varying, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL)[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  
+ActiveRecord::PendingMigrationError (
+
+Migrations are pending. To resolve this issue, run:
+
+        bin/rails db:migrate RAILS_ENV=development
+
+You have 1 pending migration:
+
+1781107344702_create_customers.rb
+
+
+):
+  
+activerecord (7.0.10) lib/active_record/migration.rb:663:in `check_pending!'
+activerecord (7.0.10) lib/active_record/migration.rb:628:in `block (2 levels) in call'
+activesupport (7.0.10) lib/active_support/file_update_checker.rb:83:in `execute'
+activerecord (7.0.10) lib/active_record/migration.rb:633:in `block in call'
+activerecord (7.0.10) lib/active_record/migration.rb:625:in `synchronize'
+activerecord (7.0.10) lib/active_record/migration.rb:625:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/callbacks.rb:27:in `block in call'
+activesupport (7.0.10) lib/active_support/callbacks.rb:99:in `run_callbacks'
+actionpack (7.0.10) lib/action_dispatch/middleware/callbacks.rb:26:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/executor.rb:14:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/actionable_exceptions.rb:17:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/debug_exceptions.rb:28:in `call'
+web-console (4.2.1) lib/web_console/middleware.rb:132:in `call_app'
+web-console (4.2.1) lib/web_console/middleware.rb:28:in `block in call'
+web-console (4.2.1) lib/web_console/middleware.rb:17:in `catch'
+web-console (4.2.1) lib/web_console/middleware.rb:17:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/show_exceptions.rb:29:in `call'
+railties (7.0.10) lib/rails/rack/logger.rb:40:in `call_app'
+railties (7.0.10) lib/rails/rack/logger.rb:25:in `block in call'
+activesupport (7.0.10) lib/active_support/tagged_logging.rb:99:in `block in tagged'
+activesupport (7.0.10) lib/active_support/tagged_logging.rb:37:in `tagged'
+activesupport (7.0.10) lib/active_support/tagged_logging.rb:99:in `tagged'
+railties (7.0.10) lib/rails/rack/logger.rb:25:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/remote_ip.rb:93:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/request_id.rb:26:in `call'
+rack (2.2.23) lib/rack/method_override.rb:24:in `call'
+rack (2.2.23) lib/rack/runtime.rb:22:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/executor.rb:14:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/static.rb:23:in `call'
+rack (2.2.23) lib/rack/sendfile.rb:127:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/host_authorization.rb:138:in `call'
+railties (7.0.10) lib/rails/engine.rb:531:in `call'
+puma (5.6.9) lib/puma/configuration.rb:252:in `call'
+puma (5.6.9) lib/puma/request.rb:77:in `block in handle_request'
+puma (5.6.9) lib/puma/thread_pool.rb:340:in `with_force_shutdown'
+puma (5.6.9) lib/puma/request.rb:76:in `handle_request'
+puma (5.6.9) lib/puma/server.rb:443:in `process_client'
+puma (5.6.9) lib/puma/thread_pool.rb:147:in `block in spawn_thread'
+Started GET "/customers" for 127.0.0.1 at 2026-06-10 11:10:23 -0500
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mCACHE ActiveRecord::SchemaMigration Pluck (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  
+ActiveRecord::PendingMigrationError (
+
+Migrations are pending. To resolve this issue, run:
+
+        bin/rails db:migrate RAILS_ENV=development
+
+You have 1 pending migration:
+
+1781107344702_create_customers.rb
+
+
+):
+  
+activerecord (7.0.10) lib/active_record/migration.rb:663:in `check_pending!'
+activerecord (7.0.10) lib/active_record/migration.rb:628:in `block (2 levels) in call'
+activesupport (7.0.10) lib/active_support/file_update_checker.rb:83:in `execute'
+activerecord (7.0.10) lib/active_record/migration.rb:633:in `block in call'
+activerecord (7.0.10) lib/active_record/migration.rb:625:in `synchronize'
+activerecord (7.0.10) lib/active_record/migration.rb:625:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/callbacks.rb:27:in `block in call'
+activesupport (7.0.10) lib/active_support/callbacks.rb:99:in `run_callbacks'
+actionpack (7.0.10) lib/action_dispatch/middleware/callbacks.rb:26:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/executor.rb:14:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/actionable_exceptions.rb:17:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/debug_exceptions.rb:28:in `call'
+web-console (4.2.1) lib/web_console/middleware.rb:132:in `call_app'
+web-console (4.2.1) lib/web_console/middleware.rb:28:in `block in call'
+web-console (4.2.1) lib/web_console/middleware.rb:17:in `catch'
+web-console (4.2.1) lib/web_console/middleware.rb:17:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/show_exceptions.rb:29:in `call'
+railties (7.0.10) lib/rails/rack/logger.rb:40:in `call_app'
+railties (7.0.10) lib/rails/rack/logger.rb:25:in `block in call'
+activesupport (7.0.10) lib/active_support/tagged_logging.rb:99:in `block in tagged'
+activesupport (7.0.10) lib/active_support/tagged_logging.rb:37:in `tagged'
+activesupport (7.0.10) lib/active_support/tagged_logging.rb:99:in `tagged'
+railties (7.0.10) lib/rails/rack/logger.rb:25:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/remote_ip.rb:93:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/request_id.rb:26:in `call'
+rack (2.2.23) lib/rack/method_override.rb:24:in `call'
+rack (2.2.23) lib/rack/runtime.rb:22:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/executor.rb:14:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/static.rb:23:in `call'
+rack (2.2.23) lib/rack/sendfile.rb:127:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/host_authorization.rb:138:in `call'
+railties (7.0.10) lib/rails/engine.rb:531:in `call'
+puma (5.6.9) lib/puma/configuration.rb:252:in `call'
+puma (5.6.9) lib/puma/request.rb:77:in `block in handle_request'
+puma (5.6.9) lib/puma/thread_pool.rb:340:in `with_force_shutdown'
+puma (5.6.9) lib/puma/request.rb:76:in `handle_request'
+puma (5.6.9) lib/puma/server.rb:443:in `process_client'
+puma (5.6.9) lib/puma/thread_pool.rb:147:in `block in spawn_thread'
+Started GET "/customers" for 127.0.0.1 at 2026-06-10 11:10:24 -0500
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mCACHE ActiveRecord::SchemaMigration Pluck (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  
+ActiveRecord::PendingMigrationError (
+
+Migrations are pending. To resolve this issue, run:
+
+        bin/rails db:migrate RAILS_ENV=development
+
+You have 1 pending migration:
+
+1781107344702_create_customers.rb
+
+
+):
+  
+activerecord (7.0.10) lib/active_record/migration.rb:663:in `check_pending!'
+activerecord (7.0.10) lib/active_record/migration.rb:628:in `block (2 levels) in call'
+activesupport (7.0.10) lib/active_support/file_update_checker.rb:83:in `execute'
+activerecord (7.0.10) lib/active_record/migration.rb:633:in `block in call'
+activerecord (7.0.10) lib/active_record/migration.rb:625:in `synchronize'
+activerecord (7.0.10) lib/active_record/migration.rb:625:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/callbacks.rb:27:in `block in call'
+activesupport (7.0.10) lib/active_support/callbacks.rb:99:in `run_callbacks'
+actionpack (7.0.10) lib/action_dispatch/middleware/callbacks.rb:26:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/executor.rb:14:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/actionable_exceptions.rb:17:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/debug_exceptions.rb:28:in `call'
+web-console (4.2.1) lib/web_console/middleware.rb:132:in `call_app'
+web-console (4.2.1) lib/web_console/middleware.rb:28:in `block in call'
+web-console (4.2.1) lib/web_console/middleware.rb:17:in `catch'
+web-console (4.2.1) lib/web_console/middleware.rb:17:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/show_exceptions.rb:29:in `call'
+railties (7.0.10) lib/rails/rack/logger.rb:40:in `call_app'
+railties (7.0.10) lib/rails/rack/logger.rb:25:in `block in call'
+activesupport (7.0.10) lib/active_support/tagged_logging.rb:99:in `block in tagged'
+activesupport (7.0.10) lib/active_support/tagged_logging.rb:37:in `tagged'
+activesupport (7.0.10) lib/active_support/tagged_logging.rb:99:in `tagged'
+railties (7.0.10) lib/rails/rack/logger.rb:25:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/remote_ip.rb:93:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/request_id.rb:26:in `call'
+rack (2.2.23) lib/rack/method_override.rb:24:in `call'
+rack (2.2.23) lib/rack/runtime.rb:22:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/executor.rb:14:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/static.rb:23:in `call'
+rack (2.2.23) lib/rack/sendfile.rb:127:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/host_authorization.rb:138:in `call'
+railties (7.0.10) lib/rails/engine.rb:531:in `call'
+puma (5.6.9) lib/puma/configuration.rb:252:in `call'
+puma (5.6.9) lib/puma/request.rb:77:in `block in handle_request'
+puma (5.6.9) lib/puma/thread_pool.rb:340:in `with_force_shutdown'
+puma (5.6.9) lib/puma/request.rb:76:in `handle_request'
+puma (5.6.9) lib/puma/server.rb:443:in `process_client'
+puma (5.6.9) lib/puma/thread_pool.rb:147:in `block in spawn_thread'
+Started GET "/customers" for 127.0.0.1 at 2026-06-10 11:10:25 -0500
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mCACHE ActiveRecord::SchemaMigration Pluck (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  
+ActiveRecord::PendingMigrationError (
+
+Migrations are pending. To resolve this issue, run:
+
+        bin/rails db:migrate RAILS_ENV=development
+
+You have 1 pending migration:
+
+1781107344702_create_customers.rb
+
+
+):
+  
+activerecord (7.0.10) lib/active_record/migration.rb:663:in `check_pending!'
+activerecord (7.0.10) lib/active_record/migration.rb:628:in `block (2 levels) in call'
+activesupport (7.0.10) lib/active_support/file_update_checker.rb:83:in `execute'
+activerecord (7.0.10) lib/active_record/migration.rb:633:in `block in call'
+activerecord (7.0.10) lib/active_record/migration.rb:625:in `synchronize'
+activerecord (7.0.10) lib/active_record/migration.rb:625:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/callbacks.rb:27:in `block in call'
+activesupport (7.0.10) lib/active_support/callbacks.rb:99:in `run_callbacks'
+actionpack (7.0.10) lib/action_dispatch/middleware/callbacks.rb:26:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/executor.rb:14:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/actionable_exceptions.rb:17:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/debug_exceptions.rb:28:in `call'
+web-console (4.2.1) lib/web_console/middleware.rb:132:in `call_app'
+web-console (4.2.1) lib/web_console/middleware.rb:28:in `block in call'
+web-console (4.2.1) lib/web_console/middleware.rb:17:in `catch'
+web-console (4.2.1) lib/web_console/middleware.rb:17:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/show_exceptions.rb:29:in `call'
+railties (7.0.10) lib/rails/rack/logger.rb:40:in `call_app'
+railties (7.0.10) lib/rails/rack/logger.rb:25:in `block in call'
+activesupport (7.0.10) lib/active_support/tagged_logging.rb:99:in `block in tagged'
+activesupport (7.0.10) lib/active_support/tagged_logging.rb:37:in `tagged'
+activesupport (7.0.10) lib/active_support/tagged_logging.rb:99:in `tagged'
+railties (7.0.10) lib/rails/rack/logger.rb:25:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/remote_ip.rb:93:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/request_id.rb:26:in `call'
+rack (2.2.23) lib/rack/method_override.rb:24:in `call'
+rack (2.2.23) lib/rack/runtime.rb:22:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/executor.rb:14:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/static.rb:23:in `call'
+rack (2.2.23) lib/rack/sendfile.rb:127:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/host_authorization.rb:138:in `call'
+railties (7.0.10) lib/rails/engine.rb:531:in `call'
+puma (5.6.9) lib/puma/configuration.rb:252:in `call'
+puma (5.6.9) lib/puma/request.rb:77:in `block in handle_request'
+puma (5.6.9) lib/puma/thread_pool.rb:340:in `with_force_shutdown'
+puma (5.6.9) lib/puma/request.rb:76:in `handle_request'
+puma (5.6.9) lib/puma/server.rb:443:in `process_client'
+puma (5.6.9) lib/puma/thread_pool.rb:147:in `block in spawn_thread'
+Started GET "/customers" for 127.0.0.1 at 2026-06-10 11:10:26 -0500
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mCACHE ActiveRecord::SchemaMigration Pluck (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  
+ActiveRecord::PendingMigrationError (
+
+Migrations are pending. To resolve this issue, run:
+
+        bin/rails db:migrate RAILS_ENV=development
+
+You have 1 pending migration:
+
+1781107344702_create_customers.rb
+
+
+):
+  
+activerecord (7.0.10) lib/active_record/migration.rb:663:in `check_pending!'
+activerecord (7.0.10) lib/active_record/migration.rb:628:in `block (2 levels) in call'
+activesupport (7.0.10) lib/active_support/file_update_checker.rb:83:in `execute'
+activerecord (7.0.10) lib/active_record/migration.rb:633:in `block in call'
+activerecord (7.0.10) lib/active_record/migration.rb:625:in `synchronize'
+activerecord (7.0.10) lib/active_record/migration.rb:625:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/callbacks.rb:27:in `block in call'
+activesupport (7.0.10) lib/active_support/callbacks.rb:99:in `run_callbacks'
+actionpack (7.0.10) lib/action_dispatch/middleware/callbacks.rb:26:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/executor.rb:14:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/actionable_exceptions.rb:17:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/debug_exceptions.rb:28:in `call'
+web-console (4.2.1) lib/web_console/middleware.rb:132:in `call_app'
+web-console (4.2.1) lib/web_console/middleware.rb:28:in `block in call'
+web-console (4.2.1) lib/web_console/middleware.rb:17:in `catch'
+web-console (4.2.1) lib/web_console/middleware.rb:17:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/show_exceptions.rb:29:in `call'
+railties (7.0.10) lib/rails/rack/logger.rb:40:in `call_app'
+railties (7.0.10) lib/rails/rack/logger.rb:25:in `block in call'
+activesupport (7.0.10) lib/active_support/tagged_logging.rb:99:in `block in tagged'
+activesupport (7.0.10) lib/active_support/tagged_logging.rb:37:in `tagged'
+activesupport (7.0.10) lib/active_support/tagged_logging.rb:99:in `tagged'
+railties (7.0.10) lib/rails/rack/logger.rb:25:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/remote_ip.rb:93:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/request_id.rb:26:in `call'
+rack (2.2.23) lib/rack/method_override.rb:24:in `call'
+rack (2.2.23) lib/rack/runtime.rb:22:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/executor.rb:14:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/static.rb:23:in `call'
+rack (2.2.23) lib/rack/sendfile.rb:127:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/host_authorization.rb:138:in `call'
+railties (7.0.10) lib/rails/engine.rb:531:in `call'
+puma (5.6.9) lib/puma/configuration.rb:252:in `call'
+puma (5.6.9) lib/puma/request.rb:77:in `block in handle_request'
+puma (5.6.9) lib/puma/thread_pool.rb:340:in `with_force_shutdown'
+puma (5.6.9) lib/puma/request.rb:76:in `handle_request'
+puma (5.6.9) lib/puma/server.rb:443:in `process_client'
+puma (5.6.9) lib/puma/thread_pool.rb:147:in `block in spawn_thread'
+Started GET "/customers" for 127.0.0.1 at 2026-06-10 11:10:27 -0500
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mCACHE ActiveRecord::SchemaMigration Pluck (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  
+ActiveRecord::PendingMigrationError (
+
+Migrations are pending. To resolve this issue, run:
+
+        bin/rails db:migrate RAILS_ENV=development
+
+You have 1 pending migration:
+
+1781107344702_create_customers.rb
+
+
+):
+  
+activerecord (7.0.10) lib/active_record/migration.rb:663:in `check_pending!'
+activerecord (7.0.10) lib/active_record/migration.rb:628:in `block (2 levels) in call'
+activesupport (7.0.10) lib/active_support/file_update_checker.rb:83:in `execute'
+activerecord (7.0.10) lib/active_record/migration.rb:633:in `block in call'
+activerecord (7.0.10) lib/active_record/migration.rb:625:in `synchronize'
+activerecord (7.0.10) lib/active_record/migration.rb:625:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/callbacks.rb:27:in `block in call'
+activesupport (7.0.10) lib/active_support/callbacks.rb:99:in `run_callbacks'
+actionpack (7.0.10) lib/action_dispatch/middleware/callbacks.rb:26:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/executor.rb:14:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/actionable_exceptions.rb:17:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/debug_exceptions.rb:28:in `call'
+web-console (4.2.1) lib/web_console/middleware.rb:132:in `call_app'
+web-console (4.2.1) lib/web_console/middleware.rb:28:in `block in call'
+web-console (4.2.1) lib/web_console/middleware.rb:17:in `catch'
+web-console (4.2.1) lib/web_console/middleware.rb:17:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/show_exceptions.rb:29:in `call'
+railties (7.0.10) lib/rails/rack/logger.rb:40:in `call_app'
+railties (7.0.10) lib/rails/rack/logger.rb:25:in `block in call'
+activesupport (7.0.10) lib/active_support/tagged_logging.rb:99:in `block in tagged'
+activesupport (7.0.10) lib/active_support/tagged_logging.rb:37:in `tagged'
+activesupport (7.0.10) lib/active_support/tagged_logging.rb:99:in `tagged'
+railties (7.0.10) lib/rails/rack/logger.rb:25:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/remote_ip.rb:93:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/request_id.rb:26:in `call'
+rack (2.2.23) lib/rack/method_override.rb:24:in `call'
+rack (2.2.23) lib/rack/runtime.rb:22:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/executor.rb:14:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/static.rb:23:in `call'
+rack (2.2.23) lib/rack/sendfile.rb:127:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/host_authorization.rb:138:in `call'
+railties (7.0.10) lib/rails/engine.rb:531:in `call'
+puma (5.6.9) lib/puma/configuration.rb:252:in `call'
+puma (5.6.9) lib/puma/request.rb:77:in `block in handle_request'
+puma (5.6.9) lib/puma/thread_pool.rb:340:in `with_force_shutdown'
+puma (5.6.9) lib/puma/request.rb:76:in `handle_request'
+puma (5.6.9) lib/puma/server.rb:443:in `process_client'
+puma (5.6.9) lib/puma/thread_pool.rb:147:in `block in spawn_thread'
+Started GET "/customers" for 127.0.0.1 at 2026-06-10 11:10:28 -0500
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mCACHE ActiveRecord::SchemaMigration Pluck (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  
+ActiveRecord::PendingMigrationError (
+
+Migrations are pending. To resolve this issue, run:
+
+        bin/rails db:migrate RAILS_ENV=development
+
+You have 1 pending migration:
+
+1781107344702_create_customers.rb
+
+
+):
+  
+activerecord (7.0.10) lib/active_record/migration.rb:663:in `check_pending!'
+activerecord (7.0.10) lib/active_record/migration.rb:628:in `block (2 levels) in call'
+activesupport (7.0.10) lib/active_support/file_update_checker.rb:83:in `execute'
+activerecord (7.0.10) lib/active_record/migration.rb:633:in `block in call'
+activerecord (7.0.10) lib/active_record/migration.rb:625:in `synchronize'
+activerecord (7.0.10) lib/active_record/migration.rb:625:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/callbacks.rb:27:in `block in call'
+activesupport (7.0.10) lib/active_support/callbacks.rb:99:in `run_callbacks'
+actionpack (7.0.10) lib/action_dispatch/middleware/callbacks.rb:26:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/executor.rb:14:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/actionable_exceptions.rb:17:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/debug_exceptions.rb:28:in `call'
+web-console (4.2.1) lib/web_console/middleware.rb:132:in `call_app'
+web-console (4.2.1) lib/web_console/middleware.rb:28:in `block in call'
+web-console (4.2.1) lib/web_console/middleware.rb:17:in `catch'
+web-console (4.2.1) lib/web_console/middleware.rb:17:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/show_exceptions.rb:29:in `call'
+railties (7.0.10) lib/rails/rack/logger.rb:40:in `call_app'
+railties (7.0.10) lib/rails/rack/logger.rb:25:in `block in call'
+activesupport (7.0.10) lib/active_support/tagged_logging.rb:99:in `block in tagged'
+activesupport (7.0.10) lib/active_support/tagged_logging.rb:37:in `tagged'
+activesupport (7.0.10) lib/active_support/tagged_logging.rb:99:in `tagged'
+railties (7.0.10) lib/rails/rack/logger.rb:25:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/remote_ip.rb:93:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/request_id.rb:26:in `call'
+rack (2.2.23) lib/rack/method_override.rb:24:in `call'
+rack (2.2.23) lib/rack/runtime.rb:22:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/executor.rb:14:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/static.rb:23:in `call'
+rack (2.2.23) lib/rack/sendfile.rb:127:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/host_authorization.rb:138:in `call'
+railties (7.0.10) lib/rails/engine.rb:531:in `call'
+puma (5.6.9) lib/puma/configuration.rb:252:in `call'
+puma (5.6.9) lib/puma/request.rb:77:in `block in handle_request'
+puma (5.6.9) lib/puma/thread_pool.rb:340:in `with_force_shutdown'
+puma (5.6.9) lib/puma/request.rb:76:in `handle_request'
+puma (5.6.9) lib/puma/server.rb:443:in `process_client'
+puma (5.6.9) lib/puma/thread_pool.rb:147:in `block in spawn_thread'
+Started GET "/customers" for 127.0.0.1 at 2026-06-10 11:10:29 -0500
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mCACHE ActiveRecord::SchemaMigration Pluck (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  
+ActiveRecord::PendingMigrationError (
+
+Migrations are pending. To resolve this issue, run:
+
+        bin/rails db:migrate RAILS_ENV=development
+
+You have 1 pending migration:
+
+1781107344702_create_customers.rb
+
+
+):
+  
+activerecord (7.0.10) lib/active_record/migration.rb:663:in `check_pending!'
+activerecord (7.0.10) lib/active_record/migration.rb:628:in `block (2 levels) in call'
+activesupport (7.0.10) lib/active_support/file_update_checker.rb:83:in `execute'
+activerecord (7.0.10) lib/active_record/migration.rb:633:in `block in call'
+activerecord (7.0.10) lib/active_record/migration.rb:625:in `synchronize'
+activerecord (7.0.10) lib/active_record/migration.rb:625:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/callbacks.rb:27:in `block in call'
+activesupport (7.0.10) lib/active_support/callbacks.rb:99:in `run_callbacks'
+actionpack (7.0.10) lib/action_dispatch/middleware/callbacks.rb:26:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/executor.rb:14:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/actionable_exceptions.rb:17:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/debug_exceptions.rb:28:in `call'
+web-console (4.2.1) lib/web_console/middleware.rb:132:in `call_app'
+web-console (4.2.1) lib/web_console/middleware.rb:28:in `block in call'
+web-console (4.2.1) lib/web_console/middleware.rb:17:in `catch'
+web-console (4.2.1) lib/web_console/middleware.rb:17:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/show_exceptions.rb:29:in `call'
+railties (7.0.10) lib/rails/rack/logger.rb:40:in `call_app'
+railties (7.0.10) lib/rails/rack/logger.rb:25:in `block in call'
+activesupport (7.0.10) lib/active_support/tagged_logging.rb:99:in `block in tagged'
+activesupport (7.0.10) lib/active_support/tagged_logging.rb:37:in `tagged'
+activesupport (7.0.10) lib/active_support/tagged_logging.rb:99:in `tagged'
+railties (7.0.10) lib/rails/rack/logger.rb:25:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/remote_ip.rb:93:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/request_id.rb:26:in `call'
+rack (2.2.23) lib/rack/method_override.rb:24:in `call'
+rack (2.2.23) lib/rack/runtime.rb:22:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/executor.rb:14:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/static.rb:23:in `call'
+rack (2.2.23) lib/rack/sendfile.rb:127:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/host_authorization.rb:138:in `call'
+railties (7.0.10) lib/rails/engine.rb:531:in `call'
+puma (5.6.9) lib/puma/configuration.rb:252:in `call'
+puma (5.6.9) lib/puma/request.rb:77:in `block in handle_request'
+puma (5.6.9) lib/puma/thread_pool.rb:340:in `with_force_shutdown'
+puma (5.6.9) lib/puma/request.rb:76:in `handle_request'
+puma (5.6.9) lib/puma/server.rb:443:in `process_client'
+puma (5.6.9) lib/puma/thread_pool.rb:147:in `block in spawn_thread'
+Started GET "/customers" for 127.0.0.1 at 2026-06-10 11:10:30 -0500
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mCACHE ActiveRecord::SchemaMigration Pluck (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  
+ActiveRecord::PendingMigrationError (
+
+Migrations are pending. To resolve this issue, run:
+
+        bin/rails db:migrate RAILS_ENV=development
+
+You have 1 pending migration:
+
+1781107344702_create_customers.rb
+
+
+):
+  
+activerecord (7.0.10) lib/active_record/migration.rb:663:in `check_pending!'
+activerecord (7.0.10) lib/active_record/migration.rb:628:in `block (2 levels) in call'
+activesupport (7.0.10) lib/active_support/file_update_checker.rb:83:in `execute'
+activerecord (7.0.10) lib/active_record/migration.rb:633:in `block in call'
+activerecord (7.0.10) lib/active_record/migration.rb:625:in `synchronize'
+activerecord (7.0.10) lib/active_record/migration.rb:625:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/callbacks.rb:27:in `block in call'
+activesupport (7.0.10) lib/active_support/callbacks.rb:99:in `run_callbacks'
+actionpack (7.0.10) lib/action_dispatch/middleware/callbacks.rb:26:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/executor.rb:14:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/actionable_exceptions.rb:17:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/debug_exceptions.rb:28:in `call'
+web-console (4.2.1) lib/web_console/middleware.rb:132:in `call_app'
+web-console (4.2.1) lib/web_console/middleware.rb:28:in `block in call'
+web-console (4.2.1) lib/web_console/middleware.rb:17:in `catch'
+web-console (4.2.1) lib/web_console/middleware.rb:17:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/show_exceptions.rb:29:in `call'
+railties (7.0.10) lib/rails/rack/logger.rb:40:in `call_app'
+railties (7.0.10) lib/rails/rack/logger.rb:25:in `block in call'
+activesupport (7.0.10) lib/active_support/tagged_logging.rb:99:in `block in tagged'
+activesupport (7.0.10) lib/active_support/tagged_logging.rb:37:in `tagged'
+activesupport (7.0.10) lib/active_support/tagged_logging.rb:99:in `tagged'
+railties (7.0.10) lib/rails/rack/logger.rb:25:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/remote_ip.rb:93:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/request_id.rb:26:in `call'
+rack (2.2.23) lib/rack/method_override.rb:24:in `call'
+rack (2.2.23) lib/rack/runtime.rb:22:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/executor.rb:14:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/static.rb:23:in `call'
+rack (2.2.23) lib/rack/sendfile.rb:127:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/host_authorization.rb:138:in `call'
+railties (7.0.10) lib/rails/engine.rb:531:in `call'
+puma (5.6.9) lib/puma/configuration.rb:252:in `call'
+puma (5.6.9) lib/puma/request.rb:77:in `block in handle_request'
+puma (5.6.9) lib/puma/thread_pool.rb:340:in `with_force_shutdown'
+puma (5.6.9) lib/puma/request.rb:76:in `handle_request'
+puma (5.6.9) lib/puma/server.rb:443:in `process_client'
+puma (5.6.9) lib/puma/thread_pool.rb:147:in `block in spawn_thread'
+Started GET "/customers" for 127.0.0.1 at 2026-06-10 11:10:31 -0500
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mCACHE ActiveRecord::SchemaMigration Pluck (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  
+ActiveRecord::PendingMigrationError (
+
+Migrations are pending. To resolve this issue, run:
+
+        bin/rails db:migrate RAILS_ENV=development
+
+You have 1 pending migration:
+
+1781107344702_create_customers.rb
+
+
+):
+  
+activerecord (7.0.10) lib/active_record/migration.rb:663:in `check_pending!'
+activerecord (7.0.10) lib/active_record/migration.rb:628:in `block (2 levels) in call'
+activesupport (7.0.10) lib/active_support/file_update_checker.rb:83:in `execute'
+activerecord (7.0.10) lib/active_record/migration.rb:633:in `block in call'
+activerecord (7.0.10) lib/active_record/migration.rb:625:in `synchronize'
+activerecord (7.0.10) lib/active_record/migration.rb:625:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/callbacks.rb:27:in `block in call'
+activesupport (7.0.10) lib/active_support/callbacks.rb:99:in `run_callbacks'
+actionpack (7.0.10) lib/action_dispatch/middleware/callbacks.rb:26:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/executor.rb:14:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/actionable_exceptions.rb:17:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/debug_exceptions.rb:28:in `call'
+web-console (4.2.1) lib/web_console/middleware.rb:132:in `call_app'
+web-console (4.2.1) lib/web_console/middleware.rb:28:in `block in call'
+web-console (4.2.1) lib/web_console/middleware.rb:17:in `catch'
+web-console (4.2.1) lib/web_console/middleware.rb:17:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/show_exceptions.rb:29:in `call'
+railties (7.0.10) lib/rails/rack/logger.rb:40:in `call_app'
+railties (7.0.10) lib/rails/rack/logger.rb:25:in `block in call'
+activesupport (7.0.10) lib/active_support/tagged_logging.rb:99:in `block in tagged'
+activesupport (7.0.10) lib/active_support/tagged_logging.rb:37:in `tagged'
+activesupport (7.0.10) lib/active_support/tagged_logging.rb:99:in `tagged'
+railties (7.0.10) lib/rails/rack/logger.rb:25:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/remote_ip.rb:93:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/request_id.rb:26:in `call'
+rack (2.2.23) lib/rack/method_override.rb:24:in `call'
+rack (2.2.23) lib/rack/runtime.rb:22:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/executor.rb:14:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/static.rb:23:in `call'
+rack (2.2.23) lib/rack/sendfile.rb:127:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/host_authorization.rb:138:in `call'
+railties (7.0.10) lib/rails/engine.rb:531:in `call'
+puma (5.6.9) lib/puma/configuration.rb:252:in `call'
+puma (5.6.9) lib/puma/request.rb:77:in `block in handle_request'
+puma (5.6.9) lib/puma/thread_pool.rb:340:in `with_force_shutdown'
+puma (5.6.9) lib/puma/request.rb:76:in `handle_request'
+puma (5.6.9) lib/puma/server.rb:443:in `process_client'
+puma (5.6.9) lib/puma/thread_pool.rb:147:in `block in spawn_thread'
+Started GET "/customers" for 127.0.0.1 at 2026-06-10 11:10:32 -0500
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mCACHE ActiveRecord::SchemaMigration Pluck (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  
+ActiveRecord::PendingMigrationError (
+
+Migrations are pending. To resolve this issue, run:
+
+        bin/rails db:migrate RAILS_ENV=development
+
+You have 1 pending migration:
+
+1781107344702_create_customers.rb
+
+
+):
+  
+activerecord (7.0.10) lib/active_record/migration.rb:663:in `check_pending!'
+activerecord (7.0.10) lib/active_record/migration.rb:628:in `block (2 levels) in call'
+activesupport (7.0.10) lib/active_support/file_update_checker.rb:83:in `execute'
+activerecord (7.0.10) lib/active_record/migration.rb:633:in `block in call'
+activerecord (7.0.10) lib/active_record/migration.rb:625:in `synchronize'
+activerecord (7.0.10) lib/active_record/migration.rb:625:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/callbacks.rb:27:in `block in call'
+activesupport (7.0.10) lib/active_support/callbacks.rb:99:in `run_callbacks'
+actionpack (7.0.10) lib/action_dispatch/middleware/callbacks.rb:26:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/executor.rb:14:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/actionable_exceptions.rb:17:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/debug_exceptions.rb:28:in `call'
+web-console (4.2.1) lib/web_console/middleware.rb:132:in `call_app'
+web-console (4.2.1) lib/web_console/middleware.rb:28:in `block in call'
+web-console (4.2.1) lib/web_console/middleware.rb:17:in `catch'
+web-console (4.2.1) lib/web_console/middleware.rb:17:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/show_exceptions.rb:29:in `call'
+railties (7.0.10) lib/rails/rack/logger.rb:40:in `call_app'
+railties (7.0.10) lib/rails/rack/logger.rb:25:in `block in call'
+activesupport (7.0.10) lib/active_support/tagged_logging.rb:99:in `block in tagged'
+activesupport (7.0.10) lib/active_support/tagged_logging.rb:37:in `tagged'
+activesupport (7.0.10) lib/active_support/tagged_logging.rb:99:in `tagged'
+railties (7.0.10) lib/rails/rack/logger.rb:25:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/remote_ip.rb:93:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/request_id.rb:26:in `call'
+rack (2.2.23) lib/rack/method_override.rb:24:in `call'
+rack (2.2.23) lib/rack/runtime.rb:22:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/executor.rb:14:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/static.rb:23:in `call'
+rack (2.2.23) lib/rack/sendfile.rb:127:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/host_authorization.rb:138:in `call'
+railties (7.0.10) lib/rails/engine.rb:531:in `call'
+puma (5.6.9) lib/puma/configuration.rb:252:in `call'
+puma (5.6.9) lib/puma/request.rb:77:in `block in handle_request'
+puma (5.6.9) lib/puma/thread_pool.rb:340:in `with_force_shutdown'
+puma (5.6.9) lib/puma/request.rb:76:in `handle_request'
+puma (5.6.9) lib/puma/server.rb:443:in `process_client'
+puma (5.6.9) lib/puma/thread_pool.rb:147:in `block in spawn_thread'
+Started GET "/customers" for 127.0.0.1 at 2026-06-10 11:10:34 -0500
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mCACHE ActiveRecord::SchemaMigration Pluck (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  
+ActiveRecord::PendingMigrationError (
+
+Migrations are pending. To resolve this issue, run:
+
+        bin/rails db:migrate RAILS_ENV=development
+
+You have 1 pending migration:
+
+1781107344702_create_customers.rb
+
+
+):
+  
+activerecord (7.0.10) lib/active_record/migration.rb:663:in `check_pending!'
+activerecord (7.0.10) lib/active_record/migration.rb:628:in `block (2 levels) in call'
+activesupport (7.0.10) lib/active_support/file_update_checker.rb:83:in `execute'
+activerecord (7.0.10) lib/active_record/migration.rb:633:in `block in call'
+activerecord (7.0.10) lib/active_record/migration.rb:625:in `synchronize'
+activerecord (7.0.10) lib/active_record/migration.rb:625:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/callbacks.rb:27:in `block in call'
+activesupport (7.0.10) lib/active_support/callbacks.rb:99:in `run_callbacks'
+actionpack (7.0.10) lib/action_dispatch/middleware/callbacks.rb:26:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/executor.rb:14:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/actionable_exceptions.rb:17:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/debug_exceptions.rb:28:in `call'
+web-console (4.2.1) lib/web_console/middleware.rb:132:in `call_app'
+web-console (4.2.1) lib/web_console/middleware.rb:28:in `block in call'
+web-console (4.2.1) lib/web_console/middleware.rb:17:in `catch'
+web-console (4.2.1) lib/web_console/middleware.rb:17:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/show_exceptions.rb:29:in `call'
+railties (7.0.10) lib/rails/rack/logger.rb:40:in `call_app'
+railties (7.0.10) lib/rails/rack/logger.rb:25:in `block in call'
+activesupport (7.0.10) lib/active_support/tagged_logging.rb:99:in `block in tagged'
+activesupport (7.0.10) lib/active_support/tagged_logging.rb:37:in `tagged'
+activesupport (7.0.10) lib/active_support/tagged_logging.rb:99:in `tagged'
+railties (7.0.10) lib/rails/rack/logger.rb:25:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/remote_ip.rb:93:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/request_id.rb:26:in `call'
+rack (2.2.23) lib/rack/method_override.rb:24:in `call'
+rack (2.2.23) lib/rack/runtime.rb:22:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/executor.rb:14:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/static.rb:23:in `call'
+rack (2.2.23) lib/rack/sendfile.rb:127:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/host_authorization.rb:138:in `call'
+railties (7.0.10) lib/rails/engine.rb:531:in `call'
+puma (5.6.9) lib/puma/configuration.rb:252:in `call'
+puma (5.6.9) lib/puma/request.rb:77:in `block in handle_request'
+puma (5.6.9) lib/puma/thread_pool.rb:340:in `with_force_shutdown'
+puma (5.6.9) lib/puma/request.rb:76:in `handle_request'
+puma (5.6.9) lib/puma/server.rb:443:in `process_client'
+puma (5.6.9) lib/puma/thread_pool.rb:147:in `block in spawn_thread'
+Started GET "/customers" for 127.0.0.1 at 2026-06-10 11:10:35 -0500
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mCACHE ActiveRecord::SchemaMigration Pluck (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  
+ActiveRecord::PendingMigrationError (
+
+Migrations are pending. To resolve this issue, run:
+
+        bin/rails db:migrate RAILS_ENV=development
+
+You have 1 pending migration:
+
+1781107344702_create_customers.rb
+
+
+):
+  
+activerecord (7.0.10) lib/active_record/migration.rb:663:in `check_pending!'
+activerecord (7.0.10) lib/active_record/migration.rb:628:in `block (2 levels) in call'
+activesupport (7.0.10) lib/active_support/file_update_checker.rb:83:in `execute'
+activerecord (7.0.10) lib/active_record/migration.rb:633:in `block in call'
+activerecord (7.0.10) lib/active_record/migration.rb:625:in `synchronize'
+activerecord (7.0.10) lib/active_record/migration.rb:625:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/callbacks.rb:27:in `block in call'
+activesupport (7.0.10) lib/active_support/callbacks.rb:99:in `run_callbacks'
+actionpack (7.0.10) lib/action_dispatch/middleware/callbacks.rb:26:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/executor.rb:14:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/actionable_exceptions.rb:17:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/debug_exceptions.rb:28:in `call'
+web-console (4.2.1) lib/web_console/middleware.rb:132:in `call_app'
+web-console (4.2.1) lib/web_console/middleware.rb:28:in `block in call'
+web-console (4.2.1) lib/web_console/middleware.rb:17:in `catch'
+web-console (4.2.1) lib/web_console/middleware.rb:17:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/show_exceptions.rb:29:in `call'
+railties (7.0.10) lib/rails/rack/logger.rb:40:in `call_app'
+railties (7.0.10) lib/rails/rack/logger.rb:25:in `block in call'
+activesupport (7.0.10) lib/active_support/tagged_logging.rb:99:in `block in tagged'
+activesupport (7.0.10) lib/active_support/tagged_logging.rb:37:in `tagged'
+activesupport (7.0.10) lib/active_support/tagged_logging.rb:99:in `tagged'
+railties (7.0.10) lib/rails/rack/logger.rb:25:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/remote_ip.rb:93:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/request_id.rb:26:in `call'
+rack (2.2.23) lib/rack/method_override.rb:24:in `call'
+rack (2.2.23) lib/rack/runtime.rb:22:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/executor.rb:14:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/static.rb:23:in `call'
+rack (2.2.23) lib/rack/sendfile.rb:127:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/host_authorization.rb:138:in `call'
+railties (7.0.10) lib/rails/engine.rb:531:in `call'
+puma (5.6.9) lib/puma/configuration.rb:252:in `call'
+puma (5.6.9) lib/puma/request.rb:77:in `block in handle_request'
+puma (5.6.9) lib/puma/thread_pool.rb:340:in `with_force_shutdown'
+puma (5.6.9) lib/puma/request.rb:76:in `handle_request'
+puma (5.6.9) lib/puma/server.rb:443:in `process_client'
+puma (5.6.9) lib/puma/thread_pool.rb:147:in `block in spawn_thread'
+Started GET "/customers" for 127.0.0.1 at 2026-06-10 11:10:36 -0500
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mCACHE ActiveRecord::SchemaMigration Pluck (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  
+ActiveRecord::PendingMigrationError (
+
+Migrations are pending. To resolve this issue, run:
+
+        bin/rails db:migrate RAILS_ENV=development
+
+You have 1 pending migration:
+
+1781107344702_create_customers.rb
+
+
+):
+  
+activerecord (7.0.10) lib/active_record/migration.rb:663:in `check_pending!'
+activerecord (7.0.10) lib/active_record/migration.rb:628:in `block (2 levels) in call'
+activesupport (7.0.10) lib/active_support/file_update_checker.rb:83:in `execute'
+activerecord (7.0.10) lib/active_record/migration.rb:633:in `block in call'
+activerecord (7.0.10) lib/active_record/migration.rb:625:in `synchronize'
+activerecord (7.0.10) lib/active_record/migration.rb:625:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/callbacks.rb:27:in `block in call'
+activesupport (7.0.10) lib/active_support/callbacks.rb:99:in `run_callbacks'
+actionpack (7.0.10) lib/action_dispatch/middleware/callbacks.rb:26:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/executor.rb:14:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/actionable_exceptions.rb:17:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/debug_exceptions.rb:28:in `call'
+web-console (4.2.1) lib/web_console/middleware.rb:132:in `call_app'
+web-console (4.2.1) lib/web_console/middleware.rb:28:in `block in call'
+web-console (4.2.1) lib/web_console/middleware.rb:17:in `catch'
+web-console (4.2.1) lib/web_console/middleware.rb:17:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/show_exceptions.rb:29:in `call'
+railties (7.0.10) lib/rails/rack/logger.rb:40:in `call_app'
+railties (7.0.10) lib/rails/rack/logger.rb:25:in `block in call'
+activesupport (7.0.10) lib/active_support/tagged_logging.rb:99:in `block in tagged'
+activesupport (7.0.10) lib/active_support/tagged_logging.rb:37:in `tagged'
+activesupport (7.0.10) lib/active_support/tagged_logging.rb:99:in `tagged'
+railties (7.0.10) lib/rails/rack/logger.rb:25:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/remote_ip.rb:93:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/request_id.rb:26:in `call'
+rack (2.2.23) lib/rack/method_override.rb:24:in `call'
+rack (2.2.23) lib/rack/runtime.rb:22:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/executor.rb:14:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/static.rb:23:in `call'
+rack (2.2.23) lib/rack/sendfile.rb:127:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/host_authorization.rb:138:in `call'
+railties (7.0.10) lib/rails/engine.rb:531:in `call'
+puma (5.6.9) lib/puma/configuration.rb:252:in `call'
+puma (5.6.9) lib/puma/request.rb:77:in `block in handle_request'
+puma (5.6.9) lib/puma/thread_pool.rb:340:in `with_force_shutdown'
+puma (5.6.9) lib/puma/request.rb:76:in `handle_request'
+puma (5.6.9) lib/puma/server.rb:443:in `process_client'
+puma (5.6.9) lib/puma/thread_pool.rb:147:in `block in spawn_thread'
+Started GET "/customers" for 127.0.0.1 at 2026-06-10 11:10:37 -0500
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mCACHE ActiveRecord::SchemaMigration Pluck (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  
+ActiveRecord::PendingMigrationError (
+
+Migrations are pending. To resolve this issue, run:
+
+        bin/rails db:migrate RAILS_ENV=development
+
+You have 1 pending migration:
+
+1781107344702_create_customers.rb
+
+
+):
+  
+activerecord (7.0.10) lib/active_record/migration.rb:663:in `check_pending!'
+activerecord (7.0.10) lib/active_record/migration.rb:628:in `block (2 levels) in call'
+activesupport (7.0.10) lib/active_support/file_update_checker.rb:83:in `execute'
+activerecord (7.0.10) lib/active_record/migration.rb:633:in `block in call'
+activerecord (7.0.10) lib/active_record/migration.rb:625:in `synchronize'
+activerecord (7.0.10) lib/active_record/migration.rb:625:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/callbacks.rb:27:in `block in call'
+activesupport (7.0.10) lib/active_support/callbacks.rb:99:in `run_callbacks'
+actionpack (7.0.10) lib/action_dispatch/middleware/callbacks.rb:26:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/executor.rb:14:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/actionable_exceptions.rb:17:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/debug_exceptions.rb:28:in `call'
+web-console (4.2.1) lib/web_console/middleware.rb:132:in `call_app'
+web-console (4.2.1) lib/web_console/middleware.rb:28:in `block in call'
+web-console (4.2.1) lib/web_console/middleware.rb:17:in `catch'
+web-console (4.2.1) lib/web_console/middleware.rb:17:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/show_exceptions.rb:29:in `call'
+railties (7.0.10) lib/rails/rack/logger.rb:40:in `call_app'
+railties (7.0.10) lib/rails/rack/logger.rb:25:in `block in call'
+activesupport (7.0.10) lib/active_support/tagged_logging.rb:99:in `block in tagged'
+activesupport (7.0.10) lib/active_support/tagged_logging.rb:37:in `tagged'
+activesupport (7.0.10) lib/active_support/tagged_logging.rb:99:in `tagged'
+railties (7.0.10) lib/rails/rack/logger.rb:25:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/remote_ip.rb:93:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/request_id.rb:26:in `call'
+rack (2.2.23) lib/rack/method_override.rb:24:in `call'
+rack (2.2.23) lib/rack/runtime.rb:22:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/executor.rb:14:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/static.rb:23:in `call'
+rack (2.2.23) lib/rack/sendfile.rb:127:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/host_authorization.rb:138:in `call'
+railties (7.0.10) lib/rails/engine.rb:531:in `call'
+puma (5.6.9) lib/puma/configuration.rb:252:in `call'
+puma (5.6.9) lib/puma/request.rb:77:in `block in handle_request'
+puma (5.6.9) lib/puma/thread_pool.rb:340:in `with_force_shutdown'
+puma (5.6.9) lib/puma/request.rb:76:in `handle_request'
+puma (5.6.9) lib/puma/server.rb:443:in `process_client'
+puma (5.6.9) lib/puma/thread_pool.rb:147:in `block in spawn_thread'
+Started GET "/" for 127.0.0.1 at 2026-06-10 11:10:37 -0500
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mCACHE ActiveRecord::SchemaMigration Pluck (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  
+ActiveRecord::PendingMigrationError (
+
+Migrations are pending. To resolve this issue, run:
+
+        bin/rails db:migrate RAILS_ENV=development
+
+You have 1 pending migration:
+
+1781107344702_create_customers.rb
+
+
+):
+  
+activerecord (7.0.10) lib/active_record/migration.rb:663:in `check_pending!'
+activerecord (7.0.10) lib/active_record/migration.rb:628:in `block (2 levels) in call'
+activesupport (7.0.10) lib/active_support/file_update_checker.rb:83:in `execute'
+activerecord (7.0.10) lib/active_record/migration.rb:633:in `block in call'
+activerecord (7.0.10) lib/active_record/migration.rb:625:in `synchronize'
+activerecord (7.0.10) lib/active_record/migration.rb:625:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/callbacks.rb:27:in `block in call'
+activesupport (7.0.10) lib/active_support/callbacks.rb:99:in `run_callbacks'
+actionpack (7.0.10) lib/action_dispatch/middleware/callbacks.rb:26:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/executor.rb:14:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/actionable_exceptions.rb:17:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/debug_exceptions.rb:28:in `call'
+web-console (4.2.1) lib/web_console/middleware.rb:132:in `call_app'
+web-console (4.2.1) lib/web_console/middleware.rb:28:in `block in call'
+web-console (4.2.1) lib/web_console/middleware.rb:17:in `catch'
+web-console (4.2.1) lib/web_console/middleware.rb:17:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/show_exceptions.rb:29:in `call'
+railties (7.0.10) lib/rails/rack/logger.rb:40:in `call_app'
+railties (7.0.10) lib/rails/rack/logger.rb:25:in `block in call'
+activesupport (7.0.10) lib/active_support/tagged_logging.rb:99:in `block in tagged'
+activesupport (7.0.10) lib/active_support/tagged_logging.rb:37:in `tagged'
+activesupport (7.0.10) lib/active_support/tagged_logging.rb:99:in `tagged'
+railties (7.0.10) lib/rails/rack/logger.rb:25:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/remote_ip.rb:93:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/request_id.rb:26:in `call'
+rack (2.2.23) lib/rack/method_override.rb:24:in `call'
+rack (2.2.23) lib/rack/runtime.rb:22:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/executor.rb:14:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/static.rb:23:in `call'
+rack (2.2.23) lib/rack/sendfile.rb:127:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/host_authorization.rb:138:in `call'
+railties (7.0.10) lib/rails/engine.rb:531:in `call'
+puma (5.6.9) lib/puma/configuration.rb:252:in `call'
+puma (5.6.9) lib/puma/request.rb:77:in `block in handle_request'
+puma (5.6.9) lib/puma/thread_pool.rb:340:in `with_force_shutdown'
+puma (5.6.9) lib/puma/request.rb:76:in `handle_request'
+puma (5.6.9) lib/puma/server.rb:443:in `process_client'
+puma (5.6.9) lib/puma/thread_pool.rb:147:in `block in spawn_thread'
+Started GET "/customers" for 127.0.0.1 at 2026-06-10 11:10:37 -0500
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mCACHE ActiveRecord::SchemaMigration Pluck (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  
+ActiveRecord::PendingMigrationError (
+
+Migrations are pending. To resolve this issue, run:
+
+        bin/rails db:migrate RAILS_ENV=development
+
+You have 1 pending migration:
+
+1781107344702_create_customers.rb
+
+
+):
+  
+activerecord (7.0.10) lib/active_record/migration.rb:663:in `check_pending!'
+activerecord (7.0.10) lib/active_record/migration.rb:628:in `block (2 levels) in call'
+activesupport (7.0.10) lib/active_support/file_update_checker.rb:83:in `execute'
+activerecord (7.0.10) lib/active_record/migration.rb:633:in `block in call'
+activerecord (7.0.10) lib/active_record/migration.rb:625:in `synchronize'
+activerecord (7.0.10) lib/active_record/migration.rb:625:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/callbacks.rb:27:in `block in call'
+activesupport (7.0.10) lib/active_support/callbacks.rb:99:in `run_callbacks'
+actionpack (7.0.10) lib/action_dispatch/middleware/callbacks.rb:26:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/executor.rb:14:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/actionable_exceptions.rb:17:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/debug_exceptions.rb:28:in `call'
+web-console (4.2.1) lib/web_console/middleware.rb:132:in `call_app'
+web-console (4.2.1) lib/web_console/middleware.rb:28:in `block in call'
+web-console (4.2.1) lib/web_console/middleware.rb:17:in `catch'
+web-console (4.2.1) lib/web_console/middleware.rb:17:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/show_exceptions.rb:29:in `call'
+railties (7.0.10) lib/rails/rack/logger.rb:40:in `call_app'
+railties (7.0.10) lib/rails/rack/logger.rb:25:in `block in call'
+activesupport (7.0.10) lib/active_support/tagged_logging.rb:99:in `block in tagged'
+activesupport (7.0.10) lib/active_support/tagged_logging.rb:37:in `tagged'
+activesupport (7.0.10) lib/active_support/tagged_logging.rb:99:in `tagged'
+railties (7.0.10) lib/rails/rack/logger.rb:25:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/remote_ip.rb:93:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/request_id.rb:26:in `call'
+rack (2.2.23) lib/rack/method_override.rb:24:in `call'
+rack (2.2.23) lib/rack/runtime.rb:22:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/executor.rb:14:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/static.rb:23:in `call'
+rack (2.2.23) lib/rack/sendfile.rb:127:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/host_authorization.rb:138:in `call'
+railties (7.0.10) lib/rails/engine.rb:531:in `call'
+puma (5.6.9) lib/puma/configuration.rb:252:in `call'
+puma (5.6.9) lib/puma/request.rb:77:in `block in handle_request'
+puma (5.6.9) lib/puma/thread_pool.rb:340:in `with_force_shutdown'
+puma (5.6.9) lib/puma/request.rb:76:in `handle_request'
+puma (5.6.9) lib/puma/server.rb:443:in `process_client'
+puma (5.6.9) lib/puma/thread_pool.rb:147:in `block in spawn_thread'
+Started GET "/customers" for 127.0.0.1 at 2026-06-10 11:10:38 -0500
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mCACHE ActiveRecord::SchemaMigration Pluck (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  
+ActiveRecord::PendingMigrationError (
+
+Migrations are pending. To resolve this issue, run:
+
+        bin/rails db:migrate RAILS_ENV=development
+
+You have 1 pending migration:
+
+1781107344702_create_customers.rb
+
+
+):
+  
+activerecord (7.0.10) lib/active_record/migration.rb:663:in `check_pending!'
+activerecord (7.0.10) lib/active_record/migration.rb:628:in `block (2 levels) in call'
+activesupport (7.0.10) lib/active_support/file_update_checker.rb:83:in `execute'
+activerecord (7.0.10) lib/active_record/migration.rb:633:in `block in call'
+activerecord (7.0.10) lib/active_record/migration.rb:625:in `synchronize'
+activerecord (7.0.10) lib/active_record/migration.rb:625:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/callbacks.rb:27:in `block in call'
+activesupport (7.0.10) lib/active_support/callbacks.rb:99:in `run_callbacks'
+actionpack (7.0.10) lib/action_dispatch/middleware/callbacks.rb:26:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/executor.rb:14:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/actionable_exceptions.rb:17:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/debug_exceptions.rb:28:in `call'
+web-console (4.2.1) lib/web_console/middleware.rb:132:in `call_app'
+web-console (4.2.1) lib/web_console/middleware.rb:28:in `block in call'
+web-console (4.2.1) lib/web_console/middleware.rb:17:in `catch'
+web-console (4.2.1) lib/web_console/middleware.rb:17:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/show_exceptions.rb:29:in `call'
+railties (7.0.10) lib/rails/rack/logger.rb:40:in `call_app'
+railties (7.0.10) lib/rails/rack/logger.rb:25:in `block in call'
+activesupport (7.0.10) lib/active_support/tagged_logging.rb:99:in `block in tagged'
+activesupport (7.0.10) lib/active_support/tagged_logging.rb:37:in `tagged'
+activesupport (7.0.10) lib/active_support/tagged_logging.rb:99:in `tagged'
+railties (7.0.10) lib/rails/rack/logger.rb:25:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/remote_ip.rb:93:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/request_id.rb:26:in `call'
+rack (2.2.23) lib/rack/method_override.rb:24:in `call'
+rack (2.2.23) lib/rack/runtime.rb:22:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/executor.rb:14:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/static.rb:23:in `call'
+rack (2.2.23) lib/rack/sendfile.rb:127:in `call'
+actionpack (7.0.10) lib/action_dispatch/middleware/host_authorization.rb:138:in `call'
+railties (7.0.10) lib/rails/engine.rb:531:in `call'
+puma (5.6.9) lib/puma/configuration.rb:252:in `call'
+puma (5.6.9) lib/puma/request.rb:77:in `block in handle_request'
+puma (5.6.9) lib/puma/thread_pool.rb:340:in `with_force_shutdown'
+puma (5.6.9) lib/puma/request.rb:76:in `handle_request'
+puma (5.6.9) lib/puma/server.rb:443:in `process_client'
+puma (5.6.9) lib/puma/thread_pool.rb:147:in `block in spawn_thread'
+Started GET "/customers" for 127.0.0.1 at 2026-06-10 11:11:01 -0500
+Processing by CustomersController#index as */*
+  Rendering layout layouts/application.html.erb
+  Rendering customers/index.html.erb within layouts/application
+  [1m[36mCustomer Load (0.6ms)[0m  [1m[34mSELECT "vw_customers".* FROM "vw_customers"[0m
+  ↳ app/views/customers/index.html.erb:18
+  Rendered customers/index.html.erb within layouts/application (Duration: 49.6ms | Allocations: 13510)
+  Rendered layout layouts/application.html.erb (Duration: 49.7ms | Allocations: 13609)
+Completed 500 Internal Server Error in 71ms (ActiveRecord: 7.6ms | Allocations: 38474)
+
+
+  
+ActionView::Template::Error (undefined method `email_address' for #<Customer customer_id: "jane-smith-email-com", first_name: "Jane", last_name: "Smithy", name: "Jane Smithy", initials: "JS">):
+    22:             <td><%= customer.last_name %></td>
+    23:             <td><strong><%= customer.name %></strong></td>
+    24:             <td><code><%= customer.initials %></code></td>
+    25:             <td><a href="mailto:<%= customer.email_address %>"><%= customer.email_address %></a></td>
+    26:           </tr>
+    27:         <% end %>
+    28:       </tbody>
+  
+app/views/customers/index.html.erb:25
+app/views/customers/index.html.erb:18
+Started GET "/customers" for 127.0.0.1 at 2026-06-10 11:11:03 -0500
+Processing by CustomersController#index as */*
+  Rendering layout layouts/application.html.erb
+  Rendering customers/index.html.erb within layouts/application
+  [1m[36mCustomer Load (0.6ms)[0m  [1m[34mSELECT "vw_customers".* FROM "vw_customers"[0m
+  ↳ app/views/customers/index.html.erb:18
+  Rendered customers/index.html.erb within layouts/application (Duration: 1.7ms | Allocations: 1588)
+  Rendered layout layouts/application.html.erb (Duration: 1.8ms | Allocations: 1672)
+Completed 500 Internal Server Error in 2ms (ActiveRecord: 0.6ms | Allocations: 1895)
+
+
+  
+ActionView::Template::Error (undefined method `email_address' for #<Customer customer_id: "jane-smith-email-com", first_name: "Jane", last_name: "Smithy", name: "Jane Smithy", initials: "JS">):
+    22:             <td><%= customer.last_name %></td>
+    23:             <td><strong><%= customer.name %></strong></td>
+    24:             <td><code><%= customer.initials %></code></td>
+    25:             <td><a href="mailto:<%= customer.email_address %>"><%= customer.email_address %></a></td>
+    26:           </tr>
+    27:         <% end %>
+    28:       </tbody>
+  
+app/views/customers/index.html.erb:25
+app/views/customers/index.html.erb:18
+Started GET "/customers" for 127.0.0.1 at 2026-06-10 11:11:04 -0500
+Processing by CustomersController#index as */*
+  Rendering layout layouts/application.html.erb
+  Rendering customers/index.html.erb within layouts/application
+  [1m[36mCustomer Load (0.6ms)[0m  [1m[34mSELECT "vw_customers".* FROM "vw_customers"[0m
+  ↳ app/views/customers/index.html.erb:18
+  Rendered customers/index.html.erb within layouts/application (Duration: 1.4ms | Allocations: 1586)
+  Rendered layout layouts/application.html.erb (Duration: 1.4ms | Allocations: 1670)
+Completed 500 Internal Server Error in 2ms (ActiveRecord: 0.6ms | Allocations: 1891)
+
+
+  
+ActionView::Template::Error (undefined method `email_address' for #<Customer customer_id: "jane-smith-email-com", first_name: "Jane", last_name: "Smithy", name: "Jane Smithy", initials: "JS">):
+    22:             <td><%= customer.last_name %></td>
+    23:             <td><strong><%= customer.name %></strong></td>
+    24:             <td><code><%= customer.initials %></code></td>
+    25:             <td><a href="mailto:<%= customer.email_address %>"><%= customer.email_address %></a></td>
+    26:           </tr>
+    27:         <% end %>
+    28:       </tbody>
+  
+app/views/customers/index.html.erb:25
+app/views/customers/index.html.erb:18
+Started GET "/customers" for 127.0.0.1 at 2026-06-10 11:11:05 -0500
+Processing by CustomersController#index as */*
+  Rendering layout layouts/application.html.erb
+  Rendering customers/index.html.erb within layouts/application
+  [1m[36mCustomer Load (0.7ms)[0m  [1m[34mSELECT "vw_customers".* FROM "vw_customers"[0m
+  ↳ app/views/customers/index.html.erb:18
+  Rendered customers/index.html.erb within layouts/application (Duration: 1.4ms | Allocations: 1586)
+  Rendered layout layouts/application.html.erb (Duration: 1.5ms | Allocations: 1670)
+Completed 500 Internal Server Error in 2ms (ActiveRecord: 0.7ms | Allocations: 1891)
+
+
+  
+ActionView::Template::Error (undefined method `email_address' for #<Customer customer_id: "jane-smith-email-com", first_name: "Jane", last_name: "Smithy", name: "Jane Smithy", initials: "JS">):
+    22:             <td><%= customer.last_name %></td>
+    23:             <td><strong><%= customer.name %></strong></td>
+    24:             <td><code><%= customer.initials %></code></td>
+    25:             <td><a href="mailto:<%= customer.email_address %>"><%= customer.email_address %></a></td>
+    26:           </tr>
+    27:         <% end %>
+    28:       </tbody>
+  
+app/views/customers/index.html.erb:25
+app/views/customers/index.html.erb:18
+Started GET "/customers" for 127.0.0.1 at 2026-06-10 11:11:06 -0500
+Processing by CustomersController#index as */*
+  Rendering layout layouts/application.html.erb
+  Rendering customers/index.html.erb within layouts/application
+  [1m[36mCustomer Load (0.7ms)[0m  [1m[34mSELECT "vw_customers".* FROM "vw_customers"[0m
+  ↳ app/views/customers/index.html.erb:18
+  Rendered customers/index.html.erb within layouts/application (Duration: 1.4ms | Allocations: 1586)
+  Rendered layout layouts/application.html.erb (Duration: 1.5ms | Allocations: 1670)
+Completed 500 Internal Server Error in 2ms (ActiveRecord: 0.7ms | Allocations: 1891)
+
+
+  
+ActionView::Template::Error (undefined method `email_address' for #<Customer customer_id: "jane-smith-email-com", first_name: "Jane", last_name: "Smithy", name: "Jane Smithy", initials: "JS">):
+    22:             <td><%= customer.last_name %></td>
+    23:             <td><strong><%= customer.name %></strong></td>
+    24:             <td><code><%= customer.initials %></code></td>
+    25:             <td><a href="mailto:<%= customer.email_address %>"><%= customer.email_address %></a></td>
+    26:           </tr>
+    27:         <% end %>
+    28:       </tbody>
+  
+app/views/customers/index.html.erb:25
+app/views/customers/index.html.erb:18
+Started GET "/customers" for 127.0.0.1 at 2026-06-10 11:11:08 -0500
+Processing by CustomersController#index as */*
+  Rendering layout layouts/application.html.erb
+  Rendering customers/index.html.erb within layouts/application
+  [1m[36mCustomer Load (0.9ms)[0m  [1m[34mSELECT "vw_customers".* FROM "vw_customers"[0m
+  ↳ app/views/customers/index.html.erb:18
+  Rendered customers/index.html.erb within layouts/application (Duration: 53.6ms | Allocations: 13510)
+  Rendered layout layouts/application.html.erb (Duration: 53.7ms | Allocations: 13609)
+Completed 500 Internal Server Error in 74ms (ActiveRecord: 8.1ms | Allocations: 38476)
+
+
+  
+ActionView::Template::Error (undefined method `email_address' for #<Customer customer_id: "jane-smith-email-com", first_name: "Jane", last_name: "Smithy", name: "Jane Smithy", initials: "JS">):
+    22:             <td><%= customer.last_name %></td>
+    23:             <td><strong><%= customer.name %></strong></td>
+    24:             <td><code><%= customer.initials %></code></td>
+    25:             <td><a href="mailto:<%= customer.email_address %>"><%= customer.email_address %></a></td>
+    26:           </tr>
+    27:         <% end %>
+    28:       </tbody>
+  
+app/views/customers/index.html.erb:25
+app/views/customers/index.html.erb:18
+Started GET "/customers" for 127.0.0.1 at 2026-06-10 11:11:09 -0500
+Processing by CustomersController#index as */*
+  Rendering layout layouts/application.html.erb
+  Rendering customers/index.html.erb within layouts/application
+  [1m[36mCustomer Load (1.2ms)[0m  [1m[34mSELECT "vw_customers".* FROM "vw_customers"[0m
+  ↳ app/views/customers/index.html.erb:18
+  Rendered customers/index.html.erb within layouts/application (Duration: 2.2ms | Allocations: 1588)
+  Rendered layout layouts/application.html.erb (Duration: 2.2ms | Allocations: 1672)
+Completed 500 Internal Server Error in 2ms (ActiveRecord: 1.2ms | Allocations: 1895)
+
+
+  
+ActionView::Template::Error (undefined method `email_address' for #<Customer customer_id: "jane-smith-email-com", first_name: "Jane", last_name: "Smithy", name: "Jane Smithy", initials: "JS">):
+    22:             <td><%= customer.last_name %></td>
+    23:             <td><strong><%= customer.name %></strong></td>
+    24:             <td><code><%= customer.initials %></code></td>
+    25:             <td><a href="mailto:<%= customer.email_address %>"><%= customer.email_address %></a></td>
+    26:           </tr>
+    27:         <% end %>
+    28:       </tbody>
+  
+app/views/customers/index.html.erb:25
+app/views/customers/index.html.erb:18
+Started GET "/customers" for 127.0.0.1 at 2026-06-10 11:11:10 -0500
+Processing by CustomersController#index as */*
+  Rendering layout layouts/application.html.erb
+  Rendering customers/index.html.erb within layouts/application
+  [1m[36mCustomer Load (0.6ms)[0m  [1m[34mSELECT "vw_customers".* FROM "vw_customers"[0m
+  ↳ app/views/customers/index.html.erb:18
+  Rendered customers/index.html.erb within layouts/application (Duration: 1.7ms | Allocations: 1586)
+  Rendered layout layouts/application.html.erb (Duration: 1.7ms | Allocations: 1670)
+Completed 500 Internal Server Error in 2ms (ActiveRecord: 0.6ms | Allocations: 1891)
+
+
+  
+ActionView::Template::Error (undefined method `email_address' for #<Customer customer_id: "jane-smith-email-com", first_name: "Jane", last_name: "Smithy", name: "Jane Smithy", initials: "JS">):
+    22:             <td><%= customer.last_name %></td>
+    23:             <td><strong><%= customer.name %></strong></td>
+    24:             <td><code><%= customer.initials %></code></td>
+    25:             <td><a href="mailto:<%= customer.email_address %>"><%= customer.email_address %></a></td>
+    26:           </tr>
+    27:         <% end %>
+    28:       </tbody>
+  
+app/views/customers/index.html.erb:25
+app/views/customers/index.html.erb:18
+Started GET "/customers" for 127.0.0.1 at 2026-06-10 11:11:11 -0500
+Processing by CustomersController#index as */*
+  Rendering layout layouts/application.html.erb
+  Rendering customers/index.html.erb within layouts/application
+  [1m[36mCustomer Load (0.7ms)[0m  [1m[34mSELECT "vw_customers".* FROM "vw_customers"[0m
+  ↳ app/views/customers/index.html.erb:18
+  Rendered customers/index.html.erb within layouts/application (Duration: 1.4ms | Allocations: 1586)
+  Rendered layout layouts/application.html.erb (Duration: 1.5ms | Allocations: 1670)
+Completed 500 Internal Server Error in 2ms (ActiveRecord: 0.7ms | Allocations: 1891)
+
+
+  
+ActionView::Template::Error (undefined method `email_address' for #<Customer customer_id: "jane-smith-email-com", first_name: "Jane", last_name: "Smithy", name: "Jane Smithy", initials: "JS">):
+    22:             <td><%= customer.last_name %></td>
+    23:             <td><strong><%= customer.name %></strong></td>
+    24:             <td><code><%= customer.initials %></code></td>
+    25:             <td><a href="mailto:<%= customer.email_address %>"><%= customer.email_address %></a></td>
+    26:           </tr>
+    27:         <% end %>
+    28:       </tbody>
+  
+app/views/customers/index.html.erb:25
+app/views/customers/index.html.erb:18
+Started GET "/customers" for 127.0.0.1 at 2026-06-10 11:11:12 -0500
+Processing by CustomersController#index as */*
+  Rendering layout layouts/application.html.erb
+  Rendering customers/index.html.erb within layouts/application
+  [1m[36mCustomer Load (0.6ms)[0m  [1m[34mSELECT "vw_customers".* FROM "vw_customers"[0m
+  ↳ app/views/customers/index.html.erb:18
+  Rendered customers/index.html.erb within layouts/application (Duration: 1.3ms | Allocations: 1586)
+  Rendered layout layouts/application.html.erb (Duration: 1.4ms | Allocations: 1670)
+Completed 500 Internal Server Error in 2ms (ActiveRecord: 0.6ms | Allocations: 1891)
+
+
+  
+ActionView::Template::Error (undefined method `email_address' for #<Customer customer_id: "jane-smith-email-com", first_name: "Jane", last_name: "Smithy", name: "Jane Smithy", initials: "JS">):
+    22:             <td><%= customer.last_name %></td>
+    23:             <td><strong><%= customer.name %></strong></td>
+    24:             <td><code><%= customer.initials %></code></td>
+    25:             <td><a href="mailto:<%= customer.email_address %>"><%= customer.email_address %></a></td>
+    26:           </tr>
+    27:         <% end %>
+    28:       </tbody>
+  
+app/views/customers/index.html.erb:25
+app/views/customers/index.html.erb:18
+Started GET "/customers" for 127.0.0.1 at 2026-06-10 11:11:13 -0500
+Processing by CustomersController#index as */*
+  Rendering layout layouts/application.html.erb
+  Rendering customers/index.html.erb within layouts/application
+  [1m[36mCustomer Load (0.5ms)[0m  [1m[34mSELECT "vw_customers".* FROM "vw_customers"[0m
+  ↳ app/views/customers/index.html.erb:18
+  Rendered customers/index.html.erb within layouts/application (Duration: 1.6ms | Allocations: 1586)
+  Rendered layout layouts/application.html.erb (Duration: 1.7ms | Allocations: 1670)
+Completed 500 Internal Server Error in 2ms (ActiveRecord: 0.5ms | Allocations: 1891)
+
+
+  
+ActionView::Template::Error (undefined method `email_address' for #<Customer customer_id: "jane-smith-email-com", first_name: "Jane", last_name: "Smithy", name: "Jane Smithy", initials: "JS">):
+    22:             <td><%= customer.last_name %></td>
+    23:             <td><strong><%= customer.name %></strong></td>
+    24:             <td><code><%= customer.initials %></code></td>
+    25:             <td><a href="mailto:<%= customer.email_address %>"><%= customer.email_address %></a></td>
+    26:           </tr>
+    27:         <% end %>
+    28:       </tbody>
+  
+app/views/customers/index.html.erb:25
+app/views/customers/index.html.erb:18
+Started GET "/customers" for 127.0.0.1 at 2026-06-10 11:12:46 -0500
+Processing by CustomersController#index as */*
+  Rendering layout layouts/application.html.erb
+  Rendering customers/index.html.erb within layouts/application
+  [1m[36mCustomer Load (0.6ms)[0m  [1m[34mSELECT "vw_customers".* FROM "vw_customers"[0m
+  ↳ app/views/customers/index.html.erb:17
+  Rendered customers/index.html.erb within layouts/application (Duration: 49.0ms | Allocations: 11754)
+  Rendered layout layouts/application.html.erb (Duration: 50.6ms | Allocations: 12449)
+Completed 200 OK in 72ms (Views: 43.5ms | ActiveRecord: 8.7ms | Allocations: 37380)
+
+
+Started GET "/customers" for 127.0.0.1 at 2026-06-10 11:12:46 -0500
+Processing by CustomersController#index as */*
+  Rendering layout layouts/application.html.erb
+  Rendering customers/index.html.erb within layouts/application
+  [1m[36mCustomer Load (0.5ms)[0m  [1m[34mSELECT "vw_customers".* FROM "vw_customers"[0m
+  ↳ app/views/customers/index.html.erb:17
+  Rendered customers/index.html.erb within layouts/application (Duration: 1.1ms | Allocations: 783)
+  Rendered layout layouts/application.html.erb (Duration: 1.2ms | Allocations: 1037)
+Completed 200 OK in 1ms (Views: 0.8ms | ActiveRecord: 0.5ms | Allocations: 1286)
+
+
+Started GET "/customers/jane-smith-email-com" for 127.0.0.1 at 2026-06-10 11:12:46 -0500
+Processing by CustomersController#show as */*
+  Parameters: {"id"=>"jane-smith-email-com"}
+  [1m[36mCustomer Load (0.3ms)[0m  [1m[34mSELECT "vw_customers".* FROM "vw_customers" WHERE "vw_customers"."customer_id" = $1 LIMIT $2[0m  [["customer_id", "jane-smith-email-com"], ["LIMIT", 1]]
+  ↳ app/controllers/customers_controller.rb:7:in `show'
+  Rendering layout layouts/application.html.erb
+  Rendering customers/show.html.erb within layouts/application
+  Rendered customers/show.html.erb within layouts/application (Duration: 0.4ms | Allocations: 327)
+  Rendered layout layouts/application.html.erb (Duration: 0.6ms | Allocations: 579)
+Completed 200 OK in 3ms (Views: 0.7ms | ActiveRecord: 0.4ms | Allocations: 3046)
+
+
+Started GET "/customers" for 127.0.0.1 at 2026-06-10 11:13:13 -0500
+Processing by CustomersController#index as */*
+  Rendering layout layouts/application.html.erb
+  Rendering customers/index.html.erb within layouts/application
+  [1m[36mCustomer Load (0.8ms)[0m  [1m[34mSELECT "vw_customers".* FROM "vw_customers"[0m
+  ↳ app/views/customers/index.html.erb:17
+  Rendered customers/index.html.erb within layouts/application (Duration: 45.3ms | Allocations: 11754)
+  Rendered layout layouts/application.html.erb (Duration: 47.0ms | Allocations: 12449)
+Completed 200 OK in 68ms (Views: 41.8ms | ActiveRecord: 6.7ms | Allocations: 37379)
+
+
+Started GET "/customers/jane-smith-email-com" for 127.0.0.1 at 2026-06-10 11:13:13 -0500
+Processing by CustomersController#show as */*
+  Parameters: {"id"=>"jane-smith-email-com"}
+  [1m[36mCustomer Load (0.4ms)[0m  [1m[34mSELECT "vw_customers".* FROM "vw_customers" WHERE "vw_customers"."customer_id" = $1 LIMIT $2[0m  [["customer_id", "jane-smith-email-com"], ["LIMIT", 1]]
+  ↳ app/controllers/customers_controller.rb:7:in `show'
+  Rendering layout layouts/application.html.erb
+  Rendering customers/show.html.erb within layouts/application
+  Rendered customers/show.html.erb within layouts/application (Duration: 0.4ms | Allocations: 327)
+  Rendered layout layouts/application.html.erb (Duration: 0.5ms | Allocations: 581)
+Completed 200 OK in 3ms (Views: 0.6ms | ActiveRecord: 0.5ms | Allocations: 3051)
+
+
+Started GET "/" for 127.0.0.1 at 2026-06-10 11:13:22 -0500
+Processing by CustomersController#index as */*
+  Rendering layout layouts/application.html.erb
+  Rendering customers/index.html.erb within layouts/application
+  [1m[36mCustomer Load (0.7ms)[0m  [1m[34mSELECT "vw_customers".* FROM "vw_customers"[0m
+  ↳ app/views/customers/index.html.erb:17
+  Rendered customers/index.html.erb within layouts/application (Duration: 1.7ms | Allocations: 782)
+  Rendered layout layouts/application.html.erb (Duration: 1.9ms | Allocations: 1034)
+Completed 200 OK in 2ms (Views: 1.4ms | ActiveRecord: 0.7ms | Allocations: 1281)
+
+
+Started GET "/customers" for 127.0.0.1 at 2026-06-10 11:13:22 -0500
+Processing by CustomersController#index as */*
+  Rendering layout layouts/application.html.erb
+  Rendering customers/index.html.erb within layouts/application
+  [1m[36mCustomer Load (0.5ms)[0m  [1m[34mSELECT "vw_customers".* FROM "vw_customers"[0m
+  ↳ app/views/customers/index.html.erb:17
+  Rendered customers/index.html.erb within layouts/application (Duration: 1.3ms | Allocations: 782)
+  Rendered layout layouts/application.html.erb (Duration: 1.5ms | Allocations: 1034)
+Completed 200 OK in 2ms (Views: 1.1ms | ActiveRecord: 0.5ms | Allocations: 1281)
+
+
+Started GET "/" for 127.0.0.1 at 2026-06-10 11:18:32 -0500
+Processing by CustomersController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering customers/index.html.erb within layouts/application
+  [1m[36mCustomer Load (0.6ms)[0m  [1m[34mSELECT "vw_customers".* FROM "vw_customers"[0m
+  ↳ app/views/customers/index.html.erb:17
+  Rendered customers/index.html.erb within layouts/application (Duration: 56.7ms | Allocations: 11747)
+  Rendered layout layouts/application.html.erb (Duration: 58.8ms | Allocations: 15934)
+Completed 200 OK in 83ms (Views: 52.1ms | ActiveRecord: 8.9ms | Allocations: 40785)
+
+
+Started GET "/" for 127.0.0.1 at 2026-06-10 11:18:42 -0500
+Processing by CustomersController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering customers/index.html.erb within layouts/application
+  [1m[36mCustomer Load (0.7ms)[0m  [1m[34mSELECT "vw_customers".* FROM "vw_customers"[0m
+  ↳ app/views/customers/index.html.erb:17
+  Rendered customers/index.html.erb within layouts/application (Duration: 1.5ms | Allocations: 789)
+  Rendered layout layouts/application.html.erb (Duration: 1.8ms | Allocations: 1208)
+Completed 200 OK in 2ms (Views: 1.3ms | ActiveRecord: 0.7ms | Allocations: 1456)
+
+
+  [1m[36mCustomer Load (0.5ms)[0m  [1m[34mSELECT "vw_customers".* FROM "vw_customers" ORDER BY "vw_customers"."customer_id" ASC[0m
+Started GET "/customers" for 127.0.0.1 at 2026-06-10 11:51:03 -0500
+Processing by CustomersController#index as */*
+  Rendering layout layouts/application.html.erb
+  Rendering customers/index.html.erb within layouts/application
+  [1m[36mCustomer Load (0.4ms)[0m  [1m[34mSELECT "vw_customers".* FROM "vw_customers"[0m
+  ↳ app/views/customers/index.html.erb:17
+  Rendered customers/index.html.erb within layouts/application (Duration: 54.3ms | Allocations: 11750)
+  Rendered layout layouts/application.html.erb (Duration: 56.2ms | Allocations: 12445)
+Completed 200 OK in 78ms (Views: 53.6ms | ActiveRecord: 4.1ms | Allocations: 37375)
+
+
+Started GET "/customers/alice-cooper" for 127.0.0.1 at 2026-06-10 11:51:03 -0500
+Processing by CustomersController#show as */*
+  Parameters: {"id"=>"alice-cooper"}
+  [1m[36mCustomer Load (0.5ms)[0m  [1m[34mSELECT "vw_customers".* FROM "vw_customers" WHERE "vw_customers"."customer_id" = $1 LIMIT $2[0m  [["customer_id", "alice-cooper"], ["LIMIT", 1]]
+  ↳ app/controllers/customers_controller.rb:7:in `show'
+  Rendering layout layouts/application.html.erb
+  Rendering customers/show.html.erb within layouts/application
+  Rendered customers/show.html.erb within layouts/application (Duration: 0.4ms | Allocations: 327)
+  Rendered layout layouts/application.html.erb (Duration: 0.5ms | Allocations: 581)
+Completed 200 OK in 3ms (Views: 0.7ms | ActiveRecord: 0.6ms | Allocations: 3051)
+
+
+Started GET "/api/jobs" for 127.0.0.1 at 2026-06-10 11:56:28 -0500
+  
+ActionController::RoutingError (No route matches [GET] "/api/jobs"):
+  
+Started GET "/customers" for 127.0.0.1 at 2026-06-10 11:56:50 -0500
+Processing by CustomersController#index as */*
+  Rendering layout layouts/application.html.erb
+  Rendering customers/index.html.erb within layouts/application
+  [1m[36mCustomer Load (1.5ms)[0m  [1m[34mSELECT "vw_customers".* FROM "vw_customers"[0m
+  ↳ app/views/customers/index.html.erb:17
+  Rendered customers/index.html.erb within layouts/application (Duration: 2362.6ms | Allocations: 11754)
+  Rendered layout layouts/application.html.erb (Duration: 2364.6ms | Allocations: 12449)
+Completed 200 OK in 2387ms (Views: 2342.2ms | ActiveRecord: 23.9ms | Allocations: 37380)
+
+
+Started GET "/customers" for 127.0.0.1 at 2026-06-10 11:56:52 -0500
+Processing by CustomersController#index as */*
+  Rendering layout layouts/application.html.erb
+  Rendering customers/index.html.erb within layouts/application
+  [1m[36mCustomer Load (1.4ms)[0m  [1m[34mSELECT "vw_customers".* FROM "vw_customers"[0m
+  ↳ app/views/customers/index.html.erb:17
+  Rendered customers/index.html.erb within layouts/application (Duration: 48.6ms | Allocations: 11750)
+  Rendered layout layouts/application.html.erb (Duration: 49.9ms | Allocations: 12445)
+Completed 200 OK in 66ms (Views: 40.9ms | ActiveRecord: 10.1ms | Allocations: 37375)
+
+
+Started GET "/customers" for 127.0.0.1 at 2026-06-10 11:56:57 -0500
+Processing by CustomersController#index as */*
+  Rendering layout layouts/application.html.erb
+  Rendering customers/index.html.erb within layouts/application
+  [1m[36mCustomer Load (0.6ms)[0m  [1m[34mSELECT "vw_customers".* FROM "vw_customers"[0m
+  ↳ app/views/customers/index.html.erb:17
+  Rendered customers/index.html.erb within layouts/application (Duration: 1.2ms | Allocations: 783)
+  Rendered layout layouts/application.html.erb (Duration: 1.5ms | Allocations: 1037)
+Completed 200 OK in 2ms (Views: 1.0ms | ActiveRecord: 0.6ms | Allocations: 1286)
+
+
+Started GET "/customers" for 127.0.0.1 at 2026-06-10 11:56:57 -0500
+Processing by CustomersController#index as */*
+  Rendering layout layouts/application.html.erb
+  Rendering customers/index.html.erb within layouts/application
+  [1m[36mCustomer Load (0.6ms)[0m  [1m[34mSELECT "vw_customers".* FROM "vw_customers"[0m
+  ↳ app/views/customers/index.html.erb:17
+  Rendered customers/index.html.erb within layouts/application (Duration: 1.4ms | Allocations: 783)
+  Rendered layout layouts/application.html.erb (Duration: 1.8ms | Allocations: 1037)
+Completed 200 OK in 2ms (Views: 1.3ms | ActiveRecord: 0.6ms | Allocations: 1286)
+
+
+Started GET "/customers" for 127.0.0.1 at 2026-06-10 12:12:23 -0500
+Processing by CustomersController#index as */*
+  Rendering layout layouts/application.html.erb
+  Rendering customers/index.html.erb within layouts/application
+  [1m[36mCustomer Load (0.7ms)[0m  [1m[34mSELECT "vw_customers".* FROM "vw_customers"[0m
+  ↳ app/views/customers/index.html.erb:17
+  Rendered customers/index.html.erb within layouts/application (Duration: 51.2ms | Allocations: 11753)
+  Rendered layout layouts/application.html.erb (Duration: 53.0ms | Allocations: 12448)
+Completed 200 OK in 77ms (Views: 45.4ms | ActiveRecord: 9.2ms | Allocations: 37378)
+
+
+Started GET "/customers" for 127.0.0.1 at 2026-06-10 12:12:23 -0500
+Processing by CustomersController#index as */*
+  Rendering layout layouts/application.html.erb
+  Rendering customers/index.html.erb within layouts/application
+  [1m[36mCustomer Load (0.6ms)[0m  [1m[34mSELECT "vw_customers".* FROM "vw_customers"[0m
+  ↳ app/views/customers/index.html.erb:17
+  Rendered customers/index.html.erb within layouts/application (Duration: 28.9ms | Allocations: 4187)
+  Rendered layout layouts/application.html.erb (Duration: 29.3ms | Allocations: 4440)
+Completed 200 OK in 30ms (Views: 26.2ms | ActiveRecord: 3.8ms | Allocations: 4692)
+
+
+Started GET "/customers" for 127.0.0.1 at 2026-06-10 12:25:45 -0500
+Processing by CustomersController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering customers/index.html.erb within layouts/application
+  [1m[36mCustomer Load (0.7ms)[0m  [1m[34mSELECT "vw_customers".* FROM "vw_customers"[0m
+  ↳ app/views/customers/index.html.erb:17
+  Rendered customers/index.html.erb within layouts/application (Duration: 49.2ms | Allocations: 4186)
+  Rendered layout layouts/application.html.erb (Duration: 51.2ms | Allocations: 4649)
+Completed 200 OK in 53ms (Views: 45.8ms | ActiveRecord: 6.6ms | Allocations: 4897)
+
+
+Started GET "/favicon.ico" for 127.0.0.1 at 2026-06-10 12:25:45 -0500
+  
+ActionController::RoutingError (No route matches [GET] "/favicon.ico"):
+  
+Started GET "/customers" for 127.0.0.1 at 2026-06-10 12:25:46 -0500
+Processing by CustomersController#index as */*
+  Rendering layout layouts/application.html.erb
+  Rendering customers/index.html.erb within layouts/application
+  [1m[36mCustomer Load (1.4ms)[0m  [1m[34mSELECT "vw_customers".* FROM "vw_customers"[0m
+  ↳ app/views/customers/index.html.erb:17
+  Rendered customers/index.html.erb within layouts/application (Duration: 55.8ms | Allocations: 11750)
+  Rendered layout layouts/application.html.erb (Duration: 57.5ms | Allocations: 12445)
+Completed 200 OK in 79ms (Views: 46.0ms | ActiveRecord: 12.8ms | Allocations: 37376)
+
+
+Started GET "/customers" for 127.0.0.1 at 2026-06-10 12:25:46 -0500
+Processing by CustomersController#index as */*
+  Rendering layout layouts/application.html.erb
+  Rendering customers/index.html.erb within layouts/application
+  [1m[36mCustomer Load (1.0ms)[0m  [1m[34mSELECT "vw_customers".* FROM "vw_customers"[0m
+  ↳ app/views/customers/index.html.erb:17
+  Rendered customers/index.html.erb within layouts/application (Duration: 52.5ms | Allocations: 4187)
+  Rendered layout layouts/application.html.erb (Duration: 55.9ms | Allocations: 4442)
+Completed 200 OK in 59ms (Views: 52.9ms | ActiveRecord: 4.6ms | Allocations: 4696)
+
+
+Started GET "/customers" for 127.0.0.1 at 2026-06-10 12:25:46 -0500
+Processing by CustomersController#index as */*
+  Rendering layout layouts/application.html.erb
+  Rendering customers/index.html.erb within layouts/application
+  [1m[36mCustomer Load (1.5ms)[0m  [1m[34mSELECT "vw_customers".* FROM "vw_customers"[0m
+  ↳ app/views/customers/index.html.erb:17
+  Rendered customers/index.html.erb within layouts/application (Duration: 4.0ms | Allocations: 789)
+  Rendered layout layouts/application.html.erb (Duration: 4.6ms | Allocations: 1042)
+Completed 200 OK in 6ms (Views: 3.7ms | ActiveRecord: 1.5ms | Allocations: 1295)
+
+
+Started GET "/customers" for 127.0.0.1 at 2026-06-10 12:34:21 -0500
+Processing by CustomersController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering customers/index.html.erb within layouts/application
+  [1m[36mCustomer Load (0.8ms)[0m  [1m[34mSELECT "vw_customers".* FROM "vw_customers"[0m
+  ↳ app/views/customers/index.html.erb:17
+  Rendered customers/index.html.erb within layouts/application (Duration: 48.9ms | Allocations: 4245)
+  Rendered layout layouts/application.html.erb (Duration: 51.1ms | Allocations: 4653)
+Completed 200 OK in 52ms (Views: 45.5ms | ActiveRecord: 6.1ms | Allocations: 4898)
+
+
+Started GET "/customers" for 127.0.0.1 at 2026-06-10 12:47:21 -0500
+Processing by CustomersController#index as */*
+  Rendering layout layouts/application.html.erb
+  Rendering customers/index.html.erb within layouts/application
+  [1m[36mCustomer Load (0.5ms)[0m  [1m[34mSELECT "vw_customers".* FROM "vw_customers"[0m
+  ↳ app/views/customers/index.html.erb:17
+  Rendered customers/index.html.erb within layouts/application (Duration: 57.3ms | Allocations: 11750)
+  Rendered layout layouts/application.html.erb (Duration: 58.8ms | Allocations: 12445)
+Completed 200 OK in 80ms (Views: 53.0ms | ActiveRecord: 7.3ms | Allocations: 37375)
+
+
+Started GET "/customers" for 127.0.0.1 at 2026-06-10 12:47:38 -0500
+Processing by CustomersController#index as */*
+  Rendering layout layouts/application.html.erb
+  Rendering customers/index.html.erb within layouts/application
+  [1m[36mCustomer Load (0.5ms)[0m  [1m[34mSELECT "vw_customers".* FROM "vw_customers"[0m
+  ↳ app/views/customers/index.html.erb:17
+  Rendered customers/index.html.erb within layouts/application (Duration: 55.8ms | Allocations: 11750)
+  Rendered layout layouts/application.html.erb (Duration: 57.4ms | Allocations: 12445)
+Completed 200 OK in 81ms (Views: 53.8ms | ActiveRecord: 5.4ms | Allocations: 37375)
+
+
+Started GET "/customers" for 127.0.0.1 at 2026-06-10 12:47:43 -0500
+Processing by CustomersController#index as */*
+  Rendering layout layouts/application.html.erb
+  Rendering customers/index.html.erb within layouts/application
+  [1m[36mCustomer Load (2.4ms)[0m  [1m[34mSELECT "vw_customers".* FROM "vw_customers"[0m
+  ↳ app/views/customers/index.html.erb:17
+  Rendered customers/index.html.erb within layouts/application (Duration: 3.4ms | Allocations: 783)
+  Rendered layout layouts/application.html.erb (Duration: 3.7ms | Allocations: 1037)
+Completed 200 OK in 4ms (Views: 1.5ms | ActiveRecord: 2.4ms | Allocations: 1286)
+
+
+Started GET "/customers" for 127.0.0.1 at 2026-06-10 12:47:43 -0500
+Processing by CustomersController#index as */*
+  Rendering layout layouts/application.html.erb
+  Rendering customers/index.html.erb within layouts/application
+  [1m[36mCustomer Load (0.8ms)[0m  [1m[34mSELECT "vw_customers".* FROM "vw_customers"[0m
+  ↳ app/views/customers/index.html.erb:17
+  Rendered customers/index.html.erb within layouts/application (Duration: 1.8ms | Allocations: 790)
+  Rendered layout layouts/application.html.erb (Duration: 2.0ms | Allocations: 1045)
+Completed 200 OK in 2ms (Views: 1.3ms | ActiveRecord: 0.8ms | Allocations: 1299)
+
+
+Started GET "/api/transpilers" for 127.0.0.1 at 2026-06-10 12:50:03 -0500
+  
+ActionController::RoutingError (No route matches [GET] "/api/transpilers"):
+  
+Started GET "/" for 127.0.0.1 at 2026-06-10 12:50:12 -0500
+Processing by CustomersController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering customers/index.html.erb within layouts/application
+  [1m[36mCustomer Load (0.5ms)[0m  [1m[34mSELECT "vw_customers".* FROM "vw_customers"[0m
+  ↳ app/views/customers/index.html.erb:17
+  Rendered customers/index.html.erb within layouts/application (Duration: 53.1ms | Allocations: 11748)
+  Rendered layout layouts/application.html.erb (Duration: 55.0ms | Allocations: 12650)
+Completed 200 OK in 80ms (Views: 50.3ms | ActiveRecord: 6.5ms | Allocations: 37498)
+
+
+Started GET "/favicon.ico" for 127.0.0.1 at 2026-06-10 12:50:13 -0500
+  
+ActionController::RoutingError (No route matches [GET] "/favicon.ico"):
+  
+Started GET "/" for 127.0.0.1 at 2026-06-10 12:50:15 -0500
+Processing by CustomersController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering customers/index.html.erb within layouts/application
+  [1m[36mCustomer Load (0.6ms)[0m  [1m[34mSELECT "vw_customers".* FROM "vw_customers"[0m
+  ↳ app/views/customers/index.html.erb:17
+  Rendered customers/index.html.erb within layouts/application (Duration: 1.8ms | Allocations: 791)
+  Rendered layout layouts/application.html.erb (Duration: 2.3ms | Allocations: 1195)
+Completed 200 OK in 3ms (Views: 2.0ms | ActiveRecord: 0.6ms | Allocations: 1443)
+
+
+Started GET "/customers/jane-smith-email-com" for 127.0.0.1 at 2026-06-10 12:50:16 -0500
+Processing by CustomersController#show as HTML
+  Parameters: {"id"=>"jane-smith-email-com"}
+  [1m[36mCustomer Load (0.5ms)[0m  [1m[34mSELECT "vw_customers".* FROM "vw_customers" WHERE "vw_customers"."customer_id" = $1 LIMIT $2[0m  [["customer_id", "jane-smith-email-com"], ["LIMIT", 1]]
+  ↳ app/controllers/customers_controller.rb:7:in `show'
+  Rendering layout layouts/application.html.erb
+  Rendering customers/show.html.erb within layouts/application
+  Rendered customers/show.html.erb within layouts/application (Duration: 0.9ms | Allocations: 327)
+  Rendered layout layouts/application.html.erb (Duration: 1.5ms | Allocations: 718)
+Completed 200 OK in 8ms (Views: 2.0ms | ActiveRecord: 0.8ms | Allocations: 3178)
+
+
+Started GET "/customers" for 127.0.0.1 at 2026-06-10 12:50:22 -0500
+Processing by CustomersController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering customers/index.html.erb within layouts/application
+  [1m[36mCustomer Load (0.6ms)[0m  [1m[34mSELECT "vw_customers".* FROM "vw_customers"[0m
+  ↳ app/views/customers/index.html.erb:17
+  Rendered customers/index.html.erb within layouts/application (Duration: 49.5ms | Allocations: 11748)
+  Rendered layout layouts/application.html.erb (Duration: 51.6ms | Allocations: 12653)
+Completed 200 OK in 72ms (Views: 48.2ms | ActiveRecord: 4.6ms | Allocations: 37500)
+
+
+Started GET "/customers" for 127.0.0.1 at 2026-06-10 12:50:23 -0500
+Processing by CustomersController#index as */*
+  Rendering layout layouts/application.html.erb
+  Rendering customers/index.html.erb within layouts/application
+  [1m[36mCustomer Load (0.8ms)[0m  [1m[34mSELECT "vw_customers".* FROM "vw_customers"[0m
+  ↳ app/views/customers/index.html.erb:17
+  Rendered customers/index.html.erb within layouts/application (Duration: 1.5ms | Allocations: 790)
+  Rendered layout layouts/application.html.erb (Duration: 1.7ms | Allocations: 1058)
+Completed 200 OK in 2ms (Views: 1.0ms | ActiveRecord: 0.8ms | Allocations: 1388)
+
+
+Started GET "/customers/emily-jones-email-com" for 127.0.0.1 at 2026-06-10 12:50:23 -0500
+Processing by CustomersController#show as HTML
+  Parameters: {"id"=>"emily-jones-email-com"}
+  [1m[36mCustomer Load (0.7ms)[0m  [1m[34mSELECT "vw_customers".* FROM "vw_customers" WHERE "vw_customers"."customer_id" = $1 LIMIT $2[0m  [["customer_id", "emily-jones-email-com"], ["LIMIT", 1]]
+  ↳ app/controllers/customers_controller.rb:7:in `show'
+  Rendering layout layouts/application.html.erb
+  Rendering customers/show.html.erb within layouts/application
+  Rendered customers/show.html.erb within layouts/application (Duration: 0.8ms | Allocations: 327)
+  Rendered layout layouts/application.html.erb (Duration: 1.3ms | Allocations: 737)
+Completed 200 OK in 7ms (Views: 1.6ms | ActiveRecord: 1.0ms | Allocations: 3198)
+
+
+Started GET "/customers" for 127.0.0.1 at 2026-06-10 12:50:34 -0500
+Processing by CustomersController#index as */*
+  Rendering layout layouts/application.html.erb
+  Rendering customers/index.html.erb within layouts/application
+  [1m[36mCustomer Load (0.5ms)[0m  [1m[34mSELECT "vw_customers".* FROM "vw_customers"[0m
+  ↳ app/views/customers/index.html.erb:17
+  Rendered customers/index.html.erb within layouts/application (Duration: 1.2ms | Allocations: 782)
+  Rendered layout layouts/application.html.erb (Duration: 1.5ms | Allocations: 1034)
+Completed 200 OK in 2ms (Views: 1.1ms | ActiveRecord: 0.5ms | Allocations: 1281)
+
+
+Started GET "/customers" for 127.0.0.1 at 2026-06-10 12:50:34 -0500
+Processing by CustomersController#index as */*
+  Rendering layout layouts/application.html.erb
+  Rendering customers/index.html.erb within layouts/application
+  [1m[36mCustomer Load (0.5ms)[0m  [1m[34mSELECT "vw_customers".* FROM "vw_customers"[0m
+  ↳ app/views/customers/index.html.erb:17
+  Rendered customers/index.html.erb within layouts/application (Duration: 47.7ms | Allocations: 11750)
+  Rendered layout layouts/application.html.erb (Duration: 49.2ms | Allocations: 12445)
+Completed 200 OK in 70ms (Views: 45.9ms | ActiveRecord: 4.5ms | Allocations: 37377)
+
+
+Started GET "/customers" for 127.0.0.1 at 2026-06-10 12:52:10 -0500
+Processing by CustomersController#index as */*
+  Rendering layout layouts/application.html.erb
+  Rendering customers/index.html.erb within layouts/application
+  [1m[36mCustomer Load (1.7ms)[0m  [1m[34mSELECT "vw_customers".* FROM "vw_customers"[0m
+  ↳ app/views/customers/index.html.erb:17
+  Rendered customers/index.html.erb within layouts/application (Duration: 2.7ms | Allocations: 790)
+  Rendered layout layouts/application.html.erb (Duration: 3.0ms | Allocations: 1045)
+Completed 200 OK in 3ms (Views: 1.4ms | ActiveRecord: 1.7ms | Allocations: 1299)
+
+
+Started GET "/customers" for 127.0.0.1 at 2026-06-10 12:54:31 -0500
+Processing by CustomersController#index as */*
+  Rendering layout layouts/application.html.erb
+  Rendering customers/index.html.erb within layouts/application
+  [1m[36mCustomer Load (0.8ms)[0m  [1m[34mSELECT "vw_customers".* FROM "vw_customers"[0m
+  ↳ app/views/customers/index.html.erb:17
+  Rendered customers/index.html.erb within layouts/application (Duration: 57.1ms | Allocations: 11750)
+  Rendered layout layouts/application.html.erb (Duration: 58.8ms | Allocations: 12445)
+Completed 200 OK in 79ms (Views: 52.3ms | ActiveRecord: 7.8ms | Allocations: 37375)
+
+
+Started GET "/customers" for 127.0.0.1 at 2026-06-10 12:58:20 -0500
+Processing by CustomersController#index as */*
+  Rendering layout layouts/application.html.erb
+  Rendering customers/index.html.erb within layouts/application
+  [1m[36mCustomer Load (0.7ms)[0m  [1m[34mSELECT "vw_customers".* FROM "vw_customers"[0m
+  ↳ app/views/customers/index.html.erb:17
+  Rendered customers/index.html.erb within layouts/application (Duration: 51.5ms | Allocations: 11750)
+  Rendered layout layouts/application.html.erb (Duration: 53.2ms | Allocations: 12445)
+Completed 200 OK in 75ms (Views: 46.2ms | ActiveRecord: 8.3ms | Allocations: 37375)
+
+
+Started GET "/" for 127.0.0.1 at 2026-06-10 13:00:42 -0500
+Processing by CustomersController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering customers/index.html.erb within layouts/application
+  [1m[36mCustomer Load (0.6ms)[0m  [1m[34mSELECT "vw_customers".* FROM "vw_customers"[0m
+  ↳ app/views/customers/index.html.erb:17
+  Rendered customers/index.html.erb within layouts/application (Duration: 49.1ms | Allocations: 11748)
+  Rendered layout layouts/application.html.erb (Duration: 50.8ms | Allocations: 12644)
+Completed 200 OK in 75ms (Views: 44.7ms | ActiveRecord: 7.9ms | Allocations: 37492)
+
+
+Started GET "/customers/jane-smith-email-com" for 127.0.0.1 at 2026-06-10 13:02:43 -0500
+Processing by CustomersController#show as HTML
+  Parameters: {"id"=>"jane-smith-email-com"}
+  [1m[36mCustomer Load (0.8ms)[0m  [1m[34mSELECT "vw_customers".* FROM "vw_customers" WHERE "vw_customers"."customer_id" = $1 LIMIT $2[0m  [["customer_id", "jane-smith-email-com"], ["LIMIT", 1]]
+  ↳ app/controllers/customers_controller.rb:7:in `show'
+  Rendering layout layouts/application.html.erb
+  Rendering customers/show.html.erb within layouts/application
+  Rendered customers/show.html.erb within layouts/application (Duration: 1.0ms | Allocations: 327)
+  Rendered layout layouts/application.html.erb (Duration: 1.7ms | Allocations: 730)
+Completed 200 OK in 9ms (Views: 2.0ms | ActiveRecord: 1.3ms | Allocations: 3207)
+
+
+Started GET "/customers/jane-smith-email-com" for 127.0.0.1 at 2026-06-10 13:13:51 -0500
+Processing by CustomersController#show as HTML
+  Parameters: {"id"=>"jane-smith-email-com"}
+  [1m[36mCustomer Load (0.7ms)[0m  [1m[34mSELECT "vw_customers".* FROM "vw_customers" WHERE "vw_customers"."customer_id" = $1 LIMIT $2[0m  [["customer_id", "jane-smith-email-com"], ["LIMIT", 1]]
+  ↳ app/controllers/customers_controller.rb:7:in `show'
+  Rendering layout layouts/application.html.erb
+  Rendering customers/show.html.erb within layouts/application
+  Rendered customers/show.html.erb within layouts/application (Duration: 0.3ms | Allocations: 65)
+  Rendered layout layouts/application.html.erb (Duration: 1.1ms | Allocations: 469)
+Completed 200 OK in 52ms (Views: 1.6ms | ActiveRecord: 8.1ms | Allocations: 4635)
+
+

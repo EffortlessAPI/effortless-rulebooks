@@ -26,8 +26,8 @@ Start simple, scale to sophistication. Each base demonstrates different ERB capa
 | Base | Complexity | Tables | Key Features | Documentation |
 |------|------------|--------|--------------|---------------|
 | **[CustomerDemo](bases/customer-fullname/)** | Minimal | 1 | String concatenation | The "Hello World" |
-| **[Jessica BASIC](bases/jessica-basic/)** | Moderate | 9 | Relationships, aggregations, role-agent separation | Real workflow modeling |
-| **[Jessica ADVANCED](bases/jessica-advanced/)** | Advanced | 9 | Cross-entity lookups, conditional logic (IF) | Business rule complexity |
+| **[Talisman BASIC](bases/talisman-basic/)** | Moderate | 9 | Relationships, aggregations, role-agent separation | Real workflow modeling |
+| **[Talisman ADVANCED](bases/talisman-advanced/)** | Advanced | 9 | Cross-entity lookups, conditional logic (IF) | Business rule complexity |
 | **[StarTrek](bases/star-trek/)** | Moderate | 7 | Hierarchical rollups, polymorphic FKs | Media catalog patterns |
 | **[is-everything-a-language](bases/is-everything-a-language/)** | Philosophical | 3 | 8-predicate AND logic, meta-ontology | Formal argument modeling |
 
@@ -95,8 +95,8 @@ The `orchestration/bases.json` file contains a catalog of Airtable bases that ca
 ```json
 [
   {"id": "appWrXPvXbkgQGOxt", "name": "CustomerDemo", "complexity": "minimal", "default": true},
-  {"id": "applThn0rikpCR9C3", "name": "BASIC: Jessica Talisman's Ontology", "complexity": "moderate"},
-  {"id": "appwN9EAp8IeIxM23", "name": "ADVANCED: Jessica Talisman's Ontology", "complexity": "advanced"},
+  {"id": "applThn0rikpCR9C3", "name": "Talisman BASIC Ontology", "complexity": "moderate"},
+  {"id": "appwN9EAp8IeIxM23", "name": "Talisman ADVANCED Ontology", "complexity": "advanced"},
   {"id": "appC8XTj95lubn6hz", "name": "is-everything-a-language", "complexity": "philosophical"},
   {"id": "appqwWQxIWFtyDsiL", "name": "DEMO: StarTrek TV Shows", "complexity": "moderate"}
 ]
@@ -300,10 +300,10 @@ FullName = LastName & ", " & FirstName
 → "Doe, Jane"
 ```
 
-### Jessica Talisman's Workflow Ontology
+### Talisman Workflow Ontology
 A 9-table workflow model with role-agent separation, delegation chains, and approval gates. Available in two versions:
-- **[BASIC](bases/jessica-basic/)** — Relationships, aggregations, boolean derivations
-- **[ADVANCED](bases/jessica-advanced/)** — Adds cross-entity lookups and conditional logic
+- **[BASIC](bases/talisman-basic/)** — Relationships, aggregations, boolean derivations
+- **[ADVANCED](bases/talisman-advanced/)** — Adds cross-entity lookups and conditional logic
 
 ### StarTrek TV Shows
 Hierarchical media catalog (Series → Seasons → Episodes) with polymorphic ratings. See [bases/star-trek/](bases/star-trek/).

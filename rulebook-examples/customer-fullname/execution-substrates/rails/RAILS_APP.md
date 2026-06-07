@@ -104,15 +104,16 @@ bash start.sh
 ```
 
 This will:
-- Create the database
-- Run migrations (create table + views)
-- Seed the data
-- Start Rails on http://localhost:3000
+- Verify the canonical `erb_customer_fullname` database is bootstrapped (built by
+  `postgres-bootstrap/init-db.sh`) — Rails reads its `vw_<entity>` views and does
+  NOT own the schema/seed data
+- Start Rails on http://localhost:8001 (pass a port to override, e.g.
+  `./start.sh 8002`; Rails for this demo lives in the 8000s)
 
 ## URLs
 
-- **http://localhost:3000/** — List all customers
-- **http://localhost:3000/customers/jane-smith-email-com** — View a specific customer (note the customer_id from the list)
+- **http://localhost:8001/** — List all customers
+- **http://localhost:8001/customers/jane-smith-email-com** — View a specific customer (note the customer_id from the list)
 
 ## Demo
 

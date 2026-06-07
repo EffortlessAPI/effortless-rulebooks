@@ -31,8 +31,8 @@ bash orchestration/build-all-domains.sh --report-only   # re-render from existin
 | NO_LOG  | `gym-trainer-invoicing` | No log on disk — run build-all-domains.sh --domain gym-trainer-invoicing | — |
 | NO_LOG  | `intelligence-taxonomy` | No log on disk — run build-all-domains.sh --domain intelligence-taxonomy | — |
 | NO_LOG  | `is-everything-a-language` | No log on disk — run build-all-domains.sh --domain is-everything-a-language | — |
-| NO_LOG  | `jessica-advanced` | No log on disk — run build-all-domains.sh --domain jessica-advanced | — |
-| NO_LOG  | `jessica-basic` | No log on disk — run build-all-domains.sh --domain jessica-basic | — |
+| NO_LOG  | `talisman-advanced` | No log on disk — run build-all-domains.sh --domain talisman-advanced | — |
+| NO_LOG  | `talisman-basic` | No log on disk — run build-all-domains.sh --domain talisman-basic | — |
 | NO_LOG  | `job-search-rag` | No log on disk — run build-all-domains.sh --domain job-search-rag | — |
 | NO_LOG  | `mechanical-kitchen-timer` | No log on disk — run build-all-domains.sh --domain mechanical-kitchen-timer | — |
 | NO_LOG  | `naked-claude-vs-effortless-claude` | No log on disk — run build-all-domains.sh --domain naked-claude-vs-effortless-claude | — |

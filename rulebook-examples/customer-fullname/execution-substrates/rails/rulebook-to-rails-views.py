@@ -33,6 +33,17 @@ def convert_formula_to_sql(formula: str) -> str:
     if formula.startswith('='):
         formula = formula[1:]
 
+    # Excel string literals are double-quoted ("a, b"); SQL string literals are
+    # single-quoted ('a, b'). Convert these FIRST, before we start emitting
+    # double-quoted identifiers for {{Field}} refs — otherwise the two uses of
+    # the double-quote collide and Postgres reads " " as a column name
+    # ("column \" \" does not exist"). Escape any embedded single quotes.
+    def excel_string_to_sql(match):
+        inner = match.group(1).replace("'", "''")
+        return f"'{inner}'"
+
+    formula = re.sub(r'"([^"]*)"', excel_string_to_sql, formula)
+
     # Replace {{FieldName}} with "field_name"
     def replace_field(match):
         field_name = match.group(1)

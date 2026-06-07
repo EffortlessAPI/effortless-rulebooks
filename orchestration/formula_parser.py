@@ -130,10 +130,13 @@ def tokenize(formula: str) -> List[Token]:
             i += 1
             continue
 
-        # String literal
-        if c == '"':
+        # String literal — both double (") and single (') quotes delimit a
+        # string, matching the Excel/Airtable dialect. Single quotes appear in
+        # unit args like DATETIME_DIFF(..., 'hours') / DATEADD(..., 'days').
+        if c == '"' or c == "'":
+            quote = c
             j = i + 1
-            while j < len(formula) and formula[j] != '"':
+            while j < len(formula) and formula[j] != quote:
                 if formula[j] == '\\':
                     j += 2
                 else:

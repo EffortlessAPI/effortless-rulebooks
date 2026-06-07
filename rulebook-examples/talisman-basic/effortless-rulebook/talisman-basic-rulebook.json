@@ -1,0 +1,2152 @@
+{
+  "$schema": "https://example.com/cmcc-schema/v1",
+  "Name": "Talisman: Basic",
+  "Description": "The NTWF (Special Solutions Workflow) ontology from Jessica Talisman's 'Intentional Arrangement' series, modeled as a relational rulebook. One curated worked example — the Production Deployment Workflow — exercises every class, property, and competency question: three disjoint agent types (human / AI / pipeline), role-vs-agent separation, a delegation/escalation chain, an approval gate as a step subtype, step-to-step transitive ordering, a PROV provenance chain over artifacts, and DCAT dataset consumption. Every competency question is answered by a derived column or a transitive-closure view (no sidecar code); a small set of load-bearing INDEX/MATCH lookups resolves the role-to-agent and gate-to-role-to-approver chains the questions depend on.",
+  "Workflows": {
+    "Description": "Table: Workflows. The NTWF Workflow class — prov:Plan + schema:CreativeWork. Each workflow has Dublin Core metadata (title, description, identifier, created, modified), a lifecycle status from the SKOS scheme, and a collection of WorkflowSteps (ntwf:hasStep).",
+    "important": true,
+    "summary_rich": "The **root entity** of the NTWF demo. The single curated workflow — *Production Deployment* — carries full Dublin Core metadata, a SKOS lifecycle status, and six ordered steps. This is the table that shows how a slug (`Name`) is derived from a display name, and how a rollup (`CountOfNonProposedSteps`) counts related rows without any application code.",
+    "important_fields": [
+      "DisplayName",
+      "Title",
+      "CountOfNonProposedSteps",
+      "HasMoreThan1Step"
+    ],
+    "schema": [
+      {
+        "name": "WorkflowId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "RelativePath",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Stable, DAG-derived location for this Workflow row. Root segment 'workflows' + the row's primary key. No leading slash so the Iri swap is a clean 1:1 substitution. The relational analogue of a REST resource path; unique by construction across the whole model.",
+        "formula": "=\"workflows/\" & {{WorkflowId}}"
+      },
+      {
+        "name": "Iri",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Opaque stable identifier (the dash-form of RelativePath). Because RelativePath has no leading slash, this is a clean SUBSTITUTE of '/' for '-'. The OWL transpiler mints each individual's IRI from this value (erb:<Iri>), so identity is path-derived and globally unique — no cross-table primary-key collisions.",
+        "formula": "=SUBSTITUTE({{RelativePath}}, \"/\", \"-\")"
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Short machine-friendly name for the workflow. Used for programmatic reference and URL slug generation.",
+        "formula": "=SUBSTITUTE(LOWER({{DisplayName}}), \" \", \"-\")",
+        "important": true,
+        "explanation_rich": "**Your first calculated field.** `Name` is just `LOWER(DisplayName)` with spaces swapped for dashes — the kind of slug you'd usually write by hand in a controller. Here it lives in the rulebook. Worked example: the *Production Deployment* workflow has `DisplayName = \"Production Deployment\"`, so `Name` becomes `production-deployment`. Rename it to *Production Deployment v2* and the slug becomes `production-deployment-v2` everywhere — Postgres view, Python class, Excel cell — without touching a single line of code."
+      },
+      {
+        "name": "DisplayName",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "Title",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Human-readable title of the workflow. Maps to dct:title from Dublin Core. Example: 'Production Deployment Workflow'."
+      },
+      {
+        "name": "Description",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Detailed description of the workflow's purpose and scope. Maps to dct:description from Dublin Core. Should explain what business goal the workflow achieves."
+      },
+      {
+        "name": "Identifier",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "External system identifier for cross-referencing. Maps to dct:identifier from Dublin Core. This is the join key back to document management systems, ticket systems, or other operational systems."
+      },
+      {
+        "name": "Modified",
+        "datatype": "datetime",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Last modification timestamp. Maps to dct:modified from Dublin Core. Critical for answering CQ5: 'Which workflows haven't been reviewed or updated in twelve months?'"
+      },
+      {
+        "name": "Created",
+        "datatype": "datetime",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Creation timestamp. Maps to dct:created from Dublin Core. Records when the workflow was first defined."
+      },
+      {
+        "name": "MaxPlanMinutes",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Configurable upper bound (in minutes) on the workflow's total planned runtime: the sum of all its steps' StepDurationMinutes must not exceed this budget. EXTENSION beyond the source article — the article carries stepDurationMinutes / escalationThresholdHours as recorded literals that drive no rule; this field gives stepDurationMinutes a live consumer so editing a step's duration has a visible, derived consequence. Raw and editable so the budget itself is a fact you can change."
+      },
+      {
+        "name": "StalenessThresholdMonths",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true,
+        "Description": "The governance POLICY (in months) that defines when this workflow's compliance documentation goes stale: if more than this many months have passed since Modified (dct:modified) without a review, IsStale fires. The article hardcodes the answer to CQ5 at twelve months ('which workflows haven't been reviewed in twelve months'); promoting that threshold to a raw, editable field makes the policy itself a fact in the SSoT rather than a constant buried in the IsStale formula — so an org can set a 6-month or 18-month review cadence and the staleness verdict recomputes. Defaults to 12 to match the article."
+      },
+      {
+        "name": "WorkflowStatus",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "FK to WorkflowStatusConcepts. Captures the current lifecycle state of the workflow (draft, active, deprecated, archived). Maps to the SKOS CBox status vocabulary.",
+        "RelatedTo": "WorkflowStatusConcepts"
+      },
+      {
+        "name": "WorkflowSteps",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Reference to workflow steps. Represents the ntwf:hasStep relationship linking workflows to their constituent steps.",
+        "RelatedTo": "WorkflowSteps"
+      },
+      {
+        "name": "CountOfNonProposedSteps",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Calculated count of workflow steps in this workflow. Useful for workflow complexity analysis and reporting.",
+        "formula": "=COUNTIFS(WorkflowSteps!{{Workflow}}, Workflows!{{WorkflowId}})",
+        "important": true,
+        "explanation_rich": "**Your first rollup.** This counts every `WorkflowSteps` row whose `Workflow` foreign key points back at this workflow's `WorkflowId`. No JOIN to write. Worked example: the *Production Deployment* workflow has five steps (`prod-deploy-step-1` through `prod-deploy-step-5`), so `CountOfNonProposedSteps` is `5`. Add or delete a step and the count updates on the next read."
+      },
+      {
+        "name": "HasMoreThan1Step",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "formula": "={{CountOfNonProposedSteps}} > 1",
+        "important": true,
+        "explanation_rich": "**A second-order calculation.** This field reads another calculated field — `CountOfNonProposedSteps` — and turns it into a boolean. It's the smallest possible example of a DAG: a rollup feeds into a rule. Worked example: *Production Deployment* has 5 steps, so `HasMoreThan1Step` is `TRUE`. A hypothetical single-step workflow would return `FALSE`."
+      },
+      {
+        "name": "CountAISteps",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "important": true,
+        "Description": "Number of steps in this workflow executed by an AIAgent (rollup over WorkflowSteps.IsExecutedByAI). This is the 'AI-executed' half of the article's CQ3 ('which steps are executed by AI agents') — counted against AIAgent individuals specifically, not the deterministic AutomatedPipeline, which is a disjoint agent type. Also drives the business-payoff query (a workflow is a compliance risk when an AI agent runs a step). Worked example: 2 (the AI risk-assessment step and the AI post-deployment health report).",
+        "formula": "=COUNTIFS(WorkflowSteps!{{Workflow}}, Workflows!{{WorkflowId}}, WorkflowSteps!{{IsExecutedByAI}}, TRUE)"
+      },
+      {
+        "name": "CountHumanSteps",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "important": true,
+        "Description": "Number of steps executed by a HumanAgent (rollup over WorkflowSteps.IsExecutedByHuman). The 'who actually runs this step' count — distinct from CountHumanRequiredSteps, which counts steps that demand a human decision (requiresHumanApproval). Worked example: 2 (the legal-review step and the release approval gate).",
+        "formula": "=COUNTIFS(WorkflowSteps!{{Workflow}}, Workflows!{{WorkflowId}}, WorkflowSteps!{{IsExecutedByHuman}}, TRUE)"
+      },
+      {
+        "name": "CountHumanRequiredSteps",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "important": true,
+        "Description": "Number of steps that require a human decision (rollup over WorkflowSteps.RequiresHumanApproval). This is the 'human-required' half of the article's CQ3 ('which require a human decision'), answered — as the article notes — by a single FILTER on requiresHumanApproval. Worked example: 2 (the legal-review step and the release approval gate).",
+        "formula": "=COUNTIFS(WorkflowSteps!{{Workflow}}, Workflows!{{WorkflowId}}, WorkflowSteps!{{RequiresHumanApproval}}, TRUE)"
+      },
+      {
+        "name": "CountApprovalConsistencyViolations",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "important": true,
+        "Description": "Number of steps that require human approval but are not human-filled (rollup over WorkflowSteps.ApprovalConsistencyViolation). The clean ABox witness: this is 0 for the Production Deployment workflow. A non-zero value is the relational signal of a Suite-4 consistency violation.",
+        "explanation_rich": "**A consistency invariant, rolled up.** Every step computes whether it violates the human-approval rule; this counts the violations for the whole workflow. A clean ABox holds it at **0** — the same green/red signal the article's reasoner produces, available as a single column with no reasoner in the loop.",
+        "formula": "=COUNTIFS(WorkflowSteps!{{Workflow}}, Workflows!{{WorkflowId}}, WorkflowSteps!{{ApprovalConsistencyViolation}}, TRUE)"
+      },
+      {
+        "name": "HasAIAgentStep",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE iff at least one step in this workflow is executed by an AIAgent. The structural half of the article's business payoff query.",
+        "formula": "={{CountAISteps}} > 0"
+      },
+      {
+        "name": "MonthsSinceModified",
+        "datatype": "integer",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Whole months since this workflow was last modified (dct:modified), measured live against NOW(). Drives CQ5 staleness. NOW() is seeded deterministically during conformance so test answers stay stable.",
+        "formula": "=DATETIME_DIFF(NOW(), {{Modified}}, \"months\")"
+      },
+      {
+        "name": "IsStale",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "important": true,
+        "Description": "TRUE iff the workflow's compliance documentation has not been reviewed (Modified) within its policy window — i.e. MonthsSinceModified exceeds the configurable StalenessThresholdMonths. The metadata half of CQ5 ('which workflows haven't been reviewed in twelve months'): with the default threshold of 12 this is exactly the article's question, but the threshold is now a fact you can change, so the staleness verdict tracks the org's actual review cadence rather than a hardcoded constant.",
+        "formula": "={{MonthsSinceModified}} > {{StalenessThresholdMonths}}"
+      },
+      {
+        "name": "IsStaleAndHasAIAgent",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "important": true,
+        "Description": "The article's headline business question, as one boolean: a workflow that is BOTH stale (not reviewed in 12 months) AND has an AI-executed step — the highest compliance risk. Joins the metadata layer (dct:modified) with the accountability layer (filledBy → AIAgent) the way the closing SPARQL demo does, but as a single derived column.",
+        "explanation_rich": "**The whole article, in one cell.** The closing demonstration is a SPARQL query that crosses three layers — metadata (`dct:modified`), structure (`hasStep`), and accountability (`filledBy` → `AIAgent`) — to surface stale workflows running AI steps. Here that business question is a derived boolean: `IsStale AND HasAIAgentStep`. The substrate has already done the join; the answer is a column.",
+        "formula": "=AND({{IsStale}}, {{HasAIAgentStep}})"
+      },
+      {
+        "name": "CountTotalPlanMinutes",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "important": true,
+        "Description": "Total planned runtime of the workflow: the sum of StepDurationMinutes over all of its steps. The live consumer of the per-step duration literal. EXTENSION beyond the source article (which records stepDurationMinutes but never sums it). Compared against MaxPlanMinutes to derive IsOverTimeBudget.",
+        "formula": "=SUMIFS(WorkflowSteps!{{StepDurationMinutes}}, WorkflowSteps!{{Workflow}}, Workflows!{{WorkflowId}})"
+      },
+      {
+        "name": "IsOverTimeBudget",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "important": true,
+        "Description": "TRUE iff the workflow's total planned runtime (CountTotalPlanMinutes) exceeds its configured budget (MaxPlanMinutes). EXTENSION beyond the source article — a third compliance input alongside staleness and AI-execution, giving the step-duration literal a visible derived consequence. Editing any step's StepDurationMinutes recomputes the sum and can flip this boolean, which folds into IsAtComplianceRisk.",
+        "explanation_rich": "**The time budget, as a boolean.** Sum every step's duration; compare it to the workflow's `MaxPlanMinutes`. When the plan runs longer than its budget this goes `TRUE` — the green→red time bar in the console crossing its limit, expressed as a derived column. Drag a step's duration up and watch it flip.",
+        "formula": "={{CountTotalPlanMinutes}} > {{MaxPlanMinutes}}"
+      },
+      {
+        "name": "CountDerivationLinks",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Number of prov:wasDerivedFrom links among this workflow's artifacts (rollup over WorkflowArtifacts.HasDerivationParent). Answers the lineage half of CQ4: 5 artifacts form a chain with 4 derivation links.",
+        "formula": "=COUNTIFS(WorkflowArtifacts!{{ProducedByWorkflow}}, Workflows!{{WorkflowId}}, WorkflowArtifacts!{{HasDerivationParent}}, TRUE)"
+      },
+      {
+        "name": "CountLegalOwnedSteps",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Number of steps in this workflow whose owning department is Legal (rollup over WorkflowSteps.IsLegalOwned). CQ7: exactly one Legal-owned step in the Production Deployment workflow.",
+        "formula": "=COUNTIFS(WorkflowSteps!{{Workflow}}, Workflows!{{WorkflowId}}, WorkflowSteps!{{IsLegalOwned}}, TRUE)"
+      },
+      {
+        "name": "CountEngineeringOwnedSteps",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Number of steps whose owning department is Engineering (rollup over WorkflowSteps.IsEngineeringOwned). Feeds CQ7's Engineering-involvement check.",
+        "formula": "=COUNTIFS(WorkflowSteps!{{Workflow}}, Workflows!{{WorkflowId}}, WorkflowSteps!{{IsEngineeringOwned}}, TRUE)"
+      },
+      {
+        "name": "InvolvesEngineeringAndLegal",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "important": true,
+        "Description": "TRUE iff this workflow has at least one Engineering-owned step AND at least one Legal-owned step. Answers CQ7 ('which workflows involve both engineering and legal') as a single boolean — the Production Deployment workflow qualifies (4 Engineering steps + 1 Legal step).",
+        "formula": "=AND({{CountEngineeringOwnedSteps}} > 0, {{CountLegalOwnedSteps}} > 0)"
+      },
+      {
+        "name": "CountInferredPrecedencePairs",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "important": true,
+        "Description": "Number of step-ordering pairs that the transitive closure of ntwf:precedesStep INFERRED (rollup over the closure view vw_step_precedence_closure where is_inferred = TRUE). The article's signature count: 6 of the 10 closure pairs were never asserted — including step-1 -> step-5. NOTE: this single-workflow model has exactly one Workflow, so the global closure view is wholly this workflow's; the COUNTIFS is unfiltered because every precedence edge belongs to the Production Deployment DAG.",
+        "explanation_rich": "**The inference, counted.** Four edges (1->2->3->4->5) were written down; the `closure` field type materialized `vw_step_precedence_closure` and derived the full ordering. This rolls up the rows that carry `is_inferred = TRUE` — the pairs no human asserted, the article's '6 inferred' figure, surfaced as a column. Delete the view and `effortless build` regenerates the same 6.",
+        "formula": "=COUNTIFS(vw_step_precedence_closure!{{IsInferred}}, TRUE())"
+      },
+      {
+        "name": "CountAssertedPrecedencePairs",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Number of step-ordering pairs that were directly ASSERTED as ntwf:precedesStep edges (rollup over vw_step_precedence_closure where is_inferred = FALSE) — the hop-1 rows. The article's 4 asserted edges. Together with CountInferredPrecedencePairs (6) this sums to the 10-pair closure, making CountOfPrecedenceClosurePairs an honest asserted+inferred total rather than an unconditional count. Single-workflow note as on CountInferredPrecedencePairs: the global closure view is this workflow's.",
+        "formula": "=COUNTIFS(vw_step_precedence_closure!{{IsInferred}}, FALSE())"
+      },
+      {
+        "name": "CountOfPrecedenceClosurePairs",
+        "datatype": "integer",
+        "type": "calculated",
+        "nullable": true,
+        "important": true,
+        "Description": "Total number of step-ordering pairs in the transitive closure of ntwf:precedesStep = asserted (4) + inferred (6) = 10. The article's headline closure cardinality, witnessing that the 4 asserted edges over a 5-step chain close to all 10 (i<j) pairs. Computed as CountAssertedPrecedencePairs + CountInferredPrecedencePairs so the total is provably the sum of the two halves, not a separate unconditional view count that could silently drift from them.",
+        "explanation_rich": "**The closure size, as a single number.** A 5-step linear chain has C(5,2) = 10 ordering pairs; the article asserts 4 of them and lets the reasoner derive the rest. Here `CountAssertedPrecedencePairs + CountInferredPrecedencePairs` = 4 + 6 = **10**, the same total the OWL-RL closure produces — and because it is the literal sum of the asserted and inferred witnesses, it cannot disagree with them.",
+        "formula": "={{CountAssertedPrecedencePairs}} + {{CountInferredPrecedencePairs}}"
+      },
+      {
+        "name": "CountRolesWithBadFillerCardinality",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "important": true,
+        "Description": "Number of roles that do NOT have exactly one filledBy arm set (rollup over Roles.HasExactlyOneFiller = FALSE). The three agent classes are owl:disjointWith one another and ntwf:filledBy is functional, so a clean ABox has 0 such roles — this is the Suite-1 functional/disjointness witness as a single integer. A non-zero value is the relational signal of the Suite-4 disjointness violation (a role filled by two agent classes, or by none). NOTE: this single-workflow model has exactly one Workflow and every Role participates in it, so the count is over all roles; a multi-workflow model would scope it through a role→workflow path.",
+        "explanation_rich": "**Disjointness + functionality, counted to zero.** In OWL, a role typed as filled by both a `HumanAgent` and an `AIAgent` is an inconsistency the reasoner catches via `owl:disjointWith`; a role filled by none violates the functional `filledBy`. Relationally, every role must have exactly one of its three filler arms set — `HasExactlyOneFiller`. This rolls those up: **0** in the clean ABox, the same green signal the reasoner produces, with no reasoner in the loop.",
+        "formula": "=COUNTIFS(Roles!{{HasExactlyOneFiller}}, FALSE())"
+      }
+    ],
+    "data": [
+      {
+        "WorkflowId": "production-deployment",
+        "DisplayName": "Production Deployment",
+        "Title": "Production Deployment Workflow",
+        "Description": "The primary NTWF ABox example. A 5-step workflow for deploying software to production at Special Solutions. Steps involve an AI Risk Analysis Agent (step 1), a human Legal Compliance Reviewer (step 2), a human Release Manager at the Release Approval Gate (step 3), an automated CI/CD pipeline (step 4), and the Release Manager again for the post-deployment report (step 5). Demonstrates all three agent types, the delegation chain, artifact provenance, and DCAT dataset consumption.",
+        "Identifier": "WF-PROD-DEPLOY-001",
+        "Modified": "2024-12-10T05:00:00.000Z",
+        "Created": "2026-01-10T06:00:00.000Z",
+        "MaxPlanMinutes": 240,
+        "StalenessThresholdMonths": 24,
+        "WorkflowStatus": "status-active",
+        "WorkflowSteps": ""
+      }
+    ]
+  },
+  "WorkflowSteps": {
+    "Description": "Table: WorkflowSteps. The NTWF WorkflowStep class — prov:Activity. Each step is first-class and individually addressable, belongs to one Workflow (ntwf:isStepOf), and is assigned to exactly one Role (ntwf:assignedRole). Step-to-step ordering is modeled in the StepPrecedence junction; the ApprovalGate subtype specializes a step via a 1:1 FK.",
+    "important": true,
+    "summary_rich": "The **building blocks**. Each step belongs to one `Workflow` and is assigned to one `Role` (never directly to an agent — that's Heuristic 2). Some steps require a human to approve (`RequiresHumanApproval`); others run automatically. Step 3 is specialized by an `ApprovalGate`. Step order is recorded as first-class `StepPrecedence` edges, not as a magic integer.",
+    "important_fields": [
+      "DisplayName",
+      "Workflow",
+      "AssignedRole",
+      "RequiresHumanApproval"
+    ],
+    "schema": [
+      {
+        "name": "WorkflowStepId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "ParentPath",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "RelatedTo": "Workflows",
+        "Description": "Helper: the Workflows parent's RelativePath, pulled across the Workflow FK. Exists so RelativePath can concatenate the '/steps/' segment using only local-field '&' concat (the transpiler compiles a lookup as a pure passthrough, not a lookup+concat).",
+        "formula": "=INDEX(Workflows!{{RelativePath}}, MATCH({{Workflow}}, Workflows!{{WorkflowId}}, 0))"
+      },
+      {
+        "name": "RelativePath",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Stable, DAG-derived location: this row nests under its Workflows parent. Concatenates the parent's path (ParentPath) with '/steps/' + this row's primary key. The DAG performs the recursion — one hop per table via ParentPath — so the full ancestry is encoded without a recursive formula. Unique by construction.",
+        "formula": "={{ParentPath}} & \"/steps/\" & {{WorkflowStepId}}"
+      },
+      {
+        "name": "Iri",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Opaque stable identifier (the dash-form of RelativePath). Because RelativePath has no leading slash, this is a clean SUBSTITUTE of '/' for '-'. The OWL transpiler mints each individual's IRI from this value (erb:<Iri>), so identity is path-derived and globally unique — no cross-table primary-key collisions.",
+        "formula": "=SUBSTITUTE({{RelativePath}}, \"/\", \"-\")"
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "formula": "=SUBSTITUTE(LOWER({{DisplayName}}), \" \", \"-\")"
+      },
+      {
+        "name": "DisplayName",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "Workflow",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Foreign key to the parent workflow. Represents the inverse of ntwf:hasStep, enabling navigation from step to its containing workflow (ntwf:isStepOf).",
+        "RelatedTo": "Workflows"
+      },
+      {
+        "name": "SequencePosition",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Integer ordinal position of the step within its workflow. Maps to ntwf:sequencePosition, declared as owl:FunctionalProperty (each step has exactly one position). Enables positional queries. Note: this is a display/positional convenience — the authoritative ordering lives in the StepPrecedence edges."
+      },
+      {
+        "name": "AssignedRole",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Foreign key to the Role responsible for executing this step. Maps to ntwf:assignedRole (owl:FunctionalProperty — exactly one role per step). Critical for implementing Heuristic 2 (role-agent separation): steps point to roles, not directly to agents.",
+        "RelatedTo": "Roles"
+      },
+      {
+        "name": "RequiresHumanApproval",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Boolean flag indicating whether a human agent must fill the assigned role. Maps to ntwf:requiresHumanApproval. Enables answering CQ3: 'Which steps require human decisions vs. AI execution?'"
+      },
+      {
+        "name": "StepDurationMinutes",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Expected duration of this step in minutes. Maps to ntwf:stepDurationMinutes (datatype property, not functional). Enables SLA and throughput analysis."
+      },
+      {
+        "name": "ConsumesDataset",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "FK to Datasets. Records which DCAT dataset this step consumes as input. Kept separate from artifact consumption to preserve DCAT metadata semantics (consumesDataset vs. requiresArtifact).",
+        "RelatedTo": "Datasets"
+      },
+      {
+        "name": "ProducesArtifacts",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Back-reference to WorkflowArtifacts produced by this step. Inverse of WorkflowArtifacts.ProducedByStep (ntwf:producesArtifact / prov:wasGeneratedBy).",
+        "RelatedTo": "WorkflowArtifacts"
+      },
+      {
+        "name": "ApprovalGate",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Back-reference to the ApprovalGate subtype row that specializes this step, if any. Inverse of ApprovalGates.WorkflowStep. A step has zero or one approval gate; when present, the gate adds escalationThresholdHours and marks the step as a blocking decision checkpoint. This models ntwf:ApprovalGate rdfs:subClassOf WorkflowStep as a shared-key 1:1 specialization rather than collapsing two DAG nodes into one.",
+        "RelatedTo": "ApprovalGates"
+      },
+      {
+        "name": "Precedes",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Back-reference to StepPrecedence edges where this step is the FromStep (the predecessor). Inverse of StepPrecedence.FromStep. Together with PrecededBy, lets you walk the ntwf:precedesStep ordering in both directions.",
+        "RelatedTo": "StepPrecedence"
+      },
+      {
+        "name": "PrecededBy",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Back-reference to StepPrecedence edges where this step is the ToStep (the successor). Inverse of StepPrecedence.ToStep. Part of the ntwf:precedesStep transitive ordering relationship.",
+        "RelatedTo": "StepPrecedence"
+      },
+      {
+        "name": "ExecutingHumanAgent",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "The HumanAgent (if any) that executes this step, resolved through ntwf:assignedRole → ntwf:filledBy (the HumanAgent arm). Load-bearing lookup: it follows the role→agent indirection the article relies on, so a step knows its executing agent without per-step agent bindings.",
+        "formula": "=INDEX(Roles!{{FilledByHumanAgent}}, MATCH({{AssignedRole}}, Roles!{{RoleId}}, 0))"
+      },
+      {
+        "name": "ExecutingAIAgent",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "The AIAgent (if any) that executes this step, resolved through ntwf:assignedRole → ntwf:filledBy (the AIAgent arm). One of the three polymorphic filledBy arms.",
+        "formula": "=INDEX(Roles!{{FilledByAIAgent}}, MATCH({{AssignedRole}}, Roles!{{RoleId}}, 0))"
+      },
+      {
+        "name": "ExecutingAutomatedPipeline",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "The AutomatedPipeline (if any) that executes this step, resolved through ntwf:assignedRole → ntwf:filledBy (the AutomatedPipeline arm).",
+        "formula": "=INDEX(Roles!{{FilledByAutomatedPipeline}}, MATCH({{AssignedRole}}, Roles!{{RoleId}}, 0))"
+      },
+      {
+        "name": "ExecutingAgentType",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "important": true,
+        "Description": "Which of the three disjoint agent classes executes this step (HumanAgent / AIAgent / AutomatedPipeline), derived from whichever filledBy arm the assigned role has set. Answers the typing half of CQ3 ('which steps are executed by AI agents, and which require a human decision').",
+        "explanation_rich": "**The role→agent indirection, resolved to a type.** The step points at a role; the role is filled by exactly one of a human, an AI, or a pipeline. This field reads the three lookup arms and reports the executing agent's class — the relational stand-in for the OWL `rdf:type` of the `filledBy` target. In the Production Deployment workflow this yields two AI/pipeline steps and three human steps.",
+        "formula": "=IF(NOT(ISBLANK({{ExecutingHumanAgent}})), \"HumanAgent\", IF(NOT(ISBLANK({{ExecutingAIAgent}})), \"AIAgent\", IF(NOT(ISBLANK({{ExecutingAutomatedPipeline}})), \"AutomatedPipeline\", \"\")))"
+      },
+      {
+        "name": "IsExecutedByAI",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when this step's assigned role is filled by an AIAgent. Feeds CQ3 and the business payoff query (stale workflows with AI-executed steps).",
+        "formula": "=NOT(ISBLANK({{ExecutingAIAgent}}))"
+      },
+      {
+        "name": "IsExecutedByHuman",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when this step's assigned role is filled by a HumanAgent. Feeds CQ3's human-vs-AI step split.",
+        "formula": "=NOT(ISBLANK({{ExecutingHumanAgent}}))"
+      },
+      {
+        "name": "ApprovalConsistencyViolation",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "important": true,
+        "Description": "Detectable-error witness: TRUE iff this step requires human approval (RequiresHumanApproval) yet its assigned role is NOT filled by a HumanAgent. In the OWL ABox this is the rule that only a HumanAgent may fill a role on a requiresHumanApproval step; a clean ABox yields FALSE for every step. This is the relational equivalent of the Suite-4 disjointness/consistency check.",
+        "explanation_rich": "**An inconsistency made visible.** The article's reasoner flags it when a non-human fills a role on a step that requires human approval. Here the same violation surfaces as a boolean: `RequiresHumanApproval = true AND ExecutingHumanAgent is blank`. Every step in the clean Production Deployment ABox returns FALSE — flip an approval step onto an AI-filled role and this lights up, exactly as the reasoner would.",
+        "formula": "=AND({{RequiresHumanApproval}}, ISBLANK({{ExecutingHumanAgent}}))"
+      },
+      {
+        "name": "ApprovalIsHumanFilled",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "important": true,
+        "Description": "Positive form of the human-only-gate rule: TRUE iff this step's human-approval obligation is satisfied — either the step does not require human approval (vacuously satisfied), or it does and its assigned role is filled by a HumanAgent. The clean Production Deployment ABox yields TRUE for every step. This is the affirmative complement of ApprovalConsistencyViolation: the two are always opposite when approval is required, and this one is additionally TRUE on steps that need no approval.",
+        "explanation_rich": "**The gate rule, as a satisfied-yes boolean.** `ApprovalConsistencyViolation` asks 'is this step broken?'; this asks 'is this step's approval obligation met?'. When `RequiresHumanApproval` is false the obligation is vacuously met (TRUE); when true, it is met only if a human actually fills the role. Every step in the clean ABox returns TRUE — the green half of the same Suite-4 invariant the article's reasoner enforces.",
+        "formula": "=IF({{RequiresHumanApproval}}, NOT(ISBLANK({{ExecutingHumanAgent}})), TRUE)"
+      },
+      {
+        "name": "OwningDepartment",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "The department that owns this step's assigned role, resolved through AssignedRole → Roles.OwnedBy. Lets a workflow report which departments its steps touch (CQ7: 'which workflows involve both Engineering and Legal, and at what steps do they intersect').",
+        "formula": "=INDEX(Roles!{{OwnedBy}}, MATCH({{AssignedRole}}, Roles!{{RoleId}}, 0))"
+      },
+      {
+        "name": "IsLegalOwned",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE iff this step's owning department is Legal. Rolls up to CQ7's count of Legal-owned steps (exactly one in the Production Deployment workflow).",
+        "formula": "={{OwningDepartment}} = \"ntwf-legal-dept\""
+      },
+      {
+        "name": "IsEngineeringOwned",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE iff this step's owning department is Engineering. Rolls up to CQ7's Engineering-involvement check.",
+        "formula": "={{OwningDepartment}} = \"ntwf-engineering\""
+      }
+    ],
+    "data": [
+      {
+        "WorkflowStepId": "prod-deploy-step-4",
+        "DisplayName": "Automated Deployment Execution",
+        "Workflow": "production-deployment",
+        "SequencePosition": 4,
+        "AssignedRole": "ntwf-ci-executor-role",
+        "RequiresHumanApproval": false,
+        "StepDurationMinutes": 60,
+        "ConsumesDataset": "",
+        "ProducesArtifacts": "artifact-deployment-log",
+        "ApprovalGate": "",
+        "Precedes": "prec-4-5",
+        "PrecededBy": "prec-3-4"
+      },
+      {
+        "WorkflowStepId": "prod-deploy-step-5",
+        "DisplayName": "Post-Deployment Health Check & Report",
+        "Workflow": "production-deployment",
+        "SequencePosition": 5,
+        "AssignedRole": "ntwf-deployment-health-role",
+        "RequiresHumanApproval": false,
+        "StepDurationMinutes": 30,
+        "ConsumesDataset": "",
+        "ProducesArtifacts": "artifact-post-deploy-report",
+        "ApprovalGate": "",
+        "Precedes": "",
+        "PrecededBy": "prec-4-5"
+      },
+      {
+        "WorkflowStepId": "prod-deploy-step-1",
+        "DisplayName": "AI Risk Assessment",
+        "Workflow": "production-deployment",
+        "SequencePosition": 1,
+        "AssignedRole": "ntwf-risk-analysis-role",
+        "RequiresHumanApproval": false,
+        "StepDurationMinutes": 15,
+        "ConsumesDataset": "ds-q1-2026-risk-metrics",
+        "ProducesArtifacts": "artifact-risk-report",
+        "ApprovalGate": "",
+        "Precedes": "prec-1-2",
+        "PrecededBy": ""
+      },
+      {
+        "WorkflowStepId": "prod-deploy-step-2",
+        "DisplayName": "Legal Compliance Review",
+        "Workflow": "production-deployment",
+        "SequencePosition": 2,
+        "AssignedRole": "ntwf-legal-compliance-role",
+        "RequiresHumanApproval": true,
+        "StepDurationMinutes": 120,
+        "ConsumesDataset": "",
+        "ProducesArtifacts": "artifact-legal-clearance",
+        "ApprovalGate": "",
+        "Precedes": "prec-2-3",
+        "PrecededBy": "prec-1-2"
+      },
+      {
+        "WorkflowStepId": "prod-deploy-step-3",
+        "DisplayName": "Release Approval Gate",
+        "Workflow": "production-deployment",
+        "SequencePosition": 3,
+        "AssignedRole": "ntwf-release-manager-role",
+        "RequiresHumanApproval": false,
+        "StepDurationMinutes": 30,
+        "ConsumesDataset": "",
+        "ProducesArtifacts": "artifact-release-authorization",
+        "ApprovalGate": "ntwf-release-approval-gate",
+        "Precedes": "prec-3-4",
+        "PrecededBy": "prec-2-3"
+      }
+    ]
+  },
+  "ApprovalGates": {
+    "Description": "Table: ApprovalGates. The NTWF ApprovalGate class — rdfs:subClassOf WorkflowStep. Modeled as a class-table-inheritance subtype: each gate row shares identity with exactly one WorkflowStep (via the WorkflowStep 1:1 FK) and carries only the gate-specific attribute, escalationThresholdHours. The step it specializes keeps the common attributes (requiresHumanApproval, assigned role, etc.). This preserves the article's double-typing — a gate IS a step — without collapsing two DAG nodes into one.",
+    "schema": [
+      {
+        "name": "ApprovalGateId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "ParentPath",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "RelatedTo": "WorkflowSteps",
+        "Description": "Helper: the WorkflowSteps parent's RelativePath, pulled across the WorkflowStep FK. Exists so RelativePath can concatenate the '/approval-gates/' segment using only local-field '&' concat (the transpiler compiles a lookup as a pure passthrough, not a lookup+concat).",
+        "formula": "=INDEX(WorkflowSteps!{{RelativePath}}, MATCH({{WorkflowStep}}, WorkflowSteps!{{WorkflowStepId}}, 0))"
+      },
+      {
+        "name": "RelativePath",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Stable, DAG-derived location: this row nests under its WorkflowSteps parent. Concatenates the parent's path (ParentPath) with '/approval-gates/' + this row's primary key. The DAG performs the recursion — one hop per table via ParentPath — so the full ancestry is encoded without a recursive formula. Unique by construction.",
+        "formula": "={{ParentPath}} & \"/approval-gates/\" & {{ApprovalGateId}}"
+      },
+      {
+        "name": "Iri",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Opaque stable identifier (the dash-form of RelativePath). Because RelativePath has no leading slash, this is a clean SUBSTITUTE of '/' for '-'. The OWL transpiler mints each individual's IRI from this value (erb:<Iri>), so identity is path-derived and globally unique — no cross-table primary-key collisions.",
+        "formula": "=SUBSTITUTE({{RelativePath}}, \"/\", \"-\")"
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "formula": "=SUBSTITUTE(LOWER({{DisplayName}}), \" \", \"-\")"
+      },
+      {
+        "name": "DisplayName",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "WorkflowStep",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "1:1 FK to the WorkflowStep this gate specializes (subtype shared key). This is the relational expression of ntwf:ApprovalGate rdfs:subClassOf WorkflowStep: the gate row adds escalationThresholdHours to its step. Inverse is WorkflowSteps.ApprovalGate.",
+        "RelatedTo": "WorkflowSteps"
+      },
+      {
+        "name": "EscalationThresholdHours",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Integer number of hours that may elapse on a pending gate before the ntwf:delegatesTo chain activates. Maps to ntwf:escalationThresholdHours. Domain applies only to ApprovalGate individuals — which is exactly why the gate is its own subtype table and this attribute does not live on every WorkflowStep."
+      },
+      {
+        "name": "GateRole",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "The role responsible for this gate's underlying step, resolved through WorkflowStep → WorkflowSteps.AssignedRole. First hop of the CQ2 chain (gate → role → approver).",
+        "formula": "=INDEX(WorkflowSteps!{{AssignedRole}}, MATCH({{WorkflowStep}}, WorkflowSteps!{{WorkflowStepId}}, 0))"
+      },
+      {
+        "name": "GateApproverHuman",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "important": true,
+        "Description": "The human agent who approves at this gate, resolved through the two-hop chain gate → GateRole → Roles.FilledByHumanAgent. Answers CQ2 ('who is responsible for approving a production deployment') directly: the release-approval gate resolves to the Release Manager role, filled by Maria Gonzalez.",
+        "explanation_rich": "**CQ2 answered by a lookup chain.** A gate specializes a step; the step has a role; the role is filled by a person. This field walks that chain — `GateRole` (gate → step → role) then `Roles.FilledByHumanAgent` (role → human) — to name the approver. For the release-approval gate the answer is `ntwf-maria-gonzalez`, exactly what the article's SPARQL returns.",
+        "formula": "=INDEX(Roles!{{FilledByHumanAgent}}, MATCH({{GateRole}}, Roles!{{RoleId}}, 0))"
+      }
+    ],
+    "data": [
+      {
+        "ApprovalGateId": "ntwf-release-approval-gate",
+        "DisplayName": "Release Approval Gate",
+        "WorkflowStep": "prod-deploy-step-3",
+        "EscalationThresholdHours": 4
+      }
+    ]
+  },
+  "StepPrecedence": {
+    "Description": "Table: StepPrecedence. The NTWF ntwf:precedesStep ordering relationship, modeled as a first-class step-to-step junction. Each row is one directed edge: FromStep precedes ToStep. ntwf:precedesStep is an owl:TransitiveProperty — the four asserted edges (1->2, 2->3, 3->4, 4->5) imply the full closure of ten ordering pairs (including 1->5, which is never asserted). Each edge is a first-class node in the DAG, never a 'helper' integer.",
+    "schema": [
+      {
+        "name": "StepPrecedenceId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "ParentPath",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "RelatedTo": "WorkflowSteps",
+        "Description": "Helper: the WorkflowSteps parent's RelativePath, pulled across the FromStep FK. Exists so RelativePath can concatenate the '/precedence/' segment using only local-field '&' concat (the transpiler compiles a lookup as a pure passthrough, not a lookup+concat).",
+        "formula": "=INDEX(WorkflowSteps!{{RelativePath}}, MATCH({{FromStep}}, WorkflowSteps!{{WorkflowStepId}}, 0))"
+      },
+      {
+        "name": "RelativePath",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Stable, DAG-derived location: this row nests under its WorkflowSteps parent. Concatenates the parent's path (ParentPath) with '/precedence/' + this row's primary key. The DAG performs the recursion — one hop per table via ParentPath — so the full ancestry is encoded without a recursive formula. Unique by construction.",
+        "formula": "={{ParentPath}} & \"/precedence/\" & {{StepPrecedenceId}}"
+      },
+      {
+        "name": "Iri",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Opaque stable identifier (the dash-form of RelativePath). Because RelativePath has no leading slash, this is a clean SUBSTITUTE of '/' for '-'. The OWL transpiler mints each individual's IRI from this value (erb:<Iri>), so identity is path-derived and globally unique — no cross-table primary-key collisions.",
+        "formula": "=SUBSTITUTE({{RelativePath}}, \"/\", \"-\")"
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Human-readable edge label derived from its endpoints. Mirrors the FromStep -> ToStep direction.",
+        "formula": "={{FromStep}} & \" -> \" & {{ToStep}}"
+      },
+      {
+        "name": "FromStep",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "FK to the predecessor WorkflowStep — the step that comes BEFORE. The source of the ntwf:precedesStep edge. Inverse is WorkflowSteps.Precedes.",
+        "RelatedTo": "WorkflowSteps"
+      },
+      {
+        "name": "ToStep",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "FK to the successor WorkflowStep — the step that comes AFTER. The target of the ntwf:precedesStep edge. Inverse is WorkflowSteps.PrecededBy.",
+        "RelatedTo": "WorkflowSteps"
+      },
+      {
+        "name": "PrecedesStepClosure",
+        "datatype": "string",
+        "type": "closure",
+        "nullable": true,
+        "important": true,
+        "Description": "Transitive closure of ntwf:precedesStep (an owl:TransitiveProperty). The 4 asserted edges (1→2, 2→3, 3→4, 4→5) imply the full 10-pair ordering closure — including the never-asserted step-1 → step-5. Materialized by the transpiler as the view vw_step_precedence_closure(from_id, to_id, hop_distance, is_inferred): 4 asserted (hop 1) + 6 inferred rows. This is the article's headline inference made to fire, not seeded.",
+        "explanation_rich": "**The transitive closure, computed by the substrate.** `ntwf:precedesStep` is declared `owl:TransitiveProperty`: assert `1→2, 2→3, 3→4, 4→5` and a reasoner derives all ten ordering pairs. Here the `closure` field type emits a cycle-safe `WITH RECURSIVE` view, `vw_step_precedence_closure`, that does exactly that — every reachable `(from_id, to_id)` pair with `hop_distance` (shortest derivation) and `is_inferred` (TRUE when no direct edge asserts the pair). Worked example: `step-1 → step-5` appears with `hop_distance = 4`, `is_inferred = true`, though it was never written down. Delete the view and `effortless build` regenerates it identically.",
+        "EdgeTable": "StepPrecedence",
+        "FromColumn": "FromStep",
+        "ToColumn": "ToStep"
+      }
+    ],
+    "data": [
+      {
+        "StepPrecedenceId": "prec-1-2",
+        "FromStep": "prod-deploy-step-1",
+        "ToStep": "prod-deploy-step-2"
+      },
+      {
+        "StepPrecedenceId": "prec-2-3",
+        "FromStep": "prod-deploy-step-2",
+        "ToStep": "prod-deploy-step-3"
+      },
+      {
+        "StepPrecedenceId": "prec-3-4",
+        "FromStep": "prod-deploy-step-3",
+        "ToStep": "prod-deploy-step-4"
+      },
+      {
+        "StepPrecedenceId": "prec-4-5",
+        "FromStep": "prod-deploy-step-4",
+        "ToStep": "prod-deploy-step-5"
+      }
+    ]
+  },
+  "Roles": {
+    "Description": "Table: Roles. The NTWF Role class — a custom root with no adequate standard match, declared disjoint with WorkflowStep and WorkflowArtifact. Roles are the heart of Heuristic 2 (role-agent separation): WorkflowSteps point to Roles; Roles point to exactly one agent (human, AI, or pipeline) via the polymorphic filledBy relationship. When personnel or models change, one filledBy triple changes and the workflow structure is untouched.",
+    "schema": [
+      {
+        "name": "RoleId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "RelativePath",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Stable, DAG-derived location for this Role row. Root segment 'roles' + the row's primary key. No leading slash so the Iri swap is a clean 1:1 substitution. The relational analogue of a REST resource path; unique by construction across the whole model.",
+        "formula": "=\"roles/\" & {{RoleId}}"
+      },
+      {
+        "name": "Iri",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Opaque stable identifier (the dash-form of RelativePath). Because RelativePath has no leading slash, this is a clean SUBSTITUTE of '/' for '-'. The OWL transpiler mints each individual's IRI from this value (erb:<Iri>), so identity is path-derived and globally unique — no cross-table primary-key collisions.",
+        "formula": "=SUBSTITUTE({{RelativePath}}, \"/\", \"-\")"
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "formula": "=SUBSTITUTE(LOWER({{DisplayName}}), \" \", \"-\")"
+      },
+      {
+        "name": "DisplayName",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "Label",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Human-readable display name. Maps to rdfs:label. Per Heuristic 6: if you cannot write a clear label, you do not yet understand the concept well enough to model it."
+      },
+      {
+        "name": "Comment",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Detailed description of the role's responsibilities and scope. Maps to rdfs:comment. Should define what the role covers, what it excludes, and how it differs from adjacent roles."
+      },
+      {
+        "name": "HasCapability",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "FK to AgentCapabilityConcepts. Declares the capability this role requires of its filler. Maps to ntwf:hasCapability. Enables CQ: 'Which roles require AI-specific capabilities?'",
+        "RelatedTo": "AgentCapabilityConcepts"
+      },
+      {
+        "name": "FilledByHumanAgent",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "One arm of the polymorphic ntwf:filledBy relationship: FK to the HumanAgent that fills this role today. Exactly one of FilledByHumanAgent / FilledByAIAgent / FilledByAutomatedPipeline is set per role (filledBy is functional; the three agent types are owl:disjointWith each other). Roles whose capability requires human judgment or legal review must use this arm.",
+        "RelatedTo": "HumanAgents"
+      },
+      {
+        "name": "FilledByAIAgent",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "One arm of the polymorphic ntwf:filledBy relationship: FK to the AIAgent that fills this role today. Exactly one filledBy arm is set per role. An AIAgent may fill probabilistic-capability roles (e.g. risk analysis) but never a role whose step has requiresHumanApproval.",
+        "RelatedTo": "AIAgents"
+      },
+      {
+        "name": "FilledByAutomatedPipeline",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "One arm of the polymorphic ntwf:filledBy relationship: FK to the AutomatedPipeline that fills this role today. Exactly one filledBy arm is set per role. Pipelines fill deterministic execution roles (e.g. CI/CD).",
+        "RelatedTo": "AutomatedPipelines"
+      },
+      {
+        "name": "OwnedBy",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Foreign key to the Department that owns this role. Maps to ntwf:ownedBy (owl:FunctionalProperty). Enables answering CQ7: 'Which workflows involve both Engineering and Legal?'",
+        "RelatedTo": "Departments"
+      },
+      {
+        "name": "DelegatesTo",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Foreign key to the next Role in the escalation chain. Maps to ntwf:delegatesTo (traversable via the SPARQL property path delegatesTo+). Enables answering CQ6: 'What happens when the Release Manager / VP of Engineering is unavailable?'",
+        "RelatedTo": "Roles"
+      },
+      {
+        "name": "WorkflowSteps",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Back-reference to workflow steps assigned to this role. Inverse of WorkflowSteps.AssignedRole.",
+        "RelatedTo": "WorkflowSteps"
+      },
+      {
+        "name": "FromDelegatesTo",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Back-reference: the Role that delegates TO this role (one step up the escalation chain). Inverse of Roles.DelegatesTo.",
+        "RelatedTo": "Roles"
+      },
+      {
+        "name": "DelegationClosure",
+        "datatype": "string",
+        "type": "closure",
+        "nullable": true,
+        "important": true,
+        "Description": "Transitive closure of ntwf:delegatesTo over the self-referential DelegatesTo FK. The asserted escalation edges (Release Manager → VP Engineering, VP Engineering → CTO) imply the never-asserted reachability Release Manager → CTO. Materialized as vw_roles_closure(from_id, to_id, hop_distance, is_inferred). This is the SQL equivalent of the SPARQL delegatesTo+ property path.",
+        "explanation_rich": "**The escalation chain, closed transitively.** `ntwf:delegatesTo` chains Release Manager → VP Engineering → CTO. The article traverses it with the SPARQL property path `delegatesTo+`; here the `closure` field type emits `vw_roles_closure` from the self-referential `DelegatesTo` FK. Release Manager → CTO surfaces as an inferred row (`hop_distance = 2`, `is_inferred = true`) even though only the two single-step edges were asserted — answering CQ6 without leaving the database.",
+        "ToColumn": "DelegatesTo"
+      },
+      {
+        "name": "FilledByArmCount",
+        "datatype": "integer",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Number of polymorphic ntwf:filledBy arms set on this role (of FilledByHumanAgent / FilledByAIAgent / FilledByAutomatedPipeline). Should always be exactly 1 — mirroring filledBy being functional and the three agent types being mutually disjoint.",
+        "formula": "=IF(NOT(ISBLANK({{FilledByHumanAgent}})), 1, 0) + IF(NOT(ISBLANK({{FilledByAIAgent}})), 1, 0) + IF(NOT(ISBLANK({{FilledByAutomatedPipeline}})), 1, 0)"
+      },
+      {
+        "name": "HasExactlyOneFiller",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "important": true,
+        "Description": "Disjointness/functional witness: TRUE iff exactly one filledBy arm is set. The three agent classes are owl:disjointWith one another and ntwf:filledBy is functional, so a clean ABox has this TRUE for every role. Setting two arms (a role filled by both a human and an AI) is the Suite-4 disjointness violation — here it flips this to FALSE.",
+        "explanation_rich": "**Disjointness, enforced as a boolean.** In OWL, typing one individual as both `HumanAgent` and `AIAgent` is an inconsistency the reasoner catches via `owl:disjointWith`. Relationally, the equivalent is 'a role must be filled through exactly one of its three arms'. `FilledByArmCount = 1` for every role in the clean ABox; set a second arm and this witness fails — the same error, surfaced without a reasoner.",
+        "formula": "={{FilledByArmCount}} = 1"
+      },
+      {
+        "name": "FillerType",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Which disjoint agent class fills this role (HumanAgent / AIAgent / AutomatedPipeline), from whichever filledBy arm is set. Lets the delegation-chain query confirm CQ6's 'zero AI agents in the escalation chain'.",
+        "formula": "=IF(NOT(ISBLANK({{FilledByHumanAgent}})), \"HumanAgent\", IF(NOT(ISBLANK({{FilledByAIAgent}})), \"AIAgent\", IF(NOT(ISBLANK({{FilledByAutomatedPipeline}})), \"AutomatedPipeline\", \"\")))"
+      }
+    ],
+    "data": [
+      {
+        "RoleId": "ntwf-legal-compliance-role",
+        "DisplayName": "Legal Compliance Reviewer",
+        "Label": "Legal Compliance Reviewer",
+        "Comment": "Certifies that the deployment plan meets regulatory and contractual requirements. Must be a human agent — AI agents may not fill this role (requiresHumanApproval).",
+        "HasCapability": "cap-legal-review",
+        "FilledByHumanAgent": "ntwf-james-okafor",
+        "FilledByAIAgent": "",
+        "FilledByAutomatedPipeline": "",
+        "OwnedBy": "ntwf-legal-dept",
+        "DelegatesTo": "",
+        "WorkflowSteps": "prod-deploy-step-2",
+        "FromDelegatesTo": ""
+      },
+      {
+        "RoleId": "ntwf-ci-executor-role",
+        "DisplayName": "CI/CD Executor",
+        "Label": "CI/CD Executor",
+        "Comment": "Executes the automated build, test, and deployment sequence. Filled by an AutomatedPipeline. Demonstrates CQ3: this step does NOT require human approval.",
+        "HasCapability": "cap-ci-execution",
+        "FilledByHumanAgent": "",
+        "FilledByAIAgent": "",
+        "FilledByAutomatedPipeline": "ntwf-ci-pipeline",
+        "OwnedBy": "ntwf-engineering",
+        "DelegatesTo": "",
+        "WorkflowSteps": "prod-deploy-step-4",
+        "FromDelegatesTo": ""
+      },
+      {
+        "RoleId": "ntwf-cto-role",
+        "DisplayName": "Chief Technology Officer",
+        "Label": "Chief Technology Officer",
+        "Comment": "Top of the delegation chain. Has cap-executive-authorization. When both Release Manager and VP Engineering are unavailable, the CTO is the final escalation target.",
+        "HasCapability": "cap-executive-authorization",
+        "FilledByHumanAgent": "ntwf-sarah-kim",
+        "FilledByAIAgent": "",
+        "FilledByAutomatedPipeline": "",
+        "OwnedBy": "ntwf-engineering",
+        "DelegatesTo": "",
+        "WorkflowSteps": "",
+        "FromDelegatesTo": "ntwf-vp-engineering-role"
+      },
+      {
+        "RoleId": "ntwf-risk-analysis-role",
+        "DisplayName": "Risk Analysis Agent",
+        "Label": "Risk Analysis Agent",
+        "Comment": "Performs probabilistic risk scoring over the Q1 risk metrics dataset. This is a role, not an identity — filled by RiskAnalysis-AI today but could be replaced by a newer model version without changing the workflow structure.",
+        "HasCapability": "cap-risk-analysis",
+        "FilledByHumanAgent": "",
+        "FilledByAIAgent": "ntwf-health-ai",
+        "FilledByAutomatedPipeline": "",
+        "OwnedBy": "ntwf-engineering",
+        "DelegatesTo": "",
+        "WorkflowSteps": "prod-deploy-step-1",
+        "FromDelegatesTo": ""
+      },
+      {
+        "RoleId": "ntwf-deployment-health-role",
+        "DisplayName": "Deployment Health Agent",
+        "Label": "Deployment Health Agent",
+        "Comment": "Generates the post-deployment health report by summarizing telemetry after a release. A role, not an identity — filled by a human reviewer today, it could be replaced by a newer model without changing the workflow structure.",
+        "HasCapability": "cap-risk-analysis",
+        "FilledByHumanAgent": "ntwf-james-okafor",
+        "FilledByAIAgent": "",
+        "FilledByAutomatedPipeline": "",
+        "OwnedBy": "ntwf-engineering",
+        "DelegatesTo": "",
+        "WorkflowSteps": "prod-deploy-step-5",
+        "FromDelegatesTo": ""
+      },
+      {
+        "RoleId": "ntwf-release-manager-role",
+        "DisplayName": "Release Manager",
+        "Label": "Release Manager",
+        "Comment": "Owns the production deployment process. Coordinates all parties, triggers the pipeline, and authorizes the release at the approval gate.",
+        "HasCapability": "cap-human-judgment",
+        "FilledByHumanAgent": "ntwf-sarah-kim",
+        "FilledByAIAgent": "",
+        "FilledByAutomatedPipeline": "",
+        "OwnedBy": "ntwf-engineering",
+        "DelegatesTo": "ntwf-vp-engineering-role",
+        "WorkflowSteps": "prod-deploy-step-3",
+        "FromDelegatesTo": ""
+      },
+      {
+        "RoleId": "ntwf-vp-engineering-role",
+        "DisplayName": "VP of Engineering",
+        "Label": "VP of Engineering",
+        "Comment": "First escalation target when Release Manager is unavailable. Demonstrates ntwf:delegatesTo chain: Release Manager → VP Engineering → CTO.",
+        "HasCapability": "cap-human-judgment",
+        "FilledByHumanAgent": "",
+        "FilledByAIAgent": "",
+        "FilledByAutomatedPipeline": "ntwf-ci-pipeline",
+        "OwnedBy": "ntwf-engineering",
+        "DelegatesTo": "ntwf-cto-role",
+        "WorkflowSteps": "",
+        "FromDelegatesTo": "ntwf-release-manager-role"
+      }
+    ]
+  },
+  "Departments": {
+    "Description": "Table: Departments. The NTWF Department class — schema:Organization. First-class entity that enables cross-department intersection queries (CQ7: which workflows involve both Engineering and Legal?). Roles are ownedBy a department.",
+    "schema": [
+      {
+        "name": "DepartmentId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "RelativePath",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Stable, DAG-derived location for this Department row. Root segment 'departments' + the row's primary key. No leading slash so the Iri swap is a clean 1:1 substitution. The relational analogue of a REST resource path; unique by construction across the whole model.",
+        "formula": "=\"departments/\" & {{DepartmentId}}"
+      },
+      {
+        "name": "Iri",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Opaque stable identifier (the dash-form of RelativePath). Because RelativePath has no leading slash, this is a clean SUBSTITUTE of '/' for '-'. The OWL transpiler mints each individual's IRI from this value (erb:<Iri>), so identity is path-derived and globally unique — no cross-table primary-key collisions.",
+        "formula": "=SUBSTITUTE({{RelativePath}}, \"/\", \"-\")"
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Human-readable display name of the department. Should match organizational terminology for stakeholder communication.",
+        "formula": "=SUBSTITUTE(LOWER({{DisplayName}}), \" \", \"-\")"
+      },
+      {
+        "name": "Title",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Formal organizational title of the department. Maps to schema:name / dct:title."
+      },
+      {
+        "name": "DisplayName",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Machine-friendly name for programmatic reference."
+      },
+      {
+        "name": "Roles",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Back-reference to roles owned by this department. Inverse of Roles.OwnedBy.",
+        "RelatedTo": "Roles"
+      }
+    ],
+    "data": [
+      {
+        "DepartmentId": "ntwf-engineering",
+        "Title": "Engineering",
+        "DisplayName": "engineering",
+        "Roles": ""
+      },
+      {
+        "DepartmentId": "ntwf-legal-dept",
+        "Title": "Legal",
+        "DisplayName": "legal",
+        "Roles": ""
+      }
+    ]
+  },
+  "HumanAgents": {
+    "Description": "Table: HumanAgents. The NTWF HumanAgent class — foaf:Person + prov:Agent. The only agent type permitted to fill roles whose step has requiresHumanApproval. Disjoint with AIAgent and AutomatedPipeline.",
+    "schema": [
+      {
+        "name": "HumanAgentId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "RelativePath",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Stable, DAG-derived location for this HumanAgent row. Root segment 'human-agents' + the row's primary key. No leading slash so the Iri swap is a clean 1:1 substitution. The relational analogue of a REST resource path; unique by construction across the whole model.",
+        "formula": "=\"human-agents/\" & {{HumanAgentId}}"
+      },
+      {
+        "name": "Iri",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Opaque stable identifier (the dash-form of RelativePath). Because RelativePath has no leading slash, this is a clean SUBSTITUTE of '/' for '-'. The OWL transpiler mints each individual's IRI from this value (erb:<Iri>), so identity is path-derived and globally unique — no cross-table primary-key collisions.",
+        "formula": "=SUBSTITUTE({{RelativePath}}, \"/\", \"-\")"
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Full name of the person. Maps to foaf:name. Note: FOAF's name property is appropriate for persons, not for software systems (which use schema:name)."
+      },
+      {
+        "name": "DisplayName",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "Mbox",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Email address of the person. Maps to foaf:mbox. Used for notifications and organizational directory integration."
+      },
+      {
+        "name": "Roles",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Back-reference to roles currently filled by this agent. Inverse of Roles.FilledByHumanAgent.",
+        "RelatedTo": "Roles"
+      }
+    ],
+    "data": [
+      {
+        "HumanAgentId": "ntwf-james-okafor",
+        "Name": "James Okafor",
+        "DisplayName": "James Okafor",
+        "Mbox": "james.okafor@special-solutions.example",
+        "Roles": "ntwf-legal-compliance-role"
+      },
+      {
+        "HumanAgentId": "ntwf-sarah-kim",
+        "Name": "Sarah Kim",
+        "DisplayName": "Sarah Kim",
+        "Mbox": "sarah.kim@special-solutions.example",
+        "Roles": "ntwf-cto-role"
+      }
+    ]
+  },
+  "AIAgents": {
+    "Description": "Table: AIAgents. The NTWF AIAgent class — prov:SoftwareAgent + ntwf:modelVersion. Distinguished from AutomatedPipeline by probabilistic (vs. deterministic) output semantics. Disjoint with HumanAgent and AutomatedPipeline. May never fill a role whose step has requiresHumanApproval.",
+    "schema": [
+      {
+        "name": "AIAgentId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "RelativePath",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Stable, DAG-derived location for this AIAgent row. Root segment 'ai-agents' + the row's primary key. No leading slash so the Iri swap is a clean 1:1 substitution. The relational analogue of a REST resource path; unique by construction across the whole model.",
+        "formula": "=\"ai-agents/\" & {{AIAgentId}}"
+      },
+      {
+        "name": "Iri",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Opaque stable identifier (the dash-form of RelativePath). Because RelativePath has no leading slash, this is a clean SUBSTITUTE of '/' for '-'. The OWL transpiler mints each individual's IRI from this value (erb:<Iri>), so identity is path-derived and globally unique — no cross-table primary-key collisions.",
+        "formula": "=SUBSTITUTE({{RelativePath}}, \"/\", \"-\")"
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Display name of the AI agent. Maps to schema:name (not foaf:name, which is for persons)."
+      },
+      {
+        "name": "Title",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Descriptive title of the AI agent's function."
+      },
+      {
+        "name": "DisplayName",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "ModelVersion",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Version string of the AI model. Maps to ntwf:modelVersion. Makes AI-produced artifacts auditable at the version level. The domain declaration means this property applies only to AIAgent individuals."
+      },
+      {
+        "name": "Roles",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Back-reference to roles currently filled by this AI agent. Inverse of Roles.FilledByAIAgent.",
+        "RelatedTo": "Roles"
+      }
+    ],
+    "data": [
+      {
+        "AIAgentId": "ntwf-risk-ai",
+        "Name": "RiskAnalysis-AI",
+        "Title": "Risk Analysis AI Agent",
+        "DisplayName": "RiskAnalysis-AI",
+        "ModelVersion": "risk-classifier-v2.4.1",
+        "Roles": "ntwf-risk-analysis-role"
+      },
+      {
+        "AIAgentId": "ntwf-health-ai",
+        "Name": "DeploymentHealth-AI",
+        "Title": "Deployment Health AI Agent",
+        "DisplayName": "DeploymentHealth-AI",
+        "ModelVersion": "health-summarizer-v1.2.0",
+        "Roles": "ntwf-deployment-health-role"
+      }
+    ]
+  },
+  "AutomatedPipelines": {
+    "Description": "Table: AutomatedPipelines. The NTWF AutomatedPipeline class — prov:SoftwareAgent + schema:SoftwareApplication. Distinguished from AIAgent by deterministic (vs. probabilistic) output semantics. Disjoint with HumanAgent and AIAgent. Carries schema:name, not foaf:name.",
+    "schema": [
+      {
+        "name": "AutomatedPipelineId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "RelativePath",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Stable, DAG-derived location for this AutomatedPipeline row. Root segment 'automated-pipelines' + the row's primary key. No leading slash so the Iri swap is a clean 1:1 substitution. The relational analogue of a REST resource path; unique by construction across the whole model.",
+        "formula": "=\"automated-pipelines/\" & {{AutomatedPipelineId}}"
+      },
+      {
+        "name": "Iri",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Opaque stable identifier (the dash-form of RelativePath). Because RelativePath has no leading slash, this is a clean SUBSTITUTE of '/' for '-'. The OWL transpiler mints each individual's IRI from this value (erb:<Iri>), so identity is path-derived and globally unique — no cross-table primary-key collisions.",
+        "formula": "=SUBSTITUTE({{RelativePath}}, \"/\", \"-\")"
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Display name of the pipeline. Maps to schema:name (appropriate for software systems, unlike foaf:name which is for persons)."
+      },
+      {
+        "name": "Description",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Description of what the pipeline does and its execution semantics (deterministic, no probabilistic output)."
+      },
+      {
+        "name": "DisplayName",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true
+      },
+      {
+        "name": "Roles",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Back-reference to roles currently filled by this pipeline. Inverse of Roles.FilledByAutomatedPipeline.",
+        "RelatedTo": "Roles"
+      }
+    ],
+    "data": [
+      {
+        "AutomatedPipelineId": "ntwf-ci-pipeline",
+        "Name": "CI/CD Deploy Pipeline",
+        "Description": "Automated build, test, and deployment pipeline for production releases. Deterministic execution — no probabilistic output.",
+        "DisplayName": "CI/CD Deploy Pipeline",
+        "Roles": "ntwf-ci-executor-role"
+      }
+    ]
+  },
+  "WorkflowStatusConcepts": {
+    "Description": "SKOS controlled vocabulary for workflow lifecycle states (ntwf:WorkflowStatusScheme). Part of the CBox. Concepts are shared across all workflows.",
+    "schema": [
+      {
+        "name": "ConceptId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "RelativePath",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Stable, DAG-derived location for this WorkflowStatusConcept row. Root segment 'concepts/workflow-status' + the row's primary key. No leading slash so the Iri swap is a clean 1:1 substitution. The relational analogue of a REST resource path; unique by construction across the whole model.",
+        "formula": "=\"concepts/workflow-status/\" & {{ConceptId}}"
+      },
+      {
+        "name": "Iri",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Opaque stable identifier (the dash-form of RelativePath). Because RelativePath has no leading slash, this is a clean SUBSTITUTE of '/' for '-'. The OWL transpiler mints each individual's IRI from this value (erb:<Iri>), so identity is path-derived and globally unique — no cross-table primary-key collisions.",
+        "formula": "=SUBSTITUTE({{RelativePath}}, \"/\", \"-\")"
+      },
+      {
+        "name": "PrefLabel",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Preferred human-readable label. Maps to skos:prefLabel."
+      },
+      {
+        "name": "AltLabel",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Alternative label or synonym. Maps to skos:altLabel."
+      },
+      {
+        "name": "Definition",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Formal definition of the concept. Maps to skos:definition."
+      },
+      {
+        "name": "ScopeNote",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Usage guidance for the concept. Maps to skos:scopeNote."
+      },
+      {
+        "name": "Workflows",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Back-reference to workflows currently in this status. Inverse of Workflows.WorkflowStatus.",
+        "RelatedTo": "Workflows"
+      }
+    ],
+    "data": [
+      {
+        "ConceptId": "status-draft",
+        "PrefLabel": "Draft",
+        "AltLabel": "In Progress",
+        "Definition": "Workflow is being authored or reviewed and is not yet in production use.",
+        "ScopeNote": "Set this status when the workflow has not completed its initial review cycle.",
+        "Workflows": ""
+      },
+      {
+        "ConceptId": "status-active",
+        "PrefLabel": "Active",
+        "AltLabel": "In Use",
+        "Definition": "Workflow is approved and currently being executed by the organization.",
+        "ScopeNote": "Only active workflows should be assigned to running process instances.",
+        "Workflows": ""
+      },
+      {
+        "ConceptId": "status-deprecated",
+        "PrefLabel": "Deprecated",
+        "AltLabel": "Superseded",
+        "Definition": "Workflow has been replaced by a newer version and should not be used for new instances.",
+        "ScopeNote": "Deprecated workflows may still have in-flight instances; do not archive until all instances close.",
+        "Workflows": ""
+      },
+      {
+        "ConceptId": "status-archived",
+        "PrefLabel": "Archived",
+        "AltLabel": "Retired",
+        "Definition": "Workflow is no longer in use and has been moved to historical records.",
+        "ScopeNote": "Archived workflows answer CQ5 stale-workflow queries but generate no new instances.",
+        "Workflows": ""
+      }
+    ]
+  },
+  "ComplianceVerdictConcepts": {
+    "Description": "SKOS controlled vocabulary for the two possible compliance-verdict outcomes (ntwf:ComplianceVerdictScheme). Part of the CBox. ComplianceVerdicts.VerdictConcept is a derived FK that resolves to exactly one of these concepts based on IsAtComplianceRisk; the human-readable Verdict string is then a lookup of the chosen concept's PrefLabel. Promoting the verdict outcomes from inline string literals to a first-class option set makes the choice auditable and lets the RuleSpeak narrative cite the defined options instead of magic strings.",
+    "schema": [
+      {
+        "name": "ConceptId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "RelativePath",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Stable, DAG-derived location for this ComplianceVerdictConcept row. Root segment 'concepts/compliance-verdict' + the row's primary key. No leading slash so the Iri swap is a clean 1:1 substitution.",
+        "formula": "=\"concepts/compliance-verdict/\" & {{ConceptId}}"
+      },
+      {
+        "name": "Iri",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Opaque stable identifier (the dash-form of RelativePath). The OWL transpiler mints each individual's IRI from this value (erb:<Iri>), so identity is path-derived and globally unique.",
+        "formula": "=SUBSTITUTE({{RelativePath}}, \"/\", \"-\")"
+      },
+      {
+        "name": "PrefLabel",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Preferred human-readable label — the stakeholder-facing verdict text. Maps to skos:prefLabel."
+      },
+      {
+        "name": "AltLabel",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Alternative short label or synonym. Maps to skos:altLabel."
+      },
+      {
+        "name": "Definition",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Formal definition of the outcome. Maps to skos:definition."
+      },
+      {
+        "name": "ScopeNote",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Usage guidance for the concept. Maps to skos:scopeNote."
+      },
+      {
+        "name": "ComplianceVerdicts",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Back-reference to compliance verdicts currently resolved to this outcome. Inverse of ComplianceVerdicts.VerdictConcept.",
+        "RelatedTo": "ComplianceVerdicts"
+      }
+    ],
+    "data": [
+      {
+        "ConceptId": "verdict-at-risk",
+        "PrefLabel": "AT RISK: stale workflow with an AI-executed step",
+        "AltLabel": "At Risk",
+        "Definition": "The workflow is BOTH stale (compliance documentation not reviewed in twelve months) AND has at least one step executed by an AI agent — the highest-compliance-risk combination the article identifies.",
+        "ScopeNote": "Resolved when IsAtComplianceRisk is true. This is the verdict Talisman's closing query returns.",
+        "ComplianceVerdicts": ""
+      },
+      {
+        "ConceptId": "verdict-ok",
+        "PrefLabel": "OK: not a stale-plus-AI compliance risk",
+        "AltLabel": "OK",
+        "Definition": "The workflow does not meet the stale-AND-AI-executed combination. It may still be stale, or still have AI steps, but not both at once.",
+        "ScopeNote": "Resolved when IsAtComplianceRisk is false. The default, non-risk outcome.",
+        "ComplianceVerdicts": ""
+      }
+    ]
+  },
+  "AgentCapabilityConcepts": {
+    "Description": "SKOS controlled vocabulary for agent capability types (ntwf:AgentCapabilityScheme). Roles declare which capability their filler must have (ntwf:hasCapability). Part of the CBox.",
+    "schema": [
+      {
+        "name": "ConceptId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "RelativePath",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Stable, DAG-derived location for this AgentCapabilityConcept row. Root segment 'concepts/agent-capability' + the row's primary key. No leading slash so the Iri swap is a clean 1:1 substitution. The relational analogue of a REST resource path; unique by construction across the whole model.",
+        "formula": "=\"concepts/agent-capability/\" & {{ConceptId}}"
+      },
+      {
+        "name": "Iri",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Opaque stable identifier (the dash-form of RelativePath). Because RelativePath has no leading slash, this is a clean SUBSTITUTE of '/' for '-'. The OWL transpiler mints each individual's IRI from this value (erb:<Iri>), so identity is path-derived and globally unique — no cross-table primary-key collisions.",
+        "formula": "=SUBSTITUTE({{RelativePath}}, \"/\", \"-\")"
+      },
+      {
+        "name": "PrefLabel",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Preferred label. Maps to skos:prefLabel."
+      },
+      {
+        "name": "AltLabel",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Alternative label. Maps to skos:altLabel."
+      },
+      {
+        "name": "Definition",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Formal definition. Maps to skos:definition."
+      },
+      {
+        "name": "ScopeNote",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Usage guidance. Maps to skos:scopeNote."
+      },
+      {
+        "name": "Roles",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Back-reference to roles requiring this capability. Inverse of Roles.HasCapability.",
+        "RelatedTo": "Roles"
+      }
+    ],
+    "data": [
+      {
+        "ConceptId": "cap-human-judgment",
+        "PrefLabel": "Human Judgment",
+        "AltLabel": "Human Decision",
+        "Definition": "The filler must be a human agent capable of contextual, ethical, and legally binding decisions.",
+        "ScopeNote": "Used for ApprovalGate steps where requiresHumanApproval is true. AI agents may not fill roles with this capability.",
+        "Roles": ""
+      },
+      {
+        "ConceptId": "cap-risk-analysis",
+        "PrefLabel": "Risk Analysis",
+        "AltLabel": "Risk Assessment",
+        "Definition": "The filler must be capable of probabilistic risk scoring over structured datasets.",
+        "ScopeNote": "Can be satisfied by an AIAgent with an appropriate model version (e.g. risk-classifier-v2.4.1).",
+        "Roles": ""
+      },
+      {
+        "ConceptId": "cap-legal-review",
+        "PrefLabel": "Legal Review",
+        "AltLabel": "Compliance Review",
+        "Definition": "The filler must have authority to certify regulatory and contractual compliance.",
+        "ScopeNote": "Requires a human agent. Cannot be delegated to AI or automated pipeline.",
+        "Roles": ""
+      },
+      {
+        "ConceptId": "cap-ci-execution",
+        "PrefLabel": "CI/CD Execution",
+        "AltLabel": "Pipeline Execution",
+        "Definition": "The filler must be an automated pipeline capable of running a deterministic build, test, and deploy sequence.",
+        "ScopeNote": "Satisfied by AutomatedPipelines. HumanAgents should not fill roles requiring only this capability.",
+        "Roles": ""
+      },
+      {
+        "ConceptId": "cap-executive-authorization",
+        "PrefLabel": "Executive Authorization",
+        "AltLabel": "C-Level Sign-off",
+        "Definition": "The filler must hold executive authority to approve high-impact organizational changes.",
+        "ScopeNote": "Reserved for the top of delegation chains. Maps to the ntwf:delegatesTo escalation pattern.",
+        "Roles": ""
+      }
+    ]
+  },
+  "Datasets": {
+    "Description": "DCAT datasets consumed by workflow steps. The NTWF mapping of dcat:Dataset. Kept separate from WorkflowArtifacts to preserve DCAT metadata semantics (dcat:Dataset vs. prov:Entity). Answers CQ8: 'What datasets does the review consume, and which AI processed them?'",
+    "schema": [
+      {
+        "name": "DatasetId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "RelativePath",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Stable, DAG-derived location for this Dataset row. Root segment 'datasets' + the row's primary key. No leading slash so the Iri swap is a clean 1:1 substitution. The relational analogue of a REST resource path; unique by construction across the whole model.",
+        "formula": "=\"datasets/\" & {{DatasetId}}"
+      },
+      {
+        "name": "Iri",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Opaque stable identifier (the dash-form of RelativePath). Because RelativePath has no leading slash, this is a clean SUBSTITUTE of '/' for '-'. The OWL transpiler mints each individual's IRI from this value (erb:<Iri>), so identity is path-derived and globally unique — no cross-table primary-key collisions.",
+        "formula": "=SUBSTITUTE({{RelativePath}}, \"/\", \"-\")"
+      },
+      {
+        "name": "Title",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Human-readable dataset name. Maps to dct:title."
+      },
+      {
+        "name": "Identifier",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "External system identifier. Maps to dct:identifier. Used for cross-referencing with data catalogs."
+      },
+      {
+        "name": "Modified",
+        "datatype": "datetime",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Last modification timestamp. Maps to dct:modified."
+      },
+      {
+        "name": "DistributionUrl",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "URL of the data distribution. Maps to dcat:Distribution. The access endpoint for the dataset."
+      },
+      {
+        "name": "ConsumedBySteps",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Back-reference to WorkflowSteps that consume this dataset. Inverse of WorkflowSteps.ConsumesDataset.",
+        "RelatedTo": "WorkflowSteps"
+      }
+    ],
+    "data": [
+      {
+        "DatasetId": "ds-q1-2026-risk-metrics",
+        "Title": "Q1 2026 Risk Metrics",
+        "Identifier": "DS-RISK-2026-Q1",
+        "Modified": "2026-03-31T05:00:00.000Z",
+        "DistributionUrl": "https://data.internal.special-solutions.example/risk/q1-2026",
+        "ConsumedBySteps": "prod-deploy-step-1"
+      }
+    ]
+  },
+  "WorkflowArtifacts": {
+    "Description": "Artifacts produced and consumed by workflow steps. The NTWF WorkflowArtifact class — prov:Entity + schema:CreativeWork. The DerivedFromArtifact self-FK encodes the prov:wasDerivedFrom provenance chain; ProducedByStep maps prov:wasGeneratedBy; the AttributedTo* arms map prov:wasAttributedTo to the responsible agent.",
+    "schema": [
+      {
+        "name": "ArtifactId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false
+      },
+      {
+        "name": "ParentPath",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "RelatedTo": "WorkflowSteps",
+        "Description": "Helper: the WorkflowSteps parent's RelativePath, pulled across the ProducedByStep FK. Exists so RelativePath can concatenate the '/artifacts/' segment using only local-field '&' concat (the transpiler compiles a lookup as a pure passthrough, not a lookup+concat).",
+        "formula": "=INDEX(WorkflowSteps!{{RelativePath}}, MATCH({{ProducedByStep}}, WorkflowSteps!{{WorkflowStepId}}, 0))"
+      },
+      {
+        "name": "RelativePath",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Stable, DAG-derived location: this row nests under its WorkflowSteps parent. Concatenates the parent's path (ParentPath) with '/artifacts/' + this row's primary key. The DAG performs the recursion — one hop per table via ParentPath — so the full ancestry is encoded without a recursive formula. Unique by construction.",
+        "formula": "={{ParentPath}} & \"/artifacts/\" & {{ArtifactId}}"
+      },
+      {
+        "name": "Iri",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Opaque stable identifier (the dash-form of RelativePath). Because RelativePath has no leading slash, this is a clean SUBSTITUTE of '/' for '-'. The OWL transpiler mints each individual's IRI from this value (erb:<Iri>), so identity is path-derived and globally unique — no cross-table primary-key collisions.",
+        "formula": "=SUBSTITUTE({{RelativePath}}, \"/\", \"-\")"
+      },
+      {
+        "name": "Title",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Human-readable artifact name. Maps to dct:title."
+      },
+      {
+        "name": "Identifier",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "External system identifier. Maps to dct:identifier."
+      },
+      {
+        "name": "Created",
+        "datatype": "datetime",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Creation timestamp. Maps to dct:created."
+      },
+      {
+        "name": "ProducedByStep",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "FK to the WorkflowStep that produced this artifact. Maps to prov:wasGeneratedBy. Inverse of WorkflowSteps.ProducesArtifacts.",
+        "RelatedTo": "WorkflowSteps"
+      },
+      {
+        "name": "DerivedFromArtifact",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Self-FK to the artifact this one was derived from. Maps to prov:wasDerivedFrom. Enables the full provenance chain query (CQ4).",
+        "RelatedTo": "WorkflowArtifacts"
+      },
+      {
+        "name": "AttributedToHumanAgent",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "FK to HumanAgent responsible for this artifact. One arm of prov:wasAttributedTo (exactly one AttributedTo arm is set per artifact, mirroring the disjoint agent types).",
+        "RelatedTo": "HumanAgents"
+      },
+      {
+        "name": "AttributedToAIAgent",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "FK to AIAgent responsible for this artifact. One arm of prov:wasAttributedTo.",
+        "RelatedTo": "AIAgents"
+      },
+      {
+        "name": "AttributedToAutomatedPipeline",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "FK to AutomatedPipeline responsible for this artifact. One arm of prov:wasAttributedTo.",
+        "RelatedTo": "AutomatedPipelines"
+      },
+      {
+        "name": "ProducingAgentType",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Which disjoint agent class produced this artifact (HumanAgent / AIAgent / AutomatedPipeline), from whichever prov:wasAttributedTo arm is set. Lets CQ4 report which kind of agent each artifact in the lineage came from.",
+        "formula": "=IF(NOT(ISBLANK({{AttributedToHumanAgent}})), \"HumanAgent\", IF(NOT(ISBLANK({{AttributedToAIAgent}})), \"AIAgent\", IF(NOT(ISBLANK({{AttributedToAutomatedPipeline}})), \"AutomatedPipeline\", \"\")))"
+      },
+      {
+        "name": "HasDerivationParent",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE iff this artifact was derived from another (prov:wasDerivedFrom is set). Counting these across the chain gives CQ4's '4 derivation links among 5 artifacts' — every artifact except the first has a parent.",
+        "formula": "=NOT(ISBLANK({{DerivedFromArtifact}}))"
+      },
+      {
+        "name": "ProducedByWorkflow",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "The workflow this artifact belongs to, resolved through ProducedByStep → WorkflowSteps.Workflow (artifact → producing step → workflow). Lets workflow-level rollups (e.g. CountDerivationLinks) aggregate artifacts without a redundant direct FK.",
+        "formula": "=INDEX(WorkflowSteps!{{Workflow}}, MATCH({{ProducedByStep}}, WorkflowSteps!{{WorkflowStepId}}, 0))"
+      }
+    ],
+    "data": [
+      {
+        "ArtifactId": "artifact-risk-report",
+        "Title": "Risk Assessment Report",
+        "Identifier": "ART-RISK-001",
+        "Created": "2026-04-01T05:00:00.000Z",
+        "ProducedByStep": "prod-deploy-step-1",
+        "DerivedFromArtifact": "",
+        "AttributedToHumanAgent": "",
+        "AttributedToAIAgent": "ntwf-risk-ai",
+        "AttributedToAutomatedPipeline": ""
+      },
+      {
+        "ArtifactId": "artifact-legal-clearance",
+        "Title": "Legal Clearance Certificate",
+        "Identifier": "ART-LEGAL-001",
+        "Created": "2026-04-02T05:00:00.000Z",
+        "ProducedByStep": "prod-deploy-step-2",
+        "DerivedFromArtifact": "artifact-risk-report",
+        "AttributedToHumanAgent": "ntwf-james-okafor",
+        "AttributedToAIAgent": "",
+        "AttributedToAutomatedPipeline": ""
+      },
+      {
+        "ArtifactId": "artifact-release-authorization",
+        "Title": "Release Authorization",
+        "Identifier": "ART-AUTH-001",
+        "Created": "2026-04-02T05:00:00.000Z",
+        "ProducedByStep": "prod-deploy-step-3",
+        "DerivedFromArtifact": "artifact-legal-clearance",
+        "AttributedToHumanAgent": "ntwf-sarah-kim",
+        "AttributedToAIAgent": "",
+        "AttributedToAutomatedPipeline": ""
+      },
+      {
+        "ArtifactId": "artifact-deployment-log",
+        "Title": "Deployment Execution Log",
+        "Identifier": "ART-DEPLOG-001",
+        "Created": "2026-04-03T05:00:00.000Z",
+        "ProducedByStep": "prod-deploy-step-4",
+        "DerivedFromArtifact": "artifact-release-authorization",
+        "AttributedToHumanAgent": "",
+        "AttributedToAIAgent": "",
+        "AttributedToAutomatedPipeline": "ntwf-ci-pipeline"
+      },
+      {
+        "ArtifactId": "artifact-post-deploy-report",
+        "Title": "Post-Deployment Health Report",
+        "Identifier": "ART-HEALTH-001",
+        "Created": "2026-04-03T05:00:00.000Z",
+        "ProducedByStep": "prod-deploy-step-5",
+        "DerivedFromArtifact": "artifact-deployment-log",
+        "AttributedToHumanAgent": "",
+        "AttributedToAIAgent": "ntwf-health-ai",
+        "AttributedToAutomatedPipeline": ""
+      }
+    ]
+  },
+  "ComplianceVerdicts": {
+    "Description": "Table: ComplianceVerdicts. The article's closing demonstration, made first-class. One row per workflow carrying a single business verdict that joins the three layers Jessica Talisman ends on — the metadata layer (dct:modified staleness), the structural layer (step->role->agent), and the accountability layer (filledBy -> AIAgent). IsAtComplianceRisk is true exactly when a workflow is BOTH stale (not reviewed in twelve months) AND has an AI agent executing a step: 'a business question answered by a machine, automatically, across a live graph.' Because every input is derived, changing a raw fact far downstream (the Modified date, or which agent fills a role) flips the verdict on the next read.",
+    "important": true,
+    "summary_rich": "**The punchline, as a row.** This table holds the one verdict the article builds toward: is a workflow a *compliance risk* — stale **and** running an AI step? Every column is derived from facts elsewhere in the rulebook, so the verdict is never hand-set. Backdate the workflow's `Modified` past twelve months, or swap the risk-analysis role from the AI agent to a human, and `IsAtComplianceRisk` recomputes — the live demonstration that descriptive logic becomes auditable business intelligence when metadata, structure, and accountability share one graph.",
+    "important_fields": [
+      "WorkflowTitle",
+      "IsStale",
+      "HasAIExecutedStep",
+      "IsAtComplianceRisk",
+      "Verdict"
+    ],
+    "schema": [
+      {
+        "name": "ComplianceVerdictId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Primary key. One verdict per workflow (1:1)."
+      },
+      {
+        "name": "ParentPath",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "RelatedTo": "Workflows",
+        "Description": "Helper: the Workflows parent's RelativePath, pulled across the Workflow FK. Exists so RelativePath can concatenate the '/verdicts/' segment using only local-field '&' concat (the transpiler compiles a lookup as a pure passthrough, not a lookup+concat).",
+        "formula": "=INDEX(Workflows!{{RelativePath}}, MATCH({{Workflow}}, Workflows!{{WorkflowId}}, 0))"
+      },
+      {
+        "name": "RelativePath",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Stable, DAG-derived location: this row nests under its Workflows parent. Concatenates the parent's path (ParentPath) with '/verdicts/' + this row's primary key. The DAG performs the recursion — one hop per table via ParentPath — so the full ancestry is encoded without a recursive formula. Unique by construction.",
+        "formula": "={{ParentPath}} & \"/verdicts/\" & {{ComplianceVerdictId}}"
+      },
+      {
+        "name": "Iri",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Opaque stable identifier (the dash-form of RelativePath). Because RelativePath has no leading slash, this is a clean SUBSTITUTE of '/' for '-'. The OWL transpiler mints each individual's IRI from this value (erb:<Iri>), so identity is path-derived and globally unique — no cross-table primary-key collisions.",
+        "formula": "=SUBSTITUTE({{RelativePath}}, \"/\", \"-\")"
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Machine-friendly slug, mirrors the workflow.",
+        "formula": "=SUBSTITUTE(LOWER({{WorkflowTitle}}), \" \", \"-\")"
+      },
+      {
+        "name": "Workflow",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "1:1 FK to the Workflow this verdict summarizes.",
+        "RelatedTo": "Workflows"
+      },
+      {
+        "name": "WorkflowTitle",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "The workflow's dct:title, for human-readable display.",
+        "formula": "=INDEX(Workflows!{{Title}}, MATCH({{Workflow}}, Workflows!{{WorkflowId}}, 0))"
+      },
+      {
+        "name": "MonthsSinceReview",
+        "datatype": "integer",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Whole months since the workflow's dct:modified, pulled from Workflows.MonthsSinceModified. The metadata layer of the verdict.",
+        "formula": "=INDEX(Workflows!{{MonthsSinceModified}}, MATCH({{Workflow}}, Workflows!{{WorkflowId}}, 0))"
+      },
+      {
+        "name": "IsStale",
+        "datatype": "boolean",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Whether the workflow has not been reviewed in twelve months (dct:modified > 12mo). Pulled from Workflows.IsStale. The article's CQ5 condition.",
+        "formula": "=INDEX(Workflows!{{IsStale}}, MATCH({{Workflow}}, Workflows!{{WorkflowId}}, 0))"
+      },
+      {
+        "name": "AIStepCount",
+        "datatype": "integer",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "How many steps an AI agent executes in this workflow, pulled from Workflows.CountAISteps. The accountability layer.",
+        "formula": "=INDEX(Workflows!{{CountAISteps}}, MATCH({{Workflow}}, Workflows!{{WorkflowId}}, 0))"
+      },
+      {
+        "name": "HasAIExecutedStep",
+        "datatype": "boolean",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Whether at least one step is executed by an AIAgent (filledBy -> AIAgent). Pulled from Workflows.HasAIAgentStep.",
+        "formula": "=INDEX(Workflows!{{HasAIAgentStep}}, MATCH({{Workflow}}, Workflows!{{WorkflowId}}, 0))"
+      },
+      {
+        "name": "TotalPlanMinutes",
+        "datatype": "integer",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "The workflow's total planned runtime (sum of step durations), pulled from Workflows.CountTotalPlanMinutes. EXTENSION beyond the source article. The time layer of the verdict.",
+        "formula": "=INDEX(Workflows!{{CountTotalPlanMinutes}}, MATCH({{Workflow}}, Workflows!{{WorkflowId}}, 0))"
+      },
+      {
+        "name": "TimeBudgetMinutes",
+        "datatype": "integer",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "The workflow's configured runtime budget, pulled from Workflows.MaxPlanMinutes. EXTENSION beyond the source article.",
+        "formula": "=INDEX(Workflows!{{MaxPlanMinutes}}, MATCH({{Workflow}}, Workflows!{{WorkflowId}}, 0))"
+      },
+      {
+        "name": "IsOverTimeBudget",
+        "datatype": "boolean",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Whether total planned runtime exceeds the workflow's budget. Pulled from Workflows.IsOverTimeBudget. EXTENSION beyond the source article — the third compliance input alongside staleness and AI-execution.",
+        "formula": "=INDEX(Workflows!{{IsOverTimeBudget}}, MATCH({{Workflow}}, Workflows!{{WorkflowId}}, 0))"
+      },
+      {
+        "name": "IsAtComplianceRisk",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "important": true,
+        "Description": "THE VERDICT. True when the workflow is EITHER (stale AND has an AI agent executing a step) — the article's closing business question — OR over its planned-runtime budget. The first disjunct is the article's headline finale verbatim; the second is an EXTENSION giving the step-duration literal a live compliance consequence. Fully derived: flip the Modified date, the role's filledBy agent, or any step's duration, and this recomputes on the next read.",
+        "explanation_rich": "**The whole article in one boolean, plus a time guard.** Talisman's finale is a query that returns 'every stale workflow where an AI agent is executing a step and the compliance documentation hasn't been reviewed — a business question answered by a machine, automatically, across a live graph.' That is the first disjunct here: `IsStale AND HasAIExecutedStep`, crossing three first-class layers — metadata (`dct:modified`), structure (step->role), accountability (`filledBy`->AIAgent). The second disjunct, `IsOverTimeBudget`, is an extension beyond the article so the per-step duration literal has a visible consequence: when the summed plan runtime exceeds `MaxPlanMinutes`, the verdict trips on time alone. Backdate `Modified`, reassign the risk-analysis role to a human, or drag a step's duration past the budget — each flips the verdict, with no code to write.",
+        "formula": "=OR(AND({{IsStale}}, {{HasAIExecutedStep}}), {{IsOverTimeBudget}})"
+      },
+      {
+        "name": "VerdictConcept",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "important": true,
+        "RelatedTo": "ComplianceVerdictConcepts",
+        "Description": "Derived FK to the chosen ComplianceVerdictConcepts option. Selects 'verdict-at-risk' when IsAtComplianceRisk is true, else 'verdict-ok'. This is a CALCULATED relationship — the verdict outcome is one of two defined options, picked by the boolean flag, rather than a hardcoded string. The human-readable Verdict is a lookup of this concept's PrefLabel.",
+        "formula": "=IF({{IsAtComplianceRisk}}, \"verdict-at-risk\", \"verdict-ok\")"
+      },
+      {
+        "name": "Verdict",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "important": true,
+        "RelatedTo": "ComplianceVerdictConcepts",
+        "Description": "Human-readable rendering of the verdict for stakeholders — the PrefLabel of the resolved ComplianceVerdictConcepts option (VerdictConcept). No longer an inline string literal: the two possible values are defined rows in the ComplianceVerdictConcepts vocabulary, and this field looks up whichever one VerdictConcept selected.",
+        "formula": "=INDEX(ComplianceVerdictConcepts!{{PrefLabel}}, MATCH({{VerdictConcept}}, ComplianceVerdictConcepts!{{ConceptId}}, 0))"
+      }
+    ],
+    "data": [
+      {
+        "ComplianceVerdictId": "verdict-production-deployment",
+        "Workflow": "production-deployment",
+        "VerdictConcept": ""
+      }
+    ]
+  },
+  "__meta__": {
+    "Description": "Project-level metadata that travels with the rulebook: tagline, motif, narrative descriptions, substrate list, signature rows, etc. One row per metadata key. Use ValueType to interpret StringValue vs JsonValue.",
+    "important": false,
+    "schema": [
+      {
+        "name": "MetaKey",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "The metadata key (e.g. 'tagline', 'motif_palette', 'substrates'). Unique within the table."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "formula": "={{MetaKey}}",
+        "Description": "Identifier for this metadata entry. Mirrors MetaKey so the row is addressable by Name like every other table."
+      },
+      {
+        "name": "ValueType",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "How to interpret the value columns: 'string' (use StringValue), 'object' (parse JsonValue as JSON object), 'array' (parse JsonValue as JSON array)."
+      },
+      {
+        "name": "StringValue",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Plain string value. Populated when ValueType == 'string'; null otherwise."
+      },
+      {
+        "name": "JsonValue",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "JSON-encoded value. Populated when ValueType == 'object' or 'array'; null when ValueType == 'string'."
+      }
+    ],
+    "data": [
+      {
+        "MetaKey": "tagline",
+        "Name": "tagline",
+        "ValueType": "string",
+        "StringValue": "One workflow, told tip to tail: humans, AI, and pipelines under one ontology.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "motif",
+        "Name": "motif",
+        "ValueType": "string",
+        "StringValue": "corkboard",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "motif_palette",
+        "Name": "motif_palette",
+        "ValueType": "object",
+        "StringValue": null,
+        "JsonValue": "{\"primary\": \"#6e4b2a\", \"accent\": \"#d4a574\", \"ink\": \"#2a1e10\"}"
+      },
+      {
+        "MetaKey": "description_rich",
+        "Name": "description_rich",
+        "ValueType": "string",
+        "StringValue": "Talisman BASIC models the **NTWF ontology** from Jessica Talisman's *Intentional Arrangement* series — the workflow language for a fictional 1,100-person technology company, *Special Solutions*. Instead of a pile of tutorial stubs, it tells **one complete story**: the *Production Deployment Workflow*. Five ordered steps carry a release from AI risk assessment to post-deploy report, passing through all three disjoint agent types — an AI Risk Analysis Agent (RiskAnalysis-AI, `risk-classifier-v2.4.1`); a human Legal Compliance Reviewer (James Okafor); a human Release Manager (Maria Gonzalez), who owns the approval gate that authorizes the release; and an automated CI/CD pipeline. Roles are kept separate from the agents who fill them (Heuristic 2), so a personnel change is one edge, not a workflow rewrite. A delegation chain (Release Manager -> VP Engineering -> CTO) handles escalation; a PROV provenance chain links five artifacts from risk report to post-deploy report; and a DCAT dataset feeds the AI step. Every NTWF class, property, and competency question is exercised by real, connected rows — answered by derived columns and first-class transitive-closure views (`precedesStep`, `delegatesTo`), with load-bearing INDEX/MATCH lookups resolving the role-to-agent indirection.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "use_cases",
+        "Name": "use_cases",
+        "ValueType": "array",
+        "StringValue": null,
+        "JsonValue": "[\"**CQ1 — steps in order.** Walk `StepPrecedence` from `prod-deploy-step-1`; the four asserted edges (1->2->3->4->5) imply the full transitive ordering, including the never-asserted 1->5.\", \"**CQ2 — who approves a deployment.** From the *Release Approval Gate* (step 3) to its assigned role (Release Manager) to the human who fills it: Maria Gonzalez.\", \"**CQ3 — AI vs human steps.** Two steps are executed by AI agents — step 1 (AI Risk Assessment, RiskAnalysis-AI) and step 5 (Post-Deployment Health Report, DeploymentHealth-AI) — and two require a human decision (`RequiresHumanApproval`): step 2 (Legal Review) and step 3 (Release Approval Gate). The deterministic CI/CD pipeline runs step 4 — a third, disjoint agent type, not counted as AI.\", \"**CQ4 — artifact provenance.** Follow `DerivedFromArtifact` from the post-deploy report back through deployment log, release authorization, legal clearance, to the risk report — five artifacts, four derivation links, one chain.\", \"**CQ6 — escalation.** When the Release Manager is unavailable, traverse `DelegatesTo`: Release Manager -> VP Engineering -> CTO. Note an AI role has no DelegatesTo edge — it cannot stand in a human delegation chain.\", \"**CQ7 — cross-department.** The Production Deployment workflow spans Engineering (six roles) and Legal (one role) — answerable by intersecting `Roles.OwnedBy`; exactly one step (Legal Review) is Legal-owned.\", \"**CQ8 — datasets and the AI that read them.** The Q1 2026 Risk Metrics dataset is `ConsumedBySteps` step 1, whose role is filled by RiskAnalysis-AI.\", \"**Read your first calculated field.** `Workflows.Name` is just `DisplayName` lowercased with dashes — but it lives in the rulebook, not in code. Rename the workflow and the slug updates in every substrate.\", \"**Trace a second-order rule.** `HasMoreThan1Step` reads the rollup `CountOfNonProposedSteps`, which counts `WorkflowSteps`. Two hops — the whole DAG in miniature.\"]"
+      },
+      {
+        "MetaKey": "signature_rows",
+        "Name": "signature_rows",
+        "ValueType": "array",
+        "StringValue": null,
+        "JsonValue": "[{\"entity\": \"Workflows\", \"ids\": [\"production-deployment\"]}, {\"entity\": \"WorkflowSteps\", \"ids\": [\"prod-deploy-step-1\", \"prod-deploy-step-2\", \"prod-deploy-step-3\", \"prod-deploy-step-4\", \"prod-deploy-step-5\"]}, {\"entity\": \"WorkflowArtifacts\", \"ids\": [\"artifact-risk-report\", \"artifact-post-deploy-report\"]}]"
+      },
+      {
+        "MetaKey": "journal_seed",
+        "Name": "journal_seed",
+        "ValueType": "string",
+        "StringValue": "One workflow pinned to the board — Production Deployment — with five steps in order, a human, an AI, a pipeline, a Release-Manager-owned approval gate, a delegation chain up to the CTO, and a provenance trail of five artifacts. The whole NTWF ontology, told as a single story.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "substrates",
+        "Name": "substrates",
+        "ValueType": "array",
+        "StringValue": null,
+        "JsonValue": "[{\"key\": \"postgres\", \"important\": true, \"chip_label\": \"Postgres\"}, {\"key\": \"python\", \"important\": true, \"chip_label\": \"Python\"}, {\"key\": \"excel\", \"important\": false, \"chip_label\": \"Excel\"}, {\"key\": \"owl\", \"important\": false, \"chip_label\": \"OWL\"}]"
+      },
+      {
+        "MetaKey": "CMCC_Summary",
+        "Name": "CMCC_Summary",
+        "ValueType": "string",
+        "StringValue": "Rulebook-first project: Schemas, Data, Relationships (FK links), Aggregations (COUNTIFS/Rollups, including conditional counts over derived child fields), Lookups (INDEX/MATCH, load-bearing for role-to-agent chains), transitive-closure views, and Calculated fields (formulas) in Excel dialect. Field types are declared directly in the rulebook JSON; the build derives all substrates from the rulebook as the single source of truth.",
+        "JsonValue": null
+      },
+      {
+        "MetaKey": "conversion_metadata",
+        "Name": "conversion_metadata",
+        "ValueType": "object",
+        "StringValue": null,
+        "JsonValue": "{\"table_count\": 14, \"tool_version\": \"2.0.0\", \"field_type_mapping\": \"checkbox→boolean, number→number/integer, relationship→relationship, lookup→lookup, aggregation→aggregation, formula→calculated\", \"source\": \"rulebook-first\", \"type_inference\": {\"enabled\": true, \"priority\": \"rulebook_schema (NO COERCION) → formula_analysis → reference_resolution → data_analysis (last-resort inference; build SHOULD FAIL rather than silently use this)\", \"nullable_support\": true, \"error_value_handling\": \"#NUM!, #ERROR!, #N/A, #REF!, #DIV/0!, #VALUE!, #NAME? are treated as NULL\"}}"
+      }
+    ]
+  }
+}

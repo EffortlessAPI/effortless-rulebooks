@@ -32,6 +32,22 @@ function fieldOf(rb: Rulebook, table: string, field: string): RawField | null {
   return schemaOf(rb, table).find((f) => f.name === field) ?? null;
 }
 
+// The table a relationship field points at. Prefer the explicit RelatedTo; when
+// it's absent (some reverse links only carry an implied target), fall back to a
+// bare `formula` value that names a real table — and lastly the field name
+// itself if it matches a table. Returns null only when nothing resolves, so the
+// UI can degrade to generic "another table" prose without a dead link.
+function relationTarget(rb: Rulebook, f: RawField): string | null {
+  const candidate = (v: unknown): string | null => {
+    if (typeof v !== "string") return null;
+    const name = v.trim();
+    if (!name || /[^A-Za-z0-9_]/.test(name)) return null; // a real formula, not a bare table name
+    const t = rb[name];
+    return t && typeof t === "object" && "schema" in (t as object) ? name : null;
+  };
+  return f.RelatedTo?.trim() || candidate(f.formula) || candidate(f.name);
+}
+
 function toNode(rb: Rulebook, table: string, field: string): FieldNode | null {
   const f = fieldOf(rb, table, field);
   if (!f) return null;
@@ -43,7 +59,7 @@ function toNode(rb: Rulebook, table: string, field: string): FieldNode | null {
     nullable: f.nullable ?? true,
     formula: f.formula ?? null,
     description: f.Description ?? "",
-    relatedTo: f.RelatedTo ?? null,
+    relatedTo: f.type === "relationship" ? relationTarget(rb, f) : (f.RelatedTo ?? null),
   };
 }
 
@@ -136,22 +152,27 @@ function collectLeaves(
   field: string,
   seen: Set<string> = new Set(),
   acc: Map<string, FieldNode> = new Map(),
+  isRoot: boolean = true,
 ): FieldNode[] {
   const key = `${table}.${field}`;
   if (seen.has(key)) return [...acc.values()];
   seen.add(key);
   const node = toNode(rb, table, field);
   if (!node) return [...acc.values()];
-  if (node.type === "raw" || node.type === "relationship") {
+  // A node is a LEAF only when reached by recursion from the field we're
+  // explaining — never the field itself. (The root being its own leaf is the
+  // self-reference bug: a formula-less aggregation with no traced inputs would
+  // otherwise list itself under "ground truth at the leaves".)
+  if (!isRoot && (node.type === "raw" || node.type === "relationship")) {
     if (!acc.has(key)) acc.set(key, node);
     return [...acc.values()];
   }
   const parents = index.upstream.get(key) ?? [];
-  if (parents.length === 0 && !node.formula) {
+  if (!isRoot && parents.length === 0 && !node.formula) {
     if (!acc.has(key)) acc.set(key, node);
     return [...acc.values()];
   }
-  for (const p of parents) collectLeaves(rb, index, p.table, p.field, seen, acc);
+  for (const p of parents) collectLeaves(rb, index, p.table, p.field, seen, acc, false);
   return [...acc.values()];
 }
 
@@ -215,4 +236,56 @@ export function listTablesAndFields(): { table: string; fields: string[] }[] {
     table: t,
     fields: schemaOf(rb, t).map((f) => f.name),
   }));
+}
+
+// ── Ontology navigation: tables + their columns ────────────────────────────
+
+export interface TableSummary {
+  table: string;
+  description: string;
+  fieldCount: number;
+  derivedCount: number;   // calculated / lookup / aggregation
+  relationshipCount: number;
+}
+
+// Every table in the rulebook with a quick shape summary, for the tables index.
+export function listTables(): TableSummary[] {
+  const rb = rulebook as unknown as Rulebook;
+  return tablesOf(rb).map((t) => {
+    const fields = schemaOf(rb, t);
+    const derived = fields.filter(
+      (f) => f.type === "calculated" || f.type === "lookup" || f.type === "aggregation",
+    ).length;
+    const rels = fields.filter((f) => f.type === "relationship").length;
+    const tv = rb[t] as { Description?: string } | undefined;
+    return {
+      table: t,
+      description: tv?.Description ?? "",
+      fieldCount: fields.length,
+      derivedCount: derived,
+      relationshipCount: rels,
+    };
+  });
+}
+
+// Does this table exist in the rulebook?
+export function tableExists(table: string): boolean {
+  const rb = rulebook as unknown as Rulebook;
+  return tablesOf(rb).includes(table);
+}
+
+// One table's description (for the table page header).
+export function tableDescription(table: string): string {
+  const rb = rulebook as unknown as Rulebook;
+  const tv = rb[table] as { Description?: string } | undefined;
+  return tv?.Description ?? "";
+}
+
+// All columns of a table as full FieldNodes (type/datatype/formula/description),
+// in schema order — for the per-table page.
+export function tableColumns(table: string): FieldNode[] {
+  const rb = rulebook as unknown as Rulebook;
+  return schemaOf(rb, table)
+    .map((f) => toNode(rb, table, f.name))
+    .filter((n): n is FieldNode => n !== null);
 }

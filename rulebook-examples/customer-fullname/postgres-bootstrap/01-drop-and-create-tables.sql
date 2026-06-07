@@ -51,11 +51,11 @@ END $$;
 -- ----------------------------------------------------------------------------
 CREATE TABLE customers (
   customer_id                         TEXT                 PRIMARY KEY,
-  first_name                          TEXT                ,                     -- First Name of the customer - used to make the full name
-  last_name                           TEXT                                      -- Last Name of the customer - used to make the full name
+  first_name                          TEXT                ,                     -- First Name of the customer
+  last_name                           TEXT                                      -- Last Name of the customer
 );
-COMMENT ON COLUMN customers.first_name IS 'First Name of the customer - used to make the full name';
-COMMENT ON COLUMN customers.last_name IS 'Last Name of the customer - used to make the full name';
+COMMENT ON COLUMN customers.first_name IS 'First Name of the customer';
+COMMENT ON COLUMN customers.last_name IS 'Last Name of the customer';
 
 -- ============================================================================
 -- FK INDEXES - Performance only, always applied

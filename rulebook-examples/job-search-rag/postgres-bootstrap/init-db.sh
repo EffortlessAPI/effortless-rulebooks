@@ -53,7 +53,7 @@ if [ -z "$DATABASE_URL_DB_NAME" ]; then
 fi
 DATABASE_URL_ADMIN_CONN="${DATABASE_URL%/*}/postgres"
 echo "[init-db] ensuring database exists: $DATABASE_URL_DB_NAME"
-psql "$DATABASE_URL_ADMIN_CONN" -v ON_ERROR_STOP=1 -c "CREATE DATABASE IF NOT EXISTS \"$DATABASE_URL_DB_NAME\";" 2>/dev/null || true
+psql "$DATABASE_URL_ADMIN_CONN" -tc "SELECT 1 FROM pg_database WHERE datname = '$DATABASE_URL_DB_NAME'" 2>/dev/null | grep -q 1 || createdb "$DATABASE_URL_ADMIN_CONN" "$DATABASE_URL_DB_NAME" 2>/dev/null || true
 
 echo "Initializing database: $CONNECTION_STRING"
 echo ""

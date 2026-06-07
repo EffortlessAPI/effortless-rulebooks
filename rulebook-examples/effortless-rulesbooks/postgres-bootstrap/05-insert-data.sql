@@ -102,10 +102,10 @@ INSERT INTO rulebook_domains (domain_id, domain_name, relative_path, rulebook_pa
 VALUES ('domain-001', 'Customer FullName', 'rulebook-examples/customer-fullname/', 'rulebook-examples/customer-fullname/effortless-rulebook/customer-fullname-rulebook.json', 'minimal', 1, 'string concatenation', 'Hello World: demonstrates basic schema and calculated field (CONCAT formula)') ON CONFLICT (domain_id) DO NOTHING;
 
 INSERT INTO rulebook_domains (domain_id, domain_name, relative_path, rulebook_path, complexity_level, table_count, key_features, purpose)
-VALUES ('domain-002', 'Jessica BASIC', 'rulebook-examples/jessica-basic/', 'rulebook-examples/jessica-basic/effortless-rulebook/jessica-basic-rulebook.json', 'moderate', 9, 'relationships, aggregations, role-agent separation', 'Real workflow modeling: task management with assigned agents') ON CONFLICT (domain_id) DO NOTHING;
+VALUES ('domain-002', 'Talisman BASIC', 'rulebook-examples/talisman-basic/', 'rulebook-examples/talisman-basic/effortless-rulebook/talisman-basic-rulebook.json', 'moderate', 9, 'relationships, aggregations, role-agent separation', 'Real workflow modeling: task management with assigned agents') ON CONFLICT (domain_id) DO NOTHING;
 
 INSERT INTO rulebook_domains (domain_id, domain_name, relative_path, rulebook_path, complexity_level, table_count, key_features, purpose)
-VALUES ('domain-003', 'Jessica ADVANCED', 'rulebook-examples/jessica-advanced/', 'rulebook-examples/jessica-advanced/effortless-rulebook/jessica-advanced-rulebook.json', 'advanced', 9, 'cross-entity lookups, conditional IF logic, complex aggregations', 'Business rule complexity: demonstrates advanced formula patterns') ON CONFLICT (domain_id) DO NOTHING;
+VALUES ('domain-003', 'Talisman ADVANCED', 'rulebook-examples/talisman-advanced/', 'rulebook-examples/talisman-advanced/effortless-rulebook/talisman-advanced-rulebook.json', 'advanced', 9, 'cross-entity lookups, conditional IF logic, complex aggregations', 'Business rule complexity: demonstrates advanced formula patterns') ON CONFLICT (domain_id) DO NOTHING;
 
 INSERT INTO rulebook_domains (domain_id, domain_name, relative_path, rulebook_path, complexity_level, table_count, key_features, purpose)
 VALUES ('domain-004', 'StarTrek', 'rulebook-examples/star-trek/', 'rulebook-examples/star-trek/effortless-rulebook/star-trek-rulebook.json', 'moderate', 7, 'hierarchical rollups, polymorphic foreign keys', 'Media catalog: TV shows, seasons, episodes; demonstrates polymorphism') ON CONFLICT (domain_id) DO NOTHING;

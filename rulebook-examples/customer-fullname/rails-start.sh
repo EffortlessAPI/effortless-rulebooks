@@ -1,6 +1,6 @@
 #!/bin/bash
 # Start the Rails app for Customer FullName demo
-# Usage: ./rails-start.sh
+# Usage: ./rails-start.sh [PORT]   (default 8002; e.g. ./rails-start.sh 8003)
 
 set -e
 
@@ -13,4 +13,4 @@ fi
 
 echo "Starting Rails app..."
 cd "$RAILS_DIR"
-bash start.sh
+bash start.sh "$@"

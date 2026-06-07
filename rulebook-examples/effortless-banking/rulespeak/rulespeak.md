@@ -9,88 +9,88 @@ _Community-bank commercial RM platform — loans, deposits, covenants, BSA/AML._
 
 ## 1 Business Vocabulary
 
-| Term | Meaning (business sense) |
-|------|--------------------------|
-| **User** | Bank employees: relationship managers, underwriters, branch bankers, and admins. Used for portfolio assignment, audit trails, and segregation-of-duties enforcement. |
-| Is RM | True when Role = 'RM' (relationship manager). |
-| Is Underwriter | True when Role = 'Underwriter'. |
-| Is Branch Banker | True when Role = 'BranchBanker'. |
-| Is Admin | True when Role = 'Admin'. |
-| Count of Portfolio Businesses | Number of Businesses whose RelationshipManager is this user. |
-| Count of Originated Loans | Number of Loans this user originated as the RM of record. |
-| Count of Underwritten Loans | Number of Loans this user underwrote. |
-| **Business** | Small-business customers (and prospects) of the bank. Central entity: BeneficialOwners, Contacts, Accounts, Loans, Documents, and Interactions all hang off a Business. BusinessProfile information (legal name, structure, NAICS code) lives directly on this table. |
-| Relationship Manager Label | Display label of the assigned RM, pulled from Users. |
-| Is Customer | True when Status = 'Customer'. |
-| Is Prospect | True when Status = 'Prospect'. |
-| Was Referred | True when this business was referred in by another business. |
-| Count of Beneficial Owners | Number of BeneficialOwner rows attached. |
-| Count of Contacts | Number of Contact rows attached. |
-| Count of Accounts | Number of Account rows attached. |
-| Count of Loans | Number of Loan rows attached. |
-| Count of Interactions | Number of Interaction rows attached (the activity feed). |
-| Count of Documents | Number of Documents attached directly to this Business. |
-| Total Deposit Balance USD | Sum of CurrentBalanceUsd across this Business's Accounts. |
-| Total Loan Principal USD | Sum of PrincipalUsd across this Business's Loans. |
-| Count of Classified Loans | Number of Loans on this Business whose risk grade is substandard or worse (>=7). |
-| Has Classified Loan | True when at least one loan on this Business is a classified asset. |
-| Beneficial Owners At CDD Threshold | Count of BeneficialOwners meeting FinCEN's 25% threshold or marked as the control person. |
-| Meets CDD Rule | True when CDD beneficial-ownership collection is satisfied: at least one owner crosses the 25% threshold, or a control person is designated. |
-| Portfolio Priority | Higher-order: portfolio-management priority bucket for this business. 'High' when classified loan present, 'Medium' when CDD or onboarding incomplete or no loans yet, otherwise 'Low'. |
-| **Beneficial Owner** | Individuals owning 25%+ of a Business plus designated control persons, per FinCEN's CDD rule. PII (SSN, DOB, address) is stored encrypted at rest via field-level encryption. |
-| Business Label | Display label of the parent Business. |
-| Meets25 Percent Threshold | True when OwnershipPercentage >= 25. |
-| Meets CDD Threshold | True when this row counts toward CDD compliance: meets 25% OR is the control person. |
-| **Contact** | Non-owner individuals associated with a Business: officers, AP clerks, authorized signers, additional points of contact. Distinct from BeneficialOwners (which carries PII/CDD weight). |
-| Business Label | Display label of the parent Business. |
-| Is Officer | True when ContactType = 'Officer'. |
-| Is AP Clerk | True when ContactType = 'APClerk'. |
-| **Account** | Deposit accounts the Business holds at the bank (checking, savings, money market). Balances feed GlobalCashFlow during credit analysis. TreasuryServices enrollment flags (ACH, Wire, Card) are stored per-account. |
-| Business Label | Display label of the parent Business. |
-| Treasury Service Count | Number of treasury services enrolled on this account. |
-| Has Any Treasury Service | True when at least one treasury service is enrolled. |
-| **Loan** | Credit facilities extended to a Business, tracked from inquiry through funding, servicing, and payoff. RiskRating is denormalized here for fast reads; every change is captured in RiskRatingHistory. |
-| Business Label | Display label of the borrower Business. |
-| Business NAICS Code | NAICS code of the borrower Business (concentration analytics). |
-| Originating RM Label | Display label of the originating RM. |
-| Underwriter is Admin | True when the loan's underwriter holds the Admin role (looked up from Users.IsAdmin). |
-| Is Funded | True when UnderwritingStage = 'Funded'. |
-| Is Classified Asset | True when RiskRating is substandard (7) or worse. |
-| DSCR in Band | True when DSCR meets or exceeds the 1.20 minimum band. |
-| LTV in Band | True when LTV is at or below 0.80, or null (unsecured). |
-| Segregation of Duties Ok | True when the originating RM and the underwriter are different Users (segregation-of-duties check). |
-| Count of Covenants | Number of Covenants attached to this loan. |
-| Count of Breached Covenants | Number of Covenants currently in Breached status on this loan. |
-| Count of Risk Rating History | Number of RiskRatingHistory rows for this loan. |
-| Count of Documents | Number of Documents attached directly to this Loan. |
-| Has Breached Covenant | True when at least one covenant is in breach. |
-| On Watchlist | Higher-order: on the watchlist when the loan is a classified asset OR has any breached covenant. |
-| Health Score | Higher-order composite health score (0-4): +1 for DscrInBand, +1 for LtvInBand, +1 for NOT IsClassifiedAsset, +1 for NOT HasBreachedCovenant. |
-| **Covenant** | Conditions attached to a Loan that must be tested on a recurring schedule (e.g. minimum DSCR each quarter). CovenantMonitoring runs the tickler calendar ahead of NextTestDate; breaches surface as SystemEvent Interactions. |
-| Loan Label | Display label of the parent Loan. |
-| Loan Business | Business of the parent Loan (chained lookup). |
-| Is Breached | True when Status = 'Breached'. |
-| Has Active Waiver | True when CurrentWaiverThrough is set (waiver is on file). |
-| **Risk Rating History** | Time-series of risk-grade changes on a Loan. Regulators audit rating drift, so every migration is captured here. AnnualReview also writes a row even when the grade is reaffirmed unchanged. |
-| Loan Label | Display label of the parent Loan. |
-| Changed by User Label | Display label of the user who recorded the change. |
-| Grade Delta | NewGrade - PriorGrade (positive = downgrade in this scale); equals 0 on initial rating. |
-| Is Downgrade | True when the migration represents a downgrade (higher grade number = worse risk). |
-| Is Initial Rating | True when this is the loan's first rating row (no PriorGrade). |
-| Crossed Classified Threshold | Higher-order: true when this migration is the moment a loan crossed from non-classified to classified (PriorGrade < 7 and NewGrade >= 7). |
-| **Document** | Files in the DocumentVault. A document attaches to either a Business (tax returns, formation docs) or a Loan (note, security agreement, appraisal). Both FKs are nullable so a document can hang off the appropriate parent. |
-| Business Label | Display label of the attached Business (if any). |
-| Loan Label | Display label of the attached Loan (if any). |
-| Uploaded by User Label | Display label of the uploader (if known). |
-| Attached to | Which parent this document hangs off: 'Loan', 'Business', or 'Orphan' (neither set). |
-| From Customer Portal | True when uploaded by the customer themselves via the BusinessClientPortal. |
-| **Interaction** | Unified activity-log feed for a Business. An Interaction is intentionally generic: InteractionType discriminates Note, Call, Visit, Task, Meeting, or SystemEvent. Covenant breaches, document requests, and other machine actions are written as SystemEvent interactions so they appear in the same stream as human-logged activity. |
-| Business Label | Display label of the parent Business. |
-| User Label | Display label of the logging user (if any). |
-| Is System Event | True for system-generated rows. |
-| Is Task | True for Task-type rows. |
-| From Customer | True when sourced from the BusinessClientPortal (customer-originated). |
-| Is Covenant Event | Higher-order: true when this is a covenant-related system event (subject contains 'covenant'). |
+| Term | Description | Narrative Comment |
+|------|-------------|-------------------|
+| **User** | A user tracked by the business. | _Bank employees: relationship managers, underwriters, branch bankers, and admins. Used for portfolio assignment, audit trails, and segregation-of-duties enforcement._ |
+| Is RM | True when the role is the literal “RM”. | _True when Role = 'RM' (relationship manager)._ |
+| Is Underwriter | True when the role is the literal “Underwriter”. | _True when Role = 'Underwriter'._ |
+| Is Branch Banker | True when the role is the literal “BranchBanker”. | _True when Role = 'BranchBanker'._ |
+| Is Admin | True when the role is the literal “Admin”. | _True when Role = 'Admin'._ |
+| Count of Portfolio Businesses | The number of businesses related to the user. | _Number of Businesses whose RelationshipManager is this user._ |
+| Count of Originated Loans | The number of loans related to the user. | _Number of Loans this user originated as the RM of record._ |
+| Count of Underwritten Loans | The number of loans related to the user. | _Number of Loans this user underwrote._ |
+| **Business** | A business tracked by the business. | _Small-business customers (and prospects) of the bank. Central entity: BeneficialOwners, Contacts, Accounts, Loans, Documents, and Interactions all hang off a Business. BusinessProfile information (legal name, structure, NAICS code) lives directly on this table._ |
+| Relationship Manager Label | The full name of the business's relationship manager. | _Display label of the assigned RM, pulled from Users._ |
+| Is Customer | True when the status is the literal “Customer”. | _True when Status = 'Customer'._ |
+| Is Prospect | True when the status is the literal “Prospect”. | _True when Status = 'Prospect'._ |
+| Was Referred | True when the referral source (a missing value counts as an empty string) has a value. | _True when this business was referred in by another business._ |
+| Count of Beneficial Owners | The number of beneficial owners related to the business. | _Number of BeneficialOwner rows attached._ |
+| Count of Contacts | The number of contacts related to the business. | _Number of Contact rows attached._ |
+| Count of Accounts | The number of accounts related to the business. | _Number of Account rows attached._ |
+| Count of Loans | The number of loans related to the business. | _Number of Loan rows attached._ |
+| Count of Interactions | The number of interactions related to the business. | _Number of Interaction rows attached (the activity feed)._ |
+| Count of Documents | The number of documents related to the business. | _Number of Documents attached directly to this Business._ |
+| Total Deposit Balance USD | The total current balance USD across the accounts related to the business. | _Sum of CurrentBalanceUsd across this Business's Accounts._ |
+| Total Loan Principal USD | The total principal USD across the loans related to the business. | _Sum of PrincipalUsd across this Business's Loans._ |
+| Count of Classified Loans | The number of the business's loans that are classified assets. | _Number of Loans on this Business whose risk grade is substandard or worse (>=7)._ |
+| Has Classified Loan | True when the count of classified loans is greater than 0. | _True when at least one loan on this Business is a classified asset._ |
+| Beneficial Owners At CDD Threshold | The number of the business's beneficial owners that meet CDD threshold. | _Count of BeneficialOwners meeting FinCEN's 25% threshold or marked as the control person._ |
+| Meets CDD Rule | True when the beneficial owners at CDD threshold is greater than 0. | _True when CDD beneficial-ownership collection is satisfied: at least one owner crosses the 25% threshold, or a control person is designated._ |
+| Portfolio Priority | Determined by priority: the literal “High” if the has classified loan flag is set; the literal “Medium” if at least one of the following holds: it is not the case that the meets CDD rule flag is set; the is prospect flag is set; or the count of loans is 0; otherwise the literal “Low”. | _Higher-order: portfolio-management priority bucket for this business. 'High' when classified loan present, 'Medium' when CDD or onboarding incomplete or no loans yet, otherwise 'Low'._ |
+| **Beneficial Owner** | A beneficial owner tracked by the business. | _Individuals owning 25%+ of a Business plus designated control persons, per FinCEN's CDD rule. PII (SSN, DOB, address) is stored encrypted at rest via field-level encryption._ |
+| Business Label | The legal name of the beneficial owner's business. | _Display label of the parent Business._ |
+| Meets25 Percent Threshold | True when the ownership percentage is at least 25. | _True when OwnershipPercentage >= 25._ |
+| Meets CDD Threshold | True when at least one of the following holds: the meets25 percent threshold flag is set or the is control person flag is set. | _True when this row counts toward CDD compliance: meets 25% OR is the control person._ |
+| **Contact** | A contact tracked by the business. | _Non-owner individuals associated with a Business: officers, AP clerks, authorized signers, additional points of contact. Distinct from BeneficialOwners (which carries PII/CDD weight)._ |
+| Business Label | The legal name of the contact's business. | _Display label of the parent Business._ |
+| Is Officer | True when the contact type is the literal “Officer”. | _True when ContactType = 'Officer'._ |
+| Is AP Clerk | True when the contact type is the literal “APClerk”. | _True when ContactType = 'APClerk'._ |
+| **Account** | An account tracked by the business. | _Deposit accounts the Business holds at the bank (checking, savings, money market). Balances feed GlobalCashFlow during credit analysis. TreasuryServices enrollment flags (ACH, Wire, Card) are stored per-account._ |
+| Business Label | The legal name of the account's business. | _Display label of the parent Business._ |
+| Treasury Service Count | Computed as the number of the following that hold: the has ACH flag is set; the has wire flag is set; and the has card flag is set. | _Number of treasury services enrolled on this account._ |
+| Has Any Treasury Service | True when the treasury service count is greater than 0. | _True when at least one treasury service is enrolled._ |
+| **Loan** | A loan tracked by the business. | _Credit facilities extended to a Business, tracked from inquiry through funding, servicing, and payoff. RiskRating is denormalized here for fast reads; every change is captured in RiskRatingHistory._ |
+| Business Label | The legal name of the loan's business. | _Display label of the borrower Business._ |
+| Business NAICS Code | The NAICS code of the loan's business. | _NAICS code of the borrower Business (concentration analytics)._ |
+| Originating RM Label | The full name of the loan's originating RM. | _Display label of the originating RM._ |
+| Underwriter is Admin | True when the loan's underwriter is an admin. | _True when the loan's underwriter holds the Admin role (looked up from Users.IsAdmin)._ |
+| Is Funded | True when the underwriting stage is the literal “Funded”. | _True when UnderwritingStage = 'Funded'._ |
+| Is Classified Asset | True when the risk rating is at least 7. | _True when RiskRating is substandard (7) or worse._ |
+| DSCR in Band | True when the DSCR (a missing value counts as 0) is at least 1.20. | _True when DSCR meets or exceeds the 1.20 minimum band._ |
+| LTV in Band | True when the LTV (a missing value counts as 0) is at most 0.80. | _True when LTV is at or below 0.80, or null (unsecured)._ |
+| Segregation of Duties Ok | True when it is not the case that the originating RM is the underwriter. | _True when the originating RM and the underwriter are different Users (segregation-of-duties check)._ |
+| Count of Covenants | The number of covenants related to the loan. | _Number of Covenants attached to this loan._ |
+| Count of Breached Covenants | The number of the loan's covenants that are breached. | _Number of Covenants currently in Breached status on this loan._ |
+| Count of Risk Rating History | The number of risk rating history related to the loan. | _Number of RiskRatingHistory rows for this loan._ |
+| Count of Documents | The number of documents related to the loan. | _Number of Documents attached directly to this Loan._ |
+| Has Breached Covenant | True when the count of breached covenants is greater than 0. | _True when at least one covenant is in breach._ |
+| On Watchlist | True when at least one of the following holds: the is classified asset flag is set or the has breached covenant flag is set. | _Higher-order: on the watchlist when the loan is a classified asset OR has any breached covenant._ |
+| Health Score | Computed as the number of the following that hold: the DSCR in band flag is set and the LTV in band flag is set plus 0 if the is classified asset flag is set, otherwise 1 plus 0 if the has breached covenant flag is set, otherwise 1. | _Higher-order composite health score (0-4): +1 for DscrInBand, +1 for LtvInBand, +1 for NOT IsClassifiedAsset, +1 for NOT HasBreachedCovenant._ |
+| **Covenant** | A covenant tracked by the business. | _Conditions attached to a Loan that must be tested on a recurring schedule (e.g. minimum DSCR each quarter). CovenantMonitoring runs the tickler calendar ahead of NextTestDate; breaches surface as SystemEvent Interactions._ |
+| Loan Label | The loan number of the covenant's loan. | _Display label of the parent Loan._ |
+| Loan Business | The business of the covenant's loan. | _Business of the parent Loan (chained lookup)._ |
+| Is Breached | True when the status is the literal “Breached”. | _True when Status = 'Breached'._ |
+| Has Active Waiver | True when the current waiver through (a missing value counts as an empty string) has a value. | _True when CurrentWaiverThrough is set (waiver is on file)._ |
+| **Risk Rating History** | A risk rating history tracked by the business. | _Time-series of risk-grade changes on a Loan. Regulators audit rating drift, so every migration is captured here. AnnualReview also writes a row even when the grade is reaffirmed unchanged._ |
+| Loan Label | The loan number of the risk rating history's loan. | _Display label of the parent Loan._ |
+| Changed by User Label | The full name of the risk rating history's changed by user. | _Display label of the user who recorded the change._ |
+| Grade Delta | Computed as the new grade minus the prior grade (a missing value counts as the new grade). | _NewGrade - PriorGrade (positive = downgrade in this scale); equals 0 on initial rating._ |
+| Is Downgrade | True when the grade delta is greater than 0. | _True when the migration represents a downgrade (higher grade number = worse risk)._ |
+| Is Initial Rating | True when the prior grade (a missing value counts as 0) is 0. | _True when this is the loan's first rating row (no PriorGrade)._ |
+| Crossed Classified Threshold | True when all of the following hold: the prior grade (a missing value counts as 0) is less than 7 and the new grade is at least 7. | _Higher-order: true when this migration is the moment a loan crossed from non-classified to classified (PriorGrade < 7 and NewGrade >= 7)._ |
+| **Document** | A document tracked by the business. | _Files in the DocumentVault. A document attaches to either a Business (tax returns, formation docs) or a Loan (note, security agreement, appraisal). Both FKs are nullable so a document can hang off the appropriate parent._ |
+| Business Label | The legal name of the document's business. | _Display label of the attached Business (if any)._ |
+| Loan Label | The loan number of the document's loan. | _Display label of the attached Loan (if any)._ |
+| Uploaded by User Label | The full name of the document's uploaded by user. | _Display label of the uploader (if known)._ |
+| Attached to | Determined by priority: the literal “Loan” if the loan (a missing value counts as an empty string) has a value; the literal “Business” if the business (a missing value counts as an empty string) has a value; otherwise the literal “Orphan”. | _Which parent this document hangs off: 'Loan', 'Business', or 'Orphan' (neither set)._ |
+| From Customer Portal | True when the uploaded via is the literal “BusinessClientPortal”. | _True when uploaded by the customer themselves via the BusinessClientPortal._ |
+| **Interaction** | An interaction tracked by the business. | _Unified activity-log feed for a Business. An Interaction is intentionally generic: InteractionType discriminates Note, Call, Visit, Task, Meeting, or SystemEvent. Covenant breaches, document requests, and other machine actions are written as SystemEvent interactions so they appear in the same stream as human-logged activity._ |
+| Business Label | The legal name of the interaction's business. | _Display label of the parent Business._ |
+| User Label | The full name of the interaction's user. | _Display label of the logging user (if any)._ |
+| Is System Event | True when the interaction type is the literal “SystemEvent”. | _True for system-generated rows._ |
+| Is Task | True when the interaction type is the literal “Task”. | _True for Task-type rows._ |
+| From Customer | True when the source is the literal “BusinessClientPortal”. | _True when sourced from the BusinessClientPortal (customer-originated)._ |
+| Is Covenant Event | True when all of the following hold: the is system event flag is set and it is not the case that the position of the literal “covenant” within the lower-cased subject (or 0 if that can't be computed) is 0. | _Higher-order: true when this is a covenant-related system event (subject contains 'covenant')._ |
 
 ## 2 Fact Types
 
@@ -110,7 +110,69 @@ _Community-bank commercial RM platform — loans, deposits, covenants, BSA/AML._
 - an **interaction** references exactly one **business**
 - an **interaction** may reference one **user**
 
-## 3 Definitional Rules
+## 3 Operative Rules
+
+_Operative rules state what the business **obliges**, **prohibits**, or
+advises (**should**). Structural rules come from required fields and foreign keys;
+semantic rules come from the Constraints table, each keyed on a boolean the rulebook
+already computes (cross-referenced as DR-N in the Definitional Rules below)._
+
+### Structural Constraints (from the schema)
+
+- A user **must** have a full name, a role, and an email.
+- A business **must** reference exactly one user as its relationship manager.
+- A business **must** have a legal name, a business structure, an NAICS code, and a status.
+- A beneficial owner **must** reference exactly one business.
+- A beneficial owner **must** have a full name, a date of birth, an SSN, an address, and an ownership percentage, and record whether it is a control person.
+- A contact **must** reference exactly one business.
+- A contact **must** have a full name, a title, and a contact type, and record whether it is an authorized signer.
+- An account **must** reference exactly one business.
+- An account **must** have an account type, an account number last4, a current balance USD, and an opened at, and record whether it has an ACH, whether it has a wire, and whether it has a card.
+- A loan **must** reference exactly one business.
+- A loan **must** reference exactly one user as its originating RM.
+- A loan **must** reference exactly one user as its underwriter.
+- A loan **must** have a loan number, a loan purpose, a principal USD, a rate pct, a term months, an underwriting stage, a risk rating, a risk rating label, and an originated at.
+- A covenant **must** reference exactly one loan.
+- A covenant **must** have a covenant type, a test frequency, a next test date, and a status.
+- A risk rating history **must** reference exactly one loan.
+- A risk rating history **must** reference exactly one user as its changed by user.
+- A risk rating history **must** have an effective date, a new grade, and a reason.
+- A document **must** have a filename, a document type, and an uploaded at, and record whether it is ocr indexed.
+- An interaction **must** reference exactly one business.
+- An interaction **must** have an interaction type, a subject, and an interaction date.
+
+### BSA/AML (CDD)
+
+- **biz-cdd** *(hard)* — A business **must** have a beneficial owners at CDD threshold of more than 0.
+  - _On violation:_ “Beneficial-ownership (CDD) collection is incomplete: no owner crosses the 25% threshold and no control person is designated.”
+  - _Source:_ FinCEN CDD Rule, 31 CFR 1010.230
+  - _Keys on:_ Meets CDD Rule (see DR-23).
+
+### Credit Policy
+
+- **loan-dscr** *(override)* — A loan **must** have a DSCR of at least 1.20 *(waivable by an authorized approver)*.
+  - _On violation:_ “DSCR is below the 1.20 minimum; a credit-committee waiver is required to fund.”
+  - _Source:_ Internal Credit Policy §2.1 (DSCR floor)
+  - _Keys on:_ DSCR in Band (see DR-40).
+- **loan-ltv** *(override)* — A loan **must** have an LTV of at most 0.80 *(waivable by an authorized approver)*.
+  - _On violation:_ “LTV exceeds the 0.80 ceiling; a credit-committee waiver is required to fund.”
+  - _Source:_ Internal Credit Policy §2.2 (LTV ceiling)
+  - _Keys on:_ LTV in Band (see DR-41).
+
+### Portfolio Monitoring
+
+- **loan-watchlist** *(advisory)* — A loan **should** satisfy that at least one of the following holds: the is classified asset flag is set or the has breached covenant flag is set.
+  - _On violation:_ “This loan is a classified asset or has a breached covenant but is not flagged on the watchlist.”
+  - _Source:_ Internal Portfolio Risk Procedure §6 (watchlist)
+  - _Keys on:_ On Watchlist (see DR-48).
+
+### Segregation of Duties
+
+- **loan-sod** *(hard)* — A loan **must not** be funded by the same user who originated it: the originating relationship manager and the underwriter must be different users.
+  - _On violation:_ “The same user originated and underwrote this loan — segregation of duties is violated.”
+  - _Source:_ Internal Credit Policy §4.2
+
+## 4 Definitional Rules
 
 _All statements express truth in the business domain; they are neither
 procedures nor imperatives. "iff" is avoided in favor of "only if" so a
@@ -128,7 +190,7 @@ one-directional necessity is not mistaken for an equivalence._
 | **DR-8 Relationship Manager Label** | A business's relationship manager label is the full name of the business's relationship manager. |
 | **DR-9 Is Customer** | A business is considered a customer if the status is the literal “Customer”. |
 | **DR-10 Is Prospect** | A business is considered a prospect if the status is the literal “Prospect”. |
-| **DR-11 Was Referred** | A business is considered to have been referred if the referral source is set. |
+| **DR-11 Was Referred** | A business is considered to have been referred if the referral source (a missing value counts as an empty string) has a value. |
 | **DR-12 Count of Beneficial Owners** | A business's count of beneficial owners is the number of beneficial owners related to the business. |
 | **DR-13 Count of Contacts** | A business's count of contacts is the number of contacts related to the business. |
 | **DR-14 Count of Accounts** | A business's count of accounts is the number of accounts related to the business. |
@@ -166,30 +228,30 @@ one-directional necessity is not mistaken for an equivalence._
 | **DR-46 Count of Documents** | A loan's count of documents is the number of documents related to the loan. |
 | **DR-47 Has Breached Covenant** | A loan is considered to have a breached covenant if the count of breached covenants is greater than 0. |
 | **DR-48 On Watchlist** | A loan is flagged on watchlist if at least one of the following holds: the is classified asset flag is set or the has breached covenant flag is set. |
-| **DR-49 Health Score** | A loan's health score is computed as `If(DscrInBand, 1, 0) + If(LtvInBand, 1, 0) + If(IsClassifiedAsset, 0, 1) + If(HasBreachedCovenant, 0, 1)`. |
+| **DR-49 Health Score** | A loan's health score is computed as the number of the following that hold: the DSCR in band flag is set and the LTV in band flag is set plus 0 if the is classified asset flag is set, otherwise 1 plus 0 if the has breached covenant flag is set, otherwise 1. |
 | **DR-50 Loan Label** | A covenant's loan label is the loan number of the covenant's loan. |
 | **DR-51 Loan Business** | A covenant's loan business is the business of the covenant's loan. |
 | **DR-52 Is Breached** | A covenant is considered breached if the status is the literal “Breached”. |
-| **DR-53 Has Active Waiver** | A covenant is considered to have an active waiver if the current waiver through is set. |
+| **DR-53 Has Active Waiver** | A covenant is considered to have an active waiver if the current waiver through (a missing value counts as an empty string) has a value. |
 | **DR-54 Loan Label** | A risk rating history's loan label is the loan number of the risk rating history's loan. |
 | **DR-55 Changed by User Label** | A risk rating history's changed by user label is the full name of the risk rating history's changed by user. |
-| **DR-56 Grade Delta** | A risk rating history's grade delta is computed as `NewGrade - Coalesce(PriorGrade, NewGrade)`. |
+| **DR-56 Grade Delta** | A risk rating history's grade delta is computed as the new grade minus the prior grade (a missing value counts as the new grade). |
 | **DR-57 Is Downgrade** | A risk rating history is considered a downgrade if the grade delta is greater than 0. |
 | **DR-58 Is Initial Rating** | A risk rating history is considered initial rating if the prior grade (a missing value counts as 0) is 0. |
 | **DR-59 Crossed Classified Threshold** | A risk rating history is flagged crossed classified threshold if all of the following hold: the prior grade (a missing value counts as 0) is less than 7 and the new grade is at least 7. |
 | **DR-60 Business Label** | A document's business label is the legal name of the document's business. |
 | **DR-61 Loan Label** | A document's loan label is the loan number of the document's loan. |
 | **DR-62 Uploaded by User Label** | A document's uploaded by user label is the full name of the document's uploaded by user. |
-| **DR-63 Attached to** | The document's attached to is determined by the following priority:<br>1. the literal “Loan”, if the loan is set;<br>2. the literal “Business”, if the business is set;<br>3. otherwise the literal “Orphan”. |
+| **DR-63 Attached to** | The document's attached to is determined by the following priority:<br>1. the literal “Loan”, if the loan (a missing value counts as an empty string) has a value;<br>2. the literal “Business”, if the business (a missing value counts as an empty string) has a value;<br>3. otherwise the literal “Orphan”. |
 | **DR-64 From Customer Portal** | A document is flagged from customer portal if the uploaded via is the literal “BusinessClientPortal”. |
 | **DR-65 Business Label** | An interaction's business label is the legal name of the interaction's business. |
 | **DR-66 User Label** | An interaction's user label is the full name of the interaction's user. |
 | **DR-67 Is System Event** | An interaction is considered a system event if the interaction type is the literal “SystemEvent”. |
 | **DR-68 Is Task** | An interaction is considered a task if the interaction type is the literal “Task”. |
 | **DR-69 From Customer** | An interaction is flagged from customer if the source is the literal “BusinessClientPortal”. |
-| **DR-70 Is Covenant Event** | An interaction is considered a covenant event if all of the following hold: the is system event flag is set and it is not the case that `Iferror(Find("covenant", Lower(Subject)), 0)` is 0. |
+| **DR-70 Is Covenant Event** | An interaction is considered a covenant event if all of the following hold: the is system event flag is set and it is not the case that the position of the literal “covenant” within the lower-cased subject (or 0 if that can't be computed) is 0. |
 
-## 4 Traceability to Schema
+## 5 Traceability to Schema
 
 _The expression column is the rule's definition in RuleSpeak notation —
 the same logic the rulebook stores, written for a business reader._
@@ -215,9 +277,9 @@ the same logic the rulebook stores, written for a business reader._
 | **Businesses.CountOfDocuments** | rollup | `Count(Documents via Business)` |
 | **Businesses.TotalDepositBalanceUsd** | rollup | `Sum(Accounts.CurrentBalanceUsd via Business)` |
 | **Businesses.TotalLoanPrincipalUsd** | rollup | `Sum(Loans.PrincipalUsd via Business)` |
-| **Businesses.CountOfClassifiedLoans** | rollup | `Count(Loans.Business, Name, Loans.IsClassifiedAsset, True())` |
+| **Businesses.CountOfClassifiedLoans** | rollup | `Count(Loans via Business)` |
 | **Businesses.HasClassifiedLoan** | formula | `CountOfClassifiedLoans > 0` |
-| **Businesses.BeneficialOwnersAtCddThreshold** | rollup | `Count(BeneficialOwners.Business, Name, BeneficialOwners.MeetsCddThreshold, True())` |
+| **Businesses.BeneficialOwnersAtCddThreshold** | rollup | `Count(BeneficialOwners via Business)` |
 | **Businesses.MeetsCddRule** | formula | `BeneficialOwnersAtCddThreshold > 0` |
 | **Businesses.PortfolioPriority** | formula | `If(HasClassifiedLoan, "High", If(Or(Not(MeetsCddRule), IsProspect, CountOfLoans = 0), "Medium", "Low"))` |
 | **BeneficialOwners.BusinessLabel** | lookup | `Lookup(Businesses.LegalName via Business)` |
@@ -239,7 +301,7 @@ the same logic the rulebook stores, written for a business reader._
 | **Loans.LtvInBand** | formula | `Coalesce(Ltv, 0) <= 0.80` |
 | **Loans.SegregationOfDutiesOk** | formula | `Not(OriginatingRm = Underwriter)` |
 | **Loans.CountOfCovenants** | rollup | `Count(Covenants via Loan)` |
-| **Loans.CountOfBreachedCovenants** | rollup | `Count(Covenants.Loan, Name, Covenants.IsBreached, True())` |
+| **Loans.CountOfBreachedCovenants** | rollup | `Count(Covenants via Loan)` |
 | **Loans.CountOfRiskRatingHistory** | rollup | `Count(RiskRatingHistory via Loan)` |
 | **Loans.CountOfDocuments** | rollup | `Count(Documents via Loan)` |
 | **Loans.HasBreachedCovenant** | formula | `CountOfBreachedCovenants > 0` |
@@ -266,3 +328,11 @@ the same logic the rulebook stores, written for a business reader._
 | **Interactions.IsTask** | formula | `InteractionType = "Task"` |
 | **Interactions.FromCustomer** | formula | `Source = "BusinessClientPortal"` |
 | **Interactions.IsCovenantEvent** | formula | `And(IsSystemEvent, Not(Iferror(Find("covenant", Lower(Subject)), 0) = 0))` |
+
+---
+
+_This document is rendered in **RuleSpeak®**, the declarative business-rule
+notation created by **Ronald G. Ross**, and follows the conventions of
+**SBVR** (Semantics of Business Vocabulary and Business Rules). With thanks to
+Ronald G. Ross for RuleSpeak and his foundational work on business rules —
+[www.RonRoss.info](https://www.RonRoss.info)._

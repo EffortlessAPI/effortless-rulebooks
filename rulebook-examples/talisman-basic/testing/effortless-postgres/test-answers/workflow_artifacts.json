@@ -1,0 +1,57 @@
+[
+  {
+    "artifact_id": "artifact-deployment-log",
+    "title": "Deployment Execution Log",
+    "identifier": "ART-DEPLOG-001",
+    "created": "2026-04-03 00:00:00-05:00",
+    "produced_by_step": "prod-deploy-step-4",
+    "derived_from_artifact": "artifact-release-authorization",
+    "attributed_to_human_agent": "",
+    "attributed_to_ai_agent": "",
+    "attributed_to_automated_pipeline": "ntwf-ci-pipeline"
+  },
+  {
+    "artifact_id": "artifact-legal-clearance",
+    "title": "Legal Clearance Certificate",
+    "identifier": "ART-LEGAL-001",
+    "created": "2026-04-02 00:00:00-05:00",
+    "produced_by_step": "prod-deploy-step-3",
+    "derived_from_artifact": "artifact-risk-report",
+    "attributed_to_human_agent": "ntwf-james-okafor",
+    "attributed_to_ai_agent": "",
+    "attributed_to_automated_pipeline": ""
+  },
+  {
+    "artifact_id": "artifact-post-deploy-report",
+    "title": "Post-Deployment Health Report",
+    "identifier": "ART-HEALTH-001",
+    "created": "2026-04-03 00:00:00-05:00",
+    "produced_by_step": "prod-deploy-step-5",
+    "derived_from_artifact": "artifact-deployment-log",
+    "attributed_to_human_agent": "ntwf-maria-gonzalez",
+    "attributed_to_ai_agent": "",
+    "attributed_to_automated_pipeline": ""
+  },
+  {
+    "artifact_id": "artifact-release-authorization",
+    "title": "Release Authorization",
+    "identifier": "ART-AUTH-001",
+    "created": "2026-04-02 00:00:00-05:00",
+    "produced_by_step": "prod-deploy-step-3",
+    "derived_from_artifact": "artifact-legal-clearance",
+    "attributed_to_human_agent": "ntwf-maria-gonzalez",
+    "attributed_to_ai_agent": "",
+    "attributed_to_automated_pipeline": ""
+  },
+  {
+    "artifact_id": "artifact-risk-report",
+    "title": "Risk Assessment Report",
+    "identifier": "ART-RISK-001",
+    "created": "2026-04-01 00:00:00-05:00",
+    "produced_by_step": "prod-deploy-step-2",
+    "derived_from_artifact": "",
+    "attributed_to_human_agent": "",
+    "attributed_to_ai_agent": "ntwf-risk-ai",
+    "attributed_to_automated_pipeline": ""
+  }
+]

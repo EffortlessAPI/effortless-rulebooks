@@ -141,3 +141,13 @@ Pick one (or several in order) and we'll crank the loop.
 - **No tests.** Smoke-tested manually.
 - **FK constraints skipped.** `99-fk-constraints.sql` is not applied — fine for a demo where the rulebook controls all inserts; flip `EFFORTLESS_ENFORCE_FKS=true` to opt in.
 - **The taxonomy is intentionally simple.** Three buckets and one weighted sum is not "a proper taxonomy of intelligence" — it's the smallest model that lets the DAG turn. Loops 1–10 above show how to make it richer without writing any glue code.
+
+---
+
+## Local transpiler bus (`localhost:4242`)
+
+> **All 13 local transpilers live on `localhost:4242`.** Once you run
+> `./start.sh` from the repo root, the ssotme-proxy exposes every repo-local
+> transpiler — `rulebook-to-postgres`, `rulebook-to-python`, `rulebook-to-golang`,
+> `rulebook-to-cobol`, `rulebook-to-owl`, and more — as first-class `ssotme://`
+> routes any `effortless build` can call.

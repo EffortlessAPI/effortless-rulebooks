@@ -1,12 +1,13 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-gem 'rails', '6.0.4.1'
-gem 'pg', '1.1.4'
-gem 'puma', '5.2.2'
-gem 'sass-rails', '>= 6'
-gem 'webpacker', '~> 5.0'
+gem 'rails', '~> 7.0.0'
+gem 'pg', '~> 1.1'
+gem 'puma', '~> 5.0'
 gem 'jbuilder', '~> 2.7'
+# NOTE: no webpacker / sass-rails. This demo's only view layer is plain ERB +
+# CDN Bootstrap (see app/views/layouts/application.html.erb). The webpacker
+# railtie crashes boot looking for config/webpacker.yml, and there is no sass.
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]

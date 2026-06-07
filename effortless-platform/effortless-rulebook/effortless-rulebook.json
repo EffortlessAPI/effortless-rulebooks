@@ -423,7 +423,7 @@
         "InvariantId": "framing-011",
         "Name": "Swappable active domain",
         "Category": "project-catalog",
-        "WrongFraming": "The platform has one stack and a 'swappable active domain' — switch the active domain (acme-llc, star-trek, jessica-advanced, …) and the entire stack regenerates against it.",
+        "WrongFraming": "The platform has one stack and a 'swappable active domain' — switch the active domain (acme-llc, star-trek, talisman-advanced, …) and the entire stack regenerates against it.",
         "CorrectFraming": "rulebook-examples/ is a CATALOG of N independent Effortless projects. Each project owns its own rulebook and picks the subset of the platform's 15 substrates it needs (acme-llc uses all 15; most use 3+). active-domain.txt is a convenience pointer for the orchestrator/portal — not the architecture.",
         "Why": "The 'swappable' framing implies one shared stack parameterized by domain. In reality each project is self-contained; the platform is a catalog, not a runtime that mounts one domain at a time. Calling them 'swappable' hides the fact that projects choose different substrate subsets and evolve independently.",
         "ViolatedAxiomId": "ax-006",
@@ -1456,7 +1456,7 @@
     ]
   },
   "RulebookDomains": {
-    "Description": "Customer ontologies: each domain has its own rulebook + substrate generation. Domains form a TREE — ParentDomainId links a more-elaborate domain back to the simpler one it grew out of (e.g. Jessica ADVANCED ← Jessica BASIC). The UI uses this to present related rulebooks as a set rather than a flat list, and to drive 'next step in the progression' navigation.",
+    "Description": "Customer ontologies: each domain has its own rulebook + substrate generation. Domains form a TREE — ParentDomainId links a more-elaborate domain back to the simpler one it grew out of (e.g. Talisman ADVANCED ← Talisman BASIC). The UI uses this to present related rulebooks as a set rather than a flat list, and to drive 'next step in the progression' navigation.",
     "schema": [
       {
         "name": "DomainId",
@@ -1540,9 +1540,9 @@
       },
       {
         "DomainId": "domain-002",
-        "DomainName": "Jessica BASIC",
-        "RelativePath": "rulebook-examples/jessica-basic/",
-        "RulebookPath": "rulebook-examples/jessica-basic/effortless-rulebook/jessica-basic-rulebook.json",
+        "DomainName": "Talisman BASIC",
+        "RelativePath": "rulebook-examples/talisman-basic/",
+        "RulebookPath": "rulebook-examples/talisman-basic/effortless-rulebook/talisman-basic-rulebook.json",
         "ComplexityLevel": "moderate",
         "TableCount": 9,
         "KeyFeatures": "relationships, aggregations, role-agent separation",
@@ -1552,15 +1552,15 @@
       },
       {
         "DomainId": "domain-003",
-        "DomainName": "Jessica ADVANCED",
-        "RelativePath": "rulebook-examples/jessica-advanced/",
-        "RulebookPath": "rulebook-examples/jessica-advanced/effortless-rulebook/jessica-advanced-rulebook.json",
+        "DomainName": "Talisman ADVANCED",
+        "RelativePath": "rulebook-examples/talisman-advanced/",
+        "RulebookPath": "rulebook-examples/talisman-advanced/effortless-rulebook/talisman-advanced-rulebook.json",
         "ComplexityLevel": "advanced",
         "TableCount": 9,
         "KeyFeatures": "cross-entity lookups, conditional IF logic, complex aggregations",
         "Purpose": "Business rule complexity: demonstrates advanced formula patterns",
         "ParentDomainId": "domain-002",
-        "ProgressionNote": "Same shape as Jessica BASIC but adds cross-entity lookups, conditional IF logic, and richer aggregations. Demonstrates that elaboration can happen without substrate edits — pure rulebook change."
+        "ProgressionNote": "Same shape as Talisman BASIC but adds cross-entity lookups, conditional IF logic, and richer aggregations. Demonstrates that elaboration can happen without substrate edits — pure rulebook change."
       },
       {
         "DomainId": "domain-004",
@@ -1572,7 +1572,7 @@
         "KeyFeatures": "hierarchical rollups, polymorphic foreign keys",
         "Purpose": "Media catalog: TV shows, seasons, episodes; demonstrates polymorphism",
         "ParentDomainId": null,
-        "ProgressionNote": "Independent root — different domain from Jessica entirely. Demonstrates that swapping domains, not just elaborating one, is also a pure rulebook change. Hierarchical rollups + polymorphic FKs."
+        "ProgressionNote": "Independent root — different domain from Talisman entirely. Demonstrates that swapping domains, not just elaborating one, is also a pure rulebook change. Hierarchical rollups + polymorphic FKs."
       },
       {
         "DomainId": "domain-005",
@@ -4496,8 +4496,8 @@
       },
       {
         "FlavorId": "flav-006",
-        "ProjectSlug": "jessica-advanced",
-        "DisplayName": "Jessica Talisman: Advanced",
+        "ProjectSlug": "talisman-advanced",
+        "DisplayName": "Talisman: Advanced",
         "Flavor": "computation-heavy",
         "Complexity": "advanced",
         "EntityCount": 10,
@@ -4508,12 +4508,12 @@
         "GoodAnswerKeyFor": "postgres",
         "SortOrder": 160,
         "Tagline": "Workflow / approval ontology with cross-entity lookups and multi-step derivation.",
-        "LogoPath": "rulebook-examples/jessica-advanced/effortless-logo.png"
+        "LogoPath": "rulebook-examples/talisman-advanced/effortless-logo.png"
       },
       {
         "FlavorId": "flav-007",
-        "ProjectSlug": "jessica-basic",
-        "DisplayName": "Jessica Talisman: Basic",
+        "ProjectSlug": "talisman-basic",
+        "DisplayName": "Talisman: Basic",
         "Flavor": "tutorial-ladder",
         "Complexity": "basic",
         "EntityCount": 9,
@@ -4524,7 +4524,7 @@
         "GoodAnswerKeyFor": null,
         "SortOrder": 30,
         "Tagline": "Workflow ontology without cross-entity lookups — for stepping authors up the formula ladder.",
-        "LogoPath": "rulebook-examples/jessica-basic/effortless-logo.png"
+        "LogoPath": "rulebook-examples/talisman-basic/effortless-logo.png"
       },
       {
         "FlavorId": "flav-008",
@@ -6900,9 +6900,9 @@
         "NarrativeId": "narrative-cross-02",
         "Order": 2,
         "NarrativeName": "Substrate Drift (cross-rulebook progression)",
-        "StepName": "Jessica BASIC (child of root)",
+        "StepName": "Talisman BASIC (child of root)",
         "RelatedDomainId": "domain-002",
-        "WhatHappens": "Walk down the progression tree to Jessica BASIC — adds relationships, aggregations, role/agent separation. Every substrate handles the elaboration with no substrate-side edits.",
+        "WhatHappens": "Walk down the progression tree to Talisman BASIC — adds relationships, aggregations, role/agent separation. Every substrate handles the elaboration with no substrate-side edits.",
         "KeyLesson": "Walking the tree of rulebooks (ParentDomainId) IS the demo — no git rewind required. The viewer can see N rulebooks side-by-side rather than replaying commits.",
         "ObservedCost": "Python/Go/Postgres < 1s, OWL ~10s, English ~5min.",
         "NarrativeStyle": "cross-rulebook",
@@ -6913,9 +6913,9 @@
         "NarrativeId": "narrative-cross-03",
         "Order": 3,
         "NarrativeName": "Substrate Drift (cross-rulebook progression)",
-        "StepName": "Jessica ADVANCED (child of BASIC)",
+        "StepName": "Talisman ADVANCED (child of BASIC)",
         "RelatedDomainId": "domain-003",
-        "WhatHappens": "Walk further down: Jessica ADVANCED elaborates BASIC with cross-entity lookups and conditional IF logic. Conformance still 100% across deterministic substrates.",
+        "WhatHappens": "Walk further down: Talisman ADVANCED elaborates BASIC with cross-entity lookups and conditional IF logic. Conformance still 100% across deterministic substrates.",
         "KeyLesson": "Elaboration within a tree of rulebooks costs the SAME as elaboration within a commit history — proving that 'commits' was never the load-bearing thing; the progression structure was.",
         "ObservedCost": "Cost profile unchanged from BASIC.",
         "NarrativeStyle": "cross-rulebook",

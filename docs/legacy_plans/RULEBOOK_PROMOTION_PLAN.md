@@ -34,7 +34,7 @@ an `effortless-rulebooks/` folder with one subfolder per domain.
   - `devops/pull.sh`: Explicitly pulls from Airtable via effortless airtabletorulebook (lines 27-29)
   - `devops/rebuild-on-trigger.sh`: Complex webhook orchestrator that syncs Airtable before rebuild (multiple Airtable API calls)
   - `run-in-docker.sh`: Checks for AIRTABLE_API_KEY env var, validates connectivity (lines 78-192)
-  - `cleanup-airtable.py`: Directly manipulates Airtable via REST API for Jessica ADVANCED base (lines 3-518)
+  - `cleanup-airtable.py`: Directly manipulates Airtable via REST API for Talisman ADVANCED base (lines 3-518)
   - `populate-acme-corp.py`: Seed script for populating Airtable with sample data (lines 3-100)
   - `orchestration/test-orchestrator.py`: Line 388 references "airtable" as the oracle baseline
   - `README.md` & `README.TECHNICAL.md`: Marketing/docs frame Airtable as "the hub" and rulebook as "disposable IR"

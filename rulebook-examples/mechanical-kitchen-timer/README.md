@@ -17,3 +17,12 @@ A spring-loaded arm with a small steel striker, held back by a cam on the arbor 
 How they couple: §1 winds §2 → §2 drives §3 → §3 drives §4, which paces the unwinding back through §3 to §2 → when §2 reaches zero it trips §5.
 
 One input, one output, three parts in between doing the actual work. Want me to go deeper on any one of them (e.g. the escapement geometry, or the cam profile that releases the hammer)?
+---
+
+## Local transpiler bus (`localhost:4242`)
+
+> **All 13 local transpilers live on `localhost:4242`.** Once you run
+> `./start.sh` from the repo root, the ssotme-proxy exposes every repo-local
+> transpiler — `rulebook-to-postgres`, `rulebook-to-python`, `rulebook-to-golang`,
+> `rulebook-to-cobol`, `rulebook-to-owl`, and more — as first-class `ssotme://`
+> routes any `effortless build` can call.

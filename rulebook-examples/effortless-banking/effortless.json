@@ -1,7 +1,7 @@
 {
   "ShowHidden": false,
   "ShowAllFiles": false,
-  "CurrentPath": null,
+  "CurrentPath": "/rulespeak",
   "SSoTmeProjectFiles": null,
   "SSoTmeProjectId": "88f956dc-5967-4229-8dae-66746b75041e",
   "Name": "first-valley-bank",
@@ -59,7 +59,9 @@
       "Name": "rulebooktorulespeak",
       "RelativePath": "/rulespeak",
       "CommandLine": "rulebook-to-rulespeak -i ../effortless-rulebook/effortless-banking-rulebook.json",
-      "IsDisabled": false
+      "IsDisabled": false,
+      "LastVersionUsed": "v2026.06.06.0219",
+      "LastUrl": "https://effortless-rulebook-to-rulespeak-v2026-06-06-0219-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     }
   ]
 }

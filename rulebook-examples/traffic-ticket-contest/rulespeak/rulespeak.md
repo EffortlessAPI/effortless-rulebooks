@@ -165,6 +165,7 @@ _A production-grade ERB platform (admin/state-machine/jurisdiction/routing/featu
 | Has Complete Lineage | TRUE when the PriorInstance chain walks back to SequenceIndex=1 (the initial state occupancy). Validates lineage completeness. |
 | **Violation Type** | A violation type tracked by the business. |
 | Jurisdiction Label | Display name of the governing jurisdiction. |
+| Traffic School Point Cap | The governing jurisdiction's traffic-school point cap, looked up from Jurisdictions. |
 | Is School Eligible by Cap | Whether this violation's points fall at or below the jurisdiction's traffic-school point cap (jurisdiction rule applied to the violation). |
 | Count of Citations | Number of citations issued for this violation type. |
 | **Driver** | A driver tracked by the business. |
@@ -206,6 +207,23 @@ _A production-grade ERB platform (admin/state-machine/jurisdiction/routing/featu
 | Citation Label | Citation number this payment concerns. |
 | **Case Event** | A case event tracked by the business. |
 | Citation Label | Citation number this event concerns. |
+| **Test Category** | A test category tracked by the business. |
+| **Test Surface** | A test surface tracked by the business. |
+| **Test Technology** | A test technology tracked by the business. |
+| **Test Case** | A test case tracked by the business. |
+| Expectation Count | Count of child TestExpectations. |
+| **Test Expectation** | A test expectation tracked by the business. |
+| **Test Run** | A test run tracked by the business. |
+| **Test Result** | A test result tracked by the business. |
+| **Test Result Assertion** | A test result assertion tracked by the business. |
+| **Screen Layout** | A screen layout tracked by the business. |
+| **Screen Section** | A screen section tracked by the business. |
+| **Field Display Hint** | A field display hint tracked by the business. |
+| **Fee Schedule** | A fee schedule tracked by the business. |
+| **Deadline Rule** | A deadline rule tracked by the business. |
+| **Contest Ground** | A contest ground tracked by the business. |
+| **Driver License Point** | A driver license point tracked by the business. |
+| **Build Phas** | A build phas tracked by the business. |
 
 ## 2 Fact Types
 
@@ -254,6 +272,15 @@ _A production-grade ERB platform (admin/state-machine/jurisdiction/routing/featu
 - a **hearing** references exactly one **citation**
 - a **payment** references exactly one **citation**
 - a **case event** references exactly one **citation**
+- a **screen layout** may reference one **platform naviation**
+- a **screen section** may reference one **screen layout**
+- a **field display hint** may reference one **ERB table**
+- a **fee schedule** may reference one **jurisdiction**
+- a **fee schedule** may reference one **violation type**
+- a **deadline rule** may reference one **jurisdiction**
+- a **contest ground** may reference one **violation type**
+- a **driver license point** may reference one **driver**
+- a **driver license point** may reference one **citation**
 
 ## 3 Definitional Rules
 
@@ -383,42 +410,44 @@ one-directional necessity is not mistaken for an equivalence._
 | **DR-118 Is Current** | A subject state instance is considered a current if `Isblank(ExitedAt)`. |
 | **DR-119 Has Complete Lineage** | A subject state instance is considered to have a complete lineage if the sequence index is at least 1. |
 | **DR-120 Jurisdiction Label** | A violation type's jurisdiction label is the display name of the violation type's jurisdiction. |
-| **DR-121 Is School Eligible by Cap** | A violation type is considered a school eligible by cap if `If(Points` is at most `Lookup(Jurisdictions.TrafficSchoolPointCap, Match(Jurisdiction, Jurisdictions.Name, 0)), TRUE, FALSE)`. |
-| **DR-122 Count of Citations** | A violation type's count of citations is the number of citations related to the violation type. |
-| **DR-123 Full Name** | A driver's full name is computed as the last name, followed by a comma followed by a space, followed by the first name. |
-| **DR-124 Home Jurisdiction Label** | A driver's home jurisdiction label is the display name of the driver's home jurisdiction. |
-| **DR-125 Suspension Threshold** | A driver's suspension threshold is the point suspension threshold of the driver's home jurisdiction. |
-| **DR-126 Warning Threshold** | A driver's warning threshold is the point warning threshold of the driver's home jurisdiction. |
-| **DR-127 Count of Citations** | A driver's count of citations is the number of citations related to the driver. |
-| **DR-128 Active Points** | A driver's active points is the total effective points across the citations related to the driver. |
-| **DR-129 License Status** | The driver's license status is determined by the following priority:<br>1. the literal “Suspended”, if the active points is at least the suspension threshold;<br>2. the literal “Warning”, if the active points is at least the warning threshold;<br>3. otherwise the literal “Valid”. |
-| **DR-130 Driver Label** | A citation's driver label is the full name of the citation's driver. |
-| **DR-131 Violation Label** | A citation's violation label is the description of the citation's violation type. |
-| **DR-132 Jurisdiction Label** | A citation's jurisdiction label is the display name of the citation's jurisdiction. |
-| **DR-133 Base Fine USD** | A citation's base fine USD is the base fine USD of the citation's violation type. |
-| **DR-134 Violation Points** | A citation's violation points is the points of the citation's violation type. |
-| **DR-135 Days to Respond** | A citation's days to respond is the days to respond of the citation's jurisdiction. |
-| **DR-136 Days to Pay After Ruling** | A citation's days to pay after ruling is the days to pay after ruling of the citation's jurisdiction. |
-| **DR-137 Late Penalty Pct** | A citation's late penalty pct is the late penalty pct of the citation's jurisdiction. |
-| **DR-138 Days Late to Collections** | A citation's days late to collections is the days late to collections of the citation's jurisdiction. |
-| **DR-139 Response Due Date** | A citation's response due date is computed as `IssuedOn + DaysToRespond`. |
-| **DR-140 Days Until Response Due** | A citation's days until response due is computed as `ResponseDueDate - AsOfDate`. |
-| **DR-141 Is Response Overdue** | A citation is considered a response overdue if `If(And(Isblank(RespondedOn), AsOfDate` is greater than `ResponseDueDate), TRUE, FALSE)`. |
-| **DR-142 Count of Hearings** | A citation's count of hearings is the number of hearings related to the citation. |
-| **DR-143 Latest Hearing Outcome** | A citation's latest hearing outcome is rolled up from its related records (`Maxifs(Hearings.Outcome, Hearings.Citation, Name, Hearings.ScheduledFor, Maxifs(Hearings.ScheduledFor, Hearings.Citation, Name))`). |
-| **DR-144 Contest Status** | The citation's contest status is determined by the following priority:<br>1. the literal “NotContested”, if it is not the case that the contest requested flag is set;<br>2. the literal “HearingRequested”, if the count of hearings is 0;<br>3. the literal “Scheduled”, if at least one of the following holds: the latest hearing outcome is the literal “Pending” or `Isblank(LatestHearingOutcome)`;<br>4. otherwise the literal “Heard”. |
-| **DR-145 Is Dismissed** | A citation is considered dismissed if `If(LatestHearingOutcome` is `"Dismissed", TRUE, FALSE)`. |
-| **DR-146 Is Guilty** | A citation is considered a guilty if `If(Or(LatestHearingOutcome` is `"Guilty", LatestHearingOutcome = "Upheld", And(IsResponseOverdue, Not(ContestRequested))), TRUE, FALSE)`. |
-| **DR-147 Amount Due USD** | The citation's amount due USD is determined by the following priority:<br>1. 0, if the is dismissed flag is set;<br>2. `BaseFineUsd * (1 + LatePenaltyPct)`, if the is payment late flag is set;<br>3. otherwise the base fine USD. |
-| **DR-148 Payment Due Date** | A citation's payment due date is computed as `ResponseDueDate + DaysToPayAfterRuling`. |
-| **DR-149 Is Payment Late** | A citation is considered a payment late if `If(And(IsGuilty, Isblank(PaidOn), AsOfDate` is greater than `PaymentDueDate), TRUE, FALSE)`. |
-| **DR-150 Is in Collections** | A citation is considered in collections if `If(And(IsPaymentLate, AsOfDate` is greater than `(PaymentDueDate + DaysLateToCollections)), TRUE, FALSE)`. |
-| **DR-151 Payment Status** | The citation's payment status is determined by the following priority:<br>1. the literal “NotOwed”, if the is dismissed flag is set;<br>2. the literal “Paid”, if it is not the case that `Isblank(PaidOn)`;<br>3. the literal “Collections”, if the is in collections flag is set;<br>4. the literal “Late”, if the is payment late flag is set;<br>5. the literal “Due”, if the is guilty flag is set;<br>6. otherwise the literal “Pending”. |
-| **DR-152 Effective Points** | The citation's effective points is determined by the following priority:<br>1. the violation points, if all of the following hold: the is guilty flag is set and it is not the case that the is dismissed flag is set;<br>2. otherwise 0. |
-| **DR-153 Citation Status** | The citation's citation status is determined by the following priority:<br>1. the literal “Closed”, if at least one of the following holds: it is not the case that `Isblank(PaidOn)` or the is dismissed flag is set;<br>2. the literal “Adjudicated”, if at least one of the following holds: the latest hearing outcome is the literal “Guilty”; the latest hearing outcome is the literal “Upheld”; or all of the following hold: the is response overdue flag is set and it is not the case that the contest requested flag is set;<br>3. the literal “InContest”, if all of the following hold: the contest requested flag is set and the count of hearings is greater than 0;<br>4. the literal “Responded”, if it is not the case that `Isblank(RespondedOn)`;<br>5. otherwise the literal “Issued”. |
-| **DR-154 Citation Label** | A hearing's citation label is the citation number of the hearing's citation. |
-| **DR-155 Citation Label** | A payment's citation label is the citation number of the payment's citation. |
-| **DR-156 Citation Label** | A case event's citation label is the citation number of the case event's citation. |
+| **DR-121 Traffic School Point Cap** | A violation type's traffic school point cap is the traffic school point cap of the violation type's jurisdiction. |
+| **DR-122 Is School Eligible by Cap** | A violation type is considered a school eligible by cap if `If(Points` is at most `TrafficSchoolPointCap, TRUE, FALSE)`. |
+| **DR-123 Count of Citations** | A violation type's count of citations is the number of citations related to the violation type. |
+| **DR-124 Full Name** | A driver's full name is computed as the last name, followed by a comma followed by a space, followed by the first name. |
+| **DR-125 Home Jurisdiction Label** | A driver's home jurisdiction label is the display name of the driver's home jurisdiction. |
+| **DR-126 Suspension Threshold** | A driver's suspension threshold is the point suspension threshold of the driver's home jurisdiction. |
+| **DR-127 Warning Threshold** | A driver's warning threshold is the point warning threshold of the driver's home jurisdiction. |
+| **DR-128 Count of Citations** | A driver's count of citations is the number of citations related to the driver. |
+| **DR-129 Active Points** | A driver's active points is the total effective points across the citations related to the driver. |
+| **DR-130 License Status** | The driver's license status is determined by the following priority:<br>1. the literal “Suspended”, if the active points is at least the suspension threshold;<br>2. the literal “Warning”, if the active points is at least the warning threshold;<br>3. otherwise the literal “Valid”. |
+| **DR-131 Driver Label** | A citation's driver label is the full name of the citation's driver. |
+| **DR-132 Violation Label** | A citation's violation label is the description of the citation's violation type. |
+| **DR-133 Jurisdiction Label** | A citation's jurisdiction label is the display name of the citation's jurisdiction. |
+| **DR-134 Base Fine USD** | A citation's base fine USD is the base fine USD of the citation's violation type. |
+| **DR-135 Violation Points** | A citation's violation points is the points of the citation's violation type. |
+| **DR-136 Days to Respond** | A citation's days to respond is the days to respond of the citation's jurisdiction. |
+| **DR-137 Days to Pay After Ruling** | A citation's days to pay after ruling is the days to pay after ruling of the citation's jurisdiction. |
+| **DR-138 Late Penalty Pct** | A citation's late penalty pct is the late penalty pct of the citation's jurisdiction. |
+| **DR-139 Days Late to Collections** | A citation's days late to collections is the days late to collections of the citation's jurisdiction. |
+| **DR-140 Response Due Date** | A citation's response due date is computed as `IssuedOn + DaysToRespond`. |
+| **DR-141 Days Until Response Due** | A citation's days until response due is computed as `ResponseDueDate - AsOfDate`. |
+| **DR-142 Is Response Overdue** | A citation is considered a response overdue if `If(And(Isblank(RespondedOn), AsOfDate` is greater than `ResponseDueDate), TRUE, FALSE)`. |
+| **DR-143 Count of Hearings** | A citation's count of hearings is the number of hearings related to the citation. |
+| **DR-144 Latest Hearing Outcome** | A citation's latest hearing outcome is rolled up from its related records (`Maxifs(Hearings.Outcome, Hearings.Citation, Name, Hearings.ScheduledFor, Maxifs(Hearings.ScheduledFor, Hearings.Citation, Name))`). |
+| **DR-145 Contest Status** | The citation's contest status is determined by the following priority:<br>1. the literal “NotContested”, if it is not the case that the contest requested flag is set;<br>2. the literal “HearingRequested”, if the count of hearings is 0;<br>3. the literal “Scheduled”, if at least one of the following holds: the latest hearing outcome is the literal “Pending” or `Isblank(LatestHearingOutcome)`;<br>4. otherwise the literal “Heard”. |
+| **DR-146 Is Dismissed** | A citation is considered dismissed if `If(LatestHearingOutcome` is `"Dismissed", TRUE, FALSE)`. |
+| **DR-147 Is Guilty** | A citation is considered a guilty if `If(Or(LatestHearingOutcome` is `"Guilty", LatestHearingOutcome = "Upheld", And(IsResponseOverdue, Not(ContestRequested))), TRUE, FALSE)`. |
+| **DR-148 Amount Due USD** | The citation's amount due USD is determined by the following priority:<br>1. 0, if the is dismissed flag is set;<br>2. `BaseFineUsd * (1 + LatePenaltyPct)`, if the is payment late flag is set;<br>3. otherwise the base fine USD. |
+| **DR-149 Payment Due Date** | A citation's payment due date is computed as `ResponseDueDate + DaysToPayAfterRuling`. |
+| **DR-150 Is Payment Late** | A citation is considered a payment late if `If(And(IsGuilty, Isblank(PaidOn), AsOfDate` is greater than `PaymentDueDate), TRUE, FALSE)`. |
+| **DR-151 Is in Collections** | A citation is considered in collections if `If(And(IsPaymentLate, AsOfDate` is greater than `(PaymentDueDate + DaysLateToCollections)), TRUE, FALSE)`. |
+| **DR-152 Payment Status** | The citation's payment status is determined by the following priority:<br>1. the literal “NotOwed”, if the is dismissed flag is set;<br>2. the literal “Paid”, if it is not the case that `Isblank(PaidOn)`;<br>3. the literal “Collections”, if the is in collections flag is set;<br>4. the literal “Late”, if the is payment late flag is set;<br>5. the literal “Due”, if the is guilty flag is set;<br>6. otherwise the literal “Pending”. |
+| **DR-153 Effective Points** | The citation's effective points is determined by the following priority:<br>1. the violation points, if all of the following hold: the is guilty flag is set and it is not the case that the is dismissed flag is set;<br>2. otherwise 0. |
+| **DR-154 Citation Status** | The citation's citation status is determined by the following priority:<br>1. the literal “Closed”, if at least one of the following holds: it is not the case that `Isblank(PaidOn)` or the is dismissed flag is set;<br>2. the literal “Adjudicated”, if at least one of the following holds: the latest hearing outcome is the literal “Guilty”; the latest hearing outcome is the literal “Upheld”; or all of the following hold: the is response overdue flag is set and it is not the case that the contest requested flag is set;<br>3. the literal “InContest”, if all of the following hold: the contest requested flag is set and the count of hearings is greater than 0;<br>4. the literal “Responded”, if it is not the case that `Isblank(RespondedOn)`;<br>5. otherwise the literal “Issued”. |
+| **DR-155 Citation Label** | A hearing's citation label is the citation number of the hearing's citation. |
+| **DR-156 Citation Label** | A payment's citation label is the citation number of the payment's citation. |
+| **DR-157 Citation Label** | A case event's citation label is the citation number of the case event's citation. |
+| **DR-158 Expectation Count** | A test case's expectation count is rolled up from its related records (`Count(TestExpectation.TestCase=TestCaseId)`). |
 
 ## 4 Traceability to Schema
 
@@ -547,7 +576,8 @@ the same logic the rulebook stores, written for a business reader._
 | **SubjectStateInstances.IsCurrent** | formula | `Isblank(ExitedAt)` |
 | **SubjectStateInstances.HasCompleteLineage** | formula | `SequenceIndex>=1` |
 | **ViolationTypes.JurisdictionLabel** | lookup | `Lookup(Jurisdictions.DisplayName via Jurisdiction)` |
-| **ViolationTypes.IsSchoolEligibleByCap** | formula | `If(Points <= Lookup(Jurisdictions.TrafficSchoolPointCap, Match(Jurisdiction, Jurisdictions.Name, 0)), TRUE, FALSE)` |
+| **ViolationTypes.TrafficSchoolPointCap** | lookup | `Lookup(Jurisdictions.TrafficSchoolPointCap via Jurisdiction)` |
+| **ViolationTypes.IsSchoolEligibleByCap** | formula | `If(Points <= TrafficSchoolPointCap, TRUE, FALSE)` |
 | **ViolationTypes.CountOfCitations** | rollup | `Count(Citations via ViolationType)` |
 | **Drivers.FullName** | formula | `LastName & ", " & FirstName` |
 | **Drivers.HomeJurisdictionLabel** | lookup | `Lookup(Jurisdictions.DisplayName via HomeJurisdiction)` |
@@ -583,3 +613,4 @@ the same logic the rulebook stores, written for a business reader._
 | **Hearings.CitationLabel** | lookup | `Lookup(Citations.CitationNumber via Citation)` |
 | **Payments.CitationLabel** | lookup | `Lookup(Citations.CitationNumber via Citation)` |
 | **CaseEvents.CitationLabel** | lookup | `Lookup(Citations.CitationNumber via Citation)` |
+| **TestCase.ExpectationCount** | rollup | `Count(TestExpectation.TestCase=TestCaseId)` |

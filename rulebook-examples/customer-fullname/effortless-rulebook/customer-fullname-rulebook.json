@@ -7,84 +7,60 @@
         "type": "raw"
       },
       {
-        "name": "EmailAddress",
-        "datatype": "string",
-        "type": "raw",
-        "Description": "Email address of the customer.",
-        "nullable": true
-      },
-      {
-        "name": "Name",
-        "datatype": "string",
-        "type": "calculated",
-        "Description": "Full name is computed from the first and last name of the customer",
-        "formula": "={{FirstName}} & \" \" & {{LastName}} ",
-        "nullable": true
-      },
-      {
-        "name": "FullName",
-        "datatype": "string",
-        "type": "calculated",
-        "Description": "Last-name-first display form, computed from last and first name.",
-        "formula": "={{LastName}} & \", \" & {{FirstName}}",
-        "nullable": true
-      },
-      {
         "name": "FirstName",
         "datatype": "string",
         "type": "raw",
-        "Description": "First Name of the customer - used to make the full name"
+        "Description": "First Name of the customer"
       },
       {
         "name": "LastName",
         "datatype": "string",
         "type": "raw",
-        "Description": "Last Name of the customer - used to make the full name"
+        "Description": "Last Name of the customer"
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "Description": "Full name: first and last",
+        "formula": "={{FirstName}} & \" \" & {{LastName}}"
       },
       {
         "name": "Initials",
         "datatype": "string",
         "type": "calculated",
-        "Description": "Initials computed from the first letter of the first and last name.",
-        "formula": "=LEFT({{FirstName}}, 1) & LEFT({{LastName}}, 1) & \".\""
+        "Description": "Last letter of first and last name, dot-separated with trailing dot",
+        "formula": "=RIGHT({{FirstName}}, 1) & \".\" & RIGHT({{LastName}}, 1) & \".\""
       }
     ],
     "data": [
       {
-        "CustomerId": "cust-1000",
-        "EmailAddress": "jane.smith@email.com",
-        "Name": "Jane Smith",
-        "FullName": "Smith, Jane",
+        "CustomerId": "jane-smith-email-com",
         "FirstName": "Jane",
-        "LastName": "Smith",
-        "Initials": "JS."
+        "LastName": "Smithy",
+        "Name": "Jane Smithy",
+        "Initials": "e.y."
       },
       {
-        "CustomerId": "cust-1001",
-        "EmailAddress": "john.doe@email.com",
-        "Name": "John Doe",
-        "FullName": "Doe, John",
+        "CustomerId": "john-doe-email-com",
         "FirstName": "John",
         "LastName": "Doe",
-        "Initials": "JD."
+        "Name": "John Doe",
+        "Initials": "n.e."
       },
       {
-        "CustomerId": "cust-1002",
-        "EmailAddress": "emily.jones@email.com",
-        "Name": "Emily Jones",
-        "FullName": "Jones, Emily",
+        "CustomerId": "emily-jones-email-com",
         "FirstName": "Emily",
         "LastName": "Jones",
-        "Initials": "EJ."
+        "Name": "Emily Jones",
+        "Initials": "y.s."
       },
       {
-        "CustomerId": "cust-1003",
-        "EmailAddress": "alice@cooper.com",
-        "Name": "Alice Cooper",
-        "FullName": "Cooper, Alice",
+        "CustomerId": "alice-cooper",
         "FirstName": "Alice",
-        "LastName": "Cooper",
-        "Initials": "AC."
+        "LastName": "Gutknechts",
+        "Name": "Alice Gutknechts",
+        "Initials": "e.s."
       }
     ]
   },
@@ -93,76 +69,30 @@
       {
         "name": "MetaKey",
         "datatype": "string",
-        "type": "raw",
-        "Description": "The metadata key (e.g. 'tagline', 'motif_palette', 'substrates'). Unique within the table."
+        "type": "raw"
       },
       {
         "name": "Name",
         "datatype": "string",
         "type": "calculated",
-        "Description": "Identifier for this metadata entry. Mirrors MetaKey so the row is addressable by Name like every other table.",
         "formula": "={{MetaKey}}"
       },
       {
         "name": "ValueType",
         "datatype": "string",
-        "type": "raw",
-        "Description": "How to interpret the value columns: 'string' (use StringValue), 'object' (parse JsonValue as JSON object), 'array' (parse JsonValue as JSON array)."
+        "type": "raw"
       },
       {
         "name": "StringValue",
         "datatype": "string",
-        "type": "raw",
-        "Description": "Plain string value. Populated when ValueType == 'string'; null otherwise."
+        "type": "raw"
       },
       {
         "name": "JsonValue",
         "datatype": "string",
-        "type": "raw",
-        "Description": "JSON-encoded value. Populated when ValueType == 'object' or 'array'; null when ValueType == 'string'."
+        "type": "raw"
       }
     ],
-    "data": [
-      {
-        "MetaKey": "tagline",
-        "ValueType": "string",
-        "StringValue": "One table. One calculated field. That's the whole demo."
-      },
-      {
-        "MetaKey": "motif",
-        "ValueType": "string",
-        "StringValue": "default"
-      },
-      {
-        "MetaKey": "description_rich",
-        "ValueType": "string",
-        "StringValue": "The smallest non-trivial Effortless rulebook. **One** entity (`Customers`), three rows, and a single calculated field — `FullName = FirstName & \" \" & LastName`. The argument is the simplicity itself: this much logic, lifted out of application code and into the rulebook, propagates to every substrate. Postgres view, Python class, Excel cell, OWL ontology — all four compute the same answer the same way, from the same rulebook JSON, with zero glue code.\n\nThis is the rulebook to point a skeptic at when *every other demo feels like too much*."
-      },
-      {
-        "MetaKey": "use_cases",
-        "ValueType": "array",
-        "JsonValue": "[\"**Edit `FirstName` on any row and watch `FullName` recompute in every substrate.** No application code reads this field — the rulebook IS the field.\", \"**Compare the Postgres view, the Python class, and the Excel cell** for the same row. They all compute `FullName` from the same formula declared once in the rulebook.\", \"**Try adding a calculated field of your own** — say `Initials = LEFT(FirstName, 1) & LEFT(LastName, 1)`. Run `effortless build`. Every substrate now has it.\"]"
-      },
-      {
-        "MetaKey": "signature_rows",
-        "ValueType": "array",
-        "JsonValue": "[{\"entity\": \"Customers\", \"ids\": [\"jane-smith-email-com\", \"john-doe-email-com\", \"emily-jones-email-com\"]}]"
-      },
-      {
-        "MetaKey": "journal_seed",
-        "ValueType": "string",
-        "StringValue": "Three customers. One calculated field. The whole point of ERB, on a napkin."
-      },
-      {
-        "MetaKey": "substrates",
-        "ValueType": "array",
-        "JsonValue": "[{\"key\": \"postgres\", \"important\": true, \"chip_label\": \"Postgres\"}, {\"key\": \"python\", \"important\": true, \"chip_label\": \"Python\"}, {\"key\": \"excel\", \"important\": false, \"chip_label\": \"Excel\"}, {\"key\": \"owl\", \"important\": false, \"chip_label\": \"OWL\"}]"
-      },
-      {
-        "MetaKey": "motif_palette",
-        "ValueType": "object",
-        "JsonValue": "{\"primary\": \"#2b4a6a\", \"accent\": \"#e6a544\", \"ink\": \"#0d1b2a\"}"
-      }
-    ]
+    "data": []
   }
 }

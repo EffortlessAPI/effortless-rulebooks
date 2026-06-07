@@ -1,0 +1,4 @@
+# The reasoner is the computation engine. Same stack as owl/graph.py.
+rdflib>=7.0
+owlrl>=6.0
+pyshacl>=0.25

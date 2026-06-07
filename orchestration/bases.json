@@ -49,9 +49,9 @@
   },
   {
     "id": "appwN9EAp8IeIxM23",
-    "name": "Jessica Talisman's Special Solutions (v2)",
+    "name": "Talisman's Special Solutions (v2)",
     "description": "Extends LLC's Ontology with additional business rules, inferences, and cross-entity calculations",
-    "docs": "bases/jessica-advanced",
+    "docs": "bases/talisman-advanced",
     "complexity": "advanced"
   },
   {

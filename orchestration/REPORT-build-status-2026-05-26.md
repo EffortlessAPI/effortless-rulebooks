@@ -42,8 +42,8 @@ explicit `raise`. It does **not** mean every substrate scored 100% conformance
 | **FIX**| **gym-trainer-invoicing**           | **PARSER fixed this session — see gym-fix-notes below**                   |
 | FAIL   | intelligence-taxonomy               | PARSER: ops `*`                                                           |
 | PASS   | is-everything-a-language            | —                                                                         |
-| PASS   | jessica-advanced                    | —                                                                         |
-| PASS   | jessica-basic                       | —                                                                         |
+| PASS   | talisman-advanced                    | —                                                                         |
+| PASS   | talisman-basic                       | —                                                                         |
 | PASS   | job-search-rag                      | —                                                                         |
 | FAIL   | mechanical-kitchen-timer            | PARSER: ops `*` `+` `.` `/`                                               |
 | PASS   | naked-claude-vs-effortless-claude   | —                                                                         |

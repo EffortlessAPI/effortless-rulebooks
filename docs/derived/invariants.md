@@ -90,7 +90,7 @@ _violates `ax-007` · severity: critical · status: active_
 
 ### Swappable active domain
 
-**Wrong framing.** The platform has one stack and a 'swappable active domain' — switch the active domain (acme-llc, star-trek, jessica-advanced, …) and the entire stack regenerates against it.
+**Wrong framing.** The platform has one stack and a 'swappable active domain' — switch the active domain (acme-llc, star-trek, talisman-advanced, …) and the entire stack regenerates against it.
 
 **Correct framing.** rulebook-examples/ is a CATALOG of N independent Effortless projects. Each project owns its own rulebook and picks the subset of the platform's 15 substrates it needs (acme-llc uses all 15; most use 3+). active-domain.txt is a convenience pointer for the orchestrator/portal — not the architecture.
 

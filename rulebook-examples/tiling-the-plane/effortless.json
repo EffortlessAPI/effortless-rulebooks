@@ -57,6 +57,15 @@
       "CommandLine": "http://localhost:4242/postgres-calculated-to-rulebook -i ../effortless-rulebook/tiling-the-plane-rulebook.json",
       "IsDisabled": true,
       "Description": "Reverse spoke: refresh rulebook derived-field display copies from Postgres views after the destructive rebuild (raws verified, never written). [DISABLED: requires postgres-bootstrap/pull-from-postgres.sh to produce .pg-raw-data.json; not wired in this project. The rulebook JSON is authoritative, so the display-copy refresh is optional.]"
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "rulebooktorulespeak",
+      "RelativePath": "/rulespeak",
+      "CommandLine": "rulebook-to-rulespeak -i ../effortless-rulebook/tiling-the-plane-rulebook.json",
+      "IsDisabled": false,
+      "LastVersionUsed": "v2026.06.06.0219",
+      "LastUrl": "https://effortless-rulebook-to-rulespeak-v2026-06-06-0219-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     }
   ]
 }

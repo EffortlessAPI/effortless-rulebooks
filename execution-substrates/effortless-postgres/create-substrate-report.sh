@@ -18,7 +18,28 @@ SUBSTRATE_TITLE = "Effortless-PostgreSQL Execution Substrate"
 SUBSTRATE_ICON = "🐘"
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__)) if '__file__' in globals() else os.getcwd()
-POSTGRES_DIR = os.path.abspath(os.path.join(SCRIPT_DIR, '..', '..', 'licensed-effortless-tools', 'postgres'))
+REPO_ROOT = os.path.abspath(os.path.join(SCRIPT_DIR, '..', '..'))
+
+
+def _default_postgres_dir():
+    """Default ERB_POSTGRES_DIR: rulebook-examples/<ERB_DOMAIN>/postgres-bootstrap/.
+
+    The rulebook-to-postgres transpiler emits the numbered SQL files into the
+    active domain's postgres-bootstrap/ folder (see orchestration/shared.py,
+    which maps folder 'postgres-bootstrap' -> substrate 'effortless-postgres').
+    The default IS the right answer for the active domain; ERB_POSTGRES_DIR only
+    overrides. There is no domain-agnostic location to fall back to.
+    """
+    domain = os.environ.get('ERB_DOMAIN', '').strip()
+    if not domain:
+        raise RuntimeError(
+            "ERB_DOMAIN is not set and ERB_POSTGRES_DIR was not supplied; "
+            "cannot resolve the postgres-bootstrap directory."
+        )
+    return os.path.join(REPO_ROOT, 'rulebook-examples', domain, 'postgres-bootstrap')
+
+
+POSTGRES_DIR = os.environ.get('ERB_POSTGRES_DIR') or _default_postgres_dir()
 
 
 def read_file(path, default=""):
@@ -28,16 +49,34 @@ def read_file(path, default=""):
     except Exception:
         return default
 
+
+def read_required_sql(path):
+    """Read a generated SQL file that MUST exist. Raise on failure — never
+    substitute a placeholder. A silent '-- (file not generated yet)' default
+    would render the report green while showing nothing, masking a wrong path
+    or a failed build (the exact anti-pattern CLAUDE.md forbids)."""
+    if not os.path.exists(path):
+        raise FileNotFoundError(
+            f"Generated SQL not found at {path}. The rulebook-to-postgres "
+            f"transpiler is supposed to emit it into POSTGRES_DIR "
+            f"({POSTGRES_DIR}) before this report-generator runs. If you're "
+            f"seeing this, either the build failed or POSTGRES_DIR is wrong "
+            f"(set ERB_DOMAIN / ERB_POSTGRES_DIR correctly) — do not substitute "
+            f"a default."
+        )
+    with open(path, 'r') as f:
+        return f.read()
+
+
 def _default_testing_dir():
     """Default ERB_TESTING_DIR: rulebook-examples/<ERB_DOMAIN>/testing/."""
-    repo_root = os.path.abspath(os.path.join(SCRIPT_DIR, '..', '..'))
     domain = os.environ.get('ERB_DOMAIN', '').strip()
     if not domain:
         raise RuntimeError(
             "ERB_DOMAIN is not set and ERB_TESTING_DIR was not supplied; "
             "cannot resolve the testing directory."
         )
-    return os.path.join(repo_root, 'rulebook-examples', domain, 'testing')
+    return os.path.join(REPO_ROOT, 'rulebook-examples', domain, 'testing')
 
 
 def _resolve_test_results_path():
@@ -71,7 +110,7 @@ SQL_FILES = [
 
 sql_sources = {}
 for fname, tab_id, _label, _group in SQL_FILES:
-    sql_sources[tab_id] = read_file(os.path.join(POSTGRES_DIR, fname), '-- (file not generated yet)')
+    sql_sources[tab_id] = read_required_sql(os.path.join(POSTGRES_DIR, fname))
 
 log_content = read_file('.last-run.log', 'No log available')
 test_results = read_file(_resolve_test_results_path(), 'No test results available')

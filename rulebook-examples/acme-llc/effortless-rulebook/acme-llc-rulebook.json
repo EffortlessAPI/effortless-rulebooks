@@ -336,6 +336,13 @@
         "ValueType": "object",
         "StringValue": null,
         "JsonValue": "{\"source_base_id\": \"appWrXPvXbkgQGOxt\", \"table_count\": 3, \"tool_version\": \"2.0.0\", \"field_type_mapping\": \"checkbox→boolean, number→number/integer, multipleRecordLinks→relationship, multipleLookupValues→lookup, rollup→aggregation, count→aggregation, formula→calculated\", \"export_mode\": \"schema_first_type_mapping\", \"type_inference\": {\"enabled\": true, \"priority\": \"airtable_metadata (NO COERCION) → formula_analysis → reference_resolution → data_analysis (last-resort inference; build SHOULD FAIL rather than silently use this)\", \"airtable_type_mapping\": \"checkbox→boolean, singleLineText→string, multilineText→string, number→number/integer, datetime→datetime, singleSelect→string, email→string, url→string, phoneNumber→string\", \"data_coercion_hierarchy\": \"Only invoked when Airtable schema is unavailable (which SHOULD make the build fail). Coercion order: datetime → number → integer → boolean → base64 → json → string\", \"nullable_support\": true, \"error_value_handling\": \"#NUM!, #ERROR!, #N/A, #REF!, #DIV/0!, #VALUE!, #NAME? are treated as NULL\"}}"
+      },
+      {
+        "MetaKey": "narrative_drift_lesson",
+        "Name": "narrative_drift_lesson",
+        "ValueType": "string",
+        "StringValue": "**The point of this demo is the asymmetry between code and prose.** Flip `FullName` from `LastName & \", \" & FirstName` (legal-style, surname-first) to `FirstName & \" \" & LastName` (western order) and re-run `effortless build`: every *executable* artifact follows along instantly and for free — the Postgres view, Python class, Go SDK, Excel/CSV, OWL, the rendered RuleSpeak DRs and section-4 expression all re-derive from the single formula and stay correct. But every *hand-written* narrative about the rules goes stale from one moment to the next — `description_rich`, `explanation_rich`, `journal_seed`, the seed `FullName` values baked into the Customers rows, and any prose README still say \"Smith, Bobby / courtroom-style\" even though the formula now computes \"Bobby Smith\". That staleness is INTENTIONAL and left in place on purpose: it is the live exhibit. Computed code follows the SSoT; comments and narrative cannot. The only narrative that can keep up is one that is itself regenerated from the rulebook (e.g. an LLM-generated README), not hand-maintained. Do not \"fix\" the stale narrative or seed values to match the formula — doing so erases the demonstration.",
+        "JsonValue": null
       }
     ]
   }

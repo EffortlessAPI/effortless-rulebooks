@@ -19,89 +19,13 @@
   "ProjectTranspilers": [
     {
       "IsSSoTTranspiler": false,
-      "Name": "rulebooktoairtable",
-      "RelativePath": "/effortless-rulebook/push-to-airtable",
-      "CommandLine": "rulebook-to-airtable -i ../traffic-ticket-contest-rulebook.json -account airtable -w 300000",
-      "IsDisabled": true,
-      "Enabled": false,
-      "Description": "Reverse-sync: push rulebook changes back to Airtable"
-    },
-    {
-      "IsSSoTTranspiler": false,
-      "Name": "httplocalhost4242rulebooktopython",
-      "RelativePath": "/python",
-      "CommandLine": "http://localhost:4242/rulebook-to-python -i ../effortless-rulebook/traffic-ticket-contest-rulebook.json",
-      "IsDisabled": false
-    },
-    {
-      "IsSSoTTranspiler": false,
-      "Name": "httplocalhost4242rulebooktogolang",
-      "RelativePath": "/golang",
-      "CommandLine": "http://localhost:4242/rulebook-to-golang -i ../effortless-rulebook/traffic-ticket-contest-rulebook.json",
-      "IsDisabled": false
-    },
-    {
-      "IsSSoTTranspiler": false,
-      "Name": "httplocalhost4242rulebooktobinary",
-      "RelativePath": "/binary",
-      "CommandLine": "http://localhost:4242/rulebook-to-binary -i ../effortless-rulebook/traffic-ticket-contest-rulebook.json",
-      "IsDisabled": false
-    },
-    {
-      "IsSSoTTranspiler": false,
-      "Name": "httplocalhost4242rulebooktocobcol",
-      "RelativePath": "/cobol",
-      "CommandLine": "http://localhost:4242/rulebook-to-cobol -i ../effortless-rulebook/traffic-ticket-contest-rulebook.json",
-      "IsDisabled": false
-    },
-    {
-      "IsSSoTTranspiler": false,
-      "Name": "httplocalhost4242rulebooktocsv",
-      "RelativePath": "/csv",
-      "CommandLine": "http://localhost:4242/rulebook-to-csv -i ../effortless-rulebook/traffic-ticket-contest-rulebook.json",
-      "IsDisabled": false
-    },
-    {
-      "IsSSoTTranspiler": false,
-      "Name": "httplocalhost4242rulebooktoxlsx",
-      "RelativePath": "/xlsx",
-      "CommandLine": "http://localhost:4242/rulebook-to-xlsx -i ../effortless-rulebook/traffic-ticket-contest-rulebook.json",
-      "IsDisabled": false
-    },
-    {
-      "IsSSoTTranspiler": false,
-      "Name": "httplocalhost4242rulebooktouml",
-      "RelativePath": "/uml",
-      "CommandLine": "http://localhost:4242/rulebook-to-uml -i ../effortless-rulebook/traffic-ticket-contest-rulebook.json",
-      "IsDisabled": false
-    },
-    {
-      "IsSSoTTranspiler": false,
-      "Name": "httplocalhost4242rulebooktoowl",
-      "RelativePath": "/owl",
-      "CommandLine": "http://localhost:4242/rulebook-to-owl -i ../effortless-rulebook/traffic-ticket-contest-rulebook.json",
-      "IsDisabled": false
-    },
-    {
-      "IsSSoTTranspiler": false,
-      "Name": "httplocalhost4242rulebooktoenglish",
-      "RelativePath": "/english",
-      "CommandLine": "http://localhost:4242/rulebook-to-english -i ../effortless-rulebook/traffic-ticket-contest-rulebook.json",
-      "IsDisabled": false
-    },
-    {
-      "IsSSoTTranspiler": false,
-      "Name": "httplocalhost4242rulebooktoexplainddag",
-      "RelativePath": "/explain-dag",
-      "CommandLine": "http://localhost:4242/rulebook-to-explain-dag -i ../effortless-rulebook/traffic-ticket-contest-rulebook.json",
-      "IsDisabled": false
-    },
-    {
-      "IsSSoTTranspiler": false,
       "Name": "rulebooktopostgres",
       "RelativePath": "/postgres-bootstrap",
-      "CommandLine": "rulebook-to-postgres -i ../effortless-rulebook/traffic-ticket-contest-rulebook.json -p mode=drop-all -p stage=dev -p drop_all=true",
-      "IsDisabled": false
+      "CommandLine": "http://localhost:30038 -i ../effortless-rulebook/traffic-ticket-contest-rulebook.json -p mode=drop-all -p stage=dev -p drop_all=true",
+      "IsDisabled": false,
+      "LastVersionUsed": "v2026.05.09.1738",
+      "LastUrl": "https://effortless-rulebook-to-postgres-v2026-05-09-1738-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
+      "Description": "Generate Postgres schema + seed data from the rulebook. TEMP: pointed at the local :30038 build (with the FK-inference fix) instead of the cloud LastUrl, pending deploy of that fix to the cloud transpiler."
     },
     {
       "IsSSoTTranspiler": false,
@@ -112,31 +36,33 @@
     },
     {
       "IsSSoTTranspiler": false,
-      "Name": "rulebooktoxlsx-effortless",
-      "RelativePath": "/effortless-xlsx",
-      "CommandLine": "rulebook-to-xlsx -i ../effortless-rulebook/traffic-ticket-contest-rulebook.json",
-      "IsDisabled": false
-    },
-    {
-      "IsSSoTTranspiler": false,
-      "Name": "rulebooktoentityframework",
-      "RelativePath": "/effortless-entity-framework",
-      "CommandLine": "rulebook-to-entity-framework -i ../effortless-rulebook/traffic-ticket-contest-rulebook.json",
-      "IsDisabled": false
-    },
-    {
-      "IsSSoTTranspiler": false,
       "Name": "httplocalhost4242postgrescalculatedtorulebook",
       "RelativePath": "/postgres-bootstrap",
       "CommandLine": "http://localhost:4242/postgres-calculated-to-rulebook -i ../effortless-rulebook/traffic-ticket-contest-rulebook.json",
-      "IsDisabled": false,
-      "Description": "Reverse spoke: refresh rulebook derived-field display copies from Postgres views after the destructive rebuild (raws verified, never written)."
+      "IsDisabled": true,
+      "Description": "Reverse spoke: refresh rulebook derived-field display copies from Postgres views after the destructive rebuild (raws verified, never written). DISABLED for now — it was failing on missing .pg-raw-data.json and mutating/auto-committing the rulebook during builds."
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "httplocalhost4242rulebooktoexplainddag",
+      "RelativePath": "/explain-dag",
+      "CommandLine": "http://localhost:4242/rulebook-to-explain-dag -i ../effortless-rulebook/traffic-ticket-contest-rulebook.json",
+      "IsDisabled": false
     },
     {
       "IsSSoTTranspiler": false,
       "Name": "rulebooktorulespeak",
       "RelativePath": "/rulespeak",
       "CommandLine": "rulebook-to-rulespeak -i ../effortless-rulebook/traffic-ticket-contest-rulebook.json",
+      "IsDisabled": false,
+      "LastVersionUsed": "v2026.06.06.0219",
+      "LastUrl": "https://effortless-rulebook-to-rulespeak-v2026-06-06-0219-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "httplocalhost4242rulebooktopython",
+      "RelativePath": "/python",
+      "CommandLine": "http://localhost:4242/rulebook-to-python -i ../effortless-rulebook/traffic-ticket-contest-rulebook.json",
       "IsDisabled": false
     }
   ]

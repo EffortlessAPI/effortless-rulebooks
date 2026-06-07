@@ -97,7 +97,7 @@ The highlights table below is a curated subset; the [full domain catalog](docs/d
 | [mechanical-kitchen-timer](rulebook-examples/mechanical-kitchen-timer/) | depth of expressivity | A 26-table hardware ontology — demonstrates that the methodology isn't limited to information systems |
 | [fantasy-football](rulebook-examples/fantasy-football/) | depth of expressivity | Four-hop DAG: raw stats → roster aggregations → matchup scoring → standings |
 | [therapist-helper-portal](rulebook-examples/therapist-helper-portal/) | depth of expressivity | Three-hop cascading inference: GoalUpdate → Goal.ProgressPct → Client.IsAtRisk |
-| [jessica-basic](rulebook-examples/jessica-basic/) | depth of expressivity | Relationships, aggregations, role-agent separation |
+| [talisman-basic](rulebook-examples/talisman-basic/) | depth of expressivity | Relationships, aggregations, role-agent separation |
 | [star-trek](rulebook-examples/star-trek/) | depth of expressivity | Hierarchical rollups, polymorphic foreign keys |
 | [is-everything-a-language](rulebook-examples/is-everything-a-language/) | depth of expressivity | 8-predicate AND logic, formal argument modeling |
 | [customer-fullname](rulebook-examples/customer-fullname/) | minimal | Hello World — string concat formula |

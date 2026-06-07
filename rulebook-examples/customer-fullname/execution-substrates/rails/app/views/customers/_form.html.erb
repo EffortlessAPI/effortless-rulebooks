@@ -33,11 +33,6 @@
   </div>
 
   <div class="mb-3">
-    <label for="customer_email_address">Email Address</label>
-    <input class="form-control" type="email" value="<%= customer.email_address %>" name="customer[email_address]" id="customer_email_address" />
-  </div>
-
-  <div class="mb-3">
     <input type="submit" value="<%= customer.persisted? ? 'Update Customer' : 'Create Customer' %>" class="btn btn-primary" />
     <a class="btn btn-secondary" href="<%= customers_path %>">Cancel</a>
   </div>

@@ -1,0 +1,26 @@
+[
+  {
+    "step_precedence_id": "prec-1-2",
+    "name": null,
+    "from_step": "prod-deploy-step-1",
+    "to_step": "prod-deploy-step-2"
+  },
+  {
+    "step_precedence_id": "prec-2-3",
+    "name": null,
+    "from_step": "prod-deploy-step-2",
+    "to_step": "prod-deploy-step-3"
+  },
+  {
+    "step_precedence_id": "prec-3-4",
+    "name": null,
+    "from_step": "prod-deploy-step-3",
+    "to_step": "prod-deploy-step-4"
+  },
+  {
+    "step_precedence_id": "prec-4-5",
+    "name": null,
+    "from_step": "prod-deploy-step-4",
+    "to_step": "prod-deploy-step-5"
+  }
+]
