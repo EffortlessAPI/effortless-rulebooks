@@ -29,6 +29,7 @@ export default function App() {
   const [busy, setBusy] = useState(false);
   const [view, setView] = useState("flow");
   const [reassign, setReassign] = useState(null); // {roleId, anchorRect} | null
+  const [scenarioOpen, setScenarioOpen] = useState(false); // floating picker open?
   const reloadingRef = useRef(false);
 
   const load = useCallback(async () => {
@@ -99,8 +100,15 @@ export default function App() {
       <TopBar sit={sit} busy={busy} />
 
       {/* The verdict is a fixed card in the top-right corner — always visible,
-          pinned as you scroll. */}
-      <VerdictHeader verdict={sit.verdict} workflow={sit.workflow} />
+          pinned as you scroll. Right under the verdict sits the "Try a scenario"
+          button, which opens the floating picker (scenarios come from the DB). */}
+      <VerdictHeader
+        verdict={sit.verdict}
+        workflow={sit.workflow}
+        hasScenarios={scenarios.length > 0}
+        busy={busy}
+        onOpenScenarios={() => setScenarioOpen(true)}
+      />
 
       <div className="viewbar">
         <div className="tabs">
@@ -113,16 +121,6 @@ export default function App() {
         </div>
       </div>
 
-      {/* The two stacked status bars sit UNDER the view picker, just above the
-          stage. The editable knobs that drive the verdict read top-to-bottom. */}
-      <StalenessBar
-        workflow={sit.workflow}
-        busy={busy}
-        onSetThreshold={handlers.setStalenessThreshold}
-        onSetModified={handlers.setModified}
-      />
-      <TimeBudgetBar sit={sit} workflow={sit.workflow} verdict={sit.verdict} />
-
       {/* The step mix (how many steps an AI vs. a human runs) sits right above
           the step cards it summarizes. */}
       <AgentMix sit={sit} />
@@ -132,13 +130,28 @@ export default function App() {
         {view === "graph" && <GraphView sit={sit} handlers={handlers} />}
       </div>
 
-      {/* Scenario presets live at the BOTTOM — set several facts at once and
-          watch everything above recompute. */}
-      <ScenarioBar
-        scenarios={scenarios}
+      {/* The two stacked status bars now live at the BOTTOM, just above the
+          footer. They are read-outs of the verdict's inputs (staleness + time
+          budget); their editable knobs drive what the verdict above recomputes. */}
+      <StalenessBar
+        workflow={sit.workflow}
         busy={busy}
-        onApply={(name) => mutate(() => api.applyScenario(name))}
+        onSetThreshold={handlers.setStalenessThreshold}
+        onSetModified={handlers.setModified}
       />
+      <TimeBudgetBar sit={sit} workflow={sit.workflow} verdict={sit.verdict} />
+
+      {/* The scenario picker is a floating popup, opened from the button under
+          the verdict. Each choice sets several facts at once (and explains what
+          it does); watch the whole board recompute. Scenarios are DB-driven. */}
+      {scenarioOpen && (
+        <ScenarioModal
+          scenarios={scenarios}
+          busy={busy}
+          onApply={(name) => { setScenarioOpen(false); mutate(() => api.applyScenario(name)); }}
+          onClose={() => setScenarioOpen(false)}
+        />
+      )}
 
       {/* While the reasoner runs, the whole board dims behind a pulsing veil so
           it's unmistakable that the substrate is recomputing (matches the
@@ -195,19 +208,48 @@ function AgentMix({ sit }) {
   );
 }
 
-// ---- scenario presets -----------------------------------------------------
-function ScenarioBar({ scenarios, onApply, busy }) {
-  if (!scenarios.length) return null;
-  const icon = (id) => (id === "trigger-risk" ? "⚠️" : id === "all-human" ? "🧑" : id === "ai-at-gate" ? "🤖" : "↺");
+// ---- scenario picker (floating popup) -------------------------------------
+// A modal launched from the button under the verdict. Each scenario sets several
+// raw facts at once; the row shows its label + an explanation of what it does
+// and what the reasoner will derive as a result. The whole list — labels, icons,
+// explanations — comes from the backend (which reads the rulebook's `Scenarios`
+// table). Nothing here is hardcoded; add a row to the rulebook and it shows up.
+function ScenarioModal({ scenarios, onApply, onClose, busy }) {
+  // Close on Escape; the backdrop click also closes.
+  useEffect(() => {
+    const onKey = (e) => { if (e.key === "Escape") onClose(); };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [onClose]);
+
   return (
-    <div className="scenario-bar">
-      <span className="scenario-label">Try a scenario:</span>
-      {scenarios.map((s) => (
-        <button key={s.id} className={"scenario-btn " + (s.id === "reset" ? "reset" : "")} disabled={busy} onClick={() => onApply(s.id)}>
-          {icon(s.id)} {s.label}
-        </button>
-      ))}
-      <span className="scenario-note">each sets several facts at once — watch the board recompute</span>
+    <div className="scenario-modal-backdrop" onClick={onClose}>
+      <div className="scenario-modal" role="dialog" aria-modal="true" onClick={(e) => e.stopPropagation()}>
+        <div className="sm-head">
+          <div className="sm-title">Try a scenario</div>
+          <button className="sm-close" onClick={onClose} aria-label="close">✕</button>
+        </div>
+        <p className="sm-intro muted">
+          Each scenario sets several raw facts at once — then the reasoner recomputes the whole
+          board. Pick one and watch the verdict and the bars react.
+        </p>
+        <div className="sm-list">
+          {scenarios.map((s) => (
+            <button
+              key={s.id}
+              className={"sm-item " + (s.isReset ? "reset" : "")}
+              disabled={busy}
+              onClick={() => onApply(s.id)}
+            >
+              <span className="sm-item-icon">{s.icon || "▷"}</span>
+              <span className="sm-item-body">
+                <span className="sm-item-label">{s.label}</span>
+                {s.explanation && <span className="sm-item-explain">{s.explanation}</span>}
+              </span>
+            </button>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }
@@ -217,7 +259,10 @@ function ScenarioBar({ scenarios, onApply, busy }) {
 //   (docs stale  AND  AI runs a step)   OR   (plan over its time budget)
 // Each pill is lit only when that condition is currently true; the pills that
 // are actually FORCING the current verdict get a "firing" highlight.
-function VerdictHeader({ verdict, workflow }) {
+//
+// Directly under the verdict sits the "Try a scenario" button that opens the
+// floating picker — keeping the presets right next to the status they change.
+function VerdictHeader({ verdict, workflow, hasScenarios, busy, onOpenScenarios }) {
   const risk = verdict.isAtComplianceRisk;
   const stale = verdict.isStale;
   const ai = verdict.hasAIExecutedStep;
@@ -239,6 +284,11 @@ function VerdictHeader({ verdict, workflow }) {
         <RulePill on={over} label="over time budget" firing={over} />
         <span className="vh-eq">→ {risk ? "AT RISK" : "ok"}</span>
       </div>
+      {hasScenarios && (
+        <button className="vh-scenario-btn" disabled={busy} onClick={onOpenScenarios}>
+          ✦ Try a scenario…
+        </button>
+      )}
     </div>
   );
 }

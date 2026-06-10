@@ -58,14 +58,40 @@ button, input, select { font: inherit; }
 .am-ai b { color: var(--ai); }
 .am-human b { color: var(--human); }
 
-/* scenario bar (lives at the bottom of the page, above the footer) */
-.scenario-bar { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; padding: 11px 22px; background: var(--panel); border-top: 1px solid var(--line); }
-.scenario-label { font-size: 12px; color: var(--muted); font-weight: 600; }
-.scenario-btn { background: var(--card2); border: 1px solid var(--line); color: var(--text); padding: 7px 13px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 13px; transition: filter .12s, border-color .12s; }
-.scenario-btn:hover:not(:disabled) { border-color: var(--accent); }
-.scenario-btn.reset { background: transparent; color: var(--muted); }
-.scenario-btn:disabled { opacity: .5; }
-.scenario-note { font-size: 12px; color: var(--muted); margin-left: auto; }
+/* "Try a scenario…" button — lives inside the verdict card, under the rule row.
+   Opens the floating scenario picker (the scenarios themselves come from the DB). */
+.vh-scenario-btn { align-self: stretch; margin-top: 2px; background: var(--card2); border: 1px solid var(--accent);
+  color: var(--text); padding: 8px 12px; border-radius: 9px; cursor: pointer; font-weight: 700; font-size: 13px;
+  transition: filter .12s, box-shadow .12s; box-shadow: 0 0 0 0 transparent; }
+.vh-scenario-btn:hover:not(:disabled) { box-shadow: 0 6px 22px -8px var(--accent); filter: brightness(1.08); }
+.vh-scenario-btn:disabled { opacity: .5; cursor: default; }
+
+/* scenario picker — a floating modal popup */
+.scenario-modal-backdrop { position: fixed; inset: 0; z-index: 60; display: flex; align-items: center; justify-content: center;
+  padding: 24px; background: rgba(6,8,13,.62); backdrop-filter: blur(2px); animation: sm-fade .14s ease; }
+@keyframes sm-fade { from { opacity: 0; } to { opacity: 1; } }
+.scenario-modal { width: 560px; max-width: 100%; max-height: 84vh; overflow: auto; background: var(--bg2);
+  border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 30px 90px -20px rgba(0,0,0,.7);
+  padding: 18px 20px 20px; animation: sm-rise .16s ease; }
+@keyframes sm-rise { from { transform: translateY(8px) scale(.99); opacity: .6; } to { transform: none; opacity: 1; } }
+.sm-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.sm-title { font-size: 17px; font-weight: 800; }
+.sm-close { background: transparent; border: 1px solid var(--line); color: var(--muted); width: 30px; height: 30px;
+  border-radius: 8px; cursor: pointer; font-size: 14px; line-height: 1; }
+.sm-close:hover { color: var(--text); border-color: var(--accent); }
+.sm-intro { font-size: 12.5px; margin: 8px 0 14px; line-height: 1.5; }
+.sm-list { display: flex; flex-direction: column; gap: 10px; }
+.sm-item { display: flex; align-items: flex-start; gap: 13px; text-align: left; width: 100%;
+  background: var(--card); border: 1px solid var(--line); color: var(--text); padding: 13px 15px; border-radius: 11px;
+  cursor: pointer; transition: border-color .12s, background .12s, transform .08s; }
+.sm-item:hover:not(:disabled) { border-color: var(--accent); background: var(--card2); }
+.sm-item:active:not(:disabled) { transform: translateY(1px); }
+.sm-item:disabled { opacity: .55; cursor: default; }
+.sm-item.reset { background: transparent; }
+.sm-item-icon { font-size: 20px; line-height: 1.2; flex-shrink: 0; width: 24px; text-align: center; }
+.sm-item-body { display: flex; flex-direction: column; gap: 4px; }
+.sm-item-label { font-size: 14px; font-weight: 700; }
+.sm-item-explain { font-size: 12.5px; color: var(--muted); line-height: 1.5; }
 
 /* verdict — a fixed card pinned in the top-right corner, always visible */
 .verdict-header { position: fixed; top: 64px; right: 18px; z-index: 35; width: 320px; max-width: 42vw;
@@ -82,7 +108,9 @@ button, input, select { font: inherit; }
 /* keep the fixed card from overlapping the stage on narrow screens */
 @media (max-width: 1100px) {
   .verdict-header { position: static; width: auto; max-width: none; flex-direction: row; align-items: center;
-    margin: 0 22px 12px; box-shadow: none; }
+    flex-wrap: wrap; margin: 0 22px 12px; box-shadow: none; }
+  /* in the row layout the scenario button shouldn't try to stretch full-width */
+  .vh-scenario-btn { align-self: center; margin-top: 0; margin-left: auto; white-space: nowrap; }
 }
 .rule-pill { padding: 4px 9px; border-radius: 999px; border: 1px solid var(--line); font-weight: 600; }
 .rule-pill.on { color: var(--risk); border-color: #f0653f55; background: #f0653f12; }
@@ -253,7 +281,7 @@ button, input, select { font: inherit; }
 @media (max-width: 760px) {
   .org { grid-template-columns: 1fr; }
   .metrics { gap: 14px; }
-  .scenario-note { display: none; }
+  .scenario-modal { width: 100%; }
 }
 
 /* ===========================================================================

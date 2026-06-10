@@ -88,6 +88,14 @@
     },
     {
       "IsSSoTTranspiler": false,
+      "Name": "buildexplainerdag",
+      "RelativePath": "/web",
+      "CommandLine": "-exec ./build-explainer.sh",
+      "IsDisabled": false,
+      "Description": "Bundle the React explainer-dag (vite build) so the regenerated source becomes the served app — the second half of rulebooktoreactexplainerdag, mirroring how 'execute' follows rulebooktopostgres"
+    },
+    {
+      "IsSSoTTranspiler": false,
       "Name": "rulebooktorulespeak",
       "RelativePath": "/rulespeak",
       "CommandLine": "rulebook-to-rulespeak -i ../effortless-rulebook/customer-fullname-rulebook.json",

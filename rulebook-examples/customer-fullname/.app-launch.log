@@ -25,4 +25,4 @@ Starting demo app:
 Connected to postgresql://postgres@localhost:5432/erb_customer_fullname
 Press Ctrl+C to stop
 Opened http://localhost:7002 in Chrome
-./start.sh: line 55: 72815 Killed: 9               npm start
+./start.sh: line 55: 76694 Killed: 9               npm start

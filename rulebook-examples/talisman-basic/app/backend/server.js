@@ -19,6 +19,7 @@
 // ---------------------------------------------------------------------------
 import express from "express";
 import { existsSync } from "node:fs";
+import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { reason, backendOf, dataOf, BACKENDS, DEFAULT_BACKEND } from "./dal/index.js";
@@ -414,93 +415,107 @@ app.delete("/api/individuals/:cls/:id", wrap(async (req, res) => {
 }));
 
 // ---------------------------------------------------------------------------
-// /api/scenario/:name — apply a curated preset (several raw edits at once),
-// then re-reason. Each preset is just a function that mutates the raw db; the
-// drama is entirely in what the reasoner DERIVES afterward (a verdict flips, a
-// consistency violation lights up). Presets never touch a derived field.
+// /api/scenarios + /api/scenario/:name — curated demo presets, DATA-DRIVEN.
+//
+// The scenario list is NOT hardcoded here. It lives in the rulebook (the SSoT)
+// as a first-class `Scenarios` table — one row per preset, each carrying its
+// label, icon, explanation, and an `Edits` JSON column: an ordered list of raw-
+// fact assignments to apply. This file is just an interpreter: it reads those
+// rows and REPLAYS the edit list against the active raw store, then re-reasons.
+// The drama is still entirely in what the reasoner DERIVES afterward (a verdict
+// flips, a consistency violation lights up). Edits only ever touch RAW fields.
+//
+// Why read from the rulebook and not db.json: scenarios are demo/presentation
+// config (like __meta__), not workflow facts the reasoner reasons over. Keeping
+// them in the rulebook means ONE place to edit, and they survive a rebuild —
+// the picker (this endpoint) and the apply logic both read the same rows.
 // ---------------------------------------------------------------------------
-const RM = "ntwf-release-manager-role";
-const RISK_ROLE = "ntwf-risk-analysis-role";
-const LEGAL_ROLE = "ntwf-legal-compliance-role";
 
-// Helpers that edit raw rows in a db object.
-function findRow(db, cls, id) {
-  return (db[cls] || []).find((r) =>
-    Object.entries(r).some(([k, v]) => k.endsWith("Id") && v === id)
+// Read the Scenarios table from the rulebook. The rulebook only changes on a
+// Rebuild (which restarts this process), so a process-lifetime memo here has a
+// real invalidation contract — same reasoning as `schemaMap()` above. No silent
+// fallback: if the table is missing or the file won't parse, surface it.
+let _scenarioCache = null;
+async function loadScenarios() {
+  if (_scenarioCache) return _scenarioCache;
+  const rb = JSON.parse(await readFile(RULEBOOK_PATH, "utf8"));
+  const table = rb.Scenarios;
+  if (!table || !Array.isArray(table.data)) {
+    throw new Error(
+      `No 'Scenarios' table in the rulebook (${RULEBOOK_PATH}). ` +
+      `Scenarios are SSoT-driven — add the table to the rulebook, don't hardcode them here.`
+    );
+  }
+  _scenarioCache = table.data
+    .map((row) => ({
+      id: row.ScenarioId,
+      label: row.Label,
+      icon: row.Icon || "",
+      explanation: row.Explanation || "",
+      isReset: !!row.IsReset,
+      sortOrder: Number(row.SortOrder ?? 0),
+      // `Edits` is a JSON-encoded string (the __meta__ JsonValue pattern). Parse
+      // it once here; a malformed value throws loudly rather than silently no-op.
+      edits: JSON.parse(row.Edits),
+    }))
+    .sort((a, b) => a.sortOrder - b.sortOrder);
+  return _scenarioCache;
+}
+
+// Find a raw row in a db object by its *Id primary key (any `*Id` field match),
+// or — for the singleton Workflow — by `match: "first"`.
+function locateRow(db, cls, spec) {
+  const rows = db[cls];
+  if (!Array.isArray(rows)) throw new Error(`scenario references unknown class '${cls}'`);
+  if (spec.match === "first") {
+    if (!rows.length) throw new Error(`scenario targets first '${cls}' but the table is empty`);
+    return rows[0];
+  }
+  const row = rows.find((r) =>
+    Object.entries(r).some(([k, v]) => k.endsWith("Id") && v === spec.id)
   );
-}
-function setRoleFiller(db, roleId, kind, agentId) {
-  const r = findRow(db, "Roles", roleId);
-  if (!r) return;
-  r.filledByHumanAgent = kind === "human" ? agentId : "";
-  r.filledByAIAgent = kind === "ai" ? agentId : "";
-  r.filledByAutomatedPipeline = kind === "pipeline" ? agentId : "";
-}
-function setWorkflowModified(db, iso) {
-  const wf = (db.Workflows || [])[0];
-  if (wf) wf.modified = iso;
+  if (!row) throw new Error(`scenario references '${cls}' row '${spec.id}' that does not exist`);
+  return row;
 }
 
-const FRESH = "2026-04-03T00:00:00-05:00";
-const STALE = "2023-01-01T00:00:00-06:00";
-
-// The canonical baseline assignments (mirror the rulebook seed). "reset"
-// restores these so a demo can always get back to a known-good state.
-const BASELINE = {
-  modified: FRESH,
-  fillers: [
-    [RM, "human", "ntwf-maria-gonzalez"],
-    [RISK_ROLE, "ai", "ntwf-risk-ai"],
-    [LEGAL_ROLE, "human", "ntwf-james-okafor"],
-    ["ntwf-ci-executor-role", "pipeline", "ntwf-ci-pipeline"],
-    ["ntwf-vp-engineering-role", "human", "ntwf-david-chen"],
-    ["ntwf-cto-role", "human", "ntwf-sarah-kim"],
-    ["ntwf-deployment-health-role", "ai", "ntwf-health-ai"],
-  ],
-};
-function applyBaseline(db) {
-  setWorkflowModified(db, BASELINE.modified);
-  for (const [role, kind, agent] of BASELINE.fillers) setRoleFiller(db, role, kind, agent);
+// Replay one scenario's edit list against a raw db object. Each edit is
+// {class, id|match, set:{field:value,...}} — assign the raw fields, in order.
+// We refuse any edit that tries to set a computed key (same guard as the write
+// endpoints) so a scenario can never smuggle in a derived value.
+function replayEdits(db, edits) {
+  for (const e of edits) {
+    const row = locateRow(db, e.class, e);
+    for (const [k, v] of Object.entries(e.set || {})) {
+      if (COMPUTED_KEYS.has(k)) {
+        throw new Error(`scenario edit sets derived field '${k}' on ${e.class}; scenarios edit raw facts only`);
+      }
+      row[k] = v;
+    }
+  }
 }
 
-const SCENARIOS = {
-  // Make the workflow stale → since it already has AI steps, the verdict flips
-  // to AT RISK. The single most direct "watch the reasoner react" demo.
-  "trigger-risk": {
-    label: "Trigger compliance risk",
-    apply: (db) => { applyBaseline(db); setWorkflowModified(db, STALE); },
-  },
-  // Replace every AI/pipeline filler with a human → countAISteps goes to 0, and
-  // the verdict can no longer be at-risk (no AI step), regardless of staleness.
-  "all-human": {
-    label: "All-human release",
-    apply: (db) => {
-      applyBaseline(db);
-      setRoleFiller(db, RISK_ROLE, "human", "ntwf-david-chen");
-      setRoleFiller(db, "ntwf-deployment-health-role", "human", "ntwf-sarah-kim");
-      setRoleFiller(db, "ntwf-ci-executor-role", "human", "ntwf-james-okafor");
-    },
-  },
-  // Hand the human approval-gate role (Release Manager) to an AI → the step-3
-  // approvalConsistencyViolation witness lights up: a requires-human-approval
-  // step is no longer human-filled. The reasoner catches the rule break.
-  "ai-at-gate": {
-    label: "AI at the approval gate",
-    apply: (db) => { applyBaseline(db); setRoleFiller(db, RM, "ai", "ntwf-risk-ai"); },
-  },
-  reset: { label: "Reset to baseline", apply: applyBaseline },
-};
-
-app.get("/api/scenarios", (_req, res) => {
-  res.json(Object.entries(SCENARIOS).map(([id, s]) => ({ id, label: s.label })));
-});
+app.get("/api/scenarios", wrap(async (_req, res) => {
+  const scenarios = await loadScenarios();
+  // Expose everything the picker needs (label + icon + explanation), straight
+  // from the rulebook rows — the UI hardcodes no scenario text of its own.
+  res.json(
+    scenarios.map((s) => ({
+      id: s.id,
+      label: s.label,
+      icon: s.icon,
+      explanation: s.explanation,
+      isReset: s.isReset,
+    }))
+  );
+}));
 
 app.post("/api/scenario/:name", wrap(async (req, res) => {
-  const s = SCENARIOS[req.params.name];
+  const scenarios = await loadScenarios();
+  const s = scenarios.find((x) => x.id === req.params.name);
   if (!s) return res.status(404).json({ error: `unknown scenario: ${req.params.name}` });
-  // Apply the preset's raw mutations to the ACTIVE DATA store, then re-compute
+  // Replay the preset's raw edits against the ACTIVE DATA store, then re-compute
   // to validate before persisting (store.js handles file-vs-pg persistence).
-  const result = await applyMutation(dataOf(req), s.apply);
+  const result = await applyMutation(dataOf(req), (db) => replayEdits(db, s.edits));
   res.json({ ok: true, scenario: req.params.name, ...result });
 }));
 
