@@ -1,0 +1,88 @@
+{
+  "ShowHidden": false,
+  "ShowAllFiles": false,
+  "CurrentPath": "",
+  "SSoTmeProjectFiles": null,
+  "SSoTmeProjectId": "576a7995-d37c-49cd-8a7e-3bdf28a37b2d",
+  "Name": "Talisman's Special Solutions: Task Management Ontology",
+  "Description": "A real-world workflow demonstrating task management, agent assignments, and basic aggregations.",
+  "ProjectSettings": [
+    {
+      "Name": "project-name",
+      "Value": "Talisman's Special Solutions: Task Management Ontology"
+    }
+  ],
+  "ProjectTranspilers": [
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "ensureorchestrator",
+      "RelativePath": "/postgres-bootstrap",
+      "CommandLine": "-exec ./ensure-orchestrator.sh",
+      "IsDisabled": false,
+      "Description": "Ensure the local ssotme-proxy orchestrator (localhost:4242 transpiler bus) is running so the repo-local http://localhost:4242/* tools below (rulebook-to-owl, postgres-calculated-to-rulebook) are reachable. Idempotent: boots the proxy only if it is not already live."
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "rulebooktopostgres",
+      "RelativePath": "/postgres-bootstrap",
+      "CommandLine": "https://effortless-rulebook-to-postgres-v2026-06-07-1721-cmvbd4phczmeg.7pktzg2z971j0.cpln.app -i ../effortless-rulebook/talismans-special-solutions-rulebook.json -p mode=drop-all -p stage=dev -p drop_all=true",
+      "IsDisabled": false,
+      "LastVersionUsed": "v2026.06.07.1721",
+      "LastUrl": "https://effortless-rulebook-to-postgres-v2026-06-07-1721-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
+      "_LocalDevUrl": "http://localhost:30038",
+      "_ClosureRiskNote": "Switched from the local dev tool (:30038) to the latest published cpln version. The local :30038 build is the one CONFIRMED to emit the transitive-closure views (vw_step_precedence_closure, vw_roles_closure) this demo depends on. If a build against this online URL produces no closure views, the published version lacks the feature — re-point CommandLine at _LocalDevUrl (boot that tool on :30038 via its own start.sh) until a closure-enabled version is published.",
+      "Description": "Generate Postgres schema + seed data from the rulebook"
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "execute",
+      "RelativePath": "/postgres-bootstrap",
+      "CommandLine": "-exec ./init-db.sh",
+      "IsDisabled": false
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "execute",
+      "RelativePath": "/app/backend",
+      "CommandLine": "-exec ./seed-dbjson.sh",
+      "IsDisabled": false,
+      "_Note": "Reseed the reasoner's data store (app/backend/db.json) from the rulebook on EVERY build, parallel to init-db.sh for Postgres. Runs AFTER init-db.sh so the live DB columns exist for the authoritative raw/derived classification. Without this, db.json drifts: a raw field with a default added to the rulebook (e.g. RenewalWindowMonths=2) never lands in the stale db.json, the reasoner reads null, and the UI shows COMPLIANT when AT RISK. start.sh does NOT reseed, so only a build fixes it."
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "httplocalhost4242postgrescalculatedtorulebook",
+      "RelativePath": "/postgres-bootstrap",
+      "CommandLine": "http://localhost:4242/postgres-calculated-to-rulebook -i ../effortless-rulebook/talismans-special-solutions-rulebook.json",
+      "IsDisabled": true,
+      "_IsDisabledNote": "TEMPORARILY DISABLED during closure-feature verification: this reverse spoke wrote stale step DATA back into the sacred rulebook from a prod-built DB, clobbering the curated 6-step re-curation. Re-enable once the closure-enabled tool is published and the DB is rebuilt cleanly from it.",
+      "Description": "Reverse spoke: refresh rulebook derived-field display copies from Postgres views after the destructive rebuild (raws verified, never written)."
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "rulebooktorulespeak",
+      "RelativePath": "/rulespeak",
+      "CommandLine": "rulebook-to-rulespeak -i ../effortless-rulebook/talismans-special-solutions-rulebook.json",
+      "IsDisabled": false,
+      "LastVersionUsed": "v2026.06.10.1308",
+      "LastUrl": "https://effortless-rulebook-to-rulespeak-v2026-06-10-1308-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "httplocalhost4242rulebooktoowl",
+      "RelativePath": "/owl",
+      "CommandLine": "http://localhost:4242/rulebook-to-owl -i ../effortless-rulebook/talismans-special-solutions-rulebook.json",
+      "IsDisabled": false
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "rulebooktoreactexplainerdag",
+      "RelativePath": "/app/frontend/src",
+      "CommandLine": "https://effortless-rulebook-to-react-exp-v2026-06-11-1530-cmvbd4phczmeg.7pktzg2z971j0.cpln.app -i ../../../effortless-rulebook/talismans-special-solutions-rulebook.json",
+      "IsDisabled": false,
+      "LastVersionUsed": "v2026.06.11.1530",
+      "LastUrl": "https://effortless-rulebook-to-react-exp-v2026-06-11-1530-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
+      "_HeadPointerNote": "Pinned to the explicit v2026.06.11.1530 cpln URL (NOT the bare tool name) because [latest] still resolves to the older v2026.06.10.1301 — the publish on 2026-06-11 built+activated v1530 but the HeadVersion pointer did not flip to it. v1530 is the version carrying the hovercard portal/edge-clamp fix (DagHoverCard renders via createPortal to document.body, fixed-positioned + four-edge viewport-clamped). Re-point CommandLine back to the bare 'rulebook-to-react-explainer-dag' once [latest] correctly advances to v1530 or newer.",
+      "Description": "Generate the self-contained React Explainer DAG module (app/frontend/src/explainer-dag/) — embedded rulebook + dagResolver + DagCell/DagToggle/FieldChip/FieldDag — the canonical, fully-generated provenance visualizer. Replaces the former hand-written explain-dag/ module."
+    }
+  ]
+}

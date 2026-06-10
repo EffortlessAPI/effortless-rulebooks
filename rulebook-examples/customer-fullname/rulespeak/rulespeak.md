@@ -10,8 +10,8 @@
 | Term | Description | Narrative Comment |
 |------|-------------|-------------------|
 | **Customer** | A customer is identified by its name. | — |
-| Name | Computed as the first name, followed by a space, followed by the last name. | _Full name: first and last_ |
-| Initials | Computed as the last 1 character(s) of the first name, followed by a period, followed by the last 1 character(s) of the last name, followed by a period. | _Last letter of first and last name, dot-separated with trailing dot_ |
+| Name | Computed as the last name, followed by a comma followed by a space, followed by the first name. | _Full name: first and last_ |
+| Initials | Computed as the first 1 character(s) of the first name, followed by the literal “. ”, followed by the first 1 character(s) of the last name, followed by a period. | _Last letter of first and last name, dot-separated with trailing dot_ |
 
 ## 3 Operative Rules
 
@@ -34,8 +34,8 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 
 | ID | Declarative rule |
 |----|------------------|
-| **DR-1 Name** | A customer's name is computed as the first name, followed by a space, followed by the last name. |
-| **DR-2 Initials** | A customer's initials is computed as the last 1 character(s) of the first name, followed by a period, followed by the last 1 character(s) of the last name, followed by a period. |
+| **DR-1 Name** | A customer's name is computed as the last name, followed by a comma followed by a space, followed by the first name. |
+| **DR-2 Initials** | A customer's initials is computed as the first 1 character(s) of the first name, followed by the literal “. ”, followed by the first 1 character(s) of the last name, followed by a period. |
 
 ## 5 Traceability to Schema
 
@@ -44,8 +44,8 @@ the same logic the rulebook stores, written for a business reader._
 
 | Schema element | Kind | Expression |
 |----------------|------|------------|
-| **Customers.Name** | formula | `FirstName & " " & LastName` |
-| **Customers.Initials** | formula | `Right(FirstName, 1) & "." & Right(LastName, 1) & "."` |
+| **Customers.Name** | formula | `LastName & ", " & FirstName` |
+| **Customers.Initials** | formula | `Left(FirstName, 1) & ". " & Left(LastName, 1) & "."` |
 
 ---
 

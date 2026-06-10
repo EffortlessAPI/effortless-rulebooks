@@ -1,0 +1,1111 @@
+/* ============================================================================
+ * DAG Explorer styles. Vocabulary-recursion UX:
+ *   - cells = either ground truth or a one-line function
+ *   - each {{ref}} is a chip you can drill into
+ *   - the page reads like a dictionary entry
+ * ========================================================================== */
+
+:root {
+  --dag-raw:    #003a70;  /* bank blue — ground truth */
+  --dag-calc:   #5a3aa0;  /* violet — calculated      */
+  --dag-agg:    #0a7b78;  /* teal — aggregation       */
+  --dag-rel:    #666666;  /* grey — relationship      */
+  --dag-lookup: #9a6708;  /* amber — lookup           */
+
+  --dag-raw-bg:    #eaf0f8;
+  --dag-calc-bg:   #f1ebfb;
+  --dag-agg-bg:    #e5f4f3;
+  --dag-rel-bg:    #f0f0f0;
+  --dag-lookup-bg: #fbf2dd;
+}
+
+/* ─── DagToggle (floating top-right) ─────────────────────────────────────── */
+
+.dag-toggle {
+  position: fixed;
+  top: 14px;
+  right: 18px;
+  z-index: 100;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 10px 5px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--dag-calc);
+  background: #fff;
+  color: var(--dag-calc);
+  font: 600 11px/1 system-ui, -apple-system, sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  transition: background 100ms ease, box-shadow 100ms ease, opacity 100ms ease;
+}
+.dag-toggle:hover {
+  box-shadow: 0 2px 8px rgba(0,0,0,0.14);
+}
+.dag-toggle-glyph {
+  display: inline-grid; place-items: center;
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  background: var(--dag-calc);
+  color: #fff;
+  font-style: italic;
+  font-family: Georgia, serif;
+  font-size: 13px;
+  font-weight: 700;
+}
+.dag-toggle-label { padding-right: 4px; }
+.dag-toggle-knob {
+  display: inline-block; width: 22px; height: 12px;
+  background: var(--dag-calc);
+  border-radius: 7px;
+  position: relative;
+}
+.dag-toggle-knob::after {
+  content: ""; position: absolute;
+  top: 2px; left: 12px;
+  width: 8px; height: 8px;
+  background: #fff;
+  border-radius: 50%;
+  transition: left 120ms ease;
+}
+.dag-toggle.is-off {
+  color: #777;
+  border-color: #ccc;
+}
+.dag-toggle.is-off .dag-toggle-glyph {
+  background: #bbb;
+}
+.dag-toggle.is-off .dag-toggle-knob {
+  background: #ccc;
+}
+.dag-toggle.is-off .dag-toggle-knob::after {
+  left: 2px;
+}
+
+/* ─── DagCell (the in-page wrapper) ──────────────────────────────────────── */
+
+.dag-cell {
+  position: relative;
+  display: inline-block;
+  border-radius: 3px;
+  transition: background-color 120ms ease-in-out;
+}
+.dag-cell-block { display: block; }
+.dag-cell:hover { background-color: rgba(90, 58, 160, 0.06); cursor: pointer; }
+
+.dag-cell-badge-wrap {
+  position: absolute;
+  top: -10px; right: -10px;
+  /* The wrap itself has no size — it just anchors the badge + popover. */
+}
+
+.dag-cell-fx {
+  display: grid; place-items: center;
+  width: 20px; height: 20px;
+  font-style: italic;
+  font-family: "Georgia", serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+  background: var(--dag-calc);
+  border: 1.5px solid #fff;
+  border-radius: 50%;
+  opacity: 0;
+  transform: scale(0.7);
+  transition: opacity 120ms ease, transform 120ms ease, background 100ms ease;
+  text-decoration: none;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  pointer-events: none;
+}
+.dag-cell:hover .dag-cell-fx,
+.dag-cell:focus-within .dag-cell-fx,
+.dag-cell-badge-wrap:hover .dag-cell-fx {
+  opacity: 1;
+  transform: scale(1);
+  pointer-events: auto;
+}
+.dag-cell-fx-glyph {
+  display: inline-grid; place-items: center;
+  width: 100%; height: 100%;
+  line-height: 1;
+}
+
+/* Type-coded badge: color + border reinforces the type icon. */
+.dag-cell-fx-raw    { background: var(--dag-raw);    box-shadow: 0 1px 3px rgba(0,58,112,0.35); }
+.dag-cell-fx-calc   { background: var(--dag-calc);   box-shadow: 0 1px 3px rgba(90,58,160,0.35); }
+.dag-cell-fx-agg    { background: var(--dag-agg);    box-shadow: 0 1px 3px rgba(10,123,120,0.35); }
+.dag-cell-fx-rel    { background: var(--dag-rel);    box-shadow: 0 1px 3px rgba(102,102,102,0.35); }
+.dag-cell-fx-lookup { background: var(--dag-lookup); box-shadow: 0 1px 3px rgba(154,103,8,0.35); }
+
+.dag-cell-fx-raw:hover    { background: #002a55; }
+.dag-cell-fx-calc:hover   { background: #3a1f78; }
+.dag-cell-fx-agg:hover    { background: #075c5a; }
+.dag-cell-fx-rel:hover    { background: #4a4a4a; }
+.dag-cell-fx-lookup:hover { background: #774e02; }
+
+/* ─── Sticky hover micro-page ───────────────────────────────────────────── */
+
+/* The shell is a transparent "safety zone" ~15px wider than the visible card,
+   so the mouse can travel between trigger and card (and around the card edges)
+   without leaving the hover region. */
+.dag-hovercard-shell {
+  position: absolute;
+  top: 18px;
+  right: -10px;
+  padding: 15px;
+  z-index: 200;
+  display: block;
+  pointer-events: auto;
+}
+
+/* Portaled variant: rendered into <body> and positioned `fixed` off the trigger
+   glyph's measured rect (see DagHoverCard). This is what stops ANY overflow:hidden
+   / overflow:auto ancestor (a flow track, a table, a bar) from clipping the card —
+   z-index alone can't escape an overflow clip, only leaving that stacking/clipping
+   context can. The inline style supplies left/top (already clamped inside all four
+   viewport edges) and a --dag-card-maxh budget for the card to cap its height to. */
+.dag-hovercard-shell-fixed {
+  position: fixed;
+  top: auto;
+  right: auto;
+  z-index: 1000;
+}
+/* The visible card caps to the space the JS measured (--dag-card-maxh, minus the
+   SAFETY ring) and scrolls internally — so even a tall card placed near the top
+   or bottom edge stays fully on-screen instead of running off it. */
+.dag-hovercard-shell-fixed .dag-hovercard {
+  max-height: calc(var(--dag-card-maxh, 80vh) - 30px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.dag-hovercard {
+  display: block;
+  width: 360px;
+  max-width: 90vw;
+  background: #fff;
+  border: 1px solid var(--border, #e0e0e0);
+  border-left: 4px solid var(--dag-calc);
+  border-radius: 8px;
+  box-shadow: 0 8px 28px rgba(0,0,0,0.18);
+  padding: 14px 16px 12px;
+  font: 13px/1.5 system-ui, -apple-system, sans-serif;
+  color: #222;
+  text-transform: none;
+  letter-spacing: 0;
+}
+.dag-hovercard-raw    { border-left-color: var(--dag-raw); }
+.dag-hovercard-calc   { border-left-color: var(--dag-calc); }
+.dag-hovercard-agg    { border-left-color: var(--dag-agg); }
+.dag-hovercard-rel    { border-left-color: var(--dag-rel); }
+.dag-hovercard-lookup { border-left-color: var(--dag-lookup); }
+
+.dag-hovercard > * { display: block; }
+.dag-hovercard-head {
+  display: flex !important;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.dag-hovercard-where {
+  display: inline-flex !important;
+  align-items: baseline;
+  gap: 6px;
+  font-size: 12px;
+  color: #555;
+}
+.dag-hovercard-table { font-weight: 600; color: #666; }
+.dag-hovercard-dot { color: #ccc; }
+.dag-hovercard-field { font-weight: 600; color: #222; font-size: 13px; }
+
+.dag-hovercard-desc {
+  font-size: 12.5px;
+  color: #444;
+  margin-bottom: 10px;
+}
+.dag-hovercard-gt {
+  font-size: 12.5px;
+  color: #333;
+  margin-bottom: 8px;
+}
+.dag-hovercard-gt code {
+  background: #f3f3f3; padding: 1px 5px; border-radius: 3px; font-size: 11px;
+}
+
+.dag-hovercard-label {
+  display: block !important;
+  font-size: 9.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #888;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.dag-hovercard-count {
+  display: inline-block;
+  font-size: 10px;
+  padding: 0 6px;
+  background: #ececec;
+  color: #555;
+  border-radius: 99px;
+  margin-left: 4px;
+  letter-spacing: 0;
+}
+
+.dag-hovercard-english {
+  margin-bottom: 10px;
+  padding: 8px 10px;
+  background: var(--dag-calc-bg);
+  border-radius: 5px;
+}
+.dag-hovercard-english-text {
+  display: block;
+  font-size: 14px;
+  line-height: 1.4;
+  color: #2a1c4a;
+  font-weight: 500;
+}
+.dag-hovercard-english-text::first-letter { text-transform: uppercase; }
+.dag-hovercard-english-text.dag-hovercard-muted {
+  color: #999; font-weight: 400; font-style: italic;
+}
+.dag-hovercard-english-text.dag-hovercard-muted::first-letter { text-transform: none; }
+
+.dag-hovercard-formula {
+  margin-bottom: 10px;
+}
+.dag-hovercard-formula-code {
+  display: block !important;
+  padding: 6px 8px;
+  background: #fafafa;
+  border: 1px solid #ececec;
+  border-radius: 4px;
+  font-size: 12px;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+.dag-hovercard-formula-code .fx { font-size: 12px; line-height: 1.8; }
+
+.dag-hovercard-inputs { margin-bottom: 8px; }
+.dag-hovercard-input-row {
+  display: flex !important;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+.dag-hovercard-input-row .fc-pill {
+  padding: 3px 8px 4px;
+  font-size: 11.5px;
+}
+
+.dag-hovercard-hint {
+  font-size: 11px;
+  font-style: italic;
+  color: #999;
+  border-top: 1px dashed #eee;
+  padding-top: 6px;
+  margin-top: 4px;
+}
+
+/* ─── Type badges ────────────────────────────────────────────────────────── */
+
+.tb {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 9px;
+  border-radius: 99px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  line-height: 1;
+  white-space: nowrap;
+}
+.tb-sm { padding: 2px 7px; font-size: 10px; }
+.tb-glyph { font-weight: 700; }
+.tb-raw    { color: var(--dag-raw);    background: var(--dag-raw-bg); }
+.tb-calc   { color: var(--dag-calc);   background: var(--dag-calc-bg); }
+.tb-agg    { color: var(--dag-agg);    background: var(--dag-agg-bg); }
+.tb-rel    { color: var(--dag-rel);    background: var(--dag-rel-bg); }
+.tb-lookup { color: var(--dag-lookup); background: var(--dag-lookup-bg); }
+
+/* ─── Field chips (for formula refs + upstream/downstream pills) ─────────── */
+
+.fc {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 4px;
+  padding: 1px 8px 2px;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.4;
+  text-decoration: none;
+  vertical-align: baseline;
+  border: 1px solid transparent;
+  transition: background 100ms ease, border-color 100ms ease;
+  position: relative;
+}
+.fc:hover { text-decoration: none; }
+
+.fc-glyph { font-size: 11px; opacity: 0.85; font-weight: 700; }
+.fc-table {
+  position: absolute;
+  bottom: calc(100% + 4px);
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-size: 10px;
+  font-weight: 500;
+  font-style: normal;
+  letter-spacing: 0.04em;
+  color: #fff;
+  background: rgba(30, 35, 50, 0.85);
+  padding: 2px 6px;
+  border-radius: 4px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 150ms ease;
+}
+.fc:hover .fc-table {
+  opacity: 1;
+}
+.fc-name  { font-weight: 500; }
+
+.fc-chip { /* inline-formula variant */ }
+
+.fc-pill {
+  padding: 6px 10px 7px;
+  font-size: 13px;
+  border-radius: 999px;
+  border: 1px solid currentColor;
+  background: #fff;
+}
+
+.fc-raw     { color: var(--dag-raw);    background: var(--dag-raw-bg); }
+.fc-raw:hover     { background: #d9e6f4; border-color: var(--dag-raw); }
+.fc-calc    { color: var(--dag-calc);   background: var(--dag-calc-bg); }
+.fc-calc:hover    { background: #e5d7f6; border-color: var(--dag-calc); }
+.fc-agg     { color: var(--dag-agg);    background: var(--dag-agg-bg); }
+.fc-agg:hover     { background: #cfeae7; border-color: var(--dag-agg); }
+.fc-rel     { color: var(--dag-rel);    background: var(--dag-rel-bg); }
+.fc-rel:hover     { background: #e0e0e0; border-color: var(--dag-rel); }
+.fc-lookup  { color: var(--dag-lookup); background: var(--dag-lookup-bg); }
+.fc-lookup:hover  { background: #f5e5b6; border-color: var(--dag-lookup); }
+
+/* Pills hold their own background colors */
+.fc-pill.fc-raw    { background: var(--dag-raw-bg); }
+.fc-pill.fc-calc   { background: var(--dag-calc-bg); }
+.fc-pill.fc-agg    { background: var(--dag-agg-bg); }
+.fc-pill.fc-rel    { background: var(--dag-rel-bg); }
+.fc-pill.fc-lookup { background: var(--dag-lookup-bg); }
+
+/* ─── Formula syntax (the inline expression) ────────────────────────────── */
+
+.fx {
+  display: inline;
+  font-family: "SF Mono", Menlo, Consolas, monospace;
+  font-size: 14px;
+  line-height: 2.2;
+}
+.fx-eq    { color: #999; }
+.fx-fn    { color: #444; font-weight: 600; font-style: italic; }
+.fx-paren { color: #999; }
+.fx-comma { color: #999; }
+.fx-op    { color: #444; padding: 0 3px; font-weight: 600; }
+.fx-num   { color: #ad5b00; font-variant-numeric: tabular-nums; }
+.fx-str   { color: #1f7a3a; }
+.fx-bool  { color: #1f7a3a; font-weight: 700; }
+.fx-raw   { background: #f3f3f3; padding: 6px 10px; border-radius: 4px; font-size: 13px; display: block; }
+
+/* ─── Page layout ────────────────────────────────────────────────────────── */
+
+.dag-page {
+  max-width: 880px;
+  margin: 0 auto;
+  padding-bottom: 4em;
+}
+.dag-loading { padding: 3em 1em; text-align: center; }
+
+/* ─── Breadcrumb ─────────────────────────────────────────────────────────── */
+
+.dag-crumb {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 12px; color: var(--muted);
+  margin-bottom: 1.5em;
+  text-transform: uppercase; letter-spacing: 0.06em;
+}
+.dag-back {
+  background: none; border: none; color: var(--accent);
+  cursor: pointer; font: inherit; padding: 0;
+  text-transform: uppercase; letter-spacing: 0.06em;
+}
+.dag-back:hover { text-decoration: underline; }
+.dag-crumb-sep { color: #ccc; }
+.dag-crumb-table { color: var(--muted); }
+.dag-crumb-field { color: var(--fg); font-weight: 600; }
+
+/* ─── Hero ───────────────────────────────────────────────────────────────── */
+
+.dag-hero {
+  padding: 1.8em 2em 2em;
+  margin-bottom: 1.8em;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-left: 6px solid var(--dag-rel);
+  border-radius: 8px;
+}
+.dag-hero-raw    { border-left-color: var(--dag-raw); }
+.dag-hero-calc   { border-left-color: var(--dag-calc); }
+.dag-hero-agg    { border-left-color: var(--dag-agg); }
+.dag-hero-rel    { border-left-color: var(--dag-rel); }
+.dag-hero-lookup { border-left-color: var(--dag-lookup); }
+
+.dag-hero-meta {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
+  margin-bottom: 0.8em;
+}
+.dag-pill {
+  display: inline-block;
+  padding: 3px 9px;
+  border-radius: 99px;
+  font-size: 11px;
+  font-weight: 500;
+  background: #f3f3f3;
+  color: #555;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  line-height: 1.5;
+}
+.dag-pill-depth { background: #f3eafe; color: var(--dag-calc); }
+.dag-pill-muted { background: #f3f3f3; color: #999; }
+
+.dag-title {
+  font-size: 34px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin: 0 0 0.2em;
+  color: var(--fg);
+  line-height: 1.15;
+}
+.dag-subtitle {
+  font-size: 14px;
+  color: var(--muted);
+  margin: 0 0 1em;
+}
+.dag-subtitle-table { font-weight: 600; color: #555; }
+/* The owning-table name in a field's subtitle is a link up to the table page. */
+.dag-subtitle-table-link {
+  text-decoration: none;
+  border-bottom: 1px solid color-mix(in srgb, currentColor 30%, transparent);
+}
+.dag-subtitle-table-link:hover { color: var(--dag-rel); border-bottom-color: var(--dag-rel); }
+.dag-subtitle-human { font-style: italic; }
+
+.dag-description {
+  margin: 0.8em 0 0;
+  font-size: 15px;
+  line-height: 1.55;
+  color: #444;
+}
+
+/* ─── Generic card ───────────────────────────────────────────────────────── */
+
+.dag-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.5em 1.8em;
+  margin-bottom: 1.8em;
+}
+.dag-card-title {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  margin: 0 0 1em;
+  font-weight: 600;
+}
+
+/* ─── Ground-truth card ─────────────────────────────────────────────────── */
+
+.dag-gt {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 1.2em;
+  align-items: center;
+  border-left: 6px solid var(--dag-raw);
+  background: linear-gradient(180deg, var(--dag-raw-bg), #fff);
+}
+.dag-gt-glyph {
+  font-size: 42px;
+  font-weight: 700;
+  color: var(--dag-raw);
+  line-height: 1;
+  width: 56px; text-align: center;
+}
+.dag-gt-title {
+  font-size: 18px;
+  margin: 0 0 0.3em;
+  color: var(--dag-raw);
+  font-weight: 600;
+}
+.dag-gt-body {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.55;
+  color: #333;
+}
+.dag-gt-body code {
+  background: #fff; border: 1px solid #d4dded; color: var(--dag-raw);
+  padding: 1px 6px; border-radius: 3px; font-size: 12px;
+}
+/* The related-table name inside the relationship card body — clickable. */
+.dag-gt-rel-link {
+  color: var(--dag-rel);
+  font-weight: 700;
+  text-decoration: none;
+  border-bottom: 1px solid color-mix(in srgb, var(--dag-rel) 40%, transparent);
+}
+.dag-gt-rel-link:hover { border-bottom-color: var(--dag-rel); }
+/* A small "Open TargetTable →" button beneath the relationship blurb. */
+.dag-gt-rel-cta { margin: 0.8em 0 0; }
+.dag-gt-rel-btn {
+  display: inline-flex; align-items: center;
+  font-size: 13px; font-weight: 600;
+  color: #fff; background: var(--dag-rel);
+  padding: 5px 12px; border-radius: 6px;
+  text-decoration: none;
+  transition: filter 120ms ease;
+}
+.dag-gt-rel-btn:hover { filter: brightness(1.08); }
+
+/* ─── Formula card ───────────────────────────────────────────────────────── */
+
+.dag-formula {
+  border-left: 6px solid var(--dag-calc);
+}
+
+.dag-english {
+  padding: 0.8em 1em;
+  margin-bottom: 1.2em;
+  background: var(--dag-calc-bg);
+  border-radius: 6px;
+}
+.dag-english-label {
+  display: block;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--dag-calc);
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+.dag-english-text {
+  margin: 0;
+  font-size: 17px;
+  line-height: 1.45;
+  color: #2a1c4a;
+  font-weight: 500;
+}
+
+.dag-formula-syntax { margin-top: 0.6em; }
+.dag-formula-label {
+  display: block;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+.dag-formula-code {
+  padding: 1em 1.2em;
+  background: #fafafa;
+  border: 1px solid #ececec;
+  border-radius: 6px;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+.dag-formula-hint {
+  margin: 1em 0 0;
+  font-size: 12px;
+  font-style: italic;
+}
+
+/* ─── Sections (Inputs / Consumers / Leaves) ────────────────────────────── */
+
+.dag-section { margin-bottom: 2em; }
+.dag-section-title {
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--fg);
+  margin: 0 0 0.3em;
+  font-weight: 700;
+  display: flex; align-items: center; gap: 10px;
+}
+.dag-count {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 1px 8px;
+  background: #ececec;
+  color: #555;
+  border-radius: 99px;
+  text-transform: none;
+  letter-spacing: 0;
+}
+.dag-count-muted { background: #f5f5f5; color: #999; }
+
+.dag-section-lead {
+  font-size: 13px;
+  margin: 0 0 1em;
+}
+
+/* Inputs: grid of clickable cards */
+.dag-input-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 12px;
+}
+.dag-input {
+  display: block;
+  position: relative;
+  padding: 1em 1.1em;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--dag-rel);
+  border-radius: 6px;
+  text-decoration: none;
+  color: var(--fg);
+  transition: box-shadow 100ms ease, border-color 100ms ease, transform 100ms ease;
+}
+.dag-input:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  transform: translateY(-1px);
+}
+.dag-input-raw    { border-left-color: var(--dag-raw); }
+.dag-input-calc   { border-left-color: var(--dag-calc); }
+.dag-input-agg    { border-left-color: var(--dag-agg); }
+.dag-input-rel    { border-left-color: var(--dag-rel); }
+.dag-input-lookup { border-left-color: var(--dag-lookup); }
+
+.dag-input-head {
+  display: flex; align-items: center; gap: 8px;
+  margin-bottom: 0.55em;
+  flex-wrap: wrap;
+}
+.dag-input-name {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--fg);
+}
+.dag-input-table {
+  position: absolute;
+  top: 6px;
+  right: 10px;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+  color: #fff;
+  background: rgba(30, 35, 50, 0.75);
+  padding: 1px 6px;
+  border-radius: 4px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 150ms ease;
+}
+.dag-input:hover .dag-input-table {
+  opacity: 1;
+}
+.dag-input-english {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #333;
+}
+.dag-input-english::first-letter { text-transform: uppercase; }
+.dag-input-desc {
+  margin: 0;
+  font-size: 12px;
+  color: var(--muted);
+  font-style: italic;
+  line-height: 1.5;
+}
+
+/* Pill rows for consumers + leaves */
+.dag-pill-row {
+  display: flex; flex-wrap: wrap; gap: 8px;
+  margin-bottom: 0.6em;
+}
+.dag-pill-row-faded .fc {
+  opacity: 0.7;
+}
+.dag-pill-row-faded .fc:hover {
+  opacity: 1;
+}
+
+.dag-transitive {
+  margin-top: 0.6em;
+  font-size: 13px;
+}
+.dag-transitive summary {
+  cursor: pointer; color: var(--accent); padding: 4px 0;
+  font-size: 12px;
+}
+.dag-transitive summary:hover { text-decoration: underline; }
+.dag-transitive[open] summary { margin-bottom: 0.6em; }
+
+/* Leaves: more subdued, since they're often many */
+.dag-section-leaves .fc-pill {
+  font-size: 12px;
+  padding: 4px 9px 5px;
+}
+
+/* ── XLSX download icon (sibling of DagToggle) ────────────────────────── */
+.dag-xlsx-download {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px 4px 8px;
+  border: 1px solid #d0d7de;
+  border-radius: 999px;
+  background: #fff;
+  color: #1F7244;
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 120ms ease, border-color 120ms ease;
+}
+.dag-xlsx-download:hover {
+  background: #f0faf4;
+  border-color: #1F7244;
+}
+.dag-xlsx-download svg { display: block; }
+.dag-xlsx-label { letter-spacing: 0.02em; }
+
+/* ── Narration toggle (Formula ⇄ RuleSpeak) ──────────────────────────────────
+   Mirrors the provenance-graph toggle; the choice is remembered in localStorage.
+   RuleSpeak gets its own accent (deep green — the "obligation / rule" register). */
+:root {
+  --dag-rs:    #1f6b46;  /* RuleSpeak green */
+  --dag-rs-bg: #e8f3ec;
+}
+/* ── Top bar: back · home · breadcrumb  +  global narration slider ─────────── */
+.dag-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 0.2em 0 1.1em;
+  flex-wrap: wrap;
+}
+.dag-nav-left {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  font-size: 13px;
+}
+.dag-home {
+  border: 1px solid #e0e0e0;
+  background: #fff;
+  color: var(--fg, #222);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 7px;
+  cursor: pointer;
+  transition: background 120ms ease, border-color 120ms ease;
+}
+.dag-home:hover { background: #f5f7fa; border-color: #cfd6dd; }
+.dag-crumb-trail { display: inline-flex; align-items: center; gap: 6px; }
+.dag-crumb-index-link,
+.dag-crumb-table-link {
+  color: var(--dag-calc);
+  font-weight: 600;
+  text-decoration: none;
+}
+.dag-crumb-index-link:hover,
+.dag-crumb-table-link:hover { text-decoration: underline; }
+
+/* ── Doc-element visibility: each part of a field's documentation shows only
+      when the page container carries its `show-<key>` flag. All independent —
+      any combination can be on at once. The classes are computed synchronously
+      from localStorage at render (dagPrefs.docElementClasses), so the first
+      paint is already correct (no flash of the wrong sections). Mirrors the
+      rulespeak HtmlRenderer element-gating, scoped here to `.dag-page`. ──────── */
+.dag-page .elem { display: none; }
+.dag-page.show-rulespeak .elem-rulespeak { display: block; }
+.dag-page.show-english   .elem-english   { display: block; }
+.dag-page.show-formula   .elem-formula   { display: block; }
+.dag-page.show-desc      .elem-desc      { display: block; }
+.dag-page.show-inputs    .elem-inputs    { display: block; }
+.dag-page.show-consumers .elem-consumers { display: block; }
+
+/* ── The gear: a ⚙︎ button (top-right of the bar) opening a popup of independent
+      doc-element checkboxes. Ported from rulebook-to-rulespeak's HtmlRenderer so
+      both tools present identically, using the explainer's --dag-* palette. ──── */
+.dag-gear-wrap { position: relative; flex: none; }
+.dag-gear {
+  flex: none;
+  width: 34px;
+  height: 34px;
+  border-radius: 9px;
+  border: 1px solid #e0e0e0;
+  background: #fff;
+  cursor: pointer;
+  font-size: 17px;
+  line-height: 1;
+  color: #777;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 120ms ease, border-color 120ms ease, box-shadow 120ms ease, background 120ms ease;
+}
+.dag-gear:hover {
+  color: var(--fg, #222);
+  border-color: var(--dag-calc);
+  box-shadow: 0 1px 4px rgba(90, 58, 160, 0.15);
+}
+.dag-gear[aria-expanded='true'] {
+  background: var(--dag-calc);
+  color: #fff;
+  border-color: var(--dag-calc);
+}
+
+.dag-gear-pop {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  z-index: 120;
+  width: 290px;
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  box-shadow: 0 10px 32px rgba(20, 20, 40, 0.18);
+  padding: 12px;
+}
+.dag-gear-pop-title {
+  margin: 2px 4px 8px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #777;
+}
+.dag-gear-opt {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 9px;
+  align-items: baseline;
+  padding: 7px 6px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.dag-gear-opt:hover { background: var(--dag-calc-bg); }
+.dag-gear-opt input {
+  grid-row: 1 / span 2;
+  align-self: center;
+  width: 16px;
+  height: 16px;
+  accent-color: var(--dag-calc);
+  cursor: pointer;
+}
+.dag-gear-opt-label { font-weight: 600; font-size: 14px; color: var(--fg, #222); }
+.dag-gear-opt-hint { grid-column: 2; font-size: 12px; color: #777; line-height: 1.35; }
+.dag-gear-reset {
+  margin: 8px 4px 2px;
+  border: 0;
+  background: transparent;
+  color: var(--dag-calc);
+  font: 600 12px/1 inherit;
+  cursor: pointer;
+  padding: 4px;
+}
+.dag-gear-reset:hover { text-decoration: underline; }
+
+/* In-prose clickable field reference (the words themselves become a quiet link
+   in the English / RuleSpeak text). Type-tinted underline; no glyph, no relabel. */
+.fc-inline {
+  text-decoration: none;
+  color: inherit;
+  border-bottom: 1.5px dotted currentColor;
+  cursor: pointer;
+  transition: background-color 100ms ease, border-color 100ms ease;
+  border-radius: 2px;
+  padding: 0 1px;
+}
+.fc-inline:hover { background: rgba(0,0,0,0.05); }
+.fc-inline-raw    { color: var(--dag-raw); }
+.fc-inline-calc   { color: var(--dag-calc); }
+.fc-inline-agg    { color: var(--dag-agg); }
+.fc-inline-rel    { color: var(--dag-rel); }
+.fc-inline-lookup { color: var(--dag-lookup); }
+
+/* ── RuleSpeak card ──────────────────────────────────────────────────────────
+   The declarative-rule counterpart of the formula card. */
+.dag-rulespeak { border-left: 4px solid var(--dag-rs); }
+.dag-rs-rule { background: var(--dag-rs-bg); }
+.dag-rs-rule .dag-english-label { color: var(--dag-rs); }
+.dag-rs-rule .dag-english-text { color: #16341f; }
+.dag-rs-rule .dag-rs-kw { color: var(--dag-rs); font-weight: 800; }
+.dag-rs-mech { color: #b45309; font-weight: 700; text-transform: none; letter-spacing: 0; }
+
+.dag-input-rulespeak .dag-rs-kw { color: var(--dag-rs); font-weight: 700; }
+
+.dag-rs-obligations { margin-top: 0.4em; }
+.dag-rs-obl-list { margin: 6px 0 0; padding-left: 1.1em; }
+.dag-rs-obl {
+  margin: 4px 0;
+  line-height: 1.4;
+  color: #2a1c4a;
+}
+.dag-rs-obl .dag-rs-kw { color: var(--dag-rs); font-weight: 800; }
+.dag-rs-obl-hard     { list-style: "● "; }
+.dag-rs-obl-soft     { list-style: "○ "; }
+.dag-rs-obl-override { list-style: "◐ "; }
+
+/* ── Tables index (ontology landing) ─────────────────────────────────────────
+   A responsive grid of table cards; click a card to open that table's columns. */
+.dag-table-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 12px;
+}
+.dag-table-card {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px 14px;
+  border: 1px solid #e6e6ea;
+  border-left: 4px solid var(--dag-calc);
+  border-radius: 8px;
+  background: #fff;
+  text-decoration: none;
+  color: var(--fg, #222);
+  transition: box-shadow 120ms ease, border-color 120ms ease, transform 80ms ease;
+}
+.dag-table-card:hover {
+  box-shadow: 0 3px 10px rgba(90,58,160,0.14);
+  border-left-color: var(--dag-calc);
+  transform: translateY(-1px);
+}
+.dag-table-card-name { font-weight: 700; font-size: 15px; }
+.dag-table-card-human { font-size: 12px; color: var(--muted, #888); }
+.dag-table-card-counts { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 4px; }
+.dag-pill-calc { background: var(--dag-calc-bg); color: var(--dag-calc); }
+.dag-pill-rel  { background: var(--dag-rel-bg);  color: var(--dag-rel); }
+.dag-table-card-desc {
+  font-size: 12px;
+  color: #666;
+  margin-top: 4px;
+  line-height: 1.4;
+}
+
+/* ── Table page (a table's columns) ──────────────────────────────────────────
+   One row per column; click a row to open that column's DAG page. */
+.dag-col-list { display: flex; flex-direction: column; gap: 6px; }
+.dag-col {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 9px 12px;
+  border: 1px solid #ececf0;
+  border-left: 3px solid #ddd;
+  border-radius: 7px;
+  background: #fff;
+  text-decoration: none;
+  color: var(--fg, #222);
+  transition: box-shadow 120ms ease, border-color 120ms ease, background 120ms ease;
+}
+.dag-col:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.08); background: #fcfcff; }
+.dag-col-raw    { border-left-color: var(--dag-raw); }
+.dag-col-calc   { border-left-color: var(--dag-calc); }
+.dag-col-agg    { border-left-color: var(--dag-agg); }
+.dag-col-rel    { border-left-color: var(--dag-rel); }
+.dag-col-lookup { border-left-color: var(--dag-lookup); }
+.dag-col-head { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.dag-col-name { font-weight: 700; font-size: 14px; }
+.dag-col-human { font-size: 12px; color: var(--muted, #999); }
+.dag-col-null { margin-left: auto; }
+.dag-col-rule { font-size: 13px; color: #333; line-height: 1.4; }
+.dag-col-rule.dag-col-rulespeak .dag-rs-kw { color: var(--dag-rs); font-weight: 800; }
+.dag-col-desc { font-size: 12px; color: #777; line-height: 1.4; }
+/* Relationship rows: the field link fills the row, with a sibling chip linking
+   to the table it points at (anchors can't nest, so they sit side by side). */
+.dag-col-rel-wrap {
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  padding: 0;            /* inner links own the padding */
+  overflow: hidden;
+}
+.dag-col-rel-main {
+  flex: 1 1 auto;
+  display: flex; flex-direction: column; gap: 3px;
+  padding: 9px 12px;
+  text-decoration: none; color: inherit;
+  border-radius: 7px 0 0 7px;
+  transition: background 120ms ease;
+}
+.dag-col-rel-main:hover { background: #fcfcff; }
+.dag-col-rel-target {
+  flex: 0 0 auto;
+  align-self: stretch;
+  display: flex; align-items: center;
+  padding: 0 14px;
+  font-size: 13px; font-weight: 700;
+  color: var(--dag-rel);
+  text-decoration: none;
+  background: color-mix(in srgb, var(--dag-rel) 8%, #fff);
+  border-left: 1px solid color-mix(in srgb, var(--dag-rel) 25%, transparent);
+  transition: background 120ms ease;
+  white-space: nowrap;
+}
+.dag-col-rel-target:hover { background: color-mix(in srgb, var(--dag-rel) 16%, #fff); }
+
+/* ── RuleTree: nested outline for priority ladders & AND/OR rules ────────────
+   RuleSpeak lays multi-condition / priority rules out as a list, not a run-on
+   sentence. Cases are numbered; AND/OR groups nest as indented bullets. */
+.dag-rt { font-size: 15px; line-height: 1.5; color: #16341f; }
+.dag-rt-headline { margin: 0 0 8px; font-weight: 600; }
+.dag-rt-cases {
+  margin: 0; padding-left: 1.4em;
+  display: flex; flex-direction: column; gap: 6px;
+}
+.dag-rt-case { padding-left: 2px; }
+.dag-rt-case::marker { color: var(--dag-rs); font-weight: 700; }
+.dag-rt-else { color: #555; }
+.dag-rt-case-val .dag-rt-val { color: var(--dag-rs); font-weight: 700; }
+.dag-rt-if { color: #888; font-style: italic; }
+
+/* AND/OR group: a label then an indented bullet list of children. */
+.dag-rt-group { display: inline-block; }
+.dag-rt-group-label {
+  font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em;
+  color: var(--dag-rs); font-weight: 700;
+}
+.dag-rt-any > .dag-rt-group-label { color: #9a6708; }   /* OR = amber, AND = green */
+.dag-rt-children {
+  margin: 3px 0 2px; padding-left: 1.3em;
+  list-style: none;
+  border-left: 2px solid #d7e7dd;
+}
+.dag-rt-child {
+  position: relative; padding: 2px 0 2px 2px;
+}
+.dag-rt-child::before {
+  content: "•"; color: var(--dag-rs);
+  position: absolute; left: -0.9em;
+}
+.dag-rt-any > .dag-rt-children { border-left-color: #ecdcc0; }
+.dag-rt-any .dag-rt-child::before { color: #9a6708; }
+.dag-rt-cond-block { margin-top: 4px; }
+.dag-rt-leaf { color: #16341f; }

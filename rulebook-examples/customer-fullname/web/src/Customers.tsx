@@ -15,14 +15,69 @@ interface EditState {
   field: 'FirstName' | 'LastName'
 }
 
+interface ExportState {
+  active: boolean
+  pct: number
+  label: string
+  error: string | null
+}
+
 export default function Customers() {
   const [customers, setCustomers] = useState<Customer[]>([])
   const [editState, setEditState] = useState<EditState | null>(null)
   const [editValue, setEditValue] = useState('')
+  const [exportState, setExportState] = useState<ExportState>({ active: false, pct: 0, label: '', error: null })
 
   useEffect(() => {
     load()
   }, [])
+
+  // Export the live data to Excel. Opens an SSE stream so the progress bar
+  // tracks REAL backend stages (querying views → temp rulebook → transpiler →
+  // packaging); on `done` it fetches the finished workbook and triggers a
+  // browser download.
+  function handleExport() {
+    if (exportState.active) return
+    setExportState({ active: true, pct: 0, label: 'Starting…', error: null })
+
+    const es = new EventSource('/api/export/xlsx/stream')
+
+    es.addEventListener('progress', (e) => {
+      const { label, pct } = JSON.parse((e as MessageEvent).data)
+      setExportState((s) => ({ ...s, pct, label }))
+    })
+
+    es.addEventListener('error', (e) => {
+      // Either a server-sent `error` event (has data) or a transport drop.
+      let message = 'Export failed.'
+      const data = (e as MessageEvent).data
+      if (data) {
+        try { message = JSON.parse(data).message || message } catch { /* keep default */ }
+      }
+      es.close()
+      setExportState({ active: false, pct: 0, label: '', error: message })
+    })
+
+    es.addEventListener('done', async (e) => {
+      const { downloadUrl, filename } = JSON.parse((e as MessageEvent).data)
+      es.close()
+      setExportState((s) => ({ ...s, pct: 100, label: 'Downloading…' }))
+      try {
+        const res = await fetch(downloadUrl)
+        if (!res.ok) throw new Error(`Download failed (${res.status})`)
+        const blob = await res.blob()
+        const url = URL.createObjectURL(blob)
+        const a = document.createElement('a')
+        a.href = url
+        a.download = filename || 'export.xlsx'
+        a.click()
+        URL.revokeObjectURL(url)
+        setExportState({ active: false, pct: 0, label: '', error: null })
+      } catch (err) {
+        setExportState({ active: false, pct: 0, label: '', error: String((err as Error).message || err) })
+      }
+    })
+  }
 
   async function load() {
     const res = await fetch('/api/customers')
@@ -53,8 +108,51 @@ export default function Customers() {
       <div style={{ maxWidth: '800px', margin: '0 auto', background: 'white', borderRadius: '8px', boxShadow: '0 2px 8px rgba(0,0,0,0.1)', padding: '30px' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
           <h1 style={{ color: '#333', margin: 0, fontSize: '28px' }}>Customers</h1>
-          <DagToggle />
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <button
+              onClick={handleExport}
+              disabled={exportState.active}
+              style={{
+                font: 'inherit',
+                fontSize: '13px',
+                padding: '7px 14px',
+                borderRadius: '5px',
+                border: '1px solid #1f9d55',
+                background: exportState.active ? '#9ad0b3' : '#27ae60',
+                color: 'white',
+                cursor: exportState.active ? 'default' : 'pointer',
+                whiteSpace: 'nowrap',
+              }}
+            >
+              {exportState.active ? 'Exporting…' : '⬇ Export to Excel'}
+            </button>
+            <DagToggle />
+          </div>
         </div>
+
+        {exportState.active && (
+          <div style={{ marginBottom: '20px' }}>
+            <div style={{ height: '10px', background: '#eee', borderRadius: '5px', overflow: 'hidden' }}>
+              <div
+                style={{
+                  height: '100%',
+                  width: `${exportState.pct}%`,
+                  background: '#27ae60',
+                  transition: 'width 0.25s ease',
+                }}
+              />
+            </div>
+            <div style={{ fontSize: '12px', color: '#666', marginTop: '6px' }}>
+              {exportState.label} ({exportState.pct}%)
+            </div>
+          </div>
+        )}
+
+        {exportState.error && (
+          <div style={{ marginBottom: '20px', padding: '10px 12px', background: '#fdecea', border: '1px solid #f5c6cb', borderRadius: '5px', color: '#b94a48', fontSize: '13px' }}>
+            Export failed: {exportState.error}
+          </div>
+        )}
 
         <p style={{ color: '#666', marginBottom: '25px', fontSize: '14px' }}>Click any field to edit. Press Enter to save, Escape to cancel.</p>
 

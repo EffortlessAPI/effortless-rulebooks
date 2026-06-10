@@ -1,0 +1,20 @@
+[
+  {
+    "human_agent_id": "ntwf-james-okafor",
+    "name": "James Okafor",
+    "display_name": "James Okafor",
+    "mbox": "james.okafor@special-solutions.example",
+    "roles": "ntwf-legal-compliance-role",
+    "relative_path": "human-agents/ntwf-james-okafor",
+    "iri": "human-agents-ntwf-james-okafor"
+  },
+  {
+    "human_agent_id": "ntwf-sarah-kim",
+    "name": "Sarah Kim",
+    "display_name": "Sarah Kim",
+    "mbox": "sarah.kim@special-solutions.example",
+    "roles": "ntwf-cto-role",
+    "relative_path": "human-agents/ntwf-sarah-kim",
+    "iri": "human-agents-ntwf-sarah-kim"
+  }
+]

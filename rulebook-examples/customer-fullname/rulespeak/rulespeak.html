@@ -291,35 +291,35 @@ html.show-consumers .elem-consumers{display:block}
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
         <span class="view-label">In RuleSpeak</span>
-        <p class="view-body">A customer's name is computed as the <a class="ref" href="#f-customers-firstname">first name</a>, followed by a space, followed by the <a class="ref" href="#f-customers-lastname">last name</a>.</p>
+        <p class="view-body">A customer's name is computed as the <a class="ref" href="#f-customers-lastname">last name</a>, followed by a comma followed by a space, followed by the <a class="ref" href="#f-customers-firstname">first name</a>.</p>
       </div>
       <div class="view elem elem-english">
         <span class="view-label">In English</span>
-        <p class="view-body">(<a class="ref" href="#f-customers-firstname">first name</a> joined with &quot; &quot;) joined with <a class="ref" href="#f-customers-lastname">last name</a>.</p>
+        <p class="view-body">(<a class="ref" href="#f-customers-lastname">last name</a> joined with &quot;, &quot;) joined with <a class="ref" href="#f-customers-firstname">first name</a>.</p>
       </div>
       <div class="view elem elem-formula">
         <span class="view-label">As a formula</span>
-        <div class="view-body fx"><span class="fx-eq">= </span><a class="fx-chip" href="#f-customers-firstname">First Name</a> &amp; &quot; &quot; &amp; <a class="fx-chip" href="#f-customers-lastname">Last Name</a></div>
+        <div class="view-body fx"><span class="fx-eq">= </span><a class="fx-chip" href="#f-customers-lastname">Last Name</a> &amp; &quot;, &quot; &amp; <a class="fx-chip" href="#f-customers-firstname">First Name</a></div>
       </div>
     </div>
     <details class="prov prov-inputs elem elem-inputs" open>
       <summary>Inputs <span class="count">2</span> <span class="prov-hint">fields this rule reads</span></summary>
       <div class="prov-grid">
-        <a class="input tone-raw" href="#f-customers-firstname">
-          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">First Name</span><span class="input-table">Customers</span></span>
-          <span class="input-en muted">First Name of the customer</span>
-        </a>
         <a class="input tone-raw" href="#f-customers-lastname">
           <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Last Name</span><span class="input-table">Customers</span></span>
           <span class="input-en muted">Last Name of the customer</span>
+        </a>
+        <a class="input tone-raw" href="#f-customers-firstname">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">First Name</span><span class="input-table">Customers</span></span>
+          <span class="input-en muted">First Name of the customer</span>
         </a>
       </div>
     </details>
     <details class="prov prov-leaves elem elem-inputs">
       <summary>Ground truth at the leaves <span class="count">2</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
       <div class="prov-pills">
-        <a class="ref-pill tone-raw" href="#f-customers-firstname">● First Name <span class="ref-pill-tbl">Customers</span></a>
         <a class="ref-pill tone-raw" href="#f-customers-lastname">● Last Name <span class="ref-pill-tbl">Customers</span></a>
+        <a class="ref-pill tone-raw" href="#f-customers-firstname">● First Name <span class="ref-pill-tbl">Customers</span></a>
       </div>
     </details>
     <p class="field-note elem elem-desc">Full name: first and last</p>
@@ -336,15 +336,15 @@ html.show-consumers .elem-consumers{display:block}
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
         <span class="view-label">In RuleSpeak</span>
-        <p class="view-body">A customer's initials is computed as the last 1 character(s) of the <a class="ref" href="#f-customers-firstname">first name</a>, followed by a period, followed by the last 1 character(s) of the <a class="ref" href="#f-customers-lastname">last name</a>, followed by a period.</p>
+        <p class="view-body">A customer's initials is computed as the first 1 character(s) of the <a class="ref" href="#f-customers-firstname">first name</a>, followed by the literal “. ”, followed by the first 1 character(s) of the <a class="ref" href="#f-customers-lastname">last name</a>, followed by a period.</p>
       </div>
       <div class="view elem elem-english">
         <span class="view-label">In English</span>
-        <p class="view-body">((the last 1 characters of <a class="ref" href="#f-customers-firstname">first name</a> joined with &quot;.&quot;) joined with the last 1 characters of <a class="ref" href="#f-customers-lastname">last name</a>) joined with &quot;.&quot;.</p>
+        <p class="view-body">((the first 1 characters of <a class="ref" href="#f-customers-firstname">first name</a> joined with &quot;. &quot;) joined with the first 1 characters of <a class="ref" href="#f-customers-lastname">last name</a>) joined with &quot;.&quot;.</p>
       </div>
       <div class="view elem elem-formula">
         <span class="view-label">As a formula</span>
-        <div class="view-body fx"><span class="fx-eq">= </span>RIGHT(<a class="fx-chip" href="#f-customers-firstname">First Name</a>, 1) &amp; &quot;.&quot; &amp; RIGHT(<a class="fx-chip" href="#f-customers-lastname">Last Name</a>, 1) &amp; &quot;.&quot;</div>
+        <div class="view-body fx"><span class="fx-eq">= </span>LEFT(<a class="fx-chip" href="#f-customers-firstname">First Name</a>, 1) &amp; &quot;. &quot; &amp; LEFT(<a class="fx-chip" href="#f-customers-lastname">Last Name</a>, 1) &amp; &quot;.&quot;</div>
       </div>
     </div>
     <details class="prov prov-inputs elem elem-inputs" open>

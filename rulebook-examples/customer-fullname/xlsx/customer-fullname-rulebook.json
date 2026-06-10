@@ -1,0 +1,27 @@
+{
+  "Customers": {
+    "schema": [
+      { "name": "CustomerId", "datatype": "string", "type": "raw" },
+      { "name": "FirstName", "datatype": "string", "type": "raw", "Description": "First Name of the customer" },
+      { "name": "LastName", "datatype": "string", "type": "raw", "Description": "Last Name of the customer" },
+      { "name": "Name", "datatype": "string", "type": "calculated", "Description": "Full name: first and last", "formula": "={{LastName}} & \", \" & {{FirstName}}" },
+      { "name": "Initials", "datatype": "string", "type": "calculated", "Description": "Last letter of first and last name, dot-separated with trailing dot", "formula": "=UPPER(RIGHT({{FirstName}}, 1) & \".\" & RIGHT({{LastName}}, 1) & \".\")" }
+    ],
+    "data": [
+      { "CustomerId": "jane-smith-email-com", "FirstName": "Jane", "LastName": "Smith" },
+      { "CustomerId": "john-doe-email-com", "FirstName": "John", "LastName": "Doe" },
+      { "CustomerId": "emily-jones-email-com", "FirstName": "Emily", "LastName": "Jones" },
+      { "CustomerId": "alice-cooper", "FirstName": "Alice", "LastName": "Gutknechts" }
+    ]
+  },
+  "__meta__": {
+    "schema": [
+      { "name": "MetaKey", "datatype": "string", "type": "raw" },
+      { "name": "Name", "datatype": "string", "type": "raw" },
+      { "name": "ValueType", "datatype": "string", "type": "raw" },
+      { "name": "StringValue", "datatype": "string", "type": "raw" },
+      { "name": "JsonValue", "datatype": "string", "type": "raw" }
+    ],
+    "data": []
+  }
+}
