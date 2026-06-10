@@ -1,4 +1,4 @@
-# Special Solutions — Release Control (Talisman BASIC app)
+# Talisman's Special Solutions — Release Control (TSS app)
 
 A small full-stack app that tells the **Production Deployment Workflow** as a
 business story — a software release, start to finish — where **every derived

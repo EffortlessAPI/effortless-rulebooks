@@ -1,4 +1,4 @@
-# Talisman BASIC — Effortless Project
+# Talisman's Special Solutions — Effortless Project
 
 <!-- rulebook-authoritative-banner -->
 ## Authoritative Source: `effortless-rulebook/talisman-basic-rulebook.json` is HEAD

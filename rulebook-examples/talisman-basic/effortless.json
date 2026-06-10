@@ -4,12 +4,12 @@
   "CurrentPath": "",
   "SSoTmeProjectFiles": null,
   "SSoTmeProjectId": "576a7995-d37c-49cd-8a7e-3bdf28a37b2d",
-  "Name": "Talisman BASIC: Task Management Ontology",
+  "Name": "Talisman's Special Solutions: Task Management Ontology",
   "Description": "A real-world workflow demonstrating task management, agent assignments, and basic aggregations.",
   "ProjectSettings": [
     {
       "Name": "project-name",
-      "Value": "Talisman BASIC: Task Management Ontology"
+      "Value": "Talisman's Special Solutions: Task Management Ontology"
     }
   ],
   "ProjectTranspilers": [

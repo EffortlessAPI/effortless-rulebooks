@@ -1,5 +1,5 @@
 """
-OWL-powered API for the Talisman BASIC workflow ontology.
+OWL-powered API for the Talisman's Special Solutions workflow ontology.
 
 Every endpoint answers a competency question by querying the REASONED graph
 (TBox + ABox + OWL-RL closure) built in graph.py. The transitive-closure and
@@ -16,7 +16,7 @@ from fastapi import FastAPI, HTTPException
 import graph
 
 app = FastAPI(
-    title="Talisman BASIC — OWL Workflow API",
+    title="Talisman's Special Solutions — OWL Workflow API",
     description="Competency questions answered by an OWL-RL reasoner over the "
                 "rulebook-generated ontology.",
     version="1.0.0",

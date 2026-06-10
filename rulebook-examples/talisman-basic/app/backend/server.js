@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------------------
-// Talisman BASIC — Workflow app backend (Express)
+// Talisman's Special Solutions — Workflow app backend (Express)
 //
 // Responsibilities, and ONLY these:
 //   1. Own the database: app/backend/db.json (raw, editable rows).
@@ -328,7 +328,7 @@ app.get("/api/story", wrap(async (req, res) => {
   };
 
   res.json({
-    company: "Special Solutions",
+    company: "Talisman's Special Solutions",
     workflow: {
       id: wf.workflowId,
       title: wf.displayName,

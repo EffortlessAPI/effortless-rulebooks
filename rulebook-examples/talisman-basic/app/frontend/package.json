@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "Vite + React UI for the Talisman BASIC workflow app. Renders raw rows next to the fields the OWL/SHACL reasoner derived.",
+  "description": "Vite + React UI for the Talisman's Special Solutions workflow app. Renders raw rows next to the fields the OWL/SHACL reasoner derived.",
   "scripts": {
     "dev": "vite",
     "build": "vite build",

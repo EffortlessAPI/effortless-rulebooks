@@ -1,8 +1,8 @@
-# Talisman BASIC — A Rulebook-First Workflow Ontology
+# Talisman's Special Solutions — A Rulebook-First Workflow Ontology
 
-**A worked example showing how one semantic rulebook can generate an ontology, a database, executable logic, documentation, tests, and multiple runtime projections from the same source of meaning.**
+**A worked example -** *inspired by Jessica Talisman and her fantastic [4 Part Ontology series](https://jessicatalisman.substack.com/p/ontology?utm_source=publication-search) -* **showing how one semantic rulebook can generate an ontology, a database, executable logic, documentation, tests, and multiple runtime projections from the same source of meaning.**
 
-This project models the workflow ontology from Jessica Talisman’s *Intentional Arrangement* ontology series, using the fictional **Special Solutions** workflow domain: human specialists, AI agents, automated pipelines, approval gates, provenance, datasets, escalation paths, and compliance review.
+This project models the workflow ontology from Jessica Talisman’s *Intentional Arrangement* ontology series, using the fictional **Talisman's Special Solutions** workflow domain: human specialists, AI agents, automated pipelines, approval gates, provenance, datasets, escalation paths, and compliance review.
 
 The purpose of this repo is **not** to argue against OWL, RDF, SHACL, SPARQL, triples, or ontology engineering.
 
@@ -41,13 +41,13 @@ That distinction is the whole project.
 
 Ontology engineering already has a strong discipline for building meaning before implementation:
 
-* competency questions define scope;
-* TBox, ABox, and CBox separate model structure, instance data, and governance;
-* RDF gives a universal graph representation;
-* OWL gives formal semantic commitments and reasoning;
-* SHACL gives validation;
-* SPARQL gives graph query;
-* existing vocabularies such as PROV-O, DCAT, Dublin Core, SKOS, FOAF, and Schema.org give reusable semantic building blocks.
+- competency questions define scope;
+- TBox, ABox, and CBox separate model structure, instance data, and governance;
+- RDF gives a universal graph representation;
+- OWL gives formal semantic commitments and reasoning;
+- SHACL gives validation;
+- SPARQL gives graph query;
+- existing vocabularies such as PROV-O, DCAT, Dublin Core, SKOS, FOAF, and Schema.org give reusable semantic building blocks.
 
 This repo agrees with that.
 
@@ -113,14 +113,14 @@ It is structured domain meaning: entities, fields, relationships, lookups, formu
 
 This repo is **not** saying:
 
-* “OWL is unnecessary.”
-* “RDF is unnecessary.”
-* “SHACL is unnecessary.”
-* “SPARQL is unnecessary.”
-* “Triples are bad.”
-* “Relational databases are better than ontologies.”
-* “Postgres should replace semantic-web tooling.”
-* “Ontology engineers are doing it wrong.”
+- “OWL is unnecessary.”
+- “RDF is unnecessary.”
+- “SHACL is unnecessary.”
+- “SPARQL is unnecessary.”
+- “Triples are bad.”
+- “Relational databases are better than ontologies.”
+- “Postgres should replace semantic-web tooling.”
+- “Ontology engineers are doing it wrong.”
 
 This repo is saying something narrower:
 
@@ -142,16 +142,16 @@ The answer is not that OWL fails. The answer is that many organizations need the
 
 For example, the same workflow rule may need to appear as:
 
-* an OWL axiom or property declaration;
-* RDF instance data;
-* a SHACL rule or validation shape;
-* a Postgres generated column, function, or view;
-* a Python predicate;
-* an Excel formula;
-* a Go function;
-* a UI field rule;
-* a documentation sentence;
-* a conformance test.
+- an OWL axiom or property declaration;
+- RDF instance data;
+- a SHACL rule or validation shape;
+- a Postgres generated column, function, or view;
+- a Python predicate;
+- an Excel formula;
+- a Go function;
+- a UI field rule;
+- a documentation sentence;
+- a conformance test.
 
 If each of those is hand-authored, semantic drift is almost guaranteed.
 
@@ -185,13 +185,13 @@ because all of those substrates were generated from the same rulebook.
 
 Changing the rulebook changes:
 
-* the ontology projection;
-* the database projection;
-* the generated functions;
-* the documentation;
-* the tests;
-* the expected results;
-* the UI/API-facing behavior.
+- the ontology projection;
+- the database projection;
+- the generated functions;
+- the documentation;
+- the tests;
+- the expected results;
+- the UI/API-facing behavior.
 
 That is the point of the example.
 
@@ -199,25 +199,25 @@ That is the point of the example.
 
 ## The Example Domain
 
-This rulebook models the **Production Deployment Workflow** from the fictional company **Special Solutions**.
+This rulebook models the **Production Deployment Workflow** from the fictional company **Talisman's Special Solutions**.
 
 The workflow includes:
 
-* human specialists;
-* AI agents;
-* automated pipelines;
-* roles;
-* departments;
-* workflow steps;
-* approval gates;
-* step ordering;
-* delegation and escalation;
-* datasets;
-* workflow artifacts;
-* provenance;
-* status vocabularies;
-* agent capability vocabularies;
-* compliance-risk verdicts.
+- human specialists;
+- AI agents;
+- automated pipelines;
+- roles;
+- departments;
+- workflow steps;
+- approval gates;
+- step ordering;
+- delegation and escalation;
+- datasets;
+- workflow artifacts;
+- provenance;
+- status vocabularies;
+- agent capability vocabularies;
+- compliance-risk verdicts.
 
 The seed data is one curated worked example rather than disconnected tutorial rows.
 
@@ -227,25 +227,25 @@ The seed data is one curated worked example rather than disconnected tutorial ro
 
 This example includes:
 
-* **14 interconnected domain tables**
-* **human, AI, and automated-pipeline agents**
-* **role–agent separation**
-* **approval gates modeled as workflow-step subtypes**
-* **step-to-step ordering**
-* **transitive closure over step precedence**
-* **delegation and escalation chains**
-* **PROV-style artifact provenance**
-* **DCAT-style dataset consumption**
-* **SKOS-style controlled vocabularies**
-* **derived fields**
-* **lookup fields**
-* **aggregation fields**
-* **boolean verdict fields**
-* **generated Postgres**
-* **generated OWL**
-* **generated SHACL**
-* **generated documentation**
-* **generated tests**
+- **14 interconnected domain tables**
+- **human, AI, and automated-pipeline agents**
+- **role–agent separation**
+- **approval gates modeled as workflow-step subtypes**
+- **step-to-step ordering**
+- **transitive closure over step precedence**
+- **delegation and escalation chains**
+- **PROV-style artifact provenance**
+- **DCAT-style dataset consumption**
+- **SKOS-style controlled vocabularies**
+- **derived fields**
+- **lookup fields**
+- **aggregation fields**
+- **boolean verdict fields**
+- **generated Postgres**
+- **generated OWL**
+- **generated SHACL**
+- **generated documentation**
+- **generated tests**
 
 The important part is not any one of those outputs.
 
@@ -257,23 +257,25 @@ The important part is that they are generated from the same semantic rulebook.
 
 Five ordered steps carry a release from request to post-deployment report:
 
-| # | Step                                            | Role                      | Filled by             | Human approval? |
-| - | ----------------------------------------------- | ------------------------- | --------------------- | --------------- |
-| 1 | Initiate Deployment Request                     | Release Manager           | Maria Gonzalez        | Yes             |
-| 2 | AI Risk Assessment                              | Risk Analysis Agent       | RiskAnalysis-AI       | No              |
-| 3 | Legal Compliance Review & Release Authorization | Legal Compliance Reviewer | James Okafor          | Yes             |
-| 4 | Automated Deployment Execution                  | CI/CD Executor            | CI/CD Deploy Pipeline | No              |
-| 5 | Post-Deployment Health Check & Report           | Release Manager           | Maria Gonzalez        | Yes             |
+
+| #   | Step                                            | Role                      | Filled by             | Human approval? |
+| --- | ----------------------------------------------- | ------------------------- | --------------------- | --------------- |
+| 1   | Initiate Deployment Request                     | Release Manager           | Maria Gonzalez        | Yes             |
+| 2   | AI Risk Assessment                              | Risk Analysis Agent       | RiskAnalysis-AI       | No              |
+| 3   | Legal Compliance Review & Release Authorization | Legal Compliance Reviewer | James Okafor          | Yes             |
+| 4   | Automated Deployment Execution                  | CI/CD Executor            | CI/CD Deploy Pipeline | No              |
+| 5   | Post-Deployment Health Check & Report           | Release Manager           | Maria Gonzalez        | Yes             |
+
 
 The workflow also includes:
 
-* step precedence: `1 → 2 → 3 → 4 → 5`;
-* transitive closure: asserted edges imply all reachable ordered pairs, including `1 → 5`;
-* an approval gate at step 3;
-* role delegation from Release Manager to VP Engineering to CTO;
-* a provenance chain across generated artifacts;
-* a risk dataset consumed by the AI risk-assessment step;
-* a compliance-risk verdict derived from multiple upstream facts.
+- step precedence: `1 → 2 → 3 → 4 → 5`;
+- transitive closure: asserted edges imply all reachable ordered pairs, including `1 → 5`;
+- an approval gate at step 3;
+- role delegation from Release Manager to VP Engineering to CTO;
+- a provenance chain across generated artifacts;
+- a risk dataset consumed by the AI risk-assessment step;
+- a compliance-risk verdict derived from multiple upstream facts.
 
 ---
 
@@ -444,12 +446,12 @@ This repo treats those questions as acceptance criteria.
 
 A competency question should be traceable to:
 
-* the structural rulebook;
-* the generated ontology;
-* the generated database;
-* the generated documentation;
-* the generated tests;
-* the expected answer.
+- the structural rulebook;
+- the generated ontology;
+- the generated database;
+- the generated documentation;
+- the generated tests;
+- the expected answer.
 
 That makes the competency question not just a design prompt, but a cross-substrate conformance target.
 
@@ -507,6 +509,7 @@ Workflows.WorkflowStatus → WorkflowStatusConcepts
 
 ## Tables Overview
 
+
 | Table                     | Purpose                                             |
 | ------------------------- | --------------------------------------------------- |
 | `Workflows`               | Workflow-level metadata and aggregate verdicts      |
@@ -523,6 +526,7 @@ Workflows.WorkflowStatus → WorkflowStatusConcepts
 | `Datasets`                | DCAT-style datasets consumed by steps               |
 | `WorkflowArtifacts`       | PROV-style artifacts generated by steps             |
 | `ComplianceVerdicts`      | Derived compliance-risk results                     |
+
 
 ---
 
@@ -753,4 +757,4 @@ It makes OWL part of a larger model-driven system.
 
 ## One-Sentence Summary
 
-**Talisman BASIC is a rulebook-first workflow ontology where OWL/RDF/SHACL are preserved as first-class semantic-web artifacts, but generated as siblings alongside Postgres, executable code, documentation, and tests from one higher-order source of meaning.**
+**Talisman's Special Solutions is a rulebook-first workflow ontology where OWL/RDF/SHACL are preserved as first-class semantic-web artifacts, but generated as siblings alongside Postgres, executable code, documentation, and tests from one higher-order source of meaning.**

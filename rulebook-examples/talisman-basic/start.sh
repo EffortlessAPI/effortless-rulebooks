@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # ============================================================================
-# Talisman BASIC workflow app — one-command run.
+# Talisman's Special Solutions workflow app — one-command run.
 #
 # Per repo doctrine, start.sh is the restart story: it kills whatever is on its
 # ports first, then boots clean. Two modes:

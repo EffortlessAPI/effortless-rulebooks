@@ -1,13 +1,13 @@
 # Ontology, Parts I–III: The Architecture of Meaning
 **Jessica Talisman — Intentional Arrangement (Feb–Mar 2026)**
 
-*Summary prepared for the Talisman-Basic ERB rulebook*
+*Summary prepared for the Talisman's Special Solutions ERB rulebook*
 
 ---
 
 ## Overview
 
-This three-part series demystifies ontologies — what they are, how to engineer them, and how to validate them. The worked example is NTWF: a workflow-management ontology for a fictional 1,100-person technology company called Special Solutions, whose processes involve human specialists, AI agents, and automated pipelines operating side by side. The NTWF ontology is the domain modeled in the Talisman-Basic ERB rulebook.
+This three-part series demystifies ontologies — what they are, how to engineer them, and how to validate them. The worked example is NTWF: a workflow-management ontology for a fictional 1,100-person technology company called Special Solutions, whose processes involve human specialists, AI agents, and automated pipelines operating side by side. The NTWF ontology is the domain modeled in the Talisman's Special Solutions ERB rulebook.
 
 ---
 
@@ -113,9 +113,9 @@ The metadata layer — Dublin Core properties spread across all three boxes — 
 
 ---
 
-## Mapping to the Talisman-Basic Rulebook
+## Mapping to the Talisman's Special Solutions Rulebook
 
-The Talisman-Basic ERB rulebook replicates the core NTWF domain as relational tables:
+The Talisman's Special Solutions ERB rulebook replicates the core NTWF domain as relational tables:
 
 | Rulebook Table | Ontology Counterpart |
 |---|---|

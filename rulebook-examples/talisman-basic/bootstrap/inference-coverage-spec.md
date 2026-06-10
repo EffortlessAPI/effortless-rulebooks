@@ -1,4 +1,4 @@
-# Talisman-Basic — Article Inference Coverage Spec
+# Talisman's Special Solutions — Article Inference Coverage Spec
 
 **Goal:** 100% implementation coverage of every *checkable claim* in Jessica Talisman's
 NTWF article (Parts I–III), expressed as **first-class inference chains in the rulebook**

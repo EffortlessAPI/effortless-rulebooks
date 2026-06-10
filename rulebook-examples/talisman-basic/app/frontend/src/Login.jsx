@@ -77,7 +77,7 @@ export default function Login({ onEnter }) {
     <div className="login">
       <div className="login-card">
         <div className="login-head">
-          <h1>Special Solutions — Release Console</h1>
+          <h1>Talisman's Special Solutions — Release Console</h1>
           <p className="login-sub">
             One rulebook, two execution substrates. Pick which engine computes the
             board, then walk in — the console is identical either way.

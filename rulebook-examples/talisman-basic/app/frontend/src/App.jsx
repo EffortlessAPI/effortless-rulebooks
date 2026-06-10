@@ -6,7 +6,7 @@ import { GraphView } from "./views/GraphView.jsx";
 import { ReassignPopover } from "./Editable.jsx";
 
 // ===========================================================================
-// Special Solutions — Release Console.
+// Talisman's Special Solutions — Release Console.
 //
 // A dashboard for ONE release. The top is the situation at a glance (the
 // compliance verdict). The middle is the same reasoned model shown three ways

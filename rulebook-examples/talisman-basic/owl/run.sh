@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Driver for the Talisman BASIC OWL project.
+# Driver for the Talisman's Special Solutions OWL project.
 #
 #   ./run.sh reason      load TBox+ABox, run SHACL rules to fixpoint + OWL-RL,
 #                        print the headline inferences (transitive closure etc.)

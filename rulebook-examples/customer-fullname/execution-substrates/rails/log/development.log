@@ -4399,3 +4399,26 @@ Processing by CustomersController#show as HTML
 Completed 200 OK in 3ms (Views: 0.9ms | ActiveRecord: 0.4ms | Allocations: 1189)
 
 
+Started GET "/customers/emily-jones-email-com" for 127.0.0.1 at 2026-06-10 16:03:29 -0500
+Processing by CustomersController#show as HTML
+  Parameters: {"id"=>"emily-jones-email-com"}
+  [1m[36mCustomer Load (0.7ms)[0m  [1m[34mSELECT "vw_customers".* FROM "vw_customers" WHERE "vw_customers"."customer_id" = $1 LIMIT $2[0m  [["customer_id", "emily-jones-email-com"], ["LIMIT", 1]]
+  ↳ app/controllers/customers_controller.rb:7:in `show'
+  Rendering layout layouts/application.html.erb
+  Rendering customers/show.html.erb within layouts/application
+  Rendered customers/show.html.erb within layouts/application (Duration: 1.2ms | Allocations: 65)
+  Rendered layout layouts/application.html.erb (Duration: 2.1ms | Allocations: 472)
+Completed 200 OK in 144ms (Views: 3.5ms | ActiveRecord: 11.8ms | Allocations: 4639)
+
+
+Started GET "/customers" for 127.0.0.1 at 2026-06-10 16:03:32 -0500
+Processing by CustomersController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering customers/index.html.erb within layouts/application
+  [1m[36mCustomer Load (0.8ms)[0m  [1m[34mSELECT "vw_customers".* FROM "vw_customers"[0m
+  ↳ app/views/customers/index.html.erb:17
+  Rendered customers/index.html.erb within layouts/application (Duration: 2.5ms | Allocations: 787)
+  Rendered layout layouts/application.html.erb (Duration: 2.9ms | Allocations: 1191)
+Completed 200 OK in 3ms (Views: 2.4ms | ActiveRecord: 0.8ms | Allocations: 1437)
+
+

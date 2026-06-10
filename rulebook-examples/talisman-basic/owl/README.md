@@ -1,6 +1,6 @@
-# Talisman BASIC — OWL substrate
+# Talisman's Special Solutions — OWL substrate
 
-A **reasoner-grade OWL ontology** generated from the Talisman BASIC rulebook,
+A **reasoner-grade OWL ontology** generated from the Talisman's Special Solutions rulebook,
 plus a SPARQL-backed API and a conformance suite that proves the OWL reasoner
 computes **identically to Postgres**.
 

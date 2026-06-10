@@ -1,5 +1,5 @@
 """
-Reasoned-graph loader for the Talisman BASIC OWL substrate.
+Reasoned-graph loader for the Talisman's Special Solutions OWL substrate.
 
 Loads the generated TBox (src/ontology.owl) + ABox (src/individuals.ttl),
 applies an OWL-RL reasoner (rdflib + owlrl), and exposes the materialized graph
