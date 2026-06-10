@@ -21,6 +21,7 @@ _The NTWF (Talisman's Special Solutions Workflow) ontology from Jessica Talisman
 | Count Human Steps | The number of the workflow's workflow steps that are executed by humans. | _Number of steps executed by a HumanAgent (rollup over WorkflowSteps.IsExecutedByHuman). The 'who actually runs this step' count — distinct from CountHumanRequiredSteps, which counts steps that demand a human decision (requiresHumanApproval). Worked example: 2 (the legal-review step and the release approval gate)._ |
 | Count Human Required Steps | The number of the workflow's workflow steps that require human approval. | _Number of steps that require a human decision (rollup over WorkflowSteps.RequiresHumanApproval). This is the 'human-required' half of the article's CQ3 ('which require a human decision'), answered — as the article notes — by a single FILTER on requiresHumanApproval. Worked example: 2 (the legal-review step and the release approval gate)._ |
 | Count Approval Consistency Violations | The number of the workflow's workflow steps that are approval consistency violation. | _Number of steps that require human approval but are not human-filled (rollup over WorkflowSteps.ApprovalConsistencyViolation). The clean ABox witness: this is 0 for the Production Deployment workflow. A non-zero value is the relational signal of a Suite-4 consistency violation._ |
+| Has Consistency Violation | True when the count approval consistency violations is greater than 0. | _TRUE iff at least one step breaks the human-approval consistency rule (CountApprovalConsistencyViolations > 0). The boolean witness of model integrity: a clean ABox holds it FALSE. This is what makes a broken rule a first-class input to the compliance verdict — a workflow with any consistency violation cannot be COMPLIANT._ |
 | Has AI Agent Step | True when the count AI steps is greater than 0. | _TRUE iff at least one step in this workflow is executed by an AIAgent. The structural half of the article's business payoff query._ |
 | Months Since Modified | Computed as the number of months from the modified to the current date and time. ⚠︎ mechanical <!-- rulespeak:reword --> | _Whole months since this workflow was last modified (dct:modified), measured live against NOW(). Drives CQ5 staleness. NOW() is seeded deterministically during conformance so test answers stay stable._ |
 | Is Stale | True when the months since modified is greater than the staleness threshold months. | _TRUE iff the workflow's compliance documentation has not been reviewed (Modified) within its policy window — i.e. MonthsSinceModified exceeds the configurable StalenessThresholdMonths. The metadata half of CQ5 ('which workflows haven't been reviewed in twelve months'): with the default threshold of 12 this is exactly the article's question, but the threshold is now a fact you can change, so the staleness verdict tracks the org's actual review cadence rather than a hardcoded constant._ |
@@ -115,7 +116,8 @@ _The NTWF (Talisman's Special Solutions Workflow) ontology from Jessica Talisman
 | Total Plan Minutes | The count total plan minutes of the compliance verdict's workflow. | _The workflow's total planned runtime (sum of step durations), pulled from Workflows.CountTotalPlanMinutes. EXTENSION beyond the source article. The time layer of the verdict._ |
 | Time Budget Minutes | The max plan minutes of the compliance verdict's workflow. | _The workflow's configured runtime budget, pulled from Workflows.MaxPlanMinutes. EXTENSION beyond the source article._ |
 | Is Over Time Budget | True when the compliance verdict's workflow is an over time budget. | _Whether total planned runtime exceeds the workflow's budget. Pulled from Workflows.IsOverTimeBudget. EXTENSION beyond the source article — the third compliance input alongside staleness and AI-execution._ |
-| Is At Compliance Risk | True when at least one of the following holds: all of the following hold: the is stale flag is set and the has AI executed step flag is set or the is over time budget flag is set. | _THE VERDICT. True when the workflow is EITHER (stale AND has an AI agent executing a step) — the article's closing business question — OR over its planned-runtime budget. The first disjunct is the article's headline finale verbatim; the second is an EXTENSION giving the step-duration literal a live compliance consequence. Fully derived: flip the Modified date, the role's filledBy agent, or any step's duration, and this recomputes on the next read._ |
+| Has Consistency Violation | True when the compliance verdict's workflow has a consistency violation. | _Whether any step breaks the human-approval consistency rule. Pulled from Workflows.HasConsistencyViolation. This is the 'no broken rules' input to the verdict: a structural inconsistency (an approval step not filled by a human) is itself a compliance risk, independent of staleness or time budget._ |
+| Is At Compliance Risk | True when at least one of the following holds: all of the following hold: the is stale flag is set and the has AI executed step flag is set; the is over time budget flag is set; or the has consistency violation flag is set. | _THE VERDICT. True when the workflow is (stale AND has an AI agent executing a step) — the article's closing business question — OR over its planned-runtime budget OR has any human-approval consistency violation. The first disjunct is the article's headline finale verbatim; the second gives the step-duration literal a live compliance consequence; the third enforces an implicit no-broken-rules rule, so a workflow with a structural inconsistency can never read COMPLIANT. Fully derived: flip the Modified date, the role's filledBy agent, or any step's duration, and this recomputes on the next read._ |
 | Verdict | The pref label of the compliance verdict's verdict concept. | _Human-readable rendering of the verdict for stakeholders — the PrefLabel of the resolved ComplianceVerdictConcepts option (VerdictConcept). No longer an inline string literal: the two possible values are defined rows in the ComplianceVerdictConcepts vocabulary, and this field looks up whichever one VerdictConcept selected._ |
 | **Scenario** | A scenario is identified by its name. | — |
 | Relative Path | Computed as the literal “scenarios/”, followed by the scenario ID. | _DAG-derived location for this Scenario row: root segment 'scenarios' + the primary key._ |
@@ -209,91 +211,93 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 | **DR-7 Count Human Steps** | A workflow's count human steps is the number of the workflow's workflow steps that are executed by humans. |
 | **DR-8 Count Human Required Steps** | A workflow's count human required steps is the number of the workflow's workflow steps that require human approval. |
 | **DR-9 Count Approval Consistency Violations** | A workflow's count approval consistency violations is the number of the workflow's workflow steps that are approval consistency violation. |
-| **DR-10 Has AI Agent Step** | A workflow is considered to have an AI agent step if the count AI steps is greater than 0. |
-| **DR-11 Months Since Modified** | A workflow's months since modified is computed as the number of months from the modified to the current date and time. ⚠︎ mechanical <!-- rulespeak:reword --> |
-| **DR-12 Is Stale** | A workflow is considered a stale if the months since modified is greater than the staleness threshold months. |
-| **DR-13 Is Stale and Has AI Agent** | A workflow is considered a stale and has AI agent if all of the following hold: the is stale flag is set and the has AI agent step flag is set. |
-| **DR-14 Count Total Plan Minutes** | A workflow's count total plan minutes is the total step duration minutes across the workflow steps related to the workflow. |
-| **DR-15 Is Over Time Budget** | A workflow is considered an over time budget if the count total plan minutes is greater than the max plan minutes. |
-| **DR-16 Count Derivation Links** | A workflow's count derivation links is the number of the workflow's workflow artifacts that have a derivation parent. |
-| **DR-17 Count Legal Owned Steps** | A workflow's count legal owned steps is the number of the workflow's workflow steps that are legal owned. |
-| **DR-18 Count Engineering Owned Steps** | A workflow's count engineering owned steps is the number of the workflow's workflow steps that are engineering owned. |
-| **DR-19 Involves Engineering and Legal** | A workflow is considered to involve engineering and legal if all of the following hold: the count engineering owned steps is greater than 0 and the count legal owned steps is greater than 0. |
-| **DR-20 Count Inferred Precedence Pairs** | A workflow's count inferred precedence pairs is the number of vw step precedence closure related to the workflow. |
-| **DR-21 Count Asserted Precedence Pairs** | A workflow's count asserted precedence pairs is the number of vw step precedence closure related to the workflow. |
-| **DR-22 Count of Precedence Closure Pairs** | A workflow's count of precedence closure pairs is computed as the count asserted precedence pairs plus the count inferred precedence pairs. |
-| **DR-23 Count Roles With Bad Filler Cardinality** | A workflow's count roles with bad filler cardinality is the number of roles related to the workflow. |
-| **DR-24 Parent Path** | A workflow step's parent path is the relative path of the workflow step's workflow. |
-| **DR-25 Relative Path** | A workflow step's relative path is computed as the parent path, followed by the literal “/steps/”, followed by the workflow step ID. |
-| **DR-26 Iri** | A workflow step's iri is computed as the relative path with every a slash replaced by a hyphen. |
-| **DR-27 Name** | A workflow step's name is computed as the lower-cased display name with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> |
-| **DR-28 Executing Human Agent** | A workflow step's executing human agent is the filled by human agent of the workflow step's assigned role. |
-| **DR-29 Executing AI Agent** | A workflow step's executing AI agent is the filled by AI agent of the workflow step's assigned role. |
-| **DR-30 Executing Automated Pipeline** | A workflow step's executing automated pipeline is the filled by automated pipeline of the workflow step's assigned role. |
-| **DR-31 Executing Agent Type** | The workflow step's executing agent type is determined by the following priority:<br>1. the literal “HumanAgent”, if the executing human agent has a value;<br>2. the literal “AIAgent”, if the executing AI agent has a value;<br>3. the literal “AutomatedPipeline”, if the executing automated pipeline has a value;<br>4. otherwise an empty string. |
-| **DR-32 Is Executed by AI** | A workflow step is considered an executed by AI if the executing AI agent has a value. |
-| **DR-33 Is Executed by Human** | A workflow step is considered an executed by human if the executing human agent has a value. |
-| **DR-34 Approval Consistency Violation** | A workflow step is flagged approval consistency violation if all of the following hold: the requires human approval flag is set and the executing human agent is blank. |
-| **DR-35 Approval is Human Filled** | A workflow step is flagged approval is human filled if the executing human agent has a value if the requires human approval flag is set, otherwise the TRUE. |
-| **DR-36 Owning Department** | A workflow step's owning department is the owned by of the workflow step's assigned role. |
-| **DR-37 Is Legal Owned** | A workflow step is considered legal owned if the owning department is the literal “ntwf-legal-dept”. |
-| **DR-38 Is Engineering Owned** | A workflow step is considered engineering owned if the owning department is the literal “ntwf-engineering”. |
-| **DR-39 Parent Path** | An approval gate's parent path is the relative path of the approval gate's workflow step. |
-| **DR-40 Relative Path** | An approval gate's relative path is computed as the parent path, followed by the literal “/approval-gates/”, followed by the approval gate ID. |
-| **DR-41 Iri** | An approval gate's iri is computed as the relative path with every a slash replaced by a hyphen. |
-| **DR-42 Name** | An approval gate's name is computed as the lower-cased display name with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> |
-| **DR-43 Gate Role** | An approval gate's gate role is the assigned role of the approval gate's workflow step. |
-| **DR-44 Gate Approver Human** | An approval gate's gate approver human is the filled by human agent of the approval gate's gate role. |
-| **DR-45 Parent Path** | A step precedence's parent path is the relative path of the step precedence's from step. |
-| **DR-46 Relative Path** | A step precedence's relative path is computed as the parent path, followed by the literal “/precedence/”, followed by the step precedence ID. |
-| **DR-47 Iri** | A step precedence's iri is computed as the relative path with every a slash replaced by a hyphen. |
-| **DR-48 Name** | A step precedence's name is computed as the from step, followed by the literal “ -> ”, followed by the to step. |
-| **DR-49 Relative Path** | A role's relative path is computed as the literal “roles/”, followed by the role ID. |
-| **DR-50 Iri** | A role's iri is computed as the relative path with every a slash replaced by a hyphen. |
-| **DR-51 Name** | A role's name is computed as the lower-cased display name with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> |
-| **DR-52 Filled by Arm Count** | A role's filled by arm count is computed as the count of the following that hold: the filled by human agent has a value; the filled by AI agent has a value; and the filled by automated pipeline has a value. |
-| **DR-53 Has Exactly One Filler** | A role is considered to have an exactly one filler if the filled by arm count is 1. |
-| **DR-54 Filler Type** | The role's filler type is determined by the following priority:<br>1. the literal “HumanAgent”, if the filled by human agent has a value;<br>2. the literal “AIAgent”, if the filled by AI agent has a value;<br>3. the literal “AutomatedPipeline”, if the filled by automated pipeline has a value;<br>4. otherwise an empty string. |
-| **DR-55 Relative Path** | A department's relative path is computed as the literal “departments/”, followed by the department ID. |
-| **DR-56 Iri** | A department's iri is computed as the relative path with every a slash replaced by a hyphen. |
-| **DR-57 Name** | A department's name is computed as the lower-cased display name with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> |
-| **DR-58 Relative Path** | A human agent's relative path is computed as the literal “human-agents/”, followed by the human agent ID. |
-| **DR-59 Iri** | A human agent's iri is computed as the relative path with every a slash replaced by a hyphen. |
-| **DR-60 Relative Path** | An AI agent's relative path is computed as the literal “ai-agents/”, followed by the AI agent ID. |
-| **DR-61 Iri** | An AI agent's iri is computed as the relative path with every a slash replaced by a hyphen. |
-| **DR-62 Relative Path** | An automated pipeline's relative path is computed as the literal “automated-pipelines/”, followed by the automated pipeline ID. |
-| **DR-63 Iri** | An automated pipeline's iri is computed as the relative path with every a slash replaced by a hyphen. |
-| **DR-64 Relative Path** | A workflow status concept's relative path is computed as the literal “concepts/workflow-status/”, followed by the concept ID. |
-| **DR-65 Iri** | A workflow status concept's iri is computed as the relative path with every a slash replaced by a hyphen. |
-| **DR-66 Relative Path** | A compliance verdict concept's relative path is computed as the literal “concepts/compliance-verdict/”, followed by the concept ID. |
-| **DR-67 Iri** | A compliance verdict concept's iri is computed as the relative path with every a slash replaced by a hyphen. |
-| **DR-68 Relative Path** | An agent capability concept's relative path is computed as the literal “concepts/agent-capability/”, followed by the concept ID. |
-| **DR-69 Iri** | An agent capability concept's iri is computed as the relative path with every a slash replaced by a hyphen. |
-| **DR-70 Relative Path** | A dataset's relative path is computed as the literal “datasets/”, followed by the dataset ID. |
-| **DR-71 Iri** | A dataset's iri is computed as the relative path with every a slash replaced by a hyphen. |
-| **DR-72 Parent Path** | A workflow artifact's parent path is the relative path of the workflow artifact's produced by step. |
-| **DR-73 Relative Path** | A workflow artifact's relative path is computed as the parent path, followed by the literal “/artifacts/”, followed by the artifact ID. |
-| **DR-74 Iri** | A workflow artifact's iri is computed as the relative path with every a slash replaced by a hyphen. |
-| **DR-75 Producing Agent Type** | The workflow artifact's producing agent type is determined by the following priority:<br>1. the literal “HumanAgent”, if the attributed to human agent has a value;<br>2. the literal “AIAgent”, if the attributed to AI agent has a value;<br>3. the literal “AutomatedPipeline”, if the attributed to automated pipeline has a value;<br>4. otherwise an empty string. |
-| **DR-76 Has Derivation Parent** | A workflow artifact is considered to have a derivation parent if the derived from artifact has a value. |
-| **DR-77 Produced by Workflow** | A workflow artifact's produced by workflow is the workflow of the workflow artifact's produced by step. |
-| **DR-78 Parent Path** | A compliance verdict's parent path is the relative path of the compliance verdict's workflow. |
-| **DR-79 Relative Path** | A compliance verdict's relative path is computed as the parent path, followed by the literal “/verdicts/”, followed by the compliance verdict ID. |
-| **DR-80 Iri** | A compliance verdict's iri is computed as the relative path with every a slash replaced by a hyphen. |
-| **DR-81 Name** | A compliance verdict's name is computed as the lower-cased workflow title with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> |
-| **DR-82 Workflow Title** | A compliance verdict's workflow title is the title of the compliance verdict's workflow. |
-| **DR-83 Months Since Review** | A compliance verdict's months since review is the months since modified of the compliance verdict's workflow. |
-| **DR-84 Is Stale** | A compliance verdict's is stale is true when the compliance verdict's workflow is a stale. |
-| **DR-85 AI Step Count** | A compliance verdict's AI step count is the count AI steps of the compliance verdict's workflow. |
-| **DR-86 Has AI Executed Step** | A compliance verdict's has AI executed step is true when the compliance verdict's workflow has an AI agent step. |
-| **DR-87 Total Plan Minutes** | A compliance verdict's total plan minutes is the count total plan minutes of the compliance verdict's workflow. |
-| **DR-88 Time Budget Minutes** | A compliance verdict's time budget minutes is the max plan minutes of the compliance verdict's workflow. |
-| **DR-89 Is Over Time Budget** | A compliance verdict's is over time budget is true when the compliance verdict's workflow is an over time budget. |
-| **DR-90 Is At Compliance Risk** | A compliance verdict is considered at compliance risk if at least one of the following holds: all of the following hold: the is stale flag is set and the has AI executed step flag is set or the is over time budget flag is set. |
-| **DR-91 Verdict** | A compliance verdict's verdict is the pref label of the compliance verdict's verdict concept. |
-| **DR-92 Relative Path** | A scenario's relative path is computed as the literal “scenarios/”, followed by the scenario ID. |
-| **DR-93 Iri** | A scenario's iri is computed as the relative path with every a slash replaced by a hyphen. |
-| **DR-94 Name** | A scenario's name is computed as the lower-cased label with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> |
+| **DR-10 Has Consistency Violation** | A workflow is considered to have a consistency violation if the count approval consistency violations is greater than 0. |
+| **DR-11 Has AI Agent Step** | A workflow is considered to have an AI agent step if the count AI steps is greater than 0. |
+| **DR-12 Months Since Modified** | A workflow's months since modified is computed as the number of months from the modified to the current date and time. ⚠︎ mechanical <!-- rulespeak:reword --> |
+| **DR-13 Is Stale** | A workflow is considered a stale if the months since modified is greater than the staleness threshold months. |
+| **DR-14 Is Stale and Has AI Agent** | A workflow is considered a stale and has AI agent if all of the following hold: the is stale flag is set and the has AI agent step flag is set. |
+| **DR-15 Count Total Plan Minutes** | A workflow's count total plan minutes is the total step duration minutes across the workflow steps related to the workflow. |
+| **DR-16 Is Over Time Budget** | A workflow is considered an over time budget if the count total plan minutes is greater than the max plan minutes. |
+| **DR-17 Count Derivation Links** | A workflow's count derivation links is the number of the workflow's workflow artifacts that have a derivation parent. |
+| **DR-18 Count Legal Owned Steps** | A workflow's count legal owned steps is the number of the workflow's workflow steps that are legal owned. |
+| **DR-19 Count Engineering Owned Steps** | A workflow's count engineering owned steps is the number of the workflow's workflow steps that are engineering owned. |
+| **DR-20 Involves Engineering and Legal** | A workflow is considered to involve engineering and legal if all of the following hold: the count engineering owned steps is greater than 0 and the count legal owned steps is greater than 0. |
+| **DR-21 Count Inferred Precedence Pairs** | A workflow's count inferred precedence pairs is the number of vw step precedence closure related to the workflow. |
+| **DR-22 Count Asserted Precedence Pairs** | A workflow's count asserted precedence pairs is the number of vw step precedence closure related to the workflow. |
+| **DR-23 Count of Precedence Closure Pairs** | A workflow's count of precedence closure pairs is computed as the count asserted precedence pairs plus the count inferred precedence pairs. |
+| **DR-24 Count Roles With Bad Filler Cardinality** | A workflow's count roles with bad filler cardinality is the number of roles related to the workflow. |
+| **DR-25 Parent Path** | A workflow step's parent path is the relative path of the workflow step's workflow. |
+| **DR-26 Relative Path** | A workflow step's relative path is computed as the parent path, followed by the literal “/steps/”, followed by the workflow step ID. |
+| **DR-27 Iri** | A workflow step's iri is computed as the relative path with every a slash replaced by a hyphen. |
+| **DR-28 Name** | A workflow step's name is computed as the lower-cased display name with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> |
+| **DR-29 Executing Human Agent** | A workflow step's executing human agent is the filled by human agent of the workflow step's assigned role. |
+| **DR-30 Executing AI Agent** | A workflow step's executing AI agent is the filled by AI agent of the workflow step's assigned role. |
+| **DR-31 Executing Automated Pipeline** | A workflow step's executing automated pipeline is the filled by automated pipeline of the workflow step's assigned role. |
+| **DR-32 Executing Agent Type** | The workflow step's executing agent type is determined by the following priority:<br>1. the literal “HumanAgent”, if the executing human agent has a value;<br>2. the literal “AIAgent”, if the executing AI agent has a value;<br>3. the literal “AutomatedPipeline”, if the executing automated pipeline has a value;<br>4. otherwise an empty string. |
+| **DR-33 Is Executed by AI** | A workflow step is considered an executed by AI if the executing AI agent has a value. |
+| **DR-34 Is Executed by Human** | A workflow step is considered an executed by human if the executing human agent has a value. |
+| **DR-35 Approval Consistency Violation** | A workflow step is flagged approval consistency violation if all of the following hold: the requires human approval flag is set and the executing human agent is blank. |
+| **DR-36 Approval is Human Filled** | A workflow step is flagged approval is human filled if the executing human agent has a value if the requires human approval flag is set, otherwise the TRUE. |
+| **DR-37 Owning Department** | A workflow step's owning department is the owned by of the workflow step's assigned role. |
+| **DR-38 Is Legal Owned** | A workflow step is considered legal owned if the owning department is the literal “ntwf-legal-dept”. |
+| **DR-39 Is Engineering Owned** | A workflow step is considered engineering owned if the owning department is the literal “ntwf-engineering”. |
+| **DR-40 Parent Path** | An approval gate's parent path is the relative path of the approval gate's workflow step. |
+| **DR-41 Relative Path** | An approval gate's relative path is computed as the parent path, followed by the literal “/approval-gates/”, followed by the approval gate ID. |
+| **DR-42 Iri** | An approval gate's iri is computed as the relative path with every a slash replaced by a hyphen. |
+| **DR-43 Name** | An approval gate's name is computed as the lower-cased display name with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> |
+| **DR-44 Gate Role** | An approval gate's gate role is the assigned role of the approval gate's workflow step. |
+| **DR-45 Gate Approver Human** | An approval gate's gate approver human is the filled by human agent of the approval gate's gate role. |
+| **DR-46 Parent Path** | A step precedence's parent path is the relative path of the step precedence's from step. |
+| **DR-47 Relative Path** | A step precedence's relative path is computed as the parent path, followed by the literal “/precedence/”, followed by the step precedence ID. |
+| **DR-48 Iri** | A step precedence's iri is computed as the relative path with every a slash replaced by a hyphen. |
+| **DR-49 Name** | A step precedence's name is computed as the from step, followed by the literal “ -> ”, followed by the to step. |
+| **DR-50 Relative Path** | A role's relative path is computed as the literal “roles/”, followed by the role ID. |
+| **DR-51 Iri** | A role's iri is computed as the relative path with every a slash replaced by a hyphen. |
+| **DR-52 Name** | A role's name is computed as the lower-cased display name with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> |
+| **DR-53 Filled by Arm Count** | A role's filled by arm count is computed as the count of the following that hold: the filled by human agent has a value; the filled by AI agent has a value; and the filled by automated pipeline has a value. |
+| **DR-54 Has Exactly One Filler** | A role is considered to have an exactly one filler if the filled by arm count is 1. |
+| **DR-55 Filler Type** | The role's filler type is determined by the following priority:<br>1. the literal “HumanAgent”, if the filled by human agent has a value;<br>2. the literal “AIAgent”, if the filled by AI agent has a value;<br>3. the literal “AutomatedPipeline”, if the filled by automated pipeline has a value;<br>4. otherwise an empty string. |
+| **DR-56 Relative Path** | A department's relative path is computed as the literal “departments/”, followed by the department ID. |
+| **DR-57 Iri** | A department's iri is computed as the relative path with every a slash replaced by a hyphen. |
+| **DR-58 Name** | A department's name is computed as the lower-cased display name with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> |
+| **DR-59 Relative Path** | A human agent's relative path is computed as the literal “human-agents/”, followed by the human agent ID. |
+| **DR-60 Iri** | A human agent's iri is computed as the relative path with every a slash replaced by a hyphen. |
+| **DR-61 Relative Path** | An AI agent's relative path is computed as the literal “ai-agents/”, followed by the AI agent ID. |
+| **DR-62 Iri** | An AI agent's iri is computed as the relative path with every a slash replaced by a hyphen. |
+| **DR-63 Relative Path** | An automated pipeline's relative path is computed as the literal “automated-pipelines/”, followed by the automated pipeline ID. |
+| **DR-64 Iri** | An automated pipeline's iri is computed as the relative path with every a slash replaced by a hyphen. |
+| **DR-65 Relative Path** | A workflow status concept's relative path is computed as the literal “concepts/workflow-status/”, followed by the concept ID. |
+| **DR-66 Iri** | A workflow status concept's iri is computed as the relative path with every a slash replaced by a hyphen. |
+| **DR-67 Relative Path** | A compliance verdict concept's relative path is computed as the literal “concepts/compliance-verdict/”, followed by the concept ID. |
+| **DR-68 Iri** | A compliance verdict concept's iri is computed as the relative path with every a slash replaced by a hyphen. |
+| **DR-69 Relative Path** | An agent capability concept's relative path is computed as the literal “concepts/agent-capability/”, followed by the concept ID. |
+| **DR-70 Iri** | An agent capability concept's iri is computed as the relative path with every a slash replaced by a hyphen. |
+| **DR-71 Relative Path** | A dataset's relative path is computed as the literal “datasets/”, followed by the dataset ID. |
+| **DR-72 Iri** | A dataset's iri is computed as the relative path with every a slash replaced by a hyphen. |
+| **DR-73 Parent Path** | A workflow artifact's parent path is the relative path of the workflow artifact's produced by step. |
+| **DR-74 Relative Path** | A workflow artifact's relative path is computed as the parent path, followed by the literal “/artifacts/”, followed by the artifact ID. |
+| **DR-75 Iri** | A workflow artifact's iri is computed as the relative path with every a slash replaced by a hyphen. |
+| **DR-76 Producing Agent Type** | The workflow artifact's producing agent type is determined by the following priority:<br>1. the literal “HumanAgent”, if the attributed to human agent has a value;<br>2. the literal “AIAgent”, if the attributed to AI agent has a value;<br>3. the literal “AutomatedPipeline”, if the attributed to automated pipeline has a value;<br>4. otherwise an empty string. |
+| **DR-77 Has Derivation Parent** | A workflow artifact is considered to have a derivation parent if the derived from artifact has a value. |
+| **DR-78 Produced by Workflow** | A workflow artifact's produced by workflow is the workflow of the workflow artifact's produced by step. |
+| **DR-79 Parent Path** | A compliance verdict's parent path is the relative path of the compliance verdict's workflow. |
+| **DR-80 Relative Path** | A compliance verdict's relative path is computed as the parent path, followed by the literal “/verdicts/”, followed by the compliance verdict ID. |
+| **DR-81 Iri** | A compliance verdict's iri is computed as the relative path with every a slash replaced by a hyphen. |
+| **DR-82 Name** | A compliance verdict's name is computed as the lower-cased workflow title with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> |
+| **DR-83 Workflow Title** | A compliance verdict's workflow title is the title of the compliance verdict's workflow. |
+| **DR-84 Months Since Review** | A compliance verdict's months since review is the months since modified of the compliance verdict's workflow. |
+| **DR-85 Is Stale** | A compliance verdict's is stale is true when the compliance verdict's workflow is a stale. |
+| **DR-86 AI Step Count** | A compliance verdict's AI step count is the count AI steps of the compliance verdict's workflow. |
+| **DR-87 Has AI Executed Step** | A compliance verdict's has AI executed step is true when the compliance verdict's workflow has an AI agent step. |
+| **DR-88 Total Plan Minutes** | A compliance verdict's total plan minutes is the count total plan minutes of the compliance verdict's workflow. |
+| **DR-89 Time Budget Minutes** | A compliance verdict's time budget minutes is the max plan minutes of the compliance verdict's workflow. |
+| **DR-90 Is Over Time Budget** | A compliance verdict's is over time budget is true when the compliance verdict's workflow is an over time budget. |
+| **DR-91 Has Consistency Violation** | A compliance verdict's has consistency violation is true when the compliance verdict's workflow has a consistency violation. |
+| **DR-92 Is At Compliance Risk** | A compliance verdict is considered at compliance risk if at least one of the following holds: all of the following hold: the is stale flag is set and the has AI executed step flag is set; the is over time budget flag is set; or the has consistency violation flag is set. |
+| **DR-93 Verdict** | A compliance verdict's verdict is the pref label of the compliance verdict's verdict concept. |
+| **DR-94 Relative Path** | A scenario's relative path is computed as the literal “scenarios/”, followed by the scenario ID. |
+| **DR-95 Iri** | A scenario's iri is computed as the relative path with every a slash replaced by a hyphen. |
+| **DR-96 Name** | A scenario's name is computed as the lower-cased label with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> |
 
 ## 5 Traceability to Schema
 
@@ -311,6 +315,7 @@ the same logic the rulebook stores, written for a business reader._
 | **Workflows.CountHumanSteps** | rollup | `Count(WorkflowSteps via Workflow)` |
 | **Workflows.CountHumanRequiredSteps** | rollup | `Count(WorkflowSteps via Workflow)` |
 | **Workflows.CountApprovalConsistencyViolations** | rollup | `Count(WorkflowSteps via Workflow)` |
+| **Workflows.HasConsistencyViolation** | formula | `CountApprovalConsistencyViolations > 0` |
 | **Workflows.HasAIAgentStep** | formula | `CountAISteps > 0` |
 | **Workflows.MonthsSinceModified** | formula | `DaysBetween(Now(), Modified)` |
 | **Workflows.IsStale** | formula | `MonthsSinceModified > StalenessThresholdMonths` |
@@ -391,7 +396,8 @@ the same logic the rulebook stores, written for a business reader._
 | **ComplianceVerdicts.TotalPlanMinutes** | lookup | `Lookup(Workflows.CountTotalPlanMinutes via Workflow)` |
 | **ComplianceVerdicts.TimeBudgetMinutes** | lookup | `Lookup(Workflows.MaxPlanMinutes via Workflow)` |
 | **ComplianceVerdicts.IsOverTimeBudget** | lookup | `Lookup(Workflows.IsOverTimeBudget via Workflow)` |
-| **ComplianceVerdicts.IsAtComplianceRisk** | formula | `Or(And(IsStale, HasAIExecutedStep), IsOverTimeBudget)` |
+| **ComplianceVerdicts.HasConsistencyViolation** | lookup | `Lookup(Workflows.HasConsistencyViolation via Workflow)` |
+| **ComplianceVerdicts.IsAtComplianceRisk** | formula | `Or(And(IsStale, HasAIExecutedStep), IsOverTimeBudget, HasConsistencyViolation)` |
 | **ComplianceVerdicts.Verdict** | lookup | `Lookup(ComplianceVerdictConcepts.PrefLabel via VerdictConcept)` |
 | **Scenarios.RelativePath** | formula | `"scenarios/" & ScenarioId` |
 | **Scenarios.Iri** | formula | `Replace(RelativePath, "/", "-")` |

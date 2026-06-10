@@ -33,6 +33,8 @@ import {
   applyMutation,
 } from "./dal/store.js";
 import { registerControlRoutes } from "./control.js";
+import { seedStoreFromRulebook } from "./dal/export-to-rulebook.js";
+import { canonicalHash, projectStore, readMarkers } from "./dal/edit-marker.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const DB_PATH = path.join(__dirname, "db.json");
@@ -275,6 +277,12 @@ app.get("/api/story", wrap(async (req, res) => {
     totalPlanMinutes: verdictRow.totalPlanMinutes,
     timeBudgetMinutes: verdictRow.timeBudgetMinutes,
     isOverTimeBudget: !!verdictRow.isOverTimeBudget,
+    // Consistency rule (the implicit "no broken rules" input): TRUE when any step
+    // requires a human sign-off but isn't human-filled. Folded into the verdict so
+    // a self-contradictory model can never read COMPLIANT. Both come straight from
+    // the derived ComplianceVerdicts / Workflows columns — no recomputation here.
+    hasConsistencyViolation: !!verdictRow.hasConsistencyViolation,
+    consistencyViolationCount: wf.countApprovalConsistencyViolations ?? 0,
     isAtComplianceRisk: !!verdictRow.isAtComplianceRisk,
     statement: verdictRow.verdict,
   };
@@ -517,6 +525,89 @@ app.post("/api/scenario/:name", wrap(async (req, res) => {
   // to validate before persisting (store.js handles file-vs-pg persistence).
   const result = await applyMutation(dataOf(req), (db) => replayEdits(db, s.edits));
   res.json({ ok: true, scenario: req.params.name, ...result });
+}));
+
+// --- the triangle: live drift detection across the three raw stores --------
+// GET /api/triangle answers ONE question for the login page: which leg of the
+// rulebook→{reasoner, postgres} triangle is AHEAD (carries edits the rulebook
+// hasn't absorbed)? It is computed LIVE every call — never cached — by hashing
+// all three raw stores with the SAME canonicalization (edit-marker.js) so they
+// converge to one hash after any control-plane reseed. No bespoke cache, no
+// silent fallback: if a store can't be read, the request throws and the UI sees
+// the real error. (CLAUDE.md: the view/SSoT is the contract; compute live.)
+//
+// Drift semantics, bound to the three scenarios the user described:
+//   - all three hashes equal            -> aheadOf: null         (engines locked)
+//   - exactly one store ≠ rulebook,
+//     the other store === rulebook       -> aheadOf: that store   (Rebuild from X)
+//   - both stores === each other but
+//     ≠ rulebook                         -> aheadOf: "rulebook"   (Rebuild)
+//   - stores differ from rulebook AND
+//     from each other                    -> aheadOf: "diverged"   (Reset)
+app.get("/api/triangle", wrap(async (_req, res) => {
+  // Three live fingerprints — the rulebook (head) and the two engine stores.
+  // seedStoreFromRulebook projects the rulebook's data:[] into the same
+  // {Class:[camel rows]} shape readRawStore returns. We then project ALL THREE
+  // through the schema-map's rawFields so the comparison ignores each engine's
+  // extra derived/back-reference columns and only sees the editable rows that
+  // round-trip — the true definition of "ahead" (see edit-marker.projectStore).
+  const sm = await schemaMap();
+  const [rbStore, reasonerStore, postgresStore] = await Promise.all([
+    seedStoreFromRulebook(RULEBOOK_PATH),
+    readRawStore("reasoner"),
+    readRawStore("postgres"),
+  ]);
+  const hashes = {
+    rulebook: canonicalHash(projectStore(rbStore, sm)),
+    reasoner: canonicalHash(projectStore(reasonerStore, sm)),
+    postgres: canonicalHash(projectStore(postgresStore, sm)),
+  };
+
+  const rEqRb = hashes.reasoner === hashes.rulebook;
+  const pEqRb = hashes.postgres === hashes.rulebook;
+  const rEqP = hashes.reasoner === hashes.postgres;
+
+  let aheadOf = null;     // which leg is ahead: null | "rulebook" | "reasoner" | "postgres" | "diverged"
+  let action = null;      // the control action the UI should offer for that state
+  if (rEqRb && pEqRb) {
+    aheadOf = null;                 // all three locked
+  } else if (rEqRb && !pEqRb) {
+    aheadOf = "postgres";           // only postgres moved
+    action = "rebuild-from-postgres";
+  } else if (pEqRb && !rEqRb) {
+    aheadOf = "reasoner";           // only the reasoner moved
+    action = "rebuild-from-reasoner";
+  } else if (!rEqRb && !pEqRb && rEqP) {
+    aheadOf = "rulebook";           // both stores agree with each other but not the rulebook
+    action = "rebuild";             //   -> the rulebook was hand-edited; push it down into both
+  } else {
+    aheadOf = "diverged";           // genuine three-way split — no single safe sync
+    action = "reset";
+  }
+
+  // Recency markers (when each store was last app-edited). Pure adornment for the
+  // UI ("edited 12s ago"); drift itself is decided by the hashes above. The
+  // rulebook leg has no app-side stamp (hand-edited outside the app) — its
+  // recency, if any, comes from the file mtime, read live here.
+  const markers = await readMarkers();
+  let rulebookMtime = null;
+  try {
+    const { stat } = await import("node:fs/promises");
+    rulebookMtime = (await stat(RULEBOOK_PATH)).mtime.toISOString();
+  } catch { /* mtime is best-effort adornment */ }
+
+  // inSync flags per leg drive the dimming in the UI: a leg is "lit" if it's the
+  // one that's ahead OR everything is locked; otherwise it's dimmed.
+  res.json({
+    aheadOf,
+    action,
+    hashes,
+    legs: {
+      rulebook: { inSyncWithReasoner: rEqRb, inSyncWithPostgres: pEqRb, lastEditAt: rulebookMtime },
+      reasoner: { inSyncWithRulebook: rEqRb, lastEditAt: markers.reasoner?.lastEditAt || null },
+      postgres: { inSyncWithRulebook: pEqRb, lastEditAt: markers.postgres?.lastEditAt || null },
+    },
+  });
 }));
 
 // --- control plane (Reset / Rebuild) --------------------------------------

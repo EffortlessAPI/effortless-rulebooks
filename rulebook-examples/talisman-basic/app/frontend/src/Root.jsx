@@ -7,10 +7,12 @@ import { api, getBackend, setBackend } from "./api.js";
 // Root — the gate around the (unchanged) release console.
 //
 // Until you "enter" from the login page, we show Login. After entering we show
-// a slim engine bar (which engine is live, the live conformance witness, a way
-// back to the sync station) ABOVE the unmodified <App/>. App.jsx and every view
-// are untouched — they render whatever the active engine computed. Switching
-// engines is just changing the stored backend + remounting App.
+// the <App/> with a slim engine bar (which engine is live, the live conformance
+// witness, a way back to the sync station) handed to App's header via the
+// headerRight slot, so it sits pinned in the top-right corner of the header.
+// App.jsx and every view are otherwise untouched — they render whatever the
+// active engine computed. Switching engines is just changing the stored backend
+// + remounting App.
 // ===========================================================================
 
 // The live conformance chip: runs both engines on the active data and shows
@@ -87,6 +89,9 @@ function ConformanceChip() {
   );
 }
 
+// The engine controls, rendered into the top-right corner of the header (App's
+// TopBar) via the `headerRight` slot: which engine is live, the live conformance
+// witness, and the way back to the sync station — all in one compact inline row.
 function EngineBar({ backend, onLeave }) {
   return (
     <div className="engine-bar">
@@ -124,9 +129,13 @@ export default function Root() {
 
   return (
     <div className="rooted">
-      <EngineBar backend={backend} onLeave={() => setEntered(false)} />
-      {/* key on backend so App fully remounts (fresh load) when the engine changes */}
-      <App key={backend} />
+      {/* key on backend so App fully remounts (fresh load) when the engine changes.
+          The engine details (live conformance witness + engine switcher) ride in
+          the top-right corner of App's header via the headerRight slot. */}
+      <App
+        key={backend}
+        headerRight={<EngineBar backend={backend} onLeave={() => setEntered(false)} />}
+      />
     </div>
   );
 }

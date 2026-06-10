@@ -325,11 +325,17 @@ erb:isOverTimeBudget a owl:DatatypeProperty ;
     rdfs:comment "Whether total planned runtime exceeds the workflow's budget. Pulled from Workflows.IsOverTimeBudget. EXTENSION beyond the source article — the third compliance input alongside staleness and AI-execution." .
     # calculated: lookup
 
+erb:hasConsistencyViolation a owl:DatatypeProperty ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "HasConsistencyViolation" ;
+    rdfs:comment "Whether any step breaks the human-approval consistency rule. Pulled from Workflows.HasConsistencyViolation. This is the 'no broken rules' input to the verdict: a structural inconsistency (an approval step not filled by a human) is itself a compliance risk, independent of staleness or time budget." .
+    # calculated: lookup
+
 erb:isAtComplianceRisk a owl:DatatypeProperty ;
     rdfs:domain erb:ComplianceVerdicts ;
     rdfs:range xsd:boolean ;
     rdfs:label "IsAtComplianceRisk" ;
-    rdfs:comment "THE VERDICT. True when the workflow is EITHER (stale AND has an AI agent executing a step) — the article's closing business question — OR over its planned-runtime budget. The first disjunct is the article's headline finale verbatim; the second is an EXTENSION giving the step-duration literal a live compliance consequence. Fully derived: flip the Modified date, the role's filledBy agent, or any step's duration, and this recomputes on the next read." .
+    rdfs:comment "THE VERDICT. True when the workflow is (stale AND has an AI agent executing a step) — the article's closing business question — OR over its planned-runtime budget OR has any human-approval consistency violation. The first disjunct is the article's headline finale verbatim; the second gives the step-duration literal a live compliance consequence; the third enforces an implicit no-broken-rules rule, so a workflow with a structural inconsistency can never read COMPLIANT. Fully derived: flip the Modified date, the role's filledBy agent, or any step's duration, and this recomputes on the next read." .
     # calculated: calculated
 
 erb:verdictConcept a owl:ObjectProperty ;
@@ -1114,6 +1120,12 @@ erb:countApprovalConsistencyViolations a owl:DatatypeProperty ;
     rdfs:label "CountApprovalConsistencyViolations" ;
     rdfs:comment "Number of steps that require human approval but are not human-filled (rollup over WorkflowSteps.ApprovalConsistencyViolation). The clean ABox witness: this is 0 for the Production Deployment workflow. A non-zero value is the relational signal of a Suite-4 consistency violation." .
     # calculated: aggregation
+
+erb:hasConsistencyViolation a owl:DatatypeProperty ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "HasConsistencyViolation" ;
+    rdfs:comment "TRUE iff at least one step breaks the human-approval consistency rule (CountApprovalConsistencyViolations > 0). The boolean witness of model integrity: a clean ABox holds it FALSE. This is what makes a broken rule a first-class input to the compliance verdict — a workflow with any consistency violation cannot be COMPLIANT." .
+    # calculated: calculated
 
 erb:hasAIAgentStep a owl:DatatypeProperty ;
     rdfs:domain erb:Workflows ;

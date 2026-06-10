@@ -41,18 +41,46 @@ export function FlowView({ sit, handlers }) {
 function StepCard({ step, fact, handlers }) {
   const kind = kindOfType(step.executingAgentType);
   const isAI = kind === "ai";
+  // This step REQUIRES a human sign-off (raw fact) — surface the expectation on
+  // the card itself, before any edit, and forward it into the reassign popover.
+  const requiresHuman = !!step.requiresHumanApproval;
+  const needsHumanUnmet = requiresHuman && kind !== "human";
   const [gearOpen, setGearOpen] = useState(false);
+  const [gearRect, setGearRect] = useState(null); // fixed anchor for the popover
   const cardRef = useRef(null);
+  const gearRef = useRef(null);
 
-  // Click outside (or Escape) closes the settings popover.
+  // Click outside (or Escape) closes the settings popover. The popover renders
+  // OUTSIDE the card (fixed-position) so the card's overflow clip can't crop it,
+  // so "outside" means: not in the card AND not in the popover itself.
   useEffect(() => {
     if (!gearOpen) return;
-    const onDoc = (e) => { if (cardRef.current && !cardRef.current.contains(e.target)) setGearOpen(false); };
+    const onDoc = (e) => {
+      const inCard = cardRef.current && cardRef.current.contains(e.target);
+      const inPop = e.target.closest && e.target.closest(".sc-pop");
+      if (!inCard && !inPop) setGearOpen(false);
+    };
     const onKey = (e) => { if (e.key === "Escape") setGearOpen(false); };
+    // The popover is anchored at open-time; if the page or the flow-track scrolls
+    // it would detach from the gear, so close it (same feel as the reassign popover).
+    const onScroll = () => setGearOpen(false);
     document.addEventListener("mousedown", onDoc);
     document.addEventListener("keydown", onKey);
-    return () => { document.removeEventListener("mousedown", onDoc); document.removeEventListener("keydown", onKey); };
+    window.addEventListener("scroll", onScroll, true);
+    return () => {
+      document.removeEventListener("mousedown", onDoc);
+      document.removeEventListener("keydown", onKey);
+      window.removeEventListener("scroll", onScroll, true);
+    };
   }, [gearOpen]);
+
+  const toggleGear = () => {
+    setGearOpen((o) => {
+      const next = !o;
+      if (next && gearRef.current) setGearRect(gearRef.current.getBoundingClientRect());
+      return next;
+    });
+  };
 
   return (
     <div
@@ -61,22 +89,29 @@ function StepCard({ step, fact, handlers }) {
         "stepcard k-" + kind +
         (step.isApprovalGate ? " gate" : "") +
         (step.consistencyViolation ? " violation" : "") +
+        (needsHumanUnmet ? " needs-human" : "") +
         (isAI ? " ai-risk" : "")
       }
     >
       {/* gear opens a popover with the editable knobs (duration + sign-off),
           keeping the card itself a clean read-only summary at a glance */}
       <button
+        ref={gearRef}
         className={"sc-gear " + (gearOpen ? "on" : "")}
         title="step settings"
-        onClick={() => setGearOpen((o) => !o)}
+        onClick={toggleGear}
       >
         ⚙
       </button>
 
+      {/* badges live in their own row, with right padding reserved for the gear
+          so a "rule broken" / "needs human" flag is never hidden behind it */}
       <div className="sc-top">
         <span className="sc-pos">{step.position}</span>
         {step.isApprovalGate && <span className="sc-gate">🔒 gate</span>}
+        {requiresHuman && !step.consistencyViolation && (
+          <span className="sc-needs" title="this step requires a human sign-off">🔒 needs human</span>
+        )}
         {step.consistencyViolation && <span className="sc-violation">⚠ rule broken</span>}
       </div>
       <div className="sc-title">{step.title}</div>
@@ -87,6 +122,7 @@ function StepCard({ step, fact, handlers }) {
           type={step.executingAgentType}
           roleId={step.roleId}
           onReassign={handlers.openReassign}
+          requiresHuman={requiresHuman}
           size={40}
         />
         <div className="sc-who">
@@ -101,14 +137,29 @@ function StepCard({ step, fact, handlers }) {
           ? "🤖 AI runs this → counts toward risk (risk fires if docs are also stale)"
           : "🧑 not an AI → no AI-risk from this step"}
       </div>
+      {/* This step expects a human but doesn't have one yet — explain the
+          expectation BEFORE it turns into a hard violation. */}
+      {requiresHuman && !step.consistencyViolation && (
+        <div className="sc-effect needs">
+          🔒 requires a human sign-off → assign a 🧑 human to keep it consistent
+        </div>
+      )}
       {step.consistencyViolation && (
         <div className="sc-effect broken">
           ⚠ requires human sign-off but isn't human-filled → consistency rule broken
         </div>
       )}
 
-      {gearOpen && (
-        <div className="sc-pop">
+      {gearOpen && gearRect && (
+        <div
+          className="sc-pop"
+          style={{
+            position: "fixed",
+            top: gearRect.bottom + 8,
+            // right-align under the gear, clamped into the viewport
+            left: Math.min(Math.max(gearRect.right - 230, 12), window.innerWidth - 242),
+          }}
+        >
           <div className="sc-pop-section">
             <DurationControl step={step} fact={fact} handlers={handlers} />
           </div>

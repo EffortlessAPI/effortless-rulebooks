@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef, useCallback } from "react";
 import { api, getBackend, setBackend, runControl } from "./api.js";
+import Triangle from "./Triangle.jsx";
 
 // ===========================================================================
 // Login / control page — the "sync station".
@@ -33,6 +34,7 @@ export default function Login({ onEnter }) {
   const [running, setRunning] = useState(null); // action id while a build runs
   const [result, setResult] = useState(null);    // "done" | "error" | null
   const [error, setError] = useState(null);
+  const [triKey, setTriKey] = useState(0);        // bump to re-poll the triangle after a build
   const logRef = useRef(null);
 
   useEffect(() => {
@@ -70,8 +72,19 @@ export default function Login({ onEnter }) {
       setResult("error");
     } finally {
       setRunning(null);
+      // A build (success OR fail) may have moved the stores — re-poll the
+      // triangle so it relocks (or re-flags) live.
+      setTriKey((k) => k + 1);
     }
   }, [running, appendLog]);
+
+  // The triangle hands us an action *id* (e.g. "rebuild-from-postgres"); resolve
+  // it to the full action descriptor the server advertised and run it through the
+  // same path as the manual buttons, so the build streams in the one console.
+  const runActionById = useCallback((id) => {
+    const action = actions.find((a) => a.id === id);
+    if (action) runAction(action);
+  }, [actions, runAction]);
 
   return (
     <div className="login">
@@ -107,13 +120,27 @@ export default function Login({ onEnter }) {
         </section>
 
         <section className="login-section">
-          <h2>2 · Sync &amp; rebuild</h2>
+          <h2>2 · The three stores</h2>
           <p className="login-hint">
-            Each engine owns its own data. A <em>Rebuild from X</em> exports that
-            engine’s rows back into the rulebook and rebuilds <em>both</em> — so an
-            edit made on one side becomes the shared truth. <em>Reset</em> restores
-            the rulebook to its committed baseline. Builds run on the server and
-            stream below.
+            The rulebook is the <strong>head</strong>; the reasoner (db.json) and
+            Postgres are its two <strong>legs</strong>. When one drifts ahead, it
+            lights up — click to flow the change back to the hub and down into the
+            other engine. When all three agree, the triangle goes quiet.
+          </p>
+          <Triangle
+            onSync={runActionById}
+            runningAction={running}
+            refreshKey={triKey}
+          />
+        </section>
+
+        <section className="login-section">
+          <h2>3 · Manual rebuild</h2>
+          <p className="login-hint">
+            The explicit controls behind the triangle. A <em>Rebuild from X</em>
+            exports that engine’s rows back into the rulebook and rebuilds
+            <em> both</em>. <em>Reset</em> restores the rulebook to its committed
+            baseline. Builds run on the server and stream below.
           </p>
           <div className="action-grid">
             {actions.map((a) => (

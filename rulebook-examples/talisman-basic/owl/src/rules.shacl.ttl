@@ -485,6 +485,24 @@ erb:ComplianceVerdictsShape a sh:NodeShape ;
     ] ;
     sh:rule [
         a sh:SPARQLRule ;
+        rdfs:label "rule_ComplianceVerdicts_HasConsistencyViolation" ;
+        sh:prefixes erb: ;
+        sh:construct """
+            PREFIX erb: <http://example.org/erb#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this erb:hasConsistencyViolation ?_result .
+            }
+            WHERE {
+    $this a erb:ComplianceVerdicts .
+                $this erb:workflow ?j0 .
+                OPTIONAL { ?j0 erb:hasConsistencyViolation ?j1 . }
+                BIND(?j1 AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
         rdfs:label "rule_ComplianceVerdicts_IsAtComplianceRisk" ;
         sh:prefixes erb: ;
         sh:construct """
@@ -496,9 +514,10 @@ erb:ComplianceVerdictsShape a sh:NodeShape ;
             WHERE {
     $this a erb:ComplianceVerdicts .
     OPTIONAL { $this erb:hasAIExecutedStep ?has_ai_executed_step . }
+    OPTIONAL { $this erb:hasConsistencyViolation ?has_consistency_violation . }
     OPTIONAL { $this erb:isOverTimeBudget ?is_over_time_budget . }
     OPTIONAL { $this erb:isStale ?is_stale . }
-                BIND(((?is_stale && ?has_ai_executed_step) || ?is_over_time_budget) AS ?_result)
+                BIND(((?is_stale && ?has_ai_executed_step) || ?is_over_time_budget || ?has_consistency_violation) AS ?_result)
             }
         """ ;
     ] ;
@@ -1513,6 +1532,23 @@ erb:WorkflowsShape a sh:NodeShape ;
     ] ;
     sh:rule [
         a sh:SPARQLRule ;
+        rdfs:label "rule_Workflows_HasConsistencyViolation" ;
+        sh:prefixes erb: ;
+        sh:construct """
+            PREFIX erb: <http://example.org/erb#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this erb:hasConsistencyViolation ?_result .
+            }
+            WHERE {
+    $this a erb:Workflows .
+    OPTIONAL { $this erb:countApprovalConsistencyViolations ?count_approval_consistency_violations . }
+                BIND((?count_approval_consistency_violations > 0) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
         rdfs:label "rule_Workflows_HasAIAgentStep" ;
         sh:prefixes erb: ;
         sh:construct """
@@ -1854,4 +1890,4 @@ erb:WorkflowStepsCardinalityShape a sh:NodeShape ;
     sh:property [ sh:path erb:precedes ; sh:maxCount 1 ] ;
     sh:property [ sh:path erb:workflow ; sh:maxCount 1 ] .
 
-# Generated 95 SHACL rules
+# Generated 97 SHACL rules

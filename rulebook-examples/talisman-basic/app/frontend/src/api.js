@@ -49,9 +49,12 @@ async function jsonOrThrow(res) {
 }
 
 export const api = {
-  // The login page reads these two without caring about the active backend.
+  // The login page reads these without caring about the active backend.
   backends: () => fetch("/api/backends").then(jsonOrThrow),
   controlActions: () => fetch("/api/control/actions").then(jsonOrThrow),
+  // Live drift state across the three raw stores (rulebook head + two engine
+  // legs). Computed server-side from canonical hashes; see /api/triangle.
+  triangle: () => fetch("/api/triangle").then(jsonOrThrow),
 
   health: () => bfetch("/api/health").then(jsonOrThrow),
   story: () => bfetch("/api/story").then(jsonOrThrow),

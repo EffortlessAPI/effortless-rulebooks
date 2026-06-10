@@ -178,6 +178,16 @@ RETURNS INTEGER AS $$
   SELECT ((SELECT COUNT(*) FROM workflow_steps WHERE workflow = (SELECT NULLIF(workflow_id, '') FROM workflows WHERE workflow_id = p_workflow_id) AND calc_workflow_steps_approval_consistency_violation(workflow_step_id) = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
+-- calc_workflows_has_consistency_violation
+-- Field: Workflows.HasConsistencyViolation
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_workflows_has_consistency_violation(p_workflow_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_workflows_count_approval_consistency_violations(p_workflow_id))::NUMERIC > 0)::boolean;
+$$ LANGUAGE sql STABLE;
+
 -- calc_workflows_has_ai_agent_step
 -- Field: Workflows.HasAIAgentStep
 -- Type: calculated | DataType: boolean | Returns: BOOLEAN
@@ -1283,6 +1293,17 @@ RETURNS BOOLEAN AS $$
   SELECT calc_workflows_is_over_time_budget((SELECT workflow FROM compliance_verdicts WHERE compliance_verdict_id = p_compliance_verdict_id));
 $$ LANGUAGE sql STABLE;
 
+-- calc_compliance_verdicts_has_consistency_violation
+-- Field: ComplianceVerdicts.HasConsistencyViolation
+-- Type: lookup | DataType: boolean | Returns: BOOLEAN
+-- Lookup: HasConsistencyViolation from related Workflows
+
+
+CREATE OR REPLACE FUNCTION calc_compliance_verdicts_has_consistency_violation(p_compliance_verdict_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT calc_workflows_has_consistency_violation((SELECT workflow FROM compliance_verdicts WHERE compliance_verdict_id = p_compliance_verdict_id));
+$$ LANGUAGE sql STABLE;
+
 -- calc_compliance_verdicts_verdict
 -- Field: ComplianceVerdicts.Verdict
 -- Type: lookup | DataType: string | Returns: TEXT
@@ -1367,7 +1388,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_compliance_verdicts_is_at_compliance_risk(p_compliance_verdict_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (((calc_compliance_verdicts_is_stale(p_compliance_verdict_id) AND calc_compliance_verdicts_has_ai_executed_step(p_compliance_verdict_id)) OR calc_compliance_verdicts_is_over_time_budget(p_compliance_verdict_id)))::boolean;
+  SELECT (((calc_compliance_verdicts_is_stale(p_compliance_verdict_id) AND calc_compliance_verdicts_has_ai_executed_step(p_compliance_verdict_id)) OR calc_compliance_verdicts_is_over_time_budget(p_compliance_verdict_id) OR calc_compliance_verdicts_has_consistency_violation(p_compliance_verdict_id)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_compliance_verdicts_verdict_concept

@@ -173,6 +173,16 @@
         "formula": "=COUNTIFS(WorkflowSteps!{{Workflow}}, Workflows!{{WorkflowId}}, WorkflowSteps!{{ApprovalConsistencyViolation}}, TRUE)"
       },
       {
+        "name": "HasConsistencyViolation",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "important": true,
+        "Description": "TRUE iff at least one step breaks the human-approval consistency rule (CountApprovalConsistencyViolations > 0). The boolean witness of model integrity: a clean ABox holds it FALSE. This is what makes a broken rule a first-class input to the compliance verdict \u2014 a workflow with any consistency violation cannot be COMPLIANT.",
+        "explanation_rich": "**The integrity bit.** Where `CountApprovalConsistencyViolations` is the headcount, this is the yes/no: does the model currently contradict itself? It mirrors `HasAIAgentStep`/`IsOverTimeBudget` so the verdict can fold all three risk inputs the same way. The point: there is now an *implicit no-broken-rules rule* \u2014 any structural inconsistency forces the verdict to AT RISK, so 'COMPLIANT with a broken rule' is impossible by construction.",
+        "formula": "={{CountApprovalConsistencyViolations}} > 0"
+      },
+      {
         "name": "HasAIAgentStep",
         "datatype": "boolean",
         "type": "calculated",
@@ -1997,14 +2007,23 @@
         "formula": "=INDEX(Workflows!{{IsOverTimeBudget}}, MATCH({{Workflow}}, Workflows!{{WorkflowId}}, 0))"
       },
       {
+        "name": "HasConsistencyViolation",
+        "datatype": "boolean",
+        "type": "lookup",
+        "nullable": true,
+        "important": true,
+        "Description": "Whether any step breaks the human-approval consistency rule. Pulled from Workflows.HasConsistencyViolation. This is the 'no broken rules' input to the verdict: a structural inconsistency (an approval step not filled by a human) is itself a compliance risk, independent of staleness or time budget.",
+        "formula": "=INDEX(Workflows!{{HasConsistencyViolation}}, MATCH({{Workflow}}, Workflows!{{WorkflowId}}, 0))"
+      },
+      {
         "name": "IsAtComplianceRisk",
         "datatype": "boolean",
         "type": "calculated",
         "nullable": true,
         "important": true,
-        "Description": "THE VERDICT. True when the workflow is EITHER (stale AND has an AI agent executing a step) \u2014 the article's closing business question \u2014 OR over its planned-runtime budget. The first disjunct is the article's headline finale verbatim; the second is an EXTENSION giving the step-duration literal a live compliance consequence. Fully derived: flip the Modified date, the role's filledBy agent, or any step's duration, and this recomputes on the next read.",
-        "explanation_rich": "**The whole article in one boolean, plus a time guard.** Talisman's finale is a query that returns 'every stale workflow where an AI agent is executing a step and the compliance documentation hasn't been reviewed \u2014 a business question answered by a machine, automatically, across a live graph.' That is the first disjunct here: `IsStale AND HasAIExecutedStep`, crossing three first-class layers \u2014 metadata (`dct:modified`), structure (step->role), accountability (`filledBy`->AIAgent). The second disjunct, `IsOverTimeBudget`, is an extension beyond the article so the per-step duration literal has a visible consequence: when the summed plan runtime exceeds `MaxPlanMinutes`, the verdict trips on time alone. Backdate `Modified`, reassign the risk-analysis role to a human, or drag a step's duration past the budget \u2014 each flips the verdict, with no code to write.",
-        "formula": "=OR(AND({{IsStale}}, {{HasAIExecutedStep}}), {{IsOverTimeBudget}})"
+        "Description": "THE VERDICT. True when the workflow is (stale AND has an AI agent executing a step) \u2014 the article's closing business question \u2014 OR over its planned-runtime budget OR has any human-approval consistency violation. The first disjunct is the article's headline finale verbatim; the second gives the step-duration literal a live compliance consequence; the third enforces an implicit no-broken-rules rule, so a workflow with a structural inconsistency can never read COMPLIANT. Fully derived: flip the Modified date, the role's filledBy agent, or any step's duration, and this recomputes on the next read.",
+        "explanation_rich": "**The whole article in one boolean, plus two guards.** Talisman's finale is a query that returns 'every stale workflow where an AI agent is executing a step and the compliance documentation hasn't been reviewed \u2014 a business question answered by a machine, automatically, across a live graph.' That is the first disjunct: `IsStale AND HasAIExecutedStep`, crossing three first-class layers \u2014 metadata (`dct:modified`), structure (step->role), accountability (`filledBy`->AIAgent). The second disjunct, `IsOverTimeBudget`, makes the per-step duration literal trip the verdict on time alone. The third, `HasConsistencyViolation`, makes the verdict honest: if any step requires a human sign-off but isn't human-filled, the model contradicts itself, and a self-contradictory model cannot be COMPLIANT. This closes the gap where a broken consistency rule used to sit beside a green verdict. Backdate `Modified`, reassign the risk-analysis role to a human, drag a step's duration past the budget, or hand an approval step to an AI \u2014 each flips the verdict, with no code to write.",
+        "formula": "=OR(AND({{IsStale}}, {{HasAIExecutedStep}}), {{IsOverTimeBudget}}, {{HasConsistencyViolation}})"
       },
       {
         "name": "VerdictConcept",

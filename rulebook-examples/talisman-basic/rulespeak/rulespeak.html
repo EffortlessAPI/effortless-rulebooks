@@ -248,7 +248,7 @@ html.show-consumers .elem-consumers{display:block}
 <nav class="toc">
   <h2 class="toc-title">Entities</h2>
   <ul class="toc-list">
-    <li><a href="#t-workflows">Workflow</a> <span class="toc-meta">23 rules · 2 links</span></li>
+    <li><a href="#t-workflows">Workflow</a> <span class="toc-meta">24 rules · 2 links</span></li>
     <li><a href="#t-workflowsteps">Workflow Step</a> <span class="toc-meta">15 rules · 7 links</span></li>
     <li><a href="#t-approvalgates">Approval Gate</a> <span class="toc-meta">6 rules · 1 links</span></li>
     <li><a href="#t-stepprecedence">Step Precedence</a> <span class="toc-meta">4 rules · 2 links</span></li>
@@ -262,7 +262,7 @@ html.show-consumers .elem-consumers{display:block}
     <li><a href="#t-agentcapabilityconcepts">Agent Capability Concept</a> <span class="toc-meta">2 rules · 1 links</span></li>
     <li><a href="#t-datasets">Dataset</a> <span class="toc-meta">2 rules · 1 links</span></li>
     <li><a href="#t-workflowartifacts">Workflow Artifact</a> <span class="toc-meta">6 rules · 5 links</span></li>
-    <li><a href="#t-complianceverdicts">Compliance Verdict</a> <span class="toc-meta">14 rules · 2 links</span></li>
+    <li><a href="#t-complianceverdicts">Compliance Verdict</a> <span class="toc-meta">15 rules · 2 links</span></li>
     <li><a href="#t-scenarios">Scenario</a> <span class="toc-meta">3 rules · 0 links</span></li>
   </ul>
 </nav>
@@ -828,6 +828,16 @@ html.show-consumers .elem-consumers{display:block}
         </a>
       </div>
     </details>
+    <details class="prov prov-consumers elem elem-consumers">
+      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+4 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-calc" href="#f-workflows-hasconsistencyviolation">ƒ Has Consistency Violation <span class="ref-pill-tbl">Workflows</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-complianceverdicts-hasconsistencyviolation">Has Consistency Violation <span class="ref-pill-tbl">ComplianceVerdicts</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-complianceverdicts-isatcompliancerisk">Is At Compliance Risk <span class="ref-pill-tbl">ComplianceVerdicts</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-complianceverdicts-verdictconcept">Verdict Concept <span class="ref-pill-tbl">ComplianceVerdicts</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-complianceverdicts-verdict">Verdict <span class="ref-pill-tbl">ComplianceVerdicts</span></a>
+      </div>
+    </details>
     <details class="prov prov-leaves elem elem-inputs">
       <summary>Ground truth at the leaves <span class="count">6</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
       <div class="prov-pills">
@@ -841,6 +851,60 @@ html.show-consumers .elem-consumers{display:block}
     </details>
     <p class="field-note elem elem-desc">Number of steps that require human approval but are not human-filled (rollup over WorkflowSteps.ApprovalConsistencyViolation). The clean ABox witness: this is 0 for the Production Deployment workflow. A non-zero value is the relational signal of a Suite-4 consistency violation.</p>
     </article>
+  <article class="field tone-calc" id="f-workflows-hasconsistencyviolation" data-entity="Workflow" data-field="Has Consistency Violation">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Has Consistency Violation</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">4 hops from ground truth</span>
+      <span class="pill pill-muted">boolean</span>
+      <span class="pill pill-dr">DR-10</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak</span>
+        <p class="view-body">A workflow is considered to have a consistency violation if the <a class="ref" href="#f-workflows-countapprovalconsistencyviolations">count approval consistency violations</a> is greater than 0.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In English</span>
+        <p class="view-body"><a class="ref" href="#f-workflows-countapprovalconsistencyviolations">Count approval consistency violations</a> is greater than 0.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span><a class="fx-chip" href="#f-workflows-countapprovalconsistencyviolations">Count Approval Consistency Violations</a> &gt; 0</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">1</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-agg" href="#f-workflows-countapprovalconsistencyviolations">
+          <span class="input-head"><span class="input-glyph">Σ</span><span class="input-name">Count Approval Consistency Violations</span><span class="input-table">Workflows</span></span>
+          <span class="input-en">Count of WorkflowSteps whose workflow is workflow id and approval consistency violation is yes.</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-consumers elem elem-consumers">
+      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+3 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-lookup" href="#f-complianceverdicts-hasconsistencyviolation">↗ Has Consistency Violation <span class="ref-pill-tbl">ComplianceVerdicts</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-complianceverdicts-isatcompliancerisk">Is At Compliance Risk <span class="ref-pill-tbl">ComplianceVerdicts</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-complianceverdicts-verdictconcept">Verdict Concept <span class="ref-pill-tbl">ComplianceVerdicts</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-complianceverdicts-verdict">Verdict <span class="ref-pill-tbl">ComplianceVerdicts</span></a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">6</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-rel" href="#f-workflowsteps-workflow">⇢ Workflow <span class="ref-pill-tbl">WorkflowSteps</span></a>
+        <a class="ref-pill tone-raw" href="#f-workflows-workflowid">● Workflow ID <span class="ref-pill-tbl">Workflows</span></a>
+        <a class="ref-pill tone-raw" href="#f-workflowsteps-requireshumanapproval">● Requires Human Approval <span class="ref-pill-tbl">WorkflowSteps</span></a>
+        <a class="ref-pill tone-rel" href="#f-roles-filledbyhumanagent">⇢ Filled by Human Agent <span class="ref-pill-tbl">Roles</span></a>
+        <a class="ref-pill tone-rel" href="#f-workflowsteps-assignedrole">⇢ Assigned Role <span class="ref-pill-tbl">WorkflowSteps</span></a>
+        <a class="ref-pill tone-raw" href="#f-roles-roleid">● Role ID <span class="ref-pill-tbl">Roles</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">TRUE iff at least one step breaks the human-approval consistency rule (CountApprovalConsistencyViolations &gt; 0). The boolean witness of model integrity: a clean ABox holds it FALSE. This is what makes a broken rule a first-class input to the compliance verdict — a workflow with any consistency violation cannot be COMPLIANT.</p>
+    </article>
   <article class="field tone-calc" id="f-workflows-hasaiagentstep" data-entity="Workflow" data-field="Has AI Agent Step">
     <div class="field-head">
       <span class="field-glyph" title="Calculated">ƒ</span>
@@ -848,7 +912,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">4 hops from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-10</span>
+      <span class="pill pill-dr">DR-11</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -902,7 +966,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-11</span>
+      <span class="pill pill-dr">DR-12</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -954,7 +1018,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-12</span>
+      <span class="pill pill-dr">DR-13</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -1009,7 +1073,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">5 hops from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-13</span>
+      <span class="pill pill-dr">DR-14</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -1059,7 +1123,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-14</span>
+      <span class="pill pill-dr">DR-15</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -1120,7 +1184,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-15</span>
+      <span class="pill pill-dr">DR-16</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -1176,7 +1240,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-16</span>
+      <span class="pill pill-dr">DR-17</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -1228,7 +1292,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">3 hops from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-17</span>
+      <span class="pill pill-dr">DR-18</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -1286,7 +1350,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">3 hops from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-18</span>
+      <span class="pill pill-dr">DR-19</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -1344,7 +1408,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">4 hops from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-19</span>
+      <span class="pill pill-dr">DR-20</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -1392,7 +1456,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-20</span>
+      <span class="pill pill-dr">DR-21</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -1423,7 +1487,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-21</span>
+      <span class="pill pill-dr">DR-22</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -1454,7 +1518,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-22</span>
+      <span class="pill pill-dr">DR-23</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -1492,7 +1556,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">3 hops from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-23</span>
+      <span class="pill pill-dr">DR-24</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -1540,7 +1604,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-24</span>
+      <span class="pill pill-dr">DR-25</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -1605,7 +1669,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">3 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-25</span>
+      <span class="pill pill-dr">DR-26</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -1666,7 +1730,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">4 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-26</span>
+      <span class="pill pill-dr">DR-27</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -1708,7 +1772,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-27</span>
+      <span class="pill pill-dr">DR-28</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -1878,7 +1942,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-28</span>
+      <span class="pill pill-dr">DR-29</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -1912,7 +1976,7 @@ html.show-consumers .elem-consumers{display:block}
       </div>
     </details>
     <details class="prov prov-consumers elem elem-consumers">
-      <summary>Consumers <span class="count">4 direct</span> <span class="count count-muted">+2 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <summary>Consumers <span class="count">4 direct</span> <span class="count count-muted">+7 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-calc" href="#f-workflowsteps-executingagenttype">ƒ Executing Agent Type <span class="ref-pill-tbl">WorkflowSteps</span></a>
         <a class="ref-pill tone-calc" href="#f-workflowsteps-isexecutedbyhuman">ƒ Is Executed by Human <span class="ref-pill-tbl">WorkflowSteps</span></a>
@@ -1920,6 +1984,11 @@ html.show-consumers .elem-consumers{display:block}
         <a class="ref-pill tone-calc" href="#f-workflowsteps-approvalishumanfilled">ƒ Approval is Human Filled <span class="ref-pill-tbl">WorkflowSteps</span></a>
         <a class="ref-pill tone-rel faded" href="#f-workflows-counthumansteps">Count Human Steps <span class="ref-pill-tbl">Workflows</span></a>
         <a class="ref-pill tone-rel faded" href="#f-workflows-countapprovalconsistencyviolations">Count Approval Consistency Violations <span class="ref-pill-tbl">Workflows</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-workflows-hasconsistencyviolation">Has Consistency Violation <span class="ref-pill-tbl">Workflows</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-complianceverdicts-hasconsistencyviolation">Has Consistency Violation <span class="ref-pill-tbl">ComplianceVerdicts</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-complianceverdicts-isatcompliancerisk">Is At Compliance Risk <span class="ref-pill-tbl">ComplianceVerdicts</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-complianceverdicts-verdictconcept">Verdict Concept <span class="ref-pill-tbl">ComplianceVerdicts</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-complianceverdicts-verdict">Verdict <span class="ref-pill-tbl">ComplianceVerdicts</span></a>
       </div>
     </details>
     <details class="prov prov-leaves elem elem-inputs">
@@ -1939,7 +2008,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-29</span>
+      <span class="pill pill-dr">DR-30</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -2004,7 +2073,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-30</span>
+      <span class="pill pill-dr">DR-31</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -2060,7 +2129,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-31</span>
+      <span class="pill pill-dr">DR-32</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -2112,7 +2181,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-32</span>
+      <span class="pill pill-dr">DR-33</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -2167,7 +2236,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-33</span>
+      <span class="pill pill-dr">DR-34</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -2215,7 +2284,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-34</span>
+      <span class="pill pill-dr">DR-35</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -2245,9 +2314,14 @@ html.show-consumers .elem-consumers{display:block}
       </div>
     </details>
     <details class="prov prov-consumers elem elem-consumers">
-      <summary>Consumers <span class="count">1 direct</span> <span class="prov-hint">rules that read this one</span></summary>
+      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+5 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-agg" href="#f-workflows-countapprovalconsistencyviolations">Σ Count Approval Consistency Violations <span class="ref-pill-tbl">Workflows</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-workflows-hasconsistencyviolation">Has Consistency Violation <span class="ref-pill-tbl">Workflows</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-complianceverdicts-hasconsistencyviolation">Has Consistency Violation <span class="ref-pill-tbl">ComplianceVerdicts</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-complianceverdicts-isatcompliancerisk">Is At Compliance Risk <span class="ref-pill-tbl">ComplianceVerdicts</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-complianceverdicts-verdictconcept">Verdict Concept <span class="ref-pill-tbl">ComplianceVerdicts</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-complianceverdicts-verdict">Verdict <span class="ref-pill-tbl">ComplianceVerdicts</span></a>
       </div>
     </details>
     <details class="prov prov-leaves elem elem-inputs">
@@ -2268,7 +2342,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-35</span>
+      <span class="pill pill-dr">DR-36</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -2315,7 +2389,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-36</span>
+      <span class="pill pill-dr">DR-37</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -2375,7 +2449,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-37</span>
+      <span class="pill pill-dr">DR-38</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -2424,7 +2498,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-38</span>
+      <span class="pill pill-dr">DR-39</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -2479,7 +2553,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">4 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-39</span>
+      <span class="pill pill-dr">DR-40</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -2537,7 +2611,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">5 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-40</span>
+      <span class="pill pill-dr">DR-41</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -2591,7 +2665,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">6 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-41</span>
+      <span class="pill pill-dr">DR-42</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -2635,7 +2709,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-42</span>
+      <span class="pill pill-dr">DR-43</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -2709,7 +2783,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-43</span>
+      <span class="pill pill-dr">DR-44</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -2765,7 +2839,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-44</span>
+      <span class="pill pill-dr">DR-45</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -2823,7 +2897,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">4 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-45</span>
+      <span class="pill pill-dr">DR-46</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -2881,7 +2955,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">5 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-46</span>
+      <span class="pill pill-dr">DR-47</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -2935,7 +3009,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">6 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-47</span>
+      <span class="pill pill-dr">DR-48</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -2979,7 +3053,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-48</span>
+      <span class="pill pill-dr">DR-49</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -3077,7 +3151,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-49</span>
+      <span class="pill pill-dr">DR-50</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -3123,7 +3197,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-50</span>
+      <span class="pill pill-dr">DR-51</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -3163,7 +3237,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-51</span>
+      <span class="pill pill-dr">DR-52</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -3356,7 +3430,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-52</span>
+      <span class="pill pill-dr">DR-53</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -3413,7 +3487,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-53</span>
+      <span class="pill pill-dr">DR-54</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -3461,7 +3535,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-54</span>
+      <span class="pill pill-dr">DR-55</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -3517,7 +3591,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-55</span>
+      <span class="pill pill-dr">DR-56</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -3563,7 +3637,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-56</span>
+      <span class="pill pill-dr">DR-57</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -3603,7 +3677,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-57</span>
+      <span class="pill pill-dr">DR-58</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -3685,7 +3759,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-58</span>
+      <span class="pill pill-dr">DR-59</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -3731,7 +3805,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-59</span>
+      <span class="pill pill-dr">DR-60</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -3812,7 +3886,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-60</span>
+      <span class="pill pill-dr">DR-61</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -3858,7 +3932,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-61</span>
+      <span class="pill pill-dr">DR-62</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -3951,7 +4025,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-62</span>
+      <span class="pill pill-dr">DR-63</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -3997,7 +4071,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-63</span>
+      <span class="pill pill-dr">DR-64</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -4078,7 +4152,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-64</span>
+      <span class="pill pill-dr">DR-65</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -4124,7 +4198,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-65</span>
+      <span class="pill pill-dr">DR-66</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -4230,7 +4304,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-66</span>
+      <span class="pill pill-dr">DR-67</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -4276,7 +4350,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-67</span>
+      <span class="pill pill-dr">DR-68</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -4382,7 +4456,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-68</span>
+      <span class="pill pill-dr">DR-69</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -4428,7 +4502,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-69</span>
+      <span class="pill pill-dr">DR-70</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -4534,7 +4608,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-70</span>
+      <span class="pill pill-dr">DR-71</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -4580,7 +4654,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-71</span>
+      <span class="pill pill-dr">DR-72</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -4686,7 +4760,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">4 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-72</span>
+      <span class="pill pill-dr">DR-73</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -4744,7 +4818,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">5 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-73</span>
+      <span class="pill pill-dr">DR-74</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -4798,7 +4872,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">6 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-74</span>
+      <span class="pill pill-dr">DR-75</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -4938,7 +5012,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-75</span>
+      <span class="pill pill-dr">DR-76</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -4988,7 +5062,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-76</span>
+      <span class="pill pill-dr">DR-77</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -5034,7 +5108,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-77</span>
+      <span class="pill pill-dr">DR-78</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -5096,7 +5170,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-78</span>
+      <span class="pill pill-dr">DR-79</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -5152,7 +5226,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">3 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-79</span>
+      <span class="pill pill-dr">DR-80</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -5204,7 +5278,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">4 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-80</span>
+      <span class="pill pill-dr">DR-81</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -5246,7 +5320,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-81</span>
+      <span class="pill pill-dr">DR-82</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -5300,7 +5374,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-82</span>
+      <span class="pill pill-dr">DR-83</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -5356,7 +5430,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-83</span>
+      <span class="pill pill-dr">DR-84</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -5406,7 +5480,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">3 hops from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-84</span>
+      <span class="pill pill-dr">DR-85</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -5465,7 +5539,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">4 hops from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-85</span>
+      <span class="pill pill-dr">DR-86</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -5518,7 +5592,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">5 hops from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-86</span>
+      <span class="pill pill-dr">DR-87</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -5579,7 +5653,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-87</span>
+      <span class="pill pill-dr">DR-88</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -5630,7 +5704,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-88</span>
+      <span class="pill pill-dr">DR-89</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -5680,7 +5754,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">3 hops from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-89</span>
+      <span class="pill pill-dr">DR-90</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -5733,6 +5807,68 @@ html.show-consumers .elem-consumers{display:block}
     </details>
     <p class="field-note elem elem-desc">Whether total planned runtime exceeds the workflow's budget. Pulled from Workflows.IsOverTimeBudget. EXTENSION beyond the source article — the third compliance input alongside staleness and AI-execution.</p>
     </article>
+  <article class="field tone-lookup" id="f-complianceverdicts-hasconsistencyviolation" data-entity="Compliance Verdict" data-field="Has Consistency Violation">
+    <div class="field-head">
+      <span class="field-glyph" title="Lookup">↗</span>
+      <span class="field-name">Has Consistency Violation</span>
+      <span class="pill pill-type">Lookup</span>
+      <span class="pill pill-depth">5 hops from ground truth</span>
+      <span class="pill pill-muted">boolean</span>
+      <span class="pill pill-dr">DR-91</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak</span>
+        <p class="view-body">A compliance verdict's <a class="ref" href="#f-workflows-hasconsistencyviolation">has consistency violation</a> is true when the compliance verdict's <a class="ref" href="#f-complianceverdicts-workflow">workflow</a> has a consistency violation.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In English</span>
+        <p class="view-body">The <a class="ref" href="#f-workflows-hasconsistencyviolation">has consistency violation</a> of the linked <a class="ref" href="#f-complianceverdicts-workflow">workflow</a>.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>INDEX(<a class="fx-chip" href="#f-workflows-hasconsistencyviolation">Has Consistency Violation</a>, MATCH(<a class="fx-chip" href="#f-complianceverdicts-workflow">Workflow</a>, <a class="fx-chip" href="#f-workflows-workflowid">Workflow ID</a>, 0))</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">3</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-calc" href="#f-workflows-hasconsistencyviolation">
+          <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Has Consistency Violation</span><span class="input-table">Workflows</span></span>
+          <span class="input-en">Count approval consistency violations is greater than 0.</span>
+        </a>
+        <a class="input tone-rel" href="#f-complianceverdicts-workflow">
+          <span class="input-head"><span class="input-glyph">⇢</span><span class="input-name">Workflow</span><span class="input-table">ComplianceVerdicts</span></span>
+          <span class="input-en muted">1:1 FK to the Workflow this verdict summarizes.</span>
+        </a>
+        <a class="input tone-raw" href="#f-workflows-workflowid">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Workflow ID</span><span class="input-table">Workflows</span></span>
+          <span class="input-en muted">Ground truth · string</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-consumers elem elem-consumers">
+      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+2 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-calc" href="#f-complianceverdicts-isatcompliancerisk">ƒ Is At Compliance Risk <span class="ref-pill-tbl">ComplianceVerdicts</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-complianceverdicts-verdictconcept">Verdict Concept <span class="ref-pill-tbl">ComplianceVerdicts</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-complianceverdicts-verdict">Verdict <span class="ref-pill-tbl">ComplianceVerdicts</span></a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">7</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-rel" href="#f-workflowsteps-workflow">⇢ Workflow <span class="ref-pill-tbl">WorkflowSteps</span></a>
+        <a class="ref-pill tone-raw" href="#f-workflows-workflowid">● Workflow ID <span class="ref-pill-tbl">Workflows</span></a>
+        <a class="ref-pill tone-raw" href="#f-workflowsteps-requireshumanapproval">● Requires Human Approval <span class="ref-pill-tbl">WorkflowSteps</span></a>
+        <a class="ref-pill tone-rel" href="#f-roles-filledbyhumanagent">⇢ Filled by Human Agent <span class="ref-pill-tbl">Roles</span></a>
+        <a class="ref-pill tone-rel" href="#f-workflowsteps-assignedrole">⇢ Assigned Role <span class="ref-pill-tbl">WorkflowSteps</span></a>
+        <a class="ref-pill tone-raw" href="#f-roles-roleid">● Role ID <span class="ref-pill-tbl">Roles</span></a>
+        <a class="ref-pill tone-rel" href="#f-complianceverdicts-workflow">⇢ Workflow <span class="ref-pill-tbl">ComplianceVerdicts</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">Whether any step breaks the human-approval consistency rule. Pulled from Workflows.HasConsistencyViolation. This is the 'no broken rules' input to the verdict: a structural inconsistency (an approval step not filled by a human) is itself a compliance risk, independent of staleness or time budget.</p>
+    </article>
   <article class="field tone-calc" id="f-complianceverdicts-isatcompliancerisk" data-entity="Compliance Verdict" data-field="Is At Compliance Risk">
     <div class="field-head">
       <span class="field-glyph" title="Calculated">ƒ</span>
@@ -5740,7 +5876,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">6 hops from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-90</span>
+      <span class="pill pill-dr">DR-92</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -5749,15 +5885,15 @@ html.show-consumers .elem-consumers{display:block}
       </div>
       <div class="view elem elem-english">
         <span class="view-label">In English</span>
-        <p class="view-body"><a class="ref" href="#f-complianceverdicts-isstale">Is stale</a> and <a class="ref" href="#f-complianceverdicts-hasaiexecutedstep">has ai executed step</a> or <a class="ref" href="#f-complianceverdicts-isovertimebudget">is over time budget</a>.</p>
+        <p class="view-body"><a class="ref" href="#f-complianceverdicts-isstale">Is stale</a> and <a class="ref" href="#f-complianceverdicts-hasaiexecutedstep">has ai executed step</a>, <a class="ref" href="#f-complianceverdicts-isovertimebudget">is over time budget</a>, or <a class="ref" href="#f-complianceverdicts-hasconsistencyviolation">has consistency violation</a>.</p>
       </div>
       <div class="view elem elem-formula">
         <span class="view-label">As a formula</span>
-        <div class="view-body fx"><span class="fx-eq">= </span>OR(AND(<a class="fx-chip" href="#f-complianceverdicts-isstale">Is Stale</a>, <a class="fx-chip" href="#f-complianceverdicts-hasaiexecutedstep">Has AI Executed Step</a>), <a class="fx-chip" href="#f-complianceverdicts-isovertimebudget">Is Over Time Budget</a>)</div>
+        <div class="view-body fx"><span class="fx-eq">= </span>OR(AND(<a class="fx-chip" href="#f-complianceverdicts-isstale">Is Stale</a>, <a class="fx-chip" href="#f-complianceverdicts-hasaiexecutedstep">Has AI Executed Step</a>), <a class="fx-chip" href="#f-complianceverdicts-isovertimebudget">Is Over Time Budget</a>, <a class="fx-chip" href="#f-complianceverdicts-hasconsistencyviolation">Has Consistency Violation</a>)</div>
       </div>
     </div>
     <details class="prov prov-inputs elem elem-inputs" open>
-      <summary>Inputs <span class="count">3</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <summary>Inputs <span class="count">4</span> <span class="prov-hint">fields this rule reads</span></summary>
       <div class="prov-grid">
         <a class="input tone-lookup" href="#f-complianceverdicts-isstale">
           <span class="input-head"><span class="input-glyph">↗</span><span class="input-name">Is Stale</span><span class="input-table">ComplianceVerdicts</span></span>
@@ -5771,6 +5907,10 @@ html.show-consumers .elem-consumers{display:block}
           <span class="input-head"><span class="input-glyph">↗</span><span class="input-name">Is Over Time Budget</span><span class="input-table">ComplianceVerdicts</span></span>
           <span class="input-en">The is over time budget of the linked workflow.</span>
         </a>
+        <a class="input tone-lookup" href="#f-complianceverdicts-hasconsistencyviolation">
+          <span class="input-head"><span class="input-glyph">↗</span><span class="input-name">Has Consistency Violation</span><span class="input-table">ComplianceVerdicts</span></span>
+          <span class="input-en">The has consistency violation of the linked workflow.</span>
+        </a>
       </div>
     </details>
     <details class="prov prov-consumers elem elem-consumers">
@@ -5781,7 +5921,7 @@ html.show-consumers .elem-consumers{display:block}
       </div>
     </details>
     <details class="prov prov-leaves elem elem-inputs">
-      <summary>Ground truth at the leaves <span class="count">10</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <summary>Ground truth at the leaves <span class="count">12</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-raw" href="#f-workflows-modified">● Modified <span class="ref-pill-tbl">Workflows</span></a>
         <a class="ref-pill tone-raw" href="#f-workflows-stalenessthresholdmonths">● Staleness Threshold Months <span class="ref-pill-tbl">Workflows</span></a>
@@ -5793,9 +5933,11 @@ html.show-consumers .elem-consumers{display:block}
         <a class="ref-pill tone-raw" href="#f-roles-roleid">● Role ID <span class="ref-pill-tbl">Roles</span></a>
         <a class="ref-pill tone-raw" href="#f-workflowsteps-stepdurationminutes">● Step Duration Minutes <span class="ref-pill-tbl">WorkflowSteps</span></a>
         <a class="ref-pill tone-raw" href="#f-workflows-maxplanminutes">● Max Plan Minutes <span class="ref-pill-tbl">Workflows</span></a>
+        <a class="ref-pill tone-raw" href="#f-workflowsteps-requireshumanapproval">● Requires Human Approval <span class="ref-pill-tbl">WorkflowSteps</span></a>
+        <a class="ref-pill tone-rel" href="#f-roles-filledbyhumanagent">⇢ Filled by Human Agent <span class="ref-pill-tbl">Roles</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">THE VERDICT. True when the workflow is EITHER (stale AND has an AI agent executing a step) — the article's closing business question — OR over its planned-runtime budget. The first disjunct is the article's headline finale verbatim; the second is an EXTENSION giving the step-duration literal a live compliance consequence. Fully derived: flip the Modified date, the role's filledBy agent, or any step's duration, and this recomputes on the next read.</p>
+    <p class="field-note elem elem-desc">THE VERDICT. True when the workflow is (stale AND has an AI agent executing a step) — the article's closing business question — OR over its planned-runtime budget OR has any human-approval consistency violation. The first disjunct is the article's headline finale verbatim; the second gives the step-duration literal a live compliance consequence; the third enforces an implicit no-broken-rules rule, so a workflow with a structural inconsistency can never read COMPLIANT. Fully derived: flip the Modified date, the role's filledBy agent, or any step's duration, and this recomputes on the next read.</p>
     </article>
   <article class="field tone-rel" id="f-complianceverdicts-verdictconcept" data-entity="Compliance Verdict" data-field="Verdict Concept">
     <div class="field-head">
@@ -5816,7 +5958,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-91</span>
+      <span class="pill pill-dr">DR-93</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -5872,7 +6014,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-92</span>
+      <span class="pill pill-dr">DR-94</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -5918,7 +6060,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-93</span>
+      <span class="pill pill-dr">DR-95</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -5958,7 +6100,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-94</span>
+      <span class="pill pill-dr">DR-96</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">

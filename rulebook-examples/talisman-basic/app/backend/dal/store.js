@@ -22,6 +22,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { reason } from "./index.js";
 import { pgInsert, pgUpdate, pgDelete, pgRawStore } from "./postgres.js";
+import { stampEdit } from "./edit-marker.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const DB_PATH = path.join(__dirname, "..", "db.json");
@@ -54,6 +55,7 @@ export async function insertRow(backend, cls, row) {
   if (backend === "postgres") {
     await pgInsert(cls, row);
     const reasoned = await reason(await pgRawStore(), "postgres");
+    await stampEdit("postgres");
     return { engine: "postgres", reasoned_triples: reasoned.reasoned_triples };
   }
   // reasoner / file store: re-reason BEFORE persisting (never corrupt db.json).
@@ -62,6 +64,7 @@ export async function insertRow(backend, cls, row) {
   db[cls].push(row);
   const reasoned = await reason(db, "reasoner");
   await writeDbFile(db);
+  await stampEdit("reasoner");
   return { engine: "reasoner", reasoned_triples: reasoned.reasoned_triples };
 }
 
@@ -69,6 +72,7 @@ export async function patchRow(backend, cls, id, patch) {
   if (backend === "postgres") {
     await pgUpdate(cls, id, patch);
     const reasoned = await reason(await pgRawStore(), "postgres");
+    await stampEdit("postgres");
     return { engine: "postgres", reasoned_triples: reasoned.reasoned_triples };
   }
   const db = await readDbFile();
@@ -79,6 +83,7 @@ export async function patchRow(backend, cls, id, patch) {
   rows[idx] = { ...rows[idx], ...patch };
   const reasoned = await reason(db, "reasoner");
   await writeDbFile(db);
+  await stampEdit("reasoner");
   return { engine: "reasoner", reasoned_triples: reasoned.reasoned_triples };
 }
 
@@ -86,6 +91,7 @@ export async function deleteRow(backend, cls, id) {
   if (backend === "postgres") {
     await pgDelete(cls, id);
     const reasoned = await reason(await pgRawStore(), "postgres");
+    await stampEdit("postgres");
     return { engine: "postgres", reasoned_triples: reasoned.reasoned_triples };
   }
   const db = await readDbFile();
@@ -96,6 +102,7 @@ export async function deleteRow(backend, cls, id) {
   const next = { ...db, [cls]: rows.filter((_, i) => i !== idx) };
   const reasoned = await reason(next, "reasoner");
   await writeDbFile(next);
+  await stampEdit("reasoner");
   return { engine: "reasoner", reasoned_triples: reasoned.reasoned_triples };
 }
 
@@ -110,12 +117,14 @@ export async function applyMutation(backend, mutate) {
     // Persist by replaying the mutated store into the base tables.
     await replacePgStore(store);
     const reasoned = await reason(await pgRawStore(), "postgres");
+    await stampEdit("postgres");
     return { engine: "postgres", reasoned_triples: reasoned.reasoned_triples };
   }
   const db = await readDbFile();
   mutate(db);
   const reasoned = await reason(db, "reasoner");
   await writeDbFile(db);
+  await stampEdit("reasoner");
   return { engine: "reasoner", reasoned_triples: reasoned.reasoned_triples };
 }
 

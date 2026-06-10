@@ -3,6 +3,7 @@ import { api } from "./api.js";
 import { buildSituation, KIND, kindOfType, initials } from "./model.js";
 import { FlowView } from "./views/FlowView.jsx";
 import { GraphView } from "./views/GraphView.jsx";
+import { ClosureView } from "./views/ClosureView.jsx";
 import { ReassignPopover } from "./Editable.jsx";
 
 // ===========================================================================
@@ -20,15 +21,16 @@ import { ReassignPopover } from "./Editable.jsx";
 const VIEWS = [
   { id: "flow", label: "Flow", hint: "the release, step by step" },
   { id: "graph", label: "Graph", hint: "the reasoned network" },
+  { id: "closure", label: "Closure", hint: "assert order · watch it infer" },
 ];
 
-export default function App() {
+export default function App({ headerRight = null }) {
   const [story, setStory] = useState(null);
   const [scenarios, setScenarios] = useState([]);
   const [error, setError] = useState(null);
   const [busy, setBusy] = useState(false);
   const [view, setView] = useState("flow");
-  const [reassign, setReassign] = useState(null); // {roleId, anchorRect} | null
+  const [reassign, setReassign] = useState(null); // {roleId, anchorRect, requiresHuman} | null
   const [scenarioOpen, setScenarioOpen] = useState(false); // floating picker open?
   const reloadingRef = useRef(false);
 
@@ -69,7 +71,11 @@ export default function App() {
 
   // Editing handlers passed down to every view (so all lenses edit the same way).
   const handlers = {
-    openReassign: (roleId, anchorRect) => setReassign({ roleId, anchorRect }),
+    // `requiresHuman` is the step's RAW fact (requiresHumanApproval): when true,
+    // the reasoner's consistency rule demands a human filler — the popover surfaces
+    // that BEFORE you pick, and a non-human pick asks for confirmation.
+    openReassign: (roleId, anchorRect, requiresHuman = false) =>
+      setReassign({ roleId, anchorRect, requiresHuman: !!requiresHuman }),
     patchStep: (stepId, patch) => mutate(() => api.patchRow("WorkflowSteps", stepId, patch)),
     // Time budget (MaxPlanMinutes) is a FIXED fact (4h, seeded in the rulebook) —
     // no setter here; the plan fits or breaches by editing step durations.
@@ -87,6 +93,17 @@ export default function App() {
 
   const doReassign = (roleId, agentId) => {
     const agent = sit.agentById[agentId];
+    // If this step requires a human sign-off and you're picking a non-human,
+    // ask first — the pick is still ALLOWED (the whole point is to watch the
+    // reasoner flag it), but it will trip the consistency rule, so confirm intent.
+    if (reassign?.requiresHuman && agent?.kind !== "human") {
+      const ok = window.confirm(
+        `“${sit.roleById[roleId]?.name || "This role"}” fills a step that requires a human sign-off.\n\n` +
+        `Assigning ${agent?.name || "a non-human"} (${agent?.kind || "?"}) will break the ` +
+        `consistency rule — the reasoner will flag the step ⚠ rule broken.\n\nAssign anyway?`
+      );
+      if (!ok) return; // leave the popover open so they can pick a human instead
+    }
     const arms = { filledByHumanAgent: "", filledByAIAgent: "", filledByAutomatedPipeline: "" };
     if (agent?.kind === "human") arms.filledByHumanAgent = agentId;
     else if (agent?.kind === "ai") arms.filledByAIAgent = agentId;
@@ -97,7 +114,7 @@ export default function App() {
 
   return (
     <div className={"console" + (busy ? " reasoning" : "")}>
-      <TopBar sit={sit} busy={busy} />
+      <TopBar sit={sit} busy={busy} headerRight={headerRight} />
 
       {/* The verdict is a fixed card in the top-right corner — always visible,
           pinned as you scroll. Right under the verdict sits the "Try a scenario"
@@ -128,6 +145,7 @@ export default function App() {
       <div className="stage">
         {view === "flow" && <FlowView sit={sit} handlers={handlers} />}
         {view === "graph" && <GraphView sit={sit} handlers={handlers} />}
+        {view === "closure" && <ClosureView sit={sit} handlers={handlers} />}
       </div>
 
       {/* The two stacked status bars now live at the BOTTOM, just above the
@@ -168,6 +186,7 @@ export default function App() {
           role={sit.roleById[reassign.roleId]}
           agents={sit.options.agents}
           anchorRect={reassign.anchorRect}
+          requiresHuman={reassign.requiresHuman}
           onPick={(agentId) => doReassign(reassign.roleId, agentId)}
           onClose={() => setReassign(null)}
         />
@@ -181,14 +200,18 @@ export default function App() {
   );
 }
 
-// ---- top bar: just the brand --------------------------------------------
-function TopBar({ sit, busy }) {
+// ---- top bar: the brand on the left, the engine controls on the right -----
+// `headerRight` is an optional slot (Root passes the <EngineBar/> into it) so the
+// live-engine name, the conformance witness, and the engine switcher sit pinned
+// in the top-right corner of the header rather than at the bottom of the page.
+function TopBar({ sit, busy, headerRight }) {
   return (
     <div className={"topbar " + (busy ? "busy" : "")}>
       <div className="brand">
         <span className="brand-mark">◈</span> {sit.company}
         <span className="brand-sub">Release Console</span>
       </div>
+      {headerRight}
     </div>
   );
 }
@@ -267,6 +290,7 @@ function VerdictHeader({ verdict, workflow, hasScenarios, busy, onOpenScenarios 
   const stale = verdict.isStale;
   const ai = verdict.hasAIExecutedStep;
   const over = verdict.isOverTimeBudget;
+  const broken = verdict.hasConsistencyViolation;
   const staleAndAi = stale && ai;
   return (
     <div className={"verdict-header " + (risk ? "risk" : "ok")}>
@@ -282,6 +306,10 @@ function VerdictHeader({ verdict, workflow, hasScenarios, busy, onOpenScenarios 
         </span>
         <span className="vh-or">OR</span>
         <RulePill on={over} label="over time budget" firing={over} />
+        <span className="vh-or">OR</span>
+        {/* the implicit "no broken rules" input — a consistency violation alone
+            forces AT RISK, so COMPLIANT can never sit beside a broken rule */}
+        <RulePill on={broken} label="a rule is broken" firing={broken} />
         <span className="vh-eq">→ {risk ? "AT RISK" : "ok"}</span>
       </div>
       {hasScenarios && (
@@ -300,10 +328,15 @@ function whyText(v) {
   if (v.isStale && v.hasAIExecutedStep) reasons.push("docs are stale AND an AI runs a step");
   if (v.isOverTimeBudget)
     reasons.push(`the plan runs ${v.totalPlanMinutes} min, over its ${v.timeBudgetMinutes} min budget`);
+  if (v.hasConsistencyViolation) {
+    const n = v.consistencyViolationCount || 0;
+    reasons.push(`${n} step${n === 1 ? "" : "s"} break the human-sign-off rule (an approval step isn't human-filled)`);
+  }
   if (reasons.length) return "at risk because " + reasons.join("; and ");
-  // compliant — explain what's keeping it safe
-  if (v.hasAIExecutedStep && !v.isStale) return "an AI runs a step, but the docs are fresh and the plan is within budget — compliant";
-  return "no stale-plus-AI risk and within the time budget — compliant";
+  // compliant — explain what's keeping it safe (all three inputs are clear)
+  if (v.hasAIExecutedStep && !v.isStale)
+    return "an AI runs a step, but the docs are fresh, the plan is within budget, and no rule is broken — compliant";
+  return "no stale-plus-AI risk, within the time budget, and no broken rules — compliant";
 }
 
 function RulePill({ on, label, firing }) {
