@@ -1,67 +1,28 @@
-Stopping existing server on port 4801...
+Stopping existing server on port 7001...
+Building React app...
+
+> customer-fullname-web@1.0.0 build
+> vite build
+
+vite v5.4.21 building for production...
+transforming...
+✓ 58 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                   0.41 kB │ gzip:  0.28 kB
+dist/assets/index-C_Gt3D2q.css   22.43 kB │ gzip:  4.94 kB
+dist/assets/index-DJqGYdmC.js   218.17 kB │ gzip: 68.03 kB
+✓ built in 512ms
 Starting demo app:
-  API    -> http://localhost:4801
-  client -> http://localhost:4802
+  API    -> http://localhost:7001
+  client -> http://localhost:7002
 
 > customer-fullname-demo@1.0.0 start
 > node server.js
 
-[api]    http://localhost:4801  (JSON API)
-[client] http://localhost:4802  (open this in a browser)
+[api]    http://localhost:7001  (JSON API)
+[client] http://localhost:7002  (open this in a browser)
 Connected to postgresql://postgres@localhost:5432/erb_customer_fullname
 Press Ctrl+C to stop
-Opened http://localhost:4802 in Chrome
-start.sh: line 45: 81522 Killed: 9               npm start
-Starting demo app:
-  API    -> http://localhost:4801
-  client -> http://localhost:4802
-
-> customer-fullname-demo@1.0.0 start
-> node server.js
-
-[api]    http://localhost:4801  (JSON API)
-[client] http://localhost:4802  (open this in a browser)
-Connected to postgresql://postgres@localhost:5432/erb_customer_fullname
-Press Ctrl+C to stop
-Opened http://localhost:4802 in Chrome
-Stopping existing server on port 4801...
-Starting demo app:
-  API    -> http://localhost:4801
-  client -> http://localhost:4802
-
-> customer-fullname-demo@1.0.0 start
-> node server.js
-
-[api]    http://localhost:4801  (JSON API)
-[client] http://localhost:4802  (open this in a browser)
-Connected to postgresql://postgres@localhost:5432/erb_customer_fullname
-Press Ctrl+C to stop
-Opened http://localhost:4802 in Chrome
-Stopping existing server on port 4801...
-start.sh: line 45: 32595 Killed: 9               npm start
-Starting demo app:
-  API    -> http://localhost:4801
-  client -> http://localhost:4802
-
-> customer-fullname-demo@1.0.0 start
-> node server.js
-
-[api]    http://localhost:4801  (JSON API)
-[client] http://localhost:4802  (open this in a browser)
-Connected to postgresql://postgres@localhost:5432/erb_customer_fullname
-Press Ctrl+C to stop
-Opened http://localhost:4802 in Chrome
-Stopping existing server on port 4801...
-start.sh: line 45: 91750 Killed: 9               npm start
-Starting demo app:
-  API    -> http://localhost:4801
-  client -> http://localhost:4802
-
-> customer-fullname-demo@1.0.0 start
-> node server.js
-
-[api]    http://localhost:4801  (JSON API)
-[client] http://localhost:4802  (open this in a browser)
-Connected to postgresql://postgres@localhost:5432/erb_customer_fullname
-Press Ctrl+C to stop
-Opened http://localhost:4802 in Chrome
+Opened http://localhost:7002 in Chrome
+./start.sh: line 55: 72815 Killed: 9               npm start

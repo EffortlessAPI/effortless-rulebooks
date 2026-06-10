@@ -35,7 +35,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_customers_initials(p_customer_id TEXT)
 RETURNS TEXT AS $$
-  SELECT (CONCAT(RIGHT(((SELECT NULLIF(first_name, '') FROM customers WHERE customer_id = p_customer_id))::text, (1)::integer), '.', RIGHT(((SELECT NULLIF(last_name, '') FROM customers WHERE customer_id = p_customer_id))::text, (1)::integer), '.'))::text;
+  SELECT (CONCAT(LEFT(((SELECT NULLIF(first_name, '') FROM customers WHERE customer_id = p_customer_id))::text, (1)::integer), '.', LEFT(((SELECT NULLIF(last_name, '') FROM customers WHERE customer_id = p_customer_id))::text, (1)::integer), '.'))::text;
 $$ LANGUAGE sql STABLE;
 
 -- ============================================================================

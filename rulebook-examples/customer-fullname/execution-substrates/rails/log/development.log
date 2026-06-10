@@ -4295,3 +4295,27 @@ Processing by CustomersController#show as HTML
 Completed 200 OK in 52ms (Views: 1.6ms | ActiveRecord: 8.1ms | Allocations: 4635)
 
 
+Started GET "/customers/jane-smith-email-com" for 127.0.0.1 at 2026-06-10 13:47:59 -0500
+Processing by CustomersController#show as HTML
+  Parameters: {"id"=>"jane-smith-email-com"}
+  [1m[36mCustomer Load (0.3ms)[0m  [1m[34mSELECT "vw_customers".* FROM "vw_customers" WHERE "vw_customers"."customer_id" = $1 LIMIT $2[0m  [["customer_id", "jane-smith-email-com"], ["LIMIT", 1]]
+  ↳ app/controllers/customers_controller.rb:7:in `show'
+  Rendering layout layouts/application.html.erb
+  Rendering customers/show.html.erb within layouts/application
+  Rendered customers/show.html.erb within layouts/application (Duration: 0.8ms | Allocations: 755)
+  Rendered layout layouts/application.html.erb (Duration: 2.5ms | Allocations: 1658)
+Completed 200 OK in 81ms (Views: 4.0ms | ActiveRecord: 5.8ms | Allocations: 38858)
+
+
+Started GET "/customers/jane-smith-email-com" for 127.0.0.1 at 2026-06-10 13:48:01 -0500
+Processing by CustomersController#show as HTML
+  Parameters: {"id"=>"jane-smith-email-com"}
+  [1m[36mCustomer Load (1.3ms)[0m  [1m[34mSELECT "vw_customers".* FROM "vw_customers" WHERE "vw_customers"."customer_id" = $1 LIMIT $2[0m  [["customer_id", "jane-smith-email-com"], ["LIMIT", 1]]
+  ↳ app/controllers/customers_controller.rb:7:in `show'
+  Rendering layout layouts/application.html.erb
+  Rendering customers/show.html.erb within layouts/application
+  Rendered customers/show.html.erb within layouts/application (Duration: 0.2ms | Allocations: 65)
+  Rendered layout layouts/application.html.erb (Duration: 0.6ms | Allocations: 468)
+Completed 200 OK in 4ms (Views: 1.0ms | ActiveRecord: 1.3ms | Allocations: 1212)
+
+
