@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Talisman: Basic — RuleSpeak</title>
+<title>Talisman's Special Solutions — RuleSpeak</title>
 <style>
 
 :root{
@@ -194,7 +194,7 @@ html.show-consumers .elem-consumers{display:block}
 <body>
 <div class="topbar">
   <div class="topbar-inner">
-    <a class="topbar-brand" href="#top">📘 Talisman: Basic <span class="topbar-tag">RuleSpeak</span></a>
+    <a class="topbar-brand" href="#top">📘 Talisman's Special Solutions <span class="topbar-tag">RuleSpeak</span></a>
     <nav class="crumb" aria-label="You are reading">
       <span class="crumb-entity"></span>
       <span class="crumb-sep" hidden>›</span>
@@ -239,8 +239,8 @@ html.show-consumers .elem-consumers{display:block}
 </div>
 <header class="doc-header" id="top">
   <div class="doc-header-inner">
-    <h1 class="doc-title">📘 Talisman: Basic <span class="doc-title-sub">RuleSpeak</span></h1>
-    <p class="doc-lede">The NTWF (Special Solutions Workflow) ontology from Jessica Talisman's 'Intentional Arrangement' series, modeled as a relational rulebook. One curated worked example — the Production Deployment Workflow — exercises every class, property, and competency question: three disjoint agent types (human / AI / pipeline), role-vs-agent separation, a delegation/escalation chain, an approval gate as a step subtype, step-to-step transitive ordering, a PROV provenance chain over artifacts, and DCAT dataset consumption. Every competency question is answered by a derived column or a transitive-closure view (no sidecar code); a small set of load-bearing INDEX/MATCH lookups resolves the role-to-agent and gate-to-role-to-approver chains the questions depend on.</p>
+    <h1 class="doc-title">📘 Talisman's Special Solutions <span class="doc-title-sub">RuleSpeak</span></h1>
+    <p class="doc-lede">The NTWF (Talisman's Special Solutions Workflow) ontology from Jessica Talisman's 'Intentional Arrangement' series, modeled as a relational rulebook. One curated worked example — the Production Deployment Workflow — exercises every class, property, and competency question: three disjoint agent types (human / AI / pipeline), role-vs-agent separation, a delegation/escalation chain, an approval gate as a step subtype, step-to-step transitive ordering, a PROV provenance chain over artifacts, and DCAT dataset consumption. Every competency question is answered by a derived column or a transitive-closure view (no sidecar code); a small set of load-bearing INDEX/MATCH lookups resolves the role-to-agent and gate-to-role-to-approver chains the questions depend on.</p>
     <p class="doc-note">Declarative business rules rendered from the rulebook — the single source of truth. Every statement below is the plain-language reading of a formula; nothing here is hand-authored prose.</p>
     <p class="narr-hint">Use the <button type="button" class="gear-inline" id="gear-open-2">⚙︎ options</button> in the top-right corner to turn each part of the documentation on or off — RuleSpeak, English, the raw formula, the author's description, and the links to a rule's inputs and consumers. Your choices are remembered.</p>
   </div>
@@ -263,6 +263,7 @@ html.show-consumers .elem-consumers{display:block}
     <li><a href="#t-datasets">Dataset</a> <span class="toc-meta">2 rules · 1 links</span></li>
     <li><a href="#t-workflowartifacts">Workflow Artifact</a> <span class="toc-meta">6 rules · 5 links</span></li>
     <li><a href="#t-complianceverdicts">Compliance Verdict</a> <span class="toc-meta">14 rules · 2 links</span></li>
+    <li><a href="#t-scenarios">Scenario</a> <span class="toc-meta">3 rules · 0 links</span></li>
   </ul>
 </nav>
 <section class="entity" id="t-workflows" data-entity="Workflow">
@@ -5857,6 +5858,210 @@ html.show-consumers .elem-consumers{display:block}
       </div>
     </details>
     <p class="field-note elem elem-desc">Human-readable rendering of the verdict for stakeholders — the PrefLabel of the resolved ComplianceVerdictConcepts option (VerdictConcept). No longer an inline string literal: the two possible values are defined rows in the ComplianceVerdictConcepts vocabulary, and this field looks up whichever one VerdictConcept selected.</p>
+    </article>
+</section>
+<section class="entity" id="t-scenarios" data-entity="Scenario">
+  <header class="entity-head">
+    <h2 class="entity-title">Scenario</h2>
+    <p class="entity-synopsis">A scenario is identified by its name.</p>
+  </header>
+  <article class="field tone-calc" id="f-scenarios-relativepath" data-entity="Scenario" data-field="Relative Path">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Relative Path</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">1 hop from ground truth</span>
+      <span class="pill pill-muted">string</span>
+      <span class="pill pill-dr">DR-92</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak</span>
+        <p class="view-body">A scenario's relative path is computed as the literal “scenarios/”, followed by the <a class="ref" href="#f-scenarios-scenarioid">scenario ID</a>.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In English</span>
+        <p class="view-body">&quot;scenarios/&quot; joined with <a class="ref" href="#f-scenarios-scenarioid">scenario id</a>.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>&quot;scenarios/&quot; &amp; <a class="fx-chip" href="#f-scenarios-scenarioid">Scenario ID</a></div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">1</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-raw" href="#f-scenarios-scenarioid">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Scenario ID</span><span class="input-table">Scenarios</span></span>
+          <span class="input-en muted">Stable identifier for a curated demo scenario (a named set of raw-fact edits applied at once).</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-consumers elem elem-consumers">
+      <summary>Consumers <span class="count">1 direct</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-calc" href="#f-scenarios-iri">ƒ Iri <span class="ref-pill-tbl">Scenarios</span></a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">1</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-raw" href="#f-scenarios-scenarioid">● Scenario ID <span class="ref-pill-tbl">Scenarios</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">DAG-derived location for this Scenario row: root segment 'scenarios' + the primary key.</p>
+    </article>
+  <article class="field tone-calc" id="f-scenarios-iri" data-entity="Scenario" data-field="Iri">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Iri</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">2 hops from ground truth</span>
+      <span class="pill pill-muted">string</span>
+      <span class="pill pill-dr">DR-93</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak</span>
+        <p class="view-body">A scenario's iri is computed as the <a class="ref" href="#f-scenarios-relativepath">relative path</a> with every a slash replaced by a hyphen.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In English</span>
+        <p class="view-body"><a class="ref" href="#f-scenarios-relativepath">Relative path</a> with “/” replaced by “-”.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>SUBSTITUTE(<a class="fx-chip" href="#f-scenarios-relativepath">Relative Path</a>, &quot;/&quot;, &quot;-&quot;)</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">1</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-calc" href="#f-scenarios-relativepath">
+          <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Relative Path</span><span class="input-table">Scenarios</span></span>
+          <span class="input-en">&quot;scenarios/&quot; joined with scenario id.</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">1</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-raw" href="#f-scenarios-scenarioid">● Scenario ID <span class="ref-pill-tbl">Scenarios</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">Opaque stable identifier (dash-form of RelativePath).</p>
+    </article>
+  <article class="field tone-calc" id="f-scenarios-name" data-entity="Scenario" data-field="Name">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Name</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">1 hop from ground truth</span>
+      <span class="pill pill-muted">string</span>
+      <span class="pill pill-dr">DR-94</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak <span class="mech" title="Faithful but clunky wording — a flag for an optional reword pass">⚠︎ mechanical</span></span>
+        <p class="view-body">A scenario's name is computed as the lower-cased <a class="ref" href="#f-scenarios-label">label</a> with every a space replaced by a hyphen.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In English</span>
+        <p class="view-body"><a class="ref" href="#f-scenarios-label">Label</a> lowercased with “ ” replaced by “-”.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>SUBSTITUTE(LOWER(<a class="fx-chip" href="#f-scenarios-label">Label</a>), &quot; &quot;, &quot;-&quot;)</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">1</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-raw" href="#f-scenarios-label">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Label</span><span class="input-table">Scenarios</span></span>
+          <span class="input-en muted">Human-readable button label for this scenario in the picker.</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">1</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-raw" href="#f-scenarios-label">● Label <span class="ref-pill-tbl">Scenarios</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">Slug form of the human label.</p>
+    </article>
+  <article class="field tone-raw" id="f-scenarios-label" data-entity="Scenario" data-field="Label">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Label</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Human-readable button label for this scenario in the picker.</p>
+    </article>
+  <article class="field tone-raw" id="f-scenarios-icon" data-entity="Scenario" data-field="Icon">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Icon</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">A single emoji shown beside the label in the picker.</p>
+    </article>
+  <article class="field tone-raw" id="f-scenarios-explanation" data-entity="Scenario" data-field="Explanation">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Explanation</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Plain-language description of what this scenario changes and what the reasoner will derive as a result. Shown in the floating scenario picker so the user knows what each preset does before applying it.</p>
+    </article>
+  <article class="field tone-raw" id="f-scenarios-sortorder" data-entity="Scenario" data-field="Sort Order">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Sort Order</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">integer</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>integer</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Display order in the picker (ascending).</p>
+    </article>
+  <article class="field tone-raw" id="f-scenarios-isreset" data-entity="Scenario" data-field="Is Reset">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Is Reset</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">boolean</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>boolean</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">True for the single 'restore baseline' scenario; the picker styles it as a secondary action.</p>
+    </article>
+  <article class="field tone-raw" id="f-scenarios-edits" data-entity="Scenario" data-field="Edits">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Edits</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">JSON-encoded ordered list of raw-fact assignments this scenario applies. Each item is {class, id|match, set:{field:value,...}} where 'class' is a rulebook table (camelCase keys on the raw store), 'id' targets a row by its *Id primary key (or 'match':'first' for the singleton Workflow), and 'set' is the raw fields to assign. The backend replays this list against the active raw store, then re-reasons — the scenario NEVER sets a derived field. This is the single source of truth for what each demo scenario does; the app's picker and the apply endpoint both read it from here (same JSON-on-a-first-class-table pattern as __meta__'s JsonValue).</p>
     </article>
 </section>
 <footer class="doc-footer">

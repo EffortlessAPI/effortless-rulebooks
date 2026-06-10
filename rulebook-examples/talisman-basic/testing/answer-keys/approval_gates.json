@@ -2,8 +2,10 @@
   {
     "approval_gate_id": "ntwf-release-approval-gate",
     "display_name": "Release Approval Gate",
-    "name": "release-approval-gate",
     "workflow_step": "prod-deploy-step-3",
-    "escalation_threshold_hours": 4
+    "escalation_threshold_hours": 4,
+    "relative_path": "/approval-gates/ntwf-release-approval-gate",
+    "iri": "-approval-gates-ntwf-release-approval-gate",
+    "name": "release-approval-gate"
   }
 ]

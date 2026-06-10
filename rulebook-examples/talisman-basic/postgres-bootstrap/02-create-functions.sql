@@ -1380,6 +1380,36 @@ RETURNS TEXT AS $$
   SELECT (CASE WHEN calc_compliance_verdicts_is_at_compliance_risk(p_compliance_verdict_id) THEN ('verdict-at-risk')::text ELSE ('verdict-ok')::text END)::text;
 $$ LANGUAGE sql STABLE;
 
+-- calc_scenarios_relative_path
+-- Field: Scenarios.RelativePath
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_scenarios_relative_path(p_scenario_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CONCAT('scenarios/', (SELECT NULLIF(scenario_id, '') FROM scenarios WHERE scenario_id = p_scenario_id)))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_scenarios_iri
+-- Field: Scenarios.Iri
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_scenarios_iri(p_scenario_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (REPLACE(calc_scenarios_relative_path(p_scenario_id), '/', '-'))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_scenarios_name
+-- Field: Scenarios.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_scenarios_name(p_scenario_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (REPLACE(LOWER((SELECT NULLIF(label, '') FROM scenarios WHERE scenario_id = p_scenario_id)), ' ', '-'))::text;
+$$ LANGUAGE sql STABLE;
+
 -- ============================================================================
 -- MANY-SIDE RELATIONSHIP FUNCTIONS
 -- These functions aggregate child records for many-side relationships

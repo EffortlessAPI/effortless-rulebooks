@@ -779,6 +779,61 @@ erb:RolesShape a sh:NodeShape ;
         """ ;
     ] .
 
+# === Shape with rules for Scenarios ===
+erb:ScenariosShape a sh:NodeShape ;
+    sh:targetClass erb:Scenarios ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Scenarios_RelativePath" ;
+        sh:prefixes erb: ;
+        sh:construct """
+            PREFIX erb: <http://example.org/erb#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this erb:relativePath ?_result .
+            }
+            WHERE {
+    $this a erb:Scenarios .
+    OPTIONAL { $this erb:scenarioId ?scenario_id . }
+                BIND(CONCAT("scenarios/", ?scenario_id) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Scenarios_Iri" ;
+        sh:prefixes erb: ;
+        sh:construct """
+            PREFIX erb: <http://example.org/erb#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this erb:iri ?_result .
+            }
+            WHERE {
+    $this a erb:Scenarios .
+    OPTIONAL { $this erb:relativePath ?relative_path . }
+                BIND(REPLACE(?relative_path, "/", "-") AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Scenarios_Name" ;
+        sh:prefixes erb: ;
+        sh:construct """
+            PREFIX erb: <http://example.org/erb#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this erb:name ?_result .
+            }
+            WHERE {
+    $this a erb:Scenarios .
+    OPTIONAL { $this erb:label ?label . }
+                BIND(REPLACE(LCASE(?label), " ", "-") AS ?_result)
+            }
+        """ ;
+    ] .
+
 # === Shape with rules for StepPrecedence ===
 erb:StepPrecedenceShape a sh:NodeShape ;
     sh:targetClass erb:StepPrecedence ;
@@ -1799,4 +1854,4 @@ erb:WorkflowStepsCardinalityShape a sh:NodeShape ;
     sh:property [ sh:path erb:precedes ; sh:maxCount 1 ] ;
     sh:property [ sh:path erb:workflow ; sh:maxCount 1 ] .
 
-# Generated 92 SHACL rules
+# Generated 95 SHACL rules

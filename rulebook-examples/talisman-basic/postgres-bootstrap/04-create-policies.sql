@@ -22,6 +22,7 @@ ALTER TABLE agent_capability_concepts ENABLE ROW LEVEL SECURITY;
 ALTER TABLE datasets ENABLE ROW LEVEL SECURITY;
 ALTER TABLE workflow_artifacts ENABLE ROW LEVEL SECURITY;
 ALTER TABLE compliance_verdicts ENABLE ROW LEVEL SECURITY;
+ALTER TABLE scenarios ENABLE ROW LEVEL SECURITY;
 
 -- TODO: Add specific RLS policies based on your security requirements
 -- Example:

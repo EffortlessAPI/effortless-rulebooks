@@ -2,15 +2,24 @@
   {
     "workflow_id": "production-deployment",
     "display_name": "Production Deployment",
-    "name": "production-deployment",
     "title": "Production Deployment Workflow",
-    "description": "The primary NTWF ABox example. A 5-step workflow for deploying software to production at Special Solutions. Steps involve a human Release Manager (step 1), an AI Risk Analysis Agent (step 2), a human Legal Compliance Reviewer at an Approval Gate (step 3), an automated CI/CD pipeline (step 4), and the Release Manager again for the post-deployment report (step 5). Demonstrates all three agent types, the delegation chain, artifact provenance, and DCAT dataset consumption.",
+    "description": "The primary NTWF ABox example. A 5-step workflow for deploying software to production at Talisman's Special Solutions. Steps involve an AI Risk Analysis Agent (step 1), a human Legal Compliance Reviewer (step 2), a human Release Manager at the Release Approval Gate (step 3), an automated CI/CD pipeline (step 4), and the Release Manager again for the post-deployment report (step 5). Demonstrates all three agent types, the delegation chain, artifact provenance, and DCAT dataset consumption.",
     "identifier": "WF-PROD-DEPLOY-001",
-    "created": "2026-01-10T00:00:00-06:00",
-    "modified": "2026-04-03T00:00:00-05:00",
+    "modified": "2024-12-10T05:00:00.000Z",
+    "created": "2026-01-10T06:00:00.000Z",
+    "max_plan_minutes": 240,
+    "staleness_threshold_months": 24,
     "workflow_status": "status-active",
-    "workflow_steps": "prod-deploy-step-1, prod-deploy-step-2, prod-deploy-step-3, prod-deploy-step-4, prod-deploy-step-5",
-    "count_of_non_proposed_steps": 5,
-    "has_more_than1_step": true
+    "workflow_steps": "",
+    "relative_path": "workflows/production-deployment",
+    "iri": "workflows-production-deployment",
+    "name": "production-deployment",
+    "has_more_than1_step": false,
+    "has_ai_agent_step": false,
+    "is_stale": false,
+    "is_stale_and_has_ai_agent": false,
+    "is_over_time_budget": false,
+    "involves_engineering_and_legal": false,
+    "count_of_precedence_closure_pairs": 0
   }
 ]

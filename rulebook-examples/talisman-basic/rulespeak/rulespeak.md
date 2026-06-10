@@ -1,6 +1,6 @@
-# 📘 Talisman: Basic — RuleSpeak
+# 📘 Talisman's Special Solutions — RuleSpeak
 
-_The NTWF (Special Solutions Workflow) ontology from Jessica Talisman's 'Intentional Arrangement' series, modeled as a relational rulebook. One curated worked example — the Production Deployment Workflow — exercises every class, property, and competency question: three disjoint agent types (human / AI / pipeline), role-vs-agent separation, a delegation/escalation chain, an approval gate as a step subtype, step-to-step transitive ordering, a PROV provenance chain over artifacts, and DCAT dataset consumption. Every competency question is answered by a derived column or a transitive-closure view (no sidecar code); a small set of load-bearing INDEX/MATCH lookups resolves the role-to-agent and gate-to-role-to-approver chains the questions depend on._
+_The NTWF (Talisman's Special Solutions Workflow) ontology from Jessica Talisman's 'Intentional Arrangement' series, modeled as a relational rulebook. One curated worked example — the Production Deployment Workflow — exercises every class, property, and competency question: three disjoint agent types (human / AI / pipeline), role-vs-agent separation, a delegation/escalation chain, an approval gate as a step subtype, step-to-step transitive ordering, a PROV provenance chain over artifacts, and DCAT dataset consumption. Every competency question is answered by a derived column or a transitive-closure view (no sidecar code); a small set of load-bearing INDEX/MATCH lookups resolves the role-to-agent and gate-to-role-to-approver chains the questions depend on._
 
 > Declarative business rules rendered from the rulebook. Every statement
 > below expresses truth in the business domain — it is neither a procedure
@@ -117,6 +117,10 @@ _The NTWF (Special Solutions Workflow) ontology from Jessica Talisman's 'Intenti
 | Is Over Time Budget | True when the compliance verdict's workflow is an over time budget. | _Whether total planned runtime exceeds the workflow's budget. Pulled from Workflows.IsOverTimeBudget. EXTENSION beyond the source article — the third compliance input alongside staleness and AI-execution._ |
 | Is At Compliance Risk | True when at least one of the following holds: all of the following hold: the is stale flag is set and the has AI executed step flag is set or the is over time budget flag is set. | _THE VERDICT. True when the workflow is EITHER (stale AND has an AI agent executing a step) — the article's closing business question — OR over its planned-runtime budget. The first disjunct is the article's headline finale verbatim; the second is an EXTENSION giving the step-duration literal a live compliance consequence. Fully derived: flip the Modified date, the role's filledBy agent, or any step's duration, and this recomputes on the next read._ |
 | Verdict | The pref label of the compliance verdict's verdict concept. | _Human-readable rendering of the verdict for stakeholders — the PrefLabel of the resolved ComplianceVerdictConcepts option (VerdictConcept). No longer an inline string literal: the two possible values are defined rows in the ComplianceVerdictConcepts vocabulary, and this field looks up whichever one VerdictConcept selected._ |
+| **Scenario** | A scenario is identified by its name. | — |
+| Relative Path | Computed as the literal “scenarios/”, followed by the scenario ID. | _DAG-derived location for this Scenario row: root segment 'scenarios' + the primary key._ |
+| Iri | Computed as the relative path with every a slash replaced by a hyphen. | _Opaque stable identifier (dash-form of RelativePath)._ |
+| Name | Computed as the lower-cased label with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> | _Slug form of the human label._ |
 
 ## 2 Fact Types
 
@@ -184,6 +188,7 @@ already computes (cross-referenced as DR-N in the Definitional Rules below)._
 - A dataset **must** have a title.
 - A workflow artifact **must** have a title.
 - A compliance verdict **must** reference exactly one workflow.
+- A scenario **must** have a label and an edits.
 
 ## 4 Definitional Rules
 
@@ -286,6 +291,9 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 | **DR-89 Is Over Time Budget** | A compliance verdict's is over time budget is true when the compliance verdict's workflow is an over time budget. |
 | **DR-90 Is At Compliance Risk** | A compliance verdict is considered at compliance risk if at least one of the following holds: all of the following hold: the is stale flag is set and the has AI executed step flag is set or the is over time budget flag is set. |
 | **DR-91 Verdict** | A compliance verdict's verdict is the pref label of the compliance verdict's verdict concept. |
+| **DR-92 Relative Path** | A scenario's relative path is computed as the literal “scenarios/”, followed by the scenario ID. |
+| **DR-93 Iri** | A scenario's iri is computed as the relative path with every a slash replaced by a hyphen. |
+| **DR-94 Name** | A scenario's name is computed as the lower-cased label with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> |
 
 ## 5 Traceability to Schema
 
@@ -385,6 +393,9 @@ the same logic the rulebook stores, written for a business reader._
 | **ComplianceVerdicts.IsOverTimeBudget** | lookup | `Lookup(Workflows.IsOverTimeBudget via Workflow)` |
 | **ComplianceVerdicts.IsAtComplianceRisk** | formula | `Or(And(IsStale, HasAIExecutedStep), IsOverTimeBudget)` |
 | **ComplianceVerdicts.Verdict** | lookup | `Lookup(ComplianceVerdictConcepts.PrefLabel via VerdictConcept)` |
+| **Scenarios.RelativePath** | formula | `"scenarios/" & ScenarioId` |
+| **Scenarios.Iri** | formula | `Replace(RelativePath, "/", "-")` |
+| **Scenarios.Name** | formula | `Replace(Lower(Label), " ", "-")` |
 
 ---
 

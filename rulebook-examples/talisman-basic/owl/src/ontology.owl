@@ -501,7 +501,6 @@ erb:displayName a owl:DatatypeProperty ;
     rdfs:label "DisplayName" .
 
 erb:label a owl:DatatypeProperty ;
-    rdfs:domain erb:Roles ;
     rdfs:range xsd:string ;
     rdfs:label "Label" ;
     rdfs:comment "Human-readable display name. Maps to rdfs:label. Per Heuristic 6: if you cannot write a clear label, you do not yet understand the concept well enough to model it." .
@@ -578,6 +577,69 @@ erb:fillerType a owl:DatatypeProperty ;
     rdfs:label "FillerType" ;
     rdfs:comment "Which disjoint agent class fills this role (HumanAgent / AIAgent / AutomatedPipeline), from whichever filledBy arm is set. Lets the delegation-chain query confirm CQ6's 'zero AI agents in the escalation chain'." .
     # calculated: calculated
+
+# === Class: Scenarios ===
+erb:Scenarios a owl:Class ;
+    rdfs:label "Scenarios" .
+
+erb:scenarioId a owl:DatatypeProperty ;
+    rdfs:domain erb:Scenarios ;
+    rdfs:range xsd:string ;
+    rdfs:label "ScenarioId" ;
+    rdfs:comment "Stable identifier for a curated demo scenario (a named set of raw-fact edits applied at once)." .
+
+erb:relativePath a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "RelativePath" ;
+    rdfs:comment "DAG-derived location for this Scenario row: root segment 'scenarios' + the primary key." .
+    # calculated: calculated
+
+erb:iri a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "Iri" ;
+    rdfs:comment "Opaque stable identifier (dash-form of RelativePath)." .
+    # calculated: calculated
+
+erb:name a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "Name" ;
+    rdfs:comment "Slug form of the human label." .
+    # calculated: calculated
+
+erb:label a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "Label" ;
+    rdfs:comment "Human-readable button label for this scenario in the picker." .
+
+erb:icon a owl:DatatypeProperty ;
+    rdfs:domain erb:Scenarios ;
+    rdfs:range xsd:string ;
+    rdfs:label "Icon" ;
+    rdfs:comment "A single emoji shown beside the label in the picker." .
+
+erb:explanation a owl:DatatypeProperty ;
+    rdfs:domain erb:Scenarios ;
+    rdfs:range xsd:string ;
+    rdfs:label "Explanation" ;
+    rdfs:comment "Plain-language description of what this scenario changes and what the reasoner will derive as a result. Shown in the floating scenario picker so the user knows what each preset does before applying it." .
+
+erb:sortOrder a owl:DatatypeProperty ;
+    rdfs:domain erb:Scenarios ;
+    rdfs:range xsd:integer ;
+    rdfs:label "SortOrder" ;
+    rdfs:comment "Display order in the picker (ascending)." .
+
+erb:isReset a owl:DatatypeProperty ;
+    rdfs:domain erb:Scenarios ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "IsReset" ;
+    rdfs:comment "True for the single 'restore baseline' scenario; the picker styles it as a secondary action." .
+
+erb:edits a owl:DatatypeProperty ;
+    rdfs:domain erb:Scenarios ;
+    rdfs:range xsd:string ;
+    rdfs:label "Edits" ;
+    rdfs:comment "JSON-encoded ordered list of raw-fact assignments this scenario applies. Each item is {class, id|match, set:{field:value,...}} where 'class' is a rulebook table (camelCase keys on the raw store), 'id' targets a row by its *Id primary key (or 'match':'first' for the singleton Workflow), and 'set' is the raw fields to assign. The backend replays this list against the active raw store, then re-reasons — the scenario NEVER sets a derived field. This is the single source of truth for what each demo scenario does; the app's picker and the apply endpoint both read it from here (same JSON-on-a-first-class-table pattern as __meta__'s JsonValue)." .
 
 # === Class: StepPrecedence ===
 erb:StepPrecedence a owl:Class ;
