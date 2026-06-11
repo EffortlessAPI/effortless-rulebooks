@@ -48,18 +48,18 @@ export const rulespeakFields: Record<string, RuleSpeakFieldRule> = {
     "table": "Customers",
     "field": "Name",
     "kind": "formula",
-    "rule": "A customer\u0027s name is computed as the first name, followed by a space, followed by the last name.",
+    "rule": "A customer\u0027s name is computed as the last name, followed by a comma followed by a space, followed by the first name.",
     "mechanical": false,
     "refs": [
       {
         "table": "Customers",
-        "field": "FirstName",
-        "label": "first name"
+        "field": "LastName",
+        "label": "last name"
       },
       {
         "table": "Customers",
-        "field": "LastName",
-        "label": "last name"
+        "field": "FirstName",
+        "label": "first name"
       }
     ],
     "structure": null
