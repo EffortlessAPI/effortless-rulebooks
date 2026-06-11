@@ -3,30 +3,34 @@ import { api } from "./api.js";
 import Triangle from "./Triangle.jsx";
 
 // ===========================================================================
-// SyncPanel.jsx — the unified "sync station".
+// SyncPanel.jsx — the ONE interactive control.
 //
-// One surface that combines everything the user asked for:
+// Everything the login page used to stack in three sections is folded into the
+// triangle itself:
 //
-//   1. The Head & Legs TRIANGLE (visual drift indicator).
-//   2. A HEAD selector — ANY of the three stores can be made authoritative at
-//      any time, regardless of which is most recent. Default = the recency
-//      suggestion, but the user is free to override.
-//   3. The field-level DIFF for the chosen HEAD: for each OTHER store, exactly
-//      which values would be replaced (other-value → HEAD-value), so you can see
-//      what a push would do BEFORE you do it.
-//   4. Directional SYNC buttons driven by the chosen HEAD: overwrite both other
-//      stores (V), overwrite just one leg (< / >), or push up into the rulebook
-//      (^). The recency-suggested direction is highlighted, but every direction
-//      is always available. Plus "Reset to baseline" (reset root).
+//   • Click any node → it becomes HEAD (the former HEAD chips, gone).
+//   • A floaty box pops next to the focused node holding:
+//       - the field-level DIFF for that HEAD (what each other store would lose),
+//       - the directional PUSHES, named by geometry from the apex:
+//           ◂ overwrite the left leg (reasoner)
+//           ▸ overwrite the right leg (postgres)
+//           ▾ overwrite BOTH legs
+//           ▴ promote a leg UP into the hub
+//         (which of these show depends on which node is HEAD),
+//       - a quarantined, risk-colored "Reset to baseline, then rebuild" — the
+//         git-reset-then-down 4th choice,
+//       - and, for an ENGINE leg only, a "Launch console as X →" button. The hub
+//         has no launch (you don't run the UI on the rulebook).
 //
-// All three stores and all directions compose from ONE backend action
-// (/api/control/sync {from, targets}); the panel just decides the target set.
+// All pushes compose from ONE backend action (/api/control/sync {from,targets});
+// reset is /api/control/reset. The component fetches its own triangle + diff and
+// hands the parent ready-to-run descriptors via onRunSync; the parent streams
+// the build into the shared console below.
 // ===========================================================================
 
 const STORE_LABEL = { rulebook: "Rulebook", reasoner: "Reasoner", postgres: "Postgres" };
 const STORE_SUB = { rulebook: "the hub", reasoner: "db.json", postgres: "Postgres tables" };
-// Left-to-right layout order, for choosing ◂ vs ▸ glyphs on single-leg pushes.
-const NODES_ORDER = { reasoner: 0, rulebook: 1, postgres: 2 };
+const ENGINES = new Set(["reasoner", "postgres"]); // legs you can launch the console on
 
 function fmtAgo(iso) {
   if (!iso) return null;
@@ -55,12 +59,12 @@ function mostRecentStore(tri) {
 function ValueCell({ v, kind }) {
   if (v === null || v === undefined) return <span className={`dv dv-absent ${kind}`}>∅</span>;
   let s = typeof v === "string" ? v : JSON.stringify(v);
-  const long = s.length > 80;
-  if (long) s = s.slice(0, 80) + "…";
+  const long = s.length > 60;
+  if (long) s = s.slice(0, 60) + "…";
   return <span className={`dv ${kind}`} title={typeof v === "string" ? v : JSON.stringify(v)}>{s}</span>;
 }
 
-export default function SyncPanel({ onRunSync, running, refreshKey }) {
+export default function SyncPanel({ onRunSync, running, refreshKey, backends, onEnter }) {
   const [tri, setTri] = useState(null);
   const [diff, setDiff] = useState(null);
   const [head, setHead] = useState(null);          // chosen authoritative store
@@ -87,9 +91,7 @@ export default function SyncPanel({ onRunSync, running, refreshKey }) {
     return () => clearInterval(t);
   }, []);
 
-  // Default HEAD follows the recency suggestion until the user picks one. When
-  // the suggestion changes (a new edit lands) and the user hasn't overridden, we
-  // follow it; once they pick, we respect their choice.
+  // Default HEAD follows the recency suggestion until the user picks one.
   const suggestion = tri
     ? (["rulebook", "reasoner", "postgres"].includes(tri.aheadOf) ? tri.aheadOf : mostRecentStore(tri))
     : null;
@@ -116,22 +118,19 @@ export default function SyncPanel({ onRunSync, running, refreshKey }) {
     return d ? d.changedRows === 0 && d.changedFields === 0 : tri.hashes[store] === tri.hashes[head];
   };
 
-  // View model for the (presentational) Triangle. HEAD is the focus (gold ring);
-  // stores that already match HEAD are "lit"; stores that differ are "stale"
-  // (they'd be overwritten). When everything's locked, all three read "lit".
+  // View model for the Triangle. HEAD is the focus (gold ring); stores that match
+  // HEAD are "lit"; stores that differ are "stale" (they'd be overwritten).
   const nodeState = (id) => {
     if (id === head) return "head";
     if (locked) return "lit";
     return inSyncWith(id) ? "lit" : "stale";
   };
-  // Animate the legs that a "push HEAD into both others" would touch: from HEAD
-  // toward each store that differs. If HEAD is an engine, its leg flows UP to the
-  // hub; the hub→other-leg flows DOWN. If HEAD is the rulebook, both legs flow
-  // DOWN. Only animate while a sync is actually running.
+  // Animate the legs a "push HEAD into both others" would touch. If HEAD is an
+  // engine, its own leg flows UP to the hub and the other leg receives (delayed
+  // down). If HEAD is the rulebook, both legs flow DOWN. Only while syncing.
   const legPlan = (() => {
     if (!syncing) return { left: null, right: null };
     if (head === "rulebook") return { left: "down", right: "down" };
-    // engine HEAD: its own leg pushes up, the other leg receives (delayed down)
     if (head === "reasoner") return { left: "up", right: "down-delayed" };
     return { left: "down-delayed", right: "up" }; // postgres HEAD
   })();
@@ -141,11 +140,6 @@ export default function SyncPanel({ onRunSync, running, refreshKey }) {
     postgres: { inSync: inSyncWith("postgres"), ago: fmtAgo(tri.legs.postgres.lastEditAt) },
   };
 
-  // The directional buttons for the chosen HEAD. Each maps to one /api/control
-  // call. The recency-suggested direction is flagged is-suggested.
-  // - overwrite ONE other store  → sync {from:head, targets:[that store]}
-  // - overwrite BOTH others      → sync {from:head, targets:[both]}
-  // - reset root                 → the existing reset action
   const pickHead = (s) => { setHead(s); setUserPicked(true); };
 
   const runSync = (targets) => {
@@ -160,8 +154,7 @@ export default function SyncPanel({ onRunSync, running, refreshKey }) {
     onRunSync({ kind: "reset", path: "/api/control/reset", body: null, label: "Reset to pristine baseline" });
   };
 
-  // Is "push HEAD into both others" the recency suggestion? (It is when HEAD is
-  // exactly the store the triangle flagged as ahead.)
+  // Is "push HEAD into both others" the recency suggestion?
   const suggestBoth = !locked && tri.aheadOf === head && ["rulebook", "reasoner", "postgres"].includes(tri.aheadOf);
 
   const totalDiff = others.reduce((acc, s) => {
@@ -169,31 +162,33 @@ export default function SyncPanel({ onRunSync, running, refreshKey }) {
     return acc + (d ? d.changedFields + d.changedRows : 0);
   }, 0);
 
-  return (
-    <div className="sync-station">
-      <Triangle nodeState={nodeState} legPlan={legPlan} labels={labels} focus={head} syncing={syncing} />
+  // The backend id we'd launch the console on for the focused engine leg. The
+  // server's backend list (api.backends) names them; we match by id so the easter-
+  // egg cross-runs still resolve. Falls back to the bare store id.
+  const launchId = (() => {
+    if (!ENGINES.has(head)) return null;
+    const match = (backends || []).find((b) => b.id === head);
+    return match ? match.id : head;
+  })();
 
-      {/* HEAD selector — anything can be authoritative at any time */}
-      <div className="sync-headpick">
-        <span className="sync-headpick-label">Make authoritative (HEAD):</span>
-        <div className="sync-headpick-chips">
-          {["rulebook", "reasoner", "postgres"].map((s) => (
-            <button key={s} type="button"
-              className={`headchip ${head === s ? "is-head" : ""} ${suggestion === s ? "is-suggested" : ""}`}
-              onClick={() => pickHead(s)} disabled={syncing}
-              title={suggestion === s ? "Most recently edited — suggested" : ""}>
-              <span className="headchip-name">{STORE_LABEL[s]}</span>
-              <span className="headchip-sub">{STORE_SUB[s]}</span>
-              {suggestion === s && <span className="headchip-suggest">suggested</span>}
-            </button>
-          ))}
-        </div>
+  // ---- the floaty box rendered next to the focused node --------------------
+  // Diff (compact) + geometric pushes + quarantined reset + (engine) launch.
+  const popover = (
+    <div className="tri-pop">
+      <div className="tri-pop-head">
+        <span className="tri-pop-title">
+          <strong>{STORE_LABEL[head]}</strong> is HEAD
+          <span className="tri-pop-sub">{STORE_SUB[head]}</span>
+        </span>
+        {locked && totalDiff === 0
+          ? <span className="tri-pop-status ok">✓ all in sync</span>
+          : <span className="tri-pop-status warn">{totalDiff} change{totalDiff !== 1 ? "s" : ""} pending</span>}
       </div>
 
-      {/* the diff — what each OTHER store would lose if HEAD wins */}
-      <div className="sync-diff">
+      {/* DIFF: what each other store would lose if HEAD wins */}
+      <div className="tri-pop-diff">
         {locked && totalDiff === 0 ? (
-          <div className="sync-locked">✓ All three stores agree — nothing to sync.</div>
+          <div className="sync-locked">All three stores agree — nothing to push.</div>
         ) : (
           others.map((store) => {
             const d = diff?.against?.[store];
@@ -239,31 +234,81 @@ export default function SyncPanel({ onRunSync, running, refreshKey }) {
         )}
       </div>
 
-      {/* directional sync buttons — every direction always available */}
-      <div className="sync-actions">
-        <button type="button"
-          className={`sync-btn sync-btn-both ${suggestBoth ? "is-suggested" : ""}`}
-          onClick={() => runSync(others)} disabled={syncing || (locked && totalDiff === 0)}>
-          <span className="sync-btn-glyph">▾</span>
-          <span className="sync-btn-text">{STORE_LABEL[head]} → overwrite both
-            <em> ({others.map((s) => STORE_LABEL[s]).join(" + ")})</em></span>
-          {suggestBoth && <span className="sync-btn-suggest">suggested</span>}
-        </button>
+      {/* PUSHES — named by geometry. Direction is implied by which node is HEAD. */}
+      <div className="tri-pop-pushes">
+        {head === "rulebook" ? (
+          <>
+            <button type="button"
+              className={`sync-btn sync-btn-both ${suggestBoth ? "is-suggested" : ""}`}
+              onClick={() => runSync(others)} disabled={syncing || (locked && totalDiff === 0)}>
+              <span className="sync-btn-glyph">▾</span>
+              <span className="sync-btn-text">Push down into <em>both legs</em></span>
+              {suggestBoth && <span className="sync-btn-suggest">suggested</span>}
+            </button>
+            <button type="button" className="sync-btn sync-btn-one"
+              onClick={() => runSync(["reasoner"])} disabled={syncing || inSyncWith("reasoner")}>
+              <span className="sync-btn-glyph">◂</span>
+              <span className="sync-btn-text">Push left into <em>Reasoner only</em></span>
+            </button>
+            <button type="button" className="sync-btn sync-btn-one"
+              onClick={() => runSync(["postgres"])} disabled={syncing || inSyncWith("postgres")}>
+              <span className="sync-btn-glyph">▸</span>
+              <span className="sync-btn-text">Push right into <em>Postgres only</em></span>
+            </button>
+          </>
+        ) : (
+          <>
+            <button type="button"
+              className={`sync-btn sync-btn-both ${suggestBoth ? "is-suggested" : ""}`}
+              onClick={() => runSync(others)} disabled={syncing || (locked && totalDiff === 0)}>
+              <span className="sync-btn-glyph">▴▾</span>
+              <span className="sync-btn-text">Promote up &amp; sync <em>the other leg</em></span>
+              {suggestBoth && <span className="sync-btn-suggest">suggested</span>}
+            </button>
+            <button type="button" className="sync-btn sync-btn-one"
+              onClick={() => runSync(["rulebook"])} disabled={syncing || inSyncWith("rulebook")}>
+              <span className="sync-btn-glyph">▴</span>
+              <span className="sync-btn-text">Promote up into <em>the Rulebook hub only</em></span>
+            </button>
+            {others.filter((s) => s !== "rulebook").map((leg) => (
+              <button key={leg} type="button" className="sync-btn sync-btn-one"
+                onClick={() => runSync([leg])} disabled={syncing || inSyncWith(leg)}>
+                <span className="sync-btn-glyph">{leg === "reasoner" ? "◂" : "▸"}</span>
+                <span className="sync-btn-text">Promote up, then overwrite <em>{STORE_LABEL[leg]} only</em></span>
+              </button>
+            ))}
+          </>
+        )}
 
-        {others.map((store) => (
-          <button key={store} type="button"
-            className="sync-btn sync-btn-one"
-            onClick={() => runSync([store])} disabled={syncing || inSyncWith(store)}>
-            <span className="sync-btn-glyph">{store === "rulebook" ? "▴" : (NODES_ORDER[store] < NODES_ORDER[head] ? "◂" : "▸")}</span>
-            <span className="sync-btn-text">{STORE_LABEL[head]} → overwrite {STORE_LABEL[store]} only</span>
-          </button>
-        ))}
-
+        {/* the 4th choice: git reset, then push down. Quarantined + risk-colored. */}
         <button type="button" className="sync-btn sync-btn-reset" onClick={runReset} disabled={syncing}>
-          <span className="sync-btn-glyph">⟲</span>
-          <span className="sync-btn-text">Reset everything to the committed baseline</span>
+          <span className="sync-btn-glyph">⟲▾</span>
+          <span className="sync-btn-text">Reset to the committed baseline, then rebuild both</span>
         </button>
       </div>
+
+      {/* LAUNCH — engine legs only; the hub has nothing to run the console on. */}
+      {launchId && (
+        <button type="button" className="tri-pop-launch" disabled={syncing}
+          onClick={() => onEnter(launchId)}>
+          Launch the console on <strong>{STORE_LABEL[head]}</strong> →
+        </button>
+      )}
+    </div>
+  );
+
+  return (
+    <div className="sync-station">
+      <Triangle
+        nodeState={nodeState}
+        legPlan={legPlan}
+        labels={labels}
+        focus={head}
+        syncing={syncing}
+        onPick={pickHead}
+        disabled={syncing}
+        popover={popover}
+      />
     </div>
   );
 }

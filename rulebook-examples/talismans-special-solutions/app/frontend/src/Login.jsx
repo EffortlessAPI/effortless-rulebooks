@@ -1,37 +1,31 @@
 import React, { useEffect, useState, useRef, useCallback } from "react";
-import { api, getBackend, setBackend, runControl } from "./api.js";
+import { api, setBackend, runControl } from "./api.js";
 import SyncPanel from "./SyncPanel.jsx";
 
 // ===========================================================================
-// Login / control page — the "sync station".
+// Login / control page — now ONE interactive control.
 //
-// This is the gate ahead of the release console (App.jsx). It does two jobs:
+// The whole gate is the Head & Legs triangle (SyncPanel). Everything that used
+// to be three stacked sections — pick-engine buttons, HEAD chips, the diff list,
+// the directional sync buttons, AND the manual rebuild buttons — is folded into
+// the picture:
 //
-//   1. Pick the execution substrate ("which rules compute the board"): the OWL
-//      reasoner or the Postgres views. The choice is stored and attached to
-//      every API call as a header — the entire release console is UNCHANGED and
-//      unaware of which engine answered.
+//   • Click a node  → that store becomes HEAD (styling shows it).
+//   • A floaty box pops next to the focused node with the field-level diff, the
+//     directional pushes (◂ left leg / ▸ right leg / ▾ both / ▴ up into the hub),
+//     a quarantined "reset-then-rebuild" (the git-reset-then-down 4th choice),
+//     and — for an engine leg — a "Launch console on X →" button.
 //
-//   2. Drive the rebuild control plane: Reset / Rebuild / Rebuild-from-X. Each
-//      shells out to a build on the server and STREAMS its console here, so you
-//      watch both engines relock to the rulebook live.
-//
-// The two engines each own their own data store (Model B): editing on Postgres
-// mutates the Postgres tables; editing on the reasoner mutates db.json. A
-// "Rebuild from X" round-trips X's data through the rulebook hub and rebuilds
-// both, so an edit made in one engine becomes the shared truth.
-//
-// 2x2-ready: the engine list comes from the server (/api/backends); when the
-// off-diagonal cross-runs (same rules, the other DB's data) are exposed there,
-// they show up here automatically as extra choices.
+// Clicking either engine leg snaps everything back in line with that engine as
+// HEAD; clicking the rulebook makes the hub authoritative. The build still runs
+// on the server and streams into the console below this control. App.jsx and the
+// views are untouched — they render whatever the chosen engine computed.
 // ===========================================================================
 
 export default function Login({ onEnter }) {
   const [backends, setBackends] = useState([]);
-  const [chosen, setChosen] = useState(getBackend());
-  const [actions, setActions] = useState([]);
   const [log, setLog] = useState([]);
-  const [running, setRunning] = useState(null); // action id while a build runs
+  const [running, setRunning] = useState(null); // action id/label while a build runs
   const [result, setResult] = useState(null);    // "done" | "error" | null
   const [error, setError] = useState(null);
   const [triKey, setTriKey] = useState(0);        // bump to re-poll the triangle after a build
@@ -39,7 +33,6 @@ export default function Login({ onEnter }) {
 
   useEffect(() => {
     api.backends().then((b) => setBackends(b.backends || [])).catch((e) => setError(e.message));
-    api.controlActions().then((a) => setActions(a.actions || [])).catch(() => {});
   }, []);
 
   // Auto-scroll the streamed console.
@@ -49,15 +42,16 @@ export default function Login({ onEnter }) {
 
   const appendLog = useCallback((line) => setLog((l) => [...l, line]), []);
 
-  const enter = () => {
-    setBackend(chosen);
-    onEnter(chosen);
-  };
+  // Launch the console on the chosen engine (handed up from the floaty box).
+  const enter = useCallback((backendId) => {
+    setBackend(backendId);
+    onEnter(backendId);
+  }, [onEnter]);
 
-  // One streaming runner for everything: the manual named actions AND the
-  // SyncPanel's {path, body, label} descriptors. `running` holds the id/label of
-  // the active build (truthy = a build is in flight); it streams into the shared
-  // console and re-polls the triangle/diff when done.
+  // One streaming runner for every build descriptor the SyncPanel hands us
+  // ({path, body, label}). `running` holds the active label (truthy = a build is
+  // in flight); it streams into the shared console and re-polls the triangle/diff
+  // when done so the picture relocks (or re-flags) live.
   const runDescriptor = useCallback(async ({ id, path, body = null, label }) => {
     if (running) return;
     setRunning(id || label);
@@ -76,18 +70,11 @@ export default function Login({ onEnter }) {
       setResult("error");
     } finally {
       setRunning(null);
-      // A build (success OR fail) may have moved the stores — re-poll the
-      // triangle + diff so they relock (or re-flag) live.
       setTriKey((k) => k + 1);
     }
   }, [running, appendLog]);
 
-  // Manual named-action buttons (Reset / Rebuild / Rebuild-from-X).
-  const runAction = useCallback((action) => {
-    runDescriptor({ id: action.id, path: action.path, body: null, label: action.label });
-  }, [runDescriptor]);
-
-  // SyncPanel hands us a ready descriptor ({path, body, label}); just run it.
+  // SyncPanel hands us a ready descriptor ({kind, path, body, label}); just run it.
   const runSyncDescriptor = useCallback((desc) => {
     runDescriptor({ id: desc.kind, path: desc.path, body: desc.body, label: desc.label });
   }, [runDescriptor]);
@@ -98,73 +85,24 @@ export default function Login({ onEnter }) {
         <div className="login-head">
           <h1>Talisman's Special Solutions — Release Console</h1>
           <p className="login-sub">
-            One rulebook, two execution substrates. Pick which engine computes the
-            board, then walk in — the console is identical either way.
+            One rulebook (the <strong>head</strong>), two execution engines (the{" "}
+            <strong>legs</strong>): the OWL reasoner and the Postgres views.{" "}
+            <em>Click a node to make it authoritative</em> — the floaty box shows what
+            each other store would lose, lets you push the head left, right, down, or
+            up, reset to baseline, and launch the console on either engine.
           </p>
         </div>
 
         {error && <div className="login-error">{error}</div>}
 
-        <section className="login-section">
-          <h2>1 · Choose the engine</h2>
-          <div className="engine-grid">
-            {backends.map((b) => (
-              <button
-                key={b.id}
-                className={`engine-choice ${chosen === b.id ? "is-chosen" : ""}`}
-                onClick={() => setChosen(b.id)}
-                type="button"
-              >
-                <span className="engine-name">{b.label}</span>
-                <span className="engine-id">{b.id}</span>
-              </button>
-            ))}
-          </div>
-          <button className="enter-btn" onClick={enter} disabled={!chosen || !!running}>
-            Enter the console as <strong>{chosen}</strong> →
-          </button>
-        </section>
-
-        <section className="login-section">
-          <h2>2 · Sync the three stores</h2>
-          <p className="login-hint">
-            The rulebook is the <strong>head</strong>; the reasoner (db.json) and
-            Postgres are its two <strong>legs</strong>. Pick which store is
-            authoritative (HEAD) — the most-recently-edited one is suggested, but
-            <em> any</em> store can win at any time. The diff shows exactly which
-            values each other store would lose; then push HEAD into both, into one
-            leg, or up into the hub.
-          </p>
+        <section className="login-section login-section-control">
           <SyncPanel
             onRunSync={runSyncDescriptor}
             running={running}
             refreshKey={triKey}
+            backends={backends}
+            onEnter={enter}
           />
-        </section>
-
-        <section className="login-section">
-          <h2>3 · Manual rebuild</h2>
-          <p className="login-hint">
-            The explicit named controls behind the sync station. A <em>Rebuild
-            from X</em> exports that engine’s rows back into the rulebook and
-            rebuilds <em>both</em>. <em>Reset</em> restores the rulebook to its
-            committed baseline. Builds run on the server and stream below.
-          </p>
-          <div className="action-grid">
-            {actions.map((a) => (
-              <button
-                key={a.id}
-                className={`action-btn action-${a.id}`}
-                onClick={() => runAction(a)}
-                disabled={!!running}
-                type="button"
-                title={a.desc}
-              >
-                <span className="action-label">{a.label}</span>
-                <span className="action-desc">{a.desc}</span>
-              </button>
-            ))}
-          </div>
         </section>
 
         {(log.length > 0 || running) && (

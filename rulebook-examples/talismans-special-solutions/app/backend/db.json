@@ -6,7 +6,7 @@
       "title": "Production Deployment Workflow",
       "description": "The primary NTWF ABox example. A 5-step workflow for deploying software to production at Talisman's Special Solutions. Steps involve an AI Risk Analysis Agent (step 1), a human Legal Compliance Reviewer (step 2), a human Release Manager at the Release Approval Gate (step 3), an automated CI/CD pipeline (step 4), and the Release Manager again for the post-deployment report (step 5). Demonstrates all three agent types, the delegation chain, artifact provenance, and DCAT dataset consumption.",
       "identifier": "WF-PROD-DEPLOY-001",
-      "modified": "2025-04-11T00:00:00-05:00",
+      "modified": "2025-07-11T00:00:00-05:00",
       "created": "2026-01-10T06:00:00.000Z",
       "maxPlanMinutes": 240,
       "stalenessThresholdMonths": 12,

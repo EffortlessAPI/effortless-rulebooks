@@ -638,9 +638,11 @@ button, input, select { font: inherit; }
 /* the gold focus ring; in-sync stores are lit, differing stores are dimmed; */
 /* sparks animate along the legs a sync would touch.                         */
 /* ======================================================================== */
-.triangle { margin: 4px 0 2px; display: flex; flex-direction: column; align-items: center; }
+.triangle { position: relative; margin: 4px 0 2px; display: flex; flex-direction: column;
+  align-items: center; }
 .tri-loading { color: var(--muted); font-size: 13px; padding: 24px 0; text-align: center; }
-.tri-svg { width: 100%; max-width: 380px; height: auto; overflow: visible; }
+.tri-svg { width: 100%; max-width: 440px; height: auto; overflow: visible; cursor: default; }
+.triangle.is-disabled .tri-svg { cursor: progress; }
 
 /* --- legs ---------------------------------------------------------------- */
 .tri-leg-base { stroke: var(--line); stroke-width: 3; stroke-linecap: round; }
@@ -659,6 +661,13 @@ button, input, select { font: inherit; }
 @keyframes tri-delay-in { 0%,40% { opacity: 0; } 60% { opacity: 0; } 100% { opacity: 1; } }
 
 /* --- nodes --------------------------------------------------------------- */
+/* a generous invisible hit target so the whole node area is clickable */
+.tri-node-hit { fill: transparent; }
+.tri-node.is-pickable { cursor: pointer; }
+.tri-node.is-pickable:hover .tri-node-halo { stroke-width: 2.5; stroke-opacity: 1; }
+.tri-node.is-pickable:hover .tri-node-core { filter: brightness(1.18); }
+.tri-node.is-pickable:focus-visible { outline: none; }
+.tri-node.is-pickable:focus-visible .tri-node-halo { stroke: var(--pipeline); stroke-width: 2.5; }
 .tri-node-halo { fill: transparent; stroke: var(--line); stroke-width: 1.5; transition: all .3s ease; }
 .tri-node-core { fill: var(--card2); stroke: var(--muted); stroke-width: 2; transition: all .3s ease; }
 .tri-check { fill: none; stroke: var(--ok); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
@@ -687,7 +696,12 @@ button, input, select { font: inherit; }
 .tri-labels { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; width: 100%;
   max-width: 420px; margin-top: 6px; }
 .tri-label { display: flex; flex-direction: column; align-items: center; gap: 1px; text-align: center;
-  padding: 6px 4px; border-radius: 9px; transition: all .3s ease; }
+  padding: 6px 4px; border-radius: 9px; transition: all .3s ease;
+  background: transparent; border: 1px solid transparent; color: var(--text); cursor: pointer;
+  font: inherit; }
+.tri-label:hover:not(:disabled) { border-color: var(--line); background: var(--card); }
+.tri-label:disabled { cursor: default; }
+.tri-label.is-focus { border-color: var(--pipeline); background: #ffc14d0e; }
 .tri-label-rulebook { order: -1; grid-column: 2; }
 .tri-label-reasoner { order: 0; grid-column: 1; align-items: flex-start; text-align: left; }
 .tri-label-postgres { order: 0; grid-column: 3; align-items: flex-end; text-align: right; }
@@ -710,9 +724,57 @@ button, input, select { font: inherit; }
   box-shadow: 0 8px 30px -8px var(--accent); animation: pulse 1s ease-in-out infinite; }
 
 /* ======================================================================== */
-/* Sync station — HEAD selector + field-level diff + directional buttons.    */
+/* The floaty box — diffs + directional pushes + launch, anchored to a node. */
+/* It is positioned absolutely over the .triangle and points back at the     */
+/* focused store via transform-origin. On narrow viewports it collapses to a */
+/* normal in-flow card (see the media query at the end) so it never clips.    */
 /* ======================================================================== */
-.sync-station { display: flex; flex-direction: column; gap: 14px; }
+.tri-popover { position: absolute; z-index: 20; width: 340px; max-width: min(360px, 92vw); }
+.tri-popover.tri-popover-rulebook { transform: translateX(-50%); transform-origin: top center; }
+.tri-popover.tri-popover-reasoner { transform-origin: top left; }
+.tri-popover.tri-popover-postgres { transform-origin: top right; }
+.tri-pop { animation: tri-pop-in .16s ease-out; }
+@keyframes tri-pop-in { from { opacity: 0; transform: translateY(-6px) scale(.98); } to { opacity: 1; } }
+
+.tri-pop { background: var(--panel); border: 1px solid var(--line); border-radius: 14px;
+  box-shadow: 0 24px 60px -18px #000c, 0 0 0 1px #ffffff08;
+  padding: 12px 13px; display: flex; flex-direction: column; gap: 11px; }
+.tri-popover-rulebook .tri-pop { border-top: 2px solid var(--pipeline); }
+.tri-popover-reasoner .tri-pop,
+.tri-popover-postgres .tri-pop { border-top: 2px solid var(--pipeline); }
+
+.tri-pop-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+.tri-pop-title { display: flex; flex-direction: column; gap: 1px; font-size: 13px; }
+.tri-pop-title strong { color: var(--pipeline); font-size: 14px; }
+.tri-pop-sub { font-size: 10px; color: var(--muted); font-family: ui-monospace, monospace; }
+.tri-pop-status { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .05em;
+  border-radius: 999px; padding: 3px 9px; white-space: nowrap; flex: none; }
+.tri-pop-status.ok { color: #0c2414; background: var(--ok); }
+.tri-pop-status.warn { color: #2a1f05; background: var(--inferred); }
+
+/* the diff list — capped height inside the box so long diffs scroll, not grow */
+.tri-pop-diff { display: flex; flex-direction: column; gap: 8px; max-height: 220px; overflow-y: auto;
+  margin: 0 -2px; padding: 0 2px; }
+
+.tri-pop-pushes { display: flex; flex-direction: column; gap: 7px;
+  border-top: 1px solid var(--line); padding-top: 10px; }
+
+.tri-pop-launch { margin-top: 2px; width: 100%; background: var(--pipeline); color: #1a1405;
+  border: 0; border-radius: 10px; padding: 11px 14px; font-size: 14px; font-weight: 800;
+  cursor: pointer; transition: filter .12s, transform .06s; }
+.tri-pop-launch:hover:not(:disabled) { filter: brightness(1.08); }
+.tri-pop-launch:active:not(:disabled) { transform: translateY(1px); }
+.tri-pop-launch:disabled { opacity: .5; cursor: default; }
+
+/* ======================================================================== */
+/* Sync station — now just the interactive triangle + its floaty box.        */
+/* (Legacy HEAD-chip / engine-grid / action-grid rules below are unused.)     */
+/* ======================================================================== */
+.sync-station { display: flex; flex-direction: column; gap: 14px;
+  /* the triangle lives at the top; the floaty box overlays the lower region.
+     reserve enough height that the box never pushes past the card edges. */
+  position: relative; min-height: 560px; padding-bottom: 8px; }
+.sync-station .triangle { width: 100%; }
 
 /* HEAD selector chips */
 .sync-headpick { display: flex; flex-direction: column; gap: 8px; }
@@ -783,3 +845,24 @@ button, input, select { font: inherit; }
   0 8px 26px -12px var(--pipeline); }
 .sync-btn-suggest { margin-left: auto; font-size: 9px; font-weight: 800; text-transform: uppercase;
   letter-spacing: .06em; color: #2a1f05; background: var(--pipeline); border-radius: 999px; padding: 2px 8px; }
+
+/* ---- compact overrides when these reused bits live INSIDE the floaty box -- */
+/* the diff fields stack (label over old→new) so they fit a 340px popover */
+.tri-pop .diff-field { grid-template-columns: 1fr; gap: 1px; padding: 2px 0; }
+.tri-pop .diff-field-name { font-size: 10.5px; }
+.tri-pop .diff-tables { padding: 5px 10px 8px; }
+.tri-pop .diff-block-head { padding: 6px 10px; }
+.tri-pop .sync-btn { padding: 9px 11px; border-radius: 9px; }
+.tri-pop .sync-btn-glyph { font-size: 14px; width: 26px; letter-spacing: -1px; }
+.tri-pop .sync-btn-text { font-size: 12.5px; }
+.tri-pop .sync-locked { font-size: 12px; }
+
+/* ---- responsive: below the floaty box's comfort width, drop it in-flow ---- */
+/* Stop overlaying; render the box as a normal card under the triangle so it    */
+/* can never clip the card edge on a phone. The triangle keeps its meaning;     */
+/* only the positioning changes.                                               */
+@media (max-width: 620px) {
+  .sync-station { min-height: 0; }
+  .tri-popover { position: static; width: 100%; max-width: 100%; transform: none; margin-top: 14px; }
+  .tri-popover.tri-popover-rulebook { transform: none; }
+}
