@@ -1,0 +1,9 @@
+[
+  {
+    "entity": "Workflows",
+    "field": "MonthsSinceModified",
+    "formula": "=DATETIME_DIFF(NOW(), {{Modified}}, \"months\")",
+    "record_id": "production-deployment",
+    "error": "ValueError: DATETIME_DIFF: unsupported unit 'month'"
+  }
+]
