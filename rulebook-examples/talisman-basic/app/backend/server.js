@@ -34,7 +34,7 @@ import {
 } from "./dal/store.js";
 import { registerControlRoutes } from "./control.js";
 import { seedStoreFromRulebook } from "./dal/export-to-rulebook.js";
-import { canonicalHash, projectStore, readMarkers } from "./dal/edit-marker.js";
+import { canonicalHash, projectStore, diffStores, readMarkers } from "./dal/edit-marker.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const DB_PATH = path.join(__dirname, "db.json");
@@ -527,6 +527,25 @@ app.post("/api/scenario/:name", wrap(async (req, res) => {
   res.json({ ok: true, scenario: req.params.name, ...result });
 }));
 
+// Load all three raw stores and project each to its round-tripping raw fields
+// (the same basis the triangle hash and the diff both compare on). Returns
+// { rulebook, reasoner, postgres } projected stores. Shared by /api/triangle and
+// /api/diff so the two endpoints can never disagree about what "the data" is.
+async function loadProjectedStores() {
+  const sm = await schemaMap();
+  const [rbStore, reasonerStore, postgresStore] = await Promise.all([
+    seedStoreFromRulebook(RULEBOOK_PATH),
+    readRawStore("reasoner"),
+    readRawStore("postgres"),
+  ]);
+  return {
+    sm,
+    rulebook: projectStore(rbStore, sm),
+    reasoner: projectStore(reasonerStore, sm),
+    postgres: projectStore(postgresStore, sm),
+  };
+}
+
 // --- the triangle: live drift detection across the three raw stores --------
 // GET /api/triangle answers ONE question for the login page: which leg of the
 // rulebook→{reasoner, postgres} triangle is AHEAD (carries edits the rulebook
@@ -551,16 +570,11 @@ app.get("/api/triangle", wrap(async (_req, res) => {
   // through the schema-map's rawFields so the comparison ignores each engine's
   // extra derived/back-reference columns and only sees the editable rows that
   // round-trip — the true definition of "ahead" (see edit-marker.projectStore).
-  const sm = await schemaMap();
-  const [rbStore, reasonerStore, postgresStore] = await Promise.all([
-    seedStoreFromRulebook(RULEBOOK_PATH),
-    readRawStore("reasoner"),
-    readRawStore("postgres"),
-  ]);
+  const proj = await loadProjectedStores();
   const hashes = {
-    rulebook: canonicalHash(projectStore(rbStore, sm)),
-    reasoner: canonicalHash(projectStore(reasonerStore, sm)),
-    postgres: canonicalHash(projectStore(postgresStore, sm)),
+    rulebook: canonicalHash(proj.rulebook),
+    reasoner: canonicalHash(proj.reasoner),
+    postgres: canonicalHash(proj.postgres),
   };
 
   const rEqRb = hashes.reasoner === hashes.rulebook;
@@ -606,6 +620,58 @@ app.get("/api/triangle", wrap(async (_req, res) => {
       rulebook: { inSyncWithReasoner: rEqRb, inSyncWithPostgres: pEqRb, lastEditAt: rulebookMtime },
       reasoner: { inSyncWithRulebook: rEqRb, lastEditAt: markers.reasoner?.lastEditAt || null },
       postgres: { inSyncWithRulebook: pEqRb, lastEditAt: markers.postgres?.lastEditAt || null },
+    },
+  });
+}));
+
+// --- the field-level diff: "what exactly changed, next to HEAD?" -----------
+// GET /api/diff?head=rulebook|reasoner|postgres
+//
+// Picks one store as HEAD and lists, for EACH of the other two, every field that
+// differs — shown as the OTHER store's value and what HEAD would replace it with.
+// This is the "see specifically what changed" view behind the triangle: not just
+// "reasoner is ahead", but "Roles.deployment-health-role.comment: <old> → <new>".
+//
+// Per the user's mental model, we also EXTRACT each store to a temp file (the
+// projected, raw-field-only snapshot that the diff is computed from) so the exact
+// inputs are inspectable on disk — the "reasoning and sql rulebooks as temp
+// files" idea. The diff in the response is computed from those same projections,
+// so the files and the on-screen diff can never disagree.
+app.get("/api/diff", wrap(async (req, res) => {
+  const head = (req.query.head || "rulebook").toString();
+  if (!["rulebook", "reasoner", "postgres"].includes(head)) {
+    return res.status(400).json({ error: `head must be rulebook|reasoner|postgres (got '${head}')` });
+  }
+  const proj = await loadProjectedStores();
+
+  // Extract each projected store to a temp file (inspectable artifact). We write
+  // the SAME object we diff, so the file IS the diff input — no separate path.
+  const { writeFile, mkdtemp } = await import("node:fs/promises");
+  const os = await import("node:os");
+  const tmpDir = await mkdtemp(path.join(os.tmpdir(), "erb-diff-"));
+  const files = {};
+  for (const store of ["rulebook", "reasoner", "postgres"]) {
+    const fp = path.join(tmpDir, `${store}.projected.json`);
+    await writeFile(fp, JSON.stringify(proj[store], null, 2) + "\n", "utf8");
+    files[store] = fp;
+  }
+
+  // Diff each OTHER store against HEAD. The result reads as "OTHER → HEAD": the
+  // `other` value is what's there now; `head` is what HEAD would replace it with.
+  const others = ["rulebook", "reasoner", "postgres"].filter((s) => s !== head);
+  const against = {};
+  for (const other of others) {
+    against[other] = diffStores(proj[head], proj[other], proj.sm);
+  }
+
+  res.json({
+    head,
+    files,            // absolute temp-file paths for the three projected snapshots
+    against,          // { otherStore: { tables, changedFields, changedRows } }
+    hashes: {
+      rulebook: canonicalHash(proj.rulebook),
+      reasoner: canonicalHash(proj.reasoner),
+      postgres: canonicalHash(proj.postgres),
     },
   });
 }));

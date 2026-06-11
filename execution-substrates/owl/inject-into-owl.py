@@ -1379,17 +1379,48 @@ def _compile_lookup_value(expr: ExprNode, state: Dict[str, Any]) -> str:
         local_key = match_call.args[0]
         if not isinstance(local_key, FieldRef):
             raise ValueError("MATCH lookup-value must be a local {{field}}")
+        target_pk_ref = match_call.args[1]
+        if not isinstance(target_pk_ref, QualifiedRef):
+            raise ValueError("MATCH lookup-array must be Target!{{PK}}")
 
-        # Follow the local FK edge to the target individual, then read the
-        # result column off it. The FK edge IS the MATCH (FK value == target PK).
-        fk_prop = field_to_property_uri(local_key.name)
+        # Resolve the target individual by MATCHING ITS PRIMARY-KEY VALUE, not by
+        # dereferencing the local key as an object-property edge. This is the only
+        # form that is correct for EVERY kind of FK:
+        #
+        #   - A relationship FK is emitted as an owl:ObjectProperty edge to the
+        #     target node, but the node ALSO carries its PK as a datatype property
+        #     (erb:<pkCol> "<pkValue>"), so PK-matching finds the same individual.
+        #   - A *derived* FK — a lookup/calculated field whose value is a target
+        #     PK STRING (e.g. GateDelegateRole = INDEX(Roles!{{DelegatesTo}}, ...))
+        #     is NOT an edge at all; it is a plain literal. The old code emitted
+        #     `$this erb:gateDelegateRole ?node` and bound ?node to the literal
+        #     "ntwf-vp-engineering-role", then tried to read erb:filledByHumanAgent
+        #     off a *string*, which matches nothing (or, under OWL-RL churn, every
+        #     node) — the multi-valued garbage that broke chained lookups.
+        #
+        # Binding the local key as a SCALAR and joining it to the target's PK
+        # property — anchored to the target class so the join can't wander to a
+        # same-valued property on another table — resolves both cases identically.
+        local_key_prop = field_to_property_uri(local_key.name)
+        target_class = f'erb:{target_pk_ref.table}'
+        target_pk_prop = field_to_property_uri(target_pk_ref.column)
         result_prop = field_to_property_uri(result_ref.column)
-        n = state['counter'][0]
-        state['counter'][0] += 1
-        tvar = _next_join_var(n)
-        state['triples'].append(f'{INDENT}$this {fk_prop} {tvar} .')
-        rvar = _next_join_var(state['counter'][0])
-        state['counter'][0] += 1
+
+        kvar = _next_join_var(state['counter'][0]); state['counter'][0] += 1
+        tvar = _next_join_var(state['counter'][0]); state['counter'][0] += 1
+        pkvar = _next_join_var(state['counter'][0]); state['counter'][0] += 1
+        rvar = _next_join_var(state['counter'][0]); state['counter'][0] += 1
+        # Three flat, sibling OPTIONALs — no nesting, clean variable scoping:
+        #   1. bind the local FK value (a PK string, or an edge-bound IRI)
+        #   2. find the target individual whose PK datatype property equals it,
+        #      anchored to the target class so the join can't wander cross-table
+        #   3. read the result column off that individual
+        # STR() on both sides of the match so an edge-bound IRI and a plain
+        # literal compare identically against the target's PK literal.
+        state['triples'].append(f'{INDENT}OPTIONAL {{ $this {local_key_prop} {kvar} . }}')
+        state['triples'].append(
+            f'{INDENT}OPTIONAL {{ {tvar} a {target_class} ; {target_pk_prop} {pkvar} . '
+            f'FILTER(STR({pkvar}) = STR({kvar})) }}')
         state['triples'].append(f'{INDENT}OPTIONAL {{ {tvar} {result_prop} {rvar} . }}')
         # Return the bare looked-up value, NOT STR(rvar). A standalone lookup is a
         # straight copy of one field, so it must keep the source datatype — a

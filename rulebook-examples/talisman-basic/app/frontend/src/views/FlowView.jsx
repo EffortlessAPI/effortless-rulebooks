@@ -31,8 +31,8 @@ export function FlowView({ sit, handlers }) {
         ))}
       </div>
       <p className="flow-foot muted">
-        Reassign a step to an 🤖 AI to add AI-risk · open a step's ⚙ to change its duration or sign-off ·
-        the verdict and the time bar above recompute on every edit.
+        Reassign a step to an 🤖 AI to add AI-risk · open a step's ⚙ for its sign-off · drag a step's
+        segment edge on the time bar below to change its duration · the verdict and the bars recompute on every edit.
       </p>
     </div>
   );
@@ -161,15 +161,20 @@ function StepCard({ step, fact, handlers }) {
           }}
         >
           <div className="sc-pop-section">
-            <DurationControl step={step} fact={fact} handlers={handlers} />
-          </div>
-          <div className="sc-pop-divider" />
-          <div className="sc-pop-section">
             <FactToggle
               on={fact.requiresHumanApproval}
               label="requires human sign-off"
               onChange={(v) => handlers.patchStep(step.id, { requiresHumanApproval: v })}
             />
+          </div>
+          {/* Duration is no longer edited here — drag a segment's edge on the
+              time-budget bar at the bottom to resize a step right where you see
+              its effect on the plan runtime. */}
+          <div className="sc-pop-divider" />
+          <div className="sc-pop-section">
+            <span className="muted sc-pop-note">
+              ⏱ duration is set by dragging the step's segment on the time bar below
+            </span>
           </div>
         </div>
       )}
@@ -177,30 +182,3 @@ function StepCard({ step, fact, handlers }) {
   );
 }
 
-// Inline duration buttons. Each click is one committed value (one re-reason) —
-// no mid-drag stuck-slider while the reasoner is locked. Changing a step's
-// duration moves the workflow's total runtime (the top time-budget bar).
-const DURATION_STEPS = [15, 30, 60, 120];
-function DurationControl({ step, fact, handlers }) {
-  const current = Number(fact.stepDurationMinutes ?? step.durationMinutes ?? 0);
-  return (
-    <div className="sc-duration">
-      <div className="sc-dur-head">
-        <span className="muted">duration</span>
-        <span className="sc-dur-val">{current} min</span>
-      </div>
-      <span className="sc-dur-steps">
-        {DURATION_STEPS.map((m) => (
-          <button
-            key={m}
-            className={"sc-dur-btn " + (current === m ? "on" : "")}
-            onClick={() => { if (current !== m) handlers.patchStep(step.id, { stepDurationMinutes: m }); }}
-          >
-            {m}m
-          </button>
-        ))}
-      </span>
-      <div className="sc-dur-note muted">adds to the plan's total runtime ↑</div>
-    </div>
-  );
-}

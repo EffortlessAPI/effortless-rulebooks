@@ -55,6 +55,9 @@ export const api = {
   // Live drift state across the three raw stores (rulebook head + two engine
   // legs). Computed server-side from canonical hashes; see /api/triangle.
   triangle: () => fetch("/api/triangle").then(jsonOrThrow),
+  // Field-level diff: pick a HEAD store; get every field the other two stores
+  // differ on, shown as other-value → HEAD-value. See /api/diff.
+  diff: (head) => fetch(`/api/diff?head=${encodeURIComponent(head)}`).then(jsonOrThrow),
 
   health: () => bfetch("/api/health").then(jsonOrThrow),
   story: () => bfetch("/api/story").then(jsonOrThrow),
@@ -85,8 +88,11 @@ export const api = {
 // stream ends. Control endpoints are POST (state-mutating), so we can't use the
 // browser EventSource (GET-only) — we read the response body as a stream and
 // parse the `data: {...}` frames ourselves.
-export async function runControl(actionPath, onEvent) {
-  const res = await fetch(actionPath, { method: "POST" });
+export async function runControl(actionPath, onEvent, body = null) {
+  const res = await fetch(actionPath, {
+    method: "POST",
+    ...(body ? { headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) } : {}),
+  });
   if (!res.ok && !res.body) {
     const detail = await res.text().catch(() => "");
     throw new Error(`${res.status} ${res.statusText}${detail ? ` — ${detail}` : ""}`);

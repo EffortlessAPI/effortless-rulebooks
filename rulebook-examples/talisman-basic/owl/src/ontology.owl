@@ -154,6 +154,46 @@ erb:gateApproverHuman a owl:DatatypeProperty ;
     rdfs:comment "The human agent who approves at this gate, resolved through the two-hop chain gate → GateRole → Roles.FilledByHumanAgent. Answers CQ2 ('who is responsible for approving a production deployment') directly: the release-approval gate resolves to the Release Manager role, filled by Maria Gonzalez." .
     # calculated: lookup
 
+erb:requiresDualSignoffOffHours a owl:DatatypeProperty ;
+    rdfs:domain erb:ApprovalGates ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "RequiresDualSignoffOffHours" ;
+    rdfs:comment "Gate-only policy knob (lives on no other step — the reason ApprovalGate is its own subtype). When TRUE, a deployment run during off-hours must be signed off by TWO distinct human approvers: the gate's own role AND its delegate up the ntwf:delegatesTo chain. Editable. This is the gate's first attribute that DRIVES a rule — unlike EscalationThresholdHours, which is a recorded literal that drives nothing." .
+
+erb:isOffHoursDeployment a owl:DatatypeProperty ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "IsOffHoursDeployment" ;
+    rdfs:comment "Whether the workflow this gate belongs to is flagged as an off-hours deployment. Pulled from Workflows.IsOffHoursDeployment via the gate's step → workflow. The off-hours bit is an editable workflow fact; this lookup brings it down to the gate so the dual-signoff rule can combine the two toggles." .
+    # calculated: lookup
+
+erb:gateDelegateRole a owl:DatatypeProperty ;
+    rdfs:domain erb:ApprovalGates ;
+    rdfs:range xsd:string ;
+    rdfs:label "GateDelegateRole" ;
+    rdfs:comment "The role the gate's role escalates to (gate → GateRole → Roles.DelegatesTo). The second approver in the dual-signoff rule comes from here. Ties the gate directly to the delegation/escalation hierarchy." .
+    # calculated: lookup
+
+erb:gateDelegateHuman a owl:DatatypeProperty ;
+    rdfs:domain erb:ApprovalGates ;
+    rdfs:range xsd:string ;
+    rdfs:label "GateDelegateHuman" ;
+    rdfs:comment "The human agent filling the gate's delegate role (gate → GateDelegateRole → Roles.FilledByHumanAgent). Empty when the delegate role is unfilled or filled by a non-human — which is exactly the condition that makes an off-hours dual-signoff gate fail." .
+    # calculated: lookup
+
+erb:hasTwoHumanApprovers a owl:DatatypeProperty ;
+    rdfs:domain erb:ApprovalGates ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "HasTwoHumanApprovers" ;
+    rdfs:comment "TRUE when BOTH the gate's role and its delegate role are filled by (non-empty) human agents. The structural precondition for a second sign-off: two distinct humans are available along the escalation chain." .
+    # calculated: calculated
+
+erb:dualSignoffSatisfied a owl:DatatypeProperty ;
+    rdfs:domain erb:ApprovalGates ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "DualSignoffSatisfied" ;
+    rdfs:comment "The gate's verdict witness. TRUE unless the gate requires dual sign-off AND the run is off-hours AND two human approvers are NOT available along the delegation chain. In other words: a required off-hours dual-signoff gate is satisfied only when both the gate role and its delegate are human-filled. Drives Workflows.HasUnmetGateSignoff and, through it, the compliance verdict." .
+    # calculated: calculated
+
 # === Class: AutomatedPipelines ===
 erb:AutomatedPipelines a owl:Class ;
     rdfs:label "AutomatedPipelines" ;
@@ -331,11 +371,17 @@ erb:hasConsistencyViolation a owl:DatatypeProperty ;
     rdfs:comment "Whether any step breaks the human-approval consistency rule. Pulled from Workflows.HasConsistencyViolation. This is the 'no broken rules' input to the verdict: a structural inconsistency (an approval step not filled by a human) is itself a compliance risk, independent of staleness or time budget." .
     # calculated: lookup
 
+erb:hasUnmetGateSignoff a owl:DatatypeProperty ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "HasUnmetGateSignoff" ;
+    rdfs:comment "Whether any approval gate in this workflow is unsatisfied. Pulled from Workflows.HasUnmetGateSignoff. The gate's input to the verdict: an off-hours run through a gate that requires dual sign-off, without a second human approver available along the delegation chain, is a compliance risk in its own right. This is what gives the ApprovalGate subtype a measurable consequence." .
+    # calculated: lookup
+
 erb:isAtComplianceRisk a owl:DatatypeProperty ;
     rdfs:domain erb:ComplianceVerdicts ;
     rdfs:range xsd:boolean ;
     rdfs:label "IsAtComplianceRisk" ;
-    rdfs:comment "THE VERDICT. True when the workflow is (stale AND has an AI agent executing a step) — the article's closing business question — OR over its planned-runtime budget OR has any human-approval consistency violation. The first disjunct is the article's headline finale verbatim; the second gives the step-duration literal a live compliance consequence; the third enforces an implicit no-broken-rules rule, so a workflow with a structural inconsistency can never read COMPLIANT. Fully derived: flip the Modified date, the role's filledBy agent, or any step's duration, and this recomputes on the next read." .
+    rdfs:comment "THE VERDICT. True when the workflow is (stale AND has an AI agent executing a step) — the article's closing business question — OR over its planned-runtime budget OR has any human-approval consistency violation OR has any unmet approval-gate sign-off. The first disjunct is the article's headline finale verbatim; the second gives the step-duration literal a live compliance consequence; the third enforces an implicit no-broken-rules rule; the fourth gives the approval gate its first measurable consequence (a required off-hours dual sign-off with no second human approver). A workflow with any of these can never read COMPLIANT. Fully derived: flip the Modified date, the role's filledBy agent, any step's duration, the off-hours flag, or the gate's dual-signoff policy, and this recomputes on the next read." .
     # calculated: calculated
 
 erb:verdictConcept a owl:ObjectProperty ;
@@ -1005,6 +1051,26 @@ erb:isEngineeringOwned a owl:DatatypeProperty ;
     rdfs:comment "TRUE iff this step's owning department is Engineering. Rolls up to CQ7's Engineering-involvement check." .
     # calculated: calculated
 
+erb:isOffHoursDeployment a owl:DatatypeProperty ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "IsOffHoursDeployment" ;
+    rdfs:comment "Whether this step's workflow is flagged as an off-hours deployment (pulled from Workflows.IsOffHoursDeployment). Brought down to the step so an ApprovalGate specializing this step can read the off-hours bit for its dual-signoff rule." .
+    # calculated: lookup
+
+erb:gateDualSignoffSatisfied a owl:DatatypeProperty ;
+    rdfs:domain erb:WorkflowSteps ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "GateDualSignoffSatisfied" ;
+    rdfs:comment "The DualSignoffSatisfied verdict of the approval gate specializing this step, if any (gate → ApprovalGates.DualSignoffSatisfied). Blank for ordinary steps that have no gate. The bridge that brings the gate's verdict up to the step so it can be rolled up to the workflow." .
+    # calculated: lookup
+
+erb:gateSignoffUnmet a owl:DatatypeProperty ;
+    rdfs:domain erb:WorkflowSteps ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "GateSignoffUnmet" ;
+    rdfs:comment "TRUE iff this step has an approval gate AND that gate's dual-signoff policy is NOT satisfied. FALSE for steps with no gate, and for gates that are satisfied. Counted by Workflows.CountUnmetGateSignoffs to fold the gate into the compliance verdict." .
+    # calculated: calculated
+
 # === Class: Workflows ===
 erb:Workflows a owl:Class ;
     rdfs:label "Workflows" ;
@@ -1073,6 +1139,11 @@ erb:stalenessThresholdMonths a owl:DatatypeProperty ;
     rdfs:range xsd:integer ;
     rdfs:label "StalenessThresholdMonths" ;
     rdfs:comment "The governance POLICY (in months) that defines when this workflow's compliance documentation goes stale: if more than this many months have passed since Modified (dct:modified) without a review, IsStale fires. The article hardcodes the answer to CQ5 at twelve months ('which workflows haven't been reviewed in twelve months'); promoting that threshold to a raw, editable field makes the policy itself a fact in the SSoT rather than a constant buried in the IsStale formula — so an org can set a 6-month or 18-month review cadence and the staleness verdict recomputes. Defaults to 12 to match the article." .
+
+erb:isOffHoursDeployment a owl:DatatypeProperty ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "IsOffHoursDeployment" ;
+    rdfs:comment "Whether this deployment is scheduled to run during off-hours. Raw and editable so it is a fact you can toggle in the console. Combined with an approval gate's RequiresDualSignoffOffHours, this is what makes that gate demand a second human signer along the delegation chain — the gate's first attribute with a live, derived consequence. Off-hours alone changes nothing; it only matters where a gate's dual-signoff policy is switched on." .
 
 erb:workflowStatus a owl:ObjectProperty ;
     rdfs:domain erb:Workflows ;
@@ -1165,6 +1236,19 @@ erb:isOverTimeBudget a owl:DatatypeProperty ;
     rdfs:range xsd:boolean ;
     rdfs:label "IsOverTimeBudget" ;
     rdfs:comment "TRUE iff the workflow's total planned runtime (CountTotalPlanMinutes) exceeds its configured budget (MaxPlanMinutes). EXTENSION beyond the source article — a third compliance input alongside staleness and AI-execution, giving the step-duration literal a visible derived consequence. Editing any step's StepDurationMinutes recomputes the sum and can flip this boolean, which folds into IsAtComplianceRisk." .
+    # calculated: calculated
+
+erb:countUnmetGateSignoffs a owl:DatatypeProperty ;
+    rdfs:domain erb:Workflows ;
+    rdfs:range xsd:integer ;
+    rdfs:label "CountUnmetGateSignoffs" ;
+    rdfs:comment "Number of this workflow's steps whose approval gate is NOT satisfied (an off-hours run where the gate requires dual sign-off but two human approvers are not available along the delegation chain). Rollup over WorkflowSteps.GateSignoffUnmet. A clean run holds this at 0." .
+    # calculated: aggregation
+
+erb:hasUnmetGateSignoff a owl:DatatypeProperty ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "HasUnmetGateSignoff" ;
+    rdfs:comment "TRUE iff any approval gate in this workflow is unsatisfied (CountUnmetGateSignoffs > 0). The gate's contribution to the compliance verdict: a required off-hours dual-signoff gate without a second human approver is itself a compliance risk. Folds into IsAtComplianceRisk, so toggling a gate's dual-signoff policy, flagging the run off-hours, or breaking the delegation chain can flip the verdict." .
     # calculated: calculated
 
 erb:countDerivationLinks a owl:DatatypeProperty ;

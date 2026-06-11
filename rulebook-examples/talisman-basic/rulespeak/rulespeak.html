@@ -248,9 +248,9 @@ html.show-consumers .elem-consumers{display:block}
 <nav class="toc">
   <h2 class="toc-title">Entities</h2>
   <ul class="toc-list">
-    <li><a href="#t-workflows">Workflow</a> <span class="toc-meta">24 rules · 2 links</span></li>
-    <li><a href="#t-workflowsteps">Workflow Step</a> <span class="toc-meta">15 rules · 7 links</span></li>
-    <li><a href="#t-approvalgates">Approval Gate</a> <span class="toc-meta">6 rules · 1 links</span></li>
+    <li><a href="#t-workflows">Workflow</a> <span class="toc-meta">26 rules · 2 links</span></li>
+    <li><a href="#t-workflowsteps">Workflow Step</a> <span class="toc-meta">18 rules · 7 links</span></li>
+    <li><a href="#t-approvalgates">Approval Gate</a> <span class="toc-meta">11 rules · 1 links</span></li>
     <li><a href="#t-stepprecedence">Step Precedence</a> <span class="toc-meta">4 rules · 2 links</span></li>
     <li><a href="#t-roles">Role</a> <span class="toc-meta">6 rules · 8 links</span></li>
     <li><a href="#t-departments">Department</a> <span class="toc-meta">3 rules · 1 links</span></li>
@@ -262,7 +262,7 @@ html.show-consumers .elem-consumers{display:block}
     <li><a href="#t-agentcapabilityconcepts">Agent Capability Concept</a> <span class="toc-meta">2 rules · 1 links</span></li>
     <li><a href="#t-datasets">Dataset</a> <span class="toc-meta">2 rules · 1 links</span></li>
     <li><a href="#t-workflowartifacts">Workflow Artifact</a> <span class="toc-meta">6 rules · 5 links</span></li>
-    <li><a href="#t-complianceverdicts">Compliance Verdict</a> <span class="toc-meta">15 rules · 2 links</span></li>
+    <li><a href="#t-complianceverdicts">Compliance Verdict</a> <span class="toc-meta">16 rules · 2 links</span></li>
     <li><a href="#t-scenarios">Scenario</a> <span class="toc-meta">3 rules · 0 links</span></li>
   </ul>
 </nav>
@@ -506,6 +506,18 @@ html.show-consumers .elem-consumers{display:block}
       <p class="gt-body">Ground truth. Written directly to the database (datatype <code>integer</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
     <p class="field-note elem elem-desc">The governance POLICY (in months) that defines when this workflow's compliance documentation goes stale: if more than this many months have passed since Modified (dct:modified) without a review, IsStale fires. The article hardcodes the answer to CQ5 at twelve months ('which workflows haven't been reviewed in twelve months'); promoting that threshold to a raw, editable field makes the policy itself a fact in the SSoT rather than a constant buried in the IsStale formula — so an org can set a 6-month or 18-month review cadence and the staleness verdict recomputes. Defaults to 12 to match the article.</p>
+    </article>
+  <article class="field tone-raw" id="f-workflows-isoffhoursdeployment" data-entity="Workflow" data-field="Is Off Hours Deployment">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Is Off Hours Deployment</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">boolean</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>boolean</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Whether this deployment is scheduled to run during off-hours. Raw and editable so it is a fact you can toggle in the console. Combined with an approval gate's RequiresDualSignoffOffHours, this is what makes that gate demand a second human signer along the delegation chain — the gate's first attribute with a live, derived consequence. Off-hours alone changes nothing; it only matters where a gate's dual-signoff policy is switched on.</p>
     </article>
   <article class="field tone-rel" id="f-workflows-workflowstatus" data-entity="Workflow" data-field="Workflow Status">
     <div class="field-head">
@@ -1233,6 +1245,135 @@ html.show-consumers .elem-consumers{display:block}
     </details>
     <p class="field-note elem elem-desc">TRUE iff the workflow's total planned runtime (CountTotalPlanMinutes) exceeds its configured budget (MaxPlanMinutes). EXTENSION beyond the source article — a third compliance input alongside staleness and AI-execution, giving the step-duration literal a visible derived consequence. Editing any step's StepDurationMinutes recomputes the sum and can flip this boolean, which folds into IsAtComplianceRisk.</p>
     </article>
+  <article class="field tone-agg" id="f-workflows-countunmetgatesignoffs" data-entity="Workflow" data-field="Count Unmet Gate Signoffs">
+    <div class="field-head">
+      <span class="field-glyph" title="Aggregation">Σ</span>
+      <span class="field-name">Count Unmet Gate Signoffs</span>
+      <span class="pill pill-type">Aggregation</span>
+      <span class="pill pill-depth">8 hops from ground truth</span>
+      <span class="pill pill-muted">integer</span>
+      <span class="pill pill-dr">DR-17</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak</span>
+        <p class="view-body">A <a class="ref" href="#f-workflowsteps-workflow">workflow</a>'s count unmet gate signoffs is the number of the workflow's workflow steps that are <a class="ref" href="#f-workflowsteps-gatesignoffunmet">gate signoff unmet</a>.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In English</span>
+        <p class="view-body">Count of WorkflowSteps whose <a class="ref" href="#f-workflowsteps-workflow">workflow</a> is <a class="ref" href="#f-workflows-workflowid">workflow id</a> and <a class="ref" href="#f-workflowsteps-gatesignoffunmet">gate signoff unmet</a> is yes.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>COUNTIFS(<a class="fx-chip" href="#f-workflowsteps-workflow">Workflow</a>, <a class="fx-chip" href="#f-workflows-workflowid">Workflow ID</a>, <a class="fx-chip" href="#f-workflowsteps-gatesignoffunmet">Gate Signoff Unmet</a>, TRUE)</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">3</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-rel" href="#f-workflowsteps-workflow">
+          <span class="input-head"><span class="input-glyph">⇢</span><span class="input-name">Workflow</span><span class="input-table">WorkflowSteps</span></span>
+          <span class="input-en muted">Foreign key to the parent workflow. Represents the inverse of ntwf:hasStep, enabling navigation from step to its containing workflow (ntwf:isStepOf).</span>
+        </a>
+        <a class="input tone-raw" href="#f-workflows-workflowid">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Workflow ID</span><span class="input-table">Workflows</span></span>
+          <span class="input-en muted">Ground truth · string</span>
+        </a>
+        <a class="input tone-calc" href="#f-workflowsteps-gatesignoffunmet">
+          <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Gate Signoff Unmet</span><span class="input-table">WorkflowSteps</span></span>
+          <span class="input-en">Not approval gate is blank and not gate dual signoff satisfied.</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-consumers elem elem-consumers">
+      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+4 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-calc" href="#f-workflows-hasunmetgatesignoff">ƒ Has Unmet Gate Signoff <span class="ref-pill-tbl">Workflows</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-complianceverdicts-hasunmetgatesignoff">Has Unmet Gate Signoff <span class="ref-pill-tbl">ComplianceVerdicts</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-complianceverdicts-isatcompliancerisk">Is At Compliance Risk <span class="ref-pill-tbl">ComplianceVerdicts</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-complianceverdicts-verdictconcept">Verdict Concept <span class="ref-pill-tbl">ComplianceVerdicts</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-complianceverdicts-verdict">Verdict <span class="ref-pill-tbl">ComplianceVerdicts</span></a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">12</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-rel" href="#f-workflowsteps-workflow">⇢ Workflow <span class="ref-pill-tbl">WorkflowSteps</span></a>
+        <a class="ref-pill tone-raw" href="#f-workflows-workflowid">● Workflow ID <span class="ref-pill-tbl">Workflows</span></a>
+        <a class="ref-pill tone-rel" href="#f-workflowsteps-approvalgate">⇢ Approval Gate <span class="ref-pill-tbl">WorkflowSteps</span></a>
+        <a class="ref-pill tone-raw" href="#f-approvalgates-requiresdualsignoffoffhours">● Requires Dual Signoff Off Hours <span class="ref-pill-tbl">ApprovalGates</span></a>
+        <a class="ref-pill tone-raw" href="#f-workflows-isoffhoursdeployment">● Is Off Hours Deployment <span class="ref-pill-tbl">Workflows</span></a>
+        <a class="ref-pill tone-rel" href="#f-approvalgates-workflowstep">⇢ Workflow Step <span class="ref-pill-tbl">ApprovalGates</span></a>
+        <a class="ref-pill tone-raw" href="#f-workflowsteps-workflowstepid">● Workflow Step ID <span class="ref-pill-tbl">WorkflowSteps</span></a>
+        <a class="ref-pill tone-rel" href="#f-roles-filledbyhumanagent">⇢ Filled by Human Agent <span class="ref-pill-tbl">Roles</span></a>
+        <a class="ref-pill tone-rel" href="#f-workflowsteps-assignedrole">⇢ Assigned Role <span class="ref-pill-tbl">WorkflowSteps</span></a>
+        <a class="ref-pill tone-raw" href="#f-roles-roleid">● Role ID <span class="ref-pill-tbl">Roles</span></a>
+        <a class="ref-pill tone-rel" href="#f-roles-delegatesto">⇢ Delegates to <span class="ref-pill-tbl">Roles</span></a>
+        <a class="ref-pill tone-raw" href="#f-approvalgates-approvalgateid">● Approval Gate ID <span class="ref-pill-tbl">ApprovalGates</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">Number of this workflow's steps whose approval gate is NOT satisfied (an off-hours run where the gate requires dual sign-off but two human approvers are not available along the delegation chain). Rollup over WorkflowSteps.GateSignoffUnmet. A clean run holds this at 0.</p>
+    </article>
+  <article class="field tone-calc" id="f-workflows-hasunmetgatesignoff" data-entity="Workflow" data-field="Has Unmet Gate Signoff">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Has Unmet Gate Signoff</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">9 hops from ground truth</span>
+      <span class="pill pill-muted">boolean</span>
+      <span class="pill pill-dr">DR-18</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak</span>
+        <p class="view-body">A workflow is considered to have an unmet gate signoff if the <a class="ref" href="#f-workflows-countunmetgatesignoffs">count unmet gate signoffs</a> is greater than 0.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In English</span>
+        <p class="view-body"><a class="ref" href="#f-workflows-countunmetgatesignoffs">Count unmet gate signoffs</a> is greater than 0.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span><a class="fx-chip" href="#f-workflows-countunmetgatesignoffs">Count Unmet Gate Signoffs</a> &gt; 0</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">1</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-agg" href="#f-workflows-countunmetgatesignoffs">
+          <span class="input-head"><span class="input-glyph">Σ</span><span class="input-name">Count Unmet Gate Signoffs</span><span class="input-table">Workflows</span></span>
+          <span class="input-en">Count of WorkflowSteps whose workflow is workflow id and gate signoff unmet is yes.</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-consumers elem elem-consumers">
+      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+3 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-lookup" href="#f-complianceverdicts-hasunmetgatesignoff">↗ Has Unmet Gate Signoff <span class="ref-pill-tbl">ComplianceVerdicts</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-complianceverdicts-isatcompliancerisk">Is At Compliance Risk <span class="ref-pill-tbl">ComplianceVerdicts</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-complianceverdicts-verdictconcept">Verdict Concept <span class="ref-pill-tbl">ComplianceVerdicts</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-complianceverdicts-verdict">Verdict <span class="ref-pill-tbl">ComplianceVerdicts</span></a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">12</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-rel" href="#f-workflowsteps-workflow">⇢ Workflow <span class="ref-pill-tbl">WorkflowSteps</span></a>
+        <a class="ref-pill tone-raw" href="#f-workflows-workflowid">● Workflow ID <span class="ref-pill-tbl">Workflows</span></a>
+        <a class="ref-pill tone-rel" href="#f-workflowsteps-approvalgate">⇢ Approval Gate <span class="ref-pill-tbl">WorkflowSteps</span></a>
+        <a class="ref-pill tone-raw" href="#f-approvalgates-requiresdualsignoffoffhours">● Requires Dual Signoff Off Hours <span class="ref-pill-tbl">ApprovalGates</span></a>
+        <a class="ref-pill tone-raw" href="#f-workflows-isoffhoursdeployment">● Is Off Hours Deployment <span class="ref-pill-tbl">Workflows</span></a>
+        <a class="ref-pill tone-rel" href="#f-approvalgates-workflowstep">⇢ Workflow Step <span class="ref-pill-tbl">ApprovalGates</span></a>
+        <a class="ref-pill tone-raw" href="#f-workflowsteps-workflowstepid">● Workflow Step ID <span class="ref-pill-tbl">WorkflowSteps</span></a>
+        <a class="ref-pill tone-rel" href="#f-roles-filledbyhumanagent">⇢ Filled by Human Agent <span class="ref-pill-tbl">Roles</span></a>
+        <a class="ref-pill tone-rel" href="#f-workflowsteps-assignedrole">⇢ Assigned Role <span class="ref-pill-tbl">WorkflowSteps</span></a>
+        <a class="ref-pill tone-raw" href="#f-roles-roleid">● Role ID <span class="ref-pill-tbl">Roles</span></a>
+        <a class="ref-pill tone-rel" href="#f-roles-delegatesto">⇢ Delegates to <span class="ref-pill-tbl">Roles</span></a>
+        <a class="ref-pill tone-raw" href="#f-approvalgates-approvalgateid">● Approval Gate ID <span class="ref-pill-tbl">ApprovalGates</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">TRUE iff any approval gate in this workflow is unsatisfied (CountUnmetGateSignoffs &gt; 0). The gate's contribution to the compliance verdict: a required off-hours dual-signoff gate without a second human approver is itself a compliance risk. Folds into IsAtComplianceRisk, so toggling a gate's dual-signoff policy, flagging the run off-hours, or breaking the delegation chain can flip the verdict.</p>
+    </article>
   <article class="field tone-agg" id="f-workflows-countderivationlinks" data-entity="Workflow" data-field="Count Derivation Links">
     <div class="field-head">
       <span class="field-glyph" title="Aggregation">Σ</span>
@@ -1240,7 +1381,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-17</span>
+      <span class="pill pill-dr">DR-19</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -1292,7 +1433,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">3 hops from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-18</span>
+      <span class="pill pill-dr">DR-20</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -1350,7 +1491,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">3 hops from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-19</span>
+      <span class="pill pill-dr">DR-21</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -1408,7 +1549,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">4 hops from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-20</span>
+      <span class="pill pill-dr">DR-22</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -1456,7 +1597,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-21</span>
+      <span class="pill pill-dr">DR-23</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -1487,7 +1628,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-22</span>
+      <span class="pill pill-dr">DR-24</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -1518,7 +1659,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-23</span>
+      <span class="pill pill-dr">DR-25</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -1556,7 +1697,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Aggregation</span>
       <span class="pill pill-depth">3 hops from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-24</span>
+      <span class="pill pill-dr">DR-26</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -1604,7 +1745,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-25</span>
+      <span class="pill pill-dr">DR-27</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -1669,7 +1810,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">3 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-26</span>
+      <span class="pill pill-dr">DR-28</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -1730,7 +1871,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">4 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-27</span>
+      <span class="pill pill-dr">DR-29</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -1772,7 +1913,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-28</span>
+      <span class="pill pill-dr">DR-30</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -1942,7 +2083,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-29</span>
+      <span class="pill pill-dr">DR-31</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -2008,7 +2149,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-30</span>
+      <span class="pill pill-dr">DR-32</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -2073,7 +2214,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-31</span>
+      <span class="pill pill-dr">DR-33</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -2129,7 +2270,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-32</span>
+      <span class="pill pill-dr">DR-34</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -2181,7 +2322,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-33</span>
+      <span class="pill pill-dr">DR-35</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -2236,7 +2377,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-34</span>
+      <span class="pill pill-dr">DR-36</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -2284,7 +2425,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-35</span>
+      <span class="pill pill-dr">DR-37</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -2342,7 +2483,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-36</span>
+      <span class="pill pill-dr">DR-38</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -2389,7 +2530,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-37</span>
+      <span class="pill pill-dr">DR-39</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -2449,7 +2590,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-38</span>
+      <span class="pill pill-dr">DR-40</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -2498,7 +2639,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-39</span>
+      <span class="pill pill-dr">DR-41</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -2540,6 +2681,208 @@ html.show-consumers .elem-consumers{display:block}
     </details>
     <p class="field-note elem elem-desc">TRUE iff this step's owning department is Engineering. Rolls up to CQ7's Engineering-involvement check.</p>
     </article>
+  <article class="field tone-lookup" id="f-workflowsteps-isoffhoursdeployment" data-entity="Workflow Step" data-field="Is Off Hours Deployment">
+    <div class="field-head">
+      <span class="field-glyph" title="Lookup">↗</span>
+      <span class="field-name">Is Off Hours Deployment</span>
+      <span class="pill pill-type">Lookup</span>
+      <span class="pill pill-depth">1 hop from ground truth</span>
+      <span class="pill pill-muted">boolean</span>
+      <span class="pill pill-dr">DR-42</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak</span>
+        <p class="view-body">A <a class="ref" href="#f-workflowsteps-workflow">workflow</a> step's <a class="ref" href="#f-workflows-isoffhoursdeployment">is off hours deployment</a> is true when the workflow step's workflow is off hours deployment.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In English</span>
+        <p class="view-body">The <a class="ref" href="#f-workflows-isoffhoursdeployment">is off hours deployment</a> of the linked <a class="ref" href="#f-workflowsteps-workflow">workflow</a>.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>INDEX(<a class="fx-chip" href="#f-workflows-isoffhoursdeployment">Is Off Hours Deployment</a>, MATCH(<a class="fx-chip" href="#f-workflowsteps-workflow">Workflow</a>, <a class="fx-chip" href="#f-workflows-workflowid">Workflow ID</a>, 0))</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">3</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-raw" href="#f-workflows-isoffhoursdeployment">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Is Off Hours Deployment</span><span class="input-table">Workflows</span></span>
+          <span class="input-en muted">Whether this deployment is scheduled to run during off-hours. Raw and editable so it is a fact you can toggle in the console. Combined with an approval gate's RequiresDualSignoffOffHours, this is what makes that gate demand a second human signer along the delegation chain — the gate's first attribute with a live, derived consequence. Off-hours alone changes nothing; it only matters where a gate's dual-signoff policy is switched on.</span>
+        </a>
+        <a class="input tone-rel" href="#f-workflowsteps-workflow">
+          <span class="input-head"><span class="input-glyph">⇢</span><span class="input-name">Workflow</span><span class="input-table">WorkflowSteps</span></span>
+          <span class="input-en muted">Foreign key to the parent workflow. Represents the inverse of ntwf:hasStep, enabling navigation from step to its containing workflow (ntwf:isStepOf).</span>
+        </a>
+        <a class="input tone-raw" href="#f-workflows-workflowid">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Workflow ID</span><span class="input-table">Workflows</span></span>
+          <span class="input-en muted">Ground truth · string</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-consumers elem elem-consumers">
+      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+9 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-lookup" href="#f-approvalgates-isoffhoursdeployment">↗ Is Off Hours Deployment <span class="ref-pill-tbl">ApprovalGates</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-approvalgates-dualsignoffsatisfied">Dual Signoff Satisfied <span class="ref-pill-tbl">ApprovalGates</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-workflowsteps-gatedualsignoffsatisfied">Gate Dual Signoff Satisfied <span class="ref-pill-tbl">WorkflowSteps</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-workflowsteps-gatesignoffunmet">Gate Signoff Unmet <span class="ref-pill-tbl">WorkflowSteps</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-workflows-countunmetgatesignoffs">Count Unmet Gate Signoffs <span class="ref-pill-tbl">Workflows</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-workflows-hasunmetgatesignoff">Has Unmet Gate Signoff <span class="ref-pill-tbl">Workflows</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-complianceverdicts-hasunmetgatesignoff">Has Unmet Gate Signoff <span class="ref-pill-tbl">ComplianceVerdicts</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-complianceverdicts-isatcompliancerisk">Is At Compliance Risk <span class="ref-pill-tbl">ComplianceVerdicts</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-complianceverdicts-verdictconcept">Verdict Concept <span class="ref-pill-tbl">ComplianceVerdicts</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-complianceverdicts-verdict">Verdict <span class="ref-pill-tbl">ComplianceVerdicts</span></a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">3</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-raw" href="#f-workflows-isoffhoursdeployment">● Is Off Hours Deployment <span class="ref-pill-tbl">Workflows</span></a>
+        <a class="ref-pill tone-rel" href="#f-workflowsteps-workflow">⇢ Workflow <span class="ref-pill-tbl">WorkflowSteps</span></a>
+        <a class="ref-pill tone-raw" href="#f-workflows-workflowid">● Workflow ID <span class="ref-pill-tbl">Workflows</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">Whether this step's workflow is flagged as an off-hours deployment (pulled from Workflows.IsOffHoursDeployment). Brought down to the step so an ApprovalGate specializing this step can read the off-hours bit for its dual-signoff rule.</p>
+    </article>
+  <article class="field tone-lookup" id="f-workflowsteps-gatedualsignoffsatisfied" data-entity="Workflow Step" data-field="Gate Dual Signoff Satisfied">
+    <div class="field-head">
+      <span class="field-glyph" title="Lookup">↗</span>
+      <span class="field-name">Gate Dual Signoff Satisfied</span>
+      <span class="pill pill-type">Lookup</span>
+      <span class="pill pill-depth">6 hops from ground truth</span>
+      <span class="pill pill-muted">boolean</span>
+      <span class="pill pill-dr">DR-43</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak</span>
+        <p class="view-body">A workflow step's gate <a class="ref" href="#f-approvalgates-dualsignoffsatisfied">dual signoff satisfied</a> is true when the workflow step's <a class="ref" href="#f-workflowsteps-approvalgate">approval gate</a> is dual signoff satisfied.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In English</span>
+        <p class="view-body">The <a class="ref" href="#f-approvalgates-dualsignoffsatisfied">dual signoff satisfied</a> of the linked <a class="ref" href="#f-workflowsteps-approvalgate">approval gate</a>.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>INDEX(<a class="fx-chip" href="#f-approvalgates-dualsignoffsatisfied">Dual Signoff Satisfied</a>, MATCH(<a class="fx-chip" href="#f-workflowsteps-approvalgate">Approval Gate</a>, <a class="fx-chip" href="#f-approvalgates-approvalgateid">Approval Gate ID</a>, 0))</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">3</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-calc" href="#f-approvalgates-dualsignoffsatisfied">
+          <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Dual Signoff Satisfied</span><span class="input-table">ApprovalGates</span></span>
+          <span class="input-en">If requires dual signoff off hours and is off hours deployment then has two human approvers, otherwise yes.</span>
+        </a>
+        <a class="input tone-rel" href="#f-workflowsteps-approvalgate">
+          <span class="input-head"><span class="input-glyph">⇢</span><span class="input-name">Approval Gate</span><span class="input-table">WorkflowSteps</span></span>
+          <span class="input-en muted">Back-reference to the ApprovalGate subtype row that specializes this step, if any. Inverse of ApprovalGates.WorkflowStep. A step has zero or one approval gate; when present, the gate adds escalationThresholdHours and marks the step as a blocking decision checkpoint. This models ntwf:ApprovalGate rdfs:subClassOf WorkflowStep as a shared-key 1:1 specialization rather than collapsing two DAG nodes into one.</span>
+        </a>
+        <a class="input tone-raw" href="#f-approvalgates-approvalgateid">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Approval Gate ID</span><span class="input-table">ApprovalGates</span></span>
+          <span class="input-en muted">Ground truth · string</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-consumers elem elem-consumers">
+      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+6 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-calc" href="#f-workflowsteps-gatesignoffunmet">ƒ Gate Signoff Unmet <span class="ref-pill-tbl">WorkflowSteps</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-workflows-countunmetgatesignoffs">Count Unmet Gate Signoffs <span class="ref-pill-tbl">Workflows</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-workflows-hasunmetgatesignoff">Has Unmet Gate Signoff <span class="ref-pill-tbl">Workflows</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-complianceverdicts-hasunmetgatesignoff">Has Unmet Gate Signoff <span class="ref-pill-tbl">ComplianceVerdicts</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-complianceverdicts-isatcompliancerisk">Is At Compliance Risk <span class="ref-pill-tbl">ComplianceVerdicts</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-complianceverdicts-verdictconcept">Verdict Concept <span class="ref-pill-tbl">ComplianceVerdicts</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-complianceverdicts-verdict">Verdict <span class="ref-pill-tbl">ComplianceVerdicts</span></a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">12</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-raw" href="#f-approvalgates-requiresdualsignoffoffhours">● Requires Dual Signoff Off Hours <span class="ref-pill-tbl">ApprovalGates</span></a>
+        <a class="ref-pill tone-raw" href="#f-workflows-isoffhoursdeployment">● Is Off Hours Deployment <span class="ref-pill-tbl">Workflows</span></a>
+        <a class="ref-pill tone-rel" href="#f-workflowsteps-workflow">⇢ Workflow <span class="ref-pill-tbl">WorkflowSteps</span></a>
+        <a class="ref-pill tone-raw" href="#f-workflows-workflowid">● Workflow ID <span class="ref-pill-tbl">Workflows</span></a>
+        <a class="ref-pill tone-rel" href="#f-approvalgates-workflowstep">⇢ Workflow Step <span class="ref-pill-tbl">ApprovalGates</span></a>
+        <a class="ref-pill tone-raw" href="#f-workflowsteps-workflowstepid">● Workflow Step ID <span class="ref-pill-tbl">WorkflowSteps</span></a>
+        <a class="ref-pill tone-rel" href="#f-roles-filledbyhumanagent">⇢ Filled by Human Agent <span class="ref-pill-tbl">Roles</span></a>
+        <a class="ref-pill tone-rel" href="#f-workflowsteps-assignedrole">⇢ Assigned Role <span class="ref-pill-tbl">WorkflowSteps</span></a>
+        <a class="ref-pill tone-raw" href="#f-roles-roleid">● Role ID <span class="ref-pill-tbl">Roles</span></a>
+        <a class="ref-pill tone-rel" href="#f-roles-delegatesto">⇢ Delegates to <span class="ref-pill-tbl">Roles</span></a>
+        <a class="ref-pill tone-rel" href="#f-workflowsteps-approvalgate">⇢ Approval Gate <span class="ref-pill-tbl">WorkflowSteps</span></a>
+        <a class="ref-pill tone-raw" href="#f-approvalgates-approvalgateid">● Approval Gate ID <span class="ref-pill-tbl">ApprovalGates</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">The DualSignoffSatisfied verdict of the approval gate specializing this step, if any (gate → ApprovalGates.DualSignoffSatisfied). Blank for ordinary steps that have no gate. The bridge that brings the gate's verdict up to the step so it can be rolled up to the workflow.</p>
+    </article>
+  <article class="field tone-calc" id="f-workflowsteps-gatesignoffunmet" data-entity="Workflow Step" data-field="Gate Signoff Unmet">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Gate Signoff Unmet</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">7 hops from ground truth</span>
+      <span class="pill pill-muted">boolean</span>
+      <span class="pill pill-dr">DR-44</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak</span>
+        <div class="view-body"><p class="rt-headline">A workflow step is flagged gate signoff unmet if all of the following:</p><ol class="rt-priority"></ol></div>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In English</span>
+        <p class="view-body">Not <a class="ref" href="#f-workflowsteps-approvalgate">approval gate</a> is blank and not <a class="ref" href="#f-workflowsteps-gatedualsignoffsatisfied">gate dual signoff satisfied</a>.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>AND(NOT(ISBLANK(<a class="fx-chip" href="#f-workflowsteps-approvalgate">Approval Gate</a>)), NOT(<a class="fx-chip" href="#f-workflowsteps-gatedualsignoffsatisfied">Gate Dual Signoff Satisfied</a>))</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">2</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-rel" href="#f-workflowsteps-approvalgate">
+          <span class="input-head"><span class="input-glyph">⇢</span><span class="input-name">Approval Gate</span><span class="input-table">WorkflowSteps</span></span>
+          <span class="input-en muted">Back-reference to the ApprovalGate subtype row that specializes this step, if any. Inverse of ApprovalGates.WorkflowStep. A step has zero or one approval gate; when present, the gate adds escalationThresholdHours and marks the step as a blocking decision checkpoint. This models ntwf:ApprovalGate rdfs:subClassOf WorkflowStep as a shared-key 1:1 specialization rather than collapsing two DAG nodes into one.</span>
+        </a>
+        <a class="input tone-lookup" href="#f-workflowsteps-gatedualsignoffsatisfied">
+          <span class="input-head"><span class="input-glyph">↗</span><span class="input-name">Gate Dual Signoff Satisfied</span><span class="input-table">WorkflowSteps</span></span>
+          <span class="input-en">The dual signoff satisfied of the linked approval gate.</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-consumers elem elem-consumers">
+      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+5 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-agg" href="#f-workflows-countunmetgatesignoffs">Σ Count Unmet Gate Signoffs <span class="ref-pill-tbl">Workflows</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-workflows-hasunmetgatesignoff">Has Unmet Gate Signoff <span class="ref-pill-tbl">Workflows</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-complianceverdicts-hasunmetgatesignoff">Has Unmet Gate Signoff <span class="ref-pill-tbl">ComplianceVerdicts</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-complianceverdicts-isatcompliancerisk">Is At Compliance Risk <span class="ref-pill-tbl">ComplianceVerdicts</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-complianceverdicts-verdictconcept">Verdict Concept <span class="ref-pill-tbl">ComplianceVerdicts</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-complianceverdicts-verdict">Verdict <span class="ref-pill-tbl">ComplianceVerdicts</span></a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">12</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-rel" href="#f-workflowsteps-approvalgate">⇢ Approval Gate <span class="ref-pill-tbl">WorkflowSteps</span></a>
+        <a class="ref-pill tone-raw" href="#f-approvalgates-requiresdualsignoffoffhours">● Requires Dual Signoff Off Hours <span class="ref-pill-tbl">ApprovalGates</span></a>
+        <a class="ref-pill tone-raw" href="#f-workflows-isoffhoursdeployment">● Is Off Hours Deployment <span class="ref-pill-tbl">Workflows</span></a>
+        <a class="ref-pill tone-rel" href="#f-workflowsteps-workflow">⇢ Workflow <span class="ref-pill-tbl">WorkflowSteps</span></a>
+        <a class="ref-pill tone-raw" href="#f-workflows-workflowid">● Workflow ID <span class="ref-pill-tbl">Workflows</span></a>
+        <a class="ref-pill tone-rel" href="#f-approvalgates-workflowstep">⇢ Workflow Step <span class="ref-pill-tbl">ApprovalGates</span></a>
+        <a class="ref-pill tone-raw" href="#f-workflowsteps-workflowstepid">● Workflow Step ID <span class="ref-pill-tbl">WorkflowSteps</span></a>
+        <a class="ref-pill tone-rel" href="#f-roles-filledbyhumanagent">⇢ Filled by Human Agent <span class="ref-pill-tbl">Roles</span></a>
+        <a class="ref-pill tone-rel" href="#f-workflowsteps-assignedrole">⇢ Assigned Role <span class="ref-pill-tbl">WorkflowSteps</span></a>
+        <a class="ref-pill tone-raw" href="#f-roles-roleid">● Role ID <span class="ref-pill-tbl">Roles</span></a>
+        <a class="ref-pill tone-rel" href="#f-roles-delegatesto">⇢ Delegates to <span class="ref-pill-tbl">Roles</span></a>
+        <a class="ref-pill tone-raw" href="#f-approvalgates-approvalgateid">● Approval Gate ID <span class="ref-pill-tbl">ApprovalGates</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">TRUE iff this step has an approval gate AND that gate's dual-signoff policy is NOT satisfied. FALSE for steps with no gate, and for gates that are satisfied. Counted by Workflows.CountUnmetGateSignoffs to fold the gate into the compliance verdict.</p>
+    </article>
 </section>
 <section class="entity" id="t-approvalgates" data-entity="Approval Gate">
   <header class="entity-head">
@@ -2553,7 +2896,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">4 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-40</span>
+      <span class="pill pill-dr">DR-45</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -2611,7 +2954,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">5 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-41</span>
+      <span class="pill pill-dr">DR-46</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -2665,7 +3008,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">6 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-42</span>
+      <span class="pill pill-dr">DR-47</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -2709,7 +3052,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-43</span>
+      <span class="pill pill-dr">DR-48</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -2783,7 +3126,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-44</span>
+      <span class="pill pill-dr">DR-49</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -2817,9 +3160,21 @@ html.show-consumers .elem-consumers{display:block}
       </div>
     </details>
     <details class="prov prov-consumers elem elem-consumers">
-      <summary>Consumers <span class="count">1 direct</span> <span class="prov-hint">rules that read this one</span></summary>
+      <summary>Consumers <span class="count">2 direct</span> <span class="count count-muted">+11 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-lookup" href="#f-approvalgates-gateapproverhuman">↗ Gate Approver Human <span class="ref-pill-tbl">ApprovalGates</span></a>
+        <a class="ref-pill tone-lookup" href="#f-approvalgates-gatedelegaterole">↗ Gate Delegate Role <span class="ref-pill-tbl">ApprovalGates</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-approvalgates-hastwohumanapprovers">Has Two Human Approvers <span class="ref-pill-tbl">ApprovalGates</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-approvalgates-gatedelegatehuman">Gate Delegate Human <span class="ref-pill-tbl">ApprovalGates</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-approvalgates-dualsignoffsatisfied">Dual Signoff Satisfied <span class="ref-pill-tbl">ApprovalGates</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-workflowsteps-gatedualsignoffsatisfied">Gate Dual Signoff Satisfied <span class="ref-pill-tbl">WorkflowSteps</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-workflowsteps-gatesignoffunmet">Gate Signoff Unmet <span class="ref-pill-tbl">WorkflowSteps</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-workflows-countunmetgatesignoffs">Count Unmet Gate Signoffs <span class="ref-pill-tbl">Workflows</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-workflows-hasunmetgatesignoff">Has Unmet Gate Signoff <span class="ref-pill-tbl">Workflows</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-complianceverdicts-hasunmetgatesignoff">Has Unmet Gate Signoff <span class="ref-pill-tbl">ComplianceVerdicts</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-complianceverdicts-isatcompliancerisk">Is At Compliance Risk <span class="ref-pill-tbl">ComplianceVerdicts</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-complianceverdicts-verdictconcept">Verdict Concept <span class="ref-pill-tbl">ComplianceVerdicts</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-complianceverdicts-verdict">Verdict <span class="ref-pill-tbl">ComplianceVerdicts</span></a>
       </div>
     </details>
     <details class="prov prov-leaves elem elem-inputs">
@@ -2839,7 +3194,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-45</span>
+      <span class="pill pill-dr">DR-50</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -2872,6 +3227,21 @@ html.show-consumers .elem-consumers{display:block}
         </a>
       </div>
     </details>
+    <details class="prov prov-consumers elem elem-consumers">
+      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+9 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-calc" href="#f-approvalgates-hastwohumanapprovers">ƒ Has Two Human Approvers <span class="ref-pill-tbl">ApprovalGates</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-approvalgates-dualsignoffsatisfied">Dual Signoff Satisfied <span class="ref-pill-tbl">ApprovalGates</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-workflowsteps-gatedualsignoffsatisfied">Gate Dual Signoff Satisfied <span class="ref-pill-tbl">WorkflowSteps</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-workflowsteps-gatesignoffunmet">Gate Signoff Unmet <span class="ref-pill-tbl">WorkflowSteps</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-workflows-countunmetgatesignoffs">Count Unmet Gate Signoffs <span class="ref-pill-tbl">Workflows</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-workflows-hasunmetgatesignoff">Has Unmet Gate Signoff <span class="ref-pill-tbl">Workflows</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-complianceverdicts-hasunmetgatesignoff">Has Unmet Gate Signoff <span class="ref-pill-tbl">ComplianceVerdicts</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-complianceverdicts-isatcompliancerisk">Is At Compliance Risk <span class="ref-pill-tbl">ComplianceVerdicts</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-complianceverdicts-verdictconcept">Verdict Concept <span class="ref-pill-tbl">ComplianceVerdicts</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-complianceverdicts-verdict">Verdict <span class="ref-pill-tbl">ComplianceVerdicts</span></a>
+      </div>
+    </details>
     <details class="prov prov-leaves elem elem-inputs">
       <summary>Ground truth at the leaves <span class="count">5</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
       <div class="prov-pills">
@@ -2883,6 +3253,353 @@ html.show-consumers .elem-consumers{display:block}
       </div>
     </details>
     <p class="field-note elem elem-desc">The human agent who approves at this gate, resolved through the two-hop chain gate → GateRole → Roles.FilledByHumanAgent. Answers CQ2 ('who is responsible for approving a production deployment') directly: the release-approval gate resolves to the Release Manager role, filled by Maria Gonzalez.</p>
+    </article>
+  <article class="field tone-raw" id="f-approvalgates-requiresdualsignoffoffhours" data-entity="Approval Gate" data-field="Requires Dual Signoff Off Hours">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Requires Dual Signoff Off Hours</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">boolean</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>boolean</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Gate-only policy knob (lives on no other step — the reason ApprovalGate is its own subtype). When TRUE, a deployment run during off-hours must be signed off by TWO distinct human approvers: the gate's own role AND its delegate up the ntwf:delegatesTo chain. Editable. This is the gate's first attribute that DRIVES a rule — unlike EscalationThresholdHours, which is a recorded literal that drives nothing.</p>
+    </article>
+  <article class="field tone-lookup" id="f-approvalgates-isoffhoursdeployment" data-entity="Approval Gate" data-field="Is Off Hours Deployment">
+    <div class="field-head">
+      <span class="field-glyph" title="Lookup">↗</span>
+      <span class="field-name">Is Off Hours Deployment</span>
+      <span class="pill pill-type">Lookup</span>
+      <span class="pill pill-depth">2 hops from ground truth</span>
+      <span class="pill pill-muted">boolean</span>
+      <span class="pill pill-dr">DR-51</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak</span>
+        <p class="view-body">An approval gate's <a class="ref" href="#f-workflowsteps-isoffhoursdeployment">is off hours deployment</a> is true when the approval gate's <a class="ref" href="#f-approvalgates-workflowstep">workflow step</a> is off hours deployment.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In English</span>
+        <p class="view-body">The <a class="ref" href="#f-workflowsteps-isoffhoursdeployment">is off hours deployment</a> of the linked <a class="ref" href="#f-approvalgates-workflowstep">workflow step</a>.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>INDEX(<a class="fx-chip" href="#f-workflowsteps-isoffhoursdeployment">Is Off Hours Deployment</a>, MATCH(<a class="fx-chip" href="#f-approvalgates-workflowstep">Workflow Step</a>, <a class="fx-chip" href="#f-workflowsteps-workflowstepid">Workflow Step ID</a>, 0))</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">3</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-lookup" href="#f-workflowsteps-isoffhoursdeployment">
+          <span class="input-head"><span class="input-glyph">↗</span><span class="input-name">Is Off Hours Deployment</span><span class="input-table">WorkflowSteps</span></span>
+          <span class="input-en">The is off hours deployment of the linked workflow.</span>
+        </a>
+        <a class="input tone-rel" href="#f-approvalgates-workflowstep">
+          <span class="input-head"><span class="input-glyph">⇢</span><span class="input-name">Workflow Step</span><span class="input-table">ApprovalGates</span></span>
+          <span class="input-en muted">1:1 FK to the WorkflowStep this gate specializes (subtype shared key). This is the relational expression of ntwf:ApprovalGate rdfs:subClassOf WorkflowStep: the gate row adds escalationThresholdHours to its step. Inverse is WorkflowSteps.ApprovalGate.</span>
+        </a>
+        <a class="input tone-raw" href="#f-workflowsteps-workflowstepid">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Workflow Step ID</span><span class="input-table">WorkflowSteps</span></span>
+          <span class="input-en muted">Ground truth · string</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-consumers elem elem-consumers">
+      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+8 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-calc" href="#f-approvalgates-dualsignoffsatisfied">ƒ Dual Signoff Satisfied <span class="ref-pill-tbl">ApprovalGates</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-workflowsteps-gatedualsignoffsatisfied">Gate Dual Signoff Satisfied <span class="ref-pill-tbl">WorkflowSteps</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-workflowsteps-gatesignoffunmet">Gate Signoff Unmet <span class="ref-pill-tbl">WorkflowSteps</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-workflows-countunmetgatesignoffs">Count Unmet Gate Signoffs <span class="ref-pill-tbl">Workflows</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-workflows-hasunmetgatesignoff">Has Unmet Gate Signoff <span class="ref-pill-tbl">Workflows</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-complianceverdicts-hasunmetgatesignoff">Has Unmet Gate Signoff <span class="ref-pill-tbl">ComplianceVerdicts</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-complianceverdicts-isatcompliancerisk">Is At Compliance Risk <span class="ref-pill-tbl">ComplianceVerdicts</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-complianceverdicts-verdictconcept">Verdict Concept <span class="ref-pill-tbl">ComplianceVerdicts</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-complianceverdicts-verdict">Verdict <span class="ref-pill-tbl">ComplianceVerdicts</span></a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">5</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-raw" href="#f-workflows-isoffhoursdeployment">● Is Off Hours Deployment <span class="ref-pill-tbl">Workflows</span></a>
+        <a class="ref-pill tone-rel" href="#f-workflowsteps-workflow">⇢ Workflow <span class="ref-pill-tbl">WorkflowSteps</span></a>
+        <a class="ref-pill tone-raw" href="#f-workflows-workflowid">● Workflow ID <span class="ref-pill-tbl">Workflows</span></a>
+        <a class="ref-pill tone-rel" href="#f-approvalgates-workflowstep">⇢ Workflow Step <span class="ref-pill-tbl">ApprovalGates</span></a>
+        <a class="ref-pill tone-raw" href="#f-workflowsteps-workflowstepid">● Workflow Step ID <span class="ref-pill-tbl">WorkflowSteps</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">Whether the workflow this gate belongs to is flagged as an off-hours deployment. Pulled from Workflows.IsOffHoursDeployment via the gate's step → workflow. The off-hours bit is an editable workflow fact; this lookup brings it down to the gate so the dual-signoff rule can combine the two toggles.</p>
+    </article>
+  <article class="field tone-lookup" id="f-approvalgates-gatedelegaterole" data-entity="Approval Gate" data-field="Gate Delegate Role">
+    <div class="field-head">
+      <span class="field-glyph" title="Lookup">↗</span>
+      <span class="field-name">Gate Delegate Role</span>
+      <span class="pill pill-type">Lookup</span>
+      <span class="pill pill-depth">2 hops from ground truth</span>
+      <span class="pill pill-muted">string</span>
+      <span class="pill pill-dr">DR-52</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak</span>
+        <p class="view-body">An approval gate's gate delegate role is the <a class="ref" href="#f-roles-delegatesto">delegates to</a> of the approval gate's <a class="ref" href="#f-approvalgates-gaterole">gate role</a>.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In English</span>
+        <p class="view-body">The <a class="ref" href="#f-roles-delegatesto">delegates to</a> of the linked <a class="ref" href="#f-approvalgates-gaterole">gate role</a>.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>INDEX(<a class="fx-chip" href="#f-roles-delegatesto">Delegates to</a>, MATCH(<a class="fx-chip" href="#f-approvalgates-gaterole">Gate Role</a>, <a class="fx-chip" href="#f-roles-roleid">Role ID</a>, 0))</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">3</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-rel" href="#f-roles-delegatesto">
+          <span class="input-head"><span class="input-glyph">⇢</span><span class="input-name">Delegates to</span><span class="input-table">Roles</span></span>
+          <span class="input-en muted">Foreign key to the next Role in the escalation chain. Maps to ntwf:delegatesTo (traversable via the SPARQL property path delegatesTo+). Enables answering CQ6: 'What happens when the Release Manager / VP of Engineering is unavailable?'</span>
+        </a>
+        <a class="input tone-lookup" href="#f-approvalgates-gaterole">
+          <span class="input-head"><span class="input-glyph">↗</span><span class="input-name">Gate Role</span><span class="input-table">ApprovalGates</span></span>
+          <span class="input-en">The assigned role of the linked workflow step.</span>
+        </a>
+        <a class="input tone-raw" href="#f-roles-roleid">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Role ID</span><span class="input-table">Roles</span></span>
+          <span class="input-en muted">Ground truth · string</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-consumers elem elem-consumers">
+      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+10 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-lookup" href="#f-approvalgates-gatedelegatehuman">↗ Gate Delegate Human <span class="ref-pill-tbl">ApprovalGates</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-approvalgates-hastwohumanapprovers">Has Two Human Approvers <span class="ref-pill-tbl">ApprovalGates</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-approvalgates-dualsignoffsatisfied">Dual Signoff Satisfied <span class="ref-pill-tbl">ApprovalGates</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-workflowsteps-gatedualsignoffsatisfied">Gate Dual Signoff Satisfied <span class="ref-pill-tbl">WorkflowSteps</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-workflowsteps-gatesignoffunmet">Gate Signoff Unmet <span class="ref-pill-tbl">WorkflowSteps</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-workflows-countunmetgatesignoffs">Count Unmet Gate Signoffs <span class="ref-pill-tbl">Workflows</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-workflows-hasunmetgatesignoff">Has Unmet Gate Signoff <span class="ref-pill-tbl">Workflows</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-complianceverdicts-hasunmetgatesignoff">Has Unmet Gate Signoff <span class="ref-pill-tbl">ComplianceVerdicts</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-complianceverdicts-isatcompliancerisk">Is At Compliance Risk <span class="ref-pill-tbl">ComplianceVerdicts</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-complianceverdicts-verdictconcept">Verdict Concept <span class="ref-pill-tbl">ComplianceVerdicts</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-complianceverdicts-verdict">Verdict <span class="ref-pill-tbl">ComplianceVerdicts</span></a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">5</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-rel" href="#f-roles-delegatesto">⇢ Delegates to <span class="ref-pill-tbl">Roles</span></a>
+        <a class="ref-pill tone-rel" href="#f-workflowsteps-assignedrole">⇢ Assigned Role <span class="ref-pill-tbl">WorkflowSteps</span></a>
+        <a class="ref-pill tone-rel" href="#f-approvalgates-workflowstep">⇢ Workflow Step <span class="ref-pill-tbl">ApprovalGates</span></a>
+        <a class="ref-pill tone-raw" href="#f-workflowsteps-workflowstepid">● Workflow Step ID <span class="ref-pill-tbl">WorkflowSteps</span></a>
+        <a class="ref-pill tone-raw" href="#f-roles-roleid">● Role ID <span class="ref-pill-tbl">Roles</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">The role the gate's role escalates to (gate → GateRole → Roles.DelegatesTo). The second approver in the dual-signoff rule comes from here. Ties the gate directly to the delegation/escalation hierarchy.</p>
+    </article>
+  <article class="field tone-lookup" id="f-approvalgates-gatedelegatehuman" data-entity="Approval Gate" data-field="Gate Delegate Human">
+    <div class="field-head">
+      <span class="field-glyph" title="Lookup">↗</span>
+      <span class="field-name">Gate Delegate Human</span>
+      <span class="pill pill-type">Lookup</span>
+      <span class="pill pill-depth">3 hops from ground truth</span>
+      <span class="pill pill-muted">string</span>
+      <span class="pill pill-dr">DR-53</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak</span>
+        <p class="view-body">An approval gate's gate delegate human is the <a class="ref" href="#f-roles-filledbyhumanagent">filled by human agent</a> of the approval gate's <a class="ref" href="#f-approvalgates-gatedelegaterole">gate delegate role</a>.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In English</span>
+        <p class="view-body">The <a class="ref" href="#f-roles-filledbyhumanagent">filled by human agent</a> of the linked <a class="ref" href="#f-approvalgates-gatedelegaterole">gate delegate role</a>.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>INDEX(<a class="fx-chip" href="#f-roles-filledbyhumanagent">Filled by Human Agent</a>, MATCH(<a class="fx-chip" href="#f-approvalgates-gatedelegaterole">Gate Delegate Role</a>, <a class="fx-chip" href="#f-roles-roleid">Role ID</a>, 0))</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">3</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-rel" href="#f-roles-filledbyhumanagent">
+          <span class="input-head"><span class="input-glyph">⇢</span><span class="input-name">Filled by Human Agent</span><span class="input-table">Roles</span></span>
+          <span class="input-en muted">One arm of the polymorphic ntwf:filledBy relationship: FK to the HumanAgent that fills this role today. Exactly one of FilledByHumanAgent / FilledByAIAgent / FilledByAutomatedPipeline is set per role (filledBy is functional; the three agent types are owl:disjointWith each other). Roles whose capability requires human judgment or legal review must use this arm.</span>
+        </a>
+        <a class="input tone-lookup" href="#f-approvalgates-gatedelegaterole">
+          <span class="input-head"><span class="input-glyph">↗</span><span class="input-name">Gate Delegate Role</span><span class="input-table">ApprovalGates</span></span>
+          <span class="input-en">The delegates to of the linked gate role.</span>
+        </a>
+        <a class="input tone-raw" href="#f-roles-roleid">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Role ID</span><span class="input-table">Roles</span></span>
+          <span class="input-en muted">Ground truth · string</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-consumers elem elem-consumers">
+      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+9 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-calc" href="#f-approvalgates-hastwohumanapprovers">ƒ Has Two Human Approvers <span class="ref-pill-tbl">ApprovalGates</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-approvalgates-dualsignoffsatisfied">Dual Signoff Satisfied <span class="ref-pill-tbl">ApprovalGates</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-workflowsteps-gatedualsignoffsatisfied">Gate Dual Signoff Satisfied <span class="ref-pill-tbl">WorkflowSteps</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-workflowsteps-gatesignoffunmet">Gate Signoff Unmet <span class="ref-pill-tbl">WorkflowSteps</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-workflows-countunmetgatesignoffs">Count Unmet Gate Signoffs <span class="ref-pill-tbl">Workflows</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-workflows-hasunmetgatesignoff">Has Unmet Gate Signoff <span class="ref-pill-tbl">Workflows</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-complianceverdicts-hasunmetgatesignoff">Has Unmet Gate Signoff <span class="ref-pill-tbl">ComplianceVerdicts</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-complianceverdicts-isatcompliancerisk">Is At Compliance Risk <span class="ref-pill-tbl">ComplianceVerdicts</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-complianceverdicts-verdictconcept">Verdict Concept <span class="ref-pill-tbl">ComplianceVerdicts</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-complianceverdicts-verdict">Verdict <span class="ref-pill-tbl">ComplianceVerdicts</span></a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">6</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-rel" href="#f-roles-filledbyhumanagent">⇢ Filled by Human Agent <span class="ref-pill-tbl">Roles</span></a>
+        <a class="ref-pill tone-rel" href="#f-roles-delegatesto">⇢ Delegates to <span class="ref-pill-tbl">Roles</span></a>
+        <a class="ref-pill tone-rel" href="#f-workflowsteps-assignedrole">⇢ Assigned Role <span class="ref-pill-tbl">WorkflowSteps</span></a>
+        <a class="ref-pill tone-rel" href="#f-approvalgates-workflowstep">⇢ Workflow Step <span class="ref-pill-tbl">ApprovalGates</span></a>
+        <a class="ref-pill tone-raw" href="#f-workflowsteps-workflowstepid">● Workflow Step ID <span class="ref-pill-tbl">WorkflowSteps</span></a>
+        <a class="ref-pill tone-raw" href="#f-roles-roleid">● Role ID <span class="ref-pill-tbl">Roles</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">The human agent filling the gate's delegate role (gate → GateDelegateRole → Roles.FilledByHumanAgent). Empty when the delegate role is unfilled or filled by a non-human — which is exactly the condition that makes an off-hours dual-signoff gate fail.</p>
+    </article>
+  <article class="field tone-calc" id="f-approvalgates-hastwohumanapprovers" data-entity="Approval Gate" data-field="Has Two Human Approvers">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Has Two Human Approvers</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">4 hops from ground truth</span>
+      <span class="pill pill-muted">boolean</span>
+      <span class="pill pill-dr">DR-54</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak</span>
+        <div class="view-body"><p class="rt-headline">An approval gate is considered to have a two human approvers if all of the following:</p><ol class="rt-priority"></ol></div>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In English</span>
+        <p class="view-body">Not <a class="ref" href="#f-approvalgates-gateapproverhuman">gate approver human</a> is blank and not <a class="ref" href="#f-approvalgates-gatedelegatehuman">gate delegate human</a> is blank.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>AND(NOT(ISBLANK(<a class="fx-chip" href="#f-approvalgates-gateapproverhuman">Gate Approver Human</a>)), NOT(ISBLANK(<a class="fx-chip" href="#f-approvalgates-gatedelegatehuman">Gate Delegate Human</a>)))</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">2</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-lookup" href="#f-approvalgates-gateapproverhuman">
+          <span class="input-head"><span class="input-glyph">↗</span><span class="input-name">Gate Approver Human</span><span class="input-table">ApprovalGates</span></span>
+          <span class="input-en">The filled by human agent of the linked gate role.</span>
+        </a>
+        <a class="input tone-lookup" href="#f-approvalgates-gatedelegatehuman">
+          <span class="input-head"><span class="input-glyph">↗</span><span class="input-name">Gate Delegate Human</span><span class="input-table">ApprovalGates</span></span>
+          <span class="input-en">The filled by human agent of the linked gate delegate role.</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-consumers elem elem-consumers">
+      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+8 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-calc" href="#f-approvalgates-dualsignoffsatisfied">ƒ Dual Signoff Satisfied <span class="ref-pill-tbl">ApprovalGates</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-workflowsteps-gatedualsignoffsatisfied">Gate Dual Signoff Satisfied <span class="ref-pill-tbl">WorkflowSteps</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-workflowsteps-gatesignoffunmet">Gate Signoff Unmet <span class="ref-pill-tbl">WorkflowSteps</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-workflows-countunmetgatesignoffs">Count Unmet Gate Signoffs <span class="ref-pill-tbl">Workflows</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-workflows-hasunmetgatesignoff">Has Unmet Gate Signoff <span class="ref-pill-tbl">Workflows</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-complianceverdicts-hasunmetgatesignoff">Has Unmet Gate Signoff <span class="ref-pill-tbl">ComplianceVerdicts</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-complianceverdicts-isatcompliancerisk">Is At Compliance Risk <span class="ref-pill-tbl">ComplianceVerdicts</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-complianceverdicts-verdictconcept">Verdict Concept <span class="ref-pill-tbl">ComplianceVerdicts</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-complianceverdicts-verdict">Verdict <span class="ref-pill-tbl">ComplianceVerdicts</span></a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">6</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-rel" href="#f-roles-filledbyhumanagent">⇢ Filled by Human Agent <span class="ref-pill-tbl">Roles</span></a>
+        <a class="ref-pill tone-rel" href="#f-workflowsteps-assignedrole">⇢ Assigned Role <span class="ref-pill-tbl">WorkflowSteps</span></a>
+        <a class="ref-pill tone-rel" href="#f-approvalgates-workflowstep">⇢ Workflow Step <span class="ref-pill-tbl">ApprovalGates</span></a>
+        <a class="ref-pill tone-raw" href="#f-workflowsteps-workflowstepid">● Workflow Step ID <span class="ref-pill-tbl">WorkflowSteps</span></a>
+        <a class="ref-pill tone-raw" href="#f-roles-roleid">● Role ID <span class="ref-pill-tbl">Roles</span></a>
+        <a class="ref-pill tone-rel" href="#f-roles-delegatesto">⇢ Delegates to <span class="ref-pill-tbl">Roles</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">TRUE when BOTH the gate's role and its delegate role are filled by (non-empty) human agents. The structural precondition for a second sign-off: two distinct humans are available along the escalation chain.</p>
+    </article>
+  <article class="field tone-calc" id="f-approvalgates-dualsignoffsatisfied" data-entity="Approval Gate" data-field="Dual Signoff Satisfied">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Dual Signoff Satisfied</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">5 hops from ground truth</span>
+      <span class="pill pill-muted">boolean</span>
+      <span class="pill pill-dr">DR-55</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak</span>
+        <div class="view-body"><p class="rt-headline">The approval gate's dual signoff satisfied is determined by the following priority:</p><ol class="rt-priority"><li><span class="rt-value">the has two human approvers</span> <span class="rt-when">if <span class="rt-group-label">all of these hold:</span><ul class="rt-group"><li>the requires dual signoff off hours flag is set</li><li>the is off hours deployment flag is set</li></ul></span></li><li><span class="rt-value">the TRUE</span> <span class="rt-otherwise">otherwise</span></li></ol></div>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In English</span>
+        <p class="view-body">If <a class="ref" href="#f-approvalgates-requiresdualsignoffoffhours">requires dual signoff off hours</a> and <a class="ref" href="#f-approvalgates-isoffhoursdeployment">is off hours deployment</a> then <a class="ref" href="#f-approvalgates-hastwohumanapprovers">has two human approvers</a>, otherwise yes.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>IF(AND(<a class="fx-chip" href="#f-approvalgates-requiresdualsignoffoffhours">Requires Dual Signoff Off Hours</a>, <a class="fx-chip" href="#f-approvalgates-isoffhoursdeployment">Is Off Hours Deployment</a>), <a class="fx-chip" href="#f-approvalgates-hastwohumanapprovers">Has Two Human Approvers</a>, TRUE)</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">3</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-raw" href="#f-approvalgates-requiresdualsignoffoffhours">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Requires Dual Signoff Off Hours</span><span class="input-table">ApprovalGates</span></span>
+          <span class="input-en muted">Gate-only policy knob (lives on no other step — the reason ApprovalGate is its own subtype). When TRUE, a deployment run during off-hours must be signed off by TWO distinct human approvers: the gate's own role AND its delegate up the ntwf:delegatesTo chain. Editable. This is the gate's first attribute that DRIVES a rule — unlike EscalationThresholdHours, which is a recorded literal that drives nothing.</span>
+        </a>
+        <a class="input tone-lookup" href="#f-approvalgates-isoffhoursdeployment">
+          <span class="input-head"><span class="input-glyph">↗</span><span class="input-name">Is Off Hours Deployment</span><span class="input-table">ApprovalGates</span></span>
+          <span class="input-en">The is off hours deployment of the linked workflow step.</span>
+        </a>
+        <a class="input tone-calc" href="#f-approvalgates-hastwohumanapprovers">
+          <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Has Two Human Approvers</span><span class="input-table">ApprovalGates</span></span>
+          <span class="input-en">Not gate approver human is blank and not gate delegate human is blank.</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-consumers elem elem-consumers">
+      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+7 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-lookup" href="#f-workflowsteps-gatedualsignoffsatisfied">↗ Gate Dual Signoff Satisfied <span class="ref-pill-tbl">WorkflowSteps</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-workflowsteps-gatesignoffunmet">Gate Signoff Unmet <span class="ref-pill-tbl">WorkflowSteps</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-workflows-countunmetgatesignoffs">Count Unmet Gate Signoffs <span class="ref-pill-tbl">Workflows</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-workflows-hasunmetgatesignoff">Has Unmet Gate Signoff <span class="ref-pill-tbl">Workflows</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-complianceverdicts-hasunmetgatesignoff">Has Unmet Gate Signoff <span class="ref-pill-tbl">ComplianceVerdicts</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-complianceverdicts-isatcompliancerisk">Is At Compliance Risk <span class="ref-pill-tbl">ComplianceVerdicts</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-complianceverdicts-verdictconcept">Verdict Concept <span class="ref-pill-tbl">ComplianceVerdicts</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-complianceverdicts-verdict">Verdict <span class="ref-pill-tbl">ComplianceVerdicts</span></a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">10</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-raw" href="#f-approvalgates-requiresdualsignoffoffhours">● Requires Dual Signoff Off Hours <span class="ref-pill-tbl">ApprovalGates</span></a>
+        <a class="ref-pill tone-raw" href="#f-workflows-isoffhoursdeployment">● Is Off Hours Deployment <span class="ref-pill-tbl">Workflows</span></a>
+        <a class="ref-pill tone-rel" href="#f-workflowsteps-workflow">⇢ Workflow <span class="ref-pill-tbl">WorkflowSteps</span></a>
+        <a class="ref-pill tone-raw" href="#f-workflows-workflowid">● Workflow ID <span class="ref-pill-tbl">Workflows</span></a>
+        <a class="ref-pill tone-rel" href="#f-approvalgates-workflowstep">⇢ Workflow Step <span class="ref-pill-tbl">ApprovalGates</span></a>
+        <a class="ref-pill tone-raw" href="#f-workflowsteps-workflowstepid">● Workflow Step ID <span class="ref-pill-tbl">WorkflowSteps</span></a>
+        <a class="ref-pill tone-rel" href="#f-roles-filledbyhumanagent">⇢ Filled by Human Agent <span class="ref-pill-tbl">Roles</span></a>
+        <a class="ref-pill tone-rel" href="#f-workflowsteps-assignedrole">⇢ Assigned Role <span class="ref-pill-tbl">WorkflowSteps</span></a>
+        <a class="ref-pill tone-raw" href="#f-roles-roleid">● Role ID <span class="ref-pill-tbl">Roles</span></a>
+        <a class="ref-pill tone-rel" href="#f-roles-delegatesto">⇢ Delegates to <span class="ref-pill-tbl">Roles</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">The gate's verdict witness. TRUE unless the gate requires dual sign-off AND the run is off-hours AND two human approvers are NOT available along the delegation chain. In other words: a required off-hours dual-signoff gate is satisfied only when both the gate role and its delegate are human-filled. Drives Workflows.HasUnmetGateSignoff and, through it, the compliance verdict.</p>
     </article>
 </section>
 <section class="entity" id="t-stepprecedence" data-entity="Step Precedence">
@@ -2897,7 +3614,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">4 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-46</span>
+      <span class="pill pill-dr">DR-56</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -2955,7 +3672,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">5 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-47</span>
+      <span class="pill pill-dr">DR-57</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -3009,7 +3726,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">6 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-48</span>
+      <span class="pill pill-dr">DR-58</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -3053,7 +3770,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-49</span>
+      <span class="pill pill-dr">DR-59</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -3151,7 +3868,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-50</span>
+      <span class="pill pill-dr">DR-60</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -3197,7 +3914,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-51</span>
+      <span class="pill pill-dr">DR-61</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -3237,7 +3954,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-52</span>
+      <span class="pill pill-dr">DR-62</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -3430,7 +4147,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-53</span>
+      <span class="pill pill-dr">DR-63</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -3487,7 +4204,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-54</span>
+      <span class="pill pill-dr">DR-64</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -3535,7 +4252,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-55</span>
+      <span class="pill pill-dr">DR-65</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -3591,7 +4308,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-56</span>
+      <span class="pill pill-dr">DR-66</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -3637,7 +4354,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-57</span>
+      <span class="pill pill-dr">DR-67</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -3677,7 +4394,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-58</span>
+      <span class="pill pill-dr">DR-68</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -3759,7 +4476,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-59</span>
+      <span class="pill pill-dr">DR-69</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -3805,7 +4522,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-60</span>
+      <span class="pill pill-dr">DR-70</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -3886,7 +4603,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-61</span>
+      <span class="pill pill-dr">DR-71</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -3932,7 +4649,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-62</span>
+      <span class="pill pill-dr">DR-72</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -4025,7 +4742,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-63</span>
+      <span class="pill pill-dr">DR-73</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -4071,7 +4788,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-64</span>
+      <span class="pill pill-dr">DR-74</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -4152,7 +4869,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-65</span>
+      <span class="pill pill-dr">DR-75</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -4198,7 +4915,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-66</span>
+      <span class="pill pill-dr">DR-76</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -4304,7 +5021,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-67</span>
+      <span class="pill pill-dr">DR-77</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -4350,7 +5067,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-68</span>
+      <span class="pill pill-dr">DR-78</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -4456,7 +5173,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-69</span>
+      <span class="pill pill-dr">DR-79</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -4502,7 +5219,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-70</span>
+      <span class="pill pill-dr">DR-80</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -4608,7 +5325,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-71</span>
+      <span class="pill pill-dr">DR-81</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -4654,7 +5371,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-72</span>
+      <span class="pill pill-dr">DR-82</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -4760,7 +5477,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">4 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-73</span>
+      <span class="pill pill-dr">DR-83</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -4818,7 +5535,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">5 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-74</span>
+      <span class="pill pill-dr">DR-84</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -4872,7 +5589,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">6 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-75</span>
+      <span class="pill pill-dr">DR-85</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -5012,7 +5729,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-76</span>
+      <span class="pill pill-dr">DR-86</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -5062,7 +5779,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-77</span>
+      <span class="pill pill-dr">DR-87</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -5108,7 +5825,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-78</span>
+      <span class="pill pill-dr">DR-88</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -5170,7 +5887,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-79</span>
+      <span class="pill pill-dr">DR-89</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -5226,7 +5943,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">3 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-80</span>
+      <span class="pill pill-dr">DR-90</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -5278,7 +5995,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">4 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-81</span>
+      <span class="pill pill-dr">DR-91</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -5320,7 +6037,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-82</span>
+      <span class="pill pill-dr">DR-92</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -5374,7 +6091,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-83</span>
+      <span class="pill pill-dr">DR-93</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -5430,7 +6147,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-84</span>
+      <span class="pill pill-dr">DR-94</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -5480,7 +6197,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">3 hops from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-85</span>
+      <span class="pill pill-dr">DR-95</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -5539,7 +6256,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">4 hops from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-86</span>
+      <span class="pill pill-dr">DR-96</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -5592,7 +6309,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">5 hops from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-87</span>
+      <span class="pill pill-dr">DR-97</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -5653,7 +6370,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-88</span>
+      <span class="pill pill-dr">DR-98</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -5704,7 +6421,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">integer</span>
-      <span class="pill pill-dr">DR-89</span>
+      <span class="pill pill-dr">DR-99</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -5754,7 +6471,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">3 hops from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-90</span>
+      <span class="pill pill-dr">DR-100</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -5814,7 +6531,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">5 hops from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-91</span>
+      <span class="pill pill-dr">DR-101</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -5869,14 +6586,82 @@ html.show-consumers .elem-consumers{display:block}
     </details>
     <p class="field-note elem elem-desc">Whether any step breaks the human-approval consistency rule. Pulled from Workflows.HasConsistencyViolation. This is the 'no broken rules' input to the verdict: a structural inconsistency (an approval step not filled by a human) is itself a compliance risk, independent of staleness or time budget.</p>
     </article>
+  <article class="field tone-lookup" id="f-complianceverdicts-hasunmetgatesignoff" data-entity="Compliance Verdict" data-field="Has Unmet Gate Signoff">
+    <div class="field-head">
+      <span class="field-glyph" title="Lookup">↗</span>
+      <span class="field-name">Has Unmet Gate Signoff</span>
+      <span class="pill pill-type">Lookup</span>
+      <span class="pill pill-depth">10 hops from ground truth</span>
+      <span class="pill pill-muted">boolean</span>
+      <span class="pill pill-dr">DR-102</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak</span>
+        <p class="view-body">A compliance verdict's <a class="ref" href="#f-workflows-hasunmetgatesignoff">has unmet gate signoff</a> is true when the compliance verdict's <a class="ref" href="#f-complianceverdicts-workflow">workflow</a> has an unmet gate signoff.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In English</span>
+        <p class="view-body">The <a class="ref" href="#f-workflows-hasunmetgatesignoff">has unmet gate signoff</a> of the linked <a class="ref" href="#f-complianceverdicts-workflow">workflow</a>.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>INDEX(<a class="fx-chip" href="#f-workflows-hasunmetgatesignoff">Has Unmet Gate Signoff</a>, MATCH(<a class="fx-chip" href="#f-complianceverdicts-workflow">Workflow</a>, <a class="fx-chip" href="#f-workflows-workflowid">Workflow ID</a>, 0))</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">3</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-calc" href="#f-workflows-hasunmetgatesignoff">
+          <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Has Unmet Gate Signoff</span><span class="input-table">Workflows</span></span>
+          <span class="input-en">Count unmet gate signoffs is greater than 0.</span>
+        </a>
+        <a class="input tone-rel" href="#f-complianceverdicts-workflow">
+          <span class="input-head"><span class="input-glyph">⇢</span><span class="input-name">Workflow</span><span class="input-table">ComplianceVerdicts</span></span>
+          <span class="input-en muted">1:1 FK to the Workflow this verdict summarizes.</span>
+        </a>
+        <a class="input tone-raw" href="#f-workflows-workflowid">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Workflow ID</span><span class="input-table">Workflows</span></span>
+          <span class="input-en muted">Ground truth · string</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-consumers elem elem-consumers">
+      <summary>Consumers <span class="count">1 direct</span> <span class="count count-muted">+2 transitive</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-calc" href="#f-complianceverdicts-isatcompliancerisk">ƒ Is At Compliance Risk <span class="ref-pill-tbl">ComplianceVerdicts</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-complianceverdicts-verdictconcept">Verdict Concept <span class="ref-pill-tbl">ComplianceVerdicts</span></a>
+        <a class="ref-pill tone-rel faded" href="#f-complianceverdicts-verdict">Verdict <span class="ref-pill-tbl">ComplianceVerdicts</span></a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">13</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-rel" href="#f-workflowsteps-workflow">⇢ Workflow <span class="ref-pill-tbl">WorkflowSteps</span></a>
+        <a class="ref-pill tone-raw" href="#f-workflows-workflowid">● Workflow ID <span class="ref-pill-tbl">Workflows</span></a>
+        <a class="ref-pill tone-rel" href="#f-workflowsteps-approvalgate">⇢ Approval Gate <span class="ref-pill-tbl">WorkflowSteps</span></a>
+        <a class="ref-pill tone-raw" href="#f-approvalgates-requiresdualsignoffoffhours">● Requires Dual Signoff Off Hours <span class="ref-pill-tbl">ApprovalGates</span></a>
+        <a class="ref-pill tone-raw" href="#f-workflows-isoffhoursdeployment">● Is Off Hours Deployment <span class="ref-pill-tbl">Workflows</span></a>
+        <a class="ref-pill tone-rel" href="#f-approvalgates-workflowstep">⇢ Workflow Step <span class="ref-pill-tbl">ApprovalGates</span></a>
+        <a class="ref-pill tone-raw" href="#f-workflowsteps-workflowstepid">● Workflow Step ID <span class="ref-pill-tbl">WorkflowSteps</span></a>
+        <a class="ref-pill tone-rel" href="#f-roles-filledbyhumanagent">⇢ Filled by Human Agent <span class="ref-pill-tbl">Roles</span></a>
+        <a class="ref-pill tone-rel" href="#f-workflowsteps-assignedrole">⇢ Assigned Role <span class="ref-pill-tbl">WorkflowSteps</span></a>
+        <a class="ref-pill tone-raw" href="#f-roles-roleid">● Role ID <span class="ref-pill-tbl">Roles</span></a>
+        <a class="ref-pill tone-rel" href="#f-roles-delegatesto">⇢ Delegates to <span class="ref-pill-tbl">Roles</span></a>
+        <a class="ref-pill tone-raw" href="#f-approvalgates-approvalgateid">● Approval Gate ID <span class="ref-pill-tbl">ApprovalGates</span></a>
+        <a class="ref-pill tone-rel" href="#f-complianceverdicts-workflow">⇢ Workflow <span class="ref-pill-tbl">ComplianceVerdicts</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">Whether any approval gate in this workflow is unsatisfied. Pulled from Workflows.HasUnmetGateSignoff. The gate's input to the verdict: an off-hours run through a gate that requires dual sign-off, without a second human approver available along the delegation chain, is a compliance risk in its own right. This is what gives the ApprovalGate subtype a measurable consequence.</p>
+    </article>
   <article class="field tone-calc" id="f-complianceverdicts-isatcompliancerisk" data-entity="Compliance Verdict" data-field="Is At Compliance Risk">
     <div class="field-head">
       <span class="field-glyph" title="Calculated">ƒ</span>
       <span class="field-name">Is At Compliance Risk</span>
       <span class="pill pill-type">Calculated</span>
-      <span class="pill pill-depth">6 hops from ground truth</span>
+      <span class="pill pill-depth">11 hops from ground truth</span>
       <span class="pill pill-muted">boolean</span>
-      <span class="pill pill-dr">DR-92</span>
+      <span class="pill pill-dr">DR-103</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -5885,15 +6670,15 @@ html.show-consumers .elem-consumers{display:block}
       </div>
       <div class="view elem elem-english">
         <span class="view-label">In English</span>
-        <p class="view-body"><a class="ref" href="#f-complianceverdicts-isstale">Is stale</a> and <a class="ref" href="#f-complianceverdicts-hasaiexecutedstep">has ai executed step</a>, <a class="ref" href="#f-complianceverdicts-isovertimebudget">is over time budget</a>, or <a class="ref" href="#f-complianceverdicts-hasconsistencyviolation">has consistency violation</a>.</p>
+        <p class="view-body"><a class="ref" href="#f-complianceverdicts-isstale">Is stale</a> and <a class="ref" href="#f-complianceverdicts-hasaiexecutedstep">has ai executed step</a>, <a class="ref" href="#f-complianceverdicts-isovertimebudget">is over time budget</a>, <a class="ref" href="#f-complianceverdicts-hasconsistencyviolation">has consistency violation</a>, or <a class="ref" href="#f-complianceverdicts-hasunmetgatesignoff">has unmet gate signoff</a>.</p>
       </div>
       <div class="view elem elem-formula">
         <span class="view-label">As a formula</span>
-        <div class="view-body fx"><span class="fx-eq">= </span>OR(AND(<a class="fx-chip" href="#f-complianceverdicts-isstale">Is Stale</a>, <a class="fx-chip" href="#f-complianceverdicts-hasaiexecutedstep">Has AI Executed Step</a>), <a class="fx-chip" href="#f-complianceverdicts-isovertimebudget">Is Over Time Budget</a>, <a class="fx-chip" href="#f-complianceverdicts-hasconsistencyviolation">Has Consistency Violation</a>)</div>
+        <div class="view-body fx"><span class="fx-eq">= </span>OR(AND(<a class="fx-chip" href="#f-complianceverdicts-isstale">Is Stale</a>, <a class="fx-chip" href="#f-complianceverdicts-hasaiexecutedstep">Has AI Executed Step</a>), <a class="fx-chip" href="#f-complianceverdicts-isovertimebudget">Is Over Time Budget</a>, <a class="fx-chip" href="#f-complianceverdicts-hasconsistencyviolation">Has Consistency Violation</a>, <a class="fx-chip" href="#f-complianceverdicts-hasunmetgatesignoff">Has Unmet Gate Signoff</a>)</div>
       </div>
     </div>
     <details class="prov prov-inputs elem elem-inputs" open>
-      <summary>Inputs <span class="count">4</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <summary>Inputs <span class="count">5</span> <span class="prov-hint">fields this rule reads</span></summary>
       <div class="prov-grid">
         <a class="input tone-lookup" href="#f-complianceverdicts-isstale">
           <span class="input-head"><span class="input-glyph">↗</span><span class="input-name">Is Stale</span><span class="input-table">ComplianceVerdicts</span></span>
@@ -5911,6 +6696,10 @@ html.show-consumers .elem-consumers{display:block}
           <span class="input-head"><span class="input-glyph">↗</span><span class="input-name">Has Consistency Violation</span><span class="input-table">ComplianceVerdicts</span></span>
           <span class="input-en">The has consistency violation of the linked workflow.</span>
         </a>
+        <a class="input tone-lookup" href="#f-complianceverdicts-hasunmetgatesignoff">
+          <span class="input-head"><span class="input-glyph">↗</span><span class="input-name">Has Unmet Gate Signoff</span><span class="input-table">ComplianceVerdicts</span></span>
+          <span class="input-en">The has unmet gate signoff of the linked workflow.</span>
+        </a>
       </div>
     </details>
     <details class="prov prov-consumers elem elem-consumers">
@@ -5921,7 +6710,7 @@ html.show-consumers .elem-consumers{display:block}
       </div>
     </details>
     <details class="prov prov-leaves elem elem-inputs">
-      <summary>Ground truth at the leaves <span class="count">12</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <summary>Ground truth at the leaves <span class="count">19</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
       <div class="prov-pills">
         <a class="ref-pill tone-raw" href="#f-workflows-modified">● Modified <span class="ref-pill-tbl">Workflows</span></a>
         <a class="ref-pill tone-raw" href="#f-workflows-stalenessthresholdmonths">● Staleness Threshold Months <span class="ref-pill-tbl">Workflows</span></a>
@@ -5935,9 +6724,16 @@ html.show-consumers .elem-consumers{display:block}
         <a class="ref-pill tone-raw" href="#f-workflows-maxplanminutes">● Max Plan Minutes <span class="ref-pill-tbl">Workflows</span></a>
         <a class="ref-pill tone-raw" href="#f-workflowsteps-requireshumanapproval">● Requires Human Approval <span class="ref-pill-tbl">WorkflowSteps</span></a>
         <a class="ref-pill tone-rel" href="#f-roles-filledbyhumanagent">⇢ Filled by Human Agent <span class="ref-pill-tbl">Roles</span></a>
+        <a class="ref-pill tone-rel" href="#f-workflowsteps-approvalgate">⇢ Approval Gate <span class="ref-pill-tbl">WorkflowSteps</span></a>
+        <a class="ref-pill tone-raw" href="#f-approvalgates-requiresdualsignoffoffhours">● Requires Dual Signoff Off Hours <span class="ref-pill-tbl">ApprovalGates</span></a>
+        <a class="ref-pill tone-raw" href="#f-workflows-isoffhoursdeployment">● Is Off Hours Deployment <span class="ref-pill-tbl">Workflows</span></a>
+        <a class="ref-pill tone-rel" href="#f-approvalgates-workflowstep">⇢ Workflow Step <span class="ref-pill-tbl">ApprovalGates</span></a>
+        <a class="ref-pill tone-raw" href="#f-workflowsteps-workflowstepid">● Workflow Step ID <span class="ref-pill-tbl">WorkflowSteps</span></a>
+        <a class="ref-pill tone-rel" href="#f-roles-delegatesto">⇢ Delegates to <span class="ref-pill-tbl">Roles</span></a>
+        <a class="ref-pill tone-raw" href="#f-approvalgates-approvalgateid">● Approval Gate ID <span class="ref-pill-tbl">ApprovalGates</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">THE VERDICT. True when the workflow is (stale AND has an AI agent executing a step) — the article's closing business question — OR over its planned-runtime budget OR has any human-approval consistency violation. The first disjunct is the article's headline finale verbatim; the second gives the step-duration literal a live compliance consequence; the third enforces an implicit no-broken-rules rule, so a workflow with a structural inconsistency can never read COMPLIANT. Fully derived: flip the Modified date, the role's filledBy agent, or any step's duration, and this recomputes on the next read.</p>
+    <p class="field-note elem elem-desc">THE VERDICT. True when the workflow is (stale AND has an AI agent executing a step) — the article's closing business question — OR over its planned-runtime budget OR has any human-approval consistency violation OR has any unmet approval-gate sign-off. The first disjunct is the article's headline finale verbatim; the second gives the step-duration literal a live compliance consequence; the third enforces an implicit no-broken-rules rule; the fourth gives the approval gate its first measurable consequence (a required off-hours dual sign-off with no second human approver). A workflow with any of these can never read COMPLIANT. Fully derived: flip the Modified date, the role's filledBy agent, any step's duration, the off-hours flag, or the gate's dual-signoff policy, and this recomputes on the next read.</p>
     </article>
   <article class="field tone-rel" id="f-complianceverdicts-verdictconcept" data-entity="Compliance Verdict" data-field="Verdict Concept">
     <div class="field-head">
@@ -5958,7 +6754,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Lookup</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-93</span>
+      <span class="pill pill-dr">DR-104</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -6014,7 +6810,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-94</span>
+      <span class="pill pill-dr">DR-105</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -6060,7 +6856,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-95</span>
+      <span class="pill pill-dr">DR-106</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -6100,7 +6896,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-96</span>
+      <span class="pill pill-dr">DR-107</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">

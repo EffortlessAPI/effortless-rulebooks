@@ -248,6 +248,26 @@ RETURNS BOOLEAN AS $$
   SELECT (calc_workflows_count_total_plan_minutes(p_workflow_id) > (SELECT max_plan_minutes FROM workflows WHERE workflow_id = p_workflow_id))::boolean;
 $$ LANGUAGE sql STABLE;
 
+-- calc_workflows_count_unmet_gate_signoffs
+-- Field: Workflows.CountUnmetGateSignoffs
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_workflows_count_unmet_gate_signoffs(p_workflow_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM workflow_steps WHERE workflow = (SELECT NULLIF(workflow_id, '') FROM workflows WHERE workflow_id = p_workflow_id) AND calc_workflow_steps_gate_signoff_unmet(workflow_step_id) = TRUE))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_workflows_has_unmet_gate_signoff
+-- Field: Workflows.HasUnmetGateSignoff
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_workflows_has_unmet_gate_signoff(p_workflow_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_workflows_count_unmet_gate_signoffs(p_workflow_id))::NUMERIC > 0)::boolean;
+$$ LANGUAGE sql STABLE;
+
 -- calc_workflows_count_derivation_links
 -- Field: Workflows.CountDerivationLinks
 -- Type: aggregation | DataType: integer | Returns: INTEGER
@@ -383,6 +403,28 @@ RETURNS TEXT AS $$
   SELECT (SELECT owned_by::text FROM roles WHERE role_id = (SELECT assigned_role FROM workflow_steps WHERE workflow_step_id = p_workflow_step_id));
 $$ LANGUAGE sql STABLE;
 
+-- calc_workflow_steps_is_off_hours_deployment
+-- Field: WorkflowSteps.IsOffHoursDeployment
+-- Type: lookup | DataType: boolean | Returns: BOOLEAN
+-- Lookup: IsOffHoursDeployment from related Workflows
+
+
+CREATE OR REPLACE FUNCTION calc_workflow_steps_is_off_hours_deployment(p_workflow_step_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (SELECT is_off_hours_deployment::boolean FROM workflows WHERE workflow_id = (SELECT workflow FROM workflow_steps WHERE workflow_step_id = p_workflow_step_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_workflow_steps_gate_dual_signoff_satisfied
+-- Field: WorkflowSteps.GateDualSignoffSatisfied
+-- Type: lookup | DataType: boolean | Returns: BOOLEAN
+-- Lookup: DualSignoffSatisfied from related ApprovalGates
+
+
+CREATE OR REPLACE FUNCTION calc_workflow_steps_gate_dual_signoff_satisfied(p_workflow_step_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT calc_approval_gates_dual_signoff_satisfied((SELECT approval_gate FROM workflow_steps WHERE workflow_step_id = p_workflow_step_id));
+$$ LANGUAGE sql STABLE;
+
 -- get_workflows_display_name
 -- Helper function: Get DisplayName from Workflows by WorkflowId
 -- Used for join-free cross-table references in aggregations
@@ -452,6 +494,15 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION get_workflows_staleness_threshold_months(p_workflow_id TEXT)
 RETURNS INTEGER AS $$
   SELECT (SELECT staleness_threshold_months FROM workflows WHERE workflow_id = p_workflow_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_workflows_is_off_hours_deployment
+-- Helper function: Get IsOffHoursDeployment from Workflows by WorkflowId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_workflows_is_off_hours_deployment(p_workflow_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (SELECT is_off_hours_deployment FROM workflows WHERE workflow_id = p_workflow_id);
 $$ LANGUAGE sql STABLE;
 
 -- get_roles_display_name
@@ -560,6 +611,15 @@ RETURNS INTEGER AS $$
   SELECT (SELECT escalation_threshold_hours FROM approval_gates WHERE approval_gate_id = p_approval_gate_id);
 $$ LANGUAGE sql STABLE;
 
+-- get_approval_gates_requires_dual_signoff_off_hours
+-- Helper function: Get RequiresDualSignoffOffHours from ApprovalGates by ApprovalGateId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_approval_gates_requires_dual_signoff_off_hours(p_approval_gate_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (SELECT requires_dual_signoff_off_hours FROM approval_gates WHERE approval_gate_id = p_approval_gate_id);
+$$ LANGUAGE sql STABLE;
+
 -- calc_workflow_steps_relative_path
 -- Field: WorkflowSteps.RelativePath
 -- Type: calculated | DataType: string | Returns: TEXT
@@ -659,6 +719,16 @@ RETURNS BOOLEAN AS $$
   SELECT (calc_workflow_steps_owning_department(p_workflow_step_id) = 'ntwf-engineering')::boolean;
 $$ LANGUAGE sql STABLE;
 
+-- calc_workflow_steps_gate_signoff_unmet
+-- Field: WorkflowSteps.GateSignoffUnmet
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_workflow_steps_gate_signoff_unmet(p_workflow_step_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((NOT ((((SELECT NULLIF(approval_gate, '') FROM workflow_steps WHERE workflow_step_id = p_workflow_step_id)) IS NULL OR ((SELECT NULLIF(approval_gate, '') FROM workflow_steps WHERE workflow_step_id = p_workflow_step_id))::text = '')) AND NOT (calc_workflow_steps_gate_dual_signoff_satisfied(p_workflow_step_id))))::boolean;
+$$ LANGUAGE sql STABLE;
+
 -- calc_approval_gates_parent_path
 -- Field: ApprovalGates.ParentPath
 -- Type: lookup | DataType: string | Returns: TEXT
@@ -692,6 +762,39 @@ RETURNS TEXT AS $$
   SELECT (SELECT filled_by_human_agent::text FROM roles WHERE role_id = calc_approval_gates_gate_role(p_approval_gate_id));
 $$ LANGUAGE sql STABLE;
 
+-- calc_approval_gates_is_off_hours_deployment
+-- Field: ApprovalGates.IsOffHoursDeployment
+-- Type: lookup | DataType: boolean | Returns: BOOLEAN
+-- Lookup: IsOffHoursDeployment from related WorkflowSteps
+
+
+CREATE OR REPLACE FUNCTION calc_approval_gates_is_off_hours_deployment(p_approval_gate_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT calc_workflow_steps_is_off_hours_deployment((SELECT workflow_step FROM approval_gates WHERE approval_gate_id = p_approval_gate_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_approval_gates_gate_delegate_role
+-- Field: ApprovalGates.GateDelegateRole
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: DelegatesTo from related Roles
+
+
+CREATE OR REPLACE FUNCTION calc_approval_gates_gate_delegate_role(p_approval_gate_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT delegates_to::text FROM roles WHERE role_id = calc_approval_gates_gate_role(p_approval_gate_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_approval_gates_gate_delegate_human
+-- Field: ApprovalGates.GateDelegateHuman
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: FilledByHumanAgent from related Roles
+
+
+CREATE OR REPLACE FUNCTION calc_approval_gates_gate_delegate_human(p_approval_gate_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT filled_by_human_agent::text FROM roles WHERE role_id = calc_approval_gates_gate_delegate_role(p_approval_gate_id));
+$$ LANGUAGE sql STABLE;
+
 -- calc_approval_gates_relative_path
 -- Field: ApprovalGates.RelativePath
 -- Type: calculated | DataType: string | Returns: TEXT
@@ -719,6 +822,26 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_approval_gates_name(p_approval_gate_id TEXT)
 RETURNS TEXT AS $$
   SELECT (REPLACE(LOWER((SELECT NULLIF(display_name, '') FROM approval_gates WHERE approval_gate_id = p_approval_gate_id)), ' ', '-'))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_approval_gates_has_two_human_approvers
+-- Field: ApprovalGates.HasTwoHumanApprovers
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_approval_gates_has_two_human_approvers(p_approval_gate_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((NOT (((calc_approval_gates_gate_approver_human(p_approval_gate_id)) IS NULL OR (calc_approval_gates_gate_approver_human(p_approval_gate_id))::text = '')) AND NOT (((calc_approval_gates_gate_delegate_human(p_approval_gate_id)) IS NULL OR (calc_approval_gates_gate_delegate_human(p_approval_gate_id))::text = ''))))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_approval_gates_dual_signoff_satisfied
+-- Field: ApprovalGates.DualSignoffSatisfied
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_approval_gates_dual_signoff_satisfied(p_approval_gate_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (CASE WHEN (COALESCE((SELECT requires_dual_signoff_off_hours FROM approval_gates WHERE approval_gate_id = p_approval_gate_id), FALSE) AND calc_approval_gates_is_off_hours_deployment(p_approval_gate_id)) THEN (calc_approval_gates_has_two_human_approvers(p_approval_gate_id))::text ELSE (TRUE)::text END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_step_precedence_parent_path
@@ -1304,6 +1427,17 @@ RETURNS BOOLEAN AS $$
   SELECT calc_workflows_has_consistency_violation((SELECT workflow FROM compliance_verdicts WHERE compliance_verdict_id = p_compliance_verdict_id));
 $$ LANGUAGE sql STABLE;
 
+-- calc_compliance_verdicts_has_unmet_gate_signoff
+-- Field: ComplianceVerdicts.HasUnmetGateSignoff
+-- Type: lookup | DataType: boolean | Returns: BOOLEAN
+-- Lookup: HasUnmetGateSignoff from related Workflows
+
+
+CREATE OR REPLACE FUNCTION calc_compliance_verdicts_has_unmet_gate_signoff(p_compliance_verdict_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT calc_workflows_has_unmet_gate_signoff((SELECT workflow FROM compliance_verdicts WHERE compliance_verdict_id = p_compliance_verdict_id));
+$$ LANGUAGE sql STABLE;
+
 -- calc_compliance_verdicts_verdict
 -- Field: ComplianceVerdicts.Verdict
 -- Type: lookup | DataType: string | Returns: TEXT
@@ -1388,7 +1522,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_compliance_verdicts_is_at_compliance_risk(p_compliance_verdict_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (((calc_compliance_verdicts_is_stale(p_compliance_verdict_id) AND calc_compliance_verdicts_has_ai_executed_step(p_compliance_verdict_id)) OR calc_compliance_verdicts_is_over_time_budget(p_compliance_verdict_id) OR calc_compliance_verdicts_has_consistency_violation(p_compliance_verdict_id)))::boolean;
+  SELECT (((calc_compliance_verdicts_is_stale(p_compliance_verdict_id) AND calc_compliance_verdicts_has_ai_executed_step(p_compliance_verdict_id)) OR calc_compliance_verdicts_is_over_time_budget(p_compliance_verdict_id) OR calc_compliance_verdicts_has_consistency_violation(p_compliance_verdict_id) OR calc_compliance_verdicts_has_unmet_gate_signoff(p_compliance_verdict_id)))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_compliance_verdicts_verdict_concept

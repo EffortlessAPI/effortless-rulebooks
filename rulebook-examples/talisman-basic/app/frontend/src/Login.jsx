@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef, useCallback } from "react";
 import { api, getBackend, setBackend, runControl } from "./api.js";
-import Triangle from "./Triangle.jsx";
+import SyncPanel from "./SyncPanel.jsx";
 
 // ===========================================================================
 // Login / control page — the "sync station".
@@ -54,37 +54,43 @@ export default function Login({ onEnter }) {
     onEnter(chosen);
   };
 
-  const runAction = useCallback(async (action) => {
+  // One streaming runner for everything: the manual named actions AND the
+  // SyncPanel's {path, body, label} descriptors. `running` holds the id/label of
+  // the active build (truthy = a build is in flight); it streams into the shared
+  // console and re-polls the triangle/diff when done.
+  const runDescriptor = useCallback(async ({ id, path, body = null, label }) => {
     if (running) return;
-    setRunning(action.id);
+    setRunning(id || label);
     setResult(null);
     setError(null);
-    setLog([`▶ ${action.label}`]);
+    setLog([`▶ ${label}`]);
     try {
-      await runControl(action.path, (ev) => {
+      await runControl(path, (ev) => {
         if (ev.type === "step") appendLog(`\n— ${ev.label} —`);
         else if (ev.type === "log") appendLog(ev.line);
         else if (ev.type === "done") { appendLog(`\n✓ ${ev.action} complete`); setResult("done"); }
         else if (ev.type === "error") { appendLog(`\n✗ ${ev.error}`); setResult("error"); }
-      });
+      }, body);
     } catch (e) {
       appendLog(`\n✗ ${e.message}`);
       setResult("error");
     } finally {
       setRunning(null);
       // A build (success OR fail) may have moved the stores — re-poll the
-      // triangle so it relocks (or re-flags) live.
+      // triangle + diff so they relock (or re-flag) live.
       setTriKey((k) => k + 1);
     }
   }, [running, appendLog]);
 
-  // The triangle hands us an action *id* (e.g. "rebuild-from-postgres"); resolve
-  // it to the full action descriptor the server advertised and run it through the
-  // same path as the manual buttons, so the build streams in the one console.
-  const runActionById = useCallback((id) => {
-    const action = actions.find((a) => a.id === id);
-    if (action) runAction(action);
-  }, [actions, runAction]);
+  // Manual named-action buttons (Reset / Rebuild / Rebuild-from-X).
+  const runAction = useCallback((action) => {
+    runDescriptor({ id: action.id, path: action.path, body: null, label: action.label });
+  }, [runDescriptor]);
+
+  // SyncPanel hands us a ready descriptor ({path, body, label}); just run it.
+  const runSyncDescriptor = useCallback((desc) => {
+    runDescriptor({ id: desc.kind, path: desc.path, body: desc.body, label: desc.label });
+  }, [runDescriptor]);
 
   return (
     <div className="login">
@@ -120,16 +126,18 @@ export default function Login({ onEnter }) {
         </section>
 
         <section className="login-section">
-          <h2>2 · The three stores</h2>
+          <h2>2 · Sync the three stores</h2>
           <p className="login-hint">
             The rulebook is the <strong>head</strong>; the reasoner (db.json) and
-            Postgres are its two <strong>legs</strong>. When one drifts ahead, it
-            lights up — click to flow the change back to the hub and down into the
-            other engine. When all three agree, the triangle goes quiet.
+            Postgres are its two <strong>legs</strong>. Pick which store is
+            authoritative (HEAD) — the most-recently-edited one is suggested, but
+            <em> any</em> store can win at any time. The diff shows exactly which
+            values each other store would lose; then push HEAD into both, into one
+            leg, or up into the hub.
           </p>
-          <Triangle
-            onSync={runActionById}
-            runningAction={running}
+          <SyncPanel
+            onRunSync={runSyncDescriptor}
+            running={running}
             refreshKey={triKey}
           />
         </section>
@@ -137,10 +145,10 @@ export default function Login({ onEnter }) {
         <section className="login-section">
           <h2>3 · Manual rebuild</h2>
           <p className="login-hint">
-            The explicit controls behind the triangle. A <em>Rebuild from X</em>
-            exports that engine’s rows back into the rulebook and rebuilds
-            <em> both</em>. <em>Reset</em> restores the rulebook to its committed
-            baseline. Builds run on the server and stream below.
+            The explicit named controls behind the sync station. A <em>Rebuild
+            from X</em> exports that engine’s rows back into the rulebook and
+            rebuilds <em>both</em>. <em>Reset</em> restores the rulebook to its
+            committed baseline. Builds run on the server and stream below.
           </p>
           <div className="action-grid">
             {actions.map((a) => (

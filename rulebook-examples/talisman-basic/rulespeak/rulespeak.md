@@ -28,6 +28,8 @@ _The NTWF (Talisman's Special Solutions Workflow) ontology from Jessica Talisman
 | Is Stale and Has AI Agent | True when all of the following hold: the is stale flag is set and the has AI agent step flag is set. | _The article's headline business question, as one boolean: a workflow that is BOTH stale (not reviewed in 12 months) AND has an AI-executed step — the highest compliance risk. Joins the metadata layer (dct:modified) with the accountability layer (filledBy → AIAgent) the way the closing SPARQL demo does, but as a single derived column._ |
 | Count Total Plan Minutes | The total step duration minutes across the workflow steps related to the workflow. | _Total planned runtime of the workflow: the sum of StepDurationMinutes over all of its steps. The live consumer of the per-step duration literal. EXTENSION beyond the source article (which records stepDurationMinutes but never sums it). Compared against MaxPlanMinutes to derive IsOverTimeBudget._ |
 | Is Over Time Budget | True when the count total plan minutes is greater than the max plan minutes. | _TRUE iff the workflow's total planned runtime (CountTotalPlanMinutes) exceeds its configured budget (MaxPlanMinutes). EXTENSION beyond the source article — a third compliance input alongside staleness and AI-execution, giving the step-duration literal a visible derived consequence. Editing any step's StepDurationMinutes recomputes the sum and can flip this boolean, which folds into IsAtComplianceRisk._ |
+| Count Unmet Gate Signoffs | The number of the workflow's workflow steps that are gate signoff unmet. | _Number of this workflow's steps whose approval gate is NOT satisfied (an off-hours run where the gate requires dual sign-off but two human approvers are not available along the delegation chain). Rollup over WorkflowSteps.GateSignoffUnmet. A clean run holds this at 0._ |
+| Has Unmet Gate Signoff | True when the count unmet gate signoffs is greater than 0. | _TRUE iff any approval gate in this workflow is unsatisfied (CountUnmetGateSignoffs > 0). The gate's contribution to the compliance verdict: a required off-hours dual-signoff gate without a second human approver is itself a compliance risk. Folds into IsAtComplianceRisk, so toggling a gate's dual-signoff policy, flagging the run off-hours, or breaking the delegation chain can flip the verdict._ |
 | Count Derivation Links | The number of the workflow's workflow artifacts that have a derivation parent. | _Number of prov:wasDerivedFrom links among this workflow's artifacts (rollup over WorkflowArtifacts.HasDerivationParent). Answers the lineage half of CQ4: 5 artifacts form a chain with 4 derivation links._ |
 | Count Legal Owned Steps | The number of the workflow's workflow steps that are legal owned. | _Number of steps in this workflow whose owning department is Legal (rollup over WorkflowSteps.IsLegalOwned). CQ7: exactly one Legal-owned step in the Production Deployment workflow._ |
 | Count Engineering Owned Steps | The number of the workflow's workflow steps that are engineering owned. | _Number of steps whose owning department is Engineering (rollup over WorkflowSteps.IsEngineeringOwned). Feeds CQ7's Engineering-involvement check._ |
@@ -52,6 +54,9 @@ _The NTWF (Talisman's Special Solutions Workflow) ontology from Jessica Talisman
 | Owning Department | The owned by of the workflow step's assigned role. | _The department that owns this step's assigned role, resolved through AssignedRole → Roles.OwnedBy. Lets a workflow report which departments its steps touch (CQ7: 'which workflows involve both Engineering and Legal, and at what steps do they intersect')._ |
 | Is Legal Owned | True when the owning department is the literal “ntwf-legal-dept”. | _TRUE iff this step's owning department is Legal. Rolls up to CQ7's count of Legal-owned steps (exactly one in the Production Deployment workflow)._ |
 | Is Engineering Owned | True when the owning department is the literal “ntwf-engineering”. | _TRUE iff this step's owning department is Engineering. Rolls up to CQ7's Engineering-involvement check._ |
+| Is Off Hours Deployment | True when the workflow step's workflow is off hours deployment. | _Whether this step's workflow is flagged as an off-hours deployment (pulled from Workflows.IsOffHoursDeployment). Brought down to the step so an ApprovalGate specializing this step can read the off-hours bit for its dual-signoff rule._ |
+| Gate Dual Signoff Satisfied | True when the workflow step's approval gate is dual signoff satisfied. | _The DualSignoffSatisfied verdict of the approval gate specializing this step, if any (gate → ApprovalGates.DualSignoffSatisfied). Blank for ordinary steps that have no gate. The bridge that brings the gate's verdict up to the step so it can be rolled up to the workflow._ |
+| Gate Signoff Unmet | True when all of the following hold: the approval gate has a value and it is not the case that the gate dual signoff satisfied flag is set. | _TRUE iff this step has an approval gate AND that gate's dual-signoff policy is NOT satisfied. FALSE for steps with no gate, and for gates that are satisfied. Counted by Workflows.CountUnmetGateSignoffs to fold the gate into the compliance verdict._ |
 | **Approval Gate** | An approval gate is identified by its name and is related to optionally a workflow step. | — |
 | Parent Path | The relative path of the approval gate's workflow step. | _Helper: the WorkflowSteps parent's RelativePath, pulled across the WorkflowStep FK. Exists so RelativePath can concatenate the '/approval-gates/' segment using only local-field '&' concat (the transpiler compiles a lookup as a pure passthrough, not a lookup+concat)._ |
 | Relative Path | Computed as the parent path, followed by the literal “/approval-gates/”, followed by the approval gate ID. | _Stable, DAG-derived location: this row nests under its WorkflowSteps parent. Concatenates the parent's path (ParentPath) with '/approval-gates/' + this row's primary key. The DAG performs the recursion — one hop per table via ParentPath — so the full ancestry is encoded without a recursive formula. Unique by construction._ |
@@ -59,6 +64,11 @@ _The NTWF (Talisman's Special Solutions Workflow) ontology from Jessica Talisman
 | Name | Computed as the lower-cased display name with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> | — |
 | Gate Role | The assigned role of the approval gate's workflow step. | _The role responsible for this gate's underlying step, resolved through WorkflowStep → WorkflowSteps.AssignedRole. First hop of the CQ2 chain (gate → role → approver)._ |
 | Gate Approver Human | The filled by human agent of the approval gate's gate role. | _The human agent who approves at this gate, resolved through the two-hop chain gate → GateRole → Roles.FilledByHumanAgent. Answers CQ2 ('who is responsible for approving a production deployment') directly: the release-approval gate resolves to the Release Manager role, filled by Maria Gonzalez._ |
+| Is Off Hours Deployment | True when the approval gate's workflow step is off hours deployment. | _Whether the workflow this gate belongs to is flagged as an off-hours deployment. Pulled from Workflows.IsOffHoursDeployment via the gate's step → workflow. The off-hours bit is an editable workflow fact; this lookup brings it down to the gate so the dual-signoff rule can combine the two toggles._ |
+| Gate Delegate Role | The delegates to of the approval gate's gate role. | _The role the gate's role escalates to (gate → GateRole → Roles.DelegatesTo). The second approver in the dual-signoff rule comes from here. Ties the gate directly to the delegation/escalation hierarchy._ |
+| Gate Delegate Human | The filled by human agent of the approval gate's gate delegate role. | _The human agent filling the gate's delegate role (gate → GateDelegateRole → Roles.FilledByHumanAgent). Empty when the delegate role is unfilled or filled by a non-human — which is exactly the condition that makes an off-hours dual-signoff gate fail._ |
+| Has Two Human Approvers | True when all of the following hold: the gate approver human has a value and the gate delegate human has a value. | _TRUE when BOTH the gate's role and its delegate role are filled by (non-empty) human agents. The structural precondition for a second sign-off: two distinct humans are available along the escalation chain._ |
+| Dual Signoff Satisfied | True when the has two human approvers if all of the following hold: the requires dual signoff off hours flag is set and the is off hours deployment flag is set, otherwise the TRUE. | _The gate's verdict witness. TRUE unless the gate requires dual sign-off AND the run is off-hours AND two human approvers are NOT available along the delegation chain. In other words: a required off-hours dual-signoff gate is satisfied only when both the gate role and its delegate are human-filled. Drives Workflows.HasUnmetGateSignoff and, through it, the compliance verdict._ |
 | **Step Precedence** | A step precedence is identified by its name and is related to a workflow step (its from step) and a workflow step (its to step). | — |
 | Parent Path | The relative path of the step precedence's from step. | _Helper: the WorkflowSteps parent's RelativePath, pulled across the FromStep FK. Exists so RelativePath can concatenate the '/precedence/' segment using only local-field '&' concat (the transpiler compiles a lookup as a pure passthrough, not a lookup+concat)._ |
 | Relative Path | Computed as the parent path, followed by the literal “/precedence/”, followed by the step precedence ID. | _Stable, DAG-derived location: this row nests under its WorkflowSteps parent. Concatenates the parent's path (ParentPath) with '/precedence/' + this row's primary key. The DAG performs the recursion — one hop per table via ParentPath — so the full ancestry is encoded without a recursive formula. Unique by construction._ |
@@ -117,7 +127,8 @@ _The NTWF (Talisman's Special Solutions Workflow) ontology from Jessica Talisman
 | Time Budget Minutes | The max plan minutes of the compliance verdict's workflow. | _The workflow's configured runtime budget, pulled from Workflows.MaxPlanMinutes. EXTENSION beyond the source article._ |
 | Is Over Time Budget | True when the compliance verdict's workflow is an over time budget. | _Whether total planned runtime exceeds the workflow's budget. Pulled from Workflows.IsOverTimeBudget. EXTENSION beyond the source article — the third compliance input alongside staleness and AI-execution._ |
 | Has Consistency Violation | True when the compliance verdict's workflow has a consistency violation. | _Whether any step breaks the human-approval consistency rule. Pulled from Workflows.HasConsistencyViolation. This is the 'no broken rules' input to the verdict: a structural inconsistency (an approval step not filled by a human) is itself a compliance risk, independent of staleness or time budget._ |
-| Is At Compliance Risk | True when at least one of the following holds: all of the following hold: the is stale flag is set and the has AI executed step flag is set; the is over time budget flag is set; or the has consistency violation flag is set. | _THE VERDICT. True when the workflow is (stale AND has an AI agent executing a step) — the article's closing business question — OR over its planned-runtime budget OR has any human-approval consistency violation. The first disjunct is the article's headline finale verbatim; the second gives the step-duration literal a live compliance consequence; the third enforces an implicit no-broken-rules rule, so a workflow with a structural inconsistency can never read COMPLIANT. Fully derived: flip the Modified date, the role's filledBy agent, or any step's duration, and this recomputes on the next read._ |
+| Has Unmet Gate Signoff | True when the compliance verdict's workflow has an unmet gate signoff. | _Whether any approval gate in this workflow is unsatisfied. Pulled from Workflows.HasUnmetGateSignoff. The gate's input to the verdict: an off-hours run through a gate that requires dual sign-off, without a second human approver available along the delegation chain, is a compliance risk in its own right. This is what gives the ApprovalGate subtype a measurable consequence._ |
+| Is At Compliance Risk | True when at least one of the following holds: all of the following hold: the is stale flag is set and the has AI executed step flag is set; the is over time budget flag is set; the has consistency violation flag is set; or the has unmet gate signoff flag is set. | _THE VERDICT. True when the workflow is (stale AND has an AI agent executing a step) — the article's closing business question — OR over its planned-runtime budget OR has any human-approval consistency violation OR has any unmet approval-gate sign-off. The first disjunct is the article's headline finale verbatim; the second gives the step-duration literal a live compliance consequence; the third enforces an implicit no-broken-rules rule; the fourth gives the approval gate its first measurable consequence (a required off-hours dual sign-off with no second human approver). A workflow with any of these can never read COMPLIANT. Fully derived: flip the Modified date, the role's filledBy agent, any step's duration, the off-hours flag, or the gate's dual-signoff policy, and this recomputes on the next read._ |
 | Verdict | The pref label of the compliance verdict's verdict concept. | _Human-readable rendering of the verdict for stakeholders — the PrefLabel of the resolved ComplianceVerdictConcepts option (VerdictConcept). No longer an inline string literal: the two possible values are defined rows in the ComplianceVerdictConcepts vocabulary, and this field looks up whichever one VerdictConcept selected._ |
 | **Scenario** | A scenario is identified by its name. | — |
 | Relative Path | Computed as the literal “scenarios/”, followed by the scenario ID. | _DAG-derived location for this Scenario row: root segment 'scenarios' + the primary key._ |
@@ -218,86 +229,97 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 | **DR-14 Is Stale and Has AI Agent** | A workflow is considered a stale and has AI agent if all of the following hold: the is stale flag is set and the has AI agent step flag is set. |
 | **DR-15 Count Total Plan Minutes** | A workflow's count total plan minutes is the total step duration minutes across the workflow steps related to the workflow. |
 | **DR-16 Is Over Time Budget** | A workflow is considered an over time budget if the count total plan minutes is greater than the max plan minutes. |
-| **DR-17 Count Derivation Links** | A workflow's count derivation links is the number of the workflow's workflow artifacts that have a derivation parent. |
-| **DR-18 Count Legal Owned Steps** | A workflow's count legal owned steps is the number of the workflow's workflow steps that are legal owned. |
-| **DR-19 Count Engineering Owned Steps** | A workflow's count engineering owned steps is the number of the workflow's workflow steps that are engineering owned. |
-| **DR-20 Involves Engineering and Legal** | A workflow is considered to involve engineering and legal if all of the following hold: the count engineering owned steps is greater than 0 and the count legal owned steps is greater than 0. |
-| **DR-21 Count Inferred Precedence Pairs** | A workflow's count inferred precedence pairs is the number of vw step precedence closure related to the workflow. |
-| **DR-22 Count Asserted Precedence Pairs** | A workflow's count asserted precedence pairs is the number of vw step precedence closure related to the workflow. |
-| **DR-23 Count of Precedence Closure Pairs** | A workflow's count of precedence closure pairs is computed as the count asserted precedence pairs plus the count inferred precedence pairs. |
-| **DR-24 Count Roles With Bad Filler Cardinality** | A workflow's count roles with bad filler cardinality is the number of roles related to the workflow. |
-| **DR-25 Parent Path** | A workflow step's parent path is the relative path of the workflow step's workflow. |
-| **DR-26 Relative Path** | A workflow step's relative path is computed as the parent path, followed by the literal “/steps/”, followed by the workflow step ID. |
-| **DR-27 Iri** | A workflow step's iri is computed as the relative path with every a slash replaced by a hyphen. |
-| **DR-28 Name** | A workflow step's name is computed as the lower-cased display name with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> |
-| **DR-29 Executing Human Agent** | A workflow step's executing human agent is the filled by human agent of the workflow step's assigned role. |
-| **DR-30 Executing AI Agent** | A workflow step's executing AI agent is the filled by AI agent of the workflow step's assigned role. |
-| **DR-31 Executing Automated Pipeline** | A workflow step's executing automated pipeline is the filled by automated pipeline of the workflow step's assigned role. |
-| **DR-32 Executing Agent Type** | The workflow step's executing agent type is determined by the following priority:<br>1. the literal “HumanAgent”, if the executing human agent has a value;<br>2. the literal “AIAgent”, if the executing AI agent has a value;<br>3. the literal “AutomatedPipeline”, if the executing automated pipeline has a value;<br>4. otherwise an empty string. |
-| **DR-33 Is Executed by AI** | A workflow step is considered an executed by AI if the executing AI agent has a value. |
-| **DR-34 Is Executed by Human** | A workflow step is considered an executed by human if the executing human agent has a value. |
-| **DR-35 Approval Consistency Violation** | A workflow step is flagged approval consistency violation if all of the following hold: the requires human approval flag is set and the executing human agent is blank. |
-| **DR-36 Approval is Human Filled** | A workflow step is flagged approval is human filled if the executing human agent has a value if the requires human approval flag is set, otherwise the TRUE. |
-| **DR-37 Owning Department** | A workflow step's owning department is the owned by of the workflow step's assigned role. |
-| **DR-38 Is Legal Owned** | A workflow step is considered legal owned if the owning department is the literal “ntwf-legal-dept”. |
-| **DR-39 Is Engineering Owned** | A workflow step is considered engineering owned if the owning department is the literal “ntwf-engineering”. |
-| **DR-40 Parent Path** | An approval gate's parent path is the relative path of the approval gate's workflow step. |
-| **DR-41 Relative Path** | An approval gate's relative path is computed as the parent path, followed by the literal “/approval-gates/”, followed by the approval gate ID. |
-| **DR-42 Iri** | An approval gate's iri is computed as the relative path with every a slash replaced by a hyphen. |
-| **DR-43 Name** | An approval gate's name is computed as the lower-cased display name with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> |
-| **DR-44 Gate Role** | An approval gate's gate role is the assigned role of the approval gate's workflow step. |
-| **DR-45 Gate Approver Human** | An approval gate's gate approver human is the filled by human agent of the approval gate's gate role. |
-| **DR-46 Parent Path** | A step precedence's parent path is the relative path of the step precedence's from step. |
-| **DR-47 Relative Path** | A step precedence's relative path is computed as the parent path, followed by the literal “/precedence/”, followed by the step precedence ID. |
-| **DR-48 Iri** | A step precedence's iri is computed as the relative path with every a slash replaced by a hyphen. |
-| **DR-49 Name** | A step precedence's name is computed as the from step, followed by the literal “ -> ”, followed by the to step. |
-| **DR-50 Relative Path** | A role's relative path is computed as the literal “roles/”, followed by the role ID. |
-| **DR-51 Iri** | A role's iri is computed as the relative path with every a slash replaced by a hyphen. |
-| **DR-52 Name** | A role's name is computed as the lower-cased display name with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> |
-| **DR-53 Filled by Arm Count** | A role's filled by arm count is computed as the count of the following that hold: the filled by human agent has a value; the filled by AI agent has a value; and the filled by automated pipeline has a value. |
-| **DR-54 Has Exactly One Filler** | A role is considered to have an exactly one filler if the filled by arm count is 1. |
-| **DR-55 Filler Type** | The role's filler type is determined by the following priority:<br>1. the literal “HumanAgent”, if the filled by human agent has a value;<br>2. the literal “AIAgent”, if the filled by AI agent has a value;<br>3. the literal “AutomatedPipeline”, if the filled by automated pipeline has a value;<br>4. otherwise an empty string. |
-| **DR-56 Relative Path** | A department's relative path is computed as the literal “departments/”, followed by the department ID. |
-| **DR-57 Iri** | A department's iri is computed as the relative path with every a slash replaced by a hyphen. |
-| **DR-58 Name** | A department's name is computed as the lower-cased display name with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> |
-| **DR-59 Relative Path** | A human agent's relative path is computed as the literal “human-agents/”, followed by the human agent ID. |
-| **DR-60 Iri** | A human agent's iri is computed as the relative path with every a slash replaced by a hyphen. |
-| **DR-61 Relative Path** | An AI agent's relative path is computed as the literal “ai-agents/”, followed by the AI agent ID. |
-| **DR-62 Iri** | An AI agent's iri is computed as the relative path with every a slash replaced by a hyphen. |
-| **DR-63 Relative Path** | An automated pipeline's relative path is computed as the literal “automated-pipelines/”, followed by the automated pipeline ID. |
-| **DR-64 Iri** | An automated pipeline's iri is computed as the relative path with every a slash replaced by a hyphen. |
-| **DR-65 Relative Path** | A workflow status concept's relative path is computed as the literal “concepts/workflow-status/”, followed by the concept ID. |
-| **DR-66 Iri** | A workflow status concept's iri is computed as the relative path with every a slash replaced by a hyphen. |
-| **DR-67 Relative Path** | A compliance verdict concept's relative path is computed as the literal “concepts/compliance-verdict/”, followed by the concept ID. |
-| **DR-68 Iri** | A compliance verdict concept's iri is computed as the relative path with every a slash replaced by a hyphen. |
-| **DR-69 Relative Path** | An agent capability concept's relative path is computed as the literal “concepts/agent-capability/”, followed by the concept ID. |
-| **DR-70 Iri** | An agent capability concept's iri is computed as the relative path with every a slash replaced by a hyphen. |
-| **DR-71 Relative Path** | A dataset's relative path is computed as the literal “datasets/”, followed by the dataset ID. |
-| **DR-72 Iri** | A dataset's iri is computed as the relative path with every a slash replaced by a hyphen. |
-| **DR-73 Parent Path** | A workflow artifact's parent path is the relative path of the workflow artifact's produced by step. |
-| **DR-74 Relative Path** | A workflow artifact's relative path is computed as the parent path, followed by the literal “/artifacts/”, followed by the artifact ID. |
-| **DR-75 Iri** | A workflow artifact's iri is computed as the relative path with every a slash replaced by a hyphen. |
-| **DR-76 Producing Agent Type** | The workflow artifact's producing agent type is determined by the following priority:<br>1. the literal “HumanAgent”, if the attributed to human agent has a value;<br>2. the literal “AIAgent”, if the attributed to AI agent has a value;<br>3. the literal “AutomatedPipeline”, if the attributed to automated pipeline has a value;<br>4. otherwise an empty string. |
-| **DR-77 Has Derivation Parent** | A workflow artifact is considered to have a derivation parent if the derived from artifact has a value. |
-| **DR-78 Produced by Workflow** | A workflow artifact's produced by workflow is the workflow of the workflow artifact's produced by step. |
-| **DR-79 Parent Path** | A compliance verdict's parent path is the relative path of the compliance verdict's workflow. |
-| **DR-80 Relative Path** | A compliance verdict's relative path is computed as the parent path, followed by the literal “/verdicts/”, followed by the compliance verdict ID. |
-| **DR-81 Iri** | A compliance verdict's iri is computed as the relative path with every a slash replaced by a hyphen. |
-| **DR-82 Name** | A compliance verdict's name is computed as the lower-cased workflow title with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> |
-| **DR-83 Workflow Title** | A compliance verdict's workflow title is the title of the compliance verdict's workflow. |
-| **DR-84 Months Since Review** | A compliance verdict's months since review is the months since modified of the compliance verdict's workflow. |
-| **DR-85 Is Stale** | A compliance verdict's is stale is true when the compliance verdict's workflow is a stale. |
-| **DR-86 AI Step Count** | A compliance verdict's AI step count is the count AI steps of the compliance verdict's workflow. |
-| **DR-87 Has AI Executed Step** | A compliance verdict's has AI executed step is true when the compliance verdict's workflow has an AI agent step. |
-| **DR-88 Total Plan Minutes** | A compliance verdict's total plan minutes is the count total plan minutes of the compliance verdict's workflow. |
-| **DR-89 Time Budget Minutes** | A compliance verdict's time budget minutes is the max plan minutes of the compliance verdict's workflow. |
-| **DR-90 Is Over Time Budget** | A compliance verdict's is over time budget is true when the compliance verdict's workflow is an over time budget. |
-| **DR-91 Has Consistency Violation** | A compliance verdict's has consistency violation is true when the compliance verdict's workflow has a consistency violation. |
-| **DR-92 Is At Compliance Risk** | A compliance verdict is considered at compliance risk if at least one of the following holds: all of the following hold: the is stale flag is set and the has AI executed step flag is set; the is over time budget flag is set; or the has consistency violation flag is set. |
-| **DR-93 Verdict** | A compliance verdict's verdict is the pref label of the compliance verdict's verdict concept. |
-| **DR-94 Relative Path** | A scenario's relative path is computed as the literal “scenarios/”, followed by the scenario ID. |
-| **DR-95 Iri** | A scenario's iri is computed as the relative path with every a slash replaced by a hyphen. |
-| **DR-96 Name** | A scenario's name is computed as the lower-cased label with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> |
+| **DR-17 Count Unmet Gate Signoffs** | A workflow's count unmet gate signoffs is the number of the workflow's workflow steps that are gate signoff unmet. |
+| **DR-18 Has Unmet Gate Signoff** | A workflow is considered to have an unmet gate signoff if the count unmet gate signoffs is greater than 0. |
+| **DR-19 Count Derivation Links** | A workflow's count derivation links is the number of the workflow's workflow artifacts that have a derivation parent. |
+| **DR-20 Count Legal Owned Steps** | A workflow's count legal owned steps is the number of the workflow's workflow steps that are legal owned. |
+| **DR-21 Count Engineering Owned Steps** | A workflow's count engineering owned steps is the number of the workflow's workflow steps that are engineering owned. |
+| **DR-22 Involves Engineering and Legal** | A workflow is considered to involve engineering and legal if all of the following hold: the count engineering owned steps is greater than 0 and the count legal owned steps is greater than 0. |
+| **DR-23 Count Inferred Precedence Pairs** | A workflow's count inferred precedence pairs is the number of vw step precedence closure related to the workflow. |
+| **DR-24 Count Asserted Precedence Pairs** | A workflow's count asserted precedence pairs is the number of vw step precedence closure related to the workflow. |
+| **DR-25 Count of Precedence Closure Pairs** | A workflow's count of precedence closure pairs is computed as the count asserted precedence pairs plus the count inferred precedence pairs. |
+| **DR-26 Count Roles With Bad Filler Cardinality** | A workflow's count roles with bad filler cardinality is the number of roles related to the workflow. |
+| **DR-27 Parent Path** | A workflow step's parent path is the relative path of the workflow step's workflow. |
+| **DR-28 Relative Path** | A workflow step's relative path is computed as the parent path, followed by the literal “/steps/”, followed by the workflow step ID. |
+| **DR-29 Iri** | A workflow step's iri is computed as the relative path with every a slash replaced by a hyphen. |
+| **DR-30 Name** | A workflow step's name is computed as the lower-cased display name with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> |
+| **DR-31 Executing Human Agent** | A workflow step's executing human agent is the filled by human agent of the workflow step's assigned role. |
+| **DR-32 Executing AI Agent** | A workflow step's executing AI agent is the filled by AI agent of the workflow step's assigned role. |
+| **DR-33 Executing Automated Pipeline** | A workflow step's executing automated pipeline is the filled by automated pipeline of the workflow step's assigned role. |
+| **DR-34 Executing Agent Type** | The workflow step's executing agent type is determined by the following priority:<br>1. the literal “HumanAgent”, if the executing human agent has a value;<br>2. the literal “AIAgent”, if the executing AI agent has a value;<br>3. the literal “AutomatedPipeline”, if the executing automated pipeline has a value;<br>4. otherwise an empty string. |
+| **DR-35 Is Executed by AI** | A workflow step is considered an executed by AI if the executing AI agent has a value. |
+| **DR-36 Is Executed by Human** | A workflow step is considered an executed by human if the executing human agent has a value. |
+| **DR-37 Approval Consistency Violation** | A workflow step is flagged approval consistency violation if all of the following hold: the requires human approval flag is set and the executing human agent is blank. |
+| **DR-38 Approval is Human Filled** | A workflow step is flagged approval is human filled if the executing human agent has a value if the requires human approval flag is set, otherwise the TRUE. |
+| **DR-39 Owning Department** | A workflow step's owning department is the owned by of the workflow step's assigned role. |
+| **DR-40 Is Legal Owned** | A workflow step is considered legal owned if the owning department is the literal “ntwf-legal-dept”. |
+| **DR-41 Is Engineering Owned** | A workflow step is considered engineering owned if the owning department is the literal “ntwf-engineering”. |
+| **DR-42 Is Off Hours Deployment** | A workflow step's is off hours deployment is true when the workflow step's workflow is off hours deployment. |
+| **DR-43 Gate Dual Signoff Satisfied** | A workflow step's gate dual signoff satisfied is true when the workflow step's approval gate is dual signoff satisfied. |
+| **DR-44 Gate Signoff Unmet** | A workflow step is flagged gate signoff unmet if all of the following hold: the approval gate has a value and it is not the case that the gate dual signoff satisfied flag is set. |
+| **DR-45 Parent Path** | An approval gate's parent path is the relative path of the approval gate's workflow step. |
+| **DR-46 Relative Path** | An approval gate's relative path is computed as the parent path, followed by the literal “/approval-gates/”, followed by the approval gate ID. |
+| **DR-47 Iri** | An approval gate's iri is computed as the relative path with every a slash replaced by a hyphen. |
+| **DR-48 Name** | An approval gate's name is computed as the lower-cased display name with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> |
+| **DR-49 Gate Role** | An approval gate's gate role is the assigned role of the approval gate's workflow step. |
+| **DR-50 Gate Approver Human** | An approval gate's gate approver human is the filled by human agent of the approval gate's gate role. |
+| **DR-51 Is Off Hours Deployment** | An approval gate's is off hours deployment is true when the approval gate's workflow step is off hours deployment. |
+| **DR-52 Gate Delegate Role** | An approval gate's gate delegate role is the delegates to of the approval gate's gate role. |
+| **DR-53 Gate Delegate Human** | An approval gate's gate delegate human is the filled by human agent of the approval gate's gate delegate role. |
+| **DR-54 Has Two Human Approvers** | An approval gate is considered to have a two human approvers if all of the following hold: the gate approver human has a value and the gate delegate human has a value. |
+| **DR-55 Dual Signoff Satisfied** | An approval gate is flagged dual signoff satisfied if the has two human approvers if all of the following hold: the requires dual signoff off hours flag is set and the is off hours deployment flag is set, otherwise the TRUE. |
+| **DR-56 Parent Path** | A step precedence's parent path is the relative path of the step precedence's from step. |
+| **DR-57 Relative Path** | A step precedence's relative path is computed as the parent path, followed by the literal “/precedence/”, followed by the step precedence ID. |
+| **DR-58 Iri** | A step precedence's iri is computed as the relative path with every a slash replaced by a hyphen. |
+| **DR-59 Name** | A step precedence's name is computed as the from step, followed by the literal “ -> ”, followed by the to step. |
+| **DR-60 Relative Path** | A role's relative path is computed as the literal “roles/”, followed by the role ID. |
+| **DR-61 Iri** | A role's iri is computed as the relative path with every a slash replaced by a hyphen. |
+| **DR-62 Name** | A role's name is computed as the lower-cased display name with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> |
+| **DR-63 Filled by Arm Count** | A role's filled by arm count is computed as the count of the following that hold: the filled by human agent has a value; the filled by AI agent has a value; and the filled by automated pipeline has a value. |
+| **DR-64 Has Exactly One Filler** | A role is considered to have an exactly one filler if the filled by arm count is 1. |
+| **DR-65 Filler Type** | The role's filler type is determined by the following priority:<br>1. the literal “HumanAgent”, if the filled by human agent has a value;<br>2. the literal “AIAgent”, if the filled by AI agent has a value;<br>3. the literal “AutomatedPipeline”, if the filled by automated pipeline has a value;<br>4. otherwise an empty string. |
+| **DR-66 Relative Path** | A department's relative path is computed as the literal “departments/”, followed by the department ID. |
+| **DR-67 Iri** | A department's iri is computed as the relative path with every a slash replaced by a hyphen. |
+| **DR-68 Name** | A department's name is computed as the lower-cased display name with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> |
+| **DR-69 Relative Path** | A human agent's relative path is computed as the literal “human-agents/”, followed by the human agent ID. |
+| **DR-70 Iri** | A human agent's iri is computed as the relative path with every a slash replaced by a hyphen. |
+| **DR-71 Relative Path** | An AI agent's relative path is computed as the literal “ai-agents/”, followed by the AI agent ID. |
+| **DR-72 Iri** | An AI agent's iri is computed as the relative path with every a slash replaced by a hyphen. |
+| **DR-73 Relative Path** | An automated pipeline's relative path is computed as the literal “automated-pipelines/”, followed by the automated pipeline ID. |
+| **DR-74 Iri** | An automated pipeline's iri is computed as the relative path with every a slash replaced by a hyphen. |
+| **DR-75 Relative Path** | A workflow status concept's relative path is computed as the literal “concepts/workflow-status/”, followed by the concept ID. |
+| **DR-76 Iri** | A workflow status concept's iri is computed as the relative path with every a slash replaced by a hyphen. |
+| **DR-77 Relative Path** | A compliance verdict concept's relative path is computed as the literal “concepts/compliance-verdict/”, followed by the concept ID. |
+| **DR-78 Iri** | A compliance verdict concept's iri is computed as the relative path with every a slash replaced by a hyphen. |
+| **DR-79 Relative Path** | An agent capability concept's relative path is computed as the literal “concepts/agent-capability/”, followed by the concept ID. |
+| **DR-80 Iri** | An agent capability concept's iri is computed as the relative path with every a slash replaced by a hyphen. |
+| **DR-81 Relative Path** | A dataset's relative path is computed as the literal “datasets/”, followed by the dataset ID. |
+| **DR-82 Iri** | A dataset's iri is computed as the relative path with every a slash replaced by a hyphen. |
+| **DR-83 Parent Path** | A workflow artifact's parent path is the relative path of the workflow artifact's produced by step. |
+| **DR-84 Relative Path** | A workflow artifact's relative path is computed as the parent path, followed by the literal “/artifacts/”, followed by the artifact ID. |
+| **DR-85 Iri** | A workflow artifact's iri is computed as the relative path with every a slash replaced by a hyphen. |
+| **DR-86 Producing Agent Type** | The workflow artifact's producing agent type is determined by the following priority:<br>1. the literal “HumanAgent”, if the attributed to human agent has a value;<br>2. the literal “AIAgent”, if the attributed to AI agent has a value;<br>3. the literal “AutomatedPipeline”, if the attributed to automated pipeline has a value;<br>4. otherwise an empty string. |
+| **DR-87 Has Derivation Parent** | A workflow artifact is considered to have a derivation parent if the derived from artifact has a value. |
+| **DR-88 Produced by Workflow** | A workflow artifact's produced by workflow is the workflow of the workflow artifact's produced by step. |
+| **DR-89 Parent Path** | A compliance verdict's parent path is the relative path of the compliance verdict's workflow. |
+| **DR-90 Relative Path** | A compliance verdict's relative path is computed as the parent path, followed by the literal “/verdicts/”, followed by the compliance verdict ID. |
+| **DR-91 Iri** | A compliance verdict's iri is computed as the relative path with every a slash replaced by a hyphen. |
+| **DR-92 Name** | A compliance verdict's name is computed as the lower-cased workflow title with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> |
+| **DR-93 Workflow Title** | A compliance verdict's workflow title is the title of the compliance verdict's workflow. |
+| **DR-94 Months Since Review** | A compliance verdict's months since review is the months since modified of the compliance verdict's workflow. |
+| **DR-95 Is Stale** | A compliance verdict's is stale is true when the compliance verdict's workflow is a stale. |
+| **DR-96 AI Step Count** | A compliance verdict's AI step count is the count AI steps of the compliance verdict's workflow. |
+| **DR-97 Has AI Executed Step** | A compliance verdict's has AI executed step is true when the compliance verdict's workflow has an AI agent step. |
+| **DR-98 Total Plan Minutes** | A compliance verdict's total plan minutes is the count total plan minutes of the compliance verdict's workflow. |
+| **DR-99 Time Budget Minutes** | A compliance verdict's time budget minutes is the max plan minutes of the compliance verdict's workflow. |
+| **DR-100 Is Over Time Budget** | A compliance verdict's is over time budget is true when the compliance verdict's workflow is an over time budget. |
+| **DR-101 Has Consistency Violation** | A compliance verdict's has consistency violation is true when the compliance verdict's workflow has a consistency violation. |
+| **DR-102 Has Unmet Gate Signoff** | A compliance verdict's has unmet gate signoff is true when the compliance verdict's workflow has an unmet gate signoff. |
+| **DR-103 Is At Compliance Risk** | A compliance verdict is considered at compliance risk if at least one of the following holds: all of the following hold: the is stale flag is set and the has AI executed step flag is set; the is over time budget flag is set; the has consistency violation flag is set; or the has unmet gate signoff flag is set. |
+| **DR-104 Verdict** | A compliance verdict's verdict is the pref label of the compliance verdict's verdict concept. |
+| **DR-105 Relative Path** | A scenario's relative path is computed as the literal “scenarios/”, followed by the scenario ID. |
+| **DR-106 Iri** | A scenario's iri is computed as the relative path with every a slash replaced by a hyphen. |
+| **DR-107 Name** | A scenario's name is computed as the lower-cased label with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> |
 
 ## 5 Traceability to Schema
 
@@ -322,6 +344,8 @@ the same logic the rulebook stores, written for a business reader._
 | **Workflows.IsStaleAndHasAIAgent** | formula | `And(IsStale, HasAIAgentStep)` |
 | **Workflows.CountTotalPlanMinutes** | rollup | `Sum(WorkflowSteps.StepDurationMinutes via Workflow)` |
 | **Workflows.IsOverTimeBudget** | formula | `CountTotalPlanMinutes > MaxPlanMinutes` |
+| **Workflows.CountUnmetGateSignoffs** | rollup | `Count(WorkflowSteps via Workflow)` |
+| **Workflows.HasUnmetGateSignoff** | formula | `CountUnmetGateSignoffs > 0` |
 | **Workflows.CountDerivationLinks** | rollup | `Count(WorkflowArtifacts via ProducedByWorkflow)` |
 | **Workflows.CountLegalOwnedSteps** | rollup | `Count(WorkflowSteps via Workflow)` |
 | **Workflows.CountEngineeringOwnedSteps** | rollup | `Count(WorkflowSteps via Workflow)` |
@@ -345,12 +369,20 @@ the same logic the rulebook stores, written for a business reader._
 | **WorkflowSteps.OwningDepartment** | lookup | `Lookup(Roles.OwnedBy via AssignedRole)` |
 | **WorkflowSteps.IsLegalOwned** | formula | `OwningDepartment = "ntwf-legal-dept"` |
 | **WorkflowSteps.IsEngineeringOwned** | formula | `OwningDepartment = "ntwf-engineering"` |
+| **WorkflowSteps.IsOffHoursDeployment** | lookup | `Lookup(Workflows.IsOffHoursDeployment via Workflow)` |
+| **WorkflowSteps.GateDualSignoffSatisfied** | lookup | `Lookup(ApprovalGates.DualSignoffSatisfied via ApprovalGate)` |
+| **WorkflowSteps.GateSignoffUnmet** | formula | `And(Not(Isblank(ApprovalGate)), Not(GateDualSignoffSatisfied))` |
 | **ApprovalGates.ParentPath** | lookup | `Lookup(WorkflowSteps.RelativePath via WorkflowStep)` |
 | **ApprovalGates.RelativePath** | formula | `ParentPath & "/approval-gates/" & ApprovalGateId` |
 | **ApprovalGates.Iri** | formula | `Replace(RelativePath, "/", "-")` |
 | **ApprovalGates.Name** | formula | `Replace(Lower(DisplayName), " ", "-")` |
 | **ApprovalGates.GateRole** | lookup | `Lookup(WorkflowSteps.AssignedRole via WorkflowStep)` |
 | **ApprovalGates.GateApproverHuman** | lookup | `Lookup(Roles.FilledByHumanAgent via GateRole)` |
+| **ApprovalGates.IsOffHoursDeployment** | lookup | `Lookup(WorkflowSteps.IsOffHoursDeployment via WorkflowStep)` |
+| **ApprovalGates.GateDelegateRole** | lookup | `Lookup(Roles.DelegatesTo via GateRole)` |
+| **ApprovalGates.GateDelegateHuman** | lookup | `Lookup(Roles.FilledByHumanAgent via GateDelegateRole)` |
+| **ApprovalGates.HasTwoHumanApprovers** | formula | `And(Not(Isblank(GateApproverHuman)), Not(Isblank(GateDelegateHuman)))` |
+| **ApprovalGates.DualSignoffSatisfied** | formula | `If(And(RequiresDualSignoffOffHours, IsOffHoursDeployment), HasTwoHumanApprovers, TRUE)` |
 | **StepPrecedence.ParentPath** | lookup | `Lookup(WorkflowSteps.RelativePath via FromStep)` |
 | **StepPrecedence.RelativePath** | formula | `ParentPath & "/precedence/" & StepPrecedenceId` |
 | **StepPrecedence.Iri** | formula | `Replace(RelativePath, "/", "-")` |
@@ -397,7 +429,8 @@ the same logic the rulebook stores, written for a business reader._
 | **ComplianceVerdicts.TimeBudgetMinutes** | lookup | `Lookup(Workflows.MaxPlanMinutes via Workflow)` |
 | **ComplianceVerdicts.IsOverTimeBudget** | lookup | `Lookup(Workflows.IsOverTimeBudget via Workflow)` |
 | **ComplianceVerdicts.HasConsistencyViolation** | lookup | `Lookup(Workflows.HasConsistencyViolation via Workflow)` |
-| **ComplianceVerdicts.IsAtComplianceRisk** | formula | `Or(And(IsStale, HasAIExecutedStep), IsOverTimeBudget, HasConsistencyViolation)` |
+| **ComplianceVerdicts.HasUnmetGateSignoff** | lookup | `Lookup(Workflows.HasUnmetGateSignoff via Workflow)` |
+| **ComplianceVerdicts.IsAtComplianceRisk** | formula | `Or(And(IsStale, HasAIExecutedStep), IsOverTimeBudget, HasConsistencyViolation, HasUnmetGateSignoff)` |
 | **ComplianceVerdicts.Verdict** | lookup | `Lookup(ComplianceVerdictConcepts.PrefLabel via VerdictConcept)` |
 | **Scenarios.RelativePath** | formula | `"scenarios/" & ScenarioId` |
 | **Scenarios.Iri** | formula | `Replace(RelativePath, "/", "-")` |

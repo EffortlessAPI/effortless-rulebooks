@@ -95,9 +95,10 @@ erb:ApprovalGatesShape a sh:NodeShape ;
             }
             WHERE {
     $this a erb:ApprovalGates .
-                $this erb:workflowStep ?j0 .
-                OPTIONAL { ?j0 erb:relativePath ?j1 . }
-                BIND(?j1 AS ?_result)
+                OPTIONAL { $this erb:workflowStep ?j0 . }
+                OPTIONAL { ?j1 a erb:WorkflowSteps ; erb:workflowStepId ?j2 . FILTER(STR(?j2) = STR(?j0)) }
+                OPTIONAL { ?j1 erb:relativePath ?j3 . }
+                BIND(?j3 AS ?_result)
             }
         """ ;
     ] ;
@@ -165,9 +166,10 @@ erb:ApprovalGatesShape a sh:NodeShape ;
             }
             WHERE {
     $this a erb:ApprovalGates .
-                $this erb:workflowStep ?j0 .
-                OPTIONAL { ?j0 erb:assignedRole ?j1 . }
-                BIND(?j1 AS ?_result)
+                OPTIONAL { $this erb:workflowStep ?j0 . }
+                OPTIONAL { ?j1 a erb:WorkflowSteps ; erb:workflowStepId ?j2 . FILTER(STR(?j2) = STR(?j0)) }
+                OPTIONAL { ?j1 erb:assignedRole ?j3 . }
+                BIND(?j3 AS ?_result)
             }
         """ ;
     ] ;
@@ -183,9 +185,104 @@ erb:ApprovalGatesShape a sh:NodeShape ;
             }
             WHERE {
     $this a erb:ApprovalGates .
-                $this erb:gateRole ?j0 .
-                OPTIONAL { ?j0 erb:filledByHumanAgent ?j1 . }
-                BIND(?j1 AS ?_result)
+                OPTIONAL { $this erb:gateRole ?j0 . }
+                OPTIONAL { ?j1 a erb:Roles ; erb:roleId ?j2 . FILTER(STR(?j2) = STR(?j0)) }
+                OPTIONAL { ?j1 erb:filledByHumanAgent ?j3 . }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_ApprovalGates_IsOffHoursDeployment" ;
+        sh:prefixes erb: ;
+        sh:construct """
+            PREFIX erb: <http://example.org/erb#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this erb:isOffHoursDeployment ?_result .
+            }
+            WHERE {
+    $this a erb:ApprovalGates .
+                OPTIONAL { $this erb:workflowStep ?j0 . }
+                OPTIONAL { ?j1 a erb:WorkflowSteps ; erb:workflowStepId ?j2 . FILTER(STR(?j2) = STR(?j0)) }
+                OPTIONAL { ?j1 erb:isOffHoursDeployment ?j3 . }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_ApprovalGates_GateDelegateRole" ;
+        sh:prefixes erb: ;
+        sh:construct """
+            PREFIX erb: <http://example.org/erb#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this erb:gateDelegateRole ?_result .
+            }
+            WHERE {
+    $this a erb:ApprovalGates .
+                OPTIONAL { $this erb:gateRole ?j0 . }
+                OPTIONAL { ?j1 a erb:Roles ; erb:roleId ?j2 . FILTER(STR(?j2) = STR(?j0)) }
+                OPTIONAL { ?j1 erb:delegatesTo ?j3 . }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_ApprovalGates_GateDelegateHuman" ;
+        sh:prefixes erb: ;
+        sh:construct """
+            PREFIX erb: <http://example.org/erb#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this erb:gateDelegateHuman ?_result .
+            }
+            WHERE {
+    $this a erb:ApprovalGates .
+                OPTIONAL { $this erb:gateDelegateRole ?j0 . }
+                OPTIONAL { ?j1 a erb:Roles ; erb:roleId ?j2 . FILTER(STR(?j2) = STR(?j0)) }
+                OPTIONAL { ?j1 erb:filledByHumanAgent ?j3 . }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_ApprovalGates_HasTwoHumanApprovers" ;
+        sh:prefixes erb: ;
+        sh:construct """
+            PREFIX erb: <http://example.org/erb#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this erb:hasTwoHumanApprovers ?_result .
+            }
+            WHERE {
+    $this a erb:ApprovalGates .
+    OPTIONAL { $this erb:gateApproverHuman ?gate_approver_human . }
+    OPTIONAL { $this erb:gateDelegateHuman ?gate_delegate_human . }
+                BIND(((!((!BOUND(?gate_approver_human) || STR(?gate_approver_human) = ""))) && (!((!BOUND(?gate_delegate_human) || STR(?gate_delegate_human) = "")))) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_ApprovalGates_DualSignoffSatisfied" ;
+        sh:prefixes erb: ;
+        sh:construct """
+            PREFIX erb: <http://example.org/erb#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this erb:dualSignoffSatisfied ?_result .
+            }
+            WHERE {
+    $this a erb:ApprovalGates .
+    OPTIONAL { $this erb:hasTwoHumanApprovers ?has_two_human_approvers . }
+    OPTIONAL { $this erb:isOffHoursDeployment ?is_off_hours_deployment . }
+    OPTIONAL { $this erb:requiresDualSignoffOffHours ?requires_dual_signoff_off_hours . }
+                BIND(IF((?requires_dual_signoff_off_hours && ?is_off_hours_deployment), ?has_two_human_approvers, true) AS ?_result)
             }
         """ ;
     ] .
@@ -281,9 +378,10 @@ erb:ComplianceVerdictsShape a sh:NodeShape ;
             }
             WHERE {
     $this a erb:ComplianceVerdicts .
-                $this erb:workflow ?j0 .
-                OPTIONAL { ?j0 erb:relativePath ?j1 . }
-                BIND(?j1 AS ?_result)
+                OPTIONAL { $this erb:workflow ?j0 . }
+                OPTIONAL { ?j1 a erb:Workflows ; erb:workflowId ?j2 . FILTER(STR(?j2) = STR(?j0)) }
+                OPTIONAL { ?j1 erb:relativePath ?j3 . }
+                BIND(?j3 AS ?_result)
             }
         """ ;
     ] ;
@@ -351,9 +449,10 @@ erb:ComplianceVerdictsShape a sh:NodeShape ;
             }
             WHERE {
     $this a erb:ComplianceVerdicts .
-                $this erb:workflow ?j0 .
-                OPTIONAL { ?j0 erb:title ?j1 . }
-                BIND(?j1 AS ?_result)
+                OPTIONAL { $this erb:workflow ?j0 . }
+                OPTIONAL { ?j1 a erb:Workflows ; erb:workflowId ?j2 . FILTER(STR(?j2) = STR(?j0)) }
+                OPTIONAL { ?j1 erb:title ?j3 . }
+                BIND(?j3 AS ?_result)
             }
         """ ;
     ] ;
@@ -369,9 +468,10 @@ erb:ComplianceVerdictsShape a sh:NodeShape ;
             }
             WHERE {
     $this a erb:ComplianceVerdicts .
-                $this erb:workflow ?j0 .
-                OPTIONAL { ?j0 erb:monthsSinceModified ?j1 . }
-                BIND(?j1 AS ?_result)
+                OPTIONAL { $this erb:workflow ?j0 . }
+                OPTIONAL { ?j1 a erb:Workflows ; erb:workflowId ?j2 . FILTER(STR(?j2) = STR(?j0)) }
+                OPTIONAL { ?j1 erb:monthsSinceModified ?j3 . }
+                BIND(?j3 AS ?_result)
             }
         """ ;
     ] ;
@@ -387,9 +487,10 @@ erb:ComplianceVerdictsShape a sh:NodeShape ;
             }
             WHERE {
     $this a erb:ComplianceVerdicts .
-                $this erb:workflow ?j0 .
-                OPTIONAL { ?j0 erb:isStale ?j1 . }
-                BIND(?j1 AS ?_result)
+                OPTIONAL { $this erb:workflow ?j0 . }
+                OPTIONAL { ?j1 a erb:Workflows ; erb:workflowId ?j2 . FILTER(STR(?j2) = STR(?j0)) }
+                OPTIONAL { ?j1 erb:isStale ?j3 . }
+                BIND(?j3 AS ?_result)
             }
         """ ;
     ] ;
@@ -405,9 +506,10 @@ erb:ComplianceVerdictsShape a sh:NodeShape ;
             }
             WHERE {
     $this a erb:ComplianceVerdicts .
-                $this erb:workflow ?j0 .
-                OPTIONAL { ?j0 erb:countAISteps ?j1 . }
-                BIND(?j1 AS ?_result)
+                OPTIONAL { $this erb:workflow ?j0 . }
+                OPTIONAL { ?j1 a erb:Workflows ; erb:workflowId ?j2 . FILTER(STR(?j2) = STR(?j0)) }
+                OPTIONAL { ?j1 erb:countAISteps ?j3 . }
+                BIND(?j3 AS ?_result)
             }
         """ ;
     ] ;
@@ -423,9 +525,10 @@ erb:ComplianceVerdictsShape a sh:NodeShape ;
             }
             WHERE {
     $this a erb:ComplianceVerdicts .
-                $this erb:workflow ?j0 .
-                OPTIONAL { ?j0 erb:hasAIAgentStep ?j1 . }
-                BIND(?j1 AS ?_result)
+                OPTIONAL { $this erb:workflow ?j0 . }
+                OPTIONAL { ?j1 a erb:Workflows ; erb:workflowId ?j2 . FILTER(STR(?j2) = STR(?j0)) }
+                OPTIONAL { ?j1 erb:hasAIAgentStep ?j3 . }
+                BIND(?j3 AS ?_result)
             }
         """ ;
     ] ;
@@ -441,9 +544,10 @@ erb:ComplianceVerdictsShape a sh:NodeShape ;
             }
             WHERE {
     $this a erb:ComplianceVerdicts .
-                $this erb:workflow ?j0 .
-                OPTIONAL { ?j0 erb:countTotalPlanMinutes ?j1 . }
-                BIND(?j1 AS ?_result)
+                OPTIONAL { $this erb:workflow ?j0 . }
+                OPTIONAL { ?j1 a erb:Workflows ; erb:workflowId ?j2 . FILTER(STR(?j2) = STR(?j0)) }
+                OPTIONAL { ?j1 erb:countTotalPlanMinutes ?j3 . }
+                BIND(?j3 AS ?_result)
             }
         """ ;
     ] ;
@@ -459,9 +563,10 @@ erb:ComplianceVerdictsShape a sh:NodeShape ;
             }
             WHERE {
     $this a erb:ComplianceVerdicts .
-                $this erb:workflow ?j0 .
-                OPTIONAL { ?j0 erb:maxPlanMinutes ?j1 . }
-                BIND(?j1 AS ?_result)
+                OPTIONAL { $this erb:workflow ?j0 . }
+                OPTIONAL { ?j1 a erb:Workflows ; erb:workflowId ?j2 . FILTER(STR(?j2) = STR(?j0)) }
+                OPTIONAL { ?j1 erb:maxPlanMinutes ?j3 . }
+                BIND(?j3 AS ?_result)
             }
         """ ;
     ] ;
@@ -477,9 +582,10 @@ erb:ComplianceVerdictsShape a sh:NodeShape ;
             }
             WHERE {
     $this a erb:ComplianceVerdicts .
-                $this erb:workflow ?j0 .
-                OPTIONAL { ?j0 erb:isOverTimeBudget ?j1 . }
-                BIND(?j1 AS ?_result)
+                OPTIONAL { $this erb:workflow ?j0 . }
+                OPTIONAL { ?j1 a erb:Workflows ; erb:workflowId ?j2 . FILTER(STR(?j2) = STR(?j0)) }
+                OPTIONAL { ?j1 erb:isOverTimeBudget ?j3 . }
+                BIND(?j3 AS ?_result)
             }
         """ ;
     ] ;
@@ -495,9 +601,29 @@ erb:ComplianceVerdictsShape a sh:NodeShape ;
             }
             WHERE {
     $this a erb:ComplianceVerdicts .
-                $this erb:workflow ?j0 .
-                OPTIONAL { ?j0 erb:hasConsistencyViolation ?j1 . }
-                BIND(?j1 AS ?_result)
+                OPTIONAL { $this erb:workflow ?j0 . }
+                OPTIONAL { ?j1 a erb:Workflows ; erb:workflowId ?j2 . FILTER(STR(?j2) = STR(?j0)) }
+                OPTIONAL { ?j1 erb:hasConsistencyViolation ?j3 . }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_ComplianceVerdicts_HasUnmetGateSignoff" ;
+        sh:prefixes erb: ;
+        sh:construct """
+            PREFIX erb: <http://example.org/erb#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this erb:hasUnmetGateSignoff ?_result .
+            }
+            WHERE {
+    $this a erb:ComplianceVerdicts .
+                OPTIONAL { $this erb:workflow ?j0 . }
+                OPTIONAL { ?j1 a erb:Workflows ; erb:workflowId ?j2 . FILTER(STR(?j2) = STR(?j0)) }
+                OPTIONAL { ?j1 erb:hasUnmetGateSignoff ?j3 . }
+                BIND(?j3 AS ?_result)
             }
         """ ;
     ] ;
@@ -515,9 +641,10 @@ erb:ComplianceVerdictsShape a sh:NodeShape ;
     $this a erb:ComplianceVerdicts .
     OPTIONAL { $this erb:hasAIExecutedStep ?has_ai_executed_step . }
     OPTIONAL { $this erb:hasConsistencyViolation ?has_consistency_violation . }
+    OPTIONAL { $this erb:hasUnmetGateSignoff ?has_unmet_gate_signoff . }
     OPTIONAL { $this erb:isOverTimeBudget ?is_over_time_budget . }
     OPTIONAL { $this erb:isStale ?is_stale . }
-                BIND(((?is_stale && ?has_ai_executed_step) || ?is_over_time_budget || ?has_consistency_violation) AS ?_result)
+                BIND(((?is_stale && ?has_ai_executed_step) || ?is_over_time_budget || ?has_consistency_violation || ?has_unmet_gate_signoff) AS ?_result)
             }
         """ ;
     ] ;
@@ -550,9 +677,10 @@ erb:ComplianceVerdictsShape a sh:NodeShape ;
             }
             WHERE {
     $this a erb:ComplianceVerdicts .
-                $this erb:verdictConcept ?j0 .
-                OPTIONAL { ?j0 erb:prefLabel ?j1 . }
-                BIND(?j1 AS ?_result)
+                OPTIONAL { $this erb:verdictConcept ?j0 . }
+                OPTIONAL { ?j1 a erb:ComplianceVerdictConcepts ; erb:conceptId ?j2 . FILTER(STR(?j2) = STR(?j0)) }
+                OPTIONAL { ?j1 erb:prefLabel ?j3 . }
+                BIND(?j3 AS ?_result)
             }
         """ ;
     ] .
@@ -868,9 +996,10 @@ erb:StepPrecedenceShape a sh:NodeShape ;
             }
             WHERE {
     $this a erb:StepPrecedence .
-                $this erb:fromStep ?j0 .
-                OPTIONAL { ?j0 erb:relativePath ?j1 . }
-                BIND(?j1 AS ?_result)
+                OPTIONAL { $this erb:fromStep ?j0 . }
+                OPTIONAL { ?j1 a erb:WorkflowSteps ; erb:workflowStepId ?j2 . FILTER(STR(?j2) = STR(?j0)) }
+                OPTIONAL { ?j1 erb:relativePath ?j3 . }
+                BIND(?j3 AS ?_result)
             }
         """ ;
     ] ;
@@ -943,9 +1072,10 @@ erb:WorkflowArtifactsShape a sh:NodeShape ;
             }
             WHERE {
     $this a erb:WorkflowArtifacts .
-                $this erb:producedByStep ?j0 .
-                OPTIONAL { ?j0 erb:relativePath ?j1 . }
-                BIND(?j1 AS ?_result)
+                OPTIONAL { $this erb:producedByStep ?j0 . }
+                OPTIONAL { ?j1 a erb:WorkflowSteps ; erb:workflowStepId ?j2 . FILTER(STR(?j2) = STR(?j0)) }
+                OPTIONAL { ?j1 erb:relativePath ?j3 . }
+                BIND(?j3 AS ?_result)
             }
         """ ;
     ] ;
@@ -1032,9 +1162,10 @@ erb:WorkflowArtifactsShape a sh:NodeShape ;
             }
             WHERE {
     $this a erb:WorkflowArtifacts .
-                $this erb:producedByStep ?j0 .
-                OPTIONAL { ?j0 erb:workflow ?j1 . }
-                BIND(?j1 AS ?_result)
+                OPTIONAL { $this erb:producedByStep ?j0 . }
+                OPTIONAL { ?j1 a erb:WorkflowSteps ; erb:workflowStepId ?j2 . FILTER(STR(?j2) = STR(?j0)) }
+                OPTIONAL { ?j1 erb:workflow ?j3 . }
+                BIND(?j3 AS ?_result)
             }
         """ ;
     ] .
@@ -1092,9 +1223,10 @@ erb:WorkflowStepsShape a sh:NodeShape ;
             }
             WHERE {
     $this a erb:WorkflowSteps .
-                $this erb:workflow ?j0 .
-                OPTIONAL { ?j0 erb:relativePath ?j1 . }
-                BIND(?j1 AS ?_result)
+                OPTIONAL { $this erb:workflow ?j0 . }
+                OPTIONAL { ?j1 a erb:Workflows ; erb:workflowId ?j2 . FILTER(STR(?j2) = STR(?j0)) }
+                OPTIONAL { ?j1 erb:relativePath ?j3 . }
+                BIND(?j3 AS ?_result)
             }
         """ ;
     ] ;
@@ -1162,9 +1294,10 @@ erb:WorkflowStepsShape a sh:NodeShape ;
             }
             WHERE {
     $this a erb:WorkflowSteps .
-                $this erb:assignedRole ?j0 .
-                OPTIONAL { ?j0 erb:filledByHumanAgent ?j1 . }
-                BIND(?j1 AS ?_result)
+                OPTIONAL { $this erb:assignedRole ?j0 . }
+                OPTIONAL { ?j1 a erb:Roles ; erb:roleId ?j2 . FILTER(STR(?j2) = STR(?j0)) }
+                OPTIONAL { ?j1 erb:filledByHumanAgent ?j3 . }
+                BIND(?j3 AS ?_result)
             }
         """ ;
     ] ;
@@ -1180,9 +1313,10 @@ erb:WorkflowStepsShape a sh:NodeShape ;
             }
             WHERE {
     $this a erb:WorkflowSteps .
-                $this erb:assignedRole ?j0 .
-                OPTIONAL { ?j0 erb:filledByAIAgent ?j1 . }
-                BIND(?j1 AS ?_result)
+                OPTIONAL { $this erb:assignedRole ?j0 . }
+                OPTIONAL { ?j1 a erb:Roles ; erb:roleId ?j2 . FILTER(STR(?j2) = STR(?j0)) }
+                OPTIONAL { ?j1 erb:filledByAIAgent ?j3 . }
+                BIND(?j3 AS ?_result)
             }
         """ ;
     ] ;
@@ -1198,9 +1332,10 @@ erb:WorkflowStepsShape a sh:NodeShape ;
             }
             WHERE {
     $this a erb:WorkflowSteps .
-                $this erb:assignedRole ?j0 .
-                OPTIONAL { ?j0 erb:filledByAutomatedPipeline ?j1 . }
-                BIND(?j1 AS ?_result)
+                OPTIONAL { $this erb:assignedRole ?j0 . }
+                OPTIONAL { ?j1 a erb:Roles ; erb:roleId ?j2 . FILTER(STR(?j2) = STR(?j0)) }
+                OPTIONAL { ?j1 erb:filledByAutomatedPipeline ?j3 . }
+                BIND(?j3 AS ?_result)
             }
         """ ;
     ] ;
@@ -1305,9 +1440,10 @@ erb:WorkflowStepsShape a sh:NodeShape ;
             }
             WHERE {
     $this a erb:WorkflowSteps .
-                $this erb:assignedRole ?j0 .
-                OPTIONAL { ?j0 erb:ownedBy ?j1 . }
-                BIND(?j1 AS ?_result)
+                OPTIONAL { $this erb:assignedRole ?j0 . }
+                OPTIONAL { ?j1 a erb:Roles ; erb:roleId ?j2 . FILTER(STR(?j2) = STR(?j0)) }
+                OPTIONAL { ?j1 erb:ownedBy ?j3 . }
+                BIND(?j3 AS ?_result)
             }
         """ ;
     ] ;
@@ -1342,6 +1478,62 @@ erb:WorkflowStepsShape a sh:NodeShape ;
     $this a erb:WorkflowSteps .
     OPTIONAL { $this erb:owningDepartment ?owning_department . }
                 BIND((REPLACE(STR(?owning_department), "^.*#", "") = "ntwf-engineering") AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_WorkflowSteps_IsOffHoursDeployment" ;
+        sh:prefixes erb: ;
+        sh:construct """
+            PREFIX erb: <http://example.org/erb#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this erb:isOffHoursDeployment ?_result .
+            }
+            WHERE {
+    $this a erb:WorkflowSteps .
+                OPTIONAL { $this erb:workflow ?j0 . }
+                OPTIONAL { ?j1 a erb:Workflows ; erb:workflowId ?j2 . FILTER(STR(?j2) = STR(?j0)) }
+                OPTIONAL { ?j1 erb:isOffHoursDeployment ?j3 . }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_WorkflowSteps_GateDualSignoffSatisfied" ;
+        sh:prefixes erb: ;
+        sh:construct """
+            PREFIX erb: <http://example.org/erb#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this erb:gateDualSignoffSatisfied ?_result .
+            }
+            WHERE {
+    $this a erb:WorkflowSteps .
+                OPTIONAL { $this erb:approvalGate ?j0 . }
+                OPTIONAL { ?j1 a erb:ApprovalGates ; erb:approvalGateId ?j2 . FILTER(STR(?j2) = STR(?j0)) }
+                OPTIONAL { ?j1 erb:dualSignoffSatisfied ?j3 . }
+                BIND(?j3 AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_WorkflowSteps_GateSignoffUnmet" ;
+        sh:prefixes erb: ;
+        sh:construct """
+            PREFIX erb: <http://example.org/erb#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this erb:gateSignoffUnmet ?_result .
+            }
+            WHERE {
+    $this a erb:WorkflowSteps .
+    OPTIONAL { $this erb:approvalGate ?approval_gate . }
+    OPTIONAL { $this erb:gateDualSignoffSatisfied ?gate_dual_signoff_satisfied . }
+                BIND(((!((!BOUND(?approval_gate) || STR(?approval_gate) = ""))) && (!(?gate_dual_signoff_satisfied))) AS ?_result)
             }
         """ ;
     ] .
@@ -1660,6 +1852,46 @@ erb:WorkflowsShape a sh:NodeShape ;
     ] ;
     sh:rule [
         a sh:SPARQLRule ;
+        rdfs:label "rule_Workflows_CountUnmetGateSignoffs" ;
+        sh:prefixes erb: ;
+        sh:construct """
+            PREFIX erb: <http://example.org/erb#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this erb:countUnmetGateSignoffs ?_result .
+            }
+            WHERE {
+    $this a erb:Workflows .
+                {
+                    SELECT (COUNT(?child) AS ?_result) WHERE {
+                    ?child a erb:WorkflowSteps .
+                    ?child erb:workflow $this .
+                    OPTIONAL { ?child erb:gateSignoffUnmet ?c2 . }
+                    FILTER(BOUND(?c2) && ?c2 = true)
+                    }
+                }
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_Workflows_HasUnmetGateSignoff" ;
+        sh:prefixes erb: ;
+        sh:construct """
+            PREFIX erb: <http://example.org/erb#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this erb:hasUnmetGateSignoff ?_result .
+            }
+            WHERE {
+    $this a erb:Workflows .
+    OPTIONAL { $this erb:countUnmetGateSignoffs ?count_unmet_gate_signoffs . }
+                BIND((?count_unmet_gate_signoffs > 0) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
         rdfs:label "rule_Workflows_CountDerivationLinks" ;
         sh:prefixes erb: ;
         sh:construct """
@@ -1890,4 +2122,4 @@ erb:WorkflowStepsCardinalityShape a sh:NodeShape ;
     sh:property [ sh:path erb:precedes ; sh:maxCount 1 ] ;
     sh:property [ sh:path erb:workflow ; sh:maxCount 1 ] .
 
-# Generated 97 SHACL rules
+# Generated 108 SHACL rules

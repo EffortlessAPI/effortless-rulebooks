@@ -209,8 +209,6 @@ button, input, select { font: inherit; }
 .sc-assign { display: flex; align-items: center; gap: 10px; }
 .sc-agent { font-weight: 600; font-size: 13.5px; }
 .sc-role { font-size: 11.5px; color: var(--muted); }
-.sc-dur { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--muted); }
-.sc-dur input { width: 62px; background: var(--bg2); border: 1px solid var(--line); color: var(--text); border-radius: 6px; padding: 5px 7px; }
 .flow-closure-note { margin: 14px 0; padding: 10px 14px; background: var(--card); border: 1px solid var(--line); border-left: 3px solid var(--accent); border-radius: 8px; font-size: 13.5px; }
 
 /* precedence rail */
@@ -491,6 +489,24 @@ button, input, select { font: inherit; }
 .tb-seg.k-unknown { background: var(--muted); }
 .tb-seg-num { font-size: 10.5px; font-weight: 800; color: #0e1016; white-space: nowrap; padding: 0 4px;
   text-shadow: 0 1px 0 rgba(255,255,255,.2); }
+/* live minute readout shown on the segment being dragged */
+.tb-seg-live { position: absolute; top: 50%; right: 12px; transform: translateY(-50%);
+  font-size: 10.5px; font-weight: 800; color: #0e1016; background: rgba(255,255,255,.55);
+  border-radius: 4px; padding: 0 4px; pointer-events: none; font-variant-numeric: tabular-nums; }
+/* the splitter handle on each segment's right edge — drag to resize the step */
+.tb-split { position: absolute; top: 0; bottom: 0; right: -4px; width: 9px; z-index: 3;
+  cursor: ew-resize; display: flex; align-items: center; justify-content: center; }
+.tb-split::before { content: ""; width: 2px; height: 60%; border-radius: 2px;
+  background: rgba(14,16,22,.45); transition: background .12s, height .12s; }
+.tb-split:hover::before { background: var(--text); height: 80%; }
+.tb-seg:last-child .tb-split { right: 0; }   /* keep the last handle inside the track */
+.tb-split.disabled { cursor: default; }
+.tb-split.disabled::before { background: rgba(14,16,22,.25); }
+/* the dragged segment + whole-bar feedback while resizing */
+.tb-seg.dragged { box-shadow: inset 0 0 0 2px rgba(255,255,255,.55); }
+.timebudget.dragging .tb-track { cursor: ew-resize; user-select: none; }
+.timebudget.dragging .tb-seg { transition: none; }   /* track the cursor 1:1, no lag */
+.tb-dragnote { color: var(--accent); font-weight: 700; }
 /* the budget marker line + label; turns red once breached */
 .tb-limit { position: absolute; top: -3px; bottom: -3px; width: 2px; background: var(--text); opacity: .75;
   z-index: 2; transition: left .25s ease; }
@@ -509,16 +525,17 @@ button, input, select { font: inherit; }
 .tb-budgetctl { display: flex; align-items: center; gap: 10px; margin-top: 10px; font-size: 12px; }
 .tb-budgetnote { margin-left: auto; }
 
-/* stepped-value buttons, shared visual language for budget + policy window */
-.tb-steps, .st-steps, .sc-dur-steps { display: inline-flex; gap: 6px; flex-wrap: wrap; }
-.tb-step-btn, .st-step-btn, .sc-dur-btn { background: var(--card); border: 1px solid var(--line); color: var(--muted);
+/* stepped-value buttons — the policy-window picker on the staleness bar.
+   (The time-budget bar no longer uses buttons: its segments are drag-resized.) */
+.st-steps { display: inline-flex; gap: 6px; flex-wrap: wrap; }
+.st-step-btn { background: var(--card); border: 1px solid var(--line); color: var(--muted);
   border-radius: 6px; padding: 4px 10px; cursor: pointer; font-size: 12px; font-weight: 600;
   font-variant-numeric: tabular-nums; transition: border-color .15s, color .15s, background .15s; }
-.tb-step-btn:hover:not(:disabled), .st-step-btn:hover:not(:disabled), .sc-dur-btn:hover:not(:disabled) { border-color: var(--accent); color: var(--text); }
-.tb-step-btn.on, .st-step-btn.on, .sc-dur-btn.on { background: var(--accent); border-color: var(--accent); color: #fff; }
-.tb-step-btn:disabled, .st-step-btn:disabled, .sc-dur-btn:disabled { opacity: .5; cursor: default; }
+.st-step-btn:hover:not(:disabled) { border-color: var(--accent); color: var(--text); }
+.st-step-btn.on { background: var(--accent); border-color: var(--accent); color: #fff; }
+.st-step-btn:disabled { opacity: .5; cursor: default; }
 
-/* ---- step card: inline effect + duration slider ------------------------ */
+/* ---- step card: inline effect ------------------------------------------- */
 .stepcard.ai-risk { box-shadow: inset 0 0 0 1px var(--ai); }
 .sc-effect { font-size: 11.5px; line-height: 1.35; margin: 7px 0 0; padding: 5px 8px; border-radius: 7px;
   background: var(--card2); }
@@ -526,12 +543,7 @@ button, input, select { font: inherit; }
 .sc-effect.safe { color: var(--muted); }
 .sc-effect.needs { color: var(--human); background: color-mix(in srgb, var(--human) 12%, transparent); margin-top: 5px; }
 .sc-effect.broken { color: var(--risk); background: #f0653f15; margin-top: 5px; }
-.sc-duration { margin-top: 9px; }
-.sc-dur-head { display: flex; justify-content: space-between; align-items: baseline; font-size: 11px; }
-.sc-dur-val { font-weight: 700; font-variant-numeric: tabular-nums; }
-.sc-dur-val.dirty { color: var(--accent); }
-.sc-dur-steps { margin: 4px 0 2px; }
-.sc-dur-note { font-size: 10px; }
+.sc-pop-note { font-size: 11px; line-height: 1.35; }
 .flow-foot { font-size: 12px; margin: 14px 4px 0; }
 
 /* ---- staleness bar (docs-review age vs. policy window) ------------------- */
@@ -589,9 +601,10 @@ button, input, select { font: inherit; }
 .st-ctlnote { font-size: 11px; }
 
 /* ======================================================================== */
-/* Triangle — the Head & Legs drift visualizer on the login page.           */
-/* Rulebook = head (apex); reasoner / postgres = legs. Light = in-sync,      */
-/* dim = trailing, ring/glow = ahead, spark = the sync flowing along a leg.  */
+/* Triangle (presentational) — Head & Legs drift visual.                     */
+/* Rulebook = head (apex); reasoner / postgres = legs. The chosen HEAD gets   */
+/* the gold focus ring; in-sync stores are lit, differing stores are dimmed; */
+/* sparks animate along the legs a sync would touch.                         */
 /* ======================================================================== */
 .triangle { margin: 4px 0 2px; display: flex; flex-direction: column; align-items: center; }
 .tri-loading { color: var(--muted); font-size: 13px; padding: 24px 0; text-align: center; }
@@ -601,21 +614,16 @@ button, input, select { font: inherit; }
 .tri-leg-base { stroke: var(--line); stroke-width: 3; stroke-linecap: round; }
 .tri-leg-glow { stroke: var(--accent); stroke-width: 3; stroke-linecap: round;
   opacity: 0; transition: opacity .3s ease; }
-/* a leg that's part of an active sync lights up; locked legs glow faintly */
-.tri-leg.is-locked .tri-leg-glow { opacity: .18; stroke: var(--ok); }
 .tri-leg.flow-down .tri-leg-glow,
 .tri-leg.flow-up .tri-leg-glow,
 .tri-leg.flow-down-delayed .tri-leg-glow { opacity: .55; }
 
-/* the travelling spark: hidden unless its leg is flowing or everything's locked */
-.tri-spark { fill: var(--accent); filter: drop-shadow(0 0 5px var(--accent)); opacity: 0; }
-.tri-leg.flow-down .tri-spark,
-.tri-leg.flow-up .tri-spark { opacity: 1; }
-.tri-leg.flow-down-delayed .tri-spark { opacity: 1; animation: tri-delay-in .8s ease 1; }
-.tri-leg.is-locked .tri-spark { opacity: .35; fill: var(--ok); filter: drop-shadow(0 0 3px var(--ok)); }
-/* the up-leg spark is gold (pushing edits up to the hub); down-legs use accent  */
-.triangle.ahead-reasoner .tri-leg-left .tri-spark,
-.triangle.ahead-postgres .tri-leg-right .tri-spark { fill: var(--pipeline); filter: drop-shadow(0 0 6px var(--pipeline)); }
+/* the travelling spark: only present while its leg is flowing (the JSX only
+   renders the circle then). Up-legs (engine pushing to the hub) ride gold;
+   down-legs ride accent. */
+.tri-spark { fill: var(--accent); filter: drop-shadow(0 0 5px var(--accent)); }
+.tri-leg.flow-up .tri-spark { fill: var(--pipeline); filter: drop-shadow(0 0 6px var(--pipeline)); }
+.tri-leg.flow-down-delayed .tri-spark { animation: tri-delay-in .8s ease 1; }
 @keyframes tri-delay-in { 0%,40% { opacity: 0; } 60% { opacity: 0; } 100% { opacity: 1; } }
 
 /* --- nodes --------------------------------------------------------------- */
@@ -624,71 +632,122 @@ button, input, select { font: inherit; }
 .tri-check { fill: none; stroke: var(--ok); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
 .tri-node-ring { fill: none; stroke-width: 2.5; }
 
-/* lit (in sync, idle) — soft green */
+/* HEAD (the authoritative store) — gold focus ring + pop */
+.tri-node.st-head .tri-node-core { fill: #2a2410; stroke: var(--pipeline); }
+.tri-node.st-head .tri-node-halo { stroke: var(--pipeline); }
+.tri-node.st-head .tri-node-ring { stroke: var(--pipeline); animation: tri-ring 1.4s ease-out infinite; }
+/* lit (in sync with HEAD) — soft green */
 .tri-node.st-lit .tri-node-core { fill: #1a2a22; stroke: var(--ok); }
 .tri-node.st-lit .tri-node-halo { stroke: #43c46355; }
-/* ahead — the protagonist. Head ahead = accent; engine ahead = gold/green pop */
-.tri-node.st-ahead .tri-node-core { fill: #241c33; stroke: var(--accent); }
-.tri-node.st-ahead .tri-node-halo { stroke: var(--accent); }
-.tri-node.st-ahead .tri-node-ring { stroke: var(--accent); animation: tri-ring 1.4s ease-out infinite; }
-.triangle.ahead-postgres .tri-node-postgres.st-ahead .tri-node-core,
-.triangle.ahead-reasoner .tri-node-reasoner.st-ahead .tri-node-core { fill: #2a2410; stroke: var(--pipeline); }
-.triangle.ahead-postgres .tri-node-postgres.st-ahead .tri-node-ring,
-.triangle.ahead-reasoner .tri-node-reasoner.st-ahead .tri-node-ring { stroke: var(--pipeline); }
-.triangle.ahead-postgres .tri-node-postgres.st-ahead .tri-node-halo,
-.triangle.ahead-reasoner .tri-node-reasoner.st-ahead .tri-node-halo { stroke: var(--pipeline); }
-/* stale — trailing the rulebook; dimmed */
-.tri-node.st-stale { opacity: .4; filter: saturate(.4); }
-.tri-node.st-stale .tri-node-core { fill: var(--card); stroke: var(--line); }
-/* diverged — risk-flagged */
+/* stale (would be overwritten by HEAD) — dimmed, risk-tinted */
+.tri-node.st-stale { opacity: .5; }
+.tri-node.st-stale .tri-node-core { fill: #2a1714; stroke: var(--risk); }
+.tri-node.st-stale .tri-node-halo { stroke: #f0653f55; }
+/* diverged fallback */
 .tri-node.st-diverged .tri-node-core { fill: #2a1714; stroke: var(--risk); }
-.tri-node.st-diverged .tri-node-halo { stroke: var(--risk); }
 
 @keyframes tri-ring { 0% { opacity: .9; transform: scale(1); } 100% { opacity: 0; transform: scale(1.35); } }
-/* the whole locked triangle breathes gently */
-.triangle.is-locked .tri-node.st-lit .tri-node-halo { animation: tri-breathe 3.2s ease-in-out infinite; }
-@keyframes tri-breathe { 0%,100% { stroke-opacity: .45; } 50% { stroke-opacity: 1; } }
+/* the HEAD halo breathes gently while idle */
+.tri-node.st-head .tri-node-halo { animation: tri-breathe 3.2s ease-in-out infinite; }
+@keyframes tri-breathe { 0%,100% { stroke-opacity: .5; } 50% { stroke-opacity: 1; } }
 
 /* --- labels under the svg ------------------------------------------------ */
 .tri-labels { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; width: 100%;
   max-width: 420px; margin-top: 6px; }
 .tri-label { display: flex; flex-direction: column; align-items: center; gap: 1px; text-align: center;
   padding: 6px 4px; border-radius: 9px; transition: all .3s ease; }
-.tri-label-reasoner { align-items: flex-start; text-align: left; }
-.tri-label-postgres { align-items: flex-end; text-align: right; }
 .tri-label-rulebook { order: -1; grid-column: 2; }
-.tri-label-reasoner { order: 0; grid-column: 1; }
-.tri-label-postgres { order: 0; grid-column: 3; }
+.tri-label-reasoner { order: 0; grid-column: 1; align-items: flex-start; text-align: left; }
+.tri-label-postgres { order: 0; grid-column: 3; align-items: flex-end; text-align: right; }
 .tri-label-name { font-weight: 700; font-size: 13px; }
 .tri-label-sub { font-size: 10px; color: var(--muted); font-family: ui-monospace, monospace; }
 .tri-label-ago { font-size: 9.5px; color: var(--muted); }
-.tri-label.st-stale { opacity: .45; }
-.tri-label.st-ahead .tri-label-name { color: var(--accent); }
-.triangle.ahead-postgres .tri-label-postgres.st-ahead .tri-label-name,
-.triangle.ahead-reasoner .tri-label-reasoner.st-ahead .tri-label-name { color: var(--pipeline); }
-.tri-badge-ahead { font-size: 9px; font-weight: 800; letter-spacing: .08em; color: #16121f;
+.tri-label.st-stale { opacity: .6; }
+.tri-label.is-focus .tri-label-name { color: var(--pipeline); }
+.tri-badge-head { font-size: 9px; font-weight: 800; letter-spacing: .08em; color: #2a1f05;
+  background: var(--pipeline); border-radius: 999px; padding: 1px 7px; margin-top: 2px; }
+.tri-badge-ahead { font-size: 9px; font-weight: 800; letter-spacing: .06em; color: #16121f;
   background: var(--accent); border-radius: 999px; padding: 1px 7px; margin-top: 2px; }
-.triangle.ahead-postgres .tri-label-postgres .tri-badge-ahead,
-.triangle.ahead-reasoner .tri-label-reasoner .tri-badge-ahead { background: var(--pipeline); }
-.tri-badge-stale { font-size: 9px; color: var(--muted); border: 1px solid var(--line);
+.tri-badge-stale { font-size: 9px; color: #ffd9cd; border: 1px solid #f0653f66;
   border-radius: 999px; padding: 0 6px; margin-top: 2px; }
 
-/* --- reasoning pill — rides along during an engine→hub→engine sync -------- */
+/* --- reasoning pill — rides along during a sync -------------------------- */
 .tri-reasoning-pill { margin-top: 10px; font-size: 12px; font-weight: 800; letter-spacing: .04em;
   text-transform: uppercase; color: var(--accent); background: var(--bg2);
   border: 1px solid var(--accent); border-radius: 999px; padding: 6px 16px;
   box-shadow: 0 8px 30px -8px var(--accent); animation: pulse 1s ease-in-out infinite; }
 
-/* --- headline + the one-click sync button -------------------------------- */
-.tri-headline { margin-top: 12px; font-size: 13px; text-align: center; color: var(--text); max-width: 460px; }
-.tri-headline.ahead-none { color: var(--ok); }
-.tri-headline.ahead-diverged { color: var(--risk); }
-.tri-sync-btn { margin-top: 12px; width: 100%; max-width: 460px; border: 0; cursor: pointer;
-  font-weight: 700; font-size: 14px; padding: 12px 14px; border-radius: 10px;
-  background: var(--accent); color: #16121f; transition: filter .12s, box-shadow .12s; }
-.tri-sync-btn:hover:not(:disabled) { filter: brightness(1.08); box-shadow: 0 8px 26px -10px var(--accent); }
-.tri-sync-btn:disabled { opacity: .6; cursor: default; }
-.tri-sync-rulebook { background: var(--accent); color: #16121f; }
-.tri-sync-postgres, .tri-sync-reasoner { background: var(--pipeline); color: #2a1f05; }
-.tri-sync-diverged { background: var(--risk); color: #2a1109; }
-.tri-locked-note { margin-top: 12px; font-size: 12.5px; color: var(--ok); }
+/* ======================================================================== */
+/* Sync station — HEAD selector + field-level diff + directional buttons.    */
+/* ======================================================================== */
+.sync-station { display: flex; flex-direction: column; gap: 14px; }
+
+/* HEAD selector chips */
+.sync-headpick { display: flex; flex-direction: column; gap: 8px; }
+.sync-headpick-label { font-size: 12px; color: var(--muted); }
+.sync-headpick-chips { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.headchip { position: relative; display: flex; flex-direction: column; align-items: flex-start; gap: 2px;
+  background: var(--card); border: 1.5px solid var(--line); border-radius: 10px; padding: 9px 12px;
+  cursor: pointer; color: var(--text); transition: border-color .12s, background .12s; }
+.headchip:hover:not(:disabled) { border-color: var(--pipeline); }
+.headchip:disabled { opacity: .55; cursor: default; }
+.headchip.is-head { border-color: var(--pipeline); background: #ffc14d12; }
+.headchip.is-suggested:not(.is-head) { border-color: #ffc14d66; border-style: dashed; }
+.headchip-name { font-weight: 700; font-size: 14px; }
+.headchip-sub { font-size: 10px; color: var(--muted); font-family: ui-monospace, monospace; }
+.headchip-suggest { position: absolute; top: -8px; right: 8px; font-size: 8.5px; font-weight: 800;
+  text-transform: uppercase; letter-spacing: .06em; color: #2a1f05; background: var(--pipeline);
+  border-radius: 999px; padding: 1px 6px; }
+
+/* the diff blocks */
+.sync-diff { display: flex; flex-direction: column; gap: 10px; }
+.sync-locked { font-size: 13px; color: var(--ok); padding: 10px 12px; border: 1px solid #43c46355;
+  border-radius: 10px; background: #43c4630f; }
+.diff-block { border: 1px solid var(--line); border-radius: 10px; overflow: hidden; background: var(--bg2); }
+.diff-block.is-empty { opacity: .65; }
+.diff-block-head { display: flex; align-items: center; justify-content: space-between;
+  padding: 8px 12px; background: var(--card); border-bottom: 1px solid var(--line); }
+.diff-arrow { font-size: 13px; font-weight: 700; }
+.diff-arrow em { color: var(--muted); font-weight: 500; font-style: normal; padding: 0 4px; }
+.diff-count { font-size: 11px; color: var(--risk); font-weight: 700; }
+.diff-count-ok { color: var(--ok); }
+.diff-tables { padding: 6px 12px 10px; display: flex; flex-direction: column; gap: 8px; }
+.diff-table-name { font-size: 11px; font-weight: 700; color: var(--accent); text-transform: uppercase;
+  letter-spacing: .04em; margin: 6px 0 3px; }
+.diff-row { border-left: 2px solid var(--line); padding: 3px 0 3px 9px; margin-bottom: 4px; }
+.diff-row.diff-changed { border-left-color: var(--inferred); }
+.diff-row.diff-added { border-left-color: var(--ok); }
+.diff-row.diff-removed { border-left-color: var(--risk); }
+.diff-row-pk { font-size: 11.5px; font-family: ui-monospace, monospace; color: var(--text); margin-bottom: 2px; }
+.diff-kind { font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: .05em;
+  border-radius: 999px; padding: 0 6px; margin-right: 7px; }
+.diff-kind-changed { color: #2a1f05; background: var(--inferred); }
+.diff-kind-added { color: #0c2414; background: var(--ok); }
+.diff-kind-removed { color: #2a1109; background: var(--risk); }
+.diff-field { display: grid; grid-template-columns: minmax(90px,140px) 1fr auto 1fr; align-items: baseline;
+  gap: 8px; font-size: 11.5px; padding: 1px 0; }
+.diff-field-name { color: var(--muted); font-family: ui-monospace, monospace; }
+.diff-to { color: var(--muted); }
+.dv { font-family: ui-monospace, monospace; word-break: break-word; }
+.dv-old { color: #ffb4a4; text-decoration: line-through; text-decoration-color: #f0653f66; }
+.dv-new { color: #b8f0c6; }
+.dv-absent { font-style: italic; opacity: .7; text-decoration: none; }
+.diff-note { font-size: 11px; color: var(--muted); font-style: italic; padding-left: 2px; }
+
+/* directional sync buttons */
+.sync-actions { display: flex; flex-direction: column; gap: 8px; }
+.sync-btn { display: flex; align-items: center; gap: 10px; text-align: left; width: 100%;
+  background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 11px 14px;
+  cursor: pointer; color: var(--text); transition: border-color .12s, box-shadow .12s, filter .12s; }
+.sync-btn:hover:not(:disabled) { border-color: var(--pipeline); }
+.sync-btn:disabled { opacity: .45; cursor: default; }
+.sync-btn-glyph { font-size: 16px; width: 20px; text-align: center; color: var(--pipeline); }
+.sync-btn-text { font-size: 13px; font-weight: 600; }
+.sync-btn-text em { color: var(--muted); font-weight: 500; font-style: normal; }
+.sync-btn-both { border-color: var(--pipeline); background: #ffc14d0e; }
+.sync-btn-reset { border-color: #f0653f44; }
+.sync-btn-reset .sync-btn-glyph { color: var(--risk); }
+.sync-btn.is-suggested { border-color: var(--pipeline); box-shadow: 0 0 0 1px var(--pipeline),
+  0 8px 26px -12px var(--pipeline); }
+.sync-btn-suggest { margin-left: auto; font-size: 9px; font-weight: 800; text-transform: uppercase;
+  letter-spacing: .06em; color: #2a1f05; background: var(--pipeline); border-radius: 999px; padding: 2px 8px; }

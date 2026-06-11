@@ -10,6 +10,7 @@
       "created": "2026-01-10T06:00:00.000Z",
       "maxPlanMinutes": 240,
       "stalenessThresholdMonths": 24,
+      "isOffHoursDeployment": false,
       "workflowStatus": "status-active",
       "workflowSteps": ""
     }
@@ -91,7 +92,8 @@
       "approvalGateId": "ntwf-release-approval-gate",
       "displayName": "Release Approval Gate",
       "workflowStep": "prod-deploy-step-3",
-      "escalationThresholdHours": 4
+      "escalationThresholdHours": 4,
+      "requiresDualSignoffOffHours": true
     }
   ],
   "StepPrecedence": [
@@ -117,20 +119,6 @@
     }
   ],
   "Roles": [
-    {
-      "roleId": "ntwf-legal-compliance-role",
-      "displayName": "Legal Compliance Reviewer",
-      "label": "Legal Compliance Reviewer",
-      "comment": "Certifies that the deployment plan meets regulatory and contractual requirements. Must be a human agent — AI agents may not fill this role (requiresHumanApproval).",
-      "hasCapability": "cap-legal-review",
-      "filledByHumanAgent": "ntwf-james-okafor",
-      "filledByAIAgent": "",
-      "filledByAutomatedPipeline": "",
-      "ownedBy": "ntwf-legal-dept",
-      "delegatesTo": "",
-      "workflowSteps": "prod-deploy-step-2",
-      "fromDelegatesTo": ""
-    },
     {
       "roleId": "ntwf-ci-executor-role",
       "displayName": "CI/CD Executor",
@@ -177,7 +165,7 @@
       "roleId": "ntwf-deployment-health-role",
       "displayName": "Deployment Health Agent",
       "label": "Deployment Health Agent",
-      "comment": "Generates the post-deployment health report by summarizing telemetry after a release. A role, not an identity — filled by DeploymentHealth-AI today (a probabilistic summarizer), it could be replaced by a newer model without changing the workflow structure. This is the second AI-executed step the article's CQ3 counts (two steps executed by AI agents).",
+      "comment": "Generates the post-deployment health report by summarizing telemetry after a release. A role, not an identity — filled by a human reviewer today, it could be replaced by a newer model without changing the workflow structure.",
       "hasCapability": "cap-risk-analysis",
       "filledByHumanAgent": "ntwf-james-okafor",
       "filledByAIAgent": "",
@@ -214,6 +202,20 @@
       "delegatesTo": "ntwf-cto-role",
       "workflowSteps": "",
       "fromDelegatesTo": "ntwf-release-manager-role"
+    },
+    {
+      "roleId": "ntwf-legal-compliance-role",
+      "displayName": "Legal Compliance Reviewer",
+      "label": "Legal Compliance Reviewer",
+      "comment": "Certifies that the deployment plan meets regulatory and contractual requirements. Must be a human agent — AI agents may not fill this role (requiresHumanApproval).",
+      "hasCapability": "cap-legal-review",
+      "filledByHumanAgent": "",
+      "filledByAIAgent": "ntwf-risk-ai",
+      "filledByAutomatedPipeline": "",
+      "ownedBy": "ntwf-legal-dept",
+      "delegatesTo": "",
+      "workflowSteps": "prod-deploy-step-2",
+      "fromDelegatesTo": ""
     }
   ],
   "Departments": [
@@ -232,25 +234,11 @@
   ],
   "HumanAgents": [
     {
-      "humanAgentId": "ntwf-maria-gonzalez",
-      "name": "Maria Gonzalez",
-      "displayName": "Maria Gonzalez",
-      "mbox": "maria.gonzalez@special-solutions.example",
-      "roles": "ntwf-release-manager-role"
-    },
-    {
       "humanAgentId": "ntwf-james-okafor",
       "name": "James Okafor",
       "displayName": "James Okafor",
       "mbox": "james.okafor@special-solutions.example",
       "roles": "ntwf-legal-compliance-role"
-    },
-    {
-      "humanAgentId": "ntwf-david-chen",
-      "name": "David Chen",
-      "displayName": "David Chen",
-      "mbox": "david.chen@special-solutions.example",
-      "roles": "ntwf-vp-engineering-role"
     },
     {
       "humanAgentId": "ntwf-sarah-kim",
@@ -421,7 +409,7 @@
       "created": "2026-04-02T05:00:00.000Z",
       "producedByStep": "prod-deploy-step-3",
       "derivedFromArtifact": "artifact-legal-clearance",
-      "attributedToHumanAgent": "ntwf-maria-gonzalez",
+      "attributedToHumanAgent": "ntwf-sarah-kim",
       "attributedToAIAgent": "",
       "attributedToAutomatedPipeline": ""
     },
@@ -453,6 +441,53 @@
       "complianceVerdictId": "verdict-production-deployment",
       "workflow": "production-deployment",
       "verdictConcept": ""
+    }
+  ],
+  "Scenarios": [
+    {
+      "scenarioId": "trigger-risk",
+      "label": "Trigger compliance risk",
+      "icon": "⚠️",
+      "explanation": "Backdates the workflow's last review past its policy window so the docs go STALE. The release already has AI-executed steps, so stale-docs-AND-an-AI-step fires the article's headline verdict: AT COMPLIANCE RISK.",
+      "sortOrder": 1,
+      "isReset": false,
+      "edits": "[{\"class\":\"Workflows\",\"match\":\"first\",\"set\":{\"modified\":\"2026-04-03T00:00:00-05:00\"}},{\"class\":\"Roles\",\"id\":\"ntwf-release-manager-role\",\"set\":{\"filledByHumanAgent\":\"ntwf-maria-gonzalez\",\"filledByAIAgent\":\"\",\"filledByAutomatedPipeline\":\"\"}},{\"class\":\"Roles\",\"id\":\"ntwf-risk-analysis-role\",\"set\":{\"filledByHumanAgent\":\"\",\"filledByAIAgent\":\"ntwf-risk-ai\",\"filledByAutomatedPipeline\":\"\"}},{\"class\":\"Roles\",\"id\":\"ntwf-legal-compliance-role\",\"set\":{\"filledByHumanAgent\":\"ntwf-james-okafor\",\"filledByAIAgent\":\"\",\"filledByAutomatedPipeline\":\"\"}},{\"class\":\"Roles\",\"id\":\"ntwf-ci-executor-role\",\"set\":{\"filledByHumanAgent\":\"\",\"filledByAIAgent\":\"\",\"filledByAutomatedPipeline\":\"ntwf-ci-pipeline\"}},{\"class\":\"Roles\",\"id\":\"ntwf-vp-engineering-role\",\"set\":{\"filledByHumanAgent\":\"ntwf-david-chen\",\"filledByAIAgent\":\"\",\"filledByAutomatedPipeline\":\"\"}},{\"class\":\"Roles\",\"id\":\"ntwf-cto-role\",\"set\":{\"filledByHumanAgent\":\"ntwf-sarah-kim\",\"filledByAIAgent\":\"\",\"filledByAutomatedPipeline\":\"\"}},{\"class\":\"Roles\",\"id\":\"ntwf-deployment-health-role\",\"set\":{\"filledByHumanAgent\":\"\",\"filledByAIAgent\":\"ntwf-health-ai\",\"filledByAutomatedPipeline\":\"\"}},{\"class\":\"Workflows\",\"match\":\"first\",\"set\":{\"modified\":\"2023-01-01T00:00:00-06:00\"}}]"
+    },
+    {
+      "scenarioId": "all-human",
+      "label": "All-human release",
+      "icon": "🧑",
+      "explanation": "Reassigns every AI agent and pipeline to a human. The AI-step count drops to zero, so the compliance risk can no longer fire — even if the docs are stale. Shows the role→agent indirection: personnel change is one edge, not a rewrite.",
+      "sortOrder": 2,
+      "isReset": false,
+      "edits": "[{\"class\":\"Workflows\",\"match\":\"first\",\"set\":{\"modified\":\"2026-04-03T00:00:00-05:00\"}},{\"class\":\"Roles\",\"id\":\"ntwf-release-manager-role\",\"set\":{\"filledByHumanAgent\":\"ntwf-maria-gonzalez\",\"filledByAIAgent\":\"\",\"filledByAutomatedPipeline\":\"\"}},{\"class\":\"Roles\",\"id\":\"ntwf-risk-analysis-role\",\"set\":{\"filledByHumanAgent\":\"\",\"filledByAIAgent\":\"ntwf-risk-ai\",\"filledByAutomatedPipeline\":\"\"}},{\"class\":\"Roles\",\"id\":\"ntwf-legal-compliance-role\",\"set\":{\"filledByHumanAgent\":\"ntwf-james-okafor\",\"filledByAIAgent\":\"\",\"filledByAutomatedPipeline\":\"\"}},{\"class\":\"Roles\",\"id\":\"ntwf-ci-executor-role\",\"set\":{\"filledByHumanAgent\":\"\",\"filledByAIAgent\":\"\",\"filledByAutomatedPipeline\":\"ntwf-ci-pipeline\"}},{\"class\":\"Roles\",\"id\":\"ntwf-vp-engineering-role\",\"set\":{\"filledByHumanAgent\":\"ntwf-david-chen\",\"filledByAIAgent\":\"\",\"filledByAutomatedPipeline\":\"\"}},{\"class\":\"Roles\",\"id\":\"ntwf-cto-role\",\"set\":{\"filledByHumanAgent\":\"ntwf-sarah-kim\",\"filledByAIAgent\":\"\",\"filledByAutomatedPipeline\":\"\"}},{\"class\":\"Roles\",\"id\":\"ntwf-deployment-health-role\",\"set\":{\"filledByHumanAgent\":\"\",\"filledByAIAgent\":\"ntwf-health-ai\",\"filledByAutomatedPipeline\":\"\"}},{\"class\":\"Roles\",\"id\":\"ntwf-risk-analysis-role\",\"set\":{\"filledByHumanAgent\":\"ntwf-david-chen\",\"filledByAIAgent\":\"\",\"filledByAutomatedPipeline\":\"\"}},{\"class\":\"Roles\",\"id\":\"ntwf-deployment-health-role\",\"set\":{\"filledByHumanAgent\":\"ntwf-sarah-kim\",\"filledByAIAgent\":\"\",\"filledByAutomatedPipeline\":\"\"}},{\"class\":\"Roles\",\"id\":\"ntwf-ci-executor-role\",\"set\":{\"filledByHumanAgent\":\"ntwf-james-okafor\",\"filledByAIAgent\":\"\",\"filledByAutomatedPipeline\":\"\"}}]"
+    },
+    {
+      "scenarioId": "ai-at-gate",
+      "label": "AI at the approval gate",
+      "icon": "🤖",
+      "explanation": "Hands the Legal Compliance Reviewer role — whose review step requires human sign-off — to an AI agent. The reasoner's consistency witness fires on that step: a requires-human-approval step is no longer human-filled. The rule break is DERIVED, not hand-checked.",
+      "sortOrder": 3,
+      "isReset": false,
+      "edits": "[{\"class\":\"Workflows\",\"match\":\"first\",\"set\":{\"modified\":\"2026-04-03T00:00:00-05:00\"}},{\"class\":\"Roles\",\"id\":\"ntwf-release-manager-role\",\"set\":{\"filledByHumanAgent\":\"ntwf-maria-gonzalez\",\"filledByAIAgent\":\"\",\"filledByAutomatedPipeline\":\"\"}},{\"class\":\"Roles\",\"id\":\"ntwf-risk-analysis-role\",\"set\":{\"filledByHumanAgent\":\"\",\"filledByAIAgent\":\"ntwf-risk-ai\",\"filledByAutomatedPipeline\":\"\"}},{\"class\":\"Roles\",\"id\":\"ntwf-legal-compliance-role\",\"set\":{\"filledByHumanAgent\":\"ntwf-james-okafor\",\"filledByAIAgent\":\"\",\"filledByAutomatedPipeline\":\"\"}},{\"class\":\"Roles\",\"id\":\"ntwf-ci-executor-role\",\"set\":{\"filledByHumanAgent\":\"\",\"filledByAIAgent\":\"\",\"filledByAutomatedPipeline\":\"ntwf-ci-pipeline\"}},{\"class\":\"Roles\",\"id\":\"ntwf-vp-engineering-role\",\"set\":{\"filledByHumanAgent\":\"ntwf-david-chen\",\"filledByAIAgent\":\"\",\"filledByAutomatedPipeline\":\"\"}},{\"class\":\"Roles\",\"id\":\"ntwf-cto-role\",\"set\":{\"filledByHumanAgent\":\"ntwf-sarah-kim\",\"filledByAIAgent\":\"\",\"filledByAutomatedPipeline\":\"\"}},{\"class\":\"Roles\",\"id\":\"ntwf-deployment-health-role\",\"set\":{\"filledByHumanAgent\":\"\",\"filledByAIAgent\":\"ntwf-health-ai\",\"filledByAutomatedPipeline\":\"\"}},{\"class\":\"Roles\",\"id\":\"ntwf-legal-compliance-role\",\"set\":{\"filledByHumanAgent\":\"\",\"filledByAIAgent\":\"ntwf-risk-ai\",\"filledByAutomatedPipeline\":\"\"}}]"
+    },
+    {
+      "scenarioId": "offhours-gate",
+      "label": "Off-hours gate, no second signer",
+      "icon": "🌙",
+      "explanation": "Flags the deployment as off-hours and fills the VP of Engineering role (the Release Manager's delegate) with the CI pipeline instead of a human. The Release Approval Gate requires dual human sign-off during off-hours, but the delegation chain now has only one human along it — so the gate's DualSignoffSatisfied goes false and the workflow trips AT RISK on the gate rule. Fix it two ways: clear the off-hours flag, or put a human back in the VP role (one edge in the org/escalation view). The gate finally has a measurable consequence.",
+      "sortOrder": 4,
+      "isReset": false,
+      "edits": "[{\"class\":\"Workflows\",\"match\":\"first\",\"set\":{\"modified\":\"2026-04-03T00:00:00-05:00\",\"isOffHoursDeployment\":true}},{\"class\":\"Roles\",\"id\":\"ntwf-release-manager-role\",\"set\":{\"filledByHumanAgent\":\"ntwf-maria-gonzalez\",\"filledByAIAgent\":\"\",\"filledByAutomatedPipeline\":\"\"}},{\"class\":\"Roles\",\"id\":\"ntwf-risk-analysis-role\",\"set\":{\"filledByHumanAgent\":\"\",\"filledByAIAgent\":\"ntwf-risk-ai\",\"filledByAutomatedPipeline\":\"\"}},{\"class\":\"Roles\",\"id\":\"ntwf-legal-compliance-role\",\"set\":{\"filledByHumanAgent\":\"ntwf-james-okafor\",\"filledByAIAgent\":\"\",\"filledByAutomatedPipeline\":\"\"}},{\"class\":\"Roles\",\"id\":\"ntwf-ci-executor-role\",\"set\":{\"filledByHumanAgent\":\"\",\"filledByAIAgent\":\"\",\"filledByAutomatedPipeline\":\"ntwf-ci-pipeline\"}},{\"class\":\"Roles\",\"id\":\"ntwf-vp-engineering-role\",\"set\":{\"filledByHumanAgent\":\"\",\"filledByAIAgent\":\"\",\"filledByAutomatedPipeline\":\"ntwf-ci-pipeline\"}},{\"class\":\"Roles\",\"id\":\"ntwf-cto-role\",\"set\":{\"filledByHumanAgent\":\"ntwf-sarah-kim\",\"filledByAIAgent\":\"\",\"filledByAutomatedPipeline\":\"\"}},{\"class\":\"Roles\",\"id\":\"ntwf-deployment-health-role\",\"set\":{\"filledByHumanAgent\":\"\",\"filledByAIAgent\":\"ntwf-health-ai\",\"filledByAutomatedPipeline\":\"\"}}]"
+    },
+    {
+      "scenarioId": "reset",
+      "label": "Reset to baseline",
+      "icon": "↺",
+      "explanation": "Restores the canonical seed assignments, a fresh review date, and on-hours scheduling — the known-good starting point. (The seed plan runs slightly over its 4-hour budget, so the board's baseline verdict is driven by the time-budget rule; trim a step's duration to clear it.)",
+      "sortOrder": 5,
+      "isReset": true,
+      "edits": "[{\"class\":\"Workflows\",\"match\":\"first\",\"set\":{\"modified\":\"2026-04-03T00:00:00-05:00\",\"isOffHoursDeployment\":false}},{\"class\":\"Roles\",\"id\":\"ntwf-release-manager-role\",\"set\":{\"filledByHumanAgent\":\"ntwf-maria-gonzalez\",\"filledByAIAgent\":\"\",\"filledByAutomatedPipeline\":\"\"}},{\"class\":\"Roles\",\"id\":\"ntwf-risk-analysis-role\",\"set\":{\"filledByHumanAgent\":\"\",\"filledByAIAgent\":\"ntwf-risk-ai\",\"filledByAutomatedPipeline\":\"\"}},{\"class\":\"Roles\",\"id\":\"ntwf-legal-compliance-role\",\"set\":{\"filledByHumanAgent\":\"ntwf-james-okafor\",\"filledByAIAgent\":\"\",\"filledByAutomatedPipeline\":\"\"}},{\"class\":\"Roles\",\"id\":\"ntwf-ci-executor-role\",\"set\":{\"filledByHumanAgent\":\"\",\"filledByAIAgent\":\"\",\"filledByAutomatedPipeline\":\"ntwf-ci-pipeline\"}},{\"class\":\"Roles\",\"id\":\"ntwf-vp-engineering-role\",\"set\":{\"filledByHumanAgent\":\"ntwf-david-chen\",\"filledByAIAgent\":\"\",\"filledByAutomatedPipeline\":\"\"}},{\"class\":\"Roles\",\"id\":\"ntwf-cto-role\",\"set\":{\"filledByHumanAgent\":\"ntwf-sarah-kim\",\"filledByAIAgent\":\"\",\"filledByAutomatedPipeline\":\"\"}},{\"class\":\"Roles\",\"id\":\"ntwf-deployment-health-role\",\"set\":{\"filledByHumanAgent\":\"\",\"filledByAIAgent\":\"ntwf-health-ai\",\"filledByAutomatedPipeline\":\"\"}}]"
     }
   ]
 }

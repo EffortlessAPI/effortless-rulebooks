@@ -227,4 +227,96 @@ export function registerControlRoutes(app) {
       stepSeedDbJson(),
     ]);
   });
+
+  // -------------------------------------------------------------------------
+  // Generalized sync: "store FROM is authoritative — make TARGETS match it."
+  //
+  //   POST /api/control/sync   { from: "reasoner"|"postgres"|"rulebook",
+  //                              targets: ["rulebook","reasoner","postgres"] }
+  //
+  // This is the full matrix the login page's directional buttons drive. Data
+  // only round-trips THROUGH the rulebook hub (there is no direct engine↔engine
+  // data copy — that would bypass the SSoT, which is the whole point of the
+  // architecture). So every authoritative push is composed from the same three
+  // primitives the named actions use:
+  //
+  //   1. export FROM → rulebook         (skip when from === "rulebook": the hub
+  //                                      already holds the authoritative rows)
+  //   2. effortless build               (regenerate every substrate from the
+  //                                      now-authoritative rulebook)
+  //   3. reseed each requested TARGET   (init-db.sh for postgres, seed-dbjson
+  //                                      for the reasoner). The rulebook is a
+  //                                      target implicitly whenever step 1 ran.
+  //
+  // The TARGET set is what makes "V / < / > / ^" expressible from one endpoint:
+  //   - from=reasoner, targets=[rulebook,reasoner,postgres]  → V  (down to both)
+  //   - from=reasoner, targets=[rulebook,postgres]           → >  (overwrite the
+  //                                                                other leg only)
+  //   - from=reasoner, targets=[rulebook]                    → ^  (promote to the
+  //                                                                hub only; leave
+  //                                                                postgres as-is)
+  //   - from=rulebook, targets=[reasoner]                    → push the hub down
+  //                                                                into one leg
+  //
+  // Honesty note: pushing one leg into the OTHER leg necessarily updates the
+  // rulebook too (it is the conduit). That is surfaced — "rulebook" is forced
+  // into the target set whenever an export runs — never hidden. (CLAUDE.md:
+  // Avoid Silent Fallbacks; the round-trip through the hub is real, so we show
+  // it.) The source store is never reseeded from itself — it already IS the
+  // authoritative copy; reseeding it would be a redundant round-trip that could
+  // only differ if the export/build lost something, which we'd want to SEE, not
+  // paper over. So we drop FROM from the reseed targets and let the next
+  // /api/triangle read prove convergence.
+  app.post("/api/control/sync", (req, res) => {
+    const from = (req.body && req.body.from) || "";
+    const targets = (req.body && Array.isArray(req.body.targets)) ? req.body.targets : [];
+    let plan;
+    try {
+      plan = planSync(from, targets);
+    } catch (e) {
+      return res.status(400).json({ error: e.message });
+    }
+    runSequence(res, plan.action, plan.steps);
+  });
+}
+
+// planSync — PURE step planner for /api/control/sync, factored out so it can be
+// reasoned about and tested without executing a build. Given an authoritative
+// source store and the targets it should overwrite, it returns the ordered list
+// of step descriptors (export? → build → reseed each target) plus an action id.
+// Throws on invalid input (the route turns that into a 400). See the route's
+// header comment for the V / < / > / ^ mapping this encodes.
+export function planSync(from, targetsIn) {
+  const STORES = new Set(["rulebook", "reasoner", "postgres"]);
+  if (!STORES.has(from)) {
+    throw new Error(`sync 'from' must be one of rulebook|reasoner|postgres (got '${from}')`);
+  }
+  if (!Array.isArray(targetsIn) || targetsIn.length === 0) {
+    throw new Error("sync needs at least one target store");
+  }
+  const targets = targetsIn.slice();
+  for (const t of targets) {
+    if (!STORES.has(t)) throw new Error(`sync target '${t}' is not a known store`);
+  }
+
+  const steps = [];
+  const exporting = from === "reasoner" || from === "postgres";
+  if (exporting) {
+    // Promote the authoritative engine's rows into the hub. Any push that moves a
+    // leg's edits anywhere REWRITES the rulebook — so the rulebook is implicitly a
+    // target; reflect that so the UI's "what got touched" is true.
+    steps.push(stepExportFrom(from));
+    if (!targets.includes("rulebook")) targets.push("rulebook");
+  }
+  // Always rebuild so every substrate is regenerated from the (possibly just-
+  // updated) rulebook before we reseed any target from it.
+  steps.push(stepEffortlessBuild());
+
+  // Reseed each requested target EXCEPT the source (already authoritative) and
+  // the rulebook (it "reseeds" itself purely by being the build input).
+  const reseed = targets.filter((t) => t !== from && t !== "rulebook");
+  if (reseed.includes("postgres")) steps.push(stepInitDb());
+  if (reseed.includes("reasoner")) steps.push(stepSeedDbJson());
+
+  return { action: `sync-${from}->${targets.join("+")}`, steps };
 }

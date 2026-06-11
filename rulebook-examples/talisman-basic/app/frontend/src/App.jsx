@@ -157,7 +157,7 @@ export default function App({ headerRight = null }) {
         onSetThreshold={handlers.setStalenessThreshold}
         onSetModified={handlers.setModified}
       />
-      <TimeBudgetBar sit={sit} workflow={sit.workflow} verdict={sit.verdict} />
+      <TimeBudgetBar sit={sit} workflow={sit.workflow} verdict={sit.verdict} handlers={handlers} busy={busy} />
 
       {/* The scenario picker is a floating popup, opened from the button under
           the verdict. Each choice sets several facts at once (and explains what
@@ -349,12 +349,19 @@ function RulePill({ on, label, firing }) {
 
 // ---- the time-budget bar: the live total vs. the FIXED 4-hour budget -------
 // The fill is COMPOSED of one colored segment per step, so you can see exactly
-// how each step's duration builds the plan runtime. Green/yellow/red zoning is
-// conveyed by the budget marker + overflow sliver, not the segment colors.
+// how each step's duration builds the plan runtime. Each segment is RESIZABLE:
+// drag the splitter on its right edge to change that step's duration right where
+// you see its effect (no separate buttons). Green/yellow/red zoning is conveyed
+// by the budget marker + overflow sliver, not the segment colors.
 // The budget is a FIXED raw fact (MaxPlanMinutes = 240 / 4h, seeded in the
-// rulebook); it is not user-adjustable. The plan fits or breaches by editing a
-// step's duration, not by moving the budget.
-function TimeBudgetBar({ sit, workflow, verdict }) {
+// rulebook); it is not user-adjustable. The plan fits or breaches by resizing a
+// step's segment, not by moving the budget.
+const DUR_SNAP = 15;   // drag snaps to 15-minute steps
+const DUR_MIN = 15;    // a step can't go below one snap
+const DUR_MAX = 240;   // a single step can't exceed the whole 4h budget
+const snapDur = (m) => Math.max(DUR_MIN, Math.min(DUR_MAX, Math.round(m / DUR_SNAP) * DUR_SNAP));
+
+function TimeBudgetBar({ sit, workflow, verdict, handlers, busy }) {
   const steps = sit.steps || [];
   const facts = sit.stepFacts || {};
   // Per-step minutes, read from the already-derived facts (the view is the
@@ -371,41 +378,98 @@ function TimeBudgetBar({ sit, workflow, verdict }) {
   const total = Number(workflow.totalPlanMinutes ?? verdict.totalPlanMinutes ?? segs.reduce((a, s) => a + s.min, 0));
   const budget = Number(workflow.maxPlanMinutes ?? verdict.timeBudgetMinutes ?? 0);
   const over = !!(workflow.isOverTimeBudget ?? verdict.isOverTimeBudget);
-  // The track spans 0 .. max(total, budget) so both the bar and the budget
-  // marker always fit and their crossing point is honest.
-  const axisMax = Math.max(total, budget, 1);
+
+  const trackRef = useRef(null);
+  // While dragging a splitter we hold a LIVE preview value for the dragged step
+  // so the segment widths track the cursor without re-reasoning. On release we
+  // commit ONE patch (one re-reason); the doctrine of "no mid-drag stuck slider"
+  // is preserved — the reasoner only runs on the committed value.
+  const [drag, setDrag] = useState(null); // { id, min } | null
+
+  // Effective minutes for layout: the dragged step shows its live preview, all
+  // others show their committed value. The axis grows with the preview so the
+  // bar (and the honest crossing with the budget marker) always fits.
+  const effMin = (s) => (drag && drag.id === s.id ? drag.min : s.min);
+  const previewTotal = segs.reduce((a, s) => a + effMin(s), 0);
+  const axisMax = Math.max(previewTotal, total, budget, 1);
   const pctOf = (m) => (m / axisMax) * 100;
   const budgetPct = pctOf(budget);
-  const zone = over ? "red" : total / Math.max(budget, 1) >= 0.8 ? "yellow" : "green";
+  const previewOver = previewTotal > budget;
+  const zone = (drag ? previewOver : over) ? "red"
+    : previewTotal / Math.max(budget, 1) >= 0.8 ? "yellow" : "green";
+
+  // Drag math: convert a pixel delta on the track into a minute delta using the
+  // track's pixel width and the current axis scale, then snap to 15 min.
+  function startDrag(seg, e) {
+    if (busy) return;             // reasoner is locked — don't start a resize
+    e.preventDefault();
+    const track = trackRef.current;
+    if (!track) return;
+    const trackPx = track.getBoundingClientRect().width;
+    const minPerPx = axisMax / trackPx;
+    const startX = e.clientX;
+    const startMin = seg.min;
+
+    const onMove = (ev) => {
+      const dxMin = (ev.clientX - startX) * minPerPx;
+      setDrag({ id: seg.id, min: snapDur(startMin + dxMin) });
+    };
+    const onUp = (ev) => {
+      window.removeEventListener("mousemove", onMove);
+      window.removeEventListener("mouseup", onUp);
+      const dxMin = (ev.clientX - startX) * minPerPx;
+      const next = snapDur(startMin + dxMin);
+      setDrag(null);
+      if (next !== startMin) handlers.patchStep(seg.id, { stepDurationMinutes: next });
+    };
+    window.addEventListener("mousemove", onMove);
+    window.addEventListener("mouseup", onUp);
+    setDrag({ id: seg.id, min: startMin });
+  }
 
   return (
-    <div className={"timebudget " + zone}>
+    <div className={"timebudget " + zone + (drag ? " dragging" : "")}>
       <div className="tb-head">
         <span className="tb-title">⏱ Plan runtime</span>
         <span className="tb-readout">
-          <b>{total}</b> min of <b>{budget}</b> min budget
-          {over ? <span className="tb-flag"> · OVER by {total - budget} min → AT RISK</span>
-                : <span className="tb-ok"> · within budget</span>}
+          <b>{previewTotal}</b> min of <b>{budget}</b> min budget
+          {(drag ? previewOver : over)
+            ? <span className="tb-flag"> · OVER by {previewTotal - budget} min → AT RISK</span>
+            : <span className="tb-ok"> · within budget</span>}
+          {drag && <span className="tb-dragnote"> · release to recompute</span>}
         </span>
       </div>
 
-      <div className="tb-track">
+      <div className="tb-track" ref={trackRef}>
         {/* one segment per step, widths proportional to its minutes, colored by
-            who runs it (mirrors the step cards) and labeled "Step #N" */}
-        {segs.map((s) => (
-          s.min > 0 && (
+            who runs it (mirrors the step cards) and labeled "Step #N". The
+            splitter on each segment's right edge resizes that step. */}
+        {segs.map((s) => {
+          const m = effMin(s);
+          if (m <= 0) return null;
+          const isDragged = drag && drag.id === s.id;
+          return (
             <div
               key={s.id}
-              className={"tb-seg k-" + s.kind}
-              style={{ width: pctOf(s.min) + "%" }}
-              title={`Step #${s.pos}: ${s.title} — ${s.min} min (${KIND[s.kind].label})`}
+              className={"tb-seg k-" + s.kind + (isDragged ? " dragged" : "")}
+              style={{ width: pctOf(m) + "%" }}
+              title={`Step #${s.pos}: ${s.title} — ${m} min (${KIND[s.kind].label}) · drag the edge to resize`}
             >
               <span className="tb-seg-num">Step #{s.pos}</span>
+              {isDragged && <span className="tb-seg-live">{m}m</span>}
+              {/* the splitter handle — drag to change this step's duration */}
+              <span
+                className={"tb-split" + (busy ? " disabled" : "")}
+                onMouseDown={(e) => startDrag(s, e)}
+                title={busy ? "reasoning…" : `resize Step #${s.pos} (15-min steps)`}
+                role="separator"
+                aria-label={`resize Step #${s.pos} duration`}
+              />
             </div>
-          )
-        ))}
+          );
+        })}
         {/* the budget marker — everything to its right is over budget */}
-        <div className={"tb-limit " + (over ? "breached" : "")} style={{ left: budgetPct + "%" }} title={`budget: ${budget} min`}>
+        <div className={"tb-limit " + ((drag ? previewOver : over) ? "breached" : "")} style={{ left: budgetPct + "%" }} title={`budget: ${budget} min`}>
           <span className="tb-limit-label">{budget}m budget</span>
         </div>
       </div>
@@ -416,13 +480,13 @@ function TimeBudgetBar({ sit, workflow, verdict }) {
           <span key={s.id} className="tb-legend-item">
             <span className={"tb-swatch k-" + s.kind} />
             <span className="tb-legend-pos">Step #{s.pos}</span>
-            <span className="muted">{s.min}m</span>
+            <span className="muted">{effMin(s)}m</span>
           </span>
         ))}
       </div>
 
       <div className="tb-budgetctl">
-        <span className="tb-budgetnote muted">budget is fixed at 4h — change a step's duration to fit or breach</span>
+        <span className="tb-budgetnote muted">budget is fixed at 4h — drag a step's segment edge to resize it (snaps to 15 min); the plan fits or breaches</span>
       </div>
     </div>
   );
