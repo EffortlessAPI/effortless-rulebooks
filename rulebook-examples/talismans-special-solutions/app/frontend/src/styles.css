@@ -661,13 +661,14 @@ button, input, select { font: inherit; }
 @keyframes tri-delay-in { 0%,40% { opacity: 0; } 60% { opacity: 0; } 100% { opacity: 1; } }
 
 /* --- nodes --------------------------------------------------------------- */
-/* a generous invisible hit target so the whole node area is clickable */
+/* a generous invisible hit target so the whole node area is easy to hover */
 .tri-node-hit { fill: transparent; }
 .tri-node.is-pickable { cursor: pointer; }
-.tri-node.is-pickable:hover .tri-node-halo { stroke-width: 2.5; stroke-opacity: 1; }
-.tri-node.is-pickable:hover .tri-node-core { filter: brightness(1.18); }
+.tri-node.is-pickable:hover .tri-node-core,
+.tri-node.is-hover .tri-node-core { filter: brightness(1.18); }
 .tri-node.is-pickable:focus-visible { outline: none; }
-.tri-node.is-pickable:focus-visible .tri-node-halo { stroke: var(--pipeline); stroke-width: 2.5; }
+.tri-node.is-pickable:focus-visible .tri-node-halo,
+.tri-node.is-hover .tri-node-halo { stroke: var(--accent); stroke-width: 2.5; stroke-opacity: 1; }
 .tri-node-halo { fill: transparent; stroke: var(--line); stroke-width: 1.5; transition: all .3s ease; }
 .tri-node-core { fill: var(--card2); stroke: var(--muted); stroke-width: 2; transition: all .3s ease; }
 .tri-check { fill: none; stroke: var(--ok); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
@@ -697,11 +698,10 @@ button, input, select { font: inherit; }
   max-width: 420px; margin-top: 6px; }
 .tri-label { display: flex; flex-direction: column; align-items: center; gap: 1px; text-align: center;
   padding: 6px 4px; border-radius: 9px; transition: all .3s ease;
-  background: transparent; border: 1px solid transparent; color: var(--text); cursor: pointer;
-  font: inherit; }
-.tri-label:hover:not(:disabled) { border-color: var(--line); background: var(--card); }
-.tri-label:disabled { cursor: default; }
-.tri-label.is-focus { border-color: var(--pipeline); background: #ffc14d0e; }
+  background: transparent; border: 1px solid transparent; color: var(--text); cursor: pointer; }
+.tri-label.is-hover { border-color: var(--accent); background: var(--card); }
+.tri-label.is-head { border-color: var(--pipeline); background: #ffc14d0e; }
+.tri-label.is-head .tri-label-name { color: var(--pipeline); }
 .tri-label-rulebook { order: -1; grid-column: 2; }
 .tri-label-reasoner { order: 0; grid-column: 1; align-items: flex-start; text-align: left; }
 .tri-label-postgres { order: 0; grid-column: 3; align-items: flex-end; text-align: right; }
@@ -709,7 +709,6 @@ button, input, select { font: inherit; }
 .tri-label-sub { font-size: 10px; color: var(--muted); font-family: ui-monospace, monospace; }
 .tri-label-ago { font-size: 9.5px; color: var(--muted); }
 .tri-label.st-stale { opacity: .6; }
-.tri-label.is-focus .tri-label-name { color: var(--pipeline); }
 .tri-badge-head { font-size: 9px; font-weight: 800; letter-spacing: .08em; color: #2a1f05;
   background: var(--pipeline); border-radius: 999px; padding: 1px 7px; margin-top: 2px; }
 .tri-badge-ahead { font-size: 9px; font-weight: 800; letter-spacing: .06em; color: #16121f;
@@ -751,6 +750,11 @@ button, input, select { font: inherit; }
   border-radius: 999px; padding: 3px 9px; white-space: nowrap; flex: none; }
 .tri-pop-status.ok { color: #0c2414; background: var(--ok); }
 .tri-pop-status.warn { color: #2a1f05; background: var(--inferred); }
+.tri-pop-status.muted { color: var(--muted); background: var(--card); }
+
+/* the in-sync box body: a short note + (maybe) one action, no diff/pushes */
+.tri-pop-insync { display: flex; flex-direction: column; gap: 10px; }
+.tri-pop-insync-note { margin: 0; font-size: 12.5px; color: var(--muted); }
 
 /* the diff list — capped height inside the box so long diffs scroll, not grow */
 .tri-pop-diff { display: flex; flex-direction: column; gap: 8px; max-height: 220px; overflow-y: auto;

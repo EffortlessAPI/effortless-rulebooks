@@ -8,18 +8,18 @@ import SyncPanel from "./SyncPanel.jsx";
 // The whole gate is the Head & Legs triangle (SyncPanel). Everything that used
 // to be three stacked sections — pick-engine buttons, HEAD chips, the diff list,
 // the directional sync buttons, AND the manual rebuild buttons — is folded into
-// the picture:
+// the picture. Nothing is privileged:
 //
-//   • Click a node  → that store becomes HEAD (styling shows it).
-//   • A floaty box pops next to the focused node with the field-level diff, the
-//     directional pushes (◂ left leg / ▸ right leg / ▾ both / ▴ up into the hub),
-//     a quarantined "reset-then-rebuild" (the git-reset-then-down 4th choice),
-//     and — for an engine leg — a "Launch console on X →" button.
+//   • At rest, the triangle shows WHO IS HEAD — the Rulebook when all three
+//     agree, otherwise the most-recently-edited store (a status read-out only).
+//   • HOVER any node to ask "if THIS store were authoritative?" — a floaty box
+//     appears next to it with the field-level diff and the directional pushes
+//     (◂ left leg / ▸ right leg / ▾ both / ▴ up into the hub), a quarantined
+//     "reset-then-rebuild", and — for an engine leg — a "Launch console on X →".
+//     Act straight from the hover; move away and the box is gone.
 //
-// Clicking either engine leg snaps everything back in line with that engine as
-// HEAD; clicking the rulebook makes the hub authoritative. The build still runs
-// on the server and streams into the console below this control. App.jsx and the
-// views are untouched — they render whatever the chosen engine computed.
+// The build runs on the server and streams into the console below this control.
+// App.jsx and the views are untouched — they render whatever engine computed.
 // ===========================================================================
 
 export default function Login({ onEnter }) {
@@ -86,10 +86,11 @@ export default function Login({ onEnter }) {
           <h1>Talisman's Special Solutions — Release Console</h1>
           <p className="login-sub">
             One rulebook (the <strong>head</strong>), two execution engines (the{" "}
-            <strong>legs</strong>): the OWL reasoner and the Postgres views.{" "}
-            <em>Click a node to make it authoritative</em> — the floaty box shows what
-            each other store would lose, lets you push the head left, right, down, or
-            up, reset to baseline, and launch the console on either engine.
+            <strong>legs</strong>): the OWL reasoner and the Postgres views. The ring
+            marks who's <strong>HEAD</strong> right now — but none is privileged.{" "}
+            <em>Hover any node</em> to see what it would overwrite and push it left,
+            right, down, or up — reset to baseline, or launch the console on either
+            engine, straight from the hover.
           </p>
         </div>
 

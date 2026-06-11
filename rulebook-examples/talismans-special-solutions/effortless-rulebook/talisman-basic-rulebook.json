@@ -342,7 +342,7 @@
         "Title": "Production Deployment Workflow",
         "Description": "The primary NTWF ABox example. A 5-step workflow for deploying software to production at Talisman's Special Solutions. Steps involve an AI Risk Analysis Agent (step 1), a human Legal Compliance Reviewer (step 2), a human Release Manager at the Release Approval Gate (step 3), an automated CI/CD pipeline (step 4), and the Release Manager again for the post-deployment report (step 5). Demonstrates all three agent types, the delegation chain, artifact provenance, and DCAT dataset consumption.",
         "Identifier": "WF-PROD-DEPLOY-001",
-        "Modified": "2025-07-11T00:00:00-05:00",
+        "Modified": "2025-04-11T05:00:00.000Z",
         "Created": "2026-01-10T06:00:00.000Z",
         "MaxPlanMinutes": 240,
         "StalenessThresholdMonths": 12,
@@ -1140,20 +1140,6 @@
         "FromDelegatesTo": "ntwf-release-manager-role"
       },
       {
-        "RoleId": "ntwf-risk-analysis-role",
-        "DisplayName": "Risk Analysis Agent",
-        "Label": "Risk Analysis Agent",
-        "Comment": "Performs probabilistic risk scoring over the Q1 risk metrics dataset. This is a role, not an identity — filled by RiskAnalysis-AI today but could be replaced by a newer model version without changing the workflow structure.",
-        "HasCapability": "cap-risk-analysis",
-        "FilledByHumanAgent": "ntwf-james-okafor",
-        "FilledByAIAgent": "",
-        "FilledByAutomatedPipeline": "",
-        "OwnedBy": "ntwf-engineering",
-        "DelegatesTo": "",
-        "WorkflowSteps": "prod-deploy-step-1",
-        "FromDelegatesTo": ""
-      },
-      {
         "RoleId": "ntwf-legal-compliance-role",
         "DisplayName": "Legal Compliance Reviewer",
         "Label": "Legal Compliance Reviewer",
@@ -1165,6 +1151,20 @@
         "OwnedBy": "ntwf-legal-dept",
         "DelegatesTo": "",
         "WorkflowSteps": "prod-deploy-step-2",
+        "FromDelegatesTo": ""
+      },
+      {
+        "RoleId": "ntwf-risk-analysis-role",
+        "DisplayName": "Risk Analysis Agent",
+        "Label": "Risk Analysis Agent",
+        "Comment": "Performs probabilistic risk scoring over the Q1 risk metrics dataset. This is a role, not an identity — filled by RiskAnalysis-AI today but could be replaced by a newer model version without changing the workflow structure.",
+        "HasCapability": "cap-risk-analysis",
+        "FilledByHumanAgent": "",
+        "FilledByAIAgent": "ntwf-risk-ai",
+        "FilledByAutomatedPipeline": "",
+        "OwnedBy": "ntwf-engineering",
+        "DelegatesTo": "",
+        "WorkflowSteps": "prod-deploy-step-1",
         "FromDelegatesTo": ""
       }
     ]
