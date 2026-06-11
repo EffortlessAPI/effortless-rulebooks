@@ -10,14 +10,11 @@
 -- Workflows: Table: Workflows. The NTWF Workflow class — prov:Plan + schema:CreativeWork. Each workflow has Dublin Core metadata (title, description, identifier, created, modified), a lifecycle status from the SKOS scheme, and a collection of WorkflowSteps (ntwf:hasStep).
 -- ----------------------------------------------------------------------------
 INSERT INTO workflows (workflow_id, display_name, title, description, identifier, modified, created, max_plan_minutes, staleness_threshold_months, is_off_hours_deployment, workflow_status, workflow_steps)
-VALUES ('production-deployment', 'Production Deployment', 'Production Deployment Workflow', 'The primary NTWF ABox example. A 5-step workflow for deploying software to production at Talisman''s Special Solutions. Steps involve an AI Risk Analysis Agent (step 1), a human Legal Compliance Reviewer (step 2), a human Release Manager at the Release Approval Gate (step 3), an automated CI/CD pipeline (step 4), and the Release Manager again for the post-deployment report (step 5). Demonstrates all three agent types, the delegation chain, artifact provenance, and DCAT dataset consumption.', 'WF-PROD-DEPLOY-001', '2024-12-10T05:00:00.000Z', '2026-01-10T06:00:00.000Z', 240, 24, FALSE, 'status-active', '') ON CONFLICT (workflow_id) DO NOTHING;
+VALUES ('production-deployment', 'Production Deployment', 'Production Deployment Workflow', 'The primary NTWF ABox example. A 5-step workflow for deploying software to production at Talisman''s Special Solutions. Steps involve an AI Risk Analysis Agent (step 1), a human Legal Compliance Reviewer (step 2), a human Release Manager at the Release Approval Gate (step 3), an automated CI/CD pipeline (step 4), and the Release Manager again for the post-deployment report (step 5). Demonstrates all three agent types, the delegation chain, artifact provenance, and DCAT dataset consumption.', 'WF-PROD-DEPLOY-001', '2025-04-11T05:00:00.000Z', '2026-01-10T06:00:00.000Z', 240, 12, FALSE, 'status-active', '') ON CONFLICT (workflow_id) DO NOTHING;
 
 -- ----------------------------------------------------------------------------
 -- WorkflowSteps: Table: WorkflowSteps. The NTWF WorkflowStep class — prov:Activity. Each step is first-class and individually addressable, belongs to one Workflow (ntwf:isStepOf), and is assigned to exactly one Role (ntwf:assignedRole). Step-to-step ordering is modeled in the StepPrecedence junction; the ApprovalGate subtype specializes a step via a 1:1 FK.
 -- ----------------------------------------------------------------------------
-INSERT INTO workflow_steps (workflow_step_id, display_name, workflow, sequence_position, assigned_role, requires_human_approval, step_duration_minutes, consumes_dataset, produces_artifacts, approval_gate, precedes, preceded_by)
-VALUES ('prod-deploy-step-4', 'Automated Deployment Execution', 'production-deployment', 4, 'ntwf-ci-executor-role', FALSE, 60, '', 'artifact-deployment-log', '', 'prec-4-5', 'prec-3-4') ON CONFLICT (workflow_step_id) DO NOTHING;
-
 INSERT INTO workflow_steps (workflow_step_id, display_name, workflow, sequence_position, assigned_role, requires_human_approval, step_duration_minutes, consumes_dataset, produces_artifacts, approval_gate, precedes, preceded_by)
 VALUES ('prod-deploy-step-5', 'Post-Deployment Health Check & Report', 'production-deployment', 5, 'ntwf-deployment-health-role', FALSE, 30, '', 'artifact-post-deploy-report', '', '', 'prec-4-5') ON CONFLICT (workflow_step_id) DO NOTHING;
 
@@ -25,10 +22,13 @@ INSERT INTO workflow_steps (workflow_step_id, display_name, workflow, sequence_p
 VALUES ('prod-deploy-step-1', 'AI Risk Assessment', 'production-deployment', 1, 'ntwf-risk-analysis-role', FALSE, 15, 'ds-q1-2026-risk-metrics', 'artifact-risk-report', '', 'prec-1-2', '') ON CONFLICT (workflow_step_id) DO NOTHING;
 
 INSERT INTO workflow_steps (workflow_step_id, display_name, workflow, sequence_position, assigned_role, requires_human_approval, step_duration_minutes, consumes_dataset, produces_artifacts, approval_gate, precedes, preceded_by)
-VALUES ('prod-deploy-step-2', 'Legal Compliance Review', 'production-deployment', 2, 'ntwf-legal-compliance-role', TRUE, 120, '', 'artifact-legal-clearance', '', 'prec-2-3', 'prec-1-2') ON CONFLICT (workflow_step_id) DO NOTHING;
+VALUES ('prod-deploy-step-3', 'Release Approval Gate', 'production-deployment', 3, 'ntwf-release-manager-role', FALSE, 30, '', 'artifact-release-authorization', 'ntwf-release-approval-gate', 'prec-3-4', 'prec-2-3') ON CONFLICT (workflow_step_id) DO NOTHING;
 
 INSERT INTO workflow_steps (workflow_step_id, display_name, workflow, sequence_position, assigned_role, requires_human_approval, step_duration_minutes, consumes_dataset, produces_artifacts, approval_gate, precedes, preceded_by)
-VALUES ('prod-deploy-step-3', 'Release Approval Gate', 'production-deployment', 3, 'ntwf-release-manager-role', FALSE, 30, '', 'artifact-release-authorization', 'ntwf-release-approval-gate', 'prec-3-4', 'prec-2-3') ON CONFLICT (workflow_step_id) DO NOTHING;
+VALUES ('prod-deploy-step-2', 'Legal Compliance Review', 'production-deployment', 2, 'ntwf-legal-compliance-role', TRUE, 30, '', 'artifact-legal-clearance', '', 'prec-2-3', 'prec-1-2') ON CONFLICT (workflow_step_id) DO NOTHING;
+
+INSERT INTO workflow_steps (workflow_step_id, display_name, workflow, sequence_position, assigned_role, requires_human_approval, step_duration_minutes, consumes_dataset, produces_artifacts, approval_gate, precedes, preceded_by)
+VALUES ('prod-deploy-step-4', 'Automated Deployment Execution', 'production-deployment', 4, 'ntwf-ci-executor-role', FALSE, 45, '', 'artifact-deployment-log', '', 'prec-4-5', 'prec-3-4') ON CONFLICT (workflow_step_id) DO NOTHING;
 
 -- ----------------------------------------------------------------------------
 -- ApprovalGates: Table: ApprovalGates. The NTWF ApprovalGate class — rdfs:subClassOf WorkflowStep. Modeled as a class-table-inheritance subtype: each gate row shares identity with exactly one WorkflowStep (via the WorkflowStep 1:1 FK) and carries only the gate-specific attribute, escalationThresholdHours. The step it specializes keeps the common attributes (requiresHumanApproval, assigned role, etc.). This preserves the article's double-typing — a gate IS a step — without collapsing two DAG nodes into one.
@@ -61,9 +61,6 @@ INSERT INTO roles (role_id, display_name, label, comment, has_capability, filled
 VALUES ('ntwf-cto-role', 'Chief Technology Officer', 'Chief Technology Officer', 'Top of the delegation chain. Has cap-executive-authorization. When both Release Manager and VP Engineering are unavailable, the CTO is the final escalation target.', 'cap-executive-authorization', 'ntwf-sarah-kim', '', '', 'ntwf-engineering', '', '', 'ntwf-vp-engineering-role') ON CONFLICT (role_id) DO NOTHING;
 
 INSERT INTO roles (role_id, display_name, label, comment, has_capability, filled_by_human_agent, filled_by_ai_agent, filled_by_automated_pipeline, owned_by, delegates_to, workflow_steps, from_delegates_to)
-VALUES ('ntwf-risk-analysis-role', 'Risk Analysis Agent', 'Risk Analysis Agent', 'Performs probabilistic risk scoring over the Q1 risk metrics dataset. This is a role, not an identity — filled by RiskAnalysis-AI today but could be replaced by a newer model version without changing the workflow structure.', 'cap-risk-analysis', '', 'ntwf-health-ai', '', 'ntwf-engineering', '', 'prod-deploy-step-1', '') ON CONFLICT (role_id) DO NOTHING;
-
-INSERT INTO roles (role_id, display_name, label, comment, has_capability, filled_by_human_agent, filled_by_ai_agent, filled_by_automated_pipeline, owned_by, delegates_to, workflow_steps, from_delegates_to)
 VALUES ('ntwf-deployment-health-role', 'Deployment Health Agent', 'Deployment Health Agent', 'Generates the post-deployment health report by summarizing telemetry after a release. A role, not an identity — filled by a human reviewer today, it could be replaced by a newer model without changing the workflow structure.', 'cap-risk-analysis', 'ntwf-james-okafor', '', '', 'ntwf-engineering', '', 'prod-deploy-step-5', '') ON CONFLICT (role_id) DO NOTHING;
 
 INSERT INTO roles (role_id, display_name, label, comment, has_capability, filled_by_human_agent, filled_by_ai_agent, filled_by_automated_pipeline, owned_by, delegates_to, workflow_steps, from_delegates_to)
@@ -71,6 +68,9 @@ VALUES ('ntwf-release-manager-role', 'Release Manager', 'Release Manager', 'Owns
 
 INSERT INTO roles (role_id, display_name, label, comment, has_capability, filled_by_human_agent, filled_by_ai_agent, filled_by_automated_pipeline, owned_by, delegates_to, workflow_steps, from_delegates_to)
 VALUES ('ntwf-vp-engineering-role', 'VP of Engineering', 'VP of Engineering', 'First escalation target when Release Manager is unavailable. Demonstrates ntwf:delegatesTo chain: Release Manager → VP Engineering → CTO.', 'cap-human-judgment', '', '', 'ntwf-ci-pipeline', 'ntwf-engineering', 'ntwf-cto-role', '', 'ntwf-release-manager-role') ON CONFLICT (role_id) DO NOTHING;
+
+INSERT INTO roles (role_id, display_name, label, comment, has_capability, filled_by_human_agent, filled_by_ai_agent, filled_by_automated_pipeline, owned_by, delegates_to, workflow_steps, from_delegates_to)
+VALUES ('ntwf-risk-analysis-role', 'Risk Analysis Agent', 'Risk Analysis Agent', 'Performs probabilistic risk scoring over the Q1 risk metrics dataset. This is a role, not an identity — filled by RiskAnalysis-AI today but could be replaced by a newer model version without changing the workflow structure.', 'cap-risk-analysis', '', 'ntwf-risk-ai', '', 'ntwf-engineering', '', 'prod-deploy-step-1', '') ON CONFLICT (role_id) DO NOTHING;
 
 INSERT INTO roles (role_id, display_name, label, comment, has_capability, filled_by_human_agent, filled_by_ai_agent, filled_by_automated_pipeline, owned_by, delegates_to, workflow_steps, from_delegates_to)
 VALUES ('ntwf-legal-compliance-role', 'Legal Compliance Reviewer', 'Legal Compliance Reviewer', 'Certifies that the deployment plan meets regulatory and contractual requirements. Must be a human agent — AI agents may not fill this role (requiresHumanApproval).', 'cap-legal-review', '', 'ntwf-risk-ai', '', 'ntwf-legal-dept', '', 'prod-deploy-step-2', '') ON CONFLICT (role_id) DO NOTHING;

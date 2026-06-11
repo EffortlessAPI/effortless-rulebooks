@@ -342,10 +342,10 @@
         "Title": "Production Deployment Workflow",
         "Description": "The primary NTWF ABox example. A 5-step workflow for deploying software to production at Talisman's Special Solutions. Steps involve an AI Risk Analysis Agent (step 1), a human Legal Compliance Reviewer (step 2), a human Release Manager at the Release Approval Gate (step 3), an automated CI/CD pipeline (step 4), and the Release Manager again for the post-deployment report (step 5). Demonstrates all three agent types, the delegation chain, artifact provenance, and DCAT dataset consumption.",
         "Identifier": "WF-PROD-DEPLOY-001",
-        "Modified": "2024-12-10T05:00:00.000Z",
+        "Modified": "2025-04-11T05:00:00.000Z",
         "Created": "2026-01-10T06:00:00.000Z",
         "MaxPlanMinutes": 240,
-        "StalenessThresholdMonths": 24,
+        "StalenessThresholdMonths": 12,
         "IsOffHoursDeployment": false,
         "WorkflowStatus": "status-active",
         "WorkflowSteps": ""
@@ -607,20 +607,6 @@
     ],
     "data": [
       {
-        "WorkflowStepId": "prod-deploy-step-4",
-        "DisplayName": "Automated Deployment Execution",
-        "Workflow": "production-deployment",
-        "SequencePosition": 4,
-        "AssignedRole": "ntwf-ci-executor-role",
-        "RequiresHumanApproval": false,
-        "StepDurationMinutes": 60,
-        "ConsumesDataset": "",
-        "ProducesArtifacts": "artifact-deployment-log",
-        "ApprovalGate": "",
-        "Precedes": "prec-4-5",
-        "PrecededBy": "prec-3-4"
-      },
-      {
         "WorkflowStepId": "prod-deploy-step-5",
         "DisplayName": "Post-Deployment Health Check & Report",
         "Workflow": "production-deployment",
@@ -649,20 +635,6 @@
         "PrecededBy": ""
       },
       {
-        "WorkflowStepId": "prod-deploy-step-2",
-        "DisplayName": "Legal Compliance Review",
-        "Workflow": "production-deployment",
-        "SequencePosition": 2,
-        "AssignedRole": "ntwf-legal-compliance-role",
-        "RequiresHumanApproval": true,
-        "StepDurationMinutes": 120,
-        "ConsumesDataset": "",
-        "ProducesArtifacts": "artifact-legal-clearance",
-        "ApprovalGate": "",
-        "Precedes": "prec-2-3",
-        "PrecededBy": "prec-1-2"
-      },
-      {
         "WorkflowStepId": "prod-deploy-step-3",
         "DisplayName": "Release Approval Gate",
         "Workflow": "production-deployment",
@@ -675,6 +647,34 @@
         "ApprovalGate": "ntwf-release-approval-gate",
         "Precedes": "prec-3-4",
         "PrecededBy": "prec-2-3"
+      },
+      {
+        "WorkflowStepId": "prod-deploy-step-2",
+        "DisplayName": "Legal Compliance Review",
+        "Workflow": "production-deployment",
+        "SequencePosition": 2,
+        "AssignedRole": "ntwf-legal-compliance-role",
+        "RequiresHumanApproval": true,
+        "StepDurationMinutes": 30,
+        "ConsumesDataset": "",
+        "ProducesArtifacts": "artifact-legal-clearance",
+        "ApprovalGate": "",
+        "Precedes": "prec-2-3",
+        "PrecededBy": "prec-1-2"
+      },
+      {
+        "WorkflowStepId": "prod-deploy-step-4",
+        "DisplayName": "Automated Deployment Execution",
+        "Workflow": "production-deployment",
+        "SequencePosition": 4,
+        "AssignedRole": "ntwf-ci-executor-role",
+        "RequiresHumanApproval": false,
+        "StepDurationMinutes": 45,
+        "ConsumesDataset": "",
+        "ProducesArtifacts": "artifact-deployment-log",
+        "ApprovalGate": "",
+        "Precedes": "prec-4-5",
+        "PrecededBy": "prec-3-4"
       }
     ]
   },
@@ -1098,20 +1098,6 @@
         "FromDelegatesTo": "ntwf-vp-engineering-role"
       },
       {
-        "RoleId": "ntwf-risk-analysis-role",
-        "DisplayName": "Risk Analysis Agent",
-        "Label": "Risk Analysis Agent",
-        "Comment": "Performs probabilistic risk scoring over the Q1 risk metrics dataset. This is a role, not an identity — filled by RiskAnalysis-AI today but could be replaced by a newer model version without changing the workflow structure.",
-        "HasCapability": "cap-risk-analysis",
-        "FilledByHumanAgent": "",
-        "FilledByAIAgent": "ntwf-health-ai",
-        "FilledByAutomatedPipeline": "",
-        "OwnedBy": "ntwf-engineering",
-        "DelegatesTo": "",
-        "WorkflowSteps": "prod-deploy-step-1",
-        "FromDelegatesTo": ""
-      },
-      {
         "RoleId": "ntwf-deployment-health-role",
         "DisplayName": "Deployment Health Agent",
         "Label": "Deployment Health Agent",
@@ -1152,6 +1138,20 @@
         "DelegatesTo": "ntwf-cto-role",
         "WorkflowSteps": "",
         "FromDelegatesTo": "ntwf-release-manager-role"
+      },
+      {
+        "RoleId": "ntwf-risk-analysis-role",
+        "DisplayName": "Risk Analysis Agent",
+        "Label": "Risk Analysis Agent",
+        "Comment": "Performs probabilistic risk scoring over the Q1 risk metrics dataset. This is a role, not an identity — filled by RiskAnalysis-AI today but could be replaced by a newer model version without changing the workflow structure.",
+        "HasCapability": "cap-risk-analysis",
+        "FilledByHumanAgent": "",
+        "FilledByAIAgent": "ntwf-risk-ai",
+        "FilledByAutomatedPipeline": "",
+        "OwnedBy": "ntwf-engineering",
+        "DelegatesTo": "",
+        "WorkflowSteps": "prod-deploy-step-1",
+        "FromDelegatesTo": ""
       },
       {
         "RoleId": "ntwf-legal-compliance-role",

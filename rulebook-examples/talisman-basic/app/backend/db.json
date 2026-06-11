@@ -6,10 +6,10 @@
       "title": "Production Deployment Workflow",
       "description": "The primary NTWF ABox example. A 5-step workflow for deploying software to production at Talisman's Special Solutions. Steps involve an AI Risk Analysis Agent (step 1), a human Legal Compliance Reviewer (step 2), a human Release Manager at the Release Approval Gate (step 3), an automated CI/CD pipeline (step 4), and the Release Manager again for the post-deployment report (step 5). Demonstrates all three agent types, the delegation chain, artifact provenance, and DCAT dataset consumption.",
       "identifier": "WF-PROD-DEPLOY-001",
-      "modified": "2024-12-10T05:00:00.000Z",
+      "modified": "2025-07-11T00:00:00-05:00",
       "created": "2026-01-10T06:00:00.000Z",
       "maxPlanMinutes": 240,
-      "stalenessThresholdMonths": 24,
+      "stalenessThresholdMonths": 12,
       "isOffHoursDeployment": false,
       "workflowStatus": "status-active",
       "workflowSteps": ""
@@ -17,27 +17,13 @@
   ],
   "WorkflowSteps": [
     {
-      "workflowStepId": "prod-deploy-step-4",
-      "displayName": "Automated Deployment Execution",
-      "workflow": "production-deployment",
-      "sequencePosition": 4,
-      "assignedRole": "ntwf-ci-executor-role",
-      "requiresHumanApproval": false,
-      "stepDurationMinutes": 60,
-      "consumesDataset": "",
-      "producesArtifacts": "artifact-deployment-log",
-      "approvalGate": "",
-      "precedes": "prec-4-5",
-      "precededBy": "prec-3-4"
-    },
-    {
       "workflowStepId": "prod-deploy-step-5",
       "displayName": "Post-Deployment Health Check & Report",
       "workflow": "production-deployment",
       "sequencePosition": 5,
       "assignedRole": "ntwf-deployment-health-role",
       "requiresHumanApproval": false,
-      "stepDurationMinutes": 30,
+      "stepDurationMinutes": 105,
       "consumesDataset": "",
       "producesArtifacts": "artifact-post-deploy-report",
       "approvalGate": "",
@@ -59,20 +45,6 @@
       "precededBy": ""
     },
     {
-      "workflowStepId": "prod-deploy-step-2",
-      "displayName": "Legal Compliance Review",
-      "workflow": "production-deployment",
-      "sequencePosition": 2,
-      "assignedRole": "ntwf-legal-compliance-role",
-      "requiresHumanApproval": true,
-      "stepDurationMinutes": 120,
-      "consumesDataset": "",
-      "producesArtifacts": "artifact-legal-clearance",
-      "approvalGate": "",
-      "precedes": "prec-2-3",
-      "precededBy": "prec-1-2"
-    },
-    {
       "workflowStepId": "prod-deploy-step-3",
       "displayName": "Release Approval Gate",
       "workflow": "production-deployment",
@@ -85,6 +57,34 @@
       "approvalGate": "ntwf-release-approval-gate",
       "precedes": "prec-3-4",
       "precededBy": "prec-2-3"
+    },
+    {
+      "workflowStepId": "prod-deploy-step-2",
+      "displayName": "Legal Compliance Review",
+      "workflow": "production-deployment",
+      "sequencePosition": 2,
+      "assignedRole": "ntwf-legal-compliance-role",
+      "requiresHumanApproval": true,
+      "stepDurationMinutes": 30,
+      "consumesDataset": "",
+      "producesArtifacts": "artifact-legal-clearance",
+      "approvalGate": "",
+      "precedes": "prec-2-3",
+      "precededBy": "prec-1-2"
+    },
+    {
+      "workflowStepId": "prod-deploy-step-4",
+      "displayName": "Automated Deployment Execution",
+      "workflow": "production-deployment",
+      "sequencePosition": 4,
+      "assignedRole": "ntwf-ci-executor-role",
+      "requiresHumanApproval": false,
+      "stepDurationMinutes": 45,
+      "consumesDataset": "",
+      "producesArtifacts": "artifact-deployment-log",
+      "approvalGate": "",
+      "precedes": "prec-4-5",
+      "precededBy": "prec-3-4"
     }
   ],
   "ApprovalGates": [
@@ -148,20 +148,6 @@
       "fromDelegatesTo": "ntwf-vp-engineering-role"
     },
     {
-      "roleId": "ntwf-risk-analysis-role",
-      "displayName": "Risk Analysis Agent",
-      "label": "Risk Analysis Agent",
-      "comment": "Performs probabilistic risk scoring over the Q1 risk metrics dataset. This is a role, not an identity — filled by RiskAnalysis-AI today but could be replaced by a newer model version without changing the workflow structure.",
-      "hasCapability": "cap-risk-analysis",
-      "filledByHumanAgent": "",
-      "filledByAIAgent": "ntwf-health-ai",
-      "filledByAutomatedPipeline": "",
-      "ownedBy": "ntwf-engineering",
-      "delegatesTo": "",
-      "workflowSteps": "prod-deploy-step-1",
-      "fromDelegatesTo": ""
-    },
-    {
       "roleId": "ntwf-deployment-health-role",
       "displayName": "Deployment Health Agent",
       "label": "Deployment Health Agent",
@@ -204,13 +190,27 @@
       "fromDelegatesTo": "ntwf-release-manager-role"
     },
     {
+      "roleId": "ntwf-risk-analysis-role",
+      "displayName": "Risk Analysis Agent",
+      "label": "Risk Analysis Agent",
+      "comment": "Performs probabilistic risk scoring over the Q1 risk metrics dataset. This is a role, not an identity — filled by RiskAnalysis-AI today but could be replaced by a newer model version without changing the workflow structure.",
+      "hasCapability": "cap-risk-analysis",
+      "filledByHumanAgent": "ntwf-james-okafor",
+      "filledByAIAgent": "",
+      "filledByAutomatedPipeline": "",
+      "ownedBy": "ntwf-engineering",
+      "delegatesTo": "",
+      "workflowSteps": "prod-deploy-step-1",
+      "fromDelegatesTo": ""
+    },
+    {
       "roleId": "ntwf-legal-compliance-role",
       "displayName": "Legal Compliance Reviewer",
       "label": "Legal Compliance Reviewer",
       "comment": "Certifies that the deployment plan meets regulatory and contractual requirements. Must be a human agent — AI agents may not fill this role (requiresHumanApproval).",
       "hasCapability": "cap-legal-review",
-      "filledByHumanAgent": "",
-      "filledByAIAgent": "ntwf-risk-ai",
+      "filledByHumanAgent": "ntwf-james-okafor",
+      "filledByAIAgent": "",
       "filledByAutomatedPipeline": "",
       "ownedBy": "ntwf-legal-dept",
       "delegatesTo": "",

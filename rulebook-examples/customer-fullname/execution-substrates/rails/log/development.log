@@ -4422,3 +4422,14 @@ Processing by CustomersController#index as HTML
 Completed 200 OK in 3ms (Views: 2.4ms | ActiveRecord: 0.8ms | Allocations: 1437)
 
 
+Started GET "/customers" for 127.0.0.1 at 2026-06-10 21:50:55 -0500
+Processing by CustomersController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering customers/index.html.erb within layouts/application
+  [1m[36mCustomer Load (1.0ms)[0m  [1m[34mSELECT "vw_customers".* FROM "vw_customers"[0m
+  ↳ app/views/customers/index.html.erb:17
+  Rendered customers/index.html.erb within layouts/application (Duration: 49.2ms | Allocations: 4214)
+  Rendered layout layouts/application.html.erb (Duration: 49.5ms | Allocations: 4616)
+Completed 200 OK in 57ms (Views: 49.7ms | ActiveRecord: 6.5ms | Allocations: 4863)
+
+

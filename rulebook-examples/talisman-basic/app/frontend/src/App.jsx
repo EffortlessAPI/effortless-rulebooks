@@ -154,7 +154,6 @@ export default function App({ headerRight = null }) {
       <StalenessBar
         workflow={sit.workflow}
         busy={busy}
-        onSetThreshold={handlers.setStalenessThreshold}
         onSetModified={handlers.setModified}
       />
       <TimeBudgetBar sit={sit} workflow={sit.workflow} verdict={sit.verdict} handlers={handlers} busy={busy} />
@@ -285,6 +284,71 @@ function ScenarioModal({ scenarios, onApply, onClose, busy }) {
 //
 // Directly under the verdict sits the "Try a scenario" button that opens the
 // floating picker — keeping the presets right next to the status they change.
+// A tiny drag hook: grab the handle, move the card, drop it. Position is kept in
+// viewport (fixed) coords and persisted to localStorage so it survives reloads.
+// Returns pos=null until the user drags, so until then the card sits at its CSS
+// default (top-right). Double-clicking the handle calls onReset -> back to null.
+function useDraggable(storageKey) {
+  const [pos, setPos] = useState(() => {
+    try {
+      const raw = localStorage.getItem(storageKey);
+      return raw ? JSON.parse(raw) : null;
+    } catch {
+      return null;
+    }
+  });
+  const [dragging, setDragging] = useState(false);
+  const drag = useRef(null); // { dx, dy } pointer-offset within the card
+
+  const onGrabHandle = useCallback((e) => {
+    // ignore right-clicks; only start on the handle itself
+    if (e.button !== 0) return;
+    const card = e.currentTarget.closest(".verdict-header");
+    if (!card) return;
+    const rect = card.getBoundingClientRect();
+    drag.current = { dx: e.clientX - rect.left, dy: e.clientY - rect.top };
+    setDragging(true);
+    e.preventDefault();
+  }, []);
+
+  useEffect(() => {
+    if (!dragging) return;
+    const onMove = (e) => {
+      const { dx, dy } = drag.current || { dx: 0, dy: 0 };
+      // clamp so the card can't be dragged fully off-screen (keep 40px in view)
+      const maxLeft = window.innerWidth - 60;
+      const maxTop = window.innerHeight - 40;
+      const left = Math.max(0, Math.min(e.clientX - dx, maxLeft));
+      const top = Math.max(0, Math.min(e.clientY - dy, maxTop));
+      setPos({ top, left });
+    };
+    const onUp = () => {
+      setDragging(false);
+      setPos((p) => {
+        try {
+          if (p) localStorage.setItem(storageKey, JSON.stringify(p));
+        } catch {}
+        return p;
+      });
+    };
+    window.addEventListener("mousemove", onMove);
+    window.addEventListener("mouseup", onUp);
+    return () => {
+      window.removeEventListener("mousemove", onMove);
+      window.removeEventListener("mouseup", onUp);
+    };
+  }, [dragging, storageKey]);
+
+  const onReset = useCallback(() => {
+    setPos(null);
+    try {
+      localStorage.removeItem(storageKey);
+    } catch {}
+  }, [storageKey]);
+
+  return { pos, dragging, onGrabHandle, onReset };
+}
+
 function VerdictHeader({ verdict, workflow, hasScenarios, busy, onOpenScenarios }) {
   const risk = verdict.isAtComplianceRisk;
   const stale = verdict.isStale;
@@ -292,9 +356,19 @@ function VerdictHeader({ verdict, workflow, hasScenarios, busy, onOpenScenarios 
   const over = verdict.isOverTimeBudget;
   const broken = verdict.hasConsistencyViolation;
   const staleAndAi = stale && ai;
+  const { pos, dragging, onGrabHandle, onReset } = useDraggable("verdict-pos");
+  // pos = null -> sit at the CSS-default top-right corner; once dragged we pin
+  // it explicitly with top/left so it stays exactly where the user dropped it.
+  const style = pos ? { top: pos.top, left: pos.left, right: "auto" } : undefined;
   return (
-    <div className={"verdict-header " + (risk ? "risk" : "ok")}>
-      <div className="vh-badge">{risk ? "⚠ AT COMPLIANCE RISK" : "✓ COMPLIANT"}</div>
+    <div
+      className={"verdict-header " + (risk ? "risk" : "ok") + (dragging ? " dragging" : "")}
+      style={style}
+    >
+      <div className="vh-drag" onMouseDown={onGrabHandle} title="Drag to move • double-click to reset" onDoubleClick={onReset}>
+        <span className="vh-grip">⠿</span>
+        <div className="vh-badge">{risk ? "⚠ AT COMPLIANCE RISK" : "✓ COMPLIANT"}</div>
+      </div>
       <div className="vh-detail">
         <b>{workflow.title}</b> — {whyText(verdict)}
       </div>
@@ -375,7 +449,6 @@ function TimeBudgetBar({ sit, workflow, verdict, handlers, busy }) {
     min: Number(facts[s.id]?.stepDurationMinutes ?? s.durationMinutes ?? 0),
     kind: kindOfType(s.executingAgentType),
   }));
-  const total = Number(workflow.totalPlanMinutes ?? verdict.totalPlanMinutes ?? segs.reduce((a, s) => a + s.min, 0));
   const budget = Number(workflow.maxPlanMinutes ?? verdict.timeBudgetMinutes ?? 0);
   const over = !!(workflow.isOverTimeBudget ?? verdict.isOverTimeBudget);
 
@@ -387,11 +460,15 @@ function TimeBudgetBar({ sit, workflow, verdict, handlers, busy }) {
   const [drag, setDrag] = useState(null); // { id, min } | null
 
   // Effective minutes for layout: the dragged step shows its live preview, all
-  // others show their committed value. The axis grows with the preview so the
-  // bar (and the honest crossing with the budget marker) always fits.
+  // others show their committed value.
   const effMin = (s) => (drag && drag.id === s.id ? drag.min : s.min);
   const previewTotal = segs.reduce((a, s) => a + effMin(s), 0);
-  const axisMax = Math.max(previewTotal, total, budget, 1);
+  // FIXED axis: budget * 1.5 pins the budget marker at exactly two-thirds across
+  // (budget / (budget*1.5) = 0.667), so "where it goes over budget" is a stable
+  // landmark instead of sliding with the plan — same trick as the 12mo policy
+  // line on the staleness slider. The axis only grows past that if the plan
+  // itself exceeds 150% of budget (an extreme drag), so the segments stay honest.
+  const axisMax = Math.max(budget * 1.5, previewTotal, 1);
   const pctOf = (m) => (m / axisMax) * 100;
   const budgetPct = pctOf(budget);
   const previewOver = previewTotal > budget;
@@ -506,58 +583,90 @@ function TimeBudgetBar({ sit, workflow, verdict, handlers, busy }) {
 // Discrete policy-window options (months). Stepped buttons (not a slider) for
 // the same reason as the budget: one committed click per re-reason, and they
 // don't feel stuck while the board is locked mid-reason.
-const STALENESS_STEPS = [3, 6, 12, 18, 24];
-// "Last reviewed N months ago" presets — one committed click each, like the
-// budget/duration buttons. Stamps Modified to (today − N months).
-const REVIEW_AGE_STEPS = [3, 6, 12, 18];
+// The review-age axis is FIXED at 0..18 months so the 12-month policy line
+// always sits two-thirds across the bar (12/18 = 67%). The single knob is the
+// review age: slide the thumb left of the policy line = within policy; drag it
+// past = stale. The policy window itself is a fixed fact (12mo, seeded in the
+// rulebook) shown as a static marker, not an adjustable control.
+const REVIEW_AGE_MIN = 0;
+const REVIEW_AGE_MAX = 18;
+const REVIEW_AGE_SNAP = 1;   // slide in 1-month increments
+const snapAge = (m) =>
+  Math.max(REVIEW_AGE_MIN, Math.min(REVIEW_AGE_MAX, Math.round(m / REVIEW_AGE_SNAP) * REVIEW_AGE_SNAP));
 function monthsAgoISO(n) {
   const d = new Date();
   d.setMonth(d.getMonth() - n);
   return d.toISOString().slice(0, 10) + "T00:00:00-05:00";
 }
 
-function StalenessBar({ workflow, busy, onSetThreshold, onSetModified }) {
+function StalenessBar({ workflow, busy, onSetModified }) {
   const [open, setOpen] = useState(false);
   const months = Number(workflow.monthsSinceModified ?? 0);
   const threshold = Number(workflow.stalenessThresholdMonths ?? 12);
   const stale = !!workflow.isStale;
   const modified = workflow.modified;
 
-  // Axis: 0 .. max(threshold, months) + headroom, so both the needle and the
-  // threshold line always fit and the crossing is visible.
-  const axisMax = Math.max(threshold, months, 1) * 1.25;
-  const pctOf = (m) => Math.max(0, Math.min(m / axisMax, 1)) * 100;
-  const monthsPct = pctOf(months);
+  // While dragging the thumb we hold a LIVE preview age so the bar tracks the
+  // cursor without re-reasoning; on release we commit ONE patch (Modified =
+  // today − ageMonths) and the reasoner runs once. Same doctrine as the budget
+  // bar: no mid-drag stuck slider, the reasoner only runs on the committed value.
+  const [drag, setDrag] = useState(null); // preview age in months | null
+  const ageMonths = drag != null ? drag : months;
+
+  // Fixed 0..18 axis: the policy line lands at threshold/18 (12 → 67%).
+  const pctOf = (m) => Math.max(0, Math.min(m / REVIEW_AGE_MAX, 1)) * 100;
+  const monthsPct = pctOf(ageMonths);
   const threshPct = pctOf(threshold);
-  const zone = stale ? "red" : months >= threshold * 0.75 ? "yellow" : "green";
+  // The PREVIEW staleness while dragging (so colors flip the instant you cross
+  // the line, before the reasoner confirms it on release).
+  const previewStale = ageMonths > threshold;
+  const zone = previewStale ? "red" : ageMonths >= threshold * 0.75 ? "yellow" : "green";
 
   const modifiedDate = modified ? String(modified).slice(0, 10) : "";
-  const setReviewedToday = () => {
-    // "Mark docs reviewed" = stamp Modified with today's date (resets the clock).
-    const today = new Date().toISOString().slice(0, 10) + "T00:00:00-05:00";
-    onSetModified(today);
-  };
+  const commitAge = (n) => onSetModified(monthsAgoISO(snapAge(n)));
 
   return (
     <div className={"staleness " + zone}>
       <div className="st-head" onClick={() => setOpen((o) => !o)} role="button">
         <span className="st-title">📄 Docs review age</span>
         <span className="st-readout">
-          last reviewed <b>{months}</b> mo ago · policy window <b>{threshold}</b> mo
-          {stale ? <span className="st-flag"> · STALE → feeds AT RISK</span>
-                 : <span className="st-ok"> · within policy</span>}
+          last reviewed <b>{ageMonths}</b> mo ago · policy window <b>{threshold}</b> mo
+          {previewStale ? <span className="st-flag"> · STALE → feeds AT RISK</span>
+                        : <span className="st-ok"> · within policy</span>}
         </span>
         <span className="st-expand">{open ? "▾ hide timeline" : "▸ show timeline"}</span>
       </div>
 
-      {/* the gauge: a track from 0 to axisMax, fill = months-ago, threshold line */}
-      <div className="st-track" title={`${months} months since review; stale at >${threshold}`}>
-        <div className={"st-fill " + zone} style={{ width: monthsPct + "%" }} />
-        <div className="st-threshold" style={{ left: threshPct + "%" }}>
-          <span className="st-threshold-label">{threshold}mo policy</span>
+      {/* the slider: a 0..18-month track. The thumb is the review age; the policy
+          line is fixed at 12mo (≈two-thirds across). Left of the line = within
+          policy; drag the thumb past it and the docs go stale. */}
+      <div className="st-slider" onClick={(e) => e.stopPropagation()}>
+        <div className={"st-track " + zone} title={`${ageMonths} months since review; stale at >${threshold}`}>
+          <div className={"st-fill " + zone} style={{ width: monthsPct + "%" }} />
+          <div className="st-threshold" style={{ left: threshPct + "%" }}>
+            <span className="st-threshold-label">{threshold}mo policy</span>
+          </div>
+          <input
+            type="range"
+            className="st-range"
+            min={REVIEW_AGE_MIN}
+            max={REVIEW_AGE_MAX}
+            step={REVIEW_AGE_SNAP}
+            value={ageMonths}
+            disabled={busy}
+            aria-label="Months since last review"
+            // live preview while dragging (no re-reason); commit once on release
+            onChange={(e) => setDrag(snapAge(Number(e.target.value)))}
+            onMouseUp={(e) => { const n = snapAge(Number(e.target.value)); setDrag(null); if (n !== months) commitAge(n); }}
+            onKeyUp={(e) => { const n = snapAge(Number(e.target.value)); setDrag(null); if (n !== months) commitAge(n); }}
+            onBlur={() => setDrag(null)}
+          />
+          <div className="st-needle" style={{ left: monthsPct + "%" }}>
+            <span className="st-needle-label">now ({ageMonths}mo)</span>
+          </div>
         </div>
-        <div className="st-needle" style={{ left: monthsPct + "%" }}>
-          <span className="st-needle-label">now ({months}mo)</span>
+        <div className="st-scale">
+          <span>0</span><span>now — drag to set months since review</span><span>{REVIEW_AGE_MAX}mo</span>
         </div>
       </div>
 
@@ -565,7 +674,7 @@ function StalenessBar({ workflow, busy, onSetThreshold, onSetModified }) {
         <div className="st-timeline">
           <div className="st-tl-axis">
             <span className="st-tl-start">📝 reviewed<br /><b>{modifiedDate || "—"}</b></span>
-            <span className="st-tl-arrow">────────── {months} months elapsed ──────────▶</span>
+            <span className="st-tl-arrow">────────── {ageMonths} months elapsed ──────────▶</span>
             <span className="st-tl-now">today</span>
           </div>
           <div className="st-tl-bar">
@@ -573,45 +682,18 @@ function StalenessBar({ workflow, busy, onSetThreshold, onSetModified }) {
             <div className="st-tl-line" style={{ left: threshPct + "%" }} title={`stale after ${threshold} months`} />
           </div>
           <div className="st-tl-caption muted">
-            {stale
+            {previewStale
               ? `Past the ${threshold}-month review window — the docs are stale. Combined with an AI-executed step, that is the article's "AT RISK" verdict.`
-              : `Inside the ${threshold}-month window — docs are current. They go stale in ${Math.max(0, threshold - months)} more month(s) (or sooner if you tighten the policy).`}
+              : `Inside the ${threshold}-month window — docs are current. They go stale in ${Math.max(0, threshold - ageMonths)} more month(s) — slide the thumb past the ${threshold}mo line to see it flip.`}
           </div>
         </div>
       )}
 
       <div className="st-ctls">
-        <span className="st-ctl">
-          <span className="muted">last reviewed</span>
-          <span className="st-steps">
-            {REVIEW_AGE_STEPS.map((n) => (
-              <button
-                key={n}
-                className={"st-step-btn " + (months === n ? "on" : "")}
-                disabled={busy}
-                onClick={() => onSetModified(monthsAgoISO(n))}
-              >
-                {n}mo ago
-              </button>
-            ))}
-          </span>
+        <span className="st-ctlnote muted">
+          Slide the thumb to set how long since the docs were reviewed. The{" "}
+          <b>{threshold}-month policy</b> line is fixed — drag past it and the docs go stale.
         </span>
-        <span className="st-ctl st-threshold-ctl">
-          <span className="muted">policy window</span>
-          <span className="st-steps">
-            {STALENESS_STEPS.map((m) => (
-              <button
-                key={m}
-                className={"st-step-btn " + (threshold === m ? "on" : "")}
-                disabled={busy}
-                onClick={() => onSetThreshold(m)}
-              >
-                {m}mo
-              </button>
-            ))}
-          </span>
-        </span>
-        <span className="st-ctlnote muted">backdate the review date, or tighten the policy, to make it stale</span>
       </div>
     </div>
   );

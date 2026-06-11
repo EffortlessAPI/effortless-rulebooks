@@ -100,6 +100,14 @@ button, input, select { font: inherit; }
   background: var(--bg2); box-shadow: 0 16px 48px -16px rgba(0,0,0,.6); }
 .verdict-header.ok { border-color: #43c46355; background: linear-gradient(180deg, #43c4631f, var(--bg2) 70%); }
 .verdict-header.risk { border-color: #f0653f66; background: linear-gradient(180deg, #f0653f24, var(--bg2) 70%); }
+/* while dragging: lift it, kill the transition lag, no text selection */
+.verdict-header.dragging { box-shadow: 0 24px 64px -12px rgba(0,0,0,.7); user-select: none; cursor: grabbing; }
+/* the grab handle = grip + badge on one row; this is the ONLY drag surface so
+   the scenario button and pills below stay clickable */
+.vh-drag { display: flex; align-items: center; gap: 8px; width: 100%; cursor: grab; }
+.verdict-header.dragging .vh-drag { cursor: grabbing; }
+.vh-grip { color: var(--muted); font-size: 16px; line-height: 1; letter-spacing: -2px; opacity: .6; flex: none; }
+.vh-drag:hover .vh-grip { opacity: 1; color: var(--text); }
 .vh-badge { font-size: 15px; font-weight: 800; padding: 6px 12px; border-radius: 9px; white-space: nowrap; }
 .verdict-header.ok .vh-badge { color: var(--ok); background: #43c46318; border: 1px solid #43c46355; }
 .verdict-header.risk .vh-badge { color: var(--risk); background: #f0653f18; border: 1px solid #f0653f66; }
@@ -573,6 +581,30 @@ button, input, select { font: inherit; }
 .st-needle-label { position: absolute; bottom: -16px; transform: translateX(-50%); font-size: 10px;
   white-space: nowrap; color: var(--text); font-variant-numeric: tabular-nums; }
 .staleness.red .st-track { box-shadow: 0 0 0 2px #f0653f55; }
+
+/* ---- review-age SLIDER (0..18mo, 1mo steps; the one interactive knob) ----- */
+.st-slider { margin: 18px 0 4px; }
+.st-slider .st-track { cursor: pointer; }
+/* the native range input is laid INVISIBLY over the track so the user drags the
+   real fill/needle; only its thumb is a hit target spanning the full width */
+.st-range { position: absolute; left: 0; top: 0; width: 100%; height: 100%; margin: 0;
+  -webkit-appearance: none; appearance: none; background: transparent; cursor: grab; z-index: 4; }
+.st-range:active { cursor: grabbing; }
+.st-range:disabled { cursor: default; }
+.st-range:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 8px; }
+/* a visible draggable knob, centered on the track height */
+.st-range::-webkit-slider-thumb { -webkit-appearance: none; appearance: none;
+  width: 16px; height: 28px; border-radius: 6px; background: #fff; border: 2px solid var(--text);
+  box-shadow: 0 2px 6px rgba(0,0,0,.5); cursor: grab; }
+.st-range::-moz-range-thumb { width: 16px; height: 28px; border-radius: 6px; background: #fff;
+  border: 2px solid var(--text); box-shadow: 0 2px 6px rgba(0,0,0,.5); cursor: grab; }
+.staleness.red .st-range::-webkit-slider-thumb { border-color: var(--risk); }
+.staleness.red .st-range::-moz-range-thumb { border-color: var(--risk); }
+.st-range::-webkit-slider-runnable-track { background: transparent; }
+.st-range::-moz-range-track { background: transparent; }
+/* scale labels under the slider */
+.st-scale { display: flex; justify-content: space-between; font-size: 10.5px; color: var(--muted);
+  margin-top: 6px; font-variant-numeric: tabular-nums; }
 
 /* expandable timeline: reviewed-date ──→ today, with the policy line */
 .st-timeline { margin: 18px 0 10px; }
