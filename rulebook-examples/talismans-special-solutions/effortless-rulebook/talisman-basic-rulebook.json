@@ -98,7 +98,14 @@
         "datatype": "integer",
         "type": "raw",
         "nullable": true,
-        "Description": "The governance POLICY (in months) that defines when this workflow's compliance documentation goes stale: if more than this many months have passed since Modified (dct:modified) without a review, IsStale fires. The article hardcodes the answer to CQ5 at twelve months ('which workflows haven't been reviewed in twelve months'); promoting that threshold to a raw, editable field makes the policy itself a fact in the SSoT rather than a constant buried in the IsStale formula — so an org can set a 6-month or 18-month review cadence and the staleness verdict recomputes. Defaults to 12 to match the article."
+        "Description": "The governance POLICY (in months): the full review cadence after which this workflow's compliance documentation is formally out of date. IsStale does NOT wait for the whole policy window to lapse — it fires RenewalWindowMonths early, so the staleness signal is a lead-time warning that the policy window is about to close, not a notice that it already has. The article hardcodes the CQ5 question at twelve months ('which workflows haven't been reviewed in twelve months'); promoting that threshold to a raw, editable field makes the policy itself a fact in the SSoT rather than a constant buried in the IsStale formula — so an org can set a 6-month or 18-month review cadence and the staleness verdict recomputes. Defaults to 12 to match the article."
+      },
+      {
+        "name": "RenewalWindowMonths",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true,
+        "Description": "The renewal LEAD TIME (in months) before the policy window (StalenessThresholdMonths) lapses, during which the workflow should be re-reviewed. IsStale fires this many months EARLY — i.e. the effective staleness window is StalenessThresholdMonths − RenewalWindowMonths, not StalenessThresholdMonths plus a grace period. With the defaults (12-month policy, 3-month renewal window) a workflow goes stale at 9 months since Modified, giving three months of runway to renew its compliance review before the 12-month policy window actually closes. Raw and editable so the renewal cadence is a fact you can change; defaults to 3."
       },
       {
         "name": "IsOffHoursDeployment",
@@ -212,8 +219,8 @@
         "type": "calculated",
         "nullable": true,
         "important": true,
-        "Description": "TRUE iff the workflow's compliance documentation has not been reviewed (Modified) within its policy window — i.e. MonthsSinceModified exceeds the configurable StalenessThresholdMonths. The metadata half of CQ5 ('which workflows haven't been reviewed in twelve months'): with the default threshold of 12 this is exactly the article's question, but the threshold is now a fact you can change, so the staleness verdict tracks the org's actual review cadence rather than a hardcoded constant.",
-        "formula": "={{MonthsSinceModified}} > {{StalenessThresholdMonths}}"
+        "Description": "TRUE iff the workflow's compliance documentation is within its renewal window of going out of policy — i.e. MonthsSinceModified exceeds (StalenessThresholdMonths − RenewalWindowMonths). The staleness window opens RenewalWindowMonths BEFORE the policy window lapses, so this is an early-warning signal: with the defaults (12-month policy, 3-month renewal window) it fires at 9 months since Modified, three months ahead of the 12-month policy deadline, leaving runway to renew the review. The metadata half of CQ5 ('which workflows haven't been reviewed in twelve months'): the policy window still defaults to 12 to match the article, but both the policy and the renewal lead time are now editable facts, so the staleness verdict tracks the org's actual review cadence rather than a hardcoded constant.",
+        "formula": "={{MonthsSinceModified}} > ({{StalenessThresholdMonths}} - {{RenewalWindowMonths}})"
       },
       {
         "name": "IsStaleAndHasAIAgent",
@@ -346,6 +353,7 @@
         "Created": "2026-01-10T06:00:00.000Z",
         "MaxPlanMinutes": 240,
         "StalenessThresholdMonths": 12,
+        "RenewalWindowMonths": 3,
         "IsOffHoursDeployment": false,
         "WorkflowStatus": "status-active",
         "WorkflowSteps": ""
@@ -2070,7 +2078,7 @@
         "datatype": "boolean",
         "type": "lookup",
         "nullable": true,
-        "Description": "Whether the workflow has not been reviewed in twelve months (dct:modified > 12mo). Pulled from Workflows.IsStale. The article's CQ5 condition.",
+        "Description": "Whether the workflow has entered its renewal window — i.e. it is within RenewalWindowMonths of its review policy lapsing (dct:modified older than StalenessThresholdMonths − RenewalWindowMonths; 9 months with the defaults). Pulled from Workflows.IsStale. The article's CQ5 condition, fired early as a renewal warning.",
         "formula": "=INDEX(Workflows!{{IsStale}}, MATCH({{Workflow}}, Workflows!{{WorkflowId}}, 0))"
       },
       {
