@@ -554,33 +554,33 @@
     "data": [
       {
         "WorkflowStepId": "prod-deploy-step-3",
-        "DisplayName": "Legal Compliance Review & Release Authorization",
+        "DisplayName": "Release Approval Gate",
         "Workflow": "production-deployment",
         "SequencePosition": 3,
-        "AssignedRole": "ntwf-legal-compliance-role",
+        "AssignedRole": "ntwf-release-manager-role",
         "RequiresHumanApproval": true,
-        "StepDurationMinutes": 120,
+        "StepDurationMinutes": 30,
         "ConsumesDataset": "",
         "ProducesArtifacts": "artifact-release-authorization",
         "ApprovalGate": "ntwf-release-approval-gate",
         "Precedes": "prec-3-4",
         "PrecededBy": "prec-2-3",
-        "RequiresArtifacts": "artifact-risk-report"
+        "RequiresArtifacts": "artifact-legal-clearance"
       },
       {
         "WorkflowStepId": "prod-deploy-step-2",
-        "DisplayName": "AI Risk Assessment",
+        "DisplayName": "Legal Compliance Review",
         "Workflow": "production-deployment",
         "SequencePosition": 2,
-        "AssignedRole": "ntwf-risk-analysis-role",
-        "RequiresHumanApproval": false,
-        "StepDurationMinutes": 15,
-        "ConsumesDataset": "ds-q1-2026-risk-metrics",
+        "AssignedRole": "ntwf-legal-compliance-role",
+        "RequiresHumanApproval": true,
+        "StepDurationMinutes": 120,
+        "ConsumesDataset": "",
         "ProducesArtifacts": "artifact-legal-clearance",
         "ApprovalGate": "",
         "Precedes": "prec-2-3",
         "PrecededBy": "prec-1-2",
-        "RequiresArtifacts": ""
+        "RequiresArtifacts": "artifact-risk-report"
       },
       {
         "WorkflowStepId": "prod-deploy-step-5",
@@ -599,13 +599,13 @@
       },
       {
         "WorkflowStepId": "prod-deploy-step-1",
-        "DisplayName": "Initiate Deployment Request",
+        "DisplayName": "AI Risk Assessment",
         "Workflow": "production-deployment",
         "SequencePosition": 1,
-        "AssignedRole": "ntwf-release-manager-role",
-        "RequiresHumanApproval": true,
-        "StepDurationMinutes": 30,
-        "ConsumesDataset": "",
+        "AssignedRole": "ntwf-risk-analysis-role",
+        "RequiresHumanApproval": false,
+        "StepDurationMinutes": 15,
+        "ConsumesDataset": "ds-q1-2026-risk-metrics",
         "ProducesArtifacts": "artifact-risk-report",
         "ApprovalGate": "",
         "Precedes": "prec-1-2",
@@ -1063,7 +1063,7 @@
         "RoleId": "ntwf-release-manager-role",
         "DisplayName": "Release Manager",
         "Label": "Release Manager",
-        "Comment": "Owns the production deployment process. Coordinates all parties, triggers the pipeline, and signs the final post-deployment report.",
+        "Comment": "Owns the production deployment process. Fills the Release Approval Gate (step 3): the human authority who explicitly authorizes the release before the automated deployment runs. This is the CQ2 answer — gate -> Release Manager -> Maria Gonzalez. Top of the delegation chain (Release Manager -> VP Engineering -> CTO).",
         "HasCapability": "cap-human-judgment",
         "FilledByHumanAgent": "ntwf-maria-gonzalez",
         "FilledByAIAgent": "",
@@ -2175,26 +2175,26 @@
         "Title": "Risk Assessment Report",
         "Identifier": "ART-RISK-001",
         "Created": "2026-04-01T00:00:00-05:00",
-        "ProducedByStep": "prod-deploy-step-2",
+        "ProducedByStep": "prod-deploy-step-1",
         "DerivedFromArtifact": "",
         "AttributedToHumanAgent": "",
         "AttributedToAIAgent": "ntwf-risk-ai",
         "AttributedToAutomatedPipeline": "",
         "ArtifactType": "type-report",
-        "RequiredBySteps": ""
+        "RequiredBySteps": "prod-deploy-step-2"
       },
       {
         "ArtifactId": "artifact-legal-clearance",
         "Title": "Legal Clearance Certificate",
         "Identifier": "ART-LEGAL-001",
         "Created": "2026-04-02T00:00:00-05:00",
-        "ProducedByStep": "prod-deploy-step-3",
+        "ProducedByStep": "prod-deploy-step-2",
         "DerivedFromArtifact": "artifact-risk-report",
         "AttributedToHumanAgent": "ntwf-james-okafor",
         "AttributedToAIAgent": "",
         "AttributedToAutomatedPipeline": "",
         "ArtifactType": "type-decision-record",
-        "RequiredBySteps": ""
+        "RequiredBySteps": "prod-deploy-step-3"
       },
       {
         "ArtifactId": "artifact-release-authorization",
@@ -2207,7 +2207,7 @@
         "AttributedToAIAgent": "",
         "AttributedToAutomatedPipeline": "",
         "ArtifactType": "type-decision-record",
-        "RequiredBySteps": ""
+        "RequiredBySteps": "prod-deploy-step-4"
       },
       {
         "ArtifactId": "artifact-deployment-log",
@@ -2459,8 +2459,8 @@
         "ChangeKind": "minor",
         "MotivatingQuestion": "Which AI agent was executing this step on March 1, 2026?",
         "TermsAffected": "Added filledBy assignment history (RoleAssignments) with validity periods; AIAgent deployment date; agent-type-change audit witnesses.",
-        "Rationale": "Operational governance needed retained filledBy history so historical 'as of date' and blast-radius queries are answerable without discarding provenance. Additive and backward compatible.",
-        "ApprovedBy": "gov-authority"
+        "Rationale": "Operational governance needed retained filledBy history so historical 'as of date' and blast-radius queries are answerable without discarding provenance. Additive and backward compatible — a minor, backward-compatible change, so per Part IV the steward is authorized to approve and deploy it without authority review.",
+        "ApprovedBy": "gov-steward"
       }
     ]
   },

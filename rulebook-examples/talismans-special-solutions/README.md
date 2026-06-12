@@ -295,20 +295,24 @@ The important part is that they are generated from the same semantic rulebook.
 Five ordered steps carry a release from request to post-deployment report:
 
 
-| #   | Step                                            | Role                      | Filled by             | Human approval? |
-| --- | ----------------------------------------------- | ------------------------- | --------------------- | --------------- |
-| 1   | Initiate Deployment Request                     | Release Manager           | Maria Gonzalez        | Yes             |
-| 2   | AI Risk Assessment                              | Risk Analysis Agent       | RiskAnalysis-AI       | No              |
-| 3   | Legal Compliance Review & Release Authorization | Legal Compliance Reviewer | James Okafor          | Yes             |
-| 4   | Automated Deployment Execution                  | CI/CD Executor            | CI/CD Deploy Pipeline | No              |
-| 5   | Post-Deployment Health Check & Report           | Release Manager           | Maria Gonzalez        | Yes             |
+| #   | Step                                  | Role                      | Filled by             | Human approval? | Executed by |
+| --- | ------------------------------------- | ------------------------- | --------------------- | --------------- | ----------- |
+| 1   | AI Risk Assessment                    | Risk Analysis Agent       | RiskAnalysis-AI       | No              | AI          |
+| 2   | Legal Compliance Review               | Legal Compliance Reviewer | James Okafor          | Yes             | Human       |
+| 3   | Release Approval Gate                 | Release Manager           | Maria Gonzalez        | Yes             | Human       |
+| 4   | Automated Deployment Execution        | CI/CD Executor            | CI/CD Deploy Pipeline | No              | Pipeline    |
+| 5   | Post-Deployment Health Check & Report | Deployment Health Agent   | DeploymentHealth-AI   | No              | AI          |
 
+This is the exact worked example from the series: two AI-executed steps (1 and 5), two
+human-required steps (2 and 3), one deterministic pipeline step (4), and the approval gate is the
+Release-Manager-owned step — so the answer to *"who approves a production deployment?"* resolves
+through gate → Release Manager → **Maria Gonzalez**.
 
 The workflow also includes:
 
 - step precedence: `1 → 2 → 3 → 4 → 5`;
 - transitive closure: asserted edges imply all reachable ordered pairs, including `1 → 5`;
-- an approval gate at step 3;
+- an approval gate at step 3, filled by the Release Manager;
 - role delegation from Release Manager to VP Engineering to CTO;
 - a provenance chain across generated artifacts;
 - a risk dataset consumed by the AI risk-assessment step;
@@ -387,6 +391,29 @@ edit the rulebook
 ```
 
 Do not hand-edit generated outputs and treat them as canonical. They are intentionally downstream.
+
+### The rulebook is the authority — the Postgres → rulebook push-back is OFF by default
+
+The build pipeline *can* run a reverse transpiler — `postgres-calculated-to-rulebook` — that
+reads the calculated/derived columns back out of Postgres and writes them into the rulebook JSON.
+That route is **intentionally disabled** (`"IsDisabled": true`) in `effortless.json`.
+
+It is off on purpose. The flow is strictly one-directional by design:
+
+```text
+rulebook (AUTHORITY)  ──build──▶  Postgres + every other substrate  (derived)
+```
+
+Postgres is a *consumer* of the rulebook, not a source for it. The dev database is dropped and
+reseeded from the rulebook on every build (mock data, by design), so anything Postgres "computes"
+is just the rulebook's own formulas re-evaluated against that mock seed. If the push-back ran on a
+routine `effortless build`, that throwaway test data would be written **back over** the
+human-authored source of truth — silently overwriting the authority with downstream output. Leaving
+it disabled keeps the rulebook the one and only thing you edit by hand.
+
+If you ever genuinely need to lift Postgres-computed values into the rulebook (e.g. to materialize
+an answer key), enable that transpiler explicitly for that one build, confirm the diff is only what
+you intend, then turn it back off. It is never part of the default edit-and-rebuild loop.
 
 ---
 

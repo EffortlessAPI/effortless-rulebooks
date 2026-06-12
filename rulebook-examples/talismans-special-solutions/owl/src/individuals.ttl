@@ -116,8 +116,8 @@ erb:change-1-1-0 a erb:ChangeLog ;
     erb:changeKind "minor" ;
     erb:motivatingQuestion "Which AI agent was executing this step on March 1, 2026?" ;
     erb:termsAffected "Added filledBy assignment history (RoleAssignments) with validity periods; AIAgent deployment date; agent-type-change audit witnesses." ;
-    erb:rationale "Operational governance needed retained filledBy history so historical 'as of date' and blast-radius queries are answerable without discarding provenance. Additive and backward compatible." ;
-    erb:approvedBy erb:gov-authority .
+    erb:rationale "Operational governance needed retained filledBy history so historical 'as of date' and blast-radius queries are answerable without discarding provenance. Additive and backward compatible — a minor, backward-compatible change, so per Part IV the steward is authorized to approve and deploy it without authority review." ;
+    erb:approvedBy erb:gov-steward .
 
 # === Individuals: Datasets ===
 
@@ -310,7 +310,7 @@ erb:ntwf-release-manager-role a erb:Roles ;
     erb:roleId "ntwf-release-manager-role" ;
     erb:displayName "Release Manager" ;
     erb:label "Release Manager" ;
-    erb:comment "Owns the production deployment process. Coordinates all parties, triggers the pipeline, and signs the final post-deployment report." ;
+    erb:comment "Owns the production deployment process. Fills the Release Approval Gate (step 3): the human authority who explicitly authorizes the release before the automated deployment runs. This is the CQ2 answer — gate -> Release Manager -> Maria Gonzalez. Top of the delegation chain (Release Manager -> VP Engineering -> CTO)." ;
     erb:hasCapability erb:cap-human-judgment ;
     erb:filledByHumanAgent erb:ntwf-maria-gonzalez ;
     erb:ownedBy erb:ntwf-engineering ;
@@ -404,7 +404,8 @@ erb:artifact-risk-report a erb:WorkflowArtifacts ;
     erb:identifier "ART-RISK-001" ;
     erb:artifactType erb:type-report ;
     erb:created "2026-04-01T00:00:00-05:00" ;
-    erb:producedByStep erb:prod-deploy-step-2 ;
+    erb:producedByStep erb:prod-deploy-step-1 ;
+    erb:requiredBySteps erb:prod-deploy-step-2 ;
     erb:attributedToAIAgent erb:ntwf-risk-ai .
 
 erb:artifact-legal-clearance a erb:WorkflowArtifacts ;
@@ -413,7 +414,8 @@ erb:artifact-legal-clearance a erb:WorkflowArtifacts ;
     erb:identifier "ART-LEGAL-001" ;
     erb:artifactType erb:type-decision-record ;
     erb:created "2026-04-02T00:00:00-05:00" ;
-    erb:producedByStep erb:prod-deploy-step-3 ;
+    erb:producedByStep erb:prod-deploy-step-2 ;
+    erb:requiredBySteps erb:prod-deploy-step-3 ;
     erb:derivedFromArtifact erb:artifact-risk-report ;
     erb:attributedToHumanAgent erb:ntwf-james-okafor .
 
@@ -424,6 +426,7 @@ erb:artifact-release-authorization a erb:WorkflowArtifacts ;
     erb:artifactType erb:type-decision-record ;
     erb:created "2026-04-02T00:00:00-05:00" ;
     erb:producedByStep erb:prod-deploy-step-3 ;
+    erb:requiredBySteps erb:prod-deploy-step-4 ;
     erb:derivedFromArtifact erb:artifact-legal-clearance ;
     erb:attributedToHumanAgent erb:ntwf-maria-gonzalez .
 
@@ -481,28 +484,28 @@ erb:status-archived a erb:WorkflowStatusConcepts ;
 
 erb:prod-deploy-step-3 a erb:WorkflowSteps ;
     erb:workflowStepId "prod-deploy-step-3" ;
-    erb:displayName "Legal Compliance Review & Release Authorization" ;
+    erb:displayName "Release Approval Gate" ;
     erb:workflow erb:production-deployment ;
     erb:sequencePosition 3 ;
-    erb:assignedRole erb:ntwf-legal-compliance-role ;
+    erb:assignedRole erb:ntwf-release-manager-role ;
     erb:requiresHumanApproval true ;
-    erb:stepDurationMinutes 120 ;
+    erb:stepDurationMinutes 30 ;
     erb:producesArtifacts erb:artifact-release-authorization ;
-    erb:requiresArtifacts erb:artifact-risk-report ;
+    erb:requiresArtifacts erb:artifact-legal-clearance ;
     erb:approvalGate erb:ntwf-release-approval-gate ;
     erb:precedes erb:prec-3-4 ;
     erb:precededBy erb:prec-2-3 .
 
 erb:prod-deploy-step-2 a erb:WorkflowSteps ;
     erb:workflowStepId "prod-deploy-step-2" ;
-    erb:displayName "AI Risk Assessment" ;
+    erb:displayName "Legal Compliance Review" ;
     erb:workflow erb:production-deployment ;
     erb:sequencePosition 2 ;
-    erb:assignedRole erb:ntwf-risk-analysis-role ;
-    erb:requiresHumanApproval false ;
-    erb:stepDurationMinutes 15 ;
-    erb:consumesDataset erb:ds-q1-2026-risk-metrics ;
+    erb:assignedRole erb:ntwf-legal-compliance-role ;
+    erb:requiresHumanApproval true ;
+    erb:stepDurationMinutes 120 ;
     erb:producesArtifacts erb:artifact-legal-clearance ;
+    erb:requiresArtifacts erb:artifact-risk-report ;
     erb:precedes erb:prec-2-3 ;
     erb:precededBy erb:prec-1-2 .
 
@@ -519,12 +522,13 @@ erb:prod-deploy-step-5 a erb:WorkflowSteps ;
 
 erb:prod-deploy-step-1 a erb:WorkflowSteps ;
     erb:workflowStepId "prod-deploy-step-1" ;
-    erb:displayName "Initiate Deployment Request" ;
+    erb:displayName "AI Risk Assessment" ;
     erb:workflow erb:production-deployment ;
     erb:sequencePosition 1 ;
-    erb:assignedRole erb:ntwf-release-manager-role ;
-    erb:requiresHumanApproval true ;
-    erb:stepDurationMinutes 30 ;
+    erb:assignedRole erb:ntwf-risk-analysis-role ;
+    erb:requiresHumanApproval false ;
+    erb:stepDurationMinutes 15 ;
+    erb:consumesDataset erb:ds-q1-2026-risk-metrics ;
     erb:producesArtifacts erb:artifact-risk-report ;
     erb:precedes erb:prec-1-2 .
 
