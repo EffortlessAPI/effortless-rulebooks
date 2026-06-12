@@ -1472,7 +1472,7 @@ html.show-consumers .elem-consumers{display:block}
         <a class="ref-pill tone-rel" href="#f-roleassignments-filledbyautomatedpipeline">⇢ Filled by Automated Pipeline <span class="ref-pill-tbl">RoleAssignments</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Number of filledBy assignment periods that changed the agent CLASS of a role (rollup over RoleAssignments.IsAgentTypeChange = TRUE). Part IV distinguishes a same-class personnel/model swap from an agent-type transition; this counts the latter. NOTE: single-workflow model — every Role participates in the one workflow, so the count is over all assignment history; a multi-workflow model would scope it through a role→workflow path.</p>
+    <p class="field-note elem elem-desc">Number of filledBy assignment periods that changed the agent CLASS of a role (rollup over RoleAssignments.IsAgentTypeChange = TRUE). NTWF governance distinguishes a same-class personnel/model swap from an agent-type transition; this counts the latter. NOTE: single-workflow model — every Role participates in the one workflow, so the count is over all assignment history; a multi-workflow model would scope it through a role→workflow path.</p>
     </article>
   <article class="field tone-agg" id="f-workflows-countcomplianceauditchanges" data-entity="Workflow" data-field="Count Compliance Audit Changes">
     <div class="field-head">
@@ -1515,7 +1515,7 @@ html.show-consumers .elem-consumers{display:block}
         <a class="ref-pill tone-rel" href="#f-roleassignments-filledbyautomatedpipeline">⇢ Filled by Automated Pipeline <span class="ref-pill-tbl">RoleAssignments</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Number of filledBy assignment periods that took a previously AI-executed binding and reassigned it to a human (rollup over RoleAssignments.RequiresComplianceAudit = TRUE). Part IV: 'Changing the agent type of a step from ntwf:AIAgent to ntwf:HumanAgent ... is a data operation with compliance implications.' Each such row must carry when (ValidFrom) and why (Reason). NOTE: single-workflow scoping as above.</p>
+    <p class="field-note elem elem-desc">Number of filledBy assignment periods that took a previously AI-executed binding and reassigned it to a human (rollup over RoleAssignments.RequiresComplianceAudit = TRUE). NTWF governance treats this as a data operation with compliance implications: changing the agent type of a step from ntwf:AIAgent to ntwf:HumanAgent. Each such row must carry when (ValidFrom) and why (Reason). NOTE: single-workflow scoping as above.</p>
     </article>
 </section>
 <section class="entity" id="t-workflowsteps" data-entity="Workflow Step">
@@ -3701,7 +3701,7 @@ html.show-consumers .elem-consumers{display:block}
         </a>
         <a class="input tone-raw" href="#f-roleassignments-validfrom">
           <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Valid From</span><span class="input-table">RoleAssignments</span></span>
-          <span class="input-en muted">Start of the validity period for this filledBy binding (inclusive). Part IV: a retained/versioned triple 'carries the validity period'. ISO date.</span>
+          <span class="input-en muted">Start of the validity period for this filledBy binding (inclusive). A retained/versioned triple carries the validity period. ISO date.</span>
         </a>
         <a class="input tone-raw" href="#f-roleassignments-validto">
           <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Valid to</span><span class="input-table">RoleAssignments</span></span>
@@ -3777,7 +3777,7 @@ html.show-consumers .elem-consumers{display:block}
     <div class="gt">
       <p class="gt-body">Ground truth. Written directly to the database (datatype <code>date</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
-    <p class="field-note elem elem-desc">Start of the validity period for this filledBy binding (inclusive). Part IV: a retained/versioned triple 'carries the validity period'. ISO date.</p>
+    <p class="field-note elem elem-desc">Start of the validity period for this filledBy binding (inclusive). A retained/versioned triple carries the validity period. ISO date.</p>
     </article>
   <article class="field tone-raw" id="f-roleassignments-validto" data-entity="Role Assignment" data-field="Valid to">
     <div class="field-head">
@@ -3801,7 +3801,7 @@ html.show-consumers .elem-consumers{display:block}
     <div class="gt">
       <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
-    <p class="field-note elem elem-desc">The WHY of the change, per Part IV: 'the audit record must reflect when that transition happened and why.' e.g. 'initial assignment', 'departure / backfill', 'model upgrade', 'compliance reassignment to human'.</p>
+    <p class="field-note elem elem-desc">The WHY of the change: the audit record must reflect when that transition happened and why. e.g. 'initial assignment', 'departure / backfill', 'model upgrade', 'compliance reassignment to human'.</p>
     </article>
   <article class="field tone-raw" id="f-roleassignments-priorfillertype" data-entity="Role Assignment" data-field="Prior Filler Type">
     <div class="field-head">
@@ -3813,7 +3813,7 @@ html.show-consumers .elem-consumers{display:block}
     <div class="gt">
       <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
-    <p class="field-note elem elem-desc">The agent class (HumanAgent / AIAgent / AutomatedPipeline) of the binding this assignment SUPERSEDED, or blank for the first assignment of a role. Lets the agent-type-change audit (Part IV: AIAgent -&gt; HumanAgent) be witnessed without re-deriving from the prior row.</p>
+    <p class="field-note elem elem-desc">The agent class (HumanAgent / AIAgent / AutomatedPipeline) of the binding this assignment SUPERSEDED, or blank for the first assignment of a role. Lets the agent-type-change audit (AIAgent -&gt; HumanAgent) be witnessed without re-deriving from the prior row.</p>
     </article>
   <article class="field tone-calc" id="f-roleassignments-fillertype" data-entity="Role Assignment" data-field="Filler Type">
     <div class="field-head">
@@ -3912,7 +3912,7 @@ html.show-consumers .elem-consumers{display:block}
         <a class="ref-pill tone-raw" href="#f-roleassignments-validto">● Valid to <span class="ref-pill-tbl">RoleAssignments</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">TRUE iff this is the live binding (ValidTo is blank). The set of IsCurrent rows reproduces exactly the current Roles.FilledBy* values; the rest are retained history. Part IV: 'the old triple should not be deleted' — closed rows stay, only IsCurrent flips.</p>
+    <p class="field-note elem elem-desc">TRUE iff this is the live binding (ValidTo is blank). The set of IsCurrent rows reproduces exactly the current Roles.FilledBy* values; the rest are retained history. The old triple is never deleted — closed rows stay, only IsCurrent flips.</p>
     </article>
   <article class="field tone-calc" id="f-roleassignments-wasactiveasofauditdate" data-entity="Role Assignment" data-field="Was Active As of Audit Date">
     <div class="field-head">
@@ -3942,7 +3942,7 @@ html.show-consumers .elem-consumers{display:block}
       <div class="prov-grid">
         <a class="input tone-raw" href="#f-roleassignments-validfrom">
           <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Valid From</span><span class="input-table">RoleAssignments</span></span>
-          <span class="input-en muted">Start of the validity period for this filledBy binding (inclusive). Part IV: a retained/versioned triple 'carries the validity period'. ISO date.</span>
+          <span class="input-en muted">Start of the validity period for this filledBy binding (inclusive). A retained/versioned triple carries the validity period. ISO date.</span>
         </a>
         <a class="input tone-raw" href="#f-roleassignments-validto">
           <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Valid to</span><span class="input-table">RoleAssignments</span></span>
@@ -3957,7 +3957,7 @@ html.show-consumers .elem-consumers{display:block}
         <a class="ref-pill tone-raw" href="#f-roleassignments-validto">● Valid to <span class="ref-pill-tbl">RoleAssignments</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Part IV's signature temporal query: 'which agent was executing this step on March 1, 2026?'. TRUE iff this binding's validity period contains 2026-03-01 (ValidFrom &lt;= the date AND (ValidTo blank OR ValidTo &gt; the date)). ISO dates compare lexically. The single row that is TRUE for a given role names the agent active on the audit date — answerable only because history is retained.</p>
+    <p class="field-note elem elem-desc">NTWF's signature temporal query: 'which agent was executing this step on March 1, 2026?'. TRUE iff this binding's validity period contains 2026-03-01 (ValidFrom &lt;= the date AND (ValidTo blank OR ValidTo &gt; the date)). ISO dates compare lexically. The single row that is TRUE for a given role names the agent active on the audit date — answerable only because history is retained.</p>
     </article>
   <article class="field tone-calc" id="f-roleassignments-isagenttypechange" data-entity="Role Assignment" data-field="Is Agent Type Change">
     <div class="field-head">
@@ -3987,7 +3987,7 @@ html.show-consumers .elem-consumers{display:block}
       <div class="prov-grid">
         <a class="input tone-raw" href="#f-roleassignments-priorfillertype">
           <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Prior Filler Type</span><span class="input-table">RoleAssignments</span></span>
-          <span class="input-en muted">The agent class (HumanAgent / AIAgent / AutomatedPipeline) of the binding this assignment SUPERSEDED, or blank for the first assignment of a role. Lets the agent-type-change audit (Part IV: AIAgent -&gt; HumanAgent) be witnessed without re-deriving from the prior row.</span>
+          <span class="input-en muted">The agent class (HumanAgent / AIAgent / AutomatedPipeline) of the binding this assignment SUPERSEDED, or blank for the first assignment of a role. Lets the agent-type-change audit (AIAgent -&gt; HumanAgent) be witnessed without re-deriving from the prior row.</span>
         </a>
         <a class="input tone-calc" href="#f-roleassignments-fillertype">
           <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Filler Type</span><span class="input-table">RoleAssignments</span></span>
@@ -4010,7 +4010,7 @@ html.show-consumers .elem-consumers{display:block}
         <a class="ref-pill tone-rel" href="#f-roleassignments-filledbyautomatedpipeline">⇢ Filled by Automated Pipeline <span class="ref-pill-tbl">RoleAssignments</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">TRUE iff this assignment changed the agent CLASS of the role (PriorFillerType set and different from FillerType). Part IV distinguishes a plain personnel/model swap (same class) from an agent-type transition, which carries compliance weight.</p>
+    <p class="field-note elem elem-desc">TRUE iff this assignment changed the agent CLASS of the role (PriorFillerType set and different from FillerType). NTWF distinguishes a plain personnel/model swap (same class) from an agent-type transition, which carries compliance weight.</p>
     </article>
   <article class="field tone-calc" id="f-roleassignments-requirescomplianceaudit" data-entity="Role Assignment" data-field="Requires Compliance Audit">
     <div class="field-head">
@@ -4040,7 +4040,7 @@ html.show-consumers .elem-consumers{display:block}
       <div class="prov-grid">
         <a class="input tone-raw" href="#f-roleassignments-priorfillertype">
           <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Prior Filler Type</span><span class="input-table">RoleAssignments</span></span>
-          <span class="input-en muted">The agent class (HumanAgent / AIAgent / AutomatedPipeline) of the binding this assignment SUPERSEDED, or blank for the first assignment of a role. Lets the agent-type-change audit (Part IV: AIAgent -&gt; HumanAgent) be witnessed without re-deriving from the prior row.</span>
+          <span class="input-en muted">The agent class (HumanAgent / AIAgent / AutomatedPipeline) of the binding this assignment SUPERSEDED, or blank for the first assignment of a role. Lets the agent-type-change audit (AIAgent -&gt; HumanAgent) be witnessed without re-deriving from the prior row.</span>
         </a>
         <a class="input tone-calc" href="#f-roleassignments-fillertype">
           <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Filler Type</span><span class="input-table">RoleAssignments</span></span>
@@ -4063,7 +4063,7 @@ html.show-consumers .elem-consumers{display:block}
         <a class="ref-pill tone-rel" href="#f-roleassignments-filledbyautomatedpipeline">⇢ Filled by Automated Pipeline <span class="ref-pill-tbl">RoleAssignments</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Part IV: 'Changing the agent type of a step from ntwf:AIAgent to ntwf:HumanAgent ... is a data operation with compliance implications.' TRUE iff this assignment took a previously AI-executed binding and reassigned it to a human — the exact transition Part IV says the audit record must capture (when + why).</p>
+    <p class="field-note elem elem-desc">Changing the agent type of a step from ntwf:AIAgent to ntwf:HumanAgent is a data operation with compliance implications. TRUE iff this assignment took a previously AI-executed binding and reassigned it to a human — the exact transition NTWF governance says the audit record must capture (when + why).</p>
     </article>
 </section>
 <section class="entity" id="t-departments" data-entity="Department">
@@ -4509,7 +4509,7 @@ html.show-consumers .elem-consumers{display:block}
     <div class="gt">
       <p class="gt-body">Ground truth. Written directly to the database (datatype <code>date</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
-    <p class="field-note elem elem-desc">Deployment date of this AI model version. Part IV (AI System Registry): 'risk-classifier-v2.4.1 was deployed on 2026-01-10'. Sourced from the AI system registry feed via the shared Dublin Core contract (dct:date).</p>
+    <p class="field-note elem elem-desc">Deployment date of this AI model version. The NTWF graph doubles as an AI system registry: 'risk-classifier-v2.4.1 was deployed on 2026-01-10'. Sourced from the AI system registry feed via the shared Dublin Core contract (dct:date).</p>
     </article>
   <article class="field tone-rel" id="f-aiagents-roles" data-entity="AI Agent" data-field="Roles">
     <div class="field-head">
@@ -4545,7 +4545,7 @@ html.show-consumers .elem-consumers{display:block}
     <div class="gt">
       <p class="gt-body">A pointer to <a href="#t-workflowartifacts">Workflow Artifact</a>. It is not derived from anything else — it is the link the rest of the DAG hangs off.</p>
     </div>
-    <p class="field-note elem elem-desc">Back-reference to WorkflowArtifacts attributed to this AI agent (prov:wasAttributedTo). Inverse of WorkflowArtifacts.AttributedToAIAgent. First leg of the Part IV 'blast radius' traversal.</p>
+    <p class="field-note elem elem-desc">Back-reference to WorkflowArtifacts attributed to this AI agent (prov:wasAttributedTo). Inverse of WorkflowArtifacts.AttributedToAIAgent. First leg of the 'blast radius' traversal.</p>
     </article>
   <article class="field tone-agg" id="f-aiagents-countattributedartifacts" data-entity="AI Agent" data-field="Count Attributed Artifacts">
     <div class="field-head">
@@ -4590,7 +4590,7 @@ html.show-consumers .elem-consumers{display:block}
         <a class="ref-pill tone-raw" href="#f-aiagents-aiagentid">● AI Agent ID <span class="ref-pill-tbl">AIAgents</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Part IV 'blast radius', leg 1: how many artifacts are attributed to this AI agent (prov:wasAttributedTo). Counts WorkflowArtifacts whose AttributedToAIAgent is this agent.</p>
+    <p class="field-note elem elem-desc">'Blast radius', leg 1: how many artifacts are attributed to this AI agent (prov:wasAttributedTo). Counts WorkflowArtifacts whose AttributedToAIAgent is this agent.</p>
     </article>
   <article class="field tone-agg" id="f-aiagents-countimpactedworkflows" data-entity="AI Agent" data-field="Count Impacted Workflows">
     <div class="field-head">
@@ -4642,7 +4642,7 @@ html.show-consumers .elem-consumers{display:block}
         <a class="ref-pill tone-raw" href="#f-workflowsteps-workflowstepid">● Workflow Step ID <span class="ref-pill-tbl">WorkflowSteps</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">Part IV 'blast radius', summarized: the number of distinct workflows reachable from this agent's attributed artifacts (each artifact is produced by a step that belongs to a workflow). With one workflow in the worked example, an upgrade to an agent that produced any artifact has a blast radius of 1 workflow. Counts artifacts attributed to this agent that resolve to a workflow.</p>
+    <p class="field-note elem elem-desc">'Blast radius', summarized: the number of distinct workflows reachable from this agent's attributed artifacts (each artifact is produced by a step that belongs to a workflow). With one workflow in the worked example, an upgrade to an agent that produced any artifact has a blast radius of 1 workflow. Counts artifacts attributed to this agent that resolve to a workflow.</p>
     </article>
 </section>
 <section class="entity" id="t-automatedpipelines" data-entity="Automated Pipeline">
@@ -5091,7 +5091,7 @@ html.show-consumers .elem-consumers{display:block}
 <section class="entity" id="t-artifacttypeconcepts" data-entity="Artifact Type Concept">
   <header class="entity-head">
     <h2 class="entity-title">Artifact Type Concept</h2>
-    <p class="entity-synopsis">SKOS controlled vocabulary for artifact type (ntwf artifact-type scheme). Part of the CBox; Part IV names a CBox concept scheme for artifact types alongside workflow status and agent capabilities. Each artifact is classified via dct:type into one of these concepts.</p>
+    <p class="entity-synopsis">SKOS controlled vocabulary for artifact type (ntwf artifact-type scheme). Part of the CBox; NTWF names a CBox concept scheme for artifact types alongside workflow status and agent capabilities. Each artifact is classified via dct:type into one of these concepts.</p>
   </header>
   <article class="field tone-calc" id="f-artifacttypeconcepts-relativepath" data-entity="Artifact Type Concept" data-field="Relative Path">
     <div class="field-head">
@@ -5587,7 +5587,7 @@ html.show-consumers .elem-consumers{display:block}
     <div class="gt">
       <p class="gt-body">A pointer to <a href="#t-artifacttypeconcepts">Artifact Type Concept</a>. It is not derived from anything else — it is the link the rest of the DAG hangs off.</p>
     </div>
-    <p class="field-note elem elem-desc">FK to the ArtifactTypeConcepts SKOS concept classifying this artifact. Maps to dct:type. Part IV: the CBox defines a concept scheme for artifact types.</p>
+    <p class="field-note elem elem-desc">FK to the ArtifactTypeConcepts SKOS concept classifying this artifact. Maps to dct:type. The CBox defines a concept scheme for artifact types.</p>
     </article>
   <article class="field tone-raw" id="f-workflowartifacts-created" data-entity="Workflow Artifact" data-field="Created">
     <div class="field-head">
@@ -6029,7 +6029,7 @@ html.show-consumers .elem-consumers{display:block}
     <div class="gt">
       <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
-    <p class="field-note elem elem-desc">Which of the two Part IV governance kinds this is: 'Steward' or 'Authority'.</p>
+    <p class="field-note elem elem-desc">Which of the two NTWF governance kinds this is: 'Steward' or 'Authority'.</p>
     </article>
   <article class="field tone-raw" id="f-governanceroles-responsibilities" data-entity="Governance Role" data-field="Responsibilities">
     <div class="field-head">
@@ -6041,7 +6041,7 @@ html.show-consumers .elem-consumers{display:block}
     <div class="gt">
       <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
-    <p class="field-note elem elem-desc">What this role is responsible for, per Part IV. Steward: monitor drift, track external dependency updates, field user questions, maintain documentation, keep the validation suite current. Authority: approve changes to CBox/ABox/TBox; decide how and where a change is made.</p>
+    <p class="field-note elem elem-desc">What this role is responsible for. Steward: monitor drift, track external dependency updates, field user questions, maintain documentation, keep the validation suite current. Authority: approve changes to CBox/ABox/TBox; decide how and where a change is made.</p>
     </article>
   <article class="field tone-raw" id="f-governanceroles-approvalscope" data-entity="Governance Role" data-field="Approval Scope">
     <div class="field-head">
@@ -6065,7 +6065,7 @@ html.show-consumers .elem-consumers{display:block}
     <div class="gt">
       <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
-    <p class="field-note elem elem-desc">The person or function holding this role. Part IV: the steward is naturally whoever owns the engineering knowledge infrastructure; authority sits with the workflow governance function that owns the modeled domain. Under 500 people, one person may hold both.</p>
+    <p class="field-note elem elem-desc">The person or function holding this role. The steward is naturally whoever owns the engineering knowledge infrastructure; authority sits with the workflow governance function that owns the modeled domain. Under 500 people, one person may hold both.</p>
     </article>
   <article class="field tone-calc" id="f-governanceroles-canapprovechanges" data-entity="Governance Role" data-field="Can Approve Changes">
     <div class="field-head">
@@ -6095,7 +6095,7 @@ html.show-consumers .elem-consumers{display:block}
       <div class="prov-grid">
         <a class="input tone-raw" href="#f-governanceroles-kind">
           <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Kind</span><span class="input-table">GovernanceRoles</span></span>
-          <span class="input-en muted">Which of the two Part IV governance kinds this is: 'Steward' or 'Authority'.</span>
+          <span class="input-en muted">Which of the two NTWF governance kinds this is: 'Steward' or 'Authority'.</span>
         </a>
       </div>
     </details>
@@ -6105,7 +6105,7 @@ html.show-consumers .elem-consumers{display:block}
         <a class="ref-pill tone-raw" href="#f-governanceroles-kind">● Kind <span class="ref-pill-tbl">GovernanceRoles</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">TRUE iff this governance role carries approval power (Kind = 'Authority'). A Steward returns FALSE — Part IV: a steward making TBox/ABox changes without authority review is a single point of failure.</p>
+    <p class="field-note elem elem-desc">TRUE iff this governance role carries approval power (Kind = 'Authority'). A Steward returns FALSE — a steward making TBox/ABox changes without authority review is a single point of failure.</p>
     </article>
   <article class="field tone-rel" id="f-governanceroles-approvedchanges" data-entity="Governance Role" data-field="Approved Changes">
     <div class="field-head">
@@ -6239,11 +6239,11 @@ html.show-consumers .elem-consumers{display:block}
       <div class="prov-grid">
         <a class="input tone-raw" href="#f-changelog-version">
           <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Version</span><span class="input-table">ChangeLog</span></span>
-          <span class="input-en muted">The release version number this change shipped in (semantic versioning MAJOR.MINOR.PATCH). Part IV: NTWF is currently at 1.1.0.</span>
+          <span class="input-en muted">The release version number this change shipped in (semantic versioning MAJOR.MINOR.PATCH). NTWF is currently at 1.1.0.</span>
         </a>
         <a class="input tone-raw" href="#f-changelog-changedate">
           <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Change Date</span><span class="input-table">ChangeLog</span></span>
-          <span class="input-en muted">The date of the change. One of the four facts Part IV requires every change-log entry to record.</span>
+          <span class="input-en muted">The date of the change. One of the four facts NTWF governance requires every change-log entry to record.</span>
         </a>
       </div>
     </details>
@@ -6266,7 +6266,7 @@ html.show-consumers .elem-consumers{display:block}
     <div class="gt">
       <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
-    <p class="field-note elem elem-desc">The release version number this change shipped in (semantic versioning MAJOR.MINOR.PATCH). Part IV: NTWF is currently at 1.1.0.</p>
+    <p class="field-note elem elem-desc">The release version number this change shipped in (semantic versioning MAJOR.MINOR.PATCH). NTWF is currently at 1.1.0.</p>
     </article>
   <article class="field tone-raw" id="f-changelog-changedate" data-entity="Change Log" data-field="Change Date">
     <div class="field-head">
@@ -6278,7 +6278,7 @@ html.show-consumers .elem-consumers{display:block}
     <div class="gt">
       <p class="gt-body">Ground truth. Written directly to the database (datatype <code>date</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
-    <p class="field-note elem elem-desc">The date of the change. One of the four facts Part IV requires every change-log entry to record.</p>
+    <p class="field-note elem elem-desc">The date of the change. One of the four facts NTWF governance requires every change-log entry to record.</p>
     </article>
   <article class="field tone-raw" id="f-changelog-changekind" data-entity="Change Log" data-field="Change Kind">
     <div class="field-head">
@@ -6302,7 +6302,7 @@ html.show-consumers .elem-consumers{display:block}
     <div class="gt">
       <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
-    <p class="field-note elem elem-desc">The competency question that motivated the change. One of the four facts Part IV requires. Empty if the change was driven by an external-dependency update rather than a CQ.</p>
+    <p class="field-note elem elem-desc">The competency question that motivated the change. One of the four facts NTWF governance requires. Empty if the change was driven by an external-dependency update rather than a CQ.</p>
     </article>
   <article class="field tone-raw" id="f-changelog-termsaffected" data-entity="Change Log" data-field="Terms Affected">
     <div class="field-head">
@@ -6314,7 +6314,7 @@ html.show-consumers .elem-consumers{display:block}
     <div class="gt">
       <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
-    <p class="field-note elem elem-desc">The ontology terms (classes/properties/concepts) the change added, removed, or modified. One of the four facts Part IV requires.</p>
+    <p class="field-note elem elem-desc">The ontology terms (classes/properties/concepts) the change added, removed, or modified. One of the four facts NTWF governance requires.</p>
     </article>
   <article class="field tone-raw" id="f-changelog-rationale" data-entity="Change Log" data-field="Rationale">
     <div class="field-head">
@@ -6326,7 +6326,7 @@ html.show-consumers .elem-consumers{display:block}
     <div class="gt">
       <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
-    <p class="field-note elem elem-desc">Why the change was made. Part IV requires every TBox/ABox modification to be logged with its rationale.</p>
+    <p class="field-note elem elem-desc">Why the change was made. NTWF governance requires every TBox/ABox modification to be logged with its rationale.</p>
     </article>
   <article class="field tone-rel" id="f-changelog-approvedby" data-entity="Change Log" data-field="Approved by">
     <div class="field-head">
@@ -6338,7 +6338,7 @@ html.show-consumers .elem-consumers{display:block}
     <div class="gt">
       <p class="gt-body">A pointer to <a href="#t-governanceroles">Governance Role</a>. It is not derived from anything else — it is the link the rest of the DAG hangs off.</p>
     </div>
-    <p class="field-note elem elem-desc">FK to the GovernanceRole (an Authority) that approved this change. Part IV: changes to CBox/ABox/TBox require authority review; a steward identifying a need is not enough.</p>
+    <p class="field-note elem elem-desc">FK to the GovernanceRole (an Authority) that approved this change. Changes to CBox/ABox/TBox require authority review; a steward identifying a need is not enough.</p>
     </article>
   <article class="field tone-calc" id="f-changelog-isbreakingchange" data-entity="Change Log" data-field="Is Breaking Change">
     <div class="field-head">
@@ -6378,7 +6378,7 @@ html.show-consumers .elem-consumers{display:block}
         <a class="ref-pill tone-raw" href="#f-changelog-changekind">● Change Kind <span class="ref-pill-tbl">ChangeLog</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">TRUE iff this is a major (breaking) change (ChangeKind = 'major') — Part IV: requires explicit update, re-validation, and migration planning for any system on the prior version.</p>
+    <p class="field-note elem elem-desc">TRUE iff this is a major (breaking) change (ChangeKind = 'major') — requires explicit update, re-validation, and migration planning for any system on the prior version.</p>
     </article>
   <article class="field tone-calc" id="f-changelog-isbackwardcompatible" data-entity="Change Log" data-field="Is Backward Compatible">
     <div class="field-head">
@@ -6418,7 +6418,7 @@ html.show-consumers .elem-consumers{display:block}
         <a class="ref-pill tone-raw" href="#f-changelog-changekind">● Change Kind <span class="ref-pill-tbl">ChangeLog</span></a>
       </div>
     </details>
-    <p class="field-note elem elem-desc">TRUE iff systems on the prior version keep working against this release (ChangeKind is 'patch' or 'minor'). Part IV: patch and minor increments preserve backward compatibility; only major breaks it.</p>
+    <p class="field-note elem elem-desc">TRUE iff systems on the prior version keep working against this release (ChangeKind is 'patch' or 'minor'). Patch and minor increments preserve backward compatibility; only major breaks it.</p>
     </article>
 </section>
 <section class="entity" id="t-vocabularyreconciliations" data-entity="Vocabulary Reconciliation">
@@ -6591,7 +6591,7 @@ html.show-consumers .elem-consumers{display:block}
     <div class="gt">
       <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
-    <p class="field-note elem elem-desc">The OWL relation asserting equivalence. Part IV uses owl:sameAs.</p>
+    <p class="field-note elem elem-desc">The OWL relation asserting equivalence. NTWF uses owl:sameAs.</p>
     </article>
   <article class="field tone-raw" id="f-vocabularyreconciliations-sourcestandard" data-entity="Vocabulary Reconciliation" data-field="Source Standard">
     <div class="field-head">
@@ -6615,7 +6615,7 @@ html.show-consumers .elem-consumers{display:block}
     <div class="gt">
       <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
-    <p class="field-note elem elem-desc">The NTWF release version in which this reconciliation shipped. Part IV: re-homing a term triggers a version bump.</p>
+    <p class="field-note elem elem-desc">The NTWF release version in which this reconciliation shipped. Re-homing a term triggers a version bump.</p>
     </article>
   <article class="field tone-raw" id="f-vocabularyreconciliations-rationale" data-entity="Vocabulary Reconciliation" data-field="Rationale">
     <div class="field-head">

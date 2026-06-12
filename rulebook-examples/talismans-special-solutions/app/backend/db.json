@@ -235,7 +235,7 @@
       "filledByAIAgent": "",
       "filledByAutomatedPipeline": "",
       "validFrom": "2026-01-10",
-      "validTo": "",
+      "validTo": null,
       "reason": "initial assignment",
       "priorFillerType": ""
     },
@@ -257,7 +257,7 @@
       "filledByAIAgent": "",
       "filledByAutomatedPipeline": "",
       "validFrom": "2026-03-15",
-      "validTo": "",
+      "validTo": null,
       "reason": "departure of prior holder / backfill",
       "priorFillerType": "HumanAgent"
     },
@@ -290,7 +290,7 @@
       "filledByAIAgent": "ntwf-health-ai",
       "filledByAutomatedPipeline": "",
       "validFrom": "2026-02-20",
-      "validTo": "",
+      "validTo": null,
       "reason": "model upgrade: returned to automated summarization (health-summarizer-v1.2.0)",
       "priorFillerType": "HumanAgent"
     }
@@ -602,7 +602,7 @@
       "changeKind": "minor",
       "motivatingQuestion": "Which AI agent was executing this step on March 1, 2026?",
       "termsAffected": "Added filledBy assignment history (RoleAssignments) with validity periods; AIAgent deployment date; agent-type-change audit witnesses.",
-      "rationale": "Operational governance needed retained filledBy history so historical 'as of date' and blast-radius queries are answerable without discarding provenance. Additive and backward compatible — a minor, backward-compatible change, so per Part IV the steward is authorized to approve and deploy it without authority review.",
+      "rationale": "Operational governance needed retained filledBy history so historical 'as of date' and blast-radius queries are answerable without discarding provenance. Additive and backward compatible — a minor, backward-compatible change, so the steward is authorized to approve and deploy it without authority review.",
       "approvedBy": "gov-steward"
     }
   ],
@@ -614,7 +614,7 @@
       "reconciliationRelation": "owl:sameAs",
       "sourceStandard": "FOAF",
       "introducedInVersion": "v1.1.0",
-      "rationale": "Part IV worked example: a deprecated FOAF element is re-prefixed into the NTWF namespace; existing data stays valid (URIs do not disappear), and foaf:name owl:sameAs ntwf:name keeps the two interchangeable for reasoners."
+      "rationale": "Worked example: a deprecated FOAF element is re-prefixed into the NTWF namespace; existing data stays valid (URIs do not disappear), and foaf:name owl:sameAs ntwf:name keeps the two interchangeable for reasoners."
     },
     {
       "reconciliationId": "recon-dcat-v3",
@@ -623,7 +623,7 @@
       "reconciliationRelation": "owl:sameAs",
       "sourceStandard": "DCAT",
       "introducedInVersion": "v1.1.0",
-      "rationale": "Part IV external-dependency fact: DCAT went through a major v2 -> v3 revision that introduced new classes and deprecated others. NTWF tracks the alignment so its dcat:Dataset usage stays semantically current; existing data remains valid because URIs do not disappear."
+      "rationale": "External-dependency fact: DCAT went through a major v2 -> v3 revision that introduced new classes and deprecated others. NTWF tracks the alignment so its dcat:Dataset usage stays semantically current; existing data remains valid because URIs do not disappear."
     }
   ],
   "Scenarios": [
