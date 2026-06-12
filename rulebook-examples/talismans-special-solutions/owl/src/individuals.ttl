@@ -10,14 +10,16 @@ erb:ntwf-risk-ai a erb:AIAgents ;
     erb:name "RiskAnalysis-AI" ;
     erb:title "Risk Analysis AI Agent" ;
     erb:displayName "RiskAnalysis-AI" ;
-    erb:modelVersion "risk-classifier-v2.4.1" .
+    erb:modelVersion "risk-classifier-v2.4.1" ;
+    erb:deployedOn "2026-01-10" .
 
 erb:ntwf-health-ai a erb:AIAgents ;
     erb:aIAgentId "ntwf-health-ai" ;
     erb:name "DeploymentHealth-AI" ;
     erb:title "Deployment Health AI Agent" ;
     erb:displayName "DeploymentHealth-AI" ;
-    erb:modelVersion "health-summarizer-v1.2.0" .
+    erb:modelVersion "health-summarizer-v1.2.0" ;
+    erb:deployedOn "2026-02-20" .
 
 # === Individuals: AgentCapabilityConcepts ===
 
@@ -62,8 +64,30 @@ erb:ntwf-release-approval-gate a erb:ApprovalGates ;
     erb:approvalGateId "ntwf-release-approval-gate" ;
     erb:displayName "Release Approval Gate" ;
     erb:workflowStep erb:prod-deploy-step-3 ;
-    erb:escalationThresholdHours 4 ;
-    erb:requiresDualSignoffOffHours true .
+    erb:escalationThresholdHours 4 .
+
+# === Individuals: ArtifactTypeConcepts ===
+
+erb:type-report a erb:ArtifactTypeConcepts ;
+    erb:conceptId "type-report" ;
+    erb:prefLabel "Report" ;
+    erb:altLabel "Assessment" ;
+    erb:definition "A human- or AI-authored analytical document (e.g. a risk assessment report)." ;
+    erb:scopeNote "Use for narrative analytical artifacts, not for raw datasets or machine logs." .
+
+erb:type-decision-record a erb:ArtifactTypeConcepts ;
+    erb:conceptId "type-decision-record" ;
+    erb:prefLabel "Decision Record" ;
+    erb:altLabel "Authorization" ;
+    erb:definition "An artifact recording an approval or authorization decision (e.g. a release authorization, a legal clearance)." ;
+    erb:scopeNote "Use for sign-off / clearance / authorization artifacts." .
+
+erb:type-log a erb:ArtifactTypeConcepts ;
+    erb:conceptId "type-log" ;
+    erb:prefLabel "Log" ;
+    erb:altLabel "Machine Output" ;
+    erb:definition "A machine-generated record of an automated activity (e.g. a deployment log)." ;
+    erb:scopeNote "Use for deterministic pipeline/system output, not human analysis." .
 
 # === Individuals: AutomatedPipelines ===
 
@@ -73,27 +97,27 @@ erb:ntwf-ci-pipeline a erb:AutomatedPipelines ;
     erb:description "Automated build, test, and deployment pipeline for production releases. Deterministic execution — no probabilistic output." ;
     erb:displayName "CI/CD Deploy Pipeline" .
 
-# === Individuals: ComplianceVerdictConcepts ===
+# === Individuals: ChangeLog ===
 
-erb:verdict-at-risk a erb:ComplianceVerdictConcepts ;
-    erb:conceptId "verdict-at-risk" ;
-    erb:prefLabel "AT RISK: stale workflow with an AI-executed step" ;
-    erb:altLabel "At Risk" ;
-    erb:definition "The workflow is BOTH stale (compliance documentation not reviewed in twelve months) AND has at least one step executed by an AI agent — the highest-compliance-risk combination the article identifies." ;
-    erb:scopeNote "Resolved when IsAtComplianceRisk is true. This is the verdict Talisman's closing query returns." .
+erb:change-1-0-0 a erb:ChangeLog ;
+    erb:changeLogId "change-1-0-0" ;
+    erb:version "1.0.0" ;
+    erb:changeDate "2026-01-15" ;
+    erb:changeKind "major" ;
+    erb:motivatingQuestion "All eight competency questions (CQ1-CQ8)." ;
+    erb:termsAffected "Initial release: 9 classes, 13 object properties, 5 datatype properties, 2 CBox schemes." ;
+    erb:rationale "First validated release of the NTWF workflow ontology; passes the 104-test suite." ;
+    erb:approvedBy erb:gov-authority .
 
-erb:verdict-ok a erb:ComplianceVerdictConcepts ;
-    erb:conceptId "verdict-ok" ;
-    erb:prefLabel "OK: not a stale-plus-AI compliance risk" ;
-    erb:altLabel "OK" ;
-    erb:definition "The workflow does not meet the stale-AND-AI-executed combination. It may still be stale, or still have AI steps, but not both at once." ;
-    erb:scopeNote "Resolved when IsAtComplianceRisk is false. The default, non-risk outcome." .
-
-# === Individuals: ComplianceVerdicts ===
-
-erb:verdict-production-deployment a erb:ComplianceVerdicts ;
-    erb:complianceVerdictId "verdict-production-deployment" ;
-    erb:workflow erb:production-deployment .
+erb:change-1-1-0 a erb:ChangeLog ;
+    erb:changeLogId "change-1-1-0" ;
+    erb:version "1.1.0" ;
+    erb:changeDate "2026-03-20" ;
+    erb:changeKind "minor" ;
+    erb:motivatingQuestion "Which AI agent was executing this step on March 1, 2026?" ;
+    erb:termsAffected "Added filledBy assignment history (RoleAssignments) with validity periods; AIAgent deployment date; agent-type-change audit witnesses." ;
+    erb:rationale "Operational governance needed retained filledBy history so historical 'as of date' and blast-radius queries are answerable without discarding provenance. Additive and backward compatible." ;
+    erb:approvedBy erb:gov-authority .
 
 # === Individuals: Datasets ===
 
@@ -101,9 +125,9 @@ erb:ds-q1-2026-risk-metrics a erb:Datasets ;
     erb:datasetId "ds-q1-2026-risk-metrics" ;
     erb:title "Q1 2026 Risk Metrics" ;
     erb:identifier "DS-RISK-2026-Q1" ;
-    erb:modified "2026-03-31T05:00:00.000Z" ;
+    erb:modified "2026-03-31T00:00:00-05:00" ;
     erb:distributionUrl "https://data.internal.special-solutions.example/risk/q1-2026" ;
-    erb:consumedBySteps erb:prod-deploy-step-1 .
+    erb:consumedBySteps erb:prod-deploy-step-2 .
 
 # === Individuals: Departments ===
 
@@ -117,7 +141,43 @@ erb:ntwf-legal-dept a erb:Departments ;
     erb:title "Legal" ;
     erb:displayName "legal" .
 
+# === Individuals: GovernanceRoles ===
+
+erb:gov-steward a erb:GovernanceRoles ;
+    erb:governanceRoleId "gov-steward" ;
+    erb:displayName "Ontology Steward" ;
+    erb:kind "Steward" ;
+    erb:responsibilities "Monitors the ontology for drift, tracks external-dependency updates (PROV-O, FOAF, Dublin Core, DCAT, Schema.org), fields questions from users, maintains documentation, and keeps the validation suite current. Identifies that a change is needed but does not approve it. Runs the periodic (at minimum quarterly) competency-question review: new unanswerable questions become scope-change requests, obsolete questions become deprecation candidates, and questions that return wrong answers are defects." ;
+    erb:approvalScope "none" ;
+    erb:heldBy "Engineering Knowledge Infrastructure team" .
+
+erb:gov-authority a erb:GovernanceRoles ;
+    erb:governanceRoleId "gov-authority" ;
+    erb:displayName "Ontology Authority" ;
+    erb:kind "Authority" ;
+    erb:responsibilities "Holds the power to approve changes to the CBox, ABox, and TBox. Decides how and where a change is made. Reviews changes proposed by the steward so that no single person alters the knowledge graph's semantic integrity unchecked." ;
+    erb:approvalScope "CBox, ABox, TBox" ;
+    erb:heldBy "Workflow Governance function" .
+
 # === Individuals: HumanAgents ===
+
+erb:ntwf-maria-gonzalez a erb:HumanAgents ;
+    erb:humanAgentId "ntwf-maria-gonzalez" ;
+    erb:name "Maria Gonzalez" ;
+    erb:displayName "Maria Gonzalez" ;
+    erb:mbox "maria.gonzalez@special-solutions.example" .
+
+erb:ntwf-david-chen a erb:HumanAgents ;
+    erb:humanAgentId "ntwf-david-chen" ;
+    erb:name "David Chen" ;
+    erb:displayName "David Chen" ;
+    erb:mbox "david.chen@special-solutions.example" .
+
+erb:ntwf-priya-nair a erb:HumanAgents ;
+    erb:humanAgentId "ntwf-priya-nair" ;
+    erb:name "Priya Nair" ;
+    erb:displayName "Priya Nair" ;
+    erb:mbox "priya.nair@special-solutions.example" .
 
 erb:ntwf-james-okafor a erb:HumanAgents ;
     erb:humanAgentId "ntwf-james-okafor" ;
@@ -130,6 +190,62 @@ erb:ntwf-sarah-kim a erb:HumanAgents ;
     erb:name "Sarah Kim" ;
     erb:displayName "Sarah Kim" ;
     erb:mbox "sarah.kim@special-solutions.example" .
+
+# === Individuals: RoleAssignments ===
+
+erb:asn-release-manager-maria a erb:RoleAssignments ;
+    erb:roleAssignmentId "asn-release-manager-maria" ;
+    erb:role erb:ntwf-release-manager-role ;
+    erb:filledByHumanAgent erb:ntwf-maria-gonzalez ;
+    erb:validFrom "2026-01-10" ;
+    erb:validTo "" ;
+    erb:reason "initial assignment" ;
+    erb:priorFillerType "" .
+
+erb:asn-vp-eng-priya a erb:RoleAssignments ;
+    erb:roleAssignmentId "asn-vp-eng-priya" ;
+    erb:role erb:ntwf-vp-engineering-role ;
+    erb:filledByHumanAgent erb:ntwf-priya-nair ;
+    erb:validFrom "2026-01-10" ;
+    erb:validTo "2026-03-15" ;
+    erb:reason "initial assignment" ;
+    erb:priorFillerType "" .
+
+erb:asn-vp-eng-david a erb:RoleAssignments ;
+    erb:roleAssignmentId "asn-vp-eng-david" ;
+    erb:role erb:ntwf-vp-engineering-role ;
+    erb:filledByHumanAgent erb:ntwf-david-chen ;
+    erb:validFrom "2026-03-15" ;
+    erb:validTo "" ;
+    erb:reason "departure of prior holder / backfill" ;
+    erb:priorFillerType "HumanAgent" .
+
+erb:asn-deploy-health-ai-initial a erb:RoleAssignments ;
+    erb:roleAssignmentId "asn-deploy-health-ai-initial" ;
+    erb:role erb:ntwf-deployment-health-role ;
+    erb:filledByAIAgent erb:ntwf-health-ai ;
+    erb:validFrom "2026-01-10" ;
+    erb:validTo "2026-02-05" ;
+    erb:reason "initial assignment (automated summarization)" ;
+    erb:priorFillerType "" .
+
+erb:asn-deploy-health-human-audit a erb:RoleAssignments ;
+    erb:roleAssignmentId "asn-deploy-health-human-audit" ;
+    erb:role erb:ntwf-deployment-health-role ;
+    erb:filledByHumanAgent erb:ntwf-james-okafor ;
+    erb:validFrom "2026-02-05" ;
+    erb:validTo "2026-02-20" ;
+    erb:reason "compliance reassignment: automated task assigned to a human for execution" ;
+    erb:priorFillerType "AIAgent" .
+
+erb:asn-deploy-health-ai-current a erb:RoleAssignments ;
+    erb:roleAssignmentId "asn-deploy-health-ai-current" ;
+    erb:role erb:ntwf-deployment-health-role ;
+    erb:filledByAIAgent erb:ntwf-health-ai ;
+    erb:validFrom "2026-02-20" ;
+    erb:validTo "" ;
+    erb:reason "model upgrade: returned to automated summarization (health-summarizer-v1.2.0)" ;
+    erb:priorFillerType "HumanAgent" .
 
 # === Individuals: Roles ===
 
@@ -156,9 +272,9 @@ erb:ntwf-deployment-health-role a erb:Roles ;
     erb:roleId "ntwf-deployment-health-role" ;
     erb:displayName "Deployment Health Agent" ;
     erb:label "Deployment Health Agent" ;
-    erb:comment "Generates the post-deployment health report by summarizing telemetry after a release. A role, not an identity — filled by a human reviewer today, it could be replaced by a newer model without changing the workflow structure." ;
+    erb:comment "Generates the post-deployment health report by summarizing telemetry after a release. A role, not an identity — currently filled by the DeploymentHealth-AI agent (health-summarizer-v1.2.0), it could be reassigned to a human or a newer model without changing the workflow structure. Its RoleAssignments history records an earlier human-reviewer period and the agent-type transitions." ;
     erb:hasCapability erb:cap-risk-analysis ;
-    erb:filledByHumanAgent erb:ntwf-james-okafor ;
+    erb:filledByAIAgent erb:ntwf-health-ai ;
     erb:ownedBy erb:ntwf-engineering .
 
 erb:ntwf-vp-engineering-role a erb:Roles ;
@@ -167,7 +283,7 @@ erb:ntwf-vp-engineering-role a erb:Roles ;
     erb:label "VP of Engineering" ;
     erb:comment "First escalation target when Release Manager is unavailable. Demonstrates ntwf:delegatesTo chain: Release Manager → VP Engineering → CTO." ;
     erb:hasCapability erb:cap-human-judgment ;
-    erb:filledByAutomatedPipeline erb:ntwf-ci-pipeline ;
+    erb:filledByHumanAgent erb:ntwf-david-chen ;
     erb:ownedBy erb:ntwf-engineering ;
     erb:delegatesTo erb:ntwf-cto-role ;
     erb:fromDelegatesTo erb:ntwf-release-manager-role .
@@ -194,9 +310,9 @@ erb:ntwf-release-manager-role a erb:Roles ;
     erb:roleId "ntwf-release-manager-role" ;
     erb:displayName "Release Manager" ;
     erb:label "Release Manager" ;
-    erb:comment "Owns the production deployment process. Coordinates all parties, triggers the pipeline, and authorizes the release at the approval gate." ;
+    erb:comment "Owns the production deployment process. Coordinates all parties, triggers the pipeline, and signs the final post-deployment report." ;
     erb:hasCapability erb:cap-human-judgment ;
-    erb:filledByAIAgent erb:ntwf-risk-ai ;
+    erb:filledByHumanAgent erb:ntwf-maria-gonzalez ;
     erb:ownedBy erb:ntwf-engineering ;
     erb:delegatesTo erb:ntwf-vp-engineering-role .
 
@@ -204,12 +320,12 @@ erb:ntwf-release-manager-role a erb:Roles ;
 
 erb:trigger-risk a erb:Scenarios ;
     erb:scenarioId "trigger-risk" ;
-    erb:label "Trigger compliance risk" ;
+    erb:label "Stale workflow with an AI step" ;
     erb:icon "⚠️" ;
-    erb:explanation "Backdates the workflow's last review past its policy window so the docs go STALE. The release already has AI-executed steps, so stale-docs-AND-an-AI-step fires the article's headline verdict: AT COMPLIANCE RISK." ;
+    erb:explanation "Backdates the workflow's last review past its 12-month policy window so the docs go STALE. The release already has AI-executed steps, so stale-docs-AND-an-AI-step fires the article's headline business query: IsStaleAndHasAIAgent (CQ5 extended — stale workflows that involve AI agents)." ;
     erb:sortOrder 1 ;
     erb:isReset false ;
-    erb:edits "[{\"class\":\"Workflows\",\"match\":\"first\",\"set\":{\"modified\":\"2026-04-03T00:00:00-05:00\"}},{\"class\":\"Roles\",\"id\":\"ntwf-release-manager-role\",\"set\":{\"filledByHumanAgent\":\"ntwf-maria-gonzalez\",\"filledByAIAgent\":\"\",\"filledByAutomatedPipeline\":\"\"}},{\"class\":\"Roles\",\"id\":\"ntwf-risk-analysis-role\",\"set\":{\"filledByHumanAgent\":\"\",\"filledByAIAgent\":\"ntwf-risk-ai\",\"filledByAutomatedPipeline\":\"\"}},{\"class\":\"Roles\",\"id\":\"ntwf-legal-compliance-role\",\"set\":{\"filledByHumanAgent\":\"ntwf-james-okafor\",\"filledByAIAgent\":\"\",\"filledByAutomatedPipeline\":\"\"}},{\"class\":\"Roles\",\"id\":\"ntwf-ci-executor-role\",\"set\":{\"filledByHumanAgent\":\"\",\"filledByAIAgent\":\"\",\"filledByAutomatedPipeline\":\"ntwf-ci-pipeline\"}},{\"class\":\"Roles\",\"id\":\"ntwf-vp-engineering-role\",\"set\":{\"filledByHumanAgent\":\"ntwf-david-chen\",\"filledByAIAgent\":\"\",\"filledByAutomatedPipeline\":\"\"}},{\"class\":\"Roles\",\"id\":\"ntwf-cto-role\",\"set\":{\"filledByHumanAgent\":\"ntwf-sarah-kim\",\"filledByAIAgent\":\"\",\"filledByAutomatedPipeline\":\"\"}},{\"class\":\"Roles\",\"id\":\"ntwf-deployment-health-role\",\"set\":{\"filledByHumanAgent\":\"\",\"filledByAIAgent\":\"ntwf-health-ai\",\"filledByAutomatedPipeline\":\"\"}},{\"class\":\"Workflows\",\"match\":\"first\",\"set\":{\"modified\":\"2023-01-01T00:00:00-06:00\"}}]" .
+    erb:edits "[{\"class\": \"Workflows\", \"match\": \"first\", \"set\": {\"modified\": \"2026-04-03T00:00:00-05:00\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-release-manager-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-maria-gonzalez\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-risk-analysis-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"ntwf-risk-ai\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-legal-compliance-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-james-okafor\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-ci-executor-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"ntwf-ci-pipeline\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-vp-engineering-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-david-chen\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-cto-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-sarah-kim\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-deployment-health-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"ntwf-health-ai\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Workflows\", \"match\": \"first\", \"set\": {\"modified\": \"2023-01-01T00:00:00-06:00\"}}]" .
 
 erb:all-human a erb:Scenarios ;
     erb:scenarioId "all-human" ;
@@ -218,7 +334,7 @@ erb:all-human a erb:Scenarios ;
     erb:explanation "Reassigns every AI agent and pipeline to a human. The AI-step count drops to zero, so the compliance risk can no longer fire — even if the docs are stale. Shows the role→agent indirection: personnel change is one edge, not a rewrite." ;
     erb:sortOrder 2 ;
     erb:isReset false ;
-    erb:edits "[{\"class\":\"Workflows\",\"match\":\"first\",\"set\":{\"modified\":\"2026-04-03T00:00:00-05:00\"}},{\"class\":\"Roles\",\"id\":\"ntwf-release-manager-role\",\"set\":{\"filledByHumanAgent\":\"ntwf-maria-gonzalez\",\"filledByAIAgent\":\"\",\"filledByAutomatedPipeline\":\"\"}},{\"class\":\"Roles\",\"id\":\"ntwf-risk-analysis-role\",\"set\":{\"filledByHumanAgent\":\"\",\"filledByAIAgent\":\"ntwf-risk-ai\",\"filledByAutomatedPipeline\":\"\"}},{\"class\":\"Roles\",\"id\":\"ntwf-legal-compliance-role\",\"set\":{\"filledByHumanAgent\":\"ntwf-james-okafor\",\"filledByAIAgent\":\"\",\"filledByAutomatedPipeline\":\"\"}},{\"class\":\"Roles\",\"id\":\"ntwf-ci-executor-role\",\"set\":{\"filledByHumanAgent\":\"\",\"filledByAIAgent\":\"\",\"filledByAutomatedPipeline\":\"ntwf-ci-pipeline\"}},{\"class\":\"Roles\",\"id\":\"ntwf-vp-engineering-role\",\"set\":{\"filledByHumanAgent\":\"ntwf-david-chen\",\"filledByAIAgent\":\"\",\"filledByAutomatedPipeline\":\"\"}},{\"class\":\"Roles\",\"id\":\"ntwf-cto-role\",\"set\":{\"filledByHumanAgent\":\"ntwf-sarah-kim\",\"filledByAIAgent\":\"\",\"filledByAutomatedPipeline\":\"\"}},{\"class\":\"Roles\",\"id\":\"ntwf-deployment-health-role\",\"set\":{\"filledByHumanAgent\":\"\",\"filledByAIAgent\":\"ntwf-health-ai\",\"filledByAutomatedPipeline\":\"\"}},{\"class\":\"Roles\",\"id\":\"ntwf-risk-analysis-role\",\"set\":{\"filledByHumanAgent\":\"ntwf-david-chen\",\"filledByAIAgent\":\"\",\"filledByAutomatedPipeline\":\"\"}},{\"class\":\"Roles\",\"id\":\"ntwf-deployment-health-role\",\"set\":{\"filledByHumanAgent\":\"ntwf-sarah-kim\",\"filledByAIAgent\":\"\",\"filledByAutomatedPipeline\":\"\"}},{\"class\":\"Roles\",\"id\":\"ntwf-ci-executor-role\",\"set\":{\"filledByHumanAgent\":\"ntwf-james-okafor\",\"filledByAIAgent\":\"\",\"filledByAutomatedPipeline\":\"\"}}]" .
+    erb:edits "[{\"class\": \"Workflows\", \"match\": \"first\", \"set\": {\"modified\": \"2026-04-03T00:00:00-05:00\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-release-manager-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-maria-gonzalez\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-risk-analysis-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"ntwf-risk-ai\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-legal-compliance-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-james-okafor\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-ci-executor-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"ntwf-ci-pipeline\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-vp-engineering-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-david-chen\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-cto-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-sarah-kim\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-deployment-health-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"ntwf-health-ai\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-risk-analysis-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-david-chen\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-deployment-health-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-sarah-kim\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-ci-executor-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-james-okafor\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}]" .
 
 erb:ai-at-gate a erb:Scenarios ;
     erb:scenarioId "ai-at-gate" ;
@@ -227,25 +343,16 @@ erb:ai-at-gate a erb:Scenarios ;
     erb:explanation "Hands the Legal Compliance Reviewer role — whose review step requires human sign-off — to an AI agent. The reasoner's consistency witness fires on that step: a requires-human-approval step is no longer human-filled. The rule break is DERIVED, not hand-checked." ;
     erb:sortOrder 3 ;
     erb:isReset false ;
-    erb:edits "[{\"class\":\"Workflows\",\"match\":\"first\",\"set\":{\"modified\":\"2026-04-03T00:00:00-05:00\"}},{\"class\":\"Roles\",\"id\":\"ntwf-release-manager-role\",\"set\":{\"filledByHumanAgent\":\"ntwf-maria-gonzalez\",\"filledByAIAgent\":\"\",\"filledByAutomatedPipeline\":\"\"}},{\"class\":\"Roles\",\"id\":\"ntwf-risk-analysis-role\",\"set\":{\"filledByHumanAgent\":\"\",\"filledByAIAgent\":\"ntwf-risk-ai\",\"filledByAutomatedPipeline\":\"\"}},{\"class\":\"Roles\",\"id\":\"ntwf-legal-compliance-role\",\"set\":{\"filledByHumanAgent\":\"ntwf-james-okafor\",\"filledByAIAgent\":\"\",\"filledByAutomatedPipeline\":\"\"}},{\"class\":\"Roles\",\"id\":\"ntwf-ci-executor-role\",\"set\":{\"filledByHumanAgent\":\"\",\"filledByAIAgent\":\"\",\"filledByAutomatedPipeline\":\"ntwf-ci-pipeline\"}},{\"class\":\"Roles\",\"id\":\"ntwf-vp-engineering-role\",\"set\":{\"filledByHumanAgent\":\"ntwf-david-chen\",\"filledByAIAgent\":\"\",\"filledByAutomatedPipeline\":\"\"}},{\"class\":\"Roles\",\"id\":\"ntwf-cto-role\",\"set\":{\"filledByHumanAgent\":\"ntwf-sarah-kim\",\"filledByAIAgent\":\"\",\"filledByAutomatedPipeline\":\"\"}},{\"class\":\"Roles\",\"id\":\"ntwf-deployment-health-role\",\"set\":{\"filledByHumanAgent\":\"\",\"filledByAIAgent\":\"ntwf-health-ai\",\"filledByAutomatedPipeline\":\"\"}},{\"class\":\"Roles\",\"id\":\"ntwf-legal-compliance-role\",\"set\":{\"filledByHumanAgent\":\"\",\"filledByAIAgent\":\"ntwf-risk-ai\",\"filledByAutomatedPipeline\":\"\"}}]" .
-
-erb:offhours-gate a erb:Scenarios ;
-    erb:scenarioId "offhours-gate" ;
-    erb:label "Off-hours gate, no second signer" ;
-    erb:icon "🌙" ;
-    erb:explanation "Flags the deployment as off-hours and fills the VP of Engineering role (the Release Manager's delegate) with the CI pipeline instead of a human. The Release Approval Gate requires dual human sign-off during off-hours, but the delegation chain now has only one human along it — so the gate's DualSignoffSatisfied goes false and the workflow trips AT RISK on the gate rule. Fix it two ways: clear the off-hours flag, or put a human back in the VP role (one edge in the org/escalation view). The gate finally has a measurable consequence." ;
-    erb:sortOrder 4 ;
-    erb:isReset false ;
-    erb:edits "[{\"class\":\"Workflows\",\"match\":\"first\",\"set\":{\"modified\":\"2026-04-03T00:00:00-05:00\",\"isOffHoursDeployment\":true}},{\"class\":\"Roles\",\"id\":\"ntwf-release-manager-role\",\"set\":{\"filledByHumanAgent\":\"ntwf-maria-gonzalez\",\"filledByAIAgent\":\"\",\"filledByAutomatedPipeline\":\"\"}},{\"class\":\"Roles\",\"id\":\"ntwf-risk-analysis-role\",\"set\":{\"filledByHumanAgent\":\"\",\"filledByAIAgent\":\"ntwf-risk-ai\",\"filledByAutomatedPipeline\":\"\"}},{\"class\":\"Roles\",\"id\":\"ntwf-legal-compliance-role\",\"set\":{\"filledByHumanAgent\":\"ntwf-james-okafor\",\"filledByAIAgent\":\"\",\"filledByAutomatedPipeline\":\"\"}},{\"class\":\"Roles\",\"id\":\"ntwf-ci-executor-role\",\"set\":{\"filledByHumanAgent\":\"\",\"filledByAIAgent\":\"\",\"filledByAutomatedPipeline\":\"ntwf-ci-pipeline\"}},{\"class\":\"Roles\",\"id\":\"ntwf-vp-engineering-role\",\"set\":{\"filledByHumanAgent\":\"\",\"filledByAIAgent\":\"\",\"filledByAutomatedPipeline\":\"ntwf-ci-pipeline\"}},{\"class\":\"Roles\",\"id\":\"ntwf-cto-role\",\"set\":{\"filledByHumanAgent\":\"ntwf-sarah-kim\",\"filledByAIAgent\":\"\",\"filledByAutomatedPipeline\":\"\"}},{\"class\":\"Roles\",\"id\":\"ntwf-deployment-health-role\",\"set\":{\"filledByHumanAgent\":\"\",\"filledByAIAgent\":\"ntwf-health-ai\",\"filledByAutomatedPipeline\":\"\"}}]" .
+    erb:edits "[{\"class\": \"Workflows\", \"match\": \"first\", \"set\": {\"modified\": \"2026-04-03T00:00:00-05:00\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-release-manager-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-maria-gonzalez\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-risk-analysis-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"ntwf-risk-ai\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-legal-compliance-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-james-okafor\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-ci-executor-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"ntwf-ci-pipeline\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-vp-engineering-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-david-chen\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-cto-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-sarah-kim\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-deployment-health-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"ntwf-health-ai\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-legal-compliance-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"ntwf-risk-ai\", \"filledByAutomatedPipeline\": \"\"}}]" .
 
 erb:reset a erb:Scenarios ;
     erb:scenarioId "reset" ;
     erb:label "Reset to baseline" ;
     erb:icon "↺" ;
-    erb:explanation "Restores the canonical seed assignments, a fresh review date, and on-hours scheduling — the known-good starting point. (The seed plan runs slightly over its 4-hour budget, so the board's baseline verdict is driven by the time-budget rule; trim a step's duration to clear it.)" ;
+    erb:explanation "Restores the canonical seed assignments and a fresh review date — the known-good starting point. Every role is filled by exactly one agent, no requires-human-approval step is AI-filled, and the workflow is within its staleness window, so all the article's clean-ABox witnesses read green." ;
     erb:sortOrder 5 ;
     erb:isReset true ;
-    erb:edits "[{\"class\":\"Workflows\",\"match\":\"first\",\"set\":{\"modified\":\"2026-04-03T00:00:00-05:00\",\"isOffHoursDeployment\":false}},{\"class\":\"Roles\",\"id\":\"ntwf-release-manager-role\",\"set\":{\"filledByHumanAgent\":\"ntwf-maria-gonzalez\",\"filledByAIAgent\":\"\",\"filledByAutomatedPipeline\":\"\"}},{\"class\":\"Roles\",\"id\":\"ntwf-risk-analysis-role\",\"set\":{\"filledByHumanAgent\":\"\",\"filledByAIAgent\":\"ntwf-risk-ai\",\"filledByAutomatedPipeline\":\"\"}},{\"class\":\"Roles\",\"id\":\"ntwf-legal-compliance-role\",\"set\":{\"filledByHumanAgent\":\"ntwf-james-okafor\",\"filledByAIAgent\":\"\",\"filledByAutomatedPipeline\":\"\"}},{\"class\":\"Roles\",\"id\":\"ntwf-ci-executor-role\",\"set\":{\"filledByHumanAgent\":\"\",\"filledByAIAgent\":\"\",\"filledByAutomatedPipeline\":\"ntwf-ci-pipeline\"}},{\"class\":\"Roles\",\"id\":\"ntwf-vp-engineering-role\",\"set\":{\"filledByHumanAgent\":\"ntwf-david-chen\",\"filledByAIAgent\":\"\",\"filledByAutomatedPipeline\":\"\"}},{\"class\":\"Roles\",\"id\":\"ntwf-cto-role\",\"set\":{\"filledByHumanAgent\":\"ntwf-sarah-kim\",\"filledByAIAgent\":\"\",\"filledByAutomatedPipeline\":\"\"}},{\"class\":\"Roles\",\"id\":\"ntwf-deployment-health-role\",\"set\":{\"filledByHumanAgent\":\"\",\"filledByAIAgent\":\"ntwf-health-ai\",\"filledByAutomatedPipeline\":\"\"}}]" .
+    erb:edits "[{\"class\": \"Workflows\", \"match\": \"first\", \"set\": {\"modified\": \"2026-04-03T00:00:00-05:00\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-release-manager-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-maria-gonzalez\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-risk-analysis-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"ntwf-risk-ai\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-legal-compliance-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-james-okafor\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-ci-executor-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"ntwf-ci-pipeline\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-vp-engineering-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-david-chen\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-cto-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-sarah-kim\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-deployment-health-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"ntwf-health-ai\", \"filledByAutomatedPipeline\": \"\"}}]" .
 
 # === Individuals: StepPrecedence ===
 
@@ -269,22 +376,44 @@ erb:prec-4-5 a erb:StepPrecedence ;
     erb:fromStep erb:prod-deploy-step-4 ;
     erb:toStep erb:prod-deploy-step-5 .
 
+# === Individuals: VocabularyReconciliations ===
+
+erb:recon-foaf-name a erb:VocabularyReconciliations ;
+    erb:reconciliationId "recon-foaf-name" ;
+    erb:deprecatedTerm "foaf:name" ;
+    erb:replacementTerm "ntwf:name" ;
+    erb:reconciliationRelation "owl:sameAs" ;
+    erb:sourceStandard "FOAF" ;
+    erb:introducedInVersion "v1.1.0" ;
+    erb:rationale "Part IV worked example: a deprecated FOAF element is re-prefixed into the NTWF namespace; existing data stays valid (URIs do not disappear), and foaf:name owl:sameAs ntwf:name keeps the two interchangeable for reasoners." .
+
+erb:recon-dcat-v3 a erb:VocabularyReconciliations ;
+    erb:reconciliationId "recon-dcat-v3" ;
+    erb:deprecatedTerm "dcat:Dataset (v2)" ;
+    erb:replacementTerm "dcat:Dataset (v3)" ;
+    erb:reconciliationRelation "owl:sameAs" ;
+    erb:sourceStandard "DCAT" ;
+    erb:introducedInVersion "v1.1.0" ;
+    erb:rationale "Part IV external-dependency fact: DCAT went through a major v2 -> v3 revision that introduced new classes and deprecated others. NTWF tracks the alignment so its dcat:Dataset usage stays semantically current; existing data remains valid because URIs do not disappear." .
+
 # === Individuals: WorkflowArtifacts ===
 
 erb:artifact-risk-report a erb:WorkflowArtifacts ;
     erb:artifactId "artifact-risk-report" ;
     erb:title "Risk Assessment Report" ;
     erb:identifier "ART-RISK-001" ;
-    erb:created "2026-04-01T05:00:00.000Z" ;
-    erb:producedByStep erb:prod-deploy-step-1 ;
+    erb:artifactType erb:type-report ;
+    erb:created "2026-04-01T00:00:00-05:00" ;
+    erb:producedByStep erb:prod-deploy-step-2 ;
     erb:attributedToAIAgent erb:ntwf-risk-ai .
 
 erb:artifact-legal-clearance a erb:WorkflowArtifacts ;
     erb:artifactId "artifact-legal-clearance" ;
     erb:title "Legal Clearance Certificate" ;
     erb:identifier "ART-LEGAL-001" ;
-    erb:created "2026-04-02T05:00:00.000Z" ;
-    erb:producedByStep erb:prod-deploy-step-2 ;
+    erb:artifactType erb:type-decision-record ;
+    erb:created "2026-04-02T00:00:00-05:00" ;
+    erb:producedByStep erb:prod-deploy-step-3 ;
     erb:derivedFromArtifact erb:artifact-risk-report ;
     erb:attributedToHumanAgent erb:ntwf-james-okafor .
 
@@ -292,16 +421,18 @@ erb:artifact-release-authorization a erb:WorkflowArtifacts ;
     erb:artifactId "artifact-release-authorization" ;
     erb:title "Release Authorization" ;
     erb:identifier "ART-AUTH-001" ;
-    erb:created "2026-04-02T05:00:00.000Z" ;
+    erb:artifactType erb:type-decision-record ;
+    erb:created "2026-04-02T00:00:00-05:00" ;
     erb:producedByStep erb:prod-deploy-step-3 ;
     erb:derivedFromArtifact erb:artifact-legal-clearance ;
-    erb:attributedToHumanAgent erb:ntwf-sarah-kim .
+    erb:attributedToHumanAgent erb:ntwf-maria-gonzalez .
 
 erb:artifact-deployment-log a erb:WorkflowArtifacts ;
     erb:artifactId "artifact-deployment-log" ;
     erb:title "Deployment Execution Log" ;
     erb:identifier "ART-DEPLOG-001" ;
-    erb:created "2026-04-03T05:00:00.000Z" ;
+    erb:artifactType erb:type-log ;
+    erb:created "2026-04-03T00:00:00-05:00" ;
     erb:producedByStep erb:prod-deploy-step-4 ;
     erb:derivedFromArtifact erb:artifact-release-authorization ;
     erb:attributedToAutomatedPipeline erb:ntwf-ci-pipeline .
@@ -310,7 +441,8 @@ erb:artifact-post-deploy-report a erb:WorkflowArtifacts ;
     erb:artifactId "artifact-post-deploy-report" ;
     erb:title "Post-Deployment Health Report" ;
     erb:identifier "ART-HEALTH-001" ;
-    erb:created "2026-04-03T05:00:00.000Z" ;
+    erb:artifactType erb:type-report ;
+    erb:created "2026-04-03T00:00:00-05:00" ;
     erb:producedByStep erb:prod-deploy-step-5 ;
     erb:derivedFromArtifact erb:artifact-deployment-log ;
     erb:attributedToAIAgent erb:ntwf-health-ai .
@@ -349,25 +481,27 @@ erb:status-archived a erb:WorkflowStatusConcepts ;
 
 erb:prod-deploy-step-3 a erb:WorkflowSteps ;
     erb:workflowStepId "prod-deploy-step-3" ;
-    erb:displayName "Release Approval Gate" ;
+    erb:displayName "Legal Compliance Review & Release Authorization" ;
     erb:workflow erb:production-deployment ;
     erb:sequencePosition 3 ;
-    erb:assignedRole erb:ntwf-release-manager-role ;
-    erb:requiresHumanApproval false ;
-    erb:stepDurationMinutes 30 ;
+    erb:assignedRole erb:ntwf-legal-compliance-role ;
+    erb:requiresHumanApproval true ;
+    erb:stepDurationMinutes 120 ;
     erb:producesArtifacts erb:artifact-release-authorization ;
+    erb:requiresArtifacts erb:artifact-risk-report ;
     erb:approvalGate erb:ntwf-release-approval-gate ;
     erb:precedes erb:prec-3-4 ;
     erb:precededBy erb:prec-2-3 .
 
 erb:prod-deploy-step-2 a erb:WorkflowSteps ;
     erb:workflowStepId "prod-deploy-step-2" ;
-    erb:displayName "Legal Compliance Review" ;
+    erb:displayName "AI Risk Assessment" ;
     erb:workflow erb:production-deployment ;
     erb:sequencePosition 2 ;
-    erb:assignedRole erb:ntwf-legal-compliance-role ;
-    erb:requiresHumanApproval true ;
-    erb:stepDurationMinutes 30 ;
+    erb:assignedRole erb:ntwf-risk-analysis-role ;
+    erb:requiresHumanApproval false ;
+    erb:stepDurationMinutes 15 ;
+    erb:consumesDataset erb:ds-q1-2026-risk-metrics ;
     erb:producesArtifacts erb:artifact-legal-clearance ;
     erb:precedes erb:prec-2-3 ;
     erb:precededBy erb:prec-1-2 .
@@ -385,13 +519,12 @@ erb:prod-deploy-step-5 a erb:WorkflowSteps ;
 
 erb:prod-deploy-step-1 a erb:WorkflowSteps ;
     erb:workflowStepId "prod-deploy-step-1" ;
-    erb:displayName "AI Risk Assessment" ;
+    erb:displayName "Initiate Deployment Request" ;
     erb:workflow erb:production-deployment ;
     erb:sequencePosition 1 ;
-    erb:assignedRole erb:ntwf-risk-analysis-role ;
-    erb:requiresHumanApproval false ;
-    erb:stepDurationMinutes 45 ;
-    erb:consumesDataset erb:ds-q1-2026-risk-metrics ;
+    erb:assignedRole erb:ntwf-release-manager-role ;
+    erb:requiresHumanApproval true ;
+    erb:stepDurationMinutes 30 ;
     erb:producesArtifacts erb:artifact-risk-report ;
     erb:precedes erb:prec-1-2 .
 
@@ -402,8 +535,9 @@ erb:prod-deploy-step-4 a erb:WorkflowSteps ;
     erb:sequencePosition 4 ;
     erb:assignedRole erb:ntwf-ci-executor-role ;
     erb:requiresHumanApproval false ;
-    erb:stepDurationMinutes 60 ;
+    erb:stepDurationMinutes 45 ;
     erb:producesArtifacts erb:artifact-deployment-log ;
+    erb:requiresArtifacts erb:artifact-release-authorization ;
     erb:precedes erb:prec-4-5 ;
     erb:precededBy erb:prec-3-4 .
 
@@ -413,13 +547,11 @@ erb:production-deployment a erb:Workflows ;
     erb:workflowId "production-deployment" ;
     erb:displayName "Production Deployment" ;
     erb:title "Production Deployment Workflow" ;
-    erb:description "The primary NTWF ABox example. A 5-step workflow for deploying software to production at Talisman's Special Solutions. Steps involve an AI Risk Analysis Agent (step 1), a human Legal Compliance Reviewer (step 2), a human Release Manager at the Release Approval Gate (step 3), an automated CI/CD pipeline (step 4), and the Release Manager again for the post-deployment report (step 5). Demonstrates all three agent types, the delegation chain, artifact provenance, and DCAT dataset consumption." ;
+    erb:description "The primary NTWF ABox example. A 5-step workflow for deploying software to production at Talisman's Special Solutions. Steps involve a human Release Manager (step 1), an AI Risk Analysis Agent (step 2), a human Legal Compliance Reviewer at an Approval Gate (step 3), an automated CI/CD pipeline (step 4), and the Release Manager again for the post-deployment report (step 5). Demonstrates all three agent types, the delegation chain, artifact provenance, and DCAT dataset consumption." ;
     erb:identifier "WF-PROD-DEPLOY-001" ;
-    erb:modified "2025-07-11T05:00:00.000Z" ;
-    erb:created "2026-01-10T06:00:00.000Z" ;
-    erb:maxPlanMinutes 240 ;
+    erb:modified "2026-04-03T00:00:00-05:00" ;
+    erb:created "2026-01-10T00:00:00-06:00" ;
     erb:stalenessThresholdMonths 12 ;
-    erb:isOffHoursDeployment false ;
     erb:workflowStatus erb:status-active .
 
 # === Junction-projected base edges (transitive closure seeds) ===

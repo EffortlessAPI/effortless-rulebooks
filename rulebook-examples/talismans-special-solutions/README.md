@@ -6,41 +6,6 @@ This project models the workflow ontology from Jessica Talisman’s *Intentional
 
 ---
 
-## Quick Start (the clone is already built)
-
-**You do not need the `effortless` CLI to run this demo.** The generated substrates are
-committed to the repo — the OWL/SHACL artifacts (`owl/src/ontology.owl`,
-`owl/src/rules.shacl.ttl`, `owl/src/individuals.ttl`) and the Postgres schema + closure
-views (`postgres-bootstrap/*.sql`) are checked in. A fresh clone is runnable as-is:
-
-```bash
-git clone <this repo>
-cd rulebook-examples/talismans-special-solutions
-./start.sh            # Express API on :8088 + Vite dev UI on :5173
-# open http://localhost:5173
-```
-
-`start.sh` installs the Python reasoner deps (`rdflib`/`owlrl`/`pyshacl`) on first run and
-boots both processes. That is the entire runtime.
-
-### Build-time vs. runtime (read this before judging the dependency chain)
-
-These are two different worlds, and the demo only needs the second one to *run*:
-
-| Concern | What it is | When it runs | Needed to run the app? |
-| --- | --- | --- | --- |
-| `effortless build` + the CLI | Regenerates every substrate from the rulebook | Only when you **edit the rulebook** | **No** |
-| The cpln `*.cpln.app` transpiler URLs in `effortless.json` | Hosted **code generators** invoked by `effortless build` | Build only | **No** |
-| The `localhost:4242` ssotme-proxy bus | Local build-time transpiler router | Build only | **No** |
-| Express :8088 + Vite :5173 + local Postgres + in-process Python reasoner | The actual running application | Every request | **Yes** |
-
-So the long list of cpln URLs and the `:4242` bus are the **compiler toolchain**, not the
-deployment topology. The running app talks to a local Postgres and an in-process reasoner —
-nothing remote, nothing version-pinned. You only reach for the CLI when you want to
-*regenerate* the committed artifacts after changing `talismans-special-solutions-rulebook.json`.
-
----
-
 The purpose of this repo is **not** to argue against OWL, RDF, SHACL, SPARQL, triples, or ontology engineering.
 
 It is the opposite.
@@ -104,6 +69,41 @@ test expectations
 ```
 
 this project keeps the meaning in one structural rulebook and derives the rest.
+
+---
+
+## Quick Start (the clone is already built)
+
+**You do not need the `effortless` CLI to run this demo.** The generated substrates are
+committed to the repo — the OWL/SHACL artifacts (`owl/src/ontology.owl`,
+`owl/src/rules.shacl.ttl`, `owl/src/individuals.ttl`) and the Postgres schema + closure
+views (`postgres-bootstrap/*.sql`) are checked in. A fresh clone is runnable as-is:
+
+```bash
+git clone <this repo>
+cd rulebook-examples/talismans-special-solutions
+./start.sh            # Express API on :8088 + Vite dev UI on :5173
+# open http://localhost:5173
+```
+
+`start.sh` installs the Python reasoner deps (`rdflib`/`owlrl`/`pyshacl`) on first run and
+boots both processes. That is the entire runtime.
+
+### Build-time vs. runtime (read this before judging the dependency chain)
+
+These are two different worlds, and the demo only needs the second one to *run*:
+
+| Concern | What it is | When it runs | Needed to run the app? |
+| --- | --- | --- | --- |
+| `effortless build` + the CLI | Regenerates every substrate from the rulebook | Only when you **edit the rulebook** | **No** |
+| The cpln `*.cpln.app` transpiler URLs in `effortless.json` | Hosted **code generators** invoked by `effortless build` | Build only | **No** |
+| The `localhost:4242` ssotme-proxy bus | Local build-time transpiler router | Build only | **No** |
+| Express :8088 + Vite :5173 + local Postgres + in-process Python reasoner | The actual running application | Every request | **Yes** |
+
+So the long list of cpln URLs and the `:4242` bus are the **compiler toolchain**, not the
+deployment topology. The running app talks to a local Postgres and an in-process reasoner —
+nothing remote, nothing version-pinned. You only reach for the CLI when you want to
+*regenerate* the committed artifacts after changing `talismans-special-solutions-rulebook.json`.
 
 ---
 

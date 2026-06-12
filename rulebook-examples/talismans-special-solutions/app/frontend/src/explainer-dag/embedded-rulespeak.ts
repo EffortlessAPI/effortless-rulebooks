@@ -328,91 +328,6 @@ export const rulespeakFields: Record<string, RuleSpeakFieldRule> = {
       ]
     }
   },
-  "Workflows.CountTotalPlanMinutes": {
-    "table": "Workflows",
-    "field": "CountTotalPlanMinutes",
-    "kind": "rollup",
-    "rule": "A workflow\u0027s count total plan minutes is the total step duration minutes across the workflow steps related to the workflow.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "WorkflowSteps",
-        "field": "StepDurationMinutes",
-        "label": "step duration minutes"
-      },
-      {
-        "table": "WorkflowSteps",
-        "field": "Workflow",
-        "label": "workflow"
-      },
-      {
-        "table": "Workflows",
-        "field": "WorkflowId",
-        "label": "workflow ID"
-      }
-    ],
-    "structure": null
-  },
-  "Workflows.IsOverTimeBudget": {
-    "table": "Workflows",
-    "field": "IsOverTimeBudget",
-    "kind": "formula",
-    "rule": "A workflow is considered an over time budget if the count total plan minutes is greater than the max plan minutes.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Workflows",
-        "field": "CountTotalPlanMinutes",
-        "label": "count total plan minutes"
-      },
-      {
-        "table": "Workflows",
-        "field": "MaxPlanMinutes",
-        "label": "max plan minutes"
-      }
-    ],
-    "structure": null
-  },
-  "Workflows.CountUnmetGateSignoffs": {
-    "table": "Workflows",
-    "field": "CountUnmetGateSignoffs",
-    "kind": "rollup",
-    "rule": "A workflow\u0027s count unmet gate signoffs is the number of the workflow\u0027s workflow steps that are gate signoff unmet.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "WorkflowSteps",
-        "field": "Workflow",
-        "label": "workflow"
-      },
-      {
-        "table": "Workflows",
-        "field": "WorkflowId",
-        "label": "workflow ID"
-      },
-      {
-        "table": "WorkflowSteps",
-        "field": "GateSignoffUnmet",
-        "label": "gate signoff unmet"
-      }
-    ],
-    "structure": null
-  },
-  "Workflows.HasUnmetGateSignoff": {
-    "table": "Workflows",
-    "field": "HasUnmetGateSignoff",
-    "kind": "formula",
-    "rule": "A workflow is considered to have an unmet gate signoff if the count unmet gate signoffs is greater than 0.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Workflows",
-        "field": "CountUnmetGateSignoffs",
-        "label": "count unmet gate signoffs"
-      }
-    ],
-    "structure": null
-  },
   "Workflows.CountDerivationLinks": {
     "table": "Workflows",
     "field": "CountDerivationLinks",
@@ -588,6 +503,36 @@ export const rulespeakFields: Record<string, RuleSpeakFieldRule> = {
         "table": "Roles",
         "field": "HasExactlyOneFiller",
         "label": "has exactly one filler"
+      }
+    ],
+    "structure": null
+  },
+  "Workflows.CountAgentTypeChanges": {
+    "table": "Workflows",
+    "field": "CountAgentTypeChanges",
+    "kind": "rollup",
+    "rule": "A workflow\u0027s count agent type changes is the number of role assignments related to the workflow.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "RoleAssignments",
+        "field": "IsAgentTypeChange",
+        "label": "is agent type change"
+      }
+    ],
+    "structure": null
+  },
+  "Workflows.CountComplianceAuditChanges": {
+    "table": "Workflows",
+    "field": "CountComplianceAuditChanges",
+    "kind": "rollup",
+    "rule": "A workflow\u0027s count compliance audit changes is the number of role assignments related to the workflow.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "RoleAssignments",
+        "field": "RequiresComplianceAudit",
+        "label": "requires compliance audit"
       }
     ],
     "structure": null
@@ -959,95 +904,6 @@ export const rulespeakFields: Record<string, RuleSpeakFieldRule> = {
     ],
     "structure": null
   },
-  "WorkflowSteps.IsOffHoursDeployment": {
-    "table": "WorkflowSteps",
-    "field": "IsOffHoursDeployment",
-    "kind": "lookup",
-    "rule": "A workflow step\u0027s is off hours deployment is true when the workflow step\u0027s workflow is off hours deployment.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Workflows",
-        "field": "IsOffHoursDeployment",
-        "label": "is off hours deployment"
-      },
-      {
-        "table": "WorkflowSteps",
-        "field": "Workflow",
-        "label": "workflow"
-      },
-      {
-        "table": "Workflows",
-        "field": "WorkflowId",
-        "label": "workflow ID"
-      }
-    ],
-    "structure": null
-  },
-  "WorkflowSteps.GateDualSignoffSatisfied": {
-    "table": "WorkflowSteps",
-    "field": "GateDualSignoffSatisfied",
-    "kind": "lookup",
-    "rule": "A workflow step\u0027s gate dual signoff satisfied is true when the workflow step\u0027s approval gate is dual signoff satisfied.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "ApprovalGates",
-        "field": "DualSignoffSatisfied",
-        "label": "dual signoff satisfied"
-      },
-      {
-        "table": "WorkflowSteps",
-        "field": "ApprovalGate",
-        "label": "approval gate"
-      },
-      {
-        "table": "ApprovalGates",
-        "field": "ApprovalGateId",
-        "label": "approval gate ID"
-      }
-    ],
-    "structure": null
-  },
-  "WorkflowSteps.GateSignoffUnmet": {
-    "table": "WorkflowSteps",
-    "field": "GateSignoffUnmet",
-    "kind": "formula",
-    "rule": "A workflow step is flagged gate signoff unmet if all of the following hold: the approval gate has a value and it is not the case that the gate dual signoff satisfied flag is set.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "WorkflowSteps",
-        "field": "ApprovalGate",
-        "label": "approval gate"
-      },
-      {
-        "table": "WorkflowSteps",
-        "field": "GateDualSignoffSatisfied",
-        "label": "gate dual signoff satisfied"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "A workflow step is flagged gate signoff unmet if all of the following:",
-      "cases": [],
-      "children": [
-        {
-          "kind": "all",
-          "children": [
-            {
-              "kind": "leaf",
-              "text": "the approval gate has a value"
-            },
-            {
-              "kind": "leaf",
-              "text": "it is not the case that the gate dual signoff satisfied flag is set"
-            }
-          ]
-        }
-      ]
-    }
-  },
   "ApprovalGates.ParentPath": {
     "table": "ApprovalGates",
     "field": "ParentPath",
@@ -1172,171 +1028,6 @@ export const rulespeakFields: Record<string, RuleSpeakFieldRule> = {
       }
     ],
     "structure": null
-  },
-  "ApprovalGates.IsOffHoursDeployment": {
-    "table": "ApprovalGates",
-    "field": "IsOffHoursDeployment",
-    "kind": "lookup",
-    "rule": "An approval gate\u0027s is off hours deployment is true when the approval gate\u0027s workflow step is off hours deployment.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "WorkflowSteps",
-        "field": "IsOffHoursDeployment",
-        "label": "is off hours deployment"
-      },
-      {
-        "table": "ApprovalGates",
-        "field": "WorkflowStep",
-        "label": "workflow step"
-      },
-      {
-        "table": "WorkflowSteps",
-        "field": "WorkflowStepId",
-        "label": "workflow step ID"
-      }
-    ],
-    "structure": null
-  },
-  "ApprovalGates.GateDelegateRole": {
-    "table": "ApprovalGates",
-    "field": "GateDelegateRole",
-    "kind": "lookup",
-    "rule": "An approval gate\u0027s gate delegate role is the delegates to of the approval gate\u0027s gate role.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Roles",
-        "field": "DelegatesTo",
-        "label": "delegates to"
-      },
-      {
-        "table": "ApprovalGates",
-        "field": "GateRole",
-        "label": "gate role"
-      },
-      {
-        "table": "Roles",
-        "field": "RoleId",
-        "label": "role ID"
-      }
-    ],
-    "structure": null
-  },
-  "ApprovalGates.GateDelegateHuman": {
-    "table": "ApprovalGates",
-    "field": "GateDelegateHuman",
-    "kind": "lookup",
-    "rule": "An approval gate\u0027s gate delegate human is the filled by human agent of the approval gate\u0027s gate delegate role.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Roles",
-        "field": "FilledByHumanAgent",
-        "label": "filled by human agent"
-      },
-      {
-        "table": "ApprovalGates",
-        "field": "GateDelegateRole",
-        "label": "gate delegate role"
-      },
-      {
-        "table": "Roles",
-        "field": "RoleId",
-        "label": "role ID"
-      }
-    ],
-    "structure": null
-  },
-  "ApprovalGates.HasTwoHumanApprovers": {
-    "table": "ApprovalGates",
-    "field": "HasTwoHumanApprovers",
-    "kind": "formula",
-    "rule": "An approval gate is considered to have a two human approvers if all of the following hold: the gate approver human has a value and the gate delegate human has a value.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "ApprovalGates",
-        "field": "GateApproverHuman",
-        "label": "gate approver human"
-      },
-      {
-        "table": "ApprovalGates",
-        "field": "GateDelegateHuman",
-        "label": "gate delegate human"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "An approval gate is considered to have a two human approvers if all of the following:",
-      "cases": [],
-      "children": [
-        {
-          "kind": "all",
-          "children": [
-            {
-              "kind": "leaf",
-              "text": "the gate approver human has a value"
-            },
-            {
-              "kind": "leaf",
-              "text": "the gate delegate human has a value"
-            }
-          ]
-        }
-      ]
-    }
-  },
-  "ApprovalGates.DualSignoffSatisfied": {
-    "table": "ApprovalGates",
-    "field": "DualSignoffSatisfied",
-    "kind": "formula",
-    "rule": "An approval gate is flagged dual signoff satisfied if the has two human approvers if all of the following hold: the requires dual signoff off hours flag is set and the is off hours deployment flag is set, otherwise the TRUE.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "ApprovalGates",
-        "field": "RequiresDualSignoffOffHours",
-        "label": "requires dual signoff off hours"
-      },
-      {
-        "table": "ApprovalGates",
-        "field": "IsOffHoursDeployment",
-        "label": "is off hours deployment"
-      },
-      {
-        "table": "ApprovalGates",
-        "field": "HasTwoHumanApprovers",
-        "label": "has two human approvers"
-      }
-    ],
-    "structure": {
-      "kind": "priority",
-      "headline": "The approval gate\u0027s dual signoff satisfied is determined by the following priority:",
-      "cases": [
-        {
-          "value": "the has two human approvers",
-          "when": {
-            "kind": "all",
-            "children": [
-              {
-                "kind": "leaf",
-                "text": "the requires dual signoff off hours flag is set"
-              },
-              {
-                "kind": "leaf",
-                "text": "the is off hours deployment flag is set"
-              }
-            ]
-          }
-        },
-        {
-          "value": "the TRUE",
-          "when": null
-        }
-      ],
-      "children": null
-    }
   },
   "StepPrecedence.ParentPath": {
     "table": "StepPrecedence",
@@ -1559,6 +1250,292 @@ export const rulespeakFields: Record<string, RuleSpeakFieldRule> = {
       "children": null
     }
   },
+  "RoleAssignments.ParentPath": {
+    "table": "RoleAssignments",
+    "field": "ParentPath",
+    "kind": "lookup",
+    "rule": "A role assignment\u0027s parent path is the relative path of the role assignment\u0027s role.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "Roles",
+        "field": "RelativePath",
+        "label": "relative path"
+      },
+      {
+        "table": "RoleAssignments",
+        "field": "Role",
+        "label": "role"
+      },
+      {
+        "table": "Roles",
+        "field": "RoleId",
+        "label": "role ID"
+      }
+    ],
+    "structure": null
+  },
+  "RoleAssignments.RelativePath": {
+    "table": "RoleAssignments",
+    "field": "RelativePath",
+    "kind": "formula",
+    "rule": "A role assignment\u0027s relative path is computed as the parent path, followed by the literal \u201C/assignments/\u201D, followed by the role assignment ID.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "RoleAssignments",
+        "field": "ParentPath",
+        "label": "parent path"
+      },
+      {
+        "table": "RoleAssignments",
+        "field": "RoleAssignmentId",
+        "label": "role assignment ID"
+      }
+    ],
+    "structure": null
+  },
+  "RoleAssignments.Iri": {
+    "table": "RoleAssignments",
+    "field": "Iri",
+    "kind": "formula",
+    "rule": "A role assignment\u0027s iri is computed as the relative path with every a slash replaced by a hyphen.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "RoleAssignments",
+        "field": "RelativePath",
+        "label": "relative path"
+      }
+    ],
+    "structure": null
+  },
+  "RoleAssignments.Name": {
+    "table": "RoleAssignments",
+    "field": "Name",
+    "kind": "formula",
+    "rule": "A role assignment\u0027s name is computed as the role, followed by the literal \u201C [\u201D, followed by the valid from, followed by the literal \u201C -\u003E \u201D, followed by the literal \u201Copen\u201D if the valid to is blank, otherwise the valid to, followed by the literal \u201C]\u201D.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "RoleAssignments",
+        "field": "Role",
+        "label": "role"
+      },
+      {
+        "table": "RoleAssignments",
+        "field": "ValidFrom",
+        "label": "valid from"
+      },
+      {
+        "table": "RoleAssignments",
+        "field": "ValidTo",
+        "label": "valid to"
+      }
+    ],
+    "structure": null
+  },
+  "RoleAssignments.FillerType": {
+    "table": "RoleAssignments",
+    "field": "FillerType",
+    "kind": "formula",
+    "rule": "The role assignment\u0027s filler type is determined by the following priority:\n1. the literal \u201CHumanAgent\u201D, if the filled by human agent has a value;\n2. the literal \u201CAIAgent\u201D, if the filled by AI agent has a value;\n3. the literal \u201CAutomatedPipeline\u201D, if the filled by automated pipeline has a value;\n4. otherwise an empty string.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "RoleAssignments",
+        "field": "FilledByHumanAgent",
+        "label": "filled by human agent"
+      },
+      {
+        "table": "RoleAssignments",
+        "field": "FilledByAIAgent",
+        "label": "filled by AI agent"
+      },
+      {
+        "table": "RoleAssignments",
+        "field": "FilledByAutomatedPipeline",
+        "label": "filled by automated pipeline"
+      }
+    ],
+    "structure": {
+      "kind": "priority",
+      "headline": "The role assignment\u0027s filler type is determined by the following priority:",
+      "cases": [
+        {
+          "value": "the literal \u201CHumanAgent\u201D",
+          "when": {
+            "kind": "leaf",
+            "text": "the filled by human agent has a value"
+          }
+        },
+        {
+          "value": "the literal \u201CAIAgent\u201D",
+          "when": {
+            "kind": "leaf",
+            "text": "the filled by AI agent has a value"
+          }
+        },
+        {
+          "value": "the literal \u201CAutomatedPipeline\u201D",
+          "when": {
+            "kind": "leaf",
+            "text": "the filled by automated pipeline has a value"
+          }
+        },
+        {
+          "value": "an empty string",
+          "when": null
+        }
+      ],
+      "children": null
+    }
+  },
+  "RoleAssignments.IsCurrent": {
+    "table": "RoleAssignments",
+    "field": "IsCurrent",
+    "kind": "formula",
+    "rule": "A role assignment is considered a current if the valid to is blank.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "RoleAssignments",
+        "field": "ValidTo",
+        "label": "valid to"
+      }
+    ],
+    "structure": null
+  },
+  "RoleAssignments.WasActiveAsOfAuditDate": {
+    "table": "RoleAssignments",
+    "field": "WasActiveAsOfAuditDate",
+    "kind": "formula",
+    "rule": "A role assignment is considered to have been active as of audit date if all of the following hold: the valid from is at most the literal \u201C2026-03-01\u201D and at least one of the following holds: the valid to is blank or the valid to is greater than the literal \u201C2026-03-01\u201D.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "RoleAssignments",
+        "field": "ValidFrom",
+        "label": "valid from"
+      },
+      {
+        "table": "RoleAssignments",
+        "field": "ValidTo",
+        "label": "valid to"
+      }
+    ],
+    "structure": {
+      "kind": "priority",
+      "headline": "A role assignment is considered to have been active as of audit date if all of the following:",
+      "cases": [],
+      "children": [
+        {
+          "kind": "all",
+          "children": [
+            {
+              "kind": "leaf",
+              "text": "the valid from is at most the literal \u201C2026-03-01\u201D"
+            },
+            {
+              "kind": "any",
+              "children": [
+                {
+                  "kind": "leaf",
+                  "text": "the valid to is blank"
+                },
+                {
+                  "kind": "leaf",
+                  "text": "the valid to is greater than the literal \u201C2026-03-01\u201D"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "RoleAssignments.IsAgentTypeChange": {
+    "table": "RoleAssignments",
+    "field": "IsAgentTypeChange",
+    "kind": "formula",
+    "rule": "A role assignment is considered an agent type change if all of the following hold: the prior filler type has a value and the prior filler type is not the filler type.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "RoleAssignments",
+        "field": "PriorFillerType",
+        "label": "prior filler type"
+      },
+      {
+        "table": "RoleAssignments",
+        "field": "FillerType",
+        "label": "filler type"
+      }
+    ],
+    "structure": {
+      "kind": "priority",
+      "headline": "A role assignment is considered an agent type change if all of the following:",
+      "cases": [],
+      "children": [
+        {
+          "kind": "all",
+          "children": [
+            {
+              "kind": "leaf",
+              "text": "the prior filler type has a value"
+            },
+            {
+              "kind": "leaf",
+              "text": "the prior filler type is not the filler type"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "RoleAssignments.RequiresComplianceAudit": {
+    "table": "RoleAssignments",
+    "field": "RequiresComplianceAudit",
+    "kind": "formula",
+    "rule": "A role assignment is considered to require compliance audit if all of the following hold: the prior filler type has a value; the prior filler type is the literal \u201CAIAgent\u201D; and the filler type is the literal \u201CHumanAgent\u201D.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "RoleAssignments",
+        "field": "PriorFillerType",
+        "label": "prior filler type"
+      },
+      {
+        "table": "RoleAssignments",
+        "field": "FillerType",
+        "label": "filler type"
+      }
+    ],
+    "structure": {
+      "kind": "priority",
+      "headline": "A role assignment is considered to require compliance audit if all of the following:",
+      "cases": [],
+      "children": [
+        {
+          "kind": "all",
+          "children": [
+            {
+              "kind": "leaf",
+              "text": "the prior filler type has a value"
+            },
+            {
+              "kind": "leaf",
+              "text": "the prior filler type is the literal \u201CAIAgent\u201D"
+            },
+            {
+              "kind": "leaf",
+              "text": "the filler type is the literal \u201CHumanAgent\u201D"
+            }
+          ]
+        }
+      ]
+    }
+  },
   "Departments.RelativePath": {
     "table": "Departments",
     "field": "RelativePath",
@@ -1664,6 +1641,51 @@ export const rulespeakFields: Record<string, RuleSpeakFieldRule> = {
     ],
     "structure": null
   },
+  "AIAgents.CountAttributedArtifacts": {
+    "table": "AIAgents",
+    "field": "CountAttributedArtifacts",
+    "kind": "rollup",
+    "rule": "An AI agent\u0027s count attributed artifacts is the number of workflow artifacts related to the AI agent.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "WorkflowArtifacts",
+        "field": "AttributedToAIAgent",
+        "label": "attributed to AI agent"
+      },
+      {
+        "table": "AIAgents",
+        "field": "AIAgentId",
+        "label": "AI agent ID"
+      }
+    ],
+    "structure": null
+  },
+  "AIAgents.CountImpactedWorkflows": {
+    "table": "AIAgents",
+    "field": "CountImpactedWorkflows",
+    "kind": "rollup",
+    "rule": "An AI agent\u0027s count impacted workflows is the number of the AI agent\u0027s workflow artifacts that have a producing workflow.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "WorkflowArtifacts",
+        "field": "AttributedToAIAgent",
+        "label": "attributed to AI agent"
+      },
+      {
+        "table": "AIAgents",
+        "field": "AIAgentId",
+        "label": "AI agent ID"
+      },
+      {
+        "table": "WorkflowArtifacts",
+        "field": "HasProducingWorkflow",
+        "label": "has producing workflow"
+      }
+    ],
+    "structure": null
+  },
   "AutomatedPipelines.RelativePath": {
     "table": "AutomatedPipelines",
     "field": "RelativePath",
@@ -1724,36 +1746,6 @@ export const rulespeakFields: Record<string, RuleSpeakFieldRule> = {
     ],
     "structure": null
   },
-  "ComplianceVerdictConcepts.RelativePath": {
-    "table": "ComplianceVerdictConcepts",
-    "field": "RelativePath",
-    "kind": "formula",
-    "rule": "A compliance verdict concept\u0027s relative path is computed as the literal \u201Cconcepts/compliance-verdict/\u201D, followed by the concept ID.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "ComplianceVerdictConcepts",
-        "field": "ConceptId",
-        "label": "concept ID"
-      }
-    ],
-    "structure": null
-  },
-  "ComplianceVerdictConcepts.Iri": {
-    "table": "ComplianceVerdictConcepts",
-    "field": "Iri",
-    "kind": "formula",
-    "rule": "A compliance verdict concept\u0027s iri is computed as the relative path with every a slash replaced by a hyphen.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "ComplianceVerdictConcepts",
-        "field": "RelativePath",
-        "label": "relative path"
-      }
-    ],
-    "structure": null
-  },
   "AgentCapabilityConcepts.RelativePath": {
     "table": "AgentCapabilityConcepts",
     "field": "RelativePath",
@@ -1778,6 +1770,36 @@ export const rulespeakFields: Record<string, RuleSpeakFieldRule> = {
     "refs": [
       {
         "table": "AgentCapabilityConcepts",
+        "field": "RelativePath",
+        "label": "relative path"
+      }
+    ],
+    "structure": null
+  },
+  "ArtifactTypeConcepts.RelativePath": {
+    "table": "ArtifactTypeConcepts",
+    "field": "RelativePath",
+    "kind": "formula",
+    "rule": "An artifact type concept\u0027s relative path is computed as the literal \u201Cconcepts/artifact-type/\u201D, followed by the concept ID.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "ArtifactTypeConcepts",
+        "field": "ConceptId",
+        "label": "concept ID"
+      }
+    ],
+    "structure": null
+  },
+  "ArtifactTypeConcepts.Iri": {
+    "table": "ArtifactTypeConcepts",
+    "field": "Iri",
+    "kind": "formula",
+    "rule": "An artifact type concept\u0027s iri is computed as the relative path with every a slash replaced by a hyphen.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "ArtifactTypeConcepts",
         "field": "RelativePath",
         "label": "relative path"
       }
@@ -1970,423 +1992,226 @@ export const rulespeakFields: Record<string, RuleSpeakFieldRule> = {
     ],
     "structure": null
   },
-  "ComplianceVerdicts.ParentPath": {
-    "table": "ComplianceVerdicts",
-    "field": "ParentPath",
-    "kind": "lookup",
-    "rule": "A compliance verdict\u0027s parent path is the relative path of the compliance verdict\u0027s workflow.",
+  "WorkflowArtifacts.HasProducingWorkflow": {
+    "table": "WorkflowArtifacts",
+    "field": "HasProducingWorkflow",
+    "kind": "formula",
+    "rule": "A workflow artifact is considered to have a producing workflow if the produced by workflow has a value.",
     "mechanical": false,
     "refs": [
       {
-        "table": "Workflows",
-        "field": "RelativePath",
-        "label": "relative path"
-      },
-      {
-        "table": "ComplianceVerdicts",
-        "field": "Workflow",
-        "label": "workflow"
-      },
-      {
-        "table": "Workflows",
-        "field": "WorkflowId",
-        "label": "workflow ID"
+        "table": "WorkflowArtifacts",
+        "field": "ProducedByWorkflow",
+        "label": "produced by workflow"
       }
     ],
     "structure": null
   },
-  "ComplianceVerdicts.RelativePath": {
-    "table": "ComplianceVerdicts",
+  "GovernanceRoles.RelativePath": {
+    "table": "GovernanceRoles",
     "field": "RelativePath",
     "kind": "formula",
-    "rule": "A compliance verdict\u0027s relative path is computed as the parent path, followed by the literal \u201C/verdicts/\u201D, followed by the compliance verdict ID.",
+    "rule": "A governance role\u0027s relative path is computed as the literal \u201Cgovernance-roles/\u201D, followed by the governance role ID.",
     "mechanical": false,
     "refs": [
       {
-        "table": "ComplianceVerdicts",
-        "field": "ParentPath",
-        "label": "parent path"
-      },
-      {
-        "table": "ComplianceVerdicts",
-        "field": "ComplianceVerdictId",
-        "label": "compliance verdict ID"
+        "table": "GovernanceRoles",
+        "field": "GovernanceRoleId",
+        "label": "governance role ID"
       }
     ],
     "structure": null
   },
-  "ComplianceVerdicts.Iri": {
-    "table": "ComplianceVerdicts",
+  "GovernanceRoles.Iri": {
+    "table": "GovernanceRoles",
     "field": "Iri",
     "kind": "formula",
-    "rule": "A compliance verdict\u0027s iri is computed as the relative path with every a slash replaced by a hyphen.",
+    "rule": "A governance role\u0027s iri is computed as the relative path with every a slash replaced by a hyphen.",
     "mechanical": false,
     "refs": [
       {
-        "table": "ComplianceVerdicts",
+        "table": "GovernanceRoles",
         "field": "RelativePath",
         "label": "relative path"
       }
     ],
     "structure": null
   },
-  "ComplianceVerdicts.Name": {
-    "table": "ComplianceVerdicts",
+  "GovernanceRoles.Name": {
+    "table": "GovernanceRoles",
     "field": "Name",
     "kind": "formula",
-    "rule": "A compliance verdict\u0027s name is computed as the lower-cased workflow title with every a space replaced by a hyphen.",
+    "rule": "A governance role\u0027s name is computed as the lower-cased display name with every a space replaced by a hyphen.",
     "mechanical": true,
     "refs": [
       {
-        "table": "ComplianceVerdicts",
-        "field": "WorkflowTitle",
-        "label": "workflow title"
+        "table": "GovernanceRoles",
+        "field": "DisplayName",
+        "label": "display name"
       }
     ],
     "structure": null
   },
-  "ComplianceVerdicts.WorkflowTitle": {
-    "table": "ComplianceVerdicts",
-    "field": "WorkflowTitle",
-    "kind": "lookup",
-    "rule": "A compliance verdict\u0027s workflow title is the title of the compliance verdict\u0027s workflow.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Workflows",
-        "field": "Title",
-        "label": "title"
-      },
-      {
-        "table": "ComplianceVerdicts",
-        "field": "Workflow",
-        "label": "workflow"
-      },
-      {
-        "table": "Workflows",
-        "field": "WorkflowId",
-        "label": "workflow ID"
-      }
-    ],
-    "structure": null
-  },
-  "ComplianceVerdicts.MonthsSinceReview": {
-    "table": "ComplianceVerdicts",
-    "field": "MonthsSinceReview",
-    "kind": "lookup",
-    "rule": "A compliance verdict\u0027s months since review is the months since modified of the compliance verdict\u0027s workflow.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Workflows",
-        "field": "MonthsSinceModified",
-        "label": "months since modified"
-      },
-      {
-        "table": "ComplianceVerdicts",
-        "field": "Workflow",
-        "label": "workflow"
-      },
-      {
-        "table": "Workflows",
-        "field": "WorkflowId",
-        "label": "workflow ID"
-      }
-    ],
-    "structure": null
-  },
-  "ComplianceVerdicts.IsStale": {
-    "table": "ComplianceVerdicts",
-    "field": "IsStale",
-    "kind": "lookup",
-    "rule": "A compliance verdict\u0027s is stale is true when the compliance verdict\u0027s workflow is a stale.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Workflows",
-        "field": "IsStale",
-        "label": "is stale"
-      },
-      {
-        "table": "ComplianceVerdicts",
-        "field": "Workflow",
-        "label": "workflow"
-      },
-      {
-        "table": "Workflows",
-        "field": "WorkflowId",
-        "label": "workflow ID"
-      }
-    ],
-    "structure": null
-  },
-  "ComplianceVerdicts.AIStepCount": {
-    "table": "ComplianceVerdicts",
-    "field": "AIStepCount",
-    "kind": "lookup",
-    "rule": "A compliance verdict\u0027s AI step count is the count AI steps of the compliance verdict\u0027s workflow.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Workflows",
-        "field": "CountAISteps",
-        "label": "count AI steps"
-      },
-      {
-        "table": "ComplianceVerdicts",
-        "field": "Workflow",
-        "label": "workflow"
-      },
-      {
-        "table": "Workflows",
-        "field": "WorkflowId",
-        "label": "workflow ID"
-      }
-    ],
-    "structure": null
-  },
-  "ComplianceVerdicts.HasAIExecutedStep": {
-    "table": "ComplianceVerdicts",
-    "field": "HasAIExecutedStep",
-    "kind": "lookup",
-    "rule": "A compliance verdict\u0027s has AI executed step is true when the compliance verdict\u0027s workflow has an AI agent step.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Workflows",
-        "field": "HasAIAgentStep",
-        "label": "has AI agent step"
-      },
-      {
-        "table": "ComplianceVerdicts",
-        "field": "Workflow",
-        "label": "workflow"
-      },
-      {
-        "table": "Workflows",
-        "field": "WorkflowId",
-        "label": "workflow ID"
-      }
-    ],
-    "structure": null
-  },
-  "ComplianceVerdicts.TotalPlanMinutes": {
-    "table": "ComplianceVerdicts",
-    "field": "TotalPlanMinutes",
-    "kind": "lookup",
-    "rule": "A compliance verdict\u0027s total plan minutes is the count total plan minutes of the compliance verdict\u0027s workflow.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Workflows",
-        "field": "CountTotalPlanMinutes",
-        "label": "count total plan minutes"
-      },
-      {
-        "table": "ComplianceVerdicts",
-        "field": "Workflow",
-        "label": "workflow"
-      },
-      {
-        "table": "Workflows",
-        "field": "WorkflowId",
-        "label": "workflow ID"
-      }
-    ],
-    "structure": null
-  },
-  "ComplianceVerdicts.TimeBudgetMinutes": {
-    "table": "ComplianceVerdicts",
-    "field": "TimeBudgetMinutes",
-    "kind": "lookup",
-    "rule": "A compliance verdict\u0027s time budget minutes is the max plan minutes of the compliance verdict\u0027s workflow.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Workflows",
-        "field": "MaxPlanMinutes",
-        "label": "max plan minutes"
-      },
-      {
-        "table": "ComplianceVerdicts",
-        "field": "Workflow",
-        "label": "workflow"
-      },
-      {
-        "table": "Workflows",
-        "field": "WorkflowId",
-        "label": "workflow ID"
-      }
-    ],
-    "structure": null
-  },
-  "ComplianceVerdicts.IsOverTimeBudget": {
-    "table": "ComplianceVerdicts",
-    "field": "IsOverTimeBudget",
-    "kind": "lookup",
-    "rule": "A compliance verdict\u0027s is over time budget is true when the compliance verdict\u0027s workflow is an over time budget.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Workflows",
-        "field": "IsOverTimeBudget",
-        "label": "is over time budget"
-      },
-      {
-        "table": "ComplianceVerdicts",
-        "field": "Workflow",
-        "label": "workflow"
-      },
-      {
-        "table": "Workflows",
-        "field": "WorkflowId",
-        "label": "workflow ID"
-      }
-    ],
-    "structure": null
-  },
-  "ComplianceVerdicts.HasConsistencyViolation": {
-    "table": "ComplianceVerdicts",
-    "field": "HasConsistencyViolation",
-    "kind": "lookup",
-    "rule": "A compliance verdict\u0027s has consistency violation is true when the compliance verdict\u0027s workflow has a consistency violation.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Workflows",
-        "field": "HasConsistencyViolation",
-        "label": "has consistency violation"
-      },
-      {
-        "table": "ComplianceVerdicts",
-        "field": "Workflow",
-        "label": "workflow"
-      },
-      {
-        "table": "Workflows",
-        "field": "WorkflowId",
-        "label": "workflow ID"
-      }
-    ],
-    "structure": null
-  },
-  "ComplianceVerdicts.HasUnmetGateSignoff": {
-    "table": "ComplianceVerdicts",
-    "field": "HasUnmetGateSignoff",
-    "kind": "lookup",
-    "rule": "A compliance verdict\u0027s has unmet gate signoff is true when the compliance verdict\u0027s workflow has an unmet gate signoff.",
-    "mechanical": false,
-    "refs": [
-      {
-        "table": "Workflows",
-        "field": "HasUnmetGateSignoff",
-        "label": "has unmet gate signoff"
-      },
-      {
-        "table": "ComplianceVerdicts",
-        "field": "Workflow",
-        "label": "workflow"
-      },
-      {
-        "table": "Workflows",
-        "field": "WorkflowId",
-        "label": "workflow ID"
-      }
-    ],
-    "structure": null
-  },
-  "ComplianceVerdicts.IsAtComplianceRisk": {
-    "table": "ComplianceVerdicts",
-    "field": "IsAtComplianceRisk",
+  "GovernanceRoles.CanApproveChanges": {
+    "table": "GovernanceRoles",
+    "field": "CanApproveChanges",
     "kind": "formula",
-    "rule": "A compliance verdict is considered at compliance risk if at least one of the following holds: all of the following hold: the is stale flag is set and the has AI executed step flag is set; the is over time budget flag is set; the has consistency violation flag is set; or the has unmet gate signoff flag is set.",
+    "rule": "A governance role is considered able to approve changes if the kind is the literal \u201CAuthority\u201D.",
     "mechanical": false,
     "refs": [
       {
-        "table": "ComplianceVerdicts",
-        "field": "IsStale",
-        "label": "is stale"
+        "table": "GovernanceRoles",
+        "field": "Kind",
+        "label": "kind"
+      }
+    ],
+    "structure": null
+  },
+  "ChangeLog.RelativePath": {
+    "table": "ChangeLog",
+    "field": "RelativePath",
+    "kind": "formula",
+    "rule": "A change log\u0027s relative path is computed as the literal \u201Cchange-log/\u201D, followed by the change log ID.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "ChangeLog",
+        "field": "ChangeLogId",
+        "label": "change log ID"
+      }
+    ],
+    "structure": null
+  },
+  "ChangeLog.Iri": {
+    "table": "ChangeLog",
+    "field": "Iri",
+    "kind": "formula",
+    "rule": "A change log\u0027s iri is computed as the relative path with every a slash replaced by a hyphen.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "ChangeLog",
+        "field": "RelativePath",
+        "label": "relative path"
+      }
+    ],
+    "structure": null
+  },
+  "ChangeLog.Name": {
+    "table": "ChangeLog",
+    "field": "Name",
+    "kind": "formula",
+    "rule": "A change log\u0027s name is computed as the version, followed by the literal \u201C (\u201D, followed by the change date, followed by the literal \u201C)\u201D.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "ChangeLog",
+        "field": "Version",
+        "label": "version"
       },
       {
-        "table": "ComplianceVerdicts",
-        "field": "HasAIExecutedStep",
-        "label": "has AI executed step"
-      },
+        "table": "ChangeLog",
+        "field": "ChangeDate",
+        "label": "change date"
+      }
+    ],
+    "structure": null
+  },
+  "ChangeLog.IsBreakingChange": {
+    "table": "ChangeLog",
+    "field": "IsBreakingChange",
+    "kind": "formula",
+    "rule": "A change log is considered a breaking change if the change kind is the literal \u201Cmajor\u201D.",
+    "mechanical": false,
+    "refs": [
       {
-        "table": "ComplianceVerdicts",
-        "field": "IsOverTimeBudget",
-        "label": "is over time budget"
-      },
+        "table": "ChangeLog",
+        "field": "ChangeKind",
+        "label": "change kind"
+      }
+    ],
+    "structure": null
+  },
+  "ChangeLog.IsBackwardCompatible": {
+    "table": "ChangeLog",
+    "field": "IsBackwardCompatible",
+    "kind": "formula",
+    "rule": "A change log is considered a backward compatible if at least one of the following holds: the change kind is the literal \u201Cpatch\u201D or the change kind is the literal \u201Cminor\u201D.",
+    "mechanical": false,
+    "refs": [
       {
-        "table": "ComplianceVerdicts",
-        "field": "HasConsistencyViolation",
-        "label": "has consistency violation"
-      },
-      {
-        "table": "ComplianceVerdicts",
-        "field": "HasUnmetGateSignoff",
-        "label": "has unmet gate signoff"
+        "table": "ChangeLog",
+        "field": "ChangeKind",
+        "label": "change kind"
       }
     ],
     "structure": {
       "kind": "priority",
-      "headline": "A compliance verdict is considered at compliance risk if all of the following:",
+      "headline": "A change log is considered a backward compatible if all of the following:",
       "cases": [],
       "children": [
         {
           "kind": "any",
           "children": [
             {
-              "kind": "all",
-              "children": [
-                {
-                  "kind": "leaf",
-                  "text": "the is stale flag is set"
-                },
-                {
-                  "kind": "leaf",
-                  "text": "the has AI executed step flag is set"
-                }
-              ]
+              "kind": "leaf",
+              "text": "the change kind is the literal \u201Cpatch\u201D"
             },
             {
               "kind": "leaf",
-              "text": "the is over time budget flag is set"
-            },
-            {
-              "kind": "leaf",
-              "text": "the has consistency violation flag is set"
-            },
-            {
-              "kind": "leaf",
-              "text": "the has unmet gate signoff flag is set"
+              "text": "the change kind is the literal \u201Cminor\u201D"
             }
           ]
         }
       ]
     }
   },
-  "ComplianceVerdicts.Verdict": {
-    "table": "ComplianceVerdicts",
-    "field": "Verdict",
-    "kind": "lookup",
-    "rule": "A compliance verdict\u0027s verdict is the pref label of the compliance verdict\u0027s verdict concept.",
+  "VocabularyReconciliations.RelativePath": {
+    "table": "VocabularyReconciliations",
+    "field": "RelativePath",
+    "kind": "formula",
+    "rule": "A vocabulary reconciliation\u0027s relative path is computed as the literal \u201Creconciliations/\u201D, followed by the reconciliation ID.",
     "mechanical": false,
     "refs": [
       {
-        "table": "ComplianceVerdictConcepts",
-        "field": "PrefLabel",
-        "label": "pref label"
+        "table": "VocabularyReconciliations",
+        "field": "ReconciliationId",
+        "label": "reconciliation ID"
+      }
+    ],
+    "structure": null
+  },
+  "VocabularyReconciliations.Iri": {
+    "table": "VocabularyReconciliations",
+    "field": "Iri",
+    "kind": "formula",
+    "rule": "A vocabulary reconciliation\u0027s iri is computed as the relative path with every a slash replaced by a hyphen.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "VocabularyReconciliations",
+        "field": "RelativePath",
+        "label": "relative path"
+      }
+    ],
+    "structure": null
+  },
+  "VocabularyReconciliations.Name": {
+    "table": "VocabularyReconciliations",
+    "field": "Name",
+    "kind": "formula",
+    "rule": "A vocabulary reconciliation\u0027s name is computed as the deprecated term, followed by the literal \u201C owl:sameAs \u201D, followed by the replacement term.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "VocabularyReconciliations",
+        "field": "DeprecatedTerm",
+        "label": "deprecated term"
       },
       {
-        "table": "ComplianceVerdicts",
-        "field": "VerdictConcept",
-        "label": "verdict concept"
-      },
-      {
-        "table": "ComplianceVerdictConcepts",
-        "field": "ConceptId",
-        "label": "concept ID"
+        "table": "VocabularyReconciliations",
+        "field": "ReplacementTerm",
+        "label": "replacement term"
       }
     ],
     "structure": null
@@ -2447,23 +2272,24 @@ export const rulespeakStructural: Record<string, string[]> = {
     "A step precedence **must** reference exactly one workflow step as its from step.",
     "A step precedence **must** reference exactly one workflow step as its to step."
   ],
+  "RoleAssignments": [
+    "A role assignment **must** reference exactly one role.",
+    "A role assignment **must** have a valid from."
+  ],
   "WorkflowStatusConcepts": [
     "A workflow status concept **must** have a pref label."
   ],
-  "ComplianceVerdictConcepts": [
-    "A compliance verdict concept **must** have a pref label."
-  ],
   "AgentCapabilityConcepts": [
     "An agent capability concept **must** have a pref label."
+  ],
+  "ArtifactTypeConcepts": [
+    "An artifact type concept **must** have a pref label."
   ],
   "Datasets": [
     "A dataset **must** have a title."
   ],
   "WorkflowArtifacts": [
     "A workflow artifact **must** have a title."
-  ],
-  "ComplianceVerdicts": [
-    "A compliance verdict **must** reference exactly one workflow."
   ],
   "Scenarios": [
     "A scenario **must** have a label and an edits."
