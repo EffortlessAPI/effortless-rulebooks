@@ -27,10 +27,25 @@ API_PORT="${PORT:-8088}"
 WEB_PORT="${WEB_PORT:-5173}"
 
 # --- preflight: the reasoner needs the generated ontology -------------------
+# These artifacts are COMMITTED, so a fresh clone already has them and this block
+# never fires. It only triggers if someone deleted the generated owl/src/*.ttl —
+# in which case the fix is a rebuild, and we make that recovery one copy/paste,
+# not a dead end.
 for f in ontology.owl rules.shacl.ttl; do
   if [ ! -f "$PROJECT_ROOT/owl/src/$f" ]; then
     echo "ERROR: missing $PROJECT_ROOT/owl/src/$f" >&2
-    echo "Run 'effortless build' in $PROJECT_ROOT first — the .ttl IS the computation engine." >&2
+    echo "These files are normally committed; a clean clone has them. To regenerate:" >&2
+    echo "" >&2
+    if command -v effortless >/dev/null 2>&1; then
+      echo "    cd \"$PROJECT_ROOT\" && effortless build" >&2
+    else
+      echo "  The 'effortless' CLI is not installed. Install it, then rebuild:" >&2
+      echo "    npm install -g ssotme        # ships 'effortless'/'ssotme'/'aic' bins" >&2
+      echo "    cd \"$PROJECT_ROOT\" && effortless build" >&2
+      echo "" >&2
+      echo "  (Or just restore the committed artifacts — no CLI needed:" >&2
+      echo "    git checkout -- owl/src/ )" >&2
+    fi
     exit 1
   fi
 done

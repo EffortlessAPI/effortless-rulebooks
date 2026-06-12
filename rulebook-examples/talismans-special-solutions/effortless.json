@@ -30,7 +30,7 @@
       "LastVersionUsed": "v2026.06.07.1721",
       "LastUrl": "https://effortless-rulebook-to-postgres-v2026-06-07-1721-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
       "_LocalDevUrl": "http://localhost:30038",
-      "_ClosureRiskNote": "Switched from the local dev tool (:30038) to the latest published cpln version. The local :30038 build is the one CONFIRMED to emit the transitive-closure views (vw_step_precedence_closure, vw_roles_closure) this demo depends on. If a build against this online URL produces no closure views, the published version lacks the feature — re-point CommandLine at _LocalDevUrl (boot that tool on :30038 via its own start.sh) until a closure-enabled version is published.",
+      "_ClosureRiskNote": "RESOLVED for this build: the published cpln version v2026.06.07.1721 DOES emit the transitive-closure views — postgres-bootstrap/03-create-views.sql (committed) contains both vw_step_precedence_closure and vw_roles_closure as WITH RECURSIVE views with is_inferred/hop_distance columns. The committed SQL is what the demo runs against, so closure is present out of the box. Historical context / future fallback: if a FUTURE rebuild against a newer online URL produces no closure views, that version regressed the feature — re-point CommandLine at _LocalDevUrl (boot that tool on :30038 via its own start.sh) until a closure-enabled version is republished.",
       "Description": "Generate Postgres schema + seed data from the rulebook"
     },
     {
@@ -54,7 +54,7 @@
       "RelativePath": "/postgres-bootstrap",
       "CommandLine": "http://localhost:4242/postgres-calculated-to-rulebook -i ../effortless-rulebook/talismans-special-solutions-rulebook.json",
       "IsDisabled": true,
-      "_IsDisabledNote": "TEMPORARILY DISABLED during closure-feature verification: this reverse spoke wrote stale step DATA back into the sacred rulebook from a prod-built DB, clobbering the curated 6-step re-curation. Re-enable once the closure-enabled tool is published and the DB is rebuilt cleanly from it.",
+      "_IsDisabledNote": "INTENTIONALLY DISABLED guardrail. This reverse spoke refreshes derived-field DISPLAY copies in the rulebook from Postgres views. It is kept off because an earlier run wrote stale step DATA back into the sacred rulebook from a prod-built DB and overwrote a curated re-curation of the workflow steps. Keep IsDisabled:true until the spoke is verified to write derived/display fields ONLY (never raw step data) AND the DB has been rebuilt cleanly from a closure-enabled tool. The shipped model is the 5-step Production Deployment Workflow (see README).",
       "Description": "Reverse spoke: refresh rulebook derived-field display copies from Postgres views after the destructive rebuild (raws verified, never written)."
     },
     {
