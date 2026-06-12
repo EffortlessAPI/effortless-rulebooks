@@ -124,6 +124,63 @@ This:
 
 All substrates should produce identical results.
 
+## Regenerating the answer key (Postgres is the oracle)
+
+**The answer key is computed by a substrate, never re-derived in Python.** The
+conformance answer key lives in `testing/answer-keys/*.json` and is read from the
+rulebook's stored computed values. Those values come from **Postgres** — the
+reference substrate with no expressivity gaps — and are written back into the
+rulebook. When you change a formula, a raw seed value, or add a calc/lookup/
+aggregation field, the stored computed values (and therefore the answer key) go
+stale until you refresh them.
+
+**Refresh them with one command:**
+
+```bash
+cd postgres-bootstrap
+bash regenerate-answer-keys.sh
+```
+
+This is self-contained and safe to run anytime against the current rulebook. It:
+
+1. Spins up an **ephemeral throwaway database** (`erb_<domain>_keygen_<pid>`),
+   leaving the dev DB `erb_talismans_special_solutions` untouched.
+2. Builds the schema + `vw_*` views into it (`init-db.sh`) — Postgres computes
+   every calc / lookup / aggregation / closure value.
+3. Exports `SELECT * FROM vw_<entity>` for every entity (`pull-from-postgres.sh`
+   — it queries the **views**, not base tables, so the export carries the
+   computed columns).
+4. Writes the **whole view row** (raws + computed) back into the rulebook's
+   `data[]` arrays, via the `postgres-calculated-to-rulebook` tool run with
+   `ERB_WRITE_COMPUTED=true`. (Its default mode syncs raws only; the flag is
+   what makes it adopt computed values — the whole point of the refresh.)
+5. Regenerates `testing/answer-keys/*.json` from the now-fresh rulebook.
+6. Drops the temp DB.
+
+**The `effortless build -id` path:** `-id` means "include disabled". The
+`postgres-calculated-to-rulebook` transpiler is `IsDisabled: true` in
+`effortless.json` so a routine build never silently rewrites the rulebook.
+Running `effortless build -id` from `postgres-bootstrap/` runs it (against the
+dev DB). `regenerate-answer-keys.sh` is the preferred path because it is
+hermetic (temp DB) and drives the full cycle including step 5.
+
+**Doctrine (why it works this way):**
+
+- The **view IS the contract** (see repo `CLAUDE.md`). `vw_<entity>` already has
+  every computed column populated by the SQL the transpiler emitted from the
+  formulas. Refreshing the answer key = reading the view, not re-running a
+  formula engine.
+- The Python formula engine in `orchestration/` is a **cross-check that warns**,
+  never an oracle that fails the build. If it can't evaluate a formula (an
+  unimplemented function, or a time-dependent `NOW()` it can't reproduce against
+  the substrate's clock), it keeps the Postgres-adopted value and notes drift —
+  it does not overwrite or hard-fail. A genuinely *missing* value (no substrate
+  answer at all) still raises, so no silent blanks.
+- The refresh **only changes computed values** in the rulebook. Raws, formulas,
+  and schema are never touched. `regenerate-answer-keys.sh` refuses to run if the
+  rulebook already has uncommitted changes, so the resulting diff is always
+  attributable.
+
 ## Key Files
 
 | File | Purpose |

@@ -1,0 +1,10 @@
+[
+  {
+    "automated_pipeline_id": "ntwf-ci-pipeline",
+    "name": "CI/CD Deploy Pipeline",
+    "description": "Automated build, test, and deployment pipeline for production releases. Deterministic execution \u2014 no probabilistic output.",
+    "display_name": "CI/CD Deploy Pipeline",
+    "relative_path": "automated-pipelines/ntwf-ci-pipeline",
+    "iri": "automated-pipelines-ntwf-ci-pipeline"
+  }
+]

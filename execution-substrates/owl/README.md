@@ -133,9 +133,20 @@ def main():
 
 To ensure deterministic output:
 - Sort all triples by subject, predicate, object before serialization
-- Use consistent URI generation: `erb:{table}_{row_index}`
+- Mint each individual's IRI from its PRIMARY KEY: `effortless-ntwf:{pk}`
+  (e.g. `effortless-ntwf:prod-deploy-step-3`), NOT a positional row index.
+  The PK is the identity; FKs resolve to the target's PK-keyed IRI, so edges
+  link named individuals rather than carrying string literals.
 - Use canonical Turtle serialization
 - Seed any randomness (though none should be needed)
+
+> **Namespace.** The whole graph lives in one namespace, prefix
+> `effortless-ntwf:` → `<https://w3id.org/effortless-ntwf#>`. The vocabulary is
+> Jessica Talisman's NTWF (the rulebook's PK slugs are already `ntwf-*` /
+> `prod-deploy-*`); the `effortless-ntwf:` prefix is honest that this is the
+> Effortless rendering minted from the rulebook PKs. If the article's canonical
+> NTWF base IRI becomes known, it is a one-line change to `ONT_NS` in
+> `inject-into-owl.py`.
 
 ## Implementation Plan
 
@@ -178,13 +189,17 @@ def generate_tbox(rulebook):
 def generate_abox(rulebook):
     """Generate individuals from rulebook data."""
     for table_name, table_def in rulebook.items():
-        for i, row in enumerate(table_def["data"]):
-            uri = f"erb:{table_name}_{i}"
+        pk_field = primary_key_of(table_def["schema"])  # first raw column
+        for row in table_def["data"]:
+            pk = row[pk_field]                            # the identity
+            uri = f"effortless-ntwf:{slugify(pk)}"        # PK-keyed, not positional
             emit_individual(uri, table_name)
 
             for column in table_def["schema"]:
                 if not column.get("formula"):  # Only raw data
                     value = row.get(column["name"])
+                    # A relationship column emits an OBJECT-property edge to the
+                    # target's PK-keyed IRI (effortless-ntwf:{fk}), not a literal.
                     emit_property_value(uri, column["name"], value)
 ```
 
@@ -296,7 +311,7 @@ def main():
 def extract_computed_values(graph, rulebook):
     """Extract all property values from inferred graph."""
     records = []
-    erb = Namespace("http://example.org/erb#")
+    ntwf = Namespace("https://w3id.org/effortless-ntwf#")
 
     for table_name, table_def in rulebook.items():
         for i, row in enumerate(table_def.get("data", [])):

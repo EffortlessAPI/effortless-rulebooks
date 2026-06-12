@@ -312,7 +312,31 @@
         "Created": "2026-01-10T00:00:00-06:00",
         "StalenessThresholdMonths": 12,
         "WorkflowStatus": "status-active",
-        "WorkflowSteps": ""
+        "WorkflowSteps": "",
+        "RelativePath": "workflows/production-deployment",
+        "Iri": "workflows-production-deployment",
+        "Name": "production-deployment",
+        "CountOfNonProposedSteps": 5,
+        "HasMoreThan1Step": true,
+        "CountAISteps": 2,
+        "CountHumanSteps": 2,
+        "CountHumanRequiredSteps": 2,
+        "CountApprovalConsistencyViolations": 0,
+        "HasConsistencyViolation": false,
+        "HasAIAgentStep": true,
+        "MonthsSinceModified": 2,
+        "IsStale": false,
+        "IsStaleAndHasAIAgent": false,
+        "CountDerivationLinks": 4,
+        "CountLegalOwnedSteps": 1,
+        "CountEngineeringOwnedSteps": 4,
+        "InvolvesEngineeringAndLegal": true,
+        "CountInferredPrecedencePairs": 6,
+        "CountAssertedPrecedencePairs": 4,
+        "CountOfPrecedenceClosurePairs": 10,
+        "CountRolesWithBadFillerCardinality": 0,
+        "CountAgentTypeChanges": 2,
+        "CountComplianceAuditChanges": 1
       }
     ]
   },
@@ -565,7 +589,22 @@
         "ApprovalGate": "ntwf-release-approval-gate",
         "Precedes": "prec-3-4",
         "PrecededBy": "prec-2-3",
-        "RequiresArtifacts": "artifact-legal-clearance"
+        "RequiresArtifacts": "artifact-legal-clearance",
+        "ParentPath": "workflows/production-deployment",
+        "RelativePath": "workflows/production-deployment/steps/prod-deploy-step-3",
+        "Iri": "workflows-production-deployment-steps-prod-deploy-step-3",
+        "Name": "release-approval-gate",
+        "ExecutingHumanAgent": "ntwf-maria-gonzalez",
+        "ExecutingAIAgent": "",
+        "ExecutingAutomatedPipeline": "",
+        "ExecutingAgentType": "HumanAgent",
+        "IsExecutedByAI": false,
+        "IsExecutedByHuman": true,
+        "ApprovalConsistencyViolation": false,
+        "ApprovalIsHumanFilled": true,
+        "OwningDepartment": "ntwf-engineering",
+        "IsLegalOwned": false,
+        "IsEngineeringOwned": true
       },
       {
         "WorkflowStepId": "prod-deploy-step-2",
@@ -580,7 +619,22 @@
         "ApprovalGate": "",
         "Precedes": "prec-2-3",
         "PrecededBy": "prec-1-2",
-        "RequiresArtifacts": "artifact-risk-report"
+        "RequiresArtifacts": "artifact-risk-report",
+        "ParentPath": "workflows/production-deployment",
+        "RelativePath": "workflows/production-deployment/steps/prod-deploy-step-2",
+        "Iri": "workflows-production-deployment-steps-prod-deploy-step-2",
+        "Name": "legal-compliance-review",
+        "ExecutingHumanAgent": "ntwf-james-okafor",
+        "ExecutingAIAgent": "",
+        "ExecutingAutomatedPipeline": "",
+        "ExecutingAgentType": "HumanAgent",
+        "IsExecutedByAI": false,
+        "IsExecutedByHuman": true,
+        "ApprovalConsistencyViolation": false,
+        "ApprovalIsHumanFilled": true,
+        "OwningDepartment": "ntwf-legal-dept",
+        "IsLegalOwned": true,
+        "IsEngineeringOwned": false
       },
       {
         "WorkflowStepId": "prod-deploy-step-5",
@@ -595,7 +649,22 @@
         "ApprovalGate": "",
         "Precedes": "",
         "PrecededBy": "prec-4-5",
-        "RequiresArtifacts": ""
+        "RequiresArtifacts": "",
+        "ParentPath": "workflows/production-deployment",
+        "RelativePath": "workflows/production-deployment/steps/prod-deploy-step-5",
+        "Iri": "workflows-production-deployment-steps-prod-deploy-step-5",
+        "Name": "post-deployment-health-check-&-report",
+        "ExecutingHumanAgent": "",
+        "ExecutingAIAgent": "ntwf-health-ai",
+        "ExecutingAutomatedPipeline": "",
+        "ExecutingAgentType": "AIAgent",
+        "IsExecutedByAI": true,
+        "IsExecutedByHuman": false,
+        "ApprovalConsistencyViolation": false,
+        "ApprovalIsHumanFilled": true,
+        "OwningDepartment": "ntwf-engineering",
+        "IsLegalOwned": false,
+        "IsEngineeringOwned": true
       },
       {
         "WorkflowStepId": "prod-deploy-step-1",
@@ -610,7 +679,22 @@
         "ApprovalGate": "",
         "Precedes": "prec-1-2",
         "PrecededBy": "",
-        "RequiresArtifacts": ""
+        "RequiresArtifacts": "",
+        "ParentPath": "workflows/production-deployment",
+        "RelativePath": "workflows/production-deployment/steps/prod-deploy-step-1",
+        "Iri": "workflows-production-deployment-steps-prod-deploy-step-1",
+        "Name": "ai-risk-assessment",
+        "ExecutingHumanAgent": "",
+        "ExecutingAIAgent": "ntwf-risk-ai",
+        "ExecutingAutomatedPipeline": "",
+        "ExecutingAgentType": "AIAgent",
+        "IsExecutedByAI": true,
+        "IsExecutedByHuman": false,
+        "ApprovalConsistencyViolation": false,
+        "ApprovalIsHumanFilled": true,
+        "OwningDepartment": "ntwf-engineering",
+        "IsLegalOwned": false,
+        "IsEngineeringOwned": true
       },
       {
         "WorkflowStepId": "prod-deploy-step-4",
@@ -625,7 +709,22 @@
         "ApprovalGate": "",
         "Precedes": "prec-4-5",
         "PrecededBy": "prec-3-4",
-        "RequiresArtifacts": "artifact-release-authorization"
+        "RequiresArtifacts": "artifact-release-authorization",
+        "ParentPath": "workflows/production-deployment",
+        "RelativePath": "workflows/production-deployment/steps/prod-deploy-step-4",
+        "Iri": "workflows-production-deployment-steps-prod-deploy-step-4",
+        "Name": "automated-deployment-execution",
+        "ExecutingHumanAgent": "",
+        "ExecutingAIAgent": "",
+        "ExecutingAutomatedPipeline": "ntwf-ci-pipeline",
+        "ExecutingAgentType": "AutomatedPipeline",
+        "IsExecutedByAI": false,
+        "IsExecutedByHuman": false,
+        "ApprovalConsistencyViolation": false,
+        "ApprovalIsHumanFilled": true,
+        "OwningDepartment": "ntwf-engineering",
+        "IsLegalOwned": false,
+        "IsEngineeringOwned": true
       }
     ]
   },
@@ -715,7 +814,13 @@
         "ApprovalGateId": "ntwf-release-approval-gate",
         "DisplayName": "Release Approval Gate",
         "WorkflowStep": "prod-deploy-step-3",
-        "EscalationThresholdHours": 4
+        "EscalationThresholdHours": 4,
+        "ParentPath": "workflows/production-deployment/steps/prod-deploy-step-3",
+        "RelativePath": "workflows/production-deployment/steps/prod-deploy-step-3/approval-gates/ntwf-release-approval-gate",
+        "Iri": "workflows-production-deployment-steps-prod-deploy-step-3-approval-gates-ntwf-release-approval-gate",
+        "Name": "release-approval-gate",
+        "GateRole": "ntwf-release-manager-role",
+        "GateApproverHuman": "ntwf-maria-gonzalez"
       }
     ]
   },
@@ -794,22 +899,38 @@
       {
         "StepPrecedenceId": "prec-1-2",
         "FromStep": "prod-deploy-step-1",
-        "ToStep": "prod-deploy-step-2"
+        "ToStep": "prod-deploy-step-2",
+        "ParentPath": "workflows/production-deployment/steps/prod-deploy-step-1",
+        "RelativePath": "workflows/production-deployment/steps/prod-deploy-step-1/precedence/prec-1-2",
+        "Iri": "workflows-production-deployment-steps-prod-deploy-step-1-precedence-prec-1-2",
+        "Name": "prod-deploy-step-1 -> prod-deploy-step-2"
       },
       {
         "StepPrecedenceId": "prec-2-3",
         "FromStep": "prod-deploy-step-2",
-        "ToStep": "prod-deploy-step-3"
+        "ToStep": "prod-deploy-step-3",
+        "ParentPath": "workflows/production-deployment/steps/prod-deploy-step-2",
+        "RelativePath": "workflows/production-deployment/steps/prod-deploy-step-2/precedence/prec-2-3",
+        "Iri": "workflows-production-deployment-steps-prod-deploy-step-2-precedence-prec-2-3",
+        "Name": "prod-deploy-step-2 -> prod-deploy-step-3"
       },
       {
         "StepPrecedenceId": "prec-3-4",
         "FromStep": "prod-deploy-step-3",
-        "ToStep": "prod-deploy-step-4"
+        "ToStep": "prod-deploy-step-4",
+        "ParentPath": "workflows/production-deployment/steps/prod-deploy-step-3",
+        "RelativePath": "workflows/production-deployment/steps/prod-deploy-step-3/precedence/prec-3-4",
+        "Iri": "workflows-production-deployment-steps-prod-deploy-step-3-precedence-prec-3-4",
+        "Name": "prod-deploy-step-3 -> prod-deploy-step-4"
       },
       {
         "StepPrecedenceId": "prec-4-5",
         "FromStep": "prod-deploy-step-4",
-        "ToStep": "prod-deploy-step-5"
+        "ToStep": "prod-deploy-step-5",
+        "ParentPath": "workflows/production-deployment/steps/prod-deploy-step-4",
+        "RelativePath": "workflows/production-deployment/steps/prod-deploy-step-4/precedence/prec-4-5",
+        "Iri": "workflows-production-deployment-steps-prod-deploy-step-4-precedence-prec-4-5",
+        "Name": "prod-deploy-step-4 -> prod-deploy-step-5"
       }
     ]
   },
@@ -987,7 +1108,13 @@
         "OwnedBy": "ntwf-engineering",
         "DelegatesTo": "",
         "WorkflowSteps": "prod-deploy-step-4",
-        "FromDelegatesTo": ""
+        "FromDelegatesTo": "",
+        "RelativePath": "roles/ntwf-ci-executor-role",
+        "Iri": "roles-ntwf-ci-executor-role",
+        "Name": "ci/cd-executor",
+        "FilledByArmCount": 1,
+        "HasExactlyOneFiller": true,
+        "FillerType": "AutomatedPipeline"
       },
       {
         "RoleId": "ntwf-cto-role",
@@ -1001,7 +1128,13 @@
         "OwnedBy": "ntwf-engineering",
         "DelegatesTo": "",
         "WorkflowSteps": "",
-        "FromDelegatesTo": "ntwf-vp-engineering-role"
+        "FromDelegatesTo": "ntwf-vp-engineering-role",
+        "RelativePath": "roles/ntwf-cto-role",
+        "Iri": "roles-ntwf-cto-role",
+        "Name": "chief-technology-officer",
+        "FilledByArmCount": 1,
+        "HasExactlyOneFiller": true,
+        "FillerType": "HumanAgent"
       },
       {
         "RoleId": "ntwf-deployment-health-role",
@@ -1015,7 +1148,13 @@
         "OwnedBy": "ntwf-engineering",
         "DelegatesTo": "",
         "WorkflowSteps": "prod-deploy-step-5",
-        "FromDelegatesTo": ""
+        "FromDelegatesTo": "",
+        "RelativePath": "roles/ntwf-deployment-health-role",
+        "Iri": "roles-ntwf-deployment-health-role",
+        "Name": "deployment-health-agent",
+        "FilledByArmCount": 1,
+        "HasExactlyOneFiller": true,
+        "FillerType": "AIAgent"
       },
       {
         "RoleId": "ntwf-vp-engineering-role",
@@ -1029,7 +1168,13 @@
         "OwnedBy": "ntwf-engineering",
         "DelegatesTo": "ntwf-cto-role",
         "WorkflowSteps": "",
-        "FromDelegatesTo": "ntwf-release-manager-role"
+        "FromDelegatesTo": "ntwf-release-manager-role",
+        "RelativePath": "roles/ntwf-vp-engineering-role",
+        "Iri": "roles-ntwf-vp-engineering-role",
+        "Name": "vp-of-engineering",
+        "FilledByArmCount": 1,
+        "HasExactlyOneFiller": true,
+        "FillerType": "HumanAgent"
       },
       {
         "RoleId": "ntwf-risk-analysis-role",
@@ -1043,7 +1188,13 @@
         "OwnedBy": "ntwf-engineering",
         "DelegatesTo": "",
         "WorkflowSteps": "prod-deploy-step-1",
-        "FromDelegatesTo": ""
+        "FromDelegatesTo": "",
+        "RelativePath": "roles/ntwf-risk-analysis-role",
+        "Iri": "roles-ntwf-risk-analysis-role",
+        "Name": "risk-analysis-agent",
+        "FilledByArmCount": 1,
+        "HasExactlyOneFiller": true,
+        "FillerType": "AIAgent"
       },
       {
         "RoleId": "ntwf-legal-compliance-role",
@@ -1057,7 +1208,13 @@
         "OwnedBy": "ntwf-legal-dept",
         "DelegatesTo": "",
         "WorkflowSteps": "prod-deploy-step-2",
-        "FromDelegatesTo": ""
+        "FromDelegatesTo": "",
+        "RelativePath": "roles/ntwf-legal-compliance-role",
+        "Iri": "roles-ntwf-legal-compliance-role",
+        "Name": "legal-compliance-reviewer",
+        "FilledByArmCount": 1,
+        "HasExactlyOneFiller": true,
+        "FillerType": "HumanAgent"
       },
       {
         "RoleId": "ntwf-release-manager-role",
@@ -1071,7 +1228,13 @@
         "OwnedBy": "ntwf-engineering",
         "DelegatesTo": "ntwf-vp-engineering-role",
         "WorkflowSteps": "prod-deploy-step-3",
-        "FromDelegatesTo": ""
+        "FromDelegatesTo": "",
+        "RelativePath": "roles/ntwf-release-manager-role",
+        "Iri": "roles-ntwf-release-manager-role",
+        "Name": "release-manager",
+        "FilledByArmCount": 1,
+        "HasExactlyOneFiller": true,
+        "FillerType": "HumanAgent"
       }
     ]
   },
@@ -1232,9 +1395,18 @@
         "FilledByAIAgent": "",
         "FilledByAutomatedPipeline": "",
         "ValidFrom": "2026-01-10",
-        "ValidTo": "",
+        "ValidTo": null,
         "Reason": "initial assignment",
-        "PriorFillerType": ""
+        "PriorFillerType": "",
+        "ParentPath": "roles/ntwf-release-manager-role",
+        "RelativePath": "roles/ntwf-release-manager-role/assignments/asn-release-manager-maria",
+        "Iri": "roles-ntwf-release-manager-role-assignments-asn-release-manager-maria",
+        "Name": "ntwf-release-manager-role [2026-01-10 00:00:00-06 -> open]",
+        "FillerType": "HumanAgent",
+        "IsCurrent": true,
+        "WasActiveAsOfAuditDate": true,
+        "IsAgentTypeChange": false,
+        "RequiresComplianceAudit": false
       },
       {
         "RoleAssignmentId": "asn-vp-eng-priya",
@@ -1245,7 +1417,16 @@
         "ValidFrom": "2026-01-10",
         "ValidTo": "2026-03-15",
         "Reason": "initial assignment",
-        "PriorFillerType": ""
+        "PriorFillerType": "",
+        "ParentPath": "roles/ntwf-vp-engineering-role",
+        "RelativePath": "roles/ntwf-vp-engineering-role/assignments/asn-vp-eng-priya",
+        "Iri": "roles-ntwf-vp-engineering-role-assignments-asn-vp-eng-priya",
+        "Name": "ntwf-vp-engineering-role [2026-01-10 00:00:00-06 -> 2026-03-15 00:00:00-05]",
+        "FillerType": "HumanAgent",
+        "IsCurrent": false,
+        "WasActiveAsOfAuditDate": true,
+        "IsAgentTypeChange": false,
+        "RequiresComplianceAudit": false
       },
       {
         "RoleAssignmentId": "asn-vp-eng-david",
@@ -1254,9 +1435,18 @@
         "FilledByAIAgent": "",
         "FilledByAutomatedPipeline": "",
         "ValidFrom": "2026-03-15",
-        "ValidTo": "",
+        "ValidTo": null,
         "Reason": "departure of prior holder / backfill",
-        "PriorFillerType": "HumanAgent"
+        "PriorFillerType": "HumanAgent",
+        "ParentPath": "roles/ntwf-vp-engineering-role",
+        "RelativePath": "roles/ntwf-vp-engineering-role/assignments/asn-vp-eng-david",
+        "Iri": "roles-ntwf-vp-engineering-role-assignments-asn-vp-eng-david",
+        "Name": "ntwf-vp-engineering-role [2026-03-15 00:00:00-05 -> open]",
+        "FillerType": "HumanAgent",
+        "IsCurrent": true,
+        "WasActiveAsOfAuditDate": false,
+        "IsAgentTypeChange": false,
+        "RequiresComplianceAudit": false
       },
       {
         "RoleAssignmentId": "asn-deploy-health-ai-initial",
@@ -1267,7 +1457,16 @@
         "ValidFrom": "2026-01-10",
         "ValidTo": "2026-02-05",
         "Reason": "initial assignment (automated summarization)",
-        "PriorFillerType": ""
+        "PriorFillerType": "",
+        "ParentPath": "roles/ntwf-deployment-health-role",
+        "RelativePath": "roles/ntwf-deployment-health-role/assignments/asn-deploy-health-ai-initial",
+        "Iri": "roles-ntwf-deployment-health-role-assignments-asn-deploy-health-ai-initial",
+        "Name": "ntwf-deployment-health-role [2026-01-10 00:00:00-06 -> 2026-02-05 00:00:00-06]",
+        "FillerType": "AIAgent",
+        "IsCurrent": false,
+        "WasActiveAsOfAuditDate": false,
+        "IsAgentTypeChange": false,
+        "RequiresComplianceAudit": false
       },
       {
         "RoleAssignmentId": "asn-deploy-health-human-audit",
@@ -1278,7 +1477,16 @@
         "ValidFrom": "2026-02-05",
         "ValidTo": "2026-02-20",
         "Reason": "compliance reassignment: automated task assigned to a human for execution",
-        "PriorFillerType": "AIAgent"
+        "PriorFillerType": "AIAgent",
+        "ParentPath": "roles/ntwf-deployment-health-role",
+        "RelativePath": "roles/ntwf-deployment-health-role/assignments/asn-deploy-health-human-audit",
+        "Iri": "roles-ntwf-deployment-health-role-assignments-asn-deploy-health-human-audit",
+        "Name": "ntwf-deployment-health-role [2026-02-05 00:00:00-06 -> 2026-02-20 00:00:00-06]",
+        "FillerType": "HumanAgent",
+        "IsCurrent": false,
+        "WasActiveAsOfAuditDate": false,
+        "IsAgentTypeChange": true,
+        "RequiresComplianceAudit": true
       },
       {
         "RoleAssignmentId": "asn-deploy-health-ai-current",
@@ -1287,9 +1495,18 @@
         "FilledByAIAgent": "ntwf-health-ai",
         "FilledByAutomatedPipeline": "",
         "ValidFrom": "2026-02-20",
-        "ValidTo": "",
+        "ValidTo": null,
         "Reason": "model upgrade: returned to automated summarization (health-summarizer-v1.2.0)",
-        "PriorFillerType": "HumanAgent"
+        "PriorFillerType": "HumanAgent",
+        "ParentPath": "roles/ntwf-deployment-health-role",
+        "RelativePath": "roles/ntwf-deployment-health-role/assignments/asn-deploy-health-ai-current",
+        "Iri": "roles-ntwf-deployment-health-role-assignments-asn-deploy-health-ai-current",
+        "Name": "ntwf-deployment-health-role [2026-02-20 00:00:00-06 -> open]",
+        "FillerType": "AIAgent",
+        "IsCurrent": true,
+        "WasActiveAsOfAuditDate": true,
+        "IsAgentTypeChange": true,
+        "RequiresComplianceAudit": false
       }
     ]
   },
@@ -1354,13 +1571,19 @@
         "DepartmentId": "ntwf-engineering",
         "Title": "Engineering",
         "DisplayName": "engineering",
-        "Roles": ""
+        "Roles": "",
+        "RelativePath": "departments/ntwf-engineering",
+        "Iri": "departments-ntwf-engineering",
+        "Name": "engineering"
       },
       {
         "DepartmentId": "ntwf-legal-dept",
         "Title": "Legal",
         "DisplayName": "legal",
-        "Roles": ""
+        "Roles": "",
+        "RelativePath": "departments/ntwf-legal-dept",
+        "Iri": "departments-ntwf-legal-dept",
+        "Name": "legal"
       }
     ]
   },
@@ -1432,35 +1655,45 @@
         "Name": "Maria Gonzalez",
         "DisplayName": "Maria Gonzalez",
         "Mbox": "maria.gonzalez@special-solutions.example",
-        "Roles": "ntwf-release-manager-role"
+        "Roles": "ntwf-release-manager-role",
+        "RelativePath": "human-agents/ntwf-maria-gonzalez",
+        "Iri": "human-agents-ntwf-maria-gonzalez"
       },
       {
         "HumanAgentId": "ntwf-david-chen",
         "Name": "David Chen",
         "DisplayName": "David Chen",
         "Mbox": "david.chen@special-solutions.example",
-        "Roles": "ntwf-vp-engineering-role"
+        "Roles": "ntwf-vp-engineering-role",
+        "RelativePath": "human-agents/ntwf-david-chen",
+        "Iri": "human-agents-ntwf-david-chen"
       },
       {
         "HumanAgentId": "ntwf-priya-nair",
         "Name": "Priya Nair",
         "DisplayName": "Priya Nair",
         "Mbox": "priya.nair@special-solutions.example",
-        "Roles": ""
+        "Roles": "",
+        "RelativePath": "human-agents/ntwf-priya-nair",
+        "Iri": "human-agents-ntwf-priya-nair"
       },
       {
         "HumanAgentId": "ntwf-james-okafor",
         "Name": "James Okafor",
         "DisplayName": "James Okafor",
         "Mbox": "james.okafor@special-solutions.example",
-        "Roles": "ntwf-legal-compliance-role"
+        "Roles": "ntwf-legal-compliance-role",
+        "RelativePath": "human-agents/ntwf-james-okafor",
+        "Iri": "human-agents-ntwf-james-okafor"
       },
       {
         "HumanAgentId": "ntwf-sarah-kim",
         "Name": "Sarah Kim",
         "DisplayName": "Sarah Kim",
         "Mbox": "sarah.kim@special-solutions.example",
-        "Roles": "ntwf-cto-role"
+        "Roles": "ntwf-cto-role",
+        "RelativePath": "human-agents/ntwf-sarah-kim",
+        "Iri": "human-agents-ntwf-sarah-kim"
       }
     ]
   },
@@ -1576,7 +1809,11 @@
         "DisplayName": "RiskAnalysis-AI",
         "ModelVersion": "risk-classifier-v2.4.1",
         "DeployedOn": "2026-01-10",
-        "Roles": "ntwf-risk-analysis-role"
+        "Roles": "ntwf-risk-analysis-role",
+        "RelativePath": "ai-agents/ntwf-risk-ai",
+        "Iri": "ai-agents-ntwf-risk-ai",
+        "CountAttributedArtifacts": 1,
+        "CountImpactedWorkflows": 1
       },
       {
         "AIAgentId": "ntwf-health-ai",
@@ -1585,7 +1822,11 @@
         "DisplayName": "DeploymentHealth-AI",
         "ModelVersion": "health-summarizer-v1.2.0",
         "DeployedOn": "2026-02-20",
-        "Roles": "ntwf-deployment-health-role"
+        "Roles": "ntwf-deployment-health-role",
+        "RelativePath": "ai-agents/ntwf-health-ai",
+        "Iri": "ai-agents-ntwf-health-ai",
+        "CountAttributedArtifacts": 1,
+        "CountImpactedWorkflows": 1
       }
     ]
   },
@@ -1657,7 +1898,9 @@
         "Name": "CI/CD Deploy Pipeline",
         "Description": "Automated build, test, and deployment pipeline for production releases. Deterministic execution — no probabilistic output.",
         "DisplayName": "CI/CD Deploy Pipeline",
-        "Roles": "ntwf-ci-executor-role"
+        "Roles": "ntwf-ci-executor-role",
+        "RelativePath": "automated-pipelines/ntwf-ci-pipeline",
+        "Iri": "automated-pipelines-ntwf-ci-pipeline"
       }
     ]
   },
@@ -1730,7 +1973,9 @@
         "AltLabel": "In Progress",
         "Definition": "Workflow is being authored or reviewed and is not yet in production use.",
         "ScopeNote": "Set this status when the workflow has not completed its initial review cycle.",
-        "Workflows": ""
+        "Workflows": "",
+        "RelativePath": "concepts/workflow-status/status-draft",
+        "Iri": "concepts-workflow-status-status-draft"
       },
       {
         "ConceptId": "status-active",
@@ -1738,7 +1983,9 @@
         "AltLabel": "In Use",
         "Definition": "Workflow is approved and currently being executed by the organization.",
         "ScopeNote": "Only active workflows should be assigned to running process instances.",
-        "Workflows": ""
+        "Workflows": "",
+        "RelativePath": "concepts/workflow-status/status-active",
+        "Iri": "concepts-workflow-status-status-active"
       },
       {
         "ConceptId": "status-deprecated",
@@ -1746,7 +1993,9 @@
         "AltLabel": "Superseded",
         "Definition": "Workflow has been replaced by a newer version and should not be used for new instances.",
         "ScopeNote": "Deprecated workflows may still have in-flight instances; do not archive until all instances close.",
-        "Workflows": ""
+        "Workflows": "",
+        "RelativePath": "concepts/workflow-status/status-deprecated",
+        "Iri": "concepts-workflow-status-status-deprecated"
       },
       {
         "ConceptId": "status-archived",
@@ -1754,7 +2003,9 @@
         "AltLabel": "Retired",
         "Definition": "Workflow is no longer in use and has been moved to historical records.",
         "ScopeNote": "Archived workflows answer CQ5 stale-workflow queries but generate no new instances.",
-        "Workflows": ""
+        "Workflows": "",
+        "RelativePath": "concepts/workflow-status/status-archived",
+        "Iri": "concepts-workflow-status-status-archived"
       }
     ]
   },
@@ -1827,7 +2078,9 @@
         "AltLabel": "Human Decision",
         "Definition": "The filler must be a human agent capable of contextual, ethical, and legally binding decisions.",
         "ScopeNote": "Used for ApprovalGate steps where requiresHumanApproval is true. AI agents may not fill roles with this capability.",
-        "Roles": ""
+        "Roles": "",
+        "RelativePath": "concepts/agent-capability/cap-human-judgment",
+        "Iri": "concepts-agent-capability-cap-human-judgment"
       },
       {
         "ConceptId": "cap-risk-analysis",
@@ -1835,7 +2088,9 @@
         "AltLabel": "Risk Assessment",
         "Definition": "The filler must be capable of probabilistic risk scoring over structured datasets.",
         "ScopeNote": "Can be satisfied by an AIAgent with an appropriate model version (e.g. risk-classifier-v2.4.1).",
-        "Roles": ""
+        "Roles": "",
+        "RelativePath": "concepts/agent-capability/cap-risk-analysis",
+        "Iri": "concepts-agent-capability-cap-risk-analysis"
       },
       {
         "ConceptId": "cap-legal-review",
@@ -1843,7 +2098,9 @@
         "AltLabel": "Compliance Review",
         "Definition": "The filler must have authority to certify regulatory and contractual compliance.",
         "ScopeNote": "Requires a human agent. Cannot be delegated to AI or automated pipeline.",
-        "Roles": ""
+        "Roles": "",
+        "RelativePath": "concepts/agent-capability/cap-legal-review",
+        "Iri": "concepts-agent-capability-cap-legal-review"
       },
       {
         "ConceptId": "cap-ci-execution",
@@ -1851,7 +2108,9 @@
         "AltLabel": "Pipeline Execution",
         "Definition": "The filler must be an automated pipeline capable of running a deterministic build, test, and deploy sequence.",
         "ScopeNote": "Satisfied by AutomatedPipelines. HumanAgents should not fill roles requiring only this capability.",
-        "Roles": ""
+        "Roles": "",
+        "RelativePath": "concepts/agent-capability/cap-ci-execution",
+        "Iri": "concepts-agent-capability-cap-ci-execution"
       },
       {
         "ConceptId": "cap-executive-authorization",
@@ -1859,7 +2118,9 @@
         "AltLabel": "C-Level Sign-off",
         "Definition": "The filler must hold executive authority to approve high-impact organizational changes.",
         "ScopeNote": "Reserved for the top of delegation chains. Maps to the ntwf:delegatesTo escalation pattern.",
-        "Roles": ""
+        "Roles": "",
+        "RelativePath": "concepts/agent-capability/cap-executive-authorization",
+        "Iri": "concepts-agent-capability-cap-executive-authorization"
       }
     ]
   },
@@ -1932,7 +2193,9 @@
         "AltLabel": "Assessment",
         "Definition": "A human- or AI-authored analytical document (e.g. a risk assessment report).",
         "ScopeNote": "Use for narrative analytical artifacts, not for raw datasets or machine logs.",
-        "WorkflowArtifacts": ""
+        "WorkflowArtifacts": "",
+        "RelativePath": "concepts/artifact-type/type-report",
+        "Iri": "concepts-artifact-type-type-report"
       },
       {
         "ConceptId": "type-decision-record",
@@ -1940,7 +2203,9 @@
         "AltLabel": "Authorization",
         "Definition": "An artifact recording an approval or authorization decision (e.g. a release authorization, a legal clearance).",
         "ScopeNote": "Use for sign-off / clearance / authorization artifacts.",
-        "WorkflowArtifacts": ""
+        "WorkflowArtifacts": "",
+        "RelativePath": "concepts/artifact-type/type-decision-record",
+        "Iri": "concepts-artifact-type-type-decision-record"
       },
       {
         "ConceptId": "type-log",
@@ -1948,7 +2213,9 @@
         "AltLabel": "Machine Output",
         "Definition": "A machine-generated record of an automated activity (e.g. a deployment log).",
         "ScopeNote": "Use for deterministic pipeline/system output, not human analysis.",
-        "WorkflowArtifacts": ""
+        "WorkflowArtifacts": "",
+        "RelativePath": "concepts/artifact-type/type-log",
+        "Iri": "concepts-artifact-type-type-log"
       }
     ]
   },
@@ -2021,7 +2288,9 @@
         "Identifier": "DS-RISK-2026-Q1",
         "Modified": "2026-03-31T00:00:00-05:00",
         "DistributionUrl": "https://data.internal.special-solutions.example/risk/q1-2026",
-        "ConsumedBySteps": "prod-deploy-step-2"
+        "ConsumedBySteps": "prod-deploy-step-2",
+        "RelativePath": "datasets/ds-q1-2026-risk-metrics",
+        "Iri": "datasets-ds-q1-2026-risk-metrics"
       }
     ]
   },
@@ -2181,7 +2450,14 @@
         "AttributedToAIAgent": "ntwf-risk-ai",
         "AttributedToAutomatedPipeline": "",
         "ArtifactType": "type-report",
-        "RequiredBySteps": "prod-deploy-step-2"
+        "RequiredBySteps": "prod-deploy-step-2",
+        "ParentPath": "workflows/production-deployment/steps/prod-deploy-step-1",
+        "RelativePath": "workflows/production-deployment/steps/prod-deploy-step-1/artifacts/artifact-risk-report",
+        "Iri": "workflows-production-deployment-steps-prod-deploy-step-1-artifacts-artifact-risk-report",
+        "ProducingAgentType": "AIAgent",
+        "HasDerivationParent": false,
+        "ProducedByWorkflow": "production-deployment",
+        "HasProducingWorkflow": true
       },
       {
         "ArtifactId": "artifact-legal-clearance",
@@ -2194,7 +2470,14 @@
         "AttributedToAIAgent": "",
         "AttributedToAutomatedPipeline": "",
         "ArtifactType": "type-decision-record",
-        "RequiredBySteps": "prod-deploy-step-3"
+        "RequiredBySteps": "prod-deploy-step-3",
+        "ParentPath": "workflows/production-deployment/steps/prod-deploy-step-2",
+        "RelativePath": "workflows/production-deployment/steps/prod-deploy-step-2/artifacts/artifact-legal-clearance",
+        "Iri": "workflows-production-deployment-steps-prod-deploy-step-2-artifacts-artifact-legal-clearance",
+        "ProducingAgentType": "HumanAgent",
+        "HasDerivationParent": true,
+        "ProducedByWorkflow": "production-deployment",
+        "HasProducingWorkflow": true
       },
       {
         "ArtifactId": "artifact-release-authorization",
@@ -2207,7 +2490,14 @@
         "AttributedToAIAgent": "",
         "AttributedToAutomatedPipeline": "",
         "ArtifactType": "type-decision-record",
-        "RequiredBySteps": "prod-deploy-step-4"
+        "RequiredBySteps": "prod-deploy-step-4",
+        "ParentPath": "workflows/production-deployment/steps/prod-deploy-step-3",
+        "RelativePath": "workflows/production-deployment/steps/prod-deploy-step-3/artifacts/artifact-release-authorization",
+        "Iri": "workflows-production-deployment-steps-prod-deploy-step-3-artifacts-artifact-release-authorization",
+        "ProducingAgentType": "HumanAgent",
+        "HasDerivationParent": true,
+        "ProducedByWorkflow": "production-deployment",
+        "HasProducingWorkflow": true
       },
       {
         "ArtifactId": "artifact-deployment-log",
@@ -2220,7 +2510,14 @@
         "AttributedToAIAgent": "",
         "AttributedToAutomatedPipeline": "ntwf-ci-pipeline",
         "ArtifactType": "type-log",
-        "RequiredBySteps": ""
+        "RequiredBySteps": "",
+        "ParentPath": "workflows/production-deployment/steps/prod-deploy-step-4",
+        "RelativePath": "workflows/production-deployment/steps/prod-deploy-step-4/artifacts/artifact-deployment-log",
+        "Iri": "workflows-production-deployment-steps-prod-deploy-step-4-artifacts-artifact-deployment-log",
+        "ProducingAgentType": "AutomatedPipeline",
+        "HasDerivationParent": true,
+        "ProducedByWorkflow": "production-deployment",
+        "HasProducingWorkflow": true
       },
       {
         "ArtifactId": "artifact-post-deploy-report",
@@ -2233,7 +2530,14 @@
         "AttributedToAIAgent": "ntwf-health-ai",
         "AttributedToAutomatedPipeline": "",
         "ArtifactType": "type-report",
-        "RequiredBySteps": ""
+        "RequiredBySteps": "",
+        "ParentPath": "workflows/production-deployment/steps/prod-deploy-step-5",
+        "RelativePath": "workflows/production-deployment/steps/prod-deploy-step-5/artifacts/artifact-post-deploy-report",
+        "Iri": "workflows-production-deployment-steps-prod-deploy-step-5-artifacts-artifact-post-deploy-report",
+        "ProducingAgentType": "AIAgent",
+        "HasDerivationParent": true,
+        "ProducedByWorkflow": "production-deployment",
+        "HasProducingWorkflow": true
       }
     ]
   },
@@ -2329,7 +2633,11 @@
         "Kind": "Steward",
         "Responsibilities": "Monitors the ontology for drift, tracks external-dependency updates (PROV-O, FOAF, Dublin Core, DCAT, Schema.org), fields questions from users, maintains documentation, and keeps the validation suite current. Identifies that a change is needed but does not approve it. Runs the periodic (at minimum quarterly) competency-question review: new unanswerable questions become scope-change requests, obsolete questions become deprecation candidates, and questions that return wrong answers are defects.",
         "ApprovalScope": "none",
-        "HeldBy": "Engineering Knowledge Infrastructure team"
+        "HeldBy": "Engineering Knowledge Infrastructure team",
+        "RelativePath": "governance-roles/gov-steward",
+        "Iri": "governance-roles-gov-steward",
+        "Name": "ontology-steward",
+        "CanApproveChanges": false
       },
       {
         "GovernanceRoleId": "gov-authority",
@@ -2337,7 +2645,11 @@
         "Kind": "Authority",
         "Responsibilities": "Holds the power to approve changes to the CBox, ABox, and TBox. Decides how and where a change is made. Reviews changes proposed by the steward so that no single person alters the knowledge graph's semantic integrity unchecked.",
         "ApprovalScope": "CBox, ABox, TBox",
-        "HeldBy": "Workflow Governance function"
+        "HeldBy": "Workflow Governance function",
+        "RelativePath": "governance-roles/gov-authority",
+        "Iri": "governance-roles-gov-authority",
+        "Name": "ontology-authority",
+        "CanApproveChanges": true
       }
     ]
   },
@@ -2450,7 +2762,12 @@
         "MotivatingQuestion": "All eight competency questions (CQ1-CQ8).",
         "TermsAffected": "Initial release: 9 classes, 13 object properties, 5 datatype properties, 2 CBox schemes.",
         "Rationale": "First validated release of the NTWF workflow ontology; passes the 104-test suite.",
-        "ApprovedBy": "gov-authority"
+        "ApprovedBy": "gov-authority",
+        "RelativePath": "change-log/change-1-0-0",
+        "Iri": "change-log-change-1-0-0",
+        "Name": "1.0.0 (2026-01-15 00:00:00-06)",
+        "IsBreakingChange": true,
+        "IsBackwardCompatible": false
       },
       {
         "ChangeLogId": "change-1-1-0",
@@ -2460,7 +2777,12 @@
         "MotivatingQuestion": "Which AI agent was executing this step on March 1, 2026?",
         "TermsAffected": "Added filledBy assignment history (RoleAssignments) with validity periods; AIAgent deployment date; agent-type-change audit witnesses.",
         "Rationale": "Operational governance needed retained filledBy history so historical 'as of date' and blast-radius queries are answerable without discarding provenance. Additive and backward compatible — a minor, backward-compatible change, so per Part IV the steward is authorized to approve and deploy it without authority review.",
-        "ApprovedBy": "gov-steward"
+        "ApprovedBy": "gov-steward",
+        "RelativePath": "change-log/change-1-1-0",
+        "Iri": "change-log-change-1-1-0",
+        "Name": "1.1.0 (2026-03-20 00:00:00-05)",
+        "IsBreakingChange": false,
+        "IsBackwardCompatible": true
       }
     ]
   },
@@ -2548,7 +2870,10 @@
         "ReconciliationRelation": "owl:sameAs",
         "SourceStandard": "FOAF",
         "IntroducedInVersion": "v1.1.0",
-        "Rationale": "Part IV worked example: a deprecated FOAF element is re-prefixed into the NTWF namespace; existing data stays valid (URIs do not disappear), and foaf:name owl:sameAs ntwf:name keeps the two interchangeable for reasoners."
+        "Rationale": "Part IV worked example: a deprecated FOAF element is re-prefixed into the NTWF namespace; existing data stays valid (URIs do not disappear), and foaf:name owl:sameAs ntwf:name keeps the two interchangeable for reasoners.",
+        "RelativePath": "reconciliations/recon-foaf-name",
+        "Iri": "reconciliations-recon-foaf-name",
+        "Name": "foaf:name owl:sameAs ntwf:name"
       },
       {
         "ReconciliationId": "recon-dcat-v3",
@@ -2557,7 +2882,10 @@
         "ReconciliationRelation": "owl:sameAs",
         "SourceStandard": "DCAT",
         "IntroducedInVersion": "v1.1.0",
-        "Rationale": "Part IV external-dependency fact: DCAT went through a major v2 -> v3 revision that introduced new classes and deprecated others. NTWF tracks the alignment so its dcat:Dataset usage stays semantically current; existing data remains valid because URIs do not disappear."
+        "Rationale": "Part IV external-dependency fact: DCAT went through a major v2 -> v3 revision that introduced new classes and deprecated others. NTWF tracks the alignment so its dcat:Dataset usage stays semantically current; existing data remains valid because URIs do not disappear.",
+        "RelativePath": "reconciliations/recon-dcat-v3",
+        "Iri": "reconciliations-recon-dcat-v3",
+        "Name": "dcat:Dataset (v2) owl:sameAs dcat:Dataset (v3)"
       }
     ]
   },
@@ -2645,7 +2973,10 @@
         "Explanation": "Backdates the workflow's last review past its 12-month policy window so the docs go STALE. The release already has AI-executed steps, so stale-docs-AND-an-AI-step fires the article's headline business query: IsStaleAndHasAIAgent (CQ5 extended — stale workflows that involve AI agents).",
         "SortOrder": 1,
         "IsReset": false,
-        "Edits": "[{\"class\": \"Workflows\", \"match\": \"first\", \"set\": {\"modified\": \"2026-04-03T00:00:00-05:00\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-release-manager-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-maria-gonzalez\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-risk-analysis-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"ntwf-risk-ai\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-legal-compliance-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-james-okafor\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-ci-executor-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"ntwf-ci-pipeline\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-vp-engineering-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-david-chen\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-cto-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-sarah-kim\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-deployment-health-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"ntwf-health-ai\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Workflows\", \"match\": \"first\", \"set\": {\"modified\": \"2023-01-01T00:00:00-06:00\"}}]"
+        "Edits": "[{\"class\": \"Workflows\", \"match\": \"first\", \"set\": {\"modified\": \"2026-04-03T00:00:00-05:00\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-release-manager-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-maria-gonzalez\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-risk-analysis-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"ntwf-risk-ai\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-legal-compliance-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-james-okafor\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-ci-executor-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"ntwf-ci-pipeline\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-vp-engineering-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-david-chen\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-cto-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-sarah-kim\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-deployment-health-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"ntwf-health-ai\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Workflows\", \"match\": \"first\", \"set\": {\"modified\": \"2023-01-01T00:00:00-06:00\"}}]",
+        "RelativePath": "scenarios/trigger-risk",
+        "Iri": "scenarios-trigger-risk",
+        "Name": "stale-workflow-with-an-ai-step"
       },
       {
         "ScenarioId": "all-human",
@@ -2654,7 +2985,10 @@
         "Explanation": "Reassigns every AI agent and pipeline to a human. The AI-step count drops to zero, so the compliance risk can no longer fire — even if the docs are stale. Shows the role→agent indirection: personnel change is one edge, not a rewrite.",
         "SortOrder": 2,
         "IsReset": false,
-        "Edits": "[{\"class\": \"Workflows\", \"match\": \"first\", \"set\": {\"modified\": \"2026-04-03T00:00:00-05:00\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-release-manager-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-maria-gonzalez\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-risk-analysis-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"ntwf-risk-ai\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-legal-compliance-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-james-okafor\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-ci-executor-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"ntwf-ci-pipeline\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-vp-engineering-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-david-chen\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-cto-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-sarah-kim\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-deployment-health-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"ntwf-health-ai\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-risk-analysis-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-david-chen\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-deployment-health-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-sarah-kim\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-ci-executor-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-james-okafor\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}]"
+        "Edits": "[{\"class\": \"Workflows\", \"match\": \"first\", \"set\": {\"modified\": \"2026-04-03T00:00:00-05:00\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-release-manager-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-maria-gonzalez\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-risk-analysis-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"ntwf-risk-ai\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-legal-compliance-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-james-okafor\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-ci-executor-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"ntwf-ci-pipeline\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-vp-engineering-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-david-chen\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-cto-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-sarah-kim\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-deployment-health-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"ntwf-health-ai\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-risk-analysis-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-david-chen\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-deployment-health-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-sarah-kim\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-ci-executor-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-james-okafor\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}]",
+        "RelativePath": "scenarios/all-human",
+        "Iri": "scenarios-all-human",
+        "Name": "all-human-release"
       },
       {
         "ScenarioId": "ai-at-gate",
@@ -2663,7 +2997,10 @@
         "Explanation": "Hands the Legal Compliance Reviewer role — whose review step requires human sign-off — to an AI agent. The reasoner's consistency witness fires on that step: a requires-human-approval step is no longer human-filled. The rule break is DERIVED, not hand-checked.",
         "SortOrder": 3,
         "IsReset": false,
-        "Edits": "[{\"class\": \"Workflows\", \"match\": \"first\", \"set\": {\"modified\": \"2026-04-03T00:00:00-05:00\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-release-manager-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-maria-gonzalez\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-risk-analysis-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"ntwf-risk-ai\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-legal-compliance-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-james-okafor\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-ci-executor-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"ntwf-ci-pipeline\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-vp-engineering-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-david-chen\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-cto-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-sarah-kim\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-deployment-health-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"ntwf-health-ai\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-legal-compliance-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"ntwf-risk-ai\", \"filledByAutomatedPipeline\": \"\"}}]"
+        "Edits": "[{\"class\": \"Workflows\", \"match\": \"first\", \"set\": {\"modified\": \"2026-04-03T00:00:00-05:00\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-release-manager-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-maria-gonzalez\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-risk-analysis-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"ntwf-risk-ai\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-legal-compliance-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-james-okafor\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-ci-executor-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"ntwf-ci-pipeline\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-vp-engineering-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-david-chen\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-cto-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-sarah-kim\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-deployment-health-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"ntwf-health-ai\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-legal-compliance-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"ntwf-risk-ai\", \"filledByAutomatedPipeline\": \"\"}}]",
+        "RelativePath": "scenarios/ai-at-gate",
+        "Iri": "scenarios-ai-at-gate",
+        "Name": "ai-at-the-approval-gate"
       },
       {
         "ScenarioId": "reset",
@@ -2672,7 +3009,10 @@
         "Explanation": "Restores the canonical seed assignments and a fresh review date — the known-good starting point. Every role is filled by exactly one agent, no requires-human-approval step is AI-filled, and the workflow is within its staleness window, so all the article's clean-ABox witnesses read green.",
         "SortOrder": 5,
         "IsReset": true,
-        "Edits": "[{\"class\": \"Workflows\", \"match\": \"first\", \"set\": {\"modified\": \"2026-04-03T00:00:00-05:00\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-release-manager-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-maria-gonzalez\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-risk-analysis-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"ntwf-risk-ai\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-legal-compliance-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-james-okafor\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-ci-executor-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"ntwf-ci-pipeline\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-vp-engineering-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-david-chen\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-cto-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-sarah-kim\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-deployment-health-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"ntwf-health-ai\", \"filledByAutomatedPipeline\": \"\"}}]"
+        "Edits": "[{\"class\": \"Workflows\", \"match\": \"first\", \"set\": {\"modified\": \"2026-04-03T00:00:00-05:00\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-release-manager-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-maria-gonzalez\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-risk-analysis-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"ntwf-risk-ai\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-legal-compliance-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-james-okafor\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-ci-executor-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"ntwf-ci-pipeline\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-vp-engineering-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-david-chen\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-cto-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-sarah-kim\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-deployment-health-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"ntwf-health-ai\", \"filledByAutomatedPipeline\": \"\"}}]",
+        "RelativePath": "scenarios/reset",
+        "Iri": "scenarios-reset",
+        "Name": "reset-to-baseline"
       }
     ]
   },
