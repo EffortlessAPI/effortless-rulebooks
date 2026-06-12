@@ -1,0 +1,7 @@
+# Local debug crops/zoom shots — noisy. Keep only the canonical reference shots.
+_*.png
+*-zoom.png
+crop-*.png
+console-flow*.png
+console-graph.png
+console-closure.png

@@ -43,10 +43,10 @@
     "role_id": "ntwf-deployment-health-role",
     "display_name": "Deployment Health Agent",
     "label": "Deployment Health Agent",
-    "comment": "Generates the post-deployment health report by summarizing telemetry after a release. A role, not an identity \u2014 filled by a human reviewer today, it could be replaced by a newer model without changing the workflow structure.",
+    "comment": "Generates the post-deployment health report by summarizing telemetry after a release. A role, not an identity \u2014 currently filled by the DeploymentHealth-AI agent (health-summarizer-v1.2.0), it could be reassigned to a human or a newer model without changing the workflow structure. Its RoleAssignments history records an earlier human-reviewer period and the agent-type transitions.",
     "has_capability": "cap-risk-analysis",
-    "filled_by_human_agent": "ntwf-james-okafor",
-    "filled_by_ai_agent": "",
+    "filled_by_human_agent": "",
+    "filled_by_ai_agent": "ntwf-health-ai",
     "filled_by_automated_pipeline": "",
     "owned_by": "ntwf-engineering",
     "delegates_to": "",
@@ -57,7 +57,7 @@
     "name": "deployment-health-agent",
     "filled_by_arm_count": 1,
     "has_exactly_one_filler": true,
-    "filler_type": "HumanAgent"
+    "filler_type": "AIAgent"
   },
   {
     "role_id": "ntwf-legal-compliance-role",
@@ -83,9 +83,9 @@
     "role_id": "ntwf-release-manager-role",
     "display_name": "Release Manager",
     "label": "Release Manager",
-    "comment": "Owns the production deployment process. Coordinates all parties, triggers the pipeline, and authorizes the release at the approval gate.",
+    "comment": "Owns the production deployment process. Fills the Release Approval Gate (step 3): the human authority who explicitly authorizes the release before the automated deployment runs. This is the CQ2 answer \u2014 gate -> Release Manager -> Maria Gonzalez. Top of the delegation chain (Release Manager -> VP Engineering -> CTO).",
     "has_capability": "cap-human-judgment",
-    "filled_by_human_agent": "ntwf-sarah-kim",
+    "filled_by_human_agent": "ntwf-maria-gonzalez",
     "filled_by_ai_agent": "",
     "filled_by_automated_pipeline": "",
     "owned_by": "ntwf-engineering",
@@ -106,7 +106,7 @@
     "comment": "Performs probabilistic risk scoring over the Q1 risk metrics dataset. This is a role, not an identity \u2014 filled by RiskAnalysis-AI today but could be replaced by a newer model version without changing the workflow structure.",
     "has_capability": "cap-risk-analysis",
     "filled_by_human_agent": "",
-    "filled_by_ai_agent": "ntwf-health-ai",
+    "filled_by_ai_agent": "ntwf-risk-ai",
     "filled_by_automated_pipeline": "",
     "owned_by": "ntwf-engineering",
     "delegates_to": "",
@@ -115,9 +115,9 @@
     "relative_path": "roles/ntwf-risk-analysis-role",
     "iri": "roles-ntwf-risk-analysis-role",
     "name": "risk-analysis-agent",
-    "filled_by_arm_count": 0,
-    "has_exactly_one_filler": false,
-    "filler_type": ""
+    "filled_by_arm_count": 1,
+    "has_exactly_one_filler": true,
+    "filler_type": "AIAgent"
   },
   {
     "role_id": "ntwf-vp-engineering-role",
@@ -125,9 +125,9 @@
     "label": "VP of Engineering",
     "comment": "First escalation target when Release Manager is unavailable. Demonstrates ntwf:delegatesTo chain: Release Manager \u2192 VP Engineering \u2192 CTO.",
     "has_capability": "cap-human-judgment",
-    "filled_by_human_agent": "",
+    "filled_by_human_agent": "ntwf-david-chen",
     "filled_by_ai_agent": "",
-    "filled_by_automated_pipeline": "ntwf-ci-pipeline",
+    "filled_by_automated_pipeline": "",
     "owned_by": "ntwf-engineering",
     "delegates_to": "ntwf-cto-role",
     "workflow_steps": "",
@@ -137,6 +137,6 @@
     "name": "vp-of-engineering",
     "filled_by_arm_count": 1,
     "has_exactly_one_filler": true,
-    "filler_type": "AutomatedPipeline"
+    "filler_type": "HumanAgent"
   }
 ]

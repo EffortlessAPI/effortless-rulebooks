@@ -1,0 +1,47 @@
+[
+  {
+    "concept_id": "cap-human-judgment",
+    "pref_label": "Human Judgment",
+    "alt_label": "Human Decision",
+    "definition": "The filler must be a human agent capable of contextual, ethical, and legally binding decisions.",
+    "scope_note": "Used for ApprovalGate steps where requiresHumanApproval is true. AI agents may not fill roles with this capability.",
+    "relative_path": "concepts/agent-capability/cap-human-judgment",
+    "iri": "concepts-agent-capability-cap-human-judgment"
+  },
+  {
+    "concept_id": "cap-risk-analysis",
+    "pref_label": "Risk Analysis",
+    "alt_label": "Risk Assessment",
+    "definition": "The filler must be capable of probabilistic risk scoring over structured datasets.",
+    "scope_note": "Can be satisfied by an AIAgent with an appropriate model version (e.g. risk-classifier-v2.4.1).",
+    "relative_path": "concepts/agent-capability/cap-risk-analysis",
+    "iri": "concepts-agent-capability-cap-risk-analysis"
+  },
+  {
+    "concept_id": "cap-legal-review",
+    "pref_label": "Legal Review",
+    "alt_label": "Compliance Review",
+    "definition": "The filler must have authority to certify regulatory and contractual compliance.",
+    "scope_note": "Requires a human agent. Cannot be delegated to AI or automated pipeline.",
+    "relative_path": "concepts/agent-capability/cap-legal-review",
+    "iri": "concepts-agent-capability-cap-legal-review"
+  },
+  {
+    "concept_id": "cap-ci-execution",
+    "pref_label": "CI/CD Execution",
+    "alt_label": "Pipeline Execution",
+    "definition": "The filler must be an automated pipeline capable of running a deterministic build, test, and deploy sequence.",
+    "scope_note": "Satisfied by AutomatedPipelines. HumanAgents should not fill roles requiring only this capability.",
+    "relative_path": "concepts/agent-capability/cap-ci-execution",
+    "iri": "concepts-agent-capability-cap-ci-execution"
+  },
+  {
+    "concept_id": "cap-executive-authorization",
+    "pref_label": "Executive Authorization",
+    "alt_label": "C-Level Sign-off",
+    "definition": "The filler must hold executive authority to approve high-impact organizational changes.",
+    "scope_note": "Reserved for the top of delegation chains. Maps to the ntwf:delegatesTo escalation pattern.",
+    "relative_path": "concepts/agent-capability/cap-executive-authorization",
+    "iri": "concepts-agent-capability-cap-executive-authorization"
+  }
+]

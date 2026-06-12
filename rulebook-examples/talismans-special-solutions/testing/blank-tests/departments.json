@@ -3,14 +3,18 @@
     "department_id": "ntwf-engineering",
     "title": "Engineering",
     "display_name": "engineering",
-    "name": null,
-    "roles": "ntwf-release-manager-role, ntwf-vp-engineering-role, ntwf-cto-role, ntwf-risk-analysis-role, ntwf-ci-executor-role"
+    "roles": "",
+    "relative_path": null,
+    "iri": null,
+    "name": null
   },
   {
     "department_id": "ntwf-legal-dept",
     "title": "Legal",
     "display_name": "legal",
-    "name": null,
-    "roles": "ntwf-legal-compliance-role"
+    "roles": "",
+    "relative_path": null,
+    "iri": null,
+    "name": null
   }
 ]

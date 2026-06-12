@@ -1301,6 +1301,20 @@ def _eval_func(node: FuncCall, ctx: dict) -> any:
             return int(delta.total_seconds())
         if unit == 'week':
             return delta.days // 7
+        if unit in ('month', 'year'):
+            # Calendar-month/-year counting, matching the SQL the
+            # rulebook-to-postgres transpiler emits:
+            #   EXTRACT(YEAR FROM AGE(end,start))*12 + EXTRACT(MONTH FROM AGE(...))
+            # i.e. whole elapsed calendar months (Postgres AGE semantics), NOT
+            # days//30. Implemented here so the Python cross-check AGREES with the
+            # Postgres oracle instead of drifting from it on month boundaries.
+            months = (end_dt.year - start_dt.year) * 12 + (end_dt.month - start_dt.month)
+            # AGE() does not count the final partial month: if the day-of-month
+            # (and intra-day time) hasn't been reached yet, back off one month.
+            if (end_dt.day, end_dt.hour, end_dt.minute, end_dt.second) \
+                    < (start_dt.day, start_dt.hour, start_dt.minute, start_dt.second):
+                months -= 1
+            return months if unit == 'month' else months // 12
         raise ValueError(f"{name}: unsupported unit {unit!r}")
 
     raise ValueError(f"Unknown function: {name}")

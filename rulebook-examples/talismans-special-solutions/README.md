@@ -6,38 +6,61 @@ This project models the workflow ontology from Jessica Talisman’s *Intentional
 
 ---
 
-## Quick Start (the clone is already built)
+## If you read only this screen
 
-**You do not need the `effortless` CLI to run this demo.** The generated substrates are
-committed to the repo — the OWL/SHACL artifacts (`owl/src/ontology.owl`,
-`owl/src/rules.shacl.ttl`, `owl/src/individuals.ttl`) and the Postgres schema + closure
-views (`postgres-bootstrap/*.sql`) are checked in. A fresh clone is runnable as-is:
+**Everything the ontology series teaches about *modeling* — competency questions, disjoint
+classes, role–filler separation, reusing PROV-O / DCAT / SKOS, the TBox / ABox / CBox discipline —
+is load-bearing here and required in full. None of that skill is retired.** This repo removes
+exactly one thing: the assembler-like work of hand-stitching that model across OWL + RDF + SHACL +
+SPARQL to make it *run*. You author the meaning once, one layer up, and OWL, Postgres, Python, Go,
+Excel, English prose, and the conformance tests are generated **siblings**.
 
-```bash
-git clone <this repo>
-cd rulebook-examples/talismans-special-solutions
-./start.sh            # Express API on :8088 + Vite dev UI on :5173
-# open http://localhost:5173
-```
+It is not a different approach to modeling. It is a **superset**: the same modeling, minus the
+assembly.
 
-`start.sh` installs the Python reasoner deps (`rdflib`/`owlrl`/`pyshacl`) on first run and
-boots both processes. That is the entire runtime.
+### The receipt
 
-### Build-time vs. runtime (read this before judging the dependency chain)
+One source — `effortless-rulebook/talismans-special-solutions-rulebook.json`, the full NTWF worked
+example (role–agent separation, approval-gate subtype, transitive step-precedence closure,
+delegation chain, PROV provenance, DCAT datasets, SKOS vocabularies, a derived compliance verdict).
+Every projection generated from it is scored **row-by-row and column-by-column** against a
+**Postgres-oracle answer key**, and the suite is re-run on every change.
 
-These are two different worlds, and the demo only needs the second one to *run*:
+The score on any given day is a moving target — entities get added, formulas get sharpened, the
+model grows. What is *not* a moving target is the **shape of the effect** you watch repeat every
+time the ontology evolves:
 
-| Concern | What it is | When it runs | Needed to run the app? |
-| --- | --- | --- | --- |
-| `effortless build` + the CLI | Regenerates every substrate from the rulebook | Only when you **edit the rulebook** | **No** |
-| The cpln `*.cpln.app` transpiler URLs in `effortless.json` | Hosted **code generators** invoked by `effortless build` | Build only | **No** |
-| The `localhost:4242` ssotme-proxy bus | Local build-time transpiler router | Build only | **No** |
-| Express :8088 + Vite :5173 + local Postgres + in-process Python reasoner | The actual running application | Every request | **Yes** |
+- **Add a concept, change a rule, grow the model** in the one rulebook, and the **Postgres
+  projection tracks it for free** — the new column, the new closure edge, the new derived verdict
+  simply appear, correct, in the views. The closed-world substrate reaches the whole model with no
+  hand-assembly.
+- The **OWL / RDF / SHACL projection lags, then catches up** — each growth spurt opens a fresh set
+  of reasoner-side gaps (a closure that hasn't been re-stitched, a lookup the shapes don't yet
+  cover) that have to be assembled back into parity. The deltas are always in the **assembly**, never
+  in the **meaning**.
 
-So the long list of cpln URLs and the `:4242` bus are the **compiler toolchain**, not the
-deployment topology. The running app talks to a local Postgres and an in-process reasoner —
-nothing remote, nothing version-pinned. You only reach for the CLI when you want to
-*regenerate* the committed artifacts after changing `talismans-special-solutions-rulebook.json`.
+That asymmetry is the receipt, and it is stable across every revision: the meaning, authored once,
+costs nothing to re-project into the closed-world substrate; the open-world substrate is the side
+that perpetually pays the assembly tax to keep up. **The cost was never in the modeling. It is in the
+assembly — and the assembly is the part this repo lifts off the author.** (Today's exact tally lives
+in `testing/conformance-runs/latest.json`; run `./start.sh` and watch it move as you edit the
+rulebook.)
+
+### The standing bet
+
+This repo makes a falsifiable claim and invites attack on it:
+
+> Produce one competency question — finite, design-time — that the OWL / RDF / SHACL stack can
+> answer but the rulebook **cannot** express one layer up.
+
+The eight competency questions this example must answer are listed [below](#competency-questions-covered);
+each resolves from the generated substrates, and the conformance suite is the referee. If you find
+one that genuinely needs open-world machinery and can't be captured in the rulebook, that is not a
+loss for the project — **that is exactly the finding the project is looking for.**
+
+*Everything below is the careful, long-form version: what this is, what it is **not** saying, and
+how to read the repo from ontology, database, MDE, or application backgrounds. The screen above is
+the whole claim; the rest is the evidence and the reassurance.*
 
 ---
 
@@ -104,6 +127,41 @@ test expectations
 ```
 
 this project keeps the meaning in one structural rulebook and derives the rest.
+
+---
+
+## Quick Start (the clone is already built)
+
+**You do not need the `effortless` CLI to run this demo.** The generated substrates are
+committed to the repo — the OWL/SHACL artifacts (`owl/src/ontology.owl`,
+`owl/src/rules.shacl.ttl`, `owl/src/individuals.ttl`) and the Postgres schema + closure
+views (`postgres-bootstrap/*.sql`) are checked in. A fresh clone is runnable as-is:
+
+```bash
+git clone <this repo>
+cd rulebook-examples/talismans-special-solutions
+./start.sh            # Express API on :8088 + Vite dev UI on :5173
+# open http://localhost:5173
+```
+
+`start.sh` installs the Python reasoner deps (`rdflib`/`owlrl`/`pyshacl`) on first run and
+boots both processes. That is the entire runtime.
+
+### Build-time vs. runtime (read this before judging the dependency chain)
+
+These are two different worlds, and the demo only needs the second one to *run*:
+
+| Concern | What it is | When it runs | Needed to run the app? |
+| --- | --- | --- | --- |
+| `effortless build` + the CLI | Regenerates every substrate from the rulebook | Only when you **edit the rulebook** | **No** |
+| The cpln `*.cpln.app` transpiler URLs in `effortless.json` | Hosted **code generators** invoked by `effortless build` | Build only | **No** |
+| The `localhost:4242` ssotme-proxy bus | Local build-time transpiler router | Build only | **No** |
+| Express :8088 + Vite :5173 + local Postgres + in-process Python reasoner | The actual running application | Every request | **Yes** |
+
+So the long list of cpln URLs and the `:4242` bus are the **compiler toolchain**, not the
+deployment topology. The running app talks to a local Postgres and an in-process reasoner —
+nothing remote, nothing version-pinned. You only reach for the CLI when you want to
+*regenerate* the committed artifacts after changing `talismans-special-solutions-rulebook.json`.
 
 ---
 
@@ -295,20 +353,24 @@ The important part is that they are generated from the same semantic rulebook.
 Five ordered steps carry a release from request to post-deployment report:
 
 
-| #   | Step                                            | Role                      | Filled by             | Human approval? |
-| --- | ----------------------------------------------- | ------------------------- | --------------------- | --------------- |
-| 1   | Initiate Deployment Request                     | Release Manager           | Maria Gonzalez        | Yes             |
-| 2   | AI Risk Assessment                              | Risk Analysis Agent       | RiskAnalysis-AI       | No              |
-| 3   | Legal Compliance Review & Release Authorization | Legal Compliance Reviewer | James Okafor          | Yes             |
-| 4   | Automated Deployment Execution                  | CI/CD Executor            | CI/CD Deploy Pipeline | No              |
-| 5   | Post-Deployment Health Check & Report           | Release Manager           | Maria Gonzalez        | Yes             |
+| #   | Step                                  | Role                      | Filled by             | Human approval? | Executed by |
+| --- | ------------------------------------- | ------------------------- | --------------------- | --------------- | ----------- |
+| 1   | AI Risk Assessment                    | Risk Analysis Agent       | RiskAnalysis-AI       | No              | AI          |
+| 2   | Legal Compliance Review               | Legal Compliance Reviewer | James Okafor          | Yes             | Human       |
+| 3   | Release Approval Gate                 | Release Manager           | Maria Gonzalez        | Yes             | Human       |
+| 4   | Automated Deployment Execution        | CI/CD Executor            | CI/CD Deploy Pipeline | No              | Pipeline    |
+| 5   | Post-Deployment Health Check & Report | Deployment Health Agent   | DeploymentHealth-AI   | No              | AI          |
 
+This is the exact worked example from the series: two AI-executed steps (1 and 5), two
+human-required steps (2 and 3), one deterministic pipeline step (4), and the approval gate is the
+Release-Manager-owned step — so the answer to *"who approves a production deployment?"* resolves
+through gate → Release Manager → **Maria Gonzalez**.
 
 The workflow also includes:
 
 - step precedence: `1 → 2 → 3 → 4 → 5`;
 - transitive closure: asserted edges imply all reachable ordered pairs, including `1 → 5`;
-- an approval gate at step 3;
+- an approval gate at step 3, filled by the Release Manager;
 - role delegation from Release Manager to VP Engineering to CTO;
 - a provenance chain across generated artifacts;
 - a risk dataset consumed by the AI risk-assessment step;
@@ -387,6 +449,29 @@ edit the rulebook
 ```
 
 Do not hand-edit generated outputs and treat them as canonical. They are intentionally downstream.
+
+### The rulebook is the authority — the Postgres → rulebook push-back is OFF by default
+
+The build pipeline *can* run a reverse transpiler — `postgres-calculated-to-rulebook` — that
+reads the calculated/derived columns back out of Postgres and writes them into the rulebook JSON.
+That route is **intentionally disabled** (`"IsDisabled": true`) in `effortless.json`.
+
+It is off on purpose. The flow is strictly one-directional by design:
+
+```text
+rulebook (AUTHORITY)  ──build──▶  Postgres + every other substrate  (derived)
+```
+
+Postgres is a *consumer* of the rulebook, not a source for it. The dev database is dropped and
+reseeded from the rulebook on every build (mock data, by design), so anything Postgres "computes"
+is just the rulebook's own formulas re-evaluated against that mock seed. If the push-back ran on a
+routine `effortless build`, that throwaway test data would be written **back over** the
+human-authored source of truth — silently overwriting the authority with downstream output. Leaving
+it disabled keeps the rulebook the one and only thing you edit by hand.
+
+If you ever genuinely need to lift Postgres-computed values into the rulebook (e.g. to materialize
+an answer key), enable that transpiler explicitly for that one build, confirm the diff is only what
+you intend, then turn it back off. It is never part of the default edit-and-rebuild loop.
 
 ---
 

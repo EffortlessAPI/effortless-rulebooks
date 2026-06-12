@@ -1,0 +1,38 @@
+[
+  {
+    "concept_id": "status-draft",
+    "pref_label": "Draft",
+    "alt_label": "In Progress",
+    "definition": "Workflow is being authored or reviewed and is not yet in production use.",
+    "scope_note": "Set this status when the workflow has not completed its initial review cycle.",
+    "relative_path": "concepts/workflow-status/status-draft",
+    "iri": "concepts-workflow-status-status-draft"
+  },
+  {
+    "concept_id": "status-active",
+    "pref_label": "Active",
+    "alt_label": "In Use",
+    "definition": "Workflow is approved and currently being executed by the organization.",
+    "scope_note": "Only active workflows should be assigned to running process instances.",
+    "relative_path": "concepts/workflow-status/status-active",
+    "iri": "concepts-workflow-status-status-active"
+  },
+  {
+    "concept_id": "status-deprecated",
+    "pref_label": "Deprecated",
+    "alt_label": "Superseded",
+    "definition": "Workflow has been replaced by a newer version and should not be used for new instances.",
+    "scope_note": "Deprecated workflows may still have in-flight instances; do not archive until all instances close.",
+    "relative_path": "concepts/workflow-status/status-deprecated",
+    "iri": "concepts-workflow-status-status-deprecated"
+  },
+  {
+    "concept_id": "status-archived",
+    "pref_label": "Archived",
+    "alt_label": "Retired",
+    "definition": "Workflow is no longer in use and has been moved to historical records.",
+    "scope_note": "Archived workflows answer CQ5 stale-workflow queries but generate no new instances.",
+    "relative_path": "concepts/workflow-status/status-archived",
+    "iri": "concepts-workflow-status-status-archived"
+  }
+]

@@ -184,6 +184,20 @@ app.get("/api/story", wrap(async (req, res) => {
         durationMinutes: s.stepDurationMinutes,
         isApprovalGate: !!gate,
         gateName: gate ? gate.displayName : null,
+        // The gate's defining properties. `escalationThresholdHours` is a raw field
+        // the substrate emits directly. The two lookups — GateRole and
+        // GateApproverHuman — are NOT in the engines' ApprovalGates individuals
+        // payload (both substrates currently drop lookup columns from that export),
+        // so we resolve them by following the SAME FK chain the rulebook formula
+        // declares, over individuals already in hand:
+        //   GateRole          = WorkflowStep.AssignedRole          → this step's role
+        //   GateApproverHuman = GateRole.FilledByHumanAgent        → this step's human filler
+        // Because the gate is matched to `s` by workflowStep === s.workflowStepId,
+        // the gate's step IS this step, so `filler` already carries both. This is
+        // chasing existing FKs, not re-deriving a calc the view owns.
+        escalationThresholdHours: gate ? gate.escalationThresholdHours ?? null : null,
+        gateRole: gate ? (filler ? filler.roleName : s.assignedRole) : null,
+        gateApproverHuman: gate ? (filler && filler.agent?.kind === "human" ? filler.agent.name : null) : null,
         consistencyViolation: !!s.approvalConsistencyViolation,
         precedes: Array.isArray(s.precedesStep) ? s.precedesStep : s.precedesStep ? [s.precedesStep] : [],
       };
@@ -593,6 +607,55 @@ app.get("/api/diff", wrap(async (req, res) => {
       postgres: canonicalHash(proj.postgres),
     },
   });
+}));
+
+// --- conformance test harness ---------------------------------------------
+// The admin Conformance section lists the rulebook's ConformanceTests, runs the
+// whole suite against BOTH engines on demand, and shows the last run. The harness
+// is engine-agnostic (it calls the same reason() the rest of the app uses) and
+// writes a run-log to testing/conformance-runs/ that survives a restart.
+const CONFORMANCE_RUNS_DIR = path.join(PROJECT_ROOT, "testing", "conformance-runs");
+
+// List every test (metadata only — no execution). Cheap; the admin list calls it.
+app.get("/api/conformance/tests", wrap(async (_req, res) => {
+  const { ConformanceHarness } = await import("./conformance/harness");
+  const h = new ConformanceHarness();
+  await h.load();
+  res.json({ engines: (await import("./conformance/harness")).ENGINE_IDS, tests: h.listTests() });
+}));
+
+// The last run-log (committed latest.json), so the admin shows results without
+// re-running. 404 (not 500, not a fake empty run) if no run has happened yet —
+// the UI distinguishes "never run" from "ran and failed".
+app.get("/api/conformance/latest", wrap(async (_req, res) => {
+  const latest = path.join(CONFORMANCE_RUNS_DIR, "latest.json");
+  if (!existsSync(latest)) { res.status(404).json({ error: "no conformance run yet — POST /api/conformance/run" }); return; }
+  res.json(JSON.parse(await readFile(latest, "utf8")));
+}));
+
+// Run the suite NOW (optionally a subset via {only:[ids]}) and write the log.
+// This actually executes both engines — it can take ~100s for the full suite, so
+// the admin shows a spinner. We never fake or cache a result here.
+app.post("/api/conformance/run", wrap(async (req, res) => {
+  const { ConformanceHarness } = await import("./conformance/harness");
+  const only = Array.isArray(req.body?.only) ? (req.body.only as string[]) : undefined;
+  const h = new ConformanceHarness();
+  await h.load();
+  const report = await h.run({ only });
+  // Persist the canonical baseline (latest.json) ONLY for a FULL run. A subset
+  // run (the per-row ▶ button) returns its results for the client to merge into
+  // the displayed table, but must NOT clobber latest.json — otherwise a refresh
+  // would show "3 tests" instead of the full 72. We still archive every run
+  // (full or subset) as its own timestamped log for the audit trail.
+  const { mkdir } = await import("node:fs/promises");
+  await mkdir(CONFORMANCE_RUNS_DIR, { recursive: true });
+  const stamp = report.summary.startedAt.replace(/[:.]/g, "-");
+  const tag = only ? `-subset-${only.length}` : "";
+  await writeFile(path.join(CONFORMANCE_RUNS_DIR, `run-${stamp}${tag}.json`), JSON.stringify(report, null, 2) + "\n", "utf8");
+  if (!only) {
+    await writeFile(path.join(CONFORMANCE_RUNS_DIR, "latest.json"), JSON.stringify(report, null, 2) + "\n", "utf8");
+  }
+  res.json(report);
 }));
 
 // --- control plane (Reset / Rebuild) --------------------------------------

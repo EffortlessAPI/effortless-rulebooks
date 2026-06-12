@@ -1,9 +1,186 @@
 [
   {
     "entity": "Workflows",
-    "field": "MonthsSinceModified",
-    "formula": "=DATETIME_DIFF(NOW(), {{Modified}}, \"months\")",
+    "field": "HasAIAgentStep",
+    "formula": "={{CountAISteps}} > 0",
     "record_id": "production-deployment",
-    "error": "ValueError: DATETIME_DIFF: unsupported unit 'month'"
+    "error": "drift: stored=True python-recompute=False",
+    "severity": "drift"
+  },
+  {
+    "entity": "WorkflowSteps",
+    "field": "ExecutingAgentType",
+    "formula": "=IF(NOT(ISBLANK({{ExecutingHumanAgent}})), \"HumanAgent\", IF(NOT(ISBLANK({{ExecutingAIAgent}})), \"AIAgent\", IF(NOT(ISBLANK({{ExecutingAutomatedPipeline}})), \"AutomatedPipeline\", \"\")))",
+    "record_id": "prod-deploy-step-5",
+    "error": "drift: stored='AIAgent' python-recompute=''",
+    "severity": "drift"
+  },
+  {
+    "entity": "WorkflowSteps",
+    "field": "IsExecutedByAI",
+    "formula": "=NOT(ISBLANK({{ExecutingAIAgent}}))",
+    "record_id": "prod-deploy-step-5",
+    "error": "drift: stored=True python-recompute=False",
+    "severity": "drift"
+  },
+  {
+    "entity": "WorkflowSteps",
+    "field": "ExecutingAgentType",
+    "formula": "=IF(NOT(ISBLANK({{ExecutingHumanAgent}})), \"HumanAgent\", IF(NOT(ISBLANK({{ExecutingAIAgent}})), \"AIAgent\", IF(NOT(ISBLANK({{ExecutingAutomatedPipeline}})), \"AutomatedPipeline\", \"\")))",
+    "record_id": "prod-deploy-step-1",
+    "error": "drift: stored='AIAgent' python-recompute=''",
+    "severity": "drift"
+  },
+  {
+    "entity": "WorkflowSteps",
+    "field": "IsExecutedByAI",
+    "formula": "=NOT(ISBLANK({{ExecutingAIAgent}}))",
+    "record_id": "prod-deploy-step-1",
+    "error": "drift: stored=True python-recompute=False",
+    "severity": "drift"
+  },
+  {
+    "entity": "Roles",
+    "field": "FilledByArmCount",
+    "formula": "=IF(NOT(ISBLANK({{FilledByHumanAgent}})), 1, 0) + IF(NOT(ISBLANK({{FilledByAIAgent}})), 1, 0) + IF(NOT(ISBLANK({{FilledByAutomatedPipeline}})), 1, 0)",
+    "record_id": "ntwf-deployment-health-role",
+    "error": "drift: stored=1 python-recompute=0",
+    "severity": "drift"
+  },
+  {
+    "entity": "Roles",
+    "field": "FillerType",
+    "formula": "=IF(NOT(ISBLANK({{FilledByHumanAgent}})), \"HumanAgent\", IF(NOT(ISBLANK({{FilledByAIAgent}})), \"AIAgent\", IF(NOT(ISBLANK({{FilledByAutomatedPipeline}})), \"AutomatedPipeline\", \"\")))",
+    "record_id": "ntwf-deployment-health-role",
+    "error": "drift: stored='AIAgent' python-recompute=''",
+    "severity": "drift"
+  },
+  {
+    "entity": "Roles",
+    "field": "FilledByArmCount",
+    "formula": "=IF(NOT(ISBLANK({{FilledByHumanAgent}})), 1, 0) + IF(NOT(ISBLANK({{FilledByAIAgent}})), 1, 0) + IF(NOT(ISBLANK({{FilledByAutomatedPipeline}})), 1, 0)",
+    "record_id": "ntwf-risk-analysis-role",
+    "error": "drift: stored=1 python-recompute=0",
+    "severity": "drift"
+  },
+  {
+    "entity": "Roles",
+    "field": "FillerType",
+    "formula": "=IF(NOT(ISBLANK({{FilledByHumanAgent}})), \"HumanAgent\", IF(NOT(ISBLANK({{FilledByAIAgent}})), \"AIAgent\", IF(NOT(ISBLANK({{FilledByAutomatedPipeline}})), \"AutomatedPipeline\", \"\")))",
+    "record_id": "ntwf-risk-analysis-role",
+    "error": "drift: stored='AIAgent' python-recompute=''",
+    "severity": "drift"
+  },
+  {
+    "entity": "RoleAssignments",
+    "field": "Name",
+    "formula": "={{Role}} & \" [\" & {{ValidFrom}} & \" -> \" & IF(ISBLANK({{ValidTo}}), \"open\", {{ValidTo}}) & \"]\"",
+    "record_id": "asn-release-manager-maria",
+    "error": "drift: stored='ntwf-release-manager-role [2026-01-10 00:00:00-06 -> open]' python-recompute='ntwf-release-manager-role [2026-01-10 -> open]'",
+    "severity": "drift"
+  },
+  {
+    "entity": "RoleAssignments",
+    "field": "Name",
+    "formula": "={{Role}} & \" [\" & {{ValidFrom}} & \" -> \" & IF(ISBLANK({{ValidTo}}), \"open\", {{ValidTo}}) & \"]\"",
+    "record_id": "asn-vp-eng-priya",
+    "error": "drift: stored='ntwf-vp-engineering-role [2026-01-10 00:00:00-06 -> 2026-03-15 00:00:00-05]' python-recompute='ntwf-vp-engineering-role [2026-01-10 -> 2026-03-15]'",
+    "severity": "drift"
+  },
+  {
+    "entity": "RoleAssignments",
+    "field": "Name",
+    "formula": "={{Role}} & \" [\" & {{ValidFrom}} & \" -> \" & IF(ISBLANK({{ValidTo}}), \"open\", {{ValidTo}}) & \"]\"",
+    "record_id": "asn-vp-eng-david",
+    "error": "drift: stored='ntwf-vp-engineering-role [2026-03-15 00:00:00-05 -> open]' python-recompute='ntwf-vp-engineering-role [2026-03-15 -> open]'",
+    "severity": "drift"
+  },
+  {
+    "entity": "RoleAssignments",
+    "field": "Name",
+    "formula": "={{Role}} & \" [\" & {{ValidFrom}} & \" -> \" & IF(ISBLANK({{ValidTo}}), \"open\", {{ValidTo}}) & \"]\"",
+    "record_id": "asn-deploy-health-ai-initial",
+    "error": "drift: stored='ntwf-deployment-health-role [2026-01-10 00:00:00-06 -> 2026-02-05 00:00:00-06]' python-recompute='ntwf-deployment-health-role [2026-01-10 -> 2026-02-05]'",
+    "severity": "drift"
+  },
+  {
+    "entity": "RoleAssignments",
+    "field": "FillerType",
+    "formula": "=IF(NOT(ISBLANK({{FilledByHumanAgent}})), \"HumanAgent\", IF(NOT(ISBLANK({{FilledByAIAgent}})), \"AIAgent\", IF(NOT(ISBLANK({{FilledByAutomatedPipeline}})), \"AutomatedPipeline\", \"\")))",
+    "record_id": "asn-deploy-health-ai-initial",
+    "error": "drift: stored='AIAgent' python-recompute=''",
+    "severity": "drift"
+  },
+  {
+    "entity": "RoleAssignments",
+    "field": "Name",
+    "formula": "={{Role}} & \" [\" & {{ValidFrom}} & \" -> \" & IF(ISBLANK({{ValidTo}}), \"open\", {{ValidTo}}) & \"]\"",
+    "record_id": "asn-deploy-health-human-audit",
+    "error": "drift: stored='ntwf-deployment-health-role [2026-02-05 00:00:00-06 -> 2026-02-20 00:00:00-06]' python-recompute='ntwf-deployment-health-role [2026-02-05 -> 2026-02-20]'",
+    "severity": "drift"
+  },
+  {
+    "entity": "RoleAssignments",
+    "field": "Name",
+    "formula": "={{Role}} & \" [\" & {{ValidFrom}} & \" -> \" & IF(ISBLANK({{ValidTo}}), \"open\", {{ValidTo}}) & \"]\"",
+    "record_id": "asn-deploy-health-ai-current",
+    "error": "drift: stored='ntwf-deployment-health-role [2026-02-20 00:00:00-06 -> open]' python-recompute='ntwf-deployment-health-role [2026-02-20 -> open]'",
+    "severity": "drift"
+  },
+  {
+    "entity": "RoleAssignments",
+    "field": "FillerType",
+    "formula": "=IF(NOT(ISBLANK({{FilledByHumanAgent}})), \"HumanAgent\", IF(NOT(ISBLANK({{FilledByAIAgent}})), \"AIAgent\", IF(NOT(ISBLANK({{FilledByAutomatedPipeline}})), \"AutomatedPipeline\", \"\")))",
+    "record_id": "asn-deploy-health-ai-current",
+    "error": "drift: stored='AIAgent' python-recompute=''",
+    "severity": "drift"
+  },
+  {
+    "entity": "AIAgents",
+    "field": "RelativePath",
+    "formula": "=\"ai-agents/\" & {{AIAgentId}}",
+    "record_id": "ntwf-risk-ai",
+    "error": "drift: stored='ai-agents/ntwf-risk-ai' python-recompute='ai-agents/'",
+    "severity": "drift"
+  },
+  {
+    "entity": "AIAgents",
+    "field": "RelativePath",
+    "formula": "=\"ai-agents/\" & {{AIAgentId}}",
+    "record_id": "ntwf-health-ai",
+    "error": "drift: stored='ai-agents/ntwf-health-ai' python-recompute='ai-agents/'",
+    "severity": "drift"
+  },
+  {
+    "entity": "WorkflowArtifacts",
+    "field": "ProducingAgentType",
+    "formula": "=IF(NOT(ISBLANK({{AttributedToHumanAgent}})), \"HumanAgent\", IF(NOT(ISBLANK({{AttributedToAIAgent}})), \"AIAgent\", IF(NOT(ISBLANK({{AttributedToAutomatedPipeline}})), \"AutomatedPipeline\", \"\")))",
+    "record_id": "artifact-risk-report",
+    "error": "drift: stored='AIAgent' python-recompute=''",
+    "severity": "drift"
+  },
+  {
+    "entity": "WorkflowArtifacts",
+    "field": "ProducingAgentType",
+    "formula": "=IF(NOT(ISBLANK({{AttributedToHumanAgent}})), \"HumanAgent\", IF(NOT(ISBLANK({{AttributedToAIAgent}})), \"AIAgent\", IF(NOT(ISBLANK({{AttributedToAutomatedPipeline}})), \"AutomatedPipeline\", \"\")))",
+    "record_id": "artifact-post-deploy-report",
+    "error": "drift: stored='AIAgent' python-recompute=''",
+    "severity": "drift"
+  },
+  {
+    "entity": "ChangeLog",
+    "field": "Name",
+    "formula": "={{Version}} & \" (\" & {{ChangeDate}} & \")\"",
+    "record_id": "change-1-0-0",
+    "error": "drift: stored='1.0.0 (2026-01-15 00:00:00-06)' python-recompute='1.0.0 (2026-01-15)'",
+    "severity": "drift"
+  },
+  {
+    "entity": "ChangeLog",
+    "field": "Name",
+    "formula": "={{Version}} & \" (\" & {{ChangeDate}} & \")\"",
+    "record_id": "change-1-1-0",
+    "error": "drift: stored='1.1.0 (2026-03-20 00:00:00-05)' python-recompute='1.1.0 (2026-03-20)'",
+    "severity": "drift"
   }
 ]

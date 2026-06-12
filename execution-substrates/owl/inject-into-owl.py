@@ -27,6 +27,35 @@ from orchestration.shared import load_rulebook, handle_clean_arg, get_rulebook_p
 
 
 # =============================================================================
+# ONTOLOGY NAMESPACE
+# =============================================================================
+#
+# Every class, property, and individual in the emitted graph lives in ONE
+# namespace — this IS the NTWF ontology as rendered by Effortless from the
+# rulebook. We use the `effortless-ntwf:` prefix to be honest about provenance:
+# the vocabulary is Jessica Talisman's NTWF (the rulebook's PK slugs are already
+# `ntwf-*` / `prod-deploy-*` and the article uses the `ntwf:` prefix), but this
+# graph is the Effortless rendering of it, minted from the rulebook PKs — not a
+# claim to be her published serialization byte-for-byte.
+#
+# Base URI: `https://w3id.org/effortless-ntwf#` (w3id = persistent, redirectable
+# community root). The article's canonical NTWF base is paywalled and is NOT
+# declared in the rulebook, so we do NOT guess it into every IRI; if it later
+# becomes known, aligning is a one-line change to ONT_NS below. The PREFIX and
+# the BASE are the single source of truth for the whole file — every `effortless-ntwf:`
+# token is produced via the helpers/constants here, never hard-coded inline.
+ONT_PREFIX = "effortless-ntwf"
+ONT_NS = "https://w3id.org/effortless-ntwf#"
+# Convenience prefix token used when building Turtle/SPARQL terms by f-string.
+NS = f"{ONT_PREFIX}:"
+
+
+def prefix_decl() -> str:
+    """The `@prefix` line declaring the ontology namespace (TBox/ABox/SHACL)."""
+    return f"@prefix {ONT_PREFIX}: <{ONT_NS}> ."
+
+
+# =============================================================================
 # DATA TYPES
 # =============================================================================
 
@@ -457,8 +486,8 @@ def field_to_property_uri(field_name: str) -> str:
     """Convert field name to property URI (camelCase)."""
     # Ensure first letter is lowercase for property
     if field_name:
-        return 'erb:' + field_name[0].lower() + field_name[1:]
-    return 'erb:unknown'
+        return NS + field_name[0].lower() + field_name[1:]
+    return NS + 'unknown'
 
 
 def escape_sparql_string(s: str) -> str:
@@ -503,7 +532,7 @@ def compile_to_sparql(expr: ExprNode, field_bindings: Dict[str, str] = None) -> 
         # A FieldRef can resolve to an IRI rather than a string literal: a
         # relationship FK, or a lookup that copies an FK (e.g. OwningDepartment =
         # INDEX(Roles!{{OwnedBy}}, ...), where OwnedBy is an owl:ObjectProperty,
-        # so the looked-up value is erb:ntwf-engineering, an IRI — not the string
+        # so the looked-up value is effortless-ntwf:ntwf-engineering, an IRI — not the string
         # "ntwf-engineering"). A rulebook formula like
         #     ={{OwningDepartment}} = "ntwf-engineering"
         # then compiles to (?owning_department = "ntwf-engineering"), which in
@@ -699,7 +728,7 @@ def datatype_to_xsd(datatype: str) -> str:
 #   - inverse rels     : two relationship fields A.x→B and B.y→A that point at
 #                         each other are emitted as owl:inverseOf so the reasoner
 #                         derives the reverse direction instead of us pre-baking
-#                         comma-joined string lists (the old `erb:roles ""` noise).
+#                         comma-joined string lists (the old `effortless-ntwf:roles ""` noise).
 # =============================================================================
 
 
@@ -749,13 +778,15 @@ def build_pk_index(tables: Dict[str, Any]) -> Dict[str, str]:
 
 
 def individual_iri(table_name: str, pk_value: Any) -> str:
-    """Mint a stable, PK-keyed individual IRI: erb:<pkvalue>.
+    """Mint a stable, PK-keyed individual IRI: effortless-ntwf:<pkvalue>.
 
     PK values are globally unique across this rulebook (ntwf-* / prod-deploy-* /
     department-* etc.), so the IRI is the bare PK — human-readable and stable
     across reorderings. Edges resolve by minting the same IRI from the FK value.
+    The PK slug is the IRI's local name verbatim (kebab-case, colon-separated
+    from the prefix) — the owly `effortless-ntwf:prod-deploy-step-3` form.
     """
-    return f'erb:{slugify_iri_local(pk_value)}'
+    return f'{NS}{slugify_iri_local(pk_value)}'
 
 
 def find_inverse_pairs(tables: Dict[str, Any]) -> Dict[str, str]:
@@ -826,7 +857,7 @@ def closure_base_property(closure_col: Dict[str, Any], rels_by_name: Dict[str, s
     StepPrecedence(FromStep→ToStep)) or just ToColumn (self-edge, e.g.
     Roles.DelegatesTo). The base property is the relationship named by ToColumn;
     declaring IT transitive lets a reasoner derive the full closure. Returns the
-    property URI (erb:precedesStep style) or None.
+    property URI (effortless-ntwf:precedesStep style) or None.
     """
     to_col = closure_col.get('ToColumn')
     edge_table = closure_col.get('EdgeTable')
@@ -838,7 +869,7 @@ def closure_base_property(closure_col: Dict[str, Any], rels_by_name: Dict[str, s
         # <fromcol-stripped>Precedes... — simplest stable choice: 'precedes<To>').
         # We key the base property off the edge-table's column pair so it is
         # deterministic and unique.
-        return f'erb:{_lower_first(closure_col["name"].replace("Closure", ""))}'
+        return f'{NS}{_lower_first(closure_col["name"].replace("Closure", ""))}'
     if to_col:
         # Self-edge closure: base property is the ToColumn relationship itself.
         return field_to_property_uri(to_col)
@@ -885,7 +916,7 @@ def shared_field_names(tables: Dict[str, Any]) -> set:
     EVERY subject as all 14 classes — the catastrophic collapse (e.g. the 'iri'
     and 'name' fields exist on every table). The fix: do not emit rdfs:domain for
     a property whose field name is shared. Domain is not needed for our queries —
-    individuals are explicitly typed (`a erb:Class`) in the ABox, and ranges +
+    individuals are explicitly typed (`a effortless-ntwf:Class`) in the ABox, and ranges +
     the SHACL targetClass carry the rest. Unshared properties keep their domain.
     """
     import collections as _c
@@ -924,11 +955,11 @@ def generate_ontology_owl(tables: Dict[str, Any]) -> str:
     lines.append('@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .')
     lines.append('@prefix owl: <http://www.w3.org/2002/07/owl#> .')
     lines.append('@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .')
-    lines.append('@prefix erb: <http://example.org/erb#> .')
+    lines.append(prefix_decl())
     lines.append('')
-    lines.append('erb: a owl:Ontology ;')
-    lines.append('    rdfs:label "ERB Ontology" ;')
-    lines.append(f'    rdfs:comment "Generated from {get_rulebook_path().name}" .')
+    lines.append(f'<{ONT_NS}> a owl:Ontology ;')
+    lines.append('    rdfs:label "NTWF Ontology (Effortless rendering)" ;')
+    lines.append(f'    rdfs:comment "Generated by Effortless from {get_rulebook_path().name}. Vocabulary: Jessica Talisman NTWF." .')
     lines.append('')
 
     # Track object properties we declare so the transitive/functional axiom pass
@@ -946,7 +977,7 @@ def generate_ontology_owl(tables: Dict[str, Any]) -> str:
         if not schema:
             continue
 
-        class_uri = f'erb:{table_name}'
+        class_uri = f'{NS}{table_name}'
         entity_description = table_def.get('Description', '')
         lines.append(f'# === Class: {table_name} ===')
         lines.append(f'{class_uri} a owl:Class ;')
@@ -972,7 +1003,7 @@ def generate_ontology_owl(tables: Dict[str, Any]) -> str:
                 # when the field name is shared across tables (else OWL-RL types
                 # every subject as every domain class).
                 target = col['RelatedTo']
-                target_class = f'erb:{target}'
+                target_class = f'{NS}{target}'
                 lines.append(f'{prop_uri} a owl:ObjectProperty ;')
                 if col_name not in shared:
                     lines.append(f'    rdfs:domain {class_uri} ;')
@@ -1070,7 +1101,7 @@ def generate_ontology_owl(tables: Dict[str, Any]) -> str:
             classes = sorted(group)
             for i, a in enumerate(classes):
                 for b in classes[i + 1:]:
-                    lines.append(f'erb:{a} owl:disjointWith erb:{b} .')
+                    lines.append(f'{NS}{a} owl:disjointWith {NS}{b} .')
         lines.append('')
 
     return '\n'.join(lines)
@@ -1160,9 +1191,9 @@ def _split_multi(value: Any) -> List[str]:
 def generate_individuals_ttl(tables: Dict[str, Any]) -> str:
     """Generate ABox (individuals/data) from rulebook tables.
 
-    Individuals are keyed by PRIMARY KEY value (erb:<pk>), not positional index.
+    Individuals are keyed by PRIMARY KEY value (effortless-ntwf:<pk>), not positional index.
     Relationship fields emit owl:ObjectProperty EDGES to the target individual
-    (erb:<targetPk>), resolved through the FK value — not string literals.
+    (effortless-ntwf:<targetPk>), resolved through the FK value — not string literals.
     Multi-valued FK values become multiple edges (no comma-joined strings).
     The reverse direction of an inverse pair is NOT emitted; the reasoner
     infers it via owl:inverseOf, which also removes the old empty `roles ""`
@@ -1184,7 +1215,7 @@ def generate_individuals_ttl(tables: Dict[str, Any]) -> str:
     lines.append('@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .')
     lines.append('@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .')
     lines.append('@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .')
-    lines.append('@prefix erb: <http://example.org/erb#> .')
+    lines.append(prefix_decl())
     lines.append('')
 
     # Collect direct junction-projected edges to emit in a dedicated block, so
@@ -1218,16 +1249,22 @@ def generate_individuals_ttl(tables: Dict[str, Any]) -> str:
 
         lines.append(f'# === Individuals: {table_name} ===')
         lines.append('')
-        class_uri = f'erb:{table_name}'
+        class_uri = f'{NS}{table_name}'
 
         for i, row in enumerate(data):
             pk_value = row.get(pk_field) if pk_field else None
             if pk_value is None or str(pk_value).strip() == '':
-                # No identity → fall back to positional IRI (keeps it parseable,
-                # but this is unusual; surface it rather than silently dropping).
-                ind_uri = f'erb:{table_name}_{i}'
-            else:
-                ind_uri = individual_iri(table_name, pk_value)
+                # No identity = a malformed rulebook row. Minting a positional
+                # IRI here would be a silent fallback (see CLAUDE.md): it would
+                # paper over the bad row and let every FK that points at this PK
+                # dangle against a fabricated subject. The PK IS the identity in
+                # this graph — fail loudly with the exact row that's broken.
+                raise ValueError(
+                    f"{table_name}[{i}] has no primary-key value in field "
+                    f"'{pk_field}' — cannot mint an individual IRI. Fix the "
+                    f"rulebook row; the OWL substrate keys every individual by PK."
+                )
+            ind_uri = individual_iri(table_name, pk_value)
 
             lines.append(f'{ind_uri} a {class_uri} ;')
 
@@ -1397,12 +1434,12 @@ def _compile_lookup_value(expr: ExprNode, state: Dict[str, Any]) -> str:
         #
         #   - A relationship FK is emitted as an owl:ObjectProperty edge to the
         #     target node, but the node ALSO carries its PK as a datatype property
-        #     (erb:<pkCol> "<pkValue>"), so PK-matching finds the same individual.
+        #     (effortless-ntwf:<pkCol> "<pkValue>"), so PK-matching finds the same individual.
         #   - A *derived* FK — a lookup/calculated field whose value is a target
         #     PK STRING (e.g. GateDelegateRole = INDEX(Roles!{{DelegatesTo}}, ...))
         #     is NOT an edge at all; it is a plain literal. The old code emitted
-        #     `$this erb:gateDelegateRole ?node` and bound ?node to the literal
-        #     "ntwf-vp-engineering-role", then tried to read erb:filledByHumanAgent
+        #     `$this effortless-ntwf:gateDelegateRole ?node` and bound ?node to the literal
+        #     "ntwf-vp-engineering-role", then tried to read effortless-ntwf:filledByHumanAgent
         #     off a *string*, which matches nothing (or, under OWL-RL churn, every
         #     node) — the multi-valued garbage that broke chained lookups.
         #
@@ -1410,7 +1447,7 @@ def _compile_lookup_value(expr: ExprNode, state: Dict[str, Any]) -> str:
         # property — anchored to the target class so the join can't wander to a
         # same-valued property on another table — resolves both cases identically.
         local_key_prop = field_to_property_uri(local_key.name)
-        target_class = f'erb:{target_pk_ref.table}'
+        target_class = f'{NS}{target_pk_ref.table}'
         target_pk_prop = field_to_property_uri(target_pk_ref.column)
         result_prop = field_to_property_uri(result_ref.column)
 
@@ -1426,8 +1463,8 @@ def _compile_lookup_value(expr: ExprNode, state: Dict[str, Any]) -> str:
         # Match on the trailing LOCAL NAME of the target's PK property, not its
         # raw STR(). When the target's PK column is the row's own id (ConceptId,
         # StatusId, …), the ABox promotes that value to a self IRI
-        # (erb:verdict-at-risk) rather than a bare literal, so STR(pkvar) becomes
-        # "http://example.org/erb#verdict-at-risk" while the local key is the plain
+        # (effortless-ntwf:verdict-at-risk) rather than a bare literal, so STR(pkvar) becomes
+        # "https://w3id.org/effortless-ntwf#verdict-at-risk" while the local key is the plain
         # string "verdict-at-risk" — and STR()=STR() never matches. Stripping
         # everything up to the last '#'/'/' on the PK side makes the join hold
         # whether the PK arrives as an IRI or a literal, and the local key (which
@@ -1455,7 +1492,7 @@ def build_lookup_where(table_name: str, expr: ExprNode) -> str:
     state = {'triples': [], 'locals': {}, 'counter': [0]}
     value_expr = _compile_lookup_value(expr, state)
 
-    parts = [f'    $this a erb:{table_name} .']
+    parts = [f'    $this a {NS}{table_name} .']
     for field_name, var in sorted(state['locals'].items()):
         prop = field_to_property_uri(field_name)
         parts.append(f'{INDENT}OPTIONAL {{ $this {prop} {var} . }}')
@@ -1474,10 +1511,10 @@ def build_lookup_where(table_name: str, expr: ExprNode) -> str:
 # once per generation from the schema (see generate_shacl_rules), keyed by the
 # view name as it appears in formulas.
 #   { "vw_step_precedence_closure": {
-#        "base_prop": "erb:precedesStep",     # the transitive property
+#        "base_prop": "effortless-ntwf:precedesStep",     # the transitive property
 #        "edge_class": "StepPrecedence",        # asserted-edge junction class
-#        "from_prop": "erb:fromStep",           # asserted edge's from-FK
-#        "to_prop":   "erb:toStep" } }          # asserted edge's to-FK
+#        "from_prop": "effortless-ntwf:fromStep",           # asserted edge's from-FK
+#        "to_prop":   "effortless-ntwf:toStep" } }          # asserted edge's to-FK
 CLOSURE_RELATIONS: Dict[str, Dict[str, str]] = {}
 
 
@@ -1508,7 +1545,7 @@ def register_closure_relations(tables: Dict[str, Any]) -> None:
                 # for now (the only COUNTIFS-over-closure in use is the junction one).
                 continue
             view_name = f'vw_{_snake(edge_table)}_closure'
-            base_prop = closure_base_property(col, {})  # erb:precedesStep style
+            base_prop = closure_base_property(col, {})  # effortless-ntwf:precedesStep style
             CLOSURE_RELATIONS[view_name] = {
                 'base_prop': base_prop,
                 'edge_class': edge_table,
@@ -1519,11 +1556,18 @@ def register_closure_relations(tables: Dict[str, Any]) -> None:
 
 def build_closure_count_where(table_name: str, expr: ExprNode, closure: Dict[str, str]) -> str:
     """Count transitive-closure pairs, filtered by is_inferred, to match the
-    Postgres closure view. A pair (?a base ?b) is ASSERTED iff a junction edge
+    Postgres closure view. A pair (?a base+ ?b) is ASSERTED iff a junction edge
     individual exists with from=?a, to=?b; otherwise INFERRED. This is exactly
-    the view's is_inferred semantics, computed over the reasoned triples (the
-    base property is owl:TransitiveProperty, so OWL-RL has already materialized
-    every reachable pair).
+    the view's is_inferred semantics.
+
+    The closure is computed with a SPARQL TRANSITIVE PROPERTY PATH (`base+`),
+    NOT by relying on OWL-RL to pre-materialize the transitive edges. take-test
+    runs pyshacl with inference='none' (full RDFS/OWL-RL inference mis-binds the
+    multi-domain back-reference properties — see the injector's disjointness
+    workaround), so `owl:TransitiveProperty` alone never expands. `base+` walks
+    the reachability at query time, so the article's headline inference (4
+    asserted edges -> 10 closure pairs, 6 inferred, incl. the never-asserted
+    1->5) fires regardless of the reasoner's inference mode.
 
     The formula shape is COUNTIFS(<closureView>!{{IsInferred}}, TRUE/FALSE).
     """
@@ -1547,18 +1591,20 @@ def build_closure_count_where(table_name: str, expr: ExprNode, closure: Dict[str
 
     # asserted := an edge individual of edge_class links ?a -> ?b directly.
     asserted = (
-        f'{INDENT}        EXISTS {{ ?e a erb:{edge_class} ; {from_prop} ?a ; {to_prop} ?b . }}'
+        f'{INDENT}        EXISTS {{ ?e a {NS}{edge_class} ; {from_prop} ?a ; {to_prop} ?b . }}'
     )
     inferred_filter = (
         f'{INDENT}        FILTER(NOT {asserted.strip()})' if want_inferred
         else f'{INDENT}        FILTER({asserted.strip()})'
     )
+    # `{base}+` is a SPARQL transitive property path: ?a reaches ?b in one or
+    # more hops. This materializes the closure at query time (no OWL-RL needed).
     inner = (
-        f'{INDENT}        ?a {base} ?b .\n'
+        f'{INDENT}        ?a {base}+ ?b .\n'
         f'{inferred_filter}'
     )
     parts = [
-        f'    $this a erb:{table_name} .',
+        f'    $this a {NS}{table_name} .',
         f'{INDENT}{{',
         f'{INDENT}    SELECT (COUNT(*) AS ?_result) WHERE {{',
         inner,
@@ -1608,21 +1654,41 @@ def build_aggregation_where(table_name: str, expr: ExprNode) -> str:
             raise ValueError("SUMIFS over a closure relation is not supported")
         return build_closure_count_where(table_name, expr, CLOSURE_RELATIONS[first_range.table])
 
-    # First pair: Child!{{BackFK}}, Parent!{{ParentPK}} — the parent link.
+    # First pair shape detection. Two legal forms:
+    #   (a) PARENT-SCOPED: Child!{{BackFK}}, Parent!{{ParentPK}}
+    #       — criteria is a QualifiedRef naming the parent's PK. The child is
+    #         linked to $this via the BackFK object-property edge.
+    #   (b) UNSCOPED VALUE-FILTER: Child!{{Col}}, <literal/TRUE/FALSE>
+    #       — criteria is a literal. There is NO parent back-reference (e.g. a
+    #         single-workflow model where every child belongs to the one parent,
+    #         so the count is over ALL children matching the filter). The old
+    #         code assumed (a) unconditionally and emitted `?child <col> $this`,
+    #         which for a derived BOOLEAN column (IsAgentTypeChange, …) binds
+    #         $this as the object of a bool property and matches nothing → 0.
     back_range = args[0]
     if not isinstance(back_range, QualifiedRef):
-        raise ValueError("aggregation first range must be Child!{{BackFK}}")
+        raise ValueError("aggregation first range must be Child!{{Column}}")
     child_table = back_range.table
-    back_fk_prop = field_to_property_uri(back_range.column)
     if is_sum and sum_range.table != child_table:
         raise ValueError("SUMIFS sum_range and back-FK range must name the same child table")
 
-    triples = [f'{INDENT}    ?child a erb:{child_table} .',
-               f'{INDENT}    ?child {back_fk_prop} $this .']
+    triples = [f'{INDENT}    ?child a {NS}{child_table} .']
     filters = []
 
-    # Remaining (range, criteria) pairs → equality filters on the child.
-    for k in range(2, len(args), 2):
+    first_crit = args[1]
+    # Pairs to turn into value-filters. In form (a) that's pairs[2:]; in form (b)
+    # the FIRST pair is itself a value-filter, so include it.
+    filter_start = 2
+    if isinstance(first_crit, QualifiedRef):
+        # (a) parent-scoped: link the child to $this via the BackFK edge.
+        back_fk_prop = field_to_property_uri(back_range.column)
+        triples.append(f'{INDENT}    ?child {back_fk_prop} $this .')
+    else:
+        # (b) unscoped value-filter: the first pair is (Child!{{Col}}, value).
+        filter_start = 0
+
+    # (range, criteria) pairs → equality filters on the child.
+    for k in range(filter_start, len(args), 2):
         rng = args[k]
         crit = args[k + 1]
         if not isinstance(rng, QualifiedRef):
@@ -1656,7 +1722,7 @@ def build_aggregation_where(table_name: str, expr: ExprNode) -> str:
     inner = '\n'.join(triples + filters)
     # Sub-SELECT aggregates the matching children, grouped per $this row.
     parts = [
-        f'    $this a erb:{table_name} .',
+        f'    $this a {NS}{table_name} .',
         f'{INDENT}{{',
         f'{INDENT}    SELECT ({agg} AS ?_result) WHERE {{',
         inner,
@@ -1680,7 +1746,7 @@ def generate_shacl_rules(tables: Dict[str, Any]) -> str:
     lines.append('@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .')
     lines.append('@prefix sh: <http://www.w3.org/ns/shacl#> .')
     lines.append('@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .')
-    lines.append('@prefix erb: <http://example.org/erb#> .')
+    lines.append(prefix_decl())
     lines.append('')
 
     rule_count = 0
@@ -1693,7 +1759,7 @@ def generate_shacl_rules(tables: Dict[str, Any]) -> str:
         if not schema:
             continue
 
-        class_uri = f'erb:{table_name}'
+        class_uri = f'{NS}{table_name}'
 
         # Collect calculated fields with formulas
         calc_fields = []
@@ -1711,7 +1777,7 @@ def generate_shacl_rules(tables: Dict[str, Any]) -> str:
             continue
 
         # Generate NodeShape with rules
-        shape_uri = f'erb:{table_name}Shape'
+        shape_uri = f'{NS}{table_name}Shape'
         lines.append(f'# === Shape with rules for {table_name} ===')
         lines.append(f'{shape_uri} a sh:NodeShape ;')
         lines.append(f'    sh:targetClass {class_uri}')  # No trailing semicolon yet
@@ -1739,19 +1805,20 @@ def generate_shacl_rules(tables: Dict[str, Any]) -> str:
                 else:
                     field_bindings = {}
                     sparql_expr = compile_to_sparql(expr, field_bindings)
-                    where_parts = ['    $this a erb:' + table_name + ' .']
+                    where_parts = [f'    $this a {NS}{table_name} .']
                     for field_name, var_name in sorted(field_bindings.items()):
                         prop_uri = field_to_property_uri(field_name)
                         where_parts.append(f'    OPTIONAL {{ $this {prop_uri} {var_name} . }}')
                     # A CALCULATED RELATIONSHIP — a formula-bearing field whose
                     # type is `relationship` — computes a foreign-key PK string
                     # (e.g. IF(flag,'verdict-at-risk','verdict-ok')). The CONSTRUCT
-                    # must assert a real erb: edge to that individual, not a string
-                    # literal, so we coerce the computed PK into the erb: IRI. This
-                    # is the one place a scalar BIND becomes an object-property edge.
+                    # must assert a real effortless-ntwf: edge to that individual,
+                    # not a string literal, so we coerce the computed PK into the
+                    # ontology IRI. This is the one place a scalar BIND becomes an
+                    # object-property edge.
                     if calc['type'] == 'relationship':
                         sparql_expr = (
-                            f'IRI(CONCAT("http://example.org/erb#", STR({sparql_expr})))'
+                            f'IRI(CONCAT("{ONT_NS}", STR({sparql_expr})))'
                         )
                     where_parts.append(f'                BIND({sparql_expr} AS ?_result)')
                     where_clause = '\n'.join(where_parts)
@@ -1763,9 +1830,9 @@ def generate_shacl_rules(tables: Dict[str, Any]) -> str:
                 rule_lines.append(f'    sh:rule [')
                 rule_lines.append(f'        a sh:SPARQLRule ;')
                 rule_lines.append(f'        rdfs:label "{rule_name}" ;')
-                rule_lines.append(f'        sh:prefixes erb: ;')
+                rule_lines.append(f'        sh:prefixes {NS} ;')
                 rule_lines.append(f'        sh:construct """')
-                rule_lines.append(f'            PREFIX erb: <http://example.org/erb#>')
+                rule_lines.append(f'            PREFIX {ONT_PREFIX}: <{ONT_NS}>')
                 rule_lines.append(f'            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>')
                 rule_lines.append(f'            CONSTRUCT {{')
                 rule_lines.append(f'                $this {target_prop} ?_result .')
@@ -1830,8 +1897,8 @@ def generate_shacl_rules(tables: Dict[str, Any]) -> str:
             props = single_valued[table_name]
             if not props:
                 continue
-            class_uri = f'erb:{table_name}'
-            lines.append(f'erb:{table_name}CardinalityShape a sh:NodeShape ;')
+            class_uri = f'{NS}{table_name}'
+            lines.append(f'{NS}{table_name}CardinalityShape a sh:NodeShape ;')
             lines.append(f'    sh:targetClass {class_uri} ;')
             for i, prop_uri in enumerate(sorted(props)):
                 terminator = ' ;' if i < len(props) - 1 else ' .'

@@ -53,7 +53,16 @@ OWL_SRC = PROJECT_ROOT / "owl" / "src"
 TBOX = OWL_SRC / "ontology.owl"
 SHACL = OWL_SRC / "rules.shacl.ttl"
 
-ERB = Namespace("http://example.org/erb#")
+# MUST match the namespace the generated TBox + SHACL rules + ABox use. The OWL
+# transpiler emits `effortless-ntwf: <https://w3id.org/effortless-ntwf#>`. If this
+# drifts from abox_from_json.ERB or the generated TTL, the rules construct triples
+# under one namespace while _individuals() filters on another, and every derived
+# scalar vanishes from the output (the bug the conformance harness caught).
+ERB = Namespace("https://w3id.org/effortless-ntwf#")
+# The literal prefix label the generated CONSTRUCT bodies use (see owl/src/
+# rules.shacl.ttl: `PREFIX effortless-ntwf: <...>`). The construct-target scanner
+# below keys off this exact label.
+ERB_PREFIX_LABEL = "effortless-ntwf"
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from abox_from_json import json_db_to_turtle, load_db  # noqa: E402
@@ -88,8 +97,13 @@ def _shacl_construct_predicates(shapes: Graph) -> List[URIRef]:
     preds: List[URIRef] = []
     seen = set()
     for _, _, construct in shapes.triples((None, SH.construct, None)):
-        # Each CONSTRUCT body is `... CONSTRUCT { $this erb:<prop> ?_result . } ...`
-        for m in re.finditer(r"\$this\s+erb:(\w+)\s+\?_result", str(construct)):
+        # Each CONSTRUCT body is
+        #   `... CONSTRUCT { $this effortless-ntwf:<prop> ?_result . } ...`
+        # so we scan for the generated prefix label (ERB_PREFIX_LABEL), not a
+        # hardcoded `erb:`. A drift here would clear nothing in stage 3 and let
+        # stale stage-1 datatype values survive (multi-valued / pre-closure).
+        pattern = r"\$this\s+" + re.escape(ERB_PREFIX_LABEL) + r":(\w+)\s+\?_result"
+        for m in re.finditer(pattern, str(construct)):
             uri = ERB[m.group(1)]
             if uri in datatype_props and uri not in seen:
                 seen.add(uri)
@@ -161,10 +175,30 @@ def build_reasoned_graph(db: Dict[str, Any]) -> Graph:
     # triples, only the SHACL-derived calc/lookup/aggregation predicates.)
     derived_predicates = _shacl_construct_predicates(shapes)
 
+    # SOME of those predicates are dual-use: a SHACL rule CONSTRUCTs them for the
+    # tables whose `Name` (etc.) is CALCULATED, but for tables where the SAME
+    # property is a RAW field (HumanAgents/AIAgents/AutomatedPipelines carry a
+    # raw `name`) the value comes straight from the ABox — no rule restores it.
+    # clear_derived() would wipe those raw values and stage 3 would never put them
+    # back, silently dropping the field. So we snapshot the RAW (ABox-supplied)
+    # triples for the derived predicates NOW — before any SHACL has run, so the
+    # snapshot is purely authored data — and restore them after each clear. (A row
+    # whose value is genuinely computed has no ABox triple here, so nothing is
+    # restored for it; only true raw values survive the clear.)
+    raw_derived_triples = [
+        (s, p, o)
+        for p in derived_predicates
+        for s, o in g.subject_objects(p)
+    ]
+
     def clear_derived():
         for p in derived_predicates:
             for s, o in list(g.subject_objects(p)):
                 g.remove((s, p, o))
+        # put the authored raw values back so stage 3 sees them as inputs and the
+        # output carries them (they were never the rules' to recompute).
+        for s, p, o in raw_derived_triples:
+            g.add((s, p, o))
 
     shacl_to_fixpoint("stage 1")                                    # calc/lookup + asserted edges
     owlrl.DeductiveClosure(owlrl.OWLRL_Semantics).expand(g)          # transitive/inverse/type closure
@@ -217,7 +251,7 @@ def _precedence_closure(g: Graph, db: Dict[str, Any]) -> Dict[str, Any]:
         asserted.add((row.get("fromStep"), row.get("toStep")))
     pairs = []
     q = g.query(
-        "PREFIX erb: <http://example.org/erb#> "
+        "PREFIX erb: <https://w3id.org/effortless-ntwf#> "
         "SELECT ?f ?t WHERE { ?f erb:precedesStep ?t } ORDER BY ?f ?t"
     )
     for r in q:
@@ -236,7 +270,7 @@ def _delegation(g: Graph, db: Dict[str, Any]) -> Dict[str, List[str]]:
     for row in db.get("Roles", []):
         rid = row.get("roleId")
         q = g.query(
-            "PREFIX erb: <http://example.org/erb#> "
+            "PREFIX erb: <https://w3id.org/effortless-ntwf#> "
             f"SELECT ?r WHERE {{ erb:{rid} erb:delegatesTo ?r }} ORDER BY ?r"
         )
         chain = [_local(r[0]) for r in q]
@@ -247,7 +281,7 @@ def _delegation(g: Graph, db: Dict[str, Any]) -> Dict[str, List[str]]:
 
 def _disjoint_classes(g: Graph) -> List[Dict[str, str]]:
     q = g.query(
-        "PREFIX erb: <http://example.org/erb#> "
+        "PREFIX erb: <https://w3id.org/effortless-ntwf#> "
         "PREFIX owl: <http://www.w3.org/2002/07/owl#> "
         "SELECT ?a ?b WHERE { ?a owl:disjointWith ?b . "
         "FILTER(STRSTARTS(STR(?a), STR(erb:)) && STRSTARTS(STR(?b), STR(erb:))) } "
@@ -275,7 +309,7 @@ def _roles_filled_by(g: Graph, db: Dict[str, Any]) -> Dict[str, Dict[str, Any]]:
         result = {"agent": None, "agent_type": None}
         for arm, atype in arms:
             q = list(g.query(
-                "PREFIX erb: <http://example.org/erb#> "
+                "PREFIX erb: <https://w3id.org/effortless-ntwf#> "
                 f"SELECT ?a WHERE {{ erb:{rid} erb:{arm} ?a }}"
             ))
             if q:

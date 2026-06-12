@@ -1,0 +1,1858 @@
+{
+  "summary": {
+    "startedAt": "2026-06-13T15:07:08.417Z",
+    "finishedAt": "2026-06-13T15:09:32.446Z",
+    "durationMs": 144029,
+    "engines": [
+      "reasoner",
+      "postgres"
+    ],
+    "total": 72,
+    "passed": 65,
+    "failed": 6,
+    "gaps": 1,
+    "errors": 0,
+    "skipped": 0,
+    "allGreen": false
+  },
+  "results": [
+    {
+      "id": "sweep-workflows",
+      "displayName": "Sweep Workflows vs answer key",
+      "featureRef": "",
+      "section": "Sweep",
+      "testKind": "sweep",
+      "targetRef": "Workflows",
+      "explanation": "Every row and every column of Workflows must match the Postgres-oracle answer key on both engines.",
+      "enabled": true,
+      "engines": [
+        {
+          "engine": "reasoner",
+          "status": "pass",
+          "detail": "34 fields across 1 rows match"
+        },
+        {
+          "engine": "postgres",
+          "status": "pass",
+          "detail": "34 fields across 1 rows match"
+        }
+      ],
+      "overall": "pass"
+    },
+    {
+      "id": "sweep-workflowsteps",
+      "displayName": "Sweep WorkflowSteps vs answer key",
+      "featureRef": "",
+      "section": "Sweep",
+      "testKind": "sweep",
+      "targetRef": "WorkflowSteps",
+      "explanation": "Every row and every column of WorkflowSteps must match the Postgres-oracle answer key on both engines.",
+      "enabled": true,
+      "engines": [
+        {
+          "engine": "reasoner",
+          "status": "pass",
+          "detail": "140 fields across 5 rows match"
+        },
+        {
+          "engine": "postgres",
+          "status": "pass",
+          "detail": "140 fields across 5 rows match"
+        }
+      ],
+      "overall": "pass"
+    },
+    {
+      "id": "sweep-approvalgates",
+      "displayName": "Sweep ApprovalGates vs answer key",
+      "featureRef": "",
+      "section": "Sweep",
+      "testKind": "sweep",
+      "targetRef": "ApprovalGates",
+      "explanation": "Every row and every column of ApprovalGates must match the Postgres-oracle answer key on both engines.",
+      "enabled": true,
+      "engines": [
+        {
+          "engine": "reasoner",
+          "status": "pass",
+          "detail": "10 fields across 1 rows match"
+        },
+        {
+          "engine": "postgres",
+          "status": "pass",
+          "detail": "10 fields across 1 rows match"
+        }
+      ],
+      "overall": "pass"
+    },
+    {
+      "id": "sweep-stepprecedence",
+      "displayName": "Sweep StepPrecedence vs answer key",
+      "featureRef": "",
+      "section": "Sweep",
+      "testKind": "sweep",
+      "targetRef": "StepPrecedence",
+      "explanation": "Every row and every column of StepPrecedence must match the Postgres-oracle answer key on both engines.",
+      "enabled": true,
+      "engines": [
+        {
+          "engine": "reasoner",
+          "status": "fail",
+          "detail": "12 fail / 4 gap of 28 fields — prec-1-2.parentPath: value differs (engine=[\"workflows/production-deployment/steps/prod-deploy-step-1\",\"workflows/production-deployment/steps/prod-deploy-step-2\"] key=\"workflows/production-deployment/steps/prod-deploy-step-1\"); prec-1-2.relativePath: value differs (engine=[\"workflows/production-deployment/steps/prod-deploy-step-1/precedence/prec-1-2\",\"workflows/production-deployment/steps/prod-deploy-step-2/precedence/prec-1-2\"] key=\"workflows/production-deployment/steps/prod-deploy-step-1/precedence/prec-1-2\"); prec-1-2.iri: value differs (engine=[\"workflows-production-deployment-steps-prod-deploy-step-1-precedence-prec-1-2\",\"workflows-production-deployment-steps-prod-deploy-step-2-precedence-prec-1-2\"] key=\"workflows-production-deployment-steps-prod-deploy-step-1-precedence-prec-1-2\"); prec-1-2.name: engine emitted no value (key has one); prec-2-3.parentPath: value differs (engine=[\"workflows/production-deployment/steps/prod-deploy-step-2\",\"workflows/production-deployment/steps/prod-deploy-step-3\"] key=\"workflows/production-deployment/steps/prod-deploy-step-2\"); prec-2-3.relativePath: value differs (engine=[\"workflows/production-deployment/steps/prod-deploy-step-2/precedence/prec-2-3\",\"workflows/production-deployment/steps/prod-deploy-step-3/precedence/prec-2-3\"] key=\"workflows/production-deployment/steps/prod-deploy-step-2/precedence/prec-2-3\"); prec-2-3.iri: value differs (engine=[\"workflows-production-deployment-steps-prod-deploy-step-2-precedence-prec-2-3\",\"workflows-production-deployment-steps-prod-deploy-step-3-precedence-prec-2-3\"] key=\"workflows-production-deployment-steps-prod-deploy-step-2-precedence-prec-2-3\"); prec-2-3.name: engine emitted no value (key has one)"
+        },
+        {
+          "engine": "postgres",
+          "status": "pass",
+          "detail": "28 fields across 4 rows match"
+        }
+      ],
+      "overall": "fail"
+    },
+    {
+      "id": "sweep-roles",
+      "displayName": "Sweep Roles vs answer key",
+      "featureRef": "",
+      "section": "Sweep",
+      "testKind": "sweep",
+      "targetRef": "Roles",
+      "explanation": "Every row and every column of Roles must match the Postgres-oracle answer key on both engines.",
+      "enabled": true,
+      "engines": [
+        {
+          "engine": "reasoner",
+          "status": "pass",
+          "detail": "126 fields across 7 rows match"
+        },
+        {
+          "engine": "postgres",
+          "status": "pass",
+          "detail": "126 fields across 7 rows match"
+        }
+      ],
+      "overall": "pass"
+    },
+    {
+      "id": "sweep-roleassignments",
+      "displayName": "Sweep RoleAssignments vs answer key",
+      "featureRef": "",
+      "section": "Sweep",
+      "testKind": "sweep",
+      "targetRef": "RoleAssignments",
+      "explanation": "Every row and every column of RoleAssignments must match the Postgres-oracle answer key on both engines.",
+      "enabled": true,
+      "engines": [
+        {
+          "engine": "reasoner",
+          "status": "fail",
+          "detail": "2 fail / 6 gap of 108 fields — asn-deploy-health-ai-current.name: engine emitted no value (key has one); asn-deploy-health-ai-initial.name: engine emitted no value (key has one); asn-deploy-health-human-audit.name: engine emitted no value (key has one); asn-release-manager-maria.name: engine emitted no value (key has one); asn-vp-eng-david.name: engine emitted no value (key has one); asn-vp-eng-david.wasActiveAsOfAuditDate: value differs (engine=true key=false); asn-vp-eng-priya.name: engine emitted no value (key has one); asn-vp-eng-priya.wasActiveAsOfAuditDate: value differs (engine=false key=true)"
+        },
+        {
+          "engine": "postgres",
+          "status": "pass",
+          "detail": "108 fields across 6 rows match"
+        }
+      ],
+      "overall": "fail"
+    },
+    {
+      "id": "sweep-departments",
+      "displayName": "Sweep Departments vs answer key",
+      "featureRef": "",
+      "section": "Sweep",
+      "testKind": "sweep",
+      "targetRef": "Departments",
+      "explanation": "Every row and every column of Departments must match the Postgres-oracle answer key on both engines.",
+      "enabled": true,
+      "engines": [
+        {
+          "engine": "reasoner",
+          "status": "pass",
+          "detail": "14 fields across 2 rows match"
+        },
+        {
+          "engine": "postgres",
+          "status": "pass",
+          "detail": "14 fields across 2 rows match"
+        }
+      ],
+      "overall": "pass"
+    },
+    {
+      "id": "sweep-humanagents",
+      "displayName": "Sweep HumanAgents vs answer key",
+      "featureRef": "",
+      "section": "Sweep",
+      "testKind": "sweep",
+      "targetRef": "HumanAgents",
+      "explanation": "Every row and every column of HumanAgents must match the Postgres-oracle answer key on both engines.",
+      "enabled": true,
+      "engines": [
+        {
+          "engine": "reasoner",
+          "status": "pass",
+          "detail": "35 fields across 5 rows match"
+        },
+        {
+          "engine": "postgres",
+          "status": "pass",
+          "detail": "35 fields across 5 rows match"
+        }
+      ],
+      "overall": "pass"
+    },
+    {
+      "id": "sweep-aiagents",
+      "displayName": "Sweep AIAgents vs answer key",
+      "featureRef": "",
+      "section": "Sweep",
+      "testKind": "sweep",
+      "targetRef": "AIAgents",
+      "explanation": "Every row and every column of AIAgents must match the Postgres-oracle answer key on both engines.",
+      "enabled": true,
+      "engines": [
+        {
+          "engine": "reasoner",
+          "status": "fail",
+          "detail": "2 fail / 0 gap of 22 fields — ntwf-health-ai.countImpactedWorkflows: value differs (engine=[0,1] key=1); ntwf-risk-ai.countImpactedWorkflows: value differs (engine=[0,1] key=1)"
+        },
+        {
+          "engine": "postgres",
+          "status": "pass",
+          "detail": "22 fields across 2 rows match"
+        }
+      ],
+      "overall": "fail"
+    },
+    {
+      "id": "sweep-automatedpipelines",
+      "displayName": "Sweep AutomatedPipelines vs answer key",
+      "featureRef": "",
+      "section": "Sweep",
+      "testKind": "sweep",
+      "targetRef": "AutomatedPipelines",
+      "explanation": "Every row and every column of AutomatedPipelines must match the Postgres-oracle answer key on both engines.",
+      "enabled": true,
+      "engines": [
+        {
+          "engine": "reasoner",
+          "status": "pass",
+          "detail": "7 fields across 1 rows match"
+        },
+        {
+          "engine": "postgres",
+          "status": "pass",
+          "detail": "7 fields across 1 rows match"
+        }
+      ],
+      "overall": "pass"
+    },
+    {
+      "id": "sweep-workflowstatusconcepts",
+      "displayName": "Sweep WorkflowStatusConcepts vs answer key",
+      "featureRef": "",
+      "section": "Sweep",
+      "testKind": "sweep",
+      "targetRef": "WorkflowStatusConcepts",
+      "explanation": "Every row and every column of WorkflowStatusConcepts must match the Postgres-oracle answer key on both engines.",
+      "enabled": true,
+      "engines": [
+        {
+          "engine": "reasoner",
+          "status": "pass",
+          "detail": "32 fields across 4 rows match"
+        },
+        {
+          "engine": "postgres",
+          "status": "pass",
+          "detail": "32 fields across 4 rows match"
+        }
+      ],
+      "overall": "pass"
+    },
+    {
+      "id": "sweep-agentcapabilityconcepts",
+      "displayName": "Sweep AgentCapabilityConcepts vs answer key",
+      "featureRef": "",
+      "section": "Sweep",
+      "testKind": "sweep",
+      "targetRef": "AgentCapabilityConcepts",
+      "explanation": "Every row and every column of AgentCapabilityConcepts must match the Postgres-oracle answer key on both engines.",
+      "enabled": true,
+      "engines": [
+        {
+          "engine": "reasoner",
+          "status": "pass",
+          "detail": "40 fields across 5 rows match"
+        },
+        {
+          "engine": "postgres",
+          "status": "pass",
+          "detail": "40 fields across 5 rows match"
+        }
+      ],
+      "overall": "pass"
+    },
+    {
+      "id": "sweep-artifacttypeconcepts",
+      "displayName": "Sweep ArtifactTypeConcepts vs answer key",
+      "featureRef": "",
+      "section": "Sweep",
+      "testKind": "sweep",
+      "targetRef": "ArtifactTypeConcepts",
+      "explanation": "Every row and every column of ArtifactTypeConcepts must match the Postgres-oracle answer key on both engines.",
+      "enabled": true,
+      "engines": [
+        {
+          "engine": "reasoner",
+          "status": "pass",
+          "detail": "24 fields across 3 rows match"
+        },
+        {
+          "engine": "postgres",
+          "status": "pass",
+          "detail": "24 fields across 3 rows match"
+        }
+      ],
+      "overall": "pass"
+    },
+    {
+      "id": "sweep-datasets",
+      "displayName": "Sweep Datasets vs answer key",
+      "featureRef": "",
+      "section": "Sweep",
+      "testKind": "sweep",
+      "targetRef": "Datasets",
+      "explanation": "Every row and every column of Datasets must match the Postgres-oracle answer key on both engines.",
+      "enabled": true,
+      "engines": [
+        {
+          "engine": "reasoner",
+          "status": "pass",
+          "detail": "8 fields across 1 rows match"
+        },
+        {
+          "engine": "postgres",
+          "status": "pass",
+          "detail": "8 fields across 1 rows match"
+        }
+      ],
+      "overall": "pass"
+    },
+    {
+      "id": "sweep-workflowartifacts",
+      "displayName": "Sweep WorkflowArtifacts vs answer key",
+      "featureRef": "",
+      "section": "Sweep",
+      "testKind": "sweep",
+      "targetRef": "WorkflowArtifacts",
+      "explanation": "Every row and every column of WorkflowArtifacts must match the Postgres-oracle answer key on both engines.",
+      "enabled": true,
+      "engines": [
+        {
+          "engine": "reasoner",
+          "status": "fail",
+          "detail": "9 fail / 0 gap of 90 fields — artifact-legal-clearance.parentPath: value differs (engine=[\"workflows/production-deployment/steps/prod-deploy-step-2\",\"workflows/production-deployment/steps/prod-deploy-step-3\"] key=\"workflows/production-deployment/steps/prod-deploy-step-2\"); artifact-legal-clearance.relativePath: value differs (engine=[\"workflows/production-deployment/steps/prod-deploy-step-2/artifacts/artifact-legal-clearance\",\"workflows/production-deployment/steps/prod-deploy-step-3/artifacts/artifact-legal-clearance\"] key=\"workflows/production-deployment/steps/prod-deploy-step-2/artifacts/artifact-legal-clearance\"); artifact-legal-clearance.iri: value differs (engine=[\"workflows-production-deployment-steps-prod-deploy-step-2-artifacts-artifact-legal-clearance\",\"workflows-production-deployment-steps-prod-deploy-step-3-artifacts-artifact-legal-clearance\"] key=\"workflows-production-deployment-steps-prod-deploy-step-2-artifacts-artifact-legal-clearance\"); artifact-release-authorization.parentPath: value differs (engine=[\"workflows/production-deployment/steps/prod-deploy-step-3\",\"workflows/production-deployment/steps/prod-deploy-step-4\"] key=\"workflows/production-deployment/steps/prod-deploy-step-3\"); artifact-release-authorization.relativePath: value differs (engine=[\"workflows/production-deployment/steps/prod-deploy-step-3/artifacts/artifact-release-authorization\",\"workflows/production-deployment/steps/prod-deploy-step-4/artifacts/artifact-release-authorization\"] key=\"workflows/production-deployment/steps/prod-deploy-step-3/artifacts/artifact-release-authorization\"); artifact-release-authorization.iri: value differs (engine=[\"workflows-production-deployment-steps-prod-deploy-step-3-artifacts-artifact-release-authorization\",\"workflows-production-deployment-steps-prod-deploy-step-4-artifacts-artifact-release-authorization\"] key=\"workflows-production-deployment-steps-prod-deploy-step-3-artifacts-artifact-release-authorization\"); artifact-risk-report.parentPath: value differs (engine=[\"workflows/production-deployment/steps/prod-deploy-step-1\",\"workflows/production-deployment/steps/prod-deploy-step-2\"] key=\"workflows/production-deployment/steps/prod-deploy-step-1\"); artifact-risk-report.relativePath: value differs (engine=[\"workflows/production-deployment/steps/prod-deploy-step-1/artifacts/artifact-risk-report\",\"workflows/production-deployment/steps/prod-deploy-step-2/artifacts/artifact-risk-report\"] key=\"workflows/production-deployment/steps/prod-deploy-step-1/artifacts/artifact-risk-report\")"
+        },
+        {
+          "engine": "postgres",
+          "status": "pass",
+          "detail": "90 fields across 5 rows match"
+        }
+      ],
+      "overall": "fail"
+    },
+    {
+      "id": "sweep-governanceroles",
+      "displayName": "Sweep GovernanceRoles vs answer key",
+      "featureRef": "",
+      "section": "Sweep",
+      "testKind": "sweep",
+      "targetRef": "GovernanceRoles",
+      "explanation": "Every row and every column of GovernanceRoles must match the Postgres-oracle answer key on both engines.",
+      "enabled": true,
+      "engines": [
+        {
+          "engine": "reasoner",
+          "status": "pass",
+          "detail": "20 fields across 2 rows match"
+        },
+        {
+          "engine": "postgres",
+          "status": "pass",
+          "detail": "20 fields across 2 rows match"
+        }
+      ],
+      "overall": "pass"
+    },
+    {
+      "id": "sweep-changelog",
+      "displayName": "Sweep ChangeLog vs answer key",
+      "featureRef": "",
+      "section": "Sweep",
+      "testKind": "sweep",
+      "targetRef": "ChangeLog",
+      "explanation": "Every row and every column of ChangeLog must match the Postgres-oracle answer key on both engines.",
+      "enabled": true,
+      "engines": [
+        {
+          "engine": "reasoner",
+          "status": "gap",
+          "detail": "0 fail / 2 gap of 26 fields — change-1-0-0.name: engine emitted no value (key has one); change-1-1-0.name: engine emitted no value (key has one)"
+        },
+        {
+          "engine": "postgres",
+          "status": "pass",
+          "detail": "26 fields across 2 rows match"
+        }
+      ],
+      "overall": "gap"
+    },
+    {
+      "id": "sweep-vocabularyreconciliations",
+      "displayName": "Sweep VocabularyReconciliations vs answer key",
+      "featureRef": "",
+      "section": "Sweep",
+      "testKind": "sweep",
+      "targetRef": "VocabularyReconciliations",
+      "explanation": "Every row and every column of VocabularyReconciliations must match the Postgres-oracle answer key on both engines.",
+      "enabled": true,
+      "engines": [
+        {
+          "engine": "reasoner",
+          "status": "pass",
+          "detail": "20 fields across 2 rows match"
+        },
+        {
+          "engine": "postgres",
+          "status": "pass",
+          "detail": "20 fields across 2 rows match"
+        }
+      ],
+      "overall": "pass"
+    },
+    {
+      "id": "sweep-scenarios",
+      "displayName": "Sweep Scenarios vs answer key",
+      "featureRef": "",
+      "section": "Sweep",
+      "testKind": "sweep",
+      "targetRef": "Scenarios",
+      "explanation": "Every row and every column of Scenarios must match the Postgres-oracle answer key on both engines.",
+      "enabled": true,
+      "engines": [
+        {
+          "engine": "reasoner",
+          "status": "pass",
+          "detail": "40 fields across 4 rows match"
+        },
+        {
+          "engine": "postgres",
+          "status": "pass",
+          "detail": "40 fields across 4 rows match"
+        }
+      ],
+      "overall": "pass"
+    },
+    {
+      "id": "closure-precedence-1-5",
+      "displayName": "Inferred precedence 1 to 5",
+      "featureRef": "I-1,CQ3,III-precedesStep",
+      "section": "Closure",
+      "testKind": "closure-contains",
+      "targetRef": "StepPrecedence",
+      "explanation": "The headline inference: 4 asserted edges entail the never-asserted 1→5 pair via transitive precedesStep.",
+      "enabled": true,
+      "engines": [
+        {
+          "engine": "reasoner",
+          "status": "pass",
+          "detail": "present (inferred ✓)"
+        },
+        {
+          "engine": "postgres",
+          "status": "pass",
+          "detail": "present (inferred ✓)"
+        }
+      ],
+      "overall": "pass"
+    },
+    {
+      "id": "closure-delegation-rm-cto",
+      "displayName": "Inferred delegation Release Manager to CTO",
+      "featureRef": "CQ6,III-delegatesTo",
+      "section": "Closure",
+      "testKind": "closure-contains",
+      "targetRef": "Roles",
+      "explanation": "Escalation chain RM→VP Eng→CTO: the RM→CTO hop is never asserted; transitive delegatesTo entails it.",
+      "enabled": true,
+      "engines": [
+        {
+          "engine": "reasoner",
+          "status": "pass",
+          "detail": "present (asserted)"
+        },
+        {
+          "engine": "postgres",
+          "status": "pass",
+          "detail": "present (asserted)"
+        }
+      ],
+      "overall": "pass"
+    },
+    {
+      "id": "engines-agree-global",
+      "displayName": "Both engines compute identical answers",
+      "featureRef": "I-4",
+      "section": "Part I",
+      "testKind": "engines-agree",
+      "targetRef": "",
+      "explanation": "The multi-substrate equivalence claim: reasoner and Postgres views disagree on zero computed values.",
+      "enabled": true,
+      "engines": [
+        {
+          "engine": "both",
+          "status": "fail",
+          "detail": "25 value diff(s): RoleAssignments/asn-vp-eng-david.wasActiveAsOfAuditDate, RoleAssignments/asn-vp-eng-priya.wasActiveAsOfAuditDate, StepPrecedence/prec-1-2.relativePath, StepPrecedence/prec-1-2.parentPath, StepPrecedence/prec-1-2.iri, StepPrecedence/prec-2-3.relativePath"
+        }
+      ],
+      "overall": "fail"
+    },
+    {
+      "id": "iri-workflow",
+      "displayName": "Workflow IRI minted",
+      "featureRef": "I-6,IV-10",
+      "section": "Part I",
+      "testKind": "field-match",
+      "targetRef": "Workflows/production-deployment#Iri",
+      "explanation": "Every row is a globally-addressable individual; the workflow's IRI is derived, stable, and identical on both engines.",
+      "enabled": true,
+      "engines": [
+        {
+          "engine": "reasoner",
+          "status": "pass",
+          "detail": "match",
+          "expected": "workflows-production-deployment",
+          "actual": "workflows-production-deployment"
+        },
+        {
+          "engine": "postgres",
+          "status": "pass",
+          "detail": "match",
+          "expected": "workflows-production-deployment",
+          "actual": "workflows-production-deployment"
+        }
+      ],
+      "overall": "pass"
+    },
+    {
+      "id": "iri-gate",
+      "displayName": "Approval-gate IRI minted",
+      "featureRef": "I-6,IV-10",
+      "section": "Part I",
+      "testKind": "field-match",
+      "targetRef": "ApprovalGates/ntwf-release-approval-gate#Iri",
+      "explanation": "Gate IRI derives through the step's path chain (lookup → calc chain).",
+      "enabled": true,
+      "engines": [
+        {
+          "engine": "reasoner",
+          "status": "pass",
+          "detail": "match",
+          "expected": "workflows-production-deployment-steps-prod-deploy-step-3-approval-gates-ntwf-release-approval-gate",
+          "actual": "workflows-production-deployment-steps-prod-deploy-step-3-approval-gates-ntwf-release-approval-gate"
+        },
+        {
+          "engine": "postgres",
+          "status": "pass",
+          "detail": "match",
+          "expected": "workflows-production-deployment-steps-prod-deploy-step-3-approval-gates-ntwf-release-approval-gate",
+          "actual": "workflows-production-deployment-steps-prod-deploy-step-3-approval-gates-ntwf-release-approval-gate"
+        }
+      ],
+      "overall": "pass"
+    },
+    {
+      "id": "step1-agent-type",
+      "displayName": "Step 1 executing agent type resolves",
+      "featureRef": "II-1,CQ1",
+      "section": "Part II",
+      "testKind": "field-match",
+      "targetRef": "WorkflowSteps/prod-deploy-step-1#ExecutingAgentType",
+      "explanation": "Role→agent indirection: the step's executing agent type is derived through AssignedRole→FilledBy*.",
+      "enabled": true,
+      "engines": [
+        {
+          "engine": "reasoner",
+          "status": "pass",
+          "detail": "match",
+          "expected": "AIAgent",
+          "actual": "AIAgent"
+        },
+        {
+          "engine": "postgres",
+          "status": "pass",
+          "detail": "match",
+          "expected": "AIAgent",
+          "actual": "AIAgent"
+        }
+      ],
+      "overall": "pass"
+    },
+    {
+      "id": "step3-agent-type",
+      "displayName": "Gate step executing agent type resolves",
+      "featureRef": "II-1,CQ1",
+      "section": "Part II",
+      "testKind": "field-match",
+      "targetRef": "WorkflowSteps/prod-deploy-step-3#ExecutingAgentType",
+      "explanation": "The approval-gate step resolves to its human Release Manager through the same one-edge chain.",
+      "enabled": true,
+      "engines": [
+        {
+          "engine": "reasoner",
+          "status": "pass",
+          "detail": "match",
+          "expected": "HumanAgent",
+          "actual": "HumanAgent"
+        },
+        {
+          "engine": "postgres",
+          "status": "pass",
+          "detail": "match",
+          "expected": "HumanAgent",
+          "actual": "HumanAgent"
+        }
+      ],
+      "overall": "pass"
+    },
+    {
+      "id": "count-ai-steps",
+      "displayName": "AI step count",
+      "featureRef": "II-2",
+      "section": "Part II",
+      "testKind": "field-match",
+      "targetRef": "Workflows/production-deployment#CountAISteps",
+      "explanation": "COUNTIFS over the DERIVED IsExecutedByAI child field — conditional aggregation over a computed column.",
+      "enabled": true,
+      "engines": [
+        {
+          "engine": "reasoner",
+          "status": "pass",
+          "detail": "match",
+          "expected": 2,
+          "actual": 2
+        },
+        {
+          "engine": "postgres",
+          "status": "pass",
+          "detail": "match",
+          "expected": 2,
+          "actual": 2
+        }
+      ],
+      "overall": "pass"
+    },
+    {
+      "id": "count-human-steps",
+      "displayName": "Human step count",
+      "featureRef": "II-2",
+      "section": "Part II",
+      "testKind": "field-match",
+      "targetRef": "Workflows/production-deployment#CountHumanSteps",
+      "explanation": "The human side of the agent mix.",
+      "enabled": true,
+      "engines": [
+        {
+          "engine": "reasoner",
+          "status": "pass",
+          "detail": "match",
+          "expected": 2,
+          "actual": 2
+        },
+        {
+          "engine": "postgres",
+          "status": "pass",
+          "detail": "match",
+          "expected": 2,
+          "actual": 2
+        }
+      ],
+      "overall": "pass"
+    },
+    {
+      "id": "has-ai-agent-step",
+      "displayName": "HasAIAgentStep boolean",
+      "featureRef": "II-2",
+      "section": "Part II",
+      "testKind": "field-match",
+      "targetRef": "Workflows/production-deployment#HasAIAgentStep",
+      "explanation": "Boolean derived from the AI step count — an aggregation feeding a calc.",
+      "enabled": true,
+      "engines": [
+        {
+          "engine": "reasoner",
+          "status": "pass",
+          "detail": "match",
+          "expected": true,
+          "actual": true
+        },
+        {
+          "engine": "postgres",
+          "status": "pass",
+          "detail": "match",
+          "expected": true,
+          "actual": true
+        }
+      ],
+      "overall": "pass"
+    },
+    {
+      "id": "approval-human-filled",
+      "displayName": "Gate step is human-filled at seed",
+      "featureRef": "II-3,CQ2",
+      "section": "Part II",
+      "testKind": "field-match",
+      "targetRef": "WorkflowSteps/prod-deploy-step-3#ApprovalIsHumanFilled",
+      "explanation": "requiresHumanApproval is satisfied at seed: the gate role is filled by a human.",
+      "enabled": true,
+      "engines": [
+        {
+          "engine": "reasoner",
+          "status": "pass",
+          "detail": "match",
+          "expected": true,
+          "actual": true
+        },
+        {
+          "engine": "postgres",
+          "status": "pass",
+          "detail": "match",
+          "expected": true,
+          "actual": true
+        }
+      ],
+      "overall": "pass"
+    },
+    {
+      "id": "approval-violation-false",
+      "displayName": "No approval violation at seed",
+      "featureRef": "II-3",
+      "section": "Part II",
+      "testKind": "field-match",
+      "targetRef": "WorkflowSteps/prod-deploy-step-3#ApprovalConsistencyViolation",
+      "explanation": "The consistency rule does NOT fire on the seed facts — the clean baseline the mutation test breaks.",
+      "enabled": true,
+      "engines": [
+        {
+          "engine": "reasoner",
+          "status": "pass",
+          "detail": "match",
+          "expected": false,
+          "actual": false
+        },
+        {
+          "engine": "postgres",
+          "status": "pass",
+          "detail": "match",
+          "expected": false,
+          "actual": false
+        }
+      ],
+      "overall": "pass"
+    },
+    {
+      "id": "workflow-violation-false",
+      "displayName": "Workflow has no violation at seed",
+      "featureRef": "II-3",
+      "section": "Part II",
+      "testKind": "field-match",
+      "targetRef": "Workflows/production-deployment#HasConsistencyViolation",
+      "explanation": "Workflow-level rollup of approval violations is false on seed facts.",
+      "enabled": true,
+      "engines": [
+        {
+          "engine": "reasoner",
+          "status": "pass",
+          "detail": "match",
+          "expected": false,
+          "actual": false
+        },
+        {
+          "engine": "postgres",
+          "status": "pass",
+          "detail": "match",
+          "expected": false,
+          "actual": false
+        }
+      ],
+      "overall": "pass"
+    },
+    {
+      "id": "skos-workflow-status",
+      "displayName": "Workflow status is a SKOS concept",
+      "featureRef": "II-6",
+      "section": "Part II",
+      "testKind": "field-match",
+      "targetRef": "Workflows/production-deployment#WorkflowStatus",
+      "explanation": "workflowStatus points into the WorkflowStatusConcepts scheme.",
+      "enabled": true,
+      "engines": [
+        {
+          "engine": "reasoner",
+          "status": "pass",
+          "detail": "match",
+          "expected": "status-active",
+          "actual": "status-active"
+        },
+        {
+          "engine": "postgres",
+          "status": "pass",
+          "detail": "match",
+          "expected": "status-active",
+          "actual": "status-active"
+        }
+      ],
+      "overall": "pass"
+    },
+    {
+      "id": "skos-role-capability",
+      "displayName": "Role capability is a SKOS concept",
+      "featureRef": "II-6",
+      "section": "Part II",
+      "testKind": "field-match",
+      "targetRef": "Roles/ntwf-release-manager-role#HasCapability",
+      "explanation": "hasCapability points into the AgentCapabilityConcepts scheme.",
+      "enabled": true,
+      "engines": [
+        {
+          "engine": "reasoner",
+          "status": "pass",
+          "detail": "match",
+          "expected": "cap-human-judgment",
+          "actual": "cap-human-judgment"
+        },
+        {
+          "engine": "postgres",
+          "status": "pass",
+          "detail": "match",
+          "expected": "cap-human-judgment",
+          "actual": "cap-human-judgment"
+        }
+      ],
+      "overall": "pass"
+    },
+    {
+      "id": "role-label-documented",
+      "displayName": "Role carries label documentation",
+      "featureRef": "II-8",
+      "section": "Part II",
+      "testKind": "field-match",
+      "targetRef": "Roles/ntwf-release-manager-role#Label",
+      "explanation": "Heuristic 6: label/comment documentation travels with the model into every substrate.",
+      "enabled": true,
+      "engines": [
+        {
+          "engine": "reasoner",
+          "status": "pass",
+          "detail": "match",
+          "expected": "Release Manager",
+          "actual": "Release Manager"
+        },
+        {
+          "engine": "postgres",
+          "status": "pass",
+          "detail": "match",
+          "expected": "Release Manager",
+          "actual": "Release Manager"
+        }
+      ],
+      "overall": "pass"
+    },
+    {
+      "id": "gate-escalation-hours",
+      "displayName": "Gate escalation threshold",
+      "featureRef": "III-escalationThresholdHours,CQ2",
+      "section": "Part III",
+      "testKind": "field-match",
+      "targetRef": "ApprovalGates/ntwf-release-approval-gate#EscalationThresholdHours",
+      "explanation": "The gate's defining datatype property (raw, gate-only).",
+      "enabled": true,
+      "engines": [
+        {
+          "engine": "reasoner",
+          "status": "pass",
+          "detail": "match",
+          "expected": 4,
+          "actual": 4
+        },
+        {
+          "engine": "postgres",
+          "status": "pass",
+          "detail": "match",
+          "expected": 4,
+          "actual": 4
+        }
+      ],
+      "overall": "pass"
+    },
+    {
+      "id": "gate-role-lookup",
+      "displayName": "Gate role resolves via lookup",
+      "featureRef": "III-ApprovalGate,CQ2",
+      "section": "Part III",
+      "testKind": "field-match",
+      "targetRef": "ApprovalGates/ntwf-release-approval-gate#GateRole",
+      "explanation": "INDEX/MATCH lookup gate→step→role. KNOWN GAP CANDIDATE: both engines currently drop lookup columns from their individuals payload — this test exists to keep that gap visible until fixed.",
+      "enabled": true,
+      "engines": [
+        {
+          "engine": "reasoner",
+          "status": "pass",
+          "detail": "match",
+          "expected": "ntwf-release-manager-role",
+          "actual": "ntwf-release-manager-role"
+        },
+        {
+          "engine": "postgres",
+          "status": "pass",
+          "detail": "match",
+          "expected": "ntwf-release-manager-role",
+          "actual": "ntwf-release-manager-role"
+        }
+      ],
+      "overall": "pass"
+    },
+    {
+      "id": "gate-approver-lookup",
+      "displayName": "Gate approver human resolves via lookup",
+      "featureRef": "III-ApprovalGate,CQ2",
+      "section": "Part III",
+      "testKind": "field-match",
+      "targetRef": "ApprovalGates/ntwf-release-approval-gate#GateApproverHuman",
+      "explanation": "Second-order lookup gate→role→human filler. Same known gap candidate as GateRole.",
+      "enabled": true,
+      "engines": [
+        {
+          "engine": "reasoner",
+          "status": "pass",
+          "detail": "match",
+          "expected": "ntwf-maria-gonzalez",
+          "actual": "ntwf-maria-gonzalez"
+        },
+        {
+          "engine": "postgres",
+          "status": "pass",
+          "detail": "match",
+          "expected": "ntwf-maria-gonzalez",
+          "actual": "ntwf-maria-gonzalez"
+        }
+      ],
+      "overall": "pass"
+    },
+    {
+      "id": "role-exactly-one-filler",
+      "displayName": "Release Manager has exactly one filler",
+      "featureRef": "III-filledBy,Suite-4",
+      "section": "Part III",
+      "testKind": "field-match",
+      "targetRef": "Roles/ntwf-release-manager-role#HasExactlyOneFiller",
+      "explanation": "Functional filledBy: exactly one of the three filler arms is set.",
+      "enabled": true,
+      "engines": [
+        {
+          "engine": "reasoner",
+          "status": "pass",
+          "detail": "match",
+          "expected": true,
+          "actual": true
+        },
+        {
+          "engine": "postgres",
+          "status": "pass",
+          "detail": "match",
+          "expected": true,
+          "actual": true
+        }
+      ],
+      "overall": "pass"
+    },
+    {
+      "id": "bad-filler-count-zero",
+      "displayName": "No roles with bad filler cardinality",
+      "featureRef": "Suite-4",
+      "section": "Part III",
+      "testKind": "field-match",
+      "targetRef": "Workflows/production-deployment#CountRolesWithBadFillerCardinality",
+      "explanation": "Suite-4 cardinality witness: zero roles violate the exactly-one-filler rule on seed facts.",
+      "enabled": true,
+      "engines": [
+        {
+          "engine": "reasoner",
+          "status": "pass",
+          "detail": "match",
+          "expected": 0,
+          "actual": 0
+        },
+        {
+          "engine": "postgres",
+          "status": "pass",
+          "detail": "match",
+          "expected": 0,
+          "actual": 0
+        }
+      ],
+      "overall": "pass"
+    },
+    {
+      "id": "artifact-derivation",
+      "displayName": "Release authorization derives from legal clearance",
+      "featureRef": "III-wasDerivedFrom,CQ4",
+      "section": "Part III",
+      "testKind": "field-match",
+      "targetRef": "WorkflowArtifacts/artifact-release-authorization#DerivedFromArtifact",
+      "explanation": "One link of the 5-artifact PROV wasDerivedFrom chain.",
+      "enabled": true,
+      "engines": [
+        {
+          "engine": "reasoner",
+          "status": "pass",
+          "detail": "match",
+          "expected": "artifact-legal-clearance",
+          "actual": "artifact-legal-clearance"
+        },
+        {
+          "engine": "postgres",
+          "status": "pass",
+          "detail": "match",
+          "expected": "artifact-legal-clearance",
+          "actual": "artifact-legal-clearance"
+        }
+      ],
+      "overall": "pass"
+    },
+    {
+      "id": "artifact-attribution",
+      "displayName": "Risk report attributed to the risk AI",
+      "featureRef": "III-wasAttributedTo,CQ4",
+      "section": "Part III",
+      "testKind": "field-match",
+      "targetRef": "WorkflowArtifacts/artifact-risk-report#AttributedToAIAgent",
+      "explanation": "PROV attribution: the artifact names the AI agent that produced it.",
+      "enabled": true,
+      "engines": [
+        {
+          "engine": "reasoner",
+          "status": "pass",
+          "detail": "match",
+          "expected": "ntwf-risk-ai",
+          "actual": "ntwf-risk-ai"
+        },
+        {
+          "engine": "postgres",
+          "status": "pass",
+          "detail": "match",
+          "expected": "ntwf-risk-ai",
+          "actual": "ntwf-risk-ai"
+        }
+      ],
+      "overall": "pass"
+    },
+    {
+      "id": "artifact-has-parent",
+      "displayName": "Post-deploy report has a derivation parent",
+      "featureRef": "III-wasDerivedFrom",
+      "section": "Part III",
+      "testKind": "field-match",
+      "targetRef": "WorkflowArtifacts/artifact-post-deploy-report#HasDerivationParent",
+      "explanation": "Boolean derived from the lineage link.",
+      "enabled": true,
+      "engines": [
+        {
+          "engine": "reasoner",
+          "status": "pass",
+          "detail": "match",
+          "expected": true,
+          "actual": true
+        },
+        {
+          "engine": "postgres",
+          "status": "pass",
+          "detail": "match",
+          "expected": true,
+          "actual": true
+        }
+      ],
+      "overall": "pass"
+    },
+    {
+      "id": "consumes-dataset",
+      "displayName": "Step consumes the DCAT dataset",
+      "featureRef": "III-consumesDataset,CQ8",
+      "section": "Part III",
+      "testKind": "field-match",
+      "targetRef": "WorkflowSteps/prod-deploy-step-1#ConsumesDataset",
+      "explanation": "consumesDataset points at the dcat:Dataset; answers CQ8.",
+      "enabled": true,
+      "engines": [
+        {
+          "engine": "reasoner",
+          "status": "pass",
+          "detail": "match",
+          "expected": "ds-q1-2026-risk-metrics",
+          "actual": "ds-q1-2026-risk-metrics"
+        },
+        {
+          "engine": "postgres",
+          "status": "pass",
+          "detail": "match",
+          "expected": "ds-q1-2026-risk-metrics",
+          "actual": "ds-q1-2026-risk-metrics"
+        }
+      ],
+      "overall": "pass"
+    },
+    {
+      "id": "legal-owned-step",
+      "displayName": "Legal step is legal-owned",
+      "featureRef": "III-ownedBy,CQ7",
+      "section": "Part III",
+      "testKind": "field-match",
+      "targetRef": "WorkflowSteps/prod-deploy-step-2#IsLegalOwned",
+      "explanation": "ownedBy chain step→role→department resolves to Legal.",
+      "enabled": true,
+      "engines": [
+        {
+          "engine": "reasoner",
+          "status": "pass",
+          "detail": "match",
+          "expected": true,
+          "actual": true
+        },
+        {
+          "engine": "postgres",
+          "status": "pass",
+          "detail": "match",
+          "expected": true,
+          "actual": true
+        }
+      ],
+      "overall": "pass"
+    },
+    {
+      "id": "eng-owned-step",
+      "displayName": "Deploy step is engineering-owned",
+      "featureRef": "III-ownedBy,CQ7",
+      "section": "Part III",
+      "testKind": "field-match",
+      "targetRef": "WorkflowSteps/prod-deploy-step-4#IsEngineeringOwned",
+      "explanation": "Same chain resolving to Engineering.",
+      "enabled": true,
+      "engines": [
+        {
+          "engine": "reasoner",
+          "status": "pass",
+          "detail": "match",
+          "expected": true,
+          "actual": true
+        },
+        {
+          "engine": "postgres",
+          "status": "pass",
+          "detail": "match",
+          "expected": true,
+          "actual": true
+        }
+      ],
+      "overall": "pass"
+    },
+    {
+      "id": "cross-cutting-workflow",
+      "displayName": "Workflow involves Engineering AND Legal",
+      "featureRef": "CQ7",
+      "section": "Part III",
+      "testKind": "field-match",
+      "targetRef": "Workflows/production-deployment#InvolvesEngineeringAndLegal",
+      "explanation": "The cross-department join CQ7 asks about.",
+      "enabled": true,
+      "engines": [
+        {
+          "engine": "reasoner",
+          "status": "pass",
+          "detail": "match",
+          "expected": true,
+          "actual": true
+        },
+        {
+          "engine": "postgres",
+          "status": "pass",
+          "detail": "match",
+          "expected": true,
+          "actual": true
+        }
+      ],
+      "overall": "pass"
+    },
+    {
+      "id": "sequence-position",
+      "displayName": "Step 4 sequence position",
+      "featureRef": "III-sequencePosition",
+      "section": "Part III",
+      "testKind": "field-match",
+      "targetRef": "WorkflowSteps/prod-deploy-step-4#SequencePosition",
+      "explanation": "Functional integer datatype property echoes through both substrates.",
+      "enabled": true,
+      "engines": [
+        {
+          "engine": "reasoner",
+          "status": "pass",
+          "detail": "match",
+          "expected": 4,
+          "actual": 4
+        },
+        {
+          "engine": "postgres",
+          "status": "pass",
+          "detail": "match",
+          "expected": 4,
+          "actual": 4
+        }
+      ],
+      "overall": "pass"
+    },
+    {
+      "id": "step-duration",
+      "displayName": "Step 1 duration minutes",
+      "featureRef": "III-stepDurationMinutes",
+      "section": "Part III",
+      "testKind": "field-match",
+      "targetRef": "WorkflowSteps/prod-deploy-step-1#StepDurationMinutes",
+      "explanation": "Drives the time-budget bar; raw datatype property.",
+      "enabled": true,
+      "engines": [
+        {
+          "engine": "reasoner",
+          "status": "pass",
+          "detail": "match",
+          "expected": 15,
+          "actual": 15
+        },
+        {
+          "engine": "postgres",
+          "status": "pass",
+          "detail": "match",
+          "expected": 15,
+          "actual": 15
+        }
+      ],
+      "overall": "pass"
+    },
+    {
+      "id": "asserted-pair-count",
+      "displayName": "Asserted precedence pair count",
+      "featureRef": "I-1,III-precedesStep",
+      "section": "Part III",
+      "testKind": "field-match",
+      "targetRef": "Workflows/production-deployment#CountAssertedPrecedencePairs",
+      "explanation": "4 asserted edges.",
+      "enabled": true,
+      "engines": [
+        {
+          "engine": "reasoner",
+          "status": "pass",
+          "detail": "match",
+          "expected": 4,
+          "actual": 4
+        },
+        {
+          "engine": "postgres",
+          "status": "pass",
+          "detail": "match",
+          "expected": 4,
+          "actual": 4
+        }
+      ],
+      "overall": "pass"
+    },
+    {
+      "id": "inferred-pair-count",
+      "displayName": "Inferred precedence pair count",
+      "featureRef": "I-1,III-precedesStep",
+      "section": "Part III",
+      "testKind": "field-match",
+      "targetRef": "Workflows/production-deployment#CountInferredPrecedencePairs",
+      "explanation": "6 pairs exist only by inference (10-pair closure minus 4 asserted).",
+      "enabled": true,
+      "engines": [
+        {
+          "engine": "reasoner",
+          "status": "pass",
+          "detail": "match",
+          "expected": 6,
+          "actual": 6
+        },
+        {
+          "engine": "postgres",
+          "status": "pass",
+          "detail": "match",
+          "expected": 6,
+          "actual": 6
+        }
+      ],
+      "overall": "pass"
+    },
+    {
+      "id": "closure-pair-total",
+      "displayName": "Total precedence closure pairs",
+      "featureRef": "I-1,III-precedesStep",
+      "section": "Part III",
+      "testKind": "field-match",
+      "targetRef": "Workflows/production-deployment#CountOfPrecedenceClosurePairs",
+      "explanation": "The 10-pair transitive closure, counted from the materialized closure rows.",
+      "enabled": true,
+      "engines": [
+        {
+          "engine": "reasoner",
+          "status": "pass",
+          "detail": "match",
+          "expected": 10,
+          "actual": 10
+        },
+        {
+          "engine": "postgres",
+          "status": "pass",
+          "detail": "match",
+          "expected": 10,
+          "actual": 10
+        }
+      ],
+      "overall": "pass"
+    },
+    {
+      "id": "months-since-modified",
+      "displayName": "Months since last review",
+      "featureRef": "IV-1,CQ5",
+      "section": "Part IV",
+      "testKind": "field-match",
+      "targetRef": "Workflows/production-deployment#MonthsSinceModified",
+      "explanation": "Time-dependent calc (months granularity) — the staleness clock.",
+      "enabled": true,
+      "engines": [
+        {
+          "engine": "reasoner",
+          "status": "pass",
+          "detail": "match (representation)",
+          "expected": 2,
+          "actual": "2"
+        },
+        {
+          "engine": "postgres",
+          "status": "pass",
+          "detail": "match",
+          "expected": 2,
+          "actual": 2
+        }
+      ],
+      "overall": "pass"
+    },
+    {
+      "id": "is-stale-seed",
+      "displayName": "Workflow not stale at seed",
+      "featureRef": "IV-1,CQ5",
+      "section": "Part IV",
+      "testKind": "field-match",
+      "targetRef": "Workflows/production-deployment#IsStale",
+      "explanation": "The CQ5 governance query on the seed facts.",
+      "enabled": true,
+      "engines": [
+        {
+          "engine": "reasoner",
+          "status": "pass",
+          "detail": "match",
+          "expected": false,
+          "actual": false
+        },
+        {
+          "engine": "postgres",
+          "status": "pass",
+          "detail": "match",
+          "expected": false,
+          "actual": false
+        }
+      ],
+      "overall": "pass"
+    },
+    {
+      "id": "stale-and-ai-seed",
+      "displayName": "Stale-AND-has-AI at seed",
+      "featureRef": "IV-2",
+      "section": "Part IV",
+      "testKind": "field-match",
+      "targetRef": "Workflows/production-deployment#IsStaleAndHasAIAgent",
+      "explanation": "The higher-compliance-risk join on the seed facts.",
+      "enabled": true,
+      "engines": [
+        {
+          "engine": "reasoner",
+          "status": "pass",
+          "detail": "match",
+          "expected": false,
+          "actual": false
+        },
+        {
+          "engine": "postgres",
+          "status": "pass",
+          "detail": "match",
+          "expected": false,
+          "actual": false
+        }
+      ],
+      "overall": "pass"
+    },
+    {
+      "id": "authority-can-approve",
+      "displayName": "Authority can approve changes",
+      "featureRef": "IV-3",
+      "section": "Part IV",
+      "testKind": "field-match",
+      "targetRef": "GovernanceRoles/gov-authority#CanApproveChanges",
+      "explanation": "Steward vs Authority: only the Authority approves.",
+      "enabled": true,
+      "engines": [
+        {
+          "engine": "reasoner",
+          "status": "pass",
+          "detail": "match",
+          "expected": true,
+          "actual": true
+        },
+        {
+          "engine": "postgres",
+          "status": "pass",
+          "detail": "match",
+          "expected": true,
+          "actual": true
+        }
+      ],
+      "overall": "pass"
+    },
+    {
+      "id": "steward-cannot-approve",
+      "displayName": "Steward cannot approve changes",
+      "featureRef": "IV-3",
+      "section": "Part IV",
+      "testKind": "field-match",
+      "targetRef": "GovernanceRoles/gov-steward#CanApproveChanges",
+      "explanation": "The other half of the governance split.",
+      "enabled": true,
+      "engines": [
+        {
+          "engine": "reasoner",
+          "status": "pass",
+          "detail": "match",
+          "expected": false,
+          "actual": false
+        },
+        {
+          "engine": "postgres",
+          "status": "pass",
+          "detail": "match",
+          "expected": false,
+          "actual": false
+        }
+      ],
+      "overall": "pass"
+    },
+    {
+      "id": "changelog-breaking",
+      "displayName": "Change 1.0.0 breaking-change flag",
+      "featureRef": "IV-4",
+      "section": "Part IV",
+      "testKind": "field-match",
+      "targetRef": "ChangeLog/change-1-0-0#IsBreakingChange",
+      "explanation": "Semantic-versioning derivation from ChangeKind.",
+      "enabled": true,
+      "engines": [
+        {
+          "engine": "reasoner",
+          "status": "pass",
+          "detail": "match",
+          "expected": true,
+          "actual": true
+        },
+        {
+          "engine": "postgres",
+          "status": "pass",
+          "detail": "match",
+          "expected": true,
+          "actual": true
+        }
+      ],
+      "overall": "pass"
+    },
+    {
+      "id": "changelog-backcompat",
+      "displayName": "Change 1.1.0 backward-compatible flag",
+      "featureRef": "IV-4",
+      "section": "Part IV",
+      "testKind": "field-match",
+      "targetRef": "ChangeLog/change-1-1-0#IsBackwardCompatible",
+      "explanation": "The minor release is back-compat by derivation.",
+      "enabled": true,
+      "engines": [
+        {
+          "engine": "reasoner",
+          "status": "pass",
+          "detail": "match",
+          "expected": true,
+          "actual": true
+        },
+        {
+          "engine": "postgres",
+          "status": "pass",
+          "detail": "match",
+          "expected": true,
+          "actual": true
+        }
+      ],
+      "overall": "pass"
+    },
+    {
+      "id": "assignment-current",
+      "displayName": "Current role assignment flagged",
+      "featureRef": "IV-6",
+      "section": "Part IV",
+      "testKind": "field-match",
+      "targetRef": "RoleAssignments/asn-deploy-health-ai-current#IsCurrent",
+      "explanation": "Bitemporal validity: the open-ended assignment is current.",
+      "enabled": true,
+      "engines": [
+        {
+          "engine": "reasoner",
+          "status": "pass",
+          "detail": "match",
+          "expected": true,
+          "actual": true
+        },
+        {
+          "engine": "postgres",
+          "status": "pass",
+          "detail": "match",
+          "expected": true,
+          "actual": true
+        }
+      ],
+      "overall": "pass"
+    },
+    {
+      "id": "assignment-as-of-audit",
+      "displayName": "Assignment active as of audit date",
+      "featureRef": "IV-6",
+      "section": "Part IV",
+      "testKind": "field-match",
+      "targetRef": "RoleAssignments/asn-deploy-health-human-audit#WasActiveAsOfAuditDate",
+      "explanation": "The 'who filled this on the audit date' time-travel query.",
+      "enabled": true,
+      "engines": [
+        {
+          "engine": "reasoner",
+          "status": "pass",
+          "detail": "match",
+          "expected": false,
+          "actual": false
+        },
+        {
+          "engine": "postgres",
+          "status": "pass",
+          "detail": "match",
+          "expected": false,
+          "actual": false
+        }
+      ],
+      "overall": "pass"
+    },
+    {
+      "id": "agent-type-change",
+      "displayName": "Agent-type change detected",
+      "featureRef": "IV-7",
+      "section": "Part IV",
+      "testKind": "field-match",
+      "targetRef": "RoleAssignments/asn-deploy-health-human-audit#IsAgentTypeChange",
+      "explanation": "AI→Human turnover detection across consecutive assignments.",
+      "enabled": true,
+      "engines": [
+        {
+          "engine": "reasoner",
+          "status": "pass",
+          "detail": "match",
+          "expected": true,
+          "actual": true
+        },
+        {
+          "engine": "postgres",
+          "status": "pass",
+          "detail": "match",
+          "expected": true,
+          "actual": true
+        }
+      ],
+      "overall": "pass"
+    },
+    {
+      "id": "compliance-audit-required",
+      "displayName": "Turnover requires compliance audit",
+      "featureRef": "IV-7",
+      "section": "Part IV",
+      "testKind": "field-match",
+      "targetRef": "RoleAssignments/asn-deploy-health-human-audit#RequiresComplianceAudit",
+      "explanation": "The audit trigger derived from the agent-type change.",
+      "enabled": true,
+      "engines": [
+        {
+          "engine": "reasoner",
+          "status": "pass",
+          "detail": "match",
+          "expected": true,
+          "actual": true
+        },
+        {
+          "engine": "postgres",
+          "status": "pass",
+          "detail": "match",
+          "expected": true,
+          "actual": true
+        }
+      ],
+      "overall": "pass"
+    },
+    {
+      "id": "audit-changes-rollup",
+      "displayName": "Workflow compliance-audit rollup",
+      "featureRef": "IV-7",
+      "section": "Part IV",
+      "testKind": "field-match",
+      "targetRef": "Workflows/production-deployment#CountComplianceAuditChanges",
+      "explanation": "Workflow-level count of audit-triggering changes.",
+      "enabled": true,
+      "engines": [
+        {
+          "engine": "reasoner",
+          "status": "pass",
+          "detail": "match",
+          "expected": 1,
+          "actual": 1
+        },
+        {
+          "engine": "postgres",
+          "status": "pass",
+          "detail": "match",
+          "expected": 1,
+          "actual": 1
+        }
+      ],
+      "overall": "pass"
+    },
+    {
+      "id": "blast-radius-artifacts",
+      "displayName": "Risk AI attributed-artifact count",
+      "featureRef": "IV-8",
+      "section": "Part IV",
+      "testKind": "field-match",
+      "targetRef": "AIAgents/ntwf-risk-ai#CountAttributedArtifacts",
+      "explanation": "AI-system-registry blast radius: artifacts this AI produced.",
+      "enabled": true,
+      "engines": [
+        {
+          "engine": "reasoner",
+          "status": "pass",
+          "detail": "match",
+          "expected": 1,
+          "actual": 1
+        },
+        {
+          "engine": "postgres",
+          "status": "pass",
+          "detail": "match",
+          "expected": 1,
+          "actual": 1
+        }
+      ],
+      "overall": "pass"
+    },
+    {
+      "id": "blast-radius-workflows",
+      "displayName": "Risk AI impacted-workflow count",
+      "featureRef": "IV-8",
+      "section": "Part IV",
+      "testKind": "field-match",
+      "targetRef": "AIAgents/ntwf-risk-ai#CountImpactedWorkflows",
+      "explanation": "Blast radius: workflows reachable from this AI's artifacts.",
+      "enabled": true,
+      "engines": [
+        {
+          "engine": "reasoner",
+          "status": "fail",
+          "detail": "value differs (engine=[0,1] key=1)",
+          "expected": 1,
+          "actual": [
+            0,
+            1
+          ]
+        },
+        {
+          "engine": "postgres",
+          "status": "pass",
+          "detail": "match",
+          "expected": 1,
+          "actual": 1
+        }
+      ],
+      "overall": "fail"
+    },
+    {
+      "id": "model-version",
+      "displayName": "Risk AI model version",
+      "featureRef": "IV-9,III-modelVersion",
+      "section": "Part IV",
+      "testKind": "field-match",
+      "targetRef": "AIAgents/ntwf-risk-ai#ModelVersion",
+      "explanation": "The audit anchor: which model version produced the attributed artifacts.",
+      "enabled": true,
+      "engines": [
+        {
+          "engine": "reasoner",
+          "status": "pass",
+          "detail": "match",
+          "expected": "risk-classifier-v2.4.1",
+          "actual": "risk-classifier-v2.4.1"
+        },
+        {
+          "engine": "postgres",
+          "status": "pass",
+          "detail": "match",
+          "expected": "risk-classifier-v2.4.1",
+          "actual": "risk-classifier-v2.4.1"
+        }
+      ],
+      "overall": "pass"
+    },
+    {
+      "id": "deployed-on",
+      "displayName": "Risk AI deployment date",
+      "featureRef": "IV-9",
+      "section": "Part IV",
+      "testKind": "field-match",
+      "targetRef": "AIAgents/ntwf-risk-ai#DeployedOn",
+      "explanation": "When the audited model version went live.",
+      "enabled": true,
+      "engines": [
+        {
+          "engine": "reasoner",
+          "status": "pass",
+          "detail": "match",
+          "expected": "2026-01-10",
+          "actual": "2026-01-10"
+        },
+        {
+          "engine": "postgres",
+          "status": "pass",
+          "detail": "match (representation)",
+          "expected": "2026-01-10",
+          "actual": "2026-01-10T06:00:00.000Z"
+        }
+      ],
+      "overall": "pass"
+    },
+    {
+      "id": "mut-ai-at-human-gate",
+      "displayName": "Assign AI to the human-only gate fires the violation",
+      "featureRef": "II-3,Suite-4",
+      "section": "Mutation",
+      "testKind": "mutation",
+      "targetRef": "Roles/ntwf-release-manager-role",
+      "explanation": "Suite-4 inject-an-error: filling the gate role with an AI must flip ApprovalConsistencyViolation on the step AND roll up to the workflow, on BOTH engines.",
+      "enabled": true,
+      "engines": [
+        {
+          "engine": "reasoner",
+          "status": "pass",
+          "detail": "2 assertion(s) held after in-memory edit"
+        },
+        {
+          "engine": "postgres",
+          "status": "pass",
+          "detail": "2 assertion(s) held after in-memory edit"
+        }
+      ],
+      "overall": "pass"
+    },
+    {
+      "id": "mut-backdate-goes-stale",
+      "displayName": "Backdating the review makes the workflow stale",
+      "featureRef": "IV-1,CQ5",
+      "section": "Mutation",
+      "testKind": "mutation",
+      "targetRef": "Workflows/production-deployment",
+      "explanation": "Backdate dct:modified past the staleness window: IsStale must flip true.",
+      "enabled": true,
+      "engines": [
+        {
+          "engine": "reasoner",
+          "status": "pass",
+          "detail": "1 assertion(s) held after in-memory edit"
+        },
+        {
+          "engine": "postgres",
+          "status": "pass",
+          "detail": "1 assertion(s) held after in-memory edit"
+        }
+      ],
+      "overall": "pass"
+    },
+    {
+      "id": "mut-stale-and-ai-join",
+      "displayName": "Backdating fires the stale-AND-AI compliance join",
+      "featureRef": "IV-2",
+      "section": "Mutation",
+      "testKind": "mutation",
+      "targetRef": "Workflows/production-deployment",
+      "explanation": "Seed facts already include AI-executed steps, so staleness alone completes the IsStaleAndHasAIAgent join.",
+      "enabled": true,
+      "engines": [
+        {
+          "engine": "reasoner",
+          "status": "pass",
+          "detail": "1 assertion(s) held after in-memory edit"
+        },
+        {
+          "engine": "postgres",
+          "status": "pass",
+          "detail": "1 assertion(s) held after in-memory edit"
+        }
+      ],
+      "overall": "pass"
+    },
+    {
+      "id": "mut-gate-not-required",
+      "displayName": "Dropping the sign-off requirement clears the violation",
+      "featureRef": "II-3",
+      "section": "Mutation",
+      "testKind": "mutation",
+      "targetRef": "WorkflowSteps/prod-deploy-step-3",
+      "explanation": "The violation is an AND of requiresHumanApproval and a non-human filler: with the requirement off, an AI filler is consistent.",
+      "enabled": true,
+      "engines": [
+        {
+          "engine": "reasoner",
+          "status": "pass",
+          "detail": "1 assertion(s) held after in-memory edit"
+        },
+        {
+          "engine": "postgres",
+          "status": "pass",
+          "detail": "1 assertion(s) held after in-memory edit"
+        }
+      ],
+      "overall": "pass"
+    }
+  ]
+}

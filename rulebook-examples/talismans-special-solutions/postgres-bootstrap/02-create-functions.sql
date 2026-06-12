@@ -228,46 +228,6 @@ RETURNS BOOLEAN AS $$
   SELECT ((calc_workflows_is_stale(p_workflow_id) AND calc_workflows_has_ai_agent_step(p_workflow_id)))::boolean;
 $$ LANGUAGE sql STABLE;
 
--- calc_workflows_count_total_plan_minutes
--- Field: Workflows.CountTotalPlanMinutes
--- Type: aggregation | DataType: integer | Returns: INTEGER
-
-
-CREATE OR REPLACE FUNCTION calc_workflows_count_total_plan_minutes(p_workflow_id TEXT)
-RETURNS INTEGER AS $$
-  SELECT ((SELECT COALESCE(SUM((step_duration_minutes)::numeric), 0) FROM workflow_steps WHERE workflow = p_workflow_id))::integer;
-$$ LANGUAGE sql STABLE;
-
--- calc_workflows_is_over_time_budget
--- Field: Workflows.IsOverTimeBudget
--- Type: calculated | DataType: boolean | Returns: BOOLEAN
-
-
-CREATE OR REPLACE FUNCTION calc_workflows_is_over_time_budget(p_workflow_id TEXT)
-RETURNS BOOLEAN AS $$
-  SELECT (calc_workflows_count_total_plan_minutes(p_workflow_id) > (SELECT max_plan_minutes FROM workflows WHERE workflow_id = p_workflow_id))::boolean;
-$$ LANGUAGE sql STABLE;
-
--- calc_workflows_count_unmet_gate_signoffs
--- Field: Workflows.CountUnmetGateSignoffs
--- Type: aggregation | DataType: integer | Returns: INTEGER
-
-
-CREATE OR REPLACE FUNCTION calc_workflows_count_unmet_gate_signoffs(p_workflow_id TEXT)
-RETURNS INTEGER AS $$
-  SELECT ((SELECT COUNT(*) FROM workflow_steps WHERE workflow = (SELECT NULLIF(workflow_id, '') FROM workflows WHERE workflow_id = p_workflow_id) AND calc_workflow_steps_gate_signoff_unmet(workflow_step_id) = TRUE))::integer;
-$$ LANGUAGE sql STABLE;
-
--- calc_workflows_has_unmet_gate_signoff
--- Field: Workflows.HasUnmetGateSignoff
--- Type: calculated | DataType: boolean | Returns: BOOLEAN
-
-
-CREATE OR REPLACE FUNCTION calc_workflows_has_unmet_gate_signoff(p_workflow_id TEXT)
-RETURNS BOOLEAN AS $$
-  SELECT ((calc_workflows_count_unmet_gate_signoffs(p_workflow_id))::NUMERIC > 0)::boolean;
-$$ LANGUAGE sql STABLE;
-
 -- calc_workflows_count_derivation_links
 -- Field: Workflows.CountDerivationLinks
 -- Type: aggregation | DataType: integer | Returns: INTEGER
@@ -348,6 +308,26 @@ RETURNS INTEGER AS $$
   SELECT ((SELECT COUNT(*) FROM roles WHERE calc_roles_has_exactly_one_filler(role_id) = FALSE))::integer;
 $$ LANGUAGE sql STABLE;
 
+-- calc_workflows_count_agent_type_changes
+-- Field: Workflows.CountAgentTypeChanges
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_workflows_count_agent_type_changes(p_workflow_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM role_assignments WHERE calc_role_assignments_is_agent_type_change(role_assignment_id) = TRUE))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_workflows_count_compliance_audit_changes
+-- Field: Workflows.CountComplianceAuditChanges
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_workflows_count_compliance_audit_changes(p_workflow_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM role_assignments WHERE calc_role_assignments_requires_compliance_audit(role_assignment_id) = TRUE))::integer;
+$$ LANGUAGE sql STABLE;
+
 -- calc_workflow_steps_parent_path
 -- Field: WorkflowSteps.ParentPath
 -- Type: lookup | DataType: string | Returns: TEXT
@@ -403,28 +383,6 @@ RETURNS TEXT AS $$
   SELECT (SELECT owned_by::text FROM roles WHERE role_id = (SELECT assigned_role FROM workflow_steps WHERE workflow_step_id = p_workflow_step_id));
 $$ LANGUAGE sql STABLE;
 
--- calc_workflow_steps_is_off_hours_deployment
--- Field: WorkflowSteps.IsOffHoursDeployment
--- Type: lookup | DataType: boolean | Returns: BOOLEAN
--- Lookup: IsOffHoursDeployment from related Workflows
-
-
-CREATE OR REPLACE FUNCTION calc_workflow_steps_is_off_hours_deployment(p_workflow_step_id TEXT)
-RETURNS BOOLEAN AS $$
-  SELECT (SELECT is_off_hours_deployment::boolean FROM workflows WHERE workflow_id = (SELECT workflow FROM workflow_steps WHERE workflow_step_id = p_workflow_step_id));
-$$ LANGUAGE sql STABLE;
-
--- calc_workflow_steps_gate_dual_signoff_satisfied
--- Field: WorkflowSteps.GateDualSignoffSatisfied
--- Type: lookup | DataType: boolean | Returns: BOOLEAN
--- Lookup: DualSignoffSatisfied from related ApprovalGates
-
-
-CREATE OR REPLACE FUNCTION calc_workflow_steps_gate_dual_signoff_satisfied(p_workflow_step_id TEXT)
-RETURNS BOOLEAN AS $$
-  SELECT calc_approval_gates_dual_signoff_satisfied((SELECT approval_gate FROM workflow_steps WHERE workflow_step_id = p_workflow_step_id));
-$$ LANGUAGE sql STABLE;
-
 -- get_workflows_display_name
 -- Helper function: Get DisplayName from Workflows by WorkflowId
 -- Used for join-free cross-table references in aggregations
@@ -478,15 +436,6 @@ RETURNS TIMESTAMPTZ AS $$
   SELECT (SELECT created FROM workflows WHERE workflow_id = p_workflow_id);
 $$ LANGUAGE sql STABLE;
 
--- get_workflows_max_plan_minutes
--- Helper function: Get MaxPlanMinutes from Workflows by WorkflowId
--- Used for join-free cross-table references in aggregations
-
-CREATE OR REPLACE FUNCTION get_workflows_max_plan_minutes(p_workflow_id TEXT)
-RETURNS INTEGER AS $$
-  SELECT (SELECT max_plan_minutes FROM workflows WHERE workflow_id = p_workflow_id);
-$$ LANGUAGE sql STABLE;
-
 -- get_workflows_staleness_threshold_months
 -- Helper function: Get StalenessThresholdMonths from Workflows by WorkflowId
 -- Used for join-free cross-table references in aggregations
@@ -494,15 +443,6 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION get_workflows_staleness_threshold_months(p_workflow_id TEXT)
 RETURNS INTEGER AS $$
   SELECT (SELECT staleness_threshold_months FROM workflows WHERE workflow_id = p_workflow_id);
-$$ LANGUAGE sql STABLE;
-
--- get_workflows_is_off_hours_deployment
--- Helper function: Get IsOffHoursDeployment from Workflows by WorkflowId
--- Used for join-free cross-table references in aggregations
-
-CREATE OR REPLACE FUNCTION get_workflows_is_off_hours_deployment(p_workflow_id TEXT)
-RETURNS BOOLEAN AS $$
-  SELECT (SELECT is_off_hours_deployment FROM workflows WHERE workflow_id = p_workflow_id);
 $$ LANGUAGE sql STABLE;
 
 -- get_roles_display_name
@@ -611,15 +551,6 @@ RETURNS INTEGER AS $$
   SELECT (SELECT escalation_threshold_hours FROM approval_gates WHERE approval_gate_id = p_approval_gate_id);
 $$ LANGUAGE sql STABLE;
 
--- get_approval_gates_requires_dual_signoff_off_hours
--- Helper function: Get RequiresDualSignoffOffHours from ApprovalGates by ApprovalGateId
--- Used for join-free cross-table references in aggregations
-
-CREATE OR REPLACE FUNCTION get_approval_gates_requires_dual_signoff_off_hours(p_approval_gate_id TEXT)
-RETURNS BOOLEAN AS $$
-  SELECT (SELECT requires_dual_signoff_off_hours FROM approval_gates WHERE approval_gate_id = p_approval_gate_id);
-$$ LANGUAGE sql STABLE;
-
 -- calc_workflow_steps_relative_path
 -- Field: WorkflowSteps.RelativePath
 -- Type: calculated | DataType: string | Returns: TEXT
@@ -719,16 +650,6 @@ RETURNS BOOLEAN AS $$
   SELECT (calc_workflow_steps_owning_department(p_workflow_step_id) = 'ntwf-engineering')::boolean;
 $$ LANGUAGE sql STABLE;
 
--- calc_workflow_steps_gate_signoff_unmet
--- Field: WorkflowSteps.GateSignoffUnmet
--- Type: calculated | DataType: boolean | Returns: BOOLEAN
-
-
-CREATE OR REPLACE FUNCTION calc_workflow_steps_gate_signoff_unmet(p_workflow_step_id TEXT)
-RETURNS BOOLEAN AS $$
-  SELECT ((NOT ((((SELECT NULLIF(approval_gate, '') FROM workflow_steps WHERE workflow_step_id = p_workflow_step_id)) IS NULL OR ((SELECT NULLIF(approval_gate, '') FROM workflow_steps WHERE workflow_step_id = p_workflow_step_id))::text = '')) AND NOT (calc_workflow_steps_gate_dual_signoff_satisfied(p_workflow_step_id))))::boolean;
-$$ LANGUAGE sql STABLE;
-
 -- calc_approval_gates_parent_path
 -- Field: ApprovalGates.ParentPath
 -- Type: lookup | DataType: string | Returns: TEXT
@@ -762,39 +683,6 @@ RETURNS TEXT AS $$
   SELECT (SELECT filled_by_human_agent::text FROM roles WHERE role_id = calc_approval_gates_gate_role(p_approval_gate_id));
 $$ LANGUAGE sql STABLE;
 
--- calc_approval_gates_is_off_hours_deployment
--- Field: ApprovalGates.IsOffHoursDeployment
--- Type: lookup | DataType: boolean | Returns: BOOLEAN
--- Lookup: IsOffHoursDeployment from related WorkflowSteps
-
-
-CREATE OR REPLACE FUNCTION calc_approval_gates_is_off_hours_deployment(p_approval_gate_id TEXT)
-RETURNS BOOLEAN AS $$
-  SELECT calc_workflow_steps_is_off_hours_deployment((SELECT workflow_step FROM approval_gates WHERE approval_gate_id = p_approval_gate_id));
-$$ LANGUAGE sql STABLE;
-
--- calc_approval_gates_gate_delegate_role
--- Field: ApprovalGates.GateDelegateRole
--- Type: lookup | DataType: string | Returns: TEXT
--- Lookup: DelegatesTo from related Roles
-
-
-CREATE OR REPLACE FUNCTION calc_approval_gates_gate_delegate_role(p_approval_gate_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (SELECT delegates_to::text FROM roles WHERE role_id = calc_approval_gates_gate_role(p_approval_gate_id));
-$$ LANGUAGE sql STABLE;
-
--- calc_approval_gates_gate_delegate_human
--- Field: ApprovalGates.GateDelegateHuman
--- Type: lookup | DataType: string | Returns: TEXT
--- Lookup: FilledByHumanAgent from related Roles
-
-
-CREATE OR REPLACE FUNCTION calc_approval_gates_gate_delegate_human(p_approval_gate_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (SELECT filled_by_human_agent::text FROM roles WHERE role_id = calc_approval_gates_gate_delegate_role(p_approval_gate_id));
-$$ LANGUAGE sql STABLE;
-
 -- calc_approval_gates_relative_path
 -- Field: ApprovalGates.RelativePath
 -- Type: calculated | DataType: string | Returns: TEXT
@@ -822,26 +710,6 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_approval_gates_name(p_approval_gate_id TEXT)
 RETURNS TEXT AS $$
   SELECT (REPLACE(LOWER((SELECT NULLIF(display_name, '') FROM approval_gates WHERE approval_gate_id = p_approval_gate_id)), ' ', '-'))::text;
-$$ LANGUAGE sql STABLE;
-
--- calc_approval_gates_has_two_human_approvers
--- Field: ApprovalGates.HasTwoHumanApprovers
--- Type: calculated | DataType: boolean | Returns: BOOLEAN
-
-
-CREATE OR REPLACE FUNCTION calc_approval_gates_has_two_human_approvers(p_approval_gate_id TEXT)
-RETURNS BOOLEAN AS $$
-  SELECT ((NOT (((calc_approval_gates_gate_approver_human(p_approval_gate_id)) IS NULL OR (calc_approval_gates_gate_approver_human(p_approval_gate_id))::text = '')) AND NOT (((calc_approval_gates_gate_delegate_human(p_approval_gate_id)) IS NULL OR (calc_approval_gates_gate_delegate_human(p_approval_gate_id))::text = ''))))::boolean;
-$$ LANGUAGE sql STABLE;
-
--- calc_approval_gates_dual_signoff_satisfied
--- Field: ApprovalGates.DualSignoffSatisfied
--- Type: calculated | DataType: boolean | Returns: BOOLEAN
-
-
-CREATE OR REPLACE FUNCTION calc_approval_gates_dual_signoff_satisfied(p_approval_gate_id TEXT)
-RETURNS BOOLEAN AS $$
-  SELECT (CASE WHEN (COALESCE((SELECT requires_dual_signoff_off_hours FROM approval_gates WHERE approval_gate_id = p_approval_gate_id), FALSE) AND calc_approval_gates_is_off_hours_deployment(p_approval_gate_id)) THEN (calc_approval_gates_has_two_human_approvers(p_approval_gate_id))::text ELSE (TRUE)::text END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_step_precedence_parent_path
@@ -982,6 +850,15 @@ RETURNS TEXT AS $$
   SELECT (SELECT model_version FROM ai_agents WHERE ai_agent_id = p_ai_agent_id);
 $$ LANGUAGE sql STABLE;
 
+-- get_ai_agents_deployed_on
+-- Helper function: Get DeployedOn from AIAgents by AIAgentId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_ai_agents_deployed_on(p_ai_agent_id TEXT)
+RETURNS DATE AS $$
+  SELECT (SELECT deployed_on FROM ai_agents WHERE ai_agent_id = p_ai_agent_id);
+$$ LANGUAGE sql STABLE;
+
 -- get_automated_pipelines_name
 -- Helper function: Get Name from AutomatedPipelines by AutomatedPipelineId
 -- Used for join-free cross-table references in aggregations
@@ -1024,6 +901,42 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION get_departments_display_name(p_department_id TEXT)
 RETURNS TEXT AS $$
   SELECT (SELECT display_name FROM departments WHERE department_id = p_department_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_role_assignments_valid_from
+-- Helper function: Get ValidFrom from RoleAssignments by RoleAssignmentId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_role_assignments_valid_from(p_role_assignment_id TEXT)
+RETURNS DATE AS $$
+  SELECT (SELECT valid_from FROM role_assignments WHERE role_assignment_id = p_role_assignment_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_role_assignments_valid_to
+-- Helper function: Get ValidTo from RoleAssignments by RoleAssignmentId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_role_assignments_valid_to(p_role_assignment_id TEXT)
+RETURNS DATE AS $$
+  SELECT (SELECT valid_to FROM role_assignments WHERE role_assignment_id = p_role_assignment_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_role_assignments_reason
+-- Helper function: Get Reason from RoleAssignments by RoleAssignmentId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_role_assignments_reason(p_role_assignment_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT reason FROM role_assignments WHERE role_assignment_id = p_role_assignment_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_role_assignments_prior_filler_type
+-- Helper function: Get PriorFillerType from RoleAssignments by RoleAssignmentId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_role_assignments_prior_filler_type(p_role_assignment_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT prior_filler_type FROM role_assignments WHERE role_assignment_id = p_role_assignment_id);
 $$ LANGUAGE sql STABLE;
 
 -- calc_roles_relative_path
@@ -1083,6 +996,97 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_roles_filler_type(p_role_id TEXT)
 RETURNS TEXT AS $$
   SELECT (CASE WHEN NOT ((((SELECT NULLIF(filled_by_human_agent, '') FROM roles WHERE role_id = p_role_id)) IS NULL OR ((SELECT NULLIF(filled_by_human_agent, '') FROM roles WHERE role_id = p_role_id))::text = '')) THEN ('HumanAgent')::text ELSE (CASE WHEN NOT ((((SELECT NULLIF(filled_by_ai_agent, '') FROM roles WHERE role_id = p_role_id)) IS NULL OR ((SELECT NULLIF(filled_by_ai_agent, '') FROM roles WHERE role_id = p_role_id))::text = '')) THEN ('AIAgent')::text ELSE (CASE WHEN NOT ((((SELECT NULLIF(filled_by_automated_pipeline, '') FROM roles WHERE role_id = p_role_id)) IS NULL OR ((SELECT NULLIF(filled_by_automated_pipeline, '') FROM roles WHERE role_id = p_role_id))::text = '')) THEN ('AutomatedPipeline')::text ELSE ('')::text END)::text END)::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_role_assignments_parent_path
+-- Field: RoleAssignments.ParentPath
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: RelativePath from related Roles
+
+
+CREATE OR REPLACE FUNCTION calc_role_assignments_parent_path(p_role_assignment_id TEXT)
+RETURNS TEXT AS $$
+  SELECT calc_roles_relative_path((SELECT role FROM role_assignments WHERE role_assignment_id = p_role_assignment_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_role_assignments_relative_path
+-- Field: RoleAssignments.RelativePath
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_role_assignments_relative_path(p_role_assignment_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CONCAT(calc_role_assignments_parent_path(p_role_assignment_id), '/assignments/', (SELECT NULLIF(role_assignment_id, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id)))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_role_assignments_iri
+-- Field: RoleAssignments.Iri
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_role_assignments_iri(p_role_assignment_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (REPLACE(calc_role_assignments_relative_path(p_role_assignment_id), '/', '-'))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_role_assignments_name
+-- Field: RoleAssignments.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_role_assignments_name(p_role_assignment_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CONCAT((SELECT NULLIF(role, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id), ' [', (SELECT valid_from::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id), ' -> ', CASE WHEN (((SELECT valid_to::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id)) IS NULL OR ((SELECT valid_to::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id))::text = '') THEN ('open')::text ELSE ((SELECT valid_to::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id))::text END, ']'))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_role_assignments_filler_type
+-- Field: RoleAssignments.FillerType
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_role_assignments_filler_type(p_role_assignment_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CASE WHEN NOT ((((SELECT NULLIF(filled_by_human_agent, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id)) IS NULL OR ((SELECT NULLIF(filled_by_human_agent, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id))::text = '')) THEN ('HumanAgent')::text ELSE (CASE WHEN NOT ((((SELECT NULLIF(filled_by_ai_agent, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id)) IS NULL OR ((SELECT NULLIF(filled_by_ai_agent, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id))::text = '')) THEN ('AIAgent')::text ELSE (CASE WHEN NOT ((((SELECT NULLIF(filled_by_automated_pipeline, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id)) IS NULL OR ((SELECT NULLIF(filled_by_automated_pipeline, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id))::text = '')) THEN ('AutomatedPipeline')::text ELSE ('')::text END)::text END)::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_role_assignments_is_current
+-- Field: RoleAssignments.IsCurrent
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_role_assignments_is_current(p_role_assignment_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((((SELECT valid_to::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id)) IS NULL OR ((SELECT valid_to::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id))::text = ''))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_role_assignments_was_active_as_of_audit_date
+-- Field: RoleAssignments.WasActiveAsOfAuditDate
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_role_assignments_was_active_as_of_audit_date(p_role_assignment_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (((SELECT valid_from::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id) <= '2026-03-01' AND ((((SELECT valid_to::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id)) IS NULL OR ((SELECT valid_to::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id))::text = '') OR (SELECT valid_to::timestamptz FROM role_assignments WHERE role_assignment_id = p_role_assignment_id) > '2026-03-01')))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_role_assignments_is_agent_type_change
+-- Field: RoleAssignments.IsAgentTypeChange
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_role_assignments_is_agent_type_change(p_role_assignment_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((NOT ((((SELECT NULLIF(prior_filler_type, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id)) IS NULL OR ((SELECT NULLIF(prior_filler_type, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id))::text = '')) AND (SELECT NULLIF(prior_filler_type, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id) <> calc_role_assignments_filler_type(p_role_assignment_id)))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_role_assignments_requires_compliance_audit
+-- Field: RoleAssignments.RequiresComplianceAudit
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_role_assignments_requires_compliance_audit(p_role_assignment_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((NOT ((((SELECT NULLIF(prior_filler_type, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id)) IS NULL OR ((SELECT NULLIF(prior_filler_type, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id))::text = '')) AND (SELECT NULLIF(prior_filler_type, '') FROM role_assignments WHERE role_assignment_id = p_role_assignment_id) = 'AIAgent' AND calc_role_assignments_filler_type(p_role_assignment_id) = 'HumanAgent'))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_departments_relative_path
@@ -1155,6 +1159,26 @@ RETURNS TEXT AS $$
   SELECT (REPLACE(calc_ai_agents_relative_path(p_ai_agent_id), '/', '-'))::text;
 $$ LANGUAGE sql STABLE;
 
+-- calc_ai_agents_count_attributed_artifacts
+-- Field: AIAgents.CountAttributedArtifacts
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_ai_agents_count_attributed_artifacts(p_ai_agent_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM workflow_artifacts WHERE attributed_to_ai_agent = (SELECT NULLIF(ai_agent_id, '') FROM ai_agents WHERE ai_agent_id = p_ai_agent_id)))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_ai_agents_count_impacted_workflows
+-- Field: AIAgents.CountImpactedWorkflows
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_ai_agents_count_impacted_workflows(p_ai_agent_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM workflow_artifacts WHERE attributed_to_ai_agent = (SELECT NULLIF(ai_agent_id, '') FROM ai_agents WHERE ai_agent_id = p_ai_agent_id) AND calc_workflow_artifacts_has_producing_workflow(artifact_id) = TRUE))::integer;
+$$ LANGUAGE sql STABLE;
+
 -- calc_automated_pipelines_relative_path
 -- Field: AutomatedPipelines.RelativePath
 -- Type: calculated | DataType: string | Returns: TEXT
@@ -1195,26 +1219,6 @@ RETURNS TEXT AS $$
   SELECT (REPLACE(calc_workflow_status_concepts_relative_path(p_concept_id), '/', '-'))::text;
 $$ LANGUAGE sql STABLE;
 
--- calc_compliance_verdict_concepts_relative_path
--- Field: ComplianceVerdictConcepts.RelativePath
--- Type: calculated | DataType: string | Returns: TEXT
-
-
-CREATE OR REPLACE FUNCTION calc_compliance_verdict_concepts_relative_path(p_concept_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (CONCAT('concepts/compliance-verdict/', (SELECT NULLIF(concept_id, '') FROM compliance_verdict_concepts WHERE concept_id = p_concept_id)))::text;
-$$ LANGUAGE sql STABLE;
-
--- calc_compliance_verdict_concepts_iri
--- Field: ComplianceVerdictConcepts.Iri
--- Type: calculated | DataType: string | Returns: TEXT
-
-
-CREATE OR REPLACE FUNCTION calc_compliance_verdict_concepts_iri(p_concept_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (REPLACE(calc_compliance_verdict_concepts_relative_path(p_concept_id), '/', '-'))::text;
-$$ LANGUAGE sql STABLE;
-
 -- calc_agent_capability_concepts_relative_path
 -- Field: AgentCapabilityConcepts.RelativePath
 -- Type: calculated | DataType: string | Returns: TEXT
@@ -1233,6 +1237,26 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_agent_capability_concepts_iri(p_concept_id TEXT)
 RETURNS TEXT AS $$
   SELECT (REPLACE(calc_agent_capability_concepts_relative_path(p_concept_id), '/', '-'))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_artifact_type_concepts_relative_path
+-- Field: ArtifactTypeConcepts.RelativePath
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_artifact_type_concepts_relative_path(p_concept_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CONCAT('concepts/artifact-type/', (SELECT NULLIF(concept_id, '') FROM artifact_type_concepts WHERE concept_id = p_concept_id)))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_artifact_type_concepts_iri
+-- Field: ArtifactTypeConcepts.Iri
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_artifact_type_concepts_iri(p_concept_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (REPLACE(calc_artifact_type_concepts_relative_path(p_concept_id), '/', '-'))::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_datasets_relative_path
@@ -1277,6 +1301,42 @@ RETURNS TEXT AS $$
   SELECT (SELECT workflow::text FROM workflow_steps WHERE workflow_step_id = (SELECT produced_by_step FROM workflow_artifacts WHERE artifact_id = p_artifact_id));
 $$ LANGUAGE sql STABLE;
 
+-- get_artifact_type_concepts_pref_label
+-- Helper function: Get PrefLabel from ArtifactTypeConcepts by ConceptId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_artifact_type_concepts_pref_label(p_concept_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT pref_label FROM artifact_type_concepts WHERE concept_id = p_concept_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_artifact_type_concepts_alt_label
+-- Helper function: Get AltLabel from ArtifactTypeConcepts by ConceptId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_artifact_type_concepts_alt_label(p_concept_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT alt_label FROM artifact_type_concepts WHERE concept_id = p_concept_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_artifact_type_concepts_definition
+-- Helper function: Get Definition from ArtifactTypeConcepts by ConceptId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_artifact_type_concepts_definition(p_concept_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT definition FROM artifact_type_concepts WHERE concept_id = p_concept_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_artifact_type_concepts_scope_note
+-- Helper function: Get ScopeNote from ArtifactTypeConcepts by ConceptId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_artifact_type_concepts_scope_note(p_concept_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT scope_note FROM artifact_type_concepts WHERE concept_id = p_concept_id);
+$$ LANGUAGE sql STABLE;
+
 -- calc_workflow_artifacts_relative_path
 -- Field: WorkflowArtifacts.RelativePath
 -- Type: calculated | DataType: string | Returns: TEXT
@@ -1317,212 +1377,233 @@ RETURNS BOOLEAN AS $$
   SELECT (NOT ((((SELECT NULLIF(derived_from_artifact, '') FROM workflow_artifacts WHERE artifact_id = p_artifact_id)) IS NULL OR ((SELECT NULLIF(derived_from_artifact, '') FROM workflow_artifacts WHERE artifact_id = p_artifact_id))::text = '')))::boolean;
 $$ LANGUAGE sql STABLE;
 
--- calc_compliance_verdicts_parent_path
--- Field: ComplianceVerdicts.ParentPath
--- Type: lookup | DataType: string | Returns: TEXT
--- Lookup: RelativePath from related Workflows
-
-
-CREATE OR REPLACE FUNCTION calc_compliance_verdicts_parent_path(p_compliance_verdict_id TEXT)
-RETURNS TEXT AS $$
-  SELECT calc_workflows_relative_path((SELECT workflow FROM compliance_verdicts WHERE compliance_verdict_id = p_compliance_verdict_id));
-$$ LANGUAGE sql STABLE;
-
--- calc_compliance_verdicts_workflow_title
--- Field: ComplianceVerdicts.WorkflowTitle
--- Type: lookup | DataType: string | Returns: TEXT
--- Lookup: Title from related Workflows
-
-
-CREATE OR REPLACE FUNCTION calc_compliance_verdicts_workflow_title(p_compliance_verdict_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (SELECT title::text FROM workflows WHERE workflow_id = (SELECT workflow FROM compliance_verdicts WHERE compliance_verdict_id = p_compliance_verdict_id));
-$$ LANGUAGE sql STABLE;
-
--- calc_compliance_verdicts_months_since_review
--- Field: ComplianceVerdicts.MonthsSinceReview
--- Type: lookup | DataType: integer | Returns: INTEGER
--- Lookup: MonthsSinceModified from related Workflows
-
-
-CREATE OR REPLACE FUNCTION calc_compliance_verdicts_months_since_review(p_compliance_verdict_id TEXT)
-RETURNS INTEGER AS $$
-  SELECT calc_workflows_months_since_modified((SELECT workflow FROM compliance_verdicts WHERE compliance_verdict_id = p_compliance_verdict_id));
-$$ LANGUAGE sql STABLE;
-
--- calc_compliance_verdicts_is_stale
--- Field: ComplianceVerdicts.IsStale
--- Type: lookup | DataType: boolean | Returns: BOOLEAN
--- Lookup: IsStale from related Workflows
-
-
-CREATE OR REPLACE FUNCTION calc_compliance_verdicts_is_stale(p_compliance_verdict_id TEXT)
-RETURNS BOOLEAN AS $$
-  SELECT calc_workflows_is_stale((SELECT workflow FROM compliance_verdicts WHERE compliance_verdict_id = p_compliance_verdict_id));
-$$ LANGUAGE sql STABLE;
-
--- calc_compliance_verdicts_ai_step_count
--- Field: ComplianceVerdicts.AIStepCount
--- Type: lookup | DataType: integer | Returns: INTEGER
--- Lookup: CountAISteps from related Workflows
-
-
-CREATE OR REPLACE FUNCTION calc_compliance_verdicts_ai_step_count(p_compliance_verdict_id TEXT)
-RETURNS INTEGER AS $$
-  SELECT calc_workflows_count_ai_steps((SELECT workflow FROM compliance_verdicts WHERE compliance_verdict_id = p_compliance_verdict_id));
-$$ LANGUAGE sql STABLE;
-
--- calc_compliance_verdicts_has_ai_executed_step
--- Field: ComplianceVerdicts.HasAIExecutedStep
--- Type: lookup | DataType: boolean | Returns: BOOLEAN
--- Lookup: HasAIAgentStep from related Workflows
-
-
-CREATE OR REPLACE FUNCTION calc_compliance_verdicts_has_ai_executed_step(p_compliance_verdict_id TEXT)
-RETURNS BOOLEAN AS $$
-  SELECT calc_workflows_has_ai_agent_step((SELECT workflow FROM compliance_verdicts WHERE compliance_verdict_id = p_compliance_verdict_id));
-$$ LANGUAGE sql STABLE;
-
--- calc_compliance_verdicts_total_plan_minutes
--- Field: ComplianceVerdicts.TotalPlanMinutes
--- Type: lookup | DataType: integer | Returns: INTEGER
--- Lookup: CountTotalPlanMinutes from related Workflows
-
-
-CREATE OR REPLACE FUNCTION calc_compliance_verdicts_total_plan_minutes(p_compliance_verdict_id TEXT)
-RETURNS INTEGER AS $$
-  SELECT calc_workflows_count_total_plan_minutes((SELECT workflow FROM compliance_verdicts WHERE compliance_verdict_id = p_compliance_verdict_id));
-$$ LANGUAGE sql STABLE;
-
--- calc_compliance_verdicts_time_budget_minutes
--- Field: ComplianceVerdicts.TimeBudgetMinutes
--- Type: lookup | DataType: integer | Returns: INTEGER
--- Lookup: MaxPlanMinutes from related Workflows
-
-
-CREATE OR REPLACE FUNCTION calc_compliance_verdicts_time_budget_minutes(p_compliance_verdict_id TEXT)
-RETURNS INTEGER AS $$
-  SELECT (SELECT max_plan_minutes::integer FROM workflows WHERE workflow_id = (SELECT workflow FROM compliance_verdicts WHERE compliance_verdict_id = p_compliance_verdict_id));
-$$ LANGUAGE sql STABLE;
-
--- calc_compliance_verdicts_is_over_time_budget
--- Field: ComplianceVerdicts.IsOverTimeBudget
--- Type: lookup | DataType: boolean | Returns: BOOLEAN
--- Lookup: IsOverTimeBudget from related Workflows
-
-
-CREATE OR REPLACE FUNCTION calc_compliance_verdicts_is_over_time_budget(p_compliance_verdict_id TEXT)
-RETURNS BOOLEAN AS $$
-  SELECT calc_workflows_is_over_time_budget((SELECT workflow FROM compliance_verdicts WHERE compliance_verdict_id = p_compliance_verdict_id));
-$$ LANGUAGE sql STABLE;
-
--- calc_compliance_verdicts_has_consistency_violation
--- Field: ComplianceVerdicts.HasConsistencyViolation
--- Type: lookup | DataType: boolean | Returns: BOOLEAN
--- Lookup: HasConsistencyViolation from related Workflows
-
-
-CREATE OR REPLACE FUNCTION calc_compliance_verdicts_has_consistency_violation(p_compliance_verdict_id TEXT)
-RETURNS BOOLEAN AS $$
-  SELECT calc_workflows_has_consistency_violation((SELECT workflow FROM compliance_verdicts WHERE compliance_verdict_id = p_compliance_verdict_id));
-$$ LANGUAGE sql STABLE;
-
--- calc_compliance_verdicts_has_unmet_gate_signoff
--- Field: ComplianceVerdicts.HasUnmetGateSignoff
--- Type: lookup | DataType: boolean | Returns: BOOLEAN
--- Lookup: HasUnmetGateSignoff from related Workflows
-
-
-CREATE OR REPLACE FUNCTION calc_compliance_verdicts_has_unmet_gate_signoff(p_compliance_verdict_id TEXT)
-RETURNS BOOLEAN AS $$
-  SELECT calc_workflows_has_unmet_gate_signoff((SELECT workflow FROM compliance_verdicts WHERE compliance_verdict_id = p_compliance_verdict_id));
-$$ LANGUAGE sql STABLE;
-
--- calc_compliance_verdicts_verdict
--- Field: ComplianceVerdicts.Verdict
--- Type: lookup | DataType: string | Returns: TEXT
--- Lookup: PrefLabel from related ComplianceVerdictConcepts
-
-
-CREATE OR REPLACE FUNCTION calc_compliance_verdicts_verdict(p_compliance_verdict_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (SELECT pref_label::text FROM compliance_verdict_concepts WHERE concept_id = (SELECT verdict_concept FROM compliance_verdicts WHERE compliance_verdict_id = p_compliance_verdict_id));
-$$ LANGUAGE sql STABLE;
-
--- get_compliance_verdict_concepts_pref_label
--- Helper function: Get PrefLabel from ComplianceVerdictConcepts by ConceptId
--- Used for join-free cross-table references in aggregations
-
-CREATE OR REPLACE FUNCTION get_compliance_verdict_concepts_pref_label(p_concept_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (SELECT pref_label FROM compliance_verdict_concepts WHERE concept_id = p_concept_id);
-$$ LANGUAGE sql STABLE;
-
--- get_compliance_verdict_concepts_alt_label
--- Helper function: Get AltLabel from ComplianceVerdictConcepts by ConceptId
--- Used for join-free cross-table references in aggregations
-
-CREATE OR REPLACE FUNCTION get_compliance_verdict_concepts_alt_label(p_concept_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (SELECT alt_label FROM compliance_verdict_concepts WHERE concept_id = p_concept_id);
-$$ LANGUAGE sql STABLE;
-
--- get_compliance_verdict_concepts_definition
--- Helper function: Get Definition from ComplianceVerdictConcepts by ConceptId
--- Used for join-free cross-table references in aggregations
-
-CREATE OR REPLACE FUNCTION get_compliance_verdict_concepts_definition(p_concept_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (SELECT definition FROM compliance_verdict_concepts WHERE concept_id = p_concept_id);
-$$ LANGUAGE sql STABLE;
-
--- get_compliance_verdict_concepts_scope_note
--- Helper function: Get ScopeNote from ComplianceVerdictConcepts by ConceptId
--- Used for join-free cross-table references in aggregations
-
-CREATE OR REPLACE FUNCTION get_compliance_verdict_concepts_scope_note(p_concept_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (SELECT scope_note FROM compliance_verdict_concepts WHERE concept_id = p_concept_id);
-$$ LANGUAGE sql STABLE;
-
--- calc_compliance_verdicts_relative_path
--- Field: ComplianceVerdicts.RelativePath
--- Type: calculated | DataType: string | Returns: TEXT
-
-
-CREATE OR REPLACE FUNCTION calc_compliance_verdicts_relative_path(p_compliance_verdict_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (CONCAT(calc_compliance_verdicts_parent_path(p_compliance_verdict_id), '/verdicts/', (SELECT NULLIF(compliance_verdict_id, '') FROM compliance_verdicts WHERE compliance_verdict_id = p_compliance_verdict_id)))::text;
-$$ LANGUAGE sql STABLE;
-
--- calc_compliance_verdicts_iri
--- Field: ComplianceVerdicts.Iri
--- Type: calculated | DataType: string | Returns: TEXT
-
-
-CREATE OR REPLACE FUNCTION calc_compliance_verdicts_iri(p_compliance_verdict_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (REPLACE(calc_compliance_verdicts_relative_path(p_compliance_verdict_id), '/', '-'))::text;
-$$ LANGUAGE sql STABLE;
-
--- calc_compliance_verdicts_name
--- Field: ComplianceVerdicts.Name
--- Type: calculated | DataType: string | Returns: TEXT
-
-
-CREATE OR REPLACE FUNCTION calc_compliance_verdicts_name(p_compliance_verdict_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (REPLACE(LOWER(calc_compliance_verdicts_workflow_title(p_compliance_verdict_id)), ' ', '-'))::text;
-$$ LANGUAGE sql STABLE;
-
--- calc_compliance_verdicts_is_at_compliance_risk
--- Field: ComplianceVerdicts.IsAtComplianceRisk
+-- calc_workflow_artifacts_has_producing_workflow
+-- Field: WorkflowArtifacts.HasProducingWorkflow
 -- Type: calculated | DataType: boolean | Returns: BOOLEAN
 
 
-CREATE OR REPLACE FUNCTION calc_compliance_verdicts_is_at_compliance_risk(p_compliance_verdict_id TEXT)
+CREATE OR REPLACE FUNCTION calc_workflow_artifacts_has_producing_workflow(p_artifact_id TEXT)
 RETURNS BOOLEAN AS $$
-  SELECT (((calc_compliance_verdicts_is_stale(p_compliance_verdict_id) AND calc_compliance_verdicts_has_ai_executed_step(p_compliance_verdict_id)) OR calc_compliance_verdicts_is_over_time_budget(p_compliance_verdict_id) OR calc_compliance_verdicts_has_consistency_violation(p_compliance_verdict_id) OR calc_compliance_verdicts_has_unmet_gate_signoff(p_compliance_verdict_id)))::boolean;
+  SELECT (NOT (((calc_workflow_artifacts_produced_by_workflow(p_artifact_id)) IS NULL OR (calc_workflow_artifacts_produced_by_workflow(p_artifact_id))::text = '')))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- get_change_log_version
+-- Helper function: Get Version from ChangeLog by ChangeLogId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_change_log_version(p_change_log_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT version FROM change_log WHERE change_log_id = p_change_log_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_change_log_change_date
+-- Helper function: Get ChangeDate from ChangeLog by ChangeLogId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_change_log_change_date(p_change_log_id TEXT)
+RETURNS DATE AS $$
+  SELECT (SELECT change_date FROM change_log WHERE change_log_id = p_change_log_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_change_log_change_kind
+-- Helper function: Get ChangeKind from ChangeLog by ChangeLogId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_change_log_change_kind(p_change_log_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT change_kind FROM change_log WHERE change_log_id = p_change_log_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_change_log_motivating_question
+-- Helper function: Get MotivatingQuestion from ChangeLog by ChangeLogId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_change_log_motivating_question(p_change_log_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT motivating_question FROM change_log WHERE change_log_id = p_change_log_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_change_log_terms_affected
+-- Helper function: Get TermsAffected from ChangeLog by ChangeLogId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_change_log_terms_affected(p_change_log_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT terms_affected FROM change_log WHERE change_log_id = p_change_log_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_change_log_rationale
+-- Helper function: Get Rationale from ChangeLog by ChangeLogId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_change_log_rationale(p_change_log_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT rationale FROM change_log WHERE change_log_id = p_change_log_id);
+$$ LANGUAGE sql STABLE;
+
+-- calc_governance_roles_relative_path
+-- Field: GovernanceRoles.RelativePath
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_governance_roles_relative_path(p_governance_role_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CONCAT('governance-roles/', (SELECT NULLIF(governance_role_id, '') FROM governance_roles WHERE governance_role_id = p_governance_role_id)))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_governance_roles_iri
+-- Field: GovernanceRoles.Iri
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_governance_roles_iri(p_governance_role_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (REPLACE(calc_governance_roles_relative_path(p_governance_role_id), '/', '-'))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_governance_roles_name
+-- Field: GovernanceRoles.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_governance_roles_name(p_governance_role_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (REPLACE(LOWER((SELECT NULLIF(display_name, '') FROM governance_roles WHERE governance_role_id = p_governance_role_id)), ' ', '-'))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_governance_roles_can_approve_changes
+-- Field: GovernanceRoles.CanApproveChanges
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_governance_roles_can_approve_changes(p_governance_role_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((SELECT NULLIF(kind, '') FROM governance_roles WHERE governance_role_id = p_governance_role_id) = 'Authority')::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- get_governance_roles_display_name
+-- Helper function: Get DisplayName from GovernanceRoles by GovernanceRoleId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_governance_roles_display_name(p_governance_role_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT display_name FROM governance_roles WHERE governance_role_id = p_governance_role_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_governance_roles_kind
+-- Helper function: Get Kind from GovernanceRoles by GovernanceRoleId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_governance_roles_kind(p_governance_role_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT kind FROM governance_roles WHERE governance_role_id = p_governance_role_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_governance_roles_responsibilities
+-- Helper function: Get Responsibilities from GovernanceRoles by GovernanceRoleId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_governance_roles_responsibilities(p_governance_role_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT responsibilities FROM governance_roles WHERE governance_role_id = p_governance_role_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_governance_roles_approval_scope
+-- Helper function: Get ApprovalScope from GovernanceRoles by GovernanceRoleId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_governance_roles_approval_scope(p_governance_role_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT approval_scope FROM governance_roles WHERE governance_role_id = p_governance_role_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_governance_roles_held_by
+-- Helper function: Get HeldBy from GovernanceRoles by GovernanceRoleId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_governance_roles_held_by(p_governance_role_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT held_by FROM governance_roles WHERE governance_role_id = p_governance_role_id);
+$$ LANGUAGE sql STABLE;
+
+-- calc_change_log_relative_path
+-- Field: ChangeLog.RelativePath
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_change_log_relative_path(p_change_log_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CONCAT('change-log/', (SELECT NULLIF(change_log_id, '') FROM change_log WHERE change_log_id = p_change_log_id)))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_change_log_iri
+-- Field: ChangeLog.Iri
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_change_log_iri(p_change_log_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (REPLACE(calc_change_log_relative_path(p_change_log_id), '/', '-'))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_change_log_name
+-- Field: ChangeLog.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_change_log_name(p_change_log_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CONCAT((SELECT NULLIF(version, '') FROM change_log WHERE change_log_id = p_change_log_id), ' (', (SELECT change_date::timestamptz FROM change_log WHERE change_log_id = p_change_log_id), ')'))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_change_log_is_breaking_change
+-- Field: ChangeLog.IsBreakingChange
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_change_log_is_breaking_change(p_change_log_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((SELECT NULLIF(change_kind, '') FROM change_log WHERE change_log_id = p_change_log_id) = 'major')::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_change_log_is_backward_compatible
+-- Field: ChangeLog.IsBackwardCompatible
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_change_log_is_backward_compatible(p_change_log_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (((SELECT NULLIF(change_kind, '') FROM change_log WHERE change_log_id = p_change_log_id) = 'patch' OR (SELECT NULLIF(change_kind, '') FROM change_log WHERE change_log_id = p_change_log_id) = 'minor'))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_vocabulary_reconciliations_relative_path
+-- Field: VocabularyReconciliations.RelativePath
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_vocabulary_reconciliations_relative_path(p_reconciliation_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CONCAT('reconciliations/', (SELECT NULLIF(reconciliation_id, '') FROM vocabulary_reconciliations WHERE reconciliation_id = p_reconciliation_id)))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_vocabulary_reconciliations_iri
+-- Field: VocabularyReconciliations.Iri
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_vocabulary_reconciliations_iri(p_reconciliation_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (REPLACE(calc_vocabulary_reconciliations_relative_path(p_reconciliation_id), '/', '-'))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_vocabulary_reconciliations_name
+-- Field: VocabularyReconciliations.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_vocabulary_reconciliations_name(p_reconciliation_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CONCAT((SELECT NULLIF(deprecated_term, '') FROM vocabulary_reconciliations WHERE reconciliation_id = p_reconciliation_id), ' owl:sameAs ', (SELECT NULLIF(replacement_term, '') FROM vocabulary_reconciliations WHERE reconciliation_id = p_reconciliation_id)))::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_scenarios_relative_path
@@ -1553,6 +1634,36 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_scenarios_name(p_scenario_id TEXT)
 RETURNS TEXT AS $$
   SELECT (REPLACE(LOWER((SELECT NULLIF(label, '') FROM scenarios WHERE scenario_id = p_scenario_id)), ' ', '-'))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_conformance_tests_relative_path
+-- Field: ConformanceTests.RelativePath
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_conformance_tests_relative_path(p_conformance_test_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CONCAT('conformance-tests/', (SELECT NULLIF(conformance_test_id, '') FROM conformance_tests WHERE conformance_test_id = p_conformance_test_id)))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_conformance_tests_iri
+-- Field: ConformanceTests.Iri
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_conformance_tests_iri(p_conformance_test_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (REPLACE(calc_conformance_tests_relative_path(p_conformance_test_id), '/', '-'))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_conformance_tests_name
+-- Field: ConformanceTests.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_conformance_tests_name(p_conformance_test_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (REPLACE(LOWER((SELECT NULLIF(display_name, '') FROM conformance_tests WHERE conformance_test_id = p_conformance_test_id)), ' ', '-'))::text;
 $$ LANGUAGE sql STABLE;
 
 -- ============================================================================

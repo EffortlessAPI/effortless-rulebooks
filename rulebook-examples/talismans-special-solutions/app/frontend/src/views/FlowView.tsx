@@ -151,6 +151,31 @@ function StepCard({ step, fact, handlers }: StepCardProps) {
         </div>
       </div>
 
+      {/* Gate-only: the approval gate's defining properties. Today the card only
+          shows the 🔒 badge; surface the gate's actual contract — its escalation
+          window, the role that owns it, and the human who signs off. These are
+          ApprovalGates columns the reasoner resolved; we just render them. */}
+      {step.isApprovalGate && (
+        <div className="sc-gate-detail">
+          <div className="sc-gate-row">
+            <span className="sc-gate-k">escalation</span>
+            <DagCell table="ApprovalGates" field="EscalationThresholdHours">
+              <span className="sc-gate-v">
+                {step.escalationThresholdHours != null ? `${step.escalationThresholdHours} h` : "—"}
+              </span>
+            </DagCell>
+          </div>
+          <div className="sc-gate-row">
+            <span className="sc-gate-k">gate role</span>
+            <span className="sc-gate-v">{step.gateRole ?? "—"}</span>
+          </div>
+          <div className="sc-gate-row">
+            <span className="sc-gate-k">approver</span>
+            <span className="sc-gate-v">{step.gateApproverHuman ?? "—"}</span>
+          </div>
+        </div>
+      )}
+
       {/* The PRECISE effect of who runs this step — always visible. Driven by the
           derived IsExecutedByAI boolean. */}
       <div className={"sc-effect " + (isAI ? "risk" : "safe")}>

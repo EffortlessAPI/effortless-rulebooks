@@ -57,8 +57,31 @@ script_dir = Path(__file__).parent.resolve()
 # NAMESPACES
 # =============================================================================
 
-ERB = Namespace("http://example.org/erb#")
+# Ontology namespace — MUST match inject-into-owl.py's ONT_NS exactly. The
+# injector mints every individual as effortless-ntwf:<pk-slug>; the extractor
+# rebuilds the SAME IRI to read computed values back off it. If these drift, the
+# graph lookups silently return None and every computed field reads blank — so
+# this is a single, shared contract, not two independent constants.
+NTWF = Namespace("https://w3id.org/effortless-ntwf#")
 SH = Namespace("http://www.w3.org/ns/shacl#")
+
+
+def _slugify_iri_local(value) -> str:
+    """Mirror inject-into-owl.py:slugify_iri_local — PK value → IRI local name.
+
+    Must stay byte-for-byte identical to the injector: the extractor's lookups
+    only hit if it reconstructs the exact IRI the injector wrote.
+    """
+    import re as _re
+    return _re.sub(r'[^A-Za-z0-9_\-.]', '-', str(value).strip())
+
+
+def _primary_key_field(schema: list):
+    """The PK field = the first raw column (mirror inject-into-owl.py:get_pk_field)."""
+    for col in schema:
+        if col.get('type', 'raw') == 'raw':
+            return col.get('name')
+    return schema[0].get('name') if schema else None
 
 
 # =============================================================================
@@ -80,6 +103,40 @@ def camel_to_snake(name: str) -> str:
     return re.sub('_+', '_', s2)
 
 
+def _resolve_multipass_value(values, field_info, table_name, field_name, pk_value):
+    """Pick the converged value when a property carries several (multi-pass).
+
+    The reasoner adds, never replaces, so an aggregation that depends on a
+    derived child field leaves a trail: a premature value (counted before the
+    dependency materialized) plus the converged value. We resolve by the field's
+    convergence semantics, NOT by an arbitrary pick:
+
+      • aggregation / calculated NUMERIC → the converged value is the MAX. A
+        COUNT/SUM is monotonic non-decreasing as its dependency rows fill in
+        across passes, so the largest is the fixpoint.
+      • everything else → distinct multiplicity is unexpected; raise loudly
+        rather than silently choosing one (CLAUDE.md "Avoid Silent Fallbacks").
+    """
+    distinct = []
+    for v in values:
+        if v not in distinct:
+            distinct.append(v)
+    if len(distinct) == 1:
+        return distinct[0]
+
+    ftype = field_info.get('type')
+    numeric = [v for v in distinct if isinstance(v, (int, float)) and not isinstance(v, bool)]
+    if ftype in ('aggregation', 'calculated') and len(numeric) == len(distinct):
+        return max(numeric)
+
+    raise ValueError(
+        f"{table_name}.{field_name} (id={pk_value!r}) has conflicting multi-pass "
+        f"values {distinct!r} that cannot be converged by a known rule. The SHACL "
+        f"rule likely fired on a not-yet-stable dependency; fix the rule or the "
+        f"dependency ordering rather than picking a value arbitrarily."
+    )
+
+
 def rdf_value_to_python(value):
     """Convert an RDF value to Python native type."""
     if value is None:
@@ -94,7 +151,15 @@ def rdf_value_to_python(value):
         return str(py_val)
 
     if isinstance(value, URIRef):
-        return str(value)
+        # An FK / lookup that resolved to an individual comes back as that
+        # individual's IRI (effortless-ntwf:<pk> = https://w3id.org/effortless-ntwf#<pk>).
+        # The conformance answer is the bare PK — what Postgres stores in the
+        # FK text column — so strip the namespace to the local name. This is the
+        # OWL analogue of selecting the id column, not the row's IRI. (Robust to
+        # any namespace: splits on the last '#' or '/'.)
+        iri = str(value)
+        local = re.split(r'[#/]', iri)[-1]
+        return local
 
     return str(value)
 
@@ -167,9 +232,22 @@ def extract_entity_results(
         if col_type == 'raw':
             raw_snake_keys.add(snake_name)
 
+    # The individual's IRI is keyed by PRIMARY KEY (first raw column), matching
+    # the injector. We rebuild effortless-ntwf:<pk-slug> per row to read its
+    # computed values back. A row with no PK value would yield a fabricated IRI
+    # that matches nothing — surface it loudly rather than silently reading None.
+    pk_field = _primary_key_field(schema)
+
     # Extract each individual
     for i, original_row in enumerate(data):
-        ind_uri = ERB[f"{table_name}_{i}"]
+        pk_value = original_row.get(pk_field) if pk_field else None
+        if pk_value is None or str(pk_value).strip() == '':
+            raise ValueError(
+                f"{table_name}[{i}] has no primary-key value in field "
+                f"'{pk_field}'; cannot locate its individual in the graph. The "
+                f"OWL injector keys every individual by PK — fix the rulebook row."
+            )
+        ind_uri = NTWF[_slugify_iri_local(pk_value)]
 
         # Start with RAW data only; never carry pre-computed values through.
         record = {}
@@ -182,13 +260,29 @@ def extract_entity_results(
         for field_info in all_fields:
             field_name = field_info['name']
             prop_name = field_to_property_uri(field_name)
-            prop_uri = ERB[prop_name]
+            prop_uri = NTWF[prop_name]
 
-            value = data_graph.value(ind_uri, prop_uri)
+            # A computed field can carry MULTIPLE values when its SHACL rule
+            # fired across several reasoning passes: an aggregation that depends
+            # on a derived CHILD field counts 0 in the pass before the child's
+            # value materialized, then the true count in a later pass. SHACL
+            # CONSTRUCT only ADDS triples, so both the stale 0 and the converged
+            # value coexist. data_graph.value() would pick one arbitrarily — and
+            # picking the stale 0 is exactly the bug. Resolve multiplicity by the
+            # field's convergence semantics instead of guessing.
+            objs = list(data_graph.objects(ind_uri, prop_uri))
+            if not objs:
+                continue
+            py_values = [rdf_value_to_python(o) for o in objs]
+            snake_key = camel_to_snake(field_name)
 
-            if value is not None:
-                py_value = rdf_value_to_python(value)
-                snake_key = camel_to_snake(field_name)
+            if len(py_values) == 1:
+                py_value = py_values[0]
+            else:
+                py_value = _resolve_multipass_value(
+                    py_values, field_info, table_name, field_name, pk_value)
+
+            if py_value is not None:
                 record[snake_key] = py_value
 
         # Normalize empty strings to None for all string fields
@@ -268,7 +362,7 @@ def main():
     # Load ontology + individuals into a single graph
     print("\nLoading ontology and data...")
     data_graph = Graph()
-    data_graph.bind('erb', ERB)
+    data_graph.bind('effortless-ntwf', NTWF)
     data_graph.bind('xsd', XSD)
 
     data_graph.parse(ontology_path, format='turtle')
@@ -281,7 +375,7 @@ def main():
     # Load SHACL rules
     print("\nLoading SHACL rules...")
     shacl_graph = Graph()
-    shacl_graph.bind('erb', ERB)
+    shacl_graph.bind('effortless-ntwf', NTWF)
     shacl_graph.bind('sh', SH)
     shacl_graph.parse(rules_path, format='turtle')
     print(f"   Loaded: {rules_path}")

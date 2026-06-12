@@ -18,6 +18,8 @@ import type {
   StoreId,
   BackendDescriptor,
   ControlEvent,
+  ConformanceTestMeta,
+  ConformanceRunReport,
 } from "./types";
 
 const BACKEND_KEY = "erb.backend";
@@ -95,6 +97,26 @@ export const api = {
   scenarios: (): Promise<Scenario[]> => bfetch("/api/scenarios").then((r) => jsonOrThrow<Scenario[]>(r)),
   applyScenario: (name: string): Promise<unknown> =>
     bfetch(`/api/scenario/${name}`, { method: "POST" }).then((r) => jsonOrThrow(r)),
+
+  // --- conformance test harness (admin) ---
+  // List every test (metadata only). Engine-agnostic; no backend header needed.
+  conformanceTests: (): Promise<{ engines: string[]; tests: ConformanceTestMeta[] }> =>
+    fetch("/api/conformance/tests").then((r) => jsonOrThrow(r)),
+  // The last run-log, or null if no run has happened yet (404 → null, so the UI
+  // can show "never run" distinctly from an error).
+  conformanceLatest: async (): Promise<ConformanceRunReport | null> => {
+    const res = await fetch("/api/conformance/latest");
+    if (res.status === 404) return null;
+    return jsonOrThrow<ConformanceRunReport>(res);
+  },
+  // Run the whole suite (or a subset) NOW. Executes both engines server-side; can
+  // take ~100s for the full suite. Returns the fresh report (also persisted).
+  conformanceRun: (only?: string[]): Promise<ConformanceRunReport> =>
+    fetch("/api/conformance/run", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(only ? { only } : {}),
+    }).then((r) => jsonOrThrow<ConformanceRunReport>(r)),
 };
 
 // Export the CURRENT live DB state as an Excel workbook (server reads vw_* views,

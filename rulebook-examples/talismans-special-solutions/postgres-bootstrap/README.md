@@ -1,49 +1,80 @@
-# Rulebook to PostgreSQL Script Generation Report
+# postgres-bootstrap
 
-**Schema:** `public`
-**Database:** `demo`
-**Timestamp:** 2026-06-07 20:38:47 UTC
+PostgreSQL is the **reference substrate** for this project — the one with no
+expressivity gaps. It is both the dev database and the **oracle** that computes
+the conformance answer key. This folder holds the generated SQL, the scripts
+that load it, and the answer-key regeneration cycle.
 
-## Parsing Rulebook
+## Regenerating the answer key
 
-Found **14** tables in rulebook
+The conformance answer key (`../testing/answer-keys/*.json`) is read from the
+rulebook's stored **computed** values. Those values are produced by Postgres and
+written back into the rulebook — they are never re-derived in Python. Whenever a
+formula, a raw seed value, or a calc/lookup/aggregation field changes, the stored
+computed values go stale until refreshed.
 
+```bash
+cd postgres-bootstrap
+bash regenerate-answer-keys.sh
+```
 
-  - **Workflows** (23 fields, 1 records)
-  - **WorkflowSteps** (23 fields, 6 records)
-  - **ApprovalGates** (7 fields, 1 records)
-  - **StepPrecedence** (5 fields, 5 records)
-  - **Roles** (17 fields, 6 records)
-  - **Departments** (5 fields, 2 records)
-  - **HumanAgents** (5 fields, 4 records)
-  - **AIAgents** (6 fields, 1 records)
-  - **AutomatedPipelines** (5 fields, 1 records)
-  - **WorkflowStatusConcepts** (6 fields, 4 records)
-  - **AgentCapabilityConcepts** (6 fields, 5 records)
-  - **Datasets** (6 fields, 1 records)
-  - **WorkflowArtifacts** (12 fields, 5 records)
-  - **ComplianceVerdicts** (10 fields, 1 records)
+Self-contained and safe to run anytime against the current rulebook. The cycle
+(all against an **ephemeral throwaway DB**, so the dev DB is left alone):
 
-Generated **14** table definitions with **56** raw fields (mode=check-add)
-Generated **90** calculation functions
-Generated **14** views
-Generated **2** transitive-closure view(s)
-Enabled RLS on **14** tables
-Generated insert statements for **43** records
-## Script Generation Complete
+| Step | What happens |
+|------|--------------|
+| 1 | `createdb erb_<domain>_keygen_<pid>` (unique temp DB) |
+| 2 | `init-db.sh` builds schema + `vw_*` → Postgres computes every derived value |
+| 3 | `pull-from-postgres.sh` exports `SELECT * FROM vw_<entity>` (the **views**, so computed columns are included) → `.pg-raw-data.json` |
+| 4 | `postgres-calculated-to-rulebook` with `ERB_WRITE_COMPUTED=true` writes the **whole view row** (raws + computed) back into the rulebook `data[]` |
+| 5 | the orchestrator regenerates `testing/answer-keys/*.json` from the refreshed rulebook |
+| 6 | the temp DB is dropped (always, via `trap`) |
 
-Generated files:
-- `00-bootstrap.sql` - Bootstrap (overwrite Never); includes commented-out drop-all script
-- `01-drop-and-create-tables.sql` - Drop and recreate tables with raw fields and FK indexes
-- `01b-customize-schema.sql` - User customizations for schema
-- `02-create-functions.sql` - Create calculation functions
-- `02b-customize-functions.sql` - User customizations for functions
-- `03-create-views.sql` - Create views with calculated fields
-- `03b-customize-views.sql` - User customizations for views
-- `04-create-policies.sql` - Create RLS policies
-- `04b-customize-policies.sql` - User customizations for RLS policies
-- `05-insert-data.sql` - Insert data from rulebook
-- `05b-customize-data.sql` - User customizations for seed data
-- `99-fk-constraints.sql` - FK constraints (skipped unless EFFORTLESS_ENFORCE_FKS=true)
-- `init-db.sh` - Database initialization script
+The script **refuses to run** if the rulebook already has uncommitted changes, so
+the resulting diff (computed values only — never raws/formulas/schema) is always
+attributable. Commit or stash unrelated edits first.
 
+### Why `ERB_WRITE_COMPUTED`
+
+`postgres-calculated-to-rulebook` has two modes:
+
+- **default** — syncs only raw/relationship fields back (the safe reverse-spoke).
+- **`ERB_WRITE_COMPUTED=true`** — adopts the **full view row**, computed values
+  included. This is the mode the answer-key refresh needs; `regenerate-answer-keys.sh`
+  sets it. The default is unchanged so the ~20 other demos that use this shared
+  tool keep their existing behavior.
+
+### The `effortless build -id` path
+
+`-id` = "include disabled". The `postgres-calculated-to-rulebook` transpiler is
+`IsDisabled: true` in `effortless.json` so a routine `effortless build` never
+silently rewrites the rulebook. `effortless build -id` from this folder runs it
+(against the dev DB). Prefer `regenerate-answer-keys.sh` — it is hermetic (temp
+DB) and drives the full cycle including answer-key regeneration (step 5).
+
+## Loading the dev database
+
+```bash
+bash init-db.sh                      # uses DATABASE_URL from effortless.env
+DATABASE_URL=... bash init-db.sh     # or an explicit target
+```
+
+`init-db.sh` is **hand-maintained** (not in `.build-manifest.json`; the build only
+*runs* it). It installs magic-links auth, then runs every `NN[b]?-*.sql` in lex
+order. Re-running is safe — every file is idempotent.
+
+## Files
+
+| File | Regenerated by build? | Purpose |
+|------|-----------------------|---------|
+| `00`–`05`, `99-*.sql` | **yes** (`rulebook-to-postgres`) | schema, functions, views, policies, data, FK constraints |
+| `*b-customize-*.sql` | no | your durable per-file customizations |
+| `init-db.sh` | no | loads all SQL into a database |
+| `pull-from-postgres.sh` | no | exports `vw_*` rows to `.pg-raw-data.json` |
+| `regenerate-answer-keys.sh` | no | the full answer-key refresh cycle (above) |
+| `.build-manifest.json` | yes | what the last build emitted |
+| `.applied-manifest.json` | written by `init-db.sh` | what was last applied, for drift detection |
+
+> Generated `.sql` files are mechanically derived from the rulebook. Do not edit
+> them — put durable changes in the `*b-customize-*.sql` siblings, and business
+> rules in the rulebook itself.

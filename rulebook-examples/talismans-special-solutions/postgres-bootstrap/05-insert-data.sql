@@ -9,32 +9,32 @@
 -- ----------------------------------------------------------------------------
 -- Workflows: Table: Workflows. The NTWF Workflow class — prov:Plan + schema:CreativeWork. Each workflow has Dublin Core metadata (title, description, identifier, created, modified), a lifecycle status from the SKOS scheme, and a collection of WorkflowSteps (ntwf:hasStep).
 -- ----------------------------------------------------------------------------
-INSERT INTO workflows (workflow_id, display_name, title, description, identifier, modified, created, max_plan_minutes, staleness_threshold_months, is_off_hours_deployment, workflow_status, workflow_steps)
-VALUES ('production-deployment', 'Production Deployment', 'Production Deployment Workflow', 'The primary NTWF ABox example. A 5-step workflow for deploying software to production at Talisman''s Special Solutions. Steps involve a human Release Manager (step 1), an AI Risk Analysis Agent (step 2), a human Legal Compliance Reviewer at an Approval Gate (step 3), an automated CI/CD pipeline (step 4), and the Release Manager again for the post-deployment report (step 5). Demonstrates all three agent types, the delegation chain, artifact provenance, and DCAT dataset consumption.', 'WF-PROD-DEPLOY-001', '2026-04-03T00:00:00-05:00', '2026-01-10T00:00:00-06:00', 240, 12, FALSE, 'status-active', '') ON CONFLICT (workflow_id) DO NOTHING;
+INSERT INTO workflows (workflow_id, display_name, title, description, identifier, modified, created, staleness_threshold_months, workflow_status, workflow_steps)
+VALUES ('production-deployment', 'Production Deployment', 'Production Deployment Workflow', 'The primary NTWF ABox example. A 5-step workflow for deploying software to production at Talisman''s Special Solutions. Steps involve a human Release Manager (step 1), an AI Risk Analysis Agent (step 2), a human Legal Compliance Reviewer at an Approval Gate (step 3), an automated CI/CD pipeline (step 4), and the Release Manager again for the post-deployment report (step 5). Demonstrates all three agent types, the delegation chain, artifact provenance, and DCAT dataset consumption.', 'WF-PROD-DEPLOY-001', '2026-04-03T00:00:00-05:00', '2026-01-10T00:00:00-06:00', 12, 'status-active', '') ON CONFLICT (workflow_id) DO NOTHING;
 
 -- ----------------------------------------------------------------------------
 -- WorkflowSteps: Table: WorkflowSteps. The NTWF WorkflowStep class — prov:Activity. Each step is first-class and individually addressable, belongs to one Workflow (ntwf:isStepOf), and is assigned to exactly one Role (ntwf:assignedRole). Step-to-step ordering is modeled in the StepPrecedence junction; the ApprovalGate subtype specializes a step via a 1:1 FK.
 -- ----------------------------------------------------------------------------
-INSERT INTO workflow_steps (workflow_step_id, display_name, workflow, sequence_position, assigned_role, requires_human_approval, step_duration_minutes, consumes_dataset, produces_artifacts, approval_gate, precedes, preceded_by)
-VALUES ('prod-deploy-step-3', 'Legal Compliance Review & Release Authorization', 'production-deployment', 3, 'ntwf-legal-compliance-role', TRUE, 120, '', 'artifact-release-authorization', 'ntwf-release-approval-gate', 'prec-3-4', 'prec-2-3') ON CONFLICT (workflow_step_id) DO NOTHING;
+INSERT INTO workflow_steps (workflow_step_id, display_name, workflow, sequence_position, assigned_role, requires_human_approval, step_duration_minutes, consumes_dataset, produces_artifacts, requires_artifacts, approval_gate, precedes, preceded_by)
+VALUES ('prod-deploy-step-3', 'Release Approval Gate', 'production-deployment', 3, 'ntwf-release-manager-role', TRUE, 30, '', 'artifact-release-authorization', 'artifact-legal-clearance', 'ntwf-release-approval-gate', 'prec-3-4', 'prec-2-3') ON CONFLICT (workflow_step_id) DO NOTHING;
 
-INSERT INTO workflow_steps (workflow_step_id, display_name, workflow, sequence_position, assigned_role, requires_human_approval, step_duration_minutes, consumes_dataset, produces_artifacts, approval_gate, precedes, preceded_by)
-VALUES ('prod-deploy-step-2', 'AI Risk Assessment', 'production-deployment', 2, 'ntwf-risk-analysis-role', FALSE, 15, 'ds-q1-2026-risk-metrics', 'artifact-legal-clearance', '', 'prec-2-3', 'prec-1-2') ON CONFLICT (workflow_step_id) DO NOTHING;
+INSERT INTO workflow_steps (workflow_step_id, display_name, workflow, sequence_position, assigned_role, requires_human_approval, step_duration_minutes, consumes_dataset, produces_artifacts, requires_artifacts, approval_gate, precedes, preceded_by)
+VALUES ('prod-deploy-step-2', 'Legal Compliance Review', 'production-deployment', 2, 'ntwf-legal-compliance-role', TRUE, 120, '', 'artifact-legal-clearance', 'artifact-risk-report', '', 'prec-2-3', 'prec-1-2') ON CONFLICT (workflow_step_id) DO NOTHING;
 
-INSERT INTO workflow_steps (workflow_step_id, display_name, workflow, sequence_position, assigned_role, requires_human_approval, step_duration_minutes, consumes_dataset, produces_artifacts, approval_gate, precedes, preceded_by)
-VALUES ('prod-deploy-step-5', 'Post-Deployment Health Check & Report', 'production-deployment', 5, 'ntwf-release-manager-role', TRUE, 60, '', 'artifact-post-deploy-report', '', '', 'prec-4-5') ON CONFLICT (workflow_step_id) DO NOTHING;
+INSERT INTO workflow_steps (workflow_step_id, display_name, workflow, sequence_position, assigned_role, requires_human_approval, step_duration_minutes, consumes_dataset, produces_artifacts, requires_artifacts, approval_gate, precedes, preceded_by)
+VALUES ('prod-deploy-step-5', 'Post-Deployment Health Check & Report', 'production-deployment', 5, 'ntwf-deployment-health-role', FALSE, 60, '', 'artifact-post-deploy-report', '', '', '', 'prec-4-5') ON CONFLICT (workflow_step_id) DO NOTHING;
 
-INSERT INTO workflow_steps (workflow_step_id, display_name, workflow, sequence_position, assigned_role, requires_human_approval, step_duration_minutes, consumes_dataset, produces_artifacts, approval_gate, precedes, preceded_by)
-VALUES ('prod-deploy-step-1', 'Initiate Deployment Request', 'production-deployment', 1, 'ntwf-release-manager-role', TRUE, 30, '', 'artifact-risk-report', '', 'prec-1-2', '') ON CONFLICT (workflow_step_id) DO NOTHING;
+INSERT INTO workflow_steps (workflow_step_id, display_name, workflow, sequence_position, assigned_role, requires_human_approval, step_duration_minutes, consumes_dataset, produces_artifacts, requires_artifacts, approval_gate, precedes, preceded_by)
+VALUES ('prod-deploy-step-1', 'AI Risk Assessment', 'production-deployment', 1, 'ntwf-risk-analysis-role', FALSE, 15, 'ds-q1-2026-risk-metrics', 'artifact-risk-report', '', '', 'prec-1-2', '') ON CONFLICT (workflow_step_id) DO NOTHING;
 
-INSERT INTO workflow_steps (workflow_step_id, display_name, workflow, sequence_position, assigned_role, requires_human_approval, step_duration_minutes, consumes_dataset, produces_artifacts, approval_gate, precedes, preceded_by)
-VALUES ('prod-deploy-step-4', 'Automated Deployment Execution', 'production-deployment', 4, 'ntwf-ci-executor-role', FALSE, 45, '', 'artifact-deployment-log', '', 'prec-4-5', 'prec-3-4') ON CONFLICT (workflow_step_id) DO NOTHING;
+INSERT INTO workflow_steps (workflow_step_id, display_name, workflow, sequence_position, assigned_role, requires_human_approval, step_duration_minutes, consumes_dataset, produces_artifacts, requires_artifacts, approval_gate, precedes, preceded_by)
+VALUES ('prod-deploy-step-4', 'Automated Deployment Execution', 'production-deployment', 4, 'ntwf-ci-executor-role', FALSE, 45, '', 'artifact-deployment-log', 'artifact-release-authorization', '', 'prec-4-5', 'prec-3-4') ON CONFLICT (workflow_step_id) DO NOTHING;
 
 -- ----------------------------------------------------------------------------
 -- ApprovalGates: Table: ApprovalGates. The NTWF ApprovalGate class — rdfs:subClassOf WorkflowStep. Modeled as a class-table-inheritance subtype: each gate row shares identity with exactly one WorkflowStep (via the WorkflowStep 1:1 FK) and carries only the gate-specific attribute, escalationThresholdHours. The step it specializes keeps the common attributes (requiresHumanApproval, assigned role, etc.). This preserves the article's double-typing — a gate IS a step — without collapsing two DAG nodes into one.
 -- ----------------------------------------------------------------------------
-INSERT INTO approval_gates (approval_gate_id, display_name, workflow_step, escalation_threshold_hours, requires_dual_signoff_off_hours)
-VALUES ('ntwf-release-approval-gate', 'Release Approval Gate', 'prod-deploy-step-3', 4, TRUE) ON CONFLICT (approval_gate_id) DO NOTHING;
+INSERT INTO approval_gates (approval_gate_id, display_name, workflow_step, escalation_threshold_hours)
+VALUES ('ntwf-release-approval-gate', 'Release Approval Gate', 'prod-deploy-step-3', 4) ON CONFLICT (approval_gate_id) DO NOTHING;
 
 -- ----------------------------------------------------------------------------
 -- StepPrecedence: Table: StepPrecedence. The NTWF ntwf:precedesStep ordering relationship, modeled as a first-class step-to-step junction. Each row is one directed edge: FromStep precedes ToStep. ntwf:precedesStep is an owl:TransitiveProperty — the four asserted edges (1->2, 2->3, 3->4, 4->5) imply the full closure of ten ordering pairs (including 1->5, which is never asserted). Each edge is a first-class node in the DAG, never a 'helper' integer.
@@ -54,26 +54,47 @@ VALUES ('prec-4-5', 'prod-deploy-step-4', 'prod-deploy-step-5') ON CONFLICT (ste
 -- ----------------------------------------------------------------------------
 -- Roles: Table: Roles. The NTWF Role class — a custom root with no adequate standard match, declared disjoint with WorkflowStep and WorkflowArtifact. Roles are the heart of Heuristic 2 (role-agent separation): WorkflowSteps point to Roles; Roles point to exactly one agent (human, AI, or pipeline) via the polymorphic filledBy relationship. When personnel or models change, one filledBy triple changes and the workflow structure is untouched.
 -- ----------------------------------------------------------------------------
-INSERT INTO roles (role_id, display_name, label, comment, has_capability, filled_by_human_agent, filled_by_ai_agent, filled_by_automated_pipeline, owned_by, delegates_to, workflow_steps, from_delegates_to)
-VALUES ('ntwf-ci-executor-role', 'CI/CD Executor', 'CI/CD Executor', 'Executes the automated build, test, and deployment sequence. Filled by an AutomatedPipeline. Demonstrates CQ3: this step does NOT require human approval.', 'cap-ci-execution', '', '', 'ntwf-ci-pipeline', 'ntwf-engineering', '', 'prod-deploy-step-4', '') ON CONFLICT (role_id) DO NOTHING;
+INSERT INTO roles (role_id, display_name, label, comment, has_capability, filled_by_human_agent, filled_by_ai_agent, filled_by_automated_pipeline, owned_by, delegates_to, workflow_steps, from_delegates_to, role_assignments)
+VALUES ('ntwf-ci-executor-role', 'CI/CD Executor', 'CI/CD Executor', 'Executes the automated build, test, and deployment sequence. Filled by an AutomatedPipeline. Demonstrates CQ3: this step does NOT require human approval.', 'cap-ci-execution', '', '', 'ntwf-ci-pipeline', 'ntwf-engineering', '', 'prod-deploy-step-4', '', NULL) ON CONFLICT (role_id) DO NOTHING;
 
-INSERT INTO roles (role_id, display_name, label, comment, has_capability, filled_by_human_agent, filled_by_ai_agent, filled_by_automated_pipeline, owned_by, delegates_to, workflow_steps, from_delegates_to)
-VALUES ('ntwf-cto-role', 'Chief Technology Officer', 'Chief Technology Officer', 'Top of the delegation chain. Has cap-executive-authorization. When both Release Manager and VP Engineering are unavailable, the CTO is the final escalation target.', 'cap-executive-authorization', 'ntwf-sarah-kim', '', '', 'ntwf-engineering', '', '', 'ntwf-vp-engineering-role') ON CONFLICT (role_id) DO NOTHING;
+INSERT INTO roles (role_id, display_name, label, comment, has_capability, filled_by_human_agent, filled_by_ai_agent, filled_by_automated_pipeline, owned_by, delegates_to, workflow_steps, from_delegates_to, role_assignments)
+VALUES ('ntwf-cto-role', 'Chief Technology Officer', 'Chief Technology Officer', 'Top of the delegation chain. Has cap-executive-authorization. When both Release Manager and VP Engineering are unavailable, the CTO is the final escalation target.', 'cap-executive-authorization', 'ntwf-sarah-kim', '', '', 'ntwf-engineering', '', '', 'ntwf-vp-engineering-role', NULL) ON CONFLICT (role_id) DO NOTHING;
 
-INSERT INTO roles (role_id, display_name, label, comment, has_capability, filled_by_human_agent, filled_by_ai_agent, filled_by_automated_pipeline, owned_by, delegates_to, workflow_steps, from_delegates_to)
-VALUES ('ntwf-deployment-health-role', 'Deployment Health Agent', 'Deployment Health Agent', 'Generates the post-deployment health report by summarizing telemetry after a release. A role, not an identity — filled by a human reviewer today, it could be replaced by a newer model without changing the workflow structure.', 'cap-risk-analysis', 'ntwf-james-okafor', '', '', 'ntwf-engineering', '', 'prod-deploy-step-5', '') ON CONFLICT (role_id) DO NOTHING;
+INSERT INTO roles (role_id, display_name, label, comment, has_capability, filled_by_human_agent, filled_by_ai_agent, filled_by_automated_pipeline, owned_by, delegates_to, workflow_steps, from_delegates_to, role_assignments)
+VALUES ('ntwf-deployment-health-role', 'Deployment Health Agent', 'Deployment Health Agent', 'Generates the post-deployment health report by summarizing telemetry after a release. A role, not an identity — currently filled by the DeploymentHealth-AI agent (health-summarizer-v1.2.0), it could be reassigned to a human or a newer model without changing the workflow structure. Its RoleAssignments history records an earlier human-reviewer period and the agent-type transitions.', 'cap-risk-analysis', '', 'ntwf-health-ai', '', 'ntwf-engineering', '', 'prod-deploy-step-5', '', NULL) ON CONFLICT (role_id) DO NOTHING;
 
-INSERT INTO roles (role_id, display_name, label, comment, has_capability, filled_by_human_agent, filled_by_ai_agent, filled_by_automated_pipeline, owned_by, delegates_to, workflow_steps, from_delegates_to)
-VALUES ('ntwf-vp-engineering-role', 'VP of Engineering', 'VP of Engineering', 'First escalation target when Release Manager is unavailable. Demonstrates ntwf:delegatesTo chain: Release Manager → VP Engineering → CTO.', 'cap-human-judgment', 'ntwf-david-chen', '', '', 'ntwf-engineering', 'ntwf-cto-role', '', 'ntwf-release-manager-role') ON CONFLICT (role_id) DO NOTHING;
+INSERT INTO roles (role_id, display_name, label, comment, has_capability, filled_by_human_agent, filled_by_ai_agent, filled_by_automated_pipeline, owned_by, delegates_to, workflow_steps, from_delegates_to, role_assignments)
+VALUES ('ntwf-vp-engineering-role', 'VP of Engineering', 'VP of Engineering', 'First escalation target when Release Manager is unavailable. Demonstrates ntwf:delegatesTo chain: Release Manager → VP Engineering → CTO.', 'cap-human-judgment', 'ntwf-david-chen', '', '', 'ntwf-engineering', 'ntwf-cto-role', '', 'ntwf-release-manager-role', NULL) ON CONFLICT (role_id) DO NOTHING;
 
-INSERT INTO roles (role_id, display_name, label, comment, has_capability, filled_by_human_agent, filled_by_ai_agent, filled_by_automated_pipeline, owned_by, delegates_to, workflow_steps, from_delegates_to)
-VALUES ('ntwf-risk-analysis-role', 'Risk Analysis Agent', 'Risk Analysis Agent', 'Performs probabilistic risk scoring over the Q1 risk metrics dataset. This is a role, not an identity — filled by RiskAnalysis-AI today but could be replaced by a newer model version without changing the workflow structure.', 'cap-risk-analysis', '', 'ntwf-risk-ai', '', 'ntwf-engineering', '', 'prod-deploy-step-1', '') ON CONFLICT (role_id) DO NOTHING;
+INSERT INTO roles (role_id, display_name, label, comment, has_capability, filled_by_human_agent, filled_by_ai_agent, filled_by_automated_pipeline, owned_by, delegates_to, workflow_steps, from_delegates_to, role_assignments)
+VALUES ('ntwf-risk-analysis-role', 'Risk Analysis Agent', 'Risk Analysis Agent', 'Performs probabilistic risk scoring over the Q1 risk metrics dataset. This is a role, not an identity — filled by RiskAnalysis-AI today but could be replaced by a newer model version without changing the workflow structure.', 'cap-risk-analysis', '', 'ntwf-risk-ai', '', 'ntwf-engineering', '', 'prod-deploy-step-1', '', NULL) ON CONFLICT (role_id) DO NOTHING;
 
-INSERT INTO roles (role_id, display_name, label, comment, has_capability, filled_by_human_agent, filled_by_ai_agent, filled_by_automated_pipeline, owned_by, delegates_to, workflow_steps, from_delegates_to)
-VALUES ('ntwf-legal-compliance-role', 'Legal Compliance Reviewer', 'Legal Compliance Reviewer', 'Certifies that the deployment plan meets regulatory and contractual requirements. Must be a human agent — AI agents may not fill this role (requiresHumanApproval).', 'cap-legal-review', 'ntwf-james-okafor', '', '', 'ntwf-legal-dept', '', 'prod-deploy-step-2', '') ON CONFLICT (role_id) DO NOTHING;
+INSERT INTO roles (role_id, display_name, label, comment, has_capability, filled_by_human_agent, filled_by_ai_agent, filled_by_automated_pipeline, owned_by, delegates_to, workflow_steps, from_delegates_to, role_assignments)
+VALUES ('ntwf-legal-compliance-role', 'Legal Compliance Reviewer', 'Legal Compliance Reviewer', 'Certifies that the deployment plan meets regulatory and contractual requirements. Must be a human agent — AI agents may not fill this role (requiresHumanApproval).', 'cap-legal-review', 'ntwf-james-okafor', '', '', 'ntwf-legal-dept', '', 'prod-deploy-step-2', '', NULL) ON CONFLICT (role_id) DO NOTHING;
 
-INSERT INTO roles (role_id, display_name, label, comment, has_capability, filled_by_human_agent, filled_by_ai_agent, filled_by_automated_pipeline, owned_by, delegates_to, workflow_steps, from_delegates_to)
-VALUES ('ntwf-release-manager-role', 'Release Manager', 'Release Manager', 'Owns the production deployment process. Coordinates all parties, triggers the pipeline, and signs the final post-deployment report.', 'cap-human-judgment', 'ntwf-maria-gonzalez', '', '', 'ntwf-engineering', 'ntwf-vp-engineering-role', 'prod-deploy-step-3', '') ON CONFLICT (role_id) DO NOTHING;
+INSERT INTO roles (role_id, display_name, label, comment, has_capability, filled_by_human_agent, filled_by_ai_agent, filled_by_automated_pipeline, owned_by, delegates_to, workflow_steps, from_delegates_to, role_assignments)
+VALUES ('ntwf-release-manager-role', 'Release Manager', 'Release Manager', 'Owns the production deployment process. Fills the Release Approval Gate (step 3): the human authority who explicitly authorizes the release before the automated deployment runs. This is the CQ2 answer — gate -> Release Manager -> Maria Gonzalez. Top of the delegation chain (Release Manager -> VP Engineering -> CTO).', 'cap-human-judgment', 'ntwf-maria-gonzalez', '', '', 'ntwf-engineering', 'ntwf-vp-engineering-role', 'prod-deploy-step-3', '', NULL) ON CONFLICT (role_id) DO NOTHING;
+
+-- ----------------------------------------------------------------------------
+-- RoleAssignments: Table: RoleAssignments. The temporal history of ntwf:filledBy. NTWF's change-management discipline requires that when a filledBy triple is updated the old triple is NOT deleted — it is timestamped and retained, or replaced with a versioned triple carrying a validity period. Each row is one filledBy binding with a ValidFrom / ValidTo validity period and the reason for the change, so that 'which agent was executing this step on March 1, 2026?' is answerable from the graph. The current binding on Roles.FilledBy* is the row whose ValidTo is blank (IsCurrent = TRUE); closed rows preserve provenance and chain of custody. This is the relational equivalent of the ontology's named-graph / versioned-triple retention practice.
+-- ----------------------------------------------------------------------------
+INSERT INTO role_assignments (role_assignment_id, role, filled_by_human_agent, filled_by_ai_agent, filled_by_automated_pipeline, valid_from, valid_to, reason, prior_filler_type)
+VALUES ('asn-release-manager-maria', 'ntwf-release-manager-role', 'ntwf-maria-gonzalez', '', '', '2026-01-10', NULL, 'initial assignment', '') ON CONFLICT (role_assignment_id) DO NOTHING;
+
+INSERT INTO role_assignments (role_assignment_id, role, filled_by_human_agent, filled_by_ai_agent, filled_by_automated_pipeline, valid_from, valid_to, reason, prior_filler_type)
+VALUES ('asn-vp-eng-priya', 'ntwf-vp-engineering-role', 'ntwf-priya-nair', '', '', '2026-01-10', '2026-03-15', 'initial assignment', '') ON CONFLICT (role_assignment_id) DO NOTHING;
+
+INSERT INTO role_assignments (role_assignment_id, role, filled_by_human_agent, filled_by_ai_agent, filled_by_automated_pipeline, valid_from, valid_to, reason, prior_filler_type)
+VALUES ('asn-vp-eng-david', 'ntwf-vp-engineering-role', 'ntwf-david-chen', '', '', '2026-03-15', NULL, 'departure of prior holder / backfill', 'HumanAgent') ON CONFLICT (role_assignment_id) DO NOTHING;
+
+INSERT INTO role_assignments (role_assignment_id, role, filled_by_human_agent, filled_by_ai_agent, filled_by_automated_pipeline, valid_from, valid_to, reason, prior_filler_type)
+VALUES ('asn-deploy-health-ai-initial', 'ntwf-deployment-health-role', '', 'ntwf-health-ai', '', '2026-01-10', '2026-02-05', 'initial assignment (automated summarization)', '') ON CONFLICT (role_assignment_id) DO NOTHING;
+
+INSERT INTO role_assignments (role_assignment_id, role, filled_by_human_agent, filled_by_ai_agent, filled_by_automated_pipeline, valid_from, valid_to, reason, prior_filler_type)
+VALUES ('asn-deploy-health-human-audit', 'ntwf-deployment-health-role', 'ntwf-james-okafor', '', '', '2026-02-05', '2026-02-20', 'compliance reassignment: automated task assigned to a human for execution', 'AIAgent') ON CONFLICT (role_assignment_id) DO NOTHING;
+
+INSERT INTO role_assignments (role_assignment_id, role, filled_by_human_agent, filled_by_ai_agent, filled_by_automated_pipeline, valid_from, valid_to, reason, prior_filler_type)
+VALUES ('asn-deploy-health-ai-current', 'ntwf-deployment-health-role', '', 'ntwf-health-ai', '', '2026-02-20', NULL, 'model upgrade: returned to automated summarization (health-summarizer-v1.2.0)', 'HumanAgent') ON CONFLICT (role_assignment_id) DO NOTHING;
 
 -- ----------------------------------------------------------------------------
 -- Departments: Table: Departments. The NTWF Department class — schema:Organization. First-class entity that enables cross-department intersection queries (CQ7: which workflows involve both Engineering and Legal?). Roles are ownedBy a department.
@@ -87,26 +108,35 @@ VALUES ('ntwf-legal-dept', 'Legal', 'legal', '') ON CONFLICT (department_id) DO 
 -- ----------------------------------------------------------------------------
 -- HumanAgents: Table: HumanAgents. The NTWF HumanAgent class — foaf:Person + prov:Agent. The only agent type permitted to fill roles whose step has requiresHumanApproval. Disjoint with AIAgent and AutomatedPipeline.
 -- ----------------------------------------------------------------------------
-INSERT INTO human_agents (human_agent_id, name, display_name, mbox, roles)
-VALUES ('ntwf-james-okafor', 'James Okafor', 'James Okafor', 'james.okafor@special-solutions.example', 'ntwf-legal-compliance-role') ON CONFLICT (human_agent_id) DO NOTHING;
+INSERT INTO human_agents (human_agent_id, name, display_name, mbox, roles, role_assignments)
+VALUES ('ntwf-maria-gonzalez', 'Maria Gonzalez', 'Maria Gonzalez', 'maria.gonzalez@special-solutions.example', 'ntwf-release-manager-role', NULL) ON CONFLICT (human_agent_id) DO NOTHING;
 
-INSERT INTO human_agents (human_agent_id, name, display_name, mbox, roles)
-VALUES ('ntwf-sarah-kim', 'Sarah Kim', 'Sarah Kim', 'sarah.kim@special-solutions.example', 'ntwf-cto-role') ON CONFLICT (human_agent_id) DO NOTHING;
+INSERT INTO human_agents (human_agent_id, name, display_name, mbox, roles, role_assignments)
+VALUES ('ntwf-david-chen', 'David Chen', 'David Chen', 'david.chen@special-solutions.example', 'ntwf-vp-engineering-role', NULL) ON CONFLICT (human_agent_id) DO NOTHING;
+
+INSERT INTO human_agents (human_agent_id, name, display_name, mbox, roles, role_assignments)
+VALUES ('ntwf-priya-nair', 'Priya Nair', 'Priya Nair', 'priya.nair@special-solutions.example', '', NULL) ON CONFLICT (human_agent_id) DO NOTHING;
+
+INSERT INTO human_agents (human_agent_id, name, display_name, mbox, roles, role_assignments)
+VALUES ('ntwf-james-okafor', 'James Okafor', 'James Okafor', 'james.okafor@special-solutions.example', 'ntwf-legal-compliance-role', NULL) ON CONFLICT (human_agent_id) DO NOTHING;
+
+INSERT INTO human_agents (human_agent_id, name, display_name, mbox, roles, role_assignments)
+VALUES ('ntwf-sarah-kim', 'Sarah Kim', 'Sarah Kim', 'sarah.kim@special-solutions.example', 'ntwf-cto-role', NULL) ON CONFLICT (human_agent_id) DO NOTHING;
 
 -- ----------------------------------------------------------------------------
 -- AIAgents: Table: AIAgents. The NTWF AIAgent class — prov:SoftwareAgent + ntwf:modelVersion. Distinguished from AutomatedPipeline by probabilistic (vs. deterministic) output semantics. Disjoint with HumanAgent and AutomatedPipeline. May never fill a role whose step has requiresHumanApproval.
 -- ----------------------------------------------------------------------------
-INSERT INTO ai_agents (ai_agent_id, name, title, display_name, model_version, roles)
-VALUES ('ntwf-risk-ai', 'RiskAnalysis-AI', 'Risk Analysis AI Agent', 'RiskAnalysis-AI', 'risk-classifier-v2.4.1', 'ntwf-risk-analysis-role') ON CONFLICT (ai_agent_id) DO NOTHING;
+INSERT INTO ai_agents (ai_agent_id, name, title, display_name, model_version, deployed_on, roles, role_assignments, attributed_artifacts)
+VALUES ('ntwf-risk-ai', 'RiskAnalysis-AI', 'Risk Analysis AI Agent', 'RiskAnalysis-AI', 'risk-classifier-v2.4.1', '2026-01-10', 'ntwf-risk-analysis-role', NULL, NULL) ON CONFLICT (ai_agent_id) DO NOTHING;
 
-INSERT INTO ai_agents (ai_agent_id, name, title, display_name, model_version, roles)
-VALUES ('ntwf-health-ai', 'DeploymentHealth-AI', 'Deployment Health AI Agent', 'DeploymentHealth-AI', 'health-summarizer-v1.2.0', 'ntwf-deployment-health-role') ON CONFLICT (ai_agent_id) DO NOTHING;
+INSERT INTO ai_agents (ai_agent_id, name, title, display_name, model_version, deployed_on, roles, role_assignments, attributed_artifacts)
+VALUES ('ntwf-health-ai', 'DeploymentHealth-AI', 'Deployment Health AI Agent', 'DeploymentHealth-AI', 'health-summarizer-v1.2.0', '2026-02-20', 'ntwf-deployment-health-role', NULL, NULL) ON CONFLICT (ai_agent_id) DO NOTHING;
 
 -- ----------------------------------------------------------------------------
 -- AutomatedPipelines: Table: AutomatedPipelines. The NTWF AutomatedPipeline class — prov:SoftwareAgent + schema:SoftwareApplication. Distinguished from AIAgent by deterministic (vs. probabilistic) output semantics. Disjoint with HumanAgent and AIAgent. Carries schema:name, not foaf:name.
 -- ----------------------------------------------------------------------------
-INSERT INTO automated_pipelines (automated_pipeline_id, name, description, display_name, roles)
-VALUES ('ntwf-ci-pipeline', 'CI/CD Deploy Pipeline', 'Automated build, test, and deployment pipeline for production releases. Deterministic execution — no probabilistic output.', 'CI/CD Deploy Pipeline', 'ntwf-ci-executor-role') ON CONFLICT (automated_pipeline_id) DO NOTHING;
+INSERT INTO automated_pipelines (automated_pipeline_id, name, description, display_name, roles, role_assignments)
+VALUES ('ntwf-ci-pipeline', 'CI/CD Deploy Pipeline', 'Automated build, test, and deployment pipeline for production releases. Deterministic execution — no probabilistic output.', 'CI/CD Deploy Pipeline', 'ntwf-ci-executor-role', NULL) ON CONFLICT (automated_pipeline_id) DO NOTHING;
 
 -- ----------------------------------------------------------------------------
 -- WorkflowStatusConcepts: SKOS controlled vocabulary for workflow lifecycle states (ntwf:WorkflowStatusScheme). Part of the CBox. Concepts are shared across all workflows.
@@ -122,15 +152,6 @@ VALUES ('status-deprecated', 'Deprecated', 'Superseded', 'Workflow has been repl
 
 INSERT INTO workflow_status_concepts (concept_id, pref_label, alt_label, definition, scope_note, workflows)
 VALUES ('status-archived', 'Archived', 'Retired', 'Workflow is no longer in use and has been moved to historical records.', 'Archived workflows answer CQ5 stale-workflow queries but generate no new instances.', '') ON CONFLICT (concept_id) DO NOTHING;
-
--- ----------------------------------------------------------------------------
--- ComplianceVerdictConcepts: SKOS controlled vocabulary for the two possible compliance-verdict outcomes (ntwf:ComplianceVerdictScheme). Part of the CBox. ComplianceVerdicts.VerdictConcept is a derived FK that resolves to exactly one of these concepts based on IsAtComplianceRisk; the human-readable Verdict string is then a lookup of the chosen concept's PrefLabel. Promoting the verdict outcomes from inline string literals to a first-class option set makes the choice auditable and lets the RuleSpeak narrative cite the defined options instead of magic strings.
--- ----------------------------------------------------------------------------
-INSERT INTO compliance_verdict_concepts (concept_id, pref_label, alt_label, definition, scope_note, compliance_verdicts)
-VALUES ('verdict-at-risk', 'AT RISK: stale workflow with an AI-executed step', 'At Risk', 'The workflow is BOTH stale (compliance documentation not reviewed in twelve months) AND has at least one step executed by an AI agent — the highest-compliance-risk combination the article identifies.', 'Resolved when IsAtComplianceRisk is true. This is the verdict Talisman''s closing query returns.', '') ON CONFLICT (concept_id) DO NOTHING;
-
-INSERT INTO compliance_verdict_concepts (concept_id, pref_label, alt_label, definition, scope_note, compliance_verdicts)
-VALUES ('verdict-ok', 'OK: not a stale-plus-AI compliance risk', 'OK', 'The workflow does not meet the stale-AND-AI-executed combination. It may still be stale, or still have AI steps, but not both at once.', 'Resolved when IsAtComplianceRisk is false. The default, non-risk outcome.', '') ON CONFLICT (concept_id) DO NOTHING;
 
 -- ----------------------------------------------------------------------------
 -- AgentCapabilityConcepts: SKOS controlled vocabulary for agent capability types (ntwf:AgentCapabilityScheme). Roles declare which capability their filler must have (ntwf:hasCapability). Part of the CBox.
@@ -151,6 +172,18 @@ INSERT INTO agent_capability_concepts (concept_id, pref_label, alt_label, defini
 VALUES ('cap-executive-authorization', 'Executive Authorization', 'C-Level Sign-off', 'The filler must hold executive authority to approve high-impact organizational changes.', 'Reserved for the top of delegation chains. Maps to the ntwf:delegatesTo escalation pattern.', '') ON CONFLICT (concept_id) DO NOTHING;
 
 -- ----------------------------------------------------------------------------
+-- ArtifactTypeConcepts: SKOS controlled vocabulary for artifact type (ntwf artifact-type scheme). Part of the CBox; NTWF names a CBox concept scheme for artifact types alongside workflow status and agent capabilities. Each artifact is classified via dct:type into one of these concepts.
+-- ----------------------------------------------------------------------------
+INSERT INTO artifact_type_concepts (concept_id, pref_label, alt_label, definition, scope_note, workflow_artifacts)
+VALUES ('type-report', 'Report', 'Assessment', 'A human- or AI-authored analytical document (e.g. a risk assessment report).', 'Use for narrative analytical artifacts, not for raw datasets or machine logs.', '') ON CONFLICT (concept_id) DO NOTHING;
+
+INSERT INTO artifact_type_concepts (concept_id, pref_label, alt_label, definition, scope_note, workflow_artifacts)
+VALUES ('type-decision-record', 'Decision Record', 'Authorization', 'An artifact recording an approval or authorization decision (e.g. a release authorization, a legal clearance).', 'Use for sign-off / clearance / authorization artifacts.', '') ON CONFLICT (concept_id) DO NOTHING;
+
+INSERT INTO artifact_type_concepts (concept_id, pref_label, alt_label, definition, scope_note, workflow_artifacts)
+VALUES ('type-log', 'Log', 'Machine Output', 'A machine-generated record of an automated activity (e.g. a deployment log).', 'Use for deterministic pipeline/system output, not human analysis.', '') ON CONFLICT (concept_id) DO NOTHING;
+
+-- ----------------------------------------------------------------------------
 -- Datasets: DCAT datasets consumed by workflow steps. The NTWF mapping of dcat:Dataset. Kept separate from WorkflowArtifacts to preserve DCAT metadata semantics (dcat:Dataset vs. prov:Entity). Answers CQ8: 'What datasets does the review consume, and which AI processed them?'
 -- ----------------------------------------------------------------------------
 INSERT INTO datasets (dataset_id, title, identifier, modified, distribution_url, consumed_by_steps)
@@ -159,42 +192,279 @@ VALUES ('ds-q1-2026-risk-metrics', 'Q1 2026 Risk Metrics', 'DS-RISK-2026-Q1', '2
 -- ----------------------------------------------------------------------------
 -- WorkflowArtifacts: Artifacts produced and consumed by workflow steps. The NTWF WorkflowArtifact class — prov:Entity + schema:CreativeWork. The DerivedFromArtifact self-FK encodes the prov:wasDerivedFrom provenance chain; ProducedByStep maps prov:wasGeneratedBy; the AttributedTo* arms map prov:wasAttributedTo to the responsible agent.
 -- ----------------------------------------------------------------------------
-INSERT INTO workflow_artifacts (artifact_id, title, identifier, created, produced_by_step, derived_from_artifact, attributed_to_human_agent, attributed_to_ai_agent, attributed_to_automated_pipeline)
-VALUES ('artifact-risk-report', 'Risk Assessment Report', 'ART-RISK-001', '2026-04-01T00:00:00-05:00', 'prod-deploy-step-2', '', '', 'ntwf-risk-ai', '') ON CONFLICT (artifact_id) DO NOTHING;
+INSERT INTO workflow_artifacts (artifact_id, title, identifier, artifact_type, created, produced_by_step, required_by_steps, derived_from_artifact, attributed_to_human_agent, attributed_to_ai_agent, attributed_to_automated_pipeline)
+VALUES ('artifact-risk-report', 'Risk Assessment Report', 'ART-RISK-001', 'type-report', '2026-04-01T00:00:00-05:00', 'prod-deploy-step-1', 'prod-deploy-step-2', '', '', 'ntwf-risk-ai', '') ON CONFLICT (artifact_id) DO NOTHING;
 
-INSERT INTO workflow_artifacts (artifact_id, title, identifier, created, produced_by_step, derived_from_artifact, attributed_to_human_agent, attributed_to_ai_agent, attributed_to_automated_pipeline)
-VALUES ('artifact-legal-clearance', 'Legal Clearance Certificate', 'ART-LEGAL-001', '2026-04-02T00:00:00-05:00', 'prod-deploy-step-3', 'artifact-risk-report', 'ntwf-james-okafor', '', '') ON CONFLICT (artifact_id) DO NOTHING;
+INSERT INTO workflow_artifacts (artifact_id, title, identifier, artifact_type, created, produced_by_step, required_by_steps, derived_from_artifact, attributed_to_human_agent, attributed_to_ai_agent, attributed_to_automated_pipeline)
+VALUES ('artifact-legal-clearance', 'Legal Clearance Certificate', 'ART-LEGAL-001', 'type-decision-record', '2026-04-02T00:00:00-05:00', 'prod-deploy-step-2', 'prod-deploy-step-3', 'artifact-risk-report', 'ntwf-james-okafor', '', '') ON CONFLICT (artifact_id) DO NOTHING;
 
-INSERT INTO workflow_artifacts (artifact_id, title, identifier, created, produced_by_step, derived_from_artifact, attributed_to_human_agent, attributed_to_ai_agent, attributed_to_automated_pipeline)
-VALUES ('artifact-release-authorization', 'Release Authorization', 'ART-AUTH-001', '2026-04-02T00:00:00-05:00', 'prod-deploy-step-3', 'artifact-legal-clearance', 'ntwf-maria-gonzalez', '', '') ON CONFLICT (artifact_id) DO NOTHING;
+INSERT INTO workflow_artifacts (artifact_id, title, identifier, artifact_type, created, produced_by_step, required_by_steps, derived_from_artifact, attributed_to_human_agent, attributed_to_ai_agent, attributed_to_automated_pipeline)
+VALUES ('artifact-release-authorization', 'Release Authorization', 'ART-AUTH-001', 'type-decision-record', '2026-04-02T00:00:00-05:00', 'prod-deploy-step-3', 'prod-deploy-step-4', 'artifact-legal-clearance', 'ntwf-maria-gonzalez', '', '') ON CONFLICT (artifact_id) DO NOTHING;
 
-INSERT INTO workflow_artifacts (artifact_id, title, identifier, created, produced_by_step, derived_from_artifact, attributed_to_human_agent, attributed_to_ai_agent, attributed_to_automated_pipeline)
-VALUES ('artifact-deployment-log', 'Deployment Execution Log', 'ART-DEPLOG-001', '2026-04-03T00:00:00-05:00', 'prod-deploy-step-4', 'artifact-release-authorization', '', '', 'ntwf-ci-pipeline') ON CONFLICT (artifact_id) DO NOTHING;
+INSERT INTO workflow_artifacts (artifact_id, title, identifier, artifact_type, created, produced_by_step, required_by_steps, derived_from_artifact, attributed_to_human_agent, attributed_to_ai_agent, attributed_to_automated_pipeline)
+VALUES ('artifact-deployment-log', 'Deployment Execution Log', 'ART-DEPLOG-001', 'type-log', '2026-04-03T00:00:00-05:00', 'prod-deploy-step-4', '', 'artifact-release-authorization', '', '', 'ntwf-ci-pipeline') ON CONFLICT (artifact_id) DO NOTHING;
 
-INSERT INTO workflow_artifacts (artifact_id, title, identifier, created, produced_by_step, derived_from_artifact, attributed_to_human_agent, attributed_to_ai_agent, attributed_to_automated_pipeline)
-VALUES ('artifact-post-deploy-report', 'Post-Deployment Health Report', 'ART-HEALTH-001', '2026-04-03T00:00:00-05:00', 'prod-deploy-step-5', 'artifact-deployment-log', 'ntwf-maria-gonzalez', '', '') ON CONFLICT (artifact_id) DO NOTHING;
+INSERT INTO workflow_artifacts (artifact_id, title, identifier, artifact_type, created, produced_by_step, required_by_steps, derived_from_artifact, attributed_to_human_agent, attributed_to_ai_agent, attributed_to_automated_pipeline)
+VALUES ('artifact-post-deploy-report', 'Post-Deployment Health Report', 'ART-HEALTH-001', 'type-report', '2026-04-03T00:00:00-05:00', 'prod-deploy-step-5', '', 'artifact-deployment-log', '', 'ntwf-health-ai', '') ON CONFLICT (artifact_id) DO NOTHING;
 
 -- ----------------------------------------------------------------------------
--- ComplianceVerdicts: Table: ComplianceVerdicts. The article's closing demonstration, made first-class. One row per workflow carrying a single business verdict that joins the three layers Jessica Talisman ends on — the metadata layer (dct:modified staleness), the structural layer (step->role->agent), and the accountability layer (filledBy -> AIAgent). IsAtComplianceRisk is true exactly when a workflow is BOTH stale (not reviewed in twelve months) AND has an AI agent executing a step: 'a business question answered by a machine, automatically, across a live graph.' Because every input is derived, changing a raw fact far downstream (the Modified date, or which agent fills a role) flips the verdict on the next read.
+-- GovernanceRoles: Table: GovernanceRoles. NTWF governance names two distinct ontology-governance roles: a Steward (responsible for the ontology's health — monitors drift, tracks external dependency updates, fields user questions, maintains docs, keeps the validation suite current; identifies that a change is needed but has no approval power) and an Authority (the power to approve changes to the CBox, ABox, and TBox; decides how and where a change is made; sits with the function that owns the domain). 'A steward who can make TBox or ABox changes without authority review is a single point of failure.' For an organization under 500 people a single person may hold both roles. This table models the maintenance discipline itself, as data, so the change log can attribute approvals to a named authority.
 -- ----------------------------------------------------------------------------
-INSERT INTO compliance_verdicts (compliance_verdict_id, workflow, verdict_concept)
-VALUES ('verdict-production-deployment', 'production-deployment', '') ON CONFLICT (compliance_verdict_id) DO NOTHING;
+INSERT INTO governance_roles (governance_role_id, display_name, kind, responsibilities, approval_scope, held_by, approved_changes)
+VALUES ('gov-steward', 'Ontology Steward', 'Steward', 'Monitors the ontology for drift, tracks external-dependency updates (PROV-O, FOAF, Dublin Core, DCAT, Schema.org), fields questions from users, maintains documentation, and keeps the validation suite current. Identifies that a change is needed but does not approve it. Runs the periodic (at minimum quarterly) competency-question review: new unanswerable questions become scope-change requests, obsolete questions become deprecation candidates, and questions that return wrong answers are defects.', 'none', 'Engineering Knowledge Infrastructure team', NULL) ON CONFLICT (governance_role_id) DO NOTHING;
+
+INSERT INTO governance_roles (governance_role_id, display_name, kind, responsibilities, approval_scope, held_by, approved_changes)
+VALUES ('gov-authority', 'Ontology Authority', 'Authority', 'Holds the power to approve changes to the CBox, ABox, and TBox. Decides how and where a change is made. Reviews changes proposed by the steward so that no single person alters the knowledge graph''s semantic integrity unchecked.', 'CBox, ABox, TBox', 'Workflow Governance function', NULL) ON CONFLICT (governance_role_id) DO NOTHING;
+
+-- ----------------------------------------------------------------------------
+-- ChangeLog: Table: ChangeLog. NTWF's minimum governance artifact: 'a change log that records every TBox and ABox modification, with its rationale.' Each entry records the four facts NTWF governance enumerates — the competency question that motivated the change, the terms affected, the version number of the release, and the date — plus the rationale and the Authority who approved it. Semantic-versioning discipline (MAJOR.MINOR.PATCH) is captured per entry via ChangeKind.
+-- ----------------------------------------------------------------------------
+INSERT INTO change_log (change_log_id, version, change_date, change_kind, motivating_question, terms_affected, rationale, approved_by)
+VALUES ('change-1-0-0', '1.0.0', '2026-01-15', 'major', 'All eight competency questions (CQ1-CQ8).', 'Initial release: 9 classes, 13 object properties, 5 datatype properties, 2 CBox schemes.', 'First validated release of the NTWF workflow ontology; passes the 104-test suite.', 'gov-authority') ON CONFLICT (change_log_id) DO NOTHING;
+
+INSERT INTO change_log (change_log_id, version, change_date, change_kind, motivating_question, terms_affected, rationale, approved_by)
+VALUES ('change-1-1-0', '1.1.0', '2026-03-20', 'minor', 'Which AI agent was executing this step on March 1, 2026?', 'Added filledBy assignment history (RoleAssignments) with validity periods; AIAgent deployment date; agent-type-change audit witnesses.', 'Operational governance needed retained filledBy history so historical ''as of date'' and blast-radius queries are answerable without discarding provenance. Additive and backward compatible — a minor, backward-compatible change, so the steward is authorized to approve and deploy it without authority review.', 'gov-steward') ON CONFLICT (change_log_id) DO NOTHING;
+
+-- ----------------------------------------------------------------------------
+-- VocabularyReconciliations: Table: VocabularyReconciliations. External dependency change: when a borrowed term from a living standard (PROV-O, FOAF, Dublin Core, DCAT, Schema.org) is deprecated and re-homed into the NTWF namespace, the edit triggers a version bump and an owl:sameAs reconciliation relation declaring the old and new terms equivalent. The worked example: deprecating foaf:name, prepending the ntwf prefix to get ntwf:name, and asserting foaf:name owl:sameAs ntwf:name. Each row is one reconciliation, with the standard it came from and the version in which the reconciliation shipped.
+-- ----------------------------------------------------------------------------
+INSERT INTO vocabulary_reconciliations (reconciliation_id, deprecated_term, replacement_term, reconciliation_relation, source_standard, introduced_in_version, rationale)
+VALUES ('recon-foaf-name', 'foaf:name', 'ntwf:name', 'owl:sameAs', 'FOAF', 'v1.1.0', 'Worked example: a deprecated FOAF element is re-prefixed into the NTWF namespace; existing data stays valid (URIs do not disappear), and foaf:name owl:sameAs ntwf:name keeps the two interchangeable for reasoners.') ON CONFLICT (reconciliation_id) DO NOTHING;
+
+INSERT INTO vocabulary_reconciliations (reconciliation_id, deprecated_term, replacement_term, reconciliation_relation, source_standard, introduced_in_version, rationale)
+VALUES ('recon-dcat-v3', 'dcat:Dataset (v2)', 'dcat:Dataset (v3)', 'owl:sameAs', 'DCAT', 'v1.1.0', 'External-dependency fact: DCAT went through a major v2 -> v3 revision that introduced new classes and deprecated others. NTWF tracks the alignment so its dcat:Dataset usage stays semantically current; existing data remains valid because URIs do not disappear.') ON CONFLICT (reconciliation_id) DO NOTHING;
 
 -- ----------------------------------------------------------------------------
 -- Scenarios: Seed data for Scenarios
 -- ----------------------------------------------------------------------------
 INSERT INTO scenarios (scenario_id, label, icon, explanation, sort_order, is_reset, edits)
-VALUES ('trigger-risk', 'Trigger compliance risk', '⚠️', 'Backdates the workflow''s last review past its policy window so the docs go STALE. The release already has AI-executed steps, so stale-docs-AND-an-AI-step fires the article''s headline verdict: AT COMPLIANCE RISK.', 1, FALSE, '[{"class":"Workflows","match":"first","set":{"modified":"2026-04-03T00:00:00-05:00"}},{"class":"Roles","id":"ntwf-release-manager-role","set":{"filledByHumanAgent":"ntwf-maria-gonzalez","filledByAIAgent":"","filledByAutomatedPipeline":""}},{"class":"Roles","id":"ntwf-risk-analysis-role","set":{"filledByHumanAgent":"","filledByAIAgent":"ntwf-risk-ai","filledByAutomatedPipeline":""}},{"class":"Roles","id":"ntwf-legal-compliance-role","set":{"filledByHumanAgent":"ntwf-james-okafor","filledByAIAgent":"","filledByAutomatedPipeline":""}},{"class":"Roles","id":"ntwf-ci-executor-role","set":{"filledByHumanAgent":"","filledByAIAgent":"","filledByAutomatedPipeline":"ntwf-ci-pipeline"}},{"class":"Roles","id":"ntwf-vp-engineering-role","set":{"filledByHumanAgent":"ntwf-david-chen","filledByAIAgent":"","filledByAutomatedPipeline":""}},{"class":"Roles","id":"ntwf-cto-role","set":{"filledByHumanAgent":"ntwf-sarah-kim","filledByAIAgent":"","filledByAutomatedPipeline":""}},{"class":"Roles","id":"ntwf-deployment-health-role","set":{"filledByHumanAgent":"","filledByAIAgent":"ntwf-health-ai","filledByAutomatedPipeline":""}},{"class":"Workflows","match":"first","set":{"modified":"2023-01-01T00:00:00-06:00"}}]') ON CONFLICT (scenario_id) DO NOTHING;
+VALUES ('trigger-risk', 'Stale workflow with an AI step', '⚠️', 'Backdates the workflow''s last review past its 12-month policy window so the docs go STALE. The release already has AI-executed steps, so stale-docs-AND-an-AI-step fires the article''s headline business query: IsStaleAndHasAIAgent (CQ5 extended — stale workflows that involve AI agents).', 1, FALSE, '[{"class": "Workflows", "match": "first", "set": {"modified": "2026-04-03T00:00:00-05:00"}}, {"class": "Roles", "id": "ntwf-release-manager-role", "set": {"filledByHumanAgent": "ntwf-maria-gonzalez", "filledByAIAgent": "", "filledByAutomatedPipeline": ""}}, {"class": "Roles", "id": "ntwf-risk-analysis-role", "set": {"filledByHumanAgent": "", "filledByAIAgent": "ntwf-risk-ai", "filledByAutomatedPipeline": ""}}, {"class": "Roles", "id": "ntwf-legal-compliance-role", "set": {"filledByHumanAgent": "ntwf-james-okafor", "filledByAIAgent": "", "filledByAutomatedPipeline": ""}}, {"class": "Roles", "id": "ntwf-ci-executor-role", "set": {"filledByHumanAgent": "", "filledByAIAgent": "", "filledByAutomatedPipeline": "ntwf-ci-pipeline"}}, {"class": "Roles", "id": "ntwf-vp-engineering-role", "set": {"filledByHumanAgent": "ntwf-david-chen", "filledByAIAgent": "", "filledByAutomatedPipeline": ""}}, {"class": "Roles", "id": "ntwf-cto-role", "set": {"filledByHumanAgent": "ntwf-sarah-kim", "filledByAIAgent": "", "filledByAutomatedPipeline": ""}}, {"class": "Roles", "id": "ntwf-deployment-health-role", "set": {"filledByHumanAgent": "", "filledByAIAgent": "ntwf-health-ai", "filledByAutomatedPipeline": ""}}, {"class": "Workflows", "match": "first", "set": {"modified": "2023-01-01T00:00:00-06:00"}}]') ON CONFLICT (scenario_id) DO NOTHING;
 
 INSERT INTO scenarios (scenario_id, label, icon, explanation, sort_order, is_reset, edits)
-VALUES ('all-human', 'All-human release', '🧑', 'Reassigns every AI agent and pipeline to a human. The AI-step count drops to zero, so the compliance risk can no longer fire — even if the docs are stale. Shows the role→agent indirection: personnel change is one edge, not a rewrite.', 2, FALSE, '[{"class":"Workflows","match":"first","set":{"modified":"2026-04-03T00:00:00-05:00"}},{"class":"Roles","id":"ntwf-release-manager-role","set":{"filledByHumanAgent":"ntwf-maria-gonzalez","filledByAIAgent":"","filledByAutomatedPipeline":""}},{"class":"Roles","id":"ntwf-risk-analysis-role","set":{"filledByHumanAgent":"","filledByAIAgent":"ntwf-risk-ai","filledByAutomatedPipeline":""}},{"class":"Roles","id":"ntwf-legal-compliance-role","set":{"filledByHumanAgent":"ntwf-james-okafor","filledByAIAgent":"","filledByAutomatedPipeline":""}},{"class":"Roles","id":"ntwf-ci-executor-role","set":{"filledByHumanAgent":"","filledByAIAgent":"","filledByAutomatedPipeline":"ntwf-ci-pipeline"}},{"class":"Roles","id":"ntwf-vp-engineering-role","set":{"filledByHumanAgent":"ntwf-david-chen","filledByAIAgent":"","filledByAutomatedPipeline":""}},{"class":"Roles","id":"ntwf-cto-role","set":{"filledByHumanAgent":"ntwf-sarah-kim","filledByAIAgent":"","filledByAutomatedPipeline":""}},{"class":"Roles","id":"ntwf-deployment-health-role","set":{"filledByHumanAgent":"","filledByAIAgent":"ntwf-health-ai","filledByAutomatedPipeline":""}},{"class":"Roles","id":"ntwf-risk-analysis-role","set":{"filledByHumanAgent":"ntwf-david-chen","filledByAIAgent":"","filledByAutomatedPipeline":""}},{"class":"Roles","id":"ntwf-deployment-health-role","set":{"filledByHumanAgent":"ntwf-sarah-kim","filledByAIAgent":"","filledByAutomatedPipeline":""}},{"class":"Roles","id":"ntwf-ci-executor-role","set":{"filledByHumanAgent":"ntwf-james-okafor","filledByAIAgent":"","filledByAutomatedPipeline":""}}]') ON CONFLICT (scenario_id) DO NOTHING;
+VALUES ('all-human', 'All-human release', '🧑', 'Reassigns every AI agent and pipeline to a human. The AI-step count drops to zero, so the compliance risk can no longer fire — even if the docs are stale. Shows the role→agent indirection: personnel change is one edge, not a rewrite.', 2, FALSE, '[{"class": "Workflows", "match": "first", "set": {"modified": "2026-04-03T00:00:00-05:00"}}, {"class": "Roles", "id": "ntwf-release-manager-role", "set": {"filledByHumanAgent": "ntwf-maria-gonzalez", "filledByAIAgent": "", "filledByAutomatedPipeline": ""}}, {"class": "Roles", "id": "ntwf-risk-analysis-role", "set": {"filledByHumanAgent": "", "filledByAIAgent": "ntwf-risk-ai", "filledByAutomatedPipeline": ""}}, {"class": "Roles", "id": "ntwf-legal-compliance-role", "set": {"filledByHumanAgent": "ntwf-james-okafor", "filledByAIAgent": "", "filledByAutomatedPipeline": ""}}, {"class": "Roles", "id": "ntwf-ci-executor-role", "set": {"filledByHumanAgent": "", "filledByAIAgent": "", "filledByAutomatedPipeline": "ntwf-ci-pipeline"}}, {"class": "Roles", "id": "ntwf-vp-engineering-role", "set": {"filledByHumanAgent": "ntwf-david-chen", "filledByAIAgent": "", "filledByAutomatedPipeline": ""}}, {"class": "Roles", "id": "ntwf-cto-role", "set": {"filledByHumanAgent": "ntwf-sarah-kim", "filledByAIAgent": "", "filledByAutomatedPipeline": ""}}, {"class": "Roles", "id": "ntwf-deployment-health-role", "set": {"filledByHumanAgent": "", "filledByAIAgent": "ntwf-health-ai", "filledByAutomatedPipeline": ""}}, {"class": "Roles", "id": "ntwf-risk-analysis-role", "set": {"filledByHumanAgent": "ntwf-david-chen", "filledByAIAgent": "", "filledByAutomatedPipeline": ""}}, {"class": "Roles", "id": "ntwf-deployment-health-role", "set": {"filledByHumanAgent": "ntwf-sarah-kim", "filledByAIAgent": "", "filledByAutomatedPipeline": ""}}, {"class": "Roles", "id": "ntwf-ci-executor-role", "set": {"filledByHumanAgent": "ntwf-james-okafor", "filledByAIAgent": "", "filledByAutomatedPipeline": ""}}]') ON CONFLICT (scenario_id) DO NOTHING;
 
 INSERT INTO scenarios (scenario_id, label, icon, explanation, sort_order, is_reset, edits)
-VALUES ('ai-at-gate', 'AI at the approval gate', '🤖', 'Hands the Legal Compliance Reviewer role — whose review step requires human sign-off — to an AI agent. The reasoner''s consistency witness fires on that step: a requires-human-approval step is no longer human-filled. The rule break is DERIVED, not hand-checked.', 3, FALSE, '[{"class":"Workflows","match":"first","set":{"modified":"2026-04-03T00:00:00-05:00"}},{"class":"Roles","id":"ntwf-release-manager-role","set":{"filledByHumanAgent":"ntwf-maria-gonzalez","filledByAIAgent":"","filledByAutomatedPipeline":""}},{"class":"Roles","id":"ntwf-risk-analysis-role","set":{"filledByHumanAgent":"","filledByAIAgent":"ntwf-risk-ai","filledByAutomatedPipeline":""}},{"class":"Roles","id":"ntwf-legal-compliance-role","set":{"filledByHumanAgent":"ntwf-james-okafor","filledByAIAgent":"","filledByAutomatedPipeline":""}},{"class":"Roles","id":"ntwf-ci-executor-role","set":{"filledByHumanAgent":"","filledByAIAgent":"","filledByAutomatedPipeline":"ntwf-ci-pipeline"}},{"class":"Roles","id":"ntwf-vp-engineering-role","set":{"filledByHumanAgent":"ntwf-david-chen","filledByAIAgent":"","filledByAutomatedPipeline":""}},{"class":"Roles","id":"ntwf-cto-role","set":{"filledByHumanAgent":"ntwf-sarah-kim","filledByAIAgent":"","filledByAutomatedPipeline":""}},{"class":"Roles","id":"ntwf-deployment-health-role","set":{"filledByHumanAgent":"","filledByAIAgent":"ntwf-health-ai","filledByAutomatedPipeline":""}},{"class":"Roles","id":"ntwf-legal-compliance-role","set":{"filledByHumanAgent":"","filledByAIAgent":"ntwf-risk-ai","filledByAutomatedPipeline":""}}]') ON CONFLICT (scenario_id) DO NOTHING;
+VALUES ('ai-at-gate', 'AI at the approval gate', '🤖', 'Hands the Legal Compliance Reviewer role — whose review step requires human sign-off — to an AI agent. The reasoner''s consistency witness fires on that step: a requires-human-approval step is no longer human-filled. The rule break is DERIVED, not hand-checked.', 3, FALSE, '[{"class": "Workflows", "match": "first", "set": {"modified": "2026-04-03T00:00:00-05:00"}}, {"class": "Roles", "id": "ntwf-release-manager-role", "set": {"filledByHumanAgent": "ntwf-maria-gonzalez", "filledByAIAgent": "", "filledByAutomatedPipeline": ""}}, {"class": "Roles", "id": "ntwf-risk-analysis-role", "set": {"filledByHumanAgent": "", "filledByAIAgent": "ntwf-risk-ai", "filledByAutomatedPipeline": ""}}, {"class": "Roles", "id": "ntwf-legal-compliance-role", "set": {"filledByHumanAgent": "ntwf-james-okafor", "filledByAIAgent": "", "filledByAutomatedPipeline": ""}}, {"class": "Roles", "id": "ntwf-ci-executor-role", "set": {"filledByHumanAgent": "", "filledByAIAgent": "", "filledByAutomatedPipeline": "ntwf-ci-pipeline"}}, {"class": "Roles", "id": "ntwf-vp-engineering-role", "set": {"filledByHumanAgent": "ntwf-david-chen", "filledByAIAgent": "", "filledByAutomatedPipeline": ""}}, {"class": "Roles", "id": "ntwf-cto-role", "set": {"filledByHumanAgent": "ntwf-sarah-kim", "filledByAIAgent": "", "filledByAutomatedPipeline": ""}}, {"class": "Roles", "id": "ntwf-deployment-health-role", "set": {"filledByHumanAgent": "", "filledByAIAgent": "ntwf-health-ai", "filledByAutomatedPipeline": ""}}, {"class": "Roles", "id": "ntwf-legal-compliance-role", "set": {"filledByHumanAgent": "", "filledByAIAgent": "ntwf-risk-ai", "filledByAutomatedPipeline": ""}}]') ON CONFLICT (scenario_id) DO NOTHING;
 
 INSERT INTO scenarios (scenario_id, label, icon, explanation, sort_order, is_reset, edits)
-VALUES ('offhours-gate', 'Off-hours gate, no second signer', '🌙', 'Flags the deployment as off-hours and fills the VP of Engineering role (the Release Manager''s delegate) with the CI pipeline instead of a human. The Release Approval Gate requires dual human sign-off during off-hours, but the delegation chain now has only one human along it — so the gate''s DualSignoffSatisfied goes false and the workflow trips AT RISK on the gate rule. Fix it two ways: clear the off-hours flag, or put a human back in the VP role (one edge in the org/escalation view). The gate finally has a measurable consequence.', 4, FALSE, '[{"class":"Workflows","match":"first","set":{"modified":"2026-04-03T00:00:00-05:00","isOffHoursDeployment":true}},{"class":"Roles","id":"ntwf-release-manager-role","set":{"filledByHumanAgent":"ntwf-maria-gonzalez","filledByAIAgent":"","filledByAutomatedPipeline":""}},{"class":"Roles","id":"ntwf-risk-analysis-role","set":{"filledByHumanAgent":"","filledByAIAgent":"ntwf-risk-ai","filledByAutomatedPipeline":""}},{"class":"Roles","id":"ntwf-legal-compliance-role","set":{"filledByHumanAgent":"ntwf-james-okafor","filledByAIAgent":"","filledByAutomatedPipeline":""}},{"class":"Roles","id":"ntwf-ci-executor-role","set":{"filledByHumanAgent":"","filledByAIAgent":"","filledByAutomatedPipeline":"ntwf-ci-pipeline"}},{"class":"Roles","id":"ntwf-vp-engineering-role","set":{"filledByHumanAgent":"","filledByAIAgent":"","filledByAutomatedPipeline":"ntwf-ci-pipeline"}},{"class":"Roles","id":"ntwf-cto-role","set":{"filledByHumanAgent":"ntwf-sarah-kim","filledByAIAgent":"","filledByAutomatedPipeline":""}},{"class":"Roles","id":"ntwf-deployment-health-role","set":{"filledByHumanAgent":"","filledByAIAgent":"ntwf-health-ai","filledByAutomatedPipeline":""}}]') ON CONFLICT (scenario_id) DO NOTHING;
+VALUES ('reset', 'Reset to baseline', '↺', 'Restores the canonical seed assignments and a fresh review date — the known-good starting point. Every role is filled by exactly one agent, no requires-human-approval step is AI-filled, and the workflow is within its staleness window, so all the article''s clean-ABox witnesses read green.', 5, TRUE, '[{"class": "Workflows", "match": "first", "set": {"modified": "2026-04-03T00:00:00-05:00"}}, {"class": "Roles", "id": "ntwf-release-manager-role", "set": {"filledByHumanAgent": "ntwf-maria-gonzalez", "filledByAIAgent": "", "filledByAutomatedPipeline": ""}}, {"class": "Roles", "id": "ntwf-risk-analysis-role", "set": {"filledByHumanAgent": "", "filledByAIAgent": "ntwf-risk-ai", "filledByAutomatedPipeline": ""}}, {"class": "Roles", "id": "ntwf-legal-compliance-role", "set": {"filledByHumanAgent": "ntwf-james-okafor", "filledByAIAgent": "", "filledByAutomatedPipeline": ""}}, {"class": "Roles", "id": "ntwf-ci-executor-role", "set": {"filledByHumanAgent": "", "filledByAIAgent": "", "filledByAutomatedPipeline": "ntwf-ci-pipeline"}}, {"class": "Roles", "id": "ntwf-vp-engineering-role", "set": {"filledByHumanAgent": "ntwf-david-chen", "filledByAIAgent": "", "filledByAutomatedPipeline": ""}}, {"class": "Roles", "id": "ntwf-cto-role", "set": {"filledByHumanAgent": "ntwf-sarah-kim", "filledByAIAgent": "", "filledByAutomatedPipeline": ""}}, {"class": "Roles", "id": "ntwf-deployment-health-role", "set": {"filledByHumanAgent": "", "filledByAIAgent": "ntwf-health-ai", "filledByAutomatedPipeline": ""}}]') ON CONFLICT (scenario_id) DO NOTHING;
 
-INSERT INTO scenarios (scenario_id, label, icon, explanation, sort_order, is_reset, edits)
-VALUES ('reset', 'Reset to baseline', '↺', 'Restores the canonical seed assignments, a fresh review date, and on-hours scheduling — the known-good starting point. (The seed plan runs slightly over its 4-hour budget, so the board''s baseline verdict is driven by the time-budget rule; trim a step''s duration to clear it.)', 5, TRUE, '[{"class":"Workflows","match":"first","set":{"modified":"2026-04-03T00:00:00-05:00","isOffHoursDeployment":false}},{"class":"Roles","id":"ntwf-release-manager-role","set":{"filledByHumanAgent":"ntwf-maria-gonzalez","filledByAIAgent":"","filledByAutomatedPipeline":""}},{"class":"Roles","id":"ntwf-risk-analysis-role","set":{"filledByHumanAgent":"","filledByAIAgent":"ntwf-risk-ai","filledByAutomatedPipeline":""}},{"class":"Roles","id":"ntwf-legal-compliance-role","set":{"filledByHumanAgent":"ntwf-james-okafor","filledByAIAgent":"","filledByAutomatedPipeline":""}},{"class":"Roles","id":"ntwf-ci-executor-role","set":{"filledByHumanAgent":"","filledByAIAgent":"","filledByAutomatedPipeline":"ntwf-ci-pipeline"}},{"class":"Roles","id":"ntwf-vp-engineering-role","set":{"filledByHumanAgent":"ntwf-david-chen","filledByAIAgent":"","filledByAutomatedPipeline":""}},{"class":"Roles","id":"ntwf-cto-role","set":{"filledByHumanAgent":"ntwf-sarah-kim","filledByAIAgent":"","filledByAutomatedPipeline":""}},{"class":"Roles","id":"ntwf-deployment-health-role","set":{"filledByHumanAgent":"","filledByAIAgent":"ntwf-health-ai","filledByAutomatedPipeline":""}}]') ON CONFLICT (scenario_id) DO NOTHING;
+-- ----------------------------------------------------------------------------
+-- ConformanceTests: Seed data for ConformanceTests
+-- ----------------------------------------------------------------------------
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('sweep-workflows', 'Sweep Workflows vs answer key', '', 'Sweep', 'sweep', 'Workflows', '', 'Every row and every column of Workflows must match the Postgres-oracle answer key on both engines.', 10, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('sweep-workflowsteps', 'Sweep WorkflowSteps vs answer key', '', 'Sweep', 'sweep', 'WorkflowSteps', '', 'Every row and every column of WorkflowSteps must match the Postgres-oracle answer key on both engines.', 20, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('sweep-approvalgates', 'Sweep ApprovalGates vs answer key', '', 'Sweep', 'sweep', 'ApprovalGates', '', 'Every row and every column of ApprovalGates must match the Postgres-oracle answer key on both engines.', 30, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('sweep-stepprecedence', 'Sweep StepPrecedence vs answer key', '', 'Sweep', 'sweep', 'StepPrecedence', '', 'Every row and every column of StepPrecedence must match the Postgres-oracle answer key on both engines.', 40, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('sweep-roles', 'Sweep Roles vs answer key', '', 'Sweep', 'sweep', 'Roles', '', 'Every row and every column of Roles must match the Postgres-oracle answer key on both engines.', 50, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('sweep-roleassignments', 'Sweep RoleAssignments vs answer key', '', 'Sweep', 'sweep', 'RoleAssignments', '', 'Every row and every column of RoleAssignments must match the Postgres-oracle answer key on both engines.', 60, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('sweep-departments', 'Sweep Departments vs answer key', '', 'Sweep', 'sweep', 'Departments', '', 'Every row and every column of Departments must match the Postgres-oracle answer key on both engines.', 70, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('sweep-humanagents', 'Sweep HumanAgents vs answer key', '', 'Sweep', 'sweep', 'HumanAgents', '', 'Every row and every column of HumanAgents must match the Postgres-oracle answer key on both engines.', 80, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('sweep-aiagents', 'Sweep AIAgents vs answer key', '', 'Sweep', 'sweep', 'AIAgents', '', 'Every row and every column of AIAgents must match the Postgres-oracle answer key on both engines.', 90, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('sweep-automatedpipelines', 'Sweep AutomatedPipelines vs answer key', '', 'Sweep', 'sweep', 'AutomatedPipelines', '', 'Every row and every column of AutomatedPipelines must match the Postgres-oracle answer key on both engines.', 100, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('sweep-workflowstatusconcepts', 'Sweep WorkflowStatusConcepts vs answer key', '', 'Sweep', 'sweep', 'WorkflowStatusConcepts', '', 'Every row and every column of WorkflowStatusConcepts must match the Postgres-oracle answer key on both engines.', 110, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('sweep-agentcapabilityconcepts', 'Sweep AgentCapabilityConcepts vs answer key', '', 'Sweep', 'sweep', 'AgentCapabilityConcepts', '', 'Every row and every column of AgentCapabilityConcepts must match the Postgres-oracle answer key on both engines.', 120, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('sweep-artifacttypeconcepts', 'Sweep ArtifactTypeConcepts vs answer key', '', 'Sweep', 'sweep', 'ArtifactTypeConcepts', '', 'Every row and every column of ArtifactTypeConcepts must match the Postgres-oracle answer key on both engines.', 130, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('sweep-datasets', 'Sweep Datasets vs answer key', '', 'Sweep', 'sweep', 'Datasets', '', 'Every row and every column of Datasets must match the Postgres-oracle answer key on both engines.', 140, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('sweep-workflowartifacts', 'Sweep WorkflowArtifacts vs answer key', '', 'Sweep', 'sweep', 'WorkflowArtifacts', '', 'Every row and every column of WorkflowArtifacts must match the Postgres-oracle answer key on both engines.', 150, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('sweep-governanceroles', 'Sweep GovernanceRoles vs answer key', '', 'Sweep', 'sweep', 'GovernanceRoles', '', 'Every row and every column of GovernanceRoles must match the Postgres-oracle answer key on both engines.', 160, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('sweep-changelog', 'Sweep ChangeLog vs answer key', '', 'Sweep', 'sweep', 'ChangeLog', '', 'Every row and every column of ChangeLog must match the Postgres-oracle answer key on both engines.', 170, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('sweep-vocabularyreconciliations', 'Sweep VocabularyReconciliations vs answer key', '', 'Sweep', 'sweep', 'VocabularyReconciliations', '', 'Every row and every column of VocabularyReconciliations must match the Postgres-oracle answer key on both engines.', 180, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('sweep-scenarios', 'Sweep Scenarios vs answer key', '', 'Sweep', 'sweep', 'Scenarios', '', 'Every row and every column of Scenarios must match the Postgres-oracle answer key on both engines.', 190, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('closure-precedence-1-5', 'Inferred precedence 1 to 5', 'I-1,CQ3,III-precedesStep', 'Closure', 'closure-contains', 'StepPrecedence', '{"closure": "precedence", "from": "prod-deploy-step-1", "to": "prod-deploy-step-5"}', 'The headline inference: 4 asserted edges entail the never-asserted 1→5 pair via transitive precedesStep.', 200, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('closure-delegation-rm-cto', 'Inferred delegation Release Manager to CTO', 'CQ6,III-delegatesTo', 'Closure', 'closure-contains', 'Roles', '{"closure": "delegation", "from": "ntwf-release-manager-role", "to": "ntwf-cto-role"}', 'Escalation chain RM→VP Eng→CTO: the RM→CTO hop is never asserted; transitive delegatesTo entails it.', 210, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('engines-agree-global', 'Both engines compute identical answers', 'I-4', 'Part I', 'engines-agree', '', '', 'The multi-substrate equivalence claim: reasoner and Postgres views disagree on zero computed values.', 220, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('iri-workflow', 'Workflow IRI minted', 'I-6,IV-10', 'Part I', 'field-match', 'Workflows/production-deployment#Iri', '', 'Every row is a globally-addressable individual; the workflow''s IRI is derived, stable, and identical on both engines.', 230, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('iri-gate', 'Approval-gate IRI minted', 'I-6,IV-10', 'Part I', 'field-match', 'ApprovalGates/ntwf-release-approval-gate#Iri', '', 'Gate IRI derives through the step''s path chain (lookup → calc chain).', 240, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('step1-agent-type', 'Step 1 executing agent type resolves', 'II-1,CQ1', 'Part II', 'field-match', 'WorkflowSteps/prod-deploy-step-1#ExecutingAgentType', '', 'Role→agent indirection: the step''s executing agent type is derived through AssignedRole→FilledBy*.', 250, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('step3-agent-type', 'Gate step executing agent type resolves', 'II-1,CQ1', 'Part II', 'field-match', 'WorkflowSteps/prod-deploy-step-3#ExecutingAgentType', '', 'The approval-gate step resolves to its human Release Manager through the same one-edge chain.', 260, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('count-ai-steps', 'AI step count', 'II-2', 'Part II', 'field-match', 'Workflows/production-deployment#CountAISteps', '', 'COUNTIFS over the DERIVED IsExecutedByAI child field — conditional aggregation over a computed column.', 270, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('count-human-steps', 'Human step count', 'II-2', 'Part II', 'field-match', 'Workflows/production-deployment#CountHumanSteps', '', 'The human side of the agent mix.', 280, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('has-ai-agent-step', 'HasAIAgentStep boolean', 'II-2', 'Part II', 'field-match', 'Workflows/production-deployment#HasAIAgentStep', '', 'Boolean derived from the AI step count — an aggregation feeding a calc.', 290, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('approval-human-filled', 'Gate step is human-filled at seed', 'II-3,CQ2', 'Part II', 'field-match', 'WorkflowSteps/prod-deploy-step-3#ApprovalIsHumanFilled', '', 'requiresHumanApproval is satisfied at seed: the gate role is filled by a human.', 300, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('approval-violation-false', 'No approval violation at seed', 'II-3', 'Part II', 'field-match', 'WorkflowSteps/prod-deploy-step-3#ApprovalConsistencyViolation', '', 'The consistency rule does NOT fire on the seed facts — the clean baseline the mutation test breaks.', 310, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('workflow-violation-false', 'Workflow has no violation at seed', 'II-3', 'Part II', 'field-match', 'Workflows/production-deployment#HasConsistencyViolation', '', 'Workflow-level rollup of approval violations is false on seed facts.', 320, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('skos-workflow-status', 'Workflow status is a SKOS concept', 'II-6', 'Part II', 'field-match', 'Workflows/production-deployment#WorkflowStatus', '', 'workflowStatus points into the WorkflowStatusConcepts scheme.', 330, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('skos-role-capability', 'Role capability is a SKOS concept', 'II-6', 'Part II', 'field-match', 'Roles/ntwf-release-manager-role#HasCapability', '', 'hasCapability points into the AgentCapabilityConcepts scheme.', 340, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('role-label-documented', 'Role carries label documentation', 'II-8', 'Part II', 'field-match', 'Roles/ntwf-release-manager-role#Label', '', 'Heuristic 6: label/comment documentation travels with the model into every substrate.', 350, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('gate-escalation-hours', 'Gate escalation threshold', 'III-escalationThresholdHours,CQ2', 'Part III', 'field-match', 'ApprovalGates/ntwf-release-approval-gate#EscalationThresholdHours', '', 'The gate''s defining datatype property (raw, gate-only).', 360, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('gate-role-lookup', 'Gate role resolves via lookup', 'III-ApprovalGate,CQ2', 'Part III', 'field-match', 'ApprovalGates/ntwf-release-approval-gate#GateRole', '', 'INDEX/MATCH lookup gate→step→role. KNOWN GAP CANDIDATE: both engines currently drop lookup columns from their individuals payload — this test exists to keep that gap visible until fixed.', 370, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('gate-approver-lookup', 'Gate approver human resolves via lookup', 'III-ApprovalGate,CQ2', 'Part III', 'field-match', 'ApprovalGates/ntwf-release-approval-gate#GateApproverHuman', '', 'Second-order lookup gate→role→human filler. Same known gap candidate as GateRole.', 380, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('role-exactly-one-filler', 'Release Manager has exactly one filler', 'III-filledBy,Suite-4', 'Part III', 'field-match', 'Roles/ntwf-release-manager-role#HasExactlyOneFiller', '', 'Functional filledBy: exactly one of the three filler arms is set.', 390, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('bad-filler-count-zero', 'No roles with bad filler cardinality', 'Suite-4', 'Part III', 'field-match', 'Workflows/production-deployment#CountRolesWithBadFillerCardinality', '', 'Suite-4 cardinality witness: zero roles violate the exactly-one-filler rule on seed facts.', 400, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('artifact-derivation', 'Release authorization derives from legal clearance', 'III-wasDerivedFrom,CQ4', 'Part III', 'field-match', 'WorkflowArtifacts/artifact-release-authorization#DerivedFromArtifact', '', 'One link of the 5-artifact PROV wasDerivedFrom chain.', 410, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('artifact-attribution', 'Risk report attributed to the risk AI', 'III-wasAttributedTo,CQ4', 'Part III', 'field-match', 'WorkflowArtifacts/artifact-risk-report#AttributedToAIAgent', '', 'PROV attribution: the artifact names the AI agent that produced it.', 420, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('artifact-has-parent', 'Post-deploy report has a derivation parent', 'III-wasDerivedFrom', 'Part III', 'field-match', 'WorkflowArtifacts/artifact-post-deploy-report#HasDerivationParent', '', 'Boolean derived from the lineage link.', 430, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('consumes-dataset', 'Step consumes the DCAT dataset', 'III-consumesDataset,CQ8', 'Part III', 'field-match', 'WorkflowSteps/prod-deploy-step-1#ConsumesDataset', '', 'consumesDataset points at the dcat:Dataset; answers CQ8.', 440, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('legal-owned-step', 'Legal step is legal-owned', 'III-ownedBy,CQ7', 'Part III', 'field-match', 'WorkflowSteps/prod-deploy-step-2#IsLegalOwned', '', 'ownedBy chain step→role→department resolves to Legal.', 450, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('eng-owned-step', 'Deploy step is engineering-owned', 'III-ownedBy,CQ7', 'Part III', 'field-match', 'WorkflowSteps/prod-deploy-step-4#IsEngineeringOwned', '', 'Same chain resolving to Engineering.', 460, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('cross-cutting-workflow', 'Workflow involves Engineering AND Legal', 'CQ7', 'Part III', 'field-match', 'Workflows/production-deployment#InvolvesEngineeringAndLegal', '', 'The cross-department join CQ7 asks about.', 470, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('sequence-position', 'Step 4 sequence position', 'III-sequencePosition', 'Part III', 'field-match', 'WorkflowSteps/prod-deploy-step-4#SequencePosition', '', 'Functional integer datatype property echoes through both substrates.', 480, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('step-duration', 'Step 1 duration minutes', 'III-stepDurationMinutes', 'Part III', 'field-match', 'WorkflowSteps/prod-deploy-step-1#StepDurationMinutes', '', 'Drives the time-budget bar; raw datatype property.', 490, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('asserted-pair-count', 'Asserted precedence pair count', 'I-1,III-precedesStep', 'Part III', 'field-match', 'Workflows/production-deployment#CountAssertedPrecedencePairs', '', '4 asserted edges.', 500, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('inferred-pair-count', 'Inferred precedence pair count', 'I-1,III-precedesStep', 'Part III', 'field-match', 'Workflows/production-deployment#CountInferredPrecedencePairs', '', '6 pairs exist only by inference (10-pair closure minus 4 asserted).', 510, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('closure-pair-total', 'Total precedence closure pairs', 'I-1,III-precedesStep', 'Part III', 'field-match', 'Workflows/production-deployment#CountOfPrecedenceClosurePairs', '', 'The 10-pair transitive closure, counted from the materialized closure rows.', 520, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('months-since-modified', 'Months since last review', 'IV-1,CQ5', 'Part IV', 'field-match', 'Workflows/production-deployment#MonthsSinceModified', '', 'Time-dependent calc (months granularity) — the staleness clock.', 530, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('is-stale-seed', 'Workflow not stale at seed', 'IV-1,CQ5', 'Part IV', 'field-match', 'Workflows/production-deployment#IsStale', '', 'The CQ5 governance query on the seed facts.', 540, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('stale-and-ai-seed', 'Stale-AND-has-AI at seed', 'IV-2', 'Part IV', 'field-match', 'Workflows/production-deployment#IsStaleAndHasAIAgent', '', 'The higher-compliance-risk join on the seed facts.', 550, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('authority-can-approve', 'Authority can approve changes', 'IV-3', 'Part IV', 'field-match', 'GovernanceRoles/gov-authority#CanApproveChanges', '', 'Steward vs Authority: only the Authority approves.', 560, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('steward-cannot-approve', 'Steward cannot approve changes', 'IV-3', 'Part IV', 'field-match', 'GovernanceRoles/gov-steward#CanApproveChanges', '', 'The other half of the governance split.', 570, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('changelog-breaking', 'Change 1.0.0 breaking-change flag', 'IV-4', 'Part IV', 'field-match', 'ChangeLog/change-1-0-0#IsBreakingChange', '', 'Semantic-versioning derivation from ChangeKind.', 580, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('changelog-backcompat', 'Change 1.1.0 backward-compatible flag', 'IV-4', 'Part IV', 'field-match', 'ChangeLog/change-1-1-0#IsBackwardCompatible', '', 'The minor release is back-compat by derivation.', 590, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('assignment-current', 'Current role assignment flagged', 'IV-6', 'Part IV', 'field-match', 'RoleAssignments/asn-deploy-health-ai-current#IsCurrent', '', 'Bitemporal validity: the open-ended assignment is current.', 600, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('assignment-as-of-audit', 'Assignment active as of audit date', 'IV-6', 'Part IV', 'field-match', 'RoleAssignments/asn-deploy-health-human-audit#WasActiveAsOfAuditDate', '', 'The ''who filled this on the audit date'' time-travel query.', 610, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('agent-type-change', 'Agent-type change detected', 'IV-7', 'Part IV', 'field-match', 'RoleAssignments/asn-deploy-health-human-audit#IsAgentTypeChange', '', 'AI→Human turnover detection across consecutive assignments.', 620, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('compliance-audit-required', 'Turnover requires compliance audit', 'IV-7', 'Part IV', 'field-match', 'RoleAssignments/asn-deploy-health-human-audit#RequiresComplianceAudit', '', 'The audit trigger derived from the agent-type change.', 630, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('audit-changes-rollup', 'Workflow compliance-audit rollup', 'IV-7', 'Part IV', 'field-match', 'Workflows/production-deployment#CountComplianceAuditChanges', '', 'Workflow-level count of audit-triggering changes.', 640, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('blast-radius-artifacts', 'Risk AI attributed-artifact count', 'IV-8', 'Part IV', 'field-match', 'AIAgents/ntwf-risk-ai#CountAttributedArtifacts', '', 'AI-system-registry blast radius: artifacts this AI produced.', 650, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('blast-radius-workflows', 'Risk AI impacted-workflow count', 'IV-8', 'Part IV', 'field-match', 'AIAgents/ntwf-risk-ai#CountImpactedWorkflows', '', 'Blast radius: workflows reachable from this AI''s artifacts.', 660, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('model-version', 'Risk AI model version', 'IV-9,III-modelVersion', 'Part IV', 'field-match', 'AIAgents/ntwf-risk-ai#ModelVersion', '', 'The audit anchor: which model version produced the attributed artifacts.', 670, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('deployed-on', 'Risk AI deployment date', 'IV-9', 'Part IV', 'field-match', 'AIAgents/ntwf-risk-ai#DeployedOn', '', 'When the audited model version went live.', 680, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('mut-ai-at-human-gate', 'Assign AI to the human-only gate fires the violation', 'II-3,Suite-4', 'Mutation', 'mutation', 'Roles/ntwf-release-manager-role', '{"edits": [{"class": "Roles", "id": "ntwf-release-manager-role", "set": {"filledByHumanAgent": "", "filledByAIAgent": "ntwf-risk-ai", "filledByAutomatedPipeline": ""}}], "assert": [{"class": "WorkflowSteps", "id": "prod-deploy-step-3", "field": "approvalConsistencyViolation", "equals": true}, {"class": "Workflows", "id": "production-deployment", "field": "hasConsistencyViolation", "equals": true}]}', 'Suite-4 inject-an-error: filling the gate role with an AI must flip ApprovalConsistencyViolation on the step AND roll up to the workflow, on BOTH engines.', 690, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('mut-backdate-goes-stale', 'Backdating the review makes the workflow stale', 'IV-1,CQ5', 'Mutation', 'mutation', 'Workflows/production-deployment', '{"edits": [{"class": "Workflows", "id": "production-deployment", "set": {"modified": "2024-01-01T00:00:00-05:00"}}], "assert": [{"class": "Workflows", "id": "production-deployment", "field": "isStale", "equals": true}]}', 'Backdate dct:modified past the staleness window: IsStale must flip true.', 700, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('mut-stale-and-ai-join', 'Backdating fires the stale-AND-AI compliance join', 'IV-2', 'Mutation', 'mutation', 'Workflows/production-deployment', '{"edits": [{"class": "Workflows", "id": "production-deployment", "set": {"modified": "2024-01-01T00:00:00-05:00"}}], "assert": [{"class": "Workflows", "id": "production-deployment", "field": "isStaleAndHasAIAgent", "equals": true}]}', 'Seed facts already include AI-executed steps, so staleness alone completes the IsStaleAndHasAIAgent join.', 710, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('mut-gate-not-required', 'Dropping the sign-off requirement clears the violation', 'II-3', 'Mutation', 'mutation', 'WorkflowSteps/prod-deploy-step-3', '{"edits": [{"class": "Roles", "id": "ntwf-release-manager-role", "set": {"filledByHumanAgent": "", "filledByAIAgent": "ntwf-risk-ai", "filledByAutomatedPipeline": ""}}, {"class": "WorkflowSteps", "id": "prod-deploy-step-3", "set": {"requiresHumanApproval": false}}], "assert": [{"class": "WorkflowSteps", "id": "prod-deploy-step-3", "field": "approvalConsistencyViolation", "equals": false}]}', 'The violation is an AND of requiresHumanApproval and a non-human filler: with the requirement off, an AI filler is consistent.', 720, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
 

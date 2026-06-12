@@ -2,11 +2,25 @@
 """
 postgres-calculated-to-rulebook
 
-Merges current Postgres raw-table data back into the rulebook's seed data arrays.
-Only raw and relationship fields are updated — computed/lookup/aggregation fields
-are left alone (they are derived by the transpiler, not authored).
+Merges current Postgres data back into the rulebook's seed data arrays.
 
-Input:  .pg-raw-data.json  — written by pull-from-postgres.sh
+TWO MODES, selected by the ERB_WRITE_COMPUTED env var:
+
+  • DEFAULT (ERB_WRITE_COMPUTED unset/false) — raws-only sync.
+    Only raw and relationship fields are updated; computed/lookup/aggregation
+    fields are left alone. This is the safe reverse-spoke: it pulls hand-edited
+    raw values back from the DB without bloating the rulebook with derived data.
+
+  • ERB_WRITE_COMPUTED=true — full view-row adoption.
+    EVERY field present in the exchange JSON is written back, including
+    calculated/lookup/aggregation values. This is the mechanism behind
+    `regenerate-answer-keys.sh`: load rulebook raws → Postgres → vw_* compute
+    the correct values → write the whole view row back into the rulebook → the
+    answer-key generator then reads those fresh computed values. For this to
+    refresh computed fields, the exchange JSON must come from the VIEWS
+    (pull-from-postgres.sh exports vw_*, not base tables).
+
+Input:  .pg-raw-data.json  — written by pull-from-postgres.sh (vw_* rows)
         rulebook JSON       — the SSoT being updated
 
 Usage (direct):
@@ -25,6 +39,12 @@ from typing import Any, Dict, List, Tuple
 
 COMPUTED_TYPES = {"calculated", "lookup", "aggregation"}
 RAW_TYPES = {"raw", "relationship"}
+
+# When true, write ALL field types back (computed values included), not just
+# raws. The whole-view-row adoption that regenerate-answer-keys.sh relies on.
+WRITE_COMPUTED = os.environ.get("ERB_WRITE_COMPUTED", "").lower() in ("1", "true", "yes")
+# The field types this run will merge. Default = raws only; opt-in = everything.
+WRITABLE_TYPES = (RAW_TYPES | COMPUTED_TYPES) if WRITE_COMPUTED else RAW_TYPES
 
 
 def die(msg: str) -> None:
@@ -141,6 +161,7 @@ def main() -> None:
 
     log(f"rulebook={rulebook_path}")
     log(f"raw-data={json_path}")
+    log(f"mode={'write-computed (full view row)' if WRITE_COMPUTED else 'raws-only (default)'}")
 
     rulebook = json.loads(rulebook_path.read_text())
     raw_data = load_raw_data(json_path)
@@ -153,9 +174,12 @@ def main() -> None:
             continue
 
         schema = table["schema"]
-        raws = [f for f in schema if f.get("type") in RAW_TYPES]
+        # In default mode: raw + relationship fields. In ERB_WRITE_COMPUTED
+        # mode: every field type, so the rulebook adopts the full computed
+        # view row (the answer-key refresh path).
+        writable = [f for f in schema if f.get("type", "raw") in WRITABLE_TYPES]
 
-        if not raws:
+        if not writable:
             continue
 
         table_snake = snake(table_name)
@@ -190,7 +214,7 @@ def main() -> None:
                 warn(f"{table_name}[{pk_val}] not in Postgres (deleted?)")
                 continue
 
-            for f in raws:
+            for f in writable:
                 col = snake(f["name"])
                 if col not in pg_row:
                     continue

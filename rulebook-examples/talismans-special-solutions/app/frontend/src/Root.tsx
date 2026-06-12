@@ -2,6 +2,7 @@ import React, { useState, useCallback, useEffect } from "react";
 import { Routes, Route, Navigate, useNavigate, useParams, Link } from "react-router-dom";
 import App from "./App";
 import Login from "./Login";
+import AdminConformance from "./admin/AdminConformance";
 import { api, setBackend, getBackend, exportXlsx } from "./api";
 import { FieldDag, TablePage, TablesIndex, RoutingContext, mergeRouting } from "./explainer-dag";
 import "./explainer-dag/dag.css";
@@ -199,6 +200,9 @@ function EngineBar({ backend, onLeave }: { backend: string; onLeave: () => void 
       <span className="engine-bar-right">
         <ExcelButton />
         <ConformanceChip />
+        <Link className="mini-btn" to="/admin/conformance" title="Conformance test suite — run every feature against both engines">
+          🧪 tests
+        </Link>
         <button className="mini-btn" onClick={onLeave} type="button">
           ⇆ sync / switch engine
         </button>
@@ -250,6 +254,8 @@ export default function Root() {
         <Route path="/dag" element={<IndexRoute />} />
         <Route path="/dag/:table" element={<TableRoute />} />
         <Route path="/dag/:table/:field" element={<DagRoute />} />
+        <Route path="/admin" element={<Navigate to="/admin/conformance" replace />} />
+        <Route path="/admin/conformance" element={<AdminConformance />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </RoutingContext.Provider>
