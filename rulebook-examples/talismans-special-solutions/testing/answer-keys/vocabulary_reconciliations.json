@@ -6,7 +6,7 @@
     "reconciliation_relation": "owl:sameAs",
     "source_standard": "DCAT",
     "introduced_in_version": "v1.1.0",
-    "rationale": "Part IV external-dependency fact: DCAT went through a major v2 -> v3 revision that introduced new classes and deprecated others. NTWF tracks the alignment so its dcat:Dataset usage stays semantically current; existing data remains valid because URIs do not disappear.",
+    "rationale": "External-dependency fact: DCAT went through a major v2 -> v3 revision that introduced new classes and deprecated others. NTWF tracks the alignment so its dcat:Dataset usage stays semantically current; existing data remains valid because URIs do not disappear.",
     "relative_path": "reconciliations/recon-dcat-v3",
     "iri": "reconciliations-recon-dcat-v3",
     "name": "dcat:Dataset (v2) owl:sameAs dcat:Dataset (v3)"
@@ -18,7 +18,7 @@
     "reconciliation_relation": "owl:sameAs",
     "source_standard": "FOAF",
     "introduced_in_version": "v1.1.0",
-    "rationale": "Part IV worked example: a deprecated FOAF element is re-prefixed into the NTWF namespace; existing data stays valid (URIs do not disappear), and foaf:name owl:sameAs ntwf:name keeps the two interchangeable for reasoners.",
+    "rationale": "Worked example: a deprecated FOAF element is re-prefixed into the NTWF namespace; existing data stays valid (URIs do not disappear), and foaf:name owl:sameAs ntwf:name keeps the two interchangeable for reasoners.",
     "relative_path": "reconciliations/recon-foaf-name",
     "iri": "reconciliations-recon-foaf-name",
     "name": "foaf:name owl:sameAs ntwf:name"
