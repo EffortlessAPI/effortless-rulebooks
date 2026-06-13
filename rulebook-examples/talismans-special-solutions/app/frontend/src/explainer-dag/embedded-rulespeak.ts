@@ -2260,6 +2260,51 @@ export const rulespeakFields: Record<string, RuleSpeakFieldRule> = {
       }
     ],
     "structure": null
+  },
+  "ConformanceTests.RelativePath": {
+    "table": "ConformanceTests",
+    "field": "RelativePath",
+    "kind": "formula",
+    "rule": "A conformance test\u0027s relative path is computed as the literal \u201Cconformance-tests/\u201D, followed by the conformance test ID.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "ConformanceTests",
+        "field": "ConformanceTestId",
+        "label": "conformance test ID"
+      }
+    ],
+    "structure": null
+  },
+  "ConformanceTests.Iri": {
+    "table": "ConformanceTests",
+    "field": "Iri",
+    "kind": "formula",
+    "rule": "A conformance test\u0027s iri is computed as the relative path with every a slash replaced by a hyphen.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "ConformanceTests",
+        "field": "RelativePath",
+        "label": "relative path"
+      }
+    ],
+    "structure": null
+  },
+  "ConformanceTests.Name": {
+    "table": "ConformanceTests",
+    "field": "Name",
+    "kind": "formula",
+    "rule": "A conformance test\u0027s name is computed as the lower-cased display name with every a space replaced by a hyphen.",
+    "mechanical": true,
+    "refs": [
+      {
+        "table": "ConformanceTests",
+        "field": "DisplayName",
+        "label": "display name"
+      }
+    ],
+    "structure": null
   }
 };
 
@@ -2293,5 +2338,8 @@ export const rulespeakStructural: Record<string, string[]> = {
   ],
   "Scenarios": [
     "A scenario **must** have a label and an edits."
+  ],
+  "ConformanceTests": [
+    "A conformance test **must** have a display name, a section, a test kind, and a sort order, and record whether it is enabled."
   ]
 };

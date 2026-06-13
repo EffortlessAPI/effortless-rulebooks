@@ -119,6 +119,872 @@ effortless-ntwf:change-1-1-0 a effortless-ntwf:ChangeLog ;
     effortless-ntwf:rationale "Operational governance needed retained filledBy history so historical 'as of date' and blast-radius queries are answerable without discarding provenance. Additive and backward compatible — a minor, backward-compatible change, so the steward is authorized to approve and deploy it without authority review." ;
     effortless-ntwf:approvedBy effortless-ntwf:gov-steward .
 
+# === Individuals: ConformanceTests ===
+
+effortless-ntwf:sweep-workflows a effortless-ntwf:ConformanceTests ;
+    effortless-ntwf:conformanceTestId "sweep-workflows" ;
+    effortless-ntwf:displayName "Sweep Workflows vs answer key" ;
+    effortless-ntwf:featureRef "" ;
+    effortless-ntwf:section "Sweep" ;
+    effortless-ntwf:testKind "sweep" ;
+    effortless-ntwf:targetRef "Workflows" ;
+    effortless-ntwf:expect "" ;
+    effortless-ntwf:explanation "Every row and every column of Workflows must match the Postgres-oracle answer key on both engines." ;
+    effortless-ntwf:sortOrder 10 ;
+    effortless-ntwf:isEnabled true .
+
+effortless-ntwf:sweep-workflowsteps a effortless-ntwf:ConformanceTests ;
+    effortless-ntwf:conformanceTestId "sweep-workflowsteps" ;
+    effortless-ntwf:displayName "Sweep WorkflowSteps vs answer key" ;
+    effortless-ntwf:featureRef "" ;
+    effortless-ntwf:section "Sweep" ;
+    effortless-ntwf:testKind "sweep" ;
+    effortless-ntwf:targetRef "WorkflowSteps" ;
+    effortless-ntwf:expect "" ;
+    effortless-ntwf:explanation "Every row and every column of WorkflowSteps must match the Postgres-oracle answer key on both engines." ;
+    effortless-ntwf:sortOrder 20 ;
+    effortless-ntwf:isEnabled true .
+
+effortless-ntwf:sweep-approvalgates a effortless-ntwf:ConformanceTests ;
+    effortless-ntwf:conformanceTestId "sweep-approvalgates" ;
+    effortless-ntwf:displayName "Sweep ApprovalGates vs answer key" ;
+    effortless-ntwf:featureRef "" ;
+    effortless-ntwf:section "Sweep" ;
+    effortless-ntwf:testKind "sweep" ;
+    effortless-ntwf:targetRef "ApprovalGates" ;
+    effortless-ntwf:expect "" ;
+    effortless-ntwf:explanation "Every row and every column of ApprovalGates must match the Postgres-oracle answer key on both engines." ;
+    effortless-ntwf:sortOrder 30 ;
+    effortless-ntwf:isEnabled true .
+
+effortless-ntwf:sweep-stepprecedence a effortless-ntwf:ConformanceTests ;
+    effortless-ntwf:conformanceTestId "sweep-stepprecedence" ;
+    effortless-ntwf:displayName "Sweep StepPrecedence vs answer key" ;
+    effortless-ntwf:featureRef "" ;
+    effortless-ntwf:section "Sweep" ;
+    effortless-ntwf:testKind "sweep" ;
+    effortless-ntwf:targetRef "StepPrecedence" ;
+    effortless-ntwf:expect "" ;
+    effortless-ntwf:explanation "Every row and every column of StepPrecedence must match the Postgres-oracle answer key on both engines." ;
+    effortless-ntwf:sortOrder 40 ;
+    effortless-ntwf:isEnabled true .
+
+effortless-ntwf:sweep-roles a effortless-ntwf:ConformanceTests ;
+    effortless-ntwf:conformanceTestId "sweep-roles" ;
+    effortless-ntwf:displayName "Sweep Roles vs answer key" ;
+    effortless-ntwf:featureRef "" ;
+    effortless-ntwf:section "Sweep" ;
+    effortless-ntwf:testKind "sweep" ;
+    effortless-ntwf:targetRef "Roles" ;
+    effortless-ntwf:expect "" ;
+    effortless-ntwf:explanation "Every row and every column of Roles must match the Postgres-oracle answer key on both engines." ;
+    effortless-ntwf:sortOrder 50 ;
+    effortless-ntwf:isEnabled true .
+
+effortless-ntwf:sweep-roleassignments a effortless-ntwf:ConformanceTests ;
+    effortless-ntwf:conformanceTestId "sweep-roleassignments" ;
+    effortless-ntwf:displayName "Sweep RoleAssignments vs answer key" ;
+    effortless-ntwf:featureRef "" ;
+    effortless-ntwf:section "Sweep" ;
+    effortless-ntwf:testKind "sweep" ;
+    effortless-ntwf:targetRef "RoleAssignments" ;
+    effortless-ntwf:expect "" ;
+    effortless-ntwf:explanation "Every row and every column of RoleAssignments must match the Postgres-oracle answer key on both engines." ;
+    effortless-ntwf:sortOrder 60 ;
+    effortless-ntwf:isEnabled true .
+
+effortless-ntwf:sweep-departments a effortless-ntwf:ConformanceTests ;
+    effortless-ntwf:conformanceTestId "sweep-departments" ;
+    effortless-ntwf:displayName "Sweep Departments vs answer key" ;
+    effortless-ntwf:featureRef "" ;
+    effortless-ntwf:section "Sweep" ;
+    effortless-ntwf:testKind "sweep" ;
+    effortless-ntwf:targetRef "Departments" ;
+    effortless-ntwf:expect "" ;
+    effortless-ntwf:explanation "Every row and every column of Departments must match the Postgres-oracle answer key on both engines." ;
+    effortless-ntwf:sortOrder 70 ;
+    effortless-ntwf:isEnabled true .
+
+effortless-ntwf:sweep-humanagents a effortless-ntwf:ConformanceTests ;
+    effortless-ntwf:conformanceTestId "sweep-humanagents" ;
+    effortless-ntwf:displayName "Sweep HumanAgents vs answer key" ;
+    effortless-ntwf:featureRef "" ;
+    effortless-ntwf:section "Sweep" ;
+    effortless-ntwf:testKind "sweep" ;
+    effortless-ntwf:targetRef "HumanAgents" ;
+    effortless-ntwf:expect "" ;
+    effortless-ntwf:explanation "Every row and every column of HumanAgents must match the Postgres-oracle answer key on both engines." ;
+    effortless-ntwf:sortOrder 80 ;
+    effortless-ntwf:isEnabled true .
+
+effortless-ntwf:sweep-aiagents a effortless-ntwf:ConformanceTests ;
+    effortless-ntwf:conformanceTestId "sweep-aiagents" ;
+    effortless-ntwf:displayName "Sweep AIAgents vs answer key" ;
+    effortless-ntwf:featureRef "" ;
+    effortless-ntwf:section "Sweep" ;
+    effortless-ntwf:testKind "sweep" ;
+    effortless-ntwf:targetRef "AIAgents" ;
+    effortless-ntwf:expect "" ;
+    effortless-ntwf:explanation "Every row and every column of AIAgents must match the Postgres-oracle answer key on both engines." ;
+    effortless-ntwf:sortOrder 90 ;
+    effortless-ntwf:isEnabled true .
+
+effortless-ntwf:sweep-automatedpipelines a effortless-ntwf:ConformanceTests ;
+    effortless-ntwf:conformanceTestId "sweep-automatedpipelines" ;
+    effortless-ntwf:displayName "Sweep AutomatedPipelines vs answer key" ;
+    effortless-ntwf:featureRef "" ;
+    effortless-ntwf:section "Sweep" ;
+    effortless-ntwf:testKind "sweep" ;
+    effortless-ntwf:targetRef "AutomatedPipelines" ;
+    effortless-ntwf:expect "" ;
+    effortless-ntwf:explanation "Every row and every column of AutomatedPipelines must match the Postgres-oracle answer key on both engines." ;
+    effortless-ntwf:sortOrder 100 ;
+    effortless-ntwf:isEnabled true .
+
+effortless-ntwf:sweep-workflowstatusconcepts a effortless-ntwf:ConformanceTests ;
+    effortless-ntwf:conformanceTestId "sweep-workflowstatusconcepts" ;
+    effortless-ntwf:displayName "Sweep WorkflowStatusConcepts vs answer key" ;
+    effortless-ntwf:featureRef "" ;
+    effortless-ntwf:section "Sweep" ;
+    effortless-ntwf:testKind "sweep" ;
+    effortless-ntwf:targetRef "WorkflowStatusConcepts" ;
+    effortless-ntwf:expect "" ;
+    effortless-ntwf:explanation "Every row and every column of WorkflowStatusConcepts must match the Postgres-oracle answer key on both engines." ;
+    effortless-ntwf:sortOrder 110 ;
+    effortless-ntwf:isEnabled true .
+
+effortless-ntwf:sweep-agentcapabilityconcepts a effortless-ntwf:ConformanceTests ;
+    effortless-ntwf:conformanceTestId "sweep-agentcapabilityconcepts" ;
+    effortless-ntwf:displayName "Sweep AgentCapabilityConcepts vs answer key" ;
+    effortless-ntwf:featureRef "" ;
+    effortless-ntwf:section "Sweep" ;
+    effortless-ntwf:testKind "sweep" ;
+    effortless-ntwf:targetRef "AgentCapabilityConcepts" ;
+    effortless-ntwf:expect "" ;
+    effortless-ntwf:explanation "Every row and every column of AgentCapabilityConcepts must match the Postgres-oracle answer key on both engines." ;
+    effortless-ntwf:sortOrder 120 ;
+    effortless-ntwf:isEnabled true .
+
+effortless-ntwf:sweep-artifacttypeconcepts a effortless-ntwf:ConformanceTests ;
+    effortless-ntwf:conformanceTestId "sweep-artifacttypeconcepts" ;
+    effortless-ntwf:displayName "Sweep ArtifactTypeConcepts vs answer key" ;
+    effortless-ntwf:featureRef "" ;
+    effortless-ntwf:section "Sweep" ;
+    effortless-ntwf:testKind "sweep" ;
+    effortless-ntwf:targetRef "ArtifactTypeConcepts" ;
+    effortless-ntwf:expect "" ;
+    effortless-ntwf:explanation "Every row and every column of ArtifactTypeConcepts must match the Postgres-oracle answer key on both engines." ;
+    effortless-ntwf:sortOrder 130 ;
+    effortless-ntwf:isEnabled true .
+
+effortless-ntwf:sweep-datasets a effortless-ntwf:ConformanceTests ;
+    effortless-ntwf:conformanceTestId "sweep-datasets" ;
+    effortless-ntwf:displayName "Sweep Datasets vs answer key" ;
+    effortless-ntwf:featureRef "" ;
+    effortless-ntwf:section "Sweep" ;
+    effortless-ntwf:testKind "sweep" ;
+    effortless-ntwf:targetRef "Datasets" ;
+    effortless-ntwf:expect "" ;
+    effortless-ntwf:explanation "Every row and every column of Datasets must match the Postgres-oracle answer key on both engines." ;
+    effortless-ntwf:sortOrder 140 ;
+    effortless-ntwf:isEnabled true .
+
+effortless-ntwf:sweep-workflowartifacts a effortless-ntwf:ConformanceTests ;
+    effortless-ntwf:conformanceTestId "sweep-workflowartifacts" ;
+    effortless-ntwf:displayName "Sweep WorkflowArtifacts vs answer key" ;
+    effortless-ntwf:featureRef "" ;
+    effortless-ntwf:section "Sweep" ;
+    effortless-ntwf:testKind "sweep" ;
+    effortless-ntwf:targetRef "WorkflowArtifacts" ;
+    effortless-ntwf:expect "" ;
+    effortless-ntwf:explanation "Every row and every column of WorkflowArtifacts must match the Postgres-oracle answer key on both engines." ;
+    effortless-ntwf:sortOrder 150 ;
+    effortless-ntwf:isEnabled true .
+
+effortless-ntwf:sweep-governanceroles a effortless-ntwf:ConformanceTests ;
+    effortless-ntwf:conformanceTestId "sweep-governanceroles" ;
+    effortless-ntwf:displayName "Sweep GovernanceRoles vs answer key" ;
+    effortless-ntwf:featureRef "" ;
+    effortless-ntwf:section "Sweep" ;
+    effortless-ntwf:testKind "sweep" ;
+    effortless-ntwf:targetRef "GovernanceRoles" ;
+    effortless-ntwf:expect "" ;
+    effortless-ntwf:explanation "Every row and every column of GovernanceRoles must match the Postgres-oracle answer key on both engines." ;
+    effortless-ntwf:sortOrder 160 ;
+    effortless-ntwf:isEnabled true .
+
+effortless-ntwf:sweep-changelog a effortless-ntwf:ConformanceTests ;
+    effortless-ntwf:conformanceTestId "sweep-changelog" ;
+    effortless-ntwf:displayName "Sweep ChangeLog vs answer key" ;
+    effortless-ntwf:featureRef "" ;
+    effortless-ntwf:section "Sweep" ;
+    effortless-ntwf:testKind "sweep" ;
+    effortless-ntwf:targetRef "ChangeLog" ;
+    effortless-ntwf:expect "" ;
+    effortless-ntwf:explanation "Every row and every column of ChangeLog must match the Postgres-oracle answer key on both engines." ;
+    effortless-ntwf:sortOrder 170 ;
+    effortless-ntwf:isEnabled true .
+
+effortless-ntwf:sweep-vocabularyreconciliations a effortless-ntwf:ConformanceTests ;
+    effortless-ntwf:conformanceTestId "sweep-vocabularyreconciliations" ;
+    effortless-ntwf:displayName "Sweep VocabularyReconciliations vs answer key" ;
+    effortless-ntwf:featureRef "" ;
+    effortless-ntwf:section "Sweep" ;
+    effortless-ntwf:testKind "sweep" ;
+    effortless-ntwf:targetRef "VocabularyReconciliations" ;
+    effortless-ntwf:expect "" ;
+    effortless-ntwf:explanation "Every row and every column of VocabularyReconciliations must match the Postgres-oracle answer key on both engines." ;
+    effortless-ntwf:sortOrder 180 ;
+    effortless-ntwf:isEnabled true .
+
+effortless-ntwf:sweep-scenarios a effortless-ntwf:ConformanceTests ;
+    effortless-ntwf:conformanceTestId "sweep-scenarios" ;
+    effortless-ntwf:displayName "Sweep Scenarios vs answer key" ;
+    effortless-ntwf:featureRef "" ;
+    effortless-ntwf:section "Sweep" ;
+    effortless-ntwf:testKind "sweep" ;
+    effortless-ntwf:targetRef "Scenarios" ;
+    effortless-ntwf:expect "" ;
+    effortless-ntwf:explanation "Every row and every column of Scenarios must match the Postgres-oracle answer key on both engines." ;
+    effortless-ntwf:sortOrder 190 ;
+    effortless-ntwf:isEnabled true .
+
+effortless-ntwf:closure-precedence-1-5 a effortless-ntwf:ConformanceTests ;
+    effortless-ntwf:conformanceTestId "closure-precedence-1-5" ;
+    effortless-ntwf:displayName "Inferred precedence 1 to 5" ;
+    effortless-ntwf:featureRef "I-1,CQ3,III-precedesStep" ;
+    effortless-ntwf:section "Closure" ;
+    effortless-ntwf:testKind "closure-contains" ;
+    effortless-ntwf:targetRef "StepPrecedence" ;
+    effortless-ntwf:expect "{\"closure\": \"precedence\", \"from\": \"prod-deploy-step-1\", \"to\": \"prod-deploy-step-5\"}" ;
+    effortless-ntwf:explanation "The headline inference: 4 asserted edges entail the never-asserted 1→5 pair via transitive precedesStep." ;
+    effortless-ntwf:sortOrder 200 ;
+    effortless-ntwf:isEnabled true .
+
+effortless-ntwf:closure-delegation-rm-cto a effortless-ntwf:ConformanceTests ;
+    effortless-ntwf:conformanceTestId "closure-delegation-rm-cto" ;
+    effortless-ntwf:displayName "Inferred delegation Release Manager to CTO" ;
+    effortless-ntwf:featureRef "CQ6,III-delegatesTo" ;
+    effortless-ntwf:section "Closure" ;
+    effortless-ntwf:testKind "closure-contains" ;
+    effortless-ntwf:targetRef "Roles" ;
+    effortless-ntwf:expect "{\"closure\": \"delegation\", \"from\": \"ntwf-release-manager-role\", \"to\": \"ntwf-cto-role\"}" ;
+    effortless-ntwf:explanation "Escalation chain RM→VP Eng→CTO: the RM→CTO hop is never asserted; transitive delegatesTo entails it." ;
+    effortless-ntwf:sortOrder 210 ;
+    effortless-ntwf:isEnabled true .
+
+effortless-ntwf:engines-agree-global a effortless-ntwf:ConformanceTests ;
+    effortless-ntwf:conformanceTestId "engines-agree-global" ;
+    effortless-ntwf:displayName "Both engines compute identical answers" ;
+    effortless-ntwf:featureRef "I-4" ;
+    effortless-ntwf:section "Part I" ;
+    effortless-ntwf:testKind "engines-agree" ;
+    effortless-ntwf:targetRef "" ;
+    effortless-ntwf:expect "" ;
+    effortless-ntwf:explanation "The multi-substrate equivalence claim: reasoner and Postgres views disagree on zero computed values." ;
+    effortless-ntwf:sortOrder 220 ;
+    effortless-ntwf:isEnabled true .
+
+effortless-ntwf:iri-workflow a effortless-ntwf:ConformanceTests ;
+    effortless-ntwf:conformanceTestId "iri-workflow" ;
+    effortless-ntwf:displayName "Workflow IRI minted" ;
+    effortless-ntwf:featureRef "I-6,IV-10" ;
+    effortless-ntwf:section "Part I" ;
+    effortless-ntwf:testKind "field-match" ;
+    effortless-ntwf:targetRef "Workflows/production-deployment#Iri" ;
+    effortless-ntwf:expect "" ;
+    effortless-ntwf:explanation "Every row is a globally-addressable individual; the workflow's IRI is derived, stable, and identical on both engines." ;
+    effortless-ntwf:sortOrder 230 ;
+    effortless-ntwf:isEnabled true .
+
+effortless-ntwf:iri-gate a effortless-ntwf:ConformanceTests ;
+    effortless-ntwf:conformanceTestId "iri-gate" ;
+    effortless-ntwf:displayName "Approval-gate IRI minted" ;
+    effortless-ntwf:featureRef "I-6,IV-10" ;
+    effortless-ntwf:section "Part I" ;
+    effortless-ntwf:testKind "field-match" ;
+    effortless-ntwf:targetRef "ApprovalGates/ntwf-release-approval-gate#Iri" ;
+    effortless-ntwf:expect "" ;
+    effortless-ntwf:explanation "Gate IRI derives through the step's path chain (lookup → calc chain)." ;
+    effortless-ntwf:sortOrder 240 ;
+    effortless-ntwf:isEnabled true .
+
+effortless-ntwf:step1-agent-type a effortless-ntwf:ConformanceTests ;
+    effortless-ntwf:conformanceTestId "step1-agent-type" ;
+    effortless-ntwf:displayName "Step 1 executing agent type resolves" ;
+    effortless-ntwf:featureRef "II-1,CQ1" ;
+    effortless-ntwf:section "Part II" ;
+    effortless-ntwf:testKind "field-match" ;
+    effortless-ntwf:targetRef "WorkflowSteps/prod-deploy-step-1#ExecutingAgentType" ;
+    effortless-ntwf:expect "" ;
+    effortless-ntwf:explanation "Role→agent indirection: the step's executing agent type is derived through AssignedRole→FilledBy*." ;
+    effortless-ntwf:sortOrder 250 ;
+    effortless-ntwf:isEnabled true .
+
+effortless-ntwf:step3-agent-type a effortless-ntwf:ConformanceTests ;
+    effortless-ntwf:conformanceTestId "step3-agent-type" ;
+    effortless-ntwf:displayName "Gate step executing agent type resolves" ;
+    effortless-ntwf:featureRef "II-1,CQ1" ;
+    effortless-ntwf:section "Part II" ;
+    effortless-ntwf:testKind "field-match" ;
+    effortless-ntwf:targetRef "WorkflowSteps/prod-deploy-step-3#ExecutingAgentType" ;
+    effortless-ntwf:expect "" ;
+    effortless-ntwf:explanation "The approval-gate step resolves to its human Release Manager through the same one-edge chain." ;
+    effortless-ntwf:sortOrder 260 ;
+    effortless-ntwf:isEnabled true .
+
+effortless-ntwf:count-ai-steps a effortless-ntwf:ConformanceTests ;
+    effortless-ntwf:conformanceTestId "count-ai-steps" ;
+    effortless-ntwf:displayName "AI step count" ;
+    effortless-ntwf:featureRef "II-2" ;
+    effortless-ntwf:section "Part II" ;
+    effortless-ntwf:testKind "field-match" ;
+    effortless-ntwf:targetRef "Workflows/production-deployment#CountAISteps" ;
+    effortless-ntwf:expect "" ;
+    effortless-ntwf:explanation "COUNTIFS over the DERIVED IsExecutedByAI child field — conditional aggregation over a computed column." ;
+    effortless-ntwf:sortOrder 270 ;
+    effortless-ntwf:isEnabled true .
+
+effortless-ntwf:count-human-steps a effortless-ntwf:ConformanceTests ;
+    effortless-ntwf:conformanceTestId "count-human-steps" ;
+    effortless-ntwf:displayName "Human step count" ;
+    effortless-ntwf:featureRef "II-2" ;
+    effortless-ntwf:section "Part II" ;
+    effortless-ntwf:testKind "field-match" ;
+    effortless-ntwf:targetRef "Workflows/production-deployment#CountHumanSteps" ;
+    effortless-ntwf:expect "" ;
+    effortless-ntwf:explanation "The human side of the agent mix." ;
+    effortless-ntwf:sortOrder 280 ;
+    effortless-ntwf:isEnabled true .
+
+effortless-ntwf:has-ai-agent-step a effortless-ntwf:ConformanceTests ;
+    effortless-ntwf:conformanceTestId "has-ai-agent-step" ;
+    effortless-ntwf:displayName "HasAIAgentStep boolean" ;
+    effortless-ntwf:featureRef "II-2" ;
+    effortless-ntwf:section "Part II" ;
+    effortless-ntwf:testKind "field-match" ;
+    effortless-ntwf:targetRef "Workflows/production-deployment#HasAIAgentStep" ;
+    effortless-ntwf:expect "" ;
+    effortless-ntwf:explanation "Boolean derived from the AI step count — an aggregation feeding a calc." ;
+    effortless-ntwf:sortOrder 290 ;
+    effortless-ntwf:isEnabled true .
+
+effortless-ntwf:approval-human-filled a effortless-ntwf:ConformanceTests ;
+    effortless-ntwf:conformanceTestId "approval-human-filled" ;
+    effortless-ntwf:displayName "Gate step is human-filled at seed" ;
+    effortless-ntwf:featureRef "II-3,CQ2" ;
+    effortless-ntwf:section "Part II" ;
+    effortless-ntwf:testKind "field-match" ;
+    effortless-ntwf:targetRef "WorkflowSteps/prod-deploy-step-3#ApprovalIsHumanFilled" ;
+    effortless-ntwf:expect "" ;
+    effortless-ntwf:explanation "requiresHumanApproval is satisfied at seed: the gate role is filled by a human." ;
+    effortless-ntwf:sortOrder 300 ;
+    effortless-ntwf:isEnabled true .
+
+effortless-ntwf:approval-violation-false a effortless-ntwf:ConformanceTests ;
+    effortless-ntwf:conformanceTestId "approval-violation-false" ;
+    effortless-ntwf:displayName "No approval violation at seed" ;
+    effortless-ntwf:featureRef "II-3" ;
+    effortless-ntwf:section "Part II" ;
+    effortless-ntwf:testKind "field-match" ;
+    effortless-ntwf:targetRef "WorkflowSteps/prod-deploy-step-3#ApprovalConsistencyViolation" ;
+    effortless-ntwf:expect "" ;
+    effortless-ntwf:explanation "The consistency rule does NOT fire on the seed facts — the clean baseline the mutation test breaks." ;
+    effortless-ntwf:sortOrder 310 ;
+    effortless-ntwf:isEnabled true .
+
+effortless-ntwf:workflow-violation-false a effortless-ntwf:ConformanceTests ;
+    effortless-ntwf:conformanceTestId "workflow-violation-false" ;
+    effortless-ntwf:displayName "Workflow has no violation at seed" ;
+    effortless-ntwf:featureRef "II-3" ;
+    effortless-ntwf:section "Part II" ;
+    effortless-ntwf:testKind "field-match" ;
+    effortless-ntwf:targetRef "Workflows/production-deployment#HasConsistencyViolation" ;
+    effortless-ntwf:expect "" ;
+    effortless-ntwf:explanation "Workflow-level rollup of approval violations is false on seed facts." ;
+    effortless-ntwf:sortOrder 320 ;
+    effortless-ntwf:isEnabled true .
+
+effortless-ntwf:skos-workflow-status a effortless-ntwf:ConformanceTests ;
+    effortless-ntwf:conformanceTestId "skos-workflow-status" ;
+    effortless-ntwf:displayName "Workflow status is a SKOS concept" ;
+    effortless-ntwf:featureRef "II-6" ;
+    effortless-ntwf:section "Part II" ;
+    effortless-ntwf:testKind "field-match" ;
+    effortless-ntwf:targetRef "Workflows/production-deployment#WorkflowStatus" ;
+    effortless-ntwf:expect "" ;
+    effortless-ntwf:explanation "workflowStatus points into the WorkflowStatusConcepts scheme." ;
+    effortless-ntwf:sortOrder 330 ;
+    effortless-ntwf:isEnabled true .
+
+effortless-ntwf:skos-role-capability a effortless-ntwf:ConformanceTests ;
+    effortless-ntwf:conformanceTestId "skos-role-capability" ;
+    effortless-ntwf:displayName "Role capability is a SKOS concept" ;
+    effortless-ntwf:featureRef "II-6" ;
+    effortless-ntwf:section "Part II" ;
+    effortless-ntwf:testKind "field-match" ;
+    effortless-ntwf:targetRef "Roles/ntwf-release-manager-role#HasCapability" ;
+    effortless-ntwf:expect "" ;
+    effortless-ntwf:explanation "hasCapability points into the AgentCapabilityConcepts scheme." ;
+    effortless-ntwf:sortOrder 340 ;
+    effortless-ntwf:isEnabled true .
+
+effortless-ntwf:role-label-documented a effortless-ntwf:ConformanceTests ;
+    effortless-ntwf:conformanceTestId "role-label-documented" ;
+    effortless-ntwf:displayName "Role carries label documentation" ;
+    effortless-ntwf:featureRef "II-8" ;
+    effortless-ntwf:section "Part II" ;
+    effortless-ntwf:testKind "field-match" ;
+    effortless-ntwf:targetRef "Roles/ntwf-release-manager-role#Label" ;
+    effortless-ntwf:expect "" ;
+    effortless-ntwf:explanation "Heuristic 6: label/comment documentation travels with the model into every substrate." ;
+    effortless-ntwf:sortOrder 350 ;
+    effortless-ntwf:isEnabled true .
+
+effortless-ntwf:gate-escalation-hours a effortless-ntwf:ConformanceTests ;
+    effortless-ntwf:conformanceTestId "gate-escalation-hours" ;
+    effortless-ntwf:displayName "Gate escalation threshold" ;
+    effortless-ntwf:featureRef "III-escalationThresholdHours,CQ2" ;
+    effortless-ntwf:section "Part III" ;
+    effortless-ntwf:testKind "field-match" ;
+    effortless-ntwf:targetRef "ApprovalGates/ntwf-release-approval-gate#EscalationThresholdHours" ;
+    effortless-ntwf:expect "" ;
+    effortless-ntwf:explanation "The gate's defining datatype property (raw, gate-only)." ;
+    effortless-ntwf:sortOrder 360 ;
+    effortless-ntwf:isEnabled true .
+
+effortless-ntwf:gate-role-lookup a effortless-ntwf:ConformanceTests ;
+    effortless-ntwf:conformanceTestId "gate-role-lookup" ;
+    effortless-ntwf:displayName "Gate role resolves via lookup" ;
+    effortless-ntwf:featureRef "III-ApprovalGate,CQ2" ;
+    effortless-ntwf:section "Part III" ;
+    effortless-ntwf:testKind "field-match" ;
+    effortless-ntwf:targetRef "ApprovalGates/ntwf-release-approval-gate#GateRole" ;
+    effortless-ntwf:expect "" ;
+    effortless-ntwf:explanation "INDEX/MATCH lookup gate→step→role. KNOWN GAP CANDIDATE: both engines currently drop lookup columns from their individuals payload — this test exists to keep that gap visible until fixed." ;
+    effortless-ntwf:sortOrder 370 ;
+    effortless-ntwf:isEnabled true .
+
+effortless-ntwf:gate-approver-lookup a effortless-ntwf:ConformanceTests ;
+    effortless-ntwf:conformanceTestId "gate-approver-lookup" ;
+    effortless-ntwf:displayName "Gate approver human resolves via lookup" ;
+    effortless-ntwf:featureRef "III-ApprovalGate,CQ2" ;
+    effortless-ntwf:section "Part III" ;
+    effortless-ntwf:testKind "field-match" ;
+    effortless-ntwf:targetRef "ApprovalGates/ntwf-release-approval-gate#GateApproverHuman" ;
+    effortless-ntwf:expect "" ;
+    effortless-ntwf:explanation "Second-order lookup gate→role→human filler. Same known gap candidate as GateRole." ;
+    effortless-ntwf:sortOrder 380 ;
+    effortless-ntwf:isEnabled true .
+
+effortless-ntwf:role-exactly-one-filler a effortless-ntwf:ConformanceTests ;
+    effortless-ntwf:conformanceTestId "role-exactly-one-filler" ;
+    effortless-ntwf:displayName "Release Manager has exactly one filler" ;
+    effortless-ntwf:featureRef "III-filledBy,Suite-4" ;
+    effortless-ntwf:section "Part III" ;
+    effortless-ntwf:testKind "field-match" ;
+    effortless-ntwf:targetRef "Roles/ntwf-release-manager-role#HasExactlyOneFiller" ;
+    effortless-ntwf:expect "" ;
+    effortless-ntwf:explanation "Functional filledBy: exactly one of the three filler arms is set." ;
+    effortless-ntwf:sortOrder 390 ;
+    effortless-ntwf:isEnabled true .
+
+effortless-ntwf:bad-filler-count-zero a effortless-ntwf:ConformanceTests ;
+    effortless-ntwf:conformanceTestId "bad-filler-count-zero" ;
+    effortless-ntwf:displayName "No roles with bad filler cardinality" ;
+    effortless-ntwf:featureRef "Suite-4" ;
+    effortless-ntwf:section "Part III" ;
+    effortless-ntwf:testKind "field-match" ;
+    effortless-ntwf:targetRef "Workflows/production-deployment#CountRolesWithBadFillerCardinality" ;
+    effortless-ntwf:expect "" ;
+    effortless-ntwf:explanation "Suite-4 cardinality witness: zero roles violate the exactly-one-filler rule on seed facts." ;
+    effortless-ntwf:sortOrder 400 ;
+    effortless-ntwf:isEnabled true .
+
+effortless-ntwf:artifact-derivation a effortless-ntwf:ConformanceTests ;
+    effortless-ntwf:conformanceTestId "artifact-derivation" ;
+    effortless-ntwf:displayName "Release authorization derives from legal clearance" ;
+    effortless-ntwf:featureRef "III-wasDerivedFrom,CQ4" ;
+    effortless-ntwf:section "Part III" ;
+    effortless-ntwf:testKind "field-match" ;
+    effortless-ntwf:targetRef "WorkflowArtifacts/artifact-release-authorization#DerivedFromArtifact" ;
+    effortless-ntwf:expect "" ;
+    effortless-ntwf:explanation "One link of the 5-artifact PROV wasDerivedFrom chain." ;
+    effortless-ntwf:sortOrder 410 ;
+    effortless-ntwf:isEnabled true .
+
+effortless-ntwf:artifact-attribution a effortless-ntwf:ConformanceTests ;
+    effortless-ntwf:conformanceTestId "artifact-attribution" ;
+    effortless-ntwf:displayName "Risk report attributed to the risk AI" ;
+    effortless-ntwf:featureRef "III-wasAttributedTo,CQ4" ;
+    effortless-ntwf:section "Part III" ;
+    effortless-ntwf:testKind "field-match" ;
+    effortless-ntwf:targetRef "WorkflowArtifacts/artifact-risk-report#AttributedToAIAgent" ;
+    effortless-ntwf:expect "" ;
+    effortless-ntwf:explanation "PROV attribution: the artifact names the AI agent that produced it." ;
+    effortless-ntwf:sortOrder 420 ;
+    effortless-ntwf:isEnabled true .
+
+effortless-ntwf:artifact-has-parent a effortless-ntwf:ConformanceTests ;
+    effortless-ntwf:conformanceTestId "artifact-has-parent" ;
+    effortless-ntwf:displayName "Post-deploy report has a derivation parent" ;
+    effortless-ntwf:featureRef "III-wasDerivedFrom" ;
+    effortless-ntwf:section "Part III" ;
+    effortless-ntwf:testKind "field-match" ;
+    effortless-ntwf:targetRef "WorkflowArtifacts/artifact-post-deploy-report#HasDerivationParent" ;
+    effortless-ntwf:expect "" ;
+    effortless-ntwf:explanation "Boolean derived from the lineage link." ;
+    effortless-ntwf:sortOrder 430 ;
+    effortless-ntwf:isEnabled true .
+
+effortless-ntwf:consumes-dataset a effortless-ntwf:ConformanceTests ;
+    effortless-ntwf:conformanceTestId "consumes-dataset" ;
+    effortless-ntwf:displayName "Step consumes the DCAT dataset" ;
+    effortless-ntwf:featureRef "III-consumesDataset,CQ8" ;
+    effortless-ntwf:section "Part III" ;
+    effortless-ntwf:testKind "field-match" ;
+    effortless-ntwf:targetRef "WorkflowSteps/prod-deploy-step-1#ConsumesDataset" ;
+    effortless-ntwf:expect "" ;
+    effortless-ntwf:explanation "consumesDataset points at the dcat:Dataset; answers CQ8." ;
+    effortless-ntwf:sortOrder 440 ;
+    effortless-ntwf:isEnabled true .
+
+effortless-ntwf:legal-owned-step a effortless-ntwf:ConformanceTests ;
+    effortless-ntwf:conformanceTestId "legal-owned-step" ;
+    effortless-ntwf:displayName "Legal step is legal-owned" ;
+    effortless-ntwf:featureRef "III-ownedBy,CQ7" ;
+    effortless-ntwf:section "Part III" ;
+    effortless-ntwf:testKind "field-match" ;
+    effortless-ntwf:targetRef "WorkflowSteps/prod-deploy-step-2#IsLegalOwned" ;
+    effortless-ntwf:expect "" ;
+    effortless-ntwf:explanation "ownedBy chain step→role→department resolves to Legal." ;
+    effortless-ntwf:sortOrder 450 ;
+    effortless-ntwf:isEnabled true .
+
+effortless-ntwf:eng-owned-step a effortless-ntwf:ConformanceTests ;
+    effortless-ntwf:conformanceTestId "eng-owned-step" ;
+    effortless-ntwf:displayName "Deploy step is engineering-owned" ;
+    effortless-ntwf:featureRef "III-ownedBy,CQ7" ;
+    effortless-ntwf:section "Part III" ;
+    effortless-ntwf:testKind "field-match" ;
+    effortless-ntwf:targetRef "WorkflowSteps/prod-deploy-step-4#IsEngineeringOwned" ;
+    effortless-ntwf:expect "" ;
+    effortless-ntwf:explanation "Same chain resolving to Engineering." ;
+    effortless-ntwf:sortOrder 460 ;
+    effortless-ntwf:isEnabled true .
+
+effortless-ntwf:cross-cutting-workflow a effortless-ntwf:ConformanceTests ;
+    effortless-ntwf:conformanceTestId "cross-cutting-workflow" ;
+    effortless-ntwf:displayName "Workflow involves Engineering AND Legal" ;
+    effortless-ntwf:featureRef "CQ7" ;
+    effortless-ntwf:section "Part III" ;
+    effortless-ntwf:testKind "field-match" ;
+    effortless-ntwf:targetRef "Workflows/production-deployment#InvolvesEngineeringAndLegal" ;
+    effortless-ntwf:expect "" ;
+    effortless-ntwf:explanation "The cross-department join CQ7 asks about." ;
+    effortless-ntwf:sortOrder 470 ;
+    effortless-ntwf:isEnabled true .
+
+effortless-ntwf:sequence-position a effortless-ntwf:ConformanceTests ;
+    effortless-ntwf:conformanceTestId "sequence-position" ;
+    effortless-ntwf:displayName "Step 4 sequence position" ;
+    effortless-ntwf:featureRef "III-sequencePosition" ;
+    effortless-ntwf:section "Part III" ;
+    effortless-ntwf:testKind "field-match" ;
+    effortless-ntwf:targetRef "WorkflowSteps/prod-deploy-step-4#SequencePosition" ;
+    effortless-ntwf:expect "" ;
+    effortless-ntwf:explanation "Functional integer datatype property echoes through both substrates." ;
+    effortless-ntwf:sortOrder 480 ;
+    effortless-ntwf:isEnabled true .
+
+effortless-ntwf:step-duration a effortless-ntwf:ConformanceTests ;
+    effortless-ntwf:conformanceTestId "step-duration" ;
+    effortless-ntwf:displayName "Step 1 duration minutes" ;
+    effortless-ntwf:featureRef "III-stepDurationMinutes" ;
+    effortless-ntwf:section "Part III" ;
+    effortless-ntwf:testKind "field-match" ;
+    effortless-ntwf:targetRef "WorkflowSteps/prod-deploy-step-1#StepDurationMinutes" ;
+    effortless-ntwf:expect "" ;
+    effortless-ntwf:explanation "Drives the time-budget bar; raw datatype property." ;
+    effortless-ntwf:sortOrder 490 ;
+    effortless-ntwf:isEnabled true .
+
+effortless-ntwf:asserted-pair-count a effortless-ntwf:ConformanceTests ;
+    effortless-ntwf:conformanceTestId "asserted-pair-count" ;
+    effortless-ntwf:displayName "Asserted precedence pair count" ;
+    effortless-ntwf:featureRef "I-1,III-precedesStep" ;
+    effortless-ntwf:section "Part III" ;
+    effortless-ntwf:testKind "field-match" ;
+    effortless-ntwf:targetRef "Workflows/production-deployment#CountAssertedPrecedencePairs" ;
+    effortless-ntwf:expect "" ;
+    effortless-ntwf:explanation "4 asserted edges." ;
+    effortless-ntwf:sortOrder 500 ;
+    effortless-ntwf:isEnabled true .
+
+effortless-ntwf:inferred-pair-count a effortless-ntwf:ConformanceTests ;
+    effortless-ntwf:conformanceTestId "inferred-pair-count" ;
+    effortless-ntwf:displayName "Inferred precedence pair count" ;
+    effortless-ntwf:featureRef "I-1,III-precedesStep" ;
+    effortless-ntwf:section "Part III" ;
+    effortless-ntwf:testKind "field-match" ;
+    effortless-ntwf:targetRef "Workflows/production-deployment#CountInferredPrecedencePairs" ;
+    effortless-ntwf:expect "" ;
+    effortless-ntwf:explanation "6 pairs exist only by inference (10-pair closure minus 4 asserted)." ;
+    effortless-ntwf:sortOrder 510 ;
+    effortless-ntwf:isEnabled true .
+
+effortless-ntwf:closure-pair-total a effortless-ntwf:ConformanceTests ;
+    effortless-ntwf:conformanceTestId "closure-pair-total" ;
+    effortless-ntwf:displayName "Total precedence closure pairs" ;
+    effortless-ntwf:featureRef "I-1,III-precedesStep" ;
+    effortless-ntwf:section "Part III" ;
+    effortless-ntwf:testKind "field-match" ;
+    effortless-ntwf:targetRef "Workflows/production-deployment#CountOfPrecedenceClosurePairs" ;
+    effortless-ntwf:expect "" ;
+    effortless-ntwf:explanation "The 10-pair transitive closure, counted from the materialized closure rows." ;
+    effortless-ntwf:sortOrder 520 ;
+    effortless-ntwf:isEnabled true .
+
+effortless-ntwf:months-since-modified a effortless-ntwf:ConformanceTests ;
+    effortless-ntwf:conformanceTestId "months-since-modified" ;
+    effortless-ntwf:displayName "Months since last review" ;
+    effortless-ntwf:featureRef "IV-1,CQ5" ;
+    effortless-ntwf:section "Part IV" ;
+    effortless-ntwf:testKind "field-match" ;
+    effortless-ntwf:targetRef "Workflows/production-deployment#MonthsSinceModified" ;
+    effortless-ntwf:expect "" ;
+    effortless-ntwf:explanation "Time-dependent calc (months granularity) — the staleness clock." ;
+    effortless-ntwf:sortOrder 530 ;
+    effortless-ntwf:isEnabled true .
+
+effortless-ntwf:is-stale-seed a effortless-ntwf:ConformanceTests ;
+    effortless-ntwf:conformanceTestId "is-stale-seed" ;
+    effortless-ntwf:displayName "Workflow not stale at seed" ;
+    effortless-ntwf:featureRef "IV-1,CQ5" ;
+    effortless-ntwf:section "Part IV" ;
+    effortless-ntwf:testKind "field-match" ;
+    effortless-ntwf:targetRef "Workflows/production-deployment#IsStale" ;
+    effortless-ntwf:expect "" ;
+    effortless-ntwf:explanation "The CQ5 governance query on the seed facts." ;
+    effortless-ntwf:sortOrder 540 ;
+    effortless-ntwf:isEnabled true .
+
+effortless-ntwf:stale-and-ai-seed a effortless-ntwf:ConformanceTests ;
+    effortless-ntwf:conformanceTestId "stale-and-ai-seed" ;
+    effortless-ntwf:displayName "Stale-AND-has-AI at seed" ;
+    effortless-ntwf:featureRef "IV-2" ;
+    effortless-ntwf:section "Part IV" ;
+    effortless-ntwf:testKind "field-match" ;
+    effortless-ntwf:targetRef "Workflows/production-deployment#IsStaleAndHasAIAgent" ;
+    effortless-ntwf:expect "" ;
+    effortless-ntwf:explanation "The higher-compliance-risk join on the seed facts." ;
+    effortless-ntwf:sortOrder 550 ;
+    effortless-ntwf:isEnabled true .
+
+effortless-ntwf:authority-can-approve a effortless-ntwf:ConformanceTests ;
+    effortless-ntwf:conformanceTestId "authority-can-approve" ;
+    effortless-ntwf:displayName "Authority can approve changes" ;
+    effortless-ntwf:featureRef "IV-3" ;
+    effortless-ntwf:section "Part IV" ;
+    effortless-ntwf:testKind "field-match" ;
+    effortless-ntwf:targetRef "GovernanceRoles/gov-authority#CanApproveChanges" ;
+    effortless-ntwf:expect "" ;
+    effortless-ntwf:explanation "Steward vs Authority: only the Authority approves." ;
+    effortless-ntwf:sortOrder 560 ;
+    effortless-ntwf:isEnabled true .
+
+effortless-ntwf:steward-cannot-approve a effortless-ntwf:ConformanceTests ;
+    effortless-ntwf:conformanceTestId "steward-cannot-approve" ;
+    effortless-ntwf:displayName "Steward cannot approve changes" ;
+    effortless-ntwf:featureRef "IV-3" ;
+    effortless-ntwf:section "Part IV" ;
+    effortless-ntwf:testKind "field-match" ;
+    effortless-ntwf:targetRef "GovernanceRoles/gov-steward#CanApproveChanges" ;
+    effortless-ntwf:expect "" ;
+    effortless-ntwf:explanation "The other half of the governance split." ;
+    effortless-ntwf:sortOrder 570 ;
+    effortless-ntwf:isEnabled true .
+
+effortless-ntwf:changelog-breaking a effortless-ntwf:ConformanceTests ;
+    effortless-ntwf:conformanceTestId "changelog-breaking" ;
+    effortless-ntwf:displayName "Change 1.0.0 breaking-change flag" ;
+    effortless-ntwf:featureRef "IV-4" ;
+    effortless-ntwf:section "Part IV" ;
+    effortless-ntwf:testKind "field-match" ;
+    effortless-ntwf:targetRef "ChangeLog/change-1-0-0#IsBreakingChange" ;
+    effortless-ntwf:expect "" ;
+    effortless-ntwf:explanation "Semantic-versioning derivation from ChangeKind." ;
+    effortless-ntwf:sortOrder 580 ;
+    effortless-ntwf:isEnabled true .
+
+effortless-ntwf:changelog-backcompat a effortless-ntwf:ConformanceTests ;
+    effortless-ntwf:conformanceTestId "changelog-backcompat" ;
+    effortless-ntwf:displayName "Change 1.1.0 backward-compatible flag" ;
+    effortless-ntwf:featureRef "IV-4" ;
+    effortless-ntwf:section "Part IV" ;
+    effortless-ntwf:testKind "field-match" ;
+    effortless-ntwf:targetRef "ChangeLog/change-1-1-0#IsBackwardCompatible" ;
+    effortless-ntwf:expect "" ;
+    effortless-ntwf:explanation "The minor release is back-compat by derivation." ;
+    effortless-ntwf:sortOrder 590 ;
+    effortless-ntwf:isEnabled true .
+
+effortless-ntwf:assignment-current a effortless-ntwf:ConformanceTests ;
+    effortless-ntwf:conformanceTestId "assignment-current" ;
+    effortless-ntwf:displayName "Current role assignment flagged" ;
+    effortless-ntwf:featureRef "IV-6" ;
+    effortless-ntwf:section "Part IV" ;
+    effortless-ntwf:testKind "field-match" ;
+    effortless-ntwf:targetRef "RoleAssignments/asn-deploy-health-ai-current#IsCurrent" ;
+    effortless-ntwf:expect "" ;
+    effortless-ntwf:explanation "Bitemporal validity: the open-ended assignment is current." ;
+    effortless-ntwf:sortOrder 600 ;
+    effortless-ntwf:isEnabled true .
+
+effortless-ntwf:assignment-as-of-audit a effortless-ntwf:ConformanceTests ;
+    effortless-ntwf:conformanceTestId "assignment-as-of-audit" ;
+    effortless-ntwf:displayName "Assignment active as of audit date" ;
+    effortless-ntwf:featureRef "IV-6" ;
+    effortless-ntwf:section "Part IV" ;
+    effortless-ntwf:testKind "field-match" ;
+    effortless-ntwf:targetRef "RoleAssignments/asn-deploy-health-human-audit#WasActiveAsOfAuditDate" ;
+    effortless-ntwf:expect "" ;
+    effortless-ntwf:explanation "The 'who filled this on the audit date' time-travel query." ;
+    effortless-ntwf:sortOrder 610 ;
+    effortless-ntwf:isEnabled true .
+
+effortless-ntwf:agent-type-change a effortless-ntwf:ConformanceTests ;
+    effortless-ntwf:conformanceTestId "agent-type-change" ;
+    effortless-ntwf:displayName "Agent-type change detected" ;
+    effortless-ntwf:featureRef "IV-7" ;
+    effortless-ntwf:section "Part IV" ;
+    effortless-ntwf:testKind "field-match" ;
+    effortless-ntwf:targetRef "RoleAssignments/asn-deploy-health-human-audit#IsAgentTypeChange" ;
+    effortless-ntwf:expect "" ;
+    effortless-ntwf:explanation "AI→Human turnover detection across consecutive assignments." ;
+    effortless-ntwf:sortOrder 620 ;
+    effortless-ntwf:isEnabled true .
+
+effortless-ntwf:compliance-audit-required a effortless-ntwf:ConformanceTests ;
+    effortless-ntwf:conformanceTestId "compliance-audit-required" ;
+    effortless-ntwf:displayName "Turnover requires compliance audit" ;
+    effortless-ntwf:featureRef "IV-7" ;
+    effortless-ntwf:section "Part IV" ;
+    effortless-ntwf:testKind "field-match" ;
+    effortless-ntwf:targetRef "RoleAssignments/asn-deploy-health-human-audit#RequiresComplianceAudit" ;
+    effortless-ntwf:expect "" ;
+    effortless-ntwf:explanation "The audit trigger derived from the agent-type change." ;
+    effortless-ntwf:sortOrder 630 ;
+    effortless-ntwf:isEnabled true .
+
+effortless-ntwf:audit-changes-rollup a effortless-ntwf:ConformanceTests ;
+    effortless-ntwf:conformanceTestId "audit-changes-rollup" ;
+    effortless-ntwf:displayName "Workflow compliance-audit rollup" ;
+    effortless-ntwf:featureRef "IV-7" ;
+    effortless-ntwf:section "Part IV" ;
+    effortless-ntwf:testKind "field-match" ;
+    effortless-ntwf:targetRef "Workflows/production-deployment#CountComplianceAuditChanges" ;
+    effortless-ntwf:expect "" ;
+    effortless-ntwf:explanation "Workflow-level count of audit-triggering changes." ;
+    effortless-ntwf:sortOrder 640 ;
+    effortless-ntwf:isEnabled true .
+
+effortless-ntwf:blast-radius-artifacts a effortless-ntwf:ConformanceTests ;
+    effortless-ntwf:conformanceTestId "blast-radius-artifacts" ;
+    effortless-ntwf:displayName "Risk AI attributed-artifact count" ;
+    effortless-ntwf:featureRef "IV-8" ;
+    effortless-ntwf:section "Part IV" ;
+    effortless-ntwf:testKind "field-match" ;
+    effortless-ntwf:targetRef "AIAgents/ntwf-risk-ai#CountAttributedArtifacts" ;
+    effortless-ntwf:expect "" ;
+    effortless-ntwf:explanation "AI-system-registry blast radius: artifacts this AI produced." ;
+    effortless-ntwf:sortOrder 650 ;
+    effortless-ntwf:isEnabled true .
+
+effortless-ntwf:blast-radius-workflows a effortless-ntwf:ConformanceTests ;
+    effortless-ntwf:conformanceTestId "blast-radius-workflows" ;
+    effortless-ntwf:displayName "Risk AI impacted-workflow count" ;
+    effortless-ntwf:featureRef "IV-8" ;
+    effortless-ntwf:section "Part IV" ;
+    effortless-ntwf:testKind "field-match" ;
+    effortless-ntwf:targetRef "AIAgents/ntwf-risk-ai#CountImpactedWorkflows" ;
+    effortless-ntwf:expect "" ;
+    effortless-ntwf:explanation "Blast radius: workflows reachable from this AI's artifacts." ;
+    effortless-ntwf:sortOrder 660 ;
+    effortless-ntwf:isEnabled true .
+
+effortless-ntwf:model-version a effortless-ntwf:ConformanceTests ;
+    effortless-ntwf:conformanceTestId "model-version" ;
+    effortless-ntwf:displayName "Risk AI model version" ;
+    effortless-ntwf:featureRef "IV-9,III-modelVersion" ;
+    effortless-ntwf:section "Part IV" ;
+    effortless-ntwf:testKind "field-match" ;
+    effortless-ntwf:targetRef "AIAgents/ntwf-risk-ai#ModelVersion" ;
+    effortless-ntwf:expect "" ;
+    effortless-ntwf:explanation "The audit anchor: which model version produced the attributed artifacts." ;
+    effortless-ntwf:sortOrder 670 ;
+    effortless-ntwf:isEnabled true .
+
+effortless-ntwf:deployed-on a effortless-ntwf:ConformanceTests ;
+    effortless-ntwf:conformanceTestId "deployed-on" ;
+    effortless-ntwf:displayName "Risk AI deployment date" ;
+    effortless-ntwf:featureRef "IV-9" ;
+    effortless-ntwf:section "Part IV" ;
+    effortless-ntwf:testKind "field-match" ;
+    effortless-ntwf:targetRef "AIAgents/ntwf-risk-ai#DeployedOn" ;
+    effortless-ntwf:expect "" ;
+    effortless-ntwf:explanation "When the audited model version went live." ;
+    effortless-ntwf:sortOrder 680 ;
+    effortless-ntwf:isEnabled true .
+
+effortless-ntwf:mut-ai-at-human-gate a effortless-ntwf:ConformanceTests ;
+    effortless-ntwf:conformanceTestId "mut-ai-at-human-gate" ;
+    effortless-ntwf:displayName "Assign AI to the human-only gate fires the violation" ;
+    effortless-ntwf:featureRef "II-3,Suite-4" ;
+    effortless-ntwf:section "Mutation" ;
+    effortless-ntwf:testKind "mutation" ;
+    effortless-ntwf:targetRef "Roles/ntwf-release-manager-role" ;
+    effortless-ntwf:expect "{\"edits\": [{\"class\": \"Roles\", \"id\": \"ntwf-release-manager-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"ntwf-risk-ai\", \"filledByAutomatedPipeline\": \"\"}}], \"assert\": [{\"class\": \"WorkflowSteps\", \"id\": \"prod-deploy-step-3\", \"field\": \"approvalConsistencyViolation\", \"equals\": true}, {\"class\": \"Workflows\", \"id\": \"production-deployment\", \"field\": \"hasConsistencyViolation\", \"equals\": true}]}" ;
+    effortless-ntwf:explanation "Suite-4 inject-an-error: filling the gate role with an AI must flip ApprovalConsistencyViolation on the step AND roll up to the workflow, on BOTH engines." ;
+    effortless-ntwf:sortOrder 690 ;
+    effortless-ntwf:isEnabled true .
+
+effortless-ntwf:mut-backdate-goes-stale a effortless-ntwf:ConformanceTests ;
+    effortless-ntwf:conformanceTestId "mut-backdate-goes-stale" ;
+    effortless-ntwf:displayName "Backdating the review makes the workflow stale" ;
+    effortless-ntwf:featureRef "IV-1,CQ5" ;
+    effortless-ntwf:section "Mutation" ;
+    effortless-ntwf:testKind "mutation" ;
+    effortless-ntwf:targetRef "Workflows/production-deployment" ;
+    effortless-ntwf:expect "{\"edits\": [{\"class\": \"Workflows\", \"id\": \"production-deployment\", \"set\": {\"modified\": \"2024-01-01T00:00:00-05:00\"}}], \"assert\": [{\"class\": \"Workflows\", \"id\": \"production-deployment\", \"field\": \"isStale\", \"equals\": true}]}" ;
+    effortless-ntwf:explanation "Backdate dct:modified past the staleness window: IsStale must flip true." ;
+    effortless-ntwf:sortOrder 700 ;
+    effortless-ntwf:isEnabled true .
+
+effortless-ntwf:mut-stale-and-ai-join a effortless-ntwf:ConformanceTests ;
+    effortless-ntwf:conformanceTestId "mut-stale-and-ai-join" ;
+    effortless-ntwf:displayName "Backdating fires the stale-AND-AI compliance join" ;
+    effortless-ntwf:featureRef "IV-2" ;
+    effortless-ntwf:section "Mutation" ;
+    effortless-ntwf:testKind "mutation" ;
+    effortless-ntwf:targetRef "Workflows/production-deployment" ;
+    effortless-ntwf:expect "{\"edits\": [{\"class\": \"Workflows\", \"id\": \"production-deployment\", \"set\": {\"modified\": \"2024-01-01T00:00:00-05:00\"}}], \"assert\": [{\"class\": \"Workflows\", \"id\": \"production-deployment\", \"field\": \"isStaleAndHasAIAgent\", \"equals\": true}]}" ;
+    effortless-ntwf:explanation "Seed facts already include AI-executed steps, so staleness alone completes the IsStaleAndHasAIAgent join." ;
+    effortless-ntwf:sortOrder 710 ;
+    effortless-ntwf:isEnabled true .
+
+effortless-ntwf:mut-gate-not-required a effortless-ntwf:ConformanceTests ;
+    effortless-ntwf:conformanceTestId "mut-gate-not-required" ;
+    effortless-ntwf:displayName "Dropping the sign-off requirement clears the violation" ;
+    effortless-ntwf:featureRef "II-3" ;
+    effortless-ntwf:section "Mutation" ;
+    effortless-ntwf:testKind "mutation" ;
+    effortless-ntwf:targetRef "WorkflowSteps/prod-deploy-step-3" ;
+    effortless-ntwf:expect "{\"edits\": [{\"class\": \"Roles\", \"id\": \"ntwf-release-manager-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"ntwf-risk-ai\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"WorkflowSteps\", \"id\": \"prod-deploy-step-3\", \"set\": {\"requiresHumanApproval\": false}}], \"assert\": [{\"class\": \"WorkflowSteps\", \"id\": \"prod-deploy-step-3\", \"field\": \"approvalConsistencyViolation\", \"equals\": false}]}" ;
+    effortless-ntwf:explanation "The violation is an AND of requiresHumanApproval and a non-human filler: with the requirement off, an AI filler is consistent." ;
+    effortless-ntwf:sortOrder 720 ;
+    effortless-ntwf:isEnabled true .
+
 # === Individuals: Datasets ===
 
 effortless-ntwf:ds-q1-2026-risk-metrics a effortless-ntwf:Datasets ;

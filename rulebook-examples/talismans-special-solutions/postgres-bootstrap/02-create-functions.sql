@@ -1636,6 +1636,36 @@ RETURNS TEXT AS $$
   SELECT (REPLACE(LOWER((SELECT NULLIF(label, '') FROM scenarios WHERE scenario_id = p_scenario_id)), ' ', '-'))::text;
 $$ LANGUAGE sql STABLE;
 
+-- calc_conformance_tests_relative_path
+-- Field: ConformanceTests.RelativePath
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_conformance_tests_relative_path(p_conformance_test_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CONCAT('conformance-tests/', (SELECT NULLIF(conformance_test_id, '') FROM conformance_tests WHERE conformance_test_id = p_conformance_test_id)))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_conformance_tests_iri
+-- Field: ConformanceTests.Iri
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_conformance_tests_iri(p_conformance_test_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (REPLACE(calc_conformance_tests_relative_path(p_conformance_test_id), '/', '-'))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_conformance_tests_name
+-- Field: ConformanceTests.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_conformance_tests_name(p_conformance_test_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (REPLACE(LOWER((SELECT NULLIF(display_name, '') FROM conformance_tests WHERE conformance_test_id = p_conformance_test_id)), ' ', '-'))::text;
+$$ LANGUAGE sql STABLE;
+
 -- ============================================================================
 -- MANY-SIDE RELATIONSHIP FUNCTIONS
 -- These functions aggregate child records for many-side relationships

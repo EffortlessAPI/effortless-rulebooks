@@ -26,6 +26,7 @@ ALTER TABLE governance_roles ENABLE ROW LEVEL SECURITY;
 ALTER TABLE change_log ENABLE ROW LEVEL SECURITY;
 ALTER TABLE vocabulary_reconciliations ENABLE ROW LEVEL SECURITY;
 ALTER TABLE scenarios ENABLE ROW LEVEL SECURITY;
+ALTER TABLE conformance_tests ENABLE ROW LEVEL SECURITY;
 
 -- TODO: Add specific RLS policies based on your security requirements
 -- Example:

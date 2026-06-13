@@ -340,6 +340,85 @@ effortless-ntwf:isBackwardCompatible a owl:DatatypeProperty ;
     rdfs:comment "TRUE iff systems on the prior version keep working against this release (ChangeKind is 'patch' or 'minor'). Patch and minor increments preserve backward compatibility; only major breaks it." .
     # calculated: calculated
 
+# === Class: ConformanceTests ===
+effortless-ntwf:ConformanceTests a owl:Class ;
+    rdfs:label "ConformanceTests" .
+
+effortless-ntwf:conformanceTestId a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ConformanceTests ;
+    rdfs:range xsd:string ;
+    rdfs:label "ConformanceTestId" ;
+    rdfs:comment "Stable identifier for one conformance test — one assertion the harness runs against every execution substrate." .
+
+effortless-ntwf:relativePath a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "RelativePath" ;
+    rdfs:comment "DAG-derived location for this test row: root segment 'conformance-tests' + the primary key." .
+    # calculated: calculated
+
+effortless-ntwf:iri a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "Iri" ;
+    rdfs:comment "Slug IRI for this row, derived from RelativePath." .
+    # calculated: calculated
+
+effortless-ntwf:name a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "Name" ;
+    rdfs:comment "Machine name derived from the display name." .
+    # calculated: calculated
+
+effortless-ntwf:displayName a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "DisplayName" ;
+    rdfs:comment "Human-readable test title shown in the admin console and run logs." .
+
+effortless-ntwf:featureRef a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ConformanceTests ;
+    rdfs:range xsd:string ;
+    rdfs:label "FeatureRef" ;
+    rdfs:comment "Comma-separated FEATURE-COVERAGE.md ids this test witnesses (e.g. 'II-3,CQ2'). The traceability link from the article's feature inventory to an executable assertion." .
+
+effortless-ntwf:section a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ConformanceTests ;
+    rdfs:range xsd:string ;
+    rdfs:label "Section" ;
+    rdfs:comment "Grouping for display: 'Sweep', 'Part I'..'Part IV', 'Closure', 'Mutation'." .
+
+effortless-ntwf:testKind a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ConformanceTests ;
+    rdfs:range xsd:string ;
+    rdfs:label "TestKind" ;
+    rdfs:comment "How the harness executes this test. 'sweep' = every row+field of TargetRef table vs the answer key; 'field-match' = one row's field vs the answer key; 'closure-contains' = a from→to pair must appear in the engine's computed transitive closure (Expect names the closure and pair); 'engines-agree' = zero value-class disagreements between the two engines; 'mutation' = apply Expect.edits to an in-memory copy of the seed facts, re-reason, and check Expect.assert — the store is NEVER written." .
+
+effortless-ntwf:targetRef a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ConformanceTests ;
+    rdfs:range xsd:string ;
+    rdfs:label "TargetRef" ;
+    rdfs:comment "What the test reads: 'Entity' (whole table), 'Entity/pk' (one row) or 'Entity/pk#Field' (one value). Slash/hash form on purpose — these are spec references, not foreign keys." .
+
+effortless-ntwf:expect a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ConformanceTests ;
+    rdfs:range xsd:string ;
+    rdfs:label "Expect" ;
+    rdfs:comment "Kind-specific JSON spec. Empty for sweep/field-match/engines-agree — there the ORACLE is the answer key (testing/answer-keys), never a value hardcoded here (a literal would go stale; the key regenerates). closure-contains: {closure, from, to}. mutation: {edits:[{class,id,set:{camelRawField:value}}], assert:[{class,id,field,equals}]} — same edits shape as Scenarios.Edits." .
+
+effortless-ntwf:explanation a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "Explanation" ;
+    rdfs:comment "Why this test exists — what feature of the model it flexes, in one sentence." .
+
+effortless-ntwf:sortOrder a owl:DatatypeProperty ;
+    rdfs:range xsd:integer ;
+    rdfs:label "SortOrder" ;
+    rdfs:comment "Display/run order within the suite." .
+
+effortless-ntwf:isEnabled a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ConformanceTests ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "IsEnabled" ;
+    rdfs:comment "Disabled tests are listed but not executed (parked, not deleted — the list stays the complete spec)." .
+
 # === Class: Datasets ===
 effortless-ntwf:Datasets a owl:Class ;
     rdfs:label "Datasets" ;
@@ -792,13 +871,11 @@ effortless-ntwf:icon a owl:DatatypeProperty ;
     rdfs:comment "A single emoji shown beside the label in the picker." .
 
 effortless-ntwf:explanation a owl:DatatypeProperty ;
-    rdfs:domain effortless-ntwf:Scenarios ;
     rdfs:range xsd:string ;
     rdfs:label "Explanation" ;
     rdfs:comment "Plain-language description of what this scenario changes and what the reasoner will derive as a result. Shown in the floating scenario picker so the user knows what each preset does before applying it." .
 
 effortless-ntwf:sortOrder a owl:DatatypeProperty ;
-    rdfs:domain effortless-ntwf:Scenarios ;
     rdfs:range xsd:integer ;
     rdfs:label "SortOrder" ;
     rdfs:comment "Display order in the picker (ascending)." .

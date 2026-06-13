@@ -403,6 +403,61 @@ effortless-ntwf:ChangeLogShape a sh:NodeShape ;
         """ ;
     ] .
 
+# === Shape with rules for ConformanceTests ===
+effortless-ntwf:ConformanceTestsShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:ConformanceTests ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_ConformanceTests_RelativePath" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:relativePath ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:ConformanceTests .
+    OPTIONAL { $this effortless-ntwf:conformanceTestId ?conformance_test_id . }
+                BIND(CONCAT("conformance-tests/", ?conformance_test_id) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_ConformanceTests_Iri" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:iri ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:ConformanceTests .
+    OPTIONAL { $this effortless-ntwf:relativePath ?relative_path . }
+                BIND(REPLACE(?relative_path, "/", "-") AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_ConformanceTests_Name" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:name ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:ConformanceTests .
+    OPTIONAL { $this effortless-ntwf:displayName ?display_name . }
+                BIND(REPLACE(LCASE(?display_name), " ", "-") AS ?_result)
+            }
+        """ ;
+    ] .
+
 # === Shape with rules for Datasets ===
 effortless-ntwf:DatasetsShape a sh:NodeShape ;
     sh:targetClass effortless-ntwf:Datasets ;
@@ -2069,4 +2124,4 @@ effortless-ntwf:WorkflowStepsCardinalityShape a sh:NodeShape ;
     sh:property [ sh:path effortless-ntwf:producesArtifacts ; sh:maxCount 1 ] ;
     sh:property [ sh:path effortless-ntwf:workflow ; sh:maxCount 1 ] .
 
-# Generated 105 SHACL rules
+# Generated 108 SHACL rules

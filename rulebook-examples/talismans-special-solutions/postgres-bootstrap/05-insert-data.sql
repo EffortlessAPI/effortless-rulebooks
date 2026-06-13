@@ -249,3 +249,222 @@ VALUES ('ai-at-gate', 'AI at the approval gate', '🤖', 'Hands the Legal Compli
 INSERT INTO scenarios (scenario_id, label, icon, explanation, sort_order, is_reset, edits)
 VALUES ('reset', 'Reset to baseline', '↺', 'Restores the canonical seed assignments and a fresh review date — the known-good starting point. Every role is filled by exactly one agent, no requires-human-approval step is AI-filled, and the workflow is within its staleness window, so all the article''s clean-ABox witnesses read green.', 5, TRUE, '[{"class": "Workflows", "match": "first", "set": {"modified": "2026-04-03T00:00:00-05:00"}}, {"class": "Roles", "id": "ntwf-release-manager-role", "set": {"filledByHumanAgent": "ntwf-maria-gonzalez", "filledByAIAgent": "", "filledByAutomatedPipeline": ""}}, {"class": "Roles", "id": "ntwf-risk-analysis-role", "set": {"filledByHumanAgent": "", "filledByAIAgent": "ntwf-risk-ai", "filledByAutomatedPipeline": ""}}, {"class": "Roles", "id": "ntwf-legal-compliance-role", "set": {"filledByHumanAgent": "ntwf-james-okafor", "filledByAIAgent": "", "filledByAutomatedPipeline": ""}}, {"class": "Roles", "id": "ntwf-ci-executor-role", "set": {"filledByHumanAgent": "", "filledByAIAgent": "", "filledByAutomatedPipeline": "ntwf-ci-pipeline"}}, {"class": "Roles", "id": "ntwf-vp-engineering-role", "set": {"filledByHumanAgent": "ntwf-david-chen", "filledByAIAgent": "", "filledByAutomatedPipeline": ""}}, {"class": "Roles", "id": "ntwf-cto-role", "set": {"filledByHumanAgent": "ntwf-sarah-kim", "filledByAIAgent": "", "filledByAutomatedPipeline": ""}}, {"class": "Roles", "id": "ntwf-deployment-health-role", "set": {"filledByHumanAgent": "", "filledByAIAgent": "ntwf-health-ai", "filledByAutomatedPipeline": ""}}]') ON CONFLICT (scenario_id) DO NOTHING;
 
+-- ----------------------------------------------------------------------------
+-- ConformanceTests: Seed data for ConformanceTests
+-- ----------------------------------------------------------------------------
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('sweep-workflows', 'Sweep Workflows vs answer key', '', 'Sweep', 'sweep', 'Workflows', '', 'Every row and every column of Workflows must match the Postgres-oracle answer key on both engines.', 10, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('sweep-workflowsteps', 'Sweep WorkflowSteps vs answer key', '', 'Sweep', 'sweep', 'WorkflowSteps', '', 'Every row and every column of WorkflowSteps must match the Postgres-oracle answer key on both engines.', 20, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('sweep-approvalgates', 'Sweep ApprovalGates vs answer key', '', 'Sweep', 'sweep', 'ApprovalGates', '', 'Every row and every column of ApprovalGates must match the Postgres-oracle answer key on both engines.', 30, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('sweep-stepprecedence', 'Sweep StepPrecedence vs answer key', '', 'Sweep', 'sweep', 'StepPrecedence', '', 'Every row and every column of StepPrecedence must match the Postgres-oracle answer key on both engines.', 40, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('sweep-roles', 'Sweep Roles vs answer key', '', 'Sweep', 'sweep', 'Roles', '', 'Every row and every column of Roles must match the Postgres-oracle answer key on both engines.', 50, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('sweep-roleassignments', 'Sweep RoleAssignments vs answer key', '', 'Sweep', 'sweep', 'RoleAssignments', '', 'Every row and every column of RoleAssignments must match the Postgres-oracle answer key on both engines.', 60, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('sweep-departments', 'Sweep Departments vs answer key', '', 'Sweep', 'sweep', 'Departments', '', 'Every row and every column of Departments must match the Postgres-oracle answer key on both engines.', 70, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('sweep-humanagents', 'Sweep HumanAgents vs answer key', '', 'Sweep', 'sweep', 'HumanAgents', '', 'Every row and every column of HumanAgents must match the Postgres-oracle answer key on both engines.', 80, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('sweep-aiagents', 'Sweep AIAgents vs answer key', '', 'Sweep', 'sweep', 'AIAgents', '', 'Every row and every column of AIAgents must match the Postgres-oracle answer key on both engines.', 90, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('sweep-automatedpipelines', 'Sweep AutomatedPipelines vs answer key', '', 'Sweep', 'sweep', 'AutomatedPipelines', '', 'Every row and every column of AutomatedPipelines must match the Postgres-oracle answer key on both engines.', 100, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('sweep-workflowstatusconcepts', 'Sweep WorkflowStatusConcepts vs answer key', '', 'Sweep', 'sweep', 'WorkflowStatusConcepts', '', 'Every row and every column of WorkflowStatusConcepts must match the Postgres-oracle answer key on both engines.', 110, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('sweep-agentcapabilityconcepts', 'Sweep AgentCapabilityConcepts vs answer key', '', 'Sweep', 'sweep', 'AgentCapabilityConcepts', '', 'Every row and every column of AgentCapabilityConcepts must match the Postgres-oracle answer key on both engines.', 120, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('sweep-artifacttypeconcepts', 'Sweep ArtifactTypeConcepts vs answer key', '', 'Sweep', 'sweep', 'ArtifactTypeConcepts', '', 'Every row and every column of ArtifactTypeConcepts must match the Postgres-oracle answer key on both engines.', 130, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('sweep-datasets', 'Sweep Datasets vs answer key', '', 'Sweep', 'sweep', 'Datasets', '', 'Every row and every column of Datasets must match the Postgres-oracle answer key on both engines.', 140, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('sweep-workflowartifacts', 'Sweep WorkflowArtifacts vs answer key', '', 'Sweep', 'sweep', 'WorkflowArtifacts', '', 'Every row and every column of WorkflowArtifacts must match the Postgres-oracle answer key on both engines.', 150, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('sweep-governanceroles', 'Sweep GovernanceRoles vs answer key', '', 'Sweep', 'sweep', 'GovernanceRoles', '', 'Every row and every column of GovernanceRoles must match the Postgres-oracle answer key on both engines.', 160, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('sweep-changelog', 'Sweep ChangeLog vs answer key', '', 'Sweep', 'sweep', 'ChangeLog', '', 'Every row and every column of ChangeLog must match the Postgres-oracle answer key on both engines.', 170, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('sweep-vocabularyreconciliations', 'Sweep VocabularyReconciliations vs answer key', '', 'Sweep', 'sweep', 'VocabularyReconciliations', '', 'Every row and every column of VocabularyReconciliations must match the Postgres-oracle answer key on both engines.', 180, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('sweep-scenarios', 'Sweep Scenarios vs answer key', '', 'Sweep', 'sweep', 'Scenarios', '', 'Every row and every column of Scenarios must match the Postgres-oracle answer key on both engines.', 190, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('closure-precedence-1-5', 'Inferred precedence 1 to 5', 'I-1,CQ3,III-precedesStep', 'Closure', 'closure-contains', 'StepPrecedence', '{"closure": "precedence", "from": "prod-deploy-step-1", "to": "prod-deploy-step-5"}', 'The headline inference: 4 asserted edges entail the never-asserted 1→5 pair via transitive precedesStep.', 200, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('closure-delegation-rm-cto', 'Inferred delegation Release Manager to CTO', 'CQ6,III-delegatesTo', 'Closure', 'closure-contains', 'Roles', '{"closure": "delegation", "from": "ntwf-release-manager-role", "to": "ntwf-cto-role"}', 'Escalation chain RM→VP Eng→CTO: the RM→CTO hop is never asserted; transitive delegatesTo entails it.', 210, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('engines-agree-global', 'Both engines compute identical answers', 'I-4', 'Part I', 'engines-agree', '', '', 'The multi-substrate equivalence claim: reasoner and Postgres views disagree on zero computed values.', 220, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('iri-workflow', 'Workflow IRI minted', 'I-6,IV-10', 'Part I', 'field-match', 'Workflows/production-deployment#Iri', '', 'Every row is a globally-addressable individual; the workflow''s IRI is derived, stable, and identical on both engines.', 230, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('iri-gate', 'Approval-gate IRI minted', 'I-6,IV-10', 'Part I', 'field-match', 'ApprovalGates/ntwf-release-approval-gate#Iri', '', 'Gate IRI derives through the step''s path chain (lookup → calc chain).', 240, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('step1-agent-type', 'Step 1 executing agent type resolves', 'II-1,CQ1', 'Part II', 'field-match', 'WorkflowSteps/prod-deploy-step-1#ExecutingAgentType', '', 'Role→agent indirection: the step''s executing agent type is derived through AssignedRole→FilledBy*.', 250, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('step3-agent-type', 'Gate step executing agent type resolves', 'II-1,CQ1', 'Part II', 'field-match', 'WorkflowSteps/prod-deploy-step-3#ExecutingAgentType', '', 'The approval-gate step resolves to its human Release Manager through the same one-edge chain.', 260, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('count-ai-steps', 'AI step count', 'II-2', 'Part II', 'field-match', 'Workflows/production-deployment#CountAISteps', '', 'COUNTIFS over the DERIVED IsExecutedByAI child field — conditional aggregation over a computed column.', 270, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('count-human-steps', 'Human step count', 'II-2', 'Part II', 'field-match', 'Workflows/production-deployment#CountHumanSteps', '', 'The human side of the agent mix.', 280, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('has-ai-agent-step', 'HasAIAgentStep boolean', 'II-2', 'Part II', 'field-match', 'Workflows/production-deployment#HasAIAgentStep', '', 'Boolean derived from the AI step count — an aggregation feeding a calc.', 290, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('approval-human-filled', 'Gate step is human-filled at seed', 'II-3,CQ2', 'Part II', 'field-match', 'WorkflowSteps/prod-deploy-step-3#ApprovalIsHumanFilled', '', 'requiresHumanApproval is satisfied at seed: the gate role is filled by a human.', 300, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('approval-violation-false', 'No approval violation at seed', 'II-3', 'Part II', 'field-match', 'WorkflowSteps/prod-deploy-step-3#ApprovalConsistencyViolation', '', 'The consistency rule does NOT fire on the seed facts — the clean baseline the mutation test breaks.', 310, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('workflow-violation-false', 'Workflow has no violation at seed', 'II-3', 'Part II', 'field-match', 'Workflows/production-deployment#HasConsistencyViolation', '', 'Workflow-level rollup of approval violations is false on seed facts.', 320, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('skos-workflow-status', 'Workflow status is a SKOS concept', 'II-6', 'Part II', 'field-match', 'Workflows/production-deployment#WorkflowStatus', '', 'workflowStatus points into the WorkflowStatusConcepts scheme.', 330, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('skos-role-capability', 'Role capability is a SKOS concept', 'II-6', 'Part II', 'field-match', 'Roles/ntwf-release-manager-role#HasCapability', '', 'hasCapability points into the AgentCapabilityConcepts scheme.', 340, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('role-label-documented', 'Role carries label documentation', 'II-8', 'Part II', 'field-match', 'Roles/ntwf-release-manager-role#Label', '', 'Heuristic 6: label/comment documentation travels with the model into every substrate.', 350, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('gate-escalation-hours', 'Gate escalation threshold', 'III-escalationThresholdHours,CQ2', 'Part III', 'field-match', 'ApprovalGates/ntwf-release-approval-gate#EscalationThresholdHours', '', 'The gate''s defining datatype property (raw, gate-only).', 360, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('gate-role-lookup', 'Gate role resolves via lookup', 'III-ApprovalGate,CQ2', 'Part III', 'field-match', 'ApprovalGates/ntwf-release-approval-gate#GateRole', '', 'INDEX/MATCH lookup gate→step→role. KNOWN GAP CANDIDATE: both engines currently drop lookup columns from their individuals payload — this test exists to keep that gap visible until fixed.', 370, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('gate-approver-lookup', 'Gate approver human resolves via lookup', 'III-ApprovalGate,CQ2', 'Part III', 'field-match', 'ApprovalGates/ntwf-release-approval-gate#GateApproverHuman', '', 'Second-order lookup gate→role→human filler. Same known gap candidate as GateRole.', 380, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('role-exactly-one-filler', 'Release Manager has exactly one filler', 'III-filledBy,Suite-4', 'Part III', 'field-match', 'Roles/ntwf-release-manager-role#HasExactlyOneFiller', '', 'Functional filledBy: exactly one of the three filler arms is set.', 390, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('bad-filler-count-zero', 'No roles with bad filler cardinality', 'Suite-4', 'Part III', 'field-match', 'Workflows/production-deployment#CountRolesWithBadFillerCardinality', '', 'Suite-4 cardinality witness: zero roles violate the exactly-one-filler rule on seed facts.', 400, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('artifact-derivation', 'Release authorization derives from legal clearance', 'III-wasDerivedFrom,CQ4', 'Part III', 'field-match', 'WorkflowArtifacts/artifact-release-authorization#DerivedFromArtifact', '', 'One link of the 5-artifact PROV wasDerivedFrom chain.', 410, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('artifact-attribution', 'Risk report attributed to the risk AI', 'III-wasAttributedTo,CQ4', 'Part III', 'field-match', 'WorkflowArtifacts/artifact-risk-report#AttributedToAIAgent', '', 'PROV attribution: the artifact names the AI agent that produced it.', 420, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('artifact-has-parent', 'Post-deploy report has a derivation parent', 'III-wasDerivedFrom', 'Part III', 'field-match', 'WorkflowArtifacts/artifact-post-deploy-report#HasDerivationParent', '', 'Boolean derived from the lineage link.', 430, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('consumes-dataset', 'Step consumes the DCAT dataset', 'III-consumesDataset,CQ8', 'Part III', 'field-match', 'WorkflowSteps/prod-deploy-step-1#ConsumesDataset', '', 'consumesDataset points at the dcat:Dataset; answers CQ8.', 440, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('legal-owned-step', 'Legal step is legal-owned', 'III-ownedBy,CQ7', 'Part III', 'field-match', 'WorkflowSteps/prod-deploy-step-2#IsLegalOwned', '', 'ownedBy chain step→role→department resolves to Legal.', 450, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('eng-owned-step', 'Deploy step is engineering-owned', 'III-ownedBy,CQ7', 'Part III', 'field-match', 'WorkflowSteps/prod-deploy-step-4#IsEngineeringOwned', '', 'Same chain resolving to Engineering.', 460, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('cross-cutting-workflow', 'Workflow involves Engineering AND Legal', 'CQ7', 'Part III', 'field-match', 'Workflows/production-deployment#InvolvesEngineeringAndLegal', '', 'The cross-department join CQ7 asks about.', 470, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('sequence-position', 'Step 4 sequence position', 'III-sequencePosition', 'Part III', 'field-match', 'WorkflowSteps/prod-deploy-step-4#SequencePosition', '', 'Functional integer datatype property echoes through both substrates.', 480, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('step-duration', 'Step 1 duration minutes', 'III-stepDurationMinutes', 'Part III', 'field-match', 'WorkflowSteps/prod-deploy-step-1#StepDurationMinutes', '', 'Drives the time-budget bar; raw datatype property.', 490, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('asserted-pair-count', 'Asserted precedence pair count', 'I-1,III-precedesStep', 'Part III', 'field-match', 'Workflows/production-deployment#CountAssertedPrecedencePairs', '', '4 asserted edges.', 500, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('inferred-pair-count', 'Inferred precedence pair count', 'I-1,III-precedesStep', 'Part III', 'field-match', 'Workflows/production-deployment#CountInferredPrecedencePairs', '', '6 pairs exist only by inference (10-pair closure minus 4 asserted).', 510, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('closure-pair-total', 'Total precedence closure pairs', 'I-1,III-precedesStep', 'Part III', 'field-match', 'Workflows/production-deployment#CountOfPrecedenceClosurePairs', '', 'The 10-pair transitive closure, counted from the materialized closure rows.', 520, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('months-since-modified', 'Months since last review', 'IV-1,CQ5', 'Part IV', 'field-match', 'Workflows/production-deployment#MonthsSinceModified', '', 'Time-dependent calc (months granularity) — the staleness clock.', 530, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('is-stale-seed', 'Workflow not stale at seed', 'IV-1,CQ5', 'Part IV', 'field-match', 'Workflows/production-deployment#IsStale', '', 'The CQ5 governance query on the seed facts.', 540, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('stale-and-ai-seed', 'Stale-AND-has-AI at seed', 'IV-2', 'Part IV', 'field-match', 'Workflows/production-deployment#IsStaleAndHasAIAgent', '', 'The higher-compliance-risk join on the seed facts.', 550, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('authority-can-approve', 'Authority can approve changes', 'IV-3', 'Part IV', 'field-match', 'GovernanceRoles/gov-authority#CanApproveChanges', '', 'Steward vs Authority: only the Authority approves.', 560, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('steward-cannot-approve', 'Steward cannot approve changes', 'IV-3', 'Part IV', 'field-match', 'GovernanceRoles/gov-steward#CanApproveChanges', '', 'The other half of the governance split.', 570, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('changelog-breaking', 'Change 1.0.0 breaking-change flag', 'IV-4', 'Part IV', 'field-match', 'ChangeLog/change-1-0-0#IsBreakingChange', '', 'Semantic-versioning derivation from ChangeKind.', 580, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('changelog-backcompat', 'Change 1.1.0 backward-compatible flag', 'IV-4', 'Part IV', 'field-match', 'ChangeLog/change-1-1-0#IsBackwardCompatible', '', 'The minor release is back-compat by derivation.', 590, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('assignment-current', 'Current role assignment flagged', 'IV-6', 'Part IV', 'field-match', 'RoleAssignments/asn-deploy-health-ai-current#IsCurrent', '', 'Bitemporal validity: the open-ended assignment is current.', 600, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('assignment-as-of-audit', 'Assignment active as of audit date', 'IV-6', 'Part IV', 'field-match', 'RoleAssignments/asn-deploy-health-human-audit#WasActiveAsOfAuditDate', '', 'The ''who filled this on the audit date'' time-travel query.', 610, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('agent-type-change', 'Agent-type change detected', 'IV-7', 'Part IV', 'field-match', 'RoleAssignments/asn-deploy-health-human-audit#IsAgentTypeChange', '', 'AI→Human turnover detection across consecutive assignments.', 620, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('compliance-audit-required', 'Turnover requires compliance audit', 'IV-7', 'Part IV', 'field-match', 'RoleAssignments/asn-deploy-health-human-audit#RequiresComplianceAudit', '', 'The audit trigger derived from the agent-type change.', 630, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('audit-changes-rollup', 'Workflow compliance-audit rollup', 'IV-7', 'Part IV', 'field-match', 'Workflows/production-deployment#CountComplianceAuditChanges', '', 'Workflow-level count of audit-triggering changes.', 640, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('blast-radius-artifacts', 'Risk AI attributed-artifact count', 'IV-8', 'Part IV', 'field-match', 'AIAgents/ntwf-risk-ai#CountAttributedArtifacts', '', 'AI-system-registry blast radius: artifacts this AI produced.', 650, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('blast-radius-workflows', 'Risk AI impacted-workflow count', 'IV-8', 'Part IV', 'field-match', 'AIAgents/ntwf-risk-ai#CountImpactedWorkflows', '', 'Blast radius: workflows reachable from this AI''s artifacts.', 660, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('model-version', 'Risk AI model version', 'IV-9,III-modelVersion', 'Part IV', 'field-match', 'AIAgents/ntwf-risk-ai#ModelVersion', '', 'The audit anchor: which model version produced the attributed artifacts.', 670, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('deployed-on', 'Risk AI deployment date', 'IV-9', 'Part IV', 'field-match', 'AIAgents/ntwf-risk-ai#DeployedOn', '', 'When the audited model version went live.', 680, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('mut-ai-at-human-gate', 'Assign AI to the human-only gate fires the violation', 'II-3,Suite-4', 'Mutation', 'mutation', 'Roles/ntwf-release-manager-role', '{"edits": [{"class": "Roles", "id": "ntwf-release-manager-role", "set": {"filledByHumanAgent": "", "filledByAIAgent": "ntwf-risk-ai", "filledByAutomatedPipeline": ""}}], "assert": [{"class": "WorkflowSteps", "id": "prod-deploy-step-3", "field": "approvalConsistencyViolation", "equals": true}, {"class": "Workflows", "id": "production-deployment", "field": "hasConsistencyViolation", "equals": true}]}', 'Suite-4 inject-an-error: filling the gate role with an AI must flip ApprovalConsistencyViolation on the step AND roll up to the workflow, on BOTH engines.', 690, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('mut-backdate-goes-stale', 'Backdating the review makes the workflow stale', 'IV-1,CQ5', 'Mutation', 'mutation', 'Workflows/production-deployment', '{"edits": [{"class": "Workflows", "id": "production-deployment", "set": {"modified": "2024-01-01T00:00:00-05:00"}}], "assert": [{"class": "Workflows", "id": "production-deployment", "field": "isStale", "equals": true}]}', 'Backdate dct:modified past the staleness window: IsStale must flip true.', 700, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('mut-stale-and-ai-join', 'Backdating fires the stale-AND-AI compliance join', 'IV-2', 'Mutation', 'mutation', 'Workflows/production-deployment', '{"edits": [{"class": "Workflows", "id": "production-deployment", "set": {"modified": "2024-01-01T00:00:00-05:00"}}], "assert": [{"class": "Workflows", "id": "production-deployment", "field": "isStaleAndHasAIAgent", "equals": true}]}', 'Seed facts already include AI-executed steps, so staleness alone completes the IsStaleAndHasAIAgent join.', 710, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+
+INSERT INTO conformance_tests (conformance_test_id, display_name, feature_ref, section, test_kind, target_ref, expect, explanation, sort_order, is_enabled)
+VALUES ('mut-gate-not-required', 'Dropping the sign-off requirement clears the violation', 'II-3', 'Mutation', 'mutation', 'WorkflowSteps/prod-deploy-step-3', '{"edits": [{"class": "Roles", "id": "ntwf-release-manager-role", "set": {"filledByHumanAgent": "", "filledByAIAgent": "ntwf-risk-ai", "filledByAutomatedPipeline": ""}}, {"class": "WorkflowSteps", "id": "prod-deploy-step-3", "set": {"requiresHumanApproval": false}}], "assert": [{"class": "WorkflowSteps", "id": "prod-deploy-step-3", "field": "approvalConsistencyViolation", "equals": false}]}', 'The violation is an AND of requiresHumanApproval and a non-human filler: with the requirement off, an AI filler is consistent.', 720, TRUE) ON CONFLICT (conformance_test_id) DO NOTHING;
+

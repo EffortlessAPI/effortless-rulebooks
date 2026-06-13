@@ -267,6 +267,7 @@ html.show-consumers .elem-consumers{display:block}
     <li><a href="#t-changelog">Change Log</a> <span class="toc-meta">5 rules · 1 links</span></li>
     <li><a href="#t-vocabularyreconciliations">Vocabulary Reconciliation</a> <span class="toc-meta">3 rules · 0 links</span></li>
     <li><a href="#t-scenarios">Scenario</a> <span class="toc-meta">3 rules · 0 links</span></li>
+    <li><a href="#t-conformancetests">Conformance Test</a> <span class="toc-meta">3 rules · 0 links</span></li>
   </ul>
 </nav>
 <section class="entity" id="t-workflows" data-entity="Workflow">
@@ -6832,6 +6833,246 @@ html.show-consumers .elem-consumers{display:block}
       <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
     <p class="field-note elem elem-desc">JSON-encoded ordered list of raw-fact assignments this scenario applies. Each item is {class, id|match, set:{field:value,...}} where 'class' is a rulebook table (camelCase keys on the raw store), 'id' targets a row by its *Id primary key (or 'match':'first' for the singleton Workflow), and 'set' is the raw fields to assign. The backend replays this list against the active raw store, then re-reasons — the scenario NEVER sets a derived field. This is the single source of truth for what each demo scenario does; the app's picker and the apply endpoint both read it from here (same JSON-on-a-first-class-table pattern as __meta__'s JsonValue).</p>
+    </article>
+</section>
+<section class="entity" id="t-conformancetests" data-entity="Conformance Test">
+  <header class="entity-head">
+    <h2 class="entity-title">Conformance Test</h2>
+    <p class="entity-synopsis">A conformance test is identified by its name.</p>
+  </header>
+  <article class="field tone-calc" id="f-conformancetests-relativepath" data-entity="Conformance Test" data-field="Relative Path">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Relative Path</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">1 hop from ground truth</span>
+      <span class="pill pill-muted">string</span>
+      <span class="pill pill-dr">DR-106</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak</span>
+        <p class="view-body">A conformance test's relative path is computed as the literal “conformance-tests/”, followed by the <a class="ref" href="#f-conformancetests-conformancetestid">conformance test ID</a>.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In English</span>
+        <p class="view-body">&quot;conformance-tests/&quot; joined with <a class="ref" href="#f-conformancetests-conformancetestid">conformance test id</a>.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>&quot;conformance-tests/&quot; &amp; <a class="fx-chip" href="#f-conformancetests-conformancetestid">Conformance Test ID</a></div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">1</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-raw" href="#f-conformancetests-conformancetestid">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Conformance Test ID</span><span class="input-table">ConformanceTests</span></span>
+          <span class="input-en muted">Stable identifier for one conformance test — one assertion the harness runs against every execution substrate.</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-consumers elem elem-consumers">
+      <summary>Consumers <span class="count">1 direct</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-calc" href="#f-conformancetests-iri">ƒ Iri <span class="ref-pill-tbl">ConformanceTests</span></a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">1</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-raw" href="#f-conformancetests-conformancetestid">● Conformance Test ID <span class="ref-pill-tbl">ConformanceTests</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">DAG-derived location for this test row: root segment 'conformance-tests' + the primary key.</p>
+    </article>
+  <article class="field tone-calc" id="f-conformancetests-iri" data-entity="Conformance Test" data-field="Iri">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Iri</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">2 hops from ground truth</span>
+      <span class="pill pill-muted">string</span>
+      <span class="pill pill-dr">DR-107</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak</span>
+        <p class="view-body">A conformance test's iri is computed as the <a class="ref" href="#f-conformancetests-relativepath">relative path</a> with every a slash replaced by a hyphen.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In English</span>
+        <p class="view-body"><a class="ref" href="#f-conformancetests-relativepath">Relative path</a> with “/” replaced by “-”.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>SUBSTITUTE(<a class="fx-chip" href="#f-conformancetests-relativepath">Relative Path</a>, &quot;/&quot;, &quot;-&quot;)</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">1</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-calc" href="#f-conformancetests-relativepath">
+          <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Relative Path</span><span class="input-table">ConformanceTests</span></span>
+          <span class="input-en">&quot;conformance-tests/&quot; joined with conformance test id.</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">1</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-raw" href="#f-conformancetests-conformancetestid">● Conformance Test ID <span class="ref-pill-tbl">ConformanceTests</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">Slug IRI for this row, derived from RelativePath.</p>
+    </article>
+  <article class="field tone-calc" id="f-conformancetests-name" data-entity="Conformance Test" data-field="Name">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Name</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">1 hop from ground truth</span>
+      <span class="pill pill-muted">string</span>
+      <span class="pill pill-dr">DR-108</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak <span class="mech" title="Faithful but clunky wording — a flag for an optional reword pass">⚠︎ mechanical</span></span>
+        <p class="view-body">A conformance test's name is computed as the lower-cased <a class="ref" href="#f-conformancetests-displayname">display name</a> with every a space replaced by a hyphen.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In English</span>
+        <p class="view-body"><a class="ref" href="#f-conformancetests-displayname">Display name</a> lowercased with “ ” replaced by “-”.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>SUBSTITUTE(LOWER(<a class="fx-chip" href="#f-conformancetests-displayname">Display Name</a>), &quot; &quot;, &quot;-&quot;)</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">1</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-raw" href="#f-conformancetests-displayname">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Display Name</span><span class="input-table">ConformanceTests</span></span>
+          <span class="input-en muted">Human-readable test title shown in the admin console and run logs.</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">1</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-raw" href="#f-conformancetests-displayname">● Display Name <span class="ref-pill-tbl">ConformanceTests</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">Machine name derived from the display name.</p>
+    </article>
+  <article class="field tone-raw" id="f-conformancetests-displayname" data-entity="Conformance Test" data-field="Display Name">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Display Name</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Human-readable test title shown in the admin console and run logs.</p>
+    </article>
+  <article class="field tone-raw" id="f-conformancetests-featureref" data-entity="Conformance Test" data-field="Feature Ref">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Feature Ref</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Comma-separated FEATURE-COVERAGE.md ids this test witnesses (e.g. 'II-3,CQ2'). The traceability link from the article's feature inventory to an executable assertion.</p>
+    </article>
+  <article class="field tone-raw" id="f-conformancetests-section" data-entity="Conformance Test" data-field="Section">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Section</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Grouping for display: 'Sweep', 'Part I'..'Part IV', 'Closure', 'Mutation'.</p>
+    </article>
+  <article class="field tone-raw" id="f-conformancetests-testkind" data-entity="Conformance Test" data-field="Test Kind">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Test Kind</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">How the harness executes this test. 'sweep' = every row+field of TargetRef table vs the answer key; 'field-match' = one row's field vs the answer key; 'closure-contains' = a from→to pair must appear in the engine's computed transitive closure (Expect names the closure and pair); 'engines-agree' = zero value-class disagreements between the two engines; 'mutation' = apply Expect.edits to an in-memory copy of the seed facts, re-reason, and check Expect.assert — the store is NEVER written.</p>
+    </article>
+  <article class="field tone-raw" id="f-conformancetests-targetref" data-entity="Conformance Test" data-field="Target Ref">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Target Ref</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">What the test reads: 'Entity' (whole table), 'Entity/pk' (one row) or 'Entity/pk#Field' (one value). Slash/hash form on purpose — these are spec references, not foreign keys.</p>
+    </article>
+  <article class="field tone-raw" id="f-conformancetests-expect" data-entity="Conformance Test" data-field="Expect">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Expect</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Kind-specific JSON spec. Empty for sweep/field-match/engines-agree — there the ORACLE is the answer key (testing/answer-keys), never a value hardcoded here (a literal would go stale; the key regenerates). closure-contains: {closure, from, to}. mutation: {edits:[{class,id,set:{camelRawField:value}}], assert:[{class,id,field,equals}]} — same edits shape as Scenarios.Edits.</p>
+    </article>
+  <article class="field tone-raw" id="f-conformancetests-explanation" data-entity="Conformance Test" data-field="Explanation">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Explanation</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Why this test exists — what feature of the model it flexes, in one sentence.</p>
+    </article>
+  <article class="field tone-raw" id="f-conformancetests-sortorder" data-entity="Conformance Test" data-field="Sort Order">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Sort Order</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">integer</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>integer</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Display/run order within the suite.</p>
+    </article>
+  <article class="field tone-raw" id="f-conformancetests-isenabled" data-entity="Conformance Test" data-field="Is Enabled">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Is Enabled</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">boolean</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>boolean</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Disabled tests are listed but not executed (parked, not deleted — the list stays the complete spec).</p>
     </article>
 </section>
 <footer class="doc-footer">
