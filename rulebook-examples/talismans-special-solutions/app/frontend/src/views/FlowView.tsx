@@ -21,19 +21,53 @@ interface FlowViewProps {
 }
 
 export function FlowView({ sit, handlers }: FlowViewProps) {
+  // ORDER AMBIGUITY (correlates with CQ1). This left→right sequence is only a
+  // faithful "the order" when the precedence closure is TOTAL — every pair of
+  // steps comparable, i.e. n·(n−1)/2 closure pairs. When it's a partial order,
+  // steps tie on SequencePosition and this row is just one arbitrary
+  // linearization. Same check as CQ1's resolver, surfaced where the order is
+  // actually drawn — so a red CQ1 lines up with a flagged dashboard.
+  const steps = sit.steps;
+  const n = steps.length;
+  const pairs = sit.closure?.count ?? 0;
+  const needed = (n * (n - 1)) / 2;
+  const isTotal = n > 0 && pairs === needed;
+  const posCounts: Record<number, number> = {};
+  for (const s of steps) posCounts[s.position] = (posCounts[s.position] || 0) + 1;
+  const tiedCount = steps.filter((s) => posCounts[s.position] > 1).length;
+
   return (
     <div className="flow">
+      {!isTotal && n > 0 && (
+        <div className="flow-ambiguous" role="alert">
+          <b>⚠ This order is not determined.</b> The precedence closure is a{" "}
+          <b>partial</b> order ({pairs}/{needed} pairs) — {tiedCount} step(s) tie on position,
+          so the sequence below is just one arbitrary arrangement. Finish wiring the steps in the{" "}
+          <b>Closure</b> tab (reach {needed} pairs) to make this the real order.{" "}
+          <span className="muted">This is why CQ1 is failing.</span>
+        </div>
+      )}
       <div className="flow-track">
-        {sit.steps.map((s, i) => (
-          <React.Fragment key={s.id}>
-            <StepCard
-              step={s}
-              fact={sit.stepFacts[s.id] || {}}
-              handlers={handlers}
-            />
-            {i < sit.steps.length - 1 && <div className="flow-arrow">→</div>}
-          </React.Fragment>
-        ))}
+        {steps.map((s, i) => {
+          const next = steps[i + 1];
+          const ambiguousGap = !!next && s.position === next.position; // same rank → not ordered
+          return (
+            <React.Fragment key={s.id}>
+              <StepCard
+                step={s}
+                fact={sit.stepFacts[s.id] || {}}
+                handlers={handlers}
+                tied={posCounts[s.position] > 1}
+              />
+              {i < steps.length - 1 && (
+                <div className={"flow-arrow" + (ambiguousGap ? " flow-arrow--ambiguous" : "")}
+                  title={ambiguousGap ? "these two steps share a position — their order is NOT asserted" : "comes before"}>
+                  {ambiguousGap ? "∥?" : "→"}
+                </div>
+              )}
+            </React.Fragment>
+          );
+        })}
       </div>
       <p className="flow-foot muted">
         Reassign a step to an 🤖 AI to add AI-risk · open a step's ⚙ for its sign-off · the competency
@@ -47,9 +81,10 @@ interface StepCardProps {
   step: Step;
   fact: StepFact | Record<string, never>;
   handlers: Handlers;
+  tied?: boolean;
 }
 
-function StepCard({ step, fact, handlers }: StepCardProps) {
+function StepCard({ step, fact, handlers, tied }: StepCardProps) {
   const kind: AgentKind = kindOfType(step.executingAgentType);
   const isAI = kind === "ai";
   // This step REQUIRES a human sign-off (raw fact) — surface the expectation on
@@ -103,6 +138,7 @@ function StepCard({ step, fact, handlers }: StepCardProps) {
         (step.isApprovalGate ? " gate" : "") +
         (step.consistencyViolation ? " violation" : "") +
         (needsHumanUnmet ? " needs-human" : "") +
+        (tied ? " tied" : "") +
         (isAI ? " ai-risk" : "")
       }
     >
@@ -120,7 +156,7 @@ function StepCard({ step, fact, handlers }: StepCardProps) {
       {/* badges live in their own row, with right padding reserved for the gear
           so a "rule broken" / "needs human" flag is never hidden behind it */}
       <div className="sc-top">
-        <span className="sc-pos">{step.position}</span>
+        <span className={"sc-pos" + (tied ? " tied" : "")} title={tied ? "another step shares this position — order not determined" : undefined}>{step.position}{tied ? " ⚠" : ""}</span>
         {step.isApprovalGate && <span className="sc-gate">🔒 gate</span>}
         {requiresHuman && !step.consistencyViolation && (
           <span className="sc-needs" title="this step requires a human sign-off">🔒 needs human</span>

@@ -46,16 +46,34 @@ const kindOfExecType = (t: string): CqRow["kind"] =>
 const gateStep = (sit: Situation) => sit.steps.find((s) => s.isApprovalGate) || null;
 
 export const CQ_RESOLVERS: Record<string, CqResolver> = {
-  // CQ1 — all steps, in order. The order is the transitive closure of the
-  // asserted precedence edges; both the step list and the closure count are
-  // already computed.
+  // CQ1 — all steps, IN ORDER. The question demands a definite order, which only
+  // exists when the precedence closure is a TOTAL order: every pair of steps is
+  // comparable. A total order over n steps has exactly n·(n−1)/2 closure pairs.
+  // Fewer than that means a PARTIAL order — some steps tie on SequencePosition and
+  // the left-to-right sequence on the Flow dashboard is just one arbitrary
+  // linearization, not "the" order. So pass ONLY when the closure is complete.
+  // (The rulebook's ExpectedAnswer asserts the same thing: "…(10 closure pairs)".)
   "cq-1": (sit) => {
     const steps = [...sit.steps].sort((a, b) => a.position - b.position);
+    const n = steps.length;
     const pairs = sit.closure?.count ?? 0;
+    const needed = (n * (n - 1)) / 2;          // closure-pair count of a TOTAL order
+    const isTotal = n > 0 && pairs === needed;
+    // Steps sharing a SequencePosition are NOT ordered relative to each other —
+    // that's exactly the ambiguity that makes the dashboard order arbitrary.
+    const posCounts: Record<number, number> = {};
+    for (const s of steps) posCounts[s.position] = (posCounts[s.position] || 0) + 1;
+    const tied = steps.filter((s) => posCounts[s.position] > 1).length;
     return {
-      answer: `${steps.length} steps · ${pairs} ordered pairs`,
-      ok: steps.length > 0 && pairs > 0,
-      rows: steps.map((s) => ({ label: `${s.position}. ${s.title}`, kind: kindOfExecType(s.executingAgentType) })),
+      answer: isTotal
+        ? `${n} steps · fully ordered (${pairs}/${needed} pairs)`
+        : `${n} steps · PARTIAL order — ${pairs}/${needed} pairs, ${tied} step(s) ambiguous`,
+      ok: isTotal,
+      rows: steps.map((s) => ({
+        label: `${s.position}. ${s.title}`,
+        sub: posCounts[s.position] > 1 ? "⚠ tied — order not determined by the asserted edges" : undefined,
+        kind: kindOfExecType(s.executingAgentType),
+      })),
     };
   },
 

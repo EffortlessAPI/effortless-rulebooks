@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useRef } from "react";
+import React, { useMemo, useState, useEffect, useRef } from "react";
 import { kindOfType } from "../model";
 import { DagCell } from "../explainer-dag";
 import type { Situation, Handlers, Step, PrecedenceEdge, ClosurePair } from "../types";
@@ -25,6 +25,10 @@ import type { Situation, Handlers, Step, PrecedenceEdge, ClosurePair } from "../
 // only thing this view derives is presentation (which cell, which handle).
 // ===========================================================================
 
+// Nominal label colors — like the colors in a graph-coloring problem, the
+// specific hues carry no meaning; they're just a second way to tell cards apart.
+const LABEL_COLORS = ["#b692ff", "#ffc14d", "#5ad1c4", "#ff8fa3", "#7fb2ff", "#c0e35a", "#ff9d5c", "#d29bff"];
+
 interface ClosureViewProps {
   sit: Situation;
   handlers: Handlers;
@@ -33,7 +37,51 @@ interface ClosureViewProps {
 export function ClosureView({ sit, handlers }: ClosureViewProps) {
   const steps = sit.steps;
   const byId = useMemo(() => Object.fromEntries(steps.map((s) => [s.id, s])) as Record<string, Step>, [steps]);
-  const posOf = (id: string | null): number | string => byId[id ?? ""]?.position ?? "?";
+
+  // NOMINAL LABELS vs. DERIVED RANK vs. REAL STRUCTURE.
+  // `position` (s.position) is the derived SequencePosition (PrecedingStepCount + 1)
+  // — it TIES (all 1 when nothing is ordered) and reshuffles as you assert edges,
+  // so it can't name a card. We give each card a LABEL (a letter + a color)
+  // instead. But the label is purely NOMINAL — like the colors in the 3-coloring
+  // problem, any bijection works; only the precedence *relation* is real.
+  //
+  // `order` is a client-only assignment of step ids → label slot (A=0, B=1, …).
+  // It is FROZEN once set, so labels stay glued to their cards while you wire edges
+  // (stable identity). Two buttons act on it:
+  //   • Randomize  — scramble the assignment (proves labels carry no meaning;
+  //                  the closure matrix keeps the exact same pattern, just renamed).
+  //   • Relabel    — re-assign A,B,C… straight down the CURRENT flow order. Once the
+  //                  steps are fully wired, the flow order is a clean 1..n, so this
+  //                  lands you on A,B,C,D,E matching the sequence — but only then.
+  const displayOrder = useMemo(() => steps.map((s) => s.id), [steps]); // backend sorts by SequencePosition
+
+  const [order, setOrder] = useState<string[] | null>(null);
+  // Freeze to the current flow order once steps exist (and re-baseline if the step
+  // SET changes shape — added/removed). A pure rewire keeps the same length, so the
+  // frozen assignment survives and labels don't jump while you drag.
+  useEffect(() => {
+    setOrder((prev) => (prev && prev.length === steps.length ? prev : displayOrder.slice()));
+  }, [displayOrder, steps.length]);
+
+  const effectiveOrder = order && order.length === steps.length ? order : displayOrder;
+  const slotOf = useMemo(() => {
+    const m: Record<string, number> = {};
+    effectiveOrder.forEach((id, i) => { m[id] = i; });
+    return m;
+  }, [effectiveOrder]);
+  const letOf = (id: string | null): string => (id != null && slotOf[id] != null ? String.fromCharCode(65 + slotOf[id]) : "?");
+  const colorOf = (id: string | null): string => (id != null && slotOf[id] != null ? LABEL_COLORS[slotOf[id] % LABEL_COLORS.length] : "transparent");
+
+  const randomizeLabels = () => {
+    const a = effectiveOrder.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    setOrder(a);
+  };
+  // Relabel A,B,C… down the current flow order (NOT a revert to any "original").
+  const relabelInOrder = () => setOrder(displayOrder.slice());
 
   // Asserted edges (raw StepPrecedence rows) — directly editable.
   const asserted = sit.edges; // [{id, from, to}]
@@ -93,8 +141,13 @@ export function ClosureView({ sit, handlers }: ClosureViewProps) {
 
       {/* ---- THE CHAIN: drag a step's "then →" handle onto another step ---- */}
       <div className="cl-chainwrap">
-        <div className="cl-section-label">
-          Order the steps — drag a step's <span className="cl-handle-demo">then →</span> handle onto a later step
+        <div className="cl-section-label cl-section-label--row">
+          <span>Order the steps — drag a step's <span className="cl-handle-demo">then →</span> handle onto a later step</span>
+          <span className="cl-label-tools">
+            <span className="cl-label-note">labels are nominal (like graph-coloring) →</span>
+            <button className="cl-label-btn" onClick={randomizeLabels} title="Scramble the label assignment client-side — the closure structure is invariant">⤮ Randomize</button>
+            <button className="cl-label-btn cl-label-btn--ghost" onClick={relabelInOrder} title="Re-assign A,B,C… straight down the current flow order — once fully wired, that's a clean A→E">↧ Relabel A→E in order</button>
+          </span>
         </div>
         <div className="cl-chain"
           onDragEnd={() => { setDragFrom(null); setHoverTo(null); }}
@@ -111,9 +164,11 @@ export function ClosureView({ sit, handlers }: ClosureViewProps) {
                   onDragLeave={() => setHoverTo((h) => (h === s.id ? null : h))}
                   onDrop={(e: React.DragEvent<HTMLDivElement>) => { e.preventDefault(); tryAssert(dragFrom, s.id); }}
                 >
-                  <div className="cl-step-pos">{s.position}</div>
+                  <div className="cl-step-pos" title="nominal label — identifies this card; reassignable, no structural meaning"
+                    style={{ background: colorOf(s.id), borderColor: colorOf(s.id), color: "#19102e" }}>{letOf(s.id)}</div>
+                  <div className="cl-step-rank" title="derived SequencePosition — recomputed from the closure">pos {s.position}</div>
                   <div className="cl-step-title">{s.title}</div>
-                  {isHover && <div className="cl-drop-cue">drop → assert {posOf(dragFrom)} precedes {s.position}</div>}
+                  {isHover && <div className="cl-drop-cue">drop → assert {letOf(dragFrom)} precedes {letOf(s.id)}</div>}
                   {/* the draggable "then →" ordering handle */}
                   <div
                     className="cl-handle"
@@ -136,10 +191,10 @@ export function ClosureView({ sit, handlers }: ClosureViewProps) {
           {asserted.length === 0 && <span className="muted">none — drag a handle above to add one</span>}
           {asserted
             .slice()
-            .sort((a, b) => (posOf(a.from) as number) - (posOf(b.from) as number) || (posOf(a.to) as number) - (posOf(b.to) as number))
+            .sort((a, b) => letOf(a.from).localeCompare(letOf(b.from)) || letOf(a.to).localeCompare(letOf(b.to)))
             .map((e) => (
               <span key={e.id} className="cl-edge-chip">
-                {posOf(e.from)} → {posOf(e.to)}
+                {letOf(e.from)} → {letOf(e.to)}
                 <button className="cl-edge-x" title="remove this asserted edge"
                   onClick={() => handlers.removeEdge(e.id)}>×</button>
               </span>
@@ -148,13 +203,14 @@ export function ClosureView({ sit, handlers }: ClosureViewProps) {
       </div>
 
       {/* ---- THE CLOSURE MATRIX: solid = asserted, ghost = inferred -------- */}
-      <ClosureMatrix steps={steps} pairs={pairs} assertedSet={assertedSet} posOf={posOf} />
+      <ClosureMatrix steps={steps} pairs={pairs} letOf={letOf} colorOf={colorOf} />
 
       <p className="cl-foot muted">
         Solid cells are edges you <b>asserted</b>. Ghost cells the reasoner
         <b> inferred</b> by transitivity — you never stated them. Remove edge
-        {" "}{firstChainHint(asserted, posOf)} and watch a whole column of ghosts vanish:
-        the closure is recomputed, not stored.
+        {" "}{firstChainHint(asserted, letOf)} and watch a whole column of ghosts vanish:
+        the closure is recomputed, not stored. <b>Randomize the labels</b> and this
+        whole grid keeps its shape — the labels are nominal, only the ordering is real.
       </p>
     </div>
   );
@@ -163,13 +219,13 @@ export function ClosureView({ sit, handlers }: ClosureViewProps) {
 interface ClosureMatrixProps {
   steps: Step[];
   pairs: ClosurePair[];
-  assertedSet: Set<string>;
-  posOf: (id: string | null) => number | string;
+  letOf: (id: string | null) => string;
+  colorOf: (id: string | null) => string;
 }
 
 // The N×N reachability grid. One glance shows the two layers and the headline
 // inference (the corner pair you never asserted).
-function ClosureMatrix({ steps, pairs, assertedSet, posOf }: ClosureMatrixProps) {
+function ClosureMatrix({ steps, pairs, letOf, colorOf }: ClosureMatrixProps) {
   const ids = steps.map((s) => s.id);
   const lookup = useMemo(() => {
     const m: Record<string, "inferred" | "asserted"> = {};
@@ -184,19 +240,24 @@ function ClosureMatrix({ steps, pairs, assertedSet, posOf }: ClosureMatrixProps)
         {/* header row */}
         <div className="cl-mcell cl-mcorner">from ╲ to</div>
         {steps.map((s) => (
-          <div key={"h" + s.id} className="cl-mcell cl-mhead">{s.position}</div>
+          <div key={"h" + s.id} className="cl-mcell cl-mhead">
+            <span className="cl-mlabel" style={{ background: colorOf(s.id), color: "#19102e" }}>{letOf(s.id)}</span>
+          </div>
         ))}
         {/* body rows */}
         {steps.map((rs) => (
           <React.Fragment key={"r" + rs.id}>
-            <div className="cl-mcell cl-mrow" title={rs.title}>{rs.position}. <span className="cl-mrow-t">{rs.title}</span></div>
+            <div className="cl-mcell cl-mrow" title={rs.title}>
+              <span className="cl-mlabel" style={{ background: colorOf(rs.id), color: "#19102e" }}>{letOf(rs.id)}</span>
+              <span className="cl-mrow-t">{rs.title}</span>
+            </div>
             {ids.map((toId) => {
               const key = rs.id + "→" + toId;
               const state = rs.id === toId ? "self" : (lookup[key] || "none");
               const cls = "cl-mcell cl-cell " + state;
               const title =
-                state === "asserted" ? `asserted: ${rs.position} → ${posOf(toId)}`
-                : state === "inferred" ? `inferred (transitive): ${rs.position} → ${posOf(toId)} — never asserted`
+                state === "asserted" ? `asserted: ${letOf(rs.id)} → ${letOf(toId)}`
+                : state === "inferred" ? `inferred (transitive): ${letOf(rs.id)} → ${letOf(toId)} — never asserted`
                 : state === "self" ? "—"
                 : "not ordered";
               return (
@@ -219,10 +280,10 @@ function ClosureMatrix({ steps, pairs, assertedSet, posOf }: ClosureMatrixProps)
 }
 
 // Pick a representative asserted edge to name in the footer hint.
-function firstChainHint(asserted: PrecedenceEdge[], posOf: (id: string | null) => number | string): string {
+function firstChainHint(asserted: PrecedenceEdge[], letOf: (id: string | null) => string): string {
   if (!asserted.length) return "";
   const e = asserted
     .slice()
-    .sort((a, b) => (posOf(a.from) as number) - (posOf(b.from) as number))[0];
-  return `${posOf(e.from)}→${posOf(e.to)}`;
+    .sort((a, b) => letOf(a.from).localeCompare(letOf(b.from)))[0];
+  return `${letOf(e.from)}→${letOf(e.to)}`;
 }

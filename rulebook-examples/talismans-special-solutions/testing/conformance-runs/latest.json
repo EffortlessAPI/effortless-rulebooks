@@ -1,8 +1,8 @@
 {
   "summary": {
-    "startedAt": "2026-06-13T18:07:06.243Z",
-    "finishedAt": "2026-06-13T18:14:34.748Z",
-    "durationMs": 448500,
+    "startedAt": "2026-06-13T20:51:12.956Z",
+    "finishedAt": "2026-06-13T20:53:47.315Z",
+    "durationMs": 154358,
     "engines": [
       "reasoner",
       "postgres"
@@ -512,7 +512,7 @@
         {
           "engine": "both",
           "status": "pass",
-          "detail": "1848/1895 identical, 47 repr, 0 presence, 0 value diffs"
+          "detail": "1889/1895 identical, 6 repr, 0 presence, 0 value diffs"
         }
       ],
       "overall": "pass"
@@ -1340,7 +1340,7 @@
         {
           "engine": "reasoner",
           "status": "pass",
-          "detail": "match (representation)",
+          "detail": "match",
           "expected": 2,
           "actual": "2"
         },
@@ -1752,7 +1752,7 @@
         {
           "engine": "postgres",
           "status": "pass",
-          "detail": "match (representation)",
+          "detail": "match",
           "expected": "2026-01-10",
           "actual": "2026-01-10T06:00:00.000Z"
         }

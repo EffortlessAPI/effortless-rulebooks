@@ -117,9 +117,27 @@ function columnIndex(tableMap: SchemaTable): Map<string, SchemaField> {
 // pass datetimes back through as the raw stored text. We stored them as text in
 // the INSERT (see loadRawRows), and we read them back via to_char in the view?
 // No — the view selects the column as TIMESTAMPTZ. So normalize Date -> ISO.
+//
+// EXCEPTION: a `date`-typed column has NO time-of-day. The pg driver still hands
+// it back as a JS Date at server-local midnight, and toISOString() would invent
+// a midnight-in-server-tz INSTANT (2026-02-20 -> "2026-02-20T06:00:00.000Z").
+// That timestamp then leaks the server's timezone into anything that
+// concatenates the raw date — the RoleAssignments/ChangeLog `name` labels — and
+// makes the reasoner (fed these raw rows) render "...[2026-02-20T06:00:00+00:00
+// -> open]" while Postgres' own date column renders "...[2026-02-20 -> open]":
+// a spurious, machine-dependent disagreement. A date is timezone-agnostic, so we
+// hand back the bare GMT calendar day YYYY-MM-DD — matching the rulebook seed,
+// db.json, and the Postgres date column itself. (date columns are also read
+// `::text` in pgRawStore so they usually arrive as a string already; this is the
+// belt-and-suspenders path for any Date that still reaches here.)
 function normalizeValue(val: unknown, field: SchemaField | null): unknown {
   if (val === null || val === undefined) return val;
-  if (val instanceof Date) return val.toISOString();
+  if (val instanceof Date) {
+    if (field && String(field.datatype).toLowerCase() === "date") {
+      return val.toISOString().slice(0, 10);
+    }
+    return val.toISOString();
+  }
   return val;
 }
 
@@ -536,7 +554,15 @@ export async function pgRawStore(): Promise<RawDb> {
     const store: RawDb = {};
     for (const t of Object.values(sm)) {
       const { rows } = await client.query<Record<string, unknown>>(
-        `SELECT ${t.rawFields.map((f) => f.snake).join(", ")} FROM ${t.sqlTable}`
+        // A `date` column is read `::text` so Postgres formats it as the bare
+        // GMT calendar day (YYYY-MM-DD) instead of the pg driver turning it into
+        // a server-local-midnight JS Date — which toISOString() would render as
+        // a timezone-bearing instant and leak into the date-bearing `name`
+        // labels. (datetime/timestamptz columns keep their instant; see
+        // normalizeValue.)
+        `SELECT ${t.rawFields
+          .map((f) => (String(f.datatype).toLowerCase() === "date" ? `${f.snake}::text AS ${f.snake}` : f.snake))
+          .join(", ")} FROM ${t.sqlTable}`
       );
       const byCol = new Map(t.rawFields.map((f) => [f.snake, f]));
       store[t.table] = rows.map((r) => {
