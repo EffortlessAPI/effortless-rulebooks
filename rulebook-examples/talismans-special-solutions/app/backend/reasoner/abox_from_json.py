@@ -34,7 +34,16 @@ import re
 from pathlib import Path
 from typing import Any, Dict, List
 
-ERB = "http://example.org/erb#"
+# The ABox MUST use the SAME namespace the generated TBox + SHACL rules use, or
+# the rules ($this a <ns>:<Class>) never match the individuals and no computed
+# field is ever constructed. The OWL transpiler emits
+# `effortless-ntwf: <https://w3id.org/effortless-ntwf#>` (see owl/src/*.ttl); this
+# constant tracks it. (Was http://example.org/erb# — a stale namespace from
+# before the transpiler switched to the w3id IRI; the mismatch silently produced
+# raw-only individuals with every derived scalar missing, which the conformance
+# harness surfaced as 52 reasoner gaps.) The local turtle/SPARQL prefix LABEL
+# stays `erb:` for brevity — only the URI it binds to changes.
+ERB = "https://w3id.org/effortless-ntwf#"
 
 # ISO-8601 date / dateTime detection. The SHACL date math (monthsSinceModified,
 # isStale, …) uses YEAR()/MONTH()/NOW(), which only work on typed temporal
@@ -99,6 +108,16 @@ def _row_pk(row: Dict[str, Any]) -> str:
     )
 
 
+def _row_pk_field(row: Dict[str, Any]) -> str:
+    """The NAME of the row's primary-key field (workflowId, roleId, …), so the
+    serializer can force that field to a string literal — its value is the row's
+    identity, never a cross-row reference (see json_db_to_turtle)."""
+    for k, v in row.items():
+        if k.endswith("Id") and isinstance(v, str):
+            return k
+    raise ValueError(f"Row has no *Id primary-key field: {row!r}")
+
+
 def _ttl_literal(value: Any) -> str:
     """Serialize a scalar JSON value as a Turtle literal."""
     if isinstance(value, bool):
@@ -146,6 +165,7 @@ def json_db_to_turtle(db: Dict[str, Any]) -> str:
         lines.append(f"# === Individuals: {cls} ===")
         for row in rows:
             pk = _row_pk(row)
+            pk_field = _row_pk_field(row)
             triples = [f"erb:{pk} a erb:{cls}"]
             for key, value in row.items():
                 if value is None:
@@ -160,13 +180,22 @@ def json_db_to_turtle(db: Dict[str, Any]) -> str:
                 # "absent" semantics match Postgres's NULL.
                 if value == "":
                     continue
+                # The row's OWN primary-key FIELD carries its identity VALUE as a
+                # string (e.g. workflowId = "production-deployment"); it is not a
+                # reference to another row. Calc rules read it as a literal —
+                # `CONCAT("workflows/", ?workflow_id)` builds relativePath, which
+                # iri then dash-forms. If we emit it as an IRI (because the value
+                # also happens to be a PK in the pks map — it IS this row's PK),
+                # CONCAT gets a URIRef, returns nothing, and relativePath + iri
+                # silently vanish. So the PK field is ALWAYS a literal.
+                is_pk_field = key == pk_field
                 if isinstance(value, list):
                     for item in value:
                         if item == "":
                             continue
-                        triples.append(_pred_obj(key, item, pks))
+                        triples.append(_pred_obj(key, item, pks, force_literal=is_pk_field))
                 else:
-                    triples.append(_pred_obj(key, value, pks))
+                    triples.append(_pred_obj(key, value, pks, force_literal=is_pk_field))
             lines.append(" ;\n    ".join(triples) + " .")
             lines.append("")
 
@@ -195,9 +224,13 @@ def json_db_to_turtle(db: Dict[str, Any]) -> str:
     return "\n".join(lines)
 
 
-def _pred_obj(key: str, value: Any, pks: Dict[str, str]) -> str:
-    """One 'predicate object' fragment (no leading subject, no trailing dot)."""
-    if isinstance(value, str) and value in pks:
+def _pred_obj(key: str, value: Any, pks: Dict[str, str], force_literal: bool = False) -> str:
+    """One 'predicate object' fragment (no leading subject, no trailing dot).
+
+    A string value that is itself a known PK is emitted as an erb: IRI reference —
+    EXCEPT when force_literal is set (the row's own PK field), where the value is
+    the row's identity, not a reference, and calc rules need it as a literal."""
+    if not force_literal and isinstance(value, str) and value in pks:
         return f"erb:{_lname(key)} erb:{value}"
     return f"erb:{_lname(key)} {_ttl_literal(value)}"
 

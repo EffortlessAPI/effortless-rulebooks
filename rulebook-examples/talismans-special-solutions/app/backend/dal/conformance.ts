@@ -133,6 +133,16 @@ export function classify(a: unknown, b: unknown, ftype: string): Classification 
   if (a === b) return "equal";
   if (a == null && b == null) return "equal";
 
+  // "No value" has three spellings across the substrates: null, undefined, and
+  // the empty string. The reasoner SKIPS empty FK/lookup slots entirely (its
+  // abox_from_json drops "" so OWL absence == Postgres NULL); Postgres / the
+  // answer key store the same emptiness as "". null vs "" vs absent is the SAME
+  // fact — not a disagreement. (A populated value vs empty is handled below as a
+  // presence gap, which is different from both-empty.)
+  const aBlank = a == null || a === "";
+  const bBlank = b == null || b === "";
+  if (aBlank && bBlank) return "equal";
+
   // same content, different scalar spelling (41 vs "41", true vs "true")
   const sa = a == null ? null : String(a);
   const sb = b == null ? null : String(b);
