@@ -570,6 +570,17 @@ button, input, select { font: inherit; }
 .sc-effect.safe { color: var(--muted); }
 .sc-effect.needs { color: var(--human); background: color-mix(in srgb, var(--human) 12%, transparent); margin-top: 5px; }
 .sc-effect.broken { color: var(--risk); background: #f0653f15; margin-top: 5px; }
+
+/* ---- step card: approval-gate detail ------------------------------------ */
+/* Muted key / bright value rows for the gate's defining properties. Tinted
+   with the gate hue (--risk) so it reads as "this card is a gate". */
+.sc-gate-detail { margin: 8px 0 0; padding: 6px 8px; border-radius: 7px;
+  background: #f0653f10; box-shadow: inset 0 0 0 1px #f0653f22; }
+.sc-gate-row { display: flex; justify-content: space-between; align-items: baseline; gap: 10px;
+  font-size: 11.5px; line-height: 1.5; }
+.sc-gate-k { color: var(--muted); text-transform: lowercase; letter-spacing: .01em; }
+.sc-gate-v { color: var(--text); font-weight: 650; text-align: right; }
+
 .sc-pop-note { font-size: 11px; line-height: 1.35; }
 .flow-foot { font-size: 12px; margin: 14px 4px 0; }
 

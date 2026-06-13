@@ -46,6 +46,10 @@ export interface Step {
   durationMinutes: number;
   isApprovalGate: boolean;
   gateName: string | null;
+  // Gate-only properties (null on non-gate steps). Resolved to labels server-side.
+  escalationThresholdHours: number | null;
+  gateRole: string | null;
+  gateApproverHuman: string | null;
   consistencyViolation: boolean;
   precedes: string[];
 }

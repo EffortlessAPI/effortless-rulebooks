@@ -184,6 +184,20 @@ app.get("/api/story", wrap(async (req, res) => {
         durationMinutes: s.stepDurationMinutes,
         isApprovalGate: !!gate,
         gateName: gate ? gate.displayName : null,
+        // The gate's defining properties. `escalationThresholdHours` is a raw field
+        // the substrate emits directly. The two lookups — GateRole and
+        // GateApproverHuman — are NOT in the engines' ApprovalGates individuals
+        // payload (both substrates currently drop lookup columns from that export),
+        // so we resolve them by following the SAME FK chain the rulebook formula
+        // declares, over individuals already in hand:
+        //   GateRole          = WorkflowStep.AssignedRole          → this step's role
+        //   GateApproverHuman = GateRole.FilledByHumanAgent        → this step's human filler
+        // Because the gate is matched to `s` by workflowStep === s.workflowStepId,
+        // the gate's step IS this step, so `filler` already carries both. This is
+        // chasing existing FKs, not re-deriving a calc the view owns.
+        escalationThresholdHours: gate ? gate.escalationThresholdHours ?? null : null,
+        gateRole: gate ? (filler ? filler.roleName : s.assignedRole) : null,
+        gateApproverHuman: gate ? (filler && filler.agent?.kind === "human" ? filler.agent.name : null) : null,
         consistencyViolation: !!s.approvalConsistencyViolation,
         precedes: Array.isArray(s.precedesStep) ? s.precedesStep : s.precedesStep ? [s.precedesStep] : [],
       };
