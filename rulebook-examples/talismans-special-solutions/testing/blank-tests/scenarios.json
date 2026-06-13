@@ -12,6 +12,18 @@
     "name": null
   },
   {
+    "scenario_id": "ai-release-manager",
+    "label": "AI fills the release gate",
+    "icon": "\ud83e\udd16",
+    "explanation": "Hands the Release Manager role \u2014 the human authority on the approval gate \u2014 to an AI agent. The gate approver is no longer human (CQ2), and because that role also executes step 3, the AI-step count ticks up (CQ3). The two answers cannot be decoupled: the gate's approver IS a step executor.",
+    "sort_order": 20,
+    "is_reset": false,
+    "edits": "[{\"class\": \"Roles\", \"id\": \"ntwf-release-manager-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"ntwf-risk-ai\", \"filledByAutomatedPipeline\": \"\"}}]",
+    "relative_path": null,
+    "iri": null,
+    "name": null
+  },
+  {
     "scenario_id": "all-human",
     "label": "All-human release",
     "icon": "\ud83e\uddd1",
@@ -24,6 +36,78 @@
     "name": null
   },
   {
+    "scenario_id": "break-delegation",
+    "label": "Cut the escalation chain",
+    "icon": "\u2702\ufe0f",
+    "explanation": "Removes the Release Manager \u2192 VP Engineering delegation edge. The escalation chain (and its transitive closure) collapses to the unreachable tail. Demonstrates CQ6: delegation is a first-class edge, and the chain answer is its closure.",
+    "sort_order": 60,
+    "is_reset": false,
+    "edits": "[{\"class\": \"Roles\", \"id\": \"ntwf-release-manager-role\", \"set\": {\"delegatesTo\": \"\"}}]",
+    "relative_path": null,
+    "iri": null,
+    "name": null
+  },
+  {
+    "scenario_id": "break-derivation",
+    "label": "Break the provenance chain",
+    "icon": "\u26d3\ufe0f",
+    "explanation": "Clears the wasDerivedFrom link on the Legal Clearance Certificate. The PROV derivation chain splits in two \u2014 the downstream artifacts can no longer trace back to the risk report. Demonstrates CQ4: derivation is an asserted edge, and the chain answer follows it.",
+    "sort_order": 40,
+    "is_reset": false,
+    "edits": "[{\"class\": \"WorkflowArtifacts\", \"id\": \"artifact-legal-clearance\", \"set\": {\"derivedFromArtifact\": \"\"}}]",
+    "relative_path": null,
+    "iri": null,
+    "name": null
+  },
+  {
+    "scenario_id": "dataset-unconsumed",
+    "label": "Detach the risk dataset",
+    "icon": "\ud83d\udce6",
+    "explanation": "Clears the dataset's consumed-by-step link. The Q1 Risk Metrics dataset is no longer consumed by any step. Demonstrates CQ8: dataset consumption is an asserted relationship, and the answer is exactly which steps point at it.",
+    "sort_order": 80,
+    "is_reset": false,
+    "edits": "[{\"class\": \"Datasets\", \"id\": \"ds-q1-2026-risk-metrics\", \"set\": {\"consumedBySteps\": \"\"}}]",
+    "relative_path": null,
+    "iri": null,
+    "name": null
+  },
+  {
+    "scenario_id": "human-risk-step",
+    "label": "Hand the risk step to a human",
+    "icon": "\ud83e\uddd1",
+    "explanation": "Reassigns the Risk Analysis role from its AI agent to a human. The AI-executed step count drops from 2 to 1 \u2014 and only that. Demonstrates CQ3: the count is a live rollup over which steps are AI-executed, not a stored number.",
+    "sort_order": 30,
+    "is_reset": false,
+    "edits": "[{\"class\": \"Roles\", \"id\": \"ntwf-risk-analysis-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-david-chen\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}]",
+    "relative_path": null,
+    "iri": null,
+    "name": null
+  },
+  {
+    "scenario_id": "legal-to-engineering",
+    "label": "Move legal review under engineering",
+    "icon": "\ud83c\udfdb\ufe0f",
+    "explanation": "Re-owns the Legal Compliance role from the Legal dept to Engineering. With zero legal-owned steps, the cross-cutting 'involves engineering AND legal' check flips to No. Demonstrates CQ7: the boolean is an AND over department-owned step counts, derived from role ownership.",
+    "sort_order": 70,
+    "is_reset": false,
+    "edits": "[{\"class\": \"Roles\", \"id\": \"ntwf-legal-compliance-role\", \"set\": {\"ownedBy\": \"ntwf-engineering\"}}]",
+    "relative_path": null,
+    "iri": null,
+    "name": null
+  },
+  {
+    "scenario_id": "reroute-ordering",
+    "label": "Re-route the last ordering edge",
+    "icon": "\ud83d\udd00",
+    "explanation": "Re-points the final precedence edge so step 5 follows step 1 instead of step 4. The transitive closure shrinks (10 \u2192 7 ordered pairs) and the inferred positions recompute \u2014 nothing else moves. Demonstrates CQ1: order is a projection of the edges.",
+    "sort_order": 10,
+    "is_reset": false,
+    "edits": "[{\"class\": \"StepPrecedence\", \"id\": \"prec-4-5\", \"set\": {\"fromStep\": \"prod-deploy-step-1\"}}]",
+    "relative_path": null,
+    "iri": null,
+    "name": null
+  },
+  {
     "scenario_id": "reset",
     "label": "Reset to baseline",
     "icon": "\u21ba",
@@ -31,6 +115,18 @@
     "sort_order": 5,
     "is_reset": true,
     "edits": "[{\"class\": \"Workflows\", \"match\": \"first\", \"set\": {\"modified\": \"2026-04-03T00:00:00-05:00\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-release-manager-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-maria-gonzalez\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-risk-analysis-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"ntwf-risk-ai\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-legal-compliance-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-james-okafor\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-ci-executor-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"ntwf-ci-pipeline\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-vp-engineering-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-david-chen\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-cto-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-sarah-kim\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-deployment-health-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"ntwf-health-ai\", \"filledByAutomatedPipeline\": \"\"}}]",
+    "relative_path": null,
+    "iri": null,
+    "name": null
+  },
+  {
+    "scenario_id": "stale-docs",
+    "label": "Let the docs go stale",
+    "icon": "\ud83d\udcc5",
+    "explanation": "Backdates the workflow's last-modified date past its staleness window. IsStale flips to true \u2014 and only that derived flag. Demonstrates CQ5: staleness is MonthsSinceModified vs the threshold, recomputed against the clock, never asserted.",
+    "sort_order": 50,
+    "is_reset": false,
+    "edits": "[{\"class\": \"Workflows\", \"match\": \"first\", \"set\": {\"modified\": \"2023-01-01T00:00:00-06:00\"}}]",
     "relative_path": null,
     "iri": null,
     "name": null

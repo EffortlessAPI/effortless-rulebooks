@@ -219,7 +219,7 @@
       "iri",
       "name"
     ],
-    "record_count": 4
+    "record_count": 12
   },
   "competency_questions": {
     "primary_key": "competency_question_id",
@@ -229,6 +229,15 @@
       "name"
     ],
     "record_count": 8
+  },
+  "scenario_cq_effects": {
+    "primary_key": "scenario_cq_effect_id",
+    "computed_columns": [
+      "relative_path",
+      "iri",
+      "name"
+    ],
+    "record_count": 12
   },
   "conformance_tests": {
     "primary_key": "conformance_test_id",
