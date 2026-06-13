@@ -799,7 +799,7 @@ effortless-ntwf:sequence-position a effortless-ntwf:ConformanceTests ;
     effortless-ntwf:testKind "field-match" ;
     effortless-ntwf:targetRef "WorkflowSteps/prod-deploy-step-4#SequencePosition" ;
     effortless-ntwf:expect "" ;
-    effortless-ntwf:explanation "Step position is DERIVED from the precedence closure (PrecedingStepCount + 1), not a hand-asserted ordinal; step 4 resolves to 4 in both substrates because four steps transitively precede it." ;
+    effortless-ntwf:explanation "The resolved SequencePosition (override-if-pinned, else PrecedingStepCount+1) computes identically in both substrates; step 4 has four transitive predecessors and no override, so it resolves to 4." ;
     effortless-ntwf:sortOrder 480 ;
     effortless-ntwf:isEnabled true .
 

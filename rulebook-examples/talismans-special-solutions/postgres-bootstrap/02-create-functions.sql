@@ -62,6 +62,15 @@ RETURNS TEXT AS $$
   SELECT (SELECT display_name FROM workflow_steps WHERE workflow_step_id = p_workflow_step_id);
 $$ LANGUAGE sql STABLE;
 
+-- get_workflow_steps_sequence_position_override
+-- Helper function: Get SequencePositionOverride from WorkflowSteps by WorkflowStepId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_workflow_steps_sequence_position_override(p_workflow_step_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (SELECT sequence_position_override FROM workflow_steps WHERE workflow_step_id = p_workflow_step_id);
+$$ LANGUAGE sql STABLE;
+
 -- get_workflow_steps_requires_human_approval
 -- Helper function: Get RequiresHumanApproval from WorkflowSteps by WorkflowStepId
 -- Used for join-free cross-table references in aggregations
@@ -581,6 +590,16 @@ RETURNS INTEGER AS $$
   SELECT ((SELECT COUNT(*) FROM vw_step_precedence_closure WHERE to_id = (SELECT NULLIF(workflow_step_id, '') FROM workflow_steps WHERE workflow_step_id = p_workflow_step_id)))::integer;
 $$ LANGUAGE sql STABLE;
 
+-- calc_workflow_steps_inferred_sequence_position
+-- Field: WorkflowSteps.InferredSequencePosition
+-- Type: calculated | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_workflow_steps_inferred_sequence_position(p_workflow_step_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((COALESCE(CASE WHEN (calc_workflow_steps_preceding_step_count(p_workflow_step_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_workflow_steps_preceding_step_count(p_workflow_step_id))::numeric ELSE NULL END, 0) + COALESCE(1, 0)))::integer;
+$$ LANGUAGE sql STABLE;
+
 -- calc_workflow_steps_sequence_position
 -- Field: WorkflowSteps.SequencePosition
 -- Type: calculated | DataType: integer | Returns: INTEGER
@@ -588,7 +607,7 @@ $$ LANGUAGE sql STABLE;
 
 CREATE OR REPLACE FUNCTION calc_workflow_steps_sequence_position(p_workflow_step_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT ((COALESCE(CASE WHEN (calc_workflow_steps_preceding_step_count(p_workflow_step_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_workflow_steps_preceding_step_count(p_workflow_step_id))::numeric ELSE NULL END, 0) + COALESCE(1, 0)))::integer;
+  SELECT (CASE WHEN (SELECT sequence_position_override FROM workflow_steps WHERE workflow_step_id = p_workflow_step_id) IS NOT NULL THEN ((SELECT sequence_position_override FROM workflow_steps WHERE workflow_step_id = p_workflow_step_id))::text ELSE (calc_workflow_steps_inferred_sequence_position(p_workflow_step_id))::text END)::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_workflow_steps_executing_agent_type

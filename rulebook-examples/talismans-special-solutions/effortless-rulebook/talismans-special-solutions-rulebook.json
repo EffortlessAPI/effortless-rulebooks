@@ -413,14 +413,32 @@
         "formula": "=COUNTIFS(vw_step_precedence_closure!{{ToId}}, WorkflowSteps!{{WorkflowStepId}})"
       },
       {
+        "name": "InferredSequencePosition",
+        "datatype": "integer",
+        "type": "calculated",
+        "nullable": true,
+        "important": true,
+        "Description": "The step's ordinal position INFERRED purely from the StepPrecedence edges: 1 + PrecedingStepCount (one plus the number of steps that transitively precede it in vw_step_precedence_closure). On the linear Production Deployment chain: 1,2,3,4,5 — no integer is typed; it is a projection of the asserted ordering edges. This is the DEFAULT position; SequencePositionOverride can pin a different value where the inference is ambiguous (e.g. a branch produces ties). Maps to ntwf:inferredSequencePosition (an effortless extension of the article's ordering).",
+        "explanation_rich": "**The position the edges imply.** `{{PrecedingStepCount}} + 1`: a step with no predecessors is 1; each transitive predecessor bumps it by one. The four asserted edges close to ancestor counts 0,1,2,3,4 so positions fall out as 1..5 — computed by the substrate, never written down. This is the *default*: the resolved `SequencePosition` uses it unless a human pins `SequencePositionOverride`.",
+        "formula": "={{PrecedingStepCount}} + 1"
+      },
+      {
+        "name": "SequencePositionOverride",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true,
+        "Description": "OPTIONAL hand-asserted ordinal position — the article's pure ntwf:sequencePosition functional datatype property, preserved as an override slot. NULL on the linear Production Deployment chain (the inference is unambiguous, so nothing is pinned). When set, it wins over InferredSequencePosition in the resolved SequencePosition — this is how a modeler recovers the owl:FunctionalProperty 'exactly one distinct position per step' guarantee on a partial order / branch where the inferred rank would tie. Maps to ntwf:sequencePosition (the article's asserted functional property).",
+        "explanation_rich": "**The article's asserted position, kept as an override.** The original NTWF model asserts `ntwf:sequencePosition` directly as a functional integer. Rather than delete that capability, it survives here as an optional override: null by default (let the edges decide), but a pinned value takes precedence in the resolved `SequencePosition`. Asserting it is an explicit, visible decision — not a silent second encoding that could drift from the edges."
+      },
+      {
         "name": "SequencePosition",
         "datatype": "integer",
         "type": "calculated",
         "nullable": true,
         "important": true,
-        "Description": "Integer ordinal position of the step within its workflow, DERIVED from the StepPrecedence edges rather than hand-asserted: 1 + PrecedingStepCount (one plus the number of steps that transitively precede it in vw_step_precedence_closure). On the linear Production Deployment chain this yields 1,2,3,4,5 — but no integer was typed; the position is a projection of the asserted ordering edges. Maps to ntwf:sequencePosition (owl:FunctionalProperty). This makes the StepPrecedence edges the single source of order: change an edge and the position recomputes; there is no separate raw ordinal that could drift from the edges.",
-        "explanation_rich": "**Position is derived from the order, not asserted alongside it.** Previously a raw integer typed next to the `StepPrecedence` edges — two independent encodings of the same ordering that nothing forced to agree. Now it is `{{PrecedingStepCount}} + 1`: one plus the number of steps that transitively come before it. A step with no predecessors is position 1; each transitive predecessor bumps it by one. The four asserted edges close to ancestor counts 0,1,2,3,4 and the positions fall out as 1..5 — computed by the same substrate that built the closure, never written down. Remove the 4→5 edge and step 5 drops to position 1 (it now has no predecessors): the ordering edges are the only source of truth.",
-        "formula": "={{PrecedingStepCount}} + 1"
+        "Description": "The effective ordinal position used everywhere (views, UI, competency questions): the hand-asserted SequencePositionOverride when present, otherwise the edge-derived InferredSequencePosition. IF(SequencePositionOverride <> \"\", SequencePositionOverride, InferredSequencePosition). This is the honest resolution of the two ways order can be stated: the inference is the default computed from the SSoT (the StepPrecedence edges), and an explicit override only overrides — never a silent guess. On the Production Deployment chain all overrides are null, so this equals InferredSequencePosition = 1,2,3,4,5. Maps to ntwf:sequencePosition for consumers.",
+        "explanation_rich": "**Override-or-inferred, decided explicitly.** `IF(SequencePositionOverride <> \"\", SequencePositionOverride, InferredSequencePosition)`. The inferred value is the deterministically-correct default *computed from the SSoT* (the precedence edges); the override is an explicit asserted decision that wins when present. This is the sanctioned 'computed default + manual override' pattern (CLAUDE.md: *defaults derived from the SSoT are NOT fallbacks*), not the silent substitution it forbids. Here every override is null, so the resolved position IS the inference: 1,2,3,4,5.",
+        "formula": "=IF({{SequencePositionOverride}} <> \"\", {{SequencePositionOverride}}, {{InferredSequencePosition}})"
       },
       {
         "name": "AssignedRole",
@@ -4080,7 +4098,7 @@
         "TestKind": "field-match",
         "TargetRef": "WorkflowSteps/prod-deploy-step-4#SequencePosition",
         "Expect": "",
-        "Explanation": "Step position is DERIVED from the precedence closure (PrecedingStepCount + 1), not a hand-asserted ordinal; step 4 resolves to 4 in both substrates because four steps transitively precede it.",
+        "Explanation": "The resolved SequencePosition (override-if-pinned, else PrecedingStepCount+1) computes identically in both substrates; step 4 has four transitive predecessors and no override, so it resolves to 4.",
         "SortOrder": 480,
         "IsEnabled": true,
         "RelativePath": "conformance-tests/sequence-position",

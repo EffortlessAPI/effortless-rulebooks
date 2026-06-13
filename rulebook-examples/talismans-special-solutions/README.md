@@ -743,15 +743,27 @@ In ontology form, this appears as a class/subclass relationship.
 
 ### 4. Step Ordering as First-Class Structure
 
-Step order is modeled as explicit precedence edges — and the per-step *position* is **derived from
-those edges**, not asserted as a separate integer. `SequencePosition` is computed as
-`PrecedingStepCount + 1`, where `PrecedingStepCount` counts how many steps transitively precede this
-one in the closure (`vw_step_precedence_closure`). The four asserted edges close to ancestor counts
-`0,1,2,3,4`, so the positions fall out as `1,2,3,4,5` — no ordinal is ever typed. The `StepPrecedence`
-edges are the single source of order: change an edge and the position recomputes, with no separate
-raw ordinal that could drift from the edges. (This is a deliberate strengthening of the article,
-which models `ntwf:sequencePosition` as an independently-asserted functional property; here it is a
-projection of `ntwf:precedesStep`.)
+Step order is modeled as explicit precedence edges, and the per-step *position* is resolved from
+those edges **with an explicit, honest override**. Three fields express it:
+
+- **`InferredSequencePosition`** = `PrecedingStepCount + 1`, where `PrecedingStepCount` counts how many
+  steps transitively precede this one in the closure (`vw_step_precedence_closure`). The four asserted
+  edges close to ancestor counts `0,1,2,3,4`, so the inferred positions fall out as `1,2,3,4,5` — no
+  ordinal is ever typed. This is the **default**, computed purely from the `StepPrecedence` edges.
+- **`SequencePositionOverride`** = the article's pure `ntwf:sequencePosition` functional integer,
+  preserved as an optional override slot (null on this chain). It is how a modeler recovers the
+  "exactly one distinct position per step" guarantee on a *branch*, where the inferred rank would tie.
+- **`SequencePosition`** (used everywhere — views, UI, competency questions) =
+  `IF(SequencePositionOverride <> "", SequencePositionOverride, InferredSequencePosition)`: the
+  asserted value when pinned, otherwise the edge-derived default.
+
+This is the honest resolution of the two ways order can be stated. The inference is the
+deterministically-correct default *computed from the SSoT* (the edges); the override is an explicit,
+visible decision that only overrides — never a silent second encoding that could drift. That is the
+sanctioned "computed default + manual override" pattern, **not** a fallback. It keeps the article's
+asserted property intact *and* makes `ntwf:precedesStep` the source of order by default — both
+substrates (Postgres and the OWL reasoner) compute the resolved position identically, with or without
+an override.
 
 That allows transitive closure:
 

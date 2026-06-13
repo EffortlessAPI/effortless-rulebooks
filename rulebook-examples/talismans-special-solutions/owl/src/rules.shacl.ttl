@@ -381,7 +381,7 @@ effortless-ntwf:ChangeLogShape a sh:NodeShape ;
             WHERE {
     $this a effortless-ntwf:ChangeLog .
     OPTIONAL { $this effortless-ntwf:changeKind ?change_kind . }
-                BIND((REPLACE(STR(?change_kind), "^.*#", "") = "major") AS ?_result)
+                BIND((REPLACE(COALESCE(STR(?change_kind), ""), "^.*#", "") = "major") AS ?_result)
             }
         """ ;
     ] ;
@@ -398,7 +398,7 @@ effortless-ntwf:ChangeLogShape a sh:NodeShape ;
             WHERE {
     $this a effortless-ntwf:ChangeLog .
     OPTIONAL { $this effortless-ntwf:changeKind ?change_kind . }
-                BIND(((REPLACE(STR(?change_kind), "^.*#", "") = "patch") || (REPLACE(STR(?change_kind), "^.*#", "") = "minor")) AS ?_result)
+                BIND(((REPLACE(COALESCE(STR(?change_kind), ""), "^.*#", "") = "patch") || (REPLACE(COALESCE(STR(?change_kind), ""), "^.*#", "") = "minor")) AS ?_result)
             }
         """ ;
     ] .
@@ -673,7 +673,7 @@ effortless-ntwf:GovernanceRolesShape a sh:NodeShape ;
             WHERE {
     $this a effortless-ntwf:GovernanceRoles .
     OPTIONAL { $this effortless-ntwf:kind ?kind . }
-                BIND((REPLACE(STR(?kind), "^.*#", "") = "Authority") AS ?_result)
+                BIND((REPLACE(COALESCE(STR(?kind), ""), "^.*#", "") = "Authority") AS ?_result)
             }
         """ ;
     ] .
@@ -878,7 +878,7 @@ effortless-ntwf:RoleAssignmentsShape a sh:NodeShape ;
     $this a effortless-ntwf:RoleAssignments .
     OPTIONAL { $this effortless-ntwf:fillerType ?filler_type . }
     OPTIONAL { $this effortless-ntwf:priorFillerType ?prior_filler_type . }
-                BIND(((!((!BOUND(?prior_filler_type) || STR(?prior_filler_type) = ""))) && (REPLACE(STR(?prior_filler_type), "^.*#", "") = "AIAgent") && (REPLACE(STR(?filler_type), "^.*#", "") = "HumanAgent")) AS ?_result)
+                BIND(((!((!BOUND(?prior_filler_type) || STR(?prior_filler_type) = ""))) && (REPLACE(COALESCE(STR(?prior_filler_type), ""), "^.*#", "") = "AIAgent") && (REPLACE(COALESCE(STR(?filler_type), ""), "^.*#", "") = "HumanAgent")) AS ?_result)
             }
         """ ;
     ] .
@@ -1444,6 +1444,23 @@ effortless-ntwf:WorkflowStepsShape a sh:NodeShape ;
     ] ;
     sh:rule [
         a sh:SPARQLRule ;
+        rdfs:label "rule_WorkflowSteps_InferredSequencePosition" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:inferredSequencePosition ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:WorkflowSteps .
+    OPTIONAL { $this effortless-ntwf:precedingStepCount ?preceding_step_count . }
+                BIND((?preceding_step_count + 1) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
         rdfs:label "rule_WorkflowSteps_SequencePosition" ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
@@ -1454,8 +1471,9 @@ effortless-ntwf:WorkflowStepsShape a sh:NodeShape ;
             }
             WHERE {
     $this a effortless-ntwf:WorkflowSteps .
-    OPTIONAL { $this effortless-ntwf:precedingStepCount ?preceding_step_count . }
-                BIND((?preceding_step_count + 1) AS ?_result)
+    OPTIONAL { $this effortless-ntwf:inferredSequencePosition ?inferred_sequence_position . }
+    OPTIONAL { $this effortless-ntwf:sequencePositionOverride ?sequence_position_override . }
+                BIND(IF((REPLACE(COALESCE(STR(?sequence_position_override), ""), "^.*#", "") != ""), ?sequence_position_override, ?inferred_sequence_position) AS ?_result)
             }
         """ ;
     ] ;
@@ -1637,7 +1655,7 @@ effortless-ntwf:WorkflowStepsShape a sh:NodeShape ;
             WHERE {
     $this a effortless-ntwf:WorkflowSteps .
     OPTIONAL { $this effortless-ntwf:owningDepartment ?owning_department . }
-                BIND((REPLACE(STR(?owning_department), "^.*#", "") = "ntwf-legal-dept") AS ?_result)
+                BIND((REPLACE(COALESCE(STR(?owning_department), ""), "^.*#", "") = "ntwf-legal-dept") AS ?_result)
             }
         """ ;
     ] ;
@@ -1654,7 +1672,7 @@ effortless-ntwf:WorkflowStepsShape a sh:NodeShape ;
             WHERE {
     $this a effortless-ntwf:WorkflowSteps .
     OPTIONAL { $this effortless-ntwf:owningDepartment ?owning_department . }
-                BIND((REPLACE(STR(?owning_department), "^.*#", "") = "ntwf-engineering") AS ?_result)
+                BIND((REPLACE(COALESCE(STR(?owning_department), ""), "^.*#", "") = "ntwf-engineering") AS ?_result)
             }
         """ ;
     ] .
@@ -2214,4 +2232,4 @@ effortless-ntwf:WorkflowStepsCardinalityShape a sh:NodeShape ;
     sh:targetClass effortless-ntwf:WorkflowSteps ;
     sh:property [ sh:path effortless-ntwf:workflow ; sh:maxCount 1 ] .
 
-# Generated 113 SHACL rules
+# Generated 114 SHACL rules

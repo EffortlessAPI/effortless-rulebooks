@@ -1295,11 +1295,24 @@ effortless-ntwf:precedingStepCount a owl:DatatypeProperty ;
     rdfs:comment "Number of steps that TRANSITIVELY precede this step in the ntwf:precedesStep ordering — a rollup over the closure view vw_step_precedence_closure counting rows whose to_id is this step (i.e. this step's ancestors). On the linear Production Deployment chain: 0,1,2,3,4. Derived purely from the asserted StepPrecedence edges via their transitive closure; nothing is hand-entered. SequencePosition is this + 1." .
     # calculated: aggregation
 
+effortless-ntwf:inferredSequencePosition a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:WorkflowSteps ;
+    rdfs:range xsd:integer ;
+    rdfs:label "InferredSequencePosition" ;
+    rdfs:comment "The step's ordinal position INFERRED purely from the StepPrecedence edges: 1 + PrecedingStepCount (one plus the number of steps that transitively precede it in vw_step_precedence_closure). On the linear Production Deployment chain: 1,2,3,4,5 — no integer is typed; it is a projection of the asserted ordering edges. This is the DEFAULT position; SequencePositionOverride can pin a different value where the inference is ambiguous (e.g. a branch produces ties). Maps to ntwf:inferredSequencePosition (an effortless extension of the article's ordering)." .
+    # calculated: calculated
+
+effortless-ntwf:sequencePositionOverride a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:WorkflowSteps ;
+    rdfs:range xsd:integer ;
+    rdfs:label "SequencePositionOverride" ;
+    rdfs:comment "OPTIONAL hand-asserted ordinal position — the article's pure ntwf:sequencePosition functional datatype property, preserved as an override slot. NULL on the linear Production Deployment chain (the inference is unambiguous, so nothing is pinned). When set, it wins over InferredSequencePosition in the resolved SequencePosition — this is how a modeler recovers the owl:FunctionalProperty 'exactly one distinct position per step' guarantee on a partial order / branch where the inferred rank would tie. Maps to ntwf:sequencePosition (the article's asserted functional property)." .
+
 effortless-ntwf:sequencePosition a owl:DatatypeProperty ;
     rdfs:domain effortless-ntwf:WorkflowSteps ;
     rdfs:range xsd:integer ;
     rdfs:label "SequencePosition" ;
-    rdfs:comment "Integer ordinal position of the step within its workflow, DERIVED from the StepPrecedence edges rather than hand-asserted: 1 + PrecedingStepCount (one plus the number of steps that transitively precede it in vw_step_precedence_closure). On the linear Production Deployment chain this yields 1,2,3,4,5 — but no integer was typed; the position is a projection of the asserted ordering edges. Maps to ntwf:sequencePosition (owl:FunctionalProperty). This makes the StepPrecedence edges the single source of order: change an edge and the position recomputes; there is no separate raw ordinal that could drift from the edges." .
+    rdfs:comment "The effective ordinal position used everywhere (views, UI, competency questions): the hand-asserted SequencePositionOverride when present, otherwise the edge-derived InferredSequencePosition. IF(SequencePositionOverride <> \"\", SequencePositionOverride, InferredSequencePosition). This is the honest resolution of the two ways order can be stated: the inference is the default computed from the SSoT (the StepPrecedence edges), and an explicit override only overrides — never a silent guess. On the Production Deployment chain all overrides are null, so this equals InferredSequencePosition = 1,2,3,4,5. Maps to ntwf:sequencePosition for consumers." .
     # calculated: calculated
 
 effortless-ntwf:assignedRole a owl:ObjectProperty ;

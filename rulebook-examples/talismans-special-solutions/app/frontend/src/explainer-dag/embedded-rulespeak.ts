@@ -632,11 +632,11 @@ export const rulespeakFields: Record<string, RuleSpeakFieldRule> = {
     ],
     "structure": null
   },
-  "WorkflowSteps.SequencePosition": {
+  "WorkflowSteps.InferredSequencePosition": {
     "table": "WorkflowSteps",
-    "field": "SequencePosition",
+    "field": "InferredSequencePosition",
     "kind": "formula",
-    "rule": "A workflow step\u0027s sequence position is computed as the preceding step count plus 1.",
+    "rule": "A workflow step\u0027s inferred sequence position is computed as the preceding step count plus 1.",
     "mechanical": false,
     "refs": [
       {
@@ -646,6 +646,43 @@ export const rulespeakFields: Record<string, RuleSpeakFieldRule> = {
       }
     ],
     "structure": null
+  },
+  "WorkflowSteps.SequencePosition": {
+    "table": "WorkflowSteps",
+    "field": "SequencePosition",
+    "kind": "formula",
+    "rule": "The workflow step\u0027s sequence position is determined by the following priority:\n1. the sequence position override, if the sequence position override has a value;\n2. otherwise the inferred sequence position.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "WorkflowSteps",
+        "field": "SequencePositionOverride",
+        "label": "sequence position override"
+      },
+      {
+        "table": "WorkflowSteps",
+        "field": "InferredSequencePosition",
+        "label": "inferred sequence position"
+      }
+    ],
+    "structure": {
+      "kind": "priority",
+      "headline": "The workflow step\u0027s sequence position is determined by the following priority:",
+      "cases": [
+        {
+          "value": "the sequence position override",
+          "when": {
+            "kind": "leaf",
+            "text": "the sequence position override has a value"
+          }
+        },
+        {
+          "value": "the inferred sequence position",
+          "when": null
+        }
+      ],
+      "children": null
+    }
   },
   "WorkflowSteps.ExecutingHumanAgent": {
     "table": "WorkflowSteps",

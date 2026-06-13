@@ -551,10 +551,18 @@ def compile_to_sparql(expr: ExprNode, field_bindings: Dict[str, str] = None) -> 
             right_is_field = isinstance(expr.right, FieldRef)
             left_is_str = isinstance(expr.left, LiteralString)
             right_is_str = isinstance(expr.right, LiteralString)
+            # COALESCE(STR(x), "") makes the wrapper NULL-SAFE: an UNBOUND field
+            # (an OPTIONAL that matched nothing — e.g. a nullable override column
+            # that is null) makes STR(x) raise, which would void the enclosing
+            # BIND/IF and leave the result unbound. COALESCE swallows that error
+            # and yields "" instead, so a blank-check like `{{Override}} <> ""`
+            # correctly reads an absent value as blank (matching Postgres, where
+            # the same `<> ""` compiles to `IS NOT NULL`). No effect on a bound
+            # field: COALESCE(STR(bound), "") == STR(bound).
             if left_is_field and right_is_str:
-                left = f'REPLACE(STR({left}), "^.*#", "")'
+                left = f'REPLACE(COALESCE(STR({left}), ""), "^.*#", "")'
             elif right_is_field and left_is_str:
-                right = f'REPLACE(STR({right}), "^.*#", "")'
+                right = f'REPLACE(COALESCE(STR({right}), ""), "^.*#", "")'
 
         # Ordered comparison (<, <=, >, >=) of a field against a STRING LITERAL.
         #
