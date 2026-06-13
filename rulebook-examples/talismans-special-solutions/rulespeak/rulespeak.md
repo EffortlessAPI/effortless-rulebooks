@@ -135,6 +135,10 @@ _The NTWF (Talisman's Special Solutions Workflow) ontology from Jessica Talisman
 | Relative Path | Computed as the literal “scenarios/”, followed by the scenario ID. | _DAG-derived location for this Scenario row: root segment 'scenarios' + the primary key._ |
 | Iri | Computed as the relative path with every a slash replaced by a hyphen. | _Opaque stable identifier (dash-form of RelativePath)._ |
 | Name | Computed as the lower-cased label with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> | _Slug form of the human label._ |
+| **Competency Question** | The article's literal acceptance suite — the eight leadership/competency questions the NTWF worked example must answer (Talisman, Intentional Arrangement, CQ1-CQ8). First-class data, not hardcoded UI strings: each row names the question, the substrate-computed field that ANSWERS it (TargetTable/TargetField, for cross-substrate traceability and the explainer-DAG drilldown), the answer kind, and the asserted ExpectedAnswer used to grade pass/fail. The live answer is always READ from the named computed column — never recomputed — so the CQ scoreboard is a projection of the model like every other lens. This is the CMCC-native home for the competency questions: the article treats them as acceptance criteria traceable to the rulebook, so they live in the rulebook. | — |
+| Relative Path | Computed as the literal “competency-questions/”, followed by the competency question ID. | _Stable, DAG-derived location for this CompetencyQuestion row. Root segment 'competency-questions' + the row's primary key. No leading slash so the Iri swap is a clean 1:1 substitution._ |
+| Iri | Computed as the relative path with every a slash replaced by a hyphen. | _Opaque stable identifier (the dash-form of RelativePath). The OWL transpiler mints each individual's IRI from this value (erb:<Iri>), so identity is path-derived and globally unique._ |
+| Name | Computed as the lower-cased display name with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> | _Slug form of the DisplayName, for stable cross-reference. Mirrors the Name idiom used by the controlled-vocabulary tables._ |
 | **Conformance Test** | A conformance test is identified by its name. | — |
 | Relative Path | Computed as the literal “conformance-tests/”, followed by the conformance test ID. | _DAG-derived location for this test row: root segment 'conformance-tests' + the primary key._ |
 | Iri | Computed as the relative path with every a slash replaced by a hyphen. | _Slug IRI for this row, derived from RelativePath._ |
@@ -214,6 +218,7 @@ already computes (cross-referenced as DR-N in the Definitional Rules below)._
 - A dataset **must** have a title.
 - A workflow artifact **must** have a title.
 - A scenario **must** have a label and an edits.
+- A competency question **must** have a number, a display name, a question text, a target table, a target field, an answer kind, and an expected answer.
 - A conformance test **must** have a display name, a section, a test kind, and a sort order, and record whether it is enabled.
 
 ## 4 Definitional Rules
@@ -331,9 +336,12 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 | **DR-103 Relative Path** | A scenario's relative path is computed as the literal “scenarios/”, followed by the scenario ID. |
 | **DR-104 Iri** | A scenario's iri is computed as the relative path with every a slash replaced by a hyphen. |
 | **DR-105 Name** | A scenario's name is computed as the lower-cased label with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> |
-| **DR-106 Relative Path** | A conformance test's relative path is computed as the literal “conformance-tests/”, followed by the conformance test ID. |
-| **DR-107 Iri** | A conformance test's iri is computed as the relative path with every a slash replaced by a hyphen. |
-| **DR-108 Name** | A conformance test's name is computed as the lower-cased display name with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> |
+| **DR-106 Relative Path** | A competency question's relative path is computed as the literal “competency-questions/”, followed by the competency question ID. |
+| **DR-107 Iri** | A competency question's iri is computed as the relative path with every a slash replaced by a hyphen. |
+| **DR-108 Name** | A competency question's name is computed as the lower-cased display name with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> |
+| **DR-109 Relative Path** | A conformance test's relative path is computed as the literal “conformance-tests/”, followed by the conformance test ID. |
+| **DR-110 Iri** | A conformance test's iri is computed as the relative path with every a slash replaced by a hyphen. |
+| **DR-111 Name** | A conformance test's name is computed as the lower-cased display name with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> |
 
 ## 5 Traceability to Schema
 
@@ -447,6 +455,9 @@ the same logic the rulebook stores, written for a business reader._
 | **Scenarios.RelativePath** | formula | `"scenarios/" & ScenarioId` |
 | **Scenarios.Iri** | formula | `Replace(RelativePath, "/", "-")` |
 | **Scenarios.Name** | formula | `Replace(Lower(Label), " ", "-")` |
+| **CompetencyQuestions.RelativePath** | formula | `"competency-questions/" & CompetencyQuestionId` |
+| **CompetencyQuestions.Iri** | formula | `Replace(RelativePath, "/", "-")` |
+| **CompetencyQuestions.Name** | formula | `Replace(Lower(DisplayName), " ", "-")` |
 | **ConformanceTests.RelativePath** | formula | `"conformance-tests/" & ConformanceTestId` |
 | **ConformanceTests.Iri** | formula | `Replace(RelativePath, "/", "-")` |
 | **ConformanceTests.Name** | formula | `Replace(Lower(DisplayName), " ", "-")` |

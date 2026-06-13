@@ -2261,6 +2261,51 @@ export const rulespeakFields: Record<string, RuleSpeakFieldRule> = {
     ],
     "structure": null
   },
+  "CompetencyQuestions.RelativePath": {
+    "table": "CompetencyQuestions",
+    "field": "RelativePath",
+    "kind": "formula",
+    "rule": "A competency question\u0027s relative path is computed as the literal \u201Ccompetency-questions/\u201D, followed by the competency question ID.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "CompetencyQuestions",
+        "field": "CompetencyQuestionId",
+        "label": "competency question ID"
+      }
+    ],
+    "structure": null
+  },
+  "CompetencyQuestions.Iri": {
+    "table": "CompetencyQuestions",
+    "field": "Iri",
+    "kind": "formula",
+    "rule": "A competency question\u0027s iri is computed as the relative path with every a slash replaced by a hyphen.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "CompetencyQuestions",
+        "field": "RelativePath",
+        "label": "relative path"
+      }
+    ],
+    "structure": null
+  },
+  "CompetencyQuestions.Name": {
+    "table": "CompetencyQuestions",
+    "field": "Name",
+    "kind": "formula",
+    "rule": "A competency question\u0027s name is computed as the lower-cased display name with every a space replaced by a hyphen.",
+    "mechanical": true,
+    "refs": [
+      {
+        "table": "CompetencyQuestions",
+        "field": "DisplayName",
+        "label": "display name"
+      }
+    ],
+    "structure": null
+  },
   "ConformanceTests.RelativePath": {
     "table": "ConformanceTests",
     "field": "RelativePath",
@@ -2338,6 +2383,9 @@ export const rulespeakStructural: Record<string, string[]> = {
   ],
   "Scenarios": [
     "A scenario **must** have a label and an edits."
+  ],
+  "CompetencyQuestions": [
+    "A competency question **must** have a number, a display name, a question text, a target table, a target field, an answer kind, and an expected answer."
   ],
   "ConformanceTests": [
     "A conformance test **must** have a display name, a section, a test kind, and a sort order, and record whether it is enabled."

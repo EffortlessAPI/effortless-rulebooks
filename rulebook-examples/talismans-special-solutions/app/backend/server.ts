@@ -209,6 +209,79 @@ app.get("/api/story", wrap(async (req, res) => {
     pipelines: (I.AutomatedPipelines || []).map((p) => ({ id: p.automatedPipelineId, name: p.displayName })),
   };
 
+  // --- CQ-backing projections ------------------------------------------------
+  // The competency-question scoreboard reads its answers from these. NONE of
+  // these computes a derived field: each value is lifted from a column the
+  // substrate already populated (vw_<entity> / the reasoned individuals). We
+  // only ARRANGE — resolve FK ids to labels and group by narrative order — the
+  // same thing the rest of /api/story does. (Doctrine: the view IS the contract.)
+  const stepById = new Map(steps.map((s) => [s.id, s]));
+  const stepTitleById = new Map<string, string>(steps.map((s) => [s.id, s.title]));
+  const stepAgentById = new Map<string, ResolvedAgent | null>(steps.map((s) => [s.id, s.agent]));
+  const asList = (v: unknown): string[] =>
+    Array.isArray(v) ? (v as string[]) : v ? [v as string] : [];
+
+  // CQ4 — artifact provenance: producer step, wasDerivedFrom parent, the agent
+  // it was attributedTo (human/AI/pipeline — whichever arm is set), downstream
+  // consumers. All straight from WorkflowArtifacts' already-computed columns.
+  const artifacts = (I.WorkflowArtifacts || [])
+    .slice()
+    .map((a) => {
+      const attributedId = a.attributedToHumanAgent || a.attributedToAIAgent || a.attributedToAutomatedPipeline || null;
+      return {
+        id: a.artifactId,
+        title: a.title,
+        artifactType: a.artifactType || null,
+        producedByStep: a.producedByStep || null,
+        producedByStepTitle: a.producedByStep ? (stepTitleById.get(a.producedByStep) || a.producedByStep) : null,
+        producedByStepPosition: a.producedByStep ? (stepById.get(a.producedByStep)?.position ?? null) : null,
+        derivedFromArtifact: a.derivedFromArtifact || null,
+        hasDerivationParent: !!a.hasDerivationParent,
+        requiredBySteps: asList(a.requiredBySteps).map((sid) => ({ id: sid, title: stepTitleById.get(sid) || sid })),
+        attributedTo: resolveAgent(attributedId),
+        producingAgentType: a.producingAgentType || null,
+      };
+    })
+    .sort((x, y) => (x.producedByStepPosition ?? 99) - (y.producedByStepPosition ?? 99));
+
+  // CQ8 — datasets the review consumes + the AI agent that processed each:
+  // Datasets.ConsumedBySteps gives the consuming step; that step's resolved
+  // filler IS the processing agent (already resolved in `steps`).
+  const datasets = (I.Datasets || []).map((d) => {
+    const consumerIds = asList(d.consumedBySteps);
+    const consumers = consumerIds.map((sid) => ({
+      id: sid,
+      title: stepTitleById.get(sid) || sid,
+      agent: stepAgentById.get(sid) || null,
+    }));
+    return {
+      id: d.datasetId,
+      title: d.title,
+      identifier: d.identifier || null,
+      consumedBySteps: consumers,
+    };
+  });
+
+  // The competency questions themselves — first-class rulebook rows. The
+  // scoreboard renders these (question, target field, expected answer); the LIVE
+  // answer is read from TargetTable.TargetField in the payload, never recomputed.
+  const competencyQuestions = (I.CompetencyQuestions || [])
+    .slice()
+    .filter((c) => c.isActive !== false)
+    .map((c) => ({
+      id: c.competencyQuestionId,
+      number: c.number,
+      displayName: c.displayName,
+      questionText: c.questionText,
+      targetTable: c.targetTable,
+      targetField: c.targetField,
+      answerKind: c.answerKind,
+      expectedAnswer: c.expectedAnswer,
+      explanation: c.explanation || null,
+      sortOrder: c.sortOrder ?? c.number,
+    }))
+    .sort((x, y) => (x.sortOrder ?? 99) - (y.sortOrder ?? 99));
+
   const roleName = (id: string): string => (roles.get(id)?.displayName) || id;
   const delegRaw = (reasoned.competency as Record<string, any>).delegation || {};
   const deleg: Record<string, { from: string; to: { id: string; name: string }[] }> = {};
@@ -290,6 +363,10 @@ app.get("/api/story", wrap(async (req, res) => {
       monthsSinceModified: wf.monthsSinceModified,
       stalenessThresholdMonths: wf.stalenessThresholdMonths,
       isStale: !!wf.isStale,
+      // CQ7 backing — the cross-department derivation and its two input counts.
+      involvesEngineeringAndLegal: !!wf.involvesEngineeringAndLegal,
+      countEngineeringOwnedSteps: wf.countEngineeringOwnedSteps ?? 0,
+      countLegalOwnedSteps: wf.countLegalOwnedSteps ?? 0,
     },
     team,
     steps,
@@ -300,6 +377,10 @@ app.get("/api/story", wrap(async (req, res) => {
     delegation: deleg,
     closure: (reasoned.competency as Record<string, any>).precedence_closure,
     verdict,
+    // CQ-backing projections (CQ4 artifacts, CQ8 datasets, the CQ suite itself).
+    artifacts,
+    datasets,
+    competencyQuestions,
     engine: reasoned.engine,
     reasoned_triples: reasoned.reasoned_triples,
   });

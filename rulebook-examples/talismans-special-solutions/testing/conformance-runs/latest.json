@@ -1,19 +1,19 @@
 {
   "summary": {
-    "startedAt": "2026-06-13T15:07:08.417Z",
-    "finishedAt": "2026-06-13T15:09:32.446Z",
-    "durationMs": 144029,
+    "startedAt": "2026-06-13T18:07:06.243Z",
+    "finishedAt": "2026-06-13T18:14:34.748Z",
+    "durationMs": 448500,
     "engines": [
       "reasoner",
       "postgres"
     ],
     "total": 72,
-    "passed": 65,
-    "failed": 6,
-    "gaps": 1,
+    "passed": 72,
+    "failed": 0,
+    "gaps": 0,
     "errors": 0,
     "skipped": 0,
-    "allGreen": false
+    "allGreen": true
   },
   "results": [
     {
@@ -97,8 +97,8 @@
       "engines": [
         {
           "engine": "reasoner",
-          "status": "fail",
-          "detail": "12 fail / 4 gap of 28 fields — prec-1-2.parentPath: value differs (engine=[\"workflows/production-deployment/steps/prod-deploy-step-1\",\"workflows/production-deployment/steps/prod-deploy-step-2\"] key=\"workflows/production-deployment/steps/prod-deploy-step-1\"); prec-1-2.relativePath: value differs (engine=[\"workflows/production-deployment/steps/prod-deploy-step-1/precedence/prec-1-2\",\"workflows/production-deployment/steps/prod-deploy-step-2/precedence/prec-1-2\"] key=\"workflows/production-deployment/steps/prod-deploy-step-1/precedence/prec-1-2\"); prec-1-2.iri: value differs (engine=[\"workflows-production-deployment-steps-prod-deploy-step-1-precedence-prec-1-2\",\"workflows-production-deployment-steps-prod-deploy-step-2-precedence-prec-1-2\"] key=\"workflows-production-deployment-steps-prod-deploy-step-1-precedence-prec-1-2\"); prec-1-2.name: engine emitted no value (key has one); prec-2-3.parentPath: value differs (engine=[\"workflows/production-deployment/steps/prod-deploy-step-2\",\"workflows/production-deployment/steps/prod-deploy-step-3\"] key=\"workflows/production-deployment/steps/prod-deploy-step-2\"); prec-2-3.relativePath: value differs (engine=[\"workflows/production-deployment/steps/prod-deploy-step-2/precedence/prec-2-3\",\"workflows/production-deployment/steps/prod-deploy-step-3/precedence/prec-2-3\"] key=\"workflows/production-deployment/steps/prod-deploy-step-2/precedence/prec-2-3\"); prec-2-3.iri: value differs (engine=[\"workflows-production-deployment-steps-prod-deploy-step-2-precedence-prec-2-3\",\"workflows-production-deployment-steps-prod-deploy-step-3-precedence-prec-2-3\"] key=\"workflows-production-deployment-steps-prod-deploy-step-2-precedence-prec-2-3\"); prec-2-3.name: engine emitted no value (key has one)"
+          "status": "pass",
+          "detail": "28 fields across 4 rows match"
         },
         {
           "engine": "postgres",
@@ -106,7 +106,7 @@
           "detail": "28 fields across 4 rows match"
         }
       ],
-      "overall": "fail"
+      "overall": "pass"
     },
     {
       "id": "sweep-roles",
@@ -143,8 +143,8 @@
       "engines": [
         {
           "engine": "reasoner",
-          "status": "fail",
-          "detail": "2 fail / 6 gap of 108 fields — asn-deploy-health-ai-current.name: engine emitted no value (key has one); asn-deploy-health-ai-initial.name: engine emitted no value (key has one); asn-deploy-health-human-audit.name: engine emitted no value (key has one); asn-release-manager-maria.name: engine emitted no value (key has one); asn-vp-eng-david.name: engine emitted no value (key has one); asn-vp-eng-david.wasActiveAsOfAuditDate: value differs (engine=true key=false); asn-vp-eng-priya.name: engine emitted no value (key has one); asn-vp-eng-priya.wasActiveAsOfAuditDate: value differs (engine=false key=true)"
+          "status": "pass",
+          "detail": "108 fields across 6 rows match"
         },
         {
           "engine": "postgres",
@@ -152,7 +152,7 @@
           "detail": "108 fields across 6 rows match"
         }
       ],
-      "overall": "fail"
+      "overall": "pass"
     },
     {
       "id": "sweep-departments",
@@ -212,8 +212,8 @@
       "engines": [
         {
           "engine": "reasoner",
-          "status": "fail",
-          "detail": "2 fail / 0 gap of 22 fields — ntwf-health-ai.countImpactedWorkflows: value differs (engine=[0,1] key=1); ntwf-risk-ai.countImpactedWorkflows: value differs (engine=[0,1] key=1)"
+          "status": "pass",
+          "detail": "22 fields across 2 rows match"
         },
         {
           "engine": "postgres",
@@ -221,7 +221,7 @@
           "detail": "22 fields across 2 rows match"
         }
       ],
-      "overall": "fail"
+      "overall": "pass"
     },
     {
       "id": "sweep-automatedpipelines",
@@ -350,8 +350,8 @@
       "engines": [
         {
           "engine": "reasoner",
-          "status": "fail",
-          "detail": "9 fail / 0 gap of 90 fields — artifact-legal-clearance.parentPath: value differs (engine=[\"workflows/production-deployment/steps/prod-deploy-step-2\",\"workflows/production-deployment/steps/prod-deploy-step-3\"] key=\"workflows/production-deployment/steps/prod-deploy-step-2\"); artifact-legal-clearance.relativePath: value differs (engine=[\"workflows/production-deployment/steps/prod-deploy-step-2/artifacts/artifact-legal-clearance\",\"workflows/production-deployment/steps/prod-deploy-step-3/artifacts/artifact-legal-clearance\"] key=\"workflows/production-deployment/steps/prod-deploy-step-2/artifacts/artifact-legal-clearance\"); artifact-legal-clearance.iri: value differs (engine=[\"workflows-production-deployment-steps-prod-deploy-step-2-artifacts-artifact-legal-clearance\",\"workflows-production-deployment-steps-prod-deploy-step-3-artifacts-artifact-legal-clearance\"] key=\"workflows-production-deployment-steps-prod-deploy-step-2-artifacts-artifact-legal-clearance\"); artifact-release-authorization.parentPath: value differs (engine=[\"workflows/production-deployment/steps/prod-deploy-step-3\",\"workflows/production-deployment/steps/prod-deploy-step-4\"] key=\"workflows/production-deployment/steps/prod-deploy-step-3\"); artifact-release-authorization.relativePath: value differs (engine=[\"workflows/production-deployment/steps/prod-deploy-step-3/artifacts/artifact-release-authorization\",\"workflows/production-deployment/steps/prod-deploy-step-4/artifacts/artifact-release-authorization\"] key=\"workflows/production-deployment/steps/prod-deploy-step-3/artifacts/artifact-release-authorization\"); artifact-release-authorization.iri: value differs (engine=[\"workflows-production-deployment-steps-prod-deploy-step-3-artifacts-artifact-release-authorization\",\"workflows-production-deployment-steps-prod-deploy-step-4-artifacts-artifact-release-authorization\"] key=\"workflows-production-deployment-steps-prod-deploy-step-3-artifacts-artifact-release-authorization\"); artifact-risk-report.parentPath: value differs (engine=[\"workflows/production-deployment/steps/prod-deploy-step-1\",\"workflows/production-deployment/steps/prod-deploy-step-2\"] key=\"workflows/production-deployment/steps/prod-deploy-step-1\"); artifact-risk-report.relativePath: value differs (engine=[\"workflows/production-deployment/steps/prod-deploy-step-1/artifacts/artifact-risk-report\",\"workflows/production-deployment/steps/prod-deploy-step-2/artifacts/artifact-risk-report\"] key=\"workflows/production-deployment/steps/prod-deploy-step-1/artifacts/artifact-risk-report\")"
+          "status": "pass",
+          "detail": "90 fields across 5 rows match"
         },
         {
           "engine": "postgres",
@@ -359,7 +359,7 @@
           "detail": "90 fields across 5 rows match"
         }
       ],
-      "overall": "fail"
+      "overall": "pass"
     },
     {
       "id": "sweep-governanceroles",
@@ -396,8 +396,8 @@
       "engines": [
         {
           "engine": "reasoner",
-          "status": "gap",
-          "detail": "0 fail / 2 gap of 26 fields — change-1-0-0.name: engine emitted no value (key has one); change-1-1-0.name: engine emitted no value (key has one)"
+          "status": "pass",
+          "detail": "26 fields across 2 rows match"
         },
         {
           "engine": "postgres",
@@ -405,7 +405,7 @@
           "detail": "26 fields across 2 rows match"
         }
       ],
-      "overall": "gap"
+      "overall": "pass"
     },
     {
       "id": "sweep-vocabularyreconciliations",
@@ -511,11 +511,11 @@
       "engines": [
         {
           "engine": "both",
-          "status": "fail",
-          "detail": "25 value diff(s): RoleAssignments/asn-vp-eng-david.wasActiveAsOfAuditDate, RoleAssignments/asn-vp-eng-priya.wasActiveAsOfAuditDate, StepPrecedence/prec-1-2.relativePath, StepPrecedence/prec-1-2.parentPath, StepPrecedence/prec-1-2.iri, StepPrecedence/prec-2-3.relativePath"
+          "status": "pass",
+          "detail": "1848/1895 identical, 47 repr, 0 presence, 0 value diffs"
         }
       ],
-      "overall": "fail"
+      "overall": "pass"
     },
     {
       "id": "iri-workflow",
@@ -1690,13 +1690,10 @@
       "engines": [
         {
           "engine": "reasoner",
-          "status": "fail",
-          "detail": "value differs (engine=[0,1] key=1)",
+          "status": "pass",
+          "detail": "match",
           "expected": 1,
-          "actual": [
-            0,
-            1
-          ]
+          "actual": 1
         },
         {
           "engine": "postgres",
@@ -1706,7 +1703,7 @@
           "actual": 1
         }
       ],
-      "overall": "fail"
+      "overall": "pass"
     },
     {
       "id": "model-version",

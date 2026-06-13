@@ -200,10 +200,56 @@ def build_reasoned_graph(db: Dict[str, Any]) -> Graph:
         for s, p, o in raw_derived_triples:
             g.add((s, p, o))
 
+    def settle_single_valued():
+        # A SHACL CONSTRUCT only ADDS triples, so a derived value that CHANGES as
+        # the fixpoint deepens leaves BOTH objects on the subject — a spurious
+        # multi-value on a field that is single-valued by construction. The most
+        # common shape: a COUNTIFS whose criterion column is itself DERIVED
+        # several levels down (countImpactedWorkflows counts artifacts whose
+        # calc HasProducingWorkflow — a NOT(ISBLANK(lookup)) — is true). Early in
+        # the fixpoint the parent-matched children are already bound but the
+        # criterion column has not materialized, so the sub-SELECT COUNTs 0; a
+        # later pass COUNTs 1. Both survive -> countImpactedWorkflows = [0, 1].
+        #
+        # clear_derived() above fixes the OWL-RL-driven version of this (a value
+        # that flips once the closure lands); THIS fixes the residual that arises
+        # purely from derivation DEPTH within a single SHACL fixpoint. We remove
+        # only the OFFENDING (subject, predicate) values — never their already-
+        # settled single-valued dependencies — and re-run the rules once. With
+        # every dependency now present and stable from the pass's first scan, the
+        # rule yields exactly one value. Authored raw values that share a
+        # dual-use predicate are restored (same contract as clear_derived) so a
+        # raw is never dropped. We RAISE if it will not settle rather than serve
+        # a multi-valued single field (CLAUDE.md: Avoid Silent Fallbacks).
+        raw_by_sp: Dict[Any, List[Any]] = defaultdict(list)
+        for s, p, o in raw_derived_triples:
+            raw_by_sp[(s, p)].append(o)
+        for _ in range(10):
+            offenders = []
+            for p in derived_predicates:
+                subj_vals: Dict[Any, set] = defaultdict(set)
+                for s, o in g.subject_objects(p):
+                    subj_vals[s].add(o)
+                offenders.extend((s, p) for s, vals in subj_vals.items() if len(vals) > 1)
+            if not offenders:
+                return
+            for (s, p) in offenders:
+                for o in list(g.objects(s, p)):
+                    g.remove((s, p, o))
+                for o in raw_by_sp.get((s, p), ()):  # restore authored raw values
+                    g.add((s, p, o))
+            pyshacl.validate(g, shacl_graph=shapes, advanced=True, inplace=True)
+        raise RuntimeError(
+            "derived single-valued predicates did not settle in 10 passes — a "
+            "rule may be genuinely non-deterministic. Refusing to serve a "
+            "multi-valued single field."
+        )
+
     shacl_to_fixpoint("stage 1")                                    # calc/lookup + asserted edges
     owlrl.DeductiveClosure(owlrl.OWLRL_Semantics).expand(g)          # transitive/inverse/type closure
     clear_derived()                                                 # drop stage-1 derived values
     shacl_to_fixpoint("stage 3")                                    # recompute over the closure
+    settle_single_valued()                                          # collapse depth-driven multi-values
     return g
 
 

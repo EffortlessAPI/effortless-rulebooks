@@ -20,7 +20,7 @@ effortless-ntwf:AIAgentsShape a sh:NodeShape ;
             WHERE {
     $this a effortless-ntwf:AIAgents .
     OPTIONAL { $this effortless-ntwf:aIAgentId ?ai_agent_id . }
-                BIND(CONCAT("ai-agents/", ?ai_agent_id) AS ?_result)
+                BIND(CONCAT("ai-agents/", IF(isIRI(?ai_agent_id), REPLACE(STR(?ai_agent_id), "^.*[#/]", ""), STR(?ai_agent_id))) AS ?_result)
             }
         """ ;
     ] ;
@@ -102,7 +102,7 @@ effortless-ntwf:AgentCapabilityConceptsShape a sh:NodeShape ;
             WHERE {
     $this a effortless-ntwf:AgentCapabilityConcepts .
     OPTIONAL { $this effortless-ntwf:conceptId ?concept_id . }
-                BIND(CONCAT("concepts/agent-capability/", ?concept_id) AS ?_result)
+                BIND(CONCAT("concepts/agent-capability/", IF(isIRI(?concept_id), REPLACE(STR(?concept_id), "^.*[#/]", ""), STR(?concept_id))) AS ?_result)
             }
         """ ;
     ] ;
@@ -160,7 +160,7 @@ effortless-ntwf:ApprovalGatesShape a sh:NodeShape ;
     $this a effortless-ntwf:ApprovalGates .
     OPTIONAL { $this effortless-ntwf:approvalGateId ?approval_gate_id . }
     OPTIONAL { $this effortless-ntwf:parentPath ?parent_path . }
-                BIND(CONCAT(?parent_path, "/approval-gates/", ?approval_gate_id) AS ?_result)
+                BIND(CONCAT(IF(isIRI(?parent_path), REPLACE(STR(?parent_path), "^.*[#/]", ""), STR(?parent_path)), "/approval-gates/", IF(isIRI(?approval_gate_id), REPLACE(STR(?approval_gate_id), "^.*[#/]", ""), STR(?approval_gate_id))) AS ?_result)
             }
         """ ;
     ] ;
@@ -253,7 +253,7 @@ effortless-ntwf:ArtifactTypeConceptsShape a sh:NodeShape ;
             WHERE {
     $this a effortless-ntwf:ArtifactTypeConcepts .
     OPTIONAL { $this effortless-ntwf:conceptId ?concept_id . }
-                BIND(CONCAT("concepts/artifact-type/", ?concept_id) AS ?_result)
+                BIND(CONCAT("concepts/artifact-type/", IF(isIRI(?concept_id), REPLACE(STR(?concept_id), "^.*[#/]", ""), STR(?concept_id))) AS ?_result)
             }
         """ ;
     ] ;
@@ -291,7 +291,7 @@ effortless-ntwf:AutomatedPipelinesShape a sh:NodeShape ;
             WHERE {
     $this a effortless-ntwf:AutomatedPipelines .
     OPTIONAL { $this effortless-ntwf:automatedPipelineId ?automated_pipeline_id . }
-                BIND(CONCAT("automated-pipelines/", ?automated_pipeline_id) AS ?_result)
+                BIND(CONCAT("automated-pipelines/", IF(isIRI(?automated_pipeline_id), REPLACE(STR(?automated_pipeline_id), "^.*[#/]", ""), STR(?automated_pipeline_id))) AS ?_result)
             }
         """ ;
     ] ;
@@ -329,7 +329,7 @@ effortless-ntwf:ChangeLogShape a sh:NodeShape ;
             WHERE {
     $this a effortless-ntwf:ChangeLog .
     OPTIONAL { $this effortless-ntwf:changeLogId ?change_log_id . }
-                BIND(CONCAT("change-log/", ?change_log_id) AS ?_result)
+                BIND(CONCAT("change-log/", IF(isIRI(?change_log_id), REPLACE(STR(?change_log_id), "^.*[#/]", ""), STR(?change_log_id))) AS ?_result)
             }
         """ ;
     ] ;
@@ -364,7 +364,7 @@ effortless-ntwf:ChangeLogShape a sh:NodeShape ;
     $this a effortless-ntwf:ChangeLog .
     OPTIONAL { $this effortless-ntwf:changeDate ?change_date . }
     OPTIONAL { $this effortless-ntwf:version ?version . }
-                BIND(CONCAT(?version, " (", ?change_date, ")") AS ?_result)
+                BIND(CONCAT(IF(isIRI(?version), REPLACE(STR(?version), "^.*[#/]", ""), STR(?version)), " (", IF(isIRI(?change_date), REPLACE(STR(?change_date), "^.*[#/]", ""), STR(?change_date)), ")") AS ?_result)
             }
         """ ;
     ] ;
@@ -403,6 +403,61 @@ effortless-ntwf:ChangeLogShape a sh:NodeShape ;
         """ ;
     ] .
 
+# === Shape with rules for CompetencyQuestions ===
+effortless-ntwf:CompetencyQuestionsShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:CompetencyQuestions ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_CompetencyQuestions_RelativePath" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:relativePath ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:CompetencyQuestions .
+    OPTIONAL { $this effortless-ntwf:competencyQuestionId ?competency_question_id . }
+                BIND(CONCAT("competency-questions/", IF(isIRI(?competency_question_id), REPLACE(STR(?competency_question_id), "^.*[#/]", ""), STR(?competency_question_id))) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_CompetencyQuestions_Iri" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:iri ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:CompetencyQuestions .
+    OPTIONAL { $this effortless-ntwf:relativePath ?relative_path . }
+                BIND(REPLACE(?relative_path, "/", "-") AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_CompetencyQuestions_Name" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:name ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:CompetencyQuestions .
+    OPTIONAL { $this effortless-ntwf:displayName ?display_name . }
+                BIND(REPLACE(LCASE(?display_name), " ", "-") AS ?_result)
+            }
+        """ ;
+    ] .
+
 # === Shape with rules for ConformanceTests ===
 effortless-ntwf:ConformanceTestsShape a sh:NodeShape ;
     sh:targetClass effortless-ntwf:ConformanceTests ;
@@ -419,7 +474,7 @@ effortless-ntwf:ConformanceTestsShape a sh:NodeShape ;
             WHERE {
     $this a effortless-ntwf:ConformanceTests .
     OPTIONAL { $this effortless-ntwf:conformanceTestId ?conformance_test_id . }
-                BIND(CONCAT("conformance-tests/", ?conformance_test_id) AS ?_result)
+                BIND(CONCAT("conformance-tests/", IF(isIRI(?conformance_test_id), REPLACE(STR(?conformance_test_id), "^.*[#/]", ""), STR(?conformance_test_id))) AS ?_result)
             }
         """ ;
     ] ;
@@ -474,7 +529,7 @@ effortless-ntwf:DatasetsShape a sh:NodeShape ;
             WHERE {
     $this a effortless-ntwf:Datasets .
     OPTIONAL { $this effortless-ntwf:datasetId ?dataset_id . }
-                BIND(CONCAT("datasets/", ?dataset_id) AS ?_result)
+                BIND(CONCAT("datasets/", IF(isIRI(?dataset_id), REPLACE(STR(?dataset_id), "^.*[#/]", ""), STR(?dataset_id))) AS ?_result)
             }
         """ ;
     ] ;
@@ -512,7 +567,7 @@ effortless-ntwf:DepartmentsShape a sh:NodeShape ;
             WHERE {
     $this a effortless-ntwf:Departments .
     OPTIONAL { $this effortless-ntwf:departmentId ?department_id . }
-                BIND(CONCAT("departments/", ?department_id) AS ?_result)
+                BIND(CONCAT("departments/", IF(isIRI(?department_id), REPLACE(STR(?department_id), "^.*[#/]", ""), STR(?department_id))) AS ?_result)
             }
         """ ;
     ] ;
@@ -567,7 +622,7 @@ effortless-ntwf:GovernanceRolesShape a sh:NodeShape ;
             WHERE {
     $this a effortless-ntwf:GovernanceRoles .
     OPTIONAL { $this effortless-ntwf:governanceRoleId ?governance_role_id . }
-                BIND(CONCAT("governance-roles/", ?governance_role_id) AS ?_result)
+                BIND(CONCAT("governance-roles/", IF(isIRI(?governance_role_id), REPLACE(STR(?governance_role_id), "^.*[#/]", ""), STR(?governance_role_id))) AS ?_result)
             }
         """ ;
     ] ;
@@ -639,7 +694,7 @@ effortless-ntwf:HumanAgentsShape a sh:NodeShape ;
             WHERE {
     $this a effortless-ntwf:HumanAgents .
     OPTIONAL { $this effortless-ntwf:humanAgentId ?human_agent_id . }
-                BIND(CONCAT("human-agents/", ?human_agent_id) AS ?_result)
+                BIND(CONCAT("human-agents/", IF(isIRI(?human_agent_id), REPLACE(STR(?human_agent_id), "^.*[#/]", ""), STR(?human_agent_id))) AS ?_result)
             }
         """ ;
     ] ;
@@ -697,7 +752,7 @@ effortless-ntwf:RoleAssignmentsShape a sh:NodeShape ;
     $this a effortless-ntwf:RoleAssignments .
     OPTIONAL { $this effortless-ntwf:parentPath ?parent_path . }
     OPTIONAL { $this effortless-ntwf:roleAssignmentId ?role_assignment_id . }
-                BIND(CONCAT(?parent_path, "/assignments/", ?role_assignment_id) AS ?_result)
+                BIND(CONCAT(IF(isIRI(?parent_path), REPLACE(STR(?parent_path), "^.*[#/]", ""), STR(?parent_path)), "/assignments/", IF(isIRI(?role_assignment_id), REPLACE(STR(?role_assignment_id), "^.*[#/]", ""), STR(?role_assignment_id))) AS ?_result)
             }
         """ ;
     ] ;
@@ -733,7 +788,7 @@ effortless-ntwf:RoleAssignmentsShape a sh:NodeShape ;
     OPTIONAL { $this effortless-ntwf:role ?role . }
     OPTIONAL { $this effortless-ntwf:validFrom ?valid_from . }
     OPTIONAL { $this effortless-ntwf:validTo ?valid_to . }
-                BIND(CONCAT(?role, " [", ?valid_from, " -> ", IF((!BOUND(?valid_to) || STR(?valid_to) = ""), "open", ?valid_to), "]") AS ?_result)
+                BIND(CONCAT(IF(isIRI(?role), REPLACE(STR(?role), "^.*[#/]", ""), STR(?role)), " [", IF(isIRI(?valid_from), REPLACE(STR(?valid_from), "^.*[#/]", ""), STR(?valid_from)), " -> ", IF(isIRI(IF((!BOUND(?valid_to) || STR(?valid_to) = ""), "open", ?valid_to)), REPLACE(STR(IF((!BOUND(?valid_to) || STR(?valid_to) = ""), "open", ?valid_to)), "^.*[#/]", ""), STR(IF((!BOUND(?valid_to) || STR(?valid_to) = ""), "open", ?valid_to))), "]") AS ?_result)
             }
         """ ;
     ] ;
@@ -787,7 +842,7 @@ effortless-ntwf:RoleAssignmentsShape a sh:NodeShape ;
     $this a effortless-ntwf:RoleAssignments .
     OPTIONAL { $this effortless-ntwf:validFrom ?valid_from . }
     OPTIONAL { $this effortless-ntwf:validTo ?valid_to . }
-                BIND(((?valid_from <= "2026-03-01") && ((!BOUND(?valid_to) || STR(?valid_to) = "") || (?valid_to > "2026-03-01"))) AS ?_result)
+                BIND(((STR(?valid_from) <= "2026-03-01") && ((!BOUND(?valid_to) || STR(?valid_to) = "") || (STR(?valid_to) > "2026-03-01"))) AS ?_result)
             }
         """ ;
     ] ;
@@ -844,7 +899,7 @@ effortless-ntwf:RolesShape a sh:NodeShape ;
             WHERE {
     $this a effortless-ntwf:Roles .
     OPTIONAL { $this effortless-ntwf:roleId ?role_id . }
-                BIND(CONCAT("roles/", ?role_id) AS ?_result)
+                BIND(CONCAT("roles/", IF(isIRI(?role_id), REPLACE(STR(?role_id), "^.*[#/]", ""), STR(?role_id))) AS ?_result)
             }
         """ ;
     ] ;
@@ -954,7 +1009,7 @@ effortless-ntwf:ScenariosShape a sh:NodeShape ;
             WHERE {
     $this a effortless-ntwf:Scenarios .
     OPTIONAL { $this effortless-ntwf:scenarioId ?scenario_id . }
-                BIND(CONCAT("scenarios/", ?scenario_id) AS ?_result)
+                BIND(CONCAT("scenarios/", IF(isIRI(?scenario_id), REPLACE(STR(?scenario_id), "^.*[#/]", ""), STR(?scenario_id))) AS ?_result)
             }
         """ ;
     ] ;
@@ -1029,7 +1084,7 @@ effortless-ntwf:StepPrecedenceShape a sh:NodeShape ;
     $this a effortless-ntwf:StepPrecedence .
     OPTIONAL { $this effortless-ntwf:parentPath ?parent_path . }
     OPTIONAL { $this effortless-ntwf:stepPrecedenceId ?step_precedence_id . }
-                BIND(CONCAT(?parent_path, "/precedence/", ?step_precedence_id) AS ?_result)
+                BIND(CONCAT(IF(isIRI(?parent_path), REPLACE(STR(?parent_path), "^.*[#/]", ""), STR(?parent_path)), "/precedence/", IF(isIRI(?step_precedence_id), REPLACE(STR(?step_precedence_id), "^.*[#/]", ""), STR(?step_precedence_id))) AS ?_result)
             }
         """ ;
     ] ;
@@ -1064,7 +1119,7 @@ effortless-ntwf:StepPrecedenceShape a sh:NodeShape ;
     $this a effortless-ntwf:StepPrecedence .
     OPTIONAL { $this effortless-ntwf:fromStep ?from_step . }
     OPTIONAL { $this effortless-ntwf:toStep ?to_step . }
-                BIND(CONCAT(?from_step, " -> ", ?to_step) AS ?_result)
+                BIND(CONCAT(IF(isIRI(?from_step), REPLACE(STR(?from_step), "^.*[#/]", ""), STR(?from_step)), " -> ", IF(isIRI(?to_step), REPLACE(STR(?to_step), "^.*[#/]", ""), STR(?to_step))) AS ?_result)
             }
         """ ;
     ] .
@@ -1085,7 +1140,7 @@ effortless-ntwf:VocabularyReconciliationsShape a sh:NodeShape ;
             WHERE {
     $this a effortless-ntwf:VocabularyReconciliations .
     OPTIONAL { $this effortless-ntwf:reconciliationId ?reconciliation_id . }
-                BIND(CONCAT("reconciliations/", ?reconciliation_id) AS ?_result)
+                BIND(CONCAT("reconciliations/", IF(isIRI(?reconciliation_id), REPLACE(STR(?reconciliation_id), "^.*[#/]", ""), STR(?reconciliation_id))) AS ?_result)
             }
         """ ;
     ] ;
@@ -1120,7 +1175,7 @@ effortless-ntwf:VocabularyReconciliationsShape a sh:NodeShape ;
     $this a effortless-ntwf:VocabularyReconciliations .
     OPTIONAL { $this effortless-ntwf:deprecatedTerm ?deprecated_term . }
     OPTIONAL { $this effortless-ntwf:replacementTerm ?replacement_term . }
-                BIND(CONCAT(?deprecated_term, " owl:sameAs ", ?replacement_term) AS ?_result)
+                BIND(CONCAT(IF(isIRI(?deprecated_term), REPLACE(STR(?deprecated_term), "^.*[#/]", ""), STR(?deprecated_term)), " owl:sameAs ", IF(isIRI(?replacement_term), REPLACE(STR(?replacement_term), "^.*[#/]", ""), STR(?replacement_term))) AS ?_result)
             }
         """ ;
     ] .
@@ -1161,7 +1216,7 @@ effortless-ntwf:WorkflowArtifactsShape a sh:NodeShape ;
     $this a effortless-ntwf:WorkflowArtifacts .
     OPTIONAL { $this effortless-ntwf:artifactId ?artifact_id . }
     OPTIONAL { $this effortless-ntwf:parentPath ?parent_path . }
-                BIND(CONCAT(?parent_path, "/artifacts/", ?artifact_id) AS ?_result)
+                BIND(CONCAT(IF(isIRI(?parent_path), REPLACE(STR(?parent_path), "^.*[#/]", ""), STR(?parent_path)), "/artifacts/", IF(isIRI(?artifact_id), REPLACE(STR(?artifact_id), "^.*[#/]", ""), STR(?artifact_id))) AS ?_result)
             }
         """ ;
     ] ;
@@ -1271,7 +1326,7 @@ effortless-ntwf:WorkflowStatusConceptsShape a sh:NodeShape ;
             WHERE {
     $this a effortless-ntwf:WorkflowStatusConcepts .
     OPTIONAL { $this effortless-ntwf:conceptId ?concept_id . }
-                BIND(CONCAT("concepts/workflow-status/", ?concept_id) AS ?_result)
+                BIND(CONCAT("concepts/workflow-status/", IF(isIRI(?concept_id), REPLACE(STR(?concept_id), "^.*[#/]", ""), STR(?concept_id))) AS ?_result)
             }
         """ ;
     ] ;
@@ -1329,7 +1384,7 @@ effortless-ntwf:WorkflowStepsShape a sh:NodeShape ;
     $this a effortless-ntwf:WorkflowSteps .
     OPTIONAL { $this effortless-ntwf:parentPath ?parent_path . }
     OPTIONAL { $this effortless-ntwf:workflowStepId ?workflow_step_id . }
-                BIND(CONCAT(?parent_path, "/steps/", ?workflow_step_id) AS ?_result)
+                BIND(CONCAT(IF(isIRI(?parent_path), REPLACE(STR(?parent_path), "^.*[#/]", ""), STR(?parent_path)), "/steps/", IF(isIRI(?workflow_step_id), REPLACE(STR(?workflow_step_id), "^.*[#/]", ""), STR(?workflow_step_id))) AS ?_result)
             }
         """ ;
     ] ;
@@ -1583,7 +1638,7 @@ effortless-ntwf:WorkflowsShape a sh:NodeShape ;
             WHERE {
     $this a effortless-ntwf:Workflows .
     OPTIONAL { $this effortless-ntwf:workflowId ?workflow_id . }
-                BIND(CONCAT("workflows/", ?workflow_id) AS ?_result)
+                BIND(CONCAT("workflows/", IF(isIRI(?workflow_id), REPLACE(STR(?workflow_id), "^.*[#/]", ""), STR(?workflow_id))) AS ?_result)
             }
         """ ;
     ] ;
@@ -2120,8 +2175,6 @@ effortless-ntwf:WorkflowStatusConceptsCardinalityShape a sh:NodeShape ;
 
 effortless-ntwf:WorkflowStepsCardinalityShape a sh:NodeShape ;
     sh:targetClass effortless-ntwf:WorkflowSteps ;
-    sh:property [ sh:path effortless-ntwf:precedes ; sh:maxCount 1 ] ;
-    sh:property [ sh:path effortless-ntwf:producesArtifacts ; sh:maxCount 1 ] ;
     sh:property [ sh:path effortless-ntwf:workflow ; sh:maxCount 1 ] .
 
-# Generated 108 SHACL rules
+# Generated 111 SHACL rules

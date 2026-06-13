@@ -5,6 +5,7 @@ import { buildSituation, KIND, kindOfType, initials } from "./model";
 import { FlowView } from "./views/FlowView";
 import { GraphView } from "./views/GraphView";
 import { ClosureView } from "./views/ClosureView";
+import { CQView } from "./views/CQView";
 import { ReassignPopover } from "./Editable";
 import { VerdictHeader } from "./console/VerdictHeader";
 import { StalenessBar } from "./console/StalenessBar";
@@ -26,12 +27,13 @@ import type { Story, Situation, Handlers, Scenario } from "./types";
 // bar, time-budget bar, and drag hook now live in console/ and hooks/.)
 // ===========================================================================
 
-export type ViewId = "flow" | "graph" | "closure";
+export type ViewId = "flow" | "graph" | "closure" | "cq";
 
 const VIEWS: { id: ViewId; label: string; hint: string }[] = [
   { id: "flow", label: "Flow", hint: "the release, step by step" },
   { id: "graph", label: "Graph", hint: "the reasoned network" },
   { id: "closure", label: "Closure", hint: "assert order · watch it infer" },
+  { id: "cq", label: "CQs", hint: "the 8 leadership questions, answered live" },
 ];
 
 interface ReassignState {
@@ -165,6 +167,7 @@ export default function App({ headerRight = null }: AppProps) {
           )}
           {view === "graph" && <GraphView sit={sit} handlers={handlers} />}
           {view === "closure" && <ClosureView sit={sit} handlers={handlers} />}
+          {view === "cq" && <CQView sit={sit} />}
         </div>
         <VerdictHeader
           verdict={sit.verdict}

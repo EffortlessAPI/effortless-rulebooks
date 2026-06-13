@@ -123,6 +123,10 @@ export function buildSituation(story: Story): Situation {
     stepsByAgent,
     orgTree,
     graph: { nodes, edges },
+    delegation: story.delegation,
+    artifacts: story.artifacts,
+    datasets: story.datasets,
+    competencyQuestions: story.competencyQuestions,
     reasoned_triples: story.reasoned_triples,
     short: shortId,
   };

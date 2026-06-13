@@ -340,6 +340,92 @@ effortless-ntwf:isBackwardCompatible a owl:DatatypeProperty ;
     rdfs:comment "TRUE iff systems on the prior version keep working against this release (ChangeKind is 'patch' or 'minor'). Patch and minor increments preserve backward compatibility; only major breaks it." .
     # calculated: calculated
 
+# === Class: CompetencyQuestions ===
+effortless-ntwf:CompetencyQuestions a owl:Class ;
+    rdfs:label "CompetencyQuestions" ;
+    rdfs:comment "The article's literal acceptance suite — the eight leadership/competency questions the NTWF worked example must answer (Talisman, Intentional Arrangement, CQ1-CQ8). First-class data, not hardcoded UI strings: each row names the question, the substrate-computed field that ANSWERS it (TargetTable/TargetField, for cross-substrate traceability and the explainer-DAG drilldown), the answer kind, and the asserted ExpectedAnswer used to grade pass/fail. The live answer is always READ from the named computed column — never recomputed — so the CQ scoreboard is a projection of the model like every other lens. This is the CMCC-native home for the competency questions: the article treats them as acceptance criteria traceable to the rulebook, so they live in the rulebook." .
+
+effortless-ntwf:competencyQuestionId a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:CompetencyQuestions ;
+    rdfs:range xsd:string ;
+    rdfs:label "CompetencyQuestionId" ;
+    rdfs:comment "Primary key. Stable slug for the competency question (cq-1 .. cq-8)." .
+
+effortless-ntwf:relativePath a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "RelativePath" ;
+    rdfs:comment "Stable, DAG-derived location for this CompetencyQuestion row. Root segment 'competency-questions' + the row's primary key. No leading slash so the Iri swap is a clean 1:1 substitution." .
+    # calculated: calculated
+
+effortless-ntwf:iri a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "Iri" ;
+    rdfs:comment "Opaque stable identifier (the dash-form of RelativePath). The OWL transpiler mints each individual's IRI from this value (erb:<Iri>), so identity is path-derived and globally unique." .
+    # calculated: calculated
+
+effortless-ntwf:name a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "Name" ;
+    rdfs:comment "Slug form of the DisplayName, for stable cross-reference. Mirrors the Name idiom used by the controlled-vocabulary tables." .
+    # calculated: calculated
+
+effortless-ntwf:number a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:CompetencyQuestions ;
+    rdfs:range xsd:string ;
+    rdfs:label "Number" ;
+    rdfs:comment "The canonical 1-8 ordering of the competency questions as listed in the article / README." .
+
+effortless-ntwf:displayName a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "DisplayName" ;
+    rdfs:comment "Short human label for the question (e.g. 'Steps and order')." .
+
+effortless-ntwf:questionText a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:CompetencyQuestions ;
+    rdfs:range xsd:string ;
+    rdfs:label "QuestionText" ;
+    rdfs:comment "The full competency question, verbatim from the article's acceptance suite." .
+
+effortless-ntwf:targetTable a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:CompetencyQuestions ;
+    rdfs:range xsd:string ;
+    rdfs:label "TargetTable" ;
+    rdfs:comment "The entity whose computed field answers this question. Together with TargetField it pins the answer to a real column in the substrate, so the scoreboard reads the answer (never recomputes it) and the explainer-DAG drilldown lands on the exact derivation." .
+
+effortless-ntwf:targetField a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:CompetencyQuestions ;
+    rdfs:range xsd:string ;
+    rdfs:label "TargetField" ;
+    rdfs:comment "The substrate-computed field on TargetTable that answers this question (calc / lookup / aggregation / closure). The CQ scoreboard wraps the live answer in a DagCell(TargetTable, TargetField) so a click opens its inference graph." .
+
+effortless-ntwf:answerKind a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:CompetencyQuestions ;
+    rdfs:range xsd:string ;
+    rdfs:label "AnswerKind" ;
+    rdfs:comment "'scalar' when the answer is a single value graded by equality with ExpectedAnswer; 'list' when the answer is a collection graded as answerable (non-empty / matches the asserted shape)." .
+
+effortless-ntwf:expectedAnswer a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:CompetencyQuestions ;
+    rdfs:range xsd:string ;
+    rdfs:label "ExpectedAnswer" ;
+    rdfs:comment "The asserted correct answer for the seed worked example. For scalar questions the live computed value must equal this to score a pass; for list questions this is the canonical summary the rendered collection is checked against. Authored here so pass/fail is (substrate-computed value) vs (rulebook-asserted expectation) — a real conformance check, not UI logic." .
+
+effortless-ntwf:explanation a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "Explanation" ;
+    rdfs:comment "One-sentence note on how this question resolves through the model — the FK / formula chain a presenter can narrate." .
+
+effortless-ntwf:sortOrder a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "SortOrder" ;
+    rdfs:comment "Display order in the scoreboard. Mirrors Number for now; kept separate so the list can be re-sequenced without renumbering the canonical CQ ids." .
+
+effortless-ntwf:isActive a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:CompetencyQuestions ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "IsActive" ;
+    rdfs:comment "Whether this competency question is shown in the scoreboard. All eight are active in the worked example." .
+
 # === Class: ConformanceTests ===
 effortless-ntwf:ConformanceTests a owl:Class ;
     rdfs:label "ConformanceTests" .
@@ -1560,9 +1646,9 @@ effortless-ntwf:workflowStep owl:inverseOf effortless-ntwf:approvalGate .
 effortless-ntwf:approvedBy owl:inverseOf effortless-ntwf:approvedChanges .
 effortless-ntwf:consumedBySteps owl:inverseOf effortless-ntwf:consumesDataset .
 effortless-ntwf:delegatesTo owl:inverseOf effortless-ntwf:fromDelegatesTo .
-effortless-ntwf:fromStep owl:inverseOf effortless-ntwf:precededBy .
+effortless-ntwf:fromStep owl:inverseOf effortless-ntwf:precedes .
 effortless-ntwf:toStep owl:inverseOf effortless-ntwf:precededBy .
-effortless-ntwf:producedByStep owl:inverseOf effortless-ntwf:requiresArtifacts .
+effortless-ntwf:producedByStep owl:inverseOf effortless-ntwf:producesArtifacts .
 effortless-ntwf:requiredBySteps owl:inverseOf effortless-ntwf:requiresArtifacts .
 
 # === Disjoint class groups (mutually-exclusive FK targets) ===

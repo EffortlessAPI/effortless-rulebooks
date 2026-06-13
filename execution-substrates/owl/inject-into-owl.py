@@ -556,6 +556,25 @@ def compile_to_sparql(expr: ExprNode, field_bindings: Dict[str, str] = None) -> 
             elif right_is_field and left_is_str:
                 right = f'REPLACE(STR({right}), "^.*#", "")'
 
+        # Ordered comparison (<, <=, >, >=) of a field against a STRING LITERAL.
+        #
+        # abox_from_json types ISO dates as xsd:date literals so the date-math
+        # functions (DATETIME_DIFF etc.) fire. But a formula like
+        #     ={{ValidFrom}} <= "2026-03-01"
+        # then compares an xsd:date to a PLAIN (xsd:string) literal. SPARQL's
+        # ordered operators are undefined across those types, so the comparison
+        # is a type error; rdflib does not raise — it falls back to an internal
+        # ordering that silently INVERTS some results (the wasActiveAsOfAuditDate
+        # bug: david/priya flipped). ISO-8601 dates sort correctly under plain
+        # lexical string comparison, so coerce the field side to STR() — the
+        # same lexical-compare the Postgres view documents ("ISO dates compare
+        # lexically"). A field compared to a NUMBER literal is left numeric.
+        elif expr.op in ('<', '<=', '>', '>='):
+            if isinstance(expr.left, FieldRef) and isinstance(expr.right, LiteralString):
+                left = f'STR({left})'
+            elif isinstance(expr.right, FieldRef) and isinstance(expr.left, LiteralString):
+                right = f'STR({right})'
+
         return f'({left} {sparql_op} {right})'
 
     if isinstance(expr, Arith):
@@ -688,7 +707,28 @@ def compile_to_sparql(expr: ExprNode, field_bindings: Dict[str, str] = None) -> 
         raise ValueError(f"Unknown function: {expr.name}")
 
     if isinstance(expr, Concat):
-        parts = [compile_to_sparql(part, field_bindings) for part in expr.parts]
+        parts = []
+        for part in expr.parts:
+            c = compile_to_sparql(part, field_bindings)
+            if isinstance(part, LiteralString):
+                # Already a plain string literal — no coercion needed (and
+                # keeping it bare preserves embedded '/' that the IRI branch
+                # below would otherwise strip from a path separator).
+                parts.append(c)
+                continue
+            # SPARQL CONCAT requires xsd:string arguments. A part that resolves
+            # to an IRI (a relationship/FK ref) or a typed literal (xsd:date,
+            # integer, boolean) is a type error that leaves the WHOLE CONCAT —
+            # and therefore the field — unbound, the silent name-gap on
+            # StepPrecedence/RoleAssignments/ChangeLog. Coerce each non-literal
+            # part: an IRI to its trailing local name (the raw PK text Postgres
+            # concatenates for an FK), any literal to its lexical string. A
+            # date's lexical form is the TIMEZONE-INDEPENDENT ISO day
+            # (2026-01-10) — so both substrates render the identical string on
+            # every machine, with no -06/-05 offset baked in by a date->
+            # timestamptz cast. (A bare string field keeps its slashes because
+            # STR() is identity and the IRI branch never fires for a literal.)
+            parts.append(f'IF(isIRI({c}), REPLACE(STR({c}), "^.*[#/]", ""), STR({c}))')
         return 'CONCAT(' + ', '.join(parts) + ')'
 
     raise ValueError(f"Unknown expression node type: {type(expr)}")
@@ -801,14 +841,28 @@ def find_inverse_pairs(tables: Dict[str, Any]) -> Dict[str, str]:
     PK; the reverse side holds a list. We don't need data to decide direction
     for the TBox — owl:inverseOf is symmetric — so we just emit one inverseOf
     axiom per matched pair (keyed by the lexically-first side to dedupe).
+
+    Disambiguation: when two tables share MORE THAN ONE relationship in a given
+    direction (StepPrecedence.FromStep/ToStep both → WorkflowSteps, with
+    WorkflowSteps.Precedes/PrecededBy both → StepPrecedence), the plain symmetric
+    match above is ambiguous — every forward FK matches every reverse back-ref,
+    and the last write wins, so BOTH forward FKs can collapse onto ONE reverse
+    property. That is a *corrupting* axiom: two distinct FKs (fromStep, toStep)
+    declared `owl:inverseOf` the SAME property makes OWL-RL fold them together,
+    so every fromStep value also shows up as a toStep value (and the path/lookup
+    fields built on them go multi-valued). A back-reference field whose
+    Description pins its exact partner — "Inverse of <Table>.<Field>" — resolves
+    the ambiguity deterministically; we honor that pointer over the heuristic.
     """
     rels = []  # (table, field, target_table)
+    rel_names = set()  # {'Table.field'} for validating explicit pointers
     for tname, tdef in tables.items():
         if tname.startswith('_') or tname.startswith('$'):
             continue
         for col in tdef.get('schema', []):
             if is_relationship(col):
                 rels.append((tname, col['name'], col['RelatedTo']))
+                rel_names.add(f'{tname}.{col["name"]}')
 
     pairs = {}
     seen = set()
@@ -820,6 +874,28 @@ def find_inverse_pairs(tables: Dict[str, Any]) -> Dict[str, str]:
                 if key not in seen:
                     seen.add(key)
                     pairs[key[0]] = key[1]
+
+    # Override the heuristic with any explicit "Inverse of <Table>.<Field>"
+    # pointer authored in a relationship field's Description. Each such pointer
+    # pins one exact field<->field correspondence, so a 2x2 table-pair resolves
+    # to the right 1:1 matching instead of collapsing both FKs onto one reverse.
+    # An explicit pointer always wins; a pair it does not mention keeps the
+    # heuristic's choice (correct for the common unambiguous 1:1 case).
+    inv_re = re.compile(r'[Ii]nverse of ([A-Za-z_][A-Za-z0-9_]*)\.([A-Za-z_][A-Za-z0-9_]*)')
+    for tname, tdef in tables.items():
+        if tname.startswith('_') or tname.startswith('$'):
+            continue
+        for col in tdef.get('schema', []):
+            if not is_relationship(col):
+                continue
+            m = inv_re.search(col.get('Description', '') or '')
+            if not m:
+                continue
+            partner = f'{m.group(1)}.{m.group(2)}'
+            if partner not in rel_names:
+                continue  # pointer names a non-relationship / unknown field
+            key = tuple(sorted([f'{tname}.{col["name"]}', partner]))
+            pairs[key[0]] = key[1]
     return pairs
 
 

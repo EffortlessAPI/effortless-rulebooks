@@ -267,6 +267,7 @@ html.show-consumers .elem-consumers{display:block}
     <li><a href="#t-changelog">Change Log</a> <span class="toc-meta">5 rules · 1 links</span></li>
     <li><a href="#t-vocabularyreconciliations">Vocabulary Reconciliation</a> <span class="toc-meta">3 rules · 0 links</span></li>
     <li><a href="#t-scenarios">Scenario</a> <span class="toc-meta">3 rules · 0 links</span></li>
+    <li><a href="#t-competencyquestions">Competency Question</a> <span class="toc-meta">3 rules · 0 links</span></li>
     <li><a href="#t-conformancetests">Conformance Test</a> <span class="toc-meta">3 rules · 0 links</span></li>
   </ul>
 </nav>
@@ -6835,6 +6836,258 @@ html.show-consumers .elem-consumers{display:block}
     <p class="field-note elem elem-desc">JSON-encoded ordered list of raw-fact assignments this scenario applies. Each item is {class, id|match, set:{field:value,...}} where 'class' is a rulebook table (camelCase keys on the raw store), 'id' targets a row by its *Id primary key (or 'match':'first' for the singleton Workflow), and 'set' is the raw fields to assign. The backend replays this list against the active raw store, then re-reasons — the scenario NEVER sets a derived field. This is the single source of truth for what each demo scenario does; the app's picker and the apply endpoint both read it from here (same JSON-on-a-first-class-table pattern as __meta__'s JsonValue).</p>
     </article>
 </section>
+<section class="entity" id="t-competencyquestions" data-entity="Competency Question">
+  <header class="entity-head">
+    <h2 class="entity-title">Competency Question</h2>
+    <p class="entity-synopsis">The article's literal acceptance suite — the eight leadership/competency questions the NTWF worked example must answer (Talisman, Intentional Arrangement, CQ1-CQ8). First-class data, not hardcoded UI strings: each row names the question, the substrate-computed field that ANSWERS it (TargetTable/TargetField, for cross-substrate traceability and the explainer-DAG drilldown), the answer kind, and the asserted ExpectedAnswer used to grade pass/fail. The live answer is always READ from the named computed column — never recomputed — so the CQ scoreboard is a projection of the model like every other lens. This is the CMCC-native home for the competency questions: the article treats them as acceptance criteria traceable to the rulebook, so they live in the rulebook.</p>
+  </header>
+  <article class="field tone-calc" id="f-competencyquestions-relativepath" data-entity="Competency Question" data-field="Relative Path">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Relative Path</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">1 hop from ground truth</span>
+      <span class="pill pill-muted">string</span>
+      <span class="pill pill-dr">DR-106</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak</span>
+        <p class="view-body">A competency question's relative path is computed as the literal “competency-questions/”, followed by the <a class="ref" href="#f-competencyquestions-competencyquestionid">competency question ID</a>.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In English</span>
+        <p class="view-body">&quot;competency-questions/&quot; joined with <a class="ref" href="#f-competencyquestions-competencyquestionid">competency question id</a>.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>&quot;competency-questions/&quot; &amp; <a class="fx-chip" href="#f-competencyquestions-competencyquestionid">Competency Question ID</a></div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">1</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-raw" href="#f-competencyquestions-competencyquestionid">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Competency Question ID</span><span class="input-table">CompetencyQuestions</span></span>
+          <span class="input-en muted">Primary key. Stable slug for the competency question (cq-1 .. cq-8).</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-consumers elem elem-consumers">
+      <summary>Consumers <span class="count">1 direct</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-calc" href="#f-competencyquestions-iri">ƒ Iri <span class="ref-pill-tbl">CompetencyQuestions</span></a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">1</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-raw" href="#f-competencyquestions-competencyquestionid">● Competency Question ID <span class="ref-pill-tbl">CompetencyQuestions</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">Stable, DAG-derived location for this CompetencyQuestion row. Root segment 'competency-questions' + the row's primary key. No leading slash so the Iri swap is a clean 1:1 substitution.</p>
+    </article>
+  <article class="field tone-calc" id="f-competencyquestions-iri" data-entity="Competency Question" data-field="Iri">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Iri</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">2 hops from ground truth</span>
+      <span class="pill pill-muted">string</span>
+      <span class="pill pill-dr">DR-107</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak</span>
+        <p class="view-body">A competency question's iri is computed as the <a class="ref" href="#f-competencyquestions-relativepath">relative path</a> with every a slash replaced by a hyphen.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In English</span>
+        <p class="view-body"><a class="ref" href="#f-competencyquestions-relativepath">Relative path</a> with “/” replaced by “-”.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>SUBSTITUTE(<a class="fx-chip" href="#f-competencyquestions-relativepath">Relative Path</a>, &quot;/&quot;, &quot;-&quot;)</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">1</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-calc" href="#f-competencyquestions-relativepath">
+          <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Relative Path</span><span class="input-table">CompetencyQuestions</span></span>
+          <span class="input-en">&quot;competency-questions/&quot; joined with competency question id.</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">1</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-raw" href="#f-competencyquestions-competencyquestionid">● Competency Question ID <span class="ref-pill-tbl">CompetencyQuestions</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">Opaque stable identifier (the dash-form of RelativePath). The OWL transpiler mints each individual's IRI from this value (erb:&lt;Iri&gt;), so identity is path-derived and globally unique.</p>
+    </article>
+  <article class="field tone-calc" id="f-competencyquestions-name" data-entity="Competency Question" data-field="Name">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Name</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">1 hop from ground truth</span>
+      <span class="pill pill-muted">string</span>
+      <span class="pill pill-dr">DR-108</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak <span class="mech" title="Faithful but clunky wording — a flag for an optional reword pass">⚠︎ mechanical</span></span>
+        <p class="view-body">A competency question's name is computed as the lower-cased <a class="ref" href="#f-competencyquestions-displayname">display name</a> with every a space replaced by a hyphen.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In English</span>
+        <p class="view-body"><a class="ref" href="#f-competencyquestions-displayname">Display name</a> lowercased with “ ” replaced by “-”.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>SUBSTITUTE(LOWER(<a class="fx-chip" href="#f-competencyquestions-displayname">Display Name</a>), &quot; &quot;, &quot;-&quot;)</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">1</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-raw" href="#f-competencyquestions-displayname">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Display Name</span><span class="input-table">CompetencyQuestions</span></span>
+          <span class="input-en muted">Short human label for the question (e.g. 'Steps and order').</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">1</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-raw" href="#f-competencyquestions-displayname">● Display Name <span class="ref-pill-tbl">CompetencyQuestions</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">Slug form of the DisplayName, for stable cross-reference. Mirrors the Name idiom used by the controlled-vocabulary tables.</p>
+    </article>
+  <article class="field tone-raw" id="f-competencyquestions-number" data-entity="Competency Question" data-field="Number">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Number</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">number</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>number</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">The canonical 1-8 ordering of the competency questions as listed in the article / README.</p>
+    </article>
+  <article class="field tone-raw" id="f-competencyquestions-displayname" data-entity="Competency Question" data-field="Display Name">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Display Name</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Short human label for the question (e.g. 'Steps and order').</p>
+    </article>
+  <article class="field tone-raw" id="f-competencyquestions-questiontext" data-entity="Competency Question" data-field="Question Text">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Question Text</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">The full competency question, verbatim from the article's acceptance suite.</p>
+    </article>
+  <article class="field tone-raw" id="f-competencyquestions-targettable" data-entity="Competency Question" data-field="Target Table">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Target Table</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">The entity whose computed field answers this question. Together with TargetField it pins the answer to a real column in the substrate, so the scoreboard reads the answer (never recomputes it) and the explainer-DAG drilldown lands on the exact derivation.</p>
+    </article>
+  <article class="field tone-raw" id="f-competencyquestions-targetfield" data-entity="Competency Question" data-field="Target Field">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Target Field</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">The substrate-computed field on TargetTable that answers this question (calc / lookup / aggregation / closure). The CQ scoreboard wraps the live answer in a DagCell(TargetTable, TargetField) so a click opens its inference graph.</p>
+    </article>
+  <article class="field tone-raw" id="f-competencyquestions-answerkind" data-entity="Competency Question" data-field="Answer Kind">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Answer Kind</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">'scalar' when the answer is a single value graded by equality with ExpectedAnswer; 'list' when the answer is a collection graded as answerable (non-empty / matches the asserted shape).</p>
+    </article>
+  <article class="field tone-raw" id="f-competencyquestions-expectedanswer" data-entity="Competency Question" data-field="Expected Answer">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Expected Answer</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">The asserted correct answer for the seed worked example. For scalar questions the live computed value must equal this to score a pass; for list questions this is the canonical summary the rendered collection is checked against. Authored here so pass/fail is (substrate-computed value) vs (rulebook-asserted expectation) — a real conformance check, not UI logic.</p>
+    </article>
+  <article class="field tone-raw" id="f-competencyquestions-explanation" data-entity="Competency Question" data-field="Explanation">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Explanation</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">One-sentence note on how this question resolves through the model — the FK / formula chain a presenter can narrate.</p>
+    </article>
+  <article class="field tone-raw" id="f-competencyquestions-sortorder" data-entity="Competency Question" data-field="Sort Order">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Sort Order</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">number</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>number</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Display order in the scoreboard. Mirrors Number for now; kept separate so the list can be re-sequenced without renumbering the canonical CQ ids.</p>
+    </article>
+  <article class="field tone-raw" id="f-competencyquestions-isactive" data-entity="Competency Question" data-field="Is Active">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Is Active</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">boolean</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>boolean</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Whether this competency question is shown in the scoreboard. All eight are active in the worked example.</p>
+    </article>
+</section>
 <section class="entity" id="t-conformancetests" data-entity="Conformance Test">
   <header class="entity-head">
     <h2 class="entity-title">Conformance Test</h2>
@@ -6847,7 +7100,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-106</span>
+      <span class="pill pill-dr">DR-109</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -6893,7 +7146,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-107</span>
+      <span class="pill pill-dr">DR-110</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -6933,7 +7186,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-108</span>
+      <span class="pill pill-dr">DR-111</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">

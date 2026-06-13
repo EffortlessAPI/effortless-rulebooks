@@ -1401,7 +1401,7 @@
         "ParentPath": "roles/ntwf-release-manager-role",
         "RelativePath": "roles/ntwf-release-manager-role/assignments/asn-release-manager-maria",
         "Iri": "roles-ntwf-release-manager-role-assignments-asn-release-manager-maria",
-        "Name": "ntwf-release-manager-role [2026-01-10 00:00:00-06 -> open]",
+        "Name": "ntwf-release-manager-role [2026-01-10 -> open]",
         "FillerType": "HumanAgent",
         "IsCurrent": true,
         "WasActiveAsOfAuditDate": true,
@@ -1421,7 +1421,7 @@
         "ParentPath": "roles/ntwf-vp-engineering-role",
         "RelativePath": "roles/ntwf-vp-engineering-role/assignments/asn-vp-eng-priya",
         "Iri": "roles-ntwf-vp-engineering-role-assignments-asn-vp-eng-priya",
-        "Name": "ntwf-vp-engineering-role [2026-01-10 00:00:00-06 -> 2026-03-15 00:00:00-05]",
+        "Name": "ntwf-vp-engineering-role [2026-01-10 -> 2026-03-15]",
         "FillerType": "HumanAgent",
         "IsCurrent": false,
         "WasActiveAsOfAuditDate": true,
@@ -1441,7 +1441,7 @@
         "ParentPath": "roles/ntwf-vp-engineering-role",
         "RelativePath": "roles/ntwf-vp-engineering-role/assignments/asn-vp-eng-david",
         "Iri": "roles-ntwf-vp-engineering-role-assignments-asn-vp-eng-david",
-        "Name": "ntwf-vp-engineering-role [2026-03-15 00:00:00-05 -> open]",
+        "Name": "ntwf-vp-engineering-role [2026-03-15 -> open]",
         "FillerType": "HumanAgent",
         "IsCurrent": true,
         "WasActiveAsOfAuditDate": false,
@@ -1461,7 +1461,7 @@
         "ParentPath": "roles/ntwf-deployment-health-role",
         "RelativePath": "roles/ntwf-deployment-health-role/assignments/asn-deploy-health-ai-initial",
         "Iri": "roles-ntwf-deployment-health-role-assignments-asn-deploy-health-ai-initial",
-        "Name": "ntwf-deployment-health-role [2026-01-10 00:00:00-06 -> 2026-02-05 00:00:00-06]",
+        "Name": "ntwf-deployment-health-role [2026-01-10 -> 2026-02-05]",
         "FillerType": "AIAgent",
         "IsCurrent": false,
         "WasActiveAsOfAuditDate": false,
@@ -1481,7 +1481,7 @@
         "ParentPath": "roles/ntwf-deployment-health-role",
         "RelativePath": "roles/ntwf-deployment-health-role/assignments/asn-deploy-health-human-audit",
         "Iri": "roles-ntwf-deployment-health-role-assignments-asn-deploy-health-human-audit",
-        "Name": "ntwf-deployment-health-role [2026-02-05 00:00:00-06 -> 2026-02-20 00:00:00-06]",
+        "Name": "ntwf-deployment-health-role [2026-02-05 -> 2026-02-20]",
         "FillerType": "HumanAgent",
         "IsCurrent": false,
         "WasActiveAsOfAuditDate": false,
@@ -1501,7 +1501,7 @@
         "ParentPath": "roles/ntwf-deployment-health-role",
         "RelativePath": "roles/ntwf-deployment-health-role/assignments/asn-deploy-health-ai-current",
         "Iri": "roles-ntwf-deployment-health-role-assignments-asn-deploy-health-ai-current",
-        "Name": "ntwf-deployment-health-role [2026-02-20 00:00:00-06 -> open]",
+        "Name": "ntwf-deployment-health-role [2026-02-20 -> open]",
         "FillerType": "AIAgent",
         "IsCurrent": true,
         "WasActiveAsOfAuditDate": true,
@@ -2288,7 +2288,7 @@
         "Identifier": "DS-RISK-2026-Q1",
         "Modified": "2026-03-31T00:00:00-05:00",
         "DistributionUrl": "https://data.internal.special-solutions.example/risk/q1-2026",
-        "ConsumedBySteps": "prod-deploy-step-2",
+        "ConsumedBySteps": "prod-deploy-step-1",
         "RelativePath": "datasets/ds-q1-2026-risk-metrics",
         "Iri": "datasets-ds-q1-2026-risk-metrics"
       }
@@ -2765,7 +2765,7 @@
         "ApprovedBy": "gov-authority",
         "RelativePath": "change-log/change-1-0-0",
         "Iri": "change-log-change-1-0-0",
-        "Name": "1.0.0 (2026-01-15 00:00:00-06)",
+        "Name": "1.0.0 (2026-01-15)",
         "IsBreakingChange": true,
         "IsBackwardCompatible": false
       },
@@ -2780,7 +2780,7 @@
         "ApprovedBy": "gov-steward",
         "RelativePath": "change-log/change-1-1-0",
         "Iri": "change-log-change-1-1-0",
-        "Name": "1.1.0 (2026-03-20 00:00:00-05)",
+        "Name": "1.1.0 (2026-03-20)",
         "IsBreakingChange": false,
         "IsBackwardCompatible": true
       }
@@ -3013,6 +3013,242 @@
         "RelativePath": "scenarios/reset",
         "Iri": "scenarios-reset",
         "Name": "reset-to-baseline"
+      }
+    ]
+  },
+  "CompetencyQuestions": {
+    "Description": "The article's literal acceptance suite — the eight leadership/competency questions the NTWF worked example must answer (Talisman, Intentional Arrangement, CQ1-CQ8). First-class data, not hardcoded UI strings: each row names the question, the substrate-computed field that ANSWERS it (TargetTable/TargetField, for cross-substrate traceability and the explainer-DAG drilldown), the answer kind, and the asserted ExpectedAnswer used to grade pass/fail. The live answer is always READ from the named computed column — never recomputed — so the CQ scoreboard is a projection of the model like every other lens. This is the CMCC-native home for the competency questions: the article treats them as acceptance criteria traceable to the rulebook, so they live in the rulebook.",
+    "schema": [
+      {
+        "name": "CompetencyQuestionId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Primary key. Stable slug for the competency question (cq-1 .. cq-8)."
+      },
+      {
+        "name": "RelativePath",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Stable, DAG-derived location for this CompetencyQuestion row. Root segment 'competency-questions' + the row's primary key. No leading slash so the Iri swap is a clean 1:1 substitution.",
+        "formula": "=\"competency-questions/\" & {{CompetencyQuestionId}}"
+      },
+      {
+        "name": "Iri",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Opaque stable identifier (the dash-form of RelativePath). The OWL transpiler mints each individual's IRI from this value (erb:<Iri>), so identity is path-derived and globally unique.",
+        "formula": "=SUBSTITUTE({{RelativePath}}, \"/\", \"-\")"
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Slug form of the DisplayName, for stable cross-reference. Mirrors the Name idiom used by the controlled-vocabulary tables.",
+        "formula": "=SUBSTITUTE(LOWER({{DisplayName}}), \" \", \"-\")"
+      },
+      {
+        "name": "Number",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": false,
+        "Description": "The canonical 1-8 ordering of the competency questions as listed in the article / README."
+      },
+      {
+        "name": "DisplayName",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Short human label for the question (e.g. 'Steps and order')."
+      },
+      {
+        "name": "QuestionText",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "The full competency question, verbatim from the article's acceptance suite."
+      },
+      {
+        "name": "TargetTable",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "The entity whose computed field answers this question. Together with TargetField it pins the answer to a real column in the substrate, so the scoreboard reads the answer (never recomputes it) and the explainer-DAG drilldown lands on the exact derivation."
+      },
+      {
+        "name": "TargetField",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "The substrate-computed field on TargetTable that answers this question (calc / lookup / aggregation / closure). The CQ scoreboard wraps the live answer in a DagCell(TargetTable, TargetField) so a click opens its inference graph."
+      },
+      {
+        "name": "AnswerKind",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "'scalar' when the answer is a single value graded by equality with ExpectedAnswer; 'list' when the answer is a collection graded as answerable (non-empty / matches the asserted shape)."
+      },
+      {
+        "name": "ExpectedAnswer",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "The asserted correct answer for the seed worked example. For scalar questions the live computed value must equal this to score a pass; for list questions this is the canonical summary the rendered collection is checked against. Authored here so pass/fail is (substrate-computed value) vs (rulebook-asserted expectation) — a real conformance check, not UI logic."
+      },
+      {
+        "name": "Explanation",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "One-sentence note on how this question resolves through the model — the FK / formula chain a presenter can narrate."
+      },
+      {
+        "name": "SortOrder",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Display order in the scoreboard. Mirrors Number for now; kept separate so the list can be re-sequenced without renumbering the canonical CQ ids."
+      },
+      {
+        "name": "IsActive",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Whether this competency question is shown in the scoreboard. All eight are active in the worked example."
+      }
+    ],
+    "data": [
+      {
+        "CompetencyQuestionId": "cq-1",
+        "Number": 1,
+        "DisplayName": "Steps and order",
+        "QuestionText": "What are all the steps in the release process, and in what order do they execute?",
+        "TargetTable": "Workflows",
+        "TargetField": "CountOfPrecedenceClosurePairs",
+        "AnswerKind": "list",
+        "ExpectedAnswer": "5 steps, ordered 1 -> 2 -> 3 -> 4 -> 5 (10 closure pairs)",
+        "Explanation": "WorkflowSteps ordered by SequencePosition; the order is the transitive closure of the asserted StepPrecedence edges, materialized as ntwf:precedesStep.",
+        "SortOrder": 1,
+        "IsActive": true,
+        "RelativePath": "competency-questions/cq-1",
+        "Iri": "competency-questions-cq-1",
+        "Name": "steps-and-order"
+      },
+      {
+        "CompetencyQuestionId": "cq-2",
+        "Number": 2,
+        "DisplayName": "Who approves",
+        "QuestionText": "Who or what is responsible for approving a production deployment?",
+        "TargetTable": "ApprovalGates",
+        "TargetField": "GateApproverHuman",
+        "AnswerKind": "scalar",
+        "ExpectedAnswer": "Maria Gonzalez",
+        "Explanation": "The Release Approval Gate (step 3) -> its AssignedRole (Release Manager) -> FilledByHumanAgent. The role-agent indirection is resolved by the GateApproverHuman lookup.",
+        "SortOrder": 2,
+        "IsActive": true,
+        "RelativePath": "competency-questions/cq-2",
+        "Iri": "competency-questions-cq-2",
+        "Name": "who-approves"
+      },
+      {
+        "CompetencyQuestionId": "cq-3",
+        "Number": 3,
+        "DisplayName": "AI vs human steps",
+        "QuestionText": "Which steps are executed by AI agents, and which require human decision?",
+        "TargetTable": "Workflows",
+        "TargetField": "CountAISteps",
+        "AnswerKind": "list",
+        "ExpectedAnswer": "AI-executed: steps 1, 5 - human-required: steps 2, 3",
+        "Explanation": "Each step's ExecutingAgentType (via its role's filler type) classifies AI vs pipeline vs human; RequiresHumanApproval marks the human-decision steps. CountAISteps aggregates the AI side.",
+        "SortOrder": 3,
+        "IsActive": true,
+        "RelativePath": "competency-questions/cq-3",
+        "Iri": "competency-questions-cq-3",
+        "Name": "ai-vs-human-steps"
+      },
+      {
+        "CompetencyQuestionId": "cq-4",
+        "Number": 4,
+        "DisplayName": "Artifact lineage",
+        "QuestionText": "What artifacts does the review produce, and what consumes them downstream?",
+        "TargetTable": "WorkflowArtifacts",
+        "TargetField": "DerivedFromArtifact",
+        "AnswerKind": "list",
+        "ExpectedAnswer": "5 artifacts in a wasDerivedFrom chain: Risk Report -> Legal Clearance -> Release Authorization -> Deployment Log -> Post-Deployment Report",
+        "Explanation": "WorkflowArtifacts.ProducedByStep gives the producer; DerivedFromArtifact gives the PROV wasDerivedFrom parent; RequiredBySteps gives the downstream consumer.",
+        "SortOrder": 4,
+        "IsActive": true,
+        "RelativePath": "competency-questions/cq-4",
+        "Iri": "competency-questions-cq-4",
+        "Name": "artifact-lineage"
+      },
+      {
+        "CompetencyQuestionId": "cq-5",
+        "Number": 5,
+        "DisplayName": "Stale over 12 months",
+        "QuestionText": "Which workflows have not been reviewed or updated in twelve months?",
+        "TargetTable": "Workflows",
+        "TargetField": "IsStale",
+        "AnswerKind": "scalar",
+        "ExpectedAnswer": "No - Production Deployment is not stale (MonthsSinceModified 2 <= 12)",
+        "Explanation": "IsStale = MonthsSinceModified > StalenessThresholdMonths. The seed workflow was modified 2 months ago against a 12-month threshold, so it is not stale.",
+        "SortOrder": 5,
+        "IsActive": true,
+        "RelativePath": "competency-questions/cq-5",
+        "Iri": "competency-questions-cq-5",
+        "Name": "stale-over-12-months"
+      },
+      {
+        "CompetencyQuestionId": "cq-6",
+        "Number": 6,
+        "DisplayName": "Escalation path",
+        "QuestionText": "What happens when the VP of Engineering is unavailable during escalation?",
+        "TargetTable": "Roles",
+        "TargetField": "DelegatesTo",
+        "AnswerKind": "scalar",
+        "ExpectedAnswer": "Escalates Release Manager -> VP of Engineering -> Chief Technology Officer",
+        "Explanation": "Roles.DelegatesTo is a transitive chain. With the VP of Engineering unavailable, the next hop in the closure is the CTO.",
+        "SortOrder": 6,
+        "IsActive": true,
+        "RelativePath": "competency-questions/cq-6",
+        "Iri": "competency-questions-cq-6",
+        "Name": "escalation-path"
+      },
+      {
+        "CompetencyQuestionId": "cq-7",
+        "Number": 7,
+        "DisplayName": "Engineering and Legal",
+        "QuestionText": "Which workflows involve both Engineering and Legal?",
+        "TargetTable": "Workflows",
+        "TargetField": "InvolvesEngineeringAndLegal",
+        "AnswerKind": "scalar",
+        "ExpectedAnswer": "Yes - Production Deployment involves both (Engineering-owned steps and Legal-owned steps)",
+        "Explanation": "InvolvesEngineeringAndLegal = AND(CountEngineeringOwnedSteps > 0, CountLegalOwnedSteps > 0). Step 2 is Legal-owned; steps 1/3/4/5 are Engineering-owned.",
+        "SortOrder": 7,
+        "IsActive": true,
+        "RelativePath": "competency-questions/cq-7",
+        "Iri": "competency-questions-cq-7",
+        "Name": "engineering-and-legal"
+      },
+      {
+        "CompetencyQuestionId": "cq-8",
+        "Number": 8,
+        "DisplayName": "Datasets and AI",
+        "QuestionText": "What datasets does the review consume, and which AI agents processed them?",
+        "TargetTable": "Datasets",
+        "TargetField": "ConsumedBySteps",
+        "AnswerKind": "list",
+        "ExpectedAnswer": "Q1 2026 Risk Metrics, consumed by the AI Risk Assessment step and processed by RiskAnalysis-AI",
+        "Explanation": "Datasets.ConsumedBySteps (inverse of WorkflowSteps.ConsumesDataset) gives the consuming step; that step's role filler resolves the processing AI agent.",
+        "SortOrder": 8,
+        "IsActive": true,
+        "RelativePath": "competency-questions/cq-8",
+        "Iri": "competency-questions-cq-8",
+        "Name": "datasets-and-ai"
       }
     ]
   },

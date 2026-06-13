@@ -73,58 +73,10 @@
   },
   {
     "entity": "RoleAssignments",
-    "field": "Name",
-    "formula": "={{Role}} & \" [\" & {{ValidFrom}} & \" -> \" & IF(ISBLANK({{ValidTo}}), \"open\", {{ValidTo}}) & \"]\"",
-    "record_id": "asn-release-manager-maria",
-    "error": "drift: stored='ntwf-release-manager-role [2026-01-10 00:00:00-06 -> open]' python-recompute='ntwf-release-manager-role [2026-01-10 -> open]'",
-    "severity": "drift"
-  },
-  {
-    "entity": "RoleAssignments",
-    "field": "Name",
-    "formula": "={{Role}} & \" [\" & {{ValidFrom}} & \" -> \" & IF(ISBLANK({{ValidTo}}), \"open\", {{ValidTo}}) & \"]\"",
-    "record_id": "asn-vp-eng-priya",
-    "error": "drift: stored='ntwf-vp-engineering-role [2026-01-10 00:00:00-06 -> 2026-03-15 00:00:00-05]' python-recompute='ntwf-vp-engineering-role [2026-01-10 -> 2026-03-15]'",
-    "severity": "drift"
-  },
-  {
-    "entity": "RoleAssignments",
-    "field": "Name",
-    "formula": "={{Role}} & \" [\" & {{ValidFrom}} & \" -> \" & IF(ISBLANK({{ValidTo}}), \"open\", {{ValidTo}}) & \"]\"",
-    "record_id": "asn-vp-eng-david",
-    "error": "drift: stored='ntwf-vp-engineering-role [2026-03-15 00:00:00-05 -> open]' python-recompute='ntwf-vp-engineering-role [2026-03-15 -> open]'",
-    "severity": "drift"
-  },
-  {
-    "entity": "RoleAssignments",
-    "field": "Name",
-    "formula": "={{Role}} & \" [\" & {{ValidFrom}} & \" -> \" & IF(ISBLANK({{ValidTo}}), \"open\", {{ValidTo}}) & \"]\"",
-    "record_id": "asn-deploy-health-ai-initial",
-    "error": "drift: stored='ntwf-deployment-health-role [2026-01-10 00:00:00-06 -> 2026-02-05 00:00:00-06]' python-recompute='ntwf-deployment-health-role [2026-01-10 -> 2026-02-05]'",
-    "severity": "drift"
-  },
-  {
-    "entity": "RoleAssignments",
     "field": "FillerType",
     "formula": "=IF(NOT(ISBLANK({{FilledByHumanAgent}})), \"HumanAgent\", IF(NOT(ISBLANK({{FilledByAIAgent}})), \"AIAgent\", IF(NOT(ISBLANK({{FilledByAutomatedPipeline}})), \"AutomatedPipeline\", \"\")))",
     "record_id": "asn-deploy-health-ai-initial",
     "error": "drift: stored='AIAgent' python-recompute=''",
-    "severity": "drift"
-  },
-  {
-    "entity": "RoleAssignments",
-    "field": "Name",
-    "formula": "={{Role}} & \" [\" & {{ValidFrom}} & \" -> \" & IF(ISBLANK({{ValidTo}}), \"open\", {{ValidTo}}) & \"]\"",
-    "record_id": "asn-deploy-health-human-audit",
-    "error": "drift: stored='ntwf-deployment-health-role [2026-02-05 00:00:00-06 -> 2026-02-20 00:00:00-06]' python-recompute='ntwf-deployment-health-role [2026-02-05 -> 2026-02-20]'",
-    "severity": "drift"
-  },
-  {
-    "entity": "RoleAssignments",
-    "field": "Name",
-    "formula": "={{Role}} & \" [\" & {{ValidFrom}} & \" -> \" & IF(ISBLANK({{ValidTo}}), \"open\", {{ValidTo}}) & \"]\"",
-    "record_id": "asn-deploy-health-ai-current",
-    "error": "drift: stored='ntwf-deployment-health-role [2026-02-20 00:00:00-06 -> open]' python-recompute='ntwf-deployment-health-role [2026-02-20 -> open]'",
     "severity": "drift"
   },
   {
@@ -165,22 +117,6 @@
     "formula": "=IF(NOT(ISBLANK({{AttributedToHumanAgent}})), \"HumanAgent\", IF(NOT(ISBLANK({{AttributedToAIAgent}})), \"AIAgent\", IF(NOT(ISBLANK({{AttributedToAutomatedPipeline}})), \"AutomatedPipeline\", \"\")))",
     "record_id": "artifact-post-deploy-report",
     "error": "drift: stored='AIAgent' python-recompute=''",
-    "severity": "drift"
-  },
-  {
-    "entity": "ChangeLog",
-    "field": "Name",
-    "formula": "={{Version}} & \" (\" & {{ChangeDate}} & \")\"",
-    "record_id": "change-1-0-0",
-    "error": "drift: stored='1.0.0 (2026-01-15 00:00:00-06)' python-recompute='1.0.0 (2026-01-15)'",
-    "severity": "drift"
-  },
-  {
-    "entity": "ChangeLog",
-    "field": "Name",
-    "formula": "={{Version}} & \" (\" & {{ChangeDate}} & \")\"",
-    "record_id": "change-1-1-0",
-    "error": "drift: stored='1.1.0 (2026-03-20 00:00:00-05)' python-recompute='1.1.0 (2026-03-20)'",
     "severity": "drift"
   }
 ]

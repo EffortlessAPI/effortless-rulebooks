@@ -1636,6 +1636,36 @@ RETURNS TEXT AS $$
   SELECT (REPLACE(LOWER((SELECT NULLIF(label, '') FROM scenarios WHERE scenario_id = p_scenario_id)), ' ', '-'))::text;
 $$ LANGUAGE sql STABLE;
 
+-- calc_competency_questions_relative_path
+-- Field: CompetencyQuestions.RelativePath
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_competency_questions_relative_path(p_competency_question_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CONCAT('competency-questions/', (SELECT NULLIF(competency_question_id, '') FROM competency_questions WHERE competency_question_id = p_competency_question_id)))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_competency_questions_iri
+-- Field: CompetencyQuestions.Iri
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_competency_questions_iri(p_competency_question_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (REPLACE(calc_competency_questions_relative_path(p_competency_question_id), '/', '-'))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_competency_questions_name
+-- Field: CompetencyQuestions.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_competency_questions_name(p_competency_question_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (REPLACE(LOWER((SELECT NULLIF(display_name, '') FROM competency_questions WHERE competency_question_id = p_competency_question_id)), ' ', '-'))::text;
+$$ LANGUAGE sql STABLE;
+
 -- calc_conformance_tests_relative_path
 -- Field: ConformanceTests.RelativePath
 -- Type: calculated | DataType: string | Returns: TEXT

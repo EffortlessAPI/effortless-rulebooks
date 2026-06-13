@@ -93,6 +93,50 @@ export interface Workflow {
   monthsSinceModified: number;
   stalenessThresholdMonths: number;
   isStale: boolean;
+  // CQ7 backing — cross-department derivation + its two input counts.
+  involvesEngineeringAndLegal: boolean;
+  countEngineeringOwnedSteps: number;
+  countLegalOwnedSteps: number;
+}
+
+// --- CQ-backing payload shapes (CQ4 artifacts, CQ8 datasets, the CQ suite) ---
+// One PROV artifact as arranged by /api/story (already-derived fields).
+export interface Artifact {
+  id: string;
+  title: string;
+  artifactType: string | null;
+  producedByStep: string | null;
+  producedByStepTitle: string | null;
+  producedByStepPosition: number | null;
+  derivedFromArtifact: string | null;
+  hasDerivationParent: boolean;
+  requiredBySteps: { id: string; title: string }[];
+  attributedTo: Agent | null;
+  producingAgentType: string | null;
+}
+
+// One DCAT dataset + the steps (and their agents) that consume it.
+export interface DatasetConsumption {
+  id: string;
+  title: string;
+  identifier: string | null;
+  consumedBySteps: { id: string; title: string; agent: Agent | null }[];
+}
+
+// One competency question — a first-class rulebook row. The question/target/
+// expected come from CompetencyQuestions; the live answer is read at render
+// time from targetTable.targetField in this same payload (never recomputed).
+export interface CompetencyQuestion {
+  id: string;
+  number: number;
+  displayName: string;
+  questionText: string;
+  targetTable: string;
+  targetField: string;
+  answerKind: "scalar" | "list" | string;
+  expectedAnswer: string;
+  explanation: string | null;
+  sortOrder: number;
 }
 
 export interface Verdict {
@@ -150,6 +194,9 @@ export interface Story {
   delegation: Record<string, DelegationEntry>;
   closure: Closure;
   verdict: Verdict;
+  artifacts: Artifact[];
+  datasets: DatasetConsumption[];
+  competencyQuestions: CompetencyQuestion[];
   engine: string;
   reasoned_triples: number;
 }
@@ -193,6 +240,10 @@ export interface Situation {
   stepsByAgent: Record<string, number[]>;
   orgTree: OrgNode[][];
   graph: { nodes: GraphNode[]; edges: GraphEdge[] };
+  delegation: Record<string, DelegationEntry>;
+  artifacts: Artifact[];
+  datasets: DatasetConsumption[];
+  competencyQuestions: CompetencyQuestion[];
   reasoned_triples: number;
   short: (id: string) => string;
 }
