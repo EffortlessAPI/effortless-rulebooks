@@ -426,6 +426,12 @@ effortless-ntwf:isActive a owl:DatatypeProperty ;
     rdfs:label "IsActive" ;
     rdfs:comment "Whether this competency question is shown in the scoreboard. All eight are active in the worked example." .
 
+effortless-ntwf:simulateScenario a owl:ObjectProperty ;
+    rdfs:domain effortless-ntwf:CompetencyQuestions ;
+    rdfs:range effortless-ntwf:Scenarios ;
+    rdfs:label "SimulateScenario" ;
+    rdfs:comment "FK to the Scenario the card's 'Simulate' button applies to demonstrate this competency question live. Points at the minimal raw-fact edit that moves THIS question's answer in isolation where one exists; for cq-2 it points at 'ai-release-manager', which also ripples to cq-3 (the gate approver is itself a step executor, so the two answers cannot be perturbed independently). The full set of questions each scenario moves — trigger vs ripple — is enumerated in the ScenarioCQEffects junction; this is just the one the button fires. Inverse-ish of ScenarioCQEffects but kept as a direct FK so the UI has a single answer." .
+
 # === Class: ConformanceTests ===
 effortless-ntwf:ConformanceTests a owl:Class ;
     rdfs:label "ConformanceTests" .
@@ -916,6 +922,64 @@ effortless-ntwf:fillerType a owl:DatatypeProperty ;
     rdfs:label "FillerType" ;
     rdfs:comment "Which disjoint agent class fills this role (HumanAgent / AIAgent / AutomatedPipeline), from whichever filledBy arm is set. Lets the delegation-chain query confirm CQ6's 'zero AI agents in the escalation chain'." .
     # calculated: calculated
+
+# === Class: ScenarioCQEffects ===
+effortless-ntwf:ScenarioCQEffects a owl:Class ;
+    rdfs:label "ScenarioCQEffects" ;
+    rdfs:comment "Table: ScenarioCQEffects. Names the many-to-many between Scenarios and CompetencyQuestions as two 1:M foreign keys (Scenario, CompetencyQuestion) plus the detail of the relationship (EffectKind, Note). Each row asserts 'applying this scenario moves this competency question's live answer'. 'trigger' rows are the intended demonstration; 'ripple' rows record answers that move as an unavoidable consequence of the same raw edit (e.g. ai-release-manager moves cq-2 AND cq-3 because the gate approver is itself a step executor). The answers themselves are never stored here — they are read live from each substrate after the scenario applies." .
+
+effortless-ntwf:scenarioCQEffectId a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ScenarioCQEffects ;
+    rdfs:range xsd:string ;
+    rdfs:label "ScenarioCQEffectId" ;
+    rdfs:comment "Primary key. '<scenario>-<cq>' — names one (scenario moves this competency question) edge." .
+
+effortless-ntwf:relativePath a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "RelativePath" ;
+    rdfs:comment "DAG-derived location: 'scenario-cq-effects/' + the row's primary key." .
+    # calculated: calculated
+
+effortless-ntwf:iri a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "Iri" ;
+    rdfs:comment "Opaque stable identifier (dash-form of RelativePath)." .
+    # calculated: calculated
+
+effortless-ntwf:name a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "Name" ;
+    rdfs:comment "Slug label, mirrors the primary key." .
+    # calculated: calculated
+
+effortless-ntwf:scenario a owl:ObjectProperty ;
+    rdfs:domain effortless-ntwf:ScenarioCQEffects ;
+    rdfs:range effortless-ntwf:Scenarios ;
+    rdfs:label "Scenario" ;
+    rdfs:comment "FK to the Scenario whose raw-fact edits cause this effect. The 'many effects belong to one scenario' side: a single scenario can move several competency questions." .
+
+effortless-ntwf:competencyQuestion a owl:ObjectProperty ;
+    rdfs:domain effortless-ntwf:ScenarioCQEffects ;
+    rdfs:range effortless-ntwf:CompetencyQuestions ;
+    rdfs:label "CompetencyQuestion" ;
+    rdfs:comment "FK to the CompetencyQuestion whose live answer this scenario moves. The 'many effects belong to one question' side: a question can be exercised by several scenarios." .
+
+effortless-ntwf:effectKind a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ScenarioCQEffects ;
+    rdfs:range xsd:string ;
+    rdfs:label "EffectKind" ;
+    rdfs:comment "'trigger' = this scenario was authored to move this question (the point of the demo). 'ripple' = the question also moves as an unavoidable side effect of the same raw edit. The ripple rows are the pedagogical payload: they show answers that are structurally coupled and cannot be perturbed independently." .
+
+effortless-ntwf:note a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ScenarioCQEffects ;
+    rdfs:range xsd:string ;
+    rdfs:label "Note" ;
+    rdfs:comment "One-line, human-readable account of how this scenario moves this question's answer (qualitative — the actual value is read live from the substrate, never stored here)." .
+
+effortless-ntwf:sortOrder a owl:DatatypeProperty ;
+    rdfs:range xsd:integer ;
+    rdfs:label "SortOrder" ;
+    rdfs:comment "Display order." .
 
 # === Class: Scenarios ===
 effortless-ntwf:Scenarios a owl:Class ;

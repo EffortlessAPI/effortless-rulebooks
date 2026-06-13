@@ -2378,6 +2378,51 @@ export const rulespeakFields: Record<string, RuleSpeakFieldRule> = {
     ],
     "structure": null
   },
+  "ScenarioCQEffects.RelativePath": {
+    "table": "ScenarioCQEffects",
+    "field": "RelativePath",
+    "kind": "formula",
+    "rule": "A scenario CQ effect\u0027s relative path is computed as the literal \u201Cscenario-cq-effects/\u201D, followed by the scenario CQ effect ID.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "ScenarioCQEffects",
+        "field": "ScenarioCQEffectId",
+        "label": "scenario CQ effect ID"
+      }
+    ],
+    "structure": null
+  },
+  "ScenarioCQEffects.Iri": {
+    "table": "ScenarioCQEffects",
+    "field": "Iri",
+    "kind": "formula",
+    "rule": "A scenario CQ effect\u0027s iri is computed as the relative path with every a slash replaced by a hyphen.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "ScenarioCQEffects",
+        "field": "RelativePath",
+        "label": "relative path"
+      }
+    ],
+    "structure": null
+  },
+  "ScenarioCQEffects.Name": {
+    "table": "ScenarioCQEffects",
+    "field": "Name",
+    "kind": "formula",
+    "rule": "A scenario CQ effect\u0027s name is computed as the lower-cased scenario CQ effect ID with every a space replaced by a hyphen.",
+    "mechanical": true,
+    "refs": [
+      {
+        "table": "ScenarioCQEffects",
+        "field": "ScenarioCQEffectId",
+        "label": "scenario CQ effect ID"
+      }
+    ],
+    "structure": null
+  },
   "ConformanceTests.RelativePath": {
     "table": "ConformanceTests",
     "field": "RelativePath",
@@ -2458,6 +2503,11 @@ export const rulespeakStructural: Record<string, string[]> = {
   ],
   "CompetencyQuestions": [
     "A competency question **must** have a number, a display name, a question text, a target table, a target field, an answer kind, and an expected answer."
+  ],
+  "ScenarioCQEffects": [
+    "A scenario CQ effect **must** reference exactly one scenario.",
+    "A scenario CQ effect **must** reference exactly one competency question.",
+    "A scenario CQ effect **must** have an effect kind."
   ],
   "ConformanceTests": [
     "A conformance test **must** have a display name, a section, a test kind, and a sort order, and record whether it is enabled."

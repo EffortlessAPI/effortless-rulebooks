@@ -97,15 +97,28 @@ export const CQ_RESOLVERS: Record<string, CqResolver> = {
   },
 
   // CQ3 — which steps are AI-executed vs human-required. Both classifications
-  // are computed per step (ExecutingAgentType / RequiresHumanApproval).
-  "cq-3": (sit) => {
+  // are computed per step (ExecutingAgentType / RequiresHumanApproval). Like the
+  // other scalar CQs, pass/fail is the LIVE answer vs the rulebook's asserted
+  // ExpectedAnswer ("AI-executed: steps 1, 5 - human-required: steps 2, 3"): we
+  // split that prose on "human" and compare the two step-number sets. Reassign a
+  // step to an AI and the AI set drifts from the assertion → ✗ (toggle made
+  // visible). This stays purely descriptive — it reports the true classification;
+  // the AI-step-needs-human-signoff *inconsistency* is a separate constraint (the
+  // per-step "rule broken" flag), not CQ3's job.
+  "cq-3": (sit, cq) => {
     const steps = [...sit.steps].sort((a, b) => a.position - b.position);
     const ai = steps.filter((s) => s.executingAgentType === "AIAgent");
     const human = steps.filter((s) => s.requiresHumanApproval);
     const fmt = (xs: typeof steps) => xs.map((s) => s.position).join(", ") || "none";
+    const posSet = (xs: typeof steps) => xs.map((s) => s.position).sort((a, b) => a - b);
+    const nums = (t?: string) => (t?.match(/\d+/g) || []).map(Number).sort((a, b) => a - b);
+    const sameSet = (x: number[], y: number[]) => x.length === y.length && x.every((v, i) => v === y[i]);
+    // Split the asserted prose into its AI side and its human side on "human".
+    const [expAiPart, expHumanPart] = (cq.expectedAnswer || "").split(/human/i);
+    const ok = sameSet(posSet(ai), nums(expAiPart)) && sameSet(posSet(human), nums(expHumanPart));
     return {
       answer: `AI: ${fmt(ai)} · human: ${fmt(human)}`,
-      ok: ai.length > 0 || human.length > 0,
+      ok,
       rows: steps.map((s) => ({
         label: `${s.position}. ${s.title}`,
         sub: s.executingAgentType + (s.requiresHumanApproval ? " · requires human sign-off" : ""),

@@ -3053,6 +3053,102 @@
         "RelativePath": "scenarios/reset",
         "Iri": "scenarios-reset",
         "Name": "reset-to-baseline"
+      },
+      {
+        "ScenarioId": "reroute-ordering",
+        "Label": "Re-route the last ordering edge",
+        "Icon": "🔀",
+        "Explanation": "Re-points the final precedence edge so step 5 follows step 1 instead of step 4. The transitive closure shrinks (10 → 7 ordered pairs) and the inferred positions recompute — nothing else moves. Demonstrates CQ1: order is a projection of the edges.",
+        "SortOrder": 10,
+        "IsReset": false,
+        "Edits": "[{\"class\": \"StepPrecedence\", \"id\": \"prec-4-5\", \"set\": {\"fromStep\": \"prod-deploy-step-1\"}}]",
+        "RelativePath": "scenarios/reroute-ordering",
+        "Iri": "scenarios-reroute-ordering",
+        "Name": "re-route-the-last-ordering-edge"
+      },
+      {
+        "ScenarioId": "ai-release-manager",
+        "Label": "AI fills the release gate",
+        "Icon": "🤖",
+        "Explanation": "Hands the Release Manager role — the human authority on the approval gate — to an AI agent. The gate approver is no longer human (CQ2), and because that role also executes step 3, the AI-step count ticks up (CQ3). The two answers cannot be decoupled: the gate's approver IS a step executor.",
+        "SortOrder": 20,
+        "IsReset": false,
+        "Edits": "[{\"class\": \"Roles\", \"id\": \"ntwf-release-manager-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"ntwf-risk-ai\", \"filledByAutomatedPipeline\": \"\"}}]",
+        "RelativePath": "scenarios/ai-release-manager",
+        "Iri": "scenarios-ai-release-manager",
+        "Name": "ai-fills-the-release-gate"
+      },
+      {
+        "ScenarioId": "human-risk-step",
+        "Label": "Hand the risk step to a human",
+        "Icon": "🧑",
+        "Explanation": "Reassigns the Risk Analysis role from its AI agent to a human. The AI-executed step count drops from 2 to 1 — and only that. Demonstrates CQ3: the count is a live rollup over which steps are AI-executed, not a stored number.",
+        "SortOrder": 30,
+        "IsReset": false,
+        "Edits": "[{\"class\": \"Roles\", \"id\": \"ntwf-risk-analysis-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-david-chen\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}]",
+        "RelativePath": "scenarios/human-risk-step",
+        "Iri": "scenarios-human-risk-step",
+        "Name": "hand-the-risk-step-to-a-human"
+      },
+      {
+        "ScenarioId": "break-derivation",
+        "Label": "Break the provenance chain",
+        "Icon": "⛓️",
+        "Explanation": "Clears the wasDerivedFrom link on the Legal Clearance Certificate. The PROV derivation chain splits in two — the downstream artifacts can no longer trace back to the risk report. Demonstrates CQ4: derivation is an asserted edge, and the chain answer follows it.",
+        "SortOrder": 40,
+        "IsReset": false,
+        "Edits": "[{\"class\": \"WorkflowArtifacts\", \"id\": \"artifact-legal-clearance\", \"set\": {\"derivedFromArtifact\": \"\"}}]",
+        "RelativePath": "scenarios/break-derivation",
+        "Iri": "scenarios-break-derivation",
+        "Name": "break-the-provenance-chain"
+      },
+      {
+        "ScenarioId": "stale-docs",
+        "Label": "Let the docs go stale",
+        "Icon": "📅",
+        "Explanation": "Backdates the workflow's last-modified date past its staleness window. IsStale flips to true — and only that derived flag. Demonstrates CQ5: staleness is MonthsSinceModified vs the threshold, recomputed against the clock, never asserted.",
+        "SortOrder": 50,
+        "IsReset": false,
+        "Edits": "[{\"class\": \"Workflows\", \"match\": \"first\", \"set\": {\"modified\": \"2023-01-01T00:00:00-06:00\"}}]",
+        "RelativePath": "scenarios/stale-docs",
+        "Iri": "scenarios-stale-docs",
+        "Name": "let-the-docs-go-stale"
+      },
+      {
+        "ScenarioId": "break-delegation",
+        "Label": "Cut the escalation chain",
+        "Icon": "✂️",
+        "Explanation": "Removes the Release Manager → VP Engineering delegation edge. The escalation chain (and its transitive closure) collapses to the unreachable tail. Demonstrates CQ6: delegation is a first-class edge, and the chain answer is its closure.",
+        "SortOrder": 60,
+        "IsReset": false,
+        "Edits": "[{\"class\": \"Roles\", \"id\": \"ntwf-release-manager-role\", \"set\": {\"delegatesTo\": \"\"}}]",
+        "RelativePath": "scenarios/break-delegation",
+        "Iri": "scenarios-break-delegation",
+        "Name": "cut-the-escalation-chain"
+      },
+      {
+        "ScenarioId": "legal-to-engineering",
+        "Label": "Move legal review under engineering",
+        "Icon": "🏛️",
+        "Explanation": "Re-owns the Legal Compliance role from the Legal dept to Engineering. With zero legal-owned steps, the cross-cutting 'involves engineering AND legal' check flips to No. Demonstrates CQ7: the boolean is an AND over department-owned step counts, derived from role ownership.",
+        "SortOrder": 70,
+        "IsReset": false,
+        "Edits": "[{\"class\": \"Roles\", \"id\": \"ntwf-legal-compliance-role\", \"set\": {\"ownedBy\": \"ntwf-engineering\"}}]",
+        "RelativePath": "scenarios/legal-to-engineering",
+        "Iri": "scenarios-legal-to-engineering",
+        "Name": "move-legal-review-under-engineering"
+      },
+      {
+        "ScenarioId": "dataset-unconsumed",
+        "Label": "Detach the risk dataset",
+        "Icon": "📦",
+        "Explanation": "Clears the dataset's consumed-by-step link. The Q1 Risk Metrics dataset is no longer consumed by any step. Demonstrates CQ8: dataset consumption is an asserted relationship, and the answer is exactly which steps point at it.",
+        "SortOrder": 80,
+        "IsReset": false,
+        "Edits": "[{\"class\": \"Datasets\", \"id\": \"ds-q1-2026-risk-metrics\", \"set\": {\"consumedBySteps\": \"\"}}]",
+        "RelativePath": "scenarios/dataset-unconsumed",
+        "Iri": "scenarios-dataset-unconsumed",
+        "Name": "detach-the-risk-dataset"
       }
     ]
   },
@@ -3159,6 +3255,14 @@
         "type": "raw",
         "nullable": true,
         "Description": "Whether this competency question is shown in the scoreboard. All eight are active in the worked example."
+      },
+      {
+        "name": "SimulateScenario",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "FK to the Scenario the card's 'Simulate' button applies to demonstrate this competency question live. Points at the minimal raw-fact edit that moves THIS question's answer in isolation where one exists; for cq-2 it points at 'ai-release-manager', which also ripples to cq-3 (the gate approver is itself a step executor, so the two answers cannot be perturbed independently). The full set of questions each scenario moves — trigger vs ripple — is enumerated in the ScenarioCQEffects junction; this is just the one the button fires. Inverse-ish of ScenarioCQEffects but kept as a direct FK so the UI has a single answer.",
+        "RelatedTo": "Scenarios"
       }
     ],
     "data": [
@@ -3174,6 +3278,7 @@
         "Explanation": "WorkflowSteps ordered by SequencePosition; the order is the transitive closure of the asserted StepPrecedence edges, materialized as ntwf:precedesStep.",
         "SortOrder": 1,
         "IsActive": true,
+        "SimulateScenario": "reroute-ordering",
         "RelativePath": "competency-questions/cq-1",
         "Iri": "competency-questions-cq-1",
         "Name": "steps-and-order"
@@ -3190,6 +3295,7 @@
         "Explanation": "The Release Approval Gate (step 3) -> its AssignedRole (Release Manager) -> FilledByHumanAgent. The role-agent indirection is resolved by the GateApproverHuman lookup.",
         "SortOrder": 2,
         "IsActive": true,
+        "SimulateScenario": "ai-release-manager",
         "RelativePath": "competency-questions/cq-2",
         "Iri": "competency-questions-cq-2",
         "Name": "who-approves"
@@ -3206,6 +3312,7 @@
         "Explanation": "Each step's ExecutingAgentType (via its role's filler type) classifies AI vs pipeline vs human; RequiresHumanApproval marks the human-decision steps. CountAISteps aggregates the AI side.",
         "SortOrder": 3,
         "IsActive": true,
+        "SimulateScenario": "human-risk-step",
         "RelativePath": "competency-questions/cq-3",
         "Iri": "competency-questions-cq-3",
         "Name": "ai-vs-human-steps"
@@ -3222,6 +3329,7 @@
         "Explanation": "WorkflowArtifacts.ProducedByStep gives the producer; DerivedFromArtifact gives the PROV wasDerivedFrom parent; RequiredBySteps gives the downstream consumer.",
         "SortOrder": 4,
         "IsActive": true,
+        "SimulateScenario": "break-derivation",
         "RelativePath": "competency-questions/cq-4",
         "Iri": "competency-questions-cq-4",
         "Name": "artifact-lineage"
@@ -3238,6 +3346,7 @@
         "Explanation": "IsStale = MonthsSinceModified > StalenessThresholdMonths. The seed workflow was modified 2 months ago against a 12-month threshold, so it is not stale.",
         "SortOrder": 5,
         "IsActive": true,
+        "SimulateScenario": "stale-docs",
         "RelativePath": "competency-questions/cq-5",
         "Iri": "competency-questions-cq-5",
         "Name": "stale-over-12-months"
@@ -3254,6 +3363,7 @@
         "Explanation": "Roles.DelegatesTo is a transitive chain. With the VP of Engineering unavailable, the next hop in the closure is the CTO.",
         "SortOrder": 6,
         "IsActive": true,
+        "SimulateScenario": "break-delegation",
         "RelativePath": "competency-questions/cq-6",
         "Iri": "competency-questions-cq-6",
         "Name": "escalation-path"
@@ -3270,6 +3380,7 @@
         "Explanation": "InvolvesEngineeringAndLegal = AND(CountEngineeringOwnedSteps > 0, CountLegalOwnedSteps > 0). Step 2 is Legal-owned; steps 1/3/4/5 are Engineering-owned.",
         "SortOrder": 7,
         "IsActive": true,
+        "SimulateScenario": "legal-to-engineering",
         "RelativePath": "competency-questions/cq-7",
         "Iri": "competency-questions-cq-7",
         "Name": "engineering-and-legal"
@@ -3286,9 +3397,218 @@
         "Explanation": "Datasets.ConsumedBySteps (inverse of WorkflowSteps.ConsumesDataset) gives the consuming step; that step's role filler resolves the processing AI agent.",
         "SortOrder": 8,
         "IsActive": true,
+        "SimulateScenario": "dataset-unconsumed",
         "RelativePath": "competency-questions/cq-8",
         "Iri": "competency-questions-cq-8",
         "Name": "datasets-and-ai"
+      }
+    ]
+  },
+  "ScenarioCQEffects": {
+    "Description": "Table: ScenarioCQEffects. Names the many-to-many between Scenarios and CompetencyQuestions as two 1:M foreign keys (Scenario, CompetencyQuestion) plus the detail of the relationship (EffectKind, Note). Each row asserts 'applying this scenario moves this competency question's live answer'. 'trigger' rows are the intended demonstration; 'ripple' rows record answers that move as an unavoidable consequence of the same raw edit (e.g. ai-release-manager moves cq-2 AND cq-3 because the gate approver is itself a step executor). The answers themselves are never stored here — they are read live from each substrate after the scenario applies.",
+    "important": true,
+    "schema": [
+      {
+        "name": "ScenarioCQEffectId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Primary key. '<scenario>-<cq>' — names one (scenario moves this competency question) edge."
+      },
+      {
+        "name": "RelativePath",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "DAG-derived location: 'scenario-cq-effects/' + the row's primary key.",
+        "formula": "=\"scenario-cq-effects/\" & {{ScenarioCQEffectId}}"
+      },
+      {
+        "name": "Iri",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Opaque stable identifier (dash-form of RelativePath).",
+        "formula": "=SUBSTITUTE({{RelativePath}}, \"/\", \"-\")"
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Slug label, mirrors the primary key.",
+        "formula": "=SUBSTITUTE(LOWER({{ScenarioCQEffectId}}), \" \", \"-\")"
+      },
+      {
+        "name": "Scenario",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "FK to the Scenario whose raw-fact edits cause this effect. The 'many effects belong to one scenario' side: a single scenario can move several competency questions.",
+        "RelatedTo": "Scenarios"
+      },
+      {
+        "name": "CompetencyQuestion",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "FK to the CompetencyQuestion whose live answer this scenario moves. The 'many effects belong to one question' side: a question can be exercised by several scenarios.",
+        "RelatedTo": "CompetencyQuestions"
+      },
+      {
+        "name": "EffectKind",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "'trigger' = this scenario was authored to move this question (the point of the demo). 'ripple' = the question also moves as an unavoidable side effect of the same raw edit. The ripple rows are the pedagogical payload: they show answers that are structurally coupled and cannot be perturbed independently."
+      },
+      {
+        "name": "Note",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "One-line, human-readable account of how this scenario moves this question's answer (qualitative — the actual value is read live from the substrate, never stored here)."
+      },
+      {
+        "name": "SortOrder",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Display order."
+      }
+    ],
+    "data": [
+      {
+        "ScenarioCQEffectId": "reroute-ordering-cq-1",
+        "Scenario": "reroute-ordering",
+        "CompetencyQuestion": "cq-1",
+        "EffectKind": "trigger",
+        "Note": "Re-pointing prec-4-5 shrinks the precedence closure (10 → 7 pairs); positions recompute. No other answer moves.",
+        "SortOrder": 10,
+        "RelativePath": "scenario-cq-effects/reroute-ordering-cq-1",
+        "Iri": "scenario-cq-effects-reroute-ordering-cq-1",
+        "Name": "reroute-ordering-cq-1"
+      },
+      {
+        "ScenarioCQEffectId": "ai-release-manager-cq-2",
+        "Scenario": "ai-release-manager",
+        "CompetencyQuestion": "cq-2",
+        "EffectKind": "trigger",
+        "Note": "Release Manager filled by AI → the gate has no human approver.",
+        "SortOrder": 20,
+        "RelativePath": "scenario-cq-effects/ai-release-manager-cq-2",
+        "Iri": "scenario-cq-effects-ai-release-manager-cq-2",
+        "Name": "ai-release-manager-cq-2"
+      },
+      {
+        "ScenarioCQEffectId": "ai-release-manager-cq-3",
+        "Scenario": "ai-release-manager",
+        "CompetencyQuestion": "cq-3",
+        "EffectKind": "ripple",
+        "Note": "Same edit: the gate's step (3) is now AI-executed, so the AI-step count rises 2 → 3. Cannot be avoided — the gate role is a step executor.",
+        "SortOrder": 30,
+        "RelativePath": "scenario-cq-effects/ai-release-manager-cq-3",
+        "Iri": "scenario-cq-effects-ai-release-manager-cq-3",
+        "Name": "ai-release-manager-cq-3"
+      },
+      {
+        "ScenarioCQEffectId": "human-risk-step-cq-3",
+        "Scenario": "human-risk-step",
+        "CompetencyQuestion": "cq-3",
+        "EffectKind": "trigger",
+        "Note": "Risk Analysis role handed to a human → AI-step count falls 2 → 1. Isolated.",
+        "SortOrder": 40,
+        "RelativePath": "scenario-cq-effects/human-risk-step-cq-3",
+        "Iri": "scenario-cq-effects-human-risk-step-cq-3",
+        "Name": "human-risk-step-cq-3"
+      },
+      {
+        "ScenarioCQEffectId": "break-derivation-cq-4",
+        "Scenario": "break-derivation",
+        "CompetencyQuestion": "cq-4",
+        "EffectKind": "trigger",
+        "Note": "Legal Clearance loses its wasDerivedFrom parent → the PROV chain splits. Isolated.",
+        "SortOrder": 50,
+        "RelativePath": "scenario-cq-effects/break-derivation-cq-4",
+        "Iri": "scenario-cq-effects-break-derivation-cq-4",
+        "Name": "break-derivation-cq-4"
+      },
+      {
+        "ScenarioCQEffectId": "stale-docs-cq-5",
+        "Scenario": "stale-docs",
+        "CompetencyQuestion": "cq-5",
+        "EffectKind": "trigger",
+        "Note": "Modified date backdated past the window → IsStale flips true. Isolated.",
+        "SortOrder": 60,
+        "RelativePath": "scenario-cq-effects/stale-docs-cq-5",
+        "Iri": "scenario-cq-effects-stale-docs-cq-5",
+        "Name": "stale-docs-cq-5"
+      },
+      {
+        "ScenarioCQEffectId": "break-delegation-cq-6",
+        "Scenario": "break-delegation",
+        "CompetencyQuestion": "cq-6",
+        "EffectKind": "trigger",
+        "Note": "Release Manager → VP edge removed → the escalation closure collapses. Isolated.",
+        "SortOrder": 70,
+        "RelativePath": "scenario-cq-effects/break-delegation-cq-6",
+        "Iri": "scenario-cq-effects-break-delegation-cq-6",
+        "Name": "break-delegation-cq-6"
+      },
+      {
+        "ScenarioCQEffectId": "legal-to-engineering-cq-7",
+        "Scenario": "legal-to-engineering",
+        "CompetencyQuestion": "cq-7",
+        "EffectKind": "trigger",
+        "Note": "Legal role re-owned by Engineering → zero legal-owned steps → eng-AND-legal flips No. Isolated.",
+        "SortOrder": 80,
+        "RelativePath": "scenario-cq-effects/legal-to-engineering-cq-7",
+        "Iri": "scenario-cq-effects-legal-to-engineering-cq-7",
+        "Name": "legal-to-engineering-cq-7"
+      },
+      {
+        "ScenarioCQEffectId": "dataset-unconsumed-cq-8",
+        "Scenario": "dataset-unconsumed",
+        "CompetencyQuestion": "cq-8",
+        "EffectKind": "trigger",
+        "Note": "Dataset consumed-by link cleared → no step consumes it. Isolated.",
+        "SortOrder": 90,
+        "RelativePath": "scenario-cq-effects/dataset-unconsumed-cq-8",
+        "Iri": "scenario-cq-effects-dataset-unconsumed-cq-8",
+        "Name": "dataset-unconsumed-cq-8"
+      },
+      {
+        "ScenarioCQEffectId": "trigger-risk-cq-5",
+        "Scenario": "trigger-risk",
+        "CompetencyQuestion": "cq-5",
+        "EffectKind": "trigger",
+        "Note": "Backdates the review date → IsStale true (while AI steps remain — the narrative risk).",
+        "SortOrder": 100,
+        "RelativePath": "scenario-cq-effects/trigger-risk-cq-5",
+        "Iri": "scenario-cq-effects-trigger-risk-cq-5",
+        "Name": "trigger-risk-cq-5"
+      },
+      {
+        "ScenarioCQEffectId": "all-human-cq-3",
+        "Scenario": "all-human",
+        "CompetencyQuestion": "cq-3",
+        "EffectKind": "trigger",
+        "Note": "Every AI/pipeline role reassigned to a human → AI-step count falls to 0.",
+        "SortOrder": 110,
+        "RelativePath": "scenario-cq-effects/all-human-cq-3",
+        "Iri": "scenario-cq-effects-all-human-cq-3",
+        "Name": "all-human-cq-3"
+      },
+      {
+        "ScenarioCQEffectId": "ai-at-gate-cq-3",
+        "Scenario": "ai-at-gate",
+        "CompetencyQuestion": "cq-3",
+        "EffectKind": "ripple",
+        "Note": "Legal review step handed to AI → AI-step count rises 2 → 3 (the headline effect is the consistency-violation witness, not a CQ).",
+        "SortOrder": 120,
+        "RelativePath": "scenario-cq-effects/ai-at-gate-cq-3",
+        "Iri": "scenario-cq-effects-ai-at-gate-cq-3",
+        "Name": "ai-at-gate-cq-3"
       }
     ]
   },

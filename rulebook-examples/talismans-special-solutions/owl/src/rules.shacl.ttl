@@ -993,6 +993,61 @@ effortless-ntwf:RolesShape a sh:NodeShape ;
         """ ;
     ] .
 
+# === Shape with rules for ScenarioCQEffects ===
+effortless-ntwf:ScenarioCQEffectsShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:ScenarioCQEffects ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_ScenarioCQEffects_RelativePath" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:relativePath ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:ScenarioCQEffects .
+    OPTIONAL { $this effortless-ntwf:scenarioCQEffectId ?scenario_cq_effect_id . }
+                BIND(CONCAT("scenario-cq-effects/", IF(isIRI(?scenario_cq_effect_id), REPLACE(STR(?scenario_cq_effect_id), "^.*[#/]", ""), STR(?scenario_cq_effect_id))) AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_ScenarioCQEffects_Iri" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:iri ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:ScenarioCQEffects .
+    OPTIONAL { $this effortless-ntwf:relativePath ?relative_path . }
+                BIND(REPLACE(?relative_path, "/", "-") AS ?_result)
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
+        rdfs:label "rule_ScenarioCQEffects_Name" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:name ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:ScenarioCQEffects .
+    OPTIONAL { $this effortless-ntwf:scenarioCQEffectId ?scenario_cq_effect_id . }
+                BIND(REPLACE(LCASE(?scenario_cq_effect_id), " ", "-") AS ?_result)
+            }
+        """ ;
+    ] .
+
 # === Shape with rules for Scenarios ===
 effortless-ntwf:ScenariosShape a sh:NodeShape ;
     sh:targetClass effortless-ntwf:Scenarios ;
@@ -2190,6 +2245,10 @@ effortless-ntwf:ChangeLogCardinalityShape a sh:NodeShape ;
     sh:targetClass effortless-ntwf:ChangeLog ;
     sh:property [ sh:path effortless-ntwf:approvedBy ; sh:maxCount 1 ] .
 
+effortless-ntwf:CompetencyQuestionsCardinalityShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:CompetencyQuestions ;
+    sh:property [ sh:path effortless-ntwf:simulateScenario ; sh:maxCount 1 ] .
+
 effortless-ntwf:DatasetsCardinalityShape a sh:NodeShape ;
     sh:targetClass effortless-ntwf:Datasets ;
     sh:property [ sh:path effortless-ntwf:consumedBySteps ; sh:maxCount 1 ] .
@@ -2210,6 +2269,11 @@ effortless-ntwf:RoleAssignmentsCardinalityShape a sh:NodeShape ;
 effortless-ntwf:RolesCardinalityShape a sh:NodeShape ;
     sh:targetClass effortless-ntwf:Roles ;
     sh:property [ sh:path effortless-ntwf:workflowSteps ; sh:maxCount 1 ] .
+
+effortless-ntwf:ScenarioCQEffectsCardinalityShape a sh:NodeShape ;
+    sh:targetClass effortless-ntwf:ScenarioCQEffects ;
+    sh:property [ sh:path effortless-ntwf:competencyQuestion ; sh:maxCount 1 ] ;
+    sh:property [ sh:path effortless-ntwf:scenario ; sh:maxCount 1 ] .
 
 effortless-ntwf:StepPrecedenceCardinalityShape a sh:NodeShape ;
     sh:targetClass effortless-ntwf:StepPrecedence ;
@@ -2232,4 +2296,4 @@ effortless-ntwf:WorkflowStepsCardinalityShape a sh:NodeShape ;
     sh:targetClass effortless-ntwf:WorkflowSteps ;
     sh:property [ sh:path effortless-ntwf:workflow ; sh:maxCount 1 ] .
 
-# Generated 114 SHACL rules
+# Generated 117 SHACL rules

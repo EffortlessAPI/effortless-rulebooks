@@ -187,4 +187,17 @@ ALTER TABLE change_log DROP CONSTRAINT IF EXISTS fk_change_log_approved_by;
 ALTER TABLE change_log ADD CONSTRAINT fk_change_log_approved_by
   FOREIGN KEY (approved_by) REFERENCES governance_roles (governance_role_id);
 
--- 47 FK constraint(s) declared (off unless EFFORTLESS_ENFORCE_FKS=true).
+-- CompetencyQuestions
+ALTER TABLE competency_questions DROP CONSTRAINT IF EXISTS fk_competency_questions_simulate_scenario;
+ALTER TABLE competency_questions ADD CONSTRAINT fk_competency_questions_simulate_scenario
+  FOREIGN KEY (simulate_scenario) REFERENCES scenarios (scenario_id);
+
+-- ScenarioCQEffects
+ALTER TABLE scenario_cq_effects DROP CONSTRAINT IF EXISTS fk_scenario_cq_effects_scenario;
+ALTER TABLE scenario_cq_effects ADD CONSTRAINT fk_scenario_cq_effects_scenario
+  FOREIGN KEY (scenario) REFERENCES scenarios (scenario_id);
+ALTER TABLE scenario_cq_effects DROP CONSTRAINT IF EXISTS fk_scenario_cq_effects_competency_question;
+ALTER TABLE scenario_cq_effects ADD CONSTRAINT fk_scenario_cq_effects_competency_question
+  FOREIGN KEY (competency_question) REFERENCES competency_questions (competency_question_id);
+
+-- 50 FK constraint(s) declared (off unless EFFORTLESS_ENFORCE_FKS=true).

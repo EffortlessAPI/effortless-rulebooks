@@ -1666,6 +1666,60 @@ RETURNS TEXT AS $$
   SELECT (REPLACE(LOWER((SELECT NULLIF(label, '') FROM scenarios WHERE scenario_id = p_scenario_id)), ' ', '-'))::text;
 $$ LANGUAGE sql STABLE;
 
+-- get_scenarios_label
+-- Helper function: Get Label from Scenarios by ScenarioId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_scenarios_label(p_scenario_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT label FROM scenarios WHERE scenario_id = p_scenario_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_scenarios_icon
+-- Helper function: Get Icon from Scenarios by ScenarioId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_scenarios_icon(p_scenario_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT icon FROM scenarios WHERE scenario_id = p_scenario_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_scenarios_explanation
+-- Helper function: Get Explanation from Scenarios by ScenarioId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_scenarios_explanation(p_scenario_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT explanation FROM scenarios WHERE scenario_id = p_scenario_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_scenarios_sort_order
+-- Helper function: Get SortOrder from Scenarios by ScenarioId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_scenarios_sort_order(p_scenario_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (SELECT sort_order FROM scenarios WHERE scenario_id = p_scenario_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_scenarios_is_reset
+-- Helper function: Get IsReset from Scenarios by ScenarioId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_scenarios_is_reset(p_scenario_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (SELECT is_reset FROM scenarios WHERE scenario_id = p_scenario_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_scenarios_edits
+-- Helper function: Get Edits from Scenarios by ScenarioId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_scenarios_edits(p_scenario_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT edits FROM scenarios WHERE scenario_id = p_scenario_id);
+$$ LANGUAGE sql STABLE;
+
 -- calc_competency_questions_relative_path
 -- Field: CompetencyQuestions.RelativePath
 -- Type: calculated | DataType: string | Returns: TEXT
@@ -1694,6 +1748,126 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_competency_questions_name(p_competency_question_id TEXT)
 RETURNS TEXT AS $$
   SELECT (REPLACE(LOWER((SELECT NULLIF(display_name, '') FROM competency_questions WHERE competency_question_id = p_competency_question_id)), ' ', '-'))::text;
+$$ LANGUAGE sql STABLE;
+
+-- get_competency_questions_number
+-- Helper function: Get Number from CompetencyQuestions by CompetencyQuestionId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_competency_questions_number(p_competency_question_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (SELECT number FROM competency_questions WHERE competency_question_id = p_competency_question_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_competency_questions_display_name
+-- Helper function: Get DisplayName from CompetencyQuestions by CompetencyQuestionId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_competency_questions_display_name(p_competency_question_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT display_name FROM competency_questions WHERE competency_question_id = p_competency_question_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_competency_questions_question_text
+-- Helper function: Get QuestionText from CompetencyQuestions by CompetencyQuestionId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_competency_questions_question_text(p_competency_question_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT question_text FROM competency_questions WHERE competency_question_id = p_competency_question_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_competency_questions_target_table
+-- Helper function: Get TargetTable from CompetencyQuestions by CompetencyQuestionId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_competency_questions_target_table(p_competency_question_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT target_table FROM competency_questions WHERE competency_question_id = p_competency_question_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_competency_questions_target_field
+-- Helper function: Get TargetField from CompetencyQuestions by CompetencyQuestionId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_competency_questions_target_field(p_competency_question_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT target_field FROM competency_questions WHERE competency_question_id = p_competency_question_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_competency_questions_answer_kind
+-- Helper function: Get AnswerKind from CompetencyQuestions by CompetencyQuestionId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_competency_questions_answer_kind(p_competency_question_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT answer_kind FROM competency_questions WHERE competency_question_id = p_competency_question_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_competency_questions_expected_answer
+-- Helper function: Get ExpectedAnswer from CompetencyQuestions by CompetencyQuestionId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_competency_questions_expected_answer(p_competency_question_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT expected_answer FROM competency_questions WHERE competency_question_id = p_competency_question_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_competency_questions_explanation
+-- Helper function: Get Explanation from CompetencyQuestions by CompetencyQuestionId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_competency_questions_explanation(p_competency_question_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT explanation FROM competency_questions WHERE competency_question_id = p_competency_question_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_competency_questions_sort_order
+-- Helper function: Get SortOrder from CompetencyQuestions by CompetencyQuestionId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_competency_questions_sort_order(p_competency_question_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (SELECT sort_order FROM competency_questions WHERE competency_question_id = p_competency_question_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_competency_questions_is_active
+-- Helper function: Get IsActive from CompetencyQuestions by CompetencyQuestionId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_competency_questions_is_active(p_competency_question_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (SELECT is_active FROM competency_questions WHERE competency_question_id = p_competency_question_id);
+$$ LANGUAGE sql STABLE;
+
+-- calc_scenario_cq_effects_relative_path
+-- Field: ScenarioCQEffects.RelativePath
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_scenario_cq_effects_relative_path(p_scenario_cq_effect_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CONCAT('scenario-cq-effects/', (SELECT NULLIF(scenario_cq_effect_id, '') FROM scenario_cq_effects WHERE scenario_cq_effect_id = p_scenario_cq_effect_id)))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_scenario_cq_effects_iri
+-- Field: ScenarioCQEffects.Iri
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_scenario_cq_effects_iri(p_scenario_cq_effect_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (REPLACE(calc_scenario_cq_effects_relative_path(p_scenario_cq_effect_id), '/', '-'))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_scenario_cq_effects_name
+-- Field: ScenarioCQEffects.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_scenario_cq_effects_name(p_scenario_cq_effect_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (REPLACE(LOWER((SELECT NULLIF(scenario_cq_effect_id, '') FROM scenario_cq_effects WHERE scenario_cq_effect_id = p_scenario_cq_effect_id)), ' ', '-'))::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_conformance_tests_relative_path

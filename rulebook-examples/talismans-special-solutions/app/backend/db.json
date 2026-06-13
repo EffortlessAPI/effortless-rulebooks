@@ -662,6 +662,78 @@
       "sortOrder": 5,
       "isReset": true,
       "edits": "[{\"class\": \"Workflows\", \"match\": \"first\", \"set\": {\"modified\": \"2026-04-03T00:00:00-05:00\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-release-manager-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-maria-gonzalez\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-risk-analysis-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"ntwf-risk-ai\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-legal-compliance-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-james-okafor\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-ci-executor-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"ntwf-ci-pipeline\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-vp-engineering-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-david-chen\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-cto-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-sarah-kim\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-deployment-health-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"ntwf-health-ai\", \"filledByAutomatedPipeline\": \"\"}}]"
+    },
+    {
+      "scenarioId": "reroute-ordering",
+      "label": "Re-route the last ordering edge",
+      "icon": "🔀",
+      "explanation": "Re-points the final precedence edge so step 5 follows step 1 instead of step 4. The transitive closure shrinks (10 → 7 ordered pairs) and the inferred positions recompute — nothing else moves. Demonstrates CQ1: order is a projection of the edges.",
+      "sortOrder": 10,
+      "isReset": false,
+      "edits": "[{\"class\": \"StepPrecedence\", \"id\": \"prec-4-5\", \"set\": {\"fromStep\": \"prod-deploy-step-1\"}}]"
+    },
+    {
+      "scenarioId": "ai-release-manager",
+      "label": "AI fills the release gate",
+      "icon": "🤖",
+      "explanation": "Hands the Release Manager role — the human authority on the approval gate — to an AI agent. The gate approver is no longer human (CQ2), and because that role also executes step 3, the AI-step count ticks up (CQ3). The two answers cannot be decoupled: the gate's approver IS a step executor.",
+      "sortOrder": 20,
+      "isReset": false,
+      "edits": "[{\"class\": \"Roles\", \"id\": \"ntwf-release-manager-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"ntwf-risk-ai\", \"filledByAutomatedPipeline\": \"\"}}]"
+    },
+    {
+      "scenarioId": "human-risk-step",
+      "label": "Hand the risk step to a human",
+      "icon": "🧑",
+      "explanation": "Reassigns the Risk Analysis role from its AI agent to a human. The AI-executed step count drops from 2 to 1 — and only that. Demonstrates CQ3: the count is a live rollup over which steps are AI-executed, not a stored number.",
+      "sortOrder": 30,
+      "isReset": false,
+      "edits": "[{\"class\": \"Roles\", \"id\": \"ntwf-risk-analysis-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-david-chen\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}]"
+    },
+    {
+      "scenarioId": "break-derivation",
+      "label": "Break the provenance chain",
+      "icon": "⛓️",
+      "explanation": "Clears the wasDerivedFrom link on the Legal Clearance Certificate. The PROV derivation chain splits in two — the downstream artifacts can no longer trace back to the risk report. Demonstrates CQ4: derivation is an asserted edge, and the chain answer follows it.",
+      "sortOrder": 40,
+      "isReset": false,
+      "edits": "[{\"class\": \"WorkflowArtifacts\", \"id\": \"artifact-legal-clearance\", \"set\": {\"derivedFromArtifact\": \"\"}}]"
+    },
+    {
+      "scenarioId": "stale-docs",
+      "label": "Let the docs go stale",
+      "icon": "📅",
+      "explanation": "Backdates the workflow's last-modified date past its staleness window. IsStale flips to true — and only that derived flag. Demonstrates CQ5: staleness is MonthsSinceModified vs the threshold, recomputed against the clock, never asserted.",
+      "sortOrder": 50,
+      "isReset": false,
+      "edits": "[{\"class\": \"Workflows\", \"match\": \"first\", \"set\": {\"modified\": \"2023-01-01T00:00:00-06:00\"}}]"
+    },
+    {
+      "scenarioId": "break-delegation",
+      "label": "Cut the escalation chain",
+      "icon": "✂️",
+      "explanation": "Removes the Release Manager → VP Engineering delegation edge. The escalation chain (and its transitive closure) collapses to the unreachable tail. Demonstrates CQ6: delegation is a first-class edge, and the chain answer is its closure.",
+      "sortOrder": 60,
+      "isReset": false,
+      "edits": "[{\"class\": \"Roles\", \"id\": \"ntwf-release-manager-role\", \"set\": {\"delegatesTo\": \"\"}}]"
+    },
+    {
+      "scenarioId": "legal-to-engineering",
+      "label": "Move legal review under engineering",
+      "icon": "🏛️",
+      "explanation": "Re-owns the Legal Compliance role from the Legal dept to Engineering. With zero legal-owned steps, the cross-cutting 'involves engineering AND legal' check flips to No. Demonstrates CQ7: the boolean is an AND over department-owned step counts, derived from role ownership.",
+      "sortOrder": 70,
+      "isReset": false,
+      "edits": "[{\"class\": \"Roles\", \"id\": \"ntwf-legal-compliance-role\", \"set\": {\"ownedBy\": \"ntwf-engineering\"}}]"
+    },
+    {
+      "scenarioId": "dataset-unconsumed",
+      "label": "Detach the risk dataset",
+      "icon": "📦",
+      "explanation": "Clears the dataset's consumed-by-step link. The Q1 Risk Metrics dataset is no longer consumed by any step. Demonstrates CQ8: dataset consumption is an asserted relationship, and the answer is exactly which steps point at it.",
+      "sortOrder": 80,
+      "isReset": false,
+      "edits": "[{\"class\": \"Datasets\", \"id\": \"ds-q1-2026-risk-metrics\", \"set\": {\"consumedBySteps\": \"\"}}]"
     }
   ],
   "CompetencyQuestions": [
@@ -676,7 +748,8 @@
       "expectedAnswer": "5 steps, ordered 1 -> 2 -> 3 -> 4 -> 5 (10 closure pairs)",
       "explanation": "WorkflowSteps ordered by SequencePosition; the order is the transitive closure of the asserted StepPrecedence edges, materialized as ntwf:precedesStep.",
       "sortOrder": 1,
-      "isActive": true
+      "isActive": true,
+      "simulateScenario": "reroute-ordering"
     },
     {
       "competencyQuestionId": "cq-2",
@@ -689,7 +762,8 @@
       "expectedAnswer": "Maria Gonzalez",
       "explanation": "The Release Approval Gate (step 3) -> its AssignedRole (Release Manager) -> FilledByHumanAgent. The role-agent indirection is resolved by the GateApproverHuman lookup.",
       "sortOrder": 2,
-      "isActive": true
+      "isActive": true,
+      "simulateScenario": "ai-release-manager"
     },
     {
       "competencyQuestionId": "cq-3",
@@ -702,7 +776,8 @@
       "expectedAnswer": "AI-executed: steps 1, 5 - human-required: steps 2, 3",
       "explanation": "Each step's ExecutingAgentType (via its role's filler type) classifies AI vs pipeline vs human; RequiresHumanApproval marks the human-decision steps. CountAISteps aggregates the AI side.",
       "sortOrder": 3,
-      "isActive": true
+      "isActive": true,
+      "simulateScenario": "human-risk-step"
     },
     {
       "competencyQuestionId": "cq-4",
@@ -715,7 +790,8 @@
       "expectedAnswer": "5 artifacts in a wasDerivedFrom chain: Risk Report -> Legal Clearance -> Release Authorization -> Deployment Log -> Post-Deployment Report",
       "explanation": "WorkflowArtifacts.ProducedByStep gives the producer; DerivedFromArtifact gives the PROV wasDerivedFrom parent; RequiredBySteps gives the downstream consumer.",
       "sortOrder": 4,
-      "isActive": true
+      "isActive": true,
+      "simulateScenario": "break-derivation"
     },
     {
       "competencyQuestionId": "cq-5",
@@ -728,7 +804,8 @@
       "expectedAnswer": "No - Production Deployment is not stale (MonthsSinceModified 2 <= 12)",
       "explanation": "IsStale = MonthsSinceModified > StalenessThresholdMonths. The seed workflow was modified 2 months ago against a 12-month threshold, so it is not stale.",
       "sortOrder": 5,
-      "isActive": true
+      "isActive": true,
+      "simulateScenario": "stale-docs"
     },
     {
       "competencyQuestionId": "cq-6",
@@ -741,7 +818,8 @@
       "expectedAnswer": "Escalates Release Manager -> VP of Engineering -> Chief Technology Officer",
       "explanation": "Roles.DelegatesTo is a transitive chain. With the VP of Engineering unavailable, the next hop in the closure is the CTO.",
       "sortOrder": 6,
-      "isActive": true
+      "isActive": true,
+      "simulateScenario": "break-delegation"
     },
     {
       "competencyQuestionId": "cq-7",
@@ -754,7 +832,8 @@
       "expectedAnswer": "Yes - Production Deployment involves both (Engineering-owned steps and Legal-owned steps)",
       "explanation": "InvolvesEngineeringAndLegal = AND(CountEngineeringOwnedSteps > 0, CountLegalOwnedSteps > 0). Step 2 is Legal-owned; steps 1/3/4/5 are Engineering-owned.",
       "sortOrder": 7,
-      "isActive": true
+      "isActive": true,
+      "simulateScenario": "legal-to-engineering"
     },
     {
       "competencyQuestionId": "cq-8",
@@ -767,7 +846,106 @@
       "expectedAnswer": "Q1 2026 Risk Metrics, consumed by the AI Risk Assessment step and processed by RiskAnalysis-AI",
       "explanation": "Datasets.ConsumedBySteps (inverse of WorkflowSteps.ConsumesDataset) gives the consuming step; that step's role filler resolves the processing AI agent.",
       "sortOrder": 8,
-      "isActive": true
+      "isActive": true,
+      "simulateScenario": "dataset-unconsumed"
+    }
+  ],
+  "ScenarioCQEffects": [
+    {
+      "scenarioCQEffectId": "reroute-ordering-cq-1",
+      "scenario": "reroute-ordering",
+      "competencyQuestion": "cq-1",
+      "effectKind": "trigger",
+      "note": "Re-pointing prec-4-5 shrinks the precedence closure (10 → 7 pairs); positions recompute. No other answer moves.",
+      "sortOrder": 10
+    },
+    {
+      "scenarioCQEffectId": "ai-release-manager-cq-2",
+      "scenario": "ai-release-manager",
+      "competencyQuestion": "cq-2",
+      "effectKind": "trigger",
+      "note": "Release Manager filled by AI → the gate has no human approver.",
+      "sortOrder": 20
+    },
+    {
+      "scenarioCQEffectId": "ai-release-manager-cq-3",
+      "scenario": "ai-release-manager",
+      "competencyQuestion": "cq-3",
+      "effectKind": "ripple",
+      "note": "Same edit: the gate's step (3) is now AI-executed, so the AI-step count rises 2 → 3. Cannot be avoided — the gate role is a step executor.",
+      "sortOrder": 30
+    },
+    {
+      "scenarioCQEffectId": "human-risk-step-cq-3",
+      "scenario": "human-risk-step",
+      "competencyQuestion": "cq-3",
+      "effectKind": "trigger",
+      "note": "Risk Analysis role handed to a human → AI-step count falls 2 → 1. Isolated.",
+      "sortOrder": 40
+    },
+    {
+      "scenarioCQEffectId": "break-derivation-cq-4",
+      "scenario": "break-derivation",
+      "competencyQuestion": "cq-4",
+      "effectKind": "trigger",
+      "note": "Legal Clearance loses its wasDerivedFrom parent → the PROV chain splits. Isolated.",
+      "sortOrder": 50
+    },
+    {
+      "scenarioCQEffectId": "stale-docs-cq-5",
+      "scenario": "stale-docs",
+      "competencyQuestion": "cq-5",
+      "effectKind": "trigger",
+      "note": "Modified date backdated past the window → IsStale flips true. Isolated.",
+      "sortOrder": 60
+    },
+    {
+      "scenarioCQEffectId": "break-delegation-cq-6",
+      "scenario": "break-delegation",
+      "competencyQuestion": "cq-6",
+      "effectKind": "trigger",
+      "note": "Release Manager → VP edge removed → the escalation closure collapses. Isolated.",
+      "sortOrder": 70
+    },
+    {
+      "scenarioCQEffectId": "legal-to-engineering-cq-7",
+      "scenario": "legal-to-engineering",
+      "competencyQuestion": "cq-7",
+      "effectKind": "trigger",
+      "note": "Legal role re-owned by Engineering → zero legal-owned steps → eng-AND-legal flips No. Isolated.",
+      "sortOrder": 80
+    },
+    {
+      "scenarioCQEffectId": "dataset-unconsumed-cq-8",
+      "scenario": "dataset-unconsumed",
+      "competencyQuestion": "cq-8",
+      "effectKind": "trigger",
+      "note": "Dataset consumed-by link cleared → no step consumes it. Isolated.",
+      "sortOrder": 90
+    },
+    {
+      "scenarioCQEffectId": "trigger-risk-cq-5",
+      "scenario": "trigger-risk",
+      "competencyQuestion": "cq-5",
+      "effectKind": "trigger",
+      "note": "Backdates the review date → IsStale true (while AI steps remain — the narrative risk).",
+      "sortOrder": 100
+    },
+    {
+      "scenarioCQEffectId": "all-human-cq-3",
+      "scenario": "all-human",
+      "competencyQuestion": "cq-3",
+      "effectKind": "trigger",
+      "note": "Every AI/pipeline role reassigned to a human → AI-step count falls to 0.",
+      "sortOrder": 110
+    },
+    {
+      "scenarioCQEffectId": "ai-at-gate-cq-3",
+      "scenario": "ai-at-gate",
+      "competencyQuestion": "cq-3",
+      "effectKind": "ripple",
+      "note": "Legal review step handed to AI → AI-step count rises 2 → 3 (the headline effect is the consistency-violation witness, not a CQ).",
+      "sortOrder": 120
     }
   ],
   "ConformanceTests": [

@@ -267,7 +267,8 @@ html.show-consumers .elem-consumers{display:block}
     <li><a href="#t-changelog">Change Log</a> <span class="toc-meta">5 rules · 1 links</span></li>
     <li><a href="#t-vocabularyreconciliations">Vocabulary Reconciliation</a> <span class="toc-meta">3 rules · 0 links</span></li>
     <li><a href="#t-scenarios">Scenario</a> <span class="toc-meta">3 rules · 0 links</span></li>
-    <li><a href="#t-competencyquestions">Competency Question</a> <span class="toc-meta">3 rules · 0 links</span></li>
+    <li><a href="#t-competencyquestions">Competency Question</a> <span class="toc-meta">3 rules · 1 links</span></li>
+    <li><a href="#t-scenariocqeffects">Scenario CQ Effect</a> <span class="toc-meta">3 rules · 2 links</span></li>
     <li><a href="#t-conformancetests">Conformance Test</a> <span class="toc-meta">3 rules · 0 links</span></li>
   </ul>
 </nav>
@@ -7225,6 +7226,210 @@ html.show-consumers .elem-consumers{display:block}
     </div>
     <p class="field-note elem elem-desc">Whether this competency question is shown in the scoreboard. All eight are active in the worked example.</p>
     </article>
+  <article class="field tone-rel" id="f-competencyquestions-simulatescenario" data-entity="Competency Question" data-field="Simulate Scenario">
+    <div class="field-head">
+      <span class="field-glyph" title="Relationship">⇢</span>
+      <span class="field-name">Simulate Scenario</span>
+      <span class="pill pill-type">Relationship</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">A pointer to <a href="#t-scenarios">Scenario</a>. It is not derived from anything else — it is the link the rest of the DAG hangs off.</p>
+    </div>
+    <p class="field-note elem elem-desc">FK to the Scenario the card's 'Simulate' button applies to demonstrate this competency question live. Points at the minimal raw-fact edit that moves THIS question's answer in isolation where one exists; for cq-2 it points at 'ai-release-manager', which also ripples to cq-3 (the gate approver is itself a step executor, so the two answers cannot be perturbed independently). The full set of questions each scenario moves — trigger vs ripple — is enumerated in the ScenarioCQEffects junction; this is just the one the button fires. Inverse-ish of ScenarioCQEffects but kept as a direct FK so the UI has a single answer.</p>
+    </article>
+</section>
+<section class="entity" id="t-scenariocqeffects" data-entity="Scenario CQ Effect">
+  <header class="entity-head">
+    <h2 class="entity-title">Scenario CQ Effect</h2>
+    <p class="entity-synopsis">A scenario CQ effect is identified by its name and is related to a scenario and a competency question.</p>
+  </header>
+  <article class="field tone-calc" id="f-scenariocqeffects-relativepath" data-entity="Scenario CQ Effect" data-field="Relative Path">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Relative Path</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">1 hop from ground truth</span>
+      <span class="pill pill-muted">string</span>
+      <span class="pill pill-dr">DR-112</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak</span>
+        <p class="view-body">A scenario CQ effect's relative path is computed as the literal “scenario-cq-effects/”, followed by the <a class="ref" href="#f-scenariocqeffects-scenariocqeffectid">scenario CQ effect ID</a>.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In English</span>
+        <p class="view-body">&quot;scenario-cq-effects/&quot; joined with <a class="ref" href="#f-scenariocqeffects-scenariocqeffectid">scenario cq effect id</a>.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>&quot;scenario-cq-effects/&quot; &amp; <a class="fx-chip" href="#f-scenariocqeffects-scenariocqeffectid">Scenario CQ Effect ID</a></div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">1</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-raw" href="#f-scenariocqeffects-scenariocqeffectid">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Scenario CQ Effect ID</span><span class="input-table">ScenarioCQEffects</span></span>
+          <span class="input-en muted">Primary key. '&lt;scenario&gt;-&lt;cq&gt;' — names one (scenario moves this competency question) edge.</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-consumers elem elem-consumers">
+      <summary>Consumers <span class="count">1 direct</span> <span class="prov-hint">rules that read this one</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-calc" href="#f-scenariocqeffects-iri">ƒ Iri <span class="ref-pill-tbl">ScenarioCQEffects</span></a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">1</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-raw" href="#f-scenariocqeffects-scenariocqeffectid">● Scenario CQ Effect ID <span class="ref-pill-tbl">ScenarioCQEffects</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">DAG-derived location: 'scenario-cq-effects/' + the row's primary key.</p>
+    </article>
+  <article class="field tone-calc" id="f-scenariocqeffects-iri" data-entity="Scenario CQ Effect" data-field="Iri">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Iri</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">2 hops from ground truth</span>
+      <span class="pill pill-muted">string</span>
+      <span class="pill pill-dr">DR-113</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak</span>
+        <p class="view-body">A scenario CQ effect's iri is computed as the <a class="ref" href="#f-scenariocqeffects-relativepath">relative path</a> with every a slash replaced by a hyphen.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In English</span>
+        <p class="view-body"><a class="ref" href="#f-scenariocqeffects-relativepath">Relative path</a> with “/” replaced by “-”.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>SUBSTITUTE(<a class="fx-chip" href="#f-scenariocqeffects-relativepath">Relative Path</a>, &quot;/&quot;, &quot;-&quot;)</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">1</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-calc" href="#f-scenariocqeffects-relativepath">
+          <span class="input-head"><span class="input-glyph">ƒ</span><span class="input-name">Relative Path</span><span class="input-table">ScenarioCQEffects</span></span>
+          <span class="input-en">&quot;scenario-cq-effects/&quot; joined with scenario cq effect id.</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">1</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-raw" href="#f-scenariocqeffects-scenariocqeffectid">● Scenario CQ Effect ID <span class="ref-pill-tbl">ScenarioCQEffects</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">Opaque stable identifier (dash-form of RelativePath).</p>
+    </article>
+  <article class="field tone-calc" id="f-scenariocqeffects-name" data-entity="Scenario CQ Effect" data-field="Name">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Name</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">1 hop from ground truth</span>
+      <span class="pill pill-muted">string</span>
+      <span class="pill pill-dr">DR-114</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak <span class="mech" title="Faithful but clunky wording — a flag for an optional reword pass">⚠︎ mechanical</span></span>
+        <p class="view-body">A scenario CQ effect's name is computed as the lower-cased <a class="ref" href="#f-scenariocqeffects-scenariocqeffectid">scenario CQ effect ID</a> with every a space replaced by a hyphen.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In English</span>
+        <p class="view-body"><a class="ref" href="#f-scenariocqeffects-scenariocqeffectid">Scenario cq effect id</a> lowercased with “ ” replaced by “-”.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>SUBSTITUTE(LOWER(<a class="fx-chip" href="#f-scenariocqeffects-scenariocqeffectid">Scenario CQ Effect ID</a>), &quot; &quot;, &quot;-&quot;)</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">1</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-raw" href="#f-scenariocqeffects-scenariocqeffectid">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Scenario CQ Effect ID</span><span class="input-table">ScenarioCQEffects</span></span>
+          <span class="input-en muted">Primary key. '&lt;scenario&gt;-&lt;cq&gt;' — names one (scenario moves this competency question) edge.</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">1</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-raw" href="#f-scenariocqeffects-scenariocqeffectid">● Scenario CQ Effect ID <span class="ref-pill-tbl">ScenarioCQEffects</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">Slug label, mirrors the primary key.</p>
+    </article>
+  <article class="field tone-rel" id="f-scenariocqeffects-scenario" data-entity="Scenario CQ Effect" data-field="Scenario">
+    <div class="field-head">
+      <span class="field-glyph" title="Relationship">⇢</span>
+      <span class="field-name">Scenario</span>
+      <span class="pill pill-type">Relationship</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">A pointer to <a href="#t-scenarios">Scenario</a>. It is not derived from anything else — it is the link the rest of the DAG hangs off.</p>
+    </div>
+    <p class="field-note elem elem-desc">FK to the Scenario whose raw-fact edits cause this effect. The 'many effects belong to one scenario' side: a single scenario can move several competency questions.</p>
+    </article>
+  <article class="field tone-rel" id="f-scenariocqeffects-competencyquestion" data-entity="Scenario CQ Effect" data-field="Competency Question">
+    <div class="field-head">
+      <span class="field-glyph" title="Relationship">⇢</span>
+      <span class="field-name">Competency Question</span>
+      <span class="pill pill-type">Relationship</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">A pointer to <a href="#t-competencyquestions">Competency Question</a>. It is not derived from anything else — it is the link the rest of the DAG hangs off.</p>
+    </div>
+    <p class="field-note elem elem-desc">FK to the CompetencyQuestion whose live answer this scenario moves. The 'many effects belong to one question' side: a question can be exercised by several scenarios.</p>
+    </article>
+  <article class="field tone-raw" id="f-scenariocqeffects-effectkind" data-entity="Scenario CQ Effect" data-field="Effect Kind">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Effect Kind</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">'trigger' = this scenario was authored to move this question (the point of the demo). 'ripple' = the question also moves as an unavoidable side effect of the same raw edit. The ripple rows are the pedagogical payload: they show answers that are structurally coupled and cannot be perturbed independently.</p>
+    </article>
+  <article class="field tone-raw" id="f-scenariocqeffects-note" data-entity="Scenario CQ Effect" data-field="Note">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Note</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">One-line, human-readable account of how this scenario moves this question's answer (qualitative — the actual value is read live from the substrate, never stored here).</p>
+    </article>
+  <article class="field tone-raw" id="f-scenariocqeffects-sortorder" data-entity="Scenario CQ Effect" data-field="Sort Order">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Sort Order</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">integer</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>integer</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Display order.</p>
+    </article>
 </section>
 <section class="entity" id="t-conformancetests" data-entity="Conformance Test">
   <header class="entity-head">
@@ -7238,7 +7443,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-112</span>
+      <span class="pill pill-dr">DR-115</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -7284,7 +7489,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">2 hops from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-113</span>
+      <span class="pill pill-dr">DR-116</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
@@ -7324,7 +7529,7 @@ html.show-consumers .elem-consumers{display:block}
       <span class="pill pill-type">Calculated</span>
       <span class="pill pill-depth">1 hop from ground truth</span>
       <span class="pill pill-muted">string</span>
-      <span class="pill pill-dr">DR-114</span>
+      <span class="pill pill-dr">DR-117</span>
     </div>
     <div class="narr-views">
       <div class="view elem elem-rulespeak">
