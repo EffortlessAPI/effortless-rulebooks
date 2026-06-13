@@ -7,7 +7,7 @@
     "assigned_role": "ntwf-risk-analysis-role",
     "requires_human_approval": false,
     "step_duration_minutes": 15,
-    "consumes_dataset": "ds-q1-2026-risk-metrics",
+    "consumes_dataset": "",
     "produces_artifacts": "artifact-risk-report",
     "approval_gate": "",
     "precedes": "prec-1-2",
@@ -27,7 +27,10 @@
     "approval_is_human_filled": true,
     "owning_department": "ntwf-engineering",
     "is_legal_owned": false,
-    "is_engineering_owned": true
+    "is_engineering_owned": true,
+    "preceding_step_count": 0,
+    "inferred_sequence_position": 1,
+    "is_approval_gate": false
   },
   {
     "workflow_step_id": "prod-deploy-step-2",
@@ -57,7 +60,10 @@
     "approval_is_human_filled": true,
     "owning_department": "ntwf-legal-dept",
     "is_legal_owned": true,
-    "is_engineering_owned": false
+    "is_engineering_owned": false,
+    "preceding_step_count": 1,
+    "inferred_sequence_position": 2,
+    "is_approval_gate": false
   },
   {
     "workflow_step_id": "prod-deploy-step-3",
@@ -87,7 +93,10 @@
     "approval_is_human_filled": true,
     "owning_department": "ntwf-engineering",
     "is_legal_owned": false,
-    "is_engineering_owned": true
+    "is_engineering_owned": true,
+    "preceding_step_count": 2,
+    "inferred_sequence_position": 3,
+    "is_approval_gate": true
   },
   {
     "workflow_step_id": "prod-deploy-step-4",
@@ -117,7 +126,10 @@
     "approval_is_human_filled": true,
     "owning_department": "ntwf-engineering",
     "is_legal_owned": false,
-    "is_engineering_owned": true
+    "is_engineering_owned": true,
+    "preceding_step_count": 3,
+    "inferred_sequence_position": 4,
+    "is_approval_gate": false
   },
   {
     "workflow_step_id": "prod-deploy-step-5",
@@ -147,6 +159,9 @@
     "approval_is_human_filled": true,
     "owning_department": "ntwf-engineering",
     "is_legal_owned": false,
-    "is_engineering_owned": true
+    "is_engineering_owned": true,
+    "preceding_step_count": 4,
+    "inferred_sequence_position": 5,
+    "is_approval_gate": false
   }
 ]

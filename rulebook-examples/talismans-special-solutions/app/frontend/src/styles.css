@@ -60,21 +60,22 @@ button, input, select { font: inherit; }
 .am-ai b { color: var(--ai); }
 .am-human b { color: var(--human); }
 
-/* the action row at the bottom of the verdict card: the explainer/provenance
-   toggle on the left, the "Try a scenario…" button filling the rest. */
-.vh-actions { display: flex; align-items: center; gap: 8px; width: 100%; margin-top: 2px; }
+/* the action row in the CQ rail's intro: the explainer/provenance toggle on the
+   left, the "Try a scenario…" button filling the rest. (These two controls used
+   to live in the verdict box.) */
+.cq-actions { display: flex; align-items: center; gap: 8px; width: 100%; margin-top: 2px; }
 /* The provenance toggle is generated as a viewport-fixed top-right pill
-   (.dag-toggle in dag.css). We host it INSIDE the verdict box instead, so drop
-   the fixed positioning here — in app CSS, not the generated module — and let
-   it sit in the .vh-actions flow next to "Try a scenario…". */
-.vh-actions .dag-toggle { position: static; top: auto; right: auto; z-index: auto; flex: none; }
-/* "Try a scenario…" button — lives inside the verdict card, in the action row.
-   Opens the floating scenario picker (the scenarios themselves come from the DB). */
-.vh-scenario-btn { flex: 1 1 auto; background: var(--card2); border: 1px solid var(--accent);
+   (.dag-toggle in dag.css). We host it INSIDE the CQ rail instead, so drop the
+   fixed positioning here — in app CSS, not the generated module — and let it sit
+   in the .cq-actions flow next to "Try a scenario…". */
+.cq-actions .dag-toggle { position: static; top: auto; right: auto; z-index: auto; flex: none; }
+/* "Try a scenario…" button — lives in the CQ rail's action row. Opens the
+   floating scenario picker (the scenarios themselves come from the DB). */
+.cq-scenario-btn { flex: 1 1 auto; background: var(--card2); border: 1px solid var(--accent);
   color: var(--text); padding: 8px 12px; border-radius: 9px; cursor: pointer; font-weight: 700; font-size: 13px;
   transition: filter .12s, box-shadow .12s; box-shadow: 0 0 0 0 transparent; }
-.vh-scenario-btn:hover:not(:disabled) { box-shadow: 0 6px 22px -8px var(--accent); filter: brightness(1.08); }
-.vh-scenario-btn:disabled { opacity: .5; cursor: default; }
+.cq-scenario-btn:hover:not(:disabled) { box-shadow: 0 6px 22px -8px var(--accent); filter: brightness(1.08); }
+.cq-scenario-btn:disabled { opacity: .5; cursor: default; }
 
 /* scenario picker — a floating modal popup */
 .scenario-modal-backdrop { position: fixed; inset: 0; z-index: 60; display: flex; align-items: center; justify-content: center;
@@ -103,50 +104,22 @@ button, input, select { font: inherit; }
 .sm-item-label { font-size: 14px; font-weight: 700; }
 .sm-item-explain { font-size: 12.5px; color: var(--muted); line-height: 1.5; }
 
-/* verdict — a FIXED (non-draggable) card sitting at the right end of the stage
-   row, beside the steps, sized to hold the whole AND/OR statement. */
-.verdict-header { flex: 0 0 auto; width: 380px; max-width: 34vw; align-self: flex-start;
-  margin: 22px 22px 22px 0;
-  display: flex; flex-direction: column; align-items: stretch; gap: 12px;
-  padding: 16px 18px; border: 1px solid var(--line); border-radius: var(--radius);
-  background: var(--bg2); box-shadow: 0 18px 56px -14px rgba(0,0,0,.55); }
-.verdict-header.ok { border-color: #43c46355; background: linear-gradient(180deg, #43c4631f, var(--bg2) 70%); }
-.verdict-header.risk { border-color: #f0653f66; background: linear-gradient(180deg, #f0653f24, var(--bg2) 70%); }
-/* badge row — no longer a drag surface */
-.vh-drag { display: flex; align-items: center; gap: 8px; width: 100%; }
-.vh-badge { font-size: 15px; font-weight: 800; padding: 6px 12px; border-radius: 9px; white-space: nowrap; }
-.verdict-header.ok .vh-badge { color: var(--ok); background: #43c46318; border: 1px solid #43c46355; }
-.verdict-header.risk .vh-badge { color: var(--risk); background: #f0653f18; border: 1px solid #f0653f66; }
-.vh-detail { font-size: 13.5px; line-height: 1.45; }
-/* The boolean structure, read top-to-bottom as a stacked tree:
-     ( docs stale  AND  AI runs a step )
-     OR  over time budget
-     OR  a rule is broken
-     → AT RISK
-   Each OR clause sits on its own line so the (… AND …) group and the two
-   single-input clauses are visually distinct, not a wrapped blob. */
-.vh-rule { display: flex; flex-direction: column; align-items: flex-start; gap: 7px;
-  font-size: 12.5px; width: 100%; padding: 10px 12px; border-radius: 10px;
-  background: #00000026; border: 1px solid var(--line); }
-/* on narrow screens the stage row can't fit the board + card side by side, so
-   stack the verdict card under the board and let it span the full width */
+/* CQ rail — the competency-question scoreboard pinned to the right end of the
+   stage row, always visible beside the Flow/Graph/Closure lens. It scrolls
+   independently of the page so the lens on the left and the answers on the right
+   stay aligned no matter how long either gets. */
+.cqboard.rail { flex: 0 0 auto; width: 420px; max-width: 36vw; align-self: stretch;
+  margin: 22px 22px 22px 0; padding: 16px 18px;
+  border: 1px solid var(--line); border-radius: var(--radius);
+  background: var(--bg2); box-shadow: 0 18px 56px -14px rgba(0,0,0,.55);
+  position: sticky; top: 16px; max-height: calc(100vh - 32px); overflow: auto; }
+/* on narrow screens the stage row can't fit the lens + rail side by side, so
+   stack the CQ board under the lens and let it span the full width */
 @media (max-width: 1100px) {
   .stage-row { flex-direction: column; }
-  .verdict-header { width: auto; max-width: none; align-self: stretch; margin: 0 22px 22px; }
+  .cqboard.rail { width: auto; max-width: none; align-self: stretch; margin: 0 22px 22px;
+    position: static; max-height: none; }
 }
-.rule-pill { padding: 4px 9px; border-radius: 999px; border: 1px solid var(--line); font-weight: 600; }
-.rule-pill.on { color: var(--risk); border-color: #f0653f55; background: #f0653f12; }
-.rule-pill.off { color: var(--muted); }
-.vh-and { font-weight: 800; color: var(--muted); }
-/* one boolean clause = one horizontal line in the stacked tree */
-.vh-clause { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; width: 100%; }
-/* the leading OR of each line: fixed-width gutter so the pills below align,
-   making the OR-spine read as a column down the left edge */
-.vh-clause > .vh-or { flex: none; width: 22px; text-align: left; }
-/* the result line, set apart under a hairline so "→ AT RISK / ok" reads as the
-   conclusion of the tree, not just another clause */
-.vh-eq { font-weight: 800; width: 100%; margin-top: 3px; padding-top: 8px;
-  border-top: 1px solid var(--line); padding-left: 29px; }
 
 /* view tabs */
 .viewbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 10px 22px 0; flex-wrap: wrap; }
@@ -179,6 +152,15 @@ button, input, select { font: inherit; }
 /* the kind icon IS the regulated thing — front and center, filling the ring.
    font-size is set on .avatar inline (≈55% of the ring) so the icon scales. */
 .avatar-kind { font-size: inherit; line-height: 1; }
+/* When the avatar shows a PERSON's face, a small corner badge keeps the kind
+   (human / AI / pipeline) explicit — the face says WHO, the badge says WHAT. */
+.avatar.hasface { overflow: visible; }
+.avatar-kindbadge { position: absolute; right: -5px; bottom: -5px; font-size: 10px; line-height: 1;
+  background: var(--bg2); border: 1.5px solid var(--line); border-radius: 50%;
+  width: 16px; height: 16px; display: flex; align-items: center; justify-content: center; }
+.avatar-kindbadge.k-human { border-color: var(--human); }
+.avatar-kindbadge.k-ai { border-color: var(--ai); }
+.avatar-kindbadge.k-pipeline { border-color: var(--pipeline); }
 .avatar-name { position: absolute; left: 110%; white-space: nowrap; font-weight: 600; font-size: 13px; }
 /* 🔒 "needs human" hint pinned top-left; a conflict (human required but not
    human-filled) tints the ring red so the mismatch reads at a glance */
@@ -192,9 +174,40 @@ button, input, select { font: inherit; }
 .fact-toggle.on { color: var(--text); }
 
 /* ---- FLOW view ---------------------------------------------------------- */
-.flow-track { display: flex; align-items: stretch; gap: 6px; overflow-x: auto; padding-bottom: 8px; }
-.flow-arrow { align-self: center; color: var(--muted); font-size: 22px; flex: none; transition: color .15s, transform .15s; }
+.flow-ambiguous { background: color-mix(in srgb, var(--risk) 12%, transparent); border: 1px solid var(--risk);
+  border-radius: var(--radius); padding: 10px 14px; margin-bottom: 14px; font-size: 13px; line-height: 1.45; }
+/* The agent-node head height (avatar + name + stalk). Arrows and the dataset
+   feeder drop by this much so they line up with the CARD row, not the avatars. */
+:root { --flow-head: 93px; }
+.flow-track { display: flex; align-items: flex-start; gap: 6px; overflow-x: auto; padding-bottom: 8px; }
+.flow-arrow { align-self: flex-start; margin-top: calc(var(--flow-head) + 14px); color: var(--muted); font-size: 22px; flex: none; transition: color .15s, transform .15s; }
 .flow-arrow.lit { color: var(--accent); transform: scale(1.25); }
+.flow-arrow--ambiguous { color: var(--risk); font-size: 16px; font-weight: 800; }
+.flow-arrow--feeds { color: #4fd1c5; font-size: 20px; }
+
+/* one step = a COLUMN: the agent node on top, a short stalk, then the real card.
+   This is the former graph's agent→step link, now wired to the actual card. */
+.sc-col { flex: 1 1 0; min-width: 188px; display: flex; flex-direction: column; align-items: center; }
+.sc-col > .stepcard { width: 100%; flex: none; min-width: 0; }
+.sc-agentnode { display: flex; flex-direction: column; align-items: center; gap: 5px; cursor: default; }
+.sc-agentname { font-size: 11.5px; font-weight: 600; color: var(--text); max-width: 168px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: center; }
+/* the dashed stalk from the agent node down to its card (the old graph edge) */
+.sc-connector { width: 0; height: 22px; border-left: 2px dashed color-mix(in srgb, var(--accent) 55%, transparent); }
+/* DCAT dataset feeder — a "stack of papers", categorically distinct from a step
+   card so it can never be misread as a step in the ordered sequence. */
+.flow-dataset { position: relative; flex: none; align-self: flex-start; margin-top: calc(var(--flow-head) + 4px); min-width: 150px; max-width: 170px; }
+.flow-dataset .ds-stack { position: absolute; inset: 0; border-radius: 8px; background: var(--card2);
+  border: 1px solid #4fd1c5; }
+.flow-dataset .ds-stack-2 { transform: translate(5px, 5px); opacity: .55; }
+.flow-dataset .ds-stack-3 { transform: translate(9px, 9px); opacity: .3; }
+.flow-dataset .ds-face { position: relative; background: var(--card); border: 1.5px solid #4fd1c5;
+  border-radius: 8px; padding: 9px 11px; display: flex; flex-direction: column; gap: 3px;
+  box-shadow: 0 1px 0 #4fd1c5 inset; }
+.flow-dataset .ds-kicker { font-size: 9.5px; letter-spacing: .04em; text-transform: uppercase; color: #4fd1c5; font-weight: 700; }
+.flow-dataset .ds-title { font-size: 12.5px; font-weight: 700; color: var(--text); line-height: 1.2; }
+.flow-dataset .ds-sub { font-size: 9.5px; color: var(--muted); }
+.stepcard.tied { border-top-color: var(--risk); }
+.sc-pos.tied { background: color-mix(in srgb, var(--risk) 30%, var(--card2)); width: auto; padding: 0 7px; border-radius: 11px; color: var(--risk); }
 .stepcard { flex: 1 1 0; min-width: 180px; background: var(--card); border: 1px solid var(--line); border-top: 3px solid var(--line);
   border-radius: var(--radius); padding: 13px; display: flex; flex-direction: column; gap: 9px; transition: opacity .15s, box-shadow .15s, transform .15s; }
 /* whole-card border tints who runs the step: blue = person, purple = AI,
@@ -231,9 +244,31 @@ button, input, select { font: inherit; }
 .sc-needs { font-size: 11px; font-weight: 700; color: var(--human); }
 .sc-violation { font-size: 11px; font-weight: 700; color: var(--risk); }
 .sc-title { font-size: 15px; font-weight: 650; line-height: 1.25; }
+
+/* avatar-led card head: the face leads, badges + title sit beside it. The
+   per-person identity (name / role / department / escalation) is on hover, so
+   the card body itself carries no repeated words. */
+.sc-head { display: flex; align-items: flex-start; gap: 11px; padding-right: 30px; }
+.sc-agentwrap { position: relative; flex: none; }
+.sc-headmeta { min-width: 0; flex: 1; display: flex; flex-direction: column; gap: 5px; }
+.sc-headmeta .sc-top { padding-right: 0; }
+/* compact derived-effect chips (AI-risk, rule-broken) — replace the old full
+   sentences; each still drills via its DagCell. */
+.sc-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 9px; }
+.sc-chip { display: inline-block; font-size: 11px; font-weight: 600; border-radius: 999px; padding: 1px 9px; border: 1px solid var(--line); cursor: help; }
+.sc-chip.risk { color: var(--ai); border-color: color-mix(in srgb, var(--ai) 45%, transparent); background: color-mix(in srgb, var(--ai) 12%, transparent); }
+.sc-chip.broken { color: var(--risk); border-color: color-mix(in srgb, var(--risk) 45%, transparent); background: color-mix(in srgb, var(--risk) 12%, transparent); }
+
 .sc-assign { display: flex; align-items: center; gap: 10px; }
 .sc-agent { font-weight: 600; font-size: 13.5px; }
 .sc-role { font-size: 11.5px; color: var(--muted); }
+/* the assignee's escalation ladder (Release Manager → VP → CTO) — who they
+   answer to, so each person's place in the chain of authority is legible. */
+.sc-escalates { display: flex; flex-wrap: wrap; align-items: center; gap: 3px 4px; margin-top: 3px; font-size: 10.5px; color: var(--muted); }
+.sc-esc-arrow { color: var(--accent); font-weight: 700; }
+.sc-esc-name { font-weight: 600; color: var(--text); background: color-mix(in srgb, var(--accent) 9%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 22%, transparent); border-radius: 5px; padding: 0 4px; }
+.sc-esc-sep { color: var(--muted); }
 .flow-closure-note { margin: 14px 0; padding: 10px 14px; background: var(--card); border: 1px solid var(--line); border-left: 3px solid var(--accent); border-radius: 8px; font-size: 13.5px; }
 
 /* precedence rail */
@@ -248,38 +283,144 @@ button, input, select { font: inherit; }
 .pr-add select { background: var(--bg2); border: 1px solid var(--line); color: var(--text); border-radius: 7px; padding: 6px 8px; }
 
 /* ---- ORG view ----------------------------------------------------------- */
-.org { display: grid; grid-template-columns: 300px 1fr; gap: 22px; }
 .panel-label { font-size: 12px; text-transform: uppercase; letter-spacing: .07em; color: var(--muted); font-weight: 600; margin-bottom: 14px; }
-.org-tree { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px; }
-.chain { display: flex; flex-direction: column-reverse; gap: 0; align-items: flex-start; }
-.org-node { display: flex; align-items: center; gap: 10px; padding: 8px; border-radius: 9px; width: 100%; transition: background .12s; }
-.org-node.hot { background: #b692ff18; }
-.org-role { font-weight: 650; font-size: 14px; }
-.org-up { font-size: 11px; color: var(--accent); padding: 4px 0 4px 18px; }
-.org-note { font-size: 12px; margin-top: 14px; }
-.org-grid { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px; overflow-x: auto; }
-.assign { width: 100%; border-collapse: collapse; font-size: 13.5px; }
-.assign th { text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); padding: 0 12px 10px; font-weight: 600; }
-.assign td { padding: 11px 12px; border-top: 1px solid var(--line); vertical-align: middle; }
-.assign tr.hot td { background: #b692ff12; }
-.role-cell { font-weight: 600; }
-.filler-cell { min-width: 150px; }
-.step-chip { display: inline-block; background: var(--card2); border: 1px solid var(--line); border-radius: 6px; padding: 2px 8px; margin-right: 5px; font-weight: 600; font-size: 12px; }
-.org-steprail { grid-column: 1 / -1; display: flex; gap: 8px; overflow-x: auto; }
-.rail-step { flex: 1; min-width: 130px; background: var(--card); border: 1px solid var(--line); border-top: 3px solid var(--line); border-radius: 9px; padding: 10px; transition: opacity .15s, box-shadow .15s; }
-.rail-step.k-human { border-top-color: var(--human); } .rail-step.k-ai { border-top-color: var(--ai); } .rail-step.k-pipeline { border-top-color: var(--pipeline); }
-.rail-step.lit { box-shadow: 0 0 0 1px var(--accent); }
-.rail-step.dim { opacity: .4; }
-.rail-pos { font-weight: 700; margin-right: 8px; }
-.rail-title { font-size: 13px; }
+
+/* ---- ORG view (one coherent org chart) ---------------------------------- */
+.orgx { display: flex; flex-direction: column; gap: 18px; }
+.ox-help { font-size: 13px; line-height: 1.55; max-width: 880px; }
+.ox-help b { color: var(--text); font-weight: 650; }
+
+/* rows ordered by the workflow; each row is a role + its escalation ladder */
+.ox-rows { display: flex; flex-direction: column; gap: 12px; }
+.ox-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+
+/* one role card */
+.ox-card { width: 270px; flex: none; background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+  padding: 13px 14px; display: flex; flex-direction: column; gap: 11px; cursor: pointer;
+  transition: box-shadow .14s, border-color .14s, transform .14s; }
+.ox-card:hover { border-color: #b692ff66; }
+.ox-card.onpath { border-color: #b692ff66; box-shadow: 0 0 0 1px #b692ff44; }
+.ox-card.sel { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent), 0 10px 30px -14px var(--accent); transform: translateY(-2px); }
+.ox-card.gate { border-left: 3px solid var(--pipeline); }
+.ox-card-top { display: flex; align-items: center; gap: 11px; }
+.ox-card-id { min-width: 0; }
+.ox-role { font-weight: 650; font-size: 14.5px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.ox-gate-badge { font-size: 10.5px; font-weight: 700; color: var(--pipeline); border: 1px solid var(--pipeline);
+  border-radius: 999px; padding: 1px 7px; letter-spacing: .02em; }
+.ox-filler { font-size: 12.5px; }
+
+.ox-card-steps { display: flex; flex-wrap: wrap; gap: 5px; }
+.ox-stepchip { font-size: 11.5px; font-weight: 600; background: var(--card2); border: 1px solid var(--line);
+  border-left: 3px solid var(--line); border-radius: 6px; padding: 2px 8px; max-width: 100%;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ox-stepchip.k-human { border-left-color: var(--human); }
+.ox-stepchip.k-ai { border-left-color: var(--ai); }
+.ox-stepchip.k-pipeline { border-left-color: var(--pipeline); }
+.ox-nosteps { font-size: 12px; font-style: italic; }
+
+/* escalation edge editor — the connector between two cards, or a trailing pill
+   on the top of a ladder / a role with no escalation set. Exactly one per role's
+   outgoing edge, and ALWAYS present. */
+.ox-conn, .ox-trail { appearance: none; font-family: inherit; font-size: 12px; text-align: center; cursor: pointer;
+  flex: none; background: var(--card2); border: 1px solid var(--line); border-radius: 8px; padding: 7px 10px;
+  color: var(--muted); transition: background .12s, border-color .12s, color .12s; white-space: nowrap; }
+.ox-conn { position: relative; }
+.ox-conn.set, .ox-trail.set { color: var(--accent); border-color: #b692ff44; }
+.ox-conn:hover, .ox-trail:hover { background: #b692ff14; border-color: #b692ff66; color: var(--text); }
+.ox-conn.broken, .ox-trail.broken { color: var(--risk); border-color: var(--risk);
+  background: color-mix(in srgb, var(--risk) 12%, var(--card2)); font-weight: 600; }
+.ox-arrow { font-weight: 600; }
+.ox-pen { opacity: .55; margin-left: 2px; font-size: 10px; }
+.ox-set { color: var(--accent); font-weight: 600; }
+
+/* a compact reference to a step-owner that already has its own row */
+.ox-ref { appearance: none; font-family: inherit; font-size: 12.5px; cursor: pointer; flex: none;
+  background: transparent; border: 1px dashed var(--line); border-radius: 8px; padding: 8px 12px;
+  color: var(--text); font-weight: 600; transition: border-color .12s; }
+.ox-ref:hover, .ox-ref.onpath { border-color: var(--accent); }
+
+/* roles not yet wired into the workflow */
+.ox-orphans { border-top: 1px dashed var(--line); padding-top: 16px; }
+.ox-orphans-label { font-size: 11.5px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); font-weight: 600; margin-bottom: 12px; }
+
+/* step rail */
+.ox-rail { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px; }
+.ox-rail-label { font-size: 11.5px; text-transform: uppercase; letter-spacing: .05em; font-weight: 600; margin-bottom: 11px; }
+.ox-rail-row { display: flex; gap: 8px; overflow-x: auto; }
+.ox-railstep { flex: 1; min-width: 150px; display: flex; align-items: center; gap: 10px; text-align: left;
+  font-family: inherit; cursor: pointer; background: var(--card2); border: 1px solid var(--line);
+  border-top: 3px solid var(--line); border-radius: 9px; padding: 9px 11px; color: var(--text);
+  transition: opacity .15s, box-shadow .15s, border-color .14s; }
+.ox-railstep:hover { border-color: #b692ff66; }
+.ox-railstep.k-human { border-top-color: var(--human); }
+.ox-railstep.k-ai { border-top-color: var(--ai); }
+.ox-railstep.k-pipeline { border-top-color: var(--pipeline); }
+.ox-railstep.lit { box-shadow: 0 0 0 1px var(--accent); border-color: var(--accent); }
+.ox-railstep.dim { opacity: .38; }
+.ox-rail-pos { width: 24px; height: 24px; flex: none; border-radius: 50%; background: var(--card);
+  display: grid; place-items: center; font-weight: 700; font-size: 12px; }
+.ox-rail-body { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.ox-rail-title { font-size: 13px; font-weight: 600; }
+.ox-rail-meta { font-size: 11px; }
+
+/* step → role reassignment menu */
+.ox-rolemenu { width: 250px; }
+
+/* ---- DEPT view (CQ7: cross-department lens) ----------------------------- */
+.deptx { display: flex; flex-direction: column; gap: 16px; }
+.dx-verdict { padding: 13px 16px; border-radius: var(--radius); border: 1px solid var(--line); background: var(--card); }
+.dx-verdict.yes { border-color: #3fb6a855; background: linear-gradient(180deg, #3fb6a814, var(--card)); }
+.dx-verdict.no { border-color: var(--line); }
+.dx-verdict-q { font-size: 13.5px; color: var(--muted); }
+.dx-verdict-a { font-size: 17px; font-weight: 700; margin-top: 4px; }
+.dx-help { font-size: 12.5px; line-height: 1.5; }
+.dx-help-chip { border: 1px dashed var(--muted); border-radius: 6px; padding: 0 5px; }
+
+.dx-cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; align-items: start; }
+.dx-col { background: var(--card); border: 1px solid var(--line); border-top: 3px solid var(--muted); border-radius: var(--radius); padding: 13px 13px 6px; transition: box-shadow .12s; }
+.dx-col.hover { box-shadow: 0 0 0 1px var(--line) inset, 0 14px 40px -24px #000; }
+.dx-col-head { display: flex; align-items: center; gap: 8px; font-size: 15px; font-weight: 700; }
+.dx-col-dot { width: 10px; height: 10px; border-radius: 50%; flex: none; }
+.dx-col-title { flex: 1; }
+.dx-col-count { font-size: 11px; font-weight: 600; color: var(--muted); }
+.dx-col-sub { font-size: 11px; margin: 2px 0 10px; }
+.dx-col-sub code { font-size: 11px; }
+.dx-col-body { display: flex; flex-direction: column; gap: 9px; }
+.dx-col-empty { font-size: 12px; padding: 8px 0; }
+
+.dx-role { border: 1px solid var(--line); border-radius: 10px; padding: 9px 10px; background: var(--bg2); }
+.dx-role-top { display: flex; align-items: center; gap: 9px; }
+.dx-role-id { min-width: 0; }
+.dx-role-name { font-size: 13.5px; font-weight: 600; }
+.dx-deptchip { margin-top: 3px; background: transparent; border: 1px solid var(--line); border-radius: 999px; padding: 1px 9px; font-size: 11px; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; }
+.dx-deptchip:hover { background: var(--card2); }
+.dx-pen { opacity: .55; font-size: 10px; }
+.dx-role-steps { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; }
+.dx-stepchip { font-size: 11.5px; border: 1px solid var(--line); border-left: 3px solid var(--muted); border-radius: 6px; padding: 2px 7px; background: var(--card); }
+.dx-step-pos { color: var(--muted); font-weight: 600; }
+.dx-nosteps { font-size: 11px; }
+.dx-deptmenu { width: 250px; }
 
 /* ---- GRAPH view --------------------------------------------------------- */
+/* the reasoned-network graph, folded into the Flow lens as a collapsible panel
+   above the cards (no longer a separate tab) */
+.graph-collapsible { border: 1px solid var(--line); border-radius: var(--radius); background: var(--card); margin-bottom: 12px; overflow: hidden; }
+.graph-collapsible.open { border-color: color-mix(in srgb, var(--accent) 40%, var(--line)); }
+.graph-toggle { display: flex; align-items: center; gap: 8px; width: 100%; text-align: left; cursor: pointer;
+  background: transparent; border: 0; padding: 9px 12px; color: var(--text); font: inherit; }
+.graph-toggle:hover { background: color-mix(in srgb, var(--accent) 6%, transparent); }
+.gt-caret { color: var(--accent); font-size: 12px; width: 12px; }
+.gt-label { font-weight: 650; font-size: 13.5px; }
+.gt-hint { font-size: 11.5px; }
+.graph-collapsible-body { padding: 12px; border-top: 1px solid var(--line); }
+
 .graph { position: relative; }
 .graph-hint { margin-bottom: 10px; font-size: 13px; }
 .graph-svg { width: 100%; height: auto; background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); }
 .gedge { stroke-width: 1.6; }
 .gedge.precedes { stroke: var(--muted); }
 .gedge.executes { stroke: #4a5168; stroke-dasharray: 4 3; }
+.gedge.consumes { stroke: #4fd1c5; stroke-dasharray: 2 3; }
 .gedge.lit { stroke: var(--accent); stroke-width: 2.2; }
 .gedge.dim { opacity: .18; }
 .gnode { cursor: pointer; }
@@ -295,10 +436,27 @@ button, input, select { font: inherit; }
 .gnode-circle.k-human { stroke: var(--human); } .gnode-circle.k-ai { stroke: var(--ai); } .gnode-circle.k-pipeline { stroke: var(--pipeline); }
 .gnode-icon { font-size: 18px; text-anchor: middle; }
 .gnode-aname { fill: var(--text); font-size: 11px; text-anchor: middle; font-weight: 600; }
+/* DCAT dataset node (CQ8) */
+.gnode-dataset { fill: var(--card2); stroke: #4fd1c5; stroke-width: 1.5; }
+.gnode-dataset.orphan { stroke-dasharray: 4 3; stroke: var(--risk); }
+.gnode.dataset.dim { opacity: .28; }
+.gnode.focused .gnode-dataset { filter: drop-shadow(0 0 8px var(--accent)); }
+.gnode-dataset-icon { font-size: 15px; text-anchor: middle; }
+.gnode-dataset-label { fill: var(--text); font-size: 10.5px; font-weight: 600; text-anchor: start; }
+.gnode-dataset-sub { fill: var(--muted); font-size: 8px; text-anchor: start; }
 .focus-panel { position: absolute; top: 44px; right: 12px; background: var(--bg2); border: 1px solid var(--accent); border-radius: 10px; padding: 12px 14px; max-width: 260px; }
 .fp-title { font-weight: 700; margin-bottom: 8px; }
 .fp-edge { font-size: 12.5px; padding: 3px 0; color: var(--muted); }
 .fp-rel { color: var(--accent); font-weight: 600; font-size: 11px; }
+
+/* hover-card: role + department detail that follows the cursor over a node */
+.graph-hovercard { position: fixed; z-index: 90; width: 240px; background: var(--bg2); border: 1px solid var(--accent); border-radius: 10px; padding: 10px 12px; box-shadow: 0 18px 50px -22px #000; pointer-events: none; }
+.gh-title { font-weight: 700; font-size: 13.5px; margin-bottom: 3px; }
+.gh-sub { font-size: 11.5px; margin-bottom: 6px; }
+.gh-block { padding: 5px 0; border-top: 1px solid var(--line); }
+.gh-block:first-of-type { border-top: 0; }
+.gh-row { font-size: 12px; padding: 2px 0; }
+.gh-pill { border: 1px solid var(--muted); border-radius: 999px; padding: 0 7px; font-size: 11px; font-weight: 600; }
 
 /* ---- CLOSURE view ------------------------------------------------------- */
 .closure { display: flex; flex-direction: column; gap: 22px; }
@@ -328,8 +486,21 @@ button, input, select { font: inherit; }
 .cl-step.dragging { opacity: .55; }
 .cl-step.drophot { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent), 0 10px 30px -10px var(--accent); transform: translateY(-2px); }
 .cl-step-pos { position: absolute; top: -11px; left: 12px; width: 24px; height: 24px; border-radius: 50%; background: var(--bg2);
-  border: 1px solid var(--line); display: grid; place-items: center; font-weight: 800; font-size: 13px; }
+  border: 1px solid var(--line); display: grid; place-items: center; font-weight: 800; font-size: 13px; transition: background .15s, border-color .15s; }
+.cl-step-rank { position: absolute; top: -9px; right: 10px; font-size: 10.5px; font-weight: 700; color: var(--muted);
+  background: var(--bg2); border: 1px solid var(--line); border-radius: 7px; padding: 1px 6px; }
 .cl-step-title { font-size: 13.5px; font-weight: 600; line-height: 1.3; min-height: 36px; margin: 6px 0 12px; }
+
+/* nominal-label controls (graph-coloring demo) */
+.cl-section-label--row { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.cl-label-tools { display: inline-flex; align-items: center; gap: 8px; }
+.cl-label-note { font-size: 11px; color: var(--muted); font-style: italic; }
+.cl-label-btn { cursor: pointer; font-weight: 700; font-size: 11.5px; color: var(--accent); background: #b692ff18;
+  border: 1px dashed var(--accent); border-radius: 8px; padding: 4px 10px; }
+.cl-label-btn:hover { background: #b692ff2c; }
+.cl-label-btn--ghost { color: var(--muted); border-style: solid; border-color: var(--line); background: transparent; }
+.cl-mlabel { display: inline-grid; place-items: center; min-width: 20px; height: 20px; padding: 0 5px; border-radius: 6px;
+  font-weight: 800; font-size: 12px; }
 .cl-drop-cue { position: absolute; inset: auto 8px 46px 8px; background: var(--accent); color: #19102e; font-weight: 700; font-size: 11px;
   text-align: center; padding: 4px 6px; border-radius: 7px; pointer-events: none; }
 .cl-handle { cursor: grab; user-select: none; display: inline-flex; align-items: center; gap: 4px; font-weight: 800; font-size: 12px;
@@ -342,6 +513,27 @@ button, input, select { font: inherit; }
   border-radius: 8px; padding: 4px 5px 4px 11px; font-weight: 700; font-size: 13px; }
 .cl-edge-x { background: transparent; border: 0; color: var(--muted); cursor: pointer; font-size: 18px; line-height: 1; padding: 0 4px; }
 .cl-edge-x:hover { color: var(--risk); }
+
+/* ---- 2D layered step DAG (columns by derived rank) ---------------------- */
+.cl-dag { position: relative; overflow-x: auto; padding: 22px 2px 10px; }
+.cl-dag-svg { position: absolute; top: 0; left: 0; pointer-events: none; z-index: 2; overflow: visible; }
+.cl-dagedge { stroke: var(--accent); stroke-width: 2; opacity: .8; }
+.cl-dag-cols { display: flex; align-items: flex-start; gap: 46px; min-width: min-content; position: relative; }
+.cl-dag-col { display: flex; flex-direction: column; min-width: 168px; }
+.cl-dag-colhead { font-size: 10.5px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: .05em;
+  text-align: center; margin-bottom: 14px; }
+.cl-dag-tie { color: var(--accent); }
+.cl-dag-stack { display: flex; flex-direction: column; gap: 18px; }
+/* a DAG card reuses .cl-step but is fixed-width and stacks (not flex-grow) */
+.cl-dagcard { flex: none; width: 168px; min-width: 168px; z-index: 1; }
+
+/* ---- the lineage section that now rides under the step closure --------- */
+.cl-lineage-section { margin-top: 30px; }
+.cl-section-divider { display: flex; align-items: center; gap: 14px; margin: 6px 0 10px; }
+.cl-section-divider::before, .cl-section-divider::after { content: ""; flex: 1; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--line), transparent); }
+.cl-section-divider-label { font-size: 12px; font-weight: 700; color: var(--accent); white-space: nowrap; }
+.cl-lineage-bridge { font-size: 12.5px; line-height: 1.5; margin: 0 0 14px; }
 
 /* the closure matrix */
 .cl-matrixwrap { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; }
@@ -484,73 +676,6 @@ button, input, select { font: inherit; }
 .conformance-table .ftype { color: var(--muted); font-size: 10px; font-style: normal; }
 .conformance-table .v-rs { color: var(--human); } .conformance-table .v-pg { color: var(--ai); }
 .conformance-note { font-size: 11px; color: var(--muted); margin: 10px 0 0; }
-
-/* ---- verdict: three inputs, firing highlight --------------------------- */
-/* the (stale AND ai) group is the first clause-line; align its pills to the
-   same left spine as the OR-clauses below it (29px = 22px OR gutter + 7px gap) */
-.vh-rule .rule-group { display: flex; align-items: center; gap: 8px; padding: 4px 8px 4px 29px;
-  border-radius: 10px; border: 1px solid transparent; }
-.vh-rule .rule-group.firing { border-color: #f0653f66; background: #f0653f10; }
-.vh-or { font-weight: 800; color: var(--muted); }
-.rule-pill.firing { box-shadow: 0 0 0 2px #f0653f55; }
-
-/* ---- time-budget bar --------------------------------------------------- */
-/* Lives inside the Flow tab, above the step track — a card on the panel, so it
-   reads as the summary of the steps right below it. */
-.timebudget { padding: 12px 16px 6px; margin-bottom: 18px; background: var(--bg2);
-  border: 1px solid var(--line); border-radius: var(--radius); }
-.tb-head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 7px; }
-.tb-title { font-weight: 700; font-size: 13px; }
-.tb-readout { font-size: 13px; color: var(--text); }
-.tb-readout b { font-variant-numeric: tabular-nums; }
-.tb-flag { color: var(--risk); font-weight: 700; }
-.tb-ok { color: var(--ok); }
-/* the track is a flex row of per-step colored segments (one chunk per step).
-   Taller now so each segment can carry its big agent-type icon + step # + minutes
-   inline — the separate legend row is gone. */
-.tb-track { position: relative; display: flex; height: 58px; border-radius: 8px; background: var(--card);
-  border: 1px solid var(--line); overflow: hidden; }
-/* each segment is one step, colored by who runs it (blue person / purple AI /
-   amber pipeline) — mirroring the step cards. It's a vertical stack: a large
-   ¼"-ish agent-type glyph on top, then "Step #N" and its minutes. */
-.tb-seg { position: relative; min-width: 2px; display: flex; flex-direction: column;
-  align-items: center; justify-content: center; gap: 1px; padding: 0 4px;
-  transition: width .25s ease; border-right: 1px solid #0e1016aa; overflow: hidden; }
-.tb-seg:last-child { border-right: none; }
-.tb-seg.k-human { background: var(--human); }
-.tb-seg.k-ai { background: var(--ai); }
-.tb-seg.k-pipeline { background: var(--pipeline); }
-.tb-seg.k-unknown { background: var(--muted); }
-/* the big agent-type glyph — ~1/4" tall (24px) at typical 96dpi */
-.tb-seg-icon { font-size: 24px; line-height: 1; }
-.tb-seg-meta { display: flex; align-items: baseline; gap: 5px; white-space: nowrap;
-  color: #0e1016; text-shadow: 0 1px 0 rgba(255,255,255,.2); }
-.tb-seg-pos { font-size: 10.5px; font-weight: 800; }
-.tb-seg-min { font-size: 10.5px; font-weight: 700; opacity: .85; font-variant-numeric: tabular-nums; }
-/* the splitter handle on each segment's right edge — drag to resize the step */
-.tb-split { position: absolute; top: 0; bottom: 0; right: -4px; width: 9px; z-index: 3;
-  cursor: ew-resize; display: flex; align-items: center; justify-content: center; }
-.tb-split::before { content: ""; width: 2px; height: 60%; border-radius: 2px;
-  background: rgba(14,16,22,.45); transition: background .12s, height .12s; }
-.tb-split:hover::before { background: var(--text); height: 80%; }
-.tb-seg:last-child .tb-split { right: 0; }   /* keep the last handle inside the track */
-.tb-split.disabled { cursor: default; }
-.tb-split.disabled::before { background: rgba(14,16,22,.25); }
-/* the dragged segment + whole-bar feedback while resizing */
-.tb-seg.dragged { box-shadow: inset 0 0 0 2px rgba(255,255,255,.55); }
-.timebudget.dragging .tb-track { cursor: ew-resize; user-select: none; }
-.timebudget.dragging .tb-seg { transition: none; }   /* track the cursor 1:1, no lag */
-.tb-dragnote { color: var(--accent); font-weight: 700; }
-/* the budget marker line + label; turns red once breached */
-.tb-limit { position: absolute; top: -3px; bottom: -3px; width: 2px; background: var(--text); opacity: .75;
-  z-index: 2; transition: left .25s ease; }
-.tb-limit.breached { background: var(--risk); opacity: 1; box-shadow: 0 0 8px -1px var(--risk); }
-.tb-limit-label { position: absolute; top: -16px; left: 4px; font-size: 10px; white-space: nowrap; color: var(--muted); }
-.tb-limit.breached .tb-limit-label { color: var(--risk); font-weight: 700; }
-.timebudget.red .tb-track { box-shadow: 0 0 0 2px #f0653f55; }
-/* the budget note now rides on the head row, floated to the right — it no longer
-   takes its own line, so the old below-track row's ~1/4" is fully reclaimed */
-.tb-budgetnote { margin-left: auto; font-size: 12px; text-align: right; }
 
 /* stepped-value buttons — the policy-window picker on the staleness bar.
    (The time-budget bar no longer uses buttons: its segments are drag-resized.) */
@@ -1215,3 +1340,186 @@ body:has(.dag-page) { background: var(--bg); }  /* uniform dark behind the panel
 .conf-engine-list { list-style: none; margin: 0; padding: 0; }
 .conf-engine-list li { font-size: 12.5px; padding: 3px 0; color: var(--muted); display: flex; gap: 8px; align-items: baseline; }
 .conf-engine-list li b { color: var(--text); }
+
+/* ===========================================================================
+   CQ SCOREBOARD (the 8 competency questions, answered live) — /console/cq
+   =========================================================================== */
+.cqboard { display: flex; flex-direction: column; gap: 14px; }
+
+.cq-intro { display: flex; flex-direction: column; gap: 12px; }
+.cq-intro-lead { font-size: 13.5px; line-height: 1.5; color: var(--muted); max-width: 980px; }
+.cq-intro-lead code { color: var(--text); background: var(--bg2); padding: 1px 5px; border-radius: 5px; font-size: 12px; }
+.cq-intro-bar { display: flex; align-items: center; gap: 18px; }
+.cq-score { font-size: 13px; color: var(--muted); padding: 6px 14px; border: 1px solid var(--line); border-radius: 999px; }
+.cq-score b { font-size: 15px; }
+.cq-score.all { border-color: #43c46355; background: #43c4631a; }
+.cq-score.all b { color: var(--ok); }
+.cq-score.some b { color: var(--inferred); }
+
+/* the show-only-failing switch */
+.cq-switch { display: inline-flex; align-items: center; gap: 9px; font-size: 12.5px; color: var(--muted); cursor: pointer; user-select: none; }
+.cq-switch input { position: absolute; opacity: 0; width: 0; height: 0; }
+.cq-switch-track { width: 38px; height: 20px; border-radius: 999px; background: var(--card2); border: 1px solid var(--line); position: relative; transition: background .15s, border-color .15s; }
+.cq-switch-thumb { position: absolute; top: 2px; left: 2px; width: 14px; height: 14px; border-radius: 50%; background: var(--muted); transition: transform .15s, background .15s; }
+.cq-switch input:checked + .cq-switch-track { background: #f0653f30; border-color: #f0653f66; }
+.cq-switch input:checked + .cq-switch-track .cq-switch-thumb { transform: translateX(18px); background: var(--risk); }
+
+.cq-list { display: flex; flex-direction: column; gap: 9px; }
+.cq-empty { color: var(--muted); font-size: 13px; padding: 18px; text-align: center; border: 1px dashed var(--line); border-radius: 12px; }
+
+/* one CQ card */
+.cq-card { display: grid; grid-template-columns: 54px 1fr 34px; align-items: start; gap: 12px;
+  background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 13px 14px;
+  box-shadow: inset 3px 0 0 var(--line); }
+.cq-card.ok { box-shadow: inset 3px 0 0 var(--ok); }
+.cq-card.fail { box-shadow: inset 3px 0 0 var(--risk); background: linear-gradient(180deg, #f0653f10, var(--card) 60%); }
+
+.cq-num { font-size: 11px; font-weight: 800; letter-spacing: .04em; color: var(--accent);
+  background: var(--bg2); border: 1px solid var(--line); border-radius: 8px; padding: 6px 0; text-align: center; }
+
+.cq-main { min-width: 0; display: flex; flex-direction: column; gap: 7px; }
+.cq-q { font-size: 14px; font-weight: 650; color: var(--text); line-height: 1.35; }
+
+.cq-answer-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.cq-answer { font-size: 13px; color: var(--text); background: var(--bg2); border: 1px solid var(--line);
+  border-radius: 7px; padding: 4px 10px; font-variant-numeric: tabular-nums; }
+.cq-card.fail .cq-answer { border-color: #f0653f55; }
+.cq-disclose { background: transparent; border: 1px solid var(--line); color: var(--muted); font-size: 11.5px;
+  border-radius: 7px; padding: 4px 9px; cursor: pointer; }
+.cq-disclose:hover { color: var(--text); border-color: var(--accent); }
+
+/* Per-card "simulate" — applies the CQ's SimulateScenario (the minimal raw-fact
+   edit that moves THIS question), then the card flashes as the answer re-derives. */
+.cq-simulate { margin-left: auto; background: var(--card2); border: 1px solid var(--accent); color: var(--accent);
+  font-size: 11px; font-weight: 700; letter-spacing: .02em; border-radius: 7px; padding: 4px 10px; cursor: pointer; }
+.cq-simulate:hover:not(:disabled) { filter: brightness(1.12); box-shadow: 0 4px 16px -8px var(--accent); }
+.cq-simulate:disabled { opacity: .5; cursor: default; }
+/* The CQ8 dataset re-attach picker (the fix): teal to match the 📦 dataset motif. */
+.cq-reattach { margin-left: 6px; background: var(--card2); border: 1px solid #4fd1c5; color: #4fd1c5;
+  font-size: 11px; font-weight: 700; border-radius: 7px; padding: 4px 8px; cursor: pointer; white-space: nowrap; }
+.cq-reattach:hover:not(:disabled) { filter: brightness(1.12); box-shadow: 0 4px 16px -8px #4fd1c5; }
+.cq-reattach:disabled { opacity: .5; cursor: default; }
+/* The flash: a brief accent ring + lift when this card's answer just changed. */
+.cq-card.flash { animation: cq-flash 2.6s ease-out 1; }
+@keyframes cq-flash {
+  0%   { box-shadow: inset 3px 0 0 var(--accent), 0 0 0 2px var(--accent), 0 10px 30px -10px var(--accent); }
+  18%  { box-shadow: inset 3px 0 0 var(--accent), 0 0 0 2px var(--accent), 0 10px 30px -10px var(--accent); }
+  100% { box-shadow: inset 3px 0 0 var(--line); }
+}
+
+.cq-detail { margin-top: 3px; border-top: 1px dashed var(--line); padding-top: 9px; display: flex; flex-direction: column; gap: 8px; }
+.cq-expected { font-size: 12.5px; color: var(--muted); }
+.cq-expected-label { font-size: 10px; text-transform: uppercase; letter-spacing: .07em; color: var(--accent);
+  border: 1px solid var(--line); border-radius: 5px; padding: 1px 6px; margin-right: 6px; }
+.cq-rows { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
+.cq-row { display: flex; align-items: baseline; gap: 10px; font-size: 12.5px; padding: 4px 9px;
+  background: var(--bg2); border: 1px solid var(--line); border-radius: 7px; border-left-width: 3px; }
+.cq-row-label { color: var(--text); font-weight: 550; }
+.cq-row-sub { color: var(--muted); font-size: 11.5px; }
+.cq-row.k-ai { border-left-color: var(--ai); }
+.cq-row.k-human { border-left-color: var(--human); }
+.cq-row.k-pipeline { border-left-color: var(--pipeline); }
+.cq-row.k-role { border-left-color: var(--accent); }
+.cq-row.k-artifact { border-left-color: var(--inferred); }
+.cq-row.k-dataset { border-left-color: #4fd1c5; }
+.cq-row.k-step { border-left-color: var(--line); }
+.cq-why { font-size: 12.5px; color: var(--muted); line-height: 1.45; font-style: italic; }
+.cq-target { font-size: 11.5px; }
+.cq-target code { color: var(--text); background: var(--bg2); padding: 1px 5px; border-radius: 5px; }
+
+.cq-mark { font-size: 20px; font-weight: 800; text-align: center; line-height: 1.2; }
+.cq-mark.ok { color: var(--ok); }
+.cq-mark.fail { color: var(--risk); }
+
+.cq-foot { font-size: 12px; line-height: 1.5; max-width: 980px; }
+
+/* the docs-review-age slider, docked at the bottom of the board column right
+   under the step/role cards (it edits Modified → drives CQ5's IsStale). Re-skin
+   the full-width page bar as a contained panel sitting under the cards. */
+.stage > .staleness { margin-top: 18px; padding: 12px 14px;
+  background: var(--card); border: 1px solid var(--line); border-radius: 10px; }
+
+/* ---- escalation violation: clickable badges + the org-chart popup -------- */
+/* The three "fix escalation" triggers (CQ6 card · gate step · org node). Each
+   reads the derived Roles.EscalationViolation column and opens EscalationPopover. */
+.cq-fix-escalation, .sc-escalation-broken, .org-escalation-broken {
+  appearance: none; font-family: inherit; cursor: pointer;
+  color: var(--risk); background: #f0653f14; border: 1px solid #f0653f44;
+  border-radius: 7px; font-weight: 700; font-size: 11px; padding: 3px 8px;
+}
+.cq-fix-escalation:hover, .sc-escalation-broken:hover, .org-escalation-broken:hover {
+  background: #f0653f24; border-color: var(--risk);
+}
+.cq-fix-escalation { margin-left: 6px; white-space: nowrap; }
+.sc-escalation-broken { display: block; width: 100%; margin-top: 6px; text-align: left; }
+.org-escalation-broken { margin-left: 8px; }
+
+/* the floating org-chart popup */
+.esc-popover { width: 320px; border-color: var(--risk); }
+.esc-orgchart { padding: 10px 14px; border-bottom: 1px solid var(--line); }
+.esc-orgchart-label { font-size: 11px; color: var(--muted); font-weight: 600; margin-bottom: 7px; }
+.esc-chain { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-bottom: 5px; }
+.esc-chain.broken-chain { margin-top: 6px; padding-top: 6px; border-top: 1px dashed var(--line); }
+.esc-node { font-size: 12px; font-weight: 600; padding: 3px 8px; border-radius: 6px; background: var(--card2); color: var(--text); }
+.esc-node.broken { background: #f0653f1c; color: var(--risk); box-shadow: inset 0 0 0 1px #f0653f55; }
+.esc-node.ghost { background: transparent; color: var(--muted); border: 1px dashed var(--line); font-weight: 500; }
+.esc-up { font-size: 11px; color: var(--muted); }
+.esc-up.dashed { color: var(--risk); }
+.esc-opt { justify-content: flex-start; }
+.esc-opt-name { font-weight: 600; }
+.esc-leads { margin-left: auto; font-size: 11px; color: var(--muted); }
+.esc-leads.top { font-style: italic; }
+.esc-leads.cur { color: var(--accent); font-weight: 700; }
+.opt-dot.k-role { background: var(--accent); }
+.opt-dot.k-clear { background: var(--risk); }
+/* non-broken "change escalation" mode: neutral accent border instead of red */
+.esc-popover.esc-popover-ok { border-color: #b692ff66; }
+.esc-node.current { background: #b692ff1c; color: var(--accent); box-shadow: inset 0 0 0 1px #b692ff55; }
+.esc-opt.current { opacity: .6; cursor: default; }
+.esc-opt.esc-clear .esc-opt-name { color: var(--risk); }
+
+/* ---- ChainRibbon: the shared transitive-closure chain (steps/roles/artifacts) --- */
+.lineage, .ribbon { width: 100%; }
+.ln-intro { margin-bottom: 6px; }
+.ln-intro-lead { font-size: 14px; color: var(--text); max-width: 880px; }
+.rb-counts { display: flex; align-items: center; gap: 12px; margin: 12px 0 8px; flex-wrap: wrap; font-size: 14px; }
+.rb-count { padding: 6px 12px; border-radius: 999px; border: 1px solid var(--line); background: var(--card2); }
+.rb-count.asserted { border-color: var(--accent); } .rb-count.asserted b { color: var(--accent); }
+.rb-count.inferred { border-color: var(--inferred); } .rb-count.inferred b { color: var(--inferred); }
+.rb-count.total b { color: #fff; }
+.rb-plus, .rb-eq { color: var(--muted); }
+.rb-rel { margin-left: 4px; }
+
+.rb-broken { margin: 10px 0; padding: 9px 13px; border-radius: 10px; font-size: 13px; font-weight: 600;
+  color: #ffd0c2; background: color-mix(in srgb, var(--risk) 14%, transparent); border: 1px solid color-mix(in srgb, var(--risk) 50%, transparent); }
+
+.rb-track { display: flex; align-items: stretch; gap: 0; overflow-x: auto; padding: 8px 2px 12px; }
+.rb-node { position: relative; flex: 1 1 0; min-width: 160px; background: var(--card2); border: 1px solid var(--line);
+  border-top: 3px solid var(--accent); border-radius: 10px; padding: 12px 12px 14px; display: flex; gap: 10px; align-items: flex-start; }
+.rb-node.k-human { border-top-color: var(--human); } .rb-node.k-ai { border-top-color: var(--ai); }
+.rb-node.k-pipeline { border-top-color: var(--pipeline); } .rb-node.k-artifact { border-top-color: var(--accent); }
+.rb-node.k-role { border-top-color: var(--human); }
+.rb-node.origin { box-shadow: inset 0 0 0 1px #b692ff44; }
+.rb-badge { flex: 0 0 auto; width: 30px; height: 30px; display: grid; place-items: center; border-radius: 8px;
+  background: var(--accent); color: #19102e; font-weight: 800; font-size: 14px; border: 1px solid var(--accent); }
+.rb-node-body { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.rb-node-title { font-weight: 650; color: #fff; font-size: 13px; line-height: 1.25; }
+.rb-node-sub { font-size: 11px; line-height: 1.3; }
+.rb-flag { position: absolute; top: -9px; right: 8px; font-size: 10px; font-weight: 800; letter-spacing: .04em;
+  color: var(--accent); background: var(--panel); padding: 1px 7px; border-radius: 999px; border: 1px solid #b692ff55; }
+
+/* connector between two adjacent nodes */
+.rb-link { flex: 0 0 56px; align-self: center; position: relative; height: 40px; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 3px; }
+.rb-link-line { width: 100%; height: 3px; border-radius: 3px; }
+.rb-link.asserted .rb-link-line { background: var(--accent); }
+.rb-link.inferred .rb-link-line { background: repeating-linear-gradient(90deg, var(--inferred) 0 5px, transparent 5px 10px); }
+.rb-link.missing { flex-basis: 96px; }
+.rb-link.missing .rb-link-line { background: repeating-linear-gradient(90deg, var(--risk) 0 4px, transparent 4px 9px); opacity: .55; }
+.rb-link-cap { font-size: 10px; white-space: nowrap; }
+.rb-gap { display: flex; flex-direction: column; align-items: center; gap: 5px; }
+.rb-gap-x { color: var(--risk); font-size: 15px; font-weight: 800; }
+.rb-fix { border: 1px solid color-mix(in srgb, var(--risk) 55%, transparent); background: color-mix(in srgb, var(--risk) 16%, transparent);
+  color: #ffd0c2; font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 999px; cursor: pointer; white-space: nowrap; }
+.rb-fix:hover { background: color-mix(in srgb, var(--risk) 26%, transparent); }
+.ln-foot { margin-top: 12px; font-size: 12.5px; max-width: 880px; }

@@ -6,7 +6,7 @@
 //
 // IMPORTANT: this file derives PRESENTATION structure (indices, an org tree,
 // graph node/edge lists) from data the reasoner already computed. It never
-// computes a business fact (an agent's type, a step's violation, the verdict) —
+// computes a business fact (an agent's type, a step's violation, staleness) —
 // those arrive pre-derived in the story payload. (Same doctrine as the backend:
 // the reasoner is the source of truth; we arrange.)
 // ===========================================================================
@@ -47,6 +47,76 @@ export function kindOfType(t: string): AgentKind {
 export function initials(name: string): string {
   if (!name) return "?";
   return name.split(/[\s-]+/).filter(Boolean).slice(0, 2).map((w) => w[0].toUpperCase()).join("");
+}
+
+// ---- per-agent avatar -----------------------------------------------------
+// Every agent gets its OWN face, so Maria reads differently from James at a
+// glance — the role is clear from the person filling it, not just a generic 🧑.
+// Deterministic from the agent id (offline, stable across reloads, no service):
+// a distinct face from a kind-appropriate palette plus a distinct ring hue. Two
+// people can share a face only if their hues also collide, which the 0–359 hue
+// spread makes vanishingly unlikely for a demo-sized cast.
+function hashStr(s: string): number {
+  let h = 2166136261;
+  for (let i = 0; i < s.length; i++) {
+    h ^= s.charCodeAt(i);
+    h = Math.imul(h, 16777619);
+  }
+  return h >>> 0;
+}
+export interface AvatarLook {
+  face: string;
+  hue: number;
+}
+
+// Hand-assigned faces for the named cast, so each person is unmistakable at a
+// glance and never confused with another. Keyed by agent id; the hue gives each
+// a distinct ring color too. Anything not listed falls back to the hashed pool.
+const AGENT_FACES: Record<string, AvatarLook> = {
+  "ntwf-maria-gonzalez": { face: "👩",    hue: 25 },   // Release Manager — woman, brown hair
+  "ntwf-david-chen":     { face: "👨",    hue: 210 },  // VP Engineering — man, crew cut
+  "ntwf-james-okafor":   { face: "🕴️",   hue: 320 },  // Legal Compliance — a single suited person
+  "ntwf-sarah-kim":      { face: "👱‍♀️",  hue: 48 },   // CTO — blond
+  "ntwf-priya-nair":     { face: "👩‍🔬",  hue: 160 },  // (unassigned extra) — kept visually distinct
+};
+
+// ONE icon per non-human kind, used for EVERY agent of that kind: the robot is
+// the AI and ONLY the AI; the gear is the automated pipeline and nothing else.
+// (Reserving 🤖 for the AI is the whole point — it should never read as a person
+// or a process.)
+const AI_FACE = "🤖";
+const PIPELINE_FACE = "⚙️";
+// Deterministic fallback faces for any HUMAN not in the named cast above (none
+// in today's data, but keeps an added person from collapsing to a generic 🧑).
+const HUMAN_FACES = ["🧑", "👩", "👨", "🧓", "🧔"];
+
+export function avatarFor(agent?: Agent | null, type?: string): AvatarLook | null {
+  if (!agent) return null;
+  const kind: AgentKind = agent.kind || (type ? kindOfType(type) : "unknown");
+  // A named human gets their hand-picked face; everyone of a non-human kind gets
+  // that kind's single icon. No more hash-roulette that made two AIs look unlike
+  // each other or a pipeline look like a robot.
+  const id = agent.id || "";
+  if (AGENT_FACES[id]) return AGENT_FACES[id];
+  if (kind === "ai") return { face: AI_FACE, hue: 265 };
+  if (kind === "pipeline") return { face: PIPELINE_FACE, hue: 40 };
+  if (kind === "human") {
+    const h = hashStr(id || agent.name || "?");
+    return { face: HUMAN_FACES[h % HUMAN_FACES.length], hue: h % 360 };
+  }
+  return null;
+}
+
+// The escalation ladder ABOVE a role (its VP, then CTO, …), read straight off
+// the reasoned org tree the situation already built. Empty when the role
+// escalates to no one. Lets a card say "↑ VP of Engineering → CTO" so the chain
+// of authority around each person is always legible.
+export function escalationAncestors(sit: Situation, roleId: string): { id: string; name: string }[] {
+  for (const chain of sit.orgTree) {
+    const idx = chain.findIndex((n) => n.id === roleId);
+    if (idx >= 0) return chain.slice(idx + 1);
+  }
+  return [];
 }
 
 const shortId = (id: string): string => (id || "").replace(/^prod-deploy-/, "").replace(/^ntwf-/, "");
@@ -106,15 +176,29 @@ export function buildSituation(story: Story): Situation {
   for (const s of story.steps) {
     if (s.agent) edges.push({ from: "agent:" + s.agent.id, to: "step:" + s.id, type: "executes" });
   }
+  // dataset nodes + consumption edges (CQ8). A DCAT dataset is a first-class node
+  // on the board so the question "what datasets does the review consume, and
+  // which AI processed them?" is VISIBLE: the dataset feeds the step, the step's
+  // agent (an AI) is one hop up. A dataset consumed by NO step renders as an
+  // orphan — which is exactly what the "detach the risk dataset" simulate leaves
+  // behind: you watch the edge break, not a string change in a card.
+  for (const d of story.datasets) {
+    addNode("dataset:" + d.id, "dataset", d.title, { orphan: d.consumedBySteps.length === 0 });
+    for (const c of d.consumedBySteps) {
+      edges.push({ from: "dataset:" + d.id, to: "step:" + c.id, type: "consumes" });
+    }
+  }
 
   return {
     company: story.company,
     workflow: story.workflow,
-    verdict: story.verdict,
     closure: story.closure,
+    derivationClosure: story.derivationClosure ?? null,
     steps: story.steps,
     stepFacts: Object.fromEntries(story.stepFacts.map((f) => [f.id, f])),
     roles: story.roles,
+    departments: story.departments,
+    departmentById: Object.fromEntries((story.departments || []).map((d) => [d.id, d])),
     roleById,
     agentById,
     team: story.team,
@@ -123,6 +207,10 @@ export function buildSituation(story: Story): Situation {
     stepsByAgent,
     orgTree,
     graph: { nodes, edges },
+    delegation: story.delegation,
+    artifacts: story.artifacts,
+    datasets: story.datasets,
+    competencyQuestions: story.competencyQuestions,
     reasoned_triples: story.reasoned_triples,
     short: shortId,
   };

@@ -9,6 +9,7 @@
     "iri": "workflows-production-deployment-steps-prod-deploy-step-3-approval-gates-ntwf-release-approval-gate",
     "name": "release-approval-gate",
     "gate_role": "ntwf-release-manager-role",
-    "gate_approver_human": "ntwf-maria-gonzalez"
+    "gate_approver_human": "ntwf-maria-gonzalez",
+    "has_human_approver": true
   }
 ]

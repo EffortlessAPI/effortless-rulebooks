@@ -25,7 +25,20 @@
       "count_of_precedence_closure_pairs",
       "count_roles_with_bad_filler_cardinality",
       "count_agent_type_changes",
-      "count_compliance_audit_changes"
+      "count_compliance_audit_changes",
+      "count_approval_gate_steps",
+      "count_gates_without_human_approver",
+      "count_workflow_artifacts",
+      "count_roles_with_escalation_violation",
+      "count_unconsumed_datasets",
+      "cq1_satisfied",
+      "cq2_satisfied",
+      "cq3_satisfied",
+      "cq4_satisfied",
+      "cq5_satisfied",
+      "cq6_satisfied",
+      "cq7_satisfied",
+      "cq8_satisfied"
     ],
     "record_count": 1
   },
@@ -36,12 +49,16 @@
       "relative_path",
       "iri",
       "name",
+      "preceding_step_count",
+      "inferred_sequence_position",
+      "sequence_position",
       "executing_human_agent",
       "executing_ai_agent",
       "executing_automated_pipeline",
       "executing_agent_type",
       "is_executed_by_ai",
       "is_executed_by_human",
+      "is_approval_gate",
       "approval_consistency_violation",
       "approval_is_human_filled",
       "owning_department",
@@ -58,7 +75,8 @@
       "iri",
       "name",
       "gate_role",
-      "gate_approver_human"
+      "gate_approver_human",
+      "has_human_approver"
     ],
     "record_count": 1
   },
@@ -80,7 +98,9 @@
       "name",
       "filled_by_arm_count",
       "has_exactly_one_filler",
-      "filler_type"
+      "filler_type",
+      "fills_approval_gate",
+      "escalation_violation"
     ],
     "record_count": 7
   },
@@ -162,7 +182,8 @@
     "primary_key": "dataset_id",
     "computed_columns": [
       "relative_path",
-      "iri"
+      "iri",
+      "is_consumed"
     ],
     "record_count": 1
   },
@@ -216,7 +237,25 @@
       "iri",
       "name"
     ],
-    "record_count": 4
+    "record_count": 12
+  },
+  "competency_questions": {
+    "primary_key": "competency_question_id",
+    "computed_columns": [
+      "relative_path",
+      "iri",
+      "name"
+    ],
+    "record_count": 8
+  },
+  "scenario_cq_effects": {
+    "primary_key": "scenario_cq_effect_id",
+    "computed_columns": [
+      "relative_path",
+      "iri",
+      "name"
+    ],
+    "record_count": 12
   },
   "conformance_tests": {
     "primary_key": "conformance_test_id",

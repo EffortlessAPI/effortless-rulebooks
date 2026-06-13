@@ -200,6 +200,16 @@ app.get("/api/story", wrap(async (req, res) => {
         gateApproverHuman: gate ? (filler && filler.agent?.kind === "human" ? filler.agent.name : null) : null,
         consistencyViolation: !!s.approvalConsistencyViolation,
         precedes: Array.isArray(s.precedesStep) ? s.precedesStep : s.precedesStep ? [s.precedesStep] : [],
+        // CQ7 backing, per step. A step's department is NOT a raw fact — it is the
+        // owning department of the role the step is assigned to (OwningDepartment =
+        // INDEX/MATCH over Roles.OwnedBy). The two booleans are the substrate's
+        // calc over that lookup. We lift all three straight from the reasoned
+        // individual; we never re-walk the role→department chain in React. (Under
+        // the Postgres backend these carry that substrate's value, so a wrong
+        // lookup there shows up as a visible conformance diff — by design.)
+        owningDepartment: s.owningDepartment ?? null,
+        isLegalOwned: !!s.isLegalOwned,
+        isEngineeringOwned: !!s.isEngineeringOwned,
       };
     });
 
@@ -208,6 +218,101 @@ app.get("/api/story", wrap(async (req, res) => {
     ais: (I.AIAgents || []).map((a) => ({ id: a.aIAgentId, name: a.displayName })),
     pipelines: (I.AutomatedPipelines || []).map((p) => ({ id: p.automatedPipelineId, name: p.displayName })),
   };
+
+  // --- CQ-backing projections ------------------------------------------------
+  // The competency-question scoreboard reads its answers from these. NONE of
+  // these computes a derived field: each value is lifted from a column the
+  // substrate already populated (vw_<entity> / the reasoned individuals). We
+  // only ARRANGE — resolve FK ids to labels and group by narrative order — the
+  // same thing the rest of /api/story does. (Doctrine: the view IS the contract.)
+  const stepById = new Map(steps.map((s) => [s.id, s]));
+  const stepTitleById = new Map<string, string>(steps.map((s) => [s.id, s.title]));
+  const stepAgentById = new Map<string, ResolvedAgent | null>(steps.map((s) => [s.id, s.agent]));
+  // CQ8: the capability the consuming step's role REQUIRES of its filler (raw
+  // Roles.HasCapability). A dataset is only legitimately consumed by a step whose
+  // role can actually process it (the dataset-processing capability). Surfaced so
+  // the CQ8 resolver can check the consumer is capability-matched, not just any AI.
+  const stepCapabilityById = new Map<string, string | null>(
+    steps.map((s) => [s.id, ((roles.get(s.roleId) as Record<string, unknown> | undefined)?.hasCapability as string) || null]),
+  );
+  const asList = (v: unknown): string[] =>
+    Array.isArray(v) ? (v as string[]) : v ? [v as string] : [];
+
+  // CQ4 — artifact provenance: producer step, wasDerivedFrom parent, the agent
+  // it was attributedTo (human/AI/pipeline — whichever arm is set), downstream
+  // consumers. All straight from WorkflowArtifacts' already-computed columns.
+  const artifacts = (I.WorkflowArtifacts || [])
+    .slice()
+    .map((a) => {
+      const attributedId = a.attributedToHumanAgent || a.attributedToAIAgent || a.attributedToAutomatedPipeline || null;
+      return {
+        id: a.artifactId,
+        title: a.title,
+        artifactType: a.artifactType || null,
+        producedByStep: a.producedByStep || null,
+        producedByStepTitle: a.producedByStep ? (stepTitleById.get(a.producedByStep) || a.producedByStep) : null,
+        producedByStepPosition: a.producedByStep ? (stepById.get(a.producedByStep)?.position ?? null) : null,
+        derivedFromArtifact: a.derivedFromArtifact || null,
+        hasDerivationParent: !!a.hasDerivationParent,
+        requiredBySteps: asList(a.requiredBySteps).map((sid) => ({ id: sid, title: stepTitleById.get(sid) || sid })),
+        attributedTo: resolveAgent(attributedId),
+        producingAgentType: a.producingAgentType || null,
+      };
+    })
+    .sort((x, y) => (x.producedByStepPosition ?? 99) - (y.producedByStepPosition ?? 99));
+
+  // CQ8 — datasets the review consumes + the AI agent that processed each:
+  // Datasets.ConsumedBySteps gives the consuming step; that step's resolved
+  // filler IS the processing agent (already resolved in `steps`).
+  const datasets = (I.Datasets || []).map((d) => {
+    const consumerIds = asList(d.consumedBySteps);
+    const consumers = consumerIds.map((sid) => ({
+      id: sid,
+      title: stepTitleById.get(sid) || sid,
+      agent: stepAgentById.get(sid) || null,
+      roleCapability: stepCapabilityById.get(sid) || null,
+    }));
+    return {
+      id: d.datasetId,
+      title: d.title,
+      identifier: d.identifier || null,
+      consumedBySteps: consumers,
+    };
+  });
+
+  // The competency questions themselves — first-class rulebook rows. The
+  // scoreboard renders these (question, target field, expected answer); the LIVE
+  // answer is read from TargetTable.TargetField in the payload, never recomputed.
+  const competencyQuestions = (I.CompetencyQuestions || [])
+    .slice()
+    .filter((c) => c.isActive !== false)
+    .map((c) => ({
+      id: c.competencyQuestionId,
+      number: c.number,
+      displayName: c.displayName,
+      questionText: c.questionText,
+      targetTable: c.targetTable,
+      targetField: c.targetField,
+      answerKind: c.answerKind,
+      expectedAnswer: c.expectedAnswer,
+      explanation: c.explanation || null,
+      sortOrder: c.sortOrder ?? c.number,
+      // The scenario this card's "Simulate" button applies — the minimal raw-fact
+      // edit that moves THIS question's answer (isolated where one exists; for cq-2
+      // it also ripples to cq-3). FK to Scenarios; null = no simulate button.
+      simulateScenario: c.simulateScenario || null,
+      // Pass/fail is NOT decided in the app. Each CQ names a boolean column on the
+      // single Workflows row (SatisfiedField, e.g. "Cq6Satisfied") that the
+      // substrate computed from the model; read it straight off `wf`. The
+      // acceptance criterion lives entirely in the rulebook — no app heuristic, no
+      // hardcoded names (CQ6's "reaches the top" is the derived escalation rollup,
+      // not a /cto/ regex). camelCase the name the way the DAL keys its rows.
+      satisfiedField: c.satisfiedField || null,
+      satisfied: c.satisfiedField
+        ? !!wf[c.satisfiedField.charAt(0).toLowerCase() + c.satisfiedField.slice(1)]
+        : null,
+    }))
+    .sort((x, y) => (x.sortOrder ?? 99) - (y.sortOrder ?? 99));
 
   const roleName = (id: string): string => (roles.get(id)?.displayName) || id;
   const delegRaw = (reasoned.competency as Record<string, any>).delegation || {};
@@ -219,29 +324,34 @@ app.get("/api/story", wrap(async (req, res) => {
     };
   }
 
-  const verdictRow = (I.ComplianceVerdicts || [])[0] || {};
-  const verdict = {
-    workflowTitle: verdictRow.workflowTitle,
-    monthsSinceReview: verdictRow.monthsSinceReview,
-    isStale: !!verdictRow.isStale,
-    aiStepCount: verdictRow.aIStepCount,
-    hasAIExecutedStep: !!verdictRow.hasAIExecutedStep,
-    totalPlanMinutes: verdictRow.totalPlanMinutes,
-    timeBudgetMinutes: verdictRow.timeBudgetMinutes,
-    isOverTimeBudget: !!verdictRow.isOverTimeBudget,
-    hasConsistencyViolation: !!verdictRow.hasConsistencyViolation,
-    consistencyViolationCount: wf.countApprovalConsistencyViolations ?? 0,
-    isAtComplianceRisk: !!verdictRow.isAtComplianceRisk,
-    statement: verdictRow.verdict,
-  };
-
   const rolesList = (I.Roles || []).map((r) => ({
     id: r.roleId,
     name: r.displayName,
+    // The capability this role requires of its filler (raw Roles.HasCapability →
+    // AgentCapabilityConcepts). Used by the CQ8 fix picker to offer only steps
+    // whose role can actually process the dataset (the dataset-processing capability).
+    hasCapability: (r.hasCapability as string) || null,
     fillerType: r.fillerType,
     filledByHumanAgent: r.filledByHumanAgent || null,
     filledByAIAgent: r.filledByAIAgent || null,
     filledByAutomatedPipeline: r.filledByAutomatedPipeline || null,
+    // The escalation edge (raw) + the derived witness the org chart reads. Both
+    // are columns the substrate already populated; we only lift them through.
+    delegatesTo: r.delegatesTo || null,
+    fillsApprovalGate: Number(r.fillsApprovalGate ?? 0),
+    escalationViolation: !!r.escalationViolation,
+    // The raw FK that DECIDES every step's department: a role is ownedBy exactly
+    // one Department, and each step it owns inherits that. Editing this one fact
+    // re-fires CQ7. Lifted as the raw FK so the Dept lens can offer it as an edit.
+    ownedBy: r.ownedBy || null,
+  }));
+
+  // The Department class itself (schema:Organization) — what "Engineering" and
+  // "Legal" ARE, so the Dept lens can name them rather than show bare FK ids.
+  const departments = (I.Departments || []).map((d) => ({
+    id: d.departmentId,
+    title: d.title || d.displayName || d.departmentId,
+    displayName: d.displayName || null,
   }));
 
   const stepFacts = (I.WorkflowSteps || [])
@@ -273,6 +383,7 @@ app.get("/api/story", wrap(async (req, res) => {
     roles: rolesList.map((r) => ({ id: r.id, name: r.name })),
     steps: stepFacts.map((s) => ({ id: s.id, title: s.title, position: s.position })),
     datasets: (I.Datasets || []).map((d) => ({ id: d.datasetId, name: d.displayName || d.datasetId })),
+    departments: departments.map((d) => ({ id: d.id, name: d.title })),
   };
 
   res.json({
@@ -283,23 +394,32 @@ app.get("/api/story", wrap(async (req, res) => {
       status: wf.workflowStatus,
       countAISteps: wf.countAISteps,
       countHumanSteps: wf.countHumanSteps,
-      totalPlanMinutes: wf.countTotalPlanMinutes,
-      maxPlanMinutes: wf.maxPlanMinutes,
-      isOverTimeBudget: !!wf.isOverTimeBudget,
       modified: wf.modified,
       monthsSinceModified: wf.monthsSinceModified,
       stalenessThresholdMonths: wf.stalenessThresholdMonths,
       isStale: !!wf.isStale,
+      // CQ7 backing — the cross-department derivation and its two input counts.
+      involvesEngineeringAndLegal: !!wf.involvesEngineeringAndLegal,
+      countEngineeringOwnedSteps: wf.countEngineeringOwnedSteps ?? 0,
+      countLegalOwnedSteps: wf.countLegalOwnedSteps ?? 0,
     },
     team,
     steps,
     stepFacts,
     roles: rolesList,
+    departments,
     edges,
     options,
     delegation: deleg,
     closure: (reasoned.competency as Record<string, any>).precedence_closure,
-    verdict,
+    // The artifact-lineage closure — same {count,inferred,asserted,pairs} shape
+    // as `closure`, read from vw_workflow_artifacts_closure (prov:wasDerivedFrom
+    // closed transitively). Drives the artifact ChainRibbon's inferred overlay.
+    derivationClosure: (reasoned.competency as Record<string, any>).derivation_closure ?? null,
+    // CQ-backing projections (CQ4 artifacts, CQ8 datasets, the CQ suite itself).
+    artifacts,
+    datasets,
+    competencyQuestions,
     engine: reasoned.engine,
     reasoned_triples: reasoned.reasoned_triples,
   });
@@ -427,7 +547,20 @@ app.get("/api/export/xlsx", wrap(async (_req, res) => {
 }));
 
 // --- scenarios (DATA-DRIVEN from the rulebook Scenarios table) -------------
-interface ScenarioEdit { class: string; id?: string; match?: string; set?: Record<string, unknown>; }
+// An edit is one of: set raw fields on an existing row (set), delete a row by id
+// (delete), or insert/replace a row (add). delete/add exist because some
+// scenarios must change STRUCTURE, not just values — e.g. cq-1 drops an ordering
+// edge to shrink the precedence closure. (The reasoner settles cleanly on a row
+// add or delete, but NOT on a `set` that mangles a surviving edge's endpoint, so
+// structural scenarios must add/delete whole rows, never re-point an edge.)
+interface ScenarioEdit {
+  class: string;
+  id?: string;
+  match?: string;
+  set?: Record<string, unknown>;
+  delete?: boolean;
+  add?: Record<string, unknown>;
+}
 interface ScenarioRow {
   id: string; label: string; icon: string; explanation: string;
   isReset: boolean; sortOrder: number; edits: ScenarioEdit[];
@@ -472,15 +605,49 @@ function locateRow(db: RawDb, cls: string, spec: ScenarioEdit): Record<string, u
   return row;
 }
 
-function replayEdits(db: RawDb, edits: ScenarioEdit[]): void {
-  for (const e of edits) {
-    const row = locateRow(db, e.class, e);
-    for (const [k, v] of Object.entries(e.set || {})) {
-      if (COMPUTED_KEYS.has(k)) {
-        throw new Error(`scenario edit sets derived field '${k}' on ${e.class}; scenarios edit raw facts only`);
-      }
-      row[k] = v;
+function assertRawOnly(cls: string, fields: Record<string, unknown>): void {
+  for (const k of Object.keys(fields)) {
+    if (COMPUTED_KEYS.has(k)) {
+      throw new Error(`scenario edit sets derived field '${k}' on ${cls}; scenarios edit raw facts only`);
     }
+  }
+}
+
+function replayEdits(db: RawDb, edits: ScenarioEdit[]): void {
+  // Apply STRUCTURAL edits (delete/add) before value edits (set), independent of
+  // the order they appear in. This keeps reset robust: when one scenario deletes
+  // a row (cq-1's drop-final-edge removes prec-4-5) and reset both re-adds the
+  // row AND sets fields on it, the add must land before the set — otherwise the
+  // set hits a missing row and throws, aborting reset half-applied.
+  const structural = edits.filter((e) => e.delete || e.add);
+  const sets = edits.filter((e) => !e.delete && !e.add);
+
+  for (const e of structural) {
+    const rows = db[e.class];
+    if (!Array.isArray(rows)) throw new Error(`scenario references unknown class '${e.class}'`);
+    if (e.delete) {
+      // Remove the row by id. Idempotent (no-op if already absent) so a scenario
+      // can be re-applied and reset stays a safe restore.
+      if (!e.id) throw new Error(`scenario delete on '${e.class}' needs an id`);
+      const i = rows.findIndex((r) => Object.entries(r).some(([k, v]) => k.endsWith("Id") && v === e.id));
+      if (i >= 0) rows.splice(i, 1);
+    } else if (e.add) {
+      // Insert (or replace, by id) a whole raw row — reset uses this to restore a
+      // structurally-removed row. Idempotent: same id replaces in place.
+      assertRawOnly(e.class, e.add);
+      const idKey = Object.keys(e.add).find((k) => k.endsWith("Id"));
+      const id = idKey ? e.add[idKey] : undefined;
+      const i = id !== undefined ? rows.findIndex((r) => r[idKey!] === id) : -1;
+      if (i >= 0) rows[i] = { ...e.add };
+      else rows.push({ ...e.add });
+    }
+  }
+
+  for (const e of sets) {
+    // set: mutate raw fields on an existing row (the common case).
+    const row = locateRow(db, e.class, e);
+    assertRawOnly(e.class, e.set || {});
+    for (const [k, v] of Object.entries(e.set || {})) row[k] = v;
   }
 }
 
@@ -500,7 +667,27 @@ app.post("/api/scenario/:name", wrap(async (req, res) => {
     res.status(404).json({ error: `unknown scenario: ${req.params.name}` });
     return;
   }
-  const result = await applyMutation(dataOf(req), (db: RawDb) => replayEdits(db, s.edits));
+
+  // "Reset to baseline" (IsReset) restores the FULL rulebook baseline — it does
+  // NOT replay a hand-maintained edit list. The baseline IS the rulebook seed
+  // data (the SSoT), so reseeding every raw fact undoes ANY Simulate card —
+  // present or future — without anyone having to enumerate which fields each one
+  // touched. (A per-field reset list silently goes stale the moment a new card
+  // mutates a field nobody added to the list: that's how CQ7's ownedBy edit, and
+  // CQ4/CQ8, ended up unfixable.) seedStoreFromRulebook returns the same
+  // camelCase raw-store shape the engines persist, covering every table.
+  let mutate: (db: RawDb) => void;
+  if (s.isReset) {
+    const baseline = await seedStoreFromRulebook(RULEBOOK_PATH);
+    mutate = (db: RawDb) => {
+      for (const k of Object.keys(db)) delete db[k];
+      for (const [cls, rows] of Object.entries(baseline)) db[cls] = rows as RawDb[string];
+    };
+  } else {
+    mutate = (db: RawDb) => replayEdits(db, s.edits);
+  }
+
+  const result = await applyMutation(dataOf(req), mutate);
   res.json({ ok: true, scenario: req.params.name, ...result });
 }));
 

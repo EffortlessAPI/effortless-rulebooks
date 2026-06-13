@@ -14,7 +14,7 @@ import type { ConformanceResponse, ConformanceDiff } from "./types";
 // Routes:
 //   /                       → Login / sync station (the gate)
 //   /console        → redirect to /console/flow
-//   /console/:view          → the App console (view = flow|graph|closure)
+//   /console/:view          → the App console (view = flow|closure|org|dept)
 //   /dag/:table/:field      → the Explainer DAG full-screen derivation view
 //   *                       → redirect to /
 //

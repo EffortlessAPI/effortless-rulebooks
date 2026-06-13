@@ -180,6 +180,13 @@ effortless-ntwf:gateApproverHuman a owl:DatatypeProperty ;
     rdfs:comment "The human agent who approves at this gate, resolved through the two-hop chain gate → GateRole → Roles.FilledByHumanAgent. Answers CQ2 ('who is responsible for approving a production deployment') directly: the release-approval gate resolves to the Release Manager role, filled by Maria Gonzalez." .
     # calculated: lookup
 
+effortless-ntwf:hasHumanApprover a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ApprovalGates ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "HasHumanApprover" ;
+    rdfs:comment "TRUE iff this approval gate resolves to a human approver (its gate role is filled by a HumanAgent). Rolls up into Workflows.CountGatesWithoutHumanApprover, which CQ2's satisfaction reads." .
+    # calculated: calculated
+
 # === Class: ArtifactTypeConcepts ===
 effortless-ntwf:ArtifactTypeConcepts a owl:Class ;
     rdfs:label "ArtifactTypeConcepts" ;
@@ -340,6 +347,104 @@ effortless-ntwf:isBackwardCompatible a owl:DatatypeProperty ;
     rdfs:comment "TRUE iff systems on the prior version keep working against this release (ChangeKind is 'patch' or 'minor'). Patch and minor increments preserve backward compatibility; only major breaks it." .
     # calculated: calculated
 
+# === Class: CompetencyQuestions ===
+effortless-ntwf:CompetencyQuestions a owl:Class ;
+    rdfs:label "CompetencyQuestions" ;
+    rdfs:comment "The article's literal acceptance suite — the eight leadership/competency questions the NTWF worked example must answer (Talisman, Intentional Arrangement, CQ1-CQ8). First-class data, not hardcoded UI strings: each row names the question, the substrate-computed field that ANSWERS it (TargetTable/TargetField, for cross-substrate traceability and the explainer-DAG drilldown), the answer kind, and the asserted ExpectedAnswer used to grade pass/fail. The live answer is always READ from the named computed column — never recomputed — so the CQ scoreboard is a projection of the model like every other lens. This is the CMCC-native home for the competency questions: the article treats them as acceptance criteria traceable to the rulebook, so they live in the rulebook." .
+
+effortless-ntwf:competencyQuestionId a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:CompetencyQuestions ;
+    rdfs:range xsd:string ;
+    rdfs:label "CompetencyQuestionId" ;
+    rdfs:comment "Primary key. Stable slug for the competency question (cq-1 .. cq-8)." .
+
+effortless-ntwf:relativePath a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "RelativePath" ;
+    rdfs:comment "Stable, DAG-derived location for this CompetencyQuestion row. Root segment 'competency-questions' + the row's primary key. No leading slash so the Iri swap is a clean 1:1 substitution." .
+    # calculated: calculated
+
+effortless-ntwf:iri a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "Iri" ;
+    rdfs:comment "Opaque stable identifier (the dash-form of RelativePath). The OWL transpiler mints each individual's IRI from this value (erb:<Iri>), so identity is path-derived and globally unique." .
+    # calculated: calculated
+
+effortless-ntwf:name a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "Name" ;
+    rdfs:comment "Slug form of the DisplayName, for stable cross-reference. Mirrors the Name idiom used by the controlled-vocabulary tables." .
+    # calculated: calculated
+
+effortless-ntwf:number a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:CompetencyQuestions ;
+    rdfs:range xsd:string ;
+    rdfs:label "Number" ;
+    rdfs:comment "The canonical 1-8 ordering of the competency questions as listed in the article / README." .
+
+effortless-ntwf:displayName a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "DisplayName" ;
+    rdfs:comment "Short human label for the question (e.g. 'Steps and order')." .
+
+effortless-ntwf:questionText a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:CompetencyQuestions ;
+    rdfs:range xsd:string ;
+    rdfs:label "QuestionText" ;
+    rdfs:comment "The full competency question, verbatim from the article's acceptance suite." .
+
+effortless-ntwf:targetTable a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:CompetencyQuestions ;
+    rdfs:range xsd:string ;
+    rdfs:label "TargetTable" ;
+    rdfs:comment "The entity whose computed field answers this question. Together with TargetField it pins the answer to a real column in the substrate, so the scoreboard reads the answer (never recomputes it) and the explainer-DAG drilldown lands on the exact derivation." .
+
+effortless-ntwf:targetField a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:CompetencyQuestions ;
+    rdfs:range xsd:string ;
+    rdfs:label "TargetField" ;
+    rdfs:comment "The substrate-computed field on TargetTable that answers this question (calc / lookup / aggregation / closure). The CQ scoreboard wraps the live answer in a DagCell(TargetTable, TargetField) so a click opens its inference graph." .
+
+effortless-ntwf:answerKind a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:CompetencyQuestions ;
+    rdfs:range xsd:string ;
+    rdfs:label "AnswerKind" ;
+    rdfs:comment "'scalar' when the answer is a single value graded by equality with ExpectedAnswer; 'list' when the answer is a collection graded as answerable (non-empty / matches the asserted shape)." .
+
+effortless-ntwf:expectedAnswer a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:CompetencyQuestions ;
+    rdfs:range xsd:string ;
+    rdfs:label "ExpectedAnswer" ;
+    rdfs:comment "The asserted correct answer for the seed worked example. For scalar questions the live computed value must equal this to score a pass; for list questions this is the canonical summary the rendered collection is checked against. Authored here so pass/fail is (substrate-computed value) vs (rulebook-asserted expectation) — a real conformance check, not UI logic." .
+
+effortless-ntwf:satisfiedField a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:CompetencyQuestions ;
+    rdfs:range xsd:string ;
+    rdfs:label "SatisfiedField" ;
+    rdfs:comment "Name of the boolean column on Workflows that computes whether this CQ is satisfied (e.g. Cq6Satisfied). The scoreboard reads pass/fail straight from this substrate-computed column — the acceptance criterion lives in the rulebook as a derived field, never as app-side logic. Mirrors TargetTable/TargetField for the answer." .
+
+effortless-ntwf:explanation a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "Explanation" ;
+    rdfs:comment "One-sentence note on how this question resolves through the model — the FK / formula chain a presenter can narrate." .
+
+effortless-ntwf:sortOrder a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "SortOrder" ;
+    rdfs:comment "Display order in the scoreboard. Mirrors Number for now; kept separate so the list can be re-sequenced without renumbering the canonical CQ ids." .
+
+effortless-ntwf:isActive a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:CompetencyQuestions ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "IsActive" ;
+    rdfs:comment "Whether this competency question is shown in the scoreboard. All eight are active in the worked example." .
+
+effortless-ntwf:simulateScenario a owl:ObjectProperty ;
+    rdfs:domain effortless-ntwf:CompetencyQuestions ;
+    rdfs:range effortless-ntwf:Scenarios ;
+    rdfs:label "SimulateScenario" ;
+    rdfs:comment "FK to the Scenario the card's 'Simulate' button applies to demonstrate this competency question live. Points at the minimal raw-fact edit that moves THIS question's answer in isolation where one exists; for cq-2 it points at 'ai-release-manager', which also ripples to cq-3 (the gate approver is itself a step executor, so the two answers cannot be perturbed independently). The full set of questions each scenario moves — trigger vs ripple — is enumerated in the ScenarioCQEffects junction; this is just the one the button fires. Inverse-ish of ScenarioCQEffects but kept as a direct FK so the UI has a single answer." .
+
 # === Class: ConformanceTests ===
 effortless-ntwf:ConformanceTests a owl:Class ;
     rdfs:label "ConformanceTests" .
@@ -467,6 +572,13 @@ effortless-ntwf:consumedBySteps a owl:ObjectProperty ;
     rdfs:range effortless-ntwf:WorkflowSteps ;
     rdfs:label "ConsumedBySteps" ;
     rdfs:comment "Back-reference to WorkflowSteps that consume this dataset. Inverse of WorkflowSteps.ConsumesDataset." .
+
+effortless-ntwf:isConsumed a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:Datasets ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "IsConsumed" ;
+    rdfs:comment "TRUE iff some workflow step consumes this dataset (ConsumedBySteps is set). Rolls up into Workflows.CountUnconsumedDatasets, which CQ8's satisfaction reads." .
+    # calculated: calculated
 
 # === Class: Departments ===
 effortless-ntwf:Departments a owl:Class ;
@@ -831,6 +943,78 @@ effortless-ntwf:fillerType a owl:DatatypeProperty ;
     rdfs:comment "Which disjoint agent class fills this role (HumanAgent / AIAgent / AutomatedPipeline), from whichever filledBy arm is set. Lets the delegation-chain query confirm CQ6's 'zero AI agents in the escalation chain'." .
     # calculated: calculated
 
+effortless-ntwf:fillsApprovalGate a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:Roles ;
+    rdfs:range xsd:integer ;
+    rdfs:label "FillsApprovalGate" ;
+    rdfs:comment "Number of this role's assigned WorkflowSteps that are approval gates (rollup over WorkflowSteps.IsApprovalGate). Greater than zero marks a role that owns a blocking decision checkpoint and therefore MUST have a complete delegatesTo escalation path — the precondition for EscalationViolation. Worked example: 1 for the Release Manager (who fills the Release Approval Gate), 0 for every other role." .
+    # calculated: aggregation
+
+effortless-ntwf:escalationViolation a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:Roles ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "EscalationViolation" ;
+    rdfs:comment "Detectable-error witness: TRUE iff this role owns an approval gate (FillsApprovalGate > 0) yet has no escalation target (DelegatesTo is blank). A gate can stall and must be escalable up the delegatesTo chain; a gate role with no one to escalate to is a broken escalation. A clean ABox yields FALSE for every role. This is the role-side analogue of WorkflowSteps.ApprovalConsistencyViolation, and the witness CQ6's escalation chain depends on." .
+    # calculated: calculated
+
+# === Class: ScenarioCQEffects ===
+effortless-ntwf:ScenarioCQEffects a owl:Class ;
+    rdfs:label "ScenarioCQEffects" ;
+    rdfs:comment "Table: ScenarioCQEffects. Names the many-to-many between Scenarios and CompetencyQuestions as two 1:M foreign keys (Scenario, CompetencyQuestion) plus the detail of the relationship (EffectKind, Note). Each row asserts 'applying this scenario moves this competency question's live answer'. 'trigger' rows are the intended demonstration; 'ripple' rows record answers that move as an unavoidable consequence of the same raw edit (e.g. ai-release-manager moves cq-2 AND cq-3 because the gate approver is itself a step executor). The answers themselves are never stored here — they are read live from each substrate after the scenario applies." .
+
+effortless-ntwf:scenarioCQEffectId a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ScenarioCQEffects ;
+    rdfs:range xsd:string ;
+    rdfs:label "ScenarioCQEffectId" ;
+    rdfs:comment "Primary key. '<scenario>-<cq>' — names one (scenario moves this competency question) edge." .
+
+effortless-ntwf:relativePath a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "RelativePath" ;
+    rdfs:comment "DAG-derived location: 'scenario-cq-effects/' + the row's primary key." .
+    # calculated: calculated
+
+effortless-ntwf:iri a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "Iri" ;
+    rdfs:comment "Opaque stable identifier (dash-form of RelativePath)." .
+    # calculated: calculated
+
+effortless-ntwf:name a owl:DatatypeProperty ;
+    rdfs:range xsd:string ;
+    rdfs:label "Name" ;
+    rdfs:comment "Slug label, mirrors the primary key." .
+    # calculated: calculated
+
+effortless-ntwf:scenario a owl:ObjectProperty ;
+    rdfs:domain effortless-ntwf:ScenarioCQEffects ;
+    rdfs:range effortless-ntwf:Scenarios ;
+    rdfs:label "Scenario" ;
+    rdfs:comment "FK to the Scenario whose raw-fact edits cause this effect. The 'many effects belong to one scenario' side: a single scenario can move several competency questions." .
+
+effortless-ntwf:competencyQuestion a owl:ObjectProperty ;
+    rdfs:domain effortless-ntwf:ScenarioCQEffects ;
+    rdfs:range effortless-ntwf:CompetencyQuestions ;
+    rdfs:label "CompetencyQuestion" ;
+    rdfs:comment "FK to the CompetencyQuestion whose live answer this scenario moves. The 'many effects belong to one question' side: a question can be exercised by several scenarios." .
+
+effortless-ntwf:effectKind a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ScenarioCQEffects ;
+    rdfs:range xsd:string ;
+    rdfs:label "EffectKind" ;
+    rdfs:comment "'trigger' = this scenario was authored to move this question (the point of the demo). 'ripple' = the question also moves as an unavoidable side effect of the same raw edit. The ripple rows are the pedagogical payload: they show answers that are structurally coupled and cannot be perturbed independently." .
+
+effortless-ntwf:note a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:ScenarioCQEffects ;
+    rdfs:range xsd:string ;
+    rdfs:label "Note" ;
+    rdfs:comment "One-line, human-readable account of how this scenario moves this question's answer (qualitative — the actual value is read live from the substrate, never stored here)." .
+
+effortless-ntwf:sortOrder a owl:DatatypeProperty ;
+    rdfs:range xsd:integer ;
+    rdfs:label "SortOrder" ;
+    rdfs:comment "Display order." .
+
 # === Class: Scenarios ===
 effortless-ntwf:Scenarios a owl:Class ;
     rdfs:label "Scenarios" .
@@ -1118,6 +1302,10 @@ effortless-ntwf:hasProducingWorkflow a owl:DatatypeProperty ;
     rdfs:comment "TRUE iff this artifact resolves to a producing workflow (ProducedByWorkflow is set). Lets the AIAgents blast-radius rollup (CountImpactedWorkflows) count only artifacts that reach a workflow, since COUNTIFS needs a boolean criterion column." .
     # calculated: calculated
 
+# effortless-ntwf:derivationClosure is the transitive closure of effortless-ntwf:derivedFromArtifact
+effortless-ntwf:derivedFromArtifact a owl:ObjectProperty , owl:TransitiveProperty ;
+    rdfs:label "Derivation" .
+
 # === Class: WorkflowStatusConcepts ===
 effortless-ntwf:WorkflowStatusConcepts a owl:Class ;
     rdfs:label "WorkflowStatusConcepts" ;
@@ -1202,11 +1390,32 @@ effortless-ntwf:workflow a owl:ObjectProperty ;
     rdfs:label "Workflow" ;
     rdfs:comment "Foreign key to the parent workflow. Represents the inverse of ntwf:hasStep, enabling navigation from step to its containing workflow (ntwf:isStepOf)." .
 
+effortless-ntwf:precedingStepCount a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:WorkflowSteps ;
+    rdfs:range xsd:integer ;
+    rdfs:label "PrecedingStepCount" ;
+    rdfs:comment "Number of steps that TRANSITIVELY precede this step in the ntwf:precedesStep ordering — a rollup over the closure view vw_step_precedence_closure counting rows whose to_id is this step (i.e. this step's ancestors). On the linear Production Deployment chain: 0,1,2,3,4. Derived purely from the asserted StepPrecedence edges via their transitive closure; nothing is hand-entered. SequencePosition is this + 1." .
+    # calculated: aggregation
+
+effortless-ntwf:inferredSequencePosition a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:WorkflowSteps ;
+    rdfs:range xsd:integer ;
+    rdfs:label "InferredSequencePosition" ;
+    rdfs:comment "The step's ordinal position INFERRED purely from the StepPrecedence edges: 1 + PrecedingStepCount (one plus the number of steps that transitively precede it in vw_step_precedence_closure). On the linear Production Deployment chain: 1,2,3,4,5 — no integer is typed; it is a projection of the asserted ordering edges. This is the DEFAULT position; SequencePositionOverride can pin a different value where the inference is ambiguous (e.g. a branch produces ties). Maps to ntwf:inferredSequencePosition (an effortless extension of the article's ordering)." .
+    # calculated: calculated
+
+effortless-ntwf:sequencePositionOverride a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:WorkflowSteps ;
+    rdfs:range xsd:integer ;
+    rdfs:label "SequencePositionOverride" ;
+    rdfs:comment "OPTIONAL hand-asserted ordinal position — the article's pure ntwf:sequencePosition functional datatype property, preserved as an override slot. NULL on the linear Production Deployment chain (the inference is unambiguous, so nothing is pinned). When set, it wins over InferredSequencePosition in the resolved SequencePosition — this is how a modeler recovers the owl:FunctionalProperty 'exactly one distinct position per step' guarantee on a partial order / branch where the inferred rank would tie. Maps to ntwf:sequencePosition (the article's asserted functional property)." .
+
 effortless-ntwf:sequencePosition a owl:DatatypeProperty ;
     rdfs:domain effortless-ntwf:WorkflowSteps ;
     rdfs:range xsd:integer ;
     rdfs:label "SequencePosition" ;
-    rdfs:comment "Integer ordinal position of the step within its workflow. Maps to ntwf:sequencePosition, declared as owl:FunctionalProperty (each step has exactly one position). Enables positional queries. Note: this is a display/positional convenience — the authoritative ordering lives in the StepPrecedence edges." .
+    rdfs:comment "The effective ordinal position used everywhere (views, UI, competency questions): the hand-asserted SequencePositionOverride when present, otherwise the edge-derived InferredSequencePosition. IF(SequencePositionOverride <> \"\", SequencePositionOverride, InferredSequencePosition). This is the honest resolution of the two ways order can be stated: the inference is the default computed from the SSoT (the StepPrecedence edges), and an explicit override only overrides — never a silent guess. On the Production Deployment chain all overrides are null, so this equals InferredSequencePosition = 1,2,3,4,5. Maps to ntwf:sequencePosition for consumers." .
+    # calculated: calculated
 
 effortless-ntwf:assignedRole a owl:ObjectProperty ;
     rdfs:domain effortless-ntwf:WorkflowSteps ;
@@ -1302,6 +1511,13 @@ effortless-ntwf:isExecutedByHuman a owl:DatatypeProperty ;
     rdfs:range xsd:boolean ;
     rdfs:label "IsExecutedByHuman" ;
     rdfs:comment "TRUE when this step's assigned role is filled by a HumanAgent. Feeds CQ3's human-vs-AI step split." .
+    # calculated: calculated
+
+effortless-ntwf:isApprovalGate a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:WorkflowSteps ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "IsApprovalGate" ;
+    rdfs:comment "TRUE when this step is specialized by an ApprovalGate subtype row (its ApprovalGate back-reference is set). An approval gate carries escalationThresholdHours and, when it stalls, activates the gate role's delegatesTo escalation chain. Rolls up into Roles.FillsApprovalGate, which marks the role that must have a complete escalation path (CQ6)." .
     # calculated: calculated
 
 effortless-ntwf:approvalConsistencyViolation a owl:DatatypeProperty ;
@@ -1554,15 +1770,106 @@ effortless-ntwf:countComplianceAuditChanges a owl:DatatypeProperty ;
     rdfs:comment "Number of filledBy assignment periods that took a previously AI-executed binding and reassigned it to a human (rollup over RoleAssignments.RequiresComplianceAudit = TRUE). NTWF governance treats this as a data operation with compliance implications: changing the agent type of a step from ntwf:AIAgent to ntwf:HumanAgent. Each such row must carry when (ValidFrom) and why (Reason). NOTE: single-workflow scoping as above." .
     # calculated: aggregation
 
+effortless-ntwf:countApprovalGateSteps a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:Workflows ;
+    rdfs:range xsd:integer ;
+    rdfs:label "CountApprovalGateSteps" ;
+    rdfs:comment "Number of this workflow's steps that are approval gates. >0 means the workflow has a blocking approval checkpoint; used by Cq2Satisfied to require that the gate exists before asking whether it has a human approver." .
+    # calculated: aggregation
+
+effortless-ntwf:countGatesWithoutHumanApprover a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:Workflows ;
+    rdfs:range xsd:integer ;
+    rdfs:label "CountGatesWithoutHumanApprover" ;
+    rdfs:comment "Number of approval gates with no resolved human approver (gate role not filled by a HumanAgent). Single-workflow model, so this global count is wholly this workflow's. Drives Cq2Satisfied (= a gate exists AND none lack a human approver)." .
+    # calculated: aggregation
+
+effortless-ntwf:countWorkflowArtifacts a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:Workflows ;
+    rdfs:range xsd:integer ;
+    rdfs:label "CountWorkflowArtifacts" ;
+    rdfs:comment "Total artifacts produced by this workflow. With CountDerivationLinks (artifacts that have a wasDerivedFrom parent) this lets Cq4Satisfied check the provenance chain is intact: every artifact but the single origin has a parent." .
+    # calculated: aggregation
+
+effortless-ntwf:countRolesWithEscalationViolation a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:Workflows ;
+    rdfs:range xsd:integer ;
+    rdfs:label "CountRolesWithEscalationViolation" ;
+    rdfs:comment "Number of roles that own an approval gate yet escalate to no one (Roles.EscalationViolation). Single-workflow model, so this global count applies to this workflow. Drives Cq6Satisfied (=0): the model's own native escalation-completeness invariant, replacing any hardcoded 'must reach the CTO' check." .
+    # calculated: aggregation
+
+effortless-ntwf:countUnconsumedDatasets a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:Workflows ;
+    rdfs:range xsd:integer ;
+    rdfs:label "CountUnconsumedDatasets" ;
+    rdfs:comment "Number of datasets not consumed by any step (Datasets.IsConsumed = FALSE). Single-workflow model, so this global count applies to this workflow. Drives Cq8Satisfied (=0)." .
+    # calculated: aggregation
+
+effortless-ntwf:cq1Satisfied a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:Workflows ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "Cq1Satisfied" ;
+    rdfs:comment "CQ1 satisfied: the step-ordering closure is a TOTAL order — its pair count equals n*(n-1)/2 for n steps, so every pair of steps is comparable and 'the order' is well-defined. Purely structural; no asserted literal." .
+    # calculated: calculated
+
+effortless-ntwf:cq2Satisfied a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:Workflows ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "Cq2Satisfied" ;
+    rdfs:comment "CQ2 satisfied: the workflow has an approval gate AND every gate resolves to a human approver. Derived from the gate->role->filler chain; no hardcoded approver name." .
+    # calculated: calculated
+
+effortless-ntwf:cq3Satisfied a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:Workflows ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "Cq3Satisfied" ;
+    rdfs:comment "CQ3 satisfied: the AI-vs-human assignment is consistent — no step that requires a human decision is executed by a non-human (no ApprovalConsistencyViolation). Derived from the model's own consistency invariant." .
+    # calculated: calculated
+
+effortless-ntwf:cq4Satisfied a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:Workflows ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "Cq4Satisfied" ;
+    rdfs:comment "CQ4 satisfied: the wasDerivedFrom provenance chain is intact — every artifact but the single origin has a derivation parent. Structural; breaks the instant any derivation edge is cut." .
+    # calculated: calculated
+
+effortless-ntwf:cq5Satisfied a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:Workflows ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "Cq5Satisfied" ;
+    rdfs:comment "CQ5 satisfied: the workflow's compliance docs are within the review policy (not stale). Reads the existing IsStale verdict; flips when the review age passes StalenessThresholdMonths." .
+    # calculated: calculated
+
+effortless-ntwf:cq6Satisfied a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:Workflows ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "Cq6Satisfied" ;
+    rdfs:comment "CQ6 satisfied: no gate-owning role escalates to nobody — every approval gate has a complete escalation path. Uses the model's native EscalationViolation invariant; 'the top' is the delegation apex, derived, not a hardcoded CTO name." .
+    # calculated: calculated
+
+effortless-ntwf:cq7Satisfied a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:Workflows ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "Cq7Satisfied" ;
+    rdfs:comment "CQ7 satisfied: the workflow involves BOTH Engineering-owned and Legal-owned steps. Reads the existing InvolvesEngineeringAndLegal boolean." .
+    # calculated: calculated
+
+effortless-ntwf:cq8Satisfied a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:Workflows ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "Cq8Satisfied" ;
+    rdfs:comment "CQ8 satisfied: every dataset the workflow declares is actually consumed by a step. Flips when a dataset is detached." .
+    # calculated: calculated
+
 # === Inverse object-property pairs (reverse direction inferred) ===
 effortless-ntwf:attributedArtifacts owl:inverseOf effortless-ntwf:attributedToAIAgent .
 effortless-ntwf:workflowStep owl:inverseOf effortless-ntwf:approvalGate .
 effortless-ntwf:approvedBy owl:inverseOf effortless-ntwf:approvedChanges .
 effortless-ntwf:consumedBySteps owl:inverseOf effortless-ntwf:consumesDataset .
 effortless-ntwf:delegatesTo owl:inverseOf effortless-ntwf:fromDelegatesTo .
-effortless-ntwf:fromStep owl:inverseOf effortless-ntwf:precededBy .
+effortless-ntwf:fromStep owl:inverseOf effortless-ntwf:precedes .
 effortless-ntwf:toStep owl:inverseOf effortless-ntwf:precededBy .
-effortless-ntwf:producedByStep owl:inverseOf effortless-ntwf:requiresArtifacts .
+effortless-ntwf:producedByStep owl:inverseOf effortless-ntwf:producesArtifacts .
 effortless-ntwf:requiredBySteps owl:inverseOf effortless-ntwf:requiresArtifacts .
 
 # === Disjoint class groups (mutually-exclusive FK targets) ===

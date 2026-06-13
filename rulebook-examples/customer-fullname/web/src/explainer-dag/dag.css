@@ -160,6 +160,27 @@
   pointer-events: auto;
 }
 
+/* Portaled variant: rendered into <body> and positioned `fixed` off the trigger
+   glyph's measured rect (see DagHoverCard). This is what stops ANY overflow:hidden
+   / overflow:auto ancestor (a flow track, a table, a bar) from clipping the card —
+   z-index alone can't escape an overflow clip, only leaving that stacking/clipping
+   context can. The inline style supplies left/top (already clamped inside all four
+   viewport edges) and a --dag-card-maxh budget for the card to cap its height to. */
+.dag-hovercard-shell-fixed {
+  position: fixed;
+  top: auto;
+  right: auto;
+  z-index: 1000;
+}
+/* The visible card caps to the space the JS measured (--dag-card-maxh, minus the
+   SAFETY ring) and scrolls internally — so even a tall card placed near the top
+   or bottom edge stays fully on-screen instead of running off it. */
+.dag-hovercard-shell-fixed .dag-hovercard {
+  max-height: calc(var(--dag-card-maxh, 80vh) - 30px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
 .dag-hovercard {
   display: block;
   width: 360px;

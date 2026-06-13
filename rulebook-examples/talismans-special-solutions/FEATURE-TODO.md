@@ -5,7 +5,7 @@ that the rulebook **already computes** but the **Release Console** does not yet
 *demonstrate*. The job is never "compute it" (Postgres/OWL already did — read the view).
 The job is "give the user a control they can flip and watch the substrate's answer change."
 
-## The UI idiom these must fit
+## The UI idiom these must fit 
 
 The Console (`app/frontend/src/App.tsx`) is already a **toggle machine**:
 

@@ -537,6 +537,250 @@ export const rulespeakFields: Record<string, RuleSpeakFieldRule> = {
     ],
     "structure": null
   },
+  "Workflows.CountApprovalGateSteps": {
+    "table": "Workflows",
+    "field": "CountApprovalGateSteps",
+    "kind": "rollup",
+    "rule": "A workflow\u0027s count approval gate steps is the number of the workflow\u0027s workflow steps that are approval gates.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "WorkflowSteps",
+        "field": "Workflow",
+        "label": "workflow"
+      },
+      {
+        "table": "Workflows",
+        "field": "WorkflowId",
+        "label": "workflow ID"
+      },
+      {
+        "table": "WorkflowSteps",
+        "field": "IsApprovalGate",
+        "label": "is approval gate"
+      }
+    ],
+    "structure": null
+  },
+  "Workflows.CountGatesWithoutHumanApprover": {
+    "table": "Workflows",
+    "field": "CountGatesWithoutHumanApprover",
+    "kind": "rollup",
+    "rule": "A workflow\u0027s count gates without human approver is the number of approval gates related to the workflow.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "ApprovalGates",
+        "field": "HasHumanApprover",
+        "label": "has human approver"
+      }
+    ],
+    "structure": null
+  },
+  "Workflows.CountWorkflowArtifacts": {
+    "table": "Workflows",
+    "field": "CountWorkflowArtifacts",
+    "kind": "rollup",
+    "rule": "A workflow\u0027s count workflow artifacts is the number of workflow artifacts related to the workflow.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "WorkflowArtifacts",
+        "field": "ProducedByWorkflow",
+        "label": "produced by workflow"
+      },
+      {
+        "table": "Workflows",
+        "field": "WorkflowId",
+        "label": "workflow ID"
+      }
+    ],
+    "structure": null
+  },
+  "Workflows.CountRolesWithEscalationViolation": {
+    "table": "Workflows",
+    "field": "CountRolesWithEscalationViolation",
+    "kind": "rollup",
+    "rule": "A workflow\u0027s count roles with escalation violation is the number of roles related to the workflow.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "Roles",
+        "field": "EscalationViolation",
+        "label": "escalation violation"
+      }
+    ],
+    "structure": null
+  },
+  "Workflows.CountUnconsumedDatasets": {
+    "table": "Workflows",
+    "field": "CountUnconsumedDatasets",
+    "kind": "rollup",
+    "rule": "A workflow\u0027s count unconsumed datasets is the number of datasets related to the workflow.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "Datasets",
+        "field": "IsConsumed",
+        "label": "is consumed"
+      }
+    ],
+    "structure": null
+  },
+  "Workflows.Cq1Satisfied": {
+    "table": "Workflows",
+    "field": "Cq1Satisfied",
+    "kind": "formula",
+    "rule": "A workflow is flagged cq1 satisfied if the count of precedence closure pairs is the count of non proposed steps times the count of non proposed steps minus 1 divided by 2.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "Workflows",
+        "field": "CountOfPrecedenceClosurePairs",
+        "label": "count of precedence closure pairs"
+      },
+      {
+        "table": "Workflows",
+        "field": "CountOfNonProposedSteps",
+        "label": "count of non proposed steps"
+      }
+    ],
+    "structure": null
+  },
+  "Workflows.Cq2Satisfied": {
+    "table": "Workflows",
+    "field": "Cq2Satisfied",
+    "kind": "formula",
+    "rule": "A workflow is flagged cq2 satisfied if all of the following hold: the count approval gate steps is greater than 0 and the count gates without human approver is 0.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "Workflows",
+        "field": "CountApprovalGateSteps",
+        "label": "count approval gate steps"
+      },
+      {
+        "table": "Workflows",
+        "field": "CountGatesWithoutHumanApprover",
+        "label": "count gates without human approver"
+      }
+    ],
+    "structure": {
+      "kind": "priority",
+      "headline": "A workflow is flagged cq2 satisfied if all of the following:",
+      "cases": [],
+      "children": [
+        {
+          "kind": "all",
+          "children": [
+            {
+              "kind": "leaf",
+              "text": "the count approval gate steps is greater than 0"
+            },
+            {
+              "kind": "leaf",
+              "text": "the count gates without human approver is 0"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "Workflows.Cq3Satisfied": {
+    "table": "Workflows",
+    "field": "Cq3Satisfied",
+    "kind": "formula",
+    "rule": "A workflow is flagged cq3 satisfied if it is not the case that the has consistency violation flag is set.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "Workflows",
+        "field": "HasConsistencyViolation",
+        "label": "has consistency violation"
+      }
+    ],
+    "structure": null
+  },
+  "Workflows.Cq4Satisfied": {
+    "table": "Workflows",
+    "field": "Cq4Satisfied",
+    "kind": "formula",
+    "rule": "A workflow is flagged cq4 satisfied if the count derivation links is the count workflow artifacts minus 1.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "Workflows",
+        "field": "CountDerivationLinks",
+        "label": "count derivation links"
+      },
+      {
+        "table": "Workflows",
+        "field": "CountWorkflowArtifacts",
+        "label": "count workflow artifacts"
+      }
+    ],
+    "structure": null
+  },
+  "Workflows.Cq5Satisfied": {
+    "table": "Workflows",
+    "field": "Cq5Satisfied",
+    "kind": "formula",
+    "rule": "A workflow is flagged cq5 satisfied if it is not the case that the is stale flag is set.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "Workflows",
+        "field": "IsStale",
+        "label": "is stale"
+      }
+    ],
+    "structure": null
+  },
+  "Workflows.Cq6Satisfied": {
+    "table": "Workflows",
+    "field": "Cq6Satisfied",
+    "kind": "formula",
+    "rule": "A workflow is flagged cq6 satisfied if the count roles with escalation violation is 0.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "Workflows",
+        "field": "CountRolesWithEscalationViolation",
+        "label": "count roles with escalation violation"
+      }
+    ],
+    "structure": null
+  },
+  "Workflows.Cq7Satisfied": {
+    "table": "Workflows",
+    "field": "Cq7Satisfied",
+    "kind": "formula",
+    "rule": "A workflow is flagged cq7 satisfied only if the workflow is considered to involve engineering and legal.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "Workflows",
+        "field": "InvolvesEngineeringAndLegal",
+        "label": "involves engineering and legal"
+      }
+    ],
+    "structure": null
+  },
+  "Workflows.Cq8Satisfied": {
+    "table": "Workflows",
+    "field": "Cq8Satisfied",
+    "kind": "formula",
+    "rule": "A workflow is flagged cq8 satisfied if the count unconsumed datasets is 0.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "Workflows",
+        "field": "CountUnconsumedDatasets",
+        "label": "count unconsumed datasets"
+      }
+    ],
+    "structure": null
+  },
   "WorkflowSteps.ParentPath": {
     "table": "WorkflowSteps",
     "field": "ParentPath",
@@ -611,6 +855,78 @@ export const rulespeakFields: Record<string, RuleSpeakFieldRule> = {
       }
     ],
     "structure": null
+  },
+  "WorkflowSteps.PrecedingStepCount": {
+    "table": "WorkflowSteps",
+    "field": "PrecedingStepCount",
+    "kind": "rollup",
+    "rule": "A workflow step\u0027s preceding step count is the number of vw step precedence closure related to the workflow step.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "vw_step_precedence_closure",
+        "field": "ToId",
+        "label": "to ID"
+      },
+      {
+        "table": "WorkflowSteps",
+        "field": "WorkflowStepId",
+        "label": "workflow step ID"
+      }
+    ],
+    "structure": null
+  },
+  "WorkflowSteps.InferredSequencePosition": {
+    "table": "WorkflowSteps",
+    "field": "InferredSequencePosition",
+    "kind": "formula",
+    "rule": "A workflow step\u0027s inferred sequence position is computed as the preceding step count plus 1.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "WorkflowSteps",
+        "field": "PrecedingStepCount",
+        "label": "preceding step count"
+      }
+    ],
+    "structure": null
+  },
+  "WorkflowSteps.SequencePosition": {
+    "table": "WorkflowSteps",
+    "field": "SequencePosition",
+    "kind": "formula",
+    "rule": "The workflow step\u0027s sequence position is determined by the following priority:\n1. the sequence position override, if the sequence position override has a value;\n2. otherwise the inferred sequence position.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "WorkflowSteps",
+        "field": "SequencePositionOverride",
+        "label": "sequence position override"
+      },
+      {
+        "table": "WorkflowSteps",
+        "field": "InferredSequencePosition",
+        "label": "inferred sequence position"
+      }
+    ],
+    "structure": {
+      "kind": "priority",
+      "headline": "The workflow step\u0027s sequence position is determined by the following priority:",
+      "cases": [
+        {
+          "value": "the sequence position override",
+          "when": {
+            "kind": "leaf",
+            "text": "the sequence position override has a value"
+          }
+        },
+        {
+          "value": "the inferred sequence position",
+          "when": null
+        }
+      ],
+      "children": null
+    }
   },
   "WorkflowSteps.ExecutingHumanAgent": {
     "table": "WorkflowSteps",
@@ -769,6 +1085,21 @@ export const rulespeakFields: Record<string, RuleSpeakFieldRule> = {
         "table": "WorkflowSteps",
         "field": "ExecutingHumanAgent",
         "label": "executing human agent"
+      }
+    ],
+    "structure": null
+  },
+  "WorkflowSteps.IsApprovalGate": {
+    "table": "WorkflowSteps",
+    "field": "IsApprovalGate",
+    "kind": "formula",
+    "rule": "A workflow step is considered an approval gate if the approval gate has a value.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "WorkflowSteps",
+        "field": "ApprovalGate",
+        "label": "approval gate"
       }
     ],
     "structure": null
@@ -1029,6 +1360,21 @@ export const rulespeakFields: Record<string, RuleSpeakFieldRule> = {
     ],
     "structure": null
   },
+  "ApprovalGates.HasHumanApprover": {
+    "table": "ApprovalGates",
+    "field": "HasHumanApprover",
+    "kind": "formula",
+    "rule": "An approval gate is considered to have a human approver if the gate approver human has a value.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "ApprovalGates",
+        "field": "GateApproverHuman",
+        "label": "gate approver human"
+      }
+    ],
+    "structure": null
+  },
   "StepPrecedence.ParentPath": {
     "table": "StepPrecedence",
     "field": "ParentPath",
@@ -1248,6 +1594,70 @@ export const rulespeakFields: Record<string, RuleSpeakFieldRule> = {
         }
       ],
       "children": null
+    }
+  },
+  "Roles.FillsApprovalGate": {
+    "table": "Roles",
+    "field": "FillsApprovalGate",
+    "kind": "rollup",
+    "rule": "A role\u0027s fills approval gate is the number of the role\u0027s workflow steps that are approval gates.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "WorkflowSteps",
+        "field": "AssignedRole",
+        "label": "assigned role"
+      },
+      {
+        "table": "Roles",
+        "field": "RoleId",
+        "label": "role ID"
+      },
+      {
+        "table": "WorkflowSteps",
+        "field": "IsApprovalGate",
+        "label": "is approval gate"
+      }
+    ],
+    "structure": null
+  },
+  "Roles.EscalationViolation": {
+    "table": "Roles",
+    "field": "EscalationViolation",
+    "kind": "formula",
+    "rule": "A role is flagged escalation violation if all of the following hold: the fills approval gate is greater than 0 and the delegates to is blank.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "Roles",
+        "field": "FillsApprovalGate",
+        "label": "fills approval gate"
+      },
+      {
+        "table": "Roles",
+        "field": "DelegatesTo",
+        "label": "delegates to"
+      }
+    ],
+    "structure": {
+      "kind": "priority",
+      "headline": "A role is flagged escalation violation if all of the following:",
+      "cases": [],
+      "children": [
+        {
+          "kind": "all",
+          "children": [
+            {
+              "kind": "leaf",
+              "text": "the fills approval gate is greater than 0"
+            },
+            {
+              "kind": "leaf",
+              "text": "the delegates to is blank"
+            }
+          ]
+        }
+      ]
     }
   },
   "RoleAssignments.ParentPath": {
@@ -1836,6 +2246,21 @@ export const rulespeakFields: Record<string, RuleSpeakFieldRule> = {
     ],
     "structure": null
   },
+  "Datasets.IsConsumed": {
+    "table": "Datasets",
+    "field": "IsConsumed",
+    "kind": "formula",
+    "rule": "A dataset is considered consumed if the consumed by steps has a value.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "Datasets",
+        "field": "ConsumedBySteps",
+        "label": "consumed by steps"
+      }
+    ],
+    "structure": null
+  },
   "WorkflowArtifacts.ParentPath": {
     "table": "WorkflowArtifacts",
     "field": "ParentPath",
@@ -2261,6 +2686,96 @@ export const rulespeakFields: Record<string, RuleSpeakFieldRule> = {
     ],
     "structure": null
   },
+  "CompetencyQuestions.RelativePath": {
+    "table": "CompetencyQuestions",
+    "field": "RelativePath",
+    "kind": "formula",
+    "rule": "A competency question\u0027s relative path is computed as the literal \u201Ccompetency-questions/\u201D, followed by the competency question ID.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "CompetencyQuestions",
+        "field": "CompetencyQuestionId",
+        "label": "competency question ID"
+      }
+    ],
+    "structure": null
+  },
+  "CompetencyQuestions.Iri": {
+    "table": "CompetencyQuestions",
+    "field": "Iri",
+    "kind": "formula",
+    "rule": "A competency question\u0027s iri is computed as the relative path with every a slash replaced by a hyphen.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "CompetencyQuestions",
+        "field": "RelativePath",
+        "label": "relative path"
+      }
+    ],
+    "structure": null
+  },
+  "CompetencyQuestions.Name": {
+    "table": "CompetencyQuestions",
+    "field": "Name",
+    "kind": "formula",
+    "rule": "A competency question\u0027s name is computed as the lower-cased display name with every a space replaced by a hyphen.",
+    "mechanical": true,
+    "refs": [
+      {
+        "table": "CompetencyQuestions",
+        "field": "DisplayName",
+        "label": "display name"
+      }
+    ],
+    "structure": null
+  },
+  "ScenarioCQEffects.RelativePath": {
+    "table": "ScenarioCQEffects",
+    "field": "RelativePath",
+    "kind": "formula",
+    "rule": "A scenario CQ effect\u0027s relative path is computed as the literal \u201Cscenario-cq-effects/\u201D, followed by the scenario CQ effect ID.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "ScenarioCQEffects",
+        "field": "ScenarioCQEffectId",
+        "label": "scenario CQ effect ID"
+      }
+    ],
+    "structure": null
+  },
+  "ScenarioCQEffects.Iri": {
+    "table": "ScenarioCQEffects",
+    "field": "Iri",
+    "kind": "formula",
+    "rule": "A scenario CQ effect\u0027s iri is computed as the relative path with every a slash replaced by a hyphen.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "ScenarioCQEffects",
+        "field": "RelativePath",
+        "label": "relative path"
+      }
+    ],
+    "structure": null
+  },
+  "ScenarioCQEffects.Name": {
+    "table": "ScenarioCQEffects",
+    "field": "Name",
+    "kind": "formula",
+    "rule": "A scenario CQ effect\u0027s name is computed as the lower-cased scenario CQ effect ID with every a space replaced by a hyphen.",
+    "mechanical": true,
+    "refs": [
+      {
+        "table": "ScenarioCQEffects",
+        "field": "ScenarioCQEffectId",
+        "label": "scenario CQ effect ID"
+      }
+    ],
+    "structure": null
+  },
   "ConformanceTests.RelativePath": {
     "table": "ConformanceTests",
     "field": "RelativePath",
@@ -2338,6 +2853,14 @@ export const rulespeakStructural: Record<string, string[]> = {
   ],
   "Scenarios": [
     "A scenario **must** have a label and an edits."
+  ],
+  "CompetencyQuestions": [
+    "A competency question **must** have a number, a display name, a question text, a target table, a target field, an answer kind, and an expected answer."
+  ],
+  "ScenarioCQEffects": [
+    "A scenario CQ effect **must** reference exactly one scenario.",
+    "A scenario CQ effect **must** reference exactly one competency question.",
+    "A scenario CQ effect **must** have an effect kind."
   ],
   "ConformanceTests": [
     "A conformance test **must** have a display name, a section, a test kind, and a sort order, and record whether it is enabled."

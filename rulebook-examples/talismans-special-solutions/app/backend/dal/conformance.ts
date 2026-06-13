@@ -107,6 +107,19 @@ function asCalendarDate(v: unknown): string | null {
   return `${m[1]}-${m[2]}-${m[3]}`;
 }
 
+// Normalize a boolean-ish scalar to 0/1. The two substrates legitimately spell
+// a truth value several ways — JSON true/false, the strings "true"/"false"/
+// "t"/"f", and 0/1 (and their string forms) — all the SAME boolean. The project
+// rule is "booleans are 0/1", so we map to a canonical 0/1 and let the
+// comparison agree on truth values regardless of how each engine encodes them.
+// A real boolean disagreement (true on one side, false on the other) still maps
+// to 1 vs 0 and is flagged. Returns 1, 0, or null when not boolean-ish.
+function asZeroOne(v: unknown): 0 | 1 | null {
+  if (v === true || v === 1 || v === "1" || v === "true" || v === "TRUE" || v === "t") return 1;
+  if (v === false || v === 0 || v === "0" || v === "false" || v === "FALSE" || v === "f") return 0;
+  return null;
+}
+
 // Split a relationship value that one engine returns as a comma-joined string
 // and the other as an array, into a sorted token set, for set comparison.
 function asTokenSet(v: unknown): string[] {
@@ -119,9 +132,16 @@ function asTokenSet(v: unknown): string[] {
 // Classify a single field disagreement. `ftype` is the rulebook field type
 // (raw / calculated / lookup / aggregation / relationship) so we can judge what
 // a difference MEANS, not just that bytes differ. Returns one of:
-//   equal          — identical, or the same answer in a different representation
-//   representation  — same content, different spelling (num/str, datetime format,
-//                     array vs comma-joined relationship) — benign
+//   equal          — identical, OR the same value in a non-meaningful encoding:
+//                     a boolean spelled true/false vs 0/1, a number vs its string
+//                     form (41 vs "41"), or a date/datetime as the same GMT
+//                     instant/day in two spellings. The substrates AGREE on the
+//                     answer, so these are not flagged.
+//   representation  — same relationship at different INFERENCE depths: OWL-RL
+//                     folds in inverse/transitive edges (delegatesTo's closure,
+//                     a reverse-FK rollup) so one engine's target set is a
+//                     superset of the other's. Meaningful to show (it is the
+//                     reasoner inferring more), not a disagreement.
 //   presence        — one engine populated a computed field the other left
 //                     null/absent (e.g. the reasoner doesn't surface iri on every
 //                     class; Postgres always computes it) — a coverage gap, not a
@@ -143,21 +163,32 @@ export function classify(a: unknown, b: unknown, ftype: string): Classification 
   const bBlank = b == null || b === "";
   if (aBlank && bBlank) return "equal";
 
-  // same content, different scalar spelling (41 vs "41", true vs "true")
+  // Booleans normalized to 0/1. true / "true" / 1 / "1" and false / "false" /
+  // 0 / "0" are the SAME truth value spelled differently by the two engines —
+  // not a meaningful difference. Same canonical 0/1 => equal; a genuine flip
+  // (1 vs 0) is still a real `value` disagreement.
+  const za = asZeroOne(a), zb = asZeroOne(b);
+  if (za != null && zb != null) return za === zb ? "equal" : "value";
+
+  // Same value, different scalar encoding (41 vs "41"): the two engines computed
+  // the SAME answer and just typed it differently — equal, not a flagged diff.
   const sa = a == null ? null : String(a);
   const sb = b == null ? null : String(b);
-  if (sa === sb) return "representation";
+  if (sa === sb) return "equal";
 
-  // datetimes: compare as instants
+  // Dates compared in GMT/UTC. The reasoner emits "2026-04-03 00:00:00-05:00",
+  // Postgres returns "2026-04-03T05:00:00.000Z" — the SAME instant in two
+  // spellings. Same UTC instant => equal; a real instant difference is a value
+  // diff.
   const ia = asInstant(a), ib = asInstant(b);
-  if (ia != null && ib != null) return ia === ib ? "representation" : "value";
+  if (ia != null && ib != null) return ia === ib ? "equal" : "value";
 
-  // date / datetime mix: a DATE column may be the bare day on one side and a
-  // midnight ISO datetime on the other. Compare by UTC calendar day — same day,
-  // two spellings, is a representation diff. (Only when BOTH parse as a date so
-  // we never misclassify a real string mismatch.)
+  // DATE column (no time): the bare day on one side, a midnight-ish ISO datetime
+  // on the other. Compare by UTC calendar day — same GMT day, two spellings, is
+  // not a meaningful difference. (Only when BOTH parse as a date, so a real
+  // string mismatch is never hidden.)
   const da = asCalendarDate(a), db = asCalendarDate(b);
-  if (da != null && db != null) return da === db ? "representation" : "value";
+  if (da != null && db != null) return da === db ? "equal" : "value";
 
   // relationship / back-reference fields. The two engines legitimately represent
   // the SAME relationship at different inference depths:

@@ -62,13 +62,13 @@ RETURNS TEXT AS $$
   SELECT (SELECT display_name FROM workflow_steps WHERE workflow_step_id = p_workflow_step_id);
 $$ LANGUAGE sql STABLE;
 
--- get_workflow_steps_sequence_position
--- Helper function: Get SequencePosition from WorkflowSteps by WorkflowStepId
+-- get_workflow_steps_sequence_position_override
+-- Helper function: Get SequencePositionOverride from WorkflowSteps by WorkflowStepId
 -- Used for join-free cross-table references in aggregations
 
-CREATE OR REPLACE FUNCTION get_workflow_steps_sequence_position(p_workflow_step_id TEXT)
+CREATE OR REPLACE FUNCTION get_workflow_steps_sequence_position_override(p_workflow_step_id TEXT)
 RETURNS INTEGER AS $$
-  SELECT (SELECT sequence_position FROM workflow_steps WHERE workflow_step_id = p_workflow_step_id);
+  SELECT (SELECT sequence_position_override FROM workflow_steps WHERE workflow_step_id = p_workflow_step_id);
 $$ LANGUAGE sql STABLE;
 
 -- get_workflow_steps_requires_human_approval
@@ -328,6 +328,136 @@ RETURNS INTEGER AS $$
   SELECT ((SELECT COUNT(*) FROM role_assignments WHERE calc_role_assignments_requires_compliance_audit(role_assignment_id) = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
+-- calc_workflows_count_approval_gate_steps
+-- Field: Workflows.CountApprovalGateSteps
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_workflows_count_approval_gate_steps(p_workflow_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM workflow_steps WHERE workflow = (SELECT NULLIF(workflow_id, '') FROM workflows WHERE workflow_id = p_workflow_id) AND calc_workflow_steps_is_approval_gate(workflow_step_id) = TRUE))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_workflows_count_gates_without_human_approver
+-- Field: Workflows.CountGatesWithoutHumanApprover
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_workflows_count_gates_without_human_approver(p_workflow_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM approval_gates WHERE calc_approval_gates_has_human_approver(approval_gate_id) = FALSE))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_workflows_count_workflow_artifacts
+-- Field: Workflows.CountWorkflowArtifacts
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_workflows_count_workflow_artifacts(p_workflow_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM workflow_artifacts WHERE calc_workflow_artifacts_produced_by_workflow(artifact_id) = (SELECT NULLIF(workflow_id, '') FROM workflows WHERE workflow_id = p_workflow_id)))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_workflows_count_roles_with_escalation_violation
+-- Field: Workflows.CountRolesWithEscalationViolation
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_workflows_count_roles_with_escalation_violation(p_workflow_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM roles WHERE calc_roles_escalation_violation(role_id) = TRUE))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_workflows_count_unconsumed_datasets
+-- Field: Workflows.CountUnconsumedDatasets
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_workflows_count_unconsumed_datasets(p_workflow_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM datasets WHERE calc_datasets_is_consumed(dataset_id) = FALSE))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_workflows_cq1_satisfied
+-- Field: Workflows.Cq1Satisfied
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_workflows_cq1_satisfied(p_workflow_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (calc_workflows_count_of_precedence_closure_pairs(p_workflow_id) = (COALESCE(CASE WHEN (calc_workflows_count_of_non_proposed_steps(p_workflow_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_workflows_count_of_non_proposed_steps(p_workflow_id))::numeric ELSE NULL END, 0) * COALESCE(CASE WHEN ((COALESCE(CASE WHEN ((COALESCE(CASE WHEN (calc_workflows_count_of_non_proposed_steps(p_workflow_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_workflows_count_of_non_proposed_steps(p_workflow_id))::numeric ELSE NULL END, 0) - COALESCE(1, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN (calc_workflows_count_of_non_proposed_steps(p_workflow_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_workflows_count_of_non_proposed_steps(p_workflow_id))::numeric ELSE NULL END, 0) - COALESCE(1, 0)))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(2, 0), 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN ((COALESCE(CASE WHEN (calc_workflows_count_of_non_proposed_steps(p_workflow_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_workflows_count_of_non_proposed_steps(p_workflow_id))::numeric ELSE NULL END, 0) - COALESCE(1, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN (calc_workflows_count_of_non_proposed_steps(p_workflow_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_workflows_count_of_non_proposed_steps(p_workflow_id))::numeric ELSE NULL END, 0) - COALESCE(1, 0)))::numeric ELSE NULL END, 0) / NULLIF(COALESCE(2, 0), 0)))::numeric ELSE NULL END, 0)))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_workflows_cq2_satisfied
+-- Field: Workflows.Cq2Satisfied
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_workflows_cq2_satisfied(p_workflow_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (((calc_workflows_count_approval_gate_steps(p_workflow_id))::NUMERIC > 0 AND (calc_workflows_count_gates_without_human_approver(p_workflow_id))::NUMERIC = 0));
+$$ LANGUAGE sql STABLE;
+
+-- calc_workflows_cq3_satisfied
+-- Field: Workflows.Cq3Satisfied
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_workflows_cq3_satisfied(p_workflow_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (NOT (calc_workflows_has_consistency_violation(p_workflow_id)))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_workflows_cq4_satisfied
+-- Field: Workflows.Cq4Satisfied
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_workflows_cq4_satisfied(p_workflow_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (calc_workflows_count_derivation_links(p_workflow_id) = (COALESCE(CASE WHEN (calc_workflows_count_workflow_artifacts(p_workflow_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_workflows_count_workflow_artifacts(p_workflow_id))::numeric ELSE NULL END, 0) - COALESCE(1, 0)))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_workflows_cq5_satisfied
+-- Field: Workflows.Cq5Satisfied
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_workflows_cq5_satisfied(p_workflow_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (NOT (calc_workflows_is_stale(p_workflow_id)))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_workflows_cq6_satisfied
+-- Field: Workflows.Cq6Satisfied
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_workflows_cq6_satisfied(p_workflow_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_workflows_count_roles_with_escalation_violation(p_workflow_id))::NUMERIC = 0)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_workflows_cq7_satisfied
+-- Field: Workflows.Cq7Satisfied
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_workflows_cq7_satisfied(p_workflow_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (calc_workflows_involves_engineering_and_legal(p_workflow_id))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_workflows_cq8_satisfied
+-- Field: Workflows.Cq8Satisfied
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_workflows_cq8_satisfied(p_workflow_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((calc_workflows_count_unconsumed_datasets(p_workflow_id))::NUMERIC = 0)::boolean;
+$$ LANGUAGE sql STABLE;
+
 -- calc_workflow_steps_parent_path
 -- Field: WorkflowSteps.ParentPath
 -- Type: lookup | DataType: string | Returns: TEXT
@@ -580,6 +710,36 @@ RETURNS TEXT AS $$
   SELECT (REPLACE(LOWER((SELECT NULLIF(display_name, '') FROM workflow_steps WHERE workflow_step_id = p_workflow_step_id)), ' ', '-'))::text;
 $$ LANGUAGE sql STABLE;
 
+-- calc_workflow_steps_preceding_step_count
+-- Field: WorkflowSteps.PrecedingStepCount
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_workflow_steps_preceding_step_count(p_workflow_step_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM vw_step_precedence_closure WHERE to_id = (SELECT NULLIF(workflow_step_id, '') FROM workflow_steps WHERE workflow_step_id = p_workflow_step_id)))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_workflow_steps_inferred_sequence_position
+-- Field: WorkflowSteps.InferredSequencePosition
+-- Type: calculated | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_workflow_steps_inferred_sequence_position(p_workflow_step_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((COALESCE(CASE WHEN (calc_workflow_steps_preceding_step_count(p_workflow_step_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_workflow_steps_preceding_step_count(p_workflow_step_id))::numeric ELSE NULL END, 0) + COALESCE(1, 0)))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_workflow_steps_sequence_position
+-- Field: WorkflowSteps.SequencePosition
+-- Type: calculated | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_workflow_steps_sequence_position(p_workflow_step_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (CASE WHEN (SELECT sequence_position_override FROM workflow_steps WHERE workflow_step_id = p_workflow_step_id) IS NOT NULL THEN ((SELECT sequence_position_override FROM workflow_steps WHERE workflow_step_id = p_workflow_step_id))::text ELSE (calc_workflow_steps_inferred_sequence_position(p_workflow_step_id))::text END)::integer;
+$$ LANGUAGE sql STABLE;
+
 -- calc_workflow_steps_executing_agent_type
 -- Field: WorkflowSteps.ExecutingAgentType
 -- Type: calculated | DataType: string | Returns: TEXT
@@ -608,6 +768,16 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_workflow_steps_is_executed_by_human(p_workflow_step_id TEXT)
 RETURNS BOOLEAN AS $$
   SELECT (NOT (((calc_workflow_steps_executing_human_agent(p_workflow_step_id)) IS NULL OR (calc_workflow_steps_executing_human_agent(p_workflow_step_id))::text = '')))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_workflow_steps_is_approval_gate
+-- Field: WorkflowSteps.IsApprovalGate
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_workflow_steps_is_approval_gate(p_workflow_step_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (NOT ((((SELECT NULLIF(approval_gate, '') FROM workflow_steps WHERE workflow_step_id = p_workflow_step_id)) IS NULL OR ((SELECT NULLIF(approval_gate, '') FROM workflow_steps WHERE workflow_step_id = p_workflow_step_id))::text = '')))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_workflow_steps_approval_consistency_violation
@@ -710,6 +880,16 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_approval_gates_name(p_approval_gate_id TEXT)
 RETURNS TEXT AS $$
   SELECT (REPLACE(LOWER((SELECT NULLIF(display_name, '') FROM approval_gates WHERE approval_gate_id = p_approval_gate_id)), ' ', '-'))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_approval_gates_has_human_approver
+-- Field: ApprovalGates.HasHumanApprover
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_approval_gates_has_human_approver(p_approval_gate_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (NOT (((calc_approval_gates_gate_approver_human(p_approval_gate_id)) IS NULL OR (calc_approval_gates_gate_approver_human(p_approval_gate_id))::text = '')))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_step_precedence_parent_path
@@ -998,6 +1178,26 @@ RETURNS TEXT AS $$
   SELECT (CASE WHEN NOT ((((SELECT NULLIF(filled_by_human_agent, '') FROM roles WHERE role_id = p_role_id)) IS NULL OR ((SELECT NULLIF(filled_by_human_agent, '') FROM roles WHERE role_id = p_role_id))::text = '')) THEN ('HumanAgent')::text ELSE (CASE WHEN NOT ((((SELECT NULLIF(filled_by_ai_agent, '') FROM roles WHERE role_id = p_role_id)) IS NULL OR ((SELECT NULLIF(filled_by_ai_agent, '') FROM roles WHERE role_id = p_role_id))::text = '')) THEN ('AIAgent')::text ELSE (CASE WHEN NOT ((((SELECT NULLIF(filled_by_automated_pipeline, '') FROM roles WHERE role_id = p_role_id)) IS NULL OR ((SELECT NULLIF(filled_by_automated_pipeline, '') FROM roles WHERE role_id = p_role_id))::text = '')) THEN ('AutomatedPipeline')::text ELSE ('')::text END)::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
+-- calc_roles_fills_approval_gate
+-- Field: Roles.FillsApprovalGate
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_roles_fills_approval_gate(p_role_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM workflow_steps WHERE assigned_role = (SELECT NULLIF(role_id, '') FROM roles WHERE role_id = p_role_id) AND calc_workflow_steps_is_approval_gate(workflow_step_id) = TRUE))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_roles_escalation_violation
+-- Field: Roles.EscalationViolation
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_roles_escalation_violation(p_role_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (((calc_roles_fills_approval_gate(p_role_id))::NUMERIC > 0 AND (((SELECT NULLIF(delegates_to, '') FROM roles WHERE role_id = p_role_id)) IS NULL OR ((SELECT NULLIF(delegates_to, '') FROM roles WHERE role_id = p_role_id))::text = '')));
+$$ LANGUAGE sql STABLE;
+
 -- calc_role_assignments_parent_path
 -- Field: RoleAssignments.ParentPath
 -- Type: lookup | DataType: string | Returns: TEXT
@@ -1277,6 +1477,16 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_datasets_iri(p_dataset_id TEXT)
 RETURNS TEXT AS $$
   SELECT (REPLACE(calc_datasets_relative_path(p_dataset_id), '/', '-'))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_datasets_is_consumed
+-- Field: Datasets.IsConsumed
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_datasets_is_consumed(p_dataset_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (NOT (((calc_datasets_consumed_by_steps(p_dataset_id)) IS NULL OR (calc_datasets_consumed_by_steps(p_dataset_id))::text = '')))::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_workflow_artifacts_parent_path
@@ -1636,6 +1846,219 @@ RETURNS TEXT AS $$
   SELECT (REPLACE(LOWER((SELECT NULLIF(label, '') FROM scenarios WHERE scenario_id = p_scenario_id)), ' ', '-'))::text;
 $$ LANGUAGE sql STABLE;
 
+-- get_scenarios_label
+-- Helper function: Get Label from Scenarios by ScenarioId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_scenarios_label(p_scenario_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT label FROM scenarios WHERE scenario_id = p_scenario_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_scenarios_icon
+-- Helper function: Get Icon from Scenarios by ScenarioId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_scenarios_icon(p_scenario_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT icon FROM scenarios WHERE scenario_id = p_scenario_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_scenarios_explanation
+-- Helper function: Get Explanation from Scenarios by ScenarioId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_scenarios_explanation(p_scenario_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT explanation FROM scenarios WHERE scenario_id = p_scenario_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_scenarios_sort_order
+-- Helper function: Get SortOrder from Scenarios by ScenarioId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_scenarios_sort_order(p_scenario_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (SELECT sort_order FROM scenarios WHERE scenario_id = p_scenario_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_scenarios_is_reset
+-- Helper function: Get IsReset from Scenarios by ScenarioId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_scenarios_is_reset(p_scenario_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (SELECT is_reset FROM scenarios WHERE scenario_id = p_scenario_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_scenarios_edits
+-- Helper function: Get Edits from Scenarios by ScenarioId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_scenarios_edits(p_scenario_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT edits FROM scenarios WHERE scenario_id = p_scenario_id);
+$$ LANGUAGE sql STABLE;
+
+-- calc_competency_questions_relative_path
+-- Field: CompetencyQuestions.RelativePath
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_competency_questions_relative_path(p_competency_question_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CONCAT('competency-questions/', (SELECT NULLIF(competency_question_id, '') FROM competency_questions WHERE competency_question_id = p_competency_question_id)))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_competency_questions_iri
+-- Field: CompetencyQuestions.Iri
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_competency_questions_iri(p_competency_question_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (REPLACE(calc_competency_questions_relative_path(p_competency_question_id), '/', '-'))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_competency_questions_name
+-- Field: CompetencyQuestions.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_competency_questions_name(p_competency_question_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (REPLACE(LOWER((SELECT NULLIF(display_name, '') FROM competency_questions WHERE competency_question_id = p_competency_question_id)), ' ', '-'))::text;
+$$ LANGUAGE sql STABLE;
+
+-- get_competency_questions_number
+-- Helper function: Get Number from CompetencyQuestions by CompetencyQuestionId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_competency_questions_number(p_competency_question_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (SELECT number FROM competency_questions WHERE competency_question_id = p_competency_question_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_competency_questions_display_name
+-- Helper function: Get DisplayName from CompetencyQuestions by CompetencyQuestionId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_competency_questions_display_name(p_competency_question_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT display_name FROM competency_questions WHERE competency_question_id = p_competency_question_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_competency_questions_question_text
+-- Helper function: Get QuestionText from CompetencyQuestions by CompetencyQuestionId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_competency_questions_question_text(p_competency_question_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT question_text FROM competency_questions WHERE competency_question_id = p_competency_question_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_competency_questions_target_table
+-- Helper function: Get TargetTable from CompetencyQuestions by CompetencyQuestionId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_competency_questions_target_table(p_competency_question_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT target_table FROM competency_questions WHERE competency_question_id = p_competency_question_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_competency_questions_target_field
+-- Helper function: Get TargetField from CompetencyQuestions by CompetencyQuestionId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_competency_questions_target_field(p_competency_question_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT target_field FROM competency_questions WHERE competency_question_id = p_competency_question_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_competency_questions_answer_kind
+-- Helper function: Get AnswerKind from CompetencyQuestions by CompetencyQuestionId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_competency_questions_answer_kind(p_competency_question_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT answer_kind FROM competency_questions WHERE competency_question_id = p_competency_question_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_competency_questions_expected_answer
+-- Helper function: Get ExpectedAnswer from CompetencyQuestions by CompetencyQuestionId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_competency_questions_expected_answer(p_competency_question_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT expected_answer FROM competency_questions WHERE competency_question_id = p_competency_question_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_competency_questions_satisfied_field
+-- Helper function: Get SatisfiedField from CompetencyQuestions by CompetencyQuestionId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_competency_questions_satisfied_field(p_competency_question_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT satisfied_field FROM competency_questions WHERE competency_question_id = p_competency_question_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_competency_questions_explanation
+-- Helper function: Get Explanation from CompetencyQuestions by CompetencyQuestionId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_competency_questions_explanation(p_competency_question_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT explanation FROM competency_questions WHERE competency_question_id = p_competency_question_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_competency_questions_sort_order
+-- Helper function: Get SortOrder from CompetencyQuestions by CompetencyQuestionId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_competency_questions_sort_order(p_competency_question_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (SELECT sort_order FROM competency_questions WHERE competency_question_id = p_competency_question_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_competency_questions_is_active
+-- Helper function: Get IsActive from CompetencyQuestions by CompetencyQuestionId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_competency_questions_is_active(p_competency_question_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (SELECT is_active FROM competency_questions WHERE competency_question_id = p_competency_question_id);
+$$ LANGUAGE sql STABLE;
+
+-- calc_scenario_cq_effects_relative_path
+-- Field: ScenarioCQEffects.RelativePath
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_scenario_cq_effects_relative_path(p_scenario_cq_effect_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CONCAT('scenario-cq-effects/', (SELECT NULLIF(scenario_cq_effect_id, '') FROM scenario_cq_effects WHERE scenario_cq_effect_id = p_scenario_cq_effect_id)))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_scenario_cq_effects_iri
+-- Field: ScenarioCQEffects.Iri
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_scenario_cq_effects_iri(p_scenario_cq_effect_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (REPLACE(calc_scenario_cq_effects_relative_path(p_scenario_cq_effect_id), '/', '-'))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_scenario_cq_effects_name
+-- Field: ScenarioCQEffects.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_scenario_cq_effects_name(p_scenario_cq_effect_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (REPLACE(LOWER((SELECT NULLIF(scenario_cq_effect_id, '') FROM scenario_cq_effects WHERE scenario_cq_effect_id = p_scenario_cq_effect_id)), ' ', '-'))::text;
+$$ LANGUAGE sql STABLE;
+
 -- calc_conformance_tests_relative_path
 -- Field: ConformanceTests.RelativePath
 -- Type: calculated | DataType: string | Returns: TEXT
@@ -1675,4 +2098,17 @@ $$ LANGUAGE sql STABLE;
 -- INVERSE RELATIONSHIP FUNCTIONS
 -- These functions perform reverse FK lookups for inverse-side relationships
 -- ============================================================================
+
+-- calc_datasets_consumed_by_steps
+-- Field: Datasets.ConsumedBySteps
+-- Type: Inverse relationship (reverse FK lookup from WorkflowSteps.ConsumesDataset)
+
+CREATE OR REPLACE FUNCTION calc_datasets_consumed_by_steps(p_dataset_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (
+    SELECT STRING_AGG(workflow_step_id::TEXT, ', ' ORDER BY workflow_step_id)
+    FROM workflow_steps
+    WHERE consumes_dataset = p_dataset_id
+  );
+$$ LANGUAGE sql STABLE;
 

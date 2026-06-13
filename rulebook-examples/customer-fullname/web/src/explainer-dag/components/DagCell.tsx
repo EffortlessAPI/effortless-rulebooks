@@ -45,6 +45,12 @@ export function DagCell({ table, field, children, block }: Props): JSX.Element {
   const tone = typeTone(type);
   const glyph = typeGlyph(type);
 
+  // The hovercard is portaled to <body> and positioned `fixed` off this rect,
+  // so an overflow:hidden / overflow:auto ancestor (a flow track, a table, a
+  // bar) can never clip it — z-index alone can't escape an overflow clip.
+  const glyphRef = useRef<HTMLSpanElement | null>(null);
+  const [anchor, setAnchor] = useState<DOMRect | null>(null);
+
   const cancelClose = () => {
     if (closeTimer.current !== null) {
       window.clearTimeout(closeTimer.current);
@@ -53,6 +59,7 @@ export function DagCell({ table, field, children, block }: Props): JSX.Element {
   };
   const openCard = () => {
     cancelClose();
+    if (glyphRef.current) setAnchor(glyphRef.current.getBoundingClientRect());
     setHoverOpen(true);
   };
   const scheduleClose = () => {
@@ -85,6 +92,7 @@ export function DagCell({ table, field, children, block }: Props): JSX.Element {
             className={`dag-cell-fx dag-cell-fx-${tone}`}
           >
             <span
+              ref={glyphRef}
               className="dag-cell-fx-glyph"
               onMouseEnter={openCard}
               onMouseLeave={scheduleClose}
@@ -92,9 +100,10 @@ export function DagCell({ table, field, children, block }: Props): JSX.Element {
               {glyph}
             </span>
           </FieldLink>
-          {hoverOpen && dag && (
+          {hoverOpen && dag && anchor && (
             <DagHoverCard
               dag={dag}
+              anchor={anchor}
               onMouseEnter={openCard}
               onMouseLeave={scheduleClose}
             />

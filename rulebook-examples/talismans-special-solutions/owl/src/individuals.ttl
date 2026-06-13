@@ -119,6 +119,128 @@ effortless-ntwf:change-1-1-0 a effortless-ntwf:ChangeLog ;
     effortless-ntwf:rationale "Operational governance needed retained filledBy history so historical 'as of date' and blast-radius queries are answerable without discarding provenance. Additive and backward compatible — a minor, backward-compatible change, so the steward is authorized to approve and deploy it without authority review." ;
     effortless-ntwf:approvedBy effortless-ntwf:gov-steward .
 
+# === Individuals: CompetencyQuestions ===
+
+effortless-ntwf:cq-1 a effortless-ntwf:CompetencyQuestions ;
+    effortless-ntwf:competencyQuestionId "cq-1" ;
+    effortless-ntwf:number "1" ;
+    effortless-ntwf:displayName "Steps and order" ;
+    effortless-ntwf:questionText "What are all the steps in the release process, and in what order do they execute?" ;
+    effortless-ntwf:targetTable "Workflows" ;
+    effortless-ntwf:targetField "CountOfPrecedenceClosurePairs" ;
+    effortless-ntwf:answerKind "list" ;
+    effortless-ntwf:expectedAnswer "5 steps, ordered 1 -> 2 -> 3 -> 4 -> 5 (10 closure pairs)" ;
+    effortless-ntwf:satisfiedField "Cq1Satisfied" ;
+    effortless-ntwf:explanation "WorkflowSteps ordered by SequencePosition; the order is the transitive closure of the asserted StepPrecedence edges, materialized as ntwf:precedesStep." ;
+    effortless-ntwf:sortOrder "1" ;
+    effortless-ntwf:isActive true ;
+    effortless-ntwf:simulateScenario effortless-ntwf:drop-final-edge .
+
+effortless-ntwf:cq-2 a effortless-ntwf:CompetencyQuestions ;
+    effortless-ntwf:competencyQuestionId "cq-2" ;
+    effortless-ntwf:number "2" ;
+    effortless-ntwf:displayName "Who approves" ;
+    effortless-ntwf:questionText "Who or what is responsible for approving a production deployment?" ;
+    effortless-ntwf:targetTable "ApprovalGates" ;
+    effortless-ntwf:targetField "GateApproverHuman" ;
+    effortless-ntwf:answerKind "scalar" ;
+    effortless-ntwf:expectedAnswer "Maria Gonzalez" ;
+    effortless-ntwf:satisfiedField "Cq2Satisfied" ;
+    effortless-ntwf:explanation "The Release Approval Gate (step 3) -> its AssignedRole (Release Manager) -> FilledByHumanAgent. The role-agent indirection is resolved by the GateApproverHuman lookup." ;
+    effortless-ntwf:sortOrder "2" ;
+    effortless-ntwf:isActive true ;
+    effortless-ntwf:simulateScenario effortless-ntwf:ai-release-manager .
+
+effortless-ntwf:cq-3 a effortless-ntwf:CompetencyQuestions ;
+    effortless-ntwf:competencyQuestionId "cq-3" ;
+    effortless-ntwf:number "3" ;
+    effortless-ntwf:displayName "AI vs human steps" ;
+    effortless-ntwf:questionText "Which steps are executed by AI agents, and which require human decision?" ;
+    effortless-ntwf:targetTable "Workflows" ;
+    effortless-ntwf:targetField "CountAISteps" ;
+    effortless-ntwf:answerKind "list" ;
+    effortless-ntwf:expectedAnswer "AI-executed: steps 1, 5 - human-required: steps 2, 3" ;
+    effortless-ntwf:satisfiedField "Cq3Satisfied" ;
+    effortless-ntwf:explanation "Each step's ExecutingAgentType (via its role's filler type) classifies AI vs pipeline vs human; RequiresHumanApproval marks the human-decision steps. CountAISteps aggregates the AI side." ;
+    effortless-ntwf:sortOrder "3" ;
+    effortless-ntwf:isActive true ;
+    effortless-ntwf:simulateScenario effortless-ntwf:human-risk-step .
+
+effortless-ntwf:cq-4 a effortless-ntwf:CompetencyQuestions ;
+    effortless-ntwf:competencyQuestionId "cq-4" ;
+    effortless-ntwf:number "4" ;
+    effortless-ntwf:displayName "Artifact lineage" ;
+    effortless-ntwf:questionText "What artifacts does the review produce, and what consumes them downstream?" ;
+    effortless-ntwf:targetTable "WorkflowArtifacts" ;
+    effortless-ntwf:targetField "DerivedFromArtifact" ;
+    effortless-ntwf:answerKind "list" ;
+    effortless-ntwf:expectedAnswer "5 artifacts in a wasDerivedFrom chain: Risk Report -> Legal Clearance -> Release Authorization -> Deployment Log -> Post-Deployment Report" ;
+    effortless-ntwf:satisfiedField "Cq4Satisfied" ;
+    effortless-ntwf:explanation "WorkflowArtifacts.ProducedByStep gives the producer; DerivedFromArtifact gives the PROV wasDerivedFrom parent; RequiredBySteps gives the downstream consumer." ;
+    effortless-ntwf:sortOrder "4" ;
+    effortless-ntwf:isActive true ;
+    effortless-ntwf:simulateScenario effortless-ntwf:break-derivation .
+
+effortless-ntwf:cq-5 a effortless-ntwf:CompetencyQuestions ;
+    effortless-ntwf:competencyQuestionId "cq-5" ;
+    effortless-ntwf:number "5" ;
+    effortless-ntwf:displayName "Stale over 12 months" ;
+    effortless-ntwf:questionText "Which workflows have not been reviewed or updated in twelve months?" ;
+    effortless-ntwf:targetTable "Workflows" ;
+    effortless-ntwf:targetField "IsStale" ;
+    effortless-ntwf:answerKind "scalar" ;
+    effortless-ntwf:expectedAnswer "No - Production Deployment is not stale (MonthsSinceModified 2 <= 12)" ;
+    effortless-ntwf:satisfiedField "Cq5Satisfied" ;
+    effortless-ntwf:explanation "IsStale = MonthsSinceModified > StalenessThresholdMonths. The seed workflow was modified 2 months ago against a 12-month threshold, so it is not stale." ;
+    effortless-ntwf:sortOrder "5" ;
+    effortless-ntwf:isActive true ;
+    effortless-ntwf:simulateScenario effortless-ntwf:stale-docs .
+
+effortless-ntwf:cq-6 a effortless-ntwf:CompetencyQuestions ;
+    effortless-ntwf:competencyQuestionId "cq-6" ;
+    effortless-ntwf:number "6" ;
+    effortless-ntwf:displayName "Escalation path" ;
+    effortless-ntwf:questionText "What happens when the VP of Engineering is unavailable during escalation?" ;
+    effortless-ntwf:targetTable "Roles" ;
+    effortless-ntwf:targetField "DelegatesTo" ;
+    effortless-ntwf:answerKind "scalar" ;
+    effortless-ntwf:expectedAnswer "Escalates Release Manager -> VP of Engineering -> Chief Technology Officer" ;
+    effortless-ntwf:satisfiedField "Cq6Satisfied" ;
+    effortless-ntwf:explanation "Roles.DelegatesTo is a transitive chain. With the VP of Engineering unavailable, the next hop in the closure is the CTO." ;
+    effortless-ntwf:sortOrder "6" ;
+    effortless-ntwf:isActive true ;
+    effortless-ntwf:simulateScenario effortless-ntwf:break-delegation .
+
+effortless-ntwf:cq-7 a effortless-ntwf:CompetencyQuestions ;
+    effortless-ntwf:competencyQuestionId "cq-7" ;
+    effortless-ntwf:number "7" ;
+    effortless-ntwf:displayName "Engineering and Legal" ;
+    effortless-ntwf:questionText "Which workflows involve both Engineering and Legal?" ;
+    effortless-ntwf:targetTable "Workflows" ;
+    effortless-ntwf:targetField "InvolvesEngineeringAndLegal" ;
+    effortless-ntwf:answerKind "scalar" ;
+    effortless-ntwf:expectedAnswer "Yes - Production Deployment involves both (Engineering-owned steps and Legal-owned steps)" ;
+    effortless-ntwf:satisfiedField "Cq7Satisfied" ;
+    effortless-ntwf:explanation "InvolvesEngineeringAndLegal = AND(CountEngineeringOwnedSteps > 0, CountLegalOwnedSteps > 0). Step 2 is Legal-owned; steps 1/3/4/5 are Engineering-owned." ;
+    effortless-ntwf:sortOrder "7" ;
+    effortless-ntwf:isActive true ;
+    effortless-ntwf:simulateScenario effortless-ntwf:legal-to-engineering .
+
+effortless-ntwf:cq-8 a effortless-ntwf:CompetencyQuestions ;
+    effortless-ntwf:competencyQuestionId "cq-8" ;
+    effortless-ntwf:number "8" ;
+    effortless-ntwf:displayName "Datasets and AI" ;
+    effortless-ntwf:questionText "What datasets does the review consume, and which AI agents processed them?" ;
+    effortless-ntwf:targetTable "Datasets" ;
+    effortless-ntwf:targetField "ConsumedBySteps" ;
+    effortless-ntwf:answerKind "list" ;
+    effortless-ntwf:expectedAnswer "Q1 2026 Risk Metrics, consumed by the AI Risk Assessment step and processed by RiskAnalysis-AI" ;
+    effortless-ntwf:satisfiedField "Cq8Satisfied" ;
+    effortless-ntwf:explanation "Datasets.ConsumedBySteps (inverse of WorkflowSteps.ConsumesDataset) gives the consuming step; that step's role filler resolves the processing AI agent." ;
+    effortless-ntwf:sortOrder "8" ;
+    effortless-ntwf:isActive true ;
+    effortless-ntwf:simulateScenario effortless-ntwf:dataset-unconsumed .
+
 # === Individuals: ConformanceTests ===
 
 effortless-ntwf:sweep-workflows a effortless-ntwf:ConformanceTests ;
@@ -693,7 +815,7 @@ effortless-ntwf:sequence-position a effortless-ntwf:ConformanceTests ;
     effortless-ntwf:testKind "field-match" ;
     effortless-ntwf:targetRef "WorkflowSteps/prod-deploy-step-4#SequencePosition" ;
     effortless-ntwf:expect "" ;
-    effortless-ntwf:explanation "Functional integer datatype property echoes through both substrates." ;
+    effortless-ntwf:explanation "The resolved SequencePosition (override-if-pinned, else PrecedingStepCount+1) computes identically in both substrates; step 4 has four transitive predecessors and no override, so it resolves to 4." ;
     effortless-ntwf:sortOrder 480 ;
     effortless-ntwf:isEnabled true .
 
@@ -993,7 +1115,7 @@ effortless-ntwf:ds-q1-2026-risk-metrics a effortless-ntwf:Datasets ;
     effortless-ntwf:identifier "DS-RISK-2026-Q1" ;
     effortless-ntwf:modified "2026-03-31T00:00:00-05:00" ;
     effortless-ntwf:distributionUrl "https://data.internal.special-solutions.example/risk/q1-2026" ;
-    effortless-ntwf:consumedBySteps effortless-ntwf:prod-deploy-step-2 .
+    effortless-ntwf:consumedBySteps effortless-ntwf:prod-deploy-step-1 .
 
 # === Individuals: Departments ===
 
@@ -1179,6 +1301,104 @@ effortless-ntwf:ntwf-release-manager-role a effortless-ntwf:Roles ;
     effortless-ntwf:ownedBy effortless-ntwf:ntwf-engineering ;
     effortless-ntwf:delegatesTo effortless-ntwf:ntwf-vp-engineering-role .
 
+# === Individuals: ScenarioCQEffects ===
+
+effortless-ntwf:drop-final-edge-cq-1 a effortless-ntwf:ScenarioCQEffects ;
+    effortless-ntwf:scenarioCQEffectId "drop-final-edge-cq-1" ;
+    effortless-ntwf:scenario effortless-ntwf:drop-final-edge ;
+    effortless-ntwf:competencyQuestion effortless-ntwf:cq-1 ;
+    effortless-ntwf:effectKind "trigger" ;
+    effortless-ntwf:note "Deleting the step-4→step-5 edge shrinks the precedence closure (10 → 6 ordered pairs); step 5 leaves the chain. No other answer moves." ;
+    effortless-ntwf:sortOrder 10 .
+
+effortless-ntwf:ai-release-manager-cq-2 a effortless-ntwf:ScenarioCQEffects ;
+    effortless-ntwf:scenarioCQEffectId "ai-release-manager-cq-2" ;
+    effortless-ntwf:scenario effortless-ntwf:ai-release-manager ;
+    effortless-ntwf:competencyQuestion effortless-ntwf:cq-2 ;
+    effortless-ntwf:effectKind "trigger" ;
+    effortless-ntwf:note "Release Manager filled by AI → the gate has no human approver." ;
+    effortless-ntwf:sortOrder 20 .
+
+effortless-ntwf:ai-release-manager-cq-3 a effortless-ntwf:ScenarioCQEffects ;
+    effortless-ntwf:scenarioCQEffectId "ai-release-manager-cq-3" ;
+    effortless-ntwf:scenario effortless-ntwf:ai-release-manager ;
+    effortless-ntwf:competencyQuestion effortless-ntwf:cq-3 ;
+    effortless-ntwf:effectKind "ripple" ;
+    effortless-ntwf:note "Same edit: the gate's step (3) is now AI-executed, so the AI-step count rises 2 → 3. Cannot be avoided — the gate role is a step executor." ;
+    effortless-ntwf:sortOrder 30 .
+
+effortless-ntwf:human-risk-step-cq-3 a effortless-ntwf:ScenarioCQEffects ;
+    effortless-ntwf:scenarioCQEffectId "human-risk-step-cq-3" ;
+    effortless-ntwf:scenario effortless-ntwf:human-risk-step ;
+    effortless-ntwf:competencyQuestion effortless-ntwf:cq-3 ;
+    effortless-ntwf:effectKind "trigger" ;
+    effortless-ntwf:note "Risk Analysis role handed to a human → AI-step count falls 2 → 1. Isolated." ;
+    effortless-ntwf:sortOrder 40 .
+
+effortless-ntwf:break-derivation-cq-4 a effortless-ntwf:ScenarioCQEffects ;
+    effortless-ntwf:scenarioCQEffectId "break-derivation-cq-4" ;
+    effortless-ntwf:scenario effortless-ntwf:break-derivation ;
+    effortless-ntwf:competencyQuestion effortless-ntwf:cq-4 ;
+    effortless-ntwf:effectKind "trigger" ;
+    effortless-ntwf:note "Legal Clearance loses its wasDerivedFrom parent → the PROV chain splits. Isolated." ;
+    effortless-ntwf:sortOrder 50 .
+
+effortless-ntwf:stale-docs-cq-5 a effortless-ntwf:ScenarioCQEffects ;
+    effortless-ntwf:scenarioCQEffectId "stale-docs-cq-5" ;
+    effortless-ntwf:scenario effortless-ntwf:stale-docs ;
+    effortless-ntwf:competencyQuestion effortless-ntwf:cq-5 ;
+    effortless-ntwf:effectKind "trigger" ;
+    effortless-ntwf:note "Modified date backdated past the window → IsStale flips true. Isolated." ;
+    effortless-ntwf:sortOrder 60 .
+
+effortless-ntwf:break-delegation-cq-6 a effortless-ntwf:ScenarioCQEffects ;
+    effortless-ntwf:scenarioCQEffectId "break-delegation-cq-6" ;
+    effortless-ntwf:scenario effortless-ntwf:break-delegation ;
+    effortless-ntwf:competencyQuestion effortless-ntwf:cq-6 ;
+    effortless-ntwf:effectKind "trigger" ;
+    effortless-ntwf:note "Release Manager → VP edge removed → the escalation closure collapses. Isolated." ;
+    effortless-ntwf:sortOrder 70 .
+
+effortless-ntwf:legal-to-engineering-cq-7 a effortless-ntwf:ScenarioCQEffects ;
+    effortless-ntwf:scenarioCQEffectId "legal-to-engineering-cq-7" ;
+    effortless-ntwf:scenario effortless-ntwf:legal-to-engineering ;
+    effortless-ntwf:competencyQuestion effortless-ntwf:cq-7 ;
+    effortless-ntwf:effectKind "trigger" ;
+    effortless-ntwf:note "Legal role re-owned by Engineering → zero legal-owned steps → eng-AND-legal flips No. Isolated." ;
+    effortless-ntwf:sortOrder 80 .
+
+effortless-ntwf:dataset-unconsumed-cq-8 a effortless-ntwf:ScenarioCQEffects ;
+    effortless-ntwf:scenarioCQEffectId "dataset-unconsumed-cq-8" ;
+    effortless-ntwf:scenario effortless-ntwf:dataset-unconsumed ;
+    effortless-ntwf:competencyQuestion effortless-ntwf:cq-8 ;
+    effortless-ntwf:effectKind "trigger" ;
+    effortless-ntwf:note "Dataset consumed-by link cleared → no step consumes it. Isolated." ;
+    effortless-ntwf:sortOrder 90 .
+
+effortless-ntwf:trigger-risk-cq-5 a effortless-ntwf:ScenarioCQEffects ;
+    effortless-ntwf:scenarioCQEffectId "trigger-risk-cq-5" ;
+    effortless-ntwf:scenario effortless-ntwf:trigger-risk ;
+    effortless-ntwf:competencyQuestion effortless-ntwf:cq-5 ;
+    effortless-ntwf:effectKind "trigger" ;
+    effortless-ntwf:note "Backdates the review date → IsStale true (while AI steps remain — the narrative risk)." ;
+    effortless-ntwf:sortOrder 100 .
+
+effortless-ntwf:all-human-cq-3 a effortless-ntwf:ScenarioCQEffects ;
+    effortless-ntwf:scenarioCQEffectId "all-human-cq-3" ;
+    effortless-ntwf:scenario effortless-ntwf:all-human ;
+    effortless-ntwf:competencyQuestion effortless-ntwf:cq-3 ;
+    effortless-ntwf:effectKind "trigger" ;
+    effortless-ntwf:note "Every AI/pipeline role reassigned to a human → AI-step count falls to 0." ;
+    effortless-ntwf:sortOrder 110 .
+
+effortless-ntwf:ai-at-gate-cq-3 a effortless-ntwf:ScenarioCQEffects ;
+    effortless-ntwf:scenarioCQEffectId "ai-at-gate-cq-3" ;
+    effortless-ntwf:scenario effortless-ntwf:ai-at-gate ;
+    effortless-ntwf:competencyQuestion effortless-ntwf:cq-3 ;
+    effortless-ntwf:effectKind "ripple" ;
+    effortless-ntwf:note "Legal review step handed to AI → AI-step count rises 2 → 3 (the headline effect is the consistency-violation witness, not a CQ)." ;
+    effortless-ntwf:sortOrder 120 .
+
 # === Individuals: Scenarios ===
 
 effortless-ntwf:trigger-risk a effortless-ntwf:Scenarios ;
@@ -1215,7 +1435,79 @@ effortless-ntwf:reset a effortless-ntwf:Scenarios ;
     effortless-ntwf:explanation "Restores the canonical seed assignments and a fresh review date — the known-good starting point. Every role is filled by exactly one agent, no requires-human-approval step is AI-filled, and the workflow is within its staleness window, so all the article's clean-ABox witnesses read green." ;
     effortless-ntwf:sortOrder 5 ;
     effortless-ntwf:isReset true ;
-    effortless-ntwf:edits "[{\"class\": \"Workflows\", \"match\": \"first\", \"set\": {\"modified\": \"2026-04-03T00:00:00-05:00\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-release-manager-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-maria-gonzalez\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-risk-analysis-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"ntwf-risk-ai\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-legal-compliance-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-james-okafor\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-ci-executor-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"ntwf-ci-pipeline\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-vp-engineering-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-david-chen\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-cto-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-sarah-kim\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-deployment-health-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"ntwf-health-ai\", \"filledByAutomatedPipeline\": \"\"}}]" .
+    effortless-ntwf:edits "[{\"class\": \"Workflows\", \"match\": \"first\", \"set\": {\"modified\": \"2026-04-03T00:00:00-05:00\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-release-manager-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-maria-gonzalez\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\", \"delegatesTo\": \"ntwf-vp-engineering-role\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-risk-analysis-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"ntwf-risk-ai\", \"filledByAutomatedPipeline\": \"\", \"delegatesTo\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-legal-compliance-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-james-okafor\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\", \"delegatesTo\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-ci-executor-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"ntwf-ci-pipeline\", \"delegatesTo\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-vp-engineering-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-david-chen\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\", \"delegatesTo\": \"ntwf-cto-role\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-cto-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-sarah-kim\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\", \"delegatesTo\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-deployment-health-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"ntwf-health-ai\", \"filledByAutomatedPipeline\": \"\", \"delegatesTo\": \"\"}}, {\"class\": \"StepPrecedence\", \"id\": \"prec-1-2\", \"set\": {\"fromStep\": \"prod-deploy-step-1\"}}, {\"class\": \"StepPrecedence\", \"id\": \"prec-2-3\", \"set\": {\"fromStep\": \"prod-deploy-step-2\"}}, {\"class\": \"StepPrecedence\", \"id\": \"prec-3-4\", \"set\": {\"fromStep\": \"prod-deploy-step-3\"}}, {\"class\": \"StepPrecedence\", \"id\": \"prec-4-5\", \"set\": {\"fromStep\": \"prod-deploy-step-4\"}}, {\"class\": \"StepPrecedence\", \"add\": {\"stepPrecedenceId\": \"prec-4-5\", \"fromStep\": \"prod-deploy-step-4\", \"toStep\": \"prod-deploy-step-5\"}}]" .
+
+effortless-ntwf:drop-final-edge a effortless-ntwf:Scenarios ;
+    effortless-ntwf:scenarioId "drop-final-edge" ;
+    effortless-ntwf:label "Drop the final ordering edge" ;
+    effortless-ntwf:icon "✂️" ;
+    effortless-ntwf:explanation "Removes the step-4 → step-5 precedence edge entirely. Step 5 falls out of the ordered chain, so the transitive closure shrinks from 10 ordered pairs to 6 — and nothing else moves. Demonstrates CQ1: the closure cardinality is a projection of the asserted edges, recomputed the instant one is removed." ;
+    effortless-ntwf:sortOrder 10 ;
+    effortless-ntwf:isReset false ;
+    effortless-ntwf:edits "[{\"class\": \"StepPrecedence\", \"id\": \"prec-4-5\", \"delete\": true}]" .
+
+effortless-ntwf:ai-release-manager a effortless-ntwf:Scenarios ;
+    effortless-ntwf:scenarioId "ai-release-manager" ;
+    effortless-ntwf:label "AI fills the release gate" ;
+    effortless-ntwf:icon "🤖" ;
+    effortless-ntwf:explanation "Hands the Release Manager role — the human authority on the approval gate — to an AI agent. The gate approver is no longer human (CQ2), and because that role also executes step 3, the AI-step count ticks up (CQ3). The two answers cannot be decoupled: the gate's approver IS a step executor." ;
+    effortless-ntwf:sortOrder 20 ;
+    effortless-ntwf:isReset false ;
+    effortless-ntwf:edits "[{\"class\": \"Roles\", \"id\": \"ntwf-release-manager-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"ntwf-risk-ai\", \"filledByAutomatedPipeline\": \"\"}}]" .
+
+effortless-ntwf:human-risk-step a effortless-ntwf:Scenarios ;
+    effortless-ntwf:scenarioId "human-risk-step" ;
+    effortless-ntwf:label "Hand the risk step to a human" ;
+    effortless-ntwf:icon "🧑" ;
+    effortless-ntwf:explanation "Reassigns the Risk Analysis role from its AI agent to a human. The AI-executed step count drops from 2 to 1 — and only that. Demonstrates CQ3: the count is a live rollup over which steps are AI-executed, not a stored number." ;
+    effortless-ntwf:sortOrder 30 ;
+    effortless-ntwf:isReset false ;
+    effortless-ntwf:edits "[{\"class\": \"Roles\", \"id\": \"ntwf-risk-analysis-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-david-chen\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}]" .
+
+effortless-ntwf:break-derivation a effortless-ntwf:Scenarios ;
+    effortless-ntwf:scenarioId "break-derivation" ;
+    effortless-ntwf:label "Break the provenance chain" ;
+    effortless-ntwf:icon "⛓️" ;
+    effortless-ntwf:explanation "Clears the wasDerivedFrom link on the Legal Clearance Certificate. The PROV derivation chain splits in two — the downstream artifacts can no longer trace back to the risk report. Demonstrates CQ4: derivation is an asserted edge, and the chain answer follows it." ;
+    effortless-ntwf:sortOrder 40 ;
+    effortless-ntwf:isReset false ;
+    effortless-ntwf:edits "[{\"class\": \"WorkflowArtifacts\", \"id\": \"artifact-legal-clearance\", \"set\": {\"derivedFromArtifact\": \"\"}}]" .
+
+effortless-ntwf:stale-docs a effortless-ntwf:Scenarios ;
+    effortless-ntwf:scenarioId "stale-docs" ;
+    effortless-ntwf:label "Let the docs go stale" ;
+    effortless-ntwf:icon "📅" ;
+    effortless-ntwf:explanation "Backdates the workflow's last-modified date past its staleness window. IsStale flips to true — and only that derived flag. Demonstrates CQ5: staleness is MonthsSinceModified vs the threshold, recomputed against the clock, never asserted." ;
+    effortless-ntwf:sortOrder 50 ;
+    effortless-ntwf:isReset false ;
+    effortless-ntwf:edits "[{\"class\": \"Workflows\", \"match\": \"first\", \"set\": {\"modified\": \"2023-01-01T00:00:00-06:00\"}}]" .
+
+effortless-ntwf:break-delegation a effortless-ntwf:Scenarios ;
+    effortless-ntwf:scenarioId "break-delegation" ;
+    effortless-ntwf:label "Cut the escalation chain" ;
+    effortless-ntwf:icon "✂️" ;
+    effortless-ntwf:explanation "Removes the Release Manager → VP Engineering delegation edge. The escalation chain (and its transitive closure) collapses to the unreachable tail. Demonstrates CQ6: delegation is a first-class edge, and the chain answer is its closure." ;
+    effortless-ntwf:sortOrder 60 ;
+    effortless-ntwf:isReset false ;
+    effortless-ntwf:edits "[{\"class\": \"Roles\", \"id\": \"ntwf-release-manager-role\", \"set\": {\"delegatesTo\": \"\"}}]" .
+
+effortless-ntwf:legal-to-engineering a effortless-ntwf:Scenarios ;
+    effortless-ntwf:scenarioId "legal-to-engineering" ;
+    effortless-ntwf:label "Move legal review under engineering" ;
+    effortless-ntwf:icon "🏛️" ;
+    effortless-ntwf:explanation "Re-owns the Legal Compliance role from the Legal dept to Engineering. With zero legal-owned steps, the cross-cutting 'involves engineering AND legal' check flips to No. Demonstrates CQ7: the boolean is an AND over department-owned step counts, derived from role ownership." ;
+    effortless-ntwf:sortOrder 70 ;
+    effortless-ntwf:isReset false ;
+    effortless-ntwf:edits "[{\"class\": \"Roles\", \"id\": \"ntwf-legal-compliance-role\", \"set\": {\"ownedBy\": \"ntwf-engineering\"}}]" .
+
+effortless-ntwf:dataset-unconsumed a effortless-ntwf:Scenarios ;
+    effortless-ntwf:scenarioId "dataset-unconsumed" ;
+    effortless-ntwf:label "Detach the risk dataset" ;
+    effortless-ntwf:icon "📦" ;
+    effortless-ntwf:explanation "Clears the AI Risk Assessment step's consumes-dataset link (WorkflowSteps.ConsumesDataset is the authoritative DCAT forward FK; Datasets.ConsumedBySteps is its derived inverse). The Q1 Risk Metrics dataset is now consumed by no step — on the Graph lens its 📦 node visibly detaches from step 1. Demonstrates CQ8: dataset consumption is a real relationship, and the answer is exactly which steps point at it; with nothing consuming it, the AI-provenance answer is gone." ;
+    effortless-ntwf:sortOrder 80 ;
+    effortless-ntwf:isReset false ;
+    effortless-ntwf:edits "[{\"class\": \"WorkflowSteps\", \"id\": \"prod-deploy-step-1\", \"set\": {\"consumesDataset\": \"\"}}]" .
 
 # === Individuals: StepPrecedence ===
 
@@ -1349,7 +1641,6 @@ effortless-ntwf:prod-deploy-step-3 a effortless-ntwf:WorkflowSteps ;
     effortless-ntwf:workflowStepId "prod-deploy-step-3" ;
     effortless-ntwf:displayName "Release Approval Gate" ;
     effortless-ntwf:workflow effortless-ntwf:production-deployment ;
-    effortless-ntwf:sequencePosition 3 ;
     effortless-ntwf:assignedRole effortless-ntwf:ntwf-release-manager-role ;
     effortless-ntwf:requiresHumanApproval true ;
     effortless-ntwf:stepDurationMinutes 30 ;
@@ -1363,7 +1654,6 @@ effortless-ntwf:prod-deploy-step-2 a effortless-ntwf:WorkflowSteps ;
     effortless-ntwf:workflowStepId "prod-deploy-step-2" ;
     effortless-ntwf:displayName "Legal Compliance Review" ;
     effortless-ntwf:workflow effortless-ntwf:production-deployment ;
-    effortless-ntwf:sequencePosition 2 ;
     effortless-ntwf:assignedRole effortless-ntwf:ntwf-legal-compliance-role ;
     effortless-ntwf:requiresHumanApproval true ;
     effortless-ntwf:stepDurationMinutes 120 ;
@@ -1376,7 +1666,6 @@ effortless-ntwf:prod-deploy-step-5 a effortless-ntwf:WorkflowSteps ;
     effortless-ntwf:workflowStepId "prod-deploy-step-5" ;
     effortless-ntwf:displayName "Post-Deployment Health Check & Report" ;
     effortless-ntwf:workflow effortless-ntwf:production-deployment ;
-    effortless-ntwf:sequencePosition 5 ;
     effortless-ntwf:assignedRole effortless-ntwf:ntwf-deployment-health-role ;
     effortless-ntwf:requiresHumanApproval false ;
     effortless-ntwf:stepDurationMinutes 60 ;
@@ -1387,7 +1676,6 @@ effortless-ntwf:prod-deploy-step-1 a effortless-ntwf:WorkflowSteps ;
     effortless-ntwf:workflowStepId "prod-deploy-step-1" ;
     effortless-ntwf:displayName "AI Risk Assessment" ;
     effortless-ntwf:workflow effortless-ntwf:production-deployment ;
-    effortless-ntwf:sequencePosition 1 ;
     effortless-ntwf:assignedRole effortless-ntwf:ntwf-risk-analysis-role ;
     effortless-ntwf:requiresHumanApproval false ;
     effortless-ntwf:stepDurationMinutes 15 ;
@@ -1399,7 +1687,6 @@ effortless-ntwf:prod-deploy-step-4 a effortless-ntwf:WorkflowSteps ;
     effortless-ntwf:workflowStepId "prod-deploy-step-4" ;
     effortless-ntwf:displayName "Automated Deployment Execution" ;
     effortless-ntwf:workflow effortless-ntwf:production-deployment ;
-    effortless-ntwf:sequencePosition 4 ;
     effortless-ntwf:assignedRole effortless-ntwf:ntwf-ci-executor-role ;
     effortless-ntwf:requiresHumanApproval false ;
     effortless-ntwf:stepDurationMinutes 45 ;

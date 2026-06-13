@@ -1,6 +1,6 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { KIND } from "./model";
-import type { Agent, AgentKind, ExecutingAgentType, RoleRow, Handlers } from "./types";
+import { KIND, avatarFor } from "./model";
+import type { Agent, AgentKind, ExecutingAgentType, RoleRow, Handlers, Situation } from "./types";
 
 // ===========================================================================
 // Shared editable controls used by every view, so "what's editable" looks and
@@ -41,16 +41,29 @@ export function AgentAvatar({ agent, type, roleId, onReassign, size = 34, showNa
     ? `${agent ? agent.name : "unassigned"} — click to reassign` +
       (requiresHuman ? " · this step needs a 🧑 human sign-off" : "")
     : agent?.name;
+  // The avatar shows the PERSON, not just the kind: a distinct face + ring hue
+  // per agent (Maria ≠ James). A small corner badge keeps the kind (human / AI /
+  // pipeline) explicit, since the kind is the regulated thing. Unassigned roles
+  // fall back to the generic kind icon.
+  const look = avatarFor(agent, type);
+  const style: React.CSSProperties = { width: size, height: size, fontSize: Math.round(size * 0.55) };
+  if (look) {
+    style.background = `hsl(${look.hue} 65% 90%)`;
+    // A per-person ring hue — but never override the red conflict ring (a
+    // requires-human step filled by a non-human), which is a louder signal.
+    if (!conflict) style.borderColor = `hsl(${look.hue} 55% 55%)`;
+  }
   return (
     <button
       ref={ref}
-      className={"avatar " + k.cls + (editable ? " editable" : "") + (conflict ? " conflict" : "")}
-      style={{ width: size, height: size, fontSize: Math.round(size * 0.55) }}
+      className={"avatar " + k.cls + (editable ? " editable" : "") + (conflict ? " conflict" : "") + (look ? " hasface" : "")}
+      style={style}
       onClick={onClick}
       title={title}
       disabled={!editable}
     >
-      <span className="avatar-kind">{k.icon}</span>
+      <span className="avatar-kind">{look ? look.face : k.icon}</span>
+      {look && <span className={"avatar-kindbadge " + k.cls} title={k.label}>{k.icon}</span>}
       {requiresHuman && <span className="avatar-req" title="this step requires a human sign-off">🔒</span>}
       {showName && <span className="avatar-name">{agent ? agent.name : "unassigned"}</span>}
     </button>
@@ -177,5 +190,142 @@ export function FactToggle({ on, label, onChange, busy }: FactToggleProps) {
       <input type="checkbox" checked={!!on} disabled={busy} onChange={(e: React.ChangeEvent<HTMLInputElement>) => onChange(e.target.checked)} />
       <span>{label}</span>
     </label>
+  );
+}
+
+interface EscalationPopoverProps {
+  roleId: string;
+  sit: Situation;
+  anchorRect?: DOMRect | null;
+  onPick: (targetRoleId: string) => void;
+  onClose: () => void;
+}
+
+// The escalation org-chart popup, anchored to a clicked EscalationViolation
+// badge. It shows the delegation hierarchy as the reasoner has it (sit.orgTree)
+// with the offending role shown DETACHED — its delegatesTo edge is blank, so the
+// chain dead-ends and the gate it owns has nowhere to escalate. Picking a
+// next-hop role PATCHes Roles.delegatesTo; the substrate then re-closes the
+// chain and EscalationViolation / CQ6 re-answer themselves. Nothing here
+// computes the violation — it reads the derived `escalationViolation` column and
+// the already-reasoned delegation reach (sit.delegation).
+export function EscalationPopover({ roleId, sit, anchorRect, onPick, onClose }: EscalationPopoverProps) {
+  const ref = useRef<HTMLDivElement | null>(null);
+  useEffect(() => {
+    const onDoc = (e: MouseEvent) => { if (ref.current && !ref.current.contains(e.target as Node)) onClose(); };
+    const onEsc = (e: KeyboardEvent) => e.key === "Escape" && onClose();
+    document.addEventListener("mousedown", onDoc);
+    document.addEventListener("keydown", onEsc);
+    return () => { document.removeEventListener("mousedown", onDoc); document.removeEventListener("keydown", onEsc); };
+  }, [onClose]);
+
+  const role = sit.roleById[roleId];
+  // The role's CURRENT immediate next hop, read off the reasoned org tree (the
+  // node directly above it in its chain). Drives whether this popover frames a
+  // FIX ("no one to escalate to") or a CHANGE ("currently escalates to X"). We
+  // read it from orgTree rather than role.delegatesTo because that column is a
+  // transitive-closure array on the reasoner and a scalar on Postgres — orgTree
+  // is the one already-normalized adjacency both substrates agree on.
+  let currentTargetId: string | null = null;
+  for (const chain of sit.orgTree) {
+    const idx = chain.findIndex((n) => n.id === roleId);
+    if (idx >= 0 && idx < chain.length - 1) { currentTargetId = chain[idx + 1].id; break; }
+  }
+  const currentTarget = currentTargetId ? sit.roleById[currentTargetId] : null;
+  // A candidate next hop is any role but self, excluding one whose escalation
+  // already reaches this role (that pick would make a cycle). Roles that
+  // themselves escalate upward (a non-empty reach) lead somewhere — list first.
+  const reachesSelf = (from: string): boolean =>
+    (sit.delegation[from]?.to || []).some((t) => t.id === roleId);
+  const candidates = sit.roles
+    .filter((r) => r.id !== roleId && !reachesSelf(r.id))
+    .map((r) => ({ r, chain: sit.delegation[r.id]?.to || [] }))
+    .sort((a, b) => b.chain.length - a.chain.length || a.r.name.localeCompare(b.r.name));
+
+  // positioning mirrors ReassignPopover: prefer below the anchor, flip above if
+  // it would overflow, never clip.
+  const MARGIN = 12;
+  const left = Math.min(Math.max((anchorRect?.left || 100) - 80, MARGIN), window.innerWidth - 340);
+  const [top, setTop] = useState<number>((anchorRect?.bottom || 100) + 8);
+  useLayoutEffect(() => {
+    const h = ref.current?.offsetHeight ?? 0;
+    const below = (anchorRect?.bottom || 100) + 8;
+    const above = (anchorRect?.top || 100) - 8 - h;
+    let next = below;
+    if (below + h > window.innerHeight - MARGIN) next = above >= MARGIN ? above : Math.max(MARGIN, window.innerHeight - MARGIN - h);
+    setTop(next);
+  }, [anchorRect, roleId]);
+
+  return (
+    <div className={"popover esc-popover" + (currentTarget ? " esc-popover-ok" : "")} ref={ref} style={{ top, left }}>
+      <div className="popover-head">
+        {currentTarget
+          ? <>↑ <b>{role?.name || roleId}</b> escalates to <b>{currentTarget.name}</b></>
+          : <>⚠ <b>{role?.name || roleId}</b> has no one to escalate to</>}
+      </div>
+      <div className="popover-guide" role="note">
+        {currentTarget
+          ? <>When this role's gate stalls past its escalation window, authority flows up
+             to <b>{currentTarget.name}</b>. Re-point the chain by picking a different next hop:</>
+          : <>This role owns an <b>approval gate</b>. When the gate stalls past its
+             escalation window, authority must flow <b>up the delegation chain</b> — but
+             the chain dead-ends here. Pick who it escalates to:</>}
+      </div>
+
+      <div className="esc-orgchart">
+        <div className="esc-orgchart-label">Escalation hierarchy</div>
+        {sit.orgTree.map((chain, ci) => (
+          <div className="esc-chain" key={ci}>
+            {chain.map((n, i) => (
+              <React.Fragment key={n.id}>
+                <span className={"esc-node" + (n.id === roleId ? (currentTarget ? " current" : " broken") : "")}>{n.name}</span>
+                {i < chain.length - 1 && <span className="esc-up">↑</span>}
+              </React.Fragment>
+            ))}
+          </div>
+        ))}
+        {/* when the edge is cut, show the offending role detached so the gap reads */}
+        {!currentTarget && (
+          <div className="esc-chain broken-chain">
+            <span className="esc-node broken">{role?.name}</span>
+            <span className="esc-up dashed">↑ ?</span>
+            <span className="esc-node ghost">— no target —</span>
+          </div>
+        )}
+      </div>
+
+      <div className="popover-body">
+        <div className="popover-group-label">{currentTarget ? "Re-point to" : "Delegate to"}</div>
+        {candidates.map(({ r, chain }) => {
+          const isCurrent = r.id === currentTargetId;
+          return (
+            <button
+              key={r.id}
+              className={"popover-opt esc-opt" + (isCurrent ? " current" : "")}
+              onClick={() => onPick(r.id)}
+              disabled={isCurrent}
+            >
+              <span className="opt-dot k-role" />
+              <span className="esc-opt-name">{r.name}</span>
+              {isCurrent
+                ? <span className="esc-leads cur">✓ current</span>
+                : chain.length > 0
+                  ? <span className="esc-leads">↑ {chain.map((t) => t.name).join(" → ")}</span>
+                  : <span className="esc-leads top">top of chain</span>}
+            </button>
+          );
+        })}
+        {currentTarget && (
+          <button className="popover-opt esc-opt esc-clear" onClick={() => onPick("")}>
+            <span className="opt-dot k-clear" />
+            <span className="esc-opt-name">Clear escalation</span>
+            <span className="esc-leads">cut the edge — breaks CQ6</span>
+          </button>
+        )}
+      </div>
+      <div className="popover-foot">
+        Sets <code>{role?.name} → delegatesTo</code>; the reasoner re-closes the chain and CQ6 re-answers.
+      </div>
+    </div>
   );
 }

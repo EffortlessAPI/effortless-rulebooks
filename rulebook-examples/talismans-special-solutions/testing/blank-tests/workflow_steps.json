@@ -3,11 +3,11 @@
     "workflow_step_id": "prod-deploy-step-1",
     "display_name": "AI Risk Assessment",
     "workflow": "production-deployment",
-    "sequence_position": 1,
+    "sequence_position": null,
     "assigned_role": "ntwf-risk-analysis-role",
     "requires_human_approval": false,
     "step_duration_minutes": 15,
-    "consumes_dataset": "ds-q1-2026-risk-metrics",
+    "consumes_dataset": "",
     "produces_artifacts": "artifact-risk-report",
     "approval_gate": "",
     "precedes": "prec-1-2",
@@ -27,13 +27,16 @@
     "approval_is_human_filled": null,
     "owning_department": null,
     "is_legal_owned": null,
-    "is_engineering_owned": null
+    "is_engineering_owned": null,
+    "preceding_step_count": null,
+    "inferred_sequence_position": null,
+    "is_approval_gate": null
   },
   {
     "workflow_step_id": "prod-deploy-step-2",
     "display_name": "Legal Compliance Review",
     "workflow": "production-deployment",
-    "sequence_position": 2,
+    "sequence_position": null,
     "assigned_role": "ntwf-legal-compliance-role",
     "requires_human_approval": true,
     "step_duration_minutes": 120,
@@ -57,13 +60,16 @@
     "approval_is_human_filled": null,
     "owning_department": null,
     "is_legal_owned": null,
-    "is_engineering_owned": null
+    "is_engineering_owned": null,
+    "preceding_step_count": null,
+    "inferred_sequence_position": null,
+    "is_approval_gate": null
   },
   {
     "workflow_step_id": "prod-deploy-step-3",
     "display_name": "Release Approval Gate",
     "workflow": "production-deployment",
-    "sequence_position": 3,
+    "sequence_position": null,
     "assigned_role": "ntwf-release-manager-role",
     "requires_human_approval": true,
     "step_duration_minutes": 30,
@@ -87,13 +93,16 @@
     "approval_is_human_filled": null,
     "owning_department": null,
     "is_legal_owned": null,
-    "is_engineering_owned": null
+    "is_engineering_owned": null,
+    "preceding_step_count": null,
+    "inferred_sequence_position": null,
+    "is_approval_gate": null
   },
   {
     "workflow_step_id": "prod-deploy-step-4",
     "display_name": "Automated Deployment Execution",
     "workflow": "production-deployment",
-    "sequence_position": 4,
+    "sequence_position": null,
     "assigned_role": "ntwf-ci-executor-role",
     "requires_human_approval": false,
     "step_duration_minutes": 45,
@@ -117,13 +126,16 @@
     "approval_is_human_filled": null,
     "owning_department": null,
     "is_legal_owned": null,
-    "is_engineering_owned": null
+    "is_engineering_owned": null,
+    "preceding_step_count": null,
+    "inferred_sequence_position": null,
+    "is_approval_gate": null
   },
   {
     "workflow_step_id": "prod-deploy-step-5",
     "display_name": "Post-Deployment Health Check & Report",
     "workflow": "production-deployment",
-    "sequence_position": 5,
+    "sequence_position": null,
     "assigned_role": "ntwf-deployment-health-role",
     "requires_human_approval": false,
     "step_duration_minutes": 60,
@@ -147,6 +159,9 @@
     "approval_is_human_filled": null,
     "owning_department": null,
     "is_legal_owned": null,
-    "is_engineering_owned": null
+    "is_engineering_owned": null,
+    "preceding_step_count": null,
+    "inferred_sequence_position": null,
+    "is_approval_gate": null
   }
 ]

@@ -44,8 +44,16 @@ export interface SchemaField {
   datatype: string;
   type: string;
   relatedTo: string | null;
+  // The rulebook's EXPLICIT, machine-readable back-ref flag (`isReversed: true`).
+  // This is the authoritative signal that a relationship field is a derived
+  // inverse the substrate computes from a forward FK, never a stored column —
+  // far more reliable than scraping prose. When set, the field is derived.
+  isReversed: boolean;
   // Prose fallback: only consulted when we have NO base-table authority.
-  // Unreliable (see header), so used only as a last resort.
+  // Unreliable (see header) — a forward FK whose Description merely mentions the
+  // ontology inverse (e.g. WorkflowSteps.Workflow: "…inverse of ntwf:hasStep")
+  // matches this and is WRONGLY treated as a back-ref. Used only as a last
+  // resort, and only when `isReversed` is absent.
   proseBackref: boolean;
 }
 
@@ -75,6 +83,8 @@ interface RulebookField {
   type?: string;
   RelatedTo?: string | null;
   Description?: string;
+  // Explicit "this relationship is a derived inverse" flag (see SchemaField).
+  isReversed?: boolean;
 }
 
 // Minimal shape of a rulebook table object (we only touch `schema` here).
@@ -176,8 +186,11 @@ export async function loadSchemaMap(
         datatype: f.datatype || "string",
         type: f.type || "raw",
         relatedTo: f.RelatedTo || null,
-        // Prose fallback: only consulted when we have NO base-table authority.
-        // Unreliable (see header), so used only as a last resort.
+        // Explicit rulebook flag: the authoritative back-ref signal.
+        isReversed: f.isReversed === true,
+        // Prose fallback: only consulted when we have NO base-table authority
+        // AND no explicit isReversed flag. Unreliable (see header), so used only
+        // as a last resort.
         proseBackref: /back-?reference|inverse of/i.test(f.Description || ""),
       };
       allFields.push(entry);
@@ -185,17 +198,49 @@ export async function loadSchemaMap(
       // Primary key: first field whose name ends with "Id".
       if (!pk && /Id$/.test(pascal)) pk = entry;
 
+      // A relationship field is a DERIVED inverse iff the rulebook explicitly
+      // marks it (`isReversed`). The prose heuristic is consulted only when the
+      // flag is absent — and never overrides it, so a forward FK whose
+      // Description happens to mention the ontology inverse (WorkflowSteps.Workflow
+      // says "…inverse of ntwf:hasStep" but IS the stored FK) is not mistaken for
+      // a back-ref.
+      const isReverseRelationship =
+        entry.type === "relationship" && (entry.isReversed || entry.proseBackref);
+
       // Decide raw vs derived.
       let isRaw: boolean;
       if (DERIVED_TYPES.has(entry.type)) {
         isRaw = false; // calculated/lookup/aggregation: never authored
       } else if (authored) {
         // AUTHORITATIVE path: raw iff the base table has this column.
-        isRaw = authored.has(entry.snake);
+        const hasColumn = authored.has(entry.snake);
+        // GUARD (same doctrine as the zero-columns guard above): a FORWARD
+        // relationship FK the rulebook authors but the live DB is missing a
+        // column for means the schema is stale relative to the rulebook. The old
+        // behavior silently demoted it to derived and DROPPED it from the seed —
+        // which is exactly how the WorkflowSteps.Workflow FK got blanked, every
+        // COUNTIFS rollup went to 0, and CQ1/2/4/7 read ✗ while their answers
+        // still rendered correctly. A silently-dropped FK is the Avoid-Silent-
+        // Fallbacks anti-pattern; surface it loudly so a reseed never runs from a
+        // stale schema. Reverse (derived-inverse) relationship fields legitimately
+        // have no base-table column, so they are exempt.
+        if (entry.type === "relationship" && !hasColumn && !isReverseRelationship) {
+          throw new Error(
+            `schema-map: rulebook table '${tableName}' declares forward relationship ` +
+            `field '${pascal}' (column '${entry.snake}', -> ${entry.relatedTo}) but the ` +
+            `live base table '${sqlTable}' has NO such column. The schema is stale ` +
+            `relative to the rulebook; seeding now would silently drop this FK to null ` +
+            `(blanking the rollups that depend on it). Refusing — run init-db.sh to ` +
+            `rebuild the base tables from the current rulebook before reseeding. ` +
+            `(If this field is a derived inverse, mark it "isReversed": true in the rulebook.)`
+          );
+        }
+        isRaw = hasColumn;
       } else if (EDITABLE_TYPES.has(entry.type)) {
         // No base-table authority available: trust the rulebook type, but drop
-        // relationship fields whose prose marks them inverse (best effort).
-        isRaw = !(entry.type === "relationship" && entry.proseBackref);
+        // relationship fields the rulebook (or, as a last resort, prose) marks
+        // as a derived inverse.
+        isRaw = !isReverseRelationship;
       } else {
         isRaw = false;
       }

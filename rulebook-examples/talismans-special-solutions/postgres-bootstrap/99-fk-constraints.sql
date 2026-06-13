@@ -149,11 +149,6 @@ ALTER TABLE artifact_type_concepts DROP CONSTRAINT IF EXISTS fk_artifact_type_co
 ALTER TABLE artifact_type_concepts ADD CONSTRAINT fk_artifact_type_concepts_workflow_artifacts
   FOREIGN KEY (workflow_artifacts) REFERENCES workflow_artifacts (artifact_id);
 
--- Datasets
-ALTER TABLE datasets DROP CONSTRAINT IF EXISTS fk_datasets_consumed_by_steps;
-ALTER TABLE datasets ADD CONSTRAINT fk_datasets_consumed_by_steps
-  FOREIGN KEY (consumed_by_steps) REFERENCES workflow_steps (workflow_step_id);
-
 -- WorkflowArtifacts
 ALTER TABLE workflow_artifacts DROP CONSTRAINT IF EXISTS fk_workflow_artifacts_artifact_type;
 ALTER TABLE workflow_artifacts ADD CONSTRAINT fk_workflow_artifacts_artifact_type
@@ -187,4 +182,17 @@ ALTER TABLE change_log DROP CONSTRAINT IF EXISTS fk_change_log_approved_by;
 ALTER TABLE change_log ADD CONSTRAINT fk_change_log_approved_by
   FOREIGN KEY (approved_by) REFERENCES governance_roles (governance_role_id);
 
--- 47 FK constraint(s) declared (off unless EFFORTLESS_ENFORCE_FKS=true).
+-- CompetencyQuestions
+ALTER TABLE competency_questions DROP CONSTRAINT IF EXISTS fk_competency_questions_simulate_scenario;
+ALTER TABLE competency_questions ADD CONSTRAINT fk_competency_questions_simulate_scenario
+  FOREIGN KEY (simulate_scenario) REFERENCES scenarios (scenario_id);
+
+-- ScenarioCQEffects
+ALTER TABLE scenario_cq_effects DROP CONSTRAINT IF EXISTS fk_scenario_cq_effects_scenario;
+ALTER TABLE scenario_cq_effects ADD CONSTRAINT fk_scenario_cq_effects_scenario
+  FOREIGN KEY (scenario) REFERENCES scenarios (scenario_id);
+ALTER TABLE scenario_cq_effects DROP CONSTRAINT IF EXISTS fk_scenario_cq_effects_competency_question;
+ALTER TABLE scenario_cq_effects ADD CONSTRAINT fk_scenario_cq_effects_competency_question
+  FOREIGN KEY (competency_question) REFERENCES competency_questions (competency_question_id);
+
+-- 49 FK constraint(s) declared (off unless EFFORTLESS_ENFORCE_FKS=true).

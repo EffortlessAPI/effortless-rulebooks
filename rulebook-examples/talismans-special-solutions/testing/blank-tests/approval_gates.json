@@ -9,6 +9,7 @@
     "iri": null,
     "name": null,
     "gate_role": null,
-    "gate_approver_human": null
+    "gate_approver_human": null,
+    "has_human_approver": null
   }
 ]

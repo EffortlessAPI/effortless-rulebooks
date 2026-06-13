@@ -1,6 +1,6 @@
 # PostgreSQL Execution Substrate
 
-PostgreSQL is one of the **three Effortless tools** — the only substrate with **no limitations**. The `rulebook-to-postgres` tool fully supports complex aggregations, multi-table JOINs, window functions, and all formula types. All caveats about "demonstrated" or "limited" formula support apply only to the local substrates (Python, Go, etc.), not to PostgreSQL.
+PostgreSQL is one of the **three Effortless tools** and is fully expressive (`Expressive: full` in the platform's `ExecutionSubstrates` table) — the `rulebook-to-postgres` tool supports complex aggregations, multi-table JOINs, window/GROUP-BY aggregations, recursive/closure formulas, and all formula types. It is **not** privileged: many other substrates are equally `full` (Python, Go, Excel, Entity Framework, the Explain-DAG, …). Postgres is used as the reference-quality answer key for convenience, not because the other substrates are "limited." Each substrate's expressiveness is recorded per-substrate in the `ExecutionSubstrates` table — read that, rather than assuming a hierarchy.
 
 This substrate tests the PostgreSQL implementation of calculated fields against the
 canonical answer keys derived from the rulebook.

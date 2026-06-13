@@ -24,6 +24,38 @@ There is no upstream to "restore from." The JSON is the upstream.
 
 This folder is a **self-contained Effortless Rulebook (ERB) project**. The rulebook is the single source of truth. All other artifacts (Postgres, Python, Go, substrates) are mechanically derived from it.
 
+## Aim for RIGHT — always most faithful to the original 4-part series
+
+The North Star for this demo is **fidelity to Jessica Talisman's *Intentional Arrangement* 4-part
+series** (the NTWF workflow ontology). When something is ambiguous, the tie-breaker is not "what is
+easiest to ship" or "what makes the badge green" — it is **"what is most faithful to the article."**
+Always aim for *right*. Do not paper over a gap with a plausible-looking patch; fix the underlying
+model so it actually tells the article's story.
+
+### Every entity a competency question references MUST be materialized in the UI
+
+A competency question is only honestly "answered" when the **thing it talks about is visible on the
+board.** CQ8 asks *"what datasets does the review consume, and which AI processed them?"* — so the
+**dataset must be a real, named node a user can see** (in the Graph lens, attached to its consuming
+step and the AI agent), not a phantom that lives only inside the CQ card's answer string. If a CQ
+references an entity (a dataset, an artifact, a gate, a role) that is **drawn nowhere**, that is a
+bug: the "simulate" button mutates something invisible, so the user sees nothing change and cannot
+reason about the failure. The fix is to **materialize the entity**, not to tweak the button.
+
+Concrete checklist when adding or repairing a CQ + its Simulate scenario:
+
+1. **Materialize** every entity the CQ names as a visible node/chip/row in at least one lens.
+2. **Make the simulate a visible cut** — the edit must change something the user can *watch* move
+   (an edge breaks, a node orphans, a badge flips), not just a string deep in a disclosure.
+3. **Encode the real expectation in the resolver** — pass/fail must mean the question's actual
+   answer holds. Beware vacuously-true checks (`[].every(...)` is `true`): "no datasets consumed"
+   must read **red**, not green.
+4. **Edit the authoritative side of an inverse pair.** For an `owl:inverseOf` relationship the
+   reasoner asserts BOTH sides, so clearing only one side is re-derived (resurrected) from the
+   other and the simulate "does nothing." Either clear BOTH sides, or (preferred) make the back-ref
+   derived-only (`DERIVED_INVERSE_BACKREFS` in `app/backend/reasoner/abox_from_json.py`, the
+   `fromDelegatesTo`/`consumedBySteps` pattern) so the single forward FK is the editable source.
+
 ## All seed data is MOCK data. Every build resets it. That is the whole point.
 
 There is **no "production vs. non-production" data** in this rulebook. *Everything* in the `data`

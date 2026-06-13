@@ -73,58 +73,10 @@
   },
   {
     "entity": "RoleAssignments",
-    "field": "Name",
-    "formula": "={{Role}} & \" [\" & {{ValidFrom}} & \" -> \" & IF(ISBLANK({{ValidTo}}), \"open\", {{ValidTo}}) & \"]\"",
-    "record_id": "asn-release-manager-maria",
-    "error": "drift: stored='ntwf-release-manager-role [2026-01-10 00:00:00-06 -> open]' python-recompute='ntwf-release-manager-role [2026-01-10 -> open]'",
-    "severity": "drift"
-  },
-  {
-    "entity": "RoleAssignments",
-    "field": "Name",
-    "formula": "={{Role}} & \" [\" & {{ValidFrom}} & \" -> \" & IF(ISBLANK({{ValidTo}}), \"open\", {{ValidTo}}) & \"]\"",
-    "record_id": "asn-vp-eng-priya",
-    "error": "drift: stored='ntwf-vp-engineering-role [2026-01-10 00:00:00-06 -> 2026-03-15 00:00:00-05]' python-recompute='ntwf-vp-engineering-role [2026-01-10 -> 2026-03-15]'",
-    "severity": "drift"
-  },
-  {
-    "entity": "RoleAssignments",
-    "field": "Name",
-    "formula": "={{Role}} & \" [\" & {{ValidFrom}} & \" -> \" & IF(ISBLANK({{ValidTo}}), \"open\", {{ValidTo}}) & \"]\"",
-    "record_id": "asn-vp-eng-david",
-    "error": "drift: stored='ntwf-vp-engineering-role [2026-03-15 00:00:00-05 -> open]' python-recompute='ntwf-vp-engineering-role [2026-03-15 -> open]'",
-    "severity": "drift"
-  },
-  {
-    "entity": "RoleAssignments",
-    "field": "Name",
-    "formula": "={{Role}} & \" [\" & {{ValidFrom}} & \" -> \" & IF(ISBLANK({{ValidTo}}), \"open\", {{ValidTo}}) & \"]\"",
-    "record_id": "asn-deploy-health-ai-initial",
-    "error": "drift: stored='ntwf-deployment-health-role [2026-01-10 00:00:00-06 -> 2026-02-05 00:00:00-06]' python-recompute='ntwf-deployment-health-role [2026-01-10 -> 2026-02-05]'",
-    "severity": "drift"
-  },
-  {
-    "entity": "RoleAssignments",
     "field": "FillerType",
     "formula": "=IF(NOT(ISBLANK({{FilledByHumanAgent}})), \"HumanAgent\", IF(NOT(ISBLANK({{FilledByAIAgent}})), \"AIAgent\", IF(NOT(ISBLANK({{FilledByAutomatedPipeline}})), \"AutomatedPipeline\", \"\")))",
     "record_id": "asn-deploy-health-ai-initial",
     "error": "drift: stored='AIAgent' python-recompute=''",
-    "severity": "drift"
-  },
-  {
-    "entity": "RoleAssignments",
-    "field": "Name",
-    "formula": "={{Role}} & \" [\" & {{ValidFrom}} & \" -> \" & IF(ISBLANK({{ValidTo}}), \"open\", {{ValidTo}}) & \"]\"",
-    "record_id": "asn-deploy-health-human-audit",
-    "error": "drift: stored='ntwf-deployment-health-role [2026-02-05 00:00:00-06 -> 2026-02-20 00:00:00-06]' python-recompute='ntwf-deployment-health-role [2026-02-05 -> 2026-02-20]'",
-    "severity": "drift"
-  },
-  {
-    "entity": "RoleAssignments",
-    "field": "Name",
-    "formula": "={{Role}} & \" [\" & {{ValidFrom}} & \" -> \" & IF(ISBLANK({{ValidTo}}), \"open\", {{ValidTo}}) & \"]\"",
-    "record_id": "asn-deploy-health-ai-current",
-    "error": "drift: stored='ntwf-deployment-health-role [2026-02-20 00:00:00-06 -> open]' python-recompute='ntwf-deployment-health-role [2026-02-20 -> open]'",
     "severity": "drift"
   },
   {
@@ -168,19 +120,195 @@
     "severity": "drift"
   },
   {
-    "entity": "ChangeLog",
-    "field": "Name",
-    "formula": "={{Version}} & \" (\" & {{ChangeDate}} & \")\"",
-    "record_id": "change-1-0-0",
-    "error": "drift: stored='1.0.0 (2026-01-15 00:00:00-06)' python-recompute='1.0.0 (2026-01-15)'",
+    "entity": "ScenarioCQEffects",
+    "field": "RelativePath",
+    "formula": "=\"scenario-cq-effects/\" & {{ScenarioCQEffectId}}",
+    "record_id": "drop-final-edge-cq-1",
+    "error": "drift: stored='scenario-cq-effects/drop-final-edge-cq-1' python-recompute='scenario-cq-effects/'",
     "severity": "drift"
   },
   {
-    "entity": "ChangeLog",
+    "entity": "ScenarioCQEffects",
     "field": "Name",
-    "formula": "={{Version}} & \" (\" & {{ChangeDate}} & \")\"",
-    "record_id": "change-1-1-0",
-    "error": "drift: stored='1.1.0 (2026-03-20 00:00:00-05)' python-recompute='1.1.0 (2026-03-20)'",
+    "formula": "=SUBSTITUTE(LOWER({{ScenarioCQEffectId}}), \" \", \"-\")",
+    "record_id": "drop-final-edge-cq-1",
+    "error": "drift: stored='drop-final-edge-cq-1' python-recompute=''",
+    "severity": "drift"
+  },
+  {
+    "entity": "ScenarioCQEffects",
+    "field": "RelativePath",
+    "formula": "=\"scenario-cq-effects/\" & {{ScenarioCQEffectId}}",
+    "record_id": "ai-release-manager-cq-2",
+    "error": "drift: stored='scenario-cq-effects/ai-release-manager-cq-2' python-recompute='scenario-cq-effects/'",
+    "severity": "drift"
+  },
+  {
+    "entity": "ScenarioCQEffects",
+    "field": "Name",
+    "formula": "=SUBSTITUTE(LOWER({{ScenarioCQEffectId}}), \" \", \"-\")",
+    "record_id": "ai-release-manager-cq-2",
+    "error": "drift: stored='ai-release-manager-cq-2' python-recompute=''",
+    "severity": "drift"
+  },
+  {
+    "entity": "ScenarioCQEffects",
+    "field": "RelativePath",
+    "formula": "=\"scenario-cq-effects/\" & {{ScenarioCQEffectId}}",
+    "record_id": "ai-release-manager-cq-3",
+    "error": "drift: stored='scenario-cq-effects/ai-release-manager-cq-3' python-recompute='scenario-cq-effects/'",
+    "severity": "drift"
+  },
+  {
+    "entity": "ScenarioCQEffects",
+    "field": "Name",
+    "formula": "=SUBSTITUTE(LOWER({{ScenarioCQEffectId}}), \" \", \"-\")",
+    "record_id": "ai-release-manager-cq-3",
+    "error": "drift: stored='ai-release-manager-cq-3' python-recompute=''",
+    "severity": "drift"
+  },
+  {
+    "entity": "ScenarioCQEffects",
+    "field": "RelativePath",
+    "formula": "=\"scenario-cq-effects/\" & {{ScenarioCQEffectId}}",
+    "record_id": "human-risk-step-cq-3",
+    "error": "drift: stored='scenario-cq-effects/human-risk-step-cq-3' python-recompute='scenario-cq-effects/'",
+    "severity": "drift"
+  },
+  {
+    "entity": "ScenarioCQEffects",
+    "field": "Name",
+    "formula": "=SUBSTITUTE(LOWER({{ScenarioCQEffectId}}), \" \", \"-\")",
+    "record_id": "human-risk-step-cq-3",
+    "error": "drift: stored='human-risk-step-cq-3' python-recompute=''",
+    "severity": "drift"
+  },
+  {
+    "entity": "ScenarioCQEffects",
+    "field": "RelativePath",
+    "formula": "=\"scenario-cq-effects/\" & {{ScenarioCQEffectId}}",
+    "record_id": "break-derivation-cq-4",
+    "error": "drift: stored='scenario-cq-effects/break-derivation-cq-4' python-recompute='scenario-cq-effects/'",
+    "severity": "drift"
+  },
+  {
+    "entity": "ScenarioCQEffects",
+    "field": "Name",
+    "formula": "=SUBSTITUTE(LOWER({{ScenarioCQEffectId}}), \" \", \"-\")",
+    "record_id": "break-derivation-cq-4",
+    "error": "drift: stored='break-derivation-cq-4' python-recompute=''",
+    "severity": "drift"
+  },
+  {
+    "entity": "ScenarioCQEffects",
+    "field": "RelativePath",
+    "formula": "=\"scenario-cq-effects/\" & {{ScenarioCQEffectId}}",
+    "record_id": "stale-docs-cq-5",
+    "error": "drift: stored='scenario-cq-effects/stale-docs-cq-5' python-recompute='scenario-cq-effects/'",
+    "severity": "drift"
+  },
+  {
+    "entity": "ScenarioCQEffects",
+    "field": "Name",
+    "formula": "=SUBSTITUTE(LOWER({{ScenarioCQEffectId}}), \" \", \"-\")",
+    "record_id": "stale-docs-cq-5",
+    "error": "drift: stored='stale-docs-cq-5' python-recompute=''",
+    "severity": "drift"
+  },
+  {
+    "entity": "ScenarioCQEffects",
+    "field": "RelativePath",
+    "formula": "=\"scenario-cq-effects/\" & {{ScenarioCQEffectId}}",
+    "record_id": "break-delegation-cq-6",
+    "error": "drift: stored='scenario-cq-effects/break-delegation-cq-6' python-recompute='scenario-cq-effects/'",
+    "severity": "drift"
+  },
+  {
+    "entity": "ScenarioCQEffects",
+    "field": "Name",
+    "formula": "=SUBSTITUTE(LOWER({{ScenarioCQEffectId}}), \" \", \"-\")",
+    "record_id": "break-delegation-cq-6",
+    "error": "drift: stored='break-delegation-cq-6' python-recompute=''",
+    "severity": "drift"
+  },
+  {
+    "entity": "ScenarioCQEffects",
+    "field": "RelativePath",
+    "formula": "=\"scenario-cq-effects/\" & {{ScenarioCQEffectId}}",
+    "record_id": "legal-to-engineering-cq-7",
+    "error": "drift: stored='scenario-cq-effects/legal-to-engineering-cq-7' python-recompute='scenario-cq-effects/'",
+    "severity": "drift"
+  },
+  {
+    "entity": "ScenarioCQEffects",
+    "field": "Name",
+    "formula": "=SUBSTITUTE(LOWER({{ScenarioCQEffectId}}), \" \", \"-\")",
+    "record_id": "legal-to-engineering-cq-7",
+    "error": "drift: stored='legal-to-engineering-cq-7' python-recompute=''",
+    "severity": "drift"
+  },
+  {
+    "entity": "ScenarioCQEffects",
+    "field": "RelativePath",
+    "formula": "=\"scenario-cq-effects/\" & {{ScenarioCQEffectId}}",
+    "record_id": "dataset-unconsumed-cq-8",
+    "error": "drift: stored='scenario-cq-effects/dataset-unconsumed-cq-8' python-recompute='scenario-cq-effects/'",
+    "severity": "drift"
+  },
+  {
+    "entity": "ScenarioCQEffects",
+    "field": "Name",
+    "formula": "=SUBSTITUTE(LOWER({{ScenarioCQEffectId}}), \" \", \"-\")",
+    "record_id": "dataset-unconsumed-cq-8",
+    "error": "drift: stored='dataset-unconsumed-cq-8' python-recompute=''",
+    "severity": "drift"
+  },
+  {
+    "entity": "ScenarioCQEffects",
+    "field": "RelativePath",
+    "formula": "=\"scenario-cq-effects/\" & {{ScenarioCQEffectId}}",
+    "record_id": "trigger-risk-cq-5",
+    "error": "drift: stored='scenario-cq-effects/trigger-risk-cq-5' python-recompute='scenario-cq-effects/'",
+    "severity": "drift"
+  },
+  {
+    "entity": "ScenarioCQEffects",
+    "field": "Name",
+    "formula": "=SUBSTITUTE(LOWER({{ScenarioCQEffectId}}), \" \", \"-\")",
+    "record_id": "trigger-risk-cq-5",
+    "error": "drift: stored='trigger-risk-cq-5' python-recompute=''",
+    "severity": "drift"
+  },
+  {
+    "entity": "ScenarioCQEffects",
+    "field": "RelativePath",
+    "formula": "=\"scenario-cq-effects/\" & {{ScenarioCQEffectId}}",
+    "record_id": "all-human-cq-3",
+    "error": "drift: stored='scenario-cq-effects/all-human-cq-3' python-recompute='scenario-cq-effects/'",
+    "severity": "drift"
+  },
+  {
+    "entity": "ScenarioCQEffects",
+    "field": "Name",
+    "formula": "=SUBSTITUTE(LOWER({{ScenarioCQEffectId}}), \" \", \"-\")",
+    "record_id": "all-human-cq-3",
+    "error": "drift: stored='all-human-cq-3' python-recompute=''",
+    "severity": "drift"
+  },
+  {
+    "entity": "ScenarioCQEffects",
+    "field": "RelativePath",
+    "formula": "=\"scenario-cq-effects/\" & {{ScenarioCQEffectId}}",
+    "record_id": "ai-at-gate-cq-3",
+    "error": "drift: stored='scenario-cq-effects/ai-at-gate-cq-3' python-recompute='scenario-cq-effects/'",
+    "severity": "drift"
+  },
+  {
+    "entity": "ScenarioCQEffects",
+    "field": "Name",
+    "formula": "=SUBSTITUTE(LOWER({{ScenarioCQEffectId}}), \" \", \"-\")",
+    "record_id": "ai-at-gate-cq-3",
+    "error": "drift: stored='ai-at-gate-cq-3' python-recompute=''",
     "severity": "drift"
   }
 ]

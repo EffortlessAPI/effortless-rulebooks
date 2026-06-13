@@ -52,6 +52,13 @@ export interface Step {
   gateApproverHuman: string | null;
   consistencyViolation: boolean;
   precedes: string[];
+  // CQ7 backing, per step. The owning department is the department of the step's
+  // assigned role (a lookup, not a raw fact); the two booleans are the substrate's
+  // calc over it. Read-only here — change a step's department by editing the
+  // role's OwnedBy (RoleRow.ownedBy) or reassigning the step to another role.
+  owningDepartment: string | null;
+  isLegalOwned: boolean;
+  isEngineeringOwned: boolean;
 }
 
 // The raw step facts the inline editor needs (separate from narrative `steps`).
@@ -68,10 +75,31 @@ export interface StepFact {
 export interface RoleRow {
   id: string;
   name: string;
+  // The capability this role requires of its filler (Roles.HasCapability).
+  hasCapability: string | null;
   fillerType: string;
   filledByHumanAgent: string | null;
   filledByAIAgent: string | null;
   filledByAutomatedPipeline: string | null;
+  // The escalation edge + the derived witness. NOTE: the reasoner materializes
+  // the TRANSITIVE delegatesTo (closure) onto the individual, so this arrives as
+  // an array there and a single FK from Postgres — we never read it as a scalar
+  // (the org-chart reads sit.delegation/escalationViolation instead). It's here
+  // only for completeness. escalationViolation is TRUE when this role owns an
+  // approval gate (fillsApprovalGate > 0) but has no escalation target.
+  delegatesTo: string | string[] | null;
+  fillsApprovalGate: number;
+  escalationViolation: boolean;
+  // The department this role is ownedBy (raw FK). This is THE editable fact that
+  // decides the department of every step the role owns — flip it and CQ7 re-fires.
+  ownedBy: string | null;
+}
+
+// One NTWF Department (schema:Organization) — what "Engineering"/"Legal" ARE.
+export interface Department {
+  id: string;
+  title: string;
+  displayName: string | null;
 }
 
 export interface PrecedenceEdge {
@@ -86,28 +114,63 @@ export interface Workflow {
   status: string;
   countAISteps: number;
   countHumanSteps: number;
-  totalPlanMinutes: number;
-  maxPlanMinutes: number;
-  isOverTimeBudget: boolean;
   modified: string;
   monthsSinceModified: number;
   stalenessThresholdMonths: number;
   isStale: boolean;
+  // CQ7 backing — cross-department derivation + its two input counts.
+  involvesEngineeringAndLegal: boolean;
+  countEngineeringOwnedSteps: number;
+  countLegalOwnedSteps: number;
 }
 
-export interface Verdict {
-  workflowTitle: string;
-  monthsSinceReview: number;
-  isStale: boolean;
-  aiStepCount: number;
-  hasAIExecutedStep: boolean;
-  totalPlanMinutes: number;
-  timeBudgetMinutes: number;
-  isOverTimeBudget: boolean;
-  hasConsistencyViolation: boolean;
-  consistencyViolationCount: number;
-  isAtComplianceRisk: boolean;
-  statement: string;
+// --- CQ-backing payload shapes (CQ4 artifacts, CQ8 datasets, the CQ suite) ---
+// One PROV artifact as arranged by /api/story (already-derived fields).
+export interface Artifact {
+  id: string;
+  title: string;
+  artifactType: string | null;
+  producedByStep: string | null;
+  producedByStepTitle: string | null;
+  producedByStepPosition: number | null;
+  derivedFromArtifact: string | null;
+  hasDerivationParent: boolean;
+  requiredBySteps: { id: string; title: string }[];
+  attributedTo: Agent | null;
+  producingAgentType: string | null;
+}
+
+// One DCAT dataset + the steps (and their agents) that consume it. roleCapability
+// is the capability the consuming step's role requires (Roles.HasCapability) —
+// CQ8 passes only when the consumer can actually process the dataset.
+export interface DatasetConsumption {
+  id: string;
+  title: string;
+  identifier: string | null;
+  consumedBySteps: { id: string; title: string; agent: Agent | null; roleCapability: string | null }[];
+}
+
+// One competency question — a first-class rulebook row. The question/target/
+// expected come from CompetencyQuestions; the live answer is read at render
+// time from targetTable.targetField in this same payload (never recomputed).
+export interface CompetencyQuestion {
+  id: string;
+  number: number;
+  displayName: string;
+  questionText: string;
+  targetTable: string;
+  targetField: string;
+  answerKind: "scalar" | "list" | string;
+  expectedAnswer: string;
+  explanation: string | null;
+  sortOrder: number;
+  // FK to the Scenario the card's "Simulate" button applies (null = no button).
+  simulateScenario?: string | null;
+  // Name of the boolean column on Workflows that decides this CQ's pass/fail
+  // (e.g. "Cq6Satisfied"), and its live substrate-computed value. The scoreboard
+  // reads pass/fail straight from `satisfied` — the criterion lives in the rulebook.
+  satisfiedField?: string | null;
+  satisfied?: boolean | null;
 }
 
 export interface DelegationEntry {
@@ -135,6 +198,7 @@ export interface StoryOptions {
   roles: { id: string; name: string }[];
   steps: { id: string; title: string; position: number }[];
   datasets: { id: string; name: string }[];
+  departments: { id: string; name: string }[];
 }
 
 // The full /api/story payload.
@@ -145,11 +209,18 @@ export interface Story {
   steps: Step[];
   stepFacts: StepFact[];
   roles: RoleRow[];
+  departments: Department[];
   edges: PrecedenceEdge[];
   options: StoryOptions;
   delegation: Record<string, DelegationEntry>;
   closure: Closure;
-  verdict: Verdict;
+  // The artifact-lineage transitive closure (prov:wasDerivedFrom). Same shape as
+  // `closure`; null on an engine that doesn't materialize it (the UI then falls
+  // back to the raw DerivedFromArtifact adjacency on each artifact).
+  derivationClosure: Closure | null;
+  artifacts: Artifact[];
+  datasets: DatasetConsumption[];
+  competencyQuestions: CompetencyQuestion[];
   engine: string;
   reasoned_triples: number;
 }
@@ -157,19 +228,24 @@ export interface Story {
 // ---- the normalized situation (model.ts) ----------------------------------
 export interface GraphNode {
   id: string;
-  type: "step" | "agent";
+  type: "step" | "agent" | "dataset";
   label: string;
   position?: number;
   isGate?: boolean;
   violation?: boolean;
   agentKind?: AgentKind;
   kind?: AgentKind;
+  // dataset-only: true when no step currently consumes it (a detached/orphan
+  // DCAT dataset — what the CQ8 "detach the risk dataset" simulate produces).
+  orphan?: boolean;
 }
 
 export interface GraphEdge {
+  // "consumes": a step consumes a DCAT dataset (CQ8). The edge points
+  // dataset → step (the dataset FEEDS the step), mirroring "executes".
   from: string;
   to: string;
-  type: "precedes" | "executes";
+  type: "precedes" | "executes" | "consumes";
 }
 
 export interface OrgNode {
@@ -180,12 +256,14 @@ export interface OrgNode {
 export interface Situation {
   company: string;
   workflow: Workflow;
-  verdict: Verdict;
   closure: Closure;
+  derivationClosure: Closure | null;
   steps: Step[];
   stepFacts: Record<string, StepFact>;
   roles: RoleRow[];
   roleById: Record<string, RoleRow>;
+  departments: Department[];
+  departmentById: Record<string, Department>;
   agentById: Record<string, Agent>;
   team: Team;
   options: StoryOptions;
@@ -193,6 +271,10 @@ export interface Situation {
   stepsByAgent: Record<string, number[]>;
   orgTree: OrgNode[][];
   graph: { nodes: GraphNode[]; edges: GraphEdge[] };
+  delegation: Record<string, DelegationEntry>;
+  artifacts: Artifact[];
+  datasets: DatasetConsumption[];
+  competencyQuestions: CompetencyQuestion[];
   reasoned_triples: number;
   short: (id: string) => string;
 }
@@ -200,7 +282,18 @@ export interface Situation {
 // ---- the editing handlers passed down to every view -----------------------
 export interface Handlers {
   openReassign: (roleId: string, anchorRect: DOMRect, requiresHuman?: boolean) => void;
+  // Open the escalation org-chart popup anchored to the clicked violation badge.
+  openEscalation: (roleId: string, anchorRect: DOMRect) => void;
   patchStep: (stepId: string, patch: Record<string, unknown>) => void;
+  // Set a role's delegatesTo escalation target (raw FK). "" clears it.
+  setDelegatesTo: (roleId: string, targetRoleId: string) => void;
+  // Set an artifact's prov:wasDerivedFrom parent (raw FK WorkflowArtifacts.
+  // DerivedFromArtifact). "" clears it. Re-fires CQ4: the substrate recomputes
+  // the derivation closure, so a restored link re-connects the lineage ribbon.
+  setDerivedFrom: (artifactId: string, parentArtifactId: string) => void;
+  // Set a role's owning department (raw FK Roles.OwnedBy). Re-fires CQ7: every
+  // step the role owns inherits the new department.
+  setOwnedBy: (roleId: string, departmentId: string) => void;
   setStalenessThreshold: (months: number) => void;
   setModified: (isoDate: string) => void;
   addEdge: (from: string, to: string) => void;

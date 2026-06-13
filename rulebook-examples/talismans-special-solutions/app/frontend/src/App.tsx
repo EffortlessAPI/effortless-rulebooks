@@ -5,33 +5,41 @@ import { buildSituation, KIND, kindOfType, initials } from "./model";
 import { FlowView } from "./views/FlowView";
 import { GraphView } from "./views/GraphView";
 import { ClosureView } from "./views/ClosureView";
-import { ReassignPopover } from "./Editable";
-import { VerdictHeader } from "./console/VerdictHeader";
+import { OrgView } from "./views/OrgView";
+import { DeptView } from "./views/DeptView";
+import { CQView } from "./views/CQView";
+import { ReassignPopover, EscalationPopover } from "./Editable";
 import { StalenessBar } from "./console/StalenessBar";
-import { TimeBudgetBar } from "./console/TimeBudgetBar";
+import { resolveCq } from "./console/cqs";
 import { DagCell } from "./explainer-dag";
 import type { Story, Situation, Handlers, Scenario } from "./types";
 
 // ===========================================================================
 // Talisman's Special Solutions — Release Console.
 //
-// A dashboard for ONE release. The top is the situation at a glance (the
-// compliance verdict). The middle is the same reasoned model shown three ways
-// (Flow / Graph / Closure) — switch the lens via the URL (/console/:view), the
-// object is the same. Everything with a dotted outline is editable IN PLACE.
-// EVERY edit writes a raw fact and the OWL/SHACL (or Postgres) substrate
-// recomputes the whole board — the app computes nothing itself.
+// A dashboard for ONE release. The reasoned model is shown several ways
+// (Flow / Closure / Org / Dept) on the LEFT — switch the lens via the URL.
+// The reasoned-network graph folds into the Flow lens as a collapsible panel;
+// the artifact lineage rides inside the Closure lens (it's the same closure
+// machine over wasDerivedFrom, and step order drives the artifact chain).
+// (/console/:view), the object is the same. The competency-question scoreboard
+// rides on the RIGHT, always visible, so the leadership questions re-answer
+// themselves live as you edit facts on the left. Everything with a dotted
+// outline is editable IN PLACE. EVERY edit writes a raw fact and the OWL/SHACL
+// (or Postgres) substrate recomputes the whole board — the app computes nothing
+// itself.
 //
-// (Split out of the original 821-line App.jsx: the verdict header, staleness
-// bar, time-budget bar, and drag hook now live in console/ and hooks/.)
+// (Split out of the original 821-line App.jsx: the staleness bar and drag hook
+// now live in console/ and hooks/.)
 // ===========================================================================
 
-export type ViewId = "flow" | "graph" | "closure";
+export type ViewId = "flow" | "closure" | "org" | "dept";
 
 const VIEWS: { id: ViewId; label: string; hint: string }[] = [
   { id: "flow", label: "Flow", hint: "the release, step by step" },
-  { id: "graph", label: "Graph", hint: "the reasoned network" },
-  { id: "closure", label: "Closure", hint: "assert order · watch it infer" },
+  { id: "closure", label: "Closure", hint: "assert order · watch it infer · + artifact lineage" },
+  { id: "org", label: "Org", hint: "who fills · who escalates to whom" },
+  { id: "dept", label: "Dept", hint: "which steps are Eng vs Legal · answers CQ7" },
 ];
 
 interface ReassignState {
@@ -55,7 +63,12 @@ export default function App({ headerRight = null }: AppProps) {
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [reassign, setReassign] = useState<ReassignState | null>(null);
+  const [escalation, setEscalation] = useState<{ roleId: string; anchorRect: DOMRect } | null>(null);
   const [scenarioOpen, setScenarioOpen] = useState(false);
+  // CQ ids that just changed answer as the result of a "Simulate" click — drives
+  // the chip-flash so the user SEES which questions a scenario moved (one for an
+  // isolated scenario, two for cq-2's ai-release-manager which also ripples cq-3).
+  const [flashed, setFlashed] = useState<Set<string>>(new Set());
   const reloadingRef = useRef(false);
 
   const load = useCallback(async () => {
@@ -97,7 +110,21 @@ export default function App({ headerRight = null }: AppProps) {
   const handlers: Handlers = {
     openReassign: (roleId, anchorRect, requiresHuman = false) =>
       setReassign({ roleId, anchorRect, requiresHuman: !!requiresHuman }),
+    openEscalation: (roleId, anchorRect) => setEscalation({ roleId, anchorRect }),
     patchStep: (stepId, patch) => mutate(() => api.patchRow("WorkflowSteps", stepId, patch)),
+    // Set the role's escalation target (raw delegatesTo FK). The substrate
+    // recomputes EscalationViolation + the delegation closure; CQ6 re-answers.
+    setDelegatesTo: (roleId, targetRoleId) =>
+      mutate(() => api.patchRow("Roles", roleId, { delegatesTo: targetRoleId })),
+    // Set an artifact's wasDerivedFrom parent (raw DerivedFromArtifact FK). The
+    // substrate recomputes the derivation closure; CQ4 + the lineage ribbon
+    // re-answer (a restored link re-connects the chain).
+    setDerivedFrom: (artifactId, parentArtifactId) =>
+      mutate(() => api.patchRow("WorkflowArtifacts", artifactId, { derivedFromArtifact: parentArtifactId })),
+    // Move a role to another department (raw Roles.OwnedBy). The substrate
+    // recomputes every owned step's OwningDepartment + the workflow's CQ7 verdict.
+    setOwnedBy: (roleId, departmentId) =>
+      mutate(() => api.patchRow("Roles", roleId, { ownedBy: departmentId })),
     setStalenessThreshold: (months) =>
       mutate(() => api.patchRow("Workflows", sit.workflow.id, { stalenessThresholdMonths: months })),
     setModified: (isoDate) =>
@@ -127,6 +154,36 @@ export default function App({ headerRight = null }: AppProps) {
     mutate(() => api.patchRow("Roles", roleId, arms));
   };
 
+  // "Simulate" on a CQ card: snapshot every CQ's live answer, apply the card's
+  // SimulateScenario, reload, then diff — flashing every CQ whose answer moved.
+  // Isolated scenarios flash exactly one chip; cq-2's ai-release-manager flashes
+  // two (the gate approver is itself a step executor, so cq-2 and cq-3 are
+  // structurally coupled — the model won't let you move one without the other).
+  const simulate = async (scenarioId: string) => {
+    if (!scenarioId || reloadingRef.current) return;
+    reloadingRef.current = true;
+    setBusy(true);
+    setFlashed(new Set());
+    try {
+      const before = new Map(sit.competencyQuestions.map((c) => [c.id, resolveCq(sit, c).answer]));
+      await api.applyScenario(scenarioId);
+      const s = await api.story();
+      setStory(s);
+      setError(null);
+      const after = buildSituation(s);
+      const moved = after.competencyQuestions
+        .filter((c) => before.get(c.id) !== resolveCq(after, c).answer)
+        .map((c) => c.id);
+      setFlashed(new Set(moved));
+      window.setTimeout(() => setFlashed(new Set()), 2800);
+    } catch (e) {
+      setError((e as Error).message);
+    } finally {
+      setBusy(false);
+      reloadingRef.current = false;
+    }
+  };
+
   return (
     <div className={"console" + (busy ? " reasoning" : "")}>
       <TopBar sit={sit} busy={busy} headerRight={headerRight} />
@@ -146,40 +203,48 @@ export default function App({ headerRight = null }: AppProps) {
         </div>
       </div>
 
-      {/* The board sits on the LEFT, the verdict card pins to its RIGHT — the
-          verdict (with its full AND/OR statement) is a fixed, non-draggable card
-          beside the steps it summarizes, filling what used to be dead space. */}
+      {/* The lens sits on the LEFT; the competency-question scoreboard pins to
+          its RIGHT — always visible, so every edit on the left re-answers the
+          leadership questions in place instead of on a separate tab. The CQ
+          panel also hosts the explainer toggle and the scenario picker (the
+          controls that used to live in the old verdict box). */}
       <div className="stage-row">
         <div className="stage">
-          {/* The Plan-runtime bar lives in the Flow tab — it summarizes the step
-              durations shown right below it, and resizing a segment IS editing a
-              step here. The Graph/Closure lenses don't show step durations, so it
-              would be context-free there. The AgentMix (AI/human step counts) sits
-              directly above the cards it summarizes. */}
+          {/* The AgentMix (AI/human step counts) sits directly above the cards
+              it summarizes, in the Flow lens only. */}
           {view === "flow" && (
             <>
-              <TimeBudgetBar sit={sit} workflow={sit.workflow} verdict={sit.verdict} handlers={handlers} busy={busy} />
+              {/* The reasoned network is no longer drawn separately: each agent
+                  node now sits directly on top of its real step card in FlowView
+                  (agent → stalk → card), so the five steps are shown ONCE. */}
               <AgentMix sit={sit} />
               <FlowView sit={sit} handlers={handlers} />
             </>
           )}
-          {view === "graph" && <GraphView sit={sit} handlers={handlers} />}
           {view === "closure" && <ClosureView sit={sit} handlers={handlers} />}
+          {view === "org" && <OrgView sit={sit} handlers={handlers} />}
+          {view === "dept" && <DeptView sit={sit} handlers={handlers} />}
+
+          {/* The docs-review-age slider sits at the bottom of the board column,
+              right under the step/role cards (it edits Modified → drives CQ5's
+              IsStale, which re-answers live in the rail). */}
+          <StalenessBar
+            workflow={sit.workflow}
+            busy={busy}
+            onSetModified={handlers.setModified}
+          />
         </div>
-        <VerdictHeader
-          verdict={sit.verdict}
-          workflow={sit.workflow}
+        <CQView
+          sit={sit}
           hasScenarios={scenarios.length > 0}
           busy={busy}
+          flashed={flashed}
+          onSimulate={simulate}
           onOpenScenarios={() => setScenarioOpen(true)}
+          onFixEscalation={handlers.openEscalation}
+          onReattachDataset={(stepId, datasetId) => handlers.patchStep(stepId, { consumesDataset: datasetId })}
         />
       </div>
-
-      <StalenessBar
-        workflow={sit.workflow}
-        busy={busy}
-        onSetModified={handlers.setModified}
-      />
 
       {scenarioOpen && (
         <ScenarioModal
@@ -207,6 +272,16 @@ export default function App({ headerRight = null }: AppProps) {
         />
       )}
 
+      {escalation && (
+        <EscalationPopover
+          roleId={escalation.roleId}
+          sit={sit}
+          anchorRect={escalation.anchorRect}
+          onPick={(targetRoleId) => { setEscalation(null); handlers.setDelegatesTo(escalation.roleId, targetRoleId); }}
+          onClose={() => setEscalation(null)}
+        />
+      )}
+
       <footer className="console-foot">
         <span className="dot" /> db.json holds the raw facts · OWL + SHACL is the computation ·
         this console only edits facts and renders what the reasoner returns ({sit.reasoned_triples?.toLocaleString?.()} triples)
@@ -228,12 +303,41 @@ function TopBar({ sit, busy, headerRight }: { sit: Situation; busy: boolean; hea
   );
 }
 
+// ---- collapsible graph ----------------------------------------------------
+// The reasoned network, folded into the Flow lens as an optional panel above the
+// cards (it used to be its own tab). Collapsed by default so the cards lead;
+// click the header to unfold the same agents-execute-steps graph in place.
+function CollapsibleGraph({ sit, handlers }: { sit: Situation; handlers: Handlers }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className={"graph-collapsible" + (open ? " open" : "")}>
+      <button
+        className="graph-toggle"
+        onClick={() => setOpen((o) => !o)}
+        aria-expanded={open}
+      >
+        <span className="gt-caret">{open ? "▾" : "▸"}</span>
+        <span className="gt-label">⊞ Reasoned network</span>
+        <span className="gt-hint muted">
+          the same release as a graph — agents <b>execute</b> steps, steps <b>precede</b> steps
+          {open ? " · click to hide" : " · click to show"}
+        </span>
+      </button>
+      {open && (
+        <div className="graph-collapsible-body">
+          <GraphView sit={sit} handlers={handlers} />
+        </div>
+      )}
+    </div>
+  );
+}
+
 // ---- agent mix ------------------------------------------------------------
 function AgentMix({ sit }: { sit: Situation }) {
   const ai = sit.workflow.countAISteps ?? 0;
   const human = sit.workflow.countHumanSteps ?? 0;
-  // HasAIAgentStep is the explainable boolean the AI-step count drives (and the
-  // verdict's "AI runs a step" input); its DAG shows CountAISteps as an input.
+  // HasAIAgentStep is the explainable boolean the AI-step count drives; its DAG
+  // shows CountAISteps as an input.
   // The human count is the derived CountHumanSteps rollup — no boolean of its
   // own, but the aggregation has a DAG worth drilling into, so wrap it too.
   return (
@@ -276,7 +380,7 @@ function ScenarioModal({
         </div>
         <p className="sm-intro muted">
           Each scenario sets several raw facts at once — then the reasoner recomputes the whole
-          board. Pick one and watch the verdict and the bars react.
+          board. Pick one and watch the competency answers on the right react.
         </p>
         <div className="sm-list">
           {scenarios.map((s) => (

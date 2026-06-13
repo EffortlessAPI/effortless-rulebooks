@@ -9,7 +9,8 @@
 // pedagogical breathing room.
 
 import { useMemo } from "react";
-import type { ReactNode } from "react";
+import { createPortal } from "react-dom";
+import type { CSSProperties, ReactNode } from "react";
 import type { DagResponse, FieldNode } from "../lib/types.ts";
 import { humanizeField, renderEnglish } from "../lib/renderEnglish.ts";
 import { tryParseFormula } from "../lib/formula.ts";
@@ -26,11 +27,24 @@ import { TypeBadge, typeTone } from "./TypeBadge.tsx";
 
 interface Props {
   dag: DagResponse;
+  // Viewport rect of the trigger glyph; the card is positioned `fixed` off this
+  // so no overflow-clipping ancestor can crop it (z-index can't escape a clip).
+  anchor: DOMRect;
   onMouseEnter: () => void;
   onMouseLeave: () => void;
 }
 
-export function DagHoverCard({ dag, onMouseEnter, onMouseLeave }: Props): JSX.Element {
+// Card geometry — must stay in sync with .dag-hovercard in dag.css.
+const CARD_W = 360;
+const SAFETY = 15;   // transparent shell padding around the visible card
+const GAP = 8;       // breathing room between the glyph and the card
+const MARGIN = 12;   // min gap kept between the visible card and any viewport edge
+// A conservative tall-card estimate for the place-above/below decision. The CSS
+// also caps the card with max-height + internal scroll, so even a card taller
+// than this can never run off-screen — this only biases which side we prefer.
+const EST_CARD_H = 300;
+
+export function DagHoverCard({ dag, anchor, onMouseEnter, onMouseLeave }: Props): JSX.Element {
   const tone = typeTone(dag.type);
   // The hovercard is a compact 360px preview, so it shows ONE narration — the
   // first enabled in the gear (rulespeak → english → formula), defaulting to
@@ -72,9 +86,45 @@ export function DagHoverCard({ dag, onMouseEnter, onMouseLeave }: Props): JSX.El
     </FieldChip>
   );
 
-  return (
+  // Position the card in viewport (fixed) coordinates off the glyph rect, and
+  // clamp it inside ALL FOUR viewport edges so it can never be cropped — not by
+  // an ancestor (we're portaled to <body>), and not by the screen edges either.
+  const vw = window.innerWidth;
+  const vh = window.innerHeight;
+  // The visible card is min(CARD_W, 90vw); never let it exceed the viewport.
+  const cardW = Math.min(CARD_W, vw - 2 * MARGIN);
+
+  // Horizontal: prefer right-aligning the card under the glyph, then clamp the
+  // VISIBLE card fully within [MARGIN, vw - MARGIN]. (shell.left subtracts the
+  // transparent SAFETY ring so the visible card lands where we computed.)
+  const cardLeft = Math.min(Math.max(anchor.right - cardW, MARGIN), vw - cardW - MARGIN);
+
+  // Vertical: place below the glyph if it fits; else above if there's more room
+  // there; then clamp so the card's top/bottom stay within the margins. CSS caps
+  // the height (max-height + internal scroll), so a too-tall card pins to the
+  // viewport and scrolls rather than overflowing off the top or bottom edge.
+  const spaceBelow = vh - anchor.bottom - GAP - MARGIN;
+  const spaceAbove = anchor.top - GAP - MARGIN;
+  const placeBelow = spaceBelow >= EST_CARD_H || spaceBelow >= spaceAbove;
+  const maxH = Math.max(120, (placeBelow ? spaceBelow : spaceAbove));
+
+  let cardTop = placeBelow ? anchor.bottom + GAP : anchor.top - GAP - Math.min(EST_CARD_H, maxH);
+  cardTop = Math.min(Math.max(cardTop, MARGIN), vh - MARGIN - Math.min(EST_CARD_H, maxH));
+
+  const shellStyle: CSSProperties = {
+    position: "fixed",
+    left: cardLeft - SAFETY,
+    top: cardTop - SAFETY,
+    right: "auto",
+    bottom: "auto",
+    // expose the available height to the card so it can cap + scroll internally
+    ["--dag-card-maxh" as string]: `${Math.round(maxH)}px`,
+  };
+
+  return createPortal(
     <span
-      className="dag-hovercard-shell"
+      className="dag-hovercard-shell dag-hovercard-shell-fixed"
+      style={shellStyle}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
     >
@@ -140,7 +190,8 @@ export function DagHoverCard({ dag, onMouseEnter, onMouseLeave }: Props): JSX.El
           Double-click the cell to open the full DAG page.
         </span>
       </span>
-    </span>
+    </span>,
+    document.body,
   );
 }
 

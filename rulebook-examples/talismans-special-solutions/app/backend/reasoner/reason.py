@@ -42,6 +42,8 @@ import sys
 from collections import defaultdict
 from pathlib import Path
 from typing import Any, Dict, List
+import psutil
+import os
 
 from rdflib import Graph, Literal, Namespace, URIRef
 import owlrl
@@ -66,6 +68,16 @@ ERB_PREFIX_LABEL = "effortless-ntwf"
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from abox_from_json import json_db_to_turtle, load_db  # noqa: E402
+
+
+def _check_memory(stage: str, limit_gb: float = 8.0) -> None:
+    process = psutil.Process(os.getpid())
+    mem_gb = process.memory_info().rss / (1024 ** 3)
+    if mem_gb > limit_gb:
+        raise MemoryError(
+            f"Reasoner ({stage}) exceeded {limit_gb}GB memory limit "
+            f"(using {mem_gb:.1f}GB). Rules may be cyclic or input too large."
+        )
 
 
 def _local(uri: Any) -> str:
@@ -153,6 +165,7 @@ def build_reasoned_graph(db: Dict[str, Any]) -> Graph:
         prev, iterations = None, 0
         while iterations < 50:
             iterations += 1
+            _check_memory(f"{stage} iteration {iterations}")
             pyshacl.validate(g, shacl_graph=shapes, advanced=True, inplace=True)
             cur = snapshot(g)
             if cur == prev:
@@ -200,10 +213,58 @@ def build_reasoned_graph(db: Dict[str, Any]) -> Graph:
         for s, p, o in raw_derived_triples:
             g.add((s, p, o))
 
+    def settle_single_valued():
+        # A SHACL CONSTRUCT only ADDS triples, so a derived value that CHANGES as
+        # the fixpoint deepens leaves BOTH objects on the subject — a spurious
+        # multi-value on a field that is single-valued by construction. The most
+        # common shape: a COUNTIFS whose criterion column is itself DERIVED
+        # several levels down (countImpactedWorkflows counts artifacts whose
+        # calc HasProducingWorkflow — a NOT(ISBLANK(lookup)) — is true). Early in
+        # the fixpoint the parent-matched children are already bound but the
+        # criterion column has not materialized, so the sub-SELECT COUNTs 0; a
+        # later pass COUNTs 1. Both survive -> countImpactedWorkflows = [0, 1].
+        #
+        # clear_derived() above fixes the OWL-RL-driven version of this (a value
+        # that flips once the closure lands); THIS fixes the residual that arises
+        # purely from derivation DEPTH within a single SHACL fixpoint. We remove
+        # only the OFFENDING (subject, predicate) values — never their already-
+        # settled single-valued dependencies — and re-run the rules once. With
+        # every dependency now present and stable from the pass's first scan, the
+        # rule yields exactly one value. Authored raw values that share a
+        # dual-use predicate are restored (same contract as clear_derived) so a
+        # raw is never dropped. We RAISE if it will not settle rather than serve
+        # a multi-valued single field (CLAUDE.md: Avoid Silent Fallbacks).
+        raw_by_sp: Dict[Any, List[Any]] = defaultdict(list)
+        for s, p, o in raw_derived_triples:
+            raw_by_sp[(s, p)].append(o)
+        for _ in range(10):
+            offenders = []
+            for p in derived_predicates:
+                subj_vals: Dict[Any, set] = defaultdict(set)
+                for s, o in g.subject_objects(p):
+                    subj_vals[s].add(o)
+                offenders.extend((s, p) for s, vals in subj_vals.items() if len(vals) > 1)
+            if not offenders:
+                return
+            for (s, p) in offenders:
+                for o in list(g.objects(s, p)):
+                    g.remove((s, p, o))
+                for o in raw_by_sp.get((s, p), ()):  # restore authored raw values
+                    g.add((s, p, o))
+            pyshacl.validate(g, shacl_graph=shapes, advanced=True, inplace=True)
+        raise RuntimeError(
+            "derived single-valued predicates did not settle in 10 passes — a "
+            "rule may be genuinely non-deterministic. Refusing to serve a "
+            "multi-valued single field."
+        )
+
     shacl_to_fixpoint("stage 1")                                    # calc/lookup + asserted edges
+    _check_memory("before OWL-RL closure")
     owlrl.DeductiveClosure(owlrl.OWLRL_Semantics).expand(g)          # transitive/inverse/type closure
+    _check_memory("after OWL-RL closure")
     clear_derived()                                                 # drop stage-1 derived values
     shacl_to_fixpoint("stage 3")                                    # recompute over the closure
+    settle_single_valued()                                          # collapse depth-driven multi-values
     return g
 
 
@@ -253,6 +314,33 @@ def _precedence_closure(g: Graph, db: Dict[str, Any]) -> Dict[str, Any]:
     q = g.query(
         "PREFIX erb: <https://w3id.org/effortless-ntwf#> "
         "SELECT ?f ?t WHERE { ?f erb:precedesStep ?t } ORDER BY ?f ?t"
+    )
+    for r in q:
+        f, t = _local(r[0]), _local(r[1])
+        pairs.append({"from_id": f, "to_id": t, "is_inferred": (f, t) not in asserted})
+    return {
+        "count": len(pairs),
+        "inferred": sum(1 for p in pairs if p["is_inferred"]),
+        "asserted": sum(1 for p in pairs if not p["is_inferred"]),
+        "pairs": pairs,
+    }
+
+
+def _derivation_closure(g: Graph, db: Dict[str, Any]) -> Dict[str, Any]:
+    # Transitive closure of prov:wasDerivedFrom over the self-referential
+    # derivedFromArtifact FK — the artifact-lineage analogue of
+    # _precedence_closure. derivedFromArtifact is declared owl:TransitiveProperty
+    # in the generated TBox, so OWL-RL materializes the inferred reachability
+    # pairs; the asserted set is the raw single-hop FKs.
+    asserted = set()
+    for row in db.get("WorkflowArtifacts", []):
+        parent = row.get("derivedFromArtifact")
+        if parent:
+            asserted.add((row.get("artifactId"), parent))
+    pairs = []
+    q = g.query(
+        "PREFIX erb: <https://w3id.org/effortless-ntwf#> "
+        "SELECT ?f ?t WHERE { ?f erb:derivedFromArtifact ?t } ORDER BY ?f ?t"
     )
     for r in q:
         f, t = _local(r[0]), _local(r[1])
@@ -326,6 +414,7 @@ def reason(db: Dict[str, Any]) -> Dict[str, Any]:
         "individuals": _individuals(g),
         "competency": {
             "precedence_closure": _precedence_closure(g, db),
+            "derivation_closure": _derivation_closure(g, db),
             "delegation": _delegation(g, db),
             "disjoint_classes": _disjoint_classes(g),
             "roles_filled_by": _roles_filled_by(g, db),

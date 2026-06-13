@@ -302,6 +302,110 @@ export const rulebook = {
         "Description": "Number of filledBy assignment periods that took a previously AI-executed binding and reassigned it to a human (rollup over RoleAssignments.RequiresComplianceAudit = TRUE). NTWF governance treats this as a data operation with compliance implications: changing the agent type of a step from ntwf:AIAgent to ntwf:HumanAgent. Each such row must carry when (ValidFrom) and why (Reason). NOTE: single-workflow scoping as above.",
         "explanation_rich": "**The compliance-flagged transitions, counted.** NTWF governance singles out AIAgent -> HumanAgent reassignment as the case the audit record must capture (when + why). `RoleAssignments.RequiresComplianceAudit` fires on exactly that direction; this rollup surfaces how many such transitions a workflow's role history contains — the audit queue, as a number.",
         "formula": "=COUNTIFS(RoleAssignments!{{RequiresComplianceAudit}}, TRUE)"
+      },
+      {
+        "name": "CountApprovalGateSteps",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Number of this workflow's steps that are approval gates. >0 means the workflow has a blocking approval checkpoint; used by Cq2Satisfied to require that the gate exists before asking whether it has a human approver.",
+        "formula": "=COUNTIFS(WorkflowSteps!{{Workflow}}, Workflows!{{WorkflowId}}, WorkflowSteps!{{IsApprovalGate}}, TRUE)"
+      },
+      {
+        "name": "CountGatesWithoutHumanApprover",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Number of approval gates with no resolved human approver (gate role not filled by a HumanAgent). Single-workflow model, so this global count is wholly this workflow's. Drives Cq2Satisfied (= a gate exists AND none lack a human approver).",
+        "formula": "=COUNTIFS(ApprovalGates!{{HasHumanApprover}}, FALSE)"
+      },
+      {
+        "name": "CountWorkflowArtifacts",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Total artifacts produced by this workflow. With CountDerivationLinks (artifacts that have a wasDerivedFrom parent) this lets Cq4Satisfied check the provenance chain is intact: every artifact but the single origin has a parent.",
+        "formula": "=COUNTIFS(WorkflowArtifacts!{{ProducedByWorkflow}}, Workflows!{{WorkflowId}})"
+      },
+      {
+        "name": "CountRolesWithEscalationViolation",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Number of roles that own an approval gate yet escalate to no one (Roles.EscalationViolation). Single-workflow model, so this global count applies to this workflow. Drives Cq6Satisfied (=0): the model's own native escalation-completeness invariant, replacing any hardcoded 'must reach the CTO' check.",
+        "formula": "=COUNTIFS(Roles!{{EscalationViolation}}, TRUE)"
+      },
+      {
+        "name": "CountUnconsumedDatasets",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Number of datasets not consumed by any step (Datasets.IsConsumed = FALSE). Single-workflow model, so this global count applies to this workflow. Drives Cq8Satisfied (=0).",
+        "formula": "=COUNTIFS(Datasets!{{IsConsumed}}, FALSE)"
+      },
+      {
+        "name": "Cq1Satisfied",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "CQ1 satisfied: the step-ordering closure is a TOTAL order — its pair count equals n*(n-1)/2 for n steps, so every pair of steps is comparable and 'the order' is well-defined. Purely structural; no asserted literal.",
+        "formula": "={{CountOfPrecedenceClosurePairs}} = {{CountOfNonProposedSteps}} * ({{CountOfNonProposedSteps}} - 1) / 2"
+      },
+      {
+        "name": "Cq2Satisfied",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "CQ2 satisfied: the workflow has an approval gate AND every gate resolves to a human approver. Derived from the gate->role->filler chain; no hardcoded approver name.",
+        "formula": "=AND({{CountApprovalGateSteps}} > 0, {{CountGatesWithoutHumanApprover}} = 0)"
+      },
+      {
+        "name": "Cq3Satisfied",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "CQ3 satisfied: the AI-vs-human assignment is consistent — no step that requires a human decision is executed by a non-human (no ApprovalConsistencyViolation). Derived from the model's own consistency invariant.",
+        "formula": "=NOT({{HasConsistencyViolation}})"
+      },
+      {
+        "name": "Cq4Satisfied",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "CQ4 satisfied: the wasDerivedFrom provenance chain is intact — every artifact but the single origin has a derivation parent. Structural; breaks the instant any derivation edge is cut.",
+        "formula": "={{CountDerivationLinks}} = {{CountWorkflowArtifacts}} - 1"
+      },
+      {
+        "name": "Cq5Satisfied",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "CQ5 satisfied: the workflow's compliance docs are within the review policy (not stale). Reads the existing IsStale verdict; flips when the review age passes StalenessThresholdMonths.",
+        "formula": "=NOT({{IsStale}})"
+      },
+      {
+        "name": "Cq6Satisfied",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "CQ6 satisfied: no gate-owning role escalates to nobody — every approval gate has a complete escalation path. Uses the model's native EscalationViolation invariant; 'the top' is the delegation apex, derived, not a hardcoded CTO name.",
+        "formula": "={{CountRolesWithEscalationViolation}} = 0"
+      },
+      {
+        "name": "Cq7Satisfied",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "CQ7 satisfied: the workflow involves BOTH Engineering-owned and Legal-owned steps. Reads the existing InvolvesEngineeringAndLegal boolean.",
+        "formula": "={{InvolvesEngineeringAndLegal}}"
+      },
+      {
+        "name": "Cq8Satisfied",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "CQ8 satisfied: every dataset the workflow declares is actually consumed by a step. Flips when a dataset is detached.",
+        "formula": "={{CountUnconsumedDatasets}} = 0"
       }
     ],
     "data": [
@@ -407,11 +511,41 @@ export const rulebook = {
         "RelatedTo": "Workflows"
       },
       {
-        "name": "SequencePosition",
+        "name": "PrecedingStepCount",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Number of steps that TRANSITIVELY precede this step in the ntwf:precedesStep ordering — a rollup over the closure view vw_step_precedence_closure counting rows whose to_id is this step (i.e. this step's ancestors). On the linear Production Deployment chain: 0,1,2,3,4. Derived purely from the asserted StepPrecedence edges via their transitive closure; nothing is hand-entered. SequencePosition is this + 1.",
+        "explanation_rich": "**How many steps must finish before this one.** Counts the closure rows `vw_step_precedence_closure.to_id = this step` — every step that transitively precedes it. Step 1 has 0 ancestors; step 5 has 4. The four asserted edges (1→2→3→4→5) close to these ancestor counts, and `SequencePosition` is just this count plus one. Change an edge and the count (and the position) recomputes.",
+        "formula": "=COUNTIFS(vw_step_precedence_closure!{{ToId}}, WorkflowSteps!{{WorkflowStepId}})"
+      },
+      {
+        "name": "InferredSequencePosition",
+        "datatype": "integer",
+        "type": "calculated",
+        "nullable": true,
+        "important": true,
+        "Description": "The step's ordinal position INFERRED purely from the StepPrecedence edges: 1 + PrecedingStepCount (one plus the number of steps that transitively precede it in vw_step_precedence_closure). On the linear Production Deployment chain: 1,2,3,4,5 — no integer is typed; it is a projection of the asserted ordering edges. This is the DEFAULT position; SequencePositionOverride can pin a different value where the inference is ambiguous (e.g. a branch produces ties). Maps to ntwf:inferredSequencePosition (an effortless extension of the article's ordering).",
+        "explanation_rich": "**The position the edges imply.** `{{PrecedingStepCount}} + 1`: a step with no predecessors is 1; each transitive predecessor bumps it by one. The four asserted edges close to ancestor counts 0,1,2,3,4 so positions fall out as 1..5 — computed by the substrate, never written down. This is the *default*: the resolved `SequencePosition` uses it unless a human pins `SequencePositionOverride`.",
+        "formula": "={{PrecedingStepCount}} + 1"
+      },
+      {
+        "name": "SequencePositionOverride",
         "datatype": "integer",
         "type": "raw",
         "nullable": true,
-        "Description": "Integer ordinal position of the step within its workflow. Maps to ntwf:sequencePosition, declared as owl:FunctionalProperty (each step has exactly one position). Enables positional queries. Note: this is a display/positional convenience — the authoritative ordering lives in the StepPrecedence edges."
+        "Description": "OPTIONAL hand-asserted ordinal position — the article's pure ntwf:sequencePosition functional datatype property, preserved as an override slot. NULL on the linear Production Deployment chain (the inference is unambiguous, so nothing is pinned). When set, it wins over InferredSequencePosition in the resolved SequencePosition — this is how a modeler recovers the owl:FunctionalProperty 'exactly one distinct position per step' guarantee on a partial order / branch where the inferred rank would tie. Maps to ntwf:sequencePosition (the article's asserted functional property).",
+        "explanation_rich": "**The article's asserted position, kept as an override.** The original NTWF model asserts `ntwf:sequencePosition` directly as a functional integer. Rather than delete that capability, it survives here as an optional override: null by default (let the edges decide), but a pinned value takes precedence in the resolved `SequencePosition`. Asserting it is an explicit, visible decision — not a silent second encoding that could drift from the edges."
+      },
+      {
+        "name": "SequencePosition",
+        "datatype": "integer",
+        "type": "calculated",
+        "nullable": true,
+        "important": true,
+        "Description": "The effective ordinal position used everywhere (views, UI, competency questions): the hand-asserted SequencePositionOverride when present, otherwise the edge-derived InferredSequencePosition. IF(SequencePositionOverride <> \"\", SequencePositionOverride, InferredSequencePosition). This is the honest resolution of the two ways order can be stated: the inference is the default computed from the SSoT (the StepPrecedence edges), and an explicit override only overrides — never a silent guess. On the Production Deployment chain all overrides are null, so this equals InferredSequencePosition = 1,2,3,4,5. Maps to ntwf:sequencePosition for consumers.",
+        "explanation_rich": "**Override-or-inferred, decided explicitly.** `IF(SequencePositionOverride <> \"\", SequencePositionOverride, InferredSequencePosition)`. The inferred value is the deterministically-correct default *computed from the SSoT* (the precedence edges); the override is an explicit asserted decision that wins when present. This is the sanctioned 'computed default + manual override' pattern (CLAUDE.md: *defaults derived from the SSoT are NOT fallbacks*), not the silent substitution it forbids. Here every override is null, so the resolved position IS the inference: 1,2,3,4,5.",
+        "formula": "=IF({{SequencePositionOverride}} <> \"\", {{SequencePositionOverride}}, {{InferredSequencePosition}})"
       },
       {
         "name": "AssignedRole",
@@ -534,6 +668,14 @@ export const rulebook = {
         "formula": "=NOT(ISBLANK({{ExecutingHumanAgent}}))"
       },
       {
+        "name": "IsApprovalGate",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when this step is specialized by an ApprovalGate subtype row (its ApprovalGate back-reference is set). An approval gate carries escalationThresholdHours and, when it stalls, activates the gate role's delegatesTo escalation chain. Rolls up into Roles.FillsApprovalGate, which marks the role that must have a complete escalation path (CQ6).",
+        "formula": "=NOT(ISBLANK({{ApprovalGate}}))"
+      },
+      {
         "name": "ApprovalConsistencyViolation",
         "datatype": "boolean",
         "type": "calculated",
@@ -607,7 +749,10 @@ export const rulebook = {
         "ApprovalIsHumanFilled": true,
         "OwningDepartment": "ntwf-engineering",
         "IsLegalOwned": false,
-        "IsEngineeringOwned": true
+        "IsEngineeringOwned": true,
+        "PrecedingStepCount": 2,
+        "InferredSequencePosition": 3,
+        "IsApprovalGate": true
       },
       {
         "WorkflowStepId": "prod-deploy-step-2",
@@ -637,7 +782,10 @@ export const rulebook = {
         "ApprovalIsHumanFilled": true,
         "OwningDepartment": "ntwf-legal-dept",
         "IsLegalOwned": true,
-        "IsEngineeringOwned": false
+        "IsEngineeringOwned": false,
+        "PrecedingStepCount": 1,
+        "InferredSequencePosition": 2,
+        "IsApprovalGate": false
       },
       {
         "WorkflowStepId": "prod-deploy-step-5",
@@ -667,7 +815,10 @@ export const rulebook = {
         "ApprovalIsHumanFilled": true,
         "OwningDepartment": "ntwf-engineering",
         "IsLegalOwned": false,
-        "IsEngineeringOwned": true
+        "IsEngineeringOwned": true,
+        "PrecedingStepCount": 4,
+        "InferredSequencePosition": 5,
+        "IsApprovalGate": false
       },
       {
         "WorkflowStepId": "prod-deploy-step-1",
@@ -697,7 +848,10 @@ export const rulebook = {
         "ApprovalIsHumanFilled": true,
         "OwningDepartment": "ntwf-engineering",
         "IsLegalOwned": false,
-        "IsEngineeringOwned": true
+        "IsEngineeringOwned": true,
+        "PrecedingStepCount": 0,
+        "InferredSequencePosition": 1,
+        "IsApprovalGate": false
       },
       {
         "WorkflowStepId": "prod-deploy-step-4",
@@ -727,7 +881,10 @@ export const rulebook = {
         "ApprovalIsHumanFilled": true,
         "OwningDepartment": "ntwf-engineering",
         "IsLegalOwned": false,
-        "IsEngineeringOwned": true
+        "IsEngineeringOwned": true,
+        "PrecedingStepCount": 3,
+        "InferredSequencePosition": 4,
+        "IsApprovalGate": false
       }
     ]
   },
@@ -810,6 +967,14 @@ export const rulebook = {
         "Description": "The human agent who approves at this gate, resolved through the two-hop chain gate → GateRole → Roles.FilledByHumanAgent. Answers CQ2 ('who is responsible for approving a production deployment') directly: the release-approval gate resolves to the Release Manager role, filled by Maria Gonzalez.",
         "explanation_rich": "**CQ2 answered by a lookup chain.** A gate specializes a step; the step has a role; the role is filled by a person. This field walks that chain — `GateRole` (gate → step → role) then `Roles.FilledByHumanAgent` (role → human) — to name the approver. For the release-approval gate the answer is `ntwf-maria-gonzalez`, exactly what the article's SPARQL returns.",
         "formula": "=INDEX(Roles!{{FilledByHumanAgent}}, MATCH({{GateRole}}, Roles!{{RoleId}}, 0))"
+      },
+      {
+        "name": "HasHumanApprover",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE iff this approval gate resolves to a human approver (its gate role is filled by a HumanAgent). Rolls up into Workflows.CountGatesWithoutHumanApprover, which CQ2's satisfaction reads.",
+        "formula": "=NOT(ISBLANK({{GateApproverHuman}}))"
       }
     ],
     "data": [
@@ -1096,6 +1261,24 @@ export const rulebook = {
         "nullable": true,
         "Description": "Which disjoint agent class fills this role (HumanAgent / AIAgent / AutomatedPipeline), from whichever filledBy arm is set. Lets the delegation-chain query confirm CQ6's 'zero AI agents in the escalation chain'.",
         "formula": "=IF(NOT(ISBLANK({{FilledByHumanAgent}})), \"HumanAgent\", IF(NOT(ISBLANK({{FilledByAIAgent}})), \"AIAgent\", IF(NOT(ISBLANK({{FilledByAutomatedPipeline}})), \"AutomatedPipeline\", \"\")))"
+      },
+      {
+        "name": "FillsApprovalGate",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Number of this role's assigned WorkflowSteps that are approval gates (rollup over WorkflowSteps.IsApprovalGate). Greater than zero marks a role that owns a blocking decision checkpoint and therefore MUST have a complete delegatesTo escalation path — the precondition for EscalationViolation. Worked example: 1 for the Release Manager (who fills the Release Approval Gate), 0 for every other role.",
+        "formula": "=COUNTIFS(WorkflowSteps!{{AssignedRole}}, Roles!{{RoleId}}, WorkflowSteps!{{IsApprovalGate}}, TRUE)"
+      },
+      {
+        "name": "EscalationViolation",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "important": true,
+        "Description": "Detectable-error witness: TRUE iff this role owns an approval gate (FillsApprovalGate > 0) yet has no escalation target (DelegatesTo is blank). A gate can stall and must be escalable up the delegatesTo chain; a gate role with no one to escalate to is a broken escalation. A clean ABox yields FALSE for every role. This is the role-side analogue of WorkflowSteps.ApprovalConsistencyViolation, and the witness CQ6's escalation chain depends on.",
+        "explanation_rich": "**A broken escalation made visible.** An ApprovalGate carries `escalationThresholdHours`: when it stalls, authority must flow up the `ntwf:delegatesTo` chain (Release Manager → VP Engineering → CTO). If the role that owns the gate has nowhere to escalate (`DelegatesTo` blank), the gate can deadlock — there is no higher authority to take over. Here that surfaces as a boolean: `FillsApprovalGate > 0 AND DelegatesTo is blank`. Cut the Release Manager's escalation edge and this lights up, exactly as CQ6 ('what happens when the VP is unavailable during escalation?') would expose.",
+        "formula": "=AND({{FillsApprovalGate}} > 0, ISBLANK({{DelegatesTo}}))"
       }
     ],
     "data": [
@@ -1117,7 +1300,9 @@ export const rulebook = {
         "Name": "ci/cd-executor",
         "FilledByArmCount": 1,
         "HasExactlyOneFiller": true,
-        "FillerType": "AutomatedPipeline"
+        "FillerType": "AutomatedPipeline",
+        "FillsApprovalGate": 0,
+        "EscalationViolation": false
       },
       {
         "RoleId": "ntwf-cto-role",
@@ -1137,7 +1322,9 @@ export const rulebook = {
         "Name": "chief-technology-officer",
         "FilledByArmCount": 1,
         "HasExactlyOneFiller": true,
-        "FillerType": "HumanAgent"
+        "FillerType": "HumanAgent",
+        "FillsApprovalGate": 0,
+        "EscalationViolation": false
       },
       {
         "RoleId": "ntwf-deployment-health-role",
@@ -1157,7 +1344,9 @@ export const rulebook = {
         "Name": "deployment-health-agent",
         "FilledByArmCount": 1,
         "HasExactlyOneFiller": true,
-        "FillerType": "AIAgent"
+        "FillerType": "AIAgent",
+        "FillsApprovalGate": 0,
+        "EscalationViolation": false
       },
       {
         "RoleId": "ntwf-vp-engineering-role",
@@ -1177,7 +1366,9 @@ export const rulebook = {
         "Name": "vp-of-engineering",
         "FilledByArmCount": 1,
         "HasExactlyOneFiller": true,
-        "FillerType": "HumanAgent"
+        "FillerType": "HumanAgent",
+        "FillsApprovalGate": 0,
+        "EscalationViolation": false
       },
       {
         "RoleId": "ntwf-risk-analysis-role",
@@ -1197,7 +1388,9 @@ export const rulebook = {
         "Name": "risk-analysis-agent",
         "FilledByArmCount": 1,
         "HasExactlyOneFiller": true,
-        "FillerType": "AIAgent"
+        "FillerType": "AIAgent",
+        "FillsApprovalGate": 0,
+        "EscalationViolation": false
       },
       {
         "RoleId": "ntwf-legal-compliance-role",
@@ -1217,7 +1410,9 @@ export const rulebook = {
         "Name": "legal-compliance-reviewer",
         "FilledByArmCount": 1,
         "HasExactlyOneFiller": true,
-        "FillerType": "HumanAgent"
+        "FillerType": "HumanAgent",
+        "FillsApprovalGate": 0,
+        "EscalationViolation": false
       },
       {
         "RoleId": "ntwf-release-manager-role",
@@ -1237,7 +1432,9 @@ export const rulebook = {
         "Name": "release-manager",
         "FilledByArmCount": 1,
         "HasExactlyOneFiller": true,
-        "FillerType": "HumanAgent"
+        "FillerType": "HumanAgent",
+        "FillsApprovalGate": 1,
+        "EscalationViolation": false
       }
     ]
   },
@@ -1404,7 +1601,7 @@ export const rulebook = {
         "ParentPath": "roles/ntwf-release-manager-role",
         "RelativePath": "roles/ntwf-release-manager-role/assignments/asn-release-manager-maria",
         "Iri": "roles-ntwf-release-manager-role-assignments-asn-release-manager-maria",
-        "Name": "ntwf-release-manager-role [2026-01-10 00:00:00-06 -> open]",
+        "Name": "ntwf-release-manager-role [2026-01-10 -> open]",
         "FillerType": "HumanAgent",
         "IsCurrent": true,
         "WasActiveAsOfAuditDate": true,
@@ -1424,7 +1621,7 @@ export const rulebook = {
         "ParentPath": "roles/ntwf-vp-engineering-role",
         "RelativePath": "roles/ntwf-vp-engineering-role/assignments/asn-vp-eng-priya",
         "Iri": "roles-ntwf-vp-engineering-role-assignments-asn-vp-eng-priya",
-        "Name": "ntwf-vp-engineering-role [2026-01-10 00:00:00-06 -> 2026-03-15 00:00:00-05]",
+        "Name": "ntwf-vp-engineering-role [2026-01-10 -> 2026-03-15]",
         "FillerType": "HumanAgent",
         "IsCurrent": false,
         "WasActiveAsOfAuditDate": true,
@@ -1444,7 +1641,7 @@ export const rulebook = {
         "ParentPath": "roles/ntwf-vp-engineering-role",
         "RelativePath": "roles/ntwf-vp-engineering-role/assignments/asn-vp-eng-david",
         "Iri": "roles-ntwf-vp-engineering-role-assignments-asn-vp-eng-david",
-        "Name": "ntwf-vp-engineering-role [2026-03-15 00:00:00-05 -> open]",
+        "Name": "ntwf-vp-engineering-role [2026-03-15 -> open]",
         "FillerType": "HumanAgent",
         "IsCurrent": true,
         "WasActiveAsOfAuditDate": false,
@@ -1464,7 +1661,7 @@ export const rulebook = {
         "ParentPath": "roles/ntwf-deployment-health-role",
         "RelativePath": "roles/ntwf-deployment-health-role/assignments/asn-deploy-health-ai-initial",
         "Iri": "roles-ntwf-deployment-health-role-assignments-asn-deploy-health-ai-initial",
-        "Name": "ntwf-deployment-health-role [2026-01-10 00:00:00-06 -> 2026-02-05 00:00:00-06]",
+        "Name": "ntwf-deployment-health-role [2026-01-10 -> 2026-02-05]",
         "FillerType": "AIAgent",
         "IsCurrent": false,
         "WasActiveAsOfAuditDate": false,
@@ -1484,7 +1681,7 @@ export const rulebook = {
         "ParentPath": "roles/ntwf-deployment-health-role",
         "RelativePath": "roles/ntwf-deployment-health-role/assignments/asn-deploy-health-human-audit",
         "Iri": "roles-ntwf-deployment-health-role-assignments-asn-deploy-health-human-audit",
-        "Name": "ntwf-deployment-health-role [2026-02-05 00:00:00-06 -> 2026-02-20 00:00:00-06]",
+        "Name": "ntwf-deployment-health-role [2026-02-05 -> 2026-02-20]",
         "FillerType": "HumanAgent",
         "IsCurrent": false,
         "WasActiveAsOfAuditDate": false,
@@ -1504,7 +1701,7 @@ export const rulebook = {
         "ParentPath": "roles/ntwf-deployment-health-role",
         "RelativePath": "roles/ntwf-deployment-health-role/assignments/asn-deploy-health-ai-current",
         "Iri": "roles-ntwf-deployment-health-role-assignments-asn-deploy-health-ai-current",
-        "Name": "ntwf-deployment-health-role [2026-02-20 00:00:00-06 -> open]",
+        "Name": "ntwf-deployment-health-role [2026-02-20 -> open]",
         "FillerType": "AIAgent",
         "IsCurrent": true,
         "WasActiveAsOfAuditDate": true,
@@ -2282,6 +2479,14 @@ export const rulebook = {
         "nullable": true,
         "Description": "Back-reference to WorkflowSteps that consume this dataset. Inverse of WorkflowSteps.ConsumesDataset.",
         "RelatedTo": "WorkflowSteps"
+      },
+      {
+        "name": "IsConsumed",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE iff some workflow step consumes this dataset (ConsumedBySteps is set). Rolls up into Workflows.CountUnconsumedDatasets, which CQ8's satisfaction reads.",
+        "formula": "=NOT(ISBLANK({{ConsumedBySteps}}))"
       }
     ],
     "data": [
@@ -2291,7 +2496,7 @@ export const rulebook = {
         "Identifier": "DS-RISK-2026-Q1",
         "Modified": "2026-03-31T00:00:00-05:00",
         "DistributionUrl": "https://data.internal.special-solutions.example/risk/q1-2026",
-        "ConsumedBySteps": "prod-deploy-step-2",
+        "ConsumedBySteps": "prod-deploy-step-1",
         "RelativePath": "datasets/ds-q1-2026-risk-metrics",
         "Iri": "datasets-ds-q1-2026-risk-metrics"
       }
@@ -2439,6 +2644,16 @@ export const rulebook = {
         "nullable": true,
         "Description": "TRUE iff this artifact resolves to a producing workflow (ProducedByWorkflow is set). Lets the AIAgents blast-radius rollup (CountImpactedWorkflows) count only artifacts that reach a workflow, since COUNTIFS needs a boolean criterion column.",
         "formula": "=NOT(ISBLANK({{ProducedByWorkflow}}))"
+      },
+      {
+        "name": "DerivationClosure",
+        "datatype": "string",
+        "type": "closure",
+        "nullable": true,
+        "important": true,
+        "Description": "Transitive closure of prov:wasDerivedFrom over the self-referential DerivedFromArtifact FK. The asserted single-step derivation edges (Legal Clearance was derived from Risk Report, Release Authorization from Legal Clearance, …) imply the never-asserted reachability (Post-Deployment Report transitively wasDerivedFrom Risk Report). Materialized as vw_workflow_artifacts_closure(from_id, to_id, hop_distance, is_inferred). This is the artifact-lineage analogue of vw_step_precedence_closure and vw_roles_closure — the SAME closure construct as step ordering and role escalation, just over a different relation, so a broken link surfaces as a missing reachability pair exactly like a dropped precedence edge.",
+        "explanation_rich": "**Artifact lineage, closed transitively — the third member of the closure family.** `prov:wasDerivedFrom` chains Risk Report → Legal Clearance → Release Authorization → Deployment Log → Post-Deployment Report. Assert only the four adjacent derivation edges and the `closure` field type emits `vw_workflow_artifacts_closure` from the self-referential `DerivedFromArtifact` FK — every reachable `(from_id, to_id)` pair with `hop_distance` and `is_inferred`. Post-Deployment Report → Risk Report appears as an inferred row (`hop_distance = 4`, `is_inferred = true`) though only single hops were stated. Identical machinery to `precedesStep` (steps) and `delegatesTo` (roles): three relations, one transitive-closure construct. Blank one link (CQ4's break-derivation) and the chain splits into two unreachable fragments — the same way dropping a precedence edge collapses a column of inferred ordering pairs.",
+        "ToColumn": "DerivedFromArtifact"
       }
     ],
     "data": [
@@ -2768,7 +2983,7 @@ export const rulebook = {
         "ApprovedBy": "gov-authority",
         "RelativePath": "change-log/change-1-0-0",
         "Iri": "change-log-change-1-0-0",
-        "Name": "1.0.0 (2026-01-15 00:00:00-06)",
+        "Name": "1.0.0 (2026-01-15)",
         "IsBreakingChange": true,
         "IsBackwardCompatible": false
       },
@@ -2783,7 +2998,7 @@ export const rulebook = {
         "ApprovedBy": "gov-steward",
         "RelativePath": "change-log/change-1-1-0",
         "Iri": "change-log-change-1-1-0",
-        "Name": "1.1.0 (2026-03-20 00:00:00-05)",
+        "Name": "1.1.0 (2026-03-20)",
         "IsBreakingChange": false,
         "IsBackwardCompatible": true
       }
@@ -3012,10 +3227,581 @@ export const rulebook = {
         "Explanation": "Restores the canonical seed assignments and a fresh review date — the known-good starting point. Every role is filled by exactly one agent, no requires-human-approval step is AI-filled, and the workflow is within its staleness window, so all the article's clean-ABox witnesses read green.",
         "SortOrder": 5,
         "IsReset": true,
-        "Edits": "[{\"class\": \"Workflows\", \"match\": \"first\", \"set\": {\"modified\": \"2026-04-03T00:00:00-05:00\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-release-manager-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-maria-gonzalez\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-risk-analysis-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"ntwf-risk-ai\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-legal-compliance-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-james-okafor\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-ci-executor-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"ntwf-ci-pipeline\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-vp-engineering-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-david-chen\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-cto-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-sarah-kim\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-deployment-health-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"ntwf-health-ai\", \"filledByAutomatedPipeline\": \"\"}}]",
+        "Edits": "[{\"class\": \"Workflows\", \"match\": \"first\", \"set\": {\"modified\": \"2026-04-03T00:00:00-05:00\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-release-manager-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-maria-gonzalez\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\", \"delegatesTo\": \"ntwf-vp-engineering-role\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-risk-analysis-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"ntwf-risk-ai\", \"filledByAutomatedPipeline\": \"\", \"delegatesTo\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-legal-compliance-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-james-okafor\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\", \"delegatesTo\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-ci-executor-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"ntwf-ci-pipeline\", \"delegatesTo\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-vp-engineering-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-david-chen\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\", \"delegatesTo\": \"ntwf-cto-role\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-cto-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-sarah-kim\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\", \"delegatesTo\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-deployment-health-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"ntwf-health-ai\", \"filledByAutomatedPipeline\": \"\", \"delegatesTo\": \"\"}}, {\"class\": \"StepPrecedence\", \"id\": \"prec-1-2\", \"set\": {\"fromStep\": \"prod-deploy-step-1\"}}, {\"class\": \"StepPrecedence\", \"id\": \"prec-2-3\", \"set\": {\"fromStep\": \"prod-deploy-step-2\"}}, {\"class\": \"StepPrecedence\", \"id\": \"prec-3-4\", \"set\": {\"fromStep\": \"prod-deploy-step-3\"}}, {\"class\": \"StepPrecedence\", \"id\": \"prec-4-5\", \"set\": {\"fromStep\": \"prod-deploy-step-4\"}}, {\"class\": \"StepPrecedence\", \"add\": {\"stepPrecedenceId\": \"prec-4-5\", \"fromStep\": \"prod-deploy-step-4\", \"toStep\": \"prod-deploy-step-5\"}}]",
         "RelativePath": "scenarios/reset",
         "Iri": "scenarios-reset",
         "Name": "reset-to-baseline"
+      },
+      {
+        "ScenarioId": "drop-final-edge",
+        "Label": "Drop the final ordering edge",
+        "Icon": "✂️",
+        "Explanation": "Removes the step-4 → step-5 precedence edge entirely. Step 5 falls out of the ordered chain, so the transitive closure shrinks from 10 ordered pairs to 6 — and nothing else moves. Demonstrates CQ1: the closure cardinality is a projection of the asserted edges, recomputed the instant one is removed.",
+        "SortOrder": 10,
+        "IsReset": false,
+        "Edits": "[{\"class\": \"StepPrecedence\", \"id\": \"prec-4-5\", \"delete\": true}]",
+        "RelativePath": "scenarios/drop-final-edge",
+        "Iri": "scenarios-drop-final-edge",
+        "Name": "drop-the-final-ordering-edge"
+      },
+      {
+        "ScenarioId": "ai-release-manager",
+        "Label": "AI fills the release gate",
+        "Icon": "🤖",
+        "Explanation": "Hands the Release Manager role — the human authority on the approval gate — to an AI agent. The gate approver is no longer human (CQ2), and because that role also executes step 3, the AI-step count ticks up (CQ3). The two answers cannot be decoupled: the gate's approver IS a step executor.",
+        "SortOrder": 20,
+        "IsReset": false,
+        "Edits": "[{\"class\": \"Roles\", \"id\": \"ntwf-release-manager-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"ntwf-risk-ai\", \"filledByAutomatedPipeline\": \"\"}}]",
+        "RelativePath": "scenarios/ai-release-manager",
+        "Iri": "scenarios-ai-release-manager",
+        "Name": "ai-fills-the-release-gate"
+      },
+      {
+        "ScenarioId": "human-risk-step",
+        "Label": "Hand the risk step to a human",
+        "Icon": "🧑",
+        "Explanation": "Reassigns the Risk Analysis role from its AI agent to a human. The AI-executed step count drops from 2 to 1 — and only that. Demonstrates CQ3: the count is a live rollup over which steps are AI-executed, not a stored number.",
+        "SortOrder": 30,
+        "IsReset": false,
+        "Edits": "[{\"class\": \"Roles\", \"id\": \"ntwf-risk-analysis-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-david-chen\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}]",
+        "RelativePath": "scenarios/human-risk-step",
+        "Iri": "scenarios-human-risk-step",
+        "Name": "hand-the-risk-step-to-a-human"
+      },
+      {
+        "ScenarioId": "break-derivation",
+        "Label": "Break the provenance chain",
+        "Icon": "⛓️",
+        "Explanation": "Clears the wasDerivedFrom link on the Legal Clearance Certificate. The PROV derivation chain splits in two — the downstream artifacts can no longer trace back to the risk report. Demonstrates CQ4: derivation is an asserted edge, and the chain answer follows it.",
+        "SortOrder": 40,
+        "IsReset": false,
+        "Edits": "[{\"class\": \"WorkflowArtifacts\", \"id\": \"artifact-legal-clearance\", \"set\": {\"derivedFromArtifact\": \"\"}}]",
+        "RelativePath": "scenarios/break-derivation",
+        "Iri": "scenarios-break-derivation",
+        "Name": "break-the-provenance-chain"
+      },
+      {
+        "ScenarioId": "stale-docs",
+        "Label": "Let the docs go stale",
+        "Icon": "📅",
+        "Explanation": "Backdates the workflow's last-modified date past its staleness window. IsStale flips to true — and only that derived flag. Demonstrates CQ5: staleness is MonthsSinceModified vs the threshold, recomputed against the clock, never asserted.",
+        "SortOrder": 50,
+        "IsReset": false,
+        "Edits": "[{\"class\": \"Workflows\", \"match\": \"first\", \"set\": {\"modified\": \"2023-01-01T00:00:00-06:00\"}}]",
+        "RelativePath": "scenarios/stale-docs",
+        "Iri": "scenarios-stale-docs",
+        "Name": "let-the-docs-go-stale"
+      },
+      {
+        "ScenarioId": "break-delegation",
+        "Label": "Cut the escalation chain",
+        "Icon": "✂️",
+        "Explanation": "Removes the Release Manager → VP Engineering delegation edge. The escalation chain (and its transitive closure) collapses to the unreachable tail. Demonstrates CQ6: delegation is a first-class edge, and the chain answer is its closure.",
+        "SortOrder": 60,
+        "IsReset": false,
+        "Edits": "[{\"class\": \"Roles\", \"id\": \"ntwf-release-manager-role\", \"set\": {\"delegatesTo\": \"\"}}]",
+        "RelativePath": "scenarios/break-delegation",
+        "Iri": "scenarios-break-delegation",
+        "Name": "cut-the-escalation-chain"
+      },
+      {
+        "ScenarioId": "legal-to-engineering",
+        "Label": "Move legal review under engineering",
+        "Icon": "🏛️",
+        "Explanation": "Re-owns the Legal Compliance role from the Legal dept to Engineering. With zero legal-owned steps, the cross-cutting 'involves engineering AND legal' check flips to No. Demonstrates CQ7: the boolean is an AND over department-owned step counts, derived from role ownership.",
+        "SortOrder": 70,
+        "IsReset": false,
+        "Edits": "[{\"class\": \"Roles\", \"id\": \"ntwf-legal-compliance-role\", \"set\": {\"ownedBy\": \"ntwf-engineering\"}}]",
+        "RelativePath": "scenarios/legal-to-engineering",
+        "Iri": "scenarios-legal-to-engineering",
+        "Name": "move-legal-review-under-engineering"
+      },
+      {
+        "ScenarioId": "dataset-unconsumed",
+        "Label": "Detach the risk dataset",
+        "Icon": "📦",
+        "Explanation": "Clears the AI Risk Assessment step's consumes-dataset link (WorkflowSteps.ConsumesDataset is the authoritative DCAT forward FK; Datasets.ConsumedBySteps is its derived inverse). The Q1 Risk Metrics dataset is now consumed by no step — on the Graph lens its 📦 node visibly detaches from step 1. Demonstrates CQ8: dataset consumption is a real relationship, and the answer is exactly which steps point at it; with nothing consuming it, the AI-provenance answer is gone.",
+        "SortOrder": 80,
+        "IsReset": false,
+        "Edits": "[{\"class\": \"WorkflowSteps\", \"id\": \"prod-deploy-step-1\", \"set\": {\"consumesDataset\": \"\"}}]",
+        "RelativePath": "scenarios/dataset-unconsumed",
+        "Iri": "scenarios-dataset-unconsumed",
+        "Name": "detach-the-risk-dataset"
+      }
+    ]
+  },
+  "CompetencyQuestions": {
+    "Description": "The article's literal acceptance suite — the eight leadership/competency questions the NTWF worked example must answer (Talisman, Intentional Arrangement, CQ1-CQ8). First-class data, not hardcoded UI strings: each row names the question, the substrate-computed field that ANSWERS it (TargetTable/TargetField, for cross-substrate traceability and the explainer-DAG drilldown), the answer kind, and the asserted ExpectedAnswer used to grade pass/fail. The live answer is always READ from the named computed column — never recomputed — so the CQ scoreboard is a projection of the model like every other lens. This is the CMCC-native home for the competency questions: the article treats them as acceptance criteria traceable to the rulebook, so they live in the rulebook.",
+    "schema": [
+      {
+        "name": "CompetencyQuestionId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Primary key. Stable slug for the competency question (cq-1 .. cq-8)."
+      },
+      {
+        "name": "RelativePath",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Stable, DAG-derived location for this CompetencyQuestion row. Root segment 'competency-questions' + the row's primary key. No leading slash so the Iri swap is a clean 1:1 substitution.",
+        "formula": "=\"competency-questions/\" & {{CompetencyQuestionId}}"
+      },
+      {
+        "name": "Iri",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Opaque stable identifier (the dash-form of RelativePath). The OWL transpiler mints each individual's IRI from this value (erb:<Iri>), so identity is path-derived and globally unique.",
+        "formula": "=SUBSTITUTE({{RelativePath}}, \"/\", \"-\")"
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Slug form of the DisplayName, for stable cross-reference. Mirrors the Name idiom used by the controlled-vocabulary tables.",
+        "formula": "=SUBSTITUTE(LOWER({{DisplayName}}), \" \", \"-\")"
+      },
+      {
+        "name": "Number",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": false,
+        "Description": "The canonical 1-8 ordering of the competency questions as listed in the article / README."
+      },
+      {
+        "name": "DisplayName",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Short human label for the question (e.g. 'Steps and order')."
+      },
+      {
+        "name": "QuestionText",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "The full competency question, verbatim from the article's acceptance suite."
+      },
+      {
+        "name": "TargetTable",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "The entity whose computed field answers this question. Together with TargetField it pins the answer to a real column in the substrate, so the scoreboard reads the answer (never recomputes it) and the explainer-DAG drilldown lands on the exact derivation."
+      },
+      {
+        "name": "TargetField",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "The substrate-computed field on TargetTable that answers this question (calc / lookup / aggregation / closure). The CQ scoreboard wraps the live answer in a DagCell(TargetTable, TargetField) so a click opens its inference graph."
+      },
+      {
+        "name": "AnswerKind",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "'scalar' when the answer is a single value graded by equality with ExpectedAnswer; 'list' when the answer is a collection graded as answerable (non-empty / matches the asserted shape)."
+      },
+      {
+        "name": "ExpectedAnswer",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "The asserted correct answer for the seed worked example. For scalar questions the live computed value must equal this to score a pass; for list questions this is the canonical summary the rendered collection is checked against. Authored here so pass/fail is (substrate-computed value) vs (rulebook-asserted expectation) — a real conformance check, not UI logic."
+      },
+      {
+        "name": "SatisfiedField",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Name of the boolean column on Workflows that computes whether this CQ is satisfied (e.g. Cq6Satisfied). The scoreboard reads pass/fail straight from this substrate-computed column — the acceptance criterion lives in the rulebook as a derived field, never as app-side logic. Mirrors TargetTable/TargetField for the answer."
+      },
+      {
+        "name": "Explanation",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "One-sentence note on how this question resolves through the model — the FK / formula chain a presenter can narrate."
+      },
+      {
+        "name": "SortOrder",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Display order in the scoreboard. Mirrors Number for now; kept separate so the list can be re-sequenced without renumbering the canonical CQ ids."
+      },
+      {
+        "name": "IsActive",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Whether this competency question is shown in the scoreboard. All eight are active in the worked example."
+      },
+      {
+        "name": "SimulateScenario",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "FK to the Scenario the card's 'Simulate' button applies to demonstrate this competency question live. Points at the minimal raw-fact edit that moves THIS question's answer in isolation where one exists; for cq-2 it points at 'ai-release-manager', which also ripples to cq-3 (the gate approver is itself a step executor, so the two answers cannot be perturbed independently). The full set of questions each scenario moves — trigger vs ripple — is enumerated in the ScenarioCQEffects junction; this is just the one the button fires. Inverse-ish of ScenarioCQEffects but kept as a direct FK so the UI has a single answer.",
+        "RelatedTo": "Scenarios"
+      }
+    ],
+    "data": [
+      {
+        "CompetencyQuestionId": "cq-1",
+        "Number": 1,
+        "DisplayName": "Steps and order",
+        "QuestionText": "What are all the steps in the release process, and in what order do they execute?",
+        "TargetTable": "Workflows",
+        "TargetField": "CountOfPrecedenceClosurePairs",
+        "AnswerKind": "list",
+        "ExpectedAnswer": "5 steps, ordered 1 -> 2 -> 3 -> 4 -> 5 (10 closure pairs)",
+        "Explanation": "WorkflowSteps ordered by SequencePosition; the order is the transitive closure of the asserted StepPrecedence edges, materialized as ntwf:precedesStep.",
+        "SortOrder": 1,
+        "IsActive": true,
+        "SimulateScenario": "drop-final-edge",
+        "RelativePath": "competency-questions/cq-1",
+        "Iri": "competency-questions-cq-1",
+        "Name": "steps-and-order",
+        "SatisfiedField": "Cq1Satisfied"
+      },
+      {
+        "CompetencyQuestionId": "cq-2",
+        "Number": 2,
+        "DisplayName": "Who approves",
+        "QuestionText": "Who or what is responsible for approving a production deployment?",
+        "TargetTable": "ApprovalGates",
+        "TargetField": "GateApproverHuman",
+        "AnswerKind": "scalar",
+        "ExpectedAnswer": "Maria Gonzalez",
+        "Explanation": "The Release Approval Gate (step 3) -> its AssignedRole (Release Manager) -> FilledByHumanAgent. The role-agent indirection is resolved by the GateApproverHuman lookup.",
+        "SortOrder": 2,
+        "IsActive": true,
+        "SimulateScenario": "ai-release-manager",
+        "RelativePath": "competency-questions/cq-2",
+        "Iri": "competency-questions-cq-2",
+        "Name": "who-approves",
+        "SatisfiedField": "Cq2Satisfied"
+      },
+      {
+        "CompetencyQuestionId": "cq-3",
+        "Number": 3,
+        "DisplayName": "AI vs human steps",
+        "QuestionText": "Which steps are executed by AI agents, and which require human decision?",
+        "TargetTable": "Workflows",
+        "TargetField": "CountAISteps",
+        "AnswerKind": "list",
+        "ExpectedAnswer": "AI-executed: steps 1, 5 - human-required: steps 2, 3",
+        "Explanation": "Each step's ExecutingAgentType (via its role's filler type) classifies AI vs pipeline vs human; RequiresHumanApproval marks the human-decision steps. CountAISteps aggregates the AI side.",
+        "SortOrder": 3,
+        "IsActive": true,
+        "SimulateScenario": "human-risk-step",
+        "RelativePath": "competency-questions/cq-3",
+        "Iri": "competency-questions-cq-3",
+        "Name": "ai-vs-human-steps",
+        "SatisfiedField": "Cq3Satisfied"
+      },
+      {
+        "CompetencyQuestionId": "cq-4",
+        "Number": 4,
+        "DisplayName": "Artifact lineage",
+        "QuestionText": "What artifacts does the review produce, and what consumes them downstream?",
+        "TargetTable": "WorkflowArtifacts",
+        "TargetField": "DerivedFromArtifact",
+        "AnswerKind": "list",
+        "ExpectedAnswer": "5 artifacts in a wasDerivedFrom chain: Risk Report -> Legal Clearance -> Release Authorization -> Deployment Log -> Post-Deployment Report",
+        "Explanation": "WorkflowArtifacts.ProducedByStep gives the producer; DerivedFromArtifact gives the PROV wasDerivedFrom parent; RequiredBySteps gives the downstream consumer.",
+        "SortOrder": 4,
+        "IsActive": true,
+        "SimulateScenario": "break-derivation",
+        "RelativePath": "competency-questions/cq-4",
+        "Iri": "competency-questions-cq-4",
+        "Name": "artifact-lineage",
+        "SatisfiedField": "Cq4Satisfied"
+      },
+      {
+        "CompetencyQuestionId": "cq-5",
+        "Number": 5,
+        "DisplayName": "Stale over 12 months",
+        "QuestionText": "Which workflows have not been reviewed or updated in twelve months?",
+        "TargetTable": "Workflows",
+        "TargetField": "IsStale",
+        "AnswerKind": "scalar",
+        "ExpectedAnswer": "No - Production Deployment is not stale (MonthsSinceModified 2 <= 12)",
+        "Explanation": "IsStale = MonthsSinceModified > StalenessThresholdMonths. The seed workflow was modified 2 months ago against a 12-month threshold, so it is not stale.",
+        "SortOrder": 5,
+        "IsActive": true,
+        "SimulateScenario": "stale-docs",
+        "RelativePath": "competency-questions/cq-5",
+        "Iri": "competency-questions-cq-5",
+        "Name": "stale-over-12-months",
+        "SatisfiedField": "Cq5Satisfied"
+      },
+      {
+        "CompetencyQuestionId": "cq-6",
+        "Number": 6,
+        "DisplayName": "Escalation path",
+        "QuestionText": "What happens when the VP of Engineering is unavailable during escalation?",
+        "TargetTable": "Roles",
+        "TargetField": "DelegatesTo",
+        "AnswerKind": "scalar",
+        "ExpectedAnswer": "Escalates Release Manager -> VP of Engineering -> Chief Technology Officer",
+        "Explanation": "Roles.DelegatesTo is a transitive chain. With the VP of Engineering unavailable, the next hop in the closure is the CTO.",
+        "SortOrder": 6,
+        "IsActive": true,
+        "SimulateScenario": "break-delegation",
+        "RelativePath": "competency-questions/cq-6",
+        "Iri": "competency-questions-cq-6",
+        "Name": "escalation-path",
+        "SatisfiedField": "Cq6Satisfied"
+      },
+      {
+        "CompetencyQuestionId": "cq-7",
+        "Number": 7,
+        "DisplayName": "Engineering and Legal",
+        "QuestionText": "Which workflows involve both Engineering and Legal?",
+        "TargetTable": "Workflows",
+        "TargetField": "InvolvesEngineeringAndLegal",
+        "AnswerKind": "scalar",
+        "ExpectedAnswer": "Yes - Production Deployment involves both (Engineering-owned steps and Legal-owned steps)",
+        "Explanation": "InvolvesEngineeringAndLegal = AND(CountEngineeringOwnedSteps > 0, CountLegalOwnedSteps > 0). Step 2 is Legal-owned; steps 1/3/4/5 are Engineering-owned.",
+        "SortOrder": 7,
+        "IsActive": true,
+        "SimulateScenario": "legal-to-engineering",
+        "RelativePath": "competency-questions/cq-7",
+        "Iri": "competency-questions-cq-7",
+        "Name": "engineering-and-legal",
+        "SatisfiedField": "Cq7Satisfied"
+      },
+      {
+        "CompetencyQuestionId": "cq-8",
+        "Number": 8,
+        "DisplayName": "Datasets and AI",
+        "QuestionText": "What datasets does the review consume, and which AI agents processed them?",
+        "TargetTable": "Datasets",
+        "TargetField": "ConsumedBySteps",
+        "AnswerKind": "list",
+        "ExpectedAnswer": "Q1 2026 Risk Metrics, consumed by the AI Risk Assessment step and processed by RiskAnalysis-AI",
+        "Explanation": "Datasets.ConsumedBySteps (inverse of WorkflowSteps.ConsumesDataset) gives the consuming step; that step's role filler resolves the processing AI agent.",
+        "SortOrder": 8,
+        "IsActive": true,
+        "SimulateScenario": "dataset-unconsumed",
+        "RelativePath": "competency-questions/cq-8",
+        "Iri": "competency-questions-cq-8",
+        "Name": "datasets-and-ai",
+        "SatisfiedField": "Cq8Satisfied"
+      }
+    ]
+  },
+  "ScenarioCQEffects": {
+    "Description": "Table: ScenarioCQEffects. Names the many-to-many between Scenarios and CompetencyQuestions as two 1:M foreign keys (Scenario, CompetencyQuestion) plus the detail of the relationship (EffectKind, Note). Each row asserts 'applying this scenario moves this competency question's live answer'. 'trigger' rows are the intended demonstration; 'ripple' rows record answers that move as an unavoidable consequence of the same raw edit (e.g. ai-release-manager moves cq-2 AND cq-3 because the gate approver is itself a step executor). The answers themselves are never stored here — they are read live from each substrate after the scenario applies.",
+    "important": true,
+    "schema": [
+      {
+        "name": "ScenarioCQEffectId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Primary key. '<scenario>-<cq>' — names one (scenario moves this competency question) edge."
+      },
+      {
+        "name": "RelativePath",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "DAG-derived location: 'scenario-cq-effects/' + the row's primary key.",
+        "formula": "=\"scenario-cq-effects/\" & {{ScenarioCQEffectId}}"
+      },
+      {
+        "name": "Iri",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Opaque stable identifier (dash-form of RelativePath).",
+        "formula": "=SUBSTITUTE({{RelativePath}}, \"/\", \"-\")"
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Slug label, mirrors the primary key.",
+        "formula": "=SUBSTITUTE(LOWER({{ScenarioCQEffectId}}), \" \", \"-\")"
+      },
+      {
+        "name": "Scenario",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "FK to the Scenario whose raw-fact edits cause this effect. The 'many effects belong to one scenario' side: a single scenario can move several competency questions.",
+        "RelatedTo": "Scenarios"
+      },
+      {
+        "name": "CompetencyQuestion",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "FK to the CompetencyQuestion whose live answer this scenario moves. The 'many effects belong to one question' side: a question can be exercised by several scenarios.",
+        "RelatedTo": "CompetencyQuestions"
+      },
+      {
+        "name": "EffectKind",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "'trigger' = this scenario was authored to move this question (the point of the demo). 'ripple' = the question also moves as an unavoidable side effect of the same raw edit. The ripple rows are the pedagogical payload: they show answers that are structurally coupled and cannot be perturbed independently."
+      },
+      {
+        "name": "Note",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "One-line, human-readable account of how this scenario moves this question's answer (qualitative — the actual value is read live from the substrate, never stored here)."
+      },
+      {
+        "name": "SortOrder",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Display order."
+      }
+    ],
+    "data": [
+      {
+        "ScenarioCQEffectId": "drop-final-edge-cq-1",
+        "Scenario": "drop-final-edge",
+        "CompetencyQuestion": "cq-1",
+        "EffectKind": "trigger",
+        "Note": "Deleting the step-4→step-5 edge shrinks the precedence closure (10 → 6 ordered pairs); step 5 leaves the chain. No other answer moves.",
+        "SortOrder": 10,
+        "RelativePath": "scenario-cq-effects/drop-final-edge-cq-1",
+        "Iri": "scenario-cq-effects-drop-final-edge-cq-1",
+        "Name": "drop-final-edge-cq-1"
+      },
+      {
+        "ScenarioCQEffectId": "ai-release-manager-cq-2",
+        "Scenario": "ai-release-manager",
+        "CompetencyQuestion": "cq-2",
+        "EffectKind": "trigger",
+        "Note": "Release Manager filled by AI → the gate has no human approver.",
+        "SortOrder": 20,
+        "RelativePath": "scenario-cq-effects/ai-release-manager-cq-2",
+        "Iri": "scenario-cq-effects-ai-release-manager-cq-2",
+        "Name": "ai-release-manager-cq-2"
+      },
+      {
+        "ScenarioCQEffectId": "ai-release-manager-cq-3",
+        "Scenario": "ai-release-manager",
+        "CompetencyQuestion": "cq-3",
+        "EffectKind": "ripple",
+        "Note": "Same edit: the gate's step (3) is now AI-executed, so the AI-step count rises 2 → 3. Cannot be avoided — the gate role is a step executor.",
+        "SortOrder": 30,
+        "RelativePath": "scenario-cq-effects/ai-release-manager-cq-3",
+        "Iri": "scenario-cq-effects-ai-release-manager-cq-3",
+        "Name": "ai-release-manager-cq-3"
+      },
+      {
+        "ScenarioCQEffectId": "human-risk-step-cq-3",
+        "Scenario": "human-risk-step",
+        "CompetencyQuestion": "cq-3",
+        "EffectKind": "trigger",
+        "Note": "Risk Analysis role handed to a human → AI-step count falls 2 → 1. Isolated.",
+        "SortOrder": 40,
+        "RelativePath": "scenario-cq-effects/human-risk-step-cq-3",
+        "Iri": "scenario-cq-effects-human-risk-step-cq-3",
+        "Name": "human-risk-step-cq-3"
+      },
+      {
+        "ScenarioCQEffectId": "break-derivation-cq-4",
+        "Scenario": "break-derivation",
+        "CompetencyQuestion": "cq-4",
+        "EffectKind": "trigger",
+        "Note": "Legal Clearance loses its wasDerivedFrom parent → the PROV chain splits. Isolated.",
+        "SortOrder": 50,
+        "RelativePath": "scenario-cq-effects/break-derivation-cq-4",
+        "Iri": "scenario-cq-effects-break-derivation-cq-4",
+        "Name": "break-derivation-cq-4"
+      },
+      {
+        "ScenarioCQEffectId": "stale-docs-cq-5",
+        "Scenario": "stale-docs",
+        "CompetencyQuestion": "cq-5",
+        "EffectKind": "trigger",
+        "Note": "Modified date backdated past the window → IsStale flips true. Isolated.",
+        "SortOrder": 60,
+        "RelativePath": "scenario-cq-effects/stale-docs-cq-5",
+        "Iri": "scenario-cq-effects-stale-docs-cq-5",
+        "Name": "stale-docs-cq-5"
+      },
+      {
+        "ScenarioCQEffectId": "break-delegation-cq-6",
+        "Scenario": "break-delegation",
+        "CompetencyQuestion": "cq-6",
+        "EffectKind": "trigger",
+        "Note": "Release Manager → VP edge removed → the escalation closure collapses. Isolated.",
+        "SortOrder": 70,
+        "RelativePath": "scenario-cq-effects/break-delegation-cq-6",
+        "Iri": "scenario-cq-effects-break-delegation-cq-6",
+        "Name": "break-delegation-cq-6"
+      },
+      {
+        "ScenarioCQEffectId": "legal-to-engineering-cq-7",
+        "Scenario": "legal-to-engineering",
+        "CompetencyQuestion": "cq-7",
+        "EffectKind": "trigger",
+        "Note": "Legal role re-owned by Engineering → zero legal-owned steps → eng-AND-legal flips No. Isolated.",
+        "SortOrder": 80,
+        "RelativePath": "scenario-cq-effects/legal-to-engineering-cq-7",
+        "Iri": "scenario-cq-effects-legal-to-engineering-cq-7",
+        "Name": "legal-to-engineering-cq-7"
+      },
+      {
+        "ScenarioCQEffectId": "dataset-unconsumed-cq-8",
+        "Scenario": "dataset-unconsumed",
+        "CompetencyQuestion": "cq-8",
+        "EffectKind": "trigger",
+        "Note": "Dataset consumed-by link cleared → no step consumes it. Isolated.",
+        "SortOrder": 90,
+        "RelativePath": "scenario-cq-effects/dataset-unconsumed-cq-8",
+        "Iri": "scenario-cq-effects-dataset-unconsumed-cq-8",
+        "Name": "dataset-unconsumed-cq-8"
+      },
+      {
+        "ScenarioCQEffectId": "trigger-risk-cq-5",
+        "Scenario": "trigger-risk",
+        "CompetencyQuestion": "cq-5",
+        "EffectKind": "trigger",
+        "Note": "Backdates the review date → IsStale true (while AI steps remain — the narrative risk).",
+        "SortOrder": 100,
+        "RelativePath": "scenario-cq-effects/trigger-risk-cq-5",
+        "Iri": "scenario-cq-effects-trigger-risk-cq-5",
+        "Name": "trigger-risk-cq-5"
+      },
+      {
+        "ScenarioCQEffectId": "all-human-cq-3",
+        "Scenario": "all-human",
+        "CompetencyQuestion": "cq-3",
+        "EffectKind": "trigger",
+        "Note": "Every AI/pipeline role reassigned to a human → AI-step count falls to 0.",
+        "SortOrder": 110,
+        "RelativePath": "scenario-cq-effects/all-human-cq-3",
+        "Iri": "scenario-cq-effects-all-human-cq-3",
+        "Name": "all-human-cq-3"
+      },
+      {
+        "ScenarioCQEffectId": "ai-at-gate-cq-3",
+        "Scenario": "ai-at-gate",
+        "CompetencyQuestion": "cq-3",
+        "EffectKind": "ripple",
+        "Note": "Legal review step handed to AI → AI-step count rises 2 → 3 (the headline effect is the consistency-violation witness, not a CQ).",
+        "SortOrder": 120,
+        "RelativePath": "scenario-cq-effects/ai-at-gate-cq-3",
+        "Iri": "scenario-cq-effects-ai-at-gate-cq-3",
+        "Name": "ai-at-gate-cq-3"
       }
     ]
   },
@@ -3127,7 +3913,10 @@ export const rulebook = {
         "Expect": "",
         "Explanation": "Every row and every column of Workflows must match the Postgres-oracle answer key on both engines.",
         "SortOrder": 10,
-        "IsEnabled": true
+        "IsEnabled": true,
+        "RelativePath": "conformance-tests/sweep-workflows",
+        "Iri": "conformance-tests-sweep-workflows",
+        "Name": "sweep-workflows-vs-answer-key"
       },
       {
         "ConformanceTestId": "sweep-workflowsteps",
@@ -3139,7 +3928,10 @@ export const rulebook = {
         "Expect": "",
         "Explanation": "Every row and every column of WorkflowSteps must match the Postgres-oracle answer key on both engines.",
         "SortOrder": 20,
-        "IsEnabled": true
+        "IsEnabled": true,
+        "RelativePath": "conformance-tests/sweep-workflowsteps",
+        "Iri": "conformance-tests-sweep-workflowsteps",
+        "Name": "sweep-workflowsteps-vs-answer-key"
       },
       {
         "ConformanceTestId": "sweep-approvalgates",
@@ -3151,7 +3943,10 @@ export const rulebook = {
         "Expect": "",
         "Explanation": "Every row and every column of ApprovalGates must match the Postgres-oracle answer key on both engines.",
         "SortOrder": 30,
-        "IsEnabled": true
+        "IsEnabled": true,
+        "RelativePath": "conformance-tests/sweep-approvalgates",
+        "Iri": "conformance-tests-sweep-approvalgates",
+        "Name": "sweep-approvalgates-vs-answer-key"
       },
       {
         "ConformanceTestId": "sweep-stepprecedence",
@@ -3163,7 +3958,10 @@ export const rulebook = {
         "Expect": "",
         "Explanation": "Every row and every column of StepPrecedence must match the Postgres-oracle answer key on both engines.",
         "SortOrder": 40,
-        "IsEnabled": true
+        "IsEnabled": true,
+        "RelativePath": "conformance-tests/sweep-stepprecedence",
+        "Iri": "conformance-tests-sweep-stepprecedence",
+        "Name": "sweep-stepprecedence-vs-answer-key"
       },
       {
         "ConformanceTestId": "sweep-roles",
@@ -3175,7 +3973,10 @@ export const rulebook = {
         "Expect": "",
         "Explanation": "Every row and every column of Roles must match the Postgres-oracle answer key on both engines.",
         "SortOrder": 50,
-        "IsEnabled": true
+        "IsEnabled": true,
+        "RelativePath": "conformance-tests/sweep-roles",
+        "Iri": "conformance-tests-sweep-roles",
+        "Name": "sweep-roles-vs-answer-key"
       },
       {
         "ConformanceTestId": "sweep-roleassignments",
@@ -3187,7 +3988,10 @@ export const rulebook = {
         "Expect": "",
         "Explanation": "Every row and every column of RoleAssignments must match the Postgres-oracle answer key on both engines.",
         "SortOrder": 60,
-        "IsEnabled": true
+        "IsEnabled": true,
+        "RelativePath": "conformance-tests/sweep-roleassignments",
+        "Iri": "conformance-tests-sweep-roleassignments",
+        "Name": "sweep-roleassignments-vs-answer-key"
       },
       {
         "ConformanceTestId": "sweep-departments",
@@ -3199,7 +4003,10 @@ export const rulebook = {
         "Expect": "",
         "Explanation": "Every row and every column of Departments must match the Postgres-oracle answer key on both engines.",
         "SortOrder": 70,
-        "IsEnabled": true
+        "IsEnabled": true,
+        "RelativePath": "conformance-tests/sweep-departments",
+        "Iri": "conformance-tests-sweep-departments",
+        "Name": "sweep-departments-vs-answer-key"
       },
       {
         "ConformanceTestId": "sweep-humanagents",
@@ -3211,7 +4018,10 @@ export const rulebook = {
         "Expect": "",
         "Explanation": "Every row and every column of HumanAgents must match the Postgres-oracle answer key on both engines.",
         "SortOrder": 80,
-        "IsEnabled": true
+        "IsEnabled": true,
+        "RelativePath": "conformance-tests/sweep-humanagents",
+        "Iri": "conformance-tests-sweep-humanagents",
+        "Name": "sweep-humanagents-vs-answer-key"
       },
       {
         "ConformanceTestId": "sweep-aiagents",
@@ -3223,7 +4033,10 @@ export const rulebook = {
         "Expect": "",
         "Explanation": "Every row and every column of AIAgents must match the Postgres-oracle answer key on both engines.",
         "SortOrder": 90,
-        "IsEnabled": true
+        "IsEnabled": true,
+        "RelativePath": "conformance-tests/sweep-aiagents",
+        "Iri": "conformance-tests-sweep-aiagents",
+        "Name": "sweep-aiagents-vs-answer-key"
       },
       {
         "ConformanceTestId": "sweep-automatedpipelines",
@@ -3235,7 +4048,10 @@ export const rulebook = {
         "Expect": "",
         "Explanation": "Every row and every column of AutomatedPipelines must match the Postgres-oracle answer key on both engines.",
         "SortOrder": 100,
-        "IsEnabled": true
+        "IsEnabled": true,
+        "RelativePath": "conformance-tests/sweep-automatedpipelines",
+        "Iri": "conformance-tests-sweep-automatedpipelines",
+        "Name": "sweep-automatedpipelines-vs-answer-key"
       },
       {
         "ConformanceTestId": "sweep-workflowstatusconcepts",
@@ -3247,7 +4063,10 @@ export const rulebook = {
         "Expect": "",
         "Explanation": "Every row and every column of WorkflowStatusConcepts must match the Postgres-oracle answer key on both engines.",
         "SortOrder": 110,
-        "IsEnabled": true
+        "IsEnabled": true,
+        "RelativePath": "conformance-tests/sweep-workflowstatusconcepts",
+        "Iri": "conformance-tests-sweep-workflowstatusconcepts",
+        "Name": "sweep-workflowstatusconcepts-vs-answer-key"
       },
       {
         "ConformanceTestId": "sweep-agentcapabilityconcepts",
@@ -3259,7 +4078,10 @@ export const rulebook = {
         "Expect": "",
         "Explanation": "Every row and every column of AgentCapabilityConcepts must match the Postgres-oracle answer key on both engines.",
         "SortOrder": 120,
-        "IsEnabled": true
+        "IsEnabled": true,
+        "RelativePath": "conformance-tests/sweep-agentcapabilityconcepts",
+        "Iri": "conformance-tests-sweep-agentcapabilityconcepts",
+        "Name": "sweep-agentcapabilityconcepts-vs-answer-key"
       },
       {
         "ConformanceTestId": "sweep-artifacttypeconcepts",
@@ -3271,7 +4093,10 @@ export const rulebook = {
         "Expect": "",
         "Explanation": "Every row and every column of ArtifactTypeConcepts must match the Postgres-oracle answer key on both engines.",
         "SortOrder": 130,
-        "IsEnabled": true
+        "IsEnabled": true,
+        "RelativePath": "conformance-tests/sweep-artifacttypeconcepts",
+        "Iri": "conformance-tests-sweep-artifacttypeconcepts",
+        "Name": "sweep-artifacttypeconcepts-vs-answer-key"
       },
       {
         "ConformanceTestId": "sweep-datasets",
@@ -3283,7 +4108,10 @@ export const rulebook = {
         "Expect": "",
         "Explanation": "Every row and every column of Datasets must match the Postgres-oracle answer key on both engines.",
         "SortOrder": 140,
-        "IsEnabled": true
+        "IsEnabled": true,
+        "RelativePath": "conformance-tests/sweep-datasets",
+        "Iri": "conformance-tests-sweep-datasets",
+        "Name": "sweep-datasets-vs-answer-key"
       },
       {
         "ConformanceTestId": "sweep-workflowartifacts",
@@ -3295,7 +4123,10 @@ export const rulebook = {
         "Expect": "",
         "Explanation": "Every row and every column of WorkflowArtifacts must match the Postgres-oracle answer key on both engines.",
         "SortOrder": 150,
-        "IsEnabled": true
+        "IsEnabled": true,
+        "RelativePath": "conformance-tests/sweep-workflowartifacts",
+        "Iri": "conformance-tests-sweep-workflowartifacts",
+        "Name": "sweep-workflowartifacts-vs-answer-key"
       },
       {
         "ConformanceTestId": "sweep-governanceroles",
@@ -3307,7 +4138,10 @@ export const rulebook = {
         "Expect": "",
         "Explanation": "Every row and every column of GovernanceRoles must match the Postgres-oracle answer key on both engines.",
         "SortOrder": 160,
-        "IsEnabled": true
+        "IsEnabled": true,
+        "RelativePath": "conformance-tests/sweep-governanceroles",
+        "Iri": "conformance-tests-sweep-governanceroles",
+        "Name": "sweep-governanceroles-vs-answer-key"
       },
       {
         "ConformanceTestId": "sweep-changelog",
@@ -3319,7 +4153,10 @@ export const rulebook = {
         "Expect": "",
         "Explanation": "Every row and every column of ChangeLog must match the Postgres-oracle answer key on both engines.",
         "SortOrder": 170,
-        "IsEnabled": true
+        "IsEnabled": true,
+        "RelativePath": "conformance-tests/sweep-changelog",
+        "Iri": "conformance-tests-sweep-changelog",
+        "Name": "sweep-changelog-vs-answer-key"
       },
       {
         "ConformanceTestId": "sweep-vocabularyreconciliations",
@@ -3331,7 +4168,10 @@ export const rulebook = {
         "Expect": "",
         "Explanation": "Every row and every column of VocabularyReconciliations must match the Postgres-oracle answer key on both engines.",
         "SortOrder": 180,
-        "IsEnabled": true
+        "IsEnabled": true,
+        "RelativePath": "conformance-tests/sweep-vocabularyreconciliations",
+        "Iri": "conformance-tests-sweep-vocabularyreconciliations",
+        "Name": "sweep-vocabularyreconciliations-vs-answer-key"
       },
       {
         "ConformanceTestId": "sweep-scenarios",
@@ -3343,7 +4183,10 @@ export const rulebook = {
         "Expect": "",
         "Explanation": "Every row and every column of Scenarios must match the Postgres-oracle answer key on both engines.",
         "SortOrder": 190,
-        "IsEnabled": true
+        "IsEnabled": true,
+        "RelativePath": "conformance-tests/sweep-scenarios",
+        "Iri": "conformance-tests-sweep-scenarios",
+        "Name": "sweep-scenarios-vs-answer-key"
       },
       {
         "ConformanceTestId": "closure-precedence-1-5",
@@ -3355,7 +4198,10 @@ export const rulebook = {
         "Expect": "{\"closure\": \"precedence\", \"from\": \"prod-deploy-step-1\", \"to\": \"prod-deploy-step-5\"}",
         "Explanation": "The headline inference: 4 asserted edges entail the never-asserted 1→5 pair via transitive precedesStep.",
         "SortOrder": 200,
-        "IsEnabled": true
+        "IsEnabled": true,
+        "RelativePath": "conformance-tests/closure-precedence-1-5",
+        "Iri": "conformance-tests-closure-precedence-1-5",
+        "Name": "inferred-precedence-1-to-5"
       },
       {
         "ConformanceTestId": "closure-delegation-rm-cto",
@@ -3367,7 +4213,10 @@ export const rulebook = {
         "Expect": "{\"closure\": \"delegation\", \"from\": \"ntwf-release-manager-role\", \"to\": \"ntwf-cto-role\"}",
         "Explanation": "Escalation chain RM→VP Eng→CTO: the RM→CTO hop is never asserted; transitive delegatesTo entails it.",
         "SortOrder": 210,
-        "IsEnabled": true
+        "IsEnabled": true,
+        "RelativePath": "conformance-tests/closure-delegation-rm-cto",
+        "Iri": "conformance-tests-closure-delegation-rm-cto",
+        "Name": "inferred-delegation-release-manager-to-cto"
       },
       {
         "ConformanceTestId": "engines-agree-global",
@@ -3379,7 +4228,10 @@ export const rulebook = {
         "Expect": "",
         "Explanation": "The multi-substrate equivalence claim: reasoner and Postgres views disagree on zero computed values.",
         "SortOrder": 220,
-        "IsEnabled": true
+        "IsEnabled": true,
+        "RelativePath": "conformance-tests/engines-agree-global",
+        "Iri": "conformance-tests-engines-agree-global",
+        "Name": "both-engines-compute-identical-answers"
       },
       {
         "ConformanceTestId": "iri-workflow",
@@ -3391,7 +4243,10 @@ export const rulebook = {
         "Expect": "",
         "Explanation": "Every row is a globally-addressable individual; the workflow's IRI is derived, stable, and identical on both engines.",
         "SortOrder": 230,
-        "IsEnabled": true
+        "IsEnabled": true,
+        "RelativePath": "conformance-tests/iri-workflow",
+        "Iri": "conformance-tests-iri-workflow",
+        "Name": "workflow-iri-minted"
       },
       {
         "ConformanceTestId": "iri-gate",
@@ -3403,7 +4258,10 @@ export const rulebook = {
         "Expect": "",
         "Explanation": "Gate IRI derives through the step's path chain (lookup → calc chain).",
         "SortOrder": 240,
-        "IsEnabled": true
+        "IsEnabled": true,
+        "RelativePath": "conformance-tests/iri-gate",
+        "Iri": "conformance-tests-iri-gate",
+        "Name": "approval-gate-iri-minted"
       },
       {
         "ConformanceTestId": "step1-agent-type",
@@ -3415,7 +4273,10 @@ export const rulebook = {
         "Expect": "",
         "Explanation": "Role→agent indirection: the step's executing agent type is derived through AssignedRole→FilledBy*.",
         "SortOrder": 250,
-        "IsEnabled": true
+        "IsEnabled": true,
+        "RelativePath": "conformance-tests/step1-agent-type",
+        "Iri": "conformance-tests-step1-agent-type",
+        "Name": "step-1-executing-agent-type-resolves"
       },
       {
         "ConformanceTestId": "step3-agent-type",
@@ -3427,7 +4288,10 @@ export const rulebook = {
         "Expect": "",
         "Explanation": "The approval-gate step resolves to its human Release Manager through the same one-edge chain.",
         "SortOrder": 260,
-        "IsEnabled": true
+        "IsEnabled": true,
+        "RelativePath": "conformance-tests/step3-agent-type",
+        "Iri": "conformance-tests-step3-agent-type",
+        "Name": "gate-step-executing-agent-type-resolves"
       },
       {
         "ConformanceTestId": "count-ai-steps",
@@ -3439,7 +4303,10 @@ export const rulebook = {
         "Expect": "",
         "Explanation": "COUNTIFS over the DERIVED IsExecutedByAI child field — conditional aggregation over a computed column.",
         "SortOrder": 270,
-        "IsEnabled": true
+        "IsEnabled": true,
+        "RelativePath": "conformance-tests/count-ai-steps",
+        "Iri": "conformance-tests-count-ai-steps",
+        "Name": "ai-step-count"
       },
       {
         "ConformanceTestId": "count-human-steps",
@@ -3451,7 +4318,10 @@ export const rulebook = {
         "Expect": "",
         "Explanation": "The human side of the agent mix.",
         "SortOrder": 280,
-        "IsEnabled": true
+        "IsEnabled": true,
+        "RelativePath": "conformance-tests/count-human-steps",
+        "Iri": "conformance-tests-count-human-steps",
+        "Name": "human-step-count"
       },
       {
         "ConformanceTestId": "has-ai-agent-step",
@@ -3463,7 +4333,10 @@ export const rulebook = {
         "Expect": "",
         "Explanation": "Boolean derived from the AI step count — an aggregation feeding a calc.",
         "SortOrder": 290,
-        "IsEnabled": true
+        "IsEnabled": true,
+        "RelativePath": "conformance-tests/has-ai-agent-step",
+        "Iri": "conformance-tests-has-ai-agent-step",
+        "Name": "hasaiagentstep-boolean"
       },
       {
         "ConformanceTestId": "approval-human-filled",
@@ -3475,7 +4348,10 @@ export const rulebook = {
         "Expect": "",
         "Explanation": "requiresHumanApproval is satisfied at seed: the gate role is filled by a human.",
         "SortOrder": 300,
-        "IsEnabled": true
+        "IsEnabled": true,
+        "RelativePath": "conformance-tests/approval-human-filled",
+        "Iri": "conformance-tests-approval-human-filled",
+        "Name": "gate-step-is-human-filled-at-seed"
       },
       {
         "ConformanceTestId": "approval-violation-false",
@@ -3487,7 +4363,10 @@ export const rulebook = {
         "Expect": "",
         "Explanation": "The consistency rule does NOT fire on the seed facts — the clean baseline the mutation test breaks.",
         "SortOrder": 310,
-        "IsEnabled": true
+        "IsEnabled": true,
+        "RelativePath": "conformance-tests/approval-violation-false",
+        "Iri": "conformance-tests-approval-violation-false",
+        "Name": "no-approval-violation-at-seed"
       },
       {
         "ConformanceTestId": "workflow-violation-false",
@@ -3499,7 +4378,10 @@ export const rulebook = {
         "Expect": "",
         "Explanation": "Workflow-level rollup of approval violations is false on seed facts.",
         "SortOrder": 320,
-        "IsEnabled": true
+        "IsEnabled": true,
+        "RelativePath": "conformance-tests/workflow-violation-false",
+        "Iri": "conformance-tests-workflow-violation-false",
+        "Name": "workflow-has-no-violation-at-seed"
       },
       {
         "ConformanceTestId": "skos-workflow-status",
@@ -3511,7 +4393,10 @@ export const rulebook = {
         "Expect": "",
         "Explanation": "workflowStatus points into the WorkflowStatusConcepts scheme.",
         "SortOrder": 330,
-        "IsEnabled": true
+        "IsEnabled": true,
+        "RelativePath": "conformance-tests/skos-workflow-status",
+        "Iri": "conformance-tests-skos-workflow-status",
+        "Name": "workflow-status-is-a-skos-concept"
       },
       {
         "ConformanceTestId": "skos-role-capability",
@@ -3523,7 +4408,10 @@ export const rulebook = {
         "Expect": "",
         "Explanation": "hasCapability points into the AgentCapabilityConcepts scheme.",
         "SortOrder": 340,
-        "IsEnabled": true
+        "IsEnabled": true,
+        "RelativePath": "conformance-tests/skos-role-capability",
+        "Iri": "conformance-tests-skos-role-capability",
+        "Name": "role-capability-is-a-skos-concept"
       },
       {
         "ConformanceTestId": "role-label-documented",
@@ -3535,7 +4423,10 @@ export const rulebook = {
         "Expect": "",
         "Explanation": "Heuristic 6: label/comment documentation travels with the model into every substrate.",
         "SortOrder": 350,
-        "IsEnabled": true
+        "IsEnabled": true,
+        "RelativePath": "conformance-tests/role-label-documented",
+        "Iri": "conformance-tests-role-label-documented",
+        "Name": "role-carries-label-documentation"
       },
       {
         "ConformanceTestId": "gate-escalation-hours",
@@ -3547,7 +4438,10 @@ export const rulebook = {
         "Expect": "",
         "Explanation": "The gate's defining datatype property (raw, gate-only).",
         "SortOrder": 360,
-        "IsEnabled": true
+        "IsEnabled": true,
+        "RelativePath": "conformance-tests/gate-escalation-hours",
+        "Iri": "conformance-tests-gate-escalation-hours",
+        "Name": "gate-escalation-threshold"
       },
       {
         "ConformanceTestId": "gate-role-lookup",
@@ -3559,7 +4453,10 @@ export const rulebook = {
         "Expect": "",
         "Explanation": "INDEX/MATCH lookup gate→step→role. KNOWN GAP CANDIDATE: both engines currently drop lookup columns from their individuals payload — this test exists to keep that gap visible until fixed.",
         "SortOrder": 370,
-        "IsEnabled": true
+        "IsEnabled": true,
+        "RelativePath": "conformance-tests/gate-role-lookup",
+        "Iri": "conformance-tests-gate-role-lookup",
+        "Name": "gate-role-resolves-via-lookup"
       },
       {
         "ConformanceTestId": "gate-approver-lookup",
@@ -3571,7 +4468,10 @@ export const rulebook = {
         "Expect": "",
         "Explanation": "Second-order lookup gate→role→human filler. Same known gap candidate as GateRole.",
         "SortOrder": 380,
-        "IsEnabled": true
+        "IsEnabled": true,
+        "RelativePath": "conformance-tests/gate-approver-lookup",
+        "Iri": "conformance-tests-gate-approver-lookup",
+        "Name": "gate-approver-human-resolves-via-lookup"
       },
       {
         "ConformanceTestId": "role-exactly-one-filler",
@@ -3583,7 +4483,10 @@ export const rulebook = {
         "Expect": "",
         "Explanation": "Functional filledBy: exactly one of the three filler arms is set.",
         "SortOrder": 390,
-        "IsEnabled": true
+        "IsEnabled": true,
+        "RelativePath": "conformance-tests/role-exactly-one-filler",
+        "Iri": "conformance-tests-role-exactly-one-filler",
+        "Name": "release-manager-has-exactly-one-filler"
       },
       {
         "ConformanceTestId": "bad-filler-count-zero",
@@ -3595,7 +4498,10 @@ export const rulebook = {
         "Expect": "",
         "Explanation": "Suite-4 cardinality witness: zero roles violate the exactly-one-filler rule on seed facts.",
         "SortOrder": 400,
-        "IsEnabled": true
+        "IsEnabled": true,
+        "RelativePath": "conformance-tests/bad-filler-count-zero",
+        "Iri": "conformance-tests-bad-filler-count-zero",
+        "Name": "no-roles-with-bad-filler-cardinality"
       },
       {
         "ConformanceTestId": "artifact-derivation",
@@ -3607,7 +4513,10 @@ export const rulebook = {
         "Expect": "",
         "Explanation": "One link of the 5-artifact PROV wasDerivedFrom chain.",
         "SortOrder": 410,
-        "IsEnabled": true
+        "IsEnabled": true,
+        "RelativePath": "conformance-tests/artifact-derivation",
+        "Iri": "conformance-tests-artifact-derivation",
+        "Name": "release-authorization-derives-from-legal-clearance"
       },
       {
         "ConformanceTestId": "artifact-attribution",
@@ -3619,7 +4528,10 @@ export const rulebook = {
         "Expect": "",
         "Explanation": "PROV attribution: the artifact names the AI agent that produced it.",
         "SortOrder": 420,
-        "IsEnabled": true
+        "IsEnabled": true,
+        "RelativePath": "conformance-tests/artifact-attribution",
+        "Iri": "conformance-tests-artifact-attribution",
+        "Name": "risk-report-attributed-to-the-risk-ai"
       },
       {
         "ConformanceTestId": "artifact-has-parent",
@@ -3631,7 +4543,10 @@ export const rulebook = {
         "Expect": "",
         "Explanation": "Boolean derived from the lineage link.",
         "SortOrder": 430,
-        "IsEnabled": true
+        "IsEnabled": true,
+        "RelativePath": "conformance-tests/artifact-has-parent",
+        "Iri": "conformance-tests-artifact-has-parent",
+        "Name": "post-deploy-report-has-a-derivation-parent"
       },
       {
         "ConformanceTestId": "consumes-dataset",
@@ -3643,7 +4558,10 @@ export const rulebook = {
         "Expect": "",
         "Explanation": "consumesDataset points at the dcat:Dataset; answers CQ8.",
         "SortOrder": 440,
-        "IsEnabled": true
+        "IsEnabled": true,
+        "RelativePath": "conformance-tests/consumes-dataset",
+        "Iri": "conformance-tests-consumes-dataset",
+        "Name": "step-consumes-the-dcat-dataset"
       },
       {
         "ConformanceTestId": "legal-owned-step",
@@ -3655,7 +4573,10 @@ export const rulebook = {
         "Expect": "",
         "Explanation": "ownedBy chain step→role→department resolves to Legal.",
         "SortOrder": 450,
-        "IsEnabled": true
+        "IsEnabled": true,
+        "RelativePath": "conformance-tests/legal-owned-step",
+        "Iri": "conformance-tests-legal-owned-step",
+        "Name": "legal-step-is-legal-owned"
       },
       {
         "ConformanceTestId": "eng-owned-step",
@@ -3667,7 +4588,10 @@ export const rulebook = {
         "Expect": "",
         "Explanation": "Same chain resolving to Engineering.",
         "SortOrder": 460,
-        "IsEnabled": true
+        "IsEnabled": true,
+        "RelativePath": "conformance-tests/eng-owned-step",
+        "Iri": "conformance-tests-eng-owned-step",
+        "Name": "deploy-step-is-engineering-owned"
       },
       {
         "ConformanceTestId": "cross-cutting-workflow",
@@ -3679,7 +4603,10 @@ export const rulebook = {
         "Expect": "",
         "Explanation": "The cross-department join CQ7 asks about.",
         "SortOrder": 470,
-        "IsEnabled": true
+        "IsEnabled": true,
+        "RelativePath": "conformance-tests/cross-cutting-workflow",
+        "Iri": "conformance-tests-cross-cutting-workflow",
+        "Name": "workflow-involves-engineering-and-legal"
       },
       {
         "ConformanceTestId": "sequence-position",
@@ -3689,9 +4616,12 @@ export const rulebook = {
         "TestKind": "field-match",
         "TargetRef": "WorkflowSteps/prod-deploy-step-4#SequencePosition",
         "Expect": "",
-        "Explanation": "Functional integer datatype property echoes through both substrates.",
+        "Explanation": "The resolved SequencePosition (override-if-pinned, else PrecedingStepCount+1) computes identically in both substrates; step 4 has four transitive predecessors and no override, so it resolves to 4.",
         "SortOrder": 480,
-        "IsEnabled": true
+        "IsEnabled": true,
+        "RelativePath": "conformance-tests/sequence-position",
+        "Iri": "conformance-tests-sequence-position",
+        "Name": "step-4-sequence-position"
       },
       {
         "ConformanceTestId": "step-duration",
@@ -3703,7 +4633,10 @@ export const rulebook = {
         "Expect": "",
         "Explanation": "Drives the time-budget bar; raw datatype property.",
         "SortOrder": 490,
-        "IsEnabled": true
+        "IsEnabled": true,
+        "RelativePath": "conformance-tests/step-duration",
+        "Iri": "conformance-tests-step-duration",
+        "Name": "step-1-duration-minutes"
       },
       {
         "ConformanceTestId": "asserted-pair-count",
@@ -3715,7 +4648,10 @@ export const rulebook = {
         "Expect": "",
         "Explanation": "4 asserted edges.",
         "SortOrder": 500,
-        "IsEnabled": true
+        "IsEnabled": true,
+        "RelativePath": "conformance-tests/asserted-pair-count",
+        "Iri": "conformance-tests-asserted-pair-count",
+        "Name": "asserted-precedence-pair-count"
       },
       {
         "ConformanceTestId": "inferred-pair-count",
@@ -3727,7 +4663,10 @@ export const rulebook = {
         "Expect": "",
         "Explanation": "6 pairs exist only by inference (10-pair closure minus 4 asserted).",
         "SortOrder": 510,
-        "IsEnabled": true
+        "IsEnabled": true,
+        "RelativePath": "conformance-tests/inferred-pair-count",
+        "Iri": "conformance-tests-inferred-pair-count",
+        "Name": "inferred-precedence-pair-count"
       },
       {
         "ConformanceTestId": "closure-pair-total",
@@ -3739,7 +4678,10 @@ export const rulebook = {
         "Expect": "",
         "Explanation": "The 10-pair transitive closure, counted from the materialized closure rows.",
         "SortOrder": 520,
-        "IsEnabled": true
+        "IsEnabled": true,
+        "RelativePath": "conformance-tests/closure-pair-total",
+        "Iri": "conformance-tests-closure-pair-total",
+        "Name": "total-precedence-closure-pairs"
       },
       {
         "ConformanceTestId": "months-since-modified",
@@ -3751,7 +4693,10 @@ export const rulebook = {
         "Expect": "",
         "Explanation": "Time-dependent calc (months granularity) — the staleness clock.",
         "SortOrder": 530,
-        "IsEnabled": true
+        "IsEnabled": true,
+        "RelativePath": "conformance-tests/months-since-modified",
+        "Iri": "conformance-tests-months-since-modified",
+        "Name": "months-since-last-review"
       },
       {
         "ConformanceTestId": "is-stale-seed",
@@ -3763,7 +4708,10 @@ export const rulebook = {
         "Expect": "",
         "Explanation": "The CQ5 governance query on the seed facts.",
         "SortOrder": 540,
-        "IsEnabled": true
+        "IsEnabled": true,
+        "RelativePath": "conformance-tests/is-stale-seed",
+        "Iri": "conformance-tests-is-stale-seed",
+        "Name": "workflow-not-stale-at-seed"
       },
       {
         "ConformanceTestId": "stale-and-ai-seed",
@@ -3775,7 +4723,10 @@ export const rulebook = {
         "Expect": "",
         "Explanation": "The higher-compliance-risk join on the seed facts.",
         "SortOrder": 550,
-        "IsEnabled": true
+        "IsEnabled": true,
+        "RelativePath": "conformance-tests/stale-and-ai-seed",
+        "Iri": "conformance-tests-stale-and-ai-seed",
+        "Name": "stale-and-has-ai-at-seed"
       },
       {
         "ConformanceTestId": "authority-can-approve",
@@ -3787,7 +4738,10 @@ export const rulebook = {
         "Expect": "",
         "Explanation": "Steward vs Authority: only the Authority approves.",
         "SortOrder": 560,
-        "IsEnabled": true
+        "IsEnabled": true,
+        "RelativePath": "conformance-tests/authority-can-approve",
+        "Iri": "conformance-tests-authority-can-approve",
+        "Name": "authority-can-approve-changes"
       },
       {
         "ConformanceTestId": "steward-cannot-approve",
@@ -3799,7 +4753,10 @@ export const rulebook = {
         "Expect": "",
         "Explanation": "The other half of the governance split.",
         "SortOrder": 570,
-        "IsEnabled": true
+        "IsEnabled": true,
+        "RelativePath": "conformance-tests/steward-cannot-approve",
+        "Iri": "conformance-tests-steward-cannot-approve",
+        "Name": "steward-cannot-approve-changes"
       },
       {
         "ConformanceTestId": "changelog-breaking",
@@ -3811,7 +4768,10 @@ export const rulebook = {
         "Expect": "",
         "Explanation": "Semantic-versioning derivation from ChangeKind.",
         "SortOrder": 580,
-        "IsEnabled": true
+        "IsEnabled": true,
+        "RelativePath": "conformance-tests/changelog-breaking",
+        "Iri": "conformance-tests-changelog-breaking",
+        "Name": "change-1.0.0-breaking-change-flag"
       },
       {
         "ConformanceTestId": "changelog-backcompat",
@@ -3823,7 +4783,10 @@ export const rulebook = {
         "Expect": "",
         "Explanation": "The minor release is back-compat by derivation.",
         "SortOrder": 590,
-        "IsEnabled": true
+        "IsEnabled": true,
+        "RelativePath": "conformance-tests/changelog-backcompat",
+        "Iri": "conformance-tests-changelog-backcompat",
+        "Name": "change-1.1.0-backward-compatible-flag"
       },
       {
         "ConformanceTestId": "assignment-current",
@@ -3835,7 +4798,10 @@ export const rulebook = {
         "Expect": "",
         "Explanation": "Bitemporal validity: the open-ended assignment is current.",
         "SortOrder": 600,
-        "IsEnabled": true
+        "IsEnabled": true,
+        "RelativePath": "conformance-tests/assignment-current",
+        "Iri": "conformance-tests-assignment-current",
+        "Name": "current-role-assignment-flagged"
       },
       {
         "ConformanceTestId": "assignment-as-of-audit",
@@ -3847,7 +4813,10 @@ export const rulebook = {
         "Expect": "",
         "Explanation": "The 'who filled this on the audit date' time-travel query.",
         "SortOrder": 610,
-        "IsEnabled": true
+        "IsEnabled": true,
+        "RelativePath": "conformance-tests/assignment-as-of-audit",
+        "Iri": "conformance-tests-assignment-as-of-audit",
+        "Name": "assignment-active-as-of-audit-date"
       },
       {
         "ConformanceTestId": "agent-type-change",
@@ -3859,7 +4828,10 @@ export const rulebook = {
         "Expect": "",
         "Explanation": "AI→Human turnover detection across consecutive assignments.",
         "SortOrder": 620,
-        "IsEnabled": true
+        "IsEnabled": true,
+        "RelativePath": "conformance-tests/agent-type-change",
+        "Iri": "conformance-tests-agent-type-change",
+        "Name": "agent-type-change-detected"
       },
       {
         "ConformanceTestId": "compliance-audit-required",
@@ -3871,7 +4843,10 @@ export const rulebook = {
         "Expect": "",
         "Explanation": "The audit trigger derived from the agent-type change.",
         "SortOrder": 630,
-        "IsEnabled": true
+        "IsEnabled": true,
+        "RelativePath": "conformance-tests/compliance-audit-required",
+        "Iri": "conformance-tests-compliance-audit-required",
+        "Name": "turnover-requires-compliance-audit"
       },
       {
         "ConformanceTestId": "audit-changes-rollup",
@@ -3883,7 +4858,10 @@ export const rulebook = {
         "Expect": "",
         "Explanation": "Workflow-level count of audit-triggering changes.",
         "SortOrder": 640,
-        "IsEnabled": true
+        "IsEnabled": true,
+        "RelativePath": "conformance-tests/audit-changes-rollup",
+        "Iri": "conformance-tests-audit-changes-rollup",
+        "Name": "workflow-compliance-audit-rollup"
       },
       {
         "ConformanceTestId": "blast-radius-artifacts",
@@ -3895,7 +4873,10 @@ export const rulebook = {
         "Expect": "",
         "Explanation": "AI-system-registry blast radius: artifacts this AI produced.",
         "SortOrder": 650,
-        "IsEnabled": true
+        "IsEnabled": true,
+        "RelativePath": "conformance-tests/blast-radius-artifacts",
+        "Iri": "conformance-tests-blast-radius-artifacts",
+        "Name": "risk-ai-attributed-artifact-count"
       },
       {
         "ConformanceTestId": "blast-radius-workflows",
@@ -3907,7 +4888,10 @@ export const rulebook = {
         "Expect": "",
         "Explanation": "Blast radius: workflows reachable from this AI's artifacts.",
         "SortOrder": 660,
-        "IsEnabled": true
+        "IsEnabled": true,
+        "RelativePath": "conformance-tests/blast-radius-workflows",
+        "Iri": "conformance-tests-blast-radius-workflows",
+        "Name": "risk-ai-impacted-workflow-count"
       },
       {
         "ConformanceTestId": "model-version",
@@ -3919,7 +4903,10 @@ export const rulebook = {
         "Expect": "",
         "Explanation": "The audit anchor: which model version produced the attributed artifacts.",
         "SortOrder": 670,
-        "IsEnabled": true
+        "IsEnabled": true,
+        "RelativePath": "conformance-tests/model-version",
+        "Iri": "conformance-tests-model-version",
+        "Name": "risk-ai-model-version"
       },
       {
         "ConformanceTestId": "deployed-on",
@@ -3931,7 +4918,10 @@ export const rulebook = {
         "Expect": "",
         "Explanation": "When the audited model version went live.",
         "SortOrder": 680,
-        "IsEnabled": true
+        "IsEnabled": true,
+        "RelativePath": "conformance-tests/deployed-on",
+        "Iri": "conformance-tests-deployed-on",
+        "Name": "risk-ai-deployment-date"
       },
       {
         "ConformanceTestId": "mut-ai-at-human-gate",
@@ -3943,7 +4933,10 @@ export const rulebook = {
         "Expect": "{\"edits\": [{\"class\": \"Roles\", \"id\": \"ntwf-release-manager-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"ntwf-risk-ai\", \"filledByAutomatedPipeline\": \"\"}}], \"assert\": [{\"class\": \"WorkflowSteps\", \"id\": \"prod-deploy-step-3\", \"field\": \"approvalConsistencyViolation\", \"equals\": true}, {\"class\": \"Workflows\", \"id\": \"production-deployment\", \"field\": \"hasConsistencyViolation\", \"equals\": true}]}",
         "Explanation": "Suite-4 inject-an-error: filling the gate role with an AI must flip ApprovalConsistencyViolation on the step AND roll up to the workflow, on BOTH engines.",
         "SortOrder": 690,
-        "IsEnabled": true
+        "IsEnabled": true,
+        "RelativePath": "conformance-tests/mut-ai-at-human-gate",
+        "Iri": "conformance-tests-mut-ai-at-human-gate",
+        "Name": "assign-ai-to-the-human-only-gate-fires-the-violation"
       },
       {
         "ConformanceTestId": "mut-backdate-goes-stale",
@@ -3955,7 +4948,10 @@ export const rulebook = {
         "Expect": "{\"edits\": [{\"class\": \"Workflows\", \"id\": \"production-deployment\", \"set\": {\"modified\": \"2024-01-01T00:00:00-05:00\"}}], \"assert\": [{\"class\": \"Workflows\", \"id\": \"production-deployment\", \"field\": \"isStale\", \"equals\": true}]}",
         "Explanation": "Backdate dct:modified past the staleness window: IsStale must flip true.",
         "SortOrder": 700,
-        "IsEnabled": true
+        "IsEnabled": true,
+        "RelativePath": "conformance-tests/mut-backdate-goes-stale",
+        "Iri": "conformance-tests-mut-backdate-goes-stale",
+        "Name": "backdating-the-review-makes-the-workflow-stale"
       },
       {
         "ConformanceTestId": "mut-stale-and-ai-join",
@@ -3967,7 +4963,10 @@ export const rulebook = {
         "Expect": "{\"edits\": [{\"class\": \"Workflows\", \"id\": \"production-deployment\", \"set\": {\"modified\": \"2024-01-01T00:00:00-05:00\"}}], \"assert\": [{\"class\": \"Workflows\", \"id\": \"production-deployment\", \"field\": \"isStaleAndHasAIAgent\", \"equals\": true}]}",
         "Explanation": "Seed facts already include AI-executed steps, so staleness alone completes the IsStaleAndHasAIAgent join.",
         "SortOrder": 710,
-        "IsEnabled": true
+        "IsEnabled": true,
+        "RelativePath": "conformance-tests/mut-stale-and-ai-join",
+        "Iri": "conformance-tests-mut-stale-and-ai-join",
+        "Name": "backdating-fires-the-stale-and-ai-compliance-join"
       },
       {
         "ConformanceTestId": "mut-gate-not-required",
@@ -3979,7 +4978,10 @@ export const rulebook = {
         "Expect": "{\"edits\": [{\"class\": \"Roles\", \"id\": \"ntwf-release-manager-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"ntwf-risk-ai\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"WorkflowSteps\", \"id\": \"prod-deploy-step-3\", \"set\": {\"requiresHumanApproval\": false}}], \"assert\": [{\"class\": \"WorkflowSteps\", \"id\": \"prod-deploy-step-3\", \"field\": \"approvalConsistencyViolation\", \"equals\": false}]}",
         "Explanation": "The violation is an AND of requiresHumanApproval and a non-human filler: with the requirement off, an AI filler is consistent.",
         "SortOrder": 720,
-        "IsEnabled": true
+        "IsEnabled": true,
+        "RelativePath": "conformance-tests/mut-gate-not-required",
+        "Iri": "conformance-tests-mut-gate-not-required",
+        "Name": "dropping-the-sign-off-requirement-clears-the-violation"
       }
     ]
   },
