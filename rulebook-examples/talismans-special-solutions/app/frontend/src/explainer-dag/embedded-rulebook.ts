@@ -619,7 +619,8 @@ export const rulebook = {
         "ApprovalIsHumanFilled": true,
         "OwningDepartment": "ntwf-engineering",
         "IsLegalOwned": false,
-        "IsEngineeringOwned": true
+        "IsEngineeringOwned": true,
+        "PrecedingStepCount": 2
       },
       {
         "WorkflowStepId": "prod-deploy-step-2",
@@ -649,7 +650,8 @@ export const rulebook = {
         "ApprovalIsHumanFilled": true,
         "OwningDepartment": "ntwf-legal-dept",
         "IsLegalOwned": true,
-        "IsEngineeringOwned": false
+        "IsEngineeringOwned": false,
+        "PrecedingStepCount": 1
       },
       {
         "WorkflowStepId": "prod-deploy-step-5",
@@ -679,7 +681,8 @@ export const rulebook = {
         "ApprovalIsHumanFilled": true,
         "OwningDepartment": "ntwf-engineering",
         "IsLegalOwned": false,
-        "IsEngineeringOwned": true
+        "IsEngineeringOwned": true,
+        "PrecedingStepCount": 4
       },
       {
         "WorkflowStepId": "prod-deploy-step-1",
@@ -709,7 +712,8 @@ export const rulebook = {
         "ApprovalIsHumanFilled": true,
         "OwningDepartment": "ntwf-engineering",
         "IsLegalOwned": false,
-        "IsEngineeringOwned": true
+        "IsEngineeringOwned": true,
+        "PrecedingStepCount": 0
       },
       {
         "WorkflowStepId": "prod-deploy-step-4",
@@ -739,7 +743,8 @@ export const rulebook = {
         "ApprovalIsHumanFilled": true,
         "OwningDepartment": "ntwf-engineering",
         "IsLegalOwned": false,
-        "IsEngineeringOwned": true
+        "IsEngineeringOwned": true,
+        "PrecedingStepCount": 3
       }
     ]
   },

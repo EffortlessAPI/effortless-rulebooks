@@ -1649,8 +1649,48 @@ def build_closure_count_where(table_name: str, expr: ExprNode, closure: Dict[str
     """
     args = expr.args
     if len(args) != 2:
-        raise ValueError("closure COUNTIFS supports exactly one (IsInferred, bool) pair")
+        raise ValueError("closure COUNTIFS supports exactly one (range, criteria) pair")
+    range_ref = args[0]
     crit = args[1]
+
+    base = closure['base_prop']
+    edge_class = closure['edge_class']
+    from_prop = closure['from_prop']
+    to_prop = closure['to_prop']
+
+    # ---- PER-ROW closure count: COUNTIFS(<view>!{{ToId|FromId}}, Owner!{{PK}}) ----
+    # The criteria is a column reference to the CURRENT row's key ($this), not a
+    # bool literal. We count closure pairs whose matched endpoint is $this:
+    #   range = to_id   -> PREDECESSORS of $this :  COUNT WHERE ?a   base+ $this
+    #   range = from_id -> SUCCESSORS  of $this :  COUNT WHERE $this base+ ?b
+    # This mirrors the Postgres `COUNT(*) FROM <view> WHERE <endpoint> = <pk>` the
+    # `closure` field type's view exposes, so the reasoner matches it. The reach is
+    # the SPARQL transitive path `base+` (same primitive as the inferred/asserted
+    # counts), so it fires under pyshacl inference='none'. ($this inside the
+    # sub-SELECT is correlated, exactly as the child-rollup count does it.)
+    if isinstance(crit, QualifiedRef):
+        if not isinstance(range_ref, QualifiedRef):
+            raise ValueError("closure per-row COUNTIFS range must be <view>!{{Column}}")
+        col = _snake(range_ref.column)
+        if col == 'to_id':
+            path = f'{INDENT}        ?a {base}+ $this .'
+        elif col == 'from_id':
+            path = f'{INDENT}        $this {base}+ ?b .'
+        else:
+            raise ValueError(
+                "closure per-row COUNTIFS range must be the view's from_id/to_id "
+                f"column, got {range_ref.column!r}")
+        parts = [
+            f'    $this a {NS}{table_name} .',
+            f'{INDENT}{{',
+            f'{INDENT}    SELECT (COUNT(*) AS ?_result) WHERE {{',
+            path,
+            f'{INDENT}    }}',
+            f'{INDENT}}}',
+        ]
+        return '\n'.join(parts)
+
+    # ---- AGGREGATE closure count: COUNTIFS(<view>!{{IsInferred}}, TRUE/FALSE) ----
     # TRUE() parses as a no-arg FuncCall; accept both that and a bare bool literal.
     want_inferred = None
     if isinstance(crit, LiteralBool):
@@ -1658,12 +1698,7 @@ def build_closure_count_where(table_name: str, expr: ExprNode, closure: Dict[str
     elif isinstance(crit, FuncCall) and crit.name in ('TRUE', 'FALSE'):
         want_inferred = (crit.name == 'TRUE')
     else:
-        raise ValueError("closure COUNTIFS criteria must be TRUE()/FALSE()")
-
-    base = closure['base_prop']
-    edge_class = closure['edge_class']
-    from_prop = closure['from_prop']
-    to_prop = closure['to_prop']
+        raise ValueError("closure COUNTIFS criteria must be TRUE()/FALSE() or a per-row key ref")
 
     # asserted := an edge individual of edge_class links ?a -> ?b directly.
     asserted = (

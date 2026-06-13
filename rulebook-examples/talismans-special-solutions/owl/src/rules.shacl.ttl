@@ -1424,6 +1424,26 @@ effortless-ntwf:WorkflowStepsShape a sh:NodeShape ;
     ] ;
     sh:rule [
         a sh:SPARQLRule ;
+        rdfs:label "rule_WorkflowSteps_PrecedingStepCount" ;
+        sh:prefixes effortless-ntwf: ;
+        sh:construct """
+            PREFIX effortless-ntwf: <https://w3id.org/effortless-ntwf#>
+            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+            CONSTRUCT {
+                $this effortless-ntwf:precedingStepCount ?_result .
+            }
+            WHERE {
+    $this a effortless-ntwf:WorkflowSteps .
+                {
+                    SELECT (COUNT(*) AS ?_result) WHERE {
+                        ?a effortless-ntwf:precedesStep+ $this .
+                    }
+                }
+            }
+        """ ;
+    ] ;
+    sh:rule [
+        a sh:SPARQLRule ;
         rdfs:label "rule_WorkflowSteps_SequencePosition" ;
         sh:prefixes effortless-ntwf: ;
         sh:construct """
@@ -1638,7 +1658,6 @@ effortless-ntwf:WorkflowStepsShape a sh:NodeShape ;
             }
         """ ;
     ] .
-# Rule for PrecedingStepCount - parse error: closure COUNTIFS criteria must be TRUE()/FALSE()
 
 # === Shape with rules for Workflows ===
 effortless-ntwf:WorkflowsShape a sh:NodeShape ;
@@ -2195,4 +2214,4 @@ effortless-ntwf:WorkflowStepsCardinalityShape a sh:NodeShape ;
     sh:targetClass effortless-ntwf:WorkflowSteps ;
     sh:property [ sh:path effortless-ntwf:workflow ; sh:maxCount 1 ] .
 
-# Generated 112 SHACL rules
+# Generated 113 SHACL rules
