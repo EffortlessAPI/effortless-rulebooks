@@ -642,13 +642,19 @@ app.post("/api/conformance/run", wrap(async (req, res) => {
   const h = new ConformanceHarness();
   await h.load();
   const report = await h.run({ only });
-  // persist the run-log + latest.json (same as the CLI), so a refresh shows it.
-  await import("node:fs/promises").then(async ({ mkdir }) => {
-    await mkdir(CONFORMANCE_RUNS_DIR, { recursive: true });
-    const stamp = report.summary.startedAt.replace(/[:.]/g, "-");
-    await writeFile(path.join(CONFORMANCE_RUNS_DIR, `run-${stamp}.json`), JSON.stringify(report, null, 2) + "\n", "utf8");
+  // Persist the canonical baseline (latest.json) ONLY for a FULL run. A subset
+  // run (the per-row ▶ button) returns its results for the client to merge into
+  // the displayed table, but must NOT clobber latest.json — otherwise a refresh
+  // would show "3 tests" instead of the full 72. We still archive every run
+  // (full or subset) as its own timestamped log for the audit trail.
+  const { mkdir } = await import("node:fs/promises");
+  await mkdir(CONFORMANCE_RUNS_DIR, { recursive: true });
+  const stamp = report.summary.startedAt.replace(/[:.]/g, "-");
+  const tag = only ? `-subset-${only.length}` : "";
+  await writeFile(path.join(CONFORMANCE_RUNS_DIR, `run-${stamp}${tag}.json`), JSON.stringify(report, null, 2) + "\n", "utf8");
+  if (!only) {
     await writeFile(path.join(CONFORMANCE_RUNS_DIR, "latest.json"), JSON.stringify(report, null, 2) + "\n", "utf8");
-  });
+  }
   res.json(report);
 }));
 

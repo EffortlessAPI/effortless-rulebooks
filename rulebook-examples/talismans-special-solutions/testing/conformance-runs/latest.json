@@ -1,8 +1,8 @@
 {
   "summary": {
-    "startedAt": "2026-06-13T10:13:54.221Z",
-    "finishedAt": "2026-06-13T10:15:43.011Z",
-    "durationMs": 108788,
+    "startedAt": "2026-06-13T15:07:08.417Z",
+    "finishedAt": "2026-06-13T15:09:32.446Z",
+    "durationMs": 144029,
     "engines": [
       "reasoner",
       "postgres"
@@ -512,7 +512,7 @@
         {
           "engine": "both",
           "status": "fail",
-          "detail": "25 value diff(s): StepPrecedence/prec-1-2.parentPath, StepPrecedence/prec-1-2.iri, StepPrecedence/prec-1-2.relativePath, StepPrecedence/prec-2-3.parentPath, StepPrecedence/prec-2-3.relativePath, StepPrecedence/prec-2-3.iri"
+          "detail": "25 value diff(s): RoleAssignments/asn-vp-eng-david.wasActiveAsOfAuditDate, RoleAssignments/asn-vp-eng-priya.wasActiveAsOfAuditDate, StepPrecedence/prec-1-2.relativePath, StepPrecedence/prec-1-2.parentPath, StepPrecedence/prec-1-2.iri, StepPrecedence/prec-2-3.relativePath"
         }
       ],
       "overall": "fail"

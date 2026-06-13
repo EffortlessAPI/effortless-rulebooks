@@ -67,13 +67,18 @@ function printSummary(rep: RunReport) {
   if (s.gaps > 0) console.log(`  ${C.yellow}${s.gaps} gap(s): a substrate didn't emit a value — surfaced, not hidden.${C.reset}`);
 }
 
-async function writeLog(rep: RunReport): Promise<string> {
+async function writeLog(rep: RunReport, isSubset: boolean): Promise<string> {
   await mkdir(RUNS_DIR, { recursive: true });
   // filename-safe timestamp from the ISO string (no Date.now needed)
   const stamp = rep.summary.startedAt.replace(/[:.]/g, "-");
-  const file = path.join(RUNS_DIR, `run-${stamp}.json`);
+  const file = path.join(RUNS_DIR, `run-${stamp}${isSubset ? `-subset-${rep.summary.total}` : ""}.json`);
   await writeFile(file, JSON.stringify(rep, null, 2) + "\n", "utf8");
-  await writeFile(path.join(RUNS_DIR, "latest.json"), JSON.stringify(rep, null, 2) + "\n", "utf8");
+  // latest.json is the canonical FULL baseline (the admin UI reads it). A --only
+  // subset run is archived above but must NOT clobber it, or a refresh would show
+  // just the subset.
+  if (!isSubset) {
+    await writeFile(path.join(RUNS_DIR, "latest.json"), JSON.stringify(rep, null, 2) + "\n", "utf8");
+  }
   return file;
 }
 
@@ -95,7 +100,7 @@ async function main() {
   printSummary(rep);
 
   if (args.log) {
-    const file = await writeLog(rep);
+    const file = await writeLog(rep, !!args.only);
     console.log(`\n  ${C.dim}run-log: ${path.relative(process.cwd(), file)}${C.reset}`);
   }
 
