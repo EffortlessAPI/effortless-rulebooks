@@ -616,7 +616,8 @@
         "ApprovalIsHumanFilled": true,
         "OwningDepartment": "ntwf-engineering",
         "IsLegalOwned": false,
-        "IsEngineeringOwned": true
+        "IsEngineeringOwned": true,
+        "PrecedingStepCount": 2
       },
       {
         "WorkflowStepId": "prod-deploy-step-2",
@@ -646,7 +647,8 @@
         "ApprovalIsHumanFilled": true,
         "OwningDepartment": "ntwf-legal-dept",
         "IsLegalOwned": true,
-        "IsEngineeringOwned": false
+        "IsEngineeringOwned": false,
+        "PrecedingStepCount": 1
       },
       {
         "WorkflowStepId": "prod-deploy-step-5",
@@ -676,7 +678,8 @@
         "ApprovalIsHumanFilled": true,
         "OwningDepartment": "ntwf-engineering",
         "IsLegalOwned": false,
-        "IsEngineeringOwned": true
+        "IsEngineeringOwned": true,
+        "PrecedingStepCount": 4
       },
       {
         "WorkflowStepId": "prod-deploy-step-1",
@@ -706,7 +709,8 @@
         "ApprovalIsHumanFilled": true,
         "OwningDepartment": "ntwf-engineering",
         "IsLegalOwned": false,
-        "IsEngineeringOwned": true
+        "IsEngineeringOwned": true,
+        "PrecedingStepCount": 0
       },
       {
         "WorkflowStepId": "prod-deploy-step-4",
@@ -736,7 +740,8 @@
         "ApprovalIsHumanFilled": true,
         "OwningDepartment": "ntwf-engineering",
         "IsLegalOwned": false,
-        "IsEngineeringOwned": true
+        "IsEngineeringOwned": true,
+        "PrecedingStepCount": 3
       }
     ]
   },

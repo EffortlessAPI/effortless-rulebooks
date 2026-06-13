@@ -36,6 +36,8 @@
       "relative_path",
       "iri",
       "name",
+      "preceding_step_count",
+      "sequence_position",
       "executing_human_agent",
       "executing_ai_agent",
       "executing_automated_pipeline",
