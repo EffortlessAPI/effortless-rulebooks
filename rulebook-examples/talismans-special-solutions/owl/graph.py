@@ -19,7 +19,10 @@ from rdflib import Graph, Namespace
 import owlrl
 import pyshacl
 
-ERB = Namespace("http://example.org/erb#")
+# The namespace the rulebook-to-owl transpiler mints individuals and predicates
+# under. This is generated, not chosen here — keep it in lockstep with the
+# `effortless-ntwf:` prefix declared at the top of src/*.ttl / src/ontology.owl.
+ERB = Namespace("https://w3id.org/effortless-ntwf#")
 SRC = Path(__file__).resolve().parent / "src"
 
 # Files the substrate generates. If any is missing, that is a hard error — we do
@@ -31,7 +34,7 @@ SHACL = SRC / "rules.shacl.ttl"
 
 
 def _local(uri) -> str:
-    """The local name of an erb: IRI (everything after '#')."""
+    """The local name of an effortless-ntwf: IRI (everything after '#')."""
     s = str(uri)
     return s.split("#", 1)[1] if "#" in s else s
 
@@ -123,7 +126,7 @@ def iri_of(table_class: str, pk_value: str) -> str:
 
 def _q(query: str) -> Graph:
     return reasoned_graph().query(
-        "PREFIX erb: <http://example.org/erb#>\n" + query
+        "PREFIX erb: <https://w3id.org/effortless-ntwf#>\n" + query
     )
 
 
