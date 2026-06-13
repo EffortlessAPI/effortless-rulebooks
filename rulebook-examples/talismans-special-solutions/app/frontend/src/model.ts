@@ -6,7 +6,7 @@
 //
 // IMPORTANT: this file derives PRESENTATION structure (indices, an org tree,
 // graph node/edge lists) from data the reasoner already computed. It never
-// computes a business fact (an agent's type, a step's violation, the verdict) —
+// computes a business fact (an agent's type, a step's violation, staleness) —
 // those arrive pre-derived in the story payload. (Same doctrine as the backend:
 // the reasoner is the source of truth; we arrange.)
 // ===========================================================================
@@ -110,7 +110,6 @@ export function buildSituation(story: Story): Situation {
   return {
     company: story.company,
     workflow: story.workflow,
-    verdict: story.verdict,
     closure: story.closure,
     steps: story.steps,
     stepFacts: Object.fromEntries(story.stepFacts.map((f) => [f.id, f])),

@@ -60,21 +60,22 @@ button, input, select { font: inherit; }
 .am-ai b { color: var(--ai); }
 .am-human b { color: var(--human); }
 
-/* the action row at the bottom of the verdict card: the explainer/provenance
-   toggle on the left, the "Try a scenario…" button filling the rest. */
-.vh-actions { display: flex; align-items: center; gap: 8px; width: 100%; margin-top: 2px; }
+/* the action row in the CQ rail's intro: the explainer/provenance toggle on the
+   left, the "Try a scenario…" button filling the rest. (These two controls used
+   to live in the verdict box.) */
+.cq-actions { display: flex; align-items: center; gap: 8px; width: 100%; margin-top: 2px; }
 /* The provenance toggle is generated as a viewport-fixed top-right pill
-   (.dag-toggle in dag.css). We host it INSIDE the verdict box instead, so drop
-   the fixed positioning here — in app CSS, not the generated module — and let
-   it sit in the .vh-actions flow next to "Try a scenario…". */
-.vh-actions .dag-toggle { position: static; top: auto; right: auto; z-index: auto; flex: none; }
-/* "Try a scenario…" button — lives inside the verdict card, in the action row.
-   Opens the floating scenario picker (the scenarios themselves come from the DB). */
-.vh-scenario-btn { flex: 1 1 auto; background: var(--card2); border: 1px solid var(--accent);
+   (.dag-toggle in dag.css). We host it INSIDE the CQ rail instead, so drop the
+   fixed positioning here — in app CSS, not the generated module — and let it sit
+   in the .cq-actions flow next to "Try a scenario…". */
+.cq-actions .dag-toggle { position: static; top: auto; right: auto; z-index: auto; flex: none; }
+/* "Try a scenario…" button — lives in the CQ rail's action row. Opens the
+   floating scenario picker (the scenarios themselves come from the DB). */
+.cq-scenario-btn { flex: 1 1 auto; background: var(--card2); border: 1px solid var(--accent);
   color: var(--text); padding: 8px 12px; border-radius: 9px; cursor: pointer; font-weight: 700; font-size: 13px;
   transition: filter .12s, box-shadow .12s; box-shadow: 0 0 0 0 transparent; }
-.vh-scenario-btn:hover:not(:disabled) { box-shadow: 0 6px 22px -8px var(--accent); filter: brightness(1.08); }
-.vh-scenario-btn:disabled { opacity: .5; cursor: default; }
+.cq-scenario-btn:hover:not(:disabled) { box-shadow: 0 6px 22px -8px var(--accent); filter: brightness(1.08); }
+.cq-scenario-btn:disabled { opacity: .5; cursor: default; }
 
 /* scenario picker — a floating modal popup */
 .scenario-modal-backdrop { position: fixed; inset: 0; z-index: 60; display: flex; align-items: center; justify-content: center;
@@ -103,50 +104,22 @@ button, input, select { font: inherit; }
 .sm-item-label { font-size: 14px; font-weight: 700; }
 .sm-item-explain { font-size: 12.5px; color: var(--muted); line-height: 1.5; }
 
-/* verdict — a FIXED (non-draggable) card sitting at the right end of the stage
-   row, beside the steps, sized to hold the whole AND/OR statement. */
-.verdict-header { flex: 0 0 auto; width: 380px; max-width: 34vw; align-self: flex-start;
-  margin: 22px 22px 22px 0;
-  display: flex; flex-direction: column; align-items: stretch; gap: 12px;
-  padding: 16px 18px; border: 1px solid var(--line); border-radius: var(--radius);
-  background: var(--bg2); box-shadow: 0 18px 56px -14px rgba(0,0,0,.55); }
-.verdict-header.ok { border-color: #43c46355; background: linear-gradient(180deg, #43c4631f, var(--bg2) 70%); }
-.verdict-header.risk { border-color: #f0653f66; background: linear-gradient(180deg, #f0653f24, var(--bg2) 70%); }
-/* badge row — no longer a drag surface */
-.vh-drag { display: flex; align-items: center; gap: 8px; width: 100%; }
-.vh-badge { font-size: 15px; font-weight: 800; padding: 6px 12px; border-radius: 9px; white-space: nowrap; }
-.verdict-header.ok .vh-badge { color: var(--ok); background: #43c46318; border: 1px solid #43c46355; }
-.verdict-header.risk .vh-badge { color: var(--risk); background: #f0653f18; border: 1px solid #f0653f66; }
-.vh-detail { font-size: 13.5px; line-height: 1.45; }
-/* The boolean structure, read top-to-bottom as a stacked tree:
-     ( docs stale  AND  AI runs a step )
-     OR  over time budget
-     OR  a rule is broken
-     → AT RISK
-   Each OR clause sits on its own line so the (… AND …) group and the two
-   single-input clauses are visually distinct, not a wrapped blob. */
-.vh-rule { display: flex; flex-direction: column; align-items: flex-start; gap: 7px;
-  font-size: 12.5px; width: 100%; padding: 10px 12px; border-radius: 10px;
-  background: #00000026; border: 1px solid var(--line); }
-/* on narrow screens the stage row can't fit the board + card side by side, so
-   stack the verdict card under the board and let it span the full width */
+/* CQ rail — the competency-question scoreboard pinned to the right end of the
+   stage row, always visible beside the Flow/Graph/Closure lens. It scrolls
+   independently of the page so the lens on the left and the answers on the right
+   stay aligned no matter how long either gets. */
+.cqboard.rail { flex: 0 0 auto; width: 420px; max-width: 36vw; align-self: stretch;
+  margin: 22px 22px 22px 0; padding: 16px 18px;
+  border: 1px solid var(--line); border-radius: var(--radius);
+  background: var(--bg2); box-shadow: 0 18px 56px -14px rgba(0,0,0,.55);
+  position: sticky; top: 16px; max-height: calc(100vh - 32px); overflow: auto; }
+/* on narrow screens the stage row can't fit the lens + rail side by side, so
+   stack the CQ board under the lens and let it span the full width */
 @media (max-width: 1100px) {
   .stage-row { flex-direction: column; }
-  .verdict-header { width: auto; max-width: none; align-self: stretch; margin: 0 22px 22px; }
+  .cqboard.rail { width: auto; max-width: none; align-self: stretch; margin: 0 22px 22px;
+    position: static; max-height: none; }
 }
-.rule-pill { padding: 4px 9px; border-radius: 999px; border: 1px solid var(--line); font-weight: 600; }
-.rule-pill.on { color: var(--risk); border-color: #f0653f55; background: #f0653f12; }
-.rule-pill.off { color: var(--muted); }
-.vh-and { font-weight: 800; color: var(--muted); }
-/* one boolean clause = one horizontal line in the stacked tree */
-.vh-clause { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; width: 100%; }
-/* the leading OR of each line: fixed-width gutter so the pills below align,
-   making the OR-spine read as a column down the left edge */
-.vh-clause > .vh-or { flex: none; width: 22px; text-align: left; }
-/* the result line, set apart under a hairline so "→ AT RISK / ok" reads as the
-   conclusion of the tree, not just another clause */
-.vh-eq { font-weight: 800; width: 100%; margin-top: 3px; padding-top: 8px;
-  border-top: 1px solid var(--line); padding-left: 29px; }
 
 /* view tabs */
 .viewbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 10px 22px 0; flex-wrap: wrap; }
@@ -484,73 +457,6 @@ button, input, select { font: inherit; }
 .conformance-table .ftype { color: var(--muted); font-size: 10px; font-style: normal; }
 .conformance-table .v-rs { color: var(--human); } .conformance-table .v-pg { color: var(--ai); }
 .conformance-note { font-size: 11px; color: var(--muted); margin: 10px 0 0; }
-
-/* ---- verdict: three inputs, firing highlight --------------------------- */
-/* the (stale AND ai) group is the first clause-line; align its pills to the
-   same left spine as the OR-clauses below it (29px = 22px OR gutter + 7px gap) */
-.vh-rule .rule-group { display: flex; align-items: center; gap: 8px; padding: 4px 8px 4px 29px;
-  border-radius: 10px; border: 1px solid transparent; }
-.vh-rule .rule-group.firing { border-color: #f0653f66; background: #f0653f10; }
-.vh-or { font-weight: 800; color: var(--muted); }
-.rule-pill.firing { box-shadow: 0 0 0 2px #f0653f55; }
-
-/* ---- time-budget bar --------------------------------------------------- */
-/* Lives inside the Flow tab, above the step track — a card on the panel, so it
-   reads as the summary of the steps right below it. */
-.timebudget { padding: 12px 16px 6px; margin-bottom: 18px; background: var(--bg2);
-  border: 1px solid var(--line); border-radius: var(--radius); }
-.tb-head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 7px; }
-.tb-title { font-weight: 700; font-size: 13px; }
-.tb-readout { font-size: 13px; color: var(--text); }
-.tb-readout b { font-variant-numeric: tabular-nums; }
-.tb-flag { color: var(--risk); font-weight: 700; }
-.tb-ok { color: var(--ok); }
-/* the track is a flex row of per-step colored segments (one chunk per step).
-   Taller now so each segment can carry its big agent-type icon + step # + minutes
-   inline — the separate legend row is gone. */
-.tb-track { position: relative; display: flex; height: 58px; border-radius: 8px; background: var(--card);
-  border: 1px solid var(--line); overflow: hidden; }
-/* each segment is one step, colored by who runs it (blue person / purple AI /
-   amber pipeline) — mirroring the step cards. It's a vertical stack: a large
-   ¼"-ish agent-type glyph on top, then "Step #N" and its minutes. */
-.tb-seg { position: relative; min-width: 2px; display: flex; flex-direction: column;
-  align-items: center; justify-content: center; gap: 1px; padding: 0 4px;
-  transition: width .25s ease; border-right: 1px solid #0e1016aa; overflow: hidden; }
-.tb-seg:last-child { border-right: none; }
-.tb-seg.k-human { background: var(--human); }
-.tb-seg.k-ai { background: var(--ai); }
-.tb-seg.k-pipeline { background: var(--pipeline); }
-.tb-seg.k-unknown { background: var(--muted); }
-/* the big agent-type glyph — ~1/4" tall (24px) at typical 96dpi */
-.tb-seg-icon { font-size: 24px; line-height: 1; }
-.tb-seg-meta { display: flex; align-items: baseline; gap: 5px; white-space: nowrap;
-  color: #0e1016; text-shadow: 0 1px 0 rgba(255,255,255,.2); }
-.tb-seg-pos { font-size: 10.5px; font-weight: 800; }
-.tb-seg-min { font-size: 10.5px; font-weight: 700; opacity: .85; font-variant-numeric: tabular-nums; }
-/* the splitter handle on each segment's right edge — drag to resize the step */
-.tb-split { position: absolute; top: 0; bottom: 0; right: -4px; width: 9px; z-index: 3;
-  cursor: ew-resize; display: flex; align-items: center; justify-content: center; }
-.tb-split::before { content: ""; width: 2px; height: 60%; border-radius: 2px;
-  background: rgba(14,16,22,.45); transition: background .12s, height .12s; }
-.tb-split:hover::before { background: var(--text); height: 80%; }
-.tb-seg:last-child .tb-split { right: 0; }   /* keep the last handle inside the track */
-.tb-split.disabled { cursor: default; }
-.tb-split.disabled::before { background: rgba(14,16,22,.25); }
-/* the dragged segment + whole-bar feedback while resizing */
-.tb-seg.dragged { box-shadow: inset 0 0 0 2px rgba(255,255,255,.55); }
-.timebudget.dragging .tb-track { cursor: ew-resize; user-select: none; }
-.timebudget.dragging .tb-seg { transition: none; }   /* track the cursor 1:1, no lag */
-.tb-dragnote { color: var(--accent); font-weight: 700; }
-/* the budget marker line + label; turns red once breached */
-.tb-limit { position: absolute; top: -3px; bottom: -3px; width: 2px; background: var(--text); opacity: .75;
-  z-index: 2; transition: left .25s ease; }
-.tb-limit.breached { background: var(--risk); opacity: 1; box-shadow: 0 0 8px -1px var(--risk); }
-.tb-limit-label { position: absolute; top: -16px; left: 4px; font-size: 10px; white-space: nowrap; color: var(--muted); }
-.tb-limit.breached .tb-limit-label { color: var(--risk); font-weight: 700; }
-.timebudget.red .tb-track { box-shadow: 0 0 0 2px #f0653f55; }
-/* the budget note now rides on the head row, floated to the right — it no longer
-   takes its own line, so the old below-track row's ~1/4" is fully reclaimed */
-.tb-budgetnote { margin-left: auto; font-size: 12px; text-align: right; }
 
 /* stepped-value buttons — the policy-window picker on the staleness bar.
    (The time-budget bar no longer uses buttons: its segments are drag-resized.) */
@@ -1288,3 +1194,9 @@ body:has(.dag-page) { background: var(--bg); }  /* uniform dark behind the panel
 .cq-mark.fail { color: var(--risk); }
 
 .cq-foot { font-size: 12px; line-height: 1.5; max-width: 980px; }
+
+/* the docs-review-age slider, docked at the bottom of the board column right
+   under the step/role cards (it edits Modified → drives CQ5's IsStale). Re-skin
+   the full-width page bar as a contained panel sitting under the cards. */
+.stage > .staleness { margin-top: 18px; padding: 12px 14px;
+  background: var(--card); border: 1px solid var(--line); border-radius: 10px; }

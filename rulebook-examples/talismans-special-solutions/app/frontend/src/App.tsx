@@ -7,33 +7,32 @@ import { GraphView } from "./views/GraphView";
 import { ClosureView } from "./views/ClosureView";
 import { CQView } from "./views/CQView";
 import { ReassignPopover } from "./Editable";
-import { VerdictHeader } from "./console/VerdictHeader";
 import { StalenessBar } from "./console/StalenessBar";
-import { TimeBudgetBar } from "./console/TimeBudgetBar";
 import { DagCell } from "./explainer-dag";
 import type { Story, Situation, Handlers, Scenario } from "./types";
 
 // ===========================================================================
 // Talisman's Special Solutions — Release Console.
 //
-// A dashboard for ONE release. The top is the situation at a glance (the
-// compliance verdict). The middle is the same reasoned model shown three ways
-// (Flow / Graph / Closure) — switch the lens via the URL (/console/:view), the
-// object is the same. Everything with a dotted outline is editable IN PLACE.
-// EVERY edit writes a raw fact and the OWL/SHACL (or Postgres) substrate
-// recomputes the whole board — the app computes nothing itself.
+// A dashboard for ONE release. The reasoned model is shown three ways
+// (Flow / Graph / Closure) on the LEFT — switch the lens via the URL
+// (/console/:view), the object is the same. The competency-question scoreboard
+// rides on the RIGHT, always visible, so the leadership questions re-answer
+// themselves live as you edit facts on the left. Everything with a dotted
+// outline is editable IN PLACE. EVERY edit writes a raw fact and the OWL/SHACL
+// (or Postgres) substrate recomputes the whole board — the app computes nothing
+// itself.
 //
-// (Split out of the original 821-line App.jsx: the verdict header, staleness
-// bar, time-budget bar, and drag hook now live in console/ and hooks/.)
+// (Split out of the original 821-line App.jsx: the staleness bar and drag hook
+// now live in console/ and hooks/.)
 // ===========================================================================
 
-export type ViewId = "flow" | "graph" | "closure" | "cq";
+export type ViewId = "flow" | "graph" | "closure";
 
 const VIEWS: { id: ViewId; label: string; hint: string }[] = [
   { id: "flow", label: "Flow", hint: "the release, step by step" },
   { id: "graph", label: "Graph", hint: "the reasoned network" },
   { id: "closure", label: "Closure", hint: "assert order · watch it infer" },
-  { id: "cq", label: "CQs", hint: "the 8 leadership questions, answered live" },
 ];
 
 interface ReassignState {
@@ -148,41 +147,40 @@ export default function App({ headerRight = null }: AppProps) {
         </div>
       </div>
 
-      {/* The board sits on the LEFT, the verdict card pins to its RIGHT — the
-          verdict (with its full AND/OR statement) is a fixed, non-draggable card
-          beside the steps it summarizes, filling what used to be dead space. */}
+      {/* The lens sits on the LEFT; the competency-question scoreboard pins to
+          its RIGHT — always visible, so every edit on the left re-answers the
+          leadership questions in place instead of on a separate tab. The CQ
+          panel also hosts the explainer toggle and the scenario picker (the
+          controls that used to live in the old verdict box). */}
       <div className="stage-row">
         <div className="stage">
-          {/* The Plan-runtime bar lives in the Flow tab — it summarizes the step
-              durations shown right below it, and resizing a segment IS editing a
-              step here. The Graph/Closure lenses don't show step durations, so it
-              would be context-free there. The AgentMix (AI/human step counts) sits
-              directly above the cards it summarizes. */}
+          {/* The AgentMix (AI/human step counts) sits directly above the cards
+              it summarizes, in the Flow lens only. */}
           {view === "flow" && (
             <>
-              <TimeBudgetBar sit={sit} workflow={sit.workflow} verdict={sit.verdict} handlers={handlers} busy={busy} />
               <AgentMix sit={sit} />
               <FlowView sit={sit} handlers={handlers} />
             </>
           )}
           {view === "graph" && <GraphView sit={sit} handlers={handlers} />}
           {view === "closure" && <ClosureView sit={sit} handlers={handlers} />}
-          {view === "cq" && <CQView sit={sit} />}
+
+          {/* The docs-review-age slider sits at the bottom of the board column,
+              right under the step/role cards (it edits Modified → drives CQ5's
+              IsStale, which re-answers live in the rail). */}
+          <StalenessBar
+            workflow={sit.workflow}
+            busy={busy}
+            onSetModified={handlers.setModified}
+          />
         </div>
-        <VerdictHeader
-          verdict={sit.verdict}
-          workflow={sit.workflow}
+        <CQView
+          sit={sit}
           hasScenarios={scenarios.length > 0}
           busy={busy}
           onOpenScenarios={() => setScenarioOpen(true)}
         />
       </div>
-
-      <StalenessBar
-        workflow={sit.workflow}
-        busy={busy}
-        onSetModified={handlers.setModified}
-      />
 
       {scenarioOpen && (
         <ScenarioModal
@@ -235,8 +233,8 @@ function TopBar({ sit, busy, headerRight }: { sit: Situation; busy: boolean; hea
 function AgentMix({ sit }: { sit: Situation }) {
   const ai = sit.workflow.countAISteps ?? 0;
   const human = sit.workflow.countHumanSteps ?? 0;
-  // HasAIAgentStep is the explainable boolean the AI-step count drives (and the
-  // verdict's "AI runs a step" input); its DAG shows CountAISteps as an input.
+  // HasAIAgentStep is the explainable boolean the AI-step count drives; its DAG
+  // shows CountAISteps as an input.
   // The human count is the derived CountHumanSteps rollup — no boolean of its
   // own, but the aggregation has a DAG worth drilling into, so wrap it too.
   return (
@@ -279,7 +277,7 @@ function ScenarioModal({
         </div>
         <p className="sm-intro muted">
           Each scenario sets several raw facts at once — then the reasoner recomputes the whole
-          board. Pick one and watch the verdict and the bars react.
+          board. Pick one and watch the competency answers on the right react.
         </p>
         <div className="sm-list">
           {scenarios.map((s) => (

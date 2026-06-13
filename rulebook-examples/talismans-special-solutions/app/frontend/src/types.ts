@@ -86,9 +86,6 @@ export interface Workflow {
   status: string;
   countAISteps: number;
   countHumanSteps: number;
-  totalPlanMinutes: number;
-  maxPlanMinutes: number;
-  isOverTimeBudget: boolean;
   modified: string;
   monthsSinceModified: number;
   stalenessThresholdMonths: number;
@@ -139,21 +136,6 @@ export interface CompetencyQuestion {
   sortOrder: number;
 }
 
-export interface Verdict {
-  workflowTitle: string;
-  monthsSinceReview: number;
-  isStale: boolean;
-  aiStepCount: number;
-  hasAIExecutedStep: boolean;
-  totalPlanMinutes: number;
-  timeBudgetMinutes: number;
-  isOverTimeBudget: boolean;
-  hasConsistencyViolation: boolean;
-  consistencyViolationCount: number;
-  isAtComplianceRisk: boolean;
-  statement: string;
-}
-
 export interface DelegationEntry {
   from: string;
   to: { id: string; name: string }[];
@@ -193,7 +175,6 @@ export interface Story {
   options: StoryOptions;
   delegation: Record<string, DelegationEntry>;
   closure: Closure;
-  verdict: Verdict;
   artifacts: Artifact[];
   datasets: DatasetConsumption[];
   competencyQuestions: CompetencyQuestion[];
@@ -227,7 +208,6 @@ export interface OrgNode {
 export interface Situation {
   company: string;
   workflow: Workflow;
-  verdict: Verdict;
   closure: Closure;
   steps: Step[];
   stepFacts: Record<string, StepFact>;

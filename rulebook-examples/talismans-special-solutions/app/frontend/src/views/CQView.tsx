@@ -1,28 +1,35 @@
 import React, { useMemo, useState } from "react";
-import { DagCell } from "../explainer-dag";
+import { DagCell, DagToggle } from "../explainer-dag";
 import { resolveCq, type CqRow } from "../console/cqs";
 import type { Situation, CompetencyQuestion } from "../types";
 
 // ===========================================================================
 // CQ VIEW — the Competency-Question scoreboard (the article's acceptance suite).
 //
-// The eight competency questions are FIRST-CLASS ROWS in the rulebook
-// (`CompetencyQuestions`), so this lens is a projection of the model like every
-// other lens — not a hardcoded list. Each card shows the question, the LIVE
-// answer the substrate computed, and ✓/✗ against the rulebook's asserted
-// expectation. The answer is wrapped in a <DagCell> pinned to the exact field
-// that produces it (CompetencyQuestions.TargetTable/TargetField), so a click
-// opens its full derivation in /dag. The header **"show only failing"** switch
-// filters to the CQs whose live answer no longer satisfies the expectation —
-// which an edit elsewhere in the console (reassign the gate, drag the staleness
-// bar) can cause. Nothing here computes an answer; see cqs.ts.
+// This is the RIGHT RAIL of the console: it rides beside the Flow/Graph/Closure
+// lens at all times, so every edit on the left re-answers the leadership
+// questions in place. The competency questions are FIRST-CLASS ROWS in the
+// rulebook (`CompetencyQuestions`), so this panel is a projection of the model
+// like every other lens — not a hardcoded list. Each card shows the question,
+// the LIVE answer the substrate computed, and ✓/✗ against the rulebook's
+// asserted expectation. The answer is wrapped in a <DagCell> pinned to the exact
+// field that produces it (CompetencyQuestions.TargetTable/TargetField), so a
+// click opens its full derivation in /dag. The header **"show only failing"**
+// switch filters to the CQs whose live answer no longer satisfies the
+// expectation — which an edit elsewhere in the console (reassign the gate, drag
+// the staleness bar) can cause. The explainer toggle and the scenario picker
+// (the controls that used to live in the old verdict box) live in this panel's
+// action row. Nothing here computes an answer; see cqs.ts.
 // ===========================================================================
 
 interface CQViewProps {
   sit: Situation;
+  hasScenarios?: boolean;
+  busy?: boolean;
+  onOpenScenarios?: () => void;
 }
 
-export function CQView({ sit }: CQViewProps) {
+export function CQView({ sit, hasScenarios = false, busy = false, onOpenScenarios }: CQViewProps) {
   const [onlyFailing, setOnlyFailing] = useState(false);
   const [open, setOpen] = useState<Record<string, boolean>>({});
 
@@ -40,13 +47,13 @@ export function CQView({ sit }: CQViewProps) {
   const shown = onlyFailing ? results.filter((r) => !r.res.ok) : results;
 
   return (
-    <div className="cqboard">
+    <div className="cqboard rail">
       <div className="cq-intro">
         <div className="cq-intro-lead">
-          The article's acceptance suite — the eight leadership questions the model must answer.
-          Each question is a row in the rulebook's <code>CompetencyQuestions</code> table; the
-          answer below is read straight from the field that computes it, never recomputed here.
-          Click any answer to open its derivation.
+          The article's acceptance suite — the leadership questions the model must answer. Each
+          question is a row in the rulebook's <code>CompetencyQuestions</code> table; the answer
+          below is read straight from the field that computes it, never recomputed here. Click any
+          answer to open its derivation.
         </div>
         <div className="cq-intro-bar">
           <span className={"cq-score " + (allGreen ? "all" : "some")}>
@@ -61,6 +68,17 @@ export function CQView({ sit }: CQViewProps) {
             <span className="cq-switch-track"><span className="cq-switch-thumb" /></span>
             show only failing
           </label>
+        </div>
+        {/* The controls that used to sit in the verdict box: the explainer
+            toggle (makes every computed value clickable into /dag) and the
+            scenario picker (sets several raw facts, then re-reasons). */}
+        <div className="cq-actions">
+          <DagToggle />
+          {hasScenarios && onOpenScenarios && (
+            <button className="cq-scenario-btn" disabled={busy} onClick={onOpenScenarios}>
+              ✦ Try a scenario…
+            </button>
+          )}
         </div>
       </div>
 

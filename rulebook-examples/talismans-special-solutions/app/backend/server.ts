@@ -292,22 +292,6 @@ app.get("/api/story", wrap(async (req, res) => {
     };
   }
 
-  const verdictRow = (I.ComplianceVerdicts || [])[0] || {};
-  const verdict = {
-    workflowTitle: verdictRow.workflowTitle,
-    monthsSinceReview: verdictRow.monthsSinceReview,
-    isStale: !!verdictRow.isStale,
-    aiStepCount: verdictRow.aIStepCount,
-    hasAIExecutedStep: !!verdictRow.hasAIExecutedStep,
-    totalPlanMinutes: verdictRow.totalPlanMinutes,
-    timeBudgetMinutes: verdictRow.timeBudgetMinutes,
-    isOverTimeBudget: !!verdictRow.isOverTimeBudget,
-    hasConsistencyViolation: !!verdictRow.hasConsistencyViolation,
-    consistencyViolationCount: wf.countApprovalConsistencyViolations ?? 0,
-    isAtComplianceRisk: !!verdictRow.isAtComplianceRisk,
-    statement: verdictRow.verdict,
-  };
-
   const rolesList = (I.Roles || []).map((r) => ({
     id: r.roleId,
     name: r.displayName,
@@ -356,9 +340,6 @@ app.get("/api/story", wrap(async (req, res) => {
       status: wf.workflowStatus,
       countAISteps: wf.countAISteps,
       countHumanSteps: wf.countHumanSteps,
-      totalPlanMinutes: wf.countTotalPlanMinutes,
-      maxPlanMinutes: wf.maxPlanMinutes,
-      isOverTimeBudget: !!wf.isOverTimeBudget,
       modified: wf.modified,
       monthsSinceModified: wf.monthsSinceModified,
       stalenessThresholdMonths: wf.stalenessThresholdMonths,
@@ -376,7 +357,6 @@ app.get("/api/story", wrap(async (req, res) => {
     options,
     delegation: deleg,
     closure: (reasoned.competency as Record<string, any>).precedence_closure,
-    verdict,
     // CQ-backing projections (CQ4 artifacts, CQ8 datasets, the CQ suite itself).
     artifacts,
     datasets,

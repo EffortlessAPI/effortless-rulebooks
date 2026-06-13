@@ -8,13 +8,11 @@ import type { AgentKind, Situation, Step, StepFact, Handlers } from "../types";
 // FLOW VIEW — the release as a left→right pipeline of step cards.
 //
 // This is the COMPLIANCE story. Each card makes the effect of every edit
-// explicit: who runs the step (and whether that contributes to risk), and how
-// long it takes (which feeds the time-budget bar at the top).
+// explicit: who runs the step, and whether that contributes to risk.
 //
-// Two of the three verdict inputs are driven from here:
-//   • AI runs a step   → reassign an agent (the avatar) to flip it
-//   • over time budget → change a step's duration; the time bar reacts
-// (The third, "docs stale", is the workflow's Modified date.)
+// Edits here re-answer the competency questions on the right:
+//   • AI runs a step → reassign an agent (the avatar) to flip CQ3 / HasAIAgentStep
+// (Staleness — CQ5 — is the workflow's Modified date, set on the staleness bar.)
 // ===========================================================================
 
 interface FlowViewProps {
@@ -38,8 +36,8 @@ export function FlowView({ sit, handlers }: FlowViewProps) {
         ))}
       </div>
       <p className="flow-foot muted">
-        Reassign a step to an 🤖 AI to add AI-risk · open a step's ⚙ for its sign-off · drag a step's
-        segment edge on the Plan-runtime bar above to change its duration · the verdict and the bars recompute on every edit.
+        Reassign a step to an 🤖 AI to add AI-risk · open a step's ⚙ for its sign-off · the competency
+        answers on the right recompute on every edit.
       </p>
     </div>
   );

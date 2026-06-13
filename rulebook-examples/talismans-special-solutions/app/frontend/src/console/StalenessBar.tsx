@@ -89,7 +89,7 @@ export function StalenessBar({ workflow, busy, onSetModified }: StalenessBarProp
   const threshPct = pctOf(threshold);
   // The view is the contract: at REST, the STALE state comes straight from the
   // substrate's derived IsStale (workflow.isStale) — never recomputed in JS — so the
-  // bar can never disagree with the verdict pill above. While the thumb is moved
+  // bar can never disagree with CQ5's answer on the right. While the thumb is moved
   // (live drag OR committed-but-still-reasoning) we echo the computed boundary
   // (age > policy line) so the color tracks the thumb instead of snapping back to
   // the stale prop.
