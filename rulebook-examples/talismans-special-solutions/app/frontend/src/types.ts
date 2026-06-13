@@ -296,3 +296,60 @@ export interface ControlEvent {
   action?: string;
   error?: string;
 }
+
+// --- conformance harness (admin) — mirrors app/backend/conformance/harness.ts ---
+export type ConformanceStatus = "pass" | "fail" | "gap" | "error" | "skipped";
+
+// One test's metadata (the list view; no execution).
+export interface ConformanceTestMeta {
+  id: string;
+  displayName: string;
+  featureRef: string;
+  section: string;
+  testKind: string;
+  targetRef: string;
+  explanation: string;
+  enabled: boolean;
+}
+
+// One engine's verdict on one test.
+export interface ConformanceEngineResult {
+  engine: string;
+  status: "pass" | "fail" | "gap" | "error";
+  detail: string;
+  expected?: unknown;
+  actual?: unknown;
+}
+
+// One test's full result across all engines.
+export interface ConformanceTestResult {
+  id: string;
+  displayName: string;
+  featureRef: string;
+  section: string;
+  testKind: string;
+  targetRef: string;
+  explanation: string;
+  enabled: boolean;
+  engines: ConformanceEngineResult[];
+  overall: ConformanceStatus;
+}
+
+export interface ConformanceRunSummary {
+  startedAt: string;
+  finishedAt: string;
+  durationMs: number;
+  engines: string[];
+  total: number;
+  passed: number;
+  failed: number;
+  gaps: number;
+  errors: number;
+  skipped: number;
+  allGreen: boolean;
+}
+
+export interface ConformanceRunReport {
+  summary: ConformanceRunSummary;
+  results: ConformanceTestResult[];
+}

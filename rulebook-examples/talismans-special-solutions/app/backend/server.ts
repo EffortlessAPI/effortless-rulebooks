@@ -609,6 +609,49 @@ app.get("/api/diff", wrap(async (req, res) => {
   });
 }));
 
+// --- conformance test harness ---------------------------------------------
+// The admin Conformance section lists the rulebook's ConformanceTests, runs the
+// whole suite against BOTH engines on demand, and shows the last run. The harness
+// is engine-agnostic (it calls the same reason() the rest of the app uses) and
+// writes a run-log to testing/conformance-runs/ that survives a restart.
+const CONFORMANCE_RUNS_DIR = path.join(PROJECT_ROOT, "testing", "conformance-runs");
+
+// List every test (metadata only — no execution). Cheap; the admin list calls it.
+app.get("/api/conformance/tests", wrap(async (_req, res) => {
+  const { ConformanceHarness } = await import("./conformance/harness");
+  const h = new ConformanceHarness();
+  await h.load();
+  res.json({ engines: (await import("./conformance/harness")).ENGINE_IDS, tests: h.listTests() });
+}));
+
+// The last run-log (committed latest.json), so the admin shows results without
+// re-running. 404 (not 500, not a fake empty run) if no run has happened yet —
+// the UI distinguishes "never run" from "ran and failed".
+app.get("/api/conformance/latest", wrap(async (_req, res) => {
+  const latest = path.join(CONFORMANCE_RUNS_DIR, "latest.json");
+  if (!existsSync(latest)) { res.status(404).json({ error: "no conformance run yet — POST /api/conformance/run" }); return; }
+  res.json(JSON.parse(await readFile(latest, "utf8")));
+}));
+
+// Run the suite NOW (optionally a subset via {only:[ids]}) and write the log.
+// This actually executes both engines — it can take ~100s for the full suite, so
+// the admin shows a spinner. We never fake or cache a result here.
+app.post("/api/conformance/run", wrap(async (req, res) => {
+  const { ConformanceHarness } = await import("./conformance/harness");
+  const only = Array.isArray(req.body?.only) ? (req.body.only as string[]) : undefined;
+  const h = new ConformanceHarness();
+  await h.load();
+  const report = await h.run({ only });
+  // persist the run-log + latest.json (same as the CLI), so a refresh shows it.
+  await import("node:fs/promises").then(async ({ mkdir }) => {
+    await mkdir(CONFORMANCE_RUNS_DIR, { recursive: true });
+    const stamp = report.summary.startedAt.replace(/[:.]/g, "-");
+    await writeFile(path.join(CONFORMANCE_RUNS_DIR, `run-${stamp}.json`), JSON.stringify(report, null, 2) + "\n", "utf8");
+    await writeFile(path.join(CONFORMANCE_RUNS_DIR, "latest.json"), JSON.stringify(report, null, 2) + "\n", "utf8");
+  });
+  res.json(report);
+}));
+
 // --- control plane (Reset / Rebuild) --------------------------------------
 registerControlRoutes(app);
 
