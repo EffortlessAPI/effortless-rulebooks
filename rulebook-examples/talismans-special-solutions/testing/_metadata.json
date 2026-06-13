@@ -217,5 +217,14 @@
       "name"
     ],
     "record_count": 4
+  },
+  "conformance_tests": {
+    "primary_key": "conformance_test_id",
+    "computed_columns": [
+      "relative_path",
+      "iri",
+      "name"
+    ],
+    "record_count": 72
   }
 }
