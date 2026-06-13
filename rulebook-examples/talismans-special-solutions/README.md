@@ -6,6 +6,64 @@ This project models the workflow ontology from Jessica Talisman’s *Intentional
 
 ---
 
+## If you read only this screen
+
+**Everything the ontology series teaches about *modeling* — competency questions, disjoint
+classes, role–filler separation, reusing PROV-O / DCAT / SKOS, the TBox / ABox / CBox discipline —
+is load-bearing here and required in full. None of that skill is retired.** This repo removes
+exactly one thing: the assembler-like work of hand-stitching that model across OWL + RDF + SHACL +
+SPARQL to make it *run*. You author the meaning once, one layer up, and OWL, Postgres, Python, Go,
+Excel, English prose, and the conformance tests are generated **siblings**.
+
+It is not a different approach to modeling. It is a **superset**: the same modeling, minus the
+assembly.
+
+### The receipt
+
+One source — `effortless-rulebook/talismans-special-solutions-rulebook.json`, the full NTWF worked
+example (role–agent separation, approval-gate subtype, transitive step-precedence closure,
+delegation chain, PROV provenance, DCAT datasets, SKOS vocabularies, a derived compliance verdict).
+Every projection generated from it is scored **row-by-row and column-by-column** against a
+**Postgres-oracle answer key**, and the suite is re-run on every change.
+
+The score on any given day is a moving target — entities get added, formulas get sharpened, the
+model grows. What is *not* a moving target is the **shape of the effect** you watch repeat every
+time the ontology evolves:
+
+- **Add a concept, change a rule, grow the model** in the one rulebook, and the **Postgres
+  projection tracks it for free** — the new column, the new closure edge, the new derived verdict
+  simply appear, correct, in the views. The closed-world substrate reaches the whole model with no
+  hand-assembly.
+- The **OWL / RDF / SHACL projection lags, then catches up** — each growth spurt opens a fresh set
+  of reasoner-side gaps (a closure that hasn't been re-stitched, a lookup the shapes don't yet
+  cover) that have to be assembled back into parity. The deltas are always in the **assembly**, never
+  in the **meaning**.
+
+That asymmetry is the receipt, and it is stable across every revision: the meaning, authored once,
+costs nothing to re-project into the closed-world substrate; the open-world substrate is the side
+that perpetually pays the assembly tax to keep up. **The cost was never in the modeling. It is in the
+assembly — and the assembly is the part this repo lifts off the author.** (Today's exact tally lives
+in `testing/conformance-runs/latest.json`; run `./start.sh` and watch it move as you edit the
+rulebook.)
+
+### The standing bet
+
+This repo makes a falsifiable claim and invites attack on it:
+
+> Produce one competency question — finite, design-time — that the OWL / RDF / SHACL stack can
+> answer but the rulebook **cannot** express one layer up.
+
+The eight competency questions this example must answer are listed [below](#competency-questions-covered);
+each resolves from the generated substrates, and the conformance suite is the referee. If you find
+one that genuinely needs open-world machinery and can't be captured in the rulebook, that is not a
+loss for the project — **that is exactly the finding the project is looking for.**
+
+*Everything below is the careful, long-form version: what this is, what it is **not** saying, and
+how to read the repo from ontology, database, MDE, or application backgrounds. The screen above is
+the whole claim; the rest is the evidence and the reassurance.*
+
+---
+
 The purpose of this repo is **not** to argue against OWL, RDF, SHACL, SPARQL, triples, or ontology engineering.
 
 It is the opposite.
