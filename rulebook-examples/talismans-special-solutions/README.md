@@ -4,6 +4,10 @@
 
 This project models the workflow ontology from Jessica Talisman’s *Intentional Arrangement* ontology series, using the fictional **Talisman's Special Solutions** workflow domain: human specialists, AI agents, automated pipelines, approval gates, provenance, datasets, escalation paths, and compliance review.
 
+![Release Console — Flow lens: the five-step Production Deployment Workflow with its live compliance verdict](docs/current-ui/console-flow.png)
+
+*The Release Console (Flow lens). The five ordered steps run left to right; each card shows its role, the agent filling it, and human/AI/pipeline type. The panel on the right is the live **compliance verdict** — every value on screen is read from the substrate's computed columns, not recomputed in the UI.*
+
 ---
 
 ## If you read only this screen
@@ -48,6 +52,13 @@ usually OWL, but Excel, Go, or Python can lag just as easily on something theirs
 lifts off the author.** (Today's exact tally lives
 in `testing/conformance-runs/latest.json`; run `./start.sh` and watch it move as you edit the
 rulebook.)
+
+![Conformance scoreboard — every rulebook row scored reasoner-vs-Postgres against the answer key](docs/current-ui/admin-conformance-final.png)
+
+*The receipt, on screen: every row in the rulebook's `ConformanceTests` table, run by the
+engine-agnostic harness against the Postgres-oracle answer key. Green where the reasoner and
+Postgres agree; the ✗ rows are exactly the open-world **assembly** gaps described above — surfaced,
+never hidden.*
 
 ### The standing bet
 
@@ -306,6 +317,10 @@ Excel-style formula output
 ```
 
 because all of those substrates were generated from the same rulebook.
+
+![Release Console — Graph lens: agents wired to the steps they execute, every edge a triple the reasoner holds](docs/current-ui/console-graph.png)
+
+*The Graph lens shows the same model as a network: agents on top, steps below, each edge a triple the reasoner holds. The verdict panel on the right answers "Is this workflow at compliance risk?" — the engine selector in the top bar swaps which substrate produced that answer, and it stays the same.*
 
 Changing the rulebook changes:
 
@@ -751,6 +766,13 @@ implies:
 ```
 
 The same source rule can become recursive SQL in Postgres and transitive-property reasoning in OWL.
+
+![Release Console — Closure lens: 4 asserted step-precedence edges expanding to the 10-pair transitive closure](docs/current-ui/console-closure.png)
+
+*The Closure lens makes the inference visible. You only ever assert the four direct "comes before"
+edges (the pills at the bottom); the closure matrix fills in every reachable pair by transitivity —
+including the never-asserted **1 → 5**. Solid cells are asserted; ghost cells are inferred. Remove an
+edge and watch a whole column of ghosts vanish.*
 
 ---
 
