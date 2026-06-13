@@ -64,6 +64,32 @@ the whole claim; the rest is the evidence and the reassurance.*
 
 ---
 
+## Important DevOps Note: the toolchain is a *compiler*, not a deployment
+
+The list of `*.cpln.app` URLs and the `localhost:4242` bus in `effortless.json` can look like heavy,
+fragile infrastructure. They are **not the runtime.** They are the **compiler toolchain**, and the
+running app uses *none* of them.
+
+- **The hosted transpilers are code generators** — think of them as the dynamic equivalent of an
+  `npm` / `pip` / `nuget` package. The one difference: a normal package ships fixed bytes, whereas a
+  transpiler's output depends on its **input** (your rulebook). So instead of installing a static
+  dependency, you call a hosted generator that turns *your* rulebook into SQL, OWL/SHACL, a React
+  DAG, etc. You only invoke them when you **regenerate** substrates after editing the rulebook.
+- **`localhost:4242` is just a local bus** that lets the `effortless` CLI reach the repo-local
+  transpilers. It boots on demand at build time and is irrelevant at runtime.
+- **Most transpilers are open source, right in this repo.** A couple (Postgres among them) are
+  licensed hosted tools. Either way their *output* — the committed SQL, OWL/SHACL, and React DAG — is
+  checked in, so a fresh clone runs as-is.
+- **The committed artifacts run with zero of this.** `./start.sh` boots an Express API, a Vite UI, a
+  local Postgres, and an in-process reasoner — nothing remote, nothing version-pinned. You reach for
+  the CLI and the bus **only** when you want to *rebuild* from a changed rulebook.
+
+So the reproducibility story is not fragile, it is two clean worlds: **build-time** needs the
+toolchain; **runtime** needs a clone and `./start.sh`. (The Quick Start below has the full
+build-time-vs-runtime breakdown.)
+
+---
+
 The purpose of this repo is **not** to argue against OWL, RDF, SHACL, SPARQL, triples, or ontology engineering.
 
 It is the opposite.
