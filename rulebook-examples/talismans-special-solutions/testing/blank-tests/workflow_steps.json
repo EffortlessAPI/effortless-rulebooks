@@ -28,7 +28,8 @@
     "owning_department": null,
     "is_legal_owned": null,
     "is_engineering_owned": null,
-    "preceding_step_count": null
+    "preceding_step_count": null,
+    "inferred_sequence_position": null
   },
   {
     "workflow_step_id": "prod-deploy-step-2",
@@ -59,7 +60,8 @@
     "owning_department": null,
     "is_legal_owned": null,
     "is_engineering_owned": null,
-    "preceding_step_count": null
+    "preceding_step_count": null,
+    "inferred_sequence_position": null
   },
   {
     "workflow_step_id": "prod-deploy-step-3",
@@ -90,7 +92,8 @@
     "owning_department": null,
     "is_legal_owned": null,
     "is_engineering_owned": null,
-    "preceding_step_count": null
+    "preceding_step_count": null,
+    "inferred_sequence_position": null
   },
   {
     "workflow_step_id": "prod-deploy-step-4",
@@ -121,7 +124,8 @@
     "owning_department": null,
     "is_legal_owned": null,
     "is_engineering_owned": null,
-    "preceding_step_count": null
+    "preceding_step_count": null,
+    "inferred_sequence_position": null
   },
   {
     "workflow_step_id": "prod-deploy-step-5",
@@ -152,6 +156,7 @@
     "owning_department": null,
     "is_legal_owned": null,
     "is_engineering_owned": null,
-    "preceding_step_count": null
+    "preceding_step_count": null,
+    "inferred_sequence_position": null
   }
 ]

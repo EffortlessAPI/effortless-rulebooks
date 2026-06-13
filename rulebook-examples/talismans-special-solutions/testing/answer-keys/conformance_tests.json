@@ -667,7 +667,7 @@
     "test_kind": "field-match",
     "target_ref": "WorkflowSteps/prod-deploy-step-4#SequencePosition",
     "expect": "",
-    "explanation": "Step position is DERIVED from the precedence closure (PrecedingStepCount + 1), not a hand-asserted ordinal; step 4 resolves to 4 in both substrates because four steps transitively precede it.",
+    "explanation": "The resolved SequencePosition (override-if-pinned, else PrecedingStepCount+1) computes identically in both substrates; step 4 has four transitive predecessors and no override, so it resolves to 4.",
     "sort_order": 480,
     "is_enabled": true,
     "relative_path": "conformance-tests/sequence-position",

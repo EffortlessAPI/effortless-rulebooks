@@ -37,6 +37,7 @@
       "iri",
       "name",
       "preceding_step_count",
+      "inferred_sequence_position",
       "sequence_position",
       "executing_human_agent",
       "executing_ai_agent",
