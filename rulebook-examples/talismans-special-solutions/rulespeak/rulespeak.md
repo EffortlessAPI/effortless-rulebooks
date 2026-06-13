@@ -41,6 +41,8 @@ _The NTWF (Talisman's Special Solutions Workflow) ontology from Jessica Talisman
 | Relative Path | Computed as the parent path, followed by the literal “/steps/”, followed by the workflow step ID. | _Stable, DAG-derived location: this row nests under its Workflows parent. Concatenates the parent's path (ParentPath) with '/steps/' + this row's primary key. The DAG performs the recursion — one hop per table via ParentPath — so the full ancestry is encoded without a recursive formula. Unique by construction._ |
 | Iri | Computed as the relative path with every a slash replaced by a hyphen. | _Opaque stable identifier (the dash-form of RelativePath). Because RelativePath has no leading slash, this is a clean SUBSTITUTE of '/' for '-'. The OWL transpiler mints each individual's IRI from this value (erb:<Iri>), so identity is path-derived and globally unique — no cross-table primary-key collisions._ |
 | Name | Computed as the lower-cased display name with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> | — |
+| Preceding Step Count | The number of vw step precedence closure related to the workflow step. | _Number of steps that TRANSITIVELY precede this step in the ntwf:precedesStep ordering — a rollup over the closure view vw_step_precedence_closure counting rows whose to_id is this step (i.e. this step's ancestors). On the linear Production Deployment chain: 0,1,2,3,4. Derived purely from the asserted StepPrecedence edges via their transitive closure; nothing is hand-entered. SequencePosition is this + 1._ |
+| Sequence Position | Computed as the preceding step count plus 1. | _Integer ordinal position of the step within its workflow, DERIVED from the StepPrecedence edges rather than hand-asserted: 1 + PrecedingStepCount (one plus the number of steps that transitively precede it in vw_step_precedence_closure). On the linear Production Deployment chain this yields 1,2,3,4,5 — but no integer was typed; the position is a projection of the asserted ordering edges. Maps to ntwf:sequencePosition (owl:FunctionalProperty). This makes the StepPrecedence edges the single source of order: change an edge and the position recomputes; there is no separate raw ordinal that could drift from the edges._ |
 | Executing Human Agent | The filled by human agent of the workflow step's assigned role. | _The HumanAgent (if any) that executes this step, resolved through ntwf:assignedRole → ntwf:filledBy (the HumanAgent arm). Load-bearing lookup: it follows the role→agent indirection the article relies on, so a step knows its executing agent without per-step agent bindings._ |
 | Executing AI Agent | The filled by AI agent of the workflow step's assigned role. | _The AIAgent (if any) that executes this step, resolved through ntwf:assignedRole → ntwf:filledBy (the AIAgent arm). One of the three polymorphic filledBy arms._ |
 | Executing Automated Pipeline | The filled by automated pipeline of the workflow step's assigned role. | _The AutomatedPipeline (if any) that executes this step, resolved through ntwf:assignedRole → ntwf:filledBy (the AutomatedPipeline arm)._ |
@@ -259,89 +261,91 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 | **DR-26 Relative Path** | A workflow step's relative path is computed as the parent path, followed by the literal “/steps/”, followed by the workflow step ID. |
 | **DR-27 Iri** | A workflow step's iri is computed as the relative path with every a slash replaced by a hyphen. |
 | **DR-28 Name** | A workflow step's name is computed as the lower-cased display name with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> |
-| **DR-29 Executing Human Agent** | A workflow step's executing human agent is the filled by human agent of the workflow step's assigned role. |
-| **DR-30 Executing AI Agent** | A workflow step's executing AI agent is the filled by AI agent of the workflow step's assigned role. |
-| **DR-31 Executing Automated Pipeline** | A workflow step's executing automated pipeline is the filled by automated pipeline of the workflow step's assigned role. |
-| **DR-32 Executing Agent Type** | The workflow step's executing agent type is determined by the following priority:<br>1. the literal “HumanAgent”, if the executing human agent has a value;<br>2. the literal “AIAgent”, if the executing AI agent has a value;<br>3. the literal “AutomatedPipeline”, if the executing automated pipeline has a value;<br>4. otherwise an empty string. |
-| **DR-33 Is Executed by AI** | A workflow step is considered an executed by AI if the executing AI agent has a value. |
-| **DR-34 Is Executed by Human** | A workflow step is considered an executed by human if the executing human agent has a value. |
-| **DR-35 Approval Consistency Violation** | A workflow step is flagged approval consistency violation if all of the following hold: the requires human approval flag is set and the executing human agent is blank. |
-| **DR-36 Approval is Human Filled** | A workflow step is flagged approval is human filled if the executing human agent has a value if the requires human approval flag is set, otherwise the TRUE. |
-| **DR-37 Owning Department** | A workflow step's owning department is the owned by of the workflow step's assigned role. |
-| **DR-38 Is Legal Owned** | A workflow step is considered legal owned if the owning department is the literal “ntwf-legal-dept”. |
-| **DR-39 Is Engineering Owned** | A workflow step is considered engineering owned if the owning department is the literal “ntwf-engineering”. |
-| **DR-40 Parent Path** | An approval gate's parent path is the relative path of the approval gate's workflow step. |
-| **DR-41 Relative Path** | An approval gate's relative path is computed as the parent path, followed by the literal “/approval-gates/”, followed by the approval gate ID. |
-| **DR-42 Iri** | An approval gate's iri is computed as the relative path with every a slash replaced by a hyphen. |
-| **DR-43 Name** | An approval gate's name is computed as the lower-cased display name with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> |
-| **DR-44 Gate Role** | An approval gate's gate role is the assigned role of the approval gate's workflow step. |
-| **DR-45 Gate Approver Human** | An approval gate's gate approver human is the filled by human agent of the approval gate's gate role. |
-| **DR-46 Parent Path** | A step precedence's parent path is the relative path of the step precedence's from step. |
-| **DR-47 Relative Path** | A step precedence's relative path is computed as the parent path, followed by the literal “/precedence/”, followed by the step precedence ID. |
-| **DR-48 Iri** | A step precedence's iri is computed as the relative path with every a slash replaced by a hyphen. |
-| **DR-49 Name** | A step precedence's name is computed as the from step, followed by the literal “ -> ”, followed by the to step. |
-| **DR-50 Relative Path** | A role's relative path is computed as the literal “roles/”, followed by the role ID. |
-| **DR-51 Iri** | A role's iri is computed as the relative path with every a slash replaced by a hyphen. |
-| **DR-52 Name** | A role's name is computed as the lower-cased display name with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> |
-| **DR-53 Filled by Arm Count** | A role's filled by arm count is computed as the count of the following that hold: the filled by human agent has a value; the filled by AI agent has a value; and the filled by automated pipeline has a value. |
-| **DR-54 Has Exactly One Filler** | A role is considered to have an exactly one filler if the filled by arm count is 1. |
-| **DR-55 Filler Type** | The role's filler type is determined by the following priority:<br>1. the literal “HumanAgent”, if the filled by human agent has a value;<br>2. the literal “AIAgent”, if the filled by AI agent has a value;<br>3. the literal “AutomatedPipeline”, if the filled by automated pipeline has a value;<br>4. otherwise an empty string. |
-| **DR-56 Parent Path** | A role assignment's parent path is the relative path of the role assignment's role. |
-| **DR-57 Relative Path** | A role assignment's relative path is computed as the parent path, followed by the literal “/assignments/”, followed by the role assignment ID. |
-| **DR-58 Iri** | A role assignment's iri is computed as the relative path with every a slash replaced by a hyphen. |
-| **DR-59 Name** | A role assignment's name is computed as the role, followed by the literal “ [”, followed by the valid from, followed by the literal “ -> ”, followed by the literal “open” if the valid to is blank, otherwise the valid to, followed by the literal “]”. |
-| **DR-60 Filler Type** | The role assignment's filler type is determined by the following priority:<br>1. the literal “HumanAgent”, if the filled by human agent has a value;<br>2. the literal “AIAgent”, if the filled by AI agent has a value;<br>3. the literal “AutomatedPipeline”, if the filled by automated pipeline has a value;<br>4. otherwise an empty string. |
-| **DR-61 Is Current** | A role assignment is considered a current if the valid to is blank. |
-| **DR-62 Was Active As of Audit Date** | A role assignment is considered to have been active as of audit date if all of the following hold: the valid from is at most the literal “2026-03-01” and at least one of the following holds: the valid to is blank or the valid to is greater than the literal “2026-03-01”. |
-| **DR-63 Is Agent Type Change** | A role assignment is considered an agent type change if all of the following hold: the prior filler type has a value and the prior filler type is not the filler type. |
-| **DR-64 Requires Compliance Audit** | A role assignment is considered to require compliance audit if all of the following hold: the prior filler type has a value; the prior filler type is the literal “AIAgent”; and the filler type is the literal “HumanAgent”. |
-| **DR-65 Relative Path** | A department's relative path is computed as the literal “departments/”, followed by the department ID. |
-| **DR-66 Iri** | A department's iri is computed as the relative path with every a slash replaced by a hyphen. |
-| **DR-67 Name** | A department's name is computed as the lower-cased display name with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> |
-| **DR-68 Relative Path** | A human agent's relative path is computed as the literal “human-agents/”, followed by the human agent ID. |
-| **DR-69 Iri** | A human agent's iri is computed as the relative path with every a slash replaced by a hyphen. |
-| **DR-70 Relative Path** | An AI agent's relative path is computed as the literal “ai-agents/”, followed by the AI agent ID. |
-| **DR-71 Iri** | An AI agent's iri is computed as the relative path with every a slash replaced by a hyphen. |
-| **DR-72 Count Attributed Artifacts** | An AI agent's count attributed artifacts is the number of workflow artifacts related to the AI agent. |
-| **DR-73 Count Impacted Workflows** | An AI agent's count impacted workflows is the number of the AI agent's workflow artifacts that have a producing workflow. |
-| **DR-74 Relative Path** | An automated pipeline's relative path is computed as the literal “automated-pipelines/”, followed by the automated pipeline ID. |
-| **DR-75 Iri** | An automated pipeline's iri is computed as the relative path with every a slash replaced by a hyphen. |
-| **DR-76 Relative Path** | A workflow status concept's relative path is computed as the literal “concepts/workflow-status/”, followed by the concept ID. |
-| **DR-77 Iri** | A workflow status concept's iri is computed as the relative path with every a slash replaced by a hyphen. |
-| **DR-78 Relative Path** | An agent capability concept's relative path is computed as the literal “concepts/agent-capability/”, followed by the concept ID. |
-| **DR-79 Iri** | An agent capability concept's iri is computed as the relative path with every a slash replaced by a hyphen. |
-| **DR-80 Relative Path** | An artifact type concept's relative path is computed as the literal “concepts/artifact-type/”, followed by the concept ID. |
-| **DR-81 Iri** | An artifact type concept's iri is computed as the relative path with every a slash replaced by a hyphen. |
-| **DR-82 Relative Path** | A dataset's relative path is computed as the literal “datasets/”, followed by the dataset ID. |
-| **DR-83 Iri** | A dataset's iri is computed as the relative path with every a slash replaced by a hyphen. |
-| **DR-84 Parent Path** | A workflow artifact's parent path is the relative path of the workflow artifact's produced by step. |
-| **DR-85 Relative Path** | A workflow artifact's relative path is computed as the parent path, followed by the literal “/artifacts/”, followed by the artifact ID. |
-| **DR-86 Iri** | A workflow artifact's iri is computed as the relative path with every a slash replaced by a hyphen. |
-| **DR-87 Producing Agent Type** | The workflow artifact's producing agent type is determined by the following priority:<br>1. the literal “HumanAgent”, if the attributed to human agent has a value;<br>2. the literal “AIAgent”, if the attributed to AI agent has a value;<br>3. the literal “AutomatedPipeline”, if the attributed to automated pipeline has a value;<br>4. otherwise an empty string. |
-| **DR-88 Has Derivation Parent** | A workflow artifact is considered to have a derivation parent if the derived from artifact has a value. |
-| **DR-89 Produced by Workflow** | A workflow artifact's produced by workflow is the workflow of the workflow artifact's produced by step. |
-| **DR-90 Has Producing Workflow** | A workflow artifact is considered to have a producing workflow if the produced by workflow has a value. |
-| **DR-91 Relative Path** | A governance role's relative path is computed as the literal “governance-roles/”, followed by the governance role ID. |
-| **DR-92 Iri** | A governance role's iri is computed as the relative path with every a slash replaced by a hyphen. |
-| **DR-93 Name** | A governance role's name is computed as the lower-cased display name with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> |
-| **DR-94 Can Approve Changes** | A governance role is considered able to approve changes if the kind is the literal “Authority”. |
-| **DR-95 Relative Path** | A change log's relative path is computed as the literal “change-log/”, followed by the change log ID. |
-| **DR-96 Iri** | A change log's iri is computed as the relative path with every a slash replaced by a hyphen. |
-| **DR-97 Name** | A change log's name is computed as the version, followed by the literal “ (”, followed by the change date, followed by the literal “)”. |
-| **DR-98 Is Breaking Change** | A change log is considered a breaking change if the change kind is the literal “major”. |
-| **DR-99 Is Backward Compatible** | A change log is considered a backward compatible if at least one of the following holds: the change kind is the literal “patch” or the change kind is the literal “minor”. |
-| **DR-100 Relative Path** | A vocabulary reconciliation's relative path is computed as the literal “reconciliations/”, followed by the reconciliation ID. |
-| **DR-101 Iri** | A vocabulary reconciliation's iri is computed as the relative path with every a slash replaced by a hyphen. |
-| **DR-102 Name** | A vocabulary reconciliation's name is computed as the deprecated term, followed by the literal “ owl:sameAs ”, followed by the replacement term. |
-| **DR-103 Relative Path** | A scenario's relative path is computed as the literal “scenarios/”, followed by the scenario ID. |
-| **DR-104 Iri** | A scenario's iri is computed as the relative path with every a slash replaced by a hyphen. |
-| **DR-105 Name** | A scenario's name is computed as the lower-cased label with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> |
-| **DR-106 Relative Path** | A competency question's relative path is computed as the literal “competency-questions/”, followed by the competency question ID. |
-| **DR-107 Iri** | A competency question's iri is computed as the relative path with every a slash replaced by a hyphen. |
-| **DR-108 Name** | A competency question's name is computed as the lower-cased display name with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> |
-| **DR-109 Relative Path** | A conformance test's relative path is computed as the literal “conformance-tests/”, followed by the conformance test ID. |
-| **DR-110 Iri** | A conformance test's iri is computed as the relative path with every a slash replaced by a hyphen. |
-| **DR-111 Name** | A conformance test's name is computed as the lower-cased display name with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> |
+| **DR-29 Preceding Step Count** | A workflow step's preceding step count is the number of vw step precedence closure related to the workflow step. |
+| **DR-30 Sequence Position** | A workflow step's sequence position is computed as the preceding step count plus 1. |
+| **DR-31 Executing Human Agent** | A workflow step's executing human agent is the filled by human agent of the workflow step's assigned role. |
+| **DR-32 Executing AI Agent** | A workflow step's executing AI agent is the filled by AI agent of the workflow step's assigned role. |
+| **DR-33 Executing Automated Pipeline** | A workflow step's executing automated pipeline is the filled by automated pipeline of the workflow step's assigned role. |
+| **DR-34 Executing Agent Type** | The workflow step's executing agent type is determined by the following priority:<br>1. the literal “HumanAgent”, if the executing human agent has a value;<br>2. the literal “AIAgent”, if the executing AI agent has a value;<br>3. the literal “AutomatedPipeline”, if the executing automated pipeline has a value;<br>4. otherwise an empty string. |
+| **DR-35 Is Executed by AI** | A workflow step is considered an executed by AI if the executing AI agent has a value. |
+| **DR-36 Is Executed by Human** | A workflow step is considered an executed by human if the executing human agent has a value. |
+| **DR-37 Approval Consistency Violation** | A workflow step is flagged approval consistency violation if all of the following hold: the requires human approval flag is set and the executing human agent is blank. |
+| **DR-38 Approval is Human Filled** | A workflow step is flagged approval is human filled if the executing human agent has a value if the requires human approval flag is set, otherwise the TRUE. |
+| **DR-39 Owning Department** | A workflow step's owning department is the owned by of the workflow step's assigned role. |
+| **DR-40 Is Legal Owned** | A workflow step is considered legal owned if the owning department is the literal “ntwf-legal-dept”. |
+| **DR-41 Is Engineering Owned** | A workflow step is considered engineering owned if the owning department is the literal “ntwf-engineering”. |
+| **DR-42 Parent Path** | An approval gate's parent path is the relative path of the approval gate's workflow step. |
+| **DR-43 Relative Path** | An approval gate's relative path is computed as the parent path, followed by the literal “/approval-gates/”, followed by the approval gate ID. |
+| **DR-44 Iri** | An approval gate's iri is computed as the relative path with every a slash replaced by a hyphen. |
+| **DR-45 Name** | An approval gate's name is computed as the lower-cased display name with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> |
+| **DR-46 Gate Role** | An approval gate's gate role is the assigned role of the approval gate's workflow step. |
+| **DR-47 Gate Approver Human** | An approval gate's gate approver human is the filled by human agent of the approval gate's gate role. |
+| **DR-48 Parent Path** | A step precedence's parent path is the relative path of the step precedence's from step. |
+| **DR-49 Relative Path** | A step precedence's relative path is computed as the parent path, followed by the literal “/precedence/”, followed by the step precedence ID. |
+| **DR-50 Iri** | A step precedence's iri is computed as the relative path with every a slash replaced by a hyphen. |
+| **DR-51 Name** | A step precedence's name is computed as the from step, followed by the literal “ -> ”, followed by the to step. |
+| **DR-52 Relative Path** | A role's relative path is computed as the literal “roles/”, followed by the role ID. |
+| **DR-53 Iri** | A role's iri is computed as the relative path with every a slash replaced by a hyphen. |
+| **DR-54 Name** | A role's name is computed as the lower-cased display name with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> |
+| **DR-55 Filled by Arm Count** | A role's filled by arm count is computed as the count of the following that hold: the filled by human agent has a value; the filled by AI agent has a value; and the filled by automated pipeline has a value. |
+| **DR-56 Has Exactly One Filler** | A role is considered to have an exactly one filler if the filled by arm count is 1. |
+| **DR-57 Filler Type** | The role's filler type is determined by the following priority:<br>1. the literal “HumanAgent”, if the filled by human agent has a value;<br>2. the literal “AIAgent”, if the filled by AI agent has a value;<br>3. the literal “AutomatedPipeline”, if the filled by automated pipeline has a value;<br>4. otherwise an empty string. |
+| **DR-58 Parent Path** | A role assignment's parent path is the relative path of the role assignment's role. |
+| **DR-59 Relative Path** | A role assignment's relative path is computed as the parent path, followed by the literal “/assignments/”, followed by the role assignment ID. |
+| **DR-60 Iri** | A role assignment's iri is computed as the relative path with every a slash replaced by a hyphen. |
+| **DR-61 Name** | A role assignment's name is computed as the role, followed by the literal “ [”, followed by the valid from, followed by the literal “ -> ”, followed by the literal “open” if the valid to is blank, otherwise the valid to, followed by the literal “]”. |
+| **DR-62 Filler Type** | The role assignment's filler type is determined by the following priority:<br>1. the literal “HumanAgent”, if the filled by human agent has a value;<br>2. the literal “AIAgent”, if the filled by AI agent has a value;<br>3. the literal “AutomatedPipeline”, if the filled by automated pipeline has a value;<br>4. otherwise an empty string. |
+| **DR-63 Is Current** | A role assignment is considered a current if the valid to is blank. |
+| **DR-64 Was Active As of Audit Date** | A role assignment is considered to have been active as of audit date if all of the following hold: the valid from is at most the literal “2026-03-01” and at least one of the following holds: the valid to is blank or the valid to is greater than the literal “2026-03-01”. |
+| **DR-65 Is Agent Type Change** | A role assignment is considered an agent type change if all of the following hold: the prior filler type has a value and the prior filler type is not the filler type. |
+| **DR-66 Requires Compliance Audit** | A role assignment is considered to require compliance audit if all of the following hold: the prior filler type has a value; the prior filler type is the literal “AIAgent”; and the filler type is the literal “HumanAgent”. |
+| **DR-67 Relative Path** | A department's relative path is computed as the literal “departments/”, followed by the department ID. |
+| **DR-68 Iri** | A department's iri is computed as the relative path with every a slash replaced by a hyphen. |
+| **DR-69 Name** | A department's name is computed as the lower-cased display name with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> |
+| **DR-70 Relative Path** | A human agent's relative path is computed as the literal “human-agents/”, followed by the human agent ID. |
+| **DR-71 Iri** | A human agent's iri is computed as the relative path with every a slash replaced by a hyphen. |
+| **DR-72 Relative Path** | An AI agent's relative path is computed as the literal “ai-agents/”, followed by the AI agent ID. |
+| **DR-73 Iri** | An AI agent's iri is computed as the relative path with every a slash replaced by a hyphen. |
+| **DR-74 Count Attributed Artifacts** | An AI agent's count attributed artifacts is the number of workflow artifacts related to the AI agent. |
+| **DR-75 Count Impacted Workflows** | An AI agent's count impacted workflows is the number of the AI agent's workflow artifacts that have a producing workflow. |
+| **DR-76 Relative Path** | An automated pipeline's relative path is computed as the literal “automated-pipelines/”, followed by the automated pipeline ID. |
+| **DR-77 Iri** | An automated pipeline's iri is computed as the relative path with every a slash replaced by a hyphen. |
+| **DR-78 Relative Path** | A workflow status concept's relative path is computed as the literal “concepts/workflow-status/”, followed by the concept ID. |
+| **DR-79 Iri** | A workflow status concept's iri is computed as the relative path with every a slash replaced by a hyphen. |
+| **DR-80 Relative Path** | An agent capability concept's relative path is computed as the literal “concepts/agent-capability/”, followed by the concept ID. |
+| **DR-81 Iri** | An agent capability concept's iri is computed as the relative path with every a slash replaced by a hyphen. |
+| **DR-82 Relative Path** | An artifact type concept's relative path is computed as the literal “concepts/artifact-type/”, followed by the concept ID. |
+| **DR-83 Iri** | An artifact type concept's iri is computed as the relative path with every a slash replaced by a hyphen. |
+| **DR-84 Relative Path** | A dataset's relative path is computed as the literal “datasets/”, followed by the dataset ID. |
+| **DR-85 Iri** | A dataset's iri is computed as the relative path with every a slash replaced by a hyphen. |
+| **DR-86 Parent Path** | A workflow artifact's parent path is the relative path of the workflow artifact's produced by step. |
+| **DR-87 Relative Path** | A workflow artifact's relative path is computed as the parent path, followed by the literal “/artifacts/”, followed by the artifact ID. |
+| **DR-88 Iri** | A workflow artifact's iri is computed as the relative path with every a slash replaced by a hyphen. |
+| **DR-89 Producing Agent Type** | The workflow artifact's producing agent type is determined by the following priority:<br>1. the literal “HumanAgent”, if the attributed to human agent has a value;<br>2. the literal “AIAgent”, if the attributed to AI agent has a value;<br>3. the literal “AutomatedPipeline”, if the attributed to automated pipeline has a value;<br>4. otherwise an empty string. |
+| **DR-90 Has Derivation Parent** | A workflow artifact is considered to have a derivation parent if the derived from artifact has a value. |
+| **DR-91 Produced by Workflow** | A workflow artifact's produced by workflow is the workflow of the workflow artifact's produced by step. |
+| **DR-92 Has Producing Workflow** | A workflow artifact is considered to have a producing workflow if the produced by workflow has a value. |
+| **DR-93 Relative Path** | A governance role's relative path is computed as the literal “governance-roles/”, followed by the governance role ID. |
+| **DR-94 Iri** | A governance role's iri is computed as the relative path with every a slash replaced by a hyphen. |
+| **DR-95 Name** | A governance role's name is computed as the lower-cased display name with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> |
+| **DR-96 Can Approve Changes** | A governance role is considered able to approve changes if the kind is the literal “Authority”. |
+| **DR-97 Relative Path** | A change log's relative path is computed as the literal “change-log/”, followed by the change log ID. |
+| **DR-98 Iri** | A change log's iri is computed as the relative path with every a slash replaced by a hyphen. |
+| **DR-99 Name** | A change log's name is computed as the version, followed by the literal “ (”, followed by the change date, followed by the literal “)”. |
+| **DR-100 Is Breaking Change** | A change log is considered a breaking change if the change kind is the literal “major”. |
+| **DR-101 Is Backward Compatible** | A change log is considered a backward compatible if at least one of the following holds: the change kind is the literal “patch” or the change kind is the literal “minor”. |
+| **DR-102 Relative Path** | A vocabulary reconciliation's relative path is computed as the literal “reconciliations/”, followed by the reconciliation ID. |
+| **DR-103 Iri** | A vocabulary reconciliation's iri is computed as the relative path with every a slash replaced by a hyphen. |
+| **DR-104 Name** | A vocabulary reconciliation's name is computed as the deprecated term, followed by the literal “ owl:sameAs ”, followed by the replacement term. |
+| **DR-105 Relative Path** | A scenario's relative path is computed as the literal “scenarios/”, followed by the scenario ID. |
+| **DR-106 Iri** | A scenario's iri is computed as the relative path with every a slash replaced by a hyphen. |
+| **DR-107 Name** | A scenario's name is computed as the lower-cased label with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> |
+| **DR-108 Relative Path** | A competency question's relative path is computed as the literal “competency-questions/”, followed by the competency question ID. |
+| **DR-109 Iri** | A competency question's iri is computed as the relative path with every a slash replaced by a hyphen. |
+| **DR-110 Name** | A competency question's name is computed as the lower-cased display name with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> |
+| **DR-111 Relative Path** | A conformance test's relative path is computed as the literal “conformance-tests/”, followed by the conformance test ID. |
+| **DR-112 Iri** | A conformance test's iri is computed as the relative path with every a slash replaced by a hyphen. |
+| **DR-113 Name** | A conformance test's name is computed as the lower-cased display name with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> |
 
 ## 5 Traceability to Schema
 
@@ -378,6 +382,8 @@ the same logic the rulebook stores, written for a business reader._
 | **WorkflowSteps.RelativePath** | formula | `ParentPath & "/steps/" & WorkflowStepId` |
 | **WorkflowSteps.Iri** | formula | `Replace(RelativePath, "/", "-")` |
 | **WorkflowSteps.Name** | formula | `Replace(Lower(DisplayName), " ", "-")` |
+| **WorkflowSteps.PrecedingStepCount** | rollup | `Count(vw_step_precedence_closure via ToId)` |
+| **WorkflowSteps.SequencePosition** | formula | `PrecedingStepCount + 1` |
 | **WorkflowSteps.ExecutingHumanAgent** | lookup | `Lookup(Roles.FilledByHumanAgent via AssignedRole)` |
 | **WorkflowSteps.ExecutingAIAgent** | lookup | `Lookup(Roles.FilledByAIAgent via AssignedRole)` |
 | **WorkflowSteps.ExecutingAutomatedPipeline** | lookup | `Lookup(Roles.FilledByAutomatedPipeline via AssignedRole)` |

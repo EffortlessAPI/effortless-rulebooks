@@ -612,6 +612,41 @@ export const rulespeakFields: Record<string, RuleSpeakFieldRule> = {
     ],
     "structure": null
   },
+  "WorkflowSteps.PrecedingStepCount": {
+    "table": "WorkflowSteps",
+    "field": "PrecedingStepCount",
+    "kind": "rollup",
+    "rule": "A workflow step\u0027s preceding step count is the number of vw step precedence closure related to the workflow step.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "vw_step_precedence_closure",
+        "field": "ToId",
+        "label": "to ID"
+      },
+      {
+        "table": "WorkflowSteps",
+        "field": "WorkflowStepId",
+        "label": "workflow step ID"
+      }
+    ],
+    "structure": null
+  },
+  "WorkflowSteps.SequencePosition": {
+    "table": "WorkflowSteps",
+    "field": "SequencePosition",
+    "kind": "formula",
+    "rule": "A workflow step\u0027s sequence position is computed as the preceding step count plus 1.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "WorkflowSteps",
+        "field": "PrecedingStepCount",
+        "label": "preceding step count"
+      }
+    ],
+    "structure": null
+  },
   "WorkflowSteps.ExecutingHumanAgent": {
     "table": "WorkflowSteps",
     "field": "ExecutingHumanAgent",

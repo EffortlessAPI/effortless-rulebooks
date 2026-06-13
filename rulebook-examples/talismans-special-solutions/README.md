@@ -4,9 +4,9 @@
 
 This project models the workflow ontology from Jessica Talisman’s *Intentional Arrangement* ontology series, using the fictional **Talisman's Special Solutions** workflow domain: human specialists, AI agents, automated pipelines, approval gates, provenance, datasets, escalation paths, and compliance review.
 
-![Release Console — Flow lens: the five-step Production Deployment Workflow with its live compliance verdict](docs/current-ui/console-flow.png)
+![Release Console — Flow lens: the five-step Production Deployment Workflow beside the live competency-question scoreboard](docs/current-ui/console-flow.png)
 
-*The Release Console (Flow lens). The five ordered steps run left to right; each card shows its role, the agent filling it, and human/AI/pipeline type. The panel on the right is the live **compliance verdict** — every value on screen is read from the substrate's computed columns, not recomputed in the UI.*
+*The Release Console (Flow lens). The five ordered steps run left to right; each card shows its role, the agent filling it, and human/AI/pipeline type. The panel on the right is the live **competency-question scoreboard** — the leadership questions the model must answer, each read straight from the substrate's computed columns (never recomputed in the UI) and re-answered the instant you edit a fact on the left.*
 
 ---
 
@@ -26,7 +26,7 @@ assembly.
 
 One source — `effortless-rulebook/talismans-special-solutions-rulebook.json`, the full NTWF worked
 example (role–agent separation, approval-gate subtype, transitive step-precedence closure,
-delegation chain, PROV provenance, DCAT datasets, SKOS vocabularies, a derived compliance verdict).
+delegation chain, PROV provenance, DCAT datasets, SKOS vocabularies, derived risk signals).
 Every projection generated from it is scored **row-by-row and column-by-column** against a
 **Postgres-oracle answer key**, and the suite is re-run on every change.
 
@@ -35,7 +35,7 @@ model grows. What is *not* a moving target is the **shape of the effect** you wa
 time the ontology evolves:
 
 - **Add a concept, change a rule, grow the model** in the one rulebook, and the **Postgres
-  projection tracks it** — the new column, the new closure edge, the new derived verdict simply
+  projection tracks it** — the new column, the new closure edge, the new derived signal simply
   appear, correct, in the views.
 - A **less-mature transpiler lags, then catches up** — each growth spurt can open a fresh gap in
   whichever substrate's generator hasn't implemented that feature yet (a closure that hasn't been
@@ -303,7 +303,7 @@ One practical consequence is that the same UI can talk to different substrates.
 For example, the UI can ask:
 
 ```text
-Is this workflow at compliance risk?
+Which steps are executed by AI agents — and is the workflow stale?
 ```
 
 and receive the same answer from:
@@ -320,7 +320,7 @@ because all of those substrates were generated from the same rulebook.
 
 ![Release Console — Graph lens: agents wired to the steps they execute, every edge a triple the reasoner holds](docs/current-ui/console-graph.png)
 
-*The Graph lens shows the same model as a network: agents on top, steps below, each edge a triple the reasoner holds. The verdict panel on the right answers "Is this workflow at compliance risk?" — the engine selector in the top bar swaps which substrate produced that answer, and it stays the same.*
+*The Graph lens shows the same model as a network: agents on top, steps below, each edge a triple the reasoner holds. The competency-question scoreboard on the right answers the leadership questions live — the engine selector in the top bar swaps which substrate produced those answers, and they stay the same.*
 
 Changing the rulebook changes:
 
@@ -356,7 +356,7 @@ The workflow includes:
 - provenance;
 - status vocabularies;
 - agent capability vocabularies;
-- compliance-risk verdicts.
+- derived risk signals (staleness, AI-execution, consistency).
 
 The seed data is one curated worked example rather than disconnected tutorial rows.
 
@@ -379,7 +379,7 @@ This example includes:
 - **derived fields**
 - **lookup fields**
 - **aggregation fields**
-- **boolean verdict fields**
+- **boolean risk-signal fields**
 - **generated Postgres**
 - **generated OWL**
 - **generated SHACL**
@@ -418,21 +418,23 @@ The workflow also includes:
 - role delegation from Release Manager to VP Engineering to CTO;
 - a provenance chain across generated artifacts;
 - a risk dataset consumed by the AI risk-assessment step;
-- a compliance-risk verdict derived from multiple upstream facts.
+- derived risk signals (staleness, AI-execution, consistency) computed from multiple upstream facts.
 
 ---
 
-## The Compliance Verdict
+## Derived Risk Signals
 
-The worked example culminates in a derived compliance verdict:
+The worked example derives several **risk signals** — each a boolean the substrate
+computes from raw facts, never hand-entered:
 
 ```text
-IsAtComplianceRisk =
-  (workflow is stale AND workflow has an AI-executed step)
-  OR workflow is over its time budget
+IsStale                 = MonthsSinceModified > StalenessThresholdMonths
+HasAIAgentStep          = CountAISteps > 0
+IsStaleAndHasAIAgent    = IsStale AND HasAIAgentStep
+HasConsistencyViolation = CountApprovalConsistencyViolations > 0
 ```
 
-That one boolean crosses several layers of meaning:
+Each one crosses several layers of meaning:
 
 ```text
 workflow metadata
@@ -447,19 +449,17 @@ accountability structure
   → filled-by agent
   → human / AI / pipeline type
 
-execution facts
-  → step duration
-  → budget comparison
-
-verdict
-  → compliance risk
+integrity
+  → approval-step consistency
 ```
 
 In an OWL/RDF/SHACL projection, parts of this appear as graph facts, classes, properties, rules, validation, and inferred relationships.
 
 In Postgres, the same meaning appears as tables, foreign keys, functions, views, recursive closure, and derived columns.
 
-Neither representation owns the meaning. Both are projections.
+Neither representation owns the meaning. Both are projections — and the right-rail
+competency-question scoreboard reads them live from whichever substrate the engine
+selector points at.
 
 ---
 
@@ -678,7 +678,7 @@ Workflows.WorkflowStatus → WorkflowStatusConcepts
 
 | Table                     | Purpose                                             |
 | ------------------------- | --------------------------------------------------- |
-| `Workflows`               | Workflow-level metadata and aggregate verdicts      |
+| `Workflows`               | Workflow-level metadata and aggregate risk signals  |
 | `WorkflowSteps`           | Ordered executable units within a workflow          |
 | `ApprovalGates`           | Specialized workflow steps requiring approval logic |
 | `StepPrecedence`          | Step-to-step ordering edges                         |
@@ -691,7 +691,7 @@ Workflows.WorkflowStatus → WorkflowStatusConcepts
 | `AgentCapabilityConcepts` | Controlled vocabulary for capabilities              |
 | `Datasets`                | DCAT-style datasets consumed by steps               |
 | `WorkflowArtifacts`       | PROV-style artifacts generated by steps             |
-| `ComplianceVerdicts`      | Derived compliance-risk results                     |
+| `CompetencyQuestions`     | The leadership questions the model must answer (the right-rail scoreboard) |
 
 
 ---
@@ -743,7 +743,15 @@ In ontology form, this appears as a class/subclass relationship.
 
 ### 4. Step Ordering as First-Class Structure
 
-Step order is modeled as explicit precedence edges, not just a sequence number.
+Step order is modeled as explicit precedence edges — and the per-step *position* is **derived from
+those edges**, not asserted as a separate integer. `SequencePosition` is computed as
+`PrecedingStepCount + 1`, where `PrecedingStepCount` counts how many steps transitively precede this
+one in the closure (`vw_step_precedence_closure`). The four asserted edges close to ancestor counts
+`0,1,2,3,4`, so the positions fall out as `1,2,3,4,5` — no ordinal is ever typed. The `StepPrecedence`
+edges are the single source of order: change an edge and the position recomputes, with no separate
+raw ordinal that could drift from the edges. (This is a deliberate strengthening of the article,
+which models `ntwf:sequencePosition` as an independently-asserted functional property; here it is a
+projection of `ntwf:precedesStep`.)
 
 That allows transitive closure:
 
@@ -793,25 +801,26 @@ thing consumed by the workflow
 
 ---
 
-### 6. Derived Verdicts
+### 6. Derived Risk Signals
 
-The final compliance-risk verdict is not hand-entered.
+The risk signals are not hand-entered.
 
-It is derived.
+They are derived.
 
 That matters because a raw fact change should propagate through the system:
 
 ```text
 change modified date
-  → staleness changes
-  → compliance verdict changes
+  → MonthsSinceModified changes
+  → IsStale changes
 
 change role from AI-filled to human-filled
-  → AI-executed-step status changes
-  → compliance verdict changes
+  → CountAISteps changes
+  → HasAIAgentStep changes
 ```
 
-This is the practical value of making inference explicit and testable.
+This is the practical value of making inference explicit and testable — and the
+right-rail competency-question scoreboard re-answers the instant any of these flips.
 
 ---
 

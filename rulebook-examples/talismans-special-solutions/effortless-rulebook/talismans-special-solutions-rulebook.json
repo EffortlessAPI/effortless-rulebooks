@@ -404,11 +404,23 @@
         "RelatedTo": "Workflows"
       },
       {
+        "name": "PrecedingStepCount",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Number of steps that TRANSITIVELY precede this step in the ntwf:precedesStep ordering — a rollup over the closure view vw_step_precedence_closure counting rows whose to_id is this step (i.e. this step's ancestors). On the linear Production Deployment chain: 0,1,2,3,4. Derived purely from the asserted StepPrecedence edges via their transitive closure; nothing is hand-entered. SequencePosition is this + 1.",
+        "explanation_rich": "**How many steps must finish before this one.** Counts the closure rows `vw_step_precedence_closure.to_id = this step` — every step that transitively precedes it. Step 1 has 0 ancestors; step 5 has 4. The four asserted edges (1→2→3→4→5) close to these ancestor counts, and `SequencePosition` is just this count plus one. Change an edge and the count (and the position) recomputes.",
+        "formula": "=COUNTIFS(vw_step_precedence_closure!{{ToId}}, WorkflowSteps!{{WorkflowStepId}})"
+      },
+      {
         "name": "SequencePosition",
         "datatype": "integer",
-        "type": "raw",
+        "type": "calculated",
         "nullable": true,
-        "Description": "Integer ordinal position of the step within its workflow. Maps to ntwf:sequencePosition, declared as owl:FunctionalProperty (each step has exactly one position). Enables positional queries. Note: this is a display/positional convenience — the authoritative ordering lives in the StepPrecedence edges."
+        "important": true,
+        "Description": "Integer ordinal position of the step within its workflow, DERIVED from the StepPrecedence edges rather than hand-asserted: 1 + PrecedingStepCount (one plus the number of steps that transitively precede it in vw_step_precedence_closure). On the linear Production Deployment chain this yields 1,2,3,4,5 — but no integer was typed; the position is a projection of the asserted ordering edges. Maps to ntwf:sequencePosition (owl:FunctionalProperty). This makes the StepPrecedence edges the single source of order: change an edge and the position recomputes; there is no separate raw ordinal that could drift from the edges.",
+        "explanation_rich": "**Position is derived from the order, not asserted alongside it.** Previously a raw integer typed next to the `StepPrecedence` edges — two independent encodings of the same ordering that nothing forced to agree. Now it is `{{PrecedingStepCount}} + 1`: one plus the number of steps that transitively come before it. A step with no predecessors is position 1; each transitive predecessor bumps it by one. The four asserted edges close to ancestor counts 0,1,2,3,4 and the positions fall out as 1..5 — computed by the same substrate that built the closure, never written down. Remove the 4→5 edge and step 5 drops to position 1 (it now has no predecessors): the ordering edges are the only source of truth.",
+        "formula": "={{PrecedingStepCount}} + 1"
       },
       {
         "name": "AssignedRole",
@@ -4063,7 +4075,7 @@
         "TestKind": "field-match",
         "TargetRef": "WorkflowSteps/prod-deploy-step-4#SequencePosition",
         "Expect": "",
-        "Explanation": "Functional integer datatype property echoes through both substrates.",
+        "Explanation": "Step position is DERIVED from the precedence closure (PrecedingStepCount + 1), not a hand-asserted ordinal; step 4 resolves to 4 in both substrates because four steps transitively precede it.",
         "SortOrder": 480,
         "IsEnabled": true,
         "RelativePath": "conformance-tests/sequence-position",

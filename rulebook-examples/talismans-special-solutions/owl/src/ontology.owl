@@ -1288,11 +1288,19 @@ effortless-ntwf:workflow a owl:ObjectProperty ;
     rdfs:label "Workflow" ;
     rdfs:comment "Foreign key to the parent workflow. Represents the inverse of ntwf:hasStep, enabling navigation from step to its containing workflow (ntwf:isStepOf)." .
 
+effortless-ntwf:precedingStepCount a owl:DatatypeProperty ;
+    rdfs:domain effortless-ntwf:WorkflowSteps ;
+    rdfs:range xsd:integer ;
+    rdfs:label "PrecedingStepCount" ;
+    rdfs:comment "Number of steps that TRANSITIVELY precede this step in the ntwf:precedesStep ordering — a rollup over the closure view vw_step_precedence_closure counting rows whose to_id is this step (i.e. this step's ancestors). On the linear Production Deployment chain: 0,1,2,3,4. Derived purely from the asserted StepPrecedence edges via their transitive closure; nothing is hand-entered. SequencePosition is this + 1." .
+    # calculated: aggregation
+
 effortless-ntwf:sequencePosition a owl:DatatypeProperty ;
     rdfs:domain effortless-ntwf:WorkflowSteps ;
     rdfs:range xsd:integer ;
     rdfs:label "SequencePosition" ;
-    rdfs:comment "Integer ordinal position of the step within its workflow. Maps to ntwf:sequencePosition, declared as owl:FunctionalProperty (each step has exactly one position). Enables positional queries. Note: this is a display/positional convenience — the authoritative ordering lives in the StepPrecedence edges." .
+    rdfs:comment "Integer ordinal position of the step within its workflow, DERIVED from the StepPrecedence edges rather than hand-asserted: 1 + PrecedingStepCount (one plus the number of steps that transitively precede it in vw_step_precedence_closure). On the linear Production Deployment chain this yields 1,2,3,4,5 — but no integer was typed; the position is a projection of the asserted ordering edges. Maps to ntwf:sequencePosition (owl:FunctionalProperty). This makes the StepPrecedence edges the single source of order: change an edge and the position recomputes; there is no separate raw ordinal that could drift from the edges." .
+    # calculated: calculated
 
 effortless-ntwf:assignedRole a owl:ObjectProperty ;
     rdfs:domain effortless-ntwf:WorkflowSteps ;
