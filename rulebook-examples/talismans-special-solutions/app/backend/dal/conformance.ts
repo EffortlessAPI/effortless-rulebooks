@@ -86,6 +86,27 @@ function asInstant(v: unknown): number | null {
   return Number.isNaN(t) ? null : t;
 }
 
+// Pull the calendar date (YYYY-MM-DD, UTC) out of a date-or-datetime string.
+// A DATE-typed column may surface as the bare day on one side (the answer key:
+// "2026-01-10") and as a midnight-ish ISO datetime on the other (the engine:
+// "2026-01-10T06:00:00.000Z", or the reasoner's "2026-01-10 00:00:00-05:00").
+// Those are the SAME calendar date in two spellings — a representation diff, not
+// a value diff. We compare by UTC calendar day so a tz-offset midnight can't
+// look like a different day. Returns "YYYY-MM-DD" or null if not a date string.
+function asCalendarDate(v: unknown): string | null {
+  if (typeof v !== "string") return null;
+  const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(v.trim());
+  if (!m) return null;
+  // If there's a time component, normalize through Date so a tz offset rolls the
+  // day correctly; otherwise take the literal Y-M-D (no tz to apply).
+  if (/[ T]\d{2}:\d{2}/.test(v)) {
+    const t = Date.parse(v.replace(" ", "T"));
+    if (Number.isNaN(t)) return `${m[1]}-${m[2]}-${m[3]}`;
+    return new Date(t).toISOString().slice(0, 10);
+  }
+  return `${m[1]}-${m[2]}-${m[3]}`;
+}
+
 // Split a relationship value that one engine returns as a comma-joined string
 // and the other as an array, into a sorted token set, for set comparison.
 function asTokenSet(v: unknown): string[] {
@@ -108,7 +129,7 @@ function asTokenSet(v: unknown): string[] {
 //   value           — a genuine disagreement on a COMPUTED answer (a boolean
 //                     flips, a count differs). THE one that matters — a real
 //                     substrate/transpiler bug.
-function classify(a: unknown, b: unknown, ftype: string): Classification {
+export function classify(a: unknown, b: unknown, ftype: string): Classification {
   if (a === b) return "equal";
   if (a == null && b == null) return "equal";
 
@@ -120,6 +141,13 @@ function classify(a: unknown, b: unknown, ftype: string): Classification {
   // datetimes: compare as instants
   const ia = asInstant(a), ib = asInstant(b);
   if (ia != null && ib != null) return ia === ib ? "representation" : "value";
+
+  // date / datetime mix: a DATE column may be the bare day on one side and a
+  // midnight ISO datetime on the other. Compare by UTC calendar day — same day,
+  // two spellings, is a representation diff. (Only when BOTH parse as a date so
+  // we never misclassify a real string mismatch.)
+  const da = asCalendarDate(a), db = asCalendarDate(b);
+  if (da != null && db != null) return da === db ? "representation" : "value";
 
   // relationship / back-reference fields. The two engines legitimately represent
   // the SAME relationship at different inference depths:
