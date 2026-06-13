@@ -31,18 +31,21 @@ model grows. What is *not* a moving target is the **shape of the effect** you wa
 time the ontology evolves:
 
 - **Add a concept, change a rule, grow the model** in the one rulebook, and the **Postgres
-  projection tracks it for free** — the new column, the new closure edge, the new derived verdict
-  simply appear, correct, in the views. The closed-world substrate reaches the whole model with no
-  hand-assembly.
-- The **OWL / RDF / SHACL projection lags, then catches up** — each growth spurt opens a fresh set
-  of reasoner-side gaps (a closure that hasn't been re-stitched, a lookup the shapes don't yet
-  cover) that have to be assembled back into parity. The deltas are always in the **assembly**, never
-  in the **meaning**.
+  projection tracks it** — the new column, the new closure edge, the new derived verdict simply
+  appear, correct, in the views.
+- A **less-mature transpiler lags, then catches up** — each growth spurt can open a fresh gap in
+  whichever substrate's generator hasn't implemented that feature yet (a closure that hasn't been
+  re-stitched, a lookup the SHACL shapes don't yet cover) that then gets assembled back into parity.
+  The deltas are always in the **assembly**, never in the **meaning**.
 
-That asymmetry is the receipt, and it is stable across every revision: the meaning, authored once,
-costs nothing to re-project into the closed-world substrate; the open-world substrate is the side
-that perpetually pays the assembly tax to keep up. **The cost was never in the modeling. It is in the
-assembly — and the assembly is the part this repo lifts off the author.** (Today's exact tally lives
+That the projections must **agree** — and that the suite flags the instant one diverges — is the
+receipt: agreement is the proof they are one object; divergence is the alarm. A lag never means a
+substrate is "more real," only that its transpiler is less mature for that feature. Postgres is the
+answer-key oracle because, for these closed-world formulas, its transpiler currently has no gaps — so
+the delta shows up on whichever *graded* substrate is least mature for a feature; today that is
+usually OWL, but Excel, Go, or Python can lag just as easily on something theirs doesn't yet emit.
+**The cost was never in the modeling. It is in the assembly — and the assembly is the part this repo
+lifts off the author.** (Today's exact tally lives
 in `testing/conformance-runs/latest.json`; run `./start.sh` and watch it move as you edit the
 rulebook.)
 

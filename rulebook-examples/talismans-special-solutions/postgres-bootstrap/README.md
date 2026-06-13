@@ -1,7 +1,8 @@
 # postgres-bootstrap
 
-PostgreSQL is the **reference substrate** for this project — the one with no
-expressivity gaps. It is both the dev database and the **oracle** that computes
+PostgreSQL is the **designated oracle** for this project — the substrate we grade
+the others against, chosen because for these closed-world formulas its transpiler
+currently has no expressivity gaps. It is both the dev database and the source of
 the conformance answer key. This folder holds the generated SQL, the scripts
 that load it, and the answer-key regeneration cycle.
 
