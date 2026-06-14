@@ -123,16 +123,16 @@
     "entity": "ScenarioCQEffects",
     "field": "RelativePath",
     "formula": "=\"scenario-cq-effects/\" & {{ScenarioCQEffectId}}",
-    "record_id": "reroute-ordering-cq-1",
-    "error": "drift: stored='scenario-cq-effects/reroute-ordering-cq-1' python-recompute='scenario-cq-effects/'",
+    "record_id": "drop-final-edge-cq-1",
+    "error": "drift: stored='scenario-cq-effects/drop-final-edge-cq-1' python-recompute='scenario-cq-effects/'",
     "severity": "drift"
   },
   {
     "entity": "ScenarioCQEffects",
     "field": "Name",
     "formula": "=SUBSTITUTE(LOWER({{ScenarioCQEffectId}}), \" \", \"-\")",
-    "record_id": "reroute-ordering-cq-1",
-    "error": "drift: stored='reroute-ordering-cq-1' python-recompute=''",
+    "record_id": "drop-final-edge-cq-1",
+    "error": "drift: stored='drop-final-edge-cq-1' python-recompute=''",
     "severity": "drift"
   },
   {

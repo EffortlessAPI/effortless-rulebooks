@@ -72,6 +72,18 @@
     "name": null
   },
   {
+    "scenario_id": "drop-final-edge",
+    "label": "Drop the final ordering edge",
+    "icon": "\u2702\ufe0f",
+    "explanation": "Removes the step-4 \u2192 step-5 precedence edge entirely. Step 5 falls out of the ordered chain, so the transitive closure shrinks from 10 ordered pairs to 6 \u2014 and nothing else moves. Demonstrates CQ1: the closure cardinality is a projection of the asserted edges, recomputed the instant one is removed.",
+    "sort_order": 10,
+    "is_reset": false,
+    "edits": "[{\"class\": \"StepPrecedence\", \"id\": \"prec-4-5\", \"delete\": true}]",
+    "relative_path": null,
+    "iri": null,
+    "name": null
+  },
+  {
     "scenario_id": "human-risk-step",
     "label": "Hand the risk step to a human",
     "icon": "\ud83e\uddd1",
@@ -96,25 +108,13 @@
     "name": null
   },
   {
-    "scenario_id": "reroute-ordering",
-    "label": "Re-route the last ordering edge",
-    "icon": "\ud83d\udd00",
-    "explanation": "Re-points the final precedence edge so step 5 follows step 1 instead of step 4. The transitive closure shrinks (10 \u2192 7 ordered pairs) and the inferred positions recompute \u2014 nothing else moves. Demonstrates CQ1: order is a projection of the edges.",
-    "sort_order": 10,
-    "is_reset": false,
-    "edits": "[{\"class\": \"StepPrecedence\", \"id\": \"prec-4-5\", \"set\": {\"fromStep\": \"prod-deploy-step-1\"}}]",
-    "relative_path": null,
-    "iri": null,
-    "name": null
-  },
-  {
     "scenario_id": "reset",
     "label": "Reset to baseline",
     "icon": "\u21ba",
     "explanation": "Restores the canonical seed assignments and a fresh review date \u2014 the known-good starting point. Every role is filled by exactly one agent, no requires-human-approval step is AI-filled, and the workflow is within its staleness window, so all the article's clean-ABox witnesses read green.",
     "sort_order": 5,
     "is_reset": true,
-    "edits": "[{\"class\": \"Workflows\", \"match\": \"first\", \"set\": {\"modified\": \"2026-04-03T00:00:00-05:00\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-release-manager-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-maria-gonzalez\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-risk-analysis-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"ntwf-risk-ai\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-legal-compliance-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-james-okafor\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-ci-executor-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"ntwf-ci-pipeline\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-vp-engineering-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-david-chen\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-cto-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-sarah-kim\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-deployment-health-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"ntwf-health-ai\", \"filledByAutomatedPipeline\": \"\"}}]",
+    "edits": "[{\"class\": \"Workflows\", \"match\": \"first\", \"set\": {\"modified\": \"2026-04-03T00:00:00-05:00\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-release-manager-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-maria-gonzalez\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\", \"delegatesTo\": \"ntwf-vp-engineering-role\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-risk-analysis-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"ntwf-risk-ai\", \"filledByAutomatedPipeline\": \"\", \"delegatesTo\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-legal-compliance-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-james-okafor\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\", \"delegatesTo\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-ci-executor-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"ntwf-ci-pipeline\", \"delegatesTo\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-vp-engineering-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-david-chen\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\", \"delegatesTo\": \"ntwf-cto-role\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-cto-role\", \"set\": {\"filledByHumanAgent\": \"ntwf-sarah-kim\", \"filledByAIAgent\": \"\", \"filledByAutomatedPipeline\": \"\", \"delegatesTo\": \"\"}}, {\"class\": \"Roles\", \"id\": \"ntwf-deployment-health-role\", \"set\": {\"filledByHumanAgent\": \"\", \"filledByAIAgent\": \"ntwf-health-ai\", \"filledByAutomatedPipeline\": \"\", \"delegatesTo\": \"\"}}, {\"class\": \"StepPrecedence\", \"id\": \"prec-1-2\", \"set\": {\"fromStep\": \"prod-deploy-step-1\"}}, {\"class\": \"StepPrecedence\", \"id\": \"prec-2-3\", \"set\": {\"fromStep\": \"prod-deploy-step-2\"}}, {\"class\": \"StepPrecedence\", \"id\": \"prec-3-4\", \"set\": {\"fromStep\": \"prod-deploy-step-3\"}}, {\"class\": \"StepPrecedence\", \"id\": \"prec-4-5\", \"set\": {\"fromStep\": \"prod-deploy-step-4\"}}, {\"class\": \"StepPrecedence\", \"add\": {\"stepPrecedenceId\": \"prec-4-5\", \"fromStep\": \"prod-deploy-step-4\", \"toStep\": \"prod-deploy-step-5\"}}]",
     "relative_path": null,
     "iri": null,
     "name": null

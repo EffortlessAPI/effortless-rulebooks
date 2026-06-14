@@ -77,6 +77,17 @@
     "name": null
   },
   {
+    "scenario_cq_effect_id": "drop-final-edge-cq-1",
+    "scenario": "drop-final-edge",
+    "competency_question": "cq-1",
+    "effect_kind": "trigger",
+    "note": "Deleting the step-4\u2192step-5 edge shrinks the precedence closure (10 \u2192 6 ordered pairs); step 5 leaves the chain. No other answer moves.",
+    "sort_order": 10,
+    "relative_path": null,
+    "iri": null,
+    "name": null
+  },
+  {
     "scenario_cq_effect_id": "human-risk-step-cq-3",
     "scenario": "human-risk-step",
     "competency_question": "cq-3",
@@ -94,17 +105,6 @@
     "effect_kind": "trigger",
     "note": "Legal role re-owned by Engineering \u2192 zero legal-owned steps \u2192 eng-AND-legal flips No. Isolated.",
     "sort_order": 80,
-    "relative_path": null,
-    "iri": null,
-    "name": null
-  },
-  {
-    "scenario_cq_effect_id": "reroute-ordering-cq-1",
-    "scenario": "reroute-ordering",
-    "competency_question": "cq-1",
-    "effect_kind": "trigger",
-    "note": "Re-pointing prec-4-5 shrinks the precedence closure (10 \u2192 7 pairs); positions recompute. No other answer moves.",
-    "sort_order": 10,
     "relative_path": null,
     "iri": null,
     "name": null

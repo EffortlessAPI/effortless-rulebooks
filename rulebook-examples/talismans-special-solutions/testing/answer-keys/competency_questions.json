@@ -11,7 +11,7 @@
     "explanation": "WorkflowSteps ordered by SequencePosition; the order is the transitive closure of the asserted StepPrecedence edges, materialized as ntwf:precedesStep.",
     "sort_order": 1,
     "is_active": true,
-    "simulate_scenario": "reroute-ordering",
+    "simulate_scenario": "drop-final-edge",
     "relative_path": "competency-questions/cq-1",
     "iri": "competency-questions-cq-1",
     "name": "steps-and-order"
