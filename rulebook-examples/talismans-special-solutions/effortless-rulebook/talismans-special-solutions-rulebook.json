@@ -299,6 +299,110 @@
         "Description": "Number of filledBy assignment periods that took a previously AI-executed binding and reassigned it to a human (rollup over RoleAssignments.RequiresComplianceAudit = TRUE). NTWF governance treats this as a data operation with compliance implications: changing the agent type of a step from ntwf:AIAgent to ntwf:HumanAgent. Each such row must carry when (ValidFrom) and why (Reason). NOTE: single-workflow scoping as above.",
         "explanation_rich": "**The compliance-flagged transitions, counted.** NTWF governance singles out AIAgent -> HumanAgent reassignment as the case the audit record must capture (when + why). `RoleAssignments.RequiresComplianceAudit` fires on exactly that direction; this rollup surfaces how many such transitions a workflow's role history contains — the audit queue, as a number.",
         "formula": "=COUNTIFS(RoleAssignments!{{RequiresComplianceAudit}}, TRUE)"
+      },
+      {
+        "name": "CountApprovalGateSteps",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Number of this workflow's steps that are approval gates. >0 means the workflow has a blocking approval checkpoint; used by Cq2Satisfied to require that the gate exists before asking whether it has a human approver.",
+        "formula": "=COUNTIFS(WorkflowSteps!{{Workflow}}, Workflows!{{WorkflowId}}, WorkflowSteps!{{IsApprovalGate}}, TRUE)"
+      },
+      {
+        "name": "CountGatesWithoutHumanApprover",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Number of approval gates with no resolved human approver (gate role not filled by a HumanAgent). Single-workflow model, so this global count is wholly this workflow's. Drives Cq2Satisfied (= a gate exists AND none lack a human approver).",
+        "formula": "=COUNTIFS(ApprovalGates!{{HasHumanApprover}}, FALSE)"
+      },
+      {
+        "name": "CountWorkflowArtifacts",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Total artifacts produced by this workflow. With CountDerivationLinks (artifacts that have a wasDerivedFrom parent) this lets Cq4Satisfied check the provenance chain is intact: every artifact but the single origin has a parent.",
+        "formula": "=COUNTIFS(WorkflowArtifacts!{{ProducedByWorkflow}}, Workflows!{{WorkflowId}})"
+      },
+      {
+        "name": "CountRolesWithEscalationViolation",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Number of roles that own an approval gate yet escalate to no one (Roles.EscalationViolation). Single-workflow model, so this global count applies to this workflow. Drives Cq6Satisfied (=0): the model's own native escalation-completeness invariant, replacing any hardcoded 'must reach the CTO' check.",
+        "formula": "=COUNTIFS(Roles!{{EscalationViolation}}, TRUE)"
+      },
+      {
+        "name": "CountUnconsumedDatasets",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Number of datasets not consumed by any step (Datasets.IsConsumed = FALSE). Single-workflow model, so this global count applies to this workflow. Drives Cq8Satisfied (=0).",
+        "formula": "=COUNTIFS(Datasets!{{IsConsumed}}, FALSE)"
+      },
+      {
+        "name": "Cq1Satisfied",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "CQ1 satisfied: the step-ordering closure is a TOTAL order — its pair count equals n*(n-1)/2 for n steps, so every pair of steps is comparable and 'the order' is well-defined. Purely structural; no asserted literal.",
+        "formula": "={{CountOfPrecedenceClosurePairs}} = {{CountOfNonProposedSteps}} * ({{CountOfNonProposedSteps}} - 1) / 2"
+      },
+      {
+        "name": "Cq2Satisfied",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "CQ2 satisfied: the workflow has an approval gate AND every gate resolves to a human approver. Derived from the gate->role->filler chain; no hardcoded approver name.",
+        "formula": "=AND({{CountApprovalGateSteps}} > 0, {{CountGatesWithoutHumanApprover}} = 0)"
+      },
+      {
+        "name": "Cq3Satisfied",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "CQ3 satisfied: the AI-vs-human assignment is consistent — no step that requires a human decision is executed by a non-human (no ApprovalConsistencyViolation). Derived from the model's own consistency invariant.",
+        "formula": "=NOT({{HasConsistencyViolation}})"
+      },
+      {
+        "name": "Cq4Satisfied",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "CQ4 satisfied: the wasDerivedFrom provenance chain is intact — every artifact but the single origin has a derivation parent. Structural; breaks the instant any derivation edge is cut.",
+        "formula": "={{CountDerivationLinks}} = {{CountWorkflowArtifacts}} - 1"
+      },
+      {
+        "name": "Cq5Satisfied",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "CQ5 satisfied: the workflow's compliance docs are within the review policy (not stale). Reads the existing IsStale verdict; flips when the review age passes StalenessThresholdMonths.",
+        "formula": "=NOT({{IsStale}})"
+      },
+      {
+        "name": "Cq6Satisfied",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "CQ6 satisfied: no gate-owning role escalates to nobody — every approval gate has a complete escalation path. Uses the model's native EscalationViolation invariant; 'the top' is the delegation apex, derived, not a hardcoded CTO name.",
+        "formula": "={{CountRolesWithEscalationViolation}} = 0"
+      },
+      {
+        "name": "Cq7Satisfied",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "CQ7 satisfied: the workflow involves BOTH Engineering-owned and Legal-owned steps. Reads the existing InvolvesEngineeringAndLegal boolean.",
+        "formula": "={{InvolvesEngineeringAndLegal}}"
+      },
+      {
+        "name": "Cq8Satisfied",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "CQ8 satisfied: every dataset the workflow declares is actually consumed by a step. Flips when a dataset is detached.",
+        "formula": "={{CountUnconsumedDatasets}} = 0"
       }
     ],
     "data": [
@@ -860,6 +964,14 @@
         "Description": "The human agent who approves at this gate, resolved through the two-hop chain gate → GateRole → Roles.FilledByHumanAgent. Answers CQ2 ('who is responsible for approving a production deployment') directly: the release-approval gate resolves to the Release Manager role, filled by Maria Gonzalez.",
         "explanation_rich": "**CQ2 answered by a lookup chain.** A gate specializes a step; the step has a role; the role is filled by a person. This field walks that chain — `GateRole` (gate → step → role) then `Roles.FilledByHumanAgent` (role → human) — to name the approver. For the release-approval gate the answer is `ntwf-maria-gonzalez`, exactly what the article's SPARQL returns.",
         "formula": "=INDEX(Roles!{{FilledByHumanAgent}}, MATCH({{GateRole}}, Roles!{{RoleId}}, 0))"
+      },
+      {
+        "name": "HasHumanApprover",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE iff this approval gate resolves to a human approver (its gate role is filled by a HumanAgent). Rolls up into Workflows.CountGatesWithoutHumanApprover, which CQ2's satisfaction reads.",
+        "formula": "=NOT(ISBLANK({{GateApproverHuman}}))"
       }
     ],
     "data": [
@@ -2364,6 +2476,14 @@
         "nullable": true,
         "Description": "Back-reference to WorkflowSteps that consume this dataset. Inverse of WorkflowSteps.ConsumesDataset.",
         "RelatedTo": "WorkflowSteps"
+      },
+      {
+        "name": "IsConsumed",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE iff some workflow step consumes this dataset (ConsumedBySteps is set). Rolls up into Workflows.CountUnconsumedDatasets, which CQ8's satisfaction reads.",
+        "formula": "=NOT(ISBLANK({{ConsumedBySteps}}))"
       }
     ],
     "data": [
@@ -2521,6 +2641,16 @@
         "nullable": true,
         "Description": "TRUE iff this artifact resolves to a producing workflow (ProducedByWorkflow is set). Lets the AIAgents blast-radius rollup (CountImpactedWorkflows) count only artifacts that reach a workflow, since COUNTIFS needs a boolean criterion column.",
         "formula": "=NOT(ISBLANK({{ProducedByWorkflow}}))"
+      },
+      {
+        "name": "DerivationClosure",
+        "datatype": "string",
+        "type": "closure",
+        "nullable": true,
+        "important": true,
+        "Description": "Transitive closure of prov:wasDerivedFrom over the self-referential DerivedFromArtifact FK. The asserted single-step derivation edges (Legal Clearance was derived from Risk Report, Release Authorization from Legal Clearance, …) imply the never-asserted reachability (Post-Deployment Report transitively wasDerivedFrom Risk Report). Materialized as vw_workflow_artifacts_closure(from_id, to_id, hop_distance, is_inferred). This is the artifact-lineage analogue of vw_step_precedence_closure and vw_roles_closure — the SAME closure construct as step ordering and role escalation, just over a different relation, so a broken link surfaces as a missing reachability pair exactly like a dropped precedence edge.",
+        "explanation_rich": "**Artifact lineage, closed transitively — the third member of the closure family.** `prov:wasDerivedFrom` chains Risk Report → Legal Clearance → Release Authorization → Deployment Log → Post-Deployment Report. Assert only the four adjacent derivation edges and the `closure` field type emits `vw_workflow_artifacts_closure` from the self-referential `DerivedFromArtifact` FK — every reachable `(from_id, to_id)` pair with `hop_distance` and `is_inferred`. Post-Deployment Report → Risk Report appears as an inferred row (`hop_distance = 4`, `is_inferred = true`) though only single hops were stated. Identical machinery to `precedesStep` (steps) and `delegatesTo` (roles): three relations, one transitive-closure construct. Blank one link (CQ4's break-derivation) and the chain splits into two unreachable fragments — the same way dropping a precedence edge collapses a column of inferred ordering pairs.",
+        "ToColumn": "DerivedFromArtifact"
       }
     ],
     "data": [
@@ -3187,10 +3317,10 @@
         "ScenarioId": "dataset-unconsumed",
         "Label": "Detach the risk dataset",
         "Icon": "📦",
-        "Explanation": "Clears the dataset's consumed-by-step link. The Q1 Risk Metrics dataset is no longer consumed by any step. Demonstrates CQ8: dataset consumption is an asserted relationship, and the answer is exactly which steps point at it.",
+        "Explanation": "Clears the AI Risk Assessment step's consumes-dataset link (WorkflowSteps.ConsumesDataset is the authoritative DCAT forward FK; Datasets.ConsumedBySteps is its derived inverse). The Q1 Risk Metrics dataset is now consumed by no step — on the Graph lens its 📦 node visibly detaches from step 1. Demonstrates CQ8: dataset consumption is a real relationship, and the answer is exactly which steps point at it; with nothing consuming it, the AI-provenance answer is gone.",
         "SortOrder": 80,
         "IsReset": false,
-        "Edits": "[{\"class\": \"Datasets\", \"id\": \"ds-q1-2026-risk-metrics\", \"set\": {\"consumedBySteps\": \"\"}}]",
+        "Edits": "[{\"class\": \"WorkflowSteps\", \"id\": \"prod-deploy-step-1\", \"set\": {\"consumesDataset\": \"\"}}]",
         "RelativePath": "scenarios/dataset-unconsumed",
         "Iri": "scenarios-dataset-unconsumed",
         "Name": "detach-the-risk-dataset"
@@ -3281,6 +3411,13 @@
         "Description": "The asserted correct answer for the seed worked example. For scalar questions the live computed value must equal this to score a pass; for list questions this is the canonical summary the rendered collection is checked against. Authored here so pass/fail is (substrate-computed value) vs (rulebook-asserted expectation) — a real conformance check, not UI logic."
       },
       {
+        "name": "SatisfiedField",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Name of the boolean column on Workflows that computes whether this CQ is satisfied (e.g. Cq6Satisfied). The scoreboard reads pass/fail straight from this substrate-computed column — the acceptance criterion lives in the rulebook as a derived field, never as app-side logic. Mirrors TargetTable/TargetField for the answer."
+      },
+      {
         "name": "Explanation",
         "datatype": "string",
         "type": "raw",
@@ -3326,7 +3463,8 @@
         "SimulateScenario": "drop-final-edge",
         "RelativePath": "competency-questions/cq-1",
         "Iri": "competency-questions-cq-1",
-        "Name": "steps-and-order"
+        "Name": "steps-and-order",
+        "SatisfiedField": "Cq1Satisfied"
       },
       {
         "CompetencyQuestionId": "cq-2",
@@ -3343,7 +3481,8 @@
         "SimulateScenario": "ai-release-manager",
         "RelativePath": "competency-questions/cq-2",
         "Iri": "competency-questions-cq-2",
-        "Name": "who-approves"
+        "Name": "who-approves",
+        "SatisfiedField": "Cq2Satisfied"
       },
       {
         "CompetencyQuestionId": "cq-3",
@@ -3360,7 +3499,8 @@
         "SimulateScenario": "human-risk-step",
         "RelativePath": "competency-questions/cq-3",
         "Iri": "competency-questions-cq-3",
-        "Name": "ai-vs-human-steps"
+        "Name": "ai-vs-human-steps",
+        "SatisfiedField": "Cq3Satisfied"
       },
       {
         "CompetencyQuestionId": "cq-4",
@@ -3377,7 +3517,8 @@
         "SimulateScenario": "break-derivation",
         "RelativePath": "competency-questions/cq-4",
         "Iri": "competency-questions-cq-4",
-        "Name": "artifact-lineage"
+        "Name": "artifact-lineage",
+        "SatisfiedField": "Cq4Satisfied"
       },
       {
         "CompetencyQuestionId": "cq-5",
@@ -3394,7 +3535,8 @@
         "SimulateScenario": "stale-docs",
         "RelativePath": "competency-questions/cq-5",
         "Iri": "competency-questions-cq-5",
-        "Name": "stale-over-12-months"
+        "Name": "stale-over-12-months",
+        "SatisfiedField": "Cq5Satisfied"
       },
       {
         "CompetencyQuestionId": "cq-6",
@@ -3411,7 +3553,8 @@
         "SimulateScenario": "break-delegation",
         "RelativePath": "competency-questions/cq-6",
         "Iri": "competency-questions-cq-6",
-        "Name": "escalation-path"
+        "Name": "escalation-path",
+        "SatisfiedField": "Cq6Satisfied"
       },
       {
         "CompetencyQuestionId": "cq-7",
@@ -3428,7 +3571,8 @@
         "SimulateScenario": "legal-to-engineering",
         "RelativePath": "competency-questions/cq-7",
         "Iri": "competency-questions-cq-7",
-        "Name": "engineering-and-legal"
+        "Name": "engineering-and-legal",
+        "SatisfiedField": "Cq7Satisfied"
       },
       {
         "CompetencyQuestionId": "cq-8",
@@ -3445,7 +3589,8 @@
         "SimulateScenario": "dataset-unconsumed",
         "RelativePath": "competency-questions/cq-8",
         "Iri": "competency-questions-cq-8",
-        "Name": "datasets-and-ai"
+        "Name": "datasets-and-ai",
+        "SatisfiedField": "Cq8Satisfied"
       }
     ]
   },
