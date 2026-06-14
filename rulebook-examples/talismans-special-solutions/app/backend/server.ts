@@ -303,6 +303,11 @@ app.get("/api/story", wrap(async (req, res) => {
     filledByHumanAgent: r.filledByHumanAgent || null,
     filledByAIAgent: r.filledByAIAgent || null,
     filledByAutomatedPipeline: r.filledByAutomatedPipeline || null,
+    // The escalation edge (raw) + the derived witness the org chart reads. Both
+    // are columns the substrate already populated; we only lift them through.
+    delegatesTo: r.delegatesTo || null,
+    fillsApprovalGate: Number(r.fillsApprovalGate ?? 0),
+    escalationViolation: !!r.escalationViolation,
   }));
 
   const stepFacts = (I.WorkflowSteps || [])
@@ -559,31 +564,36 @@ function assertRawOnly(cls: string, fields: Record<string, unknown>): void {
 }
 
 function replayEdits(db: RawDb, edits: ScenarioEdit[]): void {
-  for (const e of edits) {
+  // Apply STRUCTURAL edits (delete/add) before value edits (set), independent of
+  // the order they appear in. This keeps reset robust: when one scenario deletes
+  // a row (cq-1's drop-final-edge removes prec-4-5) and reset both re-adds the
+  // row AND sets fields on it, the add must land before the set — otherwise the
+  // set hits a missing row and throws, aborting reset half-applied.
+  const structural = edits.filter((e) => e.delete || e.add);
+  const sets = edits.filter((e) => !e.delete && !e.add);
+
+  for (const e of structural) {
     const rows = db[e.class];
     if (!Array.isArray(rows)) throw new Error(`scenario references unknown class '${e.class}'`);
-
-    // delete: remove the row by id. Idempotent (no-op if already absent) so a
-    // scenario can be re-applied and reset stays a safe restore.
     if (e.delete) {
+      // Remove the row by id. Idempotent (no-op if already absent) so a scenario
+      // can be re-applied and reset stays a safe restore.
       if (!e.id) throw new Error(`scenario delete on '${e.class}' needs an id`);
       const i = rows.findIndex((r) => Object.entries(r).some(([k, v]) => k.endsWith("Id") && v === e.id));
       if (i >= 0) rows.splice(i, 1);
-      continue;
-    }
-
-    // add: insert (or replace, by id) a whole raw row. Used by reset to restore
-    // a structurally-removed row. Idempotent: same id replaces in place.
-    if (e.add) {
+    } else if (e.add) {
+      // Insert (or replace, by id) a whole raw row — reset uses this to restore a
+      // structurally-removed row. Idempotent: same id replaces in place.
       assertRawOnly(e.class, e.add);
       const idKey = Object.keys(e.add).find((k) => k.endsWith("Id"));
       const id = idKey ? e.add[idKey] : undefined;
       const i = id !== undefined ? rows.findIndex((r) => r[idKey!] === id) : -1;
       if (i >= 0) rows[i] = { ...e.add };
       else rows.push({ ...e.add });
-      continue;
     }
+  }
 
+  for (const e of sets) {
     // set: mutate raw fields on an existing row (the common case).
     const row = locateRow(db, e.class, e);
     assertRawOnly(e.class, e.set || {});
