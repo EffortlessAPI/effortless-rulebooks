@@ -279,6 +279,10 @@ app.get("/api/story", wrap(async (req, res) => {
       expectedAnswer: c.expectedAnswer,
       explanation: c.explanation || null,
       sortOrder: c.sortOrder ?? c.number,
+      // The scenario this card's "Simulate" button applies — the minimal raw-fact
+      // edit that moves THIS question's answer (isolated where one exists; for cq-2
+      // it also ripples to cq-3). FK to Scenarios; null = no simulate button.
+      simulateScenario: c.simulateScenario || null,
     }))
     .sort((x, y) => (x.sortOrder ?? 99) - (y.sortOrder ?? 99));
 

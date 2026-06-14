@@ -134,6 +134,8 @@ export interface CompetencyQuestion {
   expectedAnswer: string;
   explanation: string | null;
   sortOrder: number;
+  // FK to the Scenario the card's "Simulate" button applies (null = no button).
+  simulateScenario?: string | null;
 }
 
 export interface DelegationEntry {

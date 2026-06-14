@@ -1187,6 +1187,20 @@ body:has(.dag-page) { background: var(--bg); }  /* uniform dark behind the panel
   border-radius: 7px; padding: 4px 9px; cursor: pointer; }
 .cq-disclose:hover { color: var(--text); border-color: var(--accent); }
 
+/* Per-card "simulate" — applies the CQ's SimulateScenario (the minimal raw-fact
+   edit that moves THIS question), then the card flashes as the answer re-derives. */
+.cq-simulate { margin-left: auto; background: var(--card2); border: 1px solid var(--accent); color: var(--accent);
+  font-size: 11px; font-weight: 700; letter-spacing: .02em; border-radius: 7px; padding: 4px 10px; cursor: pointer; }
+.cq-simulate:hover:not(:disabled) { filter: brightness(1.12); box-shadow: 0 4px 16px -8px var(--accent); }
+.cq-simulate:disabled { opacity: .5; cursor: default; }
+/* The flash: a brief accent ring + lift when this card's answer just changed. */
+.cq-card.flash { animation: cq-flash 2.6s ease-out 1; }
+@keyframes cq-flash {
+  0%   { box-shadow: inset 3px 0 0 var(--accent), 0 0 0 2px var(--accent), 0 10px 30px -10px var(--accent); }
+  18%  { box-shadow: inset 3px 0 0 var(--accent), 0 0 0 2px var(--accent), 0 10px 30px -10px var(--accent); }
+  100% { box-shadow: inset 3px 0 0 var(--line); }
+}
+
 .cq-detail { margin-top: 3px; border-top: 1px dashed var(--line); padding-top: 9px; display: flex; flex-direction: column; gap: 8px; }
 .cq-expected { font-size: 12.5px; color: var(--muted); }
 .cq-expected-label { font-size: 10px; text-transform: uppercase; letter-spacing: .07em; color: var(--accent);

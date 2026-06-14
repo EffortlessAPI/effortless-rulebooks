@@ -26,10 +26,14 @@ interface CQViewProps {
   sit: Situation;
   hasScenarios?: boolean;
   busy?: boolean;
+  // CQ ids that just changed answer from a Simulate click → flash their cards.
+  flashed?: Set<string>;
+  // Apply a CQ card's SimulateScenario (the minimal raw-fact edit that moves it).
+  onSimulate?: (scenarioId: string) => void;
   onOpenScenarios?: () => void;
 }
 
-export function CQView({ sit, hasScenarios = false, busy = false, onOpenScenarios }: CQViewProps) {
+export function CQView({ sit, hasScenarios = false, busy = false, flashed, onSimulate, onOpenScenarios }: CQViewProps) {
   const [onlyFailing, setOnlyFailing] = useState(false);
   const [open, setOpen] = useState<Record<string, boolean>>({});
 
@@ -91,6 +95,9 @@ export function CQView({ sit, hasScenarios = false, busy = false, onOpenScenario
             ok={res.ok}
             rows={res.rows}
             open={!!open[cq.id]}
+            flash={!!flashed?.has(cq.id)}
+            busy={busy}
+            onSimulate={onSimulate}
             onToggle={() => setOpen((o) => ({ ...o, [cq.id]: !o[cq.id] }))}
           />
         ))}
@@ -115,12 +122,16 @@ interface CqCardProps {
   ok: boolean;
   rows: CqRow[];
   open: boolean;
+  flash?: boolean;
+  busy?: boolean;
+  onSimulate?: (scenarioId: string) => void;
   onToggle: () => void;
 }
 
-function CqCard({ cq, answer, ok, rows, open, onToggle }: CqCardProps) {
+function CqCard({ cq, answer, ok, rows, open, flash = false, busy = false, onSimulate, onToggle }: CqCardProps) {
+  const canSimulate = !!cq.simulateScenario && !!onSimulate;
   return (
-    <div className={"cq-card " + (ok ? "ok" : "fail")}>
+    <div className={"cq-card " + (ok ? "ok" : "fail") + (flash ? " flash" : "")}>
       <div className="cq-num">CQ{cq.number}</div>
 
       <div className="cq-main">
@@ -131,6 +142,16 @@ function CqCard({ cq, answer, ok, rows, open, onToggle }: CqCardProps) {
           <DagCell table={cq.targetTable} field={cq.targetField}>
             <span className="cq-answer">{answer}</span>
           </DagCell>
+          {canSimulate && (
+            <button
+              className="cq-simulate"
+              disabled={busy}
+              onClick={() => onSimulate!(cq.simulateScenario!)}
+              title="Apply the minimal raw-fact edit that moves this question's answer, then watch the substrate re-answer live"
+            >
+              ▶ simulate
+            </button>
+          )}
           <button
             className="cq-disclose"
             onClick={onToggle}

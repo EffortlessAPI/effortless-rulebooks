@@ -8,6 +8,7 @@ import { ClosureView } from "./views/ClosureView";
 import { CQView } from "./views/CQView";
 import { ReassignPopover } from "./Editable";
 import { StalenessBar } from "./console/StalenessBar";
+import { resolveCq } from "./console/cqs";
 import { DagCell } from "./explainer-dag";
 import type { Story, Situation, Handlers, Scenario } from "./types";
 
@@ -57,6 +58,10 @@ export default function App({ headerRight = null }: AppProps) {
   const [busy, setBusy] = useState(false);
   const [reassign, setReassign] = useState<ReassignState | null>(null);
   const [scenarioOpen, setScenarioOpen] = useState(false);
+  // CQ ids that just changed answer as the result of a "Simulate" click — drives
+  // the chip-flash so the user SEES which questions a scenario moved (one for an
+  // isolated scenario, two for cq-2's ai-release-manager which also ripples cq-3).
+  const [flashed, setFlashed] = useState<Set<string>>(new Set());
   const reloadingRef = useRef(false);
 
   const load = useCallback(async () => {
@@ -128,6 +133,36 @@ export default function App({ headerRight = null }: AppProps) {
     mutate(() => api.patchRow("Roles", roleId, arms));
   };
 
+  // "Simulate" on a CQ card: snapshot every CQ's live answer, apply the card's
+  // SimulateScenario, reload, then diff — flashing every CQ whose answer moved.
+  // Isolated scenarios flash exactly one chip; cq-2's ai-release-manager flashes
+  // two (the gate approver is itself a step executor, so cq-2 and cq-3 are
+  // structurally coupled — the model won't let you move one without the other).
+  const simulate = async (scenarioId: string) => {
+    if (!scenarioId || reloadingRef.current) return;
+    reloadingRef.current = true;
+    setBusy(true);
+    setFlashed(new Set());
+    try {
+      const before = new Map(sit.competencyQuestions.map((c) => [c.id, resolveCq(sit, c).answer]));
+      await api.applyScenario(scenarioId);
+      const s = await api.story();
+      setStory(s);
+      setError(null);
+      const after = buildSituation(s);
+      const moved = after.competencyQuestions
+        .filter((c) => before.get(c.id) !== resolveCq(after, c).answer)
+        .map((c) => c.id);
+      setFlashed(new Set(moved));
+      window.setTimeout(() => setFlashed(new Set()), 2800);
+    } catch (e) {
+      setError((e as Error).message);
+    } finally {
+      setBusy(false);
+      reloadingRef.current = false;
+    }
+  };
+
   return (
     <div className={"console" + (busy ? " reasoning" : "")}>
       <TopBar sit={sit} busy={busy} headerRight={headerRight} />
@@ -178,6 +213,8 @@ export default function App({ headerRight = null }: AppProps) {
           sit={sit}
           hasScenarios={scenarios.length > 0}
           busy={busy}
+          flashed={flashed}
+          onSimulate={simulate}
           onOpenScenarios={() => setScenarioOpen(true)}
         />
       </div>
