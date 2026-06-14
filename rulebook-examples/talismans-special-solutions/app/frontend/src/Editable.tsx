@@ -1,5 +1,5 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { KIND } from "./model";
+import { KIND, avatarFor } from "./model";
 import type { Agent, AgentKind, ExecutingAgentType, RoleRow, Handlers, Situation } from "./types";
 
 // ===========================================================================
@@ -41,16 +41,29 @@ export function AgentAvatar({ agent, type, roleId, onReassign, size = 34, showNa
     ? `${agent ? agent.name : "unassigned"} — click to reassign` +
       (requiresHuman ? " · this step needs a 🧑 human sign-off" : "")
     : agent?.name;
+  // The avatar shows the PERSON, not just the kind: a distinct face + ring hue
+  // per agent (Maria ≠ James). A small corner badge keeps the kind (human / AI /
+  // pipeline) explicit, since the kind is the regulated thing. Unassigned roles
+  // fall back to the generic kind icon.
+  const look = avatarFor(agent, type);
+  const style: React.CSSProperties = { width: size, height: size, fontSize: Math.round(size * 0.55) };
+  if (look) {
+    style.background = `hsl(${look.hue} 65% 90%)`;
+    // A per-person ring hue — but never override the red conflict ring (a
+    // requires-human step filled by a non-human), which is a louder signal.
+    if (!conflict) style.borderColor = `hsl(${look.hue} 55% 55%)`;
+  }
   return (
     <button
       ref={ref}
-      className={"avatar " + k.cls + (editable ? " editable" : "") + (conflict ? " conflict" : "")}
-      style={{ width: size, height: size, fontSize: Math.round(size * 0.55) }}
+      className={"avatar " + k.cls + (editable ? " editable" : "") + (conflict ? " conflict" : "") + (look ? " hasface" : "")}
+      style={style}
       onClick={onClick}
       title={title}
       disabled={!editable}
     >
-      <span className="avatar-kind">{k.icon}</span>
+      <span className="avatar-kind">{look ? look.face : k.icon}</span>
+      {look && <span className={"avatar-kindbadge " + k.cls} title={k.label}>{k.icon}</span>}
       {requiresHuman && <span className="avatar-req" title="this step requires a human sign-off">🔒</span>}
       {showName && <span className="avatar-name">{agent ? agent.name : "unassigned"}</span>}
     </button>

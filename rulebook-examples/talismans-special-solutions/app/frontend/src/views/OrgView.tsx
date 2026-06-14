@@ -4,30 +4,26 @@ import { AgentAvatar } from "../Editable";
 import type { Situation, Handlers, Agent, Step, RoleRow } from "../types";
 
 // ===========================================================================
-// ORG VIEW — one coherent org chart for a release.
+// ORG VIEW — one coherent org chart, ordered by the WORKFLOW.
 //
-// This replaces the old two-disconnected-panels layout (a randomly-ordered
-// table next to a chain that vanished when you cut the last edge). It is ONE
-// canvas, and every role on it is a card you can fully assign:
+// The spine is the release itself: roles are listed in the order of the step
+// they own (1, 2, 3, 4, 5). Where a role escalates, its escalation ladder
+// branches off to the right (Release Manager → VP → CTO). Roles that own no
+// steps (VP, CTO) are never their own row — they only appear as the ladder that
+// hangs off the role that escalates to them. So the layout reads exactly like
+// the workflow: 1, 2, 3→VP→CTO, 4, 5.
 //
-//   • escalation chain   — roles are stacked in tiers, apex (escalates to no
-//                          one) on top, leaves below, exactly like an org chart.
-//                          Connectors are clickable to set / change / clear who
-//                          a role escalates to. EVERY card always carries an
-//                          escalation control, so you can never get stuck with
-//                          "the panel disappeared and there's no way to add one."
-//   • who fills the role — the avatar is editable (reassign human / AI / pipeline).
-//   • what the role owns — the steps it owns are chips on the card; selecting a
-//                          role lights its steps in the rail below and its
-//                          escalation path above, so an edit's CONSEQUENCE is
-//                          visible in one eyeful.
-//   • step ownership     — click a step in the rail to move it to a different
-//                          role (writes WorkflowSteps.assignedRole); the
-//                          substrate then recomputes who executes it.
+// Every role on the canvas is fully assignable:
+//   • avatar           — click to set who fills the role (human / AI / pipeline)
+//   • escalation edge  — the connector between two cards (and the trailing pill on
+//                        the top of a ladder) edits who a role escalates to. There
+//                        is exactly one editor per role's outgoing edge, and it is
+//                        ALWAYS present — you can never get stuck unable to add one.
+//   • step ownership   — click a step in the rail to move it to another role.
 //
-// Ordering is DETERMINISTIC (escalation depth, then name) so nothing jumps when
-// the story reloads after an edit. The app computes no business facts — it reads
-// the reasoned delegation reach (sit.delegation) and arranges it.
+// Order is DETERMINISTIC (owned-step position, then name) so nothing jumps when
+// the story reloads. The app computes no business facts — it reads the reasoned
+// delegation reach (sit.delegation) and arranges it.
 // ===========================================================================
 
 interface OrgViewProps {
@@ -35,14 +31,11 @@ interface OrgViewProps {
   handlers?: Handlers;
 }
 
-interface StepMenu {
-  stepId: string;
-  anchorRect: DOMRect;
-}
+interface ChainNode { id: string; ref?: boolean } // ref = a step-owner shown compactly (has its own row)
+interface StepMenu { stepId: string; anchorRect: DOMRect }
 
 export function OrgView({ sit, handlers }: OrgViewProps) {
-  // Pinned selection (click) wins over transient hover, so the highlight stays
-  // put while you read it — the old version only had a flickery hover.
+  // Pinned selection (click) wins over transient hover so the highlight stays put.
   const [sel, setSel] = useState<string | null>(null);
   const [hover, setHover] = useState<string | null>(null);
   const [stepMenu, setStepMenu] = useState<StepMenu | null>(null);
@@ -52,10 +45,12 @@ export function OrgView({ sit, handlers }: OrgViewProps) {
   const stepsByRole: Record<string, Step[]> = {};
   for (const s of sit.steps) (stepsByRole[s.roleId] ||= []).push(s);
   for (const k of Object.keys(stepsByRole)) stepsByRole[k].sort((a, b) => a.position - b.position);
+  const ownsSteps = (rid: string): boolean => (stepsByRole[rid]?.length || 0) > 0;
+  const minStep = (rid: string): number => stepsByRole[rid]?.[0]?.position ?? Infinity;
 
-  // Immediate escalation parent of a role: of everyone it can reach (the
-  // reasoner's transitive delegatesTo), the one that itself reaches the most
-  // others is the closest hop up the chain. (Same heuristic the closure uses.)
+  // Immediate escalation parent: of everyone a role can reach (the reasoner's
+  // transitive delegatesTo), the one that itself reaches the most others is the
+  // closest hop up. (Same heuristic the closure uses.)
   const reach = (id: string): number => sit.delegation[id]?.to?.length || 0;
   const parentOf = (rid: string): string | null => {
     const targets = sit.delegation[rid]?.to || [];
@@ -63,40 +58,37 @@ export function OrgView({ sit, handlers }: OrgViewProps) {
     return [...targets].sort((a, b) => reach(b.id) - reach(a.id))[0].id;
   };
 
-  // Who escalates UP to a given role (its direct reports in org-chart terms).
-  const hasReport: Record<string, boolean> = {};
-  for (const r of sit.roles) { const p = parentOf(r.id); if (p) hasReport[p] = true; }
-
-  // Depth from the apex: apex (no parent) = 0, each hop down +1. Drives the tiers.
-  const depthMemo: Record<string, number> = {};
-  const depthOf = (rid: string, seen = new Set<string>()): number => {
-    if (rid in depthMemo) return depthMemo[rid];
-    if (seen.has(rid)) return 0; // cycle guard
-    seen.add(rid);
-    const p = parentOf(rid);
-    const d = p ? depthOf(p, seen) + 1 : 0;
-    return (depthMemo[rid] = d);
+  // The escalation ladder starting at a role: itself, then up through ancestors.
+  // Stop (and mark as a compact ref) if we reach another step-owner — it has its
+  // own row, so we don't expand its ladder again here.
+  const ladderFrom = (startId: string): ChainNode[] => {
+    const out: ChainNode[] = [{ id: startId }];
+    const seen = new Set([startId]);
+    let cur = parentOf(startId);
+    while (cur && !seen.has(cur)) {
+      seen.add(cur);
+      if (ownsSteps(cur)) { out.push({ id: cur, ref: true }); break; }
+      out.push({ id: cur });
+      cur = parentOf(cur);
+    }
+    return out;
   };
 
-  // A role is part of the escalation graph if it escalates to someone or someone
-  // escalates to it. Everything else is "unlinked" — own steps, no chain yet.
-  const inChain = (r: RoleRow): boolean => !!parentOf(r.id) || !!hasReport[r.id];
-  const chained = sit.roles.filter(inChain);
-  const unlinked = sit.roles.filter((r) => !inChain(r));
+  // PRIMARY rows: every role that owns a step, ordered by that step. Each row is
+  // the role + its escalation ladder.
+  const primary = sit.roles
+    .filter((r) => ownsSteps(r.id))
+    .sort((a, b) => minStep(a.id) - minStep(b.id) || a.name.localeCompare(b.name));
+  const rows = primary.map((r) => ladderFrom(r.id));
 
-  // Bucket chained roles into tiers by depth; sort each tier by name. Apex tier
-  // (depth 0) renders first/top.
-  const maxDepth = chained.reduce((m, r) => Math.max(m, depthOf(r.id)), 0);
-  const tiers: RoleRow[][] = [];
-  for (let d = 0; d <= maxDepth; d++) {
-    const tier = chained
-      .filter((r) => depthOf(r.id) === d)
-      .sort((a, b) => a.name.localeCompare(b.name));
-    if (tier.length) tiers.push(tier);
-  }
+  // Roles that appear in some ladder (so we don't also list them as orphans).
+  const inLadder = new Set<string>();
+  rows.forEach((row) => row.forEach((n) => inLadder.add(n.id)));
+  // ORPHANS: own no steps and not part of any ladder — render at the bottom so
+  // they're still assignable / wireable, but they're not in the workflow yet.
+  const orphans = sit.roles.filter((r) => !inLadder.has(r.id));
 
-  // The active role's escalation path (itself + every ancestor up to the apex),
-  // so selecting a role lights the whole chain it would escalate through.
+  // The active role's escalation path (itself + ancestors), to light the ladder.
   const pathUp = new Set<string>();
   if (active) {
     let cur: string | null = active;
@@ -104,96 +96,121 @@ export function OrgView({ sit, handlers }: OrgViewProps) {
     while (cur && !seen.has(cur)) { pathUp.add(cur); seen.add(cur); cur = parentOf(cur); }
   }
 
-  const cardProps = (r: RoleRow) => ({
-    onMouseEnter: () => setHover(r.id),
-    onMouseLeave: () => setHover(null),
-    onClick: () => setSel((s) => (s === r.id ? null : r.id)),
-  });
-
-  const renderCard = (r: RoleRow) => {
-    const owns = stepsByRole[r.id] || [];
-    const parentId = parentOf(r.id);
-    const parent = parentId ? sit.roleById[parentId] : null;
-    const isActive = active === r.id;
-    const onPath = pathUp.has(r.id) && !isActive;
+  // ---- pieces ------------------------------------------------------------
+  const roleCard = (rid: string) => {
+    const r = sit.roleById[rid];
+    if (!r) return null;
+    const owns = stepsByRole[rid] || [];
+    const isActive = active === rid;
+    const onPath = pathUp.has(rid) && !isActive;
     const ownsGate = (r.fillsApprovalGate || 0) > 0;
     return (
       <div
-        key={r.id}
         className={"ox-card" + (isActive ? " sel" : "") + (onPath ? " onpath" : "") + (ownsGate ? " gate" : "")}
-        {...cardProps(r)}
+        onMouseEnter={() => setHover(rid)}
+        onMouseLeave={() => setHover(null)}
+        onClick={() => setSel((s) => (s === rid ? null : rid))}
       >
         <div className="ox-card-top">
-          <AgentAvatar
-            agent={fillerAgent(sit, r.id)}
-            roleId={r.id}
-            onReassign={handlers!.openReassign}
-            size={34}
-          />
+          <AgentAvatar agent={fillerAgent(sit, rid)} roleId={rid} onReassign={handlers!.openReassign} size={34} />
           <div className="ox-card-id">
             <div className="ox-role">
               {r.name}
               {ownsGate && <span className="ox-gate-badge" title="owns an approval gate">⚖ gate</span>}
             </div>
-            <div className="ox-filler muted">{fillerAgent(sit, r.id)?.name || "unassigned"}</div>
+            <div className="ox-filler muted">{fillerAgent(sit, rid)?.name || "unassigned"}</div>
           </div>
         </div>
-
         <div className="ox-card-steps">
           {owns.length
             ? owns.map((s) => (
-                <span key={s.id} className={"ox-stepchip k-" + agentClass(s)} title={s.title}>
-                  #{s.position} {s.title}
-                </span>
+                <span key={s.id} className={"ox-stepchip k-" + agentKind(s)} title={s.title}>#{s.position} {s.title}</span>
               ))
             : <span className="ox-nosteps muted">owns no steps</span>}
         </div>
-
-        {/* escalation control — ALWAYS present, so a role is never un-editable */}
-        <button
-          type="button"
-          className={"ox-esc" + (r.escalationViolation ? " broken" : parent ? " set" : " none")}
-          onClick={(e) => { e.stopPropagation(); handlers!.openEscalation(r.id, e.currentTarget.getBoundingClientRect()); }}
-          title={parent ? `Change who ${r.name} escalates to` : `Set who ${r.name} escalates to`}
-        >
-          {r.escalationViolation
-            ? <>⚠ owns a gate but escalates to no one — fix</>
-            : parent
-              ? <>↑ escalates to <b>{parent.name}</b> <span className="ox-pen">✎</span></>
-              : <>top of chain — <span className="ox-set">+ set escalation</span></>}
-        </button>
       </div>
     );
   };
 
+  // A compact reference to a step-owner that lives in its own row.
+  const refCard = (rid: string) => {
+    const r = sit.roleById[rid];
+    const pos = minStep(rid);
+    return (
+      <button
+        className={"ox-ref" + (pathUp.has(rid) ? " onpath" : "")}
+        onClick={() => setSel(rid)}
+        title={`${r?.name} owns step #${pos} — its row is above`}
+      >
+        {r?.name} <span className="muted">· step #{pos} ↑</span>
+      </button>
+    );
+  };
+
+  // The editable escalation edge of `rid` (who it escalates to). Rendered as the
+  // connector when there's a next card, or as a trailing pill at the top of a
+  // ladder / on a role with no escalation set.
+  const escEditor = (rid: string, parentId: string | null, asConnector: boolean) => {
+    const r = sit.roleById[rid];
+    const parent = parentId ? sit.roleById[parentId] : null;
+    const cls = asConnector ? "ox-conn" : "ox-trail";
+    const state = r?.escalationViolation ? " broken" : parent ? " set" : " none";
+    return (
+      <button
+        type="button"
+        className={cls + state}
+        onClick={(e) => { e.stopPropagation(); handlers!.openEscalation(rid, e.currentTarget.getBoundingClientRect()); }}
+        title={parent ? `Change who ${r?.name} escalates to` : `Set who ${r?.name} escalates to`}
+      >
+        {r?.escalationViolation
+          ? <>⚠ no escalation — fix</>
+          : parent
+            ? <><span className="ox-arrow">↑ escalates to</span> <span className="ox-pen">✎</span></>
+            : <><span className="ox-set">+ set escalation</span></>}
+      </button>
+    );
+  };
+
+  // Render one ladder row: card, edge, card, edge, … then a trailing editor on
+  // the apex (so the chain can always be extended upward).
+  const renderRow = (chain: ChainNode[], key: string | number) => (
+    <div className="ox-row" key={key}>
+      {chain.map((node, i) => {
+        const next = chain[i + 1];
+        return (
+          <React.Fragment key={node.id}>
+            {node.ref ? refCard(node.id) : roleCard(node.id)}
+            {!node.ref && (next
+              ? escEditor(node.id, next.id, true)
+              : escEditor(node.id, null, false))}
+          </React.Fragment>
+        );
+      })}
+    </div>
+  );
+
   return (
     <div className="orgx">
       <div className="ox-help muted">
-        Every role is a card. <b>Click the avatar</b> to set who fills it · <b>click the escalation bar</b> to
-        set who it escalates to · <b>click a step below</b> to move it to another role. Select a role to light its
-        steps and the chain it escalates through.
+        Roles are listed in <b>workflow order</b> — by the step each one owns. Where a role escalates, its ladder
+        branches to the right. <b>Click the avatar</b> to set who fills a role · <b>click an escalation bar</b> to
+        set who it escalates to · <b>click a step below</b> to move it to another role.
       </div>
 
-      <div className="ox-chart">
-        {tiers.length === 0 && <div className="ox-empty muted">No escalation chain yet — wire one up from the roles below.</div>}
-        {tiers.map((tier, ti) => (
-          <React.Fragment key={ti}>
-            {ti > 0 && <div className="ox-tier-gap" aria-hidden="true">↑</div>}
-            <div className="ox-tier">{tier.map(renderCard)}</div>
-          </React.Fragment>
-        ))}
+      <div className="ox-rows">
+        {rows.map((chain, i) => renderRow(chain, i))}
       </div>
 
-      {unlinked.length > 0 && (
-        <div className="ox-unlinked">
-          <div className="ox-unlinked-label">
-            Not in the escalation chain — own steps, but escalate to no one yet
+      {orphans.length > 0 && (
+        <div className="ox-orphans">
+          <div className="ox-orphans-label">Not in the workflow yet — own no steps, escalate to no one</div>
+          <div className="ox-rows">
+            {orphans.map((r) => renderRow(ladderFrom(r.id), "orphan-" + r.id))}
           </div>
-          <div className="ox-tier">{unlinked.map(renderCard)}</div>
         </div>
       )}
 
-      {/* the step rail — every step, lit by the active role; click to reassign */}
+      {/* the step rail — every step in workflow order; lit by the active role */}
       <div className="ox-rail">
         <div className="ox-rail-label muted">Release steps — click one to move it to another role</div>
         <div className="ox-rail-row">
@@ -203,7 +220,7 @@ export function OrgView({ sit, handlers }: OrgViewProps) {
             return (
               <button
                 key={s.id}
-                className={"ox-railstep k-" + agentClass(s) + (lit ? " lit" : "") + (dim ? " dim" : "")}
+                className={"ox-railstep k-" + agentKind(s) + (lit ? " lit" : "") + (dim ? " dim" : "")}
                 onClick={(e) => setStepMenu({ stepId: s.id, anchorRect: e.currentTarget.getBoundingClientRect() })}
                 onMouseEnter={() => setHover(s.roleId)}
                 onMouseLeave={() => setHover(null)}
@@ -212,9 +229,7 @@ export function OrgView({ sit, handlers }: OrgViewProps) {
                 <span className="ox-rail-pos">{s.position}</span>
                 <span className="ox-rail-body">
                   <span className="ox-rail-title">{s.title}</span>
-                  <span className="ox-rail-meta muted">
-                    {KIND[agentKind(s)].icon} {s.role}{s.agent ? ` · ${s.agent.name}` : ""}
-                  </span>
+                  <span className="ox-rail-meta muted">{KIND[agentKind(s)].icon} {s.role}{s.agent ? ` · ${s.agent.name}` : ""}</span>
                 </span>
               </button>
             );
@@ -227,10 +242,7 @@ export function OrgView({ sit, handlers }: OrgViewProps) {
           step={sit.steps.find((s) => s.id === stepMenu.stepId)!}
           roles={sit.roles}
           anchorRect={stepMenu.anchorRect}
-          onPick={(roleId) => {
-            setStepMenu(null);
-            handlers!.patchStep(stepMenu.stepId, { assignedRole: roleId });
-          }}
+          onPick={(roleId) => { setStepMenu(null); handlers!.patchStep(stepMenu.stepId, { assignedRole: roleId }); }}
           onClose={() => setStepMenu(null)}
         />
       )}
@@ -296,7 +308,4 @@ function agentKind(s: Step) {
   return s.executingAgentType === "AIAgent" ? "ai"
     : s.executingAgentType === "AutomatedPipeline" ? "pipeline"
     : "human";
-}
-function agentClass(s: Step): string {
-  return agentKind(s);
 }

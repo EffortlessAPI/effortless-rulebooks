@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { KIND, kindOfType } from "../model";
+import { KIND, kindOfType, escalationAncestors } from "../model";
 import { AgentAvatar, FactToggle } from "../Editable";
 import { DagCell } from "../explainer-dag";
 import type { AgentKind, Situation, Step, StepFact, Handlers } from "../types";
@@ -36,6 +36,19 @@ export function FlowView({ sit, handlers }: FlowViewProps) {
   for (const s of steps) posCounts[s.position] = (posCounts[s.position] || 0) + 1;
   const tiedCount = steps.filter((s) => posCounts[s.position] > 1).length;
 
+  // DCAT dataset INPUTS, per consuming step. A dataset is NOT a step — it is an
+  // input consumed BY a step (CQ8). So it renders as a categorically-DIFFERENT
+  // box (a stack of papers, not a step card) that FEEDS its consuming step from
+  // the left of the track — never as a peer in the ordered sequence (that would
+  // conflate dcat:Dataset with WorkflowStep and pollute the CQ1 order). Driven by
+  // the SAME reasoned consumedBySteps the Graph node and CQ8 read; detaching it
+  // (the simulate) empties this map → the feeder box vanishes, so the visible cut
+  // shows up here in the Flow lens too.
+  const inputByStep: Record<string, { id: string; title: string }> = {};
+  for (const d of sit.datasets) {
+    for (const c of d.consumedBySteps) inputByStep[c.id] = { id: d.id, title: d.title };
+  }
+
   return (
     <div className="flow">
       {!isTotal && n > 0 && (
@@ -51,14 +64,24 @@ export function FlowView({ sit, handlers }: FlowViewProps) {
         {steps.map((s, i) => {
           const next = steps[i + 1];
           const ambiguousGap = !!next && s.position === next.position; // same rank → not ordered
+          const input = inputByStep[s.id];
           return (
             <React.Fragment key={s.id}>
+              {/* A dataset that this step consumes feeds IN from the left — a
+                  categorically different box (stack of papers), not a step card. */}
+              {input && (
+                <>
+                  <DatasetFeeder id={input.id} title={input.title} />
+                  <div className="flow-arrow flow-arrow--feeds" title="feeds into (DCAT dataset consumed by this step)">⇢</div>
+                </>
+              )}
               <StepCard
                 step={s}
                 fact={sit.stepFacts[s.id] || {}}
                 handlers={handlers}
                 tied={posCounts[s.position] > 1}
                 escalationViolation={!!sit.roleById[s.roleId]?.escalationViolation}
+                escalatesTo={escalationAncestors(sit, s.roleId).map((a) => a.name)}
               />
               {i < steps.length - 1 && (
                 <div className={"flow-arrow" + (ambiguousGap ? " flow-arrow--ambiguous" : "")}
@@ -78,6 +101,27 @@ export function FlowView({ sit, handlers }: FlowViewProps) {
   );
 }
 
+// A DCAT dataset rendered as a categorically-different "box" — a stack of papers,
+// NOT a step card. It feeds the step to its right. The layered look (the .ds-stack
+// sheets behind the face) is what signals "this is data, a record set" at a glance,
+// so it can never be misread as a step in the ordered sequence. Pinned to
+// Datasets.ConsumedBySteps so a click opens its derivation (and CQ8 lives there).
+function DatasetFeeder({ id, title }: { id: string; title: string }) {
+  return (
+    <div className="flow-dataset" title={`DCAT dataset · input to the next step (${id})`}>
+      <span className="ds-stack ds-stack-3" />
+      <span className="ds-stack ds-stack-2" />
+      <div className="ds-face">
+        <div className="ds-kicker">📚 input dataset</div>
+        <DagCell table="Datasets" field="ConsumedBySteps" block>
+          <div className="ds-title">{title}</div>
+        </DagCell>
+        <div className="ds-sub">DCAT · consumed by →</div>
+      </div>
+    </div>
+  );
+}
+
 interface StepCardProps {
   step: Step;
   fact: StepFact | Record<string, never>;
@@ -85,9 +129,12 @@ interface StepCardProps {
   tied?: boolean;
   // The gate role's derived EscalationViolation — drives the ⚠ badge on the gate.
   escalationViolation?: boolean;
+  // The role's escalation ladder above it (e.g. ["VP of Engineering","CTO"]) —
+  // read off the reasoned org tree so the card shows WHO this person answers to.
+  escalatesTo?: string[];
 }
 
-function StepCard({ step, fact, handlers, tied, escalationViolation = false }: StepCardProps) {
+function StepCard({ step, fact, handlers, tied, escalationViolation = false, escalatesTo = [] }: StepCardProps) {
   const kind: AgentKind = kindOfType(step.executingAgentType);
   const isAI = kind === "ai";
   // This step REQUIRES a human sign-off (raw fact) — surface the expectation on
@@ -180,6 +227,21 @@ function StepCard({ step, fact, handlers, tied, escalationViolation = false }: S
         <div className="sc-who">
           <div className="sc-agent">{step.agent ? step.agent.name : "unassigned"}</div>
           {/* the kind label is the reasoner-resolved ExecutingAgentType (role→agent→type) */}
+          {/* who this person answers to — their escalation ladder (Release
+              Manager → VP of Engineering → CTO), so the chain of authority around
+              the assignee is legible right on the card. Reasoned, read-only here;
+              it's editable in the Org lens. */}
+          {escalatesTo.length > 0 && (
+            <div className="sc-escalates" title={`escalation chain: ${step.role} → ${escalatesTo.join(" → ")}`}>
+              <span className="sc-esc-arrow">↑</span>
+              {escalatesTo.map((nm, i) => (
+                <React.Fragment key={nm}>
+                  {i > 0 && <span className="sc-esc-sep">→</span>}
+                  <span className="sc-esc-name">{nm}</span>
+                </React.Fragment>
+              ))}
+            </div>
+          )}
           <div className="sc-role">
             <DagCell table="WorkflowSteps" field="ExecutingAgentType" block>
               {step.role} · {KIND[kind].label}

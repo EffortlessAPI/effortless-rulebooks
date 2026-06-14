@@ -18,8 +18,9 @@ import type { Story, Situation, Handlers, Scenario } from "./types";
 // ===========================================================================
 // Talisman's Special Solutions — Release Console.
 //
-// A dashboard for ONE release. The reasoned model is shown three ways
-// (Flow / Graph / Closure) on the LEFT — switch the lens via the URL
+// A dashboard for ONE release. The reasoned model is shown several ways
+// (Flow / Closure / Lineage / Org / Dept) on the LEFT — switch the lens via the URL
+// (the reasoned-network graph folds into the Flow lens as a collapsible panel).
 // (/console/:view), the object is the same. The competency-question scoreboard
 // rides on the RIGHT, always visible, so the leadership questions re-answer
 // themselves live as you edit facts on the left. Everything with a dotted
@@ -31,11 +32,10 @@ import type { Story, Situation, Handlers, Scenario } from "./types";
 // now live in console/ and hooks/.)
 // ===========================================================================
 
-export type ViewId = "flow" | "graph" | "closure" | "lineage" | "org" | "dept";
+export type ViewId = "flow" | "closure" | "lineage" | "org" | "dept";
 
 const VIEWS: { id: ViewId; label: string; hint: string }[] = [
   { id: "flow", label: "Flow", hint: "the release, step by step" },
-  { id: "graph", label: "Graph", hint: "the reasoned network" },
   { id: "closure", label: "Closure", hint: "assert order · watch it infer" },
   { id: "lineage", label: "Lineage", hint: "artifacts · derived-from chain" },
   { id: "org", label: "Org", hint: "who fills · who escalates to whom" },
@@ -214,11 +214,14 @@ export default function App({ headerRight = null }: AppProps) {
               it summarizes, in the Flow lens only. */}
           {view === "flow" && (
             <>
+              {/* The reasoned network is no longer a separate tab — it's an
+                  optional panel that unfolds in place ABOVE the step cards, so
+                  the graph and the cards are the same view of the same release. */}
+              <CollapsibleGraph sit={sit} handlers={handlers} />
               <AgentMix sit={sit} />
               <FlowView sit={sit} handlers={handlers} />
             </>
           )}
-          {view === "graph" && <GraphView sit={sit} handlers={handlers} />}
           {view === "closure" && <ClosureView sit={sit} handlers={handlers} />}
           {view === "lineage" && <LineageView sit={sit} handlers={handlers} />}
           {view === "org" && <OrgView sit={sit} handlers={handlers} />}
@@ -297,6 +300,35 @@ function TopBar({ sit, busy, headerRight }: { sit: Situation; busy: boolean; hea
         <span className="brand-sub">Release Console</span>
       </div>
       {headerRight}
+    </div>
+  );
+}
+
+// ---- collapsible graph ----------------------------------------------------
+// The reasoned network, folded into the Flow lens as an optional panel above the
+// cards (it used to be its own tab). Collapsed by default so the cards lead;
+// click the header to unfold the same agents-execute-steps graph in place.
+function CollapsibleGraph({ sit, handlers }: { sit: Situation; handlers: Handlers }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className={"graph-collapsible" + (open ? " open" : "")}>
+      <button
+        className="graph-toggle"
+        onClick={() => setOpen((o) => !o)}
+        aria-expanded={open}
+      >
+        <span className="gt-caret">{open ? "▾" : "▸"}</span>
+        <span className="gt-label">⊞ Reasoned network</span>
+        <span className="gt-hint muted">
+          the same release as a graph — agents <b>execute</b> steps, steps <b>precede</b> steps
+          {open ? " · click to hide" : " · click to show"}
+        </span>
+      </button>
+      {open && (
+        <div className="graph-collapsible-body">
+          <GraphView sit={sit} handlers={handlers} />
+        </div>
+      )}
     </div>
   );
 }

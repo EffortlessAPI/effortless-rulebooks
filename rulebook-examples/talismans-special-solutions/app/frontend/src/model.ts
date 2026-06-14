@@ -49,6 +49,51 @@ export function initials(name: string): string {
   return name.split(/[\s-]+/).filter(Boolean).slice(0, 2).map((w) => w[0].toUpperCase()).join("");
 }
 
+// ---- per-agent avatar -----------------------------------------------------
+// Every agent gets its OWN face, so Maria reads differently from James at a
+// glance — the role is clear from the person filling it, not just a generic 🧑.
+// Deterministic from the agent id (offline, stable across reloads, no service):
+// a distinct face from a kind-appropriate palette plus a distinct ring hue. Two
+// people can share a face only if their hues also collide, which the 0–359 hue
+// spread makes vanishingly unlikely for a demo-sized cast.
+function hashStr(s: string): number {
+  let h = 2166136261;
+  for (let i = 0; i < s.length; i++) {
+    h ^= s.charCodeAt(i);
+    h = Math.imul(h, 16777619);
+  }
+  return h >>> 0;
+}
+const HUMAN_FACES = ["👩‍💼", "👨‍💼", "👩‍🔬", "👨‍💻", "👩‍⚖️", "🧑‍🚀", "👨‍🏫", "👩‍🔧", "🧔", "👩‍🦰", "👨‍🦱", "👩‍🦳"];
+const AI_FACES = ["🤖", "👾", "🦾"];
+const PIPELINE_FACES = ["⚙️", "🛠️", "🔁"];
+
+export interface AvatarLook {
+  face: string;
+  hue: number;
+}
+
+export function avatarFor(agent?: Agent | null, type?: string): AvatarLook | null {
+  if (!agent) return null;
+  const kind: AgentKind = agent.kind || (type ? kindOfType(type) : "unknown");
+  const pool = kind === "ai" ? AI_FACES : kind === "pipeline" ? PIPELINE_FACES : kind === "human" ? HUMAN_FACES : null;
+  if (!pool) return null;
+  const h = hashStr(agent.id || agent.name || "?");
+  return { face: pool[h % pool.length], hue: h % 360 };
+}
+
+// The escalation ladder ABOVE a role (its VP, then CTO, …), read straight off
+// the reasoned org tree the situation already built. Empty when the role
+// escalates to no one. Lets a card say "↑ VP of Engineering → CTO" so the chain
+// of authority around each person is always legible.
+export function escalationAncestors(sit: Situation, roleId: string): { id: string; name: string }[] {
+  for (const chain of sit.orgTree) {
+    const idx = chain.findIndex((n) => n.id === roleId);
+    if (idx >= 0) return chain.slice(idx + 1);
+  }
+  return [];
+}
+
 const shortId = (id: string): string => (id || "").replace(/^prod-deploy-/, "").replace(/^ntwf-/, "");
 
 // Build the normalized situation from the raw /api/story payload.

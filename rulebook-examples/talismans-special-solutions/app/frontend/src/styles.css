@@ -152,6 +152,15 @@ button, input, select { font: inherit; }
 /* the kind icon IS the regulated thing — front and center, filling the ring.
    font-size is set on .avatar inline (≈55% of the ring) so the icon scales. */
 .avatar-kind { font-size: inherit; line-height: 1; }
+/* When the avatar shows a PERSON's face, a small corner badge keeps the kind
+   (human / AI / pipeline) explicit — the face says WHO, the badge says WHAT. */
+.avatar.hasface { overflow: visible; }
+.avatar-kindbadge { position: absolute; right: -5px; bottom: -5px; font-size: 10px; line-height: 1;
+  background: var(--bg2); border: 1.5px solid var(--line); border-radius: 50%;
+  width: 16px; height: 16px; display: flex; align-items: center; justify-content: center; }
+.avatar-kindbadge.k-human { border-color: var(--human); }
+.avatar-kindbadge.k-ai { border-color: var(--ai); }
+.avatar-kindbadge.k-pipeline { border-color: var(--pipeline); }
 .avatar-name { position: absolute; left: 110%; white-space: nowrap; font-weight: 600; font-size: 13px; }
 /* 🔒 "needs human" hint pinned top-left; a conflict (human required but not
    human-filled) tints the ring red so the mismatch reads at a glance */
@@ -171,6 +180,20 @@ button, input, select { font: inherit; }
 .flow-arrow { align-self: center; color: var(--muted); font-size: 22px; flex: none; transition: color .15s, transform .15s; }
 .flow-arrow.lit { color: var(--accent); transform: scale(1.25); }
 .flow-arrow--ambiguous { color: var(--risk); font-size: 16px; font-weight: 800; }
+.flow-arrow--feeds { color: #4fd1c5; font-size: 20px; }
+/* DCAT dataset feeder — a "stack of papers", categorically distinct from a step
+   card so it can never be misread as a step in the ordered sequence. */
+.flow-dataset { position: relative; flex: none; align-self: center; min-width: 150px; max-width: 170px; margin: 8px 2px; }
+.flow-dataset .ds-stack { position: absolute; inset: 0; border-radius: 8px; background: var(--card2);
+  border: 1px solid #4fd1c5; }
+.flow-dataset .ds-stack-2 { transform: translate(5px, 5px); opacity: .55; }
+.flow-dataset .ds-stack-3 { transform: translate(9px, 9px); opacity: .3; }
+.flow-dataset .ds-face { position: relative; background: var(--card); border: 1.5px solid #4fd1c5;
+  border-radius: 8px; padding: 9px 11px; display: flex; flex-direction: column; gap: 3px;
+  box-shadow: 0 1px 0 #4fd1c5 inset; }
+.flow-dataset .ds-kicker { font-size: 9.5px; letter-spacing: .04em; text-transform: uppercase; color: #4fd1c5; font-weight: 700; }
+.flow-dataset .ds-title { font-size: 12.5px; font-weight: 700; color: var(--text); line-height: 1.2; }
+.flow-dataset .ds-sub { font-size: 9.5px; color: var(--muted); }
 .stepcard.tied { border-top-color: var(--risk); }
 .sc-pos.tied { background: color-mix(in srgb, var(--risk) 30%, var(--card2)); width: auto; padding: 0 7px; border-radius: 11px; color: var(--risk); }
 .stepcard { flex: 1 1 0; min-width: 180px; background: var(--card); border: 1px solid var(--line); border-top: 3px solid var(--line);
@@ -212,6 +235,13 @@ button, input, select { font: inherit; }
 .sc-assign { display: flex; align-items: center; gap: 10px; }
 .sc-agent { font-weight: 600; font-size: 13.5px; }
 .sc-role { font-size: 11.5px; color: var(--muted); }
+/* the assignee's escalation ladder (Release Manager → VP → CTO) — who they
+   answer to, so each person's place in the chain of authority is legible. */
+.sc-escalates { display: flex; flex-wrap: wrap; align-items: center; gap: 3px 4px; margin-top: 3px; font-size: 10.5px; color: var(--muted); }
+.sc-esc-arrow { color: var(--accent); font-weight: 700; }
+.sc-esc-name { font-weight: 600; color: var(--text); background: color-mix(in srgb, var(--accent) 9%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 22%, transparent); border-radius: 5px; padding: 0 4px; }
+.sc-esc-sep { color: var(--muted); }
 .flow-closure-note { margin: 14px 0; padding: 10px 14px; background: var(--card); border: 1px solid var(--line); border-left: 3px solid var(--accent); border-radius: 8px; font-size: 13.5px; }
 
 /* precedence rail */
@@ -233,14 +263,12 @@ button, input, select { font: inherit; }
 .ox-help { font-size: 13px; line-height: 1.55; max-width: 880px; }
 .ox-help b { color: var(--text); font-weight: 650; }
 
-/* the escalation chart: tiers stacked apex-first, connected by ↑ */
-.ox-chart { display: flex; flex-direction: column; align-items: center; gap: 0; }
-.ox-tier { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
-.ox-tier-gap { color: var(--muted); font-size: 20px; line-height: 1; padding: 8px 0; opacity: .7; }
-.ox-empty { padding: 18px; font-size: 13.5px; }
+/* rows ordered by the workflow; each row is a role + its escalation ladder */
+.ox-rows { display: flex; flex-direction: column; gap: 12px; }
+.ox-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
 
 /* one role card */
-.ox-card { width: 270px; background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+.ox-card { width: 270px; flex: none; background: var(--card); border: 1px solid var(--line); border-radius: 12px;
   padding: 13px 14px; display: flex; flex-direction: column; gap: 11px; cursor: pointer;
   transition: box-shadow .14s, border-color .14s, transform .14s; }
 .ox-card:hover { border-color: #b692ff66; }
@@ -263,21 +291,30 @@ button, input, select { font: inherit; }
 .ox-stepchip.k-pipeline { border-left-color: var(--pipeline); }
 .ox-nosteps { font-size: 12px; font-style: italic; }
 
-/* escalation control — always present on every card */
-.ox-esc { appearance: none; font-family: inherit; font-size: 12px; text-align: left; cursor: pointer;
-  background: var(--card2); border: 1px solid var(--line); border-radius: 8px; padding: 7px 10px;
-  color: var(--muted); transition: background .12s, border-color .12s, color .12s; }
-.ox-esc b { color: var(--text); font-weight: 650; }
-.ox-esc.set { color: var(--accent); }
-.ox-esc.set:hover { background: #b692ff14; border-color: #b692ff66; }
-.ox-esc.none:hover { border-color: #b692ff66; color: var(--text); }
-.ox-esc.broken { color: var(--risk); border-color: var(--risk); background: color-mix(in srgb, var(--risk) 12%, var(--card2)); font-weight: 600; }
-.ox-pen { opacity: .55; margin-left: 3px; font-size: 10px; }
+/* escalation edge editor — the connector between two cards, or a trailing pill
+   on the top of a ladder / a role with no escalation set. Exactly one per role's
+   outgoing edge, and ALWAYS present. */
+.ox-conn, .ox-trail { appearance: none; font-family: inherit; font-size: 12px; text-align: center; cursor: pointer;
+  flex: none; background: var(--card2); border: 1px solid var(--line); border-radius: 8px; padding: 7px 10px;
+  color: var(--muted); transition: background .12s, border-color .12s, color .12s; white-space: nowrap; }
+.ox-conn { position: relative; }
+.ox-conn.set, .ox-trail.set { color: var(--accent); border-color: #b692ff44; }
+.ox-conn:hover, .ox-trail:hover { background: #b692ff14; border-color: #b692ff66; color: var(--text); }
+.ox-conn.broken, .ox-trail.broken { color: var(--risk); border-color: var(--risk);
+  background: color-mix(in srgb, var(--risk) 12%, var(--card2)); font-weight: 600; }
+.ox-arrow { font-weight: 600; }
+.ox-pen { opacity: .55; margin-left: 2px; font-size: 10px; }
 .ox-set { color: var(--accent); font-weight: 600; }
 
-/* roles not yet wired into the chain */
-.ox-unlinked { border-top: 1px dashed var(--line); padding-top: 16px; }
-.ox-unlinked-label { font-size: 11.5px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); font-weight: 600; margin-bottom: 12px; text-align: center; }
+/* a compact reference to a step-owner that already has its own row */
+.ox-ref { appearance: none; font-family: inherit; font-size: 12.5px; cursor: pointer; flex: none;
+  background: transparent; border: 1px dashed var(--line); border-radius: 8px; padding: 8px 12px;
+  color: var(--text); font-weight: 600; transition: border-color .12s; }
+.ox-ref:hover, .ox-ref.onpath { border-color: var(--accent); }
+
+/* roles not yet wired into the workflow */
+.ox-orphans { border-top: 1px dashed var(--line); padding-top: 16px; }
+.ox-orphans-label { font-size: 11.5px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); font-weight: 600; margin-bottom: 12px; }
 
 /* step rail */
 .ox-rail { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px; }
@@ -338,6 +375,18 @@ button, input, select { font: inherit; }
 .dx-deptmenu { width: 250px; }
 
 /* ---- GRAPH view --------------------------------------------------------- */
+/* the reasoned-network graph, folded into the Flow lens as a collapsible panel
+   above the cards (no longer a separate tab) */
+.graph-collapsible { border: 1px solid var(--line); border-radius: var(--radius); background: var(--card); margin-bottom: 12px; overflow: hidden; }
+.graph-collapsible.open { border-color: color-mix(in srgb, var(--accent) 40%, var(--line)); }
+.graph-toggle { display: flex; align-items: center; gap: 8px; width: 100%; text-align: left; cursor: pointer;
+  background: transparent; border: 0; padding: 9px 12px; color: var(--text); font: inherit; }
+.graph-toggle:hover { background: color-mix(in srgb, var(--accent) 6%, transparent); }
+.gt-caret { color: var(--accent); font-size: 12px; width: 12px; }
+.gt-label { font-weight: 650; font-size: 13.5px; }
+.gt-hint { font-size: 11.5px; }
+.graph-collapsible-body { padding: 12px; border-top: 1px solid var(--line); }
+
 .graph { position: relative; }
 .graph-hint { margin-bottom: 10px; font-size: 13px; }
 .graph-svg { width: 100%; height: auto; background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); }
